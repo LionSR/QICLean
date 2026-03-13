@@ -1,4 +1,4 @@
-import TNLean.Channel.PositiveMap
+import TNLean.Channel.Basic
 
 /-!
 # CP Schwarz / Multiplicative-domain infrastructure for Kraus maps
