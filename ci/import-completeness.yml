@@ -1,0 +1,56 @@
+name: Import completeness
+
+# Adapted from TNLean's import-completeness.yml with only the module prefix
+# changed (TNLean.* -> QICLean.*). Unchanged otherwise: this workflow has no
+# tenkz or MPS-specific content to drop.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'QICLean.lean'
+      - 'QICLean/**/*.lean'
+      - 'scripts/generate_import_aggregators.py'
+      - 'scripts/lean_import_syntax.py'
+      - 'scripts/test_generate_import_aggregators.py'
+      - '.github/workflows/import-completeness.yml'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'QICLean.lean'
+      - 'QICLean/**/*.lean'
+      - 'scripts/generate_import_aggregators.py'
+      - 'scripts/lean_import_syntax.py'
+      - 'scripts/test_generate_import_aggregators.py'
+      - '.github/workflows/import-completeness.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check generated import aggregators
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Test import-aggregator generator
+        run: PYTHONPATH=scripts python3 scripts/test_generate_import_aggregators.py -v
+      - name: Check generated import aggregators
+        run: PYTHONPATH=scripts python3 scripts/generate_import_aggregators.py --check
+
+  # This workflow deliberately checks only that QICLean's own import
+  # aggregators are complete. It does NOT check the cross-repository import
+  # direction (that QICLean never imports TNLean) — QICLean structurally
+  # cannot import a package it does not depend on, so there is nothing for
+  # a guard to enforce on this side. TNLean carries the guard that matters:
+  # a text-level check that no TNLean/MPS/** file leaks into QICLean's
+  # import surface via a Lake path requirement. See TNLean's own CI and
+  # docs/UPGRADE_RUNBOOK.md.

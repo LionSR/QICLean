@@ -1,0 +1,28 @@
+name: Create Release
+
+# Unchanged from TNLean's create-release.yml. Load-bearing for the two-repo
+# upgrade runbook (docs/UPGRADE_RUNBOOK.md): every lean-toolchain change on
+# main mints a toolchain release tag automatically. TNLean pins QICLean by a
+# semantic-version tag pushed manually alongside this (see the runbook §2) —
+# this workflow only handles the toolchain-tag half.
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'master'
+    paths:
+      - 'lean-toolchain'
+
+jobs:
+  lean-release-tag:
+    name: Add Lean release tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: lean-release-tag action
+      uses: leanprover-community/lean-release-tag@v1
+      with:
+        do-release: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

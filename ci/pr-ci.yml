@@ -1,0 +1,471 @@
+name: PR CI
+
+# The pull-request pipeline: Lean build + style lint, blueprint lint and
+# Lean-blueprint sync, and the Lean module-policy guards. Adapted from
+# TNLean's pr-ci.yml (see ci/README.md for what was dropped and why): this
+# file keeps the Lean build/lint/blueprint jobs and the module-policy guards,
+# and drops every tenkz-specific job and path filter — QICLean's blueprint
+# has no tenkz diagram pipeline, and the tenkz shrink/corpus/RMP jobs (three
+# whole jobs in TNLean's pr-ci.yml) simply do not apply here.
+#
+# One workflow means one completion event for the auto-fix dispatcher and
+# per-job change gating: Lean-only changes skip the TeX pipeline, while
+# blueprint changes also run the Lean build for compiled declaration checking.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.lean'
+      - 'lakefile.*'
+      - 'lean-toolchain'
+      - 'lake-manifest.json'
+      - 'scripts/LintStyle.lean'
+      - 'scripts/nolints-style.txt'
+      - 'scripts/check_numbered_lean_files.py'
+      - 'scripts/check_oversized_lean_files.py'
+      - 'scripts/lean_import_syntax.py'
+      - 'scripts/test_lean_file_policies.py'
+      - 'scripts/lake_build_hotspots.py'
+      - 'scripts/test_lake_build_hotspots.py'
+      - 'scripts/seed_lake_build.sh'
+      - 'scripts/test_seed_lake_build.sh'
+      - 'docs/ci-automation.md'
+      - 'docs/CONTRIBUTING.md'
+      - '.github/workflows/pr-ci.yml'
+      - 'blueprint/src/**'
+      - 'blueprint/.chktexrc'
+      - 'blueprint/latexindent.yaml'
+      - 'scripts/blueprint_bibtex.py'
+      - 'scripts/blueprint_lean_sync.py'
+      - 'scripts/test_blueprint_web_render.py'
+      - 'scripts/check_reader_facing_prose.py'
+      - 'LICENSE'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'docs/paper-gaps/**/*.tex'
+      - 'docs/paper-gaps/**/*.bib'
+      - '**.lean'
+      - 'lakefile.*'
+      - 'lean-toolchain'
+      - 'lake-manifest.json'
+      - 'scripts/LintStyle.lean'
+      - 'scripts/nolints-style.txt'
+      - 'scripts/check_numbered_lean_files.py'
+      - 'scripts/check_oversized_lean_files.py'
+      - 'scripts/lean_import_syntax.py'
+      - 'scripts/test_lean_file_policies.py'
+      - 'scripts/lake_build_hotspots.py'
+      - 'scripts/test_lake_build_hotspots.py'
+      - 'scripts/seed_lake_build.sh'
+      - 'scripts/test_seed_lake_build.sh'
+      - 'docs/ci-automation.md'
+      - 'docs/CONTRIBUTING.md'
+      - '.github/workflows/pr-ci.yml'
+      - 'blueprint/src/**'
+      - 'blueprint/.chktexrc'
+      - 'blueprint/latexindent.yaml'
+      - 'scripts/blueprint_bibtex.py'
+      - 'scripts/blueprint_lean_sync.py'
+      - 'scripts/test_blueprint_web_render.py'
+      - 'scripts/check_reader_facing_prose.py'
+      - 'LICENSE'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Build-cache policy: the cache is saved only from main and restored
+# everywhere. Per-PR caches saved on every run evict a shared repository
+# cache budget within minutes, so main's entry never survives — this is the
+# same lesson TNLean's pr-ci.yml documents and this file inherits verbatim.
+# Mathlib and its dependencies are intentionally excluded from the cache:
+# `lake exe cache get` (run inside lean-action) restores them faster than a
+# GitHub cache of that size could.
+#
+# QICLean-specific: TNLean depends on this repository's build output, so a
+# release archive (`lake upload` on tagged commits) is the primary way
+# TNLean avoids recompiling QICLean from source; see docs/UPGRADE_RUNBOOK.md.
+env:
+  BUILD_CACHE_PATHS: |
+    .lake/build
+    .lake/packages/Gametheory/.lake/build
+    .lake/packages/checkdecls/.lake/build
+
+jobs:
+  # Per-job change gating. Push and dispatch runs skip this and run every job.
+  changes:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      lean: ${{ steps.filter.outputs.lean }}
+      module_policy: ${{ steps.filter.outputs.module_policy }}
+      blueprint: ${{ steps.filter.outputs.blueprint }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            lean:
+              - '**.lean'
+              - 'lakefile.*'
+              - 'lean-toolchain'
+              - 'lake-manifest.json'
+              - 'scripts/LintStyle.lean'
+              - 'scripts/nolints-style.txt'
+            module_policy:
+              - 'scripts/check_numbered_lean_files.py'
+              - 'scripts/check_oversized_lean_files.py'
+              - 'scripts/lean_import_syntax.py'
+              - 'scripts/test_lean_file_policies.py'
+              - 'scripts/lake_build_hotspots.py'
+              - 'scripts/test_lake_build_hotspots.py'
+              - 'scripts/seed_lake_build.sh'
+              - 'scripts/test_seed_lake_build.sh'
+              - 'docs/ci-automation.md'
+              - 'docs/CONTRIBUTING.md'
+            blueprint:
+              - 'blueprint/src/**'
+              - 'blueprint/.chktexrc'
+              - 'blueprint/latexindent.yaml'
+              - 'scripts/blueprint_bibtex.py'
+              - 'scripts/check_reader_facing_prose.py'
+              - 'scripts/test_blueprint_web_render.py'
+
+  # DROPPED from TNLean's pr-ci.yml: the tenkz-shrink, tenkz-corpus, and
+  # tenkz-rmp jobs. TNLean's blueprint draws tensor-network diagrams with a
+  # custom TikZ pipeline (tenkz); QICLean's blueprint has no diagram pipeline
+  # of that kind (channel/spectral-theory figures, if any, are ordinary
+  # commutative-diagram or plot content, not tenkz's tensor-network
+  # notation). If QICLean later adopts tenkz for some figure, port these
+  # jobs back from TNLean's pr-ci.yml rather than re-deriving them.
+
+  build:
+    needs: changes
+    outputs:
+      compilation-time-result: ${{ steps.compilation-time.outputs.result }}
+    if: |
+      !cancelled() && (
+        github.event_name != 'pull_request' ||
+        needs.changes.outputs.lean == 'true' ||
+        needs.changes.outputs.blueprint == 'true'
+      )
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Restore Lean build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.BUILD_CACHE_PATHS }}
+          key: qiclean-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+          restore-keys: |
+            qiclean-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+
+      - uses: leanprover/lean-action@v1
+        with:
+          build: false
+          use-github-cache: false
+
+      # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
+      # of a confusing kernel error downstream in TNLean. See
+      # docs/UPGRADE_RUNBOOK.md §3. QICLean has no upstream dependency to
+      # check against (it is the leaf), so this step is a no-op placeholder
+      # documenting the invariant this repository must keep true for TNLean;
+      # TNLean's own pr-ci.yml carries the real comparison step.
+
+      - name: Build Lean project and capture timings
+        run: |
+          set -eo pipefail
+          {
+            lake build
+            lake build lint_style
+          } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check changed Lean compilation times
+        id: compilation-time
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF_NAME: ${{ github.event.pull_request.base.ref }}
+          BASE_REF: origin/${{ github.event.pull_request.base.ref }}
+        run: |
+          set -o pipefail
+          git fetch --no-tags origin \
+            "+refs/heads/$BASE_REF_NAME:refs/remotes/origin/$BASE_REF_NAME"
+          git -c core.quotePath=false diff \
+            --merge-base --name-only --diff-filter=AMR "$BASE_REF" -- '*.lean' \
+            > "$RUNNER_TEMP/changed-lean-files.txt"
+          python3 scripts/lake_build_hotspots.py \
+            "$RUNNER_TEMP/lake-build.log" \
+            --changed-files-from "$RUNNER_TEMP/changed-lean-files.txt"
+          case "$?" in
+            0) echo "result=success" >> "$GITHUB_OUTPUT" ;;
+            50) echo "result=limit" >> "$GITHUB_OUTPUT" ;;
+            *) echo "result=error" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - name: Run text-based style linter
+        run: lake exe lint_style --github
+
+      # `checkdecls` imports QICLean modules to resolve every tagged
+      # declaration, so it must run after the project build rather than in
+      # a TeX-only job.
+      - name: Generate Blueprint Lean declaration list
+        run: python3 scripts/blueprint_lean_sync.py --root . --update-lean-decls
+
+      - name: Check Blueprint Lean declarations
+        timeout-minutes: 10
+        run: lake exe checkdecls blueprint/lean_decls
+
+      - name: Save Lean build cache (main only)
+        if: success() && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.BUILD_CACHE_PATHS }}
+          key: qiclean-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+
+  compile-time:
+    name: Check changed Lean compilation times
+    needs: [changes, build]
+    if: |
+      !cancelled() &&
+      github.event_name == 'pull_request' &&
+      needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce changed-module timing limit
+        env:
+          TIMING_RESULT: ${{ needs.build.outputs.compilation-time-result }}
+        run: |
+          case "$TIMING_RESULT" in
+            success) ;;
+            limit)
+              echo "::error::A changed Lean module reached the 50-second compilation limit"
+              exit 1
+              ;;
+            *)
+              echo "::error::The changed-module compilation-time checker failed"
+              exit 1
+              ;;
+          esac
+
+  file-length:
+    name: Check Lean module policies
+    needs: changes
+    if: |
+      !cancelled() && (
+        github.event_name != 'pull_request' ||
+        needs.changes.outputs.lean == 'true' ||
+        needs.changes.outputs.module_policy == 'true'
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Test Lean module-policy checkers
+        run: PYTHONPATH=scripts python3 scripts/test_lean_file_policies.py -v
+
+      - name: Test Lean compilation-time checker
+        run: python3 scripts/test_lake_build_hotspots.py
+
+      # Ordinary Lean modules over 1000 lines fail. The exact root aggregator
+      # exemption is accepted only while its uncommented content is import-only.
+      - name: Run oversized-file guard
+        run: >
+          PYTHONPATH=scripts python3 scripts/check_oversized_lean_files.py
+          --root .
+          --import-only-aggregator QICLean.lean
+
+      - name: Fetch pull-request base for the debt ratchet
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags origin \
+            "+refs/heads/${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}"
+
+      - name: Reject new numbered-sequel modules (pull request)
+        if: github.event_name == 'pull_request'
+        run: >
+          python3 scripts/check_numbered_lean_files.py
+          --root .
+          --base-ref "origin/${{ github.event.pull_request.base.ref }}"
+
+      - name: Reject new numbered-sequel modules (push)
+        if: github.event_name == 'push'
+        run: >
+          python3 scripts/check_numbered_lean_files.py
+          --root .
+          --base-ref "${{ github.event.before }}"
+
+  blueprint:
+    name: Check blueprint compiles without errors
+    needs: changes
+    if: "!cancelled() && (github.event_name != 'pull_request' || needs.changes.result == 'success')"
+    runs-on: ubuntu-latest
+    env:
+      TEX_CHANGED: ${{ github.event_name != 'pull_request' || needs.changes.outputs.blueprint == 'true' }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check reader-facing prose patterns
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: origin/${{ github.event.pull_request.base.ref }}
+        run: |
+          git fetch --no-tags origin "+refs/heads/${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}"
+          python3 scripts/check_reader_facing_prose.py --root . --diff-base "$BASE_REF" --ci
+
+      - name: Detect changed Lean files
+        id: changed-lean-files
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: origin/${{ github.event.pull_request.base.ref }}
+        run: |
+          git fetch --no-tags origin "+refs/heads/${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}"
+          changed_lean_paths="$(git diff --merge-base --name-only "$BASE_REF" -- \
+            QICLean.lean 'QICLean/**/*.lean' lakefile.* lean-toolchain lake-manifest.json)"
+          if [ -n "$changed_lean_paths" ]; then
+            has_changed_lean=true
+          else
+            has_changed_lean=false
+            while IFS= read -r tex_file; do
+              if [ -f "$tex_file" ] && grep -Eq '\\lean\{|\\uses\{|\\leanok|\\notready' "$tex_file"; then
+                has_changed_lean=true
+                break
+              fi
+            done < <(git diff --merge-base --name-only "$BASE_REF" -- \
+              'blueprint/src/**/*.tex' 'blueprint/src/*.tex')
+          fi
+          echo "has_changed_lean=$has_changed_lean" >> "$GITHUB_OUTPUT"
+
+      - name: Install blueprint system dependencies
+        if: env.TEX_CHANGED == 'true'
+        uses: texra-ai/lean-env-action/blueprint-system-deps@v1
+
+      - name: Install blueprint Python dependencies
+        if: env.TEX_CHANGED == 'true'
+        uses: texra-ai/lean-env-action/leanblueprint@v1
+
+      # DROPPED from TNLean's blueprint job: every tenkz-specific step
+      # (native tenkz source lint, tenkz manual/example compilation, the
+      # picture-pipeline smoke test, the equation/label-overlap/PEPS-torus/
+      # index-routing/fusion-tree audits). Those exist only because TNLean's
+      # blueprint draws tensor-network diagrams with the tenkz TikZ
+      # pipeline; see the note on the dropped tenkz jobs above.
+
+      - name: Lint LaTeX (chktex)
+        if: env.TEX_CHANGED == 'true'
+        run: |
+          find blueprint/src -name '*.tex' -not -path '*/Packages/*' -print0 \
+            | xargs -0 -r chktex -q -l blueprint/.chktexrc
+
+      - name: Check LaTeX formatting (latexindent)
+        if: env.TEX_CHANGED == 'true'
+        continue-on-error: true
+        timeout-minutes: 5
+        run: |
+          set -e
+          status=0
+          while IFS= read -r f; do
+            if ! latexindent -k -s -l blueprint/latexindent.yaml "$f" > /dev/null; then
+              echo "::warning file=$f::not formatted to blueprint/latexindent.yaml; run 'latexindent -l blueprint/latexindent.yaml -w -s \"$f\"' locally to fix"
+              status=1
+            fi
+          done < <(find blueprint/src -name '*.tex' -not -path '*/Packages/*')
+          exit $status
+
+      - name: Build blueprint bibliography
+        if: env.TEX_CHANGED == 'true'
+        run: python3 scripts/blueprint_bibtex.py
+
+      - name: Run leanblueprint web and check for errors
+        if: env.TEX_CHANGED == 'true'
+        working-directory: blueprint
+        run: |
+          set -o pipefail
+          tmp_output_file="$(mktemp)"
+          set +o pipefail
+          leanblueprint web 2>&1 | tee "$tmp_output_file"
+          cmd_status=${PIPESTATUS[0]}
+          set -o pipefail
+          if grep -q "^ERROR:" "$tmp_output_file"; then
+            echo "::error::Blueprint has unresolved labels (see ERROR lines above)"
+            exit 1
+          fi
+          if grep -q "WARNING: File not found:" "$tmp_output_file"; then
+            echo "::warning::Blueprint has missing file references (see WARNING lines above)"
+          fi
+          if [ "$cmd_status" -ne 0 ]; then
+            exit "$cmd_status"
+          fi
+
+      # A zero exit status says the build ran, not that the pages read. This
+      # opens every generated page (via playwright/chromium) and measures
+      # what a reader would meet.
+      - name: Test generated blueprint pages
+        if: env.TEX_CHANGED == 'true'
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          python3 -m playwright install --with-deps chromium
+          python3 scripts/test_blueprint_web_render.py --web-root blueprint/web
+
+      - name: Generate lean_decls from blueprint .tex files
+        id: lean-decls
+        run: python3 scripts/blueprint_lean_sync.py --root . --update-lean-decls
+
+      - name: Check blueprint and Lean source stay in sync
+        if: steps.lean-decls.outcome == 'success'
+        run: python3 scripts/blueprint_lean_sync.py --root . --ci
+
+      - name: Fetch PR base ref for diff
+        id: fetch-base-ref
+        if: github.event_name == 'pull_request' && steps.changed-lean-files.outputs.has_changed_lean == 'true'
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: git fetch --no-tags origin "$BASE_REF"
+
+      - name: Error on changed Lean declarations missing blueprint entries
+        if: github.event_name == 'pull_request' && steps.changed-lean-files.outputs.has_changed_lean == 'true'
+        env:
+          BASE_REF: origin/${{ github.event.pull_request.base.ref }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+
+          base_ref = os.environ["BASE_REF"]
+          changed = subprocess.check_output(
+              ["git", "diff", "--merge-base", "--name-only", "--diff-filter=AMR",
+               base_ref, "--", "QICLean.lean", "QICLean/**/*.lean"],
+              text=True,
+          )
+          changed_lean_files = [line for line in changed.splitlines() if line.endswith(".lean")]
+          if not changed_lean_files:
+              print("No changed QICLean/*.lean files in this pull request.")
+              raise SystemExit(0)
+          subprocess.run(
+              ["python3", "scripts/blueprint_lean_sync.py", "--root", ".",
+               "--warn-missing-blueprint", "--diff-base", base_ref,
+               "--changed-files", *changed_lean_files],
+              check=True,
+          )
+          PY

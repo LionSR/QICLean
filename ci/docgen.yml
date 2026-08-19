@@ -1,0 +1,142 @@
+name: Full documentation
+
+# Adapted from TNLean's docgen.yml: drops the paper-gap PDF build step (see
+# ci/README.md — QICLean's paper-gaps subset is copied separately, and its
+# PDFs are built the same way if/when QICLean accumulates its own notes) and
+# the FT-MPS split-volume packaging step. Otherwise unchanged.
+
+on:
+  schedule:
+    # Run weekly on Sunday at 06:00 UTC
+    - cron: '0 6 * * 0'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch to build docs from (default: main)'
+        required: false
+        default: 'main'
+
+concurrency:
+  group: docgen-build
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build_project:
+    runs-on: ubuntu-latest
+    name: Build project and generate docs
+    timeout-minutes: 330
+    steps:
+      - name: Cleanup to free disk space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: false
+          haskell: false
+          large-packages: false
+          docker-images: false
+          swap-storage: false
+
+      - name: Checkout project
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.ref || 'main' }}
+
+      - name: Build project
+        uses: leanprover/lean-action@v1
+        with:
+          build: true
+          # See pr-ci.yml: per-run lake caches evict the main build cache.
+          use-github-cache: false
+
+      - name: Install TeX and graphviz
+        uses: texra-ai/lean-env-action/blueprint-system-deps@v1
+        with:
+          cache-suffix: docgen-v2
+          extra-packages: latexmk texlive-science texlive-xetex texlive-fonts-extra
+
+      - name: Install leanblueprint
+        uses: texra-ai/lean-env-action/leanblueprint@v1
+
+      - name: Build blueprint bibliography
+        run: python3 scripts/blueprint_bibtex.py
+
+      - name: Build blueprint
+        working-directory: blueprint
+        run: |
+          leanblueprint pdf
+          set -o pipefail
+          tmp_output_file="$(mktemp)"
+
+          set +o pipefail
+          leanblueprint web 2>&1 | tee "$tmp_output_file"
+          cmd_status=${PIPESTATUS[0]}
+          set -o pipefail
+
+          if grep -q "^ERROR:" "$tmp_output_file"; then
+            echo "::error::Blueprint has unresolved labels (see ERROR lines above)"
+            exit 1
+          fi
+          if [ "$cmd_status" -ne 0 ]; then
+            exit "$cmd_status"
+          fi
+
+      - name: Test generated blueprint pages
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          python3 -m playwright install --with-deps chromium
+          python3 scripts/test_blueprint_web_render.py --web-root blueprint/web
+
+      - name: Generate API docs
+        run: |
+          cd docbuild
+          lake build QICLean:docs
+
+      - name: Package site components
+        run: |
+          mkdir -p site-blueprint site-docs site-badges
+          cp -r blueprint/web site-blueprint/blueprint
+          cp blueprint/print/print.pdf site-blueprint/blueprint.pdf
+          cp -r docbuild/.lake/build/doc site-docs/docs
+          python3 scripts/write_badges.py site-badges
+
+      - name: Build homepage
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: home_page
+          destination: site-blueprint/homepage
+
+      - name: Upload blueprint component
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-blueprint
+          path: site-blueprint
+          retention-days: 30
+
+      - name: Upload docs component
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-docs
+          path: site-docs
+          retention-days: 90
+
+      - name: Upload badges component
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-badges
+          path: site-badges
+          retention-days: 30
+
+  deploy:
+    name: Deploy Pages site
+    needs: build_project
+    uses: ./.github/workflows/deploy-pages.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      actions: read

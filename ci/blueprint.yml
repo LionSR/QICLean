@@ -1,0 +1,119 @@
+name: Blueprint
+
+# Adapted from TNLean's blueprint.yml: drops the native-tenkz lint/pipeline
+# step (no tenkz diagrams in QICLean's blueprint; see ci/README.md) and the
+# FT-MPS-volume packaging step (that split PDF is TNLean-specific). Otherwise
+# unchanged: same leanblueprint build, same error/warning gating, same
+# generated-page reader-facing check, same Pages deploy handoff.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.lean'
+      - 'lakefile.*'
+      - 'lean-toolchain'
+      - 'lake-manifest.json'
+      - 'blueprint/src/**'
+      - '.github/workflows/blueprint.yml'
+      - '.github/workflows/deploy-pages.yml'
+      - 'home_page/**'
+      - 'scripts/blueprint_bibtex.py'
+      - 'scripts/assemble-pages-site.sh'
+      - 'scripts/fetch-latest-artifact.sh'
+      - 'scripts/write_badges.py'
+  workflow_dispatch:
+
+concurrency:
+  group: blueprint-build
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  blueprint:
+    runs-on: ubuntu-latest
+    name: Build blueprint site components
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v6
+
+      - name: Install system dependencies
+        uses: texra-ai/lean-env-action/blueprint-system-deps@v1
+
+      - name: Install leanblueprint
+        uses: texra-ai/lean-env-action/leanblueprint@v1
+
+      - name: Build blueprint bibliography
+        run: python3 scripts/blueprint_bibtex.py
+
+      - name: Build blueprint
+        run: |
+          set -o pipefail
+          tmp_output_file="$(mktemp)"
+
+          leanblueprint pdf
+
+          set +o pipefail
+          leanblueprint web 2>&1 | tee "$tmp_output_file"
+          cmd_status=${PIPESTATUS[0]}
+          set -o pipefail
+
+          if grep -q "^ERROR:" "$tmp_output_file"; then
+            echo "::warning::Blueprint has unresolved labels (see ERROR lines above)"
+          fi
+          if grep -q "WARNING: File not found:" "$tmp_output_file"; then
+            echo "::error::Blueprint has missing files (see WARNING lines above)"
+            exit 1
+          fi
+          if [ "$cmd_status" -ne 0 ]; then
+            exit "$cmd_status"
+          fi
+
+      # A zero exit status says the build ran, not that the pages read. The
+      # site is published from here, so the reader-facing check runs here too
+      # and not only where a pull request is reviewed.
+      - name: Test generated blueprint pages
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          python3 -m playwright install --with-deps chromium
+          python3 scripts/test_blueprint_web_render.py --web-root blueprint/web
+
+      - name: Package site components
+        run: |
+          mkdir -p site-blueprint site-badges
+          cp -r blueprint/web site-blueprint/blueprint
+          cp blueprint/print/print.pdf site-blueprint/blueprint.pdf
+          python3 scripts/write_badges.py site-badges
+
+      - name: Build homepage
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: home_page
+          destination: site-blueprint/homepage
+
+      - name: Upload blueprint component
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-blueprint
+          path: site-blueprint
+          retention-days: 30
+
+      - name: Upload badges component
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-badges
+          path: site-badges
+          retention-days: 30
+
+  deploy:
+    name: Deploy Pages site
+    needs: blueprint
+    uses: ./.github/workflows/deploy-pages.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      actions: read
