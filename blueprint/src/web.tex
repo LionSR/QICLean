@@ -1,0 +1,37 @@
+\documentclass{report}
+
+\usepackage{xcolor}
+\usepackage{amssymb, amsthm, amsmath}
+\usepackage[numbers,square]{natbib}
+\usepackage{hyperref}
+\usepackage[showmore, dep_graph]{blueprint}
+\usepackage{_tnlean_patches}
+% Adapted from TNLean's web.tex: this blueprint carries no tensor-network
+% diagrams, so tenkz_pic (the plasTeX tenkz-picture renderer) is not loaded
+% here. See the packaging report for the three diagrams dropped at
+% extraction.
+
+% plasTeX already propagates section resets through subsection counters.
+\makeatletter
+\providecommand{\@addtoreset}[2]{}
+\makeatother
+
+\input{macros/common}
+\input{macros/web}
+
+\providecommand{\dotsc}{\dots}
+
+\home{..}
+\github{https://github.com/LionSR/QICLean}
+\dochome{../docs}
+
+\title{Quantum Information and Channels: A formalization blueprint}
+\author{Sirui Lu, Erickson Tjoa, and J.\ Ignacio Cirac}
+\date{Last update: \today}
+
+\begin{document}
+\maketitle
+\input{content}
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

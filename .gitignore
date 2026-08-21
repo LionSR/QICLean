@@ -1,6 +1,5 @@
 # Lake build artifacts
 /.lake/
-External/.lake/
 .lake
 
 # Local build output (LaTeX artifacts, PDFs, etc.)
@@ -20,18 +19,6 @@ External/.lake/
 *.bbl
 *.blg
 
-# Notes/Wolf build artifacts
-Notes/Wolf/.texpadtmp/
-Notes/Wolf/History/
-Notes/Wolf/build/
-Notes/WolfNoteTexSource/History/
-
-
-# Compiled PDFs (regenerable)
-presentation*.pdf
-docs/paper-gaps/*.pdf
-docs/paper-gaps/*.dvi
-
 # OS junk
 .DS_Store
 Thumbs.db
@@ -40,65 +27,17 @@ Thumbs.db
 .claude/settings.local.json
 .claude/worktrees/
 
-# Intermediate / generated analysis docs
-FINAL_STATUS.md
-STATUS_UPDATE.md
-PRESENTATION_README.md
-TIKZ_VALIDATION_REPORT.md
-tikz_analysis.md
-improved_mps_tikz.tex
-
-# Slides build artifacts
-docs/slides/.texpadtmp/
-docs/slides/History/
-*.bcf
-*.run.xml
-
 # Blueprint build artifacts (CI regenerates these)
 blueprint/web/
 blueprint/print/
 blueprint/lean_decls
 blueprint/src/web.paux
 blueprint/src/*.xdv
-blueprint/src/ch13_more-*.png
 blueprint/src/Packages/__pycache__/
-
-# Local notes / mail exports
-MeetingNotes/*.eml
-/References/
-
-blueprint/src/print.xdv
 
 # Local scratch / experiments
 Scratch/
 /tmp/
 
-# tenkz manual generated artifacts
-/docs/tenkz/*.exa
-/docs/tenkz/*.exm
-/docs/tenkz/*.tnlog
-/docs/tenkz/manual2.pdf
-/output/pdf/tenkz-*.pdf
-
-# Nested Lake artifacts in vendored local packages
-External/**/.lake/
-External/**/lake-manifest.json
-
-MeetingNotes/
-.worktrees/
-scripts/__pycache__/
-
-Draft/
-Draft_OLD/
-*.bak*
-blueprint/src/.tenkz_svg_cache
-blueprint/src/.tenkz_svg_cache/
-blueprint/src/.tenkz_svg_cache/*
-.tenkz_svg_cache
-output/
-.tn_svg_cache/
-
-tex/RMP_TIKZ_SOURCE_CODE
-
-# Python bytecode (general)
+# Python bytecode
 __pycache__/

@@ -1,0 +1,93 @@
+% QICLean chapter router. Order follows M. Wolf, "Quantum Channels &
+% Operations: A Guided Tour" (Notes/WolfNoteTexSource/ in the source
+% repository this content was extracted from), not the chNN_ file-name
+% prefixes: those prefixes are stable subject identifiers inherited from
+% TNLean's blueprint/src/chapter/ layout and are not renumbered on
+% relocation (see docs/blueprint_style_guide.md, "Blueprint Structure").
+%
+% Every chapter file lives directly under chapter/: there is no separate
+% "Appendices" part and no ft_mps/full_only split. TNLean organizes its own
+% blueprint into a shared Fundamental-Theorem-of-MPS volume ("ft_mps") and a
+% remaining-results volume ("full_only"), each with its own front matter and
+% appendix numbering; that split is a paper-volume artifact of TNLean's
+% build, not a property of the mathematics. Content that TNLean filed as a
+% "Supporting Results" appendix to one of its chapters is filed here as a
+% same-chapter continuation instead -- a same-named chNN_..._supporting_
+% results.tex file \input immediately after that chapter's main content, so
+% it appears as further sections of the one chapter Wolf's own numbering
+% gives the material, with no separate appendix part or numbering track.
+%
+% Wolf chapter -> file mapping (see the extraction report for the full
+% per-file classification and the 61-file move list):
+%   Ch.1  Deconstructing Quantum       -> ch12_auxiliary_wolf_ch01_*
+%                                          (input via ch12_auxiliary_channel_theory)
+%   Ch.2  Representations              -> ch04_channels_{choi_foundations,
+%                                          positive_map_and_channel_foundations,
+%                                          rectangular_kraus_maps},
+%                                          ch12_auxiliary_channel_no_information_...,
+%                                          ch16_channel_representations_*
+%   Ch.3  Positive, but not completely -> ch25_positive_not_cp_* (except
+%                                          kramers_degeneracy, which stays
+%                                          in TNLean)
+%   Ch.5  Operator Inequalities        -> ch05_schwarz_*,
+%                                          ch18_operator_convexity_*
+%   Ch.6  Spectral properties          -> ch04_channels_{peripheral_spectrum_
+%                                          and_primitivity,transfer_map_
+%                                          foundations}, ch06_qpf*,
+%                                          ch07_spectral_ft_peripheral_cyclic,
+%                                          ch07_spectral_supporting_results,
+%                                          ch27_channel_asymptotics_*
+%   Ch.7  Continuous one-parameter
+%         semigroups                   -> ch17_semigroup_*
+%   Ch.8  Measures for distances and
+%         mixedness                    -> ch19_entropy_*,
+%                                          ch27_channel_asymptotics_
+%                                          {jordan_block_power,
+%                                          upper_triangular_power}
+%
+% No Wolf Ch.4 (Convex Structure) or Ch.9-11 (Symmetries, Special channels,
+% Quantum spin chains) content moved: none of TNLean's blueprint chapters
+% attached to those source chapters cleared the >=0.5 qic-item-count
+% threshold used for this extraction.
+%
+% chapter/ch12_auxiliary_channel_theory.tex is TNLean's own catch-all
+% "Auxiliary Quantum-Channel Theory" chapter; it is carried over as a single
+% unit (unchanged \input list: wolf_ch01, choi_foundations,
+% no_information_without_disturbance, schwarz_abstract_domains_and_order,
+% qpf_auxiliary_extensions) rather than split apart, so its five
+% already-Wolf-numbered sub-files are each \input exactly once. Do not also
+% \input those five files individually elsewhere in this router.
+
+\input{chapter/ch04_channels}
+\input{chapter/ch16_channel_representations}
+\input{chapter/ch12_auxiliary_channel_theory}
+
+\input{chapter/ch25_positive_not_cp}
+\input{chapter/ch25_positive_not_cp_supporting_results}
+
+\input{chapter/ch05_schwarz}
+\input{chapter/ch05_schwarz_supporting_results}
+\input{chapter/ch18_operator_convexity}
+
+\input{chapter/ch06_qpf}
+\input{chapter/ch06_qpf_supporting_results}
+\input{chapter/ch07_spectral_ft_peripheral_cyclic}
+\input{chapter/ch07_spectral_supporting_results}
+\input{chapter/ch27_channel_asymptotics}
+\input{chapter/ch27_channel_asymptotics_supporting_results}
+
+% Not a Wolf chapter: the quantum Wielandt bound (Sanz, Perez-Garcia, Wolf,
+% Cirac 2010) is a separate paper's result, placed here for its close
+% relation to Wolf Ch.6's spectral/primitivity theory. Corrected into the
+% move set during Phase 2 against the real Lean-tree dry run's mover set
+% (docs/movers.txt on branch dryrun-2026-08-20) — the monorepo's
+% check_import_direction.py mover_files() boundary used for the initial
+% Phase-1 pass did not yet include the surviving Wielandt/ files. See the
+% packaging report.
+\input{chapter/ch08_wielandt}
+\input{chapter/ch08_wielandt_supporting_results}
+
+\input{chapter/ch17_semigroup}
+
+\input{chapter/ch19_entropy}
+\input{chapter/ch19_entropy_corollaries}

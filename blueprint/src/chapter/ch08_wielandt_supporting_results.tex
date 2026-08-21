@@ -1,0 +1,123 @@
+\section{Wielandt Bound}
+\label{ch:wielandt_supporting_results}
+This section collects exact-word, cumulative-span, augmentation, blocking,
+complementary-gap, and one-step padding results used by the main
+quantitative argument earlier in this chapter.
+
+\section{Exact-word and block-injectivity support}
+\label{sec:app_wielandt_exact_word_support}
+
+\begin{lemma}[Two-sided span from one nonzero matrix]
+    \label{lem:two_sided_nonzero_matrix_span}
+    \lean{Matrix.span_range_mul_nonzero_mul_eq_top}
+    \leanok
+    If $C\in\MN{D}$ is nonzero, then
+    \begin{align}
+        \spn_{\C}\{RCS:R,S\in\MN{D}\}
+         & =\MN{D}.
+        \label{eq:wld_two_sided_nonzero_span}
+    \end{align}
+    This is the matrix-factorization input used in~%
+    \cite[Lemma~3]{PerezGarcia2007Matrix}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Choose a nonzero entry $C_{pq}$. Then every matrix unit $E_{ij}$
+    is a scalar multiple of $E_{ip}CE_{qj}$, so the span in
+    (\ref{eq:wld_two_sided_nonzero_span}) contains the standard matrix basis.
+\end{proof}
+
+\section{Cumulative-span and spectral linear algebra}
+\label{sec:app_wielandt_cumulative_support}
+
+The next two lemmas connect irreducible matrix actions with the cumulative word
+span used throughout Chapter~\ref{ch:wielandt}.
+
+\begin{definition}[Fitting decomposition]\label{def:fitting_decomp}
+    \lean{Wielandt.FittingDecomposition}
+    \leanok
+    A \emph{Fitting decomposition} of a linear endomorphism
+    $f:V\to V$ on a finite-dimensional vector space over an
+    algebraically closed field consists of:
+    \begin{enumerate}
+        \item $f$ is nilpotent on the generalized $0$-eigenspace,
+        \item $f$ is invertible on each generalized $\mu$-eigenspace
+              for $\mu\neq0$,
+        \item the generalized eigenspaces span~$V$,
+        \item the generalized eigenspaces are linearly independent.
+    \end{enumerate}
+\end{definition}
+
+\begin{theorem}[Fitting decomposition exists]\label{thm:fitting_decomp}
+    \lean{Wielandt.fittingDecomposition}
+    \leanok
+    \uses{def:fitting_decomp}
+    Every linear endomorphism on a finite-dimensional vector space
+    over an algebraically closed field admits a Fitting decomposition.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Nilpotency on the zero generalized eigenspace follows from
+    the definition of generalized eigenspaces.
+    Invertibility on nonzero generalized eigenspaces follows
+    because $f-\mu$ is nilpotent there, so
+    $f=\mu(1-(1-f/\mu))$ is invertible.
+    Spanning and independence are standard results for
+    generalized eigenspaces over algebraically closed fields.
+    In~\cite{Sanz2010Quantum} and \cite[Lemma~6.3(b)]{Wolf2012Quantum},
+    the Jordan normal form is used directly.
+    The argument is phrased in terms of generalized eigenspaces instead.
+\end{proof}
+
+\begin{theorem}[Nilpotent power bound]\label{thm:nilpotent_pow_bound}
+    \lean{Wielandt.nilpotent_pow_eq_zero_of_finrank}
+    \leanok
+    If $f$ is nilpotent on a space of dimension~$n$, then $f^n=0$.
+\end{theorem}
+
+\begin{proof}\leanok
+    A nilpotent endomorphism on an $n$-dimensional space has
+    nilpotency index at most~$n$.
+\end{proof}
+
+\begin{theorem}[Nonzero trace implies eigenvector]\label{thm:eigenvector_from_trace}
+    \lean{exists_eigenvector_of_trace_ne_zero}
+    \leanok
+    If $M\in\MN{D}$ has $\tr(M)\neq0$, then $M$ has a nonzero eigenvalue
+    $\mu\neq0$ and a corresponding eigenvector $\varphi\neq0$ satisfying
+    $M\varphi=\mu\varphi$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The trace is the sum of the eigenvalues of $M$, counted with
+    multiplicity, so a nonzero trace gives a nonzero eigenvalue~$\mu$.
+    Choosing a nonzero vector $\varphi\in\ker(M-\mu\Id)$ gives
+    $M\varphi=\mu\varphi$.
+\end{proof}
+
+\section{One-step augmentation}
+\label{sec:app_wielandt_augmentation}
+
+\section{Blocking and fixed-length spanning}
+\label{sec:app_wielandt_blocking_support}
+\label{sec:rectangular_span}
+
+\section{Complementary-gap consequences}
+\label{sec:app_wielandt_complementary_gap}
+
+\section{Identity in the one-step span}
+\label{sec:app_wielandt_identity_in_span}
+
+\begin{remark}[Counterexample: cumulative spanning does not imply normality]%
+    \label{rem:cumspan_counterexample}\leanok
+    In $\MN{2}$, let $A^0=E_{12}$ and $A^1=E_{21}$ be the off-diagonal
+    matrix units.
+    Then $\algspn(A)=\MN{2}$ and $T_2(A)=\MN{2}$, but the word spans
+    alternate: $S_n(A)$ contains only off-diagonal matrices for odd~$n$
+    and only diagonal matrices for even~$n$.
+    Hence $S_n(A)\neq\MN{2}$ for every~$n$, and $A$ is not normal.
+    The one-step padding condition fails because
+    $\Id\notin S_1(A)=\spn_{\C}\{E_{12},E_{21}\}$.
+\end{remark}

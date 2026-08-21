@@ -1,0 +1,32 @@
+\documentclass[a4paper]{report}
+
+\usepackage{geometry}
+\usepackage{expl3}
+\usepackage{amssymb, amsthm, mathtools}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage[unicode,colorlinks=true,linkcolor=blue,urlcolor=magenta,citecolor=blue]{hyperref}
+\usepackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+
+\input{macros/common}
+\input{macros/print}
+% Adapted from TNLean's print.tex: this blueprint carries no tensor-network
+% diagrams, so the tenkz package and macros/diagrams (tikz-cd "channel"
+% style built on a tenkz color) are not loaded here. See the packaging
+% report for the three diagrams dropped at extraction.
+
+\providecommand{\blueprinttitle}{Quantum Information and Channels:\\
+  \large A formalization blueprint}
+\providecommand{\blueprintcontent}{content}
+
+\title{\blueprinttitle}
+\author{Sirui Lu \and Erickson Tjoa \and J.\ Ignacio Cirac}
+\date{Last update: \today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\csname input\endcsname{\blueprintcontent} % chktex 27 (macro-based path; use \csname to bypass chktex \input pattern matching)
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

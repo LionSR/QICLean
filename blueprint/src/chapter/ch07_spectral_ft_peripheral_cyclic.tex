@@ -1,0 +1,200 @@
+\section{Peripheral eigenvalue group structure}
+
+This section proves a finite-Kraus specialization of the cyclicity conclusion
+in~\cite[Theorem~6.6(1)]{Wolf2012Quantum}: the peripheral eigenvalues form a
+finite cyclic group. It does not establish the bound on the group order in
+item~(1), nor the conclusions in items~(2)--(4). Wolf's theorem assumes an
+irreducible positive unital Schwarz map, whereas the statement below assumes a
+Kraus representation and hence complete positivity. The remaining abstract
+Schwarz-map case is not included. The trace-preserving refinement that the order divides the bond
+dimension is proved in Theorem~\ref{thm:peripheral_cyclic_group}. The
+invertibility of peripheral eigenvectors and the product closure of the
+peripheral eigenvalues used below are proved in
+Section~\ref{sec:app_spectral_periodicity}.
+
+% Scope restriction (complete positivity): the cyclicity conclusion in Wolf
+% Theorem 6.6(1) assumes only positivity, unitality, and the Schwarz inequality.
+% The order bound and items (2)--(4) are not part of this entry. See
+% docs/paper-gaps/wolf_thm6_6_kraus_scope.tex.
+\begin{theorem}[Peripheral eigenvalues: cyclic structure for Kraus maps]%
+    \label{thm:peripheral_cyclic_structure}
+    \lean{Kraus.peripheralEigenvalues_eq_range_primitiveRoot}
+    \leanok
+    \uses{def:kraus_map, def:kraus_adjoint_map, def:unital_kraus,
+        def:irreducible_cp, def:peripheral_eigenvalues}
+    Let $E$ be an irreducible unital Kraus map on $\MN{D}$ with a
+    positive-definite adjoint fixed point (trace-preservation is \emph{not}
+    required).
+    Then there exist $m \ge 1$ and a primitive $m$-th root of unity
+    $\gamma$ such that the peripheral eigenvalues of $E$ are exactly
+    $\{1,\gamma,\gamma^2,\ldots,\gamma^{m-1}\}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:peripheral_finite, lem:peripheral_mul_closure,
+        lem:peripheral_closed_powers_irred_fp, thm:peripheral_roots_irred_fp}
+    Let $S$ be the set of peripheral eigenvalues and let $m=|S|$.
+    Finiteness of $S$ and $1\in S$ give $m>0$. Every element of $S$ is a root
+    of unity, while $S$ is closed under products and powers. Hence $\mu^{-1}$
+    belongs to $S$ whenever $\mu\in S$. Multiplication by such a $\mu$
+    therefore permutes $S$. Since no element of $S$ vanishes,
+    \begin{align}
+        \prod_{\nu\in S}\nu
+         & =\prod_{\nu\in S}(\mu\nu)
+          =\mu^m\prod_{\nu\in S}\nu.
+        \notag
+    \end{align}
+    Cancelling the nonzero product gives $\mu^m=1$.
+
+    Let $\gamma=\exp(2\pi i/m)$, a primitive $m$-th root of unity. The set
+    $S$ is contained in the set of all $m$-th roots of unity, and both sets
+    have cardinality $m$. Thus they are equal. Consequently every element of
+    $S$ is $\gamma^j$ for some $0\leq j<m$, and power closure gives the reverse
+    inclusion.
+\end{proof}
+
+\section{Peripheral spectral refinements}%
+\label{sec:peripheral_refinements}
+
+The trace-preserving refinements below and the cyclic decomposition and
+one-dimensionality results for the peripheral spectrum are generic
+finite-Kraus-map statements, with no tensor-network content; they are
+relocated here from the periodic-decomposition appendix, whose blocking and
+canonical-form arguments cite them across the chapter boundary.
+
+\begin{theorem}[Transfer-map peripheral eigenvalues: cyclic structure]
+    \label{thm:transfer_peripheral_cyclic_structure}
+    \lean{PeripheralSpectrum.peripheral_eigenvalues_cyclic_structure}
+    \leanok
+    \uses{def:kraus_map, def:unital_kraus, def:kraus_adjoint_map,
+        def:irreducible_cp, def:peripheral_eigenvalues}
+    Let $\E_K$ be the Kraus map of a finite matrix family $K$. Assume that
+    $\E_K$ is irreducible and unital and has a positive-definite adjoint fixed
+    point. Then there exist $m\geq1$ and a primitive $m$-th root of unity
+    $\gamma$ such that the peripheral eigenvalues of $\E_K$ are exactly
+    $\{1,\gamma,\gamma^2,\ldots,\gamma^{m-1}\}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:one_peripheral, thm:peripheral_finite,
+        lem:peripheral_closed_under_mul_group,
+        lem:peripheral_closed_under_inv_group}
+    The peripheral eigenvalues form a finite subgroup of $\C^\times$: they
+    contain $1$, are nonzero, and are closed under multiplication and
+    inversion. Every finite subgroup of $\C^\times$ is cyclic. Choosing a
+    generator $\gamma$ gives the asserted primitive root and enumeration.
+\end{proof}
+
+\begin{theorem}[Transfer-map peripheral eigenvalues form a cyclic group]%
+    \label{thm:peripheral_cyclic_group}
+    \lean{PeripheralSpectrum.peripheral_eigenvalues_form_cyclic_group}
+    \leanok
+    \uses{def:kraus_map, def:unital_kraus, def:tp_kraus,
+        def:kraus_adjoint_map, def:irreducible_cp,
+        def:peripheral_eigenvalues}
+    Let $K$ be a finite matrix family on $\MN{D}$ with Kraus map $\E_K$.
+    Assume that $\E_K$ is irreducible, that $K$ is unital and trace-preserving,
+    and that the adjoint Kraus map has a positive-definite fixed point. Then
+    there exist $m\geq1$ and a primitive $m$-th root of unity
+    $\gamma$ such that $m\mid D$ and the peripheral eigenvalues of $\E_K$
+    are exactly $\{1,\gamma,\gamma^2,\ldots,\gamma^{m-1}\}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:transfer_peripheral_cyclic_structure,
+        thm:cyclic_decomposition_irreducible_schwarz}
+    Apply Theorem~\ref{thm:transfer_peripheral_cyclic_structure} for the cyclic
+    structure. Divisibility $m\mid D$ follows from the cyclic
+    decomposition: $m$ mutually orthogonal projections summing to $\Id$
+    each have equal trace by trace preservation, so
+    $m\,\tr(P_0)=D$ with $\tr(P_0)\in\N$.
+\end{proof}
+
+\begin{theorem}[Transfer-map period divides bond dimension]%
+    \label{thm:channel_period_divides_dim}
+    \lean{PeripheralSpectrum.channel_period_divides_dim}
+    \leanok
+    \uses{def:kraus_map, def:unital_kraus, def:tp_kraus,
+        def:kraus_adjoint_map, def:irreducible_cp,
+        def:peripheral_eigenvalues}
+    Let $K$ be a finite matrix family on $\MN{D}$ with Kraus map $\E_K$.
+    Assume that $\E_K$ is irreducible, that $K$ is unital and trace-preserving,
+    and that the adjoint Kraus map fixes a positive-definite matrix. Let
+    $\gamma$ be a primitive $m$-th root of unity such that the peripheral eigenvalues
+    are exactly $\{\gamma^k:k\in\Fin{m}\}$.
+    Then $m\mid D$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:cyclic_decomposition_irreducible_schwarz}
+    The cyclic decomposition gives orthogonal projections
+    $P_0,\ldots,P_{m-1}$ with $\sum_kP_k=\Id$ and
+    $E(P_{k+1})=P_k$. Trace preservation gives
+    $\tr(P_{k+1})=\tr(P_k)$ for every $k$, hence
+    \begin{align}
+        D=\tr(\Id)=\sum_{k=0}^{m-1}\tr(P_k)=m\,\tr(P_0).
+        \notag
+    \end{align}
+    Since the trace of an orthogonal projection is an integer, $m\mid D$.
+\end{proof}
+
+\subsection{Cyclic decomposition of irreducible finite Kraus maps}
+
+The construction --- normalizing a peripheral eigenvalue to a unitary
+eigenvector, forming its discrete Fourier (cyclic) spectral projections,
+and the supporting corner-algebra apparatus (restriction to an invariant
+corner, corner rank, and the compression isometry
+$P\MN{D}P\cong\MN{n}$) --- is given in
+Section~\ref{sec:app_spectral_periodicity}.
+
+\begin{theorem}[Cyclic decomposition for irreducible finite Kraus maps]
+    \label{thm:cyclic_decomposition_irreducible_schwarz}
+    \lean{Kraus.exists_cyclic_decomposition_of_irreducible_schwarz}
+    \leanok
+    \uses{def:kraus_map, def:unital_kraus, def:kraus_adjoint_map,
+        def:irreducible_cp, def:peripheral_eigenvalues}
+    Let $K$ be a finite unital matrix family whose Kraus map is irreducible,
+    and suppose the adjoint Kraus map fixes a positive-definite matrix. If the
+    peripheral spectrum is generated by a primitive $m$-th root $\gamma$, then
+    there are a unitary $U$ and orthogonal projections
+    $P_0,\ldots,P_{m-1}$ summing to $\Id$ such that
+    $E_K(U^k)=\gamma^kU^k$, $U^m=\Id$,
+    $U=\sum_{k=0}^{m-1}\gamma^kP_k$, and $E_K(P_{k+1})=P_k$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{lem:normalized_peripheral_unitary, lem:peripheral_unitary_powers,
+        lem:cyclic_projections_from_peripheral_unitary}
+    Normalize an eigenvector for $\gamma$ to a unitary $U$. Its powers remain
+    eigenvectors, and the Fourier projections of $U$ give the stated cyclic
+    decomposition.
+\end{proof}
+
+\begin{theorem}[Peripheral eigenspaces are one-dimensional]
+    \label{thm:peripheral_multiplicity_one}
+    \lean{PeripheralSpectrum.peripheral_eigenvalue_multiplicity_one}
+    \leanok
+    \uses{def:kraus_map, def:unital_kraus, def:kraus_adjoint_map,
+        def:irreducible_cp, def:peripheral_eigenvalues}
+    Let $K$ be a finite unital matrix family whose Kraus map is irreducible,
+    and suppose that the adjoint Kraus map fixes a positive-definite matrix.
+    For every peripheral eigenvalue $\gamma$ of the transfer map, the
+    $\gamma$-eigenspace is one-dimensional.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:peripheral_unitary_eigenvector,
+        thm:ks_equality_of_peripheral_eigenvector_of_fixedPoint,
+        thm:right_multiplicative_identity,
+        lem:irreducible_unital_fixed_points_scalar}
+    Given a peripheral unitary eigenvector $U$ for $\gamma$, the
+    multiplicative-domain identity gives
+    $E(XU^\dagger)=XU^\dagger$ for any $\gamma$-eigenvector $X$.
+    By the scalar fixed-point lemma for irreducible unital maps,
+    $XU^\dagger=c\Id$, hence $X=cU$ and the eigenspace is one-dimensional.
+\end{proof}
