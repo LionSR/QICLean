@@ -15,16 +15,21 @@ measures what a reader would meet: mathematics that failed to typeset,
 LaTeX left visible in the prose, and, at a narrow width, a page the reader
 must scroll sideways as a whole rather than one wide display at a time.
 
-The local server and browser session are the ones used by
-``test_tenkz_equation_web.py``.
+The local server is a quiet stdlib HTTP server bound to an ephemeral
+port; the browser session is Playwright's chromium.
 """
 
 from __future__ import annotations
 
 import argparse
+import contextlib
+import functools
+import http.server
 import json
 import re
+import socketserver
 import sys
+import threading
 from pathlib import Path
 
 _SCRIPTS = Path(__file__).resolve().parent
@@ -37,7 +42,30 @@ sys.path.insert(0, str(_SCRIPTS.parent / "blueprint/src/Packages"))
 from playwright.sync_api import Page, sync_playwright
 
 from _tnlean_utils import CONTROL_WORD, DIMENSION_EXPRESSION, ROW_BREAK_LENGTH
-from test_tenkz_equation_web import serve
+
+
+class QuietHandler(http.server.SimpleHTTPRequestHandler):
+    """Serve the generated blueprint without writing request logs."""
+
+    def log_message(self, format: str, *args: object) -> None:
+        pass
+
+
+class ReusableTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
+
+
+@contextlib.contextmanager
+def serve(directory: Path):
+    handler = functools.partial(QuietHandler, directory=str(directory))
+    with ReusableTCPServer(("127.0.0.1", 0), handler) as server:
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            yield f"http://127.0.0.1:{server.server_address[1]}"
+        finally:
+            server.shutdown()
+            thread.join()
 
 
 # A width at which a phone reads the blueprint, and a width at which a desktop
