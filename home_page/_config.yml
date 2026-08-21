@@ -1,5 +1,5 @@
 title: QICLean
-description: Finite-dimensional quantum-channel theory, formalized in Lean 4
+description: Quantum information and channels, formalized in Lean 4
 baseurl: "/QICLean"
 url: "https://lionsr.github.io"
 github_username: LionSR
