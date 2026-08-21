@@ -19,8 +19,10 @@
 %
 % Wolf chapter -> file mapping (see the extraction report for the full
 % per-file classification and the 61-file move list):
-%   Ch.1  Deconstructing Quantum       -> ch12_auxiliary_wolf_ch01_*
-%                                          (input via ch12_auxiliary_channel_theory)
+%   Ch.1  Deconstructing Quantum       -> ch01_{states,positive_maps,
+%                                          spectrum_and_wigner} (input via
+%                                          ch01_deconstructing_quantum, the
+%                                          volume's opening chapter)
 %   Ch.2  Representations              -> ch04_channels_{choi_foundations,
 %                                          positive_map_and_channel_foundations,
 %                                          rectangular_kraus_maps},
@@ -52,11 +54,15 @@
 %
 % chapter/ch12_auxiliary_channel_theory.tex is TNLean's own catch-all
 % "Auxiliary Quantum-Channel Theory" chapter; it is carried over as a single
-% unit (unchanged \input list: wolf_ch01, choi_foundations,
-% no_information_without_disturbance, schwarz_abstract_domains_and_order,
-% qpf_auxiliary_extensions) rather than split apart, so its five
-% already-Wolf-numbered sub-files are each \input exactly once. Do not also
-% \input those five files individually elsewhere in this router.
+% unit (\input list: choi_foundations, no_information_without_disturbance,
+% schwarz_abstract_domains_and_order, qpf_auxiliary_extensions) rather than
+% split apart, so its four already-Wolf-numbered sub-files are each \input
+% exactly once. Do not also \input those four files individually elsewhere
+% in this router. Its former wolf_ch01 sub-files were promoted out of this
+% catch-all chapter into ch01_deconstructing_quantum, the volume's opening
+% chapter, \input first below.
+
+\input{chapter/ch01_deconstructing_quantum}
 
 \input{chapter/ch04_channels}
 \input{chapter/ch16_channel_representations}
