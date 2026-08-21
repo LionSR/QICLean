@@ -26,10 +26,15 @@ ARCHIVE_ROOT = "QICLean/Archive/"
 # Extraction note: TNLean's allowlist and semantic-exception entries were all
 # MPS/PEPS-rooted (with two Channel/ exceptions) and none survive verbatim
 # under QICLean/, since PEPS/ and MPS/ stayed in TNLean. This starts empty;
-# populate it from the actual QICLean/ tree once the Lean-tree extraction
-# lands (see the packaging report's Phase 2 notes) rather than carrying
-# forward stale TNLean paths.
-NUMBERED_DEBT_ALLOWLIST: frozenset[str] = frozenset()
+# The two inherited entries are named for the Wolf theorem they prove
+# (Theorems 6.8 and 6.14), not for the order a proof was split in; they
+# carry over from the pre-extraction allowlist.
+NUMBERED_DEBT_ALLOWLIST: frozenset[str] = frozenset(
+    {
+        "QICLean/Channel/FixedPoint/WolfTheorem614.lean",
+        "QICLean/Channel/WolfTheorem68.lean",
+    }
+)
 
 # These suffixes identify mathematical objects or source labels, not the order
 # in which a proof was split.  Each exception is exact and reviewable.
@@ -86,10 +91,14 @@ def _debt_allowlist_from_source(source: str) -> frozenset[str]:
             not isinstance(value, ast.Call)
             or not isinstance(value.func, ast.Name)
             or value.func.id != "frozenset"
-            or len(value.args) != 1
+            or len(value.args) > 1
             or value.keywords
         ):
             raise ValueError("NUMBERED_DEBT_ALLOWLIST must be a literal frozenset")
+        # Python has no empty-set literal, so an emptied allowlist is written
+        # as the zero-argument call `frozenset()`.
+        if not value.args:
+            return frozenset()
         parsed = ast.literal_eval(value.args[0])
         if not isinstance(parsed, set) or not all(isinstance(path, str) for path in parsed):
             raise ValueError("NUMBERED_DEBT_ALLOWLIST must contain only literal paths")
