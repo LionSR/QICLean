@@ -14,18 +14,16 @@ entanglement theory (entanglement witnesses, Schmidt number, separability,
 the partial transpose and reduction criteria),
 positive-but-not-completely-positive maps, and entropy. The library draws
 heavily on M. Wolf's lecture notes, *Quantum Channels & Operations: A Guided
-Tour*, whose chapters organize the blueprint, alongside results formalized
-from the wider quantum-information literature.
+Tour*, alongside results
+formalized from the wider quantum-information literature.
 
 ## Relation to TNLean
 
-QICLean was extracted from [TNLean](https://github.com/LionSR/TNLean), which
-formalizes the fundamental theorem of matrix product states and remains the
-home for matrix-product-state and tensor-network content; its blueprint and
-documentation are published at
-[sirui-lu.com/TNLean](https://sirui-lu.com/TNLean/). TNLean depends on
-QICLean as an ordinary Lake package; QICLean never imports TNLean or any
-matrix-product-state vocabulary.
+QICLean was extracted from [TNLean](https://github.com/LionSR/TNLean), a
+formalization of tensor-network theory centered on the fundamental theorem
+of matrix product states; its blueprint and documentation are published at
+[sirui-lu.com/TNLean](https://sirui-lu.com/TNLean/). TNLean builds on
+QICLean as an ordinary Lake dependency.
 
 ## Companion Paper
 

@@ -16,22 +16,15 @@ GKSL semigroups, entanglement theory (entanglement witnesses, Schmidt
 number, separability, the partial transpose and reduction criteria),
 positive-but-not-completely-positive maps, and entropy. The library draws
 heavily on M. Wolf's lecture notes, *Quantum Channels & Operations: A Guided
-Tour*, whose chapters organize the blueprint, alongside results formalized
-from the wider quantum-information literature.
+Tour*, alongside results
+formalized from the wider quantum-information literature.
 
 ## Relation to TNLean
 
-QICLean was extracted from [TNLean](https://github.com/LionSR/TNLean), which
-formalizes the fundamental theorem of matrix product states and remains the
-home for matrix-product-state and tensor-network content. TNLean depends on
-QICLean as an ordinary Lake package, pinned to a released tag, and re-exposes
-the channel-level results it needs through a sanctioned bridge module on its
-own side. QICLean never imports TNLean or any matrix-product-state
-vocabulary; the dependency runs one way.
-
-Both libraries track the same Lean and Mathlib toolchain in lockstep. See
-[`docs/UPGRADE_RUNBOOK.md`](docs/UPGRADE_RUNBOOK.md) for how a Mathlib bump
-propagates from this repository to TNLean.
+QICLean was extracted from [TNLean](https://github.com/LionSR/TNLean), a
+formalization of tensor-network theory centered on the fundamental theorem
+of matrix product states. TNLean builds on QICLean as an ordinary Lake
+dependency.
 
 ## Getting started
 
