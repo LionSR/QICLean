@@ -232,11 +232,6 @@ namespace IsUnitaryBetween
 variable [Fintype m] [Fintype n] [Fintype o]
   [DecidableEq m] [DecidableEq n] [DecidableEq o]
 
-/-- Spaces connected by a unitary-between matrix have equal finite cardinality. -/
-theorem card_eq (A : Matrix m n ℂ) (hA : A.IsUnitaryBetween) :
-    Fintype.card m = Fintype.card n :=
-  le_antisymm (hA.2.card_le A) (hA.1.card_le A)
-
 /-- The adjoint of a unitary-between matrix is unitary between the spaces in reverse order. -/
 theorem conjTranspose (A : Matrix m n ℂ) (hA : A.IsUnitaryBetween) :
     Aᴴ.IsUnitaryBetween :=

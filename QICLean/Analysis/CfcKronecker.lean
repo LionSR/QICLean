@@ -267,21 +267,5 @@ theorem log_kronecker_posSemidef {A : Matrix m m ℂ} {B : Matrix n n ℂ}
   noncomm_ring
 
 -- The formula includes a singular factor, without a positive-definiteness hypothesis.
-private theorem log_kronecker_zero_fin_two
-    {n : Type*} [Fintype n] [DecidableEq n] {B : Matrix n n ℂ} (hB : B.PosSemidef) :
-    CFC.log ((0 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ B) =
-      CFC.log (0 : Matrix (Fin 2) (Fin 2) ℂ) ⊗ₖ hB.isHermitian.supportProj +
-        Matrix.PosSemidef.zero.isHermitian.supportProj ⊗ₖ CFC.log B := by
-  exact log_kronecker_posSemidef Matrix.PosSemidef.zero hB
-
 -- The formula also includes a zero-dimensional matrix algebra.
-private theorem log_kronecker_fin_zero
-    {n : Type*} [Fintype n] [DecidableEq n]
-    {A : Matrix (Fin 0) (Fin 0) ℂ} {B : Matrix n n ℂ}
-    (hA : A.PosSemidef) (hB : B.PosSemidef) :
-    CFC.log (A ⊗ₖ B) =
-      CFC.log A ⊗ₖ hB.isHermitian.supportProj +
-        hA.isHermitian.supportProj ⊗ₖ CFC.log B := by
-  exact log_kronecker_posSemidef hA hB
-
 end Matrix

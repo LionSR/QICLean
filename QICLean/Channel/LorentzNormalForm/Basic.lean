@@ -120,12 +120,6 @@ def DoublyStochastic : Prop :=
 lemma DoublyStochastic.unital (hT : DoublyStochastic T) :
     ∃ c : ℂ, T 1 = c • (1 : Matrix (Fin D) (Fin D) ℂ) := hT.1
 
-/-- Doubly-stochastic implies the partial trace of the Choi matrix is ∝ 1
-(equivalently, T*(1) ∝ 1). -/
-lemma DoublyStochastic.tracePreserving (hT : DoublyStochastic T) :
-    ∃ c : ℂ, Matrix.traceLeft (choiMatrix T) =
-      c • (1 : Matrix (Fin D) (Fin D) ℂ) := hT.2
-
 end DoublyStochastic
 
 /-! ### Shared Kronecker-conjugation and partial-trace lemmas -/

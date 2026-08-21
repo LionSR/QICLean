@@ -64,7 +64,6 @@ theorem wordSpan_finrank_le (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (n : ℕ)
         Submodule.finrank_le _
     _ = D ^ 2 := by simp [Module.finrank_matrix, Fintype.card_fin, pow_two]
 
-
 /-! ## One-step span elements as redundant generators -/
 
 /-- A length-one word evaluates to the corresponding tensor entry. -/
@@ -138,16 +137,6 @@ theorem wordSpan_oneStepAugment_eq (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
   | succ n ih =>
       rw [wordSpan_succ (oneStepAugment K X) n,
         wordSpan_succ K n, ih, wordSpan_oneStepAugment_one K hX]
-
-/-- Eventual fullness is unchanged after adding a redundant one-step generator. -/
-theorem hasEventuallyFullWordSpan_oneStepAugment_of_mem_wordSpan_one
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    {X : Matrix (Fin D) (Fin D) ℂ} (hX : X ∈ wordSpan K 1)
-    (hFull : HasEventuallyFullWordSpan K) :
-    HasEventuallyFullWordSpan (oneStepAugment K X) := by
-  filter_upwards [hFull] with N hN
-  simpa [wordSpan_oneStepAugment_eq K hX N] using hN
-
 
 /-! ## Left multiplication maps S_n into S_{n+1} -/
 

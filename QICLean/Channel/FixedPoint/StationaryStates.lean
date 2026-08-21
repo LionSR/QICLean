@@ -109,14 +109,6 @@ theorem exists_stationaryState [NeZero D] (hT : IsStationaryMap T) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ ∈ densityMatrices D ∧ T ρ = ρ :=
   brouwer_fixedPoint_densityMatrices (hT.continuousOn_densityMatrices) (hT.maps_densityMatrices)
 
-/-- **Wolf Theorem 6.11**, alternative formulation: the fixed point is a
-density matrix (PSD, trace 1) satisfying `T ρ = ρ`. -/
-theorem exists_stationaryState' [NeZero D] (hT : IsStationaryMap T) :
-    ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
-      ρ.PosSemidef ∧ Matrix.trace ρ = 1 ∧ T ρ = ρ := by
-  obtain ⟨ρ, hρ, hTx⟩ := hT.exists_stationaryState
-  exact ⟨ρ, hρ.1, hρ.2, hTx⟩
-
 /-- Compatibility lemma: a linear positive trace-preserving map (in the sense of
 `IsPositiveMap` / `IsTracePreservingMap`) is a stationary map, because linear maps
 on finite-dimensional spaces are automatically continuous. -/
@@ -151,13 +143,3 @@ end IsStationaryMap
 
 The predicates defined above for arbitrary functions coincide with the existing
 linear-map predicates when applied to linear maps. -/
-
-theorem IsStationaryMap.isPositive_eq_of_linear
-    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :
-    IsStationaryMap.IsPositive (fun X => E X) ↔ IsPositiveMap E := by
-  simp [IsStationaryMap.IsPositive, IsPositiveMap]
-
-theorem IsStationaryMap.isTracePreserving_eq_of_linear
-    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :
-    IsStationaryMap.IsTracePreserving (fun X => E X) ↔ IsTracePreservingMap E := by
-  simp [IsStationaryMap.IsTracePreserving, IsTracePreservingMap]

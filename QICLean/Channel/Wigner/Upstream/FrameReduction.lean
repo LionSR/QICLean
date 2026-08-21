@@ -469,16 +469,6 @@ lemma projMap_mk (e : E ≃ₗᵢ[ℂ] E) (v : E) (hv : v ≠ 0) :
   induction p using Projectivization.ind with
   | h v hv => rw [projMap_mk]; rfl
 
-/-- `projMap` is functorial: the ray map of a composite is the composite of the
-ray maps (`trans` composes left-to-right, so `projMap e₂` applies second). -/
-lemma projMap_trans (e₁ e₂ : E ≃ₗᵢ[ℂ] E) :
-    projMap (e₁.trans e₂) = projMap e₂ ∘ projMap e₁ := by
-  funext p
-  induction p using Projectivization.ind with
-  | h v hv =>
-    rw [Function.comp_apply, projMap_mk, projMap_mk, projMap_mk]
-    rfl
-
 /-- **Transition probability is invariant under a linear isometry equivalence
 (vector level).** `transProbVec (e u) (e v) = transProbVec u v`: the numerator
 is fixed by `e.inner_map_map`, the denominator by `e.norm_map`. -/

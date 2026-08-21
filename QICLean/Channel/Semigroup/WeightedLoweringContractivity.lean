@@ -230,19 +230,6 @@ space used above. -/
 def AreOrthogonal {n : ℕ} (W₁ W₂ : Submodule ℂ (Fin (n + 1) → ℂ)) : Prop :=
   ∀ x ∈ W₁, ∀ y ∈ W₂, ∑ i, star (x i) * y i = 0
 
-/-- A weighted lowering operator with nonzero edge weights has no two nonzero orthogonal
-invariant subspaces.  This is the concrete Q1 obstruction needed after the analytic
-constant-trace-norm argument produces positive and negative invariant support spaces. -/
-theorem not_orthogonal_invariant {n : ℕ} (w : Fin n → ℂ)
-    (hw : ∀ i : Fin n, w i ≠ 0) {W₁ W₂ : Submodule ℂ (Fin (n + 1) → ℂ)}
-    (hW₁ : W₁.map (operator w) ≤ W₁) (hW₂ : W₂.map (operator w) ≤ W₂)
-    (hW₁0 : W₁ ≠ ⊥) (hW₂0 : W₂ ≠ ⊥) : ¬AreOrthogonal W₁ W₂ := by
-  intro hOrtho
-  have hv₁ : ground n ∈ W₁ := ground_mem_invariant w hw W₁ hW₁ hW₁0
-  have hv₂ : ground n ∈ W₂ := ground_mem_invariant w hw W₂ hW₂ hW₂0
-  have hzero := hOrtho (ground n) hv₁ (ground n) hv₂
-  simp [ground, Fin.sum_univ_succ] at hzero
-
 end WeightedLowering
 
 end

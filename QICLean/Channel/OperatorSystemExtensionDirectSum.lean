@@ -204,13 +204,6 @@ theorem directSumEmbedFin_conjTranspose (A : ∀ k : Fin r, Matrix (Fin (d k)) (
 
 /-! ### Positive semidefiniteness of a block-diagonal family -/
 
-/-- The block-diagonal embedding is positive semidefinite exactly when each diagonal block is
-positive semidefinite. -/
-theorem directSumEmbedFin_posSemidef_iff (A : ∀ k : Fin r, Matrix (Fin (d k)) (Fin (d k)) ℂ) :
-    (directSumEmbedFin A).PosSemidef ↔ ∀ k, (A k).PosSemidef := by
-  rw [directSumEmbedFin_apply, Matrix.reindex_apply,
-    Matrix.posSemidef_submatrix_equiv finSigmaFinEquiv.symm, blockDiagonal'_posSemidef_iff]
-
 /-! ### The level-`j` embedding and the key transport lemma -/
 
 /-- The reindexing used to embed the level-`j` tensor of the direct-sum algebra into the

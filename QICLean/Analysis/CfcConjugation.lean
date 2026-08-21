@@ -178,26 +178,7 @@ theorem IsHermitian.supportProj_transpose {A : Matrix n n ℂ} (hA : A.IsHermiti
   exact (cfc_transpose hA f).symm
 
 -- All four consequences include the singular zero matrix.
-private theorem transpose_cfc_consequences_zero_fin_two (r : ℝ) :
-    let h0 : (0 : Matrix (Fin 2) (Fin 2) ℂ).PosSemidef := Matrix.PosSemidef.zero
-    CFC.log (0 : Matrix (Fin 2) (Fin 2) ℂ)ᵀ =
-        (CFC.log (0 : Matrix (Fin 2) (Fin 2) ℂ))ᵀ ∧
-      ((0 : Matrix (Fin 2) (Fin 2) ℂ)ᵀ) ^ r =
-        ((0 : Matrix (Fin 2) (Fin 2) ℂ) ^ r)ᵀ ∧
-      CFC.sqrt (0 : Matrix (Fin 2) (Fin 2) ℂ)ᵀ =
-        (CFC.sqrt (0 : Matrix (Fin 2) (Fin 2) ℂ))ᵀ ∧
-      h0.isHermitian.transpose.supportProj = h0.isHermitian.supportProjᵀ := by
-  dsimp only
-  let h0 : (0 : Matrix (Fin 2) (Fin 2) ℂ).PosSemidef := Matrix.PosSemidef.zero
-  exact ⟨h0.isHermitian.log_transpose, h0.rpow_transpose r,
-    h0.sqrt_transpose, h0.isHermitian.supportProj_transpose⟩
-
 -- Transpose covariance also permits the zero-dimensional matrix algebra.
-private theorem cfc_transpose_fin_zero (A : Matrix (Fin 0) (Fin 0) ℂ)
-    (hA : A.IsHermitian) (f : ℝ → ℝ) :
-    (cfc f A)ᵀ = cfc f Aᵀ :=
-  cfc_transpose hA f
-
 end Transpose
 
 variable {n : Type*} [Fintype n] [DecidableEq n]

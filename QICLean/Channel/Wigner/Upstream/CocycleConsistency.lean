@@ -354,19 +354,6 @@ lemma inner_add3_basis
       = (starRingEnd ℂ) (b.repr ψ i₀ + b.repr ψ i + b.repr ψ j) := by
   rw [inner_add_right, inner_add_basis, inner_eq_conj_repr, ← map_add]
 
-/-- **Triple parallelogram expansion.** `‖A + B + C‖² = ‖A‖² + ‖B‖² + ‖C‖²
-+ 2·Re(conj A · B) + 2·Re(conj A · C) + 2·Re(conj B · C)`. Two applications of
-`cnorm_add_sq` plus `Re(conj (A+B) · C) = Re(conj A · C) + Re(conj B · C)`. -/
-lemma cnorm_add3_sq (A B C : ℂ) :
-    ‖A + B + C‖ ^ 2 = ‖A‖ ^ 2 + ‖B‖ ^ 2 + ‖C‖ ^ 2
-      + 2 * ((starRingEnd ℂ) A * B).re + 2 * ((starRingEnd ℂ) A * C).re
-      + 2 * ((starRingEnd ℂ) B * C).re := by
-  rw [cnorm_add_sq (A + B) C, cnorm_add_sq A B]
-  have hsplit : ((starRingEnd ℂ) (A + B) * C).re
-      = ((starRingEnd ℂ) A * C).re + ((starRingEnd ℂ) B * C).re := by
-    rw [map_add, add_mul, Complex.add_re]
-  rw [hsplit]; ring
-
 /-- **Triple-level overlap in coordinates.** The transition probability from
 `mk ψ` to the equal triple ray `mk (b i₀ + b i + b j)` is
 `‖c_{i₀} + c_i + c_j‖² / (‖ψ‖² · 3)`. Combines `transProb_mk`, `inner_add3_basis`

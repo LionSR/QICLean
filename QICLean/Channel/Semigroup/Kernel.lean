@@ -203,21 +203,3 @@ theorem generator_apply_eq_zero_iff_fixed_nonneg
       fun t ht => by
         rw [← hexp t ht]
         exact hX t ht
-
-/-- A simple faithful kernel yields a faithful stationary state. -/
-theorem HasSimpleFaithfulKernel.hasFaithfulStationaryState
-    {L : Mat →ₗ[ℂ] Mat} (hL : HasSimpleFaithfulKernel (D := D) L) :
-    HasFaithfulStationaryState (D := D) L := by
-  rcases hL with ⟨ρ, hρ_mem, hρ_simple⟩
-  exact ⟨ρ, hρ_mem, hρ_simple.posDef, hρ_simple.kernel⟩
-
-/-- For a simple kernel witness, the kernel is exactly the span of that witness. -/
-theorem HasSimpleKernel.generator_apply_eq_zero_iff
-    {L : Mat →ₗ[ℂ] Mat} {ρ X : Mat} (hρ : HasSimpleKernel L ρ) :
-    L X = 0 ↔ ∃ c : ℂ, X = c • ρ := by
-  constructor
-  · exact hρ.unique X
-  · rintro ⟨c, rfl⟩
-    simp [hρ.kernel]
-
-end
