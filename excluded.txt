@@ -1,0 +1,20 @@
+# excluded file <- reason / immediate importer(s)
+TNLean/Spectral/MPVOverlapTrace.lean <- (c) direct import of TNLean/MPS/Overlap/* (MPS-state vocabulary)
+TNLean/MPS/Overlap/Basic.lean <- under forbidden prefix; imported by: TNLean/Spectral/MPVOverlapTrace.lean
+TNLean/Spectral/CrossCorrelation.lean <- poisoned: transitively requires an excluded file; imported by: (seed origin) [was a seed mover]
+TNLean/Spectral/MPVOverlapDecay.lean <- poisoned: transitively requires an excluded file; imported by: (seed origin) [was a seed mover]
+TNLean/Spectral/MPVOverlapDecayRect.lean <- poisoned: transitively requires an excluded file; imported by: TNLean/Spectral/TransferOperatorGapNT.lean [was a seed mover]
+TNLean/Spectral/MPVOverlapTrace.lean <- poisoned: transitively requires an excluded file; imported by: TNLean/Spectral/MPVOverlapDecayRect.lean, TNLean/Spectral/PrimitiveOverlap.lean
+TNLean/Spectral/PeripheralToTransferMapGap.lean <- poisoned: transitively requires an excluded file; imported by: TNLean/Spectral/QuantitativeGap.lean [was a seed mover]
+TNLean/Spectral/PrimitiveOverlap.lean <- poisoned: transitively requires an excluded file; imported by: (seed origin) [was a seed mover]
+TNLean/Spectral/QuantitativeGap.lean <- poisoned: transitively requires an excluded file; imported by: (seed origin) [was a seed mover]
+TNLean/Spectral/TransferOperatorGap.lean <- poisoned: transitively requires an excluded file; imported by: TNLean/Spectral/PeripheralToTransferMapGap.lean, TNLean/Spectral/PrimitiveOverlap.lean [was a seed mover]
+TNLean/Spectral/TransferOperatorGapInjective.lean <- poisoned: transitively requires an excluded file; imported by: TNLean/Spectral/CrossCorrelation.lean, TNLean/Spectral/MPVOverlapDecay.lean, TNLean/Spectral/QuantitativeGap.lean, TNLean/Spectral/TransferOperatorGap.lean [was a seed mover]
+TNLean/Spectral/TransferOperatorGapNT.lean <- poisoned: transitively requires an excluded file; imported by: TNLean/Spectral/TransferOperatorGapInjective.lean [was a seed mover]
+TNLean/MPS/Structure/PrimitiveFixedPoint.lean <- orphaned: only importer(s) were excluded (TNLean/Spectral/PeripheralToTransferMapGap.lean); dropped as dead weight
+TNLean/Wielandt/Primitivity/Definitions.lean <- orphaned: only importer(s) were excluded (TNLean/Wielandt/Primitivity/EasyDirections.lean, TNLean/Wielandt/Primitivity/ImpliesStronglyIrreducible.lean); dropped as dead weight
+TNLean/Wielandt/Primitivity/EasyDirections.lean <- orphaned: only importer(s) were excluded (TNLean/Spectral/QuantitativeGap.lean); dropped as dead weight
+TNLean/Wielandt/Primitivity/ImpliesStronglyIrreducible.lean <- orphaned: only importer(s) were excluded (TNLean/Wielandt/Primitivity/ImpliesStronglyIrreducibleAux.lean); dropped as dead weight
+TNLean/Wielandt/Primitivity/ImpliesStronglyIrreducibleAux.lean <- orphaned: only importer(s) were excluded (TNLean/Spectral/QuantitativeGap.lean); dropped as dead weight
+TNLean/Wielandt/SpanGrowth/CumulativeSpan.lean <- orphaned: only importer(s) were excluded (TNLean/Wielandt/Primitivity/Definitions.lean, TNLean/Wielandt/SpanGrowth/EigenvectorSpreading.lean); dropped as dead weight
+TNLean/Wielandt/SpanGrowth/EigenvectorSpreading.lean <- orphaned: only importer(s) were excluded (TNLean/Wielandt/Primitivity/Definitions.lean); dropped as dead weight

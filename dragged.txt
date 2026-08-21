@@ -1,0 +1,10 @@
+# path <- dragged-by (mover file(s) whose import pulled this in)
+TNLean/Algebra/MatrixKernelRigidity.lean <- TNLean/Spectral/GaugeConstruction.lean
+TNLean/MPS/Core/CPPrimitive.lean <- TNLean/QPF/Assembly.lean, TNLean/QPF/PosDef.lean, TNLean/QPF/Primitive.lean
+TNLean/MPS/Core/Injectivity.lean <- TNLean/MPS/Defs.lean
+TNLean/MPS/Core/InvariantProjection.lean <- TNLean/MPS/Core/TransferChannel.lean
+TNLean/MPS/Core/Transfer.lean <- TNLean/MPS/Core/TransferChannel.lean, TNLean/Spectral/MixedTransfer.lean
+TNLean/MPS/Core/TransferChannel.lean <- TNLean/MPS/Core/CPPrimitive.lean, TNLean/Spectral/MixedTransfer.lean
+TNLean/MPS/Core/Word.lean <- TNLean/MPS/Core/Injectivity.lean, TNLean/MPS/Core/InvariantProjection.lean, TNLean/MPS/Defs.lean
+TNLean/MPS/Defs.lean <- TNLean/MPS/Core/Transfer.lean
+TNLean/MPS/Tactic/Attr.lean <- TNLean/MPS/Core/Transfer.lean
