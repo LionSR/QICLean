@@ -4,16 +4,18 @@ layout: default
 
 QICLean is a [Lean 4](https://lean-lang.org/) formalization of
 finite-dimensional quantum information theory, built on
-[Mathlib](https://github.com/leanprover-community/mathlib4). It follows
-M. Wolf's lecture notes, *Quantum Channels & Operations: A Guided Tour*:
-the basics of quantum mechanics (density matrices, POVMs, the Schmidt
+[Mathlib](https://github.com/leanprover-community/mathlib4): the basics of
+quantum mechanics (density matrices, POVMs, the Schmidt
 decomposition, purification and steering, Wigner's theorem), quantum
 channels in their Kraus, Choi, and Stinespring representations,
 Kadison-Schwarz inequalities, quantum Perron-Frobenius theory
 (irreducibility, primitivity, peripheral spectrum), GKSL semigroups,
 entanglement theory (entanglement witnesses, Schmidt number, separability,
 the partial transpose and reduction criteria),
-positive-but-not-completely-positive maps, and entropy.
+positive-but-not-completely-positive maps, and entropy. The library draws
+heavily on M. Wolf's lecture notes, *Quantum Channels & Operations: A Guided
+Tour*, whose chapters organize the blueprint, alongside results formalized
+from the wider quantum-information literature.
 
 ## Relation to TNLean
 

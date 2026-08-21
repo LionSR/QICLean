@@ -1,5 +1,5 @@
 <p align="center">
-  <b>Finite-dimensional quantum-channel theory, formalized in Lean 4.</b>
+  <b>Quantum information and channels, formalized in Lean 4.</b>
 </p>
 
 [![PR CI](https://github.com/LionSR/QICLean/actions/workflows/pr-ci.yml/badge.svg)](https://github.com/LionSR/QICLean/actions/workflows/pr-ci.yml)
@@ -14,9 +14,10 @@ Stinespring representations, Kadison-Schwarz inequalities, quantum
 Perron-Frobenius theory (irreducibility, primitivity, peripheral spectrum),
 GKSL semigroups, entanglement theory (entanglement witnesses, Schmidt
 number, separability, the partial transpose and reduction criteria),
-positive-but-not-completely-positive maps, and entropy. The organizing
-source is M. Wolf's lecture notes, *Quantum Channels & Operations: A Guided
-Tour*.
+positive-but-not-completely-positive maps, and entropy. The library draws
+heavily on M. Wolf's lecture notes, *Quantum Channels & Operations: A Guided
+Tour*, whose chapters organize the blueprint, alongside results formalized
+from the wider quantum-information literature.
 
 ## Relation to TNLean
 
