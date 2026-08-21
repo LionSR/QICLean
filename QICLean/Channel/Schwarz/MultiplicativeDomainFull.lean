@@ -231,12 +231,6 @@ theorem conjTranspose_mem_leftMultiplicativeDomain (K : Fin d → Mat) {X : Mat}
   have h := congrArg Matrix.conjTranspose (hX Yᴴ)
   simpa [conjTranspose_krausMap, mul_assoc] using h
 
-theorem one_mem_multiplicativeDomain (K : Fin d → Mat)
-    (h_unital : IsUnitalKraus K) :
-    (1 : Mat) ∈ multiplicativeDomain K :=
-  ⟨one_mem_rightMultiplicativeDomain (K := K) h_unital,
-    one_mem_leftMultiplicativeDomain (K := K) h_unital⟩
-
 noncomputable def rightMultiplicativeDomainSubalgebra (K : Fin d → Mat)
     (h_unital : IsUnitalKraus K) : Subalgebra ℂ Mat where
   carrier := rightMultiplicativeDomain K

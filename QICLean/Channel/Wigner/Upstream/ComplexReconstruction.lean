@@ -59,13 +59,6 @@ The layout:
 
 No ℂ-linearity is assumed anywhere below. -/
 
-/-- The imaginary-part conversion `(x · I · conj y).re = (conj x · y).im`,
-a coordinate identity in `ℂ`. -/
-lemma re_mul_I_eq_im (x y : ℂ) :
-    (x * Complex.I * (starRingEnd ℂ) y).re = ((starRingEnd ℂ) x * y).im := by
-  simp only [Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im,
-    Complex.conj_re, Complex.conj_im]; ring
-
 /-- **Complex "difference" parallelogram.** `‖A - I·B‖² = ‖A‖² + ‖B‖²
 + 2·(conj A · B).im`. Pure real-coordinate algebra via `Complex.normSq`. -/
 lemma cnorm_sub_I_sq (A B : ℂ) :

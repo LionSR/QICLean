@@ -767,15 +767,6 @@ theorem PosSemidef.isUnit_det_supportInvExtension
   Matrix.isUnit_iff_isUnit_det hρ.supportInvExtension |>.mp
     hρ.isUnit_supportInvExtension
 
-/-- On a positive-definite matrix, the generalized inverse on the support is
-the ordinary inverse. -/
-theorem PosDef.supportInv_eq_inv {ρ : Matrix n n ℂ} (hρ : ρ.PosDef) :
-    hρ.posSemidef.supportInv = ρ⁻¹ := by
-  have h : hρ.posSemidef.supportInv * ρ = 1 := by
-    rw [hρ.posSemidef.supportInv_mul_self]
-    exact hρ.supportProj_eq_one
-  exact (Matrix.inv_eq_left_inv h).symm
-
 /-- If \(Sx=b\) for a positive-semidefinite matrix \(S\), then pairing \(b\)
 with the support-generalized-inverse solution gives the pairing with \(x\):
 \[

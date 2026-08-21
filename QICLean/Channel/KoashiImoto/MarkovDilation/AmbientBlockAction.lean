@@ -222,32 +222,6 @@ private theorem blockDilationUnitary_fixedEnv_apply_support_ne
     blockDilation_fixedEnv_apply_support_ne eB c₀ k₀ Ulocal hjj'
       u v c i u' v'
 
-/-- A supported output entry of the named block dilation vanishes on a
-complementary input. -/
-private theorem blockDilationUnitary_fixedEnv_apply_support_complement
-    {z K dB dC r : ℕ} {m d : Fin K → ℕ}
-    (eB : ((s : AmbientMarkovBlockIndex z K) ×
-      (Fin (ambientMarkovCommonDim m s) ×
-        Fin (ambientMarkovConditionalDim d s))) ≃ Fin dB)
-    (c₀ : Fin dC) (k₀ : Fin r)
-    (Ulocal : ∀ s : AmbientMarkovBlockIndex z K,
-      Matrix
-        (Fin (ambientMarkovCommonDim m s) × (Fin dC × Fin r))
-        (Fin (ambientMarkovCommonDim m s) × (Fin dC × Fin r)) ℂ)
-    (j : Fin K)
-    (u : Fin (ambientMarkovCommonDim m (Sum.inr j)))
-    (v : Fin (ambientMarkovConditionalDim d (Sum.inr j)))
-    (c : Fin dC) (i : Fin r) (q : Fin z)
-    (u' : Fin (ambientMarkovCommonDim m (Sum.inl q)))
-    (v' : Fin (ambientMarkovConditionalDim d (Sum.inl q))) :
-    (blockDilationUnitary eB Ulocal *
-        fixedEnvEmbedding (S := Fin dB) (c₀, k₀))
-        (eB ⟨Sum.inr j, (u, v)⟩, (c, i))
-        (eB ⟨Sum.inl q, (u', v')⟩) = 0 := by
-  simpa [blockDilationUnitary] using
-    blockDilation_fixedEnv_apply_support_complement eB c₀ k₀ Ulocal
-      j u v c i q u' v'
-
 /-- A complementary output entry of the named block dilation vanishes on a
 supported input. -/
 private theorem blockDilationUnitary_fixedEnv_apply_complement_support

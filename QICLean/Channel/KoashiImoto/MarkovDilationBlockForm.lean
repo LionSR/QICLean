@@ -167,34 +167,6 @@ noncomputable def MarkovDilationBlockForm.sectorOutputState
       (Fin (F.jointSupport.m j) × Fin dC) ℂ :=
   rectangularKrausMap (fun i ↦ D.L i j) (F.jointSupport.σ j)
 
-/-- Applying one supported-sector recovery to an unnormalized left factor
-and the common sector output state gives the tripartite tensor product of that
-left factor with the sector output state.
-
-This is the local block-action substitution used in the final lines of HJPW
-Theorem 6. The left factor is deliberately not normalized: its trace may be
-zero, and normalization is performed only in the final Markov decomposition.
-
-Source: HJPW, arXiv:quant-ph/0304007v2, Theorem 6, equations (14)--(15),
-lines 547--570. -/
-theorem MarkovDilationBlockForm.idTensorMap_sectorOutput
-    {ρ_ABC : Matrix (Fin dA × Fin dB × Fin dC)
-      (Fin dA × Fin dB × Fin dC) ℂ}
-    {hρ_dm : ρ_ABC.PosSemidef ∧ ρ_ABC.trace = 1}
-    [Nonempty (ActiveConditionalEffectIndex (traceC_ABC ρ_ABC))]
-    {F : AmbientMarkovBipartiteBlockForm ρ_ABC hρ_dm}
-    (D : MarkovDilationBlockForm ρ_ABC hρ_dm F)
-    (j : Fin F.jointSupport.K)
-    (ω : Matrix
-      (Fin dA × Fin (F.jointSupport.d j))
-      (Fin dA × Fin (F.jointSupport.d j)) ℂ) :
-    idTensorMapLM (δ := Fin dA × Fin (F.jointSupport.d j))
-        (rectangularKrausMap (fun i ↦ D.L i j))
-        (ω ⊗ₖ F.jointSupport.σ j) =
-      ω ⊗ₖ D.sectorOutputState j := by
-  rw [idTensorMapLM_apply, idTensorMap_kronecker]
-  rfl
-
 /-- A supported sector output state is positive semidefinite.
 
 Source: HJPW, arXiv:quant-ph/0304007v2, Theorem 6, equation (15),

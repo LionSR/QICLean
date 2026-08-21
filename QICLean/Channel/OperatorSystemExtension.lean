@@ -325,11 +325,6 @@ def hermitianTensorSubmodule (S : Submodule ℂ (Matrix (Fin m) (Fin m) ℂ)) (k
     · exact hX.1.smul (IsSelfAdjoint.all c)
     · rw [heq]; exact (tensorSubmodule S k).smul_mem (c : ℂ) hX.2
 
-theorem mem_hermitianTensorSubmodule_iff {S : Submodule ℂ (Matrix (Fin m) (Fin m) ℂ)} {k : ℕ}
-    {X : Matrix (Fin m × Fin k) (Fin m × Fin k) ℂ} :
-    X ∈ hermitianTensorSubmodule S k ↔ X.IsHermitian ∧ X ∈ tensorSubmodule S k :=
-  Iff.rfl
-
 /-- The real-linear functional `A ↦ τ(A).re` on the Hermitian part of
 `S ⊗ M_n(ℂ)`, the partial map that Hahn–Banach extends. -/
 noncomputable def tauReLM {S : Submodule ℂ (Matrix (Fin m) (Fin m) ℂ)}

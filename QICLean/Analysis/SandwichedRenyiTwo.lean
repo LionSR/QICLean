@@ -310,14 +310,6 @@ theorem supportProj_mulVec_vector {ρ ω : Mat} (hω : ω.PosDef) :
     simpa only [Matrix.transpose_mul, Matrix.transpose_transpose] using ht
   rw [hRPt]
 
-/-- Applying the relative-modular half-moment operator to the vectorized state square root
-produces the vectorized weighted state. -/
-theorem operator_mulVec_vector {ρ ω : Mat} (hρ : ρ.PosSemidef) :
-    operator ρ ω *ᵥ vector ρ = Matrix.vec (referenceInvSqrt ω * ρ) := by
-  rw [operator, vector, Matrix.kronecker, Matrix.kronecker_mulVec_vec,
-    Matrix.transpose_transpose, Matrix.mul_assoc, sqrtState,
-    CFC.sqrt_mul_sqrt_self ρ hρ.nonneg]
-
 /-- The ordinary relative-modular moment is the real Hilbert--Schmidt pairing of the state
 square root with its reference-weighted sandwich. -/
 theorem expectation_eq_frobenius_inner (ρ ω : Mat) :

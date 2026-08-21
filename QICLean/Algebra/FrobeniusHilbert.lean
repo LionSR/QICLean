@@ -41,26 +41,6 @@ variable {m n : Type*} [Fintype m] [Fintype n]
 noncomputable def frobeniusNormSq (A : Matrix m n ℂ) : ℝ :=
   ‖A‖ ^ 2
 
-/-- The squared Frobenius norm is the sum of the squared entry norms. -/
-theorem frobeniusNormSq_eq_sum (A : Matrix m n ℂ) :
-    frobeniusNormSq A = ∑ i : m, ∑ j : n, ‖A i j‖ ^ 2 := by
-  rw [frobeniusNormSq, Matrix.frobenius_norm_def, ← Real.sqrt_eq_rpow, Real.sq_sqrt]
-  · simp
-  · positivity
-
-/-- The squared Frobenius norm equals the real part of the Hilbert--Schmidt
-self-pairing. -/
-theorem frobeniusNormSq_eq_trace (A : Matrix m n ℂ) :
-    frobeniusNormSq A = (trace (Aᴴ * A)).re := by
-  rw [frobeniusNormSq, trace_conjTranspose_mul_self_re_eq_frobenius_norm_sq]
-
-/-- Scalar multiplication scales the squared Frobenius norm by the squared
-scalar norm. -/
-theorem frobeniusNormSq_smul (c : ℂ) (A : Matrix m n ℂ) :
-    frobeniusNormSq (c • A) = ‖c‖ ^ 2 * frobeniusNormSq A := by
-  rw [frobeniusNormSq, frobeniusNormSq, norm_smul]
-  ring
-
 /-! ### Euclidean-space identification -/
 
 /-- Column vectorization is a linear isometry from matrices with the

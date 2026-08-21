@@ -457,38 +457,6 @@ private theorem cfcSqrt_maximallyMixedOn_kronecker
         ((1 : Matrix (Fin dA) (Fin dA) ℂ) ⊗ₖ
           hρ.isHermitian.cfc Real.sqrt) := by rw [Complex.coe_smul]
 
-/-- The square root in the maximally mixed specialization of HJPW equation
-(10) factors into the dimension normalization and the square root of $\rho_{BC}$, after the
-canonical product-index reassociation. -/
-theorem cfcSqrt_maximallyMixedTensorReference
-    (ρ : Matrix (B × C) (B × C) ℂ) (hρ : ρ.PosSemidef) :
-    (maximallyMixedTensorReference_posSemidef
-      (dA := dA) hρ).isHermitian.cfc Real.sqrt =
-      ((Real.sqrt ((dA : ℝ)⁻¹) : ℂ) •
-        ((1 : Matrix (Fin dA) (Fin dA) ℂ) ⊗ₖ
-          hρ.isHermitian.cfc Real.sqrt)).submatrix
-        (Equiv.prodAssoc (Fin dA) B C)
-        (Equiv.prodAssoc (Fin dA) B C) := by
-  rw [← (maximallyMixedTensorReference_posSemidef
-    (dA := dA) hρ).isHermitian.cfc_eq]
-  change cfc Real.sqrt
-      ((maximallyMixedOn (dA := dA) ⊗ₖ ρ).submatrix
-        (Equiv.prodAssoc (Fin dA) B C)
-        (Equiv.prodAssoc (Fin dA) B C)) = _
-  have hcfc := Matrix.cfc_submatrix_equiv
-    (((maximallyMixedOn_posDef (dA := dA)).posSemidef.kronecker
-      hρ).isHermitian) Real.sqrt (Equiv.prodAssoc (Fin dA) B C).symm
-  rw [show cfc Real.sqrt
-      ((maximallyMixedOn (dA := dA) ⊗ₖ ρ).submatrix
-        (Equiv.prodAssoc (Fin dA) B C)
-        (Equiv.prodAssoc (Fin dA) B C)) =
-      (cfc Real.sqrt (maximallyMixedOn (dA := dA) ⊗ₖ ρ)).submatrix
-        (Equiv.prodAssoc (Fin dA) B C)
-        (Equiv.prodAssoc (Fin dA) B C) by
-        simpa only [Equiv.symm_symm] using hcfc]
-  rw [((maximallyMixedOn_posDef (dA := dA)).posSemidef.kronecker
-    hρ).isHermitian.cfc_eq, cfcSqrt_maximallyMixedOn_kronecker ρ hρ]
-
 omit [Fintype C] [DecidableEq B] [DecidableEq C] in
 /-- Tracing out the untouched $A\times B$ factors from the maximally mixed
 specialization of HJPW equation (10) gives the $C$ marginal of $\rho_{BC}$. -/

@@ -75,17 +75,6 @@ theorem mixedTransferMap_self (A : MPSTensor d D) :
     mixedTransferMap A A = transferMap (d := d) (D := D) A := by
   rw [mixedTransferMap, Kraus.mixedMapLM_self, Kraus.mapLM_eq_transferMap]
 
-/-- Linearity of the mixed transfer operator in the first argument. -/
-lemma mixedTransferMap_smul_left (c : ℂ) (A B : MPSTensor d D) :
-    mixedTransferMap (fun i => c • A i) B = c • mixedTransferMap A B := by
-  exact Kraus.mixedMapLM_smul_left c A B
-
-/-- Linearity of the mixed transfer operator in the second argument (with conjugation):
-scaling B by c conjugates the scalar. -/
-lemma mixedTransferMap_smul_right (c : ℂ) (A B : MPSTensor d D) :
-    mixedTransferMap A (fun i => c • B i) = starRingEnd ℂ c • mixedTransferMap A B := by
-  exact Kraus.mixedMapLM_smul_right c A B
-
 end MixedTransfer
 
 /-! ## Iterated mixed transfer and MPV cross-correlations

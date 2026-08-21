@@ -523,29 +523,6 @@ theorem supportedWeightedHilbertSchmidtMap_isHilbertSchmidtContraction
       (hΦ.map_posSemidef hσ.posSemidef) X), norm_nonneg X]
 
 -- The contraction specializes to the identity channel on the two-dimensional matrix algebra.
-private theorem weightedHilbertSchmidtMap_identity_fin_two
-    (X : Matrix (Fin 2) (Fin 2) ℂ) :
-    ‖weightedHilbertSchmidtMap
-      (LinearMap.id : Matrix (Fin 2) (Fin 2) ℂ →ₗ[ℂ] Matrix (Fin 2) (Fin 2) ℂ)
-      1 1 X‖ ≤ ‖X‖ := by
-  exact weightedHilbertSchmidtMap_norm_le isKrausCPTP_id
-    Matrix.PosDef.one Matrix.PosDef.one rfl X
-
 -- The same specialization remains valid for the zero-dimensional matrix algebra.
-private theorem weightedHilbertSchmidtMap_identity_fin_zero
-    (X : Matrix (Fin 0) (Fin 0) ℂ) :
-    ‖weightedHilbertSchmidtMap
-      (LinearMap.id : Matrix (Fin 0) (Fin 0) ℂ →ₗ[ℂ] Matrix (Fin 0) (Fin 0) ℂ)
-      1 1 X‖ ≤ ‖X‖ := by
-  exact weightedHilbertSchmidtMap_norm_le isKrausCPTP_id
-    Matrix.PosDef.one Matrix.PosDef.one rfl X
-
 -- The support-weighted theorem includes the zero-dimensional output algebra.
-private theorem supportedWeightedHilbertSchmidtMap_identity_fin_zero
-    (X : Matrix (Fin 0) (Fin 0) ℂ) :
-    ‖supportedWeightedHilbertSchmidtMap
-      (LinearMap.id : Matrix (Fin 0) (Fin 0) ℂ →ₗ[ℂ] Matrix (Fin 0) (Fin 0) ℂ)
-      1 (isKrausCPTP_id.map_posSemidef Matrix.PosDef.one.posSemidef) X‖ ≤ ‖X‖ := by
-  exact supportedWeightedHilbertSchmidtMap_norm_le isKrausCPTP_id Matrix.PosDef.one X
-
 end Matrix

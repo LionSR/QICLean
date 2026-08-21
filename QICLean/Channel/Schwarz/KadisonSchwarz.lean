@@ -172,17 +172,6 @@ theorem kadison_schwarz_adjoint (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
   simpa [krausAdjointMap, krausMap, conjTranspose_conjTranspose] using
     kadison_schwarz (fun i => (K i)ᴴ) (isUnitalKraus_conjTranspose h_tp) X
 
-/-- **Kadison-Schwarz in Loewner order** (≤ formulation).
-
-Equivalent to `kadison_schwarz` but stated using the matrix order `≤`
-(Loewner order: `A ≤ B ↔ (B - A).PosSemidef`). -/
-theorem kadison_schwarz_le (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_unital : IsUnitalKraus K)
-    (X : Matrix (Fin D) (Fin D) ℂ) :
-    (krausMap K X)ᴴ * krausMap K X ≤ krausMap K (Xᴴ * X) := by
-  rw [Matrix.le_iff]
-  exact kadison_schwarz K h_unital X
-
 /-- **Hilbert-Schmidt contraction** for unital CP maps.
 
 For a unital CP map `E`, we have `tr(E(X)† E(X)) ≤ tr(X† X)`.

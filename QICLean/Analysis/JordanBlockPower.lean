@@ -72,14 +72,6 @@ def nilpotentShift : Matrix (Fin D) (Fin D) ℂ :=
 lemma nilpotentShift_apply {i j : Fin D} : nilpotentShift D i j =
     if (j : ℕ) = (i : ℕ) + 1 then (1 : ℂ) else 0 := rfl
 
-lemma nilpotentShift_eq_one {i j : Fin D} (h : (j : ℕ) = (i : ℕ) + 1) :
-    nilpotentShift D i j = 1 := by
-  simp [nilpotentShift_apply, h]
-
-lemma nilpotentShift_eq_zero {i j : Fin D} (h : (j : ℕ) ≠ (i : ℕ) + 1) :
-    nilpotentShift D i j = 0 := by
-  simp [nilpotentShift_apply, h]
-
 end NilpotentShift
 
 section NilpotentShiftPow

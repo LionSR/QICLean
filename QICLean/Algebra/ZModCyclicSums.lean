@@ -29,12 +29,6 @@ theorem sum_comp_addRight (F : ZMod N → M) (d : ZMod N) :
     ∑ i, F (i + d) = ∑ i, F i := by
   simpa using Equiv.sum_comp (Equiv.addRight d) F
 
-/-- Cyclic translation invariance: summing over the cyclic group `ZMod N`
-commutes with left translation of the index. -/
-theorem sum_comp_addLeft (F : ZMod N → M) (d : ZMod N) :
-    ∑ i, F (d + i) = ∑ i, F i := by
-  simpa using Equiv.sum_comp (Equiv.addLeft d) F
-
 /-- Weighted triangular count, upper form.  Summing the offsets `e` with
 `1 ≤ e < m - q` over all `q < m` counts each `e` with `1 ≤ e < m` exactly
 `m - e` times. -/

@@ -243,12 +243,6 @@ theorem commute_peripheralProjection (f : Module.End ℂ V) :
   simpa only [Commute, SemiconjBy, Module.End.mul_eq_comp]
     using f.peripheralProjection_comp
 
-/-- The peripheral spectral projection commutes with every power of the
-endomorphism. -/
-theorem commute_peripheralProjection_pow (f : Module.End ℂ V) (n : ℕ) :
-    Commute f.peripheralProjection (f ^ n) :=
-  f.commute_peripheralProjection.pow_right n
-
 /-! ### The phase-weighted peripheral spectral map `T_φ'` -/
 
 /-- The **phase-weighted peripheral spectral map** `T_φ' := T ∘ T_φ` of Wolf
@@ -271,23 +265,6 @@ theorem peripheralWeightedProjection_eq_comp (f : Module.End ℂ V) :
 theorem peripheralWeightedProjection_eq_peripheralProjection_comp (f : Module.End ℂ V) :
     f.peripheralWeightedProjection = f.peripheralProjection ∘ₗ f := by
   rw [peripheralWeightedProjection, ← f.peripheralProjection_comp]
-
-/-- The absorption identity `T_φ T_φ' = T_φ'`. -/
-theorem peripheralProjection_comp_peripheralWeightedProjection (f : Module.End ℂ V) :
-    f.peripheralProjection ∘ₗ f.peripheralWeightedProjection =
-      f.peripheralWeightedProjection := by
-  ext x
-  rw [LinearMap.comp_apply, peripheralWeightedProjection, LinearMap.comp_apply,
-    f.peripheralProjection_apply_of_mem (f.map_peripheralSubspace_le
-      (Submodule.mem_map_of_mem (f.peripheralProjection_apply_mem x)))]
-
-/-- The absorption identity `T_φ' T_φ = T_φ'`. -/
-theorem peripheralWeightedProjection_comp_peripheralProjection (f : Module.End ℂ V) :
-    f.peripheralWeightedProjection ∘ₗ f.peripheralProjection =
-      f.peripheralWeightedProjection := by
-  ext x
-  simp only [LinearMap.comp_apply, peripheralWeightedProjection, LinearMap.comp_apply,
-    peripheralProjection_apply_peripheralProjection]
 
 /-- The peripheral spectral projection fixes peripheral generalized
 eigenvectors. -/
@@ -312,14 +289,6 @@ theorem peripheralWeightedProjection_apply_of_mem_eigenspace (f : Module.End ℂ
   rw [peripheralWeightedProjection, LinearMap.comp_apply,
     f.peripheralProjection_apply_of_mem_eigenspace heig hμ hx,
     (f.mem_eigenspace_iff).mp hx]
-
-/-- **Wolf Equation (6.13)**, continued: the phase-weighted map `T_φ'`
-vanishes on the non-peripheral spectral subspace. -/
-theorem peripheralWeightedProjection_apply_of_mem_nonPeripheralSubspace (f : Module.End ℂ V)
-    {x : V} (hx : x ∈ f.nonPeripheralSubspace) :
-    f.peripheralWeightedProjection x = 0 := by
-  rw [peripheralWeightedProjection, LinearMap.comp_apply,
-    f.peripheralProjection_apply_eq_zero_iff.mpr hx, map_zero]
 
 end Module.End
 
