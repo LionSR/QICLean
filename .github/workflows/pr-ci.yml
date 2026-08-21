@@ -364,6 +364,8 @@ jobs:
       - name: Install blueprint Python dependencies
         if: env.TEX_CHANGED == 'true'
         uses: texra-ai/lean-env-action/leanblueprint@v1
+        with:
+          extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.1.0'
 
       # DROPPED from TNLean's blueprint job: every tenkz-specific step
       # (native tenkz source lint, tenkz manual/example compilation, the
