@@ -23,27 +23,22 @@ ARCHIVE_ROOT = "QICLean/Archive/"
 # Existing structural debt only.  Never add a new path: split into modules named
 # for their mathematical responsibility, then use a concept-named aggregator.
 #
-# Extraction note: TNLean's allowlist and semantic-exception entries were all
-# MPS/PEPS-rooted (with two Channel/ exceptions) and none survive verbatim
-# under QICLean/, since PEPS/ and MPS/ stayed in TNLean. This starts empty;
-# The two inherited entries are named for the Wolf theorem they prove
-# (Theorems 6.8 and 6.14), not for the order a proof was split in; they
-# carry over from the pre-extraction allowlist.
-NUMBERED_DEBT_ALLOWLIST: frozenset[str] = frozenset(
-    {
-        "QICLean/Channel/FixedPoint/WolfTheorem614.lean",
-        "QICLean/Channel/WolfTheorem68.lean",
-    }
-)
+# The debt allowlist starts empty: the pre-extraction structural-debt entries
+# were all rooted in directories that stayed behind, and the ratchet only
+# shrinks.
+NUMBERED_DEBT_ALLOWLIST: frozenset[str] = frozenset()
 
 # These suffixes identify mathematical objects or source labels, not the order
 # in which a proof was split.  Each exception is exact and reviewable.
 #
-# Extraction note: TNLean's two Channel/ semantic exceptions
-# (WolfTheorem68.lean, WolfTheorem614.lean) are plausible QICLean/Channel/
-# candidates if those files moved with the same names; confirm against the
-# actual dry-run tree before re-adding them here.
-SEMANTIC_EXCEPTIONS: dict[str, str] = {}
+SEMANTIC_EXCEPTIONS: dict[str, str] = {
+    "QICLean/Channel/WolfTheorem68.lean": (
+        "Named for Wolf Theorem 6.8, the result the module proves."
+    ),
+    "QICLean/Channel/FixedPoint/WolfTheorem614.lean": (
+        "Named for Wolf Theorem 6.14, the result the module proves."
+    ),
+}
 
 # This guidance is intentionally naming-specific.  The size checker gives
 # complementary advice about decomposing a large mathematical development.
