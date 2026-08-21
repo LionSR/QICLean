@@ -310,8 +310,5 @@ import QICLean.Channel.Wigner.Upstream.PhaseNormalization
 import QICLean.Channel.Wigner.Upstream.TransitionProbability
 import QICLean.Channel.Wigner.Upstream.Unitary
 import QICLean.Channel.Wigner.Upstream.WignerRigidity
-import QICLean.Channel.WolfChapter2Index
-import QICLean.Channel.WolfChapter6Index
-import QICLean.Channel.WolfChapter6Wrappers
 import QICLean.Channel.WolfProps
 import QICLean.Channel.WolfTheorem68

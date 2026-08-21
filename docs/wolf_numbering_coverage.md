@@ -1,44 +1,368 @@
-/-
-Copyright (c) 2026 TNLean contributors. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: TNLean contributors
--/
-import QICLean.Analysis.MeanErgodic
-import QICLean.Analysis.Dirichlet
-import QICLean.Channel.Determinant.Bound
-import QICLean.Channel.FixedPoint.Algebra
-import QICLean.Channel.Peripheral.AsymptoticImage
-import QICLean.Channel.Peripheral.CyclicGroupKraus
-import QICLean.Channel.Peripheral.JordanBlocks
-import QICLean.Channel.Peripheral.SpectralRadius
-import QICLean.Channel.FixedPoint.Cesaro
-import QICLean.Channel.FixedPoint.MeanErgodicProjection
-import QICLean.Channel.FixedPoint.MeanErgodicAdjoint
-import QICLean.Channel.FixedPoint.FullSupportBlockRetraction
-import QICLean.Channel.FixedPoint.TraceAdjointDensityBlocks
-import QICLean.Channel.FixedPoint.ConditionalExpectation
-import QICLean.Channel.FixedPoint.StationarySupport
-import QICLean.Channel.FixedPoint.CornerFixedPoints
-import QICLean.Channel.FixedPoint.WedderburnDecomp
-import QICLean.Channel.FixedPoint.BlockForm
-import QICLean.Channel.FixedPoint.CornerBlockForm
-import QICLean.Channel.FixedPoint.Corollaries
-import QICLean.Channel.FixedPoint.WeightedCornerFixedPoints
-import QICLean.Channel.FixedPoint.MaximalSupport
-import QICLean.Channel.FixedPoint.MaximalRank
-import QICLean.Channel.Irreducible.Ergodicity
-import QICLean.Channel.Irreducible.Basic
-import QICLean.Channel.Irreducible.Growth
-import QICLean.Channel.Irreducible.PerronFrobenius
-import QICLean.Channel.Irreducible.SpectralRadius
-import QICLean.Channel.Irreducible.FromSpectral
-import QICLean.Channel.Peripheral.Spectrum
-import QICLean.Channel.PerronFrobenius.Existence
-import QICLean.Channel.Irreducible.Similarity
-import QICLean.Channel.WolfChapter6Wrappers
+# Wolf-chapter numbering coverage
 
-/-!
-# Wolf Chapter 6 — Spectral Properties: Public Theorem Index
+Concordance between formalized declarations and the theorem/proposition
+numbering of M. Wolf, *Quantum Channels & Operations: Guided Tour* (2012),
+Chapters 2 and 6. This table used to live as compiled Lean documentation
+modules (`WolfChapter2Index.lean`, `WolfChapter6Index.lean`,
+`WolfChapter6Wrappers.lean`); those modules carried zero declarations of
+mathematical content beyond two dead re-export theorems, so the concordance
+now lives here as plain markdown, its natural medium.
+
+The `Kraus.wolf_prop_6_6` and `IsPositiveMap.wolf_prop_6_8` re-export
+theorems formerly provided by `WolfChapter6Wrappers.lean` had zero call sites
+outside their own docstring mentions; the substantive theorems they wrapped
+are consumed under their real names (`isIrreducibleMap_full_similarity`,
+`IsPositiveMap.exists_posSemidef_fixedPoints_decomposition`) elsewhere in the
+library, so the wrapper theorems are noted below without a live Lean
+counterpart.
+
+The tensor-network-layer companion concordance (Wolf Chapter 6 sections
+formalized over Kraus-span primitivity, the quantum Wielandt inequality, and
+the assembled quantum Perron-Frobenius theorem) lives in the sibling TNLean
+project, not in this repository.
+
+## Wolf Lecture Notes — Chapter 2: Representations
+
+This file indexes the formalization of Chapter 2 of Wolf's
+*Quantum Channels & Operations: Guided Tour*, which covers the main
+representations of quantum channels.
+
+The Lorentz-normal-form statements are recorded in
+`QICLean.Channel.LorentzNormalForm`.  The compactness/minimisation result is
+proved there; the remaining proof obligations are the optimality step at the
+minimiser and the SL(2, ℂ) Lorentz-orbit classification.  This index imports
+that file so that the cited formal statements are available from the main
+project import.
+
+### Coverage summary
+
+#### Section 2.1 Choi–Jamiolkowski and Kraus
+
+* **Proposition 2.1** (CJ isomorphism, square specialization only):
+  - `ChoiJamiolkowski.choiMatrix` — Choi matrix `τ = (T ⊗ id)(|Ω⟩⟨Ω|)` ✓
+  - `ChoiJamiolkowski.cp_iff_choi_posSemidef` — CP ↔ `τ ≥ 0` ✓
+  - `ChoiJamiolkowski.traceLeft_choiMatrix_of_tp` — TP ⟹ `tr_A(τ) = 𝟙/D` ✓
+  - `ChoiJamiolkowski.choiMatrix_isHermitian_iff_hermiticityPreserving` —
+    Hermiticity-preserving ↔ `τ` is Hermitian ✓
+  - `ChoiJamiolkowski.trace_choiMatrix_of_tp` — `tr(τ) = 1` for TP ✓
+  - `ChoiJamiolkowski.choiMatrix_id` — `τ` of identity = `|Ω⟩⟨Ω|` ✓
+  - `Channel.choiRank` — rank of the Choi matrix (dimension-generic,
+    via `ChoiRectangular.choiMatrix`) ✓
+  - `Channel.choiRank_le_of_hasKrausCard` / `Channel.choiRank_le_of_hasKrausRankLE`
+    — Choi-rank upper bounds from exact / bounded Kraus families ✓
+  - `Channel.hasKrausCard_choiRank_of_cp` /
+    `Channel.hasKrausRankLE_choiRank_of_cp` /
+    `Channel.hasKrausRankLE_choiRank_of_cptp`
+    — minimal Kraus constructions from the Choi spectral decomposition ✓
+  - **Rectangular (different-dimension) form** in
+    `TNLean/Channel/ChoiRectangular.lean` (namespace `ChoiRectangular`):
+    `choiMatrix` — `τ = (T ⊗ id_d)(|Ω⟩⟨Ω|)` on `ℂ^{d'} ⊗ ℂ^d` ✓
+    `mapOfChoiMatrix_choiMatrix` / `choiMatrix_mapOfChoiMatrix` — mutual
+    inverses ✓ `trace_pairing` — `tr[A T(B)] = d·tr[τ (A ⊗ Bᵀ)]` ✓
+    `choiMatrix_isHermitian_iff_hermiticityPreserving` — Hermiticity clause ✓
+    `isKrausCP_iff_choiMatrix_posSemidef` — CP clause ✓
+    `unital_iff_traceRight_choiMatrix` — unitality clause ✓
+    `traceLeft_choiMatrix` (`tr_A(τ) = (T*(𝟙))ᵀ/d`) and
+    `tracePreserving_iff_traceLeft_choiMatrix` — trace-preservation clause ✓
+    `trace_choiMatrix` (`tr(τ) = tr(T*(𝟙))/d`) — normalization clause ✓
+    `doublyStochastic_iff_partialTraces_proportional` — doubly-stochastic
+    clause ✓
+  - `ChoiRectangular.choiMatrix_eq_choiJamiolkowski` — the square development
+    is the specialization `d = d'` ✓
+  - Remaining square-only declarations (the `ChoiJamiolkowski.choiMatrix`
+    API, `IsTracePreservingMap`, `IsChannel`) are documented as specializations
+    in `docs/paper-gaps/choi_rectangular_scope.tex`.
+
+* **Theorem 2.1** (Kraus representation, dimension-generic development):
+  the root/`Channel`-namespace Kraus API is stated for rectangular Kraus
+  operators `Kⱼ : Matrix (Fin d') (Fin d) ℂ`; the square development is the
+  specialization `d = d'`.
+  - `kraus_tp_of_sum_conjTranspose_mul` — `∑Kᵢ†Kᵢ = 𝟙` ⟹ TP ✓
+  - `kraus_sum_conjTranspose_mul_of_tp` — TP ⟹ `∑Kᵢ†Kᵢ = 𝟙` ✓
+  - `kraus_sum_mul_conjTranspose_of_unital` — unital ⟹ `∑KᵢKᵢ† = 𝟙` ✓
+  - `kraus_same_map_of_unitary_combination` — unitary freedom (sufficient direction) ✓
+  - `kraus_same_map_of_unitaryGroup_combination` / `kraus_same_map_of_exists_unitary_combination`
+    — bundled/existential unitary-witness formulations for reuse in the converse roadmap ✓
+  - `kraus_transition_unitary_of_hs_orthonormal`
+    — converse linear-algebra core: orthonormal Kraus frames force unitary transition
+    (square form only) ✓
+  - `kraus_dual_eq_of_map_eq` — dual map equality from primal map equality ✓
+  - `kraus_conjTranspose_mul_eq_of_map_eq` — equal Stinespring Gramians ✓
+  - `kraus_rectangular_freedom` / `kraus_rectangular_freedom'`
+    — Kraus freedom (necessary direction) ✓
+  - `kraus_isometry_freedom_iff`
+    — Wolf Theorem 2.1(4) in isometric form, including zero-padding of the smaller family ✓
+  - `kraus_unitary_freedom_iff`
+    — Wolf Theorem 2.1(4) in same-size unitary form ✓
+  - `Channel.HasKrausCard` / `Channel.HasKrausRankLE` / `Channel.choiRank` /
+    `Channel.hasKrausCard_mono` / `Channel.choiRank_le_of_hasKrausCard` /
+    `Channel.hasKrausCard_choiRank_of_cp`
+    — Kraus cardinality and the minimal Kraus number `r = rank(τ)` ✓
+  - **Rectangular-specific form** in `TNLean/Channel/KrausRectangular.lean`
+    (namespace `ChoiRectangular`, no square counterpart):
+    `kraus_tp_iff_sum_conjTranspose_mul` / `kraus_unital_iff_sum_mul_conjTranspose`
+    — normalization item 1 as iffs ✓
+    `choiRank_isLeast_hasKrausCard_of_isKrausCP` / `choiRank_le_mul`
+    — minimality of the Kraus rank and the bound `r = rank(τ) ≤ d·d'` ✓
+    `exists_kraus_orthogonal_of_isKrausCP`
+    — Hilbert–Schmidt orthogonal minimal family (`tr[Kᵢ†Kⱼ] ∝ δᵢⱼ`) ✓
+
+* **Theorem 2.2** (Stinespring dilation):
+  - `stinespring_dual_representation` — `T*(A) = V†(A ⊗ 𝟙)V` ✓
+  - `stinespringV_isometry_iff_kraus_normalized` — `V†V = 𝟙` ↔ TP ✓
+  - `stinespring_schrodinger_representation` — `T(ρ) = tr_r(VρV†)` ✓
+  - **Full statement** in `TNLean/Channel/StinespringRectangular.lean`
+    (namespace `ChoiRectangular`):
+    `exists_stinespringV_of_isKrausCP` /
+    `exists_stinespringV_pairing_of_isKrausCP`
+    — for a completely positive `T : M_d → M_{d'}` and every `r ≥ rank(τ)`
+    there is a `V : ℂ^d → ℂ^{d'} ⊗ ℂ^r` with `T*(A) = V†(A ⊗ 𝟙_r)V`, an
+    isometry exactly when `T` is trace preserving ✓
+    `exists_stinespringV_choiRank_of_isKrausCP` /
+    `exists_stinespringV_pairing_choiRank_of_isKrausCP`
+    — the dilation at the Choi-rank ancilla dimension `r = rank(τ)` ✓
+    `choiRank_le_of_stinespring_dual_representation`
+    — the converse bound: a dilation with ancilla dimension `r` forces
+    `rank(τ) ≤ r`, so `r = rank(τ)` is the least admissible ancilla dimension
+    and dilations with it are minimal (discussion after Thm. 2.2) ✓
+
+* **Theorem 2.3** (ordered CP-maps):
+  - `CPDominates` — CP partial order: `S - T` is completely positive ✓
+  - `Matrix.blockTopRows` / `Matrix.blockTopRows_mul_conjTranspose` /
+    `Matrix.blockTopRows_conjTranspose_mul_le_one` — explicit block-top
+    contraction on the dilation space ✓
+  - `stinespringV_eq_kronecker_blockTopRows_mul_append` — intertwining
+    `V_{K} = (𝟙_D ⊗ C) · V_{K ++ L}` for the block-top projector ✓
+  - `CPDominates.exists_stinespring_contraction` — existential form of
+    Wolf Theorem 2.3: `T₁ ≤ T₂` gives Stinespring realizations and a contraction ✓
+
+* **Theorem 2.4** (Radon–Nikodym for CP maps):
+  - `Matrix.blockDiagTopProj` / `Matrix.blockDiagBotProj` — orthogonal
+    block projectors on the dilation space, PSD and summing to `𝟙` ✓
+  - `Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap` — Kronecker
+    identity `A ⊗ (CᴴC) = (𝟙 ⊗ C)ᴴ (A ⊗ 𝟙) (𝟙 ⊗ C)` ✓
+  - `IsCPMap.radon_nikodym_of_stinespring` — Wolf, *Quantum Channels &
+    Operations*, Theorem 2.4, source-faithful finite-family form relative to a
+    supplied Stinespring representation ✓
+  - `IsCPMap.exists_radon_nikodym` — binary block-diagonal corollary:
+    for CP `T₁, T₂`, a constructed Stinespring matrix for `T₁ + T₂` yields
+    PSD `P₁ + P₂ = 𝟙` with `Tᵢ(A) = V†(A ⊗ Pᵢ)V` ✓
+
+* **Theorem 2.5** (open-system representation, reduced form):
+  - `IsChannel.exists_stinespring_open_system` — every CPTP map is
+    `T(ρ)_{ij} = ∑ₖ (V ρ V†)_{(i,k),(j,k)}` for an isometric `V` ✓
+  - `IsChannel.exists_stinespring_open_system_traceRight` — equivalent
+    form via `Matrix.traceRight`: `T(ρ) = tr_E[V ρ V†]` ✓
+  - `IsChannel.exists_stinespring_open_system_unitary` — unitary form
+    `T(ρ) = tr_E[U W₀ ρ W₀† U†]`, where `W₀` inserts the system into the
+    first environment coordinate ✓
+
+* **Theorem 2.6** (Naimark / Neumark dilation for POVMs):
+  - `POVM` — positive operator-valued measure structure ✓
+  - `POVM.naimarkIsometry_isometry` — `V†V = 𝟙` ✓
+  - `POVM.naimarkProjection_mul_self` / `_hermitian` / `_orthogonal` /
+    `_sum_eq_one` — projective-measurement axioms on the dilation ✓
+  - `POVM.naimark_recovers_povm` — `V† P_i V = E_i` ✓
+  - `POVM.exists_naimark_dilation` — existential Naimark dilation ✓
+  - `POVM.IsNaimarkDilation` / `POVM.isNaimarkDilation_naimark`
+    — formulated Naimark-dilation predicate and canonical witness ✓
+  - `POVM.exists_isometry_mul_naimarkIsometry_of_recovery`
+    — concrete uniqueness: any dilation using the canonical projectors factors
+      through the canonical Naimark isometry via a dilation isometry ✓
+  - `POVM.exists_orthonormal_basis_restriction` — a rank-one resolution
+    forces `d ≤ n` and extends to an orthonormal basis of `ℂⁿ` ✓
+  - `POVM.exists_orthonormal_basis_restriction_of_rank_one` — sharp
+    rank-one specialization for a POVM ✓
+  - `POVM.ofPSDResolutionOfIdentity` — converse construction: PSD resolution
+    of identity on a dilation pulls back to a POVM ✓
+  - `Instrument` — quantum-instrument structure + `total_isChannel`,
+    `sum_probability`, `posteriorState` interface ✓
+
+* **Proposition “SIC POVMs” and Equations (2.33)--(2.34)**:
+  - `SICPOVM` — the unscaled rank-one projectors, with
+    `∑ᵢ Pᵢ = d𝟙` and off-diagonal overlap `1/(d+1)` ✓
+  - `SICPOVM.toPOVM` — the effects `Pᵢ/d` form a POVM ✓
+  - `SICPOVM.linearIndependent_projector` — the `d²` projectors form an
+    operator basis ✓
+  - `SICPOVM.diagonal_representation` — Wolf Equation (2.33) ✓
+  - `SICPOVM.krausMap_eq` / `SICPOVM.isChannel_krausMap` — the Kraus
+    operators `Pᵢ/√d` define the channel in Wolf Equation (2.34) ✓
+
+#### Section 2.1 Representation corollaries (Propositions 2.2–2.4)
+
+* **Proposition 2.2** (decomposition into completely positive maps), in
+  `TNLean/Channel/CPDecomposition.lean`:
+  - `ChoiRectangular.exists_four_isKrausCP_complexCombination` — every linear
+    map `M_d(ℂ) → M_{d'}(ℂ)` is a ℂ-linear combination of four CP maps ✓
+  - `ChoiRectangular.exists_two_isKrausCP_realCombination_of_hermiticityPreserving`
+    — a Hermitian map is an ℝ-linear combination of two CP maps ✓
+
+* **Proposition 2.2, sandwich-sum specialization** (square algebra, with the
+  four CP maps written out through the polarization identity of Chapter 1,
+  `Notes/WolfNoteTexSource/ch01_deconstructing_quantum.tex`, lines 586–591):
+  - `WolfProps.polarization_sandwich` — `4 • (A X Bᴴ) = (A+B) X (A+B)ᴴ
+    − (A−B) X (A−B)ᴴ + I•(A+I·B) X (A+I·B)ᴴ − I•(A−I·B) X (A−I·B)ᴴ` ✓
+  - `WolfProps.cp_decomposition_of_sandwich_sum` — every map of `M_D(ℂ)` given
+    in the sandwich-sum form `X ↦ ∑ᵢ Aᵢ X Bᵢᴴ` is a signed ℂ-linear
+    combination of four CP maps ✓
+
+* **Proposition 2.3** (no information without disturbance):
+  - `WolfProps.vecMulVec_star_eq_polarization` — rank-one outer products
+    polarize into rank-one self-outer-products ✓
+  - `WolfProps.linearMap_eq_id_of_fixes_rankOne` — a linear map fixing
+    every `vecMulVec v (star v)` is the identity ✓
+  - `WolfProps.channel_eq_id_of_fixes_pureStates` — a channel fixing
+    every pure-state projector is the identity channel ✓
+  - `Channel.exists_nonneg_smul_id_of_isCPMap_of_sum_eq_id` — the
+    source-faithful statement: a finite family of CP maps with
+    `∑ α, T α = id` has `T α = c α • id` with `c α ≥ 0` ✓
+  - `Channel.exists_nonneg_weights_of_isCPMap_of_sum_eq_id` — the weights
+    satisfy `∑ α, c α = 1` ✓
+  - `Channel.exists_nonneg_forall_trace_map_eq_of_isCPMap_of_sum_eq_id` —
+    `tr[T α ρ] = c α` for every `ρ` of unit trace ✓
+  - `Instrument.exists_nonneg_forall_probability_eq_of_total_eq_id` — the
+    same conclusion for the `Instrument` structure ✓
+
+* **Proposition 2.4** (equivalence of ensembles, Hughston–Jozsa–Wootters):
+  - `WolfProps.pureEnsembleDensity` — density operator of a pure-state
+    ensemble `∑ᵢ |ψᵢ⟩⟨ψᵢ|` ✓
+  - `WolfProps.pureEnsembleDensity_eq_of_isometric_mixing` — sufficient
+    direction: ensembles related by an isometric mixing matrix share
+    the same density ✓
+  - `WolfProps.exists_isometric_mixing_of_pureEnsembleDensity_eq` —
+    necessary direction (HJW converse): equal densities force an
+    isometric mixing matrix between the two ensembles ✓
+  - `WolfProps.pureEnsembleDensity_eq_iff_exists_isometric_mixing` —
+    both directions stated as an iff, under the cardinality hypothesis
+    `card ι₂ ≤ card ι₁` ✓
+  - `WolfProps.pureEnsembleDensity_eq_iff_exists_unitary_mixing` — Wolf's
+    own statement, in `QICLean.Channel.EnsembleEquivalence`: after padding
+    both ensembles with zero vectors onto `ι₁ ⊕ ι₂`, equal densities are
+    equivalent to unitary mixing, with no cardinality hypothesis ✓
+  - `WolfProps.pureEnsembleDensity_eq_iff_exists_unitary_mixing_fin` —
+    the same statement with `Fin (max m n)` as common index set ✓
+
+#### Section 2.3 Transfer matrix
+
+* `transferMatrix` — the `D² × D²` matrix representing `T` in the
+  standard-basis vectorization ✓
+* `transferMatrix_mulVec_eq` — `T̂ *ᵥ vec(ρ) = vec(T(ρ))` ✓
+* `transferMatrix_comp` — `(S ∘ T)^ = Ŝ * T̂` ✓
+* `transferMatrix_id` — transfer matrix of identity = identity ✓
+* `transferMatrix_injective` — the representation is faithful ✓
+* `transferMatrix_kraus` — Kraus form: `T̂ = ∑ᵢ K'ᵢ ⊗ₖ Kᵢ` ✓
+* `MPSTensor.transferMatrix_eq` — MPS transfer-operator specialization, stated in
+  `TNLean.MPS.Core.TransferMatrix`: `E_A` has transfer matrix `∑ᵢ Āᵢ ⊗ₖ Aᵢ` ✓
+
+#### Sections 2.3–2.4 Transfer-matrix characterizations and unitary actions
+
+* `transferMatrix_tp_iff` — Section 2.3, Equation (2.20), entrywise consequence:
+  TP ↔ column-diagonal sums = δ ✓
+* `transferMatrix_unital_iff` — Section 2.3, Equation (2.20), entrywise consequence:
+  unital ↔ row-diagonal sums = δ ✓
+* `transferMatrix_hermiticityPreserving_iff` — Section 2.3, Equation (2.20),
+  entrywise consequence: HP ↔ conjugation symmetry of transfer-matrix entries ✓
+* `unitaryConjLM` — unitary conjugation map `Ad_U(X) = U X U†` ✓
+* `transferMatrix_unitaryConj` — Section 2.4, lines 1000–1010, matrix-unit
+  analogue of the qubit unitary action: `(Ad_U)^ = Ū ⊗ₖ U` ✓
+* `unitaryConjLM_isChannel_of_unitary` — `Ad_U` is a channel for unitary `U` ✓
+* `transferMatrix_unitaryConj_sandwich` — Section 2.4 unitary-action identity:
+  `(Ad_{U₁} ∘ T ∘ Ad_{U₂})^ = (Ū₁⊗U₁) * T̂ * (Ū₂⊗U₂)` ✓
+
+#### General matrix SVD results
+
+* `Matrix.svd_of_posSemidef` — **SVD for PSD matrices** (spectral theorem
+  formulated): `M = U * diagonal σ * Uᴴ` with `σ ≥ 0` ✓
+* `Matrix.svd_of_isUnit` — **SVD existence for invertible complex matrices**:
+  `M = U * diagonal σ * Vᴴ` with `U, V` unitary and `σ > 0` ✓
+* `transferMatrix_svd_of_isUnit` — **SVD representation of a transfer
+  matrix**: every invertible transfer matrix admits an SVD ✓
+
+#### Section 2.4 Lorentz normal form (existence)
+
+* `Wolf.SLFiltering` — **SL(d, ℂ)-filtering operation**: a CP map
+  Φ(X) = S X S† with det(S) = 1 ✓ (definitional)
+* `Wolf.SLFiltering.comp` — composition of SL-filterings ✓
+* `Wolf.SLFiltering.S_isUnit` — `S` invertible follows from det=1 ✓
+* `Wolf.DoublyStochastic` — doubly-stochastic condition: T(1) ∝ 1 and
+  tr₁[τ] ∝ 1 ✓ (definitional)
+* `pauliMatrices` — the four Pauli matrices (qubit basis) ✓ (definitional)
+* `pauliTransferEntry` — Pauli-basis transfer matrix entry ✓ (definitional)
+* `IsLorentzDiagonal` — diagonal Lorentz normal form (Wolf Proposition 2.11 case 1) ✓
+* `IsLorentzNonDiagonal` — non-diagonal Lorentz normal form (case 2) ✓
+* `IsLorentzSingular` — singular Lorentz normal form (case 3) ✓
+* `Wolf.infimum_is_attained` — **key compactness lemma**: trace minimisation
+  over SL(d₁, ℂ) × SL(d₂, ℂ) filterings of a positive-definite operator on
+  ℂ^{d₂} ⊗ ℂ^{d₁} attains its infimum ✓ (rectangular form)
+* `Wolf.exists_normal_form_generic` — **Wolf Proposition 2.9, square case**:
+  every CP map `T : M_D → M_D` with full Kraus rank admits SL-filterings
+  making it doubly-stochastic ✓ (proved via the AGM/first-order optimality
+  argument at the minimiser, using the trace-determinant AM-GM equality
+  characterisation). This is the equal-dimension specialization; the general
+  rectangular statement is `Wolf.exists_normal_form_generic_rect` below
+* `Wolf.DoublyStochasticRect` — rectangular doubly-stochastic condition:
+  `T(𝟙) ∝ 𝟙` and `T*(𝟙) ∝ 𝟙` ✓ (definitional)
+* `Wolf.exists_normal_form_generic_rect` — **Wolf Proposition 2.9, rectangular
+  form**: every CP map `T : M_{d₁} → M_{d₂}` with full Kraus rank
+  (positive-definite `ChoiRectangular.choiMatrix T`) admits SL-filterings
+  `Φ₁ : SLFiltering d₁`, `Φ₂ : SLFiltering d₂` making `Φ₂ ∘ T ∘ Φ₁`
+  doubly-stochastic ✓
+* **Wolf Proposition 2.11 (Lorentz normal form for qubit channels)** remains
+  pending. Wolf requires general invertible Kraus-rank-one CP filters, including
+  scalar freedom. The former determinant-one `SLFiltering` formulation was false
+  and has been removed; there is currently no Lean declaration for the theorem.
+
+#### Formalization
+
+| Definition | File | Lean name |
+|------------|------|-----------|
+| Partial trace (left) | `PartialTrace.lean` | `Matrix.traceLeft` |
+| Partial trace (right) | `PartialTrace.lean` | `Matrix.traceRight` |
+| Maximally entangled vector | `MaximallyEntangled.lean` | `Matrix.omegaVec` |
+| Maximally entangled projector | `MaximallyEntangled.lean` | `Matrix.omegaProj` |
+| SWAP operator F | `MaximallyEntangled.lean` | `Matrix.swapMatrix` |
+| Tensor product of maps | `TensorMap.lean` | `Matrix.tensorMapId` |
+| Choi matrix | `ChoiJamiolkowski.lean` | `ChoiJamiolkowski.choiMatrix` |
+| Rectangular Choi matrix | `ChoiRectangular.lean` | `ChoiRectangular.choiMatrix` |
+| Rectangular Kraus rank | `KrausRank.lean` | `Channel.choiRank` |
+| Stinespring isometry | `Stinespring.lean` | `stinespringV` |
+| POVM | `POVM.lean` | `POVM` |
+| Naimark isometry | `POVM.lean` | `POVM.naimarkIsometry` |
+| Naimark projector | `POVM.lean` | `POVM.naimarkProjection` |
+| Rank-one Naimark | `POVM/RankOneNaimark.lean` | `POVM.exists_orthonormal_basis_restriction` |
+| Quantum instrument | `POVM.lean` | `Instrument` |
+| Transfer matrix | `TransferMatrix.lean` | `transferMatrix` |
+| Unitary conjugation | `TransferMatrix.lean` | `unitaryConjLM` |
+| Vectorization | `Mathlib.LinearAlgebra.Matrix.Vec` | `Matrix.vec` |
+| SL-filtering | `LorentzNormalForm.lean` | `Wolf.SLFiltering` |
+| SL-filtering composition | `LorentzNormalForm.lean` | `Wolf.SLFiltering.comp` |
+| Doubly-stochastic | `LorentzNormalForm.lean` | `Wolf.DoublyStochastic` |
+| Rectangular doubly-stochastic | `LorentzNormalForm.lean` | `Wolf.DoublyStochasticRect` |
+| Rectangular generic normal form | `LorentzNormalForm.lean` |
+  `Wolf.exists_normal_form_generic_rect` |
+| Pauli matrices | `LorentzNormalForm.lean` | `pauliMatrices` |
+| Pauli transfer entry | `LorentzNormalForm.lean` | `pauliTransferEntry` |
+| Diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzDiagonal` |
+| Non-diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzNonDiagonal` |
+| Singular Lorentz form | `LorentzNormalForm.lean` | `IsLorentzSingular` |
+
+#### Not yet formalized
+
+| Result | Notes |
+|--------|-------|
+| Section 2.4 Lorentz normal form (Proposition 2.11) | Correctly formulated
+  statement and proof remain pending. Wolf uses general invertible Kraus-rank-one
+  CP filters with scalar freedom; the former determinant-one formulation was
+  false and was removed. The proof also needs the Lorentz-orbit classification. |
+| Section 2.4 Sorted singular values | Current SVD is unsorted; later uses want sorted values |
+
+### References
+
+* [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 2][Wolf2012QChannels]
+
+---
+
+## Wolf Chapter 6 — Spectral Properties: Public Theorem Index
 
 This module serves as a **navigational index** that maps the formalized theorems
 in this project to the numbering in:
@@ -60,15 +384,15 @@ Perron–Frobenius theorem — are indexed in
 
 ---
 
-## Section 6.1 Spectral radius and determinant
+### Section 6.1 Spectral radius and determinant
 
-### Wolf Proposition 6.1 (Spectral radius of positive maps) — TRACE-PRESERVING CASE FORMALIZED
+#### Wolf Proposition 6.1 (Spectral radius of positive maps) — TRACE-PRESERVING CASE FORMALIZED
 
 * `IsPositiveMap.eigenvalue_norm_le_one_of_tracePreserving` — every eigenvalue of a
   positive trace-preserving map lies in the closed unit disk, in
-  `TNLean.Channel.Determinant.Bound`.
+  `QICLean.Channel.Determinant.Bound`.
 * `IsPositiveMap.eigenvalue_one_exists_of_tracePreserving` — eigenvalue $1$ exists
-  (nonzero PSD fixed point), in `TNLean.Channel.Peripheral.SpectralRadius`.
+  (nonzero PSD fixed point), in `QICLean.Channel.Peripheral.SpectralRadius`.
 
 The general bound `ρ(T) ≤ ‖T(1)‖∞` for arbitrary positive maps relies on the
 Russo--Dye theorem, which yields factor $1$; this general bound is not yet
@@ -77,28 +401,28 @@ elimination plan.  Documented in
 `docs/paper-gaps/wolf_prop61_russo_dye_factor.tex`.
 
 
-### Wolf Lemma 6.1 (Dirichlet's simultaneous approximation) — FORMALIZED
+#### Wolf Lemma 6.1 (Dirichlet's simultaneous approximation) — FORMALIZED
 
 * `Dirichlet.exists_int_near_mul_simultaneous` — the $m$-variable simultaneous
   approximation $1\le n\le q^m$ with $|x_k n-p_k|\le 1/q$ for all $k$, in
-  `TNLean.Analysis.Dirichlet`.
+  `QICLean.Analysis.Dirichlet`.
 
-### Wolf Proposition 6.2 (Trivial Jordan blocks for peripheral spectrum) — FORMALIZED
+#### Wolf Proposition 6.2 (Trivial Jordan blocks for peripheral spectrum) — FORMALIZED
 
 * `IsPositiveMap.no_rank_two_genEigenvector_of_tracePreserving` and
   `IsPositiveMap.no_rank_two_genEigenvector_of_unital` — rank-2
   generalized eigenvectors do not exist at peripheral eigenvalues, in
-  `TNLean.Channel.Peripheral.JordanBlocks`.
+  `QICLean.Channel.Peripheral.JordanBlocks`.
 * `IsPositiveMap.peripheral_Jordan_trivial_of_tracePreserving` and
   `IsPositiveMap.peripheral_Jordan_trivial_of_unital` —
   $\ker(T-\lambda)^k = \ker(T-\lambda)$ for all $k$ when $|\lambda| = 1$, in
-  `TNLean.Channel.Peripheral.JordanBlocks`.
+  `QICLean.Channel.Peripheral.JordanBlocks`.
 * `IsPositiveMap.pow_apply_rank_two_genEig` — binomial expansion:
   $T^n X = \lambda^n X + n \lambda^{n-1} (T-\lambda)X$ when $(T-\lambda)^2 X = 0$.
 * `IsPositiveMap.hasBoundedOrbits_of_unital` — a positive unital map has
   bounded forward orbits, the unital counterpart of
   `IsPositiveMap.hasBoundedOrbits_of_tracePreserving`, in
-  `TNLean.Channel.Peripheral.JordanBlocks`.
+  `QICLean.Channel.Peripheral.JordanBlocks`.
 
 Both cases follow Wolf's proof directly (not by duality): the uniform bound
 $\operatorname{tr}[A\,T(B)] \le \|A\|_\infty \|B\|_\infty \operatorname{tr}[1\,T(1)]
@@ -107,7 +431,7 @@ positive maps alike, since $\operatorname{tr}[1\,T(1)] = d$ in both cases.
 Formerly documented as a scope restriction in
 `docs/paper-gaps/wolf_prop62_jordan_blocks.tex`; that gap is now closed.
 
-### Wolf Proposition 6.3 (Cesàro means) — FORMALIZED
+#### Wolf Proposition 6.3 (Cesàro means) — FORMALIZED
 
 The three clauses of the proposition are represented by:
 
@@ -127,7 +451,7 @@ For the positive and trace-preserving conclusions concerning $T_\infty$:
 * `IsCPMap.meanErgodicProjection_isCPMap` — complete positivity;
 * `IsChannel.meanErgodicProjection` — the resulting channel.
 
-These results are in `TNLean.Channel.FixedPoint.MeanErgodicProjection`.  For
+These results are in `QICLean.Channel.FixedPoint.MeanErgodicProjection`.  For
 the peripheral projection $T_\phi$ and the phase-weighted map $T_\varphi$:
 
 * `IsPositiveMap.peripheralProjection_isPositiveMap` and
@@ -142,21 +466,21 @@ the peripheral projection $T_\phi$ and the phase-weighted map $T_\varphi$:
   `IsChannel.peripheralWeightedProjection` — both maps are channels in the
   completely positive case.
 
-These results are in `TNLean.Channel.Peripheral.CesaroRecurrence`.  Thus the
+These results are in `QICLean.Channel.Peripheral.CesaroRecurrence`.  Thus the
 basic hypothesis is positivity together with trace preservation, exactly as in
 Wolf's statement; complete positivity gives the corresponding stronger
 conclusions.  The boundedness needed to form $T_\infty$ follows from
 `IsPositiveMap.hasBoundedOrbits_of_tracePreserving`.
 
-## Section 6.2 Irreducible maps and Perron–Frobenius theory
+### Section 6.2 Irreducible maps and Perron–Frobenius theory
 
-### Wolf Theorem 6.2 (Irreducible positive maps) — ITEMS 1,2,4 FORMALIZED
+#### Wolf Theorem 6.2 (Irreducible positive maps) — ITEMS 1,2,4 FORMALIZED
 
 **Item 1** (definition via invariant projections):
-* `IsIrreducibleMap` — `TNLean.Channel.Irreducible.Basic`
+* `IsIrreducibleMap` — `QICLean.Channel.Irreducible.Basic`
 
 **Item 2** (growth condition `(id + T)^{d-1}(A) > 0`):
-* `growth_posDef_of_irreducible_cp` — `TNLean.Channel.Irreducible.Growth`
+* `growth_posDef_of_irreducible_cp` — `QICLean.Channel.Irreducible.Growth`
   (for CP maps; proves the (1)→(2) direction)
 * `posDef_of_ker_subset_irreducible_cp` — structural lemma:
   `ker(A) ⊆ ker(E(A))` + irreducible CP → `A` is PosDef
@@ -165,18 +489,18 @@ conclusions.  The boundedness needed to form $T_\infty$ follows from
 **Item 3** (exponential condition `exp[tT](A) > 0`): NOT FORMALIZED.
 
 **Item 4** (orthogonal trace condition):
-* `orthogonal_trace_pos_of_irreducible_cp` — `TNLean.Channel.Irreducible.Growth`
+* `orthogonal_trace_pos_of_irreducible_cp` — `QICLean.Channel.Irreducible.Growth`
   For orthogonal PSD `A, B` (tr(BA)=0), ∃ t ∈ {1,...,D-1}, tr(B·T^t(A)) > 0.
 
-### Wolf Theorem 6.3 (Spectral radius of irreducible maps) — CP SPECIALIZATIONS OF ITEMS 2–4
+#### Wolf Theorem 6.3 (Spectral radius of irreducible maps) — CP SPECIALIZATIONS OF ITEMS 2–4
 
 **Fixed-point consequences of items 2–3** (strict positivity and PSD uniqueness):
 
 Channel-level (general irreducible CP maps):
-* `posDef_of_posSemidef_fixedPoint_irreducible_cp` — `TNLean.Channel.Irreducible.FixedPoint`:
+* `posDef_of_posSemidef_fixedPoint_irreducible_cp` — `QICLean.Channel.Irreducible.FixedPoint`:
   nonzero PSD fixed point → PosDef
 * `posDef_of_posSemidef_eigenvector_irreducible_cp` —
-  `TNLean.Channel.Irreducible.Growth.OneStep`: PSD eigenvector → PosDef
+  `QICLean.Channel.Irreducible.Growth.OneStep`: PSD eigenvector → PosDef
 * `exists_posDef_eigenvector_of_irreducible_cp`: ∃ PosDef eigenvector with `r > 0`
 * `posSemidef_eigenvector_unique_of_irreducible_cp`: uniqueness up to scalar
 
@@ -184,7 +508,7 @@ The transfer-map specializations of these fixed-point consequences are indexed
 in `TNLean.Wielandt.WolfChapter6TNIndex`.
 
 **Item 3** (uniqueness of positive eigenvalue):
-* `eigenvalue_unique_of_irreducible_cp` — `TNLean.Channel.Irreducible.PerronFrobenius`
+* `eigenvalue_unique_of_irreducible_cp` — `QICLean.Channel.Irreducible.PerronFrobenius`
   Any two positive eigenvalues with nonzero PSD eigenvectors must coincide.
 * `posSemidef_eigenvector_unique_of_irreducible_cp` shows any two PSD
   eigenvectors for the same eigenvalue are proportional.
@@ -195,9 +519,9 @@ in `TNLean.Wielandt.WolfChapter6TNIndex`.
 * `spectralRadius_toReal_eq_of_posDef_eigenvector_of_irreducible_cp`
   — real-valued corollary `(ρ(E)).toReal = r`
 
-Both in `TNLean.Channel.Irreducible.SpectralRadius`.
+Both in `QICLean.Channel.Irreducible.SpectralRadius`.
 Combined with `exists_posDef_eigenvector_of_irreducible_cp` from
-`TNLean.Channel.Irreducible.PerronFrobenius`, these give the CP specialization
+`QICLean.Channel.Irreducible.PerronFrobenius`, these give the CP specialization
 of Wolf item 4 for the Perron–Frobenius eigenvalue.
 
 Wolf Theorem 6.3 assumes only positivity, and its non-degeneracy statement is
@@ -205,24 +529,24 @@ stronger than uniqueness restricted to positive-semidefinite eigenvectors. The
 positive-map extension is recorded in
 `docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex`.
 
-### Wolf Corollary 6.3 (Time-average / ergodicity) — FORMALIZED
+#### Wolf Corollary 6.3 (Time-average / ergodicity) — FORMALIZED
 
 * `IsChannel.exists_unique_density_fixedPoint_of_irreducible` —
-  `TNLean.Channel.Irreducible.Ergodicity`
+  `QICLean.Channel.Irreducible.Ergodicity`
   Qualitative form: an irreducible channel has a unique density-matrix fixed
   point, and it is positive definite.
-* `IsChannel.cesaroMean_tendsto_of_irreducible` — `TNLean.Channel.Irreducible.Ergodicity`
+* `IsChannel.cesaroMean_tendsto_of_irreducible` — `QICLean.Channel.Irreducible.Ergodicity`
   Full Cesàro convergence: for every density matrix `ρ`,
   `(1/N) ∑_{t=0}^{N-1} E^[t](ρ) → σ`.
 
-Supporting formalization in `TNLean.Channel.Irreducible.Ergodicity`:
+Supporting formalization in `QICLean.Channel.Irreducible.Ergodicity`:
 * `IsChannel.iter_mem_densityMatrices`: iterates of a channel preserve density matrices.
 * `IsChannel.cesaroMean_subseq_limit_fixedPoint`: any subsequential Cesàro limit is
   a density-matrix fixed point (compactness + telescoping argument).
 
-### Wolf Theorem 6.4 (Irreducibility from spectral properties) — FORMALIZED
+#### Wolf Theorem 6.4 (Irreducibility from spectral properties) — FORMALIZED
 
-In `TNLean.Channel.Irreducible.FromSpectral`:
+In `QICLean.Channel.Irreducible.FromSpectral`:
 * `HasSpectralProperties` — Kraus-witness bundle of the spectral assumptions
   in Wolf's theorem (PD right/left eigenvectors, PSD uniqueness, spectral radius).
 * `hasSpectralProperties_of_irreducible_cp` — the forward implication
@@ -231,71 +555,73 @@ In `TNLean.Channel.Irreducible.FromSpectral`:
   TP gauge reduction + channel fixed-point contradiction.
 * `isIrreducibleMap_iff_spectral_properties` — the final iff statement.
 
-### Wolf Theorem 6.5 (Spectral radius and positive eigenvectors) — PARTIALLY FORMALIZED
+#### Wolf Theorem 6.5 (Spectral radius and positive eigenvectors) — PARTIALLY FORMALIZED
 
-* `exists_posSemidef_eigenvector` — `TNLean.Channel.PerronFrobenius.Existence`
+* `exists_posSemidef_eigenvector` — `QICLean.Channel.PerronFrobenius.Existence`
 * `exists_posSemidef_eigenvector_general` — gives SOME nonnegative eigenvalue with
   PSD eigenvector, but does NOT identify it with the spectral radius.
 * Paper-gap: `docs/paper-gaps/wolf_ch6_spectral_radius_eigenvalue.tex`
 
 Uses Brouwer's fixed-point theorem on density matrices (proved in
-`TNLean.Channel.FixedPoint.BrouwerDensityMatrices`).
+`QICLean.Channel.FixedPoint.BrouwerDensityMatrices`).
 
-### Wolf Proposition 6.6 (Similarity preserving irreducibility) — FORMALIZED
+#### Wolf Proposition 6.6 (Similarity preserving irreducibility) — FORMALIZED
 
-* Scalar case: `isIrreducibleMap_smul` — `TNLean.Channel.Irreducible.Scaling`
-* Similarity case: `isIrreducibleMap_similarity` — `TNLean.Channel.Irreducible.Similarity`
+* Scalar case: `isIrreducibleMap_smul` — `QICLean.Channel.Irreducible.Scaling`
+* Similarity case: `isIrreducibleMap_similarity` — `QICLean.Channel.Irreducible.Similarity`
 * Full Wolf form `T' = c C⁻¹ T(C · C†) C⁻†`:
   `isIrreducibleMap_full_similarity` (and the stronger
-  `isIrreducibleMap_similarity_smul`) — `TNLean.Channel.Irreducible.Similarity`
-* Numbered theorem: `Kraus.wolf_prop_6_6` — `TNLean.Channel.WolfChapter6Wrappers`
+  `isIrreducibleMap_similarity_smul`) — `QICLean.Channel.Irreducible.Similarity`
+* Former re-export theorem `Kraus.wolf_prop_6_6` restated
+  `isIrreducibleMap_full_similarity` under Wolf numbering; the wrapper
+  had zero call sites and is not restored here.
 
-### Wolf Theorem 6.6 (Peripheral spectrum of irreducible Schwarz maps)
+#### Wolf Theorem 6.6 (Peripheral spectrum of irreducible Schwarz maps)
 
 **Item 1** (cyclic peripheral spectrum): FINITE-KRAUS SPECIALIZATION FORMALIZED
 * `Kraus.peripheralEigenvalues_eq_range_primitiveRoot` —
-  `TNLean.Channel.Peripheral.CyclicGroupKraus`: the peripheral spectrum is the
+  `QICLean.Channel.Peripheral.CyclicGroupKraus`: the peripheral spectrum is the
   full cyclic group generated by a primitive root.
 * The source bound on the order, `m ≤ D²`, is not included.
 
 **Items 2–4** (non-degeneracy, unitary eigenvector, cyclic projections):
 finite-Kraus companion specializations are formalized in
-`TNLean.Channel.Peripheral.GroupStructure` and
-`TNLean.Channel.Peripheral.CyclicDecomposition`.
+`QICLean.Channel.Peripheral.GroupStructure` and
+`QICLean.Channel.Peripheral.CyclicDecomposition`.
 
 The abstract positive unital Schwarz-map theorem remains open; see
 `docs/paper-gaps/wolf_thm6_6_kraus_scope.tex`.
 
 ---
 
-## Section 6.3 Primitive maps
+### Section 6.3 Primitive maps
 
-### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions)
+#### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions)
 
 **Item 4** (trivial peripheral spectrum, PD eigenvector):
-* `IsPrimitive` — `TNLean.Channel.Peripheral.Spectrum`
+* `IsPrimitive` — `QICLean.Channel.Peripheral.Spectrum`
 * `isPrimitive_of_compl_eigenvalues_lt_one` / `compl_eigenvalue_norm_lt_one_of_primitive`
 
 Other items: PARTIALLY via the transfer-operator gap formalization on the
 tensor-network side; see `TNLean.Wielandt.WolfChapter6TNIndex`.
 
-### Wolf Theorem 6.8 (CP primitive maps, Kraus span characterizations)
+#### Wolf Theorem 6.8 (CP primitive maps, Kraus span characterizations)
 
 Formalized in the tensor-network layer; indexed in
 `TNLean.Wielandt.WolfChapter6TNIndex`.
 
-### Wolf Theorem 6.9 (Quantum Wielandt inequality)
+#### Wolf Theorem 6.9 (Quantum Wielandt inequality)
 
 Formalized in the tensor-network layer; indexed in
 `TNLean.Wielandt.WolfChapter6TNIndex`.
 
 ---
 
-## Section 6.4 Fixed points
+### Section 6.4 Fixed points
 
-### Wolf Section 6 stationary-support state (Propositions 6.9--6.11, Lems. 6.4--6.5)
+#### Wolf Section 6 stationary-support state (Propositions 6.9--6.11, Lems. 6.4--6.5)
 
-In `TNLean.Channel.FixedPoint.StationarySupport`:
+In `QICLean.Channel.FixedPoint.StationarySupport`:
 
 * `Channel.support_proj_fixed` — support projection of a PSD fixed point is
   invariant under the compressed channel action.
@@ -307,9 +633,9 @@ In `TNLean.Channel.FixedPoint.StationarySupport`:
   (`irreducible_iff_support_full`, `stationary_support_minimal`) remain to be
   reinstated.
 
-### Wolf Theorem 6.12 (Fixed points form a *-algebra) — PARTIALLY FORMALIZED
+#### Wolf Theorem 6.12 (Fixed points form a *-algebra) — PARTIALLY FORMALIZED
 
-In `TNLean.Channel.FixedPoint.AbstractAlgebra`:
+In `QICLean.Channel.FixedPoint.AbstractAlgebra`:
 
 * `SchwarzMap.fixedPointsStarSubalgebra` — for a positive unital Schwarz map
   whose trace adjoint has an explicitly chosen positive definite fixed point,
@@ -322,9 +648,9 @@ full-rank-to-positive-definite reduction theorem remains open.  The explicit
 trace-adjoint block realization from Equation (1.39) also remains open at this
 level of generality.  The downstream Schrödinger-picture density-block
 classification and its complementary zero summand are completed in
-`TNLean.Channel.FixedPoint.WolfTheorem614`.
+`QICLean.Channel.FixedPoint.WolfTheorem614`.
 
-In `TNLean.Channel.FixedPoint.Algebra`:
+In `QICLean.Channel.FixedPoint.Algebra`:
 
 * `Kraus.fixedPointsStarSubalgebra` — Kraus specialization in the
   Schrödinger picture:
@@ -339,9 +665,9 @@ In `TNLean.Channel.FixedPoint.Algebra`:
 * `Kraus.fixedPoints_starSubalgebra` / `Kraus.mem_fixedPoints_starSubalgebra`
   — numbered theorem with Wolf naming convention.
 
-### Wolf Theorem 6.13 (Fixed points and Kraus commutant) — FORMALIZED
+#### Wolf Theorem 6.13 (Fixed points and Kraus commutant) — FORMALIZED
 
-In `TNLean.Channel.FixedPoint.Algebra`:
+In `QICLean.Channel.FixedPoint.Algebra`:
 
 * `Kraus.fixedPoint_commutes_kraus` — if `X` and `Xᴴ * X` are both fixed by
   the Heisenberg-picture map `adjointMap K`, then `X` commutes with every
@@ -355,26 +681,26 @@ In `TNLean.Channel.FixedPoint.Algebra`:
   — under the hypotheses of Theorem 6.12, the full adjoint fixed-point
   `*`-subalgebra coincides with the Kraus commutant.
 
-### Wolf Theorem 6.10 (Brouwer's fixed point theorem)
+#### Wolf Theorem 6.10 (Brouwer's fixed point theorem)
 
-* `brouwer_fixedPoint_densityMatrices` — `TNLean.Channel.FixedPoint.BrouwerDensityMatrices`
+* `brouwer_fixedPoint_densityMatrices` — `QICLean.Channel.FixedPoint.BrouwerDensityMatrices`
   (density-matrix specialization; kernel-checked).
 * `Brouwer (vendored Gametheory library)` — exact import citation: Brouwer for the
   standard simplex (LionSR/Brouwer library).
-* `exists_fixedPoint_closedCube` — `TNLean.Topology.BrouwerProduct`;
+* `exists_fixedPoint_closedCube` — `QICLean.Topology.BrouwerProduct`;
   extends Brouwer to closed cubes.
-* `fixedPoint_of_compact_retract` — `TNLean.Topology.CompactRetractFixedPoint`;
+* `fixedPoint_of_compact_retract` — `QICLean.Topology.CompactRetractFixedPoint`;
   extends Brouwer to compact retracts of finite-dimensional real normed spaces.
 * The general compact-convex statement (Wolf's formulation) is not yet proved;
   see `docs/paper-gaps/brouwer_general_compact_convex.tex`.
 
-### Wolf Theorem 6.11 (Stationary states) — FORMALIZED
+#### Wolf Theorem 6.11 (Stationary states) — FORMALIZED
 
 The theorem is formalized for continuous (not necessarily linear) maps, exactly
 matching Wolf's statement ("continuous, trace-preserving, positive (not
 necessarily linear)").  The linear specializations are also provided.
 
-In `TNLean.Channel.FixedPoint.StationaryStates`:
+In `QICLean.Channel.FixedPoint.StationaryStates`:
 
 * `IsStationaryMap.IsPositive` — positivity predicate for arbitrary (nonlinear) maps.
 * `IsStationaryMap.IsTracePreserving` — trace-preservation predicate for arbitrary maps.
@@ -391,26 +717,27 @@ In `TNLean.Channel.FixedPoint.StationaryStates`:
 Additionally:
 
 * Via Cesàro: `IsChannel.exists_posSemidef_fixedPoint` —
-  `TNLean.Channel.FixedPoint.Cesaro`.
+  `QICLean.Channel.FixedPoint.Cesaro`.
 * Via Brouwer (linear): `exists_posSemidef_eigenvector` —
-  `TNLean.Channel.PerronFrobenius.Existence`.
+  `QICLean.Channel.PerronFrobenius.Existence`.
 
-### Wolf Proposition 6.8 (Positive fixed-points) — FORMALIZED
+#### Wolf Proposition 6.8 (Positive fixed-points) — FORMALIZED
 
 * `IsPositiveMap.posPart_negPart_fixed_of_fixedPoint` — the source-faithful positive
   trace-preserving statement for the four canonical positive parts in
-  `TNLean.Channel.FixedPoint.Cesaro`.
+  `QICLean.Channel.FixedPoint.Cesaro`.
 * `IsPositiveMap.exists_posSemidef_fixedPoints_decomposition` — the existential form.
 * `IsPositiveMap.posPart_negPart_fixed_of_hermitian_fixedPoint` and
   `IsPositiveMap.posSemidef_parts_of_hermitian_fixedPoint` — Hermitian intermediate
   forms.
 * `IsChannel.posSemidef_parts_of_hermitian_fixedPoint` — the channel specialization.
-* Numbered theorem: `IsPositiveMap.wolf_prop_6_8` —
-  `TNLean.Channel.WolfChapter6Wrappers`.
+* Former re-export theorem `IsPositiveMap.wolf_prop_6_8` restated
+  `IsPositiveMap.exists_posSemidef_fixedPoints_decomposition` under Wolf
+  numbering; the wrapper had zero call sites and is not restored here.
 
-### Wolf Corollary 6.5 (Linearly independent stationary states) — FORMALIZED
+#### Wolf Corollary 6.5 (Linearly independent stationary states) — FORMALIZED
 
-In `TNLean.Channel.FixedPoint.StationarySpan`:
+In `QICLean.Channel.FixedPoint.StationarySpan`:
 
 * `IsStationaryDensity` — predicate for a stationary density matrix (PSD,
   trace 1, fixed by the map).
@@ -426,7 +753,7 @@ In `TNLean.Channel.FixedPoint.StationarySpan`:
   Wolf Corollary 6.5: when the fixed-point subspace has dimension `r`, there
   exist `r` linearly independent stationary density matrices spanning it.
 
-### Wolf Corollary 6.6 (projected support corner) — FORMALIZED (Kraus case)
+#### Wolf Corollary 6.6 (projected support corner) — FORMALIZED (Kraus case)
 
 Wolf states the corollary for a positive trace-preserving map whose trace
 adjoint is unital and satisfies the Schwarz inequality; complete positivity is
@@ -434,7 +761,7 @@ an example there, not a hypothesis. The declarations below assume a
 trace-preserving Kraus family, so they establish the completely positive case
 only.
 
-In `TNLean.Channel.FixedPoint.CornerFixedPoints`:
+In `QICLean.Channel.FixedPoint.CornerFixedPoints`:
 
 * `Kraus.cornerFixedPointsStarSubalgebra` — for a trace-preserving Schwarz map
   `T* = adjointMap K` (unitality of `T*` is `IsTP K`) and a PSD fixed point `ρ`
@@ -450,11 +777,11 @@ where the compressed map is unital with a positive-definite fixed point, applies
 Wolf Theorem 6.12 there (`Kraus.adjointFixedPointsStarSubalgebra`), and transports
 the `*`-algebra structure back along the compression isomorphism.
 
-### Wolf Theorem 6.14 (density-block form of fixed points) — FORMALIZED
+#### Wolf Theorem 6.14 (density-block form of fixed points) — FORMALIZED
 
 The general finite-dimensional convergence argument is provided by
 `LinearMap.HasBoundedOrbits.tendsto_birkhoffAverage_meanErgodicProjection` in
-`TNLean.Analysis.MeanErgodic`. It constructs the Cesàro projection onto the
+`QICLean.Analysis.MeanErgodic`. It constructs the Cesàro projection onto the
 fixed-point space for an endomorphism with bounded orbits. The matrix
 specialization is provided by
 `IsPositiveMap.hasBoundedOrbits_of_tracePreserving`,
@@ -472,7 +799,7 @@ the full-support star-algebra description, restricting to maximal stationary
 support, and adjoining the complementary zero summand gives the full statement
 of Theorem 6.14 and Equation (6.63).
 
-In `TNLean.Channel.FixedPoint.StationarySupportRestriction`:
+In `QICLean.Channel.FixedPoint.StationarySupportRestriction`:
 
 * `IsPositiveMap.map_posSemidef_supported_on_fixedPoint_support` — the order
   argument of Wolf Proposition 6.10 for a positive matrix supported on the
@@ -493,7 +820,7 @@ In `TNLean.Channel.FixedPoint.StationarySupportRestriction`:
   trace preservation, a positive-definite compressed fixed point,
   Equation (6.52), and the complementary zero summand of Equation (6.51).
 
-In `TNLean.Channel.FixedPoint.FullSupportBlockRetraction`:
+In `QICLean.Channel.FixedPoint.FullSupportBlockRetraction`:
 
 * `IsPositiveMap.exists_block_densities_of_adjoint_meanErgodicProjection` —
   when the positive trace-preserving map has a positive definite fixed point
@@ -502,7 +829,7 @@ In `TNLean.Channel.FixedPoint.FullSupportBlockRetraction`:
   fixed-point star-algebra and has the weighted partial-trace block form of
   Wolf Equation (1.40).
 
-In `TNLean.Channel.FixedPoint.TraceAdjointDensityBlocks`:
+In `QICLean.Channel.FixedPoint.TraceAdjointDensityBlocks`:
 
 * `IsPositiveMap.exists_block_densities_of_meanErgodicProjection` — under the
   same full-support hypotheses, the mean-ergodic projection has the
@@ -510,20 +837,20 @@ In `TNLean.Channel.FixedPoint.TraceAdjointDensityBlocks`:
   `U (⊕_k σ_k ⊗ tr_{m_k}((U† B U)_{kk})) U†`, and the fixed-point space is
   `U (⊕_k σ_k ⊗ M_{d_k}(ℂ)) U†`.
 
-In `TNLean.Channel.FixedPoint.SupportCompressedDensityBlocks`:
+In `QICLean.Channel.FixedPoint.SupportCompressedDensityBlocks`:
 
 * `IsPositiveMap.exists_block_densities_of_maximalSupportCompression` — the
   maximal-support compression has positive-definite density blocks, and its
   fixed points correspond exactly to the ambient fixed points carried by the
   support isometry.
 
-In `TNLean.Algebra.MatrixGramUnitary`:
+In `QICLean.Algebra.MatrixGramUnitary`:
 
 * `Matrix.exists_unitary_zero_extension_eq` — an isometric inclusion extends
   to an ambient unitary that identifies every compressed matrix with one
   complementary zero block followed by that matrix.
 
-In `TNLean.Channel.FixedPoint.WolfTheorem614`:
+In `QICLean.Channel.FixedPoint.WolfTheorem614`:
 
 * `IsPositiveMap.exists_fixedPoints_densityBlocks_with_zero` — for every
   positive trace-preserving matrix endomorphism whose trace adjoint satisfies
@@ -531,12 +858,12 @@ In `TNLean.Channel.FixedPoint.WolfTheorem614`:
   one complementary zero summand followed by positive-definite trace-one
   density blocks, exactly as in Wolf Equation (6.63).
 
-In `TNLean.Channel.FixedPoint.DirectSumBlockRetraction`:
+In `QICLean.Channel.FixedPoint.DirectSumBlockRetraction`:
 
 * `Matrix.IsPositiveDirectSumMap.exists_block_densities_of_fixedPoints` — the
   full-support consequence for a finite direct sum of full matrix algebras.
 
-In `TNLean.Channel.FixedPoint.WedderburnDecomp`:
+In `QICLean.Channel.FixedPoint.WedderburnDecomp`:
 
 * `Kraus.starSubalgebra_isSemisimpleRing` — every finite-dimensional
   `*`-subalgebra of `M_D(ℂ)` is semisimple.
@@ -552,7 +879,7 @@ In `TNLean.Channel.FixedPoint.WedderburnDecomp`:
 * `Kraus.adjointFixedPoints_wedderburnDecomp` — existence of this
   decomposition data for the adjoint-fixed-point algebra.
 
-In `TNLean.Channel.FixedPoint.BlockForm` (unital case, positive definite fixed
+In `QICLean.Channel.FixedPoint.BlockForm` (unital case, positive definite fixed
 point of the pre-dual, no zero block):
 
 * `Kraus.adjointFixedPoints_blockDiagonal_iff` — the unitary realization
@@ -560,7 +887,7 @@ point of the pre-dual, no zero block):
 * `Kraus.fixedPoints_blockDiagonal_iff` — the companion for the fixed points
   of a unital Kraus map.
 
-In `TNLean.Channel.FixedPoint.CornerBlockForm` (corner-restricted case, any
+In `QICLean.Channel.FixedPoint.CornerBlockForm` (corner-restricted case, any
 positive semidefinite fixed point):
 
 * `Kraus.cornerFixedPoints_blockDiagonal_iff` — the corner-restricted
@@ -577,9 +904,9 @@ problem: one must still prove the channel hypotheses for those maps on the
 whole direct-sum algebras.  This remaining boundary is recorded in
 `docs/paper-gaps/cpsv16_vertical_sector_invertibility.tex`.
 
-### Wolf Corollary 6.7 (faithful fixed-point conjugation) — FORMALIZED (Kraus case)
+#### Wolf Corollary 6.7 (faithful fixed-point conjugation) — FORMALIZED (Kraus case)
 
-In `TNLean.Channel.FixedPoint.Corollaries`:
+In `QICLean.Channel.FixedPoint.Corollaries`:
 
 * `Kraus.rightCanonicalGauge` — the gauged family `ρ^{-1/2} K_i ρ^{1/2}`.
 * `Kraus.weightedFixedPointsStarSubalgebra` — if `T(ρ) = ρ` with `ρ > 0`,
@@ -587,7 +914,7 @@ In `TNLean.Channel.FixedPoint.Corollaries`:
 * `Kraus.mem_weightedFixedPointsStarSubalgebra_iff` — membership is
   equivalent to saying that `ρ^{1/2} X ρ^{1/2}` is fixed by the original map.
 
-In `TNLean.Channel.FixedPoint.WeightedCornerFixedPoints` (singular case, any
+In `QICLean.Channel.FixedPoint.WeightedCornerFixedPoints` (singular case, any
 positive semidefinite fixed point, restricted to corner-supported fixed
 points):
 
@@ -598,7 +925,7 @@ points):
 * `Kraus.exists_weightedCorner_sqrt_eq_of_fixedPoint` — conjugation by `√ρ`
   maps the carrier onto the corner-supported fixed points.
 
-In `TNLean.Channel.FixedPoint.MaximalSupportBasic` (the maximal-support property
+In `QICLean.Channel.FixedPoint.MaximalSupportBasic` (the maximal-support property
 for arbitrary positive trace-preserving maps):
 
 * `Kraus.stationaryProj_absorb_of_le` — for positive semidefinite $P \preceq \rho$
@@ -607,7 +934,7 @@ for arbitrary positive trace-preserving maps):
   trace-preserving map, the fixed point $T_\infty(\mathbf 1)$ has support carrying every
   fixed point, as in Wolf Proposition 6.9.
 
-In `TNLean.Channel.FixedPoint.MaximalSupport` (the Kraus specialization and
+In `QICLean.Channel.FixedPoint.MaximalSupport` (the Kraus specialization and
 the removal of the corner restriction):
 
 * `Kraus.exists_maximalSupport_fixedPoint` — a positive semidefinite fixed point
@@ -618,7 +945,7 @@ the removal of the corner restriction):
   realizing $\rho_0^{-1/2}\,\{X \mid T(X) = X\}\,\rho_0^{-1/2}$ without a support
   restriction.
 
-In `TNLean.Channel.FixedPoint.MaximalRank` (the transfer to every fixed point
+In `QICLean.Channel.FixedPoint.MaximalRank` (the transfer to every fixed point
 of maximum rank):
 
 * `Kraus.rank_stationaryProj`, `Kraus.trace_stationaryProj` — the support
@@ -639,9 +966,9 @@ maximum-rank fixed-point density matrix satisfies the rank hypothesis, with
 unit trace of $\rho$ itself not needed for the conclusion
 (see `docs/paper-gaps/wolf_cor67_maximal_support_restriction.tex`).
 
-### Conditional expectation used in Wolf Theorem 6.14 — FORMALIZED
+#### Conditional expectation used in Wolf Theorem 6.14 — FORMALIZED
 
-In `TNLean.Channel.FixedPoint.ConditionalExpectation`:
+In `QICLean.Channel.FixedPoint.ConditionalExpectation`:
 
 * `Kraus.IsConditionalExpectation` — a positive, idempotent, unital matrix
   map whose range is contained in a star-subalgebra and which fixes that
@@ -665,22 +992,22 @@ projection, which is positive, idempotent, unital, and fixes exactly the fixed
 points of `T*`; the star-algebra structure follows from Theorem 6.12. This is
 the conditional-expectation step in the proof of Theorem 6.14. The theorem's
 explicit density-block formula is developed in
-`TNLean.Channel.FixedPoint.FullSupportBlockRetraction`.
+`QICLean.Channel.FixedPoint.FullSupportBlockRetraction`.
 
-### Wolf Theorem 6.15 (Unique fixed point from full Kraus-word span) — FORMALIZED
+#### Wolf Theorem 6.15 (Unique fixed point from full Kraus-word span) — FORMALIZED
 
 Formalized in the tensor-network layer; indexed in
 `TNLean.Wielandt.WolfChapter6TNIndex`.
 
 ---
 
-## Section 6.5 Cycles and recurrences
+### Section 6.5 Cycles and recurrences
 
-### Wolf Proposition 6.12 (Asymptotic image) — FORMALIZED
+#### Wolf Proposition 6.12 (Asymptotic image) — FORMALIZED
 
 For a positive trace-preserving `T` on `M_D(ℂ)`, write `X_T` for the span of
 the peripheral eigenvectors and `T_φ` for the peripheral spectral projection.
-All three clauses live in `TNLean.Channel.Peripheral.AsymptoticImage`:
+All three clauses live in `QICLean.Channel.Peripheral.AsymptoticImage`:
 
 * `IsPositiveMap.range_peripheralProjection_eq_iSup_eigenspace` —
   clause 1, `T_φ (M_D(ℂ)) = X_T`.
@@ -696,11 +1023,11 @@ records that `X_T` is the fixed-point space of `T_φ`, and
 `Module.End.map_eigenspace_of_ne_zero` supplies the one-eigenvalue case of
 clause 3.
 
-### Wolf Theorem 6.16 (Structure of cycles) — PARTIALLY FORMALIZED
+#### Wolf Theorem 6.16 (Structure of cycles) — PARTIALLY FORMALIZED
 
 * Reusable formalization for the permutation-of-blocks direction lives in
-  `TNLean.Channel.Peripheral.CyclicDecomposition` and
-  `TNLean.Channel.Peripheral.Cycles`:
+  `QICLean.Channel.Peripheral.CyclicDecomposition` and
+  `QICLean.Channel.Peripheral.Cycles`:
   - `preserves_corner_pow_orderOf_of_perm_decomp` — permutation-of-blocks
     iterate preserves each corner after `orderOf σ` steps.
   - `CycleStructure T` — bundled block-permutation data: a finite family of
@@ -715,7 +1042,7 @@ clause 3.
   - `CycleStructure.ofPermDecomp` — constructor from explicit permutation data.
 
 * Multi-cycle block-permutation data (disjoint union of cycles with possibly
-  distinct periods) is formulated in `TNLean.Channel.Peripheral.MultiCycleDecomposition`:
+  distinct periods) is formulated in `QICLean.Channel.Peripheral.MultiCycleDecomposition`:
   - `MultiCycleDecomposition T` — bundled data: a finite cycle index `ι`, a
     per-cycle period `period : ι → ℕ` (each nonzero), a projection family
     `P : (c : ι) → Fin (period c) → M_D(ℂ)`, the per-cycle cyclic action
@@ -737,8 +1064,7 @@ clause 3.
 
 ---
 
-## The quantum Perron–Frobenius theorem
+### The quantum Perron–Frobenius theorem
 
 The assembled quantum Perron–Frobenius theorem for transfer maps lives in the
 tensor-network layer; it is indexed in `TNLean.Wielandt.WolfChapter6TNIndex`.
--/
