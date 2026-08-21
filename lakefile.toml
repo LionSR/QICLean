@@ -1,18 +1,14 @@
-name = "TNLean"
+name = "QICLean"
 version = "0.1.0"
 keywords = ["math"]
-# The default target builds the whole TNLean library.
-defaultTargets = ["TNLean"]
+# The default target builds the whole QICLean library.
+defaultTargets = ["QICLean"]
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
 relaxedAutoImplicit = false
 weak.linter.mathlibStandardSet = true
 maxSynthPendingDepth = 3
-
-[[require]]
-name = "checkdecls"
-git = "https://github.com/PatrickMassot/checkdecls.git"
 
 [[require]]
 name = "Gametheory"
@@ -24,8 +20,12 @@ name = "mathlib"
 scope = "leanprover-community"
 rev = "v4.34.0-rc1"
 
+[[require]]
+name = "checkdecls"
+git = "https://github.com/PatrickMassot/checkdecls.git"
+
 [[lean_lib]]
-name = "TNLean"
+name = "QICLean"
 
 # Text-based style linter driver for `Mathlib.Linter.TextBased.lintModules`.
 # Run with `lake exe lint_style` (or `--fix` to auto-correct, `--github` for CI annotations).
