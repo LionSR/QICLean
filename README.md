@@ -7,9 +7,13 @@
 
 QICLean is a [Lean 4](https://lean-lang.org/) library, built on
 [Mathlib](https://github.com/leanprover-community/mathlib4), that formalizes
-finite-dimensional quantum-channel theory: Kraus, Choi, and Stinespring
-representations, Kadison-Schwarz inequalities, quantum Perron-Frobenius
-theory (irreducibility, primitivity, peripheral spectrum), GKSL semigroups,
+finite-dimensional quantum information theory: the basics of quantum
+mechanics (density matrices, POVMs, the Schmidt decomposition, purification
+and steering, Wigner's theorem), quantum channels in their Kraus, Choi, and
+Stinespring representations, Kadison-Schwarz inequalities, quantum
+Perron-Frobenius theory (irreducibility, primitivity, peripheral spectrum),
+GKSL semigroups, entanglement theory (entanglement witnesses, Schmidt
+number, separability, the partial transpose and reduction criteria),
 positive-but-not-completely-positive maps, and entropy. The organizing
 source is M. Wolf's lecture notes, *Quantum Channels & Operations: A Guided
 Tour*.
