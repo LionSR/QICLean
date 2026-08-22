@@ -9,8 +9,8 @@ import QICLean.Algebra.MatrixKernelRigidity
 import QICLean.Channel.FixedPoint.CanonicalGauge
 import QICLean.Channel.Schwarz.Basic
 import QICLean.Kraus.Injectivity
+import QICLean.Kraus.MixedMap.Gap
 import QICLean.Kraus.MixedMap.GaugeRigidity
-import QICLean.Kraus.TensorCompat
 
 import Mathlib.Data.Matrix.Block
 import Mathlib.Analysis.CStarAlgebra.Matrix
@@ -181,7 +181,7 @@ theorem gaugePhaseEquiv_of_gauged_intertwining [NeZero D]
     (hX'_u : IsUnit X'.det) (hμ : ‖μ‖ = 1)
     (hInter :
       ∀ i : Fin d, gaugeTensor SA A i * X' = μ • X' * gaugeTensor SB B i) :
-    MPSTensor.GaugePhaseEquiv A B := by
+    GaugePhaseEquiv A B := by
   let A' : MPSTensor d D := gaugeTensor SA A
   let B' : MPSTensor d D := gaugeTensor SB B
   have hSA_u : IsUnit SA.det := Ne.isUnit hSA_det
@@ -232,21 +232,29 @@ theorem gaugePhaseEquiv_of_gauged_intertwining [NeZero D]
       _ = SA * (X' * (X'⁻¹ * SA⁻¹)) := by rw [Matrix.mul_assoc]
       _ = SA * SA⁻¹ := by rw [h2]
       _ = 1 := h3
-  let Ygl : GL (Fin D) ℂ := ⟨Ymat, Yinv, hYmul, hYinv_mul⟩
-  refine ⟨Ygl, μ⁻¹, inv_ne_zero (Complex.ne_zero_of_norm_eq_one hμ), ?_⟩
+  refine ⟨Yinv, Ymat, μ, hYinv_mul, hYmul, hμ, ?_⟩
   intro i
-  have : B i = μ⁻¹ • (Ymat * A i * Yinv) := by
-    have hBi : B i = SB * B' i * SB⁻¹ := by
+  have hBi : B i = μ⁻¹ • (Ymat * A i * Yinv) := by
+    have hBi' : B i = SB * B' i * SB⁻¹ := by
       have : SB * (SB⁻¹ * B i * SB) * SB⁻¹ = B i := by
         simp only [Matrix.mul_assoc]
         rw [Matrix.mul_nonsing_inv _ hSB_u, mul_one,
           Matrix.mul_nonsing_inv_cancel_left _ _ hSB_u]
       simpa [B', gaugeTensor] using this.symm
-    rw [hBi, hper i]
+    rw [hBi', hper i]
     simp only [smul_mul_assoc, mul_smul_comm]
     congr 1
     simp only [A', gaugeTensor, Kraus.gaugeFamily, Ymat, Yinv, Matrix.mul_assoc]
-  simpa [Ygl] using this
+  have hYinvB : Yinv * B i = μ⁻¹ • (A i * Yinv) := by
+    rw [hBi, mul_smul_comm]
+    congr 1
+    simp only [← Matrix.mul_assoc, hYinv_mul, Matrix.one_mul]
+  calc
+    A i * Yinv = (1 : ℂ) • (A i * Yinv) := (one_smul _ _).symm
+    _ = (μ * μ⁻¹) • (A i * Yinv) := by rw [mul_inv_cancel₀ hμ_ne0]
+    _ = μ • (μ⁻¹ • (A i * Yinv)) := by rw [smul_smul]
+    _ = μ • (Yinv * B i) := by rw [← hYinvB]
+    _ = μ • Yinv * B i := (smul_mul_assoc μ Yinv (B i)).symm
 
 /-- Generic rectangular dimension comparison: the two intertwining relations force equality of
 dimensions once both gauged tensor families are injective. -/
