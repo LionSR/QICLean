@@ -21,8 +21,8 @@ corresponding content stayed in TNLean.
 - `src/content.tex` is the chapter router, ordered to follow M. Wolf's
   *Quantum Channels & Operations: A Guided Tour* as closely as possible; see
   the mapping comment at the top of that file. The `chNN_` prefix on each
-  file name is a stable subject identifier inherited from TNLean and is not
-  renumbered to match the router order.
+  file name is this volume's own sequential chapter number, matching the
+  router order.
 - `src/appendix/` contains the supporting-results appendices carried over
   from TNLean's `ft_mps/` and `full_only/` appendix trees.
 - `src/macros/` contains blueprint-specific macros.

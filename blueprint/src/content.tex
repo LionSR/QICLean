@@ -1,9 +1,8 @@
 % QICLean chapter router. Order follows M. Wolf, "Quantum Channels &
 % Operations: A Guided Tour" (Notes/WolfNoteTexSource/ in the source
-% repository this content was extracted from), not the chNN_ file-name
-% prefixes: those prefixes are stable subject identifiers inherited from
-% TNLean's blueprint/src/chapter/ layout and are not renumbered on
-% relocation (see docs/blueprint_style_guide.md, "Blueprint Structure").
+% repository this content was extracted from). Chapter files are numbered
+% sequentially in the order they appear below (chNN_ = this volume's own
+% chapter NN, not TNLean's).
 %
 % Every chapter file lives directly under chapter/: there is no separate
 % "Appendices" part and no ft_mps/full_only split. TNLean organizes its own
@@ -23,27 +22,36 @@
 %                                          spectrum_and_wigner} (input via
 %                                          ch01_deconstructing_quantum, the
 %                                          volume's opening chapter)
-%   Ch.2  Representations              -> ch04_channels_{choi_foundations,
-%                                          positive_map_and_channel_foundations,
+%   Ch.2  Representations              -> ch02_channels_{positive_map_and_
+%                                          channel_foundations,
 %                                          rectangular_kraus_maps},
-%                                          ch12_auxiliary_channel_no_information_...,
-%                                          ch16_channel_representations_*
-%   Ch.3  Positive, but not completely -> ch25_positive_not_cp_* (except
+%                                          ch03_channel_representations_*
+%                                          (including the former auxiliary
+%                                          chapter's Choi foundations and
+%                                          no-information-without-disturbance
+%                                          sections, folded in as this
+%                                          chapter's opening material)
+%   Ch.3  Positive, but not completely -> ch04_positive_not_cp_* (except
 %                                          kramers_degeneracy, which stays
 %                                          in TNLean)
-%   Ch.5  Operator Inequalities        -> ch05_schwarz_*,
-%                                          ch18_operator_convexity_*
-%   Ch.6  Spectral properties          -> ch04_channels_{peripheral_spectrum_
+%   Ch.5  Operator Inequalities        -> ch05_schwarz_* (including the
+%                                          former auxiliary chapter's
+%                                          abstract-domains-and-order
+%                                          section), ch06_operator_convexity_*
+%   Ch.6  Spectral properties          -> ch02_channels_{peripheral_spectrum_
 %                                          and_primitivity,transfer_map_
-%                                          foundations}, ch06_qpf*,
-%                                          ch07_spectral_ft_peripheral_cyclic,
-%                                          ch07_spectral_supporting_results,
-%                                          ch27_channel_asymptotics_*
+%                                          foundations}, ch07_qpf* (including
+%                                          the former auxiliary chapter's
+%                                          exponential-positivity and
+%                                          ergodicity section),
+%                                          ch08_spectral_ft_peripheral_cyclic,
+%                                          ch08_spectral_supporting_results,
+%                                          ch09_channel_asymptotics_*
 %   Ch.7  Continuous one-parameter
-%         semigroups                   -> ch17_semigroup_*
+%         semigroups                   -> ch11_semigroup_*
 %   Ch.8  Measures for distances and
-%         mixedness                    -> ch19_entropy_*,
-%                                          ch27_channel_asymptotics_
+%         mixedness                    -> ch12_entropy_*,
+%                                          ch09_channel_asymptotics_
 %                                          {jordan_block_power,
 %                                          upper_triangular_power}
 %
@@ -52,35 +60,32 @@
 % attached to those source chapters cleared the >=0.5 qic-item-count
 % threshold used for this extraction.
 %
-% chapter/ch12_auxiliary_channel_theory.tex is TNLean's own catch-all
-% "Auxiliary Quantum-Channel Theory" chapter; it is carried over as a single
-% unit (\input list: choi_foundations, no_information_without_disturbance,
-% schwarz_abstract_domains_and_order, qpf_auxiliary_extensions) rather than
-% split apart, so its four already-Wolf-numbered sub-files are each \input
-% exactly once. Do not also \input those four files individually elsewhere
-% in this router. Its former wolf_ch01 sub-files were promoted out of this
-% catch-all chapter into ch01_deconstructing_quantum, the volume's opening
-% chapter, \input first below.
+% TNLean's catch-all "Auxiliary Quantum-Channel Theory" chapter did not
+% survive the move to a volume-native numbering: its four sections were
+% mathematically at home in earlier chapters and are folded into them.
+% The Choi-Jamiolkowski foundations and the no-information-without-
+% disturbance theorem open ch03_channel_representations (the chapter that
+% already used them); the abstract Schwarz-map and multiplicative-domain
+% material joins ch05_schwarz; the exponential-positivity and ergodicity
+% results join ch07_qpf. No content or label was dropped in the move.
 
 \input{chapter/ch01_deconstructing_quantum}
 
-\input{chapter/ch04_channels}
-\input{chapter/ch16_channel_representations}
-\input{chapter/ch12_auxiliary_channel_theory}
+\input{chapter/ch02_channels}
+\input{chapter/ch03_channel_representations}
 
-\input{chapter/ch25_positive_not_cp}
-\input{chapter/ch25_positive_not_cp_supporting_results}
+\input{chapter/ch04_positive_not_cp}
+\input{chapter/ch04_positive_not_cp_supporting_results}
 
 \input{chapter/ch05_schwarz}
 \input{chapter/ch05_schwarz_supporting_results}
-\input{chapter/ch18_operator_convexity}
+\input{chapter/ch06_operator_convexity}
 
-\input{chapter/ch06_qpf}
-\input{chapter/ch06_qpf_supporting_results}
-\input{chapter/ch07_spectral_ft_peripheral_cyclic}
-\input{chapter/ch07_spectral_supporting_results}
-\input{chapter/ch27_channel_asymptotics}
-\input{chapter/ch27_channel_asymptotics_supporting_results}
+\input{chapter/ch07_qpf}
+\input{chapter/ch07_qpf_supporting_results}
+\input{chapter/ch08_spectral}
+\input{chapter/ch09_channel_asymptotics}
+\input{chapter/ch09_channel_asymptotics_supporting_results}
 
 % Not a Wolf chapter: the quantum Wielandt bound (Sanz, Perez-Garcia, Wolf,
 % Cirac 2010) is a separate paper's result, placed here for its close
@@ -90,10 +95,10 @@
 % check_import_direction.py mover_files() boundary used for the initial
 % Phase-1 pass did not yet include the surviving Wielandt/ files. See the
 % packaging report.
-\input{chapter/ch08_wielandt}
-\input{chapter/ch08_wielandt_supporting_results}
+\input{chapter/ch10_wielandt}
+\input{chapter/ch10_wielandt_supporting_results}
 
-\input{chapter/ch17_semigroup}
+\input{chapter/ch11_semigroup}
 
-\input{chapter/ch19_entropy}
-\input{chapter/ch19_entropy_corollaries}
+\input{chapter/ch12_entropy}
+\input{chapter/ch12_entropy_corollaries}
