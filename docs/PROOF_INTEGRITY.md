@@ -52,13 +52,48 @@ These patterns **must** be resolved before merging.
 
 #### Sanctioned axioms
 
-There are no sanctioned axiom declarations in this repository. Any new
-`axiom` declaration is a blocker.
-
-Any historically sanctioned axiom, and the theorem that later discharged
+Any new `axiom` declaration is a blocker unless explicitly sanctioned.
+A historically sanctioned axiom, and the theorem that later discharged
 it, is project fact rather than policy: record that history in the
-project's own conventions addendum (CLAUDE.md or a local docs page), not
-here.
+project's own conventions addendum, not here.
+
+### Circular reasoning
+
+Lean's kernel forbids literal declaration cycles, so focus on **mathematical
+circularity**:
+
+- Proofs that assume (or trivially reintroduce) the statement being proved as a
+  local hypothesis, then immediately close the goal from that hypothesis
+- Helper lemmas in the same file that essentially restate the main goal and are
+  only used to prove that goal
+- Local `have`/`let` bindings that are just the goal rephrased, used to solve
+  the goal without any real argument
+- Newly introduced `axiom` that makes a difficult statement trivially provable
+  without connecting to existing Mathlib / core theorems
+- Abuse of `unsafe` features to fabricate proofs instead of giving a genuine
+  derivation
+- `by exact h` where `h` came from an unjustified assumption identical to the
+  goal
+
+### Castle-in-the-air (ungrounded proofs)
+
+Proofs that avoid grounding in Mathlib:
+
+- Custom re-declarations of standard Mathlib lemmas (e.g., re-proving
+  `add_comm` instead of importing it)
+- `axiom` or `sorry`-based helper lemmas for facts that already exist in
+  Mathlib
+- Chains of custom lemmas that never bottom out in Mathlib or Lean core
+- `private` helper lemmas that duplicate Mathlib API (e.g., custom matrix
+  transpose lemmas when `Matrix.transpose_*` exists)
+- Overly long proof chains replaceable by a single Mathlib lemma
+
+When flagging, perform an actual lookup (grep, `#find?`, `exact?`,
+`library_search`). If an equivalent exists, cite the Mathlib lemma and module
+path. If not, state "no equivalent found" with search evidence.
+
+---
+
 
 ## Warnings
 
@@ -111,7 +146,6 @@ acceptable with justification.
 **Updating rules**: Edit this file and all referencing workflows will
 automatically pick up the changes.
 
-
 ## Project addendum (QICLean)
 
 ### Sanctioned-axiom history
@@ -138,46 +172,3 @@ earlier; see `QICLean/Analysis/OperatorConvexity.lean`. The `QICLean/Axioms/`
 directory held only proved theorems and was dissolved: its four modules
 were relocated to their subject homes and the `_axiom` suffix was dropped
 from the one declaration name that still carried it.
-
-### Additional blockers: circular reasoning and ungrounded proofs
-
-The canonical body above does not carry the circular-reasoning and
-castle-in-the-air rules, but `CLAUDE.md` classifies circular reasoning as
-a proof-integrity blocker and points reviewers here for the complete rule
-set. Both rule sections are therefore preserved in this addendum, with
-blocker severity, until the canonical file restores them.
-
-#### Circular reasoning
-
-Lean's kernel forbids literal declaration cycles, so focus on **mathematical
-circularity**:
-
-- Proofs that assume (or trivially reintroduce) the statement being proved as a
-  local hypothesis, then immediately close the goal from that hypothesis
-- Helper lemmas in the same file that essentially restate the main goal and are
-  only used to prove that goal
-- Local `have`/`let` bindings that are just the goal rephrased, used to solve
-  the goal without any real argument
-- Newly introduced `axiom` that makes a difficult statement trivially provable
-  without connecting to existing Mathlib / core theorems
-- Abuse of `unsafe` features to fabricate proofs instead of giving a genuine
-  derivation
-- `by exact h` where `h` came from an unjustified assumption identical to the
-  goal
-
-#### Castle-in-the-air (ungrounded proofs)
-
-Proofs that avoid grounding in Mathlib:
-
-- Custom re-declarations of standard Mathlib lemmas (e.g., re-proving
-  `add_comm` instead of importing it)
-- `axiom` or `sorry`-based helper lemmas for facts that already exist in
-  Mathlib
-- Chains of custom lemmas that never bottom out in Mathlib or Lean core
-- `private` helper lemmas that duplicate Mathlib API (e.g., custom matrix
-  transpose lemmas when `Matrix.transpose_*` exists)
-- Overly long proof chains replaceable by a single Mathlib lemma
-
-When flagging, perform an actual lookup (grep, `#find?`, `exact?`,
-`library_search`). If an equivalent exists, cite the Mathlib lemma and module
-path. If not, state "no equivalent found" with search evidence.
