@@ -55,7 +55,7 @@ The restriction `d > 2` is necessary, not an artifact of this proof: for `d = 2`
 antisymmetric unitary is a phase times `J = [[0, 1], [-1, 0]]`, and
 `J Xᵀ Jᴴ = Tr(X) 1 - X` for all `2 × 2` matrices `X`, so `T_BH` reduces to the zero map,
 which is trivially decomposable. See
-`docs/paper-gaps/breuer_hall_even_dim_restriction.tex`.
+`docs/paper-gaps/wolf_breuer_hall_even_dim_restriction.tex`.
 
 ## Main declarations
 

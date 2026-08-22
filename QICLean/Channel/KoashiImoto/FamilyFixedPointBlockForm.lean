@@ -27,7 +27,7 @@ matrices of Property 1 (lines 785--789); those steps begin at lines 857--858.
 
 **Scope restriction (full support):** The common average is assumed positive definite on the
 ambient space, in place of HJPW's reduction to the joint support (lines 761--763).  This is
-documented in `docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`.
+documented in `https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder BigOperators Kronecker
@@ -56,7 +56,7 @@ that normalization begins at lines 857--858.
 
 **Scope restriction (full support):** `hρbar` replaces HJPW's joint-support reduction
 (lines 761--763).  Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`. -/
 theorem exists_commonInvariant_fixedPointBlockForm_with_algebra
     {Kidx : Type*} [Fintype Kidx] [Nonempty Kidx] {ρ : Kidx → Mat}
     (hρbar : (commonAverage ρ).PosDef) :

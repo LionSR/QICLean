@@ -12,7 +12,7 @@ import Mathlib.LinearAlgebra.Matrix.StdBasis
 # Rectangular Choi matrices and a Hilbert--Schmidt rank estimate
 
 This file contains the algebraic estimate used in
-`docs/paper-gaps/cpgsv17_mpdo_mutual_information_bound.tex`.  For a linear map
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_mpdo_mutual_information_bound.pdf`.  For a linear map
 `L : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ`, it defines the unnormalized Choi matrix in the
 natural `α × β` ordering and proves its Frobenius Parseval identity.  It also proves that
 the squared Frobenius norm is at most `finrank ℂ L.range` whenever `L` is a
@@ -260,7 +260,7 @@ private theorem trace_gram_re_le_rank_of_contraction
 
 /-- A Hilbert--Schmidt contraction has squared Choi Frobenius norm at most the
 dimension of its range.  This is the algebraic estimate used in
-`docs/paper-gaps/cpgsv17_mpdo_mutual_information_bound.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_mpdo_mutual_information_bound.pdf`. -/
 theorem rectangularChoi_frobenius_sq_le_finrank_range
     (L : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ)
     (hL : IsHilbertSchmidtContraction L) :

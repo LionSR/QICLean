@@ -562,7 +562,7 @@ defect from relative-entropy equality.
 **Scope restriction (positive definite, fixed `t`):** The source equality
 analysis also uses integration in `t` and limiting arguments for singular
 matrices. Those steps are not asserted here. Documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem weyl_resolvent_defect_identity
     {dS dC : ℕ} [NeZero dC]
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}
@@ -743,7 +743,7 @@ displayed defect vanish.
 **Scope restriction (positive definite, fixed `t`):** The implication from
 relative-entropy equality to zero defect, integration in `t`, and singular
 supports remain outside this theorem. Documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem weyl_resolvent_eq_of_defect_eq_zero
     {dS dC : ℕ} [NeZero dC]
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}

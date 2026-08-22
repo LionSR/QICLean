@@ -1,9 +1,9 @@
 name: Full documentation
 
-# Adapted from TNLean's docgen.yml: drops the paper-gap PDF build step (see
-# ci/README.md — QICLean's paper-gaps subset is copied separately, and its
-# PDFs are built the same way if/when QICLean accumulates its own notes) and
-# the FT-MPS split-volume packaging step. Otherwise unchanged.
+# Adapted from TNLean's docgen.yml: drops the FT-MPS split-volume packaging
+# step (that split PDF is TNLean-specific). The paper-gap PDF build and site
+# packaging mirror TNLean's, calling the texra-blueprint CLI directly rather
+# than through TNLean's wrapper scripts. Otherwise unchanged.
 
 on:
   schedule:
@@ -62,10 +62,13 @@ jobs:
       - name: Install leanblueprint
         uses: texra-ai/lean-env-action/leanblueprint@v1
         with:
-          extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.1.0'
+          extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.3.2'
 
       - name: Build blueprint bibliography
         run: python3 scripts/blueprint_bibtex.py
+
+      - name: Build paper-gap PDFs
+        run: texra-blueprint --root . paper-gaps build
 
       - name: Build blueprint
         working-directory: blueprint
@@ -104,6 +107,7 @@ jobs:
           cp -r blueprint/web site-blueprint/blueprint
           cp blueprint/print/print.pdf site-blueprint/blueprint.pdf
           cp -r docbuild/.lake/build/doc site-docs/docs
+          texra-blueprint --root . paper-gaps site site-docs/paper-gaps
           python3 scripts/write_badges.py site-badges
 
       - name: Build homepage

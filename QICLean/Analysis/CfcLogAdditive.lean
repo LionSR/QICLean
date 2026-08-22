@@ -36,7 +36,7 @@ Applying `CFC.log` to both sides and using `CFC.log_exp` returns the sum.
   `Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic`.
 * Algebraic input to the layer-5 ancilla-additivity step of the relative-entropy
   elimination route for strong subadditivity,
-  `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`.
+  `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`.
 -/
 
 open scoped MatrixOrder ComplexOrder Matrix.Norms.L2Operator

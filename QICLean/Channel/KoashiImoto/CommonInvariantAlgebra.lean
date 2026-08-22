@@ -38,7 +38,7 @@ support on the working Hilbert space by shrinking to the joint support of the `�
 (arXiv:quant-ph/0304007v2, lines 761-763). This file does not derive that reduction; every
 declaration that builds the fixed-point subalgebra instead takes `PosDef (commonAverage ρ)` as
 an explicit hypothesis. Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`.
 
 ## Main declarations
 
@@ -152,7 +152,7 @@ joint-support reduction of lines 761-763 rather than re-deriving it.
 **Scope restriction (joint support):** `hρbar : PosDef (commonAverage ρ)` replaces HJPW's
 source reduction to the joint support of the `ρ_k` (arXiv:quant-ph/0304007v2, lines 761-763);
 that reduction is not derived here. Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`. -/
 noncomputable def commonInvariantStarSubalgebra (ρ : Kidx → Mat)
     (hρbar : (commonAverage ρ).PosDef) : StarSubalgebra ℂ Mat :=
   ⨅ F : PreservingKrausFamily ρ,
@@ -167,7 +167,7 @@ omit [Nonempty Kidx] in
 **Scope restriction (joint support):** inherits the `PosDef (commonAverage ρ)` hypothesis of
 `commonInvariantStarSubalgebra` in place of HJPW's joint-support reduction
 (arXiv:quant-ph/0304007v2, lines 761-763). Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`. -/
 theorem mem_commonInvariantStarSubalgebra (ρ : Kidx → Mat)
     (hρbar : (commonAverage ρ).PosDef) (X : Mat) :
     X ∈ commonInvariantStarSubalgebra ρ hρbar ↔
@@ -185,7 +185,7 @@ A direct specialization of the generic star-subalgebra block form
 **Scope restriction (joint support):** inherits the `PosDef (commonAverage ρ)` hypothesis of
 `commonInvariantStarSubalgebra` in place of HJPW's joint-support reduction
 (arXiv:quant-ph/0304007v2, lines 761-763). Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`. -/
 theorem exists_unitary_conj_blockDiagonal_iff_commonInvariantStarSubalgebra
     (ρ : Kidx → Mat) (hρbar : (commonAverage ρ).PosDef) :
     ∃ (Kc : ℕ) (d m : Fin Kc → ℕ) (e : ((k : Fin Kc) × (Fin (m k) × Fin (d k))) ≃ Fin D)

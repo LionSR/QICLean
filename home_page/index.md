@@ -25,6 +25,16 @@ of matrix product states; its blueprint and documentation are published at
 [sirui-lu.com/TNLean](https://sirui-lu.com/TNLean/). TNLean builds on
 QICLean as an ordinary Lake dependency.
 
+## Paper-Gap Notes
+
+Where the formalization deviates from a cited source &mdash; a missing
+hypothesis, a scalar correction, a scope restriction, a replacement proof
+route &mdash; the deviation is recorded as a standalone mathematical note.
+The [paper-gap notes](paper-gaps/) are indexed by source paper; each note has
+a stable link, a PDF, and a citation entry. The notes on Wolf's *Quantum
+Channels & Operations* moved here from TNLean together with the
+channel-theory library.
+
 ## Companion Paper
 
 S. Lu, E. Tjoa, J. I. Cirac, *Multi-agent Autoformalization of Tensor Network

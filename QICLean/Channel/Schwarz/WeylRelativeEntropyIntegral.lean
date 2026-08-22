@@ -178,7 +178,7 @@ arXiv:quant-ph/0304007v2, Theorem 3 and equation (8).
 
 **Scope restriction (positive definite):** The singular-support extension is
 not asserted here. Documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem weylRelativeEntropyGap_eq_zero_of_partialTraceRight_eq
     {dS dC : ℕ} [NeZero dC]
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}
@@ -258,7 +258,7 @@ arXiv:0903.2895v4, §4, at `p=1`.
 
 **Scope restriction (positive definite):** Singular supports and the later
 Petz sandwich are not asserted here. Documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem weyl_relativeEntropy_gap_integral
     {dS dC : ℕ} [NeZero dC]
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}
@@ -540,7 +540,7 @@ arXiv:0903.2895v4, §4, lines 652--674.
 
 **Scope restriction (positive definite):** Singular supports and the Petz
 sandwich remain outside this theorem. Documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem weyl_sourceB_defect_eq_zero_of_gap_eq_zero
     {dS dC : ℕ} [NeZero dC]
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}
@@ -589,7 +589,7 @@ analysis of Jenčová--Ruskai, arXiv:0903.2895v4, §4 and Appendix.
 
 **Scope restriction (positive definite):** The inverse-square-root integral
 and singular-support extension are not asserted here. Documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem weyl_resolvent_eq_of_relativeEntropy_gap_eq_zero
     {dS dC : ℕ} [NeZero dC]
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}
@@ -628,7 +628,7 @@ arXiv:0903.2895v4, §4 and Appendix.
 
 **Scope restriction (positive definite):** The inverse-square-root limit and
 singular-support extension are not asserted here. Documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem weyl_resolvent_eq_of_partialTraceRight_eq
     {dS dC : ℕ} [NeZero dC]
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}
@@ -665,7 +665,7 @@ Jenčová--Ruskai, arXiv:0903.2895v4, lines 658–680.
 
 **Scope restriction (positive definite):** The singular-support extension is
 not asserted here. Documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem weyl_sqrt_ratio_eq_of_partialTraceRight_eq
     {dS dC : ℕ} [NeZero dC]
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}
@@ -774,7 +774,7 @@ arXiv:quant-ph/0304007v2, Theorem 3, equation (8).
 
 **Scope restriction (positive definite):** The singular-support extension is
 not asserted here. Documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem weyl_identity_sandwich_of_partialTraceRight_eq
     {dS dC : ℕ} [NeZero dC]
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}

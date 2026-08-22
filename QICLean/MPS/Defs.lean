@@ -129,7 +129,7 @@ on the length. The empty word is not a physical chain.
 **Local fix (projective proportionality):** The source phrase
 "proportional to each other" is read projectively, so the scalar is nonzero.
 This reading is documented in
-`docs/paper-gaps/cpsv16_nonzero_proportionality_reading.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_nonzero_proportionality_reading.pdf`. -/
 def NonzeroProportionalMPV₂ {d D₁ D₂ : ℕ}
     (A : MPSTensor d D₁) (B : MPSTensor d D₂) : Prop :=
   ∀ N : ℕ, 0 < N → ∃ c : ℂ, c ≠ 0 ∧ ∀ σ : Fin N → Fin d, mpv A σ = c * mpv B σ

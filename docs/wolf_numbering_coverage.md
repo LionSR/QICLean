@@ -71,7 +71,7 @@ project import.
     is the specialization `d = d'` ✓
   - Remaining square-only declarations (the `ChoiJamiolkowski.choiMatrix`
     API, `IsTracePreservingMap`, `IsChannel`) are documented as specializations
-    in `docs/paper-gaps/choi_rectangular_scope.tex`.
+    in `docs/paper-gaps/wolf_choi_rectangular_scope.tex`.
 
 * **Theorem 2.1** (Kraus representation, dimension-generic development):
   the root/`Channel`-namespace Kraus API is stated for rectangular Kraus
@@ -692,7 +692,7 @@ In `QICLean.Channel.FixedPoint.Algebra`:
 * `fixedPoint_of_compact_retract` — `QICLean.Topology.CompactRetractFixedPoint`;
   extends Brouwer to compact retracts of finite-dimensional real normed spaces.
 * The general compact-convex statement (Wolf's formulation) is not yet proved;
-  see `docs/paper-gaps/brouwer_general_compact_convex.tex`.
+  see `docs/paper-gaps/wolf_brouwer_general_compact_convex.tex`.
 
 #### Wolf Theorem 6.11 (Stationary states) — FORMALIZED
 
@@ -902,7 +902,7 @@ The full Wolf statement is therefore complete.  Its application to the
 transported sector maps of arXiv:1606.00608 is a separate tensor-attached
 problem: one must still prove the channel hypotheses for those maps on the
 whole direct-sum algebras.  This remaining boundary is recorded in
-`docs/paper-gaps/cpsv16_vertical_sector_invertibility.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_vertical_sector_invertibility.pdf`.
 
 #### Wolf Corollary 6.7 (faithful fixed-point conjugation) — FORMALIZED (Kraus case)
 

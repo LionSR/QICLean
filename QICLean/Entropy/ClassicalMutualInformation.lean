@@ -266,7 +266,7 @@ marginal.
 row factor `1 + ε * β x` inside a quotient and then evaluates at an endpoint where that
 factor can vanish. Here `Real.negMulLog_mul`, which remains valid at zero, replaces that
 undefined quotient cancellation. The correction is documented in
-`docs/paper-gaps/cpgsv17_mpdo_mutual_information_bound.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_mpdo_mutual_information_bound.pdf`. -/
 private theorem classicalMutualInformation_rowPerturbation
     (P : Matrix X Y ℝ) (β : X → ℝ) (ε : ℝ)
     (hrel : ∀ y, ∑ x, β x * P x y = 0) :

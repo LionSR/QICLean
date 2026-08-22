@@ -23,7 +23,7 @@ where $\operatorname{tr}_C$ is the partial trace over the ancilla factor. The
 positive-definite base case is extended to the singular support domain
 $\ker \sigma \subseteq \ker \rho$ by regularizing both arguments and passing to the
 limit. This is layer 5 of the SSA-from-Lieb elimination route,
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`; all of its ingredients are now
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`; all of its ingredients are now
 formalized, leaving only the layer-6 singular-reference tripartite instantiation to
 discharge the standalone strong-subadditivity axiom.
 
@@ -78,12 +78,12 @@ relative entropy of the marginals, themselves affine regularizations of
 $\operatorname{tr}_C \rho, \operatorname{tr}_C \sigma$ with the shift rate scaled by
 $d_C$; the support condition transfers to the marginals by the bipartite marginal
 support fact, so the same limit applies. This is recorded in
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`, layer 5.
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`, layer 5.
 
 ## References
 
 * Layer 5 (data processing) of the relative-entropy elimination route for strong
-  subadditivity, `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`.
+  subadditivity, `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`.
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 8
   (Distance Measures)][Wolf2012QChannels].
 -/
@@ -359,7 +359,7 @@ support domain $\ker \sigma \subseteq \ker \rho$ is
 `quantumRelativeEntropy_partialTraceRight_le_support`, derived from this base case
 by regularizing both arguments and passing to the limit, so this lemma keeps its
 standalone twirl-and-convexity proof. Recorded in
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`, layer 5. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`, layer 5. -/
 theorem quantumRelativeEntropy_partialTraceRight_le
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}
     (hρ : ρ.PosDef) (hσ : σ.PosDef) :
@@ -499,7 +499,7 @@ limit lemma applies once the support condition is transferred to the marginals b
 entropies vanish and is handled separately.
 
 Source: Lieb concavity route, layer 5 of
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`; blueprint theorem
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`; blueprint theorem
 thm:relative_entropy_data_processing_support. -/
 theorem quantumRelativeEntropy_partialTraceRight_le_support
     {ρ σ : Matrix (Fin dS × ZMod dC) (Fin dS × ZMod dC) ℂ}

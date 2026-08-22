@@ -363,7 +363,7 @@ positive definite in the displayed coordinates.  The arbitrary-basis result
 follows by unitary diagonalization, and simultaneous compression to both
 marginal supports gives the singular-marginal result.  This restriction and
 its removal are recorded in
-`docs/paper-gaps/cpgsv17_mpdo_mutual_information_bound.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_mpdo_mutual_information_bound.pdf`. -/
 theorem supportedMarginalWhitenedState_frobenius_sq_le_operatorSchmidtRank
     (ρ : Matrix (α × β) (α × β) ℂ) (p : α → ℝ)
     (hρ : ρ.PosSemidef) (hp : ∀ i, 0 < p i)
@@ -408,7 +408,7 @@ arXiv:1306.5920, Theorem 6, equation (18).
 is the faithful core.  Unitary diagonalization gives the arbitrary-basis
 version, and simultaneous support compression gives the singular-marginal
 version.  This restriction and its removal are recorded in
-`docs/paper-gaps/cpgsv17_mpdo_mutual_information_bound.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_mpdo_mutual_information_bound.pdf`. -/
 theorem supportedMarginalWhitenedState_trace_sq_re_le_operatorSchmidtRank
     (ρ : Matrix (α × β) (α × β) ℂ) (p : α → ℝ)
     (hρ : ρ.PosSemidef) (hp : ∀ i, 0 < p i)

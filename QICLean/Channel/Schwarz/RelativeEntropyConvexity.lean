@@ -48,7 +48,7 @@ convex.
 * Uhlmann, *Relative entropy and the Wigner--Yanase--Dyson--Lieb concavity*,
   Commun. Math. Phys. 54, 1977.
 * Layer 4 of the relative-entropy elimination route for strong subadditivity,
-  `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`.
+  `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`.
 -/
 
 open scoped Matrix ComplexOrder
@@ -902,7 +902,7 @@ both-arguments limit `tendsto_relativeEntropyPerturb` yields the inequality for 
 original pairs.
 
 Source: Lieb concavity route, layer 4 of
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`; blueprint theorem
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`; blueprint theorem
 thm:relative_entropy_joint_convexity_support. -/
 theorem convexOn_quantumRelativeEntropy_support :
     ConvexOn ℝ (supportSet (D := D))

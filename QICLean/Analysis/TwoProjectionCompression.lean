@@ -28,7 +28,7 @@ intersection, is at most \(\eta\).
 This is the two-subspace overlap quantity used in the principal-angle argument
 of arXiv:2011.12127 §IV.C, eq:4:martingale-2, and in the Kastoryano–Lucia 2018
 principal-angle estimate. Its application to MPS ground spaces is discussed in
-`docs/paper-gaps/cpgsv21_martingale_overlap.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv21_martingale_overlap.pdf`. -/
 def IsFriedrichsBound (U V : Submodule ℂ E) (η : ℝ) : Prop :=
   ∀ x : E, x ∈ U → x ∈ (U ⊓ V)ᗮ →
     ∀ y : E, y ∈ V → y ∈ (U ⊓ V)ᗮ →
@@ -83,7 +83,7 @@ Here the reduced parts of \(U\) and \(V\) are their intersections with
 the principal-angle argument in arXiv:2011.12127 §IV.C,
 eq:4:martingale-2. The later MPS-specific input is the Kastoryano–Lucia 2018
 principal-angle estimate. The precise comparison is recorded in
-`docs/paper-gaps/cpgsv21_martingale_overlap.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv21_martingale_overlap.pdf`. -/
 theorem norm_starProjection_le_of_friedrichs_bound
     (U V : Submodule ℂ E) {η : ℝ} (hη : 0 ≤ η)
     (hAngle : IsFriedrichsBound U V η)
@@ -117,7 +117,7 @@ This is the generic two-projection norm-compression lemma associated with
 arXiv:2011.12127 §IV.C, eq:4:martingale-2. The MPS-specific input needed later
 is the Kastoryano–Lucia 2018 principal-angle estimate; its source boundary is
 recorded in
-`docs/paper-gaps/cpgsv21_martingale_overlap.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv21_martingale_overlap.pdf`. -/
 theorem norm_starProjection_starProjection_le_of_friedrichs_bound
     (U V : Submodule ℂ E) {η : ℝ} (hη : 0 ≤ η)
     (hAngle : IsFriedrichsBound U V η)
@@ -285,7 +285,7 @@ principal-angle estimate to arXiv:2011.12127, Section IV.C,
 norm compression bound for the excitation product. The MPS-specific task is only
 to supply the uniform ground-space Friedrichs bound in the chosen blocking
 convention, as recorded
-in `docs/paper-gaps/cpgsv21_martingale_overlap.tex`. -/
+in `https://sirui-lu.com/TNLean/paper-gaps/cpgsv21_martingale_overlap.pdf`. -/
 theorem re_inner_anticommutator_starProjection_orthogonal_ge_neg_of_friedrichs_bound
     (U V : Submodule ℂ E) {η : ℝ} (hη : 0 ≤ η)
     (hAngle : IsFriedrichsBound U V η) (v : E) :
@@ -322,7 +322,7 @@ not follow from a subspace-angle bound. This is the restricted geometric form
 relevant to arXiv:2011.12127 §IV.C, eq:4:martingale-2; the remaining
 Kastoryano–Lucia 2018 principal-angle estimate for MPS ground spaces is
 described in
-`docs/paper-gaps/cpgsv21_martingale_overlap.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv21_martingale_overlap.pdf`. -/
 theorem norm_starProjection_starProjection_le_of_friedrichs_bound_of_mem
     (U V : Submodule ℂ E) {η : ℝ} (hη : 0 ≤ η)
     (hAngle : IsFriedrichsBound U V η)
@@ -347,7 +347,7 @@ This is the form in which the generic geometry can be applied to local
 excitation projections. The source is arXiv:2011.12127 §IV.C,
 eq:4:martingale-2; the MPS-specific input is the Kastoryano–Lucia 2018
 principal-angle estimate, whose comparison is recorded in
-`docs/paper-gaps/cpgsv21_martingale_overlap.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv21_martingale_overlap.pdf`. -/
 theorem norm_starProjection_orthogonal_comp_le_of_friedrichs_bound
     (K L : Submodule ℂ E) {η : ℝ} (hη : 0 ≤ η)
     (hAngle : IsFriedrichsBound Kᗮ Lᗮ η)

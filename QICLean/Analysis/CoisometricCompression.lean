@@ -179,7 +179,7 @@ space of \(V\), extended by the identity on its orthogonal complement.
 This general identity lifts the retained Gibbs factor occurring in CPSV16,
 lines 999–1002, to the ambient physical space. The complement extension is
 not stated in the paper; see
-`docs/paper-gaps/cpsv16_topological_gibbs_physical_complement.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_topological_gibbs_physical_complement.pdf`. -/
 theorem exp_neg_conjTranspose_mul_mul_of_mul_conjTranspose_eq_one
     {r d : Type*} [Fintype r] [DecidableEq r] [Fintype d] [DecidableEq d]
     (V : Matrix r d ℂ) (k : Matrix r r ℂ) (hV : V * Vᴴ = 1) :

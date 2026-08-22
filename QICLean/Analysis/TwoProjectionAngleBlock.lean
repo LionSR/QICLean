@@ -15,7 +15,7 @@ lines 756–764. It does not assume that the projections commute.
 
 **Local fix (projector label):** Source line 762 repeats `P` for the second projector, where the
 surrounding argument requires `Q`. This typographical correction is documented
-in `docs/paper-gaps/1703_two_projection_projector_typo.tex`.
+in `https://sirui-lu.com/TNLean/paper-gaps/mpu_two_projection_projector_typo.pdf`.
 -/
 
 open scoped InnerProductSpace
@@ -40,7 +40,7 @@ arXiv:1703.09188, Proposition IV.5 (`prop:continuity-index`),
 
 **Local fix (projector label):** Source line 762 repeats `P` for the second
 projector, where the surrounding argument requires `Q`; see
-`docs/paper-gaps/1703_two_projection_projector_typo.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/mpu_two_projection_projector_typo.pdf`. -/
 theorem rangeCompression_isSymmetric {P Q : E →ₗ[ℂ] E}
     (hP : P.IsSymmetricProjection) (hQ : Q.IsSymmetricProjection) :
     (rangeCompression hP (Q := Q)).IsSymmetric := by
@@ -66,7 +66,7 @@ compression eigenvector.
 
 **Local fix (projector label):** Source line 762 repeats `P` for the second projector; the
 surrounding argument requires `Q`. See
-`docs/paper-gaps/1703_two_projection_projector_typo.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/mpu_two_projection_projector_typo.pdf`.
 
 Writing \(d=Qx-μx\), the conclusions include
 \(Pd=0\), \(Qx=μx+d\),
@@ -130,7 +130,7 @@ theorem angleDefect_block {P Q : E →ₗ[ℂ] E}
 /-- Normalized form of `angleDefect_block`.
 
 **Local fix (projector label):** The second projector in arXiv:1703.09188, line 762 is `Q`, not
-the repeated `P`; see `docs/paper-gaps/1703_two_projection_projector_typo.tex`.
+the repeated `P`; see `https://sirui-lu.com/TNLean/paper-gaps/mpu_two_projection_projector_typo.pdf`.
 
 The vectors `x,w` are orthonormal; on their two-dimensional span, `P` acts as
 the projection onto `x`, while `Q`

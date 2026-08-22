@@ -358,7 +358,7 @@ Theorem 6, equation (14), lines 499--502.
 **Scope restriction (HJPW Theorem 6, equation (14)):** the direct-sum
 coordinates cover only the minimum joint support, not the ambient middle
 subsystem.  This is documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`.
 Elimination: extend the coordinates to the ambient middle subsystem before
 proving the recovery-dilation action of equation (15). -/
 structure MarkovBipartiteBlockForm
@@ -469,7 +469,7 @@ subsystem B or rectangular recovery action is claimed.
 ambient direct-sum equivalence on subsystem B, whereas this theorem supplies
 the block equation only after compression to the minimum joint support.  This
 is documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`.
 Elimination: extend the support coordinates to ambient B before proving the
 recovery-dilation action of equation (15). -/
 theorem exists_markovBipartiteBlockForm_jointSupport

@@ -29,7 +29,7 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 It is the orthogonal projection onto `range (P.comp Q)`. The source instead defines
 its projector blockwise in arXiv:1703.09188, Proposition IV.5, line 764. The
 identification with that blockwise projector remains part of the global Jordan
-decomposition; see `docs/paper-gaps/1703_two_projection_projector_typo.tex`. -/
+decomposition; see `https://sirui-lu.com/TNLean/paper-gaps/mpu_two_projection_projector_typo.pdf`. -/
 noncomputable def reducedProjection (P Q : E →ₗ[ℂ] E) : E →ₗ[ℂ] E :=
   (LinearMap.range (P.comp Q)).starProjection
 
@@ -48,7 +48,7 @@ theorem range_reducedProjection (P Q : E →ₗ[ℂ] E) :
 This range identity is a coordinate-free consequence of the projection hypotheses. The
 source defines its reduced projector blockwise, and identifying that projector with
 `reducedProjection P Q` remains part of the global Jordan decomposition; see
-`docs/paper-gaps/1703_two_projection_projector_typo.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/mpu_two_projection_projector_typo.pdf`. -/
 theorem reducedProjection_range_triple {P Q : E →ₗ[ℂ] E}
     (hP : P.IsSymmetricProjection) (hQ : Q.IsSymmetricProjection) :
     LinearMap.range (P.comp (Q.comp P)) = LinearMap.range (P.comp Q) := by
