@@ -8,7 +8,6 @@ import QICLean.Algebra.MatrixTracePairing
 import QICLean.Channel.PartialTrace
 import QICLean.Channel.MaximallyEntangled
 import QICLean.Channel.TensorMap
-import QICLean.Channel.ChoiJamiolkowski
 import QICLean.Channel.Basic
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.InnerProductSpace.Positive
@@ -169,8 +168,8 @@ Proposition 2.1. -/
 private theorem omegaSlice_eq_single (hd : 0 < d) (i₂ j₂ : Fin d) :
     Matrix.bipartiteSlice (Matrix.omegaProj d) i₂ j₂ =
       (1 / (d : ℂ)) • Matrix.single i₂ j₂ (1 : ℂ) := by
-  rw [ChoiJamiolkowski.omegaSlice_eq_single (D := d) i₂ j₂,
-    ChoiJamiolkowski.omegaCoeff_eq_inv hd, Matrix.smul_single, smul_eq_mul, mul_one]
+  rw [MaximallyEntangled.omegaSlice_eq_single (d := d) i₂ j₂,
+    MaximallyEntangled.omegaCoeff_eq_inv hd, Matrix.smul_single, smul_eq_mul, mul_one]
 
 /-! ### Mutual inverses -/
 
@@ -338,7 +337,7 @@ theorem choiMatrix_of_kraus_posSemidef {r : ℕ}
       Matrix.vecMulVec (fun p : Fin d' × Fin d => c * K j p.1 p.2)
         (star (fun p : Fin d' × Fin d => c * K j p.1 p.2)) := by
     ext ⟨i₁, i₂⟩ ⟨j₁, j₂⟩
-    rw [choiMatrix_apply, hT, ChoiJamiolkowski.omegaSlice_eq_single (D := d) i₂ j₂,
+    rw [choiMatrix_apply, hT, MaximallyEntangled.omegaSlice_eq_single (d := d) i₂ j₂,
       Matrix.sum_apply i₁ j₁, Matrix.sum_apply (i₁, i₂) (j₁, j₂)]
     change ∑ x : Fin r,
         (K x * Matrix.single i₂ j₂ (c * star c) * (K x)ᴴ) i₁ j₁ =
@@ -405,7 +404,7 @@ theorem krausOfChoiDecomp_spec [NeZero d]
       have hentry : T (Matrix.single i j (c * star c)) a b =
           (∑ m : ι, Matrix.vecMulVec (v m) (star (v m))) (a, i) (b, j) := by
         have h := congrArg (fun M => M (a, i) (b, j)) hchoi
-        rwa [choiMatrix_apply, ChoiJamiolkowski.omegaSlice_eq_single (D := d) i j] at h
+        rwa [choiMatrix_apply, MaximallyEntangled.omegaSlice_eq_single (d := d) i j] at h
       have hsmul : T (Matrix.single i j (c * star c)) a b =
           (c * star c) * T (Matrix.single i j (1 : ℂ)) a b := by
         simpa [Matrix.smul_single] using congrArg (fun M => M a b)
@@ -725,11 +724,25 @@ theorem doublyStochastic_iff_partialTraces_proportional
 
 end PartialTraceClauses
 
+end ChoiRectangular
+
 /-! ### Specialization to equal dimensions -/
 
+namespace ChoiJamiolkowski
+
+/-- The square Choi matrix, definitionally specialized from the rectangular
+Choi matrix at equal input and output dimensions. -/
+noncomputable def choiMatrix {D : ℕ}
+    (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :
+    Matrix (Fin D × Fin D) (Fin D × Fin D) ℂ :=
+  Matrix.tensorMapId T (Matrix.omegaProj D)
+
+end ChoiJamiolkowski
+
+namespace ChoiRectangular
+
 /-- The rectangular Choi matrix at `d = d' = D` is definitionally the square
-Choi matrix `ChoiJamiolkowski.choiMatrix`: the existing square development is
-the specialization of the present one. -/
+Choi matrix `ChoiJamiolkowski.choiMatrix`. -/
 theorem choiMatrix_eq_choiJamiolkowski {D : ℕ}
     (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :
     choiMatrix (d := D) (d' := D) T = ChoiJamiolkowski.choiMatrix T := rfl

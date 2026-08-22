@@ -3,6 +3,7 @@ Copyright (c) 2025 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
+import QICLean.Channel.TensorMap
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Complex.Basic
@@ -64,6 +65,47 @@ theorem omegaProj_apply (i₁ i₂ j₁ j₂ : Fin d) :
     omegaProj d (i₁, i₂) (j₁, j₂) =
       omegaVec d (i₁, i₂) * star (omegaVec d (j₁, j₂)) := by
   simp only [omegaProj, vecMulVec_apply, Pi.star_apply]
+
+end Matrix
+
+namespace MaximallyEntangled
+
+variable {d : ℕ}
+
+/-- The `(i₂, j₂)`-slice of `|Ω⟩⟨Ω|` is the corresponding matrix unit,
+scaled by the squared maximally-entangled normalization coefficient. -/
+theorem omegaSlice_eq_single (i₂ j₂ : Fin d) :
+    Matrix.bipartiteSlice (Matrix.omegaProj d) i₂ j₂ =
+      Matrix.single i₂ j₂
+        (((1 : ℂ) / ((d : ℝ).sqrt : ℂ)) *
+          star ((1 : ℂ) / ((d : ℝ).sqrt : ℂ))) := by
+  ext a b
+  simp only [Matrix.bipartiteSlice_apply, Matrix.omegaProj_apply, Matrix.omegaVec_apply,
+    Matrix.single_apply]
+  by_cases ha : a = i₂ <;> by_cases hb : b = j₂
+  · subst ha hb; simp
+  · subst ha; simp [hb, show ¬(j₂ = b) from Ne.symm hb]
+  · subst hb; simp [ha, show ¬(i₂ = a) from Ne.symm ha]
+  · simp [ha, hb, show ¬(i₂ = a) from Ne.symm ha, show ¬(j₂ = b) from Ne.symm hb]
+
+/-- The squared maximally-entangled normalization coefficient is `1 / d`. -/
+theorem omegaCoeff_eq_inv (hd : 0 < d) :
+    (((1 : ℂ) / ((d : ℝ).sqrt : ℂ)) *
+      star ((1 : ℂ) / ((d : ℝ).sqrt : ℂ))) =
+      1 / (d : ℂ) := by
+  have hdr : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr hd
+  rw [show star ((1 : ℂ) / ((d : ℝ).sqrt : ℂ)) =
+      1 / ((d : ℝ).sqrt : ℂ) from by simp [Complex.conj_ofReal]]
+  rw [show (1 : ℂ) / ((d : ℝ).sqrt : ℂ) *
+      (1 / ((d : ℝ).sqrt : ℂ)) =
+      1 / (((d : ℝ).sqrt : ℂ) ^ 2) from by ring]
+  rw [show (((d : ℝ).sqrt : ℂ) ^ 2) = (((d : ℝ).sqrt ^ 2 : ℝ) : ℂ) from by push_cast; ring]
+  rw [Real.sq_sqrt hdr.le]
+  simp
+
+end MaximallyEntangled
+
+namespace Matrix
 
 /-- The entries of `omegaVec` are real, so complex conjugation fixes it. -/
 theorem star_omegaVec :
@@ -211,3 +253,24 @@ theorem omegaVec_vecMul_one_sub_omegaProj :
   rw [Matrix.vecMul_sub, Matrix.vecMul_one, omegaVec_vecMul_omegaProj, sub_self]
 
 end Matrix
+
+namespace ChoiJamiolkowski
+
+variable {D : ℕ}
+
+/-- Compatibility bridge to the dimension-neutral maximally-entangled slice lemma. -/
+theorem omegaSlice_eq_single (i₂ j₂ : Fin D) :
+    Matrix.bipartiteSlice (Matrix.omegaProj D) i₂ j₂ =
+      Matrix.single i₂ j₂
+        (((1 : ℂ) / ((D : ℝ).sqrt : ℂ)) *
+          star ((1 : ℂ) / ((D : ℝ).sqrt : ℂ))) :=
+  MaximallyEntangled.omegaSlice_eq_single i₂ j₂
+
+/-- Compatibility bridge to the dimension-neutral omega normalization lemma. -/
+theorem omegaCoeff_eq_inv (hd : 0 < D) :
+    (((1 : ℂ) / ((D : ℝ).sqrt : ℂ)) *
+      star ((1 : ℂ) / ((D : ℝ).sqrt : ℂ))) =
+      1 / (D : ℂ) :=
+  MaximallyEntangled.omegaCoeff_eq_inv hd
+
+end ChoiJamiolkowski
