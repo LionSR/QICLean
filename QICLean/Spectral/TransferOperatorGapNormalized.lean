@@ -30,7 +30,7 @@ This file specializes the mixed-map spectral bounds in
 
 open scoped Matrix TNOperatorSpace ComplexOrder BigOperators NNReal ENNReal
 
-namespace MPSTensor
+namespace Kraus
 
 variable {d D : ℕ}
 
@@ -76,4 +76,4 @@ theorem spectralRadius_mixedTransfer_le_one
     mixedTransferSpectralRadius A B ≤ 1 :=
   Kraus.mixedMapSpectralRadius_le_one_of_isTP A B hA_norm hB_norm
 
-end MPSTensor
+end Kraus

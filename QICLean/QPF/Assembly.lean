@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.QPF.PosDef
 import QICLean.QPF.Uniqueness
-import QICLean.MPS.Core.CPPrimitive
+import QICLean.Kraus.CPPrimitive
 -- Needed for `IsChannel.exists_posSemidef_fixedPoint`.
 -- The fixed-point existence theorem is used explicitly below.
 import QICLean.Channel.FixedPoint.Cesaro
@@ -42,7 +42,7 @@ irreducible maps), specialized to the trace-preserving (spectral radius = 1) set
 
 open scoped Matrix ComplexOrder BigOperators
 
-namespace MPSTensor
+namespace Kraus
 
 variable {d D : ℕ}
 
@@ -72,7 +72,7 @@ theorem exists_posSemidef_fixedPoint
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ.PosSemidef ∧ ρ ≠ 0 ∧
       transferMap (d := d) (D := D) A ρ = ρ :=
-  (MPSTensor.transferMap_isChannel A hNorm).exists_posSemidef_fixedPoint
+  (isChannel_transferMap A hNorm).exists_posSemidef_fixedPoint
     (E := transferMap A) hD
 
 end Existence
@@ -126,4 +126,4 @@ theorem injective_transfer_unique_fixed_point' [DecidableEq (Fin D)]
 
 end PerronFrobenius
 
-end MPSTensor
+end Kraus

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Irreducible.FixedPoint
-import QICLean.MPS.Core.CPPrimitive
+import QICLean.Kraus.CPPrimitive
 
 /-!
 # Quantum Perron–Frobenius: Positive Definiteness
@@ -36,7 +36,7 @@ instead of `IsInjective A`.
 
 open scoped Matrix ComplexOrder BigOperators
 
-namespace MPSTensor
+namespace Kraus
 
 variable {d D : ℕ}
 
@@ -78,4 +78,4 @@ theorem posSemidef_fixedPoint_isPosDef
 
 end PosDef
 
-end MPSTensor
+end Kraus

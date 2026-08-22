@@ -34,7 +34,7 @@ radius) is also a consequence.
 
 open scoped Matrix ComplexOrder BigOperators
 
-namespace MPSTensor
+namespace Kraus
 
 variable {d D : ℕ}
 
@@ -69,4 +69,4 @@ theorem posSemidef_fixedPoint_unique
 
 end Uniqueness
 
-end MPSTensor
+end Kraus

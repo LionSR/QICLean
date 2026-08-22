@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Kraus
 
 import QICLean.Kraus.Blocking
+import QICLean.Kraus.CPPrimitive
 import QICLean.Kraus.Injectivity
 import QICLean.Kraus.InvariantProjection
 import QICLean.Kraus.MapIterate
@@ -17,7 +18,11 @@ import QICLean.Kraus.MixedMap.Gap
 import QICLean.Kraus.MixedMap.GaugeRigidity
 import QICLean.Kraus.MixedMap.SpectralRadius
 import QICLean.Kraus.MultiBlockWord
+import QICLean.Kraus.Tactic
+import QICLean.Kraus.TensorCompat
 import QICLean.Kraus.TracePairing
+import QICLean.Kraus.Transfer
+import QICLean.Kraus.TransferChannel
 import QICLean.Kraus.Wielandt
 import QICLean.Kraus.Word
 import QICLean.Kraus.WordSpan
