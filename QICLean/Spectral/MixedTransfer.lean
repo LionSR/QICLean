@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Kraus.MixedMap
-import QICLean.MPS.Core.Transfer
-import QICLean.MPS.Core.TransferChannel
+import QICLean.Kraus.Transfer
+import QICLean.Kraus.TransferChannel
 
 /-!
 # Mixed transfer operator and iterated word formulae
@@ -44,7 +44,7 @@ multi-block fundamental theorem.
 
 open scoped Matrix ComplexOrder BigOperators
 
-namespace MPSTensor
+namespace Kraus
 
 variable {d D : ℕ}
 
@@ -169,4 +169,4 @@ theorem mixedTransferMap₂_pow_apply {d D₁ D₂ : ℕ}
 
 end IteratedTransferRect
 
-end MPSTensor
+end Kraus

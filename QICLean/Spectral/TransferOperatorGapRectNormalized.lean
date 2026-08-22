@@ -34,7 +34,7 @@ proved separately from the normalized estimate.
 
 open scoped Matrix MatrixOrder ComplexOrder BigOperators NNReal ENNReal Matrix.Norms.Operator
 
-namespace MPSTensor
+namespace Kraus
 
 variable {d D₁ D₂ : ℕ}
 
@@ -101,4 +101,4 @@ Strict dimension-mismatch consequences are intentionally downstream in
 only the shared rectangular spectral-radius bound and its analytic decay consequence.
 -/
 
-end MPSTensor
+end Kraus

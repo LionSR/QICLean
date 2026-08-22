@@ -128,7 +128,7 @@ Perron--Frobenius theorems of this and the following chapters cite them
 across the chapter boundary.
 
 \begin{definition}[Transfer map]\label{def:transfer_map}
-    \lean{MPSTensor.transferMap}
+    \lean{Kraus.transferMap}
     \leanok
     The \emph{transfer map} associated to a finite matrix family~$A$ is the
     linear map $\E_A : \MN{D} \to \MN{D}$ defined by
@@ -140,7 +140,7 @@ across the chapter boundary.
 \end{definition}
 
 \begin{definition}[Injectivity]\label{def:injective}
-    \lean{MPSTensor.IsInjective}
+    \lean{Kraus.IsInjective}
     \leanok
     A finite matrix family~$A$ is \emph{injective} if its matrices span the
     full matrix algebra:
@@ -148,7 +148,7 @@ across the chapter boundary.
 \end{definition}
 
 \begin{theorem}[Injectivity implies irreducibility]\label{thm:injective_irreducible}
-    \lean{MPSTensor.injective_implies_irreducibleCP}
+    \lean{Kraus.injective_implies_irreducibleCP}
     \leanok
     \uses{def:injective, def:transfer_map, def:irreducible_cp}
     If $A$ is an injective MPS tensor, then its transfer map $\E_A$
@@ -165,7 +165,7 @@ across the chapter boundary.
 \section{Transfer maps}
 
 \begin{theorem}[Transfer map is CP]\label{thm:transfer_cp}
-    \lean{MPSTensor.transferMap_isCPMap}
+    \lean{Kraus.transferMap_isCPMap}
     \leanok
     \uses{def:transfer_map, def:cp_map}
     The transfer map $\E_A(X)=\sum_i A^iX(A^i)^\dagger$
@@ -198,7 +198,7 @@ across the chapter boundary.
 
 \begin{lemma}[Trace adjointness of a transfer map]
     \label{lem:trace_mul_transfer_map_adjoint}
-    \lean{trace_mul_transferMap_adjoint}
+    \lean{Kraus.trace_mul_transferMap_adjoint}
     \leanok
     \uses{def:transfer_map, thm:trace_mul_kraus_map_adjoint}
     The trace-adjoint identity of
@@ -215,7 +215,7 @@ across the chapter boundary.
 
 \begin{lemma}[Left-canonical transfer maps preserve trace]
     \label{lem:trace_transfer_map_left_canonical}
-    \lean{MPSTensor.trace_transferMap}
+    \lean{Kraus.trace_transferMap}
     \leanok
     \uses{def:transfer_map}
     If $A$ is left canonical, then, for every bond matrix $X$,
@@ -238,7 +238,7 @@ across the chapter boundary.
 \end{proof}
 
 \begin{theorem}[Transfer map is a channel]\label{thm:transfer_channel}
-    \lean{MPSTensor.transferMap_isChannel}
+    \lean{Kraus.isChannel_transferMap}
     \leanok
     \uses{def:transfer_map, def:channel}
     If $\sum_i(A^i)^\dagger A^i=\Id$, then the transfer map

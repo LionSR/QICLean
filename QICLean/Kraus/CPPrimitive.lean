@@ -3,33 +3,34 @@ Copyright (c) 2025 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.MPS.Core.TransferChannel
+import QICLean.Kraus.TransferChannel
+import QICLean.Kraus.Injectivity
 import QICLean.Algebra.MatrixAux
 import QICLean.Channel.Irreducible.Basic
 import QICLean.Channel.Schwarz.KadisonSchwarz
 import QICLean.Channel.Basic
 
-/-! ## MPS injectivity implies irreducibility of the transfer map
+/-! ## Injectivity implies irreducibility of the transfer map
 
 The general definitions (`IsOrthogonalProjection`, `IsIrreducibleMap`,
-`HasUniqueFixedPoint`) are stated in `TNLean.Channel.Irreducible.Basic`. The
+`HasUniqueFixedPoint`) are stated in `QICLean.Channel.Irreducible.Basic`. The
 supporting sum-of-squares matrix lemma
-`Matrix.eq_zero_of_sum_mul_conjTranspose_eq_zero` is stated in `TNLean.Algebra.MatrixAux`.
+`Matrix.eq_zero_of_sum_mul_conjTranspose_eq_zero` is stated in `QICLean.Algebra.MatrixAux`.
 
-This file proves the MPS-specific connection: injectivity of an MPS tensor
-implies irreducibility of its transfer map.
+This file proves the finite-Kraus-family-specific connection: injectivity of a
+finite matrix family implies irreducibility of its transfer map.
 
 Key results:
-- `injective_implies_irreducibleCP`: injectivity of an MPS tensor implies
+- `injective_implies_irreducibleCP`: injectivity of a finite matrix family implies
   irreducibility of its transfer map.
 -/
 open scoped Matrix ComplexOrder BigOperators
 
-namespace MPSTensor
+namespace Kraus
 
 variable {d D : ℕ}
 
-/-! ### Connection to MPS injectivity -/
+/-! ### Connection to injectivity -/
 
 /-- The invariance condition for a projection `P` under a transfer map implies that
 each Kraus operator `Aᵢ` maps `Im(P)` into `Im(P)`, i.e., `(1 - P) * Aᵢ * P = 0`. -/
@@ -68,7 +69,7 @@ private lemma invariance_implies_complement_zero (A : MPSTensor d D)
 
 /-! #### The main irreducibility theorem -/
 
-/-- If an MPS tensor `A` is injective (its matrices span the full matrix algebra),
+/-- If a finite matrix family `A` is injective (its matrices span the full matrix algebra),
 then its transfer map `E_A` is irreducible.
 
 **Proof.** Suppose `P` is a non-trivial projection with
@@ -95,25 +96,21 @@ theorem injective_implies_irreducibleCP (A : MPSTensor d D) (hA : IsInjective A)
 
 /-! ### The transfer map is a quantum channel -/
 
-/-- The transfer map of any MPS tensor is completely positive:
+/-- The transfer map of any finite matrix family is completely positive:
 it is defined as the Kraus map `E_A(X) = ∑ᵢ Aᵢ X Aᵢ†`. -/
 theorem transferMap_isCPMap
     (A : MPSTensor d D) :
-    IsCPMap (MPSTensor.transferMap (d := d) (D := D) A) :=
+    IsCPMap (transferMap (d := d) (D := D) A) :=
   ⟨d, A, fun X => by simp [transferMap_apply]⟩
-
-/-- The transfer map of a normalized MPS tensor (with `∑ Aᵢ† Aᵢ = 1`)
-is a quantum channel: completely positive and trace-preserving. -/
-theorem transferMap_isChannel
-    (A : MPSTensor d D)
-    (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1) :
-    IsChannel (MPSTensor.transferMap (d := d) (D := D) A) :=
-  Kraus.isChannel_transferMap A hNorm
 
 /-! ### Iterated transfer map
 
 The iterated transfer map identity is `transferMap_pow_apply'` in
-`TNLean.MPS.Core.TransferChannel`. It follows from the finite Kraus map word expansion
-`Kraus.mapLM_pow_apply`. -/
+`QICLean.Kraus.TransferChannel`. It follows from the finite Kraus map word expansion
+`Kraus.mapLM_pow_apply`.
 
-end MPSTensor
+The channel property of a normalized transfer map (completely positive and
+trace-preserving) is `Kraus.isChannel_transferMap` in
+`QICLean.Kraus.TransferChannel`. -/
+
+end Kraus

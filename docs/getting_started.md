@@ -20,11 +20,20 @@ QICLean was extracted from [TNLean](https://github.com/LionSR/TNLean),
 which formalizes the fundamental theorem of matrix product states and
 remains the home for matrix-product-state and tensor-network content.
 TNLean consumes QICLean as an ordinary Lake dependency pinned to a released
-tag; QICLean never imports TNLean or any matrix-product-state vocabulary,
-so the dependency runs one way. See the "Relation to TNLean" section of the
-top-level [`README.md`](../README.md) and
+tag; QICLean never imports TNLean, and its channel and Wielandt theory
+never depends on matrix-product-state vocabulary, so the dependency runs
+one way. See the "Relation to TNLean" section of the top-level
+[`README.md`](../README.md) and
 [`docs/UPGRADE_RUNBOOK.md`](UPGRADE_RUNBOOK.md) for how the two
 repositories stay on the same Lean/Mathlib toolchain.
+
+One extraction-era exception remains mid-dissolution:
+`QICLean/Kraus/TensorCompat.lean` still declares a handful of genuinely
+matrix-product-*state* definitions (`GaugeEquiv`, `SameMPV`, `mpv`) under
+`namespace MPSTensor`, kept only so the rest of the `QICLean.MPS`
+compatibility layer could dissolve. A paired TNLean pull request re-homes
+this content in TNLean's own tensor-network layer, after which a QICLean
+tag removes the file. New contributions should not add to it.
 
 ## What you need
 

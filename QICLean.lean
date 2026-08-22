@@ -13,7 +13,6 @@ import QICLean.Analysis
 import QICLean.Channel
 import QICLean.Entropy
 import QICLean.Kraus
-import QICLean.MPS
 import QICLean.QPF
 import QICLean.Spectral
 import QICLean.Topology

@@ -20,6 +20,7 @@ intertwining, reindexing, and transpose properties.
 
 ## Main declarations
 
+* `MPSTensor` — a `Fin d`-indexed family of $D \times D$ complex matrices
 * `List.ofFn_reverse` — reversing `List.ofFn` precomposes its function with `Fin.rev`
 * `Kraus.evalWord` — the matrix product associated with a word of physical indices
 * `Kraus.evalWord_append` — evaluation sends concatenation to multiplication
@@ -27,6 +28,14 @@ intertwining, reindexing, and transpose properties.
 -/
 
 open scoped Matrix
+
+/-- A periodic translation-invariant matrix product tensor: a family of
+$D \times D$ matrices indexed by a physical index in `Fin d`.
+
+This abbreviation is kept in the root namespace: it is a reducible alias for the
+finite Kraus family type `Fin d → Matrix (Fin D) (Fin D) ℂ`, and downstream
+matrix-product-state developments are typed over it. -/
+abbrev MPSTensor (d D : ℕ) := Fin d → Matrix (Fin D) (Fin D) ℂ
 
 namespace List
 

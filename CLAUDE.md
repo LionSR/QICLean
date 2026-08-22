@@ -16,8 +16,20 @@ on top of the channel and Wielandt theory that now lives here. TNLean
 consumes QICLean as a Lake dependency, pinned to a released tag; it does not
 vendor or duplicate this source. QICLean itself never imports TNLean —
 channel and Wielandt theory is stated over finite Kraus families and words,
-never over matrix-product-state vocabulary (`MPSTensor`, `SameMPV`,
-`GaugeEquiv`).
+never over matrix-product-state vocabulary.
+
+**In-progress dissolution of the `QICLean.MPS` compatibility layer** (tracked
+by the layer's dissolution issue): the bulk of the extraction-era
+compatibility layer under `namespace MPSTensor` has been folded into
+`QICLean.Kraus` or deleted as pure delegation. One file remains as a
+deliberate, clearly-marked exception: `QICLean/Kraus/TensorCompat.lean`
+still declares `MPSTensor`-namespaced, genuinely matrix-product-*state*
+vocabulary (`GaugeEquiv`, `SameMPV`, `mpv`, and their relatives) that never
+belonged in this library. It is kept only so `QICLean.MPS` can dissolve; a
+paired TNLean pull request re-homes it in TNLean's tensor-network layer, and
+the QICLean tag after that pull request deletes it. Until then, treat
+`QICLean/Kraus/TensorCompat.lean` as scheduled for removal, not as
+precedent for adding new matrix-product-state content to `QICLean.Kraus`.
 
 ## Build Commands and Mathlib Cache Policy
 

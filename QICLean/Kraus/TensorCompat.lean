@@ -8,20 +8,29 @@ import Mathlib.Data.List.OfFn
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Order.Filter.AtTopBot.Basic
-import QICLean.MPS.Core.Word
-import QICLean.MPS.Core.Injectivity
+import QICLean.Kraus.Word
+import QICLean.Kraus.Injectivity
 
 /-!
-# Basic definitions for matrix product state tensors
+# Matrix-product-state compatibility vocabulary (scheduled to return to TNLean)
 
-This file contains the core definitions used throughout the MPS development:
-MPV coefficients, gauge equivalence, and the word-to-state lemmas connecting
-them to word evaluation, injectivity, and normality. The `MPSTensor` abbrev
-itself and the established tensor names for word evaluation and injectivity
-live in `QICLean/MPS/Core/Word.lean` and `QICLean/MPS/Core/Injectivity.lean`.
-Their finite-family owners are in the corresponding `QICLean/Kraus` modules.
-This file contains the matrix-product-vector vocabulary and the gauge-invariance
-lemmas for `evalWord`, `SameMPV`, and eventual block injectivity.
+**Scheduled for return to the tensor-network library.** This file holds the
+remaining matrix-product-*state* vocabulary built on top of `MPSTensor` and its
+finite-Kraus-family word evaluation: MPV coefficients (`mpv`, `coeff`), gauge
+equivalence (`GaugeEquiv`, `GaugePhaseEquiv`, `UnitGaugePhaseEquiv`), and the
+`SameMPV`/proportional-MPV family. Unlike the rest of the dissolved
+`QICLean.MPS` compatibility layer, these declarations are genuinely
+matrix-product-*state* concepts — they never belonged in a library whose design
+rule is to never speak matrix-product-state vocabulary. They are kept here,
+under the `MPSTensor` namespace (not renamed to `Kraus`), only so that
+`QICLean.MPS` can dissolve; the TNLean-side pull request that follows this one
+re-homes them in TNLean's own tensor-network layer, and the QICLean tag after
+that pull request deletes this file. See the dissolution issue for the
+phased plan.
+
+The `MPSTensor` abbrev itself and the word evaluation and injectivity
+declarations live in `QICLean/Kraus/Word.lean` and `QICLean/Kraus/Injectivity.lean`
+and are genuine, permanent `Kraus` vocabulary.
 
 ## Main declarations
 
@@ -35,12 +44,12 @@ namespace MPSTensor
 
 variable {d D : ℕ}
 
-/-- The MPV coefficient for a word `w`, given by `trace (evalWord A w)`. -/
+/-- The MPV coefficient for a word `w`, given by `trace (Kraus.evalWord A w)`. -/
 def coeff (A : MPSTensor d D) (w : List (Fin d)) : ℂ :=
-  Matrix.trace (evalWord A w)
+  Matrix.trace (Kraus.evalWord A w)
 
 @[simp] lemma coeff_eq (A : MPSTensor d D) (w : List (Fin d)) :
-    coeff A w = Matrix.trace (evalWord A w) := rfl
+    coeff A w = Matrix.trace (Kraus.evalWord A w) := rfl
 
 /-- The Matrix Product Vector (MPV) for system size `N`: for each basis state
 `σ : Fin N → Fin d`, this returns the coefficient
@@ -60,8 +69,8 @@ dimension. -/
 /-- MPVs after physical reindexing are MPVs on the reindexed configuration. -/
 theorem mpv_reindexPhysical {d₁ d₂ D : ℕ} (f : Fin d₁ → Fin d₂)
     (A : MPSTensor d₂ D) {N : ℕ} (σ : Fin N → Fin d₁) :
-    mpv (reindexPhysical f A) σ = mpv A (fun n => f (σ n)) := by
-  simp [mpv, coeff, evalWord_reindexPhysical, List.map_ofFn, Function.comp_def]
+    mpv (Kraus.reindexPhysical f A) σ = mpv A (fun n => f (σ n)) := by
+  simp [mpv, coeff, Kraus.evalWord_reindexPhysical, List.map_ofFn, Function.comp_def]
 
 /-- Gauge equivalence: `A` and `B` are related by simultaneous similarity
 `B i = X * A i * X⁻¹` for some `X ∈ GL(D,ℂ)`. -/
@@ -262,22 +271,22 @@ section GaugeInvariance
 variable {A B : MPSTensor d D}
 
 /-- Gauge covariance of word evaluation: if `B i = X * A i * X⁻¹`, then
-`evalWord B w = X * evalWord A w * X⁻¹`. -/
+`Kraus.evalWord B w = X * Kraus.evalWord A w * X⁻¹`. -/
 lemma evalWord_gauge (X : GL (Fin D) ℂ)
     (hX : ∀ i : Fin d,
         B i = (X : Matrix (Fin D) (Fin D) ℂ) * A i *
           ((X⁻¹ : GL (Fin D) ℂ) : Matrix (Fin D) (Fin D) ℂ)) :
     ∀ w : List (Fin d),
-      evalWord B w =
-        (X : Matrix (Fin D) (Fin D) ℂ) * evalWord A w *
+      Kraus.evalWord B w =
+        (X : Matrix (Fin D) (Fin D) ℂ) * Kraus.evalWord A w *
           ((X⁻¹ : GL (Fin D) ℂ) : Matrix (Fin D) (Fin D) ℂ)
-  | [] => by simp [evalWord]
-  | i :: w => by simp [evalWord, hX, evalWord_gauge X hX w, Matrix.mul_assoc]
+  | [] => by simp [Kraus.evalWord]
+  | i :: w => by simp [Kraus.evalWord, hX, evalWord_gauge X hX w, Matrix.mul_assoc]
 
 /-- Gauge equivalent tensors generate the same MPV family. -/
 theorem GaugeEquiv.sameMPV {A B : MPSTensor d D} : GaugeEquiv A B → SameMPV A B := by
   rintro ⟨X, hX⟩ N σ
-  simp only [mpv, coeff, evalWord_gauge X hX, trace_conj_eq]
+  simp only [mpv, coeff, evalWord_gauge X hX, Kraus.trace_conj_eq]
 
 end GaugeInvariance
 
@@ -304,10 +313,10 @@ theorem GaugeEquiv.trans {A B C : MPSTensor d D}
 
 /-- Gauge equivalent of an injective tensor is injective. -/
 theorem isInjective_of_gaugeEquiv {A B : MPSTensor d D}
-    (hA : IsInjective A) (hGauge : GaugeEquiv A B) :
-    IsInjective B := by
+    (hA : Kraus.IsInjective A) (hGauge : GaugeEquiv A B) :
+    Kraus.IsInjective B := by
   obtain ⟨X, hX⟩ := hGauge
-  rw [IsInjective, eq_top_iff]
+  rw [Kraus.IsInjective, eq_top_iff]
   intro M _
   have hM' : ((X⁻¹ : GL _ ℂ) : Matrix _ _ ℂ) * M * (X : Matrix _ _ ℂ) ∈
       Submodule.span ℂ (Set.range A) := hA ▸ Submodule.mem_top
@@ -339,24 +348,24 @@ theorem isInjective_of_gaugeEquiv {A B : MPSTensor d D}
 
 /-- Gauge equivalence preserves injectivity after any fixed blocking length. -/
 theorem isNBlkInjective_of_gaugeEquiv {A B : MPSTensor d D} {N : ℕ}
-    (hA : IsNBlkInjective A N) (hGauge : GaugeEquiv A B) :
-    IsNBlkInjective B N := by
+    (hA : Kraus.IsNBlkInjective A N) (hGauge : GaugeEquiv A B) :
+    Kraus.IsNBlkInjective B N := by
   obtain ⟨X, hX⟩ := hGauge
-  rw [IsNBlkInjective, eq_top_iff]
+  rw [Kraus.IsNBlkInjective, eq_top_iff]
   intro M _
   have hA' : Submodule.span ℂ
-      (Set.range fun σ : Fin N → Fin d => evalWord A (List.ofFn σ)) = ⊤ := by
+      (Set.range fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) = ⊤ := by
     exact hA.span_eq_top
   have hM' : ((X⁻¹ : GL _ ℂ) : Matrix _ _ ℂ) * M * (X : Matrix _ _ ℂ) ∈
       Submodule.span ℂ
-        (Set.range fun σ : Fin N → Fin d => evalWord A (List.ofFn σ)) :=
+        (Set.range fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) :=
     hA' ▸ Submodule.mem_top
   have hConj : ∀ Y ∈ Submodule.span ℂ
-      (Set.range fun σ : Fin N → Fin d => evalWord A (List.ofFn σ)),
+      (Set.range fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)),
       (X : Matrix _ _ ℂ) * Y *
           ((X⁻¹ : GL _ ℂ) : Matrix _ _ ℂ) ∈
         Submodule.span ℂ
-          (Set.range fun σ : Fin N → Fin d => evalWord B (List.ofFn σ)) := by
+          (Set.range fun σ : Fin N → Fin d => Kraus.evalWord B (List.ofFn σ)) := by
     intro Y hY
     induction hY using Submodule.span_induction with
     | mem y hy =>
@@ -379,7 +388,7 @@ theorem isNBlkInjective_of_gaugeEquiv {A B : MPSTensor d D} {N : ℕ}
 
 /-- Gauge equivalence preserves eventual block injectivity. -/
 theorem isNormal_of_gaugeEquiv {A B : MPSTensor d D}
-    (hA : IsNormal A) (hGauge : GaugeEquiv A B) : IsNormal B := by
+    (hA : Kraus.IsNormal A) (hGauge : GaugeEquiv A B) : Kraus.IsNormal B := by
   obtain ⟨N, hNpos, hN⟩ := hA
   exact ⟨N, hNpos, isNBlkInjective_of_gaugeEquiv hN hGauge⟩
 

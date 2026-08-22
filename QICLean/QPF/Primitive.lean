@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Irreducible.FixedPointUniqueness
-import QICLean.MPS.Core.CPPrimitive
+import QICLean.Kraus.CPPrimitive
 
 /-!
 # Quantum Perron–Frobenius for irreducible transfer maps
@@ -51,7 +51,7 @@ but whose transfer maps are still irreducible (e.g., after blocking).
 
 open scoped Matrix ComplexOrder BigOperators
 
-namespace MPSTensor
+namespace Kraus
 
 variable {d D : ℕ}
 
@@ -74,7 +74,7 @@ theorem quantum_perron_frobenius_irreducible [DecidableEq (Fin D)]
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
       HasUniqueFixedPoint (transferMap (d := d) (D := D) A) ρ := by
-  exact (transferMap_isChannel A (by convert hNorm)).exists_hasUniqueFixedPoint_of_irreducible
-    hIrr hD
+  exact IsChannel.exists_hasUniqueFixedPoint_of_irreducible
+    (isChannel_transferMap A (by unfold IsTP; convert hNorm)) hIrr hD
 
-end MPSTensor
+end Kraus

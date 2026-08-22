@@ -8,7 +8,9 @@ import QICLean.Algebra.ComplexPhasePositivity
 import QICLean.Algebra.MatrixKernelRigidity
 import QICLean.Channel.FixedPoint.CanonicalGauge
 import QICLean.Channel.Schwarz.Basic
+import QICLean.Kraus.Injectivity
 import QICLean.Kraus.MixedMap.GaugeRigidity
+import QICLean.Kraus.TensorCompat
 
 import Mathlib.Data.Matrix.Block
 import Mathlib.Analysis.CStarAlgebra.Matrix
@@ -32,7 +34,7 @@ open scoped Matrix Matrix.Norms.Operator MatrixOrder ComplexOrder BigOperators
 
 attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNormedSpace
 
-namespace MPSTensor
+namespace Kraus
 
 variable {d D D₁ D₂ : ℕ}
 
@@ -179,7 +181,7 @@ theorem gaugePhaseEquiv_of_gauged_intertwining [NeZero D]
     (hX'_u : IsUnit X'.det) (hμ : ‖μ‖ = 1)
     (hInter :
       ∀ i : Fin d, gaugeTensor SA A i * X' = μ • X' * gaugeTensor SB B i) :
-    GaugePhaseEquiv A B := by
+    MPSTensor.GaugePhaseEquiv A B := by
   let A' : MPSTensor d D := gaugeTensor SA A
   let B' : MPSTensor d D := gaugeTensor SB B
   have hSA_u : IsUnit SA.det := Ne.isUnit hSA_det
@@ -306,4 +308,4 @@ theorem dim_eq_of_gauged_intertwining [NeZero D₁] [NeZero D₂]
     simpa [Module.finrank_fintype_fun_eq_card, Fintype.card_fin] using hfinrank
   exact le_antisymm h_D₁_le h_D₂_le
 
-end MPSTensor
+end Kraus
