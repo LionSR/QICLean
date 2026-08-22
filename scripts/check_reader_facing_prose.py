@@ -324,8 +324,8 @@ def is_blueprint_prose_path(path: Path) -> bool:
 
 def checks_lean_math_code_spans(path: Path) -> bool:
     # TNLean's migrated-docstring-region exception (MPS/ParentHamiltonian)
-    # does not apply here: MPS/ stayed in TNLean and was not extracted into
-    # QICLean. No migrated-docstring region is exempted yet.
+    # does not apply here: MPS/ParentHamiltonian stayed in TNLean and was not
+    # extracted into QICLean. No migrated-docstring region is exempted yet.
     return False
 
 
