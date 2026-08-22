@@ -19,7 +19,6 @@ import QICLean.Kraus.MixedMap.GaugeRigidity
 import QICLean.Kraus.MixedMap.SpectralRadius
 import QICLean.Kraus.MultiBlockWord
 import QICLean.Kraus.Tactic
-import QICLean.Kraus.TensorCompat
 import QICLean.Kraus.TracePairing
 import QICLean.Kraus.Transfer
 import QICLean.Kraus.TransferChannel
