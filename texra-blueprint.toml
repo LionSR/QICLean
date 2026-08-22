@@ -1,6 +1,12 @@
 # Configuration for the shared texra-blueprint tooling.
 # https://github.com/LionSR/texra-blueprint
 
+# Per-chapter dependency graphs with the chapter-chooser page, plus
+# cross-chapter boundary edges, matching the TNLean blueprint site.
+[blueprint.graphs]
+by_chapter = true
+boundary   = true
+
 [paper_gaps]
 dir         = "docs/paper-gaps"
 site_base   = "https://sirui-lu.com/QICLean"
