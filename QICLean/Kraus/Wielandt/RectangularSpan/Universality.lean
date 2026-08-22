@@ -415,6 +415,26 @@ private theorem rectSpan_nilpIndex_finrank_eq_at
 
 /-! ### Part 4: Constant finrank from stabilization -/
 
+/-- **Constant finrank**: if `finrank(R_n) = finrank(R_{n+1})` then
+`finrank(R_m) = finrank(R_n)` for all `m ≥ n`. -/
+theorem rectSpan_nilpIndex_finrank_constant'
+    (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (i₀ : Fin d) (n : ℕ)
+    (hfin : finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K n) =
+            finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K (n + 1))) :
+    ∀ m, n ≤ m →
+      finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K m) =
+        finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K n) := by
+  intro m hm
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hm
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    have hih := ih (by omega)
+    have hchain := rectSpan_nilpIndex_finrank_eq_at K i₀ n hfin (n + k) (by omega)
+    change finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K (n + k + 1)) =
+      finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K n)
+    linarith
+
 /-! ### Part 5: Monotonicity along arbitrary length inequalities -/
 
 /-- Monotonicity of finrank along `Nat.le`. -/
