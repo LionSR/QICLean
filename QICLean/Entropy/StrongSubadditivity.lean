@@ -30,7 +30,7 @@ results.
 
 * `Entropy.strongSubadditivity` — **theorem** (not an axiom).
   Forwards to `strong_subadditivity_general` from
-  `TNLean/Channel/Schwarz/StrongSubadditivityPosDef.lean`.
+  `QICLean/Channel/Schwarz/StrongSubadditivityPosDef.lean`.
 * `Entropy.vonNeumannEntropy_eq_zero_of_fin_one` — a 1×1 Hermitian
   matrix with trace 1 has vanishing entropy; proved from Mathlib via
   `Real.negMulLog_one`.
@@ -94,7 +94,7 @@ traces `traceAC_ABC`, `traceC_ABC`, `traceA_ABC` (see
 
 This theorem forwards the proved result
 `strong_subadditivity_general` (in
-`TNLean/Channel/Schwarz/StrongSubadditivityPosDef.lean`), which derives
+`QICLean/Channel/Schwarz/StrongSubadditivityPosDef.lean`), which derives
 strong subadditivity for every positive-semidefinite unit-trace
 tripartite density matrix from Lieb concavity. No axiom is introduced
 by this module.

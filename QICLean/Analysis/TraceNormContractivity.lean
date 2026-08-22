@@ -263,7 +263,7 @@ $T : M_D(\mathbb C) \to M_{D'}(\mathbb C)$ satisfies
 $\|T(H)\|_1 \le \|H\|_1$ for every Hermitian $H$.
 
 The positivity and trace-preservation hypotheses are stated in the
-quantified rectangular form of `TNLean/Channel/TransferMatrix.lean`.
+quantified rectangular form of `QICLean/Channel/TransferMatrix.lean`.
 
 Wolf Ch. 8, Theorem 8.16 (printed numbering);
 Notes/WolfNoteTexSource/ch08_distance_measures.tex lines 898-918. -/

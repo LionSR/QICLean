@@ -22,7 +22,7 @@ Wolf's *Quantum Channels & Operations: Guided Tour*:
   Any linear map expressible as `∑ᵢ Aᵢ * X * Bᵢᴴ` is therefore a complex linear
   combination of CP maps. Proposition 2.2 for an arbitrary linear map between
   matrix algebras of possibly different dimensions is proved in
-  `TNLean/Channel/CPDecomposition.lean`.
+  `QICLean/Channel/CPDecomposition.lean`.
 * **Proposition 2.3** — no information without disturbance: any linear map fixing
   every rank-one self-outer-product is the identity. In particular, a
   quantum channel that leaves every pure state invariant is the identity.

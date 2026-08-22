@@ -75,7 +75,7 @@ Wolf eq. (3.18) with its Schmidt-number premise.
   state of Schmidt number at most `n` has `(T ⊗ id)(ρ) ≥ 0` for every `n`-positive
   map `T`, on the square system `ℂ^D ⊗ ℂ^D`.  The lift to a general bipartite system
   `ℂ^d ⊗ ℂ^{d'}` with no relation between the factors lives in
-  `TNLean/Channel/SchmidtNumberFactors.lean`
+  `QICLean/Channel/SchmidtNumberFactors.lean`
   (`Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef_general` and the two padding
   directions it combines).
 * `Matrix.tensorMapId_tEta_posSemidef_of_hasSchmidtRankLE`: the **pure-state step** at
@@ -105,7 +105,7 @@ non-square case is documented in
 predicate itself and its equivalence with separability carry no such restriction.
 The bare positive-semidefiniteness of the ampliation `(T ⊗ id)(ρ) ≥ 0` carries no
 restriction relating the two factors: the general forms live in
-`TNLean/Channel/SchmidtNumberFactors.lean`, holding for any second factor `d'` by
+`QICLean/Channel/SchmidtNumberFactors.lean`, holding for any second factor `d'` by
 padding the second factor when `d' ≤ d` and padding the first factor while extending
 `T` when `d ≤ d'`.
 

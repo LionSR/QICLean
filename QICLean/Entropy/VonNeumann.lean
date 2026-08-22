@@ -10,7 +10,7 @@ import QICLean.Analysis.Entropy
 
 This module places the von Neumann entropy of `TNLean.Analysis.Entropy`
 in the `Entropy` namespace. It is the first of three files in
-`TNLean/Entropy/` supporting the Simple MPDO RFP track
+`QICLean/Entropy/` supporting the Simple MPDO RFP track
 (see issue #236, infrastructure request #613, and the umbrella task
 #239).
 

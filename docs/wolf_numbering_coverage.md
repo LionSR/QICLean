@@ -55,7 +55,7 @@ project import.
     `Channel.hasKrausRankLE_choiRank_of_cptp`
     — minimal Kraus constructions from the Choi spectral decomposition ✓
   - **Rectangular (different-dimension) form** in
-    `TNLean/Channel/ChoiRectangular.lean` (namespace `ChoiRectangular`):
+    `QICLean/Channel/ChoiRectangular.lean` (namespace `ChoiRectangular`):
     `choiMatrix` — `τ = (T ⊗ id_d)(|Ω⟩⟨Ω|)` on `ℂ^{d'} ⊗ ℂ^d` ✓
     `mapOfChoiMatrix_choiMatrix` / `choiMatrix_mapOfChoiMatrix` — mutual
     inverses ✓ `trace_pairing` — `tr[A T(B)] = d·tr[τ (A ⊗ Bᵀ)]` ✓
@@ -98,7 +98,7 @@ project import.
     `Channel.hasKrausCard_mono` / `Channel.choiRank_le_of_hasKrausCard` /
     `Channel.hasKrausCard_choiRank_of_cp`
     — Kraus cardinality and the minimal Kraus number `r = rank(τ)` ✓
-  - **Rectangular-specific form** in `TNLean/Channel/KrausRectangular.lean`
+  - **Rectangular-specific form** in `QICLean/Channel/KrausRectangular.lean`
     (namespace `ChoiRectangular`, no square counterpart):
     `kraus_tp_iff_sum_conjTranspose_mul` / `kraus_unital_iff_sum_mul_conjTranspose`
     — normalization item 1 as iffs ✓
@@ -111,7 +111,7 @@ project import.
   - `stinespring_dual_representation` — `T*(A) = V†(A ⊗ 𝟙)V` ✓
   - `stinespringV_isometry_iff_kraus_normalized` — `V†V = 𝟙` ↔ TP ✓
   - `stinespring_schrodinger_representation` — `T(ρ) = tr_r(VρV†)` ✓
-  - **Full statement** in `TNLean/Channel/StinespringRectangular.lean`
+  - **Full statement** in `QICLean/Channel/StinespringRectangular.lean`
     (namespace `ChoiRectangular`):
     `exists_stinespringV_of_isKrausCP` /
     `exists_stinespringV_pairing_of_isKrausCP`
@@ -191,7 +191,7 @@ project import.
 #### Section 2.1 Representation corollaries (Propositions 2.2–2.4)
 
 * **Proposition 2.2** (decomposition into completely positive maps), in
-  `TNLean/Channel/CPDecomposition.lean`:
+  `QICLean/Channel/CPDecomposition.lean`:
   - `ChoiRectangular.exists_four_isKrausCP_complexCombination` — every linear
     map `M_d(ℂ) → M_{d'}(ℂ)` is a ℂ-linear combination of four CP maps ✓
   - `ChoiRectangular.exists_two_isKrausCP_realCombination_of_hermiticityPreserving`

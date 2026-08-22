@@ -11,7 +11,7 @@ import Mathlib.LinearAlgebra.Matrix.PosDef
 
 This module records foundational matrix-order infrastructure toward eliminating
 the deepest sanctioned assumption of the development, the Lieb concavity theorem
-(`lieb_concavity_posDef` in `TNLean/Analysis/LiebConcavity.lean`). The route
+(`lieb_concavity_posDef` in `QICLean/Analysis/LiebConcavity.lean`). The route
 reduces Lieb's joint concavity of `(A, B) ↦ Tr(K† A^s K B^{1-s})` to a
 single-variable problem on the commuting left and right multiplication
 superoperators `L_A` and `R_B`, using the integral representation

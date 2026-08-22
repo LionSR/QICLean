@@ -244,7 +244,7 @@ structure IsWedderburnBlockDecomp
 
 -- TODO: This theorem is a general fact about arbitrary `StarSubalgebra ℂ Mat`,
 -- not specific to quantum channels or fixed-point algebras. It should
--- eventually be moved to `TNLean/Algebra/WedderburnArtin.lean` or similar.
+-- eventually be moved to `QICLean/Algebra/WedderburnArtin.lean` or similar.
 
 /-- Every finite-dimensional `*`-subalgebra of `M_D(ℂ)` admits a Wedderburn
 block decomposition (Wolf Equations 1.39–1.40).

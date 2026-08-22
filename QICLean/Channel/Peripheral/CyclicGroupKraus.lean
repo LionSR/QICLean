@@ -54,7 +54,7 @@ variable {d D : ℕ}
 ## Invertibility of peripheral eigenvectors
 
 This file reuses `isUnit_peripheral_eigenvector` from
-`TNLean/Channel/Peripheral/ClosureFixedPointKraus.lean`.
+`QICLean/Channel/Peripheral/ClosureFixedPointKraus.lean`.
 -/
 
 /-!

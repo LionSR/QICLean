@@ -70,7 +70,7 @@ structure `HayashiMarkovDecomposition ρ_ABC`.
 The forward implication is proved in
 `TNLean.Analysis.EntropyMarkovForward`; the reverse implication is proved in
 `TNLean.Analysis.EntropyMarkovReverse`. Downstream consumers should import the
-public theorem statement from `TNLean/Entropy/MarkovChain.lean`.
+public theorem statement from `QICLean/Entropy/MarkovChain.lean`.
 
 Source: Hayashi, *Quantum Information: An Introduction*, Springer 2006,
 Theorem 5.24;

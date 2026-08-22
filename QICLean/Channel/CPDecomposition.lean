@@ -46,7 +46,7 @@ the four (respectively two) zero maps with zero coefficients already witness
 the statement.
 
 The two matrix ingredients carry no channel hypotheses and live in
-`TNLean/Algebra/HermitianHelpers.lean`: `Matrix.exists_isHermitian_eq_add_smul_I`
+`QICLean/Algebra/HermitianHelpers.lean`: `Matrix.exists_isHermitian_eq_add_smul_I`
 for Wolf's display and `Matrix.IsHermitian.exists_eq_sub_posSemidef` for the
 spectral step.
 

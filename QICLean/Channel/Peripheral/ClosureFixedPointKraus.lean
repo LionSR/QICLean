@@ -27,7 +27,7 @@ and supplies steps toward the cyclicity conclusion in item (1). See
 
 The key new input is the weighted Kadison–Schwarz equality
 `Kraus.ks_equality_of_peripheral_eigenvector_of_fixedPoint` from
-`TNLean/Channel/Schwarz/Basic.lean`, which corresponds to Wolf Theorem 5.3
+`QICLean/Channel/Schwarz/Basic.lean`, which corresponds to Wolf Theorem 5.3
 (the equality case of the Kadison–Schwarz inequality for peripheral
 eigenvectors).
 

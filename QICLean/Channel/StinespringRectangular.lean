@@ -58,7 +58,7 @@ The dilation matrix is \(V = \sum_j K_j \otimes |j\rangle\), built by
 `stinespringV` from a Kraus family of \(T\) with exactly \(r\) operators,
 obtained by zero-padding a minimal family of \(\operatorname{rank}(\tau)\)
 operators. The square statements `exists_stinespring_dilation` and
-`exists_stinespring_isometry_of_cptp` in `TNLean/Channel/Stinespring.lean`
+`exists_stinespring_isometry_of_cptp` in `QICLean/Channel/Stinespring.lean`
 remain separate and are weaker: their ancilla dimension is existentially
 quantified, whereas the theorems here hold for an arbitrary \(r\) at least the
 Choi rank.

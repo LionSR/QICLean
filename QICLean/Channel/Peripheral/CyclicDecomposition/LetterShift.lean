@@ -28,7 +28,7 @@ The word-level consequence for matrix-product words,
 
 The mutual orthogonality of projections summing to the identity is
 `orthogonalProjection_mul_eq_zero_of_sum_eq_one` in
-`TNLean/Channel/Irreducible/Basic.lean`.
+`QICLean/Channel/Irreducible/Basic.lean`.
 
 The letter shift here assumes the resolution of the identity
 $\sum_kP_k=1$ and no normalization of the Kraus family; the companion

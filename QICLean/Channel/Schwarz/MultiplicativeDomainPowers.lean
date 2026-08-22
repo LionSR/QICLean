@@ -8,7 +8,7 @@ import QICLean.Channel.Schwarz.MultiplicativeDomain
 /-!
 # Multiplicative domain: right version and powers
 
-This file extends `TNLean/Channel/MultiplicativeDomain.lean` with two tools
+This file extends `QICLean/Channel/Schwarz/MultiplicativeDomain.lean` with two tools
 used in the “periodicity removal / peripheral spectrum” reduction:
 
 * `multiplicative_domain_right`:

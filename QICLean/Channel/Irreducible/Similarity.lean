@@ -242,7 +242,7 @@ theorem similarityMap_similarityMap_inv
 `X ↦ C⁻¹ * E (C * X * Cᴴ) * (Cᴴ)⁻¹` is irreducible iff `E` is.
 
 This is the iff-version of `isIrreducibleMap_similarity`; it is the matrix
-analog of `IsPrimitive.conj_iff` in `TNLean/Channel/Peripheral/Conjugation.lean`.
+analog of `IsPrimitive.conj_iff` in `QICLean/Channel/Peripheral/Conjugation.lean`.
 The reverse direction is obtained by applying `isIrreducibleMap_similarity` with
 `C⁻¹` and using `similarityMap_similarityMap_inv`.
 

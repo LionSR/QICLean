@@ -16,7 +16,7 @@ This file proves the scalar real-analysis identity
 for \(a, b > 0\) and \(s \in (0,1)\).
 
 It is the analytic prerequisite for eliminating the sanctioned `lieb_concavity_posDef`
-in `TNLean/Analysis/LiebConcavity.lean`. The operator integral representation
+in `QICLean/Analysis/LiebConcavity.lean`. The operator integral representation
 \(A^s B^{1-s} = \frac{\sin(\pi s)}{\pi}\int_0^\infty t^{s-1} A (A + tB)^{-1} B\, dt\)
 follows entrywise from this scalar identity once \(A \otimes 1\) and \(1 \otimes B^{T}\)
 are simultaneously diagonalized through the tensor eigenbasis.

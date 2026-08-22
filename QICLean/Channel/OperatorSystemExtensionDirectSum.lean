@@ -15,7 +15,7 @@ Wolf's proposition "Extending cp maps from operator systems"
 (`Notes/WolfNoteTexSource/ch01_deconstructing_quantum.tex`, lines 616--626) quantifies the
 domain algebra over an arbitrary finite-dimensional `C^*`-algebra, i.e. a finite direct sum
 `⊕_k M_{d_k}(ℂ)` of full matrix algebras.
-`Matrix.exists_cp_extension_of_operatorSystem` (`TNLean/Channel/OperatorSystemExtension.lean`)
+`Matrix.exists_cp_extension_of_operatorSystem` (`QICLean/Channel/OperatorSystemExtension.lean`)
 proves only the one-summand case `A = M_m(ℂ)`; this file removes that scope restriction by
 transporting the one-summand theorem along the block-diagonal embedding of `⊕_k M_{d_k}(ℂ)`
 into a single ambient algebra `M_M(ℂ)`, `M = Σ_k d_k`, closing
@@ -26,10 +26,10 @@ into a single ambient algebra `M_M(ℂ)`, `M = Σ_k d_k`, closing
 The direct-sum algebra `⊕_{k : Fin r} M_{d_k}(ℂ)` is represented as the dependent function type
 `∀ k : Fin r, Matrix (Fin (d k)) (Fin (d k)) ℂ`, matching the direct-sum matrix algebra used for
 Wolf's Theorem 6.14 block structure (`Matrix.directSumDiagonalEmbedding`,
-`TNLean/Channel/FixedPoint/DirectSumExtension.lean`). An **operator system** and **complete
+`QICLean/Channel/FixedPoint/DirectSumExtension.lean`). An **operator system** and **complete
 positivity at level `j`** for this domain (`Matrix.IsOperatorSystemDirectSum`,
 `Matrix.IsCPOnOperatorSystemDirectSum`, `Matrix.IsCPMapDirectSum`) are defined entrywise, block
-by block, mirroring the single-summand predicates in `TNLean/Channel/OperatorSystem.lean`; this
+by block, mirroring the single-summand predicates in `QICLean/Channel/OperatorSystem.lean`; this
 is the direct-sum `C^*`-algebra's canonical order and star structure, in which each block
 carries its own adjoint and positivity independently of the others.
 

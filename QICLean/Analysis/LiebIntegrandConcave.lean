@@ -11,7 +11,7 @@ import QICLean.Analysis.SuperoperatorResolvent
 This module records the joint Loewner-concavity of the resolvent integrand of the
 operator Lieb integral representation, the matrix-order fact that completes the
 analytic input toward proving the Lieb concavity theorem (`lieb_concavity_posDef` in
-`TNLean/Analysis/LiebConcavity.lean`).
+`QICLean/Analysis/LiebConcavity.lean`).
 
 On the Kronecker model space the commuting left and right multiplication
 superoperators act as `Â = A ⊗ₖ 1` and `B̂ = 1 ⊗ₖ Bᵀ`, both positive definite for

@@ -35,9 +35,9 @@ Kraus-freedom theorems (`kraus_dual_eq_of_map_eq`,
 `kraus_conjTranspose_mul_eq_of_map_eq`,
 `kraus_same_map_of_isometry_combination`, `kraus_rectangular_freedom`,
 `kraus_isometry_freedom_iff`, `kraus_unitary_freedom_iff`) — lives in
-`TNLean/Channel/KrausRank.lean`, `TNLean/Channel/KrausRepresentation.lean`,
-`TNLean/Channel/KrausFreedom.lean`, and
-`TNLean/Channel/KrausUnitaryFreedom.lean`, generalized to rectangular shape;
+`QICLean/Channel/KrausRank.lean`, `QICLean/Channel/KrausRepresentation.lean`,
+`QICLean/Channel/KrausFreedom.lean`, and
+`QICLean/Channel/KrausUnitaryFreedom.lean`, generalized to rectangular shape;
 the present file keeps only the theorems that have no square counterpart.
 The square development is the specialization `d = d'` of the generalized API.
 

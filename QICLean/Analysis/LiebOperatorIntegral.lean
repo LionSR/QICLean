@@ -31,7 +31,7 @@ the Bochner integral with the continuous conjugation map `X ↦ V X V^†`.
 This operator integral representation (Carlen, Lemma 2.8) is the analytic input that,
 combined with the resolvent-integrand concavity, yields the joint concavity of
 `Â^s B̂^{1-s}`, used to eliminate the sanctioned `lieb_concavity_posDef` in
-`TNLean/Analysis/LiebConcavity.lean`.
+`QICLean/Analysis/LiebConcavity.lean`.
 
 ## Main results
 

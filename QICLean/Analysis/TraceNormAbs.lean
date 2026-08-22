@@ -18,7 +18,7 @@ properties Wolf attaches to it: scalar homogeneity
 $\|cA\|_1 = \lvert c\rvert\,\|A\|_1$ and two-sided unitary invariance
 $\|UAV\|_1 = \|A\|_1$.
 
-The trace norm is defined in `TNLean/Analysis/SchattenNorm.lean` as the sum of
+The trace norm is defined in `QICLean/Analysis/SchattenNorm.lean` as the sum of
 the singular values of the represented Euclidean linear map, while the
 absolute value `CFC.abs A` is a matrix.  The two quantities are identified
 through the observation that the singular values of `Matrix.toEuclideanLin A`

@@ -15,7 +15,7 @@ This file sets up the definitions needed to state Wolf's proposition
 completely positive map defined only on a subspace of a finite-dimensional
 `C^*`-algebra extends to a completely positive map on the whole algebra. The
 proposition itself is proved in
-`Matrix.exists_cp_extension_of_operatorSystem` (`TNLean/Channel/OperatorSystemExtension.lean`).
+`Matrix.exists_cp_extension_of_operatorSystem` (`QICLean/Channel/OperatorSystemExtension.lean`).
 
 ## Design notes
 
@@ -38,11 +38,11 @@ property of a `Submodule ℂ` rather than as a separate structure, so that
 duplication.
 
 Complete positivity of a map `T : S →ₗ[ℂ] M_n(ℂ)` is stated at every level `k`,
-generalizing `IsCPMap`/`IsKrausCP` (`TNLean/Channel/Basic.lean`) from maps
+generalizing `IsCPMap`/`IsKrausCP` (`QICLean/Channel/Basic.lean`) from maps
 defined on all of `M_m(ℂ)` to maps defined only on `S`. Level `k` inputs are
 represented as bipartite matrices `X : M_m(ℂ) ⊗ M_k(ℂ)` (indexed by
 `Fin m × Fin k`, following `Matrix.bipartiteSlice`/`Matrix.tensorMapId` from
-`TNLean/Channel/TensorMap.lean`) whose blocks all lie in `S`; `T ⊗ id_k`
+`QICLean/Channel/TensorMap.lean`) whose blocks all lie in `S`; `T ⊗ id_k`
 applies `T` to each block.
 
 ## Main definitions
