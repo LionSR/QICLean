@@ -40,7 +40,7 @@ Cirac--Perez-Garcia--Schuch--Verstraete, arXiv:2011.12127, lines 2194-2197
 (paragraph "The Knabe bound").  The finite-range coefficient above is a
 TNLean derivation obtained by running Knabe's window argument with a general
 range; it is recorded in the note
-`docs/paper-gaps/knabe_finite_range_coefficient.tex`, is not stated in any of
+`https://sirui-lu.com/TNLean/paper-gaps/knabe88_finite_range_coefficient.pdf`, is not stated in any of
 the cited sources, and is not attributed to any of them.
 
 ## Main results
@@ -372,7 +372,7 @@ arXiv:quant-ph/0608197, lines 1483-1489, and Cirac--Perez-Garcia--Schuch--
 Verstraete, arXiv:2011.12127, lines 2194-2197.  The finite-range coefficient
 is a TNLean derivation obtained by running Knabe's window argument with a
 general range; see the paper-gap note
-`docs/paper-gaps/knabe_finite_range_coefficient.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/knabe88_finite_range_coefficient.pdf`. -/
 theorem quadraticForm_sum_projections_of_cyclic_knabe
     {N R m : ℕ} [NeZero N]
     (h : ZMod N → E →ₗ[𝕜] E) (hh : ∀ i, (h i).IsSymmetricProjection)

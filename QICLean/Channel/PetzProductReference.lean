@@ -593,7 +593,7 @@ This is the maximally mixed specialization of the tensor-product factorization
 in Hayden--Jozsa--Petz--Winter, arXiv:quant-ph/0304007v2, equation (10).
 
 **Maximally mixed specialization
-(docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex):**
+(https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf):**
 This theorem proves only the $d_A^{-1}\mathbf 1_A\otimes\rho_{BC}$ case.
 The general support-compressed raw identity is
 `partialTraceRightPetzMap_productTensor`; its positive-definite-left corollary
@@ -663,7 +663,7 @@ This is the maximally mixed specialization of equation (10) of
 Hayden--Jozsa--Petz--Winter, arXiv:quant-ph/0304007v2.
 
 **Maximally mixed specialization
-(docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex):**
+(https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf):**
 This theorem proves only the $d_A^{-1}\mathbf 1_A\otimes\rho_{BC}$ case.
 The general support-compressed raw identity is
 `partialTraceRightPetzMap_productTensor`; its positive-definite-left corollary

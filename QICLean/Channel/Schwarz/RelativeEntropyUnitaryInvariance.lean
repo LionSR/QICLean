@@ -16,7 +16,7 @@ $D(U\rho U^\dagger \,\|\, U\sigma U^\dagger) = D(\rho\|\sigma)$.
 
 Unitary invariance is one of the three ingredients of the data-processing
 inequality under the partial trace (layer 5 of the SSA-from-Lieb elimination
-route, `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`), alongside joint
+route, `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`), alongside joint
 convexity (layer 4, `convexOn_quantumRelativeEntropy`) and ancilla additivity.
 
 ## Main results
@@ -41,7 +41,7 @@ conjugating unitaries.
 ## References
 
 * Layer 5 (data processing) of the relative-entropy elimination route for strong
-  subadditivity, `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`.
+  subadditivity, `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`.
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 8
   (Distance Measures)][Wolf2012QChannels].
 -/
@@ -76,7 +76,7 @@ $$D(U\rho U^\dagger \,\|\, U\sigma U^\dagger)
   = D(\rho\|\sigma),$$
 where the middle equality is trace cyclicity ($U^\dagger U = 1$). This is one of
 the three ingredients of the data-processing inequality under the partial trace
-(layer 5 of `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`). -/
+(layer 5 of `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`). -/
 theorem quantumRelativeEntropy_conj_unitary {n : Type*} [Fintype n] [DecidableEq n]
     {ρ σ : Matrix n n ℂ} (hρ : ρ.IsHermitian) (hσ : σ.IsHermitian)
     (U : unitary (Matrix n n ℂ)) :

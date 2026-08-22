@@ -63,7 +63,7 @@ multiplicativity `Real.negMulLog_mul`.
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 8
   (Distance Measures), Section 8.2 (Entropies)][Wolf2012QChannels]
 * Hayashi, *Quantum Information: An Introduction*, Springer 2006, Theorem 5.24
-* `docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`
+* `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`
 -/
 
 open scoped Matrix Kronecker ComplexOrder

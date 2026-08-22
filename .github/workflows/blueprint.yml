@@ -4,7 +4,8 @@ name: Blueprint
 # step (no tenkz diagrams in QICLean's blueprint; see ci/README.md) and the
 # FT-MPS-volume packaging step (that split PDF is TNLean-specific). Otherwise
 # unchanged: same leanblueprint build, same error/warning gating, same
-# generated-page reader-facing check, same Pages deploy handoff.
+# paper-gap reference check, same generated-page reader-facing check, same
+# Pages deploy handoff.
 
 on:
   push:
@@ -16,6 +17,12 @@ on:
       - 'lean-toolchain'
       - 'lake-manifest.json'
       - 'blueprint/src/**'
+      - 'docs/paper-gaps/**'
+      - 'texra-blueprint.toml'
+      # Trees the paper-gap reference check scans (texra-blueprint
+      # paper-gaps check); without these the check never runs
+      # on merge pushes that only touch a scanned file.
+      - 'docs/**/*.md'
       - '.github/workflows/blueprint.yml'
       - '.github/workflows/deploy-pages.yml'
       - 'home_page/**'
@@ -46,7 +53,10 @@ jobs:
       - name: Install leanblueprint
         uses: texra-ai/lean-env-action/leanblueprint@v1
         with:
-          extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.1.0'
+          extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.3.1'
+
+      - name: Check paper-gap references resolve
+        run: texra-blueprint paper-gaps check
 
       - name: Build blueprint bibliography
         run: python3 scripts/blueprint_bibtex.py

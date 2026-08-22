@@ -23,7 +23,7 @@ logarithm of this range dimension follows from Beigi's
 weighted Hilbert--Schmidt contraction and order monotonicity, together with
 the order-one limit of Müller-Lennert et al.  The mathematical argument and
 formalization status are recorded in
-`docs/paper-gaps/cpgsv17_mpdo_mutual_information_bound.tex`; the inequality
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_mpdo_mutual_information_bound.pdf`; the inequality
 is not asserted here.
 
 ## Main definitions

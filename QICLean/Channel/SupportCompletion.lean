@@ -34,7 +34,7 @@ map agrees with the original map on matrices supported by the projection.
 * Cirac--Perez-Garcia--Schuch--Verstraete, arXiv:1606.00608, Definition 4.1,
   lines 638--660, and Appendix C.4, lines 2065--2085.  The completion supplies
   the otherwise unspecified action on discarded physical complements; see
-  `docs/paper-gaps/cpgsv17_vertical_isometry_zero_sector.tex`.
+  `https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_vertical_isometry_zero_sector.pdf`.
 -/
 
 open scoped ComplexOrder Matrix

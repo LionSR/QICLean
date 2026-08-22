@@ -13,7 +13,7 @@ import QICLean.Entropy.TripartiteTrace
 
 This file proves **strong subadditivity** of the von Neumann entropy for a
 tripartite density matrix, as the layer-6 instantiation of the relative-entropy
-elimination route, `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`. For a density
+elimination route, `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`. For a density
 matrix $\rho_{ABC}$ on $A \otimes B \otimes C$,
 $$S(\rho_{ABC}) + S(\rho_B) \le S(\rho_{AB}) + S(\rho_{BC}),$$
 where the reduced states are the tripartite partial traces. The positive definite
@@ -75,7 +75,7 @@ comes from the singular-domain data-processing inequality
 derives the same inequality for every positive semidefinite unit-trace
 $\rho_{ABC}$, discharging the content of the standalone strong-subadditivity axiom
 on the full density-matrix domain. The development is recorded in
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`, layer 6.
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`, layer 6.
 
 ## References
 
@@ -85,7 +85,7 @@ on the full density-matrix domain. The development is recorded in
   subadditivity of quantum entropy with equality", CMP 246, 359–374 (2004),
   arXiv:quant-ph/0304007v2, p. 3, equations (5)–(7).
 * Layer 6 (instantiation) of the relative-entropy elimination route for strong
-  subadditivity, `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`.
+  subadditivity, `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`.
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 8
   (Distance Measures)][Wolf2012QChannels].
 -/
@@ -711,7 +711,7 @@ definite matrices, the domain on which the relative-entropy ingredients are
 directly available. The full density-matrix statement is
 `strong_subadditivity_general`, which derives the same inequality for every
 positive semidefinite unit-trace $\rho_{ABC}$ on the singular support domain.
-Recorded in `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`, layer 6.
+Recorded in `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`, layer 6.
 
 Source: Lieb, Ruskai, JMP 14, 1938 (1973);
 blueprint `thm:strong_subadditivity_posdef`. -/
@@ -807,7 +807,7 @@ and the singular-domain data processing
 
 Source: Lieb, Ruskai, JMP 14, 1938 (1973);
 blueprint `thm:strong_subadditivity`. Layer 6 of
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`. -/
 theorem strong_subadditivity_general
     (ρ_ABC : Matrix (Fin dA × Fin dB × Fin dC) (Fin dA × Fin dB × Fin dC) ℂ)
     (hρ_dm : ρ_ABC.PosSemidef ∧ ρ_ABC.trace = 1) :

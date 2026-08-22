@@ -45,7 +45,7 @@ finite-dimensional Schrödinger mean-ergodic theorem entrywise.
 **Scope restriction (joint support):** inherits the `PosDef (commonAverage ρ)` hypothesis of
 `commonInvariantStarSubalgebra` in place of HJPW's joint-support reduction
 (arXiv:quant-ph/0304007v2, lines 761-763). Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`.
 
 As in `SingleWitness.lean`, the declarations below state the finite state-family instances in
 their own signatures so that dependent projections through the bundled witness remain stable

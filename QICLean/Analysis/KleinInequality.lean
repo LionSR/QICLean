@@ -59,7 +59,7 @@ the zero eigenvalues to vanish. No eigenvalue-continuity input is needed.
 * Klein's inequality; see e.g. [M. Wolf, *Quantum Channels & Operations: Guided
   Tour*, Chapter 8 (Distance Measures)][Wolf2012QChannels].
 * Layer 3 of the relative-entropy elimination route for strong subadditivity,
-  `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`.
+  `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`.
 -/
 
 open scoped Matrix ComplexOrder Topology
@@ -695,7 +695,7 @@ derived from it by regularizing the reference state and passing to the limit, so
 lemma keeps its standalone eigenbasis/Gibbs proof.
 
 Source: Klein's inequality; layer 3 of the relative-entropy elimination route
-for strong subadditivity, `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`;
+for strong subadditivity, `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`;
 blueprint `thm:klein_inequality`. -/
 theorem quantumRelativeEntropy_nonneg {n : Type*} [Fintype n] [DecidableEq n]
     {ρ σ : Matrix n n ℂ} (hρ : ρ.PosSemidef) (hρ_tr : ρ.trace = 1)
@@ -751,7 +751,7 @@ inequality passes to the limit.
 Source: Klein's inequality; see e.g. [M. Wolf, *Quantum Channels & Operations:
 Guided Tour*, Chapter 8 (Distance Measures)][Wolf2012QChannels]; layer 3 of the
 relative-entropy elimination route for strong subadditivity,
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`; blueprint
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`; blueprint
 `thm:klein_inequality_general`. -/
 theorem quantumRelativeEntropy_nonneg_general {n : Type*} [Fintype n] [DecidableEq n]
     {ρ σ : Matrix n n ℂ} (hρ : ρ.PosSemidef) (hρ_tr : ρ.trace = 1)
@@ -814,7 +814,7 @@ operator Jensen, only the scalar strict Gibbs inequality and the spectral theore
 Source: Klein's inequality (equality case); see e.g. [M. Wolf, *Quantum Channels
 & Operations: Guided Tour*, Chapter 8 (Distance Measures)][Wolf2012QChannels];
 layer 3 of the relative-entropy elimination route for strong subadditivity,
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`; blueprint
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`; blueprint
 `thm:klein_inequality_equality`. -/
 theorem quantumRelativeEntropy_eq_zero_iff {n : Type*} [Fintype n] [DecidableEq n]
     {ρ σ : Matrix n n ℂ} (hρ : ρ.PosSemidef) (hρ_tr : ρ.trace = 1)

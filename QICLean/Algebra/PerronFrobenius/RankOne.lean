@@ -239,7 +239,7 @@ linear independence of the sector tensors; its proof instead uses primitivity
 of the trace matrix, obtained from injectivity of K in the preceding
 construction (lines 1457--1470), in a Perron--Frobenius trace-power argument,
 and primitivity does not entail the independence. Documented in
-`docs/paper-gaps/cpgsv17_pf_rank_one.tex`; the hypothesis `hl` is to be
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_pf_rank_one.pdf`; the hypothesis `hl` is to be
 discharged at the MPDO call site. -/
 theorem mul_self_eq_self_of_pairing_idempotent
     {l : Fin n → V} {r : Fin n → Module.Dual R V} {T : Matrix (Fin n) (Fin n) R}
@@ -272,7 +272,7 @@ linear independence of the sector tensors; its proof instead uses primitivity
 of the trace matrix, obtained from injectivity of K in the preceding
 construction (lines 1457--1470), in a Perron--Frobenius trace-power argument,
 and primitivity does not entail the independence. Documented in
-`docs/paper-gaps/cpgsv17_pf_rank_one.tex`; the hypothesis `hr` is to be
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_pf_rank_one.pdf`; the hypothesis `hr` is to be
 discharged at the MPDO call site. -/
 theorem mul_self_eq_self_of_pairing_idempotent_dual
     {l : Fin n → V} {r : Fin n → Module.Dual R V} {T : Matrix (Fin n) (Fin n) R}
@@ -316,7 +316,7 @@ linear independence of the sector tensors; its proof instead uses primitivity
 of the trace matrix, obtained from injectivity of K in the preceding
 construction (lines 1457--1470), in a Perron--Frobenius trace-power argument,
 and primitivity does not entail the independence. Documented in
-`docs/paper-gaps/cpgsv17_pf_rank_one.tex`; the hypothesis `hl` is to be
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_pf_rank_one.pdf`; the hypothesis `hl` is to be
 discharged at the MPDO call site. -/
 theorem hasRankOneFactorization_of_pairing_idempotent
     {V : Type*} [AddCommGroup V] [Module ℝ V]
@@ -407,7 +407,7 @@ holds without any independence hypothesis on `l` or `r`. Multiplying
 coefficient map turns the two sides directly into `T^2` and `T^3`.
 
 Source: arXiv:1606.00608, lines 1494--1497. This is the pairing computation
-of `docs/paper-gaps/cpgsv17_pf_rank_one.tex`, §3 ("What the operator-valued
+of `https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_pf_rank_one.pdf`, §3 ("What the operator-valued
 ZCL identity implies"). -/
 theorem pow_two_eq_pow_three_of_pairing_idempotent
     {V : Type*} [AddCommGroup V] [Module ℝ V]
@@ -447,7 +447,7 @@ restriction and `trace (T^2)` with the trace of its square, which coincide
 since the restriction is idempotent.
 
 Source: arXiv:1606.00608, lines 1494--1497. This is the "finite-dimensional
-carrier" step of `docs/paper-gaps/cpgsv17_pf_rank_one.tex`, §3. -/
+carrier" step of `https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_pf_rank_one.pdf`, §3. -/
 theorem trace_eq_trace_sq_of_pairing_idempotent
     {V : Type*} [AddCommGroup V] [Module ℝ V]
     {l : Fin n → V} {r : Fin n → Module.Dual ℝ V} {T : Matrix (Fin n) (Fin n) ℝ}

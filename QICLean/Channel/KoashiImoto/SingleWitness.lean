@@ -77,7 +77,7 @@ that finite family (`Kraus.averagedPreservingKrausFamily`).
 **Scope restriction (joint support):** inherits the `PosDef (commonAverage ρ)` hypothesis of
 `commonInvariantStarSubalgebra` in place of HJPW's joint-support reduction
 (arXiv:quant-ph/0304007v2, lines 761-763). Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`. -/
 theorem exists_preservingKrausFamily_adjointFixedPointsStarSubalgebra_eq
     {Kidx : Type*} [Fintype Kidx] [Nonempty Kidx] {ρ : Kidx → Mat}
     (hρbar : (commonAverage ρ).PosDef) :

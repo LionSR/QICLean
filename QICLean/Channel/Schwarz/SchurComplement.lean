@@ -39,7 +39,7 @@ substantive when `P` is singular: `P = 0`, `Q = R = 1` is a counterexample.
 
 Conditions (1) and (2) are equivalent as printed. Condition (3) becomes
 equivalent to them after adding `ker(P) ⊆ ker(Q†)`. The printed version is
-false; see `docs/paper-gaps/schur_complement_tfae.tex`.
+false; see `docs/paper-gaps/wolf_schur_complement_tfae.tex`.
 
 ## Implementation notes
 
@@ -425,7 +425,7 @@ normalization is a contraction.
 `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, line 116 omits
 `ker(P) ⊆ ker(Q†)`. Without this condition the implication to block positivity
 is false. The deviation and the scalar counterexample are recorded in
-`docs/paper-gaps/schur_complement_tfae.tex`. -/
+`docs/paper-gaps/wolf_schur_complement_tfae.tex`. -/
 theorem schurComplement_posSemidef_iff_contraction
     (P : Matrix (Fin D₁) (Fin D₁) ℂ) (Q : Matrix (Fin D₁) (Fin D₂) ℂ)
     (R : Matrix (Fin D₂) (Fin D₂) ℂ) (hP : P.PosSemidef) (hR : R.PosSemidef)
@@ -478,7 +478,7 @@ off-diagonal block.
 **Local fix (Wolf Theorem 5.2, condition (3)):** The printed condition (3) at
 `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, line 116 contains only
 the right-support condition. The left-support condition displayed here is
-necessary, as documented in `docs/paper-gaps/schur_complement_tfae.tex`. -/
+necessary, as documented in `docs/paper-gaps/wolf_schur_complement_tfae.tex`. -/
 theorem blockMatrix_posSemidef_iff_contraction
     (P : Matrix (Fin D₁) (Fin D₁) ℂ) (Q : Matrix (Fin D₁) (Fin D₂) ℂ)
     (R : Matrix (Fin D₂) (Fin D₂) ℂ) (hP : P.PosSemidef) (hR : R.PosSemidef) :
@@ -507,7 +507,7 @@ block positivity in the singular case: take the scalar blocks
 `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, line 116, the printed
 condition lacks `ker(P) ⊆ ker(Q†)`. The normalized matrix is zero in this
 example, whereas the block quadratic form at `(1, -1)` equals `-1`. See
-`docs/paper-gaps/schur_complement_tfae.tex`. -/
+`docs/paper-gaps/wolf_schur_complement_tfae.tex`. -/
 theorem wolf_condition_three_not_sufficient :
     let P : Matrix (Fin 1) (Fin 1) ℂ := 0
     let Q : Matrix (Fin 1) (Fin 1) ℂ := 1

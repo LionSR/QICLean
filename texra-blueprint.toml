@@ -1,0 +1,22 @@
+# Configuration for the shared texra-blueprint tooling.
+# https://github.com/LionSR/texra-blueprint
+
+[paper_gaps]
+dir         = "docs/paper-gaps"
+site_base   = "https://sirui-lu.com/QICLean"
+blob_base   = "https://github.com/LionSR/QICLean/blob/main/docs/paper-gaps"
+bib_author  = "The {QICLean} contributors"
+institution = "QICLean"
+title       = "QICLean paper-gap notes"
+scan_roots  = ["QICLean", "blueprint/src", "docs"]
+skip        = ["command.tex", "template.tex"]
+# Every note must carry a \gapnote{kind}{status} verdict marker.
+require_verdict = true
+
+# The source-key registry: every note is named <key>_<topic>.tex. Author
+# initials plus two-digit year, or a canonical short name for a book or
+# review; qiclean marks internal theorem-surface audits with no single
+# external source. Enforced by `texra-blueprint paper-gaps check`.
+[paper_gaps.sources]
+qiclean = "internal theorem-surface audit, no single external source"
+wolf    = "Wolf, Quantum Channels & Operations (2012 lecture notes)"

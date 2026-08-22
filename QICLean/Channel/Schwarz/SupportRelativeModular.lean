@@ -38,7 +38,7 @@ reference matrix is represented as the square of its support inverse square root
 The preceding singular equality-to-resolvent step is formalized downstream in
 `TNLean.Channel.Schwarz.SupportRelativeEntropyEquality`. The later
 support functional-calculus and recovery steps are tracked in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`.
 -/
 
 open scoped Matrix ComplexOrder Kronecker MatrixOrder

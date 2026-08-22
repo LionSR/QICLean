@@ -64,7 +64,7 @@ This is the set-spectrum part of arXiv:1703.09188, Proposition
 
 **Scope restriction (set spectrum only):** This theorem proves only that every
 nonzero spectral value equals one; set equality alone does not record algebraic
-multiplicity. See `docs/paper-gaps/cpsv17_transfer_trace_power.tex`. The exact
+multiplicity. See `https://sirui-lu.com/TNLean/paper-gaps/cpsv17_transfer_trace_power.pdf`. The exact
 multiplicity and characteristic-polynomial conclusion is
 `Matrix.charpoly_eq_X_pow_pred_mul_X_sub_one_of_forall_trace_pow_eq_one_of_one_lt`. -/
 theorem eq_one_of_mem_spectrum_of_forall_trace_pow_eq_one_of_one_lt
@@ -104,7 +104,7 @@ Proposition `prop:normal-tensor`, lines 349--354.
 
 **Scope restriction (set spectrum only):** This theorem proves only that `1` is
 a spectral value; it does not record algebraic multiplicity. See
-`docs/paper-gaps/cpsv17_transfer_trace_power.tex`. The exact conclusion is
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv17_transfer_trace_power.pdf`. The exact conclusion is
 `Matrix.charpoly_eq_X_pow_pred_mul_X_sub_one_of_forall_trace_pow_eq_one_of_one_lt`. -/
 theorem one_mem_spectrum_of_forall_trace_pow_eq_one_of_one_lt
     (A : Matrix n n ℂ)
@@ -134,7 +134,7 @@ Proposition `prop:normal-tensor`, lines 349--354.
 
 **Scope restriction (set spectrum only):** This theorem proves only equality of
 the nonzero spectrum as a set; set equality alone does not assert algebraic
-multiplicity. See `docs/paper-gaps/cpsv17_transfer_trace_power.tex`. The exact
+multiplicity. See `https://sirui-lu.com/TNLean/paper-gaps/cpsv17_transfer_trace_power.pdf`. The exact
 multiplicity and characteristic-polynomial conclusion is
 `Matrix.charpoly_eq_X_pow_pred_mul_X_sub_one_of_forall_trace_pow_eq_one_of_one_lt`. -/
 theorem spectrum_diff_zero_eq_singleton_of_forall_trace_pow_eq_one_of_one_lt

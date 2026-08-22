@@ -20,7 +20,7 @@ where $\otimes$ is the Kronecker product.
 
 Ancilla additivity is one of the three ingredients of the data-processing
 inequality under the partial trace (layer 5 of the SSA-from-Lieb elimination
-route, `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`), alongside joint
+route, `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`), alongside joint
 convexity (layer 4, `convexOn_quantumRelativeEntropy`) and unitary invariance
 (`quantumRelativeEntropy_conj_unitary`).
 
@@ -57,12 +57,12 @@ entropy of $\rho$ against $\sigma$.
 identity holds for density matrices, whereas this development restricts $\rho$,
 $\sigma$, $\tau$ to positive definite matrices (with $\tau$ of unit trace), the
 domain on which the logarithm split is available. The restriction is recorded in
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`, layer 5.
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`, layer 5.
 
 ## References
 
 * Layer 5 (data processing) of the relative-entropy elimination route for strong
-  subadditivity, `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`.
+  subadditivity, `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`.
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 8
   (Distance Measures)][Wolf2012QChannels].
 -/
@@ -111,12 +111,12 @@ $\operatorname{tr}(\rho(\log\rho - \log\sigma)) \cdot \operatorname{tr}\tau$
 (`Matrix.trace_kronecker`), and the unit trace of $\tau$ leaves the relative
 entropy of $\rho$ against $\sigma$. This is one of the three ingredients of the
 data-processing inequality under the partial trace (layer 5 of
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`).
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`).
 
 **Scope restriction (positive-definite domain):** the source identity holds for
 density matrices; here $\rho$, $\sigma$, $\tau$ are restricted to positive
 definite matrices (with $\tau$ of unit trace), the domain on which the logarithm
-split holds. Recorded in `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`,
+split holds. Recorded in `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`,
 layer 5. -/
 theorem quantumRelativeEntropy_kronecker
     {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]

@@ -117,7 +117,7 @@ contraction in Beigi, arXiv:1306.5920, Theorem 6, equation (18).
 **Scope restriction (full output support):** The output weight is assumed
 positive definite. The support-compressed form needed for arbitrary output
 support is recorded in
-`docs/paper-gaps/cpgsv17_mpdo_mutual_information_bound.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpgsv17_mpdo_mutual_information_bound.pdf`. -/
 theorem weightedHilbertSchmidtMap_norm_le
     {α β : Type*} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
     {Φ : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ}

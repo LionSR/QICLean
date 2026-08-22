@@ -23,7 +23,7 @@ this statement for the stronger hypothesis
 The paper's exact `N > 1` hypothesis is handled by the companion formalization, which does
 **not** recover `tr(E) = 1`; it proves directly that the nonzero spectrum
 equals `{1}` without computing the first moment.  The bridge between the
-two results is documented in `docs/paper-gaps/cpsv17_transfer_trace_power.tex`.
+two results is documented in `https://sirui-lu.com/TNLean/paper-gaps/cpsv17_transfer_trace_power.pdf`.
 
 The proof is purely algebraic: no spectral radius, positivity, normality, or
 diagonalizability is required.  We construct an explicit rank-one diagonal
@@ -194,7 +194,7 @@ argument in arXiv:1703.09188, Proposition `prop:normal-tensor`, lines
 blocked tensors.  The present theorem uses the stronger hypothesis
 `tr(A^k) = 1` for all `k ≥ 1`; the paper's exact `N > 1` hypothesis is
 handled by the companion formalization, which proves the nonzero spectrum is `{1}` without
-recovering `tr(E) = 1`.  See `docs/paper-gaps/cpsv17_transfer_trace_power.tex`. -/
+recovering `tr(E) = 1`.  See `https://sirui-lu.com/TNLean/paper-gaps/cpsv17_transfer_trace_power.pdf`. -/
 theorem charpoly_eq_X_pow_pred_mul_X_sub_one_of_forall_trace_pow_eq_one
     (A : Matrix n n ℂ)
     (h : ∀ k : ℕ, 0 < k → trace (A ^ k) = 1) :

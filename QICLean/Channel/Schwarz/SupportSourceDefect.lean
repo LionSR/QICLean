@@ -37,7 +37,7 @@ This file also proves the fixed-parameter common generalized-inverse solution
 from vanishing source-\(B\) defect. The entropy-equality and projected
 relative-modular conclusions are assembled downstream; the later recovery
 steps are recorded in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`.
 -/
 
 open scoped Matrix BigOperators ComplexOrder Kronecker
@@ -381,7 +381,7 @@ theorem in the paper, at lines 761--785, assumes
 This fixed-\(t\) algebraic statement does not assert rigidity, an integral
 identity, or a Petz recovery theorem. The surrounding singular
 entropy-equality gap is documented in
-`docs/paper-gaps/cpsv16_ssa_equality_hayashi_markov.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_equality_hayashi_markov.pdf`. -/
 theorem supportSourceBQuadratic_sum_sub_nonneg
     {ι : Type*} [Fintype ι] [Nonempty ι]
     (A B : ι → Matrix n n ℂ)

@@ -29,7 +29,7 @@ with the commutant argument from lines 860--882.
 **Scope restriction (full support):** The positive-definite common-average
 hypothesis replaces HJPW's reduction to the joint support, lines 761--763.
 Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`.
 
 **Convention (factor order):** TNLean orders each summand as the common
 density factor followed by the member-dependent factor, opposite to HJPW.
@@ -58,7 +58,7 @@ Property `2'`, lines 808--816, proved at lines 860--882.
 
 **Scope restriction (full support):** `hρbar` replaces HJPW's joint-support
 reduction, lines 761--763.  Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`. -/
 theorem exists_adaptedKrausBlocks_of_isPreserving
     {Kidx : Type*} [Fintype Kidx] [Nonempty Kidx] {ρ : Kidx → Mat}
     (hρbar : (commonAverage ρ).PosDef)
@@ -446,7 +446,7 @@ operation-level proof at lines 860--882.
 
 **Scope restriction (full support):** `hρbar` replaces HJPW's reduction to
 the joint support, lines 761--763.  Documented in
-`docs/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.tex`.
+`https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`.
 
 **Convention (factor order):** TNLean writes `σ_j ⊗ τ_{j|x}`, opposite to
 HJPW's order.  Thus the local channel acts on the first factor. -/

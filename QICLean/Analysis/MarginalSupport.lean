@@ -59,7 +59,7 @@ annihilates the marginal, so the core lemma applies to the lifted projection.
 ## References
 
 * Layer 6 (instantiation) of the relative-entropy elimination route for strong
-  subadditivity, `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`, the marginal
+  subadditivity, `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`, the marginal
   support lemma there.
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 8
   (Distance Measures)][Wolf2012QChannels].
@@ -86,7 +86,7 @@ $\operatorname{tr}(Q \rho) = 0$ forces $Q \rho = 0$.
 This is the operator core of the marginal support lemma: it captures the step
 "$\operatorname{tr}(Q \rho) = \lVert Q \sqrt\rho \rVert_2^2 = 0$ forces
 $Q \sqrt\rho = 0$, hence $Q \rho = 0$" of the marginal support argument in
-`docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`. -/
+`https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`. -/
 theorem PosSemidef.proj_mul_eq_zero_of_trace_eq_zero {ρ Q : Matrix n n ℂ}
     (hρ : ρ.PosSemidef) (hQ : Q.IsHermitian) (hQ2 : Q * Q = Q)
     (htr : (Q * ρ).trace = 0) : Q * ρ = 0 := by
@@ -330,7 +330,7 @@ In particular, taking $Q$ the projection onto $\ker \rho_{BC}$ gives
 $\mathcal H_A \otimes \ker \rho_{BC} \subseteq \ker \rho_{ABC}$, the
 kernel-containment used to place the singular reference state
 $(\mathbf 1_A / d_A) \otimes \rho_{BC}$ in the domain of the relative entropy at
-layer (6) of `docs/paper-gaps/cpsv16_ssa_from_lieb_route.tex`. -/
+layer (6) of `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_ssa_from_lieb_route.pdf`. -/
 theorem marginal_support
     {ρ : Matrix (Fin dA × Fin dB × Fin dC) (Fin dA × Fin dB × Fin dC) ℂ}
     (hρ : ρ.PosSemidef)

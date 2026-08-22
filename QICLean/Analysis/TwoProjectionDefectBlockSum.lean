@@ -19,7 +19,7 @@ This is the orthogonal-sum and commuting-remainder part of Jordan's lemma used i
 arXiv:1703.09188, Proposition IV.5 (`prop:continuity-index`), lines 759–762.
 
 **Local fix (projector label):** Source line 762 repeats `P` for the second projector, where the
-surrounding argument requires `Q`; see `docs/paper-gaps/1703_two_projection_projector_typo.tex`.
+surrounding argument requires `Q`; see `https://sirui-lu.com/TNLean/paper-gaps/mpu_two_projection_projector_typo.pdf`.
 -/
 
 open scoped InnerProductSpace

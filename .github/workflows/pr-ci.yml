@@ -41,12 +41,23 @@ on:
       - 'scripts/blueprint_lean_sync.py'
       - 'scripts/test_blueprint_web_render.py'
       - 'scripts/check_reader_facing_prose.py'
+      - 'docs/paper-gaps/**'
+      - 'texra-blueprint.toml'
+      # Trees the paper-gap reference check scans (texra-blueprint
+      # paper-gaps check); without these the check never runs
+      # on merge pushes that only touch a scanned file.
+      - 'docs/**/*.md'
       - 'LICENSE'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
       - 'docs/paper-gaps/**/*.tex'
       - 'docs/paper-gaps/**/*.bib'
+      - 'texra-blueprint.toml'
+      # Trees the paper-gap reference check scans (texra-blueprint
+      # paper-gaps check); without these the check never runs
+      # on PRs that only touch a scanned file.
+      - 'docs/**/*.md'
       - '**.lean'
       - 'lakefile.*'
       - 'lean-toolchain'
@@ -106,6 +117,7 @@ jobs:
       lean: ${{ steps.filter.outputs.lean }}
       module_policy: ${{ steps.filter.outputs.module_policy }}
       blueprint: ${{ steps.filter.outputs.blueprint }}
+      paper_gaps: ${{ steps.filter.outputs.paper_gaps }}
     steps:
       - uses: dorny/paths-filter@v3
         id: filter
@@ -136,6 +148,14 @@ jobs:
               - 'scripts/blueprint_bibtex.py'
               - 'scripts/check_reader_facing_prose.py'
               - 'scripts/test_blueprint_web_render.py'
+            # Everything the paper-gap reference check reads: the notes,
+            # the trees it scans for references, and its configuration.
+            paper_gaps:
+              - 'docs/paper-gaps/**'
+              - '**.lean'
+              - 'blueprint/src/**'
+              - 'docs/**/*.md'
+              - 'texra-blueprint.toml'
 
   # DROPPED from TNLean's pr-ci.yml: the tenkz-shrink, tenkz-corpus, and
   # tenkz-rmp jobs. TNLean's blueprint draws tensor-network diagrams with a
@@ -321,6 +341,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TEX_CHANGED: ${{ github.event_name != 'pull_request' || needs.changes.outputs.blueprint == 'true' }}
+      # The paper-gap reference check also runs when only the notes, the
+      # Lean sources, the Markdown docs, or the configuration changed.
+      PAPER_GAPS_CHANGED: ${{ github.event_name != 'pull_request' || needs.changes.outputs.paper_gaps == 'true' }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -361,11 +384,17 @@ jobs:
         if: env.TEX_CHANGED == 'true'
         uses: texra-ai/lean-env-action/blueprint-system-deps@v1
 
+      # Also installed for paper-gap-only changes: the reference check
+      # below runs the texra-blueprint CLI from this step's pip install.
       - name: Install blueprint Python dependencies
-        if: env.TEX_CHANGED == 'true'
+        if: env.TEX_CHANGED == 'true' || env.PAPER_GAPS_CHANGED == 'true'
         uses: texra-ai/lean-env-action/leanblueprint@v1
         with:
-          extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.1.0'
+          extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.3.1'
+
+      - name: Check paper-gap references resolve
+        if: env.TEX_CHANGED == 'true' || env.PAPER_GAPS_CHANGED == 'true'
+        run: texra-blueprint paper-gaps check
 
       # DROPPED from TNLean's blueprint job: every tenkz-specific step
       # (native tenkz source lint, tenkz manual/example compilation, the
