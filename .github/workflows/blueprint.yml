@@ -5,7 +5,10 @@ name: Blueprint
 # FT-MPS-volume packaging step (that split PDF is TNLean-specific). Otherwise
 # unchanged: same leanblueprint build, same error/warning gating, same
 # paper-gap reference check, same generated-page reader-facing check, same
-# Pages deploy handoff.
+# Pages deploy handoff. Beyond TNLean's version, this push path also builds
+# and packages the paper-gap note PDFs: the blueprint bibliography links to
+# them, so a deploy that published the links without the PDFs would leave
+# them dangling until the next scheduled docgen run.
 
 on:
   push:
@@ -49,6 +52,12 @@ jobs:
 
       - name: Install system dependencies
         uses: texra-ai/lean-env-action/blueprint-system-deps@v1
+        with:
+          # texlive-fonts-extra supplies dsfont, which some paper-gap notes
+          # load; the suffix separates the cache from the extra-package-free
+          # web-v1 set.
+          cache-suffix: web-v2
+          extra-packages: texlive-fonts-extra
 
       - name: Install leanblueprint
         uses: texra-ai/lean-env-action/leanblueprint@v1
@@ -60,6 +69,13 @@ jobs:
 
       - name: Build blueprint bibliography
         run: python3 scripts/blueprint_bibtex.py
+
+      # The bibliography links every paper-gap note to its published PDF, so
+      # the same deploy that publishes the links must also publish the PDFs;
+      # the weekly docgen run alone would leave links to freshly added notes
+      # dangling until it next succeeds.
+      - name: Build paper-gap PDFs
+        run: texra-blueprint --root . paper-gaps build
 
       - name: Build blueprint
         run: |
@@ -98,6 +114,7 @@ jobs:
           mkdir -p site-blueprint site-badges
           cp -r blueprint/web site-blueprint/blueprint
           cp blueprint/print/print.pdf site-blueprint/blueprint.pdf
+          texra-blueprint --root . paper-gaps site site-blueprint/paper-gaps
           python3 scripts/write_badges.py site-badges
 
       - name: Build homepage
