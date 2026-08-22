@@ -1,16 +1,23 @@
-<!-- Pointer: the canonical document lives in the lean-conventions skill of
-     texra-ai/texra-lean-skills, installed automatically in Claude Code
-     sessions by .claude/settings.json (other agents: see the install
-     instructions in that repository's README). Only the project addendum
-     below is repo-local. -->
+# QICLean-local convention addenda
 
-# Lean Proof Integrity Rules
+The canonical convention documents live in the `lean-conventions` skill of
+[texra-ai/texra-lean-skills](https://github.com/texra-ai/texra-lean-skills)
+(auto-installed for Claude Code sessions via `.claude/settings.json`; other
+agents: `npx skills add texra-ai/texra-lean-skills`). This file holds only
+QICLean's project-local facts — it restates no shared rule, and shared rules
+never move here.
 
-Canonical text: the `lean-conventions` skill —
-[PROOF_INTEGRITY.md](https://github.com/texra-ai/texra-lean-skills/blob/main/skills/lean-conventions/references/PROOF_INTEGRITY.md).
-Consult it through the installed skill; do not restate its rules here.
+## Style (MATHLIB_style)
 
-## Project addendum (QICLean)
+QICLean exercises the repository-local pass-through exception described in
+the deprecation section: a public declaration that merely forwards to an
+existing theorem, exposes a bundled-structure field, or names a proof step
+now written at the use site may be removed without a transition declaration,
+provided all non-`Archive` uses are migrated, no blueprint `\lean{...}` tag
+cites the old name, and the PR body plus an audit note name each removed
+declaration with its replacement.
+
+## Proof integrity (PROOF_INTEGRITY)
 
 ### Sanctioned-axiom history
 
@@ -36,3 +43,8 @@ earlier; see `QICLean/Analysis/OperatorConvexity.lean`. The `QICLean/Axioms/`
 directory held only proved theorems and was dissolved: its four modules
 were relocated to their subject homes and the `_axiom` suffix was dropped
 from the one declaration name that still carried it.
+
+## Prose (prose_style)
+
+- No migrated docstring region is currently designated (the monorepo this
+  library was extracted from designated `TNLean/MPS/ParentHamiltonian`).

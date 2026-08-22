@@ -111,21 +111,18 @@ file. See `blueprint/README.md` for layout and build commands.
 
 ## Conventions & Style Guides
 
-Detailed conventions live in `docs/`. The Mathlib-style, proof-integrity, and
-prose documents are pointers into the `lean-conventions` skill
-(texra-ai/texra-lean-skills, auto-installed via `.claude/settings.json`);
-read the skill reference plus the file's project addendum. Read the relevant
-file before working in that area:
+Shared conventions (Mathlib style, naming, documentation, PR review, proof
+integrity, prose style) live in the `lean-conventions` skill of
+texra-ai/texra-lean-skills, auto-installed via `.claude/settings.json` —
+consult the skill, and `docs/project_conventions.md` for QICLean-local
+addenda. Repo-specific conventions live in `docs/`; read the relevant file
+before working in that area:
 
 | File | Covers |
 |------|--------|
-| [`docs/MATHLIB_style.md`](docs/MATHLIB_style.md) | Code formatting, line length (100 chars), declarations, tactic style, whitespace, transparency, deprecation |
-| [`docs/MATHLIB_naming.md`](docs/MATHLIB_naming.md) | Capitalization rules, symbol-to-name dictionary, variable conventions |
-| [`docs/MATHLIB_doc.md`](docs/MATHLIB_doc.md) | Module docstrings, definition docstrings, sectioning comments, BibTeX citations |
-| [`docs/PROOF_INTEGRITY.md`](docs/PROOF_INTEGRITY.md) | Blockers (`sorry`, `axiom`, kernel bypasses, circular reasoning) and warnings (`maxHeartbeats`, debug artifacts) |
-| [`docs/MATHLIB_pr-review.md`](docs/MATHLIB_pr-review.md) | Review criteria: style, documentation, location, improvements, library integration |
+| `lean-conventions` skill | Mathlib style, naming, documentation, PR review, proof integrity, prose style (canonical; installed) |
+| [`docs/project_conventions.md`](docs/project_conventions.md) | QICLean-local addenda to the shared conventions |
 | [`docs/blueprint_style_guide.md`](docs/blueprint_style_guide.md) | LaTeX conventions, `\lean{}`/`\leanok` tags, notation table, `\uses` rules, blueprint build commands |
-| [`docs/prose_style.md`](docs/prose_style.md) | Prose conventions: no Lean jargon in the leanblueprint, banned software-engineering terms, banned LLM writing patterns (applies to `.tex` AND Lean docstrings/comments) |
 | [`docs/UPGRADE_RUNBOOK.md`](docs/UPGRADE_RUNBOOK.md) | The two-repo Mathlib upgrade procedure and lockstep invariants with TNLean |
 
 The remaining TNLean convention docs (`CONTRIBUTING.md`, `glossary.md`,
@@ -145,7 +142,7 @@ process they describe.
 - **Proof integrity blockers**: `sorry`, `admit`, `native_decide`, `unsafeCast`, `axiom`, circular reasoning
 - **Blueprint prose**: Pure mathematics only — no Lean identifiers in text, no software jargon (see banned terms list in blueprint style guide)
 - **Paper references**: Cite theorem numbers in docstrings (e.g., "Wolf Thm 6.3", "arXiv:1606.00608 Appendix A")
-- **Mathematical renames**: When renaming a declaration whose old name encodes misleading terminology (banned vocabulary in `docs/prose_style.md` §2), skip the `@[deprecated] alias` and state the reason in the PR body (see `docs/CONTRIBUTING.md` §Mathematical-language renames).
+- **Mathematical renames**: When renaming a declaration whose old name encodes misleading terminology (banned vocabulary in the lean-conventions prose_style reference, §2), skip the `@[deprecated] alias` and state the reason in the PR body (see `docs/CONTRIBUTING.md` §Mathematical-language renames).
 
 ## Workflow
 
@@ -235,7 +232,7 @@ stricter version inside a particular argument, etc.).
 When the formalization has drifted from the cited source and the work is
 **realigning the Lean development to the paper** (replacing wrong hypotheses,
 removing divergent structures, restating theorems to match the source), the
-default `sorry`/`axiom` blockers from `docs/PROOF_INTEGRITY.md` are temporarily
+default `sorry`/`axiom` blockers from the lean-conventions proof-integrity rules are temporarily
 relaxed. The priority is **getting the statements right**; proofs are
 restored after.
 

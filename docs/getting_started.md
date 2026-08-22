@@ -137,18 +137,16 @@ reasonable way to see how the library is put together:
 
 ## Contributing
 
-Read the relevant convention document before working in an area; the
-following were carried over from TNLean's `docs/` and apply here:
+Shared conventions (Mathlib style, naming, documentation, PR review, proof
+integrity, prose style) live in the `lean-conventions` skill of
+texra-ai/texra-lean-skills, auto-installed via `.claude/settings.json`;
+QICLean-local addenda are in `docs/project_conventions.md`. Repo-specific
+convention documents:
 
 | File | Covers |
 |---|---|
-| [`docs/MATHLIB_style.md`](MATHLIB_style.md) | Code formatting, declarations, tactic style |
-| [`docs/MATHLIB_naming.md`](MATHLIB_naming.md) | Capitalization, symbol-to-name dictionary, variable conventions |
-| [`docs/MATHLIB_doc.md`](MATHLIB_doc.md) | Module docstrings, definition docstrings, citations |
-| [`docs/PROOF_INTEGRITY.md`](PROOF_INTEGRITY.md) | Blockers (`sorry`, `axiom`, kernel bypasses) and warnings |
-| [`docs/MATHLIB_pr-review.md`](MATHLIB_pr-review.md) | Review criteria: style, documentation, location, improvements, library integration |
+| [`docs/project_conventions.md`](project_conventions.md) | QICLean-local addenda to the shared conventions |
 | [`docs/blueprint_style_guide.md`](blueprint_style_guide.md) | LaTeX conventions, `\lean{}`/`\leanok` tags, `\uses` rules |
-| [`docs/prose_style.md`](prose_style.md) | Prose conventions for the blueprint and docstrings |
 | [`docs/UPGRADE_RUNBOOK.md`](UPGRADE_RUNBOOK.md) | The two-repository Mathlib upgrade procedure with TNLean |
 
 The remaining TNLean convention documents (`CONTRIBUTING.md`,
