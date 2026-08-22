@@ -1,0 +1,83 @@
+name: Release Archive
+
+# Builds QICLean at a pushed semantic-version tag and publishes the build
+# output as a Lake cloud-release archive on the corresponding GitHub release,
+# so a dependent package (TNLean, pinning QICLean by tag in lakefile.toml)
+# fetches a prebuilt archive instead of compiling QICLean's modules from
+# source. See docs/UPGRADE_RUNBOOK.md §5 and the `releaseRepo` /
+# `preferReleaseBuild` keys in lakefile.toml.
+#
+# Mechanism (Lake v4.34.0-rc1, verified against the Lake source bundled with
+# the pinned toolchain, `Lake/Build/Package.lean` and `Lake/CLI/Actions.lean`):
+#   - `lake upload <tag>` packs the root package's `buildDir` into
+#     `QICLean-<platform-target>.tar.gz` and runs
+#     `gh release upload <tag> <archive> --clobber -R <releaseRepo>`.
+#   - This requires the GitHub release object for `<tag>` to already exist;
+#     `gh release upload` does not create it.
+#   - The archive name embeds the LLVM target triple of the Lean binary that
+#     built it (`System.Platform.target`), so archives are per-platform.
+#     `ubuntu-latest` here publishes the Linux archive; there is currently no
+#     macOS archive published by CI (a local `lake upload` from a macOS
+#     machine would publish that platform's archive to the same release).
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  BUILD_CACHE_PATHS: |
+    .lake/build
+    .lake/packages/Gametheory/.lake/build
+    .lake/packages/checkdecls/.lake/build
+
+jobs:
+  release-archive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      # Restore-only: this workflow runs on rare tag pushes, not every PR, so
+      # it does not save a cache entry of its own (avoiding the per-run
+      # eviction problem `docs/lake_build_cache.md` documents for pr-ci.yml).
+      - name: Restore Lean build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.BUILD_CACHE_PATHS }}
+          key: qiclean-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+          restore-keys: |
+            qiclean-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+
+      - uses: leanprover/lean-action@v1
+        with:
+          build: false
+          use-github-cache: false
+
+      - name: Build Lean project
+        run: lake build
+
+      - name: Ensure the GitHub release exists for this tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if ! gh release view "$TAG" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            gh release create "$TAG" \
+              --repo "${{ github.repository }}" \
+              --title "$TAG" \
+              --notes "Build archive for Lake cloud release."
+          fi
+
+      - name: Upload the Lake cloud-release archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: lake upload "$TAG"

@@ -46,18 +46,23 @@ These must hold at every point except the deliberate transition window in
    semantic-version tag `vX.Y.Z` — this is the tag TNLean actually pins, and
    using semver (rather than only the toolchain tag) lets a later
    content-only hotfix land as `vX.Y.(Z+1)` without another toolchain bump.
-   The tag push triggers a release build (`lake build && lake upload
-   vX.Y.Z`), producing a prebuilt archive TNLean's CI can fetch instead of
-   recompiling QICLean from source.
+   The tag push triggers `.github/workflows/release-archive.yml`, which
+   builds QICLean at the tag and runs `lake upload vX.Y.Z` (creating the
+   GitHub release object first if it does not already exist), producing a
+   prebuilt archive TNLean's CI can fetch instead of recompiling QICLean
+   from source.
 3. **TNLean**, one PR:
    - Copy QICLean's `lean-toolchain` byte-for-byte.
    - Bump the `QICLean` requirement to the new tag.
    - Bump the `mathlib` requirement to the same revision now in QICLean's
      manifest (TNLean's root Mathlib requirement must match QICLean's, per
      invariant I2).
-   - `lake update QICLean mathlib`, `lake exe cache get`,
-     `lake build QICLean:release` (or an equivalent prebuilt-archive fetch),
-     then `lake build`.
+   - `lake update QICLean mathlib`, `lake exe cache get`, then `lake build`.
+     No special target or flag is needed on the TNLean side: QICLean's
+     `preferReleaseBuild = true` (lakefile.toml) makes Lake try the GitHub
+     release archive automatically for every non-root build of QICLean,
+     as long as `.lake/packages/QICLean/.lake/build` does not already exist
+     locally and the build is not run with `--no-cache`.
    - Let ordinary CI and the auto-fix loop handle any proof fallout from the
      Mathlib bump; this PR is not required to be a pure version bump if a
      handful of TNLean proofs need adjustment, but it must not touch
@@ -104,12 +109,20 @@ reintroducing the multi-hour CI cost that the shared-cache-eviction fix
 (`docs/lake_build_cache.md`) already solved once for TNLean's own modules.
 The mitigation, in order of preference:
 
-1. **Primary**: QICLean's release tags publish a prebuilt archive (`lake
-   upload`); TNLean's CI fetches it (`lake build QICLean:release` or
-   equivalent) instead of compiling from source. Verify the exact `lake
-   upload` / `lake build ...:release` invocation against the pinned Lean
-   toolchain before relying on it in CI — the Lake release-archive feature's
-   exact flags are toolchain-version-sensitive.
+1. **Primary**: QICLean's release tags publish a prebuilt archive via
+   `release-archive.yml` (`lake upload vX.Y.Z`, run against
+   `ubuntu-latest`); an ordinary `lake build` on the TNLean side fetches and
+   unpacks it automatically instead of compiling QICLean from source —
+   `preferReleaseBuild = true` in QICLean's `lakefile.toml` is what makes
+   this automatic for any consumer, no special TNLean-side target or flag
+   required. One caveat verified against Lake v4.34.0-rc1's source
+   (`Lake/Build/Package.lean`): the archive name embeds the platform's LLVM
+   target triple (`System.Platform.target`), so archives are per-platform —
+   `release-archive.yml` publishes only the `ubuntu-latest` (Linux) archive.
+   A contributor building TNLean locally on macOS will not find a matching
+   archive and falls back to compiling QICLean from source there (Lake logs
+   a warning, does not error); this only affects local non-Linux builds, not
+   CI.
 2. **Backstop**: include QICLean's build directory
    (`.lake/packages/QICLean/.lake/build`) in TNLean's `BUILD_CACHE_PATHS`,
    saved only from `main`, same as TNLean's own build cache. This keeps the

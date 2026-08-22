@@ -4,6 +4,19 @@ keywords = ["math"]
 # The default target builds the whole QICLean library.
 defaultTargets = ["QICLean"]
 
+# Lake cloud-release configuration. TNLean pins this package by a semantic-
+# version tag (see docs/UPGRADE_RUNBOOK.md); `preferReleaseBuild` is the flag
+# a *dependent* package's Lake reads to try `optGitHubReleaseFacet` (fetch +
+# unpack a prebuilt `buildDir` archive from this repository's GitHub release
+# for the pinned tag) before falling back to compiling QICLean from source.
+# `releaseRepo` is set explicitly (rather than left to Lake's default, which
+# derives it from the dependent's `git = "...git"` requirement URL and does
+# not strip the `.git` suffix) so the constructed release-asset URL is always
+# `https://github.com/LionSR/QICLean/releases/download/<tag>/<archive>`,
+# independent of how a consumer spells the `require` URL.
+releaseRepo = "https://github.com/LionSR/QICLean"
+preferReleaseBuild = true
+
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
 relaxedAutoImplicit = false
