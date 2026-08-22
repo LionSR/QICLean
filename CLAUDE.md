@@ -103,7 +103,7 @@ notion to remove that bridge's reason to exist.
 ## Blueprint
 
 `blueprint/` holds the reader-facing mathematical account, extracted from
-TNLean's blueprint (see `interface_edges.md` at the repository root for the
+TNLean's blueprint (see `docs/extraction/interface_edges.md` for the
 severed cross-boundary edges left by that extraction). `blueprint/src/content.tex`
 orders chapters to match M. Wolf's *Quantum Channels & Operations: A Guided
 Tour* as closely as possible; see the mapping comment at the top of that

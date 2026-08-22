@@ -8,11 +8,11 @@ corresponding Lean declarations with `\lean{...}` and `\leanok` tags.
 QICLean's blueprint was extracted from TNLean's blueprint in a monorepo
 split (see the extraction report in the repository history / PR description
 for the moved-file list, the Wolf-chapter mapping, and the severed
-cross-boundary `\uses`/`\ref` edges recorded in `interface_edges.md` at the
-repository root). Chapter contents are unchanged from TNLean except for
-three tensor-network diagrams removed (QICLean carries no tenkz diagram
-pipeline) and two `\input` lines dropped where the corresponding content
-stayed in TNLean.
+cross-boundary `\uses`/`\ref` edges recorded in
+`docs/extraction/interface_edges.md`). Chapter contents are unchanged from
+TNLean except for three tensor-network diagrams removed (QICLean carries no
+tenkz diagram pipeline) and two `\input` lines dropped where the
+corresponding content stayed in TNLean.
 
 ## Layout
 
