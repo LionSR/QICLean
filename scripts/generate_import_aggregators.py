@@ -42,9 +42,9 @@ EXCLUDED_TOP_LEVEL_DIRECTORIES = frozenset({"Archive"})
 # listed production modules to a directly imported handwritten sub-aggregator.
 #
 # Extraction note: TNLean's sole entry (MPS.ParentHamiltonian.Martingale) does
-# not apply — MPS/ stayed in TNLean and was not extracted into QICLean. Empty
-# until QICLean develops its own handwritten sub-aggregators needing this
-# exception.
+# not apply — MPS/ParentHamiltonian stayed in TNLean and was not extracted
+# into QICLean. Empty until QICLean develops its own handwritten
+# sub-aggregators needing this exception.
 HANDWRITTEN_IMPORT_OWNERSHIP: dict[str, dict[str, frozenset[str]]] = {}
 
 
