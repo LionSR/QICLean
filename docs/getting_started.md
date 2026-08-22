@@ -146,15 +146,16 @@ following were carried over from TNLean's `docs/` and apply here:
 | [`docs/MATHLIB_naming.md`](MATHLIB_naming.md) | Capitalization, symbol-to-name dictionary, variable conventions |
 | [`docs/MATHLIB_doc.md`](MATHLIB_doc.md) | Module docstrings, definition docstrings, citations |
 | [`docs/PROOF_INTEGRITY.md`](PROOF_INTEGRITY.md) | Blockers (`sorry`, `axiom`, kernel bypasses) and warnings |
+| [`docs/MATHLIB_pr-review.md`](MATHLIB_pr-review.md) | Review criteria: style, documentation, location, improvements, library integration |
 | [`docs/blueprint_style_guide.md`](blueprint_style_guide.md) | LaTeX conventions, `\lean{}`/`\leanok` tags, `\uses` rules |
 | [`docs/prose_style.md`](prose_style.md) | Prose conventions for the blueprint and docstrings |
 | [`docs/UPGRADE_RUNBOOK.md`](UPGRADE_RUNBOOK.md) | The two-repository Mathlib upgrade procedure with TNLean |
 
 The remaining TNLean convention documents (`CONTRIBUTING.md`,
-`glossary.md`, `MATHLIB_pr-review.md`, `pr_review_management.md`,
-`ci-automation.md`, `lake_build_cache.md`, `tactic_development.md`,
-`tactic_patterns.md`) were not carried into this extraction; see
-[`../CLAUDE.md`](../CLAUDE.md) if one of them turns out to be needed.
+`glossary.md`, `pr_review_management.md`, `ci-automation.md`,
+`lake_build_cache.md`, `tactic_development.md`, `tactic_patterns.md`)
+were not carried into this extraction; see [`../CLAUDE.md`](../CLAUDE.md)
+if one of them turns out to be needed.
 
 **PR titles** follow `type(scope): description`, with `type` one of
 `feat`, `fix`, `refactor`, `doc`, `style`, `ci`, `chore`, and `scope` a

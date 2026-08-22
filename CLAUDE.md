@@ -121,15 +121,16 @@ shared file. Read the relevant file before working in that area:
 | [`docs/MATHLIB_naming.md`](docs/MATHLIB_naming.md) | Capitalization rules, symbol-to-name dictionary, variable conventions |
 | [`docs/MATHLIB_doc.md`](docs/MATHLIB_doc.md) | Module docstrings, definition docstrings, sectioning comments, BibTeX citations |
 | [`docs/PROOF_INTEGRITY.md`](docs/PROOF_INTEGRITY.md) | Blockers (`sorry`, `axiom`, kernel bypasses, circular reasoning) and warnings (`maxHeartbeats`, debug artifacts) |
+| [`docs/MATHLIB_pr-review.md`](docs/MATHLIB_pr-review.md) | Review criteria: style, documentation, location, improvements, library integration |
 | [`docs/blueprint_style_guide.md`](docs/blueprint_style_guide.md) | LaTeX conventions, `\lean{}`/`\leanok` tags, notation table, `\uses` rules, blueprint build commands |
 | [`docs/prose_style.md`](docs/prose_style.md) | Prose conventions: no Lean jargon in the leanblueprint, banned software-engineering terms, banned LLM writing patterns (applies to `.tex` AND Lean docstrings/comments) |
 | [`docs/UPGRADE_RUNBOOK.md`](docs/UPGRADE_RUNBOOK.md) | The two-repo Mathlib upgrade procedure and lockstep invariants with TNLean |
 
 The remaining TNLean convention docs (`CONTRIBUTING.md`, `glossary.md`,
-`MATHLIB_pr-review.md`, `pr_review_management.md`, `ci-automation.md`,
-`lake_build_cache.md`, `tactic_development.md`, `tactic_patterns.md`) were
-not carried into this extraction; port them individually if QICLean
-develops a need for the process they describe.
+`pr_review_management.md`, `ci-automation.md`, `lake_build_cache.md`,
+`tactic_development.md`, `tactic_patterns.md`) were not carried into this
+extraction; port them individually if QICLean develops a need for the
+process they describe.
 
 ### Quick Reference (from the docs above)
 
