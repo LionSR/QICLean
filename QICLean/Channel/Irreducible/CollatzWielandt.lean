@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.Irreducible.FixedPointUniqueness
 import QICLean.Channel.Irreducible.Growth
+import QICLean.Channel.Irreducible.AdjointFamily
 
 /-!
 # Collatz--Wielandt argument for irreducible positive maps
@@ -33,6 +34,19 @@ open Matrix
 variable {D : ℕ}
 
 local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
+
+/-- A positive-definite weight has strictly positive trace pairing with every
+nonzero positive semidefinite matrix. -/
+private theorem trace_mul_pos_of_posDef_posSemidef_ne_zero
+    {X₀ Y : Mat} (hX₀ : X₀.PosDef) (hY : Y.PosSemidef) (hY_ne : Y ≠ 0) :
+    0 < Matrix.trace (X₀ * Y) := by
+  have hnonneg : 0 ≤ Matrix.trace (X₀ * Y) :=
+    hX₀.posSemidef.trace_mul_nonneg hY
+  have hne : Matrix.trace (X₀ * Y) ≠ 0 := by
+    intro hzero
+    exact hY_ne
+      (Matrix.posSemidef_eq_zero_of_posDef_trace_mul_eq_zero hY hX₀ hzero)
+  exact lt_of_le_of_ne hnonneg (by simpa only [ne_eq, eq_comm] using hne)
 
 /-- A nonnegative real number `a` is lower Collatz--Wielandt feasible at `X`
 for `T` when `X` is a density matrix and `T X - a X` is positive semidefinite.
@@ -470,3 +484,85 @@ theorem finrank_eigenspace_eq_one_of_irreducible_positive [NeZero D]
   intro hXzero
   have htrace := hX.trace_pos
   simp [hXzero] at htrace
+
+/-! ## Wolf Equation (6.33): comparison with positive eigenvectors -/
+
+/-- The Perron value of an irreducible positive map is also an eigenvalue of
+the trace-pairing adjoint, with a positive-definite eigenvector.
+
+The proof uses the positive-map trace-adjoint irreducibility observation on
+Wolf lines 604--606, applies the preceding Perron construction to `T*`, and
+then identifies the two Perron values by the trace pairing.  This is the first
+step of Wolf Equation (6.33). -/
+theorem exists_posDef_traceAdjointMap_eigenvector_at_perron [NeZero D]
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
+    {X : Mat} {r : ℝ} (hr : 0 < r)
+    (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X) :
+    ∃ X₀ : Mat, X₀.PosDef ∧
+      Matrix.traceAdjointMap T X₀ = (r : ℂ) • X₀ := by
+  have hr_complex : (r : ℂ) ≠ 0 := by exact_mod_cast hr.ne'
+  have hX_ne : X ≠ 0 := by
+    intro hXzero
+    have htrace := hX.trace_pos
+    simp [hXzero] at htrace
+  have hT_ne : T ≠ 0 := by
+    intro hTzero
+    have hsmul : (r : ℂ) • X = 0 := by
+      rw [← hX_eig, hTzero, LinearMap.zero_apply]
+    exact hX_ne ((smul_eq_zero.mp hsmul).resolve_left hr_complex)
+  have hTstar_ne : Matrix.traceAdjointMap T ≠ 0 := by
+    intro hTstar_zero
+    apply hT_ne
+    have hdouble := congrArg Matrix.traceAdjointMap hTstar_zero
+    rw [Matrix.traceAdjointMap_traceAdjointMap] at hdouble
+    have hzero : Matrix.traceAdjointMap (0 : Mat →ₗ[ℂ] Mat) = 0 := by
+      apply LinearMap.ext
+      intro ρ
+      ext i j
+      simp [Matrix.traceAdjointMap]
+    rw [hzero] at hdouble
+    exact hdouble
+  obtain ⟨X₀, s, -, hs, hX₀, hX₀_eig, -⟩ :=
+    exists_posDef_eigenvector_of_irreducible_positive_of_ne_zero
+      (Matrix.traceAdjointMap T) hT.traceAdjointMap
+      (hIrr.traceAdjointMap hT) hTstar_ne
+  have htrace_pos : 0 < Matrix.trace (X₀ * X) :=
+    trace_mul_pos_of_posDef_posSemidef_ne_zero hX₀ hX.posSemidef hX_ne
+  have htrace_ne : Matrix.trace (X₀ * X) ≠ 0 := ne_of_gt htrace_pos
+  have hpair := Matrix.trace_traceAdjointMap_mul T X₀ X
+  rw [hX₀_eig, hX_eig] at hpair
+  have hsr_complex : (s : ℂ) = (r : ℂ) := by
+    apply mul_right_cancel₀ htrace_ne
+    simpa only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul,
+      smul_eq_mul] using hpair
+  have hsr : s = r := by exact_mod_cast hsr_complex
+  subst s
+  exact ⟨X₀, hX₀, hX₀_eig⟩
+
+/-- **Wolf Equation (6.33).**  Let `r > 0` have a positive-definite
+eigenvector for an irreducible positive map.  Any positive eigenvalue `λ > 0`
+which has a nonzero positive semidefinite eigenvector equals `r`.
+
+The positive-definite `r`-eigenvector `X₀` of the trace adjoint gives
+`r tr(X₀ Y) = tr(T*(X₀)Y) = tr(X₀ T(Y)) = λ tr(X₀ Y)`.
+Faithfulness of the positive-definite weighted trace permits cancellation. -/
+theorem positive_eigenvalue_eq_perron_of_irreducible_positive [NeZero D]
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
+    {X Y : Mat} {r lam : ℝ} (hr : 0 < r)
+    (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X)
+    (_hlam : 0 < lam) (hY : Y.PosSemidef) (hY_ne : Y ≠ 0)
+    (hY_eig : T Y = (lam : ℂ) • Y) :
+    lam = r := by
+  obtain ⟨X₀, hX₀, hX₀_eig⟩ :=
+    exists_posDef_traceAdjointMap_eigenvector_at_perron
+      T hT hIrr hr hX hX_eig
+  have htrace_pos : 0 < Matrix.trace (X₀ * Y) :=
+    trace_mul_pos_of_posDef_posSemidef_ne_zero hX₀ hY hY_ne
+  have htrace_ne : Matrix.trace (X₀ * Y) ≠ 0 := ne_of_gt htrace_pos
+  have hpair := Matrix.trace_traceAdjointMap_mul T X₀ Y
+  rw [hX₀_eig, hY_eig] at hpair
+  have hrlam_complex : (r : ℂ) = (lam : ℂ) := by
+    apply mul_right_cancel₀ htrace_ne
+    simpa only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul,
+      smul_eq_mul] using hpair
+  exact_mod_cast hrlam_complex.symm
