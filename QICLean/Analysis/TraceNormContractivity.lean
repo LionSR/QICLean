@@ -3,8 +3,8 @@ Copyright (c) 2026 Sirui Lu and TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
-import QICLean.Analysis.TraceNormAbs
 import QICLean.Algebra.MatrixAux
+import QICLean.Analysis.TraceNormAbs
 
 /-!
 # Trace-norm contractivity of trace-preserving positive maps
@@ -301,6 +301,96 @@ theorem traceNorm_map_sub_map_le_of_positive_of_tracePreserving
   rw [← map_sub]
   exact traceNorm_map_le_of_positive_of_tracePreserving hpos htr
     (h₁.isHermitian.sub h₂.isHermitian)
+
+/-! ### Jordan normalization of traceless Hermitian matrices -/
+
+/-- Wolf's Jordan normalization step: every nonzero traceless Hermitian matrix
+is a positive scalar times the difference of two density matrices with
+orthogonal supports, and its trace norm is twice that scalar. -/
+theorem exists_orthogonal_density_jordan_normalization
+    {H : Matrix (Fin D) (Fin D) ℂ} (hH : H.IsHermitian) (htr : H.trace = 0)
+    (hne : H ≠ 0) :
+    ∃ t : ℝ, 0 < t ∧ ∃ P Q : Matrix (Fin D) (Fin D) ℂ,
+      P.PosSemidef ∧ P.trace = 1 ∧ Q.PosSemidef ∧ Q.trace = 1 ∧ P * Q = 0 ∧
+      H = (t : ℂ) • (P - Q) ∧ traceNorm H = 2 * t := by
+  let Hp : Matrix (Fin D) (Fin D) ℂ := H⁺
+  let Hm : Matrix (Fin D) (Fin D) ℂ := H⁻
+  have hp : Hp.PosSemidef := nonneg_iff_posSemidef.mp (CFC.posPart_nonneg H)
+  have hm : Hm.PosSemidef := nonneg_iff_posSemidef.mp (CFC.negPart_nonneg H)
+  have hdecomp : Hp - Hm = H := by
+    exact CFC.posPart_sub_negPart H (isSelfAdjoint_iff.mpr hH)
+  have htreq : Hp.trace = Hm.trace := by
+    have := congrArg Matrix.trace hdecomp
+    rw [trace_sub, htr, sub_eq_zero] at this
+    exact this
+  have hpTraceReal : (Hp.trace.re : ℂ) = Hp.trace := by
+    apply Complex.ext
+    · simp
+    · simp [(Complex.nonneg_iff.mp hp.trace_nonneg).2]
+  let t : ℝ := Hp.trace.re
+  have ht0 : 0 ≤ t := (Complex.nonneg_iff.mp hp.trace_nonneg).1
+  have ht : 0 < t := ht0.lt_of_ne fun htzero ↦ by
+    have hpzero : Hp = 0 := (hp.trace_eq_zero_iff.mp (by
+      rw [← hpTraceReal]
+      change (t : ℂ) = 0
+      rw [← htzero]
+      norm_num))
+    have hmzero : Hm = 0 := (hm.trace_eq_zero_iff.mp (by rw [← htreq, hpzero]; simp))
+    apply hne
+    rw [← hdecomp, hpzero, hmzero, sub_zero]
+  let P : Matrix (Fin D) (Fin D) ℂ := (t : ℂ)⁻¹ • Hp
+  let Q : Matrix (Fin D) (Fin D) ℂ := (t : ℂ)⁻¹ • Hm
+  have htC : (t : ℂ) ≠ 0 := by exact_mod_cast ht.ne'
+  have hPinvPos : (0 : ℂ) ≤ (t : ℂ)⁻¹ := by
+    exact_mod_cast (inv_nonneg.mpr ht.le)
+  have hPpsd : P.PosSemidef := hp.smul hPinvPos
+  have hQpsd : Q.PosSemidef := hm.smul hPinvPos
+  have hPtr : P.trace = 1 := by
+    change ((t : ℂ)⁻¹ • Hp).trace = 1
+    rw [trace_smul, ← hpTraceReal]
+    change (t : ℂ)⁻¹ * (t : ℂ) = 1
+    exact inv_mul_cancel₀ htC
+  have hQtr : Q.trace = 1 := by
+    change ((t : ℂ)⁻¹ • Hm).trace = 1
+    rw [trace_smul, ← htreq, ← hpTraceReal]
+    change (t : ℂ)⁻¹ * (t : ℂ) = 1
+    exact inv_mul_cancel₀ htC
+  have hPQ : P * Q = 0 := by
+    change ((t : ℂ)⁻¹ • H⁺) * ((t : ℂ)⁻¹ • H⁻) = 0
+    rw [Matrix.smul_mul, Matrix.mul_smul, CFC.posPart_mul_negPart, smul_zero, smul_zero]
+  have hscale : H = (t : ℂ) • (P - Q) := by
+    change H = (t : ℂ) • ((t : ℂ)⁻¹ • Hp - (t : ℂ)⁻¹ • Hm)
+    rw [smul_sub, smul_smul, smul_smul]
+    simp only [mul_inv_cancel₀ htC, one_smul]
+    exact hdecomp.symm
+  have hnorm : traceNorm H = 2 * t := by
+    rw [hH.traceNorm_eq_re_trace_posPart_add_negPart]
+    change Hp.trace.re + Hm.trace.re = 2 * t
+    rw [← htreq]
+    change t + t = 2 * t
+    ring
+  exact ⟨t, ht, P, Q, hPpsd, hPtr, hQpsd, hQtr, hPQ, hscale, hnorm⟩
+
+/-- Quotient form of the Jordan normalization: an arbitrary linear map has the
+same trace-norm ratio on a traceless Hermitian input as one half of its value
+on a difference of orthogonally supported density matrices. -/
+theorem exists_orthogonal_density_traceNorm_ratio
+    (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D') (Fin D') ℂ)
+    {H : Matrix (Fin D) (Fin D) ℂ} (hH : H.IsHermitian) (htr : H.trace = 0)
+    (hne : H ≠ 0) :
+    ∃ P Q : Matrix (Fin D) (Fin D) ℂ,
+      P.PosSemidef ∧ P.trace = 1 ∧ Q.PosSemidef ∧ Q.trace = 1 ∧ P * Q = 0 ∧
+      traceNorm (T H) / traceNorm H =
+        (1 / 2 : ℝ) * traceNorm (T P - T Q) := by
+  obtain ⟨t, ht, P, Q, hP, hPtr, hQ, hQtr, hPQ, hscale, hnorm⟩ :=
+    exists_orthogonal_density_jordan_normalization hH htr hne
+  refine ⟨P, Q, hP, hPtr, hQ, hQtr, hPQ, ?_⟩
+  rw [hnorm, hscale, map_smul, traceNorm_smul]
+  have htNorm : ‖(t : ℂ)‖ = t := by simp [abs_of_pos ht]
+  rw [htNorm]
+  have htne : t ≠ 0 := ht.ne'
+  rw [map_sub]
+  field_simp
 
 /-! ### Generalized scaled-trace contractivity
 

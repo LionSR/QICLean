@@ -20,12 +20,30 @@ matrix to outer-product sums over its spectral data.
 * `Matrix.PosSemidef.eq_sum_vecMulVec_nonzero_eigs` — a positive semidefinite
   matrix equals the sum of the rank-one outer products from its nonzero
   eigenvalues and eigenvectors.
+* `Matrix.PosSemidef.eq_sum_eigenvalue_smul_eigenprojector` — the weighted
+  spectral decomposition into unit rank-one eigenprojectors.
 -/
 
 open scoped Matrix ComplexOrder
 open Matrix Finset BigOperators
 
 namespace Matrix
+
+/-- Conjugating a scaled matrix unit by `K` and `Kᴴ` gives the
+correspondingly scaled outer product of columns of `K`. -/
+theorem mul_single_mul_conjTranspose_eq_smul_vecMulVec
+    {m n : Type*} [Fintype n] [DecidableEq n]
+    (K : Matrix m n ℂ) (c : ℂ) (i₂ j₂ : n) :
+    K * Matrix.single i₂ j₂ c * Kᴴ =
+      c • Matrix.vecMulVec (fun i₁ : m => K i₁ i₂)
+        (fun j₁ : m => star (K j₁ j₂)) := by
+  rw [show Matrix.single i₂ j₂ c =
+      c • Matrix.vecMulVec (Pi.single i₂ (1 : ℂ)) (Pi.single j₂ 1) by
+    rw [← Matrix.single_eq_single_vecMulVec_single i₂ j₂]
+    simp]
+  rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul]
+  ext i₁ j₁
+  simp [Matrix.vecMulVec_apply, Matrix.conjTranspose_apply, Matrix.col, Matrix.row]
 
 /-- Conjugating the scaled matrix unit `(c · star c) · E_{i,j}` by `K` and `Kᴴ`
 yields the rank-one outer product of the scaled columns of `K`:
@@ -129,5 +147,33 @@ theorem PosSemidef.eq_sum_vecMulVec_nonzero_eigs
               star (((Real.sqrt (hApsd.1.eigenvalues i.1) : ℂ)) *
                 hApsd.1.eigenvectorUnitary p i.1)) := by
           simp [term, c]
+
+/-- The weighted spectral decomposition of a positive semidefinite matrix into
+rank-one projectors onto the unit eigenvectors. -/
+theorem PosSemidef.eq_sum_eigenvalue_smul_eigenprojector
+    {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.PosSemidef) :
+    A = ∑ i : n, (hA.1.eigenvalues i : ℂ) •
+      Matrix.vecMulVec (fun p => hA.1.eigenvectorUnitary p i)
+        (fun p => star (hA.1.eigenvectorUnitary p i)) := by
+  calc
+    A = hA.1.eigenvectorUnitary *
+        Matrix.diagonal (fun i => (hA.1.eigenvalues i : ℂ)) *
+        star hA.1.eigenvectorUnitary := by
+      simpa [Unitary.conjStarAlgAut_apply, Function.comp_def] using hA.1.spectral_theorem
+    _ = hA.1.eigenvectorUnitary *
+        (∑ i : n, Matrix.single i i (hA.1.eigenvalues i : ℂ)) *
+        star hA.1.eigenvectorUnitary := by rw [Matrix.sum_single_eq_diagonal]
+    _ = ∑ i : n, hA.1.eigenvectorUnitary *
+        Matrix.single i i (hA.1.eigenvalues i : ℂ) *
+        star hA.1.eigenvectorUnitary := by rw [Matrix.mul_sum, Matrix.sum_mul]
+    _ = ∑ i : n, (hA.1.eigenvalues i : ℂ) •
+        Matrix.vecMulVec (fun p => hA.1.eigenvectorUnitary p i)
+          (fun p => star (hA.1.eigenvectorUnitary p i)) := by
+      refine Finset.sum_congr rfl fun i _ ↦ ?_
+      simpa [← Matrix.star_eq_conjTranspose] using
+        (mul_single_mul_conjTranspose_eq_smul_vecMulVec
+          (K := (hA.1.eigenvectorUnitary : Matrix n n ℂ))
+          (c := (hA.1.eigenvalues i : ℂ)) i i)
 
 end Matrix
