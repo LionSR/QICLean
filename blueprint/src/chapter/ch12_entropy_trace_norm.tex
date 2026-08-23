@@ -539,7 +539,8 @@ Theorem~\ref{thm:trace_norm_abs}.
 
 \begin{lemma}[Trace-norm contraction coefficient]
     \label{lem:trace_norm_contraction_coefficient}
-    \lean{Matrix.traceNorm_contraction_coefficient_eq_half_sSup_orthogonal}
+    \lean{Matrix.traceNorm_contraction_coefficient_eq_half_sSup_orthogonal,
+        Matrix.orthogonalPureStateTraceNorms_nonempty_of_density}
     \leanok
     \uses{def:trace_norm, def:density_matrices}
     Let $T:\MN{D}\to\MN{D'}$ be a complex-linear map. Then
@@ -634,6 +635,108 @@ Theorem~\ref{thm:trace_norm_abs}.
     $T_\varphi(\rho-T_\phi(\rho))=0$; every positive power of
     $T_\varphi$ therefore vanishes on the same remainder, proving the second
     equality.
+\end{proof}
+
+\begin{lemma}[Pointwise form of the contraction-coefficient bound]
+    \label{lem:trace_norm_contraction_pointwise}
+    \lean{Matrix.traceNorm_map_sub_div_traceNorm_le_half_sSup_orthogonal}
+    \leanok
+    \uses{def:trace_norm, def:density_matrices}
+    Let $S:\MN{D}\to\MN{D'}$ be complex-linear and let
+    $\rho_1\neq\rho_2$ be density matrices. Then
+    \begin{align}
+        \frac{\lVert S(\rho_1)-S(\rho_2)\rVert_{\tr}}
+             {\lVert\rho_1-\rho_2\rVert_{\tr}}
+        \leq\frac12
+        \sup_{\substack{\lVert\psi\rVert=\lVert\phi\rVert=1\\
+                          \psi\perp\phi}}
+        \left\lVert S\left(\ketbra{\psi}{\psi}
+                     -\ketbra{\phi}{\phi}\right)\right\rVert_{\tr}.
+    \end{align}
+    This is the pointwise inequality from Wolf Lemma~8.3 used in
+    Equation~(8.115).
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:trace_norm_contraction_coefficient}
+    The proof is the upper-bound half of
+    Lemma~\ref{lem:trace_norm_contraction_coefficient}: normalize the positive
+    and negative parts of $\rho_1-\rho_2$ to orthogonally supported density
+    matrices and expand both in eigenprojectors.
+\end{proof}
+
+\begin{lemma}[Hilbert--Schmidt estimates for the asymptotic bound]
+    \label{lem:asymptotic_hilbert_schmidt_estimates}
+    \lean{Matrix.frobenius_norm_pureStateProj_sub_eq_sqrt_two,
+        Matrix.sSup_orthogonalPureStateTraceNorms_le_hilbertSchmidtOperatorNorm}
+    \leanok
+    \uses{def:trace_norm,
+        thm:trace_norm_frobenius_comparison}
+    For $A\in\MN{D}$ and a complex-linear map $S:\MN{D}\to\MN{D}$,
+    \begin{align}
+        \lVert A\rVert_{\tr}&\leq\sqrt D\,\lVert A\rVert_2,\\
+        \lVert S(A)\rVert_2&\leq\lVert S\rVert_{2\to2}\lVert A\rVert_2.
+    \end{align}
+    If $\psi$ and $\phi$ are orthogonal unit vectors, then
+    $\lVert\ketbra{\psi}{\psi}-\ketbra{\phi}{\phi}\rVert_2=\sqrt2$.
+    Consequently the orthogonal-pure-state supremum for $S$ is at most
+    $\sqrt D\,\lVert S\rVert_{2\to2}\sqrt2$. These are precisely the
+    estimates in Wolf Equations~(8.115)--(8.116).
+\end{lemma}
+
+\begin{proof}\leanok
+    The first inequality is finite Cauchy--Schwarz applied to the singular
+    values. The second is the defining application bound for the operator norm
+    after Frobenius vectorization. Orthogonality makes the two rank-one
+    projectors multiply to zero, so the squared Hilbert--Schmidt norm of their
+    difference is the sum of their traces, namely $2$.
+\end{proof}
+
+\begin{theorem}[Convergence towards asymptotic states: upper bound]
+    \label{thm:trace_norm_asymptotic_distance_upper}
+    \lean{Matrix.traceNormAsymptoticDistance_pow_le_transferMatrix_l2_opNorm,
+        Matrix.traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm}
+    \leanok
+    \uses{def:trace_norm_asymptotic_distance,
+        def:peripheral_spectral_projections,
+        def:mpu_transfer_matrix}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, let $\rho$ be
+    a density operator, and let $n>0$. Then
+    \begin{align}
+        \Delta_T(T^n(\rho))
+        \leq \sqrt{\frac D2}\,
+        \left\lVert \widehat T^{\,n}-\widehat T_\varphi^{\,n}\right\rVert_\infty\,
+        \Delta_T(\rho).
+        \tag{8.112}
+    \end{align}
+    Here the displayed transfer-matrix norm equals
+    $\lVert T^n-T_\varphi^n\rVert_{2\to2}$, the Hilbert--Schmidt operator norm
+    of the corresponding superoperator.
+    The explicit $n>0$ records the paper's positive-natural convention: at
+    $n=0$, both superoperator powers are the identity, so the displayed
+    right-hand side vanishes. This is the upper assertion of~
+    \cite[Chapter~8, Proposition ``Convergence towards asymptotic states'',
+    Eqs.~(8.112), (8.114)--(8.116)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:trace_norm_asymptotic_distance_numerator,
+        lem:trace_norm_contraction_pointwise,
+        lem:asymptotic_hilbert_schmidt_estimates,
+        cor:peripheral_projection_channel,
+        thm:transfer_matrix_hilbert_schmidt_operator_norm,
+        lem:wolf_positive_power_nonperipheral_identity}
+    Apply the numerator identity to $S=T^n-T_\varphi^n$. The peripheral
+    projection is again positive and trace preserving, so Lemma~8.3 applies to
+    the distinct density matrices $\rho$ and $T_\phi(\rho)$. Then use
+    $\lVert\cdot\rVert_{\tr}\leq\sqrt D\lVert\cdot\rVert_2$ and the
+    $\sqrt2$ Hilbert--Schmidt distance of orthogonal pure states. The constants
+    simplify as $\frac12\sqrt D\sqrt2=\sqrt{D/2}$; if
+    $\rho=T_\phi(\rho)$, both sides vanish directly. Finally, the
+    positive-power identity identifies the transfer-matrix difference with
+    the transfer matrix of $T^n-T_\varphi^n$, whose largest-singular-value norm
+    equals the Hilbert--Schmidt operator norm
+    $\lVert T^n-T_\varphi^n\rVert_{2\to2}$.
 \end{proof}
 
 \begin{lemma}[Scaled positive-part trace estimate]

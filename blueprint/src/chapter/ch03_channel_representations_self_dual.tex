@@ -227,6 +227,37 @@ chapter boundary.
     coordinate.
 \end{proof}
 
+\begin{theorem}[Transfer-matrix and Hilbert--Schmidt operator norms]
+    \label{thm:transfer_matrix_hilbert_schmidt_operator_norm}
+    \lean{Matrix.hilbertSchmidtOperatorNorm,
+        Matrix.frobenius_norm_apply_le_hilbertSchmidtOperatorNorm,
+        toEuclideanLin_transferMatrix,
+        l2_opNorm_transferMatrix_eq_hilbertSchmidtOperatorNorm,
+        transferMatrixLM, transferMatrix_pow}
+    \leanok
+    \uses{def:mpu_transfer_matrix}
+    For a linear map $S:\MN{D}\to\MN{D}$, let
+    $\lVert S\rVert_{2\to2}$ be its operator norm for the
+    Hilbert--Schmidt norm. Then
+    \begin{align}
+        \lVert S(X)\rVert_2
+        &\leq \lVert S\rVert_{2\to2}\lVert X\rVert_2,\\
+        \lVert S\rVert_{2\to2}
+        &=\lVert\widehat S\rVert_\infty,
+    \end{align}
+    where the norm on the transfer matrix is its largest-singular-value
+    norm. The transfer representation also preserves subtraction and powers.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:mpu_transfer_matrix_vectorization}
+    Column vectorization is a Hilbert--Schmidt isometry, and
+    Theorem~\ref{thm:mpu_transfer_matrix_vectorization} identifies the action
+    of $S$ with multiplication by $\widehat S$. Thus the two induced operator
+    norms agree. Linearity and compatibility with composition give the
+    subtraction and power identities.
+\end{proof}
+
 \begin{lemma}[The same equivalence in the matrix units]
     \label{lem:transfer_matrix_units_hermitian_iff}
     \lean{transferMatrix_isHermitian_iff_traceAdjointMap_eq_self}
