@@ -35,7 +35,7 @@ variable {d d' r n : ℕ}
 
 /-- The coefficient matrix of the Choi purification obtained from a rectangular
 Stinespring matrix `V : ℂ^d → ℂ^{d'} ⊗ ℂ^r`:
-`C_(a,i),e = d⁻¹ᐟ² V_(a,e),i`.
+`C_(a,i),e = d^(-1/2) V_(a,e),i`.
 
 This is Wolf's vector `(𝟙_d ⊗ V)|Ω⟩`, with factors reindexed so that the Choi
 system `ℂ^{d'} ⊗ ℂ^d` comes first and the environment `ℂ^r` comes last. -/
