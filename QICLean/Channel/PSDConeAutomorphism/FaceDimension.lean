@@ -7,14 +7,14 @@ import QICLean.Algebra.CornerCompression
 import QICLean.Analysis.MatrixSqrt
 
 /-!
-# Dimension of a positive-semidefinite face
+# Dimension of the span of Wolf's positive-semidefinite cone C(P)
 
-This file formalizes the face $C(P)$ from Wolf, Proposition 3.6, equation (3.42),
+This file formalizes the cone $C(P)$ from Wolf, Proposition 3.6, equation (3.42),
 and identifies its complex linear span with the matrix corner supported on $P$.
 
 ## Main declarations
 
-* `Matrix.psdConeFace`: Wolf's face $C(P)=\{A\mid \exists c>0,\ P\geq cA\geq0\}$.
+* `Matrix.psdConeFace`: Wolf's cone $C(P)=\{A\mid \exists c>0,\ P\geq cA\geq0\}$.
 * `Matrix.span_psdConeFace_eq_cornerSubmodule_supportProj`: the span of $C(P)$ is the
   corner supported on `P`.
 * `Matrix.finrank_span_psdConeFace_eq_rank_sq`: the dimension of that span is
@@ -31,7 +31,7 @@ namespace Matrix
 
 variable {D : ℕ}
 
-/-- Wolf's positive-semidefinite face
+/-- Wolf's positive-semidefinite cone
 $C(P)=\{A\in\mathcal M_D(\mathbb C)\mid \exists c>0,\ P\geq cA\geq0\}$ from
 Proposition 3.6, equation (3.42).
 
@@ -40,8 +40,9 @@ scalar action, and the two inequalities use the positive-semidefinite order. -/
 def psdConeFace (P : MatrixAlg D) : Set (MatrixAlg D) :=
   {A | ∃ c : ℝ, 0 < c ∧ (0 : MatrixAlg D) ≤ c • A ∧ c • A ≤ P}
 
-/-- A matrix belongs to Wolf's face $C(P)$ exactly when it is positive
-semidefinite and supported on the support projection of $P$. -/
+/-- A matrix belongs to Wolf's cone $C(P)$ exactly when it is positive
+semidefinite and supported on the support projection of $P$. Thus $C(P)$ is the
+support face of the positive-semidefinite cone. -/
 theorem mem_psdConeFace_iff (P A : MatrixAlg D) (hP : P.PosSemidef) :
     A ∈ psdConeFace P ↔
       A.PosSemidef ∧ A ∈ cornerSubmodule hP.supportProj := by
@@ -90,10 +91,10 @@ theorem mem_psdConeFace_iff (P A : MatrixAlg D) (hP : P.PosSemidef) :
     refine ⟨c, hc, Matrix.nonneg_iff_posSemidef.mpr (hA.smul hc.le), ?_⟩
     exact Matrix.le_iff.mpr hsub
 
-/-- The complex span of Wolf's face $C(P)$ is the full support corner
+/-- The complex span of Wolf's cone $C(P)$ is the full support corner
 $\operatorname{supp}(P)\,\mathcal M_D(\mathbb C)\,\operatorname{supp}(P)$.
 
-This is the face/corner step in Wolf, Proposition 3.6, immediately after
+This is the cone/corner step in Wolf, Proposition 3.6, immediately after
 equation (3.42). -/
 theorem span_psdConeFace_eq_cornerSubmodule_supportProj
     (P : MatrixAlg D) (hP : P.PosSemidef) :
@@ -137,7 +138,7 @@ theorem span_psdConeFace_eq_cornerSubmodule_supportProj
           (Submodule.smul_mem _ c hX)
     exact hA ▸ hcompressed
 
-/-- The complex dimension of the span of Wolf's face $C(P)$ is
+/-- The complex dimension of the span of Wolf's cone $C(P)$ is
 $\operatorname{rank}(P)^2$, as asserted after equation (3.42) in Wolf,
 Proposition 3.6. -/
 theorem finrank_span_psdConeFace_eq_rank_sq

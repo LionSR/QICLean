@@ -117,16 +117,16 @@ positivity: they are surjective on the positive semidefinite cone.
     (1) of \cite[Proposition~3.6]{Wolf2012Quantum}.
 \end{definition}
 
-For a positive semidefinite matrix $P$, Wolf introduces the face $C(P)$ in the
+For a positive semidefinite matrix $P$, Wolf introduces the cone $C(P)$ in the
 proof of the implication (1) $\Rightarrow$ (2) of
 \cite[Proposition~3.6]{Wolf2012Quantum}. Equation~\eqref{eq:psd_cone_face}
 is the definition of $C(P)$ below; it is not one of the standard-form equations
 for a positive map.
 The next results identify its linear span and compute its dimension. They
-formalize this face-dimension step only, not the full equivalence in
+formalize this cone-dimension step only, not the full equivalence in
 Proposition~3.6.
 
-\begin{definition}[The face $C(P)$ of the positive semidefinite cone]
+\begin{definition}[Wolf's cone $C(P)$]
     \label{def:psd_cone_face}
     \lean{Matrix.psdConeFace}
     \leanok
@@ -164,7 +164,7 @@ Proposition~3.6.
     square root gives $cA\le P$, and therefore $A\in C(P)$.
 \end{proof}
 
-\begin{theorem}[Span of the face $C(P)$]
+\begin{theorem}[Span of Wolf's cone $C(P)$]
     \label{thm:psd_cone_face_span}
     \lean{Matrix.span_psdConeFace_eq_cornerSubmodule_supportProj}
     \leanok
@@ -190,7 +190,7 @@ Proposition~3.6.
     to its compression, which proves the reverse inclusion.
 \end{proof}
 
-\begin{corollary}[Dimension of the face span]
+\begin{corollary}[Dimension of the cone span]
     \label{cor:psd_cone_face_span_dimension}
     \lean{Matrix.finrank_span_psdConeFace_eq_rank_sq}
     \leanok
