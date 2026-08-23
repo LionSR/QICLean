@@ -17,10 +17,10 @@ are consumed under their real names (`isIrreducibleMap_full_similarity`,
 library, so the wrapper theorems are noted below without a live Lean
 counterpart.
 
-The tensor-network-layer companion concordance (Wolf Chapter 6 sections
-formalized over Kraus-span primitivity, the quantum Wielandt inequality, and
-the assembled quantum Perron-Frobenius theorem) lives in the sibling TNLean
-project, not in this repository.
+The tensor-network-layer companion concordance (including the quantum
+Wielandt inequality and the assembled quantum Perron-Frobenius theorem) lives
+in the sibling TNLean project, not in this repository. The source-facing
+Kraus-span characterization of primitive channels is formalized here.
 
 ## Wolf Lecture Notes — Chapter 2: Representations
 
@@ -525,10 +525,9 @@ No new proofs are introduced here; this is a documentation-only index module.
 
 This module covers the sections of Wolf Chapter 6 whose formalization lives in
 the quantum-channel layer.  The sections formalized in the tensor-network layer
-— the Kraus-span primitivity characterizations (Theorem 6.8), the quantum
-Wielandt inequality (Theorem 6.9), the unique-fixed-point theorem for tensors
-with eventually full Kraus rank (Theorem 6.15), and the assembled quantum
-Perron–Frobenius theorem — are indexed in
+— the quantum Wielandt inequality (Theorem 6.9), the unique-fixed-point theorem
+for tensors with eventually full Kraus rank (Theorem 6.15), and the assembled
+quantum Perron–Frobenius theorem — are indexed in
 `TNLean.Wielandt.WolfChapter6TNIndex`.
 
 ---
@@ -808,8 +807,25 @@ tensor-network side; see `TNLean.Wielandt.WolfChapter6TNIndex`.
 
 #### Wolf Theorem 6.8 (CP primitive maps, Kraus span characterizations)
 
-Formalized in the tensor-network layer; indexed in
-`TNLean.Wielandt.WolfChapter6TNIndex`.
+**FORMALIZED** in `QICLean.Channel.WolfTheorem68`:
+
+* `Kraus.wolf_theorem_6_8_tfae` packages all four source clauses: Wolf
+  primitivity (represented by irreducibility together with the project's
+  spectral `IsPrimitive` predicate), full vector reachability for every
+  `m ≥ n`, full homogeneous Kraus-word span for every `m ≥ q`, and positive
+  definiteness of the Choi matrix of every power `m ≥ q`.
+* `Kraus.wolf_theorem_6_8_minimal_indices` chooses a single threshold `q`
+  minimal for both the word-span and Choi clauses, chooses the minimal vector
+  threshold `n`, and proves `n ≤ q`.
+* `Kraus.hasEventuallyFullVectorSpread_iff_exists_hasFullVectorSpreadFrom`,
+  `Kraus.hasEventuallyFullWordSpan_iff_exists_hasFullWordSpanFrom`, and
+  `Kraus.eventually_choiMatrix_mapLM_pow_posDef_iff_exists_hasPosDefChoiFrom`
+  identify the reusable eventual predicates with Wolf's explicitly quantified
+  threshold clauses.
+
+The Kraus-map presentation supplies complete positivity; trace preservation is
+an explicit hypothesis. No stronger CP-independent primitivity predicate is
+introduced.
 
 #### Wolf Theorem 6.9 (Quantum Wielandt inequality)
 
