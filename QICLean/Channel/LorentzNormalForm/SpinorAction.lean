@@ -554,6 +554,14 @@ theorem spinorMatrix_det (X : SL(2, ℂ)) :
   have hval := congrArg Units.val hdetCharacter
   simpa [detCharacter, spinorLinearEquivMap] using hval
 
+/-- The two matrices `X` and `-X` have the same Hermitian congruence action,
+as observed after Wolf, Equation (2.42). This is not the converse assertion
+that these are the only two points in every fibre. -/
+@[simp] theorem spinorMatrix_neg (X : SL(2, ℂ)) :
+    spinorMatrix (-X) = spinorMatrix X := by
+  ext i j
+  simp [spinorMatrix_apply, Matrix.SpecialLinearGroup.coe_neg]
+
 /-- Metric preservation in the row-action convention printed in Wolf,
 Equation (2.42): `L η Lᵀ = η`. -/
 theorem spinorMatrix_mul_metric_mul_transpose (X : SL(2, ℂ)) :
