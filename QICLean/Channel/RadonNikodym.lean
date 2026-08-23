@@ -19,6 +19,10 @@ Wolf's Radon–Nikodym theorem says: if a finite family of CP maps `Tᵢ` sums
 to a map `T` with a supplied Stinespring representation
 `T(A) = V†(A ⊗ 𝟙_r)V`, then there are PSD operators `Pᵢ` on that same
 dilation space, summing to `𝟙_r`, such that `Tᵢ(A) = V†(A ⊗ Pᵢ)V`.
+Wolf presents this as a simple corollary of the preceding comparison theorem
+for ordered completely positive maps. The proof below follows that route: an
+aggregate outcome-labelled dilation factors through the supplied dilation by
+a contraction, and the residual `𝟙_r - CᴴC` is assigned to one outcome.
 
 The file also keeps the earlier binary block-diagonal corollary: for CP maps
 `T₁, T₂`, one may construct a Stinespring matrix for `T₁ + T₂` by
@@ -41,14 +45,13 @@ evolution on a system-plus-environment.
   the identity: resolution of identity on the dilation space.
 * `Matrix.blockDiagTopProj_posSemidef`,
   `Matrix.blockDiagBotProj_posSemidef` — both are PSD.
-* `IsCPMap.radon_nikodym_of_stinespring`
-  (Wolf, *Quantum Channels & Operations*, Theorem 2.4):
-  square finite-family Radon–Nikodym theorem relative to a supplied Stinespring
-  representation.
 * `IsKrausCP.radon_nikodym_of_stinespring`
   (Wolf, *Quantum Channels & Operations*, Theorem 2.4):
   the exact rectangular Heisenberg form for maps `M_{d'}(ℂ) → M_d(ℂ)` and a
   supplied `V : ℂ^d → ℂ^{d'} ⊗ ℂ^r`.
+* `IsCPMap.radon_nikodym_of_stinespring`
+  (Wolf, *Quantum Channels & Operations*, Theorem 2.4):
+  the direct square specialization of the rectangular finite-family theorem.
 * `IsCPMap.exists_radon_nikodym`
   (Wolf, *Quantum Channels & Operations*, Theorem 2.4, binary form):
   for CP `T₁, T₂`, there exist a Stinespring matrix `V` and two PSD
@@ -186,6 +189,7 @@ theorem stinespringV_stinespringBlock
     stinespringV (stinespringBlock (D := D) (r := r) V) = V := by
   exact stinespringV_stinespringBlockRectangular V
 
+/-! ### Wolf Theorem 2.4 (finite-family supplied Stinespring form) -/
 
 /-- **Wolf Theorem 2.4 (rectangular Radon--Nikodym for quantum instruments).**
 
@@ -196,9 +200,11 @@ Let a finite nonempty family of completely positive linear maps
 on `ℂ^r`, summing to `𝟙_r`, such that
 `Tᵢ(A) = Vᴴ (A ⊗ Pᵢ) V`.
 
-No minimality of the supplied Stinespring representation is assumed. The
-nonempty-family hypothesis is necessary because the empty sum of operators
-cannot equal the identity on a nonzero supplied dilation space. -/
+No minimality of the supplied Stinespring representation is assumed. The proof
+uses Wolf's preceding ordered-map comparison theorem and completes the
+preliminary effects by its positive contraction residual. The nonempty-family
+hypothesis is necessary uniformly in the supplied dilation dimension, because
+an empty sum cannot equal the identity when the dilation space is nonzero. -/
 theorem IsKrausCP.radon_nikodym_of_stinespring
     {ι : Type*} [Fintype ι] [Nonempty ι] {d d' : ℕ}
     {T : Matrix (Fin d') (Fin d') ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ}
