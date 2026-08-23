@@ -163,9 +163,9 @@
     \leanok
     \uses{def:peripheral_spectral_splitting,
         thm:peripheral_spectral_complementarity}
-    The map $T_\varphi$ is the projection onto the peripheral subspace along
-    the non-peripheral subspace. The phase-weighted peripheral map is
-    $T_\varphi'=T\circ T_\varphi$.
+    The map $T_\phi$ is the projection onto the peripheral subspace along
+    the non-peripheral subspace. The phase-weighted peripheral map is Wolf's
+    asymptotic dynamics $T_\varphi=T\circ T_\phi$.
 \end{definition}
 
 \begin{theorem}[Properties of the peripheral spectral projections]
@@ -179,13 +179,13 @@
         Module.End.peripheralWeightedProjection_apply_of_mem_eigenspace}
     \leanok
     \uses{def:peripheral_spectral_projections}
-    The range of $T_\varphi$ is the peripheral subspace, $T_\varphi$ is
+    The range of $T_\phi$ is the peripheral subspace, $T_\phi$ is
     idempotent, and
     \begin{align}
-        T_\varphi' & =T\circ T_\varphi=T_\varphi\circ T.
+        T_\varphi & =T\circ T_\phi=T_\phi\circ T.
     \end{align}
-    On a peripheral $\mu$-eigenvector, $T_\varphi$ acts as the identity and
-    $T_\varphi'$ acts as multiplication by~$\mu$. These are
+    On a peripheral $\mu$-eigenvector, $T_\phi$ acts as the identity and
+    $T_\varphi$ acts as multiplication by~$\mu$. These are
     \cite[Equations~(6.12) and~(6.13)]{Wolf2012Quantum}.
 \end{theorem}
 
@@ -202,7 +202,7 @@
         thm:positive_trace_preserving_mean_ergodic_projection}
     Let $T:\MN{D}\to\MN{D}$ be positive and trace-preserving, with $D>0$.
     There is a strictly increasing sequence of positive integers $n_i$ such
-    that $T^{n_i}\to T_\varphi$ pointwise and in operator norm. This is
+    that $T^{n_i}\to T_\phi$ pointwise and in operator norm. This is
     \cite[Proposition~6.3(i)]{Wolf2012Quantum}.
 \end{theorem}
 
@@ -241,9 +241,9 @@
     \uses{thm:peripheral_projection_recurrent_subsequence,
         def:peripheral_spectral_projections}
     The peripheral projection of a positive trace-preserving map is positive
-    and trace-preserving, and then the weighted projection $T_\varphi'$ is
+    and trace-preserving, and then the weighted projection $T_\varphi$ is
     positive and trace-preserving as well. If the original map is completely
-    positive, then $T_\varphi$ and $T_\varphi'$ are quantum channels. This
+    positive, then $T_\phi$ and $T_\varphi$ are quantum channels. This
     is the preservation assertion in the opening clause of
     \cite[Proposition~6.3]{Wolf2012Quantum} (item~(ii) itself states only the
     composition identity).
@@ -254,7 +254,7 @@
     Every power of $T$ preserves positivity and trace, and every power of a
     completely positive map is completely positive. These properties are
     closed under the operator-norm limit. Composition with $T$ gives the
-    assertion for $T_\varphi'$.
+    assertion for $T_\varphi$.
 \end{proof}
 
 \begin{lemma}[Pointwise limits of endomorphisms in finite dimension]
@@ -316,7 +316,7 @@
     quantum channel. Together with
     Corollary~\ref{cor:peripheral_projection_channel} this completes the
     preservation assertion of \cite[Proposition~6.3]{Wolf2012Quantum} for all
-    three maps $T_\infty$, $T_\varphi$, and $T_\varphi'$.
+    three maps $T_\infty$, $T_\phi$, and $T_\varphi$.
 \end{corollary}
 
 \begin{proof}\leanok
@@ -361,7 +361,7 @@
     If $T_\infty$ denotes the mean-ergodic projection of a positive
     trace-preserving map, then
     \begin{align}
-        T_\varphi T_\infty=T_\infty.
+        T_\phi T_\infty=T_\infty.
     \end{align}
     This is the absorption identity adjacent to
     \cite[Equation~(6.14)]{Wolf2012Quantum}.
@@ -374,7 +374,7 @@
         thm:positive_trace_preserving_mean_ergodic_projection}
     The range of $T_\infty$ consists of fixed points of~$T$, hence every power
     of $T$ fixes this range. Passing to the recurrent-subsequence limit shows
-    that $T_\varphi$ also fixes it pointwise.
+    that $T_\phi$ also fixes it pointwise.
 \end{proof}
 
 \begin{theorem}[Asymptotic image]
@@ -397,7 +397,7 @@
     \end{align}
     be the span of its peripheral eigenvectors. Then
     \begin{enumerate}
-        \item $T_\varphi(\MN{D})=\mathcal X_T$,
+        \item $T_\phi(\MN{D})=\mathcal X_T$,
         \item there are positive semidefinite matrices $\rho_i$ with
               $\mathcal X_T=\spn\{\rho_i\}$,
         \item $T(\mathcal X_T)=\mathcal X_T$.
@@ -413,12 +413,12 @@
         cor:stationary_density_span}
     Write $V_\mu=\ker(T-\mu)$ for the eigenspace of a peripheral eigenvalue
     $\mu$, so that $\mathcal X_T=\sum_{|\mu|=1}V_\mu$ by the definition of
-    $\mathcal X_T$. The image of the projection $T_\varphi$ is its set of
-    fixed points, and the fixed points of $T_\varphi$ are the linear
+    $\mathcal X_T$. The image of the projection $T_\phi$ is its set of
+    fixed points, and the fixed points of $T_\phi$ are the linear
     combinations of peripheral eigenvectors:
     \begin{align}
-        T_\varphi(\MN{D})
-         & =\{X\in\MN{D}\mid T_\varphi(X)=X\}
+        T_\phi(\MN{D})
+         & =\{X\in\MN{D}\mid T_\phi(X)=X\}
         \label{eq:channel_asymptotic_fixed_points}\\
          & =\sum_{|\mu|=1}V_\mu
         \label{eq:channel_asymptotic_eigenspace_sum}\\
@@ -426,18 +426,18 @@
         \label{eq:channel_asymptotic_definition}
     \end{align}
     The equality (\ref{eq:channel_asymptotic_fixed_points}) holds because
-    $T_\varphi$ is a projection; a matrix fixed by $T_\varphi$ lies in the
+    $T_\phi$ is a projection; a matrix fixed by $T_\phi$ lies in the
     peripheral subspace, whose Jordan blocks are trivial for a positive
     trace-preserving map (Theorem~\ref{thm:peripheral_jordan_trivial}),
     which gives (\ref{eq:channel_asymptotic_eigenspace_sum}); and
     (\ref{eq:channel_asymptotic_definition}) is the definition of
     $\mathcal X_T$. This is the first claim.
 
-    The projection $T_\varphi$ is itself positive and trace-preserving, so its
+    The projection $T_\phi$ is itself positive and trace-preserving, so its
     fixed-point space is spanned by its stationary density matrices:
     \begin{align}
-        \mathcal X_T=\{X\in\MN{D}\mid T_\varphi(X)=X\}
-        =\spn\{\rho\mid \rho\ \text{a stationary density matrix of }T_\varphi\}.
+        \mathcal X_T=\{X\in\MN{D}\mid T_\phi(X)=X\}
+        =\spn\{\rho\mid \rho\ \text{a stationary density matrix of }T_\phi\}.
     \end{align}
     Every such $\rho$ is positive semidefinite, which is the second claim.
 

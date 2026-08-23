@@ -559,6 +559,55 @@ Theorem~\ref{thm:trace_norm_abs}.
     $\rho_1\neq\rho_2$ proves the equality.
 \end{proof}
 
+\begin{definition}[Trace-norm distance to the asymptotic image]
+    \label{def:trace_norm_asymptotic_distance}
+    \lean{Matrix.traceNormAsymptoticDistance}
+    \leanok
+    \uses{def:trace_norm, def:peripheral_spectral_projections}
+    For $T:\MN{D}\to\MN{D}$, let $T_\phi$ be its peripheral spectral
+    projection and define
+    \begin{align}
+        \Delta_T(\rho):=\lVert\rho-T_\phi(\rho)\rVert_{\tr}.
+    \end{align}
+    This is Wolf's notation in
+    \cite[Chapter~8, Proposition ``Convergence towards asymptotic
+    states'', Eq.~(8.112)]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{lemma}[Asymptotic-distance numerator identities]
+    \label{lem:trace_norm_asymptotic_distance_numerator}
+    \lean{Matrix.peripheralProjection_comp_pow,
+        Matrix.peripheralWeightedProjection_apply_sub_peripheralProjection,
+        Matrix.peripheralWeightedProjection_pow_apply_sub_peripheralProjection,
+        Matrix.traceNormAsymptoticDistance_pow_eq,
+        Matrix.traceNormAsymptoticDistance_pow_eq_sub_peripheralWeightedProjection_pow}
+    \leanok
+    \uses{def:trace_norm_asymptotic_distance,
+        thm:peripheral_spectral_projection_properties}
+    Let $T_\varphi:=T\circ T_\phi=T_\phi\circ T$ be Wolf's asymptotic
+    dynamics. For every matrix $\rho$, every $n\geq0$, and every $n>0$ in
+    the second equality,
+    \begin{align}
+        \Delta_T(T^n(\rho))
+        &=\lVert T^n(\rho-T_\phi(\rho))\rVert_{\tr}\\
+        &=\lVert(T^n-T_\varphi^n)(\rho-T_\phi(\rho))\rVert_{\tr}.
+        \label{eq:trace_norm_asymptotic_distance_numerator}
+    \end{align}
+    These are the numerator identities used in
+    \cite[Chapter~8, Eq.~(8.114)]{Wolf2012Quantum}. They follow from
+    $T_\phi T=TT_\phi=T_\varphi=T_\varphi T_\phi$; the positive-iterate
+    condition records that the zeroth power of $T_\varphi$ is the identity.
+\end{lemma}
+
+\begin{proof}\leanok
+    The commutation $T_\phi T=TT_\phi$ iterates to
+    $T_\phi T^n=T^nT_\phi$, which proves the first equality by linearity.
+    Idempotence of $T_\phi$ gives
+    $T_\varphi(\rho-T_\phi(\rho))=0$; every positive power of
+    $T_\varphi$ therefore vanishes on the same remainder, proving the second
+    equality.
+\end{proof}
+
 \begin{lemma}[Scaled positive-part trace estimate]
     \label{lem:scaled_posPart_trace_estimate}
     \lean{Matrix.re_trace_posPart_map_le_of_scaledTrace}

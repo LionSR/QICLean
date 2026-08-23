@@ -95,7 +95,7 @@
     Ces\`aro means tend to zero.
 \end{proof}
 
-\begin{theorem}[Phase-weighted Ces\`aro formula for $T_\varphi$]
+\begin{theorem}[Phase-weighted Ces\`aro formula for $T_\phi$]
     \label{thm:peripheral_projection_weighted_cesaro}
     \lean{IsPositiveMap.tendsto_weightedCesaroMean_peripheralProjection,
         IsPositiveMap.tendsto_endEquiv_weightedCesaroMean_peripheralProjection,
@@ -107,7 +107,7 @@
     let $\lambda_{1},\dots,\lambda_{m}$ denote the distinct eigenvalues of
     $T$ of modulus one. Then
     \begin{align}
-        T_\varphi
+        T_\phi
          & =\lim_{N\to\infty}\frac{1}{N}\sum_{n=1}^{N}
         \sum_{k=1}^{m}(\bar\lambda_{k}T)^{n},
         \label{eq:peripheral_projection_weighted_cesaro}
@@ -132,7 +132,7 @@
         thm:positive_trace_preserving_mean_ergodic_projection,
         lem:weighted_cesaro_mean_on_splitting,
         lem:tendsto_clm_of_tendsto_apply}
-    Split $X=T_\varphi(X)+(X-T_\varphi(X))$ along the complementary spectral
+    Split $X=T_\phi(X)+(X-T_\phi(X))$ along the complementary spectral
     subspaces. Bounded forward orbits force every eigenvalue to have modulus
     at most one, so every eigenvalue outside the peripheral spectrum has
     modulus strictly below one and $T^{n}(Y)\to0$ for every $Y$ in the
@@ -142,7 +142,7 @@
     summand to zero. Triviality of the peripheral Jordan blocks identifies
     the peripheral subspace with the span of the peripheral eigenspaces, on
     which part (i) of the same lemma acts as the identity, so the first
-    summand converges to $T_\varphi(X)$. Pointwise convergence of
+    summand converges to $T_\phi(X)$. Pointwise convergence of
     endomorphisms of a finite-dimensional space is convergence in operator
     norm.
 \end{proof}
