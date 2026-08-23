@@ -564,6 +564,36 @@ Thus no four-positive-parts estimate and no factor $4$ occur. The resolved
 proof-route note is
 `docs/paper-gaps/wolf_prop61_russo_dye_factor.tex`.
 
+#### Wolf Theorem "Determinants" and Equation (6.22) — PARTIALLY FORMALIZED
+
+* `channelDet_comp` — Wolf Equation (6.22),
+  `det(T₁.comp T₂) = det(T₁) det(T₂)`, with Lean composition in the
+  source's displayed order.
+* `channelDet_norm_le_one_of_positive_tracePreserving` — the magnitude bound
+  `|det T| ≤ 1` for every positive trace-preserving map.
+* `channelDet_norm_eq_one_iff_exists_unitaryChannel` — the CPTP specialization
+  of determinant saturation: a quantum channel has determinant magnitude one
+  exactly when it is a unitary conjugation.
+
+The remaining source clauses are that the determinant of every positive
+trace-preserving map is real, the full saturation alternative including maps
+unitarily equivalent to transposition, and the transposition parity/sign
+calculation.  These remain tracked in issue #38.
+
+#### Wolf Corollary "Monotonicity of the determinant" — PARTIALLY FORMALIZED
+
+* `channelDet_norm_comp_le_of_positive_tracePreserving` — for positive
+  trace-preserving `T₁,T₂`,
+  `|det(T₁.comp T₂)| ≤ |det T₁|`.
+* `channelDet_norm_comp_eq_iff` — the exact algebraic equality split
+  `|det(T₁.comp T₂)| = |det T₁|` iff
+  `det T₁ = 0` or `|det T₂| = 1`.
+
+Replacing the saturation condition `|det T₂| = 1` by Wolf's geometric
+alternative "unitary conjugation or matrix transposition" depends on the
+remaining general positive trace-preserving saturation classification above;
+the present declarations do not weaken or claim that open step.
+
 
 #### Wolf Lemma 6.1 (Dirichlet's simultaneous approximation) — FORMALIZED
 

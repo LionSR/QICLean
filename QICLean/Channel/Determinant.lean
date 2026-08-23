@@ -6,6 +6,7 @@ Authors: TNLean contributors
 import QICLean.Channel.Determinant.Basic
 import QICLean.Channel.Determinant.Bound
 import QICLean.Channel.Determinant.ChoiBound
+import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HilbertSchmidt
 import QICLean.Channel.Determinant.HeisenbergDual
 import QICLean.Channel.Determinant.UnitaryCharacterization
@@ -14,23 +15,25 @@ import QICLean.Channel.Determinant.UnitaryCharacterization
 # Determinants of quantum channels
 
 Thin module assembling the determinant development for quantum channels from
-six focused sub-modules.
+seven focused sub-modules.
 
 The division follows the same organization as the earlier `Full/` and
 `Growth/` developments:
 
-* `TNLean.Channel.Determinant.Basic` — determinant definitions and unitary
+* `QICLean.Channel.Determinant.Basic` — determinant definitions and unitary
   channels.
-* `TNLean.Channel.Determinant.Bound` — Wolf Theorem 6.1(1), the determinant
+* `QICLean.Channel.Determinant.Bound` — Wolf Theorem 6.1(1), the determinant
   bound for positive trace-preserving maps.
-* `TNLean.Channel.Determinant.ChoiBound` — Wolf Eq. (6.27), the determinant
+* `QICLean.Channel.Determinant.ChoiBound` — Wolf Eq. (6.27), the determinant
   of an arbitrary linear map bounded by the purity of its Choi--Jamiolkowski
   operator.
-* `TNLean.Channel.Determinant.HilbertSchmidt` — spectral and Hilbert--Schmidt
+* `QICLean.Channel.Determinant.Composition` — Wolf Eq. (6.22), its exact
+  algebraic equality split, and determinant monotonicity under composition.
+* `QICLean.Channel.Determinant.HilbertSchmidt` — spectral and Hilbert--Schmidt
   auxiliary lemmas for the rigidity argument.
-* `TNLean.Channel.Determinant.HeisenbergDual` — Heisenberg-dual
+* `QICLean.Channel.Determinant.HeisenbergDual` — Heisenberg-dual
   multiplicativity from determinant saturation.
-* `TNLean.Channel.Determinant.UnitaryCharacterization` — Wolf Theorem 6.1(2)
+* `QICLean.Channel.Determinant.UnitaryCharacterization` — Wolf Theorem 6.1(2)
   for CPTP maps.
 
 ## Main definitions
@@ -42,6 +45,9 @@ The division follows the same organization as the earlier `Full/` and
 ## Main statements
 
 * `channelDet_eq_linearMap_det` — `channelDet` agrees with `LinearMap.det`.
+* `channelDet_comp` — Wolf Equation (6.22), determinant multiplicativity.
+* `channelDet_norm_comp_le_of_positive_tracePreserving` — the inequality in
+  Wolf's determinant-monotonicity corollary.
 * `channelDet_norm_le_one_of_positive_tracePreserving` — Wolf Theorem 6.1(1).
 * `channelDet_norm_eq_one_iff_exists_unitaryChannel` — Wolf Theorem 6.1(2)
   for CPTP maps.
