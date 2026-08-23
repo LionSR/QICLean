@@ -333,11 +333,14 @@ the Schmidt-rank Choi criterion, the rectangular compression criterion, and
 the rank-$k$ projection criterion. Throughout, $R_X$ and $C_T(X)$ are the
 right-tensor factor and Choi compression of
 Definitions~\ref{def:choi_right_tensor_factor}
-and~\ref{def:choi_right_compression}.
+and~\ref{def:choi_right_compression}. Here
+$T:\MN{d}\to\MN{d'}$, $X\in M_{d\times k}(\C)$, the Choi matrix acts on
+$\C^{d'}\otimes\C^d$, and the compressed matrix acts on
+$\C^{d'}\otimes\C^k$.
 
 \begin{theorem}[Right tensor sandwich formula]
     \label{thm:choi_right_tensor_sandwich}
-    \lean{ChoiJamiolkowski.rightTensorMatrix_mul_choiMatrix_mul_conjTranspose}
+    \lean{ChoiJamiolkowski.rightTensorMatrix_mul_choiMatrix_mul_conjTranspose_rectangular}
     \leanok
     \uses{def:choi_right_compression, def:choi_right_tensor_factor}
     If $\tau$ is the Choi matrix of $T$, then
@@ -369,11 +372,11 @@ and~\ref{def:choi_right_compression}.
     \lean{ChoiJamiolkowski.compressedOmegaVector_hasSchmidtRankLE}
     \leanok
     \uses{def:schmidt_rank, def:choi_right_compression}
-    For $X\in\MN{D,k}(\C)$, the vector
+    For $X\in M_{d\times k}(\C)$, the vector
     \begin{align}
         \psi_X
-         & =\left(D^{-1/2}X_{i,p}\right)_{(i,p)}
-        \in\C^D\otimes\C^k
+         & =\left(d^{-1/2}X_{a,p}\right)_{(a,p)}
+        \in\C^d\otimes\C^k
         \label{eq:schwarz_compressed_omega}
     \end{align}
     has Schmidt rank at most $k$.
@@ -390,15 +393,15 @@ and~\ref{def:choi_right_compression}.
     \lean{ChoiJamiolkowski.compressedOmegaVector_schmidtRank_eq_rank}
     \leanok
     \uses{def:schmidt_rank, def:choi_right_compression}
-    Assume $D>0$. For $X\in\MN{D,k}(\C)$, the vector $\psi_X$ in
+    Assume $d>0$. For $X\in M_{d\times k}(\C)$, the vector $\psi_X$ in
     (\ref{eq:schwarz_compressed_omega}) satisfies
     $\SR(\psi_X)=\rank X$.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    The coefficient matrix of $\psi_X$ is $D^{-1/2}X$. Since $D>0$, the
-    scalar $D^{-1/2}$ is nonzero, and multiplication by this scalar preserves
+    The coefficient matrix of $\psi_X$ is $d^{-1/2}X$. Since $d>0$, the
+    scalar $d^{-1/2}$ is nonzero, and multiplication by this scalar preserves
     rank.
 \end{proof}
 
@@ -409,11 +412,11 @@ and~\ref{def:choi_right_compression}.
     \leanok
     \uses{def:schmidt_rank, def:choi_right_compression,
         thm:compressed_omega_schmidt_rank_eq_rank}
-    Assume $D>0$. For every $\psi\in\C^D\otimes\C^D$, there is
-    $X\in\MN{D}(\C)$ such that
+    Assume $d>0$. For every $\psi\in\C^d\otimes\C^d$, there is
+    $X\in\MN{d}$ such that
     \begin{align}
         \psi_{(i,p)}
-         & =D^{-1/2}X_{i,p}, \notag \\
+         & =d^{-1/2}X_{i,p}, \notag \\
         \rank X
          & =\SR(\psi).
         \label{eq:schwarz_square_schmidt_representative}
@@ -424,8 +427,8 @@ and~\ref{def:choi_right_compression}.
 
 \begin{proof}
     \leanok
-    Take $X_{i,p}=D^{1/2}\psi_{(i,p)}$. Since $D>0$, this gives
-    $D^{-1/2}X_{i,p}=\psi_{(i,p)}$. The rank identity follows from
+    Take $X_{i,p}=d^{1/2}\psi_{(i,p)}$. Since $d>0$, this gives
+    $d^{-1/2}X_{i,p}=\psi_{(i,p)}$. The rank identity follows from
     Theorem~\ref{thm:compressed_omega_schmidt_rank_eq_rank}. The bounded-rank
     statement follows by comparison with the assumed Schmidt-rank bound.
 \end{proof}
@@ -436,17 +439,17 @@ and~\ref{def:choi_right_compression}.
     \leanok
     \uses{def:schmidt_rank, def:choi_right_compression,
         thm:square_schmidt_rank_exact_parametrization}
-    Assume $D>0$. A vector $\psi\in\C^D\otimes\C^D$ has Schmidt rank at most
-    $k$ if and only if there is a matrix $X\in\MD(\C)$ of rank at most $k$
-    such that $\psi_{(i,j)}=D^{-1/2}X_{i,j}$.
+    Assume $d>0$. A vector $\psi\in\C^d\otimes\C^d$ has Schmidt rank at most
+    $k$ if and only if there is a matrix $X\in\MN{d}$ of rank at most $k$
+    such that $\psi_{(i,j)}=d^{-1/2}X_{i,j}$.
 \end{lemma}
 
 \begin{proof}
     \leanok
     The forward direction is the bounded-rank part of
     Theorem~\ref{thm:square_schmidt_rank_exact_parametrization}. Conversely,
-    if $\psi_{(i,j)}=D^{-1/2}X_{i,j}$, then
-    $C_\psi=D^{-1/2}X$, so $\rank(C_\psi)=\rank(X)$ because multiplication
+    if $\psi_{(i,j)}=d^{-1/2}X_{i,j}$, then
+    $C_\psi=d^{-1/2}X$, so $\rank(C_\psi)=\rank(X)$ because multiplication
     by a nonzero scalar preserves rank.
 \end{proof}
 
@@ -456,13 +459,14 @@ and~\ref{def:choi_right_compression}.
         ChoiJamiolkowski.rightTensorMatrix_conjTranspose_mulVec_hasSchmidtRankLE}
     \leanok
     \uses{def:schmidt_rank, def:choi_right_tensor_factor}
-    Let $X\in\MN{D,k}(\C)$ and let $\eta\in\C^D\otimes\C^k$. Then
-    $R_X^\dagger\eta\in\C^D\otimes\C^D$ has Schmidt rank at most $k$.
+    Let $X\in M_{d\times k}(\C)$ and let
+    $\eta\in\C^{d'}\otimes\C^k$. Then
+    $R_X^\dagger\eta\in\C^{d'}\otimes\C^d$ has Schmidt rank at most $k$.
 \end{lemma}
 
 \begin{proof}
     \leanok
-    If $\eta$ is read as a $D\times k$ coefficient matrix $E$, then the
+    If $\eta$ is read as a $d'\times k$ coefficient matrix $E$, then the
     coefficient matrix of $R_X^\dagger\eta$ is $EX^\dagger$. Therefore
     $\rank(EX^\dagger)\le\rank(X^\dagger)=\rank(X)\le k$.
 \end{proof}
@@ -473,8 +477,9 @@ and~\ref{def:choi_right_compression}.
     \leanok
     \uses{def:schmidt_rank, def:choi_right_tensor_factor,
         lem:matrix_rank_factorization_coordinate}
-    If $\psi\in\C^D\otimes\C^D$ has Schmidt rank at most $k$, then there
-    exist $X\in\MN{D,k}(\C)$ and $\eta\in\C^D\otimes\C^k$ such that
+    If $\psi\in\C^{d'}\otimes\C^d$ has Schmidt rank at most $k$, then there
+    exist $X\in M_{d\times k}(\C)$ and
+    $\eta\in\C^{d'}\otimes\C^k$ such that
     $\psi=R_X^\dagger\eta$.
 \end{lemma}
 
@@ -489,12 +494,13 @@ and~\ref{def:choi_right_compression}.
 
 \begin{theorem}[Quadratic form of a right Choi compression]
     \label{thm:choi_right_compression_quadratic_form}
-    \lean{ChoiJamiolkowski.rightTensor_choiMatrix_quadraticForm_eq,
-        ChoiJamiolkowski.rightCompression_quadraticForm_eq_choiMatrix_quadraticForm}
+    \lean{ChoiJamiolkowski.rightTensor_choiMatrix_quadraticForm_eq_rectangular,
+        ChoiJamiolkowski.rightCompression_quadraticForm_eq_choiMatrix_quadraticForm_rectangular}
     \leanok
     \uses{def:choi_right_compression, def:choi_right_tensor_factor,
         thm:choi_right_tensor_sandwich}
-    For $X\in\MN{D,k}(\C)$ and $\eta\in\C^D\otimes\C^k$,
+    For $X\in M_{d\times k}(\C)$ and
+    $\eta\in\C^{d'}\otimes\C^k$,
     \begin{align}
         \langle\eta,C_T(X)\eta\rangle
          & =\langle R_X^\dagger\eta,\tau_T R_X^\dagger\eta\rangle.
@@ -519,7 +525,7 @@ and~\ref{def:choi_right_compression}.
     \uses{def:blockwise_ampliation, def:choi_right_compression}
     Applying the $k$-fold ampliation of $T$ to the rank-one matrix
     $\ketbra{\psi}{\psi}$, where
-    $\psi_{(a,p)}=D^{-1/2}X_{a,p}$, is exactly the right-factor compression
+    $\psi_{(a,p)}=d^{-1/2}X_{a,p}$, is exactly the right-factor compression
     of the Choi matrix of $T$ by $X$.
 \end{lemma}
 
@@ -528,29 +534,29 @@ and~\ref{def:choi_right_compression}.
     In entries, both sides are
     \begin{align}
         \sum_{a,b}X_{a,p}
-        T\!\left(D^{-1}E_{a,b}\right)_{i,j}
+        T\!\left(d^{-1}E_{a,b}\right)_{i,j}
         \overline{X_{b,q}}.
         \notag
     \end{align}
-    If $\psi_{(a,p)}=D^{-1/2}X_{a,p}$, then for fixed $p,q$, the corresponding
+    If $\psi_{(a,p)}=d^{-1/2}X_{a,p}$, then for fixed $p,q$, the corresponding
     block of $\ketbra{\psi}{\psi}$ is
     \begin{align}
         (\ketbra{\psi}{\psi})_{(\cdot,p),(\cdot,q)}
-         & =D^{-1}\sum_{a,b}X_{a,p}\overline{X_{b,q}}E_{a,b}.
+         & =d^{-1}\sum_{a,b}X_{a,p}\overline{X_{b,q}}E_{a,b}.
         \notag
     \end{align}
     Hence
     \begin{align}
-        T\!\left(D^{-1}\sum_{a,b}
+        T\!\left(d^{-1}\sum_{a,b}
            X_{a,p}\overline{X_{b,q}}E_{a,b}\right)_{i,j}
-         & =D^{-1}\sum_{a,b}X_{a,p}\overline{X_{b,q}}
+         & =d^{-1}\sum_{a,b}X_{a,p}\overline{X_{b,q}}
                                    (T(E_{a,b}))_{i,j} \notag \\
          & =\sum_{a,b}X_{a,p}\tau_{(i,a),(j,b)}
         \overline{X_{b,q}}.
         \notag
     \end{align}
     where the second equality uses
-    $\tau_{(i,a),(j,b)}=D^{-1}(T(E_{a,b}))_{i,j}$.
+    $\tau_{(i,a),(j,b)}=d^{-1}(T(E_{a,b}))_{i,j}$.
 \end{proof}
 
 \begin{lemma}[Right-tensor multiplication]
@@ -558,7 +564,7 @@ and~\ref{def:choi_right_compression}.
     \lean{ChoiJamiolkowski.rightTensorMatrix_mul_rightTensorMatrix}
     \leanok
     \uses{def:choi_right_tensor_factor}
-    Let $X\in\MN{D,k}(\C)$ and $P\in\MN{D,D}(\C)$. Then the right-tensor
+    Let $X\in M_{d\times k}(\C)$ and $P\in\MN{d}$. Then the right-tensor
     factors satisfy $R_XR_P=R_{PX}$.
 \end{lemma}
 
@@ -571,11 +577,11 @@ and~\ref{def:choi_right_compression}.
 
 \begin{lemma}[Square sandwich implies fixed rectangular compression]
     \label{lem:square_sandwich_fixed_rectangular_compression}
-    \lean{ChoiJamiolkowski.rightCompression_posSemidef_of_rightTensorMatrix_sandwich_posSemidef_of_mul_eq_self}
+    \lean{ChoiJamiolkowski.rightCompression_posSemidef_of_projection_sandwich_of_mul_eq_self_rectangular}
     \leanok
     \uses{thm:choi_right_tensor_sandwich, lem:right_tensor_multiplication}
-    Let $T:\MN{D,D}(\C)\to\MN{D,D}(\C)$ have Choi matrix $\tau$. Suppose
-    $P\in\MN{D,D}(\C)$ and $X\in\MN{D,k}(\C)$ satisfy $PX=X$. If
+    Let $T:\MN{d}\to\MN{d'}$ have Choi matrix $\tau$. Suppose
+    $P\in\MN{d}$ and $X\in M_{d\times k}(\C)$ satisfy $PX=X$. If
     $R_P\tau R_P^\dagger\ge0$, then the rectangular right compression of
     $\tau$ by $X$ is positive semidefinite.
 \end{lemma}
@@ -599,14 +605,14 @@ and~\ref{def:choi_right_compression}.
     \label{lem:rank_k_projection_fixing_rectangular_factor}
     \lean{Matrix.exists_isHermitian_idempotent_rank_mul_eq_self}
     \leanok
-    Let $X\in\MN{D,k}(\C)$ and suppose $k\le D$. Then there exists a
-    Hermitian projection $P\in\MN{D,D}(\C)$ of rank $k$ such that $PX=X$.
+    Let $X\in M_{d\times k}(\C)$ and suppose $k\le d$. Then there exists a
+    Hermitian projection $P\in\MN{d}$ of rank $k$ such that $PX=X$.
 \end{lemma}
 
 \begin{proof}
     \leanok
-    The column space of $X$ has dimension at most $k$. Since $k\le D$, extend
-    this column space to a $k$-dimensional subspace $U\subseteq\C^D$. Let $P$
+    The column space of $X$ has dimension at most $k$. Since $k\le d$, extend
+    this column space to a $k$-dimensional subspace $U\subseteq\C^d$. Let $P$
     be the orthogonal projection onto $U$. Then $P$ is Hermitian and
     idempotent, its rank is $\dim U=k$, and it fixes each column of $X$.
 \end{proof}
@@ -616,7 +622,7 @@ and~\ref{def:choi_right_compression}.
     \lean{ChoiJamiolkowski.rightTensorMatrix_mul_conjTranspose_eq_conjTranspose_mul_self}
     \leanok
     \uses{def:choi_right_tensor_factor}
-    For every $V\in\MN{D,k}(\C)$, the right-tensor factor satisfies
+    For every $V\in M_{d\times k}(\C)$, the right-tensor factor satisfies
     $R_{VV^\dagger}=R_V^\dagger R_V$.
 \end{lemma}
 
@@ -628,12 +634,12 @@ and~\ref{def:choi_right_compression}.
 
 \begin{lemma}[Factorized right-tensor Choi sandwich]
     \label{lem:factorized_right_tensor_choi_sandwich}
-    \lean{ChoiJamiolkowski.rightTensorMatrix_mul_conjTranspose_choi_sandwich_eq}
+    \lean{ChoiJamiolkowski.rightTensorMatrix_mul_conjTranspose_choi_sandwich_eq_rectangular}
     \leanok
     \uses{def:choi_right_tensor_factor,
         lem:right_tensor_factorization_mul_adjoint}
-    Let $T:\MN{D,D}(\C)\to\MN{D,D}(\C)$ have Choi matrix $\tau$. For every
-    $V\in\MN{D,k}(\C)$,
+    Let $T:\MN{d}\to\MN{d'}$ have Choi matrix $\tau$. For every
+    $V\in M_{d\times k}(\C)$,
     \begin{align}
         R_{VV^\dagger}\tau R_{VV^\dagger}^\dagger
          & =R_V^\dagger(R_V\tau R_V^\dagger)R_V.
@@ -650,13 +656,13 @@ and~\ref{def:choi_right_compression}.
 
 \begin{theorem}[Factorized right projections in the Choi criterion]
     \label{thm:factorized_right_projection_choi_sandwich}
-    \lean{ChoiJamiolkowski.IsNPositiveMap.rightTensor_choiMatrix_sandwich_posSemidef_of_mul_conjTranspose}
+    \lean{ChoiJamiolkowski.IsNPositiveMap.rightTensor_choiMatrix_sandwich_posSemidef_of_mul_conjTranspose_rectangular}
     \leanok
     \uses{lem:factorized_right_tensor_choi_sandwich,
         thm:k_positive_right_tensor_choi_sandwiches}
-    Assume $D>0$. Let $T:\MN{D,D}(\C)\to\MN{D,D}(\C)$ be $k$-positive,
+    Assume $d>0$. Let $T:\MN{d}\to\MN{d'}$ be $k$-positive,
     with Choi matrix $\tau$. If a right-factor matrix has the form
-    $P=VV^\dagger$ with $V\in\MN{D,k}(\C)$, then
+    $P=VV^\dagger$ with $V\in M_{d\times k}(\C)$, then
     $R_P\tau R_P^\dagger\geq0$.
 \end{theorem}
 
