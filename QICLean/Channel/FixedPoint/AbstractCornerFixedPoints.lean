@@ -22,7 +22,8 @@ algebra. Wolf states the result for a maximum-rank stationary point; the proof
 here works for every positive-semidefinite stationary point, and hence includes
 that source case.
 
-The multiplication proof follows Wolf exactly: compress `T` to the support of
+The multiplication proof follows the support-compression route of Wolf
+Corollary 6.6: compress `T` to the support of
 `ρ`, identify the displayed set with the fixed points of the compressed trace
 adjoint, apply the full-support Schwarz fixed-point algebra theorem, and extend
 the product back through the support isometry.
