@@ -62,7 +62,6 @@
     \label{lem:trace_adjoint_stationary_support_compression_fixed}
     \lean{Matrix.traceAdjointMap_stationarySupportCompression_fixed}
     \leanok
-    \uses{thm:stationarySupport_restriction}
     Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, let
     $\rho\succeq0$ satisfy $T(\rho)=\rho$, and let
     $V:\mathcal H\to\C^D$ be an isometry onto the support of $\rho$. Define
@@ -99,7 +98,6 @@
         IsSchwarzMap.traceAdjointMap_stationarySupportCompression}
     \leanok
     \uses{thm:stationarySupport_compression,
-        lem:trace_adjoint_stationary_support_compression_fixed,
         thm:mean_ergodic_projection_density_block_form}
     Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, and suppose
     that $T^*$ satisfies the Schwarz inequality. Set
