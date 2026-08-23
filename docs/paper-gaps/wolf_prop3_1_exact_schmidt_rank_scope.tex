@@ -1,0 +1,104 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{Exact-Rank Wording in Wolf's Choi Criterion}
+\author{}
+\date{2026-08-23}
+
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{The printed criterion}
+
+Let $T:M_d(\C)\to M_{d'}(\C)$ be linear and let
+\begin{align}
+    \tau_T
+      &=(T\otimes\operatorname{id}_d)
+        \bigl(\ketbra{\Omega_d}{\Omega_d}\bigr)
+      \in M_{d'}(\C)\otimes M_d(\C).
+\end{align}
+Wolf's Proposition~3.1 assumes $k\le d$ and states, among its three
+equivalent conditions, that
+\begin{align}
+    \langle\psi,\tau_T\psi\rangle&\ge0
+    &&\text{whenever }\operatorname{SR}(\psi)=k.
+    \tag{Wolf 3.1(3)}
+\end{align}
+The local source prints ``Schmidt-rank $n$'' both in the statement and in the
+last sentence of the proof.
+\footnote{Source: \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines 89--115. Tracked by
+\href{https://github.com/LionSR/QICLean/issues/24}{QICLean issue \#24}.}
+
+\section{The dimension defect}
+
+Every vector in $\C^{d'}\otimes\C^d$ satisfies
+\begin{align}
+    \operatorname{SR}(\psi)&\le\min\{d',d\}.
+\end{align}
+Consequently, when $d'<k\le d$, there is no vector of Schmidt rank exactly
+$k$. Condition~(Wolf 3.1(3)) is then vacuous and cannot characterize
+$k$-positivity.
+
+For example, take $d=2$, $d'=1$, $k=2$, and
+$T(X)=-\tr(X)$. There is no Schmidt-rank-two vector in
+$\C^1\otimes\C^2$, so the printed quadratic-form condition holds. On the
+other hand, applying $T\otimes\operatorname{id}_2$ to a nonzero product
+projector gives a negative rank-one matrix. Thus $T$ is not $2$-positive.
+
+The last step of the printed proof has a second, related loss: a vector of the
+form $(\one\otimes X)^\dagger\widetilde\psi$ has Schmidt rank at most
+$\operatorname{rank}(X)$, but need not have rank equal to
+$\operatorname{rank}(X)$. Hence that step
+directly proves the bounded-rank condition, not the exact-rank condition.
+
+\section{The corrected statement}
+
+The dimension-generic Choi criterion is
+\begin{align}
+    T\text{ is $k$-positive}
+    \quad\Longleftrightarrow\quad
+    \langle\psi,\tau_T\psi\rangle&\ge0
+    &&\text{for every }\psi\text{ with }\operatorname{SR}(\psi)\le k.
+    \tag{corrected Wolf 3.1(3)}
+\end{align}
+This is the condition proved by the compression argument: factoring the
+coefficient matrix of $\psi$ through $\C^k$ writes
+$\psi=R_X^\dagger\eta$, and positivity of the right compression
+$R_X\tau_T R_X^\dagger$ gives the desired quadratic-form inequality.
+
+For $d>0$, the formal theorem covers independent input and output dimensions,
+including $k=0$ and $d'=0$.
+\footnote{Formal declarations:
+\leanid{ChoiJamiolkowski.isNPositiveMap_iff_forall_hasSchmidtRankLE_choiMatrix_quadraticForm_nonneg_rectangular}
+and
+\leanid{ChoiJamiolkowski.isNPositiveMap_iff_forall_rankProjection_choiMatrix_sandwich_posSemidef_rectangular}
+in \doclink{QICLean/Channel/Schwarz/ChoiCompression}.}
+The projection formulation additionally assumes $k\le d$, exactly as needed
+to choose a rank-$k$ projection on the input factor.
+
+If one also assumes $k\le d'$, an exact-rank formulation may be recovered
+from the bounded-rank formulation by a separate density argument: coefficient
+matrices of rank exactly $k$ are dense among matrices of rank at most $k$, and
+the quadratic form is continuous. This argument is not the proof printed by
+Wolf and is not used in the formal criterion.
+
+\section{Conclusion}
+
+Wolf's exact-rank wording is false under the printed hypothesis $k\le d$.
+Replacing exact Schmidt rank by Schmidt rank at most $k$ gives the standard
+rectangular Choi criterion and matches the compression proof. The formal
+statement and the Blueprint use this corrected wording; no additional route
+is attributed to the source.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

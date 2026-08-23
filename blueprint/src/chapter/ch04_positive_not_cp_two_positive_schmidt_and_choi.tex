@@ -492,8 +492,8 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     \lean{isNPositiveMap_iff_forall_ampliation_rank_one_posSemidef}
     \leanok
     \uses{def:k_positive_map, def:blockwise_ampliation}
-    A linear map $E:\MN{D}\to\MN{D}$ is $k$-positive if and only if, for
-    every vector $\phi\in\C^D\otimes\C^k$,
+    A linear map $E:\MN{d}\to\MN{d'}$ is $k$-positive if and only if, for
+    every vector $\phi\in\C^d\otimes\C^k$,
     $E^{(k)}(\ketbra{\phi}{\phi})\ge0$.
     This is the pure-state reduction used in
     \cite[Chapter~3, Proposition~3.1]{Wolf2012Quantum}.
@@ -503,7 +503,7 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     \leanok
     The forward implication is the definition of $k$-positivity, since
     $\ketbra{\phi}{\phi}$ is positive semidefinite. Conversely, every
-    positive semidefinite matrix on $\C^D\otimes\C^k$ is a finite sum
+    positive semidefinite matrix on $\C^d\otimes\C^k$ is a finite sum
     $\sum_i\ketbra{\phi_i}{\phi_i}$, and
     \begin{align}
         E^{(k)}\!\left(\sum_i\ketbra{\phi_i}{\phi_i}\right)
@@ -519,6 +519,11 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
 The right-tensor identities, parametrizations of bounded Schmidt rank, and
 projection factorizations used in this subsection are proved in
 Section~\ref{sec:app_positive_not_cp_choi_compression}.
+Wolf states item~3 of Proposition~3.1 using Schmidt rank exactly $k$.
+Under the stated assumption $k\le d$, that test set is empty when $k>d'$.
+The dimension-generic criterion below therefore uses Schmidt rank at most
+$k$; the source wording is analyzed in
+\cite{gap:wolf_prop3_1_exact_schmidt_rank_scope}.
 
 \begin{definition}[Right compression of the Choi matrix]\label{def:choi_right_compression}
     \lean{ChoiJamiolkowski.rightCompression,
@@ -526,39 +531,41 @@ Section~\ref{sec:app_positive_not_cp_choi_compression}.
         ChoiJamiolkowski.compressedOmegaVector}
     \leanok
     \uses{def:blockwise_ampliation}
-    For $X\in\MN{D,k}(\C)$ and a Choi matrix $\tau$, the right-factor
-    compression in the blockwise ampliation index convention has entries
+    Let $T:\MN{d}\to\MN{d'}$ have Choi matrix $\tau$ on
+    $\C^{d'}\otimes\C^d$. For $X\in M_{d\times k}(\C)$, the right-factor
+    compression is the matrix on $\C^{d'}\otimes\C^k$ with entries
     \begin{align}
         C_{(i,p),(j,q)}
          & =\sum_{a,b}X_{a,p}\tau_{(i,a),(j,b)}
         \overline{X_{b,q}}.
         \label{eq:schwarz_right_choi_compression}
     \end{align}
-    The associated vector has coefficients $D^{-1/2}X_{i,p}$.
+    The associated vector on $\C^d\otimes\C^k$ has coefficients
+    $d^{-1/2}X_{a,p}$.
 \end{definition}
 
 \begin{definition}[Right tensor factor for Choi compression]
     \label{def:choi_right_tensor_factor}
     \lean{ChoiJamiolkowski.rightTensorMatrix}
     \leanok
-    For $X\in\MN{D,k}(\C)$, let $R_X$ be the matrix from
-    $\C^D\otimes\C^D$ to $\C^D\otimes\C^k$ with entries
+    For $X\in M_{d\times k}(\C)$, let $R_X$ be the matrix from
+    $\C^{d'}\otimes\C^d$ to $\C^{d'}\otimes\C^k$ with entries
     \begin{align}
         (R_X)_{(i,p),(j,a)}
          & =\delta_{i,j}X_{a,p}.
         \label{eq:schwarz_right_tensor_factor}
     \end{align}
 \end{definition}
-\begin{theorem}[Schmidt-rank Choi expectation from $k$-positivity]
+\begin{theorem}[Rectangular Schmidt-rank Choi expectation from $k$-positivity]
     \label{thm:k_positive_schmidt_rank_choi_expectation}
-    \lean{ChoiJamiolkowski.IsNPositiveMap.choiMatrix_quadraticForm_nonneg_of_hasSchmidtRankLE}
+    \lean{ChoiJamiolkowski.IsNPositiveMap.choiMatrix_quadraticForm_nonneg_of_hasSchmidtRankLE_rectangular}
     \leanok
     \uses{lem:right_tensor_adjoint_schmidt_rank_representatives,
         thm:choi_right_compression_quadratic_form,
         thm:k_positive_iff_right_choi_compressions}
-    Assume $D>0$. If $T$ is $k$-positive, then
+    Assume $d>0$. If $T:\MN{d}\to\MN{d'}$ is $k$-positive, then
     $\langle\psi,\tau_T\psi\rangle\ge0$ for every
-    $\psi\in\C^D\otimes\C^D$ with $\SR(\psi)\le k$.
+    $\psi\in\C^{d'}\otimes\C^d$ with $\SR(\psi)\le k$.
 \end{theorem}
 
 \begin{proof}
@@ -572,23 +579,25 @@ Section~\ref{sec:app_positive_not_cp_choi_compression}.
     with $\langle\psi,\tau_T\psi\rangle$.
 \end{proof}
 
-\begin{theorem}[Converse Schmidt-rank Choi test]
+\begin{theorem}[Converse rectangular Schmidt-rank Choi test]
     \label{thm:schmidt_rank_choi_test_converse}
-    \lean{ChoiJamiolkowski.isNPositiveMap_of_forall_hasSchmidtRankLE_choiMatrix_quadraticForm_nonneg}
+    \lean{ChoiJamiolkowski.isNPositiveMap_of_forall_hasSchmidtRankLE_choiMatrix_quadraticForm_nonneg_rectangular}
     \leanok
     \uses{lem:right_tensor_adjoint_schmidt_rank,
         thm:choi_right_compression_quadratic_form,
         thm:k_positive_iff_right_choi_compressions}
-    Assume $D>0$. If $\langle\psi,\tau_T\psi\rangle\ge0$ for every
-    $\psi\in\C^D\otimes\C^D$ with $\SR(\psi)\le k$, then $T$ is
-    $k$-positive.
+    Assume $d>0$. Let $T:\MN{d}\to\MN{d'}$. If
+    $\langle\psi,\tau_T\psi\rangle\ge0$ for every
+    $\psi\in\C^{d'}\otimes\C^d$ with $\SR(\psi)\le k$, then $T$ is
+    $k$-positive. This includes $k=0$ and imposes no nonemptiness assumption
+    on the output factor.
 \end{theorem}
 
 \begin{proof}
     \leanok
     By Theorem~\ref{thm:k_positive_iff_right_choi_compressions}, it is enough
     to prove that $C_T(X)$ is positive semidefinite for each
-    $X\in\MN{D,k}(\C)$. For any $\eta$,
+    $X\in M_{d\times k}(\C)$. For any $\eta$,
     (\ref{eq:schwarz_right_compression_quadratic}) identifies
     $\langle\eta,C_T(X)\eta\rangle$ with
     $\langle R_X^\dagger\eta,\tau_T R_X^\dagger\eta\rangle$, and
@@ -599,15 +608,15 @@ Section~\ref{sec:app_positive_not_cp_choi_compression}.
     so $C_T(X)$ is positive semidefinite.
 \end{proof}
 
-\begin{theorem}[Schmidt-rank Choi criterion]
+\begin{theorem}[Rectangular Schmidt-rank Choi criterion]
     \label{thm:schmidt_rank_choi_test_iff}
-    \lean{ChoiJamiolkowski.isNPositiveMap_iff_forall_hasSchmidtRankLE_choiMatrix_quadraticForm_nonneg}
+    \lean{ChoiJamiolkowski.isNPositiveMap_iff_forall_hasSchmidtRankLE_choiMatrix_quadraticForm_nonneg_rectangular}
     \leanok
     \uses{thm:k_positive_schmidt_rank_choi_expectation,
         thm:schmidt_rank_choi_test_converse}
-    Assume $D>0$. Then $T$ is $k$-positive if and only if
+    Assume $d>0$. A map $T:\MN{d}\to\MN{d'}$ is $k$-positive if and only if
     $\langle\psi,\tau_T\psi\rangle\ge0$ for every
-    $\psi\in\C^D\otimes\C^D$ with $\SR(\psi)\le k$.
+    $\psi\in\C^{d'}\otimes\C^d$ with $\SR(\psi)\le k$.
 \end{theorem}
 
 \begin{proof}
@@ -621,9 +630,9 @@ Section~\ref{sec:app_positive_not_cp_choi_compression}.
     \leanok
     \uses{thm:k_positive_rank_one_test, def:choi_right_compression,
         lem:rank_one_ampliation_choi_compression}
-    Assume $D>0$. A linear map
-    $T:\MN{D,D}(\C)\to\MN{D,D}(\C)$ is $k$-positive if and only if, for every
-    $X\in\MN{D,k}(\C)$, the right-factor compression of the Choi matrix of
+    Assume $d>0$. A linear map
+    $T:\MN{d}\to\MN{d'}$ is $k$-positive if and only if, for every
+    $X\in M_{d\times k}(\C)$, the right-factor compression of the Choi matrix of
     $T$ by $X$ is positive semidefinite.
 \end{theorem}
 
@@ -638,8 +647,8 @@ Section~\ref{sec:app_positive_not_cp_choi_compression}.
         \label{eq:schwarz_ampliation_compression}
     \end{align}
     Conversely, given a vector $\psi$ on the ampliated space, take
-    $X_{i,p}=D^{1/2}\psi_{(i,p)}$. Since $D>0$, this choice satisfies
-    $D^{-1/2}X_{i,p}=\psi_{(i,p)}$. Substituting this vector in
+    $X_{a,p}=d^{1/2}\psi_{(a,p)}$. Since $d>0$, this choice satisfies
+    $d^{-1/2}X_{a,p}=\psi_{(a,p)}$. Substituting this vector in
     (\ref{eq:schwarz_ampliation_compression}) gives
     $(T\otimes\id_k)(\ketbra{\psi}{\psi})=C_T(X)$.
     Positivity of $C_T(X)$ is therefore positivity of the ampliation on the
@@ -649,13 +658,13 @@ Section~\ref{sec:app_positive_not_cp_choi_compression}.
 
 \begin{theorem}[Right tensor Choi sandwiches of a $k$-positive map]
     \label{thm:k_positive_right_tensor_choi_sandwiches}
-    \lean{ChoiJamiolkowski.IsNPositiveMap.rightTensor_choiMatrix_sandwich_posSemidef}
+    \lean{ChoiJamiolkowski.IsNPositiveMap.rightTensor_choiMatrix_sandwich_posSemidef_rectangular}
     \leanok
     \uses{thm:k_positive_iff_right_choi_compressions,
         thm:choi_right_tensor_sandwich}
-    Assume $D>0$. If
-    $T:\MN{D,D}(\C)\to\MN{D,D}(\C)$ is $k$-positive, then, for every
-    $X\in\MN{D,k}(\C)$,
+    Assume $d>0$. If
+    $T:\MN{d}\to\MN{d'}$ is $k$-positive, then, for every
+    $X\in M_{d\times k}(\C)$,
     \begin{align}
         R_X\tau R_X^\dagger
          & \ge0,
@@ -667,18 +676,18 @@ Section~\ref{sec:app_positive_not_cp_choi_compression}.
 \begin{proof}
     \leanok
     By Theorem~\ref{thm:k_positive_iff_right_choi_compressions},
-    $C_T(X)\ge0$ for every $X\in\MN{D,k}(\C)$. The sandwich formula
+    $C_T(X)\ge0$ for every $X\in M_{d\times k}(\C)$. The sandwich formula
     (\ref{eq:schwarz_right_tensor_sandwich}) identifies
     $R_X\tau R_X^\dagger$ with $C_T(X)$.
 \end{proof}
-\begin{theorem}[Rank-$k$ right projections in the Choi criterion]
+\begin{theorem}[Rank-$k$ input projections in the rectangular Choi criterion]
     \label{thm:rank_k_right_projection_choi_sandwich_forward}
-    \lean{ChoiJamiolkowski.IsNPositiveMap.rightTensor_choiMatrix_sandwich_posSemidef_of_isHermitian_idempotent_rank}
+    \lean{ChoiJamiolkowski.IsNPositiveMap.rightProjection_choiMatrix_sandwich_posSemidef_rectangular}
     \leanok
     \uses{lem:rank_k_hermitian_projection_factorization,
         thm:factorized_right_projection_choi_sandwich}
-    Assume $D>0$. Let $T:\MN{D,D}(\C)\to\MN{D,D}(\C)$ be $k$-positive,
-    with Choi matrix $\tau$. If $P\in\MN{D,D}(\C)$ is Hermitian, satisfies
+    Assume $d>0$. Let $T:\MN{d}\to\MN{d'}$ be $k$-positive,
+    with Choi matrix $\tau$. If $P\in\MN{d}$ is Hermitian, satisfies
     $P^2=P$, and has rank $k$, then $R_P\tau R_P^\dagger\geq0$.
     This is the forward rank-$k$ projection-compression direction of
     \cite[Chapter~3, Proposition~3.1]{Wolf2012Quantum}.
@@ -687,28 +696,28 @@ Section~\ref{sec:app_positive_not_cp_choi_compression}.
 \begin{proof}
     \leanok
     By Lemma~\ref{lem:rank_k_hermitian_projection_factorization}, write
-    $P=VV^\dagger$ with $V\in\MN{D,k}(\C)$. The conclusion is then exactly
+    $P=VV^\dagger$ with $V\in M_{d\times k}(\C)$. The conclusion is then exactly
     Theorem~\ref{thm:factorized_right_projection_choi_sandwich}.
 \end{proof}
 
-\begin{theorem}[Projection-compression converse for the Choi criterion]
+\begin{theorem}[Projection-compression converse for the rectangular Choi criterion]
     \label{thm:rank_k_right_projection_choi_sandwich_converse}
-    \lean{ChoiJamiolkowski.isNPositiveMap_of_forall_rankProjection_rightTensor_choiMatrix_sandwich_posSemidef}
+    \lean{ChoiJamiolkowski.isNPositiveMap_of_forall_rankProjection_choiMatrix_sandwich_posSemidef_rectangular}
     \leanok
     \uses{thm:k_positive_iff_right_choi_compressions,
         lem:square_sandwich_fixed_rectangular_compression,
         lem:rank_k_projection_fixing_rectangular_factor}
-    Assume $D>0$ and $k\le D$. Let
-    $T:\MN{D,D}(\C)\to\MN{D,D}(\C)$ have Choi matrix $\tau$. Suppose that
+    Assume $d>0$ and $k\le d$. Let
+    $T:\MN{d}\to\MN{d'}$ have Choi matrix $\tau$. Suppose that
     $R_P\tau R_P^\dagger\geq0$ for every Hermitian projection
-    $P\in\MN{D,D}(\C)$ of rank $k$. Then $T$ is $k$-positive.
+    $P\in\MN{d}$ of rank $k$. Then $T$ is $k$-positive.
 \end{theorem}
 
 \begin{proof}
     \leanok
     By Theorem~\ref{thm:k_positive_iff_right_choi_compressions}, it is enough
     to prove positivity of the right-factor compression by an arbitrary
-    $X\in\MN{D,k}(\C)$. Choose a rank-$k$ Hermitian projection $P$ with
+    $X\in M_{d\times k}(\C)$. Choose a rank-$k$ Hermitian projection $P$ with
     $PX=X$ using
     Lemma~\ref{lem:rank_k_projection_fixing_rectangular_factor}. The assumed
     positivity of $R_P\tau R_P^\dagger$, together with
@@ -716,15 +725,15 @@ Section~\ref{sec:app_positive_not_cp_choi_compression}.
     positivity of the rectangular compression by $X$.
 \end{proof}
 
-\begin{theorem}[Rank-$k$ projection form of the Choi criterion]
+\begin{theorem}[Rank-$k$ input-projection form of the rectangular Choi criterion]
     \label{thm:rank_k_right_projection_choi_criterion}
-    \lean{ChoiJamiolkowski.isNPositiveMap_iff_forall_rankProjection_rightTensor_choiMatrix_sandwich_posSemidef}
+    \lean{ChoiJamiolkowski.isNPositiveMap_iff_forall_rankProjection_choiMatrix_sandwich_posSemidef_rectangular}
     \leanok
     \uses{thm:rank_k_right_projection_choi_sandwich_forward,
         thm:rank_k_right_projection_choi_sandwich_converse}
-    Assume $D>0$ and $k\le D$. A linear map
-    $T:\MN{D,D}(\C)\to\MN{D,D}(\C)$ is $k$-positive if and only if, for every
-    Hermitian projection $P\in\MN{D,D}(\C)$ of rank $k$,
+    Assume $d>0$ and $k\le d$. A linear map
+    $T:\MN{d}\to\MN{d'}$ is $k$-positive if and only if, for every
+    Hermitian projection $P\in\MN{d}$ of rank $k$,
     $R_P\tau R_P^\dagger\geq0$, where $\tau$ is the Choi matrix of $T$.
     This is the rank-$k$ projection formulation of
     \cite[Chapter~3, Proposition~3.1]{Wolf2012Quantum}.

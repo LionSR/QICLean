@@ -486,6 +486,30 @@ so that the cited formal statements are available from the main project import.
 
 ---
 
+## Wolf Lecture Notes — Chapter 3: Positive Maps
+
+### Section 3.1 Choi criteria for n-positive maps
+
+#### Wolf Proposition 3.1 — FORMALIZED WITH A SOURCE WORDING CORRECTION
+
+- `ChoiJamiolkowski.isNPositiveMap_iff_forall_rightCompression_posSemidef`
+  — Equation (3.4) for a rectangular map `M_d(ℂ) → M_{d'}(ℂ)`: positivity
+  of every input-factor compression by `X : M_{d×k}(ℂ)` is equivalent to
+  `k`-positivity ✓
+- `ChoiJamiolkowski.isNPositiveMap_iff_forall_rankProjection_choiMatrix_sandwich_posSemidef_rectangular`
+  — item 2, with rank-`k` Hermitian projections on the input factor, under
+  `d > 0` and `k ≤ d` ✓
+- `ChoiJamiolkowski.isNPositiveMap_iff_forall_hasSchmidtRankLE_choiMatrix_quadraticForm_nonneg_rectangular`
+  — item 3 on the output-first space `ℂ^{d'} ⊗ ℂ^d`, using the mathematically
+  correct condition `SR(ψ) ≤ k` ✓
+- Wolf prints exact Schmidt rank `k`, which is vacuous when `k > d'` and is
+  not what the displayed compression proof establishes. The counterexample,
+  corrected statement, and scope of a possible exact-rank reformulation are
+  recorded in
+  `docs/paper-gaps/wolf_prop3_1_exact_schmidt_rank_scope.tex`.
+
+---
+
 ## Wolf Chapter 6 — Spectral Properties: Public Theorem Index
 
 This module serves as a **navigational index** that maps the formalized theorems
