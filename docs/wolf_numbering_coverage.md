@@ -131,14 +131,29 @@ project import.
     and dilations with it are minimal (discussion after Thm. 2.2) ✓
 
 * **Theorem 2.3** (ordered CP-maps):
-  - `CPDominates` — CP partial order: `S - T` is completely positive ✓
+  - `CPDominates` — rectangular CP partial order: `S - T` is completely
+    positive ✓
+  - `stinespringW` / `stinespringW_conjTranspose_mul_self` — Wolf's
+    normalized auxiliary operator for a supplied rectangular Stinespring
+    matrix and the source identity `WᴴW = τ` ✓
+  - `Matrix.sqNorm_mulVec_le_of_conjTranspose_mul_le` /
+    `Matrix.exists_contraction_mul_of_sqNorm_le` — Equation (2.13), in
+    squared form, and the rectangular factorization `W₁ = C W₂` by a
+    contraction `C : ℂ^{r₂} → ℂ^{r₁}` ✓
+  - `CPDominates.exists_supplied_stinespring_contraction` — **source-facing
+    Wolf Theorem 2.3**: for CP maps `Tᵢ : M_{d'} → M_d` with `T₁ ≤ T₂`
+    and supplied Stinespring matrices with potentially distinct ancilla
+    dimensions, returns `C` with `V₁ = (𝟙_{d'} ⊗ C)V₂`; if
+    `r₂ = Channel.choiRank T₂`, the supplied `W₂` is surjective and `C`
+    is unique ✓
   - `Matrix.blockTopRows` / `Matrix.blockTopRows_mul_conjTranspose` /
     `Matrix.blockTopRows_conjTranspose_mul_le_one` — explicit block-top
-    contraction on the dilation space ✓
+    contraction used in the canonical square corollary ✓
   - `stinespringV_eq_kronecker_blockTopRows_mul_append` — intertwining
     `V_{K} = (𝟙_D ⊗ C) · V_{K ++ L}` for the block-top projector ✓
-  - `CPDominates.exists_stinespring_contraction` — existential form of
-    Wolf Theorem 2.3: `T₁ ≤ T₂` gives Stinespring realizations and a contraction ✓
+  - `CPDominates.exists_stinespring_contraction` — canonical square
+    corollary that constructs compatible dilations by appending Kraus
+    families; it is no longer identified with the supplied source theorem ✓
 
 * **Theorem 2.4** (Radon–Nikodym for CP maps):
   - `Matrix.blockDiagTopProj` / `Matrix.blockDiagBotProj` — orthogonal
