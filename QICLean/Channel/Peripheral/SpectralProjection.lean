@@ -18,8 +18,8 @@ remaining eigenvalues.  The two subspaces are complementary, so there is a
 linear projection onto the peripheral part: the **peripheral spectral
 projection** `T_φ` of Wolf Equation (6.12), i.e. `Σ_{k:|λₖ|=1} Pₖ` in the
 spectral decomposition of Wolf Equation (6.5).  Composing with `f` gives the
-phase-weighted map `T_φ' = f ∘ T_φ` of Wolf Equation (6.13),
-`Σ_{k:|λₖ|=1} λₖ Pₖ`; the identity `T_φ' = T T_φ` of Wolf Proposition 6.3(ii)
+phase-weighted map `T_ϕ = f ∘ T_φ` of Wolf Equation (6.13),
+`Σ_{k:|λₖ|=1} λₖ Pₖ`; the identity `T_ϕ = T T_φ` of Wolf Proposition 6.3(ii)
 holds by construction.
 
 For a positive trace-preserving map on matrices, Wolf Proposition 6.2 (trivial
@@ -37,14 +37,14 @@ Equation (6.65).
   complementarity of the two subspaces.
 * `Module.End.peripheralProjection`: the projection `T_φ` onto the peripheral
   subspace along the non-peripheral subspace (Wolf (6.12)).
-* `Module.End.peripheralWeightedProjection`: the map `T_φ' = T ∘ T_φ`
+* `Module.End.peripheralWeightedProjection`: the map `T_ϕ = T ∘ T_φ`
   (Wolf (6.13)).
 
 ## Main statements
 
 * `Module.End.peripheralProjection_comp`: `T_φ` commutes with `T`.
 * `Module.End.peripheralWeightedProjection_apply_of_mem_eigenspace`:
-  `T_φ'` acts as `μ • id` on the peripheral `μ`-eigenspace (Wolf (6.13)).
+  `T_ϕ` acts as `μ • id` on the peripheral `μ`-eigenspace (Wolf (6.13)).
 * `IsPositiveMap.maxGenEigenspace_eq_eigenspace_of_norm_eq_one`: Wolf
   Proposition 6.2, subspace form.
 * `IsPositiveMap.peripheralSubspace_eq_iSup_eigenspace`: Wolf Equation (6.65).
@@ -243,25 +243,25 @@ theorem commute_peripheralProjection (f : Module.End ℂ V) :
   simpa only [Commute, SemiconjBy, Module.End.mul_eq_comp]
     using f.peripheralProjection_comp
 
-/-! ### The phase-weighted peripheral spectral map `T_φ'` -/
+/-! ### The phase-weighted peripheral spectral map `T_ϕ` -/
 
-/-- The **phase-weighted peripheral spectral map** `T_φ' := T ∘ T_φ` of Wolf
+/-- The **phase-weighted peripheral spectral map** `T_ϕ := T ∘ T_φ` of Wolf
 Equation (6.13).  Since `T_φ` projects onto the peripheral spectral subspace,
 on each peripheral eigenspace of eigenvalue `λ` this map acts as `λ • id`,
 while it vanishes on the non-peripheral subspace; it is therefore
 `Σ_{k:|λₖ|=1} λₖ Pₖ` of the spectral decomposition.  The identity
-`T_φ' = T T_φ` of Wolf Proposition 6.3(ii) holds by construction.
+`T_ϕ = T T_φ` of Wolf Proposition 6.3(ii) holds by construction.
 
 Source: Wolf, Equation (6.13) and Proposition 6.3(ii); local source
 `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 213--256. -/
 noncomputable def peripheralWeightedProjection (f : Module.End ℂ V) : Module.End ℂ V :=
   f ∘ₗ f.peripheralProjection
 
-/-- **Wolf Proposition 6.3(ii)**: `T_φ' = T T_φ`. -/
+/-- **Wolf Proposition 6.3(ii)**: `T_ϕ = T T_φ`. -/
 theorem peripheralWeightedProjection_eq_comp (f : Module.End ℂ V) :
     f.peripheralWeightedProjection = f ∘ₗ f.peripheralProjection := rfl
 
-/-- The commuted form of Wolf Proposition 6.3(ii): `T_φ' = T_φ T`. -/
+/-- The commuted form of Wolf Proposition 6.3(ii): `T_ϕ = T_φ T`. -/
 theorem peripheralWeightedProjection_eq_peripheralProjection_comp (f : Module.End ℂ V) :
     f.peripheralWeightedProjection = f.peripheralProjection ∘ₗ f := by
   rw [peripheralWeightedProjection, ← f.peripheralProjection_comp]
@@ -282,7 +282,7 @@ theorem peripheralProjection_apply_of_mem_eigenspace (f : Module.End ℂ V) {μ 
     (Module.End.eigenspace_le_maxGenEigenspace hx)
 
 /-- **Wolf Equation (6.13)**: on the peripheral `μ`-eigenspace, the
-phase-weighted map `T_φ'` acts as `μ • id`. -/
+phase-weighted map `T_ϕ` acts as `μ • id`. -/
 theorem peripheralWeightedProjection_apply_of_mem_eigenspace (f : Module.End ℂ V) {μ : ℂ}
     (heig : f.HasEigenvalue μ) (hμ : ‖μ‖ = 1) {x : V} (hx : x ∈ f.eigenspace μ) :
     f.peripheralWeightedProjection x = μ • x := by
