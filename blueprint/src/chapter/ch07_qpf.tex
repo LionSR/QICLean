@@ -770,18 +770,19 @@ The TP-gauge application follows~\cite[Appendix~A]{Cirac2016MPDO_arXiv}.
     \leanok
     \uses{def:density_matrices}
     Let $T:\MN{D}\to\MN{D}$ be linear. A pair $(X,a)$ is lower feasible
-    when
+    for $a\in\R$ when
     \begin{align}
-        X&\geq0, & \tr X&=1, & a&\geq0,
+        X&\geq0, & \tr X&=1,
         & T(X)-aX&\geq0,
         \label{eq:qpf_cw_lower_feasible}
     \end{align}
-    and is upper feasible when the first three conditions hold and
+    and is upper feasible when the first two conditions hold and
     \begin{align}
         aX-T(X)&\geq0.
         \label{eq:qpf_cw_upper_feasible}
     \end{align}
-    Under the harmless normalization $\tr X=1$, these predicates express
+    Thus the scalar ranges over all of $\R$, exactly as in the source. Under
+    the harmless normalization $\tr X=1$, these predicates express
     $a\leq r(X)$ and $\widetilde r(X)\leq a$ for the functionals in
     \cite[Equations~(6.29)--(6.30)]{Wolf2012Quantum}.
 \end{definition}
@@ -854,8 +855,12 @@ The TP-gauge application follows~\cite[Appendix~A]{Cirac2016MPDO_arXiv}.
     First maximize the lower functional, in the order used by Wolf. On density
     matrices, lower feasibility implies
     $a\leq\operatorname{Re}\tr(T(X))$. The latter continuous function has a
-    maximum, so the feasible pairs may be restricted to a compact set. Hence
-    there is a lower maximizer $(X,r)$.
+    maximum. Since $0$ is feasible and every negative candidate is below it,
+    the search for a maximum may be restricted to a compact interval
+    $0\leq a\leq M$. Hence there is a lower maximizer $(X,r)$ with $r\geq0$.
+    Upper feasible values are automatically nonnegative: positivity gives
+    $\tr T(X)\geq0$, while tracing $aX-T(X)\geq0$ gives
+    $a\geq\tr T(X)$.
 
     Put $S=(\id+T)^{D-1}$ and $R=T(X)-rX\geq0$. The polynomial identity
     \begin{align}

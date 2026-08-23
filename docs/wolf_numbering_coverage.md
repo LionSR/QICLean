@@ -707,7 +707,8 @@ The headline declarations are in
 They package the four source conclusions in order:
 
 1. `LowerCollatzWielandtFeasible` and `UpperCollatzWielandtFeasible` encode
-   Equations (6.29)–(6.30) on density matrices.
+   Equations (6.29)–(6.30) on density matrices, with the scalar ranging over
+   all real numbers as in the source.
    `exists_lowerCollatzWielandt_maximizer` constructs the lower maximizer
    first. `idPlus_pow_apply_map_sub_smul` is Equation (6.31), and
    `exists_posDef_eigenvector_of_irreducible_positive` uses it with Wolf

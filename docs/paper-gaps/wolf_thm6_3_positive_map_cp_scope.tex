@@ -96,17 +96,29 @@ the same positive-definite eigenvector and are equal. The reversed inequality
 printed at line~619 belongs to the same local error.
 
 There is no pointwise assertion that $r(X)=\widetilde r(X)$ for arbitrary
-$X\geq0$. For example, if $T(X)=AXA^\dagger$ with
-$A=\operatorname{diag}(1,2)$, then at $X=\Id$ the two values are $1$ and $4$.
+$X\geq0$, even under irreducibility. For example, on $\MN{2}$ consider the
+trace-to-identity map $T(Z)=\tr(Z)\Id$. This map is positive and irreducible:
+for every nonzero proper projection $P$, the matrix $T(P)=\Id$ is not supported
+on the range of $P$. At $X=\operatorname{diag}(1,2)$, the inequalities
+$T(X)-aX\geq0$ and $bX-T(X)\geq0$ give respectively
+\begin{align}
+  r(X)&=\min\{3,3/2\}=3/2,&
+  \widetilde r(X)&=\max\{3,3/2\}=3.
+\end{align}
 Equality at a positive eigenvector is sufficient for the theorem. The
 standalone pointwise and extended-value development tracked separately does
 not enter this proof.
 
 \section{Source-faithful proof route}
 
-The proof follows the order of Wolf's argument. First, the lower feasible
-pairs are restricted to density matrices and a compact interval, producing a
-maximizer. Equation~(6.31), together with the positive-map growth theorem,
+The proof follows the order of Wolf's argument. First, lower and upper
+feasibility are defined for every real scalar, exactly as in
+Equations~\eqref{eq:gap-lower}--\eqref{eq:gap-upper}. After normalizing to
+density matrices, zero is lower feasible and negative lower candidates cannot
+increase the supremum, so the maximizing search is restricted to a compact
+interval. Upper candidates are automatically nonnegative by positivity and
+the trace inequality. This produces a lower maximizer without changing either
+source extremum. Equation~(6.31), together with the positive-map growth theorem,
 makes the maximizer positive definite and forces its lower residual to vanish.
 Equation~(6.32) is then applied after the Hermitian and skew-Hermitian
 decomposition to prove one-dimensionality of the ordinary eigenspace.
