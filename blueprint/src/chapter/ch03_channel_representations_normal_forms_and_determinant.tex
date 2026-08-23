@@ -1060,6 +1060,57 @@ This section states the existence theorems from
     $|\det T|=\prod_i|\mu_i|\leq1$ follows by induction.
 \end{proof}
 
+\begin{theorem}[Determinant under composition]
+    \label{thm:channelDet_comp}
+    \lean{channelDet_comp}\leanok
+    \uses{def:channel_det}
+    For linear maps $T_1,T_2:\MN{D}\to\MN{D}$,
+    \begin{align}
+        \det(T_1T_2)=\det(T_1)\det(T_2),
+    \end{align}
+    where $T_1T_2=T_1\circ T_2$, so $T_2$ acts first.  This is
+    \cite[Equation~(6.22)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    Rewrite the channel determinant as the determinant of the underlying
+    linear endomorphism and apply multiplicativity of the latter.
+\end{proof}
+
+\begin{theorem}[Determinant monotonicity under composition: algebraic part]
+    \label{thm:channelDet_comp_monotone_algebraic}
+    \lean{channelDet_norm_comp_le_of_positive_tracePreserving,
+        channelDet_norm_comp_eq_iff}\leanok
+    \uses{def:channel_det, def:positive_map, def:trace_preserving}
+    Let $T_1,T_2:\MN{D}\to\MN{D}$ be positive and trace-preserving.  Then
+    \begin{align}
+        |\det(T_1T_2)|\leq |\det T_1|.
+    \end{align}
+    For arbitrary linear maps, the equality
+    $|\det(T_1T_2)|=|\det T_1|$ holds exactly when
+    \begin{align}
+        \det T_1=0 \quad\text{or}\quad |\det T_2|=1.
+    \end{align}
+    This is the multiplicative and determinant-bound part of the
+    monotonicity corollary following
+    \cite[Theorem~6.1]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:channelDet_comp, thm:channelDet_norm_le_one}
+    Theorem~\ref{thm:channelDet_comp} gives
+    $|\det(T_1T_2)|=|\det T_1|\,|\det T_2|$.  The determinant bound for
+    $T_2$ proves the inequality.  Cancelling the nonzero factor
+    $|\det T_1|$ proves the equality split; when that factor is zero,
+    equality is automatic.
+
+    The source's further replacement of $|\det T_2|=1$ by ``unitary
+    conjugation or matrix transposition'' depends on the general positive
+    trace-preserving saturation classification.  Only its CPTP unitary branch
+    is currently available, so that geometric clause remains open rather than
+    being weakened here.
+\end{proof}
+
 \begin{theorem}[Determinant one iff the channel is unitary]
     \label{thm:channelDet_norm_eq_one_iff_unitary}
     \lean{channelDet_norm_eq_one_iff_exists_unitaryChannel}\leanok
