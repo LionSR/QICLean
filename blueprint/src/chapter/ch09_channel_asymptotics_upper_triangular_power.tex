@@ -1,5 +1,58 @@
 % Source: Wolf (2012), Chapter 8, upper-triangular power lemma
 
+\begin{definition}[Largest subperipheral modulus]
+    \label{def:wolf_subperipheral_modulus}
+    \lean{Module.End.subperipheralSpectrum,
+      Module.End.subperipheralModulus}
+    \leanok
+    For a finite-dimensional complex endomorphism $T$, let
+    \begin{align}
+      \operatorname{spec}_{<1}(T)
+        &=\{\lambda:\lambda\text{ is an eigenvalue of }T,
+             \ |\lambda|<1\},\\
+      \mu(T)&=\sup\{|\lambda|:\lambda\in
+             \operatorname{spec}_{<1}(T)\}.
+    \end{align}
+    We use the explicit convention $\mu(T)=0$ when the displayed spectrum is
+    empty.  If it is nonempty, the spectrum is finite, so the supremum is an
+    attained maximum and $\mu(T)<1$.
+\end{definition}
+
+\begin{proof}
+    \leanok
+    Finite dimensionality makes the eigenvalue set finite.  Its subset in the
+    open unit disc is finite as well, so a nonempty image under the modulus has
+    a greatest element.  If the set is empty, the real supremum convention is
+    zero.  See the separate qualification for the case where zero is the only
+    subperipheral eigenvalue.
+\end{proof}
+
+\begin{lemma}[Similarity comparison for powers]
+    \label{lem:wolf_jordan_similarity_comparison}
+    \lean{Matrix.l2_opNorm_pow_similarity_bounds}
+    \leanok
+    If $AB=BA=I$ and $X=AJB$, then for every $n\in\mathbb N$,
+    \begin{align}
+      (\lVert A\rVert_\infty\lVert B\rVert_\infty)^{-1}
+        \lVert J^n\rVert_\infty
+      \le \lVert X^n\rVert_\infty
+      \le \lVert A\rVert_\infty\lVert B\rVert_\infty
+        \lVert J^n\rVert_\infty.
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    First prove $X^n=AJ^nB$ and $J^n=BX^nA$ from the two inverse identities.
+    Apply submultiplicativity to both equalities.  The factor
+    $\lVert A\rVert_\infty\lVert B\rVert_\infty$ is positive because it is at
+    least the norm of $AB=I$.
+
+% This is Equation (8.108) for a chosen basis.  Replacing the condition factor
+% by Wolf's infimum \kappa_T requires attainment or a compatible limiting
+% argument; the full Jordan-scaling theorem is therefore not marked \leanok.
+\end{proof}
+
 \begin{theorem}[Noncommutative upper-triangular word bound]
     \label{thm:wolf_upper_triangular_word_bound}
     \lean{Matrix.wolf_eq_105_seminorm}

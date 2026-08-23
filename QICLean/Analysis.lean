@@ -33,6 +33,7 @@ import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.JordanBlockPower
+import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KleinInequality
 import QICLean.Analysis.KyFanNorm
 import QICLean.Analysis.LiebConcavity
@@ -67,6 +68,7 @@ import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
+import QICLean.Analysis.SubperipheralSpectrum
 import QICLean.Analysis.SuperoperatorResolvent
 import QICLean.Analysis.SupportCompressedEntropy
 import QICLean.Analysis.SupportCompression
