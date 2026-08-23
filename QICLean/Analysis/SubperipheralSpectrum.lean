@@ -100,6 +100,16 @@ theorem subperipheralModulus_lt_one (T : Module.End ℂ V)
   rcases hr with ⟨z, hz, rfl⟩
   exact hz.2
 
+/-- Wolf's subperipheral modulus is at most one, including when the
+subperipheral spectrum is empty and the convention gives `μ = 0`. -/
+theorem subperipheralModulus_le_one (T : Module.End ℂ V) :
+    T.subperipheralModulus ≤ 1 := by
+  by_cases hT : T.subperipheralSpectrum.Nonempty
+  · exact (T.subperipheralModulus_lt_one hT).le
+  · rw [T.subperipheralModulus_eq_zero_of_empty
+      (Set.not_nonempty_iff_eq_empty.mp hT)]
+    exact zero_le_one
+
 /-- Exact qualification of the `μ = 0` case: the subperipheral spectrum is
 empty or contains only the zero eigenvalue. -/
 theorem subperipheralModulus_eq_zero_iff (T : Module.End ℂ V) :

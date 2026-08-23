@@ -3,6 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
+import QICLean.Analysis.SubperipheralSpectrum
 import Mathlib.Data.Matrix.Basic
 import Mathlib.LinearAlgebra.Matrix.IsDiag
 import Mathlib.Data.Fin.Basic
@@ -895,5 +896,49 @@ theorem wolf_eq_111_schur_form_refined
   exact h.trans (by gcongr; simpa [hΛ_norm] using l2_opNorm_pow_le_pow Λ n)
 
 end WolfEq111SchurForm
+
+section WolfEq111SubperipheralModulus
+
+open scoped Matrix.Norms.L2Operator
+
+variable {D : ℕ} {Λ N : Matrix (Fin D) (Fin D) ℂ} {n : ℕ}
+
+/-- **Wolf Eq. (8.111) with the shared subperipheral modulus.**
+
+This specializes `wolf_eq_111_schur_form` to Wolf's source-shaped `μ` from
+`Module.End.subperipheralModulus`.  The actual Schur data remain explicit:
+the channel-level theorem must still construct `Λ` and `N` for
+`T - T.peripheralWeightedProjection` and prove `‖Λ‖ = μ`.
+
+The natural exponent is stated only in its valid range `D - 1 ≤ n`.
+Source: Wolf (2012), Chapter 8, Equation (8.111), local source lines
+1299--1316. -/
+theorem wolf_eq_111_schur_form_subperipheralModulus
+    (T : Module.End ℂ (Fin D → ℂ))
+    (hΛ_diag : IsDiag Λ) (hN_sut : IsStrictlyUpperTriangular N)
+    (hDpos : D ≠ 0) (hn_ge : D - 1 ≤ n)
+    (hΛ_norm : ‖Λ‖ = T.subperipheralModulus) :
+    ‖(Λ + N) ^ n‖ ≤ T.subperipheralModulus ^ n +
+      (((D - 1 : ℕ) * n ^ (D - 1 : ℕ) : ℕ) : ℝ) *
+        T.subperipheralModulus ^ (n - (D - 1)) *
+          max ‖N‖ (‖N‖ ^ (D - 1)) := by
+  exact wolf_eq_111_schur_form hΛ_diag hN_sut hDpos hn_ge hΛ_norm
+    T.subperipheralModulus_le_one
+
+/-- The refined Equation (8.111) constant with the same shared
+subperipheral modulus and source hypothesis `2 * (D - 1) ≤ n`. -/
+theorem wolf_eq_111_schur_form_subperipheralModulus_refined
+    (T : Module.End ℂ (Fin D → ℂ))
+    (hΛ_diag : IsDiag Λ) (hN_sut : IsStrictlyUpperTriangular N)
+    (hDpos : D ≠ 0) (hn_ge : 2 * (D - 1) ≤ n)
+    (hΛ_norm : ‖Λ‖ = T.subperipheralModulus) :
+    ‖(Λ + N) ^ n‖ ≤ T.subperipheralModulus ^ n +
+      (((D - 1 : ℕ) * Nat.choose n (D - 1) : ℕ) : ℝ) *
+        T.subperipheralModulus ^ (n - (D - 1)) *
+          max ‖N‖ (‖N‖ ^ (D - 1)) := by
+  exact wolf_eq_111_schur_form_refined hΛ_diag hN_sut hDpos hn_ge hΛ_norm
+    T.subperipheralModulus_le_one
+
+end WolfEq111SubperipheralModulus
 
 end Matrix

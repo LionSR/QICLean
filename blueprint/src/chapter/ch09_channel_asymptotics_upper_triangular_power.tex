@@ -168,3 +168,30 @@
     $\lVert\Lambda^n\rVert_\infty\le\lVert\Lambda\rVert_\infty^n$, and
     substitute the norm of the diagonal part.
 \end{proof}
+
+\begin{corollary}[Schur estimate with Wolf's subperipheral modulus]
+    \label{cor:wolf_schur_form_subperipheral_modulus}
+    \lean{Matrix.wolf_eq_111_schur_form_subperipheralModulus,
+      Matrix.wolf_eq_111_schur_form_subperipheralModulus_refined}
+    \leanok
+    \uses{def:wolf_subperipheral_modulus,
+      thm:wolf_schur_form_spectral_radius_estimate}
+    Let $T$ be a complex endomorphism on the same $D$-dimensional coordinate
+    space as $\Lambda,N\in M_D(\mathbb C)$, and take
+    $\mu=\mu(T)$ from Definition~\ref{def:wolf_subperipheral_modulus}.
+    If $\Lambda$ is diagonal, $N$ is strictly upper triangular, and
+    $\lVert\Lambda\rVert_\infty=\mu$, then the coarse and refined estimates of
+    Theorem~\ref{thm:wolf_schur_form_spectral_radius_estimate} hold with this
+    shared source-shaped $\mu$.
+\end{corollary}
+
+\begin{proof}
+    \leanok
+    The shared modulus satisfies $\mu\le1$, including the empty-spectrum
+    convention $\mu=0$.  Apply the coarse estimate when $D-1\le n$ and the
+    refined estimate when $2(D-1)\le n$.
+
+% This corollary does not construct the unitary Schur representation of
+% \widehat T-\widehat T_\varphi or prove that its diagonal part has norm \mu.
+% Those remain channel-level obligations in Wolf Equation (8.111).
+\end{proof}

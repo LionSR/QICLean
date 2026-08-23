@@ -78,6 +78,17 @@ the estimate once the Schur decomposition and its spectral identification are
 given; constructing that decomposition for $\widehat T-\widehat T_\varphi$
 remains part of the channel-level theorem.
 
+The specializations
+\leanid{Matrix.wolf_eq_111_schur_form_subperipheralModulus} and
+\leanid{Matrix.wolf_eq_111_schur_form_subperipheralModulus_refined} now use the
+shared source-shaped $\mu$ from
+\leanid{Module.End.subperipheralModulus} on the same $D$-dimensional coordinate
+space as the Schur matrices.  They discharge $\mu\le1$, including the empty
+subperipheral-spectrum convention.  They intentionally retain the hypothesis
+$\lVert\Lambda\rVert_\infty=\mu$: constructing the unitary Schur representation
+of $\widehat T-\widehat T_\varphi$ and proving this spectral identification
+remain separate channel-level obligations.
+
 \section{Verdict}
 
 \textbf{Verdict: source scope restriction.}
