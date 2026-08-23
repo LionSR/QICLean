@@ -1,0 +1,89 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{Slater Strong Duality: Finiteness Conditions for Attainment}
+\author{}
+\date{2026-08-24}
+
+\begin{document}
+\maketitle
+\gapnote{source-correction}{open}
+
+\section{Source passage}
+
+For a closed pointed convex cone $K\subseteq V$ with nonempty interior,
+Chapter~4 of \cite{Wolf2012Quantum} considers
+\begin{align}
+  C_p&=\inf\{\langle c|x\rangle:x\in K,\ T(x)=b\},\\
+  C_d&=\sup\{\langle b|y\rangle:c-T^*(y)\in K^*\}.
+\end{align}
+At lines~72--78 of the local source, primal strict feasibility is said to give
+$C_p=C_d$ and attainment of the dual supremum; the dual statement is said to
+give attainment of the primal infimum.
+
+\section{Missing boundary conditions}
+
+Strict feasibility on one side does not by itself ensure that the opposite
+feasible set is nonempty or that the relevant optimum is finite.  Both failures
+already occur in one dimension with $K=\mathbb R_{\geq0}$ and $T=0$.
+
+First take $b=0$ and $c=-1$.  The primal point $x=1$ is strictly feasible, but
+the primal objective $-x$ is unbounded below.  Dual feasibility would require
+$-1\in\mathbb R_{\geq0}$, so the dual feasible set is empty and no dual
+optimizer exists.
+
+Second take $b=1$ and $c=1$.  The dual slack equals $1$ for every $y$, hence the
+dual problem is strictly feasible.  The primal equality constraint is
+$0=1$, so the primal feasible set is empty and no primal optimizer exists.
+
+Thus the attainment sentences at lines~72--78 require a finiteness condition,
+or an equivalent opposite-feasibility and boundedness condition.
+
+\section{Corrected statement}
+
+The finite-dimensional Slater theorem in Wolf's signs and adjoint convention is:
+if the primal problem is strictly feasible and $C_p\in\mathbb R$, then
+$C_p=C_d$ and the dual supremum is attained.  Dually, if the dual problem is
+strictly feasible and $C_d\in\mathbb R$, then $C_p=C_d$ and the primal infimum
+is attained.
+
+The formal development currently contains the source-shaped strict-feasibility
+predicates and separate optimizer predicates in
+\doclink{QICLean/Analysis/ConicProgram}.  The declarations
+\leanid{ConicProgram.primalValue_eq_of_isPrimalOptimizer} and
+\leanid{ConicProgram.dualValue_eq_of_isDualOptimizer} prove that an optimizer
+realizes the corresponding extended-real value.  The declarations
+\leanid{ConicProgram.optimizers_of_feasible_of_objectives_eq} and
+\leanid{ConicProgram.values_eq_of_feasible_of_objectives_eq} prove that a
+feasible pair with equal objectives attains both values.
+
+\section{Remaining proof}
+
+The unresolved step is the corrected Slater existence theorem itself.  Its
+proof must separate the appropriate finite-dimensional convex set and then
+show, using strict feasibility, that the coefficient of the objective
+coordinate is nonzero before normalizing the separating functional.  Mathlib's
+\leanid{ProperCone.relative_hyperplane_separation} concerns the closure of a
+linear image of a proper cone.  It does not prove that the unclosed image is
+closed, so it cannot by itself justify an optimizer in the original feasible
+set.  A completion must establish every closure or attainment hypothesis used
+in this argument; it must not replace that step by the false general claim that
+a linear image of a closed cone is closed.
+
+\section{Verdict}
+
+\textbf{Verdict: open source correction.} The strict-feasibility and attainment
+notions and the zero-gap certificate are formalized.  Strong duality with
+optimizer existence remains open until the corrected finite-optimum separation
+argument is proved.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
