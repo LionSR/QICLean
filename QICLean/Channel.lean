@@ -20,6 +20,7 @@ import QICLean.Channel.ComplementaryWeylTwirl
 import QICLean.Channel.CompletelyPositiveBridge
 import QICLean.Channel.DecomposablePPT
 import QICLean.Channel.DensityRetract
+import QICLean.Channel.DetailedBalance
 import QICLean.Channel.Determinant
 import QICLean.Channel.Determinant.Basic
 import QICLean.Channel.Determinant.Bound
