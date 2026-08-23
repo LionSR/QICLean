@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.SpinCover.Basic
+import QICLean.Channel.LorentzNormalForm.Basic
 import QICLean.Channel.LorentzNormalForm.QubitNormalForm
 import Mathlib.Algebra.Star.Module
 import Mathlib.GroupTheory.Abelianization.Defs
@@ -602,6 +603,166 @@ theorem spinorMatrix_isSpecialOrthochronousLorentz (X : SL(2, ℂ)) :
     IsSpecialOrthochronousLorentz (spinorMatrix X) :=
   ⟨spinorMatrix_det X, spinorMatrix_mul_metric_mul_transpose X,
     spinorMatrix_zero_zero_pos X⟩
+
+/-! ### The filtered Pauli transfer matrix -/
+
+private abbrev QubitMap :=
+  Matrix (Fin 2) (Fin 2) ℂ →ₗ[ℂ] Matrix (Fin 2) (Fin 2) ℂ
+
+/-- The Pauli-basis transfer matrix `T̂` used in Wolf, Equation (2.43). -/
+noncomputable def pauliTransferMatrix (T : QubitMap) :
+    Matrix (Fin 4) (Fin 4) ℂ :=
+  fun i j ↦ pauliTransferEntry T i j
+
+/-- The complex scalar extension of the real spinor matrix. -/
+def spinorMatrixComplex (X : SL(2, ℂ)) : Matrix (Fin 4) (Fin 4) ℂ :=
+  (spinorMatrix X).map Complex.ofReal
+
+/-- The real part of the Pauli transfer matrix. For a
+Hermiticity-preserving map this is the transfer matrix itself, regarded over
+`ℝ`. -/
+noncomputable def pauliTransferMatrixReal (T : QubitMap) :
+    Matrix (Fin 4) (Fin 4) ℝ :=
+  fun i j ↦ (pauliTransferEntry T i j).re
+
+/-- The four-Pauli expansion of an arbitrary complex qubit matrix. -/
+theorem pauli_expansion_four (M : Matrix (Fin 2) (Fin 2) ℂ) :
+    M = ∑ i : Fin 4,
+      (Matrix.trace (pauliMatrices i * M) / 2) • pauliMatrices i := by
+  rw [Fin.sum_univ_succ]
+  simp only [pauliMatrices_zero, Matrix.one_mul, pauliMatrices_succ]
+  simpa [div_eq_mul_inv] using SpinCover.pauli_expansion M
+
+/-- Complex coercion of the real spinor entry, without the redundant real
+part in the trace formula. -/
+theorem coe_spinorMatrix_apply (X : SL(2, ℂ)) (i j : Fin 4) :
+    (spinorMatrix X i j : ℂ) =
+      Matrix.trace (pauliMatrices i *
+        (X.1 * pauliMatrices j * X.1ᴴ)) / 2 := by
+  rw [spinorMatrix_apply, Complex.ofReal_div]
+  rw [trace_mul_eq_ofReal_re_of_isHermitian (pauliMatrices_isHermitian i)
+    (Matrix.isHermitian_mul_mul_conjTranspose X.1
+      (pauliMatrices_isHermitian j))]
+  norm_num
+
+/-- Congruence of a single Pauli matrix expands in the Pauli basis with the
+corresponding column of the spinor matrix. -/
+theorem sl2Congruence_pauli (X : SL(2, ℂ)) (j : Fin 4) :
+    X.1 * pauliMatrices j * X.1ᴴ =
+      ∑ i : Fin 4, (spinorMatrix X i j : ℂ) • pauliMatrices i := by
+  rw [← pauliMatrixOfMinkowski_single,
+    ← pauliMatrixOfMinkowski_spinorMatrix_mulVec X (Pi.single j 1),
+    pauliMatrixOfMinkowski]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  congr 1
+  simp [Matrix.mulVec, dotProduct, Pi.single_apply]
+
+/-- Left filtering acts on a Pauli transfer entry by the corresponding row
+of the spinor matrix. This is the left bounded slice of Wolf,
+Equation (2.43). -/
+theorem pauliTransferEntry_unitaryConj_comp
+    (X : SL(2, ℂ)) (T : QubitMap) (i j : Fin 4) :
+    pauliTransferEntry ((unitaryConjLM X.1).comp T) i j =
+      ∑ k : Fin 4,
+        (spinorMatrix X i k : ℂ) * pauliTransferEntry T k j := by
+  rw [pauliTransferEntry, LinearMap.comp_apply, unitaryConjLM_apply,
+    pauli_expansion_four (T (pauliMatrices j))]
+  simp only [Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul,
+    Matrix.trace_sum, Matrix.trace_smul, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun k _ ↦ ?_
+  rw [coe_spinorMatrix_apply]
+  simp only [pauliTransferEntry]
+  ring
+
+/-- Right filtering acts on a Pauli transfer entry by the corresponding
+column of the spinor matrix. This is the right bounded slice of Wolf,
+Equation (2.43). -/
+theorem pauliTransferEntry_comp_unitaryConj
+    (T : QubitMap) (X : SL(2, ℂ)) (i j : Fin 4) :
+    pauliTransferEntry (T.comp (unitaryConjLM X.1)) i j =
+      ∑ k : Fin 4,
+        pauliTransferEntry T i k * (spinorMatrix X k j : ℂ) := by
+  rw [pauliTransferEntry, LinearMap.comp_apply, unitaryConjLM_apply,
+    sl2Congruence_pauli]
+  simp only [map_sum, LinearMap.map_smul, Matrix.mul_smul,
+    Matrix.trace_sum, Matrix.trace_smul, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun k _ ↦ ?_
+  simp only [pauliTransferEntry]
+  ring
+
+/-- Matrix form of the left bounded slice of Wolf, Equation (2.43). -/
+theorem pauliTransferMatrix_unitaryConj_comp (X : SL(2, ℂ)) (T : QubitMap) :
+    pauliTransferMatrix ((unitaryConjLM X.1).comp T) =
+      spinorMatrixComplex X * pauliTransferMatrix T := by
+  ext i j
+  simpa [pauliTransferMatrix, spinorMatrixComplex, Matrix.mul_apply] using
+    pauliTransferEntry_unitaryConj_comp X T i j
+
+/-- Matrix form of the right bounded slice of Wolf, Equation (2.43). -/
+theorem pauliTransferMatrix_comp_unitaryConj (T : QubitMap) (X : SL(2, ℂ)) :
+    pauliTransferMatrix (T.comp (unitaryConjLM X.1)) =
+      pauliTransferMatrix T * spinorMatrixComplex X := by
+  ext i j
+  simpa [pauliTransferMatrix, spinorMatrixComplex, Matrix.mul_apply] using
+    pauliTransferEntry_comp_unitaryConj T X i j
+
+/-- Exact Pauli-transfer action of pre- and postfiltering:
+`T̂ ↦ L₂ T̂ L₁`, Wolf, Equation (2.43). -/
+theorem pauliTransferMatrix_two_sided_filtering
+    (X₂ : SL(2, ℂ)) (T : QubitMap) (X₁ : SL(2, ℂ)) :
+    pauliTransferMatrix
+        ((unitaryConjLM X₂.1).comp (T.comp (unitaryConjLM X₁.1))) =
+      spinorMatrixComplex X₂ * pauliTransferMatrix T * spinorMatrixComplex X₁ := by
+  calc
+    pauliTransferMatrix
+        ((unitaryConjLM X₂.1).comp (T.comp (unitaryConjLM X₁.1))) =
+        spinorMatrixComplex X₂ *
+          pauliTransferMatrix (T.comp (unitaryConjLM X₁.1)) :=
+      pauliTransferMatrix_unitaryConj_comp X₂ _
+    _ = spinorMatrixComplex X₂ *
+        (pauliTransferMatrix T * spinorMatrixComplex X₁) := by
+      rw [pauliTransferMatrix_comp_unitaryConj]
+    _ = spinorMatrixComplex X₂ * pauliTransferMatrix T *
+        spinorMatrixComplex X₁ := Matrix.mul_assoc _ _ _ |>.symm
+
+/-- A Hermiticity-preserving map has real Pauli transfer entries. -/
+theorem coe_pauliTransferMatrixReal_of_preservesHermiticity
+    (T : QubitMap)
+    (hT : ∀ M : Matrix (Fin 2) (Fin 2) ℂ,
+      M.IsHermitian → (T M).IsHermitian)
+    (i j : Fin 4) :
+    (pauliTransferMatrixReal T i j : ℂ) = pauliTransferMatrix T i j := by
+  simp only [pauliTransferMatrixReal, pauliTransferMatrix, pauliTransferEntry]
+  rw [← trace_mul_eq_ofReal_re_of_isHermitian (pauliMatrices_isHermitian i)
+    (hT (pauliMatrices j) (pauliMatrices_isHermitian j))]
+  norm_num
+
+/-- Real form of the exact two-sided filtering action in Wolf,
+Equation (2.43). -/
+theorem pauliTransferMatrixReal_two_sided_filtering
+    (X₂ : SL(2, ℂ)) (T : QubitMap) (X₁ : SL(2, ℂ)) :
+    pauliTransferMatrixReal
+        ((unitaryConjLM X₂.1).comp (T.comp (unitaryConjLM X₁.1))) =
+      spinorMatrix X₂ * pauliTransferMatrixReal T * spinorMatrix X₁ := by
+  ext i j
+  have h := congrArg (fun M ↦ (M i j).re)
+    (pauliTransferMatrix_two_sided_filtering X₂ T X₁)
+  simpa [pauliTransferMatrixReal, pauliTransferMatrix, spinorMatrixComplex,
+    Matrix.mul_apply, Complex.mul_re] using h
+
+/-- The `SL(2,ℂ)` matrix bundled by an `SLFiltering 2`. -/
+def SLFiltering.toSL2 (Phi : SLFiltering 2) : SL(2, ℂ) :=
+  ⟨Phi.S, Phi.det_eq_one⟩
+
+/-- Equation (2.43) for the filtering structures used by the Lorentz normal
+form development, in Wolf's order `Phi₂ ∘ T ∘ Phi₁`. -/
+theorem pauliTransferMatrixReal_slFiltering
+    (Phi₂ : SLFiltering 2) (T : QubitMap) (Phi₁ : SLFiltering 2) :
+    pauliTransferMatrixReal (Phi₂.map.comp (T.comp Phi₁.map)) =
+      spinorMatrix Phi₂.toSL2 * pauliTransferMatrixReal T *
+        spinorMatrix Phi₁.toSL2 := by
+  rw [Phi₂.map_eq, Phi₁.map_eq]
+  exact pauliTransferMatrixReal_two_sided_filtering Phi₂.toSL2 T Phi₁.toSL2
 
 /-- The spinor matrices form a monoid homomorphism. -/
 noncomputable def spinorMap : SL(2, ℂ) →* Matrix (Fin 4) (Fin 4) ℝ where
