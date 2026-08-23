@@ -212,4 +212,159 @@ noncomputable def pauliMinkowskiEquiv :
 @[simp] theorem pauliMinkowskiEquiv_symm_apply (M : HermitianQubitMatrix) :
     pauliMinkowskiEquiv.symm M = pauliMinkowskiCoordinate M := rfl
 
+/-! ### Hermitian congruence and the spinor action -/
+
+private abbrev sl2InvMatrix (X : SL(2, ℂ)) : Matrix (Fin 2) (Fin 2) ℂ :=
+  (X⁻¹ : SL(2, ℂ)).1
+
+/-- Congruence by `X ∈ SL(2,ℂ)` as a real-linear equivalence of Hermitian
+qubit matrices. This is Wolf, Equation (2.41), and is distinct from the
+three-dimensional adjoint action `SpinCover.pauliConjAd`. -/
+noncomputable def sl2CongruenceLinearEquiv (X : SL(2, ℂ)) :
+    HermitianQubitMatrix ≃ₗ[ℝ] HermitianQubitMatrix where
+  toFun M := ⟨(X : Matrix (Fin 2) (Fin 2) ℂ) * M * X.1ᴴ,
+    Matrix.isHermitian_mul_mul_conjTranspose X.1 M.property⟩
+  invFun M := ⟨sl2InvMatrix X * M * (sl2InvMatrix X)ᴴ,
+    Matrix.isHermitian_mul_mul_conjTranspose (sl2InvMatrix X) M.property⟩
+  left_inv M := by
+    apply Subtype.ext
+    have hBA : sl2InvMatrix X * X.1 = 1 := by
+      rw [sl2InvMatrix, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_mul,
+        Matrix.SpecialLinearGroup.det_coe, one_smul]
+    have hAhBh : X.1ᴴ * (sl2InvMatrix X)ᴴ = 1 := by
+      rw [← Matrix.conjTranspose_mul, hBA, Matrix.conjTranspose_one]
+    change sl2InvMatrix X *
+      ((X : Matrix (Fin 2) (Fin 2) ℂ) * M * X.1ᴴ) * (sl2InvMatrix X)ᴴ = M
+    calc
+      sl2InvMatrix X *
+          ((X : Matrix (Fin 2) (Fin 2) ℂ) * M * X.1ᴴ) * (sl2InvMatrix X)ᴴ =
+          (sl2InvMatrix X * X.1) * M *
+            (X.1ᴴ * (sl2InvMatrix X)ᴴ) := by simp only [Matrix.mul_assoc]
+      _ = M := by rw [hBA, hAhBh, Matrix.one_mul, Matrix.mul_one]
+  right_inv M := by
+    apply Subtype.ext
+    have hAB : X.1 * sl2InvMatrix X = 1 := by
+      rw [sl2InvMatrix, Matrix.SpecialLinearGroup.coe_inv, Matrix.mul_adjugate,
+        Matrix.SpecialLinearGroup.det_coe, one_smul]
+    have hBhAh : (sl2InvMatrix X)ᴴ * X.1ᴴ = 1 := by
+      rw [← Matrix.conjTranspose_mul, hAB, Matrix.conjTranspose_one]
+    change (X : Matrix (Fin 2) (Fin 2) ℂ) *
+      (sl2InvMatrix X * M * (sl2InvMatrix X)ᴴ) * X.1ᴴ = M
+    calc
+      (X : Matrix (Fin 2) (Fin 2) ℂ) *
+          (sl2InvMatrix X * M * (sl2InvMatrix X)ᴴ) * X.1ᴴ =
+          (X.1 * sl2InvMatrix X) * M *
+            ((sl2InvMatrix X)ᴴ * X.1ᴴ) := by simp only [Matrix.mul_assoc]
+      _ = M := by rw [hAB, hBhAh, Matrix.one_mul, Matrix.mul_one]
+  map_add' M N := by
+    apply Subtype.ext
+    simp [Matrix.mul_add, Matrix.add_mul]
+  map_smul' c M := by
+    apply Subtype.ext
+    simp
+
+/-- The real-linear action on Minkowski coordinates induced by the Hermitian
+congruence in Wolf, Equation (2.41). -/
+noncomputable def spinorLinearEquiv (X : SL(2, ℂ)) :
+    MinkowskiSpace ≃ₗ[ℝ] MinkowskiSpace :=
+  (pauliMinkowskiEquiv.trans (sl2CongruenceLinearEquiv X)).trans
+    pauliMinkowskiEquiv.symm
+
+/-- The `4 × 4` real spinor matrix of `X ∈ SL(2,ℂ)` in the Pauli basis. -/
+noncomputable def spinorMatrix (X : SL(2, ℂ)) : Matrix (Fin 4) (Fin 4) ℝ :=
+  LinearMap.toMatrix' (spinorLinearEquiv X).toLinearMap
+
+/-- The spinor matrix acts on coordinate columns by the induced real-linear
+equivalence. -/
+@[simp] theorem spinorMatrix_mulVec (X : SL(2, ℂ)) (x : MinkowskiSpace) :
+    spinorMatrix X *ᵥ x = spinorLinearEquiv X x := by
+  exact LinearMap.toMatrix'_mulVec _ _
+
+/-- Covariance of Pauli coordinates under the Hermitian congruence
+`M ↦ X M X†` of Wolf, Equation (2.41). -/
+theorem pauliMatrixOfMinkowski_spinorMatrix_mulVec
+    (X : SL(2, ℂ)) (x : MinkowskiSpace) :
+    pauliMatrixOfMinkowski (spinorMatrix X *ᵥ x) =
+      X.1 * pauliMatrixOfMinkowski x * X.1ᴴ := by
+  rw [spinorMatrix_mulVec]
+  change pauliMatrixOfMinkowski
+    (pauliMinkowskiCoordinate
+      ⟨X.1 * pauliMatrixOfMinkowski x * X.1ᴴ,
+        Matrix.isHermitian_mul_mul_conjTranspose X.1
+          (pauliMatrixOfMinkowski_isHermitian x)⟩) = _
+  exact pauliMatrixOfMinkowski_pauliMinkowskiCoordinate _
+
+/-- A standard coordinate vector assembles to the corresponding Pauli
+matrix. -/
+@[simp] theorem pauliMatrixOfMinkowski_single (j : Fin 4) :
+    pauliMatrixOfMinkowski (Pi.single j 1) = pauliMatrices j := by
+  simp [pauliMatrixOfMinkowski, Pi.single_apply]
+
+/-- Trace formula for the spinor matrix entries:
+`L(X)ᵢⱼ = (1/2) tr(σᵢ X σⱼ X†)`. The trace is real, so the
+real part only records the codomain of `L(X)`. -/
+theorem spinorMatrix_apply (X : SL(2, ℂ)) (i j : Fin 4) :
+    spinorMatrix X i j =
+      (Matrix.trace (pauliMatrices i *
+        (X.1 * pauliMatrices j * X.1ᴴ))).re / 2 := by
+  rw [spinorMatrix, LinearMap.toMatrix'_apply]
+  change pauliMinkowskiCoordinate
+    ⟨X.1 * pauliMatrixOfMinkowski (Pi.single j 1) * X.1ᴴ,
+      Matrix.isHermitian_mul_mul_conjTranspose X.1
+        (pauliMatrixOfMinkowski_isHermitian (Pi.single j 1))⟩ i = _
+  simp only [pauliMinkowskiCoordinate, pauliMatrixOfMinkowski_single]
+
+/-- The spinor action preserves the Minkowski determinant form. This is the
+linear-isometry assertion following Wolf, Equation (2.41). -/
+theorem spinorMatrix_preserves_minkowskiQuadratic
+    (X : SL(2, ℂ)) (x : MinkowskiSpace) :
+    minkowskiQuadratic (spinorMatrix X *ᵥ x) = minkowskiQuadratic x := by
+  apply Complex.ofReal_injective
+  rw [← det_pauliMatrixOfMinkowski, ← det_pauliMatrixOfMinkowski,
+    pauliMatrixOfMinkowski_spinorMatrix_mulVec, Matrix.det_mul, Matrix.det_mul,
+    Matrix.det_conjTranspose, Matrix.SpecialLinearGroup.det_coe]
+  norm_num
+
+/-- The coordinate action respects multiplication in `SL(2,ℂ)`. -/
+theorem spinorLinearEquiv_mul_apply (X Y : SL(2, ℂ)) (x : MinkowskiSpace) :
+    spinorLinearEquiv (X * Y) x =
+      spinorLinearEquiv X (spinorLinearEquiv Y x) := by
+  apply pauliMinkowskiEquiv.injective
+  apply Subtype.ext
+  change pauliMatrixOfMinkowski (spinorLinearEquiv (X * Y) x) =
+    pauliMatrixOfMinkowski (spinorLinearEquiv X (spinorLinearEquiv Y x))
+  rw [← spinorMatrix_mulVec, pauliMatrixOfMinkowski_spinorMatrix_mulVec,
+    ← spinorMatrix_mulVec X,
+    pauliMatrixOfMinkowski_spinorMatrix_mulVec,
+    ← spinorMatrix_mulVec Y,
+    pauliMatrixOfMinkowski_spinorMatrix_mulVec]
+  simp only [Matrix.SpecialLinearGroup.coe_mul, Matrix.conjTranspose_mul,
+    Matrix.mul_assoc]
+
+/-- The spinor matrix is multiplicative. -/
+theorem spinorMatrix_mul (X Y : SL(2, ℂ)) :
+    spinorMatrix (X * Y) = spinorMatrix X * spinorMatrix Y := by
+  rw [Matrix.ext_iff_mulVec]
+  intro x
+  rw [← Matrix.mulVec_mulVec, spinorMatrix_mulVec, spinorMatrix_mulVec,
+    spinorMatrix_mulVec]
+  exact spinorLinearEquiv_mul_apply X Y x
+
+/-- The identity element of `SL(2,ℂ)` induces the identity Lorentz
+matrix. -/
+@[simp] theorem spinorMatrix_one :
+    spinorMatrix (1 : SL(2, ℂ)) = 1 := by
+  ext i j
+  rw [spinorMatrix_apply]
+  simp only [Matrix.SpecialLinearGroup.coe_one, Matrix.conjTranspose_one,
+    Matrix.mul_one, Matrix.one_mul, trace_pauliMatrices_mul_pauliMatrices,
+    Matrix.one_apply]
+  split <;> norm_num
+
+/-- The spinor matrices form a monoid homomorphism. -/
+noncomputable def spinorMap : SL(2, ℂ) →* Matrix (Fin 4) (Fin 4) ℝ where
+  toFun := spinorMatrix
+  map_one' := spinorMatrix_one
+  map_mul' := spinorMatrix_mul
+
 end Wolf
