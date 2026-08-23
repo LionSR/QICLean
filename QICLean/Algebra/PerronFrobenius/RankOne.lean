@@ -353,7 +353,8 @@ space identifies `trace T` with the trace of the restricted operator and
 This cyclicity identity underlies the trace-power claim in arXiv:1606.00608,
 Appendix C.2, lines 1490--1497. -/
 theorem trace_pow_mul_comm {a b : Type*} [Fintype a] [Fintype b]
-    {R : Type*} [CommSemiring R] (L : Matrix a b R) (Q : Matrix b a R)
+    [DecidableEq a] [DecidableEq b] {R : Type*} [CommSemiring R]
+    (L : Matrix a b R) (Q : Matrix b a R)
     {N : ℕ} (hN : 0 < N) :
     Matrix.trace ((L * Q) ^ N) = Matrix.trace ((Q * L) ^ N) := by
   classical
