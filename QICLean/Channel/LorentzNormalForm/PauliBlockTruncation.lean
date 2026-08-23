@@ -72,6 +72,20 @@ private theorem pauliTimeReversal_pauli (i : Fin 4) :
     simp [pauliTimeReversalDiagonal]
   · simp [pauliTimeReversalDiagonal, hi, pauliTimeReversal_pauli_ne_zero i hi]
 
+private theorem trace_pauli_mul_pauliTimeReversal (i : Fin 4) (X : QubitMatrix) :
+    Matrix.trace (pauliMatrices i * pauliTimeReversal X) =
+      pauliTimeReversalDiagonal i * Matrix.trace (pauliMatrices i * X) := by
+  calc
+    Matrix.trace (pauliMatrices i * pauliTimeReversal X) =
+        Matrix.trace (Matrix.traceAdjointMap pauliTimeReversal (pauliMatrices i) * X) :=
+      (Matrix.trace_traceAdjointMap_mul pauliTimeReversal (pauliMatrices i) X).symm
+    _ = Matrix.trace (pauliTimeReversal (pauliMatrices i) * X) := by
+      rw [show Matrix.traceAdjointMap pauliTimeReversal = pauliTimeReversal by
+        simpa [pauliTimeReversal] using Matrix.traceAdjointMap_reductionMap 2 1]
+    _ = pauliTimeReversalDiagonal i * Matrix.trace (pauliMatrices i * X) := by
+      rw [pauliTimeReversal_pauli, Matrix.smul_mul, Matrix.trace_smul]
+      rfl
+
 /-- Entrywise form of Wolf's identity `D T̂ D`, where
 `D = diag(1,-1,-1,-1)` is the Pauli matrix of time reversal. -/
 theorem pauliTransferEntry_timeReversal_comp (T : QubitMap) (i j : Fin 4) :
@@ -79,10 +93,9 @@ theorem pauliTransferEntry_timeReversal_comp (T : QubitMap) (i j : Fin 4) :
       pauliTimeReversalDiagonal i * pauliTransferEntry T i j * pauliTimeReversalDiagonal j := by
   rw [pauliTransferEntry, LinearMap.comp_apply, LinearMap.comp_apply,
     pauliTimeReversal_pauli]
-  simp only [map_smul]
-  rw [pauliTimeReversal_pauli]
-  simp [pauliTransferEntry, Matrix.smul_mul, Matrix.trace_smul, mul_assoc, mul_comm,
-    mul_left_comm]
+  simp only [map_smul, Matrix.mul_smul, Matrix.trace_smul]
+  rw [trace_pauli_mul_pauliTimeReversal]
+  simp [pauliTransferEntry, mul_comm, mul_left_comm]
 
 /-- The truncation keeps the `(0,0)` entry and the lower-right `3 × 3` Pauli
 block, and zeros the two off-diagonal blocks.  This is the public entrywise
@@ -94,22 +107,29 @@ theorem pauliTransferEntry_pauliBlockDiagonalTruncation (T : QubitMap) (i j : Fi
     pauliTransferEntry (pauliBlockDiagonalTruncation T) i j =
       if (i = 0 ↔ j = 0) then pauliTransferEntry T i j else 0 := by
   rw [pauliBlockDiagonalTruncation, pauliTransferEntry]
-  simp only [LinearMap.smul_apply, LinearMap.add_apply, Matrix.mul_add, Matrix.trace_add,
-    smul_eq_mul, Matrix.smul_mul, Matrix.trace_smul]
-  rw [show ((1 : ℂ) / 2) * ((1 : ℂ) / 2) = 1 / 4 by norm_num]
-  change 1 / 4 * (Matrix.trace (pauliMatrices i * T (pauliMatrices j)) +
+  simp only [LinearMap.smul_apply, LinearMap.add_apply, Matrix.mul_smul, Matrix.trace_smul,
+    smul_eq_mul, Matrix.mul_add, Matrix.trace_add]
+  rw [← mul_assoc, show ((1 : ℂ) / 2) * ((1 : ℂ) / 2) = 1 / 4 by norm_num]
+  change (1 / 4 : ℂ) * (Matrix.trace (pauliMatrices i * T (pauliMatrices j)) +
     Matrix.trace (pauliMatrices i *
       (pauliTimeReversal.comp (T.comp pauliTimeReversal)) (pauliMatrices j))) = _
   rw [show Matrix.trace (pauliMatrices i *
       (pauliTimeReversal.comp (T.comp pauliTimeReversal)) (pauliMatrices j)) =
       2 * (pauliTimeReversalDiagonal i * pauliTransferEntry T i j *
         pauliTimeReversalDiagonal j) by
-    rw [pauliTransferEntry_timeReversal_comp]
-    simp [pauliTransferEntry]]
+    calc
+      Matrix.trace (pauliMatrices i *
+          (pauliTimeReversal.comp (T.comp pauliTimeReversal)) (pauliMatrices j)) =
+          2 * pauliTransferEntry
+            (pauliTimeReversal.comp (T.comp pauliTimeReversal)) i j := by
+        simp [pauliTransferEntry]
+      _ = 2 * (pauliTimeReversalDiagonal i * pauliTransferEntry T i j *
+          pauliTimeReversalDiagonal j) := by
+        rw [pauliTransferEntry_timeReversal_comp]]
   rw [show Matrix.trace (pauliMatrices i * T (pauliMatrices j)) =
       2 * pauliTransferEntry T i j by simp [pauliTransferEntry]]
   by_cases hi : i = 0 <;> by_cases hj : j = 0 <;>
-    simp [pauliTimeReversalDiagonal, hi, hj]
+    simp [pauliTimeReversalDiagonal, hi, hj] <;> ring
 
 /-- Pauli time reversal is positive. -/
 theorem pauliTimeReversal_isPositiveMap : IsPositiveMap pauliTimeReversal := by
@@ -142,19 +162,49 @@ theorem pauliBlockDiagonalTruncation_isPositiveMap
     isPositiveMap_comp pauliTimeReversal_isPositiveMap
       (isPositiveMap_comp hT pauliTimeReversal_isPositiveMap)
   intro X hX
-  simpa [LinearMap.smul_apply] using
-    (isPositiveMap_add hT hsandwich X hX).smul (show (0 : ℝ) ≤ 1 / 2 by norm_num)
+  have hsum := isPositiveMap_add hT hsandwich X hX
+  have hhalf := hsum.smul (show (0 : ℝ) ≤ 1 / 2 by norm_num)
+  convert hhalf using 1
+  ext i j
+  simp [LinearMap.smul_apply, LinearMap.add_apply, Complex.real_smul]
+
+private theorem pauliTimeReversal_eq_pauli_two_mul_transpose_mul (X : QubitMatrix) :
+    pauliTimeReversal X = pauliMatrices 2 * X.transpose * pauliMatrices 2 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [pauliTimeReversal, Matrix.reductionMap_apply, pauliMatrices,
+      Matrix.trace_fin_two, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
+      Fin.sum_univ_two]
+  all_goals
+    ring_nf
+    simp [Complex.I_sq]
+
+private theorem pauli_two_transpose :
+    (pauliMatrices 2).transpose = -(pauliMatrices 2) := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [pauliMatrices]
+
+private theorem pauli_two_conjTranspose :
+    (pauliMatrices 2)ᴴ = pauliMatrices 2 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [pauliMatrices]
+
+private theorem map_star_conjTranspose (A : QubitMatrix) :
+    (A.map star)ᴴ = A.transpose := by
+  ext i j
+  simp
 
 private theorem pauliTimeReversal_singleKraus_sandwich
     (A X : QubitMatrix) :
     pauliTimeReversal (A * pauliTimeReversal X * Aᴴ) =
       (pauliMatrices 2 * A.map star * pauliMatrices 2) * X *
         (pauliMatrices 2 * A.map star * pauliMatrices 2)ᴴ := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [pauliTimeReversal, Matrix.reductionMap_apply, pauliMatrices,
-      Matrix.trace_fin_two, Matrix.mul_apply]
-    <;> ring
+  rw [pauliTimeReversal_eq_pauli_two_mul_transpose_mul,
+    pauliTimeReversal_eq_pauli_two_mul_transpose_mul]
+  simp only [Matrix.transpose_mul, Matrix.conjTranspose_transpose,
+    Matrix.transpose_transpose, pauli_two_transpose, Matrix.conjTranspose_mul,
+    pauli_two_conjTranspose, map_star_conjTranspose]
+  noncomm_ring
 
 private theorem pauliTimeReversal_comp_comp_isCPMap
     {T : QubitMap} (hT : IsCPMap T) :
@@ -182,6 +232,8 @@ theorem pauliBlockDiagonalTruncation_isCPMap
     (_hHerm : ∀ X : QubitMatrix, X.IsHermitian → (T X).IsHermitian)
     (hT : IsCPMap T) : IsCPMap (pauliBlockDiagonalTruncation T) := by
   rw [pauliBlockDiagonalTruncation]
-  exact (hT.add (pauliTimeReversal_comp_comp_isCPMap hT)).smul_nonneg (by norm_num)
+  simpa only [show ((1 / 2 : ℂ)) = ((1 / 2 : ℝ) : ℂ) by norm_num] using
+    (hT.add (pauliTimeReversal_comp_comp_isCPMap hT)).smul_nonneg
+      (c := (1 / 2 : ℝ)) (by norm_num)
 
 end Wolf
