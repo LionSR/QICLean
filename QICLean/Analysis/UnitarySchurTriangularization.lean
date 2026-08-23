@@ -136,3 +136,74 @@ theorem exists_orthonormalBasis_toMatrix_isUpperTriangular (T : Module.End ℂ E
   exists_orthonormalBasis_toMatrix_isUpperTriangular_aux (finrank ℂ E) rfl T
 
 end LinearMap
+
+namespace Matrix
+
+/-- **Unitary Schur triangularization over the complex numbers.**
+
+For every complex square matrix `A`, there is a unitary matrix `U` and an upper-triangular
+matrix `R` such that `A = U * R * Uᴴ`.  The diagonal entries of `R` are exactly the eigenvalues
+of `A`, with the statement expressed using `A.toLin'`.  The result includes `m = 0`. -/
+theorem exists_unitary_schur_triangularization {m : ℕ}
+    (A : Matrix (Fin m) (Fin m) ℂ) :
+    ∃ (U : Matrix.unitaryGroup (Fin m) ℂ)
+        (R : Matrix (Fin m) (Fin m) ℂ),
+      R.IsUpperTriangular ∧
+      A = (U : Matrix (Fin m) (Fin m) ℂ) * R *
+        (U : Matrix (Fin m) (Fin m) ℂ)ᴴ ∧
+      (∀ z : ℂ, Module.End.HasEigenvalue A.toLin' z ↔ ∃ i : Fin m, R i i = z) := by
+  let T : Module.End ℂ (EuclideanSpace ℂ (Fin m)) := A.toLpLin 2 2
+  obtain ⟨b, hR⟩ := LinearMap.exists_orthonormalBasis_toMatrix_isUpperTriangular_aux
+    m (by simpa only [Fintype.card_fin] using
+      (finrank_euclideanSpace (𝕜 := ℂ) (ι := Fin m))) T
+  let e : OrthonormalBasis (Fin m) ℂ (EuclideanSpace ℂ (Fin m)) :=
+    EuclideanSpace.basisFun (Fin m) ℂ
+  let R : Matrix (Fin m) (Fin m) ℂ := LinearMap.toMatrix b.toBasis b.toBasis T
+  let U : Matrix.unitaryGroup (Fin m) ℂ :=
+    ⟨e.toBasis.toMatrix b.toBasis, e.toMatrix_orthonormalBasis_mem_unitary b⟩
+  refine ⟨U, R, hR, ?_, ?_⟩
+  · have hUstar : (U : Matrix (Fin m) (Fin m) ℂ)ᴴ = b.toBasis.toMatrix e := by
+      have hUb : (U : Matrix (Fin m) (Fin m) ℂ) * b.toBasis.toMatrix e = 1 := by
+        change e.toBasis.toMatrix b.toBasis * b.toBasis.toMatrix e.toBasis = 1
+        exact Module.Basis.toMatrix_mul_toMatrix_flip e.toBasis b.toBasis
+      have hunit : (U : Matrix (Fin m) (Fin m) ℂ)ᴴ *
+          (U : Matrix (Fin m) (Fin m) ℂ) = 1 := by
+        simpa only [← Matrix.star_eq_conjTranspose] using
+          (Matrix.mem_unitaryGroup_iff'.mp U.property)
+      calc
+        (U : Matrix (Fin m) (Fin m) ℂ)ᴴ =
+            (U : Matrix (Fin m) (Fin m) ℂ)ᴴ * 1 := (mul_one _).symm
+        _ = (U : Matrix (Fin m) (Fin m) ℂ)ᴴ *
+            ((U : Matrix (Fin m) (Fin m) ℂ) * b.toBasis.toMatrix e) := by rw [hUb]
+        _ = ((U : Matrix (Fin m) (Fin m) ℂ)ᴴ *
+            (U : Matrix (Fin m) (Fin m) ℂ)) * b.toBasis.toMatrix e :=
+              (mul_assoc _ _ _).symm
+        _ = b.toBasis.toMatrix e := by rw [hunit, one_mul]
+    rw [hUstar]
+    change A = e.toBasis.toMatrix b.toBasis * LinearMap.toMatrix b.toBasis b.toBasis T *
+      b.toBasis.toMatrix e.toBasis
+    have hchange :
+        e.toBasis.toMatrix b.toBasis * LinearMap.toMatrix b.toBasis b.toBasis T *
+            b.toBasis.toMatrix e.toBasis = LinearMap.toMatrix e.toBasis e.toBasis T :=
+      basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix
+        (b := e.toBasis) (b' := b.toBasis) (c := e.toBasis) (c' := b.toBasis) (f := T)
+    rw [hchange]
+    simp [T, e, EuclideanSpace.basisFun_toBasis, Matrix.toLpLin_eq_toLin]
+  · intro z
+    rw [Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin']
+    have hAchar : T.charpoly = A.charpoly := by
+      simp [T, Matrix.toLpLin_eq_toLin, Matrix.charpoly_toLin]
+    have hRchar : R.charpoly = T.charpoly := LinearMap.charpoly_toMatrix T b.toBasis
+    rw [← hAchar, ← hRchar, Matrix.charpoly_of_isUpperTriangular R hR]
+    rw [Polynomial.isRoot_prod]
+    simp only [Finset.mem_univ, true_and, Polynomial.root_X_sub_C]
+
+-- The theorem includes the empty complex matrix without a `Nonempty (Fin m)` hypothesis.
+private example := exists_unitary_schur_triangularization
+  (0 : Matrix (Fin 0) (Fin 0) ℂ)
+
+-- The nilpotent two-dimensional Jordan block is a nonnormal test case.
+private example := exists_unitary_schur_triangularization
+  (!![0, 1; 0, 0] : Matrix (Fin 2) (Fin 2) ℂ)
+
+end Matrix
