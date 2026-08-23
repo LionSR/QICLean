@@ -406,10 +406,10 @@ sector is positive definite.
 
 \begin{theorem}[Corner-restricted fixed points form a $*$-algebra]%
     \label{thm:cornerFixedPointsStarSubalgebra}
-    \lean{IsPositiveMap.stationaryCornerAdjointFixedPointsStarSubalgebra}
+    \lean{IsPositiveMap.stationaryCornerAdjointFixedPointsStarSubalgebra,
+        IsPositiveMap.mem_stationaryCornerAdjointFixedPointsStarSubalgebra}
     \leanok
-    \uses{thm:stationarySupport_compression, rem:corner_algebra_star_instances,
-        thm:fixedPointsStarSubalgebra}
+    \uses{rem:corner_algebra_star_instances}
     Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, and suppose
     that $T^*$ satisfies the Schwarz inequality. Let $\rho\succeq0$ satisfy
     $T(\rho)=\rho$, and let $Q=\supp(\rho)$. Then
