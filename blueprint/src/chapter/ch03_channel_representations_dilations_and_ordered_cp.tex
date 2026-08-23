@@ -633,6 +633,133 @@ a common dilation space.
     \end{align}
 \end{definition}
 
+\begin{lemma}[Unnormalized POVM steering]
+    \label{lem:unnormalized_povm_steering}
+    \lean{Matrix.exists_povm_of_sum_posSemidef}
+    \leanok
+    \uses{def:povm, thm:quantum_steering}
+    Let $\rho\geq0$ act on a finite-dimensional Hilbert space, and let
+    $C:\C^r\to\mathcal H$ satisfy $CC^\dagger=\rho$. If
+    $\rho=\sum_{i=0}^{n-1}\sigma_i$, where $n\geq1$ and every
+    $\sigma_i\geq0$, then there is a POVM $\{P_i\}_{i=0}^{n-1}$ on
+    $\C^r$ such that
+    \begin{align}
+        \sigma_i
+        &=C P_i^{\mathsf T}C^\dagger
+        \label{eq:representations_unnormalized_steering}
+    \end{align}
+    for every $i$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:quantum_steering}
+    Apply the generalized-inverse construction from quantum steering to the
+    positive summands $\sigma_i$. Their supports lie in the support of
+    $\rho$. The resulting effects sum to the projection onto the part of
+    $\C^r$ seen by $C$; add the complementary projection to one effect.
+    This preserves (\ref{eq:representations_unnormalized_steering}) and makes
+    the effects sum to the identity.
+\end{proof}
+
+\begin{theorem}[Environment-induced instruments, supplied Stinespring form]
+    \label{thm:environment_induced_instruments_stinespring}
+    \lean{Channel.exists_environment_povm_of_sum_eq_stinespring}
+    \leanok
+    \uses{def:povm, def:kraus_rank_rect, thm:choi_rect_cp,
+        lem:unnormalized_povm_steering}
+    Let $d\geq1$, let $T:\MN{d}\to\MN{d'}$ be a quantum channel, and let
+    $V:\C^d\to\C^{d'}\otimes\C^r$ be a supplied Stinespring matrix such
+    that
+    \begin{align}
+        T(\rho)&=\tr_{\C^r}(V\rho V^\dagger).
+        \label{eq:representations_environment_instruments_stinespring}
+    \end{align}
+    Suppose $n\geq1$ and
+    $T=\sum_{i=0}^{n-1}T_i$, where every
+    $T_i:\MN{d}\to\MN{d'}$ is completely positive. Then there is a POVM
+    $\{P_i\}_{i=0}^{n-1}$ on $\C^r$ such that, for every $i$ and $\rho$,
+    \begin{align}
+        T_i(\rho)
+        &=\tr_{\C^r}\!\left[(\Id_{d'}\otimes P_i)
+          V\rho V^\dagger\right].
+        \label{eq:representations_environment_instruments_reduced}
+    \end{align}
+    If $k_i$ is the Kraus rank, equivalently the Choi rank, of $T_i$, then
+    $k_i\leq\rank(P_i)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:unnormalized_povm_steering, thm:choi_rect_cp,
+        def:kraus_rank_rect}
+    The supplied Stinespring matrix gives a purification $C$ of the Choi
+    matrix $\tau_T$. Complete positivity and
+    $T=\sum_iT_i$ give a positive decomposition
+    $\tau_T=\sum_i\tau_{T_i}$. Lemma~\ref{lem:unnormalized_povm_steering}
+    yields a POVM satisfying
+    $\tau_{T_i}=CP_i^{\mathsf T}C^\dagger$. The Choi identity for inserting
+    an environment effect gives
+    (\ref{eq:representations_environment_instruments_reduced}). Finally,
+    \begin{align}
+        k_i=\rank(\tau_{T_i})
+        =\rank(CP_i^{\mathsf T}C^\dagger)
+        \leq\rank(P_i).
+        \notag
+    \end{align}
+\end{proof}
+
+\begin{proposition}[Environment-induced instruments]
+    \label{prop:environment_induced_instruments}
+    \lean{Channel.exists_environment_povm_of_sum_eq_openSystem}
+    \leanok
+    \uses{def:povm, def:kraus_rank_rect,
+        thm:environment_induced_instruments_stinespring}
+    Let $d\geq1$ and let $T:\MN{d}\to\MN{d'}$ be a quantum channel.
+    Suppose a normalized vector $\varphi\in\C^{d'}\otimes\C^{d'}$ and a
+    unitary identification
+    \begin{align}
+        U:\C^d\otimes(\C^{d'}\otimes\C^{d'})
+        &\longrightarrow \C^{dd'}\otimes\C^{d'}
+        \notag
+    \end{align}
+    are supplied, so both sides have dimension $d(d')^2$, and suppose that
+    the system-plus-environment representation from Equation~(2.14) holds:
+    \begin{align}
+        T(\rho)
+        &=\tr_{\C^{dd'}}\!\left[
+          U\bigl(\rho\otimes\ketbra{\varphi}{\varphi}\bigr)U^\dagger
+          \right].
+        \label{eq:representations_environment_instruments_open_system}
+    \end{align}
+    If $n\geq1$ and $T=\sum_{i=0}^{n-1}T_i$ is a decomposition into
+    completely positive maps $T_i:\MN{d}\to\MN{d'}$, then there is a POVM
+    $\{P_i\}_{i=0}^{n-1}\subset\MN{dd'}$ such that
+    \begin{align}
+        T_i(\rho)
+        &=\tr_{\C^{dd'}}\!\left[
+          (P_i\otimes\Id_{d'})
+          U\bigl(\rho\otimes\ketbra{\varphi}{\varphi}\bigr)U^\dagger
+          \right]
+        \label{eq:representations_environment_induced_instruments}
+    \end{align}
+    for every $i$ and $\rho$. Moreover, the Kraus rank $k_i$ of $T_i$
+    satisfies $k_i\leq\rank(P_i)$. This is
+    \cite[Proposition~(Environment induced instruments), Equation~(2.15)]
+    {Wolf2012Quantum}.
+\end{proposition}
+
+\begin{proof}\leanok
+    \uses{thm:environment_induced_instruments_stinespring}
+    Restrict $U$ to inputs of the form $x\otimes\varphi$ and reorder the
+    output factors. This gives a supplied Stinespring matrix
+    $V:\C^d\to\C^{d'}\otimes\C^{dd'}$ satisfying
+    (\ref{eq:representations_environment_instruments_stinespring}). Apply
+    Theorem~\ref{thm:environment_induced_instruments_stinespring} and rewrite
+    its effect-insertion formula in the original environment-first tensor
+    order. The result is
+    (\ref{eq:representations_environment_induced_instruments}), with the same
+    rank bound.
+\end{proof}
+
 \begin{definition}[Naimark Kraus square roots]\label{def:naimark_kraus}
     \lean{POVM.naimarkKraus, POVM.naimarkKraus_spec}
     \leanok
