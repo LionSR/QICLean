@@ -12,8 +12,11 @@ rank-$k$ projection forms of the same condition.
 \begin{definition}[$k$-positive map]\label{def:k_positive_map}
     \lean{IsNPositiveMap}
     \leanok
-    A linear map $E : \MN{D} \to \MN{D}$ is $k$-positive if
-    $E \otimes \id_{k}$ is positive on $\MN{D} \otimes \MN{k}$.
+    A linear map
+    $E : \MN{D_{\rm in}} \to \MN{D_{\rm out}}$ is $k$-positive if
+    $E \otimes \id_{k}$ is positive from
+    $\MN{D_{\rm in}} \otimes \MN{k}$ to
+    $\MN{D_{\rm out}} \otimes \MN{k}$.
 \end{definition}
 
 \begin{definition}[Two-positive map]
@@ -88,11 +91,13 @@ rank-$k$ projection forms of the same condition.
 \begin{definition}[Blockwise ampliation]\label{def:blockwise_ampliation}
     \lean{nPositiveAmpliation}
     \leanok
-    For a linear map $E : \MN{D}\to\MN{D}$, its $k$-fold ampliation acts on
-    block matrices by
+    For a linear map
+    $E : \MN{D_{\rm in}}\to\MN{D_{\rm out}}$, its $k$-fold ampliation acts
+    between the corresponding block-matrix algebras by
     \begin{align}
         E^{(k)}(X)_{(i,p),(j,q)}
-         & =E((X_{(a,p),(b,q)})_{a,b})_{i,j}.
+         & =E((X_{(a,p),(b,q)})_{a,b})_{i,j},
+         \qquad i,j<D_{\rm out},\quad a,b<D_{\rm in}.
         \label{eq:schwarz_blockwise_ampliation}
     \end{align}
 \end{definition}
