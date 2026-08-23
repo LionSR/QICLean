@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Convex.Cone.InnerDual
 import Mathlib.Analysis.InnerProductSpace.Dual
+import Mathlib.Analysis.InnerProductSpace.ProdL2
 import Mathlib.Analysis.LocallyConvex.Separation
 import Mathlib.Data.EReal.Basic
 
@@ -409,5 +410,423 @@ private theorem exists_dual_of_strictlyFeasible_of_isGLB
         rw [hraw, ← mul_assoc, inv_mul_cancel₀ hscale_ne, one_mul]
 
 end SlaterCore
+
+section Slater
+
+/-- A real greatest lower bound of a nonempty family gives the corresponding finite infimum in
+the extended reals. -/
+private theorem ereal_iInf_eq_of_isGLB {I : Type*} [Nonempty I] (f : I → ℝ) (p : ℝ)
+    (hp : IsGLB (Set.range f) p) : (⨅ i, (f i : EReal)) = (p : EReal) := by
+  have hb : BddBelow (Set.range f) := hp.bddBelow
+  have hb' : BddBelow (Set.range fun i ↦ (f i : WithTop ℝ)) := by
+    refine ⟨(p : WithTop ℝ), ?_⟩
+    rintro _ ⟨i, rfl⟩
+    exact WithTop.coe_le_coe.mpr (hp.1 (Set.mem_range_self i))
+  change (⨅ i, ((f i : WithTop ℝ) : WithBot (WithTop ℝ))) =
+    ((p : WithTop ℝ) : WithBot (WithTop ℝ))
+  calc
+    (⨅ i, ((f i : WithTop ℝ) : WithBot (WithTop ℝ))) =
+        ((↑(⨅ i, (f i : WithTop ℝ)) : WithBot (WithTop ℝ))) :=
+      (WithBot.coe_iInf (fun i ↦ (f i : WithTop ℝ)) hb').symm
+    _ = ((↑(⨅ i, f i) : WithTop ℝ) : WithBot (WithTop ℝ)) := by
+      exact congrArg (fun z : WithTop ℝ ↦ (z : WithBot (WithTop ℝ)))
+        (WithTop.coe_iInf hb).symm
+    _ = ((p : WithTop ℝ) : WithBot (WithTop ℝ)) := by rw [hp.ciInf_eq]
+
+/-- A real least upper bound of a nonempty family gives the corresponding finite supremum in the
+extended reals. -/
+private theorem ereal_iSup_eq_of_isLUB {I : Type*} [Nonempty I] (f : I → ℝ) (p : ℝ)
+    (hp : IsLUB (Set.range f) p) : (⨆ i, (f i : EReal)) = (p : EReal) := by
+  have hb : BddAbove (Set.range f) := hp.bddAbove
+  have hb' : BddAbove (Set.range fun i ↦ (f i : WithTop ℝ)) := OrderTop.bddAbove _
+  change (⨆ i, ((f i : WithTop ℝ) : WithBot (WithTop ℝ))) =
+    ((p : WithTop ℝ) : WithBot (WithTop ℝ))
+  calc
+    (⨆ i, ((f i : WithTop ℝ) : WithBot (WithTop ℝ))) =
+        ((↑(⨆ i, (f i : WithTop ℝ)) : WithBot (WithTop ℝ))) :=
+      (WithBot.coe_iSup hb').symm
+    _ = ((↑(⨆ i, f i) : WithTop ℝ) : WithBot (WithTop ℝ)) := by
+      exact congrArg (fun z : WithTop ℝ ↦ (z : WithBot (WithTop ℝ)))
+        (WithTop.coe_iSup f hb).symm
+    _ = ((p : WithTop ℝ) : WithBot (WithTop ℝ)) := by rw [hp.ciSup_eq]
+
+omit [FiniteDimensional ℝ V] [FiniteDimensional ℝ V'] in
+/-- A finite extended-real infimum of a nonempty real family is its real greatest lower bound. -/
+private theorem isGLB_of_ereal_iInf_eq {I : Type*} [Nonempty I] (f : I → ℝ) (p : ℝ)
+    (hp : (⨅ i, (f i : EReal)) = (p : EReal)) : IsGLB (Set.range f) p := by
+  constructor
+  · rintro _ ⟨i, rfl⟩
+    apply EReal.coe_le_coe_iff.mp
+    rw [← hp]
+    exact iInf_le _ i
+  · intro a ha
+    apply EReal.coe_le_coe_iff.mp
+    rw [← hp]
+    refine le_iInf fun i ↦ ?_
+    exact EReal.coe_le_coe (ha (Set.mem_range_self i))
+
+omit [FiniteDimensional ℝ V] [FiniteDimensional ℝ V'] in
+/-- A finite extended-real supremum of a nonempty real family is its real least upper bound. -/
+private theorem isLUB_of_ereal_iSup_eq {I : Type*} [Nonempty I] (f : I → ℝ) (p : ℝ)
+    (hp : (⨆ i, (f i : EReal)) = (p : EReal)) : IsLUB (Set.range f) p := by
+  constructor
+  · rintro _ ⟨i, rfl⟩
+    apply EReal.coe_le_coe_iff.mp
+    rw [← hp]
+    exact le_iSup (fun i ↦ (f i : EReal)) i
+  · intro a ha
+    apply EReal.coe_le_coe_iff.mp
+    rw [← hp]
+    refine iSup_le fun i ↦ ?_
+    exact EReal.coe_le_coe (ha (Set.mem_range_self i))
+
+omit [FiniteDimensional ℝ V] [FiniteDimensional ℝ V'] in
+/-- A real greatest lower bound realizes Wolf's extended-real primal value. This is the finite
+primal-optimum hypothesis used below; it does not assert that the infimum is attained. -/
+theorem primalValue_eq_coe_of_isGLB {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'}
+    {c : V} {b : V'} {p : ℝ}
+    (hp : IsGLB ((fun x : V ↦ inner ℝ c x) '' primalFeasible K T b) p) :
+    primalValue K T c b = (p : EReal) := by
+  let _ : Nonempty (primalFeasible K T b) := by
+    by_contra h
+    rw [not_nonempty_iff] at h
+    have hp_all : ∀ a : ℝ, a ≤ p := by
+      intro a
+      apply hp.2
+      rintro _ ⟨x, hx, rfl⟩
+      exact False.elim (@IsEmpty.false (primalFeasible K T b) h ⟨x, hx⟩)
+    exact (not_le_of_gt (lt_add_one p)) (hp_all (p + 1))
+  apply ereal_iInf_eq_of_isGLB
+  have hrange :
+      Set.range (fun x : primalFeasible K T b ↦ inner ℝ c (x : V)) =
+        (fun x : V ↦ inner ℝ c x) '' primalFeasible K T b := by
+    ext z
+    constructor
+    · rintro ⟨x, rfl⟩
+      exact ⟨x, x.property, rfl⟩
+    · rintro ⟨x, hx, rfl⟩
+      exact ⟨⟨x, hx⟩, rfl⟩
+  rw [hrange]
+  exact hp
+
+omit [FiniteDimensional ℝ V] [FiniteDimensional ℝ V'] in
+/-- For a nonempty primal feasible set, saying that Wolf's extended-real primal value is the real
+number `p` is exactly saying that `p` is the greatest lower bound of the real objective values. -/
+theorem primalValue_eq_coe_iff_isGLB {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'}
+    {c : V} {b : V'} {p : ℝ} (hfeasible : (primalFeasible K T b).Nonempty) :
+    primalValue K T c b = (p : EReal) ↔
+      IsGLB ((fun x : V ↦ inner ℝ c x) '' primalFeasible K T b) p := by
+  let _ : Nonempty (primalFeasible K T b) := hfeasible.to_subtype
+  have hrange :
+      Set.range (fun x : primalFeasible K T b ↦ inner ℝ c (x : V)) =
+        (fun x : V ↦ inner ℝ c x) '' primalFeasible K T b := by
+    ext z
+    constructor
+    · rintro ⟨x, rfl⟩
+      exact ⟨x, x.property, rfl⟩
+    · rintro ⟨x, hx, rfl⟩
+      exact ⟨⟨x, hx⟩, rfl⟩
+  constructor
+  · intro hp
+    rw [← hrange]
+    exact isGLB_of_ereal_iInf_eq _ p hp
+  · exact primalValue_eq_coe_of_isGLB
+
+/-- A real least upper bound realizes Wolf's extended-real dual value. This is the finite
+dual-optimum hypothesis used below; it does not assert that the supremum is attained. -/
+theorem dualValue_eq_coe_of_isLUB {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'}
+    {c : V} {b : V'} {p : ℝ}
+    (hp : IsLUB ((fun y : V' ↦ inner ℝ b y) '' dualFeasible K T c) p) :
+    dualValue K T c b = (p : EReal) := by
+  let _ : Nonempty (dualFeasible K T c) := by
+    by_contra h
+    rw [not_nonempty_iff] at h
+    have hp_all : ∀ a : ℝ, p ≤ a := by
+      intro a
+      apply hp.2
+      rintro _ ⟨y, hy, rfl⟩
+      exact False.elim (@IsEmpty.false (dualFeasible K T c) h ⟨y, hy⟩)
+    exact (not_le_of_gt (sub_one_lt p)) (hp_all (p - 1))
+  apply ereal_iSup_eq_of_isLUB
+  have hrange :
+      Set.range (fun y : dualFeasible K T c ↦ inner ℝ b (y : V')) =
+        (fun y : V' ↦ inner ℝ b y) '' dualFeasible K T c := by
+    ext z
+    constructor
+    · rintro ⟨y, rfl⟩
+      exact ⟨y, y.property, rfl⟩
+    · rintro ⟨y, hy, rfl⟩
+      exact ⟨⟨y, hy⟩, rfl⟩
+  rw [hrange]
+  exact hp
+
+/-- For a nonempty dual feasible set, saying that Wolf's extended-real dual value is the real
+number `p` is exactly saying that `p` is the least upper bound of the real objective values. -/
+theorem dualValue_eq_coe_iff_isLUB {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'}
+    {c : V} {b : V'} {p : ℝ} (hfeasible : (dualFeasible K T c).Nonempty) :
+    dualValue K T c b = (p : EReal) ↔
+      IsLUB ((fun y : V' ↦ inner ℝ b y) '' dualFeasible K T c) p := by
+  let _ : Nonempty (dualFeasible K T c) := hfeasible.to_subtype
+  have hrange :
+      Set.range (fun y : dualFeasible K T c ↦ inner ℝ b (y : V')) =
+        (fun y : V' ↦ inner ℝ b y) '' dualFeasible K T c := by
+    ext z
+    constructor
+    · rintro ⟨y, rfl⟩
+      exact ⟨y, y.property, rfl⟩
+    · rintro ⟨y, hy, rfl⟩
+      exact ⟨⟨y, hy⟩, rfl⟩
+  constructor
+  · intro hp
+    rw [← hrange]
+    exact isLUB_of_ereal_iSup_eq _ p hp
+  · exact dualValue_eq_coe_of_isLUB
+
+/-- The dual conic problem written as a primal cone constraint. The first coordinate is free and
+the second coordinate is the dual slack. -/
+private def dualAsPrimalCone (K : ProperCone ℝ V) :
+    PointedCone ℝ (WithLp 2 (V' × V)) where
+  carrier := {w | w.snd ∈ ProperCone.innerDual (K : Set V)}
+  zero_mem' := by simp
+  add_mem' := by
+    intro x y hx hy
+    change x.snd ∈ ProperCone.innerDual (K : Set V) at hx
+    change y.snd ∈ ProperCone.innerDual (K : Set V) at hy
+    change (x + y).snd ∈ ProperCone.innerDual (K : Set V)
+    simpa using (ProperCone.innerDual (K : Set V)).add_mem hx hy
+  smul_mem' := by
+    intro a x hx
+    change x.snd ∈ ProperCone.innerDual (K : Set V) at hx
+    change (a : ℝ) • x.snd ∈ ProperCone.innerDual (K : Set V)
+    exact (ProperCone.innerDual (K : Set V)).smul_mem hx a.property
+
+/-- The equality map `(y, z) ↦ T† y + z` for the dual problem written as a primal problem. -/
+private def dualAsPrimalMap (T : V →ₗ[ℝ] V') : WithLp 2 (V' × V) →ₗ[ℝ] V :=
+  (T.toContinuousLinearMap.adjoint.toLinearMap.coprod LinearMap.id).comp
+    (WithLp.linearEquiv 2 ℝ (V' × V)).toLinearMap
+
+@[simp]
+private theorem dualAsPrimalMap_apply (T : V →ₗ[ℝ] V') (w : WithLp 2 (V' × V)) :
+    dualAsPrimalMap T w = T.toContinuousLinearMap.adjoint w.fst + w.snd :=
+  rfl
+
+/-- **Primal Slater attainment, corrected.** If Wolf's primal problem is strictly feasible and
+has the finite real optimum `p`, then the dual supremum is attained at objective value `p`.
+
+The finite-optimum hypothesis is necessary: primal strict feasibility alone permits an unbounded
+primal problem with an empty dual feasible set.
+Source: Wolf, Chapter 4, lines 72--75, with the missing finiteness hypothesis restored. -/
+theorem exists_isDualOptimizer_of_isPrimalStrictlyFeasible_of_isGLB
+    {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {p : ℝ}
+    (hstrict : IsPrimalStrictlyFeasible K T b)
+    (hp : IsGLB ((fun x : V ↦ inner ℝ c x) '' primalFeasible K T b) p) :
+    ∃ y : V', IsDualOptimizer K T c b y ∧ inner ℝ b y = p := by
+  obtain ⟨y, hybound, hyobj⟩ :=
+    exists_dual_of_strictlyFeasible_of_isGLB K.toPointedCone T c b p
+      (by simpa [IsPrimalStrictlyFeasible] using hstrict)
+      (by simpa [primalFeasible] using hp)
+  have hyfeasible : y ∈ dualFeasible K T c := by
+    change c - T.toContinuousLinearMap.adjoint y ∈ ProperCone.innerDual (K : Set V)
+    refine ProperCone.mem_innerDual.mpr fun x hxK ↦ ?_
+    rw [inner_sub_right, T.toContinuousLinearMap.adjoint_inner_right, ← real_inner_comm x c]
+    exact sub_nonneg.mpr (hybound x hxK)
+  refine ⟨y, ⟨hyfeasible, ?_⟩, hyobj⟩
+  intro z hz
+  rw [hyobj]
+  apply hp.2
+  rintro _ ⟨x, hx, rfl⟩
+  exact weak_duality_pointwise hx hz
+
+/-- **Primal Slater strong duality, corrected.** Under primal strict feasibility and a finite
+real primal optimum, Wolf's extended-real primal and dual values are equal. Attainment is supplied
+separately by `exists_isDualOptimizer_of_isPrimalStrictlyFeasible_of_isGLB`. -/
+theorem values_eq_of_isPrimalStrictlyFeasible_of_isGLB
+    {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {p : ℝ}
+    (hstrict : IsPrimalStrictlyFeasible K T b)
+    (hp : IsGLB ((fun x : V ↦ inner ℝ c x) '' primalFeasible K T b) p) :
+    primalValue K T c b = dualValue K T c b := by
+  obtain ⟨y, hyopt, hyobj⟩ :=
+    exists_isDualOptimizer_of_isPrimalStrictlyFeasible_of_isGLB hstrict hp
+  rw [primalValue_eq_coe_of_isGLB hp, dualValue_eq_of_isDualOptimizer hyopt, hyobj]
+
+/-- **Dual Slater attainment, corrected.** If Wolf's dual problem is strictly feasible and has
+the finite real optimum `p`, then the primal infimum is attained at objective value `p`.
+
+The finite-optimum hypothesis is necessary: dual strict feasibility alone does not imply that the
+primal feasible set is nonempty.
+Source: Wolf, Chapter 4, lines 75--78, with the missing finiteness hypothesis restored. -/
+theorem exists_isPrimalOptimizer_of_isDualStrictlyFeasible_of_isLUB
+    {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {p : ℝ}
+    (hstrict : IsDualStrictlyFeasible K T c)
+    (hp : IsLUB ((fun y : V' ↦ inner ℝ b y) '' dualFeasible K T c) p) :
+    ∃ x : V, IsPrimalOptimizer K T c b x ∧ inner ℝ c x = p := by
+  let C : PointedCone ℝ (WithLp 2 (V' × V)) := dualAsPrimalCone K
+  let A : WithLp 2 (V' × V) →ₗ[ℝ] V := dualAsPrimalMap T
+  let d : WithLp 2 (V' × V) := WithLp.toLp 2 (-b, 0)
+  have hstrict' : ∃ w ∈ interior (C : Set (WithLp 2 (V' × V))), A w = c := by
+    obtain ⟨y₀, hy₀⟩ := hstrict
+    let z₀ : V := c - T.toContinuousLinearMap.adjoint y₀
+    refine ⟨WithLp.toLp 2 (y₀, z₀), ?_, ?_⟩
+    · let e : WithLp 2 (V' × V) ≃ₜ V' × V := WithLp.homeomorphProd 2 V' V
+      have hC : (C : Set (WithLp 2 (V' × V))) =
+          e ⁻¹' (Set.univ ×ˢ (ProperCone.innerDual (K : Set V) : Set V)) := by
+        ext w
+        constructor
+        · intro hw
+          change w.snd ∈ ProperCone.innerDual (K : Set V) at hw
+          change e w ∈ Set.univ ×ˢ (ProperCone.innerDual (K : Set V) : Set V)
+          exact ⟨Set.mem_univ _, hw⟩
+        · intro hw
+          have hw' : e w ∈
+              Set.univ ×ˢ (ProperCone.innerDual (K : Set V) : Set V) := hw
+          change w.snd ∈ ProperCone.innerDual (K : Set V)
+          exact hw'.2
+      rw [hC, ← e.preimage_interior, interior_prod_eq, interior_univ]
+      exact ⟨Set.mem_univ _, hy₀⟩
+    · simp [A, z₀, dualAsPrimalMap]
+  have hGLB :
+      IsGLB ((fun w : WithLp 2 (V' × V) ↦ inner ℝ d w) ''
+        {w | w ∈ C ∧ A w = c}) (-p) := by
+    constructor
+    · rintro _ ⟨w, ⟨hwC, hAw⟩, rfl⟩
+      have hz : w.snd ∈ ProperCone.innerDual (K : Set V) := by
+        exact hwC
+      have hy : w.fst ∈ dualFeasible K T c := by
+        change c - T.toContinuousLinearMap.adjoint w.fst ∈
+          ProperCone.innerDual (K : Set V)
+        have heq : c - T.toContinuousLinearMap.adjoint w.fst = w.snd := by
+          change T.toContinuousLinearMap.adjoint w.fst + w.snd = c at hAw
+          rw [← hAw]
+          abel
+        rw [heq]
+        exact hz
+      have hle := hp.1 ⟨w.fst, hy, rfl⟩
+      have hdw : inner ℝ d w = -inner ℝ b w.fst := by
+        rw [WithLp.prod_inner_apply]
+        simp [d]
+      change -p ≤ inner ℝ d w
+      rw [hdw]
+      linarith
+    · intro a ha
+      have hupper : p ≤ -a := by
+        apply hp.2
+        rintro _ ⟨y, hy, rfl⟩
+        let z : V := c - T.toContinuousLinearMap.adjoint y
+        let w : WithLp 2 (V' × V) := WithLp.toLp 2 (y, z)
+        have hwC : w ∈ C := by
+          change z ∈ ProperCone.innerDual (K : Set V)
+          change c - T.toContinuousLinearMap.adjoint y ∈
+            ProperCone.innerDual (K : Set V) at hy
+          exact hy
+        have hAw : A w = c := by
+          simp [A, w, z, dualAsPrimalMap]
+        have hle := ha ⟨w, ⟨hwC, hAw⟩, rfl⟩
+        have hdw : inner ℝ d w = -inner ℝ b y := by
+          rw [WithLp.prod_inner_apply]
+          simp [d, w]
+        change a ≤ inner ℝ d w at hle
+        rw [hdw] at hle
+        linarith
+      linarith
+  obtain ⟨x, hxbound, hxobj⟩ :=
+    exists_dual_of_strictlyFeasible_of_isGLB C A d c (-p) hstrict' hGLB
+  have hTx : T (-x) = b := by
+    let y : V' := T x + b
+    let w : WithLp 2 (V' × V) := WithLp.toLp 2 (y, 0)
+    have hyC : w ∈ C := by simp [C, dualAsPrimalCone, w]
+    have hbound := hxbound w hyC
+    have hbound' : inner ℝ (T.toContinuousLinearMap.adjoint y) x ≤
+        inner ℝ (-b) y := by
+      simpa [A, d, w, dualAsPrimalMap, WithLp.prod_inner_apply] using hbound
+    rw [T.toContinuousLinearMap.adjoint_inner_left, inner_neg_left] at hbound'
+    have hself_nonpos : inner ℝ y y ≤ 0 := by
+      dsimp [y]
+      rw [inner_add_right]
+      dsimp [y] at hbound'
+      rw [real_inner_comm (T x + b) b] at hbound'
+      linarith
+    have hy_zero : y = 0 := inner_self_eq_zero.mp (le_antisymm hself_nonpos real_inner_self_nonneg)
+    rw [map_neg]
+    exact neg_eq_of_add_eq_zero_right hy_zero
+  have hxK : -x ∈ K := by
+    have hdouble : -x ∈
+        ProperCone.innerDual (ProperCone.innerDual (K : Set V) : Set V) := by
+      refine ProperCone.mem_innerDual.mpr fun z hz ↦ ?_
+      let w : WithLp 2 (V' × V) := WithLp.toLp 2 (0, z)
+      have hzC : w ∈ C := by
+        change z ∈ ProperCone.innerDual (K : Set V)
+        exact hz
+      have hbound := hxbound w hzC
+      have hbound' : inner ℝ z x ≤ 0 := by
+        simpa [A, d, w, dualAsPrimalMap, WithLp.prod_inner_apply] using hbound
+      simpa [inner_neg_right] using neg_nonneg.mpr hbound'
+    rw [ProperCone.innerDual_innerDual K] at hdouble
+    exact hdouble
+  have hxfeasible : -x ∈ primalFeasible K T b := ⟨hxK, hTx⟩
+  have hxobj' : inner ℝ c (-x) = p := by
+    rw [inner_neg_right]
+    linarith
+  refine ⟨-x, ⟨hxfeasible, ?_⟩, hxobj'⟩
+  intro z hz
+  rw [hxobj']
+  apply hp.2
+  rintro _ ⟨y, hy, rfl⟩
+  exact weak_duality_pointwise hz hy
+
+/-- **Dual Slater strong duality, corrected.** Under dual strict feasibility and a finite real
+dual optimum, Wolf's extended-real primal and dual values are equal. Attainment is supplied
+separately by `exists_isPrimalOptimizer_of_isDualStrictlyFeasible_of_isLUB`. -/
+theorem values_eq_of_isDualStrictlyFeasible_of_isLUB
+    {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {p : ℝ}
+    (hstrict : IsDualStrictlyFeasible K T c)
+    (hp : IsLUB ((fun y : V' ↦ inner ℝ b y) '' dualFeasible K T c) p) :
+    primalValue K T c b = dualValue K T c b := by
+  obtain ⟨x, hxopt, hxobj⟩ :=
+    exists_isPrimalOptimizer_of_isDualStrictlyFeasible_of_isLUB hstrict hp
+  rw [primalValue_eq_of_isPrimalOptimizer hxopt, dualValue_eq_coe_of_isLUB hp, hxobj]
+
+/-- **Primal Slater attainment in Wolf's value notation.** If the primal problem is strictly
+feasible and its extended-real value is the finite real number `p`, then the dual optimum is
+attained at value `p`. -/
+theorem exists_isDualOptimizer_of_isPrimalStrictlyFeasible_of_primalValue_eq_coe
+    {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {p : ℝ}
+    (hstrict : IsPrimalStrictlyFeasible K T b)
+    (hvalue : primalValue K T c b = (p : EReal)) :
+    ∃ y : V', IsDualOptimizer K T c b y ∧ inner ℝ b y = p := by
+  apply exists_isDualOptimizer_of_isPrimalStrictlyFeasible_of_isGLB hstrict
+  exact (primalValue_eq_coe_iff_isGLB hstrict.feasible).mp hvalue
+
+/-- **Primal Slater strong duality in Wolf's value notation.** If the primal problem is strictly
+feasible and its extended-real value is finite, then the primal and dual values are equal. -/
+theorem values_eq_of_isPrimalStrictlyFeasible_of_primalValue_eq_coe
+    {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {p : ℝ}
+    (hstrict : IsPrimalStrictlyFeasible K T b)
+    (hvalue : primalValue K T c b = (p : EReal)) :
+    primalValue K T c b = dualValue K T c b := by
+  apply values_eq_of_isPrimalStrictlyFeasible_of_isGLB hstrict
+  exact (primalValue_eq_coe_iff_isGLB hstrict.feasible).mp hvalue
+
+/-- **Dual Slater attainment in Wolf's value notation.** If the dual problem is strictly feasible
+and its extended-real value is the finite real number `p`, then the primal optimum is attained at
+value `p`. -/
+theorem exists_isPrimalOptimizer_of_isDualStrictlyFeasible_of_dualValue_eq_coe
+    {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {p : ℝ}
+    (hstrict : IsDualStrictlyFeasible K T c)
+    (hvalue : dualValue K T c b = (p : EReal)) :
+    ∃ x : V, IsPrimalOptimizer K T c b x ∧ inner ℝ c x = p := by
+  apply exists_isPrimalOptimizer_of_isDualStrictlyFeasible_of_isLUB hstrict
+  exact (dualValue_eq_coe_iff_isLUB hstrict.feasible).mp hvalue
+
+/-- **Dual Slater strong duality in Wolf's value notation.** If the dual problem is strictly
+feasible and its extended-real value is finite, then the primal and dual values are equal. -/
+theorem values_eq_of_isDualStrictlyFeasible_of_dualValue_eq_coe
+    {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {p : ℝ}
+    (hstrict : IsDualStrictlyFeasible K T c)
+    (hvalue : dualValue K T c b = (p : EReal)) :
+    primalValue K T c b = dualValue K T c b := by
+  apply values_eq_of_isDualStrictlyFeasible_of_isLUB hstrict
+  exact (dualValue_eq_coe_iff_isLUB hstrict.feasible).mp hvalue
+
+end Slater
 
 end ConicProgram
