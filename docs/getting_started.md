@@ -27,13 +27,13 @@ one way. See the "Relation to TNLean" section of the top-level
 [`docs/UPGRADE_RUNBOOK.md`](UPGRADE_RUNBOOK.md) for how the two
 repositories stay on the same Lean/Mathlib toolchain.
 
-One extraction-era exception remains mid-dissolution:
-`QICLean/Kraus/TensorCompat.lean` still declares a handful of genuinely
-matrix-product-*state* definitions (`GaugeEquiv`, `SameMPV`, `mpv`) under
-`namespace MPSTensor`, kept only so the rest of the `QICLean.MPS`
-compatibility layer could dissolve. A paired TNLean pull request re-homes
-this content in TNLean's own tensor-network layer, after which a QICLean
-tag removes the file. New contributions should not add to it.
+The extraction-era `QICLean.MPS` compatibility layer has been dissolved.
+Channel-generic declarations live under `QICLean.Kraus`, while genuinely
+matrix-product-*state* definitions such as `GaugeEquiv`, `SameMPV`, and `mpv`
+now live in TNLean. The root-level abbrev `MPSTensor d D` remains in
+`QICLean/Kraus/Word.lean` as a synonym for a finite Kraus family so TNLean can
+state its tensor-network theory over the same underlying type; QICLean does
+not declare an API under `namespace MPSTensor`.
 
 ## What you need
 
@@ -115,16 +115,13 @@ from TNLean and does not track that order (see
 [`blueprint/README.md`](../blueprint/README.md) and
 [`docs/blueprint_style_guide.md`](blueprint_style_guide.md)).
 
-**A namespace note.** QICLean was cut out of TNLean's Lean tree, and a few
-declarations still carry TNLean's `MPSTensor` namespace rather than a
-channel-generic one, pending a rename. `QICLean/Kraus/Injectivity.lean`
-says so directly in its module docstring: the exact word-span API is
-already stated under `namespace Kraus`, but the established injectivity
-and normality declarations remain under `namespace MPSTensor`. The
-top-level `QICLean/Wielandt/` directory is the clearest example of this —
-most of its declarations still open `namespace MPSTensor`, unlike the
-channel-generic `QICLean/Kraus/Wielandt/` directory referenced in the table
-above, which covers overlapping ground without that legacy namespace.
+**A namespace note.** The channel and quantum Wielandt APIs are stated under
+`namespace Kraus`, over finite families of matrices. In particular,
+`QICLean/Kraus/Injectivity.lean` contains injectivity and normality, and
+`QICLean/Kraus/Wielandt/` contains the span-growth and quantum Wielandt
+development. The spelling `MPSTensor d D` may still appear as an argument
+type because it is a reducible root-level abbrev for the same finite-family
+type, but it does not introduce a separate namespace or compatibility API.
 
 ## A first reading path
 
