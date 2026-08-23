@@ -7,10 +7,10 @@
 
 \input{command}
 
-\title{The Even-Dimension Restriction in the Indecomposability\\
+\title{Hypothesis Boundaries for the Indecomposability\\
 of the Breuer--Hall Map (Wolf Example~3.1)}
 \author{}
-\date{2026-08-06}
+\date{2026-08-23}
 
 \begin{document}
 \maketitle
@@ -22,7 +22,7 @@ Wolf's Chapter~3, Example~3.1 introduces the Breuer--Hall
 map\footnote{\cite[Chapter~3, Example~3.1]{Wolf2012Quantum}; local source:
 \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
 344--355. Formalization issue:
-\href{https://github.com/LionSR/TNLean/issues/5471}{issue \#5471}.}
+\href{https://github.com/LionSR/QICLean/issues/16}{issue \#16}.}
 \begin{align}
   T_{\mathrm{BH}}(X)=\operatorname{tr}[X]\,\mathbb 1-X-UX^{T}U^{\dagger}.
   \tag{3.19}
@@ -32,12 +32,13 @@ $U^{\dagger}U\le\mathbb 1$.  The source then states: ``For $d$ even there are
 anti-symmetric unitaries
 $U^{\dagger}=U^{-1}=-\overline{U}$ \dots\ If $U$ is an anti-symmetric unitary
 $T_{\mathrm{BH}}$ is not decomposable.''  The final sentence has no dimension
-hypothesis.  Thus the source uses two distinct hypothesis regimes: the map is
-defined and proved positive for antisymmetric contractions
-$U^{\dagger}U\le\mathbb 1$, whereas its indecomposability assertion concerns
-antisymmetric unitaries $U^{\dagger}U=\mathbb 1$.  The formalization proves
-indecomposability only in the unitary case; extending that conclusion to general
-antisymmetric contractions remains open.
+hypothesis.  Thus the source uses two distinct hypothesis regimes: positivity is
+asserted for antisymmetric contractions $U^{\dagger}U\le\mathbb 1$, whereas
+indecomposability is asserted only for antisymmetric unitaries
+$U^{\dagger}U=\mathbb 1$.  The formalization preserves this distinction. It proves
+positivity in the contraction regime and indecomposability in the unitary regime,
+with the necessary dimension hypothesis $d>2$. The unrestricted contraction
+generalization of indecomposability is false.
 
 \section{The point at issue}
 
@@ -59,6 +60,39 @@ completely positive, hence decomposable. The hypothesis $d>2$ is therefore
 necessary, and the source's sentence must be read with the restriction
 $d\ge4$ (recall that antisymmetric unitaries exist only for even $d$: taking
 determinants in $U^{T}=-U$ gives $\det U=(-1)^{d}\det U$, and $\det U\ne0$).
+
+\section{Why contractivity does not suffice for indecomposability}
+
+The zero matrix is an antisymmetric contraction in every dimension:
+$0^{T}=-0$ and $0^{\dagger}0\le\mathbb 1$. At this parameter the
+Breuer--Hall map is exactly the first reduction map,
+\begin{align}
+  T_{\mathrm{BH},0}(X)
+  =\operatorname{tr}[X] \,\mathbb 1-X
+  =T_1(X).
+\end{align}
+The map $T_1$ is completely copositive. Indeed, if $\theta$ denotes
+transposition and $F$ denotes the swap operator, then the Choi matrix of
+$T_1\circ\theta$ is
+\begin{align}
+  \tau(T_1\circ\theta)=d^{-1}(\mathbb 1-F)\ge0.
+\end{align}
+The last inequality holds because $\mathbb 1-F$ is twice the orthogonal
+projector onto the antisymmetric subspace. The Choi criterion therefore shows
+that $T_1\circ\theta$ is completely positive, so $T_1$ is completely
+copositive and hence decomposable. Consequently, even for $d>2$, the
+Breuer--Hall map need not be indecomposable when $U$ ranges over all
+antisymmetric contractions. This counterexample does not give, and the
+formalization does not claim, a classification of the nonunitary contractions
+for which the map is indecomposable.\footnote{Formal declarations:
+\leanid{Matrix.breuerHallMap\_zero} in
+\doclink{QICLean/Channel/BreuerHallMap};
+\leanid{ChoiJamiolkowski.choiMatrix\_reductionMap\_one\_comp\_transpose},
+\leanid{Matrix.reductionMap\_one\_isCompletelyCopositiveMap}, and
+\leanid{Matrix.reductionMap\_one\_isDecomposablePositiveMap} in
+\doclink{QICLean/Channel/PositiveExamples}; and
+\leanid{Matrix.breuerHallMap\_contraction\_not\_universally\_indecomposable}
+in \doclink{QICLean/Channel/BreuerHallIndecomposable}.}
 
 \section{The corrected statement}
 
@@ -109,11 +143,15 @@ $T_{\mathrm{BH}}$ is not decomposable.
 
 \section{Conclusion}
 
-The source's indecomposability claim for the Breuer--Hall map is correct
-exactly in the dimensions where antisymmetric unitaries exist and $d>2$,
-i.e.\ for even $d\ge4$; at $d=2$ the map vanishes. The formalization proves
-the corrected statement with the explicit hypothesis $d>2$, and the
-blueprint entry records the restriction in its statement.
+Wolf's positivity statement applies to antisymmetric contractions, whereas the
+source's indecomposability sentence applies only to antisymmetric unitaries.
+For unitaries the dimension correction is necessary: the formalized theorem
+assumes $d>2$, equivalently even $d\ge4$ whenever an antisymmetric unitary
+exists, and at $d=2$ the map vanishes. The unitary hypothesis is also a genuine
+boundary for the stated conclusion: the antisymmetric contraction $U=0$ gives
+the completely copositive, decomposable reduction map $T_1$. The blueprint
+records both the corrected unitary theorem and this counterexample, without
+asserting a sharper classification for general contractions.
 
 \bibliographystyle{alpha}
 \bibliography{references}

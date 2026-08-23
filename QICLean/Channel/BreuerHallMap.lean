@@ -5,8 +5,8 @@ Authors: TNLean contributors
 -/
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import QICLean.Algebra.MatrixAux
-import QICLean.Channel.Basic
 import QICLean.Algebra.MatrixSpectralDecomp
+import QICLean.Channel.PositiveExamples
 
 /-!
 # Positivity of the Breuer-Hall map
@@ -34,6 +34,7 @@ dimension `d > 2` is `Matrix.breuerHallMap_isIndecomposablePositiveMap`.
 ## Main declarations
 
 * `Matrix.breuerHallMap` -- the Breuer-Hall map `T_BH`.
+* `Matrix.breuerHallMap_zero` -- at `U = 0`, `T_BH` is the reduction map `T₁`.
 * `Matrix.breuerHallMap_isPositiveMap` -- `T_BH` is a positive map.
 
 ## References
@@ -133,6 +134,14 @@ theorem breuerHallMap_apply (U : Matrix (Fin d) (Fin d) ℂ) (X : Matrix (Fin d)
     breuerHallMap U X =
       Matrix.trace X • (1 : Matrix (Fin d) (Fin d) ℂ) - X - U * Xᵀ * Uᴴ :=
   rfl
+
+/-- At the zero contraction, the Breuer-Hall map is exactly the reduction map
+\(T_1(X)=\operatorname{tr}(X)I-X\). -/
+@[simp]
+theorem breuerHallMap_zero (d : ℕ) :
+    breuerHallMap (0 : Matrix (Fin d) (Fin d) ℂ) = reductionMap d 1 := by
+  ext X i j
+  simp [breuerHallMap_apply, reductionMap_apply]
 
 /-! ## Positivity on rank-one outer products -/
 

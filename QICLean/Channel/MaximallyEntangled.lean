@@ -3,12 +3,13 @@ Copyright (c) 2025 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Channel.TensorMap
+import Mathlib.Algebra.Ring.Idempotent
+import Mathlib.Analysis.Matrix.PosDef
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Data.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.Trace
-import Mathlib.Data.Complex.Basic
-import Mathlib.Analysis.Real.Sqrt
-import Mathlib.Algebra.Ring.Idempotent
+import QICLean.Channel.TensorMap
 
 /-!
 # Maximally entangled state and SWAP operator
@@ -32,6 +33,7 @@ as needed for the Choi–Jamiolkowski isomorphism (Wolf Chapter 2).
 * `Matrix.swapMatrix_apply`: elementwise formula for `swapMatrix`
 * `Matrix.swapMatrix_mul_self`: `F² = 1`
 * `Matrix.swapMatrix_conjTranspose`: `F† = F`
+* `Matrix.one_sub_swapMatrix_posSemidef`: `1 - F` is positive semidefinite
 * `Matrix.trace_omegaProj`: `tr(|Ω⟩⟨Ω|) = 1` when `d > 0`
 
 ## References
@@ -39,7 +41,7 @@ as needed for the Choi–Jamiolkowski isomorphism (Wolf Chapter 2).
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 2, Example 1.2][Wolf2012QChannels]
 -/
 
-open scoped Matrix
+open scoped Matrix ComplexOrder
 open Matrix Finset BigOperators
 
 namespace Matrix
@@ -174,6 +176,24 @@ theorem swapMatrix_conjTranspose :
     (propext ⟨fun ⟨a, b⟩ => ⟨b.symm, a.symm⟩,
              fun ⟨a, b⟩ => ⟨b.symm, a.symm⟩⟩)
     (fun _ => rfl) (fun _ => rfl)
+
+/-- `1 - F` is positive semidefinite, where `F` is the SWAP operator: it is twice the
+orthogonal projector onto the antisymmetric subspace. -/
+theorem one_sub_swapMatrix_posSemidef (d : ℕ) :
+    ((1 : Matrix (Fin d × Fin d) (Fin d × Fin d) ℂ) - swapMatrix d).PosSemidef := by
+  let A : Matrix (Fin d × Fin d) (Fin d × Fin d) ℂ := 1 - swapMatrix d
+  have hAstar : Aᴴ = A := by
+    simp [A, swapMatrix_conjTranspose]
+  have hAsq : Aᴴ * A = 2 • A := by
+    rw [hAstar]
+    simp only [A, sub_mul, mul_sub, one_mul, mul_one, swapMatrix_mul_self]
+    module
+  have hpsd : (Aᴴ * A).PosSemidef := Matrix.posSemidef_conjTranspose_mul_self A
+  rw [hAsq] at hpsd
+  have hhalf : ((2 : ℂ)⁻¹) • (2 • A) = A := by module
+  change A.PosSemidef
+  rw [← hhalf]
+  exact hpsd.smul (by positivity)
 
 /-- `tr(|Ω⟩⟨Ω|) = 1` when `d > 0`. -/
 theorem trace_omegaProj (hd : 0 < d) :
