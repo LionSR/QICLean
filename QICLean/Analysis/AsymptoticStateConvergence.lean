@@ -53,8 +53,8 @@ theorem peripheralProjection_comp_pow
 /-- The phase-weighted peripheral map annihilates Wolf's non-peripheral
 remainder `ρ - T_φ(ρ)`.
 
-This is the identity `T_φ' T_φ = T_φ'` on Wolf line 1337, applied to the
-complement of the peripheral projection. -/
+This is Wolf's identity `T_\varphi T_φ = T_\varphi` on source line 1337,
+applied to the complement of the peripheral projection. -/
 @[simp]
 theorem peripheralWeightedProjection_apply_sub_peripheralProjection
     (T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ))
