@@ -1,0 +1,83 @@
+% Source: Wolf (2012), Chapter 8, Equation (8.110), lines 1274--1293
+
+\begin{theorem}[Detailed balance in the matrix representation]
+    \label{thm:detailed_balance_transfer_matrix}
+    \lean{transferMatrix_detailedBalance}
+    \leanok
+    This is the matrix-representation step in the proof of
+    \cite[Chapter~8, Equation~(8.110)]{Wolf2012Quantum}.
+    Let $T:M_d(\mathbb C)\to M_d(\mathbb C)$ be Hermiticity preserving and
+    let $\Sigma:M_d(\mathbb C)\to M_d(\mathbb C)$ be linear.  If
+    $\Sigma T^*=T\Sigma$, then
+    \begin{align}
+        \widehat\Sigma\,\widehat T^\dagger
+          =\widehat T\,\widehat\Sigma.
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Composition becomes matrix multiplication under the transfer-matrix
+    representation.  Hermiticity preservation identifies the transfer matrix
+    of $T^*$ with $\widehat T^\dagger$, so applying the representation to both
+    sides of $\Sigma T^*=T\Sigma$ gives the displayed identity.
+\end{proof}
+
+\begin{theorem}[Matrix representation of the square-root sandwich]
+    \label{thm:sigma_sandwich_transfer_matrix}
+    \lean{transferMatrix_sigmaSandwich_eq_kronecker_and_posDef}
+    \leanok
+    This is the Kronecker identity used in the specialization of
+    \cite[Chapter~8, Proposition ``Jordan condition number and detailed balance'']{Wolf2012Quantum}.
+    If $\sigma>0$ and
+    $\Sigma(X)=\sqrt\sigma\,X\sqrt\sigma$, then
+    \begin{align}
+        \widehat\Sigma
+          =\overline{\sqrt\sigma}\otimes\sqrt\sigma>0.
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Vectorizing conjugation by $\sqrt\sigma$ gives the displayed Kronecker
+    product.  The square root is positive definite, and its entrywise
+    conjugate is its transpose because it is Hermitian.  Transposition and
+    Kronecker products preserve positive definiteness.
+\end{proof}
+
+\begin{theorem}[Hermitian representative from detailed balance]
+    \label{thm:detailed_balance_hermitian_representative}
+    \lean{Matrix.PosDef.inv_sqrt_mul_mul_sqrt_isHermitian_of_detailedBalance}
+    \leanok
+    This is the square-root conjugation in the proof of
+    \cite[Chapter~8, Proposition ``Jordan condition number and detailed balance'']{Wolf2012Quantum}.
+    Let $S,A\in M_n(\mathbb C)$, with $S>0$.  If
+    $SA^\dagger=AS$, then
+    $S^{-1/2}AS^{1/2}$ is Hermitian.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Put $R=S^{1/2}$.  Positive definiteness makes $R$ invertible and
+    Hermitian.  Multiplying $R^2A^\dagger=AR^2$ on the left and right by
+    $R^{-1}$ gives
+    $RA^\dagger R^{-1}=R^{-1}AR$, which says exactly that
+    $R^{-1}AR$ is Hermitian.
+\end{proof}
+
+\begin{theorem}[Fixed point from the detailed-balance sandwich]
+    \label{thm:detailed_balance_sigma_fixed_point}
+    \lean{fixedPoint_of_detailedBalance_sigmaSandwich}
+    \leanok
+    This is the fixed-point observation in
+    \cite[Chapter~8, Proposition ``Jordan condition number and detailed balance'']{Wolf2012Quantum}.
+    Let $\sigma>0$ and set
+    $\Sigma(X)=\sqrt\sigma\,X\sqrt\sigma$.  If
+    $\Sigma T^*=T\Sigma$ and $T^*(\Id)=\Id$, then $T(\sigma)=\sigma$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Evaluate detailed balance at the identity:
+    $T(\sigma)=T(\Sigma(\Id))=\Sigma(T^*(\Id))=\Sigma(\Id)=\sigma$.
+\end{proof}
