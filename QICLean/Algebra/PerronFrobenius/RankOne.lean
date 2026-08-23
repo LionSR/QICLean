@@ -64,10 +64,12 @@ of a composition there. Combined with `Matrix.pow_eq_pow_two_of_pow_two_eq_pow_t
 `Matrix.tracePowersConstant_of_pairing_idempotent` gives the unconditional
 constant trace powers `Matrix.TracePowersConstant T`.
 
-More generally, `Matrix.trace_pow_eq_trace_of_rectangular_idempotent` proves
-the trace-power identity directly for any rectangular factorization `T = QL`
-whose opposite product `LQ` is idempotent. This is the matrix calculation at
-Appendix C.2, lines 1490--1497.
+More generally, `Matrix.trace_pow_mul_comm` gives the cyclic identity between
+the positive trace powers of the two products of a rectangular pair.
+`Matrix.trace_pow_eq_trace_of_rectangular_idempotent` specializes it to a
+factorization `T = QL` whose opposite product `LQ` is idempotent, supplying the
+matrix calculation underlying the trace-power claim in Appendix C.2, lines
+1490--1497.
 -/
 
 open scoped BigOperators Matrix ComplexOrder
@@ -344,6 +346,28 @@ and cyclicity of the trace of a composition between `W` and the coefficient
 space identifies `trace T` with the trace of the restricted operator and
 `trace (T^2)` with the trace of its square, which coincide by idempotence. -/
 
+/-- Positive powers of the two products of a rectangular pair of matrices have equal traces:
+\[
+  \operatorname{tr}((LQ)^N) = \operatorname{tr}((QL)^N), \qquad N \geq 1.
+\]
+This cyclicity identity underlies the trace-power claim in arXiv:1606.00608,
+Appendix C.2, lines 1490--1497. -/
+theorem trace_pow_mul_comm {a b : Type*} [Fintype a] [Fintype b]
+    [DecidableEq a] [DecidableEq b] {R : Type*} [CommSemiring R]
+    (L : Matrix a b R) (Q : Matrix b a R)
+    {N : ℕ} (hN : 0 < N) :
+    Matrix.trace ((L * Q) ^ N) = Matrix.trace ((Q * L) ^ N) := by
+  classical
+  have hpow : ∀ M : ℕ, (L * Q) ^ (M + 1) = L * ((Q * L) ^ M * Q) := by
+    intro M
+    induction M with
+    | zero => simp only [zero_add, pow_one, pow_zero, Matrix.one_mul]
+    | succ M ih =>
+      rw [pow_succ, ih, pow_succ]
+      simp only [Matrix.mul_assoc]
+  obtain ⟨M, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hN.ne'
+  rw [hpow M, Matrix.trace_mul_comm, Matrix.mul_assoc, ← pow_succ]
+
 /-- If the rectangular product `L * Q` is idempotent, then the product in the
 opposite order satisfies
 \[
@@ -375,27 +399,13 @@ theorem trace_pow_eq_trace_of_rectangular_idempotent
     (h : IsIdempotentElem (L * Q)) :
     ∀ N : ℕ, 0 < N → Matrix.trace ((Q * L) ^ N) = Matrix.trace (Q * L) := by
   classical
-  have htrace2 : Matrix.trace ((Q * L) ^ 2) = Matrix.trace (Q * L) := by
-    calc
-      Matrix.trace ((Q * L) ^ 2) = Matrix.trace ((Q * L * Q) * L) := by
-        simp [pow_two, Matrix.mul_assoc]
-      _ = Matrix.trace (L * (Q * L * Q)) := Matrix.trace_mul_comm _ _
-      _ = Matrix.trace ((L * Q) * (L * Q)) := by simp [Matrix.mul_assoc]
-      _ = Matrix.trace (L * Q) := by rw [h.eq]
-      _ = Matrix.trace (Q * L) := Matrix.trace_mul_comm _ _
-  have hsq3 := pow_two_eq_pow_three_of_rectangular_idempotent L Q h
-  have hpowers : ∀ N : ℕ, 2 ≤ N → (Q * L) ^ N = (Q * L) ^ 2 := by
-    intro N hN
-    induction N, hN using Nat.le_induction with
-    | base => rfl
-    | succ m _ ih =>
-      rw [pow_succ, ih]
-      exact hsq3.symm
   intro N hN
-  rcases Nat.lt_or_ge N 2 with hN2 | hN2
-  · interval_cases N
-    rw [pow_one]
-  · rw [hpowers N hN2, htrace2]
+  obtain ⟨M, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hN.ne'
+  calc
+    Matrix.trace ((Q * L) ^ (M + 1)) = Matrix.trace ((L * Q) ^ (M + 1)) :=
+      trace_pow_mul_comm Q L (Nat.zero_lt_succ M)
+    _ = Matrix.trace (L * Q) := by rw [IsIdempotentElem.pow_succ_eq M h.eq]
+    _ = Matrix.trace (Q * L) := Matrix.trace_mul_comm _ _
 
 /-- **Unconditional `T^2 = T^3` from the pairing idempotence.**
 
