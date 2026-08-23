@@ -13,7 +13,7 @@
 
 \begin{document}
 \maketitle
-\gapnote{open-gap}{open}
+\gapnote{open-gap}{resolved}
 
 \section{The assertion}
 
@@ -29,62 +29,51 @@ lines~1143--1151.}
   \exists\, x \in S,\ T(x) = x.
 \end{align}
 
-\section{What is formalized}
+\section{Resolution}
 
 The vendored Gametheory library (LionSR/Brouwer) proves the Brouwer fixed-point
 theorem for the standard simplex~$\Delta^n$:
 \leanid{Brouwer}.
-TNLean extends this to products of simplices, closed cubes, and compact retracts
+QICLean extends this to products of simplices, closed cubes, and compact retracts
 of finite-dimensional real normed spaces.\footnote{Formal declarations:
 \leanid{exists\_fixedPoint\_closedCube} in
 \doclink{QICLean/Topology/BrouwerProduct},
 \leanid{fixedPoint\_of\_compact\_retract} in
 \doclink{QICLean/Topology/CompactRetractFixedPoint},
-and \leanid{brouwer\_fixedPoint\_densityMatrices} in
-\doclink{QICLean/Channel/FixedPoint/BrouwerDensityMatrices}.}  The density-matrix specialization
-is the only form used in the existing formalization of Wolf Theorem~6.11
-(Stationary states).
+and \leanid{fixedPoint\_of\_compact\_convex} and
+\leanid{brouwer\_fixedPoint\_compactConvex} in
+\doclink{QICLean/Topology/CompactConvexFixedPoint}.}
 
-\section{What is missing}
+The last two declarations now prove the coordinate-free theorem and Wolf's
+printed form for an arbitrary nonempty compact convex subset
+\(S \subset \mathbb{R}^n\), respectively.  The proof follows the metric-projection
+route previously identified in this note.  For each ambient point, compactness
+provides a minimizer of squared distance in~\(S\).  Convexity and the
+first-order variational inequality imply that the chosen projection is
+1-Lipschitz and restricts to the identity on~\(S\).  It therefore supplies the
+continuous retraction required by
+\leanid{fixedPoint\_of\_compact\_retract}.  The reusable projection declarations
+are \leanid{CompactConvex.metricProjection},
+\leanid{CompactConvex.nearest\_inner\_nonpos}, and
+\leanid{CompactConvex.metricProjection\_lipschitzWith}.
 
-The general statement with an \emph{arbitrary} nonempty compact convex subset
-\(S \subset \mathbb{R}^n\) is not yet proved.  Three natural routes would close
-this gap:
-
-\begin{enumerate}
-  \item \textbf{Metric projection.}  For a nonempty closed convex set~\(K\) in a
-    finite-dimensional Euclidean space, the nearest-point map
-    \(\operatorname{proj}_K(x) = \operatorname*{argmin}_{p \in K} \lVert x-p\rVert\) is unique,
-    1-Lipschitz, and restricts to the identity on~\(K\).  This provides the
-    retraction required by the existing retract-based fixed-point theorem.  The
-    existence, uniqueness, and continuity of the metric projection for convex
-    sets in Euclidean space is not yet in Mathlib.
-
-  \item \textbf{Convex-body homeomorphism.}  A nonempty compact convex~\(K\)
-    with nonempty interior in its affine hull is homeomorphic to the closed
-    unit ball, which is homeomorphic to a simplex.
-
-  \item \textbf{Triangulation.}  Refine \(K\) into a simplicial complex and
-    apply the Sperner-lemma / simplicial Brouwer argument directly (the route
-    taken by the Gametheory library for the standard simplex).
-\end{enumerate}
+Wolf supplies only the theorem statement at the cited location, so this route
+is recorded as the formal proof and is not attributed to the lecture notes.
 
 \section{Impact}
 
-The missing general statement does \emph{not} block the formalization of Wolf
+The former general-statement gap did \emph{not} block the formalization of Wolf
 Theorem~6.11 (Stationary states), Proposition~6.8 (Positive fixed-points), or
 Corollary~6.5 (spanning by stationary density matrices).  These results rely
 only on the density-matrix version of Brouwer, which is already proved.
-The general compact-convex Brouwer is not used anywhere in the current
-formalization.
+The density-matrix specialization remains the theorem used by those channel
+results; the general theorem is now available independently.
 
 \section{Verdict}
 
-\textbf{Open gap.}  The general compact-convex Brouwer theorem (Wolf's
-formulation) remains unformalized.  The simplex specialization and its
-extensions to closed cubes, compact retracts, and density matrices are formalized
-and suffice for the current applications.  The metric-projection route is the
-most natural starting point and would be reusable beyond this theorem.
+\textbf{Resolved.}  Wolf's general compact-convex statement is formalized as
+\leanid{brouwer\_fixedPoint\_compactConvex}.  The coordinate-free theorem and
+the reusable nonexpansive metric projection are formalized alongside it.
 
 \bibliographystyle{alpha}
 \bibliography{references}

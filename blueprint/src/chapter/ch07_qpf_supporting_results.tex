@@ -65,6 +65,29 @@ convex domain and the limit argument used for channel fixed points.
     gives $\tr(E(\rho)) = \tr(\rho) = 1$.
 \end{proof}
 
+\begin{theorem}[Brouwer fixed point on compact convex sets]%
+    \label{thm:brouwer_compact_convex}
+    \lean{brouwer_fixedPoint_compactConvex, fixedPoint_of_compact_convex}
+    \lean{CompactConvex.metricProjection, CompactConvex.metricProjection_mem}
+    \lean{CompactConvex.metricProjection_isMinOn, CompactConvex.nearest_inner_nonpos}
+    \lean{CompactConvex.metricProjection_norm_sub_le}
+    \lean{CompactConvex.metricProjection_lipschitzWith}
+    \lean{CompactConvex.continuous_metricProjection, CompactConvex.metricProjection_eq_self}
+    \leanok
+    Let $S \subseteq \mathbb{R}^n$ be nonempty, compact, and convex. Every
+    continuous map $T : S \to S$ has a fixed point.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Choose a nearest point in $S$ by minimizing squared distance. The
+    first-order variational inequality for this minimizer shows that the
+    metric projection is $1$-Lipschitz and is the identity on $S$. It is thus
+    a continuous retraction of the ambient Euclidean space onto $S$, so the
+    compact-retract form of Brouwer's theorem applies. Wolf states the theorem
+    without supplying this proof.
+\end{proof}
+
 \begin{theorem}[Brouwer fixed point on density matrices]%
     \label{thm:brouwer_density_matrices}
     \lean{brouwer_fixedPoint_densityMatrices}
