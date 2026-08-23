@@ -9,12 +9,13 @@ import QICLean.Channel.LorentzNormalForm.InvertibleFilter
 import QICLean.Channel.LorentzNormalForm.NormalForm
 import QICLean.Channel.LorentzNormalForm.PauliBlockTruncation
 import QICLean.Channel.LorentzNormalForm.QubitNormalForm
+import QICLean.Channel.LorentzNormalForm.SpinorAction
 
 /-!
 # Lorentz normal form for quantum channels (Wolf Section 2.4, Propositions 2.8–2.11)
 
 Thin module assembling the normal-form development for quantum channels under
-filtering operations from six focused submodules.
+filtering operations from seven focused submodules.
 
 * `QICLean.Channel.LorentzNormalForm.Basic` — SL-filtering operations, the
   doubly-stochastic predicates, and the shared Kronecker-conjugation and
@@ -33,6 +34,9 @@ filtering operations from six focused submodules.
 * `QICLean.Channel.LorentzNormalForm.QubitNormalForm` — the Pauli-basis
   predicates for the qubit Lorentz normal form (Wolf Proposition 2.11;
   existence pending).
+* `QICLean.Channel.LorentzNormalForm.SpinorAction` — the four-dimensional
+  Hermitian congruence action of `SL(2,ℂ)` and its action on Pauli transfer
+  matrices (Wolf Equations (2.41)--(2.43)).
 
 ## References
 
