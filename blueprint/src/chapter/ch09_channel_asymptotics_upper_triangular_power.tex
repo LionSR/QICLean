@@ -69,3 +69,31 @@
 % therefore stated in the range $D-1\le n$, where the displayed
 % natural-power derivation is meaningful.
 \end{proof}
+
+\begin{theorem}[Schur-form spectral-radius estimate]
+    \label{thm:wolf_schur_form_spectral_radius_estimate}
+    \lean{Matrix.wolf_eq_111_schur_form,
+      Matrix.wolf_eq_111_schur_form_refined}
+    \leanok
+    \uses{thm:wolf_upper_triangular_power_estimate}
+    Let $\Lambda,N\in M_D(\mathbb C)$, where $\Lambda$ is diagonal and $N$ is
+    strictly upper triangular.  Suppose
+    $\lVert\Lambda\rVert_\infty=\mu\le1$ and
+    $\lVert\Lambda^n\rVert_\infty\le\mu^n$.  If $D-1\le n$, then
+    \begin{align}
+      \lVert(\Lambda+N)^n\rVert_\infty
+      \le \mu^n
+      +(D-1)n^{D-1}\mu^{n-D+1}
+        \max\{\lVert N\rVert_\infty,\lVert N\rVert_\infty^{D-1}\}.
+    \end{align}
+    If $2(D-1)\le n$, the factor $(D-1)n^{D-1}$ may be replaced by
+    $(D-1)\binom{n}{D-1}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_upper_triangular_power_estimate}
+    Apply Theorem~\ref{thm:wolf_upper_triangular_power_estimate} to the
+    $\ell^2$ operator norm and substitute the two bounds for the diagonal
+    part.
+\end{proof}

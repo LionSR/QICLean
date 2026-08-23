@@ -67,6 +67,17 @@ declarations are:
     $2(D-1)\le n$.
 \end{itemize}
 
+Equation~(8.111) applies Equation~(8.103) to the Schur form of
+$\widehat T-\widehat T_\varphi$, with matrix dimension $D=d^2$ and
+$\lVert\Lambda\rVert_\infty=\mu$.  It therefore inherits the same restriction
+$d^2-1\le n$ in the natural-power interpretation.  The corresponding coarse
+and refined Schur-form estimates are
+\leanid{Matrix.wolf_eq_111_schur_form} and
+\leanid{Matrix.wolf_eq_111_schur_form_refined}.  These declarations establish
+the estimate once the Schur decomposition and its spectral identification are
+given; constructing that decomposition for $\widehat T-\widehat T_\varphi$
+remains part of the channel-level theorem.
+
 \section{Verdict}
 
 \textbf{Verdict: source scope restriction.}

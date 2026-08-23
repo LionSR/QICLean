@@ -19,6 +19,7 @@ import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.Analysis.CStarAlgebra.Matrix
 /-!
 # Upper-triangular power bound — Wolf Eqs. (8.103) and (8.105)
 
@@ -832,5 +833,55 @@ theorem wolf_eq_103_refined (ν : RingSeminorm (Matrix (Fin D) (Fin D) R))
   simpa [hd] using h_helper d h_total_bound
 
 end WolfEq103Refined
+
+section WolfEq111SchurForm
+
+open scoped Matrix.Norms.L2Operator
+
+variable {D : ℕ} {Λ N : Matrix (Fin D) (Fin D) ℂ} {n : ℕ} {μ : ℝ}
+
+/-- **Wolf Eq. (8.111), coarse Schur-form estimate.**
+
+This is the matrix estimate obtained after a Schur decomposition.  The spectral
+input is kept explicit: the diagonal part has operator norm `μ`, and its `n`th
+power has norm at most `μ ^ n`.  The channel-level theorem additionally has to
+construct this decomposition for `T - T_ϕ`, where `T_ϕ = T T_φ` is Wolf's
+phase-weighted peripheral map, and identify `μ` with the largest subperipheral
+eigenvalue modulus.
+
+As in `wolf_eq_103`, the natural exponent requires `D - 1 ≤ n`; see
+`docs/paper-gaps/wolf_ch8_eq_8_103_negative_exponent.tex`. -/
+theorem wolf_eq_111_schur_form
+    (hΛ_diag : IsDiag Λ) (hN_sut : IsStrictlyUpperTriangular N)
+    (hDpos : D ≠ 0) (hn_ge : D - 1 ≤ n) (hΛ_norm : ‖Λ‖ = μ)
+    (hμ_le_one : μ ≤ 1) (hΛ_pow : ‖Λ ^ n‖ ≤ μ ^ n) :
+    ‖(Λ + N) ^ n‖ ≤ μ ^ n +
+      (((D - 1 : ℕ) * n ^ (D - 1 : ℕ) : ℕ) : ℝ) * μ ^ (n - (D - 1)) *
+        max ‖N‖ (‖N‖ ^ (D - 1)) := by
+  have h := wolf_eq_103
+    (SeminormedRing.toRingSeminorm (Matrix (Fin D) (Fin D) ℂ))
+    hΛ_diag hN_sut hDpos hn_ge (hΛ_norm.trans_le hμ_le_one)
+  simp only [SeminormedRing.toRingSeminorm_apply, hΛ_norm] at h
+  exact h.trans (by gcongr)
+
+/-- **Wolf Eq. (8.111), refined Schur-form estimate.**
+
+Under `2 * (D - 1) ≤ n`, the coarse power factor in
+`wolf_eq_111_schur_form` is replaced by the binomial coefficient printed in
+Wolf's refined estimate. -/
+theorem wolf_eq_111_schur_form_refined
+    (hΛ_diag : IsDiag Λ) (hN_sut : IsStrictlyUpperTriangular N)
+    (hDpos : D ≠ 0) (hn_ge : 2 * (D - 1) ≤ n) (hΛ_norm : ‖Λ‖ = μ)
+    (hμ_le_one : μ ≤ 1) (hΛ_pow : ‖Λ ^ n‖ ≤ μ ^ n) :
+    ‖(Λ + N) ^ n‖ ≤ μ ^ n +
+      (((D - 1 : ℕ) * Nat.choose n (D - 1) : ℕ) : ℝ) * μ ^ (n - (D - 1)) *
+        max ‖N‖ (‖N‖ ^ (D - 1)) := by
+  have h := wolf_eq_103_refined
+    (SeminormedRing.toRingSeminorm (Matrix (Fin D) (Fin D) ℂ))
+    hΛ_diag hN_sut hDpos hn_ge (hΛ_norm.trans_le hμ_le_one)
+  simp only [SeminormedRing.toRingSeminorm_apply, hΛ_norm] at h
+  exact h.trans (by gcongr)
+
+end WolfEq111SchurForm
 
 end Matrix
