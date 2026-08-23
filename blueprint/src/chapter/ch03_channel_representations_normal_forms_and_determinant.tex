@@ -158,7 +158,8 @@ This section states the existence theorems from
 % has no Lean declaration yet; declaration tags are omitted for pending results.
 
 \begin{definition}[Pauli transfer matrix]\label{def:pauli_transfer_matrix}
-    \lean{Wolf.pauliMatrices, Wolf.pauliTransferEntry}
+    \lean{Wolf.pauliMatrices, Wolf.pauliTransferEntry,
+        Wolf.pauliTransferMatrix, Wolf.pauliTransferMatrixReal}
     \leanok
     Let $\sigma_0=\Id,\sigma_1,\sigma_2,\sigma_3$ be the Pauli matrices.  The
     \emph{Pauli transfer matrix} of a linear map
@@ -282,8 +283,8 @@ This section states the existence theorems from
     \lean{Wolf.SLFiltering}\leanok
     An \emph{SL-filtering} for $D \times D$ matrices is a completely
     positive map of the form $\Phi(X)=SXS^{\dagger}$, where
-    $S \in \MN{D}$ satisfies $\det S=1$. Such maps are
-    invertible and have Kraus rank~1.
+    $S \in \MN{D}$ satisfies $\det S=1$. Such maps are invertible; when
+    $D\geq1$, they have Kraus rank~1.
 \end{definition}
 
 \begin{definition}[Invertible filtering operation]
@@ -754,15 +755,224 @@ This section states the existence theorems from
 % Pending Lean formalization: there is currently no declaration for this theorem.
 \begin{theorem}[Lorentz normal form for qubit channels]\label{thm:lorentz_normal_form_qubit}
     \uses{thm:exists_normal_form_generic,
-        def:lorentz_diagonal, def:lorentz_non_diagonal, def:lorentz_singular}
+        def:invertible_filtering, def:lorentz_diagonal,
+        def:lorentz_non_diagonal, def:lorentz_singular}
     For every qubit channel $T : \MN{2} \to \MN{2}$, there exist invertible
     completely positive maps $\Phi_{1},\Phi_{2}$, both of Kraus rank one, such
     that the filtered channel $T'=\Phi_{2}\circ T\circ\Phi_{1}$ is in one
     of the three Lorentz normal forms: diagonal, non-diagonal, or singular.
     These general filters include scalar freedom and are not restricted to
-    determinant-one $\SL(2,\C)$ filterings. A proof requires the corresponding
-    scalar normalization and the classification of Lorentz orbits.
+    determinant-one $\SL(2,\C)$ filterings. Indeed, writing $X_i=c_iS_i$
+    with $S_i\in\SL(2,\C)$ separates the Lorentz action from the positive
+    map scalar $|c_1c_2|^2$; only the latter can normalize the resulting
+    representative to a channel. A proof still requires this scalar
+    normalization and the classification of Lorentz orbits.
 \end{theorem}
+
+\begin{definition}[Pauli--Minkowski identification]
+    \label{def:pauli_minkowski_identification}
+    \lean{Wolf.pauliMatrices_zero, Wolf.pauliMatrices_succ,
+        Wolf.pauliMatrices_isHermitian,
+        Wolf.trace_pauliMatrices_mul_pauliMatrices,
+        Wolf.pauliMatrixOfMinkowski,
+        Wolf.pauliMatrixOfMinkowski_isHermitian,
+        Wolf.minkowskiQuadratic, Wolf.minkowskiBilinear,
+        Wolf.minkowskiMetric,
+        Wolf.minkowskiQuadratic_eq_bilinear_self,
+        Wolf.minkowskiBilinear_eq_dotProduct_metric_mulVec,
+        Wolf.minkowskiBilinear_polarization,
+        Wolf.minkowskiMetric_mul_self,
+        Wolf.trace_pauliMatrixOfMinkowski, Wolf.InFutureCone,
+        Wolf.trace_mul_eq_ofReal_re_of_isHermitian,
+        Wolf.pauliMinkowskiCoordinate,
+        Wolf.pauliMinkowskiCoordinate_pauliMatrixOfMinkowski,
+        Wolf.coe_pauliMinkowskiCoordinate,
+        Wolf.pauliMatrixOfMinkowski_pauliMinkowskiCoordinate,
+        Wolf.pauliMatrixOfMinkowskiLinearMap,
+        Wolf.pauliMinkowskiCoordinateLinearMap,
+        Wolf.pauliMinkowskiEquiv,
+        Wolf.pauliMinkowskiEquiv_apply,
+        Wolf.pauliMinkowskiEquiv_symm_apply}
+    \leanok
+    Every Hermitian matrix $M\in M_2^\dagger(\C)$ has unique real Pauli
+    coordinates $x=(x_0,x_1,x_2,x_3)$ such that
+    \begin{align}
+        M&=M(x):=\sum_{i=0}^{3}x_i\sigma_i,
+        &x_i&=\frac12\tr(\sigma_iM).
+        \label{eq:representations_pauli_minkowski_coordinates}
+    \end{align}
+    This identifies $M_2^\dagger(\C)$ with $\R^4$.  Write
+    \begin{align}
+        q(x)&=x_0^2-x_1^2-x_2^2-x_3^2,
+        &\eta&=\diag(1,-1,-1,-1),
+        \label{eq:representations_minkowski_form}\\
+        \mathcal C_+&=\{x\in\R^4:x_0\geq0,\ q(x)\geq0\}
+        \label{eq:representations_future_cone}
+    \end{align}
+    for the Minkowski quadratic form, its matrix, and the closed future cone.
+    These are the coordinates used immediately before
+    \cite[Eq.~(2.41)]{Wolf2012Quantum}; see also the local source
+    \path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~1040--1044.
+\end{definition}
+
+\begin{theorem}[Determinant form and the future cone]
+    \label{thm:pauli_minkowski_determinant}
+    \lean{Wolf.det_pauliMatrixOfMinkowski,
+        Wolf.posSemidef_pauliMatrixOfMinkowski_iff}
+    \leanok
+    \uses{def:pauli_minkowski_identification}
+    For every $x\in\R^4$,
+    \begin{align}
+        \det M(x)&=q(x)=\langle x,\eta x\rangle,
+        \label{eq:representations_pauli_minkowski_determinant}\\
+        M(x)\geq0&\iff x\in\mathcal C_+.
+        \label{eq:representations_pauli_future_cone}
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    The first identity follows by substituting the four Pauli matrices into
+    the determinant of a $2\times2$ matrix. For the second, a positive
+    semidefinite Hermitian matrix has nonnegative trace and determinant, which
+    give $x_0\geq0$ and $q(x)\geq0$. Conversely, the two real eigenvalues of
+    $M(x)$ have sum $2x_0\geq0$ and product $q(x)\geq0$, so both are
+    nonnegative.
+\end{proof}
+
+\begin{definition}[Spinor action on Minkowski space]
+    \label{def:spinor_action_minkowski}
+    \lean{Wolf.sl2CongruenceLinearEquiv, Wolf.spinorLinearEquiv,
+        Wolf.spinorMatrix, Wolf.spinorMatrix_mulVec,
+        Wolf.pauliMatrixOfMinkowski_spinorMatrix_mulVec,
+        Wolf.pauliMatrixOfMinkowski_single, Wolf.spinorMatrix_apply,
+        Wolf.IsSpecialOrthochronousLorentz}
+    \leanok
+    \uses{def:pauli_minkowski_identification}
+    For $X\in\SL(2,\C)$, let $L(X)$ be the real linear transformation of
+    $\R^4$ determined by Wolf's Hermitian congruence
+    \begin{align}
+        M(x)&\longmapsto XM(x)X^\dagger=M(L(X)x).
+        \label{eq:representations_spinor_congruence}
+    \end{align}
+    Its Pauli-basis entries are
+    \begin{align}
+        L(X)_{ij}
+        &=\frac12\tr\!\left(\sigma_iX\sigma_jX^\dagger\right).
+        \label{eq:representations_spinor_entries}
+    \end{align}
+    The trace is real.  This is the four-dimensional action in
+    \cite[Eq.~(2.41)]{Wolf2012Quantum}; it is not the three-dimensional
+    adjoint action $M\mapsto UMU^{-1}$ on traceless Pauli matrices.
+    The special orthochronous Lorentz group is described, in the row-action
+    convention of the source, by
+    \begin{align}
+        \mathrm{SO}^+(1,3)
+        &=\{L\in M_4(\R):\det L=1,\ L\eta L^{\mathsf T}=\eta,\ L_{00}>0\}.
+        \label{eq:representations_special_orthochronous_lorentz}
+    \end{align}
+\end{definition}
+
+\begin{theorem}[The spinor image is special orthochronous Lorentz]
+    \label{thm:spinor_image_special_orthochronous}
+    \lean{Wolf.spinorMatrix_zero_zero,
+        Wolf.spinorMatrix_zero_zero_pos,
+        Wolf.spinorMatrix_preserves_minkowskiQuadratic,
+        Wolf.spinorMatrix_preserves_minkowskiBilinear,
+        Wolf.spinorMatrix_transpose_mul_metric_mul,
+        Wolf.spinorMatrix_mem_futureCone_iff,
+        Wolf.spinorLinearEquiv_mul_apply, Wolf.spinorMatrix_mul,
+        Wolf.spinorMatrix_one, Wolf.spinorLinearEquivMap,
+        Wolf.spinorMatrix_det, Wolf.spinorMatrix_neg,
+        Wolf.spinorMatrix_mul_metric_mul_transpose,
+        Wolf.spinorMatrix_isSpecialOrthochronousLorentz,
+        Wolf.spinorMap}
+    \leanok
+    \uses{thm:pauli_minkowski_determinant,
+        def:spinor_action_minkowski}
+    The assignment $X\mapsto L(X)$ is multiplicative, and for every
+    $X\in\SL(2,\C)$,
+    \begin{align}
+        \det L(X)&=1,
+        &L(X)\eta L(X)^{\mathsf T}&=\eta,
+        &L(X)_{00}&>0.
+        \label{eq:representations_spinor_lorentz_membership}
+    \end{align}
+    Hence $L(X)\in\mathrm{SO}^+(1,3)$.  It preserves both the Minkowski
+    form and the closed future cone, and $L(-X)=L(X)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:pauli_minkowski_determinant}
+    Congruence by $X$ preserves the determinant because $\det X=1$;
+    polarization then gives preservation of the Minkowski bilinear form.
+    It preserves the future cone because congruence by an invertible matrix
+    preserves positive semidefiniteness.  Moreover,
+    $L(X)_{00}=\tr(XX^\dagger)/2>0$.  The determinant of $L(X)$ is a real
+    multiplicative character of $\SL(2,\C)$ and is therefore trivial because
+    $\SL(2,\C)$ equals its commutator subgroup.  Associativity of congruence
+    gives multiplicativity, and the two scalar signs cancel in
+    $(-X)M(-X)^\dagger$.
+\end{proof}
+
+\begin{remark}[Boundary of the spinor formalization]
+    \label{rem:spinor_double_cover_pending}
+    Theorem~\ref{thm:spinor_image_special_orthochronous} proves that the
+    spinor image lies in $\mathrm{SO}^+(1,3)$ and that $X$ and $-X$ have the
+    same effect. It does not prove that every special orthochronous Lorentz
+    transformation is in the image, nor that these are the only two points
+    in each fibre. Thus the full double-cover assertion after
+    \cite[Eq.~(2.42)]{Wolf2012Quantum} remains open. The rotation and boost
+    exponential formulas in \cite[Eq.~(2.44)]{Wolf2012Quantum} also remain
+    open; neither assertion is inferred from the analogous result for
+    $\mathrm{SU}(2)$ and $\mathrm{SO}(3)$.
+\end{remark}
+
+\begin{theorem}[Pauli transfer matrix under two-sided filtering]
+    \label{thm:pauli_transfer_two_sided_filtering}
+    \lean{Wolf.spinorMatrixComplex, Wolf.pauli_expansion_four,
+        Wolf.coe_spinorMatrix_apply,
+        Wolf.sl2Congruence_pauli,
+        Wolf.pauliTransferEntry_unitaryConj_comp,
+        Wolf.pauliTransferEntry_comp_unitaryConj,
+        Wolf.pauliTransferMatrix_unitaryConj_comp,
+        Wolf.pauliTransferMatrix_comp_unitaryConj,
+        Wolf.pauliTransferMatrix_two_sided_filtering,
+        Wolf.coe_pauliTransferMatrixReal_of_preservesHermiticity,
+        Wolf.pauliTransferMatrixReal_two_sided_filtering,
+        Wolf.SLFiltering.toSL2,
+        Wolf.pauliTransferMatrixReal_slFiltering}
+    \leanok
+    \uses{def:pauli_transfer_matrix, def:spinor_action_minkowski}
+    Let $T:M_2(\C)\to M_2(\C)$ be complex linear and let
+    $X_1,X_2\in\SL(2,\C)$. If $L_i=L(X_i)$ and $L_{i,\C}$ denotes its
+    complex scalar extension, then
+    \begin{align}
+        \widehat{\Phi_{X_2}\circ T\circ\Phi_{X_1}}
+        &=L_{2,\C}\,\widehat T\,L_{1,\C}.
+        \label{eq:representations_pauli_transfer_spinor_action}
+    \end{align}
+    If $T$ preserves Hermiticity, then $\widehat T$ has real entries, and
+    Equation~\ref{eq:representations_pauli_transfer_spinor_action} is the real
+    identity
+    \begin{align}
+        \widehat{\Phi_{X_2}\circ T\circ\Phi_{X_1}}
+        &=L_2\,\widehat T\,L_1,
+        \label{eq:representations_pauli_transfer_spinor_action_real}
+    \end{align}
+    in the exact order of \cite[Eq.~(2.43)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    Expand each matrix in the four-Pauli basis using the trace pairing in
+    Equation~\ref{eq:pauli_transfer_entries}. Postfiltering by $\Phi_{X_2}$
+    multiplies each transfer-matrix column on the left by $L_{2,\C}$, while
+    prefiltering by $\Phi_{X_1}$ multiplies each row on the right by
+    $L_{1,\C}$. Combining these two finite sums gives
+    Equation~\ref{eq:representations_pauli_transfer_spinor_action}. For a
+    Hermiticity-preserving map, the trace of the product of the two Hermitian
+    matrices $\sigma_i$ and $T(\sigma_j)$ is real, giving the stated real
+    specialization.
+\end{proof}
 
 %% The following sections will not be needed for the fundamental theorem of the matrix product states.
 

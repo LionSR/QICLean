@@ -29,10 +29,11 @@ representations of quantum channels.
 
 The Lorentz-normal-form statements are recorded in
 `QICLean.Channel.LorentzNormalForm`.  The compactness/minimisation result is
-proved there; the remaining proof obligations are the optimality step at the
-minimiser and the SL(2, ℂ) Lorentz-orbit classification.  This index imports
-that file so that the cited formal statements are available from the main
-project import.
+proved there, and the `SL(2, ℂ)` action on Pauli--Minkowski coordinates is
+formalized in `QICLean.Channel.LorentzNormalForm.SpinorAction`.  The remaining
+proof obligations for Proposition 2.11 are the Lorentz-orbit classification
+and the final scalar normalization.  This index imports the assembling module
+so that the cited formal statements are available from the main project import.
 
 ### Coverage summary
 
@@ -357,6 +358,31 @@ project import.
   tr₁[τ] ∝ 1 ✓ (definitional)
 * `pauliMatrices` — the four Pauli matrices (qubit basis) ✓ (definitional)
 * `pauliTransferEntry` — Pauli-basis transfer matrix entry ✓ (definitional)
+* `Wolf.pauliMinkowskiEquiv` — the real-linear identification
+  `M₂†(ℂ) ≃ ℝ⁴` by Hermitian Pauli coordinates ✓
+* `Wolf.det_pauliMatrixOfMinkowski` — the determinant identity immediately
+  before Equation (2.41): `det(M(x)) = x₀² - x₁² - x₂² - x₃²` ✓
+* `Wolf.posSemidef_pauliMatrixOfMinkowski_iff` — positive-semidefinite
+  Hermitian qubit matrices correspond exactly to the closed future Lorentz
+  cone ✓
+* `Wolf.spinorMatrix` / `Wolf.pauliMatrixOfMinkowski_spinorMatrix_mulVec` —
+  Equation (2.41), the four-dimensional congruence
+  `M ↦ X M X†` in Pauli--Minkowski coordinates ✓. This is distinct from the
+  three-dimensional adjoint action `SpinCover.pauliConjAd`
+* `Wolf.spinorMatrix_isSpecialOrthochronousLorentz` — the spinor image obeys
+  all three conditions printed in Equation (2.42): determinant one,
+  `L η Lᵀ = η`, and `L₀₀ > 0` ✓
+* `Wolf.spinorMatrix_neg` — `X` and `-X` induce the same congruence action ✓.
+  Surjectivity onto `SO⁺(1,3)` and the assertion that every fibre has exactly
+  these two elements remain pending
+* `Wolf.pauliTransferMatrix_two_sided_filtering` — Equation (2.43) over the
+  complex Pauli transfer matrix, in the exact order `L₂ T̂ L₁` ✓
+* `Wolf.coe_pauliTransferMatrixReal_of_preservesHermiticity` /
+  `Wolf.pauliTransferMatrixReal_slFiltering` — identification with the real
+  transfer matrix for Hermiticity-preserving maps and the bundled
+  `SLFiltering` specialization of Equation (2.43) ✓
+* **Equation (2.44)** (rotation and boost exponential formulas) remains
+  pending and is not inferred from the three-dimensional `SU(2)` spin cover
 * `IsLorentzDiagonal` — diagonal Lorentz normal form (Wolf Proposition 2.11 case 1) ✓
 * `IsLorentzNonDiagonal` — non-diagonal Lorentz normal form (case 2) ✓
 * `IsLorentzSingular` — singular Lorentz normal form (case 3) ✓
@@ -385,9 +411,11 @@ project import.
   the rectangular Choi transformation and partial-trace identities)
 * **Wolf Proposition 2.11 (Lorentz normal form for qubit channels)** remains
   pending. The required general invertible Kraus-rank-one CP filters and their
-  scalar freedom are now formalized, but the Lorentz-orbit classification and
-  the final trace-preserving normalization have no Lean declaration yet. The
-  former determinant-one `SLFiltering` formulation was false and was removed.
+  scalar freedom, the determinant-one spinor action, and its exact action on
+  Pauli transfer matrices are now formalized. The Lorentz-orbit classification
+  and the final trace-preserving normalization have no Lean declaration yet.
+  The former determinant-one `SLFiltering` formulation was false and was
+  removed.
 
 #### Formalization
 
@@ -425,6 +453,14 @@ project import.
   `Wolf.exists_normal_form_generic_rect` |
 | Pauli matrices | `LorentzNormalForm.lean` | `pauliMatrices` |
 | Pauli transfer entry | `LorentzNormalForm.lean` | `pauliTransferEntry` |
+| Pauli--Minkowski equivalence | `LorentzNormalForm/SpinorAction.lean` |
+  `Wolf.pauliMinkowskiEquiv` |
+| Minkowski determinant identity | `LorentzNormalForm/SpinorAction.lean` |
+  `Wolf.det_pauliMatrixOfMinkowski` |
+| Spinor Lorentz action | `LorentzNormalForm/SpinorAction.lean` |
+  `Wolf.spinorMatrix_isSpecialOrthochronousLorentz` |
+| Filtered Pauli transfer action | `LorentzNormalForm/SpinorAction.lean` |
+  `Wolf.pauliTransferMatrixReal_slFiltering` |
 | Diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzDiagonal` |
 | Non-diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzNonDiagonal` |
 | Singular Lorentz form | `LorentzNormalForm.lean` | `IsLorentzSingular` |
@@ -435,9 +471,13 @@ project import.
 |--------|-------|
 | Section 2.4 Lorentz normal form (Proposition 2.11) | Correctly formulated
   statement and proof remain pending. The general invertible Kraus-rank-one
-  filters and their scalar/SL decomposition are available. The proof still
-  needs the Lorentz-orbit classification and the final trace-preserving
-  normalization. |
+  filters, their scalar/SL decomposition, and the determinant-one Lorentz
+  action on Pauli transfer matrices are available. The proof still needs the
+  Lorentz-orbit classification and the final trace-preserving normalization. |
+| Section 2.4 full spinor double cover and Equation (2.44) | Image inclusion,
+  multiplicativity, and the equality `L(-X) = L(X)` are available. Surjectivity,
+  exact two-point fibres, and the rotation/boost exponential formulas remain
+  pending. |
 | Section 2.4 Sorted singular values | Current SVD is unsorted; later uses want sorted values |
 
 ### References

@@ -83,12 +83,20 @@ statement was therefore removed rather than treated as a formalization of
 Proposition~2.11.
 
 The three canonical-form predicates and the square full-Kraus-rank minimisation
-theorem are formalized.\footnote{Formal declarations
+theorem are formalized.  The Pauli--Minkowski identification, the
+$\mathrm{SL}(2,\C)$ congruence action, its image in
+$\mathrm{SO}^+(1,3)$, and the exact transfer-matrix action
+$L_2\widehat T L_1$ are also formalized.\footnote{Formal declarations
 \leanid{Wolf.IsLorentzDiagonal}, \leanid{Wolf.IsLorentzNonDiagonal},
 \leanid{Wolf.IsLorentzSingular}, and
 \leanid{Wolf.exists_normal_form_generic} in
-\doclink{QICLean/Channel/LorentzNormalForm}.}  The theorem asserting existence of
-a canonical representative for every qubit channel remains open.
+\doclink{QICLean/Channel/LorentzNormalForm}, together with
+\leanid{Wolf.pauliMinkowskiEquiv},
+\leanid{Wolf.spinorMatrix_isSpecialOrthochronousLorentz}, and
+\leanid{Wolf.pauliTransferMatrixReal_slFiltering} in
+\doclink{QICLean/Channel/LorentzNormalForm/SpinorAction}.}  The theorem
+asserting existence of a canonical representative for every qubit channel
+remains open.
 
 \section{Elimination plan}
 
@@ -106,18 +114,28 @@ A source-faithful proof requires the following steps.
   \item Use the minimisation argument of Propositions~2.8 and~2.9 for the
     full-Kraus-rank case, retaining the proportionality constants of the two
     marginals.
-  \item Formalize the Lorentz action of $\mathrm{SL}(2,\C)$ on the Pauli
-    transfer matrix and classify its diagonal, non-diagonal, and singular orbits.
+  \item[\(\checkmark\)] The Hermitian congruence $M\mapsto SMS^\dagger$
+    for $S\in\mathrm{SL}(2,\C)$ is now identified with a real Minkowski
+    transformation \leanid{Wolf.spinorMatrix}.  Its image satisfies the three
+    defining conditions of $\mathrm{SO}^+(1,3)$, and two-sided filtering acts
+    on Pauli transfer matrices in Wolf's order as $L_2\widehat T L_1$.
+  \item Classify the resulting diagonal, non-diagonal, and singular Lorentz
+    orbits.  If this classification is transported through arbitrary elements
+    of $\mathrm{SO}^+(1,3)$, prove the required surjectivity of the spinor map
+    rather than importing it from the $\mathrm{SU}(2)$ case.  The present
+    formalization proves only image inclusion and $L(-S)=L(S)$; it does not
+    prove the full two-to-one assertion or the rotation and boost formulas of
+    Wolf's Equation~(2.44).
   \item Choose the scalar factors so that the canonical representative is trace
     preserving, and verify complete positivity and the stated parameter bounds.
   \item Prove the three-case existence theorem using the general filters and link
     it to the existing canonical-form predicates.
 \end{enumerate}
 
-The discrepancy is an open gap: the canonical forms are defined, and the generic
-minimisation theorem is available in square dimension, but the scalar-normalized
-Lorentz-orbit classification required by Proposition~2.11 has not yet been
-formalized.
+The discrepancy is an open gap: the canonical forms, the generic minimisation
+theorem in square dimension, and the determinant-one Lorentz action are
+available, but the scalar-normalized Lorentz-orbit classification required by
+Proposition~2.11 has not yet been formalized.
 
 \bibliographystyle{alpha}
 \bibliography{references}
