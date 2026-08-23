@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Channel.Irreducible.AdjointFamily
 import QICLean.Channel.Irreducible.Basic
+import QICLean.Channel.Irreducible.CollatzWielandt
 import QICLean.Channel.Irreducible.Ergodicity
 import QICLean.Channel.Irreducible.FixedPoint
 import QICLean.Channel.Irreducible.FixedPointUniqueness
