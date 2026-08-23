@@ -729,8 +729,7 @@ For a linear map `T : M_D(ℂ) → M_D(ℂ)` the following are equivalent:
 
 1. `T` maps the cone of positive semidefinite matrices onto itself;
 2. `T` is positive and preserves the rank of Hermitian matrices;
-3. there is an invertible `Y` with `T(X) = Y X Y†` or `T(X) = Y Xᵀ Y†`
-   (eq. 3.42).
+3. there is an invertible `Y` with `T(X) = Y X Y†` or `T(X) = Y Xᵀ Y†`.
 
 The direction (3) ⇒ (1) is recorded here: both standard forms — conjugation
 `Ad_Y(X) = Y X Y†` and its transpose variant `X ↦ Y Xᵀ Y†` — map the positive
