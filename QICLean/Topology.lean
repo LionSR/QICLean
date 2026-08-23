@@ -9,4 +9,5 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Topology
 
 import QICLean.Topology.BrouwerProduct
+import QICLean.Topology.CompactConvexFixedPoint
 import QICLean.Topology.CompactRetractFixedPoint

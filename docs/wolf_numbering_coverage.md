@@ -901,8 +901,15 @@ In `QICLean.Channel.FixedPoint.Algebra`:
   — under the hypotheses of Theorem 6.12, the full adjoint fixed-point
   `*`-subalgebra coincides with the Kraus commutant.
 
-#### Wolf Theorem 6.10 (Brouwer's fixed point theorem)
+#### Wolf Theorem 6.10 (Brouwer's fixed point theorem) — FORMALIZED
 
+* `brouwer_fixedPoint_compactConvex` — `QICLean.Topology.CompactConvexFixedPoint`;
+  the printed statement for every nonempty compact convex
+  `S ⊆ Fin n → ℝ` and continuous self-map of `S`.
+* `fixedPoint_of_compact_convex` — coordinate-free form for finite-dimensional
+  real inner-product spaces.
+* `CompactConvex.metricProjection_lipschitzWith` — the reusable metric-projection
+  step: projection onto a nonempty compact convex set is 1-Lipschitz.
 * `brouwer_fixedPoint_densityMatrices` — `QICLean.Channel.FixedPoint.BrouwerDensityMatrices`
   (density-matrix specialization; kernel-checked).
 * `Brouwer (vendored Gametheory library)` — exact import citation: Brouwer for the
@@ -911,7 +918,7 @@ In `QICLean.Channel.FixedPoint.Algebra`:
   extends Brouwer to closed cubes.
 * `fixedPoint_of_compact_retract` — `QICLean.Topology.CompactRetractFixedPoint`;
   extends Brouwer to compact retracts of finite-dimensional real normed spaces.
-* The general compact-convex statement (Wolf's formulation) is not yet proved;
+* The former general compact-convex paper gap is resolved by metric projection;
   see `docs/paper-gaps/wolf_brouwer_general_compact_convex.tex`.
 
 #### Wolf Theorem 6.11 (Stationary states) — FORMALIZED

@@ -65,11 +65,27 @@ convex domain and the limit argument used for channel fixed points.
     gives $\tr(E(\rho)) = \tr(\rho) = 1$.
 \end{proof}
 
+\begin{theorem}[Brouwer fixed point on compact retracts]%
+    \label{thm:brouwer_compact_retract}
+    \lean{fixedPoint_of_compact_retract, fixedPoint_of_compact_retract_fin}
+    \lean{exists_fixedPoint_closedCube, exists_fixedPoint_unitCube}
+    \leanok
+    Let $K$ be a compact subset of a finite-dimensional real normed space
+    $E$. If there is a continuous retraction $r\colon E\to K$, then every
+    continuous map from $K$ to itself has a fixed point.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Brouwer's theorem for finite products of simplices transfers to closed
+    cubes. After choosing linear coordinates on $E$, apply the fixed-point
+    theorem on a cube containing $K$ to the composite of the self-map with
+    the retraction. The zero-dimensional case is immediate.
+\end{proof}
+
 \begin{theorem}[Brouwer fixed point on density matrices]%
     \label{thm:brouwer_density_matrices}
     \lean{brouwer_fixedPoint_densityMatrices}
-    \lean{fixedPoint_of_compact_retract, fixedPoint_of_compact_retract_fin}
-    \lean{exists_fixedPoint_closedCube, exists_fixedPoint_unitCube}
     \leanok
     \uses{def:density_matrices, thm:density_compact}
     Let $D > 0$. Every continuous map from the compact convex set of
@@ -78,10 +94,10 @@ convex domain and the limit argument used for channel fixed points.
 
 \begin{proof}
     \leanok
-    The proof starts from Brouwer's theorem for products of simplices,
-    transfers it to closed cubes, and then to compact retracts of
-    finite-dimensional real normed spaces. The density-matrix set is
-    such a compact retract, using the explicit density retraction.
+    \uses{thm:brouwer_compact_retract}
+    The density-matrix set is a compact retract of its finite-dimensional
+    ambient real normed space, using the explicit density retraction. Apply
+    Theorem~\ref{thm:brouwer_compact_retract}.
 \end{proof}
 
 \begin{lemma}[Ces\`aro means remain density matrices]
