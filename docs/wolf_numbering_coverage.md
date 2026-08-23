@@ -2,7 +2,8 @@
 
 Concordance between formalized declarations and the theorem/proposition
 numbering of M. Wolf, *Quantum Channels & Operations: Guided Tour* (2012),
-Chapters 2 and 6. This table used to live as compiled Lean documentation
+Chapters 2, 6, and the currently compiled Chapter 8 prerequisites. This table
+used to live as compiled Lean documentation
 modules (`WolfChapter2Index.lean`, `WolfChapter6Index.lean`,
 `WolfChapter6Wrappers.lean`); those modules carried zero declarations of
 mathematical content beyond two dead re-export theorems, so the concordance
@@ -1296,3 +1297,43 @@ clause 3.
 
 The assembled quantum Perron–Frobenius theorem for transfer maps lives in the
 tensor-network layer; it is indexed in `TNLean.Wielandt.WolfChapter6TNIndex`.
+
+---
+
+## Wolf Lecture Notes — Chapter 8: Distance measures and convergence
+
+### Equation 8.104 (Jordan-block power estimate) — FORMALIZED
+
+In `QICLean.Analysis.JordanBlockPower`:
+
+* `Matrix.jordanBlock_pow` gives the truncated binomial expansion of a Jordan
+  block power.
+* `Matrix.l2_opNorm_jordanBlock_pow_bounds` gives the two-sided operator-norm
+  estimate in Equation (8.104), with its lower and upper halves also
+  exposed separately.
+
+### Theorem “Asymptotic convergence I” (Equations 8.106–8.109) — PREREQUISITES FORMALIZED
+
+The full channel theorem is not yet formalized. The following compiled,
+source-shaped prerequisites are available:
+
+* `Module.End.subperipheralModulus` in
+  `QICLean.Analysis.SubperipheralSpectrum` is Wolf's largest subperipheral
+  modulus `μ`, totalized to zero for an empty subperipheral spectrum; the same
+  module proves attainment and strict inequality `μ < 1` in the nonempty case.
+* `Matrix.l2_opNorm_pow_similarity_bounds` in
+  `QICLean.Analysis.JordanSimilarity` proves Equation (8.108) for one chosen
+  similarity, retaining its actual condition factor rather than replacing it
+  by the infimum `κ_T` without an attainment or limiting argument.
+* `Matrix.l2_opNorm_jordanBlock_pow_polynomial_bounds` in
+  `QICLean.Analysis.JordanBlockAsymptotics` derives the two-sided
+  `μ^n n^(d_μ-1)` scaling for one supplied positive-modulus block in the
+  source range `d_μ - 1 ≤ n`.
+
+The remaining obligations for the norm of
+`T̂^n - T̂_ϕ^n` are a Jordan-form existence/decomposition API, largest-block
+data, the direct-sum eventual-maximum argument, the `μ = 0`/positive-exponent
+qualification, and a justified passage to Wolf's `κ_T` infimum. These are
+recorded in
+`docs/paper-gaps/wolf_thm823_jordan_scaling_qualifications.tex`; issue #297
+therefore remains open.

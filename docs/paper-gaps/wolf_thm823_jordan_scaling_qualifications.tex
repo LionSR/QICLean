@@ -45,11 +45,31 @@ The equality $\mu=0$ still does not imply emptiness: it means exactly that
 every subperipheral eigenvalue is zero.  A zero-eigenvalue Jordan block of
 dimension $D>1$ is nilpotent but its positive powers need not vanish for
 $1\le n<D$.  Consequently an upper bound by
-$C_2\mu^n n^{d_\mu-1}=0$ cannot hold in that range.  A qualified zero-modulus
-statement must either start at the nilpotence index or treat the finite initial
-range separately without the printed factor.  The zeroth power also requires
-an explicit convention for $0^0$ and does not belong to the positive-power
-argument at source lines~1247--1266.
+$C_2\mu^n n^{d_\mu-1}=0$ cannot hold in that range.  This phenomenon already
+occurs for the classical three-state transition which sends state~$1$ to
+itself, state~$2$ to state~$1$, and state~$3$ to state~$2$: its
+column-stochastic matrix is
+\begin{equation}
+  P=\begin{pmatrix}1&1&0\\0&0&1\\0&0&0\end{pmatrix}.
+\end{equation}
+Indeed, $P(e_3-e_1)=e_2-e_1\ne0$ and $P(e_2-e_1)=0$, which exhibits a
+size-two Jordan chain at zero.  The associated measure-and-prepare quantum
+channel is positive and trace preserving.  Its phase-weighted peripheral map
+kills this chain, so at $n=1$ the left side of Equation~(8.107) is nonzero
+while its printed right side is zero.  Thus this is not merely a boundary case
+outside the theorem's hypotheses.  A qualified zero-modulus statement must
+either start at the nilpotence index or treat the finite initial range
+separately without the printed factor.  The source's $n\in\mathbb N$ is used
+as a positive exponent in this proof; Lean's natural numbers include zero,
+whose zeroth power also requires an explicit $0^0$ convention and does not
+belong to the argument at source lines~1247--1266.
+
+For $0<\mu\le1$ and $d_\mu-1\le n$, the exact fixed-block consequence of
+Equation~(8.104) is formalized as
+\leanid{Matrix.l2_opNorm_jordanBlock_pow_polynomial_bounds} in
+\doclink{QICLean/Analysis/JordanBlockAsymptotics.lean}.  It proves the
+two-sided $\mu^n n^{d_\mu-1}$ scaling for one supplied block; it does not
+silently extend that formula across the zero-modulus boundary.
 
 \section{The block-diagonal comparison}
 
@@ -89,10 +109,12 @@ declaration does not assume a minimizing basis.
 \textbf{Verdict: source qualifications and missing Jordan-form
 infrastructure.}
 
-The shared modulus and the basis-level similarity inequality are proved.
-The full two-sided theorem still requires a constructive Jordan decomposition,
-largest-block data $d_\mu$, the direct-sum norm maximum, eventual dominance,
-and a justified passage to $\kappa_T$.  Until those dependencies are supplied,
+The shared modulus, the basis-level similarity inequality, and the
+positive-modulus single-block scaling are proved.  The full statement for
+$\widehat T^n-\widehat T_\varphi^n$ still requires a constructive Jordan
+decomposition, largest-block data $d_\mu$, the direct-sum norm maximum,
+eventual dominance, the zero-modulus/positive-exponent qualification, and a
+justified passage to $\kappa_T$.  Until those dependencies are supplied,
 Equations~(8.106)--(8.109) should not be marked formalized.  Tracking:
 \href{https://github.com/LionSR/QICLean/issues/297}{QICLean issue \#297}.
 
