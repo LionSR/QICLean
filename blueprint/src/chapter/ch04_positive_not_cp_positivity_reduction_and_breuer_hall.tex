@@ -117,6 +117,101 @@ positivity: they are surjective on the positive semidefinite cone.
     (1) of \cite[Proposition~3.6]{Wolf2012Quantum}.
 \end{definition}
 
+For a positive semidefinite matrix $P$, Wolf introduces the cone $C(P)$ in the
+proof of the implication (1) $\Rightarrow$ (2) of
+\cite[Proposition~3.6]{Wolf2012Quantum}. Equation~\eqref{eq:psd_cone_face}
+is the definition of $C(P)$ below; it is not one of the standard-form equations
+for a positive map.
+The next results identify its linear span and compute its dimension. They
+formalize this cone-dimension step only, not the full equivalence in
+Proposition~3.6.
+
+\begin{definition}[Wolf's cone $C(P)$]
+    \label{def:psd_cone_face}
+    \lean{Matrix.psdConeFace}
+    \leanok
+    For $P\in\MN{D}$, define
+    \begin{align}
+        C(P)
+         & :=\{A\in\MN{D}\mid \text{there is a real }c>0
+             \text{ such that }P\ge cA\ge0\}.
+        \tag{3.42}\label{eq:psd_cone_face}
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Support-corner characterization of $C(P)$]
+    \label{lem:psd_cone_face_mem_iff}
+    \lean{Matrix.mem_psdConeFace_iff}
+    \leanok
+    \uses{def:psd_cone_face}
+    Let $P,A\in\MN{D}$ with $P\ge0$, and let $Q=\supp(P)$ be the support
+    projection of $P$. Then
+    \begin{align}
+        A\in C(P)
+         & \iff A\ge0\ \text{ and }\ QAQ=A.
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:psd_cone_face}
+    If $P\ge cA\ge0$ with $c>0$, then $A\ge0$ and every vector in the kernel of
+    $P$ lies in the kernel of $A$. Hence $A$ is supported on $Q$, so $QAQ=A$.
+    Conversely, suppose $A\ge0$ and $QAQ=A$. On the support of $P$, put
+    $q=\lVert P^{-1/2}AP^{-1/2}\rVert$, where the inverse square root is taken
+    only on that support, and choose $c=(q+1)^{-1}$. Then $c>0$ and
+    $cP^{-1/2}AP^{-1/2}\le\Id$ on the support of $P$. Conjugating by the support
+    square root gives $cA\le P$, and therefore $A\in C(P)$.
+\end{proof}
+
+\begin{theorem}[Span of Wolf's cone $C(P)$]
+    \label{thm:psd_cone_face_span}
+    \lean{Matrix.span_psdConeFace_eq_cornerSubmodule_supportProj}
+    \leanok
+    \uses{def:psd_cone_face, lem:psd_cone_face_mem_iff}
+    Let $P\in\MN{D}$ be positive semidefinite and let $Q=\supp(P)$. Then the
+    complex linear span of $C(P)$ is the full support corner:
+    \begin{align}
+        \operatorname{span}_{\C} C(P)
+         & =Q\MN{D}Q
+          =\{A\in\MN{D}\mid QAQ=A\}.
+        \notag
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:psd_cone_face_mem_iff}
+    The support-corner characterization gives the inclusion from left to right.
+    For the reverse inclusion, use that the positive semidefinite matrices span
+    $\MN{D}$ over $\C$. Compress such a spanning expression by $Q$. Every
+    compressed positive semidefinite matrix $QBQ$ is positive semidefinite and
+    supported on $Q$, hence belongs to $C(P)$ by
+    Lemma~\ref{lem:psd_cone_face_mem_iff}. Every matrix in the corner is equal
+    to its compression, which proves the reverse inclusion.
+\end{proof}
+
+\begin{corollary}[Dimension of the cone span]
+    \label{cor:psd_cone_face_span_dimension}
+    \lean{Matrix.finrank_span_psdConeFace_eq_rank_sq}
+    \leanok
+    \uses{thm:psd_cone_face_span}
+    If $P\in\MN{D}$ is positive semidefinite, then
+    \begin{align}
+        \dim_{\C}\!\left(\operatorname{span}_{\C} C(P)\right)
+         & =\rank(P)^2.
+        \notag
+    \end{align}
+\end{corollary}
+
+\begin{proof}\leanok
+    \uses{thm:psd_cone_face_span}
+    By Theorem~\ref{thm:psd_cone_face_span}, the span is the matrix corner
+    supported on $Q=\supp(P)$. This corner is linearly equivalent to
+    $\MN{r}$, where $r=\rank(Q)$. The support projection has
+    $\rank(Q)=\rank(P)$, equivalently $\tr(Q)=\rank(P)$, so the corner has
+    complex dimension $r^2=\rank(P)^2$.
+\end{proof}
+
 \begin{theorem}[Conjugations preserve the positive semidefinite cone]
     \label{thm:conjugation_maps_psd_cone_onto}
     \lean{unitaryConjLM_mapsPSDConeOnto,
