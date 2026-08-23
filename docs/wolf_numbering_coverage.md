@@ -749,7 +749,28 @@ Formalized in the tensor-network layer; indexed in
 
 ### Section 6.4 Fixed points
 
-#### Wolf Section 6 stationary-support state (Propositions 6.9--6.11, Lems. 6.4--6.5)
+#### Wolf Section 6 stationary-support state (Propositions 6.9--6.11, Lemma 6.5)
+
+In `QICLean.Channel.FixedPoint.MaximalSupportBasic`:
+
+* `IsPositiveMap.exists_maximalSupport_fixedPoint` — Wolf Proposition 6.9:
+  the support of the fixed point $T_\infty(\mathbf 1)$ contains the support
+  and range of every fixed point.
+
+In `QICLean.Channel.FixedPoint.StationarySupportRestriction`:
+
+* `IsPositiveMap.trace_one_sub_stationaryProj_mul_map_stationaryProj_eq_zero`
+  and `IsPositiveMap.map_density_le_stationaryProj` — the displayed trace and
+  order conclusions of Wolf Proposition 6.10.
+* `IsPositiveMap.map_density_le_projection_iff_le_traceAdjointMap` — Wolf
+  Proposition 6.11: density operators below a Hermitian projection $Q$ are
+  preserved below $Q$ exactly when $T^*(Q)\succeq Q$.
+
+In `QICLean.Channel.FixedPoint.SupportCompressedDensityBlocks`:
+
+* `Matrix.traceAdjointMap_stationarySupportCompression_fixed` — Wolf
+  Equation (6.53): an adjoint fixed point compresses to an adjoint fixed point
+  of the stationary-support restriction.
 
 In `QICLean.Channel.FixedPoint.StationarySupport`:
 
@@ -758,10 +779,8 @@ In `QICLean.Channel.FixedPoint.StationarySupport`:
 * `Channel.stationarySupport` — support projection of the unique density-matrix
   fixed point of an irreducible channel.
 * `Channel.stationarySupport_eq_one` — irreducible channels have full
-  stationary support.
-* TODO: non-vacuous formalizations of Wolf Proposition 6.9 and Proposition 6.10
-  (`irreducible_iff_support_full`, `stationary_support_minimal`) remain to be
-  reinstated.
+  stationary support. This is a channel-specific consequence, not an alternate
+  formulation of Wolf Propositions 6.9--6.11.
 
 #### Wolf Theorem 6.12 (Fixed points form a *-algebra) — PARTIALLY FORMALIZED
 
@@ -936,6 +955,12 @@ In `QICLean.Channel.FixedPoint.StationarySupportRestriction`:
   support of an arbitrary stationary positive matrix.
 * `IsPositiveMap.map_supported_on_fixedPoint_support` — the extension to every
   supported matrix by decomposition into four positive matrices.
+* `IsPositiveMap.trace_one_sub_stationaryProj_mul_map_stationaryProj_eq_zero`
+  and `IsPositiveMap.map_density_le_stationaryProj` — Wolf Proposition 6.10
+  in its displayed trace and density-order forms.
+* `IsPositiveMap.map_density_le_projection_iff_le_traceAdjointMap` — Wolf
+  Proposition 6.11, identifying stationary projections with the
+  sub-harmonic inequality $Q\preceq T^*(Q)$.
 * `IsPositiveMap.stationarySupportCompression_isPositiveMap` and
   `IsPositiveMap.stationarySupportCompression_isTracePreservingMap` — the
   supported compression is positive and trace-preserving.
@@ -969,6 +994,9 @@ In `QICLean.Channel.FixedPoint.TraceAdjointDensityBlocks`:
 
 In `QICLean.Channel.FixedPoint.SupportCompressedDensityBlocks`:
 
+* `Matrix.traceAdjointMap_stationarySupportCompression_fixed` — Wolf
+  Equation (6.53), transporting trace-adjoint fixed points through the
+  stationary-support compression.
 * `IsPositiveMap.exists_block_densities_of_maximalSupportCompression` — the
   maximal-support compression has positive-definite density blocks, and its
   fixed points correspond exactly to the ambient fixed points carried by the

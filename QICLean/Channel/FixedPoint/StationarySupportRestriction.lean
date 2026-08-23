@@ -6,8 +6,12 @@ Authors: TNLean contributors
 import QICLean.Algebra.HermitianHelpers
 import QICLean.Algebra.OrthogonalProjection
 import QICLean.Channel.FixedPoint.MaximalSupportBasic
+import QICLean.Channel.FixedPoint.MeanErgodicAdjoint
 import QICLean.Channel.FixedPoint.StationaryProjection
+import QICLean.Channel.Schwarz.TwoPositive
 import QICLean.Analysis.SupportCompression
+import QICLean.Analysis.MarginalSupport
+import QICLean.Algebra.PositiveSemidefiniteNormalization
 
 /-!
 # Restriction to the support of a stationary positive matrix
@@ -243,6 +247,296 @@ theorem map_supported_on_fixedPoint_support
   rw [hXeq, T.map_sub, T.map_smul, T.map_smul, T.map_sub, T.map_sub]
   simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul]
   rw [hmA₁p, hmA₁m, hmA₂p, hmA₂m]
+
+/-- A density matrix supported on an orthogonal projection is dominated by
+that projection. -/
+private theorem density_le_of_supported_on_projection
+    {A Q : Mat} (hA : A ∈ densityMatrices D)
+    (hQ : IsOrthogonalProjection Q) (hAsupport : Q * A * Q = A) :
+    A ≤ Q := by
+  let : Nonempty (Fin D) := Matrix.nonempty_of_trace_eq_one A hA.2
+  have hOneSubA : ((1 : Mat) - A).PosSemidef := by
+    simpa [hA.2] using hA.1.trace_smul_one_sub_self_posSemidef
+  have hcorner := hOneSubA.conjTranspose_mul_mul_same Q
+  rw [hQ.1.eq] at hcorner
+  have heq : Q * ((1 : Mat) - A) * Q = Q - A := by
+    rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hQ.2, hAsupport]
+  rw [heq] at hcorner
+  exact sub_nonneg.mp hcorner.nonneg
+
+/-- A positive semidefinite matrix below a projection is supported on that
+projection. -/
+private theorem supported_on_projection_of_posSemidef_le
+    {A Q : Mat} (hA : A.PosSemidef) (hQ : IsOrthogonalProjection Q)
+    (hAQ : A ≤ Q) :
+    Q * A * Q = A := by
+  let P : Mat := 1 - Q
+  have hP : IsOrthogonalProjection P := by
+    simpa only [P] using hQ.one_sub
+  have hdiff : (Q - A).PosSemidef := (sub_nonneg.mpr hAQ).posSemidef
+  have htrace_nonneg : (0 : ℂ) ≤ Matrix.trace (P * A) :=
+    (isOrthogonalProjection_posSemidef hP).trace_mul_nonneg hA
+  have htrace_diff_nonneg : (0 : ℂ) ≤ Matrix.trace (P * (Q - A)) :=
+    (isOrthogonalProjection_posSemidef hP).trace_mul_nonneg hdiff
+  have hPQ : P * Q = 0 := by
+    simp only [P, Matrix.sub_mul, Matrix.one_mul, hQ.2, sub_self]
+  have htrace_le : Matrix.trace (P * A) ≤ 0 := by
+    rw [Matrix.mul_sub, Matrix.trace_sub, hPQ, Matrix.trace_zero,
+      zero_sub] at htrace_diff_nonneg
+    exact neg_nonneg.mp htrace_diff_nonneg
+  have htrace : Matrix.trace (P * A) = 0 :=
+    le_antisymm htrace_le htrace_nonneg
+  have hPAzero : P * A = 0 :=
+    hA.proj_mul_eq_zero_of_trace_eq_zero hP.1 hP.2 htrace
+  have hQA : Q * A = A := by
+    change (1 - Q) * A = 0 at hPAzero
+    rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at hPAzero
+    exact hPAzero.symm
+  have hAQright : A * Q = A := by
+    have hQAstar := congrArg Matrix.conjTranspose hQA
+    simpa [Matrix.conjTranspose_mul, hA.isHermitian.eq, hQ.1.eq] using hQAstar
+  rw [hQA, hAQright]
+
+/-- A positive semidefinite matrix below a projection vanishes on the
+orthogonal-complement corner. -/
+private theorem one_sub_projection_mul_eq_zero_of_posSemidef_le
+    {A Q : Mat} (hA : A.PosSemidef) (hQ : IsOrthogonalProjection Q)
+    (hAQ : A ≤ Q) :
+    (1 - Q) * A = 0 := by
+  have hsupport := supported_on_projection_of_posSemidef_le hA hQ hAQ
+  have hQA : Q * A = A := by
+    calc
+      Q * A = Q * (Q * A * Q) := by rw [hsupport]
+      _ = (Q * Q) * A * Q := by simp only [Matrix.mul_assoc]
+      _ = Q * A * Q := by rw [hQ.2]
+      _ = A := hsupport
+  rw [Matrix.sub_mul, Matrix.one_mul, hQA, sub_self]
+
+/-- A positive trace-preserving map sends density matrices to density
+matrices. -/
+private theorem map_mem_densityMatrices
+    {T : Mat →ₗ[ℂ] Mat} (hT : IsPositiveMap T)
+    (hTP : IsTracePreservingMap T) {A : Mat} (hA : A ∈ densityMatrices D) :
+    T A ∈ densityMatrices D :=
+  ⟨hT A hA.1, by rw [hTP A, hA.2]⟩
+
+/-- **Wolf Proposition 6.10, displayed trace identity.** Let `Q` be the
+support projection of a stationary density matrix `σ` for a positive
+trace-preserving map `T`. Then the part of `T Q` on the orthogonal complement of `Q` has zero
+trace:
+`tr ((1 - Q) * T Q) = 0`.
+
+Source: Wolf, Proposition 6.10; local source
+`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 1241--1257. -/
+theorem trace_one_sub_stationaryProj_mul_map_stationaryProj_eq_zero
+    {T : Mat →ₗ[ℂ] Mat} (hT : IsPositiveMap T)
+    (_hTP : IsTracePreservingMap T)
+    {σ : Mat} (hσ : σ ∈ densityMatrices D) (hσfix : T σ = σ) :
+    let Q := Kraus.stationaryProj hσ.1
+    Matrix.trace ((1 - Q) * T Q) = 0 := by
+  dsimp only
+  let Q : Mat := Kraus.stationaryProj hσ.1
+  have hQ : IsOrthogonalProjection Q :=
+    Kraus.isOrthogonalProjection_stationaryProj hσ.1
+  have hQpsd : Q.PosSemidef := isOrthogonalProjection_posSemidef hQ
+  have hQsupport : Q * Q * Q = Q := by rw [hQ.2, hQ.2]
+  have hTQsupport : Q * T Q * Q = T Q := by
+    simpa only [Q] using map_posSemidef_supported_on_fixedPoint_support
+      hT hσ.1 hσfix hQpsd (by simpa only [Q] using hQsupport)
+  have hQTQ : Q * T Q = T Q := by
+    calc
+      Q * T Q = Q * (Q * T Q * Q) := by rw [hTQsupport]
+      _ = (Q * Q) * T Q * Q := by simp only [Matrix.mul_assoc]
+      _ = Q * T Q * Q := by rw [hQ.2]
+      _ = T Q := hTQsupport
+  rw [Matrix.sub_mul, Matrix.one_mul, hQTQ, sub_self, Matrix.trace_zero]
+
+/-- **Wolf Proposition 6.10, Equation (6.50).** Let `Q` be the support
+projection of a stationary density matrix `σ` for a positive
+trace-preserving map `T`. Every density matrix `ρ` satisfying `ρ ≤ Q` also
+satisfies `T ρ ≤ Q`.
+
+Source: Wolf, Proposition 6.10, Equation (6.50); local source
+`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 1241--1257. -/
+theorem map_density_le_stationaryProj
+    {T : Mat →ₗ[ℂ] Mat} (hT : IsPositiveMap T)
+    (hTP : IsTracePreservingMap T)
+    {σ : Mat} (hσ : σ ∈ densityMatrices D) (hσfix : T σ = σ)
+    {ρ : Mat} (hρ : ρ ∈ densityMatrices D)
+    (hρQ : ρ ≤ Kraus.stationaryProj hσ.1) :
+    T ρ ≤ Kraus.stationaryProj hσ.1 := by
+  let Q : Mat := Kraus.stationaryProj hσ.1
+  change T ρ ≤ Q
+  let : Nonempty (Fin D) := Matrix.nonempty_of_trace_eq_one ρ hρ.2
+  have hQ : IsOrthogonalProjection Q :=
+    Kraus.isOrthogonalProjection_stationaryProj hσ.1
+  have hρQ' : ρ ≤ Q := hρQ
+  have hρsupport : Q * ρ * Q = ρ :=
+    supported_on_projection_of_posSemidef_le hρ.1 hQ hρQ'
+  have hTρsupport : Q * T ρ * Q = T ρ := by
+    exact map_posSemidef_supported_on_fixedPoint_support
+      hT hσ.1 hσfix hρ.1 hρsupport
+  exact density_le_of_supported_on_projection
+    (map_mem_densityMatrices hT hTP hρ) hQ hTρsupport
+
+/-- **Wolf Proposition 6.11 (stationary subspaces II).** For a positive
+trace-preserving map `T` and a Hermitian projection `Q`, preservation of every
+density matrix below `Q` is equivalent to the sub-harmonic inequality
+`Q ≤ T*(Q)`.
+
+Source: Wolf, Proposition 6.11; local source
+`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 1262--1285. -/
+theorem map_density_le_projection_iff_le_traceAdjointMap
+    {T : Mat →ₗ[ℂ] Mat} (hT : IsPositiveMap T)
+    (hTP : IsTracePreservingMap T) {Q : Mat}
+    (hQ : IsOrthogonalProjection Q) :
+    (∀ ρ : Mat, ρ ∈ densityMatrices D → ρ ≤ Q → T ρ ≤ Q) ↔
+      Q ≤ Matrix.traceAdjointMap T Q := by
+  constructor
+  · intro hpreserves
+    cases isEmpty_or_nonempty (Fin D) with
+    | inl hD =>
+        let := hD
+        have hQzero : Q = 0 := Subsingleton.elim _ _
+        simp [hQzero]
+    | inr hD =>
+        let x₀ : Fin D := Classical.choice hD
+        by_cases hQzero : Q = 0
+        · simp [hQzero]
+        · let P : Mat := 1 - Q
+          let q : Mat := Matrix.normalizePosSemidef x₀ Q
+          let B : Mat := Matrix.traceAdjointMap T P
+          have hQpsd : Q.PosSemidef := isOrthogonalProjection_posSemidef hQ
+          have hP : IsOrthogonalProjection P := by
+            simpa only [P] using hQ.one_sub
+          have hPpsd : P.PosSemidef := isOrthogonalProjection_posSemidef hP
+          have htrace_re_pos : 0 < Q.trace.re :=
+            (Complex.lt_def.mp (hQpsd.trace_pos_of_ne_zero hQzero)).1
+          have htrace_re_ne : Q.trace.re ≠ 0 := htrace_re_pos.ne'
+          have hq : q ∈ densityMatrices D :=
+            ⟨Matrix.normalizePosSemidef_posSemidef x₀ hQpsd,
+              Matrix.normalizePosSemidef_trace x₀ hQpsd⟩
+          have hqsupport : Q * q * Q = q := by
+            simp only [q, Matrix.normalizePosSemidef, htrace_re_ne, ite_false,
+              Matrix.mul_smul, Matrix.smul_mul, hQ.2]
+          have hqQ : q ≤ Q :=
+            density_le_of_supported_on_projection hq hQ hqsupport
+          have hTqQ : T q ≤ Q := hpreserves q hq hqQ
+          have hTq : T q ∈ densityMatrices D :=
+            map_mem_densityMatrices hT hTP hq
+          have hPTq : P * T q = 0 := by
+            simpa only [P] using
+              one_sub_projection_mul_eq_zero_of_posSemidef_le hTq.1 hQ hTqQ
+          have hpairq : Matrix.trace (B * q) = 0 := by
+            dsimp only [B]
+            rw [Matrix.trace_traceAdjointMap_mul, hPTq, Matrix.trace_zero]
+          have hrecover : (Q.trace.re : ℂ) • q = Q := by
+            simpa only [q] using
+              Matrix.trace_re_smul_normalizePosSemidef x₀ hQpsd
+          have hpairQ : Matrix.trace (B * Q) = 0 := by
+            rw [← hrecover, Matrix.mul_smul, Matrix.trace_smul, hpairq]
+            simp
+          have hBpsd : B.PosSemidef := by
+            exact hT.traceAdjointMap P hPpsd
+          have htraceQB : Matrix.trace (Q * B) = 0 := by
+            calc
+              Matrix.trace (Q * B) = Matrix.trace (B * Q) :=
+                Matrix.trace_mul_comm Q B
+              _ = 0 := hpairQ
+          have hQB : Q * B = 0 :=
+            hBpsd.proj_mul_eq_zero_of_trace_eq_zero hQ.1 hQ.2 htraceQB
+          have hBQ : B * Q = 0 := by
+            have hQBstar := congrArg Matrix.conjTranspose hQB
+            simpa [Matrix.conjTranspose_mul, hBpsd.isHermitian.eq, hQ.1.eq]
+              using hQBstar
+          have hBsupport : P * B * P = B := by
+            change (1 - Q) * B * (1 - Q) = B
+            rw [Matrix.sub_mul, Matrix.one_mul, hQB, sub_zero,
+              Matrix.mul_sub, Matrix.mul_one, hBQ, sub_zero]
+          have hAdjOne : Matrix.traceAdjointMap T (1 : Mat) = 1 :=
+            isTracePreservingMap_iff_traceAdjointMap_one.mp hTP
+          have hB_eq : B = 1 - Matrix.traceAdjointMap T Q := by
+            dsimp only [B, P]
+            rw [map_sub, hAdjOne]
+          have hAdjQ_eq : Matrix.traceAdjointMap T Q = 1 - B := by
+            rw [hB_eq]
+            module
+          have hAdjQpsd : (Matrix.traceAdjointMap T Q).PosSemidef :=
+            hT.traceAdjointMap Q hQpsd
+          have hcorner :
+              (P * Matrix.traceAdjointMap T Q * P).PosSemidef := by
+            have hcompressed := hAdjQpsd.conjTranspose_mul_mul_same P
+            rwa [hP.1.eq] at hcompressed
+          have hcorner_eq :
+              P * Matrix.traceAdjointMap T Q * P =
+                Matrix.traceAdjointMap T Q - Q := by
+            rw [hAdjQ_eq]
+            calc
+              P * (1 - B) * P = P * P - P * B * P := by noncomm_ring
+              _ = P - B := by rw [hP.2, hBsupport]
+              _ = (1 - B) - Q := by
+                dsimp only [P]
+                abel
+          rw [hcorner_eq] at hcorner
+          exact sub_nonneg.mp hcorner.nonneg
+  · intro hsubharmonic ρ hρ hρQ
+    let P : Mat := 1 - Q
+    have hP : IsOrthogonalProjection P := by
+      simpa only [P] using hQ.one_sub
+    have hPpsd : P.PosSemidef := isOrthogonalProjection_posSemidef hP
+    have hTρ : T ρ ∈ densityMatrices D :=
+      map_mem_densityMatrices hT hTP hρ
+    have hdiff :
+        (Matrix.traceAdjointMap T Q - Q).PosSemidef :=
+      (sub_nonneg.mpr hsubharmonic).posSemidef
+    have hpair_order :
+        Matrix.trace (Q * ρ) ≤
+          Matrix.trace (Matrix.traceAdjointMap T Q * ρ) := by
+      have hnonneg := hdiff.trace_mul_nonneg hρ.1
+      rw [Matrix.sub_mul, Matrix.trace_sub] at hnonneg
+      exact sub_nonneg.mp hnonneg
+    have hPrho : (1 - Q) * ρ = 0 :=
+      one_sub_projection_mul_eq_zero_of_posSemidef_le hρ.1 hQ hρQ
+    have hQrho : Q * ρ = ρ := by
+      rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at hPrho
+      exact hPrho.symm
+    have hAdjTrace :
+        1 ≤ Matrix.trace (Matrix.traceAdjointMap T Q * ρ) := by
+      calc
+        1 = Matrix.trace (Q * ρ) := by rw [hQrho, hρ.2]
+        _ ≤ Matrix.trace (Matrix.traceAdjointMap T Q * ρ) := hpair_order
+    have htraceP :
+        Matrix.trace (P * T ρ) =
+          1 - Matrix.trace (Matrix.traceAdjointMap T Q * ρ) := by
+      calc
+        Matrix.trace (P * T ρ) =
+            Matrix.trace (T ρ) - Matrix.trace (Q * T ρ) := by
+          dsimp only [P]
+          rw [Matrix.sub_mul, Matrix.one_mul, Matrix.trace_sub]
+        _ = 1 - Matrix.trace (Matrix.traceAdjointMap T Q * ρ) := by
+          rw [hTρ.2, ← Matrix.trace_traceAdjointMap_mul]
+    have htrace_nonneg : (0 : ℂ) ≤ Matrix.trace (P * T ρ) :=
+      hPpsd.trace_mul_nonneg hTρ.1
+    have htrace_le : Matrix.trace (P * T ρ) ≤ 0 := by
+      calc
+        Matrix.trace (P * T ρ) =
+            1 - Matrix.trace (Matrix.traceAdjointMap T Q * ρ) := htraceP
+        _ ≤ 0 := sub_nonpos.mpr hAdjTrace
+    have htrace_zero : Matrix.trace (P * T ρ) = 0 :=
+      le_antisymm htrace_le htrace_nonneg
+    have hPTρ : P * T ρ = 0 :=
+      hTρ.1.proj_mul_eq_zero_of_trace_eq_zero hP.1 hP.2 htrace_zero
+    have hQTρ : Q * T ρ = T ρ := by
+      change (1 - Q) * T ρ = 0 at hPTρ
+      rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at hPTρ
+      exact hPTρ.symm
+    have hTρQ : T ρ * Q = T ρ := by
+      have hQTρstar := congrArg Matrix.conjTranspose hQTρ
+      simpa [Matrix.conjTranspose_mul, hTρ.1.isHermitian.eq, hQ.1.eq]
+        using hQTρstar
+    have hTρsupport : Q * T ρ * Q = T ρ := by
+      rw [hQTρ, hTρQ]
+    exact density_le_of_supported_on_projection hTρ hQ hTρsupport
 
 /-- Compression of a linear map along an isometric inclusion. -/
 noncomputable def stationarySupportCompression

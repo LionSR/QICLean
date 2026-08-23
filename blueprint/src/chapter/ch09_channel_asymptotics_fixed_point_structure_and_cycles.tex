@@ -58,6 +58,39 @@
 
 % Completed support transport recorded in
 % docs/paper-gaps/wolf_theorem6_14_fixed_point_projection_gap.tex.
+\begin{lemma}[Fixed observables after stationary-support restriction]%
+    \label{lem:trace_adjoint_stationary_support_compression_fixed}
+    \lean{Matrix.traceAdjointMap_stationarySupportCompression_fixed}
+    \leanok
+    \uses{thm:stationarySupport_restriction}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, let
+    $\rho\succeq0$ satisfy $T(\rho)=\rho$, and let
+    $V:\mathcal H\to\C^D$ be an isometry onto the support of $\rho$. Define
+    $\widetilde T(Y)=V^*T(VYV^*)V$. If $T^*(A)=A$, then
+    \begin{align}
+        \widetilde T^*(V^*AV)=V^*AV.
+        \label{eq:wolf_stationary_support_adjoint_fixed}
+    \end{align}
+    This is Equation~(6.53) of~\cite{Wolf2012Quantum}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:stationarySupport_restriction}
+    For every $B\in\mathcal B(\mathcal H)$, the support intertwining
+    identity $T(VBV^*)=V\widetilde T(B)V^*$ and trace-pairing duality give
+    \begin{align}
+        \tr\!\left[\widetilde T^*(V^*AV)B\right]
+        &=\tr\!\left[V^*AV\widetilde T(B)\right]\\
+        &=\tr\!\left[AT(VBV^*)\right]\\
+        &=\tr\!\left[T^*(A)VBV^*\right]\\
+        &=\tr\!\left[V^*AVB\right].
+        \notag
+    \end{align}
+    Nondegeneracy of the trace pairing proves
+    (\ref{eq:wolf_stationary_support_adjoint_fixed}).
+\end{proof}
+
 \begin{theorem}[Density blocks after restriction to maximal stationary support]%
     \label{thm:maximal_support_compression_density_blocks}
     \lean{IsPositiveMap.exists_block_densities_of_maximalSupportCompression,
@@ -66,6 +99,7 @@
         IsSchwarzMap.traceAdjointMap_stationarySupportCompression}
     \leanok
     \uses{thm:stationarySupport_compression,
+        lem:trace_adjoint_stationary_support_compression_fixed,
         thm:mean_ergodic_projection_density_block_form}
     Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, and suppose
     that $T^*$ satisfies the Schwarz inequality. Set
@@ -91,6 +125,7 @@
 \begin{proof}
     \leanok
     \uses{thm:stationarySupport_compression,
+        lem:trace_adjoint_stationary_support_compression_fixed,
         thm:mean_ergodic_projection_density_block_form,
         thm:posdef_left_kronecker_trace_one}
     Theorem~\ref{thm:stationarySupport_compression} gives positivity, trace

@@ -23,10 +23,13 @@ Propositions 6.9--6.11).
   point of an irreducible channel.
 * `stationarySupport_eq_one`: for an irreducible channel, the stationary support
   is full (`= 1`).
-* TODO (Wolf Proposition 6.9): upgrade to the non-vacuous equivalence between
-  irreducibility and full support of stationary states.
-* TODO (Wolf Proposition 6.10): formalize minimality of stationary support without an
-  irreducibility hypothesis.
+* `IsPositiveMap.exists_maximalSupport_fixedPoint` in `MaximalSupportBasic`
+  gives Wolf Proposition 6.9.
+* `IsPositiveMap.trace_one_sub_stationaryProj_mul_map_stationaryProj_eq_zero`,
+  `IsPositiveMap.map_density_le_stationaryProj`, and
+  `IsPositiveMap.map_density_le_projection_iff_le_traceAdjointMap` in
+  `StationarySupportRestriction` give Wolf Propositions 6.10--6.11 with
+  their positive trace-preserving hypotheses.
 -/
 
 open scoped Matrix ComplexOrder BigOperators
@@ -123,7 +126,7 @@ private lemma stationaryState_ne_zero
       _ = 0 := this
   exact one_ne_zero h10
 
-/-- Proposition 6.9: for an irreducible channel, the stationary support is full. -/
+/-- For an irreducible channel, the stationary support is full. -/
 theorem stationarySupport_eq_one
     {E : Mat →ₗ[ℂ] Mat} (hE : IsChannel E)
     (hIrr : IsIrreducibleMap E) (hD : 0 < D) :
@@ -145,15 +148,5 @@ theorem stationarySupport_eq_one
         hρ_psd.supportProj_ne_zero_of_ne_zero hρ_ne
     exact hP_ne hP0
   · simpa [P] using hP1
-
-/-
-TODO (Wolf Propositions 6.9–6.10):
-The original declarations `irreducible_iff_support_full` and
-`stationary_support_minimal` were removed because their previous formulations
-were vacuous/trivial. They should be replaced by:
-* a non-vacuous Proposition 6.9 equivalence (irreducibility ↔ full support of
-  stationary states), and
-* Proposition 6.10 minimality of stationary support without assuming irreducibility.
--/
 
 end Channel
