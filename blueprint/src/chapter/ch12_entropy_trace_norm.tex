@@ -706,14 +706,15 @@ Theorem~\ref{thm:trace_norm_abs}.
     \begin{align}
         \Delta_T(T^n(\rho))
         \leq \sqrt{\frac D2}\,
-        \lVert T^n-T_\varphi^n\rVert_{2\to2}\,
+        \left\lVert \widehat T^{\,n}-\widehat T_\varphi^{\,n}\right\rVert_\infty\,
         \Delta_T(\rho).
         \tag{8.112}
     \end{align}
-    Here $\lVert\cdot\rVert_{2\to2}$ is the Hilbert--Schmidt operator norm,
-    equivalently Wolf's largest-singular-value norm of the transfer matrix.
+    Here the displayed transfer-matrix norm equals
+    $\lVert T^n-T_\varphi^n\rVert_{2\to2}$, the Hilbert--Schmidt operator norm
+    of the corresponding superoperator.
     The explicit $n>0$ records the paper's positive-natural convention: at
-    Lean's $n=0$, both superoperator powers are the identity, so the displayed
+    $n=0$, both superoperator powers are the identity, so the displayed
     right-hand side vanishes. This is the upper assertion of~
     \cite[Chapter~8, Proposition ``Convergence towards asymptotic states'',
     Eqs.~(8.112), (8.114)--(8.116)]{Wolf2012Quantum}.
