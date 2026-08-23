@@ -393,7 +393,7 @@ theorem exists_posDef_eigenvector_of_irreducible_positive_of_ne_zero [NeZero D]
 
 /-! ## Wolf Equation (6.32): one-dimensional Perron eigenspace -/
 
-/-- A Hermitian eigenvector at the positive Perron value is proportional to a
+/-- A Hermitian eigenvector at the nonnegative Perron value is proportional to a
 positive-definite Perron eigenvector.
 
 The proof is Wolf's boundary argument.  After shifting `H` by a large multiple
@@ -403,7 +403,7 @@ boundary eigenvector `W` unless `H` is already proportional to `X`.  Theorem
 boundary construction. -/
 theorem isHermitian_eigenvector_eq_smul_of_irreducible_positive [NeZero D]
     (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
-    {X H : Mat} {r : ℝ} (hr : 0 < r)
+    {X H : Mat} {r : ℝ} (hr : 0 ≤ r)
     (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X)
     (hH : H.IsHermitian) (hH_eig : T H = (r : ℂ) • H) :
     ∃ c : ℂ, H = c • X := by
@@ -440,7 +440,7 @@ theorem isHermitian_eigenvector_eq_smul_of_irreducible_positive [NeZero D]
       simpa only [α, smul_smul, inv_mul_cancel₀ hαne, one_smul] using hWpd_scaled
     exact (hWnotpd (by simpa [W] using hWpd)).elim
 
-/-- Every complex eigenvector at the positive Perron value is proportional to
+/-- Every complex eigenvector at the nonnegative Perron value is proportional to
 the positive-definite Perron eigenvector.
 
 Following Wolf's proof before Equation (6.32), the eigenvector is split into
@@ -449,7 +449,7 @@ parts remain eigenvectors at the same real eigenvalue, and the boundary
 argument is applied to each part. -/
 theorem eigenvector_eq_smul_of_irreducible_positive [NeZero D]
     (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
-    {X Z : Mat} {r : ℝ} (hr : 0 < r)
+    {X Z : Mat} {r : ℝ} (hr : 0 ≤ r)
     (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X)
     (hZ_eig : T Z = (r : ℂ) • Z) :
     ∃ c : ℂ, Z = c • X := by
@@ -474,12 +474,12 @@ theorem eigenvector_eq_smul_of_irreducible_positive [NeZero D]
   rw [hZdecomp, hc₁, hc₂]
   module
 
-/-- The eigenspace at the positive Perron value is the span of the
+/-- The eigenspace at the nonnegative Perron value is the span of the
 positive-definite Perron eigenvector.  This is geometric non-degeneracy in
 Wolf Theorem 6.3(2); it does not assert algebraic simplicity. -/
 theorem eigenspace_eq_span_of_irreducible_positive [NeZero D]
     (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
-    {X : Mat} {r : ℝ} (hr : 0 < r)
+    {X : Mat} {r : ℝ} (hr : 0 ≤ r)
     (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X) :
     Module.End.eigenspace T (r : ℂ) = ℂ ∙ X := by
   apply le_antisymm
@@ -493,11 +493,11 @@ theorem eigenspace_eq_span_of_irreducible_positive [NeZero D]
     subst Z
     exact Module.End.mem_eigenspace_iff.mpr hX_eig
 
-/-- The ordinary eigenspace at the positive Perron value has complex dimension
+/-- The ordinary eigenspace at the nonnegative Perron value has complex dimension
 one.  No statement about the generalized eigenspace is made. -/
 theorem finrank_eigenspace_eq_one_of_irreducible_positive [NeZero D]
     (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
-    {X : Mat} {r : ℝ} (hr : 0 < r)
+    {X : Mat} {r : ℝ} (hr : 0 ≤ r)
     (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X) :
     Module.finrank ℂ (Module.End.eigenspace T (r : ℂ)) = 1 := by
   rw [eigenspace_eq_span_of_irreducible_positive T hT hIrr hr hX hX_eig]

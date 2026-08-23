@@ -5,6 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Irreducible.Scaling
 import QICLean.Algebra.PosSemidefSupport
+import QICLean.Channel.Basic
 
 /-!
 # Similarity preserves irreducibility
@@ -33,6 +34,24 @@ noncomputable def similarityMap (C : Matrix (Fin D) (Fin D) ℂ)
     simp [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
   map_smul' a X := by
     simp [Matrix.mul_assoc]
+
+/-- Positive congruence similarity preserves positivity of a matrix map.
+
+For `similarityMap C E`, the input is first conjugated by `C` and the output
+by the nonsingular inverse of `C`; both congruences preserve the positive
+semidefinite cone.  Invertibility is not needed for this positivity statement. -/
+theorem IsPositiveMap.similarityMap
+    {E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ}
+    (hE : IsPositiveMap E) (C : Matrix (Fin D) (Fin D) ℂ) :
+    IsPositiveMap (similarityMap (D := D) C E) := by
+  intro X hX
+  have hinput : (C * X * Cᴴ).PosSemidef :=
+    hX.mul_mul_conjTranspose_same C
+  have houtput : (E (C * X * Cᴴ)).PosSemidef := hE _ hinput
+  have hcongr := houtput.mul_mul_conjTranspose_same C⁻¹
+  change (C⁻¹ * E (C * X * Cᴴ) * (Cᴴ)⁻¹).PosSemidef
+  rw [← Matrix.conjTranspose_nonsing_inv]
+  exact hcongr
 
 private lemma not_posDef_of_conj_projection_ne_one
     {Q C : Matrix (Fin D) (Fin D) ℂ}
