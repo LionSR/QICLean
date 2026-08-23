@@ -52,7 +52,7 @@ finite dimension).
   `IsPositiveMap.peripheralProjection_isCPMap`: `T_φ` inherits positivity,
   trace preservation, and complete positivity.
 * `IsChannel.peripheralProjection`, `IsChannel.peripheralWeightedProjection`:
-  the channel properties of `T_φ` and `T_φ' = T T_φ` (Wolf Equation 6.13).
+  the channel properties of `T_φ` and `T_ϕ = T T_φ` (Wolf Equation 6.13).
 * `IsPositiveMap.peripheralProjection_comp_meanErgodicProjection`:
   the absorption identity `T_φ T_∞ = T_∞` (Wolf Equation 6.14 area).
 
@@ -446,8 +446,8 @@ theorem exists_strictMono_tendsto_pow_peripheralProjection_clm
     fun X ↦ hPos.tendsto_pow_apply_peripheralProjection hTP hnmono hn X,
     hPos.tendsto_endEquiv_pow_peripheralProjection hTP hnmono hn⟩
 
-/-- The phase-weighted peripheral projection `T_φ' = T ∘ T_φ` of a positive
-trace-preserving map is positive: the positive-only case for `T_φ'` of the
+/-- Wolf's phase-weighted peripheral map `T_ϕ = T ∘ T_φ` for a positive
+trace-preserving map is positive: the positive-only case for `T_ϕ` of the
 preservation assertion in the opening of Wolf, Proposition 6.3
 (`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 226--229; item
 (ii) itself states only the composition identity). Positive maps are closed
@@ -459,9 +459,9 @@ theorem peripheralWeightedProjection_isPositiveMap
   rw [Module.End.peripheralWeightedProjection, LinearMap.comp_apply]
   exact hPos _ ((hPos.peripheralProjection_isPositiveMap hTP) _ hX)
 
-/-- The phase-weighted peripheral projection `T_φ' = T ∘ T_φ` of a positive
+/-- Wolf's phase-weighted peripheral map `T_ϕ = T ∘ T_φ` for a positive
 trace-preserving map is trace-preserving: both factors preserve the trace.
-This is the positive-only case for `T_φ'` of the preservation assertion in
+This is the positive-only case for `T_ϕ` of the preservation assertion in
 Wolf, Proposition 6.3
 (`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 226--229). -/
 theorem peripheralWeightedProjection_isTracePreservingMap
@@ -497,8 +497,8 @@ theorem peripheralProjection (hT : IsChannel T) :
   cp := IsPositiveMap.peripheralProjection_isCPMap hT.cp hT.tp
   tp := IsPositiveMap.peripheralProjection_isTracePreservingMap hT.cp.isPositiveMap hT.tp
 
-/-- The phase-weighted peripheral projection `T_φ' = T ∘ T_φ` of a channel is
-again a channel.  This packages Wolf Equation (6.13). -/
+/-- Wolf's phase-weighted peripheral map `T_ϕ = T ∘ T_φ` for a channel is
+again a channel. This packages Wolf Equation (6.13). -/
 theorem peripheralWeightedProjection (hT : IsChannel T) :
     IsChannel T.peripheralWeightedProjection := by
   have hP := peripheralProjection hT
