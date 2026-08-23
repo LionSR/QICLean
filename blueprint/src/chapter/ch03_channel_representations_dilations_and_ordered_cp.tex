@@ -591,7 +591,8 @@ a common dilation space.
     \label{thm:cp_radon_nikodym_of_stinespring}
     \lean{IsKrausCP.radon_nikodym_of_stinespring}
     \leanok
-    \uses{def:is_kraus_cp, def:stinespring_v}
+    \uses{def:is_kraus_cp, def:stinespring_v,
+        thm:cp_dominates_stinespring_contraction}
     Let $I$ be a nonempty finite set, and let
     $T_i,T:\MN{d'}\to\MN{d}$ be completely positive linear maps such that
     $\sum_{i\in I}T_i=T$. Suppose that a Stinespring representation of $T$ is
@@ -619,44 +620,58 @@ a common dilation space.
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{thm:kraus_rectangular_freedom'}
-    Choose rectangular Kraus families for the component maps $T_i$ and group
-    all their Kraus operators into one finite family. Add zero Kraus operators
-    to one component so that this grouped family has at least as many rows as
-    the supplied Stinespring dilation. Write the grouped Kraus operators as
-    $B_\alpha:\C^{d'}\to\C^d$, with a label map $\ell(\alpha)\in I$, and write
-    the ancilla blocks of $V$ as $K_j:\C^d\to\C^{d'}$, and take their
-    adjoints $A_j=K_j^\dagger:\C^{d'}\to\C^d$ as Kraus operators.
-    Rectangular Kraus freedom gives a matrix $W$ with
+    \uses{def:stinespring_v_gen,
+        thm:cp_dominates_stinespring_contraction}
+    First suppose that $d'>0$. Choose Kraus families for the maps $T_i$, and
+    enumerate their disjoint union as
+    $B_\alpha:\C^{d'}\to\C^d$, with outcome label $\ell(\alpha)\in I$.
+    The aggregate Stinespring matrix $\widehat V$, whose $\alpha$-th ancilla
+    block is $B_\alpha^\dagger$, represents the total map $T$.
+
+    Apply Theorem~\ref{thm:cp_dominates_stinespring_contraction} to the
+    reflexive order relation $T\le T$, using $\widehat V$ for the first
+    supplied representation and $V$ for the second. It gives a contraction
+    $C:\C^r\to\C^m$ such that
     \begin{align}
-        W^\dagger W
-        &=\Id_r, \notag\\
-        B_\alpha
-        &=\sum_{j=0}^{r-1}W_{\alpha j}A_j.
+        \widehat V
+        &=(\Id_{d'}\otimes C)V,
+        & C^\dagger C&\leq\Id_r.
         \notag
     \end{align}
-    For the fibre over $i$, set
+    Let $C_i$ be the matrix obtained from $C$ by retaining the rows labelled
+    by $i$ and setting all other rows to zero, and define the preliminary
+    effect
     \begin{align}
-        (C_i)_{\alpha j}
-        &=
-        \begin{cases}
-            \overline{W_{\alpha j}}, & \ell(\alpha)=i,\\
-            0, & \ell(\alpha)\ne i,
-        \end{cases}
-        \notag\\
-        P_i
+        E_i
         &=C_i^\dagger C_i.
         \label{eq:representations_radon_effects}
     \end{align}
-    Then $P_i\ge0$, and (\ref{eq:representations_radon_resolution}) follows
-    from $W^\dagger W=\Id_r$. Finally,
+    The labelled fibres partition the rows of $C$, so
     \begin{align}
-        V^\dagger(A\otimes P_i)V
-        &=\sum_{\ell(\alpha)=i}B_\alpha A B_\alpha^\dagger
-          =T_i(A),
-        \notag
+        E_i&\geq0,
+        & \sum_{i\in I}E_i&=C^\dagger C,
+        & T_i(A)&=V^\dagger(A\otimes E_i)V.
+        \label{eq:representations_radon_preliminary_effects}
     \end{align}
-    which proves the claim.
+    For a nonminimal supplied dilation the middle sum need not yet be the
+    identity. Set
+    $R=\Id_r-C^\dagger C\geq0$. Since $V$ and $\widehat V$ represent the
+    same total map, the contraction identity gives
+    \begin{align}
+        V^\dagger(A\otimes R)V=0
+        \qquad(A\in\MN{d'}).
+        \label{eq:representations_radon_residual_invisible}
+    \end{align}
+    Choose $i_0\in I$ and put
+    $P_{i_0}=E_{i_0}+R$ and $P_i=E_i$ for $i\ne i_0$. These operators are
+    positive, their sum is $\Id_r$, and
+    (\ref{eq:representations_radon_residual_invisible}) shows that their
+    Stinespring compressions still give the maps $T_i$.
+
+    If $d'=0$, every matrix $A\in\MN{0}$ is zero. Choose $i_0\in I$, set
+    $P_{i_0}=\Id_r$ and $P_i=0$ for $i\ne i_0$, and use linearity. This
+    separate case preserves the statement without an additional
+    positive-dimension assumption.
 \end{proof}
 
 \begin{corollary}[Square-algebra Radon--Nikodym theorem]
@@ -676,9 +691,7 @@ a common dilation space.
 
 \begin{proof}\leanok
     This is the specialization of
-    Theorem~\ref{thm:cp_radon_nikodym_of_stinespring} to $d'=d=D$. The legacy
-    square-algebra declaration is retained for compatibility; its formal proof
-    follows the same Kraus-family and rectangular Kraus-freedom argument.
+    Theorem~\ref{thm:cp_radon_nikodym_of_stinespring} to $d'=d=D$.
 \end{proof}
 
 \begin{theorem}[Binary Radon--Nikodym theorem for CP maps]
@@ -711,8 +724,8 @@ a common dilation space.
 \end{remark}
 
 \begin{proof}\leanok
-    \uses{thm:cp_dominates_stinespring_contraction, thm:exists_stinespring_dilation,
-        def:block_diag_projectors}
+    \uses{thm:exists_stinespring_dilation, def:block_diag_projectors,
+        lem:stinespring_intertwine_append}
     Take Heisenberg-form Kraus families $K_1$ for $T_1$ and
     Schr\"odinger-form $L$ for $T_2$, and form
     $K=K_1\mathbin{+\!+}L^\dagger$ on $\C^{r_1+s}$. Choose

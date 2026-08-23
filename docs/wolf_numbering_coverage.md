@@ -161,7 +161,9 @@ project import.
 
 * **Theorem 2.4** (Radon–Nikodym for quantum instruments):
   - `Matrix.blockDiagTopProj` / `Matrix.blockDiagBotProj` — orthogonal
-    block projectors on the dilation space, PSD and summing to `𝟙` ✓
+    block projectors on the dilation space, PSD and summing to `𝟙`; these
+    support only the separately constructed binary corollary, not the
+    source-facing finite-family proof ✓
   - `Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap` — Kronecker
     identity `A ⊗ (CᴴC) = (𝟙 ⊗ C)ᴴ (A ⊗ 𝟙) (𝟙 ⊗ C)` ✓
   - `IsKrausCP.radon_nikodym_of_stinespring` — the source-facing rectangular
@@ -170,9 +172,14 @@ project import.
     `V : ℂ^d → ℂ^{d'} ⊗ ℂ^r` satisfying `T(A) = V†(A ⊗ 𝟙_r)V`, there are
     PSD `Pᵢ ∈ M_r(ℂ)` with `∑ᵢ Pᵢ = 𝟙_r` and
     `Tᵢ(A) = V†(A ⊗ Pᵢ)V` ✓
+    - Proof route: form the aggregate outcome-labelled dilation `V̂`, apply
+      `CPDominates.exists_supplied_stinespring_contraction` to
+      `CPDominates.refl T`, and restrict the resulting contraction `C` by
+      outcome. The preliminary effects `Eᵢ` sum to `CᴴC`. The residual
+      `𝟙 - CᴴC`, whose Stinespring compression under `V` vanishes, is assigned
+      to a chosen outcome. The `d' = 0` case is handled separately ✓
   - `IsCPMap.radon_nikodym_of_stinespring` — the retained square-algebra
-    specialization `d' = d`, provided as a legacy API and proved by the same
-    Kraus-family/Kraus-freedom route ✓
+    specialization `d' = d`, proved directly from the rectangular theorem ✓
   - `IsCPMap.exists_radon_nikodym` — binary block-diagonal corollary:
     for square CP maps `T₁, T₂`, a constructed Stinespring matrix for
     `T₁ + T₂` yields PSD `P₁ + P₂ = 𝟙` with

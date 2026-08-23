@@ -3,7 +3,6 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Channel.KrausFreedom
 import QICLean.Channel.OrderedCP
 import QICLean.Channel.PartialTrace
 
@@ -20,6 +19,10 @@ Wolf's Radon–Nikodym theorem says: if a finite family of CP maps `Tᵢ` sums
 to a map `T` with a supplied Stinespring representation
 `T(A) = V†(A ⊗ 𝟙_r)V`, then there are PSD operators `Pᵢ` on that same
 dilation space, summing to `𝟙_r`, such that `Tᵢ(A) = V†(A ⊗ Pᵢ)V`.
+Wolf presents this as a simple corollary of the preceding comparison theorem
+for ordered completely positive maps. The proof below follows that route: an
+aggregate outcome-labelled dilation factors through the supplied dilation by
+a contraction, and the residual `𝟙_r - CᴴC` is assigned to one outcome.
 
 The file also keeps the earlier binary block-diagonal corollary: for CP maps
 `T₁, T₂`, one may construct a Stinespring matrix for `T₁ + T₂` by
@@ -42,14 +45,13 @@ evolution on a system-plus-environment.
   the identity: resolution of identity on the dilation space.
 * `Matrix.blockDiagTopProj_posSemidef`,
   `Matrix.blockDiagBotProj_posSemidef` — both are PSD.
-* `IsCPMap.radon_nikodym_of_stinespring`
-  (Wolf, *Quantum Channels & Operations*, Theorem 2.4):
-  square finite-family Radon–Nikodym theorem relative to a supplied Stinespring
-  representation.
 * `IsKrausCP.radon_nikodym_of_stinespring`
   (Wolf, *Quantum Channels & Operations*, Theorem 2.4):
   the exact rectangular Heisenberg form for maps `M_{d'}(ℂ) → M_d(ℂ)` and a
   supplied `V : ℂ^d → ℂ^{d'} ⊗ ℂ^r`.
+* `IsCPMap.radon_nikodym_of_stinespring`
+  (Wolf, *Quantum Channels & Operations*, Theorem 2.4):
+  the direct square specialization of the rectangular finite-family theorem.
 * `IsCPMap.exists_radon_nikodym`
   (Wolf, *Quantum Channels & Operations*, Theorem 2.4, binary form):
   for CP `T₁, T₂`, there exist a Stinespring matrix `V` and two PSD
@@ -125,42 +127,6 @@ theorem Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap
 
 /-! ### Weighted Stinespring compression -/
 
-/-- Stinespring dual representation for a rectangular Kraus family indexed by
-an arbitrary finite type. -/
-private theorem stinespring_dual_representation_rectangular_gen
-    {η : Type*} [Fintype η] [DecidableEq η] {d d' : ℕ}
-    (K : η → Matrix (Fin d') (Fin d) ℂ) (A : Matrix (Fin d') (Fin d') ℂ) :
-    (stinespringVGen K)ᴴ *
-        Matrix.kroneckerMap (· * ·) A (1 : Matrix η η ℂ) * stinespringVGen K =
-      ∑ j : η, (K j)ᴴ * A * K j := by
-  ext a b
-  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply,
-    stinespringVGen_apply, Matrix.kroneckerMap_apply, Matrix.one_apply,
-    Matrix.sum_apply, Fintype.sum_prod_type, mul_ite, mul_one, mul_zero,
-    Finset.sum_ite_eq', Finset.mem_univ, ite_true]
-  exact Finset.sum_comm
-
-/-- A linear combination of rectangular Kraus blocks is obtained by
-left-multiplying the Stinespring matrix by `1 ⊗ C`. -/
-private theorem stinespringVGen_rectangular_linear_combination
-    {η : Type*} {d d' : ℕ}
-    (K : Fin r → Matrix (Fin d') (Fin d) ℂ) (C : Matrix η (Fin r) ℂ) :
-    stinespringVGen (fun α : η => ∑ j : Fin r, C α j • K j) =
-      Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C *
-        stinespringV K := by
-  ext x b
-  rcases x with ⟨a, α⟩
-  simp only [stinespringVGen_apply, stinespringV_apply, Matrix.sum_apply,
-    Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.kroneckerMap_apply,
-    Matrix.one_apply, Fintype.sum_prod_type]
-  rw [Finset.sum_eq_single a]
-  · simp
-  · intro a' _ ha'
-    have haa' : a ≠ a' := fun h => ha' h.symm
-    simp [haa']
-  · intro h
-    exact absurd (Finset.mem_univ a) h
-
 /-- Compressing a `Fin`-indexed rectangular Stinespring matrix by `P = CᴴC`
 gives the Kraus sum for the corresponding linear combinations of its blocks. -/
 theorem weighted_stinespring_eq_kraus_sum_gen
@@ -186,9 +152,14 @@ theorem weighted_stinespring_eq_kraus_sum_gen
     rw [Matrix.conjTranspose_mul]
     simp only [Matrix.mul_assoc]
   rw [h_reassoc]
-  rw [← stinespring_dual_representation_rectangular_gen
-    (K := fun α : η => ∑ j : Fin r, C α j • K j) X]
-  rw [stinespringVGen_rectangular_linear_combination K C]
+  let L : η → Matrix (Fin d') (Fin d) ℂ :=
+    fun α => ∑ j : Fin r, C α j • K j
+  have hlinear : stinespringVGen L =
+      Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C *
+        stinespringV K := by
+    exact stinespringVGen_linear_combination K C
+  rw [← hlinear]
+  exact stinespring_dual_representation_gen L X
 
 /-- The `j`-th ancilla block of a supplied rectangular Stinespring matrix. -/
 def stinespringBlockRectangular {d d' : ℕ}
@@ -218,197 +189,22 @@ theorem stinespringV_stinespringBlock
     stinespringV (stinespringBlock (D := D) (r := r) V) = V := by
   exact stinespringV_stinespringBlockRectangular V
 
-/-- Radon--Nikodym theorem relative to a supplied Stinespring matrix, with an
-explicit Kraus row family for the components.
-
-The finite row type `η` is partitioned by `label : η → ι`.  The Kraus rows in
-the fibre over `i` represent the component map `Tᵢ i`, and all rows together
-represent `T`.  If the supplied Stinespring dilation has at most as many
-ancilla rows as this family, then the fibre Gram matrices of the Kraus-freedom
-isometry give the Radon--Nikodym operators on the supplied dilation space. -/
-theorem radon_nikodym_of_stinespring_of_kraus_family
-    {ι η : Type*} [Fintype ι] [DecidableEq ι] [Fintype η] {d d' : ℕ}
-    {T : Matrix (Fin d') (Fin d') ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ}
-    (Tᵢ : ι → Matrix (Fin d') (Fin d') ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ)
-    (V : Matrix (Fin d' × Fin r) (Fin d) ℂ)
-    (label : η → ι)
-    (B : η → Matrix (Fin d) (Fin d') ℂ)
-    (hV : ∀ X, T X =
-      Vᴴ * Matrix.kroneckerMap (· * ·) X (1 : Matrix (Fin r) (Fin r) ℂ) * V)
-    (hComponent : ∀ i X,
-      Tᵢ i X = ∑ α : η, if label α = i then B α * X * (B α)ᴴ else 0)
-    (hTotalKraus : ∀ X, ∑ α : η, B α * X * (B α)ᴴ = T X)
-    (hCard : Fintype.card (Fin r) ≤ Fintype.card η) :
-    ∃ P : ι → Matrix (Fin r) (Fin r) ℂ,
-      (∀ i, (P i).PosSemidef) ∧
-      (∑ i, P i = 1) ∧
-      ∀ i X,
-        Tᵢ i X = Vᴴ * Matrix.kroneckerMap (· * ·) X (P i) * V := by
-  classical
-  let K : Fin r → Matrix (Fin d') (Fin d) ℂ := stinespringBlockRectangular V
-  let A : Fin r → Matrix (Fin d) (Fin d') ℂ := fun j => (K j)ᴴ
-  have hVeq : stinespringV K = V :=
-    stinespringV_stinespringBlockRectangular (r := r) V
-  have hsame : ∀ X : Matrix (Fin d') (Fin d') ℂ,
-      ∑ α : η, B α * X * (B α)ᴴ = ∑ j : Fin r, A j * X * (A j)ᴴ := by
-    intro X
-    calc
-      ∑ α : η, B α * X * (B α)ᴴ = T X := hTotalKraus X
-      _ = Vᴴ * Matrix.kroneckerMap (· * ·) X
-            (1 : Matrix (Fin r) (Fin r) ℂ) * V := hV X
-      _ = (stinespringV K)ᴴ * Matrix.kroneckerMap (· * ·) X
-            (1 : Matrix (Fin r) (Fin r) ℂ) * stinespringV K := by rw [hVeq]
-      _ = ∑ j : Fin r, A j * X * (A j)ᴴ := by
-            rw [stinespring_dual_representation (K := K) (A := X)]
-            simp [A]
-  obtain ⟨W, hW, hB⟩ := kraus_rectangular_freedom' B A hsame hCard
-  let C : ι → Matrix η (Fin r) ℂ := fun i α j =>
-    if label α = i then star (W α j) else 0
-  refine ⟨fun i => (C i)ᴴ * C i, ?_, ?_, ?_⟩
-  · intro i
-    exact Matrix.posSemidef_conjTranspose_mul_self (C i)
-  · ext j k
-    have hexpand : ((∑ c : ι, (C c)ᴴ * C c) : Matrix (Fin r) (Fin r) ℂ) j k =
-        ∑ c : ι, ∑ α : η, star (C c α j) * C c α k := by
-      rw [Matrix.sum_apply]
-      exact Finset.sum_congr rfl fun c _ => rfl
-    rw [hexpand, Finset.sum_comm]
-    have hcollapse : ∀ α : η,
-        (∑ i : ι,
-          star (if label α = i then star (W α j) else 0) *
-            (if label α = i then star (W α k) else 0)) =
-          W α j * star (W α k) := by
-      intro α
-      rw [Finset.sum_eq_single (label α)]
-      · simp
-      · intro i _ hi
-        have hne : label α ≠ i := fun h => hi h.symm
-        simp [hne]
-      · intro h
-        exact absurd (Finset.mem_univ (label α)) h
-    change (∑ α : η, ∑ i : ι,
-      star (if label α = i then star (W α j) else 0) *
-        (if label α = i then star (W α k) else 0)) =
-      (1 : Matrix (Fin r) (Fin r) ℂ) j k
-    simp_rw [hcollapse]
-    have hentry := congr_fun (congr_fun hW k) j
-    simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply] at hentry
-    simpa [Matrix.one_apply, eq_comm, mul_comm] using hentry
-  · intro i X
-    calc
-      Tᵢ i X = ∑ α : η, if label α = i then B α * X * (B α)ᴴ else 0 :=
-        hComponent i X
-      _ = ∑ α : η, (∑ j : Fin r, C i α j • K j)ᴴ * X *
-            (∑ j : Fin r, C i α j • K j) := by
-          refine Finset.sum_congr rfl ?_
-          intro α _
-          by_cases hα : label α = i
-          · have hlin : (∑ j : Fin r, C i α j • K j)ᴴ = B α := by
-              rw [hB α]
-              rw [Matrix.conjTranspose_sum]
-              simp [C, hα, A, Matrix.conjTranspose_smul]
-            rw [ite_eq_left hα, ← hlin]
-            simp [Matrix.conjTranspose_conjTranspose]
-          · have hzero : (∑ j : Fin r, C i α j • K j) = 0 := by
-              simp [C, hα]
-            rw [ite_eq_right hα, hzero]
-            simp
-      _ = (stinespringV K)ᴴ * Matrix.kroneckerMap (· * ·) X ((C i)ᴴ * C i) *
-            stinespringV K := by
-          rw [weighted_stinespring_eq_kraus_sum_gen (K := K) (C := C i) (X := X)]
-      _ = Vᴴ * Matrix.kroneckerMap (· * ·) X ((C i)ᴴ * C i) * V := by rw [hVeq]
-
 /-! ### Wolf Theorem 2.4 (finite-family supplied Stinespring form) -/
-
-/-- **Wolf Theorem 2.4 (Radon--Nikodym for quantum instruments).**
-
-Let a finite nonempty family of completely positive maps `Tᵢ` sum to a map `T`
-with a supplied Stinespring representation `T(X) = Vᴴ (X ⊗ 𝟙_r) V`.  Then
-there are positive operators `Pᵢ` on the same dilation space, summing to the
-identity, such that
-`Tᵢ(X) = Vᴴ (X ⊗ Pᵢ) V`.
-
-This is the source-faithful finite-family statement of
-Wolf, *Quantum Channels & Operations*, Theorem 2.4.  No minimality of the
-Stinespring representation is assumed.
-
-**Local fix (nonempty family):** The source theorem states a set of component
-maps.  The Lean statement makes the index type nonempty, since for an empty
-family the conclusion `∑ i, P i = 1` is false for a nonzero supplied dilation.
-This boundary is recorded in
-`docs/paper-gaps/wolf_radon_nikodym_nonempty_family.tex`. -/
-theorem IsCPMap.radon_nikodym_of_stinespring
-    {ι : Type*} [Fintype ι] [Nonempty ι]
-    {T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ}
-    (Tᵢ : ι → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (hTᵢ : ∀ i, IsCPMap (Tᵢ i))
-    (V : Matrix (Fin D × Fin r) (Fin D) ℂ)
-    (hV : ∀ X, T X =
-      Vᴴ * Matrix.kroneckerMap (· * ·) X (1 : Matrix (Fin r) (Fin r) ℂ) * V)
-    (hsum : (∑ i, Tᵢ i) = T) :
-    ∃ P : ι → Matrix (Fin r) (Fin r) ℂ,
-      (∀ i, (P i).PosSemidef) ∧
-      (∑ i, P i = 1) ∧
-      ∀ i X,
-        Tᵢ i X = Vᴴ * Matrix.kroneckerMap (· * ·) X (P i) * V := by
-  classical
-  let s : ι → ℕ := fun i => Classical.choose (hTᵢ i)
-  let B₀ : (i : ι) → Fin (s i) → Matrix (Fin D) (Fin D) ℂ :=
-    fun i => Classical.choose (Classical.choose_spec (hTᵢ i))
-  have hB₀ : ∀ i X, Tᵢ i X = ∑ a : Fin (s i), B₀ i a * X * (B₀ i a)ᴴ := by
-    intro i
-    exact Classical.choose_spec (Classical.choose_spec (hTᵢ i))
-  let i₀ : ι := Classical.choice ‹Nonempty ι›
-  let Row := Sum (Sigma fun i : ι => Fin (s i)) (Fin r)
-  let label : Row → ι := fun α => match α with
-    | Sum.inl x => x.1
-    | Sum.inr _ => i₀
-  let B : Row → Matrix (Fin D) (Fin D) ℂ := fun α => match α with
-    | Sum.inl x => B₀ x.1 x.2
-    | Sum.inr _ => 0
-  have hComponent : ∀ i X,
-      Tᵢ i X = ∑ α : Row, if label α = i then B α * X * (B α)ᴴ else 0 := by
-    intro i X
-    rw [hB₀ i X]
-    simp only [Row, Fintype.sum_sum_type]
-    rw [Fintype.sum_sigma]
-    simp [label, B]
-  have hTotalKraus : ∀ X, ∑ α : Row, B α * X * (B α)ᴴ = T X := by
-    intro X
-    simp only [Row, Fintype.sum_sum_type]
-    rw [Fintype.sum_sigma]
-    simp only [B, Matrix.zero_mul, Matrix.conjTranspose_zero, Matrix.mul_zero,
-      Finset.sum_const_zero, add_zero]
-    calc
-      ∑ x : ι, ∑ y : Fin (s x), B₀ x y * X * (B₀ x y)ᴴ = ∑ x : ι, Tᵢ x X := by
-        refine Finset.sum_congr rfl ?_
-        intro i _
-        exact (hB₀ i X).symm
-      _ = T X := by
-        have happ := congrArg
-          (fun F : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ => F X)
-          hsum
-        simpa [Finset.sum_apply] using happ
-  have hCard : Fintype.card (Fin r) ≤ Fintype.card Row := by
-    let emb : Fin r ↪ Row := ⟨Sum.inr, by
-      intro a b h
-      exact Sum.inr.inj h⟩
-    exact Fintype.card_le_of_embedding emb
-  exact radon_nikodym_of_stinespring_of_kraus_family Tᵢ V label B hV
-    hComponent hTotalKraus hCard
 
 /-- **Wolf Theorem 2.4 (rectangular Radon--Nikodym for quantum instruments).**
 
-Let a finite nonempty family of rectangular Kraus-completely-positive
-Heisenberg maps `Tᵢ : M_{d'}(ℂ) → M_d(ℂ)` sum to `T`, and let
+Let a finite nonempty family of completely positive linear maps
+`Tᵢ : M_{d'}(ℂ) → M_d(ℂ)` sum to `T`, and let
 `V : ℂ^d → ℂ^{d'} ⊗ ℂ^r` supply the Stinespring representation
 `T(A) = Vᴴ (A ⊗ 𝟙_r) V`. Then there are positive semidefinite operators `Pᵢ`
 on `ℂ^r`, summing to `𝟙_r`, such that
 `Tᵢ(A) = Vᴴ (A ⊗ Pᵢ) V`.
 
-No minimality of the supplied Stinespring representation is assumed. The
-nonempty-family hypothesis is necessary because the empty sum of operators
-cannot equal the identity on a nonzero supplied dilation space. -/
+No minimality of the supplied Stinespring representation is assumed. The proof
+uses Wolf's preceding ordered-map comparison theorem and completes the
+preliminary effects by its positive contraction residual. The nonempty-family
+hypothesis is necessary uniformly in the supplied dilation dimension, because
+an empty sum cannot equal the identity when the dilation space is nonzero. -/
 theorem IsKrausCP.radon_nikodym_of_stinespring
     {ι : Type*} [Fintype ι] [Nonempty ι] {d d' : ℕ}
     {T : Matrix (Fin d') (Fin d') ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ}
@@ -424,50 +220,226 @@ theorem IsKrausCP.radon_nikodym_of_stinespring
       ∀ i A,
         Tᵢ i A = Vᴴ * Matrix.kroneckerMap (· * ·) A (P i) * V := by
   classical
-  let s : ι → ℕ := fun i => Classical.choose (hTᵢ i)
-  let B₀ : (i : ι) → Fin (s i) → Matrix (Fin d) (Fin d') ℂ :=
-    fun i => Classical.choose (Classical.choose_spec (hTᵢ i))
-  have hB₀ : ∀ i A, Tᵢ i A = ∑ a : Fin (s i), B₀ i a * A * (B₀ i a)ᴴ := by
-    intro i
-    exact Classical.choose_spec (Classical.choose_spec (hTᵢ i))
-  let i₀ : ι := Classical.choice ‹Nonempty ι›
-  let Row := Sum (Sigma fun i : ι => Fin (s i)) (Fin r)
-  let label : Row → ι := fun α => match α with
-    | Sum.inl x => x.1
-    | Sum.inr _ => i₀
-  let B : Row → Matrix (Fin d) (Fin d') ℂ := fun α => match α with
-    | Sum.inl x => B₀ x.1 x.2
-    | Sum.inr _ => 0
-  have hComponent : ∀ i A,
-      Tᵢ i A = ∑ α : Row, if label α = i then B α * A * (B α)ᴴ else 0 := by
-    intro i A
-    rw [hB₀ i A]
-    simp only [Row, Fintype.sum_sum_type]
-    rw [Fintype.sum_sigma]
-    simp [label, B]
-  have hTotalKraus : ∀ A, ∑ α : Row, B α * A * (B α)ᴴ = T A := by
-    intro A
-    simp only [Row, Fintype.sum_sum_type]
-    rw [Fintype.sum_sigma]
-    simp only [B, Matrix.zero_mul, Matrix.conjTranspose_zero, Matrix.mul_zero,
-      Finset.sum_const_zero, add_zero]
-    calc
-      ∑ x : ι, ∑ y : Fin (s x), B₀ x y * A * (B₀ x y)ᴴ = ∑ x : ι, Tᵢ x A := by
-        refine Finset.sum_congr rfl ?_
-        intro i _
-        exact (hB₀ i A).symm
-      _ = T A := by
-        have happ := congrArg
-          (fun F : Matrix (Fin d') (Fin d') ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ => F A)
-          hsum
-        simpa [Finset.sum_apply] using happ
-  have hCard : Fintype.card (Fin r) ≤ Fintype.card Row := by
-    let emb : Fin r ↪ Row := ⟨Sum.inr, by
-      intro a b h
-      exact Sum.inr.inj h⟩
-    exact Fintype.card_le_of_embedding emb
-  exact radon_nikodym_of_stinespring_of_kraus_family Tᵢ V label B hV
-    hComponent hTotalKraus hCard
+  by_cases hd' : d' = 0
+  · subst d'
+    let i₀ : ι := Classical.choice ‹Nonempty ι›
+    refine ⟨fun i => if i = i₀ then 1 else 0, ?_, ?_, ?_⟩
+    · intro i
+      by_cases hi : i = i₀
+      · simp [hi, Matrix.PosSemidef.one]
+      · simp [hi, Matrix.PosSemidef.zero]
+    · simp [i₀]
+    · intro i A
+      have hA : A = 0 := Subsingleton.elim _ _
+      subst A
+      simp
+  · let _ : NeZero d' := ⟨hd'⟩
+    let s : ι → ℕ := fun i => Classical.choose (hTᵢ i)
+    let B₀ : (i : ι) → Fin (s i) → Matrix (Fin d) (Fin d') ℂ :=
+      fun i => Classical.choose (Classical.choose_spec (hTᵢ i))
+    have hB₀ : ∀ i A, Tᵢ i A = ∑ a : Fin (s i), B₀ i a * A * (B₀ i a)ᴴ := by
+      intro i
+      exact Classical.choose_spec (Classical.choose_spec (hTᵢ i))
+    let Row := Sigma fun i : ι => Fin (s i)
+    let m := Fintype.card Row
+    let e : Row ≃ Fin m := Fintype.equivFin Row
+    let label : Fin m → ι := fun α => (e.symm α).1
+    let B : Fin m → Matrix (Fin d) (Fin d') ℂ := fun α =>
+      B₀ (e.symm α).1 (e.symm α).2
+    have hComponent : ∀ i A,
+        Tᵢ i A = ∑ α : Fin m, if label α = i then B α * A * (B α)ᴴ else 0 := by
+      intro i A
+      rw [hB₀ i A]
+      calc
+        ∑ a : Fin (s i), B₀ i a * A * (B₀ i a)ᴴ =
+            ∑ x : Row,
+              if x.1 = i then B₀ x.1 x.2 * A * (B₀ x.1 x.2)ᴴ else 0 := by
+          rw [Fintype.sum_sigma]
+          simp
+        _ = ∑ α : Fin m,
+              if (e.symm α).1 = i then
+                B₀ (e.symm α).1 (e.symm α).2 * A *
+                  (B₀ (e.symm α).1 (e.symm α).2)ᴴ
+              else 0 := by
+          exact (e.symm.sum_comp fun x : Row =>
+            if x.1 = i then B₀ x.1 x.2 * A * (B₀ x.1 x.2)ᴴ else 0).symm
+    have hTotalKraus : ∀ A, ∑ α : Fin m, B α * A * (B α)ᴴ = T A := by
+      intro A
+      change (∑ α : Fin m,
+        B₀ (e.symm α).1 (e.symm α).2 * A *
+          (B₀ (e.symm α).1 (e.symm α).2)ᴴ) = T A
+      calc
+        ∑ α : Fin m,
+            B₀ (e.symm α).1 (e.symm α).2 * A *
+              (B₀ (e.symm α).1 (e.symm α).2)ᴴ =
+            ∑ x : Row, B₀ x.1 x.2 * A * (B₀ x.1 x.2)ᴴ := by
+          exact e.symm.sum_comp fun x : Row => B₀ x.1 x.2 * A * (B₀ x.1 x.2)ᴴ
+        _ = ∑ i : ι, ∑ a : Fin (s i), B₀ i a * A * (B₀ i a)ᴴ := by
+          rw [Fintype.sum_sigma]
+        _ = ∑ i : ι, Tᵢ i A := by
+          refine Finset.sum_congr rfl ?_
+          intro i _
+          exact (hB₀ i A).symm
+        _ = T A := by
+          have happ := congrArg
+            (fun S : Matrix (Fin d') (Fin d') ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ =>
+              S A) hsum
+          simpa [Finset.sum_apply] using happ
+    let Khat : Fin m → Matrix (Fin d') (Fin d) ℂ := fun α => (B α)ᴴ
+    let Vhat : Matrix (Fin d' × Fin m) (Fin d) ℂ := stinespringV Khat
+    have hTCP : IsKrausCP T :=
+      ⟨m, B, fun A => (hTotalKraus A).symm⟩
+    have hVhat : ∀ A : Matrix (Fin d') (Fin d') ℂ,
+        T A = Vhatᴴ * stinespringPi (r := m) A * Vhat := by
+      intro A
+      calc
+        T A = ∑ α : Fin m, B α * A * (B α)ᴴ := (hTotalKraus A).symm
+        _ = Vhatᴴ * stinespringPi (r := m) A * Vhat := by
+          rw [stinespringPi, stinespring_dual_representation]
+          simp [Khat]
+    have hV' : ∀ A : Matrix (Fin d') (Fin d') ℂ,
+        T A = Vᴴ * stinespringPi (r := r) A * V := by
+      simpa [stinespringPi] using hV
+    obtain ⟨C, hC, hVfactor, _⟩ :=
+      CPDominates.exists_supplied_stinespring_contraction hTCP hTCP
+        (CPDominates.refl T) Vhat V hVhat hV'
+    let K : Fin r → Matrix (Fin d') (Fin d) ℂ := stinespringBlockRectangular V
+    have hVeq : stinespringV K = V :=
+      stinespringV_stinespringBlockRectangular (r := r) V
+    have hKhat : ∀ α, Khat α = ∑ j : Fin r, C α j • K j := by
+      have hlinear :
+          stinespringVGen (fun α : Fin m => ∑ j : Fin r, C α j • K j) = Vhat := by
+        calc
+          stinespringVGen (fun α : Fin m => ∑ j : Fin r, C α j • K j) =
+              Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C *
+                stinespringV K := stinespringVGen_linear_combination K C
+          _ = Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C *
+                V := by rw [hVeq]
+          _ = Vhat := hVfactor.symm
+      intro α
+      ext a b
+      have hentry := congr_fun (congr_fun hlinear (a, α)) b
+      simpa only [stinespringVGen_apply, Vhat, stinespringV_apply] using hentry.symm
+    have hBlinear : ∀ α, (∑ j : Fin r, C α j • K j)ᴴ = B α := by
+      intro α
+      rw [← hKhat α]
+      simp [Khat]
+    let F : ι → Matrix (Fin m) (Fin r) ℂ := fun i α j =>
+      if label α = i then C α j else 0
+    let E : ι → Matrix (Fin r) (Fin r) ℂ := fun i => (F i)ᴴ * F i
+    let R : Matrix (Fin r) (Fin r) ℂ := 1 - Cᴴ * C
+    have hEpos : ∀ i, (E i).PosSemidef := fun i =>
+      Matrix.posSemidef_conjTranspose_mul_self (F i)
+    have hRpos : R.PosSemidef := by
+      change (1 - Cᴴ * C).PosSemidef
+      exact Matrix.le_iff.mp hC
+    have hEcomponent : ∀ i A,
+        Tᵢ i A = Vᴴ * Matrix.kroneckerMap (· * ·) A (E i) * V := by
+      intro i A
+      calc
+        Tᵢ i A = ∑ α : Fin m,
+            if label α = i then B α * A * (B α)ᴴ else 0 := hComponent i A
+        _ = ∑ α : Fin m, (∑ j : Fin r, F i α j • K j)ᴴ * A *
+              (∑ j : Fin r, F i α j • K j) := by
+            refine Finset.sum_congr rfl ?_
+            intro α _
+            by_cases hα : label α = i
+            · have hlin : (∑ j : Fin r, F i α j • K j)ᴴ = B α := by
+                simpa only [F, hα, ite_true] using hBlinear α
+              rw [ite_eq_left hα, ← hlin]
+              simp only [Matrix.conjTranspose_conjTranspose]
+            · have hzero : ∑ j : Fin r, F i α j • K j = 0 := by
+                simp [F, hα]
+              rw [ite_eq_right hα, hzero]
+              simp
+        _ = (stinespringV K)ᴴ * Matrix.kroneckerMap (· * ·) A (E i) *
+              stinespringV K := by
+            change (∑ α : Fin m, (∑ j : Fin r, F i α j • K j)ᴴ * A *
+                (∑ j : Fin r, F i α j • K j)) =
+              (stinespringV K)ᴴ *
+                Matrix.kroneckerMap (· * ·) A ((F i)ᴴ * F i) * stinespringV K
+            rw [weighted_stinespring_eq_kraus_sum_gen]
+        _ = Vᴴ * Matrix.kroneckerMap (· * ·) A (E i) * V := by rw [hVeq]
+    have hsumE : ∑ i, E i = Cᴴ * C := by
+      ext j k
+      simp only [E, Matrix.sum_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]
+      rw [Finset.sum_comm]
+      refine Finset.sum_congr rfl ?_
+      intro α _
+      rw [Finset.sum_eq_single (label α)]
+      · simp [F]
+      · intro i _ hi
+        have hne : label α ≠ i := fun h => hi h.symm
+        simp [F, hne]
+      · intro h
+        exact absurd (Finset.mem_univ (label α)) h
+    have htotalC : ∀ A : Matrix (Fin d') (Fin d') ℂ,
+        Vᴴ * Matrix.kroneckerMap (· * ·) A (Cᴴ * C) * V = T A := by
+      intro A
+      rw [← Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap_gen A C]
+      rw [show Vᴴ *
+          ((Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C)ᴴ *
+            Matrix.kroneckerMap (· * ·) A (1 : Matrix (Fin m) (Fin m) ℂ) *
+            Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C) * V =
+          (Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C * V)ᴴ *
+            Matrix.kroneckerMap (· * ·) A (1 : Matrix (Fin m) (Fin m) ℂ) *
+            (Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C * V) by
+        rw [Matrix.conjTranspose_mul]
+        simp only [Matrix.mul_assoc]]
+      rw [← hVfactor]
+      exact (hVhat A).symm
+    have hResidual : ∀ A : Matrix (Fin d') (Fin d') ℂ,
+        Vᴴ * Matrix.kroneckerMap (· * ·) A R * V = 0 := by
+      intro A
+      have hkron : Matrix.kroneckerMap (· * ·) A R =
+          Matrix.kroneckerMap (· * ·) A (1 : Matrix (Fin r) (Fin r) ℂ) -
+            Matrix.kroneckerMap (· * ·) A (Cᴴ * C) := by
+        ext ⟨a, j⟩ ⟨b, k⟩
+        simp [R, Matrix.kroneckerMap_apply]
+        ring
+      rw [hkron, Matrix.mul_sub, Matrix.sub_mul, ← hV A, htotalC A, sub_self]
+    let i₀ : ι := Classical.choice ‹Nonempty ι›
+    let P : ι → Matrix (Fin r) (Fin r) ℂ := fun i =>
+      E i + if i = i₀ then R else 0
+    refine ⟨P, ?_, ?_, ?_⟩
+    · intro i
+      by_cases hi : i = i₀
+      · simpa [P, hi] using (hEpos i).add hRpos
+      · simpa [P, hi] using hEpos i
+    · calc
+        ∑ i, P i = (∑ i, E i) + R := by
+          simp [P, Finset.sum_add_distrib, i₀]
+        _ = Cᴴ * C + (1 - Cᴴ * C) := by rw [hsumE]
+        _ = 1 := by simp
+    · intro i A
+      by_cases hi : i = i₀
+      · rw [show P i = E i + R by simp [P, hi]]
+        rw [Matrix.kroneckerMap_add_right (· * ·) (fun a b c => mul_add a b c)]
+        rw [Matrix.mul_add, Matrix.add_mul, ← hEcomponent i A, hResidual A, add_zero]
+      · simpa [P, hi] using hEcomponent i A
+
+/-- **Wolf Theorem 2.4 (square Radon--Nikodym theorem).**
+
+This is the square specialization of
+`IsKrausCP.radon_nikodym_of_stinespring`. A finite nonempty family of
+completely positive maps summing to `T` is represented by positive operators
+on any supplied Stinespring dilation of `T`, and these operators sum to the
+identity. -/
+theorem IsCPMap.radon_nikodym_of_stinespring
+    {ι : Type*} [Fintype ι] [Nonempty ι]
+    {T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ}
+    (Tᵢ : ι → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (hTᵢ : ∀ i, IsCPMap (Tᵢ i))
+    (V : Matrix (Fin D × Fin r) (Fin D) ℂ)
+    (hV : ∀ X, T X =
+      Vᴴ * Matrix.kroneckerMap (· * ·) X (1 : Matrix (Fin r) (Fin r) ℂ) * V)
+    (hsum : (∑ i, Tᵢ i) = T) :
+    ∃ P : ι → Matrix (Fin r) (Fin r) ℂ,
+      (∀ i, (P i).PosSemidef) ∧
+      (∑ i, P i = 1) ∧
+      ∀ i X,
+        Tᵢ i X = Vᴴ * Matrix.kroneckerMap (· * ·) X (P i) * V := by
+  exact IsKrausCP.radon_nikodym_of_stinespring Tᵢ hTᵢ V hV hsum
 
 /-! ### Wolf Theorem 2.4 (Radon–Nikodym, binary form) -/
 

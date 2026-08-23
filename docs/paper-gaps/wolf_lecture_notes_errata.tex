@@ -218,7 +218,9 @@ This theorem is the immediate instrument-valued corollary of the preceding
 comparison theorem for ordered completely positive maps.  A supplied
 Stinespring representation of the total map is held fixed, and the theorem
 resolves each CP component by a positive effect on the same dilation space.
-Chapter~2, Theorem~2.4 (book p.~39) says:
+The exact local source is
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}:399--407. Chapter~2,
+Theorem~2.4 (book p.~39) says:
 \begin{quote}
 ``Let $\{T_i\}$ be a set of completely positive linear maps such that
 $\sum_iT_i=T$ \ldots\ Then there is a set of positive operators $P_i\in M_r$
@@ -243,13 +245,26 @@ The declaration \leanid{IsCPMap.radon_nikodym_of_stinespring} is retained as
 the square-algebra specialization.
 
 \paragraph{Formal proof path.}
-The proof chooses rectangular Kraus families for the component maps, combines
-them into one labelled family, and pads one component with zero Kraus operators.
-It then compares this family with the adjoints of the ancilla blocks of the
-supplied Stinespring matrix. Rectangular Kraus freedom produces an isometry,
-and the Gram matrices of its
-labelled fibres give the operators $P_i$. This is the compiled Kraus-freedom
-proof route; it does not use Douglas factorization.
+Wolf gives no separate proof beyond calling the result a simple corollary of
+the ordered-map comparison theorem. The formal proof makes this corollary
+explicit. It combines Kraus families for the components into an
+outcome-labelled Stinespring representation $\widehat V$ of $T$, then applies
+the preceding theorem to $T\leq T$ and the two representations
+$\widehat V,V$. This gives a contraction, not in general an isometry,
+\begin{equation}
+  \widehat V=(I_{d'}\otimes C)V,
+  \qquad C^\dagger C\leq I_r.
+\end{equation}
+If $C_i$ retains the rows labelled by $i$, the preliminary effects
+$E_i=C_i^\dagger C_i$ are positive, represent $T_i$, and sum to
+$C^\dagger C$. The residual
+$R=I_r-C^\dagger C$ is positive and satisfies
+$V^\dagger(A\otimes R)V=0$. A chosen outcome $i_0$ receives this residual,
+so that $P_{i_0}=E_{i_0}+R$ and $P_i=E_i$ otherwise. This last step is needed
+for an arbitrary nonminimal supplied dilation and is exactly where
+nonemptiness is used. When $d'=0$, the formal proof separately assigns $I_r$
+to a chosen outcome and zero to all others. The square-algebra declaration is
+a direct specialization of the rectangular theorem.
 
 \paragraph{Why the boundary is needed.}
 If the index type is empty, then $\sum_iT_i=T$ forces $T=0$. Taking the zero

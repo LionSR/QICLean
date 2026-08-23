@@ -144,8 +144,9 @@ theorem stinespringVGen_apply {η α β : Type*}
 
 /-- Stinespring dual representation for a Kraus family indexed by an arbitrary
 finite type. -/
-theorem stinespring_dual_representation_gen {η : Type*} [Fintype η] [DecidableEq η]
-    (K : η → Matrix (Fin D) (Fin D) ℂ) (A : Matrix (Fin D) (Fin D) ℂ) :
+theorem stinespring_dual_representation_gen
+    {η α β : Type*} [Fintype η] [DecidableEq η] [Fintype β]
+    (K : η → Matrix β α ℂ) (A : Matrix β β ℂ) :
     (stinespringVGen K)ᴴ *
       (kroneckerMap (· * ·) A (1 : Matrix η η ℂ)) *
       stinespringVGen K =
@@ -160,11 +161,11 @@ theorem stinespring_dual_representation_gen {η : Type*} [Fintype η] [Decidable
 /-- A linear combination of Kraus blocks is obtained by left-multiplying the
 Stinespring matrix by `1 ⊗ C`. -/
 theorem stinespringVGen_linear_combination
-    {η : Type*}
-    (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
+    {η α β : Type*} [Fintype β] [DecidableEq β]
+    (K : Fin r → Matrix β α ℂ)
     (C : Matrix η (Fin r) ℂ) :
     stinespringVGen (fun α : η => ∑ j : Fin r, C α j • K j) =
-      Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin D) (Fin D) ℂ) C *
+      Matrix.kroneckerMap (· * ·) (1 : Matrix β β ℂ) C *
         stinespringV K := by
   ext x b
   rcases x with ⟨a, α⟩
@@ -182,18 +183,18 @@ theorem stinespringVGen_linear_combination
 /-- The Kronecker identity
 `A ⊗ (CᴴC) = (𝟙 ⊗ C)ᴴ (A ⊗ 𝟙)(𝟙 ⊗ C)` for an arbitrary finite row type. -/
 theorem Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap_gen
-    {η : Type*} [Fintype η] [DecidableEq η]
-    (A : Matrix (Fin D) (Fin D) ℂ) (C : Matrix η (Fin r) ℂ) :
-    (Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin D) (Fin D) ℂ) C)ᴴ *
+    {η β : Type*} [Fintype η] [DecidableEq η] [Fintype β] [DecidableEq β]
+    (A : Matrix β β ℂ) (C : Matrix η (Fin r) ℂ) :
+    (Matrix.kroneckerMap (· * ·) (1 : Matrix β β ℂ) C)ᴴ *
         Matrix.kroneckerMap (· * ·) A (1 : Matrix η η ℂ) *
-        Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin D) (Fin D) ℂ) C =
+        Matrix.kroneckerMap (· * ·) (1 : Matrix β β ℂ) C =
       Matrix.kroneckerMap (· * ·) A (Cᴴ * C) := by
   rw [Matrix.conjTranspose_kronecker]
-  rw [show (1 : Matrix (Fin D) (Fin D) ℂ)ᴴ = 1 from Matrix.conjTranspose_one]
-  rw [← Matrix.mul_kronecker_mul (A := (1 : Matrix (Fin D) (Fin D) ℂ)) (B := A)
+  rw [show (1 : Matrix β β ℂ)ᴴ = 1 from Matrix.conjTranspose_one]
+  rw [← Matrix.mul_kronecker_mul (A := (1 : Matrix β β ℂ)) (B := A)
       (A' := Cᴴ) (B' := (1 : Matrix η η ℂ))]
-  rw [← Matrix.mul_kronecker_mul (A := (1 * A : Matrix (Fin D) (Fin D) ℂ))
-      (B := (1 : Matrix (Fin D) (Fin D) ℂ)) (A' := Cᴴ * 1) (B' := C)]
+  rw [← Matrix.mul_kronecker_mul (A := (1 * A : Matrix β β ℂ))
+      (B := (1 : Matrix β β ℂ)) (A' := Cᴴ * 1) (B' := C)]
   simp
 
 /-- **Stinespring representation, Schrödinger picture** (Wolf Theorem 2.2):

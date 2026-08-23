@@ -37,9 +37,13 @@ then there are positive operators \(P_i\in\mathcal M_r\) such that
   T_i(A)=V^\dagger(A\otimes P_i)V.
 \]
 The local source is
-\path{Notes/WolfNoteTexSource/ch02_representations.tex}:402--407, titled
-``Radon--Nikodym for quantum instruments'' in
-\cite{Wolf2012Quantum}.
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}:399--407. The two
+preceding lines describe the result as a simple corollary of the comparison
+theorem for ordered completely positive maps; the theorem itself is titled
+``Radon--Nikodym for quantum instruments'' in \cite{Wolf2012Quantum}.
+The source does not separately say that the outcome set is finite. The formal
+statement reads its unqualified sum as a finite sum, as elsewhere in this
+finite-dimensional development.
 
 \section{Local boundary}
 
@@ -58,18 +62,38 @@ the index type were empty, then the hypotheses \(\sum_i T_i=T\) force
   0=\mathbf 1_r
 \]
 in \(\mathcal M_r\), which is false for a nonzero dilation dimension.
+For the exceptional zero-dimensional ancilla \(r=0\), the two sides do agree;
+the nonempty hypothesis is the uniform condition valid for arbitrary supplied
+dilations.
 
 Thus the formal theorem states the source theorem in the nonempty instrument
 case, with its rectangular Heisenberg dimensions made explicit. The older
 \leanid{IsCPMap.radon_nikodym_of_stinespring} theorem is retained as the
 square-algebra specialization.
 
-The formal proof follows the Kraus-freedom route. Choose rectangular Kraus
-families for the component maps, combine them into one labelled family, pad one
-component by zero Kraus operators, and compare that family with the adjoints
-of the ancilla blocks of the supplied Stinespring matrix. Rectangular Kraus
-freedom gives an isometry whose fibre Gram matrices are the
-operators \(P_i\). No Douglas-factorization argument is used.
+The formal proof follows Wolf's indicated corollary route. Choose rectangular
+Kraus families for the component maps and combine them into an
+outcome-labelled Stinespring representation \(\widehat V\) of \(T\). Applying
+the preceding ordered-map theorem to the reflexive relation \(T\leq T\) and
+the two supplied representations \(\widehat V,V\) gives a contraction
+\[
+  \widehat V=(\mathbf 1_{d'}\otimes C)V,
+  \qquad C^\dagger C\leq\mathbf 1_r.
+\]
+Restricting the rows of \(C\) to outcome \(i\) gives a matrix \(C_i\) and a
+preliminary effect \(E_i=C_i^\dagger C_i\). These effects are positive,
+represent the component maps, and satisfy
+\(\sum_iE_i=C^\dagger C\). The residual operator
+\[
+  R=\mathbf 1_r-C^\dagger C
+\]
+is positive and has zero Stinespring compression under \(V\). Nonemptiness is
+used precisely to choose an outcome \(i_0\) receiving this residual:
+\(P_{i_0}=E_{i_0}+R\), with \(P_i=E_i\) otherwise. This completes the
+resolution of the identity even when the supplied dilation is nonminimal. If
+\(d'=0\), all source matrices vanish; the separate formal branch assigns
+\(\mathbf 1_r\) to one chosen outcome and zero to the others. The square
+declaration is proved directly by specializing the rectangular theorem.
 
 \section{Elimination plan}
 
