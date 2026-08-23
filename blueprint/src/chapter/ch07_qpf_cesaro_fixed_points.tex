@@ -228,6 +228,39 @@
     dimension.
 \end{proof}
 
+\begin{theorem}[Recurrent vectors and the peripheral range]
+    \label{thm:peripheral_range_recurrent_vectors}
+    \lean{Module.End.mem_range_peripheralProjection_iff}
+    \leanok
+    \uses{def:peripheral_spectral_projections}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace-preserving, with $D>0$.
+    Then $X\in T_\phi(\MN{D})$ if and only if, for every
+    $\varepsilon>0$, there is a positive integer $n$ such that
+    $\lVert T^n(X)-X\rVert\leq\varepsilon$. This is the recurrent-vector
+    characterization following \cite[Equation~(6.15)]{Wolf2012Quantum}.
+    Here Wolf's $\N$ is read as the positive integers; allowing $n=0$ would
+    make the recurrence condition hold for every~$X$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:peripheral_projection_recurrent_subsequence,
+        thm:peripheral_spectral_projection_properties,
+        lem:non_peripheral_pow_vanishing,
+        thm:positive_trace_preserving_mean_ergodic_projection}
+    If $X$ lies in the range of $T_\phi$, then $T_\phi(X)=X$, so the
+    recurrent subsequence of
+    Theorem~\ref{thm:peripheral_projection_recurrent_subsequence} gives the
+    required positive exponents. Conversely, put
+    $Y=X-T_\phi(X)$. Commutation of $T_\phi$ with $T$ transfers every
+    sufficiently close return of $X$ to a close return of~$Y$, while
+    Lemma~\ref{lem:non_peripheral_pow_vanishing} gives $T^n(Y)\to0$.
+    If a positive power fixed $Y$, then all of its multiples would fix $Y$,
+    contradicting this limit unless $Y=0$. The finitely many remaining small
+    powers therefore stay a positive distance from~$Y$, and all sufficiently
+    large powers stay close to zero. Arbitrarily close returns are possible
+    only when $Y=0$, hence $X=T_\phi(X)$.
+\end{proof}
+
 \begin{corollary}[Channel structure of the peripheral projections]
     \label{cor:peripheral_projection_channel}
     \lean{IsPositiveMap.peripheralProjection_isPositiveMap,
