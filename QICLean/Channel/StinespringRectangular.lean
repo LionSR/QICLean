@@ -3,6 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
+import QICLean.Channel.KrausCPTP
 import QICLean.Channel.KrausRectangular
 import QICLean.Channel.Stinespring
 
@@ -116,6 +117,40 @@ theorem exists_stinespringV_of_isKrausCP
   · -- `V†V = ∑ⱼ Kⱼ†Kⱼ`, which is `𝟙` exactly for trace-preserving `T`.
     rw [stinespringV_conjTranspose_mul]
     exact (kraus_tp_iff_sum_conjTranspose_mul K T hK).symm
+
+/-- **Rectangular Stinespring representation, Schrödinger picture** (Wolf,
+Chapter 2, Theorem 2.2). Whenever the dimension of the dilation space is at
+least the Choi rank, a completely positive map has a Stinespring matrix whose
+right partial trace is the map itself. The matrix is an isometry exactly when
+the map preserves trace. -/
+theorem exists_stinespringV_schrodinger_of_isKrausCP
+    {T : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ}
+    (hT : IsKrausCP T) {r : ℕ} (hr : Channel.choiRank T ≤ r) :
+    ∃ V : Matrix (Fin d' × Fin r) (Fin d) ℂ,
+      (∀ X : Matrix (Fin d) (Fin d) ℂ,
+        T X = Matrix.traceRight (V * X * Vᴴ)) ∧
+      (Vᴴ * V = 1 ↔ ∀ X : Matrix (Fin d) (Fin d) ℂ, (T X).trace = X.trace) := by
+  obtain ⟨K, hK⟩ :=
+    Channel.hasKrausCard_mono (Channel.hasKrausCard_choiRank_of_cp hT) hr
+  refine ⟨stinespringV K, ?_, ?_⟩
+  · intro X
+    rw [hK X]
+    ext i j
+    exact stinespring_schrodinger_representation K X i j
+  · rw [stinespringV_conjTranspose_mul]
+    exact (kraus_tp_iff_sum_conjTranspose_mul K T hK).symm
+
+/-- **Rectangular isometric Stinespring representation for CPTP maps.** -/
+theorem exists_stinespringV_schrodinger_of_isKrausCPTP
+    {T : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ}
+    (hT : IsKrausCPTP T) {r : ℕ} (hr : Channel.choiRank T ≤ r) :
+    ∃ V : Matrix (Fin d' × Fin r) (Fin d) ℂ,
+      Vᴴ * V = 1 ∧
+      ∀ X : Matrix (Fin d) (Fin d) ℂ,
+        T X = Matrix.traceRight (V * X * Vᴴ) := by
+  obtain ⟨V, hschrodinger, hV⟩ :=
+    exists_stinespringV_schrodinger_of_isKrausCP hT.isKrausCP hr
+  exact ⟨V, hV.mpr hT.trace_map, hschrodinger⟩
 
 /-- **Stinespring dilation at the Choi-rank ancilla dimension** (Wolf,
 Chapter 2, Theorem 2.2): the case \(r = \operatorname{rank}(\tau)\) of

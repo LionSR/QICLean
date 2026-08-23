@@ -65,6 +65,7 @@ import QICLean.Channel.NPositivitySpectralCriterion
 import QICLean.Channel.NoInformationWithoutDisturbance
 import QICLean.Channel.NormalForm
 import QICLean.Channel.OpenSystem
+import QICLean.Channel.OpenSystemRectangular
 import QICLean.Channel.OperatorSystem
 import QICLean.Channel.OperatorSystemExtension
 import QICLean.Channel.OperatorSystemExtensionDirectSum

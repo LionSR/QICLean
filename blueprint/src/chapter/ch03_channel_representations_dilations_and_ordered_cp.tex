@@ -197,6 +197,8 @@ channel.
 \begin{theorem}[Stinespring representation, rectangular form]
     \label{thm:stinespring_rectangular}
     \lean{ChoiRectangular.exists_stinespringV_of_isKrausCP,
+        ChoiRectangular.exists_stinespringV_schrodinger_of_isKrausCP,
+        ChoiRectangular.exists_stinespringV_schrodinger_of_isKrausCPTP,
         ChoiRectangular.exists_stinespringV_choiRank_of_isKrausCP,
         ChoiRectangular.exists_stinespringV_pairing_of_isKrausCP,
         ChoiRectangular.exists_stinespringV_pairing_choiRank_of_isKrausCP}
@@ -210,8 +212,15 @@ channel.
         \label{eq:stinespring_rectangular}
     \end{align}
     and $V$ is an isometry, $V^\dagger V=\Id_d$, if and only if $T$ is trace
-    preserving. In particular $r=\rank(\tau)$ is an admissible ancilla
-    dimension; by Lemma~\ref{lem:stinespring_rectangular_least_dim} no smaller
+    preserving. In the Schr\"odinger picture one may choose the same type of
+    dilation so that
+    \begin{align}
+        T(\rho)&=\tr_{\C^r}(V\rho V^\dagger)
+        \label{eq:stinespring_rectangular_schrodinger}
+    \end{align}
+    for every $\rho\in\MN{d}$. In particular $r=\rank(\tau)$ is an admissible
+    ancilla dimension; by
+    Lemma~\ref{lem:stinespring_rectangular_least_dim} no smaller
     ancilla dimension is admissible, and a dilation with $r=\rank(\tau)$ is
     called minimal. This is \cite[Theorem~2.2]{Wolf2012Quantum}.
 \end{theorem}
@@ -613,6 +622,54 @@ a common dilation space.
     Lemma~\ref{lem:exists_unitary_mul_eq_of_gram_eq}
     gives a unitary $U$ with $V=UW_0$. Substituting this identity into the
     partial trace formula gives (\ref{eq:representations_open_unitary}).
+\end{proof}
+
+\begin{theorem}[Open-system representation]
+    \label{thm:channel_exists_open_system_unitary_rectangular}
+    \lean{Channel.openSystemInputEmbedding,
+        Channel.openSystemInput,
+        Channel.openSystemInput_eq_embedding,
+        Channel.openSystemPartialTrace,
+        Channel.output_dimension_pos_of_isKrausCPTP,
+        Channel.IsKrausCPTP.exists_openSystem_unitary}
+    \leanok
+    \uses{def:is_kraus_cptp, def:partial_trace, thm:stinespring_rectangular,
+        thm:kraus_rect_rank_minimal, lem:exists_unitary_mul_eq_of_gram_eq}
+    Let $d\geq1$ and let $T:\MN{d}\to\MN{d'}$ be completely positive and
+    trace-preserving. Then $d'\geq1$, and there are a normalized vector
+    $\varphi\in\C^{d'}\otimes\C^{d'}$ and a unitary $U$ on
+    $\C^d\otimes\C^{d'}\otimes\C^{d'}$, a space of total dimension
+    $d(d')^2$, such that, for every $\rho\in\MN{d}$,
+    \begin{align}
+        T(\rho)
+        &=\tr_{\C^d\otimes\C^{d'}}\!\left[
+          U\bigl(\rho\otimes\ketbra{\varphi}{\varphi}\bigr)U^\dagger
+          \right].
+        \label{eq:representations_open_system_rectangular_unitary}
+    \end{align}
+    Here the partial trace is over the first two tensor factors
+    $\C^d\otimes\C^{d'}$ and retains the final factor $\C^{d'}$. This is
+    \cite[Theorem~2.5, Equation~(2.14)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:stinespring_rectangular, thm:kraus_rect_rank_minimal,
+        lem:exists_unitary_mul_eq_of_gram_eq}
+    Choose the Stinespring dilation space to have dimension $r=dd'$. The
+    bound $\rank(\tau_T)\leq dd'$ and the Schr\"odinger form of
+    Theorem~\ref{thm:stinespring_rectangular} give an isometry
+    $V:\C^d\to\C^{d'}\otimes\C^{dd'}$ satisfying
+    $T(\rho)=\tr_{\C^{dd'}}(V\rho V^\dagger)$. Reorder the codomain as
+    $\C^d\otimes\C^{d'}\otimes\C^{d'}$, with the retained output factor
+    last. Choose a normalized $\varphi\in\C^{d'}\otimes\C^{d'}$ and let
+    $W_\varphi x=x\otimes\varphi$. Since the reordered Stinespring map and
+    $W_\varphi$ are isometries, their Gram matrices agree. By
+    Lemma~\ref{lem:exists_unitary_mul_eq_of_gram_eq}, a unitary $U$ on the
+    common $d(d')^2$-dimensional space satisfies $V=UW_\varphi$. Substitution,
+    together with
+    $W_\varphi\rho W_\varphi^\dagger
+      =\rho\otimes\ketbra{\varphi}{\varphi}$,
+    gives (\ref{eq:representations_open_system_rectangular_unitary}).
 \end{proof}
 
 %% =========================================================

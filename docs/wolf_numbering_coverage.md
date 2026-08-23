@@ -118,6 +118,10 @@ project import.
     — for a completely positive `T : M_d → M_{d'}` and every `r ≥ rank(τ)`
     there is a `V : ℂ^d → ℂ^{d'} ⊗ ℂ^r` with `T*(A) = V†(A ⊗ 𝟙_r)V`, an
     isometry exactly when `T` is trace preserving ✓
+    `exists_stinespringV_schrodinger_of_isKrausCP` /
+    `exists_stinespringV_schrodinger_of_isKrausCPTP`
+    — the corresponding rectangular Schrödinger-picture realization
+    `T(ρ) = tr_{ℂ^r}(VρV†)`, with an isometric witness for CPTP maps ✓
     `exists_stinespringV_choiRank_of_isKrausCP` /
     `exists_stinespringV_pairing_choiRank_of_isKrausCP`
     — the dilation at the Choi-rank ancilla dimension `r = rank(τ)` ✓
@@ -148,14 +152,32 @@ project import.
     for CP `T₁, T₂`, a constructed Stinespring matrix for `T₁ + T₂` yields
     PSD `P₁ + P₂ = 𝟙` with `Tᵢ(A) = V†(A ⊗ Pᵢ)V` ✓
 
-* **Theorem 2.5** (open-system representation, reduced form):
-  - `IsChannel.exists_stinespring_open_system` — every CPTP map is
+* **Theorem 2.5, Equation (2.14)** (open-system representation):
+  - `Channel.IsKrausCPTP.exists_openSystem_unitary` — the source-facing
+    rectangular theorem for every CPTP map `T : M_d(ℂ) → M_{d'}(ℂ)` with
+    `d ≥ 1`: take a Stinespring dilation space of dimension `r = dd'`, a
+    normalized `φ ∈ ℂ^{d'} ⊗ ℂ^{d'}`, and a unitary on
+    `ℂ^d ⊗ ℂ^{d'} ⊗ ℂ^{d'}` of total dimension `d(d')²`; tracing the first
+    two tensor factors `ℂ^d ⊗ ℂ^{d'}` retains the final `d'`-dimensional
+    factor and gives
+    `T(ρ) = tr_E[U(ρ ⊗ |φ⟩⟨φ|)U†]` ✓
+  - `IsChannel.exists_stinespring_open_system` — the older square-algebra
+    specialization gives
     `T(ρ)_{ij} = ∑ₖ (V ρ V†)_{(i,k),(j,k)}` for an isometric `V` ✓
   - `IsChannel.exists_stinespring_open_system_traceRight` — equivalent
-    form via `Matrix.traceRight`: `T(ρ) = tr_E[V ρ V†]` ✓
-  - `IsChannel.exists_stinespring_open_system_unitary` — unitary form
+    square form via `Matrix.traceRight`: `T(ρ) = tr_E[V ρ V†]` ✓
+  - `IsChannel.exists_stinespring_open_system_unitary` — square unitary form
     `T(ρ) = tr_E[U W₀ ρ W₀† U†]`, where `W₀` inserts the system into the
     first environment coordinate ✓
+
+* **Proposition “Environment induced instruments,” Equation (2.15)**:
+  - `Channel.exists_environment_povm_of_sum_eq_stinespring` — the
+    source-faithful finite-family statement relative to a supplied
+    rectangular Stinespring representation ✓
+  - `Channel.exists_environment_povm_of_sum_eq_openSystem` — the downstream
+    system-plus-environment form relative to Equation (2.14), with a POVM on
+    the `dd'`-dimensional environment and the bound
+    `krausRank(Tᵢ) ≤ rank(Pᵢ)` ✓
 
 * **Theorem 2.6** (Naimark / Neumark dilation for POVMs):
   - `POVM` — positive operator-valued measure structure ✓
