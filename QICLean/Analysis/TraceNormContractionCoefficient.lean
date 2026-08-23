@@ -400,6 +400,37 @@ theorem orthogonalPureStateTraceNorms_nonempty_of_density
     eigenvectorUnitary_isUnitVector hQ.1 j,
     eigenvectorUnitary_areOrthogonal_of_mul_eq_zero hP hQ hPQ hi hj, rfl⟩
 
+/-- Wolf's Lemma 8.3 as the pointwise bound used in Equation (8.115): the
+trace-norm quotient of any two distinct density matrices is bounded by one
+half of the orthogonal-pure-state supremum. -/
+theorem traceNorm_map_sub_div_traceNorm_le_half_sSup_orthogonal
+    (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D') (Fin D') ℂ)
+    {ρ₁ ρ₂ : Matrix (Fin D) (Fin D) ℂ}
+    (hρ₁ : ρ₁ ∈ densityMatrices D) (hρ₂ : ρ₂ ∈ densityMatrices D)
+    (hne : ρ₁ ≠ ρ₂) :
+    traceNorm (T ρ₁ - T ρ₂) / traceNorm (ρ₁ - ρ₂) ≤
+      (1 / 2 : ℝ) * sSup (orthogonalPureStateTraceNorms T) := by
+  let S := orthogonalPureStateTraceNorms T
+  have hH : (ρ₁ - ρ₂).IsHermitian := hρ₁.1.isHermitian.sub hρ₂.1.isHermitian
+  have htr : (ρ₁ - ρ₂).trace = 0 := by
+    rw [trace_sub, hρ₁.2, hρ₂.2, sub_self]
+  have hHne : ρ₁ - ρ₂ ≠ 0 := sub_ne_zero.mpr hne
+  obtain ⟨P, Q, hP, hPtr, hQ, hQtr, hPQ, hratio⟩ :=
+    exists_orthogonal_density_traceNorm_ratio T hH htr hHne
+  have hbS : BddAbove S := by
+    simpa [S, orthogonalPureStateTraceNorms] using
+      bddAbove_orthogonalPureStateTraceNorms T
+  have hpure_le : ∀ ψ φ, IsUnitVector ψ → IsUnitVector φ →
+      AreOrthogonal ψ φ →
+      traceNorm (T (pureStateProj ψ - pureStateProj φ)) ≤ sSup S := by
+    intro ψ φ hψ hφ horth
+    apply le_csSup hbS
+    exact ⟨ψ, φ, hψ, hφ, horth, rfl⟩
+  rw [← map_sub, hratio]
+  exact mul_le_mul_of_nonneg_left
+    (traceNorm_map_sub_le_of_orthogonal_density T hP hQ hPtr hQtr hPQ hpure_le)
+    (by norm_num)
+
 /-- **Wolf's trace-norm contraction coefficient formula** (Lemma 8.3,
 Eq. (8.81)).  For an arbitrary complex-linear map, the exact supremum of the
 trace-norm quotient over distinct density matrices equals one half of the
@@ -440,16 +471,8 @@ theorem traceNorm_contraction_coefficient_eq_half_sSup_orthogonal
     have hrat_le : ∀ r ∈ R, r ≤ (1 / 2 : ℝ) * sSup S := by
       intro r hr
       rcases hr with ⟨ρ₁, hρ₁, ρ₂, hρ₂, hne, rfl⟩
-      have hH : (ρ₁ - ρ₂).IsHermitian := hρ₁.1.isHermitian.sub hρ₂.1.isHermitian
-      have htr : (ρ₁ - ρ₂).trace = 0 := by
-        rw [trace_sub, hρ₁.2, hρ₂.2, sub_self]
-      have hHne : ρ₁ - ρ₂ ≠ 0 := sub_ne_zero.mpr hne
-      obtain ⟨P, Q, hP, hPtr, hQ, hQtr, hPQ, hratio⟩ :=
-        exists_orthogonal_density_traceNorm_ratio T hH htr hHne
-      rw [← map_sub, hratio]
-      exact mul_le_mul_of_nonneg_left
-        (traceNorm_map_sub_le_of_orthogonal_density T hP hQ hPtr hQtr hPQ hpure_le)
-        (by norm_num)
+      simpa [S] using
+        traceNorm_map_sub_div_traceNorm_le_half_sSup_orthogonal T hρ₁ hρ₂ hne
     have hbR : BddAbove R := ⟨(1 / 2 : ℝ) * sSup S, hrat_le⟩
     apply le_antisymm
     · exact csSup_le hR hrat_le
