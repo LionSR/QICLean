@@ -30,6 +30,7 @@ import QICLean.Channel.Determinant.UnitaryCharacterization
 import QICLean.Channel.DirectSumConditionalExpectation
 import QICLean.Channel.EnsembleEquivalence
 import QICLean.Channel.EntanglementWitness
+import QICLean.Channel.EnvironmentInducedInstrument
 import QICLean.Channel.FaithfulMarginalWhitenedChoi
 import QICLean.Channel.FixedPoint
 import QICLean.Channel.GaugeConjugation

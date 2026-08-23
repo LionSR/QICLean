@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Algebra.MatrixAux
-import QICLean.Algebra.OrthogonalProjection
 import QICLean.Algebra.MatrixTracePairing
+import QICLean.Algebra.OrthogonalProjection
 import QICLean.Analysis.MatrixSqrt
 import QICLean.Channel.KrausCPTP
 import QICLean.Channel.MaximalOverlap
@@ -112,8 +112,9 @@ theorem partialTraceRight_idTensorMap_vecMulVec {dB' : ℕ} (ψ : Fin dA × Fin 
   set C := Matrix.schmidtCoeffMatrix ψ with hC
   set M := Matrix.traceAdjointMap T (1 : Matrix (Fin dB') (Fin dB') ℂ) with hM
   ext i₁ j₁
-  have hstep : Matrix.partialTraceRight (Matrix.idTensorMap T (Matrix.vecMulVec ψ (star ψ)))
-      i₁ j₁ = Matrix.trace (T (Matrix.bipartiteBlock (Matrix.vecMulVec ψ (star ψ)) i₁ j₁)) := by
+  have hstep :
+      Matrix.partialTraceRight (Matrix.idTensorMap T (Matrix.vecMulVec ψ (star ψ))) i₁ j₁ =
+        Matrix.trace (T (Matrix.bipartiteBlock (Matrix.vecMulVec ψ (star ψ)) i₁ j₁)) := by
     simp only [Matrix.partialTraceRight_apply, Matrix.idTensorMap_apply, Matrix.trace]
     rfl
   rw [hstep, bipartiteBlock_vecMulVec_eq]
@@ -134,20 +135,21 @@ theorem partialTraceRight_idTensorMap_vecMulVec {dB' : ℕ} (ψ : Fin dA × Fin 
 variable {n : ℕ} {ρ : Matrix (Fin dA) (Fin dA) ℂ}
 
 /-- A real scalar multiple of a positive-semidefinite matrix is Hermitian. -/
-private theorem isHermitian_smul_of_posSemidef {A : Matrix (Fin dA) (Fin dA) ℂ}
-    (hA : A.PosSemidef) (c : ℝ) : (c • A).IsHermitian := by
+private theorem isHermitian_smul_of_posSemidef {α : Type*}
+    {A : Matrix α α ℂ} (hA : A.PosSemidef) (c : ℝ) : (c • A).IsHermitian := by
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
   exact hA.isHermitian.smul (isSelfAdjoint_iff.mpr (by simp))
 
 /-- The support projection of `ρ` absorbs each weighted summand of a convex
 decomposition of `ρ`, on both sides. -/
-private theorem supportProj_mul_smul_mul_supportProj (hρ : ρ.PosSemidef) {n : ℕ}
-    {lam : Fin n → ℝ} {rho' : Fin n → Matrix (Fin dA) (Fin dA) ℂ}
+private theorem supportProj_mul_smul_mul_supportProj {α : Type*} [Fintype α] [DecidableEq α]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef) {n : ℕ}
+    {lam : Fin n → ℝ} {rho' : Fin n → Matrix α α ℂ}
     (hlam0 : ∀ i, 0 ≤ lam i) (hrho' : ∀ i, (rho' i).PosSemidef)
     (hsum : ∑ i, lam i • rho' i = ρ) (i : Fin n) :
     hρ.supportProj * (lam i • rho' i) * hρ.supportProj = lam i • rho' i := by
   have hB : ∀ j, (lam j • rho' j).PosSemidef := fun j => (hrho' j).smul (hlam0 j)
-  have hker : ∀ v : Fin dA → ℂ, ρ *ᵥ v = 0 → (lam i • rho' i) *ᵥ v = 0 := fun v hv =>
+  have hker : ∀ v : α → ℂ, ρ *ᵥ v = 0 → (lam i • rho' i) *ᵥ v = 0 := fun v hv =>
     Matrix.PosSemidef.mulVec_eq_zero_of_sum_mulVec_eq_zero hB (by rwa [hsum]) i
   have hright : (lam i • rho' i) * hρ.isHermitian.supportProj = lam i • rho' i :=
     hρ.isHermitian.mul_supportProj_eq_self_of_mulVec_kernel_le hker
@@ -163,27 +165,32 @@ private theorem supportProj_mul_smul_mul_supportProj (hρ : ρ.PosSemidef) {n : 
 `ρ`, built from the generalized inverse of `ρ` on its support:
 `C⁺ := Cᴴ ρ⁺`. It satisfies `C C⁺ = ` the support projection of `ρ`
 (`mul_purificationPinv`). -/
-private noncomputable def purificationPinv (hρ : ρ.PosSemidef)
-    (C : Matrix (Fin dA) (Fin dB) ℂ) : Matrix (Fin dB) (Fin dA) ℂ :=
+private noncomputable def purificationPinv {α : Type*} [Fintype α] [DecidableEq α]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef)
+    (C : Matrix α (Fin dB) ℂ) : Matrix (Fin dB) α ℂ :=
   Cᴴ * hρ.supportInv
 
-private theorem mul_purificationPinv (hρ : ρ.PosSemidef) {C : Matrix (Fin dA) (Fin dB) ℂ}
+private theorem mul_purificationPinv {α : Type*} [Fintype α] [DecidableEq α]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef) {C : Matrix α (Fin dB) ℂ}
     (hCC : C * Cᴴ = ρ) :
     C * purificationPinv hρ C = hρ.supportProj := by
   change C * (Cᴴ * hρ.supportInv) = hρ.supportProj
   rw [← Matrix.mul_assoc, hCC]
   exact hρ.self_mul_supportInv
 
-private theorem purificationPinv_conjTranspose (hρ : ρ.PosSemidef)
-    (C : Matrix (Fin dA) (Fin dB) ℂ) :
+private theorem purificationPinv_conjTranspose {α : Type*} [Fintype α] [DecidableEq α]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef)
+    (C : Matrix α (Fin dB) ℂ) :
     (purificationPinv hρ C)ᴴ = hρ.supportInv * C := by
   change (Cᴴ * hρ.supportInv)ᴴ = hρ.supportInv * C
   rw [Matrix.conjTranspose_mul, hρ.supportInv_isHermitian.eq, Matrix.conjTranspose_conjTranspose]
 
 /-- `C⁺ C` is an orthogonal projection on Bob's system: the "leftover"
 subspace of `H_B` not needed to purify `ρ` is its orthogonal complement. -/
-private theorem isOrthogonalProjection_purificationPinv_mul (hρ : ρ.PosSemidef)
-    {C : Matrix (Fin dA) (Fin dB) ℂ} (hCC : C * Cᴴ = ρ) :
+private theorem isOrthogonalProjection_purificationPinv_mul
+    {α : Type*} [Fintype α] [DecidableEq α]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef)
+    {C : Matrix α (Fin dB) ℂ} (hCC : C * Cᴴ = ρ) :
     IsOrthogonalProjection (purificationPinv hρ C * C) := by
   have hCinvC : purificationPinv hρ C * hρ.supportProj = purificationPinv hρ C := by
     change (Cᴴ * hρ.supportInv) * hρ.supportProj = Cᴴ * hρ.supportInv
@@ -201,31 +208,138 @@ private theorem isOrthogonalProjection_purificationPinv_mul (hρ : ρ.PosSemidef
 /-- The "leftover" completion term: the transpose of the orthogonal
 complement of `C⁺ C`, absorbed by `Cᴴ` on the right and `C` on the left with
 zero contribution (`mul_purificationPinvComplement_mul`). -/
-private noncomputable def purificationPinvComplement (hρ : ρ.PosSemidef)
-    (C : Matrix (Fin dA) (Fin dB) ℂ) : Matrix (Fin dB) (Fin dB) ℂ :=
+private noncomputable def purificationPinvComplement
+    {α : Type*} [Fintype α] [DecidableEq α]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef)
+    (C : Matrix α (Fin dB) ℂ) : Matrix (Fin dB) (Fin dB) ℂ :=
   (1 - purificationPinv hρ C * C)ᵀ
 
-private theorem purificationPinvComplement_posSemidef (hρ : ρ.PosSemidef)
-    {C : Matrix (Fin dA) (Fin dB) ℂ} (hCC : C * Cᴴ = ρ) :
+private theorem purificationPinvComplement_posSemidef
+    {α : Type*} [Fintype α] [DecidableEq α]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef)
+    {C : Matrix α (Fin dB) ℂ} (hCC : C * Cᴴ = ρ) :
     (purificationPinvComplement hρ C).PosSemidef :=
   (isOrthogonalProjection_posSemidef
     (isOrthogonalProjection_purificationPinv_mul hρ hCC).one_sub).transpose
 
 /-- `C` sandwiches `C⁺ C` back to `ρ`. -/
-private theorem mul_purificationPinv_mul_mul (hρ : ρ.PosSemidef)
-    {C : Matrix (Fin dA) (Fin dB) ℂ} (hCC : C * Cᴴ = ρ) :
+private theorem mul_purificationPinv_mul_mul
+    {α : Type*} [Fintype α] [DecidableEq α]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef)
+    {C : Matrix α (Fin dB) ℂ} (hCC : C * Cᴴ = ρ) :
     C * (purificationPinv hρ C * C) * Cᴴ = ρ := by
   calc C * (purificationPinv hρ C * C) * Cᴴ
       = (C * purificationPinv hρ C) * (C * Cᴴ) := by simp only [Matrix.mul_assoc]
     _ = hρ.supportProj * ρ := by rw [mul_purificationPinv hρ hCC, hCC]
     _ = ρ := hρ.supportProj_mul_self
 
-private theorem mul_purificationPinvComplement_mul (hρ : ρ.PosSemidef)
-    {C : Matrix (Fin dA) (Fin dB) ℂ} (hCC : C * Cᴴ = ρ) :
+private theorem mul_purificationPinvComplement_mul
+    {α : Type*} [Fintype α] [DecidableEq α]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef)
+    {C : Matrix α (Fin dB) ℂ} (hCC : C * Cᴴ = ρ) :
     C * (purificationPinvComplement hρ C)ᵀ * Cᴴ = 0 := by
   change C * (1 - purificationPinv hρ C * C) * Cᴴ = 0
   rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hCC,
     mul_purificationPinv_mul_mul hρ hCC, sub_self]
+
+/-- **Unnormalized POVM steering.** Let `C` purify a positive matrix
+`ρ = C Cᴴ`, and let `ρ = ∑ᵢ σᵢ` be a finite nonempty decomposition into
+positive matrices. Then a POVM on the purifying space realizes every summand
+by the steering sandwich `σᵢ = C (Pᵢ)ᵀ Cᴴ`.
+
+This is the unnormalized form of the construction in Wolf Proposition 1.3
+(lines 348--370). It is useful for decompositions of Choi operators, whose
+summands need not have unit trace. -/
+theorem exists_povm_of_sum_posSemidef
+    {α : Type*} [Finite α] {n : ℕ} [NeZero n]
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef) {C : Matrix α (Fin dB) ℂ}
+    (hCC : C * Cᴴ = ρ)
+    (sigma : Fin n → Matrix α α ℂ)
+    (hsigma : ∀ i, (sigma i).PosSemidef)
+    (hsum : ∑ i, sigma i = ρ) :
+    ∃ P : POVM dB n, ∀ i, sigma i = C * (P.ops i)ᵀ * Cᴴ := by
+  classical
+  let _ := Fintype.ofFinite α
+  let i0 : Fin n := ⟨0, NeZero.pos n⟩
+  let Cinv := purificationPinv hρ C
+  let X : Fin n → Matrix (Fin dB) (Fin dB) ℂ :=
+    fun i => Cinv * sigma i * Cinvᴴ
+  have hXpsd : ∀ i, (X i).PosSemidef := fun i =>
+    (hsigma i).mul_mul_conjTranspose_same Cinv
+  have hCinvHCH : Cinvᴴ * Cᴴ = hρ.supportProj := by
+    dsimp [Cinv]
+    rw [purificationPinv_conjTranspose, Matrix.mul_assoc, hCC]
+    exact hρ.supportInv_mul_self
+  have hsigma_support : ∀ i,
+      hρ.supportProj * sigma i * hρ.supportProj = sigma i := by
+    intro i
+    have hker : ∀ v : α → ℂ, ρ *ᵥ v = 0 → sigma i *ᵥ v = 0 := fun v hv =>
+      Matrix.PosSemidef.mulVec_eq_zero_of_sum_mulVec_eq_zero hsigma (by rwa [hsum]) i
+    have hright : sigma i * hρ.isHermitian.supportProj = sigma i :=
+      hρ.isHermitian.mul_supportProj_eq_self_of_mulVec_kernel_le hker
+    have hleft : hρ.isHermitian.supportProj * sigma i = sigma i := by
+      have h := congrArg Matrix.conjTranspose hright
+      simpa only [Matrix.conjTranspose_mul, hρ.isHermitian.supportProj_isHermitian.eq,
+        (hsigma i).isHermitian.eq] using h
+    change hρ.isHermitian.supportProj * sigma i * hρ.isHermitian.supportProj = sigma i
+    rw [hleft, hright]
+  have hCX : ∀ i, C * X i * Cᴴ = sigma i := by
+    intro i
+    have hstep : C * X i * Cᴴ = (C * Cinv) * sigma i * (Cinvᴴ * Cᴴ) := by
+      simp only [X, Matrix.mul_assoc]
+    rw [hstep, mul_purificationPinv hρ hCC, hCinvHCH]
+    exact hsigma_support i
+  have hCHCinvH : Cᴴ * Cinvᴴ = Cinv * C := by
+    change Cᴴ * (purificationPinv hρ C)ᴴ = purificationPinv hρ C * C
+    rw [purificationPinv_conjTranspose, purificationPinv, ← Matrix.mul_assoc]
+  have hXsum : ∑ i, X i = Cinv * C := by
+    have hpull : ∑ i, X i = Cinv * (∑ i, sigma i) * Cinvᴴ := by
+      simp only [X, ← Matrix.mul_sum, ← Matrix.sum_mul]
+    rw [hpull, hsum, ← hCC]
+    calc Cinv * (C * Cᴴ) * Cinvᴴ = Cinv * (C * (Cᴴ * Cinvᴴ)) := by
+          simp only [Matrix.mul_assoc]
+      _ = Cinv * (C * (Cinv * C)) := by rw [hCHCinvH]
+      _ = Cinv * C * (Cinv * C) := by simp only [Matrix.mul_assoc]
+      _ = Cinv * C := (isOrthogonalProjection_purificationPinv_mul hρ hCC).2
+  let L := purificationPinvComplement hρ C
+  have hLpsd : L.PosSemidef := purificationPinvComplement_posSemidef hρ hCC
+  have hLtranspose : Lᵀ = 1 - Cinv * C := rfl
+  let E : Fin n → Matrix (Fin dB) (Fin dB) ℂ :=
+    fun i => (X i)ᵀ + if i = i0 then L else 0
+  have hEpsd : ∀ i, (E i).PosSemidef := by
+    intro i
+    refine Matrix.PosSemidef.add (hXpsd i).transpose ?_
+    split
+    · exact hLpsd
+    · exact Matrix.PosSemidef.zero
+  have hEsum : ∑ i, E i = 1 := by
+    have hsum1 : ∑ i, E i = (∑ i, X i)ᵀ + L := by
+      simp only [E]
+      rw [Finset.sum_add_distrib, Matrix.transpose_sum]
+      congr 1
+      rw [Finset.sum_ite_eq' Finset.univ i0 (fun _ => L)]
+      simp
+    rw [hsum1, hXsum]
+    change (Cinv * C)ᵀ + (1 - Cinv * C)ᵀ = 1
+    rw [← Matrix.transpose_add]
+    have : Cinv * C + (1 - Cinv * C) = (1 : Matrix (Fin dB) (Fin dB) ℂ) := by
+      abel
+    rw [this, Matrix.transpose_one]
+  let P : POVM dB n := ⟨E, hEpsd, hEsum⟩
+  refine ⟨P, fun i => ?_⟩
+  change sigma i = C * (E i)ᵀ * Cᴴ
+  by_cases hi : i = i0
+  · subst hi
+    have hEi0 : E i0 = (X i0)ᵀ + L := by simp [E]
+    have hEi : (E i0)ᵀ = X i0 + (1 - Cinv * C) := by
+      rw [hEi0, Matrix.transpose_add, Matrix.transpose_transpose, hLtranspose]
+    have hzero : C * (1 - Cinv * C) * Cᴴ = 0 :=
+      mul_purificationPinvComplement_mul hρ hCC
+    rw [hEi, Matrix.mul_add, Matrix.add_mul, hCX i0, hzero, add_zero]
+  · have hEi : (E i)ᵀ = X i := by
+      simp only [E, ite_eq_right hi]
+      rw [Matrix.transpose_add, Matrix.transpose_transpose, Matrix.transpose_zero, add_zero]
+    rw [hEi, hCX i]
 
 /-- **Wolf Proposition (Quantum steering)**, Chapter 1, lines 348--357;
 proof sketch lines 359--370. For a density operator `ρ` with purification
@@ -274,7 +388,9 @@ theorem exists_instrument_of_isConvexDecomposition (hρ : ρ.PosSemidef) (_hρtr
     have hpull : ∑ i, X i = Cinv * (∑ i, lam i • rho' i) * Cinvᴴ := by
       simp only [hXdef, ← Matrix.mul_sum, ← Matrix.sum_mul]
     rw [hpull, hsum, ← hCC]
-    calc Cinv * (C * Cᴴ) * Cinvᴴ = Cinv * (C * (Cᴴ * Cinvᴴ)) := by simp only [Matrix.mul_assoc]
+    calc
+      Cinv * (C * Cᴴ) * Cinvᴴ = Cinv * (C * (Cᴴ * Cinvᴴ)) := by
+        simp only [Matrix.mul_assoc]
       _ = Cinv * (C * (Cinv * C)) := by rw [hCHCinvH]
       _ = Cinv * C * (Cinv * C) := by simp only [Matrix.mul_assoc]
       _ = Cinv * C := (isOrthogonalProjection_purificationPinv_mul hρ hCC).2
