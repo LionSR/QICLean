@@ -10,7 +10,7 @@
 
 \title{The nonempty-family condition in Wolf's Radon--Nikodym theorem}
 \author{}
-\date{2026-06-16}
+\date{2026-08-23}
 
 \begin{document}
 \maketitle
@@ -19,9 +19,15 @@
 \section{Source statement}
 
 Wolf's Radon--Nikodym theorem for quantum instruments states that, if
-\(\{T_i\}\) is a family of completely positive maps satisfying
-\(\sum_i T_i=T\) and
+\(\{T_i\}\) is a family of completely positive linear maps
 \[
+  T_i,T:\mathcal M_{d'}\longrightarrow\mathcal M_d
+\]
+satisfying \(\sum_i T_i=T\), and if a Stinespring representation of the total
+map is supplied by
+\[
+  V:\mathbb C^d\longrightarrow\mathbb C^{d'}\otimes\mathbb C^r,
+  \qquad
   T(A)=V^\dagger(A\otimes \mathbf 1_r)V,
 \]
 then there are positive operators \(P_i\in\mathcal M_r\) such that
@@ -37,9 +43,10 @@ The local source is
 
 \section{Local boundary}
 
-The Lean theorem \leanid{IsCPMap.radon_nikodym_of_stinespring} makes the index
-type nonempty.  This is not a strengthening of a mathematical hypothesis in the
-substantive case; it is the finite-type boundary needed for the identity
+The source-facing Lean theorem
+\leanid{IsKrausCP.radon_nikodym_of_stinespring} makes the finite index type
+nonempty. This is not a strengthening of a mathematical hypothesis in the
+substantive case; it is the finite-family boundary needed for the identity
 \[
   \sum_i P_i=\mathbf 1_r
 \]
@@ -53,8 +60,16 @@ the index type were empty, then the hypotheses \(\sum_i T_i=T\) force
 in \(\mathcal M_r\), which is false for a nonzero dilation dimension.
 
 Thus the formal theorem states the source theorem in the nonempty instrument
-case.  The blueprint entry records the same boundary explicitly by saying
-``nonempty finite family.''
+case, with its rectangular Heisenberg dimensions made explicit. The older
+\leanid{IsCPMap.radon_nikodym_of_stinespring} theorem is retained as the
+square-algebra specialization.
+
+The formal proof follows the Kraus-freedom route. Choose rectangular Kraus
+families for the component maps, combine them into one labelled family, pad one
+component by zero Kraus operators, and compare that family with the adjoints
+of the ancilla blocks of the supplied Stinespring matrix. Rectangular Kraus
+freedom gives an isometry whose fibre Gram matrices are the
+operators \(P_i\). No Douglas-factorization argument is used.
 
 \section{Elimination plan}
 

@@ -205,9 +205,12 @@ statement or proof route of Theorem~2.3.
 \label{sec:radon-nikodym}
 
 \paragraph{Formalization trigger.}
-The Lean theorem
-\leanid{IsCPMap.radon_nikodym_of_stinespring} makes the finite index type
-nonempty. The boundary is documented in
+The source-facing Lean theorem
+\leanid{IsKrausCP.radon_nikodym_of_stinespring} makes the finite index type
+nonempty. It has Wolf's rectangular Heisenberg dimensions
+$T_i,T:\mathcal M_{d'}\to\mathcal M_d$ and
+$V:\mathbb C^d\to\mathbb C^{d'}\otimes\mathbb C^r$. The boundary is
+documented in
 \path{docs/paper-gaps/wolf_radon_nikodym_nonempty_family.tex}.
 
 \paragraph{Printed source and its role.}
@@ -224,13 +227,29 @@ $T_i(A)=V^\dagger(A\otimes P_i)V$.''
 \end{quote}
 
 \paragraph{Formal statement.}
-The formal theorem uses a \emph{nonempty finite family}
-$\{T_i\}_{i\in\iota}$ and concludes
+The formal theorem uses a \emph{nonempty finite family} of completely positive
+linear maps
+$T_i,T:\mathcal M_{d'}\to\mathcal M_d$ with
+$\sum_{i\in\iota}T_i=T$, together with a supplied map
+$V:\mathbb C^d\to\mathbb C^{d'}\otimes\mathbb C^r$ satisfying
+$T(A)=V^\dagger(A\otimes I_r)V$. It concludes that there are positive
+semidefinite operators $P_i\in\mathcal M_r$ such that
 \begin{equation}
   \sum_{i\in\iota}P_i=I_r,
   \qquad
   T_i(A)=V^\dagger(A\otimes P_i)V.
 \end{equation}
+The declaration \leanid{IsCPMap.radon_nikodym_of_stinespring} is retained as
+the square-algebra specialization.
+
+\paragraph{Formal proof path.}
+The proof chooses rectangular Kraus families for the component maps, combines
+them into one labelled family, and pads one component with zero Kraus operators.
+It then compares this family with the adjoints of the ancilla blocks of the
+supplied Stinespring matrix. Rectangular Kraus freedom produces an isometry,
+and the Gram matrices of its
+labelled fibres give the operators $P_i$. This is the compiled Kraus-freedom
+proof route; it does not use Douglas factorization.
 
 \paragraph{Why the boundary is needed.}
 If the index type is empty, then $\sum_iT_i=T$ forces $T=0$. Taking the zero
