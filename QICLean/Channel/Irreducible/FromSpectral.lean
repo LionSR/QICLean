@@ -7,6 +7,7 @@ import QICLean.Channel.Irreducible.Ergodicity
 import QICLean.Channel.Irreducible.Basic
 import QICLean.Channel.Irreducible.KrausSetup
 import QICLean.Channel.Irreducible.SpectralRadius
+import QICLean.Channel.KrausGauge
 
 /-!
 # Irreducibility from spectral properties (Wolf Theorem 6.4)
