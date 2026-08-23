@@ -212,6 +212,68 @@ Proposition~3.6.
     complex dimension $r^2=\rank(P)^2$.
 \end{proof}
 
+\begin{theorem}[Positive Hermitian-rank preservers]
+    \label{thm:positive_hermitian_rank_preserver_standard_form}
+    \lean{IsPositiveMap.exists_isUnit_det_conj_or_transpose_of_preserves_hermitian_rank}
+    \leanok
+    \uses{def:positive_map, thm:conjugation_filters_preserve_positivity,
+        lem:conj_inv_sqrt_normalizes,
+        thm:hermitian_spectrum_preserver_classification}
+    Let $T:\MN{D}\to\MN{D}$ be a positive complex-linear map. Suppose that
+    \begin{align}
+        \rank(T(H)) & =\rank(H)
+        \notag
+    \end{align}
+    for every Hermitian matrix $H\in\MN{D}$. Then there is an invertible matrix
+    $Y\in\MN{D}$ such that either
+    \begin{align}
+        T(X) & =YXY^\dagger
+        \notag
+    \end{align}
+    for every $X\in\MN{D}$, or
+    \begin{align}
+        T(X) & =YX^{\mathsf T}Y^\dagger
+        \notag
+    \end{align}
+    for every $X\in\MN{D}$. This is precisely the implication
+    (2) $\Rightarrow$ (3) of \cite[Proposition~3.6]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:conjugation_filters_preserve_positivity,
+        lem:conj_inv_sqrt_normalizes,
+        thm:hermitian_spectrum_preserver_classification}
+    Put $A=T(\Id)$, $S=\sqrt{A}$, and $R=S^{-1}$. Positivity and rank
+    preservation imply that $A$ is positive definite. The normalized map
+    \begin{align}
+        \widetilde T(X) & =R\,T(X)\,R
+        \notag
+    \end{align}
+    is therefore positive, unital, and rank preserving on Hermitian matrices.
+    For every Hermitian $H$ and every real $\lambda$, unitality and the
+    rank-drop characterization of the spectrum give
+    \begin{align}
+        \lambda\in\sigma(\widetilde T(H))
+        & \iff \rank\!\left(\widetilde T(H)-\lambda\Id\right)<D \\
+        & \iff \rank\!\left(\widetilde T(H-\lambda\Id)\right)<D \\
+        & \iff \rank(H-\lambda\Id)<D
+        \iff \lambda\in\sigma(H).
+        \notag
+    \end{align}
+    Thus $\widetilde T$ preserves the spectrum of every Hermitian matrix.
+    Theorem~\ref{thm:hermitian_spectrum_preserver_classification} yields a
+    unitary $U$ such that $\widetilde T(X)=UXU^\dagger$ for all $X$, or
+    $\widetilde T(X)=UX^{\mathsf T}U^\dagger$ for all $X$. Since
+    $T(X)=S\widetilde T(X)S$, either formula has the required form with the
+    corrected denormalization factor
+    \begin{align}
+        Y & =\sqrt{T(\Id)}\,U.
+        \notag
+    \end{align}
+    This factor, rather than $U(T(\Id))^{-1/2}$ printed in the final line of
+    the cited proof, undoes the displayed normalization.
+\end{proof}
+
 \begin{theorem}[Conjugations preserve the positive semidefinite cone]
     \label{thm:conjugation_maps_psd_cone_onto}
     \lean{unitaryConjLM_mapsPSDConeOnto,
