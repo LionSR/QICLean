@@ -47,6 +47,9 @@ finite dimension).
 * `IsPositiveMap.exists_strictMono_tendsto_pow_peripheralProjection`:
   **Wolf Proposition 6.3(i)** — `T^(nᵢ) → T_φ` pointwise along a strictly
   monotone recurrent subsequence.
+* `Module.End.mem_range_peripheralProjection_iff`: the range of `T_φ` is
+  exactly the set of vectors to which positive powers of `T` return
+  arbitrarily closely.
 * `IsPositiveMap.peripheralProjection_isPositiveMap`,
   `IsPositiveMap.peripheralProjection_isTracePreservingMap`,
   `IsPositiveMap.peripheralProjection_isCPMap`: `T_φ` inherits positivity,
@@ -483,6 +486,156 @@ theorem peripheralProjection_isCPMap
   exact IsCPMap.of_tendsto_toCLM (fun i ↦ IsCPMap.pow hCP (n i)) hn
 
 end IsPositiveMap
+
+/-! ### Recurrent-vector characterization of the peripheral range -/
+
+namespace Module.End
+
+variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
+
+/-- If the powers of an endomorphism send `x` to zero, then arbitrarily close
+returns at positive exponents force `x = 0`. Large exponents are separated from
+`x` by convergence to zero; among the finitely many smaller positive exponents,
+an exact return would make `x` periodic and contradict the same convergence. -/
+private theorem eq_zero_of_tendsto_pow_apply_zero_of_recurrent
+    {f : Module.End ℂ V} {x : V}
+    (hzero : Tendsto (fun n : ℕ ↦ (f ^ n) x) atTop (𝓝 0))
+    (hrec : ∀ ε : ℝ, 0 < ε → ∃ n : ℕ, 0 < n ∧ ‖(f ^ n) x - x‖ ≤ ε) :
+    x = 0 := by
+  classical
+  by_contra hx
+  have hxnorm : 0 < ‖x‖ := norm_pos_iff.mpr hx
+  have hne : ∀ n : ℕ, 0 < n → (f ^ n) x ≠ x := by
+    intro n hn hfix
+    have hpow : ∀ k : ℕ, ((f ^ n) ^ k) x = x := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [pow_succ', Module.End.mul_apply, ih, hfix]
+    have hlimzero : Tendsto (fun k : ℕ ↦ (f ^ (n * k)) x) atTop (𝓝 0) :=
+      hzero.comp (strictMono_id.const_mul hn).tendsto_atTop
+    have hlimself : Tendsto (fun k : ℕ ↦ (f ^ (n * k)) x) atTop (𝓝 x) :=
+      tendsto_const_nhds.congr' <| Filter.Eventually.of_forall fun k ↦ by
+        change x = (f ^ (n * k)) x
+        rw [pow_mul]
+        exact (hpow k).symm
+    exact hx (tendsto_nhds_unique hlimself hlimzero)
+  obtain ⟨N, hN⟩ := Metric.tendsto_atTop.mp hzero (‖x‖ / 2) (by positivity)
+  let s : Finset ℝ :=
+    insert (‖x‖ / 2) ((Finset.Ico 1 N).image fun n ↦ ‖(f ^ n) x - x‖)
+  have hs : s.Nonempty := by
+    simp [s]
+  let δ : ℝ := s.min' hs
+  have hδpos : 0 < δ := by
+    dsimp [δ]
+    rw [Finset.lt_min'_iff]
+    intro y hy
+    simp only [s, Finset.mem_insert, Finset.mem_image] at hy
+    rcases hy with rfl | ⟨n, hn, rfl⟩
+    · positivity
+    · exact norm_pos_iff.mpr <| sub_ne_zero.mpr <| hne n (Finset.mem_Ico.mp hn).1
+  have hδle : ∀ n : ℕ, 0 < n → δ ≤ ‖(f ^ n) x - x‖ := by
+    intro n hn
+    by_cases hnN : n < N
+    · dsimp [δ]
+      apply Finset.min'_le
+      simp only [s, Finset.mem_insert, Finset.mem_image]
+      exact Or.inr ⟨n, Finset.mem_Ico.mpr ⟨hn, hnN⟩, rfl⟩
+    · have hsmall : ‖(f ^ n) x‖ < ‖x‖ / 2 := by
+        simpa only [dist_zero_right] using hN n (le_of_not_gt hnN)
+      have hhalf_lt : ‖x‖ / 2 < ‖(f ^ n) x - x‖ := by
+        calc
+          ‖x‖ / 2 < ‖x‖ - ‖(f ^ n) x‖ := by linarith
+          _ ≤ ‖x - (f ^ n) x‖ := norm_sub_norm_le _ _
+          _ = ‖(f ^ n) x - x‖ := norm_sub_rev _ _
+      have hδhalf : δ ≤ ‖x‖ / 2 := by
+        dsimp [δ]
+        apply Finset.min'_le
+        simp [s]
+      exact hδhalf.trans hhalf_lt.le
+  obtain ⟨n, hn, hclose⟩ := hrec (δ / 2) (by positivity)
+  linarith [hδle n hn]
+
+variable {D : ℕ} [NeZero D]
+  {T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
+
+/-- **Wolf, Section 6.3 (after Equation (6.15)): recurrent-vector
+characterization.** A matrix lies in the range of the peripheral projection if
+and only if positive powers of the map return arbitrarily close to it.
+
+Wolf writes `n ∈ ℕ` with the convention that natural numbers are positive. Here
+`ℕ` includes zero, so the explicit condition `0 < n` is required: the zeroth
+power would make the recurrence condition vacuous. Local source
+`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 258--271. -/
+theorem mem_range_peripheralProjection_iff
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
+    (X : Matrix (Fin D) (Fin D) ℂ) :
+    X ∈ LinearMap.range T.peripheralProjection ↔
+      ∀ ε : ℝ, 0 < ε → ∃ n : ℕ, 0 < n ∧ ‖(T ^ n) X - X‖ ≤ ε := by
+  constructor
+  · intro hX ε hε
+    rw [T.range_peripheralProjection] at hX
+    have hPX : T.peripheralProjection X = X :=
+      T.peripheralProjection_apply_of_mem hX
+    obtain ⟨n, hnmono, hn0, hn⟩ :=
+      hPos.exists_strictMono_tendsto_pow_peripheralProjection hTP
+    obtain ⟨i, hi⟩ := Metric.tendsto_atTop.mp (hn X) ε hε
+    refine ⟨n i, lt_of_lt_of_le hn0 (hnmono.monotone (Nat.zero_le i)), ?_⟩
+    simpa only [hPX, dist_eq_norm] using (hi i le_rfl).le
+  · intro hrec
+    have hb : ∀ μ : ℂ, T.HasEigenvalue μ → ‖μ‖ ≤ 1 := fun μ hμ ↦
+      (hPos.hasBoundedOrbits_of_tracePreserving hTP).norm_le_one_of_hasEigenvalue hμ
+    let Y := X - T.peripheralProjection X
+    have hzero : Tendsto (fun n : ℕ ↦ (T ^ n) Y) atTop (𝓝 0) :=
+      T.tendsto_pow_apply_zero_of_mem_nonPeripheralSubspace hb
+        (T.sub_peripheralProjection_mem X)
+    have hrecY : ∀ ε : ℝ, 0 < ε → ∃ n : ℕ, 0 < n ∧ ‖(T ^ n) Y - Y‖ ≤ ε := by
+      intro ε hε
+      have hPcont : Continuous T.peripheralProjection :=
+        T.peripheralProjection.continuous_of_finiteDimensional
+      obtain ⟨δ, hδpos, hδ⟩ := Metric.continuousAt_iff.mp hPcont.continuousAt
+        (ε / 2) (by positivity)
+      let η := min (δ / 2) (ε / 2)
+      have hηpos : 0 < η := by
+        dsimp [η]
+        positivity
+      obtain ⟨n, hn, hclose⟩ := hrec η hηpos
+      refine ⟨n, hn, ?_⟩
+      have hcomm : T.peripheralProjection ((T ^ n) X) =
+          (T ^ n) (T.peripheralProjection X) := by
+        simpa only [Module.End.mul_apply] using LinearMap.congr_fun
+          (T.commute_peripheralProjection.pow_right n).eq X
+      have hEq : (T ^ n) Y - Y =
+          ((T ^ n) X - X) - T.peripheralProjection ((T ^ n) X - X) := by
+        dsimp [Y]
+        rw [map_sub, map_sub, hcomm]
+        abel
+      have hdiffδ : ‖(T ^ n) X - X‖ < δ := calc
+        ‖(T ^ n) X - X‖ ≤ η := hclose
+        _ ≤ δ / 2 := min_le_left _ _
+        _ < δ := by linarith
+      have hdiffε : ‖(T ^ n) X - X‖ ≤ ε / 2 :=
+        hclose.trans (min_le_right _ _)
+      have hPsmall : ‖T.peripheralProjection ((T ^ n) X - X)‖ < ε / 2 := by
+        have := hδ (show dist ((T ^ n) X - X) 0 < δ by
+          simpa only [dist_zero_right] using hdiffδ)
+        simpa only [map_zero, dist_zero_right] using this
+      calc
+        ‖(T ^ n) Y - Y‖ =
+            ‖((T ^ n) X - X) - T.peripheralProjection ((T ^ n) X - X)‖ :=
+          congrArg norm hEq
+        _ ≤ ‖(T ^ n) X - X‖ + ‖T.peripheralProjection ((T ^ n) X - X)‖ :=
+          norm_sub_le _ _
+        _ ≤ ε / 2 + ε / 2 := add_le_add hdiffε hPsmall.le
+        _ = ε := by ring
+    have hYzero : Y = 0 :=
+      eq_zero_of_tendsto_pow_apply_zero_of_recurrent hzero hrecY
+    change X - T.peripheralProjection X = 0 at hYzero
+    have hPX : T.peripheralProjection X = X := (sub_eq_zero.mp hYzero).symm
+    exact ⟨X, hPX⟩
+
+end Module.End
 
 /-! ### Channel packaging and the mean-ergodic absorption identity -/
 

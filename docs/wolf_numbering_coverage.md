@@ -525,7 +525,13 @@ The three clauses of the proposition are represented by:
   $T_\varphi=T\,T_\phi$;
 * `IsPositiveMap.tendsto_birkhoffAverage_meanErgodicProjection_of_tracePreserving`
   — the Cesàro means converge to $T_\infty$ for the positive trace-preserving
-  maps of the proposition.
+  maps of the proposition;
+* `Module.End.mem_range_peripheralProjection_iff` — the recurrent-vector
+  characterization after Equation (6.15): $X$ lies in the range of $T_\phi$
+  exactly when, for every $\varepsilon>0$, some positive power satisfies
+  $\lVert T^n(X)-X\rVert\leq\varepsilon$. The explicit requirement $n>0$
+  records Wolf's positive-integer convention; allowing $n=0$ would make the
+  condition vacuous.
 
 For the positive and trace-preserving conclusions concerning $T_\infty$:
 
