@@ -201,10 +201,11 @@ theorem Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap_gen
   `T(ρ)_{ij} = ∑_k (V ρ V†)_{(i,k),(j,k)} = tr_r(V ρ V†)`
 
 where `tr_r` denotes partial trace over the dilation space `ℂ^r`. -/
-theorem stinespring_schrodinger_representation {r : ℕ}
-    (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
-    (X : Matrix (Fin D) (Fin D) ℂ)
-    (i j : Fin D) :
+theorem stinespring_schrodinger_representation {r : ℕ} {α β : Type*}
+    [Fintype α]
+    (K : Fin r → Matrix β α ℂ)
+    (X : Matrix α α ℂ)
+    (i j : β) :
     (∑ l : Fin r, K l * X * (K l)ᴴ) i j =
     ∑ k : Fin r,
       (stinespringV K * X * (stinespringV K)ᴴ) (i, k) (j, k) := by

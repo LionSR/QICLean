@@ -5,6 +5,7 @@ Authors: Sirui Lu
 -/
 import QICLean.Channel.ChoiRectangular
 import QICLean.Channel.KrausRectangular
+import QICLean.Channel.OpenSystemRectangular
 import QICLean.Channel.POVM
 import QICLean.Channel.QuantumSteering
 
@@ -43,40 +44,6 @@ noncomputable def choiPurificationCoeff
     (V : Matrix (Fin d' × Fin r) (Fin d) ℂ) :
     Matrix (Fin d' × Fin d) (Fin r) ℂ :=
   fun ai e => ((1 : ℂ) / ((d : ℝ).sqrt : ℂ)) * V (ai.1, e) ai.2
-
-/-- Embed an input vector `x ∈ ℂ^d` as `x ⊗ φ`, where Wolf's fixed
-initial environment vector has type `φ ∈ ℂ^{d'} ⊗ ℂ^{d'}`. The ambient input
-space therefore has exact dimension `d * (d')^2`. -/
-noncomputable def openSystemInputEmbedding
-    (φ : Fin d' × Fin d' → ℂ) :
-    Matrix (Fin d × (Fin d' × Fin d')) (Fin d) ℂ :=
-  fun p i => if p.1 = i then φ p.2 else 0
-
-/-- Wolf's fixed-state input `ρ ⊗ |φ⟩⟨φ|` from Equation (2.14), indexed as
-`ℂ^d ⊗ (ℂ^{d'} ⊗ ℂ^{d'})`. -/
-noncomputable def openSystemInput
-    (φ : Fin d' × Fin d' → ℂ) (ρ : Matrix (Fin d) (Fin d) ℂ) :
-    Matrix (Fin d × (Fin d' × Fin d')) (Fin d × (Fin d' × Fin d')) ℂ :=
-  Matrix.kroneckerMap (· * ·) ρ (Matrix.vecMulVec φ (star φ))
-
-/-- The fixed-state input is the compression through
-`openSystemInputEmbedding`: `(𝟙_d ⊗ |φ⟩) ρ (𝟙_d ⊗ ⟨φ|)`. -/
-theorem openSystemInput_eq_embedding
-    (φ : Fin d' × Fin d' → ℂ) (ρ : Matrix (Fin d) (Fin d) ℂ) :
-    openSystemInput φ ρ =
-      openSystemInputEmbedding φ * ρ * (openSystemInputEmbedding φ)ᴴ := by
-  classical
-  ext ⟨i, s⟩ ⟨j, t⟩
-  simp only [openSystemInput, Matrix.kroneckerMap_apply, Matrix.vecMulVec_apply,
-    Pi.star_apply, RCLike.star_def, Matrix.mul_apply, openSystemInputEmbedding, ite_mul,
-    zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Matrix.conjTranspose_apply]
-  rw [Finset.sum_eq_single j]
-  · simp
-    ring
-  · intro x _ hx
-    have hjx : j ≠ x := fun h => hx h.symm
-    simp [hjx]
-  · simp
 
 /-- Reindex the output of Wolf's supplied open-system operator from
 `environment ⊗ output` to the output-first convention `output ⊗ environment`
