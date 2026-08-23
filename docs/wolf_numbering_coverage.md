@@ -159,17 +159,24 @@ project import.
     corollary that constructs compatible dilations by appending Kraus
     families; it is no longer identified with the supplied source theorem ✓
 
-* **Theorem 2.4** (Radon–Nikodym for CP maps):
+* **Theorem 2.4** (Radon–Nikodym for quantum instruments):
   - `Matrix.blockDiagTopProj` / `Matrix.blockDiagBotProj` — orthogonal
     block projectors on the dilation space, PSD and summing to `𝟙` ✓
   - `Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap` — Kronecker
     identity `A ⊗ (CᴴC) = (𝟙 ⊗ C)ᴴ (A ⊗ 𝟙) (𝟙 ⊗ C)` ✓
-  - `IsCPMap.radon_nikodym_of_stinespring` — Wolf, *Quantum Channels &
-    Operations*, Theorem 2.4, source-faithful finite-family form relative to a
-    supplied Stinespring representation ✓
+  - `IsKrausCP.radon_nikodym_of_stinespring` — the source-facing rectangular
+    Heisenberg theorem: for a nonempty finite family of CP maps
+    `Tᵢ, T : M_{d'}(ℂ) → M_d(ℂ)` with `∑ᵢ Tᵢ = T` and a supplied
+    `V : ℂ^d → ℂ^{d'} ⊗ ℂ^r` satisfying `T(A) = V†(A ⊗ 𝟙_r)V`, there are
+    PSD `Pᵢ ∈ M_r(ℂ)` with `∑ᵢ Pᵢ = 𝟙_r` and
+    `Tᵢ(A) = V†(A ⊗ Pᵢ)V` ✓
+  - `IsCPMap.radon_nikodym_of_stinespring` — the retained square-algebra
+    specialization `d' = d`, provided as a legacy API and proved by the same
+    Kraus-family/Kraus-freedom route ✓
   - `IsCPMap.exists_radon_nikodym` — binary block-diagonal corollary:
-    for CP `T₁, T₂`, a constructed Stinespring matrix for `T₁ + T₂` yields
-    PSD `P₁ + P₂ = 𝟙` with `Tᵢ(A) = V†(A ⊗ Pᵢ)V` ✓
+    for square CP maps `T₁, T₂`, a constructed Stinespring matrix for
+    `T₁ + T₂` yields PSD `P₁ + P₂ = 𝟙` with
+    `Tᵢ(A) = V†(A ⊗ Pᵢ)V` ✓
 
 * **Theorem 2.5, Equation (2.14)** (open-system representation):
   - `Channel.IsKrausCPTP.exists_openSystem_unitary` — the source-facing

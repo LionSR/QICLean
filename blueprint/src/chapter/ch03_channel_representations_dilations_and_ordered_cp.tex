@@ -587,45 +587,47 @@ a common dilation space.
     and $P_{\mathrm{top}}+P_{\mathrm{bot}}=\Id$.
 \end{definition}
 
-\begin{theorem}[Radon--Nikodym theorem for finite quantum instruments]
+\begin{theorem}[Radon--Nikodym theorem for quantum instruments]
     \label{thm:cp_radon_nikodym_of_stinespring}
-    \lean{IsCPMap.radon_nikodym_of_stinespring}
+    \lean{IsKrausCP.radon_nikodym_of_stinespring}
     \leanok
-    \uses{def:cp_map, def:stinespring_v}
-    Let $\{T_i\}_{i\in I}$ be a nonempty finite family of completely positive
-    maps, let $T:\MN{D}\to\MN{D}$ satisfy $\sum_{i\in I}T_i=T$, and
-    suppose that $T$ has a supplied Stinespring representation
+    \uses{def:is_kraus_cp, def:stinespring_v}
+    Let $I$ be a nonempty finite set, and let
+    $T_i,T:\MN{d'}\to\MN{d}$ be completely positive linear maps such that
+    $\sum_{i\in I}T_i=T$. Suppose that a Stinespring representation of $T$ is
+    supplied by a linear map
+    $V:\C^d\to\C^{d'}\otimes\C^r$ satisfying
     \begin{align}
         T(A)
-        &=V^\dagger(A\otimes\Id_r)V.
+        &=V^\dagger(A\otimes\Id_r)V
+        \qquad (A\in\MN{d'}).
         \label{eq:representations_radon_dilation}
     \end{align}
-    Then there are positive semidefinite operators $P_i\in\MN{r}$ with
+    Then there are positive semidefinite operators $P_i\in\MN{r}$ such that
     \begin{align}
         \sum_{i\in I}P_i
-        &=\Id_r.
-        \label{eq:representations_radon_resolution}
-    \end{align}
-    For every $i\in I$ and $A\in\MN{D}$,
-    \begin{align}
+        &=\Id_r,
+        \label{eq:representations_radon_resolution}\\
         T_i(A)
-        &=V^\dagger(A\otimes P_i)V.
+        &=V^\dagger(A\otimes P_i)V
+        \qquad (i\in I,\ A\in\MN{d'}).
         \label{eq:representations_radon_components}
     \end{align}
-    This is \cite[Theorem~2.4]{Wolf2012Quantum}, with the nonempty-family condition
-    made explicit; see
-    \cite{gap:wolf_radon_nikodym_nonempty_family}.
+    This is the rectangular Heisenberg-picture statement of
+    \cite[Theorem~2.4]{Wolf2012Quantum}. The nonempty-family condition is made
+    explicit; see \cite{gap:wolf_radon_nikodym_nonempty_family}.
 \end{theorem}
 
 \begin{proof}\leanok
     \uses{thm:kraus_rectangular_freedom'}
-    Choose Kraus families for the component maps $T_i$ and group all their
-    Kraus operators into one finite family. Add zero Kraus operators to one
-    component so that this grouped family has at least as many rows as the
-    supplied Stinespring dilation. Write the grouped Kraus operators as
-    $B_\alpha$, with a label map $\ell(\alpha)\in I$, and write the Kraus
-    operators obtained from the blocks of $V$ as $A_j$. Rectangular Kraus
-    freedom gives a matrix $W$ with
+    Choose rectangular Kraus families for the component maps $T_i$ and group
+    all their Kraus operators into one finite family. Add zero Kraus operators
+    to one component so that this grouped family has at least as many rows as
+    the supplied Stinespring dilation. Write the grouped Kraus operators as
+    $B_\alpha:\C^{d'}\to\C^d$, with a label map $\ell(\alpha)\in I$, and write
+    the ancilla blocks of $V$ as $K_j:\C^d\to\C^{d'}$, and take their
+    adjoints $A_j=K_j^\dagger:\C^{d'}\to\C^d$ as Kraus operators.
+    Rectangular Kraus freedom gives a matrix $W$ with
     \begin{align}
         W^\dagger W
         &=\Id_r, \notag\\
@@ -657,6 +659,28 @@ a common dilation space.
     which proves the claim.
 \end{proof}
 
+\begin{corollary}[Square-algebra Radon--Nikodym theorem]
+    \label{cor:cp_radon_nikodym_of_stinespring_square}
+    \lean{IsCPMap.radon_nikodym_of_stinespring}
+    \leanok
+    \uses{thm:cp_radon_nikodym_of_stinespring}
+    Let $I$ be a nonempty finite set, and let
+    $T_i,T:\MN{D}\to\MN{D}$ be completely positive linear maps such that
+    $\sum_{i\in I}T_i=T$. If
+    $V:\C^D\to\C^D\otimes\C^r$ satisfies
+    $T(A)=V^\dagger(A\otimes\Id_r)V$, then there are positive semidefinite
+    operators $P_i\in\MN{r}$ satisfying
+    $\sum_{i\in I}P_i=\Id_r$ and
+    $T_i(A)=V^\dagger(A\otimes P_i)V$ for every $i\in I$ and $A\in\MN{D}$.
+\end{corollary}
+
+\begin{proof}\leanok
+    This is the specialization of
+    Theorem~\ref{thm:cp_radon_nikodym_of_stinespring} to $d'=d=D$. The legacy
+    square-algebra declaration is retained for compatibility; its formal proof
+    follows the same Kraus-family and rectangular Kraus-freedom argument.
+\end{proof}
+
 \begin{theorem}[Binary Radon--Nikodym theorem for CP maps]
     \label{thm:cp_exists_radon_nikodym}
     \lean{IsCPMap.exists_radon_nikodym}
@@ -678,8 +702,10 @@ a common dilation space.
     \label{rem:cp_radon_nikodym_scope}
     % Source-faithful scope note: Wolf's statement is the finite-family
     % theorem relative to a supplied Stinespring dilation.
-    Theorem~\ref{thm:cp_radon_nikodym_of_stinespring} treats a finite family
-    relative to a supplied Stinespring dilation. The binary case in
+    Theorem~\ref{thm:cp_radon_nikodym_of_stinespring} is Wolf's rectangular
+    finite-family theorem relative to a supplied Stinespring dilation.
+    Corollary~\ref{cor:cp_radon_nikodym_of_stinespring_square} records the
+    retained square-algebra API. The binary case in
     Theorem~\ref{thm:cp_exists_radon_nikodym} instead constructs a common
     dilation from the Kraus families of $T_1$ and $T_2$.
 \end{remark}
