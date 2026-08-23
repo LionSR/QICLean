@@ -509,6 +509,56 @@ Theorem~\ref{thm:trace_norm_abs}.
     matrices, so Theorem~\ref{thm:trace_norm_contractivity} applies.
 \end{proof}
 
+\begin{lemma}[Trace-norm contraction coefficient]
+    \label{lem:trace_norm_contraction_coefficient}
+    \lean{Matrix.traceNorm_contraction_coefficient_eq_half_sSup_orthogonal}
+    \leanok
+    \uses{def:trace_norm, def:density_matrices}
+    Let $T:\MN{D}\to\MN{D'}$ be a complex-linear map. Then
+    \begin{align}
+        \sup_{\substack{\rho_1,\rho_2\in\mc{D}_D\\ \rho_1\neq\rho_2}}
+        \frac{\lVert T(\rho_1)-T(\rho_2)\rVert_{\tr}}
+             {\lVert\rho_1-\rho_2\rVert_{\tr}}
+        =\frac12\sup_{\substack{\lVert\psi\rVert=\lVert\phi\rVert=1\\
+                                  \langle\psi,\phi\rangle=0}}
+        \left\lVert T\left(\ketbra{\psi}{\psi}
+                     -\ketbra{\phi}{\phi}\right)\right\rVert_{\tr}.
+        \label{eq:trace_norm_contraction_coefficient}
+    \end{align}
+    The left supremum is over distinct density matrices in $\MN{D}$, and the
+    right supremum is over orthogonal unit vectors in $\C^D$. No positivity or
+    trace-preservation assumption is imposed on $T$.
+    This is \cite[Chapter~8, Lemma~8.3, Eq.~(8.81)]{Wolf2012Quantum}.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:trace_norm_jordan, thm:trace_norm_homogeneous,
+      thm:trace_norm_triangle}
+    An orthogonal pair of pure states gives a pair of distinct density matrices
+    at trace-norm distance $2$, which proves the lower bound. For the reverse
+    inequality, set $H=\rho_1-\rho_2$ and write its Jordan decomposition as
+    $H=H^+-H^-$. Since $H$ is nonzero and traceless,
+    $\tr[H^+]=\tr[H^-]=t>0$. Thus $P=H^+/t$ and $Q=H^-/t$ are density matrices
+    with orthogonal supports, and homogeneity reduces the quotient for $H$ to
+    $\frac12\lVert T(P-Q)\rVert_{\tr}$.
+
+    Take spectral decompositions
+    $P=\sum_i\lambda_i\ketbra{\psi_i}{\psi_i}$ and
+    $Q=\sum_j\mu_j\ketbra{\phi_j}{\phi_j}$. Orthogonality of the supports gives
+    $\psi_i\perp\phi_j$ whenever $\lambda_i\mu_j\neq0$, while
+    $\lambda_i,\mu_j\geq0$ and $\sum_i\lambda_i=\sum_j\mu_j=1$. The
+    product-weight expansion
+    \begin{align}
+        P-Q=\sum_{i,j}\lambda_i\mu_j
+        \left(\ketbra{\psi_i}{\psi_i}-\ketbra{\phi_j}{\phi_j}\right)
+        \notag
+    \end{align}
+    is therefore a convex combination of differences of orthogonal pure
+    states. The triangle inequality and homogeneity bound its image under $T$
+    by the right-hand supremum. Taking the supremum over
+    $\rho_1\neq\rho_2$ proves the equality.
+\end{proof}
+
 \begin{lemma}[Scaled positive-part trace estimate]
     \label{lem:scaled_posPart_trace_estimate}
     \lean{Matrix.re_trace_posPart_map_le_of_scaledTrace}

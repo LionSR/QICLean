@@ -3,8 +3,8 @@ Copyright (c) 2026 Sirui Lu and TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
-import QICLean.Analysis.TraceNormAbs
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import QICLean.Analysis.TraceNormAbs
 
 /-!
 # Variational unitary formula and triangle inequality for the trace norm
@@ -37,6 +37,7 @@ Wolf's proof sketch, which is not available in Mathlib.
   `Matrix.traceNorm_eq_sSup_norm_trace_conjTranspose_mul_unitary` — Eq. (8.11)
   as an attained supremum.
 * `Matrix.traceNorm_add_le` — the triangle inequality.
+* `Matrix.traceNorm_sum_smul_le` — the finite nonnegative weighted-sum bound.
 
 ## References
 
@@ -309,5 +310,33 @@ theorem traceNorm_add_le (A B : Matrix (Fin D) (Fin D) ℂ) :
     _ ≤ traceNorm A + traceNorm B :=
         add_le_add (norm_trace_conjTranspose_mul_unitary_le A hU)
           (norm_trace_conjTranspose_mul_unitary_le B hU)
+
+/-- The trace norm of a finite sum is at most the sum of trace norms. -/
+theorem traceNorm_sum_le {ι : Type*} [Fintype ι]
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) :
+    traceNorm (∑ i, A i) ≤ ∑ i, traceNorm (A i) := by
+  classical
+  obtain ⟨U, hU, hEq⟩ := exists_mem_unitaryGroup_trace_conjTranspose_mul_eq (∑ i, A i)
+  calc
+    traceNorm (∑ i, A i) = ‖(((∑ i, A i)ᴴ * U).trace)‖ := by
+      rw [hEq, Complex.norm_of_nonneg (traceNorm_nonneg _)]
+    _ = ‖∑ i, ((A i)ᴴ * U).trace‖ := by
+      rw [conjTranspose_sum, Finset.sum_mul, trace_sum]
+    _ ≤ ∑ i, ‖((A i)ᴴ * U).trace‖ := norm_sum_le _ _
+    _ ≤ ∑ i, traceNorm (A i) :=
+      Finset.sum_le_sum fun i _ ↦ norm_trace_conjTranspose_mul_unitary_le (A i) hU
+
+/-- The trace norm of a finite nonnegative real weighted sum is at most the
+corresponding weighted sum of trace norms. -/
+theorem traceNorm_sum_smul_le {ι : Type*} [Fintype ι]
+    (w : ι → ℝ) (A : ι → Matrix (Fin D) (Fin D) ℂ) (hw : ∀ i, 0 ≤ w i) :
+    traceNorm (∑ i, (w i : ℂ) • A i) ≤ ∑ i, w i * traceNorm (A i) := by
+  calc
+    traceNorm (∑ i, (w i : ℂ) • A i) ≤ ∑ i, traceNorm ((w i : ℂ) • A i) :=
+      traceNorm_sum_le _
+    _ = ∑ i, w i * traceNorm (A i) := by
+      congr 1
+      funext i
+      rw [traceNorm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hw i)]
 
 end Matrix

@@ -71,6 +71,7 @@ import QICLean.Analysis.SupportCompression
 import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceNormAbs
+import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Analysis.TraceNormContractivity
 import QICLean.Analysis.TraceNormVariational
 import QICLean.Analysis.TwoProjectionAngleBlock
