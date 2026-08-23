@@ -9,7 +9,7 @@
 
 \title{Formalization-Derived Corrections to Wolf's \emph{Quantum Channels \& Operations}}
 \author{}
-\date{2026-07-13}
+\date{2026-08-23}
 
 \begin{document}
 \sloppy
@@ -94,6 +94,69 @@ that bound. Squaring is justified only after fixing the sign of the trace.
 This is a genuine source error. The unrestricted printed converse should not
 be claimed as formalized; the formal theorem proves the corrected,
 trace-nonnegative statement.
+
+\section{The false converse for Pauli-block truncation}
+\label{sec:pauli-block-truncation}
+
+\paragraph{Formalization trigger.}
+The forward preservation properties of Pauli-block truncation are formalized as
+\leanid{Wolf.pauliBlockDiagonalTruncation_isPositiveMap} and
+\leanid{Wolf.pauliBlockDiagonalTruncation_isCPMap} in
+\doclink{QICLean/Channel/LorentzNormalForm/PauliBlockTruncation}. The source
+error is documented in
+\path{docs/paper-gaps/wolf_prop2_10_block_truncation_converse.tex}.
+
+\paragraph{Printed source and its role.}
+In Section~2.4, after the Bloch-ball representation in Eq.~(2.39), Wolf's
+Proposition~2.10 considers the Pauli transfer matrix
+\begin{equation}
+  \widehat T=
+  \begin{pmatrix}
+    \widehat T_{00}&r^{\mathsf T}\\
+    v&\Delta
+  \end{pmatrix}
+\end{equation}
+of a Hermiticity-preserving map and prints the assertion that the block
+truncation
+\begin{equation}
+  \widehat T'=\widehat T_{00}\oplus\Delta
+\end{equation}
+is positive, respectively completely positive, if and only if $\widehat T$ is.
+The local source is
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~984--990.
+
+\paragraph{Correction.}
+With $\Theta(X)=\operatorname{tr}(X)\Id-X$ and
+$D=\operatorname{diag}(1,-1,-1,-1)$, the truncation is
+\begin{equation}
+  T'=\frac{T+\Theta\circ T\circ\Theta}{2},
+  \qquad
+  \widehat T'=\frac{\widehat T+D\widehat T D}{2}
+  =\widehat T_{00}\oplus\Delta.
+\end{equation}
+The valid statements are the forward implications
+\begin{equation}
+  T\text{ positive}\Longrightarrow T'\text{ positive},
+  \qquad
+  T\text{ completely positive}\Longrightarrow
+  T'\text{ completely positive}.
+\end{equation}
+These are exactly the directions proved in the source at lines~992--998 and
+formalized by the declarations above.
+
+\paragraph{Why the correction is necessary.}
+Let
+\begin{equation}
+  T(X)=\operatorname{tr}(X)\operatorname{diag}(3/2,-1/2).
+\end{equation}
+Then $T$ is Hermiticity preserving but not positive, since
+$T(\Id/2)=\operatorname{diag}(3/4,-1/4)$. Its Pauli-block truncation is the
+completely depolarizing channel $T'(X)=\operatorname{tr}(X)\Id/2$, which is
+completely positive. Thus both printed converses fail.
+
+\paragraph{Classification.}
+This is a genuine source error. The proof of Proposition~2.10 supports the two
+forward implications, not the printed equivalences.
 
 \section{The nonempty-family boundary in the Radon--Nikodym theorem}
 \label{sec:radon-nikodym}
@@ -200,8 +263,9 @@ errata entries:
 
 \section{Conclusion}
 
-At present the formalization-derived record contains one genuine mathematical
-source error (Section~\ref{sec:lorentz}), one explicit boundary convention
+At present the formalization-derived record contains two genuine mathematical
+source errors (Sections~\ref{sec:lorentz} and
+\ref{sec:pauli-block-truncation}), one explicit boundary convention
 (Section~\ref{sec:radon-nikodym}), and one local correction to a spectrum
 shorthand (Section~\ref{sec:two-pure-state-spectrum}). These are the corrections
 asserted by the Lean documentation itself.
