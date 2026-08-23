@@ -34,6 +34,26 @@ This chapter follows the convex-optimization framework of
     require it.
 \end{definition}
 
+\begin{definition}[Strict feasibility and attainment]
+    \label{def:conic_strict_feasibility_and_attainment}
+    \lean{ConicProgram.IsPrimalStrictlyFeasible,
+        ConicProgram.IsDualStrictlyFeasible, ConicProgram.IsPrimalOptimizer,
+        ConicProgram.IsDualOptimizer,
+        ConicProgram.IsPrimalStrictlyFeasible.feasible,
+        ConicProgram.IsDualStrictlyFeasible.feasible}
+    \leanok
+    \uses{def:conic_programs}
+    Following \cite[Chapter~4, lines~72--78]{Wolf2012Quantum}, the primal
+    problem is \emph{strictly feasible} when there is an $x\in\operatorname{int}K$
+    with $T(x)=b$.  The dual problem is strictly feasible when there is a
+    $y\in V'$ such that $c-T^*(y)\in\operatorname{int}K^*$.  A primal
+    optimizer is an $x^0\in\mathcal F_p$ satisfying
+    $\langle c|x^0\rangle\leq\langle c|x\rangle$ for every
+    $x\in\mathcal F_p$; a dual optimizer is a $y^0\in\mathcal F_d$ satisfying
+    $\langle b|y\rangle\leq\langle b|y^0\rangle$ for every
+    $y\in\mathcal F_d$.
+\end{definition}
+
 \begin{theorem}[Weak duality]
     \label{thm:conic_weak_duality}
     \lean{ConicProgram.weak_duality_pointwise, ConicProgram.weak_duality}
@@ -60,3 +80,42 @@ This chapter follows the convex-optimization framework of
     $y\in\mathcal F_d$ and then the infimum over $x\in\mathcal F_p$ proves
     $C_d\leq C_p$.
 \end{proof}
+
+\begin{theorem}[A zero-gap feasible pair attains both values]
+    \label{thm:conic_zero_gap_optimizers}
+    \lean{ConicProgram.optimizers_of_feasible_of_objectives_eq,
+        ConicProgram.values_eq_of_feasible_of_objectives_eq,
+        ConicProgram.primalValue_eq_of_isPrimalOptimizer,
+        ConicProgram.dualValue_eq_of_isDualOptimizer}
+    \leanok
+    \uses{def:conic_strict_feasibility_and_attainment,
+        thm:conic_weak_duality}
+    If $x\in\mathcal F_p$, $y\in\mathcal F_d$, and
+    $\langle c|x\rangle=\langle b|y\rangle$, then $x$ and $y$ are primal and
+    dual optimizers, respectively, and
+    $C_p=C_d=\langle c|x\rangle=\langle b|y\rangle$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:conic_weak_duality}
+    For any $z\in\mathcal F_p$ and $w\in\mathcal F_d$, weak duality gives
+    $\langle b|w\rangle\leq\langle c|x\rangle
+    =\langle b|y\rangle\leq\langle c|z\rangle$.  Hence $x$ minimizes the
+    primal objective and $y$ maximizes the dual objective.  Taking the
+    corresponding infimum and supremum gives the asserted value equality.
+\end{proof}
+
+% Wolf's lines 72--78 omit the finiteness conditions required by the
+% attainment clauses.  The counterexamples and the unresolved separation step
+% are recorded in docs/paper-gaps/wolf_slater_attainment_conditions.tex.
+\begin{theorem}[Corrected Slater strong duality]
+    \label{thm:conic_corrected_slater}
+    \uses{def:conic_strict_feasibility_and_attainment,
+        thm:conic_weak_duality}
+    Suppose the primal problem is strictly feasible and $C_p\in\mathbb R$.
+    Then $C_p=C_d$ and there is a dual optimizer $y^0\in\mathcal F_d$ with
+    $\langle b|y^0\rangle=C_d$.  Dually, if the dual problem is strictly
+    feasible and $C_d\in\mathbb R$, then $C_p=C_d$ and there is a primal
+    optimizer $x^0\in\mathcal F_p$ with $\langle c|x^0\rangle=C_p$.
+\end{theorem}

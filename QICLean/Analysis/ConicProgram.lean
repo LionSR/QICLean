@@ -7,18 +7,20 @@ import Mathlib.Analysis.Convex.Cone.InnerDual
 import Mathlib.Data.EReal.Basic
 
 /-!
-# Conic programs and weak duality
+# Conic programs, strict feasibility, and weak duality
 
-This file defines the primal and dual conic programs in Wolf's convention and proves weak
-duality. The source is Wolf, *Quantum Channels & Operations*, Chapter 4,
-`Notes/WolfNoteTexSource/ch04_convex_structure.tex`, lines 39--71, especially equations
-`conic-primal` and `conic-dual`.
+This file defines the primal and dual conic programs in Wolf's convention, their strict-feasibility
+and optimizer predicates, and proves weak duality. The source is Wolf, *Quantum Channels &
+Operations*, Chapter 4, `Notes/WolfNoteTexSource/ch04_convex_structure.tex`, lines 39--78,
+especially equations `conic-primal` and `conic-dual`.
 
 The optimization values lie in `EReal`. Thus an infeasible primal problem has value `+∞`, an
 infeasible dual problem has value `-∞`, a primal problem unbounded below has value `-∞`, and a
 dual problem unbounded above has value `+∞`.
 
-No strong-duality or attainment assertion is made here.
+The strict-feasibility and optimizer predicates deliberately keep value equality separate from
+attainment. No Slater strong-duality assertion is made here: Wolf's claim at lines 72--78 needs a
+finiteness or opposite-feasibility condition for its attainment clause.
 -/
 
 noncomputable section
@@ -63,6 +65,52 @@ Source: Wolf, Chapter 4, equation `conic-dual`, lines 61--65. -/
 def dualValue (K : ProperCone ℝ V) (T : V →ₗ[ℝ] V') (c : V) (b : V') : EReal :=
   ⨆ y : dualFeasible K T c, ((inner ℝ b (y : V') : ℝ) : EReal)
 
+/-- Wolf's primal problem is strictly feasible when the affine constraint meets the interior of
+the cone.
+
+Source: Wolf, Chapter 4, lines 72--75. -/
+def IsPrimalStrictlyFeasible (K : ProperCone ℝ V) (T : V →ₗ[ℝ] V') (b : V') : Prop :=
+  ∃ x ∈ interior (K : Set V), T x = b
+
+/-- Wolf's dual problem is strictly feasible when one of its slack vectors belongs to the interior
+of the dual cone.
+
+Source: Wolf, Chapter 4, lines 75--78. -/
+def IsDualStrictlyFeasible (K : ProperCone ℝ V) (T : V →ₗ[ℝ] V') (c : V) : Prop :=
+  ∃ y, c - T.toContinuousLinearMap.adjoint y ∈
+    interior (ProperCone.innerDual (K : Set V) : Set V)
+
+/-- A feasible point at which Wolf's primal infimum is attained.
+
+Source: Wolf, Chapter 4, equations `conic-primal` and the attainment discussion at lines 72--78. -/
+def IsPrimalOptimizer (K : ProperCone ℝ V) (T : V →ₗ[ℝ] V') (c : V) (b : V')
+    (x : V) : Prop :=
+  x ∈ primalFeasible K T b ∧
+    ∀ z ∈ primalFeasible K T b, inner ℝ c x ≤ inner ℝ c z
+
+/-- A feasible point at which Wolf's dual supremum is attained.
+
+Source: Wolf, Chapter 4, equations `conic-dual` and the attainment discussion at lines 72--78. -/
+def IsDualOptimizer (K : ProperCone ℝ V) (T : V →ₗ[ℝ] V') (c : V) (b : V')
+    (y : V') : Prop :=
+  y ∈ dualFeasible K T c ∧
+    ∀ z ∈ dualFeasible K T c, inner ℝ b z ≤ inner ℝ b y
+
+omit [FiniteDimensional ℝ V] [FiniteDimensional ℝ V'] in
+/-- Primal strict feasibility implies ordinary primal feasibility. -/
+theorem IsPrimalStrictlyFeasible.feasible {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {b : V'}
+    (h : IsPrimalStrictlyFeasible K T b) : (primalFeasible K T b).Nonempty := by
+  obtain ⟨x, hx, hTx⟩ := h
+  exact ⟨x, interior_subset hx, hTx⟩
+
+/-- Dual strict feasibility implies ordinary dual feasibility. -/
+theorem IsDualStrictlyFeasible.feasible {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V}
+    (h : IsDualStrictlyFeasible K T c) : (dualFeasible K T c).Nonempty := by
+  obtain ⟨y, hy⟩ := h
+  refine ⟨y, ?_⟩
+  change c - T.toContinuousLinearMap.adjoint y ∈ ProperCone.innerDual (K : Set V)
+  exact interior_subset hy
+
 /-- **Pointwise weak duality.** Every dual-feasible objective value is at most every
 primal-feasible objective value.
 
@@ -92,5 +140,52 @@ theorem weak_duality {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'} {c : V} {b : 
   refine iSup_le fun y => ?_
   refine le_iInf fun x => ?_
   exact EReal.coe_le_coe (weak_duality_pointwise x.property y.property)
+
+omit [FiniteDimensional ℝ V] [FiniteDimensional ℝ V'] in
+/-- A primal optimizer realizes the extended-real primal value as a finite real value. -/
+theorem primalValue_eq_of_isPrimalOptimizer {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'}
+    {c : V} {b : V'} {x : V} (hx : IsPrimalOptimizer K T c b x) :
+    primalValue K T c b = (inner ℝ c x : EReal) := by
+  apply le_antisymm
+  · exact iInf_le_of_le ⟨x, hx.1⟩ le_rfl
+  · refine le_iInf fun z ↦ ?_
+    exact EReal.coe_le_coe (hx.2 z z.property)
+
+/-- A dual optimizer realizes the extended-real dual value as a finite real value. -/
+theorem dualValue_eq_of_isDualOptimizer {K : ProperCone ℝ V} {T : V →ₗ[ℝ] V'}
+    {c : V} {b : V'} {y : V'} (hy : IsDualOptimizer K T c b y) :
+    dualValue K T c b = (inner ℝ b y : EReal) := by
+  apply le_antisymm
+  · refine iSup_le fun z ↦ ?_
+    exact EReal.coe_le_coe (hy.2 z z.property)
+  · exact le_iSup_of_le ⟨y, hy.1⟩ le_rfl
+
+/-- A primal-dual feasible pair with equal objective values attains both extrema. This separates
+the zero-gap certificate from the existence statement in Slater's theorem.
+
+Source: Wolf, Chapter 4, lines 71--78. -/
+theorem optimizers_of_feasible_of_objectives_eq {K : ProperCone ℝ V}
+    {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {x : V} {y : V'}
+    (hx : x ∈ primalFeasible K T b) (hy : y ∈ dualFeasible K T c)
+    (hxy : inner ℝ c x = inner ℝ b y) :
+    IsPrimalOptimizer K T c b x ∧ IsDualOptimizer K T c b y := by
+  constructor
+  · refine ⟨hx, fun z hz ↦ ?_⟩
+    rw [hxy]
+    exact weak_duality_pointwise hz hy
+  · refine ⟨hy, fun z hz ↦ ?_⟩
+    rw [← hxy]
+    exact weak_duality_pointwise hx hz
+
+/-- A zero-gap feasible pair gives equality of Wolf's extended-real primal and dual values, while
+also supplying optimizers on both sides. -/
+theorem values_eq_of_feasible_of_objectives_eq {K : ProperCone ℝ V}
+    {T : V →ₗ[ℝ] V'} {c : V} {b : V'} {x : V} {y : V'}
+    (hx : x ∈ primalFeasible K T b) (hy : y ∈ dualFeasible K T c)
+    (hxy : inner ℝ c x = inner ℝ b y) :
+    primalValue K T c b = dualValue K T c b := by
+  obtain ⟨hxopt, hyopt⟩ := optimizers_of_feasible_of_objectives_eq hx hy hxy
+  rw [primalValue_eq_of_isPrimalOptimizer hxopt, dualValue_eq_of_isDualOptimizer hyopt,
+    hxy]
 
 end ConicProgram
