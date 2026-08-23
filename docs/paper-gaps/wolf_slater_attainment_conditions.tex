@@ -13,7 +13,7 @@
 
 \begin{document}
 \maketitle
-\gapnote{false-source}{open}
+\gapnote{false-source}{resolved}
 
 \section{Source passage}
 
@@ -53,35 +53,59 @@ $C_p=C_d$ and the dual supremum is attained.  Dually, if the dual problem is
 strictly feasible and $C_d\in\mathbb R$, then $C_p=C_d$ and the primal infimum
 is attained.
 
-The formal development currently contains the source-shaped strict-feasibility
-predicates and separate optimizer predicates in
-\doclink{QICLean/Analysis/ConicProgram}.  The declarations
-\leanid{ConicProgram.primalValue_eq_of_isPrimalOptimizer} and
-\leanid{ConicProgram.dualValue_eq_of_isDualOptimizer} prove that an optimizer
-realizes the corresponding extended-real value.  The declarations
-\leanid{ConicProgram.optimizers_of_feasible_of_objectives_eq} and
-\leanid{ConicProgram.values_eq_of_feasible_of_objectives_eq} prove that a
-feasible pair with equal objectives attains both values.
+The formal development in \doclink{QICLean/Analysis/ConicProgram} proves both
+directions.  The source-facing declarations
+\leanid{ConicProgram.exists_isDualOptimizer_of_isPrimalStrictlyFeasible_of_primalValue_eq_coe}
+and
+\leanid{ConicProgram.values_eq_of_isPrimalStrictlyFeasible_of_primalValue_eq_coe}
+give dual attainment and value equality from primal strict feasibility and
+$C_p=p\in\mathbb R$.  The declarations
+\leanid{ConicProgram.exists_isPrimalOptimizer_of_isDualStrictlyFeasible_of_dualValue_eq_coe}
+and
+\leanid{ConicProgram.values_eq_of_isDualStrictlyFeasible_of_dualValue_eq_coe}
+give the dual statement.  The equivalences
+\leanid{ConicProgram.primalValue_eq_coe_iff_isGLB} and
+\leanid{ConicProgram.dualValue_eq_coe_iff_isLUB} identify these hypotheses
+with the corresponding real greatest-lower-bound and least-upper-bound
+conditions whenever the feasible set is nonempty.
 
-\section{Remaining proof}
+\section{Separation argument}
 
-The unresolved step is the corrected Slater existence theorem itself.  Its
-proof must separate the appropriate finite-dimensional convex set and then
-show, using strict feasibility, that the coefficient of the objective
-coordinate is nonzero before normalizing the separating functional.  Mathlib's
-\leanid{ProperCone.relative_hyperplane_separation} concerns the closure of a
-linear image of a proper cone.  It does not prove that the unclosed image is
-closed, so it cannot by itself justify an optimizer in the original feasible
-set.  A completion must establish every closure or attainment hypothesis used
-in this argument; it must not replace that step by the false general claim that
-a linear image of a closed cone is closed.
+For a cone $C$, equality map $A$, objective vector $d$, and right-hand side
+$r$, the proof separates the lifted epigraph
+\begin{align}
+  D=\{(A(x),\langle d|x\rangle+s):x\in C,\ s\geq0\}
+  \subseteq\operatorname{ran}(A)\times\mathbb R.
+\end{align}
+The codomain is restricted to $\operatorname{ran}(A)$, so the lifted linear
+map is surjective and hence open in finite dimension.  Strict feasibility
+gives $D$ nonempty interior.  If $p$ is the finite greatest lower bound, then
+$(r,p)$ belongs to $\overline D$ but not to $\operatorname{int}D$.  A
+supporting functional $f$ therefore vanishes at $(r,p)$ and is nonpositive on
+$D$.  Its vertical coefficient $\alpha=f(0,1)$ is strictly negative: if it
+vanished, strict feasibility and openness of the nonzero functional would
+make $0$ an interior point of $(-\infty,0]$.  Normalizing by $-\alpha$ gives
+the required dual multiplier and its attained objective value.
+
+For the converse direction, the dual problem is written as a primal problem
+on $V'\times K^*$ with cone constraint on the second coordinate, equality map
+$(y,z)\mapsto T^*(y)+z$, and objective $\langle-b|y\rangle$.  The multiplier
+returned by the same separation argument yields $T(-x)=b$ and
+$-x\in K^{**}=K$.  This is precisely primal feasibility in Wolf's signs.
+At no point is a linear image of a closed cone assumed to be closed; only the
+closure membership of the single boundary point $(r,p)$ is used, and it
+follows from the greatest-lower-bound property.
 
 \section{Verdict}
 
-\textbf{Verdict: open source correction.} The strict-feasibility and attainment
-notions and the zero-gap certificate are formalized.  Strong duality with
-optimizer existence remains open until the corrected finite-optimum separation
-argument is proved.
+\textbf{Verdict: false as printed; corrected theorem resolved.} The two
+one-dimensional examples show that neither attainment sentence at lines
+72--78 follows from strict feasibility alone.  With the missing finite-real
+optimum hypothesis, both value equality and the optimizer on the opposite
+side are now formalized, with separate declarations for equality and
+attainment.  This resolves
+\href{https://github.com/LionSR/QICLean/issues/110}{QICLean issue \#110} while
+retaining the source correction.
 
 \bibliographystyle{alpha}
 \bibliography{references}

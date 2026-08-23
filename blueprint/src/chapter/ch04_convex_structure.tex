@@ -107,18 +107,87 @@ This chapter follows the convex-optimization framework of
 \end{proof}
 
 % Wolf's lines 72--78 omit the finiteness conditions required by the
-% attainment clauses.  The counterexamples and the unresolved separation step
-% are recorded in docs/paper-gaps/wolf_slater_attainment_conditions.tex.
+% attainment clauses.  The counterexamples and corrected statement are
+% recorded in docs/paper-gaps/wolf_slater_attainment_conditions.tex.
+\begin{theorem}[Finite real values and real extrema]
+    \label{thm:conic_finite_value_extrema}
+    \lean{ConicProgram.primalValue_eq_coe_of_isGLB,
+        ConicProgram.primalValue_eq_coe_iff_isGLB,
+        ConicProgram.dualValue_eq_coe_of_isLUB,
+        ConicProgram.dualValue_eq_coe_iff_isLUB}
+    \leanok
+    \uses{def:conic_programs}
+    If $\mathcal F_p$ is nonempty and $p\in\R$, then $C_p=p$ in the
+    extended real line if and only if $p$ is the greatest lower bound of
+    $\{\langle c|x\rangle:x\in\mathcal F_p\}$.  If $\mathcal F_d$ is
+    nonempty, then $C_d=p$ if and only if $p$ is the least upper bound of
+    $\{\langle b|y\rangle:y\in\mathcal F_d\}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The embedding $\R\to\overline{\R}$ preserves and reflects order.  Thus
+    the defining extended-real infimum is $p\in\R$ exactly when $p$ is a
+    lower bound of all real objective values and every other real lower bound
+    is at most $p$.  The supremum statement is the order-dual argument.
+\end{proof}
+
 \begin{theorem}[Corrected Slater strong duality]
     \label{thm:conic_corrected_slater}
-    \uses{def:conic_strict_feasibility_and_attainment,
-        thm:conic_weak_duality}
+    \lean{ConicProgram.exists_isDualOptimizer_of_isPrimalStrictlyFeasible_of_isGLB,
+        ConicProgram.values_eq_of_isPrimalStrictlyFeasible_of_isGLB,
+        ConicProgram.exists_isPrimalOptimizer_of_isDualStrictlyFeasible_of_isLUB,
+        ConicProgram.values_eq_of_isDualStrictlyFeasible_of_isLUB,
+        ConicProgram.exists_isDualOptimizer_of_isPrimalStrictlyFeasible_of_primalValue_eq_coe,
+        ConicProgram.values_eq_of_isPrimalStrictlyFeasible_of_primalValue_eq_coe,
+        ConicProgram.exists_isPrimalOptimizer_of_isDualStrictlyFeasible_of_dualValue_eq_coe,
+        ConicProgram.values_eq_of_isDualStrictlyFeasible_of_dualValue_eq_coe}
+    \leanok
+    \uses{def:conic_strict_feasibility_and_attainment}
+    The finiteness hypotheses below correct the attainment sentences printed
+    at lines~72--78 of \cite[Chapter~4]{Wolf2012Quantum}; the counterexamples
+    to the unqualified statements are recorded in
+    \cite{gap:wolf_slater_attainment_conditions}.
     Suppose the primal problem is strictly feasible and $C_p\in\mathbb R$.
     Then $C_p=C_d$ and there is a dual optimizer $y^0\in\mathcal F_d$ with
     $\langle b|y^0\rangle=C_d$.  Dually, if the dual problem is strictly
     feasible and $C_d\in\mathbb R$, then $C_p=C_d$ and there is a primal
     optimizer $x^0\in\mathcal F_p$ with $\langle c|x^0\rangle=C_p$.
 \end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:conic_weak_duality, thm:conic_finite_value_extrema}
+    Write the primal problem in the form
+    $\inf\{\langle d|x\rangle:x\in C,\ A(x)=r\}=p$ and consider the convex
+    set
+    \begin{align}
+        D=\{(A(x),\langle d|x\rangle+s):x\in C,\ s\geq0\}
+        \subseteq\operatorname{ran}(A)\times\R.
+        \label{eq:conic_slater_epigraph}
+    \end{align}
+    The map $(x,s)\mapsto(A(x),\langle d|x\rangle+s)$ onto
+    $\operatorname{ran}(A)\times\R$ is open.  Strict feasibility therefore
+    gives $D$ nonempty interior.  The greatest-lower-bound property places
+    $(r,p)$ in $\overline D\setminus\operatorname{int}D$, so a separating
+    functional $f$ satisfies $f\leq0$ on $D$ and $f(r,p)=0$.  If
+    $\alpha=f(0,1)$ vanished, the image under $f$ of an interior point of $D$
+    would make $0$ an interior point of $(-\infty,0]$, a contradiction.
+    Hence $\alpha<0$, and normalization by $-\alpha$ gives $y$ such that,
+    for every $x\in C$,
+    \begin{align}
+        \langle A(x)|y\rangle & \leq\langle d|x\rangle, \\
+        \langle r|y\rangle    & =p.
+        \label{eq:conic_slater_separator}
+    \end{align}
+    For $C=K$, $A=T$, $d=c$, and $r=b$,
+    (\ref{eq:conic_slater_separator}) is dual feasibility and dual attainment.
+    For the converse direction, write the dual as a primal problem on
+    $V'\times K^*$ with equality map $(y,z)\mapsto T^*(y)+z$ and objective
+    $\langle-b|y\rangle$.  The same separation argument gives $x$ with
+    $T(-x)=b$ and $-x\in K^{**}=K$, hence a primal optimizer.  Weak duality
+    then gives equality of the two extended-real values in both cases.
+\end{proof}
 
 \begin{theorem}[Complementary slackness]
     \label{thm:semidefinite_complementary_slackness}

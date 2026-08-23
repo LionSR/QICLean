@@ -10,10 +10,11 @@ import Mathlib.Analysis.LocallyConvex.Separation
 import Mathlib.Data.EReal.Basic
 
 /-!
-# Conic programs, strict feasibility, and weak duality
+# Conic programs and corrected Slater duality
 
 This file defines the primal and dual conic programs in Wolf's convention, their strict-feasibility
-and optimizer predicates, and proves weak duality. The source is Wolf, *Quantum Channels &
+and optimizer predicates, weak duality, and the corrected finite-dimensional Slater theorem. The
+source is Wolf, *Quantum Channels &
 Operations*, Chapter 4, `Notes/WolfNoteTexSource/ch04_convex_structure.tex`, lines 39--78,
 especially equations `conic-primal` and `conic-dual`.
 
@@ -21,9 +22,10 @@ The optimization values lie in `EReal`. Thus an infeasible primal problem has va
 infeasible dual problem has value `-∞`, a primal problem unbounded below has value `-∞`, and a
 dual problem unbounded above has value `+∞`.
 
-The strict-feasibility and optimizer predicates deliberately keep value equality separate from
-attainment. No Slater strong-duality assertion is made here: Wolf's claim at lines 72--78 needs a
-finiteness or opposite-feasibility condition for its attainment clause.
+The strict-feasibility and optimizer predicates keep value equality separate from attainment.
+Wolf's claim at lines 72--78 is false without a finiteness or opposite-feasibility condition. The
+theorems below restore the missing hypothesis: primal strict feasibility together with a finite
+primal value gives dual attainment and equality of values, and the dual statement is analogous.
 -/
 
 noncomputable section
@@ -190,7 +192,7 @@ theorem values_eq_of_feasible_of_objectives_eq {K : ProperCone ℝ V}
   obtain ⟨hxopt, hyopt⟩ := optimizers_of_feasible_of_objectives_eq hx hy hxy
   rw [primalValue_eq_of_isPrimalOptimizer hxopt, dualValue_eq_of_isDualOptimizer hyopt,
     hxy]
-section SlaterCore
+section SlaterSeparation
 
 variable {W Z : Type*}
 variable [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W]
@@ -289,10 +291,10 @@ private theorem exists_dual_of_strictlyFeasible_of_isGLB
   have hD_smul {t : ℝ} (ht : 0 ≤ t) {z : A.range × ℝ} (hz : z ∈ D) : t • z ∈ D := by
     obtain ⟨⟨x, s⟩, ⟨hxC, hs⟩, rfl⟩ := hz
     refine ⟨t • (x, s), ?_, ?_⟩
-    refine ⟨C.smul_mem ht hxC, ?_⟩
-    change 0 ≤ t * s
-    exact mul_nonneg ht hs
-    exact (slaterLift A d).map_smul t (x, s)
+    · refine ⟨C.smul_mem ht hxC, ?_⟩
+      change 0 ≤ t * s
+      exact mul_nonneg ht hs
+    · exact (slaterLift A d).map_smul t (x, s)
   have hfD_closure : ∀ z ∈ closure D, f z ≤ f q := by
     exact closure_minimal hfD (isClosed_Iic.preimage f.continuous)
   have htwo_q : (2 : ℝ) • q ∈ closure D := by
@@ -409,7 +411,7 @@ private theorem exists_dual_of_strictlyFeasible_of_isGLB
       _ = p := by
         rw [hraw, ← mul_assoc, inv_mul_cancel₀ hscale_ne, one_mul]
 
-end SlaterCore
+end SlaterSeparation
 
 section Slater
 
