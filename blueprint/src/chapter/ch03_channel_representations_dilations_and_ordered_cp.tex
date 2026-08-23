@@ -300,12 +300,176 @@ by tracking how two CP maps related by domination or decomposition sit inside
 a common dilation space.
 
 \begin{definition}[CP partial order]\label{def:cp_dominates}
-    \lean{CPDominates}
+    \lean{CPDominates, CPDominates.refl}
     \leanok
-    \uses{def:cp_map}
-    For linear maps $S,T:\MN{D}\to\MN{D}$, write $T\le S$ (in the CP
-    order) when $S-T$ is completely positive.
+    \uses{def:is_kraus_cp}
+    For linear maps $S,T:\MN{d_{\rm in}}\to\MN{d_{\rm out}}$, write
+    $T\le S$ (in the CP order) when $S-T$ is completely positive.
 \end{definition}
+
+\begin{definition}[Wolf auxiliary matrix]\label{def:ordered_cp_stinespring_w}
+    \lean{stinespringW, stinespringW_apply}
+    \leanok
+    \uses{def:stinespring_v}
+    Let $V:\C^d\to\C^{d'}\otimes\C^r$ be a supplied Stinespring
+    matrix, and let
+    $\ket{\Omega}=d'^{-1/2}\sum_{a=1}^{d'}\ket{a,a}$ be normalized.
+    Wolf's auxiliary operator is
+    \begin{align}
+        W
+        &:=(\Id_r\otimes\bra{\Omega})(V\otimes\Id_{d'})
+          :\C^d\otimes\C^{d'}\longrightarrow\C^r,
+        \label{eq:ordered_cp_w_definition}
+    \end{align}
+    or, in coordinates, $W_{j,(i,a)}=d'^{-1/2}V_{(a,j),i}$.
+\end{definition}
+
+\begin{lemma}[The $V$--$W$ correspondence]
+    \label{lem:ordered_cp_v_w_correspondence}
+    \lean{stinespringW_injective, stinespringW_kronecker_mul,
+        stinespring_eq_kronecker_mul_iff_W_eq_mul}
+    \leanok
+    \uses{def:ordered_cp_stinespring_w}
+    If $d'>0$, the assignment $V\mapsto W$ is one-to-one. Moreover, for
+    every $C:\C^{r_2}\to\C^{r_1}$,
+    \[
+        V_1=(\Id_{d'}\otimes C)V_2
+        \quad\Longleftrightarrow\quad
+        W_1=CW_2.
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    The coordinate formula
+    $W_{j,(i,a)}=d'^{-1/2}V_{(a,j),i}$ is invertible because $d'>0$.
+    Equivalently, with the canonical tensor-factor identifications used in
+    the source,
+    $V=d'(W\otimes\Id_{d'})(\Id_d\otimes\ket{\Omega})$.
+    The coefficient $d'^2$ printed in the source footnote is a normalization
+    typo; see \path{docs/paper-gaps/wolf_lecture_notes_errata.tex}.
+    Expanding the Kronecker product shows directly that multiplication by
+    $\Id_{d'}\otimes C$ on $V$ becomes multiplication by $C$ on $W$.
+\end{proof}
+
+\begin{lemma}[The auxiliary Gram matrix is the Choi matrix]
+    \label{lem:ordered_cp_stinespring_w_gram}
+    \lean{stinespringW_conjTranspose_mul_self}
+    \leanok
+    \uses{def:ordered_cp_stinespring_w, def:choi_matrix_rect,
+        thm:stinespring_dual_representation}
+    Suppose that $T:\MN{d'}\to\MN{d}$ has the supplied representation
+    $T(A)=V^\dagger(A\otimes\Id_r)V$. If $\tau$ is the normalized Choi
+    matrix of $T$, then
+    \begin{align}
+        W^\dagger W=\tau.
+        \label{eq:ordered_cp_w_gram}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $V=\sum_jK_j\otimes\ket j$. Then
+    $T(A)=\sum_jK_j^\dagger A K_j$, so $T$ has Kraus operators
+    $K_j^\dagger$. Both sides of
+    (\ref{eq:ordered_cp_w_gram}) have entries
+    \[
+        \frac1{d'}\sum_j
+        \overline{(K_j)_{a i}}(K_j)_{b k}
+    \]
+    at the pair of indices $(i,a),(k,b)$.
+\end{proof}
+
+\begin{lemma}[Rectangular contraction factorization]
+    \label{lem:ordered_cp_rectangular_contraction_factorization}
+    \lean{Matrix.exists_contraction_mul_of_conjTranspose_mul_le,
+        Matrix.sqNorm_mulVec_le_of_conjTranspose_mul_le,
+        Matrix.exists_contraction_mul_of_sqNorm_le}
+    \leanok
+    Let $W_i:H\to R_i$ be finite-dimensional complex matrices. If
+    \begin{align}
+        \lVert W_1\psi\rVert^2
+        \leq \lVert W_2\psi\rVert^2
+        \qquad(\psi\in H),
+        \label{eq:ordered_cp_norm_comparison}
+    \end{align}
+    then there is a contraction $C:R_2\to R_1$ such that
+    $W_1=CW_2$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Equivalently, (\ref{eq:ordered_cp_norm_comparison}) is
+    $W_1^\dagger W_1\leq W_2^\dagger W_2$. Take the positive square root
+    $S$ of $W_2^\dagger W_2-W_1^\dagger W_1$. After adjoining zero rows,
+    the matrices with row blocks $(W_1,S,0)$ and $(0,0,W_2)$ have the
+    same Gram matrix. A unitary carrying the second matrix to the first
+    has an $R_1\times R_2$ corner $C$ satisfying $W_1=CW_2$; orthonormality
+    of its columns gives $C^\dagger C\leq\Id_{R_2}$.
+\end{proof}
+
+\begin{lemma}[Minimality makes the auxiliary matrix surjective]
+    \label{lem:ordered_cp_minimal_w_surjective}
+    \lean{stinespringW_mulVec_surjective_of_minimal,
+        Matrix.eq_of_mul_eq_mul_of_mulVec_surjective}
+    \leanok
+    \uses{lem:ordered_cp_stinespring_w_gram,
+        lem:stinespring_rectangular_least_dim}
+    If the supplied dominating dilation is minimal,
+    $r_2=\rank(\tau_2)$, then $W_2$ is surjective. Consequently a
+    factorization $W_1=CW_2$ determines $C$ uniquely.
+\end{lemma}
+
+\begin{proof}\leanok
+    The Gram identity gives
+    $\rank(W_2)=\rank(W_2^\dagger W_2)=\rank(\tau_2)=r_2$, so $W_2$ has
+    full row rank and is surjective. A surjective right factor can be
+    cancelled.
+\end{proof}
+
+\begin{theorem}[Relation between ordered CP maps]
+    \label{thm:cp_dominates_stinespring_contraction}
+    \lean{CPDominates.exists_supplied_stinespring_contraction}
+    \leanok
+    \uses{def:cp_dominates, def:ordered_cp_stinespring_w,
+        lem:ordered_cp_stinespring_w_gram,
+        lem:ordered_cp_rectangular_contraction_factorization,
+        lem:ordered_cp_v_w_correspondence,
+        lem:ordered_cp_minimal_w_surjective}
+    Let $T_i:\MN{d'}\to\MN{d}$ be completely positive maps with
+    $T_1\leq T_2$. Suppose that, for possibly distinct ancilla dimensions
+    $r_i$, matrices $V_i:\C^d\to\C^{d'}\otimes\C^{r_i}$ are supplied and
+    satisfy
+    \[
+        T_i(A)=V_i^\dagger(A\otimes\Id_{r_i})V_i
+        \qquad(A\in\MN{d'}).
+    \]
+    Then there is a contraction $C:\C^{r_2}\to\C^{r_1}$ such that
+    \begin{align}
+        V_1=(\Id_{d'}\otimes C)V_2.
+        \label{eq:representations_ordered_intertwining}
+    \end{align}
+    If $V_2$ is minimal, in the source sense
+    $r_2=\rank(\tau_2)$, then $C$ is unique. This is
+    \cite[Theorem~2.3 and Equation~(2.13)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    Complete positivity of $T_2-T_1$ and the Choi correspondence give
+    $\tau_1\leq\tau_2$. By
+    Lemma~\ref{lem:ordered_cp_stinespring_w_gram},
+    \[
+        W_1^\dagger W_1=\tau_1\leq\tau_2=W_2^\dagger W_2,
+    \]
+    which is precisely the squared norm comparison
+    (\ref{eq:ordered_cp_norm_comparison}). The rectangular factorization
+    lemma gives a contraction $C$ with $W_1=CW_2$. Inverting
+    (\ref{eq:ordered_cp_w_definition}) gives
+    (\ref{eq:representations_ordered_intertwining}) with the same supplied
+    $V_i$.
+
+    If $r_2=\rank(\tau_2)$, then
+    $\rank(W_2)=\rank(W_2^\dagger W_2)=\rank(\tau_2)=r_2$; hence $W_2$ is
+    surjective. Thus two coefficients satisfying $W_1=CW_2=C'W_2$ agree,
+    proving uniqueness.
+\end{proof}
 
 \begin{definition}[Block-top contraction]\label{def:block_top_rows}
     \lean{Matrix.blockTopRows}
@@ -365,7 +529,7 @@ a common dilation space.
     precisely $V_K$.
 \end{proof}
 
-\begin{theorem}[Ordered CP maps via Stinespring contractions]\label{thm:cp_dominates_stinespring_contraction}
+\begin{corollary}[Canonical square realization]\label{cor:cp_dominates_stinespring_contraction_canonical}
     \lean{CPDominates.exists_stinespring_contraction}
     \leanok
     \uses{def:cp_dominates, def:stinespring_v, def:block_top_rows,
@@ -380,10 +544,12 @@ a common dilation space.
     \begin{align}
         V_1
         &=(\Id_D\otimes\widetilde C)V_2.
-        \label{eq:representations_ordered_intertwining}
+        \label{eq:representations_ordered_intertwining_canonical}
     \end{align}
-    This is~\cite[Theorem~2.3]{Wolf2012Quantum}.
-\end{theorem}
+    This is the explicit square corollary obtained by constructing both
+    dilation matrices, rather than the supplied-dilation statement of
+    Theorem~\ref{thm:cp_dominates_stinespring_contraction}.
+\end{corollary}
 
 \begin{proof}\leanok
     \uses{thm:exists_stinespring_dilation, lem:block_top_rows_contraction,

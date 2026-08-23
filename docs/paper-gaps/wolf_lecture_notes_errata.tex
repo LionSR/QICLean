@@ -158,6 +158,49 @@ completely positive. Thus both printed converses fail.
 This is a genuine source error. The proof of Proposition~2.10 supports the two
 forward implications, not the printed equivalences.
 
+\section{The inverse coefficient in the proof of Theorem~2.3}
+\label{sec:ordered-cp-inverse}
+
+\paragraph{Formalization trigger.}
+The formal proof defines Wolf's normalized auxiliary matrix as
+\leanid{stinespringW} and proves that the assignment from a supplied
+Stinespring matrix is injective in \leanid{stinespringW_injective}, both in
+\doclink{QICLean/Channel/OrderedCP}.
+
+\paragraph{Printed source and its role.}
+In the proof of Theorem~2.3, Wolf takes the normalized vector
+$\ket{\Omega}=d'^{-1/2}\sum_a\ket{a,a}$ and defines
+\begin{equation}
+  W_i=(\one_{r_i}\otimes\bra{\Omega})
+      (V_i\otimes\one_{d'}).
+\end{equation}
+The footnote asserting that $V_i\mapsto W_i$ is one-to-one prints the inverse
+with the coefficient $d'^2$. The same coefficient appears in the local source
+at \path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~392--393,
+and in the PDF on book p.~39.
+
+\paragraph{Correction.}
+The coordinate relation is
+\begin{equation}
+  (W_i)_{j,(k,a)}=d'^{-1/2}(V_i)_{(a,j),k},
+\end{equation}
+so its coordinate inverse multiplies by $\sqrt{d'}$. Equivalently, with the
+canonical tensor-factor identifications used in the source, the inverse is
+\begin{equation}
+  V_i=d'(W_i\otimes\one_{d'})(\one_d\otimes\ket{\Omega}).
+\end{equation}
+
+\paragraph{Why the correction is necessary.}
+The second occurrence of the normalized vector contributes another factor
+$d'^{-1/2}$. Hence the tensor expression without its leading coefficient is
+$V_i/d'$, and the leading coefficient must be $d'$, not $d'^2$. The theorem
+itself is unaffected: the formal injectivity proof uses the coordinate
+relation and only cancels the nonzero factor $d'^{-1/2}$.
+
+\paragraph{Classification.}
+This is a normalization typo in a source footnote. It does not change the
+statement or proof route of Theorem~2.3.
+
 \section{The nonempty-family boundary in the Radon--Nikodym theorem}
 \label{sec:radon-nikodym}
 
@@ -263,12 +306,13 @@ errata entries:
 
 \section{Conclusion}
 
-At present the formalization-derived record contains two genuine mathematical
-source errors (Sections~\ref{sec:lorentz} and
-\ref{sec:pauli-block-truncation}), one explicit boundary convention
+At present the formalization-derived record contains two false printed
+assertions (Sections~\ref{sec:lorentz} and
+\ref{sec:pauli-block-truncation}), one normalization typo
+(Section~\ref{sec:ordered-cp-inverse}), one explicit boundary convention
 (Section~\ref{sec:radon-nikodym}), and one local correction to a spectrum
-shorthand (Section~\ref{sec:two-pure-state-spectrum}). These are the corrections
-asserted by the Lean documentation itself.
+shorthand (Section~\ref{sec:two-pure-state-spectrum}). These are the
+corrections asserted by the Lean documentation itself.
 
 \appendix
 \section{Corrected errors in the local LaTeX transcription}
