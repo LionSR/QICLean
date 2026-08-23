@@ -119,3 +119,33 @@ This chapter follows the convex-optimization framework of
     feasible and $C_d\in\mathbb R$, then $C_p=C_d$ and there is a primal
     optimizer $x^0\in\mathcal F_p$ with $\langle c|x^0\rangle=C_p$.
 \end{theorem}
+
+\begin{theorem}[Complementary slackness]
+    \label{thm:semidefinite_complementary_slackness}
+    \lean{Matrix.PosSemidef.mul_eq_zero_of_trace_mul_eq_zero,
+        Matrix.PosSemidef.supportProj_mul_supportProj_eq_zero_of_mul_eq_zero,
+        SemidefiniteProgram.re_trace_slack_mul_eq_objective_sub,
+        SemidefiniteProgram.complementary_slackness,
+        SemidefiniteProgram.complementary_slackness_supports}
+    \leanok
+    Let $b\in\R^n$ and let $F_0,F_1,\ldots,F_n$ be Hermitian matrices.
+    Suppose that $X^0\geq0$, $\tr(F_iX^0)=b_i$ for every $i$,
+    $F_0-\sum_i y_i^0F_i\geq0$, and the two objective values are equal.
+    Then, as in
+    \cite[Chapter~4, equation~(4.4)]{Wolf2012Quantum},
+    \begin{align}
+        \left(F_0-\sum_i y_i^0F_i\right)X^0=0.
+        \label{eq:semidefinite_complementary_slackness}
+    \end{align}
+    Thus $X^0$ and $F_0-\sum_i y_i^0F_i$ have orthogonal supports.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The equality constraints and equality of the objectives give
+    $\tr((F_0-\sum_i y_i^0F_i)X^0)=0$.  If two positive semidefinite matrices
+    have zero trace pairing, the product of their positive square roots has
+    zero Hilbert--Schmidt norm; hence their product and the product of their
+    support projections vanish.  This proves
+    (\ref{eq:semidefinite_complementary_slackness}) and the support statement.
+\end{proof}
