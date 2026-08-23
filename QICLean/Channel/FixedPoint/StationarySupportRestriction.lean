@@ -284,6 +284,68 @@ theorem map_supported_on_support_of_map
   simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul]
   rw [hmA₁p, hmA₁m, hmA₂p, hmA₂m]
 
+/-- If a positive map sends an orthogonal projection `P` into the corner
+`P M_D P`, then it preserves the whole corner.
+
+This is the projection form of the support argument in Wolf Theorem 6.2.  It
+uses only positivity: the support projection of `P` is `P` itself, so
+`map_supported_on_support_of_map` applies with `ρ = P`. -/
+theorem map_supported_on_projection_of_map_projection_supported
+    {T : Mat →ₗ[ℂ] Mat} (hT : IsPositiveMap T)
+    {P X : Mat} (hP : IsOrthogonalProjection P)
+    (hTPsupport : P * T P * P = T P)
+    (hXsupport : P * X * P = X) :
+    P * T X * P = T X := by
+  classical
+  let hPpsd : P.PosSemidef := isOrthogonalProjection_posSemidef hP
+  let Q : Mat := hPpsd.supportProj
+  have hQproj : IsOrthogonalProjection Q :=
+    hPpsd.isOrthogonalProjection_supportProj
+  have hQP : Q * P = P := by
+    simpa only [Q] using hPpsd.supportProj_mul_self
+  have hPQ_eq_P : P * Q = P := by
+    have h := congrArg Matrix.conjTranspose hQP
+    simpa [Matrix.conjTranspose_mul, hP.1.eq, hQproj.1.eq] using h
+  have hPQ_eq_Q : P * Q = Q := by
+    obtain ⟨W, hQW⟩ := hPpsd.exists_supportProj_eq_mul
+    calc
+      P * Q = P * (P * W) := by simpa only [Q] using congrArg (P * ·) hQW
+      _ = (P * P) * W := by simp only [Matrix.mul_assoc]
+      _ = P * W := by rw [hP.2]
+      _ = Q := by simpa only [Q] using hQW.symm
+  have hQP_eq : Q = P := hPQ_eq_Q.symm.trans hPQ_eq_P
+  have hTPsupport' :
+      Kraus.stationaryProj hPpsd * T P * Kraus.stationaryProj hPpsd = T P := by
+    simpa only [Kraus.stationaryProj, Q, hQP_eq] using hTPsupport
+  have hXsupport' :
+      Kraus.stationaryProj hPpsd * X * Kraus.stationaryProj hPpsd = X := by
+    simpa only [Kraus.stationaryProj, Q, hQP_eq] using hXsupport
+  simpa only [Kraus.stationaryProj, Q, hQP_eq] using
+    map_supported_on_support_of_map hT hPpsd hTPsupport' hXsupport'
+
+/-- If the positive matrix `T P` has zero trace on the orthogonal complement
+of a projection `P`, then `T P` is supported on `P`.
+
+This is the order-theoretic implication used in Wolf's trace-adjoint proof of
+irreducibility: positivity turns the scalar condition
+`tr ((1 - P) T(P)) = 0` into corner support. -/
+theorem map_projection_supported_of_trace_complement_map_projection_eq_zero
+    {T : Mat →ₗ[ℂ] Mat} (hT : IsPositiveMap T)
+    {P : Mat} (hP : IsOrthogonalProjection P)
+    (htrace : Matrix.trace ((1 - P) * T P) = 0) :
+    P * T P * P = T P := by
+  have hPpsd : P.PosSemidef := isOrthogonalProjection_posSemidef hP
+  have hTPpsd : (T P).PosSemidef := hT P hPpsd
+  have hcomplement_zero : (1 - P) * T P = 0 :=
+    hTPpsd.proj_mul_eq_zero_of_trace_eq_zero hP.one_sub.1 hP.one_sub.2 htrace
+  have hleft : P * T P = T P := by
+    rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at hcomplement_zero
+    exact hcomplement_zero.symm
+  have hright : T P * P = T P := by
+    have h := congrArg Matrix.conjTranspose hleft
+    simpa [Matrix.conjTranspose_mul, hP.1.eq, hTPpsd.isHermitian.eq] using h
+  rw [hleft, hright]
+
 /-- **Wolf Eq. (6.52), support form.** If `ρ` is a positive semidefinite fixed
 point of a positive map `T`, then every matrix supported on `supp ρ` is mapped
 to another matrix supported there.
