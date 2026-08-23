@@ -223,8 +223,8 @@ theorem Matrix.exists_contraction_mul_of_sqNorm_le
 /-- Wolf's auxiliary matrix
 `W = (1ᵣ ⊗ ⟨Ω|)(V ⊗ 1)` from the proof of Theorem 2.3.
 
-For `V : ℂᵈ → ℂᵈʹ ⊗ ℂʳ`, the matrix `W` maps
-`ℂᵈ ⊗ ℂᵈʹ → ℂʳ`. Its entries use Wolf's normalized maximally
+For `V : ℂᵈ → ℂᵈ' ⊗ ℂʳ`, the matrix `W` maps
+`ℂᵈ ⊗ ℂᵈ' → ℂʳ`. Its entries use Wolf's normalized maximally
 entangled vector on the `d'`-dimensional factor. -/
 noncomputable def stinespringW {d d' r : ℕ}
     (V : Matrix (Fin d' × Fin r) (Fin d) ℂ) :
@@ -382,7 +382,7 @@ theorem stinespringW_mulVec_surjective_of_minimal
 /-- **Wolf Theorem 2.3 (relation between ordered CP maps).**
 
 Let `T₁, T₂ : M_{d'}(ℂ) → M_d(ℂ)` be completely positive maps with
-`T₂ ≥ T₁`, and let `Vᵢ : ℂᵈ → ℂᵈʹ ⊗ ℂʳᵢ` be supplied Stinespring
+`T₂ ≥ T₁`, and let `Vᵢ : ℂᵈ → ℂᵈ' ⊗ ℂʳᵢ` be supplied Stinespring
 representations. Then there is a contraction from the `r₂`-dimensional
 ancilla to the `r₁`-dimensional ancilla, represented by
 `C : Matrix (Fin r₁) (Fin r₂) ℂ`, such that
