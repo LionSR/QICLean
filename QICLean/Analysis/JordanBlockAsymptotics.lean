@@ -32,7 +32,8 @@ nontrivial nilpotent block has nonzero small positive powers but the displayed
 scaling factor vanishes.
 
 Source: Wolf (2012), Chapter 8, Equations (8.104), (8.106), and (8.107), local
-source `Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 1225--1266.
+source `Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 1197--1214
+and 1225--1266.
 -/
 
 open scoped Matrix.Norms.L2Operator
