@@ -48,33 +48,32 @@ private theorem trace_mul_pos_of_posDef_posSemidef_ne_zero
       (Matrix.posSemidef_eq_zero_of_posDef_trace_mul_eq_zero hY hX₀ hzero)
   exact lt_of_le_of_ne hnonneg (by simpa only [ne_eq, eq_comm] using hne)
 
-/-- A nonnegative real number `a` is lower Collatz--Wielandt feasible at `X`
-for `T` when `X` is a density matrix and `T X - a X` is positive semidefinite.
+/-- A real number `a` is lower Collatz--Wielandt feasible at `X` for `T` when
+`X` is a density matrix and `T X - a X` is positive semidefinite.
 
 This is the predicate `a ≤ r(X)` in Wolf's notation at lines 608--615. -/
 def LowerCollatzWielandtFeasible (T : Mat →ₗ[ℂ] Mat) (X : Mat) (a : ℝ) : Prop :=
-  X ∈ densityMatrices D ∧ 0 ≤ a ∧ (T X - (a : ℂ) • X).PosSemidef
+  X ∈ densityMatrices D ∧ (T X - (a : ℂ) • X).PosSemidef
 
-/-- A nonnegative real number `a` is upper Collatz--Wielandt feasible at `X`
-when `X` is a density matrix and `a X - T X` is positive semidefinite.
+/-- A real number `a` is upper Collatz--Wielandt feasible at `X` when `X` is a
+density matrix and `a X - T X` is positive semidefinite.
 
 This is the predicate `r̃(X) ≤ a` in Wolf Equation (6.30).  The global
 upper quantity is an infimum, correcting the second supremum printed on Wolf
 line 618. -/
 def UpperCollatzWielandtFeasible (T : Mat →ₗ[ℂ] Mat) (X : Mat) (a : ℝ) : Prop :=
-  X ∈ densityMatrices D ∧ 0 ≤ a ∧ ((a : ℂ) • X - T X).PosSemidef
+  X ∈ densityMatrices D ∧ ((a : ℂ) • X - T X).PosSemidef
 
 /-- A nonnegative eigenvalue with a density-matrix eigenvector is feasible
 for both the lower and upper Collatz--Wielandt problems at that vector. -/
 theorem lower_and_upperCollatzWielandtFeasible_of_eigenvector
     (T : Mat →ₗ[ℂ] Mat) {X : Mat} {r : ℝ}
-    (hX : X ∈ densityMatrices D) (hr : 0 ≤ r)
-    (hEig : T X = (r : ℂ) • X) :
+    (hX : X ∈ densityMatrices D) (hEig : T X = (r : ℂ) • X) :
     LowerCollatzWielandtFeasible T X r ∧
       UpperCollatzWielandtFeasible T X r := by
   constructor
-  · exact ⟨hX, hr, by rw [hEig, sub_self]; exact Matrix.PosSemidef.zero⟩
-  · exact ⟨hX, hr, by rw [hEig, sub_self]; exact Matrix.PosSemidef.zero⟩
+  · exact ⟨hX, by rw [hEig, sub_self]; exact Matrix.PosSemidef.zero⟩
+  · exact ⟨hX, by rw [hEig, sub_self]; exact Matrix.PosSemidef.zero⟩
 
 /-- The lower Collatz--Wielandt feasible value is bounded by the trace
 functional: if `T X - a X ≥ 0` and `tr X = 1`, then
@@ -83,10 +82,27 @@ theorem lowerCollatzWielandtFeasible_le_re_trace
     (T : Mat →ₗ[ℂ] Mat) {X : Mat} {a : ℝ}
     (h : LowerCollatzWielandtFeasible T X a) :
     a ≤ (Matrix.trace (T X)).re := by
-  have htr := h.2.2.trace_nonneg
+  have htr := h.2.trace_nonneg
   rw [Matrix.trace_sub, Matrix.trace_smul, h.1.2, smul_eq_mul, mul_one] at htr
   have hre := (Complex.nonneg_iff.mp htr).1
   change 0 ≤ (Matrix.trace (T X)).re - a at hre
+  linarith
+
+/-- Every upper Collatz--Wielandt feasible value for a positive map is
+nonnegative.  This is a consequence of positivity and the trace-one
+normalization, rather than part of the source feasibility predicate. -/
+theorem upperCollatzWielandtFeasible_nonneg
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) {X : Mat} {a : ℝ}
+    (h : UpperCollatzWielandtFeasible T X a) :
+    0 ≤ a := by
+  have hTX : (T X).PosSemidef := hT X h.1.1
+  have hTXtrace := hTX.trace_nonneg
+  have hgaptrace := h.2.trace_nonneg
+  rw [Matrix.trace_sub, Matrix.trace_smul, h.1.2, smul_eq_mul, mul_one] at hgaptrace
+  have hTXre : 0 ≤ (Matrix.trace (T X)).re :=
+    (Complex.nonneg_iff.mp hTXtrace).1
+  have hgapre := (Complex.nonneg_iff.mp hgaptrace).1
+  change 0 ≤ a - (Matrix.trace (T X)).re at hgapre
   linarith
 
 /-- **Wolf Theorem 6.3, lower-functional maximizer.**
@@ -97,7 +113,7 @@ The maximizing value is real and nonnegative. -/
 theorem exists_lowerCollatzWielandt_maximizer [NeZero D]
     (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) :
     ∃ X : Mat, ∃ r : ℝ,
-      LowerCollatzWielandtFeasible T X r ∧
+      0 ≤ r ∧ LowerCollatzWielandtFeasible T X r ∧
         ∀ Y : Mat, ∀ a : ℝ, LowerCollatzWielandtFeasible T Y a → a ≤ r := by
   have hD : 0 < D := Nat.pos_of_ne_zero (NeZero.ne D)
   have hdensity : (densityMatrices D).Nonempty := densityMatrices_nonempty hD
@@ -125,15 +141,17 @@ theorem exists_lowerCollatzWielandt_maximizer [NeZero D]
     exact ⟨⟨hX₀, ⟨le_rfl, hM_nonneg⟩⟩, by simpa using hT X₀ hX₀.1⟩
   obtain ⟨p, hpK, hpmax⟩ :=
     hKcompact.exists_isMaxOn hKnonempty continuous_snd.continuousOn
-  refine ⟨p.1, p.2, ?_, ?_⟩
-  · exact ⟨hpK.1.1, hpK.1.2.1, hpK.2⟩
+  refine ⟨p.1, p.2, hpK.1.2.1, ?_, ?_⟩
+  · exact ⟨hpK.1.1, hpK.2⟩
   · intro Y a hYa
-    have haM : a ≤ M :=
-      (lowerCollatzWielandtFeasible_le_re_trace T hYa).trans
-        (by simpa [M, f] using hXmaximal hYa.1)
-    have hpair : (Y, a) ∈ K :=
-      ⟨⟨hYa.1, ⟨hYa.2.1, haM⟩⟩, hYa.2.2⟩
-    exact hpmax hpair
+    by_cases ha : 0 ≤ a
+    · have haM : a ≤ M :=
+        (lowerCollatzWielandtFeasible_le_re_trace T hYa).trans
+          (by simpa [M, f] using hXmaximal hYa.1)
+      have hpair : (Y, a) ∈ K :=
+        ⟨⟨hYa.1, ⟨ha, haM⟩⟩, hYa.2⟩
+      exact hpmax hpair
+    · exact (le_of_not_ge ha).trans hpK.1.2.1
 
 /-- **Wolf Equation (6.31).**  The polynomial `(id + T)^n` commutes with
 `T - r id`. -/
@@ -276,14 +294,14 @@ theorem exists_posDef_eigenvector_of_irreducible_positive [NeZero D]
     ∃ X : Mat, ∃ r : ℝ,
       X ∈ densityMatrices D ∧ 0 ≤ r ∧ X.PosDef ∧ T X = (r : ℂ) • X ∧
         ∀ Y : Mat, ∀ a : ℝ, LowerCollatzWielandtFeasible T Y a → a ≤ r := by
-  obtain ⟨X, r, hXr, hmax⟩ := exists_lowerCollatzWielandt_maximizer T hT
+  obtain ⟨X, r, hr, hXr, hmax⟩ := exists_lowerCollatzWielandt_maximizer T hT
   have hX_ne : X ≠ 0 := by
     intro hXzero
     have htrace := hXr.1.2
     rw [hXzero, Matrix.trace_zero] at htrace
     norm_num at htrace
   let A : Mat := T X - (r : ℂ) • X
-  have hA : A.PosSemidef := hXr.2.2
+  have hA : A.PosSemidef := hXr.2
   have hA_zero : A = 0 := by
     by_contra hA_ne
     let S : Module.End ℂ Mat := (LinearMap.id + T) ^ (D - 1)
@@ -358,7 +376,7 @@ theorem exists_posDef_eigenvector_of_irreducible_positive [NeZero D]
       rw [heq]
       exact hscaled
     have hYfeasible : LowerCollatzWielandtFeasible T Y (r + δ) :=
-      ⟨⟨hYpsd, hYtrace⟩, add_nonneg hXr.2.1 hδ.le, hYresidual⟩
+      ⟨⟨hYpsd, hYtrace⟩, hYresidual⟩
     exact (not_lt_of_ge (hmax Y (r + δ) hYfeasible)) (lt_add_of_pos_right r hδ)
   have hEig : T X = (r : ℂ) • X := by
     apply sub_eq_zero.mp
@@ -366,7 +384,7 @@ theorem exists_posDef_eigenvector_of_irreducible_positive [NeZero D]
   have hXpd : X.PosDef :=
     posDef_of_posSemidef_eigenvector_irreducible
       T hT hIrr X (r : ℂ) hXr.1.1 hX_ne hEig
-  exact ⟨X, r, hXr.1, hXr.2.1, hXpd, hEig, hmax⟩
+  exact ⟨X, r, hXr.1, hr, hXpd, hEig, hmax⟩
 
 /-- **Wolf Theorem 6.3, nonzero-map form.**
 
@@ -614,7 +632,7 @@ theorem perron_le_upperCollatzWielandtFeasible [NeZero D]
     rw [← hpair, hX₀_eig, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]
   have hgap_nonneg :
       0 ≤ Matrix.trace (X₀ * ((a : ℂ) • Y - T Y)) :=
-    hX₀.posSemidef.trace_mul_nonneg hYa.2.2
+    hX₀.posSemidef.trace_mul_nonneg hYa.2
   have hgap_eq :
       Matrix.trace (X₀ * ((a : ℂ) • Y - T Y)) =
         (((a - r : ℝ) : ℂ) * Matrix.trace (X₀ * Y)) := by
@@ -652,12 +670,12 @@ theorem exists_posDef_common_collatzWielandt_value_of_irreducible_positive
     exists_posDef_eigenvector_of_irreducible_positive T hT hIrr
   obtain ⟨hLowerAtX, hUpperAtX⟩ :=
     lower_and_upperCollatzWielandtFeasible_of_eigenvector
-      T hXdensity hr hX_eig
+      T hXdensity hX_eig
   have hUpperMin :
       ∀ Y : Mat, ∀ a : ℝ, UpperCollatzWielandtFeasible T Y a → r ≤ a := by
     intro Y a hYa
     by_cases hrzero : r = 0
-    · simpa only [hrzero] using hYa.2.1
+    · simpa only [hrzero] using upperCollatzWielandtFeasible_nonneg T hT hYa
     · have hrpos : 0 < r := lt_of_le_of_ne hr (Ne.symm hrzero)
       exact perron_le_upperCollatzWielandtFeasible
         T hT hIrr hrpos hX hX_eig hYa
