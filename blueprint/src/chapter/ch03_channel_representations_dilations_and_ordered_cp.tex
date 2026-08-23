@@ -302,7 +302,7 @@ a common dilation space.
 \begin{definition}[CP partial order]\label{def:cp_dominates}
     \lean{CPDominates, CPDominates.refl}
     \leanok
-    \uses{def:cp_map}
+    \uses{def:is_kraus_cp}
     For linear maps $S,T:\MN{d_{\rm in}}\to\MN{d_{\rm out}}$, write
     $T\le S$ (in the CP order) when $S-T$ is completely positive.
 \end{definition}
@@ -342,6 +342,11 @@ a common dilation space.
 \begin{proof}\leanok
     The coordinate formula
     $W_{j,(i,a)}=d'^{-1/2}V_{(a,j),i}$ is invertible because $d'>0$.
+    Equivalently, with the canonical tensor-factor identifications used in
+    the source,
+    $V=d'(W\otimes\Id_{d'})(\Id_d\otimes\ket{\Omega})$.
+    The coefficient $d'^2$ printed in the source footnote is a normalization
+    typo; see \path{docs/paper-gaps/wolf_lecture_notes_errata.tex}.
     Expanding the Kronecker product shows directly that multiplication by
     $\Id_{d'}\otimes C$ on $V$ becomes multiplication by $C$ on $W$.
 \end{proof}

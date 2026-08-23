@@ -80,12 +80,12 @@ This is the finite-dimensional Douglas lemma in the orientation of Wolf
 Equation (2.13). The row types of `A` and `B` may be different. -/
 theorem Matrix.exists_contraction_mul_of_conjTranspose_mul_le
     {n r₁ r₂ : Type*}
-    [Fintype n] [DecidableEq n] [Fintype r₁] [DecidableEq r₁]
-    [Fintype r₂] [DecidableEq r₂]
+    [Finite n] [Fintype r₁] [Fintype r₂] [DecidableEq r₂]
     (A : Matrix r₁ n ℂ) (B : Matrix r₂ n ℂ)
     (hAB : Aᴴ * A ≤ Bᴴ * B) :
     ∃ C : Matrix r₁ r₂ ℂ, Cᴴ * C ≤ 1 ∧ A = C * B := by
   classical
+  let _ : Fintype n := Fintype.ofFinite n
   let P : Matrix n n ℂ := Bᴴ * B - Aᴴ * A
   have hP : P.PosSemidef := hAB
   let S : Matrix n n ℂ := hP.isHermitian.cfc Real.sqrt
@@ -185,12 +185,12 @@ theorem Matrix.sqNorm_mulVec_le_of_conjTranspose_mul_le
 (Equation (2.13), in squared form). -/
 theorem Matrix.exists_contraction_mul_of_sqNorm_le
     {n r₁ r₂ : Type*}
-    [Fintype n] [DecidableEq n] [Fintype r₁] [DecidableEq r₁]
-    [Fintype r₂] [DecidableEq r₂]
+    [Fintype n] [Fintype r₁] [Fintype r₂] [DecidableEq r₂]
     (A : Matrix r₁ n ℂ) (B : Matrix r₂ n ℂ)
     (hAB : ∀ x : n → ℂ,
       star (A.mulVec x) ⬝ᵥ A.mulVec x ≤ star (B.mulVec x) ⬝ᵥ B.mulVec x) :
     ∃ C : Matrix r₁ r₂ ℂ, Cᴴ * C ≤ 1 ∧ A = C * B := by
+  classical
   have hGram : Aᴴ * A ≤ Bᴴ * B := by
     rw [Matrix.le_iff]
     refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ ?_
@@ -336,10 +336,11 @@ theorem stinespringW_conjTranspose_mul_self
 
 /-- A matrix with surjective right factor may be cancelled on the right. -/
 theorem Matrix.eq_of_mul_eq_mul_of_mulVec_surjective
-    {m n p : Type*} [Fintype n] [DecidableEq n] [Fintype p]
+    {m n p : Type*} [Fintype n] [Fintype p]
     (A B : Matrix m n ℂ) (W : Matrix n p ℂ)
     (hW : Function.Surjective W.mulVec)
     (h : A * W = B * W) : A = B := by
+  classical
   have hall : ∀ y : n → ℂ, A.mulVec y = B.mulVec y := by
     intro y
     obtain ⟨x, rfl⟩ := hW y

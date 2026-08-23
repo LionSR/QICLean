@@ -136,6 +136,10 @@ project import.
   - `stinespringW` / `stinespringW_conjTranspose_mul_self` — Wolf's
     normalized auxiliary operator for a supplied rectangular Stinespring
     matrix and the source identity `WᴴW = τ` ✓
+  - the inverse of `V ↦ W` uses the coefficient `d'` in tensor form (or
+    `√d'` in coordinates), rather than the `d'^2` printed in the source
+    footnote; the normalization typo is recorded in
+    `docs/paper-gaps/wolf_lecture_notes_errata.tex` ✓
   - `Matrix.sqNorm_mulVec_le_of_conjTranspose_mul_le` /
     `Matrix.exists_contraction_mul_of_sqNorm_le` — Equation (2.13), in
     squared form, and the rectangular factorization `W₁ = C W₂` by a
