@@ -6,21 +6,21 @@
 
 \input{command}
 
-\title{Complete Positivity in the Projected Support Corner Star-Algebra}
+\title{Source-General Projected Support Corner Star-Algebra}
 \author{}
 \date{2026-07-30}
 
 \begin{document}
 \maketitle
-\gapnote{scope-restriction}{open}
+\gapnote{scope-restriction}{resolved}
 
 \section{The assertion}
 
 Corollary 6.6 of \emph{Quantum Channels \& Operations} (Wolf 2012), stated at
 lines 1380--1510 of \texttt{Notes/WolfNoteTexSource/ch06\_spectral\_properties.tex},
 concerns a positive trace-preserving linear map $T$ on $M_D(\mathbb{C})$ whose trace
-adjoint $T^{*}$ is unital and satisfies the Schwarz inequality. For a positive
-semidefinite fixed point $\rho$ of $T$ with support projection $Q$, the corner-restricted
+adjoint $T^{*}$ is unital and satisfies the Schwarz inequality. For a maximum-rank
+positive semidefinite fixed point $\rho$ of $T$ with support projection $Q$, the corner-restricted
 fixed-point set
 \[
     \{\, Y \in Q\,M_D(\mathbb{C})\,Q \;\mid\; Q\,T^{*}(Y)\,Q = Y \,\}
@@ -32,36 +32,43 @@ not as part of the hypothesis. The Schwarz inequality for the adjoint is strictl
 every completely positive unital map satisfies it, but positive maps that are not
 completely positive can satisfy it as well.
 
-\section{The restriction in the formalization}
+\section{The former restriction}
 
-The available Lean statement is \leanid{Kraus.cornerFixedPointsStarSubalgebra}, with the
+The earlier Lean statement was \leanid{Kraus.cornerFixedPointsStarSubalgebra}, with the
 membership characterization \leanid{Kraus.mem\_cornerFixedPointsStarSubalgebra}, both in
 \texttt{QICLean/Channel/FixedPoint/CornerFixedPoints.lean}. Its hypotheses are a family
 $K$ of Kraus operators with \leanid{IsTP} $K$ and a positive semidefinite fixed point of
 the induced map. Presenting the map by a Kraus family assumes complete positivity, so the
-Lean hypothesis set is strictly stronger than the source's. Under the repository
-faithfulness rule this declaration establishes the completely positive case of
-Corollary 6.6 and is not a formalization of the corollary itself.
+Lean hypothesis set there is strictly stronger than the source's. That declaration
+therefore remains a completely positive specialization rather than the source-facing
+formalization of Corollary 6.6.
 
-The corresponding Blueprint entry states the Kraus form explicitly in its hypotheses, so
-its \leanid{\textbackslash leanok} is honest for the restricted statement; it must not be
-read as the unrestricted corollary. The analogous restriction for Corollary 6.7 is
-recorded separately in \texttt{wolf\_cor67\_maximal\_support\_restriction.tex}.
+The analogous restriction for Corollary 6.7 is recorded separately in
+\texttt{wolf\_cor67\_maximal\_support\_restriction.tex}.
 
-\section{Elimination plan}
+\section{Resolution}
 
-No further material is needed from the source: the corollary is stated in full at the
-lines cited above, and the machinery to express its hypothesis without Kraus data already
-exists. The multiplicative domain of a bare linear map
-$E : M_D(\mathbb{C}) \to M_D(\mathbb{C})$ is available as \leanid{multiplicativeDomain} in
-\texttt{QICLean/Channel/Schwarz/AbstractMultiplicativeDomain.lean}, together with its
-membership characterization, so the Schwarz hypothesis can be carried directly.
+The source-general statement is
+\leanid{IsPositiveMap.stationaryCornerAdjointFixedPointsStarSubalgebra}, with membership
+characterization
+\leanid{IsPositiveMap.mem\_stationaryCornerAdjointFixedPointsStarSubalgebra}, in
+\texttt{QICLean/Channel/FixedPoint/AbstractCornerFixedPoints.lean}. Its hypotheses are
+exactly positivity and trace preservation of $T$ and the Schwarz inequality for $T^*$;
+it does not assume a Kraus representation or complete positivity. The declaration works
+for every positive semidefinite fixed point, and therefore includes the source's
+maximum-rank choice.
 
-The elimination is therefore to restate the corollary for a positive trace-preserving map
-whose trace adjoint is unital and Schwarz, discharging it through the general support
-compression and the now-available Theorem 6.14, and then to recover the present Kraus
-declarations as specializations rather than maintaining a parallel development. The
-source-general statement is the one that may carry a source-facing Blueprint entry for
-Corollary 6.6.
+The proof follows Wolf's lines 1433--1437. It compresses $T$ to the support of $\rho$;
+the compression is positive and trace preserving, has a positive-definite fixed point,
+and its trace adjoint remains Schwarz. Hence the abstract fixed-point algebra theorem
+\leanid{SchwarzMap.fixedPointsStarSubalgebra} applies. Extension through the support
+isometry transports multiplication back to the corner, while the trace-adjoint
+compression identity identifies the compressed fixed equation with $QT^*(Y)Q=Y$.
+
+\section{Verdict}
+
+The complete-positivity restriction is eliminated for Corollary 6.6. The Blueprint and
+numbering coverage now point to the source-general declaration; the Kraus declarations
+remain documented specializations.
 
 \end{document}

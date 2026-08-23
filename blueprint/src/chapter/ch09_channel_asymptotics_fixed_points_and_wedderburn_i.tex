@@ -265,8 +265,7 @@ channel-level argument below uses its Kraus analogue.
 
 This subsection establishes the results on the corner algebra,
 $*$-structure, and compression of a PSD fixed point onto its support sector
-needed for the completely positive finite-Kraus specialization of
-\cite[Corollary~6.6]{Wolf2012Quantum}: the corner carries a
+used in \cite[Corollary~6.6]{Wolf2012Quantum}: the corner carries a
 $\C$-algebra and $*$-structure, the two standard presentations of the corner
 are identified, and the compression of a PSD fixed point onto its support
 sector is positive definite.
@@ -407,48 +406,37 @@ sector is positive definite.
 
 \begin{theorem}[Corner-restricted fixed points form a $*$-algebra]%
     \label{thm:cornerFixedPointsStarSubalgebra}
-    \lean{Kraus.cornerFixedPointsStarSubalgebra}
+    \lean{IsPositiveMap.stationaryCornerAdjointFixedPointsStarSubalgebra}
     \leanok
-    \uses{thm:compression_on_support_posDef, rem:corner_algebra_star_instances,
-        thm:adjointFixedPointsStarSubalgebra, thm:support_proj_fixed}
-    Let $T(X)=\sum_iK_iXK_i^\dagger$ be a trace-preserving finite Kraus map,
-    with adjoint $T^*(Y)=\sum_iK_i^\dagger YK_i$. Let $\rho\succeq0$ satisfy
+    \uses{thm:stationarySupport_compression, rem:corner_algebra_star_instances,
+        thm:fixedPointsStarSubalgebra}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, and suppose
+    that $T^*$ satisfies the Schwarz inequality. Let $\rho\succeq0$ satisfy
     $T(\rho)=\rho$, and let $Q=\supp(\rho)$. Then
     \begin{align}
         \{Y\in Q\MN{D}Q\mid QT^*(Y)Q=Y\}
         \label{eq:spectral_corner_fixed_set}
     \end{align}
-    is a $*$-subalgebra of the corner algebra $Q\MN{D}Q$. Within the
-    finite-Kraus setting, this strengthens the maximum-rank-fixed-point case
-    by allowing an arbitrary positive semidefinite fixed point. At maximum
-    rank it gives the completely positive finite-Kraus specialization of
-    \cite[Corollary~6.6]{Wolf2012Quantum}, whose hypothesis is an abstract
-    unital Schwarz map.
-    % Scope restriction (finite Kraus family): see
-    % docs/paper-gaps/wolf_cor66_kraus_hypothesis_restriction.tex.
+    is a $*$-subalgebra of the corner algebra $Q\MN{D}Q$. Wolf chooses a
+    maximum-rank fixed point; the formal theorem strengthens the support
+    choice to an arbitrary PSD fixed point while retaining exactly the
+    source assumptions on $T$. This is
+    \cite[Corollary~6.6 and Equation~(6.61)]{Wolf2012Quantum}.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    \uses{thm:supported_kraus_corner_compression,
-        thm:compression_on_support_posDef, thm:adjointFixedPointsStarSubalgebra,
-        thm:support_proj_fixed}
+    \uses{thm:stationarySupport_compression,
+        thm:fixedPointsStarSubalgebra}
     The set in (\ref{eq:spectral_corner_fixed_set}) is the fixed-point set
-    of the compressed map $\widetilde{T}^*$ on the support sector. Since
-    $\rho$ is fixed by $T$, Theorem~\ref{thm:support_proj_fixed} gives
-    $(\Id-Q)K_iQ=0$, so the compressed family $QK_iQ$ is supported on the
-    corner and is trace-preserving there:
-    $\sum_i(QK_iQ)^\dagger(QK_iQ)=Q$.
-    Theorem~\ref{thm:supported_kraus_corner_compression} compresses this
-    family to a unital map on the support sector, while the compression of
-    $\rho$ is a positive-definite fixed point by
-    Theorem~\ref{thm:compression_on_support_posDef}. The structure theorem
-    for fixed points of unital Schwarz maps with a positive-definite fixed
-    point (Theorem~\ref{thm:adjointFixedPointsStarSubalgebra}) makes the
-    compressed fixed points a $*$-algebra. The compression isomorphism is
-    multiplicative and star-preserving, intertwines the compressed adjoint
-    map with the corner-restricted map, and transports this structure back
-    to the corner.
+    of the compressed map $\widetilde{T}^*$ on the support sector.
+    The stationary-support compression is positive and trace preserving,
+    its adjoint remains Schwarz, and the compression of $\rho$ is positive
+    definite. Theorem~\ref{thm:fixedPointsStarSubalgebra} therefore makes
+    $\Fix(\widetilde{T}^*)$ a $*$-algebra. Compression by the support
+    isometry identifies products and adjoints in that algebra with products
+    and adjoints in $Q\MN{D}Q$, and the trace-adjoint compression identity
+    identifies its fixed equation with $QT^*(Y)Q=Y$.
 \end{proof}
 
 \section{Wedderburn decomposition of the fixed-point algebra}
