@@ -52,4 +52,3 @@ theorem transferMatrix_pow_sub_peripheralWeightedProjection_pow
       ((transferMatrixLM (D := D)).map_sub _ _).symm
     _ = transferMatrix ((T - T.peripheralWeightedProjection) ^ n) :=
       congrArg transferMatrix (T.pow_sub_peripheralWeightedProjection_pow hn)
-
