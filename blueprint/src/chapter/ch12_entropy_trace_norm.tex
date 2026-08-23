@@ -671,8 +671,7 @@ Theorem~\ref{thm:trace_norm_abs}.
         Matrix.sSup_orthogonalPureStateTraceNorms_le_hilbertSchmidtOperatorNorm}
     \leanok
     \uses{def:trace_norm,
-        thm:trace_norm_frobenius_comparison,
-        thm:transfer_matrix_hilbert_schmidt_operator_norm}
+        thm:trace_norm_frobenius_comparison}
     For $A\in\MN{D}$ and a complex-linear map $S:\MN{D}\to\MN{D}$,
     \begin{align}
         \lVert A\rVert_{\tr}&\leq\sqrt D\,\lVert A\rVert_2,\\
@@ -700,7 +699,7 @@ Theorem~\ref{thm:trace_norm_abs}.
     \leanok
     \uses{def:trace_norm_asymptotic_distance,
         def:peripheral_spectral_projections,
-        thm:transfer_matrix_hilbert_schmidt_operator_norm}
+        def:mpu_transfer_matrix}
     Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, let $\rho$ be
     a density operator, and let $n>0$. Then
     \begin{align}
@@ -724,14 +723,20 @@ Theorem~\ref{thm:trace_norm_abs}.
     \uses{lem:trace_norm_asymptotic_distance_numerator,
         lem:trace_norm_contraction_pointwise,
         lem:asymptotic_hilbert_schmidt_estimates,
-        cor:peripheral_projection_channel}
+        cor:peripheral_projection_channel,
+        thm:transfer_matrix_hilbert_schmidt_operator_norm,
+        lem:wolf_positive_power_nonperipheral_identity}
     Apply the numerator identity to $S=T^n-T_\varphi^n$. The peripheral
     projection is again positive and trace preserving, so Lemma~8.3 applies to
     the distinct density matrices $\rho$ and $T_\phi(\rho)$. Then use
     $\lVert\cdot\rVert_{\tr}\leq\sqrt D\lVert\cdot\rVert_2$ and the
     $\sqrt2$ Hilbert--Schmidt distance of orthogonal pure states. The constants
     simplify as $\frac12\sqrt D\sqrt2=\sqrt{D/2}$; if
-    $\rho=T_\phi(\rho)$, both sides vanish directly.
+    $\rho=T_\phi(\rho)$, both sides vanish directly. Finally, the
+    positive-power identity identifies the transfer-matrix difference with
+    the transfer matrix of $T^n-T_\varphi^n$, whose largest-singular-value norm
+    equals the Hilbert--Schmidt operator norm
+    $\lVert T^n-T_\varphi^n\rVert_{2\to2}$.
 \end{proof}
 
 \begin{lemma}[Scaled positive-part trace estimate]
