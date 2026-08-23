@@ -123,8 +123,8 @@ proof of the implication (1) $\Rightarrow$ (2) of
 is the definition of $C(P)$ below; it is not one of the standard-form equations
 for a positive map.
 The next results identify its linear span and compute its dimension. They
-formalize this cone-dimension step only, not the full equivalence in
-Proposition~3.6.
+supply the cone-dimension step used in the formalization of the full
+equivalence in Proposition~3.6 below.
 
 \begin{definition}[Wolf's cone $C(P)$]
     \label{def:psd_cone_face}
@@ -297,6 +297,49 @@ Proposition~3.6.
     $YWY^\dagger=A$ proves the conjugation case, and
     $Y(W^T)^TY^\dagger=A$ proves the transpose case, with $W$ and $W^T$
     positive semidefinite.
+\end{proof}
+
+\begin{theorem}[Automorphisms and rank-preserving maps]
+    \label{thm:wolf_prop_3_6}
+    \lean{wolf_prop_3_6}
+    \leanok
+    \uses{def:maps_psd_cone_onto, cor:psd_cone_face_span_dimension,
+        thm:positive_hermitian_rank_preserver_standard_form,
+        thm:conjugation_maps_psd_cone_onto}
+    Let $T:\MN{D}\to\MN{D}$ be a complex-linear map. The following are
+    equivalent:
+    \begin{enumerate}
+        \item $T$ maps the cone of positive semidefinite matrices onto itself;
+        \item $T$ is positive and preserves the rank of Hermitian matrices;
+        \item there is an invertible $Y\in\MN{D}$ such that either
+              $T(X)=YXY^\dagger$ for every $X$, or
+              $T(X)=YX^{\mathsf T}Y^\dagger$ for every $X$.
+    \end{enumerate}
+    This is \cite[Proposition~3.6]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:psd_cone_face, cor:psd_cone_face_span_dimension,
+        thm:positive_hermitian_rank_preserver_standard_form,
+        thm:conjugation_maps_psd_cone_onto}
+    For (1) $\Rightarrow$ (2), $T$ is bijective and $T^{-1}$ is again positive
+    and maps the positive semidefinite cone onto itself. For $P\geq0$, $T$ maps
+    Wolf's cone $C(P)$ onto $C(T(P))$. The complex spans therefore have equal
+    dimension, so
+    \begin{align}
+        \rank(P)^2
+        &=\dim_{\C}\!\left(\operatorname{span}_{\C}C(P)\right)\\
+        &=\dim_{\C}\!\left(\operatorname{span}_{\C}C(T(P))\right)
+        =\rank(T(P))^2.
+        \notag
+    \end{align}
+    Hence $T$ preserves rank on positive semidefinite matrices. Decompose a
+    Hermitian $H$ as $H=P_+-P_-$ into its positive and negative parts. Rank
+    subadditivity gives $\rank(T(H))\leq\rank(H)$; applying the same argument to
+    $T^{-1}$ gives the converse inequality. Implication (2) $\Rightarrow$ (3)
+    is Theorem~\ref{thm:positive_hermitian_rank_preserver_standard_form}, and
+    (3) $\Rightarrow$ (1) is
+    Theorem~\ref{thm:conjugation_maps_psd_cone_onto}.
 \end{proof}
 
 \section{Positivity hierarchy and two-positive maps}
