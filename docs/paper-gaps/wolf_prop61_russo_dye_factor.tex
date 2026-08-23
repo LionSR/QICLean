@@ -9,74 +9,101 @@
 
 \title{Wolf Proposition~6.1 --- The Russo--Dye Factor}
 \author{}
-\date{2026-08-04}
+\date{2026-08-23}
 
 \begin{document}
 \maketitle
-\gapnote{scope-restriction}{open}
+\gapnote{scope-restriction}{resolved}
 
 \section{The assertion}
 
-Wolf, \emph{Quantum Channels \& Operations}, Proposition~6.1:
-``If $T$ is a positive map on $\mathcal M_d(\mathbb C)$, then its
-spectral radius satisfies $\varrho(T)\le\|T(\mathbf 1)\|_\infty$.  If in
-addition $T$ is unital or trace-preserving, then there is an eigenvalue
-$\lambda=1$.''
+Let $d\geq1$, and let $T:\MN{d}\to\MN{d}$ be positive. Wolf's
+Proposition~6.1 states~\cite[Proposition~6.1]{Wolf2012Quantum}
+\begin{align}
+    \varrho(T)&\leq\|T(\Id)\|_\infty.
+    \tag{6.2}
+\end{align}
+If $T$ is unital or trace-preserving, then $1$ is an eigenvalue,
+$\varrho(T)=1$, and every eigenvalue lies in the closed unit disk.
+The local source is
+\path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex}, lines~73--91.
 
-The proof invokes the Russo--Dye theorem
-$\|T(X)\|_\infty\le\|T(\mathbf 1)\|_\infty\,\|X\|_\infty$ to bound
-every eigenvalue modulus by $\|T(\mathbf 1)\|_\infty$, and hence the
-spectral radius.
+At line~84 Wolf invokes the Russo--Dye estimate
+\begin{align}
+    \|T(X)\|_\infty
+    &\leq\|T(\Id)\|_\infty\,\|X\|_\infty.
+    \label{eq:russo-dye-estimate}
+\end{align}
+If $T(X)=\lambda X$ and $X\neq0$, cancellation of
+$\|X\|_\infty$ gives
+\begin{align}
+    |\lambda|&\leq\|T(\Id)\|_\infty,
+    \tag{6.3}
+\end{align}
+and taking the largest eigenvalue modulus gives (6.2).
 
 \section{The formalization}
 
-The trace-preserving case is the one needed by the rest of the chapter.
-It is established by two theorems:
+The general coefficient-one statement is formalized in
+\doclink{QICLean/Channel/Peripheral/SpectralRadius}. The main declarations
+are:
 \begin{itemize}
-\item \leanid{IsPositiveMap.eigenvalue\_norm\_le\_one\_of\_tracePreserving}
-  in \doclink{QICLean/Channel/Determinant/Bound} proves $|\lambda|\le1$ for
-  every eigenvalue of a positive trace-preserving map via an orbit-and-trace
-  argument that decomposes an eigenvector into Hermitian parts and
-  difference-of-density-matrices components;
-\item \leanid{IsPositiveMap.eigenvalue\_one\_exists\_of\_tracePreserving}
-  in \doclink{QICLean/Channel/Peripheral/SpectralRadius} proves that
-  $1$ is an eigenvalue with a nonzero positive-semidefinite eigenvector,
-  using the Perron--Frobenius theorem
-  (\leanid{exists\_posSemidef\_eigenvector} in
-  \doclink{QICLean/Channel/PerronFrobenius/Existence}) together with trace
-  preservation to force the Perron eigenvalue to~$1$.
+\item \leanid{IsPositiveMap.norm\_apply\_le\_norm\_map\_one\_mul\_norm}
+  proves (\ref{eq:russo-dye-estimate}) for every matrix $X$;
+\item \leanid{IsPositiveMap.eigenvalue\_norm\_le\_norm\_map\_one}
+  proves Equation~(6.3);
+\item \leanid{IsPositiveMap.spectralRadius\_le\_nnnorm\_map\_one}
+  proves Equation~(6.2);
+\item \leanid{eigenvalue\_one\_of\_map\_one\_eq\_one},
+  \leanid{IsPositiveMap.eigenvalue\_norm\_le\_one\_of\_map\_one\_eq\_one},
+  and
+  \leanid{IsPositiveMap.spectralRadius\_eq\_one\_of\_map\_one\_eq\_one}
+  give the three unital conclusions without assuming complete positivity.
 \end{itemize}
-Together these give $\varrho(T)=1$ for the trace-preserving case, which is the
-statement required by Proposition~6.3 (Ces\`aro means) and later results.
 
-The unital case follows by duality: the trace adjoint $T^*$ is
-trace-preserving, its spectrum coincides with that of~$T$, and the
-eigenvalue-$1$ conclusion carries over.  This dual implication has not yet been
-wired as a separate lemma.
+The trace-preserving results remain available as independent sibling
+theorems. In particular,
+\leanid{IsPositiveMap.eigenvalue\_norm\_le\_one\_of\_tracePreserving} in
+\doclink{QICLean/Channel/Determinant/Bound} gives the closed-unit-disk bound,
+and \leanid{IsPositiveMap.eigenvalue\_one\_exists\_of\_tracePreserving} gives
+a nonzero positive-semidefinite fixed point.
 
-The general ``$\varrho(T)\le\|T(\mathbf 1)\|_\infty$ for every positive map''
-has not been formalized.  A possible elimination plan would follow the
-Russo--Dye route for the matrix algebra by: (a) using
-\leanid{PositiveLinearMap.norm\_apply\_le\_of\_nonneg} from Mathlib to obtain
-the factor-$1$ bound on positive-semidefinite inputs; (b) decomposing an
-arbitrary matrix into four positive-semidefinite parts via the standard
-Hermitian/anti-Hermitian and positive/negative-part decomposition; (c) obtaining
-$\|T(X)\|\le 4\|T(\mathbf 1)\|\|X\|$ and, from it, a characterisation of
-the spectral radius.  Steps (a) and (b) are available; step~(c) would yield
-a factor-$4$ certificate, weaker than the source's factor~$1$.  To recover
-the optimal factor one would need the full Russo--Dye theorem
-$\|T\|=\|T(\mathbf 1)\|$ for positive maps on C$^\ast$-algebras, which
-is not yet present in Mathlib.\footnote{Mathlib~\texttt{PositiveLinearMap.norm\_apply\_le\_of\_nonneg}
-already proves $\|T(X)\|\le\|T(\mathbf 1)\|\|X\|$ for $X\ge0$; the missing
-step is the extension to arbitrary $X$ without the factor~$4$.}
+\section{The proof route}
+
+The pinned version of Mathlib has no standalone Russo--Dye theorem or theorem
+identifying the operator-norm unit ball with the closed convex hull of the
+unitaries. The formal proof instead derives exactly
+(\ref{eq:russo-dye-estimate}) from Wolf's
+Theorem~5.6~\cite[Theorem~5.6]{Wolf2012Quantum}, already formalized as
+\leanid{KadisonSchwarz.schwarz\_inequality\_commuting\_dominant\_operator}.
+This is an alternative derivation of the estimate used by Wolf, not a
+formalization of the convex-hull theorem itself.
+
+Set $c=\|T(\Id)\|_\infty$. For $c>0$, the normalized map
+$S=c^{-1}T$ is positive and subunital. If $\|A\|_\infty\leq1$, then
+$A^\dagger A\leq\Id$. Wolf's Theorem~5.6, with dominant operator $\Id$,
+gives
+\begin{align}
+    S(A)^\dagger S(A)&\leq S(\Id)\leq\Id.
+\end{align}
+The C$^*$-identity yields $\|S(A)\|_\infty\leq1$. The case $c=0$ is treated
+separately: the same inequality gives
+$T(A)^\dagger T(A)\leq T(\Id)=0$, hence $T(A)=0$. Rescaling an arbitrary
+nonzero $X$ proves (\ref{eq:russo-dye-estimate}). No decomposition into four
+positive parts and no factor four enters the argument.
+
+The formal hypotheses match the source boundary: positivity and $d\geq1$.
+The norm is Mathlib's matrix C$^*$-operator norm, corresponding to Wolf's
+$\|\cdot\|_\infty$; it is not the Frobenius norm or the row-sum matrix norm.
 
 \section{Verdict}
 
-This is a \emph{scope restriction}.  The trace-preserving and unital cases of
-Wolf Proposition~6.1 are fully proved; the general bound
-$\varrho(T)\le\|T(\mathbf 1)\|_\infty$ for arbitrary positive maps is not
-yet formalized.  The trace-preserving case is the one invoked throughout the
-remainder of Chapter~6 and is complete.\footnote{Tracking: \href{https://github.com/LionSR/TNLean/issues/3984}{TNLean issue \#3984}.}
+The former scope restriction is resolved. Equation~(6.2), Equation~(6.3), and
+the unital conclusions of Wolf Proposition~6.1 are formalized for arbitrary
+positive matrix maps with the sharp coefficient one and without a
+complete-positivity assumption. The formal proof uses Wolf's Theorem~5.6 to
+derive the norm estimate that the source obtains from Russo--Dye.\footnote{Tracking:
+\ghissue{36}.}
 
 \bibliographystyle{alpha}
 \bibliography{references}

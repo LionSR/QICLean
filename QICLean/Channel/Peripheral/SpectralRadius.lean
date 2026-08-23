@@ -14,27 +14,38 @@ import Mathlib.Topology.Algebra.Module.FiniteDimension
 /-!
 # Spectral radius of positive maps — Wolf Proposition 6.1
 
-**Wolf Proposition 6.1**: For a positive trace-preserving (or unital) map
-$T: M_d(\mathbb{C}) \to M_d(\mathbb{C})$, the spectral radius is $1$, all eigenvalues
-lie in the unit disk, and $1$ is an eigenvalue.
+**Wolf Proposition 6.1**: if
+$T: M_d(\mathbb{C}) \to M_d(\mathbb{C})$ is positive and $d \ge 1$, then
+$\varrho(T) \le \|T(\mathbf 1)\|_\infty$.  If $T$ is unital or
+trace-preserving, then $1$ is an eigenvalue, the spectral radius is $1$, and
+all eigenvalues lie in the closed unit disk.
 
-The eigenvalue modulus bound $|\lambda| \le 1$ is provided by
-`IsPositiveMap.eigenvalue_norm_le_one_of_tracePreserving` in
-`TNLean.Channel.Determinant.Bound`.  Eigenvalue-$1$ existence is proved here
-using the Perron--Frobenius theorem (`exists_posSemidef_eigenvector`) together
-with trace preservation.
+Wolf invokes the Russo--Dye estimate
+$\|T(X)\|_\infty \le \|T(\mathbf 1)\|_\infty\|X\|_\infty$.  No standalone
+Russo--Dye theorem is available in the pinned Mathlib.  For finite matrices,
+this file derives precisely the estimate needed by Proposition 6.1 from
+Wolf's Theorem 5.6 (`schwarz_inequality_commuting_dominant_operator`), taking
+the dominant operator to be the identity after normalizing the map.  This
+retains the sharp coefficient one and does not use the four-positive-parts
+bound.
 
-The general $\varrho(T) \le \|T(\mathbf 1)\|_\infty$ bound for arbitrary
-positive maps relies on the Russo--Dye theorem and is documented in
-`docs/paper-gaps/wolf_prop61_russo_dye_factor.tex`.
+The norm in these declarations is the matrix C*-operator norm (Wolf's
+$\|\cdot\|_\infty$), not the Frobenius norm or Mathlib's row-sum norm.  The
+pre-existing trace-preserving results are retained independently.
 
 ## Main result
 
-* `IsPositiveMap.eigenvalue_one_exists_of_tracePreserving`:
-  nonzero PSD fixed point for positive trace-preserving maps.
-* `spectralRadius_le_one_of_forall_eigenvalue_norm_le_one`: the norm-agnostic
-  step transporting a pointwise eigenvalue bound to a spectral-radius bound,
-  shared by every operator-norm choice used for this map.
+* `IsPositiveMap.norm_apply_le_norm_map_one_mul_norm`: the sharp matrix
+  Russo--Dye estimate used by Wolf.
+* `IsPositiveMap.eigenvalue_norm_le_norm_map_one` and
+  `IsPositiveMap.spectralRadius_le_nnnorm_map_one`: Equations (6.3) and (6.2).
+* `eigenvalue_one_of_map_one_eq_one`,
+  `IsPositiveMap.eigenvalue_norm_le_one_of_map_one_eq_one`, and
+  `IsPositiveMap.spectralRadius_eq_one_of_map_one_eq_one`: the unital case.
+* `IsPositiveMap.eigenvalue_one_exists_of_tracePreserving`: the
+  trace-preserving fixed point.
+* `spectralRadius_le_of_forall_eigenvalue_nnnorm_le`: the norm-agnostic step
+  from pointwise eigenvalue bounds to a spectral-radius bound.
 * `Kraus.eigenvalue_norm_le_one_of_isTP`, `Kraus.spectralRadius_mapLM_le_one_of_isTP`:
   eigenvalue and spectral-radius bounds for trace-preserving Kraus maps.
 
