@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Channel.Irreducible.FixedPointUniqueness
 import QICLean.Channel.Irreducible.Growth
 
 /-!
@@ -116,6 +117,68 @@ theorem idPlus_pow_apply_map_sub_smul
     simpa only [Module.End.mul_apply] using h
   change S (T X - r • X) = T (S X) - r • S X
   rw [map_sub, map_smul, happly]
+
+/-- **Wolf Equation (6.32), algebraic identity.**  If `T X = r X` for a real
+`r`, then `(id + T)^n X = (1 + r)^n X`. -/
+theorem idPlus_pow_apply_of_real_eigenvector
+    (T : Mat →ₗ[ℂ] Mat) (X : Mat) (r : ℝ)
+    (hEig : T X = (r : ℂ) • X) (n : ℕ) :
+    ((LinearMap.id + T : Module.End ℂ Mat) ^ n) X =
+      (((1 + r) ^ n : ℝ) : ℂ) • X := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [pow_succ', Module.End.mul_apply, ih, map_smul]
+      simp only [LinearMap.add_apply, LinearMap.id_apply, hEig]
+      push_cast
+      rw [pow_succ]
+      module
+
+section
+
+open scoped Matrix.Norms.L2Operator
+
+/-- A Hermitian matrix becomes positive definite after adding a sufficiently
+large positive multiple of a prescribed positive-definite matrix. -/
+private theorem exists_posDef_add_real_smul [NeZero D]
+    {X H : Mat} (hX : X.PosDef) (hH : H.IsHermitian) :
+    ∃ b : ℝ, 0 < b ∧ ((b : ℂ) • X + H).PosDef := by
+  classical
+  let μ : ℝ := minEigenvalue hX.isHermitian
+  have hμ : 0 < μ := minEigenvalue_pos_of_posDef hX.isHermitian hX
+  let b : ℝ := (‖H‖ + 1) / μ
+  have hb : 0 < b := div_pos (by positivity) hμ
+  have hXgap : (X - (μ : ℂ) • (1 : Mat)).PosSemidef := by
+    simpa [μ] using sub_minEigenvalue_smul_one_posSemidef hX.isHermitian
+  have hHlower : ((-‖H‖ : ℝ) : ℂ) • (1 : Mat) ≤ H := by
+    simpa [Algebra.algebraMap_eq_smul_one] using
+      (isSelfAdjoint_iff.mpr hH).neg_algebraMap_norm_le_self
+  have hHgap : (H + ((‖H‖ : ℝ) : ℂ) • (1 : Mat)).PosSemidef := by
+    have h := (sub_nonneg.mpr hHlower).posSemidef
+    push_cast at h
+    simpa only [neg_smul, sub_neg_eq_add] using h
+  have hb_nonneg : (0 : ℂ) ≤ (b : ℂ) := by exact_mod_cast hb.le
+  have hscaled := hXgap.smul hb_nonneg
+  have hbμ : (b : ℂ) * (μ : ℂ) = (((‖H‖ + 1 : ℝ)) : ℂ) := by
+    exact_mod_cast div_mul_cancel₀ (‖H‖ + 1) hμ.ne'
+  have hsum : ((b : ℂ) • X + H - (1 : Mat)).PosSemidef := by
+    have heq :
+        (b : ℂ) • (X - (μ : ℂ) • (1 : Mat)) +
+            (H + ((‖H‖ : ℝ) : ℂ) • (1 : Mat)) =
+          (b : ℂ) • X + H - (1 : Mat) := by
+      rw [smul_sub, smul_smul, hbμ]
+      push_cast
+      module
+    rw [← heq]
+    exact hscaled.add hHgap
+  refine ⟨b, hb, ?_⟩
+  have hpd := Matrix.PosDef.one.add_posSemidef hsum
+  have heq : (1 : Mat) + ((b : ℂ) • X + H - 1) = (b : ℂ) • X + H := by
+    module
+  rw [heq] at hpd
+  exact hpd
+
+end
 
 namespace IsPositiveMap
 
@@ -292,3 +355,118 @@ theorem exists_posDef_eigenvector_of_irreducible_positive_of_ne_zero [NeZero D]
     apply hT.eq_zero_of_map_posDef_eq_zero hXpd
     simpa [hzero.symm] using hEig
   exact ⟨X, r, hX, hrpos, hXpd, hEig, hmax⟩
+
+/-! ## Wolf Equation (6.32): one-dimensional Perron eigenspace -/
+
+/-- A Hermitian eigenvector at the positive Perron value is proportional to a
+positive-definite Perron eigenvector.
+
+The proof is Wolf's boundary argument.  After shifting `H` by a large multiple
+of `X`, the critical-scalar construction gives a nonzero positive-semidefinite
+boundary eigenvector `W` unless `H` is already proportional to `X`.  Theorem
+6.2 and Equation (6.32) make that `W` positive definite, contradicting its
+boundary construction. -/
+theorem isHermitian_eigenvector_eq_smul_of_irreducible_positive [NeZero D]
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
+    {X H : Mat} {r : ℝ} (hr : 0 < r)
+    (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X)
+    (hH : H.IsHermitian) (hH_eig : T H = (r : ℂ) • H) :
+    ∃ c : ℂ, H = c • X := by
+  obtain ⟨b, hb, hσpd⟩ := exists_posDef_add_real_smul hX hH
+  let σ : Mat := (b : ℂ) • X + H
+  have hσ_eig : T σ = (r : ℂ) • σ := by
+    simp only [σ, map_add, map_smul, hX_eig, hH_eig]
+    module
+  have hσpd' : σ.PosDef := by simpa [σ] using hσpd
+  obtain ⟨c, -, hWpsd, hWnotpd⟩ := exists_critical_scalar hX hσpd'
+  let W : Mat := σ - (c : ℂ) • X
+  have hW_eig : T W = (r : ℂ) • W := by
+    simp only [W, map_sub, map_smul, hσ_eig, hX_eig]
+    module
+  by_cases hWzero : W = 0
+  · refine ⟨(c : ℂ) - (b : ℂ), ?_⟩
+    have hEq : (b : ℂ) • X + H = (c : ℂ) • X := by
+      exact sub_eq_zero.mp (by simpa [W, σ] using hWzero)
+    calc
+      H = (c : ℂ) • X - (b : ℂ) • X := by rw [← hEq]; module
+      _ = ((c : ℂ) - (b : ℂ)) • X := by module
+  · have hSW :
+        (((LinearMap.id + T : Module.End ℂ Mat) ^ (D - 1)) W).PosDef :=
+      growth_posDef_of_irreducible T hT hIrr W (by simpa [W] using hWpsd) hWzero
+    have hEq32 := idPlus_pow_apply_of_real_eigenvector T W r hW_eig (D - 1)
+    let α : ℝ := (1 + r) ^ (D - 1)
+    have hα : 0 < α := pow_pos (by linarith) _
+    have hαinv : (0 : ℂ) < ((α : ℂ)⁻¹) := by
+      exact_mod_cast inv_pos.mpr hα
+    rw [hEq32] at hSW
+    have hWpd_scaled := hSW.smul hαinv
+    have hαne : (α : ℂ) ≠ 0 := by exact_mod_cast hα.ne'
+    have hWpd : W.PosDef := by
+      simpa only [α, smul_smul, inv_mul_cancel₀ hαne, one_smul] using hWpd_scaled
+    exact (hWnotpd (by simpa [W] using hWpd)).elim
+
+/-- Every complex eigenvector at the positive Perron value is proportional to
+the positive-definite Perron eigenvector.
+
+Following Wolf's proof before Equation (6.32), the eigenvector is split into
+its Hermitian and skew-Hermitian parts.  Positivity of `T` ensures that both
+parts remain eigenvectors at the same real eigenvalue, and the boundary
+argument is applied to each part. -/
+theorem eigenvector_eq_smul_of_irreducible_positive [NeZero D]
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
+    {X Z : Mat} {r : ℝ} (hr : 0 < r)
+    (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X)
+    (hZ_eig : T Z = (r : ℂ) • Z) :
+    ∃ c : ℂ, Z = c • X := by
+  obtain ⟨H₁, H₂, hH₁def, hH₂def, hH₁, hH₂, hZdecomp⟩ :=
+    Matrix.exists_isHermitian_decomposition Z
+  have hZstar_eig : T Zᴴ = (r : ℂ) • Zᴴ := by
+    calc
+      T Zᴴ = (T Z)ᴴ := hT.map_conjTranspose Z
+      _ = ((r : ℂ) • Z)ᴴ := by rw [hZ_eig]
+      _ = (r : ℂ) • Zᴴ := by simp
+  have hH₁_eig : T H₁ = (r : ℂ) • H₁ := by
+    simp only [hH₁def, map_add, hZ_eig, hZstar_eig]
+    module
+  have hH₂_eig : T H₂ = (r : ℂ) • H₂ := by
+    simp only [hH₂def, map_smul, map_sub, hZ_eig, hZstar_eig]
+    module
+  obtain ⟨c₁, hc₁⟩ := isHermitian_eigenvector_eq_smul_of_irreducible_positive
+    T hT hIrr hr hX hX_eig hH₁ hH₁_eig
+  obtain ⟨c₂, hc₂⟩ := isHermitian_eigenvector_eq_smul_of_irreducible_positive
+    T hT hIrr hr hX hX_eig hH₂ hH₂_eig
+  refine ⟨(2⁻¹ : ℂ) * c₁ - ((2⁻¹ : ℂ) * Complex.I) * c₂, ?_⟩
+  rw [hZdecomp, hc₁, hc₂]
+  module
+
+/-- The eigenspace at the positive Perron value is the span of the
+positive-definite Perron eigenvector.  This is geometric non-degeneracy in
+Wolf Theorem 6.3(2); it does not assert algebraic simplicity. -/
+theorem eigenspace_eq_span_of_irreducible_positive [NeZero D]
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
+    {X : Mat} {r : ℝ} (hr : 0 < r)
+    (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X) :
+    Module.End.eigenspace T (r : ℂ) = ℂ ∙ X := by
+  apply le_antisymm
+  · intro Z hZ
+    obtain ⟨c, hc⟩ := eigenvector_eq_smul_of_irreducible_positive
+      T hT hIrr hr hX hX_eig (Module.End.mem_eigenspace_iff.mp hZ)
+    exact Submodule.mem_span_singleton.mpr ⟨c, hc.symm⟩
+  · apply Submodule.span_le.mpr
+    intro Z hZ
+    rw [Set.mem_singleton_iff] at hZ
+    subst Z
+    exact Module.End.mem_eigenspace_iff.mpr hX_eig
+
+/-- The ordinary eigenspace at the positive Perron value has complex dimension
+one.  No statement about the generalized eigenspace is made. -/
+theorem finrank_eigenspace_eq_one_of_irreducible_positive [NeZero D]
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T)
+    {X : Mat} {r : ℝ} (hr : 0 < r)
+    (hX : X.PosDef) (hX_eig : T X = (r : ℂ) • X) :
+    Module.finrank ℂ (Module.End.eigenspace T (r : ℂ)) = 1 := by
+  rw [eigenspace_eq_span_of_irreducible_positive T hT hIrr hr hX hX_eig]
+  apply finrank_span_singleton
+  intro hXzero
+  have htrace := hX.trace_pos
+  simp [hXzero] at htrace
