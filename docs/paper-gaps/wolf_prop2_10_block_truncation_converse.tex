@@ -1,0 +1,133 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{The False Converse in Wolf's Pauli-Block Truncation Proposition}
+\author{}
+\date{2026-08-23}
+
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{The printed equivalence}
+
+In Section~2.4, after the Bloch-ball affine representation
+$x\mapsto v+\Delta x$ in Eq.~(2.39), Wolf considers a Hermiticity-preserving
+linear map $T:\MN{2}\to\MN{2}$. In the Pauli basis, write
+\begin{align}
+  \widehat T
+  &=\begin{pmatrix}
+      \widehat T_{00}&r^{\mathsf T}\\
+      v&\Delta
+    \end{pmatrix},
+  &
+  \widehat T_{ij}
+  &=\frac12\tr\!\left(\sigma_iT(\sigma_j)\right).
+\end{align}
+Here $\Delta=(\widehat T_{ij})_{i,j=1}^{3}$ is the lower-right Pauli block,
+and the row $r^{\mathsf T}$ and column $v$ are the two off-diagonal blocks.
+Proposition~2.10 prints the claim that
+\begin{align}
+  \widehat T'
+  :=\widehat T_{00}\oplus\Delta
+  =\begin{pmatrix}
+      \widehat T_{00}&0\\
+      0&\Delta
+    \end{pmatrix}
+\end{align}
+represents a positive, respectively completely positive, map if and only if
+$\widehat T$ does.
+\footnote{\cite[Section~2.4, Proposition~2.10, Eq.~(2.39)]{Wolf2012Quantum};
+local source \path{Notes/WolfNoteTexSource/ch02_representations.tex},
+lines~984--990.}
+
+\section{What the proof establishes}
+
+Let
+\begin{align}
+  \Theta(X)&=\tr(X)\Id-X,
+  &D&=\mathrm{diag}(1,-1,-1,-1).
+\end{align}
+The Pauli transfer matrix of $\Theta$ is $D$, and
+\begin{align}
+  T'&=\frac{T+\Theta\circ T\circ\Theta}{2},
+  &
+  \widehat T'
+  &=\frac{\widehat T+D\widehat T D}{2}
+    =\widehat T_{00}\oplus\Delta.
+  \label{eq:truncation}
+\end{align}
+Wolf's proof shows the two forward implications
+\begin{align}
+  T\text{ positive}
+  &\Longrightarrow T'\text{ positive},
+  \label{eq:positive-forward}\\
+  T\text{ completely positive}
+  &\Longrightarrow T'\text{ completely positive}.
+  \label{eq:cp-forward}
+\end{align}
+It does not prove either converse. The proof route is exactly the averaging
+in \eqref{eq:truncation}: double time reversal preserves positivity and
+complete positivity in this setting, and these cones are convex.
+\footnote{\cite[Proposition~2.10]{Wolf2012Quantum}; local source
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~992--998.}
+
+The formalization follows this proof and states only the forward directions.
+Pauli time reversal, its diagonal transfer coefficients, and the truncation are
+\leanid{Wolf.pauliTimeReversal},
+\leanid{Wolf.pauliTimeReversalDiagonal}, and
+\leanid{Wolf.pauliBlockDiagonalTruncation}. The transfer-matrix identities are
+\leanid{Wolf.pauliTransferEntry_timeReversal_comp} and
+\leanid{Wolf.pauliTransferEntry_pauliBlockDiagonalTruncation}. The two
+preservation theorems are
+\leanid{Wolf.pauliBlockDiagonalTruncation_isPositiveMap} and
+\leanid{Wolf.pauliBlockDiagonalTruncation_isCPMap}.
+\footnote{All declarations are in
+\doclink{QICLean/Channel/LorentzNormalForm/PauliBlockTruncation}.}
+
+\section{Counterexample to both converses}
+
+Define
+\begin{align}
+  T(X)&=\tr(X)\begin{pmatrix}3/2&0\\0&-1/2\end{pmatrix}.
+  \label{eq:counterexample}
+\end{align}
+The map is Hermiticity preserving. It is not positive, because
+\begin{align}
+  T(\Id/2)
+  &=\begin{pmatrix}3/2&0\\0&-1/2\end{pmatrix}
+  \not\geq0.
+\end{align}
+Its Pauli transfer matrix has $\widehat T_{00}=1$, zero lower-right block
+$\Delta=0$, and a nonzero entry only in the off-diagonal column $v$.
+Consequently its truncation is
+\begin{align}
+  \widehat T'
+  &=\mathrm{diag}(1,0,0,0),
+  &
+  T'(X)&=\frac{\tr(X)}2\Id.
+\end{align}
+This is the completely depolarizing channel and is completely positive.
+Therefore $T'$ can be completely positive while $T$ is not even positive.
+The reverse implication fails for positivity and, a fortiori, the reverse
+implication fails for complete positivity.
+
+\section{Conclusion}
+
+The ``if and only if'' in Wolf's Proposition~2.10 is false as printed. The
+proof in the source establishes the valid forward implications
+\eqref{eq:positive-forward} and \eqref{eq:cp-forward}, and those are the
+statements formalized in Lean. The explicit map \eqref{eq:counterexample}
+shows that no converse can be inferred from Pauli-block truncation. The source
+statement should therefore replace both equivalences by forward implications.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

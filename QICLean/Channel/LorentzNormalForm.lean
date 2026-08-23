@@ -6,24 +6,27 @@ Authors: TNLean contributors
 import QICLean.Channel.LorentzNormalForm.Basic
 import QICLean.Channel.LorentzNormalForm.Infimum
 import QICLean.Channel.LorentzNormalForm.NormalForm
+import QICLean.Channel.LorentzNormalForm.PauliBlockTruncation
 import QICLean.Channel.LorentzNormalForm.QubitNormalForm
 
 /-!
 # Lorentz normal form for quantum channels (Wolf Section 2.4, Propositions 2.8–2.11)
 
 Thin module assembling the normal-form development for quantum channels under
-filtering operations from four focused sub-modules.
+filtering operations from five focused submodules.
 
-* `TNLean.Channel.LorentzNormalForm.Basic` — SL-filtering operations, the
+* `QICLean.Channel.LorentzNormalForm.Basic` — SL-filtering operations, the
   doubly-stochastic predicates, and the shared Kronecker-conjugation and
   partial-trace identities.
-* `TNLean.Channel.LorentzNormalForm.Infimum` — the compactness/minimisation
+* `QICLean.Channel.LorentzNormalForm.Infimum` — the compactness/minimisation
   argument (Wolf Equation (2.36)): attainment of the infimum and the AM–GM
   optimality lemmas.
-* `TNLean.Channel.LorentzNormalForm.NormalForm` — Wolf Proposition 2.9, the
+* `QICLean.Channel.LorentzNormalForm.NormalForm` — Wolf Proposition 2.9, the
   generic normal form for CP maps with full Kraus rank, in square and
   rectangular forms.
-* `TNLean.Channel.LorentzNormalForm.QubitNormalForm` — the Pauli-basis
+* `QICLean.Channel.LorentzNormalForm.PauliBlockTruncation` — the valid forward
+  implications of Wolf Proposition 2.10 for Pauli-block truncation.
+* `QICLean.Channel.LorentzNormalForm.QubitNormalForm` — the Pauli-basis
   predicates for the qubit Lorentz normal form (Wolf Proposition 2.11;
   existence pending).
 

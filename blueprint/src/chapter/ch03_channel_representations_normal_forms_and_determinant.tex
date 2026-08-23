@@ -157,6 +157,127 @@ This section states the existence theorems from
 % QICLean/Channel/LorentzNormalForm.lean. The correctly formulated Proposition 2.11
 % has no Lean declaration yet; declaration tags are omitted for pending results.
 
+\begin{definition}[Pauli transfer matrix]\label{def:pauli_transfer_matrix}
+    \lean{Wolf.pauliMatrices, Wolf.pauliTransferEntry}
+    \leanok
+    Let $\sigma_0=\Id,\sigma_1,\sigma_2,\sigma_3$ be the Pauli matrices.  The
+    \emph{Pauli transfer matrix} of a linear map
+    $T:\MN{2}\to\MN{2}$ is $\widehat T\in M_4(\C)$ with entries
+    \begin{align}
+        \widehat T_{ij}
+        &=\frac12\tr\!\left(\sigma_iT(\sigma_j)\right),
+        \qquad 0\leq i,j\leq3.
+        \label{eq:pauli_transfer_entries}
+    \end{align}
+    We write
+    \begin{align}
+        \widehat T
+        &=
+        \begin{pmatrix}
+            \widehat T_{00} & r^{\mathsf T}\\
+            v & \Delta
+        \end{pmatrix},
+        \label{eq:pauli_transfer_blocks}
+    \end{align}
+    where $\Delta=(\widehat T_{ij})_{i,j=1}^{3}$.  Thus $r^{\mathsf T}$ and
+    $v$ are exactly the two off-diagonal Pauli blocks.  This is the
+    representation used in \cite[Section~2.4, Eq.~(2.39)]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{definition}[Pauli-block diagonal truncation]
+    \label{def:pauli_block_diagonal_truncation}
+    \lean{Wolf.pauliTimeReversal, Wolf.pauliTimeReversalDiagonal,
+        Wolf.pauliBlockDiagonalTruncation}
+    \leanok
+    \uses{def:pauli_transfer_matrix}
+    Define Pauli time reversal by
+    $\Theta(X)=\tr(X)\Id-X$.  Its Pauli transfer matrix is
+    \begin{align}
+        D&=\diag(1,-1,-1,-1).
+        \label{eq:pauli_time_reversal_diagonal}
+    \end{align}
+    For a linear map $T:\MN{2}\to\MN{2}$, define its
+    \emph{Pauli-block diagonal truncation} by
+    \begin{align}
+        T'&=\frac{T+\Theta\circ T\circ\Theta}{2}.
+        \label{eq:pauli_block_truncation}
+    \end{align}
+    This is the truncation in
+    \cite[Proposition~2.10, Section~2.4]{Wolf2012Quantum}; see also the local
+    source \path{Notes/WolfNoteTexSource/ch02_representations.tex},
+    lines~984--998.
+\end{definition}
+
+\begin{theorem}[Pauli-block truncation preserves positivity and complete positivity]
+    \label{thm:pauli_block_truncation_forward}
+    \lean{Wolf.pauliTransferEntry_timeReversal_comp,
+        Wolf.pauliTransferEntry_pauliBlockDiagonalTruncation,
+        Wolf.pauliBlockDiagonalTruncation_isPositiveMap,
+        Wolf.pauliBlockDiagonalTruncation_isCPMap}
+    \leanok
+    \uses{def:pauli_block_diagonal_truncation, def:positive_map, def:cp_map}
+    Let $T:\MN{2}\to\MN{2}$ be Hermiticity preserving, and let $T'$ be its
+    Pauli-block diagonal truncation.  If $\widehat T$ is written as in
+    \eqref{eq:pauli_transfer_blocks}, then
+    \begin{align}
+        \widehat{T'}
+        &=\frac{\widehat T+D\widehat T D}{2}
+          =\begin{pmatrix}
+              \widehat T_{00}&0\\
+              0&\Delta
+            \end{pmatrix}
+          =\widehat T_{00}\oplus\Delta.
+        \label{eq:pauli_block_truncation_matrix}
+    \end{align}
+    Equivalently, entrywise,
+    \begin{align}
+        \widehat{T'}_{ij}
+        &=\begin{cases}
+            \widehat T_{ij},& i=j=0\text{ or }i,j\in\{1,2,3\},\\
+            0,&\text{otherwise}.
+          \end{cases}
+        \label{eq:pauli_block_truncation_entrywise}
+    \end{align}
+    If $T$ is positive, then $T'$ is positive.  If $T$ is completely
+    positive, then $T'$ is completely positive.  These are precisely the
+    forward implications proved in
+    \cite[Proposition~2.10, Section~2.4]{Wolf2012Quantum}, following
+    Eq.~(2.39); the local proof is at
+    \path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~992--998.
+\end{theorem}
+
+\begin{proof}\leanok
+    In the Pauli basis, pre- and postcomposition by $\Theta$ multiply the
+    transfer matrix by $D$ on the right and left, respectively.  Averaging
+    with $D\widehat T D$ therefore gives
+    \eqref{eq:pauli_block_truncation_entrywise}.  Time reversal is positive,
+    so $\Theta\circ T\circ\Theta$ is positive whenever $T$ is positive, and
+    convexity gives positivity of $T'$.  If
+    $T(X)=\sum_iK_iXK_i^\dagger$, then
+    $\Theta\circ T\circ\Theta$ has Kraus operators
+    $\sigma_2\overline{K_i}\sigma_2$.  Hence the same averaging also
+    preserves complete positivity.
+\end{proof}
+
+\begin{remark}[Source correction: the converse fails]
+    \label{rem:pauli_block_truncation_converse}
+    Proposition~2.10 of \cite{Wolf2012Quantum} prints both preservation
+    statements as equivalences, but its proof establishes only the forward
+    implications in Theorem~\ref{thm:pauli_block_truncation_forward}.  Indeed,
+    consider
+    \begin{align}
+        T(X)&=\tr(X)\diag(3/2,-1/2).
+        \label{eq:pauli_block_truncation_counterexample}
+    \end{align}
+    This map is Hermiticity preserving but not positive, since
+    $T(\Id/2)=\diag(3/2,-1/2)$.  Its Pauli-block diagonal truncation is the
+    completely depolarizing channel
+    $T'(X)=\tr(X)\Id/2$, which is completely positive.  Thus neither the
+    positivity converse nor the complete-positivity converse is valid.  See
+    \path{docs/paper-gaps/wolf_prop2_10_block_truncation_converse.tex} for the
+    focused source-correction record.
+\end{remark}
+
 \begin{definition}[SL-filtering operation]\label{def:sl_filtering}
     \lean{Wolf.SLFiltering}\leanok
     An \emph{SL-filtering} for $D \times D$ matrices is a completely
