@@ -39,6 +39,10 @@ namespace Wolf
 /-- The real four-dimensional coordinate space used in Wolf, Equation (2.41). -/
 abbrev MinkowskiSpace := Fin 4 → ℝ
 
+@[simp] theorem pauliMatrices_zero : pauliMatrices 0 = 1 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> rfl
+
 /-- The spatial Pauli matrices in the four-coordinate convention agree with
 the three Pauli matrices in `SpinCover`. -/
 @[simp] theorem pauliMatrices_succ (i : Fin 3) :
@@ -90,5 +94,122 @@ theorem det_pauliMatrixOfMinkowski (x : MinkowskiSpace) :
   rw [Complex.I_sq]
   simp [minkowskiQuadratic]
   ring
+
+/-- The real vector space of Hermitian qubit matrices. -/
+abbrev HermitianQubitMatrix := selfAdjoint (Matrix (Fin 2) (Fin 2) ℂ)
+
+/-- The trace pairing of two Hermitian matrices is real. -/
+theorem trace_mul_eq_ofReal_re_of_isHermitian
+    {A B : Matrix (Fin 2) (Fin 2) ℂ} (hA : A.IsHermitian) (hB : B.IsHermitian) :
+    (((A * B).trace).re : ℂ) = (A * B).trace := by
+  rw [← Complex.conj_eq_iff_re, starRingEnd_apply,
+    ← Matrix.trace_conjTranspose,
+    Matrix.conjTranspose_mul, hA.eq, hB.eq, Matrix.trace_mul_comm]
+
+/-- The `i`-th real Pauli coordinate
+`xᵢ = (1/2) tr(σᵢ M)` of a Hermitian qubit matrix. -/
+def pauliMinkowskiCoordinate (M : HermitianQubitMatrix) (i : Fin 4) : ℝ :=
+  (Matrix.trace (pauliMatrices i * (M : Matrix (Fin 2) (Fin 2) ℂ))).re / 2
+
+/-- Pauli coordinates recover the coefficient of a real Pauli sum. -/
+@[simp] theorem pauliMinkowskiCoordinate_pauliMatrixOfMinkowski
+    (x : MinkowskiSpace) (i : Fin 4) :
+    pauliMinkowskiCoordinate ⟨pauliMatrixOfMinkowski x,
+      pauliMatrixOfMinkowski_isHermitian x⟩ i = x i := by
+  simp only [pauliMinkowskiCoordinate, pauliMatrixOfMinkowski, Matrix.mul_sum,
+    Matrix.trace_sum, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul,
+    trace_pauliMatrices_mul_pauliMatrices]
+  simp
+
+/-- For a Hermitian matrix, embedding a real Pauli coordinate into `ℂ`
+recovers its trace-pairing coefficient. -/
+theorem coe_pauliMinkowskiCoordinate (M : HermitianQubitMatrix) (i : Fin 4) :
+    (pauliMinkowskiCoordinate M i : ℂ) =
+      Matrix.trace (pauliMatrices i * (M : Matrix (Fin 2) (Fin 2) ℂ)) / 2 := by
+  rw [pauliMinkowskiCoordinate, Complex.ofReal_div]
+  rw [trace_mul_eq_ofReal_re_of_isHermitian (pauliMatrices_isHermitian i) M.property]
+  norm_num
+
+/-- Reassembling the real Pauli coordinates of a Hermitian qubit matrix
+recovers that matrix. -/
+theorem pauliMatrixOfMinkowski_pauliMinkowskiCoordinate
+    (M : HermitianQubitMatrix) :
+    pauliMatrixOfMinkowski (pauliMinkowskiCoordinate M) = M := by
+  rw [pauliMatrixOfMinkowski, Fin.sum_univ_succ]
+  simp_rw [coe_pauliMinkowskiCoordinate]
+  rw [pauliMatrices_zero, Matrix.one_mul]
+  simp_rw [pauliMatrices_succ]
+  simpa using
+    (SpinCover.pauli_expansion (M : Matrix (Fin 2) (Fin 2) ℂ)).symm
+
+/-- Assembly of a Hermitian qubit matrix from its real Pauli coordinates,
+as a real linear map. -/
+noncomputable def pauliMatrixOfMinkowskiLinearMap :
+    MinkowskiSpace →ₗ[ℝ] HermitianQubitMatrix where
+  toFun x := ⟨pauliMatrixOfMinkowski x, pauliMatrixOfMinkowski_isHermitian x⟩
+  map_add' x y := by
+    apply Subtype.ext
+    simp [pauliMatrixOfMinkowski, add_smul, Finset.sum_add_distrib]
+  map_smul' c x := by
+    apply Subtype.ext
+    change pauliMatrixOfMinkowski (c • x) = c • pauliMatrixOfMinkowski x
+    simp only [pauliMatrixOfMinkowski, Pi.smul_apply]
+    rw [Finset.smul_sum]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    ext a b
+    simp [Matrix.smul_apply, smul_eq_mul]
+    ring
+
+/-- Extraction of the real Pauli coordinates of a Hermitian qubit matrix,
+as a real linear map. -/
+noncomputable def pauliMinkowskiCoordinateLinearMap :
+    HermitianQubitMatrix →ₗ[ℝ] MinkowskiSpace where
+  toFun M := pauliMinkowskiCoordinate M
+  map_add' M N := by
+    ext i
+    change
+      (Matrix.trace (pauliMatrices i *
+        ((M : Matrix (Fin 2) (Fin 2) ℂ) +
+          (N : Matrix (Fin 2) (Fin 2) ℂ)))).re / 2 =
+      pauliMinkowskiCoordinate M i + pauliMinkowskiCoordinate N i
+    rw [Matrix.mul_add, Matrix.trace_add]
+    simp [pauliMinkowskiCoordinate]
+    ring
+  map_smul' c M := by
+    ext i
+    change
+      (Matrix.trace (pauliMatrices i *
+        (c • (M : Matrix (Fin 2) (Fin 2) ℂ)))).re / 2 =
+      c • pauliMinkowskiCoordinate M i
+    rw [Matrix.mul_smul, Matrix.trace_smul]
+    simp [pauliMinkowskiCoordinate, Complex.mul_re]
+    ring
+
+/-- The real-linear Pauli-coordinate equivalence
+`M₂†(ℂ) ≃ ℝ⁴` used before Wolf, Equation (2.41). -/
+noncomputable def pauliMinkowskiEquiv :
+    MinkowskiSpace ≃ₗ[ℝ] HermitianQubitMatrix :=
+  LinearEquiv.ofLinearMap pauliMatrixOfMinkowskiLinearMap
+    pauliMinkowskiCoordinateLinearMap
+    (by
+      apply LinearMap.ext
+      intro M
+      apply Subtype.ext
+      change pauliMatrixOfMinkowski (pauliMinkowskiCoordinate M) = M
+      exact pauliMatrixOfMinkowski_pauliMinkowskiCoordinate M)
+    (by
+      apply LinearMap.ext
+      intro x
+      funext i
+      change pauliMinkowskiCoordinate
+        ⟨pauliMatrixOfMinkowski x, pauliMatrixOfMinkowski_isHermitian x⟩ i = x i
+      exact pauliMinkowskiCoordinate_pauliMatrixOfMinkowski x i)
+
+@[simp] theorem pauliMinkowskiEquiv_apply (x : MinkowskiSpace) :
+    ((pauliMinkowskiEquiv x : HermitianQubitMatrix) :
+      Matrix (Fin 2) (Fin 2) ℂ) = pauliMatrixOfMinkowski x := rfl
+
+@[simp] theorem pauliMinkowskiEquiv_symm_apply (M : HermitianQubitMatrix) :
+    pauliMinkowskiEquiv.symm M = pauliMinkowskiCoordinate M := rfl
 
 end Wolf
