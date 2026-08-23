@@ -94,8 +94,15 @@ a canonical representative for every qubit channel remains open.
 
 A source-faithful proof requires the following steps.
 \begin{enumerate}
-  \item Define general invertible Kraus-rank-one completely positive filters and
-    separate each filter into a determinant-one factor and a nonzero scalar.
+  \item[\(\checkmark\)] General invertible Kraus-rank-one completely positive
+    filters are now formalized as \leanid{Wolf.InvertibleFilter}.  For every
+    nonzero dimension,
+    \leanid{Wolf.InvertibleFilter.exists_scalar_slFiltering} separates the
+    filtering matrix as $X=cS$, where $c\in\C$ is nonzero,
+    $c^d=\det X$, and $S\in\SL(d,\C)$, while the induced map satisfies
+    $\Phi_X=|c|^2\Phi_S$ with $|c|^2>0$.  The corresponding two-filter scalar
+    identity for $\Phi_2\circ T\circ\Phi_1$ is
+    \leanid{Wolf.InvertibleFilter.filteredMap_eq_normSq_smul}.
   \item Use the minimisation argument of Propositions~2.8 and~2.9 for the
     full-Kraus-rank case, retaining the proportionality constants of the two
     marginals.

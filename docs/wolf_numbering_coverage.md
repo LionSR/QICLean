@@ -332,6 +332,20 @@ project import.
   Φ(X) = S X S† with det(S) = 1 ✓ (definitional)
 * `Wolf.SLFiltering.comp` — composition of SL-filterings ✓
 * `Wolf.SLFiltering.S_isUnit` — `S` invertible follows from det=1 ✓
+* `Wolf.InvertibleFilter` / `Wolf.InvertibleFilter.map` — **general
+  invertible Kraus-rank-one filtering operation**
+  `Φ_X(A) = X A X†` for `X ∈ GL(d, ℂ)` ✓ (definitional)
+* `Wolf.InvertibleFilter.comp` / `Wolf.InvertibleFilter.inv` — composition
+  and inverse filterings, with map composition in the source order ✓
+* `Wolf.InvertibleFilter.choiRank_eq_one` — an invertible filter has Kraus
+  rank exactly one when `d ≥ 1` ✓
+* `Wolf.InvertibleFilter.exists_scalar_slFiltering` — every invertible
+  filtering matrix has a decomposition `X = cS`, with `c ≠ 0`,
+  `c^d = det X`, `S ∈ SL(d, ℂ)`, and
+  `Φ_X = |c|² Φ_S`, where `|c|² > 0` ✓
+* `Wolf.InvertibleFilter.filteredMap_eq_normSq_smul` — for a rectangular
+  `T : M_{d₁} → M_{d₂}`, the source-ordered filtering
+  `Φ₂ ∘ T ∘ Φ₁` has scalar factor `|c₁c₂|²` after decomposing both filters ✓
 * `Wolf.DoublyStochastic` — doubly-stochastic condition: T(1) ∝ 1 and
   tr₁[τ] ∝ 1 ✓ (definitional)
 * `pauliMatrices` — the four Pauli matrices (qubit basis) ✓ (definitional)
@@ -363,9 +377,10 @@ project import.
   doubly-stochastic ✓ (derived from `Wolf.exists_normal_form_generic_tau` by
   the rectangular Choi transformation and partial-trace identities)
 * **Wolf Proposition 2.11 (Lorentz normal form for qubit channels)** remains
-  pending. Wolf requires general invertible Kraus-rank-one CP filters, including
-  scalar freedom. The former determinant-one `SLFiltering` formulation was false
-  and has been removed; there is currently no Lean declaration for the theorem.
+  pending. The required general invertible Kraus-rank-one CP filters and their
+  scalar freedom are now formalized, but the Lorentz-orbit classification and
+  the final trace-preserving normalization have no Lean declaration yet. The
+  former determinant-one `SLFiltering` formulation was false and was removed.
 
 #### Formalization
 
@@ -391,6 +406,12 @@ project import.
 | Vectorization | `Mathlib.LinearAlgebra.Matrix.Vec` | `Matrix.vec` |
 | SL-filtering | `LorentzNormalForm.lean` | `Wolf.SLFiltering` |
 | SL-filtering composition | `LorentzNormalForm.lean` | `Wolf.SLFiltering.comp` |
+| Invertible filtering | `LorentzNormalForm/InvertibleFilter.lean` |
+  `Wolf.InvertibleFilter` |
+| Exact invertible-filter Kraus rank | `LorentzNormalForm/InvertibleFilter.lean` |
+  `Wolf.InvertibleFilter.choiRank_eq_one` |
+| Scalar/SL filtering decomposition | `LorentzNormalForm/InvertibleFilter.lean` |
+  `Wolf.InvertibleFilter.exists_scalar_slFiltering` |
 | Doubly-stochastic | `LorentzNormalForm.lean` | `Wolf.DoublyStochastic` |
 | Rectangular doubly-stochastic | `LorentzNormalForm.lean` | `Wolf.DoublyStochasticRect` |
 | Rectangular generic normal form | `LorentzNormalForm.lean` |
@@ -406,9 +427,10 @@ project import.
 | Result | Notes |
 |--------|-------|
 | Section 2.4 Lorentz normal form (Proposition 2.11) | Correctly formulated
-  statement and proof remain pending. Wolf uses general invertible Kraus-rank-one
-  CP filters with scalar freedom; the former determinant-one formulation was
-  false and was removed. The proof also needs the Lorentz-orbit classification. |
+  statement and proof remain pending. The general invertible Kraus-rank-one
+  filters and their scalar/SL decomposition are available. The proof still
+  needs the Lorentz-orbit classification and the final trace-preserving
+  normalization. |
 | Section 2.4 Sorted singular values | Current SVD is unsorted; later uses want sorted values |
 
 ### References

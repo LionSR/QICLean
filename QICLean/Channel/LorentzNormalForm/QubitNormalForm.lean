@@ -143,10 +143,13 @@ A former declaration in this file incorrectly restricted both filters to
 channel. That statement is false: determinant-one filters cannot supply the
 scalar normalization required for all channels, so the declaration was removed.
 The correctly formulated theorem remains to be formalized. Its proof will need:
-- A type for general invertible Kraus-rank-one CP filters, including scalar freedom;
 - The compactness and minimization results above, with the required normalization;
 - The Lorentz group classification of the filtering orbits;
 - The complete-positivity condition `λ₁ + λ₂ ≤ 1 + λ₃`.
+
+The general filtering type, its exact Kraus-rank-one property, and its
+scalar/determinant-one decomposition are provided by
+`Wolf.InvertibleFilter` in `LorentzNormalForm.InvertibleFilter`.
 
 See Wolf Section 2.4 for the complete proof. -/
 
