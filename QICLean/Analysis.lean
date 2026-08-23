@@ -65,6 +65,7 @@ import QICLean.Analysis.RpowConvexity
 import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo
 import QICLean.Analysis.SchattenNorm
+import QICLean.Analysis.SchurAsymptoticConvergence
 import QICLean.Analysis.SemidefiniteProgram
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius

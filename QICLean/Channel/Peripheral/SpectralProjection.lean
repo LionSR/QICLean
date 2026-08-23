@@ -266,6 +266,40 @@ theorem peripheralWeightedProjection_eq_peripheralProjection_comp (f : Module.En
     f.peripheralWeightedProjection = f.peripheralProjection ∘ₗ f := by
   rw [peripheralWeightedProjection, ← f.peripheralProjection_comp]
 
+/-- The positive-power identity underlying Wolf's Schur route for Equation
+(8.111):
+`T ^ n - T_ϕ ^ n = (T - T_ϕ) ^ n` for `0 < n`.
+
+Here `T_ϕ = T T_φ`, `T` commutes with the idempotent spectral projection
+`T_φ`, and the two sides are the common restriction `T ^ n (1 - T_φ)` to the
+non-peripheral summand.  The positive-iterate hypothesis is necessary: at
+`n = 0` the left-hand side is zero whereas the right-hand side is the identity.
+In particular, the natural exponent condition `d^2 - 1 ≤ n` from the later
+channel estimate does not exclude this failure when `d = 1`; that boundary
+case must be excluded or treated separately.
+
+Source: Wolf, Equation (8.111) and its Schur-decomposition proof; local source
+`Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 1299--1316. -/
+theorem pow_sub_peripheralWeightedProjection_pow (f : Module.End ℂ V)
+    {n : ℕ} (hn : 0 < n) :
+    f ^ n - f.peripheralWeightedProjection ^ n =
+      (f - f.peripheralWeightedProjection) ^ n := by
+  let P := f.peripheralProjection
+  have hP : IsIdempotentElem P := f.isIdempotentElem_peripheralProjection
+  have hcomm : Commute f P := f.commute_peripheralProjection.symm
+  have hWpow : f.peripheralWeightedProjection ^ n = f ^ n * P := by
+    rw [peripheralWeightedProjection, ← Module.End.mul_eq_comp, hcomm.mul_pow,
+      hP.pow_eq hn.ne']
+  have hR : f - f.peripheralWeightedProjection = f * (1 - P) := by
+    rw [peripheralWeightedProjection, ← Module.End.mul_eq_comp, mul_sub, mul_one]
+  have hcommQ : Commute f (1 - P) := (Commute.one_right f).sub_right hcomm
+  have hRpow : (f - f.peripheralWeightedProjection) ^ n = f ^ n * (1 - P) := by
+    rw [hR, hcommQ.mul_pow, hP.one_sub.pow_eq hn.ne']
+  calc
+    f ^ n - f.peripheralWeightedProjection ^ n = f ^ n - f ^ n * P := by rw [hWpow]
+    _ = f ^ n * (1 - P) := by rw [mul_sub, mul_one]
+    _ = (f - f.peripheralWeightedProjection) ^ n := hRpow.symm
+
 /-- The peripheral spectral projection fixes peripheral generalized
 eigenvectors. -/
 theorem peripheralProjection_apply_of_mem_maxGenEigenspace (f : Module.End ℂ V) {μ : ℂ}
