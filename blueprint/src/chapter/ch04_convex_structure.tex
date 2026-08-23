@@ -1,0 +1,62 @@
+\chapter{Convex Structure}\label{ch:convex_structure}
+
+This chapter follows the convex-optimization framework of
+\cite[Chapter~4]{Wolf2012Quantum}.
+
+\begin{definition}[Primal and dual conic programs]
+    \label{def:conic_programs}
+    \lean{ConicProgram.primalFeasible, ConicProgram.dualFeasible,
+        ConicProgram.primalValue, ConicProgram.dualValue}
+    \leanok
+    Let $V$ and $V'$ be finite-dimensional real Hilbert spaces, let
+    $K\subseteq V$ be a closed pointed convex cone with nonempty interior, let
+    $T:V\to V'$ be linear, and fix $c\in V$ and $b\in V'$.  As in
+    \cite[Chapter~4, equations~(4.1)--(4.2)]{Wolf2012Quantum}, define the dual
+    cone, the primal and dual feasible sets, and their values by
+    \begin{align}
+        K^*
+         & :=\{u\in V:\forall z\in K,\ \langle z|u\rangle\geq0\},
+        \label{eq:conic_dual_cone}                                                                               \\
+        \mathcal F_p
+         & :=\{x\in K:T(x)=b\},
+         & C_p                                                    & :=\inf_{x\in\mathcal F_p}\langle c|x\rangle,
+        \label{eq:conic_primal}                                                                                  \\
+        \mathcal F_d
+         & :=\{y\in V':c-T^*(y)\in K^*\},
+         & C_d                                                    & :=\sup_{y\in\mathcal F_d}\langle b|y\rangle.
+        \label{eq:conic_dual}
+    \end{align}
+    The values belong to the extended real line.  The conventions are
+    $\inf\varnothing=+\infty$ and $\sup\varnothing=-\infty$; an objective
+    unbounded below has infimum $-\infty$, and one unbounded above has
+    supremum $+\infty$.  The nonempty-interior assumption is Wolf's
+    convention for a conic program; the definitions and weak duality do not
+    require it.
+\end{definition}
+
+\begin{theorem}[Weak duality]
+    \label{thm:conic_weak_duality}
+    \lean{ConicProgram.weak_duality_pointwise, ConicProgram.weak_duality}
+    \leanok
+    \uses{def:conic_programs}
+    For every $x\in\mathcal F_p$ and $y\in\mathcal F_d$,
+    $\langle b|y\rangle\leq\langle c|x\rangle$.  Consequently,
+    $C_d\leq C_p$ with the extended-real conventions of
+    Definition~\ref{def:conic_programs}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{def:conic_programs}
+    Dual feasibility and $x\in K$ give
+    \begin{align}
+        0
+         & \leq\langle x|c-T^*(y)\rangle
+        =\langle c|x\rangle-\langle T(x)|y\rangle
+        =\langle c|x\rangle-\langle b|y\rangle.
+        \label{eq:conic_pointwise_weak_duality}
+    \end{align}
+    This is the pointwise inequality.  Taking the supremum over
+    $y\in\mathcal F_d$ and then the infimum over $x\in\mathcal F_p$ proves
+    $C_d\leq C_p$.
+\end{proof}
