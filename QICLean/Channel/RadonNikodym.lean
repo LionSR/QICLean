@@ -393,50 +393,203 @@ theorem IsKrausCP.radon_nikodym_of_stinespring
       ∀ i A,
         Tᵢ i A = Vᴴ * Matrix.kroneckerMap (· * ·) A (P i) * V := by
   classical
-  let s : ι → ℕ := fun i => Classical.choose (hTᵢ i)
-  let B₀ : (i : ι) → Fin (s i) → Matrix (Fin d) (Fin d') ℂ :=
-    fun i => Classical.choose (Classical.choose_spec (hTᵢ i))
-  have hB₀ : ∀ i A, Tᵢ i A = ∑ a : Fin (s i), B₀ i a * A * (B₀ i a)ᴴ := by
-    intro i
-    exact Classical.choose_spec (Classical.choose_spec (hTᵢ i))
-  let i₀ : ι := Classical.choice ‹Nonempty ι›
-  let Row := Sum (Sigma fun i : ι => Fin (s i)) (Fin r)
-  let label : Row → ι := fun α => match α with
-    | Sum.inl x => x.1
-    | Sum.inr _ => i₀
-  let B : Row → Matrix (Fin d) (Fin d') ℂ := fun α => match α with
-    | Sum.inl x => B₀ x.1 x.2
-    | Sum.inr _ => 0
-  have hComponent : ∀ i A,
-      Tᵢ i A = ∑ α : Row, if label α = i then B α * A * (B α)ᴴ else 0 := by
-    intro i A
-    rw [hB₀ i A]
-    simp only [Row, Fintype.sum_sum_type]
-    rw [Fintype.sum_sigma]
-    simp [label, B]
-  have hTotalKraus : ∀ A, ∑ α : Row, B α * A * (B α)ᴴ = T A := by
-    intro A
-    simp only [Row, Fintype.sum_sum_type]
-    rw [Fintype.sum_sigma]
-    simp only [B, Matrix.zero_mul, Matrix.conjTranspose_zero, Matrix.mul_zero,
-      Finset.sum_const_zero, add_zero]
-    calc
-      ∑ x : ι, ∑ y : Fin (s x), B₀ x y * A * (B₀ x y)ᴴ = ∑ x : ι, Tᵢ x A := by
-        refine Finset.sum_congr rfl ?_
-        intro i _
-        exact (hB₀ i A).symm
-      _ = T A := by
-        have happ := congrArg
-          (fun F : Matrix (Fin d') (Fin d') ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ => F A)
-          hsum
-        simpa [Finset.sum_apply] using happ
-  have hCard : Fintype.card (Fin r) ≤ Fintype.card Row := by
-    let emb : Fin r ↪ Row := ⟨Sum.inr, by
-      intro a b h
-      exact Sum.inr.inj h⟩
-    exact Fintype.card_le_of_embedding emb
-  exact radon_nikodym_of_stinespring_of_kraus_family Tᵢ V label B hV
-    hComponent hTotalKraus hCard
+  by_cases hd' : d' = 0
+  · subst d'
+    let i₀ : ι := Classical.choice ‹Nonempty ι›
+    refine ⟨fun i => if i = i₀ then 1 else 0, ?_, ?_, ?_⟩
+    · intro i
+      by_cases hi : i = i₀
+      · simp [hi, Matrix.PosSemidef.one]
+      · simp [hi, Matrix.PosSemidef.zero]
+    · simp [i₀]
+    · intro i A
+      have hA : A = 0 := Subsingleton.elim _ _
+      subst A
+      simp
+  · let _ : NeZero d' := ⟨hd'⟩
+    let s : ι → ℕ := fun i => Classical.choose (hTᵢ i)
+    let B₀ : (i : ι) → Fin (s i) → Matrix (Fin d) (Fin d') ℂ :=
+      fun i => Classical.choose (Classical.choose_spec (hTᵢ i))
+    have hB₀ : ∀ i A, Tᵢ i A = ∑ a : Fin (s i), B₀ i a * A * (B₀ i a)ᴴ := by
+      intro i
+      exact Classical.choose_spec (Classical.choose_spec (hTᵢ i))
+    let Row := Sigma fun i : ι => Fin (s i)
+    let m := Fintype.card Row
+    let e : Row ≃ Fin m := Fintype.equivFin Row
+    let label : Fin m → ι := fun α => (e.symm α).1
+    let B : Fin m → Matrix (Fin d) (Fin d') ℂ := fun α =>
+      B₀ (e.symm α).1 (e.symm α).2
+    have hComponent : ∀ i A,
+        Tᵢ i A = ∑ α : Fin m, if label α = i then B α * A * (B α)ᴴ else 0 := by
+      intro i A
+      rw [hB₀ i A]
+      calc
+        ∑ a : Fin (s i), B₀ i a * A * (B₀ i a)ᴴ =
+            ∑ x : Row,
+              if x.1 = i then B₀ x.1 x.2 * A * (B₀ x.1 x.2)ᴴ else 0 := by
+          rw [Fintype.sum_sigma]
+          simp
+        _ = ∑ α : Fin m,
+              if (e.symm α).1 = i then
+                B₀ (e.symm α).1 (e.symm α).2 * A *
+                  (B₀ (e.symm α).1 (e.symm α).2)ᴴ
+              else 0 := by
+          exact (e.symm.sum_comp fun x : Row =>
+            if x.1 = i then B₀ x.1 x.2 * A * (B₀ x.1 x.2)ᴴ else 0).symm
+    have hTotalKraus : ∀ A, ∑ α : Fin m, B α * A * (B α)ᴴ = T A := by
+      intro A
+      change (∑ α : Fin m,
+        B₀ (e.symm α).1 (e.symm α).2 * A *
+          (B₀ (e.symm α).1 (e.symm α).2)ᴴ) = T A
+      calc
+        ∑ α : Fin m,
+            B₀ (e.symm α).1 (e.symm α).2 * A *
+              (B₀ (e.symm α).1 (e.symm α).2)ᴴ =
+            ∑ x : Row, B₀ x.1 x.2 * A * (B₀ x.1 x.2)ᴴ := by
+          exact e.symm.sum_comp fun x : Row => B₀ x.1 x.2 * A * (B₀ x.1 x.2)ᴴ
+        _ = ∑ i : ι, ∑ a : Fin (s i), B₀ i a * A * (B₀ i a)ᴴ := by
+          rw [Fintype.sum_sigma]
+        _ = ∑ i : ι, Tᵢ i A := by
+          refine Finset.sum_congr rfl ?_
+          intro i _
+          exact (hB₀ i A).symm
+        _ = T A := by
+          have happ := congrArg
+            (fun S : Matrix (Fin d') (Fin d') ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ =>
+              S A) hsum
+          simpa [Finset.sum_apply] using happ
+    let Khat : Fin m → Matrix (Fin d') (Fin d) ℂ := fun α => (B α)ᴴ
+    let Vhat : Matrix (Fin d' × Fin m) (Fin d) ℂ := stinespringV Khat
+    have hTCP : IsKrausCP T :=
+      ⟨m, B, fun A => (hTotalKraus A).symm⟩
+    have hVhat : ∀ A : Matrix (Fin d') (Fin d') ℂ,
+        T A = Vhatᴴ * stinespringPi (r := m) A * Vhat := by
+      intro A
+      calc
+        T A = ∑ α : Fin m, B α * A * (B α)ᴴ := (hTotalKraus A).symm
+        _ = Vhatᴴ * stinespringPi (r := m) A * Vhat := by
+          rw [stinespringPi, stinespring_dual_representation]
+          simp [Khat]
+    have hV' : ∀ A : Matrix (Fin d') (Fin d') ℂ,
+        T A = Vᴴ * stinespringPi (r := r) A * V := by
+      simpa [stinespringPi] using hV
+    obtain ⟨C, hC, hVfactor, _⟩ :=
+      CPDominates.exists_supplied_stinespring_contraction hTCP hTCP
+        (CPDominates.refl T) Vhat V hVhat hV'
+    let K : Fin r → Matrix (Fin d') (Fin d) ℂ := stinespringBlockRectangular V
+    have hVeq : stinespringV K = V :=
+      stinespringV_stinespringBlockRectangular (r := r) V
+    have hKhat : ∀ α, Khat α = ∑ j : Fin r, C α j • K j := by
+      have hlinear :
+          stinespringVGen (fun α : Fin m => ∑ j : Fin r, C α j • K j) = Vhat := by
+        calc
+          stinespringVGen (fun α : Fin m => ∑ j : Fin r, C α j • K j) =
+              Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C *
+                stinespringV K := stinespringVGen_linear_combination K C
+          _ = Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C *
+                V := by rw [hVeq]
+          _ = Vhat := hVfactor.symm
+      intro α
+      ext a b
+      have hentry := congr_fun (congr_fun hlinear (a, α)) b
+      simpa only [stinespringVGen_apply, Vhat, stinespringV_apply] using hentry.symm
+    have hBlinear : ∀ α, (∑ j : Fin r, C α j • K j)ᴴ = B α := by
+      intro α
+      rw [← hKhat α]
+      simp [Khat]
+    let F : ι → Matrix (Fin m) (Fin r) ℂ := fun i α j =>
+      if label α = i then C α j else 0
+    let E : ι → Matrix (Fin r) (Fin r) ℂ := fun i => (F i)ᴴ * F i
+    let R : Matrix (Fin r) (Fin r) ℂ := 1 - Cᴴ * C
+    have hEpos : ∀ i, (E i).PosSemidef := fun i =>
+      Matrix.posSemidef_conjTranspose_mul_self (F i)
+    have hRpos : R.PosSemidef := by
+      change (1 - Cᴴ * C).PosSemidef
+      exact Matrix.le_iff.mp hC
+    have hEcomponent : ∀ i A,
+        Tᵢ i A = Vᴴ * Matrix.kroneckerMap (· * ·) A (E i) * V := by
+      intro i A
+      calc
+        Tᵢ i A = ∑ α : Fin m,
+            if label α = i then B α * A * (B α)ᴴ else 0 := hComponent i A
+        _ = ∑ α : Fin m, (∑ j : Fin r, F i α j • K j)ᴴ * A *
+              (∑ j : Fin r, F i α j • K j) := by
+            refine Finset.sum_congr rfl ?_
+            intro α _
+            by_cases hα : label α = i
+            · have hlin : (∑ j : Fin r, F i α j • K j)ᴴ = B α := by
+                simpa only [F, hα, ite_true] using hBlinear α
+              rw [ite_eq_left hα, ← hlin]
+              simp only [Matrix.conjTranspose_conjTranspose]
+            · have hzero : ∑ j : Fin r, F i α j • K j = 0 := by
+                simp [F, hα]
+              rw [ite_eq_right hα, hzero]
+              simp
+        _ = (stinespringV K)ᴴ * Matrix.kroneckerMap (· * ·) A (E i) *
+              stinespringV K := by
+            change (∑ α : Fin m, (∑ j : Fin r, F i α j • K j)ᴴ * A *
+                (∑ j : Fin r, F i α j • K j)) =
+              (stinespringV K)ᴴ *
+                Matrix.kroneckerMap (· * ·) A ((F i)ᴴ * F i) * stinespringV K
+            rw [weighted_stinespring_eq_kraus_sum_gen]
+        _ = Vᴴ * Matrix.kroneckerMap (· * ·) A (E i) * V := by rw [hVeq]
+    have hsumE : ∑ i, E i = Cᴴ * C := by
+      ext j k
+      simp only [E, Matrix.sum_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]
+      rw [Finset.sum_comm]
+      refine Finset.sum_congr rfl ?_
+      intro α _
+      rw [Finset.sum_eq_single (label α)]
+      · simp [F]
+      · intro i _ hi
+        have hne : label α ≠ i := fun h => hi h.symm
+        simp [F, hne]
+      · intro h
+        exact absurd (Finset.mem_univ (label α)) h
+    have htotalC : ∀ A : Matrix (Fin d') (Fin d') ℂ,
+        Vᴴ * Matrix.kroneckerMap (· * ·) A (Cᴴ * C) * V = T A := by
+      intro A
+      rw [← Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap_gen A C]
+      rw [show Vᴴ *
+          ((Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C)ᴴ *
+            Matrix.kroneckerMap (· * ·) A (1 : Matrix (Fin m) (Fin m) ℂ) *
+            Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C) * V =
+          (Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C * V)ᴴ *
+            Matrix.kroneckerMap (· * ·) A (1 : Matrix (Fin m) (Fin m) ℂ) *
+            (Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C * V) by
+        rw [Matrix.conjTranspose_mul]
+        simp only [Matrix.mul_assoc]]
+      rw [← hVfactor]
+      exact (hVhat A).symm
+    have hResidual : ∀ A : Matrix (Fin d') (Fin d') ℂ,
+        Vᴴ * Matrix.kroneckerMap (· * ·) A R * V = 0 := by
+      intro A
+      have hkron : Matrix.kroneckerMap (· * ·) A R =
+          Matrix.kroneckerMap (· * ·) A (1 : Matrix (Fin r) (Fin r) ℂ) -
+            Matrix.kroneckerMap (· * ·) A (Cᴴ * C) := by
+        ext ⟨a, j⟩ ⟨b, k⟩
+        simp [R, Matrix.kroneckerMap_apply]
+        ring
+      rw [hkron, Matrix.mul_sub, Matrix.sub_mul, ← hV A, htotalC A, sub_self]
+    let i₀ : ι := Classical.choice ‹Nonempty ι›
+    let P : ι → Matrix (Fin r) (Fin r) ℂ := fun i =>
+      E i + if i = i₀ then R else 0
+    refine ⟨P, ?_, ?_, ?_⟩
+    · intro i
+      by_cases hi : i = i₀
+      · simpa [P, hi] using (hEpos i).add hRpos
+      · simpa [P, hi] using hEpos i
+    · calc
+        ∑ i, P i = (∑ i, E i) + R := by
+          simp [P, Finset.sum_add_distrib, i₀]
+        _ = Cᴴ * C + (1 - Cᴴ * C) := by rw [hsumE]
+        _ = 1 := by simp
+    · intro i A
+      by_cases hi : i = i₀
+      · rw [show P i = E i + R by simp [P, hi]]
+        rw [Matrix.kroneckerMap_add_right (· * ·) (fun a b c => mul_add a b c)]
+        rw [Matrix.mul_add, Matrix.add_mul, ← hEcomponent i A, hResidual A, add_zero]
+      · simpa [P, hi] using hEcomponent i A
 
 /-! ### Wolf Theorem 2.4 (Radon–Nikodym, binary form) -/
 
