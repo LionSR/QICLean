@@ -853,6 +853,118 @@ The TP-gauge application follows~\cite[Appendix~A]{Cirac2016MPDO_arXiv}.
 
 
 
+\section{Completely positive primitive maps}
+
+Let $D\geq1$ and let $T:\MN{D}\to\MN{D}$ have the Kraus decomposition
+$T(X)=\sum_i K_iXK_i^\dagger$. Following Wolf, for $m\in\mathbb N$ let
+\begin{align}
+    K_m
+    :=\operatorname{span}\left\{
+        \prod_{k=1}^{m}K_{i_k}:i_1,\ldots,i_m
+      \right\},
+    \qquad
+    \tau_m
+    :=(T^m\otimes\operatorname{id}_D)
+      (\ketbra{\Omega}{\Omega}).
+    \notag
+\end{align}
+
+\begin{definition}[The three Kraus threshold clauses]
+    \label{def:wolf_6_8_explicit_thresholds}
+    \lean{Kraus.HasFullVectorSpreadFrom, Kraus.HasFullWordSpanFrom,
+        Kraus.HasPosDefChoiFrom}
+    \leanok
+    \uses{def:vector_spread_span, def:kraus_exact_word_span,
+        def:kraus_map, def:choi_matrix}
+    At a threshold $n$, the vector-spread clause says that, for every
+    $m\geq n$ and every nonzero $\psi\in\C^D$,
+    $K_m\ket{\psi}=\C^D$. At a threshold $q$, the word-span clause says
+    $K_m=\MN{D}$ for every $m\geq q$, while the Choi clause says
+    $\tau_m>0$ for every $m\geq q$.
+    These are the direct quantified clauses in
+    \cite[Theorem~6.8(2--4)]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{theorem}[Eventual and explicit-threshold formulations]
+    \label{thm:wolf_6_8_eventual_thresholds}
+    \lean{Kraus.hasEventuallyFullVectorSpread_iff_exists_hasFullVectorSpreadFrom,
+        Kraus.hasEventuallyFullWordSpan_iff_exists_hasFullWordSpanFrom,
+        Kraus.eventually_choiMatrix_mapLM_pow_posDef_iff_exists_hasPosDefChoiFrom}
+    \leanok
+    \uses{def:wolf_6_8_explicit_thresholds,
+        def:kraus_eventually_full_vector_spread,
+        def:kraus_eventually_full_word_span}
+    Each assertion that the corresponding property holds for every
+    sufficiently large $m$ is equivalent to the existence of a threshold
+    with Wolf's explicit universal quantifier:
+    \begin{align}
+        &\bigl(\forall\text{ sufficiently large }m\ \forall\psi\neq0,
+          K_m\ket{\psi}=\C^D\bigr)
+          \Longleftrightarrow
+          \bigl(\exists n\ \forall m\geq n\ \forall\psi\neq0,
+          K_m\ket{\psi}=\C^D\bigr), \notag\\
+        &\bigl(\forall\text{ sufficiently large }m, K_m=\MN{D}\bigr)
+          \Longleftrightarrow
+          \bigl(\exists q\ \forall m\geq q, K_m=\MN{D}\bigr), \notag\\
+        &\bigl(\forall\text{ sufficiently large }m, \tau_m>0\bigr)
+          \Longleftrightarrow
+          \bigl(\exists q\ \forall m\geq q, \tau_m>0\bigr).
+          \notag
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    In each case, ``for every sufficiently large $m$'' means exactly that
+    there is a lower threshold beyond which the property holds.
+\end{proof}
+
+\begin{theorem}[Completely positive primitive maps]
+    \label{thm:wolf_6_8_kraus_equivalences}
+    \lean{Kraus.wolf_theorem_6_8_tfae,
+        Kraus.wolf_theorem_6_8_minimal_indices}
+    \leanok
+    \uses{def:tp_kraus, def:irreducible_cp, def:primitive_channel,
+        def:wolf_6_8_explicit_thresholds}
+    Let $T:\MN{D}\to\MN{D}$ be completely positive and trace preserving,
+    with the Kraus decomposition above. Then the following are equivalent:
+    \begin{enumerate}
+        \item $T$ is primitive: it is irreducible and its peripheral spectrum
+              consists only of $1$;
+        \item there is an $n\in\mathbb N$ such that, for every $m\geq n$ and
+              every nonzero $\psi\in\C^D$, $K_m\ket{\psi}=\C^D$;
+        \item there is a $q\in\mathbb N$ such that
+              $K_m=\MN{D}$ for every $m\geq q$;
+        \item there is a $q\in\mathbb N$ such that
+              $\tau_m>0$ for every $m\geq q$.
+    \end{enumerate}
+    The thresholds in items~3 and~4 can be chosen equal. If $n$ and $q$ are
+    chosen minimal, then $n\leq q$. This is
+    \cite[Theorem~6.8]{Wolf2012Quantum}.
+    % The formal primitive clause is IsIrreducibleMap together with the
+    % project's spectral IsPrimitive predicate.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_6_8_eventual_thresholds,
+        thm:kraus_primitive_irreducible_eventual_span_choi,
+        thm:kraus_iterate_choi_posdef_iff_word_span,
+        thm:kraus_vector_spread_of_word_span,
+        thm:kraus_irreducible_from_spreading,
+        thm:kraus_primitive_from_tp_spreading}
+    Primitivity gives full $K_m$ for all sufficiently large $m$ by the
+    established positive-definite-fixed-point and nonperipheral-decay
+    argument. At every fixed length, vectorization identifies $K_m$ with the
+    span generating $\tau_m$, so items~3 and~4 are equivalent with the same
+    $q$. A full matrix word span sends every nonzero vector onto all of
+    $\C^D$, proving item~2 from item~3 at the same threshold;
+    conversely, evaluating item~2 at $m=n$ gives irreducibility and trivial
+    peripheral spectrum. Thus all four clauses are equivalent. The pointwise
+    word-span--Choi equivalence makes their admissible $q$-sets equal, and a
+    word threshold is also a vector threshold, so minimality gives $n\leq q$.
+\end{proof}
+
 \section{General Brouwer and stationary states}
 
 \begin{theorem}[Brouwer's fixed point theorem]
