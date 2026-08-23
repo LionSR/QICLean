@@ -426,6 +426,80 @@ that Loewner domination transfers the support.
     linearity of $T$ gives (\ref{eq:spectral_ds_support_invariance}).
 \end{proof}
 
+\begin{theorem}[Stationary subspaces]%
+    \label{thm:wolf_stationary_subspaces}
+    \lean{IsPositiveMap.trace_one_sub_stationaryProj_mul_map_stationaryProj_eq_zero,
+        IsPositiveMap.map_density_le_stationaryProj}
+    \leanok
+    \uses{thm:stationarySupport_restriction}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, let
+    $\sigma$ be a density operator with $T(\sigma)=\sigma$, and let $Q$ be
+    the support projection of $\sigma$. Then
+    \begin{align}
+        \tr\!\left[(\Id-Q)T(Q)\right]&=0,
+        \label{eq:wolf_stationary_subspace_trace}\\
+        \rho\preceq Q&\quad\Longrightarrow\quad T(\rho)\preceq Q
+        \label{eq:wolf_stationary_subspace_order}
+    \end{align}
+    for every density operator $\rho\in\MN{D}$. This is
+    \cite[Proposition~6.10]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:stationarySupport_restriction}
+    Since $Q$ is positive and supported on itself,
+    Theorem~\ref{thm:stationarySupport_restriction} gives
+    $QT(Q)Q=T(Q)$, hence $(\Id-Q)T(Q)=0$ and
+    (\ref{eq:wolf_stationary_subspace_trace}) follows. If
+    $\rho\preceq Q$, positivity shows that $\rho$ is supported on $Q$.
+    The same theorem therefore gives $QT(\rho)Q=T(\rho)$. Finally,
+    positivity and trace preservation make $T(\rho)$ a density operator;
+    a density operator supported on $Q$ is bounded above by $Q$, which proves
+    (\ref{eq:wolf_stationary_subspace_order}).
+\end{proof}
+
+\begin{theorem}[Stationary subspaces II]%
+    \label{thm:wolf_stationary_subspaces_ii}
+    \lean{IsPositiveMap.map_density_le_projection_iff_le_traceAdjointMap}
+    \leanok
+    \uses{def:positive_map, def:trace_preserving}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, and let
+    $Q\in\MN{D}$ be a Hermitian projection. Then the following are
+    equivalent:
+    \begin{enumerate}
+        \item every density operator $\rho\preceq Q$ satisfies
+              $T(\rho)\preceq Q$;
+        \item $T^*(Q)\succeq Q$.
+    \end{enumerate}
+    This is \cite[Proposition~6.11]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Put $P=\Id-Q$. For the forward implication, apply the preservation
+    hypothesis to the trace normalization of $Q$. Trace-pairing positivity
+    gives $QT^*(P)=0$, hence
+    $PT^*(P)P=T^*(P)$. Since $T^*(\Id)=\Id$, this rewrites as
+    \begin{align}
+        T^*(Q)-PT^*(Q)P=Q,
+        \notag
+    \end{align}
+    and compression preserves positivity, so $T^*(Q)\succeq Q$.
+    Conversely, for a density operator $\rho\preceq Q$, one has
+    $Q\rho=\rho$. Thus
+    \begin{align}
+        0
+        \leq \tr[T(\rho)P]
+        =1-\tr[\rho T^*(Q)]
+        \leq1-\tr[\rho Q]
+        =0.
+        \notag
+    \end{align}
+    Positivity then forces $PT(\rho)=0$, so $T(\rho)$ is supported on $Q$;
+    its unit trace gives $T(\rho)\preceq Q$.
+\end{proof}
+
 \begin{theorem}[Restriction to full-rank fixed points]%
     \label{thm:stationarySupport_compression}
     \lean{IsPositiveMap.exists_maximalSupportCompression}

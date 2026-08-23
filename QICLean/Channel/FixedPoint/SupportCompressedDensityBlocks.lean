@@ -72,6 +72,46 @@ theorem Matrix.traceAdjointMap_stationarySupportCompression
     _ = (IsPositiveMap.stationarySupportCompression
           (Matrix.traceAdjointMap T) V A * B).trace := rfl
 
+/-- **Wolf Equation (6.53).** If `A` is fixed by the trace adjoint of a
+positive trace-preserving map `T`, then its compression `Vᴴ * A * V` is fixed
+by the trace adjoint of the restriction of `T` to the support of a stationary
+positive matrix.
+
+The argument uses the support intertwining of Equation (6.52) and the
+trace-adjoint identity, without complete positivity or a Schwarz hypothesis.
+
+Source: Wolf, Lemma 6.5, Equation (6.53); local source
+`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 1345--1376. -/
+theorem Matrix.traceAdjointMap_stationarySupportCompression_fixed
+    {T : MatD →ₗ[ℂ] MatD} (hT : IsPositiveMap T)
+    (_hTP : IsTracePreservingMap T)
+    {ρ : MatD} (hρ : ρ.PosSemidef) (hρfix : T ρ = ρ)
+    (V : Matrix (Fin D) (Fin n) ℂ) (hV : Vᴴ * V = 1)
+    (hVrange : V * Vᴴ = Kraus.stationaryProj hρ)
+    {A : MatD} (hAfix : Matrix.traceAdjointMap T A = A) :
+    Matrix.traceAdjointMap (IsPositiveMap.stationarySupportCompression T V)
+        (Vᴴ * A * V) = Vᴴ * A * V := by
+  apply Matrix.ext_iff_trace_mul_right.mpr
+  intro B
+  rw [Matrix.trace_traceAdjointMap_mul]
+  have hintertwine := IsPositiveMap.stationarySupportCompression_intertwine
+    hT hρ hρfix V hV hVrange B
+  have htraceIntertwine :
+      (Vᴴ * A * V * IsPositiveMap.stationarySupportCompression T V B).trace =
+        (A * T (V * B * Vᴴ)).trace := by
+    rw [hintertwine]
+    simpa only [Matrix.mul_assoc] using
+      (Matrix.trace_mul_cycle (A * V)
+        (IsPositiveMap.stationarySupportCompression T V B) Vᴴ).symm
+  rw [htraceIntertwine]
+  calc
+    (A * T (V * B * Vᴴ)).trace =
+        (Matrix.traceAdjointMap T A * (V * B * Vᴴ)).trace :=
+      (Matrix.trace_traceAdjointMap_mul T A (V * B * Vᴴ)).symm
+    _ = (A * (V * B * Vᴴ)).trace := by rw [hAfix]
+    _ = (Vᴴ * A * V * B).trace := by
+      simpa only [Matrix.mul_assoc] using Matrix.trace_mul_cycle (A * V) B Vᴴ
+
 /-- Compression along an isometry preserves the Schwarz inequality for a
 positive map.
 
