@@ -178,6 +178,37 @@
     the identity matrix has operator norm one because $D\ge1$.
 \end{proof}
 
+\begin{theorem}[Unitary Schur triangularization]
+    \label{thm:unitary_schur_triangularization}
+    \lean{LinearMap.exists_orthonormalBasis_toMatrix_isUpperTriangular,
+      Matrix.exists_unitary_schur_triangularization}
+    \leanok
+    For every $A\in M_D(\mathbb C)$, including $D=0$, there are a unitary
+    matrix $U$ and an upper-triangular matrix $R$ such that
+    \begin{align}
+      A=URU^\dagger.
+    \end{align}
+    Moreover, a complex number $z$ is an eigenvalue of $A$ if and only if
+    $R_{ii}=z$ for some $i$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    In positive dimension, choose an eigenvector of the adjoint of $A$ and
+    place its normalization last in an orthonormal basis.  Its orthogonal
+    complement is invariant under $A$.  Induction on that complement gives
+    an orthonormal basis in which the restricted matrix is upper triangular;
+    adjoining the normalized eigenvector therefore gives an upper-triangular
+    matrix $R$ for $A$.  The change of orthonormal basis is unitary and has
+    the displayed conjugation order.  The zero-dimensional case uses the
+    empty orthonormal basis.  Finally,
+    \begin{align}
+      \chi_A(X)=\chi_R(X)=\prod_i(X-R_{ii}),
+    \end{align}
+    so the roots of the characteristic polynomial are precisely the diagonal
+    entries of $R$.
+\end{proof}
+
 \begin{theorem}[Schur-form spectral-radius estimate]
     \label{thm:wolf_schur_form_spectral_radius_estimate}
     \lean{Matrix.wolf_eq_111_schur_form,
@@ -275,7 +306,8 @@
 \end{proof}
 
 % This lemma is only the algebraic first step in Wolf's proof of
-% Equation (8.111).  The channel-level estimate tracked in QICLean issue #300
-% remains pending on the unitary Schur triangularization tracked in issue
-% #383, as well as the source's bound on the strictly upper-triangular part.
+% Equation (8.111).  The generic unitary Schur triangularization is now
+% formalized above.  The channel-level estimate tracked in QICLean issue #300
+% remains pending on its specialization and the source's bound on the strictly
+% upper-triangular part.
 % There is deliberately no \leanok claim for the full asymptotic theorem here.
