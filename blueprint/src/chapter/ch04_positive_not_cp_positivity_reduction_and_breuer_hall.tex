@@ -74,6 +74,33 @@ cone and map it onto itself.
     $k^{-1}\ket{\Omega}\bra{\Omega}$.
 \end{proof}
 
+\begin{theorem}[Complete copositivity of the first reduction map]
+    \label{thm:reduction_map_one_completely_copositive}
+    \lean{ChoiJamiolkowski.choiMatrix_reductionMap_one_comp_transpose,
+        Matrix.one_sub_swapMatrix_posSemidef,
+        Matrix.reductionMap_one_isCompletelyCopositiveMap,
+        Matrix.reductionMap_one_isDecomposablePositiveMap}
+    \leanok
+    \uses{def:reduction_map, def:decomposable_positive_map,
+        thm:cp_iff_choi_posSemidef}
+    For $D\ge1$, the map $T_1(X)=\tr(X)\Id-X$ is completely copositive and
+    hence decomposable. More precisely, the Choi matrix of
+    $T_1\circ\theta$, where $\theta$ is transposition, is
+    \begin{align}
+        \tau(T_1\circ\theta) & =D^{-1}(\Id-F)\ge0,
+        \notag
+    \end{align}
+    with $F$ the swap operator on $\C^D\otimes\C^D$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The operator $\Id-F$ is twice the orthogonal projector onto the
+    antisymmetric subspace, so it is positive semidefinite. The Choi criterion
+    therefore shows that $T_1\circ\theta$ is completely positive, which means
+    that $T_1$ is completely copositive. Taking the completely positive
+    summand to be zero gives a decomposable representation of $T_1$.
+\end{proof}
+
 \subsection{Automorphisms of the positive semidefinite cone}
 
 Invertible conjugations, with or without transposition, do more than preserve
@@ -433,20 +460,30 @@ of a bipartite state whose Schmidt number is at most $n$.
 
 \section{The Breuer--Hall map}
 
-A second concrete positive map of \cite[Chapter~3, Example~3.1]{Wolf2012Quantum}
-is built from an antisymmetric contraction $U$ on $\C^{D}$, a matrix with
-$U^{\mathsf T}=-U$ and $U^{\dagger}U\le\Id$. The associated Breuer--Hall map
-\cite[Equation~(3.19)]{Wolf2012Quantum} is
-$T_{\mathrm{BH}}(X)=\tr(X) \Id-X-U\,X^{\mathsf T}U^{\dagger}$.
-It is positive, and for an antisymmetric unitary in dimension $D>2$ it is
-indecomposable (Theorem~\ref{thm:breuer_hall_indecomposable}); the threshold
-beyond which it fails to be completely positive is not treated here. The
-source states indecomposability for every antisymmetric unitary without a
-dimension hypothesis, but the restriction $D>2$ is necessary: at $D=2$ every
-antisymmetric unitary is a phase multiple of
+Wolf defines the Breuer--Hall map in
+\cite[Chapter~3, Example~3.1]{Wolf2012Quantum} for an antisymmetric contraction
+$U$ on $\C^{D}$, namely $U^{\mathsf T}=-U$ and
+$U^{\dagger}U\le\Id$:
+\begin{align}
+    T_{\mathrm{BH}}(X)=\tr(X)\Id-X-U X^{\mathsf T}U^{\dagger}.
+    \notag
+\end{align}
+The contraction hypotheses are used for positivity. Wolf's subsequent
+indecomposability assertion is stated only for antisymmetric unitaries. The
+formalization preserves this distinction: positivity holds for antisymmetric
+contractions, while indecomposability is proved for antisymmetric unitaries in
+dimension $D>2$.
+
+Neither restriction may be discarded. At $D=2$, every antisymmetric unitary is
+a phase multiple of
 $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$, and
-$JX^{\mathsf T}J^{\dagger}=\tr(X)\Id-X$ for every $2\times2$ matrix $X$, so
-$T_{\mathrm{BH}}$ is the zero map, which is decomposable.
+$JX^{\mathsf T}J^{\dagger}=\tr(X)\Id-X$, so $T_{\mathrm{BH}}$ is the zero map.
+Moreover, the unitary hypothesis cannot be replaced by contractivity in the
+indecomposability conclusion: $U=0$ is an antisymmetric contraction and gives
+$T_{\mathrm{BH}}=T_1$, which is completely copositive and decomposable by
+Theorem~\ref{thm:reduction_map_one_completely_copositive}. This counterexample
+only refutes the unrestricted contraction generalization; no sharper
+classification of antisymmetric contractions is asserted here.
 
 \begin{definition}[Breuer--Hall map]
     \label{def:breuer_hall_map}
@@ -520,6 +557,28 @@ $T_{\mathrm{BH}}$ is the zero map, which is decomposable.
     sends each such operator to a positive semidefinite matrix, and a sum of
     positive semidefinite matrices is positive semidefinite, so $T_{\mathrm{BH}}$
     is positive.
+\end{proof}
+
+\begin{theorem}[The contraction generalization of indecomposability is false]
+    \label{thm:breuer_hall_contraction_counterexample}
+    \lean{Matrix.breuerHallMap_zero,
+        Matrix.breuerHallMap_contraction_not_universally_indecomposable}
+    \leanok
+    \uses{def:breuer_hall_map, thm:reduction_map_one_completely_copositive}
+    Suppose $D>2$. It is false that the Breuer--Hall map is indecomposable for
+    every antisymmetric contraction $U$. Indeed, $U=0$ satisfies
+    $U^{\mathsf T}=-U$ and $U^{\dagger}U\le\Id$, but its Breuer--Hall map is
+    \begin{align}
+        T_{\mathrm{BH}}(X) & =\tr(X)\Id-X=T_1(X),
+        \notag
+    \end{align}
+    which is completely copositive and decomposable.
+\end{theorem}
+
+\begin{proof}\leanok
+    Substitute $U=0$ into the defining formula. The twisted-transpose term
+    vanishes, leaving the first reduction map. Apply
+    Theorem~\ref{thm:reduction_map_one_completely_copositive}.
 \end{proof}
 
 \begin{theorem}[The Breuer--Hall map is indecomposable]

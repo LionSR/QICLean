@@ -18,6 +18,8 @@ This file records elementary positive maps from Wolf Chapter 3.
 * `Matrix.reductionMap`: the reduction map
   \(X \mapsto \operatorname{tr}(X) I - k^{-1}X\).
 * `Matrix.reductionMap_one_isPositiveMap`: the case \(k=1\) is positive.
+* `Matrix.reductionMap_one_isCompletelyCopositiveMap`: the case \(k=1\) is completely
+  copositive, hence decomposable.
 * `Matrix.traceAdjointMap_reductionMap`: the reduction map is self-dual for
   the trace pairing.
 * `ChoiJamiolkowski.choiMatrix_reductionMap`: Choi matrix of the reduction map.
@@ -61,6 +63,14 @@ theorem reductionMap_one_isPositiveMap {D : ℕ} [NeZero D] :
   intro X hX
   simpa [reductionMap] using
     (Matrix.PosSemidef.trace_smul_one_sub_self_posSemidef hX)
+
+/-- Composing the reduction map \(T_1\) with transposition gives
+\(X \mapsto \operatorname{tr}(X)I-X^{\mathsf T}\). -/
+@[simp]
+theorem reductionMap_one_comp_transpose_apply (D : ℕ) (X : Matrix (Fin D) (Fin D) ℂ) :
+    ((reductionMap D 1).comp (transposeLinearMapComplex (Fin D))) X =
+      Matrix.trace X • (1 : Matrix (Fin D) (Fin D) ℂ) - Xᵀ := by
+  simp [reductionMap_apply, transposeLinearMapComplex, LinearMap.comp_apply]
 
 /-- **Wolf Chapter 3, Example 3.1, equation (3.18).** The reduction map is
 self-dual for the bilinear trace pairing:
@@ -118,4 +128,58 @@ theorem choiMatrix_reductionMap [NeZero D] (k : ℕ) :
       simp_all [choiMatrix_apply, Matrix.reductionMap, omegaSlice_eq_single,
         Matrix.omegaProj_apply, Matrix.omegaVec_apply, eq_comm]
 
+/-- The Choi matrix of \(T_1 \circ \mathrm{transpose}\) is the normalized
+antisymmetric-subspace operator \(D^{-1}(1-F)\). -/
+theorem choiMatrix_reductionMap_one_comp_transpose [NeZero D] :
+    choiMatrix ((Matrix.reductionMap D 1).comp
+      (Matrix.transposeLinearMapComplex (Fin D))) =
+      ((D : ℂ)⁻¹) • ((1 : Matrix (Fin D × Fin D) (Fin D × Fin D) ℂ) -
+        Matrix.swapMatrix D) := by
+  have hDpos : (0 : ℝ) < D := by
+    exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne D)
+  have hcoeff :
+      (D : ℂ)⁻¹ = (((D : ℝ).sqrt : ℂ)⁻¹ * (((D : ℝ).sqrt : ℂ)⁻¹)) := by
+    rw [← _root_.mul_inv_rev]
+    congr
+    have hsqrt : (D : ℝ) = (D : ℝ).sqrt * (D : ℝ).sqrt := by
+      nth_rw 1 [← Real.sq_sqrt hDpos.le]
+      ring
+    exact_mod_cast hsqrt
+  ext ⟨i₁, i₂⟩ ⟨j₁, j₂⟩
+  rw [hcoeff]
+  by_cases h₂ : i₂ = j₂
+  · subst j₂
+    simp [choiMatrix_apply, Matrix.reductionMap_one_comp_transpose_apply,
+      omegaSlice_eq_single, Matrix.swapMatrix_apply, Matrix.trace_single_eq_same,
+      Matrix.one_apply, Matrix.single_apply]
+    split_ifs <;> grind
+  · simp [choiMatrix_apply, Matrix.reductionMap_one_comp_transpose_apply,
+      omegaSlice_eq_single, Matrix.swapMatrix_apply,
+      Matrix.trace_single_eq_of_ne i₂ j₂ _ h₂, Matrix.one_apply, Matrix.single_apply]
+    split_ifs <;> grind
+
 end ChoiJamiolkowski
+
+namespace Matrix
+
+variable {D : ℕ}
+
+/-- The reduction map \(T_1(X)=\operatorname{tr}(X)I-X\) is completely copositive. Its
+composition with transposition has Choi matrix \(D^{-1}(1-F)\), which is positive
+semidefinite. -/
+theorem reductionMap_one_isCompletelyCopositiveMap [NeZero D] :
+    IsCompletelyCopositiveMap (reductionMap D 1) := by
+  rw [IsCompletelyCopositiveMap, ChoiJamiolkowski.cp_iff_choi_posSemidef,
+    ChoiJamiolkowski.choiMatrix_reductionMap_one_comp_transpose]
+  exact (one_sub_swapMatrix_posSemidef D).smul (by positivity)
+
+/-- The reduction map \(T_1\) is decomposable (indeed, completely copositive). -/
+theorem reductionMap_one_isDecomposablePositiveMap [NeZero D] :
+    IsDecomposablePositiveMap (reductionMap D 1) := by
+  refine ⟨0, reductionMap D 1, ?_, reductionMap_one_isCompletelyCopositiveMap, ?_⟩
+  · refine ⟨0, Fin.elim0, ?_⟩
+    intro X
+    simp
+  · simp
+
+end Matrix

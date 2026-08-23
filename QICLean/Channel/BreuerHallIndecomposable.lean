@@ -51,6 +51,13 @@ so `(T_BH ⊗ id)(ρ)` is not positive semidefinite (its quadratic form at `Ψ` 
 By `not_isDecomposablePositiveMap_of_isPPT_not_tensorMapId_posSemidef`, `T_BH` is not
 decomposable.
 
+## Boundary for antisymmetric contractions
+
+Unitarity cannot be weakened to contractivity in the indecomposability statement. The zero
+matrix is antisymmetric and contractive, but `breuerHallMap 0 = reductionMap d 1`; the
+reduction map is completely copositive and therefore decomposable. Thus even when `d > 2`,
+not every antisymmetric contraction gives an indecomposable Breuer-Hall map.
+
 The restriction `d > 2` is necessary, not an artifact of this proof: for `d = 2` every
 antisymmetric unitary is a phase times `J = [[0, 1], [-1, 0]]`, and
 `J Xᵀ Jᴴ = Tr(X) 1 - X` for all `2 × 2` matrices `X`, so `T_BH` reduces to the zero map,
@@ -69,6 +76,8 @@ which is trivially decomposable. See
 * `Matrix.breuerHallMap_isIndecomposablePositiveMap` -- **Wolf Chapter 3, Example 3.1.**
   For antisymmetric unitary `U` in dimension `d > 2`, `breuerHallMap U` is an
   indecomposable positive map.
+* `Matrix.breuerHallMap_contraction_not_universally_indecomposable` -- the zero
+  antisymmetric contraction refutes the corresponding universal contraction claim.
 
 ## References
 
@@ -700,5 +709,17 @@ theorem breuerHallMap_isIndecomposablePositiveMap (hd : 2 < d)
     IsIndecomposablePositiveMap (Matrix.breuerHallMap U) :=
   ⟨Matrix.breuerHallMap_isPositiveMap U hUanti (le_of_eq hUunit),
     breuerHallMap_not_isDecomposablePositiveMap hd hUanti hUunit⟩
+
+/-- The Breuer-Hall indecomposability theorem does not extend from antisymmetric unitaries
+to all antisymmetric contractions, even in dimension `d > 2`: the zero contraction gives
+the decomposable reduction map \(T_1\). -/
+theorem breuerHallMap_contraction_not_universally_indecomposable (hd : 2 < d) :
+    ¬ ∀ U : Matrix (Fin d) (Fin d) ℂ,
+      Uᵀ = -U → Uᴴ * U ≤ 1 → IsIndecomposablePositiveMap (breuerHallMap U) := by
+  let _ : NeZero d := ⟨Nat.ne_of_gt (lt_trans (by omega) hd)⟩
+  intro h
+  have hzero := h (0 : Matrix (Fin d) (Fin d) ℂ) (by simp) (by simp)
+  rw [breuerHallMap_zero] at hzero
+  exact hzero.2 reductionMap_one_isDecomposablePositiveMap
 
 end Matrix
