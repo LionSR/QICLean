@@ -51,6 +51,7 @@ import QICLean.Channel.LocalizedKrausCPTP
 import QICLean.Channel.LorentzNormalForm
 import QICLean.Channel.LorentzNormalForm.Basic
 import QICLean.Channel.LorentzNormalForm.Infimum
+import QICLean.Channel.LorentzNormalForm.InvertibleFilter
 import QICLean.Channel.LorentzNormalForm.NormalForm
 import QICLean.Channel.LorentzNormalForm.PauliBlockTruncation
 import QICLean.Channel.LorentzNormalForm.QubitNormalForm

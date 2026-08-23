@@ -286,6 +286,92 @@ This section states the existence theorems from
     invertible and have Kraus rank~1.
 \end{definition}
 
+\begin{definition}[Invertible filtering operation]
+\label{def:invertible_filtering}
+    \lean{Wolf.InvertibleFilter,
+        Wolf.InvertibleFilter.map,
+        Wolf.InvertibleFilter.map_apply,
+        Wolf.InvertibleFilter.map_eq_unitaryConjLM,
+        Wolf.InvertibleFilter.cp,
+        Wolf.InvertibleFilter.id,
+        Wolf.InvertibleFilter.map_id,
+        Wolf.InvertibleFilter.comp,
+        Wolf.InvertibleFilter.comp_X,
+        Wolf.InvertibleFilter.map_comp,
+        Wolf.InvertibleFilter.inv,
+        Wolf.InvertibleFilter.inv_X,
+        Wolf.InvertibleFilter.inv_comp,
+        Wolf.InvertibleFilter.comp_inv,
+        Wolf.InvertibleFilter.inv_map_comp,
+        Wolf.InvertibleFilter.map_comp_inv,
+        Wolf.InvertibleFilter.filteredMap,
+        Wolf.InvertibleFilter.filteredMap_apply,
+        Wolf.SLFiltering.toInvertibleFilter,
+        Wolf.SLFiltering.toInvertibleFilter_X,
+        Wolf.SLFiltering.toInvertibleFilter_map}\leanok
+    An \emph{invertible filtering operation} on $\MN{D}$ is a completely
+    positive map
+    \begin{align}
+        \Phi_X(A)=XAX^\dagger,
+        \qquad X\in\GL(D,\C).
+        \label{eq:representations_invertible_filter}
+    \end{align}
+    If $T:\MN{d_1}\to\MN{d_2}$, pre- and postfiltering are written in
+    Wolf's order as $\Phi_2\circ T\circ\Phi_1$.  The matrices $X$ are
+    retained as part of the data; in particular, matrices which differ by a
+    phase are not identified.
+\end{definition}
+
+\begin{lemma}[Scalar and determinant-one decomposition]
+\label{lem:invertible_filter_scalar_sl}
+    \lean{Wolf.InvertibleFilter.hasKrausCard_one,
+        Wolf.InvertibleFilter.map_ne_zero,
+        Wolf.InvertibleFilter.choiRank_eq_one,
+        Wolf.InvertibleFilter.singleKrausMap_smul,
+        Wolf.InvertibleFilter.exists_scalar_slFiltering}\leanok
+    Let $D\geq1$ and let $X\in\GL(D,\C)$.  There are a nonzero
+    $c\in\C$ and $S\in\SL(D,\C)$ such that
+    \begin{align}
+        c^D&=\det X, & X&=cS,
+        \label{eq:representations_filter_scalar_matrix}\\
+        \Phi_X&=|c|^2\Phi_S, & |c|^2&>0.
+        \label{eq:representations_filter_scalar_map}
+    \end{align}
+    Moreover, $\Phi_X$ has Kraus rank exactly one.  The matrix scalar $c$
+    is complex and need not be positive real; positivity applies only to the
+    map scalar $|c|^2$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Choose a $D$th root $c$ of $\det X$.  Since $X$ is invertible, both
+    $\det X$ and $c$ are nonzero.  Put $S=c^{-1}X$.  Multiplicativity of the
+    determinant gives $\det S=1$, while direct expansion of
+    $(cS)A(cS)^\dagger$ gives
+    $\Phi_X=|c|^2\Phi_S$.  The displayed nonzero Kraus operator gives Kraus
+    rank at most one, and invertibility excludes Kraus rank zero.
+\end{proof}
+
+\begin{lemma}[Scalar factors under pre- and postfiltering]
+\label{lem:invertible_filter_two_scalar}
+    \lean{Wolf.InvertibleFilter.filteredMap_eq_normSq_smul}\leanok
+    \uses{def:invertible_filtering, lem:invertible_filter_scalar_sl}
+    Suppose $X_i=c_iS_i$, where $c_i\neq0$ and
+    $S_i\in\SL(d_i,\C)$.  For every linear map
+    $T:\MN{d_1}\to\MN{d_2}$,
+    \begin{align}
+        \Phi_{X_2}\circ T\circ\Phi_{X_1}
+        =|c_1c_2|^2
+          \bigl(\Phi_{S_2}\circ T\circ\Phi_{S_1}\bigr).
+        \label{eq:representations_filter_two_scalar}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Substitute $\Phi_{X_i}=|c_i|^2\Phi_{S_i}$ and use linearity of $T$ and
+    of the outer filtering operation.  The two real scalars combine as
+    $|c_1|^2|c_2|^2=|c_1c_2|^2$.
+\end{proof}
+
 \begin{definition}[Doubly-stochastic map]\label{def:doubly_stochastic}
     \lean{Wolf.DoublyStochastic}\leanok
     A linear map $T : \MN{D} \to \MN{D}$ is \emph{doubly-stochastic}

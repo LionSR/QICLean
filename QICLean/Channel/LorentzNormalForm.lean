@@ -5,6 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.LorentzNormalForm.Basic
 import QICLean.Channel.LorentzNormalForm.Infimum
+import QICLean.Channel.LorentzNormalForm.InvertibleFilter
 import QICLean.Channel.LorentzNormalForm.NormalForm
 import QICLean.Channel.LorentzNormalForm.PauliBlockTruncation
 import QICLean.Channel.LorentzNormalForm.QubitNormalForm
@@ -13,7 +14,7 @@ import QICLean.Channel.LorentzNormalForm.QubitNormalForm
 # Lorentz normal form for quantum channels (Wolf Section 2.4, Propositions 2.8–2.11)
 
 Thin module assembling the normal-form development for quantum channels under
-filtering operations from five focused submodules.
+filtering operations from six focused submodules.
 
 * `QICLean.Channel.LorentzNormalForm.Basic` — SL-filtering operations, the
   doubly-stochastic predicates, and the shared Kronecker-conjugation and
@@ -21,6 +22,9 @@ filtering operations from five focused submodules.
 * `QICLean.Channel.LorentzNormalForm.Infimum` — the compactness/minimisation
   argument (Wolf Equation (2.36)): attainment of the infimum and the AM–GM
   optimality lemmas.
+* `QICLean.Channel.LorentzNormalForm.InvertibleFilter` — the general
+  invertible Kraus-rank-one filters used in Wolf Proposition 2.11, including
+  their scalar/determinant-one decomposition.
 * `QICLean.Channel.LorentzNormalForm.NormalForm` — Wolf Proposition 2.9, the
   generic normal form for CP maps with full Kraus rank, in square and
   rectangular forms.
