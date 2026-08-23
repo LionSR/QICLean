@@ -529,6 +529,9 @@ Perron–Frobenius theorem — are indexed in
   `QICLean.Channel.Determinant.Bound`.
 * `IsPositiveMap.eigenvalue_one_exists_of_tracePreserving` — eigenvalue $1$ exists
   (nonzero PSD fixed point), in `QICLean.Channel.Peripheral.SpectralRadius`.
+* `IsPositiveMap.spectralRadius_eq_one_of_tracePreserving` — a positive
+  trace-preserving map has spectral radius exactly $1$, by combining the two
+  preceding results.
 
 The pinned Mathlib has no standalone Russo--Dye theorem. The formal proof
 derives its sharp matrix norm estimate from Wolf Theorem 5.6, using the

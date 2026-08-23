@@ -141,6 +141,27 @@
     $\varrho(T)\leq1$. The eigenvalue $1$ gives the reverse inequality.
 \end{proof}
 
+\begin{theorem}[Positive trace-preserving maps have unit spectral radius]
+    \label{thm:positive_tp_spectral_radius}
+    \lean{IsPositiveMap.eigenvalue_norm_le_one_of_tracePreserving,
+        IsPositiveMap.eigenvalue_one_exists_of_tracePreserving,
+        IsPositiveMap.spectralRadius_eq_one_of_tracePreserving}
+    \leanok
+    \uses{def:positive_map, def:trace_preserving}
+    Let $D\geq1$, and let $T:\MN{D}\to\MN{D}$ be positive and
+    trace-preserving. Then $1$ is an eigenvalue with a nonzero positive
+    semidefinite eigenvector, every eigenvalue belongs to the closed unit
+    disk, and $\varrho(T)=1$. No complete-positivity assumption is made.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:positive_tp_eigenvalue_disk, thm:eigenvalue_one_tp}
+    Theorem~\ref{thm:positive_tp_eigenvalue_disk} places every eigenvalue in
+    the closed unit disk. Theorem~\ref{thm:eigenvalue_one_tp} supplies a
+    nonzero positive semidefinite fixed point, so $1$ is an eigenvalue.
+    Hence $\varrho(T)\leq1$ and $\varrho(T)\geq1$, respectively.
+\end{proof}
+
 \begin{definition}[Primitive map]\label{def:primitive_channel}
     \lean{IsPrimitive}
     \leanok

@@ -44,6 +44,8 @@ pre-existing trace-preserving results are retained independently.
   `IsPositiveMap.spectralRadius_eq_one_of_map_one_eq_one`: the unital case.
 * `IsPositiveMap.eigenvalue_one_exists_of_tracePreserving`: the
   trace-preserving fixed point.
+* `IsPositiveMap.spectralRadius_eq_one_of_tracePreserving`: the
+  trace-preserving spectral-radius equality.
 * `spectralRadius_le_of_forall_eigenvalue_nnnorm_le`: the norm-agnostic step
   from pointwise eigenvalue bounds to a spectral-radius bound.
 * `Kraus.eigenvalue_norm_le_one_of_isTP`, `Kraus.spectralRadius_mapLM_le_one_of_isTP`:
@@ -54,7 +56,7 @@ pre-existing trace-preserving results are retained independently.
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Proposition 6.1][Wolf2012Quantum]
 -/
 
-open scoped Matrix ComplexOrder
+open scoped Matrix ComplexOrder NNReal
 open Matrix
 
 variable {D : ℕ}
@@ -272,7 +274,27 @@ theorem eigenvalue_one_of_map_one_eq_one
   apply Module.End.hasEigenvalue_of_hasEigenvector
   rw [Module.End.hasEigenvector_iff]
   refine ⟨Module.End.mem_eigenspace_iff.mpr ?_, one_ne_zero⟩
-  simpa only [hOne, one_smul]
+  simp only [hOne, one_smul]
+
+/-- The norm-agnostic passage from a closed-unit-disk eigenvalue bound and the
+eigenvalue `1` to spectral radius exactly `1`. -/
+private theorem spectralRadius_eq_one_of_eigenvalue_bounds
+    {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
+    (E : V →ₗ[ℂ] V)
+    (hBound : ∀ μ, Module.End.HasEigenvalue E μ → ‖μ‖ ≤ 1)
+    (hOne : Module.End.HasEigenvalue E 1) :
+    spectralRadius ℂ (Module.End.toContinuousLinearMap V E) = 1 := by
+  apply le_antisymm
+  · exact spectralRadius_le_one_of_forall_eigenvalue_norm_le_one E hBound
+  · have hSpec : spectrum ℂ (Module.End.toContinuousLinearMap V E) = spectrum ℂ E :=
+      AlgEquiv.spectrum_eq (Module.End.toContinuousLinearMap V) E
+    have hOneSpec : (1 : ℂ) ∈ spectrum ℂ (Module.End.toContinuousLinearMap V E) := by
+      rw [hSpec]
+      exact Module.End.hasEigenvalue_iff_mem_spectrum.mp hOne
+    rw [spectralRadius]
+    simpa using (@le_iSup₂ ENNReal ℂ
+      (· ∈ spectrum ℂ (Module.End.toContinuousLinearMap V E)) _
+      (fun μ _ ↦ (‖μ‖₊ : ENNReal)) 1 hOneSpec)
 
 namespace IsPositiveMap
 
@@ -315,24 +337,30 @@ theorem spectralRadius_eq_one_of_map_one_eq_one
     {T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ}
     (hT : IsPositiveMap T) (hOne : T 1 = 1) :
     spectralRadius ℂ
+      (Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ) T) = 1 :=
+  spectralRadius_eq_one_of_eigenvalue_bounds T
+    (hT.eigenvalue_norm_le_one_of_map_one_eq_one hOne)
+    (eigenvalue_one_of_map_one_eq_one hOne)
+
+/-- **Wolf Proposition 6.1, trace-preserving case**: a positive
+trace-preserving matrix map has spectral radius exactly `1`.
+
+The closed-unit-disk bound is the existing orbit-and-trace result, and the
+reverse inequality follows from the existing positive semidefinite fixed
+point. -/
+theorem spectralRadius_eq_one_of_tracePreserving
+    [NeZero D]
+    {T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ}
+    (hT : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
+    spectralRadius ℂ
       (Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ) T) = 1 := by
-  apply le_antisymm
-  · simpa only [hOne, nnnorm_one] using hT.spectralRadius_le_nnnorm_map_one
-  · have hSpec :
-        spectrum ℂ (Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ) T) =
-          spectrum ℂ T :=
-      AlgEquiv.spectrum_eq
-        (Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ)) T
-    have hOneSpec : (1 : ℂ) ∈
-        spectrum ℂ (Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ) T) := by
-      rw [hSpec]
-      exact Module.End.hasEigenvalue_iff_mem_spectrum.mp
-        (eigenvalue_one_of_map_one_eq_one hOne)
-    rw [spectralRadius]
-    simpa using (@le_iSup₂ ENNReal ℂ
-      (· ∈ spectrum ℂ
-        (Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ) T)) _
-      (fun μ _ ↦ (‖μ‖₊ : ENNReal)) 1 hOneSpec)
+  apply spectralRadius_eq_one_of_eigenvalue_bounds T
+  · exact hT.eigenvalue_norm_le_one_of_tracePreserving hTP
+  · obtain ⟨ρ, _, hρne, hρ⟩ := hT.eigenvalue_one_exists_of_tracePreserving hTP
+    apply Module.End.hasEigenvalue_of_hasEigenvector
+    rw [Module.End.hasEigenvector_iff]
+    refine ⟨Module.End.mem_eigenspace_iff.mpr ?_, hρne⟩
+    simpa only [one_smul] using hρ
 
 end RussoDyeSpectral
 
