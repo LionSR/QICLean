@@ -125,42 +125,6 @@ theorem Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap
 
 /-! ### Weighted Stinespring compression -/
 
-/-- Stinespring dual representation for a rectangular Kraus family indexed by
-an arbitrary finite type. -/
-private theorem stinespring_dual_representation_rectangular_gen
-    {η : Type*} [Fintype η] [DecidableEq η] {d d' : ℕ}
-    (K : η → Matrix (Fin d') (Fin d) ℂ) (A : Matrix (Fin d') (Fin d') ℂ) :
-    (stinespringVGen K)ᴴ *
-        Matrix.kroneckerMap (· * ·) A (1 : Matrix η η ℂ) * stinespringVGen K =
-      ∑ j : η, (K j)ᴴ * A * K j := by
-  ext a b
-  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply,
-    stinespringVGen_apply, Matrix.kroneckerMap_apply, Matrix.one_apply,
-    Matrix.sum_apply, Fintype.sum_prod_type, mul_ite, mul_one, mul_zero,
-    Finset.sum_ite_eq', Finset.mem_univ, ite_true]
-  exact Finset.sum_comm
-
-/-- A linear combination of rectangular Kraus blocks is obtained by
-left-multiplying the Stinespring matrix by `1 ⊗ C`. -/
-private theorem stinespringVGen_rectangular_linear_combination
-    {η : Type*} {d d' : ℕ}
-    (K : Fin r → Matrix (Fin d') (Fin d) ℂ) (C : Matrix η (Fin r) ℂ) :
-    stinespringVGen (fun α : η => ∑ j : Fin r, C α j • K j) =
-      Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C *
-        stinespringV K := by
-  ext x b
-  rcases x with ⟨a, α⟩
-  simp only [stinespringVGen_apply, stinespringV_apply, Matrix.sum_apply,
-    Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.kroneckerMap_apply,
-    Matrix.one_apply, Fintype.sum_prod_type]
-  rw [Finset.sum_eq_single a]
-  · simp
-  · intro a' _ ha'
-    have haa' : a ≠ a' := fun h => ha' h.symm
-    simp [haa']
-  · intro h
-    exact absurd (Finset.mem_univ a) h
-
 /-- Compressing a `Fin`-indexed rectangular Stinespring matrix by `P = CᴴC`
 gives the Kraus sum for the corresponding linear combinations of its blocks. -/
 theorem weighted_stinespring_eq_kraus_sum_gen
@@ -186,9 +150,14 @@ theorem weighted_stinespring_eq_kraus_sum_gen
     rw [Matrix.conjTranspose_mul]
     simp only [Matrix.mul_assoc]
   rw [h_reassoc]
-  rw [← stinespring_dual_representation_rectangular_gen
-    (K := fun α : η => ∑ j : Fin r, C α j • K j) X]
-  rw [stinespringVGen_rectangular_linear_combination K C]
+  let L : η → Matrix (Fin d') (Fin d) ℂ :=
+    fun α => ∑ j : Fin r, C α j • K j
+  have hlinear : stinespringVGen L =
+      Matrix.kroneckerMap (· * ·) (1 : Matrix (Fin d') (Fin d') ℂ) C *
+        stinespringV K := by
+    exact stinespringVGen_linear_combination K C
+  rw [← hlinear]
+  exact stinespring_dual_representation_gen L X
 
 /-- The `j`-th ancilla block of a supplied rectangular Stinespring matrix. -/
 def stinespringBlockRectangular {d d' : ℕ}
