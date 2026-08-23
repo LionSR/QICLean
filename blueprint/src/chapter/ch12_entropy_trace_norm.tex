@@ -234,6 +234,33 @@ Theorem~\ref{thm:trace_norm_abs}.
     and the claim follows from Theorem~\ref{thm:trace_norm_abs}.
 \end{proof}
 
+\begin{theorem}[Trace norm and Hilbert--Schmidt norm comparison]
+    \label{thm:trace_norm_frobenius_comparison}
+    \lean{Matrix.frobenius_norm_le_traceNorm,
+        Matrix.traceNorm_le_sqrt_dim_mul_frobenius_norm}
+    \leanok
+    \uses{lem:trace_norm_sqrt_matrix_eigenvalues}
+    For every $A\in\MN{D}$,
+    \begin{align}
+        \lVert A\rVert_2
+        &\leq \lVert A\rVert_1
+        \leq \sqrt D\,\lVert A\rVert_2.
+        \label{eq:trace_norm_frobenius_comparison}
+    \end{align}
+    This is the $p=2$ and $p=1$ comparison in
+    \cite[Eq.~(8.7)]{Wolf2012Quantum}, used in the proof of trace-norm
+    convergence toward asymptotic states.
+\end{theorem}
+
+\begin{proof}\leanok
+    Write $s_0,\ldots,s_{D-1}\geq0$ for the singular values of $A$.
+    Then $\lVert A\rVert_2^2=\sum_i s_i^2$ and
+    $\lVert A\rVert_1=\sum_i s_i$. The first inequality follows by expanding
+    $(\sum_i s_i)^2$ and using nonnegativity. The second is the
+    Cauchy--Schwarz bound
+    $(\sum_i s_i)^2\leq D\sum_i s_i^2$.
+\end{proof}
+
 \begin{theorem}[Variational unitary formula for the trace norm]
     \label{thm:trace_norm_variational}
     \lean{Matrix.norm_trace_conjTranspose_mul_unitary_le}
