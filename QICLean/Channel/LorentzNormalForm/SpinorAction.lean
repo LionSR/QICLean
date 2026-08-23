@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Algebra.SpinCover.Basic
 import QICLean.Channel.LorentzNormalForm.QubitNormalForm
 import Mathlib.Algebra.Star.Module
+import Mathlib.GroupTheory.Abelianization.Defs
 import Mathlib.LinearAlgebra.Matrix.SpecialLinearGroup
 
 /-!
@@ -81,6 +82,41 @@ theorem pauliMatrixOfMinkowski_isHermitian (x : MinkowskiSpace) :
 def minkowskiQuadratic (x : MinkowskiSpace) : ℝ :=
   x 0 ^ 2 - x 1 ^ 2 - x 2 ^ 2 - x 3 ^ 2
 
+/-- The Minkowski bilinear form with signature `(1, 3)` used in Wolf,
+Equation (2.42). -/
+def minkowskiBilinear (x y : MinkowskiSpace) : ℝ :=
+  x 0 * y 0 - x 1 * y 1 - x 2 * y 2 - x 3 * y 3
+
+/-- The diagonal matrix `η = diag(1, -1, -1, -1)` in Wolf,
+Equation (2.42). -/
+def minkowskiMetric : Matrix (Fin 4) (Fin 4) ℝ :=
+  diagonal fun i ↦ if i = 0 then 1 else -1
+
+theorem minkowskiQuadratic_eq_bilinear_self (x : MinkowskiSpace) :
+    minkowskiQuadratic x = minkowskiBilinear x x := by
+  simp [minkowskiQuadratic, minkowskiBilinear, pow_two]
+
+/-- The coordinate formula for the bilinear form in terms of `η`. -/
+theorem minkowskiBilinear_eq_dotProduct_metric_mulVec (x y : MinkowskiSpace) :
+    minkowskiBilinear x y = dotProduct x (minkowskiMetric *ᵥ y) := by
+  simp [minkowskiBilinear, minkowskiMetric, Matrix.mulVec, dotProduct,
+    Fin.sum_univ_four]
+  ring
+
+/-- Polarization of the Minkowski determinant form. -/
+theorem minkowskiBilinear_polarization (x y : MinkowskiSpace) :
+    2 * minkowskiBilinear x y =
+      minkowskiQuadratic (x + y) - minkowskiQuadratic x - minkowskiQuadratic y := by
+  simp only [minkowskiBilinear, minkowskiQuadratic, Pi.add_apply]
+  ring
+
+@[simp] theorem minkowskiMetric_mul_self :
+    minkowskiMetric * minkowskiMetric = 1 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    norm_num [minkowskiMetric, Matrix.mul_apply, Matrix.diagonal_apply,
+      Fin.sum_univ_four]
+
 /-- The determinant of a Hermitian qubit matrix is its Minkowski quadratic
 form, as stated immediately before Wolf, Equation (2.41). -/
 theorem det_pauliMatrixOfMinkowski (x : MinkowskiSpace) :
@@ -94,6 +130,58 @@ theorem det_pauliMatrixOfMinkowski (x : MinkowskiSpace) :
   rw [Complex.I_sq]
   simp [minkowskiQuadratic]
   ring
+
+/-- The trace of `M(x)` is twice its time coordinate. -/
+theorem trace_pauliMatrixOfMinkowski (x : MinkowskiSpace) :
+    Matrix.trace (pauliMatrixOfMinkowski x) = (2 * x 0 : ℝ) := by
+  simp [pauliMatrixOfMinkowski, pauliMatrices,
+    Matrix.trace_fin_two, Fin.sum_univ_four]
+  ring
+
+/-- The closed future Lorentz cone in Pauli coordinates. -/
+def InFutureCone (x : MinkowskiSpace) : Prop :=
+  0 ≤ x 0 ∧ 0 ≤ minkowskiQuadratic x
+
+/-- Under the Pauli-coordinate identification, the positive-semidefinite cone
+of Hermitian qubit matrices is the closed future Lorentz cone. -/
+theorem posSemidef_pauliMatrixOfMinkowski_iff (x : MinkowskiSpace) :
+    (pauliMatrixOfMinkowski x).PosSemidef ↔ InFutureCone x := by
+  let hM := pauliMatrixOfMinkowski_isHermitian x
+  constructor
+  · intro hPSD
+    constructor
+    · have htrace := Complex.nonneg_iff.mp hPSD.trace_nonneg |>.1
+      rw [trace_pauliMatrixOfMinkowski] at htrace
+      simpa using htrace
+    · have hdet := Complex.nonneg_iff.mp hPSD.det_nonneg |>.1
+      rw [det_pauliMatrixOfMinkowski] at hdet
+      simpa using hdet
+  · rintro ⟨hx₀, hq⟩
+    rw [hM.posSemidef_iff_eigenvalues_nonneg]
+    have hsum : hM.eigenvalues 0 + hM.eigenvalues 1 = 2 * x 0 := by
+      have h := congrArg Complex.re hM.trace_eq_sum_eigenvalues
+      rw [trace_pauliMatrixOfMinkowski] at h
+      simpa [Fin.sum_univ_two] using h.symm
+    have hprod : hM.eigenvalues 0 * hM.eigenvalues 1 = minkowskiQuadratic x := by
+      have h := congrArg Complex.re hM.det_eq_prod_eigenvalues
+      rw [det_pauliMatrixOfMinkowski] at h
+      simpa [Fin.prod_univ_two] using h.symm
+    intro i
+    fin_cases i
+    · by_contra hneg
+      have h₀neg : hM.eigenvalues 0 < 0 := lt_of_not_ge hneg
+      have h₁nonpos : hM.eigenvalues 1 ≤ 0 := by
+        by_contra h₁
+        have h₁pos : 0 < hM.eigenvalues 1 := lt_of_not_ge h₁
+        nlinarith
+      nlinarith
+    · by_contra hneg
+      have h₁neg : hM.eigenvalues 1 < 0 := lt_of_not_ge hneg
+      have h₀nonpos : hM.eigenvalues 0 ≤ 0 := by
+        by_contra h₀
+        have h₀pos : 0 < hM.eigenvalues 0 := lt_of_not_ge h₀
+        nlinarith
+      nlinarith
 
 /-- The real vector space of Hermitian qubit matrices. -/
 abbrev HermitianQubitMatrix := selfAdjoint (Matrix (Fin 2) (Fin 2) ℂ)
@@ -314,6 +402,35 @@ theorem spinorMatrix_apply (X : SL(2, ℂ)) (i j : Fin 4) :
         (pauliMatrixOfMinkowski_isHermitian (Pi.single j 1))⟩ i = _
   simp only [pauliMinkowskiCoordinate, pauliMatrixOfMinkowski_single]
 
+/-- The time-time entry is one half of the squared Frobenius norm of `X`. -/
+theorem spinorMatrix_zero_zero (X : SL(2, ℂ)) :
+    spinorMatrix X 0 0 =
+      (Complex.normSq (X.1 0 0) + Complex.normSq (X.1 0 1) +
+        Complex.normSq (X.1 1 0) + Complex.normSq (X.1 1 1)) / 2 := by
+  rw [spinorMatrix_apply]
+  norm_num [pauliMatrices, Matrix.trace_fin_two, Matrix.mul_apply,
+    Matrix.conjTranspose_apply, Matrix.vecMul_eq_sum, Fin.sum_univ_two,
+    Complex.normSq_apply]
+  ring
+
+/-- The spinor action is time-orientation preserving: `L₀₀ > 0`, as in
+Wolf, Equation (2.42). -/
+theorem spinorMatrix_zero_zero_pos (X : SL(2, ℂ)) :
+    0 < spinorMatrix X 0 0 := by
+  rw [spinorMatrix_zero_zero]
+  have hentry : X.1 0 0 ≠ 0 ∨ X.1 0 1 ≠ 0 ∨ X.1 1 0 ≠ 0 ∨ X.1 1 1 ≠ 0 := by
+    by_contra h
+    push Not at h
+    rcases h with ⟨h₀₀, h₀₁, h₁₀, h₁₁⟩
+    have hdet := X.2
+    rw [Matrix.det_fin_two, h₀₀, h₀₁, h₁₀, h₁₁] at hdet
+    norm_num at hdet
+  rcases hentry with h | h | h | h
+  all_goals
+    nlinarith [Complex.normSq_pos.mpr h,
+      Complex.normSq_nonneg (X.1 0 0), Complex.normSq_nonneg (X.1 0 1),
+      Complex.normSq_nonneg (X.1 1 0), Complex.normSq_nonneg (X.1 1 1)]
+
 /-- The spinor action preserves the Minkowski determinant form. This is the
 linear-isometry assertion following Wolf, Equation (2.41). -/
 theorem spinorMatrix_preserves_minkowskiQuadratic
@@ -324,6 +441,44 @@ theorem spinorMatrix_preserves_minkowskiQuadratic
     pauliMatrixOfMinkowski_spinorMatrix_mulVec, Matrix.det_mul, Matrix.det_mul,
     Matrix.det_conjTranspose, Matrix.SpecialLinearGroup.det_coe]
   norm_num
+
+/-- The spinor action preserves the polarized Minkowski bilinear form. -/
+theorem spinorMatrix_preserves_minkowskiBilinear
+    (X : SL(2, ℂ)) (x y : MinkowskiSpace) :
+    minkowskiBilinear (spinorMatrix X *ᵥ x) (spinorMatrix X *ᵥ y) =
+      minkowskiBilinear x y := by
+  have hpolar := minkowskiBilinear_polarization
+    (spinorMatrix X *ᵥ x) (spinorMatrix X *ᵥ y)
+  rw [← Matrix.mulVec_add] at hpolar
+  rw [spinorMatrix_preserves_minkowskiQuadratic,
+    spinorMatrix_preserves_minkowskiQuadratic,
+    spinorMatrix_preserves_minkowskiQuadratic] at hpolar
+  nlinarith [minkowskiBilinear_polarization x y]
+
+/-- The column-action form of Lorentz metric preservation. -/
+theorem spinorMatrix_transpose_mul_metric_mul (X : SL(2, ℂ)) :
+    (spinorMatrix X)ᵀ * minkowskiMetric * spinorMatrix X = minkowskiMetric := by
+  ext i j
+  have h := spinorMatrix_preserves_minkowskiBilinear X
+    (Pi.single i 1) (Pi.single j 1)
+  fin_cases i <;> fin_cases j <;>
+    simp [minkowskiBilinear, minkowskiMetric, Matrix.mul_apply, Matrix.mulVec,
+      Matrix.diagonal_apply, Fin.sum_univ_four] at h ⊢ <;>
+    linarith
+
+/-- The spinor action preserves the closed future Lorentz cone. Equivalently,
+Hermitian positive semidefiniteness is preserved by `M ↦ X M X†`. -/
+theorem spinorMatrix_mem_futureCone_iff (X : SL(2, ℂ)) (x : MinkowskiSpace) :
+    InFutureCone (spinorMatrix X *ᵥ x) ↔ InFutureCone x := by
+  rw [← posSemidef_pauliMatrixOfMinkowski_iff,
+    pauliMatrixOfMinkowski_spinorMatrix_mulVec,
+    ← posSemidef_pauliMatrixOfMinkowski_iff]
+  have hX : IsUnit X.1 := by
+    rw [Matrix.isUnit_iff_isUnit_det, Matrix.SpecialLinearGroup.det_coe]
+    exact isUnit_one
+  simpa only [star_eq_conjTranspose] using
+    (hX.posSemidef_star_right_conjugate_iff
+      (x := pauliMatrixOfMinkowski x))
 
 /-- The coordinate action respects multiplication in `SL(2,ℂ)`. -/
 theorem spinorLinearEquiv_mul_apply (X Y : SL(2, ℂ)) (x : MinkowskiSpace) :
@@ -361,10 +516,104 @@ matrix. -/
     Matrix.one_apply]
   split <;> norm_num
 
+/-- The spinor action as a representation by real-linear equivalences. -/
+noncomputable def spinorLinearEquivMap :
+    SL(2, ℂ) →* (MinkowskiSpace ≃ₗ[ℝ] MinkowskiSpace) where
+  toFun := spinorLinearEquiv
+  map_one' := by
+    apply LinearEquiv.ext
+    intro x
+    have h := spinorMatrix_mulVec (1 : SL(2, ℂ)) x
+    rw [spinorMatrix_one, Matrix.one_mulVec] at h
+    exact h.symm
+  map_mul' X Y := by
+    apply LinearEquiv.ext
+    intro x
+    simpa using spinorLinearEquiv_mul_apply X Y x
+
+/-- The spinor matrix has determinant one, as required in Wolf,
+Equation (2.42).
+
+The determinant character has abelian codomain, whereas `SL(2,ℂ)` is
+perfect; hence this character is trivial. This algebraic argument proves the
+determinant condition only. It does not assert that the spinor map is
+surjective or a double cover. -/
+theorem spinorMatrix_det (X : SL(2, ℂ)) :
+    Matrix.det (spinorMatrix X) = 1 := by
+  let detCharacter : SL(2, ℂ) →* ℝˣ :=
+    LinearEquiv.det.comp spinorLinearEquivMap
+  have hperfect : commutator SL(2, ℂ) = ⊤ :=
+    Matrix.SL2.commutator_eq_top (a := (2 : ℂ)) (by norm_num) (by norm_num)
+  have hmem : X ∈ commutator SL(2, ℂ) := by
+    rw [hperfect]
+    exact Subgroup.mem_top X
+  have hdetCharacter : detCharacter X = 1 :=
+    MonoidHom.mem_ker.mp (Abelianization.commutator_subset_ker detCharacter hmem)
+  rw [spinorMatrix, LinearMap.det_toMatrix']
+  have hval := congrArg Units.val hdetCharacter
+  simpa [detCharacter, spinorLinearEquivMap] using hval
+
+/-- Metric preservation in the row-action convention printed in Wolf,
+Equation (2.42): `L η Lᵀ = η`. -/
+theorem spinorMatrix_mul_metric_mul_transpose (X : SL(2, ℂ)) :
+    spinorMatrix X * minkowskiMetric * (spinorMatrix X)ᵀ = minkowskiMetric := by
+  let A := spinorMatrix X
+  let B := spinorMatrix X⁻¹
+  have hAB : A * B = 1 := by
+    change spinorMatrix X * spinorMatrix X⁻¹ = 1
+    rw [← spinorMatrix_mul]
+    simp
+  have hmetric : Aᵀ * minkowskiMetric * A = minkowskiMetric :=
+    spinorMatrix_transpose_mul_metric_mul X
+  have htranspose_metric : Aᵀ * minkowskiMetric = minkowskiMetric * B := by
+    calc
+      Aᵀ * minkowskiMetric = (Aᵀ * minkowskiMetric) * 1 := by rw [Matrix.mul_one]
+      _ = (Aᵀ * minkowskiMetric) * (A * B) := by rw [hAB]
+      _ = (Aᵀ * minkowskiMetric * A) * B := by
+        simp only [Matrix.mul_assoc]
+      _ = minkowskiMetric * B := by rw [hmetric]
+  have htranspose : Aᵀ = minkowskiMetric * B * minkowskiMetric := by
+    calc
+      Aᵀ = Aᵀ * 1 := by rw [Matrix.mul_one]
+      _ = Aᵀ * (minkowskiMetric * minkowskiMetric) := by
+        rw [minkowskiMetric_mul_self]
+      _ = (Aᵀ * minkowskiMetric) * minkowskiMetric := by
+        simp only [Matrix.mul_assoc]
+      _ = minkowskiMetric * B * minkowskiMetric := by rw [htranspose_metric]
+  change A * minkowskiMetric * Aᵀ = minkowskiMetric
+  rw [htranspose]
+  calc
+    A * minkowskiMetric * (minkowskiMetric * B * minkowskiMetric) =
+        A * (minkowskiMetric * minkowskiMetric) * B * minkowskiMetric := by
+      simp only [Matrix.mul_assoc]
+    _ = A * B * minkowskiMetric := by rw [minkowskiMetric_mul_self, Matrix.mul_one]
+    _ = minkowskiMetric := by rw [hAB, Matrix.one_mul]
+
+/-- The three defining conditions of the special orthochronous Lorentz group
+printed in Wolf, Equation (2.42). -/
+def IsSpecialOrthochronousLorentz (L : Matrix (Fin 4) (Fin 4) ℝ) : Prop :=
+  Matrix.det L = 1 ∧
+    L * minkowskiMetric * Lᵀ = minkowskiMetric ∧
+    0 < L 0 0
+
+/-- Every matrix produced by Hermitian congruence with `X ∈ SL(2,ℂ)` lies in
+the special orthochronous Lorentz group of Wolf, Equation (2.42). -/
+theorem spinorMatrix_isSpecialOrthochronousLorentz (X : SL(2, ℂ)) :
+    IsSpecialOrthochronousLorentz (spinorMatrix X) :=
+  ⟨spinorMatrix_det X, spinorMatrix_mul_metric_mul_transpose X,
+    spinorMatrix_zero_zero_pos X⟩
+
 /-- The spinor matrices form a monoid homomorphism. -/
 noncomputable def spinorMap : SL(2, ℂ) →* Matrix (Fin 4) (Fin 4) ℝ where
   toFun := spinorMatrix
   map_one' := spinorMatrix_one
   map_mul' := spinorMatrix_mul
+
+/-!
+The inclusion of the spinor image in `SO⁺(1,3)` is now formalized. Wolf's
+stronger assertion that this map is a surjective double cover, and the explicit
+rotation/boost exponential formulas in Equation (2.44), are not inferred from
+the three-dimensional `SU(2)` result and are not asserted in this module.
+-/
 
 end Wolf
