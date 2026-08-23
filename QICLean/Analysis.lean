@@ -32,6 +32,7 @@ import QICLean.Analysis.HayashiMarkovStructure
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.IsometricCompression
+import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KleinInequality

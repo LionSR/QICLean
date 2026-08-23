@@ -53,6 +53,45 @@
 % argument; the full Jordan-scaling theorem is therefore not marked \leanok.
 \end{proof}
 
+\begin{theorem}[Single-block polynomial scaling prerequisite]
+    \label{thm:wolf_single_jordan_block_polynomial_scaling}
+    \lean{Matrix.l2_opNorm_jordanBlock_pow_polynomial_bounds,
+      Matrix.le_l2_opNorm_jordanBlock_pow_polynomial,
+      Matrix.l2_opNorm_jordanBlock_pow_le_polynomial}
+    \leanok
+    Let $D\ge 1$, let $J_D(\lambda)$ be a Jordan block, and suppose that
+    $0<|\lambda|\le1$ and $D-1\le n$.  Then
+    \begin{align}
+      \bigl(|\lambda|(D-1)\bigr)^{-(D-1)}
+        |\lambda|^n n^{D-1}
+      &\le \lVert J_D(\lambda)^n\rVert_\infty,\\
+      \lVert J_D(\lambda)^n\rVert_\infty
+      &\le D|\lambda|^{-(D-1)}
+        |\lambda|^n n^{D-1}.
+    \end{align}
+    At $D=1$ the inverse-power factor in the first line is interpreted as
+    the zeroth power and hence equals one.  This is the fixed-block estimate
+    used in the proof of Wolf's Equations~(8.106)--(8.107), before selecting
+    the largest subperipheral block and comparing the full direct sum.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:jordan_block_power_norm}
+    In the lower half of Equation~(8.104), take $k_0=D-1$ and use
+    $\binom{n}{k_0}\ge(n/k_0)^{k_0}$.  For the upper half, each of the $D$
+    summands is at most
+    $|\lambda|^{n-D+1}n^{D-1}$: monotonicity in the exponent uses
+    $|\lambda|\le1$, and $\binom nk\le n^k\le n^{D-1}$.  Finally factor
+    $|\lambda|^{n-D+1}=|\lambda|^{-(D-1)}|\lambda|^n$.
+
+% This theorem is only the single-block prerequisite.  A formalization of
+% the channel statement with \widehat T^n-\widehat T_\varphi^n still needs a
+% Jordan-form existence theorem, the direct-sum eventual-maximum argument,
+% and a justified passage from a chosen similarity to Wolf's infimum
+% \kappa_T; see the associated paper-gap note.
+\end{proof}
+
 \begin{theorem}[Noncommutative upper-triangular word bound]
     \label{thm:wolf_upper_triangular_word_bound}
     \lean{Matrix.wolf_eq_105_seminorm}
