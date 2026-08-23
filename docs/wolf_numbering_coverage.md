@@ -510,18 +510,34 @@ Perron–Frobenius theorem — are indexed in
 
 ### Section 6.1 Spectral radius and determinant
 
-#### Wolf Proposition 6.1 (Spectral radius of positive maps) — TRACE-PRESERVING CASE FORMALIZED
+#### Wolf Proposition 6.1 (Spectral radius of positive maps) — FORMALIZED
 
+* `IsPositiveMap.norm_apply_le_norm_map_one_mul_norm` — the sharp
+  Russo--Dye estimate `‖T(X)‖∞ ≤ ‖T(1)‖∞ ‖X‖∞` for every positive
+  matrix map, using the matrix C*-operator norm.
+* `IsPositiveMap.eigenvalue_norm_le_norm_map_one` — Wolf Equation (6.3),
+  `|μ| ≤ ‖T(1)‖∞` for every eigenvalue.
+* `IsPositiveMap.spectralRadius_le_nnnorm_map_one` — Wolf Equation (6.2),
+  `ρ(T) ≤ ‖T(1)‖∞` for every positive map on a nonzero matrix algebra.
+* `eigenvalue_one_of_map_one_eq_one`,
+  `IsPositiveMap.eigenvalue_norm_le_one_of_map_one_eq_one`, and
+  `IsPositiveMap.spectralRadius_eq_one_of_map_one_eq_one` — for a positive
+  unital map, eigenvalue $1$, the closed-unit-disk bound, and spectral radius
+  exactly $1$, without complete positivity.
 * `IsPositiveMap.eigenvalue_norm_le_one_of_tracePreserving` — every eigenvalue of a
   positive trace-preserving map lies in the closed unit disk, in
   `QICLean.Channel.Determinant.Bound`.
 * `IsPositiveMap.eigenvalue_one_exists_of_tracePreserving` — eigenvalue $1$ exists
   (nonzero PSD fixed point), in `QICLean.Channel.Peripheral.SpectralRadius`.
+* `IsPositiveMap.spectralRadius_eq_one_of_tracePreserving` — a positive
+  trace-preserving map has spectral radius exactly $1$, by combining the two
+  preceding results.
 
-The general bound `ρ(T) ≤ ‖T(1)‖∞` for arbitrary positive maps relies on the
-Russo--Dye theorem, which yields factor $1$; this general bound is not yet
-formalized.  A factor-$4$ route via the PSD decomposition is a possible
-elimination plan.  Documented in
+The pinned Mathlib has no standalone Russo--Dye theorem. The formal proof
+derives its sharp matrix norm estimate from Wolf Theorem 5.6, using the
+identity as a commuting dominant operator after normalizing by `‖T(1)‖∞`.
+Thus no four-positive-parts estimate and no factor $4$ occur. The resolved
+proof-route note is
 `docs/paper-gaps/wolf_prop61_russo_dye_factor.tex`.
 
 

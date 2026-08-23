@@ -47,6 +47,121 @@
     below use the unit-circle set of Definition~\ref{def:peripheral_eigenvalues}.
 \end{remark}
 
+\begin{theorem}[Russo--Dye estimate for positive matrix maps]
+    \label{thm:positive_map_russo_dye_estimate}
+    \lean{IsPositiveMap.norm_apply_le_norm_map_one_mul_norm}
+    \leanok
+    \uses{def:positive_map, thm:schwarz_commuting_dominant}
+    Let $D\geq1$, and let $T:\MN{D}\to\MN{D}$ be positive. Then, for every
+    $X\in\MN{D}$,
+    \begin{align}
+        \|T(X)\|_\infty
+        &\leq \|T(\Id)\|_\infty\,\|X\|_\infty.
+        \label{eq:positive_map_russo_dye_estimate}
+    \end{align}
+    This is the Russo--Dye estimate invoked in the proof of
+    \cite[Proposition~6.1]{Wolf2012Quantum}, at local source line~84. Here
+    $\|\cdot\|_\infty$ is the C$^*$-operator norm, rather than the Frobenius
+    norm or a row-sum norm.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:schwarz_commuting_dominant}
+    Put $c=\|T(\Id)\|_\infty$. If $c>0$, normalize the map by
+    $S=c^{-1}T$. Positivity gives $T(\Id)\geq0$, and the operator-norm order
+    bound gives $T(\Id)\leq c\Id$; hence $S(\Id)\leq\Id$.
+    For a contraction $A$, one has $A^\dagger A\leq\Id$. Apply
+    Theorem~\ref{thm:schwarz_commuting_dominant} to $S$, with dominant
+    operator $\Id$, to obtain
+    \begin{align}
+        S(A)^\dagger S(A)
+        &\leq S(\Id)\leq\Id.
+        \notag
+    \end{align}
+    The C$^*$-identity therefore gives $\|S(A)\|_\infty\leq1$.
+    If $c=0$, the same argument applied directly to $T$ gives
+    $T(A)^\dagger T(A)\leq T(\Id)=0$, and thus $T(A)=0$. Finally, rescale
+    an arbitrary nonzero $X$ to the contraction
+    $A=\|X\|_\infty^{-1}X$. This proves
+    (\ref{eq:positive_map_russo_dye_estimate}) with coefficient one.
+\end{proof}
+
+\begin{theorem}[Spectral-radius bound for positive matrix maps]
+    \label{thm:positive_map_spectral_radius_bound}
+    \lean{IsPositiveMap.eigenvalue_norm_le_norm_map_one,
+        IsPositiveMap.spectralRadius_le_nnnorm_map_one}
+    \leanok
+    \uses{def:positive_map}
+    Let $D\geq1$, and let $T:\MN{D}\to\MN{D}$ be positive. Every eigenvalue
+    $\mu$ of $T$ satisfies
+    \begin{align}
+        |\mu|&\leq\|T(\Id)\|_\infty,
+        \tag{6.3}
+    \end{align}
+    and consequently
+    \begin{align}
+        \varrho(T)&\leq\|T(\Id)\|_\infty.
+        \tag{6.2}
+    \end{align}
+    This is \cite[Proposition~6.1]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:positive_map_russo_dye_estimate}
+    If $T(X)=\mu X$ for a nonzero $X$, then
+    Theorem~\ref{thm:positive_map_russo_dye_estimate} gives
+    \begin{align}
+        |\mu|\,\|X\|_\infty
+        &=\|T(X)\|_\infty
+        \leq\|T(\Id)\|_\infty\,\|X\|_\infty.
+        \notag
+    \end{align}
+    Division by $\|X\|_\infty>0$ proves (6.3). In finite dimension the
+    spectral values are precisely the eigenvalues, so taking the supremum of
+    their moduli proves (6.2).
+\end{proof}
+
+\begin{theorem}[Positive unital maps have unit spectral radius]
+    \label{thm:positive_unital_spectral_radius}
+    \lean{eigenvalue_one_of_map_one_eq_one,
+        IsPositiveMap.eigenvalue_norm_le_one_of_map_one_eq_one,
+        IsPositiveMap.spectralRadius_eq_one_of_map_one_eq_one}
+    \leanok
+    \uses{def:positive_map, def:unital_linear_map}
+    Let $D\geq1$, and let $T:\MN{D}\to\MN{D}$ be positive and unital. Then
+    $1$ is an eigenvalue of $T$, every eigenvalue belongs to the closed unit
+    disk, and $\varrho(T)=1$. No complete-positivity assumption is made.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:positive_map_spectral_radius_bound}
+    Unitality gives $T(\Id)=\Id$, so the nonzero identity matrix is an
+    eigenvector with eigenvalue $1$. Theorem~\ref{thm:positive_map_spectral_radius_bound}
+    gives $|\mu|\leq\|\Id\|_\infty=1$ for every eigenvalue $\mu$ and
+    $\varrho(T)\leq1$. The eigenvalue $1$ gives the reverse inequality.
+\end{proof}
+
+\begin{theorem}[Positive trace-preserving maps have unit spectral radius]
+    \label{thm:positive_tp_spectral_radius}
+    \lean{IsPositiveMap.eigenvalue_norm_le_one_of_tracePreserving,
+        IsPositiveMap.eigenvalue_one_exists_of_tracePreserving,
+        IsPositiveMap.spectralRadius_eq_one_of_tracePreserving}
+    \leanok
+    \uses{def:positive_map, def:trace_preserving}
+    Let $D\geq1$, and let $T:\MN{D}\to\MN{D}$ be positive and
+    trace-preserving. Then $1$ is an eigenvalue with a nonzero positive
+    semidefinite eigenvector, every eigenvalue belongs to the closed unit
+    disk, and $\varrho(T)=1$. No complete-positivity assumption is made.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:positive_tp_eigenvalue_disk, thm:eigenvalue_one_tp}
+    Theorem~\ref{thm:positive_tp_eigenvalue_disk} places every eigenvalue in
+    the closed unit disk. Theorem~\ref{thm:eigenvalue_one_tp} supplies a
+    nonzero positive semidefinite fixed point, so $1$ is an eigenvalue.
+    Hence $\varrho(T)\leq1$ and $\varrho(T)\geq1$, respectively.
+\end{proof}
+
 \begin{definition}[Primitive map]\label{def:primitive_channel}
     \lean{IsPrimitive}
     \leanok
