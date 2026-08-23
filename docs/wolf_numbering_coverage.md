@@ -973,29 +973,27 @@ In `QICLean.Channel.FixedPoint.StationarySpan`:
   Wolf Corollary 6.5: when the fixed-point subspace has dimension `r`, there
   exist `r` linearly independent stationary density matrices spanning it.
 
-#### Wolf Corollary 6.6 (projected support corner) — FORMALIZED (Kraus case)
+#### Wolf Corollary 6.6 (projected support corner) — FORMALIZED
 
-Wolf states the corollary for a positive trace-preserving map whose trace
-adjoint is unital and satisfies the Schwarz inequality; complete positivity is
-an example there, not a hypothesis. The declarations below assume a
-trace-preserving Kraus family, so they establish the completely positive case
-only.
+In `QICLean.Channel.FixedPoint.AbstractCornerFixedPoints`:
 
-In `QICLean.Channel.FixedPoint.CornerFixedPoints`:
-
-* `Kraus.cornerFixedPointsStarSubalgebra` — for a trace-preserving Schwarz map
-  `T* = adjointMap K` (unitality of `T*` is `IsTP K`) and a PSD fixed point `ρ`
-  of `T = map K` with support projection `Q := stationaryProj`, the
+* `IsPositiveMap.stationaryCornerAdjointFixedPointsStarSubalgebra` — for a
+  positive trace-preserving map `T` whose trace adjoint is Schwarz, and a PSD
+  fixed point `ρ` with support projection `Q := stationaryProj`, the
   corner-restricted fixed-point set `{Y ∈ Q M_D(ℂ) Q | Q T*(Y) Q = Y}` is a
   `StarSubalgebra` of the corner algebra `Q M_D(ℂ) Q`.
-* `Kraus.mem_cornerFixedPointsStarSubalgebra` — membership is exactly the
-  corner fixed-point condition `Q (adjointMap K Y) Q = Y`.
+* `IsPositiveMap.mem_stationaryCornerAdjointFixedPointsStarSubalgebra` —
+  membership is exactly the displayed corner fixed-point condition of Wolf
+  Equation (6.61).
 
-The proof compresses the supported family `Q Kᵢ Q` to the support sector via
-`exists_compressedTensor_of_supported_projection_with_letter_and_isometry`,
-where the compressed map is unital with a positive-definite fixed point, applies
-Wolf Theorem 6.12 there (`Kraus.adjointFixedPointsStarSubalgebra`), and transports
-the `*`-algebra structure back along the compression isomorphism.
+These are the source hypotheses: positivity and trace preservation of `T`,
+and the Schwarz inequality for `T*`; no Kraus representation or complete
+positivity is assumed. Wolf chooses a maximum-rank fixed point, while the Lean
+theorem proves the same conclusion for every PSD fixed point. The proof uses
+the source support-compression route and the abstract Wolf Theorem 6.12 fixed
+point algebra. The earlier declarations in
+`QICLean.Channel.FixedPoint.CornerFixedPoints` remain available as finite-Kraus
+specializations.
 
 #### Wolf Theorem 6.14 (density-block form of fixed points) — FORMALIZED
 

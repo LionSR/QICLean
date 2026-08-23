@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Channel.FixedPoint
 
 import QICLean.Channel.FixedPoint.AbstractAlgebra
+import QICLean.Channel.FixedPoint.AbstractCornerFixedPoints
 import QICLean.Channel.FixedPoint.Algebra
 import QICLean.Channel.FixedPoint.BlockForm
 import QICLean.Channel.FixedPoint.BrouwerDensityMatrices
