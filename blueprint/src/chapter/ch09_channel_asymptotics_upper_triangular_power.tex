@@ -195,3 +195,48 @@
 % \widehat T-\widehat T_\varphi or prove that its diagonal part has norm \mu.
 % Those remain channel-level obligations in Wolf Equation (8.111).
 \end{proof}
+
+\begin{lemma}[Positive-power nonperipheral identity]
+    \label{lem:wolf_positive_power_nonperipheral_identity}
+    \lean{Module.End.pow_sub_peripheralWeightedProjection_pow,
+      transferMatrix_pow_sub_peripheralWeightedProjection_pow}
+    \leanok
+    \uses{def:peripheral_spectral_projections,
+      def:mpu_transfer_matrix}
+    Let $T$ be a complex finite-dimensional endomorphism, let $T_\phi$ be
+    its peripheral spectral projection, and let
+    $T_\varphi=T T_\phi$ be the phase-weighted peripheral map of
+    Equation~(6.13).  For every positive integer $n$,
+    \begin{align}
+      T^n-T_\varphi^n&=(T-T_\varphi)^n,\\
+      \widehat T^{\,n}-\widehat T_\varphi^{\,n}
+        &=(\widehat T-\widehat T_\varphi)^n.
+    \end{align}
+    The restriction $n>0$ is essential: at $n=0$ the first left-hand side
+    is zero, whereas the right-hand side is the identity.  In particular,
+    the later condition $d^2-1\leq n$ does not exclude this failure when
+    $d=1$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{def:mpu_transfer_matrix,
+      thm:peripheral_spectral_projection_properties}
+    Put $P=T_\phi$.  Since $P^2=P$, $TP=PT$, and
+    $T_\varphi=TP$, positivity of $n$ gives
+    \begin{align}
+      T_\varphi^n=T^nP,
+      \qquad
+      (T-T_\varphi)^n
+        =\bigl(T(I-P)\bigr)^n=T^n(I-P).
+    \end{align}
+    Subtracting the first identity from $T^n$ proves the endomorphism
+    statement.  Linearity of the transfer-matrix representation and its
+    compatibility with products and powers give the second statement.
+\end{proof}
+
+% This lemma is only the algebraic first step in Wolf's proof of
+% Equation (8.111).  The channel-level estimate tracked in QICLean issue #300
+% remains pending on the unitary Schur triangularization tracked in issue
+% #383, as well as the source's bound on the strictly upper-triangular part.
+% There is deliberately no \leanok claim for the full asymptotic theorem here.
