@@ -477,6 +477,60 @@ This section states the existence theorems from
     carries the inequality to an arbitrary finite index set of $D$ elements.
 \end{proof}
 
+% Lean: Wolf.exists_normal_form_generic_tau
+\begin{theorem}[Normal form for generic $\tau$]
+    \label{thm:exists_normal_form_generic_tau}
+    \lean{Wolf.exists_normal_form_generic_tau}
+    \leanok
+    \uses{lem:infimum_is_attained, lem:trace_det_amgm}
+    Let $\tau\in\mathcal{B}(\C^{d_2}\otimes\C^{d_1})$ be positive-definite. Then
+    there exist $S_i\in\mathrm{SL}(d_i,\C)$ which attain the infimum
+    \begin{align}
+        p
+        &:={\inf}_{X_i\in\mathrm{SL}(d_i,\C)}
+          \tr\!\left[(X_2\otimes X_1)\tau
+          (X_2\otimes X_1)^\dagger\right].
+        \label{eq:representations_generic_tau_infimum}
+    \end{align}
+    In particular, for
+    \begin{align}
+        \tau'
+        &:=(S_2\otimes S_1)\tau(S_2\otimes S_1)^\dagger,
+        \notag
+    \end{align}
+    both partial traces are proportional to the respective identity matrices:
+    \begin{align}
+        \tr_{2}[\tau']&=\kappa_1\Id_{d_1},
+        &\tr_{1}[\tau']&=\kappa_2\Id_{d_2}
+        \label{eq:representations_generic_tau_marginals}
+    \end{align}
+    for some $\kappa_1,\kappa_2\in\C$. This is
+    \cite[Proposition~2.8, lines 894--919]{Wolf2012Quantum}, with the two
+    dimensions kept independent.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:infimum_is_attained, lem:trace_det_amgm}
+    Choose a minimizing pair $(S_1,S_2)$ by
+    Lemma~\ref{lem:infimum_is_attained}. Hold $S_2$ fixed and set
+    \begin{align}
+        \rho_2
+        &:=(S_2\otimes\Id_{d_1})\tau
+          (S_2\otimes\Id_{d_1})^\dagger,
+        &M_1&:=\tr_2[\rho_2].
+        \notag
+    \end{align}
+    Positive-definiteness of $\tau$ and invertibility of $S_2$ imply that
+    $M_1$ is positive-definite. The defining minimality of $(S_1,S_2)$ says
+    that $S_1$ minimizes $\tr(XM_1X^\dagger)$ over
+    $X\in\mathrm{SL}(d_1,\C)$. A determinant-one whitening of $M_1$ attains
+    the trace--determinant arithmetic--geometric-mean bound, while its equality
+    case in Lemma~\ref{lem:trace_det_amgm} forces
+    $S_1M_1S_1^\dagger$ to be a scalar matrix. This matrix is
+    $\tr_2[\tau']$. Holding $S_1$ fixed and interchanging the two tensor
+    factors gives $\tr_1[\tau']\propto\Id_{d_2}$ in the same way.
+\end{proof}
+
 % Lean: Wolf.exists_normal_form_generic
 \begin{theorem}[Generic normal form for CP maps]\label{thm:exists_normal_form_generic}
     \lean{Wolf.exists_normal_form_generic}
@@ -536,8 +590,7 @@ This section states the existence theorems from
     \lean{Wolf.exists_normal_form_generic_rect}
     \leanok
     \uses{def:sl_filtering, def:doubly_stochastic_rect,
-    lem:infimum_is_attained, lem:trace_det_amgm, def:choi_matrix_rect,
-    def:is_kraus_cp}
+    thm:exists_normal_form_generic_tau, def:choi_matrix_rect, def:is_kraus_cp}
     Let $T : \MN{d_1} \to \MN{d_2}$ be a completely positive map whose
     Choi matrix is positive-definite (equivalently, $T$ has full Kraus
     rank). Then there exist SL-filterings $\Phi_{1}$ on $\MN{d_1}$ and
@@ -547,18 +600,16 @@ This section states the existence theorems from
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{lem:infimum_is_attained, lem:trace_det_amgm}
-    The argument is the one of Theorem~\ref{thm:exists_normal_form_generic}
-    with the two dimensions tracked separately: take the minimiser
-    $(S_{1},S_{2})\in\mathrm{SL}(d_1,\C)\times\mathrm{SL}(d_2,\C)$ of
-    $\tr[(S_{2}\otimes_{k}S_{1})\tau(S_{2}\otimes_{k}S_{1})^{\dagger}]$
-    from Lemma~\ref{lem:infimum_is_attained} and set $\Phi_{1},\Phi_{2}$ to
-    be the filterings with matrices $S_{1}^{\mathsf T}$ and $S_{2}$.  Each
-    partial trace of the filtered Choi matrix minimises a functional
-    $\tr(SMS^{\dagger})$ over $\det S=1$, which saturates the
-    trace--determinant AM--GM bound of Lemma~\ref{lem:trace_det_amgm}; the
-    equality case forces both partial traces to be proportional to the
-    identity, and the partial-trace identities
+    \uses{thm:exists_normal_form_generic_tau}
+    Apply Theorem~\ref{thm:exists_normal_form_generic_tau} to the rectangular
+    Choi matrix $\tau$ of $T$, and let $S_1,S_2$ be the resulting
+    determinant-one matrices. Define $\Phi_1,\Phi_2$ to be the filterings with
+    matrices $S_1^{\mathsf T}$ and $S_2$, respectively. The Choi matrix of
+    $\Phi_2\circ T\circ\Phi_1$ is then the minimizing representative
+    $(S_2\otimes S_1)\tau(S_2\otimes S_1)^\dagger$. Its two partial
+    traces are scalar by
+    Equation~\eqref{eq:representations_generic_tau_marginals}, and the
+    rectangular Choi identities
     $\tr_B(\tau)=T(\Id)/d_1$ and $\tr_A(\tau)=(T^{*}(\Id))^{\mathsf T}/d_1$
     give the doubly-stochastic condition.
 \end{proof}
