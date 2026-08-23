@@ -27,6 +27,10 @@ to matrix superoperators without introducing a second norm on matrices.
   between matrix spaces.
 * `Matrix.frobeniusEuclideanMap_comp`: Frobenius transport preserves
   composition.
+* `Matrix.hilbertSchmidtOperatorNorm`: the induced Hilbert--Schmidt operator
+  norm of a matrix superoperator.
+* `Matrix.frobenius_norm_apply_le_hilbertSchmidtOperatorNorm`: its defining
+  application bound.
 -/
 
 open scoped Matrix Matrix.Norms.Frobenius
@@ -125,6 +129,26 @@ theorem frobeniusEuclideanMap_apply
         (frobeniusEquivEuclidean α α X))) =
     frobeniusEquivEuclidean β β (E X)
   rw [(frobeniusEquivEuclidean α α).symm_apply_apply]
+
+/-! ### Hilbert--Schmidt operator norm -/
+
+/-- The Hilbert--Schmidt `2 → 2` operator norm of a matrix superoperator,
+transported through column vectorization. -/
+noncomputable def hilbertSchmidtOperatorNorm
+    {α β : Type*} [Fintype α] [Fintype β]
+    (S : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ) : ℝ :=
+  ‖LinearMap.toContinuousLinearMap (frobeniusEuclideanMap S)‖
+
+/-- The defining application bound for the Hilbert--Schmidt `2 → 2`
+operator norm. -/
+theorem frobenius_norm_apply_le_hilbertSchmidtOperatorNorm
+    {α β : Type*} [Fintype α] [Fintype β]
+    (S : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ) (X : Matrix α α ℂ) :
+    ‖S X‖ ≤ hilbertSchmidtOperatorNorm S * ‖X‖ := by
+  have h := (LinearMap.toContinuousLinearMap (frobeniusEuclideanMap S)).le_opNorm
+    (frobeniusEquivEuclidean α α X)
+  simpa only [hilbertSchmidtOperatorNorm, frobeniusEuclideanMap_apply,
+    LinearMap.coe_toContinuousLinearMap', LinearIsometryEquiv.norm_map] using h
 
 /-- Transport a linear equivalence between finite matrix spaces through
 Frobenius vectorization. -/

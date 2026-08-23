@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Basic
+import QICLean.Algebra.FrobeniusHilbert
 import QICLean.Algebra.MatrixTracePairing
+import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.Vec
 import Mathlib.LinearAlgebra.Matrix.Trace
@@ -34,6 +36,11 @@ with composition. We also relate it to the Kraus representation.
 ## Main results
 
 * `transferMatrix_mulVec_eq`: `T̂ *ᵥ vec(ρ) = vec(T(ρ))`
+* `toEuclideanLin_transferMatrix`: the transfer matrix acts as the
+  Frobenius-vectorized superoperator.
+* `l2_opNorm_transferMatrix_eq_hilbertSchmidtOperatorNorm`: Wolf's
+  largest-singular-value transfer-matrix norm is the Hilbert--Schmidt
+  `2 → 2` operator norm.
 * `transferMatrix_comp`: `(S ∘ T)^ = Ŝ * T̂`
 * `transferMatrix_id`: the transfer matrix of the identity is the identity
 * `transferMatrix_pow`: transfer matrices preserve powers
@@ -185,6 +192,41 @@ theorem transferMatrix_mulVec_eq
   simp only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]
   rw [Finset.sum_comm]
   congr 1; ext k; congr 1; ext l; ring
+
+section FrobeniusBridge
+
+open scoped Matrix.Norms.Frobenius
+
+/-- Under Euclidean column vectorization, `transferMatrix T` is exactly the
+linear map obtained by transporting `T` through the Frobenius isometry. -/
+theorem toEuclideanLin_transferMatrix
+    (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :
+    Matrix.toEuclideanLin (transferMatrix T) = frobeniusEuclideanMap T := by
+  apply LinearMap.ext
+  intro x
+  obtain ⟨X, rfl⟩ := (frobeniusEquivEuclidean (Fin D) (Fin D)).surjective x
+  rw [frobeniusEuclideanMap_apply]
+  change WithLp.toLp 2 (transferMatrix T *ᵥ X.vec) = WithLp.toLp 2 (T X).vec
+  rw [transferMatrix_mulVec_eq]
+
+end FrobeniusBridge
+
+section L2OperatorNorm
+
+open scoped Matrix.Norms.L2Operator
+
+/-- The L² operator norm of Wolf's transfer matrix `T̂` is the induced
+Hilbert--Schmidt `2 → 2` norm of the matrix superoperator `T`. -/
+theorem l2_opNorm_transferMatrix_eq_hilbertSchmidtOperatorNorm
+    (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :
+    ‖transferMatrix T‖ = hilbertSchmidtOperatorNorm T := by
+  rw [Matrix.l2_opNorm_def]
+  change ‖LinearMap.toContinuousLinearMap
+      (Matrix.toEuclideanLin (transferMatrix T))‖ = _
+  rw [toEuclideanLin_transferMatrix]
+  rfl
+
+end L2OperatorNorm
 
 /-! ### Compatibility with composition -/
 

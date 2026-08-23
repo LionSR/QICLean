@@ -539,7 +539,8 @@ Theorem~\ref{thm:trace_norm_abs}.
 
 \begin{lemma}[Trace-norm contraction coefficient]
     \label{lem:trace_norm_contraction_coefficient}
-    \lean{Matrix.traceNorm_contraction_coefficient_eq_half_sSup_orthogonal}
+    \lean{Matrix.traceNorm_contraction_coefficient_eq_half_sSup_orthogonal,
+        Matrix.orthogonalPureStateTraceNorms_nonempty_of_density}
     \leanok
     \uses{def:trace_norm, def:density_matrices}
     Let $T:\MN{D}\to\MN{D'}$ be a complex-linear map. Then
@@ -666,14 +667,12 @@ Theorem~\ref{thm:trace_norm_abs}.
 
 \begin{lemma}[Hilbert--Schmidt estimates for the asymptotic bound]
     \label{lem:asymptotic_hilbert_schmidt_estimates}
-    \lean{Matrix.sum_sq_singularValues_eq_frobenius_sq,
-        Matrix.traceNorm_le_sqrt_card_mul_frobenius,
-        Matrix.hilbertSchmidtOperatorNorm,
-        Matrix.frobenius_norm_apply_le_hilbertSchmidtOperatorNorm,
-        Matrix.frobenius_norm_pureStateProj_sub_eq_sqrt_two,
+    \lean{Matrix.frobenius_norm_pureStateProj_sub_eq_sqrt_two,
         Matrix.sSup_orthogonalPureStateTraceNorms_le_hilbertSchmidtOperatorNorm}
     \leanok
-    \uses{def:trace_norm}
+    \uses{def:trace_norm,
+        thm:trace_norm_frobenius_comparison,
+        thm:transfer_matrix_hilbert_schmidt_operator_norm}
     For $A\in\MN{D}$ and a complex-linear map $S:\MN{D}\to\MN{D}$,
     \begin{align}
         \lVert A\rVert_{\tr}&\leq\sqrt D\,\lVert A\rVert_2,\\
@@ -696,10 +695,12 @@ Theorem~\ref{thm:trace_norm_abs}.
 
 \begin{theorem}[Convergence towards asymptotic states: upper bound]
     \label{thm:trace_norm_asymptotic_distance_upper}
-    \lean{Matrix.traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm}
+    \lean{Matrix.traceNormAsymptoticDistance_pow_le_transferMatrix_l2_opNorm,
+        Matrix.traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm}
     \leanok
     \uses{def:trace_norm_asymptotic_distance,
-        def:peripheral_spectral_projections}
+        def:peripheral_spectral_projections,
+        thm:transfer_matrix_hilbert_schmidt_operator_norm}
     Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, let $\rho$ be
     a density operator, and let $n>0$. Then
     \begin{align}
@@ -722,7 +723,7 @@ Theorem~\ref{thm:trace_norm_abs}.
     \uses{lem:trace_norm_asymptotic_distance_numerator,
         lem:trace_norm_contraction_pointwise,
         lem:asymptotic_hilbert_schmidt_estimates,
-        thm:peripheral_spectral_projection_properties}
+        cor:peripheral_projection_channel}
     Apply the numerator identity to $S=T^n-T_\varphi^n$. The peripheral
     projection is again positive and trace preserving, so Lemma~8.3 applies to
     the distinct density matrices $\rho$ and $T_\phi(\rho)$. Then use

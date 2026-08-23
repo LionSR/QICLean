@@ -6,8 +6,9 @@ Authors: Sirui Lu
 import QICLean.Algebra.FrobeniusHilbert
 import QICLean.Analysis.TraceNormAbs
 import QICLean.Analysis.TraceNormContractionCoefficient
+import QICLean.Analysis.TraceNormFrobenius
 import QICLean.Channel.Peripheral.CesaroRecurrence
-import Mathlib.Analysis.InnerProductSpace.Trace
+import QICLean.Channel.Peripheral.SchurAsymptoticConvergence
 
 /-!
 # Trace-norm convergence towards asymptotic states
@@ -33,59 +34,6 @@ noncomputable section
 namespace Matrix
 
 variable {D : ℕ}
-
-/-- The sum of the squared singular values of a matrix is its squared
-Hilbert--Schmidt norm. -/
-lemma sum_sq_singularValues_eq_frobenius_sq
-    (A : Matrix (Fin D) (Fin D) ℂ) :
-    (∑ i : Fin D, (Matrix.toEuclideanLin A).singularValues i ^ 2) = ‖A‖ ^ 2 := by
-  rw [Finset.sum_congr rfl (fun i _ ↦
-    LinearMap.sq_singularValues_fin (Matrix.toEuclideanLin A)
-      finrank_euclideanSpace_fin i)]
-  rw [← (Matrix.toEuclideanLin A).isSymmetric_adjoint_comp_self.re_trace_eq_sum_eigenvalues
-    finrank_euclideanSpace_fin]
-  rw [Matrix.adjoint_toEuclideanLin_comp_self]
-  change ((LinearMap.trace ℂ _ (Matrix.toEuclideanLin (Aᴴ * A))).re) = _
-  rw [show LinearMap.trace ℂ _ (Matrix.toEuclideanLin (Aᴴ * A)) =
-      Matrix.trace (Aᴴ * A) by
-    exact Matrix.trace_toLin_eq (Aᴴ * A) (EuclideanSpace.basisFun (Fin D) ℂ).toBasis]
-  exact Matrix.trace_conjTranspose_mul_self_re_eq_frobenius_norm_sq A
-
-/-- Wolf's Schatten-norm comparison `‖A‖₁ ≤ √d ‖A‖₂` at the `p = 1`,
-`q = 2` instance of Equation (8.7). -/
-theorem traceNorm_le_sqrt_card_mul_frobenius
-    (A : Matrix (Fin D) (Fin D) ℂ) :
-    traceNorm A ≤ Real.sqrt D * ‖A‖ := by
-  rw [traceNorm_eq_sum_fin]
-  calc
-    (∑ i : Fin D, (Matrix.toEuclideanLin A).singularValues i) =
-        ∑ i : Fin D, (Matrix.toEuclideanLin A).singularValues i * 1 := by simp
-    _ ≤ Real.sqrt (∑ i : Fin D, (Matrix.toEuclideanLin A).singularValues i ^ 2) *
-        Real.sqrt (∑ _i : Fin D, (1 : ℝ) ^ 2) :=
-      Real.sum_mul_le_sqrt_mul_sqrt Finset.univ _ _
-    _ = Real.sqrt D * ‖A‖ := by
-      rw [sum_sq_singularValues_eq_frobenius_sq]
-      simp only [one_pow, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-        nsmul_eq_mul, mul_one]
-      rw [Real.sqrt_sq_eq_abs, abs_of_nonneg (norm_nonneg A), mul_comm]
-
-/-- Wolf's Hilbert--Schmidt `2 → 2` operator norm of a matrix
-superoperator, transported through column vectorization. This is the same
-operator norm as the largest-singular-value norm of its transfer matrix. -/
-def hilbertSchmidtOperatorNorm
-    (S : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)) : ℝ :=
-  ‖LinearMap.toContinuousLinearMap (frobeniusEuclideanMap S)‖
-
-/-- The defining application bound for the Hilbert--Schmidt `2 → 2`
-operator norm. -/
-lemma frobenius_norm_apply_le_hilbertSchmidtOperatorNorm
-    (S : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ))
-    (X : Matrix (Fin D) (Fin D) ℂ) :
-    ‖S X‖ ≤ hilbertSchmidtOperatorNorm S * ‖X‖ := by
-  have h := (LinearMap.toContinuousLinearMap (frobeniusEuclideanMap S)).le_opNorm
-    (frobeniusEquivEuclidean (Fin D) (Fin D) X)
-  simpa only [hilbertSchmidtOperatorNorm, frobeniusEuclideanMap_apply,
-    LinearMap.coe_toContinuousLinearMap', LinearIsometryEquiv.norm_map] using h
 
 /-- The Hilbert--Schmidt distance between orthogonal pure-state projectors is
 `√2`, the equality used in Wolf Equation (8.116). -/
@@ -146,7 +94,7 @@ lemma sSup_orthogonalPureStateTraceNorms_le_hilbertSchmidtOperatorNorm
     calc
       traceNorm (S (pureStateProj ψ - pureStateProj φ)) ≤
           Real.sqrt D * ‖S (pureStateProj ψ - pureStateProj φ)‖ :=
-        traceNorm_le_sqrt_card_mul_frobenius _
+        traceNorm_le_sqrt_dim_mul_frobenius_norm _
       _ ≤ Real.sqrt D *
           (hilbertSchmidtOperatorNorm S * ‖pureStateProj ψ - pureStateProj φ‖) :=
         mul_le_mul_of_nonneg_left
@@ -302,5 +250,40 @@ theorem traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm
     rw [traceNormAsymptoticDistance_pow_eq_sub_peripheralWeightedProjection_pow T ρ hn,
       traceNormAsymptoticDistance]
     simpa only [S] using hmul
+
+section TransferMatrixNorm
+
+open scoped Matrix.Norms.L2Operator
+
+/-- **Wolf Proposition, Equation (8.112), transfer-matrix form.** For a
+positive trace-preserving map and a density matrix `ρ`, the distance of the
+positive iterate `Tⁿρ` from the asymptotic subspace is bounded using the
+largest-singular-value norm of Wolf's transfer matrices, with the exact
+constant `√(d/2)`.
+
+The explicit hypothesis `0 < n` records Wolf's positive-natural convention:
+at Lean's `n = 0`, the transfer-matrix difference on the right is zero while
+the initial asymptotic distance need not vanish.
+
+Source: Wolf, Equations (8.112), (8.114)--(8.116); local source lines
+1323--1354. -/
+theorem traceNormAsymptoticDistance_pow_le_transferMatrix_l2_opNorm
+    (T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ))
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
+    {ρ : Matrix (Fin D) (Fin D) ℂ} (hρ : ρ ∈ densityMatrices D)
+    {n : ℕ} (hn : 0 < n) :
+    traceNormAsymptoticDistance T ((T ^ n) ρ) ≤
+      Real.sqrt ((D : ℝ) / 2) *
+        ‖transferMatrix T ^ n -
+          transferMatrix T.peripheralWeightedProjection ^ n‖ *
+        traceNormAsymptoticDistance T ρ := by
+  rw [transferMatrix_pow_sub_peripheralWeightedProjection_pow T hn,
+    ← transferMatrix_pow,
+    l2_opNorm_transferMatrix_eq_hilbertSchmidtOperatorNorm,
+    ← T.pow_sub_peripheralWeightedProjection_pow hn]
+  exact traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm
+    T hPos hTP hρ hn
+
+end TransferMatrixNorm
 
 end Matrix
