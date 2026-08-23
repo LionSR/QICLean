@@ -26,16 +26,16 @@ specializations.
 
 The proof is split across four supporting sub-modules for readability:
 
-* `TNLean.Channel.Irreducible.Growth.Preservation` — preservation lemmas for
+* `QICLean.Channel.Irreducible.Growth.Preservation` — preservation lemmas for
   `id + E` and `E^n` under positivity, plus the binomial expansion of
   `(id + E)^n`.
-* `TNLean.Channel.Irreducible.Growth.OneStep` — the structural
+* `QICLean.Channel.Irreducible.Growth.OneStep` — the structural
   `posDef_of_ker_subset_irreducible` lemma via the support projection.
-* `TNLean.Channel.Irreducible.Growth.KernelDescent` — kernel-dimension induction
+* `QICLean.Channel.Irreducible.Growth.KernelDescent` — kernel-dimension induction
   yielding `growth_posDef_of_irreducible`.
-* `TNLean.Channel.Irreducible.Growth.OrthogonalTrace` — binomial expansion of
+* `QICLean.Channel.Irreducible.Growth.OrthogonalTrace` — binomial expansion of
   the growth witness producing `orthogonal_trace_pos_of_irreducible_cp`.
-* `TNLean.Channel.Irreducible.Growth.Exponential` — normed-algebra setup and
+* `QICLean.Channel.Irreducible.Growth.Exponential` — normed-algebra setup and
   `exp_posDef_of_irreducible_cp`, `irreducible_iff_exp_posDef_forall`.
 
 ## Main statements

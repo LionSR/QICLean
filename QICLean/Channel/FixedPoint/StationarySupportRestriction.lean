@@ -49,7 +49,7 @@ positive scalar multiple of the matrix.
 This is the finite-dimensional order estimate used in Wolf, Proposition 6.10:
 after compression to the support, the matrix is positive definite, so its least
 eigenvalue gives the required scalar. -/
-theorem exists_stationaryProj_le_smul {ρ : Mat} (hρ : ρ.PosSemidef) :
+theorem exists_supportProj_le_smul {ρ : Mat} (hρ : ρ.PosSemidef) :
     ∃ c : ℂ, 0 ≤ c ∧ Kraus.stationaryProj hρ ≤ c • ρ := by
   classical
   let Q : Mat := Kraus.stationaryProj hρ
@@ -144,7 +144,7 @@ theorem map_posSemidef_supported_on_support_of_map
       let Q : Mat := Kraus.stationaryProj hρ
       have hQproj : IsOrthogonalProjection Q :=
         Kraus.isOrthogonalProjection_stationaryProj hρ
-      obtain ⟨c, hc, hQcρ⟩ := exists_stationaryProj_le_smul hρ
+      obtain ⟨c, hc, hQcρ⟩ := exists_supportProj_le_smul hρ
       have hcρ_sub_Q : (c • ρ - Q).PosSemidef := by
         have hQcρ' : Q ≤ c • ρ := by simpa [Q] using hQcρ
         exact (sub_nonneg.mpr hQcρ').posSemidef
