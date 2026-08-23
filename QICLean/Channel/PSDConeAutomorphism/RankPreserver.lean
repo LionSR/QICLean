@@ -56,7 +56,7 @@ theorem isUnit_iff_rank_eq_card (A : Matrix (Fin d) (Fin d) ℂ) :
     IsUnit A ↔ A.rank = d := by
   constructor
   · intro hA
-    simpa using Matrix.rank_of_isUnit A hA
+    simpa only [Fintype.card_fin] using Matrix.rank_of_isUnit A hA
   · intro hA
     apply Matrix.mulVec_surjective_iff_isUnit.mp
     change Function.Surjective A.mulVecLin
@@ -152,7 +152,7 @@ theorem IsPositiveMap.exists_isUnit_det_conj_or_transpose_of_preserves_hermitian
     exact hT 1 Matrix.PosSemidef.one
   have hArank : A.rank = d := by
     rw [hA, hRank 1 Matrix.isHermitian_one]
-    simp
+    simp only [Matrix.rank_one, Fintype.card_fin]
   have hAunit : IsUnit A := (Matrix.isUnit_iff_rank_eq_card A).2 hArank
   have hApd : A.PosDef := hApsd.posDef_iff_isUnit.2 hAunit
   set S : Matrix (Fin d) (Fin d) ℂ := CFC.sqrt A with hS
@@ -177,11 +177,11 @@ theorem IsPositiveMap.exists_isUnit_det_conj_or_transpose_of_preserves_hermitian
   let T₀ := (unitaryConjLM R).comp T
   have hT₀_apply (X : Matrix (Fin d) (Fin d) ℂ) :
       T₀ X = R * T X * R := by
-    simp [T₀, hRHerm]
+    simp only [T₀, LinearMap.comp_apply, unitaryConjLM_apply, hRHerm]
   have hT₀pos : IsPositiveMap T₀ := by
     intro X hX
     rw [hT₀_apply]
-    simpa [hRHerm] using
+    simpa only [unitaryConjLM_apply, hRHerm] using
       (unitaryConjLM_isPositiveMap R (T X) (hT X hX))
   have hT₀one : T₀ 1 = 1 := by
     rw [hT₀_apply, ← hA]
@@ -202,7 +202,7 @@ theorem IsPositiveMap.exists_isUnit_det_conj_or_transpose_of_preserves_hermitian
       hT₀one hT₀Rank
   have hrecover (X : Matrix (Fin d) (Fin d) ℂ) : T X = S * T₀ X * S := by
     calc
-      T X = 1 * T X * 1 := by simp
+      T X = 1 * T X * 1 := by simp only [one_mul, mul_one]
       _ = (S * R) * T X * (R * S) := by rw [hSR, hRS]
       _ = S * (R * T X * R) * S := by
         simp only [Matrix.mul_assoc]
