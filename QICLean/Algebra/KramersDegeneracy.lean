@@ -192,7 +192,7 @@ is exactly what Wolf's calculation needs and cannot be dropped (the eigenvalue `
 see the paper-gap note).
 
 **Local fix (Wolf ch03, lines 527–530):** the nonvanishing hypothesis
-`A *ᵥ star ψ ≠ 0` is added to the printed statement.  Counterexample and corrected
+`A *ᵥ star ψ ≠ 0` is added to the original statement.  Counterexample and corrected
 statement: `docs/paper-gaps/wolf_ch3_kramers_theorem_ii.tex`. -/
 theorem two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero {H A : Matrix n n ℂ}
     (hH : H.IsHermitian) (hHA : H * A = A * Hᵀ) (hAanti : Aᵀ = -A)
