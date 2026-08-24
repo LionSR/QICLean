@@ -9,7 +9,7 @@
 
 \title{Formalization-Derived Corrections to Wolf's \emph{Quantum Channels \& Operations}}
 \author{}
-\date{2026-08-23}
+\date{2026-08-24}
 
 \begin{document}
 \sloppy
@@ -456,6 +456,42 @@ These are two local false-source corrections exposed by the positive-map
 formalization. They do not alter the proof for a nonzero irreducible map once
 the second global extremum is read as an infimum.
 
+\section{The missing order hypothesis in the unitary comparison}
+\label{sec:unitary-comparison}
+
+\paragraph{Formalization trigger.}
+The correction and the exact source proof route are documented in
+\path{docs/paper-gaps/wolf_ch5_unitary_comparison_missing_order.tex}.  The
+corrected theorem is not yet formalized because the current dependency surface
+does not expose the required cross-matrix Weyl monotonicity theorem.
+
+\paragraph{Printed statement and correction.}
+Immediately after stating Weyl monotonicity for Hermitian matrices satisfying
+$A\le B$, Wolf's Proposition~5.3 drops that hypothesis and claims that for
+arbitrary Hermitian $A,B$ there is a unitary $U$ such that
+\begin{align}
+  f(A)\le U f(B)U^\dagger
+\end{align}
+for every non-decreasing scalar function $f$ on an interval containing the two
+spectra.  In dimension one, $A=[1]$, $B=[0]$, and $f(x)=x$ contradict the
+printed claim.  The corrected proposition inserts $A\le B$.
+
+\paragraph{Source proof route.}
+Under $A\le B$, Equation~(5.56) gives
+$\lambda_j^\downarrow(A)\le\lambda_j^\downarrow(B)$ for every $j$ because
+the smallest eigenvalue of $B-A$ is nonnegative.  Monotonicity of $f$ preserves
+these scalar inequalities.  Choosing decreasingly ordered eigenvector
+unitaries $V_A,V_B$ and setting $U=V_A V_B^\dagger$ then transports the
+entrywise diagonal inequality to
+$f(A)\le Uf(B)U^\dagger$.  This unitary depends only on the two ordered
+eigenbases, so it works simultaneously for every admissible $f$, as required
+by the quantifier order of the printed proposition.
+
+\paragraph{Classification.}
+This is a genuine source error: the printed theorem is false, while its
+intended corrected statement follows by exactly the preceding argument once
+$A\le B$ is retained.
+
 \section{Formalization gaps that are not source corrections}
 
 The following Wolf-specific paper-gap notes are intentionally \emph{not}
@@ -478,14 +514,16 @@ errata entries:
 
 \section{Conclusion}
 
-At present the formalization-derived record contains four false printed
+At present the formalization-derived record contains five false printed
 assertions (Sections~\ref{sec:lorentz},
 \ref{sec:pauli-block-truncation}, and the two corrections in
-Section~\ref{sec:theorem-6-3}), one normalization typo
+Section~\ref{sec:theorem-6-3}, together with
+Section~\ref{sec:unitary-comparison}), one normalization typo
 (Section~\ref{sec:ordered-cp-inverse}), one explicit boundary convention
 (Section~\ref{sec:radon-nikodym}), and one local correction to a spectrum
 shorthand (Section~\ref{sec:two-pure-state-spectrum}). These are the
-corrections asserted by the Lean documentation itself.
+corrections exposed by the Lean development and its source-faithfulness
+audits.
 
 \appendix
 \section{Corrected errors in the local LaTeX transcription}

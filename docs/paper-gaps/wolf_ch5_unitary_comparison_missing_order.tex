@@ -1,0 +1,130 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{The Missing Order Hypothesis in Wolf's Unitary Comparison}
+\author{}
+\date{2026-08-24}
+
+\begin{document}
+\maketitle
+\gapnote{false-source}{open}
+
+\section{The assertion}
+
+Wolf's Proposition~5.3 follows a display of Weyl's monotonicity theorem for
+Hermitian matrices.  The preceding paragraph assumes $A\le B$ and states
+\begin{align}
+  \lambda_j^\downarrow(B)
+  \ge \lambda_j^\downarrow(A)+\lambda_d^\downarrow(B-A)
+  \qquad (1\le j\le d),
+  \tag{Wolf (5.56)}
+\end{align}
+where the eigenvalues are ordered decreasingly.  Since $B-A\ge0$, its
+smallest eigenvalue is nonnegative, so the paragraph concludes that
+$\lambda_j^\downarrow(A)\le\lambda_j^\downarrow(B)$ for every $j$.
+
+The proposition printed immediately afterward drops the order hypothesis:
+for arbitrary Hermitian $A,B\in M_d(\C)$ it claims that there is a unitary
+$U$, independent of $f$, such that
+\begin{align}
+  f(A)\le U f(B)U^\dagger
+  \tag{Wolf (5.57)}
+\end{align}
+for every non-decreasing function $f:I\to\mathbb R$ on an interval containing
+both spectra.\footnote{\cite[Proposition~5.3 and Equations~(5.56)--(5.57)]
+{Wolf2012Quantum}; local source
+\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex},
+lines~1119--1135.  Tracked in \ghissue{27}.}
+
+\section{The point at issue}
+
+The printed proposition is false.  In dimension one take
+\begin{align}
+  A=[1],\qquad B=[0],\qquad I=[0,1],\qquad f(x)=x.
+\end{align}
+Every one-dimensional unitary is a scalar phase and therefore
+$Uf(B)U^\dagger=0$, whereas the claimed inequality becomes $1\le0$.
+
+The omission is also exposed by the source proof route itself: Equation~(5.56)
+is stated only for $A\le B$, and that condition is exactly what makes the
+ordered eigenvalues comparable.  Without it, the sentence ``one obtains
+immediately'' does not supply the hypothesis needed by the proposition.
+
+\section{The corrected statement and source proof}
+
+The source argument proves the following corrected proposition.
+
+Let $A,B\in M_d(\C)$ be Hermitian and assume $A\le B$.  Then there is a
+unitary $U\in M_d(\C)$ such that, for every non-decreasing
+$f:I\to\mathbb R$ on an interval $I$ containing the spectra of both $A$ and
+$B$,
+\begin{align}
+  f(A)\le U f(B)U^\dagger.
+  \tag{corrected Wolf (5.57)}
+\end{align}
+The quantifier order is unchanged: the same $U$ works for every such $f$.
+
+Indeed, choose eigenvector unitaries $V_A,V_B$ in decreasing eigenvalue order,
+so that
+\begin{align}
+  A&=V_A\operatorname{diag}
+      (\lambda_1^\downarrow(A),\ldots,\lambda_d^\downarrow(A))V_A^\dagger,\\
+  B&=V_B\operatorname{diag}
+      (\lambda_1^\downarrow(B),\ldots,\lambda_d^\downarrow(B))V_B^\dagger.
+\end{align}
+Equation~(5.56), positivity of $B-A$, and monotonicity of $f$ give
+\begin{align}
+  f(\lambda_j^\downarrow(A))
+  \le f(\lambda_j^\downarrow(B))
+  \qquad (1\le j\le d).
+\end{align}
+With $U=V_A V_B^\dagger$, functional calculus in these eigenbases yields
+\begin{align}
+  f(A)
+  &=V_A\operatorname{diag}
+      (f(\lambda_1^\downarrow(A)),\ldots,f(\lambda_d^\downarrow(A)))V_A^\dagger,\\
+  U f(B)U^\dagger
+  &=V_A\operatorname{diag}
+      (f(\lambda_1^\downarrow(B)),\ldots,f(\lambda_d^\downarrow(B)))V_A^\dagger.
+\end{align}
+The entrywise diagonal inequality, transported by the unitary congruence
+$X\mapsto V_A X V_A^\dagger$, is the corrected conclusion.
+
+\section{Formalization boundary}
+
+The current matrix API already provides decreasingly ordered Hermitian
+eigenvalues and unitary covariance of the continuous functional calculus.
+The latter is recorded as \leanid{Matrix.cfc_conj_unitary} in
+\doclink{QICLean/Analysis/CfcConjugation}.  What is not yet exposed by the
+current dependency surface is the cross-matrix Weyl step
+\begin{align}
+  A\le B
+  \Longrightarrow
+  \lambda_j^\downarrow(A)\le\lambda_j^\downarrow(B)
+  \quad\text{for every }j.
+\end{align}
+The available antitonicity theorem for the ordered list only compares indices
+within one fixed Hermitian matrix; it does not compare two matrices in the
+Loewner order.  Consequently no replacement proof of the corrected proposition
+is asserted here.  Formalizing Weyl monotonicity by its own finite-dimensional
+spectral route remains the exact open dependency.
+
+\section{Conclusion}
+
+Wolf's Proposition~5.3 is false as printed because it omits $A\le B$.  Adding
+that hypothesis makes the proposition an immediate consequence of the
+preceding Equation~(5.56), exactly as the source says: order the two spectra,
+apply the scalar monotonicity of $f$, and align the two eigenbases by one
+unitary.  The source correction is definitive; the formal Weyl-monotonicity
+dependency remains open.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

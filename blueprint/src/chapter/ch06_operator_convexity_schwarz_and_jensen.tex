@@ -618,3 +618,28 @@ matrix-order tools used independently of the Fundamental Theorem.
 \begin{proof}\leanok
     Direct application of Theorem~\ref{thm:posMap_log_concave_jensen}.
 \end{proof}
+
+\section{Source boundary for Wolf's unitary comparison}
+
+Wolf's Proposition~5.3 claims that, for arbitrary Hermitian $A,B$, there is
+one unitary $U$ such that
+\begin{align}
+    f(A)\le U f(B)U^\dagger
+    \tag{Wolf (5.57)}
+\end{align}
+for every scalar non-decreasing function $f$ on an interval containing both
+spectra.  The statement is false without the hypothesis $A\le B$: in
+dimension one, $A=[1]$, $B=[0]$, and $f(x)=x$ would give $1\le0$.
+
+The corrected proposition assumes $A\le B$.  This is precisely the hypothesis
+of Weyl monotonicity in the immediately preceding Equation~(5.56), which gives
+$\lambda_j^\downarrow(A)\le\lambda_j^\downarrow(B)$ for each decreasingly
+ordered eigenvalue.  Applying $f$ entrywise and aligning the two ordered
+eigenbases proves the unitary comparison, with the same unitary for every
+$f$.  The exact correction and source proof route are recorded in
+\cite{gap:wolf_ch5_unitary_comparison_missing_order}.
+
+This result is not yet marked as formalized.  The current development has
+unitary covariance of functional calculus, but not the required cross-matrix
+Weyl monotonicity theorem for the Loewner order.  That spectral theorem is the
+remaining dependency; no alternate proof route is asserted here.
