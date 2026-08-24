@@ -16,8 +16,8 @@ density matrix `X` when `T X - a X ≥ 0`.  The feasible pairs form, after a
 uniform trace bound on `a`, a compact set.  Hence the lower value has a
 maximizer.
 
-The upper Collatz--Wielandt quantity is not introduced at this stage.  Wolf's
-proof first turns the lower maximizer into a positive-definite eigenvector by
+Wolf's proof does not use the upper Collatz--Wielandt quantity at this stage.
+It first turns the lower maximizer into a positive-definite eigenvector by
 Equation (6.31) and irreducibility; only then are the two global variational
 quantities identified.
 
@@ -34,6 +34,163 @@ open Matrix
 variable {D : ℕ}
 
 local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
+
+/-- The real parameters in the set on the right-hand side of Wolf
+Equation (6.29), at local source lines 608--613. -/
+def lowerCollatzWielandtSet (T : Mat →ₗ[ℂ] Mat) (X : Mat) : Set ℝ :=
+  {a | (T X - (a : ℂ) • X).PosSemidef}
+
+/-- The real parameters in the set on the right-hand side of Wolf
+Equation (6.30), at local source lines 614--615. -/
+def upperCollatzWielandtSet (T : Mat →ₗ[ℂ] Mat) (X : Mat) : Set ℝ :=
+  {a | ((a : ℂ) • X - T X).PosSemidef}
+
+/-- Wolf's lower Collatz--Wielandt functional `r(X)` from Equation (6.29),
+valued in the extended reals.
+
+The extended value records the boundary at `X = 0` exactly: every real
+parameter is feasible there, so `r(0) = +∞`. -/
+noncomputable def lowerCollatzWielandtValue
+    (T : Mat →ₗ[ℂ] Mat) (X : Mat) : EReal :=
+  sSup ((fun a : ℝ => (a : EReal)) '' lowerCollatzWielandtSet T X)
+
+/-- Wolf's upper Collatz--Wielandt functional `tilde r(X)` from Equation
+(6.30), valued in the extended reals.
+
+If no real upper parameter exists, the infimum is `+∞`. At `X = 0`, every
+real parameter is feasible and the value is `-∞`. Thus neither boundary is
+represented by an arbitrary real. -/
+noncomputable def upperCollatzWielandtValue
+    (T : Mat →ₗ[ℂ] Mat) (X : Mat) : EReal :=
+  sInf ((fun a : ℝ => (a : EReal)) '' upperCollatzWielandtSet T X)
+
+/-- The corrected global lower Collatz--Wielandt quantity, after the
+trace-one normalization used by Wolf at local source lines 634--637. -/
+noncomputable def lowerCollatzWielandtGlobal
+    (T : Mat →ₗ[ℂ] Mat) : EReal :=
+  sSup (lowerCollatzWielandtValue T '' densityMatrices D)
+
+/-- The corrected global upper Collatz--Wielandt quantity, after the
+trace-one normalization used by Wolf at local source lines 634--637.
+
+This is an infimum, correcting the second supremum printed at source line
+618. -/
+noncomputable def upperCollatzWielandtGlobal
+    (T : Mat →ₗ[ℂ] Mat) : EReal :=
+  sInf (upperCollatzWielandtValue T '' densityMatrices D)
+
+/-- A lower parameter at a nonzero positive semidefinite matrix does not
+exceed an upper parameter at the same matrix. -/
+private theorem lowerCollatzWielandtSet_le_upperCollatzWielandtSet
+    (T : Mat →ₗ[ℂ] Mat) {X : Mat} {a b : ℝ}
+    (hX : X.PosSemidef) (hX_ne : X ≠ 0)
+    (ha : a ∈ lowerCollatzWielandtSet T X)
+    (hb : b ∈ upperCollatzWielandtSet T X) :
+    a ≤ b := by
+  have hsum := ha.add hb
+  have heq :
+      (T X - (a : ℂ) • X) + ((b : ℂ) • X - T X) =
+        (((b - a : ℝ) : ℂ) • X) := by
+    push_cast
+    module
+  rw [heq] at hsum
+  have htrace_nonneg := hsum.trace_nonneg
+  rw [Matrix.trace_smul, smul_eq_mul] at htrace_nonneg
+  have htrace_pos := hX.trace_pos_of_ne_zero hX_ne
+  have hprod_re_nonneg := (Complex.nonneg_iff.mp htrace_nonneg).1
+  have htrace_re_pos := (Complex.lt_def.mp htrace_pos).1
+  rw [Complex.mul_re] at hprod_re_nonneg
+  norm_num at hprod_re_nonneg
+  norm_num at htrace_re_pos
+  nlinarith
+
+/-- **Pointwise Collatz--Wielandt inequality.** For a nonzero positive
+semidefinite matrix, the functional in Wolf Equation (6.29) is at most the
+functional in Equation (6.30).
+
+This is the corrected pointwise order underlying Wolf Theorem 6.3. It does
+not assert pointwise equality for arbitrary positive semidefinite matrices. -/
+theorem lowerCollatzWielandtValue_le_upperCollatzWielandtValue
+    (T : Mat →ₗ[ℂ] Mat) {X : Mat}
+    (hX : X.PosSemidef) (hX_ne : X ≠ 0) :
+    lowerCollatzWielandtValue T X ≤ upperCollatzWielandtValue T X := by
+  rw [lowerCollatzWielandtValue, upperCollatzWielandtValue]
+  apply sSup_le
+  intro a ha
+  obtain ⟨a', ha', rfl⟩ := ha
+  apply le_sInf
+  intro b hb
+  obtain ⟨b', hb', rfl⟩ := hb
+  exact EReal.coe_le_coe_iff.mpr
+    (lowerCollatzWielandtSet_le_upperCollatzWielandtSet T hX hX_ne ha' hb')
+
+/-- **Equality at a positive eigenvector.** If `X ≥ 0` is nonzero and
+`T X = r X`, then both pointwise functionals in Wolf Equations (6.29)--(6.30)
+equal `r`.
+
+This is precisely the equality used at local source lines 649--651; no
+equality is claimed away from eigenvectors. -/
+theorem lower_and_upperCollatzWielandtValue_eq_of_eigenvector
+    (T : Mat →ₗ[ℂ] Mat) {X : Mat} {r : ℝ}
+    (hX : X.PosSemidef) (hX_ne : X ≠ 0)
+    (hEig : T X = (r : ℂ) • X) :
+    lowerCollatzWielandtValue T X = (r : EReal) ∧
+      upperCollatzWielandtValue T X = (r : EReal) := by
+  have hr_lower_set : r ∈ lowerCollatzWielandtSet T X := by
+    rw [lowerCollatzWielandtSet, Set.mem_ofPred_eq, hEig, sub_self]
+    exact Matrix.PosSemidef.zero
+  have hr_upper_set : r ∈ upperCollatzWielandtSet T X := by
+    rw [upperCollatzWielandtSet, Set.mem_ofPred_eq, hEig, sub_self]
+    exact Matrix.PosSemidef.zero
+  have hr_le_lower : (r : EReal) ≤ lowerCollatzWielandtValue T X := by
+    apply le_sSup
+    exact ⟨r, hr_lower_set, rfl⟩
+  have hupper_le_r : upperCollatzWielandtValue T X ≤ (r : EReal) := by
+    apply sInf_le
+    exact ⟨r, hr_upper_set, rfl⟩
+  have hlower_le_upper :=
+    lowerCollatzWielandtValue_le_upperCollatzWielandtValue T hX hX_ne
+  exact ⟨le_antisymm (hlower_le_upper.trans hupper_le_r) hr_le_lower,
+    le_antisymm hupper_le_r (hr_le_lower.trans hlower_le_upper)⟩
+
+/-- At the excluded point `X = 0`, Wolf's lower functional has the honest
+extended value `+∞`. -/
+theorem lowerCollatzWielandtValue_zero (T : Mat →ₗ[ℂ] Mat) :
+    lowerCollatzWielandtValue T 0 = ⊤ := by
+  have hset : lowerCollatzWielandtSet T 0 = Set.univ := by
+    ext a
+    change (T 0 - (a : ℂ) • (0 : Mat)).PosSemidef ↔ True
+    simp only [map_zero, smul_zero, sub_zero]
+    exact iff_true_intro Matrix.PosSemidef.zero
+  rw [lowerCollatzWielandtValue, hset, Set.image_univ]
+  rw [sSup_eq_top]
+  intro b hb
+  obtain ⟨a, hba, -⟩ := EReal.lt_iff_exists_real_btwn.mp hb
+  exact ⟨(a : EReal), ⟨a, rfl⟩, hba⟩
+
+/-- At the excluded point `X = 0`, Wolf's upper functional has the honest
+extended value `-∞`. -/
+theorem upperCollatzWielandtValue_zero (T : Mat →ₗ[ℂ] Mat) :
+    upperCollatzWielandtValue T 0 = ⊥ := by
+  have hset : upperCollatzWielandtSet T 0 = Set.univ := by
+    ext a
+    change ((a : ℂ) • (0 : Mat) - T 0).PosSemidef ↔ True
+    simp only [map_zero, smul_zero, sub_zero]
+    exact iff_true_intro Matrix.PosSemidef.zero
+  rw [upperCollatzWielandtValue, hset, Set.image_univ]
+  rw [sInf_eq_bot]
+  intro b hb
+  obtain ⟨a, -, hab⟩ := EReal.lt_iff_exists_real_btwn.mp hb
+  exact ⟨(a : EReal), ⟨a, rfl⟩, hab⟩
+
+/-- If no real parameter satisfies Wolf's upper inequality at `X`, then the
+upper pointwise functional has extended value `+∞`. -/
+theorem upperCollatzWielandtValue_eq_top_of_not_nonempty
+    (T : Mat →ₗ[ℂ] Mat) (X : Mat)
+    (h : ¬ (upperCollatzWielandtSet T X).Nonempty) :
+    upperCollatzWielandtValue T X = ⊤ := by
+  have hset : upperCollatzWielandtSet T X = ∅ := Set.not_nonempty_iff_eq_empty.mp h
+  simp [upperCollatzWielandtValue, hset]
 
 /-- A positive-definite weight has strictly positive trace pairing with every
 nonzero positive semidefinite matrix. -/
@@ -681,3 +838,80 @@ theorem exists_posDef_common_collatzWielandt_value_of_irreducible_positive
         T hT hIrr hrpos hX hX_eig hYa
   exact ⟨X, r, hXdensity, hr, hX, hX_eig, hLowerAtX, hUpperAtX,
     hLowerMax, hUpperMin⟩
+
+/-- **Wolf Theorem 6.3(1), pointwise-functional form.** For an irreducible
+positive map, Wolf's corrected global lower supremum and upper infimum are
+attained at the same positive-definite density-matrix eigenvector. Both
+extended-real values equal its eigenvalue.
+
+The proof uses the positive Perron pair obtained by Wolf's Equation (6.31),
+then applies the eigenvector equality at local source lines 649--651. -/
+theorem exists_posDef_collatzWielandt_extrema_of_irreducible_positive
+    [NeZero D]
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T) :
+    ∃ X : Mat, ∃ r : ℝ,
+      X ∈ densityMatrices D ∧ 0 ≤ r ∧ X.PosDef ∧
+        T X = (r : ℂ) • X ∧
+        lowerCollatzWielandtValue T X = (r : EReal) ∧
+        upperCollatzWielandtValue T X = (r : EReal) ∧
+        lowerCollatzWielandtGlobal T = (r : EReal) ∧
+        upperCollatzWielandtGlobal T = (r : EReal) := by
+  obtain ⟨X, r, hXdensity, hr, hX, hX_eig, -, -, hLowerMax, hUpperMin⟩ :=
+    exists_posDef_common_collatzWielandt_value_of_irreducible_positive T hT hIrr
+  have hX_ne : X ≠ 0 := by
+    intro hzero
+    have htrace := hXdensity.2
+    rw [hzero, Matrix.trace_zero] at htrace
+    norm_num at htrace
+  obtain ⟨hLowerAtX, hUpperAtX⟩ :=
+    lower_and_upperCollatzWielandtValue_eq_of_eigenvector
+      T hXdensity.1 hX_ne hX_eig
+  have hLowerBound : ∀ Y ∈ densityMatrices D,
+      lowerCollatzWielandtValue T Y ≤ (r : EReal) := by
+    intro Y hY
+    rw [lowerCollatzWielandtValue]
+    apply sSup_le
+    intro a ha
+    obtain ⟨a', ha', rfl⟩ := ha
+    exact EReal.coe_le_coe_iff.mpr (hLowerMax Y a' ⟨hY, ha'⟩)
+  have hUpperBound : ∀ Y ∈ densityMatrices D,
+      (r : EReal) ≤ upperCollatzWielandtValue T Y := by
+    intro Y hY
+    rw [upperCollatzWielandtValue]
+    apply le_sInf
+    intro a ha
+    obtain ⟨a', ha', rfl⟩ := ha
+    exact EReal.coe_le_coe_iff.mpr (hUpperMin Y a' ⟨hY, ha'⟩)
+  have hLowerGlobal : lowerCollatzWielandtGlobal T = (r : EReal) := by
+    apply le_antisymm
+    · rw [lowerCollatzWielandtGlobal]
+      apply sSup_le
+      intro a ha
+      obtain ⟨Y, hY, rfl⟩ := ha
+      exact hLowerBound Y hY
+    · rw [lowerCollatzWielandtGlobal]
+      apply le_sSup
+      exact ⟨X, hXdensity, hLowerAtX⟩
+  have hUpperGlobal : upperCollatzWielandtGlobal T = (r : EReal) := by
+    apply le_antisymm
+    · rw [upperCollatzWielandtGlobal]
+      apply sInf_le
+      exact ⟨X, hXdensity, hUpperAtX⟩
+    · rw [upperCollatzWielandtGlobal]
+      apply le_sInf
+      intro a ha
+      obtain ⟨Y, hY, rfl⟩ := ha
+      exact hUpperBound Y hY
+  exact ⟨X, r, hXdensity, hr, hX, hX_eig, hLowerAtX, hUpperAtX,
+    hLowerGlobal, hUpperGlobal⟩
+
+/-- **Corrected global Collatz--Wielandt equality.** For an irreducible
+positive map, the supremum of Wolf's lower pointwise functional over density
+matrices equals the infimum of the upper pointwise functional. -/
+theorem lowerCollatzWielandtGlobal_eq_upperCollatzWielandtGlobal
+    [NeZero D]
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T) :
+    lowerCollatzWielandtGlobal T = upperCollatzWielandtGlobal T := by
+  obtain ⟨-, r, -, -, -, -, -, -, hLower, hUpper⟩ :=
+    exists_posDef_collatzWielandt_extrema_of_irreducible_positive T hT hIrr
+  exact hLower.trans hUpper.symm

@@ -798,15 +798,27 @@ The headline declarations are in
 
 They package the four source conclusions in order:
 
-1. `LowerCollatzWielandtFeasible` and `UpperCollatzWielandtFeasible` encode
-   Equations (6.29)–(6.30) on density matrices, with the scalar ranging over
-   all real numbers as in the source.
+1. `lowerCollatzWielandtSet` and `upperCollatzWielandtSet` are the two sets in
+   Equations (6.29)–(6.30), and `lowerCollatzWielandtValue` and
+   `upperCollatzWielandtValue` take their extended-real supremum and infimum.
+   The zero boundary is explicit: the values are respectively `⊤` and `⊥`;
+   an empty upper set has value `⊤`.
+   `lowerCollatzWielandtValue_le_upperCollatzWielandtValue` proves the corrected
+   pointwise order for every nonzero positive semidefinite matrix, and
+   `lower_and_upperCollatzWielandtValue_eq_of_eigenvector` proves equality at
+   positive eigenvectors, exactly as used at source lines 649–651.
+   `LowerCollatzWielandtFeasible` and `UpperCollatzWielandtFeasible` encode the
+   corresponding trace-one pairs, with the scalar ranging over all real
+   numbers as in the source.
    `exists_lowerCollatzWielandt_maximizer` constructs the lower maximizer
    first. `idPlus_pow_apply_map_sub_smul` is Equation (6.31), and
    `exists_posDef_eigenvector_of_irreducible_positive` uses it with Wolf
    Theorem 6.2 to obtain a positive-definite eigenvector. After that,
    `exists_posDef_common_collatzWielandt_value_of_irreducible_positive`
-   identifies the global lower maximum with the global upper minimum.
+   identifies the global lower maximum with the global upper minimum, while
+   `exists_posDef_collatzWielandt_extrema_of_irreducible_positive` and
+   `lowerCollatzWielandtGlobal_eq_upperCollatzWielandtGlobal` state the same
+   conclusion for the corrected pointwise functionals.
 2. `eigenspace_eq_span_of_irreducible_positive` and
    `finrank_eigenspace_eq_one_of_irreducible_positive` formalize Equation
    (6.32): the ordinary complex eigenspace at `r` is one-dimensional. This is

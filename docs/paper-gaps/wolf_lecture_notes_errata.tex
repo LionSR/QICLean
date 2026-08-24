@@ -368,8 +368,12 @@ the characteristic polynomial records the complete multiplicity data.
 The declarations
 \leanid{exists_wolfTheorem63_of_irreducible_positive} and
 \leanid{exists_wolfTheorem63_of_irreducible_positive_of_ne_zero} formalize
-Wolf Theorem~6.3 for arbitrary positive maps. The two corrections are
-documented in
+Wolf Theorem~6.3 for arbitrary positive maps. The declarations
+\leanid{lowerCollatzWielandtValue},
+\leanid{upperCollatzWielandtValue}, and
+\leanid{lowerCollatzWielandtGlobal\_eq\_upperCollatzWielandtGlobal}
+formalize the corrected pointwise and global quantities. The two corrections
+are documented in
 \path{docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex}.
 
 \paragraph{The global upper quantity.}
@@ -387,8 +391,11 @@ The corrected Collatz--Wielandt pair is
 \end{equation}
 For an irreducible positive map, both extrema are attained at the same
 positive-definite eigenvector and are equal. Thus the second ``sup'' and the
-displayed reversed inequality are a single local source error. Equality is
-not asserted pointwise for arbitrary $X$.
+displayed reversed inequality are two local source errors. Equality is
+not asserted pointwise for arbitrary $X$. In the extended-real formulation,
+$r(0)=+\infty$ and $\widetilde r(0)=-\infty$; for every nonzero $X\geq0$ one
+has $r(X)\leq\widetilde r(X)$, with equality at positive eigenvectors as used
+at local source lines~649--651.
 
 \paragraph{The one-dimensional zero map.}
 The theorem assumes only that $T:\MN{D}\to\MN{D}$ is irreducible and positive,
