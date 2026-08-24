@@ -22,8 +22,10 @@ whereas Wolf writes the full-matrix factor first.  No second block decomposition
 ## Main declarations
 
 * `Matrix.densityBlockWithZeroEmbedding`
+* `Matrix.densityBlockWithZeroPrincipalCompression`
 * `Matrix.densityBlockWithZeroCompression`
 * `Matrix.densityBlockWithZeroCompression_embedding`
+* `Matrix.densityBlockWithZeroEmbedding_eq_one`
 
 ## Reference
 
@@ -131,6 +133,202 @@ theorem densityBlockWithZeroEmbedding_apply
             (Matrix.blockDiagonal' fun k ↦ sigma k ⊗ₖ X k))) * star U := by
   simp [densityBlockWithZeroEmbedding, zeroBottomRightEmbedding,
     densityBlockTensorEmbedding, Matrix.unitaryReindexLinearEquiv_symm_apply]
+
+/-- Compress an ambient matrix to the full principal block indexed by `k` in Wolf's
+zero-extended density-block coordinates.
+
+Unlike `densityBlockWithZeroCompression`, this map does not take a partial trace: its
+codomain retains both factors `Fin (m k) × Fin (d k)`.  This is the principal-block
+compression used in the scalar repair following Wolf Theorem 6.16, lines 1660--1663. -/
+noncomputable def densityBlockWithZeroPrincipalCompression
+    {D n K : ℕ} {d m : Fin K → ℕ}
+    (e : ((k : Fin K) × (Fin (m k) × Fin (d k))) ≃ Fin n)
+    (e₀ : (Fin (D - n) ⊕ Fin n) ≃ Fin D)
+    (U : Matrix (Fin D) (Fin D) ℂ)
+    (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
+    (k : Fin K) :
+    Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ]
+      Matrix (Fin (m k) × Fin (d k)) (Fin (m k) × Fin (d k)) ℂ :=
+  (Matrix.directSumBlockCompression (m := m) (d := d) k).comp
+    ((Matrix.reindexLinearEquiv ℂ ℂ e.symm e.symm).toLinearMap.comp
+      (bottomRightCompression.comp
+        (Matrix.unitaryReindexLinearEquiv e₀ U hU).toLinearMap))
+
+@[simp]
+theorem densityBlockWithZeroPrincipalCompression_apply
+    {D n K : ℕ} {d m : Fin K → ℕ}
+    (e : ((k : Fin K) × (Fin (m k) × Fin (d k))) ≃ Fin n)
+    (e₀ : (Fin (D - n) ⊕ Fin n) ≃ Fin D)
+    (U : Matrix (Fin D) (Fin D) ℂ)
+    (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
+    (B : Matrix (Fin D) (Fin D) ℂ) (k : Fin K) :
+    densityBlockWithZeroPrincipalCompression e e₀ U hU k B =
+      Matrix.directSumBlockCompression (m := m) (d := d) k
+        (Matrix.reindex e.symm e.symm
+          (Matrix.unitaryReindexLinearEquiv e₀ U hU B).toBlocks₂₂) := by
+  rfl
+
+/-- Principal-block compression recovers the full Kronecker block before partial trace. -/
+@[simp]
+theorem densityBlockWithZeroPrincipalCompression_embedding
+    {D n K : ℕ} {d m : Fin K → ℕ}
+    (e : ((k : Fin K) × (Fin (m k) × Fin (d k))) ≃ Fin n)
+    (e₀ : (Fin (D - n) ⊕ Fin n) ≃ Fin D)
+    (U : Matrix (Fin D) (Fin D) ℂ)
+    (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
+    (sigma : ∀ k, Matrix (Fin (m k)) (Fin (m k)) ℂ)
+    (X : ∀ k, Matrix (Fin (d k)) (Fin (d k)) ℂ) (k : Fin K) :
+    densityBlockWithZeroPrincipalCompression e e₀ U hU k
+        (densityBlockWithZeroEmbedding e e₀ U hU sigma X) =
+      sigma k ⊗ₖ X k := by
+  let Phi := Matrix.unitaryReindexLinearEquiv e₀ U hU
+  let A : Matrix (Fin (D - n) ⊕ Fin n) (Fin (D - n) ⊕ Fin n) ℂ :=
+    Matrix.fromBlocks 0 0 0
+      (Matrix.reindex e e
+        (Matrix.blockDiagonal' fun j ↦ sigma j ⊗ₖ X j))
+  have hcoord : Phi (densityBlockWithZeroEmbedding e e₀ U hU sigma X) = A := by
+    change Phi (Phi.symm A) = A
+    exact Phi.apply_symm_apply A
+  rw [densityBlockWithZeroPrincipalCompression_apply, hcoord]
+  simp [A]
+
+/-- Every full principal block of the ambient identity remains the identity in
+density-block coordinates. -/
+@[simp]
+theorem densityBlockWithZeroPrincipalCompression_one
+    {D n K : ℕ} {d m : Fin K → ℕ}
+    (e : ((k : Fin K) × (Fin (m k) × Fin (d k))) ≃ Fin n)
+    (e₀ : (Fin (D - n) ⊕ Fin n) ≃ Fin D)
+    (U : Matrix (Fin D) (Fin D) ℂ)
+    (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
+    (k : Fin K) :
+    densityBlockWithZeroPrincipalCompression e e₀ U hU k 1 = 1 := by
+  rw [densityBlockWithZeroPrincipalCompression_apply,
+    Matrix.unitaryReindexLinearEquiv_one]
+  ext i j
+  simp only [Matrix.directSumBlockCompression_apply, Matrix.reindex_apply,
+    Matrix.toBlocks₂₂, Matrix.one_apply, Sum.inr.injEq]
+  change (if e ⟨k, i⟩ = e ⟨k, j⟩ then 1 else 0) =
+    if i = j then 1 else 0
+  by_cases hij : i = j
+  · subst j
+    simp
+  · have heij : e ⟨k, i⟩ ≠ e ⟨k, j⟩ := by
+      intro he
+      apply hij
+      simpa using e.injective he
+    simp [hij, heij]
+
+/-- Principal-block compression preserves positive semidefiniteness. -/
+theorem densityBlockWithZeroPrincipalCompression_posSemidef
+    {D n K : ℕ} {d m : Fin K → ℕ}
+    (e : ((k : Fin K) × (Fin (m k) × Fin (d k))) ≃ Fin n)
+    (e₀ : (Fin (D - n) ⊕ Fin n) ≃ Fin D)
+    (U : Matrix (Fin D) (Fin D) ℂ)
+    (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
+    (k : Fin K) {B : Matrix (Fin D) (Fin D) ℂ} (hB : B.PosSemidef) :
+    (densityBlockWithZeroPrincipalCompression e e₀ U hU k B).PosSemidef := by
+  rw [densityBlockWithZeroPrincipalCompression_apply]
+  apply Matrix.directSumBlockCompression_isPositiveMap k
+  have hcoord : (Matrix.unitaryReindexLinearEquiv e₀ U hU B).PosSemidef :=
+    Matrix.unitaryReindexLinearEquiv_posSemidef e₀ U hU hB
+  have hbottom : (Matrix.unitaryReindexLinearEquiv e₀ U hU B).toBlocks₂₂.PosSemidef := by
+    exact hcoord.submatrix Sum.inr
+  simpa only [Matrix.reindex_apply, Equiv.symm_symm,
+    Matrix.posSemidef_submatrix_equiv] using hbottom
+
+/-- If an encoded density-block family is the ambient identity, then Wolf's zero summand
+has dimension zero.
+
+This is the zero-summand step omitted between Wolf Theorem 6.16, lines 1660--1663.  It
+uses only the exact coordinates from Theorem 6.14 and remains valid in the zero-dimensional
+edge case. -/
+theorem densityBlockWithZeroEmbedding_eq_one_dimension
+    {D n K : ℕ} {d m : Fin K → ℕ}
+    (e : ((k : Fin K) × (Fin (m k) × Fin (d k))) ≃ Fin n)
+    (e₀ : (Fin (D - n) ⊕ Fin n) ≃ Fin D)
+    (U : Matrix (Fin D) (Fin D) ℂ)
+    (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
+    (sigma : ∀ k, Matrix (Fin (m k)) (Fin (m k)) ℂ)
+    (X : ∀ k, Matrix (Fin (d k)) (Fin (d k)) ℂ)
+    (hOne : densityBlockWithZeroEmbedding e e₀ U hU sigma X = 1) :
+    n = D := by
+  let Phi := Matrix.unitaryReindexLinearEquiv e₀ U hU
+  let A : Matrix (Fin (D - n) ⊕ Fin n) (Fin (D - n) ⊕ Fin n) ℂ :=
+    Matrix.fromBlocks 0 0 0
+      (Matrix.reindex e e
+        (Matrix.blockDiagonal' fun k ↦ sigma k ⊗ₖ X k))
+  have hencode : Phi (densityBlockWithZeroEmbedding e e₀ U hU sigma X) = A := by
+    change Phi (Phi.symm A) = A
+    exact Phi.apply_symm_apply A
+  have hcoord : A = 1 := by
+    calc
+      A = Phi (densityBlockWithZeroEmbedding e e₀ U hU sigma X) := hencode.symm
+      _ = Phi 1 := congrArg (fun B ↦ Phi B) hOne
+      _ = 1 := Matrix.unitaryReindexLinearEquiv_one e₀ U hU
+  have hsub : D - n = 0 := by
+    by_contra hne
+    let i : Fin (D - n) := ⟨0, Nat.pos_of_ne_zero hne⟩
+    have hentry := congrFun (congrFun hcoord (Sum.inl i)) (Sum.inl i)
+    have hzeroone : (0 : ℂ) = 1 := by
+      simp [A] at hentry
+    exact zero_ne_one hzeroone
+  have hcard := Fintype.card_congr e₀
+  simp only [Fintype.card_sum, Fintype.card_fin] at hcard
+  omega
+
+/-- In an identity-valued density-block encoding, each full principal block is the
+identity, so its trace-one left factor is maximally mixed and its right factor is the
+compensating scalar identity.
+
+This is the per-block scalar step omitted in Wolf Theorem 6.16, lines 1660--1663. -/
+theorem densityBlockWithZeroEmbedding_eq_one_block
+    {D n K : ℕ} {d m : Fin K → ℕ}
+    (e : ((k : Fin K) × (Fin (m k) × Fin (d k))) ≃ Fin n)
+    (e₀ : (Fin (D - n) ⊕ Fin n) ≃ Fin D)
+    (U : Matrix (Fin D) (Fin D) ℂ)
+    (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
+    (sigma : ∀ k, Matrix (Fin (m k)) (Fin (m k)) ℂ)
+    (hd : ∀ k, 0 < d k) (hm : ∀ k, 0 < m k)
+    (hsigmaTrace : ∀ k, (sigma k).trace = 1)
+    (X : ∀ k, Matrix (Fin (d k)) (Fin (d k)) ℂ)
+    (hOne : densityBlockWithZeroEmbedding e e₀ U hU sigma X = 1)
+    (k : Fin K) :
+    sigma k = (m k : ℂ)⁻¹ • 1 ∧ X k = (m k : ℂ) • 1 := by
+  let _ : NeZero (m k) := ⟨Nat.ne_of_gt (hm k)⟩
+  let _ : NeZero (d k) := ⟨Nat.ne_of_gt (hd k)⟩
+  apply Matrix.kronecker_eq_one_of_left_trace_eq_one (hsigmaTrace k)
+  calc
+    sigma k ⊗ₖ X k = densityBlockWithZeroPrincipalCompression e e₀ U hU k
+        (densityBlockWithZeroEmbedding e e₀ U hU sigma X) :=
+      (densityBlockWithZeroPrincipalCompression_embedding
+        e e₀ U hU sigma X k).symm
+    _ = densityBlockWithZeroPrincipalCompression e e₀ U hU k 1 :=
+      congrArg (fun B ↦ densityBlockWithZeroPrincipalCompression e e₀ U hU k B) hOne
+    _ = 1 := densityBlockWithZeroPrincipalCompression_one e e₀ U hU k
+
+/-- Exact identity coordinates for Wolf's zero-extended density-block decomposition.
+
+If the encoded family is the ambient identity, the zero summand disappears (`n = D`),
+every density factor is maximally mixed, and every full-matrix factor is its compensating
+scalar identity.  The statement includes the vacuous empty-family and zero-dimensional
+edge cases and does not assert multiplicativity of the coordinate maps. -/
+theorem densityBlockWithZeroEmbedding_eq_one
+    {D n K : ℕ} {d m : Fin K → ℕ}
+    (e : ((k : Fin K) × (Fin (m k) × Fin (d k))) ≃ Fin n)
+    (e₀ : (Fin (D - n) ⊕ Fin n) ≃ Fin D)
+    (U : Matrix (Fin D) (Fin D) ℂ)
+    (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
+    (sigma : ∀ k, Matrix (Fin (m k)) (Fin (m k)) ℂ)
+    (hd : ∀ k, 0 < d k) (hm : ∀ k, 0 < m k)
+    (hsigmaTrace : ∀ k, (sigma k).trace = 1)
+    (X : ∀ k, Matrix (Fin (d k)) (Fin (d k)) ℂ)
+    (hOne : densityBlockWithZeroEmbedding e e₀ U hU sigma X = 1) :
+    n = D ∧ ∀ k, sigma k = (m k : ℂ)⁻¹ • 1 ∧ X k = (m k : ℂ) • 1 := by
+  exact ⟨densityBlockWithZeroEmbedding_eq_one_dimension
+      e e₀ U hU sigma X hOne,
+    densityBlockWithZeroEmbedding_eq_one_block
+      e e₀ U hU sigma hd hm hsigmaTrace X hOne⟩
 
 /-- Recover the full-matrix factors from Wolf's zero-extended density-block coordinates.
 
