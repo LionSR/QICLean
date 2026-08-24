@@ -778,11 +778,111 @@ noncomputable def spinorMap : SL(2, ℂ) →* Matrix (Fin 4) (Fin 4) ℝ where
   map_one' := spinorMatrix_one
   map_mul' := spinorMatrix_mul
 
+/-! ### The kernel of the spinor action
+
+The two-to-one assertion after Wolf, Equation (2.42) (lines 1057--1059 of the
+source) has two halves: `X` and `-X` act identically (proved above as
+`spinorMatrix_neg`), and no other pair does.  The second half is the kernel
+computation: if `L(X) = 1`, then congruence by `X` fixes every Hermitian
+matrix; unitarity follows from the identity matrix, scalarity from
+commutation with the Pauli basis, and `det X = 1` pins the scalar to `±1`. -/
+
+/-- If `X ∈ SL(2,ℂ)` acts trivially on Minkowski coordinates, then `X = ±1`.
+
+This is the kernel half of the two-to-one assertion after Wolf,
+Equation (2.42) (`Notes/WolfNoteTexSource/ch02_representations.tex`, lines
+1057--1059).  The route is the one sketched in the source: `X X† = 1` from
+the congruence action on the identity, then `X` commutes with every Pauli
+matrix, so `X` is scalar, and `det X = 1` forces the scalar to be `±1`. -/
+theorem spinorMatrix_eq_one_iff (X : SL(2, ℂ)) :
+    spinorMatrix X = 1 ↔ X = 1 ∨ X = -1 := by
+  constructor
+  · intro h
+    have hconj : ∀ j : Fin 4, X.1 * pauliMatrices j * X.1ᴴ = pauliMatrices j := by
+      intro j
+      have hx := pauliMatrixOfMinkowski_spinorMatrix_mulVec X (Pi.single j 1)
+      rw [h, Matrix.one_mulVec, pauliMatrixOfMinkowski_single] at hx
+      exact hx.symm
+    have hunit : X.1 * X.1ᴴ = 1 := by
+      have h0 := hconj 0
+      rwa [pauliMatrices_zero, Matrix.mul_one] at h0
+    have hleft : (X⁻¹ : SL(2, ℂ)).1 * X.1 = 1 := by
+      rw [← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel,
+        Matrix.SpecialLinearGroup.coe_one]
+    have hunit' : X.1ᴴ * X.1 = 1 := by
+      have hu : X.1ᴴ = (X⁻¹ : SL(2, ℂ)).1 := by
+        calc X.1ᴴ = 1 * X.1ᴴ := (Matrix.one_mul _).symm
+        _ = ((X⁻¹ : SL(2, ℂ)).1 * X.1) * X.1ᴴ := by rw [hleft]
+        _ = (X⁻¹ : SL(2, ℂ)).1 * (X.1 * X.1ᴴ) := by rw [Matrix.mul_assoc]
+        _ = (X⁻¹ : SL(2, ℂ)).1 := by rw [hunit, Matrix.mul_one]
+      rw [hu]; exact hleft
+    have hcomm : ∀ j : Fin 4, X.1 * pauliMatrices j = pauliMatrices j * X.1 := by
+      intro j
+      calc X.1 * pauliMatrices j
+          = (X.1 * pauliMatrices j * X.1ᴴ) * X.1 := by
+            rw [Matrix.mul_assoc, hunit', Matrix.mul_one]
+        _ = pauliMatrices j * X.1 := by rw [hconj j]
+    have h01 : X.1 0 1 = 0 := by
+      have h01e := congrFun (congrFun (hcomm 3) 0) 1
+      simp [pauliMatrices, Matrix.mul_apply, Fin.sum_univ_two] at h01e
+      exact self_eq_neg.mp h01e.symm
+    have h10 : X.1 1 0 = 0 := by
+      have h10e := congrFun (congrFun (hcomm 3) 1) 0
+      simp [pauliMatrices, Matrix.mul_apply, Fin.sum_univ_two] at h10e
+      exact self_eq_neg.mp h10e
+    have hdiag : X.1 0 0 = X.1 1 1 := by
+      have he := congrFun (congrFun (hcomm 1) 0) 1
+      simp [pauliMatrices, Matrix.mul_apply, Fin.sum_univ_two] at he
+      exact he
+    have hdet : X.1 0 0 * X.1 0 0 = 1 := by
+      have hd := X.2
+      rw [Matrix.det_fin_two, h01, h10, ← hdiag] at hd
+      simpa using hd
+    have hscalar : X.1 = (X.1 0 0) • (1 : Matrix (Fin 2) (Fin 2) ℂ) := by
+      ext a b
+      fin_cases a <;> fin_cases b <;>
+        simp [h01, h10, hdiag]
+    rcases (sq_eq_one_iff (R := ℂ)).mp (by rw [pow_two]; exact hdet) with hc | hc
+    · left
+      apply Subtype.ext
+      rw [hscalar, hc]
+      simp [Matrix.SpecialLinearGroup.coe_one]
+    · right
+      apply Subtype.ext
+      rw [hscalar, hc]
+      simp [Matrix.SpecialLinearGroup.coe_neg, Matrix.SpecialLinearGroup.coe_one]
+  · rintro (rfl | rfl)
+    · exact spinorMatrix_one
+    · rw [spinorMatrix_neg]; exact spinorMatrix_one
+
+/-- The fibres of the spinor action are exactly the pairs `{X, -X}`.
+
+This is the full "two-to-one" assertion after Wolf, Equation (2.42)
+(`Notes/WolfNoteTexSource/ch02_representations.tex`, lines 1057--1059),
+reduced to the kernel computation `spinorMatrix_eq_one_iff` by
+multiplicativity of the spinor map. -/
+theorem spinorMatrix_eq_iff_eq_or_eq_neg (X Y : SL(2, ℂ)) :
+    spinorMatrix X = spinorMatrix Y ↔ X = Y ∨ X = -Y := by
+  constructor
+  · intro h
+    have h1 : spinorMatrix (X * Y⁻¹) = 1 := by
+      rw [spinorMatrix_mul, h, ← spinorMatrix_mul, mul_inv_cancel, spinorMatrix_one]
+    rcases (spinorMatrix_eq_one_iff _).mp h1 with h2 | h2
+    · left
+      exact eq_of_mul_inv_eq_one h2
+    · right
+      calc X = X * Y⁻¹ * Y := by group
+        _ = -1 * Y := by rw [h2]
+        _ = -Y := neg_one_mul Y
+  · rintro (rfl | rfl)
+    · rfl
+    · exact spinorMatrix_neg Y
+
 /-!
-The inclusion of the spinor image in `SO⁺(1,3)` is now formalized. Wolf's
-stronger assertion that this map is a surjective double cover, and the explicit
-rotation/boost exponential formulas in Equation (2.44), are not inferred from
-the three-dimensional `SU(2)` result and are not asserted in this module.
+The inclusion of the spinor image in `SO⁺(1,3)` and the exact two-point
+fibres are formalized in this module.  Surjectivity of the spinor map onto
+`SO⁺(1,3)` and the explicit rotation/boost formulas of Wolf, Equation (2.44)
+are proved in `QICLean.Channel.LorentzNormalForm.SpinorCover`.
 -/
 
 end Wolf
