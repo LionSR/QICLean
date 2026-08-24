@@ -91,6 +91,21 @@ sum `f`. -/
 noncomputable def lambdaT (T : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (x : ι → ℝ) : ℝ :=
   coordinateSum (x⁻¹ * T x)
 
+@[simp]
+theorem lambdaT_neg (T : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (x : ι → ℝ) :
+    lambdaT (-T) x = -lambdaT T x := by
+  simp [lambdaT, coordinateSum, Finset.sum_neg_distrib]
+
+/-- A local maximum of `L_T` is a local minimum of `L_{-T}`. -/
+theorem isLocalMinOn_lambdaT_neg_of_isLocalMaxOn
+    (T : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (x : ι → ℝ)
+    (hmax : IsLocalMaxOn (lambdaT T) positiveInvertibles x) :
+    IsLocalMinOn (lambdaT (-T)) positiveInvertibles x := by
+  rw [show lambdaT (-T) = fun y ↦ -lambdaT T y by
+    funext y
+    exact lambdaT_neg T y]
+  exact hmax.neg
+
 private theorem lambdaT_line (T : (ι → ℝ) →ₗ[ℝ] (ι → ℝ))
     (z : ι → ℝ) (t : ℝ) :
     lambdaT T (1 + t • z) =
@@ -368,5 +383,82 @@ theorem multiplication_on_laurentSubalgebra_of_two_localMinOn
   simp only [Pi.mul_apply, Pi.inv_apply]
   field_simp [hu i] at hDqi ⊢
   linarith
+
+/-- Nowosad's Theorem 1.8 for a finite real coordinate algebra, with the
+source's Hilbert-norm boundedness recorded explicitly.  Finite dimensionality
+supplies the bound, while the two genuine local minima supply the variational
+identities used in the conclusion. -/
+theorem finiteCoordinate_theorem_one_eight
+    (A : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (u v : ι → ℝ)
+    (hupos : u ∈ positiveInvertibles) (hvpos : v ∈ positiveInvertibles)
+    (hminU : IsLocalMinOn (lambdaT A) positiveInvertibles u)
+    (hminV : IsLocalMinOn (lambdaT A) positiveInvertibles v) :
+    (∃ C : ℝ, 0 ≤ C ∧ ∀ x,
+      inducedHilbertNorm (A x) ≤ C * inducedHilbertNorm x) ∧
+      ∀ q : laurentSubalgebra (u⁻¹ * v),
+        A (u * (q : ι → ℝ)) =
+          (u⁻¹ * A u) * (u * (q : ι → ℝ)) := by
+  refine ⟨exists_inducedHilbertNorm_bound A, ?_⟩
+  intro q
+  exact multiplication_on_laurentSubalgebra_of_two_localMinOn
+    A u v hupos hvpos hminU hminV q
+
+/-- Nowosad's functional is constant on the regular part of
+`u · P(u⁻¹v)`.  This is the final assertion of Theorem 1.8 after the
+multiplication conclusion and the disappearance of the null ideal. -/
+theorem lambdaT_eq_on_laurentSubalgebra_of_two_localMinOn
+    (A : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (u v : ι → ℝ)
+    (hupos : u ∈ positiveInvertibles) (hvpos : v ∈ positiveInvertibles)
+    (hminU : IsLocalMinOn (lambdaT A) positiveInvertibles u)
+    (hminV : IsLocalMinOn (lambdaT A) positiveInvertibles v)
+    (q : laurentSubalgebra (u⁻¹ * v))
+    (hq : ∀ i, (q : ι → ℝ) i ≠ 0) :
+    lambdaT A (u * (q : ι → ℝ)) = lambdaT A u := by
+  have hu : ∀ i, u i ≠ 0 := by
+    rw [mem_positiveInvertibles] at hupos
+    exact fun i ↦ ne_of_gt (hupos i)
+  unfold lambdaT
+  rw [multiplication_on_laurentSubalgebra_of_two_localMinOn
+    A u v hupos hvpos hminU hminV q]
+  unfold coordinateSum
+  apply Finset.sum_congr rfl
+  intro i _
+  simp only [Pi.inv_apply, Pi.mul_apply]
+  field_simp [hu i, hq i]
+
+/-- The local-maximum multiplication conclusion used by Yamagami is exactly
+Nowosad's local-minimum theorem applied to the negative operator. -/
+theorem multiplication_on_laurentSubalgebra_of_two_localMaxOn
+    (T : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (u v : ι → ℝ)
+    (hupos : u ∈ positiveInvertibles) (hvpos : v ∈ positiveInvertibles)
+    (hmaxU : IsLocalMaxOn (lambdaT T) positiveInvertibles u)
+    (hmaxV : IsLocalMaxOn (lambdaT T) positiveInvertibles v)
+    (q : laurentSubalgebra (u⁻¹ * v)) :
+    T (u * (q : ι → ℝ)) =
+      (u⁻¹ * T u) * (u * (q : ι → ℝ)) := by
+  have hminU := isLocalMinOn_lambdaT_neg_of_isLocalMaxOn T u hmaxU
+  have hminV := isLocalMinOn_lambdaT_neg_of_isLocalMaxOn T v hmaxV
+  have hneg := multiplication_on_laurentSubalgebra_of_two_localMinOn
+    (-T) u v hupos hvpos hminU hminV q
+  ext i
+  have hi := congrFun hneg i
+  have hi' := congrArg Neg.neg hi
+  simpa using hi'
+
+/-- The corresponding local-maximum constancy statement, obtained only by
+the source-prescribed substitution `T ↦ -T`. -/
+theorem lambdaT_eq_on_laurentSubalgebra_of_two_localMaxOn
+    (T : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (u v : ι → ℝ)
+    (hupos : u ∈ positiveInvertibles) (hvpos : v ∈ positiveInvertibles)
+    (hmaxU : IsLocalMaxOn (lambdaT T) positiveInvertibles u)
+    (hmaxV : IsLocalMaxOn (lambdaT T) positiveInvertibles v)
+    (q : laurentSubalgebra (u⁻¹ * v))
+    (hq : ∀ i, (q : ι → ℝ) i ≠ 0) :
+    lambdaT T (u * (q : ι → ℝ)) = lambdaT T u := by
+  have hminU := isLocalMinOn_lambdaT_neg_of_isLocalMaxOn T u hmaxU
+  have hminV := isLocalMinOn_lambdaT_neg_of_isLocalMaxOn T v hmaxV
+  have hneg := lambdaT_eq_on_laurentSubalgebra_of_two_localMinOn
+    (-T) u v hupos hvpos hminU hminV q hq
+  simpa only [lambdaT_neg, neg_inj] using hneg
 
 end Nowosad
