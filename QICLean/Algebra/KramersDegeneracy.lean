@@ -25,9 +25,10 @@ $V^T = -V$ (lines 500–501).
 The subsequent "Kramers' theorem II" (Wolf Thm 3.2, lines 527–530) relaxes the
 unitary to a general antisymmetric intertwiner $A \neq 0$ with $H A = A H^T$ and
 claims the same global degeneracy.  As printed that claim is false: with
-$H = \operatorname{diag}(0, 1, 1)$ and $A$ the standard symplectic unit of the
-$1$-eigenspace one has $H A = A H^T$ and $A^T = -A \neq 0$, yet the eigenvalue $0$ is
-simple, because the partner vector $A \overline\psi$ of the $0$-eigenvector vanishes.
+$H = \operatorname{diag}(0, 1, 1)$ and $A$ the standard antisymmetric unit
+$[[0,1],[-1,0]]$ of the $1$-eigenspace one has $H A = A H^T$ and $A^T = -A \neq 0$,
+yet the eigenvalue $0$ is simple, because the partner vector $A \overline\psi$ of
+the $0$-eigenvector vanishes.
 The correct statement is conditional: $A \overline\psi$ is always an eigenvector of $H$
 for the same eigenvalue and is always orthogonal to $\psi$, so the eigenvalue is
 degenerate *whenever the partner is nonzero*; a global conclusion follows when $A$ is
@@ -153,9 +154,9 @@ omit [DecidableEq n] in
 /-- The entrywise conjugate of a `μ`-eigenvector of a Hermitian matrix `H` is a
 `μ`-eigenvector of the transpose `Hᵀ`, provided `μ` is real (which Hermiticity of `H`
 forces, see `Matrix.IsHermitian.conj_eq_self_of_hasEigenvalue`).  This is the middle
-step of Wolf's calculation `H *ᵥ (Vᴴ *ᵥ star ψ) = Vᴴ *ᵥ (Hᵀ *ᵥ star ψ) =
-λ • (Vᴴ *ᵥ star ψ)` (ch03 line 509),
-factored out so it can be reused with a general intertwiner. -/
+step of Wolf's ch03-line-509 calculation
+`H *ᵥ (Vᴴ *ᵥ star ψ) = Vᴴ *ᵥ (Hᵀ *ᵥ star ψ) = λ • (Vᴴ *ᵥ star ψ)`, factored out so it
+can be reused with a general intertwiner. -/
 theorem transpose_mulVec_star_of_mulVec_eq_smul {H : Matrix n n ℂ} (hH : H.IsHermitian)
     {μ : ℂ} {ψ : n → ℂ} (hψ : H *ᵥ ψ = μ • ψ) (hμ : (starRingEnd ℂ) μ = μ) :
     Hᵀ *ᵥ star ψ = μ • star ψ := by
@@ -187,8 +188,8 @@ Wolf's printed Theorem 3.2 assumes only `A ≠ 0` and concludes that *every* eig
 `H` is at least two-fold degenerate.  That global form is false, because the partner
 `A *ᵥ star ψ` of a particular eigenvector can vanish; the nonvanishing hypothesis below
 is exactly what Wolf's calculation needs and cannot be dropped (the eigenvalue `0` of
-`H = diag (0, 1, 1)` with `A` the symplectic unit of the `1`-eigenspace is simple — see
-the paper-gap note).
+`H = diag (0, 1, 1)` with `A` the antisymmetric unit of the `1`-eigenspace is simple —
+see the paper-gap note).
 
 **Local fix (Wolf ch03, lines 527–530):** the nonvanishing hypothesis
 `A *ᵥ star ψ ≠ 0` is added to the printed statement.  Counterexample and corrected
@@ -211,9 +212,8 @@ theorem two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero {H A : Matr
 
 /-- **Kramers' theorem II for an invertible antisymmetric intertwiner** (corrected
 global form of Wolf Thm 3.2, ch03 lines 527–530): if `H` is Hermitian and `A` is an
-invertible
-antisymmetric matrix with `H * A = A * Hᵀ`, then every eigenvalue of `H` is at least
-two-fold degenerate.
+invertible antisymmetric matrix with `H * A = A * Hᵀ`, then every eigenvalue of `H`
+is at least two-fold degenerate.
 
 Invertibility makes the partner `A *ᵥ star ψ` of every eigenvector nonzero, so the
 corrected conditional theorem applies to every eigenvalue.  Over `ℂ` an antisymmetric
