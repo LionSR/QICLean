@@ -1091,10 +1091,18 @@ The Kraus-map presentation supplies complete positivity; trace preservation is
 an explicit hypothesis. No stronger CP-independent primitivity predicate is
 introduced.
 
-#### Wolf Theorem 6.9 (Quantum Wielandt inequality)
+#### Wolf Theorem 6.9 (Quantum Wielandt inequality) and the low-dimensional corollary
 
-Formalized in the tensor-network layer; indexed in
-`TNLean.Wielandt.WolfChapter6TNIndex`.
+The general inequality is formalized in the tensor-network layer and indexed in
+`TNLean.Wielandt.WolfChapter6TNIndex`.  QICLean now contains the dimension-two
+nilpotent-space classification and the resulting one-step nonzero-eigenvalue
+conclusion in
+`Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two`.  In dimension three,
+`QICLean.exists_common_ker_of_forall_sq_eq_zero` and
+`Kraus.exists_mem_wordSpan_one_sq_ne_zero_fin_three` cover and exclude the
+square-zero branch.  The nilpotency-index-three classification, its exceptional
+primitive-channel obstruction, and the assembled QICLean index bound remain open;
+see `docs/paper-gaps/wolf_ch6_lowdim_wielandt_classification.tex`.
 
 ---
 

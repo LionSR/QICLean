@@ -126,6 +126,7 @@ import QICLean.Channel.TransferMatrix
 import QICLean.Channel.WeightedHilbertSchmidt
 import QICLean.Channel.WeylTwirl
 import QICLean.Channel.WhitenedChoi
+import QICLean.Channel.WielandtLowDim
 import QICLean.Channel.Wigner
 import QICLean.Channel.WolfProps
 import QICLean.Channel.WolfTheorem68
