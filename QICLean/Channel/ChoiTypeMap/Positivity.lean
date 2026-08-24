@@ -148,9 +148,9 @@ private theorem card_choose_le_sum_powersetCard_prod {ι : Type*} [Fintype ι]
 /-- **Master expansion.**  With `s = d - 1` (as a real) and `d` the
 cardinality of the index type, the difference of the full product and the sum
 of the erased products, scaled by `s`, expands as the signed subset sum
-`∑ t, (|t| - 1) s ^ (d - |t|) y^t`: the `t`-coefficient is
-`s ^ (d - |t|) - (d - |t|) s ^ (d - 1 - |t|) = (|t| - 1) s ^ (d - |t|)`,
-using `s = d - 1`. -/
+`∑ t, (|t| - 1) s ^ (d - |t|) y^t`: the scaled `t`-coefficient satisfies
+`s * (s ^ (d - |t|) - (d - |t|) * s ^ (d - 1 - |t|)) =
+  (|t| - 1) * s ^ (d - |t|)`, using `s = d - 1`. -/
 private theorem mul_prod_add_sub_sum_prod_erase {ι : Type*} [Fintype ι] [DecidableEq ι]
     (y : ι → ℝ) :
     ((Fintype.card ι : ℝ) - 1) *
