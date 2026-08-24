@@ -700,7 +700,7 @@ so that the cited formal statements are available from the main project import.
 
 #### Wolf Theorem 3.2 (Kramers' theorem II) — FALSE AS PRINTED; CORRECTED FORM FORMALIZED
 
-- The printed statement (`H` Hermitian, `Aᵀ = -A ≠ 0`, `H * A = A * Hᵀ` ⟹
+- The original statement (`H` Hermitian, `Aᵀ = -A ≠ 0`, `H * A = A * Hᵀ` ⟹
   every eigenvalue at least two-fold degenerate) is false: the partner
   `A *ᵥ star ψ` of an eigenvector can vanish. The counterexample
   (`H = diag(0,1,1)`, `A` the antisymmetric unit of the `1`-eigenspace) and
@@ -1258,7 +1258,7 @@ In `QICLean.Channel.FixedPoint.Algebra`:
 #### Wolf Theorem 6.10 (Brouwer's fixed point theorem) — FORMALIZED
 
 * `brouwer_fixedPoint_compactConvex` — `QICLean.Topology.CompactConvexFixedPoint`;
-  the printed statement for every nonempty compact convex
+  the original statement for every nonempty compact convex
   `S ⊆ Fin n → ℝ` and continuous self-map of `S`.
 * `fixedPoint_of_compact_convex` — coordinate-free form for finite-dimensional
   real inner-product spaces.

@@ -304,7 +304,7 @@ every positive eigenvalue with a nonzero positive semidefinite eigenvector
 equals `r`, and `r` is the spectral radius.
 
 The value is allowed to be zero exactly to retain the one-dimensional zero-map
-boundary case omitted in Wolf's printed statement. -/
+boundary case omitted in Wolf's original statement. -/
 theorem exists_wolfTheorem63_of_irreducible_positive [NeZero D]
     (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
     (hT : IsPositiveMap T) (hIrr : IsIrreducibleMap T) :
@@ -355,7 +355,7 @@ theorem exists_wolfTheorem63_of_irreducible_positive [NeZero D]
 /-- **Wolf Theorem 6.3, source form.**  If the irreducible positive map is
 nonzero, the common Collatz--Wielandt value in
 `exists_wolfTheorem63_of_irreducible_positive` is strictly positive.  This is
-Wolf's printed statement with the necessary one-dimensional zero-map boundary
+Wolf's original statement with the necessary one-dimensional zero-map boundary
 excluded explicitly. -/
 theorem exists_wolfTheorem63_of_irreducible_positive_of_ne_zero [NeZero D]
     (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
