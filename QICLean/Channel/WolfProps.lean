@@ -42,8 +42,9 @@ Wolf's *Quantum Channels & Operations: Guided Tour*:
   every rank-one self-outer-product ray is a scalar multiple of the identity.
 * `WolfProps.linearMap_eq_id_of_fixes_rankOne` — Proposition 2.3 (linear-algebra
   form): a linear map fixing every `vecMulVec v (star v)` is the identity.
-* `WolfProps.linearMap_eq_of_eq_on_rankOne` — two linear maps that agree on every
-  `vecMulVec v (star v)` are equal.
+* `WolfProps.linearMap_eq_of_eq_on_rankOne` — two linear maps from a full matrix
+  algebra into any complex module that agree on every `vecMulVec v (star v)`
+  are equal.
 * `WolfProps.channel_eq_id_of_fixes_pureStates` — Proposition 2.3 (channel form):
   a quantum channel fixing every pure-state projector is the identity.
 * `WolfProps.pureEnsembleDensity_eq_of_isometric_mixing` — Proposition 2.4
@@ -344,22 +345,44 @@ theorem linearMap_eq_id_of_fixes_rankOne
     simpa [Matrix.vecMulVec_apply, Pi.star_apply, i₀] using hii
   simpa [hc_one] using hc
 
-/-- Two complex-linear matrix maps are equal if they agree on every rank-one
-self-outer-product `vecMulVec v (star v)`. -/
+/-- Two complex-linear maps from a full matrix algebra into an arbitrary complex module
+are equal if they agree on every rank-one self-outer-product `vecMulVec v (star v)`.
+
+Polarization first extends the hypothesis to all outer products `vecMulVec u (star v)`;
+the standard matrix units are scaled outer products, so linearity finishes the proof. -/
 theorem linearMap_eq_of_eq_on_rankOne
-    (T S : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    {E : Type*} [AddCommGroup E] [Module ℂ E]
+    (T S : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] E)
     (h : ∀ v : Fin D → ℂ,
       T (Matrix.vecMulVec v (star v)) = S (Matrix.vecMulVec v (star v))) :
     T = S := by
-  have hfix : T - S + LinearMap.id = LinearMap.id :=
-    linearMap_eq_id_of_fixes_rankOne (T - S + LinearMap.id) fun v ↦ by
-      simp only [LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply, h v,
-        sub_self, zero_add]
+  have houter (u v : Fin D → ℂ) :
+      T (Matrix.vecMulVec u (star v)) = S (Matrix.vecMulVec u (star v)) := by
+    have hpol := vecMulVec_star_eq_polarization u v
+    have hT := congrArg T hpol
+    have hS := congrArg S hpol
+    simp only [map_smul, map_sub, map_add, h] at hT hS
+    have h4 : (4 : ℂ) • T (Matrix.vecMulVec u (star v)) =
+        (4 : ℂ) • S (Matrix.vecMulVec u (star v)) := hT.trans hS.symm
+    exact smul_right_injective E (by norm_num : (4 : ℂ) ≠ 0) h4
   apply LinearMap.ext
   intro X
-  have hX := LinearMap.congr_fun hfix X
-  simpa only [LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply,
-    add_eq_right, sub_eq_zero] using hX
+  refine Matrix.induction_on' X ?_ ?_ ?_
+  · simp
+  · intro p q hp hq
+    simp only [map_add, hp, hq]
+  · intro i j x
+    have hstar : star (Pi.single j (1 : ℂ)) =
+        (Pi.single j (1 : ℂ) : Fin D → ℂ) := by
+      ext k
+      simp [Pi.single_apply, Pi.star_apply]
+    have hsingle : (Matrix.single i j x : Matrix (Fin D) (Fin D) ℂ) =
+        x • Matrix.vecMulVec (Pi.single i 1) (star (Pi.single j 1)) := by
+      rw [hstar]
+      rw [← Matrix.single_eq_single_vecMulVec_single (i := i) (j := j)]
+      ext p q
+      simp [Matrix.single_apply]
+    rw [hsingle, map_smul, map_smul, houter]
 
 /-- **Proposition 2.3 (Wolf), pure-state form**: any linear map (in particular any
 quantum channel) leaving every pure-state projector `vecMulVec v (star v)`

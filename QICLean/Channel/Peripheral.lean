@@ -29,6 +29,7 @@ import QICLean.Channel.Peripheral.JordanBlocks
 import QICLean.Channel.Peripheral.MultiCycleDecomposition
 import QICLean.Channel.Peripheral.PeriodicityRemoval
 import QICLean.Channel.Peripheral.Powers
+import QICLean.Channel.Peripheral.PureStateFace
 import QICLean.Channel.Peripheral.RecurrentInverse
 import QICLean.Channel.Peripheral.SchurAsymptoticConvergence
 import QICLean.Channel.Peripheral.SpectralProjection
