@@ -449,9 +449,9 @@ theorem spinorMatrix_boostExpSL2 (n : Fin 3 → ℝ) (hn : ∑ k, n k ^ 2 = 1) (
     spinorMatrix (boostExpSL2 n hn t) = NormedSpace.exp (t • boostGenerator n) := by
   rw [exp_smul_boostGenerator n hn]
   have hc : Real.cosh t = Real.cosh (t / 2) ^ 2 + Real.sinh (t / 2) ^ 2 := by
-    convert Real.cosh_two_mul (t / 2) using 1 ; ring
+    convert Real.cosh_two_mul (t / 2) using 1; ring
   have hs : Real.sinh t = 2 * Real.sinh (t / 2) * Real.cosh (t / 2) := by
-    convert Real.sinh_two_mul (t / 2) using 1 ; ring
+    convert Real.sinh_two_mul (t / 2) using 1; ring
   have hu : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1 := by
     simpa [Fin.sum_univ_three] using hn
   have hh := Real.cosh_sq_sub_sinh_sq (t / 2)
@@ -481,9 +481,9 @@ theorem spinorMatrix_rotationExpSL2 (n : Fin 3 → ℝ) (hn : ∑ k, n k ^ 2 = 1
       NormedSpace.exp (t • rotationGenerator n) := by
   rw [exp_smul_rotationGenerator n hn]
   have hc : Real.cos t = 2 * Real.cos (t / 2) ^ 2 - 1 := by
-    convert Real.cos_two_mul (t / 2) using 1 ; ring
+    convert Real.cos_two_mul (t / 2) using 1; ring
   have hs : Real.sin t = 2 * Real.sin (t / 2) * Real.cos (t / 2) := by
-    convert Real.sin_two_mul (t / 2) using 1 ; ring
+    convert Real.sin_two_mul (t / 2) using 1; ring
   have hu : n 0 ^ 2 + n 1 ^ 2 + n 2 ^ 2 = 1 := by
     simpa [Fin.sum_univ_three] using hn
   have hh := Real.cos_sq_add_sin_sq (t / 2)
