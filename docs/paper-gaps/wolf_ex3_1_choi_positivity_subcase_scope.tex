@@ -46,8 +46,12 @@ with zero-denominator summands read as $0$.  In the interior, put
 $y_i=x_{i-1}/x_i$, so that $\prod_i y_i=1$.  Clearing denominators expands the
 inequality in the elementary symmetric sums $e_k(y)$; AM--GM gives
 $e_k(y)\ge\binom{d}{k}$, and the resulting binomial expression is zero at the
-constant family.  On the boundary, if some $x_i$ vanishes, at most $d-1$
-summands are nonzero and each is at most $1/(d-1)$.\footnote{Formal
+constant family.  This is the proof route of Tanahashi--Tomiyama, Theorem~1
+and Lemmas~2--3~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable}:
+Lemma~3 supplies the reciprocal estimate and Theorem~1 applies the rank-one
+diagonal-minus-projector criterion of Lemma~2.  Their argument assumes the
+coordinates are positive.  On the boundary, if some $x_i$ vanishes, at most
+$d-1$ summands are nonzero and each is at most $1/(d-1)$.\footnote{Formal
 declarations: \leanid{Matrix.choiType\_cyclic\_reciprocal\_one\_of\_nonneg},
 \leanid{Matrix.choiTypeMap\_vecMulVec\_posSemidef\_one}, and
 \leanid{Matrix.choiTypeMap\_isPositiveMap\_one} in
@@ -98,8 +102,9 @@ already extends any such rank-one statement to positivity of \(T_C\) on all
 positive semidefinite matrices.
 
 The remaining estimate is genuinely harder than the proved cases.  The now
-formalized case $n=1$ is due to Tanahashi and
-Tomiyama~\cite{TanahashiTomiyama1988Indecomposable}, and the full range
+formalized case $n=1$ is Tanahashi--Tomiyama's Theorem~1, whose Lemmas~2--3
+give the exact proof route used here~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable},
+and the full range
 $1\le n\le d-1$ to Yamagami~\cite{Yamagami1993Cyclic}, whose proof is
 variational: it combines Nowosad's uniqueness theorem for critical points of
 \(x\mapsto\sum_i x_i/(Sx)_i\) on the positive cone, a spectral condition on

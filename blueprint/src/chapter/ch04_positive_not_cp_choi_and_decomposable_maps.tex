@@ -14,10 +14,11 @@ middle range $2\le n\le d-3$ and the indecomposability assertion remain open.
 The missing general positivity step is a cyclic reciprocal estimate for the
 weights in the rank-one reduction; it does not follow merely from equality of
 the total numerator and denominator weights. The general estimate is
-classical: the case $n=d-2$ is due to Ando, the case $n=1$ to Tanahashi and
-Tomiyama~\cite{TanahashiTomiyama1988Indecomposable}, and the whole range to
-Yamagami~\cite{Yamagami1993Cyclic}, whose proof is a variational argument on
-the boundary of a projective simplex.
+classical: the case $n=d-2$ is due to Ando, while the case $n=1$ is Theorem~1
+of Tanahashi and Tomiyama~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable}.
+Their Lemmas~2--3 use the same rank-one and product-one coefficient argument
+formalized below. The whole range is due to Yamagami~\cite{Yamagami1993Cyclic},
+whose proof is a variational argument on the boundary of a projective simplex.
 
 \begin{definition}[Choi-type map]
     \label{def:choi_type_map}
@@ -159,10 +160,12 @@ the boundary of a projective simplex.
 
 \begin{proof}
     \leanok
-    First suppose that every $x_i$ is positive and set
+    Following Tanahashi--Tomiyama, Lemma~3, first suppose that every $x_i$ is
+    positive and set
     $y_i=x_{i-1}/x_i$. Then $\prod_i y_i=1$, and the sum becomes
-    $\sum_i 1/(d-1+y_i)$. Clearing its positive common denominator reduces the
-    desired estimate to
+    $\sum_i 1/(d-1+y_i)$. After clearing its positive common denominator,
+    multiply the resulting non-negative difference by the positive factor
+    $d-1$. The desired estimate then reduces to
     \begin{align}
         \sum_{k=0}^{d}(k-1)(d-1)^{d-k}e_k(y)
          & \ge0,
@@ -175,7 +178,9 @@ the boundary of a projective simplex.
     $e_k(y)=\binom{d}{k}$ gives equality by the binomial identity obtained at
     $y_i=1$.
 
-    If some $x_i$ vanishes, at most $d-1$ summands are nonzero. Every nonzero
+    Tanahashi--Tomiyama assume positive coordinates at this step. To obtain the
+    source's unrestricted positive-map statement, suppose instead that some
+    $x_i$ vanishes. Then at most $d-1$ summands are nonzero. Every nonzero
     summand is at most $1/(d-1)$ because
     $(d-1)x_i+x_{i-1}\ge(d-1)x_i$, so their sum is again at most $1$.
 \end{proof}
