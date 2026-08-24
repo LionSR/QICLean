@@ -322,6 +322,96 @@ Section~\ref{sec:app_schwarz_trace_order}.
     (\ref{eq:schwarz_order_interval}) back into spectral bounds.
 \end{proof}
 
+\subsection{Weyl monotonicity and unitary comparison}
+
+\begin{theorem}[Weyl monotonicity in the Loewner order]
+    \label{thm:weyl_monotonicity_loewner}
+    \lean{LinearMap.IsSymmetric.eigenvalues_le_of_sub_isPositive,
+        Matrix.IsHermitian.eigenvalues₀_mono,
+        Matrix.IsHermitian.eigenvalues_mono}
+    \leanok
+    Let $A,B\in\MN{d}$ be Hermitian. If $A\leq B$, then their decreasingly
+    ordered eigenvalues satisfy
+    \begin{align}
+        \lambda_j^\downarrow(A)
+         & \leq \lambda_j^\downarrow(B)
+        \qquad (0\leq j<d).
+        \label{eq:schwarz_weyl_monotonicity}
+    \end{align}
+    This is the consequence of \cite[Equation~(5.56)]{Wolf2012Quantum}
+    used immediately before Proposition~5.3.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Let $S$ and $T$ be the symmetric endomorphisms associated with $A$ and
+    $B$. Fix $j$, let $P$ be the span of the first $j+1$ eigenvectors of
+    $S$, and let $Q$ be the span of the last $d-j$ eigenvectors of $T$.
+    Since $\dim P+\dim Q=d+1$, there is a nonzero vector
+    $x\in P\cap Q$. The two ordered spectral expansions and positivity of
+    $T-S$ give
+    \begin{align}
+        \lambda_j^\downarrow(A)\lVert x\rVert^2
+         & \leq \operatorname{Re}\langle Sx,x\rangle
+          \leq \operatorname{Re}\langle Tx,x\rangle
+          \leq \lambda_j^\downarrow(B)\lVert x\rVert^2.
+        \notag
+    \end{align}
+    Division by $\lVert x\rVert^2>0$ proves
+    (\ref{eq:schwarz_weyl_monotonicity}).
+\end{proof}
+
+\begin{theorem}[Unitary comparison for non-decreasing functions]
+    \label{thm:wolf_unitary_comparison}
+    \lean{Matrix.IsHermitian.exists_unitary_cfc_le_cfc_of_le}
+    \leanok
+    Let $A,B\in\MN{d}$ be Hermitian. The corrected form of
+    \cite[Proposition~5.3 and Equation~(5.57)]{Wolf2012Quantum} is, with
+    $\mathcal U(d)$ denoting the unitary matrices,
+    \begin{align}
+        A\leq B\quad\Longrightarrow\quad
+        \exists U\in\mathcal U(d)\quad
+        &\forall I\subseteq\R\ \forall f:\R\to\R, \notag\\
+        &\Bigl(I\text{ is an interval}\Bigr)\ \land
+          \Bigl(\spec(A)\cup\spec(B)\subseteq I\Bigr) \notag\\
+        &\land\ \Bigl(f\text{ is non-decreasing on }I\Bigr) \notag\\
+        &\Longrightarrow f(A)\leq U f(B)U^\dagger.
+        \label{eq:schwarz_unitary_comparison}
+    \end{align}
+    In particular, the unitary is chosen before the interval and the function;
+    it depends only on $A$ and $B$. No continuity hypothesis on $f$ is
+    required, since both spectra are finite.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:weyl_monotonicity_loewner}
+    Choose unitary eigenvector matrices $V_A,V_B$ in decreasing eigenvalue
+    order and set $U=V_AV_B^\dagger$. By
+    (\ref{eq:schwarz_weyl_monotonicity}) and monotonicity of $f$,
+    \begin{align}
+        f\bigl(\lambda_j^\downarrow(A)\bigr)
+         &\leq f\bigl(\lambda_j^\downarrow(B)\bigr)
+        \qquad (0\leq j<d).
+        \notag
+    \end{align}
+    Hence the corresponding diagonal matrices are ordered. Conjugating this
+    inequality by $V_A$ and using $U=V_AV_B^\dagger$ gives
+    (\ref{eq:schwarz_unitary_comparison}). The cross-matrix eigenvalue
+    comparison used here is Theorem~\ref{thm:weyl_monotonicity_loewner}, proved
+    by the preceding variational argument; it is not assumed separately.
+\end{proof}
+
+\begin{remark}[Necessity of the order hypothesis]
+    \label{rem:wolf_unitary_comparison_counterexample}
+    Wolf's printed proposition omits $A\leq B$ and is false in that form. In
+    dimension $d=1$, take $A=[1]$, $B=[0]$, $I=[0,1]$, and $f(x)=x$.
+    Every unitary is a scalar phase, so $Uf(B)U^\dagger=0$, whereas
+    (\ref{eq:schwarz_unitary_comparison}) without its order hypothesis would
+    assert $1\leq0$. The correction is recorded in
+    \cite{gap:wolf_ch5_unitary_comparison_missing_order}.
+\end{remark}
+
 \section{Positive Schwarz maps outside complete positivity}
 
 The following example shows that the Schwarz inequality does not force complete
