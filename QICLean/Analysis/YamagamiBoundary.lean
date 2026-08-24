@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.CyclicReciprocal
 import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Data.ZMod.Basic
 import Mathlib.Order.LiminfLimsup
 import Mathlib.Tactic.Abel
 import Mathlib.Tactic.FieldSimp
@@ -97,19 +97,23 @@ section OneStepCyclicFunction
 
 variable {N : ℕ} [NeZero N]
 
-/-- The denominator of Yamagami's `f_{N,m,s}` for the case `l = 1`, with
-the forward cyclic window used in the paper. -/
-def fnmsDenominator (m : ℕ) (s : ℝ) (x : ZMod N → ℝ) (i : ZMod N) : ℝ :=
-  (s - (m : ℝ)) * x i + ∑ k ∈ Finset.Icc 1 m, x (i + (k : ZMod N))
-
-/-- One summand of Yamagami's `f_{N,m,s}`. -/
-noncomputable def fnmsTerm (m : ℕ) (s : ℝ) (x : ZMod N → ℝ) (i : ZMod N) : ℝ :=
-  x i / fnmsDenominator m s x i
-
-/-- Yamagami's `f_{N,m,s}` for the case `l = 1`.  Division is Lean's
-totalized real division, so a boundary term `0 / 0` has value zero. -/
-noncomputable def fnms (m : ℕ) (s : ℝ) (x : ZMod N → ℝ) : ℝ :=
-  ∑ i, fnmsTerm m s x i
+omit [NeZero N] in
+private theorem forwardDenominator_eq_Icc
+    (m : ℕ) (s : ℝ) (x : ZMod N → ℝ) (i : ZMod N) :
+    forwardDenominator N m s x i =
+      (s - (m : ℝ)) * x i + ∑ k ∈ Finset.Icc 1 m, x (i + (k : ZMod N)) := by
+  unfold forwardDenominator
+  congr 1
+  change (∑ k : Fin m, (fun q : ℕ ↦ x (i + ((q + 1 : ℕ) : ZMod N))) k) = _
+  rw [Fin.sum_univ_eq_sum_range (fun q : ℕ ↦ x (i + ((q + 1 : ℕ) : ZMod N))) m,
+    ← Nat.Ico_zero_eq_range,
+    Finset.sum_Ico_add' (fun k : ℕ ↦ x (i + (k : ZMod N))) 0 m 1]
+  apply Finset.sum_congr
+  · ext k
+    simp only [Finset.mem_Ico, Finset.mem_Icc]
+    omega
+  · intro k _
+    rfl
 
 /-- The `m` terms immediately preceding the first positive coordinate after
 the zero run singled out in Yamagami's singular-boundary argument. -/
@@ -203,13 +207,13 @@ theorem precedingIndices_zero_and_reaches
 omit [NeZero N] in
 /-- At each of the `m` preceding indices, the limiting denominator is
 strictly positive because its forward window contains `a_j > 0`. -/
-theorem fnmsDenominator_pos_of_mem_preceding
+theorem forwardDenominator_pos_of_mem_preceding
     (m : ℕ) (s : ℝ) (a : ZMod N → ℝ) (j i : ZMod N)
     (ha : ∀ q, 0 ≤ a q) (hrun : HasSingularRun m a j)
     (hi : i ∈ precedingIndices m j) :
-    0 < fnmsDenominator m s a i := by
+    0 < forwardDenominator N m s a i := by
   obtain ⟨hizero, k, hk, hik⟩ := precedingIndices_zero_and_reaches m a j i hrun hi
-  rw [fnmsDenominator, hizero, mul_zero, zero_add]
+  rw [forwardDenominator_eq_Icc, hizero, mul_zero, zero_add]
   have hsingle : a j ≤ ∑ q ∈ Finset.Icc 1 m, a (i + (q : ZMod N)) := by
     rw [← hik]
     exact Finset.single_le_sum (s := Finset.Icc 1 m)
@@ -219,47 +223,45 @@ theorem fnmsDenominator_pos_of_mem_preceding
 
 omit [NeZero N] in
 /-- The cyclic denominator is continuous under coordinatewise convergence. -/
-theorem tendsto_fnmsDenominator
+theorem tendsto_forwardDenominator
     {α : Type*} {l : Filter α} (m : ℕ) (s : ℝ)
     (x : α → ZMod N → ℝ) (a : ZMod N → ℝ)
     (hx : Tendsto x l (𝓝 a)) (i : ZMod N) :
-    Tendsto (fun t ↦ fnmsDenominator m s (x t) i) l
-      (𝓝 (fnmsDenominator m s a i)) := by
-  unfold fnmsDenominator
+    Tendsto (fun t ↦ forwardDenominator N m s (x t) i) l
+      (𝓝 (forwardDenominator N m s a i)) := by
+  unfold forwardDenominator
   exact (tendsto_const_nhds.mul ((tendsto_pi_nhds.1 hx) i)).add
-    (tendsto_finsetSum (Finset.Icc 1 m) fun k _ ↦
-      (tendsto_pi_nhds.1 hx) (i + (k : ZMod N)))
+    (tendsto_finsetSum Finset.univ fun k _ ↦
+      (tendsto_pi_nhds.1 hx) (i + ((k.1 + 1 : ℕ) : ZMod N)))
 
 omit [NeZero N] in
 /-- A nonsingular cyclic summand is continuous under coordinatewise
 convergence. -/
-theorem tendsto_fnmsTerm_of_denominator_ne
+theorem tendsto_summand_of_denominator_ne
     {α : Type*} {l : Filter α} (m : ℕ) (s : ℝ)
     (x : α → ZMod N → ℝ) (a : ZMod N → ℝ)
     (hx : Tendsto x l (𝓝 a)) (i : ZMod N)
-    (hi : fnmsDenominator m s a i ≠ 0) :
-    Tendsto (fun t ↦ fnmsTerm m s (x t) i) l (𝓝 (fnmsTerm m s a i)) := by
-  have hquot :=
-    (tendsto_pi_nhds.1 hx i).div (tendsto_fnmsDenominator m s x a hx i) hi
-  refine Tendsto.congr' ?_ hquot
-  exact Eventually.of_forall fun _ ↦ rfl
+    (hi : forwardDenominator N m s a i ≠ 0) :
+    Tendsto (fun t ↦ x t i / forwardDenominator N m s (x t) i) l
+      (𝓝 (a i / forwardDenominator N m s a i)) :=
+  (tendsto_pi_nhds.1 hx i).div (tendsto_forwardDenominator m s x a hx i) hi
 
 omit [NeZero N] in
 /-- The `m` source-designated summands tend to zero along any approximating
 filter.  Their numerators tend to zero and their limiting denominators contain
 the fixed positive coordinate `a_j`. -/
-theorem tendsto_fnmsTerm_zero_of_mem_preceding
+theorem tendsto_summand_zero_of_mem_preceding
     {α : Type*} {l : Filter α} (m : ℕ) (s : ℝ)
     (x : α → ZMod N → ℝ) (a : ZMod N → ℝ) (j i : ZMod N)
     (hx : Tendsto x l (𝓝 a)) (ha : ∀ q, 0 ≤ a q)
     (hrun : HasSingularRun m a j) (hi : i ∈ precedingIndices m j) :
-    Tendsto (fun t ↦ fnmsTerm m s (x t) i) l (𝓝 0) := by
+    Tendsto (fun t ↦ x t i / forwardDenominator N m s (x t) i) l (𝓝 0) := by
   have hizero := (precedingIndices_zero_and_reaches m a j i hrun hi).1
-  have hdenom := fnmsDenominator_pos_of_mem_preceding m s a j i ha hrun hi
+  have hdenom := forwardDenominator_pos_of_mem_preceding m s a j i ha hrun hi
   have hquot :=
-    (tendsto_pi_nhds.1 hx i).div (tendsto_fnmsDenominator m s x a hx i) hdenom.ne'
+    (tendsto_pi_nhds.1 hx i).div (tendsto_forwardDenominator m s x a hx i) hdenom.ne'
   have hquotZero : Tendsto
-      ((fun t ↦ x t i) / fun t ↦ fnmsDenominator m s (x t) i) l (𝓝 0) := by
+      ((fun t ↦ x t i) / fun t ↦ forwardDenominator N m s (x t) i) l (𝓝 0) := by
     simpa [hizero] using hquot
   refine Tendsto.congr' ?_ hquotZero
   exact Eventually.of_forall fun _ ↦ rfl
@@ -267,24 +269,24 @@ theorem tendsto_fnmsTerm_zero_of_mem_preceding
 omit [NeZero N] in
 /-- On the strictly positive cone, every summand is nonnegative and is at
 most the common source coefficient `1 / (s - m)`. -/
-theorem fnmsTerm_nonneg_and_le
+theorem summand_nonneg_and_le
     (m : ℕ) (s : ℝ) (x : ZMod N → ℝ) (hs : (m : ℝ) < s)
     (hx : ∀ q, 0 < x q) (i : ZMod N) :
-    0 ≤ fnmsTerm m s x i ∧ fnmsTerm m s x i ≤ 1 / (s - (m : ℝ)) := by
+    0 ≤ x i / forwardDenominator N m s x i ∧
+      x i / forwardDenominator N m s x i ≤ 1 / (s - (m : ℝ)) := by
   have hc : 0 < s - (m : ℝ) := sub_pos.mpr hs
   have hsum : 0 ≤ ∑ k ∈ Finset.Icc 1 m, x (i + (k : ZMod N)) :=
     Finset.sum_nonneg fun k _ ↦ (hx (i + (k : ZMod N))).le
-  have hdenom : 0 < fnmsDenominator m s x i := by
-    unfold fnmsDenominator
+  have hdenom : 0 < forwardDenominator N m s x i := by
+    rw [forwardDenominator_eq_Icc]
     exact add_pos_of_pos_of_nonneg (mul_pos hc (hx i)) hsum
   constructor
   · exact div_nonneg (hx i).le hdenom.le
-  · have hbase : (s - (m : ℝ)) * x i ≤ fnmsDenominator m s x i := by
-      unfold fnmsDenominator
+  · have hbase : (s - (m : ℝ)) * x i ≤ forwardDenominator N m s x i := by
+      rw [forwardDenominator_eq_Icc]
       exact le_add_of_nonneg_right hsum
     calc
-      fnmsTerm m s x i = x i / fnmsDenominator m s x i := rfl
-      _ ≤ x i / ((s - (m : ℝ)) * x i) :=
+      x i / forwardDenominator N m s x i ≤ x i / ((s - (m : ℝ)) * x i) :=
         div_le_div_of_nonneg_left (hx i).le (mul_pos hc (hx i)) hbase
       _ = 1 / (s - (m : ℝ)) := by
         field_simp [hc.ne', (hx i).ne']
@@ -292,16 +294,16 @@ theorem fnmsTerm_nonneg_and_le
 omit [NeZero N] in
 /-- With nonnegative coordinates and `s > m`, a zero cyclic denominator has
 zero numerator.  Hence its totalized boundary summand is `0 / 0 = 0`. -/
-theorem eq_zero_of_fnmsDenominator_eq_zero
+theorem eq_zero_of_forwardDenominator_eq_zero
     (m : ℕ) (s : ℝ) (x : ZMod N → ℝ) (hs : (m : ℝ) < s)
     (hx : ∀ q, 0 ≤ x q) (i : ZMod N)
-    (hi : fnmsDenominator m s x i = 0) : x i = 0 := by
+    (hi : forwardDenominator N m s x i = 0) : x i = 0 := by
   by_contra hxi
   have hxipos : 0 < x i := lt_of_le_of_ne (hx i) (Ne.symm hxi)
   have hsum : 0 ≤ ∑ k ∈ Finset.Icc 1 m, x (i + (k : ZMod N)) :=
     Finset.sum_nonneg fun k _ ↦ hx (i + (k : ZMod N))
-  have hdenom : 0 < fnmsDenominator m s x i := by
-    unfold fnmsDenominator
+  have hdenom : 0 < forwardDenominator N m s x i := by
+    rw [forwardDenominator_eq_Icc]
     exact add_pos_of_pos_of_nonneg (mul_pos (sub_pos.mpr hs) hxipos) hsum
   exact hdenom.ne' hi
 
@@ -309,32 +311,32 @@ omit [NeZero N] in
 /-- A singular denominator is exactly a zero numerator followed by `m` zero
 coordinates.  This records the `m + 1` consecutive zeros from which
 Yamagami begins the singular-boundary count. -/
-theorem fnmsDenominator_eq_zero_iff
+theorem forwardDenominator_eq_zero_iff
     (m : ℕ) (s : ℝ) (x : ZMod N → ℝ) (hs : (m : ℝ) < s)
     (hx : ∀ q, 0 ≤ x q) (i : ZMod N) :
-    fnmsDenominator m s x i = 0 ↔
+    forwardDenominator N m s x i = 0 ↔
       x i = 0 ∧ ∀ k ∈ Finset.Icc 1 m, x (i + (k : ZMod N)) = 0 := by
   constructor
   · intro hi
-    have hxi := eq_zero_of_fnmsDenominator_eq_zero m s x hs hx i hi
+    have hxi := eq_zero_of_forwardDenominator_eq_zero m s x hs hx i hi
     refine ⟨hxi, ?_⟩
     have hsum : (∑ k ∈ Finset.Icc 1 m, x (i + (k : ZMod N))) = 0 := by
-      simpa [fnmsDenominator, hxi] using hi
+      simpa [forwardDenominator_eq_Icc, hxi] using hi
     exact (Finset.sum_eq_zero_iff_of_nonneg
       (s := Finset.Icc 1 m) (f := fun k : ℕ ↦ x (i + (k : ZMod N)))
       (fun k _ ↦ hx (i + (k : ZMod N)))).mp hsum
   · rintro ⟨hxi, hwindow⟩
-    rw [fnmsDenominator, hxi, mul_zero, zero_add]
+    rw [forwardDenominator_eq_Icc, hxi, mul_zero, zero_add]
     exact Finset.sum_eq_zero hwindow
 
 /-- A singular denominator in a nonzero nonnegative vector supplies the
 zero run singled out in Yamagami's simultaneous-singularity sentence.  The
 positive endpoint is the first positive coordinate encountered after the
 denominator's zero forward window. -/
-theorem exists_hasSingularRun_of_fnmsDenominator_eq_zero
+theorem exists_hasSingularRun_of_forwardDenominator_eq_zero
     (m : ℕ) (s : ℝ) (a : ZMod N → ℝ) (i : ZMod N)
     (hs : (m : ℝ) < s) (ha : ∀ q, 0 ≤ a q) (hne : a ≠ 0)
-    (hi : fnmsDenominator m s a i = 0) :
+    (hi : forwardDenominator N m s a i = 0) :
     ∃ j, HasSingularRun m a j := by
   apply exists_hasSingularRun_of_zero_window m a i ha
   · by_contra hpos
@@ -344,7 +346,7 @@ theorem exists_hasSingularRun_of_fnmsDenominator_eq_zero
     · exact not_lt.mp (fun hq ↦ hpos ⟨q, hq⟩)
     · exact ha q
   · obtain ⟨hai, hforward⟩ :=
-      (fnmsDenominator_eq_zero_iff m s a hs ha i).mp hi
+      (forwardDenominator_eq_zero_iff m s a hs ha i).mp hi
     intro k hk
     rw [Finset.mem_Icc] at hk
     by_cases hk0 : k = 0
@@ -354,42 +356,43 @@ theorem exists_hasSingularRun_of_fnmsDenominator_eq_zero
 /-- Yamagami's omitted simultaneous-singularity estimate for `l = 1`.
 The one source-designated zero run supplies all `m` vanishing summands at
 once, and the complement has `N - m` terms. -/
-theorem limsup_fnms_le_sub_ratio_of_singularRun
+theorem limsup_functional_le_sub_ratio_of_singularRun
     {α : Type*} {l : Filter α} [NeBot l]
     (m : ℕ) (s : ℝ) (x : α → ZMod N → ℝ) (a : ZMod N → ℝ) (j : ZMod N)
     (hmN : m < N) (hs : (m : ℝ) < s)
     (hx : Tendsto x l (𝓝 a)) (hxpos : ∀ᶠ t in l, ∀ i, 0 < x t i)
     (ha : ∀ i, 0 ≤ a i) (hrun : HasSingularRun m a j) :
-    limsup (fun t ↦ fnms m s (x t)) l ≤
+    limsup (fun t ↦ functional N m s (x t)) l ≤
       ((N - m : ℕ) : ℝ) / (s - (m : ℝ)) := by
   have hcard : (Finset.univ \ precedingIndices m j).card = N - m := by
     rw [Finset.card_sdiff_of_subset (precedingIndices m j).subset_univ, Finset.card_univ,
       ZMod.card, card_precedingIndices m j hmN]
   have hlim := limsup_sum_le_card_mul_of_tendsto_zero_on
-    (u := fun t i ↦ fnmsTerm m s (x t) i) (V := precedingIndices m j)
+    (u := fun t i ↦ x t i / forwardDenominator N m s (x t) i)
+    (V := precedingIndices m j)
     (c := 1 / (s - (m : ℝ)))
-    (fun i hi ↦ tendsto_fnmsTerm_zero_of_mem_preceding m s x a j i hx ha hrun hi)
-    (hxpos.mono fun t ht i ↦ (fnmsTerm_nonneg_and_le m s (x t) hs ht i).1)
-    (hxpos.mono fun t ht i _ ↦ (fnmsTerm_nonneg_and_le m s (x t) hs ht i).2)
-  simpa [fnms, hcard, div_eq_mul_inv] using hlim
+    (fun i hi ↦ tendsto_summand_zero_of_mem_preceding m s x a j i hx ha hrun hi)
+    (hxpos.mono fun t ht i ↦ (summand_nonneg_and_le m s (x t) hs ht i).1)
+    (hxpos.mono fun t ht i _ ↦ (summand_nonneg_and_le m s (x t) hs ht i).2)
+  simpa [functional, hcard, div_eq_mul_inv] using hlim
 
 /-- Yamagami's singular-boundary estimate stated from the boundary condition
 itself: at least one denominator vanishes in a nonzero nonnegative vector.
 The first-positive lemma constructs the source-designated zero run, after
 which the global `N - m` count applies. -/
-theorem limsup_fnms_le_sub_ratio_of_singularDenominator
+theorem limsup_functional_le_sub_ratio_of_singularDenominator
     {α : Type*} {l : Filter α} [NeBot l]
     (m : ℕ) (s : ℝ) (x : α → ZMod N → ℝ) (a : ZMod N → ℝ)
     (hmN : m < N) (hs : (m : ℝ) < s)
     (hx : Tendsto x l (𝓝 a)) (hxpos : ∀ᶠ t in l, ∀ i, 0 < x t i)
     (ha : ∀ i, 0 ≤ a i) (hne : a ≠ 0)
-    (hsingular : ∃ i, fnmsDenominator m s a i = 0) :
-    limsup (fun t ↦ fnms m s (x t)) l ≤
+    (hsingular : ∃ i, forwardDenominator N m s a i = 0) :
+    limsup (fun t ↦ functional N m s (x t)) l ≤
       ((N - m : ℕ) : ℝ) / (s - (m : ℝ)) := by
   obtain ⟨i, hi⟩ := hsingular
   obtain ⟨j, hrun⟩ :=
-    exists_hasSingularRun_of_fnmsDenominator_eq_zero m s a i hs ha hne hi
-  exact limsup_fnms_le_sub_ratio_of_singularRun m s x a j hmN hs hx hxpos ha hrun
+    exists_hasSingularRun_of_forwardDenominator_eq_zero m s a i hs ha hne hi
+  exact limsup_functional_le_sub_ratio_of_singularRun m s x a j hmN hs hx hxpos ha hrun
 
 omit [NeZero N] in
 /-- The elementary comparison displayed by Yamagami:
@@ -405,30 +408,30 @@ theorem sub_ratio_le_card_ratio
 
 /-- The singular-boundary limsup is at most the interior value `N / s`.
 This is equation (5) of Yamagami's proof, with the suppressed simultaneous
-`0 / 0` case supplied by `limsup_fnms_le_sub_ratio_of_singularRun`. -/
-theorem limsup_fnms_le_card_ratio_of_singularRun
+`0 / 0` case supplied by `limsup_functional_le_sub_ratio_of_singularRun`. -/
+theorem limsup_functional_le_card_ratio_of_singularRun
     {α : Type*} {l : Filter α} [NeBot l]
     (m : ℕ) (s : ℝ) (x : α → ZMod N → ℝ) (a : ZMod N → ℝ) (j : ZMod N)
     (hmN : m < N) (hs : (m : ℝ) < s) (hNs : (N : ℝ) ≤ s)
     (hx : Tendsto x l (𝓝 a)) (hxpos : ∀ᶠ t in l, ∀ i, 0 < x t i)
     (ha : ∀ i, 0 ≤ a i) (hrun : HasSingularRun m a j) :
-    limsup (fun t ↦ fnms m s (x t)) l ≤ (N : ℝ) / s :=
-  (limsup_fnms_le_sub_ratio_of_singularRun m s x a j hmN hs hx hxpos ha hrun).trans
+    limsup (fun t ↦ functional N m s (x t)) l ≤ (N : ℝ) / s :=
+  (limsup_functional_le_sub_ratio_of_singularRun m s x a j hmN hs hx hxpos ha hrun).trans
     (sub_ratio_le_card_ratio m N s hmN hs hNs)
 
 /-- Equation (5) in Yamagami's singular-boundary case, including the
 suppressed possibility of several vanishing denominators.  No zero-block
 decomposition is used: one singular denominator and the first positive
 coordinate after its window provide all `m` vanishing summands. -/
-theorem limsup_fnms_le_card_ratio_of_singularDenominator
+theorem limsup_functional_le_card_ratio_of_singularDenominator
     {α : Type*} {l : Filter α} [NeBot l]
     (m : ℕ) (s : ℝ) (x : α → ZMod N → ℝ) (a : ZMod N → ℝ)
     (hmN : m < N) (hs : (m : ℝ) < s) (hNs : (N : ℝ) ≤ s)
     (hx : Tendsto x l (𝓝 a)) (hxpos : ∀ᶠ t in l, ∀ i, 0 < x t i)
     (ha : ∀ i, 0 ≤ a i) (hne : a ≠ 0)
-    (hsingular : ∃ i, fnmsDenominator m s a i = 0) :
-    limsup (fun t ↦ fnms m s (x t)) l ≤ (N : ℝ) / s :=
-  (limsup_fnms_le_sub_ratio_of_singularDenominator
+    (hsingular : ∃ i, forwardDenominator N m s a i = 0) :
+    limsup (fun t ↦ functional N m s (x t)) l ≤ (N : ℝ) / s :=
+  (limsup_functional_le_sub_ratio_of_singularDenominator
     m s x a hmN hs hx hxpos ha hne hsingular).trans
       (sub_ratio_le_card_ratio m N s hmN hs hNs)
 
@@ -440,22 +443,23 @@ Lean's totalized value of each omitted `0 / 0` term is zero.
 
 This theorem does not prove the strictly positive inequality supplied as
 `hpositive`. -/
-theorem fnms_le_of_strictlyPositive
+theorem functional_le_of_strictlyPositive
     (m : ℕ) (s B : ℝ) (x : ZMod N → ℝ) (hs : (m : ℝ) < s)
     (hx : ∀ i, 0 ≤ x i)
-    (hpositive : ∀ y : ZMod N → ℝ, (∀ i, 0 < y i) → fnms m s y ≤ B) :
-    fnms m s x ≤ B := by
+    (hpositive : ∀ y : ZMod N → ℝ, (∀ i, 0 < y i) → functional N m s y ≤ B) :
+    functional N m s x ≤ B := by
   classical
   let R : Finset (ZMod N) :=
-    Finset.univ.filter fun i ↦ fnmsDenominator m s x i ≠ 0
-  have hregular : fnms m s x = ∑ i ∈ R, fnmsTerm m s x i := by
-    rw [fnms, Finset.sum_subset (Finset.subset_univ R)]
+    Finset.univ.filter fun i ↦ forwardDenominator N m s x i ≠ 0
+  have hregular : functional N m s x =
+      ∑ i ∈ R, x i / forwardDenominator N m s x i := by
+    rw [functional, Finset.sum_subset (Finset.subset_univ R)]
     intro i _ hi
-    have hdenom : fnmsDenominator m s x i = 0 := by
+    have hdenom : forwardDenominator N m s x i = 0 := by
       simp only [R, Finset.mem_filter, Finset.mem_univ, true_and] at hi
       exact not_ne_iff.mp hi
-    have hxi := eq_zero_of_fnmsDenominator_eq_zero m s x hs hx i hdenom
-    simp [fnmsTerm, hxi, hdenom]
+    have hxi := eq_zero_of_forwardDenominator_eq_zero m s x hs hx i hdenom
+    simp [hxi, hdenom]
   let y : ℕ → ZMod N → ℝ := fun n i ↦ x i + 1 / ((n : ℝ) + 1)
   have hypos : ∀ n i, 0 < y n i := by
     intro n i
@@ -466,28 +470,31 @@ theorem fnms_le_of_strictlyPositive
     simpa [y] using
       tendsto_const_nhds.add (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ))
   have hregularTend :
-      Tendsto (fun n ↦ ∑ i ∈ R, fnmsTerm m s (y n) i) atTop (𝓝 (fnms m s x)) := by
+      Tendsto (fun n ↦ ∑ i ∈ R, y n i / forwardDenominator N m s (y n) i)
+        atTop (𝓝 (functional N m s x)) := by
     rw [hregular]
     exact tendsto_finsetSum R fun i hi ↦
-      tendsto_fnmsTerm_of_denominator_ne m s y x hytend i (Finset.mem_filter.mp hi).2
-  have hregular_le : ∀ n, (∑ i ∈ R, fnmsTerm m s (y n) i) ≤ B := by
+      tendsto_summand_of_denominator_ne m s y x hytend i (Finset.mem_filter.mp hi).2
+  have hregular_le : ∀ n,
+      (∑ i ∈ R, y n i / forwardDenominator N m s (y n) i) ≤ B := by
     intro n
-    have hsubset : (∑ i ∈ R, fnmsTerm m s (y n) i) ≤ fnms m s (y n) := by
-      rw [fnms]
+    have hsubset : (∑ i ∈ R, y n i / forwardDenominator N m s (y n) i) ≤
+        functional N m s (y n) := by
+      rw [functional]
       exact Finset.sum_le_sum_of_subset_of_nonneg R.subset_univ fun i _ _ ↦
-        (fnmsTerm_nonneg_and_le m s (y n) hs (hypos n) i).1
+        (summand_nonneg_and_le m s (y n) hs (hypos n) i).1
     exact hsubset.trans (hpositive (y n) (hypos n))
   exact le_of_tendsto' hregularTend hregular_le
 
 /-- The direct `0 / 0 = 0` nonnegative cyclic inequality, conditional only
 on the corresponding strictly positive inequality. -/
-theorem fnms_le_card_ratio_of_strictlyPositive
+theorem functional_le_card_ratio_of_strictlyPositive
     (m : ℕ) (s : ℝ) (x : ZMod N → ℝ) (hs : (m : ℝ) < s)
     (hx : ∀ i, 0 ≤ x i)
     (hpositive : ∀ y : ZMod N → ℝ, (∀ i, 0 < y i) →
-      fnms m s y ≤ (N : ℝ) / s) :
-    fnms m s x ≤ (N : ℝ) / s :=
-  fnms_le_of_strictlyPositive m s ((N : ℝ) / s) x hs hx hpositive
+      functional N m s y ≤ (N : ℝ) / s) :
+    functional N m s x ≤ (N : ℝ) / s :=
+  functional_le_of_strictlyPositive m s ((N : ℝ) / s) x hs hx hpositive
 
 end OneStepCyclicFunction
 
