@@ -618,12 +618,14 @@ so that the cited formal statements are available from the main project import.
   entangled density operator on `ℂ^d ⊗ ℂ^{d'}` yields an indecomposable positive
   map `T : M_d(ℂ) → M_{d'}(ℂ)`, by Proposition 3.4 at `n = 1` and the
   contrapositive of decomposable-PPT preservation ✓
-- The reverse implication remains open. It requires the explicit
-  decomposable-witness cone `W = P₁ + P₂^{T₁}` from Equation (3.15), the
-  rectangular map--witness equivalence, closedness of that cone,
-  self-adjointness of partial transpose for the trace pairing, and the
-  separating-hyperplane argument. Proposition 3.5 is therefore not recorded
-  as fully formalized; see
+- `Matrix.IsDecomposableWitness` and
+  `ChoiRectangular.isDecomposablePositiveMap_iff_choiMatrix_traceAdjointMap_isDecomposableWitness`
+  — the explicit Equation (3.15) cone `W = P₁ + P₂^{T₁}` and its rectangular
+  trace-adjoint Choi correspondence with decomposable maps ✓
+- The reverse implication remains open. It requires closedness of the
+  decomposable-witness cone, self-adjointness of partial transpose for the
+  trace pairing, and the separating-hyperplane argument. Proposition 3.5 is
+  therefore not recorded as fully formalized; see
   `docs/paper-gaps/wolf_prop3_5_reverse_implication.tex`.
 
 #### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — PARTIALLY FORMALIZED
