@@ -724,6 +724,12 @@ so that the cited formal statements are available from the main project import.
   cyclic matrix is nonnegative and invertible, its negative-Hessian
   representative is positive semidefinite with kernel `ℝ · 1`, and the
   concrete functional is exactly `λ_{S⁻¹}(Sx)` ✓
+- `Yamagami.deleteLastCoordinate` and
+  `Yamagami.functional_le_deleteLastCoordinate` formalize the p. 525
+  regular-boundary recurrence. In the exact range `N ≥ 3`,
+  `2 ≤ m ≤ N - 2`, and `s ≥ N`, deleting a zero final coordinate gives
+  `f_{N,m,s}(x) ≤ f_{N-1,m-1,s-1}(x')`, including when the reduced vector has
+  a singular denominator under Lean's totalized division ✓
 - `Nowosad.inducedHilbertNorm_sq` and
   `Nowosad.exists_inducedHilbertNorm_bound` identify the norm induced by the
   faithful coordinate-sum functional with the finite `L²` norm and prove that
@@ -767,11 +773,10 @@ so that the cited formal statements are available from the main project import.
   a maximal-block decomposition ✓
 - `Yamagami.functional_le_card_ratio_of_strictlyPositive` transfers an
   already proved strictly positive inequality to Lean's direct nonnegative
-  `0 / 0 = 0` value. This theorem is conditional; the positive-interior input
-  and the regular-boundary induction are still required. The finite Nowosad
-  theorem and the cyclic Fourier--Hessian package supply the abstract
-  uniqueness and concrete matrix prerequisites, but they supply neither a
-  proof that the unit vector is a local maximum nor the global inequality. See
+  `0 / 0 = 0` value. This theorem is conditional. The regular-boundary
+  recurrence is now formalized, but the finite Nowosad theorem and the cyclic
+  Fourier--Hessian package supply neither a proof that the unit vector is a
+  local maximum nor the compact global maximization argument. See
   `docs/paper-gaps/yamagami93_simultaneous_singularity_boundary.tex` ✓
 - Positivity in the middle range `2 ≤ n ≤ d - 3` remains open; its exact
   scope and cyclic reciprocal inequality are recorded in
