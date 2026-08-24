@@ -10,6 +10,7 @@ import QICLean.Analysis.TraceNormContractivity
 import QICLean.Analysis.TraceNormFrobenius
 import QICLean.Channel.Determinant.Bound
 import QICLean.Channel.FixedPoint.StationaryStates
+import QICLean.Channel.Peripheral.CesaroRecurrence
 import QICLean.Channel.Peripheral.SpectralProjection
 import QICLean.Channel.TransferMatrix
 
@@ -69,6 +70,15 @@ noncomputable def transferMatrixFin
     (T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)) :
     Matrix (Fin (D * D)) (Fin (D * D)) ℂ :=
   Matrix.reindex finProdFinEquiv finProdFinEquiv (transferMatrix T)
+
+/-- Canonical coordinate relabelling commutes with powers of transfer
+matrices. -/
+theorem transferMatrixFin_pow
+    (T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)) (n : ℕ) :
+    transferMatrixFin T ^ n =
+      Matrix.reindex finProdFinEquiv finProdFinEquiv (transferMatrix T ^ n) := by
+  exact (map_pow (Matrix.reindexAlgEquiv ℂ ℂ finProdFinEquiv)
+    (transferMatrix T) n).symm
 
 /-- Relabelling the transfer-matrix coordinates does not change the
 eigenvalues of the represented endomorphism. -/
@@ -406,3 +416,183 @@ theorem IsPositiveMap.exists_wolf_eq_111_schur_data
       · rw [T.subperipheralModulus_eq_zero_of_empty
           (Set.not_nonempty_iff_eq_empty.mp hsub)]
         exact norm_nonneg Λ
+
+/-- Wolf's Schur data with the source-order nilpotent-part estimate
+`‖N‖ ≤ μ + 2 √D`.
+
+The two `√D` terms bound the Hilbert--Schmidt operator norms of `T` and
+`T_ϕ = T T_φ`, respectively.  Positivity and trace preservation of the
+phase-weighted map follow from those of `T`; complete positivity is not used.
+
+Source: Wolf, Chapter 8, proof of Equation (8.111), local source lines
+1314--1316. -/
+theorem IsPositiveMap.exists_wolf_eq_111_schur_data_with_bound
+    [NeZero D] {T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
+    ∃ (U : Matrix.unitaryGroup (Fin (D * D)) ℂ)
+        (Λ N : Matrix (Fin (D * D)) (Fin (D * D)) ℂ),
+      IsDiag Λ ∧ IsStrictlyUpperTriangular N ∧
+      transferMatrixFin (T - T.peripheralWeightedProjection) =
+        (U : Matrix (Fin (D * D)) (Fin (D * D)) ℂ) * (Λ + N) *
+          (U : Matrix (Fin (D * D)) (Fin (D * D)) ℂ)ᴴ ∧
+      (∀ z : ℂ, (∃ i : Fin (D * D), Λ i i = z) ↔
+        z = 0 ∨ z ∈ T.subperipheralSpectrum) ∧
+      ‖Λ‖ = T.subperipheralModulus ∧
+      ‖N‖ ≤ T.subperipheralModulus + 2 * Real.sqrt D := by
+  obtain ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm⟩ :=
+    hPos.exists_wolf_eq_111_schur_data hTP
+  refine ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm, ?_⟩
+  have hWPos : IsPositiveMap T.peripheralWeightedProjection :=
+    hPos.peripheralWeightedProjection_isPositiveMap hTP
+  have hWTP : IsTracePreservingMap T.peripheralWeightedProjection :=
+    hPos.peripheralWeightedProjection_isTracePreservingMap hTP
+  have hA_bound :
+      ‖transferMatrixFin (T - T.peripheralWeightedProjection)‖ ≤
+        2 * Real.sqrt D := by
+    calc
+      ‖transferMatrixFin (T - T.peripheralWeightedProjection)‖ =
+          ‖transferMatrix (T - T.peripheralWeightedProjection)‖ := by
+        rw [transferMatrixFin, Matrix.l2_opNorm_reindex_equiv]
+      _ = ‖transferMatrix T -
+          transferMatrix T.peripheralWeightedProjection‖ := by
+        rw [show transferMatrix (T - T.peripheralWeightedProjection) =
+            transferMatrix T - transferMatrix T.peripheralWeightedProjection from
+          (transferMatrixLM (D := D)).map_sub T T.peripheralWeightedProjection]
+      _ ≤ ‖transferMatrix T‖ +
+          ‖transferMatrix T.peripheralWeightedProjection‖ := norm_sub_le _ _
+      _ = Matrix.hilbertSchmidtOperatorNorm T +
+          Matrix.hilbertSchmidtOperatorNorm T.peripheralWeightedProjection := by
+        rw [l2_opNorm_transferMatrix_eq_hilbertSchmidtOperatorNorm,
+          l2_opNorm_transferMatrix_eq_hilbertSchmidtOperatorNorm]
+      _ ≤ Real.sqrt D + Real.sqrt D :=
+        add_le_add (hPos.hilbertSchmidtOperatorNorm_le_sqrt_dim hTP)
+          (hWPos.hilbertSchmidtOperatorNorm_le_sqrt_dim hWTP)
+      _ = 2 * Real.sqrt D := by ring
+  have hform_norm :
+      ‖transferMatrixFin (T - T.peripheralWeightedProjection)‖ = ‖Λ + N‖ := by
+    rw [hform, ← Matrix.star_eq_conjTranspose, ← Unitary.coe_star,
+      CStarRing.norm_mul_coe_unitary, CStarRing.norm_coe_unitary_mul]
+  calc
+    ‖N‖ = ‖(Λ + N) - Λ‖ := by rw [add_sub_cancel_left]
+    _ ≤ ‖Λ + N‖ + ‖Λ‖ := norm_sub_le _ _
+    _ = ‖transferMatrixFin (T - T.peripheralWeightedProjection)‖ +
+        T.subperipheralModulus := by rw [hform_norm, hΛnorm]
+    _ ≤ 2 * Real.sqrt D + T.subperipheralModulus :=
+      by simpa [add_comm] using add_le_add_right hA_bound T.subperipheralModulus
+    _ = T.subperipheralModulus + 2 * Real.sqrt D := by ring
+
+/-! ### Channel-level Equation (8.111) -/
+
+/-- **Wolf Equation (8.111), channel-level coarse estimate.**
+
+For a positive trace-preserving map, this constructs the Schur data of
+`T - T_ϕ`, identifies the diagonal norm with the common subperipheral
+modulus `μ`, bounds the strictly upper-triangular part by `μ + 2 √D`,
+and proves the coarse power estimate.
+
+The natural exponent is restricted to the range in which Wolf's exponent
+`n - D² + 1` is nonnegative.  The additional hypothesis `0 < n` is logically
+independent when `D = 1` and is required by
+`Tⁿ - T_ϕⁿ = (T - T_ϕ)ⁿ`.  No division by `μ` is used, so `μ = 0`
+is included; at the boundary `n = D² - 1`, Lean's convention `0 ^ 0 = 1`
+gives the correct natural-power form of the estimate.
+
+Source: Wolf, Chapter 8, Theorem "Asymptotic convergence II", Equation
+(8.111), local source lines 1299--1316. -/
+theorem IsPositiveMap.exists_wolf_eq_111
+    [NeZero D] {T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
+    {n : ℕ} (hn : 0 < n) (hn_ge : D * D - 1 ≤ n) :
+    ∃ (U : Matrix.unitaryGroup (Fin (D * D)) ℂ)
+        (Λ N : Matrix (Fin (D * D)) (Fin (D * D)) ℂ),
+      IsDiag Λ ∧ IsStrictlyUpperTriangular N ∧
+      transferMatrixFin (T - T.peripheralWeightedProjection) =
+        (U : Matrix (Fin (D * D)) (Fin (D * D)) ℂ) * (Λ + N) *
+          (U : Matrix (Fin (D * D)) (Fin (D * D)) ℂ)ᴴ ∧
+      (∀ z : ℂ, (∃ i : Fin (D * D), Λ i i = z) ↔
+        z = 0 ∨ z ∈ T.subperipheralSpectrum) ∧
+      ‖Λ‖ = T.subperipheralModulus ∧
+      ‖N‖ ≤ T.subperipheralModulus + 2 * Real.sqrt D ∧
+      ‖transferMatrix T ^ n -
+          transferMatrix T.peripheralWeightedProjection ^ n‖ ≤
+        T.subperipheralModulus ^ n +
+          (((D * D - 1 : ℕ) * n ^ (D * D - 1 : ℕ) : ℕ) : ℝ) *
+            T.subperipheralModulus ^ (n - (D * D - 1)) *
+              max ‖N‖ (‖N‖ ^ (D * D - 1)) := by
+  obtain ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm, hNnorm⟩ :=
+    hPos.exists_wolf_eq_111_schur_data_with_bound hTP
+  refine ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm, hNnorm, ?_⟩
+  have hD2 : D * D ≠ 0 := mul_ne_zero (NeZero.ne D) (NeZero.ne D)
+  let _ : Nonempty (Fin (D * D)) :=
+    Fin.pos_iff_nonempty.mp (Nat.pos_of_ne_zero hD2)
+  have hschur := Matrix.wolf_eq_111_schur_form hΛDiag hNUpper hD2 hn_ge
+    hΛnorm T.subperipheralModulus_le_one
+  rw [transferMatrix_pow_sub_peripheralWeightedProjection_pow T hn]
+  calc
+    ‖transferMatrix (T - T.peripheralWeightedProjection) ^ n‖ =
+        ‖transferMatrixFin (T - T.peripheralWeightedProjection) ^ n‖ := by
+      rw [transferMatrixFin_pow, Matrix.l2_opNorm_reindex_equiv]
+    _ = ‖(Λ + N) ^ n‖ := by
+      have hconj : transferMatrixFin (T - T.peripheralWeightedProjection) =
+          Unitary.conjStarAlgAut ℂ
+            (Matrix (Fin (D * D)) (Fin (D * D)) ℂ) U (Λ + N) := by
+        simpa only [Unitary.conjStarAlgAut_apply,
+          Matrix.star_eq_conjTranspose] using hform
+      rw [hconj, ← map_pow, Unitary.conjStarAlgAut_apply,
+        ← Unitary.coe_star, CStarRing.norm_mul_coe_unitary,
+        CStarRing.norm_coe_unitary_mul]
+    _ ≤ _ := hschur
+
+/-- **Wolf Equation (8.111), channel-level refined estimate.**
+
+Under `2 (D² - 1) ≤ n`, the factor `n ^ (D² - 1)` in the coarse
+estimate is replaced by `Nat.choose n (D² - 1)`.  The explicit hypothesis
+`0 < n` again records the separate `D = 1`, `n = 0` boundary of the
+positive-power identity.  The proof uses only natural powers and therefore
+also includes `μ = 0` without division.
+
+Source: Wolf, Chapter 8, Theorem "Asymptotic convergence II", Equation
+(8.111), local source lines 1299--1316. -/
+theorem IsPositiveMap.exists_wolf_eq_111_refined
+    [NeZero D] {T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
+    {n : ℕ} (hn : 0 < n) (hn_ge : 2 * (D * D - 1) ≤ n) :
+    ∃ (U : Matrix.unitaryGroup (Fin (D * D)) ℂ)
+        (Λ N : Matrix (Fin (D * D)) (Fin (D * D)) ℂ),
+      IsDiag Λ ∧ IsStrictlyUpperTriangular N ∧
+      transferMatrixFin (T - T.peripheralWeightedProjection) =
+        (U : Matrix (Fin (D * D)) (Fin (D * D)) ℂ) * (Λ + N) *
+          (U : Matrix (Fin (D * D)) (Fin (D * D)) ℂ)ᴴ ∧
+      (∀ z : ℂ, (∃ i : Fin (D * D), Λ i i = z) ↔
+        z = 0 ∨ z ∈ T.subperipheralSpectrum) ∧
+      ‖Λ‖ = T.subperipheralModulus ∧
+      ‖N‖ ≤ T.subperipheralModulus + 2 * Real.sqrt D ∧
+      ‖transferMatrix T ^ n -
+          transferMatrix T.peripheralWeightedProjection ^ n‖ ≤
+        T.subperipheralModulus ^ n +
+          (((D * D - 1 : ℕ) * Nat.choose n (D * D - 1) : ℕ) : ℝ) *
+            T.subperipheralModulus ^ (n - (D * D - 1)) *
+              max ‖N‖ (‖N‖ ^ (D * D - 1)) := by
+  obtain ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm, hNnorm⟩ :=
+    hPos.exists_wolf_eq_111_schur_data_with_bound hTP
+  refine ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm, hNnorm, ?_⟩
+  have hD2 : D * D ≠ 0 := mul_ne_zero (NeZero.ne D) (NeZero.ne D)
+  let _ : Nonempty (Fin (D * D)) :=
+    Fin.pos_iff_nonempty.mp (Nat.pos_of_ne_zero hD2)
+  have hschur := Matrix.wolf_eq_111_schur_form_refined hΛDiag hNUpper hD2 hn_ge
+    hΛnorm T.subperipheralModulus_le_one
+  rw [transferMatrix_pow_sub_peripheralWeightedProjection_pow T hn]
+  calc
+    ‖transferMatrix (T - T.peripheralWeightedProjection) ^ n‖ =
+        ‖transferMatrixFin (T - T.peripheralWeightedProjection) ^ n‖ := by
+      rw [transferMatrixFin_pow, Matrix.l2_opNorm_reindex_equiv]
+    _ = ‖(Λ + N) ^ n‖ := by
+      have hconj : transferMatrixFin (T - T.peripheralWeightedProjection) =
+          Unitary.conjStarAlgAut ℂ
+            (Matrix (Fin (D * D)) (Fin (D * D)) ℂ) U (Λ + N) := by
+        simpa only [Unitary.conjStarAlgAut_apply,
+          Matrix.star_eq_conjTranspose] using hform
+      rw [hconj, ← map_pow, Unitary.conjStarAlgAut_apply,
+        ← Unitary.coe_star, CStarRing.norm_mul_coe_unitary,
+        CStarRing.norm_coe_unitary_mul]
+    _ ≤ _ := hschur
