@@ -4,7 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 
-import Mathlib
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
+import Mathlib.Algebra.Order.Ring.Star
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Polynomial.Derivative
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.Normed.Field.Basic
+import Mathlib.RingTheory.Adjoin.Polynomial.Basic
 
 /-!
 # Nowosad's Laurent-polynomial recursion in a finite coordinate algebra

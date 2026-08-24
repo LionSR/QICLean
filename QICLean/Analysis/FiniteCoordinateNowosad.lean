@@ -4,6 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 
+import Mathlib.Analysis.Calculus.Deriv.Inv
+import Mathlib.Analysis.Calculus.LocalExtr.Basic
+import Mathlib.Analysis.Normed.Lp.PiLp
+import Mathlib.Analysis.Normed.Module.FiniteDimension
 import QICLean.Analysis.FiniteCoordinateNowosad.Recursion
 
 /-!
