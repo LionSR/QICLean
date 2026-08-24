@@ -672,6 +672,12 @@ so that the cited formal statements are available from the main project import.
   block-transpose identity on pp. 594--595 ✓
 - `Matrix.partialTransposeRight_haAGamma_hasSchmidtNumberLE_two` proves that
   the displayed block transpose also belongs to the two-simple cone ✓
+- `Yamagami.norm_symbol_sub_half_lt_half` formalizes the corrected
+  Wolf-range (`m ≤ d - 2`) part of Yamagami's stride-one Lemma 6 open-disk
+  condition, one dependency of the remaining variational proof. The printed
+  endpoint `m = d - 1`, `s = d` is false with a strict inequality and is
+  recorded in the paper-gap note; this theorem does not prove the cyclic
+  inequality ✓
 - Positivity in the middle range `2 ≤ n ≤ d - 3` remains open; its exact
   scope and cyclic reciprocal inequality are recorded in
   `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. The factor

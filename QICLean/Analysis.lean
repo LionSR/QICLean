@@ -19,6 +19,7 @@ import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ConvexHullCompact
+import QICLean.Analysis.CyclicReciprocal
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.Dirichlet
 import QICLean.Analysis.Entropy
