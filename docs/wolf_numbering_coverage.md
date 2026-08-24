@@ -611,6 +611,28 @@ replaces `|det T₂| = 1` by Wolf's geometric alternative "unitary conjugation
 or matrix transposition".  The declarations here deliberately retain the
 algebraic equality split as a reusable separate theorem.
 
+#### Wolf Corollary "Positive invertible maps" — FORMALIZED
+
+* `ChannelDeterminant.Internal.inverseOfBijective_isTracePreservingMap` — the
+  source's observation that the inverse of a bijective trace-preserving linear
+  map is automatically trace preserving.
+* `ChannelDeterminant.Internal.channelDet_norm_eq_one_of_inverseOfBijective_isPositiveMap`
+  — if a positive trace-preserving bijection and its inverse are positive, the
+  determinant bounds and multiplicativity force `|det T| = 1`.
+* `ChannelDeterminant.Internal.inverseOfBijective_unitaryChannel` and
+  `ChannelDeterminant.Internal.inverseOfBijective_unitaryChannel_comp_transpose`
+  — the explicit inverses of the two standard forms, with the correct reversed
+  composition order in the transpose branch.
+* `ChannelDeterminant.Internal.wolfPositiveInvertibleMaps` — for positive
+  matrix dimension, the inverse of a positive trace-preserving bijection is
+  positive exactly when the map is unitary conjugation or unitary conjugation
+  after ordinary transposition.
+
+The forward implication follows Wolf's determinant route and consumes the
+source-general saturation theorem above.  The converse uses the explicit
+positive inverse of each standard form; it does not strengthen the hypotheses
+to complete positivity and therefore retains Wolf's transpose branch.
+
 
 #### Wolf Lemma 6.1 (Dirichlet's simultaneous approximation) — FORMALIZED
 
