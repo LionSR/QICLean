@@ -6,9 +6,9 @@
 
 \input{command}
 
-\title{Corner-Support Restriction in the Weighted Fixed-Point Star-Algebra}
+\title{Wolf Corollary 6.7: Source-General Resolution Record}
 \author{}
-\date{2026-07-12}
+\date{2026-08-24}
 
 \begin{document}
 \maketitle
@@ -32,70 +32,55 @@ support of the maximum-rank fixed point, so conjugation by $\rho^{-1/2}$ loses n
 
 \section{The formalization}
 
-Two layers are established, both for a Kraus map (the completely positive case of the
-Schwarz hypothesis, as in the other results of this section).
+The source-general implementation is in
+\leanid{QICLean/Channel/FixedPoint/AbstractWeightedFixedPoints.lean}.  It assumes exactly
+that $T$ is positive and trace preserving and that its trace adjoint is Schwarz; it does
+not assume a Kraus representation or complete positivity.
 
-For an \emph{arbitrary} positive semidefinite fixed point $\rho$ with support
-projection $Q$ (\leanid{Kraus.weightedCornerFixedPointsStarSubalgebra} and
-\leanid{Kraus.exists\_weightedCorner\_sqrt\_eq\_of\_fixedPoint} in
-\leanid{QICLean/Channel/FixedPoint/WeightedCornerFixedPoints.lean}), the set
+For an arbitrary positive semidefinite fixed point $\rho$ with support projection $Q$,
+\leanid{IsPositiveMap.weightedCornerFixedPointsStarSubalgebra} proves that
 \[
-    \rho^{-1/2}\,\{X \mid T(X) = X,\ Q X Q = X\}\,\rho^{-1/2}
+    \left\{Y\in QM_D(\mathbb C)Q\mid
+      T(\sqrt\rho\,Y\sqrt\rho)=\sqrt\rho\,Y\sqrt\rho\right\}
 \]
-is a $*$-subalgebra of the corner algebra $Q M_D(\mathbb{C}) Q$; for a non-maximal
-$\rho$ the conjugated set is restricted to the fixed points supported on the support
-of $\rho$. The positive definite case without any support restriction is
-\leanid{Kraus.weightedFixedPointsStarSubalgebra}.
-
-At a fixed point of maximal support the restriction disappears
-(\leanid{Kraus.exists\_maximalSupport\_weightedCorner\_sqrt\_eq} in
-\leanid{QICLean/Channel/FixedPoint/MaximalSupport.lean}): there is a positive
-semidefinite fixed point $\rho_0$ at which the conjugated set is
+is a $*$-subalgebra of $QM_D(\mathbb C)Q$.  Its multiplication proof follows Wolf's
+Theorem~6.14 density blocks.  On the support sector, fixed blocks are
+$\sigma_k\otimes X_k$ and $\rho$ has blocks $\sigma_k\otimes R_k$ with both density
+factors positive definite.  The weighted product remains fixed because
 \[
-    \rho_0^{-1/2}\,\{X \mid T(X) = X\}\,\rho_0^{-1/2},
+  (\sigma_k\otimes X_k)(\sigma_k^{-1}\otimes R_k^{-1})
+  (\sigma_k\otimes Z_k)
+  =\sigma_k\otimes(X_kR_k^{-1}Z_k).
 \]
-the set of the corollary, with the inverse square root taken on the support of
-$\rho_0$.
+This is the factor-swapped form of Wolf's
+$\mathcal M_{d_k}\otimes\rho_k$ notation, as already recorded for the formalized
+Theorem~6.14.
 
-\section{The maximal-support property}
+The every-maximum-rank step is source-general as well.
+\leanid{IsPositiveMap.maximalSupport\_of\_maximalRank} in
+\leanid{QICLean/Channel/FixedPoint/AbstractMaximalRank.lean} takes an arbitrary positive
+semidefinite fixed point whose rank bounds the rank of every stationary density and
+proves $QXQ=X$ for every fixed point $X$.  It compares that arbitrary choice with
+$T_\infty(\mathbf 1)$, rather than replacing Wolf's quantifier by the canonical witness.
 
-The removal of the restriction rests on the maximal-support property
-(\leanid{Kraus.exists\_maximalSupport\_fixedPoint}): there is a positive semidefinite
-fixed point $\rho_0$ whose support projection $Q_0$ satisfies $Q_0 X Q_0 = X$ for every
-fixed point $X$. The witness is the sum of the positive parts of the Hermitian and
-anti-Hermitian components of a basis $X_0, \ldots, X_{m-1}$ of the fixed-point space
-(the reference instead takes the image of the identity under the projection onto the
-fixed-point space). Writing
-$H_{1,j} = X_j + X_j^{\dagger}$ and $H_{2,j} = i(X_j - X_j^{\dagger})$ for the fixed
-Hermitian components and $H_{k,j} = P^{+}_{k,j} - P^{-}_{k,j}$ for their positive parts
-(\leanid{IsChannel.posSemidef\_parts\_of\_hermitian\_fixedPoint}), the witness
-\begin{align*}
-    \rho_0 &= \sum_{j=0}^{m-1}
-        \bigl(P^{+}_{1,j} + P^{-}_{1,j} + P^{+}_{2,j} + P^{-}_{2,j}\bigr)
-\end{align*}
-dominates every summand in the Loewner order, domination transfers the support
-(\leanid{Kraus.stationaryProj\_absorb\_of\_le}, from
-$0 \preceq (\mathbf 1-Q_0)P(\mathbf 1-Q_0) \preceq (\mathbf 1-Q_0)\rho_0(\mathbf 1-Q_0) = 0$),
-and linearity extends the absorption from the parts to every fixed point.
+Finally,
+\leanid{IsPositiveMap.mem\_weightedCornerFixedPointsStarSubalgebra\_iff\_inverseSandwich}
+identifies the formal carrier in both directions with
+$\rho^{-1/2}\mathcal F_T\rho^{-1/2}$.  The inverse square root is the functional-calculus
+inverse on $\supp(\rho)$ and zero on its kernel.  The support identities
+$\sqrt\rho\,\rho^{-1/2}=Q=\rho^{-1/2}\sqrt\rho$ give the equality without an ambient
+invertibility assumption.  The generic construction also includes zero support as the
+zero corner algebra; the source theorem's density hypothesis, of course, has trace one.
 
 \section{Verdict}
 
-The restriction is eliminated. The maximal-support property holds at the constructed
-witness (\leanid{Kraus.exists\_maximalSupport\_fixedPoint}), and the transfer to every
-maximum-rank fixed point is
-\leanid{Kraus.maximalSupport\_of\_maximalRank} in
-\leanid{QICLean/Channel/FixedPoint/MaximalRank.lean}: for any positive semidefinite fixed
-point $\rho$ whose rank bounds the rank of every fixed-point density matrix, the support
-projection of $\rho$ carries every fixed point, because the support projection of a
-positive semidefinite matrix has the rank of the matrix and its trace is that rank, so
-the two support projections have equal traces, one absorbs the other, and they coincide.
-The conjugated set $\rho^{-1/2}\,\{X \mid T(X) = X\}\,\rho^{-1/2}$ of the corollary is
-realized at every such $\rho$
-(\leanid{Kraus.exists\_weightedCorner\_sqrt\_eq\_of\_maximalRank}), with the inverse
-square root taken on the support of $\rho$. Unit trace of $\rho$ itself is not needed for
-the conclusion and is not assumed; the maximality hypothesis quantifies over fixed-point
-density matrices, as in the source. The remaining scope convention is the Kraus
-(completely positive) case of the source's Schwarz hypothesis, shared by the other
-formalized results of the section.
+The former Kraus-only scope restriction is eliminated.
+\leanid{IsPositiveMap.wolfCorollary67} states the printed corollary for a positive
+trace-preserving linear map with Schwarz trace adjoint and for every maximum-rank
+stationary density matrix, and it returns a star-algebra whose carrier is exactly Wolf's
+displayed inverse-square-root set.  The older declarations in the
+\texttt{Kraus} namespace remain compatibility specializations; the maximum-rank and
+surjectivity declarations delegate to the source-general proofs rather than furnishing
+a parallel route.
 
 \end{document}

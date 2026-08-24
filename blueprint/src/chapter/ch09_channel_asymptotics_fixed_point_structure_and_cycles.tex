@@ -211,6 +211,88 @@
     Theorem~\ref{thm:maximal_support_compression_density_blocks}.
 \end{proof}
 
+\begin{theorem}[Weighted fixed points on stationary support]%
+    \label{thm:abstract_weighted_corner_fixed_points}
+    \lean{IsPositiveMap.weightedFixed_mul_of_posDef,
+        IsPositiveMap.weightedFixedPointsStarSubalgebra,
+        IsPositiveMap.mem_weightedFixedPointsStarSubalgebra,
+        IsPositiveMap.weightedCornerFixedPointsStarSubalgebra,
+        IsPositiveMap.mem_weightedCornerFixedPointsStarSubalgebra}
+    \leanok
+    \uses{thm:wolf_6_14, thm:compression_on_support_posDef}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, suppose that
+    $T^*$ satisfies the Schwarz inequality, and let $\rho\succeq0$ satisfy
+    $T(\rho)=\rho$.  With $Q=\supp(\rho)$, the set
+    \begin{align}
+        \left\{Y\in Q\MN{D}Q\;\middle|\;
+          T\!\left(\sqrt{\rho}\,Y\sqrt{\rho}\right)
+          =\sqrt{\rho}\,Y\sqrt{\rho}\right\}
+        \label{eq:spectral_weighted_corner_fixed_points}
+    \end{align}
+    is a $*$-subalgebra of the corner algebra $Q\MN{D}Q$.
+    No invertibility of $\rho$ on the ambient space is assumed.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:wolf_6_14, thm:compression_on_support_posDef}
+    Compress to $\supp(\rho)$, where $\rho$ is positive definite.  In the
+    density-block coordinates of Theorem~\ref{thm:wolf_6_14}, write fixed
+    points as
+    $\bigoplus_k\sigma_k\otimes X_k$ and the compressed $\rho$ as
+    $\bigoplus_k\sigma_k\otimes R_k$, with $\sigma_k,R_k>0$.  The weighted
+    product of two fixed blocks is
+    \begin{align}
+        (\sigma_k\otimes X_k)
+        (\sigma_k^{-1}\otimes R_k^{-1})
+        (\sigma_k\otimes Z_k)
+        &=\sigma_k\otimes(X_kR_k^{-1}Z_k),
+        \notag
+    \end{align}
+    hence is fixed.  This proves multiplication closure of
+    (\ref{eq:spectral_weighted_corner_fixed_points}); linearity, positivity,
+    and $T(\rho)=\rho$ give the remaining algebra and adjoint operations.
+    Extending the compressed result by zero gives the stated corner algebra.
+    If the support is zero, that corner is the zero algebra, so the boundary
+    case is included without an ambient inverse.
+\end{proof}
+
+\begin{theorem}[Weighted fixed-point star-algebra]%
+    \label{thm:wolf_corollary_6_7}
+    \lean{IsPositiveMap.wolfCorollary67,
+        IsPositiveMap.mem_weightedCornerFixedPointsStarSubalgebra_iff_inverseSandwich}
+    \leanok
+    \uses{thm:abstract_weighted_corner_fixed_points,
+        thm:maximalSupport_of_maximalRank}
+    Let $T:\MN{D}\to\MN{D}$ be a trace-preserving, positive, linear map for
+    which $T^*$ satisfies the Schwarz inequality.  For every density matrix
+    $\rho$ which is a maximum-rank fixed point of $T$, the set
+    \begin{align}
+        \rho^{-1/2}\Fix(T)\rho^{-1/2}
+        \label{eq:spectral_wolf_corollary_6_7}
+    \end{align}
+    is a $*$-algebra, with the inverse taken on $\supp(\rho)$.
+    This is \cite[Corollary~6.7]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:wolf_6_14, thm:abstract_weighted_corner_fixed_points,
+        thm:maximalSupport_of_maximalRank}
+    Theorem~\ref{thm:maximalSupport_of_maximalRank} applies to the arbitrary
+    maximum-rank stationary density $\rho$, so every $X\in\Fix(T)$ satisfies
+    $QXQ=X$ for $Q=\supp(\rho)$.  The support identities
+    \begin{align}
+        \sqrt{\rho}\,\rho^{-1/2}=Q,
+        &\qquad
+        \rho^{-1/2}\sqrt{\rho}=Q
+        \notag
+    \end{align}
+    show in both directions that the carrier in
+    (\ref{eq:spectral_weighted_corner_fixed_points}) is exactly the set in
+    (\ref{eq:spectral_wolf_corollary_6_7}).  Its multiplication closure is
+    the density-block calculation from Theorem~\ref{thm:wolf_6_14} recorded
+    above, so this is Wolf's route rather than a separate Kraus argument.
+\end{proof}
+
 \begin{theorem}[Conjugation by the square root at a fixed point of maximal support]%
     \label{thm:maximalSupport_weightedCorner}
     \lean{Kraus.exists_maximalSupport_weightedCorner_sqrt_eq}
@@ -305,10 +387,11 @@ support projection.
 \begin{theorem}[The support of a fixed point of maximum rank carries every fixed
         point]%
     \label{thm:maximalSupport_of_maximalRank}
-    \lean{Kraus.maximalSupport_of_maximalRank}
+    \lean{IsPositiveMap.maximalSupport_of_maximalRank,
+        Kraus.maximalSupport_of_maximalRank}
     \leanok
-    \uses{def:tp_kraus, def:support_proj}
-    Let $T(X)=\sum_iK_iXK_i^\dagger$ be trace-preserving and let
+    \uses{def:support_proj}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, and let
     $\rho\succeq0$ be a fixed point of $T$ whose rank bounds the rank of
     every fixed-point density matrix:
     $\rank\sigma\leq\rank\rho$ for every $\sigma\succeq0$ with
@@ -367,10 +450,11 @@ support projection.
 
 \begin{theorem}[Conjugation by the square root at every fixed point of maximum rank]%
     \label{thm:weightedCorner_sqrt_eq_of_maximalRank}
-    \lean{Kraus.exists_weightedCorner_sqrt_eq_of_maximalRank}
+    \lean{IsPositiveMap.exists_weightedCorner_sqrt_eq_of_maximalRank,
+        Kraus.exists_weightedCorner_sqrt_eq_of_maximalRank}
     \leanok
-    \uses{def:tp_kraus, def:support_proj}
-    Let $T(X)=\sum_iK_iXK_i^\dagger$ be trace-preserving and let
+    \uses{def:support_proj}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, and let
     $\rho\succeq0$ be a fixed point of $T$ whose rank bounds the rank of
     every fixed-point density matrix. Then every fixed point $X$ of $T$
     arises as $X=\sqrt{\rho}\,Y\sqrt{\rho}$ for a corner-supported $Y$ with
@@ -397,6 +481,12 @@ the conjugated fixed-point set
     \notag
 \end{align}
 of Corollary~6.7 of~\cite{Wolf2012Quantum}.
+
+The declarations \texttt{Kraus.maximalSupport\_of\_maximalRank} and
+\texttt{Kraus.exists\_weightedCorner\_sqrt\_eq\_of\_maximalRank} retain the
+former finite-Kraus interfaces as compatibility wrappers around the two
+source-general results above; they do not introduce a second proof route or
+stronger source-facing hypotheses.
 
 \section{Further irreducibility and primitivity equivalences}
 
