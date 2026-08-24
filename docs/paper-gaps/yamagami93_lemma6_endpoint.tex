@@ -74,9 +74,14 @@ range.}  This correction concerns only Lemma~6's open-disk condition.  It
 does not by itself prove Yamagami's cyclic reciprocal inequality.  The finite
 Nowosad theorem and the uniqueness assertion of Yamagami's Lemma~3 are now
 formalized, and the simultaneous-singularity boundary count is also complete.
-What remains includes the bridge from the generic Nowosad functional to the
-concrete cyclic \leanid{Yamagami.functional}, the proof that the unit vector is
-a local maximum, and the separate regular-boundary induction.
+The cyclic matrix package in
+\doclink{QICLean/Analysis/YamagamiCyclicMatrix} now also proves invertibility,
+the positive-semidefinite Hessian with kernel $\mathbb R\mathbf1$, and the
+bridge from the generic Nowosad functional to the concrete cyclic
+\leanid{Yamagami.functional}.  What remains includes the proof that the unit
+vector is a local maximum, the separate regular-boundary induction, and the
+global cyclic inequality.  Thus this resolved endpoint remains only a
+prerequisite for the still-open issue~\#19.
 
 \bibliographystyle{alpha}
 \bibliography{references}

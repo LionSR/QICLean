@@ -714,6 +714,16 @@ so that the cited formal statements are available from the main project import.
   endpoint `m = d - 1`, `s = d` is false with a strict inequality and is
   recorded in the paper-gap note; this theorem does not prove the cyclic
   inequality ✓
+- `Yamagami.forwardMatrix`, `Yamagami.dft_map_hessianMatrix_mulVec`,
+  `Yamagami.hessianMatrix_forwardMatrix_posSemidef`,
+  `Yamagami.hessianMatrix_forwardMatrix_mulVec_eq_zero_iff_isScalarVector`,
+  `Yamagami.forwardMatrix_isUnit_det`, and
+  `Yamagami.functional_eq_lambdaT_inverseOperator_mulVec` formalize the
+  stride-one Fourier--Hessian prerequisite from Yamagami's Lemmas 2--4 and
+  Corollary 5. In the exact range `d ≥ 3`, `1 ≤ m ≤ d - 2`, and `s ≥ d`, the
+  cyclic matrix is nonnegative and invertible, its negative-Hessian
+  representative is positive semidefinite with kernel `ℝ · 1`, and the
+  concrete functional is exactly `λ_{S⁻¹}(Sx)` ✓
 - `Nowosad.inducedHilbertNorm_sq` and
   `Nowosad.exists_inducedHilbertNorm_bound` identify the norm induced by the
   faithful coordinate-sum functional with the finite `L²` norm and prove that
@@ -746,11 +756,11 @@ so that the cited formal statements are available from the main project import.
   The Lean proof instead uses `Yamagami.dotProduct_hessianMatrix_mulVec` and
   `Yamagami.minimumQuadraticForm_normalizedNegativeInverse_eq`, the exact
   algebraic second-variation identity needed by Nowosad's argument.
-- The preceding Lemma 3 declaration proves uniqueness only. It does not prove
-  that the unit vector is a local maximum, specialize the Hessian hypotheses
-  to the full cyclic family, identify the generic `lambdaT` composition with
-  the concrete stride-one `Yamagami.functional`, or establish the cyclic
-  reciprocal inequality.
+- The preceding Lemma 3 declaration proves uniqueness only. The cyclic
+  Fourier--Hessian package above now specializes its algebraic hypotheses and
+  identifies the generic `lambdaT` composition with the concrete stride-one
+  `Yamagami.functional`; it still does not prove that the unit vector is a
+  local maximum or establish the global cyclic reciprocal inequality.
 - `Yamagami.limsup_functional_le_card_ratio_of_singularDenominator`
   formalizes the omitted simultaneous-singularity boundary count: one
   least-next-positive zero string supplies all `m` vanishing summands, without
@@ -759,9 +769,9 @@ so that the cited formal statements are available from the main project import.
   already proved strictly positive inequality to Lean's direct nonnegative
   `0 / 0 = 0` value. This theorem is conditional; the positive-interior input
   and the regular-boundary induction are still required. The finite Nowosad
-  theorem now supplies the abstract local-maximum uniqueness ingredient, but
-  it supplies neither existence of the unit maximum nor the global inequality.
-  See
+  theorem and the cyclic Fourier--Hessian package supply the abstract
+  uniqueness and concrete matrix prerequisites, but they supply neither a
+  proof that the unit vector is a local maximum nor the global inequality. See
   `docs/paper-gaps/yamagami93_simultaneous_singularity_boundary.tex` ✓
 - Positivity in the middle range `2 ≤ n ≤ d - 3` remains open; its exact
   scope and cyclic reciprocal inequality are recorded in
