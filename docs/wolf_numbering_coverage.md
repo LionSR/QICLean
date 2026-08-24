@@ -672,6 +672,22 @@ so that the cited formal statements are available from the main project import.
   block-transpose identity on pp. 594--595 ✓
 - `Matrix.partialTransposeRight_haAGamma_hasSchmidtNumberLE_two` proves that
   the displayed block transpose also belongs to the two-simple cone ✓
+- `Matrix.tensorFactorSwap_haAGamma_hasSchmidtNumberLE_two` and
+  `Matrix.partialTransposeLeft_tensorFactorSwap_haAGamma_hasSchmidtNumberLE_two`
+  transport Ha's two decompositions to the Eom--Kye orientation: if
+  `ρ = A_γ^σ`, then both `ρ` and `ρ^{T₁} = (A_γ^{T₂})^σ` belong to the
+  two-simple cone ✓
+- `Matrix.eomKyePairing_eq_JPairing_tensorMapId_factorSwap` proves the exact
+  tensor-factor order in the Eom--Kye pairing, and
+  `Matrix.eomKyePairing_eq_omegaVec_quadraticForm_factorSwap` records the
+  factor `d` required by the normalized vector
+  `Ω = d⁻¹ᐟ² ∑ᵢ eᵢ ⊗ eᵢ` ✓
+- `Matrix.eomKyePairing_haAGamma_choiTypeMap` and
+  `Matrix.choiTypeMapFin_haAGamma_omegaVec_quadraticForm` prove, for the full
+  source range `d ≥ 3`, `1 ≤ n ≤ d - 2`, and `γ > 0`, that both the
+  Eom--Kye pairing and its normalized factor-swapped quadratic form equal
+  `γ² - 1`; the corresponding strict-negativity theorems cover
+  `0 < γ < 1` ✓
 - `Yamagami.norm_symbol_sub_half_lt_half` formalizes the corrected
   Wolf-range (`m ≤ d - 2`) part of Yamagami's stride-one Lemma 6 open-disk
   condition, one dependency of the remaining variational proof. The printed
@@ -729,10 +745,11 @@ so that the cited formal statements are available from the main project import.
   `docs/paper-gaps/yamagami93_simultaneous_singularity_boundary.tex` ✓
 - Positivity in the middle range `2 ≤ n ≤ d - 3` remains open; its exact
   scope and cyclic reciprocal inequality are recorded in
-  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. The factor
-  swap, Eom--Kye pairing, negative value, and indecomposability conclusion
-  remain open and are recorded in
-  `docs/paper-gaps/ha98_choi_type_witness_scope.tex`.
+  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. This is the
+  positivity dependency tracked by issue #19. The final theorem combining
+  positivity with the negative witness to conclude indecomposability also
+  remains open; the completed witness algebra and this remaining scope are
+  recorded in `docs/paper-gaps/ha98_choi_type_witness_scope.tex`.
 
 ### Section 3.3 Transposition and time reversal
 
