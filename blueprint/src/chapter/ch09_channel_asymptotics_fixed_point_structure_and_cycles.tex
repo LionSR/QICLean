@@ -615,6 +615,38 @@ classification theorem is already proved.
     identities follow from the trace pairing and its matrix-unit formula.
 \end{proof}
 
+\begin{theorem}[Unital Schwarz normalization and Kronecker reflection]
+    \label{thm:wolf_cycle_schwarz_unital_kronecker}
+    \lean{IsPositiveMap.map_one_eq_one_of_tracePreserving_of_isSchwarzMap,
+        Matrix.PosSemidef.right_of_one_kronecker,
+        Matrix.kronecker_eq_one_of_left_trace_eq_one}
+    \leanok
+    \uses{def:positive_map,def:trace_preserving,
+        def:abstract_schwarz_inequality}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, with $D>0$,
+    and suppose that $T$ is Schwarz. Then $T(\Id)=\Id$. For $m,d>0$,
+    positivity of $\Id_m\otimes B$ implies $B\succeq0$. If
+    $\tr(\sigma)=1$ and $\sigma\otimes X=\Id_{md}$, then
+    $\sigma=m^{-1}\Id_m$ and $X=m\Id_d$.
+
+    These auxiliary facts are needed before the matched-multiplicity comparison
+    and the transport of the ambient Schwarz defect to an individual weighted
+    full-matrix block map at source lines 1660--1663. They establish neither
+    remaining step; that source-facing assembly remains open. This is not a
+    modified-product argument.
+    % Tracking: GitHub issue #417.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Put $B=T(\Id)$. Positivity gives $B\succeq0$, Schwarz gives
+    $B-B^2\succeq0$, and trace preservation gives $\tr(B)=D$. The Hermitian
+    trace-square inequality and its equality case force $B=\Id$. Partial
+    trace and positive scalar rescaling reflect positivity from
+    $\Id_m\otimes B$. Taking both partial traces of
+    $\sigma\otimes X=\Id_{md}$ gives the remaining formulas.
+\end{proof}
+
 \begin{theorem}[Recurrent projection and inverse on the asymptotic image]
     \label{thm:wolf_cycle_recurrent_peripheral_inverse}
     \lean{IsPositiveMap.exists_strictMono_tendsto_pow_peripheralProjection_and_predecessor,

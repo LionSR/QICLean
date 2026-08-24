@@ -62,6 +62,10 @@ Proposition 2.1) and for reduced states on contiguous tensor factors.
 * `Matrix.traceRight_kronecker`: `tr_B(A ⊗ B) = A • tr(B)`
 * `Matrix.traceLeft_one`: `tr_A(1) = d • 1`
 * `Matrix.traceRight_one`: `tr_B(1) = d' • 1`
+* `Matrix.PosSemidef.right_of_one_kronecker`: positivity of `1 ⊗ₖ B`
+  reflects to `B` when the identity factor is nonzero
+* `Matrix.kronecker_eq_one_of_left_trace_eq_one`: a trace-one left factor in
+  a Kronecker factorization of the identity is maximally mixed
 
 ## References
 
@@ -628,5 +632,53 @@ theorem traceRight_one :
   by_cases hij : i = j
   · simp [hij, Finset.sum_const, Finset.card_univ, Fintype.card_fin]
   · simp [hij]
+
+/-! ### Kronecker reflection and identity factors -/
+
+/-- Positive semidefiniteness of `1 ⊗ₖ B` reflects to the right factor when
+the identity factor is nonzero.
+
+This auxiliary fact supports Wolf Theorem 6.16's omitted scalar step and is
+not separately stated there. Source:
+`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 1660--1663. -/
+theorem PosSemidef.right_of_one_kronecker {m d : ℕ} [NeZero m]
+    {B : Matrix (Fin d) (Fin d) ℂ}
+    (h : ((1 : Matrix (Fin m) (Fin m) ℂ) ⊗ₖ B).PosSemidef) :
+    B.PosSemidef := by
+  have hpartial := h.partialTraceLeft
+  rw [partialTraceLeft_kronecker, Matrix.trace_one, Fintype.card_fin] at hpartial
+  have hmpos : (0 : ℂ) < m := by
+    exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne m)
+  have hrescaled := hpartial.smul (inv_pos.mpr hmpos).le
+  simpa only [smul_smul, inv_mul_cancel₀ (ne_of_gt hmpos), one_smul] using hrescaled
+
+/-- If a trace-one left factor tensored with `X` is the identity, then the
+left factor is maximally mixed and `X` is the compensating scalar identity.
+
+This auxiliary fact supports Wolf Theorem 6.16's omitted scalar step and is
+not separately stated there. Source:
+`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 1660--1663. -/
+theorem kronecker_eq_one_of_left_trace_eq_one {m d : ℕ} [NeZero m] [NeZero d]
+    {sigma : Matrix (Fin m) (Fin m) ℂ}
+    {X : Matrix (Fin d) (Fin d) ℂ}
+    (hsigmaTrace : sigma.trace = 1) (h : sigma ⊗ₖ X = 1) :
+    sigma = (m : ℂ)⁻¹ • 1 ∧ X = (m : ℂ) • 1 := by
+  have hX : X = (m : ℂ) • 1 := by
+    have hleft := congrArg traceLeft h
+    rw [traceLeft_kronecker, hsigmaTrace, one_smul, traceLeft_one] at hleft
+    exact hleft
+  constructor
+  · have hright := congrArg traceRight h
+    rw [traceRight_kronecker, traceRight_one, hX, Matrix.trace_smul,
+      Matrix.trace_one, Fintype.card_fin] at hright
+    have hcancel : (d : ℂ) • ((m : ℂ) • sigma) = (d : ℂ) • 1 := by
+      simpa only [smul_smul, smul_eq_mul, mul_comm] using hright
+    have hdne : (d : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne d)
+    have hmSigma : (m : ℂ) • sigma = 1 :=
+      smul_right_injective _ hdne hcancel
+    have hmne : (m : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne m)
+    have hrescaled := congrArg (fun Y ↦ (m : ℂ)⁻¹ • Y) hmSigma
+    simpa only [smul_smul, inv_mul_cancel₀ hmne, one_smul] using hrescaled
+  · exact hX
 
 end Matrix
