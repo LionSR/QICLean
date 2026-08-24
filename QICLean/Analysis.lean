@@ -101,3 +101,4 @@ import QICLean.Analysis.WeightedPositiveKernel
 import QICLean.Analysis.WeylMonotonicity
 import QICLean.Analysis.YamagamiBoundary
 import QICLean.Analysis.YamagamiCyclicMatrix
+import QICLean.Analysis.YamagamiRegularBoundary
