@@ -466,8 +466,9 @@ theorem haAGamma_hasSchmidtNumberLE_two (γ : ℝ) :
     haArGamma_hasSchmidtNumberLE_two γ r
 
 /-- Ha's `A_γ` is positive semidefinite.  This is the PSD half supplied by
-its explicit `V₂` decomposition; positivity of its block transpose is a later
-displayed decomposition on Ha 1998, p. 595. -/
+its explicit `V₂` decomposition.  The second `V₂` decomposition, for Ha's
+displayed block transpose on p. 595, is formalized in
+`QICLean.Channel.ChoiTypeMap.HaBlockTranspose`. -/
 theorem haAGamma_posSemidef (γ : ℝ) :
     (haAGamma d γ).PosSemidef := by
   exact (haAGamma_hasSchmidtNumberLE_two γ).posSemidef
