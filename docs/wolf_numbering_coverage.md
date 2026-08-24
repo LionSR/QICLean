@@ -545,6 +545,43 @@ so that the cited formal statements are available from the main project import.
 
 ---
 
+## Wolf Lecture Notes — Chapter 4: Convex Structure
+
+### Equation 4.3 and lines 85–105 (semidefinite duality) — FORMALIZED WITH FINITENESS CORRECTION
+
+- `SemidefiniteProgram.HermitianMatrix.psdCone`, `innerDual_psdCone`, and
+  `interior_psdCone_eq_posDef` realize the Hermitian positive-semidefinite
+  matrices as a self-dual proper cone for the real trace pairing, with the
+  zero-dimensional case included.
+- `SemidefiniteProgram.traceAnalysisMap` and `traceAnalysisMap_adjoint` prove
+  the source identities `T(X)ᵢ = tr(FᵢX)` (the trace is real) and
+  `T†(y) = ∑ᵢ yᵢFᵢ`. The primal/dual and strict-feasibility iff lemmas expose
+  exactly Wolf's trace constraints and Loewner signs.
+- `SemidefiniteProgram.weak_duality_pointwise` and `weak_duality` specialize
+  the existing conic values to Equation 4.3, retaining their documented
+  empty and unbounded extended-real semantics.
+- The four `*_of_primalStrict_of_primalValue_eq_coe` and
+  `*_of_dualStrict_of_dualValue_eq_coe` declarations specialize corrected
+  Slater duality and attainment. They require a finite value on the strictly
+  feasible side; the unqualified printed claim at lines 100–105 is false
+  without this boundary, as recorded in
+  `docs/paper-gaps/wolf_slater_attainment_conditions.tex`.
+
+### Equation 4.4 and lines 107–116 (complementary slackness) — FORMALIZED
+
+- `SemidefiniteProgram.complementary_slackness` proves
+  `(F₀ - ∑ᵢ yᵢFᵢ)X = 0` from explicit primal/dual feasibility and equal
+  objectives; `complementary_slackness_supports` proves the orthogonal-support
+  consequence.
+- `SemidefiniteProgram.isDualOptimizer_iff_exists_complementary` gives Wolf's
+  optimizer characterization under equality of the conic values and explicit
+  primal attainment, with every trace and Loewner feasibility hypothesis in
+  the statement.
+
+The surrounding complexity prose at source lines 80–83 is not formalized.
+
+---
+
 ## Wolf Chapter 6 — Spectral Properties: Public Theorem Index
 
 This module serves as a **navigational index** that maps the formalized theorems

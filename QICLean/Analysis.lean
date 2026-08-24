@@ -29,6 +29,7 @@ import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.HayashiMarkovStructure
+import QICLean.Analysis.HermitianMatrixCone
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.IsometricCompression
@@ -66,6 +67,7 @@ import QICLean.Analysis.RpowConvexity
 import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo
 import QICLean.Analysis.SchattenNorm
+import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
