@@ -509,6 +509,40 @@ so that the cited formal statements are available from the main project import.
   recorded in
   `docs/paper-gaps/wolf_prop3_1_exact_schmidt_rank_scope.tex`.
 
+### Section 3.3 Transposition and time reversal
+
+#### Wolf Theorem 3.1 (Kramers' theorem) — FORMALIZED
+
+- `Matrix.IsHermitian.two_le_finrank_eigenspace_of_antiunitary` — the printed
+  antiunitary statement: `[H,T] = 0` and `T² = -1` for Hermitian `H` and
+  antiunitary `T` imply every eigenvalue is at least two-fold degenerate ✓
+  (in `QICLean/Algebra/KramersDegeneracy.lean`)
+- `Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_unitary` —
+  Wolf's matrix reduction `T = ΓV` of the same theorem: `H` Hermitian,
+  `Vᴴ * V = 1`, `H * Vᴴ = Vᴴ * Hᵀ`, `Vᵀ = -V` ✓ — proved as the unitary
+  special case `A = Vᴴ` of the corrected Theorem 3.2 below
+
+#### Wolf Theorem 3.2 (Kramers' theorem II) — FALSE AS PRINTED; CORRECTED FORM FORMALIZED
+
+- The printed statement (`H` Hermitian, `Aᵀ = -A ≠ 0`, `H * A = A * Hᵀ` ⟹
+  every eigenvalue at least two-fold degenerate) is false: the partner
+  `A *ᵥ star ψ` of an eigenvector can vanish. The counterexample
+  (`H = diag(0,1,1)`, `A` the antisymmetric unit of the `1`-eigenspace) and
+  the corrected statements are recorded in
+  `docs/paper-gaps/wolf_ch3_kramers_theorem_ii.tex`; the false printed form
+  is deliberately not formalized.
+- `Matrix.IsHermitian.transpose_mulVec_star_of_mulVec_eq_smul` and
+  `Matrix.IsHermitian.mulVec_star_intertwiner_of_mul_eq_mul_transpose` —
+  eigenvector transport: `A *ᵥ star ψ` is again a `μ`-eigenvector ✓
+- `Matrix.dotProduct_star_mulVec_star_eq_zero_of_transpose_eq_neg` —
+  orthogonality `star ψ ⬝ᵥ (A *ᵥ star ψ) = 0` ✓
+- `Matrix.IsHermitian.two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero`
+  — corrected conditional form: the eigenspace of `μ` has dimension `≥ 2`
+  whenever the partner `A *ᵥ star ψ` is nonzero ✓
+- `Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_isUnit` —
+  invertible-`A` global corollary: if `A` is invertible, every eigenvalue of
+  `H` is at least two-fold degenerate ✓
+
 ---
 
 ## Wolf Chapter 6 — Spectral Properties: Public Theorem Index
