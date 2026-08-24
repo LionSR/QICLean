@@ -710,6 +710,105 @@ classification theorem is already proved.
     hypothesis on $T^*$; no adjoint-stability implication is used.
 \end{proof}
 
+\begin{theorem}[Permutation of density-block pure-state faces]
+    \label{thm:wolf_cycle_density_block_face_permutation}
+    \lean{Matrix.densityBlockWithZeroEmbedding,
+        Matrix.densityBlockWithZeroEmbedding_apply,
+        Matrix.densityBlockWithZeroCompression,
+        Matrix.densityBlockWithZeroCompression_apply,
+        Matrix.densityBlockWithZeroCompression_embedding,
+        Matrix.densityBlockWithZeroCompression_posSemidef,
+        Matrix.densityBlockWithZeroEmbedding_posSemidef,
+        Matrix.densityBlockWithZeroEmbedding_posSemidef_iff,
+        Matrix.trace_densityBlockWithZeroEmbedding,
+        Matrix.densityBlockWithZeroEmbedding_mem_densityMatrices_iff,
+        Matrix.densityBlockWithZeroEmbedding_fixed,
+        Matrix.densityBlockWithZeroEmbedding_compression_of_fixed,
+        Matrix.densityBlockDynamics,
+        Matrix.densityBlockDynamics_apply,
+        Matrix.densityBlockWithZeroEmbedding_densityBlockDynamics,
+        Matrix.densityBlockWithZeroEmbedding_densityBlockRestrictedInverse,
+        Matrix.densityBlockRestrictedInverse_comp_densityBlockDynamics,
+        Matrix.densityBlockDynamics_comp_densityBlockRestrictedInverse,
+        Matrix.densityBlockDynamics_isPositiveDirectSumMap,
+        Matrix.densityBlockDynamics_isTracePreservingBetweenDirectSums,
+        IsPositiveMap.exists_peripheralDensityBlockDynamics,
+        Matrix.IsPositiveBetweenDirectSums,
+        Matrix.directSumBlockMap,
+        Matrix.IsPositiveBetweenDirectSums.mapsTo_directSumDensityMatrices,
+        Matrix.mapsTo_extremePoints_directSumDensityMatrices_of_mutualInverse,
+        Matrix.DirectSumFacePermutation,
+        Matrix.exists_directSumFacePermutation_of_mutualInverse,
+        Matrix.DirectSumFacePermutation.map_apply,
+        Matrix.DirectSumFacePermutation.inverse_apply,
+        IsPositiveMap.exists_peripheralDensityBlockFacePermutation}
+    \leanok
+    \uses{thm:wolf_6_14,
+        thm:wolf_cycle_recurrent_peripheral_inverse,
+        thm:extreme_direct_sum_density_matrices,
+        thm:wolf_connected_pure_state_proj_image,
+        thm:linear_map_eq_of_eq_on_pure_state_matrix}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, with $D>0$,
+    and suppose that $T^*$ is Schwarz. Choose the zero-extended density-block
+    coordinates of the recurrent projection from Theorem~\ref{thm:wolf_6_14},
+    in the formal tensor-factor order $\sigma_k\otimes X_k$, and let $E$ and
+    $R$ denote their embedding and compression maps. If $S$ is the recurrent
+    inverse from Theorem~\ref{thm:wolf_cycle_recurrent_peripheral_inverse}, set
+    \begin{align}
+        \bar T&=R\circ T\circ E,
+        &
+        \bar S&=R\circ S\circ E.
+        \notag
+    \end{align}
+    Then $\bar T$ and $\bar S$ are mutually inverse positive maps on
+    $\bigoplus_{k<K}\MN{d_k}$ and preserve the total trace. There is an
+    equivalence $\tau:\Fin K\simeq\Fin K$ such that, with Wolf's
+    output-to-input permutation $\pi=\tau^{-1}$,
+    \begin{align}
+        (\bar T X)_j
+          &=\bar T_{\pi(j),j}\bigl(X_{\pi(j)}\bigr),
+        &
+        (\bar S Y)_i
+          &=\bar S_{\tau(i),i}\bigl(Y_{\tau(i)}\bigr),
+        \notag\\
+        d_{\pi(j)}&=d_j.
+        \notag
+    \end{align}
+    Every matched block map and its inverse is positive, preserves the
+    ordinary matrix trace, and the two compositions are identities. The
+    conclusion compares only the full-matrix dimensions $d_k$.
+
+    This is exactly the relative-pure-state, connectedness, and block
+    permutation step at source lines 1641--1659 of Wolf's proof of
+    Theorem~6.16. It does not compare the multiplicities $m_k$, transport the
+    ordinary Schwarz inequality to the matched block maps, assemble the
+    exclusion of the transpose alternative, or prove Equation~(6.68); those
+    remain separate source-facing follow-ups.
+    % Tracking: GitHub issues #417 and #411.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The density-block embedding and compression are inverse on the fixed
+    range. They reflect componentwise positivity, identify total block trace
+    with ambient trace, and identify the direct-sum density states with the
+    density states in the recurrent image. Consequently $\bar T$ and
+    $\bar S$ inherit positivity, trace preservation, the two embedding
+    intertwinings, and both inverse identities from $T$ and $S$.
+
+    Mutual inverse affine bijections preserve the relative extreme states.
+    For a fixed input summand, the rank-one projectors form a connected set,
+    while the trace of each output coordinate on that set takes values only
+    in the discrete set $\{0,1\}$. Hence the occupied output summand is
+    independent of the projector. Polarization extends the resulting
+    single-summand formula from rank-one projectors to the whole matrix
+    block. Applying the same argument to $\bar S$ shows that the two block
+    assignments are inverse. The matched block maps are positive and
+    trace-preserving; their two-sided inverse identities imply injections in
+    both directions, and equality of finite matrix-space dimensions gives
+    $d_i=d_{\tau(i)}$.
+\end{proof}
+
 \begin{theorem}[The Schwarz condition excludes matrix transpositions]
     \label{thm:wolf_cycle_schwarz_excludes_transpose}
     \lean{ChannelDeterminant.Internal.transposeLinearMapComplex_not_isSchwarzMap,
