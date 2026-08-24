@@ -581,6 +581,20 @@ so that the cited formal statements are available from the main project import.
 - `Matrix.hasSchmidtNumberLE_iff_forall_isNPositiveMap_tensorMapId_posSemidef`
   — the full rectangular equivalence in Proposition 3.4 for density operators ✓
 
+#### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — PARTIALLY FORMALIZED
+
+- `Matrix.choiTypeMap` and `Matrix.choiTypeMap_vecMulVec` formalize the map
+  and its rank-one reduction on the cyclic index set `ZMod d` ✓
+- `Matrix.choiTypeMap_isPositiveMap_one` proves positivity for the complete
+  bottom slice `n = 1` in every dimension `d ≥ 3`, including rank-one vectors
+  with vanishing coordinates ✓
+- `Matrix.choiTypeMap_isPositiveMap_sub_two` proves positivity for the complete
+  top slice `n = d - 2` in every dimension `d ≥ 3` ✓
+- Positivity in the middle range `2 ≤ n ≤ d - 3` and indecomposability remain
+  open. The exact scope and the remaining cyclic reciprocal inequality are
+  recorded in
+  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`.
+
 ### Section 3.3 Transposition and time reversal
 
 #### Wolf Theorem 3.1 (Kramers' theorem) — FORMALIZED

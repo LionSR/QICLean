@@ -23,13 +23,11 @@ where `D` projects a matrix to its diagonal part.
 
 The main theorem in this file is the exact action on rank-one projectors.  This
 is the algebraic reduction needed for the positivity proof of Wolf Example 3.1.
-This file proves positivity for the case \(d=3,n=1\) and, more generally, for
-the top of Wolf's range, \(n=d-2\) with \(d\ge3\); the scalar input for the
-latter is a reciprocal inequality valid for an arbitrary permutation.  The
-remaining range \(1\le n\le d-3\) still requires the general cyclic reciprocal
-inequality for the diagonal weights; it does not follow merely from equality of
-the total numerator and denominator weights.  Indecomposability is not proved
-here.
+This file proves positivity for the explicit case \(d=3,n=1\) and for the
+top of Wolf's range, \(n=d-2\) with \(d\ge3\).  The scalar input for the top
+slice is a reciprocal inequality valid for an arbitrary permutation.  The
+complete bottom slice \(n=1\) is proved in `QICLean.Channel.ChoiTypeMap.Positivity`.
+The middle range \(2\le n\le d-3\) and indecomposability remain open.
 
 ## References
 
@@ -181,8 +179,8 @@ private theorem choiType_cyclic_reciprocal_three_one_amgm
 **Scope restriction:** See
 `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`.  This proves
 only the three-variable scalar estimate needed for the \(d=3,n=1\) rank-one
-subcase of Wolf Chapter 3, Example 3.1, equation (3.20).  The general
-nonnegative cyclic estimate for \(1\le n\le d-2\) remains separate. -/
+subcase of Wolf Chapter 3, Example 3.1, equation (3.20).  It is retained as an
+explicit three-variable specialization of the general `n = 1` estimate below. -/
 theorem choiType_cyclic_reciprocal_three_one_of_nonneg
     {x y z : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) (hz : 0 ≤ z) :
     x / (2 * x + z) + y / (2 * y + x) + z / (2 * z + y) ≤ 1 := by
@@ -312,9 +310,8 @@ positive semidefinite.
 **Scope restriction:** See
 `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`.  This is only
 the \(3\times3\) rank-one subcase of the positivity assertion in Wolf Chapter 3,
-Example 3.1, equation (3.20).  It does not prove positivity of \(T_C\) on every
-positive semidefinite matrix, and it does not treat the general range
-\(1\le n\le d-2\). -/
+Example 3.1, equation (3.20).  It is retained as the explicit \(3\times3\)
+specialization and is subsumed by `choiTypeMap_vecMulVec_posSemidef_one`. -/
 theorem choiTypeMap_vecMulVec_posSemidef_three_one (v : ZMod 3 → ℂ) :
     (choiTypeMap 3 1 (vecMulVec v (star v))).PosSemidef := by
   refine choiTypeMap_vecMulVec_posSemidef_of_weight_sum_le_one
@@ -349,8 +346,8 @@ theorem isPositiveMap_of_forall_vecMulVec_posSemidef
 
 **Scope restriction:** See
 `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`.  This proves
-only the \(d=3,n=1\) case of Wolf Chapter 3, Example 3.1, equation (3.20).
-The general range \(1\le n\le d-2\) remains separate. -/
+only the \(d=3,n=1\) specialization of Wolf Chapter 3, Example 3.1,
+equation (3.20), and is subsumed by `choiTypeMap_isPositiveMap_one`. -/
 theorem choiTypeMap_isPositiveMap_three_one :
     IsPositiveMap (choiTypeMap 3 1) :=
   isPositiveMap_of_forall_vecMulVec_posSemidef _
@@ -590,5 +587,6 @@ theorem choiTypeMap_isPositiveMap_sub_two (hd : 3 ≤ d) :
     IsPositiveMap (choiTypeMap d (d - 2)) :=
   isPositiveMap_of_forall_vecMulVec_posSemidef _ fun w =>
     choiTypeMap_vecMulVec_posSemidef_sub_two hd w
+
 
 end Matrix

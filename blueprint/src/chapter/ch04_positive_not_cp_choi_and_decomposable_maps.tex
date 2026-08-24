@@ -8,14 +8,12 @@ $D(X)$ and cyclic shifts $U_{k0}$:
     \notag
 \end{align}
 The formal statements below record the map and the rank-one reduction used in
-the standard positivity argument. Positivity is proved for the case $d=3$,
-$n=1$ and, for every $d\ge3$, at the top of the range, $n=d-2$; the scalar
-input for the latter is a reciprocal inequality valid for an arbitrary
-permutation in place of the cyclic shift. The positivity assertion for the
-remaining range $1\le n\le d-3$ and the indecomposability assertion remain
-open. The missing general positivity step is a cyclic reciprocal estimate for
-the weights in the rank-one reduction; it does not follow merely from equality
-of the total numerator and denominator weights. The general estimate is
+the standard positivity argument. Positivity is proved, for every $d\ge3$, at
+both ends of the range: $n=1$ and $n=d-2$. The positivity assertion for the
+middle range $2\le n\le d-3$ and the indecomposability assertion remain open.
+The missing general positivity step is a cyclic reciprocal estimate for the
+weights in the rank-one reduction; it does not follow merely from equality of
+the total numerator and denominator weights. The general estimate is
 classical: the case $n=d-2$ is due to Ando, the case $n=1$ to Tanahashi and
 Tomiyama~\cite{TanahashiTomiyama1988Indecomposable}, and the whole range to
 Yamagami~\cite{Yamagami1993Cyclic}, whose proof is a variational argument on
@@ -141,36 +139,63 @@ the boundary of a projective simplex.
     the stated positivity.
 \end{proof}
 
-\begin{lemma}[The first Choi rank-one positivity subcase]
-    \label{lem:choi_type_first_cyclic_reciprocal_subcase}
-    \lean{Matrix.choiTypeMap_vecMulVec_posSemidef_three_one}
+\begin{lemma}[The first cyclic reciprocal inequality]
+    \label{lem:choi_type_first_cyclic_reciprocal}
+    \lean{Matrix.choiType_cyclic_reciprocal_one_of_pos,
+        Matrix.choiType_cyclic_reciprocal_one_of_nonneg,
+        Matrix.choiTypeRankOneWeight_one,
+        Matrix.choiTypeRankOneWeight_reciprocal_sum_one}
     \leanok
-    \uses{def:choi_type_map, def:choi_type_rankone_weight,
-        lem:choi_type_rankone_positive_from_weight_bound}
-    For $d=3$ and $n=1$, every vector $v=(v_0,v_1,v_2)$ satisfies
-    $T_C(\ketbra{v}{v})\ge0$. Equivalently, with
-    $x=|v_0|^2$, $y=|v_1|^2$, and $z=|v_2|^2$, the needed cyclic estimate is
+    Let $d\ge2$ and let $x_i\ge0$ be indexed by $\Z/d\Z$. Then, with
+    zero-denominator summands read as $0$,
     \begin{align}
-        \frac{x}{2x+z}+\frac{y}{2y+x}+\frac{z}{2z+y}
+        \sum_i\frac{x_i}{(d-1)x_i+x_{i-1}}
          & \le1.
         \notag
     \end{align}
-    The zero-denominator terms are read as $0$, as in the preceding
-    Schur-complement criterion. This is only the $3\times3$ rank-one subcase;
-    the cyclic estimate for all $1\le n\le d-2$ remains open.
+    Consequently, for $n=1$ and $x_i=|v_i|^2$, the reciprocal sum of the
+    rank-one weights $a_i=(d-1)x_i+x_{i-1}$ is at most $1$.
 \end{lemma}
 
 \begin{proof}
     \leanok
-    First assume that the denominators are nonzero. After multiplying by their
-    product, the inequality is equivalent to
-    $x^2y+y^2z+z^2x\ge3xyz$. This follows from AM--GM applied to the three
-    non-negative numbers $x^2y$, $y^2z$, and $z^2x$. If one of the denominators
-    vanishes, the corresponding two variables vanish. For example, if
-    $2x+z=0$, then $x=z=0$, and the remaining term is
-    $y/(2y)\le1/2\le1$ when $y>0$, while all terms vanish when $y=0$. The
-    rank-one positivity then follows from
-    Lemma~\ref{lem:choi_type_rankone_positive_from_weight_bound}.
+    First suppose that every $x_i$ is positive and set
+    $y_i=x_{i-1}/x_i$. Then $\prod_i y_i=1$, and the sum becomes
+    $\sum_i 1/(d-1+y_i)$. Clearing its positive common denominator reduces the
+    desired estimate to
+    \begin{align}
+        \sum_{k=0}^{d}(k-1)(d-1)^{d-k}e_k(y)
+         & \ge0,
+        \notag
+    \end{align}
+    where $e_k(y)$ is the $k$th elementary symmetric sum. The product of the
+    $k$-fold monomials occurring in $e_k(y)$ is $1$, so AM--GM gives
+    $e_k(y)\ge\binom{d}{k}$. The coefficients are non-negative for $k\ge2$,
+    while the $k=0,1$ terms are fixed, and substitution of
+    $e_k(y)=\binom{d}{k}$ gives equality by the binomial identity obtained at
+    $y_i=1$.
+
+    If some $x_i$ vanishes, at most $d-1$ summands are nonzero. Every nonzero
+    summand is at most $1/(d-1)$ because
+    $(d-1)x_i+x_{i-1}\ge(d-1)x_i$, so their sum is again at most $1$.
+\end{proof}
+
+\begin{lemma}[Rank-one positivity at the bottom of the range]
+    \label{lem:choi_type_rankone_positive_bottom}
+    \lean{Matrix.choiTypeMap_vecMulVec_posSemidef_one}
+    \leanok
+    \uses{lem:choi_type_first_cyclic_reciprocal,
+        lem:choi_type_rankone_positive_from_weight_bound}
+    For $d\ge3$ and $n=1$, every vector $v$ satisfies
+    $T_C(\ketbra{v}{v})\ge0$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Put $x_i=|v_i|^2$. Lemma~\ref{lem:choi_type_first_cyclic_reciprocal}
+    bounds $\sum_i x_i/a_i$ by $1$, and
+    Lemma~\ref{lem:choi_type_rankone_positive_from_weight_bound} turns this
+    bound into rank-one positivity.
 \end{proof}
 
 \begin{lemma}[Positivity from rank-one positivity]
@@ -193,19 +218,20 @@ the boundary of a projective simplex.
     matrices is positive semidefinite.
 \end{proof}
 
-\begin{theorem}[The first Choi map is positive]
-    \label{thm:choi_type_first_positive_subcase}
-    \lean{Matrix.choiTypeMap_isPositiveMap_three_one}
+\begin{theorem}[Choi-type maps at the bottom of the range are positive]
+    \label{thm:choi_type_positive_bottom}
+    \lean{Matrix.choiTypeMap_isPositiveMap_one}
     \leanok
-    \uses{def:choi_type_map, lem:choi_type_first_cyclic_reciprocal_subcase,
+    \uses{def:choi_type_map, lem:choi_type_rankone_positive_bottom,
         lem:positive_map_from_rankone}
-    For $d=3$ and $n=1$, the Choi-type map $T_C$ sends every positive
-    semidefinite matrix to a positive semidefinite matrix.
+    For every $d\ge3$ and $n=1$, the Choi-type map $T_C$ sends every positive
+    semidefinite matrix to a positive semidefinite matrix. This is the bottom
+    slice of the positivity assertion of Wolf's Example~3.1.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    Combine Lemma~\ref{lem:choi_type_first_cyclic_reciprocal_subcase} with
+    Combine Lemma~\ref{lem:choi_type_rankone_positive_bottom} with
     Lemma~\ref{lem:positive_map_from_rankone}.
 \end{proof}
 
