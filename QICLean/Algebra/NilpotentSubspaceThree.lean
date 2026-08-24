@@ -13,45 +13,31 @@ import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.LinearAlgebra.Span.Basic
 
 /-!
-# Nilpotent subspaces of 3×3 complex matrices
+# Square-zero subspaces of 3×3 complex matrices
 
-A **nilpotent subspace** of `M₃(ℂ)` is a linear subspace all of whose elements
-are nilpotent.  This file proves the three-dimensional classification: every
-nilpotent subspace of `3 × 3` complex matrices either has a common kernel
-vector or is, up to a simultaneous similarity, contained in the
-two-dimensional *exceptional* space
+This file proves the square-zero branch of the three-dimensional nilpotent-subspace
+classification: if every matrix in a complex linear subspace of `3 × 3` matrices
+squares to zero, then the matrices have a common nonzero kernel vector.
 
-```
-N₃ = { (0 u 0; v 0 u; 0 -v 0) : u v : ℂ }.
-```
+The complete classification invoked without proof by Wolf's low-dimensional quantum
+Wielandt corollary is not established here.  In particular, the branch containing a
+matrix of nilpotency index three and the exceptional two-dimensional family remain to
+be formalized.  That missing argument is external to Wolf, *Quantum Channels &
+Operations*, Chapter 6, `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`
+lines 1115–1126.
 
-Together with the trace-preserving and primitivity obstructions proved in
-`QICLean.Channel.WielandtLowDim`, this is the `D = 3` case of the
-classification used for the low-dimensional quantum Wielandt corollary
-(Sanz–Pérez-García–Wolf–Cirac, arXiv:0909.5347, remark after Theorem 1;
-Wolf, *Quantum Channels & Operations*, Chapter 6, corollary after
-Theorem 6.9, `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`
-lines 1111–1127), where the classification is cited without proof from
-M. A. Fasoli, *Classification of nilpotent linear spaces in M(4; ℂ)*,
-Communications in Algebra 25(6):1919–1932, 1997.
+## Main result
 
-## Main results
-
-* `common_ker_or_conjugate_windmill_of_isNilpotent_submodule_fin_three`:
-  the classification of nilpotent subspaces of `M₃(ℂ)`.
+* `exists_common_ker_of_forall_sq_eq_zero`: a square-zero subspace of `M₃(ℂ)`
+  has a common nonzero kernel vector.
 
 ## Proof outline
 
-If every element of the subspace squares to zero, a direct
-`AM + MA = 0` argument yields a common kernel vector.  Otherwise some
-element `A` has `A² ≠ 0`, hence (being nilpotent of rank two) is cyclic;
-conjugating `A` to the Jordan block `J₃`, the trace conditions
-`tr((xJ₃ + M)²) = tr((xJ₃ + M)³) = 0` force every `M` of the subspace into
-a one-parameter family, and a second explicit conjugation by
-`s • 1 - p • J₃` (built from an element with nonzero `(1,0)` entry) either
-lands the whole subspace inside `N₃` or exhibits the common kernel `e₁`.
+A nonzero member `A` has rank at most one, so it has the form
+`x ↦ ℓ(x) • u`.  Polarizing `(A + M)² = 0` shows that every other member `M`
+preserves the line spanned by `u`.  Nilpotence forces the corresponding scalar
+to vanish, giving the common kernel vector `u`.
 -/
-
 open scoped Matrix
 
 namespace QICLean
