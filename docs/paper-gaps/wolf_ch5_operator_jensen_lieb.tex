@@ -7,7 +7,7 @@
 
 \input{command}
 
-\title{Wolf Chapter~5 Operator Jensen and Lieb Concavity Boundary}
+\title{Wolf Chapter~5 Special-Function Jensen and Lieb Concavity}
 \author{}
 \date{2026-08-24}
 
@@ -17,26 +17,22 @@
 
 \section{Scope}
 
-This note records three distinct parts of the Chapter~5
-operator-convexity boundary.  First, the special-function Jensen declarations
-are proved.\footnote{%
+This note records two resolved parts of Wolf's Chapter~5.  First, the
+special-function Jensen inequalities are proved.\footnote{%
     The declarations are
     \leanid{posMap_rpow_concave_jensen}, \leanid{posMap_rpow_convex_jensen},
     \leanid{posMap_log_concave_jensen}, and \leanid{lieb_concavity_posDef} in
     \doclink{QICLean/Analysis/LiebConcavity}; all four are proved theorems and
     none is an axiom.}
-Second, the common subunital hypothesis printed in Wolf Corollary~5.2 is false
-for its logarithmic clause and must be replaced there by unitality.  Third, the
+The common subunital hypothesis printed in Wolf Corollary~5.2 is false for its
+logarithmic clause and must be replaced there by unitality.  Second, the
 finite-dimensional Ando--Lieb theorem is proved in the full exponent range
-described in Section~\ref{sec:lieb}.  This note does not identify the proved
-special-function declarations with the full general function-theoretic package
-in Wolf's Section~5.4.  The positive-map Jensen declarations
-underlie \cite[Corollary~5.2]{Wolf2012Quantum} (the second corollary of Wolf's
-\S5.4) and rest on the operator-convexity and
-operator-monotonicity-versus-positive-maps results
-\cite[Theorems~5.10--5.13]{Wolf2012Quantum}; the Lieb declaration is the
-Ando--Lieb trace functional \cite[Theorem~5.15]{Wolf2012Quantum}.  (Wolf's Theorem~5.1 is
-Douglas' theorem and is unrelated to this development.)
+described in Section~\ref{sec:lieb}.  The positive-map Jensen inequalities
+specialize \cite[Corollary~5.2]{Wolf2012Quantum}; the Lieb theorem is the
+Ando--Lieb trace functional \cite[Theorem~5.15]{Wolf2012Quantum}.  The distinct
+scope question for Wolf's general operator-convexity and operator-monotonicity
+results is recorded in
+\path{docs/paper-gaps/wolf_ch5_operator_convexity_scope.tex}.
 
 The notation is fixed throughout.  Operators act on a finite-dimensional Hilbert
 space, identified with $D\times D$ complex matrices.  The order $A\le B$ is the
@@ -74,7 +70,7 @@ $[1,2]$).  The logarithmic case proved in the development assumes $T$ unital.
 The weaker common subunital hypothesis printed by Wolf is insufficient, as the
 scalar counterexample below shows.
 
-\subsection{The proved special-function route and the general-package boundary}
+\subsection{The proved special-function route}
 
 Mathlib~4.31 supplies the integral
 representation\footnote{%
@@ -208,17 +204,10 @@ The integral representation of the power integrand, previously named as the
 obstruction, is present.  The printed subunital logarithm clause remains false;
 its resolution is the source-facing unital correction above.
 
-These special-function theorems do not package Wolf's full Section~5.4 block.
-No source-level declaration has been identified for the general operator-convex
-integral criterion (Theorem~5.8), L\"owner's theorem (Theorem~5.9), the two
-general projection-inequality implications (Theorems~5.10--5.11), Jensen's
-inequality for an arbitrary operator-convex function and a unital positive map
-(Theorem~5.12), the entropic corollary, the general positive-map
-operator-monotonicity theorem (Theorem~5.13), or the finite-family Jensen
-corollary following Corollary~5.2.  The exact source package is therefore still
-partial by scope and packaging; in particular, the former pass-through wrappers
-for Corollary~5.2(1)--(2) are no longer live declarations.  The special
-real-power and corrected logarithm slice itself remains axiom-free.
+The verdict of this note is limited to these special functions: the real-power
+inequalities are proved, and the false logarithmic clause is repaired by the
+unital hypothesis.  The separate question of arbitrary operator-convex and
+operator-monotone functions does not affect this resolved source correction.
 
 \section{The Lieb concavity theorem (boundary exponent)}\label{sec:lieb}
 
@@ -339,8 +328,8 @@ The relevant formal-library inputs now available are
 \leanid{CFC.exists_measure_nnrpow_eq_integral_cfcₙ_rpowIntegrand₀₁},
 \leanid{CFC.concaveOn_rpow}, \leanid{CFC.convexOn_rpow}, and
 \leanid{CFC.concaveOn_log}.  Thus the scalar functional-calculus inputs are
-available, and all four positive-map Jensen and Lieb declarations of this
-boundary are now proved theorems.
+available, and the three positive-map Jensen inequalities and the Lieb theorem
+treated in this note are proved.
 
 \bibliographystyle{alpha}
 \bibliography{references}
