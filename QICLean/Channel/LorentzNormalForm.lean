@@ -11,6 +11,7 @@ import QICLean.Channel.LorentzNormalForm.NormalForm
 import QICLean.Channel.LorentzNormalForm.PauliBlockTruncation
 import QICLean.Channel.LorentzNormalForm.QubitNormalForm
 import QICLean.Channel.LorentzNormalForm.SpinorAction
+import QICLean.Channel.LorentzNormalForm.SpinorCover
 
 /-!
 # Lorentz normal form for quantum channels (Wolf Section 2.4, Propositions 2.8–2.11)
@@ -41,6 +42,9 @@ filtering operations from eight focused submodules.
 * `QICLean.Channel.LorentzNormalForm.SpinorAction` — the four-dimensional
   Hermitian congruence action of `SL(2,ℂ)` and its action on Pauli transfer
   matrices (Wolf Equations (2.41)--(2.43)).
+* `QICLean.Channel.LorentzNormalForm.SpinorCover` — the spinor epimorphism
+  `SL(2,ℂ) → SO⁺(1,3)`: the bundled homomorphism, the rotation-block
+  reduction, and the unitary lift (Wolf Equations (2.42)--(2.44)).
 
 ## References
 

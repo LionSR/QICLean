@@ -62,6 +62,7 @@ import QICLean.Channel.LorentzNormalForm.NormalForm
 import QICLean.Channel.LorentzNormalForm.PauliBlockTruncation
 import QICLean.Channel.LorentzNormalForm.QubitNormalForm
 import QICLean.Channel.LorentzNormalForm.SpinorAction
+import QICLean.Channel.LorentzNormalForm.SpinorCover
 import QICLean.Channel.MarginalSupportAbsorption
 import QICLean.Channel.MarginalSupportWhitenedChoi
 import QICLean.Channel.MaximalOverlap
