@@ -413,13 +413,18 @@ private theorem haCyclicProjectorSum_apply_forward_diag (hd : 3 ≤ d)
   have hm1sq : (Real.sqrt ((d : ℝ) - 1)) ^ 2 = (d : ℝ) - 1 :=
     Real.sq_sqrt hdm1
   have hne := haCyclicSucc_ne hd i
-  simp [add_apply, haVectorProjector, vecMulVec_apply, Pi.star_apply,
-    haUVector, haVVector, haTensorBasis, hne]
-  apply Complex.ext <;> simp [pow_two]
-  rw [Nat.cast_sub (by omega : 1 ≤ d), Nat.cast_one]
-  field_simp
-  ring_nf at hdsq hm1sq ⊢
-  nlinarith
+  have hscalar :
+      γ / Real.sqrt d * (γ / Real.sqrt d) +
+          Real.sqrt ((d : ℝ) - 1) / Real.sqrt d *
+            (Real.sqrt ((d : ℝ) - 1) / Real.sqrt d) =
+        (d : ℝ)⁻¹ * (γ ^ 2 + (d - 1 : ℕ)) := by
+    rw [Nat.cast_sub (by omega : 1 ≤ d), Nat.cast_one]
+    field_simp
+    ring_nf at hdsq hm1sq ⊢
+    nlinarith
+  simpa [add_apply, haVectorProjector, vecMulVec_apply, Pi.star_apply,
+    haUVector, haVVector, haTensorBasis, hne, pow_two] using
+      congrArg (fun x : ℝ ↦ (x : ℂ)) hscalar
 
 private theorem haCyclicProjectorSum_apply_reverse_diag (hd : 3 ≤ d)
     {γ : ℝ} (hγ : 0 < γ) (i : Fin d) :
@@ -430,19 +435,22 @@ private theorem haCyclicProjectorSum_apply_reverse_diag (hd : 3 ≤ d)
   have hdpos : 0 < (d : ℝ) := by nlinarith
   have hspos : 0 < Real.sqrt d := Real.sqrt_pos.2 hdpos
   have hdsq : (Real.sqrt d) ^ 2 = (d : ℝ) := Real.sq_sqrt hdpos.le
-  have hdsq4 : (Real.sqrt d) ^ 4 = (d : ℝ) ^ 2 := by
-    rw [show (Real.sqrt d) ^ 4 = ((Real.sqrt d) ^ 2) ^ 2 by ring, hdsq]
   have hm1sq : (Real.sqrt (-1 + (d : ℝ))) ^ 2 = -1 + (d : ℝ) := by
     convert Real.sq_sqrt (show 0 ≤ -1 + (d : ℝ) by nlinarith)
   have hne := haCyclicSucc_ne hd i
-  simp [add_apply, haVectorProjector, vecMulVec_apply, Pi.star_apply,
-    haUVector, haVVector, haTensorBasis, hne]
-  apply Complex.ext <;> simp [pow_two]
-  rw [Nat.cast_sub (by omega : 1 ≤ d), Nat.cast_one]
-  field_simp
-  ring_nf
-  rw [hdsq4, hm1sq, hdsq]
-  ring
+  have hscalar :
+      γ⁻¹ * (Real.sqrt d)⁻¹ * (γ⁻¹ * (Real.sqrt d)⁻¹) +
+          Real.sqrt ((d : ℝ) - 1) / Real.sqrt d *
+            (Real.sqrt ((d : ℝ) - 1) / Real.sqrt d) =
+        (d : ℝ)⁻¹ * ((γ ^ 2)⁻¹ + (d - 1 : ℕ)) := by
+    rw [Nat.cast_sub (by omega : 1 ≤ d), Nat.cast_one]
+    field_simp
+    ring_nf
+    rw [hm1sq, hdsq]
+    ring
+  simpa [add_apply, haVectorProjector, vecMulVec_apply, Pi.star_apply,
+    haUVector, haVVector, haTensorBasis, hne, pow_two] using
+      congrArg (fun x : ℝ ↦ (x : ℂ)) hscalar
 
 private theorem haCyclicProjectorSum_apply_forward_reverse (hd : 3 ≤ d)
     {γ : ℝ} (hγ : 0 < γ) (i : Fin d) :
@@ -456,12 +464,16 @@ private theorem haCyclicProjectorSum_apply_forward_reverse (hd : 3 ≤ d)
   have hm1sq : (Real.sqrt ((d : ℝ) - 1)) ^ 2 = (d : ℝ) - 1 :=
     Real.sq_sqrt hdm1
   have hne := haCyclicSucc_ne hd i
-  simp [add_apply, haVectorProjector, vecMulVec_apply, Pi.star_apply,
-    haUVector, haVVector, haTensorBasis, hne]
-  apply Complex.ext <;> simp
-  field_simp
-  ring_nf at hdsq hm1sq ⊢
-  nlinarith
+  have hscalar :
+      γ / Real.sqrt d * (γ⁻¹ * (Real.sqrt d)⁻¹) +
+          Real.sqrt ((d : ℝ) - 1) / Real.sqrt d *
+            (Real.sqrt ((d : ℝ) - 1) / Real.sqrt d) = 1 := by
+    field_simp
+    ring_nf at hdsq hm1sq ⊢
+    nlinarith
+  simpa [add_apply, haVectorProjector, vecMulVec_apply, Pi.star_apply,
+    haUVector, haVVector, haTensorBasis, hne] using
+      congrArg (fun x : ℝ ↦ (x : ℂ)) hscalar
 
 private theorem haCyclicProjectorSum_apply_reverse_forward (hd : 3 ≤ d)
     {γ : ℝ} (hγ : 0 < γ) (i : Fin d) :
@@ -475,12 +487,16 @@ private theorem haCyclicProjectorSum_apply_reverse_forward (hd : 3 ≤ d)
   have hm1sq : (Real.sqrt ((d : ℝ) - 1)) ^ 2 = (d : ℝ) - 1 :=
     Real.sq_sqrt hdm1
   have hne := haCyclicSucc_ne hd i
-  simp [add_apply, haVectorProjector, vecMulVec_apply, Pi.star_apply,
-    haUVector, haVVector, haTensorBasis, hne]
-  apply Complex.ext <;> simp
-  field_simp
-  ring_nf at hdsq hm1sq ⊢
-  nlinarith
+  have hscalar :
+      (γ⁻¹ * (Real.sqrt d)⁻¹) * (γ / Real.sqrt d) +
+          Real.sqrt ((d : ℝ) - 1) / Real.sqrt d *
+            (Real.sqrt ((d : ℝ) - 1) / Real.sqrt d) = 1 := by
+    field_simp
+    ring_nf at hdsq hm1sq ⊢
+    nlinarith
+  simpa [add_apply, haVectorProjector, vecMulVec_apply, Pi.star_apply,
+    haUVector, haVVector, haTensorBasis, hne] using
+      congrArg (fun x : ℝ ↦ (x : ℂ)) hscalar
 
 private theorem haCyclicProjectorSum_apply_eq_zero (γ : ℝ)
     (p q : Fin d × Fin d)
