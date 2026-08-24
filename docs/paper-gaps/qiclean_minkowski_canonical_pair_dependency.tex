@@ -41,17 +41,43 @@ the reversal permutation matrix. A block for a non-real conjugate pair
 has real dimension $2m$ and carries an unsigned reversal metric; no sign
 characteristic is attached to that block.
 
-The GLR convention is commonly written
+The passage from the GLR convention to \eqref{eq:canonical-pair}
+requires applying GLR to $C^{\mathsf T}$, not directly to $C$.  Indeed,
+\eqref{eq:m-selfadjoint} and $M^2=I$ imply
 \begin{align}
-  C&=S^{-1}JS,
-  &M&=S^{\mathsf T}N_JS.
+  CM&=MC^{\mathsf T},
 \end{align}
-Putting $X=S^{-\mathsf T}$ gives the second identity in
-\eqref{eq:canonical-pair}; transposing the similarity convention, and if
-necessary conjugating each Jordan chain by its reversal, gives the Jordan
-orientation used in the VDDM display. These inverse and transpose changes
-must be retained explicitly: replacing them by an ordinary Euclidean singular
-value decomposition does not prove \eqref{eq:canonical-pair}.
+so $C^{\mathsf T}$ is also $M$-selfadjoint.  GLR then gives
+\begin{align}
+  C^{\mathsf T}&=S^{-1}JS,
+  &M&=S^{\mathsf T}P_{\varepsilon,J}S.
+\end{align}
+After transposing the first identity and setting $X=S^{-\mathsf T}$, one
+obtains
+\begin{align}
+  C&=S^{\mathsf T}J^{\mathsf T}S^{-\mathsf T}
+    =X^{-1}J^{\mathsf T}X,\\
+  XMX^{\mathsf T}
+    &=S^{-\mathsf T}MS^{-1}=P_{\varepsilon,J}.
+  \label{eq:glr-vddm-translation}
+\end{align}
+It remains only to restore the chosen upper-Jordan orientation.  On every
+real Jordan block, reversal gives
+\begin{align}
+  P_kJ_k(\lambda)^{\mathsf T}P_k&=J_k(\lambda),
+  &P_k^2&=I.
+\end{align}
+The simultaneous reversal of the chain and realification coordinates gives
+the analogous identity for a non-real conjugate-pair block.  Let $R$ be the
+direct sum of these blockwise reversals.  Replacing $J^{\mathsf T}$ by
+$RJ^{\mathsf T}R$ and $X$ by $RX$ preserves the similarity in
+\eqref{eq:glr-vddm-translation}.  It also preserves every metric block:
+$R(\varepsilon P_k)R^{\mathsf T}=\varepsilon P_k$ for a real block, and the
+same calculation holds for an unsigned conjugate-pair block.  Hence
+$N_J:=P_{\varepsilon,J}$ has exactly the VDDM orientation and sign convention.
+These inverse, transpose, and reversal changes must be retained explicitly:
+replacing them by an ordinary Euclidean singular value decomposition does not
+prove \eqref{eq:canonical-pair}.
 
 \section{The four-dimensional inertia restriction}
 
