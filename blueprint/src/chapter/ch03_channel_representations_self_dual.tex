@@ -55,6 +55,48 @@ assumed Hermitian.
     special case of Definition~\ref{def:transfer_matrix_of_basis}.
 \end{definition}
 
+\begin{theorem}[Transfer matrix of a Kraus representation]
+    \label{thm:transfer_matrix_kraus}
+    \lean{transferMatrix_kraus}
+    \leanok
+    \uses{def:mpu_transfer_matrix}
+    If
+    $T(X)=\sum_j K_jXK_j^\dagger$, then the column-stacking
+    convention gives
+    \begin{align}
+        \widehat T
+        &=\sum_j \overline{K_j}\otimes K_j.
+    \end{align}
+    Wolf's Equation~(2.21) prints the two Kronecker factors in the opposite
+    order; the difference is the simultaneous product-index permutation
+    induced by the vectorization convention.
+\end{theorem}
+
+\begin{proof}\leanok
+    Evaluate both sides on a matrix unit and compare the corresponding
+    column-stacked coordinates.
+\end{proof}
+
+\begin{theorem}[Channel determinant as a transfer-matrix determinant]
+    \label{thm:channel_det_transfer_matrix}
+    \lean{channelDet_eq_det_transferMatrix}
+    \leanok
+    \uses{def:channel_det, def:mpu_transfer_matrix}
+    For every linear endomorphism $T$ of $\MN{D}$,
+    \begin{align}
+        \det T
+        &=\det\widehat T.
+    \end{align}
+    This is the basis-independence of the determinant after transporting $T$
+    through column stacking.
+\end{theorem}
+
+\begin{proof}\leanok
+    Changing from the matrix-unit basis to column-stacked coordinates
+    conjugates the linear endomorphism by a linear equivalence, so its
+    determinant is unchanged.
+\end{proof}
+
 \begin{lemma}[Coordinates in a Hilbert--Schmidt orthonormal basis]
     \label{lem:hilbert_schmidt_orthonormal_coordinates}
     \lean{HilbertSchmidtOrthonormal.repr_apply,
