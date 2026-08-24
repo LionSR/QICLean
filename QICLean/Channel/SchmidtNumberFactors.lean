@@ -6,17 +6,17 @@ Authors: Sirui Lu
 import QICLean.Channel.SchmidtNumber
 
 /-!
-# General bipartite reduction forward step
+# General bipartite reduction criterion
 
-`SchmidtNumber.lean` establishes the forward step of Wolf's reduction criterion —
-that a bipartite state of Schmidt number at most `n` satisfies `(T ⊗ id)(ρ) ≥ 0`
-for every `n`-positive map `T` — on the **square** system `ℂ^D ⊗ ℂ^D`.  This file
-lifts that result to a general bipartite system `ℂ^d ⊗ ℂ^{d'}` with the first factor
-`d` equal to the map's dimension and **no relation imposed** between the two tensor
-factors (Wolf §3.2, eq. (3.18) step 1, Prop 3.4 only-if).
+`SchmidtNumber.lean` establishes the rectangular forward step of Wolf Proposition 3.4:
+a bipartite state of Schmidt number at most `n` satisfies `(T ⊗ id)(ρ) ≥ 0` for every
+`n`-positive map `T`, with independent input, output, and bystander dimensions. This
+file retains the two zero-padding constructions originally used to lift the square
+specialization, together with compatibility declarations and the dimension-general
+reduction criterion of Wolf Equation (3.18).
 
-The lift uses two zero-padding directions to reach the square system the square
-result needs.  When the second factor is the smaller, `d' ≤ d`, the second factor is
+The compatibility construction uses two zero-padding directions. When the second
+factor is the smaller, `d' ≤ d`, the second factor is
 padded up to `d` by zeros and the square result is restricted back to the `d × d'`
 corner.  When the second factor is the larger, `d ≤ d'`, the first factor is padded up
 to `d'` by zeros and the map `T` is extended to the larger square `M_{d'}` by the
@@ -39,9 +39,9 @@ raise its rank.
   factor `d ≤ d'`, by padding the first factor up to `d'` with zeros, extending `T` by
   the corner sandwich, and restricting back to the `d × d'` corner.
 * `Matrix.tensorMapId_posSemidef_of_hasSchmidtRankLE_general` and
-  `Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef_general`: the **general bipartite
-  forward step** of Wolf Prop 3.4 (only if), with no relation imposed between the two
-  tensor factors, combining the two padding directions.
+  `Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef_general`: square-map compatibility
+  aliases for the rectangular forward theorem, with no relation imposed between the
+  two tensor factors.
 * `Matrix.reductionCriterion_left_of_hasSchmidtNumberLE_general` and
   `Matrix.reductionCriterion_right_of_hasSchmidtNumberLE_general`: the **general
   bipartite reduction criterion** of Wolf eq. (3.18), composing the general forward
@@ -66,10 +66,9 @@ variable {d d' D : ℕ}
 
 /-! ## Padding the second factor to a square system
 
-The square forward step of `SchmidtNumber.lean` fixes both tensor factors to the
-map's dimension `d`.  To reach Wolf's general bipartite system `ℂ^d ⊗ ℂ^{d'}` we
-pad the second factor up to `d` by zeros (valid when `d' ≤ d`), apply the square
-result, and restrict back to the `d × d'` corner with `Matrix.PosSemidef.submatrix`.
+This compatibility construction pads the second factor up to `d` by zeros (valid
+when `d' ≤ d`), applies the square specialization of the forward theorem, and restricts
+back to the `d × d'` corner with `Matrix.PosSemidef.submatrix`.
 The padding is the standard zero-border dilation; it preserves Schmidt rank because
 appending zero columns to the coefficient matrix cannot raise its rank. -/
 
@@ -580,16 +579,13 @@ bipartite second factor** (Wolf §3.2, Prop 3.4, eq. (3.18) step 1).  For a pure
 ampliation `(T ⊗ id)(|ψ⟩⟨ψ|)` is positive semidefinite, with no relation imposed
 between the two tensor factors.
 
-The two padding directions cover the full range: when the second factor is the smaller,
-`d' ≤ d`, the second factor is padded up to `d`; when it is the larger, `d ≤ d'`, the
-first factor is padded up to `d'` and `T` is extended to the larger square. -/
+The source-facing theorem in `SchmidtNumber.lean` is now rectangular. This declaration
+keeps the former square-map API as a compatibility alias. -/
 theorem tensorMapId_posSemidef_of_hasSchmidtRankLE_general [NeZero d] [NeZero d'] {n : ℕ}
     {T : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ}
     (hTpos : IsNPositiveMap n T) {ψ : Fin d × Fin d' → ℂ} (hψ : HasSchmidtRankLE n ψ) :
-    (tensorMapId T (vecMulVec ψ (star ψ))).PosSemidef := by
-  rcases le_or_gt d' d with h | h
-  · exact tensorMapId_posSemidef_of_hasSchmidtRankLE' h hTpos hψ
-  · exact tensorMapId_posSemidef_of_hasSchmidtRankLE'' h.le hTpos hψ
+    (tensorMapId T (vecMulVec ψ (star ψ))).PosSemidef :=
+  tensorMapId_posSemidef_of_hasSchmidtRankLE hTpos hψ
 
 /-- **Positive maps and entanglement, only-if direction, general bipartite second
 factor** (Wolf §3.2, Prop 3.4, eq. (3.18) step 1).  A bipartite state on a general
@@ -597,18 +593,14 @@ system `ℂ^d ⊗ ℂ^{d'}` of Schmidt number at most `n`, with first factor `d`
 dimension of the `n`-positive map `T`, satisfies `(T ⊗ id)(ρ) ≥ 0`, with no relation
 imposed between the two tensor factors.
 
-This is the faithful bipartite forward step of Wolf eq. (3.18): the two padding
-directions of the pure-state step (`d' ≤ d` padding the second factor, `d ≤ d'` padding
-the first factor and extending `T`) jointly cover all `d'`, and the ampliation is
-linear over the finite pure-state decomposition. -/
+This square-map compatibility declaration now delegates to the rectangular forward
+theorem in `SchmidtNumber.lean`. It is retained for the reduction-criterion API below. -/
 theorem HasSchmidtNumberLE.tensorMapId_posSemidef_general [NeZero d] [NeZero d'] {n : ℕ}
     {T : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ}
     (hTpos : IsNPositiveMap n T)
     {ρ : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ} (hρ : HasSchmidtNumberLE n ρ) :
-    (tensorMapId T ρ).PosSemidef := by
-  rcases le_or_gt d' d with h | h
-  · exact hρ.tensorMapId_posSemidef' h hTpos
-  · exact hρ.tensorMapId_posSemidef'' h.le hTpos
+    (tensorMapId T ρ).PosSemidef :=
+  hρ.tensorMapId_posSemidef hTpos
 
 /-! ## The general bipartite reduction criterion (Wolf eq. (3.18))
 
