@@ -370,12 +370,57 @@ normalization; it is not a separate Lean theorem.
     pp.~523--524~\cite{Yamagami1993Cyclic}.
 \end{proof}
 
+\begin{theorem}[Yamagami's regular-boundary recurrence]
+    \label{thm:yamagami_regular_boundary_recurrence}
+    \lean{Yamagami.deleteLastCoordinate,
+        Yamagami.functional_le_deleteLastCoordinate}
+    \leanok
+    \uses{def:yamagami_stride_one_reciprocal}
+    Let $N\ge3$, $2\le m\le N-2$, and $s\ge N$.  Suppose that
+    $x\colon\Z/N\Z\to\R$ is nonnegative and $x_{N-1}=0$, and let
+    $x'\colon\Z/(N-1)\Z\to\R$ be given in the standard cyclic coordinates by
+    $x'_i=x_i$ for $0\le i<N-1$.  Then
+    \begin{align}
+        f_{N,m,s}(x)&\le f_{N-1,m-1,s-1}(x').
+        \label{eq:yamagami_regular_boundary_recurrence}
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The coefficient of the distinguished coordinate is unchanged, since
+    $(s-1)-(m-1)=s-m$.  For every retained coordinate, the reduced
+    $(m-1)$-step forward window embeds in the original $m$-step window while
+    preserving cyclic order.  Nonnegativity of $x$ therefore makes the
+    reduced denominator no larger than the original denominator.  If the
+    common numerator is positive, then $s-m>0$ makes the reduced denominator
+    positive, so the original summand is at most the reduced one.  If the
+    numerator is zero, both summands have totalized value zero.  Summing these
+    comparisons and removing the zero summand at $N-1$ proves
+    (\ref{eq:yamagami_regular_boundary_recurrence}).  This is the
+    regular-boundary reduction on p.~525 of
+    \cite{Yamagami1993Cyclic}.
+
+    The comparison cannot in general be made strict.  For
+    $(N,m,s)=(5,2,5)$ and $x=(1,0,0,1,0)$, the original denominators are
+    $(3,1,1,4,1)$, whereas the denominators of the reduced vector
+    $x'=(1,0,0,1)$ are $(3,0,1,4)$.  Both sides of
+    (\ref{eq:yamagami_regular_boundary_recurrence}) equal $7/12$.  Thus a
+    regular original boundary point can become singular after deletion, and
+    the totalized comparison must be non-strict.  It is nevertheless
+    sufficient for induction, because an upper bound for the reduced
+    functional is preserved under equality.
+\end{proof}
+
 Theorem~\ref{thm:yamagami_forward_fourier_hessian} supplies the concrete
 Fourier--Hessian and functional-identification prerequisites for the
-uniqueness argument in Yamagami's Lemma~3.  It does not prove that
-$\mathbf 1$ is a local maximum, carry out the regular-boundary reduction on
-p.~525, or establish the global cyclic reciprocal inequality.  These steps,
-and hence the middle-range positivity theorem, are not yet formalized.
+uniqueness argument in Yamagami's Lemma~3, and
+Theorem~\ref{thm:yamagami_regular_boundary_recurrence} supplies the
+dimension reduction on p.~525.  These results do not prove that $\mathbf 1$
+is a local maximum or assemble the interior, singular-boundary, and
+regular-boundary estimates into a compact global maximum.  The full cyclic
+reciprocal inequality and the resulting middle-range Choi positivity theorem
+are not yet formalized.
 
 \begin{lemma}[The first positive coordinate after a singular window]
     \label{lem:yamagami_singular_zero_run}
@@ -473,12 +518,14 @@ and hence the middle-range positivity theorem, are not yet formalized.
     summand converges to its direct boundary value.  The omitted singular
     summands of the positive approximants are nonnegative, while their
     totalized boundary values are zero.  Passing to the limit gives the
-    claim.  This lemma is conditional: it supplies neither the positive
-    interior inequality nor Yamagami's regular-boundary induction.  In
-    particular, Theorem~\ref{thm:yamagami_lemma_three_uniqueness} supplies
-    only the uniqueness assertion for positive local maxima; it establishes
-    neither the existence of the unit maximum nor the global cyclic
-    inequality.  The full cyclic inequality is not asserted here.
+    claim.  This lemma is conditional: it does not supply the positive
+    interior inequality.  Theorem~\ref{thm:yamagami_regular_boundary_recurrence}
+    supplies the regular-boundary dimension reduction, but neither theorem
+    assembles a compact global maximum.  In particular,
+    Theorem~\ref{thm:yamagami_lemma_three_uniqueness} supplies only the
+    uniqueness assertion for positive local maxima; it establishes neither
+    the existence of the unit maximum nor the global cyclic inequality.  The
+    full cyclic inequality is not asserted here.
 \end{proof}
 
 \begin{definition}[Choi-type map]
