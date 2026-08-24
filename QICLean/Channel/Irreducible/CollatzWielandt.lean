@@ -58,7 +58,7 @@ def LowerCollatzWielandtFeasible (T : Mat →ₗ[ℂ] Mat) (X : Mat) (a : ℝ) :
 /-- A real number `a` is upper Collatz--Wielandt feasible at `X` when `X` is a
 density matrix and `a X - T X` is positive semidefinite.
 
-This is the predicate `r̃(X) ≤ a` in Wolf Equation (6.30).  The global
+This is the predicate `tilde r(X) ≤ a` in Wolf Equation (6.30).  The global
 upper quantity is an infimum, correcting the second supremum printed on Wolf
 line 618. -/
 def UpperCollatzWielandtFeasible (T : Mat →ₗ[ℂ] Mat) (X : Mat) (a : ℝ) : Prop :=
