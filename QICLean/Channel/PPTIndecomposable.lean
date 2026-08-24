@@ -21,10 +21,13 @@ a positive map whose ampliation detects the entangled state. The contrapositive
 of rectangular decomposable-PPT preservation then proves that this map is
 indecomposable.
 
-The reverse implication in Proposition 3.5 is not claimed here. It requires the
-closed convex cone of Wolf Equation (3.15), its trace-pairing duality, and the
-separating-hyperplane argument used in Lewenstein--Kraus--Cirac--Horodecki,
-arXiv:quant-ph/0005014v3, Theorem 3.
+The reverse implication in Proposition 3.5 is not claimed here. The normalized
+compact convex set of decomposable witnesses and the trace-adjointness of
+first-factor partial transpose are formalized in
+`QICLean.Channel.DecomposableWitness`. What remains is normalization of the
+nonzero block-positive Choi witness and the separating-hyperplane argument
+used in Lewenstein--Kraus--Cirac--Horodecki, arXiv:quant-ph/0005014v3,
+Theorem 3.
 The exact remaining boundary is recorded in
 `docs/paper-gaps/wolf_prop3_5_reverse_implication.tex`.
 

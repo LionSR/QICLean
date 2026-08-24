@@ -625,10 +625,33 @@ so that the cited formal statements are available from the main project import.
 - `Matrix.convex_setOf_isDecomposableWitness` — convexity of the explicit
   Equation (3.15) decomposable-witness cone, as used in the proof of
   Proposition 3.5 ✓
-- The reverse implication remains open. It requires closedness of the
-  decomposable-witness cone, self-adjointness of partial transpose for the
-  trace pairing, and the separating-hyperplane argument. Proposition 3.5 is
-  therefore not recorded as fully formalized; see
+- `Matrix.IsNormalizedDecomposableWitness` — the trace-one decomposable
+  operators `a P₁ + (1-a) P₂^{T₁}` of
+  Lewenstein–Kraus–Cirac–Horodecki Theorem 3, with `a ∈ [0,1]` and
+  positive trace-one `P₁,P₂` ✓
+- `Matrix.isCompact_setOf_isNormalizedDecomposableWitness`,
+  `Matrix.isNormalizedDecomposableWitness_iff`, and
+  `Matrix.convex_setOf_isNormalizedDecomposableWitness` — compactness and
+  convexity of the normalized set, and its identification with the trace-one
+  section of Wolf's Equation (3.15) cone in nonzero dimensions ✓
+- `Matrix.PosSemidef.hasSchmidtNumberLE_left` and
+  `Matrix.isCompact_setOf_posSemidef_trace_one` — the rectangular
+  positive-semidefinite trace-one section used in the compactness proof ✓
+- `Matrix.partialTransposeLeft_smul` and
+  `Matrix.continuous_partialTransposeLeft` — scalar compatibility and
+  continuity of Wolf's first-factor partial transpose, used for the compact
+  continuous-image description ✓
+- `Matrix.trace_partialTransposeLeft_mul` and
+  `Matrix.trace_partialTransposeLeft_mul_re` — self-adjointness of
+  first-factor partial transpose for the complex bilinear and real trace
+  pairings ✓
+- The reverse implication remains open. The remaining work is to normalize
+  the nonzero block-positive Choi witness of an indecomposable map and carry
+  out the strict separation argument, including positivity, the PPT
+  property, trace normalization, and entanglement of the separating
+  operator. Closedness of the full unbounded cone is not needed for this
+  trace-one route. Proposition 3.5 is therefore not recorded as fully
+  formalized; see
   `docs/paper-gaps/wolf_prop3_5_reverse_implication.tex`.
 
 #### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — PARTIALLY FORMALIZED
