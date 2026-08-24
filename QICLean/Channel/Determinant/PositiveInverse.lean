@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.Determinant.Composition
+import QICLean.Channel.Determinant.PositiveExtremality
 import QICLean.Channel.TransferMatrix
 
 /-!
@@ -165,5 +166,31 @@ theorem inverseOfBijective_unitaryChannel_comp_transpose_isPositiveMap
   simpa only [unitaryChannel, unitaryConjLM] using
     unitaryConjLM_comp_transpose_mapsPSDConeOnto
       (U : MatrixAlg d) (Matrix.UnitaryGroup.det_isUnit U)
+
+/-- **Wolf Corollary: positive invertible maps.**
+
+For a positive trace-preserving bijection on a nonzero matrix algebra, the
+inverse is positive exactly for unitary conjugations and unitary conjugations
+after ordinary matrix transposition.  The forward direction follows Wolf's
+determinant argument: the determinant bounds for `T` and `T⁻¹`, together with
+multiplicativity, force `|det T| = 1`, so Wolf Theorem 6.1 applies. -/
+theorem wolfPositiveInvertibleMaps [NeZero d]
+    {T : MatrixEnd d} (hT : Function.Bijective T)
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
+    IsPositiveMap (inverseOfBijective T hT) ↔
+      ∃ U : Matrix.unitaryGroup (Fin d) ℂ,
+        T = unitaryChannel U ∨
+        T = (unitaryChannel U).comp
+          (Matrix.transposeLinearMapComplex (Fin d)) := by
+  constructor
+  · intro hInvPos
+    exact exists_unitary_or_transpose_of_channelDet_norm_eq_one hPos hTP
+      (channelDet_norm_eq_one_of_inverseOfBijective_isPositiveMap
+        hT hPos hTP hInvPos)
+  · rintro ⟨U, hTUnitary | hTTranspose⟩
+    · subst T
+      exact inverseOfBijective_unitaryChannel_isPositiveMap U hT
+    · subst T
+      exact inverseOfBijective_unitaryChannel_comp_transpose_isPositiveMap U hT
 
 end ChannelDeterminant.Internal
