@@ -140,12 +140,53 @@ one-singularity calculation
 recorded in
 \cite{gap:yamagami_simultaneous_singularity_boundary}.
 
-This is still not the cyclic reciprocal inequality.  The positive-interior
-uniqueness theorem, tracked by \ghissue{448}, and the separate
-regular-boundary induction remain missing.  The direct theorem for Lean's
+The finite-coordinate Nowosad input is now formalized along the source route
+\cite[pp.~409--418]{Nowosad1968Isoperimetric}.  The declaration
+\leanid{Nowosad.exists\_inducedHilbertNorm\_bound} proves boundedness for the
+actual norm induced by the coordinate-sum functional, namely the finite
+$L^2$ norm.  The declarations
+\leanid{Nowosad.mem\_laurentSubalgebra\_of\_eq\_on\_valueClass} and
+\leanid{Nowosad.coordinate\_pointDerivation\_eq\_zero} use the Lagrange
+idempotents of the value classes of the generator, so the derivation is
+killed on the possibly proper Laurent algebra $P(w)$ even when coordinates
+of $w$ repeat.  From the genuine first and second variations,
+\leanid{Nowosad.finiteCoordinate\_theorem\_one\_eight} gives the finite real
+specialization of Nowosad's Theorem~1.8.  Its local-maximum corollary is
+obtained explicitly from $\lambda_{-T}=-\lambda_T$, rather than by changing
+the orientation of Nowosad's theorem.
+
+For Yamagami's matrix $S$, the formal change of variables uses exactly
+\begin{align}
+  b&=\frac{Sa}{s}, & x(t)&=sS^{-1}(b^t),
+  &H&=s(S+S^{\mathsf T})-2S^{\mathsf T}S.
+\end{align}
+The ordinary Euclidean Hessian satisfies
+\begin{align}
+  D^2f_S(\mathbf 1)[h,h]&=-s^{-3}\langle h,Hh\rangle.
+\end{align}
+This analytic identity fixes Yamagami's normalization and is not separately
+formalized as a Fr\'echet-derivative theorem.  The Lean development uses the
+corresponding algebraic second-variation identity
+\leanid{Yamagami.minimumQuadraticForm\_normalizedNegativeInverse\_eq}.
+Under positivity of $H$ and $\ker H=\mathbb R\mathbf 1$, the declaration
+\leanid{Yamagami.lemma\_three\_localMax\_isScalar} proves that every strictly
+positive local maximum is scalar.  More precisely,
+\leanid{Yamagami.pulledBackTangent\_mem\_hessianKernel\_and\_not\_isScalarVector}
+shows that a non-scalar maximum would give the non-scalar tangent
+$sS^{-1}\log((Sa)/s)$ in $\ker H$.  This is the uniqueness assertion of
+Yamagami's Lemma~3 on p.~523, not a proof that the unit vector is itself a
+local maximum.
+
+These results are still not the cyclic reciprocal inequality.  The
+strictly-positive global inequality, including the cyclic specialization of
+the Hessian hypotheses and the required existence or attainment argument,
+and the separate regular-boundary induction remain open.  In particular, no
+current declaration identifies the generic composition
+$x\mapsto\lambda_{S^{-1}}(Sx)$ used by the Nowosad layer with the concrete
+stride-one \leanid{Yamagami.functional}.  The direct theorem for Lean's
 literal \(0/0=0\) functional is correspondingly conditional on an already
-proved strictly positive inequality; it does not discharge either missing
-input.
+proved strictly positive inequality; it supplies none of these remaining
+steps.
 
 Two verifiable computations locate the obstruction to elementary summand
 bounds in the remaining range.  First, the estimate is tight in two distinct

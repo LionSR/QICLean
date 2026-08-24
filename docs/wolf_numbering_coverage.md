@@ -678,6 +678,43 @@ so that the cited formal statements are available from the main project import.
   endpoint `m = d - 1`, `s = d` is false with a strict inequality and is
   recorded in the paper-gap note; this theorem does not prove the cyclic
   inequality ✓
+- `Nowosad.inducedHilbertNorm_sq` and
+  `Nowosad.exists_inducedHilbertNorm_bound` identify the norm induced by the
+  faithful coordinate-sum functional with the finite `L²` norm and prove that
+  every finite-coordinate linear operator is bounded for this norm. This is
+  the Hilbert-norm hypothesis in Nowosad's Theorem 1.8, rather than the
+  supremum norm on a raw function space ✓
+- `Nowosad.mem_laurentSubalgebra_of_eq_on_valueClass`,
+  `Nowosad.valueClassIdempotent_mem_laurentSubalgebra`, and
+  `Nowosad.coordinate_pointDerivation_eq_zero` identify the finite Laurent
+  algebra `P(w)` with the functions constant on the value classes of `w` and
+  kill its coordinate point derivations with the corresponding value-class
+  idempotents. This is the genuine Laurent-algebra specialization of the
+  Singer--Wermer step, including repeated coordinates of `w` ✓
+- `Nowosad.finiteCoordinate_theorem_one_eight` and
+  `Nowosad.lambdaT_eq_on_laurentSubalgebra_of_two_localMinOn` formalize the
+  finite real-coordinate conclusion of Nowosad's local-minimum Theorem 1.8:
+  multiplication, and hence constancy of `λ_T`, on the regular part of
+  `u · P(u⁻¹v)`. `Nowosad.isLocalMinOn_lambdaT_neg_of_isLocalMaxOn` and
+  `Nowosad.lambdaT_eq_on_laurentSubalgebra_of_two_localMaxOn` expose the
+  source-prescribed `T ↦ -T` passage to Yamagami's local maxima ✓
+- `Yamagami.pulledBackTangent_mem_hessianKernel_and_not_isScalarVector` and
+  `Yamagami.lemma_three_localMax_isScalar` formalize the uniqueness assertion
+  of Yamagami's Lemma 3. The Nowosad generator is exactly `b = (S a)/s`, and
+  the original-coordinate curve is `x(t) = s S⁻¹(b^t)`. With
+  `H = s(S+Sᵀ)-2SᵀS`, the Euclidean Hessian convention is
+  `D²f_S(1)[h,h] = -s⁻³⟨h,Hh⟩`. A non-scalar local maximum therefore yields
+  the named non-scalar tangent `s S⁻¹(log b)` in `ker H` ✓
+- The displayed analytic Hessian identity fixes the normalization used in the
+  source; it is not separately formalized as a Fréchet-derivative theorem.
+  The Lean proof instead uses `Yamagami.dotProduct_hessianMatrix_mulVec` and
+  `Yamagami.minimumQuadraticForm_normalizedNegativeInverse_eq`, the exact
+  algebraic second-variation identity needed by Nowosad's argument.
+- The preceding Lemma 3 declaration proves uniqueness only. It does not prove
+  that the unit vector is a local maximum, specialize the Hessian hypotheses
+  to the full cyclic family, identify the generic `lambdaT` composition with
+  the concrete stride-one `Yamagami.functional`, or establish the cyclic
+  reciprocal inequality.
 - `Yamagami.limsup_functional_le_card_ratio_of_singularDenominator`
   formalizes the omitted simultaneous-singularity boundary count: one
   least-next-positive zero string supplies all `m` vanishing summands, without
@@ -685,8 +722,10 @@ so that the cited formal statements are available from the main project import.
 - `Yamagami.functional_le_card_ratio_of_strictlyPositive` transfers an
   already proved strictly positive inequality to Lean's direct nonnegative
   `0 / 0 = 0` value. This theorem is conditional; the positive-interior input
-  remains tracked by issue #448, and the regular-boundary induction is still
-  required. See
+  and the regular-boundary induction are still required. The finite Nowosad
+  theorem now supplies the abstract local-maximum uniqueness ingredient, but
+  it supplies neither existence of the unit maximum nor the global inequality.
+  See
   `docs/paper-gaps/yamagami93_simultaneous_singularity_boundary.tex` ✓
 - Positivity in the middle range `2 ≤ n ≤ d - 3` remains open; its exact
   scope and cyclic reciprocal inequality are recorded in

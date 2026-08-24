@@ -25,6 +25,211 @@ Their Lemmas~2--3 use the same rank-one and product-one coefficient argument
 formalized below. The whole range is due to Yamagami~\cite{Yamagami1993Cyclic},
 whose proof is a variational argument on the boundary of a projective simplex.
 
+The finite-coordinate interior-uniqueness input in that argument is recorded
+next.  It follows Nowosad's local-minimum proof and then makes Yamagami's
+change of sign and change of variables explicit.  These results prove neither
+that the unit vector is a local maximum nor the full cyclic reciprocal
+inequality.
+
+\subsection{Nowosad's finite-coordinate theorem}
+
+\begin{definition}[Nowosad's finite-coordinate data]
+    \label{def:nowosad_finite_coordinate_data}
+    \lean{Nowosad.positiveInvertibles,
+        Nowosad.inducedHilbertNorm,
+        Nowosad.inducedHilbertNorm_sq,
+        Nowosad.lambdaT,
+        Nowosad.laurentSubalgebra}
+    \leanok
+    Let $I$ be finite and let $A=\R^I$, with coordinatewise multiplication
+    and the faithful positive functional $\varphi(x)=\sum_{i\in I}x_i$.  Its
+    strictly positive invertible cone is
+    \begin{align}
+        A_{++}&=\{x\in A:x_i>0\text{ for every }i\},
+    \end{align}
+    and the induced Hilbert norm and Nowosad functional are
+    \begin{align}
+        \lVert x\rVert_\varphi^2&=\varphi(x^2)=\sum_i x_i^2,
+        &\lambda_T(x)&=\varphi\bigl(x^{-1}T(x)\bigr)
+          =\sum_i\frac{(Tx)_i}{x_i}.
+    \end{align}
+    For $w\in A$, write
+    $P(w)=\operatorname{alg}_{\R}\{w,w^{-1}\}$ for its Laurent-polynomial
+    subalgebra.
+\end{definition}
+
+\begin{theorem}[Finite-dimensional induced-Hilbert boundedness]
+    \label{thm:nowosad_finite_hilbert_bound}
+    \lean{Nowosad.exists_inducedHilbertNorm_bound}
+    \leanok
+    \uses{def:nowosad_finite_coordinate_data}
+    Every real linear operator $T\colon A\to A$ is bounded for the norm
+    induced by $\varphi$: there is $C\ge0$ such that
+    \begin{align}
+        \lVert Tx\rVert_\varphi\le C\lVert x\rVert_\varphi
+        \qquad (x\in A).
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The space $A$, equipped with the induced norm, is the finite-dimensional
+    $L^2$ space on $I$.  Transport $T$ to this $L^2$ space and use continuity
+    of linear maps in finite dimension.  This is the boundedness hypothesis
+    in Nowosad's Theorem~1.8, not a bound for the supremum norm on a function
+    space.
+\end{proof}
+
+\begin{theorem}[Value-class point derivations on $P(w)$]
+    \label{thm:nowosad_finite_laurent_derivation}
+    \lean{Nowosad.eq_on_valueClass_of_mem_laurentSubalgebra,
+        Nowosad.mem_laurentSubalgebra_of_eq_on_valueClass,
+        Nowosad.valueClassIdempotent,
+        Nowosad.valueClassIdempotent_mem_laurentSubalgebra,
+        Nowosad.laurent_product_rule_of_two_minimumData,
+        Nowosad.coordinate_pointDerivation_eq_zero}
+    \leanok
+    \uses{def:nowosad_finite_coordinate_data}
+    An element $q\in A$ belongs to $P(w)$ exactly when it is constant on
+    every value class of $w$.  If $i\in I$ and a linear functional
+    $D\colon P(w)\to\R$ satisfies
+    \begin{align}
+        D(qr)=q_iD(r)+r_iD(q)
+        \qquad (q,r\in P(w)),
+    \end{align}
+    then $D=0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Lagrange interpolation gives, for each value $w_i$, the idempotent
+    \begin{align}
+        e_{[w_i]}(j)=
+        \begin{cases}
+            1,&w_j=w_i,\\
+            0,&w_j\ne w_i,
+        \end{cases}
+    \end{align}
+    and places it in $P(w)$.  Since $e_{[w_i]}^2=e_{[w_i]}$, the Leibniz
+    identity gives $D(e_{[w_i]})=0$.  For arbitrary $q\in P(w)$,
+    $qe_{[w_i]}=q_i e_{[w_i]}$, and a second application gives $D(q)=0$.
+    Thus the idempotent is attached to the whole value class, rather than to
+    a singleton coordinate which need not belong to $P(w)$.  This is the
+    finite-coordinate form of the point-derivation step following Nowosad's
+    equations (1.28)--(1.29).
+\end{proof}
+
+\begin{theorem}[Nowosad Theorem~1.8 in finite coordinates]
+    \label{thm:nowosad_finite_theorem_one_eight}
+    \lean{Nowosad.finiteCoordinate_theorem_one_eight,
+        Nowosad.lambdaT_eq_on_laurentSubalgebra_of_two_localMinOn,
+        Nowosad.lambdaT_neg,
+        Nowosad.isLocalMinOn_lambdaT_neg_of_isLocalMaxOn,
+        Nowosad.multiplication_on_laurentSubalgebra_of_two_localMaxOn,
+        Nowosad.lambdaT_eq_on_laurentSubalgebra_of_two_localMaxOn}
+    \leanok
+    \uses{thm:nowosad_finite_hilbert_bound,
+        thm:nowosad_finite_laurent_derivation}
+    Let $T\colon A\to A$ be real linear, and suppose that $u,v\in A_{++}$
+    are local minima of $\lambda_T$.  Put $w=u^{-1}v$ and
+    $\delta=u^{-1}T(u)$.  Then
+    \begin{align}
+        T(uq)=\delta\,uq\qquad(q\in P(w)),
+    \end{align}
+    and $\lambda_T$ is constant on $uP(w)\cap A_{++}$.
+    The same conclusion for two local maxima of $\lambda_T$ is obtained by
+    applying the local-minimum statement to $-T$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The first and second variations at the two genuine local minima give
+    Nowosad's normalized variation data.  The comparison of the two positive
+    quadratic forms yields the power recursion (1.19)--(1.20), then the
+    Laurent-polynomial identity (1.23).  Finite value-class interpolation is
+    the coordinate analogue of the analytic extension (1.27), and gives the
+    product rule (1.28).  The null ideal in (1.29) is zero because $\varphi$ is
+    faithful.  Coordinate evaluation therefore gives the point derivations
+    of Theorem~\ref{thm:nowosad_finite_laurent_derivation}, which vanish.
+    Undoing the normalization proves the multiplication and constancy
+    conclusions.  This is the finite specialization of
+    Nowosad~\cite[pp.~409--418]{Nowosad1968Isoperimetric}.  Finally,
+    $\lambda_{-T}=-\lambda_T$, so negation exchanges local maxima and local
+    minima exactly as used by Yamagami~\cite[p.~522]{Yamagami1993Cyclic}.
+\end{proof}
+
+\begin{definition}[Yamagami's transformed generator and Hessian matrix]
+    \label{def:yamagami_nowosad_change_of_variables}
+    \lean{Yamagami.inverseOperator,
+        Yamagami.transformedGenerator,
+        Yamagami.pulledBackCurve,
+        Yamagami.hessianMatrix,
+        Yamagami.dotProduct_hessianMatrix_mulVec,
+        Yamagami.minimumQuadraticForm_normalizedNegativeInverse_eq}
+    \leanok
+    Let $S$ be invertible and suppose that
+    $S\mathbf 1=S^{\mathsf T}\mathbf 1=s\mathbf 1$, where $s>0$.  For
+    \begin{align}
+        f_S(x)&=\lambda_{S^{-1}}(Sx)=\sum_i\frac{x_i}{(Sx)_i},
+    \end{align}
+    a second positive point $a$ is transformed to
+    \begin{align}
+        b&=\frac{Sa}{s},
+        &x(t)&=sS^{-1}(b^t),
+        &H&=s(S+S^{\mathsf T})-2S^{\mathsf T}S,
+    \end{align}
+    where powers are taken coordinatewise.
+\end{definition}
+
+For the ordinary Euclidean Hessian, direct differentiation gives
+\begin{align}
+    D^2f_S(\mathbf 1)[h,h]
+      &=-s^{-3}\langle h,Hh\rangle.
+\end{align}
+Thus $H$ is the negative-Hessian representative used by Yamagami, up to the
+positive factor $s^{-3}$.  The formal variational identity in
+Definition~\ref{def:yamagami_nowosad_change_of_variables} records the same
+quadratic form with the normalization appropriate to Nowosad's operator.  The
+analytic differentiation identity itself is recorded here to fix the source
+normalization; it is not a separate Lean theorem.
+
+\begin{theorem}[Uniqueness assertion in Yamagami's Lemma~3]
+    \label{thm:yamagami_lemma_three_uniqueness}
+    \lean{Yamagami.composed_lambdaT_pulledBackCurve_eq_of_localMax,
+        Yamagami.pulledBackCurve_zero,
+        Yamagami.hasDerivAt_pulledBackCurve_zero,
+        Yamagami.hessianMatrix_mulVec_one_eq_zero,
+        Yamagami.pulledBackTangent_mem_hessianKernel_and_not_isScalarVector,
+        Yamagami.lemma_three_localMax_isScalar}
+    \leanok
+    \uses{thm:nowosad_finite_theorem_one_eight,
+        def:yamagami_nowosad_change_of_variables}
+    Suppose in addition that $S$ has nonnegative entries, that $H$ is
+    positive semidefinite, and that $\ker H=\R\mathbf 1$.  Then every local
+    maximum of $f_S$ on $A_{++}$ is projectively scalar.  More precisely,
+    a non-scalar local maximum $a$ would produce the non-scalar vector
+    \begin{align}
+        sS^{-1}\log\!\left(\frac{Sa}{s}\right)\in\ker H.
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The row and column sum identities together with $H\succeq0$ give
+    Nowosad's first normalized variation package at $\mathbf 1$ directly.
+    A local maximum at $a$ transfers under the invertible change of variables
+    to the normalized point $b=(Sa)/s$; applying the sign change $T\mapsto-T$
+    gives the second package.  The finite Laurent theorem applied to
+    $\log b\in P(b)$ makes the normalized operator vanish there.  Hence the
+    pulled-back curve $x(t)=sS^{-1}(b^t)$ has tangent
+    $sS^{-1}(\log b)=\log b$, which lies in $\ker H$.  If $a$ is non-scalar,
+    so is this tangent, contradicting $\ker H=\R\mathbf 1$.
+
+    This proves only the uniqueness assertion of Yamagami's Lemma~3 on
+    p.~523.  It does not prove that $\mathbf 1$ is itself a local maximum, and
+    it does not prove the cyclic reciprocal inequality.
+\end{proof}
+
 \begin{definition}[Yamagami's stride-one cyclic reciprocal data]
     \label{def:yamagami_stride_one_reciprocal}
     \lean{Yamagami.forwardDenominator,
@@ -179,8 +384,10 @@ middle range.
     totalized boundary values are zero.  Passing to the limit gives the
     claim.  This lemma is conditional: it supplies neither the positive
     interior inequality nor Yamagami's regular-boundary induction.  In
-    particular, the Nowosad interior-uniqueness input remains open, so the
-    full cyclic inequality is not asserted here.
+    particular, Theorem~\ref{thm:yamagami_lemma_three_uniqueness} supplies
+    only the uniqueness assertion for positive local maxima; it establishes
+    neither the existence of the unit maximum nor the global cyclic
+    inequality.  The full cyclic inequality is not asserted here.
 \end{proof}
 
 \begin{definition}[Choi-type map]
