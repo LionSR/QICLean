@@ -126,7 +126,9 @@ private theorem matrixBasisTransposePerm_sq :
 
 /-- The determinant of ordinary transposition.  The pair-swap fixes the `d`
 diagonal matrix units and exchanges the remaining `d²-d` units in pairs, so
-its sign is `(-1)^(d(d-1)/2)`, exactly the count in Wolf Theorem 6.1(3). -/
+its sign is `(-1)^(d(d-1)/2)`, exactly the count in Wolf Theorem 6.1(3).
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 395--406. -/
 theorem channelDet_transposeLinearMapComplex :
     channelDet (Matrix.transposeLinearMapComplex (Fin d)) =
       (-1 : ℂ) ^ (d * (d - 1) / 2) := by
@@ -223,7 +225,9 @@ private theorem transpose_comp_self :
 /-- The channel determinant of a Hermiticity-preserving complex-linear map is
 real.  Positive maps are Hermiticity-preserving, so this is Wolf's
 conjugate-paired-spectrum step in Theorem 6.1(1), stated at its natural
-linearity boundary. -/
+linearity boundary.
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 364--367. -/
 theorem channelDet_star_eq_of_map_conjTranspose
     {T : MatrixEnd d} (hHP : ∀ X, T Xᴴ = (T X)ᴴ) :
     star (channelDet T) = channelDet T := by
@@ -248,7 +252,9 @@ theorem channelDet_star_eq_of_isPositiveMap {T : MatrixEnd d}
   channelDet_star_eq_of_map_conjTranspose hPos.map_conjTranspose
 
 /-- **Wolf Theorem 6.1(1).**  The determinant of a positive trace-preserving
-map is a real number in `[-1, 1]`. -/
+map is a real number in `[-1, 1]`.
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 351--367. -/
 theorem exists_real_channelDet_mem_Icc_of_positive_tracePreserving
     {T : MatrixEnd d} (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
     ∃ r : ℝ, r ∈ Set.Icc (-1) 1 ∧ channelDet T = r := by
@@ -275,7 +281,9 @@ For a positive trace-preserving `T` with determinant of modulus one, every
 eigenvalue is peripheral.  The recurrent powers therefore converge to the
 identity.  Applying the positive maps `T ^ (n_i - 1)` to a positive target and
 passing to the closed positive-semidefinite cone shows that its unique
-preimage under `T` is positive. -/
+preimage under `T` is positive.
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 369--380. -/
 theorem mapsPSDConeOnto_of_channelDet_norm_eq_one [NeZero d]
     {T : MatrixEnd d} (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
     (hdet : ‖channelDet T‖ = 1) :
@@ -404,7 +412,9 @@ theorem channelDet_norm_eq_one_of_unitaryChannel_comp_transpose
 For `d > 0`, a positive trace-preserving map has determinant of modulus one
 exactly when it is unitary conjugation or unitary conjugation after ordinary
 matrix transposition.  The `NeZero d` assumption is the explicit Lean form of
-Wolf's positive matrix-dimension convention. -/
+Wolf's positive matrix-dimension convention.
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 351--400. -/
 theorem channelDet_norm_eq_one_iff_exists_unitary_or_transpose_of_positive_tracePreserving
     [NeZero d] {T : MatrixEnd d}
     (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
@@ -420,7 +430,9 @@ theorem channelDet_norm_eq_one_iff_exists_unitary_or_transpose_of_positive_trace
 
 /-- **Wolf Theorem 6.1(3).**  For a positive trace-preserving map in positive
 matrix dimension, determinant `-1` occurs exactly for a unitary conjugation
-after ordinary transposition in a dimension for which `⌊d/2⌋` is odd. -/
+after ordinary transposition in a dimension for which `⌊d/2⌋` is odd.
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 358--406. -/
 theorem channelDet_eq_neg_one_iff_exists_unitary_transpose_of_positive_tracePreserving
     [NeZero d] {T : MatrixEnd d}
     (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
@@ -445,6 +457,30 @@ theorem channelDet_eq_neg_one_iff_exists_unitary_transpose_of_positive_tracePres
   · rintro ⟨hodd, U, rfl⟩
     rw [channelDet_comp, channelDet_unitary_eq_one, one_mul,
       channelDet_transposeLinearMapComplex_eq_neg_one_iff.mpr hodd]
+
+/-- **Wolf Theorem 6.1(3), determinant-one converse in the odd-parity
+dimensions.**  If `⌊d/2⌋` is odd, the transpose branch has determinant
+`-1`; hence a positive trace-preserving map has determinant `1` exactly when it
+is a unitary conjugation. -/
+theorem channelDet_eq_one_iff_exists_unitary_of_positive_tracePreserving_of_odd
+    [NeZero d] {T : MatrixEnd d}
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
+    (hodd : Odd (d / 2)) :
+    channelDet T = 1 ↔
+      ∃ U : Matrix.unitaryGroup (Fin d) ℂ, T = unitaryChannel U := by
+  constructor
+  · intro hdet
+    have hnorm : ‖channelDet T‖ = 1 := by rw [hdet, norm_one]
+    obtain ⟨U, hunitary | htranspose⟩ :=
+      exists_unitary_or_transpose_of_channelDet_norm_eq_one hPos hTP hnorm
+    · exact ⟨U, hunitary⟩
+    · have hneg : channelDet T = -1 := by
+        rw [htranspose, channelDet_comp, channelDet_unitary_eq_one, one_mul,
+          channelDet_transposeLinearMapComplex_eq_neg_one_iff.mpr hodd]
+      rw [hdet] at hneg
+      exact (by norm_num at hneg)
+  · rintro ⟨U, rfl⟩
+    exact channelDet_unitary_eq_one U
 
 end Internal
 

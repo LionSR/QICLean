@@ -564,21 +564,38 @@ Thus no four-positive-parts estimate and no factor $4$ occur. The resolved
 proof-route note is
 `docs/paper-gaps/wolf_prop61_russo_dye_factor.tex`.
 
-#### Wolf Theorem "Determinants" and Equation (6.22) — PARTIALLY FORMALIZED
+#### Wolf Theorem "Determinants" and Equation (6.22) — FORMALIZED
 
 * `channelDet_comp` — Wolf Equation (6.22),
   `det(T₁.comp T₂) = det(T₁) det(T₂)`, with Lean composition in the
   source's displayed order.
 * `channelDet_norm_le_one_of_positive_tracePreserving` — the magnitude bound
   `|det T| ≤ 1` for every positive trace-preserving map.
+* `ChannelDeterminant.Internal.exists_real_channelDet_mem_Icc_of_positive_tracePreserving`
+  — the full first clause: `det T` is real and belongs to `[-1,1]`.
+* `ChannelDeterminant.Internal.channelDet_norm_eq_one_iff_exists_unitary_or_transpose_of_positive_tracePreserving`
+  — for positive matrix dimension, the source-general saturation alternative:
+  `|det T| = 1` exactly for unitary conjugations and unitary conjugations after
+  ordinary transposition.
+* `ChannelDeterminant.Internal.channelDet_transposeLinearMapComplex` and
+  `ChannelDeterminant.Internal.channelDet_transposeLinearMapComplex_eq_neg_one_iff`
+  — ordinary transposition has determinant `(-1)^(d(d-1)/2)`, which equals
+  `-1` exactly when `⌊d/2⌋` is odd.
+* `ChannelDeterminant.Internal.channelDet_eq_neg_one_iff_exists_unitary_transpose_of_positive_tracePreserving`
+  and
+  `ChannelDeterminant.Internal.channelDet_eq_one_iff_exists_unitary_of_positive_tracePreserving_of_odd`
+  — the source-facing sign classifications in Wolf Theorem "Determinants"(3).
 * `channelDet_norm_eq_one_iff_exists_unitaryChannel` — the CPTP specialization
   of determinant saturation: a quantum channel has determinant magnitude one
   exactly when it is a unitary conjugation.
 
-The remaining source clauses are that the determinant of every positive
-trace-preserving map is real, the full saturation alternative including maps
-unitarily equivalent to transposition, and the transposition parity/sign
-calculation.  These remain tracked in issue #38.
+The proof follows Wolf's route: phase-spectrum saturation, Dirichlet recurrent
+powers converging to `T_φ = id`, positivity of the inverse, the existing
+cone/rank/Wigner classification, and trace-preserving normalization of its
+implementer.  The transposition sign is the same pair count as Wolf's
+Gell--Mann-basis argument, represented by the matrix-unit pair-swap
+permutation.  Positive matrix dimension is explicit as `[NeZero d]` in the
+saturation and sign-classification declarations.
 
 #### Wolf Corollary "Monotonicity of the determinant" — PARTIALLY FORMALIZED
 
@@ -589,10 +606,10 @@ calculation.  These remain tracked in issue #38.
   `|det(T₁.comp T₂)| = |det T₁|` iff
   `det T₁ = 0` or `|det T₂| = 1`.
 
-Replacing the saturation condition `|det T₂| = 1` by Wolf's geometric
-alternative "unitary conjugation or matrix transposition" depends on the
-remaining general positive trace-preserving saturation classification above;
-the present declarations do not weaken or claim that open step.
+The general positive trace-preserving saturation classification above now
+replaces `|det T₂| = 1` by Wolf's geometric alternative "unitary conjugation
+or matrix transposition".  The declarations here deliberately retain the
+algebraic equality split as a reusable separate theorem.
 
 
 #### Wolf Lemma 6.1 (Dirichlet's simultaneous approximation) — FORMALIZED

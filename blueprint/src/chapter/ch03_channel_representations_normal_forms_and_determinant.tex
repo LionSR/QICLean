@@ -1041,23 +1041,116 @@ This section states the existence theorems from
     bounded. Since $T^n(X)=\mu^nX$, this is impossible when $|\mu|>1$.
 \end{proof}
 
-\begin{theorem}[Determinant bound for positive trace-preserving maps]
+\begin{theorem}[Real determinant interval for positive trace-preserving maps]
     \label{thm:channelDet_norm_le_one}
     \lean{channelDet_norm_le_one_of_positive_tracePreserving,
-        channelDet_norm_le_one_of_channel}\leanok
+        channelDet_norm_le_one_of_channel,
+        ChannelDeterminant.Internal.channelDet_star_eq_of_map_conjTranspose,
+        ChannelDeterminant.Internal.channelDet_star_eq_of_isPositiveMap,
+        ChannelDeterminant.Internal.exists_real_channelDet_mem_Icc_of_positive_tracePreserving}\leanok
     \uses{def:channel_det, def:positive_map, def:trace_preserving}
     For any positive trace-preserving map $T : \MN{D} \to \MN{D}$,
+    $\det T$ is real and belongs to $[-1,1]$; in particular,
     $|\det T|\leq1$.
     This is \cite[Theorem~6.1(1)]{Wolf2012Quantum}.
 \end{theorem}
 
 \begin{proof}\leanok
     \uses{thm:positive_tp_eigenvalue_disk}
+    Positivity implies Hermiticity preservation.  In the matrix-unit basis,
+    conjugating the channel matrix entrywise is the same as conjugating the
+    map by the pair-swap involution induced by $X\mapsto X^{\mathsf T}$.
+    Determinant multiplicativity and involutivity therefore give
+    $\overline{\det T}=\det T$, which is the source's conjugate-pair reality
+    argument in coordinates.
+
     Every eigenvalue $\mu$ of $T$ satisfies $|\mu|\leq1$
     (positivity and trace preservation force spectral radius~$\leq1$).
     Since $\det T$ is the product of the eigenvalues
     (counted with algebraic multiplicity), the bound
     $|\det T|=\prod_i|\mu_i|\leq1$ follows by induction.
+\end{proof}
+
+\begin{theorem}[Determinant saturation for positive trace-preserving maps]
+    \label{thm:channelDet_norm_eq_one_iff_positive_tp}
+    \lean{ChannelDeterminant.Internal.channel_all_eigenvalues_norm_one_of_positive_tracePreserving,
+        ChannelDeterminant.Internal.channel_all_eigenvalues_norm_one,
+        Module.End.peripheralSubspace_eq_top_of_all_eigenvalues_norm_one,
+        Module.End.peripheralProjection_eq_one_of_all_eigenvalues_norm_one,
+        ChannelDeterminant.Internal.mapsPSDConeOnto_of_channelDet_norm_eq_one,
+        ChannelDeterminant.Internal.exists_unitary_or_transpose_of_channelDet_norm_eq_one,
+        ChannelDeterminant.Internal.channelDet_transpose_norm_eq_one,
+        ChannelDeterminant.Internal.channelDet_norm_eq_one_of_unitaryChannel_comp_transpose,
+        ChannelDeterminant.Internal.channelDet_norm_eq_one_iff_exists_unitary_or_transpose_of_positive_tracePreserving}\leanok
+    \uses{def:channel_det, def:positive_map, def:trace_preserving,
+        def:unitary_channel}
+    Let $D>0$ and let $T:\MN{D}\to\MN{D}$ be positive and
+    trace-preserving.  Then
+    \begin{align}
+        |\det T|=1
+        \quad\Longleftrightarrow\quad
+        \exists U\in\mc{U}(D),\quad
+        T(A)=UAU^\dagger
+        \ \text{or}\
+        T(A)=UA^{\mathsf T}U^\dagger .
+    \end{align}
+    This is \cite[Theorem~6.1(2)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:positive_tp_eigenvalue_disk,
+        thm:peripheral_projection_recurrent_subsequence, thm:wolf_prop_3_6,
+        thm:channel_det_unitary_eq_one}
+    Saturation forces every eigenvalue to have modulus one, so the peripheral
+    subspace is all of $\MN{D}$ and the peripheral projection $T_\phi$ is the
+    identity.  Along Wolf's Dirichlet recurrent subsequence,
+    $T^{n_i}\to T_\phi=\id$.  Since $T$ is bijective, the preimage $X$ of a
+    positive matrix $A$ is the limit of the positive matrices
+    $T^{n_i-1}(A)$; closedness of the positive-semidefinite cone makes
+    $T^{-1}$ positive.
+
+    Thus $T$ maps the positive-semidefinite cone onto itself.  The already
+    formalized cone/rank/Wigner route of Wolf Proposition~3.6 gives
+    $T(A)=YAY^\dagger$ or $T(A)=YA^{\mathsf T}Y^\dagger$ with $Y$
+    invertible.  Trace preservation and nondegeneracy of the trace pairing
+    imply $Y^\dagger Y=\one$, so $Y$ is unitary.  Conversely, unitary
+    conjugation has determinant one, while transposition is an involution and
+    hence has determinant of modulus one.
+\end{proof}
+
+\begin{theorem}[Sign of transposition and the extremal negative determinant]
+    \label{thm:channelDet_transpose_sign}
+    \lean{ChannelDeterminant.Internal.matrixBasisTransposePerm,
+        ChannelDeterminant.Internal.matrixBasisTransposePerm_apply,
+        ChannelDeterminant.Internal.channelMatrix_transposeLinearMapComplex,
+        ChannelDeterminant.Internal.channelDet_transposeLinearMapComplex,
+        ChannelDeterminant.Internal.odd_mul_pred_div_two_iff_odd_div_two,
+        ChannelDeterminant.Internal.channelDet_transposeLinearMapComplex_eq_neg_one_iff,
+        ChannelDeterminant.Internal.channelDet_eq_neg_one_iff_exists_unitary_transpose_of_positive_tracePreserving,
+        ChannelDeterminant.Internal.channelDet_eq_one_iff_exists_unitary_of_positive_tracePreserving_of_odd}\leanok
+    \uses{thm:channelDet_norm_eq_one_iff_positive_tp,
+        thm:channel_det_unitary_eq_one}
+    Ordinary transposition on $\MN{D}$ satisfies
+    \begin{align}
+        \det(A\mapsto A^{\mathsf T})
+        =(-1)^{D(D-1)/2}.
+    \end{align}
+    Consequently it has determinant $-1$ exactly when
+    $\lfloor D/2\rfloor$ is odd.  For a positive trace-preserving $T$ in
+    positive dimension, $\det T=-1$ exactly when that parity condition holds
+    and $T(A)=UA^{\mathsf T}U^\dagger$ for a unitary $U$.  In those odd-parity
+    dimensions, $\det T=1$ exactly for unitary conjugations.  This is
+    \cite[Theorem~6.1(3)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    In the matrix-unit basis, transposition is the permutation that exchanges
+    $E_{ij}$ and $E_{ji}$.  It fixes the $D$ diagonal units and partitions the
+    remaining $D^2-D$ units into $D(D-1)/2$ transpositions, giving the displayed
+    sign.  Splitting $D$ into its even and odd cases proves that
+    $D(D-1)/2$ and $\lfloor D/2\rfloor$ have the same parity.  The source-facing
+    classifications then follow from determinant saturation and the fact that
+    every unitary conjugation has determinant one.
 \end{proof}
 
 \begin{theorem}[Determinant under composition]
@@ -1105,10 +1198,10 @@ This section states the existence theorems from
     equality is automatic.
 
     The source's further replacement of $|\det T_2|=1$ by ``unitary
-    conjugation or matrix transposition'' depends on the general positive
-    trace-preserving saturation classification.  Only its CPTP unitary branch
-    is currently available, so that geometric clause remains open rather than
-    being weakened here.
+    conjugation or matrix transposition'' is exactly
+    Theorem~\ref{thm:channelDet_norm_eq_one_iff_positive_tp}; the present
+    declaration isolates the algebraic equality split so the saturation
+    classification remains reusable.
 \end{proof}
 
 \begin{theorem}[Determinant one iff the channel is unitary]
@@ -1122,7 +1215,9 @@ This section states the existence theorems from
         \exists\,U \in \mc{U}(D),\quad T(\rho)=U\rho U^\dagger.
         \label{eq:representations_det_unitary_iff}
     \end{align}
-    This is \cite[Theorem~6.1(2)]{Wolf2012Quantum}.
+    This is the CPTP specialization of
+    \cite[Theorem~6.1(2)]{Wolf2012Quantum}; complete positivity excludes the
+    genuinely transpose-type branch.
 \end{theorem}
 
 \begin{proof}

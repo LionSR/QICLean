@@ -28,6 +28,7 @@ import QICLean.Channel.Determinant.ChoiBound
 import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HeisenbergDual
 import QICLean.Channel.Determinant.HilbertSchmidt
+import QICLean.Channel.Determinant.PositiveExtremality
 import QICLean.Channel.Determinant.UnitaryCharacterization
 import QICLean.Channel.DirectSumConditionalExpectation
 import QICLean.Channel.EnsembleEquivalence
