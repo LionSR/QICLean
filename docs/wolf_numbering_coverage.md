@@ -1498,16 +1498,54 @@ is false under the single printed hypothesis.
     convex-extreme points with families supported on one block, where the
     occupied block is a rank-one orthogonal projection.
 
-* The remaining **existence direction** — that every trace-preserving positive
-  map for which both `T` and `T*` satisfy the Schwarz inequality admits a
-  `MultiCycleDecomposition` on its asymptotic image, with the cycles coming
-  from the now-formalized density-block decomposition of the fixed-point
-  space — now requires proving that the induced positive inverse permutes
-  these now-characterized density-block faces with equal dimensions, and
-  assembling the exact weighted Equations (6.66)--(6.68). The conditional
-  `CycleStructure` and
-  `MultiCycleDecomposition` objects above are consumers of that theorem; they
-  are not substitutes for the missing source-facing declaration.
+* The density-block coordinate transport assembled from the recurrent-inverse
+  setup at source lines 1637--1640, and used by the subsequent
+  1641--1659 argument, is formalized in
+  `QICLean.Channel.Peripheral.DensityBlockCoordinates` and
+  `QICLean.Channel.Peripheral.DensityBlockDynamics`:
+  - `Matrix.densityBlockWithZeroEmbedding` and
+    `Matrix.densityBlockWithZeroCompression` are the maps `E` and `R` for the
+    exact zero-extended witnesses of
+    `IsPositiveMap.exists_fixedPoints_densityBlocks_with_zero`, in the
+    established formal tensor-factor order `sigma k ⊗ X k`;
+  - the round-trip, positivity, trace, density-state, and fixed-range lemmas
+    show that these coordinates carry exactly the direct-sum density-state
+    geometry, without introducing another decomposition;
+  - `Matrix.densityBlockDynamics` is `R.comp (A.comp E)`, and
+    `IsPositiveMap.exists_peripheralDensityBlockDynamics` packages the maps
+    `Tbar` and `Sbar`, both embedding intertwinings, their two inverse
+    identities, positivity, and preservation of total block trace.
+
+* The relative-pure-state and permutation argument at source lines 1641--1659
+  is formalized by:
+  - `Matrix.IsPositiveBetweenDirectSums` and
+    `Matrix.mapsTo_extremePoints_directSumDensityMatrices_of_mutualInverse`,
+    which express positivity between dependent matrix families and
+    preservation of their relative extreme states;
+  - `Matrix.exists_directSumFacePermutation_of_mutualInverse`, which uses the
+    connected rank-one-projector locus to make the occupied output block
+    constant, applies the same construction to the inverse, and returns
+    `Matrix.DirectSumFacePermutation` with positive, trace-preserving,
+    mutually inverse matched block maps and equality only of their
+    full-matrix dimensions;
+  - the public full-family formulas
+    `Matrix.DirectSumFacePermutation.map_apply` and
+    `Matrix.DirectSumFacePermutation.inverse_apply`;
+  - `IsPositiveMap.exists_peripheralDensityBlockFacePermutation`, which
+    combines the exact Theorem 6.14 witnesses and recurrent inverse with that
+    direct-sum argument. Its block equivalence is source-to-target, while its
+    inverse is Wolf's output-to-input permutation `pi`, so
+    `(Tbar X) j` depends only on `X (pi j)` and `d (pi j) = d j`.
+
+* This completes exactly the bounded pure-face/permutation passage at source
+  lines 1641--1659, not all of Theorem 6.16. The remaining **existence
+  assembly** for a `MultiCycleDecomposition` must still compare the matched
+  multiplicities `m`, transport the ordinary Schwarz inequality to the
+  matched weighted block maps, combine the already formalized exclusion of
+  the transpose alternative, and obtain the exact weighted Equation (6.68).
+  Those steps remain tracked by #417 and #411. The conditional
+  `CycleStructure` and `MultiCycleDecomposition` objects above are consumers
+  of that later theorem; they are not substitutes for it.
 
 ---
 

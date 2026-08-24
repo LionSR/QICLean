@@ -25,6 +25,7 @@ import QICLean.Channel.Peripheral.CyclicDecomposition.Primitivity
 import QICLean.Channel.Peripheral.CyclicGroupKraus
 import QICLean.Channel.Peripheral.DensityBlockCoordinates
 import QICLean.Channel.Peripheral.DensityBlockDynamics
+import QICLean.Channel.Peripheral.DensityBlockFacePermutation
 import QICLean.Channel.Peripheral.DirectSumFacePermutation
 import QICLean.Channel.Peripheral.GroupStructure
 import QICLean.Channel.Peripheral.IrreducibleChannel
