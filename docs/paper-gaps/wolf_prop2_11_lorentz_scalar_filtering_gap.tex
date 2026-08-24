@@ -98,6 +98,25 @@ $L_2\widehat T L_1$ are also formalized.\footnote{Formal declarations
 asserting existence of a canonical representative for every qubit channel
 remains open.
 
+The two non-generic representatives themselves are now formalized directly
+from the source formulas in
+\cite[Theorem~8, Eqs.~(17)--(19)]{VerstraeteVerschelde2002QuantumChannels}.
+The exact non-diagonal three-Kraus family defines a channel for each assumed
+$x\in[0,1]$, has the Pauli data
+$\Delta=\operatorname{diag}(x/\sqrt3,x/\sqrt3,1/3)$ and
+$v=(0,0,2/3)$, and has Choi/Kraus rank three for $x<1$ and two at $x=1$.
+The singular two-Kraus family realizes
+$X\mapsto\tr(X)\lvert0\rangle\!\langle0\rvert$ and has Choi/Kraus rank two.
+\footnote{Formal declarations
+\leanid{Wolf.nonDiagonalMap},
+\leanid{Wolf.choiRank_nonDiagonalMap_eq_three},
+\leanid{Wolf.choiRank_nonDiagonalMap_one},
+\leanid{Wolf.singularMap}, and
+\leanid{Wolf.choiRank_singularMap} in
+\doclink{QICLean/Channel/LorentzNormalForm/CanonicalQubitChannels}.}
+This bounded construction proves sufficiency for an already supplied
+$x\in[0,1]$; it does not derive that range or classify Lorentz orbits.
+
 \section{Elimination plan}
 
 A source-faithful proof requires the following steps.
@@ -127,15 +146,19 @@ A source-faithful proof requires the following steps.
     prove the full two-to-one assertion or the rotation and boost formulas of
     Wolf's Equation~(2.44).
   \item Choose the scalar factors so that the canonical representative is trace
-    preserving, and verify complete positivity and the stated parameter bounds.
+    preserving, and derive the stated parameter bounds from the positive
+    two-qubit normal forms.  Once $x\in[0,1]$ is supplied, the exact Kraus
+    constructions, complete positivity, transfer data, and rank calculations
+    for the non-diagonal and singular representatives are already formalized.
   \item Prove the three-case existence theorem using the general filters and link
     it to the existing canonical-form predicates.
 \end{enumerate}
 
-The discrepancy is an open gap: the canonical forms, the generic minimisation
-theorem in square dimension, and the determinant-one Lorentz action are
-available, but the scalar-normalized Lorentz-orbit classification required by
-Proposition~2.11 has not yet been formalized.
+The discrepancy is an open gap: the canonical predicates, the exact
+non-generic representatives and their ranks, the generic minimisation theorem
+in square dimension, and the determinant-one Lorentz action are available,
+but the scalar-normalized Lorentz-orbit classification and necessity of the
+parameter range required by Proposition~2.11 have not yet been formalized.
 
 \bibliographystyle{alpha}
 \bibliography{references}

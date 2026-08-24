@@ -7,9 +7,9 @@
 
 \input{command}
 
-\title{Exact-Rank Wording in Wolf's Choi Criterion}
+\title{Exact-Rank Wording in Wolf's Choi and Witness Criteria}
 \author{}
-\date{2026-08-23}
+\date{2026-08-24}
 
 \begin{document}
 \maketitle
@@ -90,13 +90,64 @@ matrices of rank exactly $k$ are dense among matrices of rank at most $k$, and
 the quadratic form is continuous. This argument is not the proof printed by
 Wolf and is not used in the formal criterion.
 
+\section{The same defect in Proposition~3.3}
+
+Wolf's Proposition~3.3 considers a density operator
+$\rho\in M_d(\C)\otimes M_{d'}(\C)$ and states that its Schmidt number is at
+least $n+1$ if and only if there is a Hermitian $W$ with
+$\tr(W\rho)<0$ and
+\begin{align}
+    \langle\psi,W\psi\rangle&\ge0
+    &&\text{for every $\psi$ with $\operatorname{SR}(\psi)=n$}.
+    \tag{Wolf 3.3}
+\end{align}
+The source then defines $S_n$ as the density operators of Schmidt number at
+most $n$ and separates $\rho$ from $S_n$; its converse says that $S_n$ is the
+closed convex hull of the same printed exact-rank set.
+\footnote{Source: \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines 229--243. Tracked by
+\href{https://github.com/LionSR/QICLean/issues/23}{QICLean issue \#23}.}
+
+This exact-rank wording again fails without the bound $n\le\min\{d,d'\}$.
+If $n>\min\{d,d'\}$, no vector has Schmidt rank exactly $n$, so the witness
+condition is vacuous. Taking $W=-\one$ then makes $\tr(W\rho)=-1<0$ for every
+density operator, whereas no such $\rho$ can have Schmidt number at least
+$n+1$. Thus the printed equivalence is false in precisely the range where its
+test set is empty.
+
+The dimension-generic correction is
+\begin{align}
+    \operatorname{sn}(\rho)>n
+    \quad\Longleftrightarrow\quad
+    \exists W=W^\dagger:\quad
+    \tr(W\rho)<0\quad\text{and}\quad
+    \langle\psi,W\psi\rangle&\ge0
+    &&\text{whenever }\operatorname{SR}(\psi)\le n.
+    \tag{corrected Wolf 3.3}
+\end{align}
+This is exactly the separating-hyperplane statement for $S_n$: each pure
+projector in a defining decomposition of $S_n$ has Schmidt rank at most $n$.
+It is formalized by
+\leanid{Matrix.not_hasSchmidtNumberLE_iff_exists_witness} in
+\doclink{QICLean/Channel/EntanglementWitness} and is the witness input to the
+rectangular positive-map characterization
+\leanid{Matrix.hasSchmidtNumberLE_iff_forall_isNPositiveMap_tensorMapId_posSemidef}
+in \doclink{QICLean/Channel/PositiveMapDetection}.
+
+When $n\le\min\{d,d'\}$, the exact-rank witness test can again be recovered
+from the bounded-rank test by the same density-and-continuity argument. That
+additional argument is not the separating-hyperplane proof printed in
+Proposition~3.3 and is not used by the formal theorem.
+
 \section{Conclusion}
 
-Wolf's exact-rank wording is false under the printed hypothesis $k\le d$.
-Replacing exact Schmidt rank by Schmidt rank at most $k$ gives the standard
-rectangular Choi criterion and matches the compression proof. The formal
-statement and the Blueprint use this corrected wording; no additional route
-is attributed to the source.
+Wolf's exact-rank wording in Proposition~3.1 is false under the printed
+hypothesis $k\le d$, and the same wording in Proposition~3.3 is false when
+$n>\min\{d,d'\}$. Replacing exact Schmidt rank by Schmidt rank at most the
+given bound yields the dimension-generic Choi and witness criteria and matches
+the proofs through compressions and the convex set $S_n$. The formal statements
+and the Blueprint use this corrected wording; no additional route is attributed
+to the source.
 
 \bibliographystyle{alpha}
 \bibliography{references}

@@ -387,6 +387,15 @@ so that the cited formal statements are available from the main project import.
 * `IsLorentzDiagonal` — diagonal Lorentz normal form (Wolf Proposition 2.11 case 1) ✓
 * `IsLorentzNonDiagonal` — non-diagonal Lorentz normal form (case 2) ✓
 * `IsLorentzSingular` — singular Lorentz normal form (case 3) ✓
+* `Wolf.nonDiagonalKraus` / `Wolf.nonDiagonalMap` — the exact three-operator
+  non-diagonal representative in Verstraete--Verschelde Theorem 8,
+  Equation (19), with its arbitrary-matrix action and Pauli transfer matrix ✓
+* `Wolf.choiRank_nonDiagonalMap_eq_three` /
+  `Wolf.choiRank_nonDiagonalMap_one` — the non-diagonal representative has
+  Choi/Kraus rank 3 for `0 ≤ x < 1` and rank 2 at `x = 1` ✓
+* `Wolf.singularKraus` / `Wolf.singularMap` — the singular representative is
+  `X ↦ tr(X)|0⟩⟨0|`, has the stated Pauli transfer matrix, and satisfies
+  `Wolf.choiRank_singularMap : Channel.choiRank singularMap = 2` ✓
 * `Wolf.infimum_is_attained` — **key compactness lemma**: trace minimisation
   over SL(d₁, ℂ) × SL(d₂, ℂ) filterings of a positive-definite operator on
   ℂ^{d₂} ⊗ ℂ^{d₁} attains its infimum ✓ (rectangular form)
@@ -411,12 +420,15 @@ so that the cited formal statements are available from the main project import.
   doubly-stochastic ✓ (derived from `Wolf.exists_normal_form_generic_tau` by
   the rectangular Choi transformation and partial-trace identities)
 * **Wolf Proposition 2.11 (Lorentz normal form for qubit channels)** remains
-  pending. The required general invertible Kraus-rank-one CP filters and their
-  scalar freedom, the determinant-one spinor action, and its exact action on
-  Pauli transfer matrices are now formalized. The Lorentz-orbit classification
-  and the final trace-preserving normalization have no Lean declaration yet.
-  The former determinant-one `SLFiltering` formulation was false and was
-  removed.
+  pending as an existence and orbit-classification theorem. The required
+  general invertible Kraus-rank-one CP filters and their scalar freedom, the
+  determinant-one spinor action, and its exact action on Pauli transfer
+  matrices are formalized. The source-displayed non-diagonal and singular
+  representatives, including their exact actions and Choi/Kraus ranks, are
+  also formalized. The Lorentz-orbit classification, necessity of the
+  non-diagonal parameter range, and final trace-preserving normalization have
+  no Lean declaration yet. The former determinant-one `SLFiltering`
+  formulation was false and was removed.
 
 #### Formalization
 
@@ -465,6 +477,13 @@ so that the cited formal statements are available from the main project import.
 | Diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzDiagonal` |
 | Non-diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzNonDiagonal` |
 | Singular Lorentz form | `LorentzNormalForm.lean` | `IsLorentzSingular` |
+| Canonical non-diagonal and singular representatives |
+  `LorentzNormalForm/CanonicalQubitChannels.lean` |
+  `Wolf.nonDiagonalMap`, `Wolf.singularMap` |
+| Canonical representative Choi/Kraus ranks |
+  `LorentzNormalForm/CanonicalQubitChannels.lean` |
+  `Wolf.choiRank_nonDiagonalMap_eq_three`,
+  `Wolf.choiRank_nonDiagonalMap_one`, `Wolf.choiRank_singularMap` |
 
 #### Not yet formalized
 
@@ -473,8 +492,11 @@ so that the cited formal statements are available from the main project import.
 | Section 2.4 Lorentz normal form (Proposition 2.11) | Correctly formulated
   statement and proof remain pending. The general invertible Kraus-rank-one
   filters, their scalar/SL decomposition, and the determinant-one Lorentz
-  action on Pauli transfer matrices are available. The proof still needs the
-  Lorentz-orbit classification and the final trace-preserving normalization. |
+  action on Pauli transfer matrices are available. The displayed
+  non-diagonal and singular representatives and their ranks are also
+  available. The proof still needs the Lorentz-orbit classification, the
+  necessity of the parameter bounds, and the final trace-preserving
+  normalization. |
 | Section 2.4 full spinor double cover and Equation (2.44) | Image inclusion,
   multiplicativity, and the equality `L(-X) = L(X)` are available. Surjectivity,
   exact two-point fibres, and the rotation/boost exponential formulas remain
@@ -484,6 +506,8 @@ so that the cited formal statements are available from the main project import.
 ### References
 
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 2][Wolf2012QChannels]
+* [F. Verstraete and H. Verschelde, *On Quantum Channels*,
+  arXiv:quant-ph/0202124v2](https://arxiv.org/abs/quant-ph/0202124v2)
 
 ---
 
@@ -509,7 +533,38 @@ so that the cited formal statements are available from the main project import.
   recorded in
   `docs/paper-gaps/wolf_prop3_1_exact_schmidt_rank_scope.tex`.
 
-### Section 3.2 Positive maps and entanglement theory
+### Section 3.2 Detecting entanglement and Schmidt number
+
+#### Wolf Proposition 3.3 — FORMALIZED WITH A SOURCE WORDING CORRECTION
+
+- `Matrix.not_hasSchmidtNumberLE_iff_exists_witness` — a trace-one Hermitian
+  state lies outside `S_n` iff a Hermitian witness is negative on the state
+  and nonnegative on every vector of Schmidt rank at most `n` ✓
+- Wolf prints exact Schmidt rank `n`. This is vacuous when
+  `n > min(d,d')` and does not describe the pure generators of `S_n` used by
+  the separating-hyperplane proof. The counterexample, corrected statement,
+  and exact-rank scope are recorded alongside the same defect in Proposition
+  3.1 at `docs/paper-gaps/wolf_prop3_1_exact_schmidt_rank_scope.tex`.
+
+#### Wolf Proposition 3.4 — FORMALIZED (RECTANGULAR FORM)
+
+- `Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef` — the only-if direction
+  for an `n`-positive map `T : M_d(ℂ) → M_r(ℂ)`, with an independent
+  bystander dimension; the pure-state proof uses the rectangular
+  right-factor parametrization
+  `ChoiJamiolkowski.exists_compression_of_vector` ✓
+- `ChoiJamiolkowski.exists_isNPositiveMap_choiMatrix_eq_of_witness` — Equation
+  (3.13) in Wolf's orientation: a witness `W` on `ℂ^d ⊗ ℂ^{d'}` is the
+  rectangular Choi matrix of an `n`-positive map
+  `P : M_{d'}(ℂ) → M_d(ℂ)` ✓
+- `ChoiJamiolkowski.trace_choiMatrix_mul_eq_omegaVec_quadraticForm_traceAdjointMap`
+  — Equation (3.14), with `T = traceAdjointMap P` and the test vector
+  `omegaVec d'` ✓
+- `Matrix.exists_isNPositiveMap_tensorMapId_not_posSemidef` — if a trace-one
+  Hermitian state on `ℂ^d ⊗ ℂ^{d'}` lies outside `S_n`, an `n`-positive map
+  `T : M_d(ℂ) → M_{d'}(ℂ)` detects it ✓
+- `Matrix.hasSchmidtNumberLE_iff_forall_isNPositiveMap_tensorMapId_posSemidef`
+  — the full rectangular equivalence in Proposition 3.4 for density operators ✓
 
 #### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — PARTIALLY FORMALIZED
 
@@ -1423,7 +1478,7 @@ records that `X_T` is the fixed-point space of `T_φ`, and
 `Module.End.map_eigenspace_of_ne_zero` supplies the one-eigenvalue case of
 clause 3.
 
-#### Wolf Theorem 6.16 (Structure of cycles) — PARTIALLY FORMALIZED
+#### Wolf Theorem 6.16 (Structure of cycles) — FORMALIZED
 
 The source-contract audit is resolved in
 `docs/paper-gaps/wolf_theorem6_16_schwarz_orientation.tex`.  The printed
@@ -1431,7 +1486,7 @@ proof uses the Schwarz inequality for `T` itself when it excludes the
 transpose branch, but obtains Equation (6.66) by applying Theorem 6.14 to the
 recurrent projection `I`; that theorem requires the trace adjoint `I*` to be
 Schwarz.  Closure under powers and limits transports the two orientations
-separately.  Therefore the source-facing assembly will explicitly assume that
+separately.  Therefore the source-facing assembly explicitly assumes that
 both `T` and `T*` are Schwarz.  No implication between these hypotheses is
 silently introduced, and the note does not claim that the theorem's conclusion
 is false under the single printed hypothesis.
@@ -1582,8 +1637,11 @@ is false under the single printed hypothesis.
     mutually inverse matched block maps and equality only of their
     full-matrix dimensions;
   - the public full-family formulas
-    `Matrix.DirectSumFacePermutation.map_apply` and
-    `Matrix.DirectSumFacePermutation.inverse_apply`;
+    `Matrix.DirectSumFacePermutation.map_apply`,
+    `Matrix.DirectSumFacePermutation.map_apply_blockEquiv`, and
+    `Matrix.DirectSumFacePermutation.inverse_apply`; the source-indexed
+    `map_apply_blockEquiv` form avoids dependent casts when the matrix size
+    varies with the block;
   - `IsPositiveMap.exists_peripheralDensityBlockFacePermutation`, which
     combines the exact Theorem 6.14 witnesses and recurrent inverse with that
     direct-sum argument. Its block equivalence is source-to-target, while its
@@ -1633,13 +1691,32 @@ is false under the single printed hypothesis.
   argument at lines 1653--1656 proves only equality of `d_k`; the new trace
   calculation supplies the missing equality of `m_k`.
 
-* This completes the bounded pure-face/permutation passage and the repaired
-  scalar block-Schwarz step, but not all of Theorem 6.16. The remaining
-  **existence assembly** must apply the already formalized exclusion of the
-  transpose alternative to the matched endomorphisms and prove the exact
-  weighted Equation (6.68). That step remains tracked by #411. The conditional
-  `CycleStructure` and `MultiCycleDecomposition` objects above are consumers
-  of that later theorem; they are not substitutes for it.
+* The final source-facing assembly lives in
+  `QICLean.Channel.Peripheral.StructureOfCycles`:
+  - `Matrix.DirectSumFacePermutation.exists_reindexedUnitaryBlockAction`
+    applies the positive-invertible Schwarz classification to each matched
+    endomorphism, sets Wolf's output-to-input permutation to
+    `pi = F.blockEquiv.symm`, and reindexes the classified source unitary to
+    an output-indexed unitary `V k`;
+  - `IsPositiveMap.exists_wolfTheorem616` is the compiled Theorem 6.16
+    boundary. It identifies membership in `T.peripheralSubspace` with the
+    literal zero-extended `Matrix.fromBlocks 0 0 0` density-block form of
+    Equations (6.66)--(6.67), retains `e₀`, and separately proves `n = D`
+    and `sigma k = (m k : ℂ)⁻¹ • 1`;
+  - the same declaration returns `pi`, both equalities
+    `d (pi k) = d k` and `m (pi k) = m k`, output-indexed unitaries, the
+    coordinate action
+    `A X k = V k * reindex (X (pi k)) * V kᴴ`, and the ambient Equation
+    (6.68), `T (E X) = E (A X)`;
+  - Schwarz for `T` and Schwarz for `T*` remain distinct hypotheses, and the
+    positive trace-preserving inverse consumed by the block classification is
+    only the recurrent inverse on the peripheral image.
+
+  Thus the exact source theorem is complete without CP/Kraus hypotheses,
+  a modified product, a global inverse for `T`, or a substitute through the
+  conditional `CycleStructure` and `MultiCycleDecomposition` records. Those
+  records remain independent downstream interfaces rather than part of the
+  source theorem.
 
 ---
 

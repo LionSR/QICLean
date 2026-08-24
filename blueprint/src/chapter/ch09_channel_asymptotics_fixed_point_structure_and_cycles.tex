@@ -781,8 +781,7 @@ classification theorem is already proved.
     Theorem~6.16. It does not compare the multiplicities $m_k$, transport the
     ordinary Schwarz inequality to the matched block maps, assemble the
     exclusion of the transpose alternative, or prove Equation~(6.68); those
-    remain separate source-facing follow-ups.
-    % Tracking: GitHub issues #417 and #411.
+    are assembled in Theorem~\ref{thm:wolf_6_16} below.
 \end{theorem}
 
 \begin{proof}
@@ -954,6 +953,83 @@ classification theorem is already proved.
     by a unitary is an order automorphism, so the unitary-conjugated transpose
     branch fails the same inequality. For $d=1$, ordinary transposition is the
     identity and this alternative is already unitary conjugation.
+\end{proof}
+
+\begin{theorem}[Structure of cycles]
+    \label{thm:wolf_6_16}
+    \lean{Matrix.DirectSumFacePermutation.map_apply_blockEquiv,
+        Matrix.DirectSumFacePermutation.exists_reindexedUnitaryBlockAction,
+        IsPositiveMap.exists_wolfTheorem616}
+    \leanok
+    \uses{thm:wolf_cycle_density_block_schwarz,
+        thm:wolf_cycle_schwarz_excludes_transpose}
+    This is Wolf, Chapter~6, Theorem~6.16, Equations~(6.66)--(6.68),
+    local source lines~1597--1664, under the separately retained
+    trace-adjoint-Schwarz contract required by the printed proof's invocation
+    of Theorem~6.14.
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, with $D>0$.
+    Suppose separately that $T$ and its trace-pairing adjoint $T^*$ satisfy
+    the Schwarz inequality. There are zero-extended density-block
+    coordinates $E$, positive integers $d_k,m_k$, density matrices
+    $\sigma_k\in\MN{m_k}$, a permutation $\pi$ of the blocks, and unitaries
+    $V_k\in\MN{d_k}$ such that
+    \begin{align}
+        \mathcal X_T
+          &=0\oplus\bigoplus_{k<K}
+              \bigl(\sigma_k\otimes\MN{d_k}\bigr),
+              \tag{6.66}\label{eq:wolf_6_16_density_blocks}\\
+        B\in\mathcal X_T
+          &\Longleftrightarrow
+            B=E(X)\quad\text{for some }X=(X_k)_{k<K},
+              \tag{6.67}\label{eq:wolf_6_16_coordinates}\\
+        d_{\pi(k)}&=d_k,
+        &m_{\pi(k)}&=m_k,
+        &\sigma_k&=m_k^{-1}\Id_{m_k}.
+        \notag
+    \end{align}
+    If $q_k:\Fin{d_{\pi(k)}}\simeq\Fin{d_k}$ is the canonical reindexing,
+    the coordinate action $A$ and its ambient realization are
+    \begin{align}
+        (AX)_k
+          &=V_k\,\operatorname{reindex}_{q_k,q_k}
+              (X_{\pi(k)})\,V_k^\dagger,
+          \notag\\
+        T(E(X))&=E(AX).
+          \tag{6.68}\label{eq:wolf_6_16_action}
+    \end{align}
+    Here $\pi$ is explicitly the output-to-input permutation: output block
+    $k$ reads input block $\pi(k)$. In the formal coordinates the tensor
+    order is $\sigma_k\otimes X_k$; Wolf's displayed
+    $X_k\otimes\rho_k$ differs by the canonical tensor-factor swap.
+
+    The compiled statement retains the equivalence $e_0$ and the literal
+    zero extension $\operatorname{fromBlocks}(0,0,0,-)$ while also proving
+    $n=D$. This records Equations~(6.66)--(6.67) without a dependent rewrite
+    that erases Wolf's zero-summand form. The inverse used to classify each
+    matched block is only the inverse on the peripheral image; no inverse of
+    the ambient map $T$ is asserted.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Theorem~\ref{thm:wolf_cycle_density_block_schwarz} supplies the exact
+    density-block coordinates, $n=D$, maximally mixed weights, the
+    source-to-target face permutation $\tau$, equality of matched
+    multiplicities, and a positive trace-preserving bijective Schwarz
+    endomorphism on each matched full-matrix block whose canonical inverse is
+    positive. Apply
+    Theorem~\ref{thm:wolf_cycle_schwarz_excludes_transpose} to each such
+    endomorphism. Thus it is unitary conjugation.
+
+    Set $\pi=\tau^{-1}$. Reindex the source unitary along
+    $d_{\pi(k)}=d_k$ to obtain the output-indexed $V_k$; simultaneous
+    reindexing preserves multiplication, adjoints, and unitarity. The
+    source-indexed full-family block action then gives the displayed formula
+    for $A$. Finally the existing density-block intertwining equality is
+    reversed to read $T(E(X))=E(AX)$, exactly Equation~(6.68). Membership in
+    $\mathcal X_T$ is the fixed-point characterization of the peripheral
+    projection, so the preceding zero-extended block characterization gives
+    Equations~(6.66)--(6.67) verbatim at the formal coordinate boundary.
 \end{proof}
 
 \begin{definition}[Block-permutation structure]

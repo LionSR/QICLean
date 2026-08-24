@@ -60,7 +60,7 @@ in Section~\ref{sec:app_positive_not_cp_schmidt_number_geometry}.
     \lean{Matrix.tensorMapId_tEta_posSemidef_of_hasSchmidtRankLE}
     \leanok
     \uses{def:schmidt_rank, def:t_eta, def:tensor_map_id, thm:t_eta_threshold,
-        thm:square_schmidt_rank_exact_parametrization,
+        thm:schmidt_rank_exact_parametrization,
         lem:rank_one_ampliation_choi_compression,
         thm:choi_right_compression_quadratic_form, thm:schmidt_rank_choi_test_iff}
     For a pure state $\ket{\psi}\bra{\psi}$ on the square bipartite system
@@ -86,19 +86,20 @@ in Section~\ref{sec:app_positive_not_cp_schmidt_number_geometry}.
     \lean{Matrix.tensorMapId_posSemidef_of_hasSchmidtRankLE}
     \leanok
     \uses{def:schmidt_rank, def:tensor_map_id, def:k_positive_map,
-        def:choi_right_compression, thm:square_schmidt_rank_exact_parametrization,
+        def:choi_right_compression, thm:schmidt_rank_exact_parametrization,
         lem:rank_one_ampliation_choi_compression,
         thm:choi_right_compression_quadratic_form, thm:schmidt_rank_choi_test_iff}
-    For a pure state $\ket{\psi}\bra{\psi}$ on the square bipartite system
-    $\MN{D}\otimes\MN{D}$ with $\SR(\psi)\le n$ and any $n$-positive map
-    $T$, applying $T$ to the first factor keeps the result positive semidefinite:
-    $(T\otimes\id)(\ket{\psi}\bra{\psi})\ge 0$.
+    For a pure state $\ket{\psi}\bra{\psi}$ on
+    $\MN{d}\otimes\MN{k}$ with $\SR(\psi)\le n$ and any $n$-positive map
+    $T\colon\MN{d}\to\MN{r}$, applying $T$ to the first factor keeps the result
+    positive semidefinite:
+    $(T\otimes\id_k)(\ket{\psi}\bra{\psi})\ge 0$.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    Write $\psi$ through the maximally entangled vector as $\psi=\psi_X$ for a square
-    matrix $X$ on the right factor with
+    Write $\psi$ through the maximally entangled vector as $\psi=\psi_X$ for a
+    rectangular matrix $X\in M_{d\times k}(\C)$ with
     $\rank(X)=\SR(\psi)\le n$. Then
     $(T\otimes\id)(\ket{\psi}\bra{\psi})$ is the right-factor Choi compression of $T$
     by $X$, and its quadratic form on a vector $\eta$ equals the Choi quadratic form
@@ -114,11 +115,11 @@ in Section~\ref{sec:app_positive_not_cp_schmidt_number_geometry}.
     \leanok
     \uses{def:has_schmidt_number_le, def:tensor_map_id, def:k_positive_map,
         thm:tensor_map_id_sum, thm:tensor_map_id_posSemidef_pure}
-    A bipartite state on the square system $\MN{D}\otimes\MN{D}$ of Schmidt number at
-    most $n$ satisfies $(T\otimes\id)(\rho)\ge 0$ for every $n$-positive map $T$.
-    This is the square case $d=d'=D$ of the only-if direction of Wolf's
-    Proposition~3.4 for a general bipartite system
-    $\MN{d}\otimes\MN{d'}$ \cite[Chapter~3, Proposition~3.4]{Wolf2012Quantum}.
+    A bipartite state on $\MN{d}\otimes\MN{k}$ of Schmidt number at most $n$
+    satisfies $(T\otimes\id_k)(\rho)\ge 0$ for every $n$-positive map
+    $T\colon\MN{d}\to\MN{r}$. This is the only-if direction of Wolf's
+    Proposition~3.4 \cite[Chapter~3, Proposition~3.4]{Wolf2012Quantum}, with the
+    map output and innocent-bystander dimensions allowed to vary independently.
 \end{theorem}
 
 \begin{proof}
@@ -129,29 +130,23 @@ in Section~\ref{sec:app_positive_not_cp_schmidt_number_geometry}.
     positive semidefinite matrices is positive semidefinite.
 \end{proof}
 
-\begin{theorem}[Only-if direction for a general bipartite system]
+\begin{theorem}[Square-map compatibility form of the only-if direction]
     \label{thm:has_schmidt_number_le_tensor_map_id_general}
     \lean{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef_general}
     \leanok
     \uses{def:has_schmidt_number_le, def:tensor_map_id, def:k_positive_map,
         thm:has_schmidt_number_le_tensor_map_id}
-    On a general bipartite system $\MN{d}\otimes\MN{d'}$, with no relation imposed
-    between the two factors, a state of Schmidt number at most $n$ satisfies
-    $(T\otimes\id)(\rho)\ge 0$ for every $n$-positive map $T$ on $\MN{d}$.
-    This is the only-if direction of Wolf's Proposition~3.4, the first step of
-    eq.~(3.18) \cite[Chapter~3, Proposition~3.4]{Wolf2012Quantum}, with no restriction
-    on the bipartite dimensions.
+    On $\MN{d}\otimes\MN{d'}$, with no relation imposed between the two factors, a
+    state of Schmidt number at most $n$ satisfies $(T\otimes\id)(\rho)\ge 0$ for
+    every $n$-positive endomorphism $T$ of $\MN{d}$. This compatibility declaration
+    is the specialization of Theorem~\ref{thm:has_schmidt_number_le_tensor_map_id}
+    used by the reduction criterion below.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    Pad the bipartite state to the square system $\MN{D}\otimes\MN{D}$ with
-    $D=\max(d,d')$ by zero rows and columns: when $d'\le d$ the second factor is padded
-    up to $d$; when $d\le d'$ the first factor is padded up to $d'$ and $T$ is extended
-    to a map on $\MN{d'}$ that preserves $n$-positivity. Padding preserves the
-    Schmidt-number bound, the square result makes the padded ampliation positive
-    semidefinite, and the original ampliation is its principal submatrix, hence positive
-    semidefinite.
+    Apply Theorem~\ref{thm:has_schmidt_number_le_tensor_map_id} with output dimension
+    $r=d$ and bystander dimension $k=d'$.
 \end{proof}
 
 \begin{theorem}[Reduction step from the Schmidt-number premise]
@@ -226,9 +221,12 @@ proved in Section~\ref{sec:app_positive_not_cp_schmidt_number_geometry}.
         \re\bra{\psi}W\ket{\psi} & \ge 0.
         \notag
     \end{align}
-    This is Wolf's Proposition~3.3 \cite[Chapter~3, Proposition~3.3]{Wolf2012Quantum}: a
-    state has Schmidt number larger than $n$ exactly when it is detected by an
-    entanglement witness for $S_n$.
+    This is the corrected form of Wolf's Proposition~3.3
+    \cite[Chapter~3, Proposition~3.3]{Wolf2012Quantum}: a state has Schmidt number
+    larger than $n$ exactly when it is detected by an entanglement witness for $S_n$.
+    The source prints exact Schmidt rank $n$, while the convex set and proof require
+    Schmidt rank at most $n$; the defect is recorded in
+    \cite{gap:wolf_prop3_1_exact_schmidt_rank_scope}.
 \end{theorem}
 
 \begin{proof}
@@ -252,20 +250,50 @@ Section~\ref{sec:app_positive_not_cp_witness_choi}.
     \uses{def:k_positive_map, def:has_schmidt_number_le,
         thm:exists_entanglement_witness, thm:exists_isNPositiveMap_choiMatrix_eq,
         thm:k_positive_trace_pairing_adjoint, thm:trace_choiMatrix_omega_quadratic_adjoint}
-    Let $\rho$ be a trace-one Hermitian bipartite state on $\C^D\otimes\C^D$ whose Schmidt
-    number exceeds $n$. Then there is an $n$-positive map $T\colon\MN{D}\to\MN{D}$ such that
-    $(T\otimes\Id)(\rho)$ is not positive semidefinite. This is the if direction of Wolf's
-    Proposition~3.4 \cite[Chapter~3, Proposition~3.4]{Wolf2012Quantum}.
+    Let $\rho$ be a trace-one Hermitian bipartite state on
+    $\C^d\otimes\C^{d'}$ whose Schmidt number exceeds $n$. Then there is an
+    $n$-positive map $T\colon\MN{d}\to\MN{d'}$ such that
+    $(T\otimes\Id_{d'})(\rho)$ is not positive semidefinite. This is the if
+    direction of Wolf's Proposition~3.4
+    \cite[Chapter~3, Proposition~3.4, Equations~(3.13)--(3.14)]{Wolf2012Quantum}.
 \end{theorem}
 
 \begin{proof}
     \leanok
     The entanglement witness $W$ for $\rho$ (\ref{thm:exists_entanglement_witness}) is the
-    Choi matrix of an $n$-positive map $P$ (\ref{thm:exists_isNPositiveMap_choiMatrix_eq}).
+    Choi matrix of an $n$-positive map $P\colon\MN{d'}\to\MN{d}$
+    (\ref{thm:exists_isNPositiveMap_choiMatrix_eq}).
     Its trace-pairing adjoint $T=P^{*}$ is again $n$-positive
     (\ref{thm:k_positive_trace_pairing_adjoint}). By the Choi trace pairing through the
     trace-pairing adjoint (\ref{thm:trace_choiMatrix_omega_quadratic_adjoint}),
-    $\bra{\Omega}(T\otimes\Id)(\rho)\ket{\Omega}=\tr(W\rho)$, whose real part is
+    $\bra{\Omega_{d'}}(T\otimes\Id_{d'})(\rho)\ket{\Omega_{d'}}=\tr(W\rho)$,
+    whose real part is
     negative. A positive semidefinite matrix has non-negative quadratic forms, so
     $(T\otimes\Id)(\rho)$ is not positive semidefinite.
+\end{proof}
+
+\begin{theorem}[Positive maps and entanglement]
+    \label{thm:schmidt_number_iff_positive_maps}
+    \lean{Matrix.hasSchmidtNumberLE_iff_forall_isNPositiveMap_tensorMapId_posSemidef}
+    \leanok
+    \uses{def:k_positive_map, def:has_schmidt_number_le,
+        thm:has_schmidt_number_le_tensor_map_id, thm:exists_isNPositiveMap_detects}
+    Let $d,d'>0$ and let $\rho$ be a density operator on
+    $\C^d\otimes\C^{d'}$. Then $\rho$ has Schmidt number at most $n$ if and only if
+    \begin{align}
+        (T\otimes\Id_{d'})(\rho)&\ge0
+        &&\text{for every $n$-positive }T\colon\MN{d}\to\MN{d'}.
+        \notag
+    \end{align}
+    This is Wolf's rectangular Proposition~3.4
+    \cite[Chapter~3, Proposition~3.4]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The forward implication is
+    Theorem~\ref{thm:has_schmidt_number_le_tensor_map_id}. For the converse, if the
+    Schmidt number exceeded $n$, Theorem~\ref{thm:exists_isNPositiveMap_detects}
+    would supply an $n$-positive $T\colon\MN{d}\to\MN{d'}$ for which the displayed
+    ampliation is not positive semidefinite, contradicting the universal hypothesis.
 \end{proof}

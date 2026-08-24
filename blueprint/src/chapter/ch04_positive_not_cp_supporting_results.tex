@@ -405,21 +405,20 @@ $\C^{d'}\otimes\C^k$.
     rank.
 \end{proof}
 
-\begin{theorem}[Square representative with exact Schmidt rank]
-    \label{thm:square_schmidt_rank_exact_parametrization}
-    \lean{ChoiJamiolkowski.exists_squareCompression_of_vector,
-        ChoiJamiolkowski.exists_squareCompression_of_hasSchmidtRankLE}
+\begin{theorem}[Rectangular representative with exact Schmidt rank]
+    \label{thm:schmidt_rank_exact_parametrization}
+    \lean{ChoiJamiolkowski.exists_compression_of_vector}
     \leanok
     \uses{def:schmidt_rank, def:choi_right_compression,
         thm:compressed_omega_schmidt_rank_eq_rank}
-    Assume $d>0$. For every $\psi\in\C^d\otimes\C^d$, there is
-    $X\in\MN{d}$ such that
+    Assume $d>0$. For every $\psi\in\C^d\otimes\C^k$, there is
+    $X\in M_{d\times k}(\C)$ such that
     \begin{align}
         \psi_{(i,p)}
          & =d^{-1/2}X_{i,p}, \notag \\
         \rank X
          & =\SR(\psi).
-        \label{eq:schwarz_square_schmidt_representative}
+        \label{eq:schwarz_schmidt_representative}
     \end{align}
     In particular, if $\SR(\psi)\le r$, then $X$ may be chosen with
     $\rank X\le r$.
@@ -438,7 +437,7 @@ $\C^{d'}\otimes\C^k$.
     \lean{ChoiJamiolkowski.hasSchmidtRankLE_iff_exists_rank_le_compressedOmegaVector}
     \leanok
     \uses{def:schmidt_rank, def:choi_right_compression,
-        thm:square_schmidt_rank_exact_parametrization}
+        thm:schmidt_rank_exact_parametrization}
     Assume $d>0$. A vector $\psi\in\C^d\otimes\C^d$ has Schmidt rank at most
     $k$ if and only if there is a matrix $X\in\MN{d}$ of rank at most $k$
     such that $\psi_{(i,j)}=d^{-1/2}X_{i,j}$.
@@ -447,7 +446,7 @@ $\C^{d'}\otimes\C^k$.
 \begin{proof}
     \leanok
     The forward direction is the bounded-rank part of
-    Theorem~\ref{thm:square_schmidt_rank_exact_parametrization}. Conversely,
+    Theorem~\ref{thm:schmidt_rank_exact_parametrization}. Conversely,
     if $\psi_{(i,j)}=d^{-1/2}X_{i,j}$, then
     $C_\psi=d^{-1/2}X$, so $\rank(C_\psi)=\rank(X)$ because multiplication
     by a nonzero scalar preserves rank.
@@ -939,7 +938,7 @@ Theorem~\ref{thm:exists_isNPositiveMap_detects}.
     \label{thm:exists_choiMatrix_eq}
     \lean{ChoiJamiolkowski.exists_choiMatrix_eq}
     \leanok
-    \uses{thm:cp_iff_choi_posSemidef}
+    \uses{thm:choi_rect_mutual_inverse}
     Assume $D>0$. Every bipartite matrix $W$ on $\C^D\otimes\C^D$ is the Choi matrix
     $\tau_T=(T\otimes\Id)(\ket{\Omega}\bra{\Omega})$ of some linear map
     $T\colon\MN{D}\to\MN{D}$.
@@ -947,21 +946,21 @@ Theorem~\ref{thm:exists_isNPositiveMap_detects}.
 
 \begin{proof}
     \leanok
-    The Choi correspondence $T\mapsto\tau_T$ is complex-linear and injective. Its domain,
-    the space of linear maps on $\MN{D}$, and its codomain, the bipartite matrix space on
-    $\C^D\otimes\C^D$, both have complex dimension $D^4$, so the injective map is also
-    surjective. Hence every $W$ is a Choi matrix.
+    Apply the explicit inverse $\tau\mapsto T$ from the rectangular Choi correspondence
+    (Theorem~\ref{thm:choi_rect_mutual_inverse}) to $W$. Its inverse law gives
+    $\tau_T=W$; the displayed square statement is the specialization $d=d'=D$.
 \end{proof}
 
 \begin{theorem}[A witness is the Choi matrix of an $n$-positive map]
     \label{thm:exists_isNPositiveMap_choiMatrix_eq}
     \lean{ChoiJamiolkowski.exists_isNPositiveMap_choiMatrix_eq_of_witness}
     \leanok
-    \uses{def:k_positive_map, def:schmidt_rank, thm:exists_choiMatrix_eq,
+    \uses{def:k_positive_map, def:schmidt_rank, thm:choi_rect_mutual_inverse,
         thm:schmidt_rank_choi_test_iff, thm:exists_entanglement_witness}
-    Assume $D>0$. Let $W$ be a Hermitian operator on $\C^D\otimes\C^D$ with
+    Assume $d'>0$. Let $W$ be a Hermitian operator on $\C^d\otimes\C^{d'}$ with
     $\re\bra{\psi}W\ket{\psi}\ge 0$ for every $\psi$ of Schmidt rank at most $n$.
-    Then $W$ is the Choi matrix of an $n$-positive map $T$. This is the
+    Then $W$ is the Choi matrix of an $n$-positive map
+    $P\colon\MN{d'}\to\MN{d}$. This is the
     Choi--Jamio\l kowski translation of the entanglement witness of Wolf's Proposition~3.3
     into the $n$-positive map of Wolf's Proposition~3.4
     \cite[Chapter~3, Proposition~3.4]{Wolf2012Quantum}.
@@ -969,12 +968,12 @@ Theorem~\ref{thm:exists_isNPositiveMap_detects}.
 
 \begin{proof}
     \leanok
-    By the surjectivity of the Choi correspondence (\ref{thm:exists_choiMatrix_eq}) there
-    is a linear map $T$ with $\tau_T=W$. Because $W$ is Hermitian, the Choi quadratic form
+    The explicit rectangular inverse gives $P\colon\MN{d'}\to\MN{d}$ with $\tau_P=W$.
+    Because $W$ is Hermitian, the Choi quadratic form
     $\bra{\psi}W\ket{\psi}$ is real, and it equals the witness expectation
     $\tr(W\ket{\psi}\bra{\psi})$; the witness condition makes it non-negative on every
     vector of Schmidt rank at most $n$. This is exactly the Schmidt-rank Choi criterion
-    (\ref{thm:schmidt_rank_choi_test_iff}) for $n$-positivity of $T$.
+    (\ref{thm:schmidt_rank_choi_test_iff}) for $n$-positivity of $P$.
 \end{proof}
 
 \begin{theorem}[Choi trace pairing through the trace-pairing adjoint]
@@ -982,22 +981,25 @@ Theorem~\ref{thm:exists_isNPositiveMap_detects}.
     \lean{ChoiJamiolkowski.trace_choiMatrix_mul_eq_omegaVec_quadraticForm_traceAdjointMap}
     \leanok
     \uses{def:trace_pairing_adjoint, thm:trace_pairing_adjoint_ampliation}
-    For a linear map $T\colon\MN{D}\to\MN{D}$ with Choi matrix $\tau_T$ and any bipartite
-    matrix $\rho$ on $\C^D\otimes\C^D$,
+    For a linear map $P\colon\MN{d'}\to\MN{d}$ with Choi matrix $\tau_P$ and any bipartite
+    matrix $\rho$ on $\C^d\otimes\C^{d'}$,
     \begin{align}
-        \tr(\tau_T\,\rho)
-         & =\bra{\Omega}(T^{*}\otimes\Id)(\rho)\ket{\Omega},
+        \tr(\tau_P\,\rho)
+         & =\bra{\Omega_{d'}}(P^{*}\otimes\Id_{d'})(\rho)\ket{\Omega_{d'}},
         \notag
     \end{align}
-    where $T^{*}$ is the trace-pairing adjoint of $T$.
+    where $P^{*}\colon\MN{d}\to\MN{d'}$ is the trace-pairing adjoint of $P$.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    Since $\tau_T=(T\otimes\Id)(\ket{\Omega}\bra{\Omega})$, cyclicity of the trace gives
-    $\tr(\tau_T\rho)=\tr(\rho\,(T\otimes\Id)(\ket{\Omega}\bra{\Omega}))$. The
+    Since $\tau_P=(P\otimes\Id_{d'})(\ket{\Omega_{d'}}\bra{\Omega_{d'}})$, cyclicity
+    of the trace gives
+    $\tr(\tau_P\rho)=\tr(\rho\,(P\otimes\Id_{d'})(\ket{\Omega_{d'}}\bra{\Omega_{d'}}))$.
+    The
     $\Id$-ampliation of the trace-pairing adjoint is the trace-pairing adjoint of the
-    ampliation, so moving $T$ across the trace pairing replaces
-    $(T\otimes\Id)$ by $(T^{*}\otimes\Id)$ acting on $\rho$ and turns the pairing against
-    $\ket{\Omega}\bra{\Omega}$ into the quadratic form $\bra{\Omega} \cdot\,\ket{\Omega}$.
+    ampliation, so moving $P$ across the trace pairing replaces
+    $(P\otimes\Id_{d'})$ by $(P^{*}\otimes\Id_{d'})$ acting on $\rho$ and turns the
+    pairing against $\ket{\Omega_{d'}}\bra{\Omega_{d'}}$ into the quadratic form
+    $\bra{\Omega_{d'}} \cdot\,\ket{\Omega_{d'}}$.
 \end{proof}

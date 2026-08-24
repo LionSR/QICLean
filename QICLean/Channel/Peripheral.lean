@@ -41,6 +41,7 @@ import QICLean.Channel.Peripheral.SchurAsymptoticConvergence
 import QICLean.Channel.Peripheral.SpectralProjection
 import QICLean.Channel.Peripheral.SpectralRadius
 import QICLean.Channel.Peripheral.Spectrum
+import QICLean.Channel.Peripheral.StructureOfCycles
 import QICLean.Channel.Peripheral.TransferMatrix
 import QICLean.Channel.Peripheral.UnitalKraus
 import QICLean.Channel.Peripheral.WeightedCesaro
