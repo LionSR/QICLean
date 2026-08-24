@@ -34,6 +34,7 @@ gives the polar (Cartan) decomposition described by Wolf.
 * `Wolf.spinorMatrix_su2ToSL2` : the rotation lift, `1 ⊕ R(U)` for
   `U ∈ SU(2)`
 * `Wolf.boostSpinor` : the boost spinor `P = (M(u) + I)/√(2(1+u₀))`
+* `Wolf.boostSpinor_posDef` : the boost spinor is positive definite
 * `Wolf.spinorMatrix_boostSpinorSL2` : the boost lift,
   `spinorMatrix P_u = B_u`
 * `Wolf.exists_sl2_spinorMatrix_eq` : the spinor epimorphism; every
@@ -126,8 +127,7 @@ theorem IsSpecialOrthochronousLorentz.inv {L : Matrix (Fin 4) (Fin 4) ℝ}
     rw [hcancelt, hcancelt] at h2
     exact h2
   · rw [hLinv]
-    simp [Matrix.mul_apply, minkowskiMetric, Matrix.diagonal_apply]
-    exact h00
+    simpa [Matrix.mul_apply, minkowskiMetric, Matrix.diagonal_apply] using h00
 
 /-- The time-row Minkowski norm identity from `L η Lᵀ = η`. -/
 theorem row_norm_of_lorentz {L : Matrix (Fin 4) (Fin 4) ℝ}
@@ -137,7 +137,7 @@ theorem row_norm_of_lorentz {L : Matrix (Fin 4) (Fin 4) ℝ}
   simp [Matrix.mul_apply, Matrix.transpose_apply, minkowskiMetric,
     Matrix.diagonal_apply, Fin.sum_univ_four] at h00
   rw [Fin.sum_univ_three]
-  show L 0 0 ^ 2 - (L 0 1 ^ 2 + L 0 2 ^ 2 + L 0 3 ^ 2) = 1
+  change L 0 0 ^ 2 - (L 0 1 ^ 2 + L 0 2 ^ 2 + L 0 3 ^ 2) = 1
   linarith [h00]
 
 /-- The time-column Minkowski norm identity from `Lᵀ η L = η`. -/
@@ -148,7 +148,7 @@ theorem col_norm_of_lorentz {L : Matrix (Fin 4) (Fin 4) ℝ}
   simp [Matrix.mul_apply, Matrix.transpose_apply, minkowskiMetric,
     Matrix.diagonal_apply, Fin.sum_univ_four] at h00
   rw [Fin.sum_univ_three]
-  show L 0 0 ^ 2 - (L 1 0 ^ 2 + L 2 0 ^ 2 + L 3 0 ^ 2) = 1
+  change L 0 0 ^ 2 - (L 1 0 ^ 2 + L 2 0 ^ 2 + L 3 0 ^ 2) = 1
   linarith [h00]
 
 theorem IsSpecialOrthochronousLorentz.mul {A B : Matrix (Fin 4) (Fin 4) ℝ}
@@ -164,7 +164,8 @@ theorem IsSpecialOrthochronousLorentz.mul {A B : Matrix (Fin 4) (Fin 4) ℝ}
       _ = A * minkowskiMetric * Aᵀ := by rw [hlorB]
       _ = minkowskiMetric := hlorA
   · have hrowA := row_norm_of_lorentz hlorA
-    have hcolB := col_norm_of_lorentz (IsSpecialOrthochronousLorentz.transpose_mul_metric_mul ⟨hdetB, hlorB, h00B⟩)
+    have hcolB := col_norm_of_lorentz
+      (IsSpecialOrthochronousLorentz.transpose_mul_metric_mul ⟨hdetB, hlorB, h00B⟩)
     have hSA : 0 ≤ ∑ k : Fin 3, A 0 k.succ ^ 2 :=
       Finset.sum_nonneg (fun k _ ↦ sq_nonneg (A 0 k.succ : ℝ))
     have hSB : 0 ≤ ∑ k : Fin 3, B k.succ 0 ^ 2 :=
@@ -252,7 +253,8 @@ def lorentzRotationBlock (R : Matrix (Fin 3) (Fin 3) ℝ) : Matrix (Fin 4) (Fin 
     lorentzRotationBlock R i.succ j.succ = R i j := by
   simp [lorentzRotationBlock, Matrix.of_apply, Fin.cons_succ]
 
-@[simp] theorem lorentzRotationBlock_one : lorentzRotationBlock (1 : Matrix (Fin 3) (Fin 3) ℝ) = 1 := by
+@[simp] theorem lorentzRotationBlock_one :
+    lorentzRotationBlock (1 : Matrix (Fin 3) (Fin 3) ℝ) = 1 := by
   ext i j
   rw [Matrix.one_apply]
   cases i using Fin.cases <;> cases j using Fin.cases <;>
@@ -353,8 +355,9 @@ theorem exists_so3_block_of_fixes_time {L : Matrix (Fin 4) (Fin 4) ℝ}
           L 1 i.succ * L 1 j.succ + L 2 i.succ * L 2 j.succ + L 3 i.succ * L 3 j.succ := by
         simp only [Matrix.mul_apply, Matrix.transpose_apply, Fin.sum_univ_three,
           Matrix.submatrix_apply]
-        show L 1 i.succ * L 1 j.succ + L 2 i.succ * L 2 j.succ + L 3 i.succ * L 3 j.succ =
-          L 1 i.succ * L 1 j.succ + L 2 i.succ * L 2 j.succ + L 3 i.succ * L 3 j.succ
+        change
+          L 1 i.succ * L 1 j.succ + L 2 i.succ * L 2 j.succ + L 3 i.succ * L 3 j.succ =
+            L 1 i.succ * L 1 j.succ + L 2 i.succ * L 2 j.succ + L 3 i.succ * L 3 j.succ
         rfl
       rw [Matrix.one_apply, hR]
       by_cases hij : i = j
@@ -606,6 +609,23 @@ theorem boostSpinor_isHermitian (u : MinkowskiSpace) :
     Matrix.conjTranspose_one]
   congr 1
   simp
+
+/-- The canonical boost spinor is positive definite on the future unit
+hyperboloid.  This certifies the positive polar factor in Wolf, Equation (2.44). -/
+theorem boostSpinor_posDef (u : MinkowskiSpace) (hu : minkowskiQuadratic u = 1)
+    (hu0 : 0 < u 0) :
+    (boostSpinor u).PosDef := by
+  have hM : (pauliMatrixOfMinkowski u).PosSemidef :=
+    (posSemidef_pauliMatrixOfMinkowski_iff u).2 ⟨hu0.le, by simp [hu]⟩
+  have hsum : (pauliMatrixOfMinkowski u + 1).PosDef :=
+    Matrix.PosDef.posSemidef_add hM Matrix.PosDef.one
+  have hc : 0 < 2 * (1 + u 0) := by linarith
+  have hs : 0 < (Real.sqrt (2 * (1 + u 0)))⁻¹ :=
+    inv_pos.mpr (Real.sqrt_pos.2 hc)
+  rw [boostSpinor]
+  convert hsum.smul hs using 1
+  ext i j
+  simp only [Matrix.smul_apply, smul_eq_mul, Complex.real_smul, Complex.ofReal_inv]
 
 /-- The determinant of `M(u) + I` is `2(1+u₀)` on the unit hyperboloid. -/
 theorem det_pauliMatrixOfMinkowski_add_one (u : MinkowskiSpace)

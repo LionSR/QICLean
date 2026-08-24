@@ -987,7 +987,7 @@ This section states the existence theorems from
 
 \begin{theorem}[Spinor epimorphism and two-point fibres]
     \label{thm:spinor_epimorphism_two_point_fibres}
-    \lean{Wolf.exists_sl2_spinorMatrix_eq,
+    \lean{Wolf.boostSpinor_posDef, Wolf.exists_sl2_spinorMatrix_eq,
         Wolf.spinorCoverHom_surjective,
         Wolf.spinorMatrix_eq_one_iff,
         Wolf.spinorCoverHom_eq_iff_eq_or_eq_neg,
@@ -1011,7 +1011,7 @@ This section states the existence theorems from
     \uses{thm:spinor_image_special_orthochronous}
     Given $L\in\mathrm{SO}^+(1,3)$, set $u=Le_0$.  The Lorentz identities
     give $q(u)=1$ and $u_0>0$.  The canonical boost $B_u$, whose first column
-    is $u$, has the spinor lift
+    is $u$, has the positive-definite determinant-one spinor lift
     $P_u=(M(u)+I)/\sqrt{2(1+u_0)}$.  The matrix $B_u^{-1}L$ fixes $e_0$;
     its Lorentz equations force the block form $1\oplus R$ with
     $R\in\mathrm{SO}(3)$.  Lift $R$ to $U\in\mathrm{SU}(2)$.  Multiplicativity

@@ -390,6 +390,9 @@ so that the cited formal statements are available from the main project import.
   `Wolf.pauliTransferMatrixReal_slFiltering` — identification with the real
   transfer matrix for Hermiticity-preserving maps and the bundled
   `SLFiltering` specialization of Equation (2.43) ✓
+* `Wolf.boostSpinor_posDef` — the canonical closed boost spinor
+  `P = (M(u) + I)/sqrt(2(1+u₀))` is positive definite on the future unit
+  hyperboloid, certifying Wolf's positive polar factor in Equation (2.44) ✓
 * `Wolf.spinorMatrix_boostExpSL2` — the boost formula in Equation (2.44),
   `exp(t n·σ/2) ↦ exp(t n·B)`, including the identification of the Lorentz
   exponential with the canonical rapidity boost ✓
@@ -488,6 +491,8 @@ so that the cited formal statements are available from the main project import.
 | Spinor epimorphism and exact two-point fibres |
   `LorentzNormalForm/SpinorCover.lean` |
   `Wolf.spinorCoverHom_surjective`, `Wolf.spinorCoverHom_eq_iff_eq_or_eq_neg` |
+| Positive canonical boost spinor | `LorentzNormalForm/SpinorCover.lean` |
+  `Wolf.boostSpinor_posDef` |
 | Spinor boost and rotation exponentials |
   `LorentzNormalForm/SpinorExponential.lean` |
   `Wolf.spinorMatrix_boostExpSL2`, `Wolf.spinorMatrix_rotationExpSL2` |
