@@ -1431,7 +1431,7 @@ records that `X_T` is the fixed-point space of `T_φ`, and
 `Module.End.map_eigenspace_of_ne_zero` supplies the one-eigenvalue case of
 clause 3.
 
-#### Wolf Theorem 6.16 (Structure of cycles) — PARTIALLY FORMALIZED
+#### Wolf Theorem 6.16 (Structure of cycles) — FORMALIZED
 
 The source-contract audit is resolved in
 `docs/paper-gaps/wolf_theorem6_16_schwarz_orientation.tex`.  The printed
@@ -1439,7 +1439,7 @@ proof uses the Schwarz inequality for `T` itself when it excludes the
 transpose branch, but obtains Equation (6.66) by applying Theorem 6.14 to the
 recurrent projection `I`; that theorem requires the trace adjoint `I*` to be
 Schwarz.  Closure under powers and limits transports the two orientations
-separately.  Therefore the source-facing assembly will explicitly assume that
+separately.  Therefore the source-facing assembly explicitly assumes that
 both `T` and `T*` are Schwarz.  No implication between these hypotheses is
 silently introduced, and the note does not claim that the theorem's conclusion
 is false under the single printed hypothesis.
@@ -1590,8 +1590,11 @@ is false under the single printed hypothesis.
     mutually inverse matched block maps and equality only of their
     full-matrix dimensions;
   - the public full-family formulas
-    `Matrix.DirectSumFacePermutation.map_apply` and
-    `Matrix.DirectSumFacePermutation.inverse_apply`;
+    `Matrix.DirectSumFacePermutation.map_apply`,
+    `Matrix.DirectSumFacePermutation.map_apply_blockEquiv`, and
+    `Matrix.DirectSumFacePermutation.inverse_apply`; the source-indexed
+    `map_apply_blockEquiv` form avoids dependent casts when the matrix size
+    varies with the block;
   - `IsPositiveMap.exists_peripheralDensityBlockFacePermutation`, which
     combines the exact Theorem 6.14 witnesses and recurrent inverse with that
     direct-sum argument. Its block equivalence is source-to-target, while its
@@ -1641,13 +1644,32 @@ is false under the single printed hypothesis.
   argument at lines 1653--1656 proves only equality of `d_k`; the new trace
   calculation supplies the missing equality of `m_k`.
 
-* This completes the bounded pure-face/permutation passage and the repaired
-  scalar block-Schwarz step, but not all of Theorem 6.16. The remaining
-  **existence assembly** must apply the already formalized exclusion of the
-  transpose alternative to the matched endomorphisms and prove the exact
-  weighted Equation (6.68). That step remains tracked by #411. The conditional
-  `CycleStructure` and `MultiCycleDecomposition` objects above are consumers
-  of that later theorem; they are not substitutes for it.
+* The final source-facing assembly lives in
+  `QICLean.Channel.Peripheral.StructureOfCycles`:
+  - `Matrix.DirectSumFacePermutation.exists_reindexedUnitaryBlockAction`
+    applies the positive-invertible Schwarz classification to each matched
+    endomorphism, sets Wolf's output-to-input permutation to
+    `pi = F.blockEquiv.symm`, and reindexes the classified source unitary to
+    an output-indexed unitary `V k`;
+  - `IsPositiveMap.exists_wolfTheorem616` is the compiled Theorem 6.16
+    boundary. It identifies membership in `T.peripheralSubspace` with the
+    literal zero-extended `Matrix.fromBlocks 0 0 0` density-block form of
+    Equations (6.66)--(6.67), retains `e₀`, and separately proves `n = D`
+    and `sigma k = (m k : ℂ)⁻¹ • 1`;
+  - the same declaration returns `pi`, both equalities
+    `d (pi k) = d k` and `m (pi k) = m k`, output-indexed unitaries, the
+    coordinate action
+    `A X k = V k * reindex (X (pi k)) * V kᴴ`, and the ambient Equation
+    (6.68), `T (E X) = E (A X)`;
+  - Schwarz for `T` and Schwarz for `T*` remain distinct hypotheses, and the
+    positive trace-preserving inverse consumed by the block classification is
+    only the recurrent inverse on the peripheral image.
+
+  Thus the exact source theorem is complete without CP/Kraus hypotheses,
+  a modified product, a global inverse for `T`, or a substitute through the
+  conditional `CycleStructure` and `MultiCycleDecomposition` records. Those
+  records remain independent downstream interfaces rather than part of the
+  source theorem.
 
 ---
 

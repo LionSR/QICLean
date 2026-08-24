@@ -24,8 +24,9 @@ This is an intentionally partial boundary of Theorem 6.16.  It proves equality
 only of the full-matrix dimensions `d`, not of the multiplicity dimensions `m`.
 Transport of the ordinary Schwarz inequality to the matched block maps,
 comparison of multiplicities, exclusion of the transpose alternative in the
-assembled density-block coordinates, and Equation (6.68) remain separate
-follow-up work.  No CP/Kraus or ring-ideal classification is used.
+assembled density-block coordinates, and Equation (6.68) are handled by the
+subsequent source-facing modules.  No CP/Kraus or ring-ideal classification is
+used here.
 -/
 
 open scoped Matrix MatrixOrder ComplexOrder BigOperators Kronecker
@@ -77,6 +78,46 @@ theorem DirectSumFacePermutation.map_apply
         apply F.blockEquiv.injective
         rw [Equiv.apply_symm_apply]
         exact hji.symm
+      · simp
+
+omit [∀ i, NeZero (d i)] [∀ j, NeZero (e j)] in
+/-- The source-indexed form of the full-family block action.  Evaluating at
+the target `F.blockEquiv i` reads the input block `i` without transporting a
+dependent matrix through `F.blockEquiv.symm_apply_apply`.
+
+This is equivalent to `DirectSumFacePermutation.map_apply`, but is the more
+stable interface when the matrix sizes depend on the block index. -/
+theorem DirectSumFacePermutation.map_apply_blockEquiv
+    {T : (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₗ[ℂ]
+      (∀ j, Matrix (Fin (e j)) (Fin (e j)) ℂ)}
+    {S : (∀ j, Matrix (Fin (e j)) (Fin (e j)) ℂ) →ₗ[ℂ]
+      (∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ)}
+    (F : DirectSumFacePermutation T S)
+    (X : ∀ i, Matrix (Fin (d i)) (Fin (d i)) ℂ) (i : iota) :
+    T X (F.blockEquiv i) =
+      directSumBlockMap T i (F.blockEquiv i) (X i) := by
+  classical
+  let := Fintype.ofFinite iota
+  let := Fintype.ofFinite kappa
+  calc
+    T X (F.blockEquiv i) = T (∑ r, Pi.single r (X r)) (F.blockEquiv i) := by
+      rw [Finset.univ_sum_single]
+    _ = (∑ r, T (Pi.single r (X r))) (F.blockEquiv i) := by
+      rw [map_sum]
+    _ = ∑ r, T (Pi.single r (X r)) (F.blockEquiv i) := by
+      rw [Finset.sum_apply]
+    _ = ∑ r, (Pi.single (F.blockEquiv r)
+        (directSumBlockMap T r (F.blockEquiv r) (X r)) :
+          ∀ j, Matrix (Fin (e j)) (Fin (e j)) ℂ) (F.blockEquiv i) := by
+      apply Finset.sum_congr rfl
+      intro r _
+      rw [F.map_single]
+    _ = directSumBlockMap T i (F.blockEquiv i) (X i) := by
+      rw [Finset.sum_eq_single i]
+      · rw [Pi.single_eq_same]
+      · intro r _ hri
+        rw [Pi.single_eq_of_ne]
+        exact fun h ↦ hri (F.blockEquiv.injective h.symm)
       · simp
 
 omit [∀ i, NeZero (d i)] [∀ j, NeZero (e j)] in
