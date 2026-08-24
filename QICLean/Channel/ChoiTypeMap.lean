@@ -580,7 +580,7 @@ positive semidefinite matrix.
 **Scope restriction:** See
 `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`.  This proves
 the case `n = d - 2` of the positivity assertion for every `d ≥ 3`, subsuming
-the earlier \(d=3,n=1\) case.  The remaining range \(1\le n\le d-3\) is still
+the earlier \(d=3,n=1\) case.  The remaining range \(2\le n\le d-3\) is still
 open; its classical proof is the variational argument of Yamagami
 [Proc. Amer. Math. Soc. 118 (1993), 521–527]. -/
 theorem choiTypeMap_isPositiveMap_sub_two (hd : 3 ≤ d) :

@@ -26,6 +26,9 @@ The middle range \(2\le n\le d-3\) and indecomposability are not proved here.
 
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 3,
   Example 3.1, equation (3.20)][Wolf2012QChannels]
+* [K. Tanahashi and J. Tomiyama, *Indecomposable positive maps in matrix
+  algebras*, Theorem 1 and Lemmas 2--3, pp. 309--311]
+  [TanahashiTomiyama1988Indecomposable]
 -/
 
 open scoped Matrix ComplexOrder InnerProductSpace
@@ -53,11 +56,14 @@ some coordinate vanishes, at most \(d-1\) summands are nonzero and each is at
 most \(1/(d-1)\), which proves the boundary case directly.
 
 This is the case \(n = 1\) of the positivity assertion of Wolf Chapter 3,
-Example 3.1, equation (3.20) (ch03 lines 357–365); that case is classical
-(Tanahashi–Tomiyama, *Indecomposable positive maps in matrix algebras*,
-Canad. Math. Bull. 31 (1988), 308–317).  The proof here is the
-elementary-symmetric expansion sketched above, not the variational argument
-of Yamagami needed for the middle of the range. -/
+Example 3.1, equation (3.20) (ch03 lines 357–365). The proof follows
+Tanahashi--Tomiyama, Theorem 1 and Lemmas 2--3 (pp. 309--311): their Lemma 3
+sets \(y_i=x_{i-1}/x_i\), groups the cleared-denominator coefficients by
+elementary degree, and bounds the corresponding symmetric sums at the
+product-one family; their Theorem 1 then applies the rank-one diagonal-minus-
+projector criterion of Lemma 2. The paper assumes every \(x_i>0\); the formal
+proof below additionally handles zero coordinates directly. This source route
+is distinct from Yamagami's variational argument for the middle of the range. -/
 
 /-- Each variable appears in the same number of `k`-subsets of the index
 type, so the product of all `k`-subset monomials of a product-one family is
