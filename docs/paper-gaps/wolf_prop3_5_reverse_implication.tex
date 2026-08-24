@@ -92,17 +92,36 @@ the same input-to-output orientation $\MN{d}\to\MN{d'}$ as Wolf.
 The converse required for the full proposition begins with an
 indecomposable positive map and must produce a PPT entangled density
 operator. The current formal development does not claim that implication.
-Following Wolf and the primary witness proof requires all of the following:
+The explicit cone, its convexity, and the rectangular adjoint bridge are now
+formalized as \leanid{Matrix.IsDecomposableWitness},
+\leanid{Matrix.convex_setOf_isDecomposableWitness}, and
+\leanid{ChoiRectangular.isDecomposablePositiveMap_iff_choiMatrix_traceAdjointMap_isDecomposableWitness}:
 \begin{align}
-  &\text{the exact cone }\{P_1+P_2^{T_1}:P_1,P_2\geq0\},\notag\\
-  &\text{the rectangular map--witness correspondence in the adjoint
-    orientation of Wolf Proposition 3.4},\notag\\
-  &\text{closedness and convexity of that cone},\notag\\
+  T\text{ decomposable}
+  \quad\Longleftrightarrow\quad
+  \operatorname{Choi}(T^*)=P_1+P_2^{T_1}
+  \text{ for some }P_1,P_2\geq0.
+  \notag
+\end{align}
+Following Wolf and the primary witness proof still requires all of the
+following:
+\begin{align}
+  &\text{closedness of that cone},\notag\\
   &\tr\!\left(P_2^{T_1}R\right)
       =\tr\!\left(P_2R^{T_1}\right),\notag\\
   &\text{and separation followed by positivity, PPT, trace normalization,
     and entanglement of the separator.}\notag
 \end{align}
+The intended source-faithful route to closedness starts from the trace-one
+decomposable operators $aP+(1-a)Q^{T_1}$ used by
+Lewenstein--Kraus--Cirac--Horodecki.  One must first prove that the normalized set
+is compact, then recover the unnormalized Equation~(3.15) cone through the radial
+map whose radius is its trace.  On the Lean side this still requires
+trace-bounded compactness for positive-semidefinite matrices on the product
+index and a proper-map argument for radial scaling.  Merely observing that
+$P_1+P_2^{T_1}$ is a continuous image of the closed product of two
+positive-semidefinite cones would not prove closedness.
+
 Defining a decomposable witness merely as a functional nonnegative on every
 PPT operator would hide rather than prove Equation~(3.15), so that route is
 not used.
@@ -113,7 +132,8 @@ The verdict is a live scope restriction. The PPT-entangled-state-to-
 indecomposable-map direction of Wolf Proposition~3.5 is formalized with the
 printed rectangular dimensions and first-factor transpose convention. The
 reverse direction, and hence the source's existence equivalence, remains open
-until the Equation~(3.15) cone and its trace-pairing separation argument are
+until closedness of the now-explicit Equation~(3.15) cone, trace-adjointness of
+partial transpose for the trace pairing, and the separation argument are
 formalized.
 
 \bibliographystyle{alpha}

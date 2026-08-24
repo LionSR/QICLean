@@ -21,6 +21,7 @@ import QICLean.Channel.ChoiTypeMap.Positivity
 import QICLean.Channel.ComplementaryWeylTwirl
 import QICLean.Channel.CompletelyPositiveBridge
 import QICLean.Channel.DecomposablePPT
+import QICLean.Channel.DecomposableWitness
 import QICLean.Channel.DensityRetract
 import QICLean.Channel.DetailedBalance
 import QICLean.Channel.Determinant

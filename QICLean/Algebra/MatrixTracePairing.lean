@@ -43,6 +43,7 @@ linear map between matrix algebras.
 * `Matrix.exists_identity_traceless_basis` — an identity-plus-traceless basis
 * `Matrix.trace_traceAdjointMap_mul` — the adjoint satisfies `tr(E*(ρ) X) = tr(ρ E(X))`
 * `Matrix.traceAdjointMap_apply_apply` — the entries of the adjoint against matrix units
+* `Matrix.traceAdjointMap_add` — the trace-pairing adjoint preserves sums
 * `Matrix.traceAdjointMap_traceAdjointMap` — the trace-pairing adjoint is involutive
 * `Matrix.traceAdjointMap_comp` — the trace-pairing adjoint reverses composition
 -/
@@ -314,6 +315,15 @@ theorem traceAdjointMap_apply_apply {n m : Type*} [Finite n] [Fintype m]
   have hsingle := Matrix.trace_mul_single (traceAdjointMap E ρ) j i (1 : ℂ)
   rw [trace_traceAdjointMap_mul] at hsingle
   simpa using hsingle.symm
+
+/-- The trace-pairing adjoint preserves addition of linear maps. -/
+@[simp]
+theorem traceAdjointMap_add {n m : Type*} [Fintype m]
+    (E F : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ) :
+    traceAdjointMap (E + F) = traceAdjointMap E + traceAdjointMap F := by
+  classical
+  ext ρ i j
+  simp [traceAdjointMap, Matrix.mul_add]
 
 /-- The trace-pairing adjoint is involutive.
 

@@ -532,6 +532,85 @@ positive map and a completely copositive map.
     $\Phi(X)\ge0$.
 \end{proof}
 
+\begin{definition}[Decomposable witnesses]
+    \label{def:decomposable_witness}
+    \lean{Matrix.IsDecomposableWitness}
+    \leanok
+    \uses{def:partial_transpose_left}
+    A witness $W$ on $\C^d\otimes\C^{d'}$ is \emph{decomposable} when
+    \begin{align}
+        W=P_1+P_2^{T_1},\qquad P_1,P_2\geq0.
+        \tag{Wolf 3.15}
+    \end{align}
+    This is the explicit cone in Wolf's Equation~(3.15), with partial
+    transposition on the first factor.
+\end{definition}
+
+\begin{theorem}[Convexity of decomposable witnesses]
+    \label{thm:decomposable_witness_convex}
+    \lean{Matrix.convex_setOf_isDecomposableWitness}
+    \leanok
+    \uses{def:decomposable_witness}
+    The set of decomposable witnesses in Equation~(3.15) is convex.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    If $W=P_1+P_2^{T_1}$ and $W'=Q_1+Q_2^{T_1}$, then for
+    $a,b\geq0$ with $a+b=1$,
+    \begin{align}
+        aW+bW'
+        &=(aP_1+bQ_1)+(aP_2+bQ_2)^{T_1}.
+        \notag
+    \end{align}
+    Both matrices in parentheses are positive semidefinite.
+\end{proof}
+
+\begin{theorem}[Rectangular decomposable map--witness correspondence]
+    \label{thm:decomposable_map_iff_decomposable_witness}
+    \lean{Matrix.traceAdjointMap_add,
+        Matrix.traceAdjointMap_transposeLinearMapComplex,
+        ChoiRectangular.choiMatrix_transposeLinearMapComplex_comp,
+        ChoiRectangular.isDecomposablePositiveMap_iff_choiMatrix_traceAdjointMap_isDecomposableWitness}
+    \leanok
+    \uses{def:decomposable_positive_map, def:decomposable_witness,
+        def:choi_matrix_rect, lem:choi_rect_linear,
+        thm:choi_rect_mutual_inverse, thm:choi_rect_cp}
+    Let $d'\geq1$ and let $T\colon\MN{d}\to\MN{d'}$. Then $T$ is
+    decomposable if and only if the output-first Choi matrix of its trace
+    adjoint $T^*\colon\MN{d'}\to\MN{d}$ is a decomposable witness:
+    \begin{align}
+        T\text{ decomposable}
+        \quad\Longleftrightarrow\quad
+        \tau(T^*)=P_1+P_2^{T_1}
+        \text{ for some }P_1,P_2\geq0.
+        \notag
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Write a decomposable map in Wolf's form
+    $T=T_1+T_2\circ\theta$, with $T_1,T_2$ completely positive. The trace
+    adjoint reverses composition and transposition is self-adjoint, so
+    \begin{align}
+        T^*=T_1^*+\theta\circ T_2^*.
+        \notag
+    \end{align}
+    Rectangular Choi matrices place the output factor first. Consequently,
+    postcomposition by $\theta$ becomes first-factor partial transposition:
+    \begin{align}
+        \tau(\theta\circ T_2^*)=\tau(T_2^*)^{T_1}.
+        \notag
+    \end{align}
+    The Choi matrices of $T_1^*$ and $T_2^*$ are positive semidefinite by
+    complete positivity, which proves the forward implication. Conversely,
+    reconstruct completely positive maps $Q_1,Q_2\colon\MN{d'}\to\MN{d}$
+    from $P_1,P_2\geq0$. Choi injectivity gives
+    $T^*=Q_1+\theta\circ Q_2$; taking trace adjoints again yields
+    $T=Q_1^*+Q_2^*\circ\theta$, a decomposable map.
+\end{proof}
+
 \begin{theorem}[Decomposable maps preserve positivity on PPT states]
     \label{thm:decomposable_map_tensor_id_ppt}
     \lean{Matrix.tensorMapId_comp_transposeLinearMapComplex,
@@ -592,9 +671,11 @@ positive map and a completely copositive map.
     decomposable, Theorem~\ref{thm:decomposable_map_tensor_id_ppt} would make
     this ampliation positive because $\rho$ is PPT, a contradiction.
 
-    The reverse implication of Proposition~3.5 is not claimed here; it needs
-    Wolf's decomposable-witness cone in Equation~(3.15), its closedness and
-    trace-pairing duality, and a separating-hyperplane argument.
+    The reverse implication of Proposition~3.5 is not claimed here. Although
+    Theorem~\ref{thm:decomposable_map_iff_decomposable_witness} now supplies
+    Wolf's explicit Equation~(3.15) cone and map--witness bridge, the reverse
+    implication still needs closedness of that cone, trace-pairing duality,
+    and a separating-hyperplane argument.
 \end{proof}
 
 \begin{theorem}[A PPT state detected by an ampliation witnesses indecomposability]
