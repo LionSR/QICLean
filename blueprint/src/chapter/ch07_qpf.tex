@@ -19,31 +19,25 @@ and~\cite{Evans1978Spectral}.
 
 \section{Positive definiteness}
 
-\begin{theorem}[Positive-definite growth for irreducible CP maps]
+\begin{theorem}[Positive-definite growth for irreducible positive maps]
     \label{thm:growth_pd_irred}
-    \lean{growth_posDef_of_irreducible_cp}
+    \lean{growth_posDef_of_irreducible, growth_posDef_of_irreducible_cp}
     \leanok
-    \uses{def:irreducible_cp}
-    Let $E$ be an irreducible completely positive map on $\MN{D}$ and let
+    \uses{def:positive_map, def:irreducible_cp}
+    Let $E$ be an irreducible positive map on $\MN{D}$ and let
     $A\geq0$ be nonzero. Then
     \begin{align}
-        (\Id+E)^{D-1}(A)
+        (\id+E)^{D-1}(A)
          & >0.
         \label{eq:qpf_growth_pd}
     \end{align}
-    This is the completely positive specialization of the implication
-    (1)$\Rightarrow$(2) in \cite[Theorem~6.2]{Wolf2012Quantum}.
+    This is the implication (1)$\Rightarrow$(2) in
+    \cite[Theorem~6.2]{Wolf2012Quantum}. Complete positivity is not assumed.
 \end{theorem}
 
 \begin{proof}\leanok
-    Choose a Kraus decomposition
-    \begin{align}
-        E(X)
-         & =\sum_i K_iXK_i^\dagger
-        \notag
-    \end{align}
-    and set $T(B)=B+E(B)$ for nonzero $B\geq0$. Always
-    $\ker T(B)\subseteq\ker B$: if $v\in\ker T(B)$, then
+    Set $S(B)=B+E(B)$ for nonzero $B\geq0$. Always
+    $\ker S(B)\subseteq\ker B$: if $v\in\ker S(B)$, then
     \begin{align}
         0
          & =v^\dagger Bv+v^\dagger E(B)v,
@@ -52,44 +46,38 @@ and~\cite{Evans1978Spectral}.
     and both terms are non-negative, so $v^\dagger Bv=0$ and hence $Bv=0$.
     If $B$ is not positive definite, irreducibility forces
     \begin{align}
-        \dim\ker T(B)
+        \dim\ker S(B)
          & <\dim\ker B.
         \notag
     \end{align}
     Indeed, equality of the kernel dimensions would turn the inclusion above
-    into $\ker B\subseteq\ker T(B)$. Thus, for $v\in\ker B$,
-    \begin{align}
-        0
-         & =v^\dagger E(B)v
-        =\sum_i(K_i^\dagger v)^\dagger B(K_i^\dagger v).
-        \notag
-    \end{align}
-    Every summand is non-negative, so equality would imply, for every~$i$,
-    \begin{align}
-        K_i^\dagger(\ker B)
-         & \subseteq\ker B.
-        \notag
-    \end{align}
-    Equivalently, $\supp B$ would be invariant under every $K_i$, making the
-    support projection of $B$ a nontrivial invariant projection.
+    into $\ker B\subseteq\ker E(B)$. Let $Q$ be the support projection of
+    $B$. The latter inclusion places $E(B)$ in the corner $Q\MN{D}Q$.
+    Every Hermitian element of this corner lies between two real multiples
+    of~$B$. Positivity and order preservation therefore place its image under
+    $E$ in the same corner; the Hermitian decomposition gives this for every
+    element of $Q\MN{D}Q$. Thus $Q$ is an invariant projection.
+    Irreducibility gives $Q=0$ or $Q=\Id$, and $B\neq0$ excludes the first
+    case. Hence equality of the kernels would force $B>0$.
 
     We prove by induction on $n$ that every nonzero $B\geq0$ with
-    $\dim\ker B\leq n$ satisfies $T^n(B)>0$. For $n=0$, the kernel is
+    $\dim\ker B\leq n$ satisfies $S^n(B)>0$. For $n=0$, the kernel is
     trivial, so $B>0$. Suppose the claim holds for $n$ and let
-    $\dim\ker B\leq n+1$. If $B>0$, then $T(B)=B+E(B)>0$, and every
+    $\dim\ker B\leq n+1$. If $B>0$, then $S(B)=B+E(B)>0$, and every
     subsequent iterate remains positive definite. Otherwise the strict
-    kernel decrease gives $\dim\ker T(B)\leq n$; the induction hypothesis
-    applied to $T(B)$ yields
-    $T^n(T(B))=T^{n+1}(B)>0$. Since $A\neq0$, rank--nullity gives
+    kernel decrease gives $\dim\ker S(B)\leq n$; the induction hypothesis
+    applied to $S(B)$ yields
+    $S^n(S(B))=S^{n+1}(B)>0$. Since $A\neq0$, rank--nullity gives
     $\dim\ker A\leq D-1$, which proves (\ref{eq:qpf_growth_pd}).
 \end{proof}
 
 \begin{theorem}[Kernel inclusion forces positive definiteness]
     \label{thm:kernel_inclusion_pd_irred}
-    \lean{posDef_of_ker_subset_irreducible_cp}
+    \lean{posDef_of_ker_subset_irreducible,
+        posDef_of_ker_subset_irreducible_cp}
     \leanok
-    \uses{def:irreducible_cp}
-    Let $E$ be an irreducible completely positive map on $\MN{D}$.
+    \uses{def:positive_map, def:irreducible_cp}
+    Let $E$ be an irreducible positive map on $\MN{D}$.
     If $\rho\geq0$, $\rho\neq0$, and
     \begin{align}
         \ker\rho
@@ -101,46 +89,31 @@ and~\cite{Evans1978Spectral}.
 
 \begin{proof}
     \leanok
-    Write $E(X)=\sum_i K_iXK_i^\dagger$ and let $Q$ be the support
-    projection of $\rho$.  For $v\in\ker\rho$, the kernel inclusion gives
-    \begin{align}
-        0
-         & =v^\dagger E(\rho)v
-          =\sum_i(K_i^\dagger v)^\dagger\rho(K_i^\dagger v).
-        \notag
-    \end{align}
-    Every summand is non-negative, so
-    $K_i^\dagger(\ker\rho)\subseteq\ker\rho$ for every~$i$.  Equivalently,
-    for every~$X$,
-    \begin{align}
-        Q E(QXQ)Q
-         & =E(QXQ).
-        \notag
-    \end{align}
-    Irreducibility forces $Q\in\{0,I\}$, while $\rho\neq0$ rules out
-    $Q=0$.  Thus $Q=I$, so $\ker\rho=\{0\}$ and $\rho>0$.
+    Let $Q$ be the support projection of $\rho$. The kernel inclusion and
+    positivity place $E(\rho)$ in $Q\MN{D}Q$. The same two-sided order
+    argument as in Theorem~\ref{thm:growth_pd_irred} shows that $E$ maps the
+    whole corner $Q\MN{D}Q$ into itself. Irreducibility forces
+    $Q\in\{0,\Id\}$, while $\rho\neq0$ rules out $Q=0$. Thus $Q=\Id$, so
+    $\rho>0$.
 \end{proof}
 
 \begin{theorem}[PSD eigenvectors are positive definite]
     \label{thm:psd_eigenvector_pd_irred}
-    \lean{posDef_of_posSemidef_eigenvector_irreducible_cp}
+    \lean{posDef_of_posSemidef_eigenvector_irreducible,
+        posDef_of_posSemidef_eigenvector_irreducible_cp}
     \leanok
-    \uses{def:irreducible_cp}
-    Let $E$ be an irreducible completely positive map on $\MN{D}$.
-    If $\rho\geq0$, $\rho\neq0$, $r>0$, and
-    $E(\rho)=r\rho$, then $\rho$ is positive definite.
+    \uses{def:positive_map, def:irreducible_cp}
+    Let $E$ be an irreducible positive map on $\MN{D}$.
+    If $\rho\geq0$, $\rho\neq0$, and
+    $E(\rho)=\lambda\rho$ for some $\lambda\in\C$, then $\rho$ is positive
+    definite.
 \end{theorem}
 
 \begin{proof}
     \leanok
     \uses{thm:kernel_inclusion_pd_irred}
     The eigenvector equation gives
-    \begin{align}
-        \ker\rho
-         & =\ker E(\rho).
-        \notag
-    \end{align}
-    Hence $\ker\rho\subseteq\ker E(\rho)$.
+    $\ker\rho\subseteq\ker E(\rho)$, including when $\lambda=0$.
     Theorem~\ref{thm:kernel_inclusion_pd_irred} then forces $\rho$ to be
     positive definite.
 \end{proof}
@@ -789,47 +762,187 @@ The TP-gauge application follows~\cite[Appendix~A]{Cirac2016MPDO_arXiv}.
     rank~$2$ by induction.
 \end{proof}
 
-\section{Spectral radius at the Perron eigenvalue}
+\section{The Collatz--Wielandt argument for irreducible positive maps}
 
-\begin{theorem}[Spectral radius is the Perron eigenvalue]
-    \label{thm:spectral_radius_pf_irred}
-    \lean{spectralRadius_eq_of_posDef_eigenvector_of_irreducible_cp}
+\begin{definition}[Lower and upper Collatz--Wielandt feasibility]
+    \label{def:collatz_wielandt_feasible}
+    \lean{LowerCollatzWielandtFeasible, UpperCollatzWielandtFeasible}
     \leanok
-    \uses{def:irreducible_cp}
-    Let $E$ be an irreducible completely positive map on $\MN{D}$.
-    Suppose $\rho > 0$ and $E(\rho) = r\rho$ with $r > 0$.
-    Then the spectral radius of $E$ is $r$.
-    This is the completely positive specialization of
+    \uses{def:density_matrices}
+    Let $T:\MN{D}\to\MN{D}$ be linear. A pair $(X,a)$ is lower feasible
+    for $a\in\R$ when
+    \begin{align}
+        X&\geq0, & \tr X&=1,
+        & T(X)-aX&\geq0,
+        \label{eq:qpf_cw_lower_feasible}
+    \end{align}
+    and is upper feasible when the first two conditions hold and
+    \begin{align}
+        aX-T(X)&\geq0.
+        \label{eq:qpf_cw_upper_feasible}
+    \end{align}
+    Thus the scalar ranges over all of $\R$, exactly as in the source. Under
+    the harmless normalization $\tr X=1$, these predicates express
+    $a\leq r(X)$ and $\widetilde r(X)\leq a$ for the functionals in
+    \cite[Equations~(6.29)--(6.30)]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{theorem}[Irreducibility of the trace adjoint]
+    \label{thm:trace_adjoint_irreducible_positive}
+    \lean{IsIrreducibleMap.traceAdjointMap,
+        isIrreducibleMap_traceAdjointMap_iff}
+    \leanok
+    \uses{def:positive_map, def:irreducible_cp}
+    Let $T:\MN{D}\to\MN{D}$ be positive, and let $T^*$ denote its adjoint
+    for the trace pairing. Then $T$ is irreducible if and only if $T^*$ is
+    irreducible. This is the observation at local source lines~604--606,
+    immediately preceding \cite[Theorem~6.3]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    Suppose $P$ is an invariant projection for $T^*$. Its complementary
+    leakage vanishes, and trace duality gives
+    \begin{align}
+        0
+        &=\tr\!\left((\Id-P)T^*(P)\right)
+         =\tr\!\left(P T(\Id-P)\right).
+        \label{eq:qpf_trace_adjoint_leakage}
+    \end{align}
+    Positivity turns the final scalar equality into the assertion that
+    $T(\Id-P)$ is supported on $\Id-P$. Two-sided order domination then
+    shows that $T$ preserves the whole corner
+    $(\Id-P)\MN{D}(\Id-P)$. Irreducibility of $T$ makes $\Id-P$, and hence
+    $P$, trivial. Applying the same implication to $T^*$ and using
+    $(T^*)^*=T$ proves the converse.
+\end{proof}
+
+\begin{theorem}[Spectral radius of irreducible positive maps]
+    \label{thm:wolf_irreducible_positive_spectral_radius}
+    \lean{exists_wolfTheorem63_of_irreducible_positive,
+        exists_wolfTheorem63_of_irreducible_positive_of_ne_zero}
+    \leanok
+    \uses{def:positive_map, def:irreducible_cp,
+        def:collatz_wielandt_feasible}
+    Let $D\geq1$ and let $T:\MN{D}\to\MN{D}$ be irreducible and positive.
+    There are a density matrix $X>0$ and a real number $r\geq0$ such that
+    $T(X)=rX$ and the following assertions hold.
+    \begin{enumerate}
+        \item Every lower feasible value is at most $r$, every upper feasible
+              value is at least $r$, and $(X,r)$ is feasible in both senses.
+              Thus $r$ is the global maximum of the lower values and the
+              global minimum of the upper values.
+        \item The ordinary complex eigenspace at $r$ is $\C X$, and hence has
+              dimension one. No assertion about the generalized eigenspace is
+              made.
+        \item If $Y\geq0$ is nonzero, $\lambda>0$, and
+              $T(Y)=\lambda Y$, then $\lambda=r$.
+        \item The spectral radius satisfies $\varrho(T)=r$.
+    \end{enumerate}
+    If $T\neq0$, the same conclusions hold with $r>0$. This is the
+    source form of \cite[Theorem~6.3]{Wolf2012Quantum}.
+
+    The boundary $r=0$ is necessary without the hypothesis $T\neq0$.
+    On $\MN{1}$ the zero map is positive and irreducible because the only
+    orthogonal projections are $0$ and $\Id$, but its spectral radius is zero.
+    The printed claim that the distinguished eigenvalue is strictly positive
+    therefore omits this one-dimensional case.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:growth_pd_irred,
+        thm:trace_adjoint_irreducible_positive,
+        thm:spectral_radius_pf_irred}
+    First maximize the lower functional, in the order used by Wolf. On density
+    matrices, lower feasibility implies
+    $a\leq\operatorname{Re}\tr(T(X))$. The latter continuous function has a
+    maximum. Since $0$ is feasible and every negative candidate is below it,
+    the search for a maximum may be restricted to a compact interval
+    $0\leq a\leq M$. Hence there is a lower maximizer $(X,r)$ with $r\geq0$.
+    Upper feasible values are automatically nonnegative: positivity gives
+    $\tr T(X)\geq0$, while tracing $aX-T(X)\geq0$ gives
+    $a\geq\tr T(X)$.
+
+    Put $S=(\id+T)^{D-1}$ and $R=T(X)-rX\geq0$. The polynomial identity
+    \begin{align}
+        S\bigl(T-r\id\bigr)(X)
+        &=\bigl(T-r\id\bigr)S(X)
+        \tag{6.31}\label{eq:qpf_cw_commutation}
+    \end{align}
+    is Wolf's Equation~(6.31). Theorem~\ref{thm:growth_pd_irred} gives
+    $S(X)>0$. If $R\neq0$, it also gives $S(R)>0$; subtracting a sufficiently
+    small positive multiple of $S(X)$ from $S(R)$ would make a value larger
+    than $r$ lower feasible at the normalized matrix $S(X)$. This contradicts
+    maximality. Thus $R=0$, so $T(X)=rX$ and $X>0$.
+
+    For geometric non-degeneracy, split a complex $r$-eigenvector into its
+    Hermitian and skew-Hermitian parts. If a Hermitian part $H$ is not a
+    scalar multiple of $X$, choose a real boundary perturbation
+    $W=X+cH\geq0$ which is nonzero and singular. It is still an
+    $r$-eigenvector, whence
+    \begin{align}
+        0<S(W)
+        &=(1+r)^{D-1}W.
+        \tag{6.32}\label{eq:qpf_cw_boundary}
+    \end{align}
+    This is impossible because a positive multiple of a singular matrix is
+    singular. Both Hermitian parts are therefore proportional to $X$, proving
+    that the ordinary eigenspace is $\C X$.
+
+    If $r=0$, positivity and $X>0$ imply $T=0$, so the remaining conclusions
+    follow directly. Hence suppose $r>0$. By
+    Theorem~\ref{thm:trace_adjoint_irreducible_positive}, the trace adjoint
+    $T^*$ is again irreducible and positive. The preceding construction gives
+    $X_0>0$ with $T^*(X_0)=rX_0$; the trace pairing first identifies its
+    Perron value with $r$. For any nonzero $Y\geq0$ satisfying
+    $T(Y)=\lambda Y$, one then has Wolf's Equation~(6.33):
+    \begin{align}
+        r\tr(X_0Y)
+        &=\tr\!\left(T^*(X_0)Y\right)
+         =\tr\!\left(X_0T(Y)\right)
+         =\lambda\tr(X_0Y).
+        \tag{6.33}\label{eq:qpf_cw_trace_pairing}
+    \end{align}
+    Since $\tr(X_0Y)>0$, this gives $\lambda=r$. Pairing $X_0$ instead with
+    the positive residual in~(\ref{eq:qpf_cw_upper_feasible}) shows that every
+    upper feasible value is at least $r$. Together with feasibility of the
+    Perron pair, this proves the corrected global maximum--minimum equality.
+
+    Finally set
+    \begin{align}
+        T'(A)
+        &=r^{-1}X^{-1/2}T\!\left(X^{1/2}AX^{1/2}\right)X^{-1/2}.
+        \label{eq:qpf_cw_unital_similarity}
+    \end{align}
+    When $r>0$, this map is positive and unital. Its spectral radius is one by
+    Theorem~\ref{thm:positive_unital_spectral_radius}; similarity and scalar
+    rescaling give $\varrho(T)=r$.
+
+    The local source at lines~617--619 prints the upper global quantity as a
+    second supremum and then states the reversed inequality
+    $r\geq\widetilde r$. The valid statement proved here is the minimum of the
+    upper feasible values, equal to the lower maximum by the trace-adjoint
+    argument above. No pointwise equality $r(Y)=\widetilde r(Y)$ is used.
+\end{proof}
+
+\begin{theorem}[Spectral radius from a positive-definite eigenvector]
+    \label{thm:spectral_radius_pf_irred}
+    \lean{spectralRadius_eq_of_posDef_eigenvector_of_positive,
+        spectralRadius_eq_of_posDef_eigenvector_of_irreducible_cp}
+    \leanok
+    \uses{def:positive_map}
+    Let $D\geq1$, let $T:\MN{D}\to\MN{D}$ be positive, and suppose
+    $X>0$ and $T(X)=rX$ with $r>0$. Then $\varrho(T)=r$.
+    Irreducibility and complete positivity are not needed once this Perron
+    pair is supplied. This is the final similarity argument in
     \cite[Theorem~6.3(4)]{Wolf2012Quantum}.
 \end{theorem}
 
-\begin{proof}
-    \leanok
-    \uses{thm:kraus_posdef_adjoint_eigenvector,
-        thm:kraus_tp_gauge_from_adjoint_fixed, thm:kraus_tp_spectral_radius_bound}
-    Choose Kraus operators $\{K_i\}$ for $E$; their Kraus map is $E$, so it
-    is irreducible.
-    Theorem~\ref{thm:kraus_posdef_adjoint_eigenvector}
-    therefore gives a positive definite matrix $\sigma>0$ and $t>0$ such that
-    $E^\dagger(\sigma)=t\sigma$. The weighted trace pairing with $\rho$ gives
-    \begin{align}
-        r\tr(\sigma\rho)
-         & =\tr(\sigma E(\rho))
-        =\tr(E^\dagger(\sigma)\rho)
-        =t\tr(\sigma\rho).
-        \notag
-    \end{align}
-    Since $\tr(\sigma\rho)>0$, one has $t=r$. Rescale by $r^{-1}$ and
-    conjugate by $\sigma^{1/2}$ as in
-    Theorem~\ref{thm:kraus_tp_gauge_from_adjoint_fixed}; this produces a
-    trace-preserving Kraus map $F$ similar to $r^{-1}E$.
-    The trace-preserving spectral-radius bound
-    (Theorem~\ref{thm:kraus_tp_spectral_radius_bound}) gives
-    $\rho_{\spec}(F)\leq1$.
-    The conjugate of $\rho$ is a nonzero fixed point of $F$, so $1$ is an
-    eigenvalue and $\rho_{\spec}(F)\geq1$. Hence
-    $\rho_{\spec}(F)=1$. Similarity preserves the spectrum, and undoing the
-    scalar rescaling gives $\rho_{\spec}(E)=r$.
+\begin{proof}\leanok
+    \uses{thm:positive_unital_spectral_radius}
+    Apply the construction~(\ref{eq:qpf_cw_unital_similarity}) to the supplied
+    pair $(X,r)$. The resulting map is positive and unital, so
+    Theorem~\ref{thm:positive_unital_spectral_radius} gives spectral radius
+    one. Similarity invariance and the scalar rule give $\varrho(T)=r$.
 \end{proof}
 
 \begin{theorem}[Eigenvalue $1$ for positive trace-preserving maps]

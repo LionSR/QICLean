@@ -674,17 +674,19 @@ conclusions.  The boundedness needed to form $T_\infty$ follows from
 
 ### Section 6.2 Irreducible maps and Perron–Frobenius theory
 
-#### Wolf Theorem 6.2 (Irreducible positive maps) — ITEMS 1,2,4 FORMALIZED
+#### Wolf Theorem 6.2 (Irreducible positive maps) — ITEMS 1–2 FORMALIZED; ITEM 4 CP SPECIALIZATION
 
 **Item 1** (definition via invariant projections):
 * `IsIrreducibleMap` — `QICLean.Channel.Irreducible.Basic`
 
 **Item 2** (growth condition `(id + T)^{d-1}(A) > 0`):
-* `growth_posDef_of_irreducible_cp` — `QICLean.Channel.Irreducible.Growth`
-  (for CP maps; proves the (1)→(2) direction)
-* `posDef_of_ker_subset_irreducible_cp` — structural lemma:
-  `ker(A) ⊆ ker(E(A))` + irreducible CP → `A` is PosDef
-* `mulVecLin_ker_idPlusE_lt_of_not_posDef` — strict kernel decrease
+* `growth_posDef_of_irreducible` — `QICLean.Channel.Irreducible.Growth`:
+  the (1)→(2) direction for arbitrary positive maps, with no CP hypothesis.
+* `posDef_of_ker_subset_irreducible` — structural lemma:
+  `ker(A) ⊆ ker(T(A))` + positive irreducible `T` → `A` is PosDef.
+* `mulVecLin_ker_idPlusE_lt_of_not_posDef_of_positive` — strict kernel
+  decrease. The declarations with the former CP signatures remain as direct
+  specializations.
 
 **Item 3** (exponential condition `exp[tT](A) > 0`): NOT FORMALIZED.
 
@@ -692,41 +694,48 @@ conclusions.  The boundedness needed to form $T_\infty$ follows from
 * `orthogonal_trace_pos_of_irreducible_cp` — `QICLean.Channel.Irreducible.Growth`
   For orthogonal PSD `A, B` (tr(BA)=0), ∃ t ∈ {1,...,D-1}, tr(B·T^t(A)) > 0.
 
-#### Wolf Theorem 6.3 (Spectral radius of irreducible maps) — CP SPECIALIZATIONS OF ITEMS 2–4
+#### Wolf Theorem 6.3 (Spectral radius of irreducible maps) — FORMALIZED FOR POSITIVE MAPS
 
-**Fixed-point consequences of items 2–3** (strict positivity and PSD uniqueness):
+The headline declarations are in
+`QICLean.Channel.Irreducible.SpectralRadius`:
 
-Channel-level (general irreducible CP maps):
-* `posDef_of_posSemidef_fixedPoint_irreducible_cp` — `QICLean.Channel.Irreducible.FixedPoint`:
-  nonzero PSD fixed point → PosDef
-* `posDef_of_posSemidef_eigenvector_irreducible_cp` —
-  `QICLean.Channel.Irreducible.Growth.OneStep`: PSD eigenvector → PosDef
-* `exists_posDef_eigenvector_of_irreducible_cp`: ∃ PosDef eigenvector with `r > 0`
-* `posSemidef_eigenvector_unique_of_irreducible_cp`: uniqueness up to scalar
+* `exists_wolfTheorem63_of_irreducible_positive` — corrected boundary form for
+  a positive irreducible map on a nonzero matrix algebra, with `r ≥ 0`;
+* `exists_wolfTheorem63_of_irreducible_positive_of_ne_zero` — Wolf's printed
+  `r > 0` form under the necessary explicit hypothesis `T ≠ 0`.
 
-The transfer-map specializations of these fixed-point consequences are indexed
-in `TNLean.Wielandt.WolfChapter6TNIndex`.
+They package the four source conclusions in order:
 
-**Item 3** (uniqueness of positive eigenvalue):
-* `eigenvalue_unique_of_irreducible_cp` — `QICLean.Channel.Irreducible.PerronFrobenius`
-  Any two positive eigenvalues with nonzero PSD eigenvectors must coincide.
-* `posSemidef_eigenvector_unique_of_irreducible_cp` shows any two PSD
-  eigenvectors for the same eigenvalue are proportional.
+1. `LowerCollatzWielandtFeasible` and `UpperCollatzWielandtFeasible` encode
+   Equations (6.29)–(6.30) on density matrices, with the scalar ranging over
+   all real numbers as in the source.
+   `exists_lowerCollatzWielandt_maximizer` constructs the lower maximizer
+   first. `idPlus_pow_apply_map_sub_smul` is Equation (6.31), and
+   `exists_posDef_eigenvector_of_irreducible_positive` uses it with Wolf
+   Theorem 6.2 to obtain a positive-definite eigenvector. After that,
+   `exists_posDef_common_collatzWielandt_value_of_irreducible_positive`
+   identifies the global lower maximum with the global upper minimum.
+2. `eigenspace_eq_span_of_irreducible_positive` and
+   `finrank_eigenspace_eq_one_of_irreducible_positive` formalize Equation
+   (6.32): the ordinary complex eigenspace at `r` is one-dimensional. This is
+   geometric non-degeneracy, not a claim about algebraic multiplicity.
+3. `IsIrreducibleMap.traceAdjointMap` proves the positive-map observation at
+   source lines 604–606. `exists_posDef_traceAdjointMap_eigenvector_at_perron`
+   and `positive_eigenvalue_eq_perron_of_irreducible_positive` then formalize
+   the trace-pairing argument in Equation (6.33), with no Kraus or CP premise.
+4. `spectralRadius_eq_of_posDef_eigenvector_of_positive` conjugates by the
+   square root of the positive-definite Perron vector, rescales to a positive
+   unital map, and invokes Wolf Proposition 6.1. Thus the Perron value is the
+   spectral radius. The former CP spectral-radius declaration is retained as a
+   direct specialization.
 
-**Item 4** (spectral radius identity `r = ρ(T)`):
-* `spectralRadius_eq_of_posDef_eigenvector_of_irreducible_cp`
-  — `ENNReal`-valued statement `ρ(E) = ofReal r`
-* `spectralRadius_toReal_eq_of_posDef_eigenvector_of_irreducible_cp`
-  — real-valued corollary `(ρ(E)).toReal = r`
-
-Both in `QICLean.Channel.Irreducible.SpectralRadius`.
-Combined with `exists_posDef_eigenvector_of_irreducible_cp` from
-`QICLean.Channel.Irreducible.PerronFrobenius`, these give the CP specialization
-of Wolf item 4 for the Perron–Frobenius eigenvalue.
-
-Wolf Theorem 6.3 assumes only positivity, and its non-degeneracy statement is
-stronger than uniqueness restricted to positive-semidefinite eigenvectors. The
-positive-map extension is recorded in
+There are two source corrections. On `M₁(ℂ)` the zero map is positive and
+irreducible but has spectral radius zero, so the general theorem must allow
+`r = 0`; the source form needs `T ≠ 0`. At source lines 617–619 the second
+global extremum is printed as a supremum with a reversed inequality. The
+correct upper quantity is an infimum. No false pointwise lower/upper equality
+is used, and the separate pointwise development is not a prerequisite. Both
+corrections and the former CP scope restriction are recorded in the resolved note
 `docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex`.
 
 #### Wolf Corollary 6.3 (Time-average / ergodicity) — FORMALIZED
@@ -760,6 +769,10 @@ In `QICLean.Channel.Irreducible.FromSpectral`:
 * `exists_posSemidef_eigenvector` — `QICLean.Channel.PerronFrobenius.Existence`
 * `exists_posSemidef_eigenvector_general` — gives SOME nonnegative eigenvalue with
   PSD eigenvector, but does NOT identify it with the spectral radius.
+* `exists_wolfTheorem63_of_irreducible_positive` — completes the
+  spectral-radius eigenvector statement for the irreducible positive-map case.
+  Thus the remaining Theorem 6.5 gap is only the reduction from an arbitrary
+  positive map to a suitable irreducible invariant face.
 * Paper-gap: `docs/paper-gaps/wolf_ch6_spectral_radius_eigenvalue.tex`
 
 Uses Brouwer's fixed-point theorem on density matrices (proved in

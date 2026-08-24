@@ -318,6 +318,49 @@ that Wolf's intended spectrum-preserver argument is false. The two displayed
 values contain the transition-probability information used in that argument;
 the characteristic polynomial records the complete multiplicity data.
 
+\section{The two boundary errors in Theorem~6.3}
+\label{sec:theorem-6-3}
+
+\paragraph{Formalization trigger.}
+The declarations
+\leanid{exists_wolfTheorem63_of_irreducible_positive} and
+\leanid{exists_wolfTheorem63_of_irreducible_positive_of_ne_zero} formalize
+Wolf Theorem~6.3 for arbitrary positive maps. The two corrections are
+documented in
+\path{docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex}.
+
+\paragraph{The global upper quantity.}
+At local source lines~617--619, after defining the pointwise lower and upper
+functionals $r(X)$ and $\widetilde r(X)$, the notes print
+\begin{equation}\tag{printed}
+  r=\sup_{X\geq0}r(X),\qquad
+  \widetilde r=\sup_{X\geq0}\widetilde r(X),\qquad
+  r\geq\widetilde r.
+\end{equation}
+The corrected Collatz--Wielandt pair is
+\begin{equation}\tag{corrected}
+  r=\sup_{X\geq0,\,X\neq0}r(X),\qquad
+  \widetilde r=\inf_{X\geq0,\,X\neq0}\widetilde r(X).
+\end{equation}
+For an irreducible positive map, both extrema are attained at the same
+positive-definite eigenvector and are equal. Thus the second ``sup'' and the
+displayed reversed inequality are a single local source error. Equality is
+not asserted pointwise for arbitrary $X$.
+
+\paragraph{The one-dimensional zero map.}
+The theorem assumes only that $T:\MN{D}\to\MN{D}$ is irreducible and positive,
+but item~2 and the proof require a strictly positive Perron value. On
+$\MN{1}$, the zero map is positive and irreducible because $0$ and $\Id$ are
+the only orthogonal projections. Its spectral radius is zero. Hence the
+assumption-free conclusion must allow $r=0$ while retaining the
+positive-definite eigenvector $X>0$. Wolf's printed $r>0$ form becomes valid
+after adding $T\neq0$. For $D>1$, irreducibility itself excludes the zero map.
+
+\paragraph{Classification.}
+These are two local false-source corrections exposed by the positive-map
+formalization. They do not alter the proof for a nonzero irreducible map once
+the second global extremum is read as an infimum.
+
 \section{Formalization gaps that are not source corrections}
 
 The following Wolf-specific paper-gap notes are intentionally \emph{not}
@@ -340,9 +383,10 @@ errata entries:
 
 \section{Conclusion}
 
-At present the formalization-derived record contains two false printed
-assertions (Sections~\ref{sec:lorentz} and
-\ref{sec:pauli-block-truncation}), one normalization typo
+At present the formalization-derived record contains four false printed
+assertions (Sections~\ref{sec:lorentz},
+\ref{sec:pauli-block-truncation}, and the two corrections in
+Section~\ref{sec:theorem-6-3}), one normalization typo
 (Section~\ref{sec:ordered-cp-inverse}), one explicit boundary convention
 (Section~\ref{sec:radon-nikodym}), and one local correction to a spectrum
 shorthand (Section~\ref{sec:two-pure-state-spectrum}). These are the
