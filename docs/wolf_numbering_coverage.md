@@ -384,6 +384,10 @@ so that the cited formal statements are available from the main project import.
 * `Wolf.spinorCoverHom_eq_iff_eq_or_eq_neg` /
   `Wolf.spinorCoverHom_eq_one_iff` — every fibre is exactly `{X, -X}` and the
   kernel is exactly `{1, -1}` ✓
+* `Wolf.boostSpinor_posDef` — the canonical boost lift
+  `P_u = (M(u) + I)/√(2(1+u₀))` satisfies `P_u > 0`, matching the
+  positive factor in Wolf's polar decomposition immediately before
+  Equation (2.44) (source lines 1067–1077) ✓
 * `Wolf.pauliTransferMatrix_two_sided_filtering` — Equation (2.43) over the
   complex Pauli transfer matrix, in the exact order `L₂ T̂ L₁` ✓
 * `Wolf.coe_pauliTransferMatrixReal_of_preservesHermiticity` /
