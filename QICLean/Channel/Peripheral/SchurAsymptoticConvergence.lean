@@ -5,6 +5,9 @@ Authors: Sirui Lu
 -/
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
+import QICLean.Algebra.HermitianHelpers
+import QICLean.Analysis.TraceNormContractivity
+import QICLean.Analysis.TraceNormFrobenius
 import QICLean.Channel.Determinant.Bound
 import QICLean.Channel.FixedPoint.StationaryStates
 import QICLean.Channel.Peripheral.SpectralProjection
@@ -35,7 +38,6 @@ Theorem "Asymptotic convergence II", Equation (8.111); local source
 noncomputable section
 
 open Matrix
-open scoped Matrix.Norms.L2Operator
 
 variable {D : ℕ}
 
@@ -78,6 +80,52 @@ theorem transferMatrixFin_hasEigenvalue_iff
     transferMatrixFin, Matrix.charpoly_reindex, ← Matrix.charpoly_toLin',
     ← Module.End.hasEigenvalue_iff_isRoot_charpoly]
   exact (transferMatrix_hasEigenvalue_iff T z).symm
+
+section L2Reindex
+
+open scoped Matrix.Norms.L2Operator
+
+/-- Simultaneously relabelling the rows and columns through an equivalence
+does not increase the `L²` operator norm. -/
+theorem Matrix.l2_opNorm_reindex_le_equiv
+    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
+    (e : m ≃ n) (A : Matrix m m ℂ) :
+    ‖Matrix.reindex e e A‖ ≤ ‖A‖ := by
+  classical
+  apply Matrix.l2_opNorm_le_of_forall (norm_nonneg A)
+  intro v
+  let w : m → ℂ := fun i ↦ v (e i)
+  have hmul : Matrix.reindex e e A *ᵥ v =
+      fun j ↦ (A *ᵥ w) (e.symm j) := by
+    ext j
+    simp only [Matrix.mulVec, dotProduct, Matrix.reindex_apply, w]
+    rw [← e.sum_comp]
+    simp
+  have hnorm_reindex (u : m → ℂ) :
+      ‖(EuclideanSpace.equiv n ℂ).symm (fun j ↦ u (e.symm j))‖ =
+        ‖(EuclideanSpace.equiv m ℂ).symm u‖ := by
+    rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
+    congr 1
+    simpa using (e.sum_comp (fun j ↦ ‖u (e.symm j)‖ ^ 2)).symm
+  have hw_norm : ‖(EuclideanSpace.equiv m ℂ).symm w‖ =
+      ‖(EuclideanSpace.equiv n ℂ).symm v‖ := by
+    rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
+    congr 1
+    simpa [w] using (e.sum_comp (fun j ↦ ‖v j‖ ^ 2))
+  rw [hmul, hnorm_reindex, ← hw_norm]
+  exact A.l2_opNorm_mulVec ((EuclideanSpace.equiv m ℂ).symm w)
+
+/-- Simultaneously relabelling the rows and columns through an equivalence
+preserves the `L²` operator norm. -/
+theorem Matrix.l2_opNorm_reindex_equiv
+    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
+    (e : m ≃ n) (A : Matrix m m ℂ) :
+    ‖Matrix.reindex e e A‖ = ‖A‖ := by
+  apply le_antisymm (Matrix.l2_opNorm_reindex_le_equiv e A)
+  have hback := Matrix.l2_opNorm_reindex_le_equiv e.symm (Matrix.reindex e e A)
+  simpa [Matrix.reindex_apply] using hback
+
+end L2Reindex
 
 /-! ### Spectrum after removing the phase-weighted peripheral map -/
 
@@ -176,6 +224,99 @@ theorem IsPositiveMap.hasEigenvalue_sub_peripheralWeightedProjection_iff
         Module.End.peripheralWeightedProjection, LinearMap.comp_apply, hPX, map_zero,
         sub_zero]
       exact hX.apply_eq_smul
+
+/-! ### Hilbert--Schmidt norm bound for positive channels -/
+
+section FrobeniusNorm
+
+open scoped InnerProductSpace RealInnerProductSpace Matrix.Norms.Frobenius
+
+private theorem real_inner_frobenius_eq_complex_re
+    (X Y : Matrix (Fin D) (Fin D) ℂ) :
+    inner ℝ (frobeniusEquivEuclidean (Fin D) (Fin D) X)
+        (frobeniusEquivEuclidean (Fin D) (Fin D) Y) =
+      (inner ℂ (frobeniusEquivEuclidean (Fin D) (Fin D) X)
+        (frobeniusEquivEuclidean (Fin D) (Fin D) Y)).re := by
+  simp [PiLp.inner_apply, RCLike.inner_apply, Complex.inner]
+
+private theorem frobenius_norm_sq_add_smul_I_of_isHermitian
+    {H K : Matrix (Fin D) (Fin D) ℂ}
+    (hH : H.IsHermitian) (hK : K.IsHermitian) :
+    ‖H + Complex.I • K‖ ^ 2 = ‖H‖ ^ 2 + ‖K‖ ^ 2 := by
+  have htrace_im : (Matrix.trace (H * K)).im = 0 := by
+    apply (Complex.im_eq_zero_iff_isSelfAdjoint _).mpr
+    rw [isSelfAdjoint_iff, ← Matrix.trace_conjTranspose,
+      Matrix.conjTranspose_mul, hH.eq, hK.eq, Matrix.trace_mul_comm]
+  have horth : inner ℝ (frobeniusEquivEuclidean (Fin D) (Fin D) H)
+      (frobeniusEquivEuclidean (Fin D) (Fin D) (Complex.I • K)) = 0 := by
+    rw [real_inner_frobenius_eq_complex_re,
+      Matrix.inner_frobeniusEquivEuclidean, hH.eq, Matrix.mul_smul,
+      Matrix.trace_smul, smul_eq_mul, Complex.mul_re, htrace_im]
+    norm_num
+  have hpyth := norm_add_sq_eq_norm_sq_add_norm_sq_real horth
+  calc
+    ‖H + Complex.I • K‖ ^ 2 =
+        ‖frobeniusEquivEuclidean (Fin D) (Fin D) (H + Complex.I • K)‖ ^ 2 := by
+      rw [LinearIsometryEquiv.norm_map]
+    _ = ‖frobeniusEquivEuclidean (Fin D) (Fin D) H +
+          frobeniusEquivEuclidean (Fin D) (Fin D) (Complex.I • K)‖ ^ 2 := by
+      rw [map_add]
+    _ = ‖frobeniusEquivEuclidean (Fin D) (Fin D) H‖ ^ 2 +
+          ‖frobeniusEquivEuclidean (Fin D) (Fin D) (Complex.I • K)‖ ^ 2 := by
+      simpa only [pow_two] using hpyth
+    _ = ‖H‖ ^ 2 + ‖K‖ ^ 2 := by
+      rw [LinearIsometryEquiv.norm_map, LinearIsometryEquiv.norm_map, norm_smul,
+        Complex.norm_I, one_mul]
+
+private theorem frobenius_norm_map_le_sqrt_dim_of_isHermitian
+    {T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
+    {H : Matrix (Fin D) (Fin D) ℂ} (hH : H.IsHermitian) :
+    ‖T H‖ ≤ Real.sqrt D * ‖H‖ := by
+  calc
+    ‖T H‖ ≤ Matrix.traceNorm (T H) :=
+      Matrix.frobenius_norm_le_traceNorm (T H)
+    _ ≤ Matrix.traceNorm H :=
+      Matrix.traceNorm_map_le_of_positive_of_tracePreserving hPos hTP hH
+    _ ≤ Real.sqrt D * ‖H‖ :=
+      Matrix.traceNorm_le_sqrt_dim_mul_frobenius_norm H
+
+/-- A positive trace-preserving map on `D × D` matrices has induced
+Hilbert--Schmidt norm at most `√D`.
+
+The proof first establishes the bound on Hermitian matrices from trace-norm
+contractivity, and then uses the orthogonal decomposition `X = H + iK`.
+This is the singular-value estimate used by Wolf immediately before Equation
+(8.111), local source lines 1314--1316. -/
+theorem IsPositiveMap.hilbertSchmidtOperatorNorm_le_sqrt_dim
+    {T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
+    Matrix.hilbertSchmidtOperatorNorm T ≤ Real.sqrt D := by
+  rw [Matrix.hilbertSchmidtOperatorNorm]
+  apply ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg D)
+  intro x
+  obtain ⟨X, rfl⟩ :=
+    (Matrix.frobeniusEquivEuclidean (Fin D) (Fin D)).surjective x
+  simp only [LinearMap.coe_toContinuousLinearMap',
+    Matrix.frobeniusEuclideanMap_apply, LinearIsometryEquiv.norm_map]
+  obtain ⟨H, K, hH, hK, rfl⟩ :=
+    Matrix.exists_isHermitian_eq_add_smul_I X
+  rw [map_add, map_smul]
+  have hTH : (T H).IsHermitian := Matrix.isHermitian_map_of_positive hPos hH
+  have hTK : (T K).IsHermitian := Matrix.isHermitian_map_of_positive hPos hK
+  apply (sq_le_sq₀ (norm_nonneg _)
+    (mul_nonneg (Real.sqrt_nonneg D) (norm_nonneg _))).mp
+  rw [frobenius_norm_sq_add_smul_I_of_isHermitian hTH hTK,
+    mul_pow, Real.sq_sqrt (Nat.cast_nonneg D),
+    frobenius_norm_sq_add_smul_I_of_isHermitian hH hK]
+  have hH_bound := frobenius_norm_map_le_sqrt_dim_of_isHermitian hPos hTP hH
+  have hK_bound := frobenius_norm_map_le_sqrt_dim_of_isHermitian hPos hTP hK
+  nlinarith [norm_nonneg (T H), norm_nonneg (T K), norm_nonneg H, norm_nonneg K,
+    Real.sqrt_nonneg (D : ℝ), Real.sq_sqrt (Nat.cast_nonneg D)]
+
+end FrobeniusNorm
+
+open scoped Matrix.Norms.L2Operator
 
 /-! ### Source-specific Schur data -/
 
