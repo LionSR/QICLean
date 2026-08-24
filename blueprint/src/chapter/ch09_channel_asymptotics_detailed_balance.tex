@@ -11,7 +11,7 @@
     $\Sigma T^*=T\Sigma$, then
     \begin{align}
         \widehat\Sigma\,\widehat T^\dagger
-          =\widehat T\,\widehat\Sigma.
+        =\widehat T\,\widehat\Sigma.
     \end{align}
 \end{theorem}
 
@@ -33,7 +33,7 @@
     $\Sigma(X)=\sqrt\sigma\,X\sqrt\sigma$, then
     \begin{align}
         \widehat\Sigma
-          =\overline{\sqrt\sigma}\otimes\sqrt\sigma>0.
+        =\overline{\sqrt\sigma}\otimes\sqrt\sigma>0.
     \end{align}
 \end{theorem}
 
@@ -63,6 +63,44 @@
     $R^{-1}$ gives
     $RA^\dagger R^{-1}=R^{-1}AR$, which says exactly that
     $R^{-1}AR$ is Hermitian.
+\end{proof}
+
+\begin{theorem}[The source diagonalizing similarity]
+    \label{thm:detailed_balance_diagonalizing_similarity}
+    \lean{Matrix.PosDef.exists_sqrt_mul_unitary_diagonalization_of_detailedBalance}
+    \leanok
+    This is the chosen change of basis in the proof of
+    \cite[Chapter~8, Proposition ``Jordan condition number and detailed balance'']{Wolf2012Quantum}.
+    Let $S,A\in M_n(\mathbb C)$, with $S>0$ and
+    $SA^\dagger=AS$.  There are a unitary $U$ and a real diagonal matrix
+    $D$ such that, for
+    \begin{align}
+        P=S^{1/2}U,
+        \qquad
+        Q=U^\dagger S^{-1/2},
+    \end{align}
+    one has
+    \begin{align}
+        PQ=QP=\Id,
+        \qquad
+        A=PDQ,
+        \qquad
+        \lVert P\rVert_\infty\lVert Q\rVert_\infty
+        =\sqrt{\lVert S\rVert_\infty\lVert S^{-1}\rVert_\infty}.
+    \end{align}
+    This is a statement about Wolf's displayed, chosen diagonalizing basis;
+    it does not identify that factor with the infimum $\kappa_T$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:detailed_balance_hermitian_representative}
+    The preceding theorem makes $B=S^{-1/2}AS^{1/2}$ Hermitian.  Diagonalize
+    it unitarily as $B=UDU^\dagger$ and conjugate back to obtain $A=PDQ$.
+    Unitarity gives the two inverse identities and leaves the operator norm
+    unchanged.  Finally the isometric functional calculus gives
+    $\lVert S^{1/2}\rVert_\infty=\sqrt{\lVert S\rVert_\infty}$ and the
+    corresponding identity for $S^{-1/2}$.
 \end{proof}
 
 \begin{theorem}[Fixed point from the detailed-balance sandwich]

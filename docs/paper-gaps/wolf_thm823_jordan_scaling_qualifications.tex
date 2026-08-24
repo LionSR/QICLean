@@ -104,6 +104,19 @@ limiting argument compatible with the chosen normalized Jordan form.  No such
 result is currently available in the imported Lean Jordan API, so the formal
 declaration does not assume a minimizing basis.
 
+For the detailed-balance hypothesis in Equation~(8.110),
+\leanid{Matrix.PosDef.exists_sqrt_mul_unitary_diagonalization_of_detailedBalance}
+in \doclink{QICLean/Channel/DetailedBalance.lean} now constructs exactly Wolf's
+chosen diagonalizing change of basis $S^{1/2}U$, its inverse
+$U^\dagger S^{-1/2}$, and the condition factor
+$\sqrt{\lVert S\rVert_\infty\lVert S^{-1}\rVert_\infty}$.  This supplies the
+source's unitary-diagonalization and norm calculation, but deliberately does
+not rename the chosen factor as $\kappa_T$.  Completing the printed
+$\kappa_T$ bound still requires the source-shaped infimum from issue~\#297
+and the bridge that this infimum is bounded by every admissible Jordan change
+of basis.  The detailed-balance assembly is tracked in
+\href{https://github.com/LionSR/QICLean/issues/298}{QICLean issue \#298}.
+
 \section{Verdict}
 
 \textbf{Verdict: source qualifications and missing Jordan-form
