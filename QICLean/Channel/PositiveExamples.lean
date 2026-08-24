@@ -169,7 +169,9 @@ composition with transposition has Choi matrix \(D^{-1}(1-F)\), which is positiv
 semidefinite. -/
 theorem reductionMap_one_isCompletelyCopositiveMap [NeZero D] :
     IsCompletelyCopositiveMap (reductionMap D 1) := by
-  rw [IsCompletelyCopositiveMap, ChoiJamiolkowski.cp_iff_choi_posSemidef,
+  rw [IsCompletelyCopositiveMap]
+  change IsCPMap ((reductionMap D 1).comp (transposeLinearMapComplex (Fin D)))
+  rw [ChoiJamiolkowski.cp_iff_choi_posSemidef,
     ChoiJamiolkowski.choiMatrix_reductionMap_one_comp_transpose]
   exact (one_sub_swapMatrix_posSemidef D).smul (by positivity)
 

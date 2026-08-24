@@ -6,6 +6,7 @@ Authors: TNLean contributors
 import QICLean.Channel.Schwarz.TwoPositive
 import QICLean.Channel.PartialTranspose
 import QICLean.Channel.TensorMap
+import QICLean.Channel.LocalizedKrausCPTP
 
 /-!
 # Decomposable positive maps preserve positivity on PPT states
@@ -25,8 +26,9 @@ and nondecomposable entanglement witnesses.
 * `Matrix.tensorMapId_comp_transposeLinearMapComplex` -- ampliating a map
   precomposed with transposition equals ampliating the map itself after taking the
   first-factor partial transpose of the input.
-* `IsCPMap.tensorMapId_posSemidef` -- the ampliation of a completely positive map
-  sends positive semidefinite bipartite matrices to positive semidefinite matrices.
+* `IsKrausCP.tensorMapId_posSemidef` -- the ampliation of a rectangular
+  completely positive map sends positive semidefinite bipartite matrices to
+  positive semidefinite matrices.
 * `IsDecomposablePositiveMap.tensorMapId_posSemidef_of_isPPT` -- the ampliation of
   a decomposable positive map sends PPT states to positive semidefinite matrices.
 * `not_isDecomposablePositiveMap_of_isPPT_not_tensorMapId_posSemidef` -- a PPT
@@ -34,13 +36,14 @@ and nondecomposable entanglement witnesses.
 
 ## References
 
-* [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 3][Wolf2012QChannels]
+* [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 3,
+  Equation (3.2) and Proposition 3.5][Wolf2012QChannels]
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder
 open Matrix
 
-variable {d : ℕ}
+variable {d d' k : ℕ}
 
 namespace Matrix
 
@@ -49,12 +52,12 @@ taking the first-factor partial transpose of the input. Both sides evaluate `F`
 on the matrix `X(j₁, i₂)(i₁, j₂)` at entry `(i₁, j₁)`: the left side transposes the
 `(i₂, j₂)`-slice of `X` before feeding it to `F`, and the right side reads that
 same transposed slice directly off `partialTransposeLeft X`. -/
-theorem tensorMapId_comp_transposeLinearMapComplex {d' : ℕ}
+theorem tensorMapId_comp_transposeLinearMapComplex
     (F : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ)
-    (X : Matrix (Fin d × Fin d) (Fin d × Fin d) ℂ) :
+    (X : Matrix (Fin d × Fin k) (Fin d × Fin k) ℂ) :
     tensorMapId (F.comp (Matrix.transposeLinearMapComplex (Fin d))) X
       = tensorMapId F (partialTransposeLeft X) := by
-  have hslice : ∀ i₂ j₂ : Fin d,
+  have hslice : ∀ i₂ j₂ : Fin k,
       (bipartiteSlice X i₂ j₂)ᵀ = bipartiteSlice (partialTransposeLeft X) i₂ j₂ := by
     intro i₂ j₂
     ext i₁ j₁
@@ -64,17 +67,23 @@ theorem tensorMapId_comp_transposeLinearMapComplex {d' : ℕ}
       = (F (bipartiteSlice (partialTransposeLeft X) i₂ j₂)) i₁ j₁
   rw [hslice]
 
-/-- The ampliation of a completely positive map sends positive semidefinite
-bipartite matrices to positive semidefinite matrices: this is exactly the
-statement that `E` is `d`-positive, unfolded at the ancilla dimension matching
-`E`'s domain. -/
-theorem _root_.IsCPMap.tensorMapId_posSemidef
+end Matrix
+
+/-- The ampliation of a rectangular Kraus completely positive map sends positive
+semidefinite bipartite matrices to positive semidefinite matrices. -/
+theorem IsKrausCP.tensorMapId_posSemidef
+    {E : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ}
+    (hE : IsKrausCP E)
+    {ρ : Matrix (Fin d × Fin k) (Fin d × Fin k) ℂ} (hρ : ρ.PosSemidef) :
+    (Matrix.tensorMapId E ρ).PosSemidef :=
+  Matrix.tensorMapId_posSemidef_of_isKrausCP hE hρ
+
+/-- Square compatibility form of `IsKrausCP.tensorMapId_posSemidef`. -/
+theorem IsCPMap.tensorMapId_posSemidef
     {E : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ} (hE : IsCPMap E)
     {ρ : Matrix (Fin d × Fin d) (Fin d × Fin d) ℂ} (hρ : ρ.PosSemidef) :
-    (tensorMapId E ρ).PosSemidef :=
-  hE.isNPositiveMap d ρ hρ
-
-end Matrix
+    (Matrix.tensorMapId E ρ).PosSemidef :=
+  IsKrausCP.tensorMapId_posSemidef hE hρ
 
 /-- **Decomposable maps cannot detect PPT entanglement (Wolf Ch. 3).** If `E` is a
 decomposable positive map and `ρ` is a PPT state (positive semidefinite with
@@ -83,9 +92,9 @@ semidefinite. The completely positive summand preserves positivity of `ρ`
 directly; the completely copositive summand preserves positivity of `ρ`'s
 partial transpose, which is exactly the PPT hypothesis. -/
 theorem IsDecomposablePositiveMap.tensorMapId_posSemidef_of_isPPT
-    {E : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ}
+    {E : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ}
     (hE : IsDecomposablePositiveMap E)
-    {ρ : Matrix (Fin d × Fin d) (Fin d × Fin d) ℂ}
+    {ρ : Matrix (Fin d × Fin k) (Fin d × Fin k) ℂ}
     (hρ : ρ.PosSemidef) (hPPT : Matrix.IsPPT ρ) :
     (Matrix.tensorMapId E ρ).PosSemidef := by
   obtain ⟨Ecp, Eccp, hcp, hccp, rfl⟩ := hE
@@ -109,9 +118,21 @@ witnesses that `E` is not decomposable, since decomposable maps preserve
 positivity on PPT states
 (`IsDecomposablePositiveMap.tensorMapId_posSemidef_of_isPPT`). -/
 theorem not_isDecomposablePositiveMap_of_isPPT_not_tensorMapId_posSemidef
-    {E : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ}
-    {ρ : Matrix (Fin d × Fin d) (Fin d × Fin d) ℂ}
+    {E : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ}
+    {ρ : Matrix (Fin d × Fin k) (Fin d × Fin k) ℂ}
     (hρ : ρ.PosSemidef) (hPPT : Matrix.IsPPT ρ)
     (hneg : ¬ (Matrix.tensorMapId E ρ).PosSemidef) :
     ¬ IsDecomposablePositiveMap E :=
   fun hE => hneg (hE.tensorMapId_posSemidef_of_isPPT hρ hPPT)
+
+/-- A positive map detected by a PPT state is indecomposable. This is the map-side
+contrapositive of the preservation theorem above. -/
+theorem IsPositiveMap.isIndecomposablePositiveMap_of_isPPT_not_tensorMapId_posSemidef
+    {E : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ}
+    (hE : IsPositiveMap E)
+    {ρ : Matrix (Fin d × Fin k) (Fin d × Fin k) ℂ}
+    (hρ : ρ.PosSemidef) (hPPT : Matrix.IsPPT ρ)
+    (hneg : ¬ (Matrix.tensorMapId E ρ).PosSemidef) :
+    IsIndecomposablePositiveMap E :=
+  ⟨hE, not_isDecomposablePositiveMap_of_isPPT_not_tensorMapId_posSemidef
+    hρ hPPT hneg⟩

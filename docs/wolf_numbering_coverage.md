@@ -585,6 +585,26 @@ so that the cited formal statements are available from the main project import.
 - `Matrix.hasSchmidtNumberLE_iff_forall_isNPositiveMap_tensorMapId_posSemidef`
   — the full rectangular equivalence in Proposition 3.4 for density operators ✓
 
+#### Wolf Proposition 3.5 — ONE DIRECTION FORMALIZED (RECTANGULAR FORM)
+
+- `IsCompletelyCopositiveMap`, `IsDecomposablePositiveMap`, and
+  `IsIndecomposablePositiveMap` — Wolf Equation (3.2), now for maps
+  `T : M_d(ℂ) → M_{d'}(ℂ)` rather than only square endomorphisms ✓
+- `IsDecomposablePositiveMap.tensorMapId_posSemidef_of_isPPT` — a rectangular
+  decomposable map preserves positivity on a PPT input, with an independent
+  bystander dimension ✓
+- `Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable` — a PPT
+  entangled density operator on `ℂ^d ⊗ ℂ^{d'}` yields an indecomposable positive
+  map `T : M_d(ℂ) → M_{d'}(ℂ)`, by Proposition 3.4 at `n = 1` and the
+  contrapositive of decomposable-PPT preservation ✓
+- The reverse implication remains open. It requires the explicit
+  decomposable-witness cone `W = P₁ + P₂^{T₁}` from Equation (3.15), the
+  rectangular map--witness equivalence, closedness of that cone,
+  self-adjointness of partial transpose for the trace pairing, and the
+  separating-hyperplane argument. Proposition 3.5 is therefore not recorded
+  as fully formalized; see
+  `docs/paper-gaps/wolf_prop3_5_reverse_implication.tex`.
+
 #### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — PARTIALLY FORMALIZED
 
 - `Matrix.choiTypeMap` and `Matrix.choiTypeMap_vecMulVec` formalize the map

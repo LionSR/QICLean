@@ -1,0 +1,120 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{The Remaining Direction of Wolf's PPT--Indecomposable Existence Equivalence}
+\author{}
+\date{2026-08-24}
+
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{wip}
+
+\section{The source equivalence}
+
+For fixed dimensions $d,d'$, Wolf's Proposition~3.5 states the existence
+equivalence
+\begin{align}
+  &\text{there is an indecomposable positive map }
+      T:\MN{d}\longrightarrow\MN{d'}
+  \notag\\
+  &\qquad\Longleftrightarrow\qquad
+  \text{there is an entangled density operator }
+      \rho\in\MN{d}\otimes\MN{d'}
+      \text{ with }\rho^{T_1}\geq 0.
+  \tag{Wolf Proposition 3.5}
+\end{align}
+Immediately before the proposition, the decomposable witnesses are written in
+the first-factor convention
+\begin{align}
+  W=P_1+P_2^{T_1},\qquad P_1,P_2\geq0.
+  \tag{Wolf 3.15}
+\end{align}
+The local source is
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
+276--303.
+\footnote{Tracked by \ghissue{22}.}
+
+The matching primary witness result is Theorem~3 of
+Lewenstein--Kraus--Cirac--Horodecki: a witness is nondecomposable if and only
+if it detects a PPT entangled state \cite{LewensteinKrausCiracHorodecki2000}.
+Its difficult direction separates a nondecomposable witness from the closed
+convex cone of decomposable witnesses. The earlier Horodecki--Horodecki--
+Horodecki cone calculation writes the dual of the PPT cone as the functionals
+represented by $B+C^{T_2}$ with $B,C\geq0$
+\cite[arXiv v2, Appendix Eq.~(50)]{HorodeckiHorodeckiHorodecki1996Separability}.
+That paper transposes the second factor; Wolf's displayed Equation~(3.15)
+transposes the first.
+
+\section{The formalized direction}
+
+The formal development now proves
+\begin{align}
+  &\rho\geq0,\quad \tr(\rho)=1,\quad \rho^{T_1}\geq0,
+      \quad \rho\text{ not separable}
+  \notag\\
+  &\qquad\Longrightarrow\qquad
+  \exists T:\MN{d}\longrightarrow\MN{d'}\text{ positive and indecomposable}.
+  \tag{formalized direction}
+\end{align}
+This is the source's PPT-state-to-map implication, not a substitute theorem.
+Schmidt number one is separability, so the rectangular positive-map criterion
+at level one supplies a positive $T$ for which
+$(T\otimes\operatorname{id}_{d'})(\rho)$ is not positive semidefinite. A
+decomposable map cannot have this property: writing
+$T=T_1+T_2\theta$ gives
+\begin{align}
+  (T\otimes\operatorname{id})(\rho)
+    &=(T_1\otimes\operatorname{id})(\rho)
+      +(T_2\otimes\operatorname{id})(\rho^{T_1})\geq0.
+\end{align}
+Thus the detecting map is indecomposable.
+
+The formal theorem is
+\leanid{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}.
+\footnote{Formal declarations:
+\leanid{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}
+in \doclink{QICLean/Channel/PPTIndecomposable}, and
+\leanid{IsDecomposablePositiveMap.tensorMapId_posSemidef_of_isPPT}
+in \doclink{QICLean/Channel/DecomposablePPT}.}
+The decomposability predicates and preservation theorem are rectangular, with
+the same input-to-output orientation $\MN{d}\to\MN{d'}$ as Wolf.
+
+\section{The remaining direction}
+
+The converse required for the full proposition begins with an
+indecomposable positive map and must produce a PPT entangled density
+operator. The current formal development does not claim that implication.
+Following Wolf and the primary witness proof requires all of the following:
+\begin{align}
+  &\text{the exact cone }\{P_1+P_2^{T_1}:P_1,P_2\geq0\},\notag\\
+  &\text{the rectangular map--witness correspondence in the adjoint
+    orientation of Wolf Proposition 3.4},\notag\\
+  &\text{closedness and convexity of that cone},\notag\\
+  &\tr\!\left(P_2^{T_1}R\right)
+      =\tr\!\left(P_2R^{T_1}\right),\notag\\
+  &\text{and separation followed by positivity, PPT, trace normalization,
+    and entanglement of the separator.}\notag
+\end{align}
+Defining a decomposable witness merely as a functional nonnegative on every
+PPT operator would hide rather than prove Equation~(3.15), so that route is
+not used.
+
+\section{Conclusion}
+
+The verdict is a live scope restriction. The PPT-entangled-state-to-
+indecomposable-map direction of Wolf Proposition~3.5 is formalized with the
+printed rectangular dimensions and first-factor transpose convention. The
+reverse direction, and hence the source's existence equivalence, remains open
+until the Equation~(3.15) cone and its trace-pairing separation argument are
+formalized.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
