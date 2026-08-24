@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.LorentzNormalForm.Basic
+import QICLean.Channel.LorentzNormalForm.CanonicalQubitChannels
 import QICLean.Channel.LorentzNormalForm.Infimum
 import QICLean.Channel.LorentzNormalForm.InvertibleFilter
 import QICLean.Channel.LorentzNormalForm.NormalForm
@@ -15,11 +16,14 @@ import QICLean.Channel.LorentzNormalForm.SpinorAction
 # Lorentz normal form for quantum channels (Wolf Section 2.4, Propositions 2.8–2.11)
 
 Thin module assembling the normal-form development for quantum channels under
-filtering operations from seven focused submodules.
+filtering operations from eight focused submodules.
 
 * `QICLean.Channel.LorentzNormalForm.Basic` — SL-filtering operations, the
   doubly-stochastic predicates, and the shared Kronecker-conjugation and
   partial-trace identities.
+* `QICLean.Channel.LorentzNormalForm.CanonicalQubitChannels` — the exact
+  non-diagonal and singular qubit representatives, their Pauli-transfer
+  action, and their Choi/Kraus ranks.
 * `QICLean.Channel.LorentzNormalForm.Infimum` — the compactness/minimisation
   argument (Wolf Equation (2.36)): attainment of the infimum and the AM–GM
   optimality lemmas.

@@ -387,6 +387,15 @@ so that the cited formal statements are available from the main project import.
 * `IsLorentzDiagonal` — diagonal Lorentz normal form (Wolf Proposition 2.11 case 1) ✓
 * `IsLorentzNonDiagonal` — non-diagonal Lorentz normal form (case 2) ✓
 * `IsLorentzSingular` — singular Lorentz normal form (case 3) ✓
+* `Wolf.nonDiagonalKraus` / `Wolf.nonDiagonalMap` — the exact three-operator
+  non-diagonal representative in Verstraete--Verschelde Theorem 8,
+  Equation (19), with its arbitrary-matrix action and Pauli transfer matrix ✓
+* `Wolf.choiRank_nonDiagonalMap_eq_three` /
+  `Wolf.choiRank_nonDiagonalMap_one` — the non-diagonal representative has
+  Choi/Kraus rank 3 for `0 ≤ x < 1` and rank 2 at `x = 1` ✓
+* `Wolf.singularKraus` / `Wolf.singularMap` — the singular representative is
+  `X ↦ tr(X)|0⟩⟨0|`, has the stated Pauli transfer matrix, and satisfies
+  `Wolf.choiRank_singularMap : Channel.choiRank singularMap = 2` ✓
 * `Wolf.infimum_is_attained` — **key compactness lemma**: trace minimisation
   over SL(d₁, ℂ) × SL(d₂, ℂ) filterings of a positive-definite operator on
   ℂ^{d₂} ⊗ ℂ^{d₁} attains its infimum ✓ (rectangular form)
@@ -411,12 +420,15 @@ so that the cited formal statements are available from the main project import.
   doubly-stochastic ✓ (derived from `Wolf.exists_normal_form_generic_tau` by
   the rectangular Choi transformation and partial-trace identities)
 * **Wolf Proposition 2.11 (Lorentz normal form for qubit channels)** remains
-  pending. The required general invertible Kraus-rank-one CP filters and their
-  scalar freedom, the determinant-one spinor action, and its exact action on
-  Pauli transfer matrices are now formalized. The Lorentz-orbit classification
-  and the final trace-preserving normalization have no Lean declaration yet.
-  The former determinant-one `SLFiltering` formulation was false and was
-  removed.
+  pending as an existence and orbit-classification theorem. The required
+  general invertible Kraus-rank-one CP filters and their scalar freedom, the
+  determinant-one spinor action, and its exact action on Pauli transfer
+  matrices are formalized. The source-displayed non-diagonal and singular
+  representatives, including their exact actions and Choi/Kraus ranks, are
+  also formalized. The Lorentz-orbit classification, necessity of the
+  non-diagonal parameter range, and final trace-preserving normalization have
+  no Lean declaration yet. The former determinant-one `SLFiltering`
+  formulation was false and was removed.
 
 #### Formalization
 
@@ -465,6 +477,13 @@ so that the cited formal statements are available from the main project import.
 | Diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzDiagonal` |
 | Non-diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzNonDiagonal` |
 | Singular Lorentz form | `LorentzNormalForm.lean` | `IsLorentzSingular` |
+| Canonical non-diagonal and singular representatives |
+  `LorentzNormalForm/CanonicalQubitChannels.lean` |
+  `Wolf.nonDiagonalMap`, `Wolf.singularMap` |
+| Canonical representative Choi/Kraus ranks |
+  `LorentzNormalForm/CanonicalQubitChannels.lean` |
+  `Wolf.choiRank_nonDiagonalMap_eq_three`,
+  `Wolf.choiRank_nonDiagonalMap_one`, `Wolf.choiRank_singularMap` |
 
 #### Not yet formalized
 
@@ -473,8 +492,11 @@ so that the cited formal statements are available from the main project import.
 | Section 2.4 Lorentz normal form (Proposition 2.11) | Correctly formulated
   statement and proof remain pending. The general invertible Kraus-rank-one
   filters, their scalar/SL decomposition, and the determinant-one Lorentz
-  action on Pauli transfer matrices are available. The proof still needs the
-  Lorentz-orbit classification and the final trace-preserving normalization. |
+  action on Pauli transfer matrices are available. The displayed
+  non-diagonal and singular representatives and their ranks are also
+  available. The proof still needs the Lorentz-orbit classification, the
+  necessity of the parameter bounds, and the final trace-preserving
+  normalization. |
 | Section 2.4 full spinor double cover and Equation (2.44) | Image inclusion,
   multiplicativity, and the equality `L(-X) = L(X)` are available. Surjectivity,
   exact two-point fibres, and the rotation/boost exponential formulas remain
@@ -484,6 +506,8 @@ so that the cited formal statements are available from the main project import.
 ### References
 
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 2][Wolf2012QChannels]
+* [F. Verstraete and H. Verschelde, *On Quantum Channels*,
+  arXiv:quant-ph/0202124v2](https://arxiv.org/abs/quant-ph/0202124v2)
 
 ---
 
