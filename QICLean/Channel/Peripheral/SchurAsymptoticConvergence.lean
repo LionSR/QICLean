@@ -25,9 +25,9 @@ distinct throughout.
 The first result transports the exact positive-power identity
 `T ^ n - T_ϕ ^ n = (T - T_ϕ) ^ n` to transfer matrices.  The restriction
 `0 < n` is essential: at `n = 0` the left-hand side vanishes and the
-right-hand side is the identity.  Thus the later natural-exponent condition
-`d^2 - 1 ≤ n` must not by itself be used to claim the printed all-`n`
-statement when `d = 1`.
+right-hand side is the identity.  The channel estimates below use this
+identity only for positive powers and treat the remaining `D = 1`, `n = 0`
+boundary directly.
 
 ## References
 
@@ -491,18 +491,18 @@ modulus `μ`, bounds the strictly upper-triangular part by `μ + 2 √D`,
 and proves the coarse power estimate.
 
 The natural exponent is restricted to the range in which Wolf's exponent
-`n - D² + 1` is nonnegative.  The additional hypothesis `0 < n` is logically
-independent when `D = 1` and is required by
-`Tⁿ - T_ϕⁿ = (T - T_ϕ)ⁿ`.  No division by `μ` is used, so `μ = 0`
-is included; at the boundary `n = D² - 1`, Lean's convention `0 ^ 0 = 1`
-gives the correct natural-power form of the estimate.
+`n - D² + 1` is nonnegative.  For `n > 0`, the proof uses
+`Tⁿ - T_ϕⁿ = (T - T_ϕ)ⁿ`; the sole permitted zero-power case is
+`D = 1`, `n = 0`, where the final inequality is proved directly.  No division
+by `μ` is used, so `μ = 0` is included; at the boundary `n = D² - 1`,
+Lean's convention `0 ^ 0 = 1` gives the natural-power form of the estimate.
 
 Source: Wolf, Chapter 8, Theorem "Asymptotic convergence II", Equation
 (8.111), local source lines 1299--1316. -/
 theorem IsPositiveMap.exists_wolf_eq_111
     [NeZero D] {T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
     (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
-    {n : ℕ} (hn : 0 < n) (hn_ge : D * D - 1 ≤ n) :
+    {n : ℕ} (hn_ge : D * D - 1 ≤ n) :
     ∃ (U : Matrix.unitaryGroup (Fin (D * D)) ℂ)
         (Λ N : Matrix (Fin (D * D)) (Fin (D * D)) ℂ),
       IsDiag Λ ∧ IsStrictlyUpperTriangular N ∧
@@ -522,41 +522,46 @@ theorem IsPositiveMap.exists_wolf_eq_111
   obtain ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm, hNnorm⟩ :=
     hPos.exists_wolf_eq_111_schur_data_with_bound hTP
   refine ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm, hNnorm, ?_⟩
-  have hD2 : D * D ≠ 0 := mul_ne_zero (NeZero.ne D) (NeZero.ne D)
-  let _ : Nonempty (Fin (D * D)) :=
-    Fin.pos_iff_nonempty.mp (Nat.pos_of_ne_zero hD2)
-  have hschur := Matrix.wolf_eq_111_schur_form hΛDiag hNUpper hD2 hn_ge
-    hΛnorm T.subperipheralModulus_le_one
-  rw [transferMatrix_pow_sub_peripheralWeightedProjection_pow T hn]
-  calc
-    ‖transferMatrix (T - T.peripheralWeightedProjection) ^ n‖ =
-        ‖transferMatrixFin (T - T.peripheralWeightedProjection) ^ n‖ := by
-      rw [transferMatrixFin_pow, Matrix.l2_opNorm_reindex_equiv]
-    _ = ‖(Λ + N) ^ n‖ := by
-      have hconj : transferMatrixFin (T - T.peripheralWeightedProjection) =
-          Unitary.conjStarAlgAut ℂ
-            (Matrix (Fin (D * D)) (Fin (D * D)) ℂ) U (Λ + N) := by
-        simpa only [Unitary.conjStarAlgAut_apply,
-          Matrix.star_eq_conjTranspose] using hform
-      rw [hconj, ← map_pow, Unitary.conjStarAlgAut_apply,
-        ← Unitary.coe_star, CStarRing.norm_mul_coe_unitary,
-        CStarRing.norm_coe_unitary_mul]
-    _ ≤ _ := hschur
+  by_cases hn0 : n = 0
+  · subst n
+    have hdim : D * D - 1 = 0 := Nat.eq_zero_of_le_zero hn_ge
+    simp [hdim]
+  · have hn : 0 < n := Nat.pos_of_ne_zero hn0
+    have hD2 : D * D ≠ 0 := mul_ne_zero (NeZero.ne D) (NeZero.ne D)
+    let _ : Nonempty (Fin (D * D)) :=
+      Fin.pos_iff_nonempty.mp (Nat.pos_of_ne_zero hD2)
+    have hschur := Matrix.wolf_eq_111_schur_form hΛDiag hNUpper hD2 hn_ge
+      hΛnorm T.subperipheralModulus_le_one
+    rw [transferMatrix_pow_sub_peripheralWeightedProjection_pow T hn]
+    calc
+      ‖transferMatrix (T - T.peripheralWeightedProjection) ^ n‖ =
+          ‖transferMatrixFin (T - T.peripheralWeightedProjection) ^ n‖ := by
+        rw [transferMatrixFin_pow, Matrix.l2_opNorm_reindex_equiv]
+      _ = ‖(Λ + N) ^ n‖ := by
+        have hconj : transferMatrixFin (T - T.peripheralWeightedProjection) =
+            Unitary.conjStarAlgAut ℂ
+              (Matrix (Fin (D * D)) (Fin (D * D)) ℂ) U (Λ + N) := by
+          simpa only [Unitary.conjStarAlgAut_apply,
+            Matrix.star_eq_conjTranspose] using hform
+        rw [hconj, ← map_pow, Unitary.conjStarAlgAut_apply,
+          ← Unitary.coe_star, CStarRing.norm_mul_coe_unitary,
+          CStarRing.norm_coe_unitary_mul]
+      _ ≤ _ := hschur
 
 /-- **Wolf Equation (8.111), channel-level refined estimate.**
 
 Under `2 (D² - 1) ≤ n`, the factor `n ^ (D² - 1)` in the coarse
-estimate is replaced by `Nat.choose n (D² - 1)`.  The explicit hypothesis
-`0 < n` again records the separate `D = 1`, `n = 0` boundary of the
-positive-power identity.  The proof uses only natural powers and therefore
-also includes `μ = 0` without division.
+estimate is replaced by `Nat.choose n (D² - 1)`.  The `D = 1`, `n = 0`
+boundary is discharged directly; positive powers use the nonperipheral power
+identity.  The proof uses only natural powers and therefore also includes
+`μ = 0` without division.
 
 Source: Wolf, Chapter 8, Theorem "Asymptotic convergence II", Equation
 (8.111), local source lines 1299--1316. -/
 theorem IsPositiveMap.exists_wolf_eq_111_refined
     [NeZero D] {T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
     (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
-    {n : ℕ} (hn : 0 < n) (hn_ge : 2 * (D * D - 1) ≤ n) :
+    {n : ℕ} (hn_ge : 2 * (D * D - 1) ≤ n) :
     ∃ (U : Matrix.unitaryGroup (Fin (D * D)) ℂ)
         (Λ N : Matrix (Fin (D * D)) (Fin (D * D)) ℂ),
       IsDiag Λ ∧ IsStrictlyUpperTriangular N ∧
@@ -576,23 +581,28 @@ theorem IsPositiveMap.exists_wolf_eq_111_refined
   obtain ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm, hNnorm⟩ :=
     hPos.exists_wolf_eq_111_schur_data_with_bound hTP
   refine ⟨U, Λ, N, hΛDiag, hNUpper, hform, hΛspectrum, hΛnorm, hNnorm, ?_⟩
-  have hD2 : D * D ≠ 0 := mul_ne_zero (NeZero.ne D) (NeZero.ne D)
-  let _ : Nonempty (Fin (D * D)) :=
-    Fin.pos_iff_nonempty.mp (Nat.pos_of_ne_zero hD2)
-  have hschur := Matrix.wolf_eq_111_schur_form_refined hΛDiag hNUpper hD2 hn_ge
-    hΛnorm T.subperipheralModulus_le_one
-  rw [transferMatrix_pow_sub_peripheralWeightedProjection_pow T hn]
-  calc
-    ‖transferMatrix (T - T.peripheralWeightedProjection) ^ n‖ =
-        ‖transferMatrixFin (T - T.peripheralWeightedProjection) ^ n‖ := by
-      rw [transferMatrixFin_pow, Matrix.l2_opNorm_reindex_equiv]
-    _ = ‖(Λ + N) ^ n‖ := by
-      have hconj : transferMatrixFin (T - T.peripheralWeightedProjection) =
-          Unitary.conjStarAlgAut ℂ
-            (Matrix (Fin (D * D)) (Fin (D * D)) ℂ) U (Λ + N) := by
-        simpa only [Unitary.conjStarAlgAut_apply,
-          Matrix.star_eq_conjTranspose] using hform
-      rw [hconj, ← map_pow, Unitary.conjStarAlgAut_apply,
-        ← Unitary.coe_star, CStarRing.norm_mul_coe_unitary,
-        CStarRing.norm_coe_unitary_mul]
-    _ ≤ _ := hschur
+  by_cases hn0 : n = 0
+  · subst n
+    have hdim : D * D - 1 = 0 := by omega
+    simp [hdim]
+  · have hn : 0 < n := Nat.pos_of_ne_zero hn0
+    have hD2 : D * D ≠ 0 := mul_ne_zero (NeZero.ne D) (NeZero.ne D)
+    let _ : Nonempty (Fin (D * D)) :=
+      Fin.pos_iff_nonempty.mp (Nat.pos_of_ne_zero hD2)
+    have hschur := Matrix.wolf_eq_111_schur_form_refined hΛDiag hNUpper hD2 hn_ge
+      hΛnorm T.subperipheralModulus_le_one
+    rw [transferMatrix_pow_sub_peripheralWeightedProjection_pow T hn]
+    calc
+      ‖transferMatrix (T - T.peripheralWeightedProjection) ^ n‖ =
+          ‖transferMatrixFin (T - T.peripheralWeightedProjection) ^ n‖ := by
+        rw [transferMatrixFin_pow, Matrix.l2_opNorm_reindex_equiv]
+      _ = ‖(Λ + N) ^ n‖ := by
+        have hconj : transferMatrixFin (T - T.peripheralWeightedProjection) =
+            Unitary.conjStarAlgAut ℂ
+              (Matrix (Fin (D * D)) (Fin (D * D)) ℂ) U (Λ + N) := by
+          simpa only [Unitary.conjStarAlgAut_apply,
+            Matrix.star_eq_conjTranspose] using hform
+        rw [hconj, ← map_pow, Unitary.conjStarAlgAut_apply,
+          ← Unitary.coe_star, CStarRing.norm_mul_coe_unitary,
+          CStarRing.norm_coe_unitary_mul]
+      _ ≤ _ := hschur
