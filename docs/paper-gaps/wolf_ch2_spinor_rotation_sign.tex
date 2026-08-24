@@ -1,0 +1,82 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{The Rotation Sign in Wolf's Spinor Exponential Formula}
+\author{}
+\date{2026-08-24}
+
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{The printed formula}
+
+Wolf's Equation~(2.44) uses the standard Pauli matrices and defines the
+spatial rotation generators by
+\begin{align}
+  R_i &= \sum_{j,k=1}^3 \varepsilon_{ijk}\ketbra{k}{j}.
+\end{align}
+It then prints the spinor correspondence
+\begin{align}
+  U=\exp\!\left(-\frac{i}{2}\vec n\mathbin{\cdot}\vec\sigma\right)
+  \quad\longmapsto\quad
+  \exp\!\left(-\vec n\mathbin{\cdot}\vec R\right).
+  \tag{printed 2.44}
+\end{align}
+The local source is
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~1070--1077.
+
+\section{The sign inconsistency}
+
+Take \(\vec n=(0,0,\theta)\).  With
+\(\sigma_2=\bigl(\begin{smallmatrix}0&-i\\ i&0\end{smallmatrix}\bigr)\)
+and the column-vector convention used in the notes,
+\begin{align}
+  e^{-i\theta\sigma_3/2}\,\sigma_1\,e^{i\theta\sigma_3/2}
+    &= \cos\theta\,\sigma_1+\sin\theta\,\sigma_2.
+\end{align}
+Thus the Pauli-coordinate vector of \(\sigma_1\) rotates toward the positive
+second coordinate.  On the other hand, the printed definition gives
+\(R_3\ket{1}=\ket{2}\), so
+\(e^{+\theta R_3}\) has this action while
+\(e^{-\theta R_3}\) rotates toward the negative second coordinate.
+The two signs in the printed correspondence therefore cannot both be correct.
+
+\section{Correction and formalization}
+
+For the displayed spinor and generators, the congruence action is
+\begin{align}
+  \exp\!\left(-\frac{i}{2}\vec n\mathbin{\cdot}\vec\sigma\right)
+  \quad\longmapsto\quad
+  \exp\!\left(+\vec n\mathbin{\cdot}\vec R\right).
+  \tag{corrected 2.44}
+\end{align}
+Equivalently, the printed negative Lorentz exponential is obtained from
+\(U=\exp(+i\vec n\cdot\vec\sigma/2)\).
+
+The corrected correspondence is formalized by
+\leanid{Wolf.spinorMatrix\_rotationExpSL2}.  The closed spinor exponential and
+Rodrigues formula are
+\leanid{Wolf.exp\_neg\_I\_smul\_pauliVector} and
+\leanid{Wolf.exp\_smul\_rotationGenerator}, respectively, all in
+\doclink{QICLean/Channel/LorentzNormalForm/SpinorExponential}.
+The positive-angle convention also agrees with the existing diagonal
+\(\mathrm{SU}(2)\) calculation \leanid{SpinCover.R\_su2Diag\_eq\_rotZ}.
+
+\section{Verdict}
+
+This is a genuine sign error in Equation~(2.44), not a change of convention in
+the formalization: the Pauli matrices, the displayed generators, and the
+column-vector action are all fixed explicitly by the source.  The boost half
+of Equation~(2.44) is unaffected.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

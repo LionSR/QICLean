@@ -361,6 +361,51 @@ that Wolf's intended spectrum-preserver argument is false. The two displayed
 values contain the transition-probability information used in that argument;
 the characteristic polynomial records the complete multiplicity data.
 
+\section{The rotation sign in the spinor exponential formula}
+\label{sec:spinor-rotation-sign}
+
+\paragraph{Formalization trigger.}
+The rotation exponential is formalized as
+\leanid{Wolf.spinorMatrix\_rotationExpSL2} in
+\doclink{QICLean/Channel/LorentzNormalForm/SpinorExponential}.  The discrepancy
+is documented in
+\path{docs/paper-gaps/wolf_ch2_spinor_rotation_sign.tex}.
+
+\paragraph{Printed source and its role.}
+Wolf's Equation~(2.44), in
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~1070--1077,
+defines
+\begin{equation}
+  R_i=\sum_{j,k=1}^3\varepsilon_{ijk}\ketbra{k}{j}
+\end{equation}
+and prints
+\begin{equation}
+  e^{-i\vec n\cdot\vec\sigma/2}\longmapsto e^{-\vec n\cdot\vec R}.
+\end{equation}
+
+\paragraph{Correction.}
+With the standard Pauli matrices and column-vector convention used in the
+notes, the corrected correspondence is
+\begin{equation}
+  e^{-i\vec n\cdot\vec\sigma/2}\longmapsto e^{+\vec n\cdot\vec R}.
+\end{equation}
+Equivalently, the printed Lorentz exponential corresponds to the spinor with
+opposite sign in its exponent.
+
+\paragraph{Why the correction is necessary.}
+For \(\vec n=(0,0,\theta)\), direct Pauli conjugation gives
+\begin{equation}
+  e^{-i\theta\sigma_3/2}\sigma_1e^{i\theta\sigma_3/2}
+   =\cos\theta\,\sigma_1+\sin\theta\,\sigma_2.
+\end{equation}
+The printed generator satisfies \(R_3\ket{1}=\ket{2}\), so this is the action
+of \(e^{+\theta R_3}\), whereas \(e^{-\theta R_3}\) rotates toward the
+negative second coordinate.
+
+\paragraph{Classification.}
+This is a genuine source sign error.  The formal theorem follows the actual
+congruence action; the boost formula in the same equation is unchanged.
+
 \section{The two boundary errors in Theorem~6.3}
 \label{sec:theorem-6-3}
 

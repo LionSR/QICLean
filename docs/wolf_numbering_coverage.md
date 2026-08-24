@@ -373,17 +373,30 @@ so that the cited formal statements are available from the main project import.
 * `Wolf.spinorMatrix_isSpecialOrthochronousLorentz` — the spinor image obeys
   all three conditions printed in Equation (2.42): determinant one,
   `L η Lᵀ = η`, and `L₀₀ > 0` ✓
-* `Wolf.spinorMatrix_neg` — `X` and `-X` induce the same congruence action ✓.
-  Surjectivity onto `SO⁺(1,3)` and the assertion that every fibre has exactly
-  these two elements remain pending
+* `Wolf.spinorMatrix_neg` — `X` and `-X` induce the same congruence action ✓
+* `Wolf.specialOrthochronousLorentzGroup` / `Wolf.spinorCoverHom` — the
+  special orthochronous Lorentz matrices as a group and the bundled
+  homomorphism `SL(2, ℂ) →* SO⁺(1,3)` ✓
+* `Wolf.exists_sl2_spinorMatrix_eq` / `Wolf.spinorCoverHom_surjective` — every
+  special orthochronous Lorentz matrix has a spinor preimage, constructed by
+  the canonical boost followed by an `SU(2)` lift of the residual `SO(3)`
+  rotation ✓
+* `Wolf.spinorCoverHom_eq_iff_eq_or_eq_neg` /
+  `Wolf.spinorCoverHom_eq_one_iff` — every fibre is exactly `{X, -X}` and the
+  kernel is exactly `{1, -1}` ✓
 * `Wolf.pauliTransferMatrix_two_sided_filtering` — Equation (2.43) over the
   complex Pauli transfer matrix, in the exact order `L₂ T̂ L₁` ✓
 * `Wolf.coe_pauliTransferMatrixReal_of_preservesHermiticity` /
   `Wolf.pauliTransferMatrixReal_slFiltering` — identification with the real
   transfer matrix for Hermiticity-preserving maps and the bundled
   `SLFiltering` specialization of Equation (2.43) ✓
-* **Equation (2.44)** (rotation and boost exponential formulas) remains
-  pending and is not inferred from the three-dimensional `SU(2)` spin cover
+* `Wolf.spinorMatrix_boostExpSL2` — the boost formula in Equation (2.44),
+  `exp(t n·σ/2) ↦ exp(t n·B)`, including the identification of the Lorentz
+  exponential with the canonical rapidity boost ✓
+* `Wolf.spinorMatrix_rotationExpSL2` — the rotation formula in Equation
+  (2.44), with the corrected congruence-action sign
+  `exp(-i t n·σ/2) ↦ exp(+t n·R)` ✓. Wolf's printed negative Lorentz sign is
+  documented in `docs/paper-gaps/wolf_ch2_spinor_rotation_sign.tex`
 * `IsLorentzDiagonal` — diagonal Lorentz normal form (Wolf Proposition 2.11 case 1) ✓
 * `IsLorentzNonDiagonal` — non-diagonal Lorentz normal form (case 2) ✓
 * `IsLorentzSingular` — singular Lorentz normal form (case 3) ✓
@@ -472,6 +485,12 @@ so that the cited formal statements are available from the main project import.
   `Wolf.det_pauliMatrixOfMinkowski` |
 | Spinor Lorentz action | `LorentzNormalForm/SpinorAction.lean` |
   `Wolf.spinorMatrix_isSpecialOrthochronousLorentz` |
+| Spinor epimorphism and exact two-point fibres |
+  `LorentzNormalForm/SpinorCover.lean` |
+  `Wolf.spinorCoverHom_surjective`, `Wolf.spinorCoverHom_eq_iff_eq_or_eq_neg` |
+| Spinor boost and rotation exponentials |
+  `LorentzNormalForm/SpinorExponential.lean` |
+  `Wolf.spinorMatrix_boostExpSL2`, `Wolf.spinorMatrix_rotationExpSL2` |
 | Filtered Pauli transfer action | `LorentzNormalForm/SpinorAction.lean` |
   `Wolf.pauliTransferMatrixReal_slFiltering` |
 | Diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzDiagonal` |
@@ -497,10 +516,6 @@ so that the cited formal statements are available from the main project import.
   available. The proof still needs the Lorentz-orbit classification, the
   necessity of the parameter bounds, and the final trace-preserving
   normalization. |
-| Section 2.4 full spinor double cover and Equation (2.44) | Image inclusion,
-  multiplicativity, and the equality `L(-X) = L(X)` are available. Surjectivity,
-  exact two-point fibres, and the rotation/boost exponential formulas remain
-  pending. |
 | Section 2.4 Sorted singular values | Current SVD is unsorted; later uses want sorted values |
 
 ### References

@@ -9,3 +9,4 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Algebra.SpinCover
 
 import QICLean.Algebra.SpinCover.Basic
+import QICLean.Algebra.SpinCover.EulerAngles
