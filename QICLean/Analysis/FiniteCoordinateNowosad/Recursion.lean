@@ -69,6 +69,15 @@ noncomputable def normalizeAt (A : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (v : �
     simp
     ring
 
+omit [Fintype ι] in
+@[simp]
+theorem normalizeAt_normalizeAt_one
+    (A : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (v : ι → ℝ) :
+    normalizeAt (normalizeAt A 1) v = normalizeAt A v := by
+  ext x i
+  simp [normalizeAt]
+  ring
+
 /-- The finite-coordinate first- and second-variation data at the unit.  The
 three fields respectively record `A 1 = 0`, equation (1.11), and
 nonnegativity of the quadratic form in equations (1.13)--(1.14). -/
@@ -307,7 +316,11 @@ theorem power_recursion_of_two_minimumData
   | succ k => simpa [Nat.succ_eq_add_one] using (hstate k).1
 
 /-- The finite-coordinate form of Nowosad's Laurent-polynomial identity
-(1.23), first for ordinary polynomials. -/
+(1.23), first for ordinary polynomials.  In the general proof, equation
+(1.27) is the analytic extension of this identity.  Here the value-class
+interpolation theorem identifies the finite Laurent algebra with the ordinary
+polynomial algebra, so this same identity is also the finite-coordinate
+counterpart of (1.27); no closure argument is required. -/
 theorem polynomial_chain_rule_of_two_minimumData
     (A : (ι → ℝ) →ₗ[ℝ] (ι → ℝ)) (v : ι → ℝ)
     (hv : ∀ i, v i ≠ 0) (hA : MinimumData A)
