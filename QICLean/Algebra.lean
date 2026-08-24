@@ -24,6 +24,7 @@ import QICLean.Algebra.HermitianSpectrumPerturbation
 import QICLean.Algebra.HermitianSpectrumPreserver
 import QICLean.Algebra.HermitianTracePower
 import QICLean.Algebra.HermitianUnitaryConjugacy
+import QICLean.Algebra.KramersDegeneracy
 import QICLean.Algebra.KroneckerFactorPositivity
 import QICLean.Algebra.MatrixAux
 import QICLean.Algebra.MatrixCongruence
