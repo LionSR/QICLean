@@ -23,6 +23,7 @@ import QICLean.Channel.Peripheral.CyclicDecomposition.LetterShift
 import QICLean.Channel.Peripheral.CyclicDecomposition.PeripheralUnitary
 import QICLean.Channel.Peripheral.CyclicDecomposition.Primitivity
 import QICLean.Channel.Peripheral.CyclicGroupKraus
+import QICLean.Channel.Peripheral.DensityBlockCoordinates
 import QICLean.Channel.Peripheral.GroupStructure
 import QICLean.Channel.Peripheral.IrreducibleChannel
 import QICLean.Channel.Peripheral.JordanBlocks
