@@ -10,9 +10,9 @@ import QICLean.Channel.MaximallyEntangled
 # Ha's negative pairing
 
 This module formalizes the remaining algebraic part of Ha's construction on
-pp. 595--596.  It first fixes the tensor-factor order in the Eom--Kye pairing
-identity, and then evaluates that pairing for Ha's matrix `A_γ` and the
-Choi-type map.
+pp. 592--595, culminating in the negative pairing on p. 595.  It first fixes
+the tensor-factor order in the Eom--Kye pairing identity, and then evaluates
+that pairing for Ha's matrix `A_γ` and the Choi-type map.
 
 The factor swap is essential: the map acts on the first factor of `A_γ^σ`.
 The source uses the unnormalized vectorized identity `J_d`, whereas
@@ -24,9 +24,10 @@ No positivity, indecomposability, or atomicity assertion is made here.
 ## References
 
 * [K.-C. Ha, *Atomic Positive Linear Maps in Matrix Algebras*,
-  pp. 595--596][Ha1998AtomicPositiveMaps]
-* [S.-H. Kye and H.-J. Eom, *Duality for positive linear maps in matrix
-  algebras*, equations (1) and (13)][EomKye2000Duality]
+  pp. 592--595][Ha1998AtomicPositiveMaps]
+* [M.-H. Eom and S.-H. Kye, *Duality for positive linear maps in matrix
+  algebras*, Theorem 3.3 proof, pp. 138--139, equations
+  (12)--(13)][EomKye2000Duality]
 -/
 
 open scoped Matrix ComplexOrder
@@ -100,9 +101,9 @@ noncomputable def eomKyeJPairing {I : Type*} [Fintype I]
     (X : Matrix (I × I) (I × I) ℂ) : ℂ :=
   ∑ i : I, ∑ j : I, X (i, i) (j, j)
 
-/-- **Eom--Kye, equations (1) and (13).**  The coefficient pairing is
-obtained by applying the map to the first tensor factor of the factor-swapped
-matrix and then pairing with the vectorized identity. -/
+/-- **Eom--Kye, Theorem 3.3 proof, pp. 138--139, equations (12)--(13).**  The
+coefficient pairing is obtained by applying the map to the first tensor factor
+of the factor-swapped matrix and then pairing with the vectorized identity. -/
 theorem eomKyePairing_eq_JPairing_tensorMapId_factorSwap
     {I : Type*} [Fintype I] [DecidableEq I]
     (A : Matrix (I × I) (I × I) ℂ)
