@@ -44,97 +44,6 @@ namespace QICLean
 
 variable {S : Submodule ℂ (Matrix (Fin 3) (Fin 3) ℂ)}
 
-/-- The nilpotent `3 × 3` Jordan block. -/
-def jordanThree : Matrix (Fin 3) (Fin 3) ℂ := !![0, 1, 0; 0, 0, 1; 0, 0, 0]
-
-/-- The exceptional nilpotent-space matrix pattern in dimension three. -/
-def windmillMat (u v : ℂ) : Matrix (Fin 3) (Fin 3) ℂ := !![0, u, 0; v, 0, u; 0, -v, 0]
-
-/-- The Jordan block is the `v = 0` exceptional matrix. -/
-theorem jordanThree_eq_windmillMat : jordanThree = windmillMat 1 0 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [jordanThree, windmillMat]
-
-/-- The trace of a positive power of a nilpotent complex matrix vanishes. -/
-theorem IsNilpotent.trace_pow_eq_zero {M : Matrix (Fin 3) (Fin 3) ℂ}
-    (hM : IsNilpotent M) {k : ℕ} (hk : 0 < k) : (M ^ k).trace = 0 :=
-  IsNilpotent.eq_zero
-    (Matrix.isNilpotent_trace_of_isNilpotent (IsNilpotent.pow_of_pos hM (by omega)))
-
-/-- A nilpotent `3 × 3` complex matrix cubes to zero. -/
-theorem IsNilpotent.cube_eq_zero {M : Matrix (Fin 3) (Fin 3) ℂ}
-    (hM : IsNilpotent M) : M ^ 3 = 0 := by
-  have hcp : M.charpoly = Polynomial.X ^ 3 := by
-    have h1 := Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent hM
-    simp only [Fintype.card_fin] at h1
-    exact sub_eq_zero.mp (IsNilpotent.eq_zero h1)
-  have hCH := Matrix.aeval_self_charpoly M
-  rw [hcp] at hCH
-  simpa using hCH
-
-/-- The trace of a cube of a sum, in noncommutative normal form. -/
-theorem trace_cube_add (A M : Matrix (Fin 3) (Fin 3) ℂ) :
-    ((A + M) ^ 3).trace =
-      (A ^ 3).trace + 3 * (A ^ 2 * M).trace + 3 * (A * M ^ 2).trace + (M ^ 3).trace := by
-  have hexp : (A + M) ^ 3 =
-      A ^ 3 + (A ^ 2 * M + A * M * A + M * A ^ 2) +
-        (A * M ^ 2 + M * A * M + M ^ 2 * A) + M ^ 3 := by
-    noncomm_ring
-  have c1 : (A * M * A).trace = (A ^ 2 * M).trace := by
-    rw [Matrix.trace_mul_comm (A * M) A]
-    congr 1
-    noncomm_ring
-  have c2 : (M * A ^ 2).trace = (A ^ 2 * M).trace := Matrix.trace_mul_comm _ _
-  have c3 : (M * A * M).trace = (A * M ^ 2).trace := by
-    rw [Matrix.trace_mul_comm (M * A) M, show M * (M * A) = M ^ 2 * A by noncomm_ring,
-      Matrix.trace_mul_comm (M ^ 2) A]
-  have c4 : (M ^ 2 * A).trace = (A * M ^ 2).trace := Matrix.trace_mul_comm _ _
-  rw [hexp]
-  simp only [Matrix.trace_add, c1, c2, c3, c4]
-  ring
-
-/-- If `A`, `M`, `A + M`, and `A - M` all have traceless cubes, the mixed
-traces `tr(A²M)` and `tr(AM²)` vanish. -/
-theorem trace_sq_mul_eq_zero_of_cube_add_sub
-    {A M : Matrix (Fin 3) (Fin 3) ℂ}
-    (hA : (A ^ 3).trace = 0) (hM : (M ^ 3).trace = 0)
-    (hp : ((A + M) ^ 3).trace = 0) (hm : ((A - M) ^ 3).trace = 0) :
-    (A ^ 2 * M).trace = 0 ∧ (A * M ^ 2).trace = 0 := by
-  have hp' := trace_cube_add A M
-  have hm' := trace_cube_add A (-M)
-  rw [← sub_eq_add_neg] at hm'
-  rw [hp] at hp'
-  rw [hm] at hm'
-  have hM3 : ((-M) ^ 3).trace = -((M ^ 3).trace) := by
-    rw [show (-M) ^ 3 = -(M ^ 3) by noncomm_ring, Matrix.trace_neg]
-  have h2 : (A ^ 2 * (-M)).trace = -((A ^ 2 * M).trace) := by
-    rw [show A ^ 2 * (-M) = -(A ^ 2 * M) by noncomm_ring, Matrix.trace_neg]
-  have h3 : (A * (-M) ^ 2).trace = (A * M ^ 2).trace := by
-    rw [show (-M) ^ 2 = M ^ 2 by noncomm_ring]
-  rw [hM3, hM, h2, h3] at hm'
-  simp only [neg_zero] at hm'
-  rw [hA, hM] at hp'
-  rw [hA] at hm'
-  constructor
-  · linear_combination (norm := ring1) (hm' - hp') / 6
-  · linear_combination (norm := ring1) (hp' + hm') / -6
-
-/-- The trace of `A * M` vanishes when `A`, `M`, and `A + M` have traceless
-squares. -/
-theorem trace_mul_eq_zero_of_sq_add
-    {A M : Matrix (Fin 3) (Fin 3) ℂ}
-    (hA : (A ^ 2).trace = 0) (hM : (M ^ 2).trace = 0)
-    (hp : ((A + M) ^ 2).trace = 0) :
-    (A * M).trace = 0 := by
-  have hexp : (A + M) ^ 2 = A ^ 2 + (A * M + M * A) + M ^ 2 := by noncomm_ring
-  have c1 : (M * A).trace = (A * M).trace := Matrix.trace_mul_comm _ _
-  rw [hexp] at hp
-  simp only [Matrix.trace_add, c1] at hp
-  linear_combination (norm := ring1) (hp - hA - hM) / 2
-
-
-/-! ### Part 2: the square-zero case -/
-
 /-- A square-zero `3 × 3` complex matrix has rank at most one. -/
 theorem Matrix.rank_le_one_of_sq_eq_zero {M : Matrix (Fin 3) (Fin 3) ℂ}
     (hM : M ^ 2 = 0) : Matrix.rank M ≤ 1 := by
@@ -205,12 +114,6 @@ theorem IsNilpotent.eq_zero_of_mulVec_eq_smul {M : Matrix (Fin 3) (Fin 3) ℂ}
     exact one_ne_zero hk
   have hμk : μ ^ k = 0 := (smul_eq_zero.mp h0.symm).resolve_right hu
   exact (pow_eq_zero_iff hk0).mp hμk
-
-/-- Every vector is the sum of its standard-unit components. -/
-theorem eq_sum_single (x : Fin 3 → ℂ) :
-    x = ∑ j : Fin 3, x j • Pi.single j (1 : ℂ) := by
-  ext i
-  simp [Pi.single_apply]
 
 /-- **Square-zero case**: a submodule of `3 × 3` complex matrices in which
 every element squares to zero has a common kernel vector. -/
