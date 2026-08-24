@@ -252,6 +252,54 @@ theorem mul_permMatrix_apply' {n : Type*} [Fintype n] [DecidableEq n]
   rw [Matrix.vecMul_permMatrix]
   rfl
 
+
+/-! ## Real-eigenvalue Jordan blocks -/
+
+/-- The real Jordan block of size `n` and eigenvalue `a`, with ones on the first
+superdiagonal. This is the orientation used in GLR Theorem 5.3. -/
+def realJordanBlock (n : ℕ) (a : ℝ) : Matrix (Fin n) (Fin n) ℝ := fun i j =>
+  if i = j then a else if i.val + 1 = j.val then 1 else 0
+
+/-- A real Jordan block is selfadjoint for its unsigned sip matrix. -/
+theorem sipMatrix_mul_realJordanBlock (n : ℕ) (a : ℝ) :
+    sipMatrix n ℝ * realJordanBlock n a =
+      (realJordanBlock n a).transpose * sipMatrix n ℝ := by
+  ext i j
+  change (((finReversePerm n).permMatrix ℝ * realJordanBlock n a) i j) =
+    ((realJordanBlock n a).transpose * (finReversePerm n).permMatrix ℝ) i j
+  rw [permMatrix_mul_apply', mul_permMatrix_apply']
+  simp only [transpose_apply, finReversePerm_apply]
+  change realJordanBlock n a i.rev j = realJordanBlock n a j.rev i
+  have hdiag : i.rev = j ↔ j.rev = i := by
+    constructor
+    · intro h
+      rw [← h]
+      simp
+    · intro h
+      rw [← h]
+      simp
+  have hsuper : n - (i.val + 1) + 1 = j.val ↔
+      n - (j.val + 1) + 1 = i.val := by
+    omega
+  simp only [realJordanBlock]
+  by_cases hd : i.rev = j
+  · have hd' : j.rev = i := hdiag.mp hd
+    simp [hd, hd']
+  · have hd' : j.rev ≠ i := fun h ↦ hd (hdiag.mpr h)
+    simp only [Fin.val_rev]
+    by_cases hs : n - (i.val + 1) + 1 = j.val
+    · have hs' : n - (j.val + 1) + 1 = i.val := hsuper.mp hs
+      simp [hd, hd', hs, hs']
+    · have hs' : n - (j.val + 1) + 1 ≠ i.val := fun h ↦ hs (hsuper.mpr h)
+      simp [hd, hd', hs, hs']
+
+/-- A real Jordan block is selfadjoint for either sign of its signed sip metric. -/
+theorem signedSipMatrix_mul_realJordanBlock (ε : GLRSign) (n : ℕ) (a : ℝ) :
+    signedSipMatrix ε n * realJordanBlock n a =
+      (realJordanBlock n a).transpose * signedSipMatrix ε n := by
+  simp only [signedSipMatrix, Matrix.smul_mul, Matrix.mul_smul]
+  rw [sipMatrix_mul_realJordanBlock]
+
 /-- The real conjugate-pair Jordan block is selfadjoint for its unsigned sip metric.
 
 This verifies the block identity `H A = Aᵀ H` from GLR Section 5.1. It also records why no sign
@@ -297,5 +345,74 @@ theorem complexPairSipMatrix_mul_realConjugatePairJordanBlock
       simp [hd, hd', hs, hs', one_fin_two_rev_apply]
     · have hs' : m - (j.val + 1) + 1 ≠ i.val := fun h ↦ hs (hsuperNat.mpr h)
       simp [hd, hd', hs, hs']
+
+
+/-! ## Four-dimensional Minkowski selfadjointness -/
+
+/-- The matrix of the Minkowski form of inertia `(1, 3)` in the ordered Pauli basis.
+
+This is the matrix denoted `M` in the proof of Verstraete--Dehaene--De Moor, Theorem 3,
+arXiv:quant-ph/0011111v1, lines 175--196. -/
+def minkowskiMetric : Matrix (Fin 4) (Fin 4) ℝ := diagonal ![1, -1, -1, -1]
+
+@[simp]
+theorem minkowskiMetric_transpose : minkowskiMetric.transpose = minkowskiMetric := by
+  simp [minkowskiMetric]
+
+@[simp]
+theorem minkowskiMetric_mul_self : minkowskiMetric * minkowskiMetric = 1 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [minkowskiMetric, Matrix.mul_apply, Fin.sum_univ_four]
+
+/-- The four-dimensional Minkowski metric is invertible and is its own inverse. -/
+theorem minkowskiMetric_isUnit : IsUnit minkowskiMetric := by
+  rw [isUnit_iff_exists_inv]
+  exact ⟨minkowskiMetric, minkowskiMetric_mul_self⟩
+
+/-- A real matrix is selfadjoint for a symmetric metric `H` when `Aᵀ H = H A`.
+
+This fixes the transpose orientation used in GLR Section 5.1 and in the proof of VDDM
+Theorem 3. -/
+def IsSelfAdjointFor {n : Type*} [Fintype n] (H A : Matrix n n ℝ) : Prop :=
+  A.transpose * H = H * A
+
+/-- Four-dimensional selfadjointness for the Minkowski metric of inertia `(1, 3)`. -/
+def IsMinkowskiSelfAdjoint (A : Matrix (Fin 4) (Fin 4) ℝ) : Prop :=
+  IsSelfAdjointFor minkowskiMetric A
+
+/-- The equation `Aᵀ M = M A` is equivalently symmetry of `M A`. -/
+theorem isMinkowskiSelfAdjoint_iff_mul_transpose_eq (A : Matrix (Fin 4) (Fin 4) ℝ) :
+    IsMinkowskiSelfAdjoint A ↔ (minkowskiMetric * A).transpose = minkowskiMetric * A := by
+  simp only [IsMinkowskiSelfAdjoint, IsSelfAdjointFor, Matrix.transpose_mul,
+    minkowskiMetric_transpose]
+
+/-! ## Source-indexed four-dimensional block patterns -/
+
+/-- The four block patterns listed after the use of Sylvester's law in the proof of VDDM
+Theorem 3, arXiv:quant-ph/0011111v1, lines 188--196.
+
+The `conjugatePair` constructor is the source's "orthogonal `2 × 2` block": it denotes one real
+block for a non-real conjugate eigenvalue pair, not a Euclidean orthogonal matrix. This datatype
+records the four target alternatives; exhaustiveness is the still-missing consequence of the GLR
+canonical-pair existence theorem and Sylvester's law. -/
+inductive GLRFourDimensionalPattern where
+  | fourRealSingletons
+  | conjugatePairAndTwoRealSingletons
+  | realJordanTwoAndTwoRealSingletons
+  | realJordanThreeAndRealSingleton
+  deriving DecidableEq
+
+/-- Real dimensions of the blocks in each VDDM four-dimensional pattern. -/
+def GLRFourDimensionalPattern.blockDimensions : GLRFourDimensionalPattern → List ℕ
+  | .fourRealSingletons => [1, 1, 1, 1]
+  | .conjugatePairAndTwoRealSingletons => [2, 1, 1]
+  | .realJordanTwoAndTwoRealSingletons => [2, 1, 1]
+  | .realJordanThreeAndRealSingleton => [3, 1]
+
+/-- Every source-listed block pattern has total real dimension four. -/
+theorem GLRFourDimensionalPattern.sum_blockDimensions (p : GLRFourDimensionalPattern) :
+    p.blockDimensions.sum = 4 := by
+  cases p <;> rfl
 
 end Matrix
