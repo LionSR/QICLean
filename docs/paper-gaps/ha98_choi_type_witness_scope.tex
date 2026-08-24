@@ -81,14 +81,17 @@ computes
 
 \section{Formalized part}
 
-The root family, the integers $m_k=\frac32(3^{k-1}-1)$, the vectors
-$a_{i,k}$, $c_r$, $b_{r,i,j}$, and $z_{r,i}$, and the averages in
-(\ref{eq:ha98_root_average}) are now defined with zero-based indices. The
-cyclic coordinates use $\mathbb Z/d\mathbb Z$, so the shift convention agrees
-with Wolf's equation (2.24) and Ha's rotation $S e_i=e_{i+1}$.
+Ha's source uses the one-based integers
+$m_k=\frac32(3^{k-1}-1)$ and base vector $a_{i,1}$. The formalization shifts
+all indices to zero-based notation, so its corresponding formula is
+$m_k=\frac32(3^k-1)$ and its base vector is $a_{i,0}$. The root family, the
+vectors $a_{i,k}$, $c_r$, $b_{r,i,j}$, and $z_{r,i}$, and the averages in
+(\ref{eq:ha98_root_average}) are defined with this convention. The cyclic
+coordinates use $\mathbb Z/d\mathbb Z$, so the shift convention agrees with
+Wolf's equation (2.24) and Ha's rotation $S e_i=e_{i+1}$.
 
 For fixed $r$ and $i$, every column of $z_{r,i}$ other than column $r$ is a
-scalar multiple of $a_{i,1}$, while column $r$ is $c_r\circ a_{i,r}$.
+scalar multiple of $a_{i,0}$, while column $r$ is $c_r\circ a_{i,r}$.
 Consequently the coefficient matrix has rank at most two. Averaging the
 corresponding rank-one projectors proves
 \begin{align}

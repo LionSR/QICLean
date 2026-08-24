@@ -50,8 +50,9 @@ variable {d : ℕ} [NeZero d]
 
 /-! ## Ha's roots and two-simple vectors -/
 
-/-- Ha's integer
-\(m_k=\frac32(3^{k-1}-1)\), in zero-based indexing.
+/-- Ha's one-based integer is
+\(m_k=\frac32(3^{k-1}-1)\).  With the zero-based Lean index below, this is
+\(m_k=\frac32(3^k-1)\).
 
 This is the exponent introduced on Ha 1998, p. 593, immediately before
 equation (2.2). -/
@@ -87,8 +88,9 @@ noncomputable def haPhaseVector (d : ℕ) [NeZero d]
   fun p ↦ (haRootOfUnity d i)⁻¹ ^ haExponent k *
     haRootOfUnity d i ^ haExponent p
 
-/-- The phase-vector relation `a_{i,k} = ω_i ^ (-m_k) • a_{i,1}` from
-Ha 1998, p. 593. -/
+/-- The zero-based phase-vector relation
+`a_{i,k} = ω_i ^ (-m_k) • a_{i,0}`, corresponding to Ha's one-based
+relation with base vector `a_{i,1}` on p. 593. -/
 theorem haPhaseVector_eq_smul_zero (i : Fin (3 ^ d)) (k : Fin d) :
     haPhaseVector d i k =
       (haRootOfUnity d i)⁻¹ ^ haExponent k • haPhaseVector d i 0 := by
@@ -120,7 +122,8 @@ noncomputable def haTwoSimpleVector (d : ℕ) [NeZero d]
     else haPhaseVector d i p.2 p.1
 
 /-- Each `z_{r,i}` is 2-simple in Ha's terminology: its coefficient-matrix
-columns lie in the span of `a_{i,1}` and `c_r ∘ a_{i,r}`.
+columns lie in the span of the zero-based vectors `a_{i,0}` and
+`c_r ∘ a_{i,r}`.
 
 This is the first substantive step of Ha 1998, p. 594. -/
 theorem haTwoSimpleVector_hasSchmidtRankLE_two
