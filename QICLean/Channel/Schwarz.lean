@@ -47,6 +47,7 @@ import QICLean.Channel.Schwarz.SupportRelativeEntropyGap
 import QICLean.Channel.Schwarz.SupportRelativeModular
 import QICLean.Channel.Schwarz.SupportResolvent
 import QICLean.Channel.Schwarz.SupportSourceDefect
+import QICLean.Channel.Schwarz.TracePreserving
 import QICLean.Channel.Schwarz.TwoPositive
 import QICLean.Channel.Schwarz.TwoVariable
 import QICLean.Channel.Schwarz.TwoVariableEquality

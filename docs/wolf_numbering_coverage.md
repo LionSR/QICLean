@@ -1418,6 +1418,25 @@ is false under the single printed hypothesis.
     any linear map out of a full matrix block by the existing polarization
     identity.
 
+* The following auxiliary normalization and tensor-factor facts are
+  prerequisites for the scalar/multiplicity comparison and block-Schwarz
+  transport at source lines 1660--1663:
+  - `IsPositiveMap.map_one_eq_one_of_tracePreserving_of_isSchwarzMap`, which
+    proves that a positive trace-preserving Schwarz endomorphism of a nonzero
+    full matrix algebra is unital, using the Hermitian trace-square equality
+    case rather than complete positivity;
+  - `Matrix.PosSemidef.right_of_one_kronecker`, which reflects positivity from
+    \(\Id_m\otimes B\) to \(B\) for \(m>0\) by partial trace and positive
+    scalar rescaling;
+  - `Matrix.kronecker_eq_one_of_left_trace_eq_one`, which uses both partial
+    traces to show that \(\tr(\sigma)=1\) and
+    \(\sigma\otimes X=\Id_{md}\) force
+    \(\sigma=m^{-1}\Id_m\) and \(X=m\Id_d\).
+  These helpers neither compare the matched block multiplicities nor transport
+  the ambient Schwarz defect to the individual weighted full-matrix block
+  maps. That remaining source-facing assembly is tracked by #417. No
+  modified-product proof or complete-positivity hypothesis is introduced here.
+
 * The final classification step at source lines 1660--1663 is formalized
   under exactly Wolf's positive, trace-preserving, positive-inverse, and
   Schwarz hypotheses:
