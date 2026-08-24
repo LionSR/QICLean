@@ -82,11 +82,15 @@ Theorem~6.14 interface: positivity and trace preservation of a map $S$, and
 the Schwarz inequality for $S^*$.\footnote{Formal declaration:
 \leanid{IsPositiveMap.exists_fixedPoints_densityBlocks_with_zero} in
 \doclink{QICLean/Channel/FixedPoint/WolfTheorem614}.}
-The source-facing Theorem~6.16 assembly will therefore expose both
-orientations.  Its recurrent-projection component may pass the second one to
-the fixed-point theorem, while its block-classification component retains the
-first one.  The remaining construction is tracked by \ghissue{40}; this
-contract audit is \ghissue{407}.
+The completed source-facing Theorem~6.16 assembly therefore exposes both
+orientations explicitly.  Its recurrent-projection component passes the
+second one to the fixed-point theorem, while its block-classification
+component retains the first one.\footnote{Formal declaration:
+\leanid{IsPositiveMap.exists_wolfTheorem616} in
+\doclink{QICLean/Channel/Peripheral/StructureOfCycles}. It retains the exact
+zero-extended density-block membership form and proves Wolf's output-indexed
+unitary action in Equation~(6.68).} The construction is organized by
+\ghissue{40}; this contract audit is \ghissue{407}.
 
 \section{Conclusion}
 
