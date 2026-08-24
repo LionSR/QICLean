@@ -112,6 +112,19 @@ the Hessian at the constant vector (checked through the eigenvalues of the
 cyclic matrix \(S\)), and an analysis of the boundary of the projective
 simplex with a combinatorial count of vanishing summands.
 
+The stride-one spectral ingredient is now formalized as
+\leanid{CyclicReciprocal.norm\_symbol\_sub\_half\_lt\_half}: for
+$d\ge3$, $1\le m\le d-2$, $s\ge d$, and every nonzero standard character,
+the eigenvalue of
+$(s-m)I+C+\cdots+C^m$ lies in the open disk of Yamagami's Lemma~6
+\cite[pp.~523--524]{Yamagami1993Cyclic}.  The accompanying definitions retain
+Yamagami's forward window and provide the explicit index-negation bridge to
+the backward Choi window.  This is not the cyclic reciprocal inequality: the
+Nowosad uniqueness step, Hessian identification, and regular and singular
+projective-boundary analysis are still missing.  In particular, Yamagami's
+boundary $0/0$ terms remain indeterminate limits in the source, whereas Lean's
+division in the algebraically total functional is zero at a literal $0/0$.
+
 Two verifiable computations locate the obstruction to elementary summand
 bounds in the remaining range.  First, the estimate is tight in two distinct
 regimes: at the constant vector, where every summand equals \(1/d\), and

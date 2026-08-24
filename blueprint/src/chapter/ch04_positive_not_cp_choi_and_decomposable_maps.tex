@@ -25,6 +25,54 @@ Their Lemmas~2--3 use the same rank-one and product-one coefficient argument
 formalized below. The whole range is due to Yamagami~\cite{Yamagami1993Cyclic},
 whose proof is a variational argument on the boundary of a projective simplex.
 
+\begin{definition}[Yamagami's stride-one cyclic reciprocal data]
+    \label{def:yamagami_stride_one_reciprocal}
+    \lean{CyclicReciprocal.forwardDenominator,
+        CyclicReciprocal.functional,
+        CyclicReciprocal.symbol}
+    \leanok
+    For $x\colon\Z/d\Z\to\R$, define the forward denominator and homogeneous
+    functional
+    \begin{align}
+        (Sx)_i&=(s-m)x_i+\sum_{k=1}^{m}x_{i+k},
+        &f_{d,m,s}(x)&=\sum_i\frac{x_i}{(Sx)_i}.
+    \end{align}
+    For the standard character $\chi_j$ of $\Z/d\Z$, the corresponding cyclic
+    matrix eigenvalue is
+    \begin{align}
+        \lambda_j(s)=s-m+\sum_{k=1}^{m}\chi_j(k).
+    \end{align}
+    These are Yamagami's parameters with stride $l=1$.  Negating the cyclic
+    index converts this forward window to the backward window in the Choi-type
+    rank-one weight.
+\end{definition}
+
+\begin{lemma}[Yamagami's centered open-disk condition, stride one]
+    \label{lem:yamagami_stride_one_open_disk}
+    \lean{CyclicReciprocal.norm_symbol_sub_half_lt_half}
+    \leanok
+    \uses{def:yamagami_stride_one_reciprocal}
+    If $d\ge3$, $1\le m\le d-2$, $s\ge d$, and $j\ne0$ in $\Z/d\Z$, then
+    \begin{align}
+        \left|\lambda_j(s)-\frac{s}{2}\right|<\frac{s}{2}.
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    This is Lemma~6 of Yamagami~\cite[pp.~523--524]{Yamagami1993Cyclic},
+    specialized to $l=1$.  At $s=d$, split according to $2m\le d$ or
+    $d<2m$.  In the first case strict convexity is applied to the $m$ window
+    characters together with the nonnegative real coefficient $d/2-m$; in
+    the second, the vanishing sum of the nontrivial character replaces the
+    window by its complement.  Translation of the eigenvalue by $s-d$ gives
+    the result for $s\ge d$.
+\end{proof}
+
+This spectral lemma is only one dependency of Yamagami's variational proof.
+It does not establish the cyclic reciprocal inequality or positivity in the
+middle range.
+
 \begin{definition}[Choi-type map]
     \label{def:choi_type_map}
     \lean{Matrix.choiTypeMap}
