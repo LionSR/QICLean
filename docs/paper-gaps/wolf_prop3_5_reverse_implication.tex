@@ -24,9 +24,11 @@ equivalence
       T:\MN{d}\longrightarrow\MN{d'}
   \notag\\
   &\qquad\Longleftrightarrow\qquad
-  \text{there is an entangled density operator }
-      \rho\in\MN{d}\otimes\MN{d'}
-      \text{ with }\rho^{T_1}\geq 0.
+  \begin{gathered}
+    \text{there is an entangled density operator }\rho
+      \in\MN{d}\otimes\MN{d'}\\
+    \text{with }\rho^{T_1}\geq 0.
+  \end{gathered}
   \tag{Wolf Proposition 3.5}
 \end{align}
 Immediately before the proposition, the decomposable witnesses are written in
@@ -37,16 +39,22 @@ the first-factor convention
 \end{align}
 The local source is
 \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
-276--303.
-\footnote{Tracked by \ghissue{22}.}
+276--303.\footnote{Tracked by \ghissue{22}.}
 
 The matching primary witness result is Theorem~3 of
 Lewenstein--Kraus--Cirac--Horodecki: a witness is nondecomposable if and only
 if it detects a PPT entangled state \cite{LewensteinKrausCiracHorodecki2000}.
-Its difficult direction separates a nondecomposable witness from the closed
-convex cone of decomposable witnesses. The earlier Horodecki--Horodecki--
-Horodecki cone calculation writes the dual of the PPT cone as the functionals
-represented by $B+C^{T_2}$ with $B,C\geq0$
+That paper fixes $\tr(W)=1$ for witnesses and, unless stated otherwise, takes
+$P,Q\geq0$ to have trace one.  Its decomposable operators are therefore
+written
+\begin{align}
+  D=aP+(1-a)Q^T,\qquad 0\leq a\leq1.
+  \tag{LKCH normalized form}
+\end{align}
+The difficult direction of Theorem~3 separates a nondecomposable witness
+from this closed convex normalized set. The earlier
+Horodecki--Horodecki--Horodecki cone calculation writes the dual of the PPT
+cone as the functionals represented by $B+C^{T_2}$ with $B,C\geq0$
 \cite[arXiv v2 PDF, Appendix Eq.~(27)]{HorodeckiHorodeckiHorodecki1996Separability}.
 The generated arXiv HTML retags this display as Equation~(50); Equation~(27)
 is the number printed in the primary PDF.
@@ -78,8 +86,7 @@ $T=T_1+T_2\theta$ gives
 Thus the detecting map is indecomposable.
 
 The formal theorem is
-\leanid{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}.
-\footnote{Formal declarations:
+\leanid{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}.\footnote{Formal declarations:
 \leanid{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}
 in \doclink{QICLean/Channel/PPTIndecomposable}, and
 \leanid{IsDecomposablePositiveMap.tensorMapId_posSemidef_of_isPPT}
@@ -87,14 +94,49 @@ in \doclink{QICLean/Channel/DecomposablePPT}.}
 The decomposability predicates and preservation theorem are rectangular, with
 the same input-to-output orientation $\MN{d}\to\MN{d'}$ as Wolf.
 
+\section{The normalized separation data}
+
+The source-shaped normalized set is now formalized directly.  In Wolf's
+first-factor convention it is
+\begin{align}
+  \mathcal D_1
+  =\left\{aP_1+(1-a)P_2^{T_1}:
+      0\leq a\leq1,\ P_1,P_2\geq0,\
+      \tr(P_1)=\tr(P_2)=1\right\}.
+  \tag{normalized decomposable set}
+\end{align}
+The predicate \leanid{Matrix.IsNormalizedDecomposableWitness} records this
+formula.  The development proves that $\mathcal D_1$ is compact and convex
+and, when both tensor factors are nonzero, that it is exactly the trace-one
+section of Wolf's Equation~(3.15) cone.  Compactness is proved as a continuous
+image of
+$[0,1]\times\mathcal S\times\mathcal S$, where $\mathcal S$ is the compact
+set of positive semidefinite trace-one operators on the rectangular product
+space.
+
+The first-factor trace identity needed after separation is also formalized:
+\begin{align}
+  \tr\!\left(X^{T_1}Y\right)
+    =\tr\!\left(XY^{T_1}\right).
+  \tag{partial-transpose trace identity}
+\end{align}
+Thus first-factor partial transpose is self-adjoint for the real trace
+pairing.\footnote{Formal declarations:
+\leanid{Matrix.isCompact_setOf_isNormalizedDecomposableWitness},
+\leanid{Matrix.convex_setOf_isNormalizedDecomposableWitness},
+\leanid{Matrix.isNormalizedDecomposableWitness_iff}, and
+\leanid{Matrix.trace_partialTransposeLeft_mul_re} in
+\doclink{QICLean/Channel/DecomposableWitness}.}
+
 \section{The remaining direction}
 
 The converse required for the full proposition begins with an
 indecomposable positive map and must produce a PPT entangled density
 operator. The current formal development does not claim that implication.
-The explicit cone, its convexity, and the rectangular adjoint bridge are now
-formalized as \leanid{Matrix.IsDecomposableWitness},
-\leanid{Matrix.convex_setOf_isDecomposableWitness}, and
+The explicit cone, its normalized compact section, and the rectangular
+adjoint bridge are now formalized as
+\leanid{Matrix.IsDecomposableWitness},
+\leanid{Matrix.IsNormalizedDecomposableWitness}, and
 \leanid{ChoiRectangular.isDecomposablePositiveMap_iff_choiMatrix_traceAdjointMap_isDecomposableWitness}:
 \begin{align}
   T\text{ decomposable}
@@ -103,24 +145,35 @@ formalized as \leanid{Matrix.IsDecomposableWitness},
   \text{ for some }P_1,P_2\geq0.
   \notag
 \end{align}
-Following Wolf and the primary witness proof still requires all of the
-following:
+The remaining proof should now follow the normalized route of
+Lewenstein--Kraus--Cirac--Horodecki.  Starting with an indecomposable positive
+map, one must first assemble its block-positive Choi witness, prove that this
+witness is nonzero and has positive trace, and normalize it to trace one.
+The resulting witness lies outside $\mathcal D_1$.
+
+One must then strictly separate this point from the compact convex set
+$\mathcal D_1$ in the real space of Hermitian operators.  Because both the
+witness and every member of $\mathcal D_1$ have trace one, the separating
+functional may be shifted by a multiple of the trace functional so that its
+value is negative on the witness and nonnegative on $\mathcal D_1$.
+Representing the shifted functional by a Hermitian operator $R$, the endpoint
+choices $a=1$ and $a=0$ give, respectively,
 \begin{align}
-  &\text{closedness of that cone},\notag\\
-  &\tr\!\left(P_2^{T_1}R\right)
-      =\tr\!\left(P_2R^{T_1}\right),\notag\\
-  &\text{and separation followed by positivity, PPT, trace normalization,
-    and entanglement of the separator.}\notag
+  \tr(RP)\geq0\quad&\text{for every positive trace-one }P,
+  \notag\\
+  \tr(RQ^{T_1})=\tr(R^{T_1}Q)\geq0\quad
+    &\text{for every positive trace-one }Q.
+  \notag
 \end{align}
-The intended source-faithful route to closedness starts from the trace-one
-decomposable operators $aP+(1-a)Q^{T_1}$ used by
-Lewenstein--Kraus--Cirac--Horodecki.  One must first prove that the normalized set
-is compact, then recover the unnormalized Equation~(3.15) cone through the radial
-map whose radius is its trace.  On the Lean side this still requires
-trace-bounded compactness for positive-semidefinite matrices on the product
-index and a proper-map argument for radial scaling.  Merely observing that
-$P_1+P_2^{T_1}$ is a continuous image of the closed product of two
-positive-semidefinite cones would not prove closedness.
+Self-duality of the positive cone then gives $R\geq0$ and
+$R^{T_1}\geq0$.  The strict negative pairing makes $R$ nonzero, so it has
+positive trace and can be normalized to a PPT density operator.  Finally,
+the same negative pairing with the block-positive witness proves that the
+normalized operator is entangled.  These normalization, separation, and
+identification steps remain to be formalized.
+
+Closedness of the full unbounded Equation~(3.15) cone, and a radial proper-map
+argument for that cone, are not prerequisites for this trace-one proof.
 
 Defining a decomposable witness merely as a functional nonnegative on every
 PPT operator would hide rather than prove Equation~(3.15), so that route is
@@ -128,13 +181,14 @@ not used.
 
 \section{Conclusion}
 
-The verdict is a live scope restriction. The PPT-entangled-state-to-
-indecomposable-map direction of Wolf Proposition~3.5 is formalized with the
+The verdict is a live scope restriction. The direction from a PPT entangled
+state to an indecomposable map in Wolf Proposition~3.5 is formalized with the
 printed rectangular dimensions and first-factor transpose convention. The
 reverse direction, and hence the source's existence equivalence, remains open
-until closedness of the now-explicit Equation~(3.15) cone, trace-adjointness of
-partial transpose for the trace pairing, and the separation argument are
-formalized.
+until normalization of the block-positive Choi witness and the separation,
+PPT, trace-normalization, and entanglement steps above are formalized.  The
+normalized decomposable set and trace-adjointness of first-factor partial
+transpose are no longer open ingredients.
 
 \bibliographystyle{alpha}
 \bibliography{references}

@@ -566,6 +566,91 @@ positive map and a completely copositive map.
     Both matrices in parentheses are positive semidefinite.
 \end{proof}
 
+\begin{definition}[Normalized decomposable witnesses]
+    \label{def:normalized_decomposable_witness}
+    \lean{Matrix.IsNormalizedDecomposableWitness}
+    \leanok
+    \uses{def:decomposable_witness}
+    Following Lewenstein--Kraus--Cirac--Horodecki
+    \cite{LewensteinKrausCiracHorodecki2000}, a normalized decomposable witness is
+    an operator of the form
+    \begin{align}
+        D=aP_1+(1-a)P_2^{T_1},\qquad 0\leq a\leq1,
+        \qquad P_1,P_2\geq0,\quad
+        \tr(P_1)=\tr(P_2)=1.
+        \notag
+    \end{align}
+    The transpose remains on Wolf's first tensor factor.
+\end{definition}
+
+\begin{theorem}[The normalized decomposable set]
+    \label{thm:normalized_decomposable_witness_compact_convex}
+    \lean{Matrix.partialTransposeLeft_smul,
+        Matrix.continuous_partialTransposeLeft,
+        Matrix.PosSemidef.hasSchmidtNumberLE_left,
+        Matrix.isCompact_setOf_posSemidef_trace_one,
+        Matrix.isCompact_setOf_isNormalizedDecomposableWitness,
+        Matrix.isNormalizedDecomposableWitness_iff,
+        Matrix.convex_setOf_isNormalizedDecomposableWitness}
+    \leanok
+    \uses{def:normalized_decomposable_witness}
+    For $d,d'\geq1$, the normalized decomposable witnesses are precisely the
+    trace-one section of the cone in Equation~(3.15).  This set is compact
+    and convex.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:decomposable_witness_convex}
+    Let $\mathcal D$ be the set of positive semidefinite trace-one operators
+    on $\C^d\otimes\C^{d'}$.  Every positive semidefinite operator on this
+    space has Schmidt number at most $d$, because every vector in a
+    rank-one decomposition has Schmidt rank at most $d$.  Thus $\mathcal D$
+    is the compact Schmidt-number section $S_d$.  First-factor partial
+    transposition is a continuous coordinate permutation and commutes with
+    scalar multiplication.  The normalized decomposable set is therefore
+    the image of the compact set
+    $[0,1]\times\mathcal D\times\mathcal D$ under the continuous map
+    \begin{align}
+        (a,P_1,P_2)\longmapsto aP_1+(1-a)P_2^{T_1}.
+        \notag
+    \end{align}
+
+    This formula always gives a decomposable operator of trace one.
+    Conversely, write a trace-one decomposable operator as
+    $W=P_1+P_2^{T_1}$.  Positivity gives
+    $\tr(P_1),\tr(P_2)\geq0$, while
+    $\tr(P_1)+\tr(P_2)=1$.  Normalize each nonzero summand and use
+    $a=\tr(P_1)$.  A positive summand of trace zero vanishes, so in that case
+    it may be replaced by any fixed density operator.  This proves the
+    claimed identification.  Convexity now follows by intersecting the
+    convex cone of Theorem~\ref{thm:decomposable_witness_convex} with the
+    affine trace-one hyperplane.
+\end{proof}
+
+\begin{lemma}[Trace adjointness of first-factor partial transpose]
+    \label{lem:partial_transpose_left_trace_adjoint}
+    \lean{Matrix.trace_partialTransposeLeft_mul,
+        Matrix.trace_partialTransposeLeft_mul_re}
+    \leanok
+    \uses{def:partial_transpose_left}
+    For square operators $X,Y$ on $\C^d\otimes\C^{d'}$,
+    \begin{align}
+        \tr\!\left(X^{T_1}Y\right)
+        =\tr\!\left(XY^{T_1}\right).
+        \notag
+    \end{align}
+    Consequently, first-factor partial transpose is self-adjoint for the
+    real trace pairing $(X,Y)\mapsto\Re\tr(XY)$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Expand the trace in product indices.  Both sides are the same finite
+    fourfold sum after interchanging the two first-factor indices.  Taking
+    real parts gives the assertion for the real trace pairing.
+\end{proof}
+
 \begin{theorem}[Rectangular decomposable map--witness correspondence]
     \label{thm:decomposable_map_iff_decomposable_witness}
     \lean{Matrix.traceAdjointMap_add,
@@ -671,11 +756,15 @@ positive map and a completely copositive map.
     decomposable, Theorem~\ref{thm:decomposable_map_tensor_id_ppt} would make
     this ampliation positive because $\rho$ is PPT, a contradiction.
 
-    The reverse implication of Proposition~3.5 is not claimed here. Although
-    Theorem~\ref{thm:decomposable_map_iff_decomposable_witness} now supplies
-    Wolf's explicit Equation~(3.15) cone and map--witness bridge, the reverse
-    implication still needs closedness of that cone, trace-pairing duality,
-    and a separating-hyperplane argument.
+    The reverse implication of Proposition~3.5 is not claimed here.
+    Theorem~\ref{thm:normalized_decomposable_witness_compact_convex} supplies
+    the compact convex trace-one set used in the primary witness proof, and
+    Lemma~\ref{lem:partial_transpose_left_trace_adjoint} supplies the required
+    trace identity.  What remains is to normalize the nonzero block-positive
+    Choi witness of an indecomposable map and to carry out the strict
+    separation argument, including positivity, the PPT property, trace
+    normalization, and entanglement of the separating operator.  No
+    closedness theorem for the full unbounded cone is needed for this route.
 \end{proof}
 
 \begin{theorem}[A PPT state detected by an ampliation witnesses indecomposability]
