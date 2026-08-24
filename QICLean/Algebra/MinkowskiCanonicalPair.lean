@@ -124,6 +124,31 @@ def sipBasisThree : Matrix (Fin 3) (Fin 3) ℝ := !![1, 0, 1; 0, 1, 0; 1, 0, -1]
 def sipBasisFour : Matrix (Fin 4) (Fin 4) ℝ :=
   !![1, 0, 1, 0; 0, 1, 0, 1; 0, 1, 0, -1; 1, 0, -1, 0]
 
+/-- The explicit two-dimensional sip-diagonalizing basis is invertible. -/
+theorem sipBasisTwo_isUnit : IsUnit sipBasisTwo := by
+  rw [isUnit_iff_exists_inv]
+  refine ⟨(2 : ℝ)⁻¹ • sipBasisTwo, ?_⟩
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [sipBasisTwo, Matrix.mul_apply, Fin.sum_univ_two] <;> norm_num
+
+/-- The explicit three-dimensional sip-diagonalizing basis is invertible. -/
+theorem sipBasisThree_isUnit : IsUnit sipBasisThree := by
+  rw [isUnit_iff_exists_inv]
+  refine ⟨!![(2 : ℝ)⁻¹, 0, (2 : ℝ)⁻¹; 0, 1, 0;
+      (2 : ℝ)⁻¹, 0, -(2 : ℝ)⁻¹], ?_⟩
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [sipBasisThree, Matrix.mul_apply, Fin.sum_univ_three] <;> norm_num
+
+/-- The explicit four-dimensional sip-diagonalizing basis is invertible. -/
+theorem sipBasisFour_isUnit : IsUnit sipBasisFour := by
+  rw [isUnit_iff_exists_inv]
+  refine ⟨(2 : ℝ)⁻¹ • sipBasisFour.transpose, ?_⟩
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [sipBasisFour, Matrix.mul_apply, Fin.sum_univ_four] <;> norm_num
+
 /-- The two-dimensional sip matrix has one positive and one negative square after congruence. -/
 theorem sipBasisTwo_congr :
     sipBasisTwo.transpose * sipMatrix 2 ℝ * sipBasisTwo = diagonal ![2, -2] := by
@@ -138,6 +163,16 @@ theorem sipBasisThree_congr :
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [sipBasisThree, sipMatrix, finReversePerm, Matrix.mul_apply,
+      Fin.sum_univ_three, Fin.rev] <;> norm_num
+
+/-- The negative three-dimensional sip matrix has one positive and two negative squares after
+congruence. -/
+theorem sipBasisThree_negative_congr :
+    sipBasisThree.transpose * signedSipMatrix .negative 3 * sipBasisThree =
+      diagonal ![-2, -1, 2] := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [sipBasisThree, signedSipMatrix, sipMatrix, finReversePerm, Matrix.mul_apply,
       Fin.sum_univ_three, Fin.rev] <;> norm_num
 
 /-- The four-dimensional sip matrix has two positive and two negative squares after congruence. -/
