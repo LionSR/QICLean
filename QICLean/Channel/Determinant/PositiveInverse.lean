@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.PositiveExtremality
+import QICLean.Channel.Schwarz.AbstractMultiplicativeDomain
 import QICLean.Channel.TransferMatrix
 
 /-!
@@ -20,6 +21,11 @@ The final classification is kept on Wolf's determinant route: determinant
 bounds for a map and its inverse force determinant modulus one, after which
 Wolf Theorem 6.1 supplies unitary conjugation or unitary conjugation after
 ordinary matrix transposition.
+
+The proof of Wolf Theorem 6.16 later applies this classification to its block
+maps.  There the Schwarz inequality excludes the transpose branch in matrix
+dimension at least two, while ordinary transposition is the identity in
+dimension one.
 
 ## References
 
@@ -252,5 +258,114 @@ theorem wolfPositiveInvertibleMaps [NeZero d]
       exact inverseOfBijective_unitaryChannel_isPositiveMap U hT
     · subst T
       exact inverseOfBijective_unitaryChannel_comp_transpose_isPositiveMap U hT
+
+/-- Ordinary matrix transposition is not a Schwarz map in matrix dimension at
+least two.
+
+For the matrix unit \(A=E_{01}\), the Schwarz defect of transposition is
+\(E_{11}-E_{00}\), whose \(00\)-entry is negative.
+
+Source: Wolf Theorem 6.16, proof line 1663 of
+`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`. -/
+theorem transposeLinearMapComplex_not_isSchwarzMap (hd : 2 ≤ d) :
+    ¬ IsSchwarzMap (Matrix.transposeLinearMapComplex (Fin d)) := by
+  classical
+  let i : Fin d := ⟨0, by omega⟩
+  let j : Fin d := ⟨1, by omega⟩
+  intro hSchwarz
+  have hDefect := hSchwarz (Matrix.single i j 1)
+  have hDiag := hDefect.diag_nonneg (i := i)
+  norm_num [Matrix.transposeLinearMapComplex, Matrix.single,
+    Matrix.conjTranspose, Matrix.mul_apply, i, j] at hDiag
+
+/-- Removing an outer unitary conjugation from a Schwarz map preserves the
+Schwarz property of the inner map.
+
+The proof conjugates the Schwarz defect back by \(U^\dagger\); this is the
+order-automorphism step used to show that unitary conjugation cannot repair
+the transpose defect in Wolf Theorem 6.16. -/
+theorem isSchwarzMap_of_unitaryChannel_comp
+    (U : Matrix.unitaryGroup (Fin d) ℂ) {E : MatrixEnd d}
+    (hE : IsSchwarzMap ((unitaryChannel U).comp E)) :
+    IsSchwarzMap E := by
+  have hStarU : (U : MatrixAlg d)ᴴ * U = 1 := by
+    simpa only [Matrix.star_eq_conjTranspose] using
+      Matrix.UnitaryGroup.star_mul_self U
+  have hCancel (X : MatrixAlg d) :
+      (U : MatrixAlg d)ᴴ * ((U : MatrixAlg d) * X) = X := by
+    rw [← Matrix.mul_assoc, hStarU, Matrix.one_mul]
+  intro A
+  have hDefect := hE A
+  have hBack := hDefect.conjTranspose_mul_mul_same (U : MatrixAlg d)
+  have hEq :
+      (U : MatrixAlg d)ᴴ *
+          (((unitaryChannel U).comp E) (Aᴴ * A) -
+            ((unitaryChannel U).comp E) Aᴴ *
+              ((unitaryChannel U).comp E) A) *
+          (U : MatrixAlg d) =
+        E (Aᴴ * A) - E Aᴴ * E A := by
+    simp only [LinearMap.comp_apply, unitaryChannel, LinearMap.coe_mk,
+      AddHom.coe_mk, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc,
+      hCancel, hStarU, Matrix.mul_one]
+  rw [hEq] at hBack
+  exact hBack
+
+/-- Unitary conjugation after ordinary transposition is not a Schwarz map in
+matrix dimension at least two.
+
+This is the standard-form branch excluded at Wolf Theorem 6.16, proof
+line 1663. -/
+theorem unitaryChannel_comp_transpose_not_isSchwarzMap (hd : 2 ≤ d)
+    (U : Matrix.unitaryGroup (Fin d) ℂ) :
+    ¬ IsSchwarzMap ((unitaryChannel U).comp
+      (Matrix.transposeLinearMapComplex (Fin d))) := by
+  intro hSchwarz
+  exact transposeLinearMapComplex_not_isSchwarzMap hd
+    (isSchwarzMap_of_unitaryChannel_comp U hSchwarz)
+
+/-- In matrix dimension one, ordinary transposition is the identity, so
+unitary conjugation after transposition collapses to the unitary branch.
+
+This packages the one-dimensional case tacitly included in Wolf Theorem 6.16,
+proof lines 1660--1663. -/
+theorem unitaryChannel_comp_transpose_fin_one
+    (U : Matrix.unitaryGroup (Fin 1) ℂ) :
+    (unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin 1)) =
+      unitaryChannel U := by
+  apply LinearMap.ext
+  intro X
+  simp only [LinearMap.comp_apply]
+  congr 1
+  ext i j
+  rw [show i = j from Subsingleton.elim i j]
+  simp [Matrix.transposeLinearMapComplex]
+
+/-- **Wolf Theorem 6.16: the Schwarz condition excludes transposition.**
+
+A positive trace-preserving bijection with positive inverse that also
+satisfies the Schwarz inequality is unitary conjugation.  Wolf's positive
+invertible-map corollary gives unitary conjugation or unitary conjugation after
+ordinary transposition.  The latter is not Schwarz for \(d\geq 2\), and for
+\(d=1\) it is already the unitary branch.
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`,
+lines 1660--1663. -/
+theorem wolfPositiveInvertibleSchwarzMaps [NeZero d]
+    {T : MatrixEnd d} (hT : Function.Bijective T)
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
+    (hInvPos : IsPositiveMap (inverseOfBijective T hT))
+    (hSchwarz : IsSchwarzMap T) :
+    ∃ U : Matrix.unitaryGroup (Fin d) ℂ, T = unitaryChannel U := by
+  obtain ⟨U, hUnitary | hTranspose⟩ :=
+    (wolfPositiveInvertibleMaps hT hPos hTP).mp hInvPos
+  · exact ⟨U, hUnitary⟩
+  · by_cases hdOne : d = 1
+    · subst d
+      rw [unitaryChannel_comp_transpose_fin_one] at hTranspose
+      exact ⟨U, hTranspose⟩
+    · have hdPos : 0 < d := Nat.pos_of_ne_zero (NeZero.ne d)
+      have hdTwo : 2 ≤ d := by omega
+      rw [hTranspose] at hSchwarz
+      exact (unitaryChannel_comp_transpose_not_isSchwarzMap hdTwo U hSchwarz).elim
 
 end ChannelDeterminant.Internal

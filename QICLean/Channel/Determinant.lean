@@ -65,6 +65,9 @@ The division follows the same organization as the earlier `Full/` and
   exact determinant of ordinary transposition in Wolf Theorem 6.1(3).
 * `ChannelDeterminant.Internal.wolfPositiveInvertibleMaps` — positivity of the
   inverse exactly for unitary conjugation and transpose-conjugation.
+* `ChannelDeterminant.Internal.wolfPositiveInvertibleSchwarzMaps` — the
+  Schwarz refinement used in Wolf Theorem 6.16, where the transpose branch is
+  excluded (and collapses to the unitary branch in dimension one).
 * `channelDet_norm_eq_one_iff_exists_unitaryChannel` — Wolf Theorem 6.1(2)
   for CPTP maps.
 * `IsKrausCP.channelDet_nonneg_of_choiRank_le_two` — nonnegativity for
