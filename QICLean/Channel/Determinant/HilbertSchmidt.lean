@@ -74,16 +74,19 @@ private lemma norm_eq_one_of_prod_norm_eq_one
     · exact ha_eq
     · exact ih hs' hs_eq μ hμs
 
-/-- For a CPTP map with `‖det T‖ = 1`, every eigenvalue has modulus exactly 1. -/
-theorem channel_all_eigenvalues_norm_one [NeZero d]
-    (hT : IsChannel T) (hdet : ‖channelDet T‖ = 1) :
+/-- For a positive trace-preserving map with `‖det T‖ = 1`, every eigenvalue
+has modulus exactly `1`. This is the phase-spectrum step in Wolf's determinant
+extremality proof. -/
+theorem channel_all_eigenvalues_norm_one_of_positive_tracePreserving [NeZero d]
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
+    (hdet : ‖channelDet T‖ = 1) :
     ∀ μ : ℂ, Module.End.HasEigenvalue T μ → ‖μ‖ = 1 := by
   let A : Matrix (MatrixBasisIndex d) (MatrixBasisIndex d) ℂ := channelMatrix T
   have hspectrum : spectrum ℂ A = spectrum ℂ T :=
     AlgEquiv.spectrum_eq (LinearMap.toMatrixAlgEquiv (matrixSpaceBasis d)) T
   have hroot_le : ∀ μ ∈ A.charpoly.roots, ‖μ‖ ≤ 1 := by
     intro μ hμ
-    exact hT.cp.isPositiveMap.eigenvalue_norm_le_one_of_tracePreserving hT.tp μ
+    exact hPos.eigenvalue_norm_le_one_of_tracePreserving hTP μ
       (Module.End.hasEigenvalue_iff_mem_spectrum.2
         (hspectrum ▸ Matrix.mem_spectrum_of_isRoot_charpoly
           ((Polynomial.mem_roots A.charpoly_monic.ne_zero).1 hμ)))
@@ -98,6 +101,14 @@ theorem channel_all_eigenvalues_norm_one [NeZero d]
   have hμ_specA : μ ∈ spectrum ℂ A := hspectrum ▸ hμ_specT
   exact hroot_eq μ ((Polynomial.mem_roots A.charpoly_monic.ne_zero).2
     ((Matrix.mem_spectrum_iff_isRoot_charpoly).1 hμ_specA))
+
+/-- CPTP specialization of
+`channel_all_eigenvalues_norm_one_of_positive_tracePreserving`. -/
+theorem channel_all_eigenvalues_norm_one [NeZero d]
+    (hT : IsChannel T) (hdet : ‖channelDet T‖ = 1) :
+    ∀ μ : ℂ, Module.End.HasEigenvalue T μ → ‖μ‖ = 1 :=
+  channel_all_eigenvalues_norm_one_of_positive_tracePreserving
+    hT.cp.isPositiveMap hT.tp hdet
 
 /-- Conjugate transpose swaps the indices of a matrix-unit basis element. -/
 theorem stdBasis_conjTranspose_eq_swap (i j : Fin d) :
