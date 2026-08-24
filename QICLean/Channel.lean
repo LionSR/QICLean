@@ -86,6 +86,7 @@ import QICLean.Channel.POVM
 import QICLean.Channel.POVM.RankOneNaimark
 import QICLean.Channel.POVM.SIC
 import QICLean.Channel.POVM.Uniqueness
+import QICLean.Channel.PPTIndecomposable
 import QICLean.Channel.PSDConeAutomorphism
 import QICLean.Channel.PartialTrace
 import QICLean.Channel.PartialTranspose

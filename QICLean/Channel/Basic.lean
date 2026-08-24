@@ -31,9 +31,12 @@ Chapters 3 and 6 of Wolf's lecture notes.
 * `IsCPMap`: a linear map that admits a Kraus representation
 * `IsKrausCP`: a linear map between possibly different matrix algebras that
   admits a rectangular Kraus representation
-* `IsCompletelyCopositiveMap`: a map whose composition with transposition is CP
-* `IsDecomposablePositiveMap`: a sum of a CP map and a completely copositive map
+* `IsCompletelyCopositiveMap`: a possibly rectangular map whose composition
+  with input transposition is CP
+* `IsDecomposablePositiveMap`: a possibly rectangular sum of a CP map and a
+  completely copositive map
 * `IsIndecomposablePositiveMap`: a positive map that is not decomposable
+* `IsKrausCP.isPositiveMap`: rectangular Kraus CP maps are positive
 * `IsCPMap.isPositiveMap`: completely positive maps are positive
 * `IsChannel`: completely positive + trace-preserving (CPTP)
 * `Matrix.transposeLinearMapComplex_isPositiveMap`: matrix transposition is positive
@@ -145,47 +148,55 @@ end Matrix
 
 section PositiveMap
 
-variable {n : Type*} [Fintype n]
+variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
 
 /-- A map is **completely copositive** if composing it with transposition gives a
 completely positive map.
 
 This is the convention used in Wolf Chapter 3: a decomposable positive map is
 written as a completely positive map plus a map `F` for which `F ∘ transpose` is
-completely positive. -/
-def IsCompletelyCopositiveMap (E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) : Prop :=
-  IsCPMap (E.comp (Matrix.transposeLinearMapComplex n))
+completely positive. Thus Wolf's summand `T₂ ∘ θ` is represented by
+`F = T₂ ∘ θ`, since `F ∘ θ = T₂`. -/
+def IsCompletelyCopositiveMap (E : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ) : Prop :=
+  IsKrausCP (E.comp (Matrix.transposeLinearMapComplex n))
 
 /-- A **decomposable positive map** is a sum of a completely positive map and a
-completely copositive map.  This is the class used in Wolf Chapter 3 to describe
-positive maps that cannot detect PPT entanglement. -/
-def IsDecomposablePositiveMap (E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) : Prop :=
-  ∃ Ecp Eccp : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ,
-    IsCPMap Ecp ∧ IsCompletelyCopositiveMap Eccp ∧ E = Ecp + Eccp
+completely copositive map. This is Wolf Equation (3.2),
+`T = T₁ + T₂ ∘ θ`, for a possibly rectangular map `T : M_d → M_{d'}`. -/
+def IsDecomposablePositiveMap (E : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ) : Prop :=
+  ∃ Ecp Eccp : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ,
+    IsKrausCP Ecp ∧ IsCompletelyCopositiveMap Eccp ∧ E = Ecp + Eccp
 
 /-- An **indecomposable positive map** is positive but not decomposable. -/
-def IsIndecomposablePositiveMap (E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) : Prop :=
+def IsIndecomposablePositiveMap (E : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ) : Prop :=
   IsPositiveMap E ∧ ¬ IsDecomposablePositiveMap E
 
-/-- A completely positive map is positive. -/
-theorem IsCPMap.isPositiveMap {E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ}
-    (h : IsCPMap E) : IsPositiveMap E := by
+/-- A completely positive map in rectangular Kraus form is positive. -/
+theorem IsKrausCP.isPositiveMap {E : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ}
+    (h : IsKrausCP E) : IsPositiveMap E := by
   obtain ⟨r, K, hK⟩ := h
   intro X hX
   rw [hK]
   exact Matrix.posSemidef_sum (s := Finset.univ) (x := fun i => K i * X * (K i)ᴴ)
     (fun i _ => by simpa [Matrix.mul_assoc] using hX.mul_mul_conjTranspose_same (B := K i))
 
+omit [DecidableEq n] in
+/-- A square completely positive map is positive. -/
+theorem IsCPMap.isPositiveMap {E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ}
+    (h : IsCPMap E) : IsPositiveMap E := by
+  classical
+  exact IsKrausCP.isPositiveMap h
+
 /-- Completely copositive maps are positive. -/
 theorem IsCompletelyCopositiveMap.isPositiveMap
-    {E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ}
+    {E : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ}
     (h : IsCompletelyCopositiveMap E) : IsPositiveMap E := by
   intro X hX
   have hXt : (Matrix.transposeLinearMapComplex n X).PosSemidef :=
     Matrix.transposeLinearMapComplex_isPositiveMap X hX
-  have hcp : IsCPMap (E.comp (Matrix.transposeLinearMapComplex n)) := h
+  have hcp : IsKrausCP (E.comp (Matrix.transposeLinearMapComplex n)) := h
   have hEXt :=
-    IsCPMap.isPositiveMap hcp (Matrix.transposeLinearMapComplex n X) hXt
+    IsKrausCP.isPositiveMap hcp (Matrix.transposeLinearMapComplex n X) hXt
   have hdouble :
       Matrix.transposeLinearMapComplex n (Matrix.transposeLinearMapComplex n X) = X := by
     ext i j
@@ -198,13 +209,14 @@ theorem IsCompletelyCopositiveMap.isPositiveMap
 
 /-- Decomposable positive maps are positive. -/
 theorem IsDecomposablePositiveMap.isPositiveMap
-    {E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ}
+    {E : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ}
     (h : IsDecomposablePositiveMap E) : IsPositiveMap E := by
   obtain ⟨Ecp, Eccp, hcp, hccp, rfl⟩ := h
   intro X hX
   simpa [LinearMap.add_apply] using
     (hcp.isPositiveMap X hX).add (hccp.isPositiveMap X hX)
 
+omit [DecidableEq n] in
 /-- A channel is a positive map (derived from complete positivity). -/
 theorem IsChannel.pos {E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ}
     (hE : IsChannel E) : IsPositiveMap E := hE.cp.isPositiveMap

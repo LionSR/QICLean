@@ -406,7 +406,7 @@ positive map and a completely copositive map.
     \lean{IsCompletelyCopositiveMap, IsDecomposablePositiveMap,
         IsIndecomposablePositiveMap}
     \leanok
-    A map $\Phi\colon\MN{D}\to\MN{D}$ is completely copositive if
+    A map $\Phi\colon\MN{d}\to\MN{d'}$ is completely copositive if
     $\Phi\circ\theta$ is completely positive, where $\theta$ is transposition.
     It is decomposable if
     $\Phi=\Phi_{\mathrm{cp}}+\Phi_{\mathrm{ccp}}$ with
@@ -453,11 +453,13 @@ positive map and a completely copositive map.
 
 \begin{theorem}[Decomposable maps preserve positivity on PPT states]
     \label{thm:decomposable_map_tensor_id_ppt}
-    \lean{IsDecomposablePositiveMap.tensorMapId_posSemidef_of_isPPT}
+    \lean{Matrix.tensorMapId_comp_transposeLinearMapComplex,
+        IsKrausCP.tensorMapId_posSemidef, IsCPMap.tensorMapId_posSemidef,
+        IsDecomposablePositiveMap.tensorMapId_posSemidef_of_isPPT}
     \leanok
     \uses{def:decomposable_positive_map, def:is_ppt}
-    If $\Phi\colon\MN{D}\to\MN{D}$ is decomposable and $\rho$ is a positive
-    semidefinite matrix on $\C^{D}\otimes\C^{D}$ with the PPT property, then
+    If $\Phi\colon\MN{d}\to\MN{d'}$ is decomposable and $\rho$ is a positive
+    semidefinite matrix on $\C^{d}\otimes\C^{k}$ with the PPT property, then
     $(\Phi\otimes\id)(\rho)\ge0$.
 \end{theorem}
 
@@ -484,20 +486,53 @@ positive map and a completely copositive map.
     images is positive.
 \end{proof}
 
+\begin{theorem}[PPT entanglement yields an indecomposable positive map]
+    \label{thm:ppt_entangled_state_gives_indecomposable_map}
+    \lean{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}
+    \leanok
+    \uses{def:decomposable_positive_map, def:is_ppt,
+        thm:has_schmidt_number_le_one_iff_separable,
+        thm:exists_isNPositiveMap_detects, thm:decomposable_map_tensor_id_ppt}
+    Let $\rho$ be a PPT entangled density operator on
+    $\C^d\otimes\C^{d'}$. Then there is an indecomposable positive map
+    $T\colon\MN{d}\to\MN{d'}$.
+    This is the PPT-state-to-map direction of Wolf's Proposition~3.5; the
+    remaining reverse implication is recorded in
+    \cite{gap:wolf_prop3_5_reverse_implication}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    By Theorem~\ref{thm:has_schmidt_number_le_one_iff_separable}, entanglement
+    means that $\rho$ has Schmidt number larger than one. The rectangular
+    detector in Theorem~\ref{thm:exists_isNPositiveMap_detects}, at $n=1$,
+    gives a positive map $T\colon\MN{d}\to\MN{d'}$ for which
+    $(T\otimes\id)(\rho)$ is not positive semidefinite. If $T$ were
+    decomposable, Theorem~\ref{thm:decomposable_map_tensor_id_ppt} would make
+    this ampliation positive because $\rho$ is PPT, a contradiction.
+
+    The reverse implication of Proposition~3.5 is not claimed here; it needs
+    Wolf's decomposable-witness cone in Equation~(3.15), its closedness and
+    trace-pairing duality, and a separating-hyperplane argument.
+\end{proof}
+
 \begin{theorem}[A PPT state detected by an ampliation witnesses indecomposability]
     \label{thm:indecomposable_of_ppt_witness}
-    \lean{not_isDecomposablePositiveMap_of_isPPT_not_tensorMapId_posSemidef}
+    \lean{not_isDecomposablePositiveMap_of_isPPT_not_tensorMapId_posSemidef,
+        IsPositiveMap.isIndecomposablePositiveMap_of_isPPT_not_tensorMapId_posSemidef}
     \leanok
     \uses{def:decomposable_positive_map, def:is_ppt,
         thm:decomposable_map_tensor_id_ppt}
-    Let $\Phi\colon\MN{D}\to\MN{D}$ be a linear map. If some positive
-    semidefinite matrix $\rho$ on $\C^{D}\otimes\C^{D}$ with the PPT property
-    has $(\Phi\otimes\id)(\rho)$ not positive semidefinite, then $\Phi$ is not
-    decomposable.
+    Let $\Phi\colon\MN{d}\to\MN{d'}$ be a positive map. If some positive
+    semidefinite matrix $\rho$ on $\C^{d}\otimes\C^{k}$ with the PPT property
+    has $(\Phi\otimes\id)(\rho)$ not positive semidefinite, then $\Phi$ is
+    indecomposable. The detection hypothesis alone, without positivity of
+    $\Phi$, still implies that $\Phi$ is not decomposable.
 \end{theorem}
 
 \begin{proof}
     \leanok
     This is the contrapositive of
-    Theorem~\ref{thm:decomposable_map_tensor_id_ppt}.
+    Theorem~\ref{thm:decomposable_map_tensor_id_ppt}. Together with the assumed
+    positivity of $\Phi$, it is exactly indecomposability.
 \end{proof}

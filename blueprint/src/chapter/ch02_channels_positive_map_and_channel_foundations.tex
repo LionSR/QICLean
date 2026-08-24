@@ -110,10 +110,11 @@ consequences cited there: entrywise complete positivity and the associated
 abstract completely positive map.
 
 \begin{theorem}[CP maps are positive]\label{thm:cp_is_positive}
-    \lean{IsCPMap.isPositiveMap}
+    \lean{IsKrausCP.isPositiveMap, IsCPMap.isPositiveMap}
     \leanok
     \uses{def:cp_map, def:positive_map}
-    Every completely positive map is positive.
+    Every rectangular Kraus completely positive map is positive. In particular,
+    every square completely positive map is positive.
 \end{theorem}
 
 \begin{proof}\leanok
