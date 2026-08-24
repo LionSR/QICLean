@@ -12,6 +12,7 @@ import QICLean.Channel.Schwarz.AbstractMultiplicativeDomain
 import QICLean.Channel.Schwarz.AndoLieb
 import QICLean.Channel.Schwarz.Basic
 import QICLean.Channel.Schwarz.ChoiCompression
+import QICLean.Channel.Schwarz.Closure
 import QICLean.Channel.Schwarz.DiagonalJensen
 import QICLean.Channel.Schwarz.Douglas
 import QICLean.Channel.Schwarz.KadisonSchwarz

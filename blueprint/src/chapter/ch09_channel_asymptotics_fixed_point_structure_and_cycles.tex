@@ -549,9 +549,109 @@ but invokes Theorem~6.14 on the recurrent projection $I$, whose printed
 hypothesis requires $I^*$ to be Schwarz.  Accordingly, the source-facing
 assembly follows the printed proof under Schwarz hypotheses for both $T$ and
 $T^*$; the distinction and exact source lines are recorded in
-\cite{gap:wolf_theorem6_16_schwarz_orientation}.  The definitions below are
-conditional data and do not assert that this existence theorem is already
-proved.
+\cite{gap:wolf_theorem6_16_schwarz_orientation}.  The later block-structure
+definitions are conditional data and do not assert that the remaining
+classification theorem is already proved.
+
+\begin{lemma}[Closure under concatenation, powers, and limits]
+    \label{lem:positive_trace_schwarz_limit_closure}
+    \lean{IsPositiveMap.comp,
+        IsPositiveMap.pow,
+        IsPositiveMap.of_tendsto,
+        IsTracePreservingMap.comp,
+        IsTracePreservingMap.pow,
+        IsTracePreservingMap.of_tendsto,
+        IsSchwarzMap.comp,
+        IsSchwarzMap.pow,
+        IsSchwarzMap.of_tendsto,
+        Matrix.traceAdjointMap_id,
+        Matrix.traceAdjointMap_pow,
+        Matrix.tendsto_traceAdjointMap}
+    \leanok
+    \uses{def:positive_map,def:trace_preserving,
+        def:abstract_schwarz_inequality}
+    Positive and trace-preserving matrix endomorphisms are closed under
+    concatenation, natural powers, and finite-dimensional pointwise limits.
+    Positive Schwarz maps are closed under the same operations. Moreover,
+    the trace-pairing adjoint of the identity map is the identity map,
+    trace-pairing adjoints commute with natural powers, and pointwise
+    convergence passes to the trace-pairing adjoints.
+    Every assertion is orientation-specific: applying the Schwarz closure to
+    $T^*$ requires a Schwarz hypothesis for $T^*$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Positivity transports the Schwarz defect through the outer map, proving
+    concatenation closure; induction gives power closure. The cones of
+    positive semidefinite matrices are closed, so positivity and the Schwarz
+    inequality pass to finite-dimensional pointwise limits. Trace
+    preservation passes to limits by continuity of the trace. The adjoint
+    identities follow from the trace pairing and its matrix-unit formula.
+\end{proof}
+
+\begin{theorem}[Recurrent projection and inverse on the asymptotic image]
+    \label{thm:wolf_cycle_recurrent_peripheral_inverse}
+    \lean{IsPositiveMap.exists_strictMono_tendsto_pow_peripheralProjection_and_predecessor,
+        IsPositiveMap.peripheralProjection_isPositiveMap,
+        IsPositiveMap.peripheralProjection_isTracePreservingMap,
+        IsPositiveMap.peripheralProjection_isSchwarzMap,
+        IsPositiveMap.traceAdjointMap_peripheralProjection_isSchwarzMap,
+        IsPositiveMap.exists_peripheralRestrictedInverse,
+        Module.End.peripheralRestrictedInverse_apply_map_of_mem_range,
+        Module.End.map_peripheralRestrictedInverse_apply_of_mem_range}
+    \leanok
+    \uses{def:positive_map,def:trace_preserving,
+        def:abstract_schwarz_inequality,
+        def:peripheral_spectral_projections,
+        cor:peripheral_projection_channel,
+        thm:peripheral_asymptotic_image}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, with $D>0$,
+    and write $I=T_\phi$ for its recurrent/peripheral projection. There are
+    a strictly increasing sequence of positive integers $(n_i)$ and a
+    positive trace-preserving map $S$ such that
+    \begin{align}
+        T^{n_i}&\longrightarrow I, &
+        T^{n_i-1}&\longrightarrow S, \notag \\
+        S\circ T&=I, & T\circ S&=I, \notag \\
+        S\circ I&=S, & I\circ S&=S. \notag
+    \end{align}
+    The map $I$ is positive and trace preserving. Moreover, $S$ and $I$ have
+    the same range. Hence $S$ and $T$ are mutual inverses on
+    $\operatorname{ran}I=\mathcal{X}_T$; this is not a global inverse claim.
+    If $T$ is Schwarz, then $I$ is Schwarz. If, separately, $T^*$ is Schwarz,
+    then $I^*$ is Schwarz.
+
+    This is the recurrent-projection and positive-inverse step at lines
+    1629--1640 of the proof of~\cite[Theorem~6.16]{Wolf2012Quantum}, under the
+    corrected two-orientation contract used by that printed proof.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{lem:positive_trace_schwarz_limit_closure,
+        thm:peripheral_projection_recurrent_subsequence,
+        lem:non_peripheral_pow_vanishing,
+        thm:peripheral_spectral_projection_properties}
+    Start with the Dirichlet subsequence for which $T^{n_i}\to I$. Positivity
+    and trace preservation give pointwise bounded forward orbits. The uniform
+    boundedness principle upgrades these to a common operator-norm bound for
+    the powers, and finite-dimensional compactness supplies a further
+    subsequence for which $T^{n_i-1}\to S$.
+
+    Since every $n_i$ is positive, composition on either side by $T$ turns
+    $T^{n_i-1}$ into $T^{n_i}$. Uniqueness of limits gives
+    $S\circ T=I=T\circ S$. Powers vanish on the non-peripheral complement;
+    passing this fact to the predecessor limit gives $S\circ I=S$, and the
+    two composition identities then give $I\circ S=S$. These absorption
+    identities imply $\operatorname{ran}S=\operatorname{ran}I$.
+
+    Positivity and trace preservation pass to $S$ through the same limit.
+    Schwarz closure under composition, powers, and finite-dimensional limits
+    gives the $I$ orientation from the hypothesis on $T$. The identity
+    $(T^n)^*=(T^*)^n$ gives the $I^*$ orientation separately from the
+    hypothesis on $T^*$; no adjoint-stability implication is used.
+\end{proof}
 
 \begin{theorem}[The Schwarz condition excludes matrix transpositions]
     \label{thm:wolf_cycle_schwarz_excludes_transpose}
