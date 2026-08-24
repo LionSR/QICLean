@@ -165,7 +165,7 @@ $\varepsilon\in\{1,-1\}$, the matrix $\varepsilon P_n$ is the signed
 metric block attached to a real-eigenvalue Jordan block in the sign
 characteristic of Gohberg--Lancaster--Rodman, Theorem~5.3.
 
-\begin{definition}[Signed sip metric blocks]
+\begin{definition}[Signed sip metric blocks]\label{def:signed_sip_metric_blocks}
     \lean{Matrix.GLRSign, Matrix.sipMatrix, Matrix.signedSipMatrix}
     \leanok
     The \emph{sip matrix} of size $n$ is $P_n$.  A signed sip block is
@@ -173,10 +173,11 @@ characteristic of Gohberg--Lancaster--Rodman, Theorem~5.3.
     Each such block is symmetric, invertible, and its own inverse.
 \end{definition}
 
-\begin{definition}[Real canonical Jordan blocks]
+\begin{definition}[Real canonical Jordan blocks]\label{def:real_canonical_jordan_blocks}
     \lean{Matrix.realJordanBlock, Matrix.realConjugatePairBlock,
         Matrix.realConjugatePairJordanBlock, Matrix.complexPairSipMatrix}
     \leanok
+    \uses{def:signed_sip_metric_blocks}
     A real-eigenvalue block is the ordinary real Jordan block $J_n(a)$
     with eigenvalue $a$ and ones on its first superdiagonal.  If
     $a\pm\tau i$ is a non-real conjugate pair, put
@@ -192,9 +193,11 @@ characteristic of Gohberg--Lancaster--Rodman, Theorem~5.3.
 \end{definition}
 
 \begin{theorem}[Canonical blocks are selfadjoint for their metric blocks]
+    \label{thm:canonical_blocks_metric_selfadjoint}
     \lean{Matrix.signedSipMatrix_mul_realJordanBlock,
         Matrix.complexPairSipMatrix_mul_realConjugatePairJordanBlock}
     \leanok
+    \uses{def:signed_sip_metric_blocks, def:real_canonical_jordan_blocks}
     For every sign $\varepsilon$ and every real Jordan block,
     \begin{align}
         (\varepsilon P_n)J_n(a)
@@ -204,7 +207,16 @@ characteristic of Gohberg--Lancaster--Rodman, Theorem~5.3.
     analogous identity with its unsigned $2m$-dimensional reversal metric.
 \end{theorem}
 
+\begin{proof}\leanok
+    For a real-eigenvalue block, reversal changes the first superdiagonal
+    of $J_n(a)$ into the first subdiagonal of $J_n(a)^{\mathsf T}$; the
+    scalar sign multiplies both sides.  For a conjugate pair, simultaneous
+    reversal of the chain and realification coordinates also changes
+    $B(a,\tau)$ into $B(a,\tau)^{\mathsf T}$, giving the unsigned identity.
+\end{proof}
+
 \begin{definition}[Four-dimensional Minkowski selfadjointness]
+    \label{def:four_dimensional_minkowski_selfadjoint}
     \lean{Matrix.minkowskiMetric, Matrix.IsMinkowskiSelfAdjoint}
     \leanok
     Let
@@ -215,9 +227,10 @@ characteristic of Gohberg--Lancaster--Rodman, Theorem~5.3.
     $C^{\mathsf T}M=MC$.
 \end{definition}
 
-\begin{definition}[The four VDDM block patterns]
+\begin{definition}[The four VDDM block patterns]\label{def:vddm_four_block_patterns}
     \lean{Matrix.GLRFourDimensionalPattern}
     \leanok
+    \uses{def:real_canonical_jordan_blocks}
     The four source-indexed patterns are: four real one-dimensional
     blocks; one two-dimensional non-real conjugate-pair block and two real
     one-dimensional blocks; one real Jordan block of size two and two real
