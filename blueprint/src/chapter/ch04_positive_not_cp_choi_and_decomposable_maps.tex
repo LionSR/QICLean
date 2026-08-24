@@ -229,7 +229,7 @@ normalization; it is not a separate Lean theorem.
     so is this tangent, contradicting $\ker H=\R\mathbf 1$.
 
     This proves only the uniqueness assertion of Yamagami's Lemma~3 on
-    p.~523.  It does not prove that $\mathbf 1$ is itself a local maximum, and
+    p.~522.  It does not prove that $\mathbf 1$ is itself a local maximum, and
     it does not prove the cyclic reciprocal inequality.
 \end{proof}
 
@@ -285,9 +285,98 @@ normalization; it is not a separate Lean theorem.
     $s-d$ gives the result for $s\ge d$.
 \end{proof}
 
-This spectral lemma is only one dependency of Yamagami's variational proof.
-It does not establish the cyclic reciprocal inequality or positivity in the
-middle range.
+\begin{theorem}[Yamagami's cyclic Fourier--Hessian prerequisite]
+    \label{thm:yamagami_forward_fourier_hessian}
+    \lean{Yamagami.forwardMatrix,
+        Yamagami.forwardMatrix_apply,
+        Yamagami.forwardMatrix_mulVec,
+        Yamagami.forwardMatrix_add_add,
+        Yamagami.forwardMatrix_eq_circulant,
+        Yamagami.forwardMatrix_nonnegative,
+        Yamagami.forwardMatrix_nonnegative_of_sourceRange,
+        Yamagami.forwardMatrix_mulVec_one,
+        Yamagami.forwardMatrix_transpose_mulVec_one,
+        Yamagami.hessianSymbol,
+        Yamagami.symbol_zero,
+        Yamagami.hessianSymbol_zero,
+        Yamagami.hessianSymbol_pos,
+        Yamagami.hessianSymbol_nonneg,
+        Yamagami.symbol_ne_zero,
+        Yamagami.dft_map_forwardMatrix_mulVec,
+        Yamagami.symbol_neg,
+        Yamagami.dft_map_transpose_forwardMatrix_mulVec,
+        Yamagami.dft_map_hessianMatrix_mulVec,
+        Yamagami.hessianMatrix_forwardMatrix_posSemidef,
+        Yamagami.hessianMatrix_forwardMatrix_mulVec_eq_zero_iff_isScalarVector,
+        Yamagami.forwardMatrix_isUnit_det,
+        Yamagami.functional_eq_lambdaT_inverseOperator_mulVec}
+    \leanok
+    \uses{def:yamagami_stride_one_reciprocal,
+        def:yamagami_nowosad_change_of_variables}
+    On $\Z/d\Z$, let
+    \begin{align}
+        S_{i,j}
+         &=(s-m)\mathbf 1_{j=i}
+           +\sum_{k=1}^{m}\mathbf 1_{j=i+k},
+        &
+        H&=s(S+S^{\mathsf T})-2S^{\mathsf T}S.
+        \label{eq:yamagami_forward_matrix}
+    \end{align}
+    In the range $d\ge3$, $1\le m\le d-2$, and $s\ge d$, the matrix $S$
+    has nonnegative entries, is circulant and invertible, and satisfies
+    \begin{align}
+        S\mathbf 1&=S^{\mathsf T}\mathbf 1=s\mathbf 1,
+        &H&\succeq0,
+        &\ker H&=\R\mathbf 1.
+        \label{eq:yamagami_hessian_package}
+    \end{align}
+    More explicitly, for the unnormalized discrete Fourier transform,
+    \begin{align}
+        \widehat{Sx}_j
+         &=\lambda_j(s)\widehat{x}_j,
+        &
+        \widehat{Hx}_j
+         &=q_j\widehat{x}_j,
+        &
+        q_j
+         &=2\bigl(s\operatorname{Re}\lambda_j(s)
+                   -|\lambda_j(s)|^2\bigr).
+        \label{eq:yamagami_fourier_hessian}
+    \end{align}
+    Here $q_0=0$ and $q_j>0$ for $j\ne0$.  Finally, $Sx$ is the forward
+    denominator and
+    \begin{align}
+        f_{d,m,s}(x)&=\lambda_{S^{-1}}(Sx).
+        \label{eq:yamagami_functional_bridge}
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{lem:yamagami_stride_one_open_disk}
+    Formula~(\ref{eq:yamagami_forward_matrix}) gives nonnegativity and both
+    row-sum identities directly.  Translation is diagonal in the standard
+    character basis; expanding $H$ therefore gives
+    (\ref{eq:yamagami_fourier_hessian}).  The corrected open-disk inequality
+    makes $q_j$ strictly positive off the constant character and also makes
+    every Fourier multiplier of $S$ nonzero.  Thus $S$ is invertible.
+    Parseval's identity proves $H\succeq0$ and identifies its kernel with the
+    constant vectors.  Matrix inversion then reduces
+    $\lambda_{S^{-1}}(Sx)$ term by term to $\sum_i x_i/(Sx)_i$.
+
+    The negative-Hessian matrix $H$ is the one in Yamagami's Lemmas~2--3 on
+    p.~522; the cyclic diagonalization and disk criterion are Lemma~4 and
+    Corollary~5 on p.~523, followed by Lemma~6 on
+    pp.~523--524~\cite{Yamagami1993Cyclic}.
+\end{proof}
+
+Theorem~\ref{thm:yamagami_forward_fourier_hessian} supplies the concrete
+Fourier--Hessian and functional-identification prerequisites for the
+uniqueness argument in Yamagami's Lemma~3.  It does not prove that
+$\mathbf 1$ is a local maximum, carry out the regular-boundary reduction on
+p.~525, or establish the global cyclic reciprocal inequality.  These steps,
+and hence the middle-range positivity problem tracked by issue~\#19, remain
+open.
 
 \begin{lemma}[The first positive coordinate after a singular window]
     \label{lem:yamagami_singular_zero_run}

@@ -127,6 +127,27 @@ printed endpoint and its stride-one correction are recorded separately in
 \cite{gap:yamagami_lemma6_endpoint}; this scope note continues to track only
 the unfinished Choi-type positivity proof.
 
+The cyclic matrix and Hessian prerequisite built from this disk estimate is
+now formalized in
+\doclink{QICLean/Analysis/YamagamiCyclicMatrix}.  In the exact range
+$d\ge3$, $1\le m\le d-2$, and $s\ge d$, the matrix
+\begin{align}
+  S&=(s-m)I+C+\cdots+C^m,
+  &H&=s(S+S^{\mathsf T})-2S^{\mathsf T}S
+\end{align}
+has nonnegative entries, row and column sum $s$, is invertible, and satisfies
+$H\succeq0$ with $\ker H=\mathbb R\mathbf1$.  The proof diagonalizes $S$
+and $H$ by the finite Fourier transform and uses
+\leanid{Yamagami.hessianSymbol\_pos} off the constant character.  The theorem
+\leanid{Yamagami.functional\_eq\_lambdaT\_inverseOperator\_mulVec} also proves
+the previously missing identity
+\begin{align}
+  f_{d,m,s}(x)&=\lambda_{S^{-1}}(Sx).
+\end{align}
+These are the algebraic ingredients in Yamagami's Lemmas~2--4 and
+Corollary~5 on pp.~522--523, using the corrected Lemma~6 range on
+pp.~523--524~\cite{Yamagami1993Cyclic}.
+
 The accompanying definitions retain Yamagami's forward window and provide the
 explicit index-negation bridge to the backward Choi window.  The
 simultaneous-singularity part of the projective-boundary analysis is now
@@ -174,19 +195,16 @@ positive local maximum is scalar.  More precisely,
 \leanid{Yamagami.pulledBackTangent\_mem\_hessianKernel\_and\_not\_isScalarVector}
 shows that a non-scalar maximum would give the non-scalar tangent
 $sS^{-1}\log((Sa)/s)$ in $\ker H$.  This is the uniqueness assertion of
-Yamagami's Lemma~3 on p.~523, not a proof that the unit vector is itself a
+Yamagami's Lemma~3 on p.~522, not a proof that the unit vector is itself a
 local maximum.
 
-These results are still not the cyclic reciprocal inequality.  The
-strictly-positive global inequality, including the cyclic specialization of
-the Hessian hypotheses and the required existence or attainment argument,
-and the separate regular-boundary induction remain open.  In particular, no
-current declaration identifies the generic composition
-$x\mapsto\lambda_{S^{-1}}(Sx)$ used by the Nowosad layer with the concrete
-stride-one \leanid{Yamagami.functional}.  The direct theorem for Lean's
-literal \(0/0=0\) functional is correspondingly conditional on an already
-proved strictly positive inequality; it supplies none of these remaining
-steps.
+These results are still not the cyclic reciprocal inequality.  The cyclic
+Fourier--Hessian specialization and the functional identity are now proved,
+but no current declaration proves that the unit vector is a local maximum,
+carries out Yamagami's regular-boundary reduction on p.~525, or concludes the
+global strictly positive inequality.  The direct theorem for Lean's literal
+\(0/0=0\) functional remains conditional on that global interior input.  Thus
+the regular-boundary and global steps, and hence issue~\#19, remain open.
 
 Two verifiable computations locate the obstruction to elementary summand
 bounds in the remaining range.  First, the estimate is tight in two distinct
