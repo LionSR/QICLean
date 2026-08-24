@@ -1469,10 +1469,10 @@ is false under the single printed hypothesis.
     traces to show that \(\tr(\sigma)=1\) and
     \(\sigma\otimes X=\Id_{md}\) force
     \(\sigma=m^{-1}\Id_m\) and \(X=m\Id_d\).
-  These helpers neither compare the matched block multiplicities nor transport
-  the ambient Schwarz defect to the individual weighted full-matrix block
-  maps. That remaining source-facing assembly is tracked by #417. No
-  modified-product proof or complete-positivity hypothesis is introduced here.
+  These facts are assembled below to compare the matched block
+  multiplicities and transport the ambient Schwarz defect to the individual
+  weighted full-matrix block maps. No modified-product proof or
+  complete-positivity hypothesis is introduced.
 
 * The final classification step at source lines 1660--1663 is formalized
   under exactly Wolf's positive, trace-preserving, positive-inverse, and
@@ -1574,13 +1574,54 @@ is false under the single printed hypothesis.
     inverse is Wolf's output-to-input permutation `pi`, so
     `(Tbar X) j` depends only on `X (pi j)` and `d (pi j) = d j`.
 
-* This completes exactly the bounded pure-face/permutation passage at source
-  lines 1641--1659, not all of Theorem 6.16. The remaining **existence
-  assembly** for a `MultiCycleDecomposition` must still compare the matched
-  multiplicities `m`, transport the ordinary Schwarz inequality to the
-  matched weighted block maps, combine the already formalized exclusion of
-  the transpose alternative, and obtain the exact weighted Equation (6.68).
-  Those steps remain tracked by #417 and #411. The conditional
+* The scalar/multiplicity comparison and ordinary block-Schwarz transport at
+  source lines 1660--1663 are formalized in
+  `QICLean.Channel.Peripheral.DensityBlockSchwarz` and
+  `QICLean.Channel.Peripheral.MatchedBlockEndomorphism`:
+  - `IsPositiveMap.map_one_and_peripheralProjection_one_of_tracePreserving_of_isSchwarzMap`
+    proves that both `T` and its recurrent projection fix the identity;
+  - `Matrix.exists_densityBlockIdentityCoordinates` eliminates the zero
+    summand, proves `n = D`, and identifies every density factor as
+    `sigma k = (m k : ℂ)⁻¹ • 1`;
+  - `Matrix.DirectSumFacePermutation.multiplicity_eq_of_fixed_scalar_identity`
+    uses the matched block action, ordinary block trace preservation, and the
+    already proved equality of the `d` dimensions to obtain
+    `m i = m (F.blockEquiv i)`;
+  - `Matrix.DirectSumFacePermutation.blockMap_one_of_fixed_scalar_identity`
+    proves unitality of each raw matched block map;
+  - `Matrix.densityBlockWithZeroEmbedding_single_conjTranspose_mul` computes
+    the extra inverse-multiplicity scalar introduced by multiplication in the
+    weighted coordinates;
+  - `Matrix.DirectSumFacePermutation.rawBlock_isSchwarzMap_of_ambientDensityBlocks`
+    compresses the ambient Schwarz defect. Before using the matched
+    multiplicity equality, its two coefficients are respectively
+    `c_i * c_j` and `c_j * c_j`, where `c_k = (m k : ℂ)⁻¹`. Only then
+    does it cancel the common positive scalar and reflect positivity through
+    `1 ⊗ₖ B`;
+  - `Matrix.DirectSumFacePermutation.matchedBlockEndomorphism_isSchwarzMap_of_raw`
+    transports that raw inequality along the proved equality of the `d`
+    dimensions;
+  - `IsPositiveMap.exists_peripheralDensityBlockSchwarz` consumes the exact
+    face-permutation witnesses above and returns `n = D`, maximally mixed
+    weights, equality of matched multiplicities, raw block unitality, the raw
+    ordinary Schwarz inequalities, and Schwarz for the canonically reindexed
+    matched endomorphisms. Its hypotheses keep Schwarz for `T` separate from
+    Schwarz for `T*`.
+
+  This also records two printed defects without silently changing the source.
+  Source line 1499 writes `1_(m_k) ⊗ rho_k`, although
+  `rho_k ∈ M_(m_k)` and the full algebra is `M_(d_k)`; the compatible
+  identity is `1_(d_k) ⊗ rho_k`, written `sigma k ⊗ₖ 1_(d_k)` in the
+  formal tensor-factor order. Source lines 1614--1616 require the permutation
+  to preserve the whole block dimension `d_k * m_k`, whereas the pure-face
+  argument at lines 1653--1656 proves only equality of `d_k`; the new trace
+  calculation supplies the missing equality of `m_k`.
+
+* This completes the bounded pure-face/permutation passage and the repaired
+  scalar block-Schwarz step, but not all of Theorem 6.16. The remaining
+  **existence assembly** must apply the already formalized exclusion of the
+  transpose alternative to the matched endomorphisms and prove the exact
+  weighted Equation (6.68). That step remains tracked by #411. The conditional
   `CycleStructure` and `MultiCycleDecomposition` objects above are consumers
   of that later theorem; they are not substitutes for it.
 
