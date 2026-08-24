@@ -27,7 +27,9 @@ This file proves positivity for the explicit case \(d=3,n=1\) and for the
 top of Wolf's range, \(n=d-2\) with \(d\ge3\).  The scalar input for the top
 slice is a reciprocal inequality valid for an arbitrary permutation.  The
 complete bottom slice \(n=1\) is proved in `QICLean.Channel.ChoiTypeMap.Positivity`.
-The middle range \(2\le n\le d-3\) and indecomposability remain open.
+The middle range \(2\le n\le d-3\), and hence positivity throughout Wolf's
+range, is proved in `QICLean.Channel.ChoiTypeMap.YamagamiPositivity`.
+The final indecomposability theorem remains separate.
 
 ## References
 

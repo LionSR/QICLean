@@ -7,13 +7,13 @@
 
 \input{command}
 
-\title{Scope of the Choi-Type Positivity Subcases (Wolf Example~3.1)}
+\title{Resolution of the Choi-Type Positivity Scope (Wolf Example~3.1)}
 \author{}
 \date{2026-07-02, revised 2026-08-24}
 
 \begin{document}
 \maketitle
-\gapnote{scope-restriction}{open}
+\gapnote{scope-restriction}{resolved}
 
 \section{Source statement}
 
@@ -30,9 +30,10 @@ Wolf's Chapter~3, Example~3.1 introduces the Choi-type maps
 The source states that \(T_C\) is positive and indecomposable for every
 \(1\le n\le d-2\).  No nonzero-coordinate hypothesis is present.
 
-\section{Restricted statement now proved}
+\section{Endpoint statements}
 
-The present development proves two slices of the positivity assertion.
+The endpoint arguments were formalized first and remain useful independent
+proofs of two slices of the positivity assertion.
 
 First, at the bottom of the source's range, $n=1$, the development proves
 positivity of $T_C$ on all positive semidefinite inputs for every $d\ge3$.
@@ -84,28 +85,31 @@ of the cyclic estimate is classical: it is due to Ando (\emph{Positivity of
 certain maps}, seminar notes, 1985), as recorded in the introduction of
 \cite{Yamagami1993Cyclic}.
 
-\section{Missing hypotheses and elimination plan}
+\section{Resolution by Yamagami's variational argument}
 
-This is a scope restriction, not the source theorem.  The full positivity
-statement still requires the nonnegative cyclic reciprocal estimate
+The former scope restriction is resolved by the nonnegative cyclic reciprocal
+estimate
 \begin{align}
   \sum_{i\in\mathbb Z/d\mathbb Z}
   \frac{x_i}{(d-n)x_i+\sum_{k=1}^{n}x_{i-k}}\le 1
   \qquad (x_i\ge0,\;2\le n\le d-3),
 \end{align}
-with the usual zero-term convention; the cases $n=1$ and $n=d-2$ are done,
-as is $n=d-1$, which lies outside the source's range.  Once this estimate is
-available, it should be applied to \(x_i=|v_i|^2\) to obtain the rank-one
-statement for the full parameter range; the spectral decomposition
-step\footnote{\leanid{Matrix.isPositiveMap\_of\_forall\_vecMulVec\_posSemidef}.}
-already extends any such rank-one statement to positivity of \(T_C\) on all
-positive semidefinite matrices.
+with the usual zero-term convention. The declaration
+\leanid{Yamagami.functional\_card\_le\_one} proves the corresponding forward
+inequality at the cardinal parameter. Index negation gives
+\leanid{Matrix.choiTypeRankOneWeight\_reciprocal\_sum\_middle}; applying it to
+$x_i=|v_i|^2$ proves
+\leanid{Matrix.choiTypeMap\_vecMulVec\_posSemidef\_middle}. Spectral
+decomposition then gives
+\leanid{Matrix.choiTypeMap\_isPositiveMap} for every $d\ge3$ and
+$1\le n\le d-2$.\footnote{These declarations are in
+\doclink{QICLean/Channel/ChoiTypeMap/YamagamiPositivity}.}
 
-The remaining estimate is genuinely harder than the proved cases.  The now
-formalized case $n=1$ is Tanahashi--Tomiyama's Theorem~1, whose Lemmas~2--3
-give the exact proof route used here~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable},
-and the full range
-$1\le n\le d-1$ to Yamagami~\cite{Yamagami1993Cyclic}, whose proof is
+The middle estimate is genuinely harder than the two endpoint cases. The
+case $n=1$ is Tanahashi--Tomiyama's Theorem~1, whose Lemmas~2--3 give the exact
+proof route used here~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable},
+and the full range $1\le n\le d-1$ is due to
+Yamagami~\cite{Yamagami1993Cyclic}, whose proof is
 variational: it combines Nowosad's uniqueness theorem for critical points of
 \(x\mapsto\sum_i x_i/(Sx)_i\) on the positive cone, a spectral condition on
 the Hessian at the constant vector (checked through the eigenvalues of the
@@ -124,8 +128,8 @@ $I+C+\cdots+C^{d-1}$ has eigenvalue zero on every nontrivial character, giving
 equality rather than the printed strict disk bound.  The endpoint becomes
 valid for $s>d$, while $m\le d-2$ is the exact range needed here.  The false
 printed endpoint and its stride-one correction are recorded separately in
-\cite{gap:yamagami_lemma6_endpoint}; this scope note continues to track only
-the unfinished Choi-type positivity proof.
+\cite{gap:yamagami_lemma6_endpoint}; the corrected range is exactly the range
+used in the resolved Choi-type positivity proof.
 
 The cyclic matrix and Hessian prerequisite built from this disk estimate is
 now formalized in
@@ -198,16 +202,19 @@ $sS^{-1}\log((Sa)/s)$ in $\ker H$.  This is the uniqueness assertion of
 Yamagami's Lemma~3 on p.~522, not a proof that the unit vector is itself a
 local maximum.
 
-These results are still not the cyclic reciprocal inequality.  The declaration
-\leanid{Yamagami.functional\_le\_deleteLastCoordinate} now proves Yamagami's
+The declaration
+\leanid{Yamagami.functional\_le\_deleteLastCoordinate} proves Yamagami's
 regular-boundary recurrence on p.~525 in the range $N\ge3$,
 $2\le m\le N-2$, and $s\ge N$, allowing the reduced vector to have singular
-denominators under Lean's totalized convention.  No current declaration proves
-that the unit vector is a local maximum or assembles the boundary reductions
-into a compact global maximum.  The direct theorem for Lean's literal
-\(0/0=0\) functional remains conditional on that global interior input.  Thus
-the full cyclic reciprocal inequality and the middle-range Choi positivity
-theorem remain open.
+denominators under Lean's totalized convention. In the completed proof, strong
+induction uses this recurrence at regular boundary points. For a hypothetical
+positive vector with value greater than one, normalization produces a compact
+superlevel closure in the standard simplex. The simultaneous-singularity
+estimate excludes boundary points with a zero denominator; ordinary continuity
+and the inductive boundary estimate exclude the remaining boundary points. A
+maximizer is therefore strictly positive. The Fourier--Hessian theorem and
+Nowosad's uniqueness result make it scalar, where the functional equals one,
+which is the required contradiction.
 
 Two verifiable computations locate the obstruction to elementary summand
 bounds in the remaining range.  First, the estimate is tight in two distinct
@@ -215,8 +222,8 @@ regimes: at the constant vector, where every summand equals \(1/d\), and
 along the geometric configurations \(x_i=t^i\) (\(i=0,\dots,d-1\)) as
 \(t\to\infty\), where each of the \(d-n\) summands whose backward window
 avoids the wrap-around tends to \(1/(d-n)\) and the remaining summands
-vanish, so the sum again approaches \(1\).  A usable summand bound must be
-exact in both regimes.  Second, the argument proving \(n=d-2\) does not
+vanish, so the sum again approaches \(1\). Any elementary summand bound would
+have to be exact in both regimes. Second, the argument proving \(n=d-2\) does not
 extend.  With \(m=d-n\) and
 \(\delta_i=\sum_{k=1}^{m-1}(x_i-x_{i+k})\), the weight is \(a_i=T+\delta_i\)
 for every \(n\), and the estimate is equivalent (for \(T>0\) and positive
@@ -237,18 +244,19 @@ Fourier form
 \(\zeta=e^{i\pi/3}\), where the two sides are \(7\) and \(6\).  This failure
 is consistent with the historical record: the case \((d,n)=(5,2)\) required a
 separate argument~\cite{Osaka1991Indecomposable}, and the full range was
-settled only by Yamagami's variational proof.  A formalization of the
-remaining range must therefore either follow the variational route or find a
-new proof.  This is tracked by \href{https://github.com/LionSR/QICLean/issues/19}{QICLean issue \#19}.  The indecomposability
+settled only by Yamagami's variational proof. The formalization therefore
+follows the variational route described above and resolves
+\href{https://github.com/LionSR/QICLean/issues/19}{QICLean issue \#19}. The indecomposability
 assertion of the same source paragraph is separate and is tracked by
 \href{https://github.com/LionSR/QICLean/issues/18}{QICLean issue \#18}.
 
 \section{Classification}
 
-\emph{Scope restriction.}  The current theorems are mathematically correct as
-the $n=1$ and $n=d-2$ positive-map families, but they should not be cited as
-the formalization of Wolf's full Choi-type positivity theorem, whose range is
-$1\le n\le d-2$.
+\emph{Resolved.} The theorem
+\leanid{Matrix.choiTypeMap\_isPositiveMap} has exactly Wolf's hypotheses
+$d\ge3$ and $1\le n\le d-2$ and concludes positivity of the stated Choi-type
+map. The former endpoint-only scope restriction is removed. Wolf's separate
+indecomposability assertion remains tracked by QICLean issue~\#18.
 
 \bibliographystyle{alpha}
 \bibliography{references}

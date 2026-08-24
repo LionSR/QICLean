@@ -180,13 +180,13 @@ Thus $0<\gamma<1$ gives the strict negativity in
     \leanid{Matrix.eomKyePairing\_haAGamma\_choiTypeMap}, and
     \leanid{Matrix.choiTypeMapFin\_haAGamma\_omegaVec\_quadraticForm\_re\_neg}.}
 
-This completes the source algebra of the witness, but it does not prove that
-$T_C$ is positive. Positivity in the middle range $2\le n\le d-3$ remains
-the content of \ghissue{19}. After that hypothesis is available, a final
-theorem combining positivity with the negative witness to conclude
-indecomposability still remains to be stated; this is tracked by
-\ghissue{18}. No atomicity conclusion is asserted by the present
-formalization.
+This completes the source algebra of the witness. Positivity throughout the
+source range is now proved by
+\leanid{Matrix.choiTypeMap\_isPositiveMap}; the former middle-range gap is
+resolved in \ghissue{19}. A final theorem combining positivity with the
+negative witness to conclude indecomposability still remains to be stated;
+this is tracked by \ghissue{18}. No atomicity conclusion is asserted by the
+present formalization.
 
 \section{Classification}
 
@@ -194,8 +194,8 @@ formalization.
 formula, both $V_2$ decompositions on pp.~594--595, their tensor-factor
 transport, the Eom--Kye orientation, the normalization factor $d$, and the
 value $\gamma^2-1$ are formalized for every $d\ge3$ and
-$1\le n\le d-2$. The middle-range positivity theorem and the final
-indecomposability theorem remain open. No atomicity conclusion and no
+$1\le n\le d-2$. Positivity in this range is also formalized. The final
+indecomposability theorem remains open. No atomicity conclusion and no
 alternative Choi-matrix or partial-transpose ansatz is asserted.
 
 \bibliographystyle{alpha}
