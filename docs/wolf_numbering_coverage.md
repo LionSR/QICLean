@@ -813,12 +813,13 @@ The surrounding complexity prose at source lines 80–83 is not formalized.
 
 - `LinearMap.IsSymmetric.eigenvalues_le_of_sub_isPositive` proves the
   cross-operator Weyl monotonicity step by a finite-dimensional variational
-  argument. For the `j`th decreasing eigenvalue, the first `j + 1`
-  eigenspaces of the smaller operator and the last `d - j` eigenspaces of the
-  larger operator have dimensions summing to `d + 1`. A common nonzero vector
-  gives the lower and upper quadratic-form bounds, while positivity of the
-  difference gives the middle inequality. Thus no pointwise cross-matrix
-  eigenvalue comparison is assumed ✓
+  argument. For the `j`th decreasing eigenvalue, the span of the first
+  `j + 1` ordered eigenvectors of the smaller operator and the span of the
+  last `d - j` ordered eigenvectors of the larger operator have dimensions
+  summing to `d + 1`. A common nonzero vector gives the lower and upper
+  quadratic-form bounds, while positivity of the difference gives the middle
+  inequality. Thus no pointwise cross-matrix eigenvalue comparison is assumed
+  ✓
 - `Matrix.IsHermitian.eigenvalues₀_mono` and
   `Matrix.IsHermitian.eigenvalues_mono` transport this result to Hermitian
   matrices in the Loewner order:
