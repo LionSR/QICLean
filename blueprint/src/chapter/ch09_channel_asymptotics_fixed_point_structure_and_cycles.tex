@@ -543,6 +543,16 @@ cycle decomposition of~\cite[Theorem~6.16]{Wolf2012Quantum}. The
 multi-cycle decomposition refines the single-cycle case to handle
 arbitrary peripheral periods.
 
+There is a source-contract correction at the existence boundary.  Wolf's
+proof uses the Schwarz inequality for $T$ to exclude the transpose branch,
+but invokes Theorem~6.14 on the recurrent projection $I$, whose printed
+hypothesis requires $I^*$ to be Schwarz.  Accordingly, the source-facing
+assembly follows the printed proof under Schwarz hypotheses for both $T$ and
+$T^*$; the distinction and exact source lines are recorded in
+\cite{gap:wolf_theorem6_16_schwarz_orientation}.  The definitions below are
+conditional data and do not assert that this existence theorem is already
+proved.
+
 \begin{definition}[Block-permutation structure]
     \label{def:cycle_structure}
     \lean{CycleStructure}

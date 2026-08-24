@@ -11,15 +11,18 @@ import Mathlib.Logic.Equiv.Fin.Rotate
 
 This file develops an explicit multi-cycle refinement of the
 block-permutation formalization developed in
-`TNLean.Channel.Peripheral.Cycles`, in the form needed for the
+`QICLean.Channel.Peripheral.Cycles`, in the form needed for the
 asymptotic-image side of
 Wolf, *Quantum Channels & Operations*, Theorem 6.16.
 
-Concretely, Wolf Theorem 6.16 describes the asymptotic dynamics of a general
-trace-preserving positive Schwarz map `T` as a permutation of Wedderburn
-blocks, with each block transported by a unitary.  Such a permutation may
-already be represented abstractly by the `CycleStructure` bundled data of
-`TNLean.Channel.Peripheral.Cycles`, whose underlying permutation `σ` is
+Concretely, Wolf Theorem 6.16 describes the asymptotic dynamics as a
+permutation of Wedderburn blocks, with each block transported by a unitary.
+Its printed proof uses the Schwarz inequality for both `T` and the trace
+adjoint of its recurrent projection; the corrected source-facing contract is
+recorded in `docs/paper-gaps/wolf_theorem6_16_schwarz_orientation.tex`.
+Such a permutation may already be represented abstractly by the
+`CycleStructure` bundled data of
+`QICLean.Channel.Peripheral.Cycles`, whose underlying permutation `σ` is
 allowed to have multiple disjoint cycles.  The present file refines that
 view by choosing an *explicit* cycle-index type `ι`, a per-cycle period
 `period : ι → ℕ`, and the corresponding projection families, stating the
@@ -27,12 +30,11 @@ disjoint-union-of-cycles structure as separate data.
 
 The corner-preservation proofs reuse the per-orbit proof pattern of
 `preserves_corner_pow_of_cyclic_decomp` from
-`TNLean.Channel.Peripheral.CyclicDecomposition`, adapted to the setting
+`QICLean.Channel.Peripheral.CyclicDecomposition`, adapted to the setting
 where the per-cycle projections do not sum to the identity.  The
-*existence direction* — that every TP positive Schwarz map admits such a
-decomposition on its asymptotic image — depends on Wolf Theorem 6.14
-(Wedderburn decomposition of the fixed-point algebra, issues #27/#360)
-and is left to future work.
+*existence direction* depends on Wolf Theorem 6.14 together with the
+remaining density-block classification and assembly lemmas, and is left to
+future work.
 
 ## Main definitions
 
@@ -77,7 +79,7 @@ element of the cycle-index type `ι` — together with:
   and `T (X * P c k) = T X * T (P c k)`.
 
 This refines the bundled permutation data of
-`TNLean.Channel.Peripheral.Cycles.CycleStructure`: a
+`QICLean.Channel.Peripheral.Cycles.CycleStructure`: a
 `MultiCycleDecomposition` chooses an explicit cycle-index type together
 with per-cycle periods and projection families for the underlying
 permutation structure, while `toCycleStructure` forgets that extra
@@ -86,9 +88,9 @@ organisation.
 In Wolf's Theorem 6.16, the cycle-index `ι` runs over the equivalence classes
 of Wedderburn blocks that share both a common multiplicity and a common
 period under the block permutation.  The existence of this data on the
-asymptotic image of an arbitrary TP positive Schwarz map depends on the
-Wedderburn decomposition of the fixed-point algebra (Wolf Theorem 6.14) and is
-deferred. -/
+asymptotic image under the corrected two-orientation Schwarz contract depends
+on the Wedderburn decomposition of the fixed-point algebra (Wolf Theorem 6.14)
+and is deferred. -/
 structure MultiCycleDecomposition.{u} (T : MatrixEnd D) where
   /-- Finite index type for the cycles. -/
   ι : Type u
@@ -303,10 +305,10 @@ projections are the flattened family; the cyclic action on the sigma
 index matches the per-cycle action on each `Fin (period c)`.
 
 This connects multi-cycle decompositions to the block-permutation theory:
-given a Wolf Theorem 6.16 Wedderburn-based existence result (currently blocked
-on issues #27/#360), the resulting `MultiCycleDecomposition` can be flattened
-to a `CycleStructure` for use with
-`TNLean.Channel.Peripheral.Cycles`. -/
+given a source-facing Wolf Theorem 6.16 Wedderburn-based existence result under
+the corrected Schwarz contract, the resulting `MultiCycleDecomposition` can be
+flattened to a `CycleStructure` for use with
+`QICLean.Channel.Peripheral.Cycles`. -/
 noncomputable def toCycleStructure (M : MultiCycleDecomposition T) :
     CycleStructure T :=
   CycleStructure.ofPermDecomp (T := T)
