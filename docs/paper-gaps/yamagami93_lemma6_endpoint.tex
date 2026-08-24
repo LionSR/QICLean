@@ -71,9 +71,12 @@ $m\le n-2$ with $s\ge n$, or the endpoint $m=n-1$ with $s>n$.
 
 \textbf{Verdict: false source endpoint, resolved for the required stride-one
 range.}  This correction concerns only Lemma~6's open-disk condition.  It
-does not by itself prove Yamagami's cyclic reciprocal inequality: the Nowosad
-critical-point step and the regular and singular projective-boundary arguments
-remain separate dependencies.
+does not by itself prove Yamagami's cyclic reciprocal inequality.  The finite
+Nowosad theorem and the uniqueness assertion of Yamagami's Lemma~3 are now
+formalized, and the simultaneous-singularity boundary count is also complete.
+What remains includes the bridge from the generic Nowosad functional to the
+concrete cyclic \leanid{Yamagami.functional}, the proof that the unit vector is
+a local maximum, and the separate regular-boundary induction.
 
 \bibliographystyle{alpha}
 \bibliography{references}

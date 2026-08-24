@@ -130,8 +130,13 @@ nonnegative vector through the uniform perturbation
 \doclink{QICLean/Analysis/YamagamiBoundary}.}
 This conditional theorem does not supply the strictly positive interior
 inequality.  It also does not replace Yamagami's separate regular-boundary
-reduction.  The interior uniqueness input, tracked separately as
-\ghissue{448}, and the regular-boundary induction remain prerequisites of the
+reduction.  The finite-coordinate Nowosad theorem and the uniqueness assertion
+of Yamagami's Lemma~3 are now formalized in
+\leanid{Nowosad.finiteCoordinate\_theorem\_one\_eight} and
+\leanid{Yamagami.lemma\_three\_localMax\_isScalar}.  They do not identify the
+generic Nowosad functional with the concrete cyclic
+\leanid{Yamagami.functional}, prove that the unit vector is a local maximum,
+or supply the regular-boundary induction.  These remain prerequisites of the
 full cyclic inequality.
 
 \section{Verdict}
