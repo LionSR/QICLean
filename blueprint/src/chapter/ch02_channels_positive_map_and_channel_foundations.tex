@@ -221,3 +221,29 @@ abstract completely positive map.
         \label{eq:channel_density_matrices}
     \end{align}
 \end{definition}
+
+\begin{theorem}[Convex-extreme density states]
+    \label{thm:extreme_density_matrices}
+    \lean{Matrix.pureDensityMatrices,
+        Matrix.mem_pureDensityMatrices,
+        Matrix.IsRankOneOrthogonalProjection.mem_densityMatrices,
+        Matrix.IsUnitVector.isRankOneOrthogonalProjection_pureStateProj,
+        Matrix.IsRankOneOrthogonalProjection.exists_isUnitVector_pureStateProj,
+        Matrix.IsRankOneOrthogonalProjection.mem_extremePoints_densityMatrices,
+        Matrix.densityMatrices_eq_convexHull_pureDensityMatrices,
+        Matrix.extremePoints_densityMatrices,
+        Matrix.mem_extremePoints_densityMatrices_iff}
+    \leanok
+    \uses{def:density_matrices}
+    A density matrix is convex-extreme if and only if it is a rank-one
+    orthogonal projection. In Wolf's terminology, these and only these are
+    the pure density states of a full matrix algebra.
+\end{theorem}
+
+\begin{proof}\leanok
+    The spectral decomposition expresses every density matrix as a convex
+    combination of its unit rank-one eigenprojectors, with the eigenvalues as
+    nonnegative weights summing to one. Conversely, positivity forces every
+    positive summand dominated by a rank-one projector to lie on the same
+    nonnegative ray; the trace-one condition fixes its coefficient to one.
+\end{proof}

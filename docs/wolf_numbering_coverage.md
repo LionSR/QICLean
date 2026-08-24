@@ -1467,13 +1467,26 @@ is false under the single printed hypothesis.
     `Σ c : ι, Fin (period c)`, using `Equiv.Perm.sigmaCongrRight` of
     per-cycle cyclic shifts.
 
+* The density-state convex geometry used at source lines 1641--1652 is now
+  formalized without introducing a second block coordinate system:
+  - `Matrix.extremePoints_densityMatrices` identifies the convex-extreme
+    density matrices in a full matrix algebra with the rank-one orthogonal
+    projections, using the spectral decomposition in Wolf's Chapter 1 sense.
+  - `Matrix.directSumDensityMatrices` is the positive, total-trace-one state
+    space in the dependent matrix-family coordinates already used by the
+    direct-sum map APIs.
+  - `Matrix.extremePoints_directSumDensityMatrices` identifies its
+    convex-extreme points with families supported on one block, where the
+    occupied block is a rank-one orthogonal projection.
+
 * The remaining **existence direction** — that every trace-preserving positive
   map for which both `T` and `T*` satisfy the Schwarz inequality admits a
   `MultiCycleDecomposition` on its asymptotic image, with the cycles coming
   from the now-formalized density-block decomposition of the fixed-point
-  space — now requires deriving the density-block face permutation and equal
-  dimensions, and assembling the exact weighted Equations (6.66)--(6.68).
-  The conditional `CycleStructure` and
+  space — now requires proving that the induced positive inverse permutes
+  these now-characterized density-block faces with equal dimensions, and
+  assembling the exact weighted Equations (6.66)--(6.68). The conditional
+  `CycleStructure` and
   `MultiCycleDecomposition` objects above are consumers of that theorem; they
   are not substitutes for the missing source-facing declaration.
 
