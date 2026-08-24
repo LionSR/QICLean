@@ -629,12 +629,10 @@ classification theorem is already proved.
     $\tr(\sigma)=1$ and $\sigma\otimes X=\Id_{md}$, then
     $\sigma=m^{-1}\Id_m$ and $X=m\Id_d$.
 
-    These auxiliary facts are needed before the matched-multiplicity comparison
+    These auxiliary facts are used below in the matched-multiplicity comparison
     and the transport of the ambient Schwarz defect to an individual weighted
-    full-matrix block map at source lines 1660--1663. They establish neither
-    remaining step; that source-facing assembly remains open. This is not a
+    full-matrix block map at source lines 1660--1663. This is not a
     modified-product argument.
-    % Tracking: GitHub issue #417.
 \end{theorem}
 
 \begin{proof}
@@ -807,6 +805,121 @@ classification theorem is already proved.
     trace-preserving; their two-sided inverse identities imply injections in
     both directions, and equality of finite matrix-space dimensions gives
     $d_i=d_{\tau(i)}$.
+\end{proof}
+
+\begin{theorem}[Schwarz inequalities on matched density blocks]
+    \label{thm:wolf_cycle_density_block_schwarz}
+    \lean{Matrix.densityBlockWithZeroPrincipalCompression,
+        Matrix.densityBlockWithZeroPrincipalCompression_apply,
+        Matrix.densityBlockWithZeroPrincipalCompression_embedding,
+        Matrix.densityBlockWithZeroPrincipalCompression_one,
+        Matrix.densityBlockWithZeroPrincipalCompression_posSemidef,
+        Matrix.densityBlockWithZeroEmbedding_eq_one_dimension,
+        Matrix.densityBlockWithZeroEmbedding_eq_one_block,
+        Matrix.densityBlockWithZeroEmbedding_eq_one,
+        Matrix.exists_densityBlockIdentityCoordinates,
+        Matrix.densityBlockWithZeroEmbedding_single_conjTranspose_mul,
+        Matrix.densityBlockMap_fixed_identityCoordinates,
+        Matrix.DirectSumFacePermutation.multiplicity_eq_of_fixed_scalar_identity,
+        Matrix.DirectSumFacePermutation.blockMap_one_of_fixed_scalar_identity,
+        Matrix.DirectSumFacePermutation.rawBlock_isSchwarzMap_of_ambientDensityBlocks,
+        IsPositiveMap.map_one_and_peripheralProjection_one_of_tracePreserving_of_isSchwarzMap,
+        Matrix.DirectSumFacePermutation.matchedBlockEndomorphism,
+        Matrix.DirectSumFacePermutation.matchedBlockInverseEndomorphism,
+        Matrix.DirectSumFacePermutation.matchedBlockEndomorphism_apply,
+        Matrix.DirectSumFacePermutation.matchedBlockInverseEndomorphism_apply,
+        Matrix.DirectSumFacePermutation.matchedBlockEndomorphism_isPositiveMap,
+        Matrix.DirectSumFacePermutation.matchedBlockInverseEndomorphism_isPositiveMap,
+        Matrix.DirectSumFacePermutation.matchedBlockEndomorphism_isTracePreservingMap,
+        Matrix.DirectSumFacePermutation.matchedBlockInverseEndomorphism_isTracePreservingMap,
+        Matrix.DirectSumFacePermutation.matchedBlockEndomorphism_leftInverse,
+        Matrix.DirectSumFacePermutation.matchedBlockEndomorphism_rightInverse,
+        Matrix.DirectSumFacePermutation.matchedBlockInverseEndomorphism_comp,
+        Matrix.DirectSumFacePermutation.matchedBlockEndomorphism_comp_inverse,
+        Matrix.DirectSumFacePermutation.matchedBlockEndomorphism_bijective,
+        Matrix.DirectSumFacePermutation.matchedBlockInverseEndomorphism_eq_canonicalInverse,
+        Matrix.DirectSumFacePermutation.matchedBlockCanonicalInverse_isPositiveMap,
+        Matrix.DirectSumFacePermutation.matchedBlockEndomorphism_isSchwarzMap_of_raw,
+        IsPositiveMap.exists_peripheralDensityBlockSchwarz}
+    \leanok
+    \uses{def:positive_map,def:trace_preserving,
+        def:abstract_schwarz_inequality,
+        thm:wolf_cycle_density_block_face_permutation}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, with $D>0$.
+    Suppose separately that $T$ and its trace-pairing adjoint $T^*$ satisfy
+    the Schwarz inequality. In the density-block coordinates and notation of
+    Theorem~\ref{thm:wolf_cycle_density_block_face_permutation}, the zero
+    summand has dimension zero and
+    \begin{align}
+        n&=D, &
+        \sigma_k&=m_k^{-1}\Id_{m_k}. \label{eq:cycle_mixed_weights}
+    \end{align}
+    If $\tau$ is the source-to-target block permutation, then
+    \begin{align}
+        m_i&=m_{\tau(i)}, &
+        \bar T_{i,\tau(i)}(\Id_{d_i})&=\Id_{d_{\tau(i)}}. \label{eq:cycle_matched_multiplicity}
+    \end{align}
+    For every $X\in\MN{d_i}$, the raw matched block map satisfies
+    \begin{align}
+        \bar T_{i,\tau(i)}(X^\dagger X)
+        -\bar T_{i,\tau(i)}(X^\dagger)
+         \bar T_{i,\tau(i)}(X)&\succeq0. \label{eq:cycle_raw_schwarz}
+    \end{align}
+    Transporting along $d_i=d_{\tau(i)}$ gives an endomorphism of
+    $\MN{d_i}$ with the ordinary Schwarz property. Together with the matched
+    block conclusions of
+    Theorem~\ref{thm:wolf_cycle_density_block_face_permutation}, this
+    endomorphism is positive, trace preserving, bijective, and has a positive
+    inverse, exactly the hypotheses needed for the subsequent exclusion of
+    matrix transposition.
+
+    Two printed dimension defects are kept explicit. At source line 1499,
+    $\rho_k\in\MN{m_k}$ and the full algebra acts on the $d_k$ factor, so the
+    compatible identity is $\Id_{d_k}\otimes\rho_k$, not the printed
+    $\Id_{m_k}\otimes\rho_k$; in the formal tensor-factor order this is
+    $\sigma_k\otimes\Id_{d_k}$. At source lines 1614--1616 the statement asks
+    $\pi$ to preserve the dimension $d_km_k$ of the whole space
+    $\mathcal H_k$, whereas the pure-face argument at lines 1653--1656 proves
+    only equality of $d_k$. The equality of $m_k$ in
+    (\ref{eq:cycle_matched_multiplicity}) supplies the missing comparison.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_cycle_schwarz_unital_kronecker,
+        thm:wolf_cycle_density_block_face_permutation}
+    The direct Schwarz inequality, positivity, and trace preservation give
+    $T(\Id)=\Id$, so the recurrent projection also fixes $\Id$. Compressing
+    this identity in the zero-extended density-block coordinates eliminates
+    the zero summand and gives (\ref{eq:cycle_mixed_weights}), together with
+    identity coordinates $X_k=m_k\Id_{d_k}$. Intertwining with $T$ fixes this
+    coordinate family. Applying the matched block action, taking the ordinary
+    matrix trace, and using preservation of trace and
+    $d_i=d_{\tau(i)}$ gives $m_i=m_{\tau(i)}$; cancellation of the same
+    nonzero scalar gives the unitality in
+    (\ref{eq:cycle_matched_multiplicity}).
+
+    Put $c_k=m_k^{-1}$ and embed a matrix $X$ in source block $i$. Weighted
+    multiplication gives
+    \begin{align}
+        E_i(X)^\dagger E_i(X)&=c_i E_i(X^\dagger X).
+    \end{align}
+    Apply the ambient Schwarz inequality and compress to the target block
+    $j=\tau(i)$. Before using the multiplicity equality, the resulting defect
+    is
+    \begin{align}
+        c_i c_j\,\Id_{m_j}\otimes
+          \bar T_{i,j}(X^\dagger X)
+        -c_j^2\,\Id_{m_j}\otimes
+          \bigl(\bar T_{i,j}(X)^\dagger\bar T_{i,j}(X)\bigr)
+        &\succeq0. \label{eq:cycle_weighted_defect}
+    \end{align}
+    The equality $m_i=m_j$ turns the two coefficients in
+    (\ref{eq:cycle_weighted_defect}) into the same positive scalar. Cancel
+    that scalar and reflect positivity through the nonzero identity tensor
+    factor to obtain (\ref{eq:cycle_raw_schwarz}). Reindexing the equal
+    $d$-dimensional factors preserves multiplication, adjoints, and positive
+    semidefiniteness.
 \end{proof}
 
 \begin{theorem}[The Schwarz condition excludes matrix transpositions]

@@ -26,10 +26,12 @@ import QICLean.Channel.Peripheral.CyclicGroupKraus
 import QICLean.Channel.Peripheral.DensityBlockCoordinates
 import QICLean.Channel.Peripheral.DensityBlockDynamics
 import QICLean.Channel.Peripheral.DensityBlockFacePermutation
+import QICLean.Channel.Peripheral.DensityBlockSchwarz
 import QICLean.Channel.Peripheral.DirectSumFacePermutation
 import QICLean.Channel.Peripheral.GroupStructure
 import QICLean.Channel.Peripheral.IrreducibleChannel
 import QICLean.Channel.Peripheral.JordanBlocks
+import QICLean.Channel.Peripheral.MatchedBlockEndomorphism
 import QICLean.Channel.Peripheral.MultiCycleDecomposition
 import QICLean.Channel.Peripheral.PeriodicityRemoval
 import QICLean.Channel.Peripheral.Powers
