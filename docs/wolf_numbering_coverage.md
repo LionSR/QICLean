@@ -1859,3 +1859,38 @@ formalized. It depends on issue #297's source-shaped Jordan condition number
 and a theorem bounding that infimum by the condition factor of each
 admissible Jordan basis. The current declarations retain Wolf's chosen basis
 instead of silently replacing its factor by `κ_T`; issue #298 remains open.
+
+### Theorem “Asymptotic convergence II” (Equation 8.111) — FORMALIZED IN THE VALID NATURAL-EXPONENT RANGE
+
+In `QICLean.Channel.Peripheral.SchurAsymptoticConvergence`:
+
+* `Module.End.pow_sub_peripheralWeightedProjection_pow` and
+  `transferMatrix_pow_sub_peripheralWeightedProjection_pow` prove, for
+  `n > 0`, the identity
+  `T^n - T_ϕ^n = (T - T_ϕ)^n` and its transfer-matrix form. Here
+  `T_φ` is the peripheral projection and `T_ϕ = T T_φ` is the
+  phase-weighted map; the two are not identified.
+* `IsPositiveMap.hasEigenvalue_sub_peripheralWeightedProjection_iff` proves
+  that the eigenvalues of `T - T_ϕ` are exactly zero together with the
+  subperipheral eigenvalues of `T`.
+* `IsPositiveMap.exists_wolf_eq_111_schur_data_with_bound` constructs the
+  unitary Schur representation on the `d²`-dimensional transfer space, proves
+  `‖Λ‖∞ = μ`, and establishes Wolf's bound
+  `‖N‖∞ ≤ μ + 2√d`.
+* `IsPositiveMap.hilbertSchmidtOperatorNorm_le_sqrt_dim` supplies the analytic
+  input `‖T‖₂→₂ ≤ √d` for every positive trace-preserving map; complete
+  positivity is not assumed.
+* `IsPositiveMap.exists_wolf_eq_111` proves the coarse estimate when
+  `d² - 1 ≤ n`.
+  `IsPositiveMap.exists_wolf_eq_111_refined` proves the binomial-coefficient
+  refinement when `2(d² - 1) ≤ n`. Both include `μ = 0` without division
+  and include the `d = 1`, `n = 0` boundary by a direct proof.
+
+Wolf prints the coarse formula for every natural `n`, although its exponent
+`n - d² + 1` is negative below `d² - 1` and no convention is given when
+`μ = 0`. The natural-power formalization records precisely the range where
+the displayed exponent is defined. At `d = 1`, `n = 0`, the auxiliary
+positive-power identity fails, but the final inequality is the immediate
+statement `0 ≤ 1`; the headline theorems therefore include this case. This
+source qualification is recorded in
+`docs/paper-gaps/wolf_ch8_eq_8_103_negative_exponent.tex`.

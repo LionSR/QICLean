@@ -260,10 +260,6 @@
     The shared modulus satisfies $\mu\le1$, including the empty-spectrum
     convention $\mu=0$.  Apply the coarse estimate when $D-1\le n$ and the
     refined estimate when $2(D-1)\le n$.
-
-% This corollary does not construct the unitary Schur representation of
-% \widehat T-\widehat T_\varphi or prove that its diagonal part has norm \mu.
-% Those remain channel-level obligations in Wolf Equation (8.111).
 \end{proof}
 
 \begin{lemma}[Positive-power nonperipheral identity]
@@ -305,9 +301,92 @@
     compatibility with products and powers give the second statement.
 \end{proof}
 
-% This lemma is only the algebraic first step in Wolf's proof of
-% Equation (8.111).  The generic unitary Schur triangularization is now
-% formalized above.  The channel-level estimate tracked in QICLean issue #300
-% remains pending on its specialization and the source's bound on the strictly
-% upper-triangular part.
-% There is deliberately no \leanok claim for the full asymptotic theorem here.
+\begin{theorem}[Asymptotic convergence II: natural-exponent form]
+    \label{thm:wolf_asymptotic_convergence_ii}
+    \lean{IsPositiveMap.hasEigenvalue_sub_peripheralWeightedProjection_iff,
+      IsPositiveMap.hilbertSchmidtOperatorNorm_le_sqrt_dim,
+      IsPositiveMap.exists_wolf_eq_111_schur_data_with_bound,
+      IsPositiveMap.exists_wolf_eq_111,
+      IsPositiveMap.exists_wolf_eq_111_refined}
+    \leanok
+    \uses{def:wolf_subperipheral_modulus,
+      thm:unitary_schur_triangularization,
+      thm:wolf_schur_form_spectral_radius_estimate,
+      lem:wolf_positive_power_nonperipheral_identity}
+    Let $d\ge1$, and let $T:M_d(\mathbb C)\to M_d(\mathbb C)$ be positive
+    and trace preserving.  Write $T_\phi$ for the peripheral spectral
+    projection and
+    \begin{align}
+      T_\varphi=T T_\phi,
+      \qquad
+      \mu=\max\{\lvert\lambda\rvert:
+        \lambda\in\operatorname{spec}(T),\ \lvert\lambda\rvert<1\},
+    \end{align}
+    with $\mu=0$ when the displayed set is empty.  After the canonical
+    identification of the transfer-matrix coordinates with
+    $\mathbb C^{d^2}$, there are a unitary $U$, a diagonal matrix $\Lambda$,
+    and a strictly upper-triangular matrix $N$ such that
+    \begin{align}
+      \widehat T-\widehat T_\varphi
+        &=U(\Lambda+N)U^\dagger,\\
+      \{\Lambda_{ii}:1\le i\le d^2\}
+        &=\{0\}\cup\operatorname{spec}_{<1}(T),\\
+      \lVert\Lambda\rVert_\infty&=\mu,
+      &\lVert N\rVert_\infty&\le\mu+2\sqrt d.
+    \end{align}
+    For every $n\in\mathbb N$ satisfying $d^2-1\le n$,
+    \begin{align}
+      \lVert\widehat T^{\,n}-\widehat T_\varphi^{\,n}\rVert_\infty
+      \le{}&\mu^n
+      +(d^2-1)n^{d^2-1}\mu^{n-d^2+1}
+        \max\{\lVert N\rVert_\infty,
+          \lVert N\rVert_\infty^{d^2-1}\}.
+    \end{align}
+    If $2(d^2-1)\le n$, the factor
+    $(d^2-1)n^{d^2-1}$ may be replaced by
+    $(d^2-1)\binom{n}{d^2-1}$.
+
+    The statement includes $\mu=0$ without division.  When $d=1$ and $n=0$,
+    both estimates reduce to $0\le1$; this boundary is included even though
+    the auxiliary positive-power identity does not hold there.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:unitary_schur_triangularization,
+      thm:wolf_schur_form_spectral_radius_estimate,
+      lem:wolf_positive_power_nonperipheral_identity}
+    Apply unitary Schur triangularization to
+    $\widehat{T-T_\varphi}$.  The eigenvalues of $T-T_\varphi$ are precisely
+    zero and the eigenvalues of $T$ in the open unit disc.  Indeed, applying
+    $T_\phi$ to a nonzero-eigenvalue eigenvector removes its peripheral
+    component; conversely, every subperipheral generalized eigenspace lies
+    in the kernel of $T_\phi$.  A stationary state supplies the zero
+    eigenvalue.  Thus the diagonal part has norm $\mu$.
+
+    A positive trace-preserving map has Hilbert--Schmidt operator norm at
+    most $\sqrt d$.  On Hermitian inputs this follows from trace-norm
+    contractivity and
+    $\lVert X\rVert_1\le\sqrt d\,\lVert X\rVert_2$; the decomposition
+    $X=H+iK$ and orthogonality of the Hermitian and anti-Hermitian parts give
+    the estimate for arbitrary inputs.  The same bound applies to
+    $T_\varphi$, since $T_\varphi$ is again positive and trace preserving.
+    Unitary invariance and the triangle inequality therefore give
+    \begin{align}
+      \lVert N\rVert_\infty
+      \le \lVert\Lambda\rVert_\infty
+        +\lVert\widehat T\rVert_\infty
+        +\lVert\widehat T_\varphi\rVert_\infty
+      \le \mu+2\sqrt d.
+    \end{align}
+    If $n=0$, the range hypothesis forces $d=1$, and the desired inequality
+    reduces directly to $0\le1$.  If $n>0$, use
+    $\widehat T^{\,n}-\widehat T_\varphi^{\,n}
+      =\widehat{T-T_\varphi}^{\,n}$,
+    unitary invariance, and the corresponding Schur-form estimate above.
+\end{proof}
+
+% Wolf states the coarse formula for every natural n.  The exponent
+% n-d^2+1 is then negative below d^2-1, with no convention at mu=0.  The
+% formalized natural-power theorem records the valid range; see
+% docs/paper-gaps/wolf_ch8_eq_8_103_negative_exponent.tex.

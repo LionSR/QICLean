@@ -73,10 +73,7 @@ $\lVert\Lambda\rVert_\infty=\mu$.  It therefore inherits the same restriction
 $d^2-1\le n$ in the natural-power interpretation.  The corresponding coarse
 and refined Schur-form estimates are
 \leanid{Matrix.wolf_eq_111_schur_form} and
-\leanid{Matrix.wolf_eq_111_schur_form_refined}.  These declarations establish
-the estimate once the Schur decomposition and its spectral identification are
-given; constructing that decomposition for $\widehat T-\widehat T_\varphi$
-remains part of the channel-level theorem.
+\leanid{Matrix.wolf_eq_111_schur_form_refined}.
 
 The specializations
 \leanid{Matrix.wolf_eq_111_schur_form_subperipheralModulus} and
@@ -85,9 +82,25 @@ shared source-shaped $\mu$ from
 \leanid{Module.End.subperipheralModulus} on the same $D$-dimensional coordinate
 space as the Schur matrices.  They discharge $\mu\le1$, including the empty
 subperipheral-spectrum convention.  They intentionally retain the hypothesis
-$\lVert\Lambda\rVert_\infty=\mu$: constructing the unitary Schur representation
-of $\widehat T-\widehat T_\varphi$ and proving this spectral identification
-remain separate channel-level obligations.
+$\lVert\Lambda\rVert_\infty=\mu$, so that they remain reusable independently
+of a channel realization.
+
+The channel-level declarations
+\leanid{IsPositiveMap.exists_wolf_eq_111} and
+\leanid{IsPositiveMap.exists_wolf_eq_111_refined} now construct the unitary
+Schur representation of $\widehat T-\widehat T_\varphi$, prove that the
+diagonal entries are precisely zero and the subperipheral eigenvalues, identify
+$\lVert\Lambda\rVert_\infty=\mu$, and establish
+$\lVert N\rVert_\infty\le\mu+2\sqrt d$.  They assume, respectively,
+$d^2-1\le n$ and $2(d^2-1)\le n$.  When $d=1$ these ranges permit $n=0$.
+Although the auxiliary identity
+$T^0-T_\varphi^0=(T-T_\varphi)^0$ fails, the final estimate at this boundary
+is included by a direct proof: its left-hand side is zero and its right-hand
+side is one.
+
+No inverse power of $\mu$ occurs in these declarations.  Consequently the
+case $\mu=0$ is included, both when the subperipheral spectrum is empty and
+when it contains only the zero eigenvalue.
 
 \section{Verdict}
 
