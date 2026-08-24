@@ -1372,6 +1372,17 @@ clause 3.
 
 #### Wolf Theorem 6.16 (Structure of cycles) — PARTIALLY FORMALIZED
 
+The source-contract audit is resolved in
+`docs/paper-gaps/wolf_theorem6_16_schwarz_orientation.tex`.  The printed
+proof uses the Schwarz inequality for `T` itself when it excludes the
+transpose branch, but obtains Equation (6.66) by applying Theorem 6.14 to the
+recurrent projection `I`; that theorem requires the trace adjoint `I*` to be
+Schwarz.  Closure under powers and limits transports the two orientations
+separately.  Therefore the source-facing assembly will explicitly assume that
+both `T` and `T*` are Schwarz.  No implication between these hypotheses is
+silently introduced, and the note does not claim that the theorem's conclusion
+is false under the single printed hypothesis.
+
 * Reusable formalization for the permutation-of-blocks direction lives in
   `QICLean.Channel.Peripheral.CyclicDecomposition` and
   `QICLean.Channel.Peripheral.Cycles`:
@@ -1405,9 +1416,10 @@ clause 3.
     per-cycle cyclic shifts.
 
 * The remaining **existence direction** — that every trace-preserving positive
-  Schwarz map admits a `MultiCycleDecomposition` on its asymptotic image, with
-  the cycles coming from the now-formalized density-block decomposition of the
-  fixed-point space — is left to future work.
+  map for which both `T` and `T*` satisfy the Schwarz inequality admits a
+  `MultiCycleDecomposition` on its asymptotic image, with the cycles coming
+  from the now-formalized density-block decomposition of the fixed-point
+  space — is left to future work.
 
 ---
 
