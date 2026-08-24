@@ -1338,19 +1338,18 @@ positive map and a completely copositive map.
     \label{thm:ppt_entangled_state_gives_indecomposable_map}
     \lean{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}
     \leanok
-    \uses{def:decomposable_positive_map, def:is_ppt,
-        thm:has_schmidt_number_le_one_iff_separable,
-        thm:exists_isNPositiveMap_detects, thm:decomposable_map_tensor_id_ppt}
+    \uses{def:decomposable_positive_map, def:is_ppt, def:is_separable}
     Let $\rho$ be a PPT entangled density operator on
     $\C^d\otimes\C^{d'}$. Then there is an indecomposable positive map
     $T\colon\MN{d}\to\MN{d'}$.
-    This is the PPT-state-to-map direction of Wolf's Proposition~3.5; the
-    remaining reverse implication is recorded in
-    \cite{gap:wolf_prop3_5_reverse_implication}.
+    This is the PPT-state-to-map direction of Wolf's Proposition~3.5
+    \cite[Chapter~3, Proposition~3.5]{Wolf2012Quantum}.
 \end{theorem}
 
 \begin{proof}
     \leanok
+    \uses{thm:has_schmidt_number_le_one_iff_separable,
+        thm:exists_isNPositiveMap_detects, thm:decomposable_map_tensor_id_ppt}
     By Theorem~\ref{thm:has_schmidt_number_le_one_iff_separable}, entanglement
     means that $\rho$ has Schmidt number larger than one. The rectangular
     detector in Theorem~\ref{thm:exists_isNPositiveMap_detects}, at $n=1$,
@@ -1358,16 +1357,174 @@ positive map and a completely copositive map.
     $(T\otimes\id)(\rho)$ is not positive semidefinite. If $T$ were
     decomposable, Theorem~\ref{thm:decomposable_map_tensor_id_ppt} would make
     this ampliation positive because $\rho$ is PPT, a contradiction.
+\end{proof}
 
-    The reverse implication of Proposition~3.5 is not claimed here.
-    Theorem~\ref{thm:normalized_decomposable_witness_compact_convex} supplies
-    the compact convex trace-one set used in the primary witness proof, and
-    Lemma~\ref{lem:partial_transpose_left_trace_adjoint} supplies the required
-    trace identity.  What remains is to normalize the nonzero block-positive
-    Choi witness of an indecomposable map and to carry out the strict
-    separation argument, including positivity, the PPT property, trace
-    normalization, and entanglement of the separating operator.  No
-    closedness theorem for the full unbounded cone is needed for this route.
+\begin{theorem}[PPT separation of a normalized nondecomposable witness]
+    \label{thm:normalized_nondecomposable_witness_ppt_separator}
+    \lean{Matrix.exists_posSemidef_isPPT_negative_separator_of_not_isDecomposableWitness}
+    \leanok
+    \uses{def:decomposable_witness, def:is_ppt}
+    Let $d,d'\geq1$, and let $W$ be a Hermitian operator on
+    $\C^d\otimes\C^{d'}$ such that $\tr(W)=1$ and $W$ is not decomposable.
+    Then there is an operator $R$ such that
+    \begin{align}
+        R&\geq0,
+        &R^{T_1}&\geq0,
+        &\re\tr(WR)&<0.
+        \notag
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:normalized_decomposable_witness_compact_convex,
+        thm:exists_isHermitian_trace_form_re,
+        lem:partial_transpose_left_trace_adjoint}
+    Let $\mathcal D_1$ be the compact convex set in
+    Theorem~\ref{thm:normalized_decomposable_witness_compact_convex}.
+    Since $W\notin\mathcal D_1$, strict separation gives a real-linear
+    functional $f$ and a constant $c$ such that
+    \begin{align}
+        f(W)&<c<f(D) \qquad (D\in\mathcal D_1).
+        \notag
+    \end{align}
+    Represent $f$ on Hermitian operators as $f(X)=\re\tr(XH)$, with $H$
+    Hermitian, and put $R=H-c\Id$. Since $W$ and every $D\in\mathcal D_1$
+    have trace one,
+    \begin{align}
+        \re\tr(WR)&<0,
+        &\re\tr(DR)&\geq0 \qquad (D\in\mathcal D_1).
+        \notag
+    \end{align}
+    At the endpoint $a=1$, this gives $\re\tr(PR)\geq0$ for every positive
+    trace-one $P$; normalization extends the inequality to every $P\geq0$,
+    so self-duality of the positive cone gives $R\geq0$. At $a=0$, it gives
+    $\re\tr(Q^{T_1}R)\geq0$ for every positive trace-one $Q$. By
+    Lemma~\ref{lem:partial_transpose_left_trace_adjoint}, this is
+    $\re\tr(QR^{T_1})\geq0$, and the same argument gives $R^{T_1}\geq0$.
+\end{proof}
+
+\begin{theorem}[A normalized nondecomposable witness detects PPT entanglement]
+    \label{thm:normalized_nondecomposable_witness_detects_ppt_entanglement}
+    \lean{Matrix.exists_isPPT_not_isSeparable_of_not_isDecomposableWitness}
+    \leanok
+    \uses{def:decomposable_witness, def:is_ppt, def:is_separable,
+        def:schmidt_rank}
+    Let $d,d'\geq1$, and let $W$ be a Hermitian operator on
+    $\C^d\otimes\C^{d'}$ such that $\tr(W)=1$, $W$ is not decomposable, and
+    \begin{align}
+        \re\tr\!\left(W\ketbra{\psi}{\psi}\right)&\geq0
+        \qquad\text{whenever $\psi$ has Schmidt rank at most one}.
+        \notag
+    \end{align}
+    Then there is a PPT entangled density operator on
+    $\C^d\otimes\C^{d'}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:normalized_nondecomposable_witness_ppt_separator,
+        thm:not_has_schmidt_number_le_iff_exists_witness,
+        thm:has_schmidt_number_le_one_iff_separable}
+    Take $R$ from
+    Theorem~\ref{thm:normalized_nondecomposable_witness_ppt_separator}.
+    The strict inequality $\re\tr(WR)<0$ implies $R\neq0$. Hence
+    $\tr(R)>0$, and
+    \begin{align}
+        \rho&=\frac{R}{\tr(R)}
+        \notag
+    \end{align}
+    is a density operator with $\rho^{T_1}\geq0$ and
+    $\re\tr(W\rho)<0$. The assumed nonnegativity of $W$ on Schmidt-rank-one
+    vectors and the witness criterion show that $\rho$ has Schmidt number
+    larger than one. It is therefore not separable.
+\end{proof}
+
+\begin{theorem}[An indecomposable positive map yields PPT entanglement]
+    \label{thm:indecomposable_map_gives_ppt_entangled_state}
+    \lean{Matrix.IsIndecomposablePositiveMap.exists_isPPT_not_isSeparable}
+    \leanok
+    \uses{def:decomposable_positive_map, def:is_ppt, def:is_separable}
+    Let $d,d'\geq1$. If
+    $T\colon\MN{d}\to\MN{d'}$ is an indecomposable positive map, then there
+    is a PPT entangled density operator on $\C^d\otimes\C^{d'}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:k_positive_trace_pairing_adjoint,
+        thm:k_positive_schmidt_rank_choi_expectation,
+        thm:decomposable_map_iff_decomposable_witness,
+        thm:normalized_nondecomposable_witness_detects_ppt_entanglement}
+    Let $T^*\colon\MN{d'}\to\MN{d}$ be the trace-pairing adjoint and set
+    \begin{align}
+        W_0&=\tau(T^*)\in\MN{d}\otimes\MN{d'}.
+        \notag
+    \end{align}
+    This is the output-first rectangular Choi orientation: the first tensor
+    factor has dimension $d$, and every partial transpose below is $T_1$ on
+    that factor. Positivity of $T^*$ and the Schmidt-rank Choi criterion give
+    \begin{align}
+        \re\tr\!\left(W_0\ketbra{\psi}{\psi}\right)&\geq0
+        \qquad\text{for every $\psi$ of Schmidt rank at most one}.
+        \notag
+    \end{align}
+    Indecomposability implies $T\neq0$. For a positive map,
+    $T(\Id_d)=0$ would imply $T=0$, so $T(\Id_d)$ is a nonzero positive
+    operator. The rectangular Choi trace formula therefore gives
+    \begin{align}
+        \tr(W_0)&=\frac{1}{d'}\tr\!\left(T(\Id_d)\right)>0.
+        \notag
+    \end{align}
+    Put $W=W_0/\tr(W_0)$. Then $W$ is Hermitian, has trace one, and retains
+    the preceding nonnegativity. If $W$ were decomposable, positive rescaling
+    and Theorem~\ref{thm:decomposable_map_iff_decomposable_witness} would make
+    $T$ decomposable. Thus $W$ is not decomposable, and
+    Theorem~\ref{thm:normalized_nondecomposable_witness_detects_ppt_entanglement}
+    gives the required state.
+\end{proof}
+
+\begin{theorem}[PPT entanglement and indecomposable positive maps]
+    \label{thm:ppt_indecomposable_equivalence}
+    \lean{Matrix.exists_isIndecomposablePositiveMap_iff_exists_isPPT_not_isSeparable}
+    \leanok
+    \uses{def:decomposable_positive_map, def:is_ppt, def:is_separable}
+    Let $d,d'\geq1$. There exists an indecomposable positive map
+    $T\colon\MN{d}\to\MN{d'}$ if and only if there exists an entangled
+    density operator $\rho$ on $\C^d\otimes\C^{d'}$ with
+    $\rho^{T_1}\geq0$. This is Wolf's Proposition~3.5 in its rectangular
+    form \cite[Chapter~3, Proposition~3.5]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:ppt_entangled_state_gives_indecomposable_map,
+        thm:indecomposable_map_gives_ppt_entangled_state}
+    The forward implication is
+    Theorem~\ref{thm:indecomposable_map_gives_ppt_entangled_state}; the
+    converse is
+    Theorem~\ref{thm:ppt_entangled_state_gives_indecomposable_map}.
+\end{proof}
+
+\begin{theorem}[The zero-dimensional boundary]
+    \label{thm:ppt_indecomposable_equivalence_all_dimensions}
+    \lean{Matrix.exists_isIndecomposablePositiveMap_iff_exists_isPPT_not_isSeparable_all_dimensions}
+    \leanok
+    \uses{def:decomposable_positive_map, def:is_ppt, def:is_separable}
+    The equivalence in
+    Theorem~\ref{thm:ppt_indecomposable_equivalence} holds for all finite
+    dimensions $d,d'$. If $d=0$ or $d'=0$, both existence statements are
+    false.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:ppt_indecomposable_equivalence}
+    When $d,d'\geq1$, apply
+    Theorem~\ref{thm:ppt_indecomposable_equivalence}. If either dimension is
+    zero, every relevant linear map is the zero map and hence decomposable,
+    while every matrix on the empty tensor product has trace zero and cannot
+    be a density operator.
 \end{proof}
 
 \begin{theorem}[A PPT state detected by an ampliation witnesses indecomposability]

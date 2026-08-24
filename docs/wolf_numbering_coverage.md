@@ -606,7 +606,7 @@ so that the cited formal statements are available from the main project import.
 - `Matrix.hasSchmidtNumberLE_iff_forall_isNPositiveMap_tensorMapId_posSemidef`
   — the full rectangular equivalence in Proposition 3.4 for density operators ✓
 
-#### Wolf Proposition 3.5 — ONE DIRECTION FORMALIZED (RECTANGULAR FORM)
+#### Wolf Proposition 3.5 — FORMALIZED (RECTANGULAR FORM)
 
 - `IsCompletelyCopositiveMap`, `IsDecomposablePositiveMap`, and
   `IsIndecomposablePositiveMap` — Wolf Equation (3.2), now for maps
@@ -645,12 +645,32 @@ so that the cited formal statements are available from the main project import.
   `Matrix.trace_partialTransposeLeft_mul_re` — self-adjointness of
   first-factor partial transpose for the complex bilinear and real trace
   pairings ✓
-- The reverse implication remains open. The remaining work is to normalize
-  the nonzero block-positive Choi witness of an indecomposable map and carry
-  out the strict separation argument, including positivity, the PPT
-  property, trace normalization, and entanglement of the separating
-  operator. Closedness of the full unbounded cone is not needed for this
-  trace-one route. Proposition 3.5 is therefore not recorded as fully
+- `Matrix.exists_posSemidef_isPPT_negative_separator_of_not_isDecomposableWitness`
+  — strict separation of a trace-one Hermitian operator outside the
+  decomposable cone from the compact convex normalized set; its `a = 1` and
+  `a = 0` endpoints give positivity of the separator and of its first-factor
+  partial transpose ✓
+- `Matrix.exists_isPPT_not_isSeparable_of_not_isDecomposableWitness` — the
+  nonzero separator is normalized to a PPT density operator, and its negative
+  pairing with the block-positive witness proves entanglement ✓
+- `Matrix.IsIndecomposablePositiveMap.exists_isPPT_not_isSeparable` — for
+  `T : M_d(ℂ) → M_{d'}(ℂ)`, the nonzero block-positive witness is the
+  output-first rectangular matrix
+  `ChoiRectangular.choiMatrix (traceAdjointMap T)` on
+  `Fin d × Fin d'`; its positive trace permits normalization without changing
+  decomposability, and the normalized separation theorem produces a PPT
+  entangled state on `ℂ^d ⊗ ℂ^{d'}` ✓
+- `Matrix.exists_isIndecomposablePositiveMap_iff_exists_isPPT_not_isSeparable`
+  — Wolf Proposition 3.5 for fixed nonzero dimensions, with the printed map
+  orientation `M_d(ℂ) → M_{d'}(ℂ)` and first-factor partial transpose ✓
+- `Matrix.exists_isIndecomposablePositiveMap_iff_exists_isPPT_not_isSeparable_all_dimensions`
+  — the same equivalence in arbitrary finite dimensions; if either dimension
+  is zero, every relevant map is the zero decomposable map and no trace-one
+  state exists ✓
+- The reverse implication is resolved by the compact trace-one separation
+  route of Lewenstein–Kraus–Cirac–Horodecki Theorem 3. No closedness theorem
+  for the full unbounded cone and no dual definition of decomposability are
+  used. Both directions, and hence the full rectangular proposition, are
   formalized; see
   `docs/paper-gaps/wolf_prop3_5_reverse_implication.tex`.
 

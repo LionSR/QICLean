@@ -7,18 +7,18 @@
 
 \input{command}
 
-\title{The Remaining Direction of Wolf's PPT--Indecomposable Existence Equivalence}
+\title{Wolf's PPT--Indecomposable Existence Equivalence:\\
+Resolution of the Reverse Implication}
 \author{}
 \date{2026-08-24}
 
 \begin{document}
 \maketitle
-\gapnote{scope-restriction}{wip}
+\gapnote{scope-restriction}{resolved}
 
 \section{The source equivalence}
 
-For fixed dimensions $d,d'$, Wolf's Proposition~3.5 states the existence
-equivalence
+For fixed dimensions $d,d'$, Wolf's Proposition~3.5 states
 \begin{align}
   &\text{there is an indecomposable positive map }
       T:\MN{d}\longrightarrow\MN{d'}
@@ -31,164 +31,176 @@ equivalence
   \end{gathered}
   \tag{Wolf Proposition 3.5}
 \end{align}
-Immediately before the proposition, the decomposable witnesses are written in
-the first-factor convention
+Immediately before the proposition, Wolf writes the decomposable witnesses as
 \begin{align}
-  W=P_1+P_2^{T_1},\qquad P_1,P_2\geq0.
+  W&=P_1+P_2^{T_1},
+  &P_1,P_2&\geq0.
   \tag{Wolf 3.15}
 \end{align}
-The local source is
+Thus the transpose in both the witness decomposition and the PPT condition is
+on the first factor, of dimension $d$. The local source is
 \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
 276--303.\footnote{Tracked by \ghissue{22}.}
 
-The matching primary witness result is Theorem~3 of
-Lewenstein--Kraus--Cirac--Horodecki: a witness is nondecomposable if and only
-if it detects a PPT entangled state \cite{LewensteinKrausCiracHorodecki2000}.
-That paper fixes $\tr(W)=1$ for witnesses and, unless stated otherwise, takes
-$P,Q\geq0$ to have trace one.  Its decomposable operators are therefore
-written
-\begin{align}
-  D=aP+(1-a)Q^T,\qquad 0\leq a\leq1.
-  \tag{LKCH normalized form}
-\end{align}
-The difficult direction of Theorem~3 separates a nondecomposable witness
-from this closed convex normalized set. The earlier
-Horodecki--Horodecki--Horodecki cone calculation writes the dual of the PPT
-cone as the functionals represented by $B+C^{T_2}$ with $B,C\geq0$
-\cite[arXiv v2 PDF, Appendix Eq.~(27)]{HorodeckiHorodeckiHorodecki1996Separability}.
-The generated arXiv HTML retags this display as Equation~(50); Equation~(27)
-is the number printed in the primary PDF.
-That paper transposes the second factor; Wolf's displayed Equation~(3.15)
-transposes the first.
-
-\section{The formalized direction}
-
-The formal development now proves
-\begin{align}
-  &\rho\geq0,\quad \tr(\rho)=1,\quad \rho^{T_1}\geq0,
-      \quad \rho\text{ not separable}
-  \notag\\
-  &\qquad\Longrightarrow\qquad
-  \exists T:\MN{d}\longrightarrow\MN{d'}\text{ positive and indecomposable}.
-  \tag{formalized direction}
-\end{align}
-This is the source's PPT-state-to-map implication, not a substitute theorem.
-Schmidt number one is separability, so the rectangular positive-map criterion
-at level one supplies a positive $T$ for which
-$(T\otimes\operatorname{id}_{d'})(\rho)$ is not positive semidefinite. A
-decomposable map cannot have this property: writing
-$T=T_1+T_2\theta$ gives
-\begin{align}
-  (T\otimes\operatorname{id})(\rho)
-    &=(T_1\otimes\operatorname{id})(\rho)
-      +(T_2\otimes\operatorname{id})(\rho^{T_1})\geq0.
-\end{align}
-Thus the detecting map is indecomposable.
-
-The formal theorem is
-\leanid{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}.\footnote{Formal declarations:
-\leanid{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}
-in \doclink{QICLean/Channel/PPTIndecomposable}, and
-\leanid{IsDecomposablePositiveMap.tensorMapId_posSemidef_of_isPPT}
-in \doclink{QICLean/Channel/DecomposablePPT}.}
-The decomposability predicates and preservation theorem are rectangular, with
-the same input-to-output orientation $\MN{d}\to\MN{d'}$ as Wolf.
-
-\section{The normalized separation data}
-
-The source-shaped normalized set is now formalized directly.  In Wolf's
-first-factor convention it is
+The witness argument used below is the normalized form of Theorem~3 of
+Lewenstein--Kraus--Cirac--Horodecki
+\cite{LewensteinKrausCiracHorodecki2000}. With trace-one positive operators
+$P_1,P_2$, its compact convex set, written in Wolf's first-factor convention,
+is
 \begin{align}
   \mathcal D_1
-  =\left\{aP_1+(1-a)P_2^{T_1}:
+  &=\left\{aP_1+(1-a)P_2^{T_1}:
       0\leq a\leq1,\ P_1,P_2\geq0,\
       \tr(P_1)=\tr(P_2)=1\right\}.
   \tag{normalized decomposable set}
 \end{align}
-The predicate \leanid{Matrix.IsNormalizedDecomposableWitness} records this
-formula.  The development proves that $\mathcal D_1$ is compact and convex
-and, when both tensor factors are nonzero, that it is exactly the trace-one
-section of Wolf's Equation~(3.15) cone.  Compactness is proved as a continuous
-image of
-$[0,1]\times\mathcal S\times\mathcal S$, where $\mathcal S$ is the compact
-set of positive semidefinite trace-one operators on the rectangular product
-space.
 
-The first-factor trace identity needed after separation is also formalized:
+\section{The rectangular formal statement}
+
+For $d,d'\geq1$, the formalized equivalence has the same input-to-output
+orientation as Wolf:
 \begin{align}
-  \tr\!\left(X^{T_1}Y\right)
-    =\tr\!\left(XY^{T_1}\right).
-  \tag{partial-transpose trace identity}
+  &\exists T:\MN{d}\longrightarrow\MN{d'}
+      \text{ positive and indecomposable}
+  \notag\\
+  &\qquad\Longleftrightarrow\qquad
+  \begin{gathered}
+    \exists\rho\in\MN{d}\otimes\MN{d'}:\
+      \rho\geq0,\quad\tr(\rho)=1,\\
+      \rho^{T_1}\geq0,\quad\rho\text{ not separable}.
+  \end{gathered}
+  \tag{formalized Wolf Proposition 3.5}
 \end{align}
-Thus first-factor partial transpose is self-adjoint for the real trace
-pairing.\footnote{Formal declarations:
+The fixed nonzero-dimensional theorem is
+\leanid{Matrix.exists_isIndecomposablePositiveMap_iff_exists_isPPT_not_isSeparable}.
+The theorem
+\leanid{Matrix.exists_isIndecomposablePositiveMap_iff_exists_isPPT_not_isSeparable_all_dimensions}
+states the same equivalence for arbitrary natural-number dimensions and
+settles the zero-dimensional boundary explicitly.\footnote{Formal module:
+\doclink{QICLean/Channel/PPTIndecomposable}.}
+
+The implication from a PPT entangled state to an indecomposable map is
+\leanid{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}.
+It applies Wolf's rectangular positive-map criterion at level one. If the
+detecting map were decomposable, writing $T=T_1+T_2\theta$ would give
+\begin{align}
+  (T\otimes\operatorname{id})(\rho)
+    &=(T_1\otimes\operatorname{id})(\rho)
+      +(T_2\otimes\operatorname{id})(\rho^{T_1})\geq0,
+  \notag
+\end{align}
+contrary to detection.
+
+\section{The reverse implication}
+
+Let $T:\MN{d}\to\MN{d'}$ be indecomposable and positive, with
+$d,d'\geq1$. Let $T^*:\MN{d'}\to\MN{d}$ denote its trace-pairing adjoint,
+and define
+\begin{align}
+  W_0&=\tau(T^*)\in\MN{d}\otimes\MN{d'}.
+  \tag{trace-adjoint Choi witness}
+\end{align}
+This is the output-first rectangular Choi matrix of $T^*$. Its rows and
+columns are indexed by
+$\operatorname{Fin}(d)\times\operatorname{Fin}(d')$, in that order. Hence
+the first factor of $W_0$ has dimension $d$, exactly as in Wolf's
+Equation~(3.15); no exchange of the tensor factors occurs.
+
+The trace adjoint of a positive map is positive. The rectangular Choi
+criterion at level one therefore gives
+\begin{align}
+  \operatorname{Re}\tr\!\left(
+    W_0\ketbra{\psi}{\psi}\right)&\geq0
+  \qquad
+  \text{if $\psi$ has Schmidt rank at most one}.
+  \tag{block positivity}
+\end{align}
+Moreover, indecomposability implies $T\neq0$. Positivity shows that
+$T(\Id_d)=0$ would force $T=0$, so $T(\Id_d)$ is a nonzero positive
+operator. The rectangular Choi trace identity gives
+\begin{align}
+  \tr(W_0)&=\frac{1}{d'}\tr\!\left(T(\Id_d)\right)>0.
+  \tag{positive witness trace}
+\end{align}
+Consequently
+\begin{align}
+  W&=\frac{W_0}{\tr(W_0)}
+  \tag{normalized witness}
+\end{align}
+is Hermitian, block-positive, and trace one. The trace-adjoint rectangular
+Choi correspondence identifies decomposability of $T$ with membership of
+$W_0$ in Wolf's cone $P_1+P_2^{T_1}$. Positive rescaling does not change
+that membership, so $W\notin\mathcal D_1$.
+
+Strictly separate $W$ from the compact convex set $\mathcal D_1$ in the
+real space of complex matrices. Represent the separating real-linear
+functional by a Hermitian matrix and subtract a multiple of the trace
+functional. Since $W$ and every member of $\mathcal D_1$ have trace one,
+this gives a Hermitian operator $R$ such that
+\begin{align}
+  \operatorname{Re}\tr(WR)&<0,
+  &\operatorname{Re}\tr(DR)&\geq0
+    \qquad(D\in\mathcal D_1).
+  \tag{normalized separation}
+\end{align}
+At the endpoint $a=1$, the second inequality holds for every positive
+trace-one $P$. Scaling then extends it to every $P\geq0$, and self-duality
+of the positive cone gives $R\geq0$. At the endpoint $a=0$, it holds for
+$Q^{T_1}$, where $Q$ is positive and has trace one. The identity
+\begin{align}
+  \operatorname{Re}\tr\!\left(Q^{T_1}R\right)
+    &=\operatorname{Re}\tr\!\left(QR^{T_1}\right)
+  \tag{first-factor transpose adjointness}
+\end{align}
+gives $R^{T_1}\geq0$. This is the first-factor transpose throughout.
+
+The strict negative pairing implies $R\neq0$. Hence $\tr(R)>0$, and
+\begin{align}
+  \rho&=\frac{R}{\tr(R)}
+  \tag{PPT density operator}
+\end{align}
+is positive, has trace one, and satisfies $\rho^{T_1}\geq0$. Finally,
+$\operatorname{Re}\tr(W\rho)<0$, whereas block positivity of $W$ makes its
+pairing nonnegative on every separable operator. Thus $\rho$ is entangled.
+
+The separation and normalization steps are formalized by
+\leanid{Matrix.exists_posSemidef_isPPT_negative_separator_of_not_isDecomposableWitness}
+and
+\leanid{Matrix.exists_isPPT_not_isSeparable_of_not_isDecomposableWitness}.
+The complete map-to-state implication is
+\leanid{Matrix.IsIndecomposablePositiveMap.exists_isPPT_not_isSeparable}.
+The compactness and convexity of $\mathcal D_1$, the first-factor trace
+identity, and the rectangular Choi correspondence are respectively
 \leanid{Matrix.isCompact_setOf_isNormalizedDecomposableWitness},
 \leanid{Matrix.convex_setOf_isNormalizedDecomposableWitness},
-\leanid{Matrix.isNormalizedDecomposableWitness_iff}, and
-\leanid{Matrix.trace_partialTransposeLeft_mul_re} in
-\doclink{QICLean/Channel/DecomposableWitness}.}
+\leanid{Matrix.trace_partialTransposeLeft_mul_re}, and
+\leanid{ChoiRectangular.isDecomposablePositiveMap_iff_choiMatrix_traceAdjointMap_isDecomposableWitness}.
 
-\section{The remaining direction}
+This proof uses neither closedness of the full unbounded cone nor a
+definition of decomposability by duality. It separates from the compact
+trace-one set and proves the two positivity conclusions from its endpoints,
+as in the normalized witness argument of
+Lewenstein--Kraus--Cirac--Horodecki.
 
-The converse required for the full proposition begins with an
-indecomposable positive map and must produce a PPT entangled density
-operator. The current formal development does not claim that implication.
-The explicit cone, its normalized compact section, and the rectangular
-adjoint bridge are now formalized as
-\leanid{Matrix.IsDecomposableWitness},
-\leanid{Matrix.IsNormalizedDecomposableWitness}, and
-\leanid{ChoiRectangular.isDecomposablePositiveMap_iff_choiMatrix_traceAdjointMap_isDecomposableWitness}:
-\begin{align}
-  T\text{ decomposable}
-  \quad\Longleftrightarrow\quad
-  \operatorname{Choi}(T^*)=P_1+P_2^{T_1}
-  \text{ for some }P_1,P_2\geq0.
-  \notag
-\end{align}
-The remaining proof should now follow the normalized route of
-Lewenstein--Kraus--Cirac--Horodecki.  Starting with an indecomposable positive
-map, one must first assemble its block-positive Choi witness, prove that this
-witness is nonzero and has positive trace, and normalize it to trace one.
-The resulting witness lies outside $\mathcal D_1$.
+\section{The zero-dimensional boundary}
 
-One must then strictly separate this point from the compact convex set
-$\mathcal D_1$ in the real space of Hermitian operators.  Because both the
-witness and every member of $\mathcal D_1$ have trace one, the separating
-functional may be shifted by a multiple of the trace functional so that its
-value is negative on the witness and nonnegative on $\mathcal D_1$.
-Representing the shifted functional by a Hermitian operator $R$, the endpoint
-choices $a=1$ and $a=0$ give, respectively,
-\begin{align}
-  \tr(RP)\geq0\quad&\text{for every positive trace-one }P,
-  \notag\\
-  \tr(RQ^{T_1})=\tr(R^{T_1}Q)\geq0\quad
-    &\text{for every positive trace-one }Q.
-  \notag
-\end{align}
-Self-duality of the positive cone then gives $R\geq0$ and
-$R^{T_1}\geq0$.  The strict negative pairing makes $R$ nonzero, so it has
-positive trace and can be normalized to a PPT density operator.  Finally,
-the same negative pairing with the block-positive witness proves that the
-normalized operator is entangled.  These normalization, separation, and
-identification steps remain to be formalized.
+If $d=0$, every map with domain $\MN{0}$ is the zero map. If $d'=0$, every
+map with codomain $\MN{0}$ is again the zero map. In either case the map is
+decomposable, so no indecomposable positive map exists. At the same time,
+the tensor product is empty and every matrix on it has trace zero, so no
+density operator exists. Both sides of the equivalence are therefore false.
+This proves the arbitrary-dimensional statement without imposing a hidden
+nonzero-dimensional hypothesis.
 
-Closedness of the full unbounded Equation~(3.15) cone, and a radial proper-map
-argument for that cone, are not prerequisites for this trace-one proof.
+\section{Verdict}
 
-Defining a decomposable witness merely as a functional nonnegative on every
-PPT operator would hide rather than prove Equation~(3.15), so that route is
-not used.
-
-\section{Conclusion}
-
-The verdict is a live scope restriction. The direction from a PPT entangled
-state to an indecomposable map in Wolf Proposition~3.5 is formalized with the
-printed rectangular dimensions and first-factor transpose convention. The
-reverse direction, and hence the source's existence equivalence, remains open
-until normalization of the block-positive Choi witness and the separation,
-PPT, trace-normalization, and entanglement steps above are formalized.  The
-normalized decomposable set and trace-adjointness of first-factor partial
-transpose are no longer open ingredients.
+The scope restriction recorded here is resolved. Both directions of Wolf
+Proposition~3.5 are formalized with independent dimensions $d,d'$, the
+printed map orientation $\MN{d}\to\MN{d'}$, the trace-adjoint rectangular
+Choi witness on $\C^d\otimes\C^{d'}$, and partial transpose on the first
+factor. The fixed nonzero-dimensional equivalence and the explicit
+zero-dimensional boundary are both proved. No source-level gap remains in
+this proposition.
 
 \bibliographystyle{alpha}
 \bibliography{references}
