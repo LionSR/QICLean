@@ -1001,7 +1001,7 @@ This section states the existence theorems from
         Wolf.spinorCoverHom_eq_iff_eq_or_eq_neg,
         Wolf.spinorCoverHom_eq_one_iff}
     \leanok
-    \uses{def:spinor_cover_homomorphism, thm:pauli_minkowski_determinant}
+    \uses{def:spinor_cover_homomorphism}
     The homomorphism $\Lambda$ in
     (\ref{eq:representations_spinor_cover_hom}) is surjective.  Its fibres
     contain exactly two points: for all $X,Y\in\SL(2,\C)$,
@@ -1016,7 +1016,7 @@ This section states the existence theorems from
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{thm:spinor_image_special_orthochronous}
+    \uses{thm:spinor_image_special_orthochronous, thm:pauli_minkowski_determinant}
     Given $L\in\mathrm{SO}^+(1,3)$, set $u=Le_0$.  The Lorentz identities
     give $q(u)=1$ and $u_0>0$.  The canonical boost $B_u$, whose first column
     is $u$, has the positive-definite spinor lift
