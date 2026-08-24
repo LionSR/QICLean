@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{./command.tex}
+
+\title{Yamagami's Simultaneous-Singularity Boundary Count}
+\author{}
+\date{2026-08-24}
+
+\begin{document}
+\maketitle
+\gapnote{clarification}{resolved}
+
+\section{The cyclic function and its boundary}
+
+For the case denoted by \(l=1\), Yamagami studies the cyclic function
+\cite[pp.~524--525]{Yamagami1993Cyclic}
+\begin{align}
+  f_{N,m,s}(x)
+    &=\sum_{q\in\mathbb Z/N\mathbb Z}
+      \frac{x_q}
+      {(s-m)x_q+x_{q+1}+\cdots+x_{q+m}}.
+  \tag{1}
+\end{align}
+Here the indices are cyclic.  Throughout this boundary count, assume
+\(N\ge1\), \(m<N\), and \(N\le s\); in particular, \(m<s\) and \(s-m>0\).
+The interior argument assumes \(x_q>0\).  Suppose that a positive family
+tends coordinatewise to a nonzero boundary vector \(a\ge0\).  The
+singular-boundary question is how to control (1) when one or more limiting
+denominators vanish.
+
+A zero limiting denominator at an index \(i\) gives
+\begin{align}
+  a_i=a_{i+1}=\cdots=a_{i+m}=0,
+  \tag{2}
+\end{align}
+because \(s-m>0\) and every coordinate is nonnegative.  Since \(a\neq0\), a
+positive coordinate is eventually encountered after this forward zero
+window.
+
+\section{What is printed in the source}
+
+The paper first treats a single indeterminate summand.  After a cyclic
+relabeling, its hypotheses have the form
+\begin{align}
+  a_N=a_1=\cdots=a_m=0,
+  \qquad a_{m+1}>0,\qquad a_{N-1}>0.
+  \tag{3}
+\end{align}
+The \(m\) summands with numerators \(a_1,\ldots,a_m\) tend to zero, while
+every other positive summand is at most \(1/(s-m)\).  These printed estimates
+imply the upper-limit bound
+\begin{align}
+  \limsup f_{N,m,s}(x)
+    &\le \frac{N-m}{s-m}
+     \le \frac Ns.
+  \tag{4}
+\end{align}
+
+For several indeterminate summands, Yamagami records the cyclic zero-string
+condition: choose \(j\) with
+\begin{align}
+  a_j>0,
+  \qquad
+  a_{j-m-1}=a_{j-m}=\cdots=a_{j-1}=0,
+  \tag{5}
+\end{align}
+and says that the argument is similar.  The paper does not print the finite
+first-positive construction or the simultaneous limsup calculation.  Thus
+(3) and the estimates leading to (4) are the printed single-singularity
+calculation, whereas the passage from an arbitrary collection of singular
+denominators to one global count is an omitted detail.
+
+\section{The completed simultaneous count}
+
+Starting from (2), traverse the cyclic coordinates after \(i+m\) and take the
+first positive value.  Finiteness of the cyclic index set and \(a\neq0\) give
+such a first value \(a_j>0\).  Minimality shows that all coordinates from the
+end of (2) through \(j-1\) are zero, and in particular gives (5).
+\footnote{The finite first-positive step is formalized by
+\leanid{Yamagami.exists\_hasSingularRun\_of\_zero\_window}; its application
+to a zero denominator is
+\leanid{Yamagami.exists\_hasSingularRun\_of\_forwardDenominator\_eq\_zero}
+in \doclink{QICLean/Analysis/YamagamiBoundary}.}
+
+Let
+\begin{align}
+  V&=\{j-1,j-2,\ldots,j-m\}.\notag
+\end{align}
+The condition \(m<N\) makes these \(m\) cyclic indices distinct.  For
+\(q=j-k\in V\), the limiting numerator is zero, while the forward denominator
+contains the fixed positive coordinate \(a_j\).  Hence the corresponding
+summand tends to zero.  Every summand outside \(V\) remains nonnegative and is
+bounded above by \(1/(s-m)\) along the positive approximants.  A single
+partition of the finite sum therefore gives
+\begin{align}
+  \limsup f_{N,m,s}(x)
+    &\le |(\mathbb Z/N\mathbb Z)\setminus V|\frac1{s-m}
+     =\frac{N-m}{s-m}.
+  \tag{6}
+\end{align}
+If \(N\le s\), elementary cross-multiplication gives the second inequality in
+(4).
+\footnote{The reusable finite limsup estimate is
+\leanid{Yamagami.limsup\_sum\_le\_card\_mul\_of\_tendsto\_zero\_on}.
+The boundary-condition form of (6) and its comparison with \(N/s\) are
+\leanid{Yamagami.limsup\_functional\_le\_sub\_ratio\_of\_singularDenominator}
+and
+\leanid{Yamagami.limsup\_functional\_le\_card\_ratio\_of\_singularDenominator}
+in \doclink{QICLean/Analysis/YamagamiBoundary}.}
+
+This is one global count.  It neither assigns singular denominators to
+maximal zero blocks nor adds estimates from several blocks.  Consequently it
+applies unchanged when any number of limiting denominators vanish.
+
+\section{Scope of the resolution}
+
+The formal development also proves a conditional passage to the direct
+nonnegative value of (1), where real division makes \(0/0=0\).  It assumes the
+corresponding inequality for every strictly positive vector and approaches a
+nonnegative vector through the uniform perturbation
+\(x_q+1/(r+1)\).
+\footnote{Formal declarations:
+\leanid{Yamagami.functional\_le\_of\_strictlyPositive} and
+\leanid{Yamagami.functional\_le\_card\_ratio\_of\_strictlyPositive} in
+\doclink{QICLean/Analysis/YamagamiBoundary}.}
+This conditional theorem does not supply the strictly positive interior
+inequality.  It also does not replace Yamagami's separate regular-boundary
+reduction.  The interior uniqueness input, tracked separately as
+\ghissue{448}, and the regular-boundary induction remain prerequisites of the
+full cyclic inequality.
+
+\section{Verdict}
+
+The omitted simultaneous-singularity calculation is a resolved
+clarification.  The formal lemma proves precisely the global counting and
+limsup step suggested by (5), without attributing that unprinted calculation
+to Yamagami.  This resolution alone is not a proof of the full cyclic
+inequality.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
