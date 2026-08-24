@@ -106,8 +106,22 @@ $T(X)-aX\geq0$ and $bX-T(X)\geq0$ give respectively
   \widetilde r(X)&=\max\{3,3/2\}=3.
 \end{align}
 Equality at a positive eigenvector is sufficient for the theorem. The
-standalone pointwise and extended-value development tracked separately does
-not enter this proof.
+declarations
+\leanid{lowerCollatzWielandtValue} and
+\leanid{upperCollatzWielandtValue} formalize the two pointwise functionals in
+the extended reals. They record the excluded zero boundary exactly:
+\begin{align}
+  r(0)&=+\infty,&
+  \widetilde r(0)&=-\infty.
+\end{align}
+If the upper defining set is empty, its infimum is $+\infty$. For every
+nonzero $X\geq0$ the declaration
+\leanid{lowerCollatzWielandtValue\_le\_upperCollatzWielandtValue} proves the
+correct pointwise order $r(X)\leq\widetilde r(X)$, while
+\leanid{lower\_and\_upperCollatzWielandtValue\_eq\_of\_eigenvector} proves
+equality at every positive eigenvector. Thus the formal statement matches
+exactly the use at local source lines~649--651 without asserting the false
+arbitrary pointwise equality.
 
 \section{Source-faithful proof route}
 
@@ -142,6 +156,8 @@ formalized for arbitrary positive maps. The one-dimensional zero-map boundary
 requires either the corrected conclusion $r\geq0$ or the explicit hypothesis
 $T\neq0$ for the printed $r>0$ form. The second global extremum at
 lines~617--619 is an infimum, not a supremum, and the accompanying printed
-inequality is correspondingly invalid.
+inequality is correspondingly invalid. The pointwise functionals now use
+extended values, their zero and empty-set boundaries are explicit, and their
+equality is asserted only at positive eigenvectors.
 
 \end{document}

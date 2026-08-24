@@ -763,28 +763,107 @@ The TP-gauge application follows~\cite[Appendix~A]{Cirac2016MPDO_arXiv}.
 
 \section{The Collatz--Wielandt argument for irreducible positive maps}
 
-\begin{definition}[Lower and upper Collatz--Wielandt feasibility]
+\begin{definition}[Lower and upper Collatz--Wielandt quantities]
     \label{def:collatz_wielandt_feasible}
-    \lean{LowerCollatzWielandtFeasible, UpperCollatzWielandtFeasible}
+    \lean{lowerCollatzWielandtSet, upperCollatzWielandtSet,
+        lowerCollatzWielandtValue, upperCollatzWielandtValue,
+        lowerCollatzWielandtGlobal, upperCollatzWielandtGlobal,
+        LowerCollatzWielandtFeasible, UpperCollatzWielandtFeasible}
     \leanok
     \uses{def:density_matrices}
-    Let $T:\MN{D}\to\MN{D}$ be linear. A pair $(X,a)$ is lower feasible
-    for $a\in\R$ when
+    Let $T:\MN{D}\to\MN{D}$ be linear. For $X\in\MN{D}$ set
     \begin{align}
-        X&\geq0, & \tr X&=1,
-        & T(X)-aX&\geq0,
-        \label{eq:qpf_cw_lower_feasible}
+        L_T(X)
+        &:=\{a\in\R:T(X)-aX\geq0\},
+        &
+        U_T(X)
+        &:=\{a\in\R:aX-T(X)\geq0\},
+        \label{eq:qpf_cw_sets}\\
+        r_T(X)
+        &:=\sup L_T(X),
+        &
+        \widetilde r_T(X)
+        &:=\inf U_T(X),
+        \label{eq:qpf_cw_values}
     \end{align}
-    and is upper feasible when the first two conditions hold and
+    where the suprema and infima in~(\ref{eq:qpf_cw_values}) are taken in
+    $\overline{\R}$. These are
+    \cite[Equations~(6.29)--(6.30)]{Wolf2012Quantum}. The corrected global
+    quantities are
     \begin{align}
-        aX-T(X)&\geq0.
-        \label{eq:qpf_cw_upper_feasible}
+        r_T
+        &:=\sup_{X\geq0,\,\tr X=1}r_T(X),
+        &
+        \widetilde r_T
+        &:=\inf_{X\geq0,\,\tr X=1}\widetilde r_T(X).
+        \label{eq:qpf_cw_global_values}
     \end{align}
-    Thus the scalar ranges over all of $\R$, exactly as in the source. Under
-    the harmless normalization $\tr X=1$, these predicates express
-    $a\leq r(X)$ and $\widetilde r(X)\leq a$ for the functionals in
-    \cite[Equations~(6.29)--(6.30)]{Wolf2012Quantum}.
+    The trace-one condition is Wolf's homogeneous normalization from local
+    source lines~634--637. A pair $(X,a)$ is lower feasible when
+    $X\geq0$, $\tr X=1$, and $a\in L_T(X)$; it is upper feasible when the
+    first two conditions hold and $a\in U_T(X)$.
 \end{definition}
+
+\begin{theorem}[Boundary values of the pointwise quantities]
+    \label{thm:collatz_wielandt_boundaries}
+    \lean{lowerCollatzWielandtValue_zero,
+        upperCollatzWielandtValue_zero,
+        upperCollatzWielandtValue_eq_top_of_not_nonempty}
+    \leanok
+    \uses{def:collatz_wielandt_feasible}
+    For every linear map $T$,
+    $r_T(0)=+\infty$ and $\widetilde r_T(0)=-\infty$. If
+    $U_T(X)=\varnothing$, then $\widetilde r_T(X)=+\infty$.
+\end{theorem}
+
+\begin{proof}\leanok
+    At $X=0$, both sets in~(\ref{eq:qpf_cw_sets}) equal $\R$, whose supremum
+    and infimum in $\overline{\R}$ are respectively $+\infty$ and $-\infty$.
+    The infimum of the empty subset of $\overline{\R}$ is $+\infty$.
+\end{proof}
+
+\begin{theorem}[Pointwise Collatz--Wielandt inequality]
+    \label{thm:collatz_wielandt_pointwise_order}
+    \lean{lowerCollatzWielandtValue_le_upperCollatzWielandtValue}
+    \leanok
+    \uses{def:collatz_wielandt_feasible}
+    Let $X\geq0$ be nonzero. Then
+    \begin{align}
+        r_T(X)
+        &\leq\widetilde r_T(X).
+        \label{eq:qpf_cw_pointwise_order}
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    If $a\in L_T(X)$ and $b\in U_T(X)$, adding the two positive
+    semidefinite residuals gives $(b-a)X\geq0$. Since $X\geq0$ is nonzero,
+    $\tr X>0$; taking traces therefore gives $a\leq b$. Taking the supremum
+    over $a$ and the infimum over $b$ proves
+    (\ref{eq:qpf_cw_pointwise_order}), including the cases in which either
+    set has an infinite extremum.
+\end{proof}
+
+\begin{theorem}[Collatz--Wielandt equality at a positive eigenvector]
+    \label{thm:collatz_wielandt_eigenvector}
+    \lean{lower_and_upperCollatzWielandtValue_eq_of_eigenvector}
+    \leanok
+    \uses{def:collatz_wielandt_feasible}
+    Let $X\geq0$ be nonzero and suppose $T(X)=aX$ for some $a\in\R$. Then
+    \begin{align}
+        r_T(X)
+        &=a=\widetilde r_T(X).
+        \label{eq:qpf_cw_eigenvector}
+    \end{align}
+    This is the pointwise equality used at local source lines~649--651.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:collatz_wielandt_pointwise_order}
+    The eigenvalue $a$ belongs to both sets in~(\ref{eq:qpf_cw_sets}). Hence
+    $a\leq r_T(X)\leq\widetilde r_T(X)\leq a$, where the middle inequality is
+    Theorem~\ref{thm:collatz_wielandt_pointwise_order}.
+\end{proof}
 
 \begin{theorem}[Irreducibility of the trace adjoint]
     \label{thm:trace_adjoint_irreducible_positive}
@@ -818,7 +897,10 @@ The TP-gauge application follows~\cite[Appendix~A]{Cirac2016MPDO_arXiv}.
 \begin{theorem}[Spectral radius of irreducible positive maps]
     \label{thm:wolf_irreducible_positive_spectral_radius}
     \lean{exists_wolfTheorem63_of_irreducible_positive,
-        exists_wolfTheorem63_of_irreducible_positive_of_ne_zero}
+        exists_wolfTheorem63_of_irreducible_positive_of_ne_zero,
+        exists_posDef_common_collatzWielandt_value_of_irreducible_positive,
+        exists_posDef_collatzWielandt_extrema_of_irreducible_positive,
+        lowerCollatzWielandtGlobal_eq_upperCollatzWielandtGlobal}
     \leanok
     \uses{def:positive_map, def:irreducible_cp,
         def:collatz_wielandt_feasible}
@@ -902,9 +984,10 @@ The TP-gauge application follows~\cite[Appendix~A]{Cirac2016MPDO_arXiv}.
         \tag{6.33}\label{eq:qpf_cw_trace_pairing}
     \end{align}
     Since $\tr(X_0Y)>0$, this gives $\lambda=r$. Pairing $X_0$ instead with
-    the positive residual in~(\ref{eq:qpf_cw_upper_feasible}) shows that every
-    upper feasible value is at least $r$. Together with feasibility of the
-    Perron pair, this proves the corrected global maximum--minimum equality.
+    the upper residual $aY-T(Y)\geq0$ from~(\ref{eq:qpf_cw_sets}) shows that
+    every upper feasible value is at least $r$. Together with feasibility of
+    the Perron pair, this proves the corrected global maximum--minimum
+    equality.
 
     Finally set
     \begin{align}
