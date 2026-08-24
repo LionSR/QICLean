@@ -94,26 +94,83 @@ $L_2\widehat T L_1$ are also formalized.\footnote{Formal declarations
 \leanid{Wolf.pauliMinkowskiEquiv},
 \leanid{Wolf.spinorMatrix_isSpecialOrthochronousLorentz}, and
 \leanid{Wolf.pauliTransferMatrixReal_slFiltering} in
-\doclink{QICLean/Channel/LorentzNormalForm/SpinorAction}.}  The theorem
+\doclink{QICLean/Channel/LorentzNormalForm/SpinorAction};
+\leanid{Wolf.spinorCoverHom_surjective},
+\leanid{Wolf.spinorCoverHom_eq_iff_eq_or_eq_neg}, and
+\leanid{Wolf.boostSpinor_posDef} in
+\doclink{QICLean/Channel/LorentzNormalForm/SpinorCover}; and
+\leanid{Wolf.spinorMatrix_boostExpSL2} and
+\leanid{Wolf.spinorMatrix_rotationExpSL2} in
+\doclink{QICLean/Channel/LorentzNormalForm/SpinorExponential}.}  The theorem
 asserting existence of a canonical representative for every qubit channel
 remains open.
 
-The two non-generic representatives themselves are now formalized directly
-from the source formulas in
+All three displayed representatives are now formalized directly from the
+source formulas in
 \cite[Theorem~8, Eqs.~(17)--(19)]{VerstraeteVerschelde2002QuantumChannels}.
+Verstraete--Verschelde define $R_\Phi$ from the first-factor-partially-transposed
+dual state and then use $(1,x')^{\mathsf T}=R_\Phi(1,x)^{\mathsf T}$, so
+$R_\Phi$ is their Bloch transfer matrix.  It corresponds to the local
+$\widehat T$, not to the raw Pauli correlation matrix of $\tau$.  In the
+normalized Choi convention and the local factor order, the latter satisfies
+$R_{\mathrm{raw}}(\tau)=\widehat T\operatorname{diag}(1,1,-1,1)$ because
+$\sigma_2^{\mathsf T}=-\sigma_2$.
+The partial-transpose sign is therefore already absorbed before the parameters
+in Theorem~8 are introduced.
+
+For the diagonal representative, put $q_i=p_i^2$ in the Equation~(18) Pauli
+family and specialize to $A=B=\one$.  Direct Pauli conjugation gives
+\begin{align}
+  s_1&=q_0+q_1-q_2-q_3,
+  &s_2&=q_0-q_1+q_2-q_3,\\
+  s_3&=q_0-q_1-q_2+q_3,
+  &1&=q_0+q_1+q_2+q_3.
+\end{align}
+Inverting these equations in Wolf's Pauli-transfer convention gives
+\begin{align}
+  q_0&=(1+s_1+s_2+s_3)/4,
+  &q_1&=(1+s_1-s_2-s_3)/4,\\
+  q_2&=(1-s_1+s_2-s_3)/4,
+  &q_3&=(1-s_1-s_2+s_3)/4.
+\end{align}
+Verstraete--Verschelde, Theorem~8 instead prints
+$1-s_1-s_2-s_3\geq0$.  This is inconsistent with Equation~(16): the identity
+channel has $R_\Phi=\operatorname{diag}(1,1,1,1)$ and violates that printed
+inequality.  It also cannot be explained by the partial-transpose bridge,
+because $R_\Phi$ is defined only after that transpose and already acts as the
+Bloch transfer matrix.  The formalization therefore records the all-minus
+condition as a printed sign inconsistency and does not use it.
+The formalization proves that the weights sum to one and that their simultaneous
+nonnegativity is equivalent to the four displayed numerator inequalities.
+Assuming that nonnegativity, the Equation~(18) amplitudes are $p_i=\sqrt{q_i}$
+when $A=B=\one$, and the resulting channel has Pauli transfer matrix
+$\operatorname{diag}(1,s_1,s_2,s_3)$ and Choi/Kraus rank
+$\#\{i\mid q_i\ne0\}$, retaining all rank-drop boundaries.  No necessity
+statement for complete positivity is formalized: the definition uses
+$\sqrt{q_i}$ and therefore clips a negative candidate weight to zero.
+Under $1\geq s_1\geq s_2\geq|s_3|$, Wolf's Equation~(2.40),
+$s_1+s_2\leq1+s_3$, supplies all four inequalities and agrees with the direct
+Equation~(18) calculation above.
 The exact non-diagonal three-Kraus family defines a channel for each assumed
 $x\in[0,1]$, has the Pauli data
 $\Delta=\operatorname{diag}(x/\sqrt3,x/\sqrt3,1/3)$ and
 $v=(0,0,2/3)$, and has Choi/Kraus rank three for $x<1$ and two at $x=1$.
-The singular two-Kraus family realizes
+The third normal form in Equation~(17) is realized by the singular two-Kraus
+family
 $X\mapsto\tr(X)\lvert0\rangle\!\langle0\rvert$ and has Choi/Kraus rank two.
-\footnote{Formal declarations
+The diagonal rank formula is the direct Bell-family calculation from
+Equation~(18).  The non-diagonal and singular rank statements are respectively
+cases 2 and 3 of \cite[Theorem~18]{WolfCirac2008Dividing}\footnote{Formal declarations
+\leanid{Wolf.diagonalMap},
+\leanid{Wolf.diagonalBellWeight_nonneg_iff},
+\leanid{Wolf.pauliTransferMatrix_diagonalMap},
+\leanid{Wolf.choiRank_diagonalMap},
 \leanid{Wolf.nonDiagonalMap},
 \leanid{Wolf.choiRank_nonDiagonalMap_eq_three},
 \leanid{Wolf.choiRank_nonDiagonalMap_one},
 \leanid{Wolf.singularMap}, and
 \leanid{Wolf.choiRank_singularMap} in
-\doclink{QICLean/Channel/LorentzNormalForm/CanonicalQubitChannels}.}
+\doclink{QICLean/Channel/LorentzNormalForm/CanonicalQubitChannels}.}.
 This bounded construction proves sufficiency for an already supplied
 $x\in[0,1]$; it does not derive that range or classify Lorentz orbits.
 
@@ -138,27 +195,30 @@ A source-faithful proof requires the following steps.
     transformation \leanid{Wolf.spinorMatrix}.  Its image satisfies the three
     defining conditions of $\mathrm{SO}^+(1,3)$, and two-sided filtering acts
     on Pauli transfer matrices in Wolf's order as $L_2\widehat T L_1$.
+  \item[\(\checkmark\)] The spinor homomorphism onto
+    $\mathrm{SO}^+(1,3)$ is surjective and has the exact two-point fibres
+    $\{S,-S\}$.  The explicit boost and rotation exponential identities from
+    Wolf's Equation~(2.44) are also formalized, so arbitrary source Lorentz
+    factors can be lifted by the proved spinor cover rather than extrapolating
+    from the $\mathrm{SU}(2)$ rotation case.
   \item Classify the resulting diagonal, non-diagonal, and singular Lorentz
-    orbits.  If this classification is transported through arbitrary elements
-    of $\mathrm{SO}^+(1,3)$, prove the required surjectivity of the spinor map
-    rather than importing it from the $\mathrm{SU}(2)$ case.  The present
-    formalization proves only image inclusion and $L(-S)=L(S)$; it does not
-    prove the full two-to-one assertion or the rotation and boost formulas of
-    Wolf's Equation~(2.44).
+    orbits using the source decomposition and its signed canonical-pair data.
   \item Choose the scalar factors so that the canonical representative is trace
     preserving, and derive the stated parameter bounds from the positive
-    two-qubit normal forms.  Once $x\in[0,1]$ is supplied, the exact Kraus
-    constructions, complete positivity, transfer data, and rank calculations
-    for the non-diagonal and singular representatives are already formalized.
+    two-qubit normal forms.  Once the Bell-diagonal eigenvalues are nonnegative and
+    $x\in[0,1]$ is supplied, the exact Kraus constructions, complete positivity,
+    transfer data, and rank calculations for all three representatives are
+    already formalized.
   \item Prove the three-case existence theorem using the general filters and link
     it to the existing canonical-form predicates.
 \end{enumerate}
 
 The discrepancy is an open gap: the canonical predicates, the exact
-non-generic representatives and their ranks, the generic minimisation theorem
-in square dimension, and the determinant-one Lorentz action are available,
-but the scalar-normalized Lorentz-orbit classification and necessity of the
-parameter range required by Proposition~2.11 have not yet been formalized.
+displayed representatives and their ranks, the generic minimisation theorem
+in square dimension, the determinant-one Lorentz action, and the full spinor
+cover are available, but the scalar-normalized Lorentz-orbit classification
+and necessity of the parameter range required by Proposition~2.11 have not
+yet been formalized.
 
 \bibliographystyle{alpha}
 \bibliography{references}

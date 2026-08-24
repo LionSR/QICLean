@@ -8,12 +8,16 @@ import QICLean.Channel.KrausRank
 import QICLean.Channel.LorentzNormalForm.SpinorAction
 
 /-!
-# Canonical non-diagonal and singular qubit channels
+# Canonical qubit-channel representatives
 
-This module formalizes the two non-generic channel representatives displayed in
+This module formalizes the three channel representatives displayed in
 Verstraete--Verschelde, *On Quantum Channels*, arXiv:quant-ph/0202124v2,
 Theorem 8, Equations (17)--(19), and repeated in Wolf, Proposition 2.11
 (`Notes/WolfNoteTexSource/ch02_representations.tex`, lines 1021--1035).
+The non-diagonal and singular rank statements also appear in cases 2 and 3
+of Wolf--Cirac, *Dividing Quantum Channels*, arXiv:math-ph/0611057v3,
+Theorem 18.  The diagonal rank formula below instead follows directly from
+the Bell family in Verstraete--Verschelde, Equation (18).
 
 Only the displayed representatives are treated here.  In particular, this file
 does not prove that every qubit channel has one of these forms, does not derive
@@ -23,9 +27,20 @@ The Pauli-transfer convention is Wolf's
 `T̂ᵢⱼ = tr[σᵢ T(σⱼ)] / 2`.  QICLean's Choi matrix is normalized, so
 for a trace-preserving qubit map
 `tau = (1/4) sum i j, T̂ᵢⱼ σᵢ ⊗ σⱼᵀ`.  Consequently a raw Pauli
-correlation matrix of `tau` has the extra sign in its `σ₂` input column
-coming from `σ₂ᵀ = -σ₂`; no raw-correlation matrix is identified with
-the transfer matrix below.
+correlation matrix of `tau` satisfies
+`R_raw(tau) = T̂ * diag(1, 1, -1, 1)`; the extra sign in its `σ₂` input
+column comes from `σ₂ᵀ = -σ₂`.  Verstraete--Verschelde instead define
+`R_Φ` from their first-factor-partially-transposed dual state and use it in the Bloch
+action `(1, x') = R_Φ (1, x)`.  Thus their `R_Φ` is the transfer matrix
+corresponding to `T̂`, not the raw correlation matrix of `tau`.
+
+Verstraete--Verschelde, Theorem 8 nevertheless prints the constraint
+`1 - s₁ - s₂ - s₃ ≥ 0`.  This is inconsistent with their preceding transfer
+convention: the identity channel has `R_Φ = diag(1, 1, 1, 1)` and violates that
+printed inequality.  The weights below are therefore obtained directly by applying
+the Equation (18) Pauli family in Wolf's transfer convention.  In particular the
+last weight is `(1 - s₁ - s₂ + s₃) / 4`, in agreement with Wolf's
+Equation (2.40); no parameter conversion from the printed all-minus inequality is used.
 -/
 
 open scoped Matrix BigOperators ComplexOrder MatrixOrder
@@ -37,6 +52,230 @@ namespace Wolf
 
 private abbrev QubitMatrix := Matrix (Fin 2) (Fin 2) ℂ
 private abbrev QubitMap := QubitMatrix →ₗ[ℂ] QubitMatrix
+
+/-! ## The diagonal (bistochastic) representative -/
+
+/-- The four candidate Bell-diagonal weights obtained by inverting the Pauli action of
+the Equation (18) family in Wolf's transfer convention.  Under the nonnegativity
+hypothesis used below, they are the squared source amplitudes `pᵢ²`.  The final
+`+s₃` is the direct Pauli-family sign, not Verstraete--Verschelde's inconsistent
+printed all-minus constraint. -/
+def diagonalBellWeight (s₁ s₂ s₃ : ℝ) : Fin 4 → ℝ
+  | 0 => (1 + s₁ + s₂ + s₃) / 4
+  | 1 => (1 + s₁ - s₂ - s₃) / 4
+  | 2 => (1 - s₁ + s₂ - s₃) / 4
+  | 3 => (1 - s₁ - s₂ + s₃) / 4
+
+/-- The diagonal entries of the Pauli transfer matrix, including the
+trace-preserving entry `s₀ = 1`. -/
+def diagonalPauliEigenvalue (s₁ s₂ s₃ : ℝ) : Fin 4 → ℝ
+  | 0 => 1
+  | 1 => s₁
+  | 2 => s₂
+  | 3 => s₃
+
+/-- Square-root coefficients for the diagonal Pauli family.  When the four
+weights are nonnegative, these are the coefficients `pᵢ` in the Equation (18)
+family `{p₀ σ₀, p₁ σ₁, p₂ σ₂, p₃ σ₃}`, specialized to `A = B = I` and
+related to the transfer parameters by the direct Pauli-action calculation above. -/
+def diagonalKrausCoefficient (s₁ s₂ s₃ : ℝ) (i : Fin 4) : ℝ :=
+  Real.sqrt (diagonalBellWeight s₁ s₂ s₃ i)
+
+/-- The four-operator Pauli family built from `diagonalKrausCoefficient`.
+Under nonnegative weights it is the diagonal representative in
+Verstraete--Verschelde, Theorem 8, Equation (18), with `A = B = I`. -/
+def diagonalKraus (s₁ s₂ s₃ : ℝ) : Fin 4 → QubitMatrix :=
+  fun i ↦ (diagonalKrausCoefficient s₁ s₂ s₃ i : ℂ) • pauliMatrices i
+
+/-- The completely positive Kraus map built from `diagonalKraus`.
+
+If a candidate weight is negative, `Real.sqrt` clips it to zero.  Therefore
+the theorems identifying this map with the source diagonal representative and
+its parameters explicitly assume that every weight is nonnegative. -/
+def diagonalMap (s₁ s₂ s₃ : ℝ) : QubitMap :=
+  Kraus.mapLM (diagonalKraus s₁ s₂ s₃)
+
+/-- Indices of the nonzero candidate Bell-diagonal weights. -/
+abbrev diagonalBellSupport (s₁ s₂ s₃ : ℝ) :=
+  {i : Fin 4 // diagonalBellWeight s₁ s₂ s₃ i ≠ 0}
+
+/-- The four candidate Bell-diagonal weights sum to one. -/
+theorem sum_diagonalBellWeight (s₁ s₂ s₃ : ℝ) :
+    ∑ i : Fin 4, diagonalBellWeight s₁ s₂ s₃ i = 1 := by
+  simp [diagonalBellWeight, Fin.sum_univ_four]
+  ring
+
+/-- Simultaneous nonnegativity of the four Bell weights is equivalent to the
+four displayed linear inequalities. -/
+theorem diagonalBellWeight_nonneg_iff (s₁ s₂ s₃ : ℝ) :
+    (∀ i, 0 ≤ diagonalBellWeight s₁ s₂ s₃ i) ↔
+      0 ≤ 1 + s₁ + s₂ + s₃ ∧
+      0 ≤ 1 + s₁ - s₂ - s₃ ∧
+      0 ≤ 1 - s₁ + s₂ - s₃ ∧
+      0 ≤ 1 - s₁ - s₂ + s₃ := by
+  constructor
+  · intro h
+    have h₀ := h (0 : Fin 4)
+    have h₁ := h (1 : Fin 4)
+    have h₂ := h (2 : Fin 4)
+    have h₃ := h (3 : Fin 4)
+    simp [diagonalBellWeight] at h₀ h₁ h₂ h₃
+    exact ⟨by linarith, by linarith, by linarith, by linarith⟩
+  · rintro ⟨h₀, h₁, h₂, h₃⟩ i
+    fin_cases i <;> simp [diagonalBellWeight] <;> linarith
+
+/-- Under Wolf's ordered diagonal convention, the single displayed
+Fujiwara--Algoet inequality supplies all four nonnegative Bell-diagonal
+eigenvalues. -/
+theorem diagonalBellWeight_nonneg_of_ordered
+    {s₁ s₂ s₃ : ℝ} (hs₁ : s₁ ≤ 1) (hs₂ : s₂ ≤ s₁)
+    (hs₃ : |s₃| ≤ s₂) (hcp : s₁ + s₂ ≤ 1 + s₃) :
+    ∀ i, 0 ≤ diagonalBellWeight s₁ s₂ s₃ i := by
+  rw [diagonalBellWeight_nonneg_iff]
+  constructor
+  · nlinarith [le_abs_self s₃, neg_abs_le s₃]
+  constructor
+  · nlinarith [le_abs_self s₃, neg_abs_le s₃]
+  constructor
+  · nlinarith [le_abs_self s₃, neg_abs_le s₃]
+  · linarith
+
+/-- The source Pauli family is trace preserving whenever its Bell-diagonal
+eigenvalues are nonnegative. -/
+theorem diagonalKraus_isTP {s₁ s₂ s₃ : ℝ}
+    (hweight : ∀ i, 0 ≤ diagonalBellWeight s₁ s₂ s₃ i) :
+    Kraus.IsTP (diagonalKraus s₁ s₂ s₃) := by
+  have hsqrt (i : Fin 4) :
+      Real.sqrt (diagonalBellWeight s₁ s₂ s₃ i) ^ 2 =
+        diagonalBellWeight s₁ s₂ s₃ i :=
+    Real.sq_sqrt (hweight i)
+  have hsqrtℂ (i : Fin 4) :
+      (diagonalKrausCoefficient s₁ s₂ s₃ i : ℂ) *
+          (diagonalKrausCoefficient s₁ s₂ s₃ i : ℂ) =
+        (diagonalBellWeight s₁ s₂ s₃ i : ℂ) := by
+    exact_mod_cast (show
+      diagonalKrausCoefficient s₁ s₂ s₃ i *
+          diagonalKrausCoefficient s₁ s₂ s₃ i =
+        diagonalBellWeight s₁ s₂ s₃ i by
+      simpa [diagonalKrausCoefficient, pow_two] using hsqrt i)
+  have hsumℂ :
+      ∑ i : Fin 4, (diagonalBellWeight s₁ s₂ s₃ i : ℂ) = 1 := by
+    exact_mod_cast sum_diagonalBellWeight s₁ s₂ s₃
+  rw [Kraus.IsTP]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    norm_num [diagonalKraus, pauliMatrices,
+      Fin.sum_univ_four, Matrix.mul_apply, Matrix.conjTranspose_apply,
+      hsqrtℂ]
+  all_goals simpa [Fin.sum_univ_four] using hsumℂ
+
+/-- The source Pauli family defines a diagonal qubit channel. -/
+theorem diagonalMap_isChannel {s₁ s₂ s₃ : ℝ}
+    (hweight : ∀ i, 0 ≤ diagonalBellWeight s₁ s₂ s₃ i) :
+    IsChannel (diagonalMap s₁ s₂ s₃) :=
+  Kraus.isChannel_mapLM _ (diagonalKraus_isTP hweight)
+
+/-- Each Pauli matrix is an eigenvector of the diagonal representative. -/
+theorem diagonalMap_pauli {s₁ s₂ s₃ : ℝ}
+    (hweight : ∀ i, 0 ≤ diagonalBellWeight s₁ s₂ s₃ i) (j : Fin 4) :
+    diagonalMap s₁ s₂ s₃ (pauliMatrices j) =
+      (diagonalPauliEigenvalue s₁ s₂ s₃ j : ℂ) • pauliMatrices j := by
+  have hsqrtℂ (i : Fin 4) :
+      (diagonalKrausCoefficient s₁ s₂ s₃ i : ℂ) *
+          (diagonalKrausCoefficient s₁ s₂ s₃ i : ℂ) =
+        (diagonalBellWeight s₁ s₂ s₃ i : ℂ) := by
+    exact_mod_cast (show
+      diagonalKrausCoefficient s₁ s₂ s₃ i *
+          diagonalKrausCoefficient s₁ s₂ s₃ i =
+        diagonalBellWeight s₁ s₂ s₃ i by
+      simpa [diagonalKrausCoefficient, pow_two] using Real.sq_sqrt (hweight i))
+  have hsqrtPowℂ (i : Fin 4) :
+      (diagonalKrausCoefficient s₁ s₂ s₃ i : ℂ) ^ 2 =
+        (diagonalBellWeight s₁ s₂ s₃ i : ℂ) := by
+    simpa [pow_two] using hsqrtℂ i
+  fin_cases j <;> ext a b <;> fin_cases a <;> fin_cases b <;>
+    norm_num [diagonalMap, Kraus.map_apply, diagonalKraus, pauliMatrices,
+      diagonalPauliEigenvalue, Fin.sum_univ_four, Matrix.mul_apply,
+      Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply, hsqrtℂ]
+  all_goals try simp [diagonalBellWeight]
+  case «2».«0».«1» =>
+    have h₀ := hsqrtPowℂ (0 : Fin 4)
+    have h₁ := hsqrtPowℂ (1 : Fin 4)
+    have h₂ := hsqrtPowℂ (2 : Fin 4)
+    have h₃ := hsqrtPowℂ (3 : Fin 4)
+    simp [diagonalBellWeight] at h₀ h₁ h₂ h₃
+    linear_combination -Complex.I * h₀ + Complex.I * h₁ -
+      Complex.I * h₂ + Complex.I * h₃
+  case «2».«1».«0» =>
+    have h₀ := hsqrtPowℂ (0 : Fin 4)
+    have h₁ := hsqrtPowℂ (1 : Fin 4)
+    have h₂ := hsqrtPowℂ (2 : Fin 4)
+    have h₃ := hsqrtPowℂ (3 : Fin 4)
+    simp [diagonalBellWeight] at h₀ h₁ h₂ h₃
+    linear_combination Complex.I * h₀ - Complex.I * h₁ +
+      Complex.I * h₂ - Complex.I * h₃
+  all_goals ring
+
+/-- Exact Pauli-transfer matrix of the diagonal representative. -/
+theorem pauliTransferMatrix_diagonalMap {s₁ s₂ s₃ : ℝ}
+    (hweight : ∀ i, 0 ≤ diagonalBellWeight s₁ s₂ s₃ i) :
+    pauliTransferMatrix (diagonalMap s₁ s₂ s₃) =
+      Matrix.diagonal (fun i ↦ (diagonalPauliEigenvalue s₁ s₂ s₃ i : ℂ)) := by
+  ext i j
+  rw [pauliTransferMatrix, pauliTransferEntry, diagonalMap_pauli hweight]
+  fin_cases i <;> fin_cases j <;>
+    norm_num [diagonalPauliEigenvalue, pauliMatrices, Matrix.diagonal_apply,
+      Matrix.trace_fin_two, Matrix.mul_apply]
+  all_goals ring_nf
+  all_goals try rw [Complex.I_sq]
+  all_goals ring
+
+/-- The source-displayed Pauli channel satisfies the diagonal normal-form
+predicate.  This does not assert existence of such a representative in every
+filtering orbit. -/
+theorem isLorentzDiagonal_diagonalMap {s₁ s₂ s₃ : ℝ}
+    (hweight : ∀ i, 0 ≤ diagonalBellWeight s₁ s₂ s₃ i) :
+    IsLorentzDiagonal (diagonalMap s₁ s₂ s₃) := by
+  refine ⟨diagonalMap_isChannel hweight, ?_, ?_⟩
+  · have hpauli : pauliMatrices (0 : Fin 4) = (1 : QubitMatrix) := by
+      ext i j
+      fin_cases i <;> fin_cases j <;> norm_num [pauliMatrices]
+    have h := diagonalMap_pauli hweight (0 : Fin 4)
+    rw [hpauli] at h
+    simpa [diagonalPauliEigenvalue] using h
+  · intro i j hij
+    have h := congrArg (fun M : Matrix (Fin 4) (Fin 4) ℂ ↦ M i j)
+      (pauliTransferMatrix_diagonalMap hweight)
+    simpa [pauliTransferMatrix, Matrix.diagonal_apply, hij] using h
+
+private theorem pauliMatrices_linearIndependent :
+    LinearIndependent ℂ pauliMatrices := by
+  rw [Fintype.linearIndependent_iff]
+  intro g hg i
+  have h₀₀ := congrArg (fun M : QubitMatrix ↦ M 0 0) hg
+  have h₁₁ := congrArg (fun M : QubitMatrix ↦ M 1 1) hg
+  have h₀₁ := congrArg (fun M : QubitMatrix ↦ M 0 1) hg
+  have h₁₀ := congrArg (fun M : QubitMatrix ↦ M 1 0) hg
+  have h₀₀' : g 0 + g 3 = 0 := by
+    simpa [Fin.sum_univ_four, pauliMatrices] using h₀₀
+  have h₁₁' : g 0 + -g 3 = 0 := by
+    simpa [Fin.sum_univ_four, pauliMatrices] using h₁₁
+  have h₀₁' : g 1 + -(g 2 * Complex.I) = 0 := by
+    simpa [Fin.sum_univ_four, pauliMatrices] using h₀₁
+  have h₁₀' : g 1 + g 2 * Complex.I = 0 := by
+    simpa [Fin.sum_univ_four, pauliMatrices] using h₁₀
+  have hg₀ : g 0 = 0 := by linear_combination (h₀₀' + h₁₁') / 2
+  have hg₃ : g 3 = 0 := by linear_combination (h₀₀' - h₁₁') / 2
+  have hg₁ : g 1 = 0 := by linear_combination (h₀₁' + h₁₀') / 2
+  have hg₂ : g 2 = 0 := by
+    have hI : g 2 * Complex.I = 0 := by
+      linear_combination (h₁₀' - h₀₁') / 2
+    exact (mul_eq_zero.mp hI).resolve_right Complex.I_ne_zero
+  fin_cases i
+  · exact hg₀
+  · exact hg₁
+  · exact hg₂
+  · exact hg₃
 
 /-! ## The non-diagonal representative -/
 
@@ -60,8 +299,8 @@ used only when certifying that this family is trace preserving. -/
 def nonDiagonalKraus (x : ℝ) : Fin 3 → QubitMatrix :=
   fun i ↦ (nonDiagonalKrausCoefficient x i : ℂ) • nonDiagonalKrausBase i
 
-/-- The canonical non-diagonal completely positive map displayed in
-Verstraete--Verschelde, Theorem 8. -/
+/-- The canonical non-diagonal completely positive map whose Pauli-transfer
+matrix is the second normal form in Verstraete--Verschelde, Equation (17). -/
 def nonDiagonalMap (x : ℝ) : QubitMap :=
   Kraus.mapLM (nonDiagonalKraus x)
 
@@ -226,19 +465,19 @@ theorem isLorentzNonDiagonal_nonDiagonalMap {x : ℝ}
 /-! ## Choi/Kraus ranks of the displayed family -/
 
 private theorem rank_sum_vecMulVec_eq_card_of_linearIndependent
-    {n : Type*} [Fintype n] {r : ℕ} (v : Fin r → n → ℂ)
+    {n ι : Type*} [Fintype n] [Fintype ι] (v : ι → n → ℂ)
     (hv : LinearIndependent ℂ v) :
-    (∑ i : Fin r, Matrix.vecMulVec (v i) (star (v i))).rank = r := by
-  let C : Matrix n (Fin r) ℂ := fun p i ↦ v i p
+    (∑ i : ι, Matrix.vecMulVec (v i) (star (v i))).rank = Fintype.card ι := by
+  let C : Matrix n ι ℂ := fun p i ↦ v i p
   have hsum :
-      ∑ i : Fin r, Matrix.vecMulVec (v i) (star (v i)) = C * Cᴴ := by
+      ∑ i : ι, Matrix.vecMulVec (v i) (star (v i)) = C * Cᴴ := by
     ext p q
     rw [Matrix.sum_apply, Matrix.mul_apply]
-    change (∑ i : Fin r, v i p * star (v i q)) =
-      ∑ i : Fin r, v i p * star (v i q)
+    change (∑ i : ι, v i p * star (v i q)) =
+      ∑ i : ι, v i p * star (v i q)
     rfl
   rw [hsum, Matrix.rank_self_mul_conjTranspose, Matrix.rank_eq_finrank_span_cols]
-  change Module.finrank ℂ (Submodule.span ℂ (Set.range v)) = r
+  change Module.finrank ℂ (Submodule.span ℂ (Set.range v)) = Fintype.card ι
   simpa using finrank_span_eq_card hv
 
 private theorem choiRank_mapLM_eq_card_of_linearIndependent {r : ℕ}
@@ -264,7 +503,101 @@ private theorem choiRank_mapLM_eq_card_of_linearIndependent {r : ℕ}
       (mul_eq_zero.mp hentry).resolve_left hc
   change (ChoiJamiolkowski.choiMatrix (Kraus.mapLM K)).rank = r
   rw [Channel.choiMatrix_mapLM_eq_sum_vecMulVec]
-  exact rank_sum_vecMulVec_eq_card_of_linearIndependent v hv
+  change (∑ i : Fin r, Matrix.vecMulVec (v i) (star (v i))).rank = r
+  simpa using rank_sum_vecMulVec_eq_card_of_linearIndependent v hv
+
+/-- The diagonal representative's Choi/Kraus rank is exactly the number of
+nonzero Bell-diagonal eigenvalues.  This includes every rank-drop boundary,
+rather than assuming the generic rank-four case. -/
+theorem choiRank_diagonalMap {s₁ s₂ s₃ : ℝ}
+    (hweight : ∀ i, 0 ≤ diagonalBellWeight s₁ s₂ s₃ i) :
+    Channel.choiRank (diagonalMap s₁ s₂ s₃) =
+      Fintype.card (diagonalBellSupport s₁ s₂ s₃) := by
+  classical
+  let c : ℂ := 1 / ((2 : ℝ).sqrt : ℂ)
+  let v : Fin 4 → (Fin 2 × Fin 2) → ℂ :=
+    fun j p ↦ c * diagonalKraus s₁ s₂ s₃ j p.1 p.2
+  let supportV : diagonalBellSupport s₁ s₂ s₃ → (Fin 2 × Fin 2) → ℂ :=
+    fun j ↦ v j.1
+  have hc : c ≠ 0 := by
+    dsimp [c]
+    positivity
+  have hcoeff : ∀ i : diagonalBellSupport s₁ s₂ s₃,
+      ((diagonalKrausCoefficient s₁ s₂ s₃ i.1 : ℝ) : ℂ) ≠ 0 := by
+    intro i
+    apply Complex.ofReal_ne_zero.mpr
+    rw [diagonalKrausCoefficient, Real.sqrt_ne_zero']
+    exact lt_of_le_of_ne (hweight i.1) (Ne.symm i.2)
+  have hK : LinearIndependent ℂ
+      (fun i : diagonalBellSupport s₁ s₂ s₃ ↦
+        diagonalKraus s₁ s₂ s₃ i.1) := by
+    have hrestricted := pauliMatrices_linearIndependent.comp
+      (fun i : diagonalBellSupport s₁ s₂ s₃ ↦ i.1) Subtype.val_injective
+    rw [Fintype.linearIndependent_iff] at hrestricted ⊢
+    intro g hg i
+    have hproduct := hrestricted
+      (fun j ↦ g j * (diagonalKrausCoefficient s₁ s₂ s₃ j.1 : ℂ)) (by
+        calc
+          ∑ j, (g j * (diagonalKrausCoefficient s₁ s₂ s₃ j.1 : ℂ)) •
+              pauliMatrices j.1 =
+              ∑ j, g j • diagonalKraus s₁ s₂ s₃ j.1 := by
+                apply Finset.sum_congr rfl
+                intro j _
+                change (g j * (diagonalKrausCoefficient s₁ s₂ s₃ j.1 : ℂ)) •
+                    pauliMatrices j.1 =
+                  g j • ((diagonalKrausCoefficient s₁ s₂ s₃ j.1 : ℂ) •
+                    pauliMatrices j.1)
+                rw [smul_smul]
+          _ = 0 := hg) i
+    exact (mul_eq_zero.mp hproduct).resolve_right (hcoeff i)
+  have hv : LinearIndependent ℂ supportV := by
+    rw [Fintype.linearIndependent_iff] at hK ⊢
+    intro g hg i
+    apply hK g _ i
+    apply Matrix.ext
+    intro a b
+    have hab := congrFun hg (a, b)
+    have hentry :
+        c * (∑ j, g j * diagonalKraus s₁ s₂ s₃ j.1 a b) = 0 := by
+      simpa [supportV, v, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc] using hab
+    rw [Matrix.sum_apply, show (0 : QubitMatrix) a b = 0 by rfl]
+    simpa only [Matrix.smul_apply, smul_eq_mul] using
+      (mul_eq_zero.mp hentry).resolve_left hc
+  have hsum :
+      ∑ i : Fin 4, Matrix.vecMulVec (v i) (star (v i)) =
+        ∑ i : diagonalBellSupport s₁ s₂ s₃,
+          Matrix.vecMulVec (supportV i) (star (supportV i)) := by
+    let f : Fin 4 → Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) ℂ :=
+      fun i ↦ Matrix.vecMulVec (v i) (star (v i))
+    have hfiltered :
+        ∑ i ∈ Finset.univ.filter
+              (fun i ↦ diagonalBellWeight s₁ s₂ s₃ i ≠ 0), f i =
+          ∑ i : Fin 4, f i := by
+      apply Finset.sum_subset (Finset.filter_subset _ _)
+      intro i _ hi
+      have hzero : diagonalBellWeight s₁ s₂ s₃ i = 0 := by
+        simpa using hi
+      ext p q
+      simp [f, v, diagonalKraus, diagonalKrausCoefficient, hzero,
+        Matrix.vecMulVec_apply]
+    calc
+      ∑ i : Fin 4, Matrix.vecMulVec (v i) (star (v i)) = ∑ i : Fin 4, f i := rfl
+      _ = ∑ i ∈ Finset.univ.filter
+            (fun i ↦ diagonalBellWeight s₁ s₂ s₃ i ≠ 0), f i := hfiltered.symm
+      _ = ∑ i : diagonalBellSupport s₁ s₂ s₃, f i.1 := by
+        simpa [diagonalBellSupport] using
+          (Finset.sum_subtype
+            (Finset.univ.filter
+              (fun i ↦ diagonalBellWeight s₁ s₂ s₃ i ≠ 0))
+            (fun i ↦ by simp) f)
+      _ = ∑ i : diagonalBellSupport s₁ s₂ s₃,
+          Matrix.vecMulVec (supportV i) (star (supportV i)) := rfl
+  change (ChoiJamiolkowski.choiMatrix
+    (Kraus.mapLM (diagonalKraus s₁ s₂ s₃))).rank = _
+  rw [Channel.choiMatrix_mapLM_eq_sum_vecMulVec]
+  change (∑ i : Fin 4, Matrix.vecMulVec (v i) (star (v i))).rank = _
+  rw [hsum]
+  exact rank_sum_vecMulVec_eq_card_of_linearIndependent supportV hv
 
 private theorem nonDiagonalKrausBase_linearIndependent :
     LinearIndependent ℂ nonDiagonalKrausBase := by
@@ -365,7 +698,8 @@ def singularKraus : Fin 2 → QubitMatrix
   | 0 => !![1, 0; 0, 0]
   | 1 => !![0, 1; 0, 0]
 
-/-- The singular qubit channel of Wolf, Proposition 2.11 case 3. -/
+/-- The singular qubit channel from the third normal form in
+Verstraete--Verschelde, Equation (17), and Wolf, Proposition 2.11 case 3. -/
 def singularMap : QubitMap :=
   Kraus.mapLM singularKraus
 
