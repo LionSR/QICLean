@@ -1383,6 +1383,23 @@ both `T` and `T*` are Schwarz.  No implication between these hypotheses is
 silently introduced, and the note does not claim that the theorem's conclusion
 is false under the single printed hypothesis.
 
+* The final classification step at source lines 1660--1663 is formalized
+  under exactly Wolf's positive, trace-preserving, positive-inverse, and
+  Schwarz hypotheses:
+  - `ChannelDeterminant.Internal.transposeLinearMapComplex_not_isSchwarzMap`
+    uses the matrix unit \(E_{01}\), whose transpose Schwarz defect is
+    \(E_{11}-E_{00}\), to rule out ordinary transposition for \(d\geq 2\).
+  - `ChannelDeterminant.Internal.isSchwarzMap_of_unitaryChannel_comp` proves
+    that an outer unitary conjugation cannot repair a Schwarz defect.
+  - `ChannelDeterminant.Internal.unitaryChannel_comp_transpose_not_isSchwarzMap`
+    excludes Wolf's unitary-conjugation-after-transposition standard form.
+  - `ChannelDeterminant.Internal.unitaryChannel_comp_transpose_fin_one`
+    records that the transpose branch collapses to unitary conjugation for
+    \(d=1\).
+  - `ChannelDeterminant.Internal.wolfPositiveInvertibleSchwarzMaps` combines
+    those facts with the completed positive-invertible-map corollary, without
+    assuming complete positivity.
+
 * Reusable formalization for the permutation-of-blocks direction lives in
   `QICLean.Channel.Peripheral.CyclicDecomposition` and
   `QICLean.Channel.Peripheral.Cycles`:
@@ -1419,7 +1436,12 @@ is false under the single printed hypothesis.
   map for which both `T` and `T*` satisfy the Schwarz inequality admits a
   `MultiCycleDecomposition` on its asymptotic image, with the cycles coming
   from the now-formalized density-block decomposition of the fixed-point
-  space — is left to future work.
+  space — still requires formalizing Schwarz closure and Wolf's positive
+  inverse on the recurrent image, deriving the density-block face permutation
+  and equal dimensions, and assembling the exact weighted Equations
+  (6.66)--(6.68). The conditional `CycleStructure` and
+  `MultiCycleDecomposition` objects above are consumers of that theorem; they
+  are not substitutes for the missing source-facing declaration.
 
 ---
 

@@ -553,6 +553,40 @@ $T^*$; the distinction and exact source lines are recorded in
 conditional data and do not assert that this existence theorem is already
 proved.
 
+\begin{theorem}[The Schwarz condition excludes matrix transpositions]
+    \label{thm:wolf_cycle_schwarz_excludes_transpose}
+    \lean{ChannelDeterminant.Internal.transposeLinearMapComplex_not_isSchwarzMap,
+        ChannelDeterminant.Internal.isSchwarzMap_of_unitaryChannel_comp,
+        ChannelDeterminant.Internal.unitaryChannel_comp_transpose_not_isSchwarzMap,
+        ChannelDeterminant.Internal.unitaryChannel_comp_transpose_fin_one,
+        ChannelDeterminant.Internal.wolfPositiveInvertibleSchwarzMaps}
+    \leanok
+    \uses{def:inverse_of_bijective_matrix_endomorphism,
+        def:positive_map, def:trace_preserving, def:unitary_channel,
+        def:abstract_schwarz_inequality}
+    Let $d>0$, and let $T:\MN{d}\to\MN{d}$ be a positive,
+    trace-preserving bijection whose inverse is positive. If $T$ satisfies the
+    Schwarz inequality in (\ref{eq:schwarz_abstract_inequality}), then there is
+    a unitary $U$ such that
+    \begin{align}
+        T(X)&=UXU^\dagger.
+    \end{align}
+    This is the final classification step at lines 1660--1663 of Wolf's proof
+    of Theorem~6.16.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_positive_invertible_maps}
+    The positive-invertible-map corollary gives either unitary conjugation or
+    $X\mapsto UX^{\mathsf T}U^\dagger$. For $d\geq 2$, take the matrix unit
+    $A=E_{01}$. The Schwarz defect of ordinary transposition is
+    $E_{11}-E_{00}$, which is not positive semidefinite. Conjugating a defect
+    by a unitary is an order automorphism, so the unitary-conjugated transpose
+    branch fails the same inequality. For $d=1$, ordinary transposition is the
+    identity and this alternative is already unitary conjugation.
+\end{proof}
+
 \begin{definition}[Block-permutation structure]
     \label{def:cycle_structure}
     \lean{CycleStructure}
