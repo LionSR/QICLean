@@ -1,0 +1,133 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{The Minkowski Canonical-Pair Dependency in Four Real Dimensions}
+\author{}
+\date{2026-08-24}
+
+\begin{document}
+\maketitle
+\gapnote{open-gap}{wip}
+
+\section{The required assertion}
+
+Let
+\begin{align}
+  M&=\operatorname{diag}(1,-1,-1,-1),
+\end{align}
+and let $C\in M_4(\mathbb R)$ satisfy
+\begin{align}
+  C^{\mathsf T}M&=MC.
+  \label{eq:m-selfadjoint}
+\end{align}
+The proof of Theorem~3 of Verstraete--Dehaene--De Moor invokes
+Gohberg--Lancaster--Rodman, Part~I, Chapter~5, Section~5.1,
+Theorem~5.3, to obtain an invertible real matrix $X$, a real Jordan
+matrix $J$, and a canonical metric $N_J$ such that
+\begin{align}
+  C&=X^{-1}JX,
+  &XMX^{\mathsf T}&=N_J.
+  \label{eq:canonical-pair}
+\end{align}
+For a real-eigenvalue Jordan block of size $n$, the corresponding metric
+block is $\varepsilon P_n$, where $\varepsilon\in\{1,-1\}$ and $P_n$ is
+the reversal permutation matrix. A block for a non-real conjugate pair
+has real dimension $2m$ and carries an unsigned reversal metric; no sign
+characteristic is attached to that block.
+
+The GLR convention is commonly written
+\begin{align}
+  C&=S^{-1}JS,
+  &M&=S^{\mathsf T}N_JS.
+\end{align}
+Putting $X=S^{-\mathsf T}$ gives the second identity in
+\eqref{eq:canonical-pair}; transposing the similarity convention, and if
+necessary conjugating each Jordan chain by its reversal, gives the Jordan
+orientation used in the VDDM display. These inverse and transpose changes
+must be retained explicitly: replacing them by an ordinary Euclidean singular
+value decomposition does not prove \eqref{eq:canonical-pair}.
+
+\section{The four-dimensional inertia restriction}
+
+The reversal form $P_n$ has positive and negative indices
+\begin{align}
+  \left(\left\lceil\frac n2\right\rceil,
+        \left\lfloor\frac n2\right\rfloor\right),
+\end{align}
+with the two indices interchanged when the sign $\varepsilon$ is negative.
+An unsigned conjugate-pair block of real dimension $2m$ has indices $(m,m)$.
+Consequently, total inertia $(1,3)$ excludes a real Jordan block of size four,
+a conjugate-pair chain of real dimension four, and two blocks of dimension two.
+The remaining dimension patterns are exactly those listed in the proof of VDDM
+Theorem~3:
+\begin{enumerate}
+  \item four real one-dimensional blocks;
+  \item one two-dimensional non-real conjugate-pair block and two real
+        one-dimensional blocks;
+  \item one real Jordan block of size two and two real one-dimensional blocks;
+  \item one real Jordan block of size three and one real one-dimensional block.
+\end{enumerate}
+The source's phrase ``orthogonal $2\times2$ block'' in the second item denotes
+the real block for a non-real conjugate eigenvalue pair. It does not assert
+that this block is an orthogonal matrix for the Euclidean scalar product.
+
+\section{Formalized infrastructure}
+
+The reversal matrices, their signed variants, and explicit congruences exposing
+the signatures of $P_2$, $P_3$, and $P_4$ are formalized. The development also
+contains real Jordan blocks, realifications of non-real conjugate-pair Jordan
+chains, and direct proofs of the block identities
+\begin{align}
+  (\varepsilon P_n)J_n(a)
+    &=J_n(a)^{\mathsf T}(\varepsilon P_n),\\
+  P_{2m}J_m(a,\tau)
+    &=J_m(a,\tau)^{\mathsf T}P_{2m}.
+\end{align}
+Finally, the matrix $M$, Equation~\eqref{eq:m-selfadjoint}, and the four target
+block patterns are represented directly.\footnote{Formal declarations in
+\doclink{QICLean/Algebra/MinkowskiCanonicalPair.lean} include
+\leanid{Matrix.signedSipMatrix}, \leanid{Matrix.realJordanBlock},
+\leanid{Matrix.realConjugatePairJordanBlock},
+\leanid{Matrix.signedSipMatrix_mul_realJordanBlock},
+\leanid{Matrix.complexPairSipMatrix_mul_realConjugatePairJordanBlock},
+\leanid{Matrix.minkowskiMetric}, \leanid{Matrix.IsMinkowskiSelfAdjoint}, and
+\leanid{Matrix.GLRFourDimensionalPattern}.}
+
+\section{The remaining obstruction}
+
+The formal library has no real Jordan canonical-form existence theorem from
+which to construct $J$ and a similarity matrix for an arbitrary real
+$4\times4$ matrix. More importantly, it has no formal version of the GLR
+canonical-pair theorem that simultaneously controls that similarity and the
+congruence class of the indefinite metric, including the sign characteristic.
+Sylvester's law for quadratic forms is available, but it applies only after the
+canonical metric $N_J$ and the congruence in \eqref{eq:canonical-pair} have been
+constructed; it cannot supply the missing simultaneous reduction.
+
+Thus no theorem with additional hypotheses is being presented as the cited
+result. The exact existence identities in \eqref{eq:canonical-pair} and the
+exhaustiveness of the four cases remain unformalized. Eliminating this gap
+requires a source-faithful real Jordan theorem followed by the finite-dimensional
+proof of GLR Theorem~5.3, or a direct four-dimensional proof that retains the
+same block, sign, transpose, and inverse conventions. Before fixing the final
+formal signature, the exact existence clause of the cited edition must also be
+transcribed verbatim from the source; the currently recorded convention
+translation is a high-confidence reconstruction from the statement context and
+proof, not a verbatim quotation.
+
+\section{Conclusion}
+
+This is an open formalization dependency, not a correction to either cited
+source. The canonical blocks and all presently asserted algebraic identities
+are proved, but the simultaneous similarity--congruence existence theorem is
+the load-bearing missing result. Numerical orbit enumeration, Euclidean SVD,
+and a generic indefinite-SVD assumption would bypass rather than close this
+gap.
+
+\end{document}
