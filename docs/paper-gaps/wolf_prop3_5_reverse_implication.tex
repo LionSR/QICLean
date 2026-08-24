@@ -92,8 +92,9 @@ the same input-to-output orientation $\MN{d}\to\MN{d'}$ as Wolf.
 The converse required for the full proposition begins with an
 indecomposable positive map and must produce a PPT entangled density
 operator. The current formal development does not claim that implication.
-The explicit cone and rectangular adjoint bridge are now formalized as
-\leanid{Matrix.IsDecomposableWitness} and
+The explicit cone, its convexity, and the rectangular adjoint bridge are now
+formalized as \leanid{Matrix.IsDecomposableWitness},
+\leanid{Matrix.convex_setOf_isDecomposableWitness}, and
 \leanid{ChoiRectangular.isDecomposablePositiveMap_iff_choiMatrix_traceAdjointMap_isDecomposableWitness}:
 \begin{align}
   T\text{ decomposable}
@@ -105,12 +106,22 @@ The explicit cone and rectangular adjoint bridge are now formalized as
 Following Wolf and the primary witness proof still requires all of the
 following:
 \begin{align}
-  &\text{closedness and convexity of that cone},\notag\\
+  &\text{closedness of that cone},\notag\\
   &\tr\!\left(P_2^{T_1}R\right)
       =\tr\!\left(P_2R^{T_1}\right),\notag\\
   &\text{and separation followed by positivity, PPT, trace normalization,
     and entanglement of the separator.}\notag
 \end{align}
+The intended source-faithful route to closedness starts from the trace-one
+decomposable operators $aP+(1-a)Q^{T_1}$ used by
+Lewenstein--Kraus--Cirac--Horodecki.  One must first prove that the normalized set
+is compact, then recover the unnormalized Equation~(3.15) cone through the radial
+map whose radius is its trace.  On the Lean side this still requires
+trace-bounded compactness for positive-semidefinite matrices on the product
+index and a proper-map argument for radial scaling.  Merely observing that
+$P_1+P_2^{T_1}$ is a continuous image of the closed product of two
+positive-semidefinite cones would not prove closedness.
+
 Defining a decomposable witness merely as a functional nonnegative on every
 PPT operator would hide rather than prove Equation~(3.15), so that route is
 not used.

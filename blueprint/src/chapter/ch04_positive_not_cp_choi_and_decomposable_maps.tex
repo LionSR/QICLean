@@ -546,6 +546,26 @@ positive map and a completely copositive map.
     transposition on the first factor.
 \end{definition}
 
+\begin{theorem}[Convexity of decomposable witnesses]
+    \label{thm:decomposable_witness_convex}
+    \lean{Matrix.convex_setOf_isDecomposableWitness}
+    \leanok
+    \uses{def:decomposable_witness}
+    The set of decomposable witnesses in Equation~(3.15) is convex.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    If $W=P_1+P_2^{T_1}$ and $W'=Q_1+Q_2^{T_1}$, then for
+    $a,b\geq0$ with $a+b=1$,
+    \begin{align}
+        aW+bW'
+        &=(aP_1+bQ_1)+(aP_2+bQ_2)^{T_1}.
+        \notag
+    \end{align}
+    Both matrices in parentheses are positive semidefinite.
+\end{proof}
+
 \begin{theorem}[Rectangular decomposable map--witness correspondence]
     \label{thm:decomposable_map_iff_decomposable_witness}
     \lean{Matrix.traceAdjointMap_add,

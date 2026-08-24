@@ -622,6 +622,9 @@ so that the cited formal statements are available from the main project import.
   `ChoiRectangular.isDecomposablePositiveMap_iff_choiMatrix_traceAdjointMap_isDecomposableWitness`
   — the explicit Equation (3.15) cone `W = P₁ + P₂^{T₁}` and its rectangular
   trace-adjoint Choi correspondence with decomposable maps ✓
+- `Matrix.convex_setOf_isDecomposableWitness` — convexity of the explicit
+  Equation (3.15) decomposable-witness cone, as used in the proof of
+  Proposition 3.5 ✓
 - The reverse implication remains open. It requires closedness of the
   decomposable-witness cone, self-adjointness of partial transpose for the
   trace pairing, and the separating-hyperplane argument. Proposition 3.5 is

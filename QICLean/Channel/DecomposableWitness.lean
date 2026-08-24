@@ -28,6 +28,8 @@ here; those are separate ingredients in Wolf Proposition 3.5.
 ## Main declarations
 
 * `Matrix.IsDecomposableWitness` -- the explicit cone in Wolf Equation (3.15).
+* `Matrix.convex_setOf_isDecomposableWitness` -- convexity of the explicit
+  decomposable-witness cone used in Wolf Proposition 3.5.
 * `Matrix.traceAdjointMap_transposeLinearMapComplex` -- transposition is
   self-adjoint for the bilinear trace pairing.
 * `ChoiRectangular.choiMatrix_transposeLinearMapComplex_comp` -- transposing
@@ -55,6 +57,20 @@ def IsDecomposableWitness
     (W : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ) : Prop :=
   ∃ P₁ P₂ : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ,
     P₁.PosSemidef ∧ P₂.PosSemidef ∧ W = P₁ + partialTransposeLeft P₂
+
+/-- The explicit decomposable-witness cone from Wolf Chapter 3, Equation
+(3.15), is convex, as used in the proof of Proposition 3.5. Convex
+combinations are taken componentwise in the two positive-semidefinite
+summands. -/
+theorem convex_setOf_isDecomposableWitness :
+    Convex ℝ {W : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ |
+      IsDecomposableWitness W} := by
+  rintro X ⟨PX, QX, hPX, hQX, rfl⟩ Y ⟨PY, QY, hPY, hQY, rfl⟩ a b ha hb _hab
+  refine ⟨a • PX + b • PY, a • QX + b • QY,
+    (hPX.smul ha).add (hPY.smul hb), (hQX.smul ha).add (hQY.smul hb), ?_⟩
+  ext p q
+  simp [partialTransposeLeft_apply, Matrix.add_apply, Matrix.smul_apply]
+  ring
 
 /-- Matrix transposition is self-adjoint for the bilinear trace pairing. -/
 @[simp]
