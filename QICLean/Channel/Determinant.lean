@@ -10,13 +10,14 @@ import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HilbertSchmidt
 import QICLean.Channel.Determinant.HeisenbergDual
 import QICLean.Channel.Determinant.PositiveExtremality
+import QICLean.Channel.Determinant.PositiveInverse
 import QICLean.Channel.Determinant.UnitaryCharacterization
 
 /-!
 # Determinants of quantum channels
 
 Thin module assembling the determinant development for quantum channels from
-eight focused sub-modules.
+nine focused sub-modules.
 
 The division follows the same organization as the earlier `Full/` and
 `Growth/` developments:
@@ -37,6 +38,8 @@ The division follows the same organization as the earlier `Full/` and
 * `QICLean.Channel.Determinant.PositiveExtremality` — Wolf Theorem 6.1 for
   positive trace-preserving maps, including reality, saturation, and the
   transposition sign.
+* `QICLean.Channel.Determinant.PositiveInverse` — Wolf's positive-invertible-map
+  corollary, including trace preservation and positivity of the inverse.
 * `QICLean.Channel.Determinant.UnitaryCharacterization` — Wolf Theorem 6.1(2)
   for CPTP maps.
 
@@ -57,6 +60,8 @@ The division follows the same organization as the earlier `Full/` and
   — Wolf Theorem 6.1(2) for positive trace-preserving maps.
 * `ChannelDeterminant.Internal.channelDet_transposeLinearMapComplex` — the
   exact determinant of ordinary transposition in Wolf Theorem 6.1(3).
+* `ChannelDeterminant.Internal.wolfPositiveInvertibleMaps` — positivity of the
+  inverse exactly for unitary conjugation and transpose-conjugation.
 * `channelDet_norm_eq_one_iff_exists_unitaryChannel` — Wolf Theorem 6.1(2)
   for CPTP maps.
 * `norm_channelDet_le_choiPurity_rpow` — Wolf Eq. (6.27), the Choi bound
