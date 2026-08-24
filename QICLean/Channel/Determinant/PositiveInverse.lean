@@ -142,16 +142,72 @@ theorem channelDet_norm_eq_one_of_inverseOfBijective_isPositiveMap
   nlinarith [norm_nonneg (channelDet T),
     norm_nonneg (channelDet (inverseOfBijective T hT))]
 
+private theorem unitaryChannel_comp_inv
+    (U : Matrix.unitaryGroup (Fin d) ℂ) :
+    (unitaryChannel U).comp (unitaryChannel U⁻¹) = 1 := by
+  have hUUInv : (U : MatrixAlg d) * (U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) = 1 :=
+    congrArg Subtype.val (mul_inv_cancel U)
+  have hUInvStarUStar :
+      ((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)ᴴ *
+          (U : MatrixAlg d)ᴴ = 1 := by
+    rw [← Matrix.conjTranspose_mul, hUUInv, Matrix.conjTranspose_one]
+  apply LinearMap.ext
+  intro X
+  change (U : MatrixAlg d) *
+      (((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d) * X *
+        ((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)ᴴ) *
+      (U : MatrixAlg d)ᴴ = X
+  rw [show (U : MatrixAlg d) *
+      (((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d) * X *
+        ((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)ᴴ) *
+      (U : MatrixAlg d)ᴴ =
+        ((U : MatrixAlg d) *
+          ((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)) * X *
+          (((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)ᴴ *
+            (U : MatrixAlg d)ᴴ) by simp only [Matrix.mul_assoc],
+    hUUInv, hUInvStarUStar, Matrix.one_mul, Matrix.mul_one]
+
+/-- The inverse of unitary conjugation is conjugation by the inverse unitary. -/
+theorem inverseOfBijective_unitaryChannel
+    (U : Matrix.unitaryGroup (Fin d) ℂ)
+    (hU : Function.Bijective (unitaryChannel U)) :
+    inverseOfBijective (unitaryChannel U) hU = unitaryChannel U⁻¹ := by
+  apply LinearMap.ext
+  intro X
+  apply hU.1
+  rw [apply_inverseOfBijective]
+  symm
+  simpa only [LinearMap.comp_apply, Module.End.one_apply] using
+    LinearMap.congr_fun (unitaryChannel_comp_inv U) X
+
+/-- The inverse of `Ad U` after ordinary transposition is ordinary
+transposition after `Ad U⁻¹`; the reversed composition order is essential. -/
+theorem inverseOfBijective_unitaryChannel_comp_transpose
+    (U : Matrix.unitaryGroup (Fin d) ℂ)
+    (hU : Function.Bijective ((unitaryChannel U).comp
+      (Matrix.transposeLinearMapComplex (Fin d)))) :
+    inverseOfBijective
+        ((unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin d))) hU =
+      (Matrix.transposeLinearMapComplex (Fin d)).comp (unitaryChannel U⁻¹) := by
+  apply LinearMap.ext
+  intro X
+  apply hU.1
+  rw [apply_inverseOfBijective]
+  have hInv := LinearMap.congr_fun (unitaryChannel_comp_inv U) X
+  symm
+  change unitaryChannel U
+    (((unitaryChannel U⁻¹ X)ᵀ)ᵀ) = X
+  simpa only [Matrix.transpose_transpose, LinearMap.comp_apply,
+    Module.End.one_apply] using hInv
+
 /-- The inverse of a unitary conjugation is positive.  The proof uses the
-explicit cone-surjectivity witness for congruence by an invertible matrix. -/
+explicit inverse standard form. -/
 theorem inverseOfBijective_unitaryChannel_isPositiveMap
     (U : Matrix.unitaryGroup (Fin d) ℂ)
     (hU : Function.Bijective (unitaryChannel U)) :
     IsPositiveMap (inverseOfBijective (unitaryChannel U) hU) := by
-  apply inverseOfBijective_isPositiveMap_of_mapsPSDConeOnto hU
-  simpa only [unitaryChannel, unitaryConjLM] using
-    unitaryConjLM_mapsPSDConeOnto (U : MatrixAlg d)
-      (Matrix.UnitaryGroup.det_isUnit U)
+  rw [inverseOfBijective_unitaryChannel U hU]
+  exact unitaryChannel_isPositiveMap U⁻¹
 
 /-- The inverse of unitary conjugation after ordinary transposition is
 positive.  This is Wolf's transpose branch, which must not be removed by
@@ -162,10 +218,10 @@ theorem inverseOfBijective_unitaryChannel_comp_transpose_isPositiveMap
       (Matrix.transposeLinearMapComplex (Fin d)))) :
     IsPositiveMap (inverseOfBijective
       ((unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin d))) hU) := by
-  apply inverseOfBijective_isPositiveMap_of_mapsPSDConeOnto hU
-  simpa only [unitaryChannel, unitaryConjLM] using
-    unitaryConjLM_comp_transpose_mapsPSDConeOnto
-      (U : MatrixAlg d) (Matrix.UnitaryGroup.det_isUnit U)
+  rw [inverseOfBijective_unitaryChannel_comp_transpose U hU]
+  intro X hX
+  exact Matrix.transposeLinearMapComplex_isPositiveMap _
+    (unitaryChannel_isPositiveMap U⁻¹ X hX)
 
 /-- **Wolf Corollary: positive invertible maps.**
 
