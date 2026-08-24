@@ -74,7 +74,9 @@ theorem inverseOfBijective_comp (T : MatrixEnd d)
 
 /-- The inverse of a bijective trace-preserving linear map is trace
 preserving.  This is the observation immediately following Wolf's positive
-invertible-map corollary. -/
+invertible-map corollary.
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 423--426. -/
 theorem inverseOfBijective_isTracePreservingMap
     {T : MatrixEnd d} (hT : Function.Bijective T)
     (hTP : IsTracePreservingMap T) :
@@ -229,7 +231,9 @@ For a positive trace-preserving bijection on a nonzero matrix algebra, the
 inverse is positive exactly for unitary conjugations and unitary conjugations
 after ordinary matrix transposition.  The forward direction follows Wolf's
 determinant argument: the determinant bounds for `T` and `T⁻¹`, together with
-multiplicativity, force `|det T| = 1`, so Wolf Theorem 6.1 applies. -/
+multiplicativity, force `|det T| = 1`, so Wolf Theorem 6.1 applies.
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 416--426. -/
 theorem wolfPositiveInvertibleMaps [NeZero d]
     {T : MatrixEnd d} (hT : Function.Bijective T)
     (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
