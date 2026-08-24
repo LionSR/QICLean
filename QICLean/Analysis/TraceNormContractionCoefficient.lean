@@ -35,6 +35,13 @@ variable {D D' : ℕ}
 def pureStateProj (ψ : Fin D → ℂ) : Matrix (Fin D) (Fin D) ℂ :=
   vecMulVec ψ (fun p => star (ψ p))
 
+/-- The rank-one projector depends continuously on its defining vector. -/
+theorem continuous_pureStateProj :
+    Continuous (pureStateProj (D := D)) := by
+  unfold pureStateProj
+  refine continuous_matrix fun i j => ?_
+  exact (continuous_apply i).mul (continuous_apply j).star
+
 /-- A vector has unit Euclidean norm, in the unbundled matrix-vector form. -/
 def IsUnitVector (ψ : Fin D → ℂ) : Prop :=
   (fun p => star (ψ p)) ⬝ᵥ ψ = 1

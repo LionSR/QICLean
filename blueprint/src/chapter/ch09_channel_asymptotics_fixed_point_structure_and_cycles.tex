@@ -536,6 +536,31 @@ Theorem~6.2 appears in Theorem~\ref{thm:wolf_6_2_item_3}.
     large level in one direction and applying upward closure in the other.
 \end{proof}
 
+\begin{theorem}[Connected rank-one pure-state locus in a full matrix block]
+    \label{thm:wolf_connected_pure_state_proj_image}
+    \lean{Matrix.continuous_pureStateProj,
+        Matrix.isPathConnected_unitVectors,
+        Matrix.isConnected_pureStateProj_image}
+    \leanok
+    Let $d>0$. The map
+    \begin{align}
+        \psi\longmapsto\ketbra{\psi}{\psi}
+        \qquad(\psi\in\C^d)
+        \notag
+    \end{align}
+    is continuous. Its unit-vector domain is path connected, and hence
+    the set of rank-one pure-state projections in $\MN{d}$ is connected.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The complex unit sphere is a real sphere in a Euclidean space of
+    dimension $2d>1$, hence it is path connected. Under Euclidean
+    coordinates it is exactly the set of vectors $\psi$ satisfying
+    $\langle\psi,\psi\rangle=1$. The rank-one projector depends
+    continuously on $\psi$, so its image is connected.
+\end{proof}
+
 \section{Multi-cycle block-permutation structure}
 
 This section develops the block-permutation structure underlying the

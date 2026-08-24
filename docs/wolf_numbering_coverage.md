@@ -1403,6 +1403,21 @@ is false under the single printed hypothesis.
     `Module.End.map_peripheralRestrictedInverse_apply_of_mem_range`, which
     state the two inverse identities on `range T.peripheralProjection = X_T`.
 
+* The literal continuity ingredients from source lines 1648--1654 are
+  formalized without assuming a target block or a block classification:
+  - `Matrix.continuous_pureStateProj` proves continuity of the map
+    sending psi to its rank-one self-projector.
+  - `Matrix.isPathConnected_unitVectors` transports Mathlib's
+    path-connected complex Euclidean unit sphere to the existing matrix-vector
+    `IsUnitVector` API.
+  - `Matrix.isConnected_pureStateProj_image` proves that the rank-one
+    pure-state projections in a nonzero full matrix block form a connected
+    set.
+  - `WolfProps.linearMap_eq_of_eq_on_rankOne` now has arbitrary
+    complex-module codomain, so agreement on rank-one projectors determines
+    any linear map out of a full matrix block by the existing polarization
+    identity.
+
 * The final classification step at source lines 1660--1663 is formalized
   under exactly Wolf's positive, trace-preserving, positive-inverse, and
   Schwarz hypotheses:

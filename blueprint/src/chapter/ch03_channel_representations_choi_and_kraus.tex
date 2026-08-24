@@ -582,7 +582,8 @@ The next three corollaries support channel decompositions and correspond to
     \label{thm:linearMap_eq_of_eq_on_rankOne}
     \lean{WolfProps.linearMap_eq_of_eq_on_rankOne}
     \leanok
-    Let $T,S:\MN{D}\to\MN{D}$ be complex-linear maps. If
+    Let $E$ be a complex vector space and let
+    $T,S:\MN{D}\to E$ be complex-linear maps. If
     \begin{align}
         T(\ketbra{v}{v})=S(\ketbra{v}{v})
     \end{align}
@@ -590,10 +591,10 @@ The next three corollaries support channel decompositions and correspond to
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{thm:linearMap_eq_id_of_fixes_rankOne}
-    The map $T-S+\id$ fixes every matrix $\ketbra{v}{v}$, so
-    Theorem~\ref{thm:linearMap_eq_id_of_fixes_rankOne} gives
-    $T-S+\id=\id$. Hence $T=S$.
+    Polarization expresses every outer product $\ketbra{u}{v}$ as a
+    complex linear combination of four self-outer-products. Thus $T$
+    and $S$ agree on all outer products, in particular on every matrix
+    unit. Linearity then gives $T=S$ on all of $\MN{D}$.
 \end{proof}
 
 \begin{definition}[Pure-state ensemble density]
