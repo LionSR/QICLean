@@ -189,14 +189,109 @@ This chapter follows the convex-optimization framework of
     then gives equality of the two extended-real values in both cases.
 \end{proof}
 
+\begin{definition}[Hermitian trace space and the positive-semidefinite cone]
+    \label{def:hermitian_psd_cone}
+    \lean{SemidefiniteProgram.matrixRealLinearEquiv,
+        SemidefiniteProgram.hermitianSubmodule,
+        SemidefiniteProgram.HermitianMatrix,
+        SemidefiniteProgram.HermitianMatrix.toMatrix,
+        SemidefiniteProgram.HermitianMatrix.toMatrix_isHermitian,
+        SemidefiniteProgram.HermitianMatrix.ofMatrix,
+        SemidefiniteProgram.HermitianMatrix.toMatrix_ofMatrix,
+        SemidefiniteProgram.HermitianMatrix.toMatrix_zero,
+        SemidefiniteProgram.HermitianMatrix.toMatrix_add,
+        SemidefiniteProgram.HermitianMatrix.toMatrix_sub,
+        SemidefiniteProgram.HermitianMatrix.toMatrix_smul,
+        SemidefiniteProgram.HermitianMatrix.inner_eq_re_trace_mul,
+        SemidefiniteProgram.HermitianMatrix.trace_mul_eq_ofReal_inner,
+        SemidefiniteProgram.HermitianMatrix.psdCone,
+        SemidefiniteProgram.HermitianMatrix.mem_psdCone_iff,
+        SemidefiniteProgram.HermitianMatrix.mem_innerDual_psdCone_iff,
+        SemidefiniteProgram.HermitianMatrix.innerDual_psdCone,
+        SemidefiniteProgram.HermitianMatrix.posDef_iff_forall_inner_pos,
+        SemidefiniteProgram.HermitianMatrix.interior_psdCone_eq_posDef,
+        SemidefiniteProgram.HermitianMatrix.mem_interior_psdCone_iff_posDef}
+    \leanok
+    The Hermitian $n\times n$ matrices form a finite-dimensional real Hilbert
+    space for Wolf's trace pairing
+    $\langle A|B\rangle=\operatorname{Re}\tr(AB)$.  Its positive-semidefinite
+    matrices form a closed proper cone $K_{\mathrm{psd}}$ satisfying
+    $K_{\mathrm{psd}}^*=K_{\mathrm{psd}}$, and
+    $\operatorname{int}K_{\mathrm{psd}}=\{A:A>0\}$.  The last identity also
+    covers the zero-dimensional matrix space, where positive definiteness is
+    vacuous and the cone is the whole space.
+\end{definition}
+
+\begin{definition}[Wolf's semidefinite trace-analysis map]
+    \label{def:semidefinite_trace_analysis}
+    \lean{SemidefiniteProgram.traceAnalysisMap,
+        SemidefiniteProgram.traceAnalysisMap_apply,
+        SemidefiniteProgram.traceAnalysisMap_apply_eq_re_trace,
+        SemidefiniteProgram.traceAnalysisMap_apply_eq_trace,
+        SemidefiniteProgram.hermitianSum,
+        SemidefiniteProgram.toMatrix_hermitianSum,
+        SemidefiniteProgram.traceAnalysisMap_adjoint,
+        SemidefiniteProgram.mem_primalFeasible_iff,
+        SemidefiniteProgram.mem_dualFeasible_iff,
+        SemidefiniteProgram.isPrimalStrictlyFeasible_iff,
+        SemidefiniteProgram.isDualStrictlyFeasible_iff}
+    \leanok
+    \uses{def:conic_programs, def:conic_strict_feasibility_and_attainment,
+        def:hermitian_psd_cone}
+    For Hermitian data $F_i$, the traces $\tr(F_iX)$ are real; define
+    $T(X)_i=\tr(F_iX)$.  Then
+    $T^*(y)=\sum_i y_iF_i$.  Consequently the conic primal constraint is
+    precisely $X\geq0$ and $\tr(F_iX)=b_i$, while conic dual feasibility is
+    precisely $F_0-\sum_i y_iF_i\geq0$.  The two conic strict-feasibility
+    predicates become, respectively, $X>0$ with the trace constraints and
+    $F_0-\sum_i y_iF_i>0$, exactly as in
+    \cite[Chapter~4, lines~85--105]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{theorem}[Semidefinite weak duality and corrected Slater duality]
+    \label{thm:semidefinite_duality}
+    \lean{SemidefiniteProgram.weak_duality_pointwise,
+        SemidefiniteProgram.weak_duality,
+        SemidefiniteProgram.exists_dualOptimizer_of_primalStrict_of_primalValue_eq_coe,
+        SemidefiniteProgram.values_eq_of_primalStrict_of_primalValue_eq_coe,
+        SemidefiniteProgram.exists_primalOptimizer_of_dualStrict_of_dualValue_eq_coe,
+        SemidefiniteProgram.values_eq_of_dualStrict_of_dualValue_eq_coe}
+    \leanok
+    \uses{def:semidefinite_trace_analysis}
+    For every feasible $X$ and $y$,
+    \begin{align}
+        \sum_i b_i y_i\leq\tr(F_0X).
+    \end{align}
+    Taking the supremum and infimum gives Wolf's semidefinite weak-duality
+    inequality, equation~(4.3), with the extended-real conventions of
+    Definition~\ref{def:conic_programs}.  If there is a strictly feasible
+    $X>0$ and the primal value is finite, equality holds and the dual optimum
+    is attained.  Dually, a strictly positive slack and a finite dual value
+    give equality and primal attainment.  These finiteness hypotheses are the
+    correction required for the unqualified printed claim at lines~100--105.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{def:hermitian_psd_cone, thm:conic_weak_duality,
+        thm:conic_corrected_slater}
+    Self-duality of $K_{\mathrm{psd}}$ and the adjoint identity turn the
+    displayed trace conditions into the primal and dual feasible sets of
+    Definition~\ref{def:conic_programs}.  The conclusions are therefore the
+    direct specializations of Theorems~\ref{thm:conic_weak_duality} and
+    \ref{thm:conic_corrected_slater}.
+\end{proof}
+
 \begin{theorem}[Complementary slackness]
     \label{thm:semidefinite_complementary_slackness}
     \lean{Matrix.PosSemidef.mul_eq_zero_of_trace_mul_eq_zero,
         Matrix.PosSemidef.supportProj_mul_supportProj_eq_zero_of_mul_eq_zero,
         SemidefiniteProgram.re_trace_slack_mul_eq_objective_sub,
         SemidefiniteProgram.complementary_slackness,
-        SemidefiniteProgram.complementary_slackness_supports}
+        SemidefiniteProgram.complementary_slackness_supports,
+        SemidefiniteProgram.isDualOptimizer_iff_exists_complementary}
     \leanok
+    \uses{def:conic_programs, def:semidefinite_trace_analysis}
     Let $b\in\R^n$ and let $F_0,F_1,\ldots,F_n$ be Hermitian matrices.
     Suppose that $X^0\geq0$, $\tr(F_iX^0)=b_i$ for every $i$,
     $F_0-\sum_i y_i^0F_i\geq0$, and the two objective values are equal.
@@ -207,14 +302,24 @@ This chapter follows the convex-optimization framework of
         \label{eq:semidefinite_complementary_slackness}
     \end{align}
     Thus $X^0$ and $F_0-\sum_i y_i^0F_i$ have orthogonal supports.
+    Under equality of the conic values and primal attainment, a dual vector
+    $y^0$ is optimal if and only if there is a primal-feasible $X^0\geq0$
+    satisfying this equation and the dual slack is positive semidefinite, as
+    stated at lines~113--116.
 \end{theorem}
 
 \begin{proof}
     \leanok
+    \uses{thm:conic_zero_gap_optimizers}
     The equality constraints and equality of the objectives give
     $\tr((F_0-\sum_i y_i^0F_i)X^0)=0$.  If two positive semidefinite matrices
     have zero trace pairing, the product of their positive square roots has
     zero Hilbert--Schmidt norm; hence their product and the product of their
     support projections vanish.  This proves
     (\ref{eq:semidefinite_complementary_slackness}) and the support statement.
+    For the optimizer characterization, choose a primal optimizer.  Equality
+    of the two values identifies its objective with that of every dual
+    optimizer, so complementary slackness applies.  Conversely, the vanishing
+    product forces the trace pairing, hence the objective gap, to vanish;
+    pointwise weak duality then makes both feasible points optimizers.
 \end{proof}
