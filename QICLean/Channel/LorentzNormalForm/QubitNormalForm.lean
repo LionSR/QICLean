@@ -12,8 +12,7 @@ This module collects the Pauli-basis definitions and the three canonical-form
 predicates for qubit channels of Wolf Proposition 2.11
 (`Notes/WolfNoteTexSource/ch02_representations.tex`, Section 2.4): the
 diagonal, non-diagonal, and singular Lorentz normal forms.  The existence
-
-theorem is pending; see
+result is pending; see
 `docs/paper-gaps/wolf_prop2_11_lorentz_scalar_filtering_gap.tex`.
 
 ## Main definitions
@@ -55,13 +54,15 @@ After SL(2, ℂ) filtering (which acts on `T̂` as a Lorentz transformation
 `L₂ T̂ L₁` with `L_i ∈ SO⁺(1,3)`), the transfer matrix can be brought to
 one of three canonical forms (Wolf Proposition 2.11):
 
-1. **Diagonal** (generic, full Kraus rank): `T̂` is diagonal —
+1. **Diagonal** (generic): `T̂` is diagonal —
    `v = 0` and `Δ = diag(λ₁, λ₂, λ₃)` with the CP condition
-   `λ₁ + λ₂ ≤ 1 + λ₃`.  This is the doubly-stochastic case.
+   `λ₁ + λ₂ ≤ 1 + λ₃`.  This is the doubly-stochastic case; the generic
+   interior has full Kraus rank, while boundary representatives can have
+   smaller rank.
 
-2. **Non-diagonal** (Kraus rank 3): `T̂` has
+2. **Non-diagonal**: `T̂` has
    `Δ = diag(x/√3, x/√3, 1/3)`, `v = (0, 0, 2/3)`, with
-   `0 ≤ x ≤ 1`.
+   `0 ≤ x ≤ 1`; its Kraus rank is 3 for `x < 1` and 2 for `x = 1`.
 
 3. **Singular** (Kraus rank 2): `T̂` has `Δ = 0` and `v = (0, 0, 1)`;
    the channel maps every input to a single pure state. -/
@@ -122,7 +123,7 @@ def IsLorentzNonDiagonal
 /-- A Hermiticity-preserving TP qubit channel `T'` is in **singular Lorentz normal
 form** (Wolf Proposition 2.11, case 3) if its Pauli-basis transfer matrix has
 `Δ = 0` and `v = (0, 0, 1)`.  That is, only `T̂_{00} = 1` and
-`T̂_{30} = 1` are nonzero; the channel maps every input to the pure state
+`T̂_{30} = 1` are nonzero; the channel maps every input state to the pure state
 `(1 + σ_z)/2`. -/
 def IsLorentzSingular
     (T' : Matrix (Fin 2) (Fin 2) ℂ →ₗ[ℂ] Matrix (Fin 2) (Fin 2) ℂ) : Prop :=

@@ -752,11 +752,65 @@ This section states the existence theorems from
     Trace preservation supplies the first row of the displayed matrix.
 \end{definition}
 
+\begin{theorem}[Displayed non-diagonal and singular representatives]
+    \label{thm:lorentz_displayed_qubit_representatives}
+    \uses{def:lorentz_non_diagonal, def:lorentz_singular}
+    \lean{Wolf.nonDiagonalKrausBase,
+        Wolf.nonDiagonalKrausCoefficient,
+        Wolf.nonDiagonalKraus,
+        Wolf.nonDiagonalMap,
+        Wolf.nonDiagonalKraus_isTP,
+        Wolf.nonDiagonalMap_isChannel,
+        Wolf.nonDiagonalMap_apply,
+        Wolf.pauliTransferMatrix_nonDiagonalMap,
+        Wolf.isLorentzNonDiagonal_nonDiagonalMap,
+        Wolf.choiRank_nonDiagonalMap_eq_three,
+        Wolf.nonDiagonalBoundaryKraus,
+        Wolf.nonDiagonalKraus_one_one,
+        Wolf.nonDiagonalMap_one_eq_boundaryMap,
+        Wolf.choiRank_nonDiagonalMap_one,
+        Wolf.singularKraus,
+        Wolf.singularMap,
+        Wolf.singularKraus_isTP,
+        Wolf.singularMap_isChannel,
+        Wolf.singularMap_apply,
+        Wolf.pauliTransferMatrix_singularMap,
+        Wolf.isLorentzSingular_singularMap,
+        Wolf.choiRank_singularMap}
+    \leanok
+    For every $x\in[0,1]$, the three Kraus operators displayed in
+    \cite[Theorem~8, Eq.~(19)]{VerstraeteVerschelde2002QuantumChannels}
+    define the non-diagonal representative
+    \begin{align}
+        \Delta
+        &=\operatorname{diag}(x/\sqrt{3},x/\sqrt{3},1/3),
+        &v&=(0,0,2/3).
+    \end{align}
+    Its Choi rank, equivalently its minimal Kraus rank, is $3$ when
+    $x<1$ and $2$ when $x=1$.  The singular representative is the
+    trace-to-state channel
+    \begin{align}
+        X\longmapsto \tr(X)\,\lvert0\rangle\!\langle0\rvert;
+    \end{align}
+    it has $\Delta=0$, $v=(0,0,1)$, and Choi/Kraus rank $2$.
+
+    These are constructions and rank calculations for the representatives
+    in \cite[Theorem~8, Eqs.~(17)--(19)]{VerstraeteVerschelde2002QuantumChannels}
+    and Wolf Proposition~2.11, not the Lorentz-orbit classification or the
+    derivation that the non-diagonal parameter must lie in $[0,1]$.
+    The normalized Choi convention is
+    $\tau=\frac14\sum_{ij}\widehat T_{ij}\sigma_i\otimes\sigma_j^{\mathsf T}$;
+    hence a raw Pauli correlation matrix has a sign change in the
+    $\sigma_2$ input column and is not silently identified with
+    $\widehat T$.
+\end{theorem}
+
 % Pending Lean formalization: there is currently no declaration for this theorem.
 \begin{theorem}[Lorentz normal form for qubit channels]\label{thm:lorentz_normal_form_qubit}
     \uses{thm:exists_normal_form_generic,
         def:invertible_filtering, def:lorentz_diagonal,
-        def:lorentz_non_diagonal, def:lorentz_singular}
+        def:lorentz_non_diagonal, def:lorentz_singular,
+        thm:lorentz_displayed_qubit_representatives}
     For every qubit channel $T : \MN{2} \to \MN{2}$, there exist invertible
     completely positive maps $\Phi_{1},\Phi_{2}$, both of Kraus rank one, such
     that the filtered channel $T'=\Phi_{2}\circ T\circ\Phi_{1}$ is in one
@@ -766,7 +820,9 @@ This section states the existence theorems from
     with $S_i\in\SL(2,\C)$ separates the Lorentz action from the positive
     map scalar $|c_1c_2|^2$; only the latter can normalize the resulting
     representative to a channel. A proof still requires this scalar
-    normalization and the classification of Lorentz orbits.
+    normalization and the classification of Lorentz orbits.  The displayed
+    non-diagonal and singular representatives and their ranks are already
+    supplied by Theorem~\ref{thm:lorentz_displayed_qubit_representatives}.
 \end{theorem}
 
 \begin{definition}[Pauli--Minkowski identification]
