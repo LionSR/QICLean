@@ -1,5 +1,44 @@
 \section{Schwarz maps on direct sums of matrix algebras}
 
+\begin{definition}[Density states on a finite direct sum]
+    \label{def:direct_sum_density_matrices}
+    \lean{Matrix.directSumDensityMatrices,
+        Matrix.mem_directSumDensityMatrices,
+        Matrix.directSumDensityMatrices_isConvex}
+    \leanok
+    In the existing matrix-family coordinates for
+    $\mathcal A=\bigoplus_{k\in I}\MN{d_k}$, its density states are the
+    families $A=(A_k)_{k\in I}$ such that every $A_k\succeq0$ and
+    $\sum_k\tr(A_k)=1$.
+\end{definition}
+
+\begin{theorem}[Convex-extreme states on a finite direct sum]
+    \label{thm:extreme_direct_sum_density_matrices}
+    \lean{Matrix.pureDirectSumDensityMatrices,
+        Matrix.mem_pureDirectSumDensityMatrices,
+        Matrix.pureDirectSumDensityMatrices_subset_directSumDensityMatrices,
+        Matrix.directSumDensityMatrices_eq_convexHull_pureDirectSumDensityMatrices,
+        Matrix.pureDirectSumDensityMatrices_subset_extremePoints,
+        Matrix.extremePoints_directSumDensityMatrices,
+        Matrix.mem_extremePoints_directSumDensityMatrices_iff}
+    \leanok
+    \uses{def:direct_sum_density_matrices,
+        thm:extreme_density_matrices}
+    A density state on $\bigoplus_{k\in I}\MN{d_k}$ is convex-extreme if
+    and only if exactly one block is nonzero and that block is a rank-one
+    orthogonal projection. These are the relative pure states of the direct
+    sum.
+\end{theorem}
+
+\begin{proof}\leanok
+    Applying the spectral decomposition in each block writes every state as
+    a convex combination of one-block rank-one states, with total weight the
+    sum of the block traces. For the converse, a convex decomposition of a
+    one-block state has zero positive summands in every other block; the
+    occupied block is rigid by
+    Theorem~\ref{thm:extreme_density_matrices}.
+\end{proof}
+
 \begin{definition}[Kraus maps between finite sums of matrix algebras]
     \label{def:kraus_map_between_direct_sums}
     \lean{Matrix.directSumMapExtension, Matrix.IsKrausDirectSumMap}
