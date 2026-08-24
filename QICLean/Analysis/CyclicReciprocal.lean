@@ -13,9 +13,13 @@ import Mathlib.Analysis.Fourier.ZMod
 This file begins the source-faithful formalization of the variational cyclic
 inequality used for Choi-type positive maps.  It defines the forward-window
 functional of Yamagami, records its elementary projective and orientation
-properties, and proves the centered open-disk estimate in Lemma 6 of
-Yamagami, *Cyclic Inequalities*, Proc. Amer. Math. Soc. 118 (1993), 521--527,
-specialized to the stride `l = 1` needed by Wolf's Choi-type maps.
+properties, and proves the corrected Wolf-range part of the centered open-disk
+estimate in Lemma 6 of Yamagami, *Cyclic Inequalities*, Proc. Amer. Math. Soc.
+118 (1993), 521--527, specialized to the stride `l = 1` needed by Wolf's
+Choi-type maps.  The printed lemma includes the endpoint `m = d - 1` when
+`s = d`, but there every nonconstant character has eigenvalue zero and the
+claimed strict disk inequality becomes an equality.  The theorem below uses
+the valid range `m ≤ d - 2`; the omitted endpoint is valid only when `s > d`.
 
 The source inequality is stated for strictly positive coordinates.  At the
 projective boundary Yamagami treats a formal `0 / 0` as an indeterminate limit.
@@ -174,9 +178,12 @@ private theorem finEquiv_apply_natCast (n : ℕ) [NeZero n] (k : Fin n) :
   | zero => exact (NeZero.ne 0 rfl).elim
   | succ n => exact (ZMod.val_natCast_of_lt k.2).symm
 
-/-- Yamagami, Lemma 6, specialized to stride `l = 1`: every nonconstant
-Fourier eigenvalue lies in the open disk with center `s / 2` and radius
-`s / 2`. -/
+/-- The corrected Wolf-range part of Yamagami's Lemma 6, specialized to stride
+`l = 1`: for `m ≤ d - 2`, every nonconstant Fourier eigenvalue lies in the
+open disk with center `s / 2` and radius `s / 2`.
+
+The printed range also permits `m = d - 1` at `s = d`; that endpoint is false
+with a strict inequality, because the nonconstant eigenvalues are zero. -/
 theorem norm_symbol_sub_half_lt_half
     (hd : 3 ≤ d) (hm₁ : 1 ≤ m) (hm₂ : m ≤ d - 2)
     (s : ℝ) (hs : (d : ℝ) ≤ s) {j : ZMod d} (hj : j ≠ 0) :

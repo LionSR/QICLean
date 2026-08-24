@@ -47,7 +47,7 @@ whose proof is a variational argument on the boundary of a projective simplex.
     rank-one weight.
 \end{definition}
 
-\begin{lemma}[Yamagami's centered open-disk condition, stride one]
+\begin{lemma}[Corrected Wolf-range centered open-disk condition, stride one]
     \label{lem:yamagami_stride_one_open_disk}
     \lean{CyclicReciprocal.norm_symbol_sub_half_lt_half}
     \leanok
@@ -60,13 +60,21 @@ whose proof is a variational argument on the boundary of a projective simplex.
 
 \begin{proof}
     \leanok
-    This is Lemma~6 of Yamagami~\cite[pp.~523--524]{Yamagami1993Cyclic},
-    specialized to $l=1$.  At $s=d$, split according to $2m\le d$ or
-    $d<2m$.  In the first case strict convexity is applied to the $m$ window
-    characters together with the nonnegative real coefficient $d/2-m$; in
-    the second, the vanishing sum of the nontrivial character replaces the
-    window by its complement.  Translation of the eigenvalue by $s-d$ gives
-    the result for $s\ge d$.
+    Yamagami's printed Lemma~6 permits $1\le m\le d-l$ and $s\ge d$
+    \cite[pp.~523--524]{Yamagami1993Cyclic}.  At $l=1$, however, its endpoint
+    $m=d-1$, $s=d$ is false: the cyclic matrix is
+    $I+C+\cdots+C^{d-1}$, so every nontrivial-character eigenvalue is zero and
+    the displayed strict disk inequality becomes an equality.  The statement
+    above is the valid range $m\le d-2$ needed by Wolf; the omitted endpoint
+    is valid when $s>d$.
+
+    In this corrected range, the source argument at $s=d$ splits according to
+    $2m\le d$ or $d<2m$.  In the first case strict convexity is applied to the
+    $m$ window characters together with the nonnegative real coefficient
+    $d/2-m$; in the second, the vanishing sum of the nontrivial character
+    replaces the window by its complement.  Translation of the eigenvalue by
+    $s-d$ gives the result for $s\ge d$.  The endpoint correction is recorded
+    in \cite{gap:wolf_ex3_1_choi_positivity_subcase_scope}.
 \end{proof}
 
 This spectral lemma is only one dependency of Yamagami's variational proof.
