@@ -418,6 +418,34 @@ theorem channelDet_norm_eq_one_iff_exists_unitary_or_transpose_of_positive_trace
     · exact channelDet_norm_eq_one_of_unitaryChannel U
     · exact channelDet_norm_eq_one_of_unitaryChannel_comp_transpose U
 
+/-- **Wolf Theorem 6.1(3).**  For a positive trace-preserving map in positive
+matrix dimension, determinant `-1` occurs exactly for a unitary conjugation
+after ordinary transposition in a dimension for which `⌊d/2⌋` is odd. -/
+theorem channelDet_eq_neg_one_iff_exists_unitary_transpose_of_positive_tracePreserving
+    [NeZero d] {T : MatrixEnd d}
+    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
+    channelDet T = -1 ↔
+      Odd (d / 2) ∧ ∃ U : Matrix.unitaryGroup (Fin d) ℂ,
+        T = (unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin d)) := by
+  constructor
+  · intro hdet
+    have hnorm : ‖channelDet T‖ = 1 := by rw [hdet, norm_neg, norm_one]
+    obtain ⟨U, hunitary | htranspose⟩ :=
+      exists_unitary_or_transpose_of_channelDet_norm_eq_one hPos hTP hnorm
+    · have hone : channelDet T = 1 := by
+        rw [hunitary, channelDet_unitary_eq_one]
+      rw [hdet] at hone
+      exact (by norm_num at hone)
+    · have htransposeDet :
+          channelDet (Matrix.transposeLinearMapComplex (Fin d)) = -1 := by
+        rw [htranspose, channelDet_comp, channelDet_unitary_eq_one, one_mul] at hdet
+        exact hdet
+      exact ⟨channelDet_transposeLinearMapComplex_eq_neg_one_iff.mp htransposeDet,
+        U, htranspose⟩
+  · rintro ⟨hodd, U, rfl⟩
+    rw [channelDet_comp, channelDet_unitary_eq_one, one_mul,
+      channelDet_transposeLinearMapComplex_eq_neg_one_iff.mpr hodd]
+
 end Internal
 
 end ChannelDeterminant
