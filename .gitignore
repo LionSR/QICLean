@@ -34,6 +34,7 @@ blueprint/lean_decls
 blueprint/src/web.paux
 blueprint/src/*.xdv
 blueprint/src/Packages/__pycache__/
+/docs/paper-gaps/*.pdf
 
 # Local scratch / experiments
 Scratch/
