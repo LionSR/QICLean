@@ -846,10 +846,24 @@ recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
     Trace preservation supplies the first row of the displayed matrix.
 \end{definition}
 
-\begin{theorem}[Displayed non-diagonal and singular representatives]
+\begin{theorem}[Displayed canonical representatives and ranks]
     \label{thm:lorentz_displayed_qubit_representatives}
-    \uses{def:lorentz_non_diagonal, def:lorentz_singular}
-    \lean{Wolf.nonDiagonalKrausBase,
+    \uses{def:lorentz_diagonal, def:lorentz_non_diagonal, def:lorentz_singular}
+    \lean{Wolf.diagonalBellWeight,
+        Wolf.diagonalPauliEigenvalue,
+        Wolf.diagonalKrausCoefficient,
+        Wolf.diagonalKraus,
+        Wolf.diagonalMap,
+        Wolf.sum_diagonalBellWeight,
+        Wolf.diagonalBellWeight_nonneg_iff,
+        Wolf.diagonalBellWeight_nonneg_of_ordered,
+        Wolf.diagonalKraus_isTP,
+        Wolf.diagonalMap_isChannel,
+        Wolf.diagonalMap_pauli,
+        Wolf.pauliTransferMatrix_diagonalMap,
+        Wolf.isLorentzDiagonal_diagonalMap,
+        Wolf.choiRank_diagonalMap,
+        Wolf.nonDiagonalKrausBase,
         Wolf.nonDiagonalKrausCoefficient,
         Wolf.nonDiagonalKraus,
         Wolf.nonDiagonalMap,
@@ -872,6 +886,47 @@ recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
         Wolf.isLorentzSingular_singularMap,
         Wolf.choiRank_singularMap}
     \leanok
+    Put $q_i=p_i^2$ for the Pauli coefficients in
+    \cite[Theorem~8, Eq.~(18)]{VerstraeteVerschelde2002QuantumChannels},
+    specialized to $A=B=\Id$.  Direct conjugation of the Pauli basis gives
+    \begin{align}
+        s_1 & =q_0+q_1-q_2-q_3, &
+        s_2 & =q_0-q_1+q_2-q_3, \\
+        s_3 & =q_0-q_1-q_2+q_3, &
+        1   & =q_0+q_1+q_2+q_3.
+    \end{align}
+    Thus, in Wolf's Pauli-transfer convention, the four candidate Bell weights
+    are
+    \begin{align}
+        q_0 & =\frac{1+s_1+s_2+s_3}{4}, &
+        q_1 & =\frac{1+s_1-s_2-s_3}{4},   \\
+        q_2 & =\frac{1-s_1+s_2-s_3}{4}, &
+        q_3 & =\frac{1-s_1-s_2+s_3}{4}.
+    \end{align}
+    Verstraete--Verschelde instead print
+    $1-s_1-s_2-s_3\geq0$ in Theorem~8.  Their preceding Equation~(16) uses
+    $R_\Phi$ as the Bloch transfer matrix, so the identity channel has
+    $R_\Phi=\operatorname{diag}(1,1,1,1)$ and violates the printed inequality.
+    The all-minus sign is therefore inconsistent with their own convention;
+    it is not used in this construction and no silent change of the parameter
+    $s_3$ is made.
+    They sum to one.  If every $q_i$ is nonnegative, put $p_i=\sqrt{q_i}$.
+    Then the source family
+    $\{p_0\sigma_0,p_1\sigma_1,p_2\sigma_2,p_3\sigma_3\}$ from
+    \cite[Theorem~8, Eq.~(18)]{VerstraeteVerschelde2002QuantumChannels},
+    specialized to $A=B=\Id$, defines a
+    bistochastic channel whose Pauli transfer matrix is
+    $\operatorname{diag}(1,s_1,s_2,s_3)$.  Its Choi rank is exactly
+    $\#\{i\mid q_i\ne0\}$, so all diagonal rank-drop boundaries are retained.
+    Simultaneous nonnegativity of the four weights is equivalent to
+    nonnegativity of their four displayed numerators.  This construction shows
+    that those inequalities suffice for the displayed Pauli family to be a
+    channel; it makes no converse assertion for a separately specified
+    diagonal map.
+    Under the ordered convention
+    $1\geq s_1\geq s_2\geq\lvert s_3\rvert$, Wolf's
+    $s_1+s_2\leq1+s_3$ from Equation~(2.40) implies all four.
+
     For every $x\in[0,1]$, the three Kraus operators displayed in
     \cite[Theorem~8, Eq.~(19)]{VerstraeteVerschelde2002QuantumChannels}
     define the non-diagonal representative
@@ -881,22 +936,32 @@ recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
         &v&=(0,0,2/3).
     \end{align}
     Its Choi rank, equivalently its minimal Kraus rank, is $3$ when
-    $x<1$ and $2$ when $x=1$.  The singular representative is the
-    trace-to-state channel
+    $x<1$ and $2$ when $x=1$.  The third normal form in
+    \cite[Theorem~8, Eq.~(17)]{VerstraeteVerschelde2002QuantumChannels}
+    is the singular trace-to-state channel
     \begin{align}
         X\longmapsto \tr(X)\,\lvert0\rangle\!\langle0\rvert;
     \end{align}
     it has $\Delta=0$, $v=(0,0,1)$, and Choi/Kraus rank $2$.
 
-    These are constructions and rank calculations for the representatives
-    in \cite[Theorem~8, Eqs.~(17)--(19)]{VerstraeteVerschelde2002QuantumChannels}
-    and Wolf Proposition~2.11, not the Lorentz-orbit classification or the
-    derivation that the non-diagonal parameter must lie in $[0,1]$.
+    These are constructions and rank calculations for the representatives in
+    \cite[Theorem~8, Eqs.~(17)--(19)]{VerstraeteVerschelde2002QuantumChannels}.
+    The diagonal rank formula is the direct Bell-family calculation from
+    Equation~(18).  The non-diagonal and singular rank statements agree with
+    cases 2 and 3 of \cite[Theorem~18]{WolfCirac2008Dividing}.  This does not
+    prove the Lorentz-orbit classification or derive that the non-diagonal
+    parameter must lie in $[0,1]$.
     The normalized Choi convention is
     $\tau=\frac14\sum_{ij}\widehat T_{ij}\sigma_i\otimes\sigma_j^{\mathsf T}$;
-    hence a raw Pauli correlation matrix has a sign change in the
-    $\sigma_2$ input column and is not silently identified with
-    $\widehat T$.
+    hence its raw Pauli correlation matrix satisfies
+    $R_{\mathrm{raw}}(\tau)=\widehat T\operatorname{diag}(1,1,-1,1)$ because
+    $\sigma_2^{\mathsf T}=-\sigma_2$.  Verstraete--Verschelde define $R_\Phi$
+    only after taking the first-factor partial transpose of their dual state
+    and then use it as the Bloch transfer matrix.  Thus $R_\Phi$ corresponds
+    to $\widehat T$, not to $R_{\mathrm{raw}}(\tau)$; the displayed sign matrix
+    is the explicit bridge.  In particular, the partial-transpose sign has
+    already been absorbed before their Theorem~8 parameters are introduced and
+    cannot account for its printed all-minus constraint.
 \end{theorem}
 
 % Pending Lean formalization: there is currently no declaration for this theorem.
@@ -915,7 +980,7 @@ recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
     map scalar $|c_1c_2|^2$; only the latter can normalize the resulting
     representative to a channel. A proof still requires this scalar
     normalization and the classification of Lorentz orbits.  The displayed
-    non-diagonal and singular representatives and their ranks are already
+    diagonal, non-diagonal, and singular representatives and their ranks are already
     supplied by Theorem~\ref{thm:lorentz_displayed_qubit_representatives}.
 \end{theorem}
 

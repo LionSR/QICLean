@@ -31,9 +31,11 @@ representations of quantum channels.
 The Lorentz-normal-form statements are recorded in
 `QICLean.Channel.LorentzNormalForm`.  The compactness/minimisation result is
 proved there, and the `SL(2, ℂ)` action on Pauli--Minkowski coordinates is
-formalized in `QICLean.Channel.LorentzNormalForm.SpinorAction`.  The remaining
-proof obligations for Proposition 2.11 are the Lorentz-orbit classification
-and the final scalar normalization.  This index imports the assembling module
+formalized in `QICLean.Channel.LorentzNormalForm.SpinorAction`.  The displayed
+diagonal, non-diagonal, and singular representatives and their exact
+Choi/Kraus ranks are formalized.  The remaining proof obligations for
+Proposition 2.11 are the Lorentz-orbit classification and the final scalar
+normalization.  This index imports the assembling module
 so that the cited formal statements are available from the main project import.
 
 ### Coverage summary
@@ -404,14 +406,33 @@ so that the cited formal statements are available from the main project import.
 * `IsLorentzDiagonal` — diagonal Lorentz normal form (Wolf Proposition 2.11 case 1) ✓
 * `IsLorentzNonDiagonal` — non-diagonal Lorentz normal form (case 2) ✓
 * `IsLorentzSingular` — singular Lorentz normal form (case 3) ✓
+  These are the same three transfer-matrix cases stated in Wolf--Cirac,
+  *Dividing Quantum Channels*, arXiv:math-ph/0611057v3, Theorem 18.  Its rank
+  statements concern only the non-diagonal and singular cases 2 and 3.
+* `Wolf.diagonalBellWeight` / `Wolf.diagonalKraus` / `Wolf.diagonalMap` —
+  the bistochastic Pauli family in Verstraete--Verschelde Theorem 8,
+  Equation (18), with its four Bell weights derived directly from Pauli
+  conjugation and with Pauli transfer matrix `diag(1, s₁, s₂, s₃)` under their
+  nonnegativity hypothesis. Verstraete--Verschelde's printed constraint
+  `1 - s₁ - s₂ - s₃ ≥ 0` is not used: their preceding Equation (16) makes
+  `R_Φ` the Bloch transfer matrix, so that constraint incorrectly excludes the
+  identity channel. The local final inequality
+  `1 - s₁ - s₂ + s₃ ≥ 0` is the direct Equation (18) calculation and agrees
+  with Wolf's Equation (2.40); the partial-transpose `σ₂` sign has already been
+  absorbed in `R_Φ` and does not provide a parameter conversion ✓
+* `Wolf.choiRank_diagonalMap` — the diagonal representative's Choi/Kraus
+  rank is the number of nonzero Bell weights, including ranks 1 through 4;
+  this is the direct Equation (18) Bell-family calculation, not a rank claim
+  from Wolf--Cirac Theorem 18 ✓
 * `Wolf.nonDiagonalKraus` / `Wolf.nonDiagonalMap` — the exact three-operator
   non-diagonal representative in Verstraete--Verschelde Theorem 8,
   Equation (19), with its arbitrary-matrix action and Pauli transfer matrix ✓
 * `Wolf.choiRank_nonDiagonalMap_eq_three` /
   `Wolf.choiRank_nonDiagonalMap_one` — the non-diagonal representative has
   Choi/Kraus rank 3 for `0 ≤ x < 1` and rank 2 at `x = 1` ✓
-* `Wolf.singularKraus` / `Wolf.singularMap` — the singular representative is
-  `X ↦ tr(X)|0⟩⟨0|`, has the stated Pauli transfer matrix, and satisfies
+* `Wolf.singularKraus` / `Wolf.singularMap` — the singular representative,
+  the third normal form in Verstraete--Verschelde Theorem 8, Equation (17),
+  realizes `X ↦ tr(X)|0⟩⟨0|`, has the stated Pauli transfer matrix, and satisfies
   `Wolf.choiRank_singularMap : Channel.choiRank singularMap = 2` ✓
 * `Wolf.infimum_is_attained` — **key compactness lemma**: trace minimisation
   over SL(d₁, ℂ) × SL(d₂, ℂ) filterings of a positive-definite operator on
@@ -440,9 +461,9 @@ so that the cited formal statements are available from the main project import.
   pending as an existence and orbit-classification theorem. The required
   general invertible Kraus-rank-one CP filters and their scalar freedom, the
   determinant-one spinor action, and its exact action on Pauli transfer
-  matrices are formalized. The source-displayed non-diagonal and singular
-  representatives, including their exact actions and Choi/Kraus ranks, are
-  also formalized. The Lorentz-orbit classification, necessity of the
+  matrices are formalized. The source-displayed diagonal, non-diagonal, and
+  singular representatives, including their exact actions and Choi/Kraus
+  ranks, are also formalized. The Lorentz-orbit classification, necessity of the
   non-diagonal parameter range, and final trace-preserving normalization have
   no Lean declaration yet. The former determinant-one `SLFiltering`
   formulation was false and was removed.
@@ -500,12 +521,12 @@ so that the cited formal statements are available from the main project import.
 | Diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzDiagonal` |
 | Non-diagonal Lorentz form | `LorentzNormalForm.lean` | `IsLorentzNonDiagonal` |
 | Singular Lorentz form | `LorentzNormalForm.lean` | `IsLorentzSingular` |
-| Canonical non-diagonal and singular representatives |
+| Canonical diagonal, non-diagonal, and singular representatives |
   `LorentzNormalForm/CanonicalQubitChannels.lean` |
-  `Wolf.nonDiagonalMap`, `Wolf.singularMap` |
+  `Wolf.diagonalMap`, `Wolf.nonDiagonalMap`, `Wolf.singularMap` |
 | Canonical representative Choi/Kraus ranks |
   `LorentzNormalForm/CanonicalQubitChannels.lean` |
-  `Wolf.choiRank_nonDiagonalMap_eq_three`,
+  `Wolf.choiRank_diagonalMap`, `Wolf.choiRank_nonDiagonalMap_eq_three`,
   `Wolf.choiRank_nonDiagonalMap_one`, `Wolf.choiRank_singularMap` |
 
 #### Not yet formalized
@@ -515,8 +536,8 @@ so that the cited formal statements are available from the main project import.
 | Section 2.4 Lorentz normal form (Proposition 2.11) | Correctly formulated
   statement and proof remain pending. The general invertible Kraus-rank-one
   filters, their scalar/SL decomposition, and the determinant-one Lorentz
-  action on Pauli transfer matrices are available. The displayed
-  non-diagonal and singular representatives and their ranks are also
+  action on Pauli transfer matrices are available. The displayed diagonal,
+  non-diagonal, and singular representatives and their ranks are also
   available. The proof still needs the Lorentz-orbit classification, the
   necessity of the parameter bounds, and the final trace-preserving
   normalization. |
