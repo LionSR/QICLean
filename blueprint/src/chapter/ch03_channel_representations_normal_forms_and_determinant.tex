@@ -1328,3 +1328,69 @@ This section states the existence theorems from
     $T(\rho)=U\rho U^\dagger$ for some unitary $U$. Kraus freedom then gives
     $K_i=c_iU$ with $\sum_i|c_i|^2=1$.
 \end{proof}
+
+\begin{theorem}[Positive determinant for small Kraus rank]
+    \label{thm:wolf_positive_det_small_kraus_rank}
+    \lean{channelDet_nonneg_of_two_kraus,
+        channelDet_nonneg_of_hasKrausRankLE_two,
+        IsKrausCP.channelDet_nonneg_of_choiRank_le_two}
+    \leanok
+    \uses{def:is_kraus_cp, def:kraus_rank_rect, def:channel_det}
+    Let $T:\MN{d}\to\MN{d}$ be a completely positive linear map with
+    Kraus rank at most two. Then
+    \begin{align}
+        \det T
+        &\geq0.
+    \end{align}
+    No trace-preservation hypothesis is assumed. This is the proposition
+    ``Positive determinant for small Kraus rank'' in
+    \cite[Chapter~6, Equation~(6.26)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:kraus_rect_rank_minimal,
+        thm:transfer_matrix_kraus,
+        thm:channel_det_transfer_matrix}
+    By minimality of Kraus rank and zero-padding, write
+    $T(X)=AXA^\dagger+BXB^\dagger$, including Kraus ranks zero and one.
+    Wolf writes
+    \begin{align}
+        \widehat T
+        &=A\otimes\overline A+B\otimes\overline B.
+    \end{align}
+    With the column-stacking convention of
+    Definition~\ref{def:mpu_transfer_matrix}, the two
+    Kronecker factors are swapped, so
+    $\widehat T=\overline A\otimes A+\overline B\otimes B$.
+
+    First suppose $\det A\neq0$ and put $C=A^{-1}B$. Equation~(6.26), in
+    this convention, is the exact factorization
+    \begin{align}
+        \widehat T
+        &=(\overline A\otimes A)
+          (\Id+\overline C\otimes C).
+    \end{align}
+    The determinant of the first factor is
+    $\overline{(\det A)^d}(\det A)^d\geq0$.
+    For the second factor, take a unitary Schur decomposition
+    $C=URU^\dagger$ with diagonal entries $\lambda_i=R_{ii}$. Unitary
+    similarity reduces its determinant to
+    \begin{align}
+        \prod_{i,j}
+        \bigl(1+\overline{\lambda_i}\lambda_j\bigr).
+    \end{align}
+    Each off-diagonal factor is paired with its complex conjugate, while the
+    diagonal factors are $1+|\lambda_i|^2$, so this product is nonnegative.
+
+    To remove the assumption on $A$ without an unproved density assertion,
+    set $\varepsilon_n=1/(n+1)$ and $A_n=A+\varepsilon_n\Id$. If
+    $A=URU^\dagger$ is a unitary Schur decomposition, then
+    $A_n=U(R+\varepsilon_n\Id)U^\dagger$. Every zero diagonal entry of $R$
+    becomes the nonzero number $\varepsilon_n$, while every nonzero diagonal
+    entry remains nonzero for all sufficiently large $n$. Hence
+    $\det A_n\neq0$ eventually. The nonsingular case applies to $(A_n,B)$;
+    since $A_n\to A$ and the determinant of
+    $\overline{A_n}\otimes A_n+\overline B\otimes B$ is continuous, passing
+    to the limit proves the claim.
+\end{proof}

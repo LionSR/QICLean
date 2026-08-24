@@ -9,6 +9,7 @@ import QICLean.Channel.Determinant.ChoiBound
 import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HilbertSchmidt
 import QICLean.Channel.Determinant.HeisenbergDual
+import QICLean.Channel.Determinant.KrausRankTwo
 import QICLean.Channel.Determinant.PositiveExtremality
 import QICLean.Channel.Determinant.PositiveInverse
 import QICLean.Channel.Determinant.UnitaryCharacterization
@@ -17,7 +18,7 @@ import QICLean.Channel.Determinant.UnitaryCharacterization
 # Determinants of quantum channels
 
 Thin module assembling the determinant development for quantum channels from
-nine focused sub-modules.
+ten focused sub-modules.
 
 The division follows the same organization as the earlier `Full/` and
 `Growth/` developments:
@@ -35,6 +36,8 @@ The division follows the same organization as the earlier `Full/` and
   auxiliary lemmas for the rigidity argument.
 * `QICLean.Channel.Determinant.HeisenbergDual` — Heisenberg-dual
   multiplicativity from determinant saturation.
+* `QICLean.Channel.Determinant.KrausRankTwo` — Wolf's nonnegative-determinant
+  proposition for completely positive maps of Kraus rank at most two.
 * `QICLean.Channel.Determinant.PositiveExtremality` — Wolf Theorem 6.1 for
   positive trace-preserving maps, including reality, saturation, and the
   transposition sign.
@@ -64,6 +67,8 @@ The division follows the same organization as the earlier `Full/` and
   inverse exactly for unitary conjugation and transpose-conjugation.
 * `channelDet_norm_eq_one_iff_exists_unitaryChannel` — Wolf Theorem 6.1(2)
   for CPTP maps.
+* `IsKrausCP.channelDet_nonneg_of_choiRank_le_two` — nonnegativity for
+  completely positive maps of Kraus rank at most two.
 * `norm_channelDet_le_choiPurity_rpow` — Wolf Eq. (6.27), the Choi bound
   `|det T| ≤ tr[τ† τ]^{d²/2}` for an arbitrary linear map.
 

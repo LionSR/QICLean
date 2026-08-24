@@ -667,6 +667,25 @@ source-general saturation theorem above.  The converse uses the explicit
 positive inverse of each standard form; it does not strengthen the hypotheses
 to complete positivity and therefore retains Wolf's transpose branch.
 
+#### Wolf Proposition "Positive determinant for small Kraus rank" and Equation (6.26) — FORMALIZED
+
+* `channelDet_nonneg_of_two_kraus` proves the source-facing two-operator
+  statement without a trace-preservation hypothesis.
+* `channelDet_nonneg_of_hasKrausRankLE_two` includes exact Kraus cardinalities
+  zero and one through Wolf's zero-padding operation.
+* `IsKrausCP.channelDet_nonneg_of_choiRank_le_two` states the proposition using
+  Kraus rank in Wolf's sense, namely the Choi rank of a completely positive
+  map.
+
+The proof follows Equation (6.26): it factors the two-Kraus transfer matrix,
+uses unitary Schur triangularization to pair the factors
+`1 + conj(λᵢ) * λⱼ`, and realizes the source's final density step by the
+explicit perturbation `Aₙ = A + (1 / (n + 1)) I`.  In Schur coordinates the
+perturbed diagonal is eventually nonzero, and continuity of the Kronecker
+transfer determinant closes the singular case.  The repository's
+column-stacking convention writes `conj(A) ⊗ A`; the Blueprint records its
+relation to Wolf's printed `A ⊗ conj(A)` ordering explicitly.
+
 
 #### Wolf Lemma 6.1 (Dirichlet's simultaneous approximation) — FORMALIZED
 
