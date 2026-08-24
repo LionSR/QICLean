@@ -25,7 +25,7 @@ identifies the remaining positive maximizer.
   521--527.
 -/
 
-open scoped BigOperators Matrix Topology
+open scoped BigOperators ComplexOrder Matrix Topology
 open Filter Finset Nowosad
 
 namespace Yamagami
@@ -349,3 +349,44 @@ theorem functional_card_le_one
             d k hd hk hk₂ a ha haZero hsmaller
 
 end Yamagami
+
+namespace Matrix
+
+variable {d n : ℕ} [NeZero d]
+
+/-- In the middle of Wolf's range, the reciprocal sum of the Choi rank-one
+weights is at most one.  Negating the cyclic index converts Yamagami's forward
+window into the backward window in `choiTypeRankOneWeight`. -/
+theorem choiTypeRankOneWeight_reciprocal_sum_middle
+    (hd : 3 ≤ d) (hn₁ : 2 ≤ n) (hn₂ : n ≤ d - 3) (v : ZMod d → ℂ) :
+    ∑ i, ‖v i‖ ^ 2 / choiTypeRankOneWeight d n v i ≤ 1 := by
+  let x : ZMod d → ℝ := fun i ↦ ‖v i‖ ^ 2
+  have hbound := Yamagami.functional_card_le_one d n hd (by omega) (by omega)
+    (fun i ↦ x (-i)) fun i ↦ sq_nonneg _
+  rw [Yamagami.functional_comp_neg d n (d : ℝ) x] at hbound
+  simpa only [x, choiTypeRankOneWeight] using hbound
+
+/-- Rank-one positivity for the Choi-type map in the middle range
+`2 ≤ n ≤ d - 3`. -/
+theorem choiTypeMap_vecMulVec_posSemidef_middle
+    (hd : 3 ≤ d) (hn₁ : 2 ≤ n) (hn₂ : n ≤ d - 3) (v : ZMod d → ℂ) :
+    (choiTypeMap d n (vecMulVec v (star v))).PosSemidef := by
+  refine choiTypeMap_vecMulVec_posSemidef_of_weight_sum_le_one n v (by omega) ?_
+  exact choiTypeRankOneWeight_reciprocal_sum_middle hd hn₁ hn₂ v
+
+/-- Positivity of the Choi-type map throughout Wolf's range
+`1 ≤ n ≤ d - 2`.  The two endpoints use their direct proofs; the remaining
+case is Yamagami's cyclic inequality followed by the rank-one criterion. -/
+theorem choiTypeMap_isPositiveMap
+    (hd : 3 ≤ d) (hn₁ : 1 ≤ n) (hn₂ : n ≤ d - 2) :
+    IsPositiveMap (choiTypeMap d n) := by
+  by_cases hnBottom : n = 1
+  · subst n
+    exact choiTypeMap_isPositiveMap_one hd
+  by_cases hnTop : n = d - 2
+  · subst n
+    exact choiTypeMap_isPositiveMap_sub_two hd
+  refine isPositiveMap_of_forall_vecMulVec_posSemidef _ fun v ↦ ?_
+  exact choiTypeMap_vecMulVec_posSemidef_middle hd (by omega) (by omega) v
+
+end Matrix
