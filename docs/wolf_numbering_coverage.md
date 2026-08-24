@@ -533,6 +533,39 @@ so that the cited formal statements are available from the main project import.
   recorded in
   `docs/paper-gaps/wolf_prop3_1_exact_schmidt_rank_scope.tex`.
 
+### Section 3.2 Detecting entanglement and Schmidt number
+
+#### Wolf Proposition 3.3 — FORMALIZED WITH A SOURCE WORDING CORRECTION
+
+- `Matrix.not_hasSchmidtNumberLE_iff_exists_witness` — a trace-one Hermitian
+  state lies outside `S_n` iff a Hermitian witness is negative on the state
+  and nonnegative on every vector of Schmidt rank at most `n` ✓
+- Wolf prints exact Schmidt rank `n`. This is vacuous when
+  `n > min(d,d')` and does not describe the pure generators of `S_n` used by
+  the separating-hyperplane proof. The counterexample, corrected statement,
+  and exact-rank scope are recorded alongside the same defect in Proposition
+  3.1 at `docs/paper-gaps/wolf_prop3_1_exact_schmidt_rank_scope.tex`.
+
+#### Wolf Proposition 3.4 — FORMALIZED (RECTANGULAR FORM)
+
+- `Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef` — the only-if direction
+  for an `n`-positive map `T : M_d(ℂ) → M_r(ℂ)`, with an independent
+  bystander dimension; the pure-state proof uses the rectangular
+  right-factor parametrization
+  `ChoiJamiolkowski.exists_compression_of_vector` ✓
+- `ChoiJamiolkowski.exists_isNPositiveMap_choiMatrix_eq_of_witness` — Equation
+  (3.13) in Wolf's orientation: a witness `W` on `ℂ^d ⊗ ℂ^{d'}` is the
+  rectangular Choi matrix of an `n`-positive map
+  `P : M_{d'}(ℂ) → M_d(ℂ)` ✓
+- `ChoiJamiolkowski.trace_choiMatrix_mul_eq_omegaVec_quadraticForm_traceAdjointMap`
+  — Equation (3.14), with `T = traceAdjointMap P` and the test vector
+  `omegaVec d'` ✓
+- `Matrix.exists_isNPositiveMap_tensorMapId_not_posSemidef` — if a trace-one
+  Hermitian state on `ℂ^d ⊗ ℂ^{d'}` lies outside `S_n`, an `n`-positive map
+  `T : M_d(ℂ) → M_{d'}(ℂ)` detects it ✓
+- `Matrix.hasSchmidtNumberLE_iff_forall_isNPositiveMap_tensorMapId_posSemidef`
+  — the full rectangular equivalence in Proposition 3.4 for density operators ✓
+
 ### Section 3.3 Transposition and time reversal
 
 #### Wolf Theorem 3.1 (Kramers' theorem) — FORMALIZED

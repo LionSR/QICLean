@@ -523,20 +523,22 @@ theorem compressedOmegaVector_hasSchmidtRankLE
     compressedOmegaVector] using
     Matrix.rank_le_card_width (Matrix.schmidtCoeffMatrix (compressedOmegaVector X))
 
-/-- A square compression of rank at most `k` gives Schmidt rank at most `k`. -/
+/-- A right-factor compression of rank at most `r` gives Schmidt rank at most `r`. -/
 theorem compressedOmegaVector_hasSchmidtRankLE_of_rank_le [NeZero D]
-    {X : Matrix (Fin D) (Fin D) ℂ} {k : ℕ} (hX : X.rank ≤ k) :
+    {m k : ℕ} {X : Matrix (Fin D) (Fin m) ℂ} (hX : X.rank ≤ k) :
     Matrix.HasSchmidtRankLE k (compressedOmegaVector X) := by
   simpa [Matrix.HasSchmidtRankLE, compressedOmegaVector_schmidtRank_eq_rank] using hX
 
-/-- For `D > 0`, every vector in $\mathbb{C}^D\otimes\mathbb{C}^D$ is obtained
-from the maximally entangled vector by applying a square right-factor matrix,
-and the matrix rank agrees with the Schmidt rank of the vector. -/
-theorem exists_squareCompression_of_vector [NeZero D]
-    (ψ : Fin D × Fin D → ℂ) :
-    ∃ X : Matrix (Fin D) (Fin D) ℂ,
+/-- For `D > 0`, every vector in $\mathbb{C}^D\otimes\mathbb{C}^k$ is obtained
+from the normalized maximally entangled vector by applying a `D × k` right-factor
+matrix, and the matrix rank agrees with the Schmidt rank of the vector. This is
+the rectangular right-factor parametrization used in the only-if direction of
+Wolf, Chapter 3, Proposition 3.4, lines 250--267. -/
+theorem exists_compression_of_vector [NeZero D]
+    (ψ : Fin D × Fin k → ℂ) :
+    ∃ X : Matrix (Fin D) (Fin k) ℂ,
       compressedOmegaVector X = ψ ∧ X.rank = Matrix.schmidtRank ψ := by
-  let X : Matrix (Fin D) (Fin D) ℂ :=
+  let X : Matrix (Fin D) (Fin k) ℂ :=
     fun a p => (((D : ℝ).sqrt : ℂ)) * ψ (a, p)
   have hDpos : 0 < (D : ℝ) := by
     exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne D)
@@ -549,6 +551,13 @@ theorem exists_squareCompression_of_vector [NeZero D]
     field_simp [hsqrt_ne]
   refine ⟨X, hvec, ?_⟩
   simpa [hvec] using (compressedOmegaVector_schmidtRank_eq_rank (X := X)).symm
+
+/-- Square specialization of `exists_compression_of_vector`. -/
+theorem exists_squareCompression_of_vector [NeZero D]
+    (ψ : Fin D × Fin D → ℂ) :
+    ∃ X : Matrix (Fin D) (Fin D) ℂ,
+      compressedOmegaVector X = ψ ∧ X.rank = Matrix.schmidtRank ψ :=
+  exists_compression_of_vector ψ
 
 /-- For `D > 0`, a square bipartite vector with Schmidt rank at most `r` has a
 square right-factor matrix representative of rank at most `r`. -/

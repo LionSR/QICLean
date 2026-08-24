@@ -109,28 +109,35 @@ the map $T_n$ is $n$-positive for all $1\le n<D$.\footnote{Formal declaration:
     \doclink{QICLean/Channel/NPositivityChainStrict}, the reduction map being
     $T_\eta$ at $\eta=n$ by \leanid{Matrix.reductionMap_eq_tEta}.}
 
-The pure-state step writes $\psi$ through the maximally entangled vector as a
-\emph{square} right-factor matrix, so the $T_n$-specialised \emph{criterion} theorems
-still fix the two tensor factors to a common dimension $D$. The general bipartite
-\emph{forward step} itself, however, no longer carries that restriction: padding the
-bipartite state to the square system $\mathbb{C}^D\otimes\mathbb{C}^D$ with
-$D=\max(d,d')$ — padding the smaller factor by zero rows or columns and, when the
-first factor grows, extending the map by a corner sandwich that preserves
-$n$-positivity — reduces the general case to the square one. Thus
-$(T\otimes\operatorname{id})(\rho)\ge 0$ holds on a general
-$\mathbb{C}^d\otimes\mathbb{C}^{d'}$ for every $n$-positive map $T$, with no relation
-between the factors.\footnote{Formal declaration:
-    \leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef_general} in
-    \doclink{QICLean/Channel/SchmidtNumberFactors}, with the $n$-positivity-preserving
-    corner extension \leanid{Matrix.isNPositiveMap_cornerExtendMap}.}
+The general forward step is now direct and rectangular. For
+$T:M_d(\mathbb{C})\to M_r(\mathbb{C})$ and
+$\psi\in\mathbb{C}^d\otimes\mathbb{C}^k$, write $\psi$ through the normalized
+maximally entangled vector as a rectangular right-factor matrix
+$X\in M_{d\times k}(\mathbb{C})$ with
+$\operatorname{rank}(X)=\operatorname{SR}(\psi)$. The ampliation of
+$\ketbra\psi\psi$ is the right-factor compression of the rectangular Choi
+matrix of $T$. Its quadratic form pulls back to a Choi quadratic form on a
+vector of Schmidt rank at most $\operatorname{rank}(X)$, so $n$-positivity gives
+the desired nonnegativity. Summing the pure projectors proves
+$(T\otimes\operatorname{id}_k)(\rho)\ge0$ with independent input, output, and
+bystander dimensions.\footnote{Formal declarations:
+    \leanid{Matrix.tensorMapId_posSemidef_of_hasSchmidtRankLE} and
+    \leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef} in
+    \doclink{QICLean/Channel/SchmidtNumber}.}
+
+The older padding constructions and the square-endomorphism declarations
+\leanid{Matrix.tensorMapId_posSemidef_of_hasSchmidtRankLE_general} and
+\leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef_general} remain as
+compatibility APIs in \doclink{QICLean/Channel/SchmidtNumberFactors}; the latter
+now delegates to the direct rectangular theorem. They are not needed to justify
+Wolf's source-facing positive-map characterization.
 
 \section{Classification}
 
 \emph{Resolved.} The general bipartite forward step
 $\operatorname{sn}(\rho)\le n\Rightarrow(T\otimes\operatorname{id})(\rho)\ge 0$ holds
-for every $n$-positive map $T$ on $\mathbb{C}^d\otimes\mathbb{C}^{d'}$ with no relation
-between the factors, at
-\leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef_general}.
+for every $n$-positive map with independent input, output, and bystander dimensions at
+\leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef}.
 
 The $T_n$-specialised reduction \emph{criterion} is likewise now general: the
 inequalities $n\,\mathbf 1\otimes\rho_2\ge\rho$ and $n\,\rho_1\otimes\mathbf 1\ge\rho$
