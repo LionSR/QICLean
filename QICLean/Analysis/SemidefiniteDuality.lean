@@ -173,7 +173,7 @@ theorem weak_duality (F₀ : HermitianMatrix n) (F : ι → HermitianMatrix n)
 
 /-- **Primal-strict semidefinite Slater attainment, corrected.** Wolf's `X > 0` condition and a
 finite primal value give a dual optimizer. The finite-value hypothesis is the necessary correction
-to the original statement at lines 100--105. -/
+to the printed statement at lines 100--105. -/
 theorem exists_dualOptimizer_of_primalStrict_of_primalValue_eq_coe
     (F₀ : HermitianMatrix n) (F : ι → HermitianMatrix n) (b : EuclideanSpace ℝ ι) (p : ℝ)
     (hstrict : ∃ X : HermitianMatrix n, (toMatrix n X).PosDef ∧
