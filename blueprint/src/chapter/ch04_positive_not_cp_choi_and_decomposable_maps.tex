@@ -94,8 +94,9 @@ middle range.
         Yamagami.exists_hasSingularRun_of_forwardDenominator_eq_zero}
     \leanok
     \uses{def:yamagami_stride_one_reciprocal}
-    Let $a\colon\Z/N\Z\to\R$ be nonnegative and nonzero.  If one forward
-    denominator vanishes, there is an index $j$ such that
+    Suppose that $N\ge1$ and $m<s$.  Let $a\colon\Z/N\Z\to\R$ be
+    nonnegative and nonzero.  If one forward denominator vanishes, there is
+    an index $j$ such that
     \begin{align}
         a_j&>0,
         &a_{j-m-1}=a_{j-m}=\cdots=a_{j-1}&=0.
@@ -162,11 +163,11 @@ middle range.
         Yamagami.functional_le_card_ratio_of_strictlyPositive}
     \leanok
     \uses{def:yamagami_stride_one_reciprocal}
-    If $f_{N,m,s}(y)\le B$ for every strictly positive vector $y$, then the
-    same inequality holds for every nonnegative vector when a literal
-    $0/0$ summand is assigned Lean's totalized value zero.  In particular,
-    the conclusion holds with $B=N/s$ once the strictly positive inequality
-    has been proved.
+    Suppose that $N\ge1$ and $m<s$.  If $f_{N,m,s}(y)\le B$ for every
+    strictly positive vector $y$, then the same inequality holds for every
+    nonnegative vector when a literal $0/0$ summand is assigned Lean's
+    totalized value zero.  In particular, the conclusion holds with $B=N/s$
+    once the strictly positive inequality has been proved.
 \end{lemma}
 
 \begin{proof}
