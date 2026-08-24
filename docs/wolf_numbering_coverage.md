@@ -678,6 +678,16 @@ so that the cited formal statements are available from the main project import.
   endpoint `m = d - 1`, `s = d` is false with a strict inequality and is
   recorded in the paper-gap note; this theorem does not prove the cyclic
   inequality ✓
+- `Yamagami.limsup_functional_le_card_ratio_of_singularDenominator`
+  formalizes the omitted simultaneous-singularity boundary count: one
+  least-next-positive zero string supplies all `m` vanishing summands, without
+  a maximal-block decomposition ✓
+- `Yamagami.functional_le_card_ratio_of_strictlyPositive` transfers an
+  already proved strictly positive inequality to Lean's direct nonnegative
+  `0 / 0 = 0` value. This theorem is conditional; the positive-interior input
+  remains tracked by issue #448, and the regular-boundary induction is still
+  required. See
+  `docs/paper-gaps/yamagami93_simultaneous_singularity_boundary.tex` ✓
 - Positivity in the middle range `2 ≤ n ≤ d - 3` remains open; its exact
   scope and cyclic reciprocal inequality are recorded in
   `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. The factor

@@ -81,6 +81,107 @@ This spectral lemma is only one dependency of Yamagami's variational proof.
 It does not establish the cyclic reciprocal inequality or positivity in the
 middle range.
 
+\begin{lemma}[The first positive coordinate after a singular window]
+    \label{lem:yamagami_singular_zero_run}
+    \lean{Yamagami.precedingIndices,
+        Yamagami.HasSingularRun,
+        Yamagami.exists_hasSingularRun_of_zero_window,
+        Yamagami.card_precedingIndices,
+        Yamagami.precedingIndices_zero_and_reaches,
+        Yamagami.forwardDenominator_pos_of_mem_preceding,
+        Yamagami.eq_zero_of_forwardDenominator_eq_zero,
+        Yamagami.forwardDenominator_eq_zero_iff,
+        Yamagami.exists_hasSingularRun_of_forwardDenominator_eq_zero}
+    \leanok
+    \uses{def:yamagami_stride_one_reciprocal}
+    Let $a\colon\Z/N\Z\to\R$ be nonnegative and nonzero.  If one forward
+    denominator vanishes, there is an index $j$ such that
+    \begin{align}
+        a_j&>0,
+        &a_{j-m-1}=a_{j-m}=\cdots=a_{j-1}&=0.
+    \end{align}
+    If $m<N$, the $m$ indices $j-1,\ldots,j-m$ are distinct.  Each has zero
+    numerator, and its forward denominator contains the positive coordinate
+    $a_j$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    A zero denominator gives a forward window of $m+1$ zero coordinates.
+    Starting immediately after this window, take the first positive
+    coordinate encountered cyclically; it exists because $a$ is nonzero.
+    Minimality gives the displayed zero string.  Translation by $j$ is
+    injective on the natural indices $1,\ldots,m$ when $m<N$, which gives the
+    cardinality statement.  No decomposition into maximal zero blocks is
+    used.
+\end{proof}
+
+\begin{lemma}[Yamagami's simultaneous-singularity boundary estimate]
+    \label{lem:yamagami_simultaneous_singular_boundary}
+    \lean{Yamagami.limsup_sum_le_card_mul_of_tendsto_zero_on,
+        Yamagami.tendsto_forwardDenominator,
+        Yamagami.tendsto_summand_of_denominator_ne,
+        Yamagami.tendsto_summand_zero_of_mem_preceding,
+        Yamagami.summand_nonneg_and_le,
+        Yamagami.limsup_functional_le_sub_ratio_of_singularRun,
+        Yamagami.limsup_functional_le_sub_ratio_of_singularDenominator,
+        Yamagami.sub_ratio_le_card_ratio,
+        Yamagami.limsup_functional_le_card_ratio_of_singularRun,
+        Yamagami.limsup_functional_le_card_ratio_of_singularDenominator}
+    \leanok
+    \uses{def:yamagami_stride_one_reciprocal,
+        lem:yamagami_singular_zero_run}
+    Suppose that $m<N$, $m<s$, and $N\le s$.  Let strictly positive vectors
+    $x^{(r)}$ converge coordinatewise to a nonzero nonnegative vector $a$ with
+    at least one vanishing forward denominator.  Then
+    \begin{align}
+        \limsup_r f_{N,m,s}\bigl(x^{(r)}\bigr)
+          &\le\frac{N-m}{s-m}
+          \le\frac Ns.
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Choose $j$ from
+    Lemma~\ref{lem:yamagami_singular_zero_run}.  The $m$ summands immediately
+    preceding $j$ tend to zero: their numerators tend to zero, while their
+    limiting denominators contain $a_j>0$.  Every remaining positive summand
+    is nonnegative and at most $1/(s-m)$.  The complement has $N-m$ elements,
+    which gives the first bound; the second is elementary.  This one global
+    count covers any number of simultaneous vanishing denominators.  Yamagami
+    prints the single-singularity calculation and only indicates the
+    simultaneous case; the completed step and its precise attribution are
+    recorded in
+    \cite{gap:yamagami_simultaneous_singularity_boundary}.
+\end{proof}
+
+\begin{lemma}[Conditional passage to the totalized boundary value]
+    \label{lem:yamagami_conditional_totalized_boundary}
+    \lean{Yamagami.functional_le_of_strictlyPositive,
+        Yamagami.functional_le_card_ratio_of_strictlyPositive}
+    \leanok
+    \uses{def:yamagami_stride_one_reciprocal}
+    If $f_{N,m,s}(y)\le B$ for every strictly positive vector $y$, then the
+    same inequality holds for every nonnegative vector when a literal
+    $0/0$ summand is assigned Lean's totalized value zero.  In particular,
+    the conclusion holds with $B=N/s$ once the strictly positive inequality
+    has been proved.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Approximate $x\ge0$ by
+    $y_i^{(r)}=x_i+1/(r+1)$.  At every nonsingular limiting denominator the
+    summand converges to its direct boundary value.  The omitted singular
+    summands of the positive approximants are nonnegative, while their
+    totalized boundary values are zero.  Passing to the limit gives the
+    claim.  This lemma is conditional: it supplies neither the positive
+    interior inequality nor Yamagami's regular-boundary induction.  In
+    particular, the Nowosad interior-uniqueness input remains open, so the
+    full cyclic inequality is not asserted here.
+\end{proof}
+
 \begin{definition}[Choi-type map]
     \label{def:choi_type_map}
     \lean{Matrix.choiTypeMap}

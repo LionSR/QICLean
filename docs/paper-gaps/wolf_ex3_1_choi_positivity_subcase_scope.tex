@@ -128,12 +128,23 @@ printed endpoint and its stride-one correction are recorded separately in
 the unfinished Choi-type positivity proof.
 
 The accompanying definitions retain Yamagami's forward window and provide the
-explicit index-negation bridge to the backward Choi window.  This is not the
-cyclic reciprocal inequality: the
-Nowosad uniqueness step, Hessian identification, and regular and singular
-projective-boundary analysis are still missing.  In particular, Yamagami's
-boundary $0/0$ terms remain indeterminate limits in the source, whereas Lean's
-division in the algebraically total functional is zero at a literal $0/0$.
+explicit index-negation bridge to the backward Choi window.  The
+simultaneous-singularity part of the projective-boundary analysis is now
+formalized separately.  From any vanishing denominator at a nonzero
+nonnegative boundary vector, the first positive coordinate after its zero
+window supplies $m$ summands tending to zero; the complement count gives
+\((N-m)/(s-m)\le N/s\).  This is the single global count indicated, but not
+printed, after Yamagami's one-singularity calculation
+\cite[pp.~524--525]{Yamagami1993Cyclic}.  Its completion and attribution are
+recorded in
+\cite{gap:yamagami_simultaneous_singularity_boundary}.
+
+This is still not the cyclic reciprocal inequality.  The positive-interior
+uniqueness theorem, tracked by \ghissue{448}, and the separate
+regular-boundary induction remain missing.  The direct theorem for Lean's
+literal \(0/0=0\) functional is correspondingly conditional on an already
+proved strictly positive inequality; it does not discharge either missing
+input.
 
 Two verifiable computations locate the obstruction to elementary summand
 bounds in the remaining range.  First, the estimate is tight in two distinct
