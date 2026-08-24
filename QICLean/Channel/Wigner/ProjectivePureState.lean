@@ -96,10 +96,11 @@ theorem star_dot_self_smul_normalizedPureStateMatrix (v : Fin d → ℂ) (hv : v
   rw [normalizedPureStateMatrix, smul_smul, mul_inv_cancel₀ (star_dot_self_ne_zero v hv),
     one_smul]
 
-/-- Two complex-linear matrix maps that agree on every normalized pure-state
-matrix agree on all matrices. -/
+/-- Two complex-linear maps from a full matrix algebra to an arbitrary complex
+module that agree on every normalized pure-state matrix agree everywhere. -/
 theorem linearMap_eq_of_eq_on_pureStateMatrix
-    (T S : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d) (Fin d) ℂ)
+    {E : Type*} [AddCommGroup E] [Module ℂ E]
+    (T S : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] E)
     (h : ∀ p : ℙ ℂ (Fin d → ℂ), T (pureStateMatrix p) = S (pureStateMatrix p)) :
     T = S := by
   apply WolfProps.linearMap_eq_of_eq_on_rankOne
