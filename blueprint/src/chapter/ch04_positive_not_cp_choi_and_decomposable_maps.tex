@@ -24,6 +24,73 @@ of Tanahashi and Tomiyama~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposabl
 Their Lemmas~2--3 use the same rank-one and product-one coefficient argument
 formalized below. The whole range is due to Yamagami~\cite{Yamagami1993Cyclic},
 whose proof is a variational argument on the boundary of a projective simplex.
+The finite-coordinate prerequisites for the interior uniqueness step are
+recorded next.  They make explicit the sign change between Nowosad's original
+local-minimum orientation and Yamagami's local maxima, but do not yet prove
+Nowosad's Laurent-algebra constancy theorem or Yamagami's Lemma~3.
+
+\subsection{Nowosad's finite-coordinate prerequisites}
+
+\begin{definition}[Nowosad's coordinate functional]
+    \label{def:nowosad_coordinate_functional}
+    \lean{Nowosad.positiveDomain, Nowosad.functional}
+    \leanok
+    For a real linear operator $T$ on $\mathbb R^d$, set
+    \begin{align}
+        \lambda_T(x)
+         &=\sum_i\frac{(Tx)_i}{x_i},
+         \qquad x_i>0.
+        \notag
+    \end{align}
+    This is the finite-coordinate specialization of
+    $x\mapsto\varphi(x^{-1}T(x))$ used by
+    Nowosad~\cite[Theorems~1.5 and~1.8]{Nowosad1968Isoperimetric}.
+\end{definition}
+
+\begin{theorem}[The Nowosad--Yamagami sign bridge]
+    \label{thm:nowosad_yamagami_sign_bridge}
+    \lean{Nowosad.functional_neg, Nowosad.functional_smul,
+        Nowosad.isLocalMinOn_functional_neg_iff_isLocalMaxOn,
+        Nowosad.continuousLinearMap,
+        Nowosad.continuousLinearMap_apply}
+    \leanok
+    \uses{def:nowosad_coordinate_functional}
+    One has $\lambda_{-T}=-\lambda_T$, so local minima of $\lambda_{-T}$ on
+    the strictly positive domain are exactly local maxima of $\lambda_T$.
+    Moreover $\lambda_T(cx)=\lambda_T(x)$ for $c\ne0$, and every linear
+    operator on $\mathbb R^d$ is bounded for its Euclidean norm.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Linearity gives $(-T)x=-(Tx)$ coordinatewise, and negation reverses local
+    minima and local maxima.  The scaling identity follows by cancelling the
+    common nonzero scalar in each quotient.  Continuity is automatic in finite
+    dimension.  Thus applying Nowosad's original local-minimum statement to
+    $-T$ gives precisely the local-maximum orientation used in Yamagami's
+    Theorem~1~\cite[p.~522]{Yamagami1993Cyclic}.
+\end{proof}
+
+\begin{theorem}[Point derivations of the coordinate algebra vanish]
+    \label{thm:nowosad_coordinate_point_derivation_zero}
+    \lean{Nowosad.IsPointDerivationAt, Nowosad.pointDerivation_eq_zero}
+    \leanok
+    If a linear functional $D$ satisfies
+    \begin{align}
+        D(xy)=x_iD(y)+y_iD(x)
+        \notag
+    \end{align}
+    at a fixed coordinate $i$, then $D=0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Let $e_i$ be the coordinate idempotent.  Applying the Leibniz identity to
+    $e_i^2=e_i$ gives $D(e_i)=2D(e_i)$, hence $D(e_i)=0$.  For arbitrary $x$,
+    the identity $e_ix=x_i e_i$ then gives $0=D(e_ix)=D(x)$.  This is the
+    finite-coordinate idempotent proof of the point-derivation vanishing step
+    used in Nowosad's argument.
+\end{proof}
 
 \begin{definition}[Yamagami's stride-one cyclic reciprocal data]
     \label{def:yamagami_stride_one_reciprocal}
