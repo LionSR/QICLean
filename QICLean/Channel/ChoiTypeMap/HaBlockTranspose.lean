@@ -38,7 +38,7 @@ def haCyclicSucc (i : Fin d) : Fin d :=
 
 /-- The squared exceptional cyclic weight, written in the source's two
 oriented neighbouring cases. -/
-private theorem haCyclicWeight_mul_star (hd : 3 ≤ d) (γ : ℝ) (a b : Fin d) :
+theorem haCyclicWeight_mul_star (hd : 3 ≤ d) (γ : ℝ) (a b : Fin d) :
     haCyclicWeight d γ b a * star (haCyclicWeight d γ b a) =
       if a = haCyclicSucc b then (γ : ℂ) ^ 2
       else if b = haCyclicSucc a then ((γ : ℂ)⁻¹) ^ 2 else 1 := by
@@ -135,7 +135,7 @@ noncomputable def haVVector (d : ℕ) [NeZero d] (i : Fin d) :
   fun p ↦ Real.sqrt (((d : ℝ) - 1) / d) *
     (haTensorBasis (haCyclicSucc i) i p + haTensorBasis i (haCyclicSucc i) p)
 
-private theorem haCyclicSucc_ne (hd : 3 ≤ d) (i : Fin d) : haCyclicSucc i ≠ i := by
+theorem haCyclicSucc_ne (hd : 3 ≤ d) (i : Fin d) : haCyclicSucc i ≠ i := by
   intro h
   have hv := congrArg Fin.val h
   by_cases hi : i.val + 1 < d
@@ -669,7 +669,7 @@ private theorem haBlockTransposeDecomposition_eq_components (γ : ℝ) :
 
 /-- The entry formula common to Ha's root average and his displayed projector
 decomposition. -/
-private noncomputable def haBlockTransposeEntry (d : ℕ) [NeZero d] (γ : ℝ)
+noncomputable def haBlockTransposeEntry (d : ℕ) [NeZero d] (γ : ℝ)
     (p q : Fin d × Fin d) : ℂ :=
   if p = q then
     ((d : ℝ)⁻¹ : ℝ) *
@@ -678,7 +678,7 @@ private noncomputable def haBlockTransposeEntry (d : ℕ) [NeZero d] (γ : ℝ)
   else if p.1 = q.2 ∧ p.2 = q.1 then 1 else 0
 
 /-- Entrywise evaluation of the block transpose of Ha's root average. -/
-private theorem partialTransposeRight_haAGamma_apply (hd : 3 ≤ d) (γ : ℝ)
+theorem partialTransposeRight_haAGamma_apply (hd : 3 ≤ d) (γ : ℝ)
     (p q : Fin d × Fin d) :
     partialTransposeRight (haAGamma d γ) p q = haBlockTransposeEntry d γ p q := by
   classical
