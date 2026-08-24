@@ -663,10 +663,21 @@ so that the cited formal statements are available from the main project import.
   with vanishing coordinates ✓
 - `Matrix.choiTypeMap_isPositiveMap_sub_two` proves positivity for the complete
   top slice `n = d - 2` in every dimension `d ≥ 3` ✓
-- Positivity in the middle range `2 ≤ n ≤ d - 3` and indecomposability remain
-  open. The exact scope and the remaining cyclic reciprocal inequality are
-  recorded in
-  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`.
+- `Matrix.haTwoSimpleVector_hasSchmidtRankLE_two` and
+  `Matrix.haAGamma_hasSchmidtNumberLE_two` formalize Ha's root-average
+  decomposition into projectors onto 2-simple vectors ✓
+- `Matrix.haArGamma_apply` and
+  `Matrix.partialTransposeRight_haAGamma_eq_haBlockTransposeDecomposition`
+  formalize Ha's root-average entry formula and the displayed
+  block-transpose identity on pp. 594--595 ✓
+- `Matrix.partialTransposeRight_haAGamma_hasSchmidtNumberLE_two` proves that
+  the displayed block transpose also belongs to the two-simple cone ✓
+- Positivity in the middle range `2 ≤ n ≤ d - 3` remains open; its exact
+  scope and cyclic reciprocal inequality are recorded in
+  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. The factor
+  swap, Eom--Kye pairing, negative value, and indecomposability conclusion
+  remain open and are recorded in
+  `docs/paper-gaps/ha98_choi_type_witness_scope.tex`.
 
 ### Section 3.3 Transposition and time reversal
 

@@ -16,6 +16,8 @@ import QICLean.Channel.ChoiDoeblin
 import QICLean.Channel.ChoiJamiolkowski
 import QICLean.Channel.ChoiRectangular
 import QICLean.Channel.ChoiTypeMap
+import QICLean.Channel.ChoiTypeMap.HaBlockTranspose
+import QICLean.Channel.ChoiTypeMap.HaTwoSimpleWitness
 import QICLean.Channel.ChoiTypeMap.Indecomposable
 import QICLean.Channel.ChoiTypeMap.Positivity
 import QICLean.Channel.ComplementaryWeylTwirl

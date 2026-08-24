@@ -100,12 +100,33 @@ corresponding rank-one projectors proves
     A_\gamma\ge0.
     \label{eq:ha98_formalized_slice}
 \end{align}
-This is Ha's first witness decomposition, not the PPT assertion and not the
-indecomposability theorem.\footnote{Formal declarations:
+The formalization also proves Ha's root-average entry formula (2.3), defines
+the vectors $u_i$, $v_i$, $\alpha_i$, and $\beta_{i,j}$ with precisely the
+two displayed beta ranges translated to zero-based indices, and proves
+\begin{align}
+    A_\gamma^{T_2}
+     & =\sum_{i=0}^{d-1}
+       \bigl(\ketbra{u_i}{u_i}+\ketbra{v_i}{v_i}
+       +\ketbra{\alpha_i}{\alpha_i}\bigr)
+       +\sum_{(i,j)\in\mathcal B_d}
+       \ketbra{\beta_{i,j}}{\beta_{i,j}}
+       \in V_2,
+    \label{eq:ha98_formalized_block_transpose}
+\end{align}
+where $\mathcal B_d$ is the union of Ha's two displayed ranges. Here $T_2$
+is the repository's right partial transpose. At the boundary $d=3$, the beta
+range is empty, exactly as in the source. Thus both source-ordered
+$V_2$ decompositions on pp.~594--595 are formalized. This does not include
+the factor swap, negative pairing, or indecomposability theorem.\footnote{Formal declarations:
     \leanid{Matrix.haTwoSimpleVector\_hasSchmidtRankLE\_two},
+    \leanid{Matrix.haArGamma\_apply},
     \leanid{Matrix.haAGamma\_hasSchmidtNumberLE\_two}, and
     \leanid{Matrix.haAGamma\_posSemidef} in
-    \doclink{QICLean/Channel/ChoiTypeMap/Indecomposable}.}
+    \doclink{QICLean/Channel/ChoiTypeMap/HaTwoSimpleWitness};
+    \leanid{Matrix.partialTransposeRight\_haAGamma\_eq\_haBlockTransposeDecomposition}
+    and
+    \leanid{Matrix.partialTransposeRight\_haAGamma\_hasSchmidtNumberLE\_two}
+    in \doclink{QICLean/Channel/ChoiTypeMap/HaBlockTranspose}.}
 
 \section{Required orientation and remaining steps}
 
@@ -127,8 +148,9 @@ transpose,
     \label{eq:ha98_partial_transpose_orientation}
 \end{align}
 Equations~(\ref{eq:ha98_formalized_slice}) and
-(\ref{eq:ha98_block_transpose}) therefore give the two positive
-semidefinite conditions for the factor-swapped PPT witness.
+(\ref{eq:ha98_formalized_block_transpose}) supply the two source matrices
+that must be transported through the factor swap. That transport has not yet
+been formalized.
 
 The maximally entangled vector in the formal development is normalized:
 $\ket{\Omega}=d^{-1/2}\sum_i e_i\otimes e_i$. Hence Eom--Kye's matrix is
@@ -143,10 +165,7 @@ form of $(T_C\otimes\operatorname{id})(\rho)$.
 
 The remaining source-ordered work is therefore:
 \begin{enumerate}
-    \item prove Ha's root-average block formula (2.3), using the exact power-sum
-          identity and exponent-collision relation;
-    \item prove the rank-one identity (\ref{eq:ha98_block_transpose});
-    \item transport it through the factor swap as in
+    \item transport the two decompositions through the factor swap as in
           (\ref{eq:ha98_partial_transpose_orientation});
     \item prove the pairing identity (\ref{eq:ha98_eom_kye_orientation}) and
           normalization (\ref{eq:ha98_omega_normalization});
@@ -160,8 +179,8 @@ conjunction and is tracked by \ghissue{18}.
 
 \section{Classification}
 
-\emph{Scope restriction.} The exact root-average construction and its
-$V_2$ decomposition are formalized. The block-transpose decomposition,
+\emph{Scope restriction.} The exact root-average construction, its entry
+formula, and both $V_2$ decompositions on pp.~594--595 are formalized. The
 factor-swapped PPT witness, Eom--Kye pairing, negative value, and
 indecomposability conclusion remain open. No Choi-matrix or
 partial-transpose ansatz is substituted for Ha's cited route.
