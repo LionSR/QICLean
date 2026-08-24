@@ -828,11 +828,16 @@ theorem spinorMatrix_eq_one_iff (X : SL(2, ℂ)) :
       exact self_eq_neg.mp h01e.symm
     have h10 : X.1 1 0 = 0 := by
       have h10e := congrFun (congrFun (hcomm 3) 1) 0
-      simp [pauliMatrices, Matrix.mul_apply, Fin.sum_univ_two] at h10e
+      simp only [pauliMatrices, Fin.isValue, Matrix.mul_apply, Matrix.of_apply,
+        Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_fin_one, Fin.sum_univ_two,
+        mul_one, Matrix.cons_val_one, mul_zero, add_zero, zero_mul, neg_mul, one_mul,
+        zero_add] at h10e
       exact self_eq_neg.mp h10e
     have hdiag : X.1 0 0 = X.1 1 1 := by
       have he := congrFun (congrFun (hcomm 1) 0) 1
-      simp [pauliMatrices, Matrix.mul_apply, Fin.sum_univ_two] at he
+      simp only [pauliMatrices, Fin.isValue, Matrix.mul_apply, Matrix.of_apply,
+        Matrix.cons_val', Matrix.cons_val_one, Matrix.cons_val_fin_one, Fin.sum_univ_two,
+        Matrix.cons_val_zero, mul_one, mul_zero, add_zero, zero_mul, one_mul, zero_add] at he
       exact he
     have hdet : X.1 0 0 * X.1 0 0 = 1 := by
       have hd := X.2
