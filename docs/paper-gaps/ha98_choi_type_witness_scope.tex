@@ -116,8 +116,7 @@ two displayed beta ranges translated to zero-based indices, and proves
 where $\mathcal B_d$ is the union of Ha's two displayed ranges. Here $T_2$
 is the repository's right partial transpose. At the boundary $d=3$, the beta
 range is empty, exactly as in the source. Thus both source-ordered
-$V_2$ decompositions on pp.~594--595 are formalized. This does not include
-the factor swap, negative pairing, or indecomposability theorem.\footnote{Formal declarations:
+$V_2$ decompositions on pp.~594--595 are formalized.\footnote{Formal declarations:
     \leanid{Matrix.haTwoSimpleVector\_hasSchmidtRankLE\_two},
     \leanid{Matrix.haArGamma\_apply},
     \leanid{Matrix.haAGamma\_hasSchmidtNumberLE\_two}, and
@@ -128,10 +127,10 @@ the factor swap, negative pairing, or indecomposability theorem.\footnote{Formal
     \leanid{Matrix.partialTransposeRight\_haAGamma\_hasSchmidtNumberLE\_two}
     in \doclink{QICLean/Channel/ChoiTypeMap/HaBlockTranspose}.}
 
-\section{Required orientation and remaining steps}
+\section{Factor swap, pairing, and remaining scope}
 
 The bilinear duality used by Ha is fixed by Eom--Kye
-\cite[Corollary~3.2 and Theorem~3.3(iii), pp.~136, 138--139]{EomKye2000Duality}.
+\cite[Theorem~3.3 proof, pp.~138--139, equations (12)--(13)]{EomKye2000Duality}.
 If $\sigma$ swaps the two tensor factors and
 $J_d=\sum_{i,j}e_{ij}\otimes e_{ij}$, their orientation is
 \begin{align}
@@ -149,8 +148,9 @@ transpose,
 \end{align}
 Equations~(\ref{eq:ha98_formalized_slice}) and
 (\ref{eq:ha98_formalized_block_transpose}) supply the two source matrices
-that must be transported through the factor swap. That transport has not yet
-been formalized.
+that must be transported through the factor swap. The formalization proves
+that $\rho=A_\gamma^\sigma$ belongs to $V_2$ and that
+$\rho^{T_1}=(A_\gamma^{T_2})^\sigma$ also belongs to $V_2$.
 
 The maximally entangled vector in the formal development is normalized:
 $\ket{\Omega}=d^{-1/2}\sum_i e_i\otimes e_i$. Hence Eom--Kye's matrix is
@@ -159,31 +159,43 @@ $\ket{\Omega}=d^{-1/2}\sum_i e_i\otimes e_i$. Hence Eom--Kye's matrix is
      & =d\ketbra{\Omega}{\Omega}.
     \label{eq:ha98_omega_normalization}
 \end{align}
-The positive factor $d$ must be retained when
-(\ref{eq:ha98_negative_pairing}) is converted into a negative quadratic
-form of $(T_C\otimes\operatorname{id})(\rho)$.
+The positive factor $d$ is retained in the formalized identity. For the full
+source range $d\ge3$, $1\le n\le d-2$, and $\gamma>0$, it proves
+\begin{align}
+    \langle A_\gamma,T_C\rangle
+     & =d\,\bra{\Omega}
+       (T_C\otimes\operatorname{id})(A_\gamma^\sigma)\ket{\Omega}
+      =\gamma^2-1.
+    \label{eq:ha98_formalized_negative_pairing}
+\end{align}
+Thus $0<\gamma<1$ gives the strict negativity in
+(\ref{eq:ha98_negative_pairing}).\footnote{The factor swap, partial-transpose
+    transport, pairing identity, cyclic-coordinate calculation, and normalized
+    quadratic form are in
+    \doclink{QICLean/Channel/ChoiTypeMap/HaNegativePairing}; the principal
+    declarations are
+    \leanid{Matrix.partialTransposeLeft\_tensorFactorSwap\_haAGamma\_hasSchmidtNumberLE\_two},
+    \leanid{Matrix.eomKyePairing\_eq\_omegaVec\_quadraticForm\_factorSwap},
+    \leanid{Matrix.eomKyePairing\_haAGamma\_choiTypeMap}, and
+    \leanid{Matrix.choiTypeMapFin\_haAGamma\_omegaVec\_quadraticForm\_re\_neg}.}
 
-The remaining source-ordered work is therefore:
-\begin{enumerate}
-    \item transport the two decompositions through the factor swap as in
-          (\ref{eq:ha98_partial_transpose_orientation});
-    \item prove the pairing identity (\ref{eq:ha98_eom_kye_orientation}) and
-          normalization (\ref{eq:ha98_omega_normalization});
-    \item calculate (\ref{eq:ha98_negative_pairing}) for the exact cyclic
-          Choi-type map and apply the PPT witness criterion.
-\end{enumerate}
-The final assertion that the map is an indecomposable \emph{positive} map also
-requires the full-range positivity theorem tracked by
-\ghissue{19}. The witness calculation itself is independent of that final
-conjunction and is tracked by \ghissue{18}.
+This completes the source algebra of the witness, but it does not prove that
+$T_C$ is positive. Positivity in the middle range $2\le n\le d-3$ remains
+the content of \ghissue{19}. After that hypothesis is available, a final
+theorem combining positivity with the negative witness to conclude
+indecomposability still remains to be stated; this is tracked by
+\ghissue{18}. No atomicity conclusion is asserted by the present
+formalization.
 
 \section{Classification}
 
 \emph{Scope restriction.} The exact root-average construction, its entry
-formula, and both $V_2$ decompositions on pp.~594--595 are formalized. The
-factor-swapped PPT witness, Eom--Kye pairing, negative value, and
-indecomposability conclusion remain open. No Choi-matrix or
-partial-transpose ansatz is substituted for Ha's cited route.
+formula, both $V_2$ decompositions on pp.~594--595, their tensor-factor
+transport, the Eom--Kye orientation, the normalization factor $d$, and the
+value $\gamma^2-1$ are formalized for every $d\ge3$ and
+$1\le n\le d-2$. The middle-range positivity theorem and the final
+indecomposability theorem remain open. No atomicity conclusion and no
+alternative Choi-matrix or partial-transpose ansatz is asserted.
 
 \bibliographystyle{alpha}
 \bibliography{references}
