@@ -462,19 +462,29 @@ the second global extremum is read as an infimum.
 \paragraph{Formalization trigger.}
 The correction and the exact source proof route are documented in
 \path{docs/paper-gaps/wolf_ch5_unitary_comparison_missing_order.tex}.  The
-corrected theorem is not yet formalized because the current dependency surface
-does not expose the required cross-matrix Weyl monotonicity theorem.
+cross-matrix Weyl comparison is proved by
+\leanid{LinearMap.IsSymmetric.eigenvalues\_le\_of\_sub\_isPositive}, and the
+corrected proposition is formalized by
+\leanid{Matrix.IsHermitian.exists\_unitary\_cfc\_le\_cfc\_of\_le}.
 
 \paragraph{Original statement and correction.}
 Immediately after stating Weyl monotonicity for Hermitian matrices satisfying
-$A\le B$, Wolf's Proposition~5.3 drops that hypothesis and claims that for
-arbitrary Hermitian $A,B$ there is a unitary $U$ such that
+$A\le B$, Wolf's Proposition~5.3 drops that hypothesis. Its corrected form,
+with the unitary chosen before the interval and the function, is
 \begin{align}
-  f(A)\le U f(B)U^\dagger
+  A\le B\quad\Longrightarrow\quad
+  \exists U\in M_d(\C)\ \Bigl[
+  &U^\dagger U=UU^\dagger=\Id\ \land
+    \forall I\subseteq\mathbb R\ \forall f:I\to\mathbb R, \notag\\
+  &\bigl(I\text{ is an interval}\ \land
+    \operatorname{spec}(A)\cup\operatorname{spec}(B)\subseteq I\ \land
+    f\text{ is non-decreasing on }I\bigr) \notag\\
+  &\hspace{7em}\Longrightarrow f(A)\le U f(B)U^\dagger\Bigr].
+  \tag{corrected Wolf (5.57)}
 \end{align}
-for every non-decreasing scalar function $f$ on an interval containing the two
-spectra.  In dimension one, $A=[1]$, $B=[0]$, and $f(x)=x$ contradict the
-printed claim.  The corrected proposition inserts $A\le B$.
+In dimension one, $A=[1]$, $B=[0]$, $I=[0,1]$, and $f(x)=x$ contradict the
+printed unqualified claim: every unitary is a phase, so its conclusion is
+$1\le0$. The hypothesis $A\le B$ is therefore indispensable.
 
 \paragraph{Source proof route.}
 Under $A\le B$, Equation~(5.56) gives
@@ -485,7 +495,11 @@ unitaries $V_A,V_B$ and setting $U=V_A V_B^\dagger$ then transports the
 entrywise diagonal inequality to
 $f(A)\le Uf(B)U^\dagger$.  This unitary depends only on the two ordered
 eigenbases, so it works simultaneously for every admissible $f$, as required
-by the quantifier order of the printed proposition.
+by the quantifier order of the printed proposition. In the formal proof, the
+cross-matrix eigenvalue comparison is established by the intersection of the
+span of the first $j+1$ ordered eigenvectors of $A$ with the span of the last
+$d-j$ ordered eigenvectors of $B$; it is not assumed as a pointwise
+comparison.
 
 \paragraph{Classification.}
 This is a genuine source error: the printed theorem is false, while its

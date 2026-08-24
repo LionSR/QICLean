@@ -2,7 +2,7 @@
 
 Concordance between formalized declarations and the theorem/proposition
 numbering of M. Wolf, *Quantum Channels & Operations: Guided Tour* (2012),
-Chapters 2, 6, and the currently compiled Chapter 8 prerequisites. This table
+Chapters 2–6 and the currently compiled Chapter 8 prerequisites. This table
 used to live as compiled Lean documentation
 modules (`WolfChapter2Index.lean`, `WolfChapter6Index.lean`,
 `WolfChapter6Wrappers.lean`); those modules carried zero declarations of
@@ -804,6 +804,40 @@ so that the cited formal statements are available from the main project import.
   the statement.
 
 The surrounding complexity prose at source lines 80–83 is not formalized.
+
+---
+
+## Wolf Lecture Notes — Chapter 5: Schwarz Inequalities
+
+### Consequence of Equation 5.56 and Proposition 5.3, Equation 5.57 — FORMALIZED WITH THE ORDER-HYPOTHESIS CORRECTION
+
+- `LinearMap.IsSymmetric.eigenvalues_le_of_sub_isPositive` proves the
+  cross-operator Weyl monotonicity step by a finite-dimensional variational
+  argument. For the `j`th decreasing eigenvalue, the span of the first
+  `j + 1` ordered eigenvectors of the smaller operator and the span of the
+  last `d - j` ordered eigenvectors of the larger operator have dimensions
+  summing to `d + 1`. A common nonzero vector gives the lower and upper
+  quadratic-form bounds, while positivity of the difference gives the middle
+  inequality. Thus no pointwise cross-matrix eigenvalue comparison is assumed
+  ✓
+- `Matrix.IsHermitian.eigenvalues₀_mono` and
+  `Matrix.IsHermitian.eigenvalues_mono` transport this result to Hermitian
+  matrices in the Loewner order:
+  `A ≤ B` implies `λⱼ↓(A) ≤ λⱼ↓(B)` for every decreasing-eigenvalue index.
+  This is the consequence of Equation 5.56 used immediately before
+  Proposition 5.3 ✓
+- `Matrix.IsHermitian.exists_unitary_cfc_le_cfc_of_le` formalizes the corrected
+  Proposition 5.3. For Hermitian `A ≤ B`, it first chooses one unitary from
+  their decreasingly ordered eigenbases; that same unitary then works for
+  every interval containing both spectra and every scalar function
+  non-decreasing on that interval. Hence the quantifier order is
+  `∃ U, ∀ I, ∀ f`, and the conclusion is the corrected Equation 5.57,
+  `f(A) ≤ U f(B) U†` ✓
+- The hypothesis `A ≤ B` is indispensable. The printed unqualified
+  proposition is false already for `d = 1`: take `A = [1]`, `B = [0]`,
+  `I = [0,1]`, and `f(x) = x`. Every one-dimensional unitary is a phase, so
+  the claimed conclusion becomes `1 ≤ 0`. The resolved false-source note is
+  `docs/paper-gaps/wolf_ch5_unitary_comparison_missing_order.tex`.
 
 ---
 

@@ -52,6 +52,7 @@ import QICLean.Channel.Schwarz.TwoPositive
 import QICLean.Channel.Schwarz.TwoVariable
 import QICLean.Channel.Schwarz.TwoVariableEquality
 import QICLean.Channel.Schwarz.TwoVariableUnconditional
+import QICLean.Channel.Schwarz.UnitaryComparison
 import QICLean.Channel.Schwarz.WeylRelativeEntropyIntegral
 import QICLean.Channel.Schwarz.WeylSupportPetzRecovery
 import QICLean.Channel.Schwarz.WeylSupportRelativeEntropyEquality
