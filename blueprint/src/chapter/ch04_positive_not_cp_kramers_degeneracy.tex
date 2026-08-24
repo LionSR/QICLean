@@ -1,0 +1,166 @@
+\section{Kramers degeneracy}
+\label{sec:kramers_degeneracy}
+
+An anti-unitary symmetry of square $-\Id$ forces every eigenvalue of a
+commuting Hermitian operator to be at least two-fold degenerate.  This section
+formalizes Kramers' theorem together with its antisymmetric-intertwiner
+relaxation, whose printed form requires a correction
+\cite[Chapter~3]{Wolf2012Quantum}.
+
+\begin{lemma}[Independent eigenvectors give degeneracy]
+    \label{lem:eigenspace_dim_of_independent_pair}
+    \lean{Matrix.two_le_finrank_eigenspace_of_linearIndependent_pair}
+    \leanok
+    If two linearly independent vectors are eigenvectors of $M\in\MN{D}$ for the
+    same eigenvalue $\lambda$, then the eigenspace of $\lambda$ has dimension at
+    least two.
+\end{lemma}
+
+\begin{proof}\leanok
+    The two vectors span a two-dimensional subspace of the eigenspace.
+\end{proof}
+
+\begin{theorem}[Kramers' theorem]
+    \label{thm:kramers_degeneracy}
+    \lean{Matrix.IsHermitian.two_le_finrank_eigenspace_of_antiunitary}
+    \leanok
+    Let $H\in\MN{D}$ be Hermitian and let $T$ be an anti-unitary operator with
+    $[H,T]=0$ and $T^2=-\Id$.  Then every eigenvalue of $H$ is at least
+    two-fold degenerate
+    \cite[Chapter~3, Theorem~3.1]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:eigenspace_dim_of_independent_pair}
+    Let $H\ket{\psi}=\lambda\ket{\psi}$ with $\ket{\psi}\neq 0$.  Hermiticity
+    gives $\lambda\in\R$, while commutation and anti-linearity give
+    \begin{align}
+        H T\ket{\psi}
+         & =T H\ket{\psi}
+        =T\bigl(\lambda\ket{\psi}\bigr)
+        =\overline\lambda T\ket{\psi}
+        =\lambda T\ket{\psi}.
+    \end{align}
+    Antiunitarity makes $T\ket{\psi}$ nonzero.  These two eigenvectors are
+    linearly independent: if $T\ket{\psi}=a\ket{\psi}$, then
+    \begin{align}
+        -\ket{\psi}=T^2\ket{\psi}
+        =T\bigl(a\ket{\psi}\bigr)
+        =\overline a a\ket{\psi},
+    \end{align}
+    which is impossible because $\overline a a=|a|^2\geq0$.  Hence the
+    eigenspace of $\lambda$ has dimension at least two by
+    Lemma~\ref{lem:eigenspace_dim_of_independent_pair}.
+\end{proof}
+
+Writing $T=\Gamma V$ with $\Gamma$ complex conjugation and $V$ unitary, the
+hypotheses of Theorem~\ref{thm:kramers_degeneracy} become
+$HV^\dagger=V^\dagger H^T$ and $V^T=-V$.  Wolf then relaxes the unitary to a
+general antisymmetric intertwiner.  The two calculations behind the theorem
+survive the relaxation verbatim; only the nonvanishing of the second
+eigenvector does not (Remark~\ref{rem:kramers_ii_counterexample}).
+
+\begin{lemma}[The partner eigenvector]
+    \label{lem:kramers_partner}
+    \lean{Matrix.IsHermitian.transpose_mulVec_star_of_mulVec_eq_smul,
+        Matrix.IsHermitian.mulVec_star_intertwiner_of_mul_eq_mul_transpose,
+        Matrix.dotProduct_star_mulVec_star_eq_zero_of_transpose_eq_neg,
+        Matrix.dotProduct_mulVec_self_eq_zero_of_transpose_eq_neg}
+    \leanok
+    Let $H\in\MN{D}$ be Hermitian and let $A\in\MN{D}$ satisfy $HA=AH^{T}$ and
+    $A^{T}=-A$.  If $H\ket{\psi}=\lambda\ket{\psi}$, then the partner vector
+    $A\ket{\overline\psi}$ is again a $\lambda$-eigenvector of $H$ and is
+    orthogonal to $\ket{\psi}$:
+    \begin{align}
+        H\,A\ket{\overline\psi}       & =\lambda\,A\ket{\overline\psi}, \\
+        \braket{\psi}{A\overline\psi} & =0.
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Hermiticity of $H$ makes $\lambda$ real, so conjugating the eigenvalue
+    equation gives $H^{T}\ket{\overline\psi}=\lambda\ket{\overline\psi}$, and
+    the intertwining relation yields
+    $H\,A\ket{\overline\psi}=AH^{T}\ket{\overline\psi}
+        =\lambda\,A\ket{\overline\psi}$.  For the orthogonality, antisymmetry makes
+    the quadratic form of $A$ its own negative:
+    $\braket{\psi}{A\overline\psi}=-\braket{\psi}{A\overline\psi}$.
+\end{proof}
+
+\begin{remark}
+    \label{rem:kramers_ii_counterexample}
+    Wolf prints this relaxation with the hypothesis $A\neq0$ alone and
+    concludes that every eigenvalue of $H$ is at least two-fold degenerate
+    \cite[Chapter~3, Theorem~3.2]{Wolf2012Quantum}.  As printed this is
+    false.  On $\C^3$ with basis indexed by $0,1,2$, take
+    \begin{align}
+        H=\operatorname{diag}(0,1,1),\qquad
+        A=
+        \begin{pmatrix}
+            0 & 0  & 0 \\
+            0 & 0  & 1 \\
+            0 & -1 & 0
+        \end{pmatrix}.
+    \end{align}
+    Then $H$ is Hermitian, $A^{T}=-A\neq0$, and $HA=AH^{T}=A$, but the
+    eigenvalue $0$ is simple: its eigenvector $\ket{e_0}$ has vanishing partner
+    $A\ket{\overline{e_0}}=Ae_0=0$, so Lemma~\ref{lem:kramers_partner} supplies
+    no second eigenvector.  The correct conditional statement is
+    Theorem~\ref{thm:kramers_ii_nonvanishing}.
+\end{remark}
+
+\begin{theorem}[Kramers' theorem for an antisymmetric intertwiner]
+    \label{thm:kramers_ii_nonvanishing}
+    \lean{Matrix.IsHermitian.two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero}
+    \leanok
+    Let $H\in\MN{D}$ be Hermitian and let $A\in\MN{D}$ satisfy $HA=AH^{T}$ and
+    $A^{T}=-A$.  If $\ket{\psi}\neq0$ satisfies
+    $H\ket{\psi}=\lambda\ket{\psi}$ and the partner does not vanish,
+    $A\ket{\overline\psi}\neq0$, then the eigenspace of $\lambda$ has dimension
+    at least two.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:kramers_partner, lem:eigenspace_dim_of_independent_pair}
+    By Lemma~\ref{lem:kramers_partner}, $\ket{\psi}$ and
+    $A\ket{\overline\psi}$ are nonzero orthogonal eigenvectors for the same
+    eigenvalue $\lambda$, hence linearly independent, and
+    Lemma~\ref{lem:eigenspace_dim_of_independent_pair} gives the dimension
+    bound.
+\end{proof}
+
+\begin{corollary}[Invertible intertwiner]
+    \label{cor:kramers_ii_invertible}
+    \lean{Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_isUnit}
+    \leanok
+    Let $H\in\MN{D}$ be Hermitian and let $A\in\MN{D}$ be invertible with
+    $HA=AH^{T}$ and $A^{T}=-A$.  Then every eigenvalue of $H$ is at least
+    two-fold degenerate.
+\end{corollary}
+
+\begin{proof}\leanok
+    \uses{thm:kramers_ii_nonvanishing}
+    If $H\ket{\psi}=\lambda\ket{\psi}$ with $\ket{\psi}\neq0$, invertibility
+    of $A$ gives $A\ket{\overline\psi}\neq0$, so
+    Theorem~\ref{thm:kramers_ii_nonvanishing} applies.  An antisymmetric
+    invertible matrix exists only in even dimensions, since
+    $\det A=\det A^{T}=(-1)^{D}\det A$.
+\end{proof}
+
+\begin{corollary}[Kramers' theorem, matrix form]
+    \label{cor:kramers_matrix_form}
+    \lean{Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_unitary,
+        Matrix.transpose_conjTranspose_eq_neg_of_transpose_eq_neg}
+    \leanok
+    Let $H,V\in\MN{D}$ with $H$ Hermitian, $V$ unitary,
+    $HV^{\dagger}=V^{\dagger}H^{T}$, and $V^{T}=-V$.  Then every eigenvalue of
+    $H$ is at least two-fold degenerate.
+\end{corollary}
+
+\begin{proof}\leanok
+    \uses{cor:kramers_ii_invertible}
+    This is Corollary~\ref{cor:kramers_ii_invertible} at $A=V^{\dagger}$: the
+    adjoint of $V$ is antisymmetric because $V$ is, and invertible because $V$
+    is unitary.  This is Wolf's own proof of
+    Theorem~\ref{thm:kramers_degeneracy} read through the matrix reduction.
+\end{proof}

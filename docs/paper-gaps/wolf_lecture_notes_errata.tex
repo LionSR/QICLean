@@ -95,6 +95,49 @@ This is a genuine source error. The unrestricted printed converse should not
 be claimed as formalized; the formal theorem proves the corrected,
 trace-nonnegative statement.
 
+\section{The missing nonvanishing condition in Kramers' theorem~II}
+\label{sec:kramers-ii}
+
+\paragraph{Formalization trigger.}
+The corrected theorem is formalized as
+\leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero}
+(conditional form) and
+\leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_isUnit}
+(invertible intertwiner) in \doclink{QICLean/Algebra/KramersDegeneracy}; the
+first Kramers theorem is recovered there as the unitary special case. The
+source error is documented in
+\path{docs/paper-gaps/wolf_ch3_kramers_theorem_ii.tex}.
+
+\paragraph{Printed source and its role.}
+After Kramers' theorem (a Hermitian $H$ commuting with an anti-unitary $T$,
+$T^{2}=-\Id$, has all eigenvalues at least two-fold degenerate), Wolf prints
+``Kramer's theorem II'': if $H$ is Hermitian and $HA=AH^{T}$ for some
+anti-symmetric $A\neq 0$, then each eigenvalue of $H$ is at least two-fold
+degenerate, ``as the same proof shows.''  The local source is
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines~527--530, with the matrix reduction at lines~500--501.
+
+\paragraph{Correction.}
+The proof transports an eigenvector $\ket\psi$ of eigenvalue $\lambda$ to the
+partner $A\ket{\overline\psi}$, which is again a $\lambda$-eigenvector and is
+orthogonal to $\ket\psi$; both steps survive for a general anti-symmetric
+intertwiner.  The degeneracy follows only when the partner is nonzero, and
+that is an extra condition: the correct local statement concludes
+$\dim\ker(H-\lambda)\ge 2$ from $A\ket{\overline\psi}\neq 0$, and a global
+conclusion requires $A$ injective.  The corrected theorem therefore assumes
+$A$ invertible and concludes that every eigenvalue of $H$ is at least
+two-fold degenerate.
+
+\paragraph{Why the correction is necessary.}
+On $\C^{3}$, $H=\operatorname{diag}(0,1,1)$ and the anti-symmetric unit of
+the $1$-eigenspace satisfy $HA=AH^{T}=A$ with $A\neq 0$, but the eigenvalue
+$0$ is simple: the partner $Ae_{1}$ of its eigenvector vanishes.
+
+\paragraph{Classification.}
+This is a genuine source error.  Theorem~I is unaffected: it is the case
+$A=V^{\dagger}$ of the corrected theorem, where unitarity supplies exactly the
+missing nonvanishing.
+
 \section{The false converse for Pauli-block truncation}
 \label{sec:pauli-block-truncation}
 

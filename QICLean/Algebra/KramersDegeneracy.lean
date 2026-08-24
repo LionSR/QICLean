@@ -15,16 +15,16 @@ import Mathlib.LinearAlgebra.Matrix.DotProduct
 
 Wolf, *Quantum Channels & Operations*, Chapter 3, proves Kramers' theorem: a Hermitian
 operator $H$ commuting with an antiunitary $T$ of square $-1$ has every eigenvalue at
-least two-fold degenerate
-(`Notes/WolfNoteTexSource/ch03_positive_not_completely.tex`, lines 498–521).  Wolf
+least two-fold degenerate (Wolf Thm 3.1,
+`Notes/WolfNoteTexSource/ch03_positive_not_completely.tex`, lines 498–521).  Wolf
 reduces the statement to matrices: writing $T = \Gamma V$ with $\Gamma$ complex
 conjugation and $V$ unitary, the commutation $[H, T] = 0$ becomes
 $H V^\dagger = V^\dagger H^T$ and the condition $T^2 = -1$ becomes antisymmetry
 $V^T = -V$ (lines 500–501).
 
-The subsequent "Kramers' theorem II" (lines 527–530) relaxes the unitary to a general
-antisymmetric intertwiner $A \neq 0$ with $H A = A H^T$ and claims the same global
-degeneracy.  As printed that claim is false: with
+The subsequent "Kramers' theorem II" (Wolf Thm 3.2, lines 527–530) relaxes the
+unitary to a general antisymmetric intertwiner $A \neq 0$ with $H A = A H^T$ and
+claims the same global degeneracy.  As printed that claim is false: with
 $H = \operatorname{diag}(0, 1, 1)$ and $A$ the standard symplectic unit of the
 $1$-eigenspace one has $H A = A H^T$ and $A^T = -A \neq 0$, yet the eigenvalue $0$ is
 simple, because the partner vector $A \overline\psi$ of the $0$-eigenvector vanishes.
@@ -55,17 +55,17 @@ the phrase "two-fold degenerate".
   the corrected conditional Kramers theorem II.
 * `Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_isUnit`: the
   invertible-`A` global corollary.
-* `Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_unitary`: Kramers'
-  theorem in Wolf's matrix form, recovered as the unitary case of the corrected
-  theorem II.
+* `Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_unitary`: the
+  matrix form of Kramers' theorem, recovered as the unitary case of the corrected
+  intertwiner theorem.
 * `Matrix.IsHermitian.two_le_finrank_eigenspace_of_antiunitary`: Kramers' theorem with
   Wolf's printed antiunitary hypotheses.
 
 ## References
 
-* Wolf, *Quantum Channels & Operations*, Chapter 3, Kramers' theorem and Kramers'
-  theorem II (`Notes/WolfNoteTexSource/ch03_positive_not_completely.tex`,
-  lines 498–530).
+* Wolf, *Quantum Channels & Operations*, Chapter 3, Theorem 3.1 (Kramers' theorem)
+  and Theorem 3.2 (Kramers' theorem II),
+  `Notes/WolfNoteTexSource/ch03_positive_not_completely.tex`, lines 498–530.
 -/
 
 open scoped ComplexOrder Matrix
@@ -175,14 +175,15 @@ theorem mulVec_star_intertwiner_of_mul_eq_mul_transpose {H A : Matrix n n ℂ}
   rw [Matrix.mulVec_mulVec, hHA, ← Matrix.mulVec_mulVec,
     hH.transpose_mulVec_star_of_mulVec_eq_smul hψ hμ, Matrix.mulVec_smul]
 
-/-- **Kramers' theorem II, corrected conditional form** (Wolf ch03 lines 527–530).
+/-- **Kramers' theorem II, corrected conditional form** (Wolf Thm 3.2, ch03 lines
+527–530).
 
 Let `H` be Hermitian and let `A` be an antisymmetric intertwiner, `Aᵀ = -A` with
 `H * A = A * Hᵀ`.  If `ψ` is a `μ`-eigenvector of `H` whose partner `A *ᵥ star ψ` is
 nonzero, then the eigenspace of `μ` is at least two-dimensional: `ψ` and its partner
 are orthogonal eigenvectors for the same eigenvalue.
 
-Wolf's printed statement assumes only `A ≠ 0` and concludes that *every* eigenvalue of
+Wolf's printed Theorem 3.2 assumes only `A ≠ 0` and concludes that *every* eigenvalue of
 `H` is at least two-fold degenerate.  That global form is false, because the partner
 `A *ᵥ star ψ` of a particular eigenvector can vanish; the nonvanishing hypothesis below
 is exactly what Wolf's calculation needs and cannot be dropped (the eigenvalue `0` of
@@ -209,7 +210,8 @@ theorem two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero {H A : Matr
     (Matrix.linearIndependent_pair_of_dotProduct_star_eq_zero hψne hAψ horth)
 
 /-- **Kramers' theorem II for an invertible antisymmetric intertwiner** (corrected
-global form of Wolf ch03 lines 527–530): if `H` is Hermitian and `A` is an invertible
+global form of Wolf Thm 3.2, ch03 lines 527–530): if `H` is Hermitian and `A` is an
+invertible
 antisymmetric matrix with `H * A = A * Hᵀ`, then every eigenvalue of `H` is at least
 two-fold degenerate.
 
@@ -242,8 +244,8 @@ theorem two_le_finrank_eigenspace_of_antisymmetric_isUnit {H A : Matrix n n ℂ}
   exact hH.two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero hHA hAanti
     hψ hψne hAψ
 
-/-- **Kramers' theorem** (Wolf, *Quantum Channels & Operations*, ch03 line 503), in
-Wolf's own matrix reduction of the antiunitary statement.
+/-- **Kramers' theorem** (Wolf, *Quantum Channels & Operations*, Thm 3.1, ch03
+lines 503–506), in Wolf's own matrix reduction of the antiunitary statement.
 
 Wolf states the theorem for a Hermitian $H$ and an antiunitary $T$ with $[H, T] = 0$ and
 $T^2 = -1$, and immediately rewrites both hypotheses in matrix terms: with $T = \Gamma V$
@@ -272,7 +274,8 @@ theorem two_le_finrank_eigenspace_of_antisymmetric_unitary {H V : Matrix n n ℂ
     (isUnit_iff_exists.mpr ⟨V, hVunit, mul_eq_one_comm.mp hVunit⟩) hHV
     (Matrix.transpose_conjTranspose_eq_neg_of_transpose_eq_neg hVanti) hμ
 
-/-- **Kramers' theorem** in Wolf's printed antiunitary form (ch03 lines 503–505).
+/-- **Kramers' theorem** in Wolf's printed antiunitary form (Thm 3.1, ch03 lines
+503–505).
 
 Let $H$ be Hermitian and let $T$ be antiunitary. If $H$ commutes with $T$ and
 $T^2=-\Id$, then every eigenspace of $H$ has dimension at least two. Here
