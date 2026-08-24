@@ -970,18 +970,120 @@ This section states the existence theorems from
     $(-X)M(-X)^\dagger$.
 \end{proof}
 
-\begin{remark}[Boundary of the spinor formalization]
-    \label{rem:spinor_double_cover_pending}
-    Theorem~\ref{thm:spinor_image_special_orthochronous} proves that the
-    spinor image lies in $\mathrm{SO}^+(1,3)$ and that $X$ and $-X$ have the
-    same effect. It does not prove that every special orthochronous Lorentz
-    transformation is in the image, nor that these are the only two points
-    in each fibre. Thus the full double-cover assertion after
-    \cite[Eq.~(2.42)]{Wolf2012Quantum} remains open. The rotation and boost
-    exponential formulas in \cite[Eq.~(2.44)]{Wolf2012Quantum} also remain
-    open; neither assertion is inferred from the analogous result for
-    $\mathrm{SU}(2)$ and $\mathrm{SO}(3)$.
-\end{remark}
+\begin{definition}[Spinor covering homomorphism]
+    \label{def:spinor_cover_homomorphism}
+    \lean{Wolf.specialOrthochronousLorentzGroup, Wolf.spinorCoverHom}
+    \leanok
+    \uses{def:spinor_action_minkowski}
+    Regard $\mathrm{SO}^+(1,3)$ from
+    (\ref{eq:representations_special_orthochronous_lorentz}) as a matrix
+    group.  The spinor action defines the homomorphism
+    \begin{align}
+        \Lambda:\SL(2,\C)&\longrightarrow\mathrm{SO}^+(1,3),
+        &\Lambda(X)&=L(X).
+        \label{eq:representations_spinor_cover_hom}
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Spinor epimorphism and two-point fibres]
+    \label{thm:spinor_epimorphism_two_point_fibres}
+    \lean{Wolf.exists_sl2_spinorMatrix_eq,
+        Wolf.spinorCoverHom_surjective,
+        Wolf.spinorMatrix_eq_one_iff,
+        Wolf.spinorCoverHom_eq_iff_eq_or_eq_neg,
+        Wolf.spinorCoverHom_eq_one_iff}
+    \leanok
+    \uses{def:spinor_cover_homomorphism}
+    The homomorphism $\Lambda$ in
+    (\ref{eq:representations_spinor_cover_hom}) is surjective.  Its fibres
+    contain exactly two points: for all $X,Y\in\SL(2,\C)$,
+    \begin{align}
+        \Lambda(X)=\Lambda(Y)
+        &\iff X=Y\ \text{or}\ X=-Y,
+        &\ker\Lambda&=\{I,-I\}.
+        \label{eq:representations_spinor_two_point_fibres}
+    \end{align}
+    Thus $\SL(2,\C)$ is a double cover of $\mathrm{SO}^+(1,3)$, as stated
+    after \cite[Eq.~(2.42)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:spinor_image_special_orthochronous}
+    Given $L\in\mathrm{SO}^+(1,3)$, set $u=Le_0$.  The Lorentz identities
+    give $q(u)=1$ and $u_0>0$.  The canonical boost $B_u$, whose first column
+    is $u$, has the spinor lift
+    $P_u=(M(u)+I)/\sqrt{2(1+u_0)}$.  The matrix $B_u^{-1}L$ fixes $e_0$;
+    its Lorentz equations force the block form $1\oplus R$ with
+    $R\in\mathrm{SO}(3)$.  Lift $R$ to $U\in\mathrm{SU}(2)$.  Multiplicativity
+    then gives $\Lambda(P_uU)=B_u(1\oplus R)=L$.
+
+    If $\Lambda(X)=I$, congruence applied to $M=I$ gives $XX^\dagger=I$.
+    Congruence applied to the Pauli basis then makes $X$ commute with every
+    Pauli matrix, so $X$ is scalar.  The equation $\det X=1$ gives
+    $X=\pm I$.  Applying this kernel computation to $XY^{-1}$ proves
+    (\ref{eq:representations_spinor_two_point_fibres}).
+\end{proof}
+
+\begin{theorem}[Boost and rotation spinor exponentials]
+    \label{thm:spinor_boost_rotation_exponentials}
+    \lean{Wolf.pauliVector, Wolf.boostGenerator, Wolf.rotationGenerator,
+        Wolf.exp_smul_pauliVector, Wolf.exp_smul_boostGenerator,
+        Wolf.exp_neg_I_smul_pauliVector,
+        Wolf.exp_smul_rotationGenerator, Wolf.rapidityMinkowski,
+        Wolf.lorentzBoost_rapidityMinkowski_eq_exp,
+        Wolf.boostExpSL2, Wolf.rotationExpSL2,
+        Wolf.boostExpSL2_coe_eq_exp, Wolf.rotationExpSL2_coe_eq_exp,
+        Wolf.spinorMatrix_boostExpSL2,
+        Wolf.spinorMatrix_rotationExpSL2}
+    \leanok
+    \uses{def:spinor_cover_homomorphism}
+    Let $n\in\R^3$ be a unit vector.  Write $n\cdot\sigma$ for its Pauli
+    contraction, $n\cdot B$ for the boost generator with time--space blocks
+    $n$ and $n^{\mathsf T}$, and $n\cdot R$ for Wolf's rotation generator
+    $R_i=\sum_{j,k}\varepsilon_{ijk}\lvert k\rangle\langle j\rvert$.
+    For every $t\in\R$,
+    \begin{align}
+        \begin{aligned}
+            \exp(t\,n\cdot\sigma)
+            &=\cosh(t)I+\sinh(t)n\cdot\sigma,\\
+            \exp(t\,n\cdot B)
+            &=I+(\cosh(t)-1)(n\cdot B)^2+\sinh(t)n\cdot B,\\
+            \exp(-it\,n\cdot\sigma)
+            &=\cos(t)I-i\sin(t)n\cdot\sigma,\\
+            \exp(t\,n\cdot R)
+            &=I+(1-\cos(t))(n\cdot R)^2+\sin(t)n\cdot R.
+        \end{aligned}
+        \label{eq:representations_spinor_exponential_closed_forms}
+    \end{align}
+    If $u(n,t)=(\cosh(t),\sinh(t)n)$, then
+    $B_{u(n,t)}=\exp(t\,n\cdot B)$, and the spinor map satisfies
+    \begin{align}
+        \begin{aligned}
+            \Lambda\!\left(\exp\!\left(\frac{t}{2}n\cdot\sigma\right)\right)
+            &=\exp(t\,n\cdot B),\\
+            \Lambda\!\left(\exp\!\left(-\frac{it}{2}n\cdot\sigma\right)\right)
+            &=\exp(t\,n\cdot R).
+        \end{aligned}
+        \label{eq:representations_spinor_exponential_map}
+    \end{align}
+    The positive sign in the second Lorentz exponential is the correction to
+    the sign printed in \cite[Eq.~(2.44)]{Wolf2012Quantum}; with the displayed
+    Pauli matrices and column-vector convention, the printed negative sign
+    rotates in the opposite direction.
+\end{theorem}
+
+\begin{proof}\leanok
+    The Pauli contraction satisfies $(n\cdot\sigma)^2=I$, the boost generator
+    satisfies $(n\cdot B)^3=n\cdot B$, and the rotation generator satisfies
+    $(n\cdot R)^3=-n\cdot R$.  Splitting each exponential series into its even
+    and odd terms gives the four closed forms in
+    (\ref{eq:representations_spinor_exponential_closed_forms}).  Direct
+    substitution of $u(n,t)$ into the canonical boost gives
+    $B_{u(n,t)}=\exp(t\,n\cdot B)$.  The two half-parameter matrices have
+    determinant one, and evaluating their Pauli congruence entries with the
+    double-angle identities gives
+    (\ref{eq:representations_spinor_exponential_map}).
+\end{proof}
 
 \begin{theorem}[Pauli transfer matrix under two-sided filtering]
     \label{thm:pauli_transfer_two_sided_filtering}

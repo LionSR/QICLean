@@ -910,4 +910,3 @@ theorem spinorCoverHom_eq_one_iff (X : SL(2, ℂ)) :
   exact spinorCoverHom_eq_iff_eq_or_eq_neg X 1
 
 end Wolf
-
