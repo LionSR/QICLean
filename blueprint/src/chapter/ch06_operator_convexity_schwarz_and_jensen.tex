@@ -595,8 +595,12 @@ matrix-order tools used independently of the Fundamental Theorem.
     \uses{def:positive_map, thm:posMap_rpow_concave_jensen}
     For a positive \emph{unital} map $T$ and positive-definite~$A$, one has
     $T(\log A)\le\log(T(A))$.
-    This is \cite[Theorem~5.13]{Wolf2012Quantum} for~$f=\log$.
-    Requires unitality ($T(\Id)=\Id$), not merely subunitality.
+    This is the corrected logarithmic specialization associated with
+    \cite[Corollary~5.2(3)]{Wolf2012Quantum}.  The printed common hypothesis
+    $T(\Id)\le\Id$ is insufficient: in dimension one, for $0<c<1$, the
+    positive subunital map $T(x)=cx$ and $A=1$ would give
+    $0=T(\log A)\le\log(T(A))=\log c$.  The formal theorem instead assumes
+    $T(\Id)=\Id$; see \cite{gap:wolf_ch5_operator_jensen_lieb}.
 \end{theorem}
 
 \begin{proof}\leanok
@@ -618,6 +622,23 @@ matrix-order tools used independently of the Fundamental Theorem.
 \begin{proof}\leanok
     Direct application of Theorem~\ref{thm:posMap_log_concave_jensen}.
 \end{proof}
+
+\subsection{Boundary of the source package}
+
+The preceding declarations prove the real-power instances and the corrected
+unital logarithm instance.  The former pass-through declarations which rewrote
+the real-power inequalities into the exact exponent-parameterization of
+Corollary~5.2(1)--(2) are not live declarations.  Nor do the results above
+package the full block of results in Wolf's Section~5.4: the integral
+characterization of operator-convex
+functions, L\"owner's operator-monotonicity theorem, the two general projection
+inequalities, Jensen's inequality for an arbitrary operator-convex function,
+the entropic operator inequality, the general positive-map monotonicity theorem,
+and the finite-family Jensen corollary remain outside the proved declarations
+listed here.  Thus the special-function slice is proved, while the complete
+source package remains partial by packaging and scope.  The false common
+subunital hypothesis in the printed logarithm clause and the exact formal
+boundary are recorded in \cite{gap:wolf_ch5_operator_jensen_lieb}.
 
 \section{Source boundary for Wolf's unitary comparison}
 

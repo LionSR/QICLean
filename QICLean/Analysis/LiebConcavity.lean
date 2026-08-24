@@ -291,8 +291,10 @@ private lemma positiveMap_rpowIntegrand₁₂_cfcₙ_jensen
 For a positive subunital map `T` and `p ∈ [0, 1]`:
   `T(A ^ p) ≤ (T A) ^ p`.
 
-Follows from operator concavity of `rpow` (Bhatia, Chapter V) combined with
-the Hansen--Pedersen operator Jensen inequality for positive subunital maps.
+The proof integrates the finite-POVM resolvent inequality for Wolf's
+Löwner-integral real-power integrand.  It establishes this special-function
+instance directly, without assuming a packaged general Hansen--Pedersen
+operator Jensen theorem.
 
 References:
 * Wolf, Theorem 5.13
@@ -447,8 +449,10 @@ private lemma tendsto_rpow_exponent_two {M : Mat} (hM : 0 ≤ M) :
 For a positive subunital map `T` and `p ∈ [1, 2]`:
   `(T A) ^ p ≤ T(A ^ p)`.
 
-Follows from operator convexity of `rpow` (Bhatia, Chapter V) combined with
-the Hansen--Pedersen operator Jensen inequality for positive subunital maps.
+The proof integrates the reversed finite-POVM resolvent inequality for the
+convex Löwner integrand and obtains the endpoint `p = 2` by continuity.  It
+establishes this special-function instance directly, without assuming a
+packaged general Hansen--Pedersen operator Jensen theorem.
 
 References:
 * Wolf, Theorem 5.11
@@ -551,10 +555,12 @@ Follows by applying the concave real-power theorem to `(A ^ p - 1) / p` for
 `CFC.tendsto_cfc_rpow_sub_one_log`. Requires unitality (`T 1 = 1`), not merely
 subunitality.
 
-**Local fix (unital logarithm inequality):** Wolf Corollary 5.2(3) states the
-result for a positive subunital map, but that statement fails because `log` is
-unbounded below at zero. The present theorem uses the necessary unital
-hypothesis. This correction is documented in
+**Source correction (unital logarithm inequality):** Wolf Corollary 5.2(3)
+states the result for a positive subunital map.  That hypothesis is
+insufficient: in dimension one, `T(x) = c * x` with `0 < c < 1` and `A = 1`
+would give `0 = T(log A) ≤ log(T A) = log c`, which is false.  The present
+result uses the unital hypothesis under which the inequality is proved.  This
+correction is documented in
 `docs/paper-gaps/wolf_ch5_operator_jensen_lieb.tex`.
 
 References:
