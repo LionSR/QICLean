@@ -16,8 +16,8 @@ density matrix `X` when `T X - a X ≥ 0`.  The feasible pairs form, after a
 uniform trace bound on `a`, a compact set.  Hence the lower value has a
 maximizer.
 
-The upper Collatz--Wielandt quantity is not introduced at this stage.  Wolf's
-proof first turns the lower maximizer into a positive-definite eigenvector by
+Wolf's proof does not use the upper Collatz--Wielandt quantity at this stage.
+It first turns the lower maximizer into a positive-definite eigenvector by
 Equation (6.31) and irreducibility; only then are the two global variational
 quantities identified.
 
