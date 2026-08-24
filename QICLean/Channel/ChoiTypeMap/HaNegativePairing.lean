@@ -26,8 +26,8 @@ No positivity, indecomposability, or atomicity assertion is made here.
 * [K.-C. Ha, *Atomic Positive Linear Maps in Matrix Algebras*,
   pp. 592--595][Ha1998AtomicPositiveMaps]
 * [M.-H. Eom and S.-H. Kye, *Duality for positive linear maps in matrix
-  algebras*, Theorem 3.3 proof, pp. 138--139, equations
-  (12)--(13)][EomKye2000Duality]
+  algebras*, pp. 137--139: equations (12)--(13) on p. 137, and Theorem 3.3
+  with the concluding shuffled pairing on pp. 138--139][EomKye2000Duality]
 -/
 
 open scoped Matrix ComplexOrder
@@ -101,9 +101,10 @@ noncomputable def eomKyeJPairing {I : Type*} [Fintype I]
     (X : Matrix (I × I) (I × I) ℂ) : ℂ :=
   ∑ i : I, ∑ j : I, X (i, i) (j, j)
 
-/-- **Eom--Kye, Theorem 3.3 proof, pp. 138--139, equations (12)--(13).**  The
-coefficient pairing is obtained by applying the map to the first tensor factor
-of the factor-swapped matrix and then pairing with the vectorized identity. -/
+/-- **Eom--Kye, pp. 137--139: equations (12)--(13) on p. 137, and Theorem 3.3
+with the concluding shuffled pairing on pp. 138--139.**  The coefficient
+pairing is obtained by applying the map to the first tensor factor of the
+factor-swapped matrix and then pairing with the vectorized identity. -/
 theorem eomKyePairing_eq_JPairing_tensorMapId_factorSwap
     {I : Type*} [Fintype I] [DecidableEq I]
     (A : Matrix (I × I) (I × I) ℂ)

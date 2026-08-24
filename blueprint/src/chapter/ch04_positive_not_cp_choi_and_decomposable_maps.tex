@@ -902,9 +902,9 @@ middle range.
         Matrix.eomKyePairing_reindex}
     \leanok
     \uses{def:ha_eom_kye_pairing}
-    The orientation in the proof of
-    \cite[Theorem~3.3, pp.~138--139, equations (12)--(13)]{EomKye2000Duality}
-    is
+    The orientation obtained from
+    \cite[equations (12)--(13), p.~137; Theorem~3.3 and the concluding
+        shuffled pairing, pp.~138--139]{EomKye2000Duality} is
     \begin{align}
         \langle A,\Phi\rangle_{\mathrm{EK}}
          & =\bigl\langle(\Phi\otimes\operatorname{id})(A^\sigma),J_d\bigr\rangle.
@@ -956,8 +956,7 @@ middle range.
         Matrix.partialTransposeLeft_tensorFactorSwap_haAGamma_eq,
         Matrix.partialTransposeLeft_tensorFactorSwap_haAGamma_hasSchmidtNumberLE_two}
     \leanok
-    \uses{def:ha_eom_kye_pairing, thm:ha_root_average_two_simple,
-        thm:ha_block_transpose_two_simple}
+    \uses{def:ha_root_average, def:ha_eom_kye_pairing}
     Put $\rho_\gamma=A_\gamma^\sigma$. For every $d\ge3$ and $\gamma>0$,
     \begin{align}
         \rho_\gamma&\in V_2,
@@ -970,6 +969,7 @@ middle range.
 
 \begin{proof}
     \leanok
+    \uses{thm:ha_root_average_two_simple, thm:ha_block_transpose_two_simple}
     Tensor-factor exchange sends each projector onto a vector of Schmidt
     rank at most two to another such projector. Apply this observation first
     to $A_\gamma\in V_2$. The identity
@@ -993,8 +993,7 @@ middle range.
         Matrix.eomKyePairing_haAGamma_choiTypeMap_re_neg,
         Matrix.choiTypeMapFin_haAGamma_omegaVec_quadraticForm_re_neg}
     \leanok
-    \uses{def:choi_type_map, def:ha_pairing_coordinates,
-        thm:ha_eom_kye_factor_swap, thm:ha_block_transpose_two_simple}
+    \uses{def:choi_type_map, def:ha_root_average, def:ha_eom_kye_pairing}
     Let $d\ge3$, $1\le n\le d-2$, and $\gamma>0$. For the Choi-type map
     $T_C$ and Ha's matrix $A_\gamma$,
     \begin{align}
@@ -1011,6 +1010,7 @@ middle range.
 
 \begin{proof}
     \leanok
+    \uses{def:ha_pairing_coordinates, thm:ha_eom_kye_factor_swap}
     In cyclic coordinates, expansion of $T_C$ reduces the pairing to
     \begin{align}
         &(d-n)\sum_i A_{(i,i),(i,i)}
