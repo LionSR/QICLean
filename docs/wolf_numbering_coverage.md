@@ -1383,6 +1383,26 @@ both `T` and `T*` are Schwarz.  No implication between these hypotheses is
 silently introduced, and the note does not claim that the theorem's conclusion
 is false under the single printed hypothesis.
 
+* The recurrent projection and positive inverse step at source lines
+  1629--1640 is formalized by:
+  - `IsPositiveMap.exists_strictMono_tendsto_pow_peripheralProjection_and_predecessor`,
+    which takes the existing Dirichlet subsequence `T^(n_i) → T_φ` and extracts
+    a further subsequence for which `T^(n_i - 1)` converges, using bounded
+    orbits, Banach--Steinhaus, and finite-dimensional compactness;
+  - `IsPositiveMap.exists_peripheralRestrictedInverse`, which packages the
+    limit `S` as positive and trace preserving with
+    `S.comp T = T.peripheralProjection`,
+    `T.comp S = T.peripheralProjection`, both absorption identities, and
+    `range S = range T.peripheralProjection`; this is an inverse only on
+    `X_T`, not a global inverse;
+  - `IsPositiveMap.peripheralProjection_isSchwarzMap` and
+    `IsPositiveMap.traceAdjointMap_peripheralProjection_isSchwarzMap`, which
+    transport the two Schwarz orientations independently and do not infer
+    Schwarz for `T*` from Schwarz for `T`;
+  - `Module.End.peripheralRestrictedInverse_apply_map_of_mem_range` and
+    `Module.End.map_peripheralRestrictedInverse_apply_of_mem_range`, which
+    state the two inverse identities on `range T.peripheralProjection = X_T`.
+
 * The final classification step at source lines 1660--1663 is formalized
   under exactly Wolf's positive, trace-preserving, positive-inverse, and
   Schwarz hypotheses:
@@ -1436,10 +1456,9 @@ is false under the single printed hypothesis.
   map for which both `T` and `T*` satisfy the Schwarz inequality admits a
   `MultiCycleDecomposition` on its asymptotic image, with the cycles coming
   from the now-formalized density-block decomposition of the fixed-point
-  space — still requires formalizing Schwarz closure and Wolf's positive
-  inverse on the recurrent image, deriving the density-block face permutation
-  and equal dimensions, and assembling the exact weighted Equations
-  (6.66)--(6.68). The conditional `CycleStructure` and
+  space — now requires deriving the density-block face permutation and equal
+  dimensions, and assembling the exact weighted Equations (6.66)--(6.68).
+  The conditional `CycleStructure` and
   `MultiCycleDecomposition` objects above are consumers of that theorem; they
   are not substitutes for the missing source-facing declaration.
 
