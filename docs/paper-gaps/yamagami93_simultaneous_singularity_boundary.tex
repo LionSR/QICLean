@@ -80,8 +80,8 @@ denominators to one global count is an omitted detail.
 Starting from (2), traverse the cyclic coordinates after \(i+m\) and take the
 first positive value.  Finiteness of the cyclic index set and \(a\neq0\) give
 such a first value \(a_j>0\).  Minimality shows that all coordinates from the
-end of (2) through \(j-1\) are zero, and in particular gives (5).
-\footnote{The finite first-positive step is formalized by
+end of (2) through \(j-1\) are zero, and in particular gives (5).\footnote{The
+finite first-positive step is formalized by
 \leanid{Yamagami.exists\_hasSingularRun\_of\_zero\_window}; its application
 to a zero denominator is
 \leanid{Yamagami.exists\_hasSingularRun\_of\_forwardDenominator\_eq\_zero}
@@ -104,8 +104,7 @@ partition of the finite sum therefore gives
   \tag{6}
 \end{align}
 If \(N\le s\), elementary cross-multiplication gives the second inequality in
-(4).
-\footnote{The reusable finite limsup estimate is
+(4).\footnote{The reusable finite limsup estimate is
 \leanid{Yamagami.limsup\_sum\_le\_card\_mul\_of\_tendsto\_zero\_on}.
 The boundary-condition form of (6) and its comparison with \(N/s\) are
 \leanid{Yamagami.limsup\_functional\_le\_sub\_ratio\_of\_singularDenominator}
@@ -123,8 +122,7 @@ The formal development also proves a conditional passage to the direct
 nonnegative value of (1), where real division makes \(0/0=0\).  It assumes the
 corresponding inequality for every strictly positive vector and approaches a
 nonnegative vector through the uniform perturbation
-\(x_q+1/(r+1)\).
-\footnote{Formal declarations:
+\(x_q+1/(r+1)\).\footnote{Formal declarations:
 \leanid{Yamagami.functional\_le\_of\_strictlyPositive} and
 \leanid{Yamagami.functional\_le\_card\_ratio\_of\_strictlyPositive} in
 \doclink{QICLean/Analysis/YamagamiBoundary}.}
@@ -138,18 +136,18 @@ of Yamagami's Lemma~3 are now formalized in
 \leanid{Yamagami.lemma\_three\_localMax\_isScalar}.  The cyclic matrix package
 in \doclink{QICLean/Analysis/YamagamiCyclicMatrix} now verifies the Fourier
 Hessian hypotheses and identifies the generic Nowosad functional with the
-concrete cyclic \leanid{Yamagami.functional}.  It does not prove that the unit
-vector is a local maximum or assemble the available boundary reductions into
-a compact global maximum.  Those remaining steps are prerequisites of the
-full cyclic inequality.
+concrete cyclic \leanid{Yamagami.functional}. The declaration
+\leanid{Yamagami.functional\_card\_le\_one} now assembles these ingredients:
+the compact superlevel argument produces a positive maximizer, and the
+Fourier--Hessian/Nowosad uniqueness theorem makes it scalar.
 
 \section{Verdict}
 
 The omitted simultaneous-singularity calculation is a resolved
 clarification.  The formal lemma proves precisely the global counting and
 limsup step suggested by (5), without attributing that unprinted calculation
-to Yamagami.  This resolution alone is not a proof of the full cyclic
-inequality.
+to Yamagami. This resolution is one boundary input to the subsequently
+completed cyclic inequality.
 
 \bibliographystyle{alpha}
 \bibliography{references}

@@ -674,7 +674,7 @@ so that the cited formal statements are available from the main project import.
   formalized; see
   `docs/paper-gaps/wolf_prop3_5_reverse_implication.tex`.
 
-#### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — PARTIALLY FORMALIZED
+#### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — POSITIVITY FORMALIZED; INDECOMPOSABILITY IN PROGRESS
 
 - `Matrix.choiTypeMap` and `Matrix.choiTypeMap_vecMulVec` formalize the map
   and its rank-one reduction on the cyclic index set `ZMod d` ✓
@@ -763,28 +763,37 @@ so that the cited formal statements are available from the main project import.
   `Yamagami.minimumQuadraticForm_normalizedNegativeInverse_eq`, the exact
   algebraic second-variation identity needed by Nowosad's argument.
 - The preceding Lemma 3 declaration proves uniqueness only. The cyclic
-  Fourier--Hessian package above now specializes its algebraic hypotheses and
-  identifies the generic `lambdaT` composition with the concrete stride-one
-  `Yamagami.functional`; it still does not prove that the unit vector is a
-  local maximum or establish the global cyclic reciprocal inequality.
+  Fourier--Hessian package specializes its algebraic hypotheses and identifies
+  the generic `lambdaT` composition with the concrete stride-one
+  `Yamagami.functional`; the compactness argument below supplies the separate
+  existence and global-maximality step.
 - `Yamagami.limsup_functional_le_card_ratio_of_singularDenominator`
   formalizes the omitted simultaneous-singularity boundary count: one
   least-next-positive zero string supplies all `m` vanishing summands, without
   a maximal-block decomposition ✓
 - `Yamagami.functional_le_card_ratio_of_strictlyPositive` transfers an
   already proved strictly positive inequality to Lean's direct nonnegative
-  `0 / 0 = 0` value. This theorem is conditional. The regular-boundary
-  recurrence is now formalized, but the finite Nowosad theorem and the cyclic
-  Fourier--Hessian package supply neither a proof that the unit vector is a
-  local maximum nor the compact global maximization argument. See
+  `0 / 0 = 0` value. This general theorem remains conditional and is recorded
+  independently of the source-ordered inductive proof. See
   `docs/paper-gaps/yamagami93_simultaneous_singularity_boundary.tex` ✓
-- Positivity in the middle range `2 ≤ n ≤ d - 3` remains open; its exact
-  scope and cyclic reciprocal inequality are recorded in
-  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. This is the
-  positivity dependency tracked by issue #19. The final theorem combining
-  positivity with the negative witness to conclude indecomposability also
-  remains open; the completed witness algebra and this remaining scope are
-  recorded in `docs/paper-gaps/ha98_choi_type_witness_scope.tex`.
+- `Yamagami.functional_card_le_one` proves the nonnegative cardinal-parameter
+  cyclic reciprocal inequality in the exact range `N ≥ 3`,
+  `1 ≤ m ≤ N - 2`. Strong induction handles regular boundary points, the
+  simultaneous-singularity estimate excludes singular points from the compact
+  superlevel closure, and the Fourier--Hessian/Nowosad theorem makes the
+  positive maximizer scalar ✓
+- `Matrix.choiTypeRankOneWeight_reciprocal_sum_middle` and
+  `Matrix.choiTypeMap_vecMulVec_posSemidef_middle` transport the cyclic
+  inequality by index negation to the backward Choi weights and prove
+  rank-one positivity for `2 ≤ n ≤ d - 3` ✓
+- `Matrix.choiTypeMap_isPositiveMap` combines the bottom endpoint, the middle
+  range, and the top endpoint to prove positivity for every `d ≥ 3` and
+  `1 ≤ n ≤ d - 2` ✓
+- The former positivity scope restriction is resolved and recorded in
+  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. The final
+  theorem combining positivity with the negative witness to conclude
+  indecomposability remains open in issue #18; its completed witness algebra
+  is recorded in `docs/paper-gaps/ha98_choi_type_witness_scope.tex`.
 
 ### Section 3.3 Transposition and time reversal
 

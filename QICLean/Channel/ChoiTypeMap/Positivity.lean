@@ -529,10 +529,10 @@ theorem choiTypeMap_vecMulVec_posSemidef_one (hd : 3 ≤ d) (v : ZMod d → ℂ)
 `3 ≤ d`, the first Choi-type map sends every positive semidefinite matrix to a
 positive semidefinite matrix.
 
-**Scope restriction:** See
-`docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`.  This proves
-the complete bottom slice `n = 1` of Wolf's positivity assertion, including
-boundary vectors.  The middle range `2 ≤ n ≤ d - 3` remains open. -/
+This is the complete bottom slice `n = 1` of Wolf's positivity assertion,
+including boundary vectors. The full range is proved in
+`QICLean.Channel.ChoiTypeMap.YamagamiPositivity`; see the resolved account in
+`docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. -/
 theorem choiTypeMap_isPositiveMap_one (hd : 3 ≤ d) :
     IsPositiveMap (choiTypeMap d 1) :=
   isPositiveMap_of_forall_vecMulVec_posSemidef _ fun v =>

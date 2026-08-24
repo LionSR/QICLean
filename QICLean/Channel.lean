@@ -21,6 +21,7 @@ import QICLean.Channel.ChoiTypeMap.HaNegativePairing
 import QICLean.Channel.ChoiTypeMap.HaTwoSimpleWitness
 import QICLean.Channel.ChoiTypeMap.Indecomposable
 import QICLean.Channel.ChoiTypeMap.Positivity
+import QICLean.Channel.ChoiTypeMap.YamagamiPositivity
 import QICLean.Channel.ComplementaryWeylTwirl
 import QICLean.Channel.CompletelyPositiveBridge
 import QICLean.Channel.DecomposablePPT
