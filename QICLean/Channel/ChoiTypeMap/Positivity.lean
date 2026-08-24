@@ -42,9 +42,10 @@ For `n = 1` the Choi rank-one diagonal weight collapses to
 reciprocal estimate \(\sum_i x_i/((d-1)x_i + x_{i-1}) \le 1\) holds for
 every \(d \ge 2\).  In the interior (all \(x_i > 0\)), writing the
 summand as \(1/(y_i + (d-1))\) with \(y_i = x_{i-1}/x_i\) gives
-\(\prod_i y_i = 1\); clearing denominators yields a polynomial inequality
-whose expansion in elementary symmetric polynomials \(e_k\) of the \(y\)'s
-is \(\sum_k (k-1)(d-1)^{d-1-k} e_k \ge 0\).  That estimate follows from
+\(\prod_i y_i = 1\).  After clearing denominators and multiplying the
+resulting difference by \(d-1\), its expansion in the elementary symmetric
+polynomials \(e_k\) of the \(y\)'s is
+\(\sum_k (k-1)(d-1)^{d-k} e_k \ge 0\).  That estimate follows from
 the AM–GM bound \(e_k \ge \binom{d}{k}\) (the product of all
 \(k\)-subset monomials is \((\prod_i y_i)^{\binom{d-1}{k-1}} = 1\)) and
 the binomial identity \(\sum_k (k-1)(d-1)^{d-k}\binom{d}{k} = 0\).  If
