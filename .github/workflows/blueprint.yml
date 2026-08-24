@@ -29,7 +29,6 @@ on:
       - '.github/workflows/blueprint.yml'
       - '.github/workflows/deploy-pages.yml'
       - 'home_page/**'
-      - 'scripts/blueprint_bibtex.py'
       - 'scripts/assemble-pages-site.sh'
       - 'scripts/fetch-latest-artifact.sh'
       - 'scripts/write_badges.py'
@@ -62,13 +61,13 @@ jobs:
       - name: Install leanblueprint
         uses: texra-ai/lean-env-action/leanblueprint@v1
         with:
-          extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.3.7'
+          extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.3.8'
 
       - name: Check paper-gap references resolve
         run: texra-blueprint paper-gaps check
 
       - name: Build blueprint bibliography
-        run: python3 scripts/blueprint_bibtex.py
+        run: texra-blueprint bbl
 
       # The bibliography links every paper-gap note to its published PDF, so
       # the same deploy that publishes the links must also publish the PDFs;
