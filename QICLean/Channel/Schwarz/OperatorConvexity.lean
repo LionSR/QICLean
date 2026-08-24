@@ -10,11 +10,12 @@ import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Order
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Order
 
 /-!
-# Operator Jensen inequality for positive subunital maps
+# Special-function operator Jensen inequalities for positive maps
 
-This file states the **operator Jensen inequality** (also known as the
-Choi--Davis--Jensen or Hansen--Pedersen inequality) specialized to the
-functions `x ↦ x ^ p` and `log`, for positive subunital maps on matrices.
+This file states **operator Jensen inequalities** (also known as
+Choi--Davis--Jensen or Hansen--Pedersen inequalities) specialized to
+`x ↦ x ^ p` and `log`.  The real-power results use positive subunital maps;
+the logarithmic result uses a positive unital map.
 
 ### Background
 
@@ -27,25 +28,30 @@ and every `t ∈ [0, 1]`:
 in the Loewner order, where `f` is applied via the continuous functional
 calculus. *Operator concavity* reverses the inequality.
 
-The **operator Jensen inequality** for a positive subunital map `T`
-(`T(1) ≤ 1`) then says:
+The subunital form of the **operator Jensen inequality** for `T`
+(`T(1) ≤ 1`) requires the corresponding boundary sign at zero and says:
 
-* **convex** `f`: `f(T(A)) ≤ T(f(A))`;
-* **concave** `f`: `T(f(A)) ≤ f(T(A))`.
+* **convex** `f` with `f(0) ≤ 0`: `f(T(A)) ≤ T(f(A))`;
+* **concave** `f` with `f(0) ≥ 0`: `T(f(A)) ≤ f(T(A))`.
 
-Note: the `log` variant requires unitality (`T(1) = 1`), not merely
-subunitality, because `log` is unbounded below.
+The printed common subunital hypothesis in Wolf Corollary 5.2 is insufficient
+for its logarithmic clause.  Already in dimension one, for `0 < c < 1`, the
+positive subunital map `T(x) = c * x` and `A = 1` would assert
+`0 = T(log A) ≤ log(T A) = log c`, which is false.  The theorem below therefore
+records the corrected unital statement.
 
 ### Status
 
-The three Jensen wrappers below are proved from the boundary declarations in
+The three Jensen wrappers below are proved from declarations in
 `TNLean.Analysis.LiebConcavity`.  The concave real-power theorem is proved
 there by the finite-POVM / compression integrand route, and the logarithmic
-theorem is proved from it by taking the right limit `p → 0+` in
+result is proved from it by taking the right limit `p → 0+` in
 `(A ^ p - 1) / p`.  The convex real-power wrapper is proved from the boundary
 declaration `posMap_rpow_convex_jensen` in the same module.
 
-These are consumed by the Corollary 5.2 proofs in `OperatorMonotone.lean`.
+These are the live special-function interfaces.  The former
+`OperatorMonotone.lean` corollary wrappers were removed as unused; no theorem in
+this file depends on an unproved declaration.
 
 ## References
 
@@ -108,14 +114,16 @@ For a positive **unital** map `T` and positive-definite `A`:
   `T(log A) ≤ log(T A)`.
 
 This is obtained as the right limit of the concave real-power Jensen theorem
-for positive subunital maps. Note: unlike the `rpow` variants, the `log`
-Jensen inequality requires unitality (`T 1 = 1`), not merely subunitality
-(`T 1 ≤ 1`).
+for positive subunital maps. Note: unlike the `rpow` variants, the available
+`log` Jensen inequality assumes unitality (`T 1 = 1`), not merely
+subunitality (`T 1 ≤ 1`).
 
-**Local fix (unital logarithm inequality):** Wolf Corollary 5.2(3) states the
-result for a positive subunital map, but that statement fails because `log` is
-unbounded below at zero. The present theorem uses the necessary unital
-hypothesis. This correction is documented in
+**Source correction (unital logarithm inequality):** Wolf Corollary 5.2(3)
+states the result for a positive subunital map.  That hypothesis is
+insufficient: the scalar map `T(x) = c * x`, with `0 < c < 1`, and `A = 1`
+would give the false inequality `0 ≤ log c`.  The present theorem uses the
+unital hypothesis under which the inequality is proved.  This correction is
+documented in
 `docs/paper-gaps/wolf_ch5_operator_jensen_lieb.tex`.
 
 Proved from `posMap_log_concave_jensen` in `TNLean.Analysis.LiebConcavity`. -/

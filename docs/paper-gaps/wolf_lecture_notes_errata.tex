@@ -492,6 +492,54 @@ This is a genuine source error: the printed theorem is false, while its
 intended corrected statement follows by exactly the preceding argument once
 $A\le B$ is retained.
 
+\section{The subunital logarithm clause in Corollary~5.2}
+\label{sec:cor52-log}
+
+\paragraph{Formalization trigger.}
+The proved logarithmic Jensen declarations
+\leanid{posMap_log_concave_jensen} and
+\leanid{IsPositiveMap.log_concave_jensen}, in
+\doclink{QICLean/Analysis/LiebConcavity} and
+\doclink{QICLean/Channel/Schwarz/OperatorConvexity}, assume that the positive
+map is unital.  The discrepancy is documented in
+\path{docs/paper-gaps/wolf_ch5_operator_jensen_lieb.tex}.
+
+\paragraph{Original statement and its role.}
+Chapter~5, Corollary~5.2, in
+\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex}, lines~761--769,
+places all three clauses under the common hypothesis that $T$ is positive and
+$T(\one)\le\one$.  Its third clause prints
+\begin{equation}\tag{printed item 3}
+  T(\log A)\le\log(T(A))\qquad(A>0).
+\end{equation}
+
+\paragraph{Correction.}
+The proved logarithmic statement replaces subunitality by unitality:
+\begin{equation}\tag{corrected item 3}
+  T(\one)=\one,\qquad A>0
+  \quad\Longrightarrow\quad
+  T(\log A)\le\log(T(A)).
+\end{equation}
+The two real-power clauses in the same corollary remain valid with Wolf's
+subunital hypothesis.  The live Jensen declarations from which they follow use
+that exact assumption; this correction does not alter either power clause.
+
+\paragraph{Why the correction is necessary.}
+In dimension one, fix $0<c<1$, take the positive map $T_c(x)=cx$, and set
+$A=1$.  Then $T_c(1)=c\le1$, but
+\begin{equation}
+  T_c(\log 1)=0>\log c=\log(T_c(1)).
+\end{equation}
+Thus the printed inequality fails even for a strictly positive scalar map.
+The boundary hypothesis in Wolf's preceding positive-map monotonicity theorem
+also signals the problem: it assumes a function on an interval containing zero
+with $f(0)\ge0$, whereas the logarithm is unbounded below at zero.
+
+\paragraph{Classification.}
+This is a genuine source error in the common hypothesis of Corollary~5.2.  The
+formal theorem proves the corrected unital clause and does not preserve the
+false subunital target.
+
 \section{Formalization gaps that are not source corrections}
 
 The following Wolf-specific paper-gap notes are intentionally \emph{not}
@@ -507,18 +555,17 @@ errata entries:
     Schmidt-number premise was a formalization dependency and is now resolved;
   \item \path{wolf_ex3_1_choi_positivity_subcase_scope.tex}: the development
     proves selected parameter families, not the full source range;
-  \item \path{wolf_ch5_operator_jensen_lieb.tex} and
-    \path{wolf_cor67_maximal_support_restriction.tex}: these describe
-    formalization boundaries and their resolution, not a false printed theorem.
+  \item \path{wolf_cor67_maximal_support_restriction.tex}: this describes a
+    formalization boundary and its resolution, not a false printed theorem.
 \end{itemize}
 
 \section{Conclusion}
 
-At present the formalization-derived record contains five false printed
-assertions (Sections~\ref{sec:lorentz},
-\ref{sec:pauli-block-truncation}, and the two corrections in
-Section~\ref{sec:theorem-6-3}, together with
-Section~\ref{sec:unitary-comparison}), one normalization typo
+At present the formalization-derived record contains source errors in
+Sections~\ref{sec:lorentz}, \ref{sec:kramers-ii},
+\ref{sec:pauli-block-truncation}, \ref{sec:spinor-rotation-sign},
+\ref{sec:theorem-6-3}, \ref{sec:unitary-comparison}, and
+\ref{sec:cor52-log}; one normalization typo
 (Section~\ref{sec:ordered-cp-inverse}), one explicit boundary convention
 (Section~\ref{sec:radon-nikodym}), and one local correction to a spectrum
 shorthand (Section~\ref{sec:two-pure-state-spectrum}). These are the

@@ -11,12 +11,11 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 # Finite-POVM compression lemmas for operator Jensen
 
 This file states algebraic lemmas for the finite-POVM / compression route to
-operator Jensen inequalities. The main target is the concave real-power case in
-Wolf Corollary 5.2. The Löwner integral representation of `rpow` that this route
-feeds into is now available in Mathlib 4.31
+operator Jensen inequalities. Its first target is the concave real-power case
+behind Wolf Corollary 5.2. The Löwner integral representation of `rpow` that
+this route feeds into is available in Mathlib 4.31
 (`Analysis/SpecialFunctions/ContinuousFunctionalCalculus/Rpow/IntegralRepresentation.lean`),
-so the outstanding gap is the operator Jensen step rather than the integral
-representation; see the status note below.
+and `QICLean.Analysis.LiebConcavity` performs the downstream integral assembly.
 
 ## Main statements
 
@@ -61,17 +60,18 @@ and `CFC.concaveOn_cfc_rpowIntegrand₀₁` records the operator concavity of ea
 integrand together with the resolvent form
 `cfc (Real.rpowIntegrand₀₁ p t) a = t ^ (p - 1) • 1 - t ^ p • (t • 1 + a)⁻¹`.
 
-This file now also proves the positive-map resolvent estimate obtained from
+This file also proves the positive-map resolvent estimate obtained from
 the spectral projections of the input matrix and `povm_resolvent_inv_le`, and
 uses it to prove the single-integrand Jensen inequality
 `T(cfc (Real.rpowIntegrand₀₁ p t) A) ≤ cfc (Real.rpowIntegrand₀₁ p t) (T A)`.
-The remaining unfinished step is therefore to integrate the pointwise
-positive-semidefinite bound obtained from
+The pointwise positive-semidefinite bound obtained from
 `cfc (Real.rpowIntegrand₀₁ p t) (T A) - T(cfc (Real.rpowIntegrand₀₁ p t) A)`
-through Mathlib's Löwner integral representation.  The matrix-valued
-positive-integral step is packaged below from Mathlib's ordered Bochner
-integral API and the local closed Loewner-order topology on finite matrices;
-order monotonicity itself is Mathlib's `integral_mono_ae`.
+is integrated in `QICLean.Analysis.LiebConcavity`, giving
+`posMap_rpow_concave_jensen`; the logarithmic theorem is then its right-limit
+consequence.  The matrix-valued positive-integral step is packaged below from
+Mathlib's ordered Bochner integral API and the local closed Loewner-order
+topology on finite matrices; order monotonicity itself is Mathlib's
+`integral_mono_ae`.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder
