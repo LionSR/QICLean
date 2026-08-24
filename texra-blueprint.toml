@@ -27,3 +27,4 @@ require_verdict = true
 qiclean = "internal theorem-surface audit, no single external source"
 wolf    = "Wolf, Quantum Channels & Operations (2012 lecture notes)"
 ha98    = "Ha, Atomic Positive Linear Maps in Matrix Algebras (1998)"
+yamagami93 = "Yamagami, Cyclic Inequalities (1993)"

@@ -30,7 +30,7 @@ boundary analysis, and the full cyclic inequality is not claimed here.
 
 open scoped BigOperators
 
-namespace CyclicReciprocal
+namespace Yamagami
 
 variable (d m : ℕ) [NeZero d]
 
@@ -382,4 +382,4 @@ theorem norm_symbol_sub_half_lt_half
       simpa [add_comm] using add_lt_add_right hbase ((s - d) / 2)
     _ = s / 2 := by ring
 
-end CyclicReciprocal
+end Yamagami

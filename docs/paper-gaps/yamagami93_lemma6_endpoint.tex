@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\input{./command.tex}
+
+\title{Yamagami Lemma~6: The Strict-Disk Endpoint at Stride One}
+\author{}
+\date{2026-08-24}
+
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{Printed statement}
+
+Yamagami's Lemma~6 considers the cyclic matrix
+\begin{equation}
+  S_{n,m,s}=(s-m)I+C^l+C^{l+1}+\cdots+C^{l+m-1},
+  \qquad 1\le m\le n-l,\quad n\le s,
+  \label{eq:yamagami-matrix}
+\end{equation}
+and states that every eigenvalue other than the row sum $s$ lies in the open
+disk
+\begin{equation}
+  \left|\lambda-\frac{s}{2}\right|<\frac{s}{2}.
+  \label{eq:yamagami-open-disk}
+\end{equation}
+This is the spectral condition of Corollary~5 in the same paper
+\cite[pp.~523--524]{Yamagami1993Cyclic}.
+
+\section{False stride-one endpoint}
+
+Set $l=1$, $m=n-1$, and $s=n$, which is included in the printed range.  Then
+\begin{equation}
+  S_{n,n-1,n}=I+C+C^2+\cdots+C^{n-1}.
+\end{equation}
+For every nontrivial standard character of $\mathbb Z/n\mathbb Z$, the
+corresponding eigenvalue is zero.  Consequently
+\begin{equation}
+  \left|0-\frac{n}{2}\right|=\frac{n}{2},
+\end{equation}
+so the strict inequality in~\eqref{eq:yamagami-open-disk} is false at this
+endpoint.  This is also the
+place where the strict triangle-inequality step in the printed proof loses all
+strictness.
+
+\section{Correction used by QICLean}
+
+The Choi-type application needs only stride one and $m\le n-2$.  In exactly
+that range, with $n\ge3$ and $s\ge n$, the declaration
+\begin{center}
+  \leanid{Yamagami.norm\_symbol\_sub\_half\_lt\_half}
+\end{center}
+in \doclink{QICLean/Analysis/CyclicReciprocal}
+proves~\eqref{eq:yamagami-open-disk} for every nonzero
+standard character.  It follows Yamagami's two cases at $s=n$ and then uses
+the source's translation argument from $n$ to $s$.
+
+The omitted stride-one endpoint $m=n-1$ does satisfy~(2) when $s>n$: its
+nontrivial-character eigenvalue is $s-n$, and
+\begin{equation}
+  \left|s-n-\frac{s}{2}\right|<\frac{s}{2}
+\end{equation}
+is equivalent to $0<n<s$.  Thus the corrected stride-one alternatives are
+$m\le n-2$ with $s\ge n$, or the endpoint $m=n-1$ with $s>n$.
+
+\section{Scope}
+
+\textbf{Verdict: false source endpoint, resolved for the required stride-one
+range.}  This correction concerns only Lemma~6's open-disk condition.  It
+does not by itself prove Yamagami's cyclic reciprocal inequality: the Nowosad
+critical-point step and the regular and singular projective-boundary arguments
+remain separate dependencies.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

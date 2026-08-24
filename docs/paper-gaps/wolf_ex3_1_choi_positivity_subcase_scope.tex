@@ -113,7 +113,7 @@ cyclic matrix \(S\)), and an analysis of the boundary of the projective
 simplex with a combinatorial count of vanishing summands.
 
 The stride-one spectral ingredient is now formalized as
-\leanid{CyclicReciprocal.norm\_symbol\_sub\_half\_lt\_half}: for
+\leanid{Yamagami.norm\_symbol\_sub\_half\_lt\_half}: for
 $d\ge3$, $1\le m\le d-2$, $s\ge d$, and every nonzero standard character,
 the eigenvalue of
 $(s-m)I+C+\cdots+C^m$ lies in the open disk of Yamagami's Lemma~6
@@ -122,7 +122,10 @@ portion of the printed lemma.  Yamagami states $1\le m\le d-l$, $s\ge d$;
 with $l=1$, the additional endpoint $m=d-1$, $s=d$ is false because
 $I+C+\cdots+C^{d-1}$ has eigenvalue zero on every nontrivial character, giving
 equality rather than the printed strict disk bound.  The endpoint becomes
-valid for $s>d$, while $m\le d-2$ is the exact range needed here.
+valid for $s>d$, while $m\le d-2$ is the exact range needed here.  The false
+printed endpoint and its stride-one correction are recorded separately in
+\cite{gap:yamagami_lemma6_endpoint}; this scope note continues to track only
+the unfinished Choi-type positivity proof.
 
 The accompanying definitions retain Yamagami's forward window and provide the
 explicit index-negation bridge to the backward Choi window.  This is not the
