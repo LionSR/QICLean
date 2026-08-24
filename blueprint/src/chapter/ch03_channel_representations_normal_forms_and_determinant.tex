@@ -1226,7 +1226,8 @@ This section states the existence theorems from
         ChannelDeterminant.Internal.channelDet_norm_eq_one_of_inverseOfBijective_isPositiveMap}
     \leanok
     \uses{def:inverse_of_bijective_matrix_endomorphism,
-        thm:channelDet_norm_le_one, thm:channelDet_comp}
+        def:positive_map, def:trace_preserving,
+        def:maps_psd_cone_onto, def:channel_det}
     The inverse of a bijective trace-preserving linear map is trace preserving.
     If $T$ is positive, then $T^{-1}$ is positive exactly when $T$ maps the
     positive-semidefinite cone onto itself.  If both maps are positive and
@@ -1234,6 +1235,7 @@ This section states the existence theorems from
 \end{theorem}
 
 \begin{proof}\leanok
+    \uses{thm:channelDet_norm_le_one, thm:channelDet_comp}
     For $X=T^{-1}(Y)$, trace preservation of $T$ gives
     $\tr(T^{-1}(Y))=\tr(Y)$.  Positivity of the inverse is equivalent to
     positivity of the unique preimage of every positive-semidefinite matrix.
@@ -1249,7 +1251,8 @@ This section states the existence theorems from
         ChannelDeterminant.Internal.inverseOfBijective_unitaryChannel_isPositiveMap,
         ChannelDeterminant.Internal.inverseOfBijective_unitaryChannel_comp_transpose_isPositiveMap}
     \leanok
-    \uses{def:inverse_of_bijective_matrix_endomorphism, def:unitary_channel}
+    \uses{def:inverse_of_bijective_matrix_endomorphism, def:unitary_channel,
+        def:positive_map}
     For a unitary $U$, the inverse of $A\mapsto UAU^\dagger$ is conjugation
     by $U^{-1}$.  The inverse of
     $A\mapsto UA^{\mathsf T}U^\dagger$ is ordinary transposition after
@@ -1258,6 +1261,7 @@ This section states the existence theorems from
 \end{theorem}
 
 \begin{proof}\leanok
+    \uses{thm:transpose_positive_trace_preserving}
     Compose the displayed maps directly, using involutivity of ordinary
     transposition.  Unitary conjugation, transposition, and their compositions
     preserve the positive-semidefinite cone.
@@ -1267,9 +1271,8 @@ This section states the existence theorems from
     \label{thm:wolf_positive_invertible_maps}
     \lean{ChannelDeterminant.Internal.wolfPositiveInvertibleMaps}
     \leanok
-    \uses{thm:positive_inverse_preliminaries,
-        thm:positive_inverse_standard_forms,
-        thm:channelDet_norm_eq_one_iff_positive_tp}
+    \uses{def:inverse_of_bijective_matrix_endomorphism,
+        def:positive_map, def:trace_preserving, def:unitary_channel}
     Let $D>0$, and let $T:\MN{D}\to\MN{D}$ be positive, trace preserving,
     and bijective.  Then $T^{-1}$ is positive if and only if there is a
     unitary $U$ for which
