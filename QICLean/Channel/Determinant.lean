@@ -9,13 +9,14 @@ import QICLean.Channel.Determinant.ChoiBound
 import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HilbertSchmidt
 import QICLean.Channel.Determinant.HeisenbergDual
+import QICLean.Channel.Determinant.PositiveExtremality
 import QICLean.Channel.Determinant.UnitaryCharacterization
 
 /-!
 # Determinants of quantum channels
 
 Thin module assembling the determinant development for quantum channels from
-seven focused sub-modules.
+eight focused sub-modules.
 
 The division follows the same organization as the earlier `Full/` and
 `Growth/` developments:
@@ -33,6 +34,9 @@ The division follows the same organization as the earlier `Full/` and
   auxiliary lemmas for the rigidity argument.
 * `QICLean.Channel.Determinant.HeisenbergDual` — Heisenberg-dual
   multiplicativity from determinant saturation.
+* `QICLean.Channel.Determinant.PositiveExtremality` — Wolf Theorem 6.1 for
+  positive trace-preserving maps, including reality, saturation, and the
+  transposition sign.
 * `QICLean.Channel.Determinant.UnitaryCharacterization` — Wolf Theorem 6.1(2)
   for CPTP maps.
 
@@ -49,6 +53,10 @@ The division follows the same organization as the earlier `Full/` and
 * `channelDet_norm_comp_le_of_positive_tracePreserving` — the inequality in
   Wolf's determinant-monotonicity corollary.
 * `channelDet_norm_le_one_of_positive_tracePreserving` — Wolf Theorem 6.1(1).
+* `channelDet_norm_eq_one_iff_exists_unitary_or_transpose_of_positive_tracePreserving`
+  — Wolf Theorem 6.1(2) for positive trace-preserving maps.
+* `ChannelDeterminant.Internal.channelDet_transposeLinearMapComplex` — the
+  exact determinant of ordinary transposition in Wolf Theorem 6.1(3).
 * `channelDet_norm_eq_one_iff_exists_unitaryChannel` — Wolf Theorem 6.1(2)
   for CPTP maps.
 * `norm_channelDet_le_choiPurity_rpow` — Wolf Eq. (6.27), the Choi bound
