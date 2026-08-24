@@ -27,6 +27,15 @@ At lines~72--78 of the local source, primal strict feasibility is said to give
 $C_p=C_d$ and attainment of the dual supremum; the dual statement is said to
 give attainment of the primal infimum.
 
+The semidefinite specialization at lines~100--105 contains both the same
+missing finiteness condition and a separate directional error.  It assumes
+either a positive-definite primal matrix $X$ satisfying $\tr(F_iX)=b_i$, or a
+dual vector $y$ with positive-definite slack $F_0-\sum_i y_iF_i$, and then says
+in both cases that the dual extremum is attained.  Primal strict feasibility
+does yield dual attainment once the primal value is finite.  Dual strict
+feasibility, however, yields primal attainment once the dual value is finite;
+it does not in general yield dual attainment.
+
 \section{Missing boundary conditions}
 
 Strict feasibility on one side does not by itself ensure that the opposite
@@ -42,8 +51,50 @@ Second take $b=1$ and $c=1$.  The dual slack equals $1$ for every $y$, hence the
 dual problem is strictly feasible.  The primal equality constraint is
 $0=1$, so the primal feasible set is empty and no primal optimizer exists.
 
-Thus the attainment sentences at lines~72--78 require a finiteness condition,
-or an equivalent opposite-feasibility and boundedness condition.
+Both failures are already semidefinite programs on $1\times1$ Hermitian
+matrices, with one equality constraint.  For the first, take
+$F_0=-1$, $F_1=0$, and $b_1=0$.  The matrix $X=1$ is positive definite and
+satisfies $\tr(F_1X)=b_1$, but the primal objective is unbounded below, while
+the slack
+
+\begin{align}
+  F_0-y_1F_1=-1
+\end{align}
+
+is never positive semidefinite.  For the second, take $F_0=1$, $F_1=0$, and
+$b_1=1$.  Every dual slack is the positive-definite matrix $1$, whereas the
+primal equality $\tr(F_1X)=1$ is impossible.
+
+Thus the attainment sentences at lines~72--78 and their semidefinite
+specialization at lines~100--105 require a finiteness condition, or an
+equivalent opposite-feasibility and boundedness condition.
+
+There is also a finite-valued semidefinite program which isolates the
+directional error at line~105.  In Wolf's convention, take
+\begin{align}
+  F_0&=\begin{pmatrix}0&1\\1&0\end{pmatrix},&
+  F_1&=\begin{pmatrix}-1&0\\0&0\end{pmatrix},&
+  F_2&=\begin{pmatrix}0&0\\0&-1\end{pmatrix},&
+  b&=(-1,0).
+\end{align}
+Writing the dual variable as $y=(x,z)$ gives exactly
+\begin{align}
+  F_0-xF_1-zF_2
+    &=\begin{pmatrix}x&1\\1&z\end{pmatrix},&
+  \langle b|y\rangle&=-x.
+\end{align}
+Thus the dual problem is to maximize $-x$ subject to
+$\left(\begin{smallmatrix}x&1\\1&z\end{smallmatrix}\right)\geq0$.  It is
+strictly feasible, for example at $(x,z)=(2,2)$.  Feasibility implies $x,z>0$
+and $xz\geq1$, while $(x,z)=(t,t^{-1})$ is feasible for every $t>0$.
+Consequently the finite dual supremum is $0$, approached as $t\downarrow0$,
+but it is not attained.
+
+The associated primal constraints are $-X_{11}=-1$ and $-X_{22}=0$.
+Positive semidefiniteness then forces
+$X=\left(\begin{smallmatrix}1&0\\0&0\end{smallmatrix}\right)$, whose primal
+objective is $\tr(F_0X)=0$.  Hence the primal infimum is attained and equals
+the dual supremum, precisely as the correctly directed Slater theorem asserts.
 
 \section{Corrected statement}
 
@@ -68,6 +119,19 @@ give the dual statement.  The equivalences
 \leanid{ConicProgram.dualValue_eq_coe_iff_isLUB} identify these hypotheses
 with the corresponding real greatest-lower-bound and least-upper-bound
 conditions whenever the feasible set is nonempty.
+
+The direct semidefinite specializations are proved in
+\doclink{QICLean/Analysis/SemidefiniteDuality}.  The declarations
+\leanid{SemidefiniteProgram.exists_dualOptimizer_of_primalStrict_of_primalValue_eq_coe}
+and
+\leanid{SemidefiniteProgram.values_eq_of_primalStrict_of_primalValue_eq_coe}
+give dual attainment and value equality from a positive-definite primal point
+and $C_p=p\in\mathbb R$.  The declarations
+\leanid{SemidefiniteProgram.exists_primalOptimizer_of_dualStrict_of_dualValue_eq_coe}
+and
+\leanid{SemidefiniteProgram.values_eq_of_dualStrict_of_dualValue_eq_coe}
+give primal attainment and value equality from a positive-definite dual slack
+and $C_d=p\in\mathbb R$.
 
 \section{Separation argument}
 
@@ -99,13 +163,18 @@ follows from the greatest-lower-bound property.
 \section{Verdict}
 
 \textbf{Verdict: false as printed; corrected theorem resolved.} The two
-one-dimensional examples show that neither attainment sentence at lines
-72--78 follows from strict feasibility alone.  With the missing finite-real
-optimum hypothesis, both value equality and the optimizer on the opposite
-side are now formalized, with separate declarations for equality and
-attainment.  This resolves
+one-dimensional examples show that neither the general assertions at lines
+72--78 nor their semidefinite specialization at lines~100--105 follows from
+strict feasibility alone.  The $2\times2$ example further shows that dual
+strict feasibility and a finite dual supremum do not imply dual attainment, so
+line~105 also states the wrong optimizer direction in the dual-strict case.
+With the missing finite-real optimum hypothesis, both value equality and the
+optimizer on the opposite side are now formalized, with separate declarations
+for equality and attainment.  This resolves
 \href{https://github.com/LionSR/QICLean/issues/110}{QICLean issue \#110} while
-retaining the source correction.
+retaining the source correction, and the same correction governs the
+semidefinite specialization in
+\href{https://github.com/LionSR/QICLean/issues/111}{QICLean issue \#111}.
 
 \bibliographystyle{alpha}
 \bibliography{references}
