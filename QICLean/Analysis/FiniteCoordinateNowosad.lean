@@ -79,7 +79,9 @@ theorem mem_positiveInvertibles {x : ι → ℝ} :
     x ∈ positiveInvertibles ↔ ∀ i, 0 < x i := by
   simp [positiveInvertibles]
 
-theorem isOpen_positiveInvertibles : IsOpen (positiveInvertibles : Set (ι → ℝ)) := by
+omit [Fintype ι] in
+theorem isOpen_positiveInvertibles [Finite ι] :
+    IsOpen (positiveInvertibles : Set (ι → ℝ)) := by
   apply isOpen_set_pi Set.finite_univ
   intro i _
   exact isOpen_Ioi
