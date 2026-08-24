@@ -1832,3 +1832,25 @@ qualification, and a justified passage to Wolf's `κ_T` infimum. These are
 recorded in
 `docs/paper-gaps/wolf_thm823_jordan_scaling_qualifications.tex`; issue #297
 therefore remains open.
+
+### Proposition “Jordan condition number and detailed balance” (Equation 8.110) — SOURCE BASIS PREREQUISITE FORMALIZED
+
+In `QICLean.Channel.DetailedBalance`:
+
+* `transferMatrix_detailedBalance` translates `Σ T* = T Σ` to
+  `Σ̂ T̂† = T̂ Σ̂`.
+* `Matrix.PosDef.inv_sqrt_mul_mul_sqrt_isHermitian_of_detailedBalance`
+  proves that `Σ̂⁻¹/² T̂ Σ̂¹/²` is Hermitian.
+* `Matrix.PosDef.exists_sqrt_mul_unitary_diagonalization_of_detailedBalance`
+  constructs Wolf's particular diagonalizing similarity `Σ̂¹/² U`, its
+  inverse, and its condition factor
+  `sqrt (‖Σ̂‖∞ ‖Σ̂⁻¹‖∞)`.
+* `transferMatrix_sigmaSandwich_eq_kronecker_and_posDef` and
+  `fixedPoint_of_detailedBalance_sigmaSandwich` verify the square-root
+  sandwich specialization and Wolf's fixed-point observation.
+
+The final printed inequality `κ_T ≤ sqrt (κ(Σ̂))` is not yet marked
+formalized. It depends on issue #297's source-shaped Jordan condition number
+and a theorem bounding that infimum by the condition factor of each
+admissible Jordan basis. The current declarations retain Wolf's chosen basis
+instead of silently replacing its factor by `κ_T`; issue #298 remains open.
