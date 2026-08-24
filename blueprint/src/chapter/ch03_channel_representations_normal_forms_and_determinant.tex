@@ -157,6 +157,101 @@ This section states the existence theorems from
 % QICLean/Channel/LorentzNormalForm.lean. The correctly formulated Proposition 2.11
 % has no Lean declaration yet; declaration tags are omitted for pending results.
 
+\subsection{Canonical metric blocks for the Minkowski reduction}
+
+Let $P_n$ be the reversal permutation matrix, so that
+$(P_n)_{ij}=1$ exactly when $i+j=n+1$.  For a sign
+$\varepsilon\in\{1,-1\}$, the matrix $\varepsilon P_n$ is the signed
+metric block attached to a real-eigenvalue Jordan block in the sign
+characteristic of Gohberg--Lancaster--Rodman, Theorem~5.3.
+
+\begin{definition}[Signed sip metric blocks]\label{def:signed_sip_metric_blocks}
+    \lean{Matrix.GLRSign, Matrix.sipMatrix, Matrix.signedSipMatrix}
+    \leanok
+    The \emph{sip matrix} of size $n$ is $P_n$.  A signed sip block is
+    $\varepsilon P_n$, where $\varepsilon=1$ or $\varepsilon=-1$.
+    Each such block is symmetric, invertible, and its own inverse.
+\end{definition}
+
+\begin{definition}[Real canonical Jordan blocks]\label{def:real_canonical_jordan_blocks}
+    \lean{Matrix.realJordanBlock, Matrix.realConjugatePairBlock,
+        Matrix.realConjugatePairJordanBlock, Matrix.complexPairSipMatrix}
+    \leanok
+    \uses{def:signed_sip_metric_blocks}
+    A real-eigenvalue block is the ordinary real Jordan block $J_n(a)$
+    with eigenvalue $a$ and ones on its first superdiagonal.  If
+    $a\pm\tau i$ is a non-real conjugate pair, put
+    \begin{align}
+        B(a,\tau)&=\begin{pmatrix}a&\tau\\-\tau&a\end{pmatrix}.
+    \end{align}
+    Its real Jordan chain of length $m$ has $B(a,\tau)$ on the block
+    diagonal and $I_2$ on the first block superdiagonal.  On the product
+    indexing of this $2m$-dimensional real block, its unsigned metric
+    reverses both the chain coordinate and the two-dimensional
+    realification coordinate.  No sign characteristic is attached to a
+    non-real block.
+\end{definition}
+
+\begin{theorem}[Canonical blocks are selfadjoint for their metric blocks]
+    \label{thm:canonical_blocks_metric_selfadjoint}
+    \lean{Matrix.signedSipMatrix_mul_realJordanBlock,
+        Matrix.complexPairSipMatrix_mul_realConjugatePairJordanBlock}
+    \leanok
+    \uses{def:signed_sip_metric_blocks, def:real_canonical_jordan_blocks}
+    For every sign $\varepsilon$ and every real Jordan block,
+    \begin{align}
+        (\varepsilon P_n)J_n(a)
+        &=J_n(a)^{\mathsf T}(\varepsilon P_n).
+    \end{align}
+    The real Jordan chain for a non-real conjugate pair satisfies the
+    analogous identity with its unsigned $2m$-dimensional reversal metric.
+\end{theorem}
+
+\begin{proof}\leanok
+    For a real-eigenvalue block, reversal changes the first superdiagonal
+    of $J_n(a)$ into the first subdiagonal of $J_n(a)^{\mathsf T}$; the
+    scalar sign multiplies both sides.  For a conjugate pair, simultaneous
+    reversal of the chain and realification coordinates also changes
+    $B(a,\tau)$ into $B(a,\tau)^{\mathsf T}$, giving the unsigned identity.
+\end{proof}
+
+\begin{definition}[Four-dimensional Minkowski selfadjointness]
+    \label{def:four_dimensional_minkowski_selfadjoint}
+    \lean{Matrix.minkowskiMetric, Matrix.IsMinkowskiSelfAdjoint}
+    \leanok
+    Let
+    \begin{align}
+        M&=\operatorname{diag}(1,-1,-1,-1).
+    \end{align}
+    A real matrix $C\in M_4(\mathbb R)$ is \emph{$M$-selfadjoint} when
+    $C^{\mathsf T}M=MC$.
+\end{definition}
+
+\begin{definition}[The four VDDM block patterns]\label{def:vddm_four_block_patterns}
+    \lean{Matrix.GLRFourDimensionalPattern}
+    \leanok
+    \uses{def:real_canonical_jordan_blocks}
+    The four source-indexed patterns are: four real one-dimensional
+    blocks; one two-dimensional non-real conjugate-pair block and two real
+    one-dimensional blocks; one real Jordan block of size two and two real
+    one-dimensional blocks; or one real Jordan block of size three and one
+    real one-dimensional block.
+\end{definition}
+
+The load-bearing existence statement is still open.  It must construct, for
+every $M$-selfadjoint $C$, an invertible $X$, a real canonical Jordan matrix
+$J$, and its signed metric $N_J$ satisfying
+\begin{align}
+    C&=X^{-1}JX,
+    &XMX^{\mathsf T}&=N_J,
+\end{align}
+and then derive exhaustiveness of the four patterns from inertia $(1,3)$.
+The present library has neither real Jordan-form existence nor the simultaneous
+similarity--congruence theorem controlling the sign characteristic.  The exact
+formalization boundary and the required transpose and inverse translations are
+recorded in
+\path{docs/paper-gaps/qiclean_minkowski_canonical_pair_dependency.tex}.
+
 \begin{definition}[Pauli transfer matrix]\label{def:pauli_transfer_matrix}
     \lean{Wolf.pauliMatrices, Wolf.pauliTransferEntry,
         Wolf.pauliTransferMatrix, Wolf.pauliTransferMatrixReal}

@@ -40,6 +40,7 @@ import QICLean.Algebra.MatrixSpectralDecomp
 import QICLean.Algebra.MatrixTracePairing
 import QICLean.Algebra.MatrixTracePowerContinuity
 import QICLean.Algebra.MatrixUnitaryBetween
+import QICLean.Algebra.MinkowskiCanonicalPair
 import QICLean.Algebra.NewtonGirard
 import QICLean.Algebra.NilpotentSubspaceThree
 import QICLean.Algebra.NilpotentSubspaceTwo
