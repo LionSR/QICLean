@@ -3,6 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
+import QICLean.Channel.FixedPoint.AbstractWeightedFixedPoints
 import QICLean.Channel.FixedPoint.MaximalSupport
 
 /-!
@@ -20,6 +21,11 @@ $\sqrt{\rho}$ maps the weighted corner carrier of
 such $\rho$, which realizes the conjugated set
 $\rho^{-1/2}\,\{X \mid T(X) = X\}\,\rho^{-1/2}$ of the corollary, with the inverse square
 root taken on the support of $\rho$.
+
+These declarations are compatibility specializations of the source-general
+`IsPositiveMap` results in `AbstractMaximalRank` and
+`AbstractWeightedFixedPoints`; the proofs below introduce no independent
+Kraus-specific route.
 
 The comparison with the constructed witness $\rho_0$ goes through the rank: the support
 projection of a positive semidefinite matrix has the same rank as the matrix, and its
@@ -88,118 +94,18 @@ theorem maximalSupport_of_maximalRank
     (hρ_max : ∀ σ : Mat, σ.PosSemidef → σ.trace = 1 → map K σ = σ → σ.rank ≤ ρ.rank) :
     ∀ X : Mat, map K X = X →
       stationaryProj hρ_psd * X * stationaryProj hρ_psd = X := by
-  classical
-  obtain ⟨ρ₀, hρ₀_psd, hρ₀_fix, hmax⟩ := exists_maximalSupport_fixedPoint K h_tp
-  set Q₀ : Mat := stationaryProj hρ₀_psd with hQ₀def
-  set P : Mat := stationaryProj hρ_psd with hPdef
-  have hQ₀herm : Q₀ᴴ = Q₀ := (isOrthogonalProjection_stationaryProj hρ₀_psd).1.eq
-  have hPherm : Pᴴ = P := (isOrthogonalProjection_stationaryProj hρ_psd).1.eq
-  have hQ₀idem : Q₀ * Q₀ = Q₀ := (isOrthogonalProjection_stationaryProj hρ₀_psd).2
-  have hPidem : P * P = P := (isOrthogonalProjection_stationaryProj hρ_psd).2
-  rcases eq_or_ne ρ₀ 0 with hρ₀0 | hρ₀ne
-  · -- Degenerate case: every fixed point vanishes, and the claim is trivial.
-    have hQ₀0 : Q₀ = 0 := by
-      refine Matrix.ext_of_mulVec_single fun j => ?_
-      rw [hQ₀def, Matrix.zero_mulVec]
-      exact hρ₀_psd.supportProj_mulVec_eq_zero_of_mulVec_eq_zero _ (by
-        rw [hρ₀0, Matrix.zero_mulVec])
-    intro X hX
-    have hX0 : X = 0 := by
-      have h := hmax X hX
-      rw [hQ₀0] at h
-      simpa using h.symm
-    rw [hX0, Matrix.mul_zero, Matrix.zero_mul]
-  · -- The trace of the nonzero maximal witness is a nonzero nonnegative real number.
-    have hc_nonneg : (0 : ℂ) ≤ ρ₀.trace := hρ₀_psd.trace_nonneg
-    have hc_ne : ρ₀.trace ≠ 0 := by
-      intro h0
-      have hS_herm : (CFC.sqrt ρ₀)ᴴ = CFC.sqrt ρ₀ :=
-        Matrix.conjTranspose_cfc_sqrt ρ₀
-      have hSS : CFC.sqrt ρ₀ * CFC.sqrt ρ₀ = ρ₀ :=
-        CFC.sqrt_mul_sqrt_self ρ₀ hρ₀_psd.nonneg
-      have htr : ((CFC.sqrt ρ₀)ᴴ * CFC.sqrt ρ₀).trace = 0 := by
-        rw [hS_herm, hSS]
-        exact h0
-      have hsq0 : CFC.sqrt ρ₀ = 0 :=
-        Matrix.trace_conjTranspose_mul_self_eq_zero_iff.mp htr
-      exact hρ₀ne (by rw [← hSS, hsq0, Matrix.mul_zero])
-    have him : ρ₀.trace.im = 0 := ((Complex.nonneg_iff.mp hc_nonneg).2).symm
-    have hre_nonneg : 0 ≤ ρ₀.trace.re := (Complex.nonneg_iff.mp hc_nonneg).1
-    have hre_ne : ρ₀.trace.re ≠ 0 := by
-      intro h
-      exact hc_ne (Complex.ext h him)
-    have htr_eq : ρ₀.trace = ((ρ₀.trace.re : ℝ) : ℂ) := by
-      exact Complex.ext rfl (by simp [him])
-    set c : ℝ := (ρ₀.trace.re)⁻¹ with hcdef
-    have hc_re_nonneg : 0 ≤ c := inv_nonneg.mpr hre_nonneg
-    have hc_re_ne : c ≠ 0 := inv_ne_zero hre_ne
-    -- The normalization of the maximal witness is a fixed-point density matrix.
-    set σ : Mat := ((c : ℝ) : ℂ) • ρ₀ with hσdef
-    have hσ_psd : σ.PosSemidef := by
-      have h := hρ₀_psd.conjTranspose_mul_mul_same
-        (((Real.sqrt c : ℝ) : ℂ) • (1 : Mat))
-      have heq : (((Real.sqrt c : ℝ) : ℂ) • (1 : Mat))ᴴ * ρ₀ *
-          (((Real.sqrt c : ℝ) : ℂ) • (1 : Mat)) = σ := by
-        rw [hσdef, Matrix.conjTranspose_smul, Matrix.conjTranspose_one,
-          Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul]
-        congr 1
-        rw [show star (((Real.sqrt c : ℝ) : ℂ)) = ((Real.sqrt c : ℝ) : ℂ) by simp]
-        rw [← Complex.ofReal_mul, Real.mul_self_sqrt hc_re_nonneg]
-      rw [← heq]
-      exact h
-    have hσ_tr : σ.trace = 1 := by
-      rw [hσdef, Matrix.trace_smul, htr_eq, smul_eq_mul, ← Complex.ofReal_mul,
-        inv_mul_cancel₀ hre_ne, Complex.ofReal_one]
-    have hσ_fix : map K σ = σ := by
-      rw [hσdef, map_smul, hρ₀_fix]
-    have hσ_rank : σ.rank = ρ₀.rank := by
-      rw [hσdef, Matrix.smul_eq_diagonal_mul]
-      refine Matrix.rank_mul_eq_right_of_det_ne_zero _ _ ?_
-      rw [Matrix.det_diagonal, Finset.prod_const]
-      exact pow_ne_zero _ (Complex.ofReal_ne_zero.mpr hc_re_ne)
-    -- The two ranks agree.
-    have h1 : ρ₀.rank ≤ ρ.rank := hσ_rank ▸ hρ_max σ hσ_psd hσ_tr hσ_fix
-    have hQ₀ρQ₀ : Q₀ * ρ * Q₀ = ρ := hmax ρ hρ_fix
-    have h2 : ρ.rank ≤ ρ₀.rank := by
-      calc ρ.rank = (Q₀ * ρ * Q₀).rank := by rw [hQ₀ρQ₀]
-        _ ≤ (Q₀ * ρ).rank := Matrix.rank_mul_le_left _ _
-        _ ≤ Q₀.rank := Matrix.rank_mul_le_left _ _
-        _ = ρ₀.rank := rank_stationaryProj hρ₀_psd
-    have hrank_eq : ρ.rank = ρ₀.rank := le_antisymm h2 h1
-    -- The support of `ρ` is contained in the support of the maximal witness.
-    have hρQ₀ : ρ * Q₀ = ρ := by
-      conv_lhs => rw [← hQ₀ρQ₀]
-      rw [Matrix.mul_assoc, Matrix.mul_assoc, hQ₀idem, ← Matrix.mul_assoc]
-      exact hQ₀ρQ₀
-    have hPQ₀ : P * Q₀ = P := by
-      have hsub : P * (1 - Q₀) = 0 := by
-        refine Matrix.ext_of_mulVec_single fun j => ?_
-        rw [Matrix.zero_mulVec, ← Matrix.mulVec_mulVec]
-        refine hρ_psd.supportProj_mulVec_eq_zero_of_mulVec_eq_zero _ ?_
-        rw [Matrix.mulVec_mulVec,
-          show ρ * (1 - Q₀) = 0 by rw [Matrix.mul_sub, Matrix.mul_one, hρQ₀, sub_self],
-          Matrix.zero_mulVec]
-      rw [Matrix.mul_sub, Matrix.mul_one] at hsub
-      exact (sub_eq_zero.mp hsub).symm
-    have hQ₀P : Q₀ * P = P := by
-      have h := congrArg Matrix.conjTranspose hPQ₀
-      rwa [Matrix.conjTranspose_mul, hQ₀herm, hPherm] at h
-    -- Two projections with equal traces, one absorbing the other, coincide.
-    have hR : (Q₀ - P) * (Q₀ - P) = Q₀ - P := by
-      rw [mul_sub (Q₀ - P) Q₀ P, sub_mul Q₀ P Q₀, sub_mul Q₀ P P,
-        hQ₀idem, hPQ₀, hQ₀P, hPidem]
-      abel
-    have hRH : (Q₀ - P)ᴴ = Q₀ - P := by
-      rw [Matrix.conjTranspose_sub, hQ₀herm, hPherm]
-    have hRtr : ((Q₀ - P)ᴴ * (Q₀ - P)).trace = 0 := by
-      rw [hRH, hR, Matrix.trace_sub, hQ₀def, hPdef, trace_stationaryProj hρ₀_psd,
-        trace_stationaryProj hρ_psd, hrank_eq, sub_self]
-    have hPeq : P = Q₀ := by
-      have h := Matrix.trace_conjTranspose_mul_self_eq_zero_iff.mp hRtr
-      exact (sub_eq_zero.mp h).symm
-    intro X hX
-    rw [hPeq]
-    exact hmax X hX
+  intro X hX
+  exact IsPositiveMap.maximalSupport_of_maximalRank
+    (isPositiveMap_mapLM K)
+    (isTracePreservingMap_mapLM_of_isTP K h_tp)
+    hρ_psd
+    (by simpa only [mapLM_apply] using hρ_fix)
+    (by
+      intro σ hσ hσTrace hσFix
+      exact hρ_max σ hσ hσTrace
+        (by simpa only [mapLM_apply] using hσFix))
+    X
+    (by simpa only [mapLM_apply] using hX)
 
 /-- **Conjugation by the square root at every fixed point of maximum rank.** Let $T$ be a
 trace-preserving Kraus map and let $\rho$ be a positive semidefinite fixed point of $T$
@@ -217,8 +123,17 @@ theorem exists_weightedCorner_sqrt_eq_of_maximalRank
     {X : Mat} (hX_fix : map K X = X) :
     ∃ Y : Mat, stationaryProj hρ_psd * Y * stationaryProj hρ_psd = Y ∧
       map K (CFC.sqrt ρ * Y * CFC.sqrt ρ) = CFC.sqrt ρ * Y * CFC.sqrt ρ ∧
-      CFC.sqrt ρ * Y * CFC.sqrt ρ = X :=
-  exists_weightedCorner_sqrt_eq_of_fixedPoint K h_tp hρ_psd hρ_fix hX_fix
-    (maximalSupport_of_maximalRank K h_tp hρ_psd hρ_fix hρ_max X hX_fix)
+      CFC.sqrt ρ * Y * CFC.sqrt ρ = X := by
+  simpa only [mapLM_apply] using
+    IsPositiveMap.exists_weightedCorner_sqrt_eq_of_maximalRank
+      (isPositiveMap_mapLM K)
+      (isTracePreservingMap_mapLM_of_isTP K h_tp)
+      hρ_psd
+      (by simpa only [mapLM_apply] using hρ_fix)
+      (by
+        intro σ hσ hσTrace hσFix
+        exact hρ_max σ hσ hσTrace
+          (by simpa only [mapLM_apply] using hσFix))
+      (by simpa only [mapLM_apply] using hX_fix)
 
 end Kraus

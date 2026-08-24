@@ -10,6 +10,8 @@ Authors: QICLean contributors
 
 import QICLean.Channel.FixedPoint.AbstractAlgebra
 import QICLean.Channel.FixedPoint.AbstractCornerFixedPoints
+import QICLean.Channel.FixedPoint.AbstractMaximalRank
+import QICLean.Channel.FixedPoint.AbstractWeightedFixedPoints
 import QICLean.Channel.FixedPoint.Algebra
 import QICLean.Channel.FixedPoint.BlockForm
 import QICLean.Channel.FixedPoint.BrouwerDensityMatrices

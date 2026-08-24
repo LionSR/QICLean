@@ -1167,67 +1167,47 @@ problem: one must still prove the channel hypotheses for those maps on the
 whole direct-sum algebras.  This remaining boundary is recorded in
 `https://sirui-lu.com/TNLean/paper-gaps/cpsv16_vertical_sector_invertibility.pdf`.
 
-#### Wolf Corollary 6.7 (faithful fixed-point conjugation) — FORMALIZED (Kraus case)
+#### Wolf Corollary 6.7 (weighted fixed-point star-algebra) — FORMALIZED
 
-In `QICLean.Channel.FixedPoint.Corollaries`:
+In `QICLean.Channel.FixedPoint.AbstractMaximalRank`:
 
-* `Kraus.rightCanonicalGauge` — the gauged family `ρ^{-1/2} K_i ρ^{1/2}`.
-* `Kraus.weightedFixedPointsStarSubalgebra` — if `T(ρ) = ρ` with `ρ > 0`,
-  then `ρ^{-1/2} Fix(T) ρ^{-1/2}` is a `StarSubalgebra`.
-* `Kraus.mem_weightedFixedPointsStarSubalgebra_iff` — membership is
-  equivalent to saying that `ρ^{1/2} X ρ^{1/2}` is fixed by the original map.
+* `IsPositiveMap.maximalSupport_of_maximalRank` — for a positive
+  trace-preserving map and every positive semidefinite fixed point `ρ` whose
+  rank bounds the rank of every stationary density matrix, the support
+  projection `Q` satisfies `Q X Q = X` for every fixed point `X`.  Thus the
+  quantifier is Wolf's arbitrary maximum-rank stationary density, not one
+  chosen canonical witness.
 
-In `QICLean.Channel.FixedPoint.WeightedCornerFixedPoints` (singular case, any
-positive semidefinite fixed point, restricted to corner-supported fixed
-points):
+In `QICLean.Channel.FixedPoint.AbstractWeightedFixedPoints`:
 
-* `Kraus.weightedCornerFixedPointsStarSubalgebra` — the corner elements `Y`
-  with `√ρ Y √ρ` fixed by the map form a star-subalgebra of the corner
-  algebra `Q M_D(ℂ) Q`, realizing `ρ^{-1/2} {X | T(X) = X, Q X Q = X} ρ^{-1/2}`
-  with the inverse square root taken on the support of `ρ`.
-* `Kraus.exists_weightedCorner_sqrt_eq_of_fixedPoint` — conjugation by `√ρ`
-  maps the carrier onto the corner-supported fixed points.
+* `IsPositiveMap.weightedFixed_mul_of_posDef` — multiplication closure in the
+  full-support case, proved through Wolf Theorem 6.14 density blocks:
+  `(σ_k ⊗ X_k)(σ_k⁻¹ ⊗ R_k⁻¹)(σ_k ⊗ Z_k)
+  = σ_k ⊗ (X_k R_k⁻¹ Z_k)`.
+* `IsPositiveMap.weightedCornerFixedPointsStarSubalgebra` — for a positive
+  trace-preserving `T` whose trace adjoint is Schwarz and any positive
+  semidefinite stationary `ρ`, the corner elements `Y` for which
+  `T (√ρ Y √ρ) = √ρ Y √ρ` form a `StarSubalgebra` of `Q M_D(ℂ) Q`.
+  Compression to `supp(ρ)` supplies the positive-definite density-block
+  calculation; zero support gives the zero corner algebra.
+* `IsPositiveMap.mem_weightedCornerFixedPointsStarSubalgebra_iff_inverseSandwich`
+  — at every maximum-rank stationary density, membership is equivalent to
+  the exact displayed condition
+  `Y = ρ⁻¹ᐟ² X ρ⁻¹ᐟ²` for some `X` with `T X = X`, where the inverse square
+  root is totalized to zero off `supp(ρ)`.
+* `IsPositiveMap.wolfCorollary67` — the source-facing result under exactly
+  Wolf's hypotheses: `T` is positive and trace preserving, `T*` is Schwarz,
+  and `ρ` is an arbitrary maximum-rank stationary density matrix.  It returns
+  the star-algebra together with the exact carrier equality above.
 
-In `QICLean.Channel.FixedPoint.MaximalSupportBasic` (the maximal-support property
-for arbitrary positive trace-preserving maps):
-
-* `Kraus.stationaryProj_absorb_of_le` — for positive semidefinite $P \preceq \rho$
-  the support projection of $\rho$ absorbs $P$.
-* `IsPositiveMap.exists_maximalSupport_fixedPoint` — for an arbitrary positive
-  trace-preserving map, the fixed point $T_\infty(\mathbf 1)$ has support carrying every
-  fixed point, as in Wolf Proposition 6.9.
-
-In `QICLean.Channel.FixedPoint.MaximalSupport` (the Kraus specialization and
-the removal of the corner restriction):
-
-* `Kraus.exists_maximalSupport_fixedPoint` — a positive semidefinite fixed point
-  $\rho_0$ whose
-  support projection $Q_0$ satisfies $Q_0 X Q_0 = X$ for every fixed point $X$.
-* `Kraus.exists_maximalSupport_weightedCorner_sqrt_eq` — at $\rho_0$, conjugation
-  by $\sqrt{\rho_0}$ maps the corner carrier onto the full fixed-point set,
-  realizing $\rho_0^{-1/2}\,\{X \mid T(X) = X\}\,\rho_0^{-1/2}$ without a support
-  restriction.
-
-In `QICLean.Channel.FixedPoint.MaximalRank` (the transfer to every fixed point
-of maximum rank):
-
-* `Kraus.rank_stationaryProj`, `Kraus.trace_stationaryProj` — the support
-  projection of a positive semidefinite matrix has the rank of the matrix,
-  and its trace is that rank.
-* `Kraus.maximalSupport_of_maximalRank` — if the rank of a positive
-  semidefinite fixed point $\rho$ bounds the rank of every fixed-point
-  density matrix, its support projection $Q$ satisfies $Q X Q = X$ for every
-  fixed point $X$.
-* `Kraus.exists_weightedCorner_sqrt_eq_of_maximalRank` — at every such
-  $\rho$, conjugation by $\sqrt{\rho}$ maps the corner carrier onto the full
-  fixed-point set, realizing $\rho^{-1/2}\,\{X \mid T(X) = X\}\,\rho^{-1/2}$
-  with the inverse square root taken on the support of $\rho$.
-
-The scope is the Kraus (completely positive) case of the source's Schwarz
-hypothesis, as recorded for the other results of this section; the source's
-maximum-rank fixed-point density matrix satisfies the rank hypothesis, with
-unit trace of $\rho$ itself not needed for the conclusion
-(see `docs/paper-gaps/wolf_cor67_maximal_support_restriction.tex`).
+The earlier declarations in `QICLean.Channel.FixedPoint.Corollaries`,
+`WeightedCornerFixedPoints`, `MaximalSupport`, and `MaximalRank` remain
+finite-Kraus compatibility specializations.  In particular,
+`Kraus.maximalSupport_of_maximalRank` and
+`Kraus.exists_weightedCorner_sqrt_eq_of_maximalRank` now delegate to the
+source-general declarations rather than maintaining a second proof route.
+The former scope restriction is resolved in
+`docs/paper-gaps/wolf_cor67_maximal_support_restriction.tex`.
 
 #### Conditional expectation used in Wolf Theorem 6.14 — FORMALIZED
 
