@@ -25,6 +25,8 @@ specialization.
   to its trace adjoint.
 * `isIrreducibleMap_traceAdjointMap_iff`: trace-adjoint irreducibility is
   equivalent to irreducibility.
+* `Kraus.traceAdjointMap_mapLM_eq_mapLM_conjTranspose`: the trace-pairing
+  adjoint of a finite Kraus map is the map of the conjugate-transposed family.
 * `Kraus.isIrreducibleMap_mapLM_conjTranspose`: irreducibility passes to the
   conjugate-transposed Kraus family.
 * `Kraus.isIrreducibleMap_mapLM_conjTranspose_iff`: the two irreducibilities are
@@ -113,7 +115,12 @@ variable {d D : ℕ}
 
 local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
-private theorem traceAdjointMap_mapLM_eq_mapLM_conjTranspose (K : Fin d → Mat) :
+/-- The trace-pairing adjoint of a finite Kraus map is the Kraus map of the
+conjugate-transposed family.
+
+Since `Kraus.transferMap` is a reducible alias for `Kraus.mapLM`, this theorem
+also applies directly to transfer maps without a compatibility wrapper. -/
+theorem traceAdjointMap_mapLM_eq_mapLM_conjTranspose (K : Fin d → Mat) :
     Matrix.traceAdjointMap (mapLM K) = mapLM fun i => (K i)ᴴ := by
   have hAdjoint : Matrix.traceAdjointMap (mapLM K) = adjointMapLM K := by
     apply LinearMap.ext
