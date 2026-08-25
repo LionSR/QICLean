@@ -72,7 +72,7 @@ theorem exists_posSemidef_fixedPoint
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ.PosSemidef ∧ ρ ≠ 0 ∧
       transferMap (d := d) (D := D) A ρ = ρ :=
-  (isChannel_transferMap A hNorm).exists_posSemidef_fixedPoint
+  (isChannel_mapLM A hNorm).exists_posSemidef_fixedPoint
     (E := transferMap A) hD
 
 end Existence

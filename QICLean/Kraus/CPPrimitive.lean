@@ -3,7 +3,8 @@ Copyright (c) 2025 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Kraus.TransferChannel
+import QICLean.Channel.KrausMap
+import QICLean.Kraus.Transfer
 import QICLean.Kraus.Injectivity
 import QICLean.Algebra.MatrixAux
 import QICLean.Channel.Irreducible.Basic
@@ -105,12 +106,10 @@ theorem transferMap_isCPMap
 
 /-! ### Iterated transfer map
 
-The iterated transfer map identity is `transferMap_pow_apply'` in
-`QICLean.Kraus.TransferChannel`. It follows from the finite Kraus map word expansion
-`Kraus.mapLM_pow_apply`.
+The iterated finite Kraus map identity is `Kraus.mapLM_pow_apply` in
+`QICLean.Kraus.MapIterate`.
 
-The channel property of a normalized transfer map (completely positive and
-trace-preserving) is `Kraus.isChannel_transferMap` in
-`QICLean.Kraus.TransferChannel`. -/
+The channel property of a trace-preserving finite Kraus map is
+`Kraus.isChannel_mapLM` in `QICLean.Channel.KrausMap`. -/
 
 end Kraus

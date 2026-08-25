@@ -131,7 +131,8 @@ across the chapter boundary.
     \lean{Kraus.transferMap}
     \leanok
     The \emph{transfer map} associated to a finite matrix family~$A$ is the
-    linear map $\E_A : \MN{D} \to \MN{D}$ defined by
+    finite Kraus map of that family; the notation $\E_A$ abbreviates the
+    linear map $\MN{D} \to \MN{D}$ defined by
     \begin{align}
         \E_A(X)
         &= \sum_{i=0}^{d-1} A^i X (A^i)^\dagger.
@@ -208,9 +209,9 @@ across the chapter boundary.
 \end{lemma}
 
 \begin{proof}\leanok
-    \uses{thm:trace_mul_kraus_map_adjoint,
-        thm:kraus_map_eq_transfer_map}
-    Identify the two Kraus maps with the corresponding transfer maps.
+    \uses{thm:trace_mul_kraus_map_adjoint}
+    Apply the Kraus-map trace identity directly, since transfer-map notation
+    abbreviates the finite Kraus maps of the two matrix families.
 \end{proof}
 
 \begin{lemma}[Left-canonical transfer maps preserve trace]
@@ -238,7 +239,7 @@ across the chapter boundary.
 \end{proof}
 
 \begin{theorem}[Transfer map is a channel]\label{thm:transfer_channel}
-    \lean{Kraus.isChannel_transferMap}
+    \lean{Kraus.isChannel_mapLM}
     \leanok
     \uses{def:transfer_map, def:channel}
     If $\sum_i(A^i)^\dagger A^i=\Id$, then the transfer map

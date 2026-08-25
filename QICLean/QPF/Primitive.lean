@@ -75,6 +75,6 @@ theorem quantum_perron_frobenius_irreducible [DecidableEq (Fin D)]
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
       HasUniqueFixedPoint (transferMap (d := d) (D := D) A) ρ := by
   exact IsChannel.exists_hasUniqueFixedPoint_of_irreducible
-    (isChannel_transferMap A (by unfold IsTP; convert hNorm)) hIrr hD
+    (isChannel_mapLM A (by unfold IsTP; convert hNorm)) hIrr hD
 
 end Kraus
