@@ -73,7 +73,7 @@ lemma mixedTransferMap_apply (A B : MPSTensor d D) (X : Matrix (Fin D) (Fin D) â
 /-- The mixed transfer operator with `A = B` is the standard transfer map. -/
 theorem mixedTransferMap_self (A : MPSTensor d D) :
     mixedTransferMap A A = transferMap (d := d) (D := D) A := by
-  rw [mixedTransferMap, Kraus.mixedMapLM_self, Kraus.mapLM_eq_transferMap]
+  rw [mixedTransferMap, Kraus.mixedMapLM_self]
 
 end MixedTransfer
 

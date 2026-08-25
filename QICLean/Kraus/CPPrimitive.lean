@@ -101,7 +101,7 @@ it is defined as the Kraus map `E_A(X) = ∑ᵢ Aᵢ X Aᵢ†`. -/
 theorem transferMap_isCPMap
     (A : MPSTensor d D) :
     IsCPMap (transferMap (d := d) (D := D) A) :=
-  ⟨d, A, fun X => by simp [transferMap_apply]⟩
+  isCPMap_mapLM A
 
 /-! ### Iterated transfer map
 

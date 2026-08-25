@@ -120,10 +120,8 @@ theorem gauged_intertwining_core
       (∀ i : Fin d,
         gaugeTensor SA A i * gaugeEigenvector SA SB X =
           μ • gaugeEigenvector SA SB X * gaugeTensor SB B i) := by
-  have hρA_fix' : Kraus.mapLM A ρA = ρA := by
-    simpa only [Kraus.mapLM_eq_transferMap] using hρA_fix
-  have hρB_fix' : Kraus.mapLM B ρB = ρB := by
-    simpa only [Kraus.mapLM_eq_transferMap] using hρB_fix
+  have hρA_fix' : Kraus.mapLM A ρA = ρA := hρA_fix
+  have hρB_fix' : Kraus.mapLM B ρB = ρB := hρB_fix
   have hFX' : Kraus.mixedMapLM A B X = μ • X := by
     simpa only [mixedTransferMap₂] using hFX
   simpa only [gaugeTensor, gaugeEigenvector, Kraus.IsUnital] using
@@ -138,11 +136,9 @@ theorem self_mul_conjTranspose_fixed_of_intertwining
     (hB_unital : ∑ i : Fin d, B i * (B i)ᴴ = 1)
     (hInter : ∀ i : Fin d, A i * X = μ • X * B i)
     (hμ : ‖μ‖ = 1) :
-    transferMap A (X * Xᴴ) = X * Xᴴ := by
-  have hfixed :=
-    Kraus.mapLM_self_mul_conjTranspose_fixed_of_intertwining
-      A B X μ hB_unital hInter hμ
-  simpa only [Kraus.mapLM_eq_transferMap] using hfixed
+    transferMap A (X * Xᴴ) = X * Xᴴ :=
+  Kraus.mapLM_self_mul_conjTranspose_fixed_of_intertwining
+    A B X μ hB_unital hInter hμ
 
 /-- Transport a fixed point of the gauged transfer map back to the original tensor. -/
 theorem ungauge_transfer_fixedPoint
@@ -151,10 +147,8 @@ theorem ungauge_transfer_fixedPoint
     (hσ : transferMap (gaugeTensor S A) σ = σ) :
     transferMap A (S * σ * Sᴴ) = S * σ * Sᴴ := by
   have hσ' : Kraus.mapLM (Kraus.gaugeFamily S A) σ = σ := by
-    simpa only [Kraus.mapLM_eq_transferMap, gaugeTensor] using hσ
-  have hfixed :=
-    Kraus.mapLM_congruence_fixedPoint_of_gauge_fixedPoint A S σ hS hσ'
-  simpa only [Kraus.mapLM_eq_transferMap] using hfixed
+    simpa only [gaugeTensor] using hσ
+  exact Kraus.mapLM_congruence_fixedPoint_of_gauge_fixedPoint A S σ hS hσ'
 
 /-- Cancel an invertible gauge from a scalar identity `S * σ * Sᴴ = c • (S * Sᴴ)`. -/
 theorem ungauge_scalar_of_conjugated_scalar
