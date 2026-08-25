@@ -1,20 +1,27 @@
 \section{Block Schur Complements}\label{sec:schur_complement}
 
 \begin{theorem}[Block Schur complement]\label{thm:schur_tfae}
-  \notready
+  \lean{SchurComplement.blockMatrix_posSemidef_iff,
+    SchurComplement.blockMatrix_posSemidef_iff_contraction,
+    SchurComplement.wolf_condition_three_not_sufficient}
+  \leanok
   \uses{def:schurComplement, def:blockMatrix}
-  Let $P \in \MN{D_1}$, $R \in \MN{D_2}$ be positive semi-definite
-  and $Q \in \MN{D_1,D_2}$ such that $\ker(R) \subseteq \ker(Q)$.
-  Wolf's Theorem~5.2 states that the following are equivalent:
+  Let $P \in \MN{D_1}$ and $R \in \MN{D_2}$ be positive semidefinite, and
+  let $Q \in \MN{D_1,D_2}$. The following are equivalent:
   \begin{enumerate}
-    \item The block matrix $\begin{pmatrix} P & Q \\ Q^\dagger & R \end{pmatrix}$ is PSD,
-    \item $P \ge Q R^+ Q^\dagger$ (pseudoinverse Schur complement),
-    \item $Q = P^{1/2} K R^{1/2}$ for a contraction $K$ with $\|K\|_\infty \le 1$.
+    \item The block matrix
+      $\begin{pmatrix} P & Q \\ Q^\dagger & R \end{pmatrix}$ is positive
+      semidefinite.
+    \item One has $\ker(R)\subseteq\ker(Q)$ and
+      $P\geq QR^+Q^\dagger$.
+    \item One has $\ker(R)\subseteq\ker(Q)$,
+      $\ker(P)\subseteq\ker(Q^\dagger)$, and
+      $Q=P^{1/2}KR^{1/2}$ for the canonical support contraction $K$, with
+      $\lVert K\rVert_\infty\leq1$.
   \end{enumerate}
-  Here $R^+$ denotes the pseudoinverse (inverse on the support) and the
-  square roots $P^{1/2}, R^{1/2}$ are the positive semidefinite square roots,
-  with their inverses extended by zero on the kernel.
-% The proof is deferred (paper-gap wolf_schur_complement_tfae).
+  Here $R^+$ denotes the pseudoinverse. The second support condition in the
+  third clause is necessary in the singular case and is absent from the
+  printed statement of Wolf's Theorem~5.2.
 \end{theorem}
 
 \begin{definition}[Block matrix]\label{def:blockMatrix}

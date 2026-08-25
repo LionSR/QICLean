@@ -13,7 +13,7 @@
 
 \begin{document}
 \maketitle
-\gapnote{local-correction}{resolved}
+\gapnote{local-correction}{open}
 
 \section{Source passage}
 
@@ -56,27 +56,26 @@ Equation~\eqref{eq:wolf-sic-bound} is not stated because of its denominator,
 but the singleton family is linearly independent whenever its sole matrix has
 unit purity.
 
-\section{Formalized interpretation}
+\section{Formalization status}
 
-The formalization separates three statements. The inequality
-\leanid{Matrix.sicPOVM_offDiag_overlap_sq_bound} and its equality criterion
-\leanid{Matrix.sicPOVM_offDiag_overlap_sq_eq_iff} retain the source's
-nondegenerate hypotheses $n\ge2$ and $1\le d\le n$; in particular, their
-validity at $d=1$ is preserved. The corrected consequence
-\leanid{Matrix.sicPOVM_linearIndependent_of_overlap_bound_eq} assumes $d\ge2$.
-The complementary singleton statement is
-\leanid{Matrix.singleton_linearIndependent_of_trace_sq_eq_one}.
+The current repository contains supporting trace--purity inequalities and the
+specialized \texttt{SICPOVM} API, including linear independence for an already
+bundled $d^2$-element SIC family. It does not yet contain a source-level theorem
+for Equation~\eqref{eq:wolf-sic-bound}, its equality characterization, or the
+corrected general linear-independence consequence. In particular, the
+specialized SIC theorem cannot replace the general proposition because its
+structure already assumes the equiangular rank-one family.
 
-Consequently, the combined nondegeneracy condition for linear independence is
-$d>1$ or $n=1$, while the equality theorem itself is not artificially
-restricted.
+The intended combined nondegeneracy condition for the missing general
+linear-independence theorem is $d>1$ or $n=1$, while the equality theorem itself
+should not be artificially restricted.
 
 \section{Verdict}
 
-\textbf{Verdict: resolved local fix (one-dimensional equality family).}
-Wolf's overlap bound and equality characterization are correct in one
-dimension. Only the final linear-independence consequence requires the
-qualification $d>1$, with the singleton case treated separately.
+\textbf{Verdict: source correction identified; formalization open.}
+Wolf's overlap bound and equality characterization remain to be formalized.
+Only the final linear-independence consequence requires the qualification
+$d>1$, with the singleton case treated separately.
 
 \bibliographystyle{alpha}
 \bibliography{references}

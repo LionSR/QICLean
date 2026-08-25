@@ -22,6 +22,26 @@ Wielandt inequality and the assembled quantum Perron-Frobenius theorem) lives
 in the sibling TNLean project, not in this repository. The source-facing
 Kraus-span characterization of primitive channels is formalized here.
 
+## Complete named-environment audit
+
+The August 25, 2026 audit covers all 153 literal lemma, proposition, theorem,
+and corollary environments in the transcribed Wolf chapters. Definitions and
+examples are outside this named-result count. The dispositions are: 71 exact,
+14 corrected or otherwise dispositioned, 11
+partial-packaging, 13 partial-scope, 2 obstructed, and 42 open. Only 13 of the
+14 corrected/dispositioned entries have an implemented corrected theorem; the
+remaining entry is a documented disposition rather than a replacement
+declaration. Thus 68 environments remain audit-unresolved
+(11 partial-packaging + 13 partial-scope + 2 obstructed + 42 open), and 69 do
+not have an implemented exact or corrected theorem.
+
+Here "partial-packaging" means that substantial clauses or equation-level
+components are proved but no declaration packages the full source environment.
+"Partial-scope" means that the implemented theorem has a genuinely narrower
+hypothesis or object class, such as a finite-Kraus or channel specialization.
+These classifications concern the complete containing source environment, not
+whether an individual displayed equation or supporting lemma has been proved.
+
 ## Wolf Lecture Notes — Chapter 2: Representations
 
 This file indexes the formalization of Chapter 2 of Wolf's
@@ -237,15 +257,22 @@ so that the cited formal statements are available from the main project import.
   - `Instrument` — quantum-instrument structure + `total_isChannel`,
     `sum_probability`, `posteriorState` interface ✓
 
-* **Proposition “SIC POVMs” and Equations (2.33)--(2.34)**:
-  - `SICPOVM` — the unscaled rank-one projectors, with
-    `∑ᵢ Pᵢ = d𝟙` and off-diagonal overlap `1/(d+1)` ✓
+* **Proposition 2.7 (SIC POVMs) — PARTIAL-PACKAGING**:
+  - The general package beginning with Equation (2.30), including the equality
+    characterization and the corrected linear-independence conclusion, is not
+    formalized as a source-level theorem.
+  - `SICPOVM` — the specialized SIC structure of unscaled rank-one projectors,
+    with `∑ᵢ Pᵢ = d𝟙` and off-diagonal overlap `1/(d+1)` ✓
   - `SICPOVM.toPOVM` — the effects `Pᵢ/d` form a POVM ✓
-  - `SICPOVM.linearIndependent_projector` — the `d²` projectors form an
-    operator basis ✓
+  - `SICPOVM.linearIndependent_projector` — within this specialized SIC API,
+    the `d²` projectors form an operator basis ✓
   - `SICPOVM.diagonal_representation` — Wolf Equation (2.33) ✓
   - `SICPOVM.krausMap_eq` / `SICPOVM.isChannel_krausMap` — the Kraus
     operators `Pᵢ/√d` define the channel in Wolf Equation (2.34) ✓
+
+  These specialized declarations do not supply the missing general Equation
+  (2.30), its equality case, or the corrected proposition-level
+  linear-independence package.
 
 #### Section 2.1 Representation corollaries (Propositions 2.2–2.4)
 
@@ -870,6 +897,19 @@ The surrounding complexity prose at source lines 80–83 is not formalized.
 
 ## Wolf Lecture Notes — Chapter 5: Schwarz Inequalities
 
+### Theorem 5.2 (block Schur complement) — CORRECTED FORM FORMALIZED
+
+- `SchurComplement.blockMatrix_posSemidef_iff` proves the equivalence between
+  positivity of the block matrix and the pseudoinverse Schur-complement
+  condition, including the necessary right-support condition.
+- `SchurComplement.blockMatrix_posSemidef_iff_contraction` proves the corrected
+  contraction criterion. In the singular case the off-diagonal block must
+  satisfy support conditions on both sides; the printed condition omits the
+  left-support condition.
+- `SchurComplement.wolf_condition_three_not_sufficient` records the scalar
+  counterexample to the uncorrected condition. The correction is documented in
+  `docs/paper-gaps/wolf_schur_complement_tfae.tex`.
+
 ### Consequence of Equation 5.56 and Proposition 5.3, Equation 5.57 — FORMALIZED WITH THE ORDER-HYPOTHESIS CORRECTION
 
 - `LinearMap.IsSymmetric.eigenvalues_le_of_sub_isPositive` proves the
@@ -1123,7 +1163,7 @@ conclusions.  The boundedness needed to form $T_\infty$ follows from
 
 ### Section 6.2 Irreducible maps and Perron–Frobenius theory
 
-#### Wolf Theorem 6.2 (Irreducible positive maps) — ITEMS 1–2 FORMALIZED; ITEM 4 CP SPECIALIZATION
+#### Wolf Theorem 6.2 (Irreducible positive maps) — PARTIAL-SCOPE
 
 **Item 1** (definition via invariant projections):
 * `IsIrreducibleMap` — `QICLean.Channel.Irreducible.Basic`
@@ -1137,7 +1177,11 @@ conclusions.  The boundedness needed to form $T_\infty$ follows from
   decrease. The declarations with the former CP signatures remain as direct
   specializations.
 
-**Item 3** (exponential condition `exp[tT](A) > 0`): NOT FORMALIZED.
+**Item 3** (exponential condition `exp[tT](A) > 0`):
+* `exp_posDef_of_irreducible_cp` and `irreducible_iff_exp_posDef_forall`
+  formalize the completely positive specialization. The source theorem is for
+  positive maps, and there is no single declaration packaging all four source
+  clauses.
 
 **Item 4** (orthogonal trace condition):
 * `orthogonal_trace_pos_of_irreducible_cp` — `QICLean.Channel.Irreducible.Growth`
@@ -1199,12 +1243,13 @@ is used, and the separate pointwise development is not a prerequisite. Both
 corrections and the former CP scope restriction are recorded in the resolved note
 `docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex`.
 
-#### Wolf Corollary 6.3 (Time-average / ergodicity) — FORMALIZED
+#### Wolf Corollary 6.3 (Time-average / ergodicity) — PARTIAL-SCOPE
 
 * `IsChannel.exists_unique_density_fixedPoint_of_irreducible` —
   `QICLean.Channel.Irreducible.Ergodicity`
   Qualitative form: an irreducible channel has a unique density-matrix fixed
-  point, and it is positive definite.
+  point, and it is positive definite. This is the quantum-channel
+  specialization of the source result.
 * `IsChannel.cesaroMean_tendsto_of_irreducible` — `QICLean.Channel.Irreducible.Ergodicity`
   Full Cesàro convergence: for every density matrix `ρ`,
   `(1/N) ∑_{t=0}^{N-1} E^[t](ρ) → σ`.
@@ -1214,7 +1259,7 @@ Supporting formalization in `QICLean.Channel.Irreducible.Ergodicity`:
 * `IsChannel.cesaroMean_subseq_limit_fixedPoint`: any subsequential Cesàro limit is
   a density-matrix fixed point (compactness + telescoping argument).
 
-#### Wolf Theorem 6.4 (Irreducibility from spectral properties) — FORMALIZED
+#### Wolf Theorem 6.4 (Irreducibility from spectral properties) — PARTIAL-SCOPE
 
 In `QICLean.Channel.Irreducible.FromSpectral`:
 * `HasSpectralProperties` — Kraus-witness bundle of the spectral assumptions
@@ -1223,9 +1268,12 @@ In `QICLean.Channel.Irreducible.FromSpectral`:
   `irreducible → spectral properties`.
 * `isIrreducibleMap_of_hasSpectralProperties` — the reverse implication via
   TP gauge reduction + channel fixed-point contradiction.
-* `isIrreducibleMap_iff_spectral_properties` — the final iff statement.
+* `isIrreducibleMap_iff_spectral_properties` — the final iff statement for
+  the restricted finite-Kraus/complete-positive bundle. The source theorem is
+  stated for positive maps, so the containing environment remains a
+  partial-scope formalization.
 
-#### Wolf Theorem 6.5 (Spectral radius and positive eigenvectors) — PARTIALLY FORMALIZED
+#### Wolf Theorem 6.5 (Spectral radius and positive eigenvectors) — PARTIAL-SCOPE
 
 * `exists_posSemidef_eigenvector` — `QICLean.Channel.PerronFrobenius.Existence`
 * `exists_posSemidef_eigenvector_general` — gives SOME nonnegative eigenvalue with
@@ -1250,7 +1298,7 @@ Uses Brouwer's fixed-point theorem on density matrices (proved in
   `isIrreducibleMap_full_similarity` under Wolf numbering; the wrapper
   had zero call sites and is not restored here.
 
-#### Wolf Theorem 6.6 (Peripheral spectrum of irreducible Schwarz maps)
+#### Wolf Theorem 6.6 (Peripheral spectrum of irreducible Schwarz maps) — PARTIAL-SCOPE
 
 **Item 1** (cyclic peripheral spectrum): FINITE-KRAUS SPECIALIZATION FORMALIZED
 * `Kraus.peripheralEigenvalues_eq_range_primitiveRoot` —
@@ -1263,14 +1311,23 @@ finite-Kraus companion specializations are formalized in
 `QICLean.Channel.Peripheral.GroupStructure` and
 `QICLean.Channel.Peripheral.CyclicDecomposition`.
 
-The abstract positive unital Schwarz-map theorem remains open; see
+The abstract positive unital Schwarz-map theorem remains open; the existing
+results are finite-Kraus, hence completely positive, specializations, and the
+order bound is not packaged. See
 `docs/paper-gaps/wolf_thm6_6_kraus_scope.tex`.
+
+#### Wolf Proposition 6.7 (Covariance and eigensystem) — OPEN
+
+The multiplicative-domain and peripheral-unitary API supplies ingredients used
+inside the finite-Kraus development, but there is no public source declaration
+for either the covariance identity or the two eigenvector-shift formulas under
+Wolf's abstract positive unital Schwarz hypotheses.
 
 ---
 
 ### Section 6.3 Primitive maps
 
-#### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions)
+#### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions) — PARTIAL-SCOPE
 
 **Item 4** (trivial peripheral spectrum, PD eigenvector):
 * `IsPrimitive` — `QICLean.Channel.Peripheral.Spectrum`
@@ -1301,10 +1358,12 @@ The Kraus-map presentation supplies complete positivity; trace preservation is
 an explicit hypothesis. No stronger CP-independent primitivity predicate is
 introduced.
 
-#### Wolf Theorem 6.9 (Quantum Wielandt inequality) and the low-dimensional corollary
+#### Wolf Theorem 6.9 (Quantum Wielandt inequality) and the low-dimensional corollary — PARTIAL-PACKAGING IN THIS TRACKER
 
-The general inequality is formalized in the tensor-network layer and indexed in
-`TNLean.Wielandt.WolfChapter6TNIndex`.  QICLean now contains the dimension-two
+The general inequality is formalized and packaged in the tensor-network layer,
+not by a QICLean declaration, and is indexed in
+`TNLean.Wielandt.WolfChapter6TNIndex`. In this repository the source
+environment therefore has only partial packaging. QICLean contains the dimension-two
 nilpotent-space classification and the resulting one-step nonzero-eigenvalue
 conclusion in
 `Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two`.  In dimension three,
@@ -1351,7 +1410,7 @@ In `QICLean.Channel.FixedPoint.StationarySupport`:
   stationary support. This is a channel-specific consequence, not an alternate
   formulation of Wolf Propositions 6.9--6.11.
 
-#### Wolf Theorem 6.12 (Fixed points form a *-algebra) — PARTIALLY FORMALIZED
+#### Wolf Theorem 6.12 (Fixed points form a *-algebra) — PARTIAL-SCOPE
 
 In `QICLean.Channel.FixedPoint.AbstractAlgebra`:
 
@@ -1984,17 +2043,59 @@ tensor-network layer; it is indexed in `TNLean.Wielandt.WolfChapter6TNIndex`.
 
 ---
 
+## Wolf Lecture Notes — Chapter 7: Continuous one-parameter semigroups
+
+The complete named-environment audit classifies exactly six Chapter 7
+source environments as partial rather than exact:
+
+- Proposition 7.1, “From continuous semigroups to differentiable groups”: the
+  real nonnegative-time exponential representation is proved, but the claimed
+  real/complex parameter group extension is not packaged (partial-scope).
+- Corollary 7.1, “Perturbation of generators”: the displayed estimate is proved
+  for the project's fixed operator norm, not for an arbitrary submultiplicative
+  norm as printed (partial-scope).
+- Proposition 7.4, “Freedom in representation of generators”: the shift,
+  tracelessness, uniqueness, and Kraus-freedom ingredients are formalized, but
+  not assembled under one source-facing proposition (partial-packaging).
+- Theorem 7.1, “Generators for semigroups of quantum channels”: the GKSL and
+  Lindblad forms are proved, but the public Kossakowski package does not retain
+  the exact fixed basis of the traceless subspace used in Equation (7.23)
+  (partial-scope).
+- Proposition 7.5, “Irreducibility implies primitivity”: source clauses 1--3 are
+  packaged, while clauses 4--5 on faithful convergence and the Liouvillian
+  kernel are absent (partial-packaging).
+- Corollary 7.2, “Necessary conditions for relaxation”: the three hypotheses
+  yield non-reducibility, but the source's faithful stationary state and global
+  relaxation conclusion are not packaged (partial-packaging).
+
+Propositions 7.2 and 7.3 are exact completions. The `\leanok` markers in the
+semigroup Blueprint certify individual Lean declarations; they must not be read
+as exact-coverage markers for a larger containing Wolf environment.
+
+---
+
 ## Wolf Lecture Notes — Chapter 8: Distance measures and convergence
 
-### Equation 8.104 (Jordan-block power estimate) — FORMALIZED
+The audit distinguishes equation-level coverage from coverage of the named
+source environment containing the equation. A proved displayed equation or
+proof prerequisite does not make the containing lemma, proposition, or theorem
+exact when its other clauses, hypotheses, or conclusions remain absent. The
+entries below therefore state both levels explicitly.
 
-In `QICLean.Analysis.JordanBlockPower`:
+### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
+* `Matrix.wolf_eq_103` and `Matrix.wolf_eq_103_refined` prove Equation (8.103)
+  for an arbitrary submultiplicative seminorm in the mathematically meaningful
+  range `D - 1 ≤ n`; the printed natural exponent is undefined below that
+  range.
 * `Matrix.jordanBlock_pow` gives the truncated binomial expansion of a Jordan
   block power.
 * `Matrix.l2_opNorm_jordanBlock_pow_bounds` gives the two-sided operator-norm
-  estimate in Equation (8.104), with its lower and upper halves also
-  exposed separately.
+  estimate in Equation (8.104). The false auxiliary assertion `‖N‖ = 1` at
+  `D = 1` is replaced by the valid `‖N‖ ≤ 1` bound.
+
+Together these declarations complete the containing lemma with the documented
+natural-exponent and one-dimensional corrections.
 
 ### Theorem “Asymptotic convergence I” (Equations 8.106–8.109) — PREREQUISITES FORMALIZED
 
@@ -2022,7 +2123,7 @@ recorded in
 `docs/paper-gaps/wolf_thm823_jordan_scaling_qualifications.tex`; issue #297
 therefore remains open.
 
-### Proposition “Jordan condition number and detailed balance” (Equation 8.110) — SOURCE BASIS PREREQUISITE FORMALIZED
+### Proposition 8.5, “Jordan condition number and detailed balance” (Equation 8.110) — PARTIAL-PACKAGING
 
 In `QICLean.Channel.DetailedBalance`:
 
@@ -2044,7 +2145,7 @@ and a theorem bounding that infimum by the condition factor of each
 admissible Jordan basis. The current declarations retain Wolf's chosen basis
 instead of silently replacing its factor by `κ_T`; issue #298 remains open.
 
-### Theorem “Asymptotic convergence II” (Equation 8.111) — FORMALIZED IN THE VALID NATURAL-EXPONENT RANGE
+### Theorem 8.24, “Asymptotic convergence II” (Equation 8.111) — CORRECTED FORM FORMALIZED
 
 In `QICLean.Channel.Peripheral.SchurAsymptoticConvergence`:
 
@@ -2077,4 +2178,15 @@ the displayed exponent is defined. At `d = 1`, `n = 0`, the auxiliary
 positive-power identity fails, but the final inequality is the immediate
 statement `0 ≤ 1`; the headline theorems therefore include this case. This
 source qualification is recorded in
-`docs/paper-gaps/wolf_ch8_eq_8_103_negative_exponent.tex`.
+`docs/paper-gaps/wolf_ch8_eq_8_103_negative_exponent.tex`. With this explicit
+qualification, the containing Theorem 8.24 has a corrected-source disposition.
+
+### Proposition 8.6, “Convergence towards asymptotic states” — PARTIAL-PACKAGING
+
+`Matrix.traceNormAsymptoticDistance`,
+`Matrix.traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm`, and
+`Matrix.traceNormAsymptoticDistance_pow_le_transferMatrix_l2_opNorm` prove the
+upper bound in Equation (8.112) and its transfer-matrix estimates for positive
+powers. The converse supremum lower bound in Equation (8.113), including the
+four-positive-parts argument of Equation (8.117), remains absent. Thus the
+proved upper bound does not complete the containing proposition.
