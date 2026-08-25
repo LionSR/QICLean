@@ -175,6 +175,8 @@ shortened module path with the `QICLean/` prefix dropped — for example
   blueprint (including its reader-facing prose checks).
 - `blueprint.yml` — compiles and deploys the blueprint (web and PDF) on
   pushes to `main` that touch Lean or blueprint files.
+- `badges.yml` — weekly (and manually triggerable) refresh of the README
+  status badges (sorry/axiom counts and Lean/Mathlib versions).
 - `docgen.yml` — a weekly (and manually triggerable) full API-documentation
   build.
 - `import-completeness.yml` — checks that the generated `QICLean.lean`
