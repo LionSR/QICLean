@@ -1,0 +1,64 @@
+\section{Transfer-matrix identities}
+
+\begin{theorem}[Functoriality of transfer matrices]
+    \label{thm:transfer_matrix_functoriality}
+    \lean{transferMatrix_id,transferMatrix_comp}
+    \leanok
+    For linear maps $S,T:M_D(\mathbb C)\to M_D(\mathbb C)$,
+    \begin{align}
+        \widehat{\operatorname{id}} & =\Id,                    \\
+        \widehat{S\circ T}          & =\widehat S\,\widehat T.
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    Expand both sides on matrix units.  The identity formula is immediate,
+    while the composition formula follows by summing over the intermediate
+    row and column indices.
+\end{proof}
+
+
+\begin{theorem}[Trace preservation fixes the vectorized identity on the left]
+    \label{thm:transfer_matrix_trace_preserving_identity_left_fixed}
+    \lean{vecMul_vec_one_transferMatrix_eq_of_trace_preserving}
+    \leanok
+    If $T:M_D(\mathbb C)\to M_D(\mathbb C)$ preserves trace and
+    $(\Phi\rvert=\operatorname{vec}(\Id)^{\mathsf T}$, then
+    \begin{align}
+        (\Phi\rvert\widehat T & =(\Phi\rvert.
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+
+    On the column indexed by the matrix unit $E_{k\ell}$,
+    \begin{align}
+        \bigl((\Phi\rvert\widehat T\bigr)_{(\ell,k)}
+         & =\operatorname{vec}(\Id)\mathbin{\boldsymbol\cdot}
+        \operatorname{vec}(T(E_{k\ell}))                      \\
+         & =\tr(T(E_{k\ell}))
+        =\tr(E_{k\ell})
+        =\delta_{k\ell}.
+    \end{align}
+    These are precisely the coordinates of $(\Phi\rvert$.
+\end{proof}
+
+\begin{theorem}[Powers and traces of transfer matrices]
+    \label{thm:transfer_matrix_power_trace}
+    \lean{transferMatrix_pow,trace_transferMatrix_eq_linearMap_trace}
+    \leanok
+    For every nonnegative integer $N$,
+    \begin{align}
+        \widehat{T^N}   & =(\widehat T)^N,       \\
+        \tr(\widehat T) & =\operatorname{Tr}(T),
+    \end{align}
+    where the second trace is the operator trace of the endomorphism of
+    $M_D(\mathbb C)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:transfer_matrix_functoriality}
+    Functoriality proves the power identity by induction.  For the trace
+    identity, expand the operator trace in the matrix-unit basis.  The two
+    diagonal sums differ only by exchanging the row and column indices.
+\end{proof}
