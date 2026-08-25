@@ -8,6 +8,8 @@
 ![axioms](https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/axioms.json)
 ![Lean](https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/lean.json)
 ![Mathlib](https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/mathlib.json)
+![blueprint: no \leanok](https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/blueprint_no_leanok.json)
+![blueprint: not ready](https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/blueprint_not_ready.json)
 
 <p align="center">
   <a href="https://sirui-lu.com/QICLean/blueprint/">Blueprint</a> ·
