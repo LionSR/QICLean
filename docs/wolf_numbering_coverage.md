@@ -26,13 +26,13 @@ Kraus-span characterization of primitive channels is formalized here.
 
 The August 25, 2026 audit covers all 153 literal lemma, proposition, theorem,
 and corollary environments in the transcribed Wolf chapters. Definitions and
-examples are outside this named-result count. The dispositions are: 71 exact,
-14 corrected or otherwise dispositioned, 11
-partial-packaging, 13 partial-scope, 2 obstructed, and 42 open. Only 13 of the
-14 corrected/dispositioned entries have an implemented corrected theorem; the
+examples are outside this named-result count. After the SIC--POVM migration,
+the dispositions are: 71 exact, 15 corrected or otherwise dispositioned, 10
+partial-packaging, 13 partial-scope, 2 obstructed, and 42 open. Fourteen of the
+15 corrected/dispositioned entries have an implemented corrected theorem; the
 remaining entry is a documented disposition rather than a replacement
-declaration. Thus 68 environments remain audit-unresolved
-(11 partial-packaging + 13 partial-scope + 2 obstructed + 42 open), and 69 do
+declaration. Thus 67 environments remain audit-unresolved
+(10 partial-packaging + 13 partial-scope + 2 obstructed + 42 open), and 68 do
 not have an implemented exact or corrected theorem.
 
 Here "partial-packaging" means that substantial clauses or equation-level
@@ -257,22 +257,28 @@ so that the cited formal statements are available from the main project import.
   - `Instrument` — quantum-instrument structure + `total_isChannel`,
     `sum_probability`, `posteriorState` interface ✓
 
-* **Proposition 2.7 (SIC POVMs) — PARTIAL-PACKAGING**:
-  - The general package beginning with Equation (2.30), including the equality
-    characterization and the corrected linear-independence conclusion, is not
-    formalized as a source-level theorem.
+* **Proposition 2.7 (SIC POVMs) — CORRECTED / SOURCE-DISPOSITIONED**:
+  - `Matrix.sicPOVM_offDiag_overlap_sq_bound` — Wolf Equation (2.30) for PSD
+    Hilbert--Schmidt-normalized families ✓
+  - `Matrix.sicPOVM_offDiag_overlap_sq_eq_iff` — equality iff each matrix is a
+    rank-one orthogonal projection, the family sums to `(n/d) • 1`, and all
+    off-diagonal overlaps are constant ✓
+  - `Matrix.sicPOVM_linearIndependent_of_overlap_bound_eq` — Wolf's
+    coefficient proof with the necessary correction `2 ≤ d` ✓
+  - `Matrix.singleton_linearIndependent_of_trace_sq_eq_one` — the corrected
+    singleton branch ✓
   - `SICPOVM` — the specialized SIC structure of unscaled rank-one projectors,
     with `∑ᵢ Pᵢ = d𝟙` and off-diagonal overlap `1/(d+1)` ✓
   - `SICPOVM.toPOVM` — the effects `Pᵢ/d` form a POVM ✓
-  - `SICPOVM.linearIndependent_projector` — within this specialized SIC API,
-    the `d²` projectors form an operator basis ✓
+  - `SICPOVM.linearIndependent_projector` — the `d²` projectors form an
+    operator basis ✓
   - `SICPOVM.diagonal_representation` — Wolf Equation (2.33) ✓
   - `SICPOVM.krausMap_eq` / `SICPOVM.isChannel_krausMap` — the Kraus
     operators `Pᵢ/√d` define the channel in Wolf Equation (2.34) ✓
 
-  These specialized declarations do not supply the missing general Equation
-  (2.30), its equality case, or the corrected proposition-level
-  linear-independence package.
+  The source's unqualified linear-independence conclusion fails for `d = 1`
+  and `n > 1`; the formalization records this correction and proves all valid
+  branches.
 
 #### Section 2.1 Representation corollaries (Propositions 2.2–2.4)
 

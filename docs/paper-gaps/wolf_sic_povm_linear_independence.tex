@@ -13,7 +13,7 @@
 
 \begin{document}
 \maketitle
-\gapnote{local-correction}{open}
+\gapnote{local-correction}{formalized}
 
 \section{Source passage}
 
@@ -58,24 +58,25 @@ unit purity.
 
 \section{Formalization status}
 
-The current repository contains supporting trace--purity inequalities and the
-specialized \texttt{SICPOVM} API, including linear independence for an already
-bundled $d^2$-element SIC family. It does not yet contain a source-level theorem
-for Equation~\eqref{eq:wolf-sic-bound}, its equality characterization, or the
-corrected general linear-independence consequence. In particular, the
-specialized SIC theorem cannot replace the general proposition because its
-structure already assumes the equiangular rank-one family.
-
-The intended combined nondegeneracy condition for the missing general
-linear-independence theorem is $d>1$ or $n=1$, while the equality theorem itself
-should not be artificially restricted.
+The source-level package is formalized in
+\texttt{QICLean.Algebra.SICPOVMBound}. The theorem
+\texttt{Matrix.sicPOVM\_offDiag\_overlap\_sq\_bound} proves
+Equation~\eqref{eq:wolf-sic-bound}, and
+\texttt{Matrix.sicPOVM\_offDiag\_overlap\_sq\_eq\_iff} proves its
+full equality characterization. The corrected linear-independence conclusion
+is split into
+\texttt{Matrix.sicPOVM\_linearIndependent\_of\_overlap\_bound\_eq}
+for $d\ge2$ and
+\texttt{Matrix.singleton\_linearIndependent\_of\_trace\_sq\_eq\_one}
+for the singleton branch. The specialized \texttt{SICPOVM} API then supplies
+the $n=d^2$ operator-basis and channel consequences.
 
 \section{Verdict}
 
-\textbf{Verdict: source correction identified; formalization open.}
-Wolf's overlap bound and equality characterization remain to be formalized.
-Only the final linear-independence consequence requires the qualification
-$d>1$, with the singleton case treated separately.
+\textbf{Verdict: source correction formalized.}
+Wolf's overlap bound and equality characterization are formalized without an
+artificial dimension restriction. The final linear-independence consequence
+is stated with $d>1$, with the singleton case treated separately.
 
 \bibliographystyle{alpha}
 \bibliography{references}
