@@ -7,11 +7,12 @@ Authors: QICLean contributors
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
 import QICLean.Kraus.PrimitiveFixedPoint.Peripheral
 import QICLean.Kraus.PrimitiveFixedPoint.Irreducible
+import QICLean.Kraus.PrimitiveFixedPoint.FromPeripheral
 
 /-!
 # Primitive fixed points of finite Kraus families
 
-This module exports the complete first-phase API for complementary fixed-point gaps:
-the basic gap data and its spectral consequences, peripheral-spectrum primitivity, and the
-relationship between positive-definite fixed points and irreducibility.
+This module exports the complementary fixed-point-gap API: the basic gap data and its
+spectral consequences, peripheral-spectrum primitivity, the relationship with
+irreducibility, and constructions of primitive fixed points from peripheral primitivity.
 -/
