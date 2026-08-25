@@ -4,6 +4,16 @@
 
 [![PR CI](https://github.com/LionSR/QICLean/actions/workflows/pr-ci.yml/badge.svg)](https://github.com/LionSR/QICLean/actions/workflows/pr-ci.yml)
 [![Compile blueprint](https://github.com/LionSR/QICLean/actions/workflows/blueprint.yml/badge.svg)](https://github.com/LionSR/QICLean/actions/workflows/blueprint.yml)
+![sorries](https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/sorries.json)
+![axioms](https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/axioms.json)
+![Lean](https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/lean.json)
+![Mathlib](https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/mathlib.json)
+
+<p align="center">
+  <a href="https://sirui-lu.com/QICLean/blueprint/">Blueprint</a> ·
+  <a href="https://sirui-lu.com/QICLean/docs/">Documentation</a> ·
+  <a href="https://sirui-lu.com/QICLean/paper-gaps/">Paper-gap notes</a>
+</p>
 
 QICLean is a [Lean 4](https://lean-lang.org/) library, built on
 [Mathlib](https://github.com/leanprover-community/mathlib4), that formalizes
@@ -17,7 +27,9 @@ number, separability, the partial transpose and reduction criteria),
 positive-but-not-completely-positive maps, and entropy. The library draws
 heavily on M. Wolf's lecture notes, *Quantum Channels & Operations: A Guided
 Tour*, alongside results
-formalized from the wider quantum-information literature.
+formalized from the wider quantum-information literature. Some files contain
+unfinished proofs (`sorry`) or results assumed as axioms; the badges above
+track the current counts.
 
 ## Relation to TNLean
 
