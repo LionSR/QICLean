@@ -52,6 +52,7 @@ import QICLean.Algebra.PosSemidefSupport
 import QICLean.Algebra.PositiveSemidefiniteNormalization
 import QICLean.Algebra.RankOneSandwich
 import QICLean.Algebra.RectangularChoi
+import QICLean.Algebra.SICPOVMBound
 import QICLean.Algebra.ScalarCommutant
 import QICLean.Algebra.ShiftedTracePowerSpectrum
 import QICLean.Algebra.SkolemNoether
