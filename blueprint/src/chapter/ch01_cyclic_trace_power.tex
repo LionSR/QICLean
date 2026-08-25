@@ -1,0 +1,20 @@
+\section{A cyclic trace identity for rectangular powers}
+
+\begin{lemma}[Cyclic trace identity for rectangular powers]
+    \label{lem:matrix_trace_pow_mul_comm}
+    \lean{Matrix.trace_pow_mul_comm}
+    \leanok
+    For rectangular matrices $L$ and $Q$ over a commutative semiring and every
+    integer $N\geq1$,
+    \begin{align}
+        \tr\bigl((LQ)^N\bigr)&=\tr\bigl((QL)^N\bigr).
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Write $N=M+1$. Induction on $M$ gives
+    $(LQ)^{M+1}=L(QL)^M Q$. Moving the first factor cyclically through the
+    trace and reassociating the product gives $\tr((QL)^{M+1})$.
+\end{proof}

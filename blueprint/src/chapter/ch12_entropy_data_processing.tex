@@ -1,0 +1,70 @@
+\section{Data processing under local channels}
+
+\begin{theorem}[Data processing on the first tensor factor]
+    \label{thm:mutual_information_data_processing_left}
+    \lean{IsKrausCPTP.mutualInformation_tensorMapId_le}
+    \leanok
+    Let $\rho_{AB}$ be a bipartite density operator and let $\Phi_A$ be a
+    trace-preserving completely positive map whose input and output matrix
+    algebras may have different dimensions. Then
+    $I(A':B)_{(\Phi_A\otimes\id_B)(\rho)}\leq I(A:B)_\rho$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{lem:tensor_map_id_pos}
+    Choose a rectangular Stinespring isometry for $\Phi_A$. Conjugating by
+    $W=V_A\otimes\id_B$ gives
+    $\omega_{A'EB}=W\rho_{AB}W^\dagger$. Since
+    $W=V_A\otimes\id_B$ and $V_A^\dagger V_A=\id_A$, its marginals satisfy
+    \begin{align}
+        \omega_{A'E} & =V_A\rho_A V_A^\dagger, \notag \\
+        \omega_B     & =\rho_B.
+        \notag
+    \end{align}
+    Entropy is preserved by the isometry $W$, and also by $V_A$ on the first
+    marginal. Therefore
+    \begin{align}
+        S(\omega_{A'EB}) & =S(\rho_{AB}), \notag \\
+        S(\omega_{A'E})  & =S(\rho_A), \notag    \\
+        S(\omega_B)      & =S(\rho_B).
+        \notag
+    \end{align}
+    Hence $I(A'E:B)_\omega=I(A:B)_\rho$. The defining Stinespring identity is
+    $\tr_E(\omega_{A'EB})=(\Phi_A\otimes\id_B)(\rho_{AB})$.
+    Strong subadditivity in the form $I(R:A')\leq I(R:A'E)$ proves the stated
+    inequality with $R=B$.
+\end{proof}
+
+\begin{theorem}[Data processing on the second tensor factor]
+    \label{thm:mutual_information_data_processing_right}
+    \lean{IsKrausCPTP.mutualInformation_idTensorMap_le}
+    \leanok
+    \uses{def:id_tensor_map}
+    Let $\rho_{AB}$ be a bipartite density operator and let $\Psi_B$ be a
+    trace-preserving completely positive map whose input and output matrix
+    algebras may have different dimensions. Then
+    $I(A:B')_{(\id_A\otimes\Psi_B)(\rho)}\leq I(A:B)_\rho$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:id_tensor_map_pos, thm:mutual_information_data_processing_left}
+    Exchange the two tensor factors and apply
+    Theorem~\ref{thm:mutual_information_data_processing_left}.
+\end{proof}
+
+\begin{theorem}[Data processing for bipartite mutual information]
+    \label{thm:mutual_information_data_processing}
+    \lean{IsKrausCPTP.mutualInformation_tensorMapBoth_le}
+    \leanok
+    \uses{def:tensor_map_both}
+    Let $\rho_{AB}$ be a bipartite density operator and let $\Phi_A$ and
+    $\Psi_B$ be trace-preserving completely positive maps whose input and
+    output matrix algebras may have different dimensions. Then
+    $I(A':B')_{(\Phi_A\otimes\Psi_B)(\rho)}\leq I(A:B)_\rho$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:tensor_map_both_pos, thm:mutual_information_data_processing_left, thm:mutual_information_data_processing_right}
+    Apply the two one-sided inequalities successively.
+\end{proof}
