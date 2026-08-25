@@ -551,7 +551,7 @@ theorem hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive [NeZero D]
     exact compl_eigenvalue_norm_lt_one_of_primitive_of_irreducible_channel
       E hE hIrrE ρ hρ_fix (ne_zero_of_mem_densityMatrices' hρ_mem) htr_ne hPrim ν hν
   have hsr_lt : spectralRadius ℂ Ê < 1 :=
-    spectralRadius_lt_one_of_eigenvalues_lt_one (D := D) N hcompl_lt
+    spectralRadius_lt_one_of_eigenvalues_lt_one N hcompl_lt
   have hÊ_tendsto : Tendsto (fun n : ℕ => Ê ^ n) atTop (nhds 0) :=
     pow_tendsto_zero_of_spectralRadius_lt_one _ hsr_lt
   set ε : ℝ := δ / C with hε_def
