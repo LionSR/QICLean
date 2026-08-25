@@ -20,6 +20,7 @@ import QICLean.Kraus.MixedMap.SpectralRadius
 import QICLean.Kraus.MultiBlockWord
 import QICLean.Kraus.PrimitiveFixedPoint
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
+import QICLean.Kraus.PrimitiveFixedPoint.FromPeripheral
 import QICLean.Kraus.PrimitiveFixedPoint.Irreducible
 import QICLean.Kraus.PrimitiveFixedPoint.Peripheral
 import QICLean.Kraus.Tactic

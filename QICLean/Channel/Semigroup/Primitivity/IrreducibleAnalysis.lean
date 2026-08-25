@@ -34,7 +34,7 @@ theorem primitive_channel_pow_tendsto_zero_of_trace_zero [NeZero D]
     exact compl_eigenvalue_norm_lt_one_of_primitive_of_irreducible_channel
       E hE hIrr σ hσ_fix hσ_ne htrσ hPrim ν hν
   have hsr_lt : spectralRadius ℂ ((Module.End.toContinuousLinearMap Mat) (E - P)) < 1 :=
-    spectralRadius_lt_one_of_eigenvalues_lt_one (D := D) (E - P) hcompl_lt
+    spectralRadius_lt_one_of_eigenvalues_lt_one (E - P) hcompl_lt
   have hpow0 : Filter.Tendsto
       (fun n : ℕ => ((Module.End.toContinuousLinearMap Mat) (E - P)) ^ n)
       Filter.atTop (nhds 0) :=

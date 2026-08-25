@@ -3,6 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
+import QICLean.Analysis.SpectralRadiusPowerDecay
 import QICLean.Channel.Peripheral.Spectrum
 import QICLean.Channel.Peripheral.AdjointSpectrum
 import QICLean.Channel.Peripheral.ClosureFixedPointKraus
@@ -29,7 +30,9 @@ spectrum from Wolf Chapter 6.
 * `peripheral_isRootOfUnity_of_irreducible_channel`:
   peripheral eigenvalues of an irreducible channel are roots of unity
 * `compl_eigenvalue_norm_lt_one_of_primitive_of_irreducible_channel`:
-  primitive irreducible channels have a strict complementary transfer-map gap
+  every eigenvalue of the complementary map has modulus below one
+* `spectralRadius_compl_lt_one_of_primitive_fixedPoint_of_irreducible_channel`:
+  primitive irreducible channels have a strict complementary spectral-radius gap
 
 The roots-of-unity proof reduces the channel to a finite Kraus family:
 trace preservation makes the conjugate-transposed family unital, the fixed
@@ -37,7 +40,7 @@ point of an irreducible channel is positive definite, and the unital
 roots-of-unity theorem transports back across the adjoint.
 -/
 
-open scoped Matrix ComplexOrder MatrixOrder BigOperators NNReal ENNReal
+open scoped Matrix Matrix.Norms.Operator ComplexOrder MatrixOrder BigOperators NNReal ENNReal
 open Matrix Finset Complex
 
 noncomputable section
@@ -215,3 +218,28 @@ theorem compl_eigenvalue_norm_lt_one_of_primitive_of_irreducible_channel
     (fun X hXfix htrX =>
       fixedPoint_eq_zero_of_trace_eq_zero_of_irreducible_channel hE hIrr X hXfix htrX)
     ν hν
+
+/-- A primitive irreducible channel has spectral radius less than one after subtracting
+the projection onto any nonzero positive-semidefinite fixed point. -/
+theorem spectralRadius_compl_lt_one_of_primitive_fixedPoint_of_irreducible_channel
+    [NeZero D]
+    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (hE : IsChannel E)
+    (hIrr : IsIrreducibleMap E)
+    (hPrim : IsPrimitive E)
+    (ρ : Matrix (Fin D) (Fin D) ℂ)
+    (hρ_psd : ρ.PosSemidef)
+    (hρ_ne : ρ ≠ 0)
+    (hρ_fix : E ρ = ρ) :
+    ∃ htr : Matrix.trace ρ ≠ 0,
+      spectralRadius ℂ
+        ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ))
+          (E - fixedPointProj (D := D) ρ htr)) < 1 := by
+  have htr : Matrix.trace ρ ≠ 0 := by
+    intro htr0
+    exact hρ_ne ((Matrix.PosSemidef.trace_eq_zero_iff hρ_psd).1 htr0)
+  refine ⟨htr, spectralRadius_lt_one_of_eigenvalues_lt_one
+    (E - fixedPointProj (D := D) ρ htr) ?_⟩
+  intro ν hν
+  exact compl_eigenvalue_norm_lt_one_of_primitive_of_irreducible_channel
+    E hE hIrr ρ hρ_fix hρ_ne htr hPrim ν hν
