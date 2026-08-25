@@ -18,6 +18,10 @@ import QICLean.Kraus.MixedMap.Gap
 import QICLean.Kraus.MixedMap.GaugeRigidity
 import QICLean.Kraus.MixedMap.SpectralRadius
 import QICLean.Kraus.MultiBlockWord
+import QICLean.Kraus.PrimitiveFixedPoint
+import QICLean.Kraus.PrimitiveFixedPoint.Basic
+import QICLean.Kraus.PrimitiveFixedPoint.Irreducible
+import QICLean.Kraus.PrimitiveFixedPoint.Peripheral
 import QICLean.Kraus.Tactic
 import QICLean.Kraus.TracePairing
 import QICLean.Kraus.Transfer
