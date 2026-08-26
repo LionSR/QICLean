@@ -17,66 +17,133 @@
 
 \section{Source passage}
 
-Let $P_1,\ldots,P_n\in\MN{d}$ be positive semidefinite matrices satisfying
-$\tr(P_i^2)=1$, where $d\le n$. Chapter~2 of
-\cite{Wolf2012Quantum}, Proposition ``SIC POVMs'', proves the bound
+Let $P_1,\ldots,P_n\in\MN{d}$ be positive semidefinite matrices with $d\leq n$
+and
 \begin{align}
-  \sum_{i\ne j}|\tr(P_iP_j)|^2
-  \ge \frac{n(n-d)^2}{(n-1)d^2}.
-  \label{eq:wolf-sic-bound}
+    \tr(P_i^2)&=1
+    \qquad(1\leq i\leq n).
+    \label{eq:wolf_sic_povm_linear_independence_unit_purity}
 \end{align}
-At equality, the argument gives
+The proposition entitled ``SIC POVMs'' in Chapter~2 of
+Ref.~\cite{Wolf2012Quantum} proves
 \begin{align}
-  P_i^2&=P_i, & \operatorname{rank}(P_i)&=1, \\
-  \sum_iP_i&=\frac nd\Id, &
-  \tr(P_iP_j)&=\frac{n-d}{(n-1)d}\qquad(i\ne j).
-  \label{eq:wolf-sic-equality}
+    \sum_{i\neq j}
+        \left|\tr(P_iP_j)\right|^2
+        &\geq
+        \frac{n(n-d)^2}{(n-1)d^2}.
+    \label{eq:wolf_sic_povm_linear_independence_overlap_bound}
 \end{align}
-The source then asserts, at lines 816--823 of the local Chapter~2 source file,
-that the matrices in an equality family are linearly independent.
-
-\section{The deviation}
-
-The concluding assertion fails when $d=1$ and $n>1$. In one dimension the
-unit-purity and positivity hypotheses force every $P_i$ to be the matrix
-$[1]$. This family attains equality in~\eqref{eq:wolf-sic-bound}: both sides
-are $n(n-1)$. It is nevertheless linearly dependent as soon as it contains
-more than one member.
-
-The coefficient calculation in the source also isolates the precise
-degeneracy. If $\sum_i c_iP_i=0$, taking the trace and then pairing with
-$P_j$ gives
+At equality, the proof gives
 \begin{align}
-  \sum_i c_i&=0, \\
-  \left(1-\frac{n-d}{(n-1)d}\right)c_j&=0.
+    P_i^2&=P_i,
+    \label{eq:wolf_sic_povm_linear_independence_projector}\\
+    \operatorname{rank}(P_i)&=1,
+    \label{eq:wolf_sic_povm_linear_independence_rank_one}\\
+    \sum_iP_i&=\frac{n}{d}\Id,
+    \label{eq:wolf_sic_povm_linear_independence_tight_sum}\\
+    \tr(P_iP_j)
+        &=\frac{n-d}{(n-1)d}
+        \qquad(i\neq j).
+    \label{eq:wolf_sic_povm_linear_independence_constant_overlap}
 \end{align}
-For $n>1$, the prefactor vanishes exactly when $d=1$. Thus an equality family
-is linearly independent under the corrected condition $d>1$. When $n=1$,
-Equation~\eqref{eq:wolf-sic-bound} is not stated because of its denominator,
-but the singleton family is linearly independent whenever its sole matrix has
-unit purity.
+The source then asserts that every equality family is linearly independent
+\cite{Wolf2012Quantum}. This assertion appears at lines 816--823 of the local
+Chapter~2 source file.
+
+\section{The one-dimensional counterexample}
+
+The linear-independence conclusion fails when $d=1$ and $n>1$. In one
+dimension, positivity and
+(\ref{eq:wolf_sic_povm_linear_independence_unit_purity}) force
+\begin{align}
+    P_i&=[1]
+    \qquad(1\leq i\leq n).
+    \label{eq:wolf_sic_povm_linear_independence_dimension_one_family}
+\end{align}
+For this family, each off-diagonal overlap equals one, so
+\begin{align}
+    \sum_{i\neq j}
+        \left|\tr(P_iP_j)\right|^2
+        &=n(n-1),
+    \label{eq:wolf_sic_povm_linear_independence_dimension_one_left}\\
+    \frac{n(n-d)^2}{(n-1)d^2}
+        &=\frac{n(n-1)^2}{n-1}
+    \label{eq:wolf_sic_povm_linear_independence_dimension_one_right_first}\\
+        &=n(n-1).
+    \label{eq:wolf_sic_povm_linear_independence_dimension_one_right_value}
+\end{align}
+Thus the family attains equality in
+(\ref{eq:wolf_sic_povm_linear_independence_overlap_bound}). It is linearly
+dependent whenever $n>1$ because all its members are equal.
+
+\section{The corrected coefficient argument}
+
+Assume that an equality family satisfies a linear relation
+\begin{align}
+    \sum_i c_iP_i&=0.
+    \label{eq:wolf_sic_povm_linear_independence_linear_relation}
+\end{align}
+Taking the trace and using
+(\ref{eq:wolf_sic_povm_linear_independence_projector}) and
+(\ref{eq:wolf_sic_povm_linear_independence_rank_one}) gives
+\begin{align}
+    \sum_i c_i&=0.
+    \label{eq:wolf_sic_povm_linear_independence_coefficient_sum}
+\end{align}
+Pairing
+(\ref{eq:wolf_sic_povm_linear_independence_linear_relation}) with $P_j$ in
+the trace inner product and using
+(\ref{eq:wolf_sic_povm_linear_independence_constant_overlap}) yields
+\begin{align}
+    0
+        &=c_j+
+        \frac{n-d}{(n-1)d}\sum_{i\neq j}c_i
+    \label{eq:wolf_sic_povm_linear_independence_pairing_first}\\
+        &=
+        \left(1-\frac{n-d}{(n-1)d}\right)c_j.
+    \label{eq:wolf_sic_povm_linear_independence_pairing_prefactor}
+\end{align}
+For $n>1$, the prefactor satisfies
+\begin{align}
+    1-\frac{n-d}{(n-1)d}
+        &=\frac{n(d-1)}{(n-1)d}.
+    \label{eq:wolf_sic_povm_linear_independence_prefactor_value}
+\end{align}
+It vanishes exactly when $d=1$. Therefore every equality family is linearly
+independent under the corrected condition $d>1$.
+
+When $n=1$, the bound
+(\ref{eq:wolf_sic_povm_linear_independence_overlap_bound}) is not stated
+because its right-hand side has denominator $n-1$. The singleton family is
+nevertheless linearly independent whenever its sole matrix has unit purity,
+because that matrix is nonzero.
 
 \section{Formalization status}
 
-The source-level package is formalized in
-\texttt{QICLean.Algebra.SICPOVMBound}. The theorem
-\texttt{Matrix.sicPOVM\_offDiag\_overlap\_sq\_bound} proves
-Equation~\eqref{eq:wolf-sic-bound}, and
-\texttt{Matrix.sicPOVM\_offDiag\_overlap\_sq\_eq\_iff} proves its
-full equality characterization. The corrected linear-independence conclusion
-is split into
-\texttt{Matrix.sicPOVM\_linearIndependent\_of\_overlap\_bound\_eq}
-for $d\ge2$ and
-\texttt{Matrix.singleton\_linearIndependent\_of\_trace\_sq\_eq\_one}
-for the singleton branch. The specialized \texttt{SICPOVM} API then supplies
-the $n=d^2$ operator-basis and channel consequences.
+The overlap bound and its equality characterization are formalized in
+\doclink{QICLean/Algebra/SICPOVMBound}. The declaration
+\leanid{Matrix.sicPOVM_offDiag_overlap_sq_bound} proves
+(\ref{eq:wolf_sic_povm_linear_independence_overlap_bound}), and
+\leanid{Matrix.sicPOVM_offDiag_overlap_sq_eq_iff} proves the full equality
+characterization
+(\ref{eq:wolf_sic_povm_linear_independence_projector})--%
+(\ref{eq:wolf_sic_povm_linear_independence_constant_overlap}).
+
+The corrected linear-independence result is divided into two declarations.
+The theorem
+\leanid{Matrix.sicPOVM_linearIndependent_of_overlap_bound_eq} covers $d\geq2$,
+and
+\leanid{Matrix.singleton_linearIndependent_of_trace_sq_eq_one} covers the
+singleton case. The specialized \leanid{SICPOVM} API then provides the
+$n=d^2$ operator-basis and channel consequences.
 
 \section{Verdict}
 
-\textbf{Verdict: source correction formalized.}
-Wolf's overlap bound and equality characterization are formalized without an
-artificial dimension restriction. The final linear-independence consequence
-is stated with $d>1$, with the singleton case treated separately.
+The overlap bound and equality characterization from
+Ref.~\cite{Wolf2012Quantum} are formalized without an artificial restriction
+on $d$. The final linear-independence claim is false for $d=1$ and $n>1$.
+The corrected conclusion assumes $d>1$, with the singleton case handled
+separately. This is a local source correction, and it is fully formalized.
 
 \bibliographystyle{alpha}
 \bibliography{references}

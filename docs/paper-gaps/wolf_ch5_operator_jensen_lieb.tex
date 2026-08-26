@@ -17,319 +17,359 @@
 
 \section{Scope}
 
-This note records two resolved parts of Wolf's Chapter~5.  First, the
-special-function Jensen inequalities are proved.\footnote{%
-    The declarations are
-    \leanid{posMap_rpow_concave_jensen}, \leanid{posMap_rpow_convex_jensen},
-    \leanid{posMap_log_concave_jensen}, and \leanid{lieb_concavity_posDef} in
-    \doclink{QICLean/Analysis/LiebConcavity}; all four are proved theorems and
-    none is an axiom.}
-The common subunital hypothesis printed in Wolf Corollary~5.2 is false for its
-logarithmic clause and must be replaced there by unitality.  Second, the
-finite-dimensional Ando--Lieb theorem is proved in the full exponent range
-described in Section~\ref{sec:lieb}.  The positive-map Jensen inequalities
-specialize \cite[Corollary~5.2]{Wolf2012Quantum}; the Lieb theorem is the
-Ando--Lieb trace functional \cite[Theorem~5.15]{Wolf2012Quantum}.  The distinct
-scope question for Wolf's general operator-convexity and operator-monotonicity
-results is recorded in
+This note records two resolved parts of Chapter~5 of
+Ref.~\cite{Wolf2012Quantum}. First, the formal development proves the
+special-function Jensen inequalities corresponding to Wolf's Corollary~5.2,
+after correcting its false logarithmic clause. Second, it proves the
+finite-dimensional Ando--Lieb theorem throughout the exponent range stated in
+Wolf's Theorem~5.15. The separate scope gap for Wolf's arbitrary
+operator-convex and operator-monotone functions is recorded in
 \path{docs/paper-gaps/wolf_ch5_operator_convexity_scope.tex}.
 
-The notation is fixed throughout.  Operators act on a finite-dimensional Hilbert
-space, identified with $D\times D$ complex matrices.  The order $A\le B$ is the
-Loewner order ($B-A$ positive semidefinite).  A linear map $T$ on matrices is
-\emph{positive} if it sends positive semidefinite operators to positive
-semidefinite operators, \emph{subunital} if $T(\mathbf 1)\le\mathbf 1$, and
-\emph{unital} if $T(\mathbf 1)=\mathbf 1$.  The power $A^p$ for $A\ge 0$ and the
-logarithm $\log A$ for $A>0$ are defined by the continuous functional calculus.
+All operators act on a finite-dimensional Hilbert space, identified with
+$D\times D$ complex matrices. The relation $A\leq B$ is the Loewner order. A
+linear map $T$ is positive if it preserves positive semidefiniteness,
+subunital if $T(\Id)\leq\Id$, and unital if $T(\Id)=\Id$. For $A\geq 0$, the
+power $A^p$ is defined by continuous functional calculus; for $A>0$, the same
+applies to $\log A$.
 
-\section{The positive-map Jensen declarations}
+The relevant formal declarations are proved theorems rather than
+axioms.\footnote{Formal declarations:
+\leanid{posMap_rpow_concave_jensen},
+\leanid{posMap_rpow_convex_jensen},
+\leanid{posMap_log_concave_jensen}, and
+\leanid{lieb_concavity_posDef} in
+\doclink{QICLean/Analysis/LiebConcavity}.}
 
-\subsection{The assertions}\label{ssec:assertions}
+\section{Positive-map Jensen inequalities}
 
-For a positive subunital map $T$ the development asserts the operator Jensen
-inequalities
+\subsection{The assertions}
+\label{ssec:wolf_ch5_operator_jensen_lieb_assertions}
+
+For a positive subunital map $T$ and a positive semidefinite matrix $A$, the
+development proves
 \begin{align}
-  T(A^p) &\le (T A)^p, & p&\in[0,1], \ A\ge 0, \tag{\path{posMap_rpow_concave_jensen}}\\
-  (T A)^p &\le T(A^p), & p&\in[1,2], \ A\ge 0, \tag{\path{posMap_rpow_convex_jensen}}
+    T(A^p)&\leq(T(A))^p,
+    &
+    0&\leq p\leq 1,
+    \label{eq:wolf_ch5_operator_jensen_lieb_rpow_concave_jensen}\\
+    (T(A))^p&\leq T(A^p),
+    &
+    1&\leq p\leq 2.
+    \label{eq:wolf_ch5_operator_jensen_lieb_rpow_convex_jensen}
 \end{align}
-and, for a positive \emph{unital} map $T$ and $A>0$,
+For a positive unital map $T$ and $A>0$, it proves
 \begin{align}
-  T(\log A) &\le \log(T A). \tag{\path{posMap_log_concave_jensen}}
+    T(\log A)&\leq\log(T(A)).
+    \label{eq:wolf_ch5_operator_jensen_lieb_log_concave_jensen}
 \end{align}
-These are the operator-valued Jensen inequalities behind Wolf
-Corollary~5.2.\footnote{%
-    The live map-facing interfaces are
-    \leanid{IsPositiveMap.rpow_concave_jensen},
-    \leanid{IsPositiveMap.rpow_convex_jensen}, and
-    \leanid{IsPositiveMap.log_concave_jensen} in
-    \doclink{QICLean/Channel/Schwarz/OperatorConvexity}.}
-The first and third are concavity inequalities (for the operator-concave
-functions $x\mapsto x^p$ on $[0,1]$ and $x\mapsto\log x$); the second is a
-convexity inequality (for the operator-convex function $x\mapsto x^p$ on
-$[1,2]$).  The logarithmic case proved in the development assumes $T$ unital.
-The weaker common subunital hypothesis printed by Wolf is insufficient, as the
-scalar counterexample below shows.
+These are the operator-valued Jensen inequalities associated with Wolf's
+Corollary~5.2 \cite[Corollary~5.2]{Wolf2012Quantum}.\footnote{Map-facing
+interfaces:
+\leanid{IsPositiveMap.rpow_concave_jensen},
+\leanid{IsPositiveMap.rpow_convex_jensen}, and
+\leanid{IsPositiveMap.log_concave_jensen} in
+\doclink{QICLean/Channel/Schwarz/OperatorConvexity}.}
 
-\subsection{The proved special-function route}
+Equation~\ref{eq:wolf_ch5_operator_jensen_lieb_rpow_concave_jensen} expresses
+operator concavity of $x\mapsto x^p$ for $p\in[0,1]$.
+Equation~\ref{eq:wolf_ch5_operator_jensen_lieb_rpow_convex_jensen} expresses
+operator convexity for $p\in[1,2]$.
+Equation~\ref{eq:wolf_ch5_operator_jensen_lieb_log_concave_jensen} expresses
+operator concavity of the logarithm. The logarithmic theorem requires
+unitality; Wolf's common subunital hypothesis is insufficient.
 
-Mathlib~4.31 supplies the integral
-representation\footnote{%
-    \leanid{CFC.exists_measure_nnrpow_eq_integral_cfcₙ_rpowIntegrand₀₁}
-    and its $[1,2]$ companion in
-    \path{Mathlib/Analysis/SpecialFunctions/ContinuousFunctionalCalculus/Rpow/IntegralRepresentation.lean},
-    together with the Bochner-integral convexity transfer for C\textsuperscript{*}-algebras.}
-and, through it, the operator concavity of $x\mapsto x^p$ on $[0,1]$
-(\leanid{CFC.concaveOn_rpow}) and of $\log$ (\leanid{CFC.concaveOn_log}).  The
-scalar input of the convex case, operator convexity of $x\mapsto x^p$ on
-$[1,2]$, is also now present as \leanid{CFC.convexOn_rpow} in
-\doclink{QICLean/Analysis/RpowConvexity}.  Thus the scalar functional-calculus
-inputs for the three Jensen declarations are available in the formal
-development.
+\subsection{The special-function proof route}
 
-The general step \emph{from} operator concavity (a statement about a single
-operator) \emph{to} the Jensen inequality $T(fA)\le f(TA)$ for a positive map is
-the Choi--Davis--Jensen inequality (the positive-map form of the
-Hansen--Pedersen operator Jensen inequality).  Mathlib~4.31 contains no such
-general theorem for positive maps.  The concave real-power case is nevertheless
-discharged by the special Löwner-integrand route recorded in
-\leanid{TNLean.OperatorJensen.positiveMap_rpowIntegrand₀₁_jensen}, together
-with ordered Bochner integral monotonicity.  The logarithmic case has also been
-discharged, not by a general Choi--Davis--Jensen theorem, but by taking the
-right limit $p\to 0^+$ in the concave real-power inequality and using
-\leanid{CFC.tendsto_cfc_rpow_sub_one_log}.  The convex real-power case is now
-likewise proved, by the same positive-map Jensen step applied to the convex
-integrand of $x\mapsto x^p$ on $[1,2]$.
+The formal library supplies integral representations for real powers, including
+\leanid{CFC.exists_measure_nnrpow_eq_integral_cfcₙ_rpowIntegrand₀₁} and its
+$[1,2]$ companion in
+\path{Mathlib/Analysis/SpecialFunctions/ContinuousFunctionalCalculus/Rpow/IntegralRepresentation.lean}.
+It also supplies operator concavity of $x\mapsto x^p$ on $[0,1]$ through
+\leanid{CFC.concaveOn_rpow}, operator concavity of the logarithm through
+\leanid{CFC.concaveOn_log}, and the required Bochner-integral convexity
+transfer for C\textsuperscript{*}-algebras. Operator convexity of
+$x\mapsto x^p$ on $[1,2]$ is recorded as \leanid{CFC.convexOn_rpow} in
+\doclink{QICLean/Analysis/RpowConvexity}.
 
-\subsection{The compression scaffold is faithful to bare
-positivity}\label{ssec:caveat}
-
-A faithfulness worry would arise if the only available proof route needed a
-\emph{completely positive} $T$, since the statements assume only that $T$ is
-positive (the hypothesis recorded in the formal statements is
-\leanid{IsPositiveMap}) and a complete-positivity hypothesis would be the
-stronger-hypothesis variant forbidden by the faithfulness rule.  That worry does
-not apply here.
-
-Wolf's own proof of the positive-map operator Jensen results
-(\cite[Theorems~5.10--5.13]{Wolf2012Quantum}) proves them first for completely
-positive maps, then \emph{reduces} the bare positive-map case to the completely
-positive case: $A$ and $f(A)$ lie in the abelian $C^*$-algebra generated by $A$
-and $\mathbf 1$, on which every positive map is automatically completely
-positive (Wolf Prop.~1.6) and admits a completely positive extension to all of
-$\mathcal M_d$ (Wolf Prop.~1.7).  Thus no obstruction specific to maps that are
-positive but not completely positive survives, and the source corollary itself
-is stated for
-positive subunital maps, not for channels: \cite[Corollary~5.2]{Wolf2012Quantum}
-hypothesises a positive map with $T(\mathbf 1)\le\mathbf 1$.  This is exactly the
-\leanid{IsPositiveMap} plus subunitality recorded in the two proved real-power
-declarations.
-
-\paragraph{False printed logarithm clause.}  The same common hypothesis is
-printed for item~3,
+A general passage from operator concavity of $f$ to
 \begin{align}
-  T(\log A) &\le \log(T(A)), & A&>0. \tag{printed item 3}
+    T(f(A))&\leq f(T(A))
+    \label{eq:wolf_ch5_operator_jensen_lieb_general_concave_jensen_form}
 \end{align}
-It is false for positive subunital maps.  Work in dimension one, fix
-$0<c<1$, take $T_c(x)=cx$, and set $A=1$.  Then $T_c$ is positive and
-$T_c(1)=c\le1$, while
+for positive maps is the positive-map operator Jensen principle used in
+Wolf's Theorems~5.10--5.13 \cite[Theorems~5.10--5.13]{Wolf2012Quantum}.
+Mathlib~4.31 contains no general theorem of this scope for positive maps.
+Instead, the concave real-power case is proved by the L\"owner-integrand
+theorem
+\leanid{TNLean.OperatorJensen.positiveMap_rpowIntegrand₀₁_jensen} and ordered
+Bochner integration.
+
+The logarithmic theorem follows by taking the right limit $p\to 0^+$ in the
+concave real-power inequality and using
+\leanid{CFC.tendsto_cfc_rpow_sub_one_log}. The convex real-power case uses the
+same positive-map Jensen method with the convex integrand for $p\in[1,2]$.
+
+\subsection{Bare positivity is sufficient}
+\label{ssec:wolf_ch5_operator_jensen_lieb_bare_positivity}
+
+The source statements assume that $T$ is positive, not completely positive
+\cite[Corollary~5.2 and Theorems~5.10--5.13]{Wolf2012Quantum}. A proof that
+required complete positivity would therefore strengthen the source
+hypotheses.
+
+Wolf avoids this strengthening by restricting $T$ to the abelian
+C\textsuperscript{*}-algebra generated by $A$ and $\Id$. On this algebra every
+positive map is automatically completely positive, and the restricted map has
+a completely positive extension to the full matrix algebra
+\cite[Propositions~1.6--1.7 and Theorems~5.10--5.13]{Wolf2012Quantum}. Thus
+the source proof reduces the bare positive-map case to a completely positive
+map without changing the theorem's hypotheses.
+
+The formal finite-POVM scaffold implements the corresponding matrix
+reduction.\footnote{Formal development:
+\doclink{QICLean/Channel/Schwarz/OperatorJensenAux}, containing finite-POVM
+compression, the Schur-complement inverse bound, and the resolvent inequality.}
+Let $P_1,\ldots,P_n$ be the spectral projections of $A$. Positivity of $T$
+gives positive matrices $T(P_i)$, and linearity gives
 \begin{align}
-  T_c(\log 1) &=0,
-  &\log(T_c(1))&=\log c<0.
+    \sum_{i=1}^nT(P_i)
+        &=T\!\left(\sum_{i=1}^nP_i\right)
+    \label{eq:wolf_ch5_operator_jensen_lieb_povm_sum_first}\\
+        &=T(\Id).
+    \label{eq:wolf_ch5_operator_jensen_lieb_povm_sum_second}
 \end{align}
-Thus the printed inequality would assert $0\le\log c$.  The unital theorem
-\leanid{IsPositiveMap.log_concave_jensen} instead assumes
-$T(\mathbf 1)=\mathbf 1$ and proves the corrected statement.  This is not a
-formalization-only scope choice: the source's common subunital hypothesis is
-mathematically insufficient for item~3.  The live real-power Jensen theorems
-retain Wolf's bare subunital hypothesis; the former pass-through declarations
-which repackaged them in the exact exponent-reparameterized form of items~1--2
-were removed as unused.
+This is the identity used in Wolf's block-positivity argument
+\cite[Theorem~5.12]{Wolf2012Quantum}. The construction uses a positive family
+and a defect block, not a global Kraus or Stinespring representation of $T$.
+It therefore applies under \leanid{IsPositiveMap} and subunitality.
 
-The finite-POVM scaffold used for the concave power
-case\footnote{%
-    \doclink{QICLean/Channel/Schwarz/OperatorJensenAux} (finite-POVM compression,
-    Schur-complement inverse bound, and the resolvent inequality).}
-realises this reduction at the matrix level.  It is a finite-POVM compression
-argument in terms of a positive family $\{C_i\}$ and a defect block, not a global
-Kraus or Stinespring representation of $T$.  Its POVM elements are supplied by
-the positive matrices $T(P_i)$, where the $P_i$ are the spectral projections of
-$A$; these exist for any positive map (indeed $\sum_i T(P_i)=T(\mathbf 1)$, the
-identity used in Wolf's block-positivity step in the proof of
-  \cite[Theorem~5.12]{Wolf2012Quantum}).  The scaffold
-  therefore applies to a bare positive map in the finite-POVM resolvent reduction
-  under the \leanid{IsPositiveMap} hypothesis --- it does not require, and must not
-  be relabelled with, complete positivity.  It now proves the concave
-  real-power Jensen inequality after integration.  The logarithmic Jensen theorem
-  follows from this real-power result by the right-limit formula for
-  $(A^p-\mathbf 1)/p$ as $p\to 0^+$.  The convex real-power Jensen declaration
-  is now proved the same way, with the convex integrand on $[1,2]$.
+The pointwise finite-POVM resolvent inequality
+\leanid{povm_resolvent_inv_le} is integrated through the real-power
+representation to prove
+\leanid{posMap_rpow_concave_jensen}. Almost-everywhere Loewner inequalities
+are integrated using \leanid{integral_mono_ae}. The positive-cone
+specialization is
+\leanid{TNLean.OperatorJensen.integral_nonneg_matrix_of_ae}, which states that
+the Bochner integral of an almost-everywhere positive semidefinite
+matrix-valued function is positive semidefinite.
 
-For the concave real-power case, the analytic step has now been supplied: the
-Löwner-integral argument carries the pointwise finite-POVM resolvent inequality
-(\leanid{povm_resolvent_inv_le}) through the integral representation of
-\texttt{rpow} to the operator inequality
-\leanid{posMap_rpow_concave_jensen}.  The logarithmic inequality
-\leanid{posMap_log_concave_jensen} is then obtained by applying
-\leanid{CFC.tendsto_cfc_rpow_sub_one_log} to both $A$ and $T(A)$ and closing the
-Loewner inequality by the closedness of the finite-dimensional order graph.
+The logarithmic theorem
+\leanid{posMap_log_concave_jensen} then follows by applying
+\leanid{CFC.tendsto_cfc_rpow_sub_one_log} to both $A$ and $T(A)$ and using
+closedness of the finite-dimensional Loewner cone. The convex theorem
+\leanid{posMap_rpow_convex_jensen} uses the corresponding convex integrand and
+the input \leanid{CFC.convexOn_rpow}.
 
-\subsection{Current formal inputs}\label{ssec:formal-inputs}
+\subsection{The false logarithmic clause}
 
-The auxiliary ingredients used by the proved positive-map Jensen assemblies
-are present.  The theorem \leanid{CFC.convexOn_rpow} supplies operator
-convexity of $x\mapsto x^p$ for $p\in[1,2]$, completing the scalar
-functional-calculus input for \leanid{posMap_rpow_convex_jensen}.
+Wolf's Corollary~5.2 prints the logarithmic inequality under the same
+subunital hypothesis as the real-power inequalities:
+\begin{align}
+    T(\log A)&\leq\log(T(A)),
+    &
+    A&>0.
+    \label{eq:wolf_ch5_operator_jensen_lieb_printed_subunital_logarithm}
+\end{align}
+This is item~3 of Corollary~5.2 in Ref.~\cite{Wolf2012Quantum}. It is false.
 
-The closedness of the finite-dimensional Loewner cone also gives the ordered
-Bochner integral step needed for the integral route.  The positive-cone
-specialization is recorded as
-\leanid{TNLean.OperatorJensen.integral_nonneg_matrix_of_ae}: a matrix-valued
-Bochner integral of an almost-everywhere positive semidefinite function is
-positive semidefinite.  Almost-everywhere Loewner inequalities are integrated
-directly by the general ordered Bochner theorem \leanid{integral_mono_ae}.
+In dimension one, choose $0<c<1$, define $T_c(x)=cx$, and set $A=1$. Then
+\begin{align}
+    T_c(1)&=c\leq 1,
+    \label{eq:wolf_ch5_operator_jensen_lieb_scalar_map_subunital}\\
+    T_c(\log 1)&=0,
+    \label{eq:wolf_ch5_operator_jensen_lieb_scalar_logarithm_left}\\
+    \log(T_c(1))&=\log c<0.
+    \label{eq:wolf_ch5_operator_jensen_lieb_scalar_logarithm_right}
+\end{align}
+Consequently,
+Eq.~\ref{eq:wolf_ch5_operator_jensen_lieb_printed_subunital_logarithm} would
+assert $0\leq\log c$, a contradiction. The corrected declaration
+\leanid{IsPositiveMap.log_concave_jensen} assumes
+\begin{align}
+    T(\Id)&=\Id
+    \label{eq:wolf_ch5_operator_jensen_lieb_corrected_logarithm_unitality}
+\end{align}
+and proves
+Eq.~\ref{eq:wolf_ch5_operator_jensen_lieb_log_concave_jensen}. This is a
+source correction rather than a formalization-only restriction.
 
-\subsection{Verdict}
+The real-power theorems retain Wolf's bare subunital hypothesis. Former
+pass-through declarations that merely repackaged them in the exact exponent
+parameterization of items~1--2 were removed as unused.
 
-The two real-power Jensen theorems underlying
-\cite[Corollary~5.2]{Wolf2012Quantum} and the corrected unital logarithm theorem
-are proved.  The concave real-power statement
-\leanid{posMap_rpow_concave_jensen} is discharged by
-the finite-POVM resolvent scaffold, the pointwise integrand inequality, and
-ordered Bochner integral monotonicity.  The logarithmic statement
-\leanid{posMap_log_concave_jensen} has been discharged as the right limit of the
-concave real-power result.  The convex real-power statement
-\leanid{posMap_rpow_convex_jensen} has likewise been discharged, by the same
-positive-map operator Jensen step applied to the convex integrand.
-The integral representation of the power integrand, previously named as the
-obstruction, is present.  The printed subunital logarithm clause remains false;
-its resolution is the source-facing unital correction above.
+\subsection{Jensen verdict}
 
-The verdict of this note is limited to these special functions: the real-power
-inequalities are proved, and the false logarithmic clause is repaired by the
-unital hypothesis.  The separate question of arbitrary operator-convex and
-operator-monotone functions does not affect this resolved source correction.
+Both real-power Jensen inequalities are proved under the source hypotheses.
+The logarithmic inequality is proved under the necessary unital correction.
+The concave power proof uses finite-POVM compression, the pointwise resolvent
+inequality, and ordered Bochner integration. The logarithmic proof takes the
+right limit of the concave power theorem. The convex proof uses the
+corresponding convex integrand. The required integral representations are
+present.
 
-\section{The Lieb concavity theorem (boundary exponent)}\label{sec:lieb}
+This verdict concerns only these special functions. It does not resolve the
+separate scope question for arbitrary operator-convex and operator-monotone
+functions.
+
+\section{The Lieb concavity theorem}
+\label{sec:wolf_ch5_operator_jensen_lieb_lieb}
 
 \subsection{The assertion}
 
-For $s\in[0,1]$, an arbitrary matrix $K$, and positive-definite $A,B$, the map
+Let $s\in[0,1]$, let $K$ be any complex matrix, and let $A,B>0$. Define
 \begin{align}
-  (A,B)\ \longmapsto\ \tr\!\bigl(K^\dagger A^s K B^{1-s}\bigr)
-  \tag{\path{lieb_concavity_posDef}}
+    F_s(A,B)
+        &=\tr\!\left(K^\dagger A^sKB^{1-s}\right).
+    \label{eq:wolf_ch5_operator_jensen_lieb_boundary_functional}
 \end{align}
-is jointly concave on pairs of positive-definite matrices.  This is the
-boundary-exponent specialization of the Lieb concavity theorem
-(\cite[Theorem~5.15, the Ando--Lieb functional]{Wolf2012Quantum}), the trace
-functional underlying the Wigner--Yanase--Dyson conjecture.  It is now
-\emph{proved} --- \leanid{lieb_concavity_posDef} is a theorem,
-derived from the commuting-superoperator integral representation
-(\S\ref{ssec:lieb-gap}) --- and \leanid{lieb_concavity_psd} extends it to
-positive-semidefinite inputs by regularization.  The theorem
-\leanid{lieb_concavity_subboundary} now derives the two-exponent region
-$x,y\ge 0$, $x+y\le 1$, by reducing to the boundary theorem after the change of
-variables $r=x+y$, $s=x/r$ when $r>0$.  Thus the finite-dimensional matrix
-formalization now covers the exponent range of Wolf's Theorem~5.15.
+The formal theorem \leanid{lieb_concavity_posDef}, whose input hypotheses use
+\leanid{Matrix.PosDef}, states that $F_s$ is jointly concave on
+positive-definite pairs. This is the boundary-exponent case of the Ando--Lieb
+functional in Wolf's Theorem~5.15
+\cite[Theorem~5.15]{Wolf2012Quantum}.
 
-\paragraph{Sub-boundary exponents (resolved).}  Wolf's Theorem~5.15 is stated
-for two exponents $x,y\ge 0$ with $x+y\le 1$.  The first formal theorem
-\leanid{lieb_concavity_posDef} records only the boundary line $x=s$, $y=1-s$,
-where $x+y=1$, and \leanid{lieb_concavity_psd} extends that boundary theorem to
-positive-semidefinite inputs.  The sub-boundary theorem
-\leanid{lieb_concavity_subboundary} removes the exponent restriction: for
-$r=x+y=0$ the functional is constant, and for $0<r\le 1$ it rewrites
-$A^x,B^y$ as $(A^r)^s,(B^r)^{1-s}$ and combines operator concavity of
-$C\mapsto C^r$, monotonicity of the boundary trace functional, and
-\leanid{lieb_concavity_psd}.
-
-\paragraph{Positive-definite versus positive semidefinite (resolved).}  Wolf's
-Theorem~5.15 states the Ando--Lieb concavity for positive (semidefinite)
-operators, including singular ones.  The first formalization
-\leanid{lieb_concavity_posDef} was stated only for positive-\emph{definite}
-$A,B$ (its hypotheses are \leanid{Matrix.PosDef}).  The positive-semidefinite
-case is now also proved, as \leanid{lieb_concavity_psd}, with hypotheses
-\leanid{Matrix.PosSemidef} on $A_1,A_2,B_1,B_2$.  The proof is by
-regularization: each input is replaced by $A_i+\varepsilon\Id$ (positive
-definite for $\varepsilon>0$), the positive-definite theorem is applied for
-every $\varepsilon>0$, and the limit $\varepsilon\to 0^+$ recovers the
-semidefinite inequality.  The regularized powers converge because $x\mapsto x^s$
-is continuous on the nonnegative reals for $0<s<1$, including at the origin ---
-the logarithmic singularity that obstructs the entropy-continuity route does not
-arise here --- and the trace functional is continuous.  This scope restriction
-is therefore eliminated; the exponent restriction is eliminated by
-\leanid{lieb_concavity_subboundary}.
-
-\subsection{The point at issue}\label{ssec:lieb-gap}
-
-The matrix identity
-$A^s B^{1-s}=\tfrac{\sin(\pi s)}{\pi}\int_0^\infty t^{s-1}A\,(A+tB)^{-1}B\,\mathrm dt$
-holds only when $A$ and $B$ commute; for noncommuting $A,B$ the product
-$A^sB^{1-s}$ is not even self-adjoint, and this resolvent formula is \emph{not}
-the representation behind the Lieb functional.  The standard route works instead
-with the \emph{left and right multiplication superoperators} on $\mathcal M_d$,
+The declaration \leanid{lieb_concavity_psd}, whose input hypotheses use
+\leanid{Matrix.PosSemidef}, extends this theorem to positive-semidefinite
+inputs. The declaration \leanid{lieb_concavity_subboundary} then proves the
+full exponent range
 \begin{align}
-  L_A : X \longmapsto AX, \qquad R_B : X \longmapsto XB,
+    x&\geq 0,
+    &
+    y&\geq 0,
+    &
+    x+y&\leq 1
+    \label{eq:wolf_ch5_operator_jensen_lieb_full_exponent_region}
 \end{align}
-which always commute ($L_A R_B = R_B L_A$) and are positive on the
-Hilbert--Schmidt space $(\mathcal M_d,\langle X,Y\rangle = \tr(X^\dagger Y))$
-when $A,B\ge 0$.  The Lieb functional is the Hilbert--Schmidt pairing
+stated in Wolf's Theorem~5.15
+\cite[Theorem~5.15]{Wolf2012Quantum}.
+
+For $r=x+y>0$, set
 \begin{align}
-  \tr\!\bigl(K^\dagger A^s K B^{1-s}\bigr)
-    = \bigl\langle K,\ L_A^{\,s}\,R_B^{\,1-s}\,K\bigr\rangle,
+    r&=x+y,
+    &
+    s&=\frac{x}{r}.
+    \label{eq:wolf_ch5_operator_jensen_lieb_subboundary_parameters}
 \end{align}
-and the Ando/Lieb integral representation is the commuting-superoperator identity
+Then
 \begin{align}
-  L_A^{\,s}\,R_B^{\,1-s}
-    = \frac{\sin(\pi s)}{\pi}\int_0^\infty t^{s-1}\,
-      L_A\,(L_A + t\,R_B)^{-1}\,R_B\ \mathrm dt .
+    A^x&=(A^r)^s,
+    \label{eq:wolf_ch5_operator_jensen_lieb_subboundary_power_a}\\
+    B^y&=(B^r)^{1-s}.
+    \label{eq:wolf_ch5_operator_jensen_lieb_subboundary_power_b}
 \end{align}
-Joint concavity of the superoperator integrand in $(A,B)$ for each fixed $t$ ---
-via operator monotonicity of the resolvent $(L_A+tR_B)^{-1}$ in $A,B$ --- followed
-by pairing against $K$ in the Hilbert--Schmidt inner product, integration, and
-linearity, yields the result.
+The proof combines operator concavity of $C\mapsto C^r$, monotonicity of the
+boundary trace functional, and \leanid{lieb_concavity_psd}. When $r=0$, the
+functional is constant.
 
-Mathlib~4.31 contains neither this superoperator integral representation nor a
-matrix-mean / resolvent-monotonicity API of the required form for the commuting
-pair $(L_A,R_B)$.  Both were therefore developed within the formalization
-itself rather than drawn from the library.
+For positive-semidefinite inputs, the proof replaces each matrix by
+\begin{align}
+    A_{i,\varepsilon}&=A_i+\varepsilon\Id,
+    &
+    B_{i,\varepsilon}&=B_i+\varepsilon\Id,
+    &
+    \varepsilon&>0.
+    \label{eq:wolf_ch5_operator_jensen_lieb_regularized_inputs}
+\end{align}
+These matrices are positive definite. Applying the positive-definite theorem
+and taking $\varepsilon\to 0^+$ proves \leanid{lieb_concavity_psd}. The powers
+converge because $t\mapsto t^s$ is continuous on the nonnegative real axis for
+$0<s<1$, including at zero, and the trace functional is continuous. No
+logarithmic singularity occurs in this regularization.
 
-\subsection{Verdict}
+\subsection{The integral representation}
+\label{ssec:wolf_ch5_operator_jensen_lieb_integral_route}
 
-The Lieb concavity statement is correct
-\cite[Theorem~5.15]{Wolf2012Quantum}.  Its elimination required the Ando
-integral representation of the commuting left/right multiplication superoperators
-$L_A^{\,s}R_B^{\,1-s}$ (not the matrix product $A^sB^{1-s}$, whose resolvent
-formula holds only when $A,B$ commute) together with resolvent monotonicity of
-$(L_A+tR_B)^{-1}$.  Both were formalized over a sequence of steps --- the scalar
-boundary integral, the operator integral representation on the Kronecker model,
-the concavity of the resolvent integrand, and the resulting operator concavity ---
-and \leanid{lieb_concavity_posDef} is now a theorem in its positive-definite,
-boundary-exponent scope.  The positive-semidefinite case is also proved, as
-\leanid{lieb_concavity_psd}, by regularizing each input to positive definite and
-passing to the limit, and \leanid{lieb_concavity_subboundary} derives the full
-two-exponent range $x,y\ge 0$, $x+y\le 1$.  Three downstream corollaries build on
-the positive-definite version (the $K=\mathbf 1$ case and separate concavity in
-each argument); these are now axiom-free.  The former positive-semidefinite and
-sub-boundary exponent restrictions for the finite-dimensional matrix
-Ando--Lieb theorem have both been eliminated.
+A direct matrix resolvent formula for $A^sB^{1-s}$ is valid only when $A$ and
+$B$ commute. For noncommuting matrices, $A^sB^{1-s}$ need not be
+self-adjoint, so that formula cannot prove the general Lieb theorem.
 
-\section*{References}
+The correct representation uses left and right multiplication operators on
+$\MD$. Define
+\begin{align}
+    L_A(X)&=AX,
+    &
+    R_B(X)&=XB.
+    \label{eq:wolf_ch5_operator_jensen_lieb_left_right_multiplication}
+\end{align}
+These operators commute:
+\begin{align}
+    L_AR_B(X)
+        &=AXB
+    \label{eq:wolf_ch5_operator_jensen_lieb_superoperator_commutation_first}\\
+        &=R_BL_A(X).
+    \label{eq:wolf_ch5_operator_jensen_lieb_superoperator_commutation_second}
+\end{align}
+For $A,B\geq 0$, they are positive operators on the Hilbert--Schmidt space
+with inner product
+\begin{align}
+    \langle X,Y\rangle_{\mathrm{HS}}
+        &=\tr(X^\dagger Y).
+    \label{eq:wolf_ch5_operator_jensen_lieb_hilbert_schmidt_inner_product}
+\end{align}
+The Lieb functional becomes
+\begin{align}
+    \tr\!\left(K^\dagger A^sKB^{1-s}\right)
+        &=
+        \left\langle
+            K,L_A^sR_B^{1-s}K
+        \right\rangle_{\mathrm{HS}}.
+    \label{eq:wolf_ch5_operator_jensen_lieb_superoperator_pairing}
+\end{align}
+For $0<s<1$, the commuting-superoperator integral representation is
+\begin{align}
+    L_A^sR_B^{1-s}
+        &=
+        \frac{\sin(\pi s)}{\pi}
+        \int_0^\infty
+            t^{s-1}
+            L_A(L_A+tR_B)^{-1}R_B
+        \,dt.
+    \label{eq:wolf_ch5_operator_jensen_lieb_superoperator_integral}
+\end{align}
+Joint concavity of the integrand in $(A,B)$ for each fixed $t$ follows through
+the corresponding resolvent argument. Pairing with $K$ in the
+Hilbert--Schmidt inner product, integrating, and using linearity then proves
+joint concavity.
 
-Beyond \cite{Wolf2012Quantum}, the underlying matrix-analysis facts are:
-E.~H.\ Lieb, \emph{Convex trace functions and the Wigner--Yanase--Dyson
-conjecture}, Adv.\ Math.\ \textbf{11} (1973) 267--288;
-T.~Ando, \emph{Concavity of certain maps on positive definite matrices and
-applications to Hadamard products}, Linear Algebra Appl.\ \textbf{26} (1979)
-203--241;
-F.~Hansen and G.~K.\ Pedersen, \emph{Jensen's operator inequality}, Bull.\
-London Math.\ Soc.\ \textbf{35} (2003) 553--564;
-R.~Bhatia, \emph{Matrix Analysis}, Springer GTM~169 (1997), Chapter~V.
-The relevant formal-library inputs now available are
+Mathlib~4.31 contains neither this superoperator integral representation nor
+the required matrix-mean and resolvent-monotonicity interface for the commuting
+pair $(L_A,R_B)$. These ingredients were developed within the formalization.
+The proof proceeds through the scalar boundary integral, the operator integral
+representation on the Kronecker model, concavity of the resolvent integrand,
+and the resulting operator concavity.
+
+\subsection{Lieb verdict}
+
+The Lieb concavity assertion in Wolf's Theorem~5.15 is correct
+\cite[Theorem~5.15]{Wolf2012Quantum}. The formal proof uses the commuting
+superoperators $L_A$ and $R_B$, not a matrix resolvent identity that would
+require $A$ and $B$ to commute.
+
+The declaration \leanid{lieb_concavity_posDef} proves the positive-definite
+boundary-exponent theorem. The declaration \leanid{lieb_concavity_psd} removes
+the positive-definiteness restriction by regularization, and
+\leanid{lieb_concavity_subboundary} proves the full region in
+Eq.~\ref{eq:wolf_ch5_operator_jensen_lieb_full_exponent_region}. Three
+downstream corollaries, including the $K=\Id$ case and separate concavity in
+each argument, build on the positive-definite theorem and are now axiom-free.
+The former positive-semidefinite and sub-boundary restrictions have both been
+eliminated.
+
+\section{Conclusion}
+
+The special-function Jensen theorems and the finite-dimensional Ando--Lieb
+theorem are proved. The real-power Jensen inequalities retain Wolf's positive
+subunital hypotheses. The logarithmic clause in Corollary~5.2 of
+Ref.~\cite{Wolf2012Quantum} is false under subunitality and is corrected by
+requiring unitality. The Lieb theorem now covers positive-semidefinite inputs
+and all exponents $x,y\geq 0$ with $x+y\leq 1$.
+
+The relevant functional-calculus inputs are
 \leanid{CFC.exists_measure_nnrpow_eq_integral_cfcₙ_rpowIntegrand₀₁},
 \leanid{CFC.concaveOn_rpow}, \leanid{CFC.convexOn_rpow}, and
-\leanid{CFC.concaveOn_log}.  Thus the scalar functional-calculus inputs are
-available, and the three positive-map Jensen inequalities and the Lieb theorem
-treated in this note are proved.
+\leanid{CFC.concaveOn_log}. The three positive-map Jensen inequalities and the
+Lieb theorem treated in this note are proved.
 
 \bibliographystyle{alpha}
 \bibliography{references}

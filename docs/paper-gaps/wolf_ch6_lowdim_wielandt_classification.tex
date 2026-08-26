@@ -16,64 +16,91 @@
 
 \section{The assertion}
 
-The corollary after Wolf's quantum Wielandt inequality states that a primitive
-quantum channel on $\MN{d}$, for $d=2$ or $d=3$, has an element of its one-step
-Kraus span with a nonzero eigenvalue and consequently has Wielandt index at
-most $d^2$ \cite[Chapter~6, lines 1110--1126]{Wolf2012Quantum}.  Its proof
-invokes a classification of nilpotent matrix spaces without proving the
-classification or resolving the bibliography placeholders in the local source.
-The same low-dimensional observation appears after Theorem~1 of
-\cite{Sanz2010Quantum}.
+For a Kraus family on $\C^d$, let $\mathcal K_1\subseteq\MN{d}$ denote its
+one-step linear span. The corollary following Wolf's quantum Wielandt
+inequality states that, when $d=2$ or $d=3$, every primitive quantum channel
+has an element of $\mathcal K_1$ with a nonzero eigenvalue. It then concludes
+that the channel's Wielandt index is at most $d^2$
+\cite[Chapter~6, lines~1110--1126]{Wolf2012Quantum}. The same
+low-dimensional observation appears after Theorem~1 of
+Ref.~\cite{Sanz2010Quantum}.
 
-For $d=2$, a nilpotent linear space has dimension at most one.  For $d=3$,
-Wolf describes two similarity types of nilpotent spaces of dimension greater
-than one: the strictly upper-triangular space and an exceptional
-two-dimensional space.  The former is incompatible with trace preservation;
-the latter gives a channel whose peripheral spectral radius is degenerate.
-These classification and obstruction arguments are not contained in the
-lecture notes.  Fasoli's classification work is a relevant external source
-\cite{Fasoli1997Classification}, but the exact chain needed for Wolf's stated
-corollary must still be reconstructed and checked.
+The proof in Ref.~\cite{Wolf2012Quantum} invokes a classification of
+nilpotent matrix spaces but does not prove that classification or resolve the
+bibliography placeholders in the local source. In dimension two, the required
+claim is
+\begin{align}
+    \mathcal N\subseteq\MN{2}\text{ linear and nilpotent}
+        \quad\Longrightarrow\quad
+        \dim\mathcal N\leq1.
+    \label{eq:wolf_ch6_lowdim_wielandt_classification_dim_two_bound}
+\end{align}
+In dimension three, Wolf describes two similarity types for nilpotent spaces
+of dimension greater than one: the strictly upper-triangular space and an
+exceptional two-dimensional space \cite[Chapter~6]{Wolf2012Quantum}. The
+strictly upper-triangular type is incompatible with trace preservation, while
+the exceptional type yields a channel with degenerate peripheral spectral
+radius \cite[Chapter~6]{Wolf2012Quantum}. The lecture notes do not contain the
+classification or the two obstruction arguments.
+
+Fasoli's classification of nilpotent linear spaces is a relevant external
+source \cite{Fasoli1997Classification}. The exact chain of results required
+for Wolf's low-dimensional corollary must nevertheless be reconstructed and
+checked.
 
 \section{Formalized part}
 
-The declaration
+The dimension-two classification is complete.
 \leanid{QICLean.finrank\_le\_one\_of\_isNilpotent\_submodule\_fin\_two}
-proves the complete $d=2$ nilpotent-space dimension bound, and
+proves
+(\ref{eq:wolf_ch6_lowdim_wielandt_classification_dim_two_bound}), and
 \leanid{QICLean.exists\_common\_ker\_of\_isNilpotent\_submodule\_fin\_two}
-proves the stronger common-kernel form used for channels.  Combining this with
+proves the stronger common-kernel statement used for channels. Combined with
 trace preservation,
 \leanid{Kraus.exists\_nonzero\_eigenvector\_mem\_wordSpan\_one\_fin\_two}
 proves that the one-step span of every trace-preserving Kraus family on
 $\MN{2}$ contains an element with a nonzero eigenvalue.
 
 For $d=3$,
-\leanid{QICLean.exists\_common\_ker\_of\_forall\_sq\_eq\_zero}
-proves the square-zero branch, and
-\leanid{Kraus.exists\_mem\_wordSpan\_one\_sq\_ne\_zero\_fin\_three}
-excludes that branch for a trace-preserving family.  The remaining
-nilpotency-index-three branch, including the exceptional similarity type and
-its primitivity obstruction, is not yet formalized.
+\leanid{QICLean.exists\_common\_ker\_of\_forall\_sq\_eq\_zero} proves the
+square-zero branch, and
+\leanid{Kraus.exists\_mem\_wordSpan\_one\_sq\_ne\_zero\_fin\_three} excludes
+that branch for a trace-preserving family. The remaining
+nilpotency-index-three branch is not formalized. It includes both the
+exceptional similarity type and the proof that this type obstructs
+primitivity.
 
 \section{Remaining gap}
 
-A source-faithful proof still requires two ingredients.
-
+A source-faithful proof still requires the following ingredients.
 \begin{enumerate}
-\item Complete the $3\times3$ classification by proving that a nilpotent space
-containing an element of nilpotency index three either has a common kernel or
-is similar to the exceptional two-dimensional space, and prove that this
-exceptional Kraus pattern is incompatible with Wolf's primitivity condition.
-\item Supply in QICLean the conditional implication from a nonzero eigenvalue
-in the one-step span to full word span at length $d^2$.  The current QICLean
-checkout contains the eigenvector-spreading component but no assembled bound;
-the numbering-coverage document currently records Wolf's Theorem~6.9 as
-living in the downstream tensor-network layer.
+    \item Prove the remaining $3\times3$ classification: a nilpotent linear
+        space containing an element of nilpotency index three either has a
+        common kernel or is similar to the exceptional two-dimensional
+        space. Then prove that the exceptional Kraus pattern is incompatible
+        with Wolf's primitivity condition.
+
+    \item Prove in QICLean the conditional implication from a nonzero
+        eigenvalue in the one-step span to full word span at length $d^2$.
+        The current QICLean checkout contains the eigenvector-spreading
+        component but not the assembled bound. The numbering-coverage
+        document records Wolf's Theorem~6.9
+        \cite[Chapter~6]{Wolf2012Quantum} as belonging to the downstream
+        tensor-network layer.
 \end{enumerate}
 
 Until both ingredients are present, the source corollary must not carry a
-\texttt{\textbackslash leanok} marker in the QICLean blueprint.  This work is
+\texttt{\textbackslash leanok} marker in the QICLean blueprint. This work is
 tracked by \ghissue{65}.
+
+\section{Conclusion}
+
+The $d=2$ nilpotent-space argument and the square-zero branch for $d=3$ are
+formalized. The nilpotency-index-three classification, its exceptional
+primitivity obstruction, and the assembled $d^2$ word-span bound remain open.
+Consequently, the low-dimensional corollary of
+Ref.~\cite{Wolf2012Quantum} remains an open gap while elimination is in
+progress.
 
 \bibliographystyle{plain}
 \bibliography{references}

@@ -17,80 +17,98 @@
 
 \section{The assertion}
 
-Wolf's Proposition~2.11 states that every qubit channel
-$T:\MN{2}\to\MN{2}$ admits invertible completely positive maps
-$\Phi_1,\Phi_2$, each of Kraus rank one, such that
+Proposition~2.11 of Ref.~\cite{Wolf2012Quantum} states that every qubit
+channel $T:\MN{2}\to\MN{2}$ admits invertible completely positive maps
+$\Phi_1$ and $\Phi_2$, each of Kraus rank one, such that
 \begin{align}
-  T' = \Phi_2\circ T\circ\Phi_1
+    T'
+        &=\Phi_2\circ T\circ\Phi_1
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_filtered_channel}
 \end{align}
-is again a qubit channel and belongs to one of three Lorentz normal forms:
-diagonal, non-diagonal, or singular.\footnote{\cite[Proposition~2.11]{Wolf2012Quantum};
-local source \path{Notes/WolfNoteTexSource/ch02_representations.tex},
-lines 1021--1035.}  Each filtering has the form
+is a qubit channel in one of three Lorentz normal forms: diagonal,
+non-diagonal, or singular.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~1021--1035.}
+Each filtering is represented by
 \begin{align}
-  \Phi_X(A)=XAX^\dagger,
-  \qquad X\in\mathrm{GL}(2,\C).
+    \Phi_X(A)
+        &=XAX^\dagger,
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_general_filter}\\
+    X
+        &\in\operatorname{GL}(2,\C).
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_invertible_matrix}
 \end{align}
-Thus the proposition allows every invertible Kraus-rank-one completely positive
-filter, not only those represented by determinant-one matrices.
+The source therefore permits all invertible Kraus-rank-one completely positive
+filterings, not only those represented by determinant-one matrices.
 
 \section{Determinant-one action and scalar freedom}
 
-Choose a square root $c^2=\det X$ and write $X=cS$, where
-$S\in\mathrm{SL}(2,\C)$. Then
+Choose $c\in\C$ such that $c^2=\det X$ and set $S=c^{-1}X$. Then
 \begin{align}
-  \Phi_X(A)
-    &= |c|^2\Phi_S(A),\\
-  |c|^2
-    &= |\det X|.
+    X
+        &=cS,
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_matrix_factorization}\\
+    S
+        &\in\operatorname{SL}(2,\C),
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_special_linear_factor}\\
+    \Phi_X(A)
+        &=|c|^2\Phi_S(A),
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_filter_factorization}\\
+    |c|^2
+        &=|\det X|.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_scalar_determinant}
 \end{align}
-Consequently, if $X_i=c_iS_i$ for the two filters, then
+For two filters $X_i=c_iS_i$, this gives
 \begin{align}
-  \Phi_{X_2}\circ T\circ\Phi_{X_1}
-  = |c_1c_2|^2
-    (\Phi_{S_2}\circ T\circ\Phi_{S_1}).
-  \label{eq:scalar-factor}
+    \Phi_{X_2}\circ T\circ\Phi_{X_1}
+        &=|c_1c_2|^2
+          (\Phi_{S_2}\circ T\circ\Phi_{S_1}).
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_two_filter_scalar}
 \end{align}
-The matrices $S_1,S_2$ determine the determinant-one Lorentz action. The
-positive factor $|c_1c_2|^2$ selects the normalization on the resulting ray of
-completely positive maps.
+The matrices $S_1$ and $S_2$ determine the determinant-one Lorentz action.
+The positive scalar $|c_1c_2|^2$ selects a normalization on the resulting ray
+of completely positive maps.
 
-This distinction is immaterial when only the Lorentz orbit up to positive scale
-is considered. It is essential when the representative is required to be a
-channel. If the determinant-one representative satisfies
+This scalar is irrelevant when one considers only a Lorentz orbit up to
+positive scale. It is necessary when the representative must be a channel.
+Suppose the determinant-one representative obeys
 \begin{align}
-  \tr\!\left(\Phi_{S_2}\circ T\circ\Phi_{S_1}(A)\right)
-  = \alpha\,\tr(A),
+    \tr\!\left((\Phi_{S_2}\circ T\circ\Phi_{S_1})(A)\right)
+        &=\alpha\,\tr(A).
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_trace_scalar}
 \end{align}
-then it is trace preserving only when $\alpha=1$. General invertible filters
-can multiply the map by $\alpha^{-1}$ through the scalar in
-\eqref{eq:scalar-factor}; determinant-one filters have no such freedom. The
-minimisation in Propositions~2.8 and~2.9 produces partial traces proportional to
-the identity, but the proportionality scalar must still be chosen so that the
-qubit representative is trace preserving.
+It is trace preserving exactly when $\alpha=1$. General invertible filters can
+multiply the representative by $\alpha^{-1}$ through
+(\ref{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_two_filter_scalar});
+determinant-one filters cannot. The minimization in Propositions~2.8 and~2.9
+of Ref.~\cite{Wolf2012Quantum} makes the two partial traces proportional to
+the identity, but a further scalar choice is required to make the qubit
+representative trace preserving.
 
 \section{The point at issue}
 
-A former local statement required both filters to be determinant-one while also
-requiring the filtered map to be a qubit channel in one of the three canonical
-forms.\footnote{The removed declaration was
+A former local theorem required determinant-one matrices for both filters and
+simultaneously required the filtered map to be a qubit channel in one of the
+three canonical forms.\footnote{The removed declaration was
 \leanid{Wolf.exists_lorentz_normal_form_qubit} in
-\doclink{QICLean/Channel/LorentzNormalForm}.}  Equation~\eqref{eq:scalar-factor}
-shows why the determinant-one restriction does not justify the normalization in
-Wolf's proposition. The source theorem permits general invertible filters, and
-its channel conclusion uses their scalar freedom. The restricted local
-statement was therefore removed rather than treated as a formalization of
-Proposition~2.11.
+\doclink{QICLean/Channel/LorentzNormalForm}.}
+The scalar identity
+(\ref{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_two_filter_scalar}) shows
+that this determinant-one hypothesis does not provide the normalization used
+in Proposition~2.11 of Ref.~\cite{Wolf2012Quantum}. The local theorem was
+therefore removed rather than presented as a formalization of the source
+proposition.
 
-The three canonical-form predicates and the square full-Kraus-rank minimisation
-theorem are formalized.  The Pauli--Minkowski identification, the
-$\mathrm{SL}(2,\C)$ congruence action, its image in
-$\mathrm{SO}^+(1,3)$, and the exact transfer-matrix action
-$L_2\widehat T L_1$ are also formalized.\footnote{Formal declarations
-\leanid{Wolf.IsLorentzDiagonal}, \leanid{Wolf.IsLorentzNonDiagonal},
+The formal development contains the three canonical-form predicates and the
+square full-Kraus-rank minimization theorem.\footnote{Formal declarations:
+\leanid{Wolf.IsLorentzDiagonal},
+\leanid{Wolf.IsLorentzNonDiagonal},
 \leanid{Wolf.IsLorentzSingular}, and
 \leanid{Wolf.exists_normal_form_generic} in
-\doclink{QICLean/Channel/LorentzNormalForm}, together with
+\doclink{QICLean/Channel/LorentzNormalForm}.}
+It also contains the Pauli--Minkowski equivalence, the
+$\operatorname{SL}(2,\C)$ congruence action, its image in
+$\operatorname{SO}^{+}(1,3)$, and the transfer-matrix action
+$L_2\widehat T L_1$.\footnote{Formal declarations:
 \leanid{Wolf.pauliMinkowskiEquiv},
 \leanid{Wolf.spinorMatrix_isSpecialOrthochronousLorentz}, and
 \leanid{Wolf.pauliTransferMatrixReal_slFiltering} in
@@ -101,66 +119,167 @@ $L_2\widehat T L_1$ are also formalized.\footnote{Formal declarations
 \doclink{QICLean/Channel/LorentzNormalForm/SpinorCover}; and
 \leanid{Wolf.spinorMatrix_boostExpSL2} and
 \leanid{Wolf.spinorMatrix_rotationExpSL2} in
-\doclink{QICLean/Channel/LorentzNormalForm/SpinorExponential}.}  The theorem
-asserting existence of a canonical representative for every qubit channel
+\doclink{QICLean/Channel/LorentzNormalForm/SpinorExponential}.}
+The theorem asserting a canonical representative for every qubit channel
 remains open.
 
-All three displayed representatives are now formalized directly from the
-source formulas in
-\cite[Theorem~8, Eqs.~(17)--(19)]{VerstraeteVerschelde2002QuantumChannels}.
-Verstraete--Verschelde define $R_\Phi$ from the first-factor-partially-transposed
-dual state and then use $(1,x')^{\mathsf T}=R_\Phi(1,x)^{\mathsf T}$, so
-$R_\Phi$ is their Bloch transfer matrix.  It corresponds to the local
-$\widehat T$, not to the raw Pauli correlation matrix of $\tau$.  In the
-normalized Choi convention and the local factor order, the latter satisfies
-$R_{\mathrm{raw}}(\tau)=\widehat T\operatorname{diag}(1,1,-1,1)$ because
-$\sigma_2^{\mathsf T}=-\sigma_2$.
-The partial-transpose sign is therefore already absorbed before the parameters
-in Theorem~8 are introduced.
+\section{Canonical representatives and parameter conditions}
 
-For the diagonal representative, put $q_i=p_i^2$ in the Equation~(18) Pauli
-family and specialize to $A=B=\one$.  Direct Pauli conjugation gives
+The three displayed representatives are formalized from Theorem~8 and
+Equations~(17)--(19) of
+Ref.~\cite{VerstraeteVerschelde2002QuantumChannels}. That source defines
+$R_\Phi$ from the first-factor-partially-transposed dual state and then uses
 \begin{align}
-  s_1&=q_0+q_1-q_2-q_3,
-  &s_2&=q_0-q_1+q_2-q_3,\\
-  s_3&=q_0-q_1-q_2+q_3,
-  &1&=q_0+q_1+q_2+q_3.
+    \begin{pmatrix}1\\x'\end{pmatrix}
+        &=R_\Phi
+          \begin{pmatrix}1\\x\end{pmatrix}.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_bloch_action}
 \end{align}
-Inverting these equations in Wolf's Pauli-transfer convention gives
+Thus $R_\Phi$ is the Bloch transfer matrix and corresponds to the local
+$\widehat T$, not to the raw Pauli correlation matrix of the Choi matrix
+$\tau$. In the normalized Choi convention and the local tensor-factor order,
 \begin{align}
-  q_0&=(1+s_1+s_2+s_3)/4,
-  &q_1&=(1+s_1-s_2-s_3)/4,\\
-  q_2&=(1-s_1+s_2-s_3)/4,
-  &q_3&=(1-s_1-s_2+s_3)/4.
+    R_{\mathrm{raw}}(\tau)
+        &=\widehat T\operatorname{diag}(1,1,-1,1),
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_partial_transpose_bridge}\\
+    \sigma_2^{\mathsf T}
+        &=-\sigma_2.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_pauli_two_transpose}
 \end{align}
-Verstraete--Verschelde, Theorem~8 instead prints
-$1-s_1-s_2-s_3\geq0$.  This is inconsistent with Equation~(16): the identity
-channel has $R_\Phi=\operatorname{diag}(1,1,1,1)$ and violates that printed
-inequality.  It also cannot be explained by the partial-transpose bridge,
-because $R_\Phi$ is defined only after that transpose and already acts as the
-Bloch transfer matrix.  The formalization therefore records the all-minus
-condition as a printed sign inconsistency and does not use it.
-The formalization proves that the weights sum to one and that their simultaneous
-nonnegativity is equivalent to the four displayed numerator inequalities.
-Assuming that nonnegativity, the Equation~(18) amplitudes are $p_i=\sqrt{q_i}$
-when $A=B=\one$, and the resulting channel has Pauli transfer matrix
-$\operatorname{diag}(1,s_1,s_2,s_3)$ and Choi/Kraus rank
-$\#\{i\mid q_i\ne0\}$, retaining all rank-drop boundaries.  No necessity
-statement for complete positivity is formalized: the definition uses
-$\sqrt{q_i}$ and therefore clips a negative candidate weight to zero.
-Under $1\geq s_1\geq s_2\geq|s_3|$, Wolf's Equation~(2.40),
-$s_1+s_2\leq1+s_3$, supplies all four inequalities and agrees with the direct
-Equation~(18) calculation above.
-The exact non-diagonal three-Kraus family defines a channel for each assumed
-$x\in[0,1]$, has the Pauli data
-$\Delta=\operatorname{diag}(x/\sqrt3,x/\sqrt3,1/3)$ and
-$v=(0,0,2/3)$, and has Choi/Kraus rank three for $x<1$ and two at $x=1$.
-The third normal form in Equation~(17) is realized by the singular two-Kraus
-family
-$X\mapsto\tr(X)\lvert0\rangle\!\langle0\rvert$ and has Choi/Kraus rank two.
-The diagonal rank formula is the direct Bell-family calculation from
-Equation~(18).  The non-diagonal and singular rank statements are respectively
-cases 2 and 3 of \cite[Theorem~18]{WolfCirac2008Dividing}\footnote{Formal declarations
+The partial-transpose sign is therefore absorbed before the parameters in
+Theorem~8 of Ref.~\cite{VerstraeteVerschelde2002QuantumChannels} are
+introduced.
+
+For the diagonal representative, set $q_i=p_i^2$ in the Pauli family of
+Equation~(18) of Ref.~\cite{VerstraeteVerschelde2002QuantumChannels} and
+specialize to $A=B=\one$. Direct Pauli conjugation gives
+\begin{align}
+    s_1
+        &=q_0+q_1-q_2-q_3,
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_diagonal_s1}\\
+    s_2
+        &=q_0-q_1+q_2-q_3,
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_diagonal_s2}\\
+    s_3
+        &=q_0-q_1-q_2+q_3,
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_diagonal_s3}\\
+    1
+        &=q_0+q_1+q_2+q_3.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_weight_sum}
+\end{align}
+In Wolf's Pauli-transfer convention, inversion yields
+\begin{align}
+    q_0
+        &=\frac{1+s_1+s_2+s_3}{4},
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_weight_q0}\\
+    q_1
+        &=\frac{1+s_1-s_2-s_3}{4},
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_weight_q1}\\
+    q_2
+        &=\frac{1-s_1+s_2-s_3}{4},
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_weight_q2}\\
+    q_3
+        &=\frac{1-s_1-s_2+s_3}{4}.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_weight_q3}
+\end{align}
+
+Theorem~8 of Ref.~\cite{VerstraeteVerschelde2002QuantumChannels} instead
+prints
+\begin{align}
+    1-s_1-s_2-s_3
+        &\geq0.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_printed_all_minus}
+\end{align}
+This condition is inconsistent with Equation~(16) of the same source: the
+identity channel has
+\begin{align}
+    R_\Phi
+        &=\operatorname{diag}(1,1,1,1)
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_identity_transfer}
+\end{align}
+and violates
+(\ref{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_printed_all_minus}).
+The discrepancy cannot be explained by the partial-transpose bridge because
+$R_\Phi$ is defined after that transpose and already acts as the Bloch
+transfer matrix. The formalization records the all-minus condition as a
+printed sign inconsistency and does not use it.
+
+The formal development proves that the weights sum to one and that their
+simultaneous nonnegativity is equivalent to nonnegativity of the four
+numerators in
+(\ref{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_weight_q0})--%
+(\ref{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_weight_q3}). Under this
+nonnegativity assumption, the amplitudes in Equation~(18) of
+Ref.~\cite{VerstraeteVerschelde2002QuantumChannels} are
+\begin{align}
+    p_i
+        &=\sqrt{q_i},
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_pauli_amplitudes}\\
+    A
+        &=B=\one.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_identity_filters}
+\end{align}
+The resulting channel has
+\begin{align}
+    \widehat T
+        &=\operatorname{diag}(1,s_1,s_2,s_3),
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_diagonal_transfer}\\
+    \operatorname{rank}_{\mathrm{Choi}}(T)
+        &=\#\{i\mid q_i\neq0\}.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_diagonal_rank}
+\end{align}
+This formula retains every rank-drop boundary. No necessity theorem for
+complete positivity is formalized because the definition uses $\sqrt{q_i}$
+and therefore clips a negative candidate weight to zero.
+
+Under the ordering assumed in Equation~(2.40) of
+Ref.~\cite{Wolf2012Quantum},
+\begin{align}
+    1
+        &\geq s_1\geq s_2\geq|s_3|,
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_wolf_ordering}\\
+    s_1+s_2
+        &\leq1+s_3,
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_wolf_cp_bound}
+\end{align}
+all four weight inequalities follow, in agreement with the direct calculation
+from Equation~(18) of
+Ref.~\cite{VerstraeteVerschelde2002QuantumChannels}.
+
+For each supplied $x\in[0,1]$, the exact non-diagonal three-Kraus family is a
+channel with
+\begin{align}
+    \Delta
+        &=\operatorname{diag}
+          \left(\frac{x}{\sqrt3},\frac{x}{\sqrt3},\frac13\right),
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_nondiagonal_delta}\\
+    v
+        &=\left(0,0,\frac23\right),
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_nondiagonal_shift}\\
+    \operatorname{rank}_{\mathrm{Choi}}(T)
+        &=3
+        \qquad\text{if }x<1,
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_nondiagonal_rank_three}\\
+    \operatorname{rank}_{\mathrm{Choi}}(T)
+        &=2
+        \qquad\text{if }x=1.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_nondiagonal_rank_two}
+\end{align}
+The singular two-Kraus family from Equation~(17) of
+Ref.~\cite{VerstraeteVerschelde2002QuantumChannels} is
+\begin{align}
+    T(X)
+        &=\tr(X)\ketbra{0}{0},
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_singular_map}\\
+    \operatorname{rank}_{\mathrm{Choi}}(T)
+        &=2.
+    \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_singular_rank}
+\end{align}
+The diagonal rank formula follows directly from the Bell family in
+Equation~(18) of
+Ref.~\cite{VerstraeteVerschelde2002QuantumChannels}. The non-diagonal and
+singular rank statements are cases~2 and~3 of Theorem~18 in
+Ref.~\cite{WolfCirac2008Dividing}.\footnote{Formal declarations:
 \leanid{Wolf.diagonalMap},
 \leanid{Wolf.diagonalBellWeight_nonneg_iff},
 \leanid{Wolf.pauliTransferMatrix_diagonalMap},
@@ -170,55 +289,83 @@ cases 2 and 3 of \cite[Theorem~18]{WolfCirac2008Dividing}\footnote{Formal declar
 \leanid{Wolf.choiRank_nonDiagonalMap_one},
 \leanid{Wolf.singularMap}, and
 \leanid{Wolf.choiRank_singularMap} in
-\doclink{QICLean/Channel/LorentzNormalForm/CanonicalQubitChannels}.}.
-This bounded construction proves sufficiency for an already supplied
-$x\in[0,1]$; it does not derive that range or classify Lorentz orbits.
+\doclink{QICLean/Channel/LorentzNormalForm/CanonicalQubitChannels}.}
+These bounded constructions prove sufficiency after $x\in[0,1]$ has been
+supplied. They do not derive this range or classify Lorentz orbits.
 
 \section{Elimination plan}
 
 A source-faithful proof requires the following steps.
 \begin{enumerate}
-  \item[\(\checkmark\)] General invertible Kraus-rank-one completely positive
-    filters are now formalized as \leanid{Wolf.InvertibleFilter}.  For every
-    nonzero dimension,
-    \leanid{Wolf.InvertibleFilter.exists_scalar_slFiltering} separates the
-    filtering matrix as $X=cS$, where $c\in\C$ is nonzero,
-    $c^d=\det X$, and $S\in\operatorname{SL}(d,\C)$, while the induced map satisfies
-    $\Phi_X=|c|^2\Phi_S$ with $|c|^2>0$.  The corresponding two-filter scalar
-    identity for $\Phi_2\circ T\circ\Phi_1$ is
+    \item[$\checkmark$] General invertible Kraus-rank-one completely positive
+    filters are formalized by \leanid{Wolf.InvertibleFilter}. For every
+    nonzero dimension, the declaration
+    \leanid{Wolf.InvertibleFilter.exists_scalar_slFiltering} gives
+    \begin{align}
+        X
+            &=cS,
+        \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_general_dimension_factorization}\\
+        c
+            &\in\C\setminus\{0\},
+        \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_nonzero_scalar}\\
+        c^d
+            &=\det X,
+        \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_general_dimension_root}\\
+        S
+            &\in\operatorname{SL}(d,\C),
+        \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_general_dimension_sl}\\
+        \Phi_X
+            &=|c|^2\Phi_S,
+        \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_general_dimension_filter}\\
+        |c|^2
+            &>0.
+        \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_positive_scalar}
+    \end{align}
+    The two-filter scalar identity is
     \leanid{Wolf.InvertibleFilter.filteredMap_eq_normSq_smul}.
-  \item Use the minimisation argument of Propositions~2.8 and~2.9 for the
-    full-Kraus-rank case, retaining the proportionality constants of the two
-    marginals.
-  \item[\(\checkmark\)] The Hermitian congruence $M\mapsto SMS^\dagger$
-    for $S\in\mathrm{SL}(2,\C)$ is now identified with a real Minkowski
-    transformation \leanid{Wolf.spinorMatrix}.  Its image satisfies the three
-    defining conditions of $\mathrm{SO}^+(1,3)$, and two-sided filtering acts
-    on Pauli transfer matrices in Wolf's order as $L_2\widehat T L_1$.
-  \item[\(\checkmark\)] The spinor homomorphism onto
-    $\mathrm{SO}^+(1,3)$ is surjective and has the exact two-point fibres
-    $\{S,-S\}$.  The explicit boost and rotation exponential identities from
-    Wolf's Equation~(2.44) are also formalized, so arbitrary source Lorentz
-    factors can be lifted by the proved spinor cover rather than extrapolating
-    from the $\mathrm{SU}(2)$ rotation case.
-  \item Classify the resulting diagonal, non-diagonal, and singular Lorentz
-    orbits using the source decomposition and its signed canonical-pair data.
-  \item Choose the scalar factors so that the canonical representative is trace
-    preserving, and derive the stated parameter bounds from the positive
-    two-qubit normal forms.  Once the Bell-diagonal eigenvalues are nonnegative and
-    $x\in[0,1]$ is supplied, the exact Kraus constructions, complete positivity,
-    transfer data, and rank calculations for all three representatives are
-    already formalized.
-  \item Prove the three-case existence theorem using the general filters and link
-    it to the existing canonical-form predicates.
+
+    \item Apply the minimization argument of Propositions~2.8 and~2.9 in
+    Ref.~\cite{Wolf2012Quantum} to the full-Kraus-rank case while retaining
+    the proportionality constants of both marginals.
+
+    \item[$\checkmark$] The Hermitian congruence
+    \begin{align}
+        M
+            &\longmapsto SMS^\dagger,
+            \qquad S\in\operatorname{SL}(2,\C),
+        \label{eq:wolf_prop2_11_lorentz_scalar_filtering_gap_spinor_congruence}
+    \end{align}
+    is identified with the real Minkowski transformation
+    \leanid{Wolf.spinorMatrix}. Its image satisfies the three defining
+    conditions of $\operatorname{SO}^{+}(1,3)$, and two-sided filtering acts
+    on transfer matrices as $L_2\widehat T L_1$.
+
+    \item[$\checkmark$] The spinor homomorphism onto
+    $\operatorname{SO}^{+}(1,3)$ is surjective and has the exact fibres
+    $\{S,-S\}$. The boost and rotation exponential identities from
+    Equation~(2.44) of Ref.~\cite{Wolf2012Quantum} are formalized. Hence
+    arbitrary source Lorentz factors can be lifted through the proved spinor
+    cover without extrapolating from the $\operatorname{SU}(2)$ rotation
+    case.
+
+    \item Classify the diagonal, non-diagonal, and singular Lorentz orbits
+    using the source decomposition and its signed canonical-pair data.
+
+    \item Choose scalar factors that make each canonical representative trace
+    preserving, and derive the parameter bounds from the positive two-qubit
+    normal forms. Once the Bell-diagonal eigenvalues are nonnegative and
+    $x\in[0,1]$ is supplied, the exact Kraus constructions, complete
+    positivity, transfer data, and rank calculations are already formalized.
+
+    \item Prove the three-case existence theorem with general invertible
+    filters and connect it to the existing canonical-form predicates.
 \end{enumerate}
 
-The discrepancy is an open gap: the canonical predicates, the exact
-displayed representatives and their ranks, the generic minimisation theorem
-in square dimension, the determinant-one Lorentz action, and the full spinor
-cover are available, but the scalar-normalized Lorentz-orbit classification
-and necessity of the parameter range required by Proposition~2.11 have not
-yet been formalized.
+The discrepancy remains open. The canonical predicates, exact representatives
+and ranks, square full-Kraus-rank minimization theorem, determinant-one
+Lorentz action, and full spinor cover are available. The scalar-normalized
+Lorentz-orbit classification and the necessity of the parameter range in
+Proposition~2.11 of Ref.~\cite{Wolf2012Quantum} have not been formalized.
 
 \bibliographystyle{alpha}
 \bibliography{references}

@@ -17,59 +17,119 @@
 
 \section{Source statement}
 
-Lemma~3.1 of Wolf's \emph{Quantum Channels \& Operations}
-(\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
-119--128) states that, for a normalized vector
-$\phi\in\mathbb{C}^{D'}\otimes\mathbb{C}^{D}$ with reduced density matrix
-$\rho=\tr_2|\phi\rangle\langle\phi|$ on the first factor $\mathbb{C}^{D'}$,
+Let $D',D$ be finite dimensions, and let
+$\phi\in\mathbb C^{D'}\otimes\mathbb C^D$ be a normalized vector. Define its
+reduced density matrix on the first tensor factor by
 \begin{align}
-  \sup_{\psi}|\langle\phi|\psi\rangle|^2 = \|\rho\|_{(n)},
+    \rho
+        &=\tr_2(\ketbra{\phi}{\phi}).
+    \label{eq:wolf_lemma_3_1_top_index_scope_reduced_density}
 \end{align}
-where the supremum runs over normalized vectors $\psi$ of Schmidt rank $n$ and
-$\|\cdot\|_{(n)}$ is the Ky-Fan $n$-norm. Since $\rho$ acts on the first factor
-$\mathbb{C}^{D'}$, its Ky-Fan $n$-norm is meaningful for $1\le n\le D'$. In the
-application (n-positivity, Wolf Prop.~3.2) the Schmidt rank $n$ ranges over
-$1\le n\le D'$, so the top value $n=D'$ is within the source's scope.
+For $1\leq n\leq D'$, let $\|\rho\|_{(n)}$ denote the Ky Fan $n$-norm, the
+sum of the $n$ largest eigenvalues of $\rho$. Wolf's Lemma~3.1 states
+\begin{align}
+    \sup_{\substack{\psi\ \mathrm{normalized}\\
+                    \operatorname{SchmidtRank}(\psi)\leq n}}
+        \left|\braket{\phi}{\psi}\right|^2
+        &=\|\rho\|_{(n)}.
+    \label{eq:wolf_lemma_3_1_top_index_scope_source_identity}
+\end{align}
+The local source is
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines~119--128; see Lemma~3.1 of Ref.~\cite{Wolf2012Quantum}.
 
-\section{Formalized statement}
+Because $\rho$ acts on $\mathbb C^{D'}$, its Ky Fan $n$-norm is defined
+throughout the range $1\leq n\leq D'$. In the application to $n$-positivity
+in Wolf's Proposition~3.2, the Schmidt-rank index has the same range
+\cite[Proposition~3.2]{Wolf2012Quantum}. In particular, the endpoint $n=D'$
+belongs to the source statement.
 
-The formal theorem\footnote{Formal declaration:
+\section{Originally formalized range}
+
+The theorem
+\leanid{Matrix.maximalSchmidtOverlap_eq_kyFanNorm} establishes
+Eq.~\ref{eq:wolf_lemma_3_1_top_index_scope_source_identity} and strengthens
+the supremum assertion to attainment through Lean's \texttt{IsGreatest}
+predicate.\footnote{Formal declaration:
     \leanid{Matrix.maximalSchmidtOverlap_eq_kyFanNorm} in
-    \doclink{QICLean/Channel/MaximalOverlap}.} establishes the same identity,
-strengthened to attainment (the \Lean{} \texttt{IsGreatest} predicate), under
-the hypotheses $1\le n$ and $n<D'$, where $D'$ is the dimension of the first
-tensor factor on which $\rho$ acts.
+    \doclink{QICLean/Channel/MaximalOverlap}.}
+Its hypotheses originally covered
+\begin{align}
+    1\leq n
+        &<D'.
+    \label{eq:wolf_lemma_3_1_top_index_scope_original_formal_range}
+\end{align}
+Thus the formal theorem omitted only the endpoint $n=D'$.
 
-\section{The gap}
+\section{The endpoint}
 
-The formalization omits the top index $n=D'$. At $n=D'$ the Schmidt-rank
-constraint is vacuous and $\|\rho\|_{(D')}=\tr\rho=1$; the supremum equals $1$
-and is attained at $\psi=\phi$.
+At $n=D'$, every vector in
+$\mathbb C^{D'}\otimes\mathbb C^D$ has Schmidt rank at most $D'$, so the
+Schmidt-rank constraint is vacuous. The normalized choice $\psi=\phi$ gives
+\begin{align}
+    \left|\braket{\phi}{\phi}\right|^2
+        &=1.
+    \label{eq:wolf_lemma_3_1_top_index_scope_endpoint_attainment}
+\end{align}
+Cauchy--Schwarz gives the matching upper bound
+\begin{align}
+    \left|\braket{\phi}{\psi}\right|^2
+        &\leq
+        \braket{\phi}{\phi}\braket{\psi}{\psi}
+        =1
+    \label{eq:wolf_lemma_3_1_top_index_scope_cauchy_schwarz_bound}
+\end{align}
+for every normalized $\psi$. Since $\rho$ is a density matrix,
+\begin{align}
+    \|\rho\|_{(D')}
+        &=\tr(\rho)
+        =1.
+    \label{eq:wolf_lemma_3_1_top_index_scope_top_ky_fan_trace}
+\end{align}
+Equations~\ref{eq:wolf_lemma_3_1_top_index_scope_endpoint_attainment}--%
+\ref{eq:wolf_lemma_3_1_top_index_scope_top_ky_fan_trace} prove the source
+identity at the endpoint.
 
-The restriction is inherited from the underlying maximum principle,\footnote{Formal
-    declaration: \leanid{Matrix.IsHermitian.kyFanNorm_eq_sup_trace}.} which
-characterizes the Ky-Fan $k$-norm as a maximum over rank-exactly-$k$ orthogonal
-projections only for $k<D'$. At $k=D'$ the only rank-$D'$ projection is the
-identity, and the eigenvalue sum already equals the trace; the variational
-statement degenerates rather than fails.
+The original restriction came from the underlying maximum principle for Ky
+Fan norms.\footnote{Formal declaration:
+    \leanid{Matrix.IsHermitian.kyFanNorm_eq_sup_trace}.}
+That theorem characterizes the Ky Fan $k$-norm as a maximum over orthogonal
+projections of rank exactly $k$ only when $k<D'$. At $k=D'$, the only
+rank-$D'$ orthogonal projection is the identity, and the variational value
+reduces to
+\begin{align}
+    \operatorname{Re}\tr(A).
+    \label{eq:wolf_lemma_3_1_top_index_scope_top_projection_value}
+\end{align}
+The variational statement degenerates at the endpoint; it does not fail.
 
-\section{Elimination plan}
+\section{Resolution}
 
-Add a top-index case to the Ky-Fan maximum principle (or a companion lemma)
-covering $k=D'$, where the maximizing projection is the identity and the value
-is $\operatorname{Re}\tr(A)$. The overlap lemma then extends to $1\le n\le D'$
-by feeding that case into the same transfer argument.
+The companion theorem
+\leanid{Matrix.maximalSchmidtOverlap_eq_kyFanNorm_top} now proves the endpoint
+$n=D'$. It uses the vacuous Schmidt-rank constraint, the maximizing vector
+$\psi=\phi$, the upper bound in
+Eq.~\ref{eq:wolf_lemma_3_1_top_index_scope_cauchy_schwarz_bound}, and the
+trace identity in
+Eq.~\ref{eq:wolf_lemma_3_1_top_index_scope_top_ky_fan_trace}.
+
+Together, the declarations
+\leanid{Matrix.maximalSchmidtOverlap_eq_kyFanNorm} and
+\leanid{Matrix.maximalSchmidtOverlap_eq_kyFanNorm_top} cover
+\begin{align}
+    1\leq n
+        &\leq D',
+    \label{eq:wolf_lemma_3_1_top_index_scope_resolved_full_range}
+\end{align}
+which is the full range of Wolf's Lemma~3.1
+\cite[Lemma~3.1]{Wolf2012Quantum}.
 
 \section{Classification}
 
-\emph{Resolved.} The top index $n=D'$ is now formalized as the companion theorem
-\leanid{Matrix.maximalSchmidtOverlap_eq_kyFanNorm_top}: there the Schmidt-rank
-constraint is vacuous, the Ky-Fan $D'$-norm collapses to the trace
-$\|\rho\|_{(D')}=\tr\rho=1$, and the value is attained at $\psi=\phi$ with the
-upper bound supplied by Cauchy--Schwarz. Together with
-\leanid{Matrix.maximalSchmidtOverlap_eq_kyFanNorm} (the range $1\le n<D'$) this
-covers the full source range $1\le n\le D'$ of Wolf's Lemma~3.1, exactly as the
-elimination plan above anticipated.
+The former omission was a scope restriction in the formalization, not an
+error in the source theorem. It is resolved by the endpoint companion theorem,
+exactly as anticipated by the plan to treat the identity projection
+separately.
 
 \bibliographystyle{alpha}
 \bibliography{references}

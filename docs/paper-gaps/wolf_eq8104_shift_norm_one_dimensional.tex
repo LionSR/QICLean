@@ -17,62 +17,143 @@
 
 \section{Source passage}
 
-Fix an integer $D\ge 1$, let $N\in\MN{D}$ be the strict upper shift
-$N_{i,j}=1$ if $j=i+1$ and $N_{i,j}=0$ otherwise, let
-$J_{D}(\lambda)=\lambda\Id+N$ be the Jordan block with eigenvalue
-$\lambda\in\C$, and write $\|\cdot\|_{\infty}$ for the largest singular value.
-Chapter~8 of \cite{Wolf2012Quantum} derives, for every $n\in\mathbb N$ and
-every natural number $k_{0}\le\min\{n,D-1\}$, the two-sided estimate
+Fix an integer $D\geq 1$. Let $N\in\MN{D}$ be the strict upper shift, defined
+by
 \begin{align}
-  |\lambda|^{\,n-k_{0}}\binom{n}{k_{0}}
-    \le \bigl\|J_{D}(\lambda)^{n}\bigr\|_{\infty}
-    \le \sum_{k=0}^{\min\{n,D-1\}}|\lambda|^{\,n-k}\binom{n}{k}
+    N_{i,j}
+        &=
+        \begin{cases}
+            1, & j=i+1,\\
+            0, & \text{otherwise}.
+        \end{cases}
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_shift_definition}
 \end{align}
-of Equation~(8.104), at lines 1197--1215 of the local source file. The upper
-bound is obtained from the binomial expansion
-$J_{D}(\lambda)^{n}=\sum_{k}\binom{n}{k}\lambda^{n-k}N^{k}$ by the triangle
-inequality, using the assertion $\|N\|_{\infty}=1$ for the strict upper shift
-$N$ at line~1215.
+For $\lambda\in\C$, define the Jordan block
+$J_D(\lambda)=\lambda\Id+N$, and let $\|\cdot\|_{\infty}$ denote the largest
+singular value.
+
+Equation~(8.104) in Chapter~8 of Ref.~\cite{Wolf2012Quantum} states that, for
+every $n\in\mathbb N$ and every natural number
+$k_0\leq\min\{n,D-1\}$,
+\begin{align}
+    |\lambda|^{\,n-k_0}\binom{n}{k_0}
+        &\leq \bigl\|J_D(\lambda)^n\bigr\|_{\infty},
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_source_lower_bound}\\
+    \bigl\|J_D(\lambda)^n\bigr\|_{\infty}
+        &\leq
+        \sum_{k=0}^{\min\{n,D-1\}}
+            |\lambda|^{\,n-k}\binom{n}{k}.
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_source_upper_bound}
+\end{align}
+The local source derives these bounds at lines~1197--1215. The upper bound
+follows from the binomial expansion
+\begin{align}
+    J_D(\lambda)^n
+        &=
+        \sum_{k=0}^{\min\{n,D-1\}}
+            \binom{n}{k}\lambda^{n-k}N^k
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_binomial_expansion}
+\end{align}
+and the triangle inequality. At line~1215, the source removes the shift
+factors by asserting that $\|N\|_{\infty}=1$.
 
 \section{The deviation}
 
-The equality $\|N\|_{\infty}=1$ holds for $D\ge 2$ but fails at $D=1$: the
-strict upper shift on a one-dimensional space is the zero matrix, so
-$\|N\|_{\infty}=0$. Wolf states the equality without a dimension restriction.
-The Jordan block itself is defined for every $D\ge 1$, and Equation~(8.104) is
-asserted for every such $D$, so the intermediate assertion is one degenerate
-case wider than its proof supports.
+The asserted equality holds when $D\geq 2$, but not when $D=1$. In one
+dimension, the strict upper shift defined in
+(\ref{eq:wolf_eq8104_shift_norm_one_dimensional_shift_definition}) is the zero
+matrix. Consequently,
+\begin{align}
+    D=1
+        \quad&\Longrightarrow\quad
+        N=0,
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_one_dimensional_shift}\\
+    D=1
+        \quad&\Longrightarrow\quad
+        \|N\|_{\infty}=0.
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_one_dimensional_norm}
+\end{align}
+The source states $\|N\|_{\infty}=1$ without restricting the dimension. Since
+the Jordan block and Equation~(8.104) of Ref.~\cite{Wolf2012Quantum} both
+allow $D=1$, this intermediate assertion includes one degenerate case in
+which it is false.
 
 \section{Formalized interpretation}
 
-Only the direction $\|N\|_{\infty}\le 1$ enters the derivation: the triangle
-inequality is followed by
-$\|N^{k}\|_{\infty}\le\|N\|_{\infty}^{k}\le 1$, which is what discards the
-shift factors from the expansion. The formalization therefore states
-\leanid{Matrix.l2_opNorm_nilpotentShift_le_one} as the inequality
-$\|N\|_{\infty}\le 1$, valid for every $D$, and derives
-\leanid{Matrix.l2_opNorm_nilpotentShift_pow_le_one} from it. The proof is the
-one Wolf indicates: the Gram identity
-$N^{\dagger}N=\operatorname{diag}(0,1,\dots,1)$, which is
-\leanid{Matrix.conjTranspose_nilpotentShift_mul_self}, gives a matrix whose
-largest singular value is at most $1$, and the C*-identity
-$\|N\|_{\infty}^{2}=\|N^{\dagger}N\|_{\infty}$ transfers the bound.
+The derivation of the upper bound requires only $\|N\|_{\infty}\leq 1$.
+Submultiplicativity gives
+\begin{align}
+    \|N^k\|_{\infty}
+        &\leq \|N\|_{\infty}^{\,k},
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_power_submultiplicativity}\\
+    \|N\|_{\infty}\leq 1
+        \quad&\Longrightarrow\quad
+        \|N^k\|_{\infty}\leq 1.
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_power_bound}
+\end{align}
+Applying
+(\ref{eq:wolf_eq8104_shift_norm_one_dimensional_power_bound}) to the triangle
+inequality for
+(\ref{eq:wolf_eq8104_shift_norm_one_dimensional_binomial_expansion}) yields
+the upper bound
+(\ref{eq:wolf_eq8104_shift_norm_one_dimensional_source_upper_bound}).
 
-At $D=1$ the two sides of Equation~(8.104) coincide: the hypothesis
-$k_{0}\le\min\{n,D-1\}$ forces $k_{0}=0$, and both bounds read
-$|\lambda|^{n}\le\|\lambda^{n}\|_{\infty}\le|\lambda|^{n}$. The theorems
+The formalization therefore proves the dimension-uniform inequality
+$\|N\|_{\infty}\leq 1$ and derives the corresponding power bound from
+it.\footnote{Formal declarations:
+\leanid{Matrix.l2_opNorm_nilpotentShift_le_one} and
+\leanid{Matrix.l2_opNorm_nilpotentShift_pow_le_one}.}
+The proof follows the route indicated in Ref.~\cite{Wolf2012Quantum}. The Gram
+matrix satisfies
+\begin{align}
+    N^{\dagger}N
+        &=\operatorname{diag}(0,1,\ldots,1),
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_gram_identity}\\
+    \bigl\|N^{\dagger}N\bigr\|_{\infty}
+        &\leq 1.
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_gram_norm_bound}
+\end{align}
+The first identity is also formalized directly.\footnote{Formal declaration:
+\leanid{Matrix.conjTranspose_nilpotentShift_mul_self}.}
+The $C^*$-identity then gives
+\begin{align}
+    \|N\|_{\infty}^{\,2}
+        &=\bigl\|N^{\dagger}N\bigr\|_{\infty}
+        \leq 1,
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_cstar_norm_bound}\\
+    \|N\|_{\infty}
+        &\leq 1.
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_shift_norm_bound}
+\end{align}
+
+When $D=1$, the hypothesis $k_0\leq\min\{n,D-1\}$ forces $k_0=0$. The Jordan
+block is the scalar matrix $J_1(\lambda)=\lambda\Id$, so both sides of
+Equation~(8.104) of Ref.~\cite{Wolf2012Quantum} reduce to
+\begin{align}
+    |\lambda|^n
+        &\leq \|\lambda^n\|_{\infty}
+        \leq |\lambda|^n.
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_scalar_bounds}
+\end{align}
+Thus the source estimate remains valid in one dimension despite the false
+intermediate equality. The formal lower bound, upper bound, and combined bound
+retain Wolf's hypotheses, including $D\geq 1$, without any additional
+dimension restriction.\footnote{Formal declarations:
 \leanid{Matrix.le_l2_opNorm_jordanBlock_pow},
-\leanid{Matrix.l2_opNorm_jordanBlock_pow_le} and
-\leanid{Matrix.l2_opNorm_jordanBlock_pow_bounds} therefore carry Wolf's
-hypothesis set unchanged, with no dimension restriction beyond $D\ge 1$, which
-the Jordan block presupposes.
+\leanid{Matrix.l2_opNorm_jordanBlock_pow_le}, and
+\leanid{Matrix.l2_opNorm_jordanBlock_pow_bounds}.}
 
 \section{Verdict}
 
-\textbf{Verdict: resolved local fix (shift norm at $D=1$).} Replacing the
-source's intermediate equality $\|N\|_{\infty}=1$ by the inequality
-$\|N\|_{\infty}\le 1$ removes a false degenerate case without weakening
-Equation~(8.104), which is formalized with the source's own hypotheses.
+Replacing the source's intermediate equality $\|N\|_{\infty}=1$ by
+\begin{align}
+    \|N\|_{\infty}
+        &\leq 1
+    \label{eq:wolf_eq8104_shift_norm_one_dimensional_corrected_shift_statement}
+\end{align}
+corrects the degenerate case $D=1$ without weakening Equation~(8.104) of
+Ref.~\cite{Wolf2012Quantum}. The correction is local and resolved; the
+formalized Jordan-block estimate has exactly the source's hypotheses.
 
 \bibliographystyle{alpha}
 \bibliography{references}

@@ -17,107 +17,168 @@
 
 \section{Source statement}
 
-Proposition~3.2 of Wolf's \emph{Quantum Channels \& Operations}
-(\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
-153--179) bounds the expectation of a Hermitian operator
-$\tau\in\mathcal{M}_{D'}\otimes\mathcal{M}_{D}$ in vectors of fixed Schmidt
-rank. Writing $\tau=\sum_i\nu_i|\phi_i\rangle\langle\phi_i|$ with normalized
-eigenvectors, $\rho_i=\tr_2|\phi_i\rangle\langle\phi_i|$ the reduced density on
-the first factor $\mathbb{C}^{D'}$, $\nu_0$ the smallest positive eigenvalue and
-$\nu$ the largest one, the infimum over normalized vectors $\psi$ of Schmidt
-rank $n$ obeys
+Let $\tau\in\mathcal M_{D'}\otimes\mathcal M_D$ be Hermitian, with normalized
+eigenvectors $\phi_i$ and spectral data
 \begin{align}
-  \inf_{\psi}\langle\psi|\tau|\psi\rangle
-  &\ge \nu_0 + \sum_{i:\nu_i\le 0}(\nu_i-\nu_0)\,\|\rho_i\|_{(n)},
-  \tag{3.7}
+    \tau&=\sum_i\nu_i\ketbra{\phi_i}{\phi_i},
+    \label{eq:wolf_prop_3_2_top_index_scope_spectral_decomposition}\\
+    \rho_i&=\tr_2\!\left(\ketbra{\phi_i}{\phi_i}\right).
+    \label{eq:wolf_prop_3_2_top_index_scope_reduced_density}
 \end{align}
-and, when a single eigenvalue $\nu_-$ is non-positive,
+Here $\rho_i$ acts on the first factor $\C^{D'}$. Let $\nu_0$ be the smallest
+positive eigenvalue of $\tau$, let $\nu$ be its largest eigenvalue, and let
+$\lVert\rho_i\rVert_{(n)}$ denote its Ky--Fan $n$-norm.
+
+Proposition~3.2 of Ref.~\cite{Wolf2012Quantum} gives
 \begin{align}
-  \inf_{\psi}\langle\psi|\tau|\psi\rangle
-  &\le \nu + (\nu_- - \nu)\,\|\rho_-\|_{(n)}.
-  \tag{3.8}
+    \inf_\psi\bra{\psi}\tau\ket{\psi}
+        &\geq \nu_0+
+        \sum_{i:\nu_i\leq0}
+        (\nu_i-\nu_0)\lVert\rho_i\rVert_{(n)}.
+    \label{eq:wolf_prop_3_2_top_index_scope_lower_bound}
 \end{align}
-Each $\rho_i$ acts on the first factor $\mathbb{C}^{D'}$, so its Ky-Fan
-$n$-norm $\|\rho_i\|_{(n)}$ is meaningful for $1\le n\le D'$. Proposition~3.1 of
-the same chapter restricts the positivity index to $1\le n\le D$, the dimension
-of the second factor (same file, lines 90--92), and that is the range the source
-asserts. The value $n=D'$ therefore lies inside the source's range exactly when
-$D'\le D$; when $D'>D$ it lies beyond, and the formal endpoint below is an
-extension of the source rather than an instance of it. What matters for coverage
-is that the formal statements together hold at every $n\ge1$, hence at every $n$
-the source speaks about.
+This is Equation~(3.7) of Ref.~\cite{Wolf2012Quantum}. If a single eigenvalue
+$\nu_-$ is non-positive and $\rho_-$ is the reduced density matrix of its
+eigenvector, the proposition also gives
+\begin{align}
+    \inf_\psi\bra{\psi}\tau\ket{\psi}
+        &\leq \nu+(\nu_--\nu)\lVert\rho_-\rVert_{(n)}.
+    \label{eq:wolf_prop_3_2_top_index_scope_upper_bound}
+\end{align}
+This is Equation~(3.8) of Ref.~\cite{Wolf2012Quantum}. The local source is
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
+153--179.
 
-\section{Formalized statement}
+Because $\rho_i$ acts on $\C^{D'}$, its Ky--Fan norm is naturally indexed by
+$1\leq n\leq D'$. Proposition~3.1 of Ref.~\cite{Wolf2012Quantum} restricts
+the positivity index to $1\leq n\leq D$, as recorded in the same local source
+at lines 90--92. Consequently, the endpoint $n=D'$ belongs to the source range
+exactly when $D'\leq D$. If $D'>D$, that endpoint extends beyond the source
+range. The formal statements nevertheless hold for every $n\geq1$, and hence
+cover every index used by the source.
 
-For Schmidt ranks $1\le n<D'$ the formal theorems\footnote{Formal declarations:
+\section{Formalized statement below the top index}
+
+For $1\leq n<D'$, the formal per-vector theorems prove that every normalized
+vector $\psi$ of Schmidt rank at most $n$ satisfies the lower bound, and that
+some such vector satisfies the upper bound.\footnote{Formal declarations:
     \leanid{Matrix.IsHermitian.spectral_lower_bound} and
     \leanid{Matrix.IsHermitian.exists_le_spectral_upper_bound} in
     \doclink{QICLean/Channel/NPositivitySpectralCriterion}.}
-establish these bounds in the per-vector form: every normalized vector $\psi$ of
-Schmidt rank at most $n$ satisfies the lower bound~(3.7), and some such $\psi$
-realizes the upper bound~(3.8).
 
-The source's infimum form of the same two bounds is stated for the infimum of
-the expectations $\bra{\psi}\tau\ket{\psi}$ over the normalized vectors of
-Schmidt rank at most $n$.\footnote{Formal declarations:
-    \leanid{Matrix.IsHermitian.le_sInf_schmidtRankLEExpectations}~(3.7),
-    \leanid{Matrix.IsHermitian.sInf_schmidtRankLEExpectations_le}~(3.8), and
+The infimum formulations use the set of normalized vectors of Schmidt rank at
+most $n$.\footnote{Formal declarations:
+    \leanid{Matrix.IsHermitian.le_sInf_schmidtRankLEExpectations} for
+    Equation~(3.7) of Ref.~\cite{Wolf2012Quantum},
+    \leanid{Matrix.IsHermitian.sInf_schmidtRankLEExpectations_le} for
+    Equation~(3.8) of Ref.~\cite{Wolf2012Quantum}, and
     \leanid{Matrix.IsHermitian.sInf_schmidtRankLEExpectations_top} for the top
-    index, in \doclink{QICLean/Channel/NPositivitySpectralCriterion}.} The
-reading of the source's phrase ``vectors of Schmidt rank $n$'' is discussed in
+    index, all in
+    \doclink{QICLean/Channel/NPositivitySpectralCriterion}.}
+The interpretation of the source phrase ``vectors of Schmidt rank $n$'' is
+discussed in
 \path{docs/paper-gaps/wolf_prop_3_2_schmidt_rank_reading.tex}.
 
-\section{Status}
+\section{The top index}
 
-The top index $n=D'$ is resolved by a route that bypasses the $n<D'$ restriction
-of the maximal-overlap and Ky-Fan principles. At $n=D'$ the Schmidt-rank
-constraint is vacuous: every normalized vector qualifies and
-$\|\rho_i\|_{(D')}=\tr\rho_i=1$. Both bounds therefore constrain the same quantity,
-the infimum of $\langle\psi|\tau|\psi\rangle$ over all normalized vectors:
-\begin{itemize}
-  \item The Rayleigh estimate gives $\nu_{\min}\le\langle\psi|\tau|\psi\rangle$
-  for every normalized $\psi$, so $\inf_\psi\langle\psi|\tau|\psi\rangle\ge
-  \nu_{\min}$. The right-hand side of~(3.7) reads
-  $\nu_0+\sum_{i:\nu_i\le0}(\nu_i-\nu_0)$ there, which is at most $\nu_{\min}$
-  and can be strictly below it: for the spectrum $(-2,-1,3)$ with $\nu_0=3$ it is
-  $-6$ while $\nu_{\min}=-2$. So~(3.7) at the top index follows from the Rayleigh
-  estimate, but is not the same inequality.
-  \item The upper bound~(3.8) on the infimum becomes the existence of a normalized
-  vector with $\langle\psi|\tau|\psi\rangle=\nu_{\min}$, namely a least-eigenvalue
-  eigenvector, so $\inf_\psi\langle\psi|\tau|\psi\rangle\le\nu_{\min}$; and under
-  the hypothesis of~(3.8) that $\nu_-$ is the only non-positive eigenvalue, the
-  right-hand side $\nu+(\nu_--\nu)\|\rho_-\|_{(D')}$ is exactly $\nu_-=\nu_{\min}$.
-\end{itemize}
-Together they give $\inf_\psi\langle\psi|\tau|\psi\rangle=\nu_{\min}$. Both facts
-follow directly from the Rayleigh expansion $\langle\psi|\tau|\psi\rangle=\sum_i
-\nu_i|\langle\phi_i|\psi\rangle|^2$ and Parseval's identity $\sum_i
-|\langle\phi_i|\psi\rangle|^2=1$, comparing each $\nu_i$ against $\nu_{\min}$ and
-evaluating at the least-eigenvalue eigenvector; the Ky-Fan machinery of the $n<D'$
-proof is not invoked.
+At $n=D'$, every normalized vector satisfies the Schmidt-rank constraint, and
+each reduced density has full Ky--Fan sum
+\begin{align}
+    \lVert\rho_i\rVert_{(D')}
+        &=\tr(\rho_i)
+    \label{eq:wolf_prop_3_2_top_index_scope_ky_fan_trace}\\
+        &=1.
+    \label{eq:wolf_prop_3_2_top_index_scope_ky_fan_one}
+\end{align}
+Let $\nu_{\min}$ denote the smallest eigenvalue of $\tau$. The spectral
+expansion gives, for every normalized $\psi$,
+\begin{align}
+    \bra{\psi}\tau\ket{\psi}
+        &=\sum_i\nu_i
+            \left|\braket{\phi_i}{\psi}\right|^2,
+    \label{eq:wolf_prop_3_2_top_index_scope_rayleigh_expansion}\\
+    \sum_i\left|\braket{\phi_i}{\psi}\right|^2
+        &=1,
+    \label{eq:wolf_prop_3_2_top_index_scope_parseval}\\
+    \bra{\psi}\tau\ket{\psi}
+        &\geq\nu_{\min}.
+    \label{eq:wolf_prop_3_2_top_index_scope_rayleigh_lower_bound}
+\end{align}
+Evaluating at a normalized least-eigenvalue eigenvector gives
+\begin{align}
+    \inf_{\lVert\psi\rVert=1}\bra{\psi}\tau\ket{\psi}
+        &=\nu_{\min}.
+    \label{eq:wolf_prop_3_2_top_index_scope_minimum_eigenvalue}
+\end{align}
 
-The top-index endpoint is recorded as
+At the top index, the right-hand side of the lower bound in Equation~(3.7) of
+Ref.~\cite{Wolf2012Quantum} becomes
+\begin{align}
+    \nu_0+
+    \sum_{i:\nu_i\leq0}
+        (\nu_i-\nu_0)\lVert\rho_i\rVert_{(D')}
+        &=
+    \nu_0+\sum_{i:\nu_i\leq0}(\nu_i-\nu_0).
+    \label{eq:wolf_prop_3_2_top_index_scope_lower_endpoint_value}
+\end{align}
+This quantity is at most $\nu_{\min}$ and can be strictly smaller. For the
+spectrum $(-2,-1,3)$ with $\nu_0=3$,
+\begin{align}
+    \nu_0+\sum_{i:\nu_i\leq0}(\nu_i-\nu_0)
+        &=3+(-2-3)+(-1-3)
+    \label{eq:wolf_prop_3_2_top_index_scope_example_calculation}\\
+        &=-6,
+    \label{eq:wolf_prop_3_2_top_index_scope_example_value}\\
+    \nu_{\min}&=-2.
+    \label{eq:wolf_prop_3_2_top_index_scope_example_minimum}
+\end{align}
+Thus the top-index lower bound follows from
+(\ref{eq:wolf_prop_3_2_top_index_scope_rayleigh_lower_bound}), but it is not
+identical to the Rayleigh inequality.
+
+Under the hypothesis of Equation~(3.8) of Ref.~\cite{Wolf2012Quantum},
+$\nu_-$ is the unique non-positive eigenvalue and therefore equals
+$\nu_{\min}$. Using
+(\ref{eq:wolf_prop_3_2_top_index_scope_ky_fan_one}), its right-hand side is
+\begin{align}
+    \nu+(\nu_--\nu)\lVert\rho_-\rVert_{(D')}
+        &=\nu+(\nu_--\nu)
+    \label{eq:wolf_prop_3_2_top_index_scope_upper_endpoint_first}\\
+        &=\nu_-
+    \label{eq:wolf_prop_3_2_top_index_scope_upper_endpoint_value}\\
+        &=\nu_{\min}.
+    \label{eq:wolf_prop_3_2_top_index_scope_upper_endpoint_minimum}
+\end{align}
+A normalized least-eigenvalue eigenvector realizes this value. The endpoint
+proof therefore uses the Rayleigh expansion and Parseval's identity, not the
+Ky--Fan machinery required for $n<D'$.
+
+The top-index minimum is formalized by
 \leanid{Matrix.IsHermitian.spectral_lower_bound_top} and
-\leanid{Matrix.IsHermitian.exists_spectral_lower_bound_top}, which together
-state $\min_\psi\langle\psi|\tau|\psi\rangle=\nu_{\min}$. Inequality~(3.7)
-itself at the top index, in the infimum form, is
-\leanid{Matrix.IsHermitian.le_sInf_schmidtRankLEExpectations_top}, and~(3.8) is
-the corresponding half of
+\leanid{Matrix.IsHermitian.exists_spectral_lower_bound_top}. The top-index
+infimum form of the lower bound is
+\leanid{Matrix.IsHermitian.le_sInf_schmidtRankLEExpectations_top}; the upper
+bound is the corresponding half of
 \leanid{Matrix.IsHermitian.sInf_schmidtRankLEExpectations_top}.
 
 \section{Classification}
 
-\emph{Resolved.} Bounds~(3.7) and~(3.8) are now formalized at every index
-$n\ge1$, hence over the source's range $1\le n\le D$ whatever the two dimensions
-are, and beyond it when $D'>D$: the per-vector bounds
+The endpoint is resolved. Equations~(3.7) and~(3.8) of
+Ref.~\cite{Wolf2012Quantum} are formalized at every index $n\geq1$, and hence
+throughout the source range $1\leq n\leq D$, regardless of the relation between
+$D$ and $D'$. The declarations
 \leanid{Matrix.IsHermitian.spectral_lower_bound} and
-\leanid{Matrix.IsHermitian.exists_le_spectral_upper_bound} for $1\le n<D'$, and
-their endpoints
+\leanid{Matrix.IsHermitian.exists_le_spectral_upper_bound} cover
+$1\leq n<D'$. The declarations
 \leanid{Matrix.IsHermitian.spectral_lower_bound_top} and
-\leanid{Matrix.IsHermitian.exists_spectral_lower_bound_top} for $n\ge D'$, by
-the route detailed in the Status above. The infimum form of the source's
-statement is available over the same range,
-\leanid{Matrix.IsHermitian.le_sInf_schmidtRankLEExpectations_top} carrying~(3.7)
-at the top indices. No hypothesis foreign to the source is used.
+\leanid{Matrix.IsHermitian.exists_spectral_lower_bound_top} cover $n\geq D'$ by
+the endpoint argument in
+(\ref{eq:wolf_prop_3_2_top_index_scope_rayleigh_expansion})--%
+(\ref{eq:wolf_prop_3_2_top_index_scope_minimum_eigenvalue}). The infimum form
+has the same coverage, with
+\leanid{Matrix.IsHermitian.le_sInf_schmidtRankLEExpectations_top} supplying the
+top-index lower bound. No hypothesis absent from
+Ref.~\cite{Wolf2012Quantum} is used.
 
 \bibliographystyle{alpha}
 \bibliography{references}

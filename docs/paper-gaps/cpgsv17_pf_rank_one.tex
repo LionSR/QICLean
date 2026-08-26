@@ -16,11 +16,13 @@
 \gapnote{false-source}{open}
 
 \section{The assertion}
+\label{sec:cpgsv17_assertion}
 
 Appendix C.2 of Cirac--P\'erez-Garc\'ia--Schuch--Verstraete relates the strong
-area law and zero correlation length for a simple matrix product density operator
-to an outer-product factorization of a finite trace matrix
-\cite[Appendix~C.2, Lemmas~C.3--C.4]{Cirac2016MPDO_arXiv}.\footnote{For traceability, this note corresponds to
+area law and zero correlation length for a simple matrix product density
+operator to an outer-product factorization of a finite trace matrix
+\cite[Appendix~C.2, Lemmas~C.3--C.4]{Cirac2016MPDO_arXiv}.\footnote{For
+traceability, this note corresponds to
 \href{https://github.com/LionSR/TNLean/issues/1041}{issue \#1041}. The
 underlying question was isolated in
 \href{https://github.com/LionSR/TNLean/issues/832}{issue \#832}; the finite
@@ -29,220 +31,368 @@ counterexample was added in
 positive-semidefinite replacement theorem was added in
 \href{https://github.com/LionSR/TNLean/pull/917}{pull request \#917}. The
 inverse-map provenance question is recorded in
-\href{https://github.com/LionSR/TNLean/issues/4270}{issue \#4270}; the preceding
-audit and obstruction verdict are recorded in
-\href{https://github.com/LionSR/TNLean/issues/3593}{issue \#3593}. The source passage is
-\path{Papers/1606.00608/MPDO-22-12-17-2.tex:1394--1499}.}
+\href{https://github.com/LionSR/TNLean/issues/4270}{issue \#4270}; the
+preceding audit and obstruction verdict are recorded in
+\href{https://github.com/LionSR/TNLean/issues/3593}{issue \#3593}. The source
+passage is \path{Papers/1606.00608/MPDO-22-12-17-2.tex:1394--1499}.}
 
-The paper constructs positive semidefinite neighboring operators $\eta_{k,h}$ and defines
-\[
-  T_{k,h}=\operatorname{tr}(\eta_{k,h}).
-\]
-Thus $T$ is entrywise non-negative. Under the strong area law the source argues
-that $T$ is primitive, in the sense that some power of $T$ has all entries
-strictly positive. Under zero correlation length it obtains
-\[
-  \operatorname{tr}(T^N)=\operatorname{tr}(T)
-\]
-for every positive integer $N$, with $\operatorname{tr}(T)=1$ after
-normalization. The proof then invokes fixed-point theory for primitive
-non-negative matrices and concludes that $T$ has one eigenvalue equal to $1$
-and all other eigenvalues equal to $0$. From this it concludes the desired
-factorization
-\[
-  T_{k,h}=a_k b_h.
-\]
+The paper constructs positive semidefinite neighboring operators
+$\eta_{k,h}$ and defines the trace matrix $T$ by
+\begin{align}
+    T_{k,h}
+        &= \tr(\eta_{k,h}).
+    \label{eq:cpgsv17_trace_matrix_definition}
+\end{align}
+Thus $T$ is entrywise nonnegative. Under the strong area law, the source argues
+that $T$ is primitive, meaning that some power of $T$ has all entries strictly
+positive. Under zero correlation length, it obtains
+\begin{align}
+    \tr(T^N)
+        &= \tr(T)
+    \label{eq:cpgsv17_constant_power_traces}
+\end{align}
+for every positive integer $N$, with
+\begin{align}
+    \tr(T)
+        &= 1
+    \label{eq:cpgsv17_trace_normalization}
+\end{align}
+after normalization. The proof then invokes fixed-point theory for primitive
+nonnegative matrices and concludes that $T$ has one eigenvalue equal to $1$
+and all other eigenvalues equal to $0$. From this spectral conclusion, it
+asserts the factorization
+\begin{align}
+    T_{k,h}
+        &= a_k b_h.
+    \label{eq:cpgsv17_source_outer_product}
+\end{align}
 
-The last implication is the point at issue. Primitivity and the equalities of
-positive-power traces control the nonzero eigenvalues of $T$, but they do not
-exclude nilpotent Jordan structure on the generalized eigenspace for the
-eigenvalue $0$. Such nilpotent structure is invisible to traces of positive
-powers and can prevent $T$ from having rank one.
+The last implication is the point at issue. Primitivity and
+Eq.~\ref{eq:cpgsv17_constant_power_traces} control the nonzero eigenvalues of
+$T$, but they do not exclude nilpotent Jordan structure on the generalized
+eigenspace for the eigenvalue $0$. Such structure is invisible to traces of
+positive powers and can prevent $T$ from having rank one.
 
 \section{The counterexample}
+\label{sec:cpgsv17_counterexample}
 
 Consider the real $3\times 3$ matrix
-\[
-  T=
-  \begin{pmatrix}
-    \tfrac12 & \tfrac12 & 0\\
-    \tfrac16 & \tfrac16 & \tfrac23\\
-    \tfrac13 & \tfrac13 & \tfrac13
-  \end{pmatrix}.
-\]
-All entries are non-negative, and
-\[
-  T^2=
-  P:=\frac13
-  \begin{pmatrix}
-    1&1&1\\
-    1&1&1\\
-    1&1&1
-  \end{pmatrix}.
-\]
-Hence $T$ is primitive, since $T^2$ has all entries strictly positive. Also
-$P^2=P$ and $PT=TP=P$, so $T^N=P$ for every $N\geq 2$. Since
-$\operatorname{tr}(T)=\operatorname{tr}(P)=1$, it follows that
-\[
-  \operatorname{tr}(T^N)=\operatorname{tr}(T)=1
-\]
-for every positive integer $N$.
+\begin{align}
+    T
+        &=
+        \begin{pmatrix}
+            \tfrac12 & \tfrac12 & 0\\
+            \tfrac16 & \tfrac16 & \tfrac23\\
+            \tfrac13 & \tfrac13 & \tfrac13
+        \end{pmatrix}.
+    \label{eq:cpgsv17_counterexample_matrix}
+\end{align}
+All entries are nonnegative, and direct multiplication gives
+\begin{align}
+    T^2
+        &= P,
+    \label{eq:cpgsv17_counterexample_square}\\
+    P
+        &:= \frac13
+        \begin{pmatrix}
+            1&1&1\\
+            1&1&1\\
+            1&1&1
+        \end{pmatrix}.
+    \label{eq:cpgsv17_perron_projector}
+\end{align}
+Hence $T$ is primitive because $T^2$ has all entries strictly positive.
+Moreover,
+\begin{align}
+    P^2
+        &= P,
+    \label{eq:cpgsv17_projector_idempotence}\\
+    PT
+        &= P,
+    \label{eq:cpgsv17_projector_left_absorption}\\
+    TP
+        &= P.
+    \label{eq:cpgsv17_projector_right_absorption}
+\end{align}
+Equations~\ref{eq:cpgsv17_counterexample_square}--%
+\ref{eq:cpgsv17_projector_right_absorption} imply
+\begin{align}
+    T^N
+        &= P
+        \qquad (N\geq 2).
+    \label{eq:cpgsv17_counterexample_power_stabilization}
+\end{align}
+Since
+\begin{align}
+    \tr(T)
+        &= \tr(P)
+         = 1,
+    \label{eq:cpgsv17_counterexample_trace_one}
+\end{align}
+it follows that
+\begin{align}
+    \tr(T^N)
+        &= \tr(T)
+         = 1
+        \qquad (N\geq 1).
+    \label{eq:cpgsv17_counterexample_constant_traces}
+\end{align}
 
-Nevertheless $T$ is not an outer product. If $T=a b^{\top}$, then the
-entry $T_{1,1}=1/2$ implies $a_1\neq 0$. The entry $T_{1,3}=0$ then
-forces $b_3=0$, but this contradicts $T_{2,3}=2/3$. Thus the universal
-matrix implication
-\[
-  \text{primitive} + \text{constant positive-power traces}
-  \Longrightarrow \text{rank one}
-\]
-is false for finite entrywise non-negative real matrices.
+Nevertheless, $T$ is not an outer product. If $T=ab^{\top}$, then
+$T_{1,1}=1/2$ implies $a_1\neq 0$. The equality $T_{1,3}=0$ then forces
+$b_3=0$, contradicting $T_{2,3}=2/3$. Thus the universal matrix implication
+\begin{align}
+    \left(T\ \text{primitive and }
+        \tr(T^N)=\tr(T)\ \text{for every }N\geq 1\right)
+        &\Longrightarrow \operatorname{rank}(T)=1
+    \label{eq:cpgsv17_false_matrix_implication}
+\end{align}
+is false for finite entrywise nonnegative real matrices.
 \footnote{The formal counterexample is
 \path{TNLean/Archive/PerronFrobeniusRankOneCounterexample.lean}, especially
-\texttt{counterexample} and
-\texttt{counterexample\_with\_rectangular\_pairing}. It is also summarized in
+\leanid{counterexample} and
+\leanid{counterexample_with_rectangular_pairing}. It is also summarized in
 \path{docs/counterexamples.md:19--27}.}
 
-This example has the form $T=P+\frac16 xy^{\top}$, where
-$x=(1,-1,0)^{\top}$ and $y=(1,1,-2)^{\top}$. The perturbation satisfies
-$(xy^{\top})^2=0$ and is annihilated by $P$ on both sides. It therefore
-leaves all traces of positive powers unchanged from the Perron projector while
-raising the rank of $T$.
+The matrix in Eq.~\ref{eq:cpgsv17_counterexample_matrix} has the decomposition
+\begin{align}
+    T
+        &= P+\frac16xy^{\top},
+    \label{eq:cpgsv17_nilpotent_perturbation}\\
+    x
+        &:= (1,-1,0)^{\top},
+    \label{eq:cpgsv17_nilpotent_left_vector}\\
+    y
+        &:= (1,1,-2)^{\top}.
+    \label{eq:cpgsv17_nilpotent_right_vector}
+\end{align}
+The perturbation satisfies
+\begin{align}
+    (xy^{\top})^2
+        &= 0,
+    \label{eq:cpgsv17_perturbation_nilpotent}\\
+    Pxy^{\top}
+        &= 0,
+    \label{eq:cpgsv17_perturbation_left_annihilation}\\
+    xy^{\top}P
+        &= 0.
+    \label{eq:cpgsv17_perturbation_right_annihilation}
+\end{align}
+It therefore leaves all traces of positive powers unchanged from the Perron
+projector while increasing the rank of $T$.
 
 The same matrix has a genuinely rectangular realization of the pairing in
-lines 1490--1497 of Appendix C.2.  Set
-\[
-  L=
-  \begin{pmatrix}
-    \tfrac13&\tfrac13&\tfrac13\\
-    \tfrac16&\tfrac16&-\tfrac13
-  \end{pmatrix},
-  \qquad
-  R=
-  \begin{pmatrix}
-    1&1\\
-    1&-1\\
-    1&0
-  \end{pmatrix}.
-\]
+lines 1490--1497 of Appendix C.2 of
+Ref.~\cite{Cirac2016MPDO_arXiv}. Define
+\begin{align}
+    L
+        &:=
+        \begin{pmatrix}
+            \tfrac13&\tfrac13&\tfrac13\\
+            \tfrac16&\tfrac16&-\tfrac13
+        \end{pmatrix},
+    \label{eq:cpgsv17_rectangular_left_matrix}\\
+    R
+        &:=
+        \begin{pmatrix}
+            1&1\\
+            1&-1\\
+            1&0
+        \end{pmatrix}.
+    \label{eq:cpgsv17_rectangular_right_matrix}
+\end{align}
 Direct multiplication gives
-\[
-  RL=T,
-  \qquad
-  LR=
-  \begin{pmatrix}1&0\\0&0\end{pmatrix},
-  \qquad
-  (LR)^2=LR.
-\]
+\begin{align}
+    RL
+        &= T,
+    \label{eq:cpgsv17_rectangular_product_trace_matrix}\\
+    LR
+        &=
+        \begin{pmatrix}
+            1&0\\
+            0&0
+        \end{pmatrix},
+    \label{eq:cpgsv17_rectangular_product_projection}\\
+    (LR)^2
+        &= LR.
+    \label{eq:cpgsv17_rectangular_idempotence}
+\end{align}
 Thus the counterexample satisfies not only the scalar trace identities but
 also the full rectangular idempotence underlying the displayed
-zero-correlation-length equation at source lines 1490--1493.  Nevertheless
-$T$ is not an outer product, so this equation does not justify the rank-one
-assertion at lines 1498--1499.
+zero-correlation-length equation at source lines 1490--1493 of
+Ref.~\cite{Cirac2016MPDO_arXiv}. Nevertheless, $T$ is not an outer product, so
+that source equation does not justify the rank-one assertion at lines
+1498--1499.
 
 \section{What the operator-valued ZCL identity implies}
+\label{sec:cpgsv17_operator_zcl}
 
 The source uses more than the trace equalities before passing to
-Perron--Frobenius theory.  With $L e_k=l_k$ and
-$(R v)_k=(r_k\mid v)$, one has $T=RL$, while the displayed ZCL identity in
-lines 1489--1493 is
-\[
-  LR=L(RL)R=(LR)^2.
-\]
-This identity makes the operator $LR$ idempotent.  Multiplication on the left
-by $R$ and on the right by $L$ gives only
-\[
-  T^2=T^3,
-\]
-not $T=T^2$.  The rectangular matrices displayed above satisfy the full
-hypothesis $T=RL$ and $(LR)^2=LR$, while $T^2=T^3=P$.  Thus retaining the
-displayed operator equation, without a further property of the inverse-map
-families $l_k$ and $r_k$, does not remove the nilpotent part of $T$.
+Perron--Frobenius theory. With $Le_k=l_k$ and
+$(Rv)_k=(r_k\mid v)$, one has
+\begin{align}
+    T
+        &= RL.
+    \label{eq:cpgsv17_pairing_trace_product}
+\end{align}
+The displayed ZCL identity at lines 1489--1493 of
+Ref.~\cite{Cirac2016MPDO_arXiv} is
+\begin{align}
+    LR
+        &= L(RL)R
+         = (LR)^2.
+    \label{eq:cpgsv17_source_pairing_idempotence}
+\end{align}
+This identity makes $LR$ idempotent. Multiplication on the left by $R$ and on
+the right by $L$ gives only
+\begin{align}
+    R(LR)L
+        &= R(LR)^2L,
+    \label{eq:cpgsv17_rectangular_multiplication_step}\\
+    T^2
+        &= T^3,
+    \label{eq:cpgsv17_square_equals_cube}
+\end{align}
+not $T=T^2$. The rectangular matrices in
+Eqs.~\ref{eq:cpgsv17_rectangular_left_matrix} and
+\ref{eq:cpgsv17_rectangular_right_matrix} satisfy the full hypotheses
+$T=RL$ and $(LR)^2=LR$, while
+\begin{align}
+    T^2
+        &= T^3
+         = P.
+    \label{eq:cpgsv17_counterexample_square_cube}
+\end{align}
+Thus the operator identity alone does not remove the nilpotent part of $T$;
+one needs a further property of the inverse-map families $l_k$ and $r_k$.
 
-There is nevertheless a direct rectangular proof of the trace-power display
-at source lines 1494--1497.  Cyclicity of trace gives
-\[
-  \tr(T)=\tr(RL)
-  =\tr(LR)
-  =\tr((LR)^2)
-  =\tr(T^2).
-\]
-Together with $T^2=T^3$, this implies $T^N=T^2$ for every $N\geq2$, and hence
-\[
-  \tr(T^N)=\tr(T)
-\]
-for every positive integer $N$.
+There is nevertheless a direct rectangular proof of the trace-power statement
+at source lines 1494--1497 of
+Ref.~\cite{Cirac2016MPDO_arXiv}. Cyclicity of trace gives
+\begin{align}
+    \tr(T)
+        &= \tr(RL)
+    \label{eq:cpgsv17_trace_rectangular_product}\\
+        &= \tr(LR)
+    \label{eq:cpgsv17_trace_cyclic_swap}\\
+        &= \tr((LR)^2)
+    \label{eq:cpgsv17_trace_pairing_square}\\
+        &= \tr(T^2).
+    \label{eq:cpgsv17_trace_equals_trace_square}
+\end{align}
+Together with Eq.~\ref{eq:cpgsv17_square_equals_cube}, this implies
+\begin{align}
+    T^N
+        &= T^2
+        \qquad (N\geq 2),
+    \label{eq:cpgsv17_power_stabilization_from_square_cube}
+\end{align}
+and hence
+\begin{align}
+    \tr(T^N)
+        &= \tr(T)
+        \qquad (N\geq 1).
+    \label{eq:cpgsv17_rectangular_constant_traces}
+\end{align}
 \footnote{\sloppy Formal declaration:
 {\scriptsize\leanid{Matrix.trace_pow_eq_trace_of_rectangular_idempotent}} in
 \doclink{TNLean/Algebra/PerronFrobenius/RankOne}.}
 
-The exact sufficient conclusion is transparent.  If the inverse-map
-construction were shown to give $T^2=T$, then $T$ itself would be idempotent.
-An idempotent real matrix has trace equal to the dimension of its range;
-hence trace one makes that range one-dimensional and gives
-$T=a b^{\top}$.  This argument is formalized as
-\leanid{Matrix.hasRankOneFactorization_of_mul_self_eq_self}.  The remaining
-source-faithful task is therefore to derive $T^2=T$, or another condition
+The exact sufficient conclusion is transparent. If the inverse-map
+construction gave
+\begin{align}
+    T^2
+        &= T,
+    \label{eq:cpgsv17_required_trace_matrix_idempotence}
+\end{align}
+then $T$ itself would be idempotent. An idempotent real matrix has trace equal
+to the dimension of its range. Therefore trace one makes the range
+one-dimensional and gives $T=ab^{\top}$. This argument is formalized by
+\leanid{Matrix.hasRankOneFactorization_of_mul_self_eq_self}. The remaining
+source-faithful task is to derive
+Eq.~\ref{eq:cpgsv17_required_trace_matrix_idempotence}, or another condition
 excluding the generalized zero-eigenspace, from a property of the concrete
 inverse-map tensors not currently recorded in
 \leanid{MPOTensor.ExplicitEtaOperators}.
 
 \subsection{The pairing-idempotence route}
+\label{sec:cpgsv17_pairing_idempotence_route}
 
-The formal development derives $T^2=T$ from the displayed operator identity
-under one additional hypothesis on the inverse-map tensors.  Suppose the
-family $(l_k)_k$ is linearly independent, so that $L$ is injective.  The
-operator identity $(LR)^2=LR$ gives
-\[
-  L\,T^2=(LR)^2L=(LR)L=L\,T,
-\]
-and cancelling $L$ on the left yields $T^2=T$.  If instead the functionals
-$(r_k)_k$ are linearly independent, the same argument in the dual space gives
-the idempotence of $T^{\top}$, hence of $T$.  Together with the trace
-normalization $\operatorname{tr}(T)=1$ and the idempotent trace-one criterion
-above, this recovers the outer-product factorization asserted by
-Lemma~C.5.\footnote{\sloppy The formal statements are
+The formal development derives $T^2=T$ from
+Eq.~\ref{eq:cpgsv17_source_pairing_idempotence} under one additional
+hypothesis on the inverse-map tensors. Suppose the family $(l_k)_k$ is linearly
+independent, so that $L$ is injective. Then
+\begin{align}
+    LT^2
+        &= (LR)^2L
+    \label{eq:cpgsv17_injective_pairing_first_step}\\
+        &= (LR)L
+    \label{eq:cpgsv17_injective_pairing_second_step}\\
+        &= LT.
+    \label{eq:cpgsv17_injective_pairing_cancellation_input}
+\end{align}
+Cancelling $L$ on the left yields
+\begin{align}
+    T^2
+        &= T.
+    \label{eq:cpgsv17_injective_pairing_idempotence}
+\end{align}
+If instead the functionals $(r_k)_k$ are linearly independent, the same
+argument in the dual space gives the idempotence of $T^{\top}$ and hence of
+$T$. Together with $\tr(T)=1$ and the idempotent trace-one criterion, this
+recovers the outer-product factorization asserted by Lemma~C.5 of
+Ref.~\cite{Cirac2016MPDO_arXiv}.\footnote{\sloppy The formal statements are
 {\scriptsize\leanid{Matrix.mul_self_eq_self_of_pairing_idempotent}},
 {\scriptsize\leanid{Matrix.mul_self_eq_self_of_pairing_idempotent_dual}}, and
 {\scriptsize\leanid{Matrix.hasRankOneFactorization_of_pairing_idempotent}} in
 \doclink{TNLean/Algebra/PerronFrobenius/RankOne}, added in \ghpr{3685}.}
 
 The linear-independence hypothesis is a scope restriction relative to the
-source.  Lemma~C.5 neither assumes nor derives it: the construction
-preceding the lemma uses the injectivity of $\mathcal{K}$ to prove that the
-sector decomposition of the trace matrix is trivial, that is, that $T$ is
-primitive \cite[Appendix~C.2, lines~1457--1470]{Cirac2016MPDO_arXiv}.
-Primitivity constrains only the support pattern of the non-negative matrix
-$T$; a primitive $T$ can arise from linearly dependent $l_k$, so the cited
-passage does not make the family $(l_k)_k$ or $(r_k)_k$ linearly
-independent.  The proof of Lemma~C.5 then uses primitivity in the
-Perron--Frobenius trace-power step examined above, not any independence of
-the families.  The formal lemmas therefore state the independence as an
-explicit hypothesis; whether the inverse-map construction supplies it ---
-for instance through the injectivity of $\mathcal{K}$ --- remains to be
+source. Lemma~C.5 neither assumes nor derives it. The construction preceding
+the lemma uses injectivity of $\mathcal K$ to prove that the sector
+decomposition of the trace matrix is trivial, meaning that $T$ is primitive
+\cite[Appendix~C.2, lines~1457--1470]{Cirac2016MPDO_arXiv}. Primitivity
+constrains only the support pattern of the nonnegative matrix $T$. A primitive
+$T$ can arise from linearly dependent $l_k$, so the cited passage does not
+make either family $(l_k)_k$ or $(r_k)_k$ linearly independent. The proof of
+Lemma~C.5 then uses primitivity in the Perron--Frobenius trace-power step, not
+independence of these families. The formal lemmas therefore state independence
+as an explicit hypothesis. Whether the inverse-map construction supplies this
+property, for instance through injectivity of $\mathcal K$, remains to be
 established at the matrix product density operator call site.
 
 \subsection{The sector pairing at the matrix product density operator side}
+\label{sec:cpgsv17_sector_pairing_mpdo}
 
-The formal development now records the paper's pairing on the matrix product
-density operator side.  In an abstract real vector space, let $|l_k)$ be the
-closed sector tensors and $(r_k|$ the corresponding functionals.  It assumes
-the two displayed identities of the source,
-\[
-  T_{k,h}=(r_k|l_h),
-  \qquad
-  \sum_k |l_k)(r_k| = \sum_{k,h} T_{k,h}|l_k)(r_h|,
-\]
-from lines 1478--1493 of Appendix C.2.  These equations make the pairing
-operator $M=\sum_k|l_k)(r_k|$ idempotent, without any independence
-hypothesis on $(l_k)_k$ or $(r_k)_k$.  Pairing the idempotence with the
-functional map $R$ on the left and the coefficient map $L$ on the right, as
-in Section~3, gives $T^2=T^3$ unconditionally; restricting the pairing
-operator to the finite-dimensional span of $(l_k)_k$ then identifies
-$\operatorname{tr}(T)$ with $\operatorname{tr}(T^2)$, so every positive
-power of $T$ has the same trace as $T$.  This recovers the trace identity
-displayed at lines 1494--1497 of Appendix C.2 unconditionally, at the matrix
-product density operator side.
+The formal development records the paper's pairing on the matrix product
+density operator side. In an abstract real vector space, let $|l_k)$ be the
+closed sector tensors and $(r_k|$ the corresponding functionals. It assumes
+the two displayed identities at lines 1478--1493 of Appendix C.2 of
+Ref.~\cite{Cirac2016MPDO_arXiv}:
+\begin{align}
+    T_{k,h}
+        &= (r_k\mid l_h),
+    \label{eq:cpgsv17_sector_pairing_entries}\\
+    \sum_k |l_k)(r_k|
+        &= \sum_{k,h}T_{k,h}|l_k)(r_h|.
+    \label{eq:cpgsv17_sector_pairing_operator_identity}
+\end{align}
+Define the pairing operator by
+\begin{align}
+    M
+        &:= \sum_k |l_k)(r_k|.
+    \label{eq:cpgsv17_pairing_operator_definition}
+\end{align}
+Equations~\ref{eq:cpgsv17_sector_pairing_entries} and
+\ref{eq:cpgsv17_sector_pairing_operator_identity} make $M$ idempotent without
+requiring independence of $(l_k)_k$ or $(r_k)_k$. Pairing this idempotence with
+$R$ on the left and $L$ on the right, as in
+Section~\ref{sec:cpgsv17_operator_zcl}, gives $T^2=T^3$ unconditionally.
+Restricting $M$ to the finite-dimensional span of $(l_k)_k$ identifies
+$\tr(T)$ with $\tr(T^2)$, so every positive power of $T$ has the same trace as
+$T$. This recovers the trace identity at lines 1494--1497 of Appendix C.2 of
+Ref.~\cite{Cirac2016MPDO_arXiv} unconditionally on the matrix product density
+operator side.
 \footnote{\sloppy The formal declarations are
 {\scriptsize\leanid{MPOTensor.SectorPairingData.pairing_sq_eq_pairing_cube}}
 and
@@ -255,69 +405,92 @@ statements
 {\scriptsize\leanid{Matrix.tracePowersConstant_of_pairing_idempotent}} in
 \doclink{TNLean/Algebra/PerronFrobenius/RankOne}, added for \ghissue{3714}.}
 
-If in addition the vectors $(l_k)_k$ are linearly independent, then the
-coefficient map $L$ is injective and
-\[
-  L T^2=M^2L=ML=LT,
-\]
-so $T^2=T$, the strictly stronger idempotence used for the rank-one
-factorization below.  Trace one and idempotence together then give the
-factorization directly.  Primitivity separately makes each $|l_k)$ nonzero,
-so an independent family of subspaces carrying the vectors is sufficient to
-derive their linear independence.
+If the vectors $(l_k)_k$ are also linearly independent, then the coefficient
+map $L$ is injective and
+\begin{align}
+    LT^2
+        &= M^2L
+    \label{eq:cpgsv17_sector_pairing_injective_first_step}\\
+        &= ML
+    \label{eq:cpgsv17_sector_pairing_injective_second_step}\\
+        &= LT.
+    \label{eq:cpgsv17_sector_pairing_injective_cancellation}
+\end{align}
+Thus $T^2=T$, which is strictly stronger than $T^2=T^3$. Trace one and
+idempotence then give the rank-one factorization directly. Primitivity
+separately makes each $|l_k)$ nonzero, so an independent family of subspaces
+carrying these vectors suffices to derive their linear independence.
 \footnote{\sloppy The formal declarations are
 {\scriptsize\leanid{MPOTensor.SectorPairingData.pairing_operator_idempotent}},
 {\scriptsize\leanid{MPOTensor.SectorPairingData.mul_self_eq_self}},
 {\scriptsize\leanid{MPOTensor.SectorPairingData.l_ne_zero}},
 {\scriptsize\leanid{MPOTensor.SectorPairingData.linearIndependent_l}},
-{\scriptsize\leanid{MPOTensor.sal_zcl_implies_rank_one_T_of_pairing_idempotent}}, and
-{\scriptsize\leanid{MPOTensor.sal_zcl_implies_rank_one_T_of_sector_supports}} in
-\doclink{TNLean/MPS/MPDO/SimpleLocalStructure}.}
+{\scriptsize\leanid{MPOTensor.sal_zcl_implies_rank_one_T_of_pairing_idempotent}},
+and
+{\scriptsize\leanid{MPOTensor.sal_zcl_implies_rank_one_T_of_sector_supports}}
+in \doclink{TNLean/MPS/MPDO/SimpleLocalStructure}.}
 
-The inverse-map construction has now been connected to this argument without
-introducing additional hypotheses.  The closed tensors $(l_k)_k$ and
-$(r_k)_k$ are constructed from an injective simple tensor, the complex matrix
-is defined by
-\[
-  T_{k,h}=(r_k|l_h)=\operatorname{tr}(\eta_{k,h}),
-\]
+The inverse-map construction has been connected to this argument without
+additional hypotheses. The closed tensors $(l_k)_k$ and $(r_k)_k$ are
+constructed from an injective simple tensor, the complex matrix is defined by
+\begin{align}
+    T_{k,h}
+        &= (r_k\mid l_h)
+         = \tr(\eta_{k,h}),
+    \label{eq:cpgsv17_closed_sector_trace_matrix}
+\end{align}
 and its pairing operator is identified with the physical-trace transfer.
 Source zero correlation length therefore supplies a number $\lambda>0$ for
-which the normalized pairing operator is idempotent.  The rectangular
-factorization $S=L R$ and $T=R L$ then proves
-\[
-  (\lambda^{-1}T)^2=(\lambda^{-1}T)^3,
-  \qquad
-  \tr((\lambda^{-1}T)^N)
-    =\tr(\lambda^{-1}T)
-\]
-for every positive integer $N$.
+which the normalized pairing operator is idempotent. The rectangular
+factorizations
+\begin{align}
+    S
+        &= LR,
+    \label{eq:cpgsv17_inverse_map_physical_transfer}\\
+    T
+        &= RL
+    \label{eq:cpgsv17_inverse_map_trace_matrix}
+\end{align}
+then prove
+\begin{align}
+    (\lambda^{-1}T)^2
+        &= (\lambda^{-1}T)^3,
+    \label{eq:cpgsv17_normalized_square_cube}\\
+    \tr((\lambda^{-1}T)^N)
+        &= \tr(\lambda^{-1}T)
+        \qquad (N\geq 1).
+    \label{eq:cpgsv17_normalized_constant_traces}
+\end{align}
 \footnote{\sloppy Formal declarations:
-{\scriptsize\leanid{MPOTensor.closedSectorTraceMatrix_apply}},
-and
+{\scriptsize\leanid{MPOTensor.closedSectorTraceMatrix_apply}} and
 {\scriptsize\leanid{MPOTensor.closedSectorTraceMatrix_normalized_relations}}
 in \doclink{TNLean/MPS/MPDO/SectorPairingTransfer}.}
 
 The normalized identities can also be placed on the same real trace matrix
-for which the strong-area-law argument proves primitivity.  After discarding
-only the zero-weight indices and choosing the coherent sector phases, set
-\[
-  T^*_{k,h}=\operatorname{Re}\operatorname{tr}(\eta_{k,h})
-  \qquad (p_kp_h\ne0).
-\]
-The left tensor of every zero-weight sector vanishes.  Consequently the
-physical-trace transfer still has the active rectangular factorization
-$LQ$, while positivity of the neighboring operators identifies $QL$ with
-the complexification of $T^*$.  The same scalar $\lambda>0$ therefore gives
-\[
-  T^*\ \text{primitive},
-  \qquad
-  (\lambda^{-1}T^*)^2=(\lambda^{-1}T^*)^3,
-  \qquad
-  \operatorname{tr}((\lambda^{-1}T^*)^N)
-    =\operatorname{tr}(\lambda^{-1}T^*)
-\]
-for every positive integer $N$.
+for which the strong-area-law argument proves primitivity. After discarding
+only zero-weight indices and choosing coherent sector phases, define
+\begin{align}
+    T^*_{k,h}
+        &:= \operatorname{Re}\tr(\eta_{k,h})
+        \qquad (p_kp_h\neq 0).
+    \label{eq:cpgsv17_active_real_trace_matrix}
+\end{align}
+The left tensor of every zero-weight sector vanishes. Consequently, the
+physical-trace transfer retains the active rectangular factorization $LQ$,
+while positivity of the neighboring operators identifies $QL$ with the
+complexification of $T^*$. The same scalar $\lambda>0$ therefore gives
+\begin{align}
+    T^*
+        &\ \text{primitive},
+    \label{eq:cpgsv17_active_trace_matrix_primitive}\\
+    (\lambda^{-1}T^*)^2
+        &= (\lambda^{-1}T^*)^3,
+    \label{eq:cpgsv17_active_trace_matrix_square_cube}\\
+    \tr((\lambda^{-1}T^*)^N)
+        &= \tr(\lambda^{-1}T^*)
+        \qquad (N\geq 1).
+    \label{eq:cpgsv17_active_trace_matrix_constant_traces}
+\end{align}
 \footnote{\sloppy Formal declarations:
 {\scriptsize\leanid{MPOTensor.PhysicalSectorFactorization.activeSectorTraceMatrix_normalized_relations_of_isSourceZCL}},
 {\scriptsize\leanid{MPOTensor.exists_rephased_inverseMap_activeSectorTraceMatrix_normalized_relations}},
@@ -327,330 +500,477 @@ in \doclink{TNLean/MPS/MPDO/InverseMapActiveSectorZCL}.}
 
 Write $\mathcal B_{\mathcal K}$ for the physical-trace transfer of
 $\mathcal K$. If SAL is accompanied by the paper's literal identity
-$\mathcal B_{\mathcal K}^2=\mathcal B_{\mathcal K}$, the one-site
-normalization clause in SAL first gives $\mathcal B_{\mathcal K}\ne0$.
-Thus literal ZCL implies source ZCL, and the same primitive active trace
-matrix and normalized relations follow without any additional hypothesis.
-This specialization is formalized by
+\begin{align}
+    \mathcal B_{\mathcal K}^2
+        &= \mathcal B_{\mathcal K},
+    \label{eq:cpgsv17_literal_zcl_identity}
+\end{align}
+then the one-site normalization clause in SAL first gives
+$\mathcal B_{\mathcal K}\neq 0$. Thus literal ZCL implies source ZCL, and the
+same primitive active trace matrix and normalized relations follow without
+additional hypotheses. This specialization is formalized by
 \leanid{MPOTensor.exists_activeTraceMatrix_relations_of_isSAL_of_literal_ZCL}
 in \doclink{TNLean/MPS/MPDO/InverseMapActiveSectorZCL}.
 
 This conclusion is the scale-invariant consequence of the displayed operator
-equation; it does not imply that the normalized trace matrix is idempotent or
-semisimple, nor that it has rank one.  The remaining pairing route would have
-to prove
-linear independence of one of the two closed tensor families, or supply a
-different argument excluding the generalized zero-eigenspace.  The direct sum
-in the source's sector splitting at lines 1436--1448 concerns the physical
-indices; after those indices are contracted, the closed tensors live in a
-common bond space.  Their membership in corresponding members of an
-independent family of subspaces --- or their independence by another argument
---- therefore does not follow from the displayed equations alone.
+identity. It does not imply that the normalized trace matrix is idempotent or
+semisimple, nor that it has rank one. The remaining pairing route must prove
+linear independence of one of the two closed tensor families or supply another
+argument excluding the generalized zero-eigenspace. The direct sum in the
+source's sector splitting at lines 1436--1448 of
+Ref.~\cite{Cirac2016MPDO_arXiv} concerns physical indices. After those indices
+are contracted, the closed tensors live in a common bond space. The displayed
+equations alone therefore do not place them in corresponding members of an
+independent family of subspaces or otherwise prove their independence.
 
 \subsection{Virtual spanning does not eliminate the nilpotent part}
+\label{sec:cpgsv17_virtual_spanning}
 
-Injectivity gives more than primitivity in the present formal development:
-the sector virtual matrices span the full virtual matrix algebra.  This
-additional conclusion still does not imply the idempotence of the opposite
-product.  Consider
-\[
- L=\begin{pmatrix}
-  \tfrac16&\tfrac16&\tfrac13&\tfrac13\\
-  0&\tfrac16&\tfrac16&-\tfrac13
- \end{pmatrix},
- \qquad
- Q=\begin{pmatrix}
-  1&1\\ 1&1\\ 1&-1\\ 1&0
- \end{pmatrix}.
-\]
-Writing $l_k$ for the $k$th column of $L$ and $r_k$ for the $k$th row of
-$Q$, direct multiplication gives
-\[
- LQ=\begin{pmatrix}1&0\\0&0\end{pmatrix},
- \qquad
- T=QL=\begin{pmatrix}
-  \tfrac16&\tfrac13&\tfrac12&0\\
-  \tfrac16&\tfrac13&\tfrac12&0\\
-  \tfrac16&0&\tfrac16&\tfrac23\\
-  \tfrac16&\tfrac16&\tfrac13&\tfrac13
- \end{pmatrix}.
-\]
+Injectivity gives more than primitivity in the present formal development: the
+sector virtual matrices span the full virtual matrix algebra. This additional
+conclusion still does not imply idempotence of the opposite product. Consider
+\begin{align}
+    L
+        &:=
+        \begin{pmatrix}
+            \tfrac16&\tfrac16&\tfrac13&\tfrac13\\
+            0&\tfrac16&\tfrac16&-\tfrac13
+        \end{pmatrix},
+    \label{eq:cpgsv17_spanning_left_matrix}\\
+    Q
+        &:=
+        \begin{pmatrix}
+            1&1\\
+            1&1\\
+            1&-1\\
+            1&0
+        \end{pmatrix}.
+    \label{eq:cpgsv17_spanning_right_matrix}
+\end{align}
+Write $l_k$ for the $k$th column of $L$ and $r_k$ for the $k$th row of $Q$.
+Direct multiplication gives
+\begin{align}
+    LQ
+        &=
+        \begin{pmatrix}
+            1&0\\
+            0&0
+        \end{pmatrix},
+    \label{eq:cpgsv17_spanning_physical_projection}\\
+    T=QL
+        &=
+        \begin{pmatrix}
+            \tfrac16&\tfrac13&\tfrac12&0\\
+            \tfrac16&\tfrac13&\tfrac12&0\\
+            \tfrac16&0&\tfrac16&\tfrac23\\
+            \tfrac16&\tfrac16&\tfrac13&\tfrac13
+        \end{pmatrix}.
+    \label{eq:cpgsv17_spanning_trace_matrix}
+\end{align}
 The square of $T$ is
-\[
- T^2=\begin{pmatrix}
-  \tfrac16&\tfrac16&\tfrac13&\tfrac13\\
-  \tfrac16&\tfrac16&\tfrac13&\tfrac13\\
-  \tfrac16&\tfrac16&\tfrac13&\tfrac13\\
-  \tfrac16&\tfrac16&\tfrac13&\tfrac13
- \end{pmatrix}.
-\]
-Thus $T$ is primitive, $\operatorname{tr}(T)=1$, $T^2=T^3$, and
-$T\ne T^2$.  Equivalently, the exact missing expression is nonzero:
-\[
- Q(1-LQ)L=T-T^2\ne0.
-\]
-Moreover, the four matrices $l_k r_k$ span $M_2(\mathbb R)$.  For example,
-after vectorizing them in the order $(00,01,10,11)$, the determinant of the
-resulting four-by-four matrix is $1/108$.  Consequently full virtual spanning
-does not exclude the generalized zero-eigenspace.
+\begin{align}
+    T^2
+        &=
+        \begin{pmatrix}
+            \tfrac16&\tfrac16&\tfrac13&\tfrac13\\
+            \tfrac16&\tfrac16&\tfrac13&\tfrac13\\
+            \tfrac16&\tfrac16&\tfrac13&\tfrac13\\
+            \tfrac16&\tfrac16&\tfrac13&\tfrac13
+        \end{pmatrix}.
+    \label{eq:cpgsv17_spanning_trace_matrix_square}
+\end{align}
+Thus $T$ is primitive, $\tr(T)=1$, $T^2=T^3$, and $T\neq T^2$. Equivalently,
+the missing expression is nonzero:
+\begin{align}
+    Q(\Id-LQ)L
+        &= T-T^2
+         \neq 0.
+    \label{eq:cpgsv17_spanning_nonzero_remainder}
+\end{align}
+Moreover, the four matrices $l_kr_k$ span $M_2(\mathbb R)$. After vectorizing
+them in the order $(00,01,10,11)$, the determinant of the resulting
+four-by-four matrix is
+\begin{align}
+    \det V
+        &= \frac{1}{108}.
+    \label{eq:cpgsv17_spanning_vectorization_determinant}
+\end{align}
+Consequently, full virtual spanning does not exclude the generalized
+zero-eigenspace.
 
 This example is realized at the level of physical slices by the diagonal
 matrix product operator tensor
-\[
- K^{ij}=\delta_{ij}\,l_i r_i.
-\]
+\begin{align}
+    K^{ij}
+        &= \delta_{ij}\,l_i r_i.
+    \label{eq:cpgsv17_spanning_tensor_slices}
+\end{align}
 Its doubled-index tensor is injective because the four nonzero slices span
 $M_2(\mathbb C)$, and its physical-trace transfer is
-\(
- \sum_i K^{ii}=LQ
-\),
-so it satisfies source zero correlation length.  These assertions, together
-with primitivity, trace normalization, the spanning identity, and the nonzero
-nilpotent remainder, are proved in
+\begin{align}
+    \sum_i K^{ii}
+        &= LQ.
+    \label{eq:cpgsv17_spanning_physical_trace_transfer}
+\end{align}
+It therefore satisfies source zero correlation length. These assertions,
+together with primitivity, trace normalization, the spanning identity, and
+the nonzero nilpotent remainder, are proved in
 \path{TNLean/Archive/PerronFrobeniusVirtualSpanningCounterexample.lean}.
 \footnote{\sloppy Combined formal declaration:
 {\scriptsize\leanid{TNLean.Archive.PerronFrobeniusVirtualSpanningCounterexample.injective_sourceZCL_tensor_with_nilpotent_sector_pairing}}.}
 
-The construction does not yet identify $L$ and $Q$ with the particular closed
+The construction does not identify $L$ and $Q$ with the particular closed
 tensors selected from a Hayashi decomposition by
 \leanid{MPOTensor.zeroWeightReparameterizedInverseMapPhysicalSectorFactorization}.
-This distinction is essential.  The theorem above supplies a directly chosen
+This distinction is essential. The theorem supplies a directly chosen
 rectangular realization; it does not supply the Hayashi structure, normalized
 tail entry, inverse-map indices, and rephasing data from which the source
-factorization is constructed.  Thus it is not a counterexample to the full
-statement of Lemma~C.5.
+factorization is constructed. It is therefore not a counterexample to the
+full statement of Lemma~C.5 of Ref.~\cite{Cirac2016MPDO_arXiv}.
 
 The obstruction instead proves that every presently exported algebraic
 consequence---source ZCL, injectivity, primitivity, trace normalization,
 rectangular pairing idempotence, constant positive-power traces, and full
-virtual spanning---is insufficient.  A source-faithful completion must derive
-an additional identity from SAL and from the provenance of the inverse-map
-tensors.  In the notation above, the needed assertion is precisely
-\[
- Q(1-LQ)L=0,
-\]
+virtual spanning---is insufficient. A source-faithful completion must derive
+an additional identity from SAL and the provenance of the inverse-map tensors.
+In the notation above, the required assertion is
+\begin{align}
+    Q(\Id-LQ)L
+        &= 0,
+    \label{eq:cpgsv17_required_rectangular_vanishing}
+\end{align}
 or any equivalent statement excluding the nilpotent generalized
 zero-eigenspace of $QL$.
 
-\subsection{Positive semidefinite neighboring operators do not force the rectangular
-vanishing}
+\subsection{Positive semidefinite neighboring operators do not force the rectangular vanishing}
+\label{sec:cpgsv17_psd_neighboring_obstruction}
 
 The preceding obstruction can also be realized inside the physical-sector
-factorization with every neighboring operator positive semidefinite.  This can
-be seen from a second, independent witness with bond dimension two and four
-one-dimensional physical sectors.  Let
-\[
-  L=\begin{pmatrix}
-    \frac14&\frac14&\frac14&\frac14\\
-    1&-1&1&-1
-  \end{pmatrix},
-  \qquad
-  Q=\begin{pmatrix}
-    1&\frac18\\
-    1&\frac18\\
-    1&-\frac18\\
-    1&-\frac18
-  \end{pmatrix}.
-\]
+factorization with every neighboring operator positive semidefinite. A second,
+independent witness has bond dimension two and four one-dimensional physical
+sectors. Define
+\begin{align}
+    L
+        &:=
+        \begin{pmatrix}
+            \frac14&\frac14&\frac14&\frac14\\
+            1&-1&1&-1
+        \end{pmatrix},
+    \label{eq:cpgsv17_psd_witness_left_matrix}\\
+    Q
+        &:=
+        \begin{pmatrix}
+            1&\frac18\\
+            1&\frac18\\
+            1&-\frac18\\
+            1&-\frac18
+        \end{pmatrix}.
+    \label{eq:cpgsv17_psd_witness_right_matrix}
+\end{align}
 For each sector $k$, take the virtual matrix to be the outer product of the
-$k$th column of $L$ with the $k$th row of $Q$.  These four matrices span
+$k$th column of $L$ with the $k$th row of $Q$. These four matrices span
 $\MN{2}$: in the coordinate order $(00,01,10,11)$, the matrix having these
-four outer products as columns has determinant $-1/64$.  Placing them on the
-four diagonal physical entries therefore gives an injective tensor with a
-scalar physical-sector factorization.
+four outer products as columns has determinant
+\begin{align}
+    \det W
+        &= -\frac{1}{64}.
+    \label{eq:cpgsv17_psd_witness_spanning_determinant}
+\end{align}
+Placing them on the four diagonal physical entries therefore gives an
+injective tensor with a scalar physical-sector factorization.
 
 The two rectangular products are
-\[
-  LQ=\begin{pmatrix}1&0\\0&0\end{pmatrix},
-  \qquad
-  QL=\begin{pmatrix}
-    \frac38&\frac18&\frac38&\frac18\\
-    \frac38&\frac18&\frac38&\frac18\\
-    \frac18&\frac38&\frac18&\frac38\\
-    \frac18&\frac38&\frac18&\frac38
-  \end{pmatrix}.
-\]
+\begin{align}
+    LQ
+        &=
+        \begin{pmatrix}
+            1&0\\
+            0&0
+        \end{pmatrix},
+    \label{eq:cpgsv17_psd_witness_physical_projection}\\
+    QL
+        &=
+        \begin{pmatrix}
+            \frac38&\frac18&\frac38&\frac18\\
+            \frac38&\frac18&\frac38&\frac18\\
+            \frac18&\frac38&\frac18&\frac38\\
+            \frac18&\frac38&\frac18&\frac38
+        \end{pmatrix}.
+    \label{eq:cpgsv17_psd_witness_trace_matrix}
+\end{align}
 Hence $LQ$ is a nonzero idempotent physical-trace transfer, while $QL$ is
-strictly positive, primitive, and trace one.  Its entries are the scalar
-neighboring operators and are therefore positive semidefinite.  Nevertheless
-$(QL)^2\ne QL$; for example, the $(0,1)$ entry changes from $1/8$ to $1/4$.
+strictly positive, primitive, and has trace one. Its entries are the scalar
+neighboring operators and are therefore positive semidefinite. Nevertheless,
+\begin{align}
+    (QL)^2
+        &\neq QL,
+    \label{eq:cpgsv17_psd_witness_nonidempotence}\\
+    ((QL)^2)_{0,1}
+        &= \frac14
+         \neq \frac18
+         = (QL)_{0,1}.
+    \label{eq:cpgsv17_psd_witness_changed_entry}
+\end{align}
 Equivalently,
-\[
-  Q(1-LQ)L=QL-(QL)^2\ne0.
-\]
-Thus injectivity, full virtual-matrix spanning, positive semidefinite neighboring
-operators, primitivity, trace normalization, and the source
+\begin{align}
+    Q(\Id-LQ)L
+        &= QL-(QL)^2
+         \neq 0.
+    \label{eq:cpgsv17_psd_witness_nonzero_remainder}
+\end{align}
+Thus injectivity, full virtual-matrix spanning, positive semidefinite
+neighboring operators, primitivity, trace normalization, and the source
 zero-correlation-length rectangular identity can all hold without the missing
 vanishing.
-\footnote{The formal tensor and the combined counterexample theorem are in
+\footnote{The formal tensor and combined counterexample theorem are in
 \doclink{TNLean/MPS/MPDO/ActiveSectorSpanningCounterexample}; see
 {\scriptsize\leanid{MPOTensor.ActiveSectorSpanningCounterexample.virtual_spanning_does_not_force_rectangular_remainder_zero}}.}
 
-The induced finite-chain state is the classical cyclic law
-\[
-  p_N(i_1,\ldots,i_N)=\prod_{n=1}^N T_{i_n,i_{n+1}},
-  \qquad i_{N+1}=i_1,
-\]
-where $T=QL$ is doubly stochastic and $T^2$ is the matrix all of whose entries
-are $1/4$.  Let $h$ be the common Shannon entropy, in bits, of a row of $T$;
-the four rows are permutations of one another.  For every proper nonempty
-block of length $L$ in a chain relevant to SAL,
-\[
-  H_L=2+(L-1)h,
-  \qquad H_N=Nh.
-\]
-Consequently $I_L=H_L+H_{N-L}-H_N=4-2h$, independently of $L$.  Formally, the
-same conclusion is obtained without logarithmic calculations: after one site
-is traced out, the diagonal state is an ordinary Markov path, and conditioning
-on its middle label gives a four-sector Hayashi decomposition at every
-admissible cut.  The theorem
+Let $T:=QL$. The induced finite-chain state is the classical cyclic law
+\begin{align}
+    p_N(i_1,\ldots,i_N)
+        &:= \prod_{n=1}^N T_{i_n,i_{n+1}},
+    \label{eq:cpgsv17_classical_cyclic_law}\\
+    i_{N+1}
+        &:= i_1.
+    \label{eq:cpgsv17_cyclic_boundary_index}
+\end{align}
+The matrix $T$ is doubly stochastic, and $T^2$ has every entry equal to
+$1/4$. Let $h$ be the common Shannon entropy, in bits, of a row of $T$; the
+four rows are permutations of one another. For every proper nonempty block of
+length $L$ in a chain relevant to SAL,
+\begin{align}
+    H_L
+        &= 2+(L-1)h,
+    \label{eq:cpgsv17_block_entropy}\\
+    H_N
+        &= Nh.
+    \label{eq:cpgsv17_chain_entropy}
+\end{align}
+Consequently,
+\begin{align}
+    I_L
+        &= H_L+H_{N-L}-H_N
+    \label{eq:cpgsv17_mutual_information_definition}\\
+        &= 4-2h,
+    \label{eq:cpgsv17_mutual_information_constant}
+\end{align}
+independently of $L$. Formally, the same conclusion follows without
+logarithmic calculations. After one site is traced out, the diagonal state is
+an ordinary Markov path, and conditioning on its middle label gives a
+four-sector Hayashi decomposition at every admissible cut. The theorem
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.tensor_isSAL} therefore
 proves the strong area law for this tensor.
 
-The inverse-map provenance is now explicit.  The refined Hayashi decomposition
-has four one-dimensional sectors of weight $1/4$, with diagonal left and right
-density matrices determined by $QL$.  Its normalized four-site tail is $LQ$.
+The inverse-map provenance is explicit. The refined Hayashi decomposition has
+four one-dimensional sectors of weight $1/4$, with diagonal left and right
+density matrices determined by $QL$. Its normalized four-site tail is $LQ$.
 The four nonzero physical slices form a basis of the virtual matrix algebra;
 computing the dual basis shows that the source inverse map recovers the
-displayed closed tensors $L$ and $Q$ exactly.  Consequently its neighboring
+displayed closed tensors $L$ and $Q$ exactly. Consequently, its neighboring
 operators agree with those of
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.factorization}, and the
 same source-selected construction satisfies
-\[
-  Q(1-LQ)L\ne0.
-\]
+\begin{align}
+    Q(\Id-LQ)L
+        &\neq 0.
+    \label{eq:cpgsv17_inverse_map_nonzero_remainder}
+\end{align}
 These statements are proved in
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.%
-inverseMap_provenance_preserves_rectangular_remainder}.  Together with SAL,
+inverseMap_provenance_preserves_rectangular_remainder}. Together with SAL,
 injectivity, and source ZCL, these facts are assembled in
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.%
-tensor_has_sal_sourceZCL_and_non_rankOne_activeTraceMatrix}.  The active trace matrix
-has no factorization $T_{k,h}=a_kb_h$, while $Q(1-LQ)L\ne0$.  Hence the example
-proves the full raw-tensor conjunction, including inverse-map provenance. It
-does not refute Lemma~C.5 under its complete standing hypotheses: the lemma is
-inside Case~I at source lines~1374--1381, where $\mathcal K$ is assumed to be an
-injective normal tensor. The raw witness is not transfer-normalized, while its
-normal representative loses the literal ZCL identity. This normalization
+tensor_has_sal_sourceZCL_and_non_rankOne_activeTraceMatrix}. The active trace
+matrix has no factorization $T_{k,h}=a_kb_h$, while
+Eq.~\ref{eq:cpgsv17_inverse_map_nonzero_remainder} holds. Hence the example
+proves the full raw-tensor conjunction, including inverse-map provenance.
+
+It does not refute Lemma~C.5 under its complete standing hypotheses
+\cite[Appendix~C.2]{Cirac2016MPDO_arXiv}. The lemma lies inside Case~I at
+source lines 1374--1381, where $\mathcal K$ is assumed to be an injective
+normal tensor. The raw witness is not transfer-normalized, while its normal
+representative loses the literal ZCL identity. This normalization
 qualification corrects the earlier verdict tracked in \ghissue{4270}.
 
 \section{Renormalization maps and the global normalization boundary}
+\label{sec:cpgsv17_global_normalization}
 
-The standing hypotheses of Theorem~4.9 require a simple tensor in biCF with a
-basis of normal tensors; they are imposed at source lines~849--893 and restated
-at line~1628. They also inherit the global canonical-form convention at source
-line~246: every BNT coefficient has modulus at most one, and at least one has
+The standing hypotheses of Theorem~4.9 of
+Ref.~\cite{Cirac2016MPDO_arXiv} require a simple tensor in biCF with a basis of
+normal tensors. They are imposed at source lines 849--893 and restated at
+line 1628. They also inherit the global canonical-form convention at source
+line 246: every BNT coefficient has modulus at most one, and at least one has
 modulus one. The distinction between this single global unit witness and a
 stronger sectorwise convention is recorded in
 \path{docs/paper-gaps/cpsv16_global_vs_persector_unit_witness.tex}.
 
 Write $\mathcal K$ for the four-sector witness and regard its doubled physical
-index as an MPS index. Its four nonzero physical matrices span $\MN{2}$, so the
-doubled tensor is injective at one site. Its raw transfer map is
-\[
-  \mathcal E_{\mathcal K}(X)
-  =\left(2X_{00}+\frac1{32}X_{11}\right)
-    \begin{pmatrix}\frac18&0\\0&2\end{pmatrix},
-  \qquad
-  \mathcal E_{\mathcal K}^{2}=\frac5{16}\mathcal E_{\mathcal K}.
-\]
-Thus the raw doubled tensor has spectral radius $5/16$. Set
-\[
-  A=\frac4{\sqrt5}\mathcal K,
-  \qquad
-  \mu=\frac{\sqrt5}{4}.
-\]
-Then $\mathcal K=\mu A$, and $\mathcal E_A$ has spectrum
-$\{1,0,0,0\}$ and is idempotent. The singleton family $\{A\}$ is the normal
-basis for $\mathcal K$, but its only coefficient is $\mu<1$. Consequently the
-raw tensor $\mathcal K$ does not meet the source's global unit-weight
-convention. The normalized representative $A$ does: it is injective, hence
-normal; its singleton BNT has coefficient one; and the same one-site spanning
-identity gives biCF with blocking length one. Moreover,
-\[
-  \mathcal B_A=\frac4{\sqrt5}LQ
-  =\frac4{\sqrt5}\begin{pmatrix}1&0\\0&0\end{pmatrix}
-\]
-is not nilpotent, so the sole BNT element is simple in the sense used in
-Theorem~4.9.
+index as an MPS index. Its four nonzero physical matrices span $\MN{2}$, so
+the doubled tensor is injective at one site. Its raw transfer map is
+\begin{align}
+    \mathcal E_{\mathcal K}(X)
+        &=
+        \left(2X_{00}+\frac1{32}X_{11}\right)
+        \begin{pmatrix}
+            \frac18&0\\
+            0&2
+        \end{pmatrix},
+    \label{eq:cpgsv17_raw_transfer_map}\\
+    \mathcal E_{\mathcal K}^{2}
+        &= \frac5{16}\mathcal E_{\mathcal K}.
+    \label{eq:cpgsv17_raw_transfer_quasi_idempotence}
+\end{align}
+Thus the raw doubled tensor has spectral radius $5/16$. Define
+\begin{align}
+    A
+        &:= \frac4{\sqrt5}\mathcal K,
+    \label{eq:cpgsv17_normalized_representative}\\
+    \mu
+        &:= \frac{\sqrt5}{4}.
+    \label{eq:cpgsv17_raw_bnt_coefficient}
+\end{align}
+Then
+\begin{align}
+    \mathcal K
+        &= \mu A,
+    \label{eq:cpgsv17_raw_normalized_decomposition}
+\end{align}
+and $\mathcal E_A$ has spectrum $\{1,0,0,0\}$ and is idempotent. The singleton
+family $\{A\}$ is the normal basis for $\mathcal K$, but its only coefficient
+is $\mu<1$. Consequently, the raw tensor $\mathcal K$ does not meet the
+source's global unit-weight convention. The normalized representative $A$
+does: it is injective and hence normal; its singleton BNT has coefficient one;
+and the same one-site spanning identity gives biCF with blocking length one.
+Moreover,
+\begin{align}
+    \mathcal B_A
+        &= \frac4{\sqrt5}LQ
+    \label{eq:cpgsv17_normalized_physical_transfer_scaled}\\
+        &= \frac4{\sqrt5}
+        \begin{pmatrix}
+            1&0\\
+            0&0
+        \end{pmatrix}.
+    \label{eq:cpgsv17_normalized_physical_transfer_matrix}
+\end{align}
+This operator is not nilpotent, so the sole BNT element is simple in the sense
+used in Theorem~4.9 of Ref.~\cite{Cirac2016MPDO_arXiv}.
 
 These two representatives lie on opposite sides of the source's two literal
 normalizations. The raw tensor has
-$\mathcal B_{\mathcal K}=LQ=P$, so it satisfies the literal diagram
-$\mathcal B_{\mathcal K}^2=\mathcal B_{\mathcal K}$, but it lacks a global
-unit-modulus BNT coefficient. The representative $A$ has the required unit BNT
-coefficient, but
-\[
-  \mathcal B_A^2=\frac4{\sqrt5}\mathcal B_A
-  \ne\mathcal B_A,
-\]
-so it fails the paper's literal zero-correlation-length diagram. The scalar
-absorption at source line~1660 occurs only after that literal ZCL identity has
-already been assumed; it does not transport either literal ZCL or the
-renormalization maps across a scalar rescaling.
+\begin{align}
+    \mathcal B_{\mathcal K}
+        &= LQ
+         = P,
+    \label{eq:cpgsv17_raw_physical_transfer_projection}
+\end{align}
+so it satisfies
+\begin{align}
+    \mathcal B_{\mathcal K}^2
+        &= \mathcal B_{\mathcal K},
+    \label{eq:cpgsv17_raw_literal_zcl}
+\end{align}
+but it lacks a global unit-modulus BNT coefficient. The representative $A$
+has the required unit BNT coefficient, but
+\begin{align}
+    \mathcal B_A^2
+        &= \frac4{\sqrt5}\mathcal B_A
+    \label{eq:cpgsv17_normalized_scaled_zcl}\\
+        &\neq \mathcal B_A.
+    \label{eq:cpgsv17_normalized_literal_zcl_failure}
+\end{align}
+Thus $A$ fails the paper's literal zero-correlation-length diagram. The scalar
+absorption at source line 1660 of Ref.~\cite{Cirac2016MPDO_arXiv} occurs only
+after that literal ZCL identity has been assumed; it does not transport
+literal ZCL or the renormalization maps across scalar rescaling.
 
-The raw tensor nevertheless gives a useful positive calculation for the
-trace-preserving completely positive map condition. Let $\tau=QL$ and define
-\[
-  f(i,j)=(i\bmod2)+2\left\lfloor\frac j2\right\rfloor.
-\]
-The sector matrices obey
-\[
-  S_iS_j=\tau_{ij}S_{f(i,j)},
-  \qquad
-  \sum_{(i,j):f(i,j)=k}\tau_{ij}=1
-\]
-for each $k\in\{0,1,2,3\}$. Consequently the refinement and coarse-graining
-Kraus operators
-\[
-  R_{ij}=\sqrt{\tau_{ij}}\lvert i,j\rangle\langle f(i,j)\rvert,
-  \qquad
-  C_{ij}=\lvert f(i,j)\rangle\langle i,j\rvert
-\]
-resolve the respective input identities. Their maps are trace-preserving and
-completely positive, and direct substitution gives
-\[
-  \mathsf C[\mathcal K_2(X)]=\mathcal K_1(X),
-  \qquad
-  \mathsf R[\mathcal K_1(X)]=\mathcal K_2(X)
-\]
-for every virtual matrix $X$. Applying each map twice and passing to the
-canonical blocked coordinates gives the same two identities for
-$\mathcal K^{[2]}$. These statements are proved by
+The raw tensor nevertheless gives a positive calculation for the
+trace-preserving completely positive map condition. Let $\tau:=QL$ and define
+\begin{align}
+    f(i,j)
+        &:= (i\bmod 2)+2\left\lfloor\frac j2\right\rfloor.
+    \label{eq:cpgsv17_label_coarsening_function}
+\end{align}
+The sector matrices $S_i$ obey
+\begin{align}
+    S_iS_j
+        &= \tau_{ij}S_{f(i,j)},
+    \label{eq:cpgsv17_sector_matrix_multiplication}\\
+    \sum_{(i,j):f(i,j)=k}\tau_{ij}
+        &= 1
+        \qquad (k\in\{0,1,2,3\}).
+    \label{eq:cpgsv17_coarsening_weight_normalization}
+\end{align}
+Define the refinement and coarse-graining Kraus operators by
+\begin{align}
+    R_{ij}
+        &:= \sqrt{\tau_{ij}}\ket{i,j}\bra{f(i,j)},
+    \label{eq:cpgsv17_refinement_kraus_operator}\\
+    C_{ij}
+        &:= \ket{f(i,j)}\bra{i,j}.
+    \label{eq:cpgsv17_coarse_graining_kraus_operator}
+\end{align}
+These operators resolve their respective input identities. Their maps are
+trace-preserving and completely positive, and direct substitution gives
+\begin{align}
+    \mathsf C[\mathcal K_2(X)]
+        &= \mathcal K_1(X),
+    \label{eq:cpgsv17_coarse_graining_closure}\\
+    \mathsf R[\mathcal K_1(X)]
+        &= \mathcal K_2(X)
+    \label{eq:cpgsv17_refinement_closure}
+\end{align}
+for every virtual matrix $X$. Applying each map twice and passing to canonical
+blocked coordinates gives the same identities for $\mathcal K^{[2]}$. These
+statements are proved by
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.tensor_isRFPViaTS},
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.%
 blockTwo_tensor_isRFPViaTS}, and the general blocking theorem
 \leanid{MPOTensor.IsRFPViaTS.blockTwo}.
 
 \subsection{Pair-preserving two-to-four-site maps}
+\label{sec:cpgsv17_pair_preserving_maps}
 
 There is a sharp trace obstruction to applying the twice-iterated maps while
-retaining every fixed pair of outer sector labels.  For an arbitrary
-physical-sector factorization, put
-\[
-  C_{k,h}=\operatorname{tr}(\eta_{k,h}),
-  \qquad
-  \Theta_{k,h}
-  =\bigoplus_{l,m}
-    \eta_{k,l}\otimes\eta_{l,m}\otimes\eta_{m,h}.
-\]
+retaining every fixed pair of outer sector labels. For an arbitrary
+physical-sector factorization, define
+\begin{align}
+    C_{k,h}
+        &:= \tr(\eta_{k,h}),
+    \label{eq:cpgsv17_neighboring_trace_matrix}\\
+    \Theta_{k,h}
+        &:=
+        \bigoplus_{l,m}
+        \eta_{k,l}\otimes\eta_{l,m}\otimes\eta_{m,h}.
+    \label{eq:cpgsv17_four_site_neighboring_operator}
+\end{align}
 Additivity of trace on direct sums and multiplicativity on tensor products
 give
-\[
-  \operatorname{tr}(\Theta_{k,h})
-  =\sum_{l,m}C_{k,l}C_{l,m}C_{m,h}
-  =(C^3)_{k,h}.
-\]
-It follows that a trace-preserving family which sends every
-$\eta_{k,h}$ to the corresponding $\Theta_{k,h}$, or every
-$\Theta_{k,h}$ to the corresponding $\eta_{k,h}$, forces
-\[
-  C=C^3.
-\]
+\begin{align}
+    \tr(\Theta_{k,h})
+        &= \sum_{l,m}
+        \tr(\eta_{k,l})
+        \tr(\eta_{l,m})
+        \tr(\eta_{m,h})
+    \label{eq:cpgsv17_four_site_trace_expansion}\\
+        &= \sum_{l,m}C_{k,l}C_{l,m}C_{m,h}
+    \label{eq:cpgsv17_four_site_trace_matrix_sum}\\
+        &= (C^3)_{k,h}.
+    \label{eq:cpgsv17_four_site_trace_cube}
+\end{align}
+It follows that a trace-preserving family that sends every $\eta_{k,h}$ to
+the corresponding $\Theta_{k,h}$, or every $\Theta_{k,h}$ to the corresponding
+$\eta_{k,h}$, forces
+\begin{align}
+    C
+        &= C^3.
+    \label{eq:cpgsv17_pair_preserving_trace_condition}
+\end{align}
 This project-derived result is a \emph{conditional helper}: it identifies the
 necessary trace equality for a pair-preserving construction, but it neither
-asserts that the source maps preserve such pairs nor constructs a
-label-mixing alternative.  The trace identity and its two directions are
-proved in
+asserts that the source maps preserve such pairs nor constructs a label-mixing
+alternative. The trace identity and its two directions are proved in
 \leanid{MPOTensor.PhysicalSectorFactorization.%
 trace_fourSiteNeighboringOperator},
 \leanid{MPOTensor.PhysicalSectorFactorization.%
@@ -659,67 +979,106 @@ neighboringTraceMatrix_eq_pow_three_of_pairwise_coarsening}, and
 neighboringTraceMatrix_eq_pow_three_of_pairwise_refinement}.
 
 For the selected four-sector factorization of the active-spanning witness,
-$C=QL$.  Rectangular idempotence of $LQ$ gives $C^2=C^3$, but the explicit
-entries satisfy $C_{0,1}=1/8$ and $(C^2)_{0,1}=1/4$.  Hence
-\[
-  C^2=C^3,
-  \qquad
-  C\ne C^3,
-\]
-and neither direction of a pair-preserving trace-preserving map can exist for
-these four selected sectors.  This is proved in
+$C=QL$. Rectangular idempotence of $LQ$ gives
+\begin{align}
+    C^2
+        &= C^3,
+    \label{eq:cpgsv17_selected_trace_square_cube}
+\end{align}
+but the explicit entries satisfy
+\begin{align}
+    C_{0,1}
+        &= \frac18,
+    \label{eq:cpgsv17_selected_trace_entry}\\
+    (C^2)_{0,1}
+        &= \frac14.
+    \label{eq:cpgsv17_selected_trace_square_entry}
+\end{align}
+Hence
+\begin{align}
+    C^2
+        &= C^3,
+    \label{eq:cpgsv17_pair_preserving_square_cube}\\
+    C
+        &\neq C^3.
+    \label{eq:cpgsv17_pair_preserving_cube_failure}
+\end{align}
+Neither direction of a pair-preserving trace-preserving map can therefore
+exist for these four selected sectors. This is proved in
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.%
 not_exists_pairwise_fourSite_coarsening} and
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.%
 not_exists_pairwise_fourSite_refinement}.
 
 This exclusion is \emph{proof-path drift}, not an obstruction to
-renormalization.  The trace-preserving completely positive maps above use the
+renormalization. The trace-preserving completely positive maps above use the
 many-to-one rule $f(i,j)$ and therefore coarsen the selected labels; after
-iteration they still prove the renormalization equations for
-$\mathcal K^{[2]}$.  They are not among the fixed-$(k,h)$ families excluded by
-the trace calculation.  Likewise, the one-sector factorization has no such
-four-sector obstruction.  Thus this calculation rules out the selected
-pair-preserving route.  The explicit label-coarsening maps belong to this
+iteration, they still prove the renormalization equations for
+$\mathcal K^{[2]}$. They are not among the fixed-$(k,h)$ families excluded by
+the trace calculation. The one-sector factorization likewise has no such
+four-sector obstruction. Thus the calculation rules out only the selected
+pair-preserving route. The explicit label-coarsening maps belong to this
 example; they are not the general construction used in the source proof.
-Proposition~\texttt{3to5} instead constructs its maps from normalized rank-one
-neighboring traces, and the proof of Proposition~\texttt{prop2to5} only adds
-the projection onto the outer BNT subspaces before applying those maps.
+Proposition~\texttt{3to5} of Ref.~\cite{Cirac2016MPDO_arXiv} instead
+constructs its maps from normalized rank-one neighboring traces, and the proof
+of Proposition~\texttt{prop2to5} only adds the projection onto the outer BNT
+subspaces before applying those maps.
 
-This positive result is not invariant under the normalization above. Put
-$P=\operatorname{diag}(1,0)$. The physical-trace transfer of the normalized
-representative and that of its two-site blocking are
-\[
-  \mathcal B_A=\frac4{\sqrt5}P,
-  \qquad
-  \mathcal B_{A^{[2]}}=\mathcal B_A^2=\frac{16}{5}P.
-\]
-Definition~4.1 would force $\mathcal B_{A^{[2]}}$ to be literally idempotent,
-because trace preservation identifies the traces of its one-site and two-site
-closures for every virtual boundary matrix. But
-$(16P/5)^2\ne16P/5$. Hence $A^{[2]}$ is not a renormalization fixed point. This
-is proved by
+This positive result is not invariant under the normalization above. Define
+\begin{align}
+    P
+        &:= \operatorname{diag}(1,0).
+    \label{eq:cpgsv17_normalized_coordinate_projection}
+\end{align}
+The physical-trace transfers of the normalized representative and its
+two-site blocking are
+\begin{align}
+    \mathcal B_A
+        &= \frac4{\sqrt5}P,
+    \label{eq:cpgsv17_normalized_transfer_projection}\\
+    \mathcal B_{A^{[2]}}
+        &= \mathcal B_A^2
+    \label{eq:cpgsv17_blocked_transfer_square}\\
+        &= \frac{16}{5}P.
+    \label{eq:cpgsv17_blocked_transfer_projection}
+\end{align}
+Definition~4.1 of Ref.~\cite{Cirac2016MPDO_arXiv} would force
+$\mathcal B_{A^{[2]}}$ to be literally idempotent because trace preservation
+identifies the traces of its one-site and two-site closures for every virtual
+boundary matrix. However,
+\begin{align}
+    \left(\frac{16}{5}P\right)^2
+        &\neq \frac{16}{5}P.
+    \label{eq:cpgsv17_blocked_transfer_nonidempotence}
+\end{align}
+Hence $A^{[2]}$ is not a renormalization fixed point. This is proved by
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.%
 blockTwo_normalizedTensor_not_isRFPViaTS}.
 \footnote{The source-hypothesis and normalization-sensitive obstruction are
 tracked in \ghissue{5388}.}
 
-There are two different zero-correlation-length statements here. TNLean's
+There are two distinct zero-correlation-length statements. TNLean's
 \leanid{MPOTensor.IsSourceZCL} interpretation is scale-invariant: it asks for
-$\mathcal B_A^2=\lambda\mathcal B_A$ with some $\lambda>0$. The paper's
-diagrammatic identity is literal and selects a fixed scalar representative.
-Both the strong area law and TNLean's up-to-scalar predicate are unchanged by
-multiplying the tensor by $4/\sqrt5$, but the paper's diagram is not. Hence $A$
-is a counterexample only to the broadened implication obtained by replacing
-the literal diagram with \leanid{MPOTensor.IsSourceZCL}; it is not an
-unqualified counterexample to Theorem~4.9. This statement concerns the
-four-sector witness $A$ only; the scalar repeated-copy counterexample below is
-an exact counterexample to the printed (iv)$\Rightarrow$(v) implication.
+\begin{align}
+    \mathcal B_A^2
+        &= \lambda\mathcal B_A
+        \qquad (\lambda>0).
+    \label{eq:cpgsv17_scale_invariant_zcl}
+\end{align}
+The paper's diagrammatic identity is literal and selects a fixed scalar
+representative. Both the strong area law and TNLean's up-to-scalar predicate
+are unchanged by multiplying the tensor by $4/\sqrt5$, but the paper's diagram
+is not. Hence $A$ is a counterexample only to the broadened implication
+obtained by replacing the literal diagram with
+\leanid{MPOTensor.IsSourceZCL}; it is not an unqualified counterexample to
+Theorem~4.9 of Ref.~\cite{Cirac2016MPDO_arXiv}. This statement concerns only
+the four-sector witness $A$. The scalar repeated-copy counterexample below is
+an exact counterexample to the printed implication (iv)$\Rightarrow$(v).
 
 The scalar identities, the raw renormalization maps, and the failure of
-Definition~4.1 for $A^{[2]}$ are kernel-checked. This example leaves the
-source (ii)$\Rightarrow$(v) boundary unsettled: $\mathcal K$ satisfies literal
-ZCL but not the global unit-weight convention, while $A$ satisfies the global
+Definition~4.1 for $A^{[2]}$ are kernel-checked. This example leaves the source
+(ii)$\Rightarrow$(v) boundary unsettled: $\mathcal K$ satisfies literal ZCL
+but not the global unit-weight convention, while $A$ satisfies the global
 convention but not literal ZCL. Packaging the normality, singleton BNT, biCF,
 simplicity, and SAL facts for $A$ remains useful, but cannot turn its
 up-to-scalar ZCL relation into the paper's literal diagram. The distinct raw
@@ -727,158 +1086,214 @@ copy example below settles (iv)$\Rightarrow$(v) without asserting
 condition~(ii).
 
 \section{A positive-semidefinite route}
+\label{sec:cpgsv17_psd_route}
 
 The formal development proves a corrected sufficient matrix theorem. Let $T$
 be a finite real square matrix. If $T$ is positive semidefinite,
-$\operatorname{tr}(T)=1$, and
-$\operatorname{tr}(T^N)=\operatorname{tr}(T)$ for every positive integer
-$N$, then $T$ has an outer-product factorization $T=a b^{\top}$.
+$\tr(T)=1$, and
+\begin{align}
+    \tr(T^N)
+        &= \tr(T)
+        \qquad (N\geq 1),
+    \label{eq:cpgsv17_psd_route_trace_hypothesis}
+\end{align}
+then $T$ has an outer-product factorization
+\begin{align}
+    T
+        &= ab^{\top}.
+    \label{eq:cpgsv17_psd_route_factorization}
+\end{align}
 \footnote{The formal statements are
-\texttt{Matrix.PosSemidef.trace\_powers\_constant\_implies\_rank\_one} and
-\texttt{Matrix.primitive\_trace\_powers\_constant\_implies\_rank\_one\_of\_posSemidef}
+\leanid{Matrix.PosSemidef.trace_powers_constant_implies_rank_one} and
+\leanid{Matrix.primitive_trace_powers_constant_implies_rank_one_of_posSemidef}
 in \path{TNLean/Algebra/PerronFrobenius/RankOne.lean}.}
 Primitivity is not needed for this corrected matrix theorem once positive
 semidefiniteness and trace normalization are assumed.
 
 The proof is spectral. Positive semidefiniteness makes $T$ Hermitian and
-diagonalizable with non-negative real eigenvalues $\lambda_i$. The trace
-normalization gives $\sum_i \lambda_i=1$. The trace-power hypothesis at
-$N=2$ gives $\sum_i \lambda_i^2=1$. For non-negative numbers with sum one,
-this forces exactly one $\lambda_i$ to be $1$ and all the others to be
-$0$. Therefore the diagonal form has rank one, and unitary conjugation gives
-an outer-product factorization of $T$.
+diagonalizable with nonnegative real eigenvalues $\lambda_i$. Trace
+normalization gives
+\begin{align}
+    \sum_i\lambda_i
+        &= 1.
+    \label{eq:cpgsv17_psd_eigenvalue_sum}
+\end{align}
+The trace-power hypothesis at $N=2$ gives
+\begin{align}
+    \sum_i\lambda_i^2
+        &= 1.
+    \label{eq:cpgsv17_psd_eigenvalue_square_sum}
+\end{align}
+For nonnegative numbers with sum one,
+Eq.~\ref{eq:cpgsv17_psd_eigenvalue_square_sum} forces exactly one $\lambda_i$
+to equal $1$ and all others to equal $0$. Therefore the diagonal form has rank
+one, and unitary conjugation gives Eq.~\ref{eq:cpgsv17_psd_route_factorization}.
 
 \section{Audit of the positive-semidefinite route}
+\label{sec:cpgsv17_psd_audit}
 
 The neighboring-operator construction displayed in the source does not by
 itself exhibit $T$ as a Gram matrix. Immediately before Lemma~C.5, the paper
 writes
-\[
-  T_{k,h}=(r_k\mid l_h),
-\]
+\begin{align}
+    T_{k,h}
+        &= (r_k\mid l_h),
+    \label{eq:cpgsv17_source_cross_pairing}
+\end{align}
 with two different families $(r_k)_k$ and $(l_h)_h$
-\cite[Appendix~C.2, lines 1473--1482]{Cirac2016MPDO_arXiv}. No equality or
-adjoint relation between these two families is stated. Consequently this is a
-cross-pairing, rather than a Gram representation, and it gives neither symmetry
-nor positive semidefiniteness of $T$.
+\cite[Appendix~C.2, lines~1473--1482]{Cirac2016MPDO_arXiv}. No equality or
+adjoint relation between these families is stated. Consequently,
+Eq.~\ref{eq:cpgsv17_source_cross_pairing} is a cross-pairing rather than a Gram
+representation and gives neither symmetry nor positive semidefiniteness of
+$T$.
 
 The present type of explicit neighboring operators records only
-$\eta_{k,h}\geq 0$ for each ordered pair $(k,h)$. This hypothesis implies
-$T_{k,h}\geq 0$ entrywise, but contains no relation between $\eta_{k,h}$ and
-$\eta_{h,k}$. Thus matrix-level positive semidefiniteness cannot be deduced
-from that type alone.
+\begin{align}
+    \eta_{k,h}
+        &\geq 0
+        \qquad\text{for each ordered pair }(k,h).
+    \label{eq:cpgsv17_neighboring_operator_positivity}
+\end{align}
+This hypothesis implies
+\begin{align}
+    T_{k,h}
+        &\geq 0
+        \qquad\text{entrywise},
+    \label{eq:cpgsv17_trace_matrix_entrywise_nonnegative}
+\end{align}
+but contains no relation between $\eta_{k,h}$ and $\eta_{h,k}$. Thus the type
+alone does not imply matrix-level positive semidefiniteness.
 
 There is one special positive-semidefinite case in the formal development. The
 sector-reduced Hayashi--Markov family is defined by
-\[
-  \eta_{k,h}
-    =\tr_C(\rho_{b_2C}^{(k)})\otimes
-      \tr_A(\rho_{Ab_1}^{(h)}).
-\]
+\begin{align}
+    \eta_{k,h}
+        &:=
+        \tr_C(\rho_{b_2C}^{(k)})
+        \otimes
+        \tr_A(\rho_{Ab_1}^{(h)}).
+    \label{eq:cpgsv17_hayashi_markov_neighboring_operator}
+\end{align}
 Since each reduced density matrix has trace one, its trace matrix is the
 all-ones matrix. The theorem
-{\scriptsize\leanid{MPOTensor.ExplicitEtaOperators.traceMatrixRe_ofHayashiMarkov_posSemidef}}
-proves its positive
-semidefiniteness. This does not discharge Lemma~C.5: the sector-reduced family
-has not been identified with the inverse-map family constructed in lines
+\leanid{MPOTensor.ExplicitEtaOperators.traceMatrixRe_ofHayashiMarkov_posSemidef}
+proves its positive semidefiniteness. This does not discharge Lemma~C.5 of
+Ref.~\cite{Cirac2016MPDO_arXiv}: the sector-reduced family has not been
+identified with the inverse-map family constructed at source lines
 1413--1455, and the trace of its all-ones matrix is the number of sectors, not
 one unless there is a single sector.
 
 The positive-semidefinite route must therefore use more of the matrix product
-density operator construction than the separate inequalities
-$\eta_{k,h}\geq 0$. One possible completion is to derive an adjoint or Gram
-relation from the inverse-map tensors. Positive semidefiniteness of the source
-trace matrix is not presently established by the cited passage.
+density operator construction than the separate inequalities in
+Eq.~\ref{eq:cpgsv17_neighboring_operator_positivity}. One possible completion
+is to derive an adjoint or Gram relation from the inverse-map tensors.
+Positive semidefiniteness of the source trace matrix is not established by the
+cited passage.
 
 This corrected theorem does not refute the intended matrix product density
 operator result; it supplies one sufficient matrix-level hypothesis. For this
 route, the open question is whether the trace matrix
-$T_{k,h}=\operatorname{tr}(\eta_{k,h})$ is Hermitian or positive semidefinite.
-The pairing-idempotence route of Section~3.1 avoids that hypothesis, but instead
-requires the concrete sector pairing, the zero-correlation-length operator
-identity, and linear independence. Positivity of each $\eta_{k,h}$ gives only
-$T_{k,h}\geq 0$ entry by entry, which implies neither matrix-level positive
-semidefiniteness nor Hermitian symmetry.
+$T_{k,h}=\tr(\eta_{k,h})$ is Hermitian or positive semidefinite. The
+pairing-idempotence route of
+Section~\ref{sec:cpgsv17_pairing_idempotence_route} avoids that hypothesis but
+instead requires the concrete sector pairing, the zero-correlation-length
+operator identity, and linear independence. Positivity of each $\eta_{k,h}$
+gives only entrywise nonnegativity of $T$, which implies neither matrix-level
+positive semidefiniteness nor Hermitian symmetry.
 \footnote{The entrywise nonnegativity result is
 {\scriptsize\leanid{MPOTensor.ExplicitEtaOperators.traceMatrixRe_nonneg}}. The
 positive-semidefinite reformulation for the rank-one conclusion is
-{\scriptsize\leanid{MPOTensor.sal_zcl_implies_rank_one_T_of_posSemidef}}. The corresponding
-blueprint entries have labels
-\texttt{\detokenize{thm:mpdo_explicit_eta_trace_matrix_nonneg}} and
-\texttt{\detokenize{thm:psd_trace_powers_rank_one_t}} in
+{\scriptsize\leanid{MPOTensor.sal_zcl_implies_rank_one_T_of_posSemidef}}. The
+corresponding blueprint entries have labels
+\texttt{\detokenize{thm:mpdo\_explicit\_eta\_trace\_matrix\_nonneg}} and
+\texttt{\detokenize{thm:psd\_trace\_powers\_rank\_one\_t}} in
 \path{blueprint/src/chapter/ch21_mpdo_rfp_simple_local_primitivity.tex}.}
 
 \section{Audit of the inverse-map provenance}
+\label{sec:cpgsv17_inverse_map_audit}
 
 The remaining possibility was that the particular inverse-map tensors used in
-Appendix~C.2 might satisfy an additional identity which is not visible in the
-rectangular pairing equation.  An audit of the complete source passage does
-not reveal such an identity.
+Appendix C.2 of Ref.~\cite{Cirac2016MPDO_arXiv} satisfy an additional identity
+not visible in the rectangular pairing equation. An audit of the complete
+source passage does not reveal such an identity.
 
-In the proof of Lemma~C.4, at lines~1406--1471, the strong area law
-is used to obtain the physical-sector factorization, positive neighboring
-operators, and primitivity of the trace matrix.  The last point uses
-injectivity to rule out more than one primitive block.  This argument does not
-prove an adjoint relation between the closed left and right tensors, their
-linear independence, or the vanishing
-\[
-    Q(1-LQ)L=0.
-\]
+In the proof of Lemma~C.4 at source lines 1406--1471, the strong area law is
+used to obtain the physical-sector factorization, positive neighboring
+operators, and primitivity of the trace matrix
+\cite[Appendix~C.2]{Cirac2016MPDO_arXiv}. The last conclusion uses injectivity
+to rule out more than one primitive block. The argument does not prove an
+adjoint relation between the closed left and right tensors, their linear
+independence, or the vanishing
+\begin{align}
+    Q(\Id-LQ)L
+        &= 0.
+    \label{eq:cpgsv17_audit_required_vanishing}
+\end{align}
 The physical direct sum separates the uncontracted physical sector spaces.
-After the physical legs are closed at lines~1473--1482, the vectors $l_h$ and
-functionals $r_k$ lie in common bond spaces, and the source gives only
-$T_{k,h}=(r_k\mid l_h)$.
+After the physical legs are closed at source lines 1473--1482, the vectors
+$l_h$ and functionals $r_k$ lie in common bond spaces, and the source gives
+only $T_{k,h}=(r_k\mid l_h)$.
 
-The proof of Lemma~C.5, at lines~1489--1499, then uses zero
-correlation length to obtain the pairing-operator identity and its trace-power
-consequence.  No further property of the inverse map occurs between this
-identity and the rank-one conclusion.  At the common-matrix level this leaves
-the gap described above.  The source's separate Case~I assumption that
+The proof of Lemma~C.5 at source lines 1489--1499 then uses zero correlation
+length to obtain the pairing-operator identity and its trace-power consequence
+\cite[Appendix~C.2]{Cirac2016MPDO_arXiv}. No further property of the inverse
+map occurs between this identity and the rank-one conclusion. At the
+common-matrix level, this leaves the gap described in
+Section~\ref{sec:cpgsv17_assertion}. The separate Case~I assumption that
 $\mathcal K$ is an injective normal tensor must nevertheless be retained when
 judging the full lemma.
 
-The cyclic finite-chain form at lines~1581--1593 does not repair this step. It
-is obtained later from the same positive neighboring family and states a
-direct sum of cyclic products.  Its formal, scalar-preserving version is
+The cyclic finite-chain form at source lines 1581--1593 does not repair this
+step. It is obtained later from the same positive neighboring family and
+states a direct sum of cyclic products
+\cite[Appendix~C.2]{Cirac2016MPDO_arXiv}. Its formal, scalar-preserving version
+is
 \leanid{MPOTensor.EtaLocalStructureData.%
-exists_positive_cyclic_eta_block_decomposition}.  Neither the source formula
+exists_positive_cyclic_eta_block_decomposition}. Neither the source formula
 nor this theorem asserts independence, a Gram relation, kernel stabilization,
-or rectangular vanishing for the closed tensors.  Taking traces of cyclic
-products returns the already established positive-power trace identities.
+or rectangular vanishing for the closed tensors. Taking traces of cyclic
+products returns the established positive-power trace identities.
 
-Consequently the strongest explicit common-matrix conclusion remains
-\[
-    T^2=T^3,
-    \qquad
-    \tr(T^N)=\tr(T)\quad(N\geq1),
-\]
-together with entrywise nonnegativity and primitivity.  The formal
+Consequently, the strongest explicit common-matrix conclusion remains
+\begin{align}
+    T^2
+        &= T^3,
+    \label{eq:cpgsv17_audit_square_cube}\\
+    \tr(T^N)
+        &= \tr(T)
+        \qquad (N\geq 1),
+    \label{eq:cpgsv17_audit_constant_traces}
+\end{align}
+together with entrywise nonnegativity and primitivity. The formal
 counterexample shows that these conclusions, even supplemented by injectivity,
 full virtual spanning, and positivity of every neighboring operator, do not
-imply the missing vanishing.  The explicit Hayashi decomposition and inverse-map
-calculation now show that the same nonzero nilpotent remainder occurs for the
-source-selected factorization.  The all-cut Markov decomposition proves the
-strong area law for the same raw tensor.  This tensor satisfies the displayed
-SAL and literal ZCL relations, but it is not the injective normal tensor assumed
-in Case~I. Its normal representative loses literal ZCL. Thus the example
-isolates the normalization-sensitive step needed for
-$T_{k,h}=a_kb_h$; it does not refute Lemma~C.5 under all standing hypotheses.
+imply Eq.~\ref{eq:cpgsv17_audit_required_vanishing}. The explicit Hayashi
+decomposition and inverse-map calculation show that the same nonzero nilpotent
+remainder occurs for the source-selected factorization. The all-cut Markov
+decomposition proves the strong area law for the same raw tensor. This tensor
+satisfies the displayed SAL and literal ZCL relations, but it is not the
+injective normal tensor assumed in Case~I. Its normal representative loses
+literal ZCL. Thus the example isolates the normalization-sensitive step
+required for $T_{k,h}=a_kb_h$; it does not refute Lemma~C.5 under all standing
+hypotheses.
 
 This obstruction does not survive the full normal Case-I hypotheses: the
 completed route below excludes it and formalizes the structural corollary at
-lines~1503--1506. It remains relevant to the later Case-II passage. The
-sectorwise analytic part of that passage is now complete. For every absorbed
-BNT representative $\mathcal K_s=\mu_sA_s$, the formalization proves one-site
+source lines 1503--1506. It remains relevant to the later Case-II passage. The
+sectorwise analytic part of that passage is complete. For every absorbed BNT
+representative $\mathcal K_s=\mu_sA_s$, the formalization proves one-site
 injectivity, positivity on every nonempty periodic chain, saturation of the
 area law, and the literal identity
-\[
-  \mathcal T_{\mathcal K_s}^2=\mathcal T_{\mathcal K_s}.
-\]
+\begin{align}
+    \mathcal T_{\mathcal K_s}^2
+        &= \mathcal T_{\mathcal K_s}.
+    \label{eq:cpgsv17_absorbed_literal_transfer_idempotence}
+\end{align}
 The remaining obstruction is normality after coefficient absorption. If
 $A_s$ is normal, then the transfer map of $\mu_sA_s$ has spectral radius
 $|\mu_s|^2$. The global canonical-form convention supplies at least one
 unit-modulus coefficient, but it does not imply $|\mu_s|=1$ for every sector.
-Consequently the normal Case-I structural theorem cannot be applied to all
+Consequently, the normal Case-I structural theorem cannot be applied to all
 absorbed BNT representatives. The constructions from an explicitly supplied
 rank-one neighboring trace factorization remain valid restricted results, but
 they do not prove that such a factorization exists for every absorbed
@@ -890,77 +1305,109 @@ normalized fixed-representative boundary. It refutes the absorption inference,
 not the source assertion that some suitable factorization exists.
 
 \section{The unit-closure-trace necessary condition}
+\label{sec:cpgsv17_unit_closure_trace}
 
 The existential assertion of condition~(iv) quantifies over all possible
 physical-sector factorizations of each absorbed representative, so a
 counterexample must exclude every factorization and a proof may choose any.
-The formalization now records a constraint that every qualifying
-factorization imposes on the tensor itself, independently of the choice.
+The formalization records a constraint that every qualifying factorization
+imposes on the tensor itself, independently of that choice.
 
 Let $\mathcal K$ be any MPO tensor admitting a physical-sector factorization
 with positive semidefinite neighboring operators $\eta_{k,h}$ and real
 families satisfying
-\[
-  \operatorname{tr}(\eta_{k,h})=a_kb_h,\qquad \sum_k a_kb_k=1.
-\]
+\begin{align}
+    \tr(\eta_{k,h})
+        &= a_kb_h,
+    \label{eq:cpgsv17_neighboring_rank_one_trace}\\
+    \sum_k a_kb_k
+        &= 1.
+    \label{eq:cpgsv17_neighboring_trace_normalization}
+\end{align}
 Closing the physical legs of the factorized slices and using unitary
-invariance of the trace writes the physical-trace transfer as a rectangular
-product $\mathcal T_{\mathcal K}=LQ$ with
-$L_{\beta,k}=\operatorname{tr}((l_k)_\beta)$ and
-$Q_{k,\alpha}=\operatorname{tr}((r_k)_\alpha)$, and the opposite product is
-the rank-one coefficient matrix
-\[
-  (QL)_{k,h}=\operatorname{tr}(\eta_{k,h})=a_kb_h.
-\]
-Cyclic invariance of the trace gives
-$\operatorname{tr}((LQ)^N)=\operatorname{tr}((QL)^N)$ for every $N\geq1$,
-and all positive powers of the normalized rank-one matrix equal the matrix
-itself, of trace one. Write $\rho^{(N)}(\mathcal K)$ for the periodic
-operator denoted $\sigma^{(N)}(\mathcal K)$ in the source. Hence
-\[
-  \operatorname{tr}\bigl(\mathcal T_{\mathcal K}^{\,N}\bigr)=1,\qquad
-  \operatorname{tr}\rho^{(N)}(\mathcal K)=1,\qquad N\geq1.
-\]
+invariance of trace writes the physical-trace transfer as a rectangular
+product
+\begin{align}
+    \mathcal T_{\mathcal K}
+        &= LQ,
+    \label{eq:cpgsv17_physical_trace_rectangular_product}\\
+    L_{\beta,k}
+        &:= \tr((l_k)_\beta),
+    \label{eq:cpgsv17_left_trace_matrix}\\
+    Q_{k,\alpha}
+        &:= \tr((r_k)_\alpha).
+    \label{eq:cpgsv17_right_trace_matrix}
+\end{align}
+The opposite product is the rank-one coefficient matrix:
+\begin{align}
+    (QL)_{k,h}
+        &= \tr(\eta_{k,h})
+    \label{eq:cpgsv17_opposite_product_neighboring_trace}\\
+        &= a_kb_h.
+    \label{eq:cpgsv17_opposite_product_rank_one}
+\end{align}
+Cyclic invariance of trace gives
+\begin{align}
+    \tr((LQ)^N)
+        &= \tr((QL)^N)
+        \qquad (N\geq 1).
+    \label{eq:cpgsv17_rectangular_power_trace_cyclicity}
+\end{align}
+All positive powers of the normalized rank-one matrix equal the matrix itself,
+which has trace one. Write $\rho^{(N)}(\mathcal K)$ for the periodic operator
+denoted $\sigma^{(N)}(\mathcal K)$ in the source. Hence
+\begin{align}
+    \tr(\mathcal T_{\mathcal K}^{\,N})
+        &= 1
+        \qquad (N\geq 1),
+    \label{eq:cpgsv17_unit_transfer_power_trace}\\
+    \tr\rho^{(N)}(\mathcal K)
+        &= 1
+        \qquad (N\geq 1).
+    \label{eq:cpgsv17_unit_periodic_operator_trace}
+\end{align}
 The formal statements are
-\leanid{MPOTensor.PhysicalSectorFactorization.physTraceTransfer\_eq\_leftTraceMatrix\_mul\_rightTraceMatrix},
-\leanid{MPOTensor.PhysicalSectorFactorization.NeighboringTraceFactorization.trace\_physTraceTransfer\_pow\_eq\_one},
+\leanid{MPOTensor.PhysicalSectorFactorization.physTraceTransfer_eq_leftTraceMatrix_mul_rightTraceMatrix},
+\leanid{MPOTensor.PhysicalSectorFactorization.NeighboringTraceFactorization.trace_physTraceTransfer_pow_eq_one},
 and
-\leanid{MPOTensor.PhysicalSectorFactorization.NeighboringTraceFactorization.trace\_mpo\_eq\_one}
+\leanid{MPOTensor.PhysicalSectorFactorization.NeighboringTraceFactorization.trace_mpo_eq_one}
 in \path{TNLean/MPS/MPDO/NeighboringTraceObstruction.lean}.
 
-Three consequences follow. First, the normalization
-$\operatorname{tr}(T)=1$ invoked at line~1498 is a constraint on the tensor
-rather than a convention: a tensor with a closed chain of non-unit trace
-admits no factorization of the required form. Second, the per-representative
-assertion of condition~(iv) carries the implicit normalization
-$\operatorname{tr}(\mathcal T_{\mathcal K_s})=1$ for each absorbed
-representative, whereas the ambient normalization at lines~1755--1759
+Three consequences follow. First, the normalization $\tr(T)=1$ invoked at
+source line 1498 of Ref.~\cite{Cirac2016MPDO_arXiv} is a constraint on the
+tensor rather than a convention: a tensor with a closed chain of non-unit
+trace admits no factorization of the required form. Second, the
+per-representative assertion of condition~(iv) carries the implicit
+normalization $\tr(\mathcal T_{\mathcal K_s})=1$ for each absorbed
+representative, whereas the ambient normalization at source lines 1755--1759
 constrains only the weighted sum over representatives. Whether the standing
-hypotheses of condition~(ii) imply this per-representative unit trace is
-part of the open content of the all-sector structure statement; if some
-admissible tensor violates it, the violation immediately refutes the printed
-per-representative assertion for that tensor. Third, under literal zero
-correlation length the condition says that the physical-trace transfer of
-each absorbed representative is an idempotent of unit trace; the four-sector
-active-trace witness is consistent with this, since its physical-trace
-transfer is a rank-one coordinate projection.
+hypotheses of condition~(ii) imply this per-representative unit trace is part
+of the open content of the all-sector structure statement. Any admissible
+tensor violating it immediately refutes the printed per-representative
+assertion. Third, under literal zero correlation length, the condition says
+that the physical-trace transfer of each absorbed representative is an
+idempotent of unit trace. The four-sector active-trace witness is consistent
+with this condition because its physical-trace transfer is a rank-one
+coordinate projection.
 
 \section{Conclusion}
+\label{sec:cpgsv17_conclusion}
 
-The proof in Appendix C.2 contains an unjustified matrix step as written: a
-primitive entrywise non-negative matrix with constant traces of positive powers
-need not have rank one. The obstruction is a nilpotent Jordan component at the
-zero eigenvalue, which is not detected by the trace identities.
+The proof in Appendix C.2 of Ref.~\cite{Cirac2016MPDO_arXiv} contains an
+unjustified matrix step as written: a primitive entrywise nonnegative matrix
+with constant traces of positive powers need not have rank one. The obstruction
+is a nilpotent Jordan component at the zero eigenvalue, which the trace
+identities do not detect.
 
-The formal development proves two corrected sufficient matrix theorems.  The
+The formal development proves two corrected sufficient matrix theorems. The
 first derives the rank-one factorization from positive semidefiniteness, trace
-normalization, and the trace-power identities.  The second derives
-$T^2=T$ from the sector-pairing identity and linear independence of the closed
-sector tensors; trace one then gives the same rank-one factorization directly.
-These criteria remain available as independent matrix results.  The unrelated
+normalization, and the trace-power identities. The second derives $T^2=T$ from
+the sector-pairing identity and linear independence of the closed sector
+tensors; trace one then gives the same rank-one factorization directly. These
+criteria remain available as independent matrix results. The unrelated
 aggregate bundle that paired a three-site Markov witness with an independently
-supplied trace matrix has been retired: it imposed no relation between the
-state, the matrix, and an MPO tensor, and therefore added no consequence to
+supplied trace matrix has been retired: it imposed no relation among the
+state, the matrix, and an MPO tensor and therefore added no consequence to
 either criterion.
 
 The completed normal Case-I route supplies a third, tensor-attached result at
@@ -969,64 +1416,107 @@ the source hypothesis boundary. The active-sector conclusion is formalized in
 and the all-sector coefficient statement is formalized in
 \leanid{MPOTensor.exists_neighboringOperator_trace_rank_one_coefficients_of_isSAL_of_literal_ZCL}.
 Normality and literal ZCL, together with the physical-sector positivity and
-primitivity data, force the active sector to be unique and hence $T^2=T$.
-For the project factors $T=QL$, this gives
-\[
-  Q(1-LQ)L=QL-(QL)^2=0.
-\]
+primitivity data, force the active sector to be unique and hence $T^2=T$. For
+the project factors $T=QL$, this gives
+\begin{align}
+    Q(\Id-LQ)L
+        &= QL-(QL)^2
+    \label{eq:cpgsv17_normal_case_remainder_difference}\\
+        &= 0.
+    \label{eq:cpgsv17_normal_case_remainder_vanishing}
+\end{align}
 Thus the nilpotent-zero obstruction is excluded on this normal Case-I surface;
 idempotence of $LQ$ alone would still yield only $T^2=T^3$.
 
 For the all-sector statement, retain the active coefficient functions on
-$I_* = \{k:p_k\ne0\}$ and set
-\[
-  a_k=b_k=0 \qquad (p_k=0).
-\]
+\begin{align}
+    I_*
+        &:= \{k:p_k\neq 0\}
+    \label{eq:cpgsv17_active_index_set}
+\end{align}
+and set
+\begin{align}
+    a_k
+        &= 0
+        \qquad (p_k=0),
+    \label{eq:cpgsv17_inactive_left_coefficient}\\
+    b_k
+        &= 0
+        \qquad (p_k=0).
+    \label{eq:cpgsv17_inactive_right_coefficient}
+\end{align}
 In the zero-weight-reparameterized and rephased factorization selected by the
 construction, $p_k=0$ makes both every incoming and every outgoing neighboring
 operator vanish. On active pairs, the all-sector theorem first gives
-$\operatorname{Re}\operatorname{tr}(\eta_{k,h})=a_kb_h$.
-Every neighboring operator is positive semidefinite, hence Hermitian with real
-trace. Therefore
-\[
-  \operatorname{tr}(\eta_{k,h})=a_kb_h
-\]
+\begin{align}
+    \operatorname{Re}\tr(\eta_{k,h})
+        &= a_kb_h.
+    \label{eq:cpgsv17_active_real_neighboring_trace}
+\end{align}
+Every neighboring operator is positive semidefinite and hence Hermitian with
+real trace. Therefore,
+\begin{align}
+    \tr(\eta_{k,h})
+        &= a_kb_h
+    \label{eq:cpgsv17_all_sector_complex_trace_factorization}
+\end{align}
 for every pair of sector labels, and filtering the diagonal sum to $I_*$ gives
-$\sum_k a_kb_k=1$. This is a project-derived realization of the printed
-all-index coefficient equation in Lemma~C.5: CPSV16 quantifies sector labels
-without defining TNLean's active--inactive split or its ambient filler sectors.
+\begin{align}
+    \sum_k a_kb_k
+        &= 1.
+    \label{eq:cpgsv17_all_sector_coefficient_normalization}
+\end{align}
+This is a project-derived realization of the printed all-index coefficient
+equation in Lemma~C.5 of Ref.~\cite{Cirac2016MPDO_arXiv}: CPSV16 quantifies
+sector labels without defining TNLean's active--inactive split or its ambient
+filler sectors.
 
 The Case-II sectorwise analytic slice is formalized separately. Literal
 physical-trace idempotence gives copy independence in the source standing
-simple-canonical form by
-\leanid{MPOTensor.weight_copy_independent_of_isPhysicalTraceIdempotent}. It first
-descends to every weighted canonical block by
+simple-canonical form through
+\leanid{MPOTensor.weight_copy_independent_of_isPhysicalTraceIdempotent}. It
+first descends to every weighted canonical block through
 \leanid{MPOTensor.weighted_basis_physTraceTransfer_sq_of_literal_ZCL}, and then
-to every absorbed BNT representative by
+to every absorbed BNT representative through
 \leanid{MPOTensor.commonWeightAbsorbedBasisMPOTensor_physTraceTransfer_sq_of_literal_ZCL}.
 Together with the projector, positivity, and entropy arguments,
 \leanid{MPOTensor.commonWeightAbsorbedBasisMPOTensor_caseII_properties_of_literal_ZCL}
 gives, for every $s$,
-\[
-  \mathcal K_s\text{ injective},\qquad
-  \sigma^{(N)}(\mathcal K_s)\geq0\ (N\geq1),\qquad
-  \mathcal K_s\text{ SAL},\qquad
-  \mathcal T_{\mathcal K_s}^2=\mathcal T_{\mathcal K_s}.
-\]
+\begin{align}
+    \mathcal K_s
+        &\ \text{injective},
+    \label{eq:cpgsv17_caseii_absorbed_injective}\\
+    \sigma^{(N)}(\mathcal K_s)
+        &\geq 0
+        \qquad (N\geq 1),
+    \label{eq:cpgsv17_caseii_periodic_positive}\\
+    \mathcal K_s
+        &\ \text{satisfies SAL},
+    \label{eq:cpgsv17_caseii_absorbed_sal}\\
+    \mathcal T_{\mathcal K_s}^2
+        &= \mathcal T_{\mathcal K_s}.
+    \label{eq:cpgsv17_caseii_literal_transfer_idempotence}
+\end{align}
 This literal identity is distinct from the scale-invariant predicate
 \leanid{MPOTensor.IsSourceZCL}. The proof temporarily derives that predicate
 with scalar $1$ only to invoke the existing entropy theorem; it retains the
 literal identity as a separate conclusion.
 
-The absorbed tensor $\mathcal K_s=\mu_sA_s$ is an absorbed BNT representative,
-not automatically a normal representative. Normality of $A_s$ fixes the
-spectral radius of its transfer map to one, whereas coefficient absorption
-changes it to $|\mu_s|^2$. The source's global normalization gives only one
-unit-modulus coefficient across the whole canonical form and does not supply
-$|\mu_s|=1$ for every $s$.
+The absorbed tensor
+\begin{align}
+    \mathcal K_s
+        &= \mu_sA_s
+    \label{eq:cpgsv17_absorbed_bnt_representative}
+\end{align}
+is an absorbed BNT representative, not automatically a normal representative.
+Normality of $A_s$ fixes the spectral radius of its transfer map to one,
+whereas coefficient absorption changes that radius to $|\mu_s|^2$. The
+source's global normalization gives only one unit-modulus coefficient across
+the whole canonical form and does not supply $|\mu_s|=1$ for every $s$.
 
-The printed absorbed-normality step is now formally refuted under all
-conditions used in Appendix~C.2 by the two-sector, bond-one theorem
+The printed absorbed-normality step is formally refuted under all conditions
+used in Appendix C.2 of Ref.~\cite{Cirac2016MPDO_arXiv} by the two-sector,
+bond-one theorem
 \leanid{MPOTensor.CaseIIAbsorptionCounterexample.%
 ambient_isSAL_isSimpleCanonicalForm_and_firstAbsorbed_not_isNormalTensor}.
 For every $N>0$, its diagonal periodic operator is positive semidefinite and
@@ -1041,9 +1531,9 @@ normality inference used in Proposition~\texttt{prop2to3}; it does not refute
 the asserted all-sector conclusion or the literal implication
 (iv)$\Rightarrow$(v).
 
-That implication is separately refuted by the one-representative,
-two-copy construction
-in \path{TNLean/MPS/MPDO/Theorem49RepeatedCopyCounterexample.lean},
+That implication is separately refuted by the one-representative, two-copy
+construction in
+\path{TNLean/MPS/MPDO/Theorem49RepeatedCopyCounterexample.lean},
 \leanid{MPOTensor.CaseIIAbsorptionCounterexample.%
 printed_theorem49_iv_to_v_is_false}. Its raw copy weights are $1$ and $1/2$.
 The theorem packages the exact BNT canonical assembly and global unit-weight
@@ -1052,35 +1542,45 @@ simultaneous one-letter span, representative MPDO positivity, the
 distinct-layer equation, the physical-sector factorization, and the positive
 rank-one neighboring-trace data. Thus every printed standing hypothesis and
 all of condition~(iv) have explicit component witnesses. The two-site block
-also generates MPDOs. Nevertheless it fails
-Definition~4.1: transfer idempotence would equate the traces $1+2^{-4}$ and
-$1+2^{-2}$. The literal implication is therefore an \emph{unfaithful
-statement}; the attempt to regard outer-BNT assembly as its only unfinished
-step is \emph{proof-path drift}.
+also generates MPDOs. Nevertheless, it fails Definition~4.1 of
+Ref.~\cite{Cirac2016MPDO_arXiv}: transfer idempotence would equate
+\begin{align}
+    1+2^{-4}
+        &= 1+2^{-2},
+    \label{eq:cpgsv17_repeated_copy_false_trace_equality}
+\end{align}
+which is false. The literal implication is therefore an \emph{unfaithful
+statement}; treating outer-BNT assembly as its only unfinished step is
+\emph{proof-path drift}.
 
-Proposition~\texttt{prop2to5} remains a viable missing statement because it
-starts from condition~(ii). The earlier Case-II argument at source
-lines~1646--1665 uses literal ZCL to make repeated-copy weights independent of
-the copy label and absorb their common value before the short proof of
-\texttt{prop2to5} invokes Proposition~C.7. For the rescaling-stable example, the
-separate explicit vertical identification is complete in
+Proposition~\texttt{prop2to5} of Ref.~\cite{Cirac2016MPDO_arXiv} remains a
+viable missing statement because it starts from condition~(ii). The earlier
+Case-II argument at source lines 1646--1665 uses literal ZCL to make
+repeated-copy weights independent of the copy label and absorb their common
+value before the short proof of \texttt{prop2to5} invokes Proposition~C.7. For
+the rescaling-stable example, the separate explicit vertical identification
+is complete in
 \leanid{MPOTensor.RescalingStableLengthDependentRFP.R_oneLabelBNTAlgebraTensorClause};
 it does not supply sectorwise normality and is not used in this descent
 argument.
 
-The structural corollary at lines~1503--1506 is now formalized by
+The structural corollary at source lines 1503--1506 is formalized by
 \leanid{MPOTensor.exists_physicalSectorFactorization_rank_one_coefficients_of_isSAL_of_literal_ZCL}.
 It retains the selected physical-sector factorization itself: an isometry $U$
 with TNLean's orientation
-\[
-  U\kappa_{\beta,\alpha}U^\dagger
-    =\bigoplus_k(l_k)_\beta\otimes(r_k)_\alpha,
-\]
+\begin{align}
+    U\kappa_{\beta,\alpha}U^\dagger
+        &= \bigoplus_k
+        (l_k)_\beta\otimes(r_k)_\alpha,
+    \label{eq:cpgsv17_physical_sector_orientation}
+\end{align}
 its left and right factor matrices, and ambient positive semidefinite
-neighboring operators.  Together with the exact complex trace identity above
-and the normalization, this completes the normal Case-I corollary on the
-literal-ZCL surface.  It asserts no additional closure property of the sector
-tensors.  The orientation is the convention of
+neighboring operators. Together with
+Eqs.~\ref{eq:cpgsv17_all_sector_complex_trace_factorization} and
+\ref{eq:cpgsv17_all_sector_coefficient_normalization}, this completes the
+normal Case-I corollary on the literal-ZCL surface. It asserts no additional
+closure property of the sector tensors. The orientation in
+Eq.~\ref{eq:cpgsv17_physical_sector_orientation} is the convention of
 \leanid{MPOTensor.PhysicalSectorFactorization}, rather than an identification
 with a separately drawn graphical orientation in the source.
 
@@ -1089,163 +1589,243 @@ bond dimension one,
 \leanid{MPOTensor.exists_physicalSectorFactorization_of_bondDim_one}
 constructs one physical sector with left factor $\mathbb C^d$ and
 one-dimensional right factor. Its neighboring operator is the one-site
-periodic operator, hence is positive semidefinite by SAL. The physical-trace
-transfer is a nonzero scalar by SAL and equals one by literal idempotence, so
-the neighboring trace has the normalized factorization $1=1\cdot1$. This is a
-conditional helper at the bond-one boundary. It does not derive the
-factorization for absorbed representatives of arbitrary virtual dimension,
-so \ghissue{6775} and its unrestricted Blueprint node remain open.
+periodic operator and is therefore positive semidefinite by SAL. The
+physical-trace transfer is a nonzero scalar by SAL and equals one by literal
+idempotence, so the neighboring trace has the normalized factorization
+\begin{align}
+    1
+        &= 1\cdot 1.
+    \label{eq:cpgsv17_bond_one_trace_factorization}
+\end{align}
+This is a conditional helper at the bond-one boundary. It does not derive the
+factorization for absorbed representatives of arbitrary virtual dimension, so
+\ghissue{6775} and its unrestricted Blueprint node remain open.
 
 This one-factorization result is a \emph{conditional helper}. It assumes a
 neighboring trace factorization of the whole tensor to which the channels are
 applied. Condition~(iv) instead supplies a separate physical factorization for
-each BNT representative and leaves its raw repeated-copy weights unconstrained.
-The scalar two-copy example above shows that no direct-sum construction can
-turn these hypotheses alone into conclusion~(v).
+each BNT representative and leaves its raw repeated-copy weights
+unconstrained. The scalar two-copy example shows that no direct-sum
+construction can turn these hypotheses alone into conclusion~(v).
 
 The projector-controlled construction remains relevant to
 Proposition~\texttt{prop2to5}, hence to the viable source implication
-(ii)$\Rightarrow$(v). After ZCL has forced common copy weights and those values
-have been absorbed, Proposition~C.7 constructs a channel pair within each
-outer BNT factorization. A direct concatenation of the inner sector labels is
-not valid: cross-BNT neighboring operators vanish by support orthogonality,
-while a single global rank-one equation
-$\operatorname{tr}(\eta_{k,h})=a_kb_h$ would generally make cross terms
-nonzero. The construction instead uses the outer support projectors to control
-a direct sum of channel pairs. This all-sector assembly is formalized in
-\ghissue{6632}, separately from the refuted raw (iv)$\Rightarrow$(v) reading.
+(ii)$\Rightarrow$(v). After ZCL has forced common copy weights and those
+values have been absorbed, Proposition~C.7 constructs a channel pair within
+each outer BNT factorization
+\cite[Appendix~C.2]{Cirac2016MPDO_arXiv}. A direct concatenation of the inner
+sector labels is not valid: cross-BNT neighboring operators vanish by support
+orthogonality, while a single global rank-one equation
+$\tr(\eta_{k,h})=a_kb_h$ would generally make cross terms nonzero. The
+construction instead uses the outer support projectors to control a direct sum
+of channel pairs. This all-sector assembly is formalized in \ghissue{6632},
+separately from the refuted raw (iv)$\Rightarrow$(v) reading.
 
-The arbitrary-boundary part of this construction is now formalized by
+The arbitrary-boundary part of this construction is formalized by
 \leanid{MPSTensor.trace_evalWord_gauge_toTensorFromBlocks_mul} and
 \leanid{MPOTensor.%
 physCloseN_eq_sum_commonWeightAbsorbedBasis_of_gauge_toTensor}. Let $G$ be the
 invertible virtual matrix implementing the gauge equivalence between the raw
 tensor and its sector decomposition, and let $X$ be an arbitrary virtual
 boundary. The boundary entering a fixed representative is the sum of the
-diagonal copy blocks of $G^{-1}XG$ over that representative.
-The same transformation is valid at every chain length.  Copy-weight equality
-is used only among copies of one representative, so this calculation imposes
-no relation between distinct BNT coefficients. The projector-controlled
-combination is now formalized by
+diagonal copy blocks of $G^{-1}XG$ over that representative. The same
+transformation is valid at every chain length. Copy-weight equality is used
+only among copies of one representative, so this calculation imposes no
+relation between distinct BNT coefficients. The projector-controlled
+combination is formalized by
 \leanid{MPOTensor.%
 blockTwo_isRFPViaTS_of_commonWeightAbsorbedBNTChannels}. For a complete outer
 projective resolution, the measured projection on one blocked site is the
-reindexed matrix $P_s\otimes I$. Compression selects the matching absorbed
+reindexed matrix $P_s\otimes\Id$. Compression selects the matching absorbed
 representative at both required closure lengths; its supplied channel is then
 applied.
 
 The completeness hypothesis is removed by
 \leanid{MPOTensor.%
 blockTwo_isRFPViaTS_of_commonWeightAbsorbedBNTChannels_of_orthogonalSupports}.
-For pairwise orthogonal two-sided supports, $Q=\sum_sP_s$ is an orthogonal
-projection and both relevant closures lie in its first-site corner. The
-projector-controlled active maps are completely positive and preserve the
-trace selected by $Q$. Measuring $I-Q$ and preparing a fixed density matrix
-therefore completes each active map to a channel, while the complementary
-term vanishes on the closures. This resolves \ghissue{6807} without asserting
-that the active Markov projection is the ambient identity. Thus the
-outer-sector channel combination is complete. The source proof now has one
-remaining obligation: the source-context factorization in \ghissue{6775}. The
-direct sector-mixing problem formerly separated as \ghissue{6793} is a
-project-derived alternative, not another step asserted or used by
-Appendix~C.2.
+For pairwise orthogonal two-sided supports,
+\begin{align}
+    Q
+        &:= \sum_sP_s
+    \label{eq:cpgsv17_outer_support_projection}
+\end{align}
+is an orthogonal projection, and both relevant closures lie in its first-site
+corner. The projector-controlled active maps are completely positive and
+preserve the trace selected by $Q$. Measuring $\Id-Q$ and preparing a fixed
+density matrix therefore completes each active map to a channel, while the
+complementary term vanishes on the closures. This resolves \ghissue{6807}
+without asserting that the active Markov projection is the ambient identity.
+Thus the outer-sector channel combination is complete. The source proof now
+has one remaining obligation: the source-context factorization in
+\ghissue{6775}. The direct sector-mixing problem formerly separated as
+\ghissue{6793} is a project-derived alternative, not another step asserted or
+used by Appendix C.2 of Ref.~\cite{Cirac2016MPDO_arXiv}.
 
 The composition from supplied factorization data is complete end to end.
 Given, for every absorbed representative, a physical-sector factorization
-with positive semidefinite neighboring operators and normalized rank-one
-trace coefficients, the theorem
+with positive semidefinite neighboring operators and normalized rank-one trace
+coefficients, the theorem
 \leanid{MPOTensor.%
 blockTwo_isRFPViaTS_of_bntLayerOrthogonal_of_physicalSectorFactorization%
 _of_commonWeight} constructs the pairwise orthogonal outer supports from
 layer orthogonality and one-site spanning, produces each representative
-channel pair by Proposition~C.7, and assembles them into the blocked channel
+channel pair through Proposition~C.7 of
+Ref.~\cite{Cirac2016MPDO_arXiv}, and assembles them into the blocked channel
 pair of the complete tensor. The coarsest merging is packaged generically by
 \leanid{MPOTensor.PhysicalSectorFactorization.NeighboringTraceFactorization.%
-ofOneSector}: a single-sector factorization whose sole neighboring operator
-is positive semidefinite of unit trace suffices. The sole remaining
-obligation of the source implication (ii)$\Rightarrow$(v) is therefore the
-existence of these per-representative factorizations.
+ofOneSector}: a single-sector factorization whose sole neighboring operator is
+positive semidefinite with unit trace suffices. The sole remaining obligation
+of the source implication (ii)$\Rightarrow$(v) is therefore the existence of
+these per-representative factorizations.
 
 The all-cut Markov proof and the source-selected inverse-map calculation show
 that the raw four-sector tensor satisfies the displayed SAL, literal ZCL, and
 inverse-map relations while the trace matrix of those four fixed sectors is
 not rank one. This is not an existential obstruction. Reindexing a physical
 label as two binary labels gives a one-sector factorization with
-\[
-  l_0=\tfrac14 I,\quad l_1=Z,\qquad
-  r_0=I,\quad r_1=\tfrac18 Z.
-\]
+\begin{align}
+    l_0
+        &= \tfrac14\Id,
+    \label{eq:cpgsv17_one_sector_left_identity}\\
+    l_1
+        &= Z,
+    \label{eq:cpgsv17_one_sector_left_pauli}\\
+    r_0
+        &= \Id,
+    \label{eq:cpgsv17_one_sector_right_identity}\\
+    r_1
+        &= \tfrac18Z.
+    \label{eq:cpgsv17_one_sector_right_pauli}
+\end{align}
 Its sole neighboring operator is
-\[
-  I\otimes\tfrac14 I+\tfrac18 Z\otimes Z,
-\]
-which is positive semidefinite and has trace one. Thus the selected inverse-map
-sectors are nonminimal. This factorization and its normalized trace
-coefficients are formalized in
+\begin{align}
+    \eta
+        &= \Id\otimes\tfrac14\Id
+           +\tfrac18Z\otimes Z.
+    \label{eq:cpgsv17_one_sector_neighboring_operator}
+\end{align}
+This operator is positive semidefinite and has trace one. The factorization
+and its normalized trace coefficients are formalized in
 \leanid{MPOTensor.ActiveSectorSpanningCounterexample.%
-exists_oneSector_neighboringTraceFactorization}. Their non-rank-one trace
-matrix refutes only the proof path tied to those four selected sectors.
+exists_oneSector_neighboringTraceFactorization}. The non-rank-one trace matrix
+of the four selected inverse-map sectors therefore refutes only the proof path
+tied to those sectors.
 
-The corresponding low-level implication is refuted by a different four-letter
-tensor.  Let
-\[
- L=\begin{pmatrix}1&1&1&1\\1&2&-7&4\end{pmatrix},\qquad
- R=\begin{pmatrix}
-  1/4&-3/100\\1/4&-1/100\\1/4&1/100\\1/4&3/100
- \end{pmatrix},
-\]
-and take the four diagonal physical slices to be the outer products of the
-corresponding columns and rows.  Then $LR=\operatorname{diag}(1,0)$, so the
-physical trace transfer is literally idempotent, while $RL$ has rank two.
-The four slices span $M_2(\mathbb C)$, and the displayed scalar sector
-factorization has positive neighboring operators.  Hence the tensor is
+A different four-letter tensor refutes the corresponding low-level
+implication. Define
+\begin{align}
+    L
+        &:=
+        \begin{pmatrix}
+            1&1&1&1\\
+            1&2&-7&4
+        \end{pmatrix},
+    \label{eq:cpgsv17_noncartesian_left_matrix}\\
+    R
+        &:=
+        \begin{pmatrix}
+            1/4&-3/100\\
+            1/4&-1/100\\
+            1/4&1/100\\
+            1/4&3/100
+        \end{pmatrix}.
+    \label{eq:cpgsv17_noncartesian_right_matrix}
+\end{align}
+Take the four diagonal physical slices to be the outer products of the
+corresponding columns and rows. Then
+\begin{align}
+    LR
+        &= \operatorname{diag}(1,0),
+    \label{eq:cpgsv17_noncartesian_physical_projection}
+\end{align}
+so the physical-trace transfer is literally idempotent, while $RL$ has rank
+two. The four slices span $M_2(\mathbb C)$, and the displayed scalar sector
+factorization has positive neighboring operators. Hence the tensor is
 injective and satisfies SAL. Perron normalization expresses it as
-$\mathcal K=\mu A$, where $A$ is normal and $0<|\mu|<1$.
+\begin{align}
+    \mathcal K
+        &= \mu A,
+    \label{eq:cpgsv17_noncartesian_perron_normalization}\\
+    0
+        &< |\mu|
+         < 1,
+    \label{eq:cpgsv17_noncartesian_subunit_weight}
+\end{align}
+where $A$ is normal.
 
-The obstruction applies to every physical-sector factorization, not merely
-to the displayed one.  The scalar slice and the two slices with simple spectra
+The obstruction applies to every physical-sector factorization, not merely to
+the displayed one. The scalar slice and the two slices with simple spectra
 $1,2,-7,4$ and $-3,-1,1,3$ force every left and right sector factor to be
-one-dimensional.  The physical isometry then assigns each physical label to
-a unique sector.  The neighboring trace matrix consequently contains a
-nonzero two-by-two minor, whereas a factorization
-$\operatorname{tr}(\eta_{k,h})=a_kb_h$ has rank at most one.  This is
-formalized in
+one-dimensional. The physical isometry then assigns each physical label to a
+unique sector. The neighboring trace matrix consequently contains a nonzero
+two-by-two minor, whereas a factorization
+$\tr(\eta_{k,h})=a_kb_h$ has rank at most one. This is formalized in
 \leanid{MPOTensor.NonCartesianActiveSectorCandidate.%
-full_lowLevel_counterexample}.  Thus the local properties already inherited
-by an absorbed representative do not suffice to prove the factorization.
-Precisely, the formal theorem supplies injectivity, SAL (and hence MPDO
-generation), literal physical-trace idempotence, and an expression
+full_lowLevel_counterexample}. Thus the local properties already inherited by
+an absorbed representative do not suffice to prove the factorization.
+Precisely, the formal theorem supplies injectivity, SAL and hence MPDO
+generation, literal physical-trace idempotence, and an expression
 $\mathcal K=\mu A$ with $A$ normal and $0<|\mu|<1$. It does not package an
 ambient simple tensor in biCF whose canonical reconstruction contains
-$\mathcal K$. Moreover, for the singleton normalization produced here,
-$|\mu|=\sqrt r$, where $r$ is the Perron value of the unnormalized transfer.
-For the positive test matrix $H=\operatorname{diag}(20,1)$, direct
-calculation of the adjoint action gives the gap
+$\mathcal K$.
+
+For the singleton normalization produced here,
 \begin{align}
-  H-\mathcal E_{\mathcal K}^*(H)
-    &=\begin{pmatrix}85/8&-9/40\\-9/40&4697/5000\end{pmatrix}>0,
-  \notag
+    |\mu|
+        &= \sqrt r,
+    \label{eq:cpgsv17_noncartesian_weight_perron_value}
 \end{align}
-whose $(1,1)$-entry $85/8$ and determinant
-$85/8\cdot4697/5000-(9/40)^2=19861/2000$ are both positive, certifying
-positive definiteness. Pairing it with a positive-definite Perron
-eigenmatrix $\rho$ of $\mathcal E_{\mathcal K}$ gives the trace-adjoint identity
+where $r$ is the Perron value of the unnormalized transfer. For the positive
+test matrix
 \begin{align}
-  0
-    &<\operatorname{tr}\bigl((H-\mathcal E_{\mathcal K}^*(H))\rho\bigr)
-      =(1-r)\operatorname{tr}(H\rho).
-  \notag
+    H
+        &:= \operatorname{diag}(20,1),
+    \label{eq:cpgsv17_positive_test_matrix}
 \end{align}
-Since $\operatorname{tr}(H\rho)>0$, this gives $r<1$ and hence
-$|\mu|<1$. This is formalized in
+direct calculation of the adjoint action gives
+\begin{align}
+    H-\mathcal E_{\mathcal K}^*(H)
+        &=
+        \begin{pmatrix}
+            85/8&-9/40\\
+            -9/40&4697/5000
+        \end{pmatrix}
+        >0.
+    \label{eq:cpgsv17_adjoint_transfer_positive_gap}
+\end{align}
+Its $(1,1)$ entry is positive, and its determinant is
+\begin{align}
+    \det(H-\mathcal E_{\mathcal K}^*(H))
+        &= \frac{85}{8}\frac{4697}{5000}
+           -\left(\frac9{40}\right)^2
+    \label{eq:cpgsv17_positive_gap_determinant_expansion}\\
+        &= \frac{19861}{2000}
+         >0,
+    \label{eq:cpgsv17_positive_gap_determinant}
+\end{align}
+which certifies positive definiteness. Pairing
+Eq.~\ref{eq:cpgsv17_adjoint_transfer_positive_gap} with a positive-definite
+Perron eigenmatrix $\rho$ of $\mathcal E_{\mathcal K}$ gives
+\begin{align}
+    0
+        &<
+        \tr\bigl(        (H-\mathcal E_{\mathcal K}^*(H))\rho
+        \bigr)
+    \label{eq:cpgsv17_positive_gap_pairing}\\
+        &=
+        (1-r)\tr(H\rho).
+    \label{eq:cpgsv17_trace_adjoint_perron_identity}
+\end{align}
+Since $\tr(H\rho)>0$, Eq.~\ref{eq:cpgsv17_trace_adjoint_perron_identity}
+gives $r<1$ and hence $|\mu|<1$. This is formalized in
 \leanid{MPOTensor.NonCartesianActiveSectorCandidate.%
 transferMap_posDef_eigenvalue_lt_one}. Since this normalization has only one
-coefficient, the line-246 convention requires that coefficient to have unit
-modulus and therefore fails. Rescaling to unit weight destroys literal ZCL.
-This is the scale tension recorded in
-\path{docs/paper-gaps/cpsv16_unit_weight_rfp_scale_tension.tex}.
-Consequently the construction does not resolve \ghissue{6775} or refute the
-printed source-context assertion.
+coefficient, the source convention at line 246 requires that coefficient to
+have unit modulus and therefore fails. Rescaling to unit weight destroys
+literal ZCL. This is the scale tension recorded in
+\path{docs/paper-gaps/cpsv16_unit_weight_rfp_scale_tension.tex}. Consequently,
+the construction does not resolve \ghissue{6775} or refute the printed
+source-context assertion.
 
 The non-Cartesian tensor is not itself the normal tensor assumed in Case~I,
 and its normal representative loses literal ZCL. It therefore does not refute
@@ -1256,26 +1836,29 @@ inheritance likewise does not prove that coefficient absorption preserves
 normality.
 
 By contrast, the earlier four-sector active-trace witness $\mathcal K$ has
-explicit trace-preserving
-completely positive renormalization maps, both before and after two-site
-blocking, but its sole BNT coefficient is strictly subunit. Its globally
-normalized representative $A=(4/\sqrt5)\mathcal K$ retains SAL and TNLean's
-scale-invariant \leanid{MPOTensor.IsSourceZCL} relation, while $A^{[2]}$ fails
-the literal idempotence forced by conclusion~(v). The normalized representative
-therefore refutes the broadened implication using that up-to-scalar predicate,
-but it is not an unqualified counterexample to Theorem~4.9 because it fails the
-paper's literal ZCL diagram. Independently, the repeated-copy theorem above
-refutes the exact printed implication (iv)$\Rightarrow$(v). The source-context
+explicit trace-preserving completely positive renormalization maps, both
+before and after two-site blocking, but its sole BNT coefficient is strictly
+subunit. Its globally normalized representative
+$A=(4/\sqrt5)\mathcal K$ retains SAL and TNLean's scale-invariant
+\leanid{MPOTensor.IsSourceZCL} relation, while $A^{[2]}$ fails the literal
+idempotence forced by conclusion~(v). The normalized representative therefore
+refutes the broadened implication using that up-to-scalar predicate, but it is
+not an unqualified counterexample to Theorem~4.9 of
+Ref.~\cite{Cirac2016MPDO_arXiv} because it fails the paper's literal ZCL
+diagram.
+
+Independently, the repeated-copy theorem above refutes the exact printed
+implication (iv)$\Rightarrow$(v). The source-context
 (ii)$\Rightarrow$(iv) factorization remains \ghissue{6775}. Once it is
 supplied, the Proposition~\texttt{3to5} construction and its twice-applied
 channels for one representative are formalized by
 \leanid{MPOTensor.PhysicalSectorFactorization.NeighboringTraceFactorization.%
-blockTwo_isRFPViaTS}.
-Combining those supplied channel pairs through the orthogonal outer physical
-sectors then gives (ii)$\Rightarrow$(v); that combination is formalized in
-\ghissue{6632}, and its trace-preserving completion outside the active support
-resolves \ghissue{6807}. The project-derived direct sector-mixing alternative
-in \ghissue{6793} is retired in favor of this source route.
+blockTwo_isRFPViaTS}. Combining those supplied channel pairs through the
+orthogonal outer physical sectors then gives (ii)$\Rightarrow$(v); that
+combination is formalized in \ghissue{6632}, and its trace-preserving
+completion outside the active support resolves \ghissue{6807}. The
+project-derived direct sector-mixing alternative in \ghissue{6793} is retired
+in favor of this source route.
 
 \bibliographystyle{alpha}
 \bibliography{references}

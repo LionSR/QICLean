@@ -14,217 +14,270 @@
 \maketitle
 \gapnote{open-gap}{resolved}
 
-\section{The completed classification theorem}
+\section{The retraction classification}
 
-Wolf's Proposition~1.5 assumes a positive linear retraction onto a unital
-finite-dimensional $*$-subalgebra and classifies that retraction
-\cite[Proposition~1.5 and Equation~(1.40)]{Wolf2012Quantum}.  The local source
-is \path{Notes/WolfNoteTexSource/ch01_deconstructing_quantum.tex},
+Proposition~1.5 of Ref.~\cite{Wolf2012Quantum} classifies a positive linear
+retraction onto a unital finite-dimensional $*$-subalgebra; its block formula
+appears in source Equation~(1.40). The local source is
+\path{Notes/WolfNoteTexSource/ch01_deconstructing_quantum.tex},
 lines~536--570.
 
-The theorem
+The formal theorem
 \leanid{StarSubalgebra.exists_block_densities_of_positive_retraction} proves
-the full proposition.  It assumes exactly that the given linear map is
-positive, that its image is contained in the subalgebra, and that it fixes
-every member of the subalgebra.  It obtains the unitary direct-sum
-representation, removes off-diagonal inputs by positivity, and gives a
-positive semidefinite trace-one matrix for each summand.  No assumption of
-complete positivity, trace preservation, or a Schwarz inequality is added.
+the complete proposition. It assumes that the map is positive, that its image
+lies in the subalgebra, and that it fixes every element of the subalgebra. The
+theorem constructs the unitary direct-sum representation, uses positivity to
+eliminate off-diagonal inputs, and produces a positive semidefinite trace-one
+matrix for each summand. It adds no complete-positivity, trace-preservation, or
+Schwarz hypothesis.
 
 \section{The fixed-point theorem}
 
-Let $T:M_D(\mathbb C)\to M_D(\mathbb C)$ be positive and trace preserving,
-write $T^*$ for its trace-pairing adjoint, and suppose that $T^*$ satisfies the
-Schwarz inequality.
-Wolf's Theorem~6.14 asserts that there are a unitary $U$, a decomposition
+Let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, and let $T^*$ denote
+its trace-pairing adjoint. Assume that $T^*$ satisfies the Schwarz inequality.
+Theorem~6.14 of Ref.~\cite{Wolf2012Quantum} asserts the existence of a unitary
+$U$, a decomposition
 \begin{align}
-    \mathbb C^D
-      &= \mathcal H_0\oplus
-        \bigoplus_{k=1}^K\mathbb C^{d_k}\otimes\mathbb C^{m_k},
+  \mathbb C^D
+    &=\mathcal H_0
+      \oplus\bigoplus_{k=1}^K
+      \mathbb C^{d_k}\otimes\mathbb C^{m_k},
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_source_decomposition}
 \end{align}
-and positive definite density matrices $\rho_k\in M_{m_k}(\mathbb C)$ such
-that
+and positive-definite density matrices
+$\rho_k\in M_{m_k}(\mathbb C)$ such that source Equation~(6.63) is
 \begin{align}
-    \operatorname{Fix}(T)
-      &= U\left(0\oplus\bigoplus_{k=1}^K
-          M_{d_k}(\mathbb C)\otimes\rho_k\right)U^*.
-    \tag{Wolf, Theorem 6.14 and Equation (6.63)}
+  \operatorname{Fix}(T)
+    &=U\left(0\oplus\bigoplus_{k=1}^K
+      M_{d_k}(\mathbb C)\otimes\rho_k\right)U^*.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_source_fixed_space}
 \end{align}
-Here $\mathcal H_0$ is a genuine zero summand: every fixed point vanishes on
-this subspace.  This is the statement in
-\cite[Theorem~6.14]{Wolf2012Quantum}; the local source is
+The summand $\mathcal H_0$ is a genuine zero summand: every fixed point
+vanishes on it. The local source for Theorem~6.14 is
 \path{Notes/WolfNotePDF/wolf_ch6_sections.txt}, lines~896--905.
 
-The mean-ergodic part is now formalized.  A positive trace-preserving
-endomorphism has bounded forward orbits on every matrix, and its
-mean-ergodic projection is a positive trace-preserving retraction whose range
-is exactly $\operatorname{Fix}(T)$.
-\footnote{Formal declarations:
+\section{Mean-ergodic retraction}
+
+Every positive trace-preserving matrix endomorphism has bounded forward
+orbits. Its mean-ergodic projection is positive and trace preserving, is
+idempotent, and has range exactly $\operatorname{Fix}(T)$. If $T$ is unital,
+the projection is also unital.\footnote{Formal declarations:
 \leanid{IsPositiveMap.hasBoundedOrbits_of_tracePreserving},
 \leanid{IsPositiveMap.meanErgodicProjection_isPositiveMap}, and
 \leanid{IsTracePreservingMap.meanErgodicProjection_isTracePreservingMap}.}
-If the original map is unital, this projection is also unital.
 
-The trace-pairing adjoint of this projection is now identified as a positive
-unital idempotent retraction onto $\operatorname{Fix}(T^*)$.
-\footnote{Formal declarations:
+The trace-pairing adjoint of the mean-ergodic projection is a positive unital
+idempotent retraction onto $\operatorname{Fix}(T^*)$.\footnote{Formal
+declarations:
 \leanid{LinearMap.HasBoundedOrbits.range_traceAdjointMap_meanErgodicProjection}
 and
 \leanid{IsPositiveMap.traceAdjoint_meanErgodicProjection_isPositiveUnitalRetraction}.}
-The proof uses the complementary decomposition for the original
-mean-ergodic projection and trace-pairing nondegeneracy; it requires no
+The proof uses the complementary decomposition for the original mean-ergodic
+projection and nondegeneracy of the trace pairing. It requires no
 bounded-orbit or spectral hypothesis for $T^*$.
 
-The full-support retraction step is also formalized.  If $T$ has a positive
-definite fixed point and $T^*$ satisfies the Schwarz inequality, then the
-Schwarz equality argument makes $\operatorname{Fix}(T^*)$ a unital
-$*$-algebra, and the adjoint mean-ergodic projection is a positive retraction
-onto it.  Applying Proposition~1.5 gives the weighted partial-trace block
-form of this projection.\footnote{Formal declaration:
+\section{Full-support block retraction}
+
+Assume first that $T$ has a positive-definite fixed point. The Schwarz equality
+argument makes $\operatorname{Fix}(T^*)$ a unital $*$-algebra, and the adjoint
+mean-ergodic projection is a positive retraction onto this algebra. Applying
+Proposition~1.5 of Ref.~\cite{Wolf2012Quantum} gives the weighted
+partial-trace block form of the projection.\footnote{Formal declaration:
 \leanid{IsPositiveMap.exists_block_densities_of_adjoint_meanErgodicProjection}
 in
 \doclink{QICLean/Channel/FixedPoint/FullSupportBlockRetraction}.}
-This is the conditional-expectation step in the proof of Theorem~6.14,
-local source lines~1483--1492.
+This formalizes the conditional-expectation step at local source
+lines~1483--1492.
 
-The trace-adjoint calculation is also formalized.  In the convention used by
-the formalization, each summand is ordered as
-$\mathbb C^{m_k}\otimes\mathbb C^{d_k}$ and the adjoint fixed-point algebra is
-$\Id_{m_k}\otimes M_{d_k}(\mathbb C)$.  Consequently, the partial trace is
-over the first, multiplicity factor and
+The formalization orders each block as
+$\mathbb C^{m_k}\otimes\mathbb C^{d_k}$, so the adjoint fixed-point algebra is
+$\Id_{m_k}\otimes M_{d_k}(\mathbb C)$. The partial trace is therefore taken
+over the first, multiplicity factor:
 \begin{align}
   P_T(B)
-    =U\left(\bigoplus_k \sigma_k\otimes
+    &=U\left(\bigoplus_k
+      \sigma_k\otimes
       \operatorname{tr}_{m_k}((U^*BU)_{kk})\right)U^*.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_projection_block_form}
 \end{align}
-Writing $\operatorname{tr}_{d_k}$ here would reverse the factor convention
-and would be dimensionally inconsistent.  The range of this projection is
-$U(\bigoplus_k\sigma_k\otimes M_{d_k}(\mathbb C))U^*$, hence this is also
-$\operatorname{Fix}(T)$ under the full-support hypothesis.
-\footnote{Formal declaration:
+Using $\operatorname{tr}_{d_k}$ in
+(\ref{eq:wolf_theorem6_14_fixed_point_projection_gap_projection_block_form})
+would reverse the factor convention and would be dimensionally inconsistent.
+The range is
+\begin{align}
+  \operatorname{ran}(P_T)
+    &=U\left(\bigoplus_k
+      \sigma_k\otimes M_{d_k}(\mathbb C)\right)U^*,
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_full_support_range}
+\end{align}
+and therefore equals $\operatorname{Fix}(T)$ under the full-support
+hypothesis.\footnote{Formal declaration:
 \leanid{IsPositiveMap.exists_block_densities_of_meanErgodicProjection}
 in
 \doclink{QICLean/Channel/FixedPoint/TraceAdjointDensityBlocks}.}
 
-The maximal-support witness required for the reduction is now formalized for the
-source's full generality: for every positive trace-preserving map,
-$\rho_0=T_\infty(\mathbf 1)$ is positive semidefinite and its support contains the
-support and range of every fixed point.
-\footnote{Formal declaration:
+\section{Maximal stationary support}
+
+For every positive trace-preserving map, define
+\begin{align}
+  \rho_0
+    &=T_\infty(\Id).
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_maximal_support_state}
+\end{align}
+The matrix $\rho_0$ is positive semidefinite, and its support contains both the
+support and the range of every fixed point.\footnote{Formal declaration:
 \leanid{IsPositiveMap.exists_maximalSupport_fixedPoint} in
 \doclink{QICLean/Channel/FixedPoint/MaximalSupportBasic}.}
+This supplies the maximal-support witness in the full generality of the source.
 
-The restriction to this support is also formalized in the same generality.
-If $\rho\succeq0$ is any fixed point and $Q$ is its support projection, then
-every positive matrix in $Q M_D(\mathbb C)Q$ is mapped back into that corner.
-Decomposition into four positive matrices extends the conclusion to every
-matrix in the corner.  Hence, for an isometry $V$ with $V^*V=\mathbf 1$ and
-$VV^*=Q$, the map
+Let $\rho\succeq0$ be any fixed point and let $Q$ be its support projection.
+Every positive matrix in the corner $Q\MN{D}Q$ is mapped back into that corner.
+Decomposing an arbitrary matrix into four positive matrices extends the result
+to the entire corner. Choose an isometry $V$ satisfying
 \begin{align}
-  \widetilde T(X)=V^*T(VXV^*)V
+  V^*V
+    &=\Id,
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_isometry_initial}\\
+  VV^*
+    &=Q.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_isometry_range}
 \end{align}
-is positive and trace preserving, has a positive definite fixed point, and
-satisfies
+The compressed map is
 \begin{align}
-  T(VXV^*)=V\widetilde T(X)V^*.
-  \tag{Wolf, Equation (6.52)}
+  \widetilde T(X)
+    &=V^*T(VXV^*)V.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_compressed_map}
 \end{align}
-When $\rho=T_\infty(\mathbf 1)$, maximal support further gives
+It is positive and trace preserving and has a positive-definite fixed point.
+It also satisfies source Equation~(6.52) of Ref.~\cite{Wolf2012Quantum}:
 \begin{align}
-  \operatorname{Fix}(T)=V\operatorname{Fix}(\widetilde T)V^*.
-  \tag{Wolf, Equation (6.51)}
+  T(VXV^*)
+    &=V\widetilde T(X)V^*.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_compression_intertwining}
 \end{align}
-Thus every ambient fixed point has zero complementary block.
-The auxiliary fixed-space equivalence is also retained in conditional form:
-for a general stationary $\rho$, it assumes
-$QXQ=X$ for every $X\in\operatorname{Fix}(T)$.  This is the hypothesis named
-\texttt{hmax} in
+
+When $\rho=\rho_0$, maximality of the support gives source Equation~(6.51) of Ref.~\cite{Wolf2012Quantum}:
+\begin{align}
+  \operatorname{Fix}(T)
+    &=V\operatorname{Fix}(\widetilde T)V^*.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_compressed_fixed_space}
+\end{align}
+Thus every ambient fixed point vanishes on the complementary block.
+
+For a general stationary $\rho$, the auxiliary fixed-space equivalence assumes
+that $QXQ=X$ for every $X\in\operatorname{Fix}(T)$. This is the hypothesis
+named \texttt{hmax} in
 \leanid{IsPositiveMap.fixedPoint_iff_exists_fixedPoint_stationarySupportCompression}.
 The source-faithful theorem
-\leanid{IsPositiveMap.exists_maximalSupportCompression} has no such exposed
-hypothesis: it takes $\rho_0=T_\infty(\mathbf 1)$ and derives the support property
-from \leanid{IsPositiveMap.exists_maximalSupport_fixedPoint}.
-\footnote{Formal declarations:
-\leanid{IsPositiveMap.map_supported_on_fixedPoint_support},
-and
+\leanid{IsPositiveMap.exists_maximalSupportCompression} exposes no such
+hypothesis: it sets $\rho_0=T_\infty(\Id)$ and derives support maximality from
+\leanid{IsPositiveMap.exists_maximalSupport_fixedPoint}.\footnote{Formal
+declarations:
+\leanid{IsPositiveMap.map_supported_on_fixedPoint_support} and
 \leanid{IsPositiveMap.exists_maximalSupportCompression}
 in
 \doclink{QICLean/Channel/FixedPoint/StationarySupportRestriction}.}
 
-The full-support fixed-point theorem is now applied to $\widetilde T$.  The
-trace adjoint commutes with the isometric compression,
+\section{Schwarz compression and positive-definite blocks}
+
+The trace adjoint commutes with isometric compression:
 \begin{align}
-  \widetilde T^*(A)=V^*T^*(VAV^*)V,
+  \widetilde T^*(A)
+    &=V^*T^*(VAV^*)V.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_compressed_trace_adjoint}
 \end{align}
-and the Schwarz defect of this map is the compression of the Schwarz defect
-of $T^*$ plus a positive term supported on $\mathbf 1-VV^*$.  Hence the
-Schwarz hypothesis passes to $\widetilde T^*$ using only the positivity of
-$T$ already assumed in Theorem~6.14.  The full-support density-block theorem
-therefore gives
+The Schwarz defect of $\widetilde T^*$ is the compression of the Schwarz defect
+of $T^*$ plus a positive term supported on $\Id-VV^*$. Therefore, the Schwarz
+hypothesis passes from $T^*$ to $\widetilde T^*$ using only the positivity of
+$T$ already assumed in Theorem~6.14 of Ref.~\cite{Wolf2012Quantum}.
+
+The full-support theorem applied to $\widetilde T$ gives
 \begin{align}
   \operatorname{Fix}(\widetilde T)
-    =U\left(\bigoplus_k\sigma_k\otimes M_{d_k}(\mathbb C)\right)U^*,
+    &=U\left(\bigoplus_k
+      \sigma_k\otimes M_{d_k}(\mathbb C)\right)U^*,
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_compressed_density_blocks}
 \end{align}
-where every $\sigma_k$ has trace one.  To see that these matrices are positive
-definite, apply this formula to the positive definite fixed point
-$\rho_{\mathrm{full}}$ retained by the compression theorem:
+where each $\sigma_k$ is positive semidefinite and has trace one. Let
+$\rho_{\mathrm{full}}$ be the positive-definite fixed point retained by the
+compression theorem. Then
 \begin{align}
   U^*\rho_{\mathrm{full}}U
-    =\bigoplus_k\sigma_k\otimes X_k.
+    &=\bigoplus_k\sigma_k\otimes X_k.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_full_support_state_blocks}
 \end{align}
-Every principal block $\sigma_k\otimes X_k$ is positive definite.  Taking the
+Every principal block $\sigma_k\otimes X_k$ is positive definite. Taking the
 two partial traces gives
 \begin{align}
-  \operatorname{tr}_{m_k}(\sigma_k\otimes X_k)&=X_k,\\
+  \operatorname{tr}_{m_k}(\sigma_k\otimes X_k)
+    &=X_k,
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_partial_trace_multiplicity}\\
   \operatorname{tr}_{d_k}(\sigma_k\otimes X_k)
-    &=\operatorname{tr}(X_k)\sigma_k.
+    &=\tr(X_k)\sigma_k.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_partial_trace_matrix}
 \end{align}
-Thus $X_k$ is positive definite, so $\operatorname{tr}(X_k)>0$, and the second
-identity implies that $\sigma_k$ is positive definite.  No block dimension is
-changed and no additional kernel summand is introduced.
-\footnote{Formal declarations:
+The first identity implies that $X_k$ is positive definite, so
+$\tr(X_k)>0$. The second then implies that $\sigma_k$ is positive definite.
+This argument changes no block dimension and introduces no additional kernel
+summand.\footnote{Formal declarations:
 \leanid{Matrix.traceAdjointMap_stationarySupportCompression},
 \leanid{IsSchwarzMap.traceAdjointMap_stationarySupportCompression}, and
 \leanid{IsPositiveMap.exists_block_densities_of_maximalSupportCompression}
 in
-\doclink{QICLean/Channel/FixedPoint/SupportCompressedDensityBlocks}; the
-positive-definite partial-trace facts are
+\doclink{QICLean/Channel/FixedPoint/SupportCompressedDensityBlocks}. The
+positive-definite partial-trace results are
 \leanid{Matrix.PosDef.partialTraceRight},
 \leanid{Matrix.PosDef.partialTraceLeft}, and
 \leanid{Matrix.PosDef.left_of_kronecker_of_trace_eq_one} in
 \doclink{QICLean/Channel/PartialTrace}.}
 
-The ambient transport is now formalized.  If $U_c$ is the compressed block
-unitary, then $W=VU_c$ is an isometry from the compressed space into the
-original space.  Compare it with the canonical inclusion of
-$\mathbb C^n$ into
-$\mathbb C^{D-n}\oplus\mathbb C^n$.  The two inclusions have the same Gram
-matrix.  The finite-dimensional unitary extension theorem therefore gives an
-ambient unitary $U$ satisfying
+\section{Ambient transport}
+
+Let $U_c$ be the compressed block unitary and define
 \begin{align}
-    WAW^*=U(0_{D-n}\oplus A)U^*
+  W
+    &=VU_c.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_compressed_isometry}
 \end{align}
-for every $A\in M_n(\mathbb C)$.  Applying the retained fixed-space
-equivalence and substituting the compressed density-block formula yields
+The map $W$ is an isometry from the compressed space into the original space.
+Compare it with the canonical inclusion of $\mathbb C^n$ into
+$\mathbb C^{D-n}\oplus\mathbb C^n$. The two inclusions have the same Gram
+matrix. A finite-dimensional unitary extension therefore gives an ambient
+unitary $U$ satisfying
 \begin{align}
-    \operatorname{Fix}(T)
-      =U\left(0_{D-n}\oplus\bigoplus_k
-        \sigma_k\otimes M_{d_k}(\mathbb C)\right)U^*.
+  WAW^*
+    &=U(0_{D-n}\oplus A)U^*
+    \qquad\text{for every }A\in M_n(\mathbb C).
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_unitary_zero_extension}
+\end{align}
+Combining
+(\ref{eq:wolf_theorem6_14_fixed_point_projection_gap_compressed_fixed_space}),
+(\ref{eq:wolf_theorem6_14_fixed_point_projection_gap_compressed_density_blocks}),
+and
+(\ref{eq:wolf_theorem6_14_fixed_point_projection_gap_unitary_zero_extension})
+gives
+\begin{align}
+  \operatorname{Fix}(T)
+    &=U\left(0_{D-n}\oplus
+      \bigoplus_k\sigma_k\otimes M_{d_k}(\mathbb C)\right)U^*.
+  \label{eq:wolf_theorem6_14_fixed_point_projection_gap_ambient_fixed_space}
 \end{align}
 The first block is exactly the orthogonal complement of maximal stationary
-support, so it is one zero summand.  There are no further kernel blocks,
-because every $\sigma_k$ is positive definite.
-\footnote{Formal declarations:
+support. It is the only zero summand because every $\sigma_k$ is positive
+definite.\footnote{Formal declarations:
 \leanid{Matrix.exists_unitary_zero_extension_eq} in
 \doclink{QICLean/Algebra/MatrixGramUnitary}, and
 \leanid{IsPositiveMap.exists_fixedPoints_densityBlocks_with_zero} in
 \doclink{QICLean/Channel/FixedPoint/WolfTheorem614}.}
 
-Consequently, the statement and hypotheses of Wolf's Theorem~6.14 are now
-formalized in full.  The theorem assumes precisely positivity and trace
-preservation of $T$ and the Schwarz inequality for $T^*$; the fixed-point
-space has exactly the single complementary zero summand asserted in
-Equation~(6.63).  This document therefore records a closed paper gap.
+\section{Conclusion}
+
+Wolf's Theorem~6.14 is now formalized with its full source hypotheses and
+conclusion \cite[Theorem~6.14]{Wolf2012Quantum}. The theorem assumes exactly
+that $T$ is positive and trace preserving and that $T^*$ satisfies the Schwarz
+inequality. Its fixed-point space has the single complementary zero summand
+asserted in source Equation~(6.63). This document therefore records a resolved
+paper gap.
 
 \bibliographystyle{alpha}
 \bibliography{references}

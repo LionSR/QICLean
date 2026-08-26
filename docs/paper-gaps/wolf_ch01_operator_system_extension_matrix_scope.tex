@@ -17,76 +17,147 @@
 
 \section{The source statement}
 
-Wolf's proposition "Extending cp maps from operator systems" quantifies over
-two arbitrary finite-dimensional $C^\ast$-algebras $\mathcal A,\mathcal B$: let
-$T:S\to\mathcal B$ be a completely positive linear map from an operator system
-$S\subseteq\mathcal A$; then there is a completely positive map
-$\tilde T:\mathcal A\to\mathcal B$ agreeing with $T$ on $S$
-\cite[Proposition, lines~614--626]{Wolf2012Quantum}. The local source is
+Wolf's proposition ``Extending cp maps from operator systems'' concerns
+arbitrary finite-dimensional $C^\ast$-algebras $\mathcal A$ and $\mathcal B$
+\cite[lines~614--626]{Wolf2012Quantum}. Let $S\subseteq\mathcal A$ be an
+operator system, and let $T:S\to\mathcal B$ be completely positive. The
+proposition asserts that there is a completely positive map
+$\widetilde T:\mathcal A\to\mathcal B$ satisfying
+\begin{align}
+    \widetilde T(x)
+        &=T(x)
+        \qquad(x\in S).
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_extension_agreement}
+\end{align}
+The local source is
 \path{Notes/WolfNoteTexSource/ch01_deconstructing_quantum.tex}, lines~617--619
-(statement) and 620--626 (proof). Neither $\mathcal A$ nor $\mathcal B$ is
-assumed to be a full matrix algebra: a finite-dimensional $C^\ast$-algebra is,
-by the finite-dimensional structure theorem, a direct sum
-$\bigoplus_k M_{d_k}(\mathbb C)$, and the proposition covers every such
-algebra, not only the one-summand case $\mathcal A=M_m(\mathbb C)$.
+for the statement and lines~620--626 for the proof.
 
-\section{The formalized scope}
+Neither $\mathcal A$ nor $\mathcal B$ is assumed to be a full matrix algebra.
+By the finite-dimensional structure theorem, a finite-dimensional
+$C^\ast$-algebra is a finite direct sum of full matrix algebras:
+\begin{align}
+    \mathcal A
+        &\cong\bigoplus_k M_{d_k}(\C).
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_fd_cstar_structure}
+\end{align}
+Thus Wolf's proposition covers all such direct sums, not only the
+single-summand case $\mathcal A=M_m(\C)$.
 
-The domain algebra $\mathcal A$ is now formalized at the source's stated
-generality: a finite direct sum $\mathcal A=\bigoplus_{k<r} M_{d_k}(\mathbb C)$,
-represented literally as the dependent function type
-$\forall k, \MN{d_k}$. \leanid{Matrix.IsOperatorSystemDirectSum} and
-\leanid{Matrix.IsCPOnOperatorSystemDirectSum}
-(\doclink{QICLean/Channel/OperatorSystemExtensionDirectSum}) are the
-direct-sum-domain operator-system and complete-positivity-at-every-level
-predicates, defined entrywise (block by block), matching the single-summand
-predicates \leanid{Matrix.IsOperatorSystem}/\leanid{Matrix.IsCPOnOperatorSystem}
-(\doclink{QICLean/Channel/OperatorSystem}) verbatim when $r=1$. The extension
-theorem \leanid{Matrix.exists_cp_extension_of_operatorSystem_directSum}
-produces $\tilde T:\bigoplus_k \MN{d_k}\to\MN{p}$ agreeing with $T$ on $S$,
-completely positive in the same block-by-block sense
-(\leanid{Matrix.IsCPMapDirectSum}). The proof transports the single-summand
-theorem \leanid{Matrix.exists_cp_extension_of_operatorSystem}
-(\doclink{QICLean/Channel/OperatorSystemExtension}) along the block-diagonal
-embedding $\bigoplus_k M_{d_k}(\mathbb C)\hookrightarrow M_M(\mathbb C)$,
-$M=\sum_k d_k$ (\leanid{Matrix.directSumEmbedFin}, built from
-\leanid{Matrix.directSumDiagonalEmbedding}, the same block-diagonal embedding
-used for Wolf's Theorem~6.14 block structure, composed with the canonical
-reindexing \leanid{finSigmaFinEquiv}): complete positivity at every tensor
-level descends through this embedding
-(\leanid{Matrix.bipartiteSlice_directSumEmbedFinLevel}), because a
-block-diagonal matrix is positive semidefinite exactly when each of its
-diagonal blocks is.
+\section{The formalized domain}
 
-The codomain is now allowed to be any unital $*$-subalgebra
-$\mathcal B\subseteq\MN{p}$. The theorem
+The formalized domain has the full matrix-realized generality stated in the
+source:
+\begin{align}
+    \mathcal A
+        &=\bigoplus_{k<r}M_{d_k}(\C).
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_direct_sum_domain}
+\end{align}
+It is represented literally by the dependent function type
+$\forall k,\MN{d_k}$. The predicates
+\leanid{Matrix.IsOperatorSystemDirectSum} and
+\leanid{Matrix.IsCPOnOperatorSystemDirectSum} define operator systems and
+complete positivity at every matrix level block by block. When $r=1$, they
+agree verbatim with the single-summand predicates
+\leanid{Matrix.IsOperatorSystem} and
+\leanid{Matrix.IsCPOnOperatorSystem}.\footnote{Direct-sum definitions:
+\doclink{QICLean/Channel/OperatorSystemExtensionDirectSum}. Single-summand
+definitions: \doclink{QICLean/Channel/OperatorSystem}.}
+
+For a full matrix codomain $\MN{p}$, the extension theorem produces
+\begin{align}
+    \widetilde T
+        &:\bigoplus_k\MN{d_k}\longrightarrow\MN{p},
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_matrix_codomain_extension}\\
+    \widetilde T|_S
+        &=T.
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_matrix_extension_agreement}
+\end{align}
+Complete positivity is expressed by the blockwise predicate
+\leanid{Matrix.IsCPMapDirectSum}.\footnote{Formal declaration:
+\leanid{Matrix.exists_cp_extension_of_operatorSystem_directSum} in
+\doclink{QICLean/Channel/OperatorSystemExtensionDirectSum}.}
+
+The proof transports the single-summand extension theorem along the
+block-diagonal embedding
+\begin{align}
+    \bigoplus_k M_{d_k}(\C)
+        &\lhook\joinrel\longrightarrow M_M(\C),
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_block_diagonal_embedding}\\
+    M
+        &=\sum_k d_k.
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_total_matrix_dimension}
+\end{align}
+The embedding is
+\leanid{Matrix.directSumEmbedFin}, constructed from
+\leanid{Matrix.directSumDiagonalEmbedding} and the canonical reindexing
+\leanid{finSigmaFinEquiv}. It is the same block-diagonal construction used for
+the block structure in Wolf's Theorem~6.14 \cite{Wolf2012Quantum}.
+Complete positivity at every tensor level descends through the embedding
+because a block-diagonal matrix is positive semidefinite exactly when each
+diagonal block is positive semidefinite.\footnote{Single-summand extension:
+\leanid{Matrix.exists_cp_extension_of_operatorSystem} in
+\doclink{QICLean/Channel/OperatorSystemExtension}. Tensor-level descent:
+\leanid{Matrix.bipartiteSlice_directSumEmbedFinLevel}.}
+
+\section{The formalized codomain}
+
+The codomain may be any concrete unital $*$-subalgebra
+\begin{align}
+    \mathcal B
+        &\subseteq\MN{p}.
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_concrete_codomain}
+\end{align}
+Given $T:S\to\mathcal B$, the formal theorem produces
+\begin{align}
+    \widetilde T
+        &:\bigoplus_k\MN{d_k}\longrightarrow\mathcal B,
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_star_subalgebra_extension}\\
+    \widetilde T|_S
+        &=T.
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_star_subalgebra_agreement}
+\end{align}
+Complete positivity is stated after the canonical inclusion
+$\mathcal B\hookrightarrow\MN{p}$, because the direct-sum complete-positivity
+predicate uses a full matrix codomain.\footnote{Formal declaration:
 \leanid{Matrix.exists_cp_extension_of_operatorSystem_directSum_starSubalgebra}
-(\doclink{QICLean/Channel/OperatorSystemExtensionStarSubalgebra}) starts with a
-map $T:S\to\mathcal B$ and returns an extension
-$\widetilde T:\bigoplus_k\MN{d_k}\to\mathcal B$. Complete positivity is stated
-after the canonical inclusion $\mathcal B\hookrightarrow\MN{p}$, because the
-direct-sum complete-positivity predicate has a full matrix codomain.
+in \doclink{QICLean/Channel/OperatorSystemExtensionStarSubalgebra}.}
 
-The construction supplies the final step left implicit in the source's proof.
-First, \leanid{Matrix.exists_cp_extension_of_operatorSystem_directSum} gives an
-ambient extension $F:\bigoplus_k\MN{d_k}\to\MN{p}$. Next,
-\leanid{StarSubalgebra.exists_krausCPTP_conditionalExpectation} gives a
-trace-preserving completely positive conditional expectation
-$E:\MN{p}\to\MN{p}$ with range in $\mathcal B$ and $E|_{\mathcal B}=\mathrm{id}$.
-The map $E\circ F$ remains completely positive, takes values in $\mathcal B$,
-and agrees with $T$ on $S$. Restricting its codomain gives $\widetilde T$.
+The construction supplies the final step left implicit in Wolf's proof
+\cite[lines~620--626]{Wolf2012Quantum}. First, the direct-sum theorem gives an
+ambient completely positive extension
+\begin{align}
+    F
+        &:\bigoplus_k\MN{d_k}\longrightarrow\MN{p}.
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_ambient_extension}
+\end{align}
+Next, a trace-preserving completely positive conditional expectation
+\begin{align}
+    E
+        &:\MN{p}\longrightarrow\MN{p}
+    \label{eq:wolf_ch01_operator_system_extension_matrix_scope_conditional_expectation}
+\end{align}
+has range in $\mathcal B$ and restricts to the identity on $\mathcal B$.
+Therefore $E\circ F$ is completely positive, takes values in $\mathcal B$, and
+agrees with $T$ on $S$. Restricting its codomain gives
+(\ref{eq:wolf_ch01_operator_system_extension_matrix_scope_star_subalgebra_extension}).\footnote{Formal
+declaration:
+\leanid{StarSubalgebra.exists_krausCPTP_conditionalExpectation}.}
 
 \section{Verdict}
 
-\textbf{Closed for matrix-realized finite-dimensional algebras.} The domain is
-a finite direct sum $\bigoplus_{k<r}M_{d_k}(\mathbb C)$ and the codomain is a
-concrete unital $*$-subalgebra of a full matrix algebra, exactly the
-representation chosen in Wolf's displayed proof. The formal theorem does not
-quantify over an abstract finite-dimensional $C^*$-algebra type lacking a
-specified matrix representation, and it should not be cited as such an
-abstract theorem. It closes the matrix-algebra scope gap tracked in
-\href{https://github.com/LionSR/TNLean/issues/5645}{TNLean issue \#5645}: neither the domain nor the codomain is required to be a single
-full matrix algebra.
+\emph{Closed for matrix-realized finite-dimensional algebras.} The domain is a
+finite direct sum $\bigoplus_{k<r}M_{d_k}(\C)$, and the codomain is a concrete
+unital $*$-subalgebra of a full matrix algebra. This is the representation used
+in Wolf's displayed proof \cite[lines~620--626]{Wolf2012Quantum}. The formal
+theorem does not quantify over an abstract finite-dimensional $C^\ast$-algebra
+type without a specified matrix representation and must not be cited as such
+an abstract theorem.
+
+This result closes the matrix-algebra scope gap tracked in
+\href{https://github.com/LionSR/TNLean/issues/5645}{TNLean issue \#5645}.
+Neither the domain nor the codomain is required to be a single full matrix
+algebra.
 
 \bibliographystyle{alpha}
 \bibliography{references}

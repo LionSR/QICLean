@@ -14,73 +14,162 @@
 \maketitle
 \gapnote{clarification}{resolved}
 
-\section{The source statement}
+\section{Source statement}
 
-Wolf's Proposition~1.6 reads: let $T:\mathcal A\to\mathcal B$ be a positive
-linear map between unital $C^*$-algebras; if either $\mathcal A$ or
-$\mathcal B$ is commutative then $T$ is completely positive
-\cite[Proposition~1.6]{Wolf2012Quantum}. The local source is
+Let $\mathcal A$ and $\mathcal B$ be unital $C^*$-algebras, and let
+$T:\mathcal A\to\mathcal B$ be a positive linear map. Wolf's
+Proposition~1.6 states
+\begin{align}
+    \mathcal A\text{ commutative}
+    \quad\text{or}\quad
+    \mathcal B\text{ commutative}
+        &\Longrightarrow T\text{ completely positive}.
+    \label{eq:wolf_prop16_cp_positivity_commutative_side_source_statement}
+\end{align}
+See Proposition~1.6 of Ref.~\cite{Wolf2012Quantum}. The local source is
 \path{Notes/WolfNoteTexSource/ch01_deconstructing_quantum.tex},
-lines~600--612. Wolf proves only the finite-dimensional case, reduces to
-$\mathcal B$ commutative (the $\mathcal A$-commutative case follows because
-$T$ is completely positive iff its dual $T^*$ is), and then argues by
-simultaneously diagonalizing the pairwise-commuting family
-$\{T(a_{ij})\}$. His remark immediately after the proof states that the
-algebra structure of $\mathcal A$ was never used, so the same argument gives
-complete positivity for any positive map out of an operator system into a
-commutative $C^*$-algebra.
+lines~600--612.
 
-\section{Formalized component}
+Wolf proves the finite-dimensional case. He reduces to the case in which
+$\mathcal B$ is commutative by using the equivalence between complete
+positivity of $T$ and complete positivity of its dual $T^*$. For a positive
+block matrix $(a_{ij})$, the codomain argument simultaneously diagonalizes
+the pairwise-commuting family
+\begin{align}
+    \{T(a_{ij})\}_{i,j}.
+    \label{eq:wolf_prop16_cp_positivity_commutative_side_source_image_family}
+\end{align}
+The remark following the proof observes that the algebra structure of
+$\mathcal A$ is unused. The same proof therefore applies to a positive map
+from an operator system into a commutative $C^*$-algebra
+\cite[Proposition~1.6]{Wolf2012Quantum}.
 
-\Lean's ambient objects for this proposition are linear endomorphisms of
-$M_D(\mathbb C)$: \leanid{IsPositiveMap} and \leanid{IsCPMap} in
-\leanid{QICLean/Channel/Basic.lean} both fix $\mathcal A=\mathcal B=M_D(\mathbb
-C)$. Reading Wolf's ``$\mathcal B$ commutative'' hypothesis literally in this
-ambient setting would force $M_D(\mathbb C)$ itself to be commutative, i.e.\
-$D\le 1$, which is not the statement Wolf's proof establishes and not a
-useful specialization. The formalization instead uses the range-only
-hypothesis that Wolf's own remark licenses:
-\leanid{PositiveOnAbelian.HasCommutingRange T}, defined as
-$\forall\,X\,Y,\ \operatorname{Commute}(T(X))(T(Y))$, in
-\leanid{QICLean/Channel/Schwarz/PositiveOnAbelian/CompletePositivity.lean}.
-Since a family of pairwise-commuting elements generates a commutative
-subalgebra, \leanid{HasCommutingRange T} is exactly the statement that $T$
-maps into some commutative subalgebra of $M_D(\mathbb C)$ -- the hypothesis
-Wolf's proof actually consumes, not an invented strengthening or weakening
-of it.
+\section{Matrix-algebra formulation}
 
+The ambient objects used for this proposition in Lean are linear
+endomorphisms of $M_D(\mathbb C)$. The predicates \leanid{IsPositiveMap} and
+\leanid{IsCPMap} in \path{QICLean/Channel/Basic.lean} both fix
+\begin{align}
+    \mathcal A
+        =\mathcal B
+        &=M_D(\mathbb C).
+    \label{eq:wolf_prop16_cp_positivity_commutative_side_fixed_ambient_algebras}
+\end{align}
+A literal requirement that the ambient codomain in
+Eq.~\ref{eq:wolf_prop16_cp_positivity_commutative_side_fixed_ambient_algebras}
+be commutative would force
+\begin{align}
+    D&\leq1.
+    \label{eq:wolf_prop16_cp_positivity_commutative_side_commutative_matrix_dimension}
+\end{align}
+That specialization is narrower than the argument in Proposition~1.6 and does
+not express the useful matrix-algebra case.
+
+The formalization instead isolates the range property used by Wolf's proof.
+For a linear map $T:M_D(\mathbb C)\to M_D(\mathbb C)$, the predicate
+\leanid{PositiveOnAbelian.HasCommutingRange T} means
+\begin{align}
+    \forall X,Y,\qquad
+    \operatorname{Commute}(T(X))(T(Y)).
+    \label{eq:wolf_prop16_cp_positivity_commutative_side_commuting_range}
+\end{align}
+It is defined in
+\path{QICLean/Channel/Schwarz/PositiveOnAbelian/CompletePositivity.lean}.
+A pairwise-commuting range generates a commutative subalgebra of
+$M_D(\mathbb C)$. Thus
+Eq.~\ref{eq:wolf_prop16_cp_positivity_commutative_side_commuting_range} says
+that $T$ maps into a commutative matrix subalgebra, which is exactly the
+codomain property used by Wolf's proof and by his operator-system
+generalization \cite[Proposition~1.6]{Wolf2012Quantum}.
+
+\section{Formalized codomain argument}
+
+The declaration
 \leanid{PositiveOnAbelian.isCPMap_of_isPositiveMap_of_hasCommutingRange}
-proves the commutative-codomain case:
-\leanid{IsPositiveMap T} together with \leanid{HasCommutingRange T} implies
-\leanid{IsCPMap T}. The proof follows Wolf's route: it reduces complete
-positivity to nonnegativity of the block quadratic form built from the Choi
-matrix, and this reduces to the already-proved simultaneous-diagonalization
-lemma \leanid{PositiveOnAbelian.quadraticForm_nonneg_of_isPositiveMap_of_}
-\leanid{commuting_images} (\href{https://github.com/LionSR/TNLean/issues/5468}{TNLean issue \#5468} closes the wrapping gap left open
-after that lemma was proved sorry-free).
+proves that positivity and a commuting range imply complete positivity:
+\begin{align}
+    T\text{ is positive}
+    \quad\text{and}\quad
+    \forall X,Y,\,
+    \operatorname{Commute}(T(X))(T(Y))
+        &\Longrightarrow T\text{ is completely positive}.
+    \label{eq:wolf_prop16_cp_positivity_commutative_side_codomain_theorem}
+\end{align}
+The proof follows Wolf's route. It reduces complete positivity to
+nonnegativity of the block quadratic form associated with the Choi matrix and
+then applies the simultaneous-diagonalization lemma
+\leanid{PositiveOnAbelian.quadraticForm_nonneg_of_isPositiveMap_of_commuting_images}.
+The remaining wrapping gap after that lemma became sorry-free was closed by
+\href{https://github.com/LionSR/TNLean/issues/5468}{TNLean issue \#5468}.
 
+The condition in
+Eq.~\ref{eq:wolf_prop16_cp_positivity_commutative_side_commuting_range} is
+implied by a commutative ambient codomain. For $D>1$, it is strictly weaker
+than commutativity of the full codomain $M_D(\mathbb C)$: a map can have
+commutative range even though the ambient matrix algebra is noncommutative.
+This weakening changes only the ambient presentation, not the source proof,
+because Wolf explicitly observes that the proof needs only a commutative
+target for the image under consideration
+\cite[Proposition~1.6]{Wolf2012Quantum}.
+
+\section{Formalized domain argument}
+
+The declaration
 \leanid{PositiveOnAbelian.isCPMap_of_isPositiveMap_of_hasCommutingRange_adjoint}
-proves the commutative-domain case by the same duality argument Wolf invokes:
-$T$ is completely positive iff its trace-pairing adjoint
-\leanid{Matrix.traceAdjointMap T} is, and the codomain case applies to
-\leanid{Matrix.traceAdjointMap T} when its range is commutative.
+formalizes the commutative-domain case by the duality argument used in the
+source. Let \leanid{Matrix.traceAdjointMap T} denote the adjoint with respect
+to the trace pairing. The proof uses
+\begin{align}
+    T\text{ completely positive}
+        &\Longleftrightarrow
+        \operatorname{Adj}_{\tr}(T)\text{ completely positive},
+    \label{eq:wolf_prop16_cp_positivity_commutative_side_cp_adjoint_equivalence}
+\end{align}
+where $\operatorname{Adj}_{\tr}(T)$ denotes
+\leanid{Matrix.traceAdjointMap T}. When this adjoint has commuting range, the
+codomain theorem in
+Eq.~\ref{eq:wolf_prop16_cp_positivity_commutative_side_codomain_theorem}
+applies to it, and
+Eq.~\ref{eq:wolf_prop16_cp_positivity_commutative_side_cp_adjoint_equivalence}
+then gives complete positivity of $T$.
+
+The declaration
 \leanid{PositiveOnAbelian.isCPMap_of_isPositiveMap_of_commutingRange_or}
-combines both disjuncts into the ``either side'' statement.
+combines the two cases:
+\begin{align}
+    T\text{ is positive}
+    \quad\text{and}\quad
+    \bigl(  T\text{ has commuting range}
+      \ \text{or}\
+      \operatorname{Adj}_{\tr}(T)\text{ has commuting range}
+    \bigr)
+        &\Longrightarrow T\text{ is completely positive}.
+    \label{eq:wolf_prop16_cp_positivity_commutative_side_either_side_theorem}
+\end{align}
 
-\section{Relationship to the source hypothesis}
+\section{Relationship to Proposition~1.6}
 
-\leanid{HasCommutingRange T} is implied by, but strictly weaker than, ``the
-ambient codomain algebra is commutative'' when the ambient codomain is the
-full matrix algebra $M_D(\mathbb C)$ with $D>1$: a map with commutative range
-need not have commutative full codomain, since $M_D(\mathbb C)$ itself is
-never commutative for $D>1$. This is the correct reading of Wolf's
-proposition for an ambient setting where $\mathcal A$ and $\mathcal B$ are
-not themselves varied as commutative or noncommutative algebras but are
-fixed as $M_D(\mathbb C)$; it matches the generalization Wolf's own remark
-grants (operator system to commutative algebra), not a separately restricted
-theorem. No hypothesis absent from Wolf's argument is added, so the theorems
-above formalize Proposition~1.6 as Wolf actually proves it, not a
-corollary of it.
+The range-only formulation is the correct interpretation of Proposition~1.6
+inside a development whose ambient domain and codomain are fixed as full
+matrix algebras. It neither adds a hypothesis absent from Wolf's argument nor
+removes a property used by that argument. Instead, it expresses commutativity
+at the level of the generated image algebra, where simultaneous
+diagonalization occurs.
+
+Consequently,
+Eqs.~\ref{eq:wolf_prop16_cp_positivity_commutative_side_codomain_theorem} and
+\ref{eq:wolf_prop16_cp_positivity_commutative_side_either_side_theorem}
+formalize Proposition~1.6 as Wolf proves and immediately generalizes it
+\cite[Proposition~1.6]{Wolf2012Quantum}. They are not merely corollaries
+obtained by forcing the entire ambient matrix algebra to be commutative.
+
+\section{Classification}
+
+The discrepancy was not mathematical. It concerned how to express a
+commutative domain or codomain inside a fixed full-matrix ambient type. The
+commuting-range formulation resolves that notational and structural
+clarification while preserving the complete-positivity conclusion and the
+source proof.
 
 \bibliographystyle{alpha}
 \bibliography{references}

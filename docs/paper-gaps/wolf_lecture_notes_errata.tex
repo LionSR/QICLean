@@ -17,394 +17,592 @@
 \gapnote{local-correction}{resolved}
 
 \begin{abstract}
-This note records only discrepancies in Michael M.~Wolf's \emph{Quantum
-Channels \& Operations: Guided Tour} that were exposed by the present Lean
-formalization or by a paper-gap analysis required to state a formal theorem
-faithfully. It is not a general errata list for the lecture notes. Its main
-body records only formalization-derived corrections; the final appendix records
-three separately audited local PDF--transcription errors. Each item quotes the
-relevant original statement, gives the locally correct replacement, and explains
-why the correction is necessary.
+This note records discrepancies in Michael M.~Wolf's \emph{Quantum Channels
+\& Operations: Guided Tour} that were exposed by the present Lean
+formalization or by the source-faithfulness analysis required for that
+formalization \cite{Wolf2012Quantum}. It is not a general errata list. The main
+body gives the formalization-derived corrections, and the appendix records
+three separately audited errors in the local PDF transcription. Each entry
+states the source assertion, gives the local correction, and explains why the
+correction is necessary.
 \end{abstract}
 
 \section{Scope}
 
-The source PDFs are stored in \path{Notes/WolfNotePDF/}; the local
-transcription is in \path{Notes/WolfNoteTexSource/}. The corresponding
-formalization and paper-gap records are named explicitly below. A distinction
-is essential:
+The source PDFs are stored in \path{Notes/WolfNotePDF/}, and the local
+transcription is stored in \path{Notes/WolfNoteTexSource/}. The corresponding
+formal declarations and paper-gap records are identified below. The entries
+distinguish three cases:
 \begin{itemize}
-  \item a \emph{source error} is a printed mathematical assertion that is false
-    as stated;
-  \item a \emph{well-posedness correction} makes an implicit boundary convention
-    explicit, without changing the substantive theorem;
-  \item a \emph{formalization scope gap} is not an erratum: it records that the
-    current Lean theorem is narrower than the source or that an auxiliary proof
-    remains incomplete.
+    \item A \emph{source error} is a printed mathematical assertion that is
+          false as stated.
+    \item A \emph{well-posedness correction} makes an implicit boundary
+          convention explicit without changing the substantive theorem.
+    \item A \emph{formalization scope gap} records that the current Lean
+          theorem is narrower than the source theorem or that an auxiliary
+          proof is incomplete. It is not an erratum.
 \end{itemize}
-
-Only the first two kinds belong in the formalization-derived main body. The
-appendix keeps transcription errors visibly separate from that record.
+Only the first two cases appear in the formalization-derived main body. The
+appendix treats transcription errors separately.
 
 \section{The trace sign in the Lorentz-cone converse}
 \label{sec:lorentz}
 
 \paragraph{Formalization trigger.}
-The formal proof of the converse trace inequality requires nonnegativity of the
-trace. Its declaration is
-\path{Matrix.IsHermitian.posSemidef_of_trace_re_nonneg_of_card_sub_one_mul_trace_sq_re_le}
+The formal converse requires the trace to be nonnegative. Its declaration is
+\leanid{Matrix.IsHermitian.posSemidef_of_trace_re_nonneg_of_card_sub_one_mul_trace_sq_re_le}
 in \doclink{QICLean/Analysis/MatrixTraceInequalities}. The discrepancy is
-tracked in \path{docs/paper-gaps/wolf_ch3_lorentz_cone_trace_sign.tex}.
+tracked in
+\path{docs/paper-gaps/wolf_ch3_lorentz_cone_trace_sign.tex}.
 
-\paragraph{Printed source and its role.}
-The proposition occurs at the end of the discussion of automorphisms of the
-positive cone in Chapter~3.  Its first part gives the elementary necessary
-inequality for a positive semidefinite Hermitian matrix; the second part is
-intended to characterize the corresponding Lorentz cone.  Chapter~3,
-Proposition~3.7 in the local PDF (book p.~66) states, for Hermitian $A$,
-\begin{equation}\tag{printed converse}
-  \operatorname{tr}(A)^2\geq(d-1)\operatorname{tr}(A^2)
-  \quad\Longrightarrow\quad A\geq0.
-\end{equation}
+\paragraph{Printed assertion.}
+At the end of the discussion of automorphisms of the positive cone, the first
+part of Chapter~3, Proposition~3.7 gives a necessary trace inequality for a
+positive semidefinite Hermitian matrix. Its converse is intended to
+characterize the associated Lorentz cone. For a Hermitian matrix
+$A\in M_d(\mathbb C)$, the local PDF on book p.~66 prints
+\begin{align}
+    \tr(A)^2
+        &\geq (d-1)\tr(A^2)
+        \Longrightarrow A\geq0.
+    \label{eq:wolf_lecture_notes_errata_lorentz_printed_converse}
+\end{align}
+This is the printed converse of Proposition~3.7
+\cite[Proposition~3.7]{Wolf2012Quantum}.
 
 \paragraph{Correction.}
 The valid converse is
-\begin{equation}\tag{formalized converse}
-  A=A^\dagger,\qquad
-  \operatorname{tr}(A)\geq0,\qquad
-  \operatorname{tr}(A)^2\geq(d-1)\operatorname{tr}(A^2)
-  \quad\Longrightarrow\quad A\geq0.
-\end{equation}
-In the complex-matrix Lean statement the traces are expressed through real
-parts; for Hermitian matrices these are the same real quantities.
+\begin{align}
+    A=A^\dagger,\qquad
+    \tr(A)\geq0,\qquad
+    \tr(A)^2\geq(d-1)\tr(A^2)
+        &\Longrightarrow A\geq0.
+    \label{eq:wolf_lecture_notes_errata_lorentz_corrected_converse}
+\end{align}
+The complex-matrix Lean statement uses real parts of the traces. For Hermitian
+matrices, these real parts equal the displayed real quantities.
 
-\paragraph{Why the correction is necessary.}
-Take $A=-I_d$. It is Hermitian and not positive semidefinite, but
-\begin{equation}
-  \operatorname{tr}(A)^2=d^2
-  \geq d(d-1)=(d-1)\operatorname{tr}(A^2).
-\end{equation}
-Thus the squared inequality alone describes both orientations of the Lorentz
-cone. The condition $\operatorname{tr}(A)\geq0$ selects the positive sheet.
-It is also used by the proof: when a negative eigenvalue is present, the source
-bounds $\operatorname{tr}(A)$ above by a nonnegative quantity and then squares
-that bound. Squaring is justified only after fixing the sign of the trace.
+\paragraph{Necessity of the correction.}
+Set $A=-\Id_d$. Then $A$ is Hermitian and is not positive semidefinite, but
+\begin{align}
+    \tr(A)^2
+        &=d^2,
+    \label{eq:wolf_lecture_notes_errata_lorentz_counterexample_trace}\\
+    (d-1)\tr(A^2)
+        &=d(d-1),
+    \label{eq:wolf_lecture_notes_errata_lorentz_counterexample_square}\\
+    \tr(A)^2
+        &\geq(d-1)\tr(A^2).
+    \label{eq:wolf_lecture_notes_errata_lorentz_counterexample_inequality}
+\end{align}
+Thus the squared inequality describes both orientations of the Lorentz cone.
+The condition $\tr(A)\geq0$ selects the positive sheet. The source proof also
+uses this sign: after bounding $\tr(A)$ above by a nonnegative quantity in the
+presence of a negative eigenvalue, it squares the bound
+\cite[Proposition~3.7]{Wolf2012Quantum}. That step requires the trace sign.
 
 \paragraph{Classification.}
-This is a genuine source error. The unrestricted printed converse should not
-be claimed as formalized; the formal theorem proves the corrected,
-trace-nonnegative statement.
+The unrestricted converse in
+Eq.~\ref{eq:wolf_lecture_notes_errata_lorentz_printed_converse} is a source
+error. The formal theorem proves the corrected statement in
+Eq.~\ref{eq:wolf_lecture_notes_errata_lorentz_corrected_converse}.
 
 \section{The missing nonvanishing condition in Kramers' theorem~II}
 \label{sec:kramers-ii}
 
 \paragraph{Formalization trigger.}
-The corrected theorem is formalized as
-\leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero}
-(conditional form) and
+The conditional form is formalized by
+\leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero},
+and the invertible-intertwiner form is formalized by
 \leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_isUnit}
-(invertible intertwiner) in \doclink{QICLean/Algebra/KramersDegeneracy}; the
-first Kramers theorem is recovered there as the unitary special case. The
-source error is documented in
+in \doclink{QICLean/Algebra/KramersDegeneracy}. The same file recovers the
+first Kramers theorem as the unitary special case. The source error is
+documented in
 \path{docs/paper-gaps/wolf_ch3_kramers_theorem_ii.tex}.
 
-\paragraph{Printed source and its role.}
-After Kramers' theorem (a Hermitian $H$ commuting with an anti-unitary $T$,
-$T^{2}=-\Id$, has all eigenvalues at least two-fold degenerate), Wolf prints
-``Kramer's theorem II'': if $H$ is Hermitian and $HA=AH^{T}$ for some
-anti-symmetric $A\neq 0$, then each eigenvalue of $H$ is at least two-fold
-degenerate, ``as the same proof shows.''  The local source is
+\paragraph{Printed assertion.}
+Wolf first states that if a Hermitian matrix $H$ commutes with an anti-unitary
+$T$ satisfying $T^2=-\Id$, then every eigenvalue of $H$ has multiplicity at
+least two \cite{Wolf2012Quantum}. The subsequent ``Kramer's theorem II''
+asserts that if
+\begin{align}
+    H&=H^\dagger,
+    \label{eq:wolf_lecture_notes_errata_kramers_hermitian}\\
+    HA&=AH^T,
+    \label{eq:wolf_lecture_notes_errata_kramers_intertwining}\\
+    A^T&=-A,\qquad A\neq0,
+    \label{eq:wolf_lecture_notes_errata_kramers_antisymmetric}
+\end{align}
+then every eigenvalue of $H$ has multiplicity at least two, ``as the same proof
+shows'' \cite{Wolf2012Quantum}. The local source is
 \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
-lines~527--530, with the matrix reduction at lines~500--501.
+lines~527--530; the matrix reduction occurs at lines~500--501.
 
 \paragraph{Correction.}
-The proof transports an eigenvector $\ket\psi$ of eigenvalue $\lambda$ to the
-partner $A\ket{\overline\psi}$, which is again a $\lambda$-eigenvector and is
-orthogonal to $\ket\psi$; both steps survive for a general anti-symmetric
-intertwiner.  The degeneracy follows only when the partner is nonzero, and
-that is an extra condition: the correct local statement concludes
-$\dim\ker(H-\lambda)\ge 2$ from $A\ket{\overline\psi}\neq 0$, and a global
-conclusion requires $A$ injective.  The corrected theorem therefore assumes
-$A$ invertible and concludes that every eigenvalue of $H$ is at least
-two-fold degenerate.
+Let $\ket{\psi}$ be a $\lambda$-eigenvector of $H$. Under
+Eq.~\ref{eq:wolf_lecture_notes_errata_kramers_intertwining}, the vector
+$A\ket{\overline\psi}$ is another $\lambda$-eigenvector. Antisymmetry makes it
+orthogonal to $\ket{\psi}$. These facts imply degeneracy only if
+\begin{align}
+    A\ket{\overline\psi}&\neq0.
+    \label{eq:wolf_lecture_notes_errata_kramers_partner_nonzero}
+\end{align}
+The correct local conclusion is therefore
+\begin{align}
+    A\ket{\overline\psi}\neq0
+        &\Longrightarrow \dim\ker(H-\lambda\Id)\geq2.
+    \label{eq:wolf_lecture_notes_errata_kramers_local_conclusion}
+\end{align}
+A global conclusion follows if $A$ is injective. In finite dimensions, the
+corrected global theorem may assume that $A$ is invertible and then conclude
+that every eigenvalue of $H$ has multiplicity at least two.
 
-\paragraph{Why the correction is necessary.}
-On $\C^{3}$, $H=\operatorname{diag}(0,1,1)$ and the anti-symmetric unit of
-the $1$-eigenspace satisfy $HA=AH^{T}=A$ with $A\neq 0$, but the eigenvalue
-$0$ is simple: the partner $Ae_{1}$ of its eigenvector vanishes.
+\paragraph{Necessity of the correction.}
+On $\mathbb C^3$, let
+\begin{align}
+    H&=\operatorname{diag}(0,1,1),
+    \label{eq:wolf_lecture_notes_errata_kramers_counterexample_h}\\
+    A&=
+    \begin{pmatrix}
+        0&0&0\\
+        0&0&1\\
+        0&-1&0
+    \end{pmatrix}.
+    \label{eq:wolf_lecture_notes_errata_kramers_counterexample_a}
+\end{align}
+Then
+\begin{align}
+    HA&=AH^T=A,
+    \label{eq:wolf_lecture_notes_errata_kramers_counterexample_intertwining}\\
+    A&\neq0,
+    \label{eq:wolf_lecture_notes_errata_kramers_counterexample_nonzero}\\
+    Ae_1&=0.
+    \label{eq:wolf_lecture_notes_errata_kramers_counterexample_kernel}
+\end{align}
+The eigenvalue $0$ is simple, so the printed conclusion fails.
 
 \paragraph{Classification.}
-This is a genuine source error.  Theorem~I is unaffected: it is the case
-$A=V^{\dagger}$ of the corrected theorem, where unitarity supplies exactly the
-missing nonvanishing.
+This is a source error. The first Kramers theorem remains valid because it is
+the case $A=V^\dagger$ of the corrected theorem, where unitarity supplies the
+missing nonvanishing condition \cite{Wolf2012Quantum}.
 
 \section{The false converse for Pauli-block truncation}
 \label{sec:pauli-block-truncation}
 
 \paragraph{Formalization trigger.}
-The forward preservation properties of Pauli-block truncation are formalized as
+The forward preservation results are formalized by
 \leanid{Wolf.pauliBlockDiagonalTruncation_isPositiveMap} and
 \leanid{Wolf.pauliBlockDiagonalTruncation_isCPMap} in
 \doclink{QICLean/Channel/LorentzNormalForm/PauliBlockTruncation}. The source
 error is documented in
 \path{docs/paper-gaps/wolf_prop2_10_block_truncation_converse.tex}.
 
-\paragraph{Printed source and its role.}
-In Section~2.4, after the Bloch-ball representation in Eq.~(2.39), Wolf's
-Proposition~2.10 considers the Pauli transfer matrix
-\begin{equation}
-  \widehat T=
-  \begin{pmatrix}
-    \widehat T_{00}&r^{\mathsf T}\\
-    v&\Delta
-  \end{pmatrix}
-\end{equation}
-of a Hermiticity-preserving map and prints the assertion that the block
-truncation
-\begin{equation}
-  \widehat T'=\widehat T_{00}\oplus\Delta
-\end{equation}
-is positive, respectively completely positive, if and only if $\widehat T$ is.
-The local source is
+\paragraph{Printed assertion.}
+After the Bloch-ball representation in source Equation~(2.39), Wolf's
+Proposition~2.10 writes the Pauli transfer matrix of a
+Hermiticity-preserving map as
+\begin{align}
+    \widehat T
+        &=
+        \begin{pmatrix}
+            \widehat T_{00}&r^{\mathsf T}\\
+            v&\Delta
+        \end{pmatrix}.
+    \label{eq:wolf_lecture_notes_errata_pauli_transfer_matrix}
+\end{align}
+It then asserts that the block truncation
+\begin{align}
+    \widehat T'
+        &=\widehat T_{00}\oplus\Delta
+    \label{eq:wolf_lecture_notes_errata_pauli_block_truncation}
+\end{align}
+is positive, respectively completely positive, if and only if $\widehat T$ is
+\cite[Proposition~2.10]{Wolf2012Quantum}. The local source is
 \path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~984--990.
 
 \paragraph{Correction.}
-With $\Theta(X)=\operatorname{tr}(X)\Id-X$ and
-$D=\operatorname{diag}(1,-1,-1,-1)$, the truncation is
-\begin{equation}
-  T'=\frac{T+\Theta\circ T\circ\Theta}{2},
-  \qquad
-  \widehat T'=\frac{\widehat T+D\widehat T D}{2}
-  =\widehat T_{00}\oplus\Delta.
-\end{equation}
-The valid statements are the forward implications
-\begin{equation}
-  T\text{ positive}\Longrightarrow T'\text{ positive},
-  \qquad
-  T\text{ completely positive}\Longrightarrow
-  T'\text{ completely positive}.
-\end{equation}
-These are exactly the directions proved in the source at lines~992--998 and
-formalized by the declarations above.
+Define the reduction map
+\begin{align}
+    \Theta(X)
+        &=\tr(X)\Id-X
+    \label{eq:wolf_lecture_notes_errata_pauli_reduction_map}
+\end{align}
+and the diagonal Pauli-coordinate matrix
+\begin{align}
+    D&=\operatorname{diag}(1,-1,-1,-1).
+    \label{eq:wolf_lecture_notes_errata_pauli_sign_matrix}
+\end{align}
+Then the truncation satisfies
+\begin{align}
+    T'
+        &=\frac{T+\Theta\circ T\circ\Theta}{2},
+    \label{eq:wolf_lecture_notes_errata_pauli_map_average}\\
+    \widehat T'
+        &=\frac{\widehat T+D\widehat T D}{2},
+    \label{eq:wolf_lecture_notes_errata_pauli_matrix_average}\\
+    \widehat T'
+        &=\widehat T_{00}\oplus\Delta.
+    \label{eq:wolf_lecture_notes_errata_pauli_average_block_form}
+\end{align}
+The valid implications are
+\begin{align}
+    T\text{ positive}
+        &\Longrightarrow T'\text{ positive},
+    \label{eq:wolf_lecture_notes_errata_pauli_positive_forward}\\
+    T\text{ completely positive}
+        &\Longrightarrow T'\text{ completely positive}.
+    \label{eq:wolf_lecture_notes_errata_pauli_cp_forward}
+\end{align}
+These are the directions proved at local source lines~992--998
+\cite[Proposition~2.10]{Wolf2012Quantum} and formalized by the declarations
+above.
 
-\paragraph{Why the correction is necessary.}
-Let
-\begin{equation}
-  T(X)=\operatorname{tr}(X)\operatorname{diag}(3/2,-1/2).
-\end{equation}
-Then $T$ is Hermiticity preserving but not positive, since
-$T(\Id/2)=\operatorname{diag}(3/2,-1/2)$. Its Pauli-block truncation is the
-completely depolarizing channel $T'(X)=\operatorname{tr}(X)\Id/2$, which is
-completely positive. Thus both printed converses fail.
+\paragraph{Necessity of the correction.}
+Consider
+\begin{align}
+    T(X)
+        &=\tr(X)\operatorname{diag}(3/2,-1/2).
+    \label{eq:wolf_lecture_notes_errata_pauli_counterexample_map}
+\end{align}
+This map preserves Hermiticity but is not positive because
+\begin{align}
+    T(\Id/2)
+        &=\operatorname{diag}(3/2,-1/2)
+        \not\geq0.
+    \label{eq:wolf_lecture_notes_errata_pauli_counterexample_not_positive}
+\end{align}
+Its Pauli-block truncation is
+\begin{align}
+    T'(X)
+        &=\tr(X)\frac{\Id}{2},
+    \label{eq:wolf_lecture_notes_errata_pauli_counterexample_truncation}
+\end{align}
+which is the completely depolarizing channel and is completely positive.
+Hence both printed converses fail.
 
 \paragraph{Classification.}
-This is a genuine source error. The proof of Proposition~2.10 supports the two
-forward implications, not the printed equivalences.
+This is a source error. The proof of Proposition~2.10 supports
+Eqs.~\ref{eq:wolf_lecture_notes_errata_pauli_positive_forward} and
+\ref{eq:wolf_lecture_notes_errata_pauli_cp_forward}, not the printed
+equivalences \cite{Wolf2012Quantum}.
 
 \section{The inverse coefficient in the proof of Theorem~2.3}
 \label{sec:ordered-cp-inverse}
 
 \paragraph{Formalization trigger.}
-The formal proof defines Wolf's normalized auxiliary matrix as
-\leanid{stinespringW} and proves that the assignment from a supplied
-Stinespring matrix is injective in \leanid{stinespringW_injective}, both in
+The formal proof defines Wolf's normalized auxiliary matrix by
+\leanid{stinespringW} and proves injectivity of the assignment from a supplied
+Stinespring matrix by \leanid{stinespringW_injective}, both in
 \doclink{QICLean/Channel/OrderedCP}.
 
-\paragraph{Printed source and its role.}
-In the proof of Theorem~2.3, Wolf takes the normalized vector
-$\ket{\Omega}=d'^{-1/2}\sum_a\ket{a,a}$ and defines
-\begin{equation}
-  W_i=(\one_{r_i}\otimes\bra{\Omega})
-      (V_i\otimes\one_{d'}).
-\end{equation}
-The footnote asserting that $V_i\mapsto W_i$ is one-to-one prints the inverse
-with the coefficient $d'^2$. The same coefficient appears in the local source
-at \path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~392--393,
-and in the PDF on book p.~39.
+\paragraph{Printed assertion.}
+In the proof of Theorem~2.3, Wolf uses the normalized vector
+\begin{align}
+    \ket{\Omega}
+        &=d'^{-1/2}\sum_a\ket{a,a}
+    \label{eq:wolf_lecture_notes_errata_ordered_cp_omega}
+\end{align}
+and defines
+\begin{align}
+    W_i
+        &=(\one_{r_i}\otimes\bra{\Omega})
+          (V_i\otimes\one_{d'}).
+    \label{eq:wolf_lecture_notes_errata_ordered_cp_w_definition}
+\end{align}
+The accompanying footnote states that $V_i\mapsto W_i$ is injective but prints
+$d'^2$ as the coefficient in the inverse
+\cite[Theorem~2.3]{Wolf2012Quantum}. The same coefficient occurs in
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~392--393, and
+in the PDF on book p.~39.
 
 \paragraph{Correction.}
 The coordinate relation is
-\begin{equation}
-  (W_i)_{j,(k,a)}=d'^{-1/2}(V_i)_{(a,j),k},
-\end{equation}
-so its coordinate inverse multiplies by $\sqrt{d'}$. Equivalently, with the
+\begin{align}
+    (W_i)_{j,(k,a)}
+        &=d'^{-1/2}(V_i)_{(a,j),k}.
+    \label{eq:wolf_lecture_notes_errata_ordered_cp_coordinate_relation}
+\end{align}
+Its coordinate inverse therefore multiplies by $\sqrt{d'}$. With the
 canonical tensor-factor identifications used in the source, the inverse is
-\begin{equation}
-  V_i=d'(W_i\otimes\one_{d'})(\one_d\otimes\ket{\Omega}).
-\end{equation}
+\begin{align}
+    V_i
+        &=d'(W_i\otimes\one_{d'})
+          (\one_d\otimes\ket{\Omega}).
+    \label{eq:wolf_lecture_notes_errata_ordered_cp_correct_inverse}
+\end{align}
 
-\paragraph{Why the correction is necessary.}
-The second occurrence of the normalized vector contributes another factor
-$d'^{-1/2}$. Hence the tensor expression without its leading coefficient is
-$V_i/d'$, and the leading coefficient must be $d'$, not $d'^2$. The theorem
-itself is unaffected: the formal injectivity proof uses the coordinate
-relation and only cancels the nonzero factor $d'^{-1/2}$.
+\paragraph{Necessity of the correction.}
+The second occurrence of $\ket{\Omega}$ contributes another factor
+$d'^{-1/2}$. Consequently,
+\begin{align}
+    (W_i\otimes\one_{d'})
+    (\one_d\otimes\ket{\Omega})
+        &=\frac{1}{d'}V_i.
+    \label{eq:wolf_lecture_notes_errata_ordered_cp_unscaled_inverse}
+\end{align}
+The coefficient in
+Eq.~\ref{eq:wolf_lecture_notes_errata_ordered_cp_correct_inverse} must
+therefore be $d'$, not $d'^2$. Theorem~2.3 is unaffected: the formal
+injectivity proof uses
+Eq.~\ref{eq:wolf_lecture_notes_errata_ordered_cp_coordinate_relation} and
+cancels only the nonzero factor $d'^{-1/2}$.
 
 \paragraph{Classification.}
-This is a normalization typo in a source footnote. It does not change the
-statement or proof route of Theorem~2.3.
+This is a normalization typo in a source footnote. It changes neither the
+statement nor the proof route of Theorem~2.3 \cite{Wolf2012Quantum}.
 
 \section{The nonempty-family boundary in the Radon--Nikodym theorem}
 \label{sec:radon-nikodym}
 
 \paragraph{Formalization trigger.}
-The source-facing Lean theorem
-\leanid{IsKrausCP.radon_nikodym_of_stinespring} makes the finite index type
-nonempty. It has Wolf's rectangular Heisenberg dimensions
+The source-facing theorem
+\leanid{IsKrausCP.radon_nikodym_of_stinespring} assumes that the finite index
+type is nonempty. It uses Wolf's rectangular Heisenberg dimensions
 $T_i,T:\mathcal M_{d'}\to\mathcal M_d$ and
 $V:\mathbb C^d\to\mathbb C^{d'}\otimes\mathbb C^r$. The boundary is
 documented in
 \path{docs/paper-gaps/wolf_radon_nikodym_nonempty_family.tex}.
 
-\paragraph{Printed source and its role.}
-This theorem is the immediate instrument-valued corollary of the preceding
-comparison theorem for ordered completely positive maps.  A supplied
-Stinespring representation of the total map is held fixed, and the theorem
-resolves each CP component by a positive effect on the same dilation space.
-The exact local source is
-\path{Notes/WolfNoteTexSource/ch02_representations.tex}:399--407. Chapter~2,
-Theorem~2.4 (book p.~39) says:
+\paragraph{Printed assertion.}
+Wolf's Theorem~2.4 is the instrument-valued corollary of the preceding
+comparison theorem for ordered completely positive maps. It fixes a
+Stinespring representation of the total map and represents each component by
+a positive effect on the same dilation space. The local source is
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~399--407. It
+states:
 \begin{quote}
 ``Let $\{T_i\}$ be a set of completely positive linear maps such that
 $\sum_iT_i=T$ \ldots\ Then there is a set of positive operators $P_i\in M_r$
 which sum up to $I_r$ such that
 $T_i(A)=V^\dagger(A\otimes P_i)V$.''
 \end{quote}
+This is Theorem~2.4 of Ref.~\cite{Wolf2012Quantum}.
 
 \paragraph{Formal statement.}
-The formal theorem uses a \emph{nonempty finite family} of completely positive
-linear maps
-$T_i,T:\mathcal M_{d'}\to\mathcal M_d$ with
-$\sum_{i\in\iota}T_i=T$, together with a supplied map
+Let $\iota$ be a nonempty finite index type. The formal theorem assumes
+completely positive maps
+$T_i,T:\mathcal M_{d'}\to\mathcal M_d$ satisfying
+\begin{align}
+    \sum_{i\in\iota}T_i
+        &=T
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_map_sum}
+\end{align}
+and a supplied map
 $V:\mathbb C^d\to\mathbb C^{d'}\otimes\mathbb C^r$ satisfying
-$T(A)=V^\dagger(A\otimes I_r)V$. It concludes that there are positive
-semidefinite operators $P_i\in\mathcal M_r$ such that
-\begin{equation}
-  \sum_{i\in\iota}P_i=I_r,
-  \qquad
-  T_i(A)=V^\dagger(A\otimes P_i)V.
-\end{equation}
-The declaration \leanid{IsCPMap.radon_nikodym_of_stinespring} is retained as
-the square-algebra specialization.
+\begin{align}
+    T(A)
+        &=V^\dagger(A\otimes I_r)V.
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_total_dilation}
+\end{align}
+It concludes that positive semidefinite operators
+$P_i\in\mathcal M_r$ exist such that
+\begin{align}
+    \sum_{i\in\iota}P_i
+        &=I_r,
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_effect_sum}\\
+    T_i(A)
+        &=V^\dagger(A\otimes P_i)V.
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_component_formula}
+\end{align}
+The declaration \leanid{IsCPMap.radon_nikodym_of_stinespring} remains the
+square-algebra specialization.
 
 \paragraph{Formal proof path.}
-Wolf gives no separate proof beyond calling the result a simple corollary of
-the ordered-map comparison theorem. The formal proof makes this corollary
-explicit. It combines Kraus families for the components into an
+Wolf presents this result as a simple corollary of the ordered-map comparison
+theorem and gives no separate proof \cite[Theorem~2.4]{Wolf2012Quantum}. The
+formal proof combines Kraus families for the components into an
 outcome-labelled Stinespring representation $\widehat V$ of $T$, then applies
-the preceding theorem to $T\leq T$ and the two representations
-$\widehat V,V$. This gives a contraction, not in general an isometry,
-\begin{equation}
-  \widehat V=(I_{d'}\otimes C)V,
-  \qquad C^\dagger C\leq I_r.
-\end{equation}
-If $C_i$ retains the rows labelled by $i$, the preliminary effects
-$E_i=C_i^\dagger C_i$ are positive, represent $T_i$, and sum to
-$C^\dagger C$. The residual
-$R=I_r-C^\dagger C$ is positive and satisfies
-$V^\dagger(A\otimes R)V=0$. A chosen outcome $i_0$ receives this residual,
-so that $P_{i_0}=E_{i_0}+R$ and $P_i=E_i$ otherwise. This last step is needed
-for an arbitrary nonminimal supplied dilation and is exactly where
-nonemptiness is used. When $d'=0$, the formal proof separately assigns $I_r$
-to a chosen outcome and zero to all others. The square-algebra declaration is
-a direct specialization of the rectangular theorem.
+the preceding theorem to $T\leq T$ and the representations $\widehat V$ and
+$V$. It obtains a contraction $C$ satisfying
+\begin{align}
+    \widehat V
+        &=(I_{d'}\otimes C)V,
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_contraction_factorization}\\
+    C^\dagger C
+        &\leq I_r.
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_contraction_bound}
+\end{align}
+This contraction need not be an isometry.
 
-\paragraph{Why the boundary is needed.}
-If the index type is empty, then $\sum_iT_i=T$ forces $T=0$. Taking the zero
-Stinespring matrix $V=0$ still satisfies the representation hypothesis, but the
+Let $C_i$ retain the rows of $C$ labelled by $i$, and define
+\begin{align}
+    E_i
+        &=C_i^\dagger C_i.
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_preliminary_effect}
+\end{align}
+The operators $E_i$ are positive, represent $T_i$, and satisfy
+\begin{align}
+    \sum_{i\in\iota}E_i
+        &=C^\dagger C.
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_preliminary_sum}
+\end{align}
+The residual operator
+\begin{align}
+    R
+        &=I_r-C^\dagger C
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_residual_definition}
+\end{align}
+is positive and satisfies
+\begin{align}
+    V^\dagger(A\otimes R)V
+        &=0.
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_residual_vanishes}
+\end{align}
+Choose $i_0\in\iota$ and set
+\begin{align}
+    P_{i_0}
+        &=E_{i_0}+R,
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_distinguished_effect}\\
+    P_i
+        &=E_i\qquad(i\neq i_0).
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_other_effects}
+\end{align}
+This step gives
+Eq.~\ref{eq:wolf_lecture_notes_errata_radon_nikodym_effect_sum} for an
+arbitrary nonminimal supplied dilation and is where nonemptiness is used. If
+$d'=0$, the formal proof instead assigns $I_r$ to a chosen outcome and zero
+to every other outcome. The square-algebra declaration specializes the
+rectangular theorem directly.
+
+\paragraph{Necessity of the boundary.}
+If $\iota$ is empty, then
+Eq.~\ref{eq:wolf_lecture_notes_errata_radon_nikodym_map_sum} forces $T=0$.
+The zero Stinespring matrix $V=0$ satisfies
+Eq.~\ref{eq:wolf_lecture_notes_errata_radon_nikodym_total_dilation}, but the
 printed conclusion would require
-\begin{equation}
-  0=\sum_iP_i=I_r,
-\end{equation}
-which is false when the dilation space has nonzero dimension. For the intended
-notion of a quantum instrument, a nonempty finite outcome family is the
-substantive case.
+\begin{align}
+    0
+        =\sum_{i\in\iota}P_i
+        &=I_r.
+    \label{eq:wolf_lecture_notes_errata_radon_nikodym_empty_contradiction}
+\end{align}
+This is false when the dilation space has nonzero dimension. A nonempty finite
+outcome family is also the substantive case for a quantum instrument.
 
 \paragraph{Classification.}
-This is a local well-posedness correction, not an assertion that the
-nonempty-case Radon--Nikodym theorem is false. The source's word ``set'' and
-summation notation leave the boundary implicit; Lean must state it.
+This is a local well-posedness correction, not a claim that the
+nonempty-family Radon--Nikodym theorem is false. The word ``set'' and the
+summation notation in the source leave the empty-family boundary implicit
+\cite{Wolf2012Quantum}; Lean must state it explicitly.
 
 \section{Suppressed zero multiplicities in the two-pure-state spectrum}
 \label{sec:two-pure-state-spectrum}
 
 \paragraph{Formalization trigger.}
-The Lean theorem
-\leanid{Projectivization.charpoly_add_pureStateMatrix_of_two_le} keeps the full
-characteristic polynomial of a sum of two normalized pure-state matrices. The
-correction is documented in
+The theorem
+\leanid{Projectivization.charpoly_add_pureStateMatrix_of_two_le} retains the
+full characteristic polynomial of the sum of two normalized pure-state
+matrices. The correction is documented in
 \path{docs/paper-gaps/wolf_ch01_two_pure_state_zero_multiplicities.tex}.
 
-\paragraph{Printed source and its role.}
-In the spectrum-preserver argument following Wigner's theorem, Chapter~1 says
-that the spectrum of two Hermitian rank-one projections $P,Q$ is
-\begin{equation}
-  1\pm\sqrt{\operatorname{tr}(PQ)}.
-\end{equation}
-These values are the two roots of the quadratic
-$(X-1)^2-\operatorname{tr}(PQ)$.
+\paragraph{Printed assertion.}
+In the spectrum-preserver argument following Wigner's theorem, Wolf states
+that the two potentially nonzero eigenvalues of the sum of two Hermitian
+rank-one projections $P,Q$ are
+\begin{align}
+    1\pm\sqrt{\tr(PQ)}.
+    \label{eq:wolf_lecture_notes_errata_two_pure_state_printed_values}
+\end{align}
+These values are the roots of
+\begin{align}
+    (X-1)^2-\tr(PQ).
+    \label{eq:wolf_lecture_notes_errata_two_pure_state_quadratic}
+\end{align}
+The statement appears in Chapter~1 of Ref.~\cite{Wolf2012Quantum}.
 
 \paragraph{Correction.}
-For $d\geq2$, the multiplicity-aware statement is
-\begin{equation}
-  \chi_{P+Q}(X)
-  =X^{d-2}\bigl((X-1)^2-\operatorname{tr}(PQ)\bigr).
-\end{equation}
-The factor $X^{d-2}$ supplies the guaranteed additional zero multiplicity.
-If $P=Q$, then the quadratic is $X(X-2)$ and contributes one further zero, so
-the total zero multiplicity is $d-1$. Dimension one has the separate formula
-$\chi_{P+Q}(X)=X-2$, and dimension zero has no projective pure states.
+For $d\geq2$, the multiplicity-aware identity is
+\begin{align}
+    \chi_{P+Q}(X)
+        &=X^{d-2}((X-1)^2-\tr(PQ)).
+    \label{eq:wolf_lecture_notes_errata_two_pure_state_charpoly}
+\end{align}
+The factor $X^{d-2}$ supplies the guaranteed additional zero multiplicity. If
+$P=Q$, then
+\begin{align}
+    (X-1)^2-\tr(PQ)
+        &=X(X-2),
+    \label{eq:wolf_lecture_notes_errata_two_pure_state_equal_projection_quadratic}
+\end{align}
+so the total zero multiplicity is $d-1$. In dimension one,
+\begin{align}
+    \chi_{P+Q}(X)
+        &=X-2.
+    \label{eq:wolf_lecture_notes_errata_two_pure_state_dimension_one}
+\end{align}
+In dimension zero, no projective pure states exist.
 
 \paragraph{Classification.}
-This is a local correction to the displayed spectrum shorthand, not a claim
-that Wolf's intended spectrum-preserver argument is false. The two displayed
-values contain the transition-probability information used in that argument;
-the characteristic polynomial records the complete multiplicity data.
+This is a local correction to the spectrum shorthand in
+Eq.~\ref{eq:wolf_lecture_notes_errata_two_pure_state_printed_values}, not a
+claim that the intended spectrum-preserver argument is false. The two
+displayed values retain the transition-probability information used in that
+argument \cite{Wolf2012Quantum}; the characteristic polynomial in
+Eq.~\ref{eq:wolf_lecture_notes_errata_two_pure_state_charpoly} records all
+multiplicities.
 
 \section{The rotation sign in the spinor exponential formula}
 \label{sec:spinor-rotation-sign}
 
 \paragraph{Formalization trigger.}
-The rotation exponential is formalized as
+The rotation exponential is formalized by
 \leanid{Wolf.spinorMatrix\_rotationExpSL2} in
-\doclink{QICLean/Channel/LorentzNormalForm/SpinorExponential}.  The discrepancy
+\doclink{QICLean/Channel/LorentzNormalForm/SpinorExponential}. The discrepancy
 is documented in
 \path{docs/paper-gaps/wolf_ch2_spinor_rotation_sign.tex}.
 
-\paragraph{Printed source and its role.}
-Wolf's Equation~(2.44), in
+\paragraph{Printed assertion.}
+Source Equation~(2.44), at
 \path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines~1070--1077,
 defines
-\begin{equation}
-  R_i=\sum_{j,k=1}^3\varepsilon_{ijk}\ketbra{k}{j}
-\end{equation}
-and prints
-\begin{equation}
-  e^{-i\vec n\cdot\vec\sigma/2}\longmapsto e^{-\vec n\cdot\vec R}.
-\end{equation}
+\begin{align}
+    R_i
+        &=\sum_{j,k=1}^{3}\varepsilon_{ijk}\ketbra{k}{j}
+    \label{eq:wolf_lecture_notes_errata_spinor_rotation_generator}
+\end{align}
+and prints the correspondence
+\begin{align}
+    e^{-i\vec n\cdot\vec\sigma/2}
+        &\longmapsto e^{-\vec n\cdot\vec R}.
+    \label{eq:wolf_lecture_notes_errata_spinor_printed_correspondence}
+\end{align}
+This is the rotation part of Equation~(2.44) in
+Ref.~\cite{Wolf2012Quantum}.
 
 \paragraph{Correction.}
-With the standard Pauli matrices and column-vector convention used in the
-notes, the corrected correspondence is
-\begin{equation}
-  e^{-i\vec n\cdot\vec\sigma/2}\longmapsto e^{+\vec n\cdot\vec R}.
-\end{equation}
-Equivalently, the printed Lorentz exponential corresponds to the spinor with
+With the standard Pauli matrices and the column-vector convention used in the
+notes, the correct correspondence is
+\begin{align}
+    e^{-i\vec n\cdot\vec\sigma/2}
+        &\longmapsto e^{+\vec n\cdot\vec R}.
+    \label{eq:wolf_lecture_notes_errata_spinor_corrected_correspondence}
+\end{align}
+Equivalently, the printed Lorentz exponential corresponds to a spinor with the
 opposite sign in its exponent.
 
-\paragraph{Why the correction is necessary.}
-For \(\vec n=(0,0,\theta)\), direct Pauli conjugation gives
-\begin{equation}
-  e^{-i\theta\sigma_3/2}\sigma_1e^{i\theta\sigma_3/2}
-   =\cos\theta\,\sigma_1+\sin\theta\,\sigma_2.
-\end{equation}
-The printed generator satisfies \(R_3\ket{1}=\ket{2}\), so this is the action
-of \(e^{+\theta R_3}\), whereas \(e^{-\theta R_3}\) rotates toward the
-negative second coordinate.
+\paragraph{Necessity of the correction.}
+For $\vec n=(0,0,\theta)$, direct Pauli conjugation gives
+\begin{align}
+    e^{-i\theta\sigma_3/2}\sigma_1e^{i\theta\sigma_3/2}
+        &=\cos\theta\,\sigma_1+\sin\theta\,\sigma_2.
+    \label{eq:wolf_lecture_notes_errata_spinor_pauli_conjugation}
+\end{align}
+The generator in
+Eq.~\ref{eq:wolf_lecture_notes_errata_spinor_rotation_generator} satisfies
+\begin{align}
+    R_3\ket{1}
+        &=\ket{2}.
+    \label{eq:wolf_lecture_notes_errata_spinor_generator_action}
+\end{align}
+Therefore
+Eq.~\ref{eq:wolf_lecture_notes_errata_spinor_pauli_conjugation} is the action
+of $e^{+\theta R_3}$, whereas $e^{-\theta R_3}$ rotates toward the negative
+second coordinate.
 
 \paragraph{Classification.}
-This is a genuine source sign error.  The formal theorem follows the actual
-congruence action; the boost formula in the same equation is unchanged.
+This is a source sign error. The formal theorem follows the actual congruence
+action. The boost formula in the same source equation is unchanged
+\cite[Equation~(2.44)]{Wolf2012Quantum}.
 
 \section{The two boundary errors in Theorem~6.3}
 \label{sec:theorem-6-3}
@@ -413,267 +611,418 @@ congruence action; the boost formula in the same equation is unchanged.
 The declarations
 \leanid{exists_wolfTheorem63_of_irreducible_positive} and
 \leanid{exists_wolfTheorem63_of_irreducible_positive_of_ne_zero} formalize
-Wolf Theorem~6.3 for arbitrary positive maps. The declarations
+Wolf's Theorem~6.3 for arbitrary positive maps. The declarations
 \leanid{lowerCollatzWielandtValue},
 \leanid{upperCollatzWielandtValue}, and
 \leanid{lowerCollatzWielandtGlobal\_eq\_upperCollatzWielandtGlobal}
-formalize the corrected pointwise and global quantities. The two corrections
-are documented in
+formalize the corrected pointwise and global quantities. Both corrections are
+documented in
 \path{docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex}.
 
 \paragraph{The global upper quantity.}
-At local source lines~617--619, after defining the pointwise lower and upper
-functionals $r(X)$ and $\widetilde r(X)$, the notes print
-\begin{equation}\tag{printed}
-  r=\sup_{X\geq0}r(X),\qquad
-  \widetilde r=\sup_{X\geq0}\widetilde r(X),\qquad
-  r\geq\widetilde r.
-\end{equation}
-The corrected Collatz--Wielandt pair is
-\begin{equation}\tag{corrected}
-  r=\sup_{X\geq0,\,X\neq0}r(X),\qquad
-  \widetilde r=\inf_{X\geq0,\,X\neq0}\widetilde r(X).
-\end{equation}
+After defining the pointwise lower and upper functionals $r(X)$ and
+$\widetilde r(X)$, local source lines~617--619 print
+\begin{align}
+    r
+        &=\sup_{X\geq0}r(X),
+    \label{eq:wolf_lecture_notes_errata_theorem63_printed_lower_global}\\
+    \widetilde r
+        &=\sup_{X\geq0}\widetilde r(X),
+    \label{eq:wolf_lecture_notes_errata_theorem63_printed_upper_global}\\
+    r
+        &\geq\widetilde r.
+    \label{eq:wolf_lecture_notes_errata_theorem63_printed_global_order}
+\end{align}
+These formulas occur in the proof of Theorem~6.3 of
+Ref.~\cite{Wolf2012Quantum}. The corrected Collatz--Wielandt quantities are
+\begin{align}
+    r
+        &=\sup_{\substack{X\geq0\\X\neq0}}r(X),
+    \label{eq:wolf_lecture_notes_errata_theorem63_correct_lower_global}\\
+    \widetilde r
+        &=\inf_{\substack{X\geq0\\X\neq0}}\widetilde r(X).
+    \label{eq:wolf_lecture_notes_errata_theorem63_correct_upper_global}
+\end{align}
 For an irreducible positive map, both extrema are attained at the same
-positive-definite eigenvector and are equal. Thus the second ``sup'' and the
-displayed reversed inequality are two local source errors. Equality is
-not asserted pointwise for arbitrary $X$. In the extended-real formulation,
-$r(0)=+\infty$ and $\widetilde r(0)=-\infty$; for every nonzero $X\geq0$ one
-has $r(X)\leq\widetilde r(X)$, with equality at positive eigenvectors as used
-at local source lines~649--651.
+positive-definite eigenvector and are equal. Thus the second supremum and the
+reversed inequality in
+Eq.~\ref{eq:wolf_lecture_notes_errata_theorem63_printed_global_order} are
+source errors. Equality is not a pointwise statement for arbitrary $X$. In the
+extended-real formulation,
+\begin{align}
+    r(0)&=+\infty,
+    \label{eq:wolf_lecture_notes_errata_theorem63_lower_at_zero}\\
+    \widetilde r(0)&=-\infty,
+    \label{eq:wolf_lecture_notes_errata_theorem63_upper_at_zero}
+\end{align}
+whereas every nonzero $X\geq0$ satisfies
+\begin{align}
+    r(X)
+        &\leq\widetilde r(X).
+    \label{eq:wolf_lecture_notes_errata_theorem63_pointwise_order}
+\end{align}
+Equality holds at positive eigenvectors, as used at local source
+lines~649--651 \cite{Wolf2012Quantum}.
 
 \paragraph{The one-dimensional zero map.}
-The theorem assumes only that $T:\MN{D}\to\MN{D}$ is irreducible and positive,
-but item~2 and the proof require a strictly positive Perron value. On
-$\MN{1}$, the zero map is positive and irreducible because $0$ and $\Id$ are
-the only orthogonal projections. Its spectral radius is zero. Hence the
-assumption-free conclusion must allow $r=0$ while retaining the
-positive-definite eigenvector $X>0$. Wolf's printed $r>0$ form becomes valid
-after adding $T\neq0$. For $D>1$, irreducibility itself excludes the zero map.
+Theorem~6.3 assumes only that $T:\MN{D}\to\MN{D}$ is positive and irreducible,
+but its second item and proof require a strictly positive Perron value
+\cite[Theorem~6.3]{Wolf2012Quantum}. On $\MN{1}$, the zero map is positive and
+irreducible because $0$ and $\Id$ are the only orthogonal projections. Its
+spectral radius is
+\begin{align}
+    r(T)
+        &=0.
+    \label{eq:wolf_lecture_notes_errata_theorem63_zero_map_radius}
+\end{align}
+The theorem without a nonzero-map hypothesis must therefore allow $r=0$ while
+retaining a positive-definite eigenvector $X>0$. The printed conclusion $r>0$
+becomes valid after adding $T\neq0$. When $D>1$, irreducibility itself excludes
+the zero map.
 
 \paragraph{Classification.}
-These are two local false-source corrections exposed by the positive-map
-formalization. They do not alter the proof for a nonzero irreducible map once
-the second global extremum is read as an infimum.
+These are two local source errors exposed by the positive-map formalization.
+They do not alter the proof for a nonzero irreducible map once the second
+global extremum is interpreted as the infimum in
+Eq.~\ref{eq:wolf_lecture_notes_errata_theorem63_correct_upper_global}.
 
 \section{The missing order hypothesis in the unitary comparison}
 \label{sec:unitary-comparison}
 
 \paragraph{Formalization trigger.}
-The correction and the exact source proof route are documented in
-\path{docs/paper-gaps/wolf_ch5_unitary_comparison_missing_order.tex}.  The
-cross-matrix Weyl comparison is proved by
+The correction and the source proof route are documented in
+\path{docs/paper-gaps/wolf_ch5_unitary_comparison_missing_order.tex}. The
+cross-matrix Weyl comparison is formalized by
 \leanid{LinearMap.IsSymmetric.eigenvalues\_le\_of\_sub\_isPositive}, and the
 corrected proposition is formalized by
 \leanid{Matrix.IsHermitian.exists\_unitary\_cfc\_le\_cfc\_of\_le}.
 
-\paragraph{Original statement and correction.}
+\paragraph{Printed assertion and correction.}
 Immediately after stating Weyl monotonicity for Hermitian matrices satisfying
-$A\le B$, Wolf's Proposition~5.3 drops that hypothesis. Its corrected form,
-with the unitary chosen before the interval and the function, is
+$A\leq B$, Proposition~5.3 omits this order hypothesis
+\cite[Proposition~5.3]{Wolf2012Quantum}. The corrected statement, with the
+unitary chosen before the interval and the function, is
 \begin{align}
-  A\le B\quad\Longrightarrow\quad
-  \exists U\in M_d(\C)\ \Bigl[
-  &U^\dagger U=UU^\dagger=\Id\ \land
-    \forall I\subseteq\mathbb R\ \forall f:I\to\mathbb R, \notag\\
-  &\bigl(I\text{ is an interval}\ \land
-    \operatorname{spec}(A)\cup\operatorname{spec}(B)\subseteq I\ \land
-    f\text{ is non-decreasing on }I\bigr) \notag\\
-  &\hspace{7em}\Longrightarrow f(A)\le U f(B)U^\dagger\Bigr].
-  \tag{corrected Wolf (5.57)}
+    A\leq B
+        \Longrightarrow
+        \exists U\in M_d(\mathbb C)\ \Bigl[
+        &U^\dagger U=UU^\dagger=\Id
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_unitary}\\
+        &{}\land
+        \forall I\subseteq\mathbb R\ \forall f:I\to\mathbb R,\nonumber\\
+        &\bigl(      I\text{ is an interval}
+          \land
+          \operatorname{spec}(A)\cup\operatorname{spec}(B)\subseteq I
+          \land
+          f\text{ is non-decreasing on }I
+          \bigr)\nonumber\\
+        &\hspace{4em}\Longrightarrow
+          f(A)\leq Uf(B)U^\dagger
+        \Bigr].
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_corrected_statement}
 \end{align}
-In dimension one, $A=[1]$, $B=[0]$, $I=[0,1]$, and $f(x)=x$ contradict the
-printed unqualified claim: every unitary is a phase, so its conclusion is
-$1\le0$. The hypothesis $A\le B$ is therefore indispensable.
+This is the corrected form of source Equation~(5.57)
+\cite[Equation~(5.57)]{Wolf2012Quantum}.
+
+In dimension one, take
+\begin{align}
+    A&=[1],
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_counterexample_a}\\
+    B&=[0],
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_counterexample_b}\\
+    I&=[0,1],
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_counterexample_interval}\\
+    f(x)&=x.
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_counterexample_function}
+\end{align}
+Every unitary is a phase, so the unqualified printed conclusion becomes
+\begin{align}
+    1&\leq0,
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_counterexample_contradiction}
+\end{align}
+which is false. The hypothesis $A\leq B$ is indispensable.
 
 \paragraph{Source proof route.}
-Under $A\le B$, Equation~(5.56) gives
-$\lambda_j^\downarrow(A)\le\lambda_j^\downarrow(B)$ for every $j$ because
-the smallest eigenvalue of $B-A$ is nonnegative.  Monotonicity of $f$ preserves
-these scalar inequalities.  Choosing decreasingly ordered eigenvector
-unitaries $V_A,V_B$ and setting $U=V_A V_B^\dagger$ then transports the
-entrywise diagonal inequality to
-$f(A)\le Uf(B)U^\dagger$.  This unitary depends only on the two ordered
-eigenbases, so it works simultaneously for every admissible $f$, as required
-by the quantifier order of the printed proposition. In the formal proof, the
-cross-matrix eigenvalue comparison is established by the intersection of the
-span of the first $j+1$ ordered eigenvectors of $A$ with the span of the last
-$d-j$ ordered eigenvectors of $B$; it is not assumed as a pointwise
-comparison.
+Under $A\leq B$, source Equation~(5.56) gives
+\begin{align}
+    \lambda_j^\downarrow(A)
+        &\leq\lambda_j^\downarrow(B)
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_eigenvalue_order}
+\end{align}
+for every $j$, because the smallest eigenvalue of $B-A$ is nonnegative
+\cite[Equation~(5.56)]{Wolf2012Quantum}. Monotonicity of $f$ gives
+\begin{align}
+    f(\lambda_j^\downarrow(A))
+        &\leq f(\lambda_j^\downarrow(B)).
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_function_order}
+\end{align}
+Choose unitaries $V_A,V_B$ whose columns are eigenvectors in decreasing
+eigenvalue order, and define
+\begin{align}
+    U
+        &=V_AV_B^\dagger.
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_basis_unitary}
+\end{align}
+Transporting
+Eq.~\ref{eq:wolf_lecture_notes_errata_unitary_comparison_function_order}
+through these eigenbases yields
+\begin{align}
+    f(A)
+        &\leq Uf(B)U^\dagger.
+    \label{eq:wolf_lecture_notes_errata_unitary_comparison_transported_order}
+\end{align}
+The unitary in
+Eq.~\ref{eq:wolf_lecture_notes_errata_unitary_comparison_basis_unitary}
+depends only on the two ordered eigenbases, so it works for every admissible
+$f$, as required by the quantifier order in Proposition~5.3
+\cite{Wolf2012Quantum}. The formal cross-matrix eigenvalue comparison uses the
+intersection of the span of the first $j+1$ ordered eigenvectors of $A$ with
+the span of the last $d-j$ ordered eigenvectors of $B$; it does not assume a
+pointwise comparison.
 
 \paragraph{Classification.}
-This is a genuine source error: the printed theorem is false, while its
-intended corrected statement follows by exactly the preceding argument once
-$A\le B$ is retained.
+This is a source error. The printed theorem is false, whereas the corrected
+statement in
+Eq.~\ref{eq:wolf_lecture_notes_errata_unitary_comparison_corrected_statement}
+follows from the preceding source argument once $A\leq B$ is retained.
 
 \section{The subunital logarithm clause in Corollary~5.2}
 \label{sec:cor52-log}
 
 \paragraph{Formalization trigger.}
-The proved logarithmic Jensen declarations
+The logarithmic Jensen declarations
 \leanid{posMap_log_concave_jensen} and
 \leanid{IsPositiveMap.log_concave_jensen}, in
 \doclink{QICLean/Analysis/LiebConcavity} and
 \doclink{QICLean/Channel/Schwarz/OperatorConvexity}, assume that the positive
-map is unital.  The discrepancy is documented in
+map is unital. The discrepancy is documented in
 \path{docs/paper-gaps/wolf_ch5_operator_jensen_lieb.tex}.
 
-\paragraph{Original statement and its role.}
-Chapter~5, Corollary~5.2, in
-\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex}, lines~761--769,
-places all three clauses under the common hypothesis that $T$ is positive and
-$T(\one)\le\one$.  Its third clause prints
-\begin{equation}\tag{printed item 3}
-  T(\log A)\le\log(T(A))\qquad(A>0).
-\end{equation}
+\paragraph{Printed assertion.}
+Chapter~5, Corollary~5.2 places three conclusions under the common hypothesis
+that $T$ is positive and $T(\one)\leq\one$. Its third conclusion is
+\begin{align}
+    T(\log A)
+        &\leq\log(T(A)),
+        \qquad A>0.
+    \label{eq:wolf_lecture_notes_errata_log_printed_subunital_clause}
+\end{align}
+The local source is
+\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex},
+lines~761--769; see Corollary~5.2 of Ref.~\cite{Wolf2012Quantum}.
 
 \paragraph{Correction.}
-The proved logarithmic statement replaces subunitality by unitality:
-\begin{equation}\tag{corrected item 3}
-  T(\one)=\one,\qquad A>0
-  \quad\Longrightarrow\quad
-  T(\log A)\le\log(T(A)).
-\end{equation}
-The two real-power clauses in the same corollary remain valid with Wolf's
-subunital hypothesis.  The live Jensen declarations from which they follow use
-that exact assumption; this correction does not alter either power clause.
+The proved logarithmic statement requires unitality:
+\begin{align}
+    T(\one)=\one,\qquad A>0
+        &\Longrightarrow
+        T(\log A)\leq\log(T(A)).
+    \label{eq:wolf_lecture_notes_errata_log_corrected_unital_clause}
+\end{align}
+The two real-power clauses in the same corollary remain valid under the
+subunital hypothesis printed by Wolf \cite[Corollary~5.2]{Wolf2012Quantum}.
+The live Jensen declarations use that hypothesis for the power clauses, so
+the logarithmic correction does not alter them.
 
-\paragraph{Why the correction is necessary.}
-In dimension one, fix $0<c<1$, take the positive map $T_c(x)=cx$, and set
-$A=1$.  Then $T_c(1)=c\le1$, but
-\begin{equation}
-  T_c(\log 1)=0>\log c=\log(T_c(1)).
-\end{equation}
-Thus the printed inequality fails even for a strictly positive scalar map.
-The boundary hypothesis in Wolf's preceding positive-map monotonicity theorem
-also signals the problem: it assumes a function on an interval containing zero
-with $f(0)\ge0$, whereas the logarithm is unbounded below at zero.
+\paragraph{Necessity of the correction.}
+Fix $0<c<1$ and consider the one-dimensional positive map
+\begin{align}
+    T_c(x)
+        &=cx.
+    \label{eq:wolf_lecture_notes_errata_log_scalar_map}
+\end{align}
+For $A=1$,
+\begin{align}
+    T_c(1)
+        &=c\leq1,
+    \label{eq:wolf_lecture_notes_errata_log_scalar_subunital}\\
+    T_c(\log1)
+        &=0,
+    \label{eq:wolf_lecture_notes_errata_log_scalar_left_side}\\
+    \log(T_c(1))
+        &=\log c<0.
+    \label{eq:wolf_lecture_notes_errata_log_scalar_right_side}
+\end{align}
+Hence
+\begin{align}
+    T_c(\log1)
+        &>\log(T_c(1)),
+    \label{eq:wolf_lecture_notes_errata_log_scalar_contradiction}
+\end{align}
+so the printed clause fails even for a strictly positive scalar map. Wolf's
+preceding positive-map monotonicity theorem also requires a function on an
+interval containing zero with $f(0)\geq0$, whereas the logarithm is unbounded
+below at zero \cite{Wolf2012Quantum}.
 
 \paragraph{Classification.}
-This is a genuine source error in the common hypothesis of Corollary~5.2.  The
-formal theorem proves the corrected unital clause and does not preserve the
-false subunital target.
+This is a source error in the common hypothesis of Corollary~5.2. The formal
+theorem proves
+Eq.~\ref{eq:wolf_lecture_notes_errata_log_corrected_unital_clause} rather than
+the false subunital target.
 
 \section{Formalization gaps that are not source corrections}
 
-The following Wolf-specific paper-gap notes are intentionally \emph{not}
-errata entries:
+The following Wolf-specific notes record formalization scope or dependency
+boundaries rather than source errata:
 \begin{itemize}
-  \item \path{wolf_prop28_square_case.tex}: the current normal-form theorem is
-    the square-dimensional special case of Wolf's rectangular statement;
-  \item \path{wolf_lemma_3_1_top_index_scope.tex},
-    \path{wolf_prop_3_2_top_index_scope.tex}, and
-    \path{wolf_t_eta_top_index_scope.tex}: endpoint Schmidt-rank cases that
-    were formalization scope gaps and are now resolved;
-  \item \path{wolf_reduction_criterion_schmidt_premise.tex}: the
-    Schmidt-number premise was a formalization dependency and is now resolved;
-  \item \path{wolf_ex3_1_choi_positivity_subcase_scope.tex}: the development
-    proves selected parameter families, not the full source range;
-  \item \path{wolf_cor67_maximal_support_restriction.tex}: this describes a
-    formalization boundary and its resolution, not a false printed theorem.
+    \item \path{wolf_prop28_square_case.tex} records that the current
+          normal-form theorem is the square-dimensional special case of
+          Wolf's rectangular statement \cite{Wolf2012Quantum}.
+    \item \path{wolf_lemma_3_1_top_index_scope.tex},
+          \path{wolf_prop_3_2_top_index_scope.tex}, and
+          \path{wolf_t_eta_top_index_scope.tex} record endpoint Schmidt-rank
+          cases that were formalization scope gaps and are now resolved.
+    \item \path{wolf_reduction_criterion_schmidt_premise.tex} records a
+          formalization dependency on the Schmidt-number premise that is now
+          resolved.
+    \item \path{wolf_ex3_1_choi_positivity_subcase_scope.tex} records that the
+          development proves selected parameter families rather than the full
+          source range.
+    \item \path{wolf_cor67_maximal_support_restriction.tex} records a resolved
+          formalization boundary rather than a false printed theorem.
 \end{itemize}
 
 \section{Conclusion}
 
-At present the formalization-derived record contains source errors in
+The formalization-derived record identifies source errors in
 Sections~\ref{sec:lorentz}, \ref{sec:kramers-ii},
 \ref{sec:pauli-block-truncation}, \ref{sec:spinor-rotation-sign},
 \ref{sec:theorem-6-3}, \ref{sec:unitary-comparison}, and
-\ref{sec:cor52-log}; one normalization typo
-(Section~\ref{sec:ordered-cp-inverse}), one explicit boundary convention
-(Section~\ref{sec:radon-nikodym}), and one local correction to a spectrum
-shorthand (Section~\ref{sec:two-pure-state-spectrum}). These are the
-corrections exposed by the Lean development and its source-faithfulness
-audits.
+\ref{sec:cor52-log}. It also identifies one normalization typo in
+Section~\ref{sec:ordered-cp-inverse}, one explicit boundary convention in
+Section~\ref{sec:radon-nikodym}, and one local correction to a spectrum
+shorthand in Section~\ref{sec:two-pure-state-spectrum}. These are the
+corrections exposed by the Lean development and its source-faithfulness audits
+of Ref.~\cite{Wolf2012Quantum}.
 
 \appendix
 \section{Corrected errors in the local LaTeX transcription}
 \label{app:transcription}
 
-This appendix is deliberately placed last.  Its entries were found by comparing
-the source PDFs with the local transcription; they are \emph{not} claims that a
-Lean proof forced a correction to Wolf's statement.  Each was a mathematically
-material transcription error and has now been corrected in the local TeX.
+This appendix records errors found by comparing the source PDFs with the local
+transcription. They are not claims that a Lean proof forced a correction to
+Wolf's statements. Each error was mathematically material and has been
+corrected in the local TeX source.
 
-\subsection{The Choi marginal: $\tau_B$ versus $\operatorname{tr}_B\tau$}
+\subsection{The Choi marginal: $\tau_B$ versus $\tr_B\tau$}
 
-\textbf{Source context.}  In Chapter~2, immediately after deriving the
-coordinate expression for the Choi--Jamiolkowski correspondence in
-Eq.~(2.4), Wolf explains the channel--state dictionary.  For a channel
-$T:M_d\to M_{d'}$, the first factor is the output factor $A$ and the second is
-the untouched input/reference factor $B$.  The PDF (book p.~34) states:
+\paragraph{Source context.}
+Immediately after deriving the coordinate form of the Choi--Jamiolkowski
+correspondence in source Equation~(2.4), Wolf describes the channel--state
+dictionary \cite[Equation~(2.4)]{Wolf2012Quantum}. For a channel
+$T:M_d\to M_{d'}$, the first tensor factor is the output factor $A$, and the
+second is the untouched input or reference factor $B$. The PDF on book p.~34
+states:
 \begin{quote}
 ``If $T$ is a quantum channel in the Schr\"odinger picture, then $\tau$ is a
 density operator with reduced density matrix $\tau_B=\one/d$.''
 \end{quote}
-Thus $\tau_B$ denotes $\operatorname{tr}_A\tau$.
+Thus $\tau_B$ denotes $\tr_A\tau$.
 
-\textbf{Transcription and correction.}  A previous local transcription at
-\path{ch02_representations.tex:113--114} changed the displayed marginal to
-$\operatorname{tr}_B\tau=\one/d$.  It has been corrected to retain Wolf's
-notation; equivalently, one may spell out
-\begin{equation}
-  \tau_B=\operatorname{tr}_A\tau=\frac{\one_d}{d}.
-\end{equation}
+\paragraph{Transcription and correction.}
+A previous local transcription at
+\path{ch02_representations.tex:113--114} replaced this marginal by
+$\tr_B\tau=\one/d$. The source-faithful identity is
+\begin{align}
+    \tau_B
+        =\tr_A\tau
+        &=\frac{\one_d}{d}.
+    \label{eq:wolf_lecture_notes_errata_transcription_choi_correct_marginal}
+\end{align}
 
-\textbf{Reason.}  Trace preservation is equivalent to the last identity.  The
-other marginal satisfies $\operatorname{tr}_B\tau=T(\one)/d$ and is maximally
-mixed precisely when $T$ is unital.  Hence the local transcription accidentally
-turns a trace-preserving assertion into a stronger and generally false unitality
-assertion.
+\paragraph{Reason.}
+Trace preservation is equivalent to
+Eq.~\ref{eq:wolf_lecture_notes_errata_transcription_choi_correct_marginal}.
+The other marginal is
+\begin{align}
+    \tr_B\tau
+        &=\frac{T(\one)}{d}.
+    \label{eq:wolf_lecture_notes_errata_transcription_choi_other_marginal}
+\end{align}
+It is maximally mixed precisely when $T$ is unital. The former transcription
+therefore changed a trace-preserving condition into a stronger condition that
+is generally false.
 
 \subsection{The conjugation in the proof of Kramer's theorem}
 
-\textbf{Source context.}  Chapter~3 proves Kramer's theorem for a Hermitian
-$H$ commuting with an anti-unitary symmetry $T=\Gamma V$, where $V^T=-V$.
-After showing that $V^\dagger\lvert\overline\psi\rangle$ is another eigenvector,
-the PDF (book p.~62, Eq.~(3.29)) establishes orthogonality by the chain
-\begin{equation}\tag{PDF (3.29)}
- \langle\psi\mid V^\dagger\mid\overline\psi\rangle
- =-\langle\psi\mid\overline V\mid\overline\psi\rangle
- =-\overline{\langle\overline\psi\mid V\mid\psi\rangle}.
-\end{equation}
-The final conjugation is then identified with
-$\langle\psi\mid V^\dagger\mid\overline\psi\rangle$, proving that this scalar
-is its own negative.
+\paragraph{Source context.}
+Chapter~3 proves Kramer's theorem for a Hermitian matrix $H$ commuting with an
+anti-unitary symmetry $T=\Gamma V$, where $V^T=-V$
+\cite{Wolf2012Quantum}. After showing that
+$V^\dagger\ket{\overline\psi}$ is another eigenvector, source
+Equation~(3.29) proves orthogonality through
+\begin{align}
+    \bra{\psi}V^\dagger\ket{\overline\psi}
+        &=-\bra{\psi}\overline V\ket{\overline\psi},
+    \label{eq:wolf_lecture_notes_errata_transcription_kramers_first_equality}\\
+    \bra{\psi}\overline V\ket{\overline\psi}
+        &=\overline{\bra{\overline\psi}V\ket{\psi}}.
+    \label{eq:wolf_lecture_notes_errata_transcription_kramers_conjugation}
+\end{align}
+This is Equation~(3.29) in Ref.~\cite{Wolf2012Quantum}. The final conjugate is
+then identified with
+$\bra{\psi}V^\dagger\ket{\overline\psi}$, so the scalar equals its own
+negative.
 
-\textbf{Transcription and correction.}  A previous local TeX version at
-\path{ch03_positive_not_completely.tex:515} omitted the outer bar in the final
-term.  It has been corrected to the source-faithful and mathematically
-necessary term $-\overline{\langle\overline\psi\mid V\mid\psi\rangle}$.
+\paragraph{Transcription and correction.}
+A previous local TeX version at
+\path{ch03_positive_not_completely.tex:515} omitted the outer conjugation in
+the last term. The corrected term is
+\begin{align}
+    -\overline{\bra{\overline\psi}V\ket{\psi}}.
+    \label{eq:wolf_lecture_notes_errata_transcription_kramers_correct_term}
+\end{align}
 
-\textbf{Reason.}  Componentwise,
-\begin{equation}
- \langle\psi\mid\overline V\mid\overline\psi\rangle
- =\overline{\langle\overline\psi\mid V\mid\psi\rangle}.
-\end{equation}
-Without the conjugation the equality is false in general, and the final
-self-cancellation in the orthogonality argument does not follow.
+\paragraph{Reason.}
+The componentwise identity in
+Eq.~\ref{eq:wolf_lecture_notes_errata_transcription_kramers_conjugation}
+shows that the conjugation is necessary. Without it, the equality is false in
+general, and the final self-cancellation does not follow.
 
 \subsection{The order of the conjugated factors in Example~5.3}
 
-\textbf{Source context.}  Chapter~5 studies the adjoint of the map
-$T(X)=\tfrac12(X^T+\tfrac12\operatorname{tr}(X)\one)$ as an example of a
-Schwarz map that need not be $2$-positive.  In the traceless case, the PDF
-(book p.~77, Eq.~(5.10)) subtracts the product
-\begin{equation}\tag{PDF (5.10), relevant term}
-  \frac14\,\overline A A^T
-\end{equation}
-from $T^*(A^\dagger A)$.
+\paragraph{Source context.}
+Chapter~5 considers the adjoint of the map
+\begin{align}
+    T(X)
+        &=\frac12\left(X^T+\frac12\tr(X)\one\right)
+    \label{eq:wolf_lecture_notes_errata_transcription_example53_map}
+\end{align}
+as an example of a Schwarz map that need not be $2$-positive
+\cite[Example~5.3]{Wolf2012Quantum}. For traceless $A$, source
+Equation~(5.10) subtracts
+\begin{align}
+    \frac14\,\overline A A^T
+    \label{eq:wolf_lecture_notes_errata_transcription_example53_source_product}
+\end{align}
+from $T^*(A^\dagger A)$
+\cite[Equation~(5.10)]{Wolf2012Quantum}.
 
-\textbf{Transcription and correction.}  A previous local TeX version at
-\path{ch05_schwarz_inequalities.tex:373,377} instead wrote
-$A\overline A^{\,T}$.  It has been corrected to $\overline A A^T$, as in the
-source.
+\paragraph{Transcription and correction.}
+A previous local TeX version at
+\path{ch05_schwarz_inequalities.tex:373,377} wrote
+$A\overline A^{\,T}$. It has been corrected to
+Eq.~\ref{eq:wolf_lecture_notes_errata_transcription_example53_source_product}.
 
-\textbf{Reason.}  Since $T^*(A)=A^T/2$ for traceless $A$,
-\begin{equation}
- T^*(A^\dagger)T^*(A)
- =\frac14(A^\dagger)^T A^T
- =\frac14\,\overline A A^T.
-\end{equation}
-The transcribed matrix $A\overline A^{\,T}=AA^\dagger$ is generally a
-different operator, even though both matrices are positive semidefinite and
-the final positivity conclusion in the example survives.
+\paragraph{Reason.}
+For traceless $A$,
+\begin{align}
+    T^*(A)
+        &=\frac12A^T,
+    \label{eq:wolf_lecture_notes_errata_transcription_example53_adjoint}\\
+    T^*(A^\dagger)T^*(A)
+        &=\frac14(A^\dagger)^T A^T,
+    \label{eq:wolf_lecture_notes_errata_transcription_example53_product_first}\\
+    T^*(A^\dagger)T^*(A)
+        &=\frac14\,\overline A A^T.
+    \label{eq:wolf_lecture_notes_errata_transcription_example53_product_correct}
+\end{align}
+The transcribed matrix
+$A\overline A^{\,T}=AA^\dagger$ is generally different. Both matrices are
+positive semidefinite, so the final positivity conclusion in the example
+survives.
+
+\bibliographystyle{alpha}
+\bibliography{references}
 
 \end{document}

@@ -15,95 +15,146 @@
 \maketitle
 \gapnote{local-correction}{resolved}
 
-Let \(\mathcal H_A\), \(\mathcal H_X\), and \(\mathcal H_B\) be
-finite-dimensional Hilbert spaces, let
-\(K_{AXB}\subseteq\mathcal H_A\otimes\mathcal H_X\otimes\mathcal H_B\),
-and let \(P_{AXB}\) be the orthogonal projector onto \(K_{AXB}\).  Define
-\[
-  \rho_{AX}=\operatorname{tr}_B P_{AXB},
-  \qquad
-  \rho_{XB}=\operatorname{tr}_A P_{AXB}.
-\]
-The two marginal supports are \(\operatorname{ran}\rho_{AX}\) and
-\(\operatorname{ran}\rho_{XB}\), with orthogonal projectors \(P_{AX}\) and
-\(P_{XB}\), respectively.  For an operator on \(AX\) or \(XB\), a hat
-denotes its lift to the full tripartite space; in particular,
-\[
-  \widehat P_{AX}=P_{AX}\otimes I_B,
-  \qquad
-  \widehat P_{XB}=I_A\otimes P_{XB},
-\]
-and likewise for \(\widehat\rho_{AX}\) and \(\widehat\rho_{XB}\).
+Let $\mathcal H_A$, $\mathcal H_X$, and $\mathcal H_B$ be finite-dimensional
+Hilbert spaces. Let
+$K_{AXB}\subseteq\mathcal H_A\otimes\mathcal H_X\otimes\mathcal H_B$, and let
+$P_{AXB}$ be the orthogonal projector onto $K_{AXB}$. Define the reduced
+operators by
+\begin{align}
+    \rho_{AX}
+        &= \tr_B(P_{AXB}),
+    \label{eq:cpsvdecor_reduced_operator_ax}\\
+    \rho_{XB}
+        &= \tr_A(P_{AXB}).
+    \label{eq:cpsvdecor_reduced_operator_xb}
+\end{align}
+The two marginal supports are $\operatorname{ran}(\rho_{AX})$ and
+$\operatorname{ran}(\rho_{XB})$, with orthogonal projectors $P_{AX}$ and
+$P_{XB}$, respectively. For an operator on $AX$ or $XB$, a hat denotes its
+lift to the full tripartite space. In particular,
+\begin{align}
+    \widehat P_{AX}
+        &= P_{AX}\otimes\Id_B,
+    \label{eq:cpsvdecor_lifted_projector_ax}\\
+    \widehat P_{XB}
+        &= \Id_A\otimes P_{XB}.
+    \label{eq:cpsvdecor_lifted_projector_xb}
+\end{align}
+The same convention defines $\widehat\rho_{AX}$ and
+$\widehat\rho_{XB}$.
 
 \section{The source step}
 
-In the proof of Proposition~D.3, the source chooses orthonormal bases
-\(\{\alpha_i\}\) and \(\{\beta_i\}\) of the two marginal supports and
-asserts that every basis vector is a single partial contraction,
+In the proof of Proposition~D.3 of
+Ref.~\cite[lines 2236--2242]{Cirac2016MPDO_arXiv}, the source chooses
+orthonormal bases $\{\alpha_i\}_i$ and $\{\beta_i\}_i$ of the two marginal
+supports and asserts that each basis vector is a single partial contraction:
 \begin{align}
-  \alpha_i=\langle\widetilde b_i\mid\varphi_{b,i}\rangle,
-  \qquad
-  \beta_i=\langle\widetilde a_i\mid\varphi_{a,i}\rangle,
+    \alpha_i
+        &= \bra{\widetilde b_i}\varphi_{b,i},
+    \label{eq:cpsvdecor_source_single_contraction_ax}\\
+    \beta_i
+        &= \bra{\widetilde a_i}\varphi_{a,i},
+    \label{eq:cpsvdecor_source_single_contraction_xb}
 \end{align}
-with \(\varphi_{a,i},\varphi_{b,i}\in K_{AXB}\).
-This is the passage at source lines 2236--2242.
+where $\varphi_{a,i},\varphi_{b,i}\in K_{AXB}$ and the contractions act on the
+corresponding outer tensor factors.
 
 The support of a reduced operator is spanned by partial contractions, but an
-arbitrary vector in that span need not itself be one partial contraction.
-Thus the displayed single-contraction choice does not follow from the
+arbitrary vector in that span need not equal one partial contraction. Thus
+Eqs.~\ref{eq:cpsvdecor_source_single_contraction_ax} and
+\ref{eq:cpsvdecor_source_single_contraction_xb} do not follow from the
 definition of marginal support.
 
 \section{Local correction}
 
-The subsequent matrix-unit argument only needs a factorization of each
-marginal support projector through the corresponding reduced operator.  For
-the elementary matrix units on the outer factors, write
-\(E^A_{ak}=\lvert a\rangle\langle k\rvert\) and
-\(E^B_{bk}=\lvert b\rangle\langle k\rvert\).  The reduced operators have the
+The subsequent matrix-unit argument needs only a factorization of each
+marginal support projector through the corresponding reduced operator. Fix
+orthonormal bases of $\mathcal H_A$ and $\mathcal H_B$, and define the
+elementary matrix units on the outer factors by
+\begin{align}
+    E^A_{ak}
+        &= \ketbra{a}{k},
+    \label{eq:cpsvdecor_matrix_unit_a}\\
+    E^B_{bk}
+        &= \ketbra{b}{k}.
+    \label{eq:cpsvdecor_matrix_unit_b}
+\end{align}
+When these matrix units occur in products with $P_{AXB}$, they are lifted by
+the identity on the other tensor factors. The reduced operators then have the
 exact expansions
 \begin{align}
-  \widehat\rho_{AX}
-    &=\sum_{b,k} E^B_{bk}P_{AXB}E^B_{kb},\\
-  \widehat\rho_{XB}
-    &=\sum_{a,k} E^A_{ak}P_{AXB}E^A_{ka}.
-\end{align}
-If \(g(0)=0\) and \(g(x)=x^{-1}\) for \(x\ne0\), functional calculus gives
-\begin{align}
-  P_{AX}=g(\rho_{AX})\rho_{AX}=\rho_{AX}g(\rho_{AX}),\\
-  P_{XB}=g(\rho_{XB})\rho_{XB}=\rho_{XB}g(\rho_{XB}).
-\end{align}
-Consequently the decorrelation identity first annihilates
-\begin{align}
-  \widehat\rho_{XB}(I-P_{AXB})\widehat\rho_{AX}
-  \quad\text{and}\quad
-  \widehat\rho_{AX}(I-P_{AXB})\widehat\rho_{XB},
-\end{align}
-and multiplication by the two reciprocal-on-support factors gives the same
-equalities for \(\widehat P_{XB}\) and \(\widehat P_{AX}\).  The absorption
-identities then yield
-\begin{align}
-  \widehat P_{XB}\widehat P_{AX}
-    =P_{AXB}
-    =\widehat P_{AX}\widehat P_{XB}.
+    \widehat\rho_{AX}
+        &= \sum_{b,k} E^B_{bk}P_{AXB}E^B_{kb},
+    \label{eq:cpsvdecor_reduced_expansion_ax}\\
+    \widehat\rho_{XB}
+        &= \sum_{a,k} E^A_{ak}P_{AXB}E^A_{ka}.
+    \label{eq:cpsvdecor_reduced_expansion_xb}
 \end{align}
 
-This correction uses the source's matrix-unit and marginal-support argument,
-but replaces the unsupported single-contraction assertion by a valid
-factorization.  No hypothesis is added to Proposition~D.3.
+Define $g(0)=0$ and $g(x)=x^{-1}$ for $x\neq 0$. Functional calculus gives
+\begin{align}
+    P_{AX}
+        &= g(\rho_{AX})\rho_{AX}
+         = \rho_{AX}g(\rho_{AX}),
+    \label{eq:cpsvdecor_support_factorization_ax}\\
+    P_{XB}
+        &= g(\rho_{XB})\rho_{XB}
+         = \rho_{XB}g(\rho_{XB}).
+    \label{eq:cpsvdecor_support_factorization_xb}
+\end{align}
+The decorrelation identity first gives
+\begin{align}
+    \widehat\rho_{XB}(\Id-P_{AXB})\widehat\rho_{AX}
+        &= 0,
+    \label{eq:cpsvdecor_reduced_complement_product_xbax}\\
+    \widehat\rho_{AX}(\Id-P_{AXB})\widehat\rho_{XB}
+        &= 0.
+    \label{eq:cpsvdecor_reduced_complement_product_axxb}
+\end{align}
+Multiplication by the reciprocal-on-support factors from
+Eqs.~\ref{eq:cpsvdecor_support_factorization_ax} and
+\ref{eq:cpsvdecor_support_factorization_xb} yields
+\begin{align}
+    \widehat P_{XB}(\Id-P_{AXB})\widehat P_{AX}
+        &= 0,
+    \label{eq:cpsvdecor_support_complement_product_xbax}\\
+    \widehat P_{AX}(\Id-P_{AXB})\widehat P_{XB}
+        &= 0.
+    \label{eq:cpsvdecor_support_complement_product_axxb}
+\end{align}
+The absorption identities then imply
+\begin{align}
+    \widehat P_{XB}\widehat P_{AX}
+        &= P_{AXB},
+    \label{eq:cpsvdecor_support_product_xbax}\\
+    \widehat P_{AX}\widehat P_{XB}
+        &= P_{AXB}.
+    \label{eq:cpsvdecor_support_product_axxb}
+\end{align}
 
-\paragraph{Verdict: local correction.}
-The conclusion and hypotheses of Proposition~D.3 are unchanged; only the
-unsupported intermediate representation is replaced.
+This correction retains the matrix-unit and marginal-support argument of
+Ref.~\cite{Cirac2016MPDO_arXiv}, but replaces the unsupported
+single-contraction assertion by the valid factorizations in
+Eqs.~\ref{eq:cpsvdecor_support_factorization_ax} and
+\ref{eq:cpsvdecor_support_factorization_xb}. It adds no hypothesis to
+Proposition~D.3 of Ref.~\cite{Cirac2016MPDO_arXiv}.
 
 \section{Formal statement}
 
-The reduced-operator expansions are
+The reduced-operator expansions in
+Eqs.~\ref{eq:cpsvdecor_reduced_expansion_ax} and
+\ref{eq:cpsvdecor_reduced_expansion_xb} are formalized by
 \leanid{TripartiteDecorrelation.lift_marginalAX_eq_sum} and
-\leanid{TripartiteDecorrelation.lift_marginalXB_eq_sum}.  The complementary
-support products are
+\leanid{TripartiteDecorrelation.lift_marginalXB_eq_sum}. The complementary
+support products in
+Eqs.~\ref{eq:cpsvdecor_support_complement_product_xbax} and
+\ref{eq:cpsvdecor_support_complement_product_axxb} are formalized by
 \leanid{TripartiteDecorrelation.IsDecorrelated.}
 \hspace{0pt}\leanid{supports_mul_complement_mul_eq_zero} and its reverse-order
-counterpart.  The two product identities are assembled by
+counterpart. The product identities in
+Eqs.~\ref{eq:cpsvdecor_support_product_xbax} and
+\ref{eq:cpsvdecor_support_product_axxb} are assembled by
 \leanid{TripartiteDecorrelation.supportProducts_eq}.
 
 \bibliographystyle{alpha}

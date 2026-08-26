@@ -17,108 +17,146 @@
 
 \section{Source statement}
 
-Let $E=T^*\colon M_{d'}(\mathbb C)\to M_d(\mathbb C)$ be a positive linear
-map, where the reverse-direction map
-$T\colon M_d(\mathbb C)\to M_{d'}(\mathbb C)$ is two-positive.
-Theorem~5.3 of Wolf's \emph{Quantum Channels \& Operations: Guided Tour},
-Chapter~5, asserts that for every $A,B\in M_{d'}(\mathbb C)$,
+Let
 \begin{align}
-  E(A^\dagger B)\,E(B^\dagger B)^{-1}\,E(B^\dagger A)
-  &\leq E(A^\dagger A),
-  \label{eq:schwarz}
+    T&\colon\MN{d}\to\MN{d'},
+    &
+    E=T^*&\colon\MN{d'}\to\MN{d},
+    \label{eq:wolf_ch5_two_variable_unconditional_maps}
 \end{align}
-where the inverse is taken on the range of $E(B^\dagger B)$.  The local
-source is
-\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex}, lines
-180--190.
+where $T$ is two-positive and $E$ is its trace adjoint. Wolf's Theorem~5.3
+asserts that, for every $A,B\in\MN{d'}$,
+\begin{align}
+    E(A^\dagger B)
+    E(B^\dagger B)^{-1}
+    E(B^\dagger A)
+        &\leq E(A^\dagger A),
+    \label{eq:wolf_ch5_two_variable_unconditional_source_inequality}
+\end{align}
+where the inverse is taken on the range of $E(B^\dagger B)$
+\cite[Chapter~5, Theorem~5.3]{Wolf2012Quantum}.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex},
+lines~180--190.}
 
-Rectangular two-positivity is invariant under the trace adjoint, so $E=T^*$
-is two-positive. The formal theorem records Wolf's hypotheses with the same
-independent input and output dimensions and does not assume an additional
-witness. The inverse on the range is represented by the Moore--Penrose inverse.
+Rectangular two-positivity is invariant under the trace adjoint, so $E=T^*$ is
+also two-positive. The formal theorem retains the independent input and output
+dimensions used by Wolf and assumes no additional range witness. It represents
+the inverse on the range by the Moore--Penrose inverse.
 
 \section{The range inverse}
 
-Put
+Define
 \begin{align}
-  P &= E(A^\dagger A), &
-  Z &= E(A^\dagger B), &
-  R &= E(B^\dagger B).
+    P&=E(A^\dagger A),
+    &
+    Z&=E(A^\dagger B),
+    &
+    R&=E(B^\dagger B).
+    \label{eq:wolf_ch5_two_variable_unconditional_block_entries}
 \end{align}
-Two-positivity gives
+Two-positivity of $E$ gives the block inequality
 \begin{align}
-  \begin{pmatrix}
-    P & Z\\
-    Z^\dagger & R
-  \end{pmatrix}
-  &\geq 0.
-  \label{eq:block-positive}
+    \begin{pmatrix}
+        P&Z\\
+        Z^\dagger&R
+    \end{pmatrix}
+        &\geq 0.
+    \label{eq:wolf_ch5_two_variable_unconditional_block_positive}
 \end{align}
 The kernel clause of the Schur-complement theorem applied to
-\eqref{eq:block-positive} yields
+Eq.~\ref{eq:wolf_ch5_two_variable_unconditional_block_positive} gives
 \begin{align}
-  \ker R &\subseteq \ker Z.
-  \label{eq:kernel-inclusion}
+    \ker R&\subseteq\ker Z.
+    \label{eq:wolf_ch5_two_variable_unconditional_kernel_inclusion}
 \end{align}
-Let $R^+$ be the Moore--Penrose inverse of $R$, and let
-\begin{align}
-  s_R &= RR^+=R^+R
-\end{align}
-be the orthogonal projection onto the support of $R$.  Since $R$ is positive
-semidefinite, its support is $(\ker R)^\perp$.  Equation
-\eqref{eq:kernel-inclusion} is therefore equivalent to
-\begin{align}
-  Zs_R &= Z,
-  &
-  s_RZ^\dagger &= Z^\dagger.
-  \label{eq:support-absorption}
-\end{align}
-In particular,
-\begin{align}
-  R\bigl(R^+Z^\dagger\bigr) &= Z^\dagger.
-  \label{eq:range-witness}
-\end{align}
-Thus $R^+Z^\dagger v$ is the required preimage of $Z^\dagger v$ under $R$
-for every vector $v$.  This is precisely the meaning of the inverse on the
-range in \eqref{eq:schwarz}; no separate range--kernel duality argument is
-needed.
 
-The formal proof establishes \eqref{eq:kernel-inclusion}, then
-\eqref{eq:support-absorption}, and finally
-\eqref{eq:range-witness}.
+Let $R^+$ denote the Moore--Penrose inverse of $R$, and define
+\begin{align}
+    s_R&=RR^+
+    \label{eq:wolf_ch5_two_variable_unconditional_left_support_projection}\\
+       &=R^+R.
+    \label{eq:wolf_ch5_two_variable_unconditional_right_support_projection}
+\end{align}
+Because $R\geq 0$, $s_R$ is the orthogonal projection onto
+$\operatorname{ran}R=(\ker R)^\perp$. The kernel inclusion in
+Eq.~\ref{eq:wolf_ch5_two_variable_unconditional_kernel_inclusion} is
+equivalent to the support-absorption identities
+\begin{align}
+    Zs_R&=Z,
+    \label{eq:wolf_ch5_two_variable_unconditional_right_support_absorption}\\
+    s_RZ^\dagger&=Z^\dagger.
+    \label{eq:wolf_ch5_two_variable_unconditional_left_support_absorption}
+\end{align}
+Consequently,
+\begin{align}
+    R(R^+Z^\dagger)
+        &=(RR^+)Z^\dagger
+    \label{eq:wolf_ch5_two_variable_unconditional_range_witness_first}\\
+        &=s_RZ^\dagger
+    \label{eq:wolf_ch5_two_variable_unconditional_range_witness_second}\\
+        &=Z^\dagger.
+    \label{eq:wolf_ch5_two_variable_unconditional_range_witness}
+\end{align}
+For every vector $v$, the vector $R^+Z^\dagger v$ is therefore a preimage of
+$Z^\dagger v$ under $R$. Equation
+\ref{eq:wolf_ch5_two_variable_unconditional_range_witness} gives exactly the
+inverse-on-the-range operation required in
+Eq.~\ref{eq:wolf_ch5_two_variable_unconditional_source_inequality}. No
+separate range--kernel duality argument is needed.
+
+The formal proof establishes
+Eq.~\ref{eq:wolf_ch5_two_variable_unconditional_kernel_inclusion}, then
+Eqs.~\ref{eq:wolf_ch5_two_variable_unconditional_right_support_absorption}
+and~\ref{eq:wolf_ch5_two_variable_unconditional_left_support_absorption}, and
+finally Eq.~\ref{eq:wolf_ch5_two_variable_unconditional_range_witness}.
 
 \section{Derivation of the inequality}
 
-For a fixed vector $v$, set
+Fix a vector $v$ and define
 \begin{align}
-  w &= R^+Z^\dagger v.
+    w&=R^+Z^\dagger v.
+    \label{eq:wolf_ch5_two_variable_unconditional_quadratic_witness}
 \end{align}
-Equation~\eqref{eq:range-witness} gives $Rw=Z^\dagger v$.  The
-pseudoinverse-free quadratic-form consequence of
-\eqref{eq:block-positive} then gives
+Equation~\ref{eq:wolf_ch5_two_variable_unconditional_range_witness} gives
 \begin{align}
-  v^\dagger Pv
-  &\geq v^\dagger Zw
-   = v^\dagger ZR^+Z^\dagger v.
+    Rw&=Z^\dagger v.
+    \label{eq:wolf_ch5_two_variable_unconditional_witness_equation}
 \end{align}
-Since this holds for every $v$,
+The pseudoinverse-free quadratic-form consequence of
+Eq.~\ref{eq:wolf_ch5_two_variable_unconditional_block_positive} then yields
 \begin{align}
-  ZR^+Z^\dagger &\leq P,
+    v^\dagger Pv
+        &\geq v^\dagger Zw
+    \label{eq:wolf_ch5_two_variable_unconditional_quadratic_bound_first}\\
+        &=v^\dagger ZR^+Z^\dagger v.
+    \label{eq:wolf_ch5_two_variable_unconditional_quadratic_bound_second}
 \end{align}
-which is \eqref{eq:schwarz}.\footnote{Formal declaration:
-  \leanid{schwarz_two_variable_unconditional_of_traceAdjointMap} in the namespace
-  \leanid{SchwarzTwoVariable}.}
+Because this inequality holds for every $v$,
+\begin{align}
+    ZR^+Z^\dagger&\leq P.
+    \label{eq:wolf_ch5_two_variable_unconditional_schur_bound}
+\end{align}
+Substituting the definitions from
+Eq.~\ref{eq:wolf_ch5_two_variable_unconditional_block_entries} into
+Eq.~\ref{eq:wolf_ch5_two_variable_unconditional_schur_bound} gives
+Eq.~\ref{eq:wolf_ch5_two_variable_unconditional_source_inequality}, with
+$R^+$ realizing the inverse on the range.\footnote{Formal declaration:
+\leanid{schwarz_two_variable_unconditional_of_traceAdjointMap} in the namespace
+\leanid{SchwarzTwoVariable}.}
 
 \section{Verdict}
 
-There is no remaining hypothesis or dimensional restriction relative to
-Wolf's statement.  The formal theorem records the positive map as the trace
-adjoint $E=T^*$ of a two-positive reverse-direction map $T$; rectangular
-two-positivity of $E$ follows from invariance under the trace adjoint.  The
-phrase ``inverse on the range'' is realized by the
-Moore--Penrose inverse, and the required range inclusion follows from
-support-projection absorption.  The earlier proposed use of an explicit
-Euclidean-space range--kernel duality is unnecessary.  Thus the former gap is
+No hypothesis or dimensional restriction remains relative to Wolf's
+Theorem~5.3 \cite[Chapter~5, Theorem~5.3]{Wolf2012Quantum}. The formal theorem
+records the positive map as the trace adjoint $E=T^*$ of a two-positive
+reverse-direction map $T$. Rectangular two-positivity of $E$ follows from
+invariance under the trace adjoint. The Moore--Penrose inverse realizes Wolf's
+``inverse on the range'', and the required range inclusion follows from
+support-projection absorption. The earlier proposed Euclidean
+range--kernel-duality argument is unnecessary. The former gap is therefore
 resolved.
+
+\bibliographystyle{alpha}
+\bibliography{references}
 
 \end{document}

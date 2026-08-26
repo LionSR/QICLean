@@ -17,137 +17,192 @@
 
 \section{The printed criterion}
 
-Let $T:M_d(\C)\to M_{d'}(\C)$ be linear and let
+Let $T:M_d(\C)\to M_{d'}(\C)$ be linear. Define its Choi matrix by
 \begin{align}
     \tau_T
-      &=(T\otimes\operatorname{id}_d)
-        \bigl(\ketbra{\Omega_d}{\Omega_d}\bigr)
-      \in M_{d'}(\C)\otimes M_d(\C).
+        &=(T\otimes\operatorname{id}_d)
+          (\ketbra{\Omega_d}{\Omega_d}),
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_choi_definition}\\
+    \tau_T
+        &\in M_{d'}(\C)\otimes M_d(\C).
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_choi_space}
 \end{align}
-Wolf's Proposition~3.1 assumes $k\le d$ and states, among its three
-equivalent conditions, that
+Proposition~3.1 of Ref.~\cite{Wolf2012Quantum} assumes $k\leq d$ and includes
+the condition
 \begin{align}
-    \langle\psi,\tau_T\psi\rangle&\ge0
-    &&\text{whenever }\operatorname{SR}(\psi)=k.
-    \tag{Wolf 3.1(3)}
+    \bra{\psi}\tau_T\ket{\psi}
+        &\geq0
+        \qquad\text{whenever }\operatorname{SR}(\psi)=k,
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_printed_choi_condition}
 \end{align}
-The local source prints ``Schmidt-rank $n$'' both in the statement and in the
-last sentence of the proof.
-\footnote{Source: \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
-lines 89--115. Tracked by
+where $\operatorname{SR}(\psi)$ denotes the Schmidt rank. This is condition~(3)
+in the printed proposition. The local source uses ``Schmidt-rank $n$'' in
+both the statement and the final sentence of the proof.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines~89--115. Tracked by
 \href{https://github.com/LionSR/QICLean/issues/24}{QICLean issue \#24}.}
 
 \section{The dimension defect}
 
-Every vector in $\C^{d'}\otimes\C^d$ satisfies
+Every $\psi\in\C^{d'}\otimes\C^d$ satisfies
 \begin{align}
-    \operatorname{SR}(\psi)&\le\min\{d',d\}.
+    \operatorname{SR}(\psi)
+        &\leq\min\{d',d\}.
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_rank_dimension_bound}
 \end{align}
-Consequently, when $d'<k\le d$, there is no vector of Schmidt rank exactly
-$k$. Condition~(Wolf 3.1(3)) is then vacuous and cannot characterize
-$k$-positivity.
+If $d'<k\leq d$, no vector has Schmidt rank exactly $k$. The condition
+(\ref{eq:wolf_prop3_1_exact_schmidt_rank_scope_printed_choi_condition}) is
+then vacuous and cannot characterize $k$-positivity.
 
-For example, take $d=2$, $d'=1$, $k=2$, and
-$T(X)=-\tr(X)$. There is no Schmidt-rank-two vector in
-$\C^1\otimes\C^2$, so the printed quadratic-form condition holds. On the
-other hand, applying $T\otimes\operatorname{id}_2$ to a nonzero product
-projector gives a negative rank-one matrix. Thus $T$ is not $2$-positive.
+For example, set
+\begin{align}
+    d&=2,
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_counterexample_input_dimension}\\
+    d'&=1,
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_counterexample_output_dimension}\\
+    k&=2,
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_counterexample_rank}\\
+    T(X)&=-\tr(X).
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_counterexample_map}
+\end{align}
+There is no Schmidt-rank-two vector in $\C^1\otimes\C^2$, so the printed
+quadratic-form condition holds. However, applying
+$T\otimes\operatorname{id}_2$ to a nonzero product projector produces a
+negative rank-one matrix. Thus $T$ is not $2$-positive.
 
-The last step of the printed proof has a second, related loss: a vector of the
-form $(\one\otimes X)^\dagger\widetilde\psi$ has Schmidt rank at most
-$\operatorname{rank}(X)$, but need not have rank equal to
-$\operatorname{rank}(X)$. Hence that step
-directly proves the bounded-rank condition, not the exact-rank condition.
+The final step of the printed proof has the same defect. A vector of the form
+\begin{align}
+    \psi
+        &=(\one\otimes X)^\dagger\widetilde\psi
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_compressed_vector}
+\end{align}
+satisfies
+\begin{align}
+    \operatorname{SR}(\psi)
+        &\leq\operatorname{rank}(X),
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_compressed_rank_bound}
+\end{align}
+but equality need not hold. The compression argument directly proves a
+bounded-rank criterion, not the printed exact-rank criterion.
 
 \section{The corrected statement}
 
 The dimension-generic Choi criterion is
 \begin{align}
     T\text{ is $k$-positive}
-    \quad\Longleftrightarrow\quad
-    \langle\psi,\tau_T\psi\rangle&\ge0
-    &&\text{for every }\psi\text{ with }\operatorname{SR}(\psi)\le k.
-    \tag{corrected Wolf 3.1(3)}
+        &\Longleftrightarrow
+          \bra{\psi}\tau_T\ket{\psi}\geq0
+          \quad\text{for every $\psi$ with }
+          \operatorname{SR}(\psi)\leq k.
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_corrected_choi_criterion}
 \end{align}
-This is the condition proved by the compression argument: factoring the
-coefficient matrix of $\psi$ through $\C^k$ writes
-$\psi=R_X^\dagger\eta$, and positivity of the right compression
-$R_X\tau_T R_X^\dagger$ gives the desired quadratic-form inequality.
+This is the condition proved by the compression argument. Factoring the
+coefficient matrix of $\psi$ through $\C^k$ gives
+\begin{align}
+    \psi
+        &=R_X^\dagger\eta,
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_coefficient_factorization}
+\end{align}
+and positivity of the compressed Choi matrix
+\begin{align}
+    R_X\tau_T R_X^\dagger
+        &\geq0
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_positive_compression}
+\end{align}
+implies the quadratic-form inequality in
+(\ref{eq:wolf_prop3_1_exact_schmidt_rank_scope_corrected_choi_criterion}).
 
-For $d>0$, the formal theorem covers independent input and output dimensions,
-including $k=0$ and $d'=0$.
-\footnote{Formal declarations:
+For $d>0$, the formal theorem permits independent input and output dimensions,
+including $k=0$ and $d'=0$.\footnote{Formal declarations:
 \leanid{ChoiJamiolkowski.isNPositiveMap_iff_forall_hasSchmidtRankLE_choiMatrix_quadraticForm_nonneg_rectangular}
 and
 \leanid{ChoiJamiolkowski.isNPositiveMap_iff_forall_rankProjection_choiMatrix_sandwich_posSemidef_rectangular}
 in \doclink{QICLean/Channel/Schwarz/ChoiCompression}.}
-The projection formulation additionally assumes $k\le d$, exactly as needed
-to choose a rank-$k$ projection on the input factor.
+The projection formulation additionally assumes $k\leq d$, which is precisely
+the condition required to choose a rank-$k$ projection on the input factor.
 
-If one also assumes $k\le d'$, an exact-rank formulation may be recovered
-from the bounded-rank formulation by a separate density argument: coefficient
-matrices of rank exactly $k$ are dense among matrices of rank at most $k$, and
-the quadratic form is continuous. This argument is not the proof printed by
-Wolf and is not used in the formal criterion.
+If $k\leq d'$ as well, the exact-rank condition follows from the bounded-rank
+condition by a separate density argument: coefficient matrices of rank exactly
+$k$ are dense among coefficient matrices of rank at most $k$, and the
+quadratic form is continuous. This is not the proof printed in Proposition~3.1
+of Ref.~\cite{Wolf2012Quantum}, and the formal criterion does not use it.
 
 \section{The same defect in Proposition~3.3}
 
-Wolf's Proposition~3.3 considers a density operator
-$\rho\in M_d(\C)\otimes M_{d'}(\C)$ and states that its Schmidt number is at
-least $n+1$ if and only if there is a Hermitian $W$ with
-$\tr(W\rho)<0$ and
+Let $\rho\in M_d(\C)\otimes M_{d'}(\C)$ be a density operator.
+Proposition~3.3 of Ref.~\cite{Wolf2012Quantum} states that $\rho$ has Schmidt
+number at least $n+1$ if and only if there is a Hermitian operator $W$ such
+that
 \begin{align}
-    \langle\psi,W\psi\rangle&\ge0
-    &&\text{for every $\psi$ with $\operatorname{SR}(\psi)=n$}.
-    \tag{Wolf 3.3}
+    \tr(W\rho)
+        &<0,
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_printed_witness_detection}\\
+    \bra{\psi}W\ket{\psi}
+        &\geq0
+        \qquad\text{whenever }\operatorname{SR}(\psi)=n.
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_printed_witness_rank}
 \end{align}
-The source then defines $S_n$ as the density operators of Schmidt number at
-most $n$ and separates $\rho$ from $S_n$; its converse says that $S_n$ is the
-closed convex hull of the same printed exact-rank set.
-\footnote{Source: \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
-lines 229--243. Tracked by
+The source defines $S_n$ as the density operators of Schmidt number at most
+$n$ and separates $\rho$ from $S_n$. Its converse identifies $S_n$ with the
+closed convex hull of the same printed exact-rank set.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines~229--243. Tracked by
 \href{https://github.com/LionSR/QICLean/issues/23}{QICLean issue \#23}.}
 
-This exact-rank wording again fails without the bound $n\le\min\{d,d'\}$.
-If $n>\min\{d,d'\}$, no vector has Schmidt rank exactly $n$, so the witness
-condition is vacuous. Taking $W=-\one$ then makes $\tr(W\rho)=-1<0$ for every
-density operator, whereas no such $\rho$ can have Schmidt number at least
-$n+1$. Thus the printed equivalence is false in precisely the range where its
-test set is empty.
+This exact-rank wording fails when $n>\min\{d,d'\}$. No vector then has
+Schmidt rank exactly $n$, so
+(\ref{eq:wolf_prop3_1_exact_schmidt_rank_scope_printed_witness_rank}) is
+vacuous. Taking
+\begin{align}
+    W
+        &=-\one
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_vacuous_witness}
+\end{align}
+gives
+\begin{align}
+    \tr(W\rho)
+        &=-1<0
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_vacuous_detection}
+\end{align}
+for every density operator, although no such state can have Schmidt number at
+least $n+1$. The printed equivalence is therefore false whenever its test set
+is empty.
 
 The dimension-generic correction is
 \begin{align}
     \operatorname{sn}(\rho)>n
-    \quad\Longleftrightarrow\quad
-    \exists W=W^\dagger:\quad
-    \tr(W\rho)<0\quad\text{and}\quad
-    \langle\psi,W\psi\rangle&\ge0
-    &&\text{whenever }\operatorname{SR}(\psi)\le n.
-    \tag{corrected Wolf 3.3}
+        &\Longleftrightarrow
+          \exists\,W=W^\dagger:\,
+          \tr(W\rho)<0
+          \text{ and }
+          \bra{\psi}W\ket{\psi}\geq0
+          \text{ whenever }\operatorname{SR}(\psi)\leq n.
+    \label{eq:wolf_prop3_1_exact_schmidt_rank_scope_corrected_witness_criterion}
 \end{align}
-This is exactly the separating-hyperplane statement for $S_n$: each pure
+This is the separating-hyperplane criterion for $S_n$, because each pure
 projector in a defining decomposition of $S_n$ has Schmidt rank at most $n$.
 It is formalized by
 \leanid{Matrix.not_hasSchmidtNumberLE_iff_exists_witness} in
-\doclink{QICLean/Channel/EntanglementWitness} and is the witness input to the
-rectangular positive-map characterization
+\doclink{QICLean/Channel/EntanglementWitness}. It also supplies the witness
+used in the rectangular positive-map characterization
 \leanid{Matrix.hasSchmidtNumberLE_iff_forall_isNPositiveMap_tensorMapId_posSemidef}
 in \doclink{QICLean/Channel/PositiveMapDetection}.
 
-When $n\le\min\{d,d'\}$, the exact-rank witness test can again be recovered
-from the bounded-rank test by the same density-and-continuity argument. That
-additional argument is not the separating-hyperplane proof printed in
-Proposition~3.3 and is not used by the formal theorem.
+When $n\leq\min\{d,d'\}$, density and continuity again recover the exact-rank
+test from the bounded-rank test. This additional argument is not the
+separating-hyperplane proof printed in Proposition~3.3 of
+Ref.~\cite{Wolf2012Quantum}, and the formal theorem does not use it.
 
 \section{Conclusion}
 
-Wolf's exact-rank wording in Proposition~3.1 is false under the printed
-hypothesis $k\le d$, and the same wording in Proposition~3.3 is false when
+The exact-rank wording in Proposition~3.1 of
+Ref.~\cite{Wolf2012Quantum} is false under the printed hypothesis $k\leq d$.
+The same wording in Proposition~3.3 is false when
 $n>\min\{d,d'\}$. Replacing exact Schmidt rank by Schmidt rank at most the
-given bound yields the dimension-generic Choi and witness criteria and matches
-the proofs through compressions and the convex set $S_n$. The formal statements
-and the Blueprint use this corrected wording; no additional route is attributed
-to the source.
+specified bound gives dimension-generic Choi and witness criteria and matches
+the respective compression and convex-separation proofs. The formal
+statements and the Blueprint use this corrected wording; they do not attribute
+an additional argument to the source.
 
 \bibliographystyle{alpha}
 \bibliography{references}

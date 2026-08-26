@@ -18,73 +18,145 @@ of the Breuer--Hall Map (Wolf Example~3.1)}
 
 \section{Source statement}
 
-Wolf's Chapter~3, Example~3.1 introduces the Breuer--Hall
-map\footnote{\cite[Chapter~3, Example~3.1]{Wolf2012Quantum}; local source:
+Let $U\in\MD$ be antisymmetric, so $U^{\mathsf T}=-U$, and suppose that it is
+a contraction:
+\begin{align}
+    U^\dagger U
+        &\leq\Id.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_contraction}
+\end{align}
+Wolf's Chapter~3, Example~3.1 defines the Breuer--Hall map by
+\begin{align}
+    T_{\mathrm{BH}}(X)
+        &=\tr(X)\Id-X-UX^{\mathsf T}U^\dagger.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_breuer_hall_map}
+\end{align}
+The source identifies this formula as Equation~(3.19)
+\cite[Chapter~3, Example~3.1]{Wolf2012Quantum}.\footnote{Local source:
 \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
-344--355. Formalization issue:
-\href{https://github.com/LionSR/QICLean/issues/16}{issue \#16}.}
-\begin{align}
-  T_{\mathrm{BH}}(X)=\operatorname{tr}[X]\,\mathbb 1-X-UX^{T}U^{\dagger}.
-  \tag{3.19}
-\end{align}
-Here $U$ may be any antisymmetric contraction satisfying $U^{T}=-U$ and
-$U^{\dagger}U\le\mathbb 1$.  The source then states: ``For $d$ even there are
-anti-symmetric unitaries
-$U^{\dagger}=U^{-1}=-\overline{U}$ \dots\ If $U$ is an anti-symmetric unitary
-$T_{\mathrm{BH}}$ is not decomposable.''  The final sentence has no dimension
-hypothesis.  Thus the source uses two distinct hypothesis regimes: positivity is
-asserted for antisymmetric contractions $U^{\dagger}U\le\mathbb 1$, whereas
-indecomposability is asserted only for antisymmetric unitaries
-$U^{\dagger}U=\mathbb 1$.  The formalization preserves this distinction. It proves
-positivity in the contraction regime and indecomposability in the unitary regime,
-with the necessary dimension hypothesis $d>2$. The unrestricted contraction
-generalization of indecomposability is false.
+344--355. Formalization issue: \ghissue{16}.}
 
-\section{The point at issue}
-
-The blanket statement fails at $d=2$. Every antisymmetric $2\times2$ matrix
-is a scalar multiple of
+Wolf states that antisymmetric unitaries exist when $d$ is even and satisfy
+``$U^\dagger=U^{-1}=-\overline U$''. The source then states, without an
+explicit dimension hypothesis, that $T_{\mathrm{BH}}$ is not decomposable
+when $U$ is an antisymmetric unitary \cite[Example~3.1]{Wolf2012Quantum}.
+Its positivity and indecomposability assertions therefore use different
+hypotheses: positivity allows the contraction condition
+(\ref{eq:wolf_breuer_hall_even_dim_restriction_contraction}), whereas
+indecomposability requires
 \begin{align}
-  J=\begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix},
+    U^\dagger U
+        &=\Id.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_unitarity}
 \end{align}
-so every antisymmetric unitary at $d=2$ is a phase $e^{i\theta}J$, and the
-twisted-transpose term is independent of the phase. A direct computation
-gives, for $X=(\begin{smallmatrix} a & b \\ c & d\end{smallmatrix})$,
-\begin{align}
-  JX^{T}J^{\dagger}
-  =\begin{pmatrix} d & -b \\ -c & a\end{pmatrix}
-  =\operatorname{tr}[X]\,\mathbb 1-X,
-\end{align}
-so $T_{\mathrm{BH}}$ is the zero map on $\mathcal M_2$. The zero map is
-completely positive, hence decomposable. The hypothesis $d>2$ is therefore
-necessary, and the source's sentence must be read with the restriction
-$d\ge4$ (recall that antisymmetric unitaries exist only for even $d$: taking
-determinants in $U^{T}=-U$ gives $\det U=(-1)^{d}\det U$, and $\det U\ne0$).
 
-\section{Why contractivity does not suffice for indecomposability}
+The formalization preserves this distinction. It proves positivity for
+antisymmetric contractions and indecomposability for antisymmetric unitaries
+when $d>2$. Indecomposability does not extend to all antisymmetric
+contractions.
+
+\section{The dimension-two boundary}
+
+Every antisymmetric $2\times2$ matrix is a scalar multiple of
+\begin{align}
+    J
+        &=\begin{pmatrix}
+            0 & 1\\
+            -1 & 0
+          \end{pmatrix}.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_symplectic_matrix}
+\end{align}
+Thus every antisymmetric unitary in dimension two has the form
+$e^{i\theta}J$, and the phase does not affect the twisted-transpose term.
+For
+\begin{align}
+    X
+        &=\begin{pmatrix}
+            a & b\\
+            c & d
+          \end{pmatrix},
+    \label{eq:wolf_breuer_hall_even_dim_restriction_generic_two_matrix}
+\end{align}
+direct multiplication gives
+\begin{align}
+    JX^{\mathsf T}J^\dagger
+        &=\begin{pmatrix}
+            d & -b\\
+            -c & a
+          \end{pmatrix},
+    \label{eq:wolf_breuer_hall_even_dim_restriction_twisted_transpose_matrix}\\
+    JX^{\mathsf T}J^\dagger
+        &=\tr(X)\Id-X.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_twisted_transpose_reduction}
+\end{align}
+Substitution into
+(\ref{eq:wolf_breuer_hall_even_dim_restriction_breuer_hall_map}) yields
+\begin{align}
+    T_{\mathrm{BH}}(X)
+        &=0
+    \label{eq:wolf_breuer_hall_even_dim_restriction_dimension_two_zero}
+\end{align}
+for every $X\in M_2(\C)$. The zero map is completely positive and therefore
+decomposable. Hence $d>2$ is necessary.
+
+An antisymmetric unitary can exist only in even dimension. Indeed,
+$U^{\mathsf T}=-U$ implies
+\begin{align}
+    \det U
+        &=\det(U^{\mathsf T}),
+    \label{eq:wolf_breuer_hall_even_dim_restriction_determinant_transpose}\\
+    \det U
+        &=\det(-U),
+    \label{eq:wolf_breuer_hall_even_dim_restriction_determinant_antisymmetry}\\
+    \det U
+        &=(-1)^d\det U.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_determinant_parity}
+\end{align}
+Since unitarity gives $\det U\neq0$, the dimension is even. The corrected
+unitary range is therefore $d\geq4$.
+
+\section{Why contractivity does not imply indecomposability}
 
 The zero matrix is an antisymmetric contraction in every dimension:
-$0^{T}=-0$ and $0^{\dagger}0\le\mathbb 1$. At this parameter the
-Breuer--Hall map is exactly the first reduction map,
 \begin{align}
-  T_{\mathrm{BH},0}(X)
-  =\operatorname{tr}[X] \,\mathbb 1-X
-  =T_1(X).
+    0^{\mathsf T}
+        &=-0,
+    \label{eq:wolf_breuer_hall_even_dim_restriction_zero_antisymmetric}\\
+    0^\dagger0
+        &\leq\Id.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_zero_contraction}
 \end{align}
-The map $T_1$ is completely copositive. Indeed, if $\theta$ denotes
-transposition and $F$ denotes the swap operator, then the Choi matrix of
+At $U=0$, the Breuer--Hall map becomes the first reduction map:
+\begin{align}
+    T_{\mathrm{BH},0}(X)
+        &=\tr(X)\Id-X,
+    \label{eq:wolf_breuer_hall_even_dim_restriction_zero_parameter_map}\\
+    T_{\mathrm{BH},0}(X)
+        &=T_1(X).
+    \label{eq:wolf_breuer_hall_even_dim_restriction_reduction_map}
+\end{align}
+
+Let $\theta$ denote transposition and $F$ the swap operator. With the
+normalization used in the formal development, the Choi matrix of
 $T_1\circ\theta$ is
 \begin{align}
-  \tau(T_1\circ\theta)=d^{-1}(\mathbb 1-F)\ge0.
+    \tau(T_1\circ\theta)
+        &=d^{-1}(\Id-F),
+    \label{eq:wolf_breuer_hall_even_dim_restriction_reduction_choi}\\
+    \tau(T_1\circ\theta)
+        &\geq0.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_reduction_choi_positive}
 \end{align}
-The last inequality holds because $\mathbb 1-F$ is twice the orthogonal
-projector onto the antisymmetric subspace. The Choi criterion therefore shows
-that $T_1\circ\theta$ is completely positive, so $T_1$ is completely
-copositive and hence decomposable. Consequently, even for $d>2$, the
-Breuer--Hall map need not be indecomposable when $U$ ranges over all
-antisymmetric contractions. This counterexample does not give, and the
-formalization does not claim, a classification of the nonunitary contractions
-for which the map is indecomposable.\footnote{Formal declarations:
+The second line holds because $\Id-F$ is twice the orthogonal projector onto
+the antisymmetric subspace. The Choi criterion shows that $T_1\circ\theta$ is
+completely positive. Therefore $T_1$ is completely copositive and
+decomposable.
+
+Consequently, even when $d>2$, the Breuer--Hall map need not be
+indecomposable over all antisymmetric contractions. This counterexample does
+not classify the nonunitary contractions for which the map is
+indecomposable, and the formalization makes no such claim.\footnote{Formal
+declarations:
 \leanid{Matrix.breuerHallMap\_zero} in
 \doclink{QICLean/Channel/BreuerHallMap};
 \leanid{ChoiJamiolkowski.choiMatrix\_reductionMap\_one\_comp\_transpose},
@@ -96,62 +168,101 @@ in \doclink{QICLean/Channel/BreuerHallIndecomposable}.}
 
 \section{The corrected statement}
 
-The proved statement is: if $d>2$ and $U$ is an antisymmetric unitary on
-$\mathbb C^{d}$, then $T_{\mathrm{BH}}$ is an indecomposable positive
-map.\footnote{Formal declarations:
+If $d>2$ and $U$ is an antisymmetric unitary on $\C^d$, then
+$T_{\mathrm{BH}}$ is an indecomposable positive map.\footnote{Formal
+declarations:
 \leanid{Matrix.breuerHallMap\_isIndecomposablePositiveMap} and
 \leanid{Matrix.breuerHallMap\_not\_isDecomposablePositiveMap} in
 \doclink{QICLean/Channel/BreuerHallIndecomposable}; positivity is
 \leanid{Matrix.breuerHallMap\_isPositiveMap} in
 \doclink{QICLean/Channel/BreuerHallMap}.}
-The source gives no proof; the formalized argument is the standard PPT
-detection route. Write $F$ for the swap operator on
-$\mathbb C^{d}\otimes\mathbb C^{d}$ and $\ket{\Psi}$ for the $U$-twisted
-maximally entangled vector, $\Psi(i,k)=U(i,k)$, with unnormalized projector
-$P_{0}=\ket{\Psi}\bra{\Psi}$. The witness state
+
+The source gives no proof. The formalized argument uses PPT detection. Let
+$F$ be the swap operator on $\C^d\otimes\C^d$, and let $\ket{\Psi}$ be the
+$U$-twisted maximally entangled vector with coordinates
+$\Psi(i,k)=U(i,k)$. Define the unnormalized projector and witness state by
 \begin{align}
-  \rho=(\mathbb 1+F)+P_{0}
+    P_0
+        &=\ket{\Psi}\bra{\Psi},
+    \label{eq:wolf_breuer_hall_even_dim_restriction_twisted_projector}\\
+    \rho
+        &=(\Id+F)+P_0.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_witness_state}
 \end{align}
-is a sum of positive semidefinite terms, and antisymmetry with unitarity of
-$U$ gives the partial-transpose evaluations
-$(\mathbb 1+F)^{T_{1}}=\mathbb 1+P_{1}$ and
-$P_{0}^{T_{1}}=(U^{\dagger}\otimes\mathbb 1)(\mathbb 1+F)(U\otimes\mathbb 1)
--\mathbb 1$, where $P_{1}$ is the untwisted maximally entangled projector.
-Hence
+Both terms in
+(\ref{eq:wolf_breuer_hall_even_dim_restriction_witness_state}) are positive
+semidefinite. Let $P_1$ denote the untwisted maximally entangled projector.
+Antisymmetry and unitarity give
 \begin{align}
-  \rho^{T_{1}}=P_{1}+(U^{\dagger}\otimes\mathbb 1)(\mathbb 1+F)(U\otimes\mathbb 1)
-  \ge0,
+    (\Id+F)^{T_1}
+        &=\Id+P_1,
+    \label{eq:wolf_breuer_hall_even_dim_restriction_swap_partial_transpose}\\
+    P_0^{T_1}
+        &=(U^\dagger\otimes\Id)(\Id+F)(U\otimes\Id)-\Id.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_twisted_partial_transpose}
 \end{align}
-so $\rho$ is a PPT state. Expanding all tensor indices and contracting
-against $U^{\dagger}U=\mathbb 1$ yields the carrying identity, valid for
-every bipartite $\sigma$,
+Therefore
 \begin{align}
-  \operatorname{tr}[(T_{\mathrm{BH}}\otimes\mathrm{id})(\sigma)\,P_{0}]
-  =\operatorname{tr}(\sigma)-\operatorname{tr}(\sigma P_{0})
-  -\operatorname{tr}(F\sigma).
+    \rho^{T_1}
+        &=P_1+(U^\dagger\otimes\Id)(\Id+F)(U\otimes\Id),
+    \label{eq:wolf_breuer_hall_even_dim_restriction_witness_partial_transpose}\\
+    \rho^{T_1}
+        &\geq0.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_witness_ppt}
 \end{align}
-At $\sigma=\rho$ the three traces are $d^{2}+2d$, $d^{2}$, and $d^{2}$ ---
-the last two because antisymmetry gives $F\ket{\Psi}=-\ket{\Psi}$ --- so the
-pairing equals $d(2-d)<0$ for $d>2$, and
-$(T_{\mathrm{BH}}\otimes\mathrm{id})(\rho)$ is not positive semidefinite.
-Since decomposable maps preserve positivity on PPT
-states,\footnote{Formal declarations:
+Thus $\rho$ is a PPT state.
+
+Expanding the tensor indices and using $U^\dagger U=\Id$ gives, for every
+bipartite matrix $\sigma$,
+\begin{align}
+    \tr\!\left[(T_{\mathrm{BH}}\otimes\operatorname{id})(\sigma)P_0\right]
+        &=\tr(\sigma)-\tr(\sigma P_0)-\tr(F\sigma).
+    \label{eq:wolf_breuer_hall_even_dim_restriction_pairing_identity}
+\end{align}
+For $\sigma=\rho$, antisymmetry gives
+$F\ket{\Psi}=-\ket{\Psi}$, and the required traces are
+\begin{align}
+    \tr(\rho)
+        &=d^2+2d,
+    \label{eq:wolf_breuer_hall_even_dim_restriction_witness_trace}\\
+    \tr(\rho P_0)
+        &=d^2,
+    \label{eq:wolf_breuer_hall_even_dim_restriction_projector_pairing}\\
+    \tr(F\rho)
+        &=d^2.
+    \label{eq:wolf_breuer_hall_even_dim_restriction_swap_pairing}
+\end{align}
+Substitution into
+(\ref{eq:wolf_breuer_hall_even_dim_restriction_pairing_identity}) yields
+\begin{align}
+    \tr\!\left[(T_{\mathrm{BH}}\otimes\operatorname{id})(\rho)P_0\right]
+        &=d(2-d),
+    \label{eq:wolf_breuer_hall_even_dim_restriction_negative_detection_value}\\
+    \tr\!\left[(T_{\mathrm{BH}}\otimes\operatorname{id})(\rho)P_0\right]
+        &<0
+        \qquad(d>2).
+    \label{eq:wolf_breuer_hall_even_dim_restriction_negative_detection}
+\end{align}
+Hence $(T_{\mathrm{BH}}\otimes\operatorname{id})(\rho)$ is not positive
+semidefinite. Decomposable maps preserve positivity on PPT
+states.\footnote{Formal declarations:
 \leanid{IsDecomposablePositiveMap.tensorMapId\_posSemidef\_of\_isPPT} and
 \leanid{not\_isDecomposablePositiveMap\_of\_isPPT\_not\_tensorMapId\_posSemidef}
 in \doclink{QICLean/Channel/DecomposablePPT}.}
-$T_{\mathrm{BH}}$ is not decomposable.
+Therefore $T_{\mathrm{BH}}$ is not decomposable.
 
 \section{Conclusion}
 
-Wolf's positivity statement applies to antisymmetric contractions, whereas the
-source's indecomposability sentence applies only to antisymmetric unitaries.
-For unitaries the dimension correction is necessary: the formalized theorem
-assumes $d>2$, equivalently even $d\ge4$ whenever an antisymmetric unitary
-exists, and at $d=2$ the map vanishes. The unitary hypothesis is also a genuine
-boundary for the stated conclusion: the antisymmetric contraction $U=0$ gives
-the completely copositive, decomposable reduction map $T_1$. The blueprint
-records both the corrected unitary theorem and this counterexample, without
-asserting a sharper classification for general contractions.
+Wolf's positivity statement applies to antisymmetric contractions, while the
+indecomposability statement applies only to antisymmetric unitaries
+\cite[Example~3.1]{Wolf2012Quantum}. In the unitary case, the dimension
+correction is necessary: the formal theorem assumes $d>2$, equivalently even
+$d\geq4$ when an antisymmetric unitary exists, and the map vanishes at $d=2$.
+The unitary hypothesis is also a genuine boundary for the stated conclusion,
+because the antisymmetric contraction $U=0$ gives the completely copositive,
+decomposable reduction map $T_1$. The formalization records the corrected
+unitary theorem and this counterexample without asserting a classification for
+general contractions.
 
 \bibliographystyle{alpha}
 \bibliography{references}

@@ -16,148 +16,233 @@
 
 \section{Source statement}
 
-Wolf Theorem~6.3 concerns an irreducible positive map
-$T:\MN{D}\to\MN{D}$; complete positivity is not assumed. The exact local
-source is
-\path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex}, lines~604--680.
-Equations~(6.29)--(6.30) define, for nonzero $X\geq0$,
+Theorem~6.3 of Ref.~\cite{Wolf2012Quantum} concerns an irreducible positive
+map
 \begin{align}
-  r(X)&=\sup\{a\in\mathbb R:T(X)-aX\geq0\},
-  \tag{6.29}\label{eq:gap-lower}\\
-  \widetilde r(X)&=\inf\{a\in\mathbb R:T(X)-aX\leq0\}.
-  \tag{6.30}\label{eq:gap-upper}
+  T
+    &:\MN{D}\longrightarrow\MN{D}.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_positive_map}
 \end{align}
-The theorem identifies the global lower and upper quantities, constructs a
-strictly positive eigenvector, proves one-dimensionality of its ordinary
-eigenspace, compares every positive eigenvalue with the distinguished value,
-and identifies that value with the spectral radius.
+It does not assume complete positivity. The exact local source is
+\path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex},
+lines~604--680.
 
-\section{Positive-map scope is resolved}
+For each nonzero $X\succeq0$, source Equations~(6.29)--(6.30) define
+\begin{align}
+  r(X)
+    &=\sup\{a\in\mathbb R:T(X)-aX\succeq0\},
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_lower_functional}\\
+  \widetilde r(X)
+    &=\inf\{a\in\mathbb R:T(X)-aX\preceq0\}.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_upper_functional}
+\end{align}
+The theorem identifies the global lower and upper values, constructs a
+strictly positive eigenvector, proves that its ordinary eigenspace is
+one-dimensional, compares every positive eigenvalue with the distinguished
+value, and identifies that value with the spectral radius
+\cite[Theorem~6.3]{Wolf2012Quantum}.
+
+\section{Positive-map scope}
 
 The declaration
 \leanid{exists_wolfTheorem63_of_irreducible_positive} in
 \doclink{QICLean/Channel/Irreducible/SpectralRadius} proves all four conclusions
 for an arbitrary irreducible positive map on a nonzero full matrix algebra. It
-returns a density matrix $X>0$ and $r\geq0$ satisfying $T(X)=rX$; the ordinary
-complex eigenspace at $r$ has dimension one, every positive eigenvalue with a
-nonzero positive semidefinite eigenvector equals $r$, and
-$\varrho(T)=r$. The lower value is a global maximum and the upper value is a
-global minimum, both attained at $X$.
+produces a density matrix $X>0$ and a scalar $r\geq0$ satisfying
+\begin{align}
+  T(X)
+    &=rX,
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_perron_eigenvector}\\
+  \varrho(T)
+    &=r.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_spectral_radius}
+\end{align}
+The ordinary complex eigenspace at $r$ has dimension one. Every positive
+eigenvalue admitting a nonzero positive semidefinite eigenvector equals $r$.
+The global lower value is a maximum and the corrected global upper value is a
+minimum, and both are attained at $X$.
 
 The source-form declaration
-\leanid{exists_wolfTheorem63_of_irreducible_positive_of_ne_zero} adds
-$T\neq0$ and obtains $r>0$. The structural growth theorem
-\leanid{growth_posDef_of_irreducible}, the trace-adjoint theorem
-\leanid{IsIrreducibleMap.traceAdjointMap}, and the spectral-radius theorem
-\leanid{spectralRadius_eq_of_posDef_eigenvector_of_positive} all assume only
-positivity. The earlier complete-positive declarations remain available as
-direct specializations.
+\leanid{exists_wolfTheorem63_of_irreducible_positive_of_ne_zero} adds the
+hypothesis $T\neq0$ and obtains
+\begin{align}
+  r
+    &>0.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_positive_radius}
+\end{align}
+The structural growth theorem \leanid{growth_posDef_of_irreducible}, the
+trace-adjoint theorem \leanid{IsIrreducibleMap.traceAdjointMap}, and the
+spectral-radius theorem
+\leanid{spectralRadius_eq_of_posDef_eigenvector_of_positive} assume only
+positivity. Earlier completely positive declarations remain available as
+specializations.
 
-Here ``non-degenerate'' is formalized as one-dimensionality of the ordinary
-eigenspace, which is exactly what the boundary argument at source
-lines~653--661 establishes. No claim about algebraic multiplicity or the
-generalized eigenspace is made.
+Here ``non-degenerate'' means that the ordinary eigenspace is
+one-dimensional, exactly as established by the boundary argument at local
+source lines~653--661. No assertion is made about algebraic multiplicity or
+the generalized eigenspace.
 
-\section{The one-dimensional zero-map boundary}
+\section{One-dimensional zero-map boundary}
 
 The printed theorem does not exclude the zero map, but its proof begins at
-line~640 with a positive lower value, and item~2 writes $T(X)=rX>0$. This is
-false at the following boundary. On $\MN{1}$ the zero map is positive and is
-irreducible under both the source and repository definitions, because the only
-orthogonal projections are $0$ and $\Id$. Its spectral radius is zero, and it
-has no strictly positive eigenvalue.
-
-The assumption-free corrected theorem therefore uses $r\geq0$ and states
-$X>0$ separately from $T(X)=rX$. The printed $r>0$ conclusion is valid after
-adding the explicit hypothesis $T\neq0$. For $D>1$, irreducibility already
-excludes the zero map, but the uniform hypothesis records the exact missing
-boundary.
-
-\section{The upper extremum at lines 617--619}
-
-The source prints
+line~640 with a positive lower value, and item~2 asserts
 \begin{align}
-  r&:=\sup_{X\geq0}r(X),&
-  \widetilde r&:=\sup_{X\geq0}\widetilde r(X),&
-  r&\geq\widetilde r.
-  \tag{printed}
+  T(X)
+    &=rX>0.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_printed_positive_image}
 \end{align}
-This cannot be the stated Collatz--Wielandt pair. The corrected global upper
+This assertion is false in dimension one. On $\MN{1}$, the zero map is positive
+and irreducible under both the source and repository definitions because the
+only orthogonal projections are $0$ and $\Id$. Its spectral radius is zero,
+and it has no strictly positive eigenvalue.
+
+The assumption-free corrected theorem therefore separates the conclusions
+\begin{align}
+  X
+    &>0,
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_corrected_positive_vector}\\
+  T(X)
+    &=rX,
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_corrected_eigenvector}\\
+  r
+    &\geq0.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_corrected_nonnegative_radius}
+\end{align}
+The printed conclusion $r>0$ becomes valid after adding $T\neq0$. If $D>1$,
+irreducibility already excludes the zero map, but the uniform hypothesis
+records the exact missing boundary.
+
+\section{Correction to the upper extremum}
+
+At local source lines~617--619, the printed global definitions and comparison
+are
+\begin{align}
+  r
+    &:=\sup_{X\succeq0}r(X),
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_printed_lower_global}\\
+  \widetilde r
+    &:=\sup_{X\succeq0}\widetilde r(X),
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_printed_upper_global}\\
+  r
+    &\geq\widetilde r.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_printed_global_order}
+\end{align}
+This is not the Collatz--Wielandt pair used by the theorem. The corrected upper
 quantity is
 \begin{align}
   \widetilde r
-  &=\inf_{X\geq0,\,X\neq0}\widetilde r(X).
-  \tag{corrected upper extremum}
+    &=\inf_{\substack{X\succeq0\\X\neq0}}\widetilde r(X).
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_corrected_upper_global}
 \end{align}
-Equivalently, one may take the infimum over density matrices, as in the compact
-normalization used in the proof. For an irreducible positive map, the formal
-proof shows that the lower supremum and this upper infimum are both attained at
-the same positive-definite eigenvector and are equal. The reversed inequality
-printed at line~619 belongs to the same local error.
+Equivalently, the infimum may be taken over density matrices, as in the compact
+normalization used by the proof. For an irreducible positive map, the lower
+supremum and upper infimum are attained at the same positive-definite
+eigenvector and are equal. The reversed inequality at line~619 is part of the
+same local source error.
 
-There is no pointwise assertion that $r(X)=\widetilde r(X)$ for arbitrary
-$X\geq0$, even under irreducibility. For example, on $\MN{2}$ consider the
-trace-to-identity map $T(Z)=\tr(Z)\Id$. This map is positive and irreducible:
-for every nonzero proper projection $P$, the matrix $T(P)=\Id$ is not supported
-on the range of $P$. At $X=\operatorname{diag}(1,2)$, the inequalities
-$T(X)-aX\geq0$ and $bX-T(X)\geq0$ give respectively
+Irreducibility does not imply pointwise equality
+$r(X)=\widetilde r(X)$ for every nonzero $X\succeq0$. Consider
+$T:\MN{2}\to\MN{2}$ defined by
 \begin{align}
-  r(X)&=\min\{3,3/2\}=3/2,&
-  \widetilde r(X)&=\max\{3,3/2\}=3.
+  T(Z)
+    &=\tr(Z)\Id.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_trace_identity_map}
 \end{align}
-Equality at a positive eigenvector is sufficient for the theorem. The
-declarations
-\leanid{lowerCollatzWielandtValue} and
-\leanid{upperCollatzWielandtValue} formalize the two pointwise functionals in
-the extended reals. They record the excluded zero boundary exactly:
+This map is positive and irreducible: for every nonzero proper projection $P$,
+the matrix $T(P)=\Id$ is not supported on the range of $P$. At
 \begin{align}
-  r(0)&=+\infty,&
-  \widetilde r(0)&=-\infty.
+  X
+    &=\operatorname{diag}(1,2),
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_pointwise_counterexample_matrix}
 \end{align}
-If the upper defining set is empty, its infimum is $+\infty$. For every
-nonzero $X\geq0$ the declaration
-\leanid{lowerCollatzWielandtValue\_le\_upperCollatzWielandtValue} proves the
-correct pointwise order $r(X)\leq\widetilde r(X)$, while
+the lower and upper feasibility conditions give
+\begin{align}
+  r(X)
+    &=\min\{3,3/2\}
+     =3/2,
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_pointwise_lower_value}\\
+  \widetilde r(X)
+    &=\max\{3,3/2\}
+     =3.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_pointwise_upper_value}
+\end{align}
+Equality at a positive eigenvector is sufficient for the theorem.
+
+The declarations \leanid{lowerCollatzWielandtValue} and
+\leanid{upperCollatzWielandtValue} define the two pointwise functionals in the
+extended reals. Their values at the excluded zero matrix are
+\begin{align}
+  r(0)
+    &=+\infty,
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_zero_lower_value}\\
+  \widetilde r(0)
+    &=-\infty.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_zero_upper_value}
+\end{align}
+If the defining set for the upper functional is empty, its infimum is
+$+\infty$. For every nonzero $X\succeq0$, the declaration
+\leanid{lowerCollatzWielandtValue\_le\_upperCollatzWielandtValue} proves
+\begin{align}
+  r(X)
+    &\leq\widetilde r(X).
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_correct_pointwise_order}
+\end{align}
+The declaration
 \leanid{lower\_and\_upperCollatzWielandtValue\_eq\_of\_eigenvector} proves
-equality at every positive eigenvector. Thus the formal statement matches
-exactly the use at local source lines~649--651 without asserting the false
-arbitrary pointwise equality.
+equality at every positive eigenvector. Thus the formal result matches the use
+at local source lines~649--651 without asserting false pointwise equality for
+arbitrary positive semidefinite matrices.
 
 \section{Source-faithful proof route}
 
-The proof follows the order of Wolf's argument. First, lower and upper
-feasibility are defined for every real scalar, exactly as in
-Equations~\eqref{eq:gap-lower}--\eqref{eq:gap-upper}. After normalizing to
-density matrices, zero is lower feasible and negative lower candidates cannot
-increase the supremum, so the maximizing search is restricted to a compact
-interval. Upper candidates are automatically nonnegative by positivity and
-the trace inequality. This produces a lower maximizer without changing either
-source extremum. Equation~(6.31), together with the positive-map growth theorem,
-makes the maximizer positive definite and forces its lower residual to vanish.
-Equation~(6.32) is then applied after the Hermitian and skew-Hermitian
-decomposition to prove one-dimensionality of the ordinary eigenspace.
+The formal proof follows the order of the source argument
+\cite[Theorem~6.3]{Wolf2012Quantum}. Lower and upper feasibility are first
+defined for every real scalar as in
+(\ref{eq:wolf_thm6_3_positive_map_cp_scope_lower_functional}) and
+(\ref{eq:wolf_thm6_3_positive_map_cp_scope_upper_functional}). After
+normalization to density matrices, zero is lower feasible and negative lower
+candidates cannot increase the supremum. The maximizing search can therefore
+be restricted to a compact interval. Positivity and the trace inequality make
+all upper candidates nonnegative. These observations produce a lower maximizer
+without changing either source extremum.
 
-If the resulting value is zero, a positive map annihilating a
-positive-definite matrix must be the zero map, and the remaining conclusions
-are immediate. In the positive branch, the complementary-projection argument
-at lines~604--606 proves that the
-trace-pairing adjoint $T^*$ is irreducible. Its positive-definite Perron
-eigenvector supplies Equation~(6.33), which proves uniqueness of positive
-eigenvalues and, by pairing with an upper residual, the corrected upper
-minimum. Finally, conjugation by $X^{1/2}$ and rescaling by $r^{-1}$ produce
-Wolf's positive unital map; Proposition~6.1 identifies its spectral radius as
-one.
+Source Equation~(6.31) of Ref.~\cite{Wolf2012Quantum}, together with the positive-map growth theorem, makes
+the maximizer positive definite and forces its lower residual to vanish:
+\begin{align}
+  T(X)-rX
+    &=0.
+  \label{eq:wolf_thm6_3_positive_map_cp_scope_vanishing_lower_residual}
+\end{align}
+Source Equation~(6.32) of Ref.~\cite{Wolf2012Quantum} is then applied after decomposing an arbitrary matrix
+into Hermitian and skew-Hermitian parts. This proves that the ordinary
+eigenspace is one-dimensional.
+
+If $r=0$, positivity and $X>0$ imply that a map satisfying $T(X)=0$ is the
+zero map, after which the remaining conclusions are immediate. In the branch
+$r>0$, the complementary-projection argument at local source lines~604--606
+shows that $T^*$ is irreducible. A positive-definite Perron eigenvector for
+$T^*$ supplies source Equation~(6.33) of Ref.~\cite{Wolf2012Quantum}. Pairing with this vector proves
+uniqueness of positive eigenvalues and, after pairing with an upper residual,
+the corrected upper minimum.
+
+Finally, conjugation by $X^{1/2}$ and rescaling by $r^{-1}$ produce the
+positive unital map used by Wolf. Proposition~6.1 of
+Ref.~\cite{Wolf2012Quantum} identifies its spectral radius as one, which gives
+(\ref{eq:wolf_thm6_3_positive_map_cp_scope_spectral_radius}).
 
 \section{Verdict}
 
 \textbf{Verdict: resolved, with two source corrections.} The former
-complete-positivity restriction has been removed. Wolf Theorem~6.3 is
-formalized for arbitrary positive maps. The one-dimensional zero-map boundary
-requires either the corrected conclusion $r\geq0$ or the explicit hypothesis
-$T\neq0$ for the printed $r>0$ form. The second global extremum at
-lines~617--619 is an infimum, not a supremum, and the accompanying printed
-inequality is correspondingly invalid. The pointwise functionals now use
+complete-positivity restriction has been removed: Theorem~6.3 is formalized
+for arbitrary positive maps. At the one-dimensional zero-map boundary, the
+assumption-free theorem requires $r\geq0$; the printed conclusion $r>0$
+requires the additional hypothesis $T\neq0$. The second global extremum at
+local source lines~617--619 is an infimum rather than a supremum, and the
+printed comparison is correspondingly invalid. The pointwise functionals use
 extended values, their zero and empty-set boundaries are explicit, and their
 equality is asserted only at positive eigenvectors.
+
+\bibliographystyle{alpha}
+\bibliography{references}
 
 \end{document}
