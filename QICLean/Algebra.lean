@@ -49,7 +49,6 @@ import QICLean.Algebra.MatrixPosDefTransport
 import QICLean.Algebra.MatrixRankBaseChange
 import QICLean.Algebra.MatrixRankClosed
 import QICLean.Algebra.MatrixRankKronecker
-import QICLean.Algebra.MatrixReindex
 import QICLean.Algebra.MatrixReindexUnitary
 import QICLean.Algebra.MatrixSpectralDecomp
 import QICLean.Algebra.MatrixStabilization
