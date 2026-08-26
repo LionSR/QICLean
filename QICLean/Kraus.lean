@@ -28,7 +28,6 @@ import QICLean.Kraus.ProjectionTriangularTrace
 import QICLean.Kraus.Tactic
 import QICLean.Kraus.TracePairing
 import QICLean.Kraus.Transfer
-import QICLean.Kraus.TransferChannel
 import QICLean.Kraus.Wielandt
 import QICLean.Kraus.Word
 import QICLean.Kraus.WordSpan
