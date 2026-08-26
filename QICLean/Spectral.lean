@@ -9,6 +9,5 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Spectral
 
 import QICLean.Spectral.GaugeConstruction
-import QICLean.Spectral.MixedTransfer
 import QICLean.Spectral.TransferOperatorGapNormalized
 import QICLean.Spectral.TransferOperatorGapRectNormalized
