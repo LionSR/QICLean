@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Kraus.Wielandt.SpanGrowth
 
+import QICLean.Kraus.Wielandt.SpanGrowth.AlgebraSpan
 import QICLean.Kraus.Wielandt.SpanGrowth.CumulativeSpan
 import QICLean.Kraus.Wielandt.SpanGrowth.CumulativeToWordSpan
 import QICLean.Kraus.Wielandt.SpanGrowth.EigenvectorSpreading

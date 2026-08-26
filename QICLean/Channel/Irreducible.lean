@@ -21,6 +21,7 @@ import QICLean.Channel.Irreducible.Growth.KernelDescent
 import QICLean.Channel.Irreducible.Growth.OneStep
 import QICLean.Channel.Irreducible.Growth.OrthogonalTrace
 import QICLean.Channel.Irreducible.Growth.Preservation
+import QICLean.Channel.Irreducible.KrausGauge
 import QICLean.Channel.Irreducible.KrausSetup
 import QICLean.Channel.Irreducible.PerronFrobenius
 import QICLean.Channel.Irreducible.Scaling
