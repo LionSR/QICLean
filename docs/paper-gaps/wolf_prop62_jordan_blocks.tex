@@ -17,76 +17,123 @@
 
 \section{The assertion}
 
-Wolf, \emph{Quantum Channels \& Operations}, Proposition~6.2:
-``Let $T:\mathcal M_d(\mathbb C)\to\mathcal M_d(\mathbb C)$ be a
-trace-preserving (or unital) positive linear map.  If $\lambda$ is an
-eigenvalue of $T$ with $|\lambda|=1$, then its geometric multiplicity
-equals its algebraic multiplicity, i.e., all Jordan blocks for $\lambda$
-are one-dimensional.''
+Let $T:\MN{d}\to\MN{d}$ be a positive linear map that is either
+trace-preserving or unital. Proposition~6.2 of Ref.~\cite{Wolf2012Quantum}
+states that every eigenvalue $\lambda$ of $T$ with $|\lambda|=1$ has equal
+geometric and algebraic multiplicities. Equivalently, every Jordan block
+associated with $\lambda$ is one-dimensional.
 
-The proof observes that the iterates $T^n$ are uniformly bounded in
-operator norm (positivity together with either trace preservation or
-unitality keeps every forward orbit bounded) and that powers of a
-nontrivial Jordan block grow without bound when the eigenvalue has
-modulus~$1$, giving a contradiction.
+The proof in Ref.~\cite{Wolf2012Quantum} uses two facts. First, positivity
+together with trace preservation or unitality makes the iterates of $T$
+uniformly bounded in operator norm. Second, powers of a nontrivial Jordan block
+whose eigenvalue has modulus one grow without bound. These facts are
+incompatible.
 
-\section{The formalization}
+\section{Bounded orbits}
 
-The bounded-orbit lemma is formalized for both hypotheses of the
-proposition. \leanid{IsPositiveMap.hasBoundedOrbits\_of\_tracePreserving} in
-\doclink{QICLean/Channel/FixedPoint/MeanErgodicProjection} proves
-that every forward orbit $\{T^n X\}_{n\in\mathbb N}$ is bounded in norm
-for a positive trace-preserving $T$, and
-\leanid{IsPositiveMap.hasBoundedOrbits\_of\_unital} in
-\doclink{QICLean/Channel/Peripheral/JordanBlocks} proves the same for a
-positive unital $T$. Both share the reduction from an arbitrary matrix to
-a positive semidefinite one
-(\leanid{IsPositiveMap.hasBoundedOrbits\_of\_posSemidef\_orbit\_bounded} in
-\doclink{QICLean/Channel/FixedPoint/MeanErgodicProjection}) and differ only
-in the positive-semidefinite-orbit step: trace preservation bounds the trace
-of each iterate directly, while unitality bounds each iterate above by
-$(\operatorname{tr}X)\cdot 1$ in the Loewner order and then bounds its trace.
-This is exactly Wolf's own argument: the bound
-$\operatorname{tr}[A\,T(B)] \le \|A\|_\infty \|B\|_\infty
-\operatorname{tr}[1\,T(1)] = d\|A\|_\infty\|B\|_\infty$ holds verbatim for
-trace-preserving \emph{or} unital positive maps because
-$\operatorname{tr}[1\,T(1)] = d$ under either hypothesis (trace preservation
-gives $\operatorname{tr}[T(1)] = \operatorname{tr}[1] = d$; unitality gives
-$T(1) = 1$, so $\operatorname{tr}[1\cdot 1] = d$ directly). No duality
-argument through the adjoint map is needed or used.
+The bounded-orbit result is formalized under both alternatives in
+Proposition~6.2 of Ref.~\cite{Wolf2012Quantum}.\footnote{Formal declarations:
+    \leanid{IsPositiveMap.hasBoundedOrbits_of_tracePreserving} in
+    \doclink{QICLean/Channel/FixedPoint/MeanErgodicProjection}, and
+    \leanid{IsPositiveMap.hasBoundedOrbits_of_unital} in
+    \doclink{QICLean/Channel/Peripheral/JordanBlocks}.}
+Both proofs reduce an arbitrary matrix to the positive-semidefinite case using
+the same lemma.\footnote{Formal declaration:
+    \leanid{IsPositiveMap.hasBoundedOrbits_of_posSemidef_orbit_bounded} in
+    \doclink{QICLean/Channel/FixedPoint/MeanErgodicProjection}.}
 
-The binomial-expansion ingredient is formalized once and shared between the
-two cases. A rank-$2$ generalized eigenvector $(T-\lambda)X=Y\neq0$ with
-$(T-\lambda)Y=0$ gives, by induction on the decomposition
-$T=\lambda I+(T-\lambda I)$ (\leanid{IsPositiveMap.pow\_apply\_rank\_two\_genEig}),
-\[
-    T^n X = \lambda^n X + n\lambda^{n-1}Y,
-\]
-whose norm grows linearly with $n$. Extracting the norm bound
-$\|T^n X\|\ge n\|Y\|-\|X\|$ from this identity and applying the bounded-orbit
-lemma (either hypothesis) reaches the contradiction that closes the rank-$2$
-case; the full statement for higher-rank generalized eigenvectors reduces to
-rank~$2$ by induction on $k$.
+For a positive semidefinite input, trace preservation fixes the trace of every
+iterate. Unitality instead bounds each iterate in the Loewner order by a scalar
+multiple of the identity and then bounds its trace. The common scalar estimate
+used in Ref.~\cite{Wolf2012Quantum} is
+\begin{align}
+    \tr\!\left(A\,T(B)\right)
+        &\leq \lVert A\rVert_\infty\lVert B\rVert_\infty
+            \tr\!\left(\Id\,T(\Id)\right)
+    \label{eq:wolf_prop62_jordan_blocks_trace_bound_first}\\
+        &=d\lVert A\rVert_\infty\lVert B\rVert_\infty.
+    \label{eq:wolf_prop62_jordan_blocks_trace_bound_dimension}
+\end{align}
+Under trace preservation,
+\begin{align}
+    \tr\!\left(T(\Id)\right)
+        &=\tr(\Id)
+    \label{eq:wolf_prop62_jordan_blocks_trace_preserving_identity}\\
+        &=d.
+    \label{eq:wolf_prop62_jordan_blocks_trace_preserving_dimension}
+\end{align}
+Under unitality,
+\begin{align}
+    T(\Id)&=\Id,
+    \label{eq:wolf_prop62_jordan_blocks_unital_identity}\\
+    \tr\!\left(\Id\,T(\Id)\right)
+        &=\tr(\Id)
+    \label{eq:wolf_prop62_jordan_blocks_unital_trace}\\
+        &=d.
+    \label{eq:wolf_prop62_jordan_blocks_unital_dimension}
+\end{align}
+Thus (\ref{eq:wolf_prop62_jordan_blocks_trace_bound_dimension}) holds under
+either hypothesis. The formal proof follows this direct argument and does not
+pass through the adjoint map.
+
+\section{The Jordan-block argument}
+
+Suppose that $X,Y\in\MN{d}$ and $\lambda\in\C$ satisfy
+\begin{align}
+    (T-\lambda\Id)X&=Y,
+    \label{eq:wolf_prop62_jordan_blocks_rank_two_first}\\
+    (T-\lambda\Id)Y&=0,
+    \label{eq:wolf_prop62_jordan_blocks_rank_two_second}\\
+    Y&\neq0.
+    \label{eq:wolf_prop62_jordan_blocks_rank_two_nonzero}
+\end{align}
+These relations describe a rank-two generalized eigenvector. Expanding
+$T=\lambda\Id+(T-\lambda\Id)$ and using
+(\ref{eq:wolf_prop62_jordan_blocks_rank_two_first}) and
+(\ref{eq:wolf_prop62_jordan_blocks_rank_two_second}) gives
+\begin{align}
+    T^nX
+        &=\lambda^nX+n\lambda^{n-1}Y.
+    \label{eq:wolf_prop62_jordan_blocks_iterate_formula}
+\end{align}
+This identity is formalized by
+\leanid{IsPositiveMap.pow_apply_rank_two_genEig}.
+
+When $|\lambda|=1$, the reverse triangle inequality applied to
+(\ref{eq:wolf_prop62_jordan_blocks_iterate_formula}) yields
+\begin{align}
+    \lVert T^nX\rVert
+        &\geq n\lVert Y\rVert-\lVert X\rVert.
+    \label{eq:wolf_prop62_jordan_blocks_linear_growth}
+\end{align}
+Because $Y\neq0$, the right-hand side of
+(\ref{eq:wolf_prop62_jordan_blocks_linear_growth}) is unbounded as
+$n\to\infty$. This contradicts the bounded-orbit theorem under either trace
+preservation or unitality. Higher-rank generalized eigenvectors reduce to the
+rank-two case by induction on the length of the generalized-eigenvector chain.
 
 \section{Verdict}
 
-Both hypotheses of Proposition~6.2 are \emph{closed}.  The rank-2 binomial
-expansion (\leanid{IsPositiveMap.pow\_apply\_rank\_two\_genEig}) is shared
-between the two cases; the rank-2 generalized-eigenvector prohibition and
-the full $k$-step reduction are each proved once per hypothesis
-(\leanid{IsPositiveMap.no\_rank\_two\_genEigenvector\_of\_tracePreserving},
-\leanid{IsPositiveMap.no\_rank\_two\_genEigenvector\_of\_unital},
-\leanid{IsPositiveMap.peripheral\_Jordan\_trivial\_of\_tracePreserving},
-\leanid{IsPositiveMap.peripheral\_Jordan\_trivial\_of\_unital}), all in
+Both alternatives in Proposition~6.2 of Ref.~\cite{Wolf2012Quantum} are
+formalized. The shared binomial expansion is
+\leanid{IsPositiveMap.pow_apply_rank_two_genEig}; the rank-two prohibitions and
+the full generalized-eigenvector reductions are
+\leanid{IsPositiveMap.no_rank_two_genEigenvector_of_tracePreserving},
+\leanid{IsPositiveMap.no_rank_two_genEigenvector_of_unital},
+\leanid{IsPositiveMap.peripheral_Jordan_trivial_of_tracePreserving}, and
+\leanid{IsPositiveMap.peripheral_Jordan_trivial_of_unital}, all in
 \doclink{QICLean/Channel/Peripheral/JordanBlocks}.
 
-The unital case was formerly recorded as a \emph{scope restriction} pending a
-duality argument through the trace adjoint. That plan was not taken up:
-Wolf's own proof bounds $\operatorname{tr}[A\,T(B)]$ uniformly for
-trace-preserving \emph{or} unital positive maps by the same computation, so
-the unital case is proved directly, in parallel with the trace-preserving
-case, rather than by transport through $T^*$. See \href{https://github.com/LionSR/TNLean/issues/3984}{TNLean issue \#3984}
-(tracking) and \href{https://github.com/LionSR/TNLean/issues/5447}{TNLean issue \#5447} (this closure).
+The unital case was formerly recorded as a scope restriction while a proof
+through the trace adjoint was under consideration. That route is unnecessary:
+the estimate in
+(\ref{eq:wolf_prop62_jordan_blocks_trace_bound_first})--%
+(\ref{eq:wolf_prop62_jordan_blocks_trace_bound_dimension}) applies directly
+under either hypothesis. The unital and trace-preserving cases are therefore
+proved in parallel. The work is tracked in
+\href{https://github.com/LionSR/TNLean/issues/3984}{TNLean issue \#3984} and
+closed in
+\href{https://github.com/LionSR/TNLean/issues/5447}{TNLean issue \#5447}.
 
 \bibliographystyle{alpha}
 \bibliography{references}

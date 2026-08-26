@@ -17,245 +17,443 @@
 
 \section{Source statement}
 
-Wolf's Chapter~3, Example~3.1 introduces the Choi-type maps
-\cite{Wolf2012Quantum}\footnote{Local source:
-\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
-357--365.}  With \(D\) the diagonal projection on \(\mathcal M_d\) and
-\(U_{k0}\) the cyclic shift, the map is
+Let $\mathcal M_d=\MN{d}$, let
+$D\colon\mathcal M_d\to\mathcal M_d$ be the projection onto the diagonal
+matrices, and let $U_{k0}$ be the cyclic shift by $k$ coordinates.
+Example~3.1 in Chapter~3 of Ref.~\cite{Wolf2012Quantum} introduces the
+Choi-type map
 \begin{align}
-  T_C(X)
-  =(d-n)D(X)-X+\sum_{k=1}^{n}D(U_{k0}XU_{k0}^{\dagger}).
-  \tag{3.20}
+    T_C(X)
+        &=(d-n)D(X)-X
+          +\sum_{k=1}^{n}D(U_{k0}XU_{k0}^{\dagger}).
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_choi_type_map}
 \end{align}
-The source states that \(T_C\) is positive and indecomposable for every
-\(1\le n\le d-2\).  No nonzero-coordinate hypothesis is present.
+This is Equation~(3.20) of Ref.~\cite{Wolf2012Quantum}.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines 357--365.}
+The source states that $T_C$ is positive and indecomposable whenever
+\begin{align}
+    1
+        &\leq n\leq d-2.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_source_parameter_range}
+\end{align}
+It imposes no hypothesis that the coordinates of an input vector be nonzero.
 
 \section{Endpoint statements}
 
-The endpoint arguments were formalized first and remain useful independent
-proofs of two slices of the positivity assertion.
+The endpoint arguments give independent proofs of two slices of the positivity
+claim.
 
-First, at the bottom of the source's range, $n=1$, the development proves
-positivity of $T_C$ on all positive semidefinite inputs for every $d\ge3$.
-The scalar input is the boundary-inclusive cyclic reciprocal inequality
+For the lower endpoint $n=1$, the development proves that $T_C$ maps every
+positive semidefinite input to a positive semidefinite output in every
+dimension $d\geq 3$. The scalar input is the boundary-inclusive cyclic
+reciprocal inequality
 \begin{align}
-  \sum_{i\in\mathbb Z/d\mathbb Z}
-  \frac{x_i}{(d-1)x_i+x_{i-1}}\le1,
-  \qquad x_i\ge0,
+    \sum_{i\in\mathbb Z/d\mathbb Z}
+        \frac{x_i}{(d-1)x_i+x_{i-1}}
+        &\leq 1,
+    \qquad x_i\geq 0,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_lower_endpoint_reciprocal}
 \end{align}
-with zero-denominator summands read as $0$.  In the interior, put
-$y_i=x_{i-1}/x_i$, so that $\prod_i y_i=1$.  Clearing denominators expands the
-inequality in the elementary symmetric sums $e_k(y)$; AM--GM gives
-$e_k(y)\ge\binom{d}{k}$, and the resulting binomial expression is zero at the
-constant family.  This is the proof route of Tanahashi--Tomiyama, Theorem~1
-and Lemmas~2--3~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable}:
-Lemma~3 supplies the reciprocal estimate and Theorem~1 applies the rank-one
-diagonal-minus-projector criterion of Lemma~2.  Their argument assumes the
-coordinates are positive.  On the boundary, if some $x_i$ vanishes, at most
-$d-1$ summands are nonzero and each is at most $1/(d-1)$.\footnote{Formal
-declarations: \leanid{Matrix.choiType\_cyclic\_reciprocal\_one\_of\_nonneg},
-\leanid{Matrix.choiTypeMap\_vecMulVec\_posSemidef\_one}, and
-\leanid{Matrix.choiTypeMap\_isPositiveMap\_one} in
+where a summand with zero denominator is defined to be zero. In the interior
+of the nonnegative cone, define
+\begin{align}
+    y_i
+        &=\frac{x_{i-1}}{x_i},
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_ratio_definition}\\
+    \prod_{i\in\mathbb Z/d\mathbb Z}y_i
+        &=1.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_ratio_product}
+\end{align}
+Clearing denominators in
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_lower_endpoint_reciprocal})
+produces an expression in the elementary symmetric sums $e_k(y)$. The
+arithmetic--geometric mean inequality gives
+\begin{align}
+    e_k(y)
+        &\geq \binom{d}{k},
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_symmetric_sum_bound}
+\end{align}
+and the resulting binomial expression vanishes for the constant family. This
+is the proof route of Theorem~1 and Lemmas~2--3 of
+Ref.~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable}: Lemma~3 gives
+the reciprocal estimate, and Theorem~1 applies the rank-one
+diagonal-minus-projector criterion from Lemma~2.
+
+The argument in
+Ref.~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable} assumes strictly
+positive coordinates. If some $x_i$ vanishes, at most $d-1$ summands in
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_lower_endpoint_reciprocal})
+are nonzero, and every nonzero summand is at most $1/(d-1)$. This proves the
+boundary case as well.\footnote{Formal declarations:
+\leanid{Matrix.choiType_cyclic_reciprocal_one_of_nonneg},
+\leanid{Matrix.choiTypeMap_vecMulVec_posSemidef_one}, and
+\leanid{Matrix.choiTypeMap_isPositiveMap_one} in
 \doclink{QICLean/Channel/ChoiTypeMap/Positivity}.}
-Using the spectral decomposition of a positive semidefinite matrix into
-rank-one positive semidefinite summands extends the rank-one result to the
-positive-map statement.
+A spectral decomposition of a positive semidefinite matrix into rank-one
+positive semidefinite summands then extends the rank-one result to positivity
+of the map.
 
-Second, at the top of the source's range, \(n=d-2\), the development proves
-positivity of \(T_C\) on all positive semidefinite inputs for every dimension
-\(d\ge3\); this family subsumes the \(d=3,n=1\)
-case.\footnote{Formal declarations:
-\leanid{Matrix.perm\_reciprocal\_sum\_le\_one},
-\leanid{Matrix.choiTypeMap\_vecMulVec\_posSemidef\_sub\_two}, and
-\leanid{Matrix.choiTypeMap\_isPositiveMap\_sub\_two} in
-\doclink{QICLean/Channel/ChoiTypeMap}.}  For \(n=d-2\) the backward window
-\(x_{i-1},\dots,x_{i-n}\) misses exactly the entries at \(i\) and \(i+1\), so
-with \(T=\sum_j x_j\) the diagonal weight collapses to
-\(a_i=T+x_i-x_{i+1}\), and the cyclic reciprocal estimate becomes an instance
-of a reciprocal inequality valid for an arbitrary permutation \(\sigma\):
+For the upper endpoint $n=d-2$, the development proves positivity on every
+positive semidefinite input for all $d\geq 3$. This endpoint includes the case
+$(d,n)=(3,1)$.\footnote{Formal declarations:
+\leanid{Matrix.perm_reciprocal_sum_le_one},
+\leanid{Matrix.choiTypeMap_vecMulVec_posSemidef_sub_two}, and
+\leanid{Matrix.choiTypeMap_isPositiveMap_sub_two} in
+\doclink{QICLean/Channel/ChoiTypeMap}.}
+The backward window $x_{i-1},\ldots,x_{i-n}$ then omits exactly $x_i$ and
+$x_{i+1}$. Define
 \begin{align}
-  \sum_i \frac{x_i}{T+x_i-x_{\sigma(i)}}\le 1,
-  \qquad x_i\ge 0 .
+    T
+        &=\sum_j x_j,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_total_mass}\\
+    a_i
+        &=T+x_i-x_{i+1}.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_upper_endpoint_weight}
 \end{align}
-Each summand is at most \((x_iT-x_i\delta_i+\delta_i^2/2)/T^2\) with
-\(\delta_i=x_i-x_{\sigma(i)}\), by the pair bound
-\(x_i+x_{\sigma(i)}\le T\), and the bounds sum to \(1\) exactly because
-\(\sum_i x_i\delta_i=\tfrac12\sum_i\delta_i^2\) for a permutation.  This case
-of the cyclic estimate is classical: it is due to Ando (\emph{Positivity of
-certain maps}, seminar notes, 1985), as recorded in the introduction of
-\cite{Yamagami1993Cyclic}.
+The cyclic estimate becomes a special case of the permutation inequality
+\begin{align}
+    \sum_i\frac{x_i}{T+x_i-x_{\sigma(i)}}
+        &\leq 1,
+    \qquad x_i\geq 0,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_permutation_reciprocal}
+\end{align}
+where $\sigma$ is an arbitrary permutation.
+
+Set $\delta_i=x_i-x_{\sigma(i)}$. The pair bound
+$x_i+x_{\sigma(i)}\leq T$ gives
+\begin{align}
+    \frac{x_i}{T+\delta_i}
+        &\leq
+        \frac{x_iT-x_i\delta_i+\delta_i^2/2}{T^2}.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_permutation_summand_bound}
+\end{align}
+For a permutation,
+\begin{align}
+    \sum_i x_i\delta_i
+        &=\frac{1}{2}\sum_i\delta_i^2.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_permutation_delta_identity}
+\end{align}
+Summing
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_permutation_summand_bound})
+and using
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_permutation_delta_identity})
+proves
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_permutation_reciprocal}).
+This cyclic estimate is due to Ando, as recorded in the introduction of
+Ref.~\cite{Yamagami1993Cyclic}.
 
 \section{Resolution by Yamagami's variational argument}
 
 The former scope restriction is resolved by the nonnegative cyclic reciprocal
 estimate
 \begin{align}
-  \sum_{i\in\mathbb Z/d\mathbb Z}
-  \frac{x_i}{(d-n)x_i+\sum_{k=1}^{n}x_{i-k}}\le 1
-  \qquad (x_i\ge0,\;2\le n\le d-3),
+    \sum_{i\in\mathbb Z/d\mathbb Z}
+        \frac{x_i}
+        {(d-n)x_i+\sum_{k=1}^{n}x_{i-k}}
+        &\leq 1,
+    \qquad x_i\geq 0,\quad 2\leq n\leq d-3,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_middle_reciprocal}
 \end{align}
-with the usual zero-term convention. The declaration
-\leanid{Yamagami.functional\_card\_le\_one} proves the corresponding forward
-inequality at the cardinal parameter. Index negation gives
-\leanid{Matrix.choiTypeRankOneWeight\_reciprocal\_sum\_middle}; applying it to
-$x_i=|v_i|^2$ proves
-\leanid{Matrix.choiTypeMap\_vecMulVec\_posSemidef\_middle}. Spectral
-decomposition then gives
-\leanid{Matrix.choiTypeMap\_isPositiveMap} for every $d\ge3$ and
-$1\le n\le d-2$.\footnote{These declarations are in
+again with zero-denominator summands defined to be zero. The corresponding
+forward-window inequality is proved at the cardinal parameter. Index negation
+converts it to
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_middle_reciprocal});
+applying the result to $x_i=|v_i|^2$ proves positivity on rank-one positive
+semidefinite inputs. Spectral decomposition then proves positivity of $T_C$
+for every $d\geq 3$ and $1\leq n\leq d-2$.\footnote{Formal declarations:
+\leanid{Yamagami.functional_card_le_one},
+\leanid{Matrix.choiTypeRankOneWeight_reciprocal_sum_middle},
+\leanid{Matrix.choiTypeMap_vecMulVec_posSemidef_middle}, and
+\leanid{Matrix.choiTypeMap_isPositiveMap} in
 \doclink{QICLean/Channel/ChoiTypeMap/YamagamiPositivity}.}
 
-The middle estimate is genuinely harder than the two endpoint cases. The
-case $n=1$ is Tanahashi--Tomiyama's Theorem~1, whose Lemmas~2--3 give the exact
-proof route used here~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable},
-and the full range $1\le n\le d-1$ is due to
-Yamagami~\cite{Yamagami1993Cyclic}, whose proof is
-variational: it combines Nowosad's uniqueness theorem for critical points of
-\(x\mapsto\sum_i x_i/(Sx)_i\) on the positive cone, a spectral condition on
-the Hessian at the constant vector (checked through the eigenvalues of the
-cyclic matrix \(S\)), and an analysis of the boundary of the projective
-simplex with a combinatorial count of vanishing summands.
-
-The stride-one spectral ingredient is now formalized as
-\leanid{Yamagami.norm\_symbol\_sub\_half\_lt\_half}: for
-$d\ge3$, $1\le m\le d-2$, $s\ge d$, and every nonzero standard character,
-the eigenvalue of
-$(s-m)I+C+\cdots+C^m$ lies in the open disk of Yamagami's Lemma~6
-\cite[pp.~523--524]{Yamagami1993Cyclic}.  This is the corrected Wolf-range
-portion of the printed lemma.  Yamagami states $1\le m\le d-l$, $s\ge d$;
-with $l=1$, the additional endpoint $m=d-1$, $s=d$ is false because
-$I+C+\cdots+C^{d-1}$ has eigenvalue zero on every nontrivial character, giving
-equality rather than the printed strict disk bound.  The endpoint becomes
-valid for $s>d$, while $m\le d-2$ is the exact range needed here.  The false
-printed endpoint and its stride-one correction are recorded separately in
-\cite{gap:yamagami_lemma6_endpoint}; the corrected range is exactly the range
-used in the resolved Choi-type positivity proof.
-
-The cyclic matrix and Hessian prerequisite built from this disk estimate is
-now formalized in
-\doclink{QICLean/Analysis/YamagamiCyclicMatrix}.  In the exact range
-$d\ge3$, $1\le m\le d-2$, and $s\ge d$, the matrix
+The middle range requires more than the endpoint arguments. The case $n=1$ is
+Theorem~1 of
+Ref.~\cite[pp.~309--311]{TanahashiTomiyama1988Indecomposable}, with
+Lemmas~2--3 supplying the proof route used here. Yamagami proves the full
+range $1\leq n\leq d-1$ by a variational argument
+\cite{Yamagami1993Cyclic}. The argument combines Nowosad's uniqueness theorem
+for critical points of the functional
 \begin{align}
-  S&=(s-m)I+C+\cdots+C^m,
-  &H&=s(S+S^{\mathsf T})-2S^{\mathsf T}S
+    x
+        &\longmapsto
+        \sum_i\frac{x_i}{(Sx)_i}
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_variational_functional}
 \end{align}
-has nonnegative entries, row and column sum $s$, is invertible, and satisfies
-$H\succeq0$ with $\ker H=\mathbb R\mathbf1$.  The proof diagonalizes $S$
-and $H$ by the finite Fourier transform and uses
-\leanid{Yamagami.hessianSymbol\_pos} off the constant character.  The theorem
-\leanid{Yamagami.functional\_eq\_lambdaT\_inverseOperator\_mulVec} also proves
-the previously missing identity
-\begin{align}
-  f_{d,m,s}(x)&=\lambda_{S^{-1}}(Sx).
-\end{align}
-These are the algebraic ingredients in Yamagami's Lemmas~2--4 and
-Corollary~5 on pp.~522--523, using the corrected Lemma~6 range on
-pp.~523--524~\cite{Yamagami1993Cyclic}.
+on the positive cone, a spectral condition for the Hessian at the constant
+vector, and a projective-boundary analysis that counts vanishing summands
+\cite{Nowosad1968Isoperimetric,Yamagami1993Cyclic}.
 
-The accompanying definitions retain Yamagami's forward window and provide the
-explicit index-negation bridge to the backward Choi window.  The
-simultaneous-singularity part of the projective-boundary analysis is now
-formalized separately.  Under $N\ge1$, $m<N$, and $N\le s$, any vanishing
-denominator at a nonzero nonnegative boundary vector yields a first positive
-coordinate after its zero window.  This supplies $m$ summands tending to
-zero, and the complement count gives \((N-m)/(s-m)\le N/s\).  This is the
-single global count indicated, but not printed, after Yamagami's
+\subsection{The spectral and Hessian ingredients}
+
+Let $C$ denote the cyclic shift matrix. For integers $d\geq 3$ and
+$1\leq m\leq d-2$, and for $s\geq d$, define
+\begin{align}
+    S
+        &=(s-m)I+C+\cdots+C^m.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_cyclic_matrix}
+\end{align}
+For every nontrivial standard character, the corresponding eigenvalue of $S$
+lies in the open disk stated in Lemma~6 of
+Ref.~\cite[pp.~523--524]{Yamagami1993Cyclic}.\footnote{Formal declaration:
+\leanid{Yamagami.norm_symbol_sub_half_lt_half}.}
+This is the corrected stride-one portion needed for Wolf's parameter range.
+
+Lemma~6 of Ref.~\cite[pp.~523--524]{Yamagami1993Cyclic} is printed for
+$1\leq m\leq d-l$ and $s\geq d$. At $l=1$, $m=d-1$, and $s=d$, however,
+\begin{align}
+    S
+        &=I+C+\cdots+C^{d-1}
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_false_endpoint_matrix}
+\end{align}
+has eigenvalue zero on every nontrivial character. The resulting disk bound is
+an equality rather than the printed strict inequality. The endpoint becomes
+valid when $s>d$, while $m\leq d-2$ is the exact range required here. The
+false printed endpoint and its correction are recorded separately in
+Ref.~\cite{gap:yamagami_lemma6_endpoint}.
+
+Define the Hessian matrix
+\begin{align}
+    H
+        &=s(S+S^{\mathsf T})-2S^{\mathsf T}S.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_hessian_matrix}
+\end{align}
+In the range $d\geq 3$, $1\leq m\leq d-2$, and $s\geq d$, the matrix $S$ has
+nonnegative entries, every row and column sum is $s$, and $S$ is invertible.
+Moreover,
+\begin{align}
+    H
+        &\succeq 0,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_hessian_positive}\\
+    \ker H
+        &=\mathbb R\mathbf 1.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_hessian_kernel}
+\end{align}
+The proof diagonalizes $S$ and $H$ by the finite Fourier transform and proves
+strict positivity away from the constant character.\footnote{The cyclic
+matrix development is in
+\doclink{QICLean/Analysis/YamagamiCyclicMatrix}. Formal declaration for the
+off-character positivity statement:
+\leanid{Yamagami.hessianSymbol_pos}.}
+
+Let $f_{d,m,s}$ denote Yamagami's cyclic functional, and let
+$\lambda_{S^{-1}}$ denote the corresponding inverse-operator functional. The
+previously missing identity is
+\begin{align}
+    f_{d,m,s}(x)
+        &=\lambda_{S^{-1}}(Sx).
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_inverse_operator_identity}
+\end{align}
+It supplies an algebraic ingredient used in Lemmas~2--4 and Corollary~5 of
+Ref.~\cite[pp.~522--523]{Yamagami1993Cyclic}, together with the corrected
+range of Lemma~6 on pp.~523--524.\footnote{Formal declaration:
+\leanid{Yamagami.functional_eq_lambdaT_inverseOperator_mulVec}.}
+
+\subsection{The projective boundary}
+
+The definitions retain Yamagami's forward window and use index negation to
+obtain the backward Choi window. The simultaneous-singularity argument treats
+a nonzero nonnegative boundary vector under the hypotheses
+\begin{align}
+    N
+        &\geq 1,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_boundary_dimension}\\
+    m
+        &<N,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_boundary_window}\\
+    N
+        &\leq s.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_boundary_parameter}
+\end{align}
+A vanishing denominator produces a first positive coordinate after its zero
+window. This makes $m$ summands tend to zero, and counting the complementary
+summands gives
+\begin{align}
+    \frac{N-m}{s-m}
+        &\leq \frac{N}{s}.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_boundary_count}
+\end{align}
+This is the global count indicated, but not printed, after Yamagami's
 one-singularity calculation
-\cite[pp.~524--525]{Yamagami1993Cyclic}.  Its completion and attribution are
+\cite[pp.~524--525]{Yamagami1993Cyclic}. Its completion and attribution are
 recorded in
-\cite{gap:yamagami_simultaneous_singularity_boundary}.
+Ref.~\cite{gap:yamagami_simultaneous_singularity_boundary}.
 
-The finite-coordinate Nowosad input is now formalized along the source route
-\cite[pp.~409--418]{Nowosad1968Isoperimetric}.  The declaration
-\leanid{Nowosad.exists\_inducedHilbertNorm\_bound} proves boundedness for the
-actual norm induced by the coordinate-sum functional, namely the finite
-$L^2$ norm.  The declarations
-\leanid{Nowosad.mem\_laurentSubalgebra\_of\_eq\_on\_valueClass} and
-\leanid{Nowosad.coordinate\_pointDerivation\_eq\_zero} use the Lagrange
-idempotents of the value classes of the generator, so the derivation is
-killed on the possibly proper Laurent algebra $P(w)$ even when coordinates
-of $w$ repeat.  From the genuine first and second variations,
-\leanid{Nowosad.finiteCoordinate\_theorem\_one\_eight} gives the finite real
-specialization of Nowosad's Theorem~1.8.  Its local-maximum corollary is
-obtained explicitly from $\lambda_{-T}=-\lambda_T$, rather than by changing
-the orientation of Nowosad's theorem.
+The regular-boundary recurrence in Ref.~\cite[p.~525]{Yamagami1993Cyclic} is
+formalized for $N\geq 3$, $2\leq m\leq N-2$, and $s\geq N$, including reduced
+vectors with singular denominators under Lean's totalized
+convention.\footnote{Formal declaration:
+\leanid{Yamagami.functional_le_deleteLastCoordinate}.}
+Strong induction applies this recurrence at regular boundary points. If a
+positive vector had functional value greater than one, normalization would
+produce a compact superlevel closure in the standard simplex. The
+simultaneous-singularity estimate excludes boundary points with a zero
+denominator; continuity and the inductive estimate exclude the remaining
+boundary points. Hence a maximizer must be strictly positive. The
+Fourier--Hessian result and Nowosad's uniqueness theorem force that maximizer
+to be scalar, where the functional equals one, giving a contradiction
+\cite{Nowosad1968Isoperimetric,Yamagami1993Cyclic}.
 
-For Yamagami's matrix $S$, the formal change of variables uses exactly
+\subsection{The finite-coordinate Nowosad argument}
+
+The finite-coordinate input follows the source route in
+Ref.~\cite[pp.~409--418]{Nowosad1968Isoperimetric}. Boundedness is proved for
+the norm induced by the coordinate-sum functional, which is the finite
+$L^2$ norm.\footnote{Formal declaration:
+\leanid{Nowosad.exists_inducedHilbertNorm_bound}.}
+Lagrange idempotents for the value classes of the generator show that the
+coordinate derivation vanishes on the possibly proper Laurent algebra $P(w)$,
+including the case in which coordinates of $w$ repeat.\footnote{Formal
+declarations:
+\leanid{Nowosad.mem_laurentSubalgebra_of_eq_on_valueClass} and
+\leanid{Nowosad.coordinate_pointDerivation_eq_zero}.}
+The genuine first and second variations yield the finite real specialization
+of Nowosad's Theorem~1.8
+\cite{Nowosad1968Isoperimetric}.\footnote{Formal declaration:
+\leanid{Nowosad.finiteCoordinate_theorem_one_eight}.}
+Its local-maximum corollary follows from
 \begin{align}
-  b&=\frac{Sa}{s}, & x(t)&=sS^{-1}(b^t),
-  &H&=s(S+S^{\mathsf T})-2S^{\mathsf T}S.
+    \lambda_{-T}
+        &=-\lambda_T
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_lambda_sign_identity}
 \end{align}
-The ordinary Euclidean Hessian satisfies
-\begin{align}
-  D^2f_S(\mathbf 1)[h,h]&=-s^{-3}\langle h,Hh\rangle.
-\end{align}
-This analytic identity fixes Yamagami's normalization and is not separately
-formalized as a Fr\'echet-derivative theorem.  The Lean development uses the
-corresponding algebraic second-variation identity
-\leanid{Yamagami.minimumQuadraticForm\_normalizedNegativeInverse\_eq}.
-Under positivity of $H$ and $\ker H=\mathbb R\mathbf 1$, the declaration
-\leanid{Yamagami.lemma\_three\_localMax\_isScalar} proves that every strictly
-positive local maximum is scalar.  More precisely,
-\leanid{Yamagami.pulledBackTangent\_mem\_hessianKernel\_and\_not\_isScalarVector}
-shows that a non-scalar maximum would give the non-scalar tangent
-$sS^{-1}\log((Sa)/s)$ in $\ker H$.  This is the uniqueness assertion of
-Yamagami's Lemma~3 on p.~522, not a proof that the unit vector is itself a
-local maximum.
+rather than from reversing the orientation of Nowosad's theorem.
 
-The declaration
-\leanid{Yamagami.functional\_le\_deleteLastCoordinate} proves Yamagami's
-regular-boundary recurrence on p.~525 in the range $N\ge3$,
-$2\le m\le N-2$, and $s\ge N$, allowing the reduced vector to have singular
-denominators under Lean's totalized convention. In the completed proof, strong
-induction uses this recurrence at regular boundary points. For a hypothetical
-positive vector with value greater than one, normalization produces a compact
-superlevel closure in the standard simplex. The simultaneous-singularity
-estimate excludes boundary points with a zero denominator; ordinary continuity
-and the inductive boundary estimate exclude the remaining boundary points. A
-maximizer is therefore strictly positive. The Fourier--Hessian theorem and
-Nowosad's uniqueness result make it scalar, where the functional equals one,
-which is the required contradiction.
-
-Two verifiable computations locate the obstruction to elementary summand
-bounds in the remaining range.  First, the estimate is tight in two distinct
-regimes: at the constant vector, where every summand equals \(1/d\), and
-along the geometric configurations \(x_i=t^i\) (\(i=0,\dots,d-1\)) as
-\(t\to\infty\), where each of the \(d-n\) summands whose backward window
-avoids the wrap-around tends to \(1/(d-n)\) and the remaining summands
-vanish, so the sum again approaches \(1\). Any elementary summand bound would
-have to be exact in both regimes. Second, the argument proving \(n=d-2\) does not
-extend.  With \(m=d-n\) and
-\(\delta_i=\sum_{k=1}^{m-1}(x_i-x_{i+k})\), the weight is \(a_i=T+\delta_i\)
-for every \(n\), and the estimate is equivalent (for \(T>0\) and positive
-weights \(a_i\)) to \(\sum_i x_i\delta_i^2/a_i\le\sum_i x_i\delta_i\).  The proved case reaches
-this through the two intermediate steps
+For Yamagami's matrix $S$, define the change of variables by
 \begin{align}
-  \sum_i \frac{x_i\delta_i^2}{a_i}\le\frac1m\sum_i\delta_i^2
-  \qquad\text{and}\qquad
-  \frac1m\sum_i\delta_i^2
-  \le\frac12\sum_{k=1}^{m-1}\sum_i\bigl(x_i-x_{i+k}\bigr)^2
-  =\sum_i x_i\delta_i .
+    b
+        &=\frac{Sa}{s},
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_change_variable_b}\\
+    x(t)
+        &=sS^{-1}(b^t).
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_change_variable_x}
 \end{align}
-The first step, from \(a_i\ge m x_i\), holds for every \(m\); the second, in
-Fourier form
-\(\bigl|\sum_{k=1}^{m-1}(1-\zeta^k)\bigr|^2
-\le\tfrac m2\sum_{k=1}^{m-1}|1-\zeta^k|^2\) over \(d\)-th roots of unity
-\(\zeta\), holds with equality for \(m=2\) but fails for \(m=3\) at
-\(\zeta=e^{i\pi/3}\), where the two sides are \(7\) and \(6\).  This failure
-is consistent with the historical record: the case \((d,n)=(5,2)\) required a
-separate argument~\cite{Osaka1991Indecomposable}, and the full range was
-settled only by Yamagami's variational proof. The formalization therefore
-follows the variational route described above and resolves
-\href{https://github.com/LionSR/QICLean/issues/19}{QICLean issue \#19}. The indecomposability
-assertion of the same source paragraph is separate and is tracked by
+The matrix $H$ remains the matrix defined in
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_hessian_matrix}). The
+ordinary Euclidean Hessian satisfies
+\begin{align}
+    D^2f_S(\mathbf 1)[h,h]
+        &=-s^{-3}\langle h,Hh\rangle.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_euclidean_hessian}
+\end{align}
+This identity fixes Yamagami's normalization. It is not formalized separately
+as a Fr\'echet-derivative theorem; the development instead uses the
+corresponding algebraic second-variation identity.\footnote{Formal declaration:
+\leanid{Yamagami.minimumQuadraticForm_normalizedNegativeInverse_eq}.}
+
+Under
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_hessian_positive}) and
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_hessian_kernel}), every
+strictly positive local maximum is scalar.\footnote{Formal declaration:
+\leanid{Yamagami.lemma_three_localMax_isScalar}.}
+More precisely, a non-scalar maximum would produce the non-scalar tangent
+\begin{align}
+    sS^{-1}\log\left(\frac{Sa}{s}\right)
+        &\in\ker H.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_nonscalar_tangent}
+\end{align}
+This is the uniqueness assertion in Lemma~3 of
+Ref.~\cite[p.~522]{Yamagami1993Cyclic}; it does not assert that the unit vector
+is itself a local maximum.\footnote{Formal declaration:
+\leanid{Yamagami.pulledBackTangent_mem_hessianKernel_and_not_isScalarVector}.}
+
+\subsection{Why the endpoint summand bound does not extend}
+
+Two computations explain why elementary summand bounds do not cover the
+remaining range. First, the cyclic estimate is tight in two distinct regimes.
+At the constant vector, every summand equals $1/d$. For the geometric family
+\begin{align}
+    x_i
+        &=t^i,
+    \qquad i=0,\ldots,d-1,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_geometric_family}
+\end{align}
+as $t\to\infty$, each of the $d-n$ summands whose backward window avoids
+wrap-around tends to $1/(d-n)$, while every remaining summand tends to zero.
+The full sum again tends to one. Any summand-wise estimate would therefore
+need to be sharp in both regimes.
+
+Second, the proof for $n=d-2$ does not extend. Set
+\begin{align}
+    m
+        &=d-n,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_complementary_window}\\
+    \delta_i
+        &=\sum_{k=1}^{m-1}(x_i-x_{i+k}),
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_general_delta}\\
+    a_i
+        &=T+\delta_i.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_general_weight}
+\end{align}
+For $T>0$ and positive weights $a_i$, the reciprocal estimate is equivalent
+to
+\begin{align}
+    \sum_i\frac{x_i\delta_i^2}{a_i}
+        &\leq \sum_i x_i\delta_i.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_equivalent_delta_bound}
+\end{align}
+The endpoint proof factors this inequality through
+\begin{align}
+    \sum_i\frac{x_i\delta_i^2}{a_i}
+        &\leq \frac{1}{m}\sum_i\delta_i^2,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_first_delta_step}\\
+    \frac{1}{m}\sum_i\delta_i^2
+        &\leq
+        \frac{1}{2}\sum_{k=1}^{m-1}
+            \sum_i(x_i-x_{i+k})^2,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_second_delta_step}\\
+    \frac{1}{2}\sum_{k=1}^{m-1}
+            \sum_i(x_i-x_{i+k})^2
+        &=\sum_i x_i\delta_i.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_delta_energy_identity}
+\end{align}
+The first inequality follows from $a_i\geq mx_i$ and holds for every $m$. In
+Fourier variables, the second inequality is
+\begin{align}
+    \left|\sum_{k=1}^{m-1}(1-\zeta^k)\right|^2
+        &\leq
+        \frac{m}{2}\sum_{k=1}^{m-1}|1-\zeta^k|^2
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_fourier_endpoint_bound}
+\end{align}
+for every $d$th root of unity $\zeta$. It is an equality for $m=2$, but it
+fails for $m=3$ and $\zeta=e^{i\pi/3}$:
+\begin{align}
+    \left|\sum_{k=1}^{2}(1-\zeta^k)\right|^2
+        &=7,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_fourier_counterexample_left}\\
+    \frac{3}{2}\sum_{k=1}^{2}|1-\zeta^k|^2
+        &=6.
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_fourier_counterexample_right}
+\end{align}
+This obstruction agrees with the historical development: the case
+$(d,n)=(5,2)$ required a separate argument
+\cite{Osaka1991Indecomposable}, and Yamagami later established the full range
+by the variational proof \cite{Yamagami1993Cyclic}.
+
+The formalization therefore follows the variational route and resolves
+\href{https://github.com/LionSR/QICLean/issues/19}{QICLean issue \#19}. The
+indecomposability assertion in the same paragraph of
+Ref.~\cite{Wolf2012Quantum} is separate and remains tracked by
 \href{https://github.com/LionSR/QICLean/issues/18}{QICLean issue \#18}.
 
 \section{Classification}
 
-\emph{Resolved.} The theorem
-\leanid{Matrix.choiTypeMap\_isPositiveMap} has exactly Wolf's hypotheses
-$d\ge3$ and $1\le n\le d-2$ and concludes positivity of the stated Choi-type
-map. The former endpoint-only scope restriction is removed. Wolf's separate
+The scope restriction is resolved. The formal positivity theorem has exactly
+Wolf's hypotheses
+\begin{align}
+    d
+        &\geq 3,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_resolved_dimension}\\
+    1
+        &\leq n\leq d-2,
+    \label{eq:wolf_ex3_1_choi_positivity_subcase_scope_resolved_parameter_range}
+\end{align}
+and concludes that the Choi-type map
+(\ref{eq:wolf_ex3_1_choi_positivity_subcase_scope_choi_type_map}) is
+positive.\footnote{Formal declaration:
+\leanid{Matrix.choiTypeMap_isPositiveMap}.}
+The former endpoint-only restriction has been removed. Wolf's independent
 indecomposability assertion remains tracked by QICLean issue~\#18.
 
 \bibliographystyle{alpha}

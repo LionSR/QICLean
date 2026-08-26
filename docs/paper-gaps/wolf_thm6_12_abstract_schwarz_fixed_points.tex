@@ -17,91 +17,134 @@
 
 \section{Source statement}
 
-Wolf introduces a Schwarz map as a positive unital matrix map satisfying
+A Schwarz map in Chapter~5 of Ref.~\cite{Wolf2012Quantum} is a positive unital
+matrix map $E$ satisfying source Equation~(5.2):
 \begin{align}
-  E(A^\dagger A)-E(A^\dagger)E(A)&\succeq0
-  \qquad\text{for every }A.
-  \tag{5.2}
+  E(A^\dagger A)-E(A^\dagger)E(A)
+    &\succeq0
+    \qquad\text{for every }A.
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_schwarz_inequality}
 \end{align}
-This terminology is stated in Chapter~5 immediately before Example~5.3
-(local source lines 347--352).  Theorem~6.12 then assumes a unital map satisfying
-this Schwarz inequality and an arbitrary full-rank fixed point of its
-trace-pairing adjoint.  Its algebraic conclusion is
+This definition appears immediately before Example~5.3, at local source
+lines~347--352.
+
+Theorem~6.12 of Ref.~\cite{Wolf2012Quantum} assumes a unital Schwarz map and
+an arbitrary full-rank fixed point of its trace-pairing adjoint. Its algebraic
+conclusion is
 \begin{align}
-  \operatorname{Fix}(E)&=\{X:E(X)=X\}
-  \quad\text{is a unital $*$-subalgebra.}
-  \tag{6.12}
+  \operatorname{Fix}(E)
+    &=\{X:E(X)=X\},
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_fixed_space_definition}\\
+  \operatorname{Fix}(E)
+    &\text{ is a unital $*$-subalgebra}.
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_source_algebra_conclusion}
 \end{align}
-The proof is at local source lines 1395--1417.  It invokes the proposition on
-positive fixed points (local lines 1161--1192, cited there as Proposition~6.9)
-to replace the full-rank witness by a positive-definite fixed point before
-performing the weighted-trace argument.
-The complete theorem also invokes the explicit block realization in
-Equation~(1.39); the present increment concerns only the displayed
-$*$-algebra conclusion.
+The proof is at local source lines~1395--1417. It invokes Proposition~6.9 on
+positive fixed points, at local source lines~1161--1192, to replace the
+full-rank witness by a positive-definite fixed point before applying the
+weighted-trace argument. The complete source theorem also invokes the explicit
+block realization in source Equation~(1.39) of Ref.~\cite{Wolf2012Quantum}. This note concerns only the
+$*$-algebra conclusion in
+(\ref{eq:wolf_thm6_12_abstract_schwarz_fixed_points_source_algebra_conclusion}).
 
-The word ``positive'' is not repeated in the theorem statement because it is
-part of the Chapter~5 definition of a Schwarz map.  Exposing positivity as a
-separate formal hypothesis therefore does not strengthen the source theorem.
+The source theorem does not repeat the word ``positive'' because positivity is
+part of the Chapter~5 definition of a Schwarz map. Making positivity explicit
+in a formal signature does not strengthen the theorem.
 
-\section{The weighted equality}
+\section{Weighted Schwarz equality}
 
-Let $\rho>0$ satisfy $E^*(\rho)=\rho$, and let $E(X)=X$.  Positivity implies
-$E(X^\dagger)=X^\dagger$.  For the Schwarz gap
+Assume that $\rho>0$ satisfies
 \begin{align}
-  \Delta_X&=E(X^\dagger X)-E(X^\dagger)E(X)\succeq0,
+  E^*(\rho)
+    &=\rho,
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_invariant_weight}
 \end{align}
-the trace-pairing identity gives Wolf's Equation~(6.60):
+and let $X\in\operatorname{Fix}(E)$. Positivity of $E$ implies
+\begin{align}
+  E(X^\dagger)
+    &=X^\dagger.
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_adjoint_fixed}
+\end{align}
+Define the Schwarz gap by
+\begin{align}
+  \Delta_X
+    &=E(X^\dagger X)-E(X^\dagger)E(X),
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_schwarz_gap_definition}\\
+  \Delta_X
+    &\succeq0.
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_schwarz_gap_positive}
+\end{align}
+The trace-pairing identity gives the calculation in source Equation~(6.60) of Ref.~\cite{Wolf2012Quantum}:
 \begin{align}
   \tr(\rho\Delta_X)
+    &=\tr\!\left(\rho E(X^\dagger X)\right)
+      -\tr\!\left(\rho E(X^\dagger)E(X)\right),
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_weighted_gap_expand}\\
     &=\tr\!\left(E^*(\rho)X^\dagger X\right)
-      -\tr\!\left(\rho X^\dagger X\right)\\
+      -\tr\!\left(\rho X^\dagger X\right),
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_trace_adjoint_step}\\
     &=0.
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_weighted_gap_zero}
 \end{align}
-Faithfulness of the positive-definite weight forces $\Delta_X=0$.  Repeating
-the calculation for $X^\dagger$ gives equality in both one-sided Schwarz
-inequalities.  The abstract multiplicative-domain theorem then yields
+Because $\rho$ is positive definite and $\Delta_X$ is positive semidefinite,
+(\ref{eq:wolf_thm6_12_abstract_schwarz_fixed_points_weighted_gap_zero})
+implies
 \begin{align}
-  E(XY)&=E(X)E(Y)=XY
+  \Delta_X
+    &=0.
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_schwarz_equality}
 \end{align}
-for fixed points $X$ and $Y$.
+Repeating the argument for $X^\dagger$ gives equality in both one-sided
+Schwarz inequalities. The abstract multiplicative-domain theorem then yields,
+for fixed points $X$ and $Y$,
+\begin{align}
+  E(XY)
+    &=E(X)E(Y),
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_multiplicativity}\\
+    &=XY.
+  \label{eq:wolf_thm6_12_abstract_schwarz_fixed_points_product_fixed}
+\end{align}
+This proves closure under multiplication; the preceding identities give
+closure under adjoints, and the unital hypothesis supplies the identity.
 
-This argument is formalized for arbitrary positive unital Schwarz maps once a
-positive-definite invariant weight has been supplied explicitly.
-\footnote{Formal declarations:
-  \leanid{SchwarzMap.schwarz_equality_of_mem_fixedPoints},
-  \leanid{SchwarzMap.mem_multiplicativeDomain_of_mem_fixedPoints}, and
-  \leanid{SchwarzMap.fixedPointsStarSubalgebra} in
-  \doclink{QICLean/Channel/FixedPoint/AbstractAlgebra}.}
+The argument is formalized for arbitrary positive unital Schwarz maps once a
+positive-definite invariant weight is supplied explicitly.\footnote{Formal
+declarations:
+\leanid{SchwarzMap.schwarz_equality_of_mem_fixedPoints},
+\leanid{SchwarzMap.mem_multiplicativeDomain_of_mem_fixedPoints}, and
+\leanid{SchwarzMap.fixedPointsStarSubalgebra} in
+\doclink{QICLean/Channel/FixedPoint/AbstractAlgebra}.}
 
 \section{Comparison with the Kraus specialization}
 
-The earlier declaration assumed a Kraus representation.
-\footnote{Formal declaration:
-  \leanid{Kraus.fixedPointsStarSubalgebra} in
-  \doclink{QICLean/Channel/FixedPoint/Algebra}.}
-That result is mathematically correct, but complete positivity is stronger than
-the Schwarz-map hypothesis in Theorem~6.12.  It is retained as a useful
-specialization of the post-reduction lemma and is not presented as the literal
-formalization of the theorem.
+The earlier declaration
+\leanid{Kraus.fixedPointsStarSubalgebra} assumed a Kraus representation and is
+located in
+\doclink{QICLean/Channel/FixedPoint/Algebra}. It is mathematically correct, but
+complete positivity is stronger than the Schwarz-map hypothesis of
+Theorem~6.12 in Ref.~\cite{Wolf2012Quantum}. The declaration remains a useful
+specialization of the post-reduction lemma, but it is not the literal
+formalization of the source theorem.
 
 \section{Verdict}
 
 The earlier Kraus-only attribution was a \emph{scope restriction}, and the
-abstract lemma removes that restriction.  A second scope restriction remains:
-the formal signature assumes a positive-definite fixed point, while Wolf
-Theorem~6.12 assumes only a full-rank fixed point and derives the faithful
-positive witness from its proposition on positive fixed points.  Consequently,
-the present result is the source-faithful post-reduction algebra lemma, not yet
-the literal formalization of Theorem~6.12.
+abstract lemma removes that restriction. A second scope restriction remains.
+The formal signature assumes the positive-definite invariant weight in
+(\ref{eq:wolf_thm6_12_abstract_schwarz_fixed_points_invariant_weight}), whereas
+Theorem~6.12 assumes only a full-rank fixed point and derives a faithful
+positive witness through Proposition~6.9
+\cite[Theorem~6.12 and Proposition~6.9]{Wolf2012Quantum}. The current theorem
+is therefore the source-faithful post-reduction algebra lemma, not yet a
+literal formalization of Theorem~6.12.
 
-The elimination plan is to formalize the positive-fixed-parts proposition for
-the abstract positive trace-preserving trace adjoint, derive a positive-definite
-fixed point from the full-rank witness, and wrap the present lemma.  The
-explicit trace-adjoint Equation~(1.39) realization remains open at this level
-of generality.  The downstream Schrödinger-picture density-block
-classification, support reduction, and zero-block assembly required for
-Theorem~6.14 are complete; see
+Eliminating the remaining restriction requires formalizing the proposition on
+positive fixed parts for the abstract positive trace-preserving trace adjoint,
+deriving a positive-definite fixed point from the full-rank witness, and then
+applying the present lemma. The explicit trace-adjoint realization from source
+Equation~(1.39) of Ref.~\cite{Wolf2012Quantum} also remains open at this level of generality. The downstream
+Schr{\"o}dinger-picture density-block classification, support reduction, and
+zero-block assembly required for Theorem~6.14 are complete; see
 \path{docs/paper-gaps/wolf_theorem6_14_fixed_point_projection_gap.tex}.
 
 \bibliographystyle{alpha}

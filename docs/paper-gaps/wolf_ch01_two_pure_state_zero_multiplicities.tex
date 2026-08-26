@@ -17,55 +17,76 @@
 
 \section{The source display}
 
-In the proof of the spectrum-preserver consequence following Wigner's theorem,
-Wolf considers Hermitian rank-one projections $P,Q\in M_d(\mathbb C)$ and
-writes that the spectrum of $P+Q$ is
+Let $P,Q\in M_d(\C)$ be Hermitian rank-one projections. In the
+spectrum-preserver argument following Wigner's theorem, Wolf writes the
+spectrum of $P+Q$ as
 \begin{align}
-  1\pm\sqrt{\tr(PQ)}.
+    1-\sqrt{\tr(PQ)},
+    \qquad
+    1+\sqrt{\tr(PQ)}.
+    \label{eq:wolf_ch01_two_pure_state_zero_multiplicities_source_two_values}
 \end{align}
-The statement appears in Chapter~1, lines 289--296 of the local source,
+This shorthand appears in Chapter~1, lines~289--296 of
+Ref.~\cite{Wolf2012Quantum}; the local source is
 \path{Notes/WolfNoteTexSource/ch01_deconstructing_quantum.tex}.
 
 \section{The suppressed eigenvalues}
 
-The range of $P+Q$ lies in the span of the two one-dimensional ranges of $P$
-and $Q$. Hence $P+Q$ vanishes on a subspace of dimension at least $d-2$.
-Counting algebraic multiplicities, its characteristic polynomial is
+The range of $P+Q$ lies in the span of the one-dimensional ranges of $P$ and
+$Q$. Hence $P+Q$ vanishes on a subspace of dimension at least $d-2$. For
+$d\geq2$, its characteristic polynomial, with algebraic multiplicities, is
 \begin{align}
-  \chi_{P+Q}(X)
-  =X^{d-2}((X-1)^2-\tr(PQ))
-  \qquad(d\geq2).
+    \chi_{P+Q}(X)
+        &=X^{d-2}((X-1)^2-\tr(PQ)).
+    \label{eq:wolf_ch01_two_pure_state_zero_multiplicities_characteristic_polynomial}
 \end{align}
-The displayed values are precisely the two roots of
-$(X-1)^2-\tr(PQ)$. The factor $X^{d-2}$ supplies the guaranteed additional
-zero multiplicity. If $P=Q$, then the quadratic is $X(X-2)$ and contributes
-one further zero, so the total zero multiplicity is $d-1$. In dimension one
-the separate formula is
+The two values in
+(\ref{eq:wolf_ch01_two_pure_state_zero_multiplicities_source_two_values}) are
+the roots of the quadratic factor in
+(\ref{eq:wolf_ch01_two_pure_state_zero_multiplicities_characteristic_polynomial}).
+The factor $X^{d-2}$ contributes at least $d-2$ zero eigenvalues.
+
+If $P=Q$, then $\tr(PQ)=1$, so
 \begin{align}
-  \chi_{P+Q}(X)=X-2,
+    (X-1)^2-\tr(PQ)
+        &=X(X-2).
+    \label{eq:wolf_ch01_two_pure_state_zero_multiplicities_equal_projection_quadratic}
 \end{align}
-because every normalized rank-one projection is the identity. In dimension
-zero there are no projective pure states.
+The quadratic factor then contributes one additional zero, and the total zero
+multiplicity is $d-1$.
+
+In dimension one, every normalized rank-one projection is the identity, so the
+separate formula is
+\begin{align}
+    \chi_{P+Q}(X)
+        &=X-2.
+    \label{eq:wolf_ch01_two_pure_state_zero_multiplicities_dimension_one_charpoly}
+\end{align}
+In dimension zero, projective pure states do not exist.
 
 \section{Formal correction}
 
-The declaration
-\leanid{Projectivization.charpoly_add_pureStateMatrix_of_two_le} proves the
-multiplicity-aware formula through a $d\times2$ and $2\times d$ factorization.
-The declaration
+The formalization proves the multiplicity-aware identity
+(\ref{eq:wolf_ch01_two_pure_state_zero_multiplicities_characteristic_polynomial})
+through a $d\times2$ and $2\times d$ factorization. It then recovers
+$\tr(PQ)$ from equality of two such characteristic polynomials.\footnote{Formal
+declarations:
+\leanid{Projectivization.charpoly_add_pureStateMatrix_of_two_le} and
 \leanid{Projectivization.trace_pureStateMatrix_mul_eq_of_charpoly_add_eq}
-then recovers $\tr(PQ)$ from equality of two such characteristic polynomials.
-Both are in
-\doclink{QICLean/Channel/Wigner/TwoPureStateCharpoly}; the low-dimensional cases
-are stated explicitly there. This correction is tracked by \href{https://github.com/LionSR/TNLean/issues/5683}{TNLean issue \#5683}.
+in \doclink{QICLean/Channel/Wigner/TwoPureStateCharpoly}.}
+The low-dimensional cases are stated explicitly in the same file. This
+correction is tracked by
+\href{https://github.com/LionSR/TNLean/issues/5683}{TNLean issue \#5683}.
 
 \section{Classification}
 
-This is a local correction to a spectrum shorthand, not a claim that Wolf's
-intended spectrum-preserver argument is false. The roots of the quadratic
-factor retain the transition-probability information used in that argument.
-The formal statement uses characteristic polynomials because they retain all
-zero eigenvalues and all algebraic multiplicities without ambiguity.
+\emph{Local correction.} The issue is a spectrum shorthand, not a failure of
+Wolf's intended spectrum-preserver argument \cite{Wolf2012Quantum}. The two
+roots in
+(\ref{eq:wolf_ch01_two_pure_state_zero_multiplicities_source_two_values})
+retain the transition-probability information used in that argument. The
+formal theorem uses characteristic polynomials because they record every zero
+eigenvalue and every algebraic multiplicity without ambiguity.
 
 \bibliographystyle{alpha}
 \bibliography{references}

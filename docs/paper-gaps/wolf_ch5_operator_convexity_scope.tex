@@ -17,117 +17,153 @@
 
 \section{The source assertions}
 
-Wolf's Section~5.4 passes from functional calculus to general results about
-operator-convex and operator-monotone functions.  For operators on a
-finite-dimensional Hilbert space, $A\le B$ denotes the Loewner order.  A linear
-map $T$ is positive when it preserves this order and subunital when
-$T(\mathbf 1)\le\mathbf 1$.
+Wolf's Section~5.4 develops general results about operator-convex and
+operator-monotone functions \cite[Section~5.4]{Wolf2012Quantum}. All operators
+below act on finite-dimensional Hilbert spaces. The relation $A\leq B$ denotes
+the Loewner order. A linear map $T$ is positive if it preserves positive
+semidefiniteness, subunital if $T(\Id)\leq\Id$, and unital if
+$T(\Id)=\Id$.
 
-The section first characterizes the two classes of functions.  Theorem~5.8
-states that $f:[0,\infty)\to\mathbb R$ is operator convex if and only if
+Wolf's Theorem~5.8 states that a function
+$f\colon[0,\infty)\to\mathbb R$ is operator convex if and only if it has the
+representation
 \begin{align}
-  f(x)=a+bx+cx^2+\int_0^\infty \frac{y x^2}{y+x}\,d\mu(y),
-  \tag{Wolf (5.18)}
+    f(x)
+        &=a+bx+cx^2
+          +\int_0^\infty\frac{yx^2}{y+x}\,d\mu(y),
+    \label{eq:wolf_ch5_operator_convexity_scope_operator_convex_representation}
 \end{align}
-where $a,b\in\mathbb R$, $c\ge0$, and $\mu$ is a finite positive measure.
-L\"owner's theorem, Theorem~5.9, characterizes continuous operator-monotone
-functions on $(0,\infty)$ by their Pick-function continuation and by the
-integral representation
-\begin{align}
-  f(x)=a+bx+\int_{-\infty}^0\frac{1+xy}{y-x}\,d\mu(y),
-  \tag{Wolf (5.19)}
-\end{align}
-with $a\in\mathbb R$, $b\ge0$, and $\mu$ a finite positive measure.
+where $a,b\in\mathbb R$, $c\geq 0$, and $\mu$ is a finite positive measure
+\cite[Theorem~5.8, Equation~(5.18)]{Wolf2012Quantum}.
 
-Wolf's Theorem~5.10 starts from the projection inequality
+L\"owner's theorem, stated as Wolf's Theorem~5.9, characterizes continuous
+operator-monotone functions on $(0,\infty)$ by both their Pick-function
+continuation and the representation
 \begin{align}
-  f(PAP)\le P f(A)P
-  \tag{Wolf (5.22)}
+    f(x)
+        &=a+bx
+          +\int_{-\infty}^0\frac{1+xy}{y-x}\,d\mu(y),
+    \label{eq:wolf_ch5_operator_convexity_scope_operator_monotone_representation}
 \end{align}
-for every dimension, Hermitian projection $P$, and Hermitian $A$ whose spectrum
-is contained in an interval containing zero.  It deduces $f(0)\le0$, operator
-convexity of $f$, and Jensen's inequality
-\begin{align}
-  f(T(A))\le T(f(A))
-  \tag{Wolf (5.23)}
-\end{align}
-for every positive subunital map $T$.  Theorem~5.11 proves the converse
-projection inequality for an operator-convex function:
-\begin{align}
-  f(PAP)\le P f(A)P+P^\perp f(0)P^\perp,
-  \tag{Wolf (5.25)}
-\end{align}
-and, when $f(0)\le0$, obtains the corresponding Jensen inequality
-\begin{align}
-  f(T(A))\le T(f(A)).
-  \tag{Wolf (5.26)}
-\end{align}
-Theorem~5.12 removes the condition $f(0)\le0$ when $T$ is unital.  Its
-entropic corollary is the operator inequality
-\begin{align}
-  T(\rho)\log T(\rho)\le T(\rho\log\rho).
-  \tag{Wolf (5.33)}
-\end{align}
-For an operator-monotone function on $[0,a]$ with $f(0)\ge0$, Theorem~5.13
-gives the reverse Jensen inequality
-\begin{align}
-  T(f(A))\le f(T(A)).
-  \tag{Wolf (5.34)}
-\end{align}
-Finally, the corollary following Corollary~5.2 extends both inequalities to a
-finite collection of positive maps $\{T_i\}_{i=1}^n$ satisfying
-$\sum_i T_i(\mathbf 1)\le\mathbf 1$: the operator-monotone case gives
-\begin{align}
-  \sum_{i=1}^n T_i(f(A_i))
-  \le f\!\left(\sum_{i=1}^n T_i(A_i)\right),
-  \tag{Wolf (5.37)}
-\end{align}
-and the operator-convex case gives the reverse inequality.
+where $a\in\mathbb R$, $b\geq 0$, and $\mu$ is a finite positive measure
+\cite[Theorem~5.9, Equation~(5.19)]{Wolf2012Quantum}.
 
-These are the assertions and terminology of the source itself.
-\cite[Section~5.4, Theorems~5.8--5.13, and the corollaries following
-Theorem~5.12 and Corollary~5.2]{Wolf2012Quantum}
+Wolf's Theorem~5.10 assumes, in every dimension, that a Hermitian projection
+$P$ and a Hermitian operator $A$ satisfy the compression inequality
+\begin{align}
+    f(PAP)&\leq Pf(A)P,
+    \label{eq:wolf_ch5_operator_convexity_scope_source_projection_assumption}
+\end{align}
+whenever the spectrum of $A$ lies in an interval containing zero
+\cite[Theorem~5.10, Equation~(5.22)]{Wolf2012Quantum}. It deduces
+$f(0)\leq 0$, operator convexity of $f$, and the positive-subunital Jensen
+inequality
+\begin{align}
+    f(T(A))&\leq T(f(A)).
+    \label{eq:wolf_ch5_operator_convexity_scope_source_subunital_jensen}
+\end{align}
+The last formula is Equation~(5.23) of
+Ref.~\cite{Wolf2012Quantum}.
+
+Conversely, Wolf's Theorem~5.11 proves for an operator-convex function that
+\begin{align}
+    f(PAP)
+        &\leq Pf(A)P+P^\perp f(0)P^\perp.
+    \label{eq:wolf_ch5_operator_convexity_scope_source_projection_converse}
+\end{align}
+This is Equation~(5.25) of Ref.~\cite{Wolf2012Quantum}. When $f(0)\leq 0$, the
+same theorem obtains
+\begin{align}
+    f(T(A))&\leq T(f(A))
+    \label{eq:wolf_ch5_operator_convexity_scope_source_convex_jensen}
+\end{align}
+for positive subunital $T$; this is Equation~(5.26) of
+Ref.~\cite{Wolf2012Quantum}. Wolf's Theorem~5.12 removes the condition
+$f(0)\leq 0$ when $T$ is unital
+\cite[Theorem~5.12]{Wolf2012Quantum}. Its entropic corollary is
+\begin{align}
+    T(\rho)\log T(\rho)
+        &\leq T(\rho\log\rho).
+    \label{eq:wolf_ch5_operator_convexity_scope_source_entropy_inequality}
+\end{align}
+This is Equation~(5.33) of Ref.~\cite{Wolf2012Quantum}.
+
+For an operator-monotone function on $[0,a]$ satisfying $f(0)\geq 0$, Wolf's
+Theorem~5.13 gives the reverse Jensen inequality
+\begin{align}
+    T(f(A))&\leq f(T(A)).
+    \label{eq:wolf_ch5_operator_convexity_scope_source_monotone_jensen}
+\end{align}
+This is Equation~(5.34) of Ref.~\cite{Wolf2012Quantum}.
+
+The corollary following Corollary~5.2 extends both Jensen inequalities to a
+finite family of positive maps $T_1,\ldots,T_n$ satisfying
+\begin{align}
+    \sum_{i=1}^nT_i(\Id)&\leq\Id.
+    \label{eq:wolf_ch5_operator_convexity_scope_finite_family_subunitality}
+\end{align}
+For operator-monotone $f$, it gives
+\begin{align}
+    \sum_{i=1}^nT_i(f(A_i))
+        &\leq
+        f\!\left(\sum_{i=1}^nT_i(A_i)\right).
+    \label{eq:wolf_ch5_operator_convexity_scope_finite_family_monotone_jensen}
+\end{align}
+This is Equation~(5.37) of Ref.~\cite{Wolf2012Quantum}; the operator-convex
+case gives the reverse inequality.
 
 \section{The special-function restriction}
 
-The formal development proves Jensen inequalities for the particular functions
-$x\mapsto x^p$ and $x\mapsto\log x$.  For a positive subunital map $T$ and a
-positive semidefinite operator $A$, they give
+The formal development proves Jensen inequalities only for the functions
+$x\mapsto x^p$ and $x\mapsto\log x$. For a positive subunital map $T$ and a
+positive semidefinite operator $A$, it proves
 \begin{align}
-  T(A^p)&\le (T(A))^p, &&0\le p\le1,\tag{power concavity}\\[0.3em]
-  (T(A))^p&\le T(A^p), &&1\le p\le2.\tag{power convexity}
+    T(A^p)&\leq(T(A))^p,
+    &
+    0&\leq p\leq 1,
+    \label{eq:wolf_ch5_operator_convexity_scope_power_concavity}\\
+    (T(A))^p&\leq T(A^p),
+    &
+    1&\leq p\leq 2.
+    \label{eq:wolf_ch5_operator_convexity_scope_power_convexity}
 \end{align}
-For a positive \emph{unital} map and $A>0$, they also give
+For a positive unital map $T$ and a positive-definite operator $A$, it also
+proves
 \begin{align}
-  T(\log A)\le\log(T(A)).
-  \tag{logarithm concavity}
+    T(\log A)&\leq\log(T(A)).
+    \label{eq:wolf_ch5_operator_convexity_scope_logarithm_concavity}
 \end{align}
-The unital hypothesis in the last line corrects the false common subunital
-hypothesis in the original Corollary~5.2.\footnote{The counterexample and
+The unital hypothesis in
+Eq.~\ref{eq:wolf_ch5_operator_convexity_scope_logarithm_concavity} corrects
+the false common subunital hypothesis in Wolf's Corollary~5.2
+\cite[Corollary~5.2]{Wolf2012Quantum}.\footnote{The counterexample and
 corrected statement are recorded in
 \path{docs/paper-gaps/wolf_ch5_operator_jensen_lieb.tex}.}
 
-These inequalities are proved through the integral representations of the
-specific power functions and a limit at $p=0$.\footnote{Formal declarations:
+The formal proofs use integral representations of the specified power
+functions and derive the logarithmic case by a limit as $p\to 0^+$.\footnote{
+Formal declarations:
 \leanid{posMap_rpow_concave_jensen},
 \leanid{posMap_rpow_convex_jensen}, and
 \leanid{posMap_log_concave_jensen} in
 \doclink{QICLean/Analysis/LiebConcavity}.}
-They are instances of the source's general Jensen inequalities, but instances
-for these three functions do not imply the characterization of all
-operator-convex functions, L\"owner's theorem, the projection equivalences,
-the arbitrary-function forms of Jensen's inequality, or the finite-family
-corollary.
 
-\clearpage
+Equations~\ref{eq:wolf_ch5_operator_convexity_scope_power_concavity},
+\ref{eq:wolf_ch5_operator_convexity_scope_power_convexity},
+and~\ref{eq:wolf_ch5_operator_convexity_scope_logarithm_concavity} are
+instances of Wolf's general Jensen inequalities. They do not imply the
+integral characterization of every operator-convex function, L\"owner's
+theorem, the projection equivalences, the arbitrary-function Jensen
+inequalities, or the finite-family corollary.
+
 \section{Verdict}
 
 The proved power and logarithm inequalities form a proper special-function
-restriction of Wolf's Section~5.4 results.  The source's general
-operator-convexity and operator-monotonicity assertions listed above remain an
-open scope gap; no conclusion for an arbitrary function $f$ follows from the
-three special cases alone.  The gap is resolved only when the general source
-assertions themselves, or source-faithful theorems that imply them, are proved.
+restriction of the results in Section~5.4 of Ref.~\cite{Wolf2012Quantum}. The
+general operator-convexity and operator-monotonicity assertions remain an open
+scope gap. No theorem for an arbitrary function $f$ follows from the three
+special cases alone. The gap is resolved only by proving the general source
+assertions themselves or source-faithful theorems that imply them.
 
 \bibliographystyle{alpha}
 \bibliography{references}

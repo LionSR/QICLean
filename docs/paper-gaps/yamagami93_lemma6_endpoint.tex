@@ -14,77 +14,149 @@
 \maketitle
 \gapnote{false-source}{resolved}
 
-\section{Original statement}
+\section{The source statement}
 
-Yamagami's Lemma~6 considers the cyclic matrix
-\begin{equation}
-  S_{n,m,s}=(s-m)I+C^l+C^{l+1}+\cdots+C^{l+m-1},
-  \qquad 1\le m\le n-l,\quad n\le s,
-  \label{eq:yamagami-matrix}
-\end{equation}
-and states that every eigenvalue other than the row sum $s$ lies in the open
-disk
-\begin{equation}
-  \left|\lambda-\frac{s}{2}\right|<\frac{s}{2}.
-  \label{eq:yamagami-open-disk}
-\end{equation}
-This is the spectral condition of Corollary~5 in the same paper
-\cite[pp.~523--524]{Yamagami1993Cyclic}.
+Let $C$ be the permutation matrix for the cyclic shift on
+$\mathbb Z/n\mathbb Z$. For integers $l,m,n,s$ in the range
+\begin{align}
+    1
+        &\leq m
+        \leq n-l,
+    \label{eq:yamagami93_lemma6_endpoint_parameter_range_m}\\
+    n
+        &\leq s,
+    \label{eq:yamagami93_lemma6_endpoint_parameter_range_s}
+\end{align}
+Lemma~6 of Ref.~\cite{Yamagami1993Cyclic} considers the cyclic matrix
+\begin{align}
+    S_{n,m,s}
+        &=
+        (s-m)I+C^l+C^{l+1}+\cdots+C^{l+m-1}.
+    \label{eq:yamagami93_lemma6_endpoint_cyclic_matrix}
+\end{align}
+Its row sum is $s$. The lemma states that every eigenvalue $\lambda\neq s$
+lies in the open disc
+\begin{align}
+    \left|\lambda-\frac{s}{2}\right|
+        &< \frac{s}{2}.
+    \label{eq:yamagami93_lemma6_endpoint_open_disk}
+\end{align}
+This is the spectral condition used by Corollary~5 of
+Ref.~\cite[pp.~523--524]{Yamagami1993Cyclic}.
 
-\section{False stride-one endpoint}
+\section{The false stride-one endpoint}
 
-Set $l=1$, $m=n-1$, and $s=n$, which is included in the printed range.  Then
-\begin{equation}
-  S_{n,n-1,n}=I+C+C^2+\cdots+C^{n-1}.
-\end{equation}
-For every nontrivial standard character of $\mathbb Z/n\mathbb Z$, the
-corresponding eigenvalue is zero.  Consequently
-\begin{equation}
-  \left|0-\frac{n}{2}\right|=\frac{n}{2},
-\end{equation}
-so the strict inequality in~\eqref{eq:yamagami-open-disk} is false at this
-endpoint.  This is also the
-place where the strict triangle-inequality step in the printed proof loses all
-strictness.
+Choose the stride-one endpoint
+\begin{align}
+    l
+        &= 1,
+    \label{eq:yamagami93_lemma6_endpoint_stride_one}\\
+    m
+        &= n-1,
+    \label{eq:yamagami93_lemma6_endpoint_maximal_length}\\
+    s
+        &= n.
+    \label{eq:yamagami93_lemma6_endpoint_minimal_row_sum}
+\end{align}
+These values satisfy
+(\ref{eq:yamagami93_lemma6_endpoint_parameter_range_m}) and
+(\ref{eq:yamagami93_lemma6_endpoint_parameter_range_s}). The matrix in
+(\ref{eq:yamagami93_lemma6_endpoint_cyclic_matrix}) becomes
+\begin{align}
+    S_{n,n-1,n}
+        &=
+        I+C+C^2+\cdots+C^{n-1}.
+    \label{eq:yamagami93_lemma6_endpoint_character_sum_matrix}
+\end{align}
+Every nontrivial standard character of $\mathbb Z/n\mathbb Z$ is an
+eigenvector of
+(\ref{eq:yamagami93_lemma6_endpoint_character_sum_matrix}) with eigenvalue
+zero. For such an eigenvalue,
+\begin{align}
+    \left|0-\frac{n}{2}\right|
+        &= \frac{n}{2}.
+    \label{eq:yamagami93_lemma6_endpoint_boundary_equality}
+\end{align}
+Equation~(\ref{eq:yamagami93_lemma6_endpoint_boundary_equality}) contradicts
+the strict inequality in
+(\ref{eq:yamagami93_lemma6_endpoint_open_disk}). At this endpoint, the strict
+triangle-inequality step in the proof of Lemma~6 of
+Ref.~\cite{Yamagami1993Cyclic} also loses all strictness.
 
-\section{Correction used by QICLean}
+\section{The correction used by QICLean}
 
-The Choi-type application needs only stride one and $m\le n-2$.  In exactly
-that range, with $n\ge3$ and $s\ge n$, the declaration
-\begin{center}
-  \leanid{Yamagami.norm\_symbol\_sub\_half\_lt\_half}
-\end{center}
-in \doclink{QICLean/Analysis/CyclicReciprocal}
-proves~\eqref{eq:yamagami-open-disk} for every nonzero
-standard character.  It follows Yamagami's two cases at $s=n$ and then uses
-the source's translation argument from $n$ to $s$.
+The Choi-type application requires only stride one with $m\leq n-2$. Under
+the assumptions
+\begin{align}
+    n
+        &\geq 3,
+    \label{eq:yamagami93_lemma6_endpoint_corrected_n}\\
+    s
+        &\geq n,
+    \label{eq:yamagami93_lemma6_endpoint_corrected_s}\\
+    m
+        &\leq n-2,
+    \label{eq:yamagami93_lemma6_endpoint_corrected_m}
+\end{align}
+the formal development proves
+(\ref{eq:yamagami93_lemma6_endpoint_open_disk}) for every nonzero standard
+character.\footnote{Formal declaration:
+\leanid{Yamagami.norm_symbol_sub_half_lt_half} in
+\doclink{QICLean/Analysis/CyclicReciprocal}.}
+The proof follows the two cases used at $s=n$ in Lemma~6 of
+Ref.~\cite{Yamagami1993Cyclic} and then applies the source's translation
+argument from $n$ to $s$.
 
-The omitted stride-one endpoint $m=n-1$ does satisfy~(2) when $s>n$: its
-nontrivial-character eigenvalue is $s-n$, and
-\begin{equation}
-  \left|s-n-\frac{s}{2}\right|<\frac{s}{2}
-\end{equation}
-is equivalent to $0<n<s$.  Thus the corrected stride-one alternatives are
-$m\le n-2$ with $s\ge n$, or the endpoint $m=n-1$ with $s>n$.
+The omitted endpoint $m=n-1$ also satisfies the open-disc condition when
+$s>n$. Its eigenvalue on every nontrivial character is
+\begin{align}
+    \lambda
+        &= s-n.
+    \label{eq:yamagami93_lemma6_endpoint_shifted_endpoint_eigenvalue}
+\end{align}
+For this eigenvalue, the open-disc condition is equivalent to
+\begin{align}
+    \left|s-n-\frac{s}{2}\right|
+        &< \frac{s}{2},
+    \label{eq:yamagami93_lemma6_endpoint_shifted_endpoint_disk}\\
+    0
+        &< n<s.
+    \label{eq:yamagami93_lemma6_endpoint_shifted_endpoint_condition}
+\end{align}
+Thus the corrected stride-one alternatives are
+\begin{align}
+    m
+        &\leq n-2
+        &&\text{with }s\geq n,
+    \label{eq:yamagami93_lemma6_endpoint_corrected_main_range}\\
+    m
+        &= n-1
+        &&\text{with }s>n.
+    \label{eq:yamagami93_lemma6_endpoint_corrected_endpoint_range}
+\end{align}
 
 \section{Scope}
 
 \textbf{Verdict: false source endpoint, resolved for the required stride-one
-range.}  This correction concerns only Lemma~6's open-disk condition.  It
-does not by itself prove Yamagami's cyclic reciprocal inequality.  The finite
-Nowosad theorem and the uniqueness assertion of Yamagami's Lemma~3 are now
-formalized, and the simultaneous-singularity boundary count is also complete.
-The cyclic matrix package in
-\doclink{QICLean/Analysis/YamagamiCyclicMatrix} now also proves invertibility,
-the positive-semidefinite Hessian with kernel $\mathbb R\mathbf1$, and the
-bridge from the generic Nowosad functional to the concrete cyclic
-\leanid{Yamagami.functional}.  The declaration
-\leanid{Yamagami.functional\_le\_deleteLastCoordinate} now also proves the
-regular-boundary recurrence on p.~525. These ingredients are now assembled by
-\leanid{Yamagami.functional\_card\_le\_one}: the compact superlevel argument
-produces a positive maximizer, and the Fourier--Hessian/Nowosad uniqueness
-theorem makes it scalar. Thus this endpoint correction is a resolved
-prerequisite of the completed positivity theorem.
+range.} This correction concerns only the open-disc condition in Lemma~6 of
+Ref.~\cite{Yamagami1993Cyclic}; it does not by itself prove Yamagami's cyclic
+reciprocal inequality.
+
+The finite Nowosad theorem~\cite{Nowosad1968Isoperimetric}, the uniqueness
+assertion in Lemma~3 of Ref.~\cite{Yamagami1993Cyclic}, and the
+simultaneous-singularity boundary count are now formalized. The cyclic matrix
+package in \doclink{QICLean/Analysis/YamagamiCyclicMatrix} proves
+invertibility, positive semidefiniteness of the Hessian with kernel
+$\mathbb R\mathbf 1$, and the bridge from the generic Nowosad functional to the
+concrete cyclic functional \leanid{Yamagami.functional}. The regular-boundary
+recurrence on p.~525 of Ref.~\cite{Yamagami1993Cyclic} is formalized by
+\leanid{Yamagami.functional_le_deleteLastCoordinate}.
+
+The declaration \leanid{Yamagami.functional_card_le_one} assembles these
+ingredients. Its compact-superlevel argument produces a positive maximizer,
+and the Fourier--Hessian and Nowosad uniqueness theorem makes that maximizer
+scalar. The endpoint correction is therefore a resolved prerequisite of the
+completed positivity theorem.
 
 \bibliographystyle{alpha}
 \bibliography{references}

@@ -16,71 +16,120 @@
 
 \section{The assertion}
 
-Corollary 6.7 of \emph{Quantum Channels \& Operations} (Wolf 2012) states: for a
-trace-preserving, positive, linear map $T$ on $M_d(\mathbb{C})$ whose adjoint satisfies
-the Schwarz inequality, and for any density matrix $\rho$ which is a \emph{maximum-rank}
-fixed point of $T$, the set
-\[
-    \rho^{-1/2}\,\mathcal{F}_T\,\rho^{-1/2},
-    \qquad \mathcal{F}_T = \{X \mid T(X) = X\},
-\]
-is a $*$-algebra, with the inverse square root taken on the support of $\rho$.
+Let $T:\MN{d}\to\MN{d}$ be positive and trace preserving, and assume that its
+trace adjoint satisfies the Schwarz inequality. Define the fixed-point space
+\begin{align}
+    \mathcal F_T
+        &=\left\{X\in\MN{d}\mathrel{}\middle|\mathrel{}T(X)=X\right\}.
+    \label{eq:wolf_cor67_maximal_support_restriction_fixed_point_space}
+\end{align}
+Let $\rho$ be any maximum-rank density matrix in $\mathcal F_T$, and interpret
+$\rho^{-1/2}$ as the inverse square root on the support of $\rho$ and as zero
+on its kernel. Corollary~6.7 of Ref.~\cite{Wolf2012Quantum} states that
+\begin{align}
+    \rho^{-1/2}\mathcal F_T\rho^{-1/2}
+        &=
+        \left\{\rho^{-1/2}X\rho^{-1/2}
+            \mathrel{}\middle|\mathrel{}
+            X\in\mathcal F_T\right\}
+    \label{eq:wolf_cor67_maximal_support_restriction_inverse_sandwich_set}
+\end{align}
+is a $*$-algebra.
 
-The corollary rests on the maximal-support property of fixed points stated earlier in
-Section~6.4 of the reference: every fixed point of $T$ has support and range within the
-support of the maximum-rank fixed point, so conjugation by $\rho^{-1/2}$ loses nothing.
+The corollary uses the maximal-support property established earlier in
+Section~6.4 of Ref.~\cite{Wolf2012Quantum}: every fixed point of $T$ has
+support and range contained in the support of a maximum-rank fixed point.
+Consequently, conjugation by $\rho^{-1/2}$ discards no part of
+$\mathcal F_T$.
 
 \section{The formalization}
 
 The source-general implementation is in
-\leanid{QICLean/Channel/FixedPoint/AbstractWeightedFixedPoints.lean}.  It assumes exactly
-that $T$ is positive and trace preserving and that its trace adjoint is Schwarz; it does
-not assume a Kraus representation or complete positivity.
+\path{QICLean/Channel/FixedPoint/AbstractWeightedFixedPoints.lean}. It assumes
+exactly that $T$ is positive and trace preserving and that its trace adjoint is
+Schwarz. It assumes neither a Kraus representation nor complete positivity.
 
-For an arbitrary positive semidefinite fixed point $\rho$ with support projection $Q$,
+For an arbitrary positive semidefinite fixed point $\rho$, let $Q$ be its
+support projection. The declaration
 \leanid{IsPositiveMap.weightedCornerFixedPointsStarSubalgebra} proves that
-\[
-    \left\{Y\in QM_D(\mathbb C)Q\mid
-      T(\sqrt\rho\,Y\sqrt\rho)=\sqrt\rho\,Y\sqrt\rho\right\}
-\]
-is a $*$-subalgebra of $QM_D(\mathbb C)Q$.  Its multiplication proof follows Wolf's
-Theorem~6.14 density blocks.  On the support sector, fixed blocks are
-$\sigma_k\otimes X_k$ and $\rho$ has blocks $\sigma_k\otimes R_k$ with both density
-factors positive definite.  The weighted product remains fixed because
-\[
-  (\sigma_k\otimes X_k)(\sigma_k^{-1}\otimes R_k^{-1})
-  (\sigma_k\otimes Z_k)
-  =\sigma_k\otimes(X_kR_k^{-1}Z_k).
-\]
-This is the factor-swapped form of Wolf's
-$\mathcal M_{d_k}\otimes\rho_k$ notation, as already recorded for the formalized
+\begin{align}
+    \mathcal W_{\rho,T}
+        &=
+        \left\{Y\in Q\MN{d}Q
+            \mathrel{}\middle|\mathrel{}
+            T(\sqrt{\rho}\,Y\sqrt{\rho})
+                =\sqrt{\rho}\,Y\sqrt{\rho}\right\}
+    \label{eq:wolf_cor67_maximal_support_restriction_weighted_corner_carrier}
+\end{align}
+is a $*$-subalgebra of $Q\MN{d}Q$.
+
+Its multiplication proof follows the density-block decomposition in
+Wolf's Theorem~6.14 \cite{Wolf2012Quantum}. On each support sector, fixed
+blocks have the form $\sigma_k\otimes X_k$, while $\rho$ has blocks
+$\sigma_k\otimes R_k$, with both density factors positive definite. The
+weighted product remains fixed because
+\begin{align}
+    &(\sigma_k\otimes X_k)
+      (\sigma_k^{-1}\otimes R_k^{-1})
+      (\sigma_k\otimes Z_k)\nonumber\\
+        &\qquad
+        =\sigma_k\otimes(X_kR_k^{-1}Z_k).
+    \label{eq:wolf_cor67_maximal_support_restriction_weighted_block_product}
+\end{align}
+This is the factor-swapped form of the
+$\mathcal M_{d_k}\otimes\rho_k$ notation in
+Ref.~\cite{Wolf2012Quantum}, as already recorded for the formalization of
 Theorem~6.14.
 
-The every-maximum-rank step is source-general as well.
+The maximum-rank step is also source-general. The declaration
 \leanid{IsPositiveMap.maximalSupport\_of\_maximalRank} in
-\leanid{QICLean/Channel/FixedPoint/AbstractMaximalRank.lean} takes an arbitrary positive
-semidefinite fixed point whose rank bounds the rank of every stationary density and
-proves $QXQ=X$ for every fixed point $X$.  It compares that arbitrary choice with
-$T_\infty(\mathbf 1)$, rather than replacing Wolf's quantifier by the canonical witness.
+\path{QICLean/Channel/FixedPoint/AbstractMaximalRank.lean} accepts any
+positive semidefinite fixed point whose rank is at least the rank of every
+stationary density. It proves
+\begin{align}
+    QXQ
+        &=X
+        \qquad\text{for every }X\in\mathcal F_T.
+    \label{eq:wolf_cor67_maximal_support_restriction_maximal_support_identity}
+\end{align}
+The proof compares the arbitrary maximum-rank choice with
+$T_\infty(\mathbf 1)$; it does not replace the source quantifier by a
+canonical witness.
 
 Finally,
 \leanid{IsPositiveMap.mem\_weightedCornerFixedPointsStarSubalgebra\_iff\_inverseSandwich}
-identifies the formal carrier in both directions with
-$\rho^{-1/2}\mathcal F_T\rho^{-1/2}$.  The inverse square root is the functional-calculus
-inverse on $\operatorname{supp}(\rho)$ and zero on its kernel.  The support identities
-$\sqrt\rho\,\rho^{-1/2}=Q=\rho^{-1/2}\sqrt\rho$ give the equality without an ambient
-invertibility assumption.  The generic construction also includes zero support as the
-zero corner algebra; the source theorem's density hypothesis, of course, has trace one.
+identifies the carrier
+(\ref{eq:wolf_cor67_maximal_support_restriction_weighted_corner_carrier}) in
+both directions with
+(\ref{eq:wolf_cor67_maximal_support_restriction_inverse_sandwich_set}). The
+support identities are
+\begin{align}
+    \sqrt{\rho} \rho^{-1/2}
+        &=Q,
+    \label{eq:wolf_cor67_maximal_support_restriction_left_support_identity}\\
+    \rho^{-1/2}\sqrt{\rho}
+        &=Q.
+    \label{eq:wolf_cor67_maximal_support_restriction_right_support_identity}
+\end{align}
+They establish the carrier equality without assuming that $\rho$ is
+invertible on the ambient space. The generic construction also includes the
+zero-support case as the zero corner algebra. The density-matrix hypothesis
+in Corollary~6.7 of Ref.~\cite{Wolf2012Quantum} has trace one and therefore
+excludes that case.
 
-\section{Verdict}
+\section{Conclusion}
 
 The former Kraus-only scope restriction is eliminated.
-\leanid{IsPositiveMap.wolfCorollary67} states the printed corollary for a positive
-trace-preserving linear map with Schwarz trace adjoint and for every maximum-rank
-stationary density matrix, and it returns a star-algebra whose carrier is exactly Wolf's
-displayed inverse-square-root set.  The older declarations in the
-\texttt{Kraus} namespace remain compatibility specializations; the maximum-rank and
-surjectivity declarations delegate to the source-general proofs rather than furnishing
-a parallel route.
+\leanid{IsPositiveMap.wolfCorollary67} states Corollary~6.7 of
+Ref.~\cite{Wolf2012Quantum} for a positive trace-preserving linear map with
+Schwarz trace adjoint and for every maximum-rank stationary density matrix.
+It returns a $*$-algebra whose carrier is exactly the inverse-square-root set
+(\ref{eq:wolf_cor67_maximal_support_restriction_inverse_sandwich_set}). The
+older declarations in the \leanid{Kraus} namespace remain compatibility
+specializations. The maximum-rank and surjectivity declarations delegate to
+the source-general proofs rather than providing a separate route.
+
+\bibliographystyle{alpha}
+\bibliography{references}
 
 \end{document}

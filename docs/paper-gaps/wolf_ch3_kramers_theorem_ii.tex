@@ -17,98 +17,193 @@
 
 \section{The assertion}
 
-Wolf's Kramers theorem~II states:\footnote{\cite[Chapter~3, Theorem~3.2
-(``Kramer's theorem~II'')]{Wolf2012Quantum}; local source
-\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
-lines~527--530.  Tracked in \ghissue{17}.}
+Wolf's Kramers theorem~II concerns a Hermitian matrix $H$ and a nonzero
+anti-symmetric matrix $A$ satisfying an intertwining relation. It asserts that
 \begin{align}
-  \left.
-  \begin{minipage}{0.82\linewidth}
-  Let $H$ be Hermitian and $HA=AH^{T}$ for some anti-symmetric $A\neq 0$.
-  Then each eigenvalue of $H$ is at least two-fold degenerate.
-  \end{minipage}
-  \right\}
-  \tag{\path{Wolf ch03, lines 527--530}}
+    H&=H^\dagger,
+    &
+    A^T&=-A,
+    &
+    A&\neq 0,
+    &
+    HA&=AH^T
+    \quad\Longrightarrow\quad
+    \dim\ker(H-\lambda\Id)\geq 2
+    \ \text{for every eigenvalue $\lambda$ of $H$}.
+    \label{eq:wolf_ch3_kramers_theorem_ii_printed_claim}
 \end{align}
-The theorem is offered as a relaxation of the first Kramers theorem
-(\cite[Chapter~3, Theorem~3.1]{Wolf2012Quantum}), which
-treats a Hermitian $H$ commuting with an anti-unitary $T$ of square $-\Id$:
-writing $T=\Gamma V$ with $\Gamma$ complex conjugation and $V$ unitary, the
-hypotheses become $HV^{\dagger}=V^{\dagger}H^{T}$ and $V^{T}=-V$, and the
-printed text adds that ``the restriction on the required symmetry in the
-theorem can be relaxed as the same proof shows.''\footnote{Local source,
-lines~498--501 (the matrix reduction) and lines~523--525 (the relaxation
-claim).}
+This is the statement printed as Chapter~3, Theorem~3.2, ``Kramer's
+theorem~II'', in Ref.~\cite{Wolf2012Quantum}.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines~527--530. Tracked in \ghissue{17}.}
+
+The theorem is presented as a relaxation of Wolf's first Kramers theorem
+\cite[Chapter~3, Theorem~3.1]{Wolf2012Quantum}. That theorem assumes that a
+Hermitian matrix $H$ commutes with an anti-unitary operator $T$ satisfying
+$T^2=-\Id$. Writing $T=\Gamma V$, where $\Gamma$ is complex conjugation and
+$V$ is unitary, gives
+\begin{align}
+    HV^\dagger&=V^\dagger H^T,
+    &
+    V^T&=-V.
+    \label{eq:wolf_ch3_kramers_theorem_ii_first_theorem_matrix_form}
+\end{align}
+Wolf then states that ``the restriction on the required symmetry in the
+theorem can be relaxed as the same proof shows''
+\cite[Chapter~3, Theorems~3.1--3.2]{Wolf2012Quantum}.\footnote{Local source:
+lines~498--501 for the matrix reduction and lines~523--525 for the relaxation
+claim.}
 
 \section{The point at issue}
 
-The proof in question produces, for every eigenvector
-$H\ket{\psi}=\lambda\ket{\psi}$, the partner vector $A\ket{\overline\psi}$ and
-argues that the two vectors are orthogonal eigenvectors for the same
-eigenvalue.  Both calculation steps survive the relaxation:
+Let $\ket{\psi}\neq 0$ satisfy
 \begin{align}
-  H\,A\ket{\overline\psi}
-  =A H^{T}\ket{\overline\psi}
-  =\lambda\,A\ket{\overline\psi},
-  \qquad
-  \braket{\psi}{A\overline\psi}=0,
+    H\ket{\psi}&=\lambda\ket{\psi}.
+    \label{eq:wolf_ch3_kramers_theorem_ii_eigenvector}
 \end{align}
-the first because Hermiticity makes $\lambda$ real and
-$H^{T}\ket{\overline\psi}=\overline{H\ket{\psi}}$, the second because the
-quadratic form of an anti-symmetric matrix is its own negative.  What does
-\emph{not} survive is the nondegeneracy step.  In the first theorem the
-partner is $V^{\dagger}\ket{\overline\psi}$ with $V$ unitary, hence nonzero;
-for a general anti-symmetric $A\neq 0$ the vector $\ket{\overline\psi}$ may lie
-in the kernel of $A$, and then the partner vanishes and the orthogonality
-statement is vacuous.
+Because $H$ is Hermitian, $\lambda$ is real. Complex conjugation of
+Eq.~\ref{eq:wolf_ch3_kramers_theorem_ii_eigenvector} therefore gives
+\begin{align}
+    H^T\ket{\overline{\psi}}
+        &=\overline{H\ket{\psi}}
+    \label{eq:wolf_ch3_kramers_theorem_ii_conjugate_eigenvector_first}\\
+        &=\lambda\ket{\overline{\psi}}.
+    \label{eq:wolf_ch3_kramers_theorem_ii_conjugate_eigenvector_second}
+\end{align}
+The intertwining relation then yields
+\begin{align}
+    HA\ket{\overline{\psi}}
+        &=AH^T\ket{\overline{\psi}}
+    \label{eq:wolf_ch3_kramers_theorem_ii_partner_transport_first}\\
+        &=\lambda A\ket{\overline{\psi}}.
+    \label{eq:wolf_ch3_kramers_theorem_ii_partner_transport_second}
+\end{align}
+Thus $A\ket{\overline{\psi}}$ is either zero or an eigenvector of $H$ with
+eigenvalue $\lambda$.
 
-Concretely, on $\C^{3}$ take
+Anti-symmetry also gives
 \begin{align}
-  H=\operatorname{diag}(0,1,1),
-  \qquad
-  A=
-  \begin{pmatrix}
-    0&0&0\\
-    0&0&1\\
-    0&-1&0
-  \end{pmatrix}.
+    \braket{\psi}{A\overline{\psi}}
+        &=\overline{\psi}^{\,T}A\overline{\psi}
+    \label{eq:wolf_ch3_kramers_theorem_ii_partner_orthogonality_first}\\
+        &=\overline{\psi}^{\,T}A^T\overline{\psi}
+    \label{eq:wolf_ch3_kramers_theorem_ii_partner_orthogonality_second}\\
+        &=-\overline{\psi}^{\,T}A\overline{\psi}
+    \label{eq:wolf_ch3_kramers_theorem_ii_partner_orthogonality_third}\\
+        &=0.
+    \label{eq:wolf_ch3_kramers_theorem_ii_partner_orthogonality_zero}
 \end{align}
-Then $H=H^{\dagger}$, $A^{T}=-A$, $A\neq 0$, and $HA=AH^{T}=A$, since the
-nontrivial rows and columns of $A$ sit entirely inside the $1$-eigenspace of
-$H$.  The eigenvalue $0$ of $H$ is simple, with eigenvector $e_{1}$, and the
-partner vanishes: $A\overline{e_{1}}=Ae_{1}=0$.  So the printed conclusion
-fails while every printed hypothesis holds.
+The second equality uses the fact that a scalar equals its transpose.
+Equations~\ref{eq:wolf_ch3_kramers_theorem_ii_partner_transport_second}
+and~\ref{eq:wolf_ch3_kramers_theorem_ii_partner_orthogonality_zero} establish
+the transport and orthogonality steps in the printed proof. They do not
+establish that the partner is nonzero. In the first Kramers theorem, the
+partner is $V^\dagger\ket{\overline{\psi}}$, which cannot vanish because $V$
+is unitary. A general nonzero anti-symmetric matrix $A$ may have a nontrivial
+kernel.
+
+A counterexample occurs on $\C^3$. Define
+\begin{align}
+    H&=\operatorname{diag}(0,1,1),
+    &
+    A&=
+    \begin{pmatrix}
+        0&0&0\\
+        0&0&1\\
+        0&-1&0
+    \end{pmatrix}.
+    \label{eq:wolf_ch3_kramers_theorem_ii_counterexample_matrices}
+\end{align}
+These matrices satisfy
+\begin{align}
+    H&=H^\dagger,
+    &
+    A^T&=-A,
+    &
+    A&\neq 0,
+    \label{eq:wolf_ch3_kramers_theorem_ii_counterexample_basic_hypotheses}\\
+    HA&=AH^T=A.
+    \label{eq:wolf_ch3_kramers_theorem_ii_counterexample_intertwining}
+\end{align}
+The nonzero rows and columns of $A$ lie in the $1$-eigenspace of $H$, which
+explains Eq.~\ref{eq:wolf_ch3_kramers_theorem_ii_counterexample_intertwining}.
+The eigenvalue $0$ is simple, with eigenvector $e_1$, and its proposed partner
+vanishes:
+\begin{align}
+    He_1&=0,
+    &
+    \dim\ker H&=1,
+    &
+    A\overline{e_1}&=Ae_1=0.
+    \label{eq:wolf_ch3_kramers_theorem_ii_counterexample_simple_eigenvalue}
+\end{align}
+Thus the hypotheses of
+Eq.~\ref{eq:wolf_ch3_kramers_theorem_ii_printed_claim} hold while its
+conclusion fails.
 
 \section{The corrected statement}
 
-The calculation above proves the conditional statement: the eigenvalue
-$\lambda$ of an eigenvector $\ket{\psi}$ is at least two-fold degenerate
-\emph{whenever the partner is nonzero},
+For an eigenvector $\ket{\psi}$ with eigenvalue $\lambda$, the calculation
+proves the exact conditional statement
 \begin{align}
-  A\ket{\overline\psi}\neq 0
-  \Longrightarrow
-  \dim\ker(H-\lambda)\ge 2,
+    A\ket{\overline{\psi}}\neq 0
+    \quad\Longrightarrow\quad
+    \dim\ker(H-\lambda\Id)\geq 2.
+    \label{eq:wolf_ch3_kramers_theorem_ii_conditional_correction}
 \end{align}
-because $\ket{\psi}$ and $A\ket{\overline\psi}$ are then two orthogonal,
-hence linearly independent, eigenvectors for $\lambda$.  A hypothesis-free
-global conclusion therefore requires $A$ to be injective, so that
-$\ket{\psi}\neq 0$ implies $A\ket{\overline\psi}\neq 0$: if the
-anti-symmetric intertwiner $A$ is invertible, then every eigenvalue of $H$ is
-at least two-fold degenerate.  Over $\C$ an anti-symmetric matrix can be
-invertible only in even dimensions, since
-$\det A=\det A^{T}=(-1)^{d}\det A$; this matches the observation printed next
-to the first theorem that anti-symmetric unitaries exist only in even
-dimensions.\footnote{Local source, lines~523--524.}
+Under the hypothesis in
+Eq.~\ref{eq:wolf_ch3_kramers_theorem_ii_conditional_correction},
+Eqs.~\ref{eq:wolf_ch3_kramers_theorem_ii_partner_transport_second}
+and~\ref{eq:wolf_ch3_kramers_theorem_ii_partner_orthogonality_zero} provide
+two nonzero orthogonal eigenvectors with eigenvalue $\lambda$.
 
-The first Kramers theorem is exactly the invertible case: for $T=\Gamma V$
-the choice $A=V^{\dagger}$ is anti-symmetric (because $V^{T}=-V$) and
-invertible (because $V$ is unitary), so the corrected theorem~II specializes
-to theorem~I, with Wolf's own proof.
+A global sufficient condition is injectivity of $A$. More precisely,
+\begin{align}
+    H&=H^\dagger,
+    &
+    A^T&=-A,
+    &
+    HA&=AH^T,
+    &
+    \ker A&=\{0\},
+    \label{eq:wolf_ch3_kramers_theorem_ii_invertible_hypotheses}\\
+    \dim\ker(H-\lambda\Id)&\geq 2
+    \qquad\text{for every eigenvalue $\lambda$ of $H$}.
+    \label{eq:wolf_ch3_kramers_theorem_ii_invertible_conclusion}
+\end{align}
+Here the first line implies the second. In finite dimensions, $\ker A=\{0\}$
+is equivalent to invertibility.
+
+If $A$ is a $d\times d$ anti-symmetric matrix, then
+\begin{align}
+    \det A
+        &=\det A^T
+    \label{eq:wolf_ch3_kramers_theorem_ii_determinant_transpose}\\
+        &=\det(-A)
+    \label{eq:wolf_ch3_kramers_theorem_ii_determinant_antisymmetry}\\
+        &=(-1)^d\det A.
+    \label{eq:wolf_ch3_kramers_theorem_ii_determinant_parity}
+\end{align}
+Consequently, an invertible anti-symmetric matrix can exist only in even
+dimension. This agrees with Wolf's observation that anti-symmetric unitaries
+exist only in even dimensions \cite[Chapter~3, discussion following
+Theorem~3.1]{Wolf2012Quantum}.\footnote{Local source, lines~523--524.}
+
+The first Kramers theorem is the invertible case of
+Eqs.~\ref{eq:wolf_ch3_kramers_theorem_ii_invertible_hypotheses}--%
+\ref{eq:wolf_ch3_kramers_theorem_ii_invertible_conclusion}. For
+$T=\Gamma V$, set $A=V^\dagger$. The relation $V^T=-V$ and unitarity imply
+$A^T=-A$, while unitarity also makes $A$ invertible. The corrected theorem~II
+therefore specializes to theorem~I using Wolf's proof
+\cite[Chapter~3, Theorems~3.1--3.2]{Wolf2012Quantum}.
 
 \section{The formalization}
 
-The corrected development lives in
-\doclink{QICLean/Algebra/KramersDegeneracy}.\footnote{Transport:
+The corrected development records transport, orthogonality, the conditional
+theorem, the invertible global corollary, and both forms of the first Kramers
+theorem.\footnote{Formal development:
+\doclink{QICLean/Algebra/KramersDegeneracy}.
+Transport:
 \leanid{Matrix.IsHermitian.mulVec_star_intertwiner_of_mul_eq_mul_transpose};
 orthogonality:
 \leanid{Matrix.dotProduct_star_mulVec_star_eq_zero_of_transpose_eq_neg};
@@ -116,23 +211,26 @@ conditional theorem:
 \leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero};
 invertible global corollary:
 \leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_isUnit};
-theorem~I in matrix form, derived as the case $A=V^{\dagger}$:
+theorem~I in matrix form, obtained with $A=V^\dagger$:
 \leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_unitary};
-theorem~I with the printed anti-unitary hypotheses:
+theorem~I under the printed anti-unitary hypotheses:
 \leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_antiunitary}.}
-Degeneracy is recorded as $2\le\dim$ of the eigenspace; for a Hermitian
-matrix the geometric and algebraic multiplicities agree, so nothing is lost
-against the printed phrase ``two-fold degenerate''.  The false printed
-statement itself is deliberately not formalized.
+The formal statements express degeneracy by the lower bound $2\leq\dim$ on the
+eigenspace. For Hermitian matrices, geometric and algebraic multiplicities
+coincide, so this agrees with the printed phrase ``two-fold degenerate''. The
+false statement in
+Eq.~\ref{eq:wolf_ch3_kramers_theorem_ii_printed_claim} is deliberately not
+formalized.
 
 \section{Conclusion}
 
-Kramers theorem~II as printed is false; the hypothesis $A\neq0$ is
-insufficient because the partner $A\ket{\overline\psi}$ can vanish.  The
-correct local conclusion holds under the exact nonvanishing condition
-$A\ket{\overline\psi}\neq0$, and the global conclusion holds when $A$ is
-invertible.  This is a genuine source error, resolved by the corrected
-statements above.
+Kramers theorem~II is false as printed in Ref.~\cite{Wolf2012Quantum}. The
+condition $A\neq 0$ does not prevent the partner
+$A\ket{\overline{\psi}}$ from vanishing. The exact local conclusion is
+Eq.~\ref{eq:wolf_ch3_kramers_theorem_ii_conditional_correction}, and the global
+degeneracy conclusion follows under the invertibility condition in
+Eq.~\ref{eq:wolf_ch3_kramers_theorem_ii_invertible_hypotheses}. These corrected
+statements resolve the source error.
 
 \bibliographystyle{alpha}
 \bibliography{references}

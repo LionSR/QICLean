@@ -16,40 +16,55 @@
 
 \section{Closure record}
 
-Cirac--Perez-Garcia--Schuch--Verstraete 2016 normalizes the raw coefficients in
-the basis-of-normal-tensors expansion by a single global condition: Section
-II.C, line 246 requires \(|\mu_{j,q}|\le1\) for all copy weights and
-\(|\mu_{j_\ast,q_\ast}|=1\) for some copy.  The paper-level canonical form does
-not state that every BNT sector contains a copy of modulus one; a sector may
-carry only strictly subunit copy weights while another sector holds the global
-unit witness.  The formal predicate
-\leanid{MPSTensor.IsBNTCanonicalForm} records exactly this global witness
-through the field \leanid{MPSTensor.IsBNTCanonicalForm.weight_unit_exists}.
+Cirac--P\'erez-Garc\'ia--Schuch--Verstraete normalize the raw coefficients in
+the basis-of-normal-tensors expansion by one global condition. Section~II.C,
+line~246 of Ref.~\cite{Cirac2016MPDO_arXiv} requires
+$|\mu_{j,q}|\leq 1$ for every copy weight and
+$|\mu_{j_\ast,q_\ast}|=1$ for at least one copy. The paper-level canonical
+form does not require every BNT sector to contain a unit-modulus copy. One
+sector may contain only strictly subunit copy weights while another sector
+contains the global unit witness. The formal predicate
+\leanid{MPSTensor.IsBNTCanonicalForm} records exactly this global condition
+through the field
+\leanid{MPSTensor.IsBNTCanonicalForm.weight_unit_exists}.
 
 Earlier full-basis matching and global-gauge theorems assumed the stronger
-per-sector condition \(\forall j,\ \exists q,\ |\mu_{j,q}|=1\), the price of an
-asymptotic matching route that projected onto single sectors through the
-Cesaro non-decay lemma.  That restriction has been eliminated.  The exact
-linear-independence matcher
-(\leanid{MPSTensor.exists_block_match_exact} for the equal case and
-\leanid{MPSTensor.exists_block_match_exact_of_eventuallyProportional} for the
-proportional case) works at one fixed sufficiently large length, and
-\leanid{MPSTensor.IsBNTCanonicalForm.coeff_not_eventually_zero} shows that the
-sector coefficient sum \(c^{(j)}_N=\sum_q\mu_{j,q}^N\) is nonzero infinitely
-often for any nonzero copy weights, with no modulus assumption.  The matching
-and global-gauge declarations therefore carry exactly the source hypothesis
-set.  The unitary equal-case assembly of Source Corollary A.6
-(\path{Papers/1606.00608/MPDO-22-12-17-2.tex:1197}, label
-\texttt{thm:Fundamental-CFII}) is complete on the same surface
-(\leanid{MPSTensor.ft_sector_bnt_equal_unitary_global_gauge_witnesses} and
-\leanid{MPSTensor.fundamentalTheorem_equal_canonicalForm_unitary}), again
-without a per-sector unit-weight assumption.
+per-sector condition $\forall j,\ \exists q,\ |\mu_{j,q}|=1$. That condition
+entered through an asymptotic matching argument that projected onto individual
+sectors using the Ces\`aro non-decay lemma. The restriction has been
+eliminated.
+
+For sector $j$, define the length-$N$ coefficient sum by
+\begin{align}
+    c_N^{(j)}
+        &= \sum_q \mu_{j,q}^N.
+    \label{eq:cpsvunit_sector_coefficient_sum}
+\end{align}
+The exact linear-independence matcher works at one fixed sufficiently large
+length. Its equal-case declaration is
+\leanid{MPSTensor.exists_block_match_exact}, and its proportional-case
+declaration is
+\leanid{MPSTensor.exists_block_match_exact_of_eventuallyProportional}. The
+theorem
+\leanid{MPSTensor.IsBNTCanonicalForm.coeff_not_eventually_zero} shows that
+$c_N^{(j)}$ is nonzero for infinitely many $N$ whenever the copy weights are
+nonzero; it requires no modulus assumption. The matching and global-gauge
+declarations therefore use exactly the source hypothesis set.
+
+The unitary equal-case assembly in Corollary~A.6 of
+Ref.~\cite{Cirac2016MPDO_arXiv}, identified in the source by
+\texttt{thm:Fundamental-CFII} at
+\path{Papers/1606.00608/MPDO-22-12-17-2.tex:1197}, is complete under the same
+hypotheses. Its formal declarations are
+\leanid{MPSTensor.ft_sector_bnt_equal_unitary_global_gauge_witnesses} and
+\leanid{MPSTensor.fundamentalTheorem_equal_canonicalForm_unitary}. Neither
+declaration assumes a per-sector unit weight.
 
 The faithful structural normalization remains the global unit-weight field
 \path{MPSTensor.IsBNTCanonicalForm.weight_unit_exists} in
-\path{TNLean/MPS/FundamentalTheorem/SectorBNT/Basic.lean}.  The interaction
+\path{TNLean/MPS/FundamentalTheorem/SectorBNT/Basic.lean}. The interaction
 between this convention and the scale fixed by the MPDO renormalization
-equations is the separate note
+equations is treated separately in
 \path{docs/paper-gaps/cpsv16_unit_weight_rfp_scale_tension.tex}.
 
 \bibliographystyle{alpha}

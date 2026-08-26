@@ -18,86 +18,165 @@
 
 \section{Source statement}
 
-In Chapter~3 of Wolf's lecture notes \cite{Wolf2012Quantum}, the one-parameter
-family
+Let $D\geq1$. Chapter~3 of Ref.~\cite{Wolf2012Quantum} studies the maps
+$T_\eta:\MN{D}\to\MN{D}$ defined for $\eta\in\mathbb R_+$ by source
+Equation~(3.11):
 \begin{align}
-  T_\eta(\rho)=\tr(\rho)\,\mathbf 1-\frac{\rho}{\eta},
-  \qquad \eta\in\mathbb R_+,
-  \tag{3.11}
+  T_\eta(\rho)
+    &=\tr(\rho)\Id-\frac{\rho}{\eta}.
+  \label{eq:wolf_t_eta_top_index_scope_map}
 \end{align}
-on $M_D(\mathbb C)$ (the formal map is written $\tr(\rho)\,\mathbf 1-\eta^{-1}\rho$,
-which agrees on $\eta>0$ and is moreover defined at $\eta=0$) is analyzed
-through its Choi--Jamiolkowski operator
-$\tau_\eta=D^{-1}\mathbf 1-\eta^{-1}\ket\Omega\bra\Omega$.  All positive
-eigenvalues of $\tau_\eta$ equal $1/D$, and the single non-positive eigenvalue
-is $\nu_-=1/D-1/\eta$ with reduced density $\rho_-=\mathbf 1/D$, so its
-Ky--Fan $n$-norm is $\|\rho_-\|_{(n)}=n/D$.  The source concludes:
+The formal map is written $\tr(\rho)\Id-\eta^{-1}\rho$. It agrees with
+(\ref{eq:wolf_t_eta_top_index_scope_map}) for $\eta>0$ and is also defined at
+$\eta=0$.
+
+The Choi--Jamiolkowski operator used in the source is
 \begin{align}
-  T_\eta\ \text{is $n$-positive}\iff \eta\ge n,
-  \qquad n=1,\dots,D,
+  \tau_\eta
+    &=D^{-1}\Id-\eta^{-1}\ketbra{\Omega}{\Omega}.
+  \label{eq:wolf_t_eta_top_index_scope_choi_operator}
 \end{align}
-where the range of $n$ runs up to the dimension $D$, in which case
-$n$-positivity is complete positivity.  This proves that every inclusion in
-Wolf's chain
+All positive eigenvalues of $\tau_\eta$ equal $1/D$. Its unique nonpositive
+eigenvalue and the corresponding reduced density matrix are
 \begin{align}
-  \mathcal T_{\mathrm{cp}}=\mathcal T_D\subseteq
-  \mathcal T_{D-1}\subseteq\cdots\subseteq\mathcal T_2\subseteq\mathcal T_1
-  \tag{3.3}
+  \nu_-
+    &=\frac{1}{D}-\frac{1}{\eta},
+  \label{eq:wolf_t_eta_top_index_scope_negative_eigenvalue}\\
+  \rho_-
+    &=\frac{\Id}{D}.
+  \label{eq:wolf_t_eta_top_index_scope_reduced_density}
 \end{align}
-is strict.\footnote{Local source:
+Consequently, the Ky--Fan $n$-norm satisfies
+\begin{align}
+  \|\rho_-\|_{(n)}
+    &=\frac{n}{D}.
+  \label{eq:wolf_t_eta_top_index_scope_ky_fan_norm}
+\end{align}
+The source concludes that
+\begin{align}
+  T_\eta\text{ is $n$-positive}
+    &\Longleftrightarrow \eta\geq n,
+  \qquad 1\leq n\leq D.
+  \label{eq:wolf_t_eta_top_index_scope_full_threshold}
+\end{align}
+At $n=D$, $n$-positivity is complete positivity. The threshold therefore makes
+every inclusion in source Equation~(3.3) strict:
+\begin{align}
+  \mathcal T_{\mathrm{cp}}=\mathcal T_D
+    &\subseteq\mathcal T_{D-1}
+      \subseteq\cdots\subseteq\mathcal T_2
+      \subseteq\mathcal T_1.
+  \label{eq:wolf_t_eta_top_index_scope_positivity_chain}
+\end{align}
+These claims appear in Chapter~3 of Ref.~\cite{Wolf2012Quantum}.\footnote{Local
+source:
 \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex:181--193},
 equation label \path{eq:ch3:3.11}.}
 
 \section{Point at issue}
 
-The formal statement establishes the equivalence
+The initial formal statement proved only
 \begin{align}
-  T_\eta\ \text{is $k$-positive}\iff \eta\ge k
+  T_\eta\text{ is $k$-positive}
+    &\Longleftrightarrow \eta\geq k,
+  \qquad 1\leq k<D.
+  \label{eq:wolf_t_eta_top_index_scope_initial_formal_threshold}
 \end{align}
-for Schmidt-rank index $1\le k<D$, omitting the top index $k=D$.  The
-restriction is inherited, not introduced here: the equivalence is derived from
-the maximal-overlap principle (Wolf Lemma~3.1), whose formal version
-$\sup_\psi|\braket{\Omega}{\psi}|^2=\|\rho\|_{(k)}$ over Schmidt-rank-$k$
-normalized vectors is available only for $1\le k<D$.  That bound in turn rests
-on the Ky--Fan maximum principle, stated for orthogonal projections of rank
-exactly $k$ with $k<D$.  At the top index $k=D$ the Ky--Fan $D$-norm is the
-full trace and the maximizing projection is the identity; the present
-formalization of the maximum principle does not cover that boundary case.
+It omitted the top index $k=D$. This restriction was inherited from the formal
+version of Wolf's maximal-overlap principle, Lemma~3.1
+\cite[Lemma~3.1]{Wolf2012Quantum}. For normalized vectors $\psi$ of Schmidt
+rank at most $k$, that principle identifies
+\begin{align}
+  \sup_\psi\left|\braket{\Omega}{\psi}\right|^2
+    &=\|\rho\|_{(k)}.
+  \label{eq:wolf_t_eta_top_index_scope_maximal_overlap}
+\end{align}
+The formal theorem was available only for $1\leq k<D$ because it depended on a
+Ky--Fan maximum principle stated for orthogonal projections of rank exactly
+$k<D$. At $k=D$, the Ky--Fan norm is the full trace and the maximizing
+projection is $\Id$, but that boundary case was absent from the formal maximum
+principle.
 
-Consequently the strictness witness produced here, a $k$-positive map that fails
-to be $(k+1)$-positive, is available for $1\le k$ with $k+1<D$.  This covers
-every inclusion in the chain~(3.3) except the topmost one,
-$\mathcal T_D\subseteq\mathcal T_{D-1}$, which compares complete positivity with
-$(D-1)$-positivity and requires the $k=D$ index.
+The resulting strictness witness, a $k$-positive map that is not
+$(k+1)$-positive, was therefore available only when
+\begin{align}
+  1
+    &\leq k,
+  \label{eq:wolf_t_eta_top_index_scope_initial_witness_lower_bound}\\
+  k+1
+    &<D.
+  \label{eq:wolf_t_eta_top_index_scope_initial_witness_upper_bound}
+\end{align}
+This range proves every strict inclusion in
+(\ref{eq:wolf_t_eta_top_index_scope_positivity_chain}) except
+\begin{align}
+  \mathcal T_D
+    &\subseteq\mathcal T_{D-1},
+  \label{eq:wolf_t_eta_top_index_scope_top_inclusion}
+\end{align}
+which compares complete positivity with $(D-1)$-positivity and requires the
+threshold at $k=D$.
 
-\section{Status}
+\section{Resolution}
 
-The boundary case $k=D$ is resolved by a route that bypasses the $k<D$
-restriction of the maximal-overlap and Ky--Fan principles entirely.  On
-$M_D(\mathbb C)$, $D$-positivity is complete positivity
-(\leanid{isCPMap_iff_isNPositiveMap_card}), which is positive semidefiniteness of
-the Choi operator $\tau_\eta$.  Its quadratic form on a vector $\psi$ is
-$D^{-1}\|\psi\|^2-\eta^{-1}|\braket{\Omega}{\psi}|^2$, and since $\ket\Omega$ is
-normalized the Cauchy--Schwarz bound $|\braket{\Omega}{\psi}|^2\le\|\psi\|^2$
-(saturated at $\psi=\Omega$) makes that form nonnegative for every $\psi$ exactly
-when $\eta\ge D$.  Hence $T_\eta$ is $D$-positive iff $\eta\ge D$, the equivalence
-at the top index.
+The endpoint $k=D$ is proved without the restricted maximal-overlap or Ky--Fan
+principles. On $\MN{D}$, $D$-positivity is equivalent to complete positivity.
+The corresponding formal equivalence is
+\leanid{isCPMap_iff_isNPositiveMap_card}. Complete positivity of $T_\eta$ is
+equivalent to positive semidefiniteness of
+(\ref{eq:wolf_t_eta_top_index_scope_choi_operator}).
 
-The formal declarations are \leanid{Matrix.isNPositiveMap_tEta_iff} for the
-range $1\le k<D$ and \leanid{Matrix.isNPositiveMap_tEta_card_iff} for the top
-index $k=D$, together covering the full equivalence~(3.11) over $1\le k\le D$, in
-\doclink{QICLean/Channel/NPositivityChainStrict}.  The strictness witness
-\leanid{Matrix.exists_isNPositiveMap_not_succ} remains stated for $k+1<D$; the
-strictness of the top inclusion $\mathcal T_D\subsetneq\mathcal T_{D-1}$ follows
-from the $k=D-1$ and $k=D$ thresholds but is not recorded as a separate witness.
+For every vector $\psi$, the quadratic form of the Choi operator is
+\begin{align}
+  \bra{\psi}\tau_\eta\ket{\psi}
+    &=D^{-1}\|\psi\|^2
+      -\eta^{-1}\left|\braket{\Omega}{\psi}\right|^2.
+  \label{eq:wolf_t_eta_top_index_scope_choi_quadratic_form}
+\end{align}
+Because $\ket{\Omega}$ is normalized, Cauchy--Schwarz gives
+\begin{align}
+  \left|\braket{\Omega}{\psi}\right|^2
+    &\leq\|\psi\|^2,
+  \label{eq:wolf_t_eta_top_index_scope_cauchy_schwarz}
+\end{align}
+with equality at $\psi=\Omega$. Hence
+\begin{align}
+  \tau_\eta\succeq0
+    &\Longleftrightarrow \eta\geq D,
+  \label{eq:wolf_t_eta_top_index_scope_choi_threshold}\\
+  T_\eta\text{ is $D$-positive}
+    &\Longleftrightarrow \eta\geq D.
+  \label{eq:wolf_t_eta_top_index_scope_top_threshold}
+\end{align}
+
+The declaration \leanid{Matrix.isNPositiveMap_tEta_iff} proves
+(\ref{eq:wolf_t_eta_top_index_scope_initial_formal_threshold}), and
+\leanid{Matrix.isNPositiveMap_tEta_card_iff} proves
+(\ref{eq:wolf_t_eta_top_index_scope_top_threshold}). Both are in
+\doclink{QICLean/Channel/NPositivityChainStrict}. Together they establish the
+full source range in
+(\ref{eq:wolf_t_eta_top_index_scope_full_threshold}).
+
+The witness
+\leanid{Matrix.exists_isNPositiveMap_not_succ} remains stated for $k+1<D$.
+The endpoint thresholds at $k=D-1$ and $k=D$ nevertheless imply
+\begin{align}
+  \mathcal T_D
+    &\subsetneq\mathcal T_{D-1},
+  \label{eq:wolf_t_eta_top_index_scope_strict_top_inclusion}
+\end{align}
+although this strict inclusion is not recorded as a separate witness
+declaration.
 
 \section{Classification}
 
-\emph{Resolved.} The full source range $1\le k\le D$ of equivalence~(3.11) is now
-formalized: \leanid{Matrix.isNPositiveMap_tEta_iff} for $1\le k<D$ and
-\leanid{Matrix.isNPositiveMap_tEta_card_iff} for the completely-positive endpoint
-$k=D$, the latter by the Choi-operator route detailed in the Status above.  No
-hypothesis foreign to the source is used.
+\emph{Resolved.} The declarations
+\leanid{Matrix.isNPositiveMap_tEta_iff} and
+\leanid{Matrix.isNPositiveMap_tEta_card_iff} now cover the complete source
+range $1\leq k\leq D$ from source Equation~(3.11)
+\cite[Chapter~3]{Wolf2012Quantum}. The top index uses the Choi-operator
+argument rather than the restricted Ky--Fan route. No hypothesis foreign to
+the source is introduced.
 
 \bibliographystyle{alpha}
 \bibliography{references}

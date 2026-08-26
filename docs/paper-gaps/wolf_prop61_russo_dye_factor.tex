@@ -17,95 +17,168 @@
 
 \section{The assertion}
 
-Let $d\geq1$, and let $T:\MN{d}\to\MN{d}$ be positive. Wolf's
-Proposition~6.1 states~\cite[Proposition~6.1]{Wolf2012Quantum}
+Let $d\geq1$, and let $T:\MN{d}\to\MN{d}$ be positive.
+Proposition~6.1 of Ref.~\cite{Wolf2012Quantum} states
 \begin{align}
-    \varrho(T)&\leq\|T(\Id)\|_\infty.
-    \tag{6.2}
+    \varrho(T)
+        &\leq\|T(\Id)\|_\infty.
+    \label{eq:wolf_prop61_russo_dye_factor_spectral_radius_bound}
 \end{align}
-If $T$ is unital or trace-preserving, then $1$ is an eigenvalue,
-$\varrho(T)=1$, and every eigenvalue lies in the closed unit disk.
-The local source is
-\path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex}, lines~73--91.
+This is Equation~(6.2) of the source. If $T$ is unital or trace preserving,
+then $1$ is an eigenvalue, $\varrho(T)=1$, and every eigenvalue lies in the
+closed unit disk.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex}, lines~73--91.}
 
-At line~84 Wolf invokes the Russo--Dye estimate
+The proof invokes the Russo--Dye estimate
 \begin{align}
     \|T(X)\|_\infty
-    &\leq\|T(\Id)\|_\infty\,\|X\|_\infty.
-    \label{eq:russo-dye-estimate}
+        &\leq\|T(\Id)\|_\infty\,\|X\|_\infty.
+    \label{eq:wolf_prop61_russo_dye_factor_russo_dye_estimate}
 \end{align}
-If $T(X)=\lambda X$ and $X\neq0$, cancellation of
-$\|X\|_\infty$ gives
+This occurs at line~84 of the local source. If $X\neq0$ and
 \begin{align}
-    |\lambda|&\leq\|T(\Id)\|_\infty,
-    \tag{6.3}
+    T(X)
+        &=\lambda X,
+    \label{eq:wolf_prop61_russo_dye_factor_eigenvector_equation}
 \end{align}
-and taking the largest eigenvalue modulus gives (6.2).
+then
+\begin{align}
+    |\lambda| \|X\|_\infty
+        &=\|T(X)\|_\infty,
+    \label{eq:wolf_prop61_russo_dye_factor_eigenvalue_norm_identity}\\
+    \|T(X)\|_\infty
+        &\leq\|T(\Id)\|_\infty\,\|X\|_\infty,
+    \label{eq:wolf_prop61_russo_dye_factor_eigenvalue_norm_estimate}\\
+    |\lambda|
+        &\leq\|T(\Id)\|_\infty.
+    \label{eq:wolf_prop61_russo_dye_factor_eigenvalue_bound}
+\end{align}
+The final inequality is Equation~(6.3) of
+Ref.~\cite{Wolf2012Quantum}. Maximizing over the eigenvalue moduli gives
+(\ref{eq:wolf_prop61_russo_dye_factor_spectral_radius_bound}).
 
 \section{The formalization}
 
-The general coefficient-one statement is formalized in
-\doclink{QICLean/Channel/Peripheral/SpectralRadius}. The main declarations
-are:
+The sharp coefficient-one theorem is formalized in
+\doclink{QICLean/Channel/Peripheral/SpectralRadius}. Its principal
+declarations are as follows.
 \begin{itemize}
-\item \leanid{IsPositiveMap.norm\_apply\_le\_norm\_map\_one\_mul\_norm}
-  proves (\ref{eq:russo-dye-estimate}) for every matrix $X$;
-\item \leanid{IsPositiveMap.eigenvalue\_norm\_le\_norm\_map\_one}
-  proves Equation~(6.3);
-\item \leanid{IsPositiveMap.spectralRadius\_le\_nnnorm\_map\_one}
-  proves Equation~(6.2);
-\item \leanid{eigenvalue\_one\_of\_map\_one\_eq\_one},
-  \leanid{IsPositiveMap.eigenvalue\_norm\_le\_one\_of\_map\_one\_eq\_one},
-  and
-  \leanid{IsPositiveMap.spectralRadius\_eq\_one\_of\_map\_one\_eq\_one}
-  give the three unital conclusions without assuming complete positivity.
+    \item
+    \leanid{IsPositiveMap.norm\_apply\_le\_norm\_map\_one\_mul\_norm}
+    proves
+    (\ref{eq:wolf_prop61_russo_dye_factor_russo_dye_estimate}) for every
+    matrix $X$.
+
+    \item
+    \leanid{IsPositiveMap.eigenvalue\_norm\_le\_norm\_map\_one}
+    proves
+    (\ref{eq:wolf_prop61_russo_dye_factor_eigenvalue_bound}).
+
+    \item
+    \leanid{IsPositiveMap.spectralRadius\_le\_nnnorm\_map\_one}
+    proves
+    (\ref{eq:wolf_prop61_russo_dye_factor_spectral_radius_bound}).
+
+    \item
+    \leanid{eigenvalue\_one\_of\_map\_one\_eq\_one},
+    \leanid{IsPositiveMap.eigenvalue\_norm\_le\_one\_of\_map\_one\_eq\_one},
+    and
+    \leanid{IsPositiveMap.spectralRadius\_eq\_one\_of\_map\_one\_eq\_one}
+    prove the three unital conclusions without assuming complete positivity.
 \end{itemize}
 
-The trace-preserving results remain available as independent sibling
-theorems. In particular,
+The trace-preserving results remain independent sibling theorems. The
+declaration
 \leanid{IsPositiveMap.eigenvalue\_norm\_le\_one\_of\_tracePreserving} in
 \doclink{QICLean/Channel/Determinant/Bound} gives the closed-unit-disk bound,
-and \leanid{IsPositiveMap.eigenvalue\_one\_exists\_of\_tracePreserving} gives
-a nonzero positive-semidefinite fixed point. These are assembled by
-\leanid{IsPositiveMap.spectralRadius\_eq\_one\_of\_tracePreserving}, which
-proves the trace-preserving spectral-radius equality.
+and
+\leanid{IsPositiveMap.eigenvalue\_one\_exists\_of\_tracePreserving} produces
+a nonzero positive-semidefinite fixed point. The declaration
+\leanid{IsPositiveMap.spectralRadius\_eq\_one\_of\_tracePreserving} combines
+these results to prove the trace-preserving spectral-radius equality.
 
 \section{The proof route}
 
-The pinned version of Mathlib has no standalone Russo--Dye theorem or theorem
-identifying the operator-norm unit ball with the closed convex hull of the
-unitaries. The formal proof instead derives exactly
-(\ref{eq:russo-dye-estimate}) from Wolf's
-Theorem~5.6~\cite[Theorem~5.6]{Wolf2012Quantum}, already formalized as
+The pinned Mathlib version contains neither a standalone Russo--Dye theorem
+nor a theorem identifying the operator-norm unit ball with the closed convex
+hull of the unitaries. The formal proof instead derives
+(\ref{eq:wolf_prop61_russo_dye_factor_russo_dye_estimate}) from
+Theorem~5.6 of Ref.~\cite{Wolf2012Quantum}, formalized as
 \leanid{KadisonSchwarz.schwarz\_inequality\_commuting\_dominant\_operator}.
-This is an alternative derivation of the estimate used by Wolf, not a
-formalization of the convex-hull theorem itself.
+This is an alternative derivation of the estimate used in the source, not a
+formalization of the convex-hull theorem.
 
-Set $c=\|T(\Id)\|_\infty$. For $c>0$, the normalized map
-$S=c^{-1}T$ is positive and subunital. If $\|A\|_\infty\leq1$, then
-$A^\dagger A\leq\Id$. Wolf's Theorem~5.6, with dominant operator $\Id$,
-gives
+Set
 \begin{align}
-    S(A)^\dagger S(A)&\leq S(\Id)\leq\Id.
+    c
+        &:=\|T(\Id)\|_\infty.
+    \label{eq:wolf_prop61_russo_dye_factor_normalization_constant}
 \end{align}
-The C$^*$-identity yields $\|S(A)\|_\infty\leq1$. The case $c=0$ is treated
-separately: the same inequality gives
-$T(A)^\dagger T(A)\leq T(\Id)=0$, hence $T(A)=0$. Rescaling an arbitrary
-nonzero $X$ proves (\ref{eq:russo-dye-estimate}). No decomposition into four
-positive parts and no factor four enters the argument.
+For $c>0$, define
+\begin{align}
+    S
+        &:=c^{-1}T.
+    \label{eq:wolf_prop61_russo_dye_factor_normalized_map}
+\end{align}
+The map $S$ is positive and subunital. If $\|A\|_\infty\leq1$, then
+\begin{align}
+    A^\dagger A
+        &\leq\Id.
+    \label{eq:wolf_prop61_russo_dye_factor_unit_ball_order}
+\end{align}
+Applying Theorem~5.6 of Ref.~\cite{Wolf2012Quantum} with dominant operator
+$\Id$ gives
+\begin{align}
+    S(A)^\dagger S(A)
+        &\leq S(\Id),
+    \label{eq:wolf_prop61_russo_dye_factor_schwarz_first_bound}\\
+    S(\Id)
+        &\leq\Id,
+    \label{eq:wolf_prop61_russo_dye_factor_subunital_bound}\\
+    S(A)^\dagger S(A)
+        &\leq\Id.
+    \label{eq:wolf_prop61_russo_dye_factor_schwarz_unit_bound}
+\end{align}
+The C$^*$-identity then yields
+\begin{align}
+    \|S(A)\|_\infty
+        &\leq1.
+    \label{eq:wolf_prop61_russo_dye_factor_normalized_contraction}
+\end{align}
 
-The formal hypotheses match the source boundary: positivity and $d\geq1$.
-The norm is Mathlib's matrix C$^*$-operator norm, corresponding to Wolf's
-$\|\cdot\|_\infty$; it is not the Frobenius norm or the row-sum matrix norm.
+The case $c=0$ is separate. The same inequality gives
+\begin{align}
+    T(A)^\dagger T(A)
+        &\leq T(\Id),
+    \label{eq:wolf_prop61_russo_dye_factor_zero_case_schwarz}\\
+    T(\Id)
+        &=0,
+    \label{eq:wolf_prop61_russo_dye_factor_zero_case_identity}\\
+    T(A)^\dagger T(A)
+        &\leq0,
+    \label{eq:wolf_prop61_russo_dye_factor_zero_case_nonpositive_square}\\
+    T(A)
+        &=0.
+    \label{eq:wolf_prop61_russo_dye_factor_zero_case_map_value}
+\end{align}
+Rescaling an arbitrary nonzero $X$ then proves
+(\ref{eq:wolf_prop61_russo_dye_factor_russo_dye_estimate}) in all cases.
+The argument does not decompose $X$ into four positive parts and introduces
+no factor four.
+
+The formal hypotheses match the source: $T$ is positive and $d\geq1$. The
+norm is Mathlib's matrix C$^*$-operator norm, corresponding to
+$\|\cdot\|_\infty$ in Ref.~\cite{Wolf2012Quantum}; it is neither the
+Frobenius norm nor the row-sum matrix norm.
 
 \section{Verdict}
 
-The former scope restriction is resolved. Equation~(6.2), Equation~(6.3), and
-the unital conclusions of Wolf Proposition~6.1 are formalized for arbitrary
-positive matrix maps with the sharp coefficient one and without a
-complete-positivity assumption. The formal proof uses Wolf's Theorem~5.6 to
-derive the norm estimate that the source obtains from Russo--Dye.\footnote{Tracking:
-\ghissue{36}.}
+The former scope restriction is resolved. Equations~(6.2) and~(6.3), and the
+unital conclusions of Proposition~6.1 in
+Ref.~\cite{Wolf2012Quantum}, are formalized for arbitrary positive matrix
+maps with sharp coefficient one and without a complete-positivity assumption.
+The formal proof derives the source's norm estimate from Theorem~5.6 of the
+same reference.\footnote{Tracking: \ghissue{36}.}
 
 \bibliographystyle{alpha}
 \bibliography{references}

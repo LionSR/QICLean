@@ -14,92 +14,111 @@
 \maketitle
 \gapnote{local-correction}{resolved}
 
-\section{The original statement and the invoked theorem}
+\section{Statement and invoked fixed-point theorem}
 
-Let $T:M_d(\mathbb C)\to M_d(\mathbb C)$ be positive and trace preserving,
-and write $T^*$ for its trace-pairing adjoint.  Wolf's Theorem~6.16 states
-that $T$ fulfils the Schwarz inequality and concludes that the peripheral
-space has the weighted matrix-block form in Equations~(6.66)--(6.67), with
-$T$ acting by the block permutation and unitary conjugations of
-Equation~(6.68) \cite[Theorem~6.16]{Wolf2012Quantum}.  The local source is
+Let $T:\MN{d}\to\MN{d}$ be positive and trace preserving, and let $T^*$ be its
+trace-pairing adjoint. Theorem~6.16 of Ref.~\cite{Wolf2012Quantum} assumes that
+$T$ satisfies the Schwarz inequality. It concludes that the peripheral space
+has the weighted matrix-block form in source Equations~(6.66)--(6.67), and
+that $T$ acts through the block permutation and unitary conjugations in source
+Equation~(6.68). The local source is
 \path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex},
 lines~1592--1624.
 
-The proof identifies which map must satisfy the inequality.  It takes a
-subsequential limit
+The proof takes a subsequential limit of powers,
 \begin{align}
-  I=\lim_{i\to\infty} T^{n_i}
-  \notag
+  I
+    &=\lim_{i\to\infty}T^{n_i},
+  \label{eq:wolf_theorem6_16_schwarz_orientation_recurrent_projection}
 \end{align}
-and says that $I$ remains Schwarz because this property is preserved under
-composition.  At the end it excludes matrix transposition because $T$, and
-therefore each induced block map $T_k$, is Schwarz.  Thus the proof uses the
+and states that $I$ remains Schwarz because the Schwarz property is preserved
+under composition. It later excludes matrix transposition because $T$, and
+therefore each induced block map $T_k$, is Schwarz. These steps use the
 Schwarz inequality for $T$ itself; see local source lines~1626--1633 and
 1660--1663.
 
-For the weighted matrix-block form, however, the same proof identifies the
-peripheral space with $\operatorname{Fix}(I)$ and invokes Wolf's
-Theorem~6.14.  The hypothesis printed in Theorem~6.14 is that the
-trace adjoint of its trace-preserving map is Schwarz.  Applied to $I$, that
-hypothesis is
+The same proof identifies the peripheral space with $\operatorname{Fix}(I)$
+and invokes Theorem~6.14 of Ref.~\cite{Wolf2012Quantum} to obtain the weighted
+matrix-block structure. That theorem assumes that the trace adjoint of its
+trace-preserving map is Schwarz. Applied to $I$, the required hypothesis is
 \begin{align}
-  I^*(A^\dagger A)\succeq I^*(A^\dagger)I^*(A)
-  \qquad\text{for every }A\in M_d(\mathbb C).
-  \tag{required by Theorem 6.14}
+  I^*(A^\dagger A)
+    &\succeq I^*(A^\dagger)I^*(A)
+    \qquad\text{for every }A\in\MN{d}.
+  \label{eq:wolf_theorem6_16_schwarz_orientation_required_adjoint_schwarz}
 \end{align}
-The local source for this hypothesis is lines~1467--1474.  Schwarz closure
-for the powers of $T$ gives the corresponding inequality for $I$, not for
-$I^*$.  The printed proof supplies no step deriving the latter orientation.
+The local source for this hypothesis is lines~1467--1474. Closure under powers
+gives the Schwarz inequality for $I$ from the corresponding inequality for
+$T$, but it does not give
+(\ref{eq:wolf_theorem6_16_schwarz_orientation_required_adjoint_schwarz}).
+The printed proof supplies no argument that changes the orientation.
 
 \section{Corrected proof contract}
 
-The minimal explicit correction that validates the proof as printed is to
-assume both Schwarz inequalities:
+The minimal explicit correction that validates the printed proof is to assume
+both Schwarz inequalities:
 \begin{align}
-  T(A^\dagger A)&\succeq T(A^\dagger)T(A),
-  \notag \\
-  T^*(A^\dagger A)&\succeq T^*(A^\dagger)T^*(A)
-  \qquad\text{for every }A\in M_d(\mathbb C).
-  \tag{corrected Theorem 6.16 contract}
+  T(A^\dagger A)
+    &\succeq T(A^\dagger)T(A)
+    \qquad\text{for every }A\in\MN{d},
+  \label{eq:wolf_theorem6_16_schwarz_orientation_map_schwarz}\\
+  T^*(A^\dagger A)
+    &\succeq T^*(A^\dagger)T^*(A)
+    \qquad\text{for every }A\in\MN{d}.
+  \label{eq:wolf_theorem6_16_schwarz_orientation_adjoint_schwarz}
 \end{align}
-The first is exactly the orientation used for the block dynamics and the
-transpose exclusion.  The second is stable under powers and finite-dimensional
-limits: since $(T^n)^*=(T^*)^n$, it supplies the Schwarz inequality for
-$I^*=\lim_{i\to\infty}(T^*)^{n_i}$.  Theorem~6.14 may then be applied to $I$
-with its literal printed hypothesis.
+The first orientation is used for the block dynamics and the exclusion of
+transposition. The second is stable under powers and finite-dimensional
+limits. Indeed,
+\begin{align}
+  (T^n)^*
+    &=(T^*)^n,
+  \label{eq:wolf_theorem6_16_schwarz_orientation_adjoint_power}\\
+  I^*
+    &=\lim_{i\to\infty}(T^*)^{n_i}.
+  \label{eq:wolf_theorem6_16_schwarz_orientation_adjoint_limit}
+\end{align}
+Thus
+(\ref{eq:wolf_theorem6_16_schwarz_orientation_adjoint_schwarz}) implies
+(\ref{eq:wolf_theorem6_16_schwarz_orientation_required_adjoint_schwarz}), and
+Theorem~6.14 may be applied to $I$ with its literal source hypothesis.
 
-This correction does not assert that the conclusion of Theorem~6.16 is false
-under the single printed Schwarz hypothesis.  A different proof could in
-principle derive the needed fixed-point structure.  It records instead the
-exact contract supported by Wolf's stated proof route.  In particular, a
-formal theorem following that route must not silently infer that the
-trace-pairing adjoint of an arbitrary Schwarz map is Schwarz.
+This correction does not claim that the conclusion of Theorem~6.16 is false
+under the single printed Schwarz hypothesis. A different proof might establish
+the required fixed-point structure. The correction records only the contract
+supported by the proof as written. In particular, a formal theorem following
+that route cannot infer that the trace-pairing adjoint of an arbitrary Schwarz
+map is Schwarz.
 
 \section{Formalization boundary}
 
-The existing source-general fixed-point theorem has the literal
-Theorem~6.14 interface: positivity and trace preservation of a map $S$, and
-the Schwarz inequality for $S^*$.\footnote{Formal declaration:
+The source-general fixed-point theorem has the literal interface of
+Theorem~6.14 of Ref.~\cite{Wolf2012Quantum}: the map $S$ is positive and trace
+preserving, and $S^*$ satisfies the Schwarz inequality.\footnote{Formal
+declaration:
 \leanid{IsPositiveMap.exists_fixedPoints_densityBlocks_with_zero} in
 \doclink{QICLean/Channel/FixedPoint/WolfTheorem614}.}
-The completed source-facing Theorem~6.16 assembly therefore exposes both
-orientations explicitly.  Its recurrent-projection component passes the
-second one to the fixed-point theorem, while its block-classification
-component retains the first one.\footnote{Formal declaration:
+
+The completed source-facing assembly for Theorem~6.16 exposes both
+orientations. Its recurrent-projection component passes the adjoint orientation
+to the fixed-point theorem, while its block-classification component retains
+the orientation for the original map.\footnote{Formal declaration:
 \leanid{IsPositiveMap.exists_wolfTheorem616} in
-\doclink{QICLean/Channel/Peripheral/StructureOfCycles}. It retains the exact
-zero-extended density-block membership form and proves Wolf's output-indexed
-unitary action in Equation~(6.68).} The construction is organized by
-\ghissue{40}; this contract audit is \ghissue{407}.
+\doclink{QICLean/Channel/Peripheral/StructureOfCycles}. It preserves the exact
+zero-extended density-block membership form and proves the output-indexed
+unitary action in source Equation~(6.68) of
+Ref.~\cite{Wolf2012Quantum}.}
+The construction is organized by \ghissue{40}; this contract audit is
+\ghissue{407}.
 
 \section{Conclusion}
 
-Wolf's printed proof uses two Schwarz orientations but states only the one for
-$T$.  Adding the Schwarz inequality for $T^*$ is a local hypothesis correction
-that makes the invocation of Theorem~6.14 valid without changing Wolf's
-terminology, block notation, or proof order.  Until a separately sourced
-derivation removes it, both orientations are the source-facing formal
-contract.
+The printed proof of Theorem~6.16 uses both Schwarz orientations but states
+only the one for $T$ \cite[Theorem~6.16]{Wolf2012Quantum}. Adding the Schwarz
+inequality for $T^*$ is a local hypothesis correction that validates the
+invocation of Theorem~6.14 without changing the source terminology, block
+notation, or proof order. Unless a separately sourced derivation removes the
+extra assumption, both orientations remain the source-facing formal contract.
 
 \bibliographystyle{alpha}
 \bibliography{references}

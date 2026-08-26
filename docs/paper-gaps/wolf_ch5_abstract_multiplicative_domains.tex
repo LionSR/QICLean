@@ -16,75 +16,119 @@
 
 \section{Source statement}
 
-Let $E:M_D(\mathbb C)\to M_D(\mathbb C)$ be a complex-linear map satisfying
-the Schwarz inequality
+Let $E\colon\MD\to\MD$ be a complex-linear map. Wolf assumes the one-variable
+Schwarz inequality
 \begin{align}
-  E(A^*A)-E(A^*)E(A)\succeq 0
-  \qquad (A\in M_D(\mathbb C)).
-  \tag{Wolf, Equation (5.2)}
+    E(A^\dagger A)-E(A^\dagger)E(A)&\succeq 0
+    \qquad\text{for every $A\in\MD$}.
+    \label{eq:wolf_ch5_abstract_multiplicative_domains_schwarz_inequality}
 \end{align}
-Wolf defines
-\begin{align}
-  \mathcal A_R
-    &=\{A:E(XA)=E(X)E(A)\text{ for every }X\},\\
-  \mathcal A_L
-    &=\{A:E(AX)=E(A)E(X)\text{ for every }X\},
-\end{align}
-and proves
-\begin{align}
-  A\in\mathcal A_R
-    &\iff E(A^*A)=E(A^*)E(A),\\
-  A\in\mathcal A_L
-    &\iff E(AA^*)=E(A)E(A^*).
-  \tag{Wolf, Equations (5.13)--(5.14)}
-\end{align}
-The local source for Equation~(5.2) is
+This is Equation~(5.2) of Ref.~\cite{Wolf2012Quantum}.\footnote{Local source:
 \path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex},
-lines~156--164; the local source for Equations~(5.11)--(5.14) is
-lines~383--410 of the same file.  No Kraus representation, complete
-positivity, or $2$-positivity occurs in this statement.
+lines~156--164.}
+
+Wolf defines the right and left multiplicative domains by
+\begin{align}
+    \mathcal A_R
+        &=\left\{A\in\MD:
+            E(XA)=E(X)E(A)
+            \ \text{for every $X\in\MD$}\right\},
+    \label{eq:wolf_ch5_abstract_multiplicative_domains_right_domain}\\
+    \mathcal A_L
+        &=\left\{A\in\MD:
+            E(AX)=E(A)E(X)
+            \ \text{for every $X\in\MD$}\right\}.
+    \label{eq:wolf_ch5_abstract_multiplicative_domains_left_domain}
+\end{align}
+These are Equations~(5.11)--(5.12) of
+Ref.~\cite{Wolf2012Quantum}.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex},
+lines~383--410.}
+
+The corresponding characterizations are
+\begin{align}
+    A\in\mathcal A_R
+        &\quad\Longleftrightarrow\quad
+        E(A^\dagger A)=E(A^\dagger)E(A),
+    \label{eq:wolf_ch5_abstract_multiplicative_domains_right_characterization}\\
+    A\in\mathcal A_L
+        &\quad\Longleftrightarrow\quad
+        E(AA^\dagger)=E(A)E(A^\dagger).
+    \label{eq:wolf_ch5_abstract_multiplicative_domains_left_characterization}
+\end{align}
+These are Equations~(5.13)--(5.14) of
+Ref.~\cite{Wolf2012Quantum}. The theorem assumes complex linearity and
+Eq.~\ref{eq:wolf_ch5_abstract_multiplicative_domains_schwarz_inequality}; it
+does not assume a Kraus representation, complete positivity, or
+$2$-positivity.
 
 \section{Earlier specialization}
 
-The existing one-sided characterizations use a unital Kraus family.
-\footnote{See
+The earlier formal characterizations assume a unital Kraus family.\footnote{
+Formal declarations:
 \leanid{KadisonSchwarz.mem_rightMultiplicativeDomain_iff} and
 \leanid{KadisonSchwarz.mem_leftMultiplicativeDomain_iff} in
 \doclink{QICLean/Channel/Schwarz/MultiplicativeDomainFull}.}
-They are mathematically correct specializations, but the
-Kraus representation and unitality are absent from Wolf's abstract
-multiplicative-domain theorem.  Their names also use the convention that the
-subscript records the side on which the varying factor is appended; this
-interchanges the labels ``left'' and ``right'' relative to Wolf's convention,
-where the subscript records the side occupied by the fixed element.
+These declarations are mathematically correct specializations, but their Kraus
+and unitality hypotheses do not occur in Wolf's abstract theorem
+\cite[Chapter~5, Equations~(5.11)--(5.14)]{Wolf2012Quantum}.
 
-The source-faithful formulation now uses only complex linearity and the
-displayed Schwarz inequality.
-\footnote{Formal declarations:
+The earlier declarations also use a different naming convention. Their
+subscript names the side on which the varying factor is appended. Wolf's
+subscript names the side occupied by the fixed element. Consequently, the two
+conventions interchange the labels ``left'' and ``right'', although they
+describe the same two sets. Their intersections therefore agree:
+\begin{align}
+    \mathcal A_L\cap\mathcal A_R
+        &=\mathcal A_R\cap\mathcal A_L.
+    \label{eq:wolf_ch5_abstract_multiplicative_domains_full_domain_agreement}
+\end{align}
+
+The source-faithful formalization now assumes only complex linearity and the
+Schwarz inequality in
+Eq.~\ref{eq:wolf_ch5_abstract_multiplicative_domains_schwarz_inequality}.\footnote{
+Formal declarations:
 \leanid{IsSchwarzMap},
 \leanid{SchwarzMap.rightMultiplicativeDomain},
 \leanid{SchwarzMap.leftMultiplicativeDomain},
 \leanid{SchwarzMap.mem_rightMultiplicativeDomain_iff}, and
 \leanid{SchwarzMap.mem_leftMultiplicativeDomain_iff} in
 \doclink{QICLean/Channel/Schwarz/AbstractMultiplicativeDomain}.}
-The Kraus declarations remain available as specialized results and are no
+The Kraus declarations remain available as specialized results. They are no
 longer used as the blueprint witness for the unrestricted source theorem.
 
-\section{Remaining Chapter 5 boundary}
+\section{Remaining Chapter~5 boundary}
 
 Wolf's preceding two-variable operator Schwarz inequality and its equality
-criterion, involving the inverse of $E(B^*B)$ on its range, remain separate
-work.  The one-variable multiplicative-domain theorem above does not assume
-those results: its polarization proof applies the one-variable Schwarz
-inequality directly to $A+tY$.
+criterion involve the inverse of $E(B^\dagger B)$ on its range
+\cite[Chapter~5, Theorem~5.3]{Wolf2012Quantum}. They are logically separate
+from the one-variable result. In particular, the multiplicative-domain theorem
+does not assume the two-variable theorem. Its polarization argument applies
+Eq.~\ref{eq:wolf_ch5_abstract_multiplicative_domains_schwarz_inequality}
+directly to
+\begin{align}
+    A+tY,
+    \qquad
+    A,Y&\in\MD,
+    \quad
+    t\in\C.
+    \label{eq:wolf_ch5_abstract_multiplicative_domains_polarization_input}
+\end{align}
+
+The two-variable inverse-on-range inequality is treated separately in
+\path{docs/paper-gaps/wolf_ch5_two_variable_unconditional.tex}. Its equality
+criterion remains separate work and is not needed for the one-variable
+multiplicative-domain theorem.
 
 \section{Verdict}
 
-The interchange of the one-sided domain names is a notational clarification:
-the two conventions define the same pair of sets with opposite labels, and
-their full intersections agree.  The source-faithful one-variable theorem is
-complete.  The two-variable inverse-on-range inequality and its equality
-criterion remain an open gap.
+The interchange of the one-sided domain names is a notational clarification.
+The two conventions assign opposite labels to the same pair of sets, and their
+full multiplicative domains coincide. The source-faithful one-variable theorem
+is complete under exactly the abstract hypotheses used by Wolf
+\cite[Chapter~5, Equations~(5.2) and (5.11)--(5.14)]{Wolf2012Quantum}. The
+two-variable inequality and its equality criterion are separate from this
+resolved clarification.
 
 \bibliographystyle{alpha}
 \bibliography{references}

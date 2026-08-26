@@ -14,73 +14,120 @@
 \maketitle
 \gapnote{scope-restriction}{resolved}
 
-\section{The source statement}
+\section{Source statement}
 
-Wolf's Proposition~1.5 classifies positive linear retractions onto an arbitrary
-unital finite-dimensional $*$-subalgebra
-\cite[Proposition~1.5 and Equation~(1.40)]{Wolf2012Quantum}.  After unitary
-conjugation, the subalgebra has the form
-\[
-    \bigoplus_{k=1}^{K} M_{d_k}(\mathbb C)\otimes\mathbf 1_{m_k},
-\]
-and the proposition asserts that the retraction is a direct sum of weighted
-partial traces, one for each summand.  The proof first removes inputs between
-distinct summands and outputs in the wrong summand, and then proves the
-weighted-partial-trace formula separately on each factor.  The corresponding
-local source is
-\path{Notes/WolfNoteTexSource/ch01_deconstructing_quantum.tex}, lines~536--570.
+Wolf's Proposition~1.5 classifies positive linear retractions onto arbitrary
+unital finite-dimensional $*$-subalgebras
+\cite[Proposition~1.5]{Wolf2012Quantum}. After unitary conjugation, such a
+subalgebra has the block form
+\begin{align}
+    \mathcal A
+        &=\bigoplus_{k=1}^{K}
+          M_{d_k}(\mathbb C)\otimes\one_{m_k}.
+    \label{eq:wolf_prop1_5_one_factor_scope_source_block_algebra}
+\end{align}
+The proposition states that a positive retraction onto $\mathcal A$ is a
+direct sum of weighted partial traces, one on each summand; see source
+Equation~(1.40) \cite[Equation~(1.40)]{Wolf2012Quantum}. Its proof first shows
+that the retraction removes inputs between distinct central summands and
+produces no output in an incorrect summand. It then proves the
+weighted-partial-trace formula on each factor separately. The local source is
+\path{Notes/WolfNoteTexSource/ch01_deconstructing_quantum.tex},
+lines~536--570.
 
-\section{Formalized component}
+\section{The one-factor theorem}
 
-The theorem
-\leanid{Matrix.exists_density_of_positive_retraction_onto_right_factor} proves
-the complete factor argument for a positive retraction whose range is
-\[
-    \mathbf 1_m\otimes M_d(\mathbb C).
-\]
-It introduces no hypothesis absent from the one-factor specialization of the
-source proposition.  In particular, the representing matrix is only required
-to be positive semidefinite and to have trace one.  Thus the theorem is a
-faithful scope-restricted case, but it is not the full direct-sum
-classification of Proposition~1.5.
+The declaration
+\leanid{Matrix.exists_density_of_positive_retraction_onto_right_factor}
+proves the complete factor argument for a positive retraction whose range is
+\begin{align}
+    \one_m\otimes M_d(\mathbb C).
+    \label{eq:wolf_prop1_5_one_factor_scope_formal_factor_range}
+\end{align}
+It introduces no hypothesis absent from the one-factor specialization of
+Proposition~1.5. In particular, the representing matrix $\rho$ is required
+only to satisfy
+\begin{align}
+    \rho&\geq0,
+    \label{eq:wolf_prop1_5_one_factor_scope_density_positive}\\
+    \tr(\rho)&=1.
+    \label{eq:wolf_prop1_5_one_factor_scope_density_trace_one}
+\end{align}
+The theorem therefore gives a faithful one-factor case of the source result,
+but by itself it does not establish the direct-sum classification in
+Eq.~\ref{eq:wolf_prop1_5_one_factor_scope_source_block_algebra}.
 
-The theorem
+\section{The coordinate direct-sum construction}
+
+The declaration
 \leanid{Matrix.coordinateDirectSumConditionalExpectation_isKrausCPTP_and_isConditionalExpectation}
 constructs the normalized trace-preserving choice simultaneously on all
-summands in displayed direct-sum coordinates.  In the tensor-factor order used
-by QICLean, its range is
-\[
-    \bigoplus_{k=1}^{K}\mathbf 1_{m_k}\otimes M_{d_k}(\mathbb C),
-\]
-and its formula is obtained from Wolf's order by interchanging the two tensor
-factors.  This theorem includes the coordinatewise partial traces and removal
-of off-diagonal blocks, but it neither conjugates an arbitrary represented
-subalgebra into these coordinates nor corestricts the ambient matrix-valued map
-to that subalgebra.  It is therefore a coordinate construction, not the full
-unitarily transported statement of Proposition~1.5.
+summands in displayed direct-sum coordinates. In QICLean's tensor-factor
+order, its range is
+\begin{align}
+    \bigoplus_{k=1}^{K}
+        \one_{m_k}\otimes M_{d_k}(\mathbb C).
+    \label{eq:wolf_prop1_5_one_factor_scope_coordinate_range}
+\end{align}
+This order is obtained from
+Eq.~\ref{eq:wolf_prop1_5_one_factor_scope_source_block_algebra} by
+interchanging the two tensor factors in each summand.
+
+The coordinate theorem performs the coordinatewise partial traces and removes
+the off-diagonal blocks. It does not, by itself, conjugate an arbitrarily
+represented subalgebra into the coordinates of
+Eq.~\ref{eq:wolf_prop1_5_one_factor_scope_coordinate_range}, nor does it
+corestrict the ambient matrix-valued map to that subalgebra. It is therefore a
+coordinate construction rather than the full unitarily transported
+classification of Proposition~1.5 \cite{Wolf2012Quantum}.
 
 \section{Resolution of the direct-sum argument}
 
-The theorem
+The declaration
 \leanid{StarSubalgebra.exists_block_densities_of_positive_retraction} combines
-the one-factor theorem with the finite-dimensional block description.  Its
-proof:
+the one-factor theorem with the finite-dimensional block decomposition. Its
+proof proceeds as follows:
 \begin{enumerate}
-    \item conjugate and reindex the ambient matrices by the unitary block data;
-    \item prove that the positive retraction annihilates inputs between
-          distinct central summands;
-    \item prove that an input supported in one summand has no output in another
-          summand;
-    \item apply the one-factor theorem to each diagonal summand; and
-    \item conjugate the resulting direct sum of weighted partial traces back to
-          the original subalgebra.
+    \item It conjugates and reindexes the ambient matrices using the unitary
+          block data.
+    \item It proves that the positive retraction annihilates inputs between
+          distinct central summands.
+    \item It proves that an input supported in one summand has no output in a
+          different summand.
+    \item It applies
+          \leanid{Matrix.exists_density_of_positive_retraction_onto_right_factor}
+          to each diagonal summand.
+    \item It conjugates the resulting direct sum of weighted partial traces
+          back to the original subalgebra.
 \end{enumerate}
-The second and third items are the off-diagonal positivity arguments in Wolf's
-proof preceding Equation~(1.42).  They are now proved using the complementary
-central projection of each summand.  The remaining distinction between the
-classification of a given retraction and the later construction of a
-fixed-point projection is recorded in
+
+The second and third steps formalize the off-diagonal positivity arguments
+that precede source Equation~(1.42)
+\cite[Equation~(1.42)]{Wolf2012Quantum}. For the central projection $p_k$ of
+the $k$th summand, these arguments use the complementary projection
+\begin{align}
+    \one-p_k.
+    \label{eq:wolf_prop1_5_one_factor_scope_complementary_central_projection}
+\end{align}
+They eliminate cross-summand inputs and wrong-summand outputs before the
+factor theorem is applied.
+
+The resulting theorem supplies positive trace-one block densities $\rho_k$
+and reconstructs the source classification as a unitarily transported direct
+sum of weighted partial traces. The distinction between classifying a given
+retraction and constructing a fixed-point projection later in the development
+remains recorded in
 \path{docs/paper-gaps/wolf_theorem6_14_fixed_point_projection_gap.tex}.
+
+\section{Classification}
+
+The one-factor theorem and the coordinate direct-sum construction were
+individually scope-restricted relative to Wolf's Proposition~1.5. The theorem
+\leanid{StarSubalgebra.exists_block_densities_of_positive_retraction} now
+combines the missing block, support, and unitary-transport arguments. The
+scope restriction is therefore resolved, and the formal development covers
+the full finite-dimensional classification stated in Proposition~1.5
+\cite[Proposition~1.5]{Wolf2012Quantum}.
 
 \bibliographystyle{alpha}
 \bibliography{references}

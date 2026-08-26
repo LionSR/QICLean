@@ -18,92 +18,143 @@
 
 \section{Source statement}
 
-Wolf's Radon--Nikodym theorem for quantum instruments states that, if
-\(\{T_i\}\) is a family of completely positive linear maps
-\[
-  T_i,T:\mathcal M_{d'}\longrightarrow\mathcal M_d
-\]
-satisfying \(\sum_i T_i=T\), and if a Stinespring representation of the total
-map is supplied by
-\[
-  V:\mathbb C^d\longrightarrow\mathbb C^{d'}\otimes\mathbb C^r,
-  \qquad
-  T(A)=V^\dagger(A\otimes \mathbf 1_r)V,
-\]
-then there are positive operators \(P_i\in\mathcal M_r\) such that
-\[
-  \sum_i P_i=\mathbf 1_r,
-  \qquad
-  T_i(A)=V^\dagger(A\otimes P_i)V.
-\]
-The local source is
-\path{Notes/WolfNoteTexSource/ch02_representations.tex}:399--407. The two
-preceding lines describe the result as a simple corollary of the comparison
-theorem for ordered completely positive maps; the theorem itself is titled
-``Radon--Nikodym for quantum instruments'' in \cite{Wolf2012Quantum}.
-The source does not separately say that the outcome set is finite. The formal
-statement reads its unqualified sum as a finite sum, as elsewhere in this
-finite-dimensional development.
+Let $\{T_i\}_{i\in I}$ be a finite family of completely positive linear maps,
+and let $T$ be another completely positive map, with
+\begin{align}
+    T_i,T:\mathcal M_{d'}&\longrightarrow\mathcal M_d,
+    \label{eq:wolf_radon_nikodym_nonempty_family_map_types}\\
+    \sum_{i\in I}T_i&=T.
+    \label{eq:wolf_radon_nikodym_nonempty_family_map_sum}
+\end{align}
+Suppose that $T$ has a supplied Stinespring representation
+\begin{align}
+    V:\C^d&\longrightarrow\C^{d'}\otimes\C^r,
+    \label{eq:wolf_radon_nikodym_nonempty_family_stinespring_map}\\
+    T(A)&=V^\dagger(A\otimes\Id_r)V.
+    \label{eq:wolf_radon_nikodym_nonempty_family_stinespring_formula}
+\end{align}
+Wolf's Radon--Nikodym theorem for quantum instruments states that there are
+positive operators $P_i\in\mathcal M_r$ satisfying
+\begin{align}
+    \sum_{i\in I}P_i&=\Id_r,
+    \label{eq:wolf_radon_nikodym_nonempty_family_effect_resolution}\\
+    T_i(A)&=V^\dagger(A\otimes P_i)V.
+    \label{eq:wolf_radon_nikodym_nonempty_family_component_representation}
+\end{align}
+This statement appears in
+\path{Notes/WolfNoteTexSource/ch02_representations.tex}, lines 399--407, under
+the title ``Radon--Nikodym for quantum instruments'' in
+Ref.~\cite{Wolf2012Quantum}. The two preceding lines describe it as a corollary
+of the comparison theorem for ordered completely positive maps
+\cite{Wolf2012Quantum}.
 
-\section{Local boundary}
+The source does not state separately that the outcome set $I$ is finite. The
+formal theorem interprets the unqualified sum in
+(\ref{eq:wolf_radon_nikodym_nonempty_family_map_sum}) as a finite sum, in
+accordance with the surrounding finite-dimensional development.
 
-The source-facing Lean theorem
-\leanid{IsKrausCP.radon_nikodym_of_stinespring} makes the finite index type
-nonempty. This is not a strengthening of a mathematical hypothesis in the
-substantive case; it is the finite-family boundary needed for the identity
-\[
-  \sum_i P_i=\mathbf 1_r
-\]
-to be meaningful as a resolution of the identity by instrument components.  If
-the index type were empty, then the hypotheses \(\sum_i T_i=T\) force
-\(T=0\).  One may still supply the zero Stinespring matrix
-\(V=0\), but the conclusion would ask
-\[
-  0=\mathbf 1_r
-\]
-in \(\mathcal M_r\), which is false for a nonzero dilation dimension.
-For the exceptional zero-dimensional ancilla \(r=0\), the two sides do agree;
-the nonempty hypothesis is the uniform condition valid for arbitrary supplied
-dilations.
+\section{The nonempty-family boundary}
 
-Thus the formal theorem states the source theorem in the nonempty instrument
-case, with its rectangular Heisenberg dimensions made explicit. The older
-\leanid{IsCPMap.radon_nikodym_of_stinespring} theorem is retained as the
+The source-facing formal theorem assumes that the finite index type $I$ is
+nonempty.\footnote{Formal declaration:
+    \leanid{IsKrausCP.radon_nikodym_of_stinespring}.}
+This condition does not strengthen the substantive instrument theorem. It
+records the boundary required for
+(\ref{eq:wolf_radon_nikodym_nonempty_family_effect_resolution}) to be a
+resolution of the identity by instrument components.
+
+If $I$ is empty, then
+(\ref{eq:wolf_radon_nikodym_nonempty_family_map_sum}) implies
+\begin{align}
+    T&=0.
+    \label{eq:wolf_radon_nikodym_nonempty_family_empty_total_map}
+\end{align}
+The zero map admits the supplied Stinespring matrix $V=0$. However, the
+conclusion would require
+\begin{align}
+    \sum_{i\in\varnothing}P_i
+        &=0
+    \label{eq:wolf_radon_nikodym_nonempty_family_empty_effect_sum}\\
+        &=\Id_r.
+    \label{eq:wolf_radon_nikodym_nonempty_family_empty_identity_requirement}
+\end{align}
+This is false when the dilation dimension $r$ is nonzero. If $r=0$, the two
+sides agree, but nonemptiness is the uniform condition valid for every supplied
+dilation.
+
+The formal theorem therefore states the source result for nonempty finite
+instruments and makes the rectangular Heisenberg dimensions explicit. The
+older declaration \leanid{IsCPMap.radon_nikodym_of_stinespring} remains the
 square-algebra specialization.
 
-The formal proof follows Wolf's indicated corollary route. Choose rectangular
-Kraus families for the component maps and combine them into an
-outcome-labelled Stinespring representation \(\widehat V\) of \(T\). Applying
-the preceding ordered-map theorem to the reflexive relation \(T\leq T\) and
-the two supplied representations \(\widehat V,V\) gives a contraction
-\[
-  \widehat V=(\mathbf 1_{d'}\otimes C)V,
-  \qquad C^\dagger C\leq\mathbf 1_r.
-\]
-Restricting the rows of \(C\) to outcome \(i\) gives a matrix \(C_i\) and a
-preliminary effect \(E_i=C_i^\dagger C_i\). These effects are positive,
-represent the component maps, and satisfy
-\(\sum_iE_i=C^\dagger C\). The residual operator
-\[
-  R=\mathbf 1_r-C^\dagger C
-\]
-is positive and has zero Stinespring compression under \(V\). Nonemptiness is
-used precisely to choose an outcome \(i_0\) receiving this residual:
-\(P_{i_0}=E_{i_0}+R\), with \(P_i=E_i\) otherwise. This completes the
-resolution of the identity even when the supplied dilation is nonminimal. If
-\(d'=0\), all source matrices vanish; the separate formal branch assigns
-\(\mathbf 1_r\) to one chosen outcome and zero to the others. The square
-declaration is proved directly by specializing the rectangular theorem.
+\section{The formal proof}
 
-\section{Elimination plan}
+Choose rectangular Kraus families for the component maps and combine them into
+an outcome-labelled Stinespring representation $\widehat V$ of $T$. Apply the
+ordered-map comparison theorem to the reflexive relation $T\leq T$ and the two
+representations $\widehat V$ and $V$. This gives a contraction $C$ such that
+\begin{align}
+    \widehat V
+        &=(\Id_{d'}\otimes C)V,
+    \label{eq:wolf_radon_nikodym_nonempty_family_comparison_factorization}\\
+    C^\dagger C&\leq\Id_r.
+    \label{eq:wolf_radon_nikodym_nonempty_family_contraction_bound}
+\end{align}
 
-No mathematical proof gap is expected for the nonempty case.  An empty-index
-variant would need a different conclusion, for example a vacuous statement with
-zero dilation space or no identity resolution.  Such a statement is not the
+Restrict the rows of $C$ to the outcome $i$ and call the resulting matrix
+$C_i$. Define
+\begin{align}
+    E_i&=C_i^\dagger C_i.
+    \label{eq:wolf_radon_nikodym_nonempty_family_preliminary_effect}
+\end{align}
+Each $E_i$ is positive and represents the corresponding component map. The
+row decomposition gives
+\begin{align}
+    \sum_{i\in I}E_i
+        &=C^\dagger C.
+    \label{eq:wolf_radon_nikodym_nonempty_family_preliminary_effect_sum}
+\end{align}
+Define the residual operator
+\begin{align}
+    R&=\Id_r-C^\dagger C.
+    \label{eq:wolf_radon_nikodym_nonempty_family_residual_definition}
+\end{align}
+By (\ref{eq:wolf_radon_nikodym_nonempty_family_contraction_bound}), $R$ is
+positive. Its Stinespring compression under $V$ vanishes.
+
+Nonemptiness is used exactly once. Choose $i_0\in I$ and set
+\begin{align}
+    P_{i_0}&=E_{i_0}+R,
+    \label{eq:wolf_radon_nikodym_nonempty_family_corrected_effect}\\
+    P_i&=E_i\qquad(i\neq i_0).
+    \label{eq:wolf_radon_nikodym_nonempty_family_unchanged_effects}
+\end{align}
+Then
+\begin{align}
+    \sum_{i\in I}P_i
+        &=\sum_{i\in I}E_i+R
+    \label{eq:wolf_radon_nikodym_nonempty_family_completed_sum_first}\\
+        &=C^\dagger C+\Id_r-C^\dagger C
+    \label{eq:wolf_radon_nikodym_nonempty_family_completed_sum_second}\\
+        &=\Id_r.
+    \label{eq:wolf_radon_nikodym_nonempty_family_completed_resolution}
+\end{align}
+Because the compression of $R$ vanishes, the adjustment does not change the
+component map assigned to $i_0$. This construction completes the identity
+resolution even when the supplied dilation is nonminimal.
+
+If $d'=0$, all source matrices vanish. The separate formal branch assigns
+$\Id_r$ to one chosen outcome and zero to every other outcome. The square
+declaration is obtained by specializing the rectangular theorem.
+
+\section{Verdict}
+
+The nonempty case has no mathematical proof gap. The nonempty-family condition
+is a local correction to the well-posedness boundary of the printed
+finite-family statement in Ref.~\cite{Wolf2012Quantum}. An empty-index theorem
+would require a different conclusion, such as a restriction to zero dilation
+space or the omission of the identity resolution. Such a variant is not the
 instrument theorem used in the development.
-
-Verdict: local correction of a well-posedness boundary in the printed finite-family
-statement.
 
 \bibliographystyle{alpha}
 \bibliography{references}

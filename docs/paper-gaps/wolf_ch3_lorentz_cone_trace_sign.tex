@@ -17,76 +17,132 @@
 
 \section{The assertion}
 
-Wolf's Proposition~3.7 states two elementary trace inequalities for Hermitian
-matrices.\footnote{\cite[Proposition~3.7]{Wolf2012Quantum};
-local source \path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
-lines 693--722.}  The forward implication says that a positive semidefinite
-matrix satisfies
+Let $A\in\MN{d}$ be Hermitian. Wolf's Proposition~3.7 first states that
+positive semidefiniteness implies
 \begin{align}
-  \tr(A^2) \le \tr(A)^2.
+    A\geq 0
+    \quad\Longrightarrow\quad
+    \tr(A^2)\leq\tr(A)^2.
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_forward_inequality}
 \end{align}
-The converse is printed as
+The converse printed in the same proposition is
 \begin{align}
-  \tr(A)^2 \ge (d-1)\tr(A^2) \Longrightarrow A \ge 0.
-  \tag{\path{Wolf Prop. 3.7 converse}}
+    \tr(A)^2\geq(d-1)\tr(A^2)
+    \quad\Longrightarrow\quad
+    A\geq 0.
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_printed_converse}
 \end{align}
+Both assertions appear in Proposition~3.7 of
+Ref.~\cite{Wolf2012Quantum}.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines~693--722.}
 
 \section{The point at issue}
 
-The printed converse cannot be true without a sign condition on the trace.  For
-example, if \(A=-I_d\) and \(d\geq 1\), then \(A\) is Hermitian and not positive
-semidefinite, while
+The squared trace in
+Eq.~\ref{eq:wolf_ch3_lorentz_cone_trace_sign_printed_converse} does not
+determine the sign of $\tr(A)$. For $A=-\Id_d$ with $d\geq 1$,
 \begin{align}
-  \tr(A)^2=d^2 \ge d(d-1)=(d-1)\tr(A^2).
+    A&=-\Id_d\not\geq 0,
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_negative_identity_not_positive}\\
+    \tr(A)^2
+        &=d^2,
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_negative_identity_trace_square}\\
+    (d-1)\tr(A^2)
+        &=d(d-1),
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_negative_identity_square_trace}\\
+    \tr(A)^2
+        &\geq(d-1)\tr(A^2).
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_negative_identity_satisfies_inequality}
 \end{align}
-Thus the squared inequality only controls the Lorentz cone up to time
-orientation; it does not distinguish the positive and negative trace sheets.
+Thus $A=-\Id_d$ satisfies the hypothesis of
+Eq.~\ref{eq:wolf_ch3_lorentz_cone_trace_sign_printed_converse} but contradicts
+its conclusion. The inequality determines a Lorentz cone without selecting
+its time orientation; it includes both the positive- and negative-trace
+sheets.
 
-This is also visible in the proof printed after the proposition.  The argument
-decomposes \(A=A_+-A_-\) and uses the estimate
+The issue also appears in Wolf's proof
+\cite[Proposition~3.7]{Wolf2012Quantum}. Write the positive and negative parts
+of $A$ as $A_+$ and $A_-$, so that
 \begin{align}
-  \tr(A) \le \tr(A_+).
+    A&=A_+-A_-,
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_positive_negative_decomposition}\\
+    \tr(A)
+        &=\tr(A_+)-\tr(A_-)
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_trace_decomposition}\\
+        &\leq\tr(A_+).
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_trace_upper_bound}
 \end{align}
-To contradict the squared inequality one needs the left hand side to have the
-same orientation as the nonnegative quantity being bounded.  A nonnegative
-trace hypothesis supplies exactly this orientation.
+To use the last inequality after squaring, $\tr(A)$ must have the same
+orientation as the nonnegative quantity $\tr(A_+)$. The condition
+$\tr(A)\geq 0$ supplies that orientation.
 
 \section{Corrected statement}
 
-The formal theorem proves the trace-nonnegative version:
+The valid converse adds a nonnegative-trace hypothesis:
 \begin{align}
-  A=A^\dagger,\qquad
-  \tr(A)\ge 0,\qquad
-  (d-1)\tr(A^2)\le \tr(A)^2
-  \Longrightarrow A\ge 0.
+    A&=A^\dagger,
+    &
+    \tr(A)&\geq 0,
+    &
+    (d-1)\tr(A^2)&\leq\tr(A)^2
+    \quad\Longrightarrow\quad
+    A\geq 0.
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_corrected_converse}
 \end{align}
-In the complex matrix formalization the traces are written with real parts,
-which agrees with the displayed real quantities for Hermitian \(A\).\footnote{
-Formal declaration
+The complex matrix formalization writes the trace conditions using real parts.
+For Hermitian $A$, the relevant traces are real, so the formal statement agrees
+with Eq.~\ref{eq:wolf_ch3_lorentz_cone_trace_sign_corrected_converse}.\footnote{
+Formal declaration:
 \leanid{Matrix.IsHermitian.posSemidef_of_trace_re_nonneg_of_card_sub_one_mul_trace_sq_re_le}
-in \doclink{QICLean/Analysis/MatrixTraceInequalities}; tracked by
+in \doclink{QICLean/Analysis/MatrixTraceInequalities}. Tracked by
 \href{https://github.com/LionSR/TNLean/issues/3402}{TNLean issue \#3402}.}
 
-The proof is a finite eigenvalue argument.  If some eigenvalue \(\lambda_0\) is
-negative, write
+The proof reduces the claim to the eigenvalues of $A$. Let
+$\lambda_0,\lambda_1,\ldots,\lambda_{d-1}$ be the eigenvalues, suppose
+$\lambda_0<0$, and define
 \begin{align}
-  T=\sum_i\lambda_i,\qquad
-  R=\sum_{i\ne 0}\lambda_i .
+    T&=\sum_{i=0}^{d-1}\lambda_i,
+    &
+    R&=\sum_{i\neq 0}\lambda_i.
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_eigenvalue_sums}
 \end{align}
-Since \(T\ge0\) and \(T=\lambda_0+R\), one has \(T<R\), and hence
-\(T^2<R^2\).  Cauchy's inequality for the remaining \(d-1\) eigenvalues gives
+The trace assumption gives $T\geq 0$, while $T=\lambda_0+R$ and
+$\lambda_0<0$ imply
 \begin{align}
-  R^2\le (d-1)\sum_{i\ne 0}\lambda_i^2
-       \le (d-1)\sum_i\lambda_i^2,
+    0\leq T&<R,
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_strict_sum_comparison}\\
+    T^2&<R^2.
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_strict_square_comparison}
 \end{align}
-contradicting the assumed Lorentz inequality.  Therefore all eigenvalues are
-nonnegative.
+Cauchy's inequality for the remaining $d-1$ eigenvalues yields
+\begin{align}
+    R^2
+        &\leq(d-1)\sum_{i\neq 0}\lambda_i^2
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_cauchy_remaining_eigenvalues}\\
+        &\leq(d-1)\sum_{i=0}^{d-1}\lambda_i^2.
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_cauchy_all_eigenvalues}
+\end{align}
+Because $T=\tr(A)$ and $\sum_i\lambda_i^2=\tr(A^2)$, combining
+Eqs.~\ref{eq:wolf_ch3_lorentz_cone_trace_sign_strict_square_comparison}
+and~\ref{eq:wolf_ch3_lorentz_cone_trace_sign_cauchy_all_eigenvalues} gives
+\begin{align}
+    \tr(A)^2
+        <(d-1)\tr(A^2),
+    \label{eq:wolf_ch3_lorentz_cone_trace_sign_contradiction}
+\end{align}
+contrary to the hypothesis in
+Eq.~\ref{eq:wolf_ch3_lorentz_cone_trace_sign_corrected_converse}. Hence no
+eigenvalue is negative, and $A\geq 0$.
 
 \section{Conclusion}
 
-The unrestricted printed converse should not be marked as formalized.  The
-formal development records the future-cone, trace-nonnegative converse as the
-mathematically valid statement used in the positive-map discussion.
+The converse in Proposition~3.7 of Ref.~\cite{Wolf2012Quantum} is false
+without a trace-sign condition. The local correction is
+Eq.~\ref{eq:wolf_ch3_lorentz_cone_trace_sign_corrected_converse}. The formal
+development records this trace-nonnegative, future-cone statement for use in
+the positive-map discussion and does not mark the unrestricted printed
+converse as formalized.
 
 \bibliographystyle{alpha}
 \bibliography{references}

@@ -17,144 +17,214 @@
 
 \section{Source statement}
 
-The reduction-criterion paragraph of Wolf's \emph{Quantum Channels \&
-Operations} (\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
-lines 329--338) introduces the maps $T_n(X)=\tr(X)\,\mathbf 1-X/n$, notes that
-each is $n$-positive and self-dual, and concludes that
+For an integer $n\geq1$, define the reduction map
 \begin{align}
-  n\,\rho_1\otimes\mathbf 1\ge\rho
-  \qquad\text{and}\qquad
-  n\,\mathbf 1\otimes\rho_2\ge\rho
-  \tag{3.18}
+    T_n(X)&=\tr(X)\Id-\frac{1}{n}X.
+    \label{eq:wolf_reduction_criterion_schmidt_premise_reduction_map}
 \end{align}
-is \emph{necessary for a bipartite state $\rho$ to have Schmidt number $n$},
-with $\rho_1$ and $\rho_2$ the two reduced density matrices. The source assertion
-is the implication
-\begin{align}
-  \operatorname{sn}(\rho)\le n
-  \;\Longrightarrow\;
-  \bigl(n\,\rho_1\otimes\mathbf 1\ge\rho\ \text{and}\
-  n\,\mathbf 1\otimes\rho_2\ge\rho\bigr),
-  \tag{\path{source}}
-\end{align}
-where $\operatorname{sn}(\rho)$ is the Schmidt number of $\rho$. Its proof has
-two steps. A state of Schmidt number at most $n$ is a convex combination of
-pure states of Schmidt rank at most $n$, so $n$-positivity of $T_n$ gives
-\begin{align}
-  \operatorname{sn}(\rho)\le n
-  \;\Longrightarrow\;
-  (T_n\otimes\operatorname{id})(\rho)\ge 0,
-  \tag{step 1}
-\end{align}
-and the algebraic identity $(T_n\otimes\operatorname{id})(\rho)=\mathbf 1\otimes\rho_2-n^{-1}\rho$
-then yields
-\begin{align}
-  (T_n\otimes\operatorname{id})(\rho)\ge 0
-  \;\Longrightarrow\;
-  n\,\mathbf 1\otimes\rho_2\ge\rho,
-  \tag{step 2}
-\end{align}
-with the companion inequality obtained from the swapped state.
+The reduction-criterion discussion in
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
+329--338, states that $T_n$ is $n$-positive and self-dual
+\cite{Wolf2012Quantum}.
 
-\section{Formalized statement}
+Let $\rho$ be a bipartite state, and let $\rho_1$ and $\rho_2$ be its reduced
+density matrices on the first and second factors. Equation~(3.18) of
+Ref.~\cite{Wolf2012Quantum} states that Schmidt number at most $n$ implies
+\begin{align}
+    n\rho_1\otimes\Id&\geq\rho,
+    \label{eq:wolf_reduction_criterion_schmidt_premise_source_left}\\
+    n\Id\otimes\rho_2&\geq\rho.
+    \label{eq:wolf_reduction_criterion_schmidt_premise_source_right}
+\end{align}
+Writing $\operatorname{sn}(\rho)$ for the Schmidt number, the source assertion
+is
+\begin{align}
+    \operatorname{sn}(\rho)\leq n
+        &\Longrightarrow
+        \left(n\rho_1\otimes\Id\geq\rho
+            \ \text{and}\
+            n\Id\otimes\rho_2\geq\rho\right).
+    \label{eq:wolf_reduction_criterion_schmidt_premise_source_implication}
+\end{align}
 
-The formal theorems\footnote{Formal declarations:
+The source proof has two steps. A state of Schmidt number at most $n$ is a
+convex combination of pure-state projectors whose vectors have Schmidt rank at
+most $n$. The $n$-positivity of $T_n$ therefore gives
+\begin{align}
+    \operatorname{sn}(\rho)\leq n
+        &\Longrightarrow
+        (T_n\otimes\operatorname{id})(\rho)\geq0.
+    \label{eq:wolf_reduction_criterion_schmidt_premise_schmidt_to_positivity}
+\end{align}
+The algebraic identity
+\begin{align}
+    (T_n\otimes\operatorname{id})(\rho)
+        &=\Id\otimes\rho_2-\frac{1}{n}\rho
+    \label{eq:wolf_reduction_criterion_schmidt_premise_tensor_identity}
+\end{align}
+then implies
+\begin{align}
+    (T_n\otimes\operatorname{id})(\rho)\geq0
+        &\Longrightarrow
+        n\Id\otimes\rho_2\geq\rho.
+    \label{eq:wolf_reduction_criterion_schmidt_premise_operator_step}
+\end{align}
+Applying the same argument after swapping the tensor factors gives
+(\ref{eq:wolf_reduction_criterion_schmidt_premise_source_left}).
+
+\section{The initially formalized operator step}
+
+The first formal theorems established only the implication in
+(\ref{eq:wolf_reduction_criterion_schmidt_premise_operator_step}).\footnote{Formal
+declarations:
     \leanid{Matrix.reductionCriterion_left} and
     \leanid{Matrix.reductionCriterion_right} in
-    \doclink{QICLean/Channel/ReductionCriterion}.} establish step~2 only. For a
-bipartite matrix $\rho$ and $n\ge 1$,
+    \doclink{QICLean/Channel/ReductionCriterion}.}
+For a bipartite matrix $\rho$ and $n\geq1$, they prove
 \begin{align}
-  (T_n\otimes\operatorname{id})(\rho)\ge 0
-  &\;\Longrightarrow\;
-  n\,\mathbf 1\otimes\rho_2\ge\rho,\\
-  (T_n\otimes\operatorname{id})(\rho^{F})\ge 0
-  &\;\Longrightarrow\;
-  n\,\rho_1\otimes\mathbf 1\ge\rho,
+    (T_n\otimes\operatorname{id})(\rho)\geq0
+        &\Longrightarrow
+        n\Id\otimes\rho_2\geq\rho,
+    \label{eq:wolf_reduction_criterion_schmidt_premise_formal_left}\\
+    (T_n\otimes\operatorname{id})(\rho^F)\geq0
+        &\Longrightarrow
+        n\rho_1\otimes\Id\geq\rho,
+    \label{eq:wolf_reduction_criterion_schmidt_premise_formal_right}
 \end{align}
-where $\rho^{F}$ is the image of $\rho$ under the factor swap and the second
-hypothesis equals Wolf's symmetric condition $(\operatorname{id}\otimes T_n)(\rho)\ge 0$. The
-underlying identity $(T_n\otimes\operatorname{id})(\rho)=\mathbf 1\otimes\rho_2-n^{-1}\rho$ is
-also formalized.\footnote{Formal declaration:
+where $\rho^F$ is obtained by swapping the tensor factors. The second
+hypothesis is the swapped form of
+$(\operatorname{id}\otimes T_n)(\rho)\geq0$. The identity
+(\ref{eq:wolf_reduction_criterion_schmidt_premise_tensor_identity}) is also
+formalized.\footnote{Formal declaration:
     \leanid{Matrix.tensorMapId_tEta_eq}.}
 
-\section{Resolution}
+\section{Resolution of the Schmidt-number premise}
 
-Step~1 is now formalized. A Schmidt-number predicate for mixed
-states\footnote{Formal declaration: \leanid{Matrix.HasSchmidtNumberLE} in
-    \doclink{QICLean/Channel/SchmidtNumber}.} records that $\rho$ is a finite sum
-of pure-state projectors of Schmidt rank at most $n$, which is Wolf's convex
-decomposition up to normalization. At $n=1$ this predicate coincides with
+The formal predicate
+\leanid{Matrix.HasSchmidtNumberLE} records that $\rho$ is a finite sum of
+pure-state projectors whose vectors have Schmidt rank at most $n$.\footnote{The
+declaration is in \doclink{QICLean/Channel/SchmidtNumber}.}
+This is the convex decomposition used in Ref.~\cite{Wolf2012Quantum}, up to
+normalization. At $n=1$, the predicate is equivalent to
 separability.\footnote{Formal declaration:
     \leanid{Matrix.hasSchmidtNumberLE_one_iff_isSeparable}.}
 
-The pure-state step shows that for a vector $\psi$ of Schmidt rank at most $n$
-(with $1\le n<D$) the ampliation $(T_n\otimes\operatorname{id})(\ketbra\psi\psi)$ is positive
-semidefinite,\footnote{Formal declaration:
-    \leanid{Matrix.tensorMapId_tEta_posSemidef_of_hasSchmidtRankLE}.} by writing
-$\psi$ through the maximally entangled vector as a square right-factor matrix of
-rank equal to the Schmidt rank of $\psi$, identifying the ampliation with the
-right-factor Choi compression, and using the $n$-positivity of $T_n$ on the
-resulting Schmidt-rank-$\le n$ vector. Summing over the pure terms gives step~1:
-a state of Schmidt number at most $n$ has
-$(T_n\otimes\operatorname{id})(\rho)\ge 0$.\footnote{Formal declaration:
-    \leanid{Matrix.HasSchmidtNumberLE.tensorMapId_tEta_posSemidef}.} Composing
-step~1 with the formalized step~2 yields Wolf's eq.~(3.18) with its
-Schmidt-number premise.\footnote{Formal declarations:
+For $1\leq n<D$, the pure-state theorem states that
+\begin{align}
+    \operatorname{SR}(\psi)\leq n
+        &\Longrightarrow
+        (T_n\otimes\operatorname{id})
+        \!\left(\ketbra{\psi}{\psi}\right)\geq0.
+    \label{eq:wolf_reduction_criterion_schmidt_premise_pure_state_step}
+\end{align}
+This is
+\leanid{Matrix.tensorMapId_tEta_posSemidef_of_hasSchmidtRankLE}. The proof
+writes $\psi$ using a maximally entangled vector and a square right-factor
+matrix whose rank equals $\operatorname{SR}(\psi)$. It identifies the
+ampliation with a right-factor compression of the Choi matrix and applies the
+$n$-positivity of $T_n$.
+
+Summing
+(\ref{eq:wolf_reduction_criterion_schmidt_premise_pure_state_step}) over the
+pure terms in a Schmidt-number decomposition proves
+(\ref{eq:wolf_reduction_criterion_schmidt_premise_schmidt_to_positivity}).\footnote{Formal
+declaration:
+    \leanid{Matrix.HasSchmidtNumberLE.tensorMapId_tEta_posSemidef}.}
+Composing that result with
+(\ref{eq:wolf_reduction_criterion_schmidt_premise_formal_left}) and
+(\ref{eq:wolf_reduction_criterion_schmidt_premise_formal_right}) yields
+Equation~(3.18) of Ref.~\cite{Wolf2012Quantum} with its Schmidt-number
+premise.\footnote{Formal declarations:
     \leanid{Matrix.reductionCriterion_left_of_hasSchmidtNumberLE} and
     \leanid{Matrix.reductionCriterion_right_of_hasSchmidtNumberLE}.}
 
-The $n$-positivity content used in the pure-state step is the threshold theorem:
-the map $T_n$ is $n$-positive for all $1\le n<D$.\footnote{Formal declaration:
-    \leanid{Matrix.isNPositiveMap_tEta_iff} in
-    \doclink{QICLean/Channel/NPositivityChainStrict}, the reduction map being
-    $T_\eta$ at $\eta=n$ by \leanid{Matrix.reductionMap_eq_tEta}.}
+The required positivity threshold is
+\begin{align}
+    1\leq n<D
+        &\Longrightarrow T_n\ \text{is $n$-positive}.
+    \label{eq:wolf_reduction_criterion_schmidt_premise_positivity_threshold}
+\end{align}
+This is formalized by
+\leanid{Matrix.isNPositiveMap_tEta_iff} in
+\doclink{QICLean/Channel/NPositivityChainStrict}; the reduction map is
+$T_\eta$ at $\eta=n$ by \leanid{Matrix.reductionMap_eq_tEta}.
 
-The general forward step is now direct and rectangular. For
-$T:M_d(\mathbb{C})\to M_r(\mathbb{C})$ and
-$\psi\in\mathbb{C}^d\otimes\mathbb{C}^k$, write $\psi$ through the normalized
-maximally entangled vector as a rectangular right-factor matrix
-$X\in M_{d\times k}(\mathbb{C})$ with
-$\operatorname{rank}(X)=\operatorname{SR}(\psi)$. The ampliation of
-$\ketbra\psi\psi$ is the right-factor compression of the rectangular Choi
-matrix of $T$. Its quadratic form pulls back to a Choi quadratic form on a
-vector of Schmidt rank at most $\operatorname{rank}(X)$, so $n$-positivity gives
-the desired nonnegativity. Summing the pure projectors proves
-$(T\otimes\operatorname{id}_k)(\rho)\ge0$ with independent input, output, and
-bystander dimensions.\footnote{Formal declarations:
-    \leanid{Matrix.tensorMapId_posSemidef_of_hasSchmidtRankLE} and
-    \leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef} in
-    \doclink{QICLean/Channel/SchmidtNumber}.}
+\section{The rectangular forward theorem}
 
-The older padding constructions and the square-endomorphism declarations
+The general forward step allows independent dimensions. Let
+$T:M_d(\C)\to M_r(\C)$ be $n$-positive, and let
+$\psi\in\C^d\otimes\C^k$ have Schmidt rank at most $n$. Write $\psi$ using a
+normalized maximally entangled vector and a rectangular right-factor matrix
+$X\in M_{d\times k}(\C)$ satisfying
+\begin{align}
+    \operatorname{rank}(X)
+        &=\operatorname{SR}(\psi).
+    \label{eq:wolf_reduction_criterion_schmidt_premise_rectangular_rank}
+\end{align}
+The ampliation of $\ketbra{\psi}{\psi}$ is a right-factor compression of the
+rectangular Choi matrix of $T$. Its quadratic form pulls back to a Choi
+quadratic form on a vector of Schmidt rank at most
+$\operatorname{rank}(X)$. Hence
+\begin{align}
+    \operatorname{SR}(\psi)\leq n
+        &\Longrightarrow
+        (T\otimes\operatorname{id}_k)
+        \!\left(\ketbra{\psi}{\psi}\right)\geq0.
+    \label{eq:wolf_reduction_criterion_schmidt_premise_rectangular_pure_step}
+\end{align}
+Summing over a Schmidt-number decomposition gives
+\begin{align}
+    \operatorname{sn}(\rho)\leq n
+        &\Longrightarrow
+        (T\otimes\operatorname{id}_k)(\rho)\geq0.
+    \label{eq:wolf_reduction_criterion_schmidt_premise_rectangular_mixed_step}
+\end{align}
+These results are formalized by
+\leanid{Matrix.tensorMapId_posSemidef_of_hasSchmidtRankLE} and
+\leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef} in
+\doclink{QICLean/Channel/SchmidtNumber}.
+
+The older padding constructions
 \leanid{Matrix.tensorMapId_posSemidef_of_hasSchmidtRankLE_general} and
 \leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef_general} remain as
-compatibility APIs in \doclink{QICLean/Channel/SchmidtNumberFactors}; the latter
-now delegates to the direct rectangular theorem. They are not needed to justify
-Wolf's source-facing positive-map characterization.
+compatibility declarations in
+\doclink{QICLean/Channel/SchmidtNumberFactors}. The latter now delegates to the
+direct rectangular theorem. Neither declaration is needed for the
+source-facing positive-map characterization.
 
 \section{Classification}
 
-\emph{Resolved.} The general bipartite forward step
-$\operatorname{sn}(\rho)\le n\Rightarrow(T\otimes\operatorname{id})(\rho)\ge 0$ holds
-for every $n$-positive map with independent input, output, and bystander dimensions at
+The bipartite-dimension scope restriction is resolved. The general implication
+in
+(\ref{eq:wolf_reduction_criterion_schmidt_premise_rectangular_mixed_step})
+holds for every $n$-positive map with independent input, output, and bystander
+dimensions through
 \leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef}.
 
-The $T_n$-specialised reduction \emph{criterion} is likewise now general: the
-inequalities $n\,\mathbf 1\otimes\rho_2\ge\rho$ and $n\,\rho_1\otimes\mathbf 1\ge\rho$
-hold on a general $\mathbb{C}^d\otimes\mathbb{C}^{d'}$ at
+The specialized reduction criterion is also dimension-general. The inequalities
+\begin{align}
+    n\Id\otimes\rho_2&\geq\rho,
+    \label{eq:wolf_reduction_criterion_schmidt_premise_general_left_result}\\
+    n\rho_1\otimes\Id&\geq\rho
+    \label{eq:wolf_reduction_criterion_schmidt_premise_general_right_result}
+\end{align}
+are proved on a general space $\C^d\otimes\C^{d'}$ by
 \leanid{Matrix.reductionCriterion_left_of_hasSchmidtNumberLE_general} and
-\leanid{Matrix.reductionCriterion_right_of_hasSchmidtNumberLE_general}, obtained by
-composing the general forward step with the dimension-general operator-half theorems
-\leanid{Matrix.reductionCriterion_left} and \leanid{Matrix.reductionCriterion_right}.
-The square-restricted \leanid{Matrix.reductionCriterion_left_of_hasSchmidtNumberLE} and
-\leanid{Matrix.reductionCriterion_right_of_hasSchmidtNumberLE} remain as the $d=d'$
-specialisations.
+\leanid{Matrix.reductionCriterion_right_of_hasSchmidtNumberLE_general}. These
+theorems compose the rectangular forward result with
+\leanid{Matrix.reductionCriterion_left} and
+\leanid{Matrix.reductionCriterion_right}. The square declarations
+\leanid{Matrix.reductionCriterion_left_of_hasSchmidtNumberLE} and
+\leanid{Matrix.reductionCriterion_right_of_hasSchmidtNumberLE} remain the
+specializations with $d=d'$.
 
-The only residual scope is the $n$-positivity threshold of $T_n$ itself: the left
-inequality needs $1\le n<d$ and the right needs $1\le n<d'$ (Wolf eq.~(3.11)), whose
-top index ($n=d$ for the left form, $n=d'$ for the right; complete positivity) is
-documented in \path{docs/paper-gaps/wolf_t_eta_top_index_scope.tex}. The bipartite-dimension
-restriction recorded in this note is thereby fully eliminated.
+The only residual scope concerns the positivity threshold of $T_n$: the left
+inequality requires $1\leq n<d$, and the right inequality requires
+$1\leq n<d'$, as in Equation~(3.11) of
+Ref.~\cite{Wolf2012Quantum}. The complete-positivity endpoints $n=d$ and
+$n=d'$, respectively, are documented in
+\path{docs/paper-gaps/wolf_t_eta_top_index_scope.tex}. The dimension
+restriction recorded in this note is fully eliminated.
 
 \bibliographystyle{alpha}
 \bibliography{references}

@@ -17,123 +17,191 @@
 
 \section{The assertion}
 
-Wolf's Proposition~5.3 follows a display of Weyl's monotonicity theorem for
-Hermitian matrices.  The preceding paragraph assumes $A\le B$ and states
+Let $A,B\in\MN{d}$ be Hermitian, and write
+$\lambda_1^\downarrow(A),\ldots,\lambda_d^\downarrow(A)$ for the eigenvalues
+of $A$ in decreasing order. The paragraph preceding Wolf's Proposition~5.3
+assumes $A\leq B$ and applies Weyl's monotonicity theorem in the form
 \begin{align}
-  \lambda_j^\downarrow(B)
-  \ge \lambda_j^\downarrow(A)+\lambda_d^\downarrow(B-A)
-  \qquad (1\le j\le d),
-  \tag{Wolf (5.56)}
+    \lambda_j^\downarrow(B)
+        &\geq \lambda_j^\downarrow(A)
+            +\lambda_d^\downarrow(B-A),
+        \qquad 1\leq j\leq d.
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_weyl_bound}
 \end{align}
-where the eigenvalues are ordered decreasingly.  Since $B-A\ge0$, its
-smallest eigenvalue is nonnegative, so the paragraph concludes that
-$\lambda_j^\downarrow(A)\le\lambda_j^\downarrow(B)$ for every $j$.
+This is Equation~(5.56) of Ref.~\cite{Wolf2012Quantum}. Since $B-A\geq0$, its
+smallest eigenvalue is nonnegative. Hence
+\begin{align}
+    \lambda_j^\downarrow(A)
+        &\leq \lambda_j^\downarrow(B),
+        \qquad 1\leq j\leq d.
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_ordered_eigenvalue_comparison}
+\end{align}
 
-The proposition printed immediately afterward drops the order hypothesis:
-for arbitrary Hermitian $A,B\in M_d(\C)$ it claims that there is a unitary
-$U$, independent of $f$, such that
+Proposition~5.3 then drops the hypothesis $A\leq B$. It claims that arbitrary
+Hermitian $A,B\in\MN{d}$ admit a unitary $U$, independent of $f$, such that
 \begin{align}
-  f(A)\le U f(B)U^\dagger
-  \tag{Wolf (5.57)}
+    f(A)
+        &\leq U f(B)U^\dagger
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_printed_unitary_comparison}
 \end{align}
-for every non-decreasing function $f:I\to\mathbb R$ on an interval containing
-both spectra.\footnote{\cite[Proposition~5.3 and Equations~(5.56)--(5.57)]
-{Wolf2012Quantum}; local source
-\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex},
-lines~1119--1135.  Tracked in \ghissue{27}.}
+for every non-decreasing function $f:I\to\mathbb R$, where $I$ is an interval
+containing both spectra. This is Equation~(5.57) of
+Ref.~\cite{Wolf2012Quantum}.\footnote{Source:
+    \cite[Proposition~5.3 and Equations~(5.56)--(5.57)]
+    {Wolf2012Quantum}; local source
+    \path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex},
+    lines~1119--1135. Tracked in \ghissue{27}.}
 
 \section{The point at issue}
 
-The printed proposition is false.  In dimension one take
+The printed proposition is false. In dimension one, set
 \begin{align}
-  A=[1],\qquad B=[0],\qquad I=[0,1],\qquad f(x)=x.
+    A&=[1],
+    &
+    B&=[0],
+    &
+    I&=[0,1],
+    &
+    f(x)&=x.
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_scalar_counterexample}
 \end{align}
-Every one-dimensional unitary is a scalar phase and therefore
-$Uf(B)U^\dagger=0$, whereas the claimed inequality becomes $1\le0$.
+Every one-dimensional unitary is a scalar phase, so
+\begin{align}
+    U f(B)U^\dagger
+        &=0,
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_scalar_conjugation}\\
+    f(A)\leq U f(B)U^\dagger
+        &\Longleftrightarrow 1\leq0.
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_scalar_contradiction}
+\end{align}
+Thus the hypotheses printed in Proposition~5.3 of
+Ref.~\cite{Wolf2012Quantum} do not imply its conclusion.
 
-The omission is also exposed by the source proof route itself: Equation~(5.56)
-is stated only for $A\le B$, and that condition is exactly what makes the
-ordered eigenvalues comparable.  Without it, the sentence ``one obtains
-immediately'' does not supply the hypothesis needed by the proposition.
+The source proof also requires the omitted order assumption. Equation~(5.56)
+of Ref.~\cite{Wolf2012Quantum} assumes $A\leq B$, and this assumption yields
+the ordered eigenvalue comparison
+(\ref{eq:wolf_ch5_unitary_comparison_missing_order_ordered_eigenvalue_comparison}).
+Without it, the proof supplies no comparison between the two ordered spectra.
 
 \section{The corrected statement and source proof}
 
-The source argument proves the following corrected proposition, with the
-existential unitary quantified before the interval and the function:
+The source argument proves the following corrected proposition:
 \begin{align}
-  A\le B\quad\Longrightarrow\quad
-  \exists U\in M_d(\C)\ \Bigl[
-  &U^\dagger U=UU^\dagger=\Id\ \land
-    \forall I\subseteq\mathbb R\ \forall f:I\to\mathbb R, \notag\\
-  &\bigl(I\text{ is an interval}\ \land
-    \operatorname{spec}(A)\cup\operatorname{spec}(B)\subseteq I\ \land
-    f\text{ is non-decreasing on }I\bigr) \notag\\
-  &\hspace{7em}\Longrightarrow f(A)\le U f(B)U^\dagger\Bigr].
-  \tag{corrected Wolf (5.57)}
+    A\leq B
+        \quad\Longrightarrow\quad
+        \exists U\in\MN{d}\ \Bigl[
+        &U^\dagger U=UU^\dagger=\Id
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_corrected_unitary_quantifier}\\
+        &{}\land
+        \forall I\subseteq\mathbb R\
+        \forall f:I\to\mathbb R,
+        \nonumber\\
+        &\bigl(        I\text{ is an interval}
+            \ \land\
+            \operatorname{spec}(A)\cup\operatorname{spec}(B)\subseteq I
+            \ \land\
+            f\text{ is non-decreasing on }I
+        \bigr)
+        \nonumber\\
+        &\hspace{4em}\Longrightarrow
+            f(A)\leq U f(B)U^\dagger
+        \Bigr].
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_corrected_statement}
 \end{align}
-Thus the same $U$ works for every admissible interval and function.
+The unitary is chosen before the interval and the function, so the same $U$
+works for every admissible $I$ and $f$.
 
-Indeed, choose eigenvector unitaries $V_A,V_B$ in decreasing eigenvalue order,
-so that
+Choose unitaries $V_A$ and $V_B$ whose columns are eigenvectors arranged in
+decreasing eigenvalue order. Then
 \begin{align}
-  A&=V_A\operatorname{diag}
-      (\lambda_1^\downarrow(A),\ldots,\lambda_d^\downarrow(A))V_A^\dagger,\\
-  B&=V_B\operatorname{diag}
-      (\lambda_1^\downarrow(B),\ldots,\lambda_d^\downarrow(B))V_B^\dagger.
+    A
+        &=V_A\operatorname{diag}\bigl(        \lambda_1^\downarrow(A),\ldots,
+            \lambda_d^\downarrow(A)
+        \bigr)V_A^\dagger,
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_A_diagonalization}\\
+    B
+        &=V_B\operatorname{diag}\bigl(        \lambda_1^\downarrow(B),\ldots,
+            \lambda_d^\downarrow(B)
+        \bigr)V_B^\dagger.
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_B_diagonalization}
 \end{align}
-Equation~(5.56), positivity of $B-A$, and monotonicity of $f$ give
+The order hypothesis and Equation~(5.56) of
+Ref.~\cite{Wolf2012Quantum} give
+(\ref{eq:wolf_ch5_unitary_comparison_missing_order_ordered_eigenvalue_comparison}).
+Monotonicity of $f$ therefore implies
 \begin{align}
-  f(\lambda_j^\downarrow(A))
-  \le f(\lambda_j^\downarrow(B))
-  \qquad (1\le j\le d).
+    f(\lambda_j^\downarrow(A))
+        &\leq f(\lambda_j^\downarrow(B)),
+        \qquad 1\leq j\leq d.
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_functional_eigenvalue_comparison}
 \end{align}
-With $U=V_A V_B^\dagger$, functional calculus in these eigenbases yields
+Set
 \begin{align}
-  f(A)
-  &=V_A\operatorname{diag}
-      (f(\lambda_1^\downarrow(A)),\ldots,f(\lambda_d^\downarrow(A)))V_A^\dagger,\\
-  U f(B)U^\dagger
-  &=V_A\operatorname{diag}
-      (f(\lambda_1^\downarrow(B)),\ldots,f(\lambda_d^\downarrow(B)))V_A^\dagger.
+    U
+        &=V_A V_B^\dagger.
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_eigenbasis_unitary}
 \end{align}
-The entrywise diagonal inequality, transported by the unitary congruence
-$X\mapsto V_A X V_A^\dagger$, is the corrected conclusion.
+Functional calculus in the two eigenbases gives
+\begin{align}
+    f(A)
+        &=V_A\operatorname{diag}\bigl(        f(\lambda_1^\downarrow(A)),\ldots,
+            f(\lambda_d^\downarrow(A))
+        \bigr)V_A^\dagger,
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_functional_calculus_A}\\
+    U f(B)U^\dagger
+        &=V_A\operatorname{diag}\bigl(        f(\lambda_1^\downarrow(B)),\ldots,
+            f(\lambda_d^\downarrow(B))
+        \bigr)V_A^\dagger.
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_functional_calculus_B}
+\end{align}
+The diagonal comparison
+(\ref{eq:wolf_ch5_unitary_comparison_missing_order_functional_eigenvalue_comparison}),
+transported by the unitary congruence $X\mapsto V_AXV_A^\dagger$, proves
+(\ref{eq:wolf_ch5_unitary_comparison_missing_order_corrected_statement}).
 
 \section{Formalization}
 
-The cross-matrix Weyl step is now proved as
+The cross-matrix Weyl comparison is formalized by
 \leanid{LinearMap.IsSymmetric.eigenvalues\_le\_of\_sub\_isPositive}, with
-matrix forms \leanid{Matrix.IsHermitian.eigenvalues₀\_mono}
-and \leanid{Matrix.IsHermitian.eigenvalues\_mono}.
-The proof is a finite-dimensional variational argument: the span of the first
-$j+1$ eigenvectors of $A$ and the span of the last $d-j$ eigenvectors of $B$
-have dimensions summing to $d+1$, so they contain a common nonzero vector.
-The ordered spectral expansions and positivity of $B-A$ then give
+matrix forms \leanid{Matrix.IsHermitian.eigenvalues₀\_mono} and
+\leanid{Matrix.IsHermitian.eigenvalues\_mono}.\footnote{Formal module:
+    \doclink{QICLean/Analysis/WeylMonotonicity}.}
+Its finite-dimensional variational proof intersects the span of the first
+$j+1$ eigenvectors of $A$ with the span of the last $d-j$ eigenvectors of
+$B$. Their dimensions sum to $d+1$, so they contain a common nonzero vector
+$x$. The ordered spectral expansions and positivity of $B-A$ yield
 \begin{align}
-  \lambda_j^\downarrow(A)\lVert x\rVert^2
-  \le \operatorname{Re}\langle Ax,x\rangle
-  \le \operatorname{Re}\langle Bx,x\rangle
-  \le \lambda_j^\downarrow(B)\lVert x\rVert^2.
+    \lambda_j^\downarrow(A)\lVert x\rVert^2
+        &\leq \operatorname{Re}\braket{Ax}{x},
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_variational_lower_bound}\\
+    \operatorname{Re}\braket{Ax}{x}
+        &\leq \operatorname{Re}\braket{Bx}{x},
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_positive_difference_bound}\\
+    \operatorname{Re}\braket{Bx}{x}
+        &\leq \lambda_j^\downarrow(B)\lVert x\rVert^2.
+    \label{eq:wolf_ch5_unitary_comparison_missing_order_variational_upper_bound}
 \end{align}
-Thus the cross-matrix comparison is proved rather than supplied as a pointwise
-hypothesis.
+Since $x\neq0$, these inequalities prove the required cross-matrix
+eigenvalue comparison.
 
-The corrected proposition is formalized as
-\leanid{Matrix.IsHermitian.exists\_unitary\_cfc\_le\_cfc\_of\_le}.
-It chooses the unitary from the two decreasingly ordered eigenbases and then
-uses the proved Weyl comparison for every interval and every non-decreasing
-function. The declarations are in
-\doclink{QICLean/Analysis/WeylMonotonicity} and
-\doclink{QICLean/Channel/Schwarz/UnitaryComparison}.
+The corrected proposition is formalized by
+\leanid{Matrix.IsHermitian.exists\_unitary\_cfc\_le\_cfc\_of\_le}.\footnote{Formal
+    module: \doclink{QICLean/Channel/Schwarz/UnitaryComparison}.}
+The proof chooses the unitary from the two decreasingly ordered eigenbases and
+uses the formalized Weyl comparison for every interval and every
+non-decreasing function.
 
 \section{Conclusion}
 
-Wolf's Proposition~5.3 is false as printed because it omits $A\le B$. Adding
-that hypothesis makes the proposition a consequence of the preceding
-Equation~(5.56): order the two spectra, apply the scalar monotonicity of $f$,
-and align the two eigenbases by one unitary. Both the cross-matrix Weyl
-comparison and the corrected unitary comparison are now formalized without an
-assumed pointwise eigenvalue comparison.
+Wolf's Proposition~5.3 is false as printed because it omits $A\leq B$. The
+scalar example
+(\ref{eq:wolf_ch5_unitary_comparison_missing_order_scalar_counterexample})
+satisfies the printed hypotheses and contradicts the conclusion. Adding
+$A\leq B$ makes the proposition follow from Equation~(5.56) of
+Ref.~\cite{Wolf2012Quantum}: compare the ordered spectra, apply scalar
+monotonicity of $f$, and align the eigenbases with one unitary. Both the
+cross-matrix Weyl comparison and this corrected unitary comparison are
+formalized without assuming a pointwise eigenvalue comparison.
 
 \bibliographystyle{alpha}
 \bibliography{references}

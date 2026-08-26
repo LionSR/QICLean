@@ -17,81 +17,124 @@
 
 \section{The source sentence}
 
-After expressing $T_\infty$ as a Ces\`aro mean in his Equation~(6.14), Wolf
-writes, for a trace-preserving positive linear map $T:\MN{D}\to\MN{D}$,
+Let $T:\MN{D}\to\MN{D}$ be a trace-preserving positive linear map. After
+expressing the asymptotic map $T_\infty$ as a Ces\`aro mean in
+Equation~(6.14), Wolf writes
 \begin{align}
-  T_\phi
-  & = \lim_{N\to\infty}\frac{1}{N}\sum_{n=1}^N
-  \sum_{k:|\lambda_k|=1} (\overline{\lambda_k}T)^n.
-  \tag{Wolf eq.~6.15}
+    T_\phi
+        &=\lim_{N\to\infty}\frac{1}{N}
+          \sum_{n=1}^{N}
+          \sum_{k:\lvert\lambda_k\rvert=1}
+          (\overline{\lambda_k}T)^n.
+    \label{eq:wolf_ch6_eq615_deduplicated_phases_block_indexed_formula}
 \end{align}
-The local source is
+This is Equation~(6.15) of Ref.~\cite{Wolf2012Quantum}. The local source is
 \path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex},
-lines~258--264 \cite{Wolf2012Quantum}. Throughout the chapter the index $k$
-runs over the Jordan blocks of the superoperator $\widehat T$: by
-Equations~(6.4)--(6.5) of the same source (lines~111--139),
-$\widehat T=X(\bigoplus_{k=1}^K J_k(\lambda_k))X^{-1}$, and ``the number of
-Jordan blocks with eigenvalue $\lambda$ is the geometric multiplicity of
-$\lambda$'' (lines~140--142); several blocks may carry the same eigenvalue.
+lines~258--264.
 
-\section{Correction forced by the multiplicities}
+In this chapter, $k$ indexes the Jordan blocks of the superoperator
+$\widehat T$. Equations~(6.4)--(6.5) of Ref.~\cite{Wolf2012Quantum}, at
+lines~111--139 of the local source, use
+\begin{align}
+    \widehat T
+        &=X\left(\bigoplus_{k=1}^{K}J_k(\lambda_k)\right)X^{-1}.
+    \label{eq:wolf_ch6_eq615_deduplicated_phases_jordan_decomposition}
+\end{align}
+The number of blocks carrying an eigenvalue $\lambda$ is its geometric
+multiplicity, so distinct block indices may carry the same eigenvalue
+\cite[Chapter~6]{Wolf2012Quantum}.
 
-The summand $(\overline{\lambda_k}T)^n$ depends on the eigenvalue $\lambda_k$
-only, not on the block carrying it, so the literal block-indexed inner sum
-counts each peripheral eigenvalue with its geometric multiplicity. Take the
-identity channel $T=\one$ on $\MN{D}$ with $D>1$: every matrix is an eigenvector
-for the eigenvalue $1$, the Jordan decomposition of $\widehat T$ consists of
-$D^2$ one-dimensional blocks all carrying $\lambda_k=1$, and the literal
-right-hand side of Equation~(6.15) is
-\[
-  \lim_{N\to\infty}\frac{1}{N}\sum_{n=1}^N D^2\,\one
-  = D^2\,\one
-  \neq T_\phi=\one.
-\]
-So read literally, with $k$ a block index, the equation is false. The reading
-under which it is true --- plainly the intended one, since the same chapter
-characterizes $T_\phi$ as the projection onto the span of the peripheral
-eigenvectors - is that $k$ runs over the \emph{distinct} peripheral
-eigenvalues,
-\[
-  T_\phi
-  = \lim_{N\to\infty}\frac{1}{N}\sum_{n=1}^N
-  \sum_{\substack{\lambda\ \text{eigenvalue of }T\\ |\lambda|=1}}
-  (\bar\lambda T)^n ,
-\]
-each phase counted once. This is consistent with the rest of the chapter:
-peripheral Jordan blocks of a trace-preserving positive map are
-one-dimensional (source, proposition on lines~181--186), so the peripheral
-subspace is the direct sum of the eigenspaces of the distinct peripheral
-eigenvalues, and on the eigenspace of $\lambda$ the summand indexed by $\mu$
-acts as the scalar $(\bar\mu\lambda)^n$, whose Ces\`aro mean is
-$\delta_{\mu\lambda}$; a single summand per distinct eigenvalue therefore
-suffices to recover the projection. The neighbouring sums
-$\widehat T_\infty$, $\widehat T_\phi$, $\widehat T_\varphi$ of
-Equations~(6.11)--(6.13) are indexed by blocks as well, but they involve the
-block projections $P_k$ and are correct as printed; only Equation~(6.15),
-whose summand lost the block dependence, requires the deduplicated index.
+\section{Correction forced by multiplicities}
 
-The formal development averages over the set of eigenvalues of modulus one, so
-each distinct phase appears once.\footnote{Formal declarations:
-  \leanid{Module.End.weightedCesaroMean} for the average, and the convergence
-  statements
-  \leanid{IsPositiveMap.tendsto_weightedCesaroMean_peripheralProjection},
-  \leanid{IsPositiveMap.tendsto_endEquiv_weightedCesaroMean_peripheralProjection},
-  \leanid{IsPositiveMap.tendsto_weightedCesaroMean_toFinset_peripheralProjection},
-  and
-  \leanid{IsPositiveMap.tendsto_endEquiv_weightedCesaroMean_toFinset_peripheralProjection}
-  in \doclink{QICLean/Channel/Peripheral/WeightedCesaro}.}
-This correction changes no hypothesis of Equation~(6.15); it adjusts the
-multiplicity convention of the inner summation index.
+The summand $(\overline{\lambda_k}T)^n$ depends only on $\lambda_k$, not on
+the block indexed by $k$. Consequently, the literal block-indexed sum in
+(\ref{eq:wolf_ch6_eq615_deduplicated_phases_block_indexed_formula}) counts
+each peripheral eigenvalue with its geometric multiplicity.
 
-\section{Verdict}
+For a counterexample, take the identity channel $T=\one$ on $\MN{D}$ with
+$D>1$. Every matrix is an eigenvector with eigenvalue $1$, and the Jordan
+decomposition of $\widehat T$ has $D^2$ one-dimensional blocks carrying that
+eigenvalue. The literal right-hand side becomes
+\begin{align}
+    \lim_{N\to\infty}\frac{1}{N}
+        \sum_{n=1}^{N}D^2\one
+        &=D^2\one,
+    \label{eq:wolf_ch6_eq615_deduplicated_phases_identity_block_sum}\\
+    D^2\one
+        &\neq \one=T_\phi.
+    \label{eq:wolf_ch6_eq615_deduplicated_phases_identity_contradiction}
+\end{align}
+Thus Equation~(6.15) of Ref.~\cite{Wolf2012Quantum} is false when $k$ is
+read literally as a Jordan-block index.
 
-This is a local correction of the summation index in the source equation: $k$
-is reinterpreted from a Jordan-block index to an index of the distinct
-peripheral eigenvalues. It does not alter the hypotheses or the conclusion of
-Equation~(6.15), which is false under the literal block-indexed reading, as
-the identity channel shows.
+Let $\mathcal P(T)$ denote the set of distinct eigenvalues of $T$ on the unit
+circle. The corrected formula is
+\begin{align}
+    T_\phi
+        &=\lim_{N\to\infty}\frac{1}{N}
+          \sum_{n=1}^{N}
+          \sum_{\lambda\in\mathcal P(T)}
+          (\overline{\lambda}T)^n.
+    \label{eq:wolf_ch6_eq615_deduplicated_phases_distinct_phase_formula}
+\end{align}
+Each peripheral phase is counted once.
+
+This reading agrees with the surrounding spectral decomposition. Peripheral
+Jordan blocks of a trace-preserving positive map are one-dimensional
+\cite[Chapter~6]{Wolf2012Quantum}. Hence the peripheral subspace is the
+direct sum of the eigenspaces associated with the distinct peripheral
+eigenvalues. If $Y$ belongs to the eigenspace of $\lambda$, then the summand
+indexed by $\mu\in\mathcal P(T)$ satisfies
+\begin{align}
+    (\overline{\mu}T)^n(Y)
+        &=(\overline{\mu}\lambda)^nY.
+    \label{eq:wolf_ch6_eq615_deduplicated_phases_action_on_eigenspace}
+\end{align}
+Its Ces\`aro mean obeys
+\begin{align}
+    \lim_{N\to\infty}\frac{1}{N}
+        \sum_{n=1}^{N}(\overline{\mu}\lambda)^n
+        &=
+        \begin{cases}
+            1,&\mu=\lambda,\\
+            0,&\mu\neq\lambda.
+        \end{cases}
+    \label{eq:wolf_ch6_eq615_deduplicated_phases_phase_orthogonality}
+\end{align}
+Therefore one summand for each distinct peripheral eigenvalue recovers the
+peripheral projection.
+
+The neighboring expressions for $\widehat T_\infty$, $\widehat T_\phi$, and
+$\widehat T_\varphi$ in Equations~(6.11)--(6.13) of
+Ref.~\cite{Wolf2012Quantum} are also indexed by Jordan blocks, but their
+summands contain the block projections $P_k$. Those formulas retain block
+dependence and are correct as printed. Only Equation~(6.15), where the
+summand no longer depends on the block, requires a deduplicated index.
+
+\section{Formalization}
+
+The formal development averages over the set of eigenvalues of modulus one,
+so each distinct phase occurs once.\footnote{Formal declarations:
+    \leanid{Module.End.weightedCesaroMean} for the average, and
+    \leanid{IsPositiveMap.tendsto_weightedCesaroMean_peripheralProjection},
+    \leanid{IsPositiveMap.tendsto_endEquiv_weightedCesaroMean_peripheralProjection},
+    \leanid{IsPositiveMap.tendsto_weightedCesaroMean_toFinset_peripheralProjection},
+    and
+    \leanid{IsPositiveMap.tendsto_endEquiv_weightedCesaroMean_toFinset_peripheralProjection}
+    in \doclink{QICLean/Channel/Peripheral/WeightedCesaro}.}
+This correction changes no hypothesis or intended conclusion of
+Equation~(6.15) of Ref.~\cite{Wolf2012Quantum}; it changes only the
+multiplicity convention for the inner index.
+
+\section{Conclusion}
+
+Equation~(6.15) of Ref.~\cite{Wolf2012Quantum} requires a local correction:
+the inner sum must range over distinct peripheral eigenvalues, not peripheral
+Jordan blocks. The identity channel gives the contradiction
+(\ref{eq:wolf_ch6_eq615_deduplicated_phases_identity_contradiction}) under
+the literal block-indexed reading. The deduplicated formula
+(\ref{eq:wolf_ch6_eq615_deduplicated_phases_distinct_phase_formula}) has the
+source's intended hypotheses and conclusion.
 
 \bibliographystyle{alpha}
 \bibliography{references}

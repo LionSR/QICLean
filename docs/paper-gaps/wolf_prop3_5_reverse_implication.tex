@@ -18,150 +18,224 @@ Resolution of the Reverse Implication}
 
 \section{The source equivalence}
 
-For fixed dimensions $d,d'$, Wolf's Proposition~3.5 states
+For fixed dimensions $d$ and $d'$, Proposition~3.5 of
+Ref.~\cite{Wolf2012Quantum} states
 \begin{align}
-  &\text{there is an indecomposable positive map }
-      T:\MN{d}\longrightarrow\MN{d'}
-  \notag\\
-  &\qquad\Longleftrightarrow\qquad
-  \begin{gathered}
-    \text{there is an entangled density operator }\rho
-      \in\MN{d}\otimes\MN{d'}\\
-    \text{with }\rho^{T_1}\geq 0.
-  \end{gathered}
-  \tag{Wolf Proposition 3.5}
+    &\exists\,T:\MN{d}\longrightarrow\MN{d'}
+      \text{ positive and indecomposable}\nonumber\\
+    &\qquad\Longleftrightarrow
+      \exists\,\rho\in\MN{d}\otimes\MN{d'}:
+      \rho\text{ is an entangled density operator and }\rho^{T_1}\geq0.
+    \label{eq:wolf_prop3_5_reverse_implication_source_equivalence}
 \end{align}
-Immediately before the proposition, Wolf writes the decomposable witnesses as
+Immediately before that proposition, the source writes a decomposable witness
+as
 \begin{align}
-  W&=P_1+P_2^{T_1},
-  &P_1,P_2&\geq0.
-  \tag{Wolf 3.15}
+    W
+        &=P_1+P_2^{T_1},
+    \label{eq:wolf_prop3_5_reverse_implication_source_decomposition}\\
+    P_1
+        &\geq0,
+    \label{eq:wolf_prop3_5_reverse_implication_first_positive_part}\\
+    P_2
+        &\geq0.
+    \label{eq:wolf_prop3_5_reverse_implication_second_positive_part}
 \end{align}
-Thus the transpose in both the witness decomposition and the PPT condition is
-on the first factor, of dimension $d$. The local source is
-\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex}, lines
-276--303.\footnote{Tracked by \ghissue{22}.}
+This is Equation~(3.15) of Ref.~\cite{Wolf2012Quantum}. Both the witness
+decomposition and the PPT condition use partial transpose on the first factor,
+whose dimension is $d$.\footnote{Local source:
+\path{Notes/WolfNoteTexSource/ch03_positive_not_completely.tex},
+lines~276--303. Tracked by \ghissue{22}.}
 
-The witness argument used below is the normalized form of Theorem~3 of
-Lewenstein--Kraus--Cirac--Horodecki
-\cite{LewensteinKrausCiracHorodecki2000}. With trace-one positive operators
-$P_1,P_2$, its compact convex set, written in Wolf's first-factor convention,
-is
+The witness proof below uses the normalized form of Theorem~3 in
+Ref.~\cite{LewensteinKrausCiracHorodecki2000}. In Wolf's first-factor
+convention, define
 \begin{align}
-  \mathcal D_1
-  &=\left\{aP_1+(1-a)P_2^{T_1}:
-      0\leq a\leq1,\ P_1,P_2\geq0,\
-      \tr(P_1)=\tr(P_2)=1\right\}.
-  \tag{normalized decomposable set}
+    \mathcal D_1
+        &:=
+        \left\{aP_1+(1-a)P_2^{T_1}:
+          0\leq a\leq1,\,
+          P_1,P_2\geq0,\,
+          \tr(P_1)=\tr(P_2)=1\right\}.
+    \label{eq:wolf_prop3_5_reverse_implication_normalized_decomposable_set}
 \end{align}
+This is the compact convex set of normalized decomposable witnesses used in
+the separation argument.
 
 \section{The rectangular formal statement}
 
-For $d,d'\geq1$, the formalized equivalence has the same input-to-output
-orientation as Wolf:
+For $d,d'\geq1$, the formalized theorem has the same input-to-output
+orientation as Proposition~3.5 of Ref.~\cite{Wolf2012Quantum}:
 \begin{align}
-  &\exists T:\MN{d}\longrightarrow\MN{d'}
-      \text{ positive and indecomposable}
-  \notag\\
-  &\qquad\Longleftrightarrow\qquad
-  \begin{gathered}
-    \exists\rho\in\MN{d}\otimes\MN{d'}:\
-      \rho\geq0,\quad\tr(\rho)=1,\\
-      \rho^{T_1}\geq0,\quad\rho\text{ not separable}.
-  \end{gathered}
-  \tag{formalized Wolf Proposition 3.5}
+    &\exists\,T:\MN{d}\longrightarrow\MN{d'}
+      \text{ positive and indecomposable}\nonumber\\
+    &\qquad\Longleftrightarrow
+      \exists\,\rho\in\MN{d}\otimes\MN{d'}:
+      \rho\geq0,\,
+      \tr(\rho)=1,\,
+      \rho^{T_1}\geq0,\,
+      \rho\text{ is not separable}.
+    \label{eq:wolf_prop3_5_reverse_implication_formal_equivalence}
 \end{align}
 The fixed nonzero-dimensional theorem is
 \leanid{Matrix.exists_isIndecomposablePositiveMap_iff_exists_isPPT_not_isSeparable}.
-The theorem
+The declaration
 \leanid{Matrix.exists_isIndecomposablePositiveMap_iff_exists_isPPT_not_isSeparable_all_dimensions}
 states the same equivalence for arbitrary natural-number dimensions and
-settles the zero-dimensional boundary explicitly.\footnote{Formal module:
+handles the zero-dimensional boundary explicitly.\footnote{Formal module:
 \doclink{QICLean/Channel/PPTIndecomposable}.}
 
-The implication from a PPT entangled state to an indecomposable map is
+The implication from a PPT entangled state to an indecomposable positive map
+is
 \leanid{Matrix.exists_isIndecomposablePositiveMap_of_isPPT_not_isSeparable}.
-It applies Wolf's rectangular positive-map criterion at level one. If the
-detecting map were decomposable, writing $T=T_1+T_2\theta$ would give
+It applies the rectangular positive-map criterion at level one. If the
+detecting map were decomposable, one could write
 \begin{align}
-  (T\otimes\operatorname{id})(\rho)
-    &=(T_1\otimes\operatorname{id})(\rho)
-      +(T_2\otimes\operatorname{id})(\rho^{T_1})\geq0,
-  \notag
+    T
+        &=T_1+T_2\theta,
+    \label{eq:wolf_prop3_5_reverse_implication_decomposable_map}\\
+    (T\otimes\operatorname{id})(\rho)
+        &=(T_1\otimes\operatorname{id})(\rho)
+          +(T_2\otimes\operatorname{id})(\rho^{T_1}),
+    \label{eq:wolf_prop3_5_reverse_implication_decomposable_detection}\\
+    (T\otimes\operatorname{id})(\rho)
+        &\geq0,
+    \label{eq:wolf_prop3_5_reverse_implication_decomposable_nonnegative}
 \end{align}
-contrary to detection.
+contradicting detection.
 
 \section{The reverse implication}
 
-Let $T:\MN{d}\to\MN{d'}$ be indecomposable and positive, with
-$d,d'\geq1$. Let $T^*:\MN{d'}\to\MN{d}$ denote its trace-pairing adjoint,
-and define
+Let $T:\MN{d}\to\MN{d'}$ be positive and indecomposable, where $d,d'\geq1$.
+Let $T^*:\MN{d'}\to\MN{d}$ be its trace-pairing adjoint, and define
 \begin{align}
-  W_0&=\tau(T^*)\in\MN{d}\otimes\MN{d'}.
-  \tag{trace-adjoint Choi witness}
+    W_0
+        &:=\tau(T^*)
+          \in\MN{d}\otimes\MN{d'}.
+    \label{eq:wolf_prop3_5_reverse_implication_trace_adjoint_choi_witness}
 \end{align}
 This is the output-first rectangular Choi matrix of $T^*$. Its rows and
 columns are indexed by
-$\operatorname{Fin}(d)\times\operatorname{Fin}(d')$, in that order. Hence
-the first factor of $W_0$ has dimension $d$, exactly as in Wolf's
-Equation~(3.15); no exchange of the tensor factors occurs.
+$\operatorname{Fin}(d)\times\operatorname{Fin}(d')$, in that order.
+Therefore its first factor has dimension $d$, as in Equation~(3.15) of
+Ref.~\cite{Wolf2012Quantum}; the construction does not exchange the tensor
+factors.
 
 The trace adjoint of a positive map is positive. The rectangular Choi
 criterion at level one therefore gives
 \begin{align}
-  \operatorname{Re}\tr\!\left(
-    W_0\ketbra{\psi}{\psi}\right)&\geq0
-  \qquad
-  \text{if $\psi$ has Schmidt rank at most one}.
-  \tag{block positivity}
+    \operatorname{Re}\tr\!\left(W_0\ketbra{\psi}{\psi}\right)
+        &\geq0
+        \qquad\text{if }\operatorname{SR}(\psi)\leq1.
+    \label{eq:wolf_prop3_5_reverse_implication_block_positivity}
 \end{align}
-Moreover, indecomposability implies $T\neq0$. Positivity shows that
-$T(\Id_d)=0$ would force $T=0$, so $T(\Id_d)$ is a nonzero positive
+
+Indecomposability implies $T\neq0$. Positivity also implies that
+$T(\Id_d)=0$ would force $T=0$. Hence $T(\Id_d)$ is a nonzero positive
 operator. The rectangular Choi trace identity gives
 \begin{align}
-  \tr(W_0)&=\frac{1}{d'}\tr\!\left(T(\Id_d)\right)>0.
-  \tag{positive witness trace}
+    \tr(W_0)
+        &=\frac{1}{d'}\tr\!\left(T(\Id_d)\right),
+    \label{eq:wolf_prop3_5_reverse_implication_choi_trace_identity}\\
+    \tr(W_0)
+        &>0.
+    \label{eq:wolf_prop3_5_reverse_implication_positive_witness_trace}
 \end{align}
-Consequently
+Define the normalized witness
 \begin{align}
-  W&=\frac{W_0}{\tr(W_0)}
-  \tag{normalized witness}
+    W
+        &:=\frac{W_0}{\tr(W_0)}.
+    \label{eq:wolf_prop3_5_reverse_implication_normalized_witness}
 \end{align}
-is Hermitian, block-positive, and trace one. The trace-adjoint rectangular
-Choi correspondence identifies decomposability of $T$ with membership of
-$W_0$ in Wolf's cone $P_1+P_2^{T_1}$. Positive rescaling does not change
-that membership, so $W\notin\mathcal D_1$.
+It is Hermitian, block-positive, and has trace one.
 
-Strictly separate $W$ from the compact convex set $\mathcal D_1$ in the
-real space of complex matrices. Represent the separating real-linear
+The trace-adjoint rectangular Choi correspondence identifies
+decomposability of $T$ with membership of $W_0$ in the cone
+$P_1+P_2^{T_1}$ from Equation~(3.15) of
+Ref.~\cite{Wolf2012Quantum}. Positive rescaling preserves this membership.
+Since $T$ is indecomposable,
+\begin{align}
+    W
+        &\notin\mathcal D_1.
+    \label{eq:wolf_prop3_5_reverse_implication_outside_normalized_set}
+\end{align}
+
+Strictly separate $W$ from the compact convex set $\mathcal D_1$ in the real
+vector space of complex matrices. Represent the separating real-linear
 functional by a Hermitian matrix and subtract a multiple of the trace
-functional. Since $W$ and every member of $\mathcal D_1$ have trace one,
-this gives a Hermitian operator $R$ such that
+functional. Because $W$ and every $D\in\mathcal D_1$ have trace one, there is
+a Hermitian matrix $R$ such that
 \begin{align}
-  \operatorname{Re}\tr(WR)&<0,
-  &\operatorname{Re}\tr(DR)&\geq0
-    \qquad(D\in\mathcal D_1).
-  \tag{normalized separation}
+    \operatorname{Re}\tr(WR)
+        &<0,
+    \label{eq:wolf_prop3_5_reverse_implication_strict_negative_pairing}\\
+    \operatorname{Re}\tr(DR)
+        &\geq0
+        \qquad\text{for every }D\in\mathcal D_1.
+    \label{eq:wolf_prop3_5_reverse_implication_nonnegative_set_pairing}
 \end{align}
-At the endpoint $a=1$, the second inequality holds for every positive
-trace-one $P$. Scaling then extends it to every $P\geq0$, and self-duality
-of the positive cone gives $R\geq0$. At the endpoint $a=0$, it holds for
-$Q^{T_1}$, where $Q$ is positive and has trace one. The identity
-\begin{align}
-  \operatorname{Re}\tr\!\left(Q^{T_1}R\right)
-    &=\operatorname{Re}\tr\!\left(QR^{T_1}\right)
-  \tag{first-factor transpose adjointness}
-\end{align}
-gives $R^{T_1}\geq0$. This is the first-factor transpose throughout.
 
-The strict negative pairing implies $R\neq0$. Hence $\tr(R)>0$, and
+At the endpoint $a=1$ in
+(\ref{eq:wolf_prop3_5_reverse_implication_normalized_decomposable_set}),
+the second inequality holds for every positive trace-one matrix $P$. Scaling
+extends it to every $P\geq0$, and self-duality of the positive cone gives
 \begin{align}
-  \rho&=\frac{R}{\tr(R)}
-  \tag{PPT density operator}
+    R
+        &\geq0.
+    \label{eq:wolf_prop3_5_reverse_implication_separator_positive}
 \end{align}
-is positive, has trace one, and satisfies $\rho^{T_1}\geq0$. Finally,
-$\operatorname{Re}\tr(W\rho)<0$, whereas block positivity of $W$ makes its
-pairing nonnegative on every separable operator. Thus $\rho$ is entangled.
+At the endpoint $a=0$, the inequality holds for $Q^{T_1}$ whenever $Q$ is
+positive and has trace one. First-factor transpose is self-adjoint for the
+real trace pairing:
+\begin{align}
+    \operatorname{Re}\tr\!\left(Q^{T_1}R\right)
+        &=\operatorname{Re}\tr\!\left(QR^{T_1}\right).
+    \label{eq:wolf_prop3_5_reverse_implication_transpose_adjointness}
+\end{align}
+Scaling and self-duality therefore give
+\begin{align}
+    R^{T_1}
+        &\geq0.
+    \label{eq:wolf_prop3_5_reverse_implication_separator_ppt}
+\end{align}
+The transpose remains on the first factor throughout the argument.
+
+The strict inequality
+(\ref{eq:wolf_prop3_5_reverse_implication_strict_negative_pairing}) implies
+$R\neq0$. Since $R\geq0$,
+\begin{align}
+    \tr(R)
+        &>0.
+    \label{eq:wolf_prop3_5_reverse_implication_separator_positive_trace}
+\end{align}
+Define
+\begin{align}
+    \rho
+        &:=\frac{R}{\tr(R)}.
+    \label{eq:wolf_prop3_5_reverse_implication_ppt_density}
+\end{align}
+Then
+\begin{align}
+    \rho
+        &\geq0,
+    \label{eq:wolf_prop3_5_reverse_implication_density_positive}\\
+    \tr(\rho)
+        &=1,
+    \label{eq:wolf_prop3_5_reverse_implication_density_trace}\\
+    \rho^{T_1}
+        &\geq0.
+    \label{eq:wolf_prop3_5_reverse_implication_density_ppt}
+\end{align}
+Moreover,
+\begin{align}
+    \operatorname{Re}\tr(W\rho)
+        &<0.
+    \label{eq:wolf_prop3_5_reverse_implication_density_detected}
+\end{align}
+Block positivity of $W$ makes its pairing nonnegative on every separable
+operator. Thus
+(\ref{eq:wolf_prop3_5_reverse_implication_density_detected}) proves that
+$\rho$ is entangled.
 
 The separation and normalization steps are formalized by
 \leanid{Matrix.exists_posSemidef_isPPT_negative_separator_of_not_isDecomposableWitness}
@@ -176,31 +250,33 @@ identity, and the rectangular Choi correspondence are respectively
 \leanid{Matrix.trace_partialTransposeLeft_mul_re}, and
 \leanid{ChoiRectangular.isDecomposablePositiveMap_iff_choiMatrix_traceAdjointMap_isDecomposableWitness}.
 
-This proof uses neither closedness of the full unbounded cone nor a
-definition of decomposability by duality. It separates from the compact
-trace-one set and proves the two positivity conclusions from its endpoints,
-as in the normalized witness argument of
-Lewenstein--Kraus--Cirac--Horodecki.
+This proof does not use closedness of the full unbounded cone or define
+decomposability by duality. It separates from the compact trace-one set and
+derives the two positivity conditions from its endpoints, following the
+normalized witness argument of
+Ref.~\cite{LewensteinKrausCiracHorodecki2000}.
 
 \section{The zero-dimensional boundary}
 
-If $d=0$, every map with domain $\MN{0}$ is the zero map. If $d'=0$, every
-map with codomain $\MN{0}$ is again the zero map. In either case the map is
-decomposable, so no indecomposable positive map exists. At the same time,
-the tensor product is empty and every matrix on it has trace zero, so no
-density operator exists. Both sides of the equivalence are therefore false.
-This proves the arbitrary-dimensional statement without imposing a hidden
-nonzero-dimensional hypothesis.
+If $d=0$, every map with domain $\MN{0}$ is zero. If $d'=0$, every map with
+codomain $\MN{0}$ is also zero. In either case the map is decomposable, so no
+indecomposable positive map exists.
+
+The corresponding tensor product is empty, and every matrix on it has trace
+zero. Hence no density operator exists. Both sides of
+(\ref{eq:wolf_prop3_5_reverse_implication_formal_equivalence}) are false.
+This proves the arbitrary-dimensional statement without a hidden
+nonzero-dimensional assumption.
 
 \section{Verdict}
 
-The scope restriction recorded here is resolved. Both directions of Wolf
-Proposition~3.5 are formalized with independent dimensions $d,d'$, the
-printed map orientation $\MN{d}\to\MN{d'}$, the trace-adjoint rectangular
-Choi witness on $\C^d\otimes\C^{d'}$, and partial transpose on the first
-factor. The fixed nonzero-dimensional equivalence and the explicit
-zero-dimensional boundary are both proved. No source-level gap remains in
-this proposition.
+The scope restriction is resolved. Both implications in Proposition~3.5 of
+Ref.~\cite{Wolf2012Quantum} are formalized with independent dimensions $d$
+and $d'$, the source orientation $\MN{d}\to\MN{d'}$, the trace-adjoint
+rectangular Choi witness on $\C^d\otimes\C^{d'}$, and partial transpose on the
+first factor. The fixed nonzero-dimensional equivalence and the explicit
+zero-dimensional boundary are proved. No source-level gap remains in this
+proposition.
 
 \bibliographystyle{alpha}
 \bibliography{references}

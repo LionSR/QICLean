@@ -17,118 +17,224 @@
 
 \section{The source statement}
 
-Wolf defines $\mu$ as the largest modulus of an eigenvalue of $T$ in the open
-unit disc and $d_\mu$ as the largest dimension of a corresponding Jordan
-block~\cite[Chapter~8, lines~1221--1272]{Wolf2012Quantum}.  Theorem
-``Asymptotic convergence I'' then compares
-\begin{equation}
-  \lVert\widehat T^n-\widehat T_\varphi^n\rVert_\infty
-  \quad\text{with}\quad
-  \mu^n n^{d_\mu-1}.
-\end{equation}
+For a linear map $T$, Wolf defines $\mu$ as the largest modulus of an
+eigenvalue of $T$ in the open unit disc. He defines $d_\mu$ as the largest
+dimension of a Jordan block associated with an eigenvalue of modulus $\mu$
+\cite[Chapter~8, lines~1221--1272]{Wolf2012Quantum}. The theorem
+``Asymptotic convergence I'' compares the difference between the powers of the
+phase-weighted map $\widehat T$ and its peripheral part
+$\widehat T_\varphi$ with the scale
+\begin{align}
+    \mu^n n^{d_\mu-1}.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_asymptotic_scale}
+\end{align}
+More precisely, the source compares
+\begin{align}
+    \left\lVert \widehat T^n-\widehat T_\varphi^n\right\rVert_\infty
+        &\quad\text{with}\quad
+        \mu^n n^{d_\mu-1}.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_source_comparison}
+\end{align}
 The local source is
-\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex}, lines~1221--1272,
-especially Equations~(8.106)--(8.109).
+\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex},
+lines~1221--1272, especially Equations~(8.106)--(8.109) of
+Ref.~\cite{Wolf2012Quantum}.
 
-\section{Empty and zero subperipheral spectrum}
+\section{Empty and zero subperipheral spectra}
 
-If there is no eigenvalue in the open unit disc, neither the printed largest
-modulus nor $d_\mu$ is defined.  The formal definition
-\leanid{Module.End.subperipheralModulus} totalizes only the first datum by
-setting $\mu=0$.  On a nonempty subperipheral spectrum, finiteness proves that
-this supremum is an attained maximum strictly below one; see
-\leanid{Module.End.exists_norm_eq_subperipheralModulus} and
+If $T$ has no eigenvalue in the open unit disc, neither the largest modulus
+$\mu$ nor the associated block size $d_\mu$ is defined in the printed
+statement of Ref.~\cite{Wolf2012Quantum}. The formal definition totalizes only
+the modulus by setting
+\begin{align}
+    \mu
+        &= 0.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_empty_modulus}
+\end{align}
+On a nonempty subperipheral spectrum, finiteness shows that the defining
+supremum is an attained maximum strictly below one.\footnote{Formal
+declarations:
+\leanid{Module.End.subperipheralModulus},
+\leanid{Module.End.exists_norm_eq_subperipheralModulus}, and
 \leanid{Module.End.subperipheralModulus_lt_one} in
-\doclink{QICLean/Analysis/SubperipheralSpectrum.lean}.
+\doclink{QICLean/Analysis/SubperipheralSpectrum.lean}.}
 
-The equality $\mu=0$ still does not imply emptiness: it means exactly that
-every subperipheral eigenvalue is zero.  A zero-eigenvalue Jordan block of
-dimension $D>1$ is nilpotent but its positive powers need not vanish for
-$1\le n<D$.  Consequently an upper bound by
-$C_2\mu^n n^{d_\mu-1}=0$ cannot hold in that range.  This phenomenon already
-occurs for the classical three-state transition which sends state~$1$ to
-itself, state~$2$ to state~$1$, and state~$3$ to state~$2$: its
-column-stochastic matrix is
-\begin{equation}
-  P=\begin{pmatrix}1&1&0\\0&0&1\\0&0&0\end{pmatrix}.
-\end{equation}
-Indeed, $P(e_3-e_1)=e_2-e_1\ne0$ and $P(e_2-e_1)=0$, which exhibits a
-size-two Jordan chain at zero.  The associated measure-and-prepare quantum
-channel is positive and trace preserving.  Its phase-weighted peripheral map
-kills this chain, so at $n=1$ the left side of Equation~(8.107) is nonzero
-while its printed right side is zero.  Thus this is not merely a boundary case
-outside the theorem's hypotheses.  A qualified zero-modulus statement must
-either start at the nilpotence index or treat the finite initial range
-separately without the printed factor.  The source's $n\in\mathbb N$ is used
-as a positive exponent in this proof; Lean's natural numbers include zero,
-whose zeroth power also requires an explicit $0^0$ convention and does not
-belong to the argument at source lines~1247--1266.
+The equality in
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_empty_modulus}) does not
+imply that the subperipheral spectrum is empty. It means that every
+subperipheral eigenvalue is zero. A zero-eigenvalue Jordan block of dimension
+$D>1$ is nilpotent, but its powers need not vanish when $1\leq n<D$.
+Consequently, an upper bound of the form
+\begin{align}
+    C_2\mu^n n^{d_\mu-1}
+        &= 0
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_zero_modulus_bound}
+\end{align}
+cannot control those initial powers.
 
-For $0<\mu\le1$ and $d_\mu-1\le n$, the exact fixed-block consequence of
-Equation~(8.104) is formalized as
+A classical three-state transition gives a concrete example. Let state~$1$
+map to itself, state~$2$ map to state~$1$, and state~$3$ map to state~$2$.
+The corresponding column-stochastic matrix is
+\begin{align}
+    P
+        &=
+        \begin{pmatrix}
+            1 & 1 & 0\\
+            0 & 0 & 1\\
+            0 & 0 & 0
+        \end{pmatrix}.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_transition_matrix}
+\end{align}
+For the standard basis vectors $e_1,e_2,e_3$, one has
+\begin{align}
+    P(e_3-e_1)
+        &= e_2-e_1 \neq 0,
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_jordan_chain_first}\\
+    P(e_2-e_1)
+        &= 0.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_jordan_chain_second}
+\end{align}
+Equations
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_jordan_chain_first}) and
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_jordan_chain_second})
+exhibit a size-two Jordan chain at zero. The associated measure-and-prepare
+quantum channel is positive and trace preserving. Its phase-weighted
+peripheral map annihilates this chain. At $n=1$, the left-hand side of
+Equation~(8.107) of Ref.~\cite{Wolf2012Quantum} is therefore nonzero, whereas
+the printed right-hand side is zero.
+
+The zero-modulus case is thus not merely a boundary case excluded by the
+source hypotheses. A correct zero-modulus statement must either begin at the
+nilpotence index or treat the finite initial range separately without the
+factor in
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_zero_modulus_bound}).
+The source uses $n\in\mathbb N$ as a positive exponent in the proof at
+lines~1247--1266 of Ref.~\cite{Wolf2012Quantum}. In Lean, natural numbers
+include zero, so the zeroth power additionally requires an explicit convention
+for $0^0$ and does not belong to that source argument.
+
+For $0<\mu\leq 1$ and $d_\mu-1\leq n$, the exact fixed-block consequence of
+Equation~(8.104) of Ref.~\cite{Wolf2012Quantum} is formalized as a two-sided
+estimate for one supplied Jordan block.\footnote{Formal declaration:
 \leanid{Matrix.l2_opNorm_jordanBlock_pow_polynomial_bounds} in
-\doclink{QICLean/Analysis/JordanBlockAsymptotics.lean}.  It proves the
-two-sided $\mu^n n^{d_\mu-1}$ scaling for one supplied block; it does not
-silently extend that formula across the zero-modulus boundary.
+\doclink{QICLean/Analysis/JordanBlockAsymptotics.lean}.}
+This result proves the scale in
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_asymptotic_scale}) for a
+single block. It does not extend that formula across the zero-modulus
+boundary.
 
 \section{The block-diagonal comparison}
 
-At source line~1261 the notes print
-\begin{equation}
-  \lVert J^n\rVert_\infty\le \lVert X^n\rVert_\infty,
-\end{equation}
-where $X$ is one block of the block-diagonal matrix $J$.  In the Hilbert-space
-operator norm the inequality for an arbitrary chosen block has the opposite
-direction.  The intended eventual-dominance argument must prove that a block
-of largest subperipheral modulus and, among ties, largest dimension realizes
-the maximum of all block norms.  Only then does one obtain the required
-eventual equality $\lVert J^n\rVert_\infty=\lVert X^n\rVert_\infty$.
+Let $J$ be a block-diagonal Jordan matrix, and let $B$ be one of its blocks.
+At source line~1261, the notes assert
+\begin{align}
+    \lVert J^n\rVert_\infty
+        &\leq \lVert B^n\rVert_\infty.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_printed_block_bound}
+\end{align}
+This is the inequality printed for the block denoted by $X$ in
+Ref.~\cite{Wolf2012Quantum}. In the Hilbert-space operator norm, an arbitrary
+chosen block instead satisfies
+\begin{align}
+    \lVert B^n\rVert_\infty
+        &\leq \lVert J^n\rVert_\infty.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_valid_block_bound}
+\end{align}
+The intended eventual-dominance argument must select a block with largest
+subperipheral modulus and, among blocks tied in modulus, largest dimension. It
+must then prove that this block realizes the maximum of all block norms for
+sufficiently large $n$. Only that argument yields the eventual equality
+\begin{align}
+    \lVert J^n\rVert_\infty
+        &= \lVert B^n\rVert_\infty.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_eventual_block_equality}
+\end{align}
 
 \section{The Jordan condition infimum}
 
-For a chosen similarity $X=AJA^{-1}$, submultiplicativity gives
-\begin{equation}
- (\lVert A\rVert_\infty\lVert A^{-1}\rVert_\infty)^{-1}
- \lVert J^n\rVert_\infty
- \le \lVert X^n\rVert_\infty
- \le
- \lVert A\rVert_\infty\lVert A^{-1}\rVert_\infty
- \lVert J^n\rVert_\infty.
-\end{equation}
-This exact basis-level comparison is formalized as
+Let $L$ be a matrix similar to a Jordan matrix $J$, and choose an invertible
+matrix $A$ such that
+\begin{align}
+    L
+        &= AJA^{-1}.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_similarity}
+\end{align}
+Submultiplicativity gives the basis-level comparison
+\begin{align}
+    \bigl(\lVert A\rVert_\infty
+          \lVert A^{-1}\rVert_\infty\bigr)^{-1}
+    \lVert J^n\rVert_\infty
+        &\leq \lVert L^n\rVert_\infty,
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_similarity_lower}\\
+    \lVert L^n\rVert_\infty
+        &\leq
+        \lVert A\rVert_\infty
+        \lVert A^{-1}\rVert_\infty
+        \lVert J^n\rVert_\infty.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_similarity_upper}
+\end{align}
+This comparison is formalized for the chosen basis.\footnote{Formal
+declaration:
 \leanid{Matrix.l2_opNorm_pow_similarity_bounds} in
-\doclink{QICLean/Analysis/JordanSimilarity.lean}.  Wolf instead writes the
-infimum $\kappa_T$ over all Jordan changes of basis directly in Equation
-(8.108).  That replacement needs either attainment of the infimum or a
-limiting argument compatible with the chosen normalized Jordan form.  No such
-result is currently available in the imported Lean Jordan API, so the formal
-declaration does not assume a minimizing basis.
+\doclink{QICLean/Analysis/JordanSimilarity.lean}.}
 
-For the detailed-balance hypothesis in Equation~(8.110),
+Equation~(8.108) of Ref.~\cite{Wolf2012Quantum} instead uses the infimum
+$\kappa_T$ over all Jordan changes of basis. Replacing the chosen factor in
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_similarity_lower}) and
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_similarity_upper}) by this
+infimum requires either attainment of the infimum or a limiting argument
+compatible with the selected normalized Jordan form. The imported Lean Jordan
+API does not currently provide such a result, so the formal declaration does
+not assume a minimizing basis.
+
+Under the detailed-balance hypothesis in Equation~(8.110) of
+Ref.~\cite{Wolf2012Quantum}, the formal development constructs Wolf's chosen
+diagonalizing change of basis and its inverse:
+\begin{align}
+    A
+        &= S^{1/2}U,
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_detailed_balance_basis}\\
+    A^{-1}
+        &= U^\dagger S^{-1/2}.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_detailed_balance_inverse}
+\end{align}
+It also obtains the condition factor
+\begin{align}
+    \lVert A\rVert_\infty\lVert A^{-1}\rVert_\infty
+        &=
+        \sqrt{\lVert S\rVert_\infty
+              \lVert S^{-1}\rVert_\infty}.
+    \label{eq:wolf_thm823_jordan_scaling_qualifications_detailed_balance_factor}
+\end{align}
+These constructions and the norm calculation are formalized
+directly.\footnote{Formal declaration:
 \leanid{Matrix.PosDef.exists_sqrt_mul_unitary_diagonalization_of_detailedBalance}
-in \doclink{QICLean/Channel/DetailedBalance.lean} now constructs exactly Wolf's
-chosen diagonalizing change of basis $S^{1/2}U$, its inverse
-$U^\dagger S^{-1/2}$, and the condition factor
-$\sqrt{\lVert S\rVert_\infty\lVert S^{-1}\rVert_\infty}$.  This supplies the
-source's unitary-diagonalization and norm calculation, but deliberately does
-not rename the chosen factor as $\kappa_T$.  Completing the printed
-$\kappa_T$ bound still requires the source-shaped infimum from issue~\#297
-and the bridge that this infimum is bounded by every admissible Jordan change
-of basis.  The detailed-balance assembly is tracked in
+in \doclink{QICLean/Channel/DetailedBalance.lean}.}
+The formal statement deliberately does not rename the chosen factor in
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_detailed_balance_factor})
+as $\kappa_T$.
+
+Completing the printed $\kappa_T$ bound still requires the source-shaped
+infimum tracked in
+\href{https://github.com/LionSR/QICLean/issues/297}{QICLean issue \#297} and a
+proof that this infimum is bounded above by the condition factor of every
+admissible Jordan change of basis. The detailed-balance assembly is tracked in
 \href{https://github.com/LionSR/QICLean/issues/298}{QICLean issue \#298}.
 
 \section{Verdict}
 
 \textbf{Verdict: source qualifications and missing Jordan-form
-infrastructure.}
-
-The shared modulus, the basis-level similarity inequality, and the
-positive-modulus single-block scaling are proved.  The full statement for
+infrastructure.} The shared modulus, the basis-level similarity inequalities
+in
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_similarity_lower}) and
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_similarity_upper}), and the
+positive-modulus single-block scaling are proved. The full statement for
 $\widehat T^n-\widehat T_\varphi^n$ still requires a constructive Jordan
 decomposition, largest-block data $d_\mu$, the direct-sum norm maximum,
-eventual dominance, the zero-modulus/positive-exponent qualification, and a
-justified passage to $\kappa_T$.  Until those dependencies are supplied,
-Equations~(8.106)--(8.109) should not be marked formalized.  Tracking:
+eventual dominance, the zero-modulus and positive-exponent qualifications, and
+a justified passage to $\kappa_T$. Until these dependencies are supplied,
+Equations~(8.106)--(8.109) of Ref.~\cite{Wolf2012Quantum} should not be marked
+formalized. The remaining work is tracked in
 \href{https://github.com/LionSR/QICLean/issues/297}{QICLean issue \#297}.
 
 \bibliographystyle{alpha}

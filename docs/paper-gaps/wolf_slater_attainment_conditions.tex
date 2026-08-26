@@ -17,163 +17,282 @@
 
 \section{Source passage}
 
-For a closed pointed convex cone $K\subseteq V$ with nonempty interior,
-Chapter~4 of \cite{Wolf2012Quantum} considers
+Let $V$ and $W$ be finite-dimensional real inner-product spaces, let
+$K\subseteq V$ be a closed pointed convex cone with nonempty interior, and let
+$T:V\to W$ be linear. For $c\in V$ and $b\in W$, Chapter~4 of
+Ref.~\cite{Wolf2012Quantum} defines the primal and dual values by
 \begin{align}
-  C_p&=\inf\{\langle c|x\rangle:x\in K,\ T(x)=b\},\\
-  C_d&=\sup\{\langle b|y\rangle:c-T^*(y)\in K^*\}.
+  C_p
+    &=\inf\{\langle c|x\rangle:x\in K,\ T(x)=b\},
+  \label{eq:wolf_slater_attainment_conditions_primal_value}\\
+  C_d
+    &=\sup\{\langle b|y\rangle:c-T^*(y)\in K^*\}.
+  \label{eq:wolf_slater_attainment_conditions_dual_value}
 \end{align}
-At lines~72--78 of the local source, primal strict feasibility is said to give
-$C_p=C_d$ and attainment of the dual supremum; the dual statement is said to
-give attainment of the primal infimum.
+At lines~72--78 of the local source, primal strict feasibility is said to imply
+$C_p=C_d$ and attainment of the dual supremum, while dual strict feasibility
+is said to imply attainment of the primal infimum
+\cite[Chapter~4]{Wolf2012Quantum}.
 
-The semidefinite specialization at lines~100--105 contains both the same
-missing finiteness condition and a separate directional error.  It assumes
-either a positive-definite primal matrix $X$ satisfying $\tr(F_iX)=b_i$, or a
-dual vector $y$ with positive-definite slack $F_0-\sum_i y_iF_i$, and then says
-in both cases that the dual extremum is attained.  Primal strict feasibility
-does yield dual attainment once the primal value is finite.  Dual strict
-feasibility, however, yields primal attainment once the dual value is finite;
-it does not in general yield dual attainment.
+The semidefinite specialization at lines~100--105 of the same source contains
+the same missing finiteness condition and a separate directional error
+\cite[Chapter~4]{Wolf2012Quantum}. It assumes either a positive-definite primal
+matrix $X$ satisfying $\tr(F_iX)=b_i$, or a dual vector $y$ whose slack
+$F_0-\sum_i y_iF_i$ is positive definite, and then states in both cases that
+the dual extremum is attained. Primal strict feasibility yields dual
+attainment when the primal value is finite. Dual strict feasibility instead
+yields primal attainment when the dual value is finite; it does not generally
+yield dual attainment.
 
 \section{Missing boundary conditions}
 
-Strict feasibility on one side does not by itself ensure that the opposite
-feasible set is nonempty or that the relevant optimum is finite.  Both failures
-already occur in one dimension with $K=\mathbb R_{\geq0}$ and $T=0$.
+Strict feasibility on one side does not ensure that the opposite feasible set
+is nonempty or that the relevant optimum is finite. Both failures occur for
+$V=\mathbb R$, $K=\mathbb R_{\geq0}$, and $T=0$.
 
-First take $b=0$ and $c=-1$.  The primal point $x=1$ is strictly feasible, but
-the primal objective $-x$ is unbounded below.  Dual feasibility would require
-$-1\in\mathbb R_{\geq0}$, so the dual feasible set is empty and no dual
-optimizer exists.
-
-Second take $b=1$ and $c=1$.  The dual slack equals $1$ for every $y$, hence the
-dual problem is strictly feasible.  The primal equality constraint is
-$0=1$, so the primal feasible set is empty and no primal optimizer exists.
-
-Both failures are already semidefinite programs on $1\times1$ Hermitian
-matrices, with one equality constraint.  For the first, take
-$F_0=-1$, $F_1=0$, and $b_1=0$.  The matrix $X=1$ is positive definite and
-satisfies $\tr(F_1X)=b_1$, but the primal objective is unbounded below, while
-the slack
-
+First, set $b=0$ and $c=-1$. The point $x=1$ is strictly primal feasible, but
 \begin{align}
-  F_0-y_1F_1=-1
+  \inf_{x\geq0}(-x)
+    &=-\infty.
+  \label{eq:wolf_slater_attainment_conditions_unbounded_primal}
 \end{align}
+Dual feasibility would require
+\begin{align}
+  -1
+    &\in\mathbb R_{\geq0},
+  \label{eq:wolf_slater_attainment_conditions_empty_dual_requirement}
+\end{align}
+which is impossible. Thus the dual feasible set is empty and has no optimizer.
 
-is never positive semidefinite.  For the second, take $F_0=1$, $F_1=0$, and
-$b_1=1$.  Every dual slack is the positive-definite matrix $1$, whereas the
-primal equality $\tr(F_1X)=1$ is impossible.
+Second, set $b=1$ and $c=1$. The dual slack is $1$ for every $y$, so the dual
+problem is strictly feasible. The primal equality constraint becomes
+\begin{align}
+  0
+    &=1,
+  \label{eq:wolf_slater_attainment_conditions_infeasible_primal_constraint}
+\end{align}
+so the primal feasible set is empty and has no optimizer.
 
-Thus the attainment sentences at lines~72--78 and their semidefinite
+These examples are also semidefinite programs on $1\times1$ Hermitian
+matrices with one equality constraint. For the first example, take
+$F_0=-1$, $F_1=0$, and $b_1=0$. The matrix $X=1$ is positive definite and
+satisfies $\tr(F_1X)=b_1$, but the primal objective is unbounded below and the
+dual slack satisfies
+\begin{align}
+  F_0-y_1F_1
+    &=-1
+  \label{eq:wolf_slater_attainment_conditions_negative_dual_slack}
+\end{align}
+for every $y_1$, so it is never positive semidefinite. For the second example,
+take $F_0=1$, $F_1=0$, and $b_1=1$. Every dual slack is the positive-definite
+matrix $1$, while the primal equality
+\begin{align}
+  \tr(F_1X)
+    &=1
+  \label{eq:wolf_slater_attainment_conditions_impossible_sdp_equality}
+\end{align}
+is impossible.
+
+Therefore, the attainment statements at lines~72--78 and their semidefinite
 specialization at lines~100--105 require a finiteness condition, or an
-equivalent opposite-feasibility and boundedness condition.
+equivalent condition combining opposite-side feasibility and boundedness
+\cite[Chapter~4]{Wolf2012Quantum}.
 
-There is also a finite-valued semidefinite program which isolates the
-directional error at line~105.  In Wolf's convention, take
+A finite-valued semidefinite program isolates the directional error at
+line~105. In the convention of Ref.~\cite{Wolf2012Quantum}, set
 \begin{align}
-  F_0&=\begin{pmatrix}0&1\\1&0\end{pmatrix},&
-  F_1&=\begin{pmatrix}-1&0\\0&0\end{pmatrix},&
-  F_2&=\begin{pmatrix}0&0\\0&-1\end{pmatrix},&
-  b&=(-1,0).
+  F_0
+    &=\begin{pmatrix}0&1\\1&0\end{pmatrix},
+  \label{eq:wolf_slater_attainment_conditions_directional_F0}\\
+  F_1
+    &=\begin{pmatrix}-1&0\\0&0\end{pmatrix},
+  \label{eq:wolf_slater_attainment_conditions_directional_F1}\\
+  F_2
+    &=\begin{pmatrix}0&0\\0&-1\end{pmatrix},
+  \label{eq:wolf_slater_attainment_conditions_directional_F2}\\
+  b
+    &=(-1,0).
+  \label{eq:wolf_slater_attainment_conditions_directional_b}
 \end{align}
-Writing the dual variable as $y=(x,z)$ gives exactly
+Writing the dual variable as $y=(x,z)$ gives
 \begin{align}
   F_0-xF_1-zF_2
-    &=\begin{pmatrix}x&1\\1&z\end{pmatrix},&
-  \langle b|y\rangle&=-x.
+    &=\begin{pmatrix}x&1\\1&z\end{pmatrix},
+  \label{eq:wolf_slater_attainment_conditions_directional_slack}\\
+  \langle b|y\rangle
+    &=-x.
+  \label{eq:wolf_slater_attainment_conditions_directional_objective}
 \end{align}
-Thus the dual problem is to maximize $-x$ subject to
-$\left(\begin{smallmatrix}x&1\\1&z\end{smallmatrix}\right)\geq0$.  It is
-strictly feasible, for example at $(x,z)=(2,2)$.  Feasibility implies $x,z>0$
-and $xz\geq1$, while $(x,z)=(t,t^{-1})$ is feasible for every $t>0$.
-Consequently the finite dual supremum is $0$, approached as $t\downarrow0$,
-but it is not attained.
+The dual problem therefore maximizes $-x$ subject to positivity of the matrix
+in (\ref{eq:wolf_slater_attainment_conditions_directional_slack}). It is
+strictly feasible at $(x,z)=(2,2)$. Feasibility implies
+\begin{align}
+  x
+    &>0,
+  \label{eq:wolf_slater_attainment_conditions_directional_x_positive}\\
+  z
+    &>0,
+  \label{eq:wolf_slater_attainment_conditions_directional_z_positive}\\
+  xz
+    &\geq1.
+  \label{eq:wolf_slater_attainment_conditions_directional_determinant}
+\end{align}
+For every $t>0$, the point $(x,z)=(t,t^{-1})$ is feasible. Hence
+\begin{align}
+  \sup\{-x:(x,z)\text{ is dual feasible}\}
+    &=0,
+  \label{eq:wolf_slater_attainment_conditions_unattained_dual_supremum}
+\end{align}
+but the supremum is approached only as $t\downarrow0$ and is not attained.
 
-The associated primal constraints are $-X_{11}=-1$ and $-X_{22}=0$.
+The associated primal constraints are
+\begin{align}
+  -X_{11}
+    &=-1,
+  \label{eq:wolf_slater_attainment_conditions_primal_first_diagonal}\\
+  -X_{22}
+    &=0.
+  \label{eq:wolf_slater_attainment_conditions_primal_second_diagonal}
+\end{align}
 Positive semidefiniteness then forces
-$X=\left(\begin{smallmatrix}1&0\\0&0\end{smallmatrix}\right)$, whose primal
-objective is $\tr(F_0X)=0$.  Hence the primal infimum is attained and equals
-the dual supremum, precisely as the correctly directed Slater theorem asserts.
+\begin{align}
+  X
+    &=\begin{pmatrix}1&0\\0&0\end{pmatrix},
+  \label{eq:wolf_slater_attainment_conditions_primal_optimizer}
+\end{align}
+and its objective value is
+\begin{align}
+  \tr(F_0X)
+    &=0.
+  \label{eq:wolf_slater_attainment_conditions_primal_optimum}
+\end{align}
+Thus the primal infimum is attained and equals the dual supremum, exactly as
+the correctly oriented Slater theorem asserts.
 
 \section{Corrected statement}
 
-The finite-dimensional Slater theorem in Wolf's signs and adjoint convention is:
-if the primal problem is strictly feasible and $C_p\in\mathbb R$, then
-$C_p=C_d$ and the dual supremum is attained.  Dually, if the dual problem is
-strictly feasible and $C_d\in\mathbb R$, then $C_p=C_d$ and the primal infimum
-is attained.
+In the signs and adjoint convention of Ref.~\cite{Wolf2012Quantum}, the
+finite-dimensional Slater theorem has the following two directions:
+\begin{align}
+  \text{primal strict feasibility and }C_p\in\mathbb R
+    &\Longrightarrow
+      C_p=C_d\text{ and dual attainment},
+  \label{eq:wolf_slater_attainment_conditions_corrected_primal_direction}\\
+  \text{dual strict feasibility and }C_d\in\mathbb R
+    &\Longrightarrow
+      C_p=C_d\text{ and primal attainment}.
+  \label{eq:wolf_slater_attainment_conditions_corrected_dual_direction}
+\end{align}
 
-The formal development in \doclink{QICLean/Analysis/ConicProgram} proves both
-directions.  The source-facing declarations
+The formal development proves both implications in
+\doclink{QICLean/Analysis/ConicProgram}.\footnote{The primal-strict direction
+is given by
 \leanid{ConicProgram.exists_isDualOptimizer_of_isPrimalStrictlyFeasible_of_primalValue_eq_coe}
 and
-\leanid{ConicProgram.values_eq_of_isPrimalStrictlyFeasible_of_primalValue_eq_coe}
-give dual attainment and value equality from primal strict feasibility and
-$C_p=p\in\mathbb R$.  The declarations
+\leanid{ConicProgram.values_eq_of_isPrimalStrictlyFeasible_of_primalValue_eq_coe}.
+The dual-strict direction is given by
 \leanid{ConicProgram.exists_isPrimalOptimizer_of_isDualStrictlyFeasible_of_dualValue_eq_coe}
 and
-\leanid{ConicProgram.values_eq_of_isDualStrictlyFeasible_of_dualValue_eq_coe}
-give the dual statement.  The equivalences
+\leanid{ConicProgram.values_eq_of_isDualStrictlyFeasible_of_dualValue_eq_coe}.}
+The first pair assumes primal strict feasibility and $C_p=p\in\mathbb R$; the
+second assumes dual strict feasibility and $C_d=p\in\mathbb R$. The
+declarations
 \leanid{ConicProgram.primalValue_eq_coe_iff_isGLB} and
 \leanid{ConicProgram.dualValue_eq_coe_iff_isLUB} identify these hypotheses
 with the corresponding real greatest-lower-bound and least-upper-bound
-conditions whenever the feasible set is nonempty.
+conditions whenever the relevant feasible set is nonempty.
 
 The direct semidefinite specializations are proved in
-\doclink{QICLean/Analysis/SemidefiniteDuality}.  The declarations
+\doclink{QICLean/Analysis/SemidefiniteDuality}.\footnote{The primal-strict
+declarations are
 \leanid{SemidefiniteProgram.exists_dualOptimizer_of_primalStrict_of_primalValue_eq_coe}
 and
-\leanid{SemidefiniteProgram.values_eq_of_primalStrict_of_primalValue_eq_coe}
-give dual attainment and value equality from a positive-definite primal point
-and $C_p=p\in\mathbb R$.  The declarations
+\leanid{SemidefiniteProgram.values_eq_of_primalStrict_of_primalValue_eq_coe}.
+The dual-strict declarations are
 \leanid{SemidefiniteProgram.exists_primalOptimizer_of_dualStrict_of_dualValue_eq_coe}
 and
-\leanid{SemidefiniteProgram.values_eq_of_dualStrict_of_dualValue_eq_coe}
-give primal attainment and value equality from a positive-definite dual slack
-and $C_d=p\in\mathbb R$.
+\leanid{SemidefiniteProgram.values_eq_of_dualStrict_of_dualValue_eq_coe}.}
+A positive-definite primal point together with $C_p=p\in\mathbb R$ gives dual
+attainment and value equality. A positive-definite dual slack together with
+$C_d=p\in\mathbb R$ gives primal attainment and value equality.
 
 \section{Separation argument}
 
-For a cone $C$, equality map $A$, objective vector $d$, and right-hand side
-$r$, the proof separates the lifted epigraph
+Let $C$ be a cone, let $A$ be an equality map, let $d$ be an objective vector,
+and let $r$ be the right-hand side. The proof separates the lifted epigraph
 \begin{align}
-  D=\{(A(x),\langle d|x\rangle+s):x\in C,\ s\geq0\}
-  \subseteq\operatorname{ran}(A)\times\mathbb R.
+  D
+    &=\{(A(x),\langle d|x\rangle+s):x\in C,\ s\geq0\}
+      \subseteq\operatorname{ran}(A)\times\mathbb R.
+  \label{eq:wolf_slater_attainment_conditions_lifted_epigraph}
 \end{align}
-The codomain is restricted to $\operatorname{ran}(A)$, so the lifted linear
-map is surjective and hence open in finite dimension.  Strict feasibility
-gives $D$ nonempty interior.  If $p$ is the finite greatest lower bound, then
-$(r,p)$ belongs to $\overline D$ but not to $\operatorname{int}D$.  A
-supporting functional $f$ therefore vanishes at $(r,p)$ and is nonpositive on
-$D$.  Its vertical coefficient $\alpha=f(0,1)$ is strictly negative: if it
-vanished, strict feasibility and openness of the nonzero functional would
-make $0$ an interior point of $(-\infty,0]$.  Normalizing by $-\alpha$ gives
-the required dual multiplier and its attained objective value.
+Restricting the codomain to $\operatorname{ran}(A)$ makes the lifted linear
+map surjective and therefore open in finite dimension. Strict feasibility
+gives $D$ nonempty interior. If $p$ is the finite greatest lower bound, then
+\begin{align}
+  (r,p)
+    &\in\overline D\setminus\operatorname{int}D.
+  \label{eq:wolf_slater_attainment_conditions_boundary_point}
+\end{align}
+A supporting functional $f$ therefore satisfies
+\begin{align}
+  f(r,p)
+    &=0,
+  \label{eq:wolf_slater_attainment_conditions_supporting_vanishes}\\
+  f(z)
+    &\leq0
+    \qquad\text{for every }z\in D.
+  \label{eq:wolf_slater_attainment_conditions_supporting_nonpositive}
+\end{align}
+Its vertical coefficient
+\begin{align}
+  \alpha
+    &=f(0,1)
+  \label{eq:wolf_slater_attainment_conditions_vertical_coefficient}
+\end{align}
+is strictly negative. If $\alpha=0$, strict feasibility and openness of the
+nonzero functional would make $0$ an interior point of $(-\infty,0]$, which
+is impossible. Normalization by $-\alpha$ gives the required dual multiplier
+and its attained objective value.
 
-For the converse direction, the dual problem is written as a primal problem
-on $V'\times K^*$ with cone constraint on the second coordinate, equality map
-$(y,z)\mapsto T^*(y)+z$, and objective $\langle-b|y\rangle$.  The multiplier
-returned by the same separation argument yields $T(-x)=b$ and
-$-x\in K^{**}=K$.  This is precisely primal feasibility in Wolf's signs.
-At no point is a linear image of a closed cone assumed to be closed; only the
-closure membership of the single boundary point $(r,p)$ is used, and it
-follows from the greatest-lower-bound property.
+For the converse direction, write the dual problem as a primal problem on
+$W\times K^*$ with equality map and objective
+\begin{align}
+  (y,z)
+    &\longmapsto T^*(y)+z,
+  \label{eq:wolf_slater_attainment_conditions_converse_equality_map}\\
+  (y,z)
+    &\longmapsto\langle-b|y\rangle.
+  \label{eq:wolf_slater_attainment_conditions_converse_objective}
+\end{align}
+The multiplier returned by the same separation argument satisfies
+\begin{align}
+  T(-x)
+    &=b,
+  \label{eq:wolf_slater_attainment_conditions_converse_constraint}\\
+  -x
+    &\in K^{**}=K.
+  \label{eq:wolf_slater_attainment_conditions_converse_cone_membership}
+\end{align}
+These are precisely the primal feasibility conditions in Wolf's signs. The
+argument never assumes that a linear image of a closed cone is closed. It uses
+only the closure membership in
+(\ref{eq:wolf_slater_attainment_conditions_boundary_point}), which follows
+from the greatest-lower-bound property.
 
 \section{Verdict}
 
 \textbf{Verdict: false as printed; corrected theorem resolved.} The two
-one-dimensional examples show that neither the general assertions at lines
-72--78 nor their semidefinite specialization at lines~100--105 follows from
-strict feasibility alone.  The $2\times2$ example further shows that dual
+one-dimensional examples show that neither the general assertions at
+lines~72--78 nor their semidefinite specialization at lines~100--105 follows
+from strict feasibility alone. The $2\times2$ example also shows that dual
 strict feasibility and a finite dual supremum do not imply dual attainment, so
-line~105 also states the wrong optimizer direction in the dual-strict case.
-With the missing finite-real optimum hypothesis, both value equality and the
-optimizer on the opposite side are now formalized, with separate declarations
-for equality and attainment.  This resolves
+line~105 names the wrong optimizer in the dual-strict case. With the missing
+finite-real optimum hypothesis, value equality and attainment on the opposite
+side are now formalized by separate declarations. This resolves
 \href{https://github.com/LionSR/QICLean/issues/110}{QICLean issue \#110} while
-retaining the source correction, and the same correction governs the
-semidefinite specialization in
+retaining the source correction. The same correction governs the semidefinite
+specialization tracked by
 \href{https://github.com/LionSR/QICLean/issues/111}{QICLean issue \#111}.
 
 \bibliographystyle{alpha}
