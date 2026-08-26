@@ -10,7 +10,7 @@ import QICLean.Spectral.TransferOperatorGapRectNormalized
 # Normalized square transfer-operator bounds
 
 This file specializes the mixed-map spectral bounds in
-`TNLean.Kraus.MixedMap.SpectralRadius` to the square case `D₁ = D₂ = D`.
+`QICLean.Kraus.MixedMap.SpectralRadius` to the square case `D₁ = D₂ = D`.
 
 ## Main results
 
@@ -44,27 +44,26 @@ noncomputable scoped instance : NormedAlgebra ℂ (Matrix (Fin D) (Fin D) ℂ) :
 noncomputable def mixedTransferSpectralRadius (A B : MPSTensor d D) : ENNReal :=
   spectralRadius ℂ
     ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ))
-      (mixedTransferMap A B))
+      (mixedMapLM A B))
 
 theorem mixedTransferSpectralRadius_eq (A B : MPSTensor d D) :
     mixedTransferSpectralRadius A B =
       spectralRadius ℂ
         ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ))
-          (mixedTransferMap A B)) := rfl
+          (mixedMapLM A B)) := rfl
 
 /-- In equal bond dimension, the rectangular and square spectral radii agree. -/
 @[simp]
 theorem mixedTransferSpectralRadius₂_same_dim (A B : MPSTensor d D) :
-    mixedTransferSpectralRadius₂ A B = mixedTransferSpectralRadius A B := by
-  rw [mixedTransferSpectralRadius₂_eq, mixedTransferSpectralRadius_eq,
-    mixedTransferMap₂_same_dim]
+    mixedTransferSpectralRadius₂ A B = mixedTransferSpectralRadius A B :=
+  rfl
 
 /-- Every eigenvalue of the mixed transfer operator has modulus at most one. -/
 theorem eigenvalue_norm_le_one
     (A B : MPSTensor d D)
     (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1)
-    (μ : ℂ) (hμ : Module.End.HasEigenvalue (mixedTransferMap A B) μ) :
+    (μ : ℂ) (hμ : Module.End.HasEigenvalue (mixedMapLM A B) μ) :
     ‖μ‖ ≤ 1 :=
   Kraus.eigenvalue_norm_le_one_mixedMapLM_of_isTP A B hA_norm hB_norm μ hμ
 

@@ -3,7 +3,6 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Spectral.MixedTransfer
 import QICLean.Algebra.ComplexPhasePositivity
 import QICLean.Algebra.MatrixKernelRigidity
 import QICLean.Channel.FixedPoint.CanonicalGauge
@@ -104,12 +103,12 @@ theorem gauged_intertwining_core
     (ρA : Matrix (Fin D₁) (Fin D₁) ℂ) (ρB : Matrix (Fin D₂) (Fin D₂) ℂ)
     (hSA_det : SA.det ≠ 0) (hSB_det : SB.det ≠ 0)
     (hSA_mul : SA * SAᴴ = ρA) (hSB_mul : SB * SBᴴ = ρB)
-    (hρA_fix : transferMap (d := d) (D := D₁) A ρA = ρA)
-    (hρB_fix : transferMap (d := d) (D := D₂) B ρB = ρB)
+    (hρA_fix : mapLM A ρA = ρA)
+    (hρB_fix : mapLM B ρB = ρB)
     (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) (μ : ℂ)
-    (hFX : mixedTransferMap₂ A B X = μ • X)
+    (hFX : mixedMapLM A B X = μ • X)
     (hμ : ‖μ‖ = 1) (hX : X ≠ 0) :
     (∑ i : Fin d, gaugeTensor SA A i * (gaugeTensor SA A i)ᴴ = 1) ∧
       (∑ i : Fin d, gaugeTensor SB B i * (gaugeTensor SB B i)ᴴ = 1) ∧
@@ -120,23 +119,19 @@ theorem gauged_intertwining_core
       (∀ i : Fin d,
         gaugeTensor SA A i * gaugeEigenvector SA SB X =
           μ • gaugeEigenvector SA SB X * gaugeTensor SB B i) := by
-  have hρA_fix' : Kraus.mapLM A ρA = ρA := hρA_fix
-  have hρB_fix' : Kraus.mapLM B ρB = ρB := hρB_fix
-  have hFX' : Kraus.mixedMapLM A B X = μ • X := by
-    simpa only [mixedTransferMap₂] using hFX
   simpa only [gaugeTensor, gaugeEigenvector, Kraus.IsUnital] using
     Kraus.gauged_intertwining_of_mixedMapLM_eigenvector A B SA SB ρA ρB
-      hSA_det hSB_det hSA_mul hSB_mul hρA_fix' hρB_fix' hA_norm hB_norm X μ hFX' hμ hX
+      hSA_det hSB_det hSA_mul hSB_mul hρA_fix hρB_fix hA_norm hB_norm X μ hFX hμ hX
 
 /-- If `A i * X = μ • X * B i` and `B` is unital, then `X * Xᴴ` is a fixed point of
-`transferMap A`. -/
+`mapLM A`. -/
 theorem self_mul_conjTranspose_fixed_of_intertwining
     (A : MPSTensor d D₁) (B : MPSTensor d D₂)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) (μ : ℂ)
     (hB_unital : ∑ i : Fin d, B i * (B i)ᴴ = 1)
     (hInter : ∀ i : Fin d, A i * X = μ • X * B i)
     (hμ : ‖μ‖ = 1) :
-    transferMap A (X * Xᴴ) = X * Xᴴ :=
+    mapLM A (X * Xᴴ) = X * Xᴴ :=
   Kraus.mapLM_self_mul_conjTranspose_fixed_of_intertwining
     A B X μ hB_unital hInter hμ
 
@@ -144,8 +139,8 @@ theorem self_mul_conjTranspose_fixed_of_intertwining
 theorem ungauge_transfer_fixedPoint
     (A : MPSTensor d D) (S σ : Matrix (Fin D) (Fin D) ℂ)
     (hS : IsUnit S.det)
-    (hσ : transferMap (gaugeTensor S A) σ = σ) :
-    transferMap A (S * σ * Sᴴ) = S * σ * Sᴴ := by
+    (hσ : mapLM (gaugeTensor S A) σ = σ) :
+    mapLM A (S * σ * Sᴴ) = S * σ * Sᴴ := by
   have hσ' : Kraus.mapLM (Kraus.gaugeFamily S A) σ = σ := by
     simpa only [gaugeTensor] using hσ
   exact Kraus.mapLM_congruence_fixedPoint_of_gauge_fixedPoint A S σ hS hσ'

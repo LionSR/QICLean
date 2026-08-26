@@ -5,7 +5,6 @@ Authors: TNLean contributors
 -/
 import QICLean.Kraus.MixedMap.Gap
 import QICLean.Kraus.MixedMap.SpectralRadius
-import QICLean.Spectral.MixedTransfer
 
 /-!
 # Normalized rectangular transfer-operator bounds
@@ -50,14 +49,14 @@ noncomputable def mixedTransferSpectralRadius₂
     (A : MPSTensor d D₁) (B : MPSTensor d D₂) : ENNReal :=
   spectralRadius ℂ
     ((Module.End.toContinuousLinearMap (Matrix (Fin D₁) (Fin D₂) ℂ))
-      (mixedTransferMap₂ A B))
+      (mixedMapLM A B))
 
 theorem mixedTransferSpectralRadius₂_eq
     (A : MPSTensor d D₁) (B : MPSTensor d D₂) :
     mixedTransferSpectralRadius₂ A B =
       spectralRadius ℂ
         ((Module.End.toContinuousLinearMap (Matrix (Fin D₁) (Fin D₂) ℂ))
-          (mixedTransferMap₂ A B)) := rfl
+          (mixedMapLM A B)) := rfl
 
 /-! ## Eigenvalue and spectral-radius bounds -/
 
@@ -66,7 +65,7 @@ theorem eigenvalue_norm_le_one₂
     (A : MPSTensor d D₁) (B : MPSTensor d D₂)
     (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1)
-    (μ : ℂ) (hμ : Module.End.HasEigenvalue (mixedTransferMap₂ A B) μ) :
+    (μ : ℂ) (hμ : Module.End.HasEigenvalue (mixedMapLM A B) μ) :
     ‖μ‖ ≤ 1 :=
   Kraus.eigenvalue_norm_le_one_mixedMapLM_of_isTP A B hA_norm hB_norm μ hμ
 
@@ -91,7 +90,7 @@ theorem mixedTransferMap₂_pow_tendsto_zero_of_spectralRadius_lt_one
     (A : MPSTensor d D₁) (B : MPSTensor d D₂)
     (h : mixedTransferSpectralRadius₂ A B < 1)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) :
-    Filter.Tendsto (fun n => ((mixedTransferMap₂ A B) ^ n) X)
+    Filter.Tendsto (fun n => ((mixedMapLM A B) ^ n) X)
       Filter.atTop (nhds 0) :=
   Kraus.mixedMapLM_pow_tendsto_zero_of_spectralRadius_lt_one A B h X
 
