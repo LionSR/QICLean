@@ -12,6 +12,7 @@ import QICLean.Kraus.Blocking
 import QICLean.Kraus.CPPrimitive
 import QICLean.Kraus.Injectivity
 import QICLean.Kraus.InvariantProjection
+import QICLean.Kraus.IrreducibleAction
 import QICLean.Kraus.MapIterate
 import QICLean.Kraus.MixedMap
 import QICLean.Kraus.MixedMap.Gap
@@ -23,6 +24,7 @@ import QICLean.Kraus.PrimitiveFixedPoint.Basic
 import QICLean.Kraus.PrimitiveFixedPoint.FromPeripheral
 import QICLean.Kraus.PrimitiveFixedPoint.Irreducible
 import QICLean.Kraus.PrimitiveFixedPoint.Peripheral
+import QICLean.Kraus.ProjectionTriangularTrace
 import QICLean.Kraus.Tactic
 import QICLean.Kraus.TracePairing
 import QICLean.Kraus.Transfer
