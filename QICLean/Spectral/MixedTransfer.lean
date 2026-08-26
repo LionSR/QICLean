@@ -5,7 +5,6 @@ Authors: TNLean contributors
 -/
 import QICLean.Kraus.MixedMap
 import QICLean.Kraus.Transfer
-import QICLean.Kraus.TransferChannel
 
 /-!
 # Mixed transfer operator and iterated word formulae

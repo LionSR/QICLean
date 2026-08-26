@@ -89,11 +89,10 @@ TNLean's layer numbering below the tensor-network boundary (see
 | **6** | `Wielandt/` | Span-growth, rank-one extraction, rectangular span, Wielandt bound, primitivity equivalences |
 
 TNLean's tensor-network layers (`MPS/`, `PEPS/`, `PiAlgebra/`, `QCA/`) are
-**downstream** of this library, never upstream. `MPS/Core/TransferChannel.lean`
-on the TNLean side is the sanctioned bridge translating `Kraus.mapLM` /
-`IsIrreducibleMap` here into `MPSTensor.transferMap` / `IsIrreducibleTensor`
-there — do not add a channel-side dependency on any matrix-product-state
-notion to remove that bridge's reason to exist.
+**downstream** of this library, never upstream. TNLean consumes the generic
+`Kraus.mapLM` / `IsIrreducibleMap` APIs directly; do not add a channel-side
+dependency on any matrix-product-state notion or recreate compatibility
+wrappers for downstream notation.
 
 ### Key Types and Definitions
 
@@ -353,8 +352,8 @@ build against. When a declaration used across the boundary must change,
 either keep a `@[deprecated] alias` for one release cycle, or open the
 TNLean-side PR in the same batch and merge them together. Before making a
 breaking change here, check TNLean's import surface of this library (grep
-`import QICLean` and the sanctioned-bridge file, `MPS/Core/TransferChannel.lean`,
-on the TNLean side) for consumers.
+`import QICLean` and the relevant consuming declarations on the TNLean side)
+for consumers.
 
 ## Lean proof automation ledger
 
