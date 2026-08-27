@@ -39,6 +39,7 @@ import QICLean.Algebra.MatrixCongruence
 import QICLean.Algebra.MatrixCyclicTracePower
 import QICLean.Algebra.MatrixFamilyAction
 import QICLean.Algebra.MatrixFamilySupport
+import QICLean.Algebra.MatrixGramConjugation
 import QICLean.Algebra.MatrixGramUnitary
 import QICLean.Algebra.MatrixIsometryKronecker
 import QICLean.Algebra.MatrixKernelRigidity

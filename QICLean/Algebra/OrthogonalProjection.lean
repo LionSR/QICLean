@@ -19,6 +19,7 @@ channels and irreducibility.
 * `IsOrthogonalProjection`
 * `IsOrthogonalProjection.one_sub`
 * `IsOrthogonalProjection.exists_range_isometry`
+* `IsOrthogonalProjection.exists_support_isometry`
 * `IsStarProjection.conjTranspose_mul_mul_of_mul_conjTranspose_eq_one`
 * `isOrthogonalProjection_posSemidef`
 * `isOrthogonalProjection_sum_of_pairwise_mul_eq_zero`
@@ -177,6 +178,21 @@ theorem IsOrthogonalProjection.exists_range_isometry
           by_cases hp : p j
           · simp [hp, show f j = 1 from hp]
           · simp [hp, show f j = 0 from (hf01 j).resolve_right hp]
+
+/-- Every orthogonal projection is the range projection of an isometry: there
+are `n` and `V` with `Vᴴ * V = 1`, `V * Vᴴ = P`, and `n = tr P`.
+
+This is the support-isometry factorization used by the sector compressions of
+arXiv:1606.00608, Appendix A; it is stated here without any trace-preservation
+hypothesis on a tensor. -/
+theorem IsOrthogonalProjection.exists_support_isometry {D : ℕ}
+    {P : Matrix (Fin D) (Fin D) ℂ} (hP : IsOrthogonalProjection P) :
+    ∃ (n : ℕ) (V : Matrix (Fin D) (Fin n) ℂ),
+      ((n : ℂ) = Matrix.trace P) ∧ Vᴴ * V = 1 ∧ V * Vᴴ = P := by
+  obtain ⟨n, V, hViso, hVrange⟩ := hP.exists_range_isometry
+  refine ⟨n, V, ?_, hViso, hVrange⟩
+  rw [← hVrange, Matrix.trace_mul_comm, hViso, Matrix.trace_one]
+  simp
 
 /-- A finite sum of pairwise orthogonal projections is an orthogonal
 projection. -/

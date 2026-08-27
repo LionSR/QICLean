@@ -19,6 +19,7 @@ import QICLean.Kraus.MixedMap.Gap
 import QICLean.Kraus.MixedMap.GaugeRigidity
 import QICLean.Kraus.MixedMap.SpectralRadius
 import QICLean.Kraus.MultiBlockWord
+import QICLean.Kraus.NormalCommutant
 import QICLean.Kraus.PrimitiveFixedPoint
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
 import QICLean.Kraus.PrimitiveFixedPoint.FromPeripheral
