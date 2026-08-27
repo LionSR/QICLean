@@ -39,6 +39,19 @@ def IsInjective (A : Fin d → Matrix (Fin D) (Fin D) ℂ) : Prop :=
 lemma IsInjective.span_eq_top {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : IsInjective A) :
     Submodule.span ℂ (Set.range A) = ⊤ := hA
 
+/-- A finite Kraus family is not injective as soon as some linear functional
+annihilates every one of its matrices while not annihilating some matrix. -/
+theorem not_isInjective_of_linearMap
+    {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+    (φ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ℂ) (hA : ∀ i, φ (A i) = 0)
+    (M : Matrix (Fin D) (Fin D) ℂ) (hM : φ M ≠ 0) :
+    ¬ Kraus.IsInjective A := by
+  intro h
+  have hmem : M ∈ Submodule.span ℂ (Set.range A) := h.span_eq_top ▸ Submodule.mem_top
+  have hle : Submodule.span ℂ (Set.range A) ≤ LinearMap.ker φ :=
+    Submodule.span_le.2 (Set.range_subset_iff.2 fun i => LinearMap.mem_ker.2 (hA i))
+  exact hM (LinearMap.mem_ker.1 (hle hmem))
+
 /-- Multiplication of every physical letter by a nonzero scalar preserves
 injectivity. -/
 theorem IsInjective.smul
@@ -83,6 +96,24 @@ theorem IsNBlkInjective.span_eq_top {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {
     (hA : IsNBlkInjective A N) :
     Submodule.span ℂ (Set.range fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) = ⊤ := by
   simpa only [IsNBlkInjective, Kraus.wordSpan] using hA
+
+/-- A finite Kraus family is not `N`-block injective as soon as some linear
+functional annihilates every length-`N` word while not annihilating some matrix. -/
+theorem not_isNBlkInjective_of_linearMap
+    {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (φ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ℂ)
+    (hA : ∀ σ : Fin N → Fin d, φ (Kraus.evalWord A (List.ofFn σ)) = 0)
+    (M : Matrix (Fin D) (Fin D) ℂ) (hM : φ M ≠ 0) :
+    ¬ Kraus.IsNBlkInjective A N := by
+  intro h
+  have hmem : M ∈ Submodule.span ℂ
+      (Set.range fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) :=
+    h.span_eq_top ▸ Submodule.mem_top
+  have hle : Submodule.span ℂ
+      (Set.range fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) ≤
+      LinearMap.ker φ :=
+    Submodule.span_le.2 (Set.range_subset_iff.2 fun σ => LinearMap.mem_ker.2 (hA σ))
+  exact hM (LinearMap.mem_ker.1 (hle hmem))
 
 /-- Normality means eventual block injectivity at a positive length:
 there exists `N ≥ 1` such that the tensor is `N`-block-injective.
