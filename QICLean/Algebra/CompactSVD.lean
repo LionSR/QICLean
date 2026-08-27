@@ -42,7 +42,7 @@ open scoped Matrix InnerProductSpace ComplexOrder
 
 namespace Matrix
 
-variable {m n : ℕ} (M : Matrix (Fin m) (Fin n) ℂ)
+variable {α β : Type*} [Fintype α] [Fintype β] (M : Matrix α β ℂ)
 
 /-- A compact singular-value decomposition of `M`, indexed by `Fin M.rank`.
 
@@ -50,9 +50,9 @@ The factor orientation and row-coisometry identities are those of arXiv:1703.091
 `eq:sf-svd` (lines 479--486).  Only strictly positive singular values are retained. -/
 structure CompactSVD where
   /-- The left row-coisometry in the convention `M = Vᴴ * D * U`. -/
-  V : Matrix (Fin M.rank) (Fin m) ℂ
+  V : Matrix (Fin M.rank) α ℂ
   /-- The right row-coisometry in the convention `M = Vᴴ * D * U`. -/
-  U : Matrix (Fin M.rank) (Fin n) ℂ
+  U : Matrix (Fin M.rank) β ℂ
   /-- The positive singular values, with no zero padding. -/
   singularValues : Fin M.rank → ℝ
   singularValues_pos : ∀ i, 0 < singularValues i
@@ -128,13 +128,13 @@ positive eigenvalues, and normalizes their images under `Mᴴ`; the number retai
 `M.rank`. -/
 theorem exists_compactSVD : Nonempty (CompactSVD M) := by
   classical
-  set A : Matrix (Fin m) (Fin m) ℂ := M * Mᴴ with hAdef
+  set A : Matrix α α ℂ := M * Mᴴ with hAdef
   have hA : A.PosSemidef := by
     rw [hAdef]
     exact posSemidef_self_mul_conjTranspose M
   set e := hA.isHermitian.eigenvectorBasis with he
-  set lam : Fin m → ℝ := hA.isHermitian.eigenvalues with hlam
-  set w : Fin m → EuclideanSpace ℂ (Fin n) :=
+  set lam : α → ℝ := hA.isHermitian.eigenvalues with hlam
+  set w : α → EuclideanSpace ℂ β :=
     fun j ↦ WithLp.toLp 2 (Mᴴ *ᵥ ⇑(e j)) with hw
   have hlam0 : ∀ j, 0 ≤ lam j := fun j ↦ hA.eigenvalues_nonneg j
   have hgram : ∀ j k, ⟪w j, w k⟫_ℂ = if j = k then (lam j : ℂ) else 0 := by
@@ -157,7 +157,7 @@ theorem exists_compactSVD : Nonempty (CompactSVD M) := by
       _ = Fintype.card {j // lam j ≠ 0} := by rw [hlam]
   let q : Fin M.rank ≃ {j // lam j ≠ 0} :=
     Fintype.equivOfCardEq (by simp [hrank])
-  let leftIndex : Fin M.rank → Fin m := fun i ↦ (q i).1
+  let leftIndex : Fin M.rank → α := fun i ↦ (q i).1
   have hleft : Function.Injective leftIndex := by
     intro i j hij
     apply q.injective
@@ -166,7 +166,7 @@ theorem exists_compactSVD : Nonempty (CompactSVD M) := by
   have hspos : ∀ i, 0 < s i := by
     intro i
     exact Real.sqrt_pos.mpr ((hlam0 _).lt_of_ne (Ne.symm (q i).2))
-  let v : Fin M.rank → EuclideanSpace ℂ (Fin n) := fun i ↦
+  let v : Fin M.rank → EuclideanSpace ℂ β := fun i ↦
     WithLp.toLp 2 (star ((s i : ℂ)⁻¹ • ⇑(w (q i).1)))
   have hvOrthonormal : Orthonormal ℂ v := by
     rw [orthonormal_iff_ite]
@@ -194,27 +194,27 @@ theorem exists_compactSVD : Nonempty (CompactSVD M) := by
         intro h
         exact hij (q.injective (Subtype.ext h.symm))
       rw [ite_eq_right hqne, ite_eq_right hij, mul_zero]
-  let E : Matrix (Fin m) (Fin M.rank) ℂ := Matrix.of fun a i ↦ e (leftIndex i) a
-  let V : Matrix (Fin M.rank) (Fin m) ℂ := Eᴴ
-  let F : Matrix (Fin n) (Fin M.rank) ℂ := Matrix.of fun b i ↦ v i b
-  let U : Matrix (Fin M.rank) (Fin n) ℂ := Fᵀ
-  have hstar : ∀ x : Fin m → ℂ, star (Mᴴ *ᵥ x) = star x ᵥ* M := fun x ↦ by
+  let E : Matrix α (Fin M.rank) ℂ := Matrix.of fun a i ↦ e (leftIndex i) a
+  let V : Matrix (Fin M.rank) α ℂ := Eᴴ
+  let F : Matrix β (Fin M.rank) ℂ := Matrix.of fun b i ↦ v i b
+  let U : Matrix (Fin M.rank) β ℂ := Fᵀ
+  have hstar : ∀ x : α → ℂ, star (Mᴴ *ᵥ x) = star x ᵥ* M := fun x ↦ by
     rw [Matrix.star_mulVec, Matrix.conjTranspose_conjTranspose]
-  have hcoeff : ∀ (j : Fin m) (b : Fin n),
+  have hcoeff : ∀ (j : α) (b : β),
       ⟪e j, WithLp.toLp 2 (M *ᵥ Pi.single b 1)⟫_ℂ = star ((w j).ofLp b) := by
     intro j b
     rw [EuclideanSpace.inner_eq_star_dotProduct, WithLp.ofLp_toLp, dotProduct_comm,
       Matrix.dotProduct_mulVec, ← hstar, dotProduct_single_one]
     simp only [hw, WithLp.ofLp_toLp, Pi.star_apply]
-  have hfull : ∀ a b, M a b = ∑ j : Fin m, e j a * star ((w j).ofLp b) := by
+  have hfull : ∀ a b, M a b = ∑ j : α, e j a * star ((w j).ofLp b) := by
     intro a b
     have htoLp : WithLp.toLp 2 (M *ᵥ Pi.single b 1) =
-        ∑ j : Fin m, star ((w j).ofLp b) • e j := by
+        ∑ j : α, star ((w j).ofLp b) • e j := by
       rw [← e.sum_repr' (WithLp.toLp 2 (M *ᵥ Pi.single b 1))]
       exact Finset.sum_congr rfl fun j _ ↦ by rw [hcoeff j b]
     have hfun : M *ᵥ Pi.single b 1 =
-        ∑ j : Fin m, star ((w j).ofLp b) • ⇑(e j) := by
-      have h := congrArg (WithLp.addEquiv 2 (Fin m → ℂ)) htoLp
+        ∑ j : α, star ((w j).ofLp b) • ⇑(e j) := by
+      have h := congrArg (WithLp.addEquiv 2 (α → ℂ)) htoLp
       rw [map_sum, WithLp.coe_addEquiv, WithLp.ofLp_toLp] at h
       rw [h]
       exact Finset.sum_congr rfl fun j _ ↦ WithLp.ofLp_smul _ _ _
@@ -264,12 +264,12 @@ theorem exists_compactSVD : Nonempty (CompactSVD M) := by
         rw [show E = Matrix.of (fun a i ↦ e (leftIndex i) a) by rfl]
         simpa only [EuclideanSpace.basisFun_repr] using
           (Matrix.gram_eq_conjTranspose_mul
-            (EuclideanSpace.basisFun (Fin m) ℂ) (fun i ↦ e (leftIndex i))).symm
+            (EuclideanSpace.basisFun α ℂ) (fun i ↦ e (leftIndex i))).symm
       _ = 1 := Matrix.gram_eq_one_iff_orthonormal.mpr
         (e.orthonormal.comp _ hleft)
   have hU : U * Uᴴ = 1 := by
     ext i j
-    have hinner : ∑ b : Fin n, v i b * star (v j b) = ⟪v j, v i⟫_ℂ := by
+    have hinner : ∑ b : β, v i b * star (v j b) = ⟪v j, v i⟫_ℂ := by
       rw [EuclideanSpace.inner_eq_star_dotProduct]
       simp only [dotProduct, Pi.star_apply]
     simp only [U, F, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.transpose_apply,
