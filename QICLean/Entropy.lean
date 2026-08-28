@@ -14,6 +14,7 @@ import QICLean.Entropy.MutualInformation
 import QICLean.Entropy.MutualInformationBasic
 import QICLean.Entropy.MutualInformationDataProcessing
 import QICLean.Entropy.MutualInformationOperatorSchmidt
+import QICLean.Entropy.PositiveOverlappingProduct
 import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.StrongSubadditivity

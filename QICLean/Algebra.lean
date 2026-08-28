@@ -65,6 +65,7 @@ import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OrthogonalProjection
+import QICLean.Algebra.OverlappingLiftAlgebra
 import QICLean.Algebra.PerronFrobenius
 import QICLean.Algebra.PiProductTrace
 import QICLean.Algebra.PosSemidefSupport

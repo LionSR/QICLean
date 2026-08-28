@@ -1355,6 +1355,37 @@
     \cite{Hayden2004Structure}.
 \end{definition}
 
+\begin{theorem}[Positive commuting overlapping products are quantum Markov]%
+    \label{thm:positive_commuting_overlapping_product_markov}
+    \lean{Matrix.exists_quantumMarkovDecomposition_of_positive_overlapping_product}
+    \leanok
+    \uses{def:hayashi_markov_decomposition,
+        thm:commuting_overlapping_unitary_block_actions,
+        lem:overlapping_lift_algebra}
+    Let $\rho_{ABC}$ have trace one and suppose that, after reassociating the
+    tensor factors, it factors as
+    \begin{align}
+        \rho_{ABC}=X_{AB}Y_{BC},
+        \qquad X_{AB}\succeq0,
+        \qquad Y_{BC}\succeq0,
+        \qquad [X_{AB},Y_{BC}]=0.
+    \end{align}
+    Here the two factors act through their natural overlapping lifts.  Then
+    $\rho_{ABC}$ admits a quantum Markov decomposition on the middle system
+    $B$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Apply the commuting-overlap spatial decomposition to split $H_B$ as a
+    finite direct sum of tensor factors on which the two positive operators act
+    separately.  Positivity passes to the local blocks.  Normalize each pair
+    of positive blocks by its trace; the trace-one hypothesis makes the
+    products of these traces a probability distribution.  The resulting
+    block-diagonal sum is exactly the Hayden--Jozsa--Petz--Winter quantum Markov
+    form~\cite{Hayden2004Structure}.
+\end{proof}
+
 The finite-dimensional operator-algebraic step of the
 Hayden--Jozsa--Petz--Winter derivation of the Koashi--Imoto theorem
 (\cite[Appendix~A]{Hayden2004Structure}) begins with the common invariant

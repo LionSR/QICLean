@@ -112,6 +112,41 @@
     $X_{aa'}Y_{cc'}=Y_{cc'}X_{aa'}$.
 \end{proof}
 
+\begin{lemma}[Algebra of overlapping lifts]%
+    \label{lem:overlapping_lift_algebra}
+    \lean{Matrix.leftOverlappingLift_mul,
+        Matrix.rightOverlappingLift_mul,
+        Matrix.leftOverlappingLift_star,
+        Matrix.rightOverlappingLift_star,
+        Matrix.rightOverlappingLift_kronecker_one,
+        Matrix.overlappingLifts_mul_eq_zero_of_middle_mul_eq_zero,
+        Matrix.leftOverlappingLift_sum,
+        Matrix.leftOverlappingLift_smul,
+        Matrix.rightOverlappingLift_sum,
+        Matrix.posSemidef_of_leftOverlappingLift_posSemidef,
+        Matrix.posSemidef_of_rightOverlappingLift_posSemidef}
+    \leanok
+    \uses{thm:commuting_overlapping_middle_coefficients}
+    The natural lifts from $AB$ and $BC$ to $ABC$ preserve products and
+    adjoints; the left lift preserves finite sums and complex scalar
+    multiplication, and the right lift preserves finite sums.  The right lift
+    of $U_B\otimes\Id_C$ is
+    $\Id_A\otimes U_B\otimes\Id_C$.  If $X_{AB}$ is supported on a middle
+    projection $P$ from the right, $Y_{BC}$ is supported on a middle projection
+    $Q$ from the left, and $PQ=0$, then their overlapping lifts have zero
+    product.  Finally, positivity of either lifted operator implies positivity
+    of the corresponding local operator whenever the complementary factor is
+    nonempty.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Product, adjoint, sum, and scalar identities follow entrywise from the
+    Kronecker formulas.  Insert the two middle support projections and use
+    $PQ=0$ for the annihilation statement.  For positivity reflection, compress
+    the lifted matrix to a principal submatrix obtained by fixing one basis
+    vector in the complementary factor.
+\end{proof}
 
 \begin{theorem}[Coefficient form of the commuting-overlap spatial decomposition]%
     \label{thm:commuting_overlapping_coefficient_spatial_decomposition}
