@@ -21,6 +21,7 @@ finite-dimensional space is of the form `T_t = exp(tL)` for some generator `L`
   `T(t+s) = T(t) ∘ T(s)` and `T(0) = id`.
 * `IsContinuousDynSemigroup` — adds norm-continuity in `t`.
 * `expSemigroupCLM L t` — the canonical semigroup `t ↦ exp(t • L)` (CLM version).
+* `complexExpSemigroupCLM L z` — its complex-parameter extension `z ↦ exp(z • L)`.
 
 ## Main results
 
@@ -30,6 +31,8 @@ finite-dimensional space is of the form `T_t = exp(tL)` for some generator `L`
 * `hasDerivAt_expSemigroupCLM` — `d/dt exp(t•L) = exp(t•L) * L`.
 * `continuousDynSemigroup_eq_exp` — **Proposition 7.1**: every norm-continuous
   semigroup on `M_D(ℂ)` equals `exp(tL)` for some generator `L`.
+* `continuousDynSemigroup_exists_real_complex_extension` — **Proposition 7.1**:
+  the exponential representation extends to real and complex parameter groups.
 
 ## References
 
@@ -132,7 +135,43 @@ def expSemigroupCLM
     (L : MatrixCLM (Fin D)) (t : ℝ) : MatrixCLM (Fin D) :=
   NormedSpace.exp (((t : ℂ) • L))
 
+/-- The complex-parameter exponential extension of a dynamical semigroup generator,
+as in Wolf Proposition 7.1. -/
+def complexExpSemigroupCLM
+    (L : MatrixCLM (Fin D)) (z : ℂ) : MatrixCLM (Fin D) :=
+  NormedSpace.exp (z • L)
+
 /-! ### Semigroup law for exp -/
+
+theorem complexExpSemigroupCLM_add
+    (L : MatrixCLM (Fin D)) (z w : ℂ) :
+    complexExpSemigroupCLM L (z + w) =
+      complexExpSemigroupCLM L z * complexExpSemigroupCLM L w := by
+  rw [complexExpSemigroupCLM, complexExpSemigroupCLM, complexExpSemigroupCLM]
+  have hsum : (z + w) • L = z • L + w • L := add_smul z w L
+  rw [hsum]
+  exact NormedSpace.exp_add_of_commute
+    (((Commute.refl L).smul_left z).smul_right w)
+
+theorem complexExpSemigroupCLM_zero
+    (L : MatrixCLM (Fin D)) :
+    complexExpSemigroupCLM L 0 = 1 := by
+  rw [complexExpSemigroupCLM, zero_smul ℂ L, NormedSpace.exp_zero]
+
+theorem complexExpSemigroupCLM_neg_mul
+    (L : MatrixCLM (Fin D)) (z : ℂ) :
+    complexExpSemigroupCLM L (-z) * complexExpSemigroupCLM L z = 1 := by
+  rw [← complexExpSemigroupCLM_add, neg_add_cancel, complexExpSemigroupCLM_zero]
+
+theorem complexExpSemigroupCLM_mul_neg
+    (L : MatrixCLM (Fin D)) (z : ℂ) :
+    complexExpSemigroupCLM L z * complexExpSemigroupCLM L (-z) = 1 := by
+  rw [← complexExpSemigroupCLM_add, add_neg_cancel, complexExpSemigroupCLM_zero]
+
+theorem complexExpSemigroupCLM_ofReal
+    (L : MatrixCLM (Fin D)) (t : ℝ) :
+    complexExpSemigroupCLM L (t : ℂ) = expSemigroupCLM L t := by
+  rfl
 
 theorem expSemigroupCLM_add
     (L : MatrixCLM (Fin D))
@@ -151,6 +190,16 @@ theorem expSemigroupCLM_zero
   have hz : (0 : ℂ) • L = (0 : MatrixCLM (Fin D)) := by
     exact zero_smul ℂ L
   simp [expSemigroupCLM, hz]
+
+theorem expSemigroupCLM_neg_mul
+    (L : MatrixCLM (Fin D)) (t : ℝ) :
+    expSemigroupCLM L (-t) * expSemigroupCLM L t = 1 := by
+  rw [← expSemigroupCLM_add, neg_add_cancel, expSemigroupCLM_zero]
+
+theorem expSemigroupCLM_mul_neg
+    (L : MatrixCLM (Fin D)) (t : ℝ) :
+    expSemigroupCLM L t * expSemigroupCLM L (-t) = 1 := by
+  rw [← expSemigroupCLM_add, add_neg_cancel, expSemigroupCLM_zero]
 
 /-! ### Continuity of the exponential semigroup -/
 
@@ -594,6 +643,49 @@ theorem continuousDynSemigroup_eq_exp
       have hvt : 0 ≤ v - u := sub_nonneg.mpr hv
       simpa [show u + (v - u) = v by ring] using hS_add u (v - u) hu hvt)
     (by simp [hS_zero])
+
+/-- **Wolf Proposition 7.1, real and complex group extension.** Every
+norm-continuous dynamical semigroup on `M_D(ℂ)` agrees at nonnegative real
+times with an exponential family. The same exponential formula satisfies the
+group law and has two-sided inverses for every real or complex parameter, and
+the complex family restricts to the real family.
+
+Source: Wolf, *Quantum Channels & Operations: Guided Tour*, Proposition 7.1;
+`Notes/WolfNoteTexSource/ch07_semigroup_structure.tex`, lines 67--84. -/
+theorem continuousDynSemigroup_exists_real_complex_extension
+    (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (hT : IsContinuousDynSemigroup T) :
+    ∃ L : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ,
+      (∀ t : ℝ, 0 ≤ t → T t = expSemigroup L t) ∧
+      (∀ t s : ℝ,
+        expSemigroupCLM (endEquiv L) (t + s) =
+          expSemigroupCLM (endEquiv L) t * expSemigroupCLM (endEquiv L) s) ∧
+      (∀ t : ℝ,
+        expSemigroupCLM (endEquiv L) (-t) * expSemigroupCLM (endEquiv L) t = 1 ∧
+        expSemigroupCLM (endEquiv L) t * expSemigroupCLM (endEquiv L) (-t) = 1) ∧
+      (∀ z w : ℂ,
+        complexExpSemigroupCLM (endEquiv L) (z + w) =
+          complexExpSemigroupCLM (endEquiv L) z *
+            complexExpSemigroupCLM (endEquiv L) w) ∧
+      (∀ z : ℂ,
+        complexExpSemigroupCLM (endEquiv L) (-z) *
+            complexExpSemigroupCLM (endEquiv L) z = 1 ∧
+        complexExpSemigroupCLM (endEquiv L) z *
+            complexExpSemigroupCLM (endEquiv L) (-z) = 1) ∧
+      (∀ t : ℝ,
+        complexExpSemigroupCLM (endEquiv L) (t : ℂ) =
+          expSemigroupCLM (endEquiv L) t) := by
+  obtain ⟨L, hL⟩ := continuousDynSemigroup_eq_exp T hT
+  refine ⟨L, hL, ?_, ?_, ?_, ?_, ?_⟩
+  · exact expSemigroupCLM_add (endEquiv L)
+  · intro t
+    exact ⟨expSemigroupCLM_neg_mul (endEquiv L) t,
+      expSemigroupCLM_mul_neg (endEquiv L) t⟩
+  · exact complexExpSemigroupCLM_add (endEquiv L)
+  · intro z
+    exact ⟨complexExpSemigroupCLM_neg_mul (endEquiv L) z,
+      complexExpSemigroupCLM_mul_neg (endEquiv L) z⟩
+  · exact complexExpSemigroupCLM_ofReal (endEquiv L)
 
 /-- Uniqueness of the generator: if `exp(t•L) = exp(t•L')` for all `t ≥ 0`,
 then `L = L'`. Proof: both CLM semigroups agree on `[0,∞)`, hence their

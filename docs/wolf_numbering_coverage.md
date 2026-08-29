@@ -2051,15 +2051,19 @@ tensor-network layer; it is indexed in `TNLean.Wielandt.WolfChapter6TNIndex`.
 
 ## Wolf Lecture Notes — Chapter 7: Continuous one-parameter semigroups
 
-The complete named-environment audit classifies exactly six Chapter 7
-source environments as partial rather than exact:
+Proposition 7.1 is exact: `continuousDynSemigroup_exists_real_complex_extension`
+states the nonnegative-time exponential representation together with the
+real and complex exponential group laws, two-sided inverses, and agreement of
+the complex family with the real family. Corollary 7.1 is also exact. The
+abstract theorem `perturbation_bound_of_duhamel` proves the displayed estimate
+for every submultiplicative norm from the Duhamel identity, while
+`perturbation_bound` supplies the finite-dimensional matrix specialization.
+Here Wolf's “any norm” refers to the operator norm induced by the chosen norm on
+the state space, as defined immediately before Proposition 7.1.
 
-- Proposition 7.1, “From continuous semigroups to differentiable groups”: the
-  real nonnegative-time exponential representation is proved, but the claimed
-  real/complex parameter group extension is not packaged (partial-scope).
-- Corollary 7.1, “Perturbation of generators”: the displayed estimate is proved
-  for the project's fixed operator norm, not for an arbitrary submultiplicative
-  norm as printed (partial-scope).
+The complete named-environment audit therefore classifies exactly four Chapter
+7 source environments as partial rather than exact:
+
 - Proposition 7.4, “Freedom in representation of generators”: the shift,
   tracelessness, uniqueness, and Kraus-freedom ingredients are formalized, but
   not assembled under one source-facing proposition (partial-packaging).
