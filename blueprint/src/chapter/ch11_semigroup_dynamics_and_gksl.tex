@@ -173,13 +173,26 @@
     Theorem~\ref{thm:expSemigroup_zero_ch12}.
 \end{proof}
 
-\begin{theorem}[Every continuous semigroup is exponential]
+\begin{theorem}[Continuous semigroups and exponential group extensions]
     \label{thm:continuousDynSemigroup_eq_exp_ch12}
-    \lean{continuousDynSemigroup_eq_exp}\leanok
+    \lean{continuousDynSemigroup_eq_exp,
+        continuousDynSemigroup_exists_real_complex_extension,
+        complexExpSemigroupCLM, expSemigroupCLM_add,
+        expSemigroupCLM_neg_mul, expSemigroupCLM_mul_neg,
+        complexExpSemigroupCLM_add, complexExpSemigroupCLM_neg_mul,
+        complexExpSemigroupCLM_mul_neg,
+        complexExpSemigroupCLM_ofReal}\leanok
     \uses{def:continuous_dyn_semigroup_ch12, def:exp_semigroup_ch12}
     Every norm-continuous dynamical semigroup $T$ on $\MN{D}$ is
     of the form $T_t = e^{tL}$ for some generator
     $L \in \End_{\C}(\MN{D})$ and every $t \ge 0$.
+    Moreover, the same formula $T_z=e^{zL}$ for $z\in\C$ gives a complex
+    parameter group, whose restriction to $\R$ gives the real parameter group:
+    \begin{align}
+        T_{z+w}&=T_zT_w,
+        &T_{-z}T_z=T_zT_{-z}&=\Id.
+        \label{eq:semigroup_real_complex_extension}
+    \end{align}
     This is \cite[Proposition~7.1]{Wolf2012Quantum}.
 \end{theorem}
 
@@ -192,6 +205,11 @@
     $T_t = M_\varepsilon^{-1}(M_{t+\varepsilon} - M_t)$
     is differentiable for $t \ge 0$.
     ODE uniqueness then gives $T_t = e^{tL}$ for all $t \ge 0$.
+    Since scalar multiples of $L$ commute, the exponential addition formula
+    gives the complex group law in
+    (\ref{eq:semigroup_real_complex_extension}); substituting $-z$
+    gives the two-sided inverses. Restricting the complex parameter to
+    $\R\subset\C$ gives the real group extension.
 \end{proof}
 
 %% ---------------------------------------------------------
@@ -221,9 +239,10 @@
 \end{proof}
 
 \begin{theorem}[Perturbation bound]\label{thm:perturbation_bound_ch12}
-    \lean{perturbation_bound}\leanok
+    \lean{perturbation_bound_of_duhamel, perturbation_bound}\leanok
     \uses{thm:duhamel_formula_ch12}
-    For $t \ge 0$,
+    For $t \ge 0$ and every operator norm induced by a norm on the
+    finite-dimensional state space,
     \begin{align}
         \bigl\|e^{tL'} - e^{tL}\bigr\|
         &\le t\,\|\Delta\|

@@ -22,6 +22,8 @@ import Mathlib.Analysis.Normed.Group.InfiniteSum
 ## Main results
 
 * `duhamel_formula` — **Lemma 7.1** (Duhamel/perturbation integral formula)
+* `perturbation_bound_of_duhamel` — **Corollary 7.1** for an arbitrary
+  submultiplicative norm
 * `perturbation_bound` — **Corollary 7.1** (perturbation of generators)
 * `dysonTerm_continuous` — continuity of each Dyson iterate in the time parameter
 * `norm_dysonRemainder_le` — factorial norm bound on the Dyson partial-sum remainder
@@ -152,6 +154,52 @@ theorem duhamel_formula
         expSemigroupCLM L (t - 0) * expSemigroupCLM L' 0
   simp [sub_self, sub_zero, expSemigroupCLM_zero]
 
+/-! ## Corollary 7.1 for an arbitrary submultiplicative norm -/
+
+/-- The norm estimate in Wolf Corollary 7.1 uses only the Duhamel identity,
+the triangle inequality for the Bochner integral, and submultiplicativity.
+Consequently it holds for every norm making the ambient algebra a normed
+ring. In Wolf's setting this is the operator norm induced by any chosen norm
+on the finite-dimensional state space (source lines 47--50 and 133--140).
+
+Source: Wolf, *Quantum Channels & Operations: Guided Tour*, Corollary 7.1;
+`Notes/WolfNoteTexSource/ch07_semigroup_structure.tex`, lines 133--140. -/
+theorem perturbation_bound_of_duhamel
+    {A : Type*} [NormedRing A] [NormedSpace ℝ A] [CompleteSpace A]
+    (T T' : ℝ → A) (Δ : A) (t M M' : ℝ) (ht : 0 ≤ t)
+    (hduhamel : T' t - T t =
+      ∫ s in Set.Icc 0 t, T (t - s) * Δ * T' s)
+    (hT : ∀ s ∈ Set.Icc 0 t, ‖T s‖ ≤ M)
+    (hT' : ∀ s ∈ Set.Icc 0 t, ‖T' s‖ ≤ M') :
+    ‖T' t - T t‖ ≤ t * ‖Δ‖ * M * M' := by
+  rw [hduhamel]
+  have hmeas : volume (Set.Icc (0 : ℝ) t) < ⊤ := by
+    rw [Real.volume_Icc]
+    exact ENNReal.ofReal_lt_top
+  have hpointwise : ∀ s ∈ Set.Icc 0 t,
+      ‖T (t - s) * Δ * T' s‖ ≤ M * ‖Δ‖ * M' := by
+    intro s hs
+    refine (norm_mul₃_le : ‖T (t - s) * Δ * T' s‖ ≤
+      ‖T (t - s)‖ * ‖Δ‖ * ‖T' s‖).trans ?_
+    have hts : t - s ∈ Set.Icc (0 : ℝ) t :=
+      ⟨sub_nonneg.mpr hs.2, sub_le_self t hs.1⟩
+    have hM : 0 ≤ M :=
+      (norm_nonneg (T 0)).trans (hT 0 (Set.left_mem_Icc.mpr ht))
+    exact mul_le_mul
+      (mul_le_mul_of_nonneg_right (hT (t - s) hts) (norm_nonneg Δ))
+      (hT' s hs) (norm_nonneg (T' s)) (mul_nonneg hM (norm_nonneg Δ))
+  have hInt := MeasureTheory.norm_setIntegral_le_of_norm_le_const hmeas hpointwise
+  have hvol : volume.real (Set.Icc (0 : ℝ) t) = t := by
+    rw [Measure.real_def, Real.volume_Icc,
+      ENNReal.toReal_ofReal (sub_nonneg.mpr ht)]
+    ring
+  calc
+    ‖∫ s in Set.Icc 0 t, T (t - s) * Δ * T' s‖
+        ≤ M * ‖Δ‖ * M' * t := by
+          rw [hvol] at hInt
+          exact hInt
+    _ = t * ‖Δ‖ * M * M' := by ring
+
 /-! ## Auxiliary estimate for biSup bounds -/
 
 private lemma norm_expSemigroup_le_biSup (L : MatrixCLM (Fin D)) {t : ℝ} (ht : 0 ≤ t)
@@ -188,33 +236,14 @@ theorem perturbation_bound
       t * ‖L' - L‖ *
         (⨆ s ∈ Set.Icc 0 t, ‖expSemigroupCLM L s‖) *
         (⨆ s ∈ Set.Icc 0 t, ‖expSemigroupCLM L' s‖) := by
-  rw [duhamel_formula L L' t ht]
-  set Δ := L' - L
-  set M := ⨆ s ∈ Set.Icc 0 t, ‖expSemigroupCLM L s‖
-  set M' := ⨆ s ∈ Set.Icc 0 t, ‖expSemigroupCLM L' s‖
-  have hmeas : volume (Set.Icc (0 : ℝ) t) < ⊤ := by
-    rw [Real.volume_Icc]; exact ENNReal.ofReal_lt_top
-  have hpointwise : ∀ s ∈ Set.Icc 0 t,
-      ‖expSemigroupCLM L (t - s) * Δ * expSemigroupCLM L' s‖ ≤ M * ‖Δ‖ * M' := by
-    intro s hs
-    calc ‖expSemigroupCLM L (t - s) * Δ * expSemigroupCLM L' s‖
-        ≤ ‖expSemigroupCLM L (t - s) * Δ‖ * ‖expSemigroupCLM L' s‖ := norm_mul_le _ _
-      _ ≤ ‖expSemigroupCLM L (t - s)‖ * ‖Δ‖ * ‖expSemigroupCLM L' s‖ :=
-          mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _)
-      _ ≤ M * ‖Δ‖ * M' := by
-          apply mul_le_mul (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)) ?_
-            (norm_nonneg _) (mul_nonneg ?_ (norm_nonneg _))
-          · exact norm_expSemigroup_le_biSup L ht
-              ⟨sub_nonneg.mpr hs.2, sub_le_self t hs.1⟩
-          · exact norm_expSemigroup_le_biSup L' ht hs
-          · exact le_trans (norm_nonneg _)
-              (norm_expSemigroup_le_biSup L ht (Set.left_mem_Icc.mpr ht))
-  calc ‖∫ s in Set.Icc 0 t, expSemigroupCLM L (t - s) * Δ * expSemigroupCLM L' s‖
-      ≤ M * ‖Δ‖ * M' * (volume (Set.Icc (0 : ℝ) t)).toReal :=
-        norm_setIntegral_le_of_norm_le_const hmeas hpointwise
-    _ = t * ‖Δ‖ * M * M' := by
-        rw [Real.volume_Icc, ENNReal.toReal_ofReal (by linarith : (0 : ℝ) ≤ t - 0)]
-        ring
+  exact perturbation_bound_of_duhamel
+    (T := expSemigroupCLM L) (T' := expSemigroupCLM L') (Δ := L' - L)
+    (t := t)
+    (M := ⨆ s ∈ Set.Icc 0 t, ‖expSemigroupCLM L s‖)
+    (M' := ⨆ s ∈ Set.Icc 0 t, ‖expSemigroupCLM L' s‖)
+    ht (duhamel_formula L L' t ht)
+    (fun s hs => norm_expSemigroup_le_biSup L ht hs)
+    (fun s hs => norm_expSemigroup_le_biSup L' ht hs)
 
 /-- Simplified perturbation bound for quantum channels (where ‖T_s‖ ≤ 1):
 `‖T'_t - T_t‖ ≤ t · ‖Δ‖`. -/
