@@ -265,6 +265,55 @@ theorem hasDerivAt_expSemigroupCLM_zero
   have h := hasDerivAt_expSemigroupCLM L 0
   simpa [expSemigroupCLM_zero] using h
 
+/-- The exponential increment factors through its generator:
+
+`exp(tL) - 1 = (∫ s in 0..t, exp(sL)) * L`.
+
+This is the fundamental theorem of calculus applied to the operator-valued
+exponential. -/
+theorem expSemigroupCLM_sub_one_eq_intervalIntegral_mul
+    (L : MatrixCLM (Fin D)) (t : ℝ) :
+    expSemigroupCLM L t - 1 =
+      intervalIntegral (fun s : ℝ => expSemigroupCLM L s) 0 t MeasureTheory.volume * L := by
+  have hFTC :
+      intervalIntegral (fun s : ℝ => expSemigroupCLM L s * L)
+          0 t MeasureTheory.volume =
+        expSemigroupCLM L t - expSemigroupCLM L 0 :=
+    intervalIntegral.integral_eq_sub_of_hasDerivAt
+      (fun s _ => hasDerivAt_expSemigroupCLM L s) <| by
+        have hcont : Continuous (fun s : ℝ => expSemigroupCLM L s * L) :=
+          (expSemigroupCLM_continuous L).mul
+            (continuous_const : Continuous (fun _ : ℝ => L))
+        exact hcont.intervalIntegrable 0 t
+  let Rright : MatrixCLM (Fin D) →L[ℝ] MatrixCLM (Fin D) :=
+    ((ContinuousLinearMap.compL ℂ
+      (Matrix (Fin D) (Fin D) ℂ)
+      (Matrix (Fin D) (Fin D) ℂ)
+      (Matrix (Fin D) (Fin D) ℂ)).flip L).restrictScalars ℝ
+  have happly (A : MatrixCLM (Fin D)) : Rright A = A * L := by
+    ext X
+    rfl
+  have hInt :
+      intervalIntegral (fun s : ℝ => expSemigroupCLM L s * L)
+          0 t MeasureTheory.volume =
+        intervalIntegral (fun s : ℝ => expSemigroupCLM L s)
+            0 t MeasureTheory.volume * L := by
+    have hS_int : IntervalIntegrable (fun s : ℝ => expSemigroupCLM L s)
+        MeasureTheory.volume 0 t :=
+      (expSemigroupCLM_continuous L).intervalIntegrable 0 t
+    have hlin := Rright.intervalIntegral_comp_comm hS_int
+    calc
+      intervalIntegral (fun s : ℝ => expSemigroupCLM L s * L)
+          0 t MeasureTheory.volume =
+          intervalIntegral (fun s : ℝ => Rright (expSemigroupCLM L s))
+            0 t MeasureTheory.volume := by
+              congr 1
+      _ = Rright (intervalIntegral (fun s : ℝ => expSemigroupCLM L s)
+            0 t MeasureTheory.volume) := hlin
+      _ = intervalIntegral (fun s : ℝ => expSemigroupCLM L s)
+            0 t MeasureTheory.volume * L := happly _
+  rw [← hInt, hFTC, expSemigroupCLM_zero]
+
 /-! ## Semigroup properties lifted to linear maps -/
 
 /-- The exponential semigroup as a family of linear maps. -/
@@ -366,6 +415,61 @@ theorem expSemigroup_isContinuousDynSemigroup
 
 /-! ## Proposition 7.1: Continuous semigroup → exp(tL) -/
 
+/-- A continuous family of continuous linear endomorphisms that equals the identity at zero has
+an invertible positive-time integral.
+
+Indeed, the normalized integrals
+`ε⁻¹ • ∫ t in 0..ε, S t` converge to `S 0 = 1` as `ε ↓ 0`.  Since the group of
+units is open, one of these normalized integrals, and hence the corresponding
+unnormalized integral, is invertible. -/
+theorem exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one
+    (S : ℝ → MatrixCLM (Fin D))
+    (hS_zero : S 0 = 1)
+    (hS_cont : Continuous S) :
+    ∃ ε : ℝ, 0 < ε ∧
+      IsUnit (intervalIntegral S 0 ε MeasureTheory.volume) := by
+  let P : ℝ → MatrixCLM (Fin D) :=
+    fun t : ℝ => intervalIntegral S 0 t MeasureTheory.volume
+  have hP_deriv_zero : HasDerivAt P 1 0 := by
+    have hP_deriv :
+        @HasDerivAt ℝ _ (MatrixCLM (Fin D))
+          ContinuousLinearMap.addCommGroup
+          ContinuousLinearMap.module
+          ContinuousLinearMap.topologicalSpace
+          (TNOperatorSpace.instContinuousSMulRealMatrixCLM (Fin D))
+          P (S 0) 0 :=
+      intervalIntegral.integral_hasDerivAt_right
+        (hS_cont.intervalIntegrable 0 0)
+        (hS_cont.stronglyMeasurableAtFilter _ _)
+        hS_cont.continuousAt
+    exact hS_zero ▸ hP_deriv
+  have hP_zero : P 0 = 0 := intervalIntegral.integral_same
+  have htend : Filter.Tendsto
+      (fun h : ℝ => h⁻¹ • (P (0 + h) - P 0))
+      (nhdsWithin (0 : ℝ) (Set.Ioi 0))
+      (nhds (1 : MatrixCLM (Fin D))) := by
+    exact @HasDerivAt.tendsto_slope_zero_right ℝ _ (MatrixCLM (Fin D))
+      ContinuousLinearMap.toNormedAddCommGroup
+      (ContinuousLinearMap.toNormedSpace : NormedSpace ℝ (MatrixCLM (Fin D)))
+      P (1 : MatrixCLM (Fin D)) 0 _ hP_deriv_zero
+  have hunit_event : ∀ᶠ h in nhdsWithin (0 : ℝ) (Set.Ioi 0),
+      IsUnit (h⁻¹ • (P (0 + h) - P 0)) :=
+    htend.eventually (Units.isOpen.mem_nhds isUnit_one)
+  obtain ⟨ε, hunitε, hε_mem⟩ := (hunit_event.and self_mem_nhdsWithin).exists
+  have hε_pos : 0 < ε := hε_mem
+  refine ⟨ε, hε_pos, ?_⟩
+  have hu1 : IsUnit (ε⁻¹ • P ε) := by
+    simpa [hP_zero] using hunitε
+  have hu2 : IsUnit (ε • (1 : MatrixCLM (Fin D))) := by
+    change IsUnit (algebraMap ℝ (MatrixCLM (Fin D)) ε)
+    exact (IsUnit.mk0 ε (ne_of_gt hε_pos)).map (algebraMap ℝ _)
+  have hfact : P ε = (ε • (1 : MatrixCLM (Fin D))) * ((ε⁻¹ : ℝ) • P ε) := by
+    rw [Algebra.smul_mul_assoc (R := ℝ) (A := MatrixCLM (Fin D)), one_mul, smul_smul,
+        mul_inv_cancel₀ (ne_of_gt hε_pos), one_smul]
+  change IsUnit (P ε)
+  rw [hfact]
+  exact hu2.mul hu1
+
 /-- In a finite-dimensional normed algebra, the Bochner integral `(1/ε) • ∫₀^ε S(t) dt`
 is close to `S(0) = 1` for small `ε`, hence invertible. From this and the semigroup
 property, `S` is right-differentiable at `0`.
@@ -392,38 +496,10 @@ private theorem continuous_semigroup_hasDerivWithinAt_zero
       (hS_cont.intervalIntegrable 0 t)
       (hS_cont.stronglyMeasurableAtFilter _ _)
       hS_cont.continuousAt
-  have hP_zero : P 0 = 0 := intervalIntegral.integral_same
-  -- P'(0) = S(0) = 1
-  have hP_deriv_zero : HasDerivAt P 1 0 := hS_zero ▸ hP_deriv 0
-  -- Find ε > 0 such that P(ε) is invertible.
-  -- Since P'(0) = 1, the right-hand slope ε⁻¹ • P(ε) tends to 1. The unit
-  -- group is open, so this slope is a unit for some positive ε.
-  have hP_unit : ∃ ε : ℝ, 0 < ε ∧ IsUnit (P ε) := by
-    have htend : Filter.Tendsto
-        (fun h : ℝ => h⁻¹ • (P (0 + h) - P 0))
-        (nhdsWithin (0 : ℝ) (Set.Ioi 0))
-        (nhds (1 : MatrixCLM (Fin D))) := by
-      exact @HasDerivAt.tendsto_slope_zero_right ℝ _ (MatrixCLM (Fin D))
-        ContinuousLinearMap.toNormedAddCommGroup
-        (ContinuousLinearMap.toNormedSpace : NormedSpace ℝ (MatrixCLM (Fin D)))
-        P (1 : MatrixCLM (Fin D)) 0 _ hP_deriv_zero
-    have hunit_event : ∀ᶠ h in nhdsWithin (0 : ℝ) (Set.Ioi 0),
-        IsUnit (h⁻¹ • (P (0 + h) - P 0)) :=
-      htend.eventually (Units.isOpen.mem_nhds isUnit_one)
-    obtain ⟨ε, hunitε, hε_mem⟩ := (hunit_event.and self_mem_nhdsWithin).exists
-    have hε_pos : 0 < ε := hε_mem
-    refine ⟨ε, hε_pos, ?_⟩
-    have hu1 : IsUnit (ε⁻¹ • P ε) := by
-      simpa [hP_zero] using hunitε
-    have hu2 : IsUnit (ε • (1 : MatrixCLM (Fin D))) := by
-      change IsUnit (algebraMap ℝ (MatrixCLM (Fin D)) ε)
-      exact (IsUnit.mk0 ε (ne_of_gt hε_pos)).map (algebraMap ℝ _)
-    have hfact : P ε = (ε • (1 : MatrixCLM (Fin D))) * ((ε⁻¹ : ℝ) • P ε) := by
-      rw [Algebra.smul_mul_assoc (R := ℝ) (A := MatrixCLM (Fin D)), one_mul, smul_smul,
-          mul_inv_cancel₀ (ne_of_gt hε_pos), one_smul]
-    rw [hfact]
-    exact hu2.mul hu1
-  obtain ⟨ε, hε_pos, hPε_unit⟩ := hP_unit
+  obtain ⟨ε, hε_pos, hPε_unit_raw⟩ :=
+    exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one S hS_zero hS_cont
+  have hPε_unit : IsUnit (P ε) := by
+    simpa [P] using hPε_unit_raw
   -- Define Q(h) = P(h+ε) - P(h)
   let Q : ℝ → MatrixCLM (Fin D) := fun h => P (h + ε) - P h
   -- Q has derivative S(h+ε) - S(h) at each h

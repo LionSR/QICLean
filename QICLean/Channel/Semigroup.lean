@@ -35,6 +35,5 @@ import QICLean.Channel.Semigroup.ReducibleQDS.Defs
 import QICLean.Channel.Semigroup.ReducibleQDS.Equivalence
 import QICLean.Channel.Semigroup.ReducibleQDS.FixedDensity
 import QICLean.Channel.Semigroup.ReducibleQDS.GeneratorCompression
-import QICLean.Channel.Semigroup.ReducibleQDS.SubsequenceAnalysis
 import QICLean.Channel.Semigroup.RelaxationConditions
 import QICLean.Channel.Semigroup.WeightedLoweringContractivity

@@ -631,7 +631,10 @@
         trace_zero_tendsto_zero_of_primitive_unit_slice,
         relaxation_and_simple_kernel_of_irreducible_time,
         irreducible_unit_of_relaxesTo,
-        exists_irreducible_time_of_simple_kernel}\leanok
+        exists_irreducible_time_of_simple_kernel,
+        exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero,
+        expSemigroupCLM_sub_one_eq_intervalIntegral_mul,
+        exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one}\leanok
     \uses{def:qds_faithful_relaxation,
         thm:qds_irreducible_iff_primitive}
     Let $T_t=e^{tL}$, $t\in\R_+$, be a norm-continuous dynamical semigroup
@@ -648,12 +651,6 @@
               positive-definite density matrix $\rho_\infty$.
     \end{enumerate}
     This is \cite[Proposition~7.5]{Wolf2012Quantum}.
-
-    In the Lean statement, condition~3 also records irreducibility.  The
-    project predicate \texttt{IsPrimitive} records the set of peripheral
-    eigenvalues but not their algebraic multiplicities; its conjunction with
-    irreducibility is therefore the predicate corresponding to ``primitive''
-    in the source.
 \end{theorem}
 
 \begin{proof}\leanok
@@ -668,13 +665,20 @@
 
     Relaxation excludes a proper invariant compression: such a compression
     would contain a density matrix fixed at every integer time, which would
-    have to equal the positive-definite limit.  Finally, if the simple faithful
-    kernel admitted no irreducible positive-time slice, invariant
-    compressions at the times $1/(n+1)$ would give singular fixed density
-    matrices.  Compactness and the first-order expansion of $e^{tL}$ yield a
-    singular density matrix in $\ker L$, contradicting the faithful generator
-    of that kernel.  Conversely, the kernel is contained in every fixed-point
-    space, so one irreducible slice makes it one-dimensional.
+    have to equal the positive-definite limit.
+
+    For the implication from condition~5 to condition~1, choose $t_0>0$ so
+    that the fixed-point space of $e^{t_0L}$ is precisely $\ker L$.  Such a
+    time exists because
+    \[
+        e^{tL}-\Id=
+        \left(\int_0^t e^{sL}\,ds\right)L,
+    \]
+    and the integral factor is invertible for all sufficiently small positive
+    $t$.  Thus $e^{t_0L}$ has the unique fixed direction
+    $\C\rho_\infty$, with $\rho_\infty>0$, and is irreducible by
+    Theorem~6.4.  Conversely, $\ker L$ is contained in the fixed-point space
+    of every $e^{tL}$, so an irreducible slice forces condition~5.
 \end{proof}
 
 %% ---------------------------------------------------------

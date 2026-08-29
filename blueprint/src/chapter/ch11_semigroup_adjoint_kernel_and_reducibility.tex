@@ -340,7 +340,8 @@ The four equivalent reducibility conditions of
 
 \begin{theorem}[Triangular Lindblad data give deficient kernels]
     \label{thm:blockUpperTriangular_implies_rankDeficient}
-    \lean{hasRankDeficientKernelElement_of_hasBlockUpperTriangularLindblad}\leanok
+    \lean{hasRankDeficientKernelElement_of_hasBlockUpperTriangularLindblad,
+        IsChannel.exists_fixed_density_of_preserves_compression}\leanok
     \uses{def:has_block_upper_triangular_lindblad,
         def:has_rank_deficient_kernel_element, def:is_gksl_generator}
     If the Lindblad data of a GKSL generator are block-upper-triangular
@@ -355,12 +356,12 @@ The four equivalent reducibility conditions of
     The block-upper-triangular structure implies $L$ preserves the
     compression $P\MN{D}P$.
     Therefore the semigroup $e^{tL}$ also preserves $P\MN{D}P$
-    for all $t\ge0$.
-    By the Brouwer fixed-point theorem, $e^{(1/m)L}$ has a fixed
-    density matrix $\rho_m$ supported in $P\MN{D}P$ for each $m$.
-    Passing to a subsequential limit gives a density matrix
-    $\rho_0$ with $P\rho_0P=\rho_0$ and $L(\rho_0)=0$.
-    Since $P\neq\Id$, the matrix $\rho_0$ has nontrivial kernel.
+    for all $t\ge0$.  Choose $t_0>0$ so that the fixed-point space of
+    $e^{t_0L}$ is $\ker L$.  The invariant compression contains a density
+    matrix $\rho_0$ fixed by $e^{t_0L}$, obtained from the Cesàro means of
+    any density matrix supported in $P\MN{D}P$.  Hence
+    $L(\rho_0)=0$ and $P\rho_0P=\rho_0$.  Since $P\neq\Id$, the matrix
+    $\rho_0$ has nontrivial kernel.
 \end{proof}
 
 \begin{theorem}[Equivalent formulations of reducibility]

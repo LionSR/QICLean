@@ -403,7 +403,6 @@ TNLean/Channel/Semigroup/ReducibleQDS/Defs.lean
 TNLean/Channel/Semigroup/ReducibleQDS/Equivalence.lean
 TNLean/Channel/Semigroup/ReducibleQDS/FixedDensity.lean
 TNLean/Channel/Semigroup/ReducibleQDS/GeneratorCompression.lean
-TNLean/Channel/Semigroup/ReducibleQDS/SubsequenceAnalysis.lean
 TNLean/Channel/Semigroup/RelaxationConditions.lean
 TNLean/Channel/Semigroup/Resolvent.lean
 TNLean/Channel/Semigroup/WeightedLoweringContractivity.lean

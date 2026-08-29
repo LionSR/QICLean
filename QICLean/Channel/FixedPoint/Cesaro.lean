@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Algebra.HermitianHelpers
+import QICLean.Algebra.OrthogonalProjection
 import QICLean.Channel.Basic
 import QICLean.Channel.Schwarz.PositiveMapProperties
 
@@ -22,6 +23,8 @@ existence theorem is stated for channels.
 * `cesaroMean`: the Cesàro mean of iterates of a linear map
 * `cesaroMean_telescope`: telescoping identity for Cesàro means
 * `IsChannel.exists_posSemidef_fixedPoint`: existence of PSD fixed point
+* `IsChannel.exists_fixed_density_of_preserves_compression`: existence of a
+  stationary density matrix in an invariant compression
 * `IsPositiveMap.posPart_negPart_fixed_of_fixedPoint`: Wolf Proposition 6.8 for
   positive trace-preserving maps, using the four canonical positive parts.
 * `IsPositiveMap.exists_posSemidef_fixedPoints_decomposition`: existential form of
@@ -331,6 +334,85 @@ theorem cesaroMean_telescope (X : Matrix (Fin D) (Fin D) ℂ) (N : ℕ) (_hN : 0
   rw [Finset.sum_range_sub (fun n => (E ^ n) X)]
   simp [pow_zero]
 
+/-- Iterates of a channel preserve density matrices. -/
+private lemma IsChannel.iter_mem_densityMatrices
+    (hE : IsChannel E) {ρ : Matrix (Fin D) (Fin D) ℂ}
+    (hρ : ρ ∈ densityMatrices D) (n : ℕ) : (E ^ n) ρ ∈ densityMatrices D := by
+  induction n with
+  | zero =>
+      change ρ ∈ densityMatrices D
+      exact hρ
+  | succ n ih =>
+      rw [pow_succ']
+      exact IsChannel.map_densityMatrices E hE ((E ^ n) ρ) ih
+
+/-- Cesàro means of a channel applied to a density matrix remain density matrices. -/
+theorem IsChannel.cesaroMean_mem_densityMatrices
+    (hE : IsChannel E) {ρ : Matrix (Fin D) (Fin D) ℂ}
+    (hρ : ρ ∈ densityMatrices D) :
+    ∀ N : ℕ, cesaroMean E ρ (N + 1) ∈ densityMatrices D := by
+  have h_iter := IsChannel.iter_mem_densityMatrices (E := E) hE hρ
+  intro N
+  refine ⟨?_, ?_⟩
+  · rw [cesaroMean_eq]
+    exact (Matrix.posSemidef_sum _ fun n _ => (h_iter n).1).smul
+      (by rw [one_div]; exact_mod_cast inv_nonneg_of_nonneg (Nat.cast_nonneg' (N + 1)))
+  · rw [cesaroMean_eq]
+    rw [trace_smul, trace_sum,
+      Finset.sum_congr rfl (fun n _ => (h_iter n).2),
+      Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, one_div]
+    exact inv_mul_cancel₀ (Nat.cast_ne_zero.mpr (Nat.succ_ne_zero N))
+
+/-- Any subsequential limit of the Cesàro means of a channel is a
+density-matrix fixed point. -/
+theorem IsChannel.cesaroMean_subseq_limit_fixedPoint
+    (hE : IsChannel E) {ρ σ : Matrix (Fin D) (Fin D) ℂ}
+    (hρ : ρ ∈ densityMatrices D)
+    {ψ : ℕ → ℕ} (hψ_tendsto : Filter.Tendsto ψ Filter.atTop Filter.atTop)
+    (hσ_tendsto : Filter.Tendsto (fun k => cesaroMean E ρ (ψ k + 1))
+      Filter.atTop (nhds σ)) :
+    σ ∈ densityMatrices D ∧ E σ = σ := by
+  have h_iter := IsChannel.iter_mem_densityMatrices (E := E) hE hρ
+  have hces_mem : ∀ N : ℕ, cesaroMean E ρ (N + 1) ∈ densityMatrices D :=
+    IsChannel.cesaroMean_mem_densityMatrices (E := E) hE hρ
+  have hσ_mem : σ ∈ densityMatrices D :=
+    (densityMatrices_isCompact (D := D)).isClosed.mem_of_tendsto hσ_tendsto <|
+      Filter.Eventually.of_forall fun k => hces_mem (ψ k)
+  let E' : Matrix (Fin D) (Fin D) ℂ →L[ℂ] Matrix (Fin D) (Fin D) ℂ :=
+    LinearMap.toContinuousLinearMap E
+  have h_Eσ : Filter.Tendsto (fun k => E (cesaroMean E ρ (ψ k + 1)))
+      Filter.atTop (nhds (E σ)) := by
+    change Filter.Tendsto (E ∘ fun k => cesaroMean E ρ (ψ k + 1))
+      Filter.atTop (nhds (E σ))
+    simpa [E'] using (E'.continuous.tendsto σ).comp hσ_tendsto
+  have h_diff : Filter.Tendsto
+      (fun k => E (cesaroMean E ρ (ψ k + 1)) - cesaroMean E ρ (ψ k + 1))
+      Filter.atTop (nhds (E σ - σ)) :=
+    h_Eσ.sub hσ_tendsto
+  have h_telesc : ∀ k,
+      E (cesaroMean E ρ (ψ k + 1)) - cesaroMean E ρ (ψ k + 1) =
+        (1 / (((ψ k + 1 : ℕ) : ℂ))) • ((E ^ (ψ k + 1)) ρ - ρ) :=
+    fun k => cesaroMean_telescope E ρ (ψ k + 1) (Nat.succ_pos _)
+  have h_rhs_zero : Filter.Tendsto
+      (fun k => (1 / (((ψ k + 1 : ℕ) : ℂ))) • ((E ^ (ψ k + 1)) ρ - ρ))
+      Filter.atTop (nhds 0) := by
+    change Filter.Tendsto
+      ((fun k => (1 / (((ψ k + 1 : ℕ) : ℂ)))) •
+        (fun k => (E ^ (ψ k + 1)) ρ - ρ))
+      Filter.atTop (nhds 0)
+    apply NormedField.tendsto_zero_smul_of_tendsto_zero_of_bounded
+    · simp_rw [one_div]
+      exact (tendsto_inv_atTop_nhds_zero_nat (𝕜 := ℂ)).comp
+        ((Filter.tendsto_add_atTop_nat 1).comp hψ_tendsto)
+    · obtain ⟨R, hR⟩ := densityMatrices_isCompact (D := D) |>.isBounded.exists_norm_le
+      apply Filter.isBoundedUnder_of
+      exact ⟨R + R, fun k =>
+        le_trans (norm_sub_le _ _)
+          (add_le_add (hR _ (h_iter (ψ k + 1))) (hR _ hρ))⟩
+  have h_eq : E σ - σ = 0 :=
+    tendsto_nhds_unique (h_diff.congr h_telesc) h_rhs_zero
+  exact ⟨hσ_mem, sub_eq_zero.mp h_eq⟩
+
 /-- **Existence of PSD fixed point for channels** (Cesàro mean argument).
 This is an alternative proof of **Wolf Theorem 6.11** (Stationary states)
 that avoids Brouwer's fixed point theorem (Wolf Theorem 6.10) entirely.
@@ -352,92 +434,85 @@ Our proof uses only:
 theorem IsChannel.exists_posSemidef_fixedPoint
     (hE : IsChannel E) (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ.PosSemidef ∧ ρ ≠ 0 ∧ E ρ = ρ := by
-  -- Iterates of a channel preserve density matrices
-  have h_iter : ∀ n : ℕ, ∀ (ρ : Matrix (Fin D) (Fin D) ℂ), ρ ∈ densityMatrices D →
-      (E ^ n) ρ ∈ densityMatrices D := by
-    intro n; induction n with
-    | zero => intro ρ hρ; simpa [pow_zero]
-    | succ n ih =>
-      intro ρ hρ
-      have h1 := ih ρ hρ
-      change (E ^ (n + 1)) ρ ∈ densityMatrices D
-      rw [pow_succ']
-      change E ((E ^ n) ρ) ∈ densityMatrices D
-      exact IsChannel.map_densityMatrices E hE ((E ^ n) ρ) h1
-  -- Step 1: Pick a starting density matrix ρ₀
   obtain ⟨ρ₀, hρ₀⟩ := densityMatrices_nonempty hD
-  -- Step 2: Define the Cesàro means σ(N) = cesaroMean E ρ₀ (N+1)
-  set σ : ℕ → Matrix (Fin D) (Fin D) ℂ := fun N => cesaroMean E ρ₀ (N + 1)
-  -- Step 3: Each σ(N) is a density matrix
-  have hσ_mem : ∀ N, σ N ∈ densityMatrices D := by
-    intro N
-    refine ⟨?_, ?_⟩
-    · -- PSD: (1/(N+1)) • Σ E^n(ρ₀) is PSD
-      change cesaroMean E ρ₀ (N + 1) |>.PosSemidef
-      rw [cesaroMean_eq]
-      exact (Matrix.posSemidef_sum _ fun n _ => (h_iter n ρ₀ hρ₀).1).smul
-        (by rw [one_div]; exact_mod_cast inv_nonneg_of_nonneg (Nat.cast_nonneg' (N + 1)))
-    · -- Trace = 1
-      change (cesaroMean E ρ₀ (N + 1)).trace = 1
-      rw [cesaroMean_eq]
-      rw [trace_smul, trace_sum,
-        Finset.sum_congr rfl (fun n _ => (h_iter n ρ₀ hρ₀).2),
-        Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, one_div]
-      exact inv_mul_cancel₀ (Nat.cast_ne_zero.mpr (by omega))
-  -- Step 4: Extract convergent subsequence by compactness
+  have hces_mem : ∀ N, cesaroMean E ρ₀ (N + 1) ∈ densityMatrices D :=
+    IsChannel.cesaroMean_mem_densityMatrices (E := E) hE hρ₀
   have : FirstCountableTopology (Matrix (Fin D) (Fin D) ℂ) := by
     change FirstCountableTopology (Fin D → Fin D → ℂ)
     infer_instance
-  obtain ⟨ρ, hρ_mem, φ, hφ_mono, hφ_tendsto⟩ :=
-    densityMatrices_isCompact.tendsto_subseq hσ_mem
-  -- Step 5: ρ is PSD with trace 1
-  have hρ_psd : ρ.PosSemidef := hρ_mem.1
-  have hρ_tr : trace ρ = 1 := hρ_mem.2
-  -- Step 6: Show E(ρ) = ρ via telescoping + convergence
-  let E' : Matrix (Fin D) (Fin D) ℂ →L[ℂ] Matrix (Fin D) (Fin D) ℂ :=
-    LinearMap.toContinuousLinearMap E
-  -- σ ∘ φ → ρ, E ∘ σ ∘ φ → E(ρ)
-  have h_Eσ : Filter.Tendsto (E ∘ σ ∘ φ) Filter.atTop (nhds (E ρ)) := by
-    simpa [E'] using (E'.continuous.tendsto ρ).comp hφ_tendsto
-  -- (E(σ(φ k)) - σ(φ k)) → E(ρ) - ρ
-  have h_diff : Filter.Tendsto (fun k => (E ∘ σ ∘ φ) k - (σ ∘ φ) k)
-      Filter.atTop (nhds (E ρ - ρ)) :=
-    h_Eσ.sub hφ_tendsto
-  -- By telescoping: E(σ(N)) - σ(N) = (1/(N+1)) • (E^(N+1)(ρ₀) - ρ₀)
-  have h_telesc : ∀ k, (E ∘ σ ∘ φ) k - (σ ∘ φ) k =
-      (1 / ((φ k + 1 : ℕ) : ℂ)) • ((E ^ (φ k + 1)) ρ₀ - ρ₀) :=
-    fun k => cesaroMean_telescope E ρ₀ (φ k + 1) (Nat.succ_pos _)
-  -- The RHS → 0: scalar → 0 times norm-bounded sequence → 0
-  have h_rhs_zero : Filter.Tendsto (fun k => (1 / ((φ k + 1 : ℕ) : ℂ)) •
-      ((E ^ (φ k + 1)) ρ₀ - ρ₀)) Filter.atTop (nhds 0) := by
-    change Filter.Tendsto
-      ((fun k => (1 / ((φ k + 1 : ℕ) : ℂ))) • (fun k => (E ^ (φ k + 1)) ρ₀ - ρ₀))
-      Filter.atTop (nhds 0)
-    apply NormedField.tendsto_zero_smul_of_tendsto_zero_of_bounded
-    · -- 1/(φ k + 1) → 0 in ℂ
-      simp_rw [one_div]
-      have h_succ_tendsto : Filter.Tendsto (fun k => φ k + 1) Filter.atTop Filter.atTop := by
-        apply Filter.tendsto_atTop_atTop_of_monotone
-        · intro a b hab; exact Nat.add_le_add_right (hφ_mono.monotone hab) 1
-        · intro b; exact ⟨b, Nat.le_succ_of_le (hφ_mono.id_le b)⟩
-      exact (tendsto_inv_atTop_nhds_zero_nat (𝕜 := ℂ)).comp h_succ_tendsto
-    · -- ‖E^n(ρ₀) - ρ₀‖ is bounded: density matrices are compact ⇒ bounded
-      have hbdd := densityMatrices_isCompact (D := D) |>.isBounded
-      rw [Metric.isBounded_iff_subset_ball 0] at hbdd
-      obtain ⟨R, hR⟩ := hbdd
-      apply Filter.isBoundedUnder_of
-      refine ⟨R + R, fun k => ?_⟩
-      have h1 := hR (h_iter (φ k + 1) ρ₀ hρ₀)
-      have h2 := hR hρ₀
-      rw [Metric.mem_ball, dist_zero_right] at h1 h2
-      exact le_trans (norm_sub_le _ _) (by linarith)
-  -- Conclude E(ρ) - ρ = 0 by uniqueness of limits
-  have h_eq : E ρ - ρ = 0 :=
-    tendsto_nhds_unique (h_diff.congr h_telesc) h_rhs_zero
-  have hρ_fix : E ρ = ρ := sub_eq_zero.mp h_eq
-  -- Step 7: ρ ≠ 0 (trace ρ = 1 ≠ 0)
+  obtain ⟨ρ, _hρ_mem, φ, hφ_mono, hφ_tendsto⟩ :=
+    densityMatrices_isCompact.tendsto_subseq hces_mem
+  have hρ_lim : ρ ∈ densityMatrices D ∧ E ρ = ρ :=
+    IsChannel.cesaroMean_subseq_limit_fixedPoint (E := E) hE hρ₀
+      hφ_mono.tendsto_atTop hφ_tendsto
   have hρ_ne : ρ ≠ 0 := by
-    intro h; rw [h, Matrix.trace_zero (Fin D) ℂ] at hρ_tr; exact one_ne_zero hρ_tr.symm
-  exact ⟨ρ, hρ_psd, hρ_ne, hρ_fix⟩
+    intro hρ_zero
+    have htr := hρ_lim.1.2
+    rw [hρ_zero, Matrix.trace_zero (Fin D) ℂ] at htr
+    exact zero_ne_one htr
+  exact ⟨ρ, hρ_lim.1.1, hρ_ne, hρ_lim.2⟩
+
+/-- A channel preserving the compression `P M_D(ℂ) P` has a stationary density
+matrix supported in that compression. -/
+theorem IsChannel.exists_fixed_density_of_preserves_compression
+    (hE : IsChannel E) {P : Matrix (Fin D) (Fin D) ℂ}
+    (hP : IsOrthogonalProjection P) (hP_ne : P ≠ 0)
+    (hE_pres : ∀ X : Matrix (Fin D) (Fin D) ℂ,
+      P * E (P * X * P) * P = E (P * X * P)) :
+    ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ ∈ densityMatrices D ∧
+      P * ρ * P = ρ ∧ E ρ = ρ := by
+  let ρ₀ : Matrix (Fin D) (Fin D) ℂ := (trace P)⁻¹ • P
+  have hP_psd : P.PosSemidef := isOrthogonalProjection_posSemidef hP
+  have htrP_ne : Matrix.trace P ≠ 0 := by
+    intro htr
+    exact hP_ne (hP_psd.trace_eq_zero_iff.1 htr)
+  have hρ₀_mem : ρ₀ ∈ densityMatrices D := by
+    refine ⟨?_, ?_⟩
+    · exact hP_psd.smul (inv_nonneg_of_nonneg hP_psd.trace_nonneg)
+    · simp [ρ₀, Matrix.trace_smul, htrP_ne]
+  have hρ₀_corner : P * ρ₀ * P = ρ₀ := by
+    simp only [ρ₀, Matrix.mul_smul, Matrix.smul_mul]
+    rw [hP.2, hP.2]
+  have h_iter_corner : ∀ n : ℕ, P * (E ^ n) ρ₀ * P = (E ^ n) ρ₀ := by
+    intro n
+    induction n with
+    | zero => simpa [pow_zero] using hρ₀_corner
+    | succ n ih =>
+        rw [pow_succ']
+        change P * E ((E ^ n) ρ₀) * P = E ((E ^ n) ρ₀)
+        rw [← ih]
+        exact hE_pres _
+  let σ : ℕ → Matrix (Fin D) (Fin D) ℂ :=
+    fun N => cesaroMean E ρ₀ (N + 1)
+  have hσ_mem : ∀ N, σ N ∈ densityMatrices D :=
+    IsChannel.cesaroMean_mem_densityMatrices (E := E) hE hρ₀_mem
+  have hσ_corner : ∀ N, P * σ N * P = σ N := by
+    intro N
+    change P * cesaroMean E ρ₀ (N + 1) * P = cesaroMean E ρ₀ (N + 1)
+    rw [cesaroMean_eq]
+    simp only [Matrix.mul_smul, Matrix.smul_mul, mul_sum, Finset.sum_mul]
+    refine congrArg ((1 / ↑(N + 1 : ℕ) : ℂ) • ·) ?_
+    exact Finset.sum_congr rfl (fun n _ => h_iter_corner n)
+  have : TopologicalSpace.PseudoMetrizableSpace (Matrix (Fin D) (Fin D) ℂ) :=
+    PseudoEMetricSpace.pseudoMetrizableSpace
+  have : FirstCountableTopology (Matrix (Fin D) (Fin D) ℂ) :=
+    TopologicalSpace.PseudoMetrizableSpace.firstCountableTopology
+  obtain ⟨ρ, _hρ_mem, φ, hφ_mono, hφ_tendsto⟩ :=
+    densityMatrices_isCompact.tendsto_subseq hσ_mem
+  have hρ_corner : P * ρ * P = ρ := by
+    have hcont : Continuous (fun X : Matrix (Fin D) (Fin D) ℂ => P * X * P) :=
+      (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
+    exact tendsto_nhds_unique
+      (hcont.continuousAt.tendsto.comp hφ_tendsto |>.congr
+        (fun n => hσ_corner (φ n)))
+      hφ_tendsto
+  have hρ_tendsto : Filter.Tendsto
+      (fun k => cesaroMean E ρ₀ (φ k + 1)) Filter.atTop (nhds ρ) := by
+    change Filter.Tendsto (σ ∘ φ) Filter.atTop (nhds ρ)
+    exact hφ_tendsto
+  have hρ_lim : ρ ∈ densityMatrices D ∧ E ρ = ρ :=
+    IsChannel.cesaroMean_subseq_limit_fixedPoint (E := E) hE hρ₀_mem
+      hφ_mono.tendsto_atTop hρ_tendsto
+  exact ⟨ρ, hρ_lim.1, hρ_corner, hρ_lim.2⟩
 
 end CesaroMean

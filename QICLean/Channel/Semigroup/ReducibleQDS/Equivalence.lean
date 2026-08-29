@@ -5,7 +5,6 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Semigroup.ReducibleQDS.FixedDensity
 import QICLean.Channel.Semigroup.ReducibleQDS.GeneratorCompression
-import QICLean.Channel.Semigroup.ReducibleQDS.SubsequenceAnalysis
 import QICLean.Channel.Semigroup.LindbladForm.GKSLTheorem
 
 /-!
@@ -54,6 +53,27 @@ theorem isReducibleQDS_iff_generator_preserves_compression
       semigroup_preserves_compression_of_generator hP_nt.1 hgen⟩
 
 /-! ## The full equivalence (Wolf Proposition 7.6) -/
+
+/-- **Wolf Proposition 7.6, (4) → (2)**: Block-upper-triangular Lindblad data
+give a rank-deficient density matrix in the kernel of the generator.
+
+The triangular form yields an invariant compression. Choose `t₀ > 0` for
+which the fixed-point space of `exp(t₀L)` equals `ker L`; a stationary density
+matrix in the invariant compression then lies in `ker L`. -/
+theorem hasRankDeficientKernelElement_of_hasBlockUpperTriangularLindblad
+    {L : Mat →ₗ[ℂ] Mat}
+    (hGKSL : IsGKSLGenerator L)
+    (h : HasBlockUpperTriangularLindblad L) :
+    HasRankDeficientKernelElement L := by
+  obtain ⟨P, hP_nt, hT_pres⟩ :=
+    hasInvariantCompression_of_hasBlockUpperTriangularLindblad h
+  obtain ⟨t₀, ht₀, hfix⟩ :=
+    exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero L
+  obtain ⟨ρ, hρ_mem, hρ_corner, hρ_fix⟩ :=
+    IsChannel.exists_fixed_density_of_preserves_compression
+      (E := expSemigroup L t₀) (hGKSL t₀ ht₀.le)
+      hP_nt.1 hP_nt.2.1 (hT_pres t₀ ht₀.le)
+  exact ⟨ρ, hρ_mem, ⟨P, hP_nt, hρ_corner⟩, (hfix ρ).1 hρ_fix⟩
 
 /-- **Wolf Proposition 7.6, (2) → (4)**: A rank-deficient kernel element of a
 GKSL generator yields a block-upper-triangular Lindblad form. -/

@@ -2112,7 +2112,17 @@ positive-time slices are irreducible, all positive-time slices are primitive,
 all density matrices relax to one faithful density matrix, and the generator
 has a simple faithful kernel. In the third clause, primitivity records both
 irreducibility and the absence of peripheral eigenvalues other than one, as in
-Wolf's definition.
+Wolf's definition. For the implication from the simple-kernel condition, one
+chooses a positive time whose fixed space is exactly the kernel of the
+generator. This follows from
+\(e^{tL}-I=(\int_0^t e^{sL}\,ds)L\), since the integral is invertible for all
+sufficiently small positive \(t\).
+
+Proposition 7.6 is also an exact completion. In the implication from an upper
+block-triangular Lindblad representation to a rank-deficient kernel element,
+the same choice of positive time identifies the fixed space of the channel
+with the kernel of the generator. Cesàro averaging within the invariant proper
+compression then supplies the required rank-deficient density matrix.
 
 Propositions 7.1--7.6, Theorem 7.1, and Corollary 7.1 are exact completions. The
 `\leanok` markers in the semigroup Blueprint certify individual Lean

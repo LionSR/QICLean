@@ -24,7 +24,7 @@ import Mathlib.NumberTheory.Real.Irrational
 * `irreducible_semigroup_implies_primitive` — **Proposition 7.5** (forward direction):
   If `T_{t₀} = exp(t₀ · L)` is irreducible for some `t₀ > 0`, then
   `T_t` is primitive for ALL `t > 0`.
-* `qds_irreducible_iff_primitive` — **Proposition 7.5** (full equivalence):
+* `qds_irreducible_iff_primitive` — **Proposition 7.5**, items (1)--(3):
   `∃ t₀ > 0, T_{t₀} irreducible ↔ ∀ t > 0, T_t primitive`.
 
 ## Proof outline for `irreducible_semigroup_implies_primitive`
