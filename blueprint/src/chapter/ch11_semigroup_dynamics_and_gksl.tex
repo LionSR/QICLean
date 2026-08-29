@@ -718,9 +718,13 @@ which shows that such generators have the standard Lindblad form.
 
 \begin{theorem}[Traceless Kraus operators exist]
     \label{thm:exists_traceless_kraus_shift}
-    \lean{exists_traceless_kraus_shift}\leanok
+    \lean{exists_traceless_kraus_shift,
+        LindbladForm.exists_traceless_in_submodule,
+        LindbladForm.exists_traceless}\leanok
     Assume $d > 0$. Given any Kraus operators $\{L_i\}$, there exist
     $c_i \in \C$ such that $L_i' = L_i+c_i\Id$ is traceless.
+    Hence every Lindblad form has an equivalent one with traceless Lindblad
+    operators; shifting preserves any linear subspace that contains $\Id$.
     This is the final assertion of \cite[Proposition~7.4(1)]{Wolf2012Quantum}.
 \end{theorem}
 
@@ -961,13 +965,13 @@ which shows that such generators have the standard Lindblad form.
 \begin{proof}\leanok
     \uses{thm:generatorDecomp_of_gksl, thm:gksl_iff_ccp_ta,
         thm:lindbladForm_eq_generatorDecomp, thm:lindbladForm_isCCP,
-        thm:lindbladForm_isTraceAnnihilating,
-        thm:exists_traceless_kraus_shift}
+        thm:lindbladForm_isTraceAnnihilating}
     Forward: apply Theorem~\ref{thm:generatorDecomp_of_gksl} to write
     $L(\rho)=\phi(\rho)-\kappa\rho-\rho\kappa^\dagger$ with trace
-    constraint. Then choose traceless Kraus operators by
-    Theorem~\ref{thm:exists_traceless_kraus_shift} and rewrite $\kappa$ as
-    $iH+\frac{1}{2}\phi^*(\Id)$;
+    constraint. Choose Kraus operators $\{L_j\}$ for $\phi$, set
+    $H=\frac{i}{2}(\kappa^\dagger-\kappa)$, and use
+    $\sum_jL_j^\dagger L_j=\kappa+\kappa^\dagger$ to obtain
+    $\kappa=iH+\frac{1}{2}\sum_jL_j^\dagger L_j$.
     Theorem~\ref{thm:lindbladForm_eq_generatorDecomp} gives the Lindblad
     formula (\ref{eq:semigroup_gksl_lindblad}).
     Reverse: Theorems~\ref{thm:lindbladForm_isCCP}
@@ -977,28 +981,34 @@ which shows that such generators have the standard Lindblad form.
 
 \subsection{Kossakowski matrix form}
 
-\begin{definition}[Kossakowski form]\label{def:kossakowski_form}
-    \lean{KossakowskiForm}\leanok
-    A \emph{Kossakowski form} consists of $H=H^\dagger$, a finite family
-    of matrices $\{F_k\}_{k=0}^{n-1}$, and a positive semidefinite matrix
-    $C \in \MN{n}$, defining
+\begin{definition}[Kossakowski form in a traceless basis]\label{def:kossakowski_form}
+    \lean{tracelessMatrixSubspace, finrank_tracelessMatrixSubspace,
+        TracelessBasisKossakowskiForm,
+        TracelessBasisKossakowskiForm.toKossakowskiForm,
+        TracelessBasisKossakowskiForm.toLinearMap,
+        KossakowskiForm, KossakowskiForm.toLinearMap}\leanok
+    A \emph{Kossakowski form} consists of $H=H^\dagger$, a fixed basis
+    $F_1,\ldots,F_{d^2-1}$ of the traceless matrices in
+    $\MN{d}$, and a positive semidefinite matrix
+    $C\in\MN{d^2-1}$, defining
     \begin{align}
         L(\rho)
         &= i[\rho,H]
-        + \tfrac{1}{2}\sum_{k,l}C_{lk}
+        + \tfrac{1}{2}\sum_{k,l=1}^{d^2-1}C_{lk}
         ([F_k,\rho F_l^\dagger]+[F_k\rho,F_l^\dagger]).
         \label{eq:semigroup_kossakowski_form}
     \end{align}
-    In Wolf's formula one takes $\{F_k\}$ to be a basis of traceless matrices;
-    here we keep only the algebraic data needed for the conversion to
-    Lindblad form.
+    This is \cite[Theorem~7.1, Equation~(7.23)]{Wolf2012Quantum}.
+    Allowing an arbitrary finite family $\{F_k\}$ gives the corresponding
+    algebraic form used in the factorization argument.
 \end{definition}
 
-\begin{theorem}[Kossakowski form iff Lindblad form]
+\begin{theorem}[Algebraic Kossakowski form iff Lindblad form]
     \label{thm:kossakowski_iff_lindblad}
     \lean{kossakowski_iff_lindblad}\leanok
     \uses{def:kossakowski_form, def:lindblad_form}
-    A linear map admits a Kossakowski form iff it admits a Lindblad form.
+    A linear map admits an algebraic Kossakowski form if and only if it admits
+    a Lindblad form.
 \end{theorem}
 
 \begin{proof}
@@ -1007,6 +1017,33 @@ which shows that such generators have the standard Lindblad form.
     $L_j=\sum_k B_{jk}F_k$.
     Reverse: keep the same Hamiltonian and family $F_k=L_k$, and take
     $C=\Id$.
+\end{proof}
+
+\begin{theorem}[Generators of channel semigroups in Kossakowski form]
+    \label{thm:gksl_iff_basis_kossakowski}
+    \lean{tracelessBasisKossakowski_iff_lindbladForm,
+        gksl_iff_tracelessBasisKossakowskiForm}\leanok
+    \uses{def:is_gksl_generator, def:kossakowski_form,
+        thm:gksl_iff_lindblad, thm:kossakowski_iff_lindblad,
+        thm:exists_traceless_kraus_shift, thm:generator_shift_invariance}
+    A linear map $L:\MN{d}\to\MN{d}$ generates a continuous dynamical
+    semigroup of quantum channels if and only if it has the
+    Kossakowski form (\ref{eq:semigroup_kossakowski_form}) in a fixed basis of
+    the traceless matrices, with $C\geq 0$.
+    This is \cite[Theorem~7.1, Equations~(7.20)--(7.23)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:gksl_iff_lindblad, thm:kossakowski_iff_lindblad,
+        thm:exists_traceless_kraus_shift, thm:generator_shift_invariance}
+    By Theorem~\ref{thm:gksl_iff_lindblad}, it suffices to compare the
+    Lindblad and basis-level Kossakowski forms. From a Kossakowski form,
+    factor $C=B^\dagger B$ and set $L_j=\sum_kB_{jk}F_k$.
+    Conversely, shift the Lindblad operators to be traceless, expand them in
+    the fixed basis as $L_j=\sum_kM_{jk}F_k$, and set $C=M^\dagger M$.
+    Substitution into (\ref{eq:semigroup_kossakowski_form}) gives the
+    commutator form (\ref{eq:semigroup_commutator_form}).
 \end{proof}
 
 %% ---------------------------------------------------------

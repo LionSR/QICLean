@@ -16,6 +16,7 @@ This file proves the GKSL theorem characterizing generators of CPTP semigroups.
 
 * `generator_shift_invariance` — **Proposition 7.4** (Kraus shift freedom).
 * `exists_traceless_kraus_shift` — **Proposition 7.4(1)** (traceless choice).
+* `LindbladForm.exists_traceless` — an equivalent traceless Lindblad form exists.
 * `IsGKSLGenerator` — definition.
 * `gksl_iff_lindbladForm` — **Theorem 7.1**: GKSL ↔ Lindblad form.
 -/
@@ -99,6 +100,135 @@ theorem exists_traceless_kraus_shift
   have hD : (D : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne D)
   rw [div_mul_cancel₀ _ hD]
   abel
+
+/-- Shifting the Lindblad operators as in Wolf, Proposition 7.4,
+Equations (7.18)--(7.19), gives an equivalent Lindblad form with traceless
+operators. If the original operators lie in a linear subspace containing the
+identity, then the shifted operators remain in that subspace. -/
+theorem LindbladForm.exists_traceless_in_submodule
+    (G : LindbladForm D)
+    (V : Submodule ℂ (Matrix (Fin D) (Fin D) ℂ))
+    (hone : (1 : Matrix (Fin D) (Fin D) ℂ) ∈ V)
+    (hmem : ∀ j : Fin G.r, G.L j ∈ V)
+    [NeZero D] :
+    ∃ G' : LindbladForm D,
+      G'.toLinearMap = G.toLinearMap ∧
+      G'.HasTracelessKraus ∧
+      ∀ j : Fin G'.r, G'.L j ∈ V := by
+  obtain ⟨c, hc⟩ := exists_traceless_kraus_shift G.L
+  set L' : Fin G.r → Matrix (Fin D) (Fin D) ℂ :=
+    fun j ↦ G.L j + c j • (1 : Matrix (Fin D) (Fin D) ℂ) with hL'_def
+  set Δ : Matrix (Fin D) (Fin D) ℂ := ∑ j : Fin G.r,
+    (starRingEnd ℂ (c j) • G.L j - c j • (G.L j)ᴴ) with hΔ_def
+  set H' : Matrix (Fin D) (Fin D) ℂ :=
+    G.H - (Complex.I / 2) • Δ with hH'_def
+  have hH'_herm : H'.IsHermitian := by
+    rw [hH'_def]
+    apply Matrix.IsHermitian.sub G.H_hermitian
+    rw [Matrix.IsHermitian, conjTranspose_smul]
+    have hstar_I2 : star (Complex.I / 2 : ℂ) = -(Complex.I / 2) := by
+      simp [Complex.conj_I]
+      ring
+    rw [hstar_I2, hΔ_def, conjTranspose_sum]
+    simp_rw [conjTranspose_sub, conjTranspose_smul, conjTranspose_conjTranspose,
+      RCLike.star_def, Complex.conj_conj]
+    rw [neg_smul, ← smul_neg]
+    congr 1
+    rw [show -(∑ x, (c x • (G.L x)ᴴ - starRingEnd ℂ (c x) • G.L x)) =
+      ∑ x, (starRingEnd ℂ (c x) • G.L x - c x • (G.L x)ᴴ) from by
+        rw [← Finset.sum_neg_distrib]
+        apply Finset.sum_congr rfl
+        intro j _
+        simp only [neg_sub]]
+  refine ⟨⟨G.r, H', L', hH'_herm⟩, ?_, ?_, ?_⟩
+  · rw [LindbladForm.toLinearMap_eq_generatorDecomp,
+      LindbladForm.toLinearMap_eq_generatorDecomp]
+    set κ_old : Matrix (Fin D) (Fin D) ℂ := G.toGeneratorDecomp.κ
+    have hshift := generator_shift_invariance G.L κ_old c 0
+    simp only [Complex.ofReal_zero, mul_zero, zero_smul, add_zero] at hshift
+    set κ_shift : Matrix (Fin D) (Fin D) ℂ :=
+      κ_old + ∑ i, starRingEnd ℂ (c i) • G.L i +
+      (1 / 2 : ℂ) • ∑ i, (starRingEnd ℂ (c i) * c i) •
+        (1 : Matrix (Fin D) (Fin D) ℂ)
+    have hκ_new :
+        Complex.I • H' + (1 / 2 : ℂ) • ∑ j : Fin G.r, (L' j)ᴴ * L' j =
+          κ_shift := by
+      have h_iH' : Complex.I • H' =
+          Complex.I • G.H + (1 / 2 : ℂ) • Δ := by
+        rw [hH'_def, smul_sub, smul_smul]
+        have : Complex.I * (Complex.I / 2) = -(1 / 2 : ℂ) := by
+          field_simp
+          rw [Complex.I_sq]
+        rw [this, neg_smul, sub_neg_eq_add]
+      have h_adj : (1 / 2 : ℂ) • ∑ j : Fin G.r, (L' j)ᴴ * L' j =
+          (1 / 2 : ℂ) • ∑ j, (G.L j)ᴴ * G.L j +
+          (1 / 2 : ℂ) • ∑ j, starRingEnd ℂ (c j) • G.L j +
+          (1 / 2 : ℂ) • ∑ j, c j • (G.L j)ᴴ +
+          (1 / 2 : ℂ) • ∑ j, (starRingEnd ℂ (c j) * c j) •
+            (1 : Matrix (Fin D) (Fin D) ℂ) := by
+        rw [hL'_def]
+        simp_rw [conjTranspose_add, conjTranspose_smul, conjTranspose_one,
+          Matrix.add_mul, Matrix.mul_add, smul_mul_assoc, mul_smul_comm,
+          Matrix.one_mul, Matrix.mul_one, Finset.sum_add_distrib, smul_smul,
+          smul_add, Finset.smul_sum]
+        simp only [Complex.star_def]
+        abel
+      rw [h_iH', h_adj, hΔ_def, Finset.smul_sum]
+      simp_rw [smul_sub]
+      simp_rw [Finset.sum_sub_distrib]
+      have hcancel :
+          (∑ x, (1 / 2 : ℂ) • starRingEnd ℂ (c x) • G.L x -
+           ∑ x, (1 / 2 : ℂ) • c x • (G.L x)ᴴ) +
+          ((1 / 2 : ℂ) • ∑ j, starRingEnd ℂ (c j) • G.L j +
+           (1 / 2 : ℂ) • ∑ j, c j • (G.L j)ᴴ) =
+          ∑ i, starRingEnd ℂ (c i) • G.L i := by
+        rw [← Finset.smul_sum, ← Finset.smul_sum]
+        module
+      have : κ_shift = κ_old +
+          ∑ i, starRingEnd ℂ (c i) • G.L i +
+          (1 / 2 : ℂ) • ∑ i, (starRingEnd ℂ (c i) * c i) •
+            (1 : Matrix (Fin D) (Fin D) ℂ) := rfl
+      rw [this]
+      clear this
+      have hκ_old_eq : κ_old = Complex.I • G.H +
+          (1 / 2 : ℂ) • ∑ j, (G.L j)ᴴ * G.L j := rfl
+      rw [hκ_old_eq]
+      set A := Complex.I • G.H
+      set B := ∑ x, (1 / 2 : ℂ) • starRingEnd ℂ (c x) • G.L x -
+        ∑ x, (1 / 2 : ℂ) • c x • (G.L x)ᴴ
+      set C := (1 / 2 : ℂ) • ∑ j, (G.L j)ᴴ * G.L j
+      set D_half := (1 / 2 : ℂ) • ∑ j, starRingEnd ℂ (c j) • G.L j
+      set E := (1 / 2 : ℂ) • ∑ j, c j • (G.L j)ᴴ
+      set F := (1 / 2 : ℂ) • ∑ j, (starRingEnd ℂ (c j) * c j) •
+        (1 : Matrix (Fin D) (Fin D) ℂ)
+      set S := ∑ i, starRingEnd ℂ (c i) • G.L i
+      calc A + B + (C + D_half + E + F)
+          = A + C + (B + (D_half + E)) + F := by abel
+        _ = A + C + S + F := by rw [hcancel]
+    ext1 ρ
+    simp only [GeneratorDecomp.toLinearMap_apply, LindbladForm.toGeneratorDecomp]
+    rw [show Complex.I • H' + (1 / 2 : ℂ) • ∑ x, (L' x)ᴴ * L' x = κ_shift from hκ_new]
+    change (∑ x, L' x * ρ * (L' x)ᴴ) - κ_shift * ρ - ρ * κ_shiftᴴ =
+      (∑ j, G.L j * ρ * (G.L j)ᴴ) - κ_old * ρ - ρ * κ_oldᴴ
+    exact hshift ρ
+  · intro j
+    exact hc j
+  · intro j
+    rw [hL'_def]
+    exact V.add_mem (hmem j) (V.smul_mem (c j) hone)
+
+/-- Every Lindblad form has an equivalent form whose Lindblad operators are
+traceless (Wolf, Proposition 7.4(1)). -/
+theorem LindbladForm.exists_traceless (G : LindbladForm D) :
+    ∃ G' : LindbladForm D,
+      G'.toLinearMap = G.toLinearMap ∧ G'.HasTracelessKraus := by
+  by_cases hD : D = 0
+  · subst D
+    exact ⟨G, rfl, fun _ ↦ by simp [Matrix.trace]⟩
+  · let _ : NeZero D := ⟨hD⟩
+    obtain ⟨G', hG', htr, -⟩ :=
+      G.exists_traceless_in_submodule ⊤ (by simp) (fun _ ↦ by simp)
+    exact ⟨G', hG', htr⟩
 
 /-! ## Theorem 7.1: GKSL/Lindblad theorem (Wolf Theorem 7.1) -/
 

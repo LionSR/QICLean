@@ -37,10 +37,6 @@ variable {D : ℕ}
 
 section LindbladForms
 
-/-- Predicate: all Kraus operators in a Lindblad form are traceless. -/
-def LindbladForm.HasTracelessKraus (F : LindbladForm D) : Prop :=
-  ∀ j : Fin F.r, trace (F.L j) = 0
-
 /-! ### Private auxiliary lemmas for the uniqueness proofs -/
 
 /-- Key tracelessness auxiliary lemma:

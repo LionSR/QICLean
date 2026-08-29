@@ -2082,13 +2082,9 @@ for every submultiplicative norm from the Duhamel identity, while
 Here Wolf's “any norm” refers to the operator norm induced by the chosen norm on
 the state space, as defined immediately before Proposition 7.1.
 
-The complete named-environment audit therefore classifies exactly three Chapter
+The complete named-environment audit therefore classifies exactly two Chapter
 7 source environments as partial rather than exact:
 
-- Theorem 7.1, “Generators for semigroups of quantum channels”: the GKSL and
-  Lindblad forms are proved, but the public Kossakowski package does not retain
-  the exact fixed basis of the traceless subspace used in Equation (7.23)
-  (partial-scope).
 - Proposition 7.5, “Irreducibility implies primitivity”: source clauses 1--3 are
   packaged, while clauses 4--5 on faithful convergence and the Liouvillian
   kernel are absent (partial-packaging).
@@ -2104,10 +2100,19 @@ the source-oriented equation $\kappa=\kappa'+i\lambda\Id$, and a unitary
 relation $L_i'=\sum_jU_{ij}L_j$ after both families are padded with zeros to
 the larger cardinality.
 
-Propositions 7.1--7.4 and Corollary 7.1 are exact completions. The `\leanok`
-markers in the semigroup Blueprint certify individual Lean declarations; they
-must not be read as exact-coverage markers for a larger containing Wolf
-environment.
+Theorem 7.1 is an exact completion. Equations (7.20)--(7.22) are represented by
+`generatorDecomp_of_gksl`,
+`gksl_of_generatorDecomp_with_traceConstraint`, `gksl_iff_lindbladForm`, and
+`LindbladForm.commutatorForm_eq_toLinearMap`. Equation (7.23) is represented by
+`TracelessBasisKossakowskiForm`, whose `F` field is a
+`Fin (D ^ 2 - 1)`-indexed basis of the trace kernel, and by
+`gksl_iff_tracelessBasisKossakowskiForm`; the proof chooses traceless Lindblad
+operators, expands them as `Lⱼ = ∑ₖ Mⱼₖ Fₖ`, and uses `C = MᴴM`.
+
+Propositions 7.1--7.4, Theorem 7.1, and Corollary 7.1 are exact completions. The
+`\leanok` markers in the semigroup Blueprint certify individual Lean
+declarations; they must not be read as exact-coverage markers for a larger
+containing Wolf environment.
 
 ---
 
