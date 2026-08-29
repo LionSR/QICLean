@@ -72,7 +72,10 @@ primitivity.
 
 \section{Remaining gap}
 
-A source-faithful proof still requires the following ingredients.
+The general quantum Wielandt package, including all three bounds in
+Theorem~6.9, is formalized in QICLean; that work is recorded by
+\ghissue{332}. A source-faithful proof of the separate low-dimensional
+corollary still requires the following ingredients.
 \begin{enumerate}
     \item Prove the remaining $3\times3$ classification: a nilpotent linear
         space containing an element of nilpotency index three either has a
@@ -80,24 +83,27 @@ A source-faithful proof still requires the following ingredients.
         space. Then prove that the exceptional Kraus pattern is incompatible
         with Wolf's primitivity condition.
 
-    \item Prove in QICLean the conditional implication from a nonzero
-        eigenvalue in the one-step span to full word span at length $d^2$.
-        The current QICLean checkout contains the eigenvector-spreading
-        component but not the assembled bound. The numbering-coverage
-        document records Wolf's Theorem~6.9
-        \cite[Chapter~6]{Wolf2012Quantum} as belonging to the downstream
-        tensor-network layer.
+    \item Combine the remaining $3\times3$ classification with the conditional
+        quantum Wielandt bound already proved in QICLean. The implication from
+        a nonzero eigenvalue in the one-step span to full word span at length
+        $d^2$ is
+        \leanid{Kraus.wordSpan\_eq\_top\_of\_mem\_wordSpan\_one\_of\_nonzero\_eigenvalue},
+        and the corresponding minimal-index inequality is
+        \leanid{Kraus.wielandtIndex\_le\_of\_mem\_wordSpan\_one\_of\_nonzero\_eigenvalue}.
+        No additional proof of this conditional step is required for the
+        low-dimensional corollary.
 \end{enumerate}
 
-Until both ingredients are present, the source corollary must not carry a
-\texttt{\textbackslash leanok} marker in the QICLean blueprint. This work is
-tracked by \ghissue{65}.
+Until the remaining classification and its exceptional primitivity
+obstruction are present, the source corollary must not carry a
+\texttt{\textbackslash leanok} marker in the QICLean blueprint. This separate
+work remains tracked by \ghissue{65}.
 
 \section{Conclusion}
 
-The $d=2$ nilpotent-space argument and the square-zero branch for $d=3$ are
-formalized. The nilpotency-index-three classification, its exceptional
-primitivity obstruction, and the assembled $d^2$ word-span bound remain open.
+The $d=2$ nilpotent-space argument, the square-zero branch for $d=3$, and the
+conditional $d^2$ word-span bound are formalized. The nilpotency-index-three
+classification and its exceptional primitivity obstruction remain open.
 Consequently, the low-dimensional corollary of
 Ref.~\cite{Wolf2012Quantum} remains an open gap while elimination is in
 progress.

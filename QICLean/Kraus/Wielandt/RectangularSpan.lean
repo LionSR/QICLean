@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Kraus.Wielandt.RectangularSpan
 
 import QICLean.Kraus.Wielandt.RectangularSpan.Basic
+import QICLean.Kraus.Wielandt.RectangularSpan.EventualFullness
 import QICLean.Kraus.Wielandt.RectangularSpan.Growth
 import QICLean.Kraus.Wielandt.RectangularSpan.Universality
 import QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux

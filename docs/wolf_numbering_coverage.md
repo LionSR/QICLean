@@ -961,10 +961,11 @@ formalized / not yet formalized), and the Lean declaration(s) that correspond.
 No new proofs are introduced here; this is a documentation-only index module.
 
 This module covers the sections of Wolf Chapter 6 whose formalization lives in
-the quantum-channel layer.  The sections formalized in the tensor-network layer
-— the quantum Wielandt inequality (Theorem 6.9), the unique-fixed-point theorem
-for tensors with eventually full Kraus rank (Theorem 6.15), and the assembled
-quantum Perron–Frobenius theorem — are indexed in
+the quantum-channel layer. The quantum Wielandt inequality (Theorem 6.9) is
+formalized directly in `QICLean.Channel.QuantumWielandt`. Results that belong to
+the tensor-network layer, including the unique-fixed-point theorem for tensors
+with eventually full Kraus rank (Theorem 6.15) and the assembled quantum
+Perron–Frobenius theorem, are indexed separately in
 `TNLean.Wielandt.WolfChapter6TNIndex`.
 
 ---
@@ -1364,20 +1365,40 @@ The Kraus-map presentation supplies complete positivity; trace preservation is
 an explicit hypothesis. No stronger CP-independent primitivity predicate is
 introduced.
 
-#### Wolf Theorem 6.9 (Quantum Wielandt inequality) and the low-dimensional corollary — PARTIAL-PACKAGING IN THIS TRACKER
+#### Wolf Lemmas 6.2–6.3 and Theorem 6.9 (Quantum Wielandt inequality) — FORMALIZED
 
-The general inequality is formalized and packaged in the tensor-network layer,
-not by a QICLean declaration, and is indexed in
-`TNLean.Wielandt.WolfChapter6TNIndex`. In this repository the source
-environment therefore has only partial packaging. QICLean contains the dimension-two
-nilpotent-space classification and the resulting one-step nonzero-eigenvalue
-conclusion in
-`Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two`.  In dimension three,
+`QICLean.Channel.QuantumWielandt` uses Wolf's exact spaces `K_n`, Kraus rank
+`k = dim K_1`, and minimal threshold `q`:
+
+* `Kraus.krausRank` and `Kraus.wielandtIndex` define `k` and the least
+  threshold from Theorem 6.8(3).
+* `Kraus.wolf_lemma_6_2` gives a positive-length word of length at most
+  `D²-k+1` whose trace is nonzero.
+* `Kraus.wolf_lemma_6_3` packages both source conclusions: the
+  length-`D-1` vector-spreading identity and, in the noninvertible case, the
+  inclusion `|φ⟩⟨ψ| ∈ K_{D²-D+1}`.
+* `Kraus.wielandtIndex_le_general`,
+  `Kraus.wielandtIndex_le_of_mem_wordSpan_one_of_isUnit`, and
+  `Kraus.wielandtIndex_le_of_mem_wordSpan_one_of_nonzero_eigenvalue` prove
+  the three bounds `q ≤ (D²-k+1)D²`, `q ≤ D²-k+1`, and `q ≤ D²`.
+  `Kraus.wolf_theorem_6_9` packages them in the order of the source.
+
+The general proof follows Wolf's blocking argument: Lemma 6.2 supplies a
+nonzero-trace word, hence a nonzero eigenvalue, and the blocked form of Lemma
+6.3 fills the matrix space at level `nD²`. The hypotheses explicitly assemble
+trace preservation, irreducibility, and the project's peripheral-spectrum
+`IsPrimitive` predicate; the finite Kraus presentation supplies complete
+positivity.
+
+The following low-dimensional corollary is a separate open problem tracked by
+#65. QICLean contains the dimension-two nilpotent-space classification and the
+resulting one-step nonzero-eigenvalue conclusion in
+`Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two`. In dimension three,
 `QICLean.exists_common_ker_of_forall_sq_eq_zero` and
 `Kraus.exists_mem_wordSpan_one_sq_ne_zero_fin_three` cover and exclude the
-square-zero branch.  The nilpotency-index-three classification, its exceptional
-primitive-channel obstruction, and the assembled QICLean index bound remain open;
-see `docs/paper-gaps/wolf_ch6_lowdim_wielandt_classification.tex`.
+square-zero branch. The nilpotency-index-three classification and its
+exceptional primitive-channel obstruction remain open; see
+`docs/paper-gaps/wolf_ch6_lowdim_wielandt_classification.tex`.
 
 ---
 

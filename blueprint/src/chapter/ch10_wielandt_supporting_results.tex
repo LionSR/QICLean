@@ -104,6 +104,31 @@ span used throughout Chapter~\ref{ch:wielandt}.
 \label{sec:app_wielandt_blocking_support}
 \label{sec:rectangular_span}
 
+\begin{theorem}[Blocking identities for exact word spans]
+    \label{thm:kraus_blocking_word_span}
+    \lean{Kraus.evalWord_blockTensor,
+        Kraus.wordSpan_blockTensor_one,
+        Kraus.wordSpan_blockTensor,
+        Kraus.HasEventuallyFullWordSpan.blockTensor}
+    \leanok
+    \uses{def:kraus_eval_word}
+    Fix a block length $L$ and regard the words of length $L$ in a Kraus
+    family $K$ as a new family $K^{[L]}$. Evaluation of a blocked word agrees
+    with evaluation of its flattened word, and consequently
+    \begin{align}
+        K^{[L]}_n=K_{nL}.
+        \notag
+    \end{align}
+    If $L>0$ and the exact word spans of $K$ are eventually full, then the
+    exact word spans of $K^{[L]}$ are eventually full as well.
+\end{theorem}
+
+\begin{proof}\leanok
+    The evaluation identity follows by induction on the blocked word. Taking
+    spans gives the displayed equality. For eventual fullness, sufficiently
+    large $n$ also makes $nL$ exceed the original threshold.
+\end{proof}
+
 \section{Complementary-gap consequences}
 \label{sec:app_wielandt_complementary_gap}
 
