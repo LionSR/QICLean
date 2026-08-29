@@ -1289,20 +1289,25 @@ area law, and the literal identity
         &= \mathcal T_{\mathcal K_s}.
     \label{eq:cpgsv17_absorbed_literal_transfer_idempotence}
 \end{align}
-The remaining obstruction is normality after coefficient absorption. If
-$A_s$ is normal, then the transfer map of $\mu_sA_s$ has spectral radius
-$|\mu_s|^2$. The global canonical-form convention supplies at least one
-unit-modulus coefficient, but it does not imply $|\mu_s|=1$ for every sector.
-Consequently, the normal Case-I structural theorem cannot be applied to all
-absorbed BNT representatives. The constructions from an explicitly supplied
-rank-one neighboring trace factorization remain valid restricted results, but
-they do not prove that such a factorization exists for every absorbed
-representative.
+Before the ambient counterexample in
+Section~\ref{sec:cpgsv17_caseii_resolution}, the remaining obstruction
+identified here was normality after coefficient absorption. If $A_s$ is
+normal, then the transfer map of $\mu_sA_s$ has spectral radius $|\mu_s|^2$.
+The global canonical-form convention supplies at least one unit-modulus
+coefficient, but it does not imply $|\mu_s|=1$ for every sector. Consequently,
+the normal Case-I structural theorem cannot be applied to all absorbed BNT
+representatives. The constructions from an explicitly supplied rank-one
+neighboring trace factorization remain valid restricted results, but they do
+not prove that such a factorization exists for every absorbed representative.
 
-The explicit example discussed in the conclusion realizes this normalization
-obstruction under every condition used in the simple Case-II passage, at the
-normalized fixed-representative boundary. It refutes the absorption inference,
-not the source assertion that some suitable factorization exists.
+The earlier two-sector absorbed-normality example
+\leanid{MPOTensor.CaseIIAbsorptionCounterexample.%
+ambient_isSAL_isSimpleCanonicalForm_and_firstAbsorbed_not_isNormalTensor}
+realizes this normalization obstruction under every condition used in the
+simple Case-II passage, at the normalized fixed-representative boundary. It
+refutes the absorption inference, but not the source assertion that some
+suitable factorization exists. The later ambient counterexample in
+Section~\ref{sec:cpgsv17_caseii_resolution} refutes that assertion.
 
 \section{The unit-closure-trace necessary condition}
 \label{sec:cpgsv17_unit_closure_trace}
@@ -1678,9 +1683,11 @@ Ref.~\cite{Cirac2016MPDO_arXiv}, and assembles them into the blocked channel
 pair of the complete tensor. The coarsest merging is packaged generically by
 \leanid{MPOTensor.PhysicalSectorFactorization.NeighboringTraceFactorization.%
 ofOneSector}: a single-sector factorization whose sole neighboring operator is
-positive semidefinite with unit trace suffices. The sole remaining obligation
-of the source implication (ii)$\Rightarrow$(v) is therefore the existence of
-these per-representative factorizations.
+positive semidefinite with unit trace suffices. This channel construction is
+therefore conditional on supplied per-representative factorizations. The
+printed Proposition~\texttt{prop2to3} route from condition~(ii) cannot provide
+them, as Section~\ref{sec:cpgsv17_caseii_resolution} shows. Any proof of
+(ii)$\Rightarrow$(v) must use a different argument.
 
 The all-cut Markov proof and the source-selected inverse-map calculation show
 that the raw four-sector tensor satisfies the displayed SAL, literal ZCL, and
