@@ -50,12 +50,11 @@ private lemma pos_dim_of_nontrivialProjection
   interval_cases D
   exact hP_nt.2.1 (Subsingleton.elim P 0)
 
-/-- Adapted Cesàro argument: a channel preserving `PMP` has a fixed density
-matrix in `PMP`. -/
-private theorem channel_fixedPoint_in_PMP
-    {E : Mat →ₗ[ℂ] Mat} {P : Mat}
+/-- A channel preserving the compression `P M_D(ℂ) P` has a fixed density
+matrix in that compression. -/
+theorem IsChannel.exists_fixed_density_of_preserves_compression
+    {E : Mat →ₗ[ℂ] Mat} (hE : IsChannel E) {P : Mat}
     (hP : IsOrthogonalProjection P) (hP_ne : P ≠ 0)
-    (hE : IsChannel E)
     (hE_pres : ∀ X : Mat,
       P * E (P * X * P) * P = E (P * X * P)) :
     ∃ ρ : Mat, ρ ∈ densityMatrices D ∧
@@ -229,7 +228,7 @@ private theorem exists_fixed_point_sequence_in_PMP
       ρ ∈ densityMatrices D ∧ P * ρ * P = ρ ∧
       expSemigroup L (1 / (m : ℝ)) ρ = ρ := by
     intro m hm
-    exact channel_fixedPoint_in_PMP hP hP_ne (hGKSL _ (by positivity))
+    exact (hGKSL _ (by positivity)).exists_fixed_density_of_preserves_compression hP hP_ne
       (fun X => hT_pres _ (by positivity) X)
   refine ⟨fun n => (h_fix (n + 1) (Nat.succ_pos n)).choose, ?_, ?_, ?_⟩
   · intro n
@@ -251,7 +250,9 @@ private theorem compression_eq_limit_of_tendsto
       (fun n => hρ_PMP (φ n)))
     hφ_tendsto
 
-private theorem generator_vanishes_at_limit
+/-- If density matrices fixed at the times `1 / (n + 1)` converge along a
+subsequence, then their limit belongs to the kernel of the generator. -/
+theorem generator_vanishes_at_limit_of_small_time_fixed
     [NeZero D]
     {L : Mat →ₗ[ℂ] Mat}
     {ρ : Mat} {ρ_shift : ℕ → Mat} {φ : ℕ → ℕ}
@@ -396,7 +397,7 @@ theorem hasRankDeficientKernelElement_of_hasBlockUpperTriangularLindblad
   have hρ_PMP_lim : P * ρ * P = ρ :=
     compression_eq_limit_of_tendsto hρ_PMP hφ_tendsto
   have hL_zero : L ρ = 0 :=
-    generator_vanishes_at_limit hρ_mem hρ_fix hφ_mono hφ_tendsto
+    generator_vanishes_at_limit_of_small_time_fixed hρ_mem hρ_fix hφ_mono hφ_tendsto
   exact ⟨ρ, hρ_dm, ⟨P, hP_nt, hρ_PMP_lim⟩, hL_zero⟩
 
 end -- noncomputable section
