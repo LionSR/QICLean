@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Convex.Combination
 import Mathlib.Analysis.Convex.Extreme
+import QICLean.Algebra.MatrixIsometryEntries
 import QICLean.Algebra.TracePurity
 import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Channel.FixedPoint.DirectSumExtension
@@ -103,9 +104,9 @@ theorem IsRankOneOrthogonalProjection.exists_isUnitVector_pureStateProj
   subst n
   let psi : Fin D → ℂ := fun i ↦ V i 0
   refine ⟨psi, ?_, ?_⟩
-  · have hentry := congrFun (congrFun hVstarV (0 : Fin 1)) (0 : Fin 1)
-    change (∑ p : Fin D, star (V p 0) * V p 0) = 1
-    simpa [Matrix.mul_apply, Matrix.conjTranspose_apply] using hentry
+  · change (∑ p : Fin D, star (V p 0) * V p 0) = 1
+    simpa using Matrix.sum_star_mul_eq_ite_of_conjTranspose_mul_eq_one
+      V hVstarV (0 : Fin 1) (0 : Fin 1)
   · calc
       pureStateProj psi = V * Vᴴ := by
         ext i j

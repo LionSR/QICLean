@@ -42,6 +42,10 @@ Extracted from various files for reusability.
   semidefinite cone for the trace pairing
 - `Matrix.posSemidef_eq_zero_of_posDef_trace_mul_eq_zero`: faithfulness of a
   positive-definite weighted trace on the positive semidefinite cone
+- `Matrix.PosDef.trace_mul_pos_of_posSemidef_of_ne_zero`: strict positivity of
+  the positive-definite trace pairing
+- `Matrix.PosSemidef.trace_mul_pos_of_ne_zero_of_posDef`: the opposite product
+  orientation of the strict trace-pairing identity
 - `Matrix.eq_zero_of_sum_mul_conjTranspose_eq_zero`: a positive sum of squares
   vanishes only if every summand vanishes
 - `Matrix.eq_zero_of_sum_conjTranspose_mul_self_eq_zero`: the conjugate-transpose
@@ -701,6 +705,23 @@ theorem posSemidef_eq_zero_of_posDef_trace_mul_eq_zero
   have : M * Sᴴ = 0 * Sᴴ := by
     simpa [zero_mul] using hMS_zero
   exact IsUnit.mul_right_cancel hSstar_unit this
+
+/-- A positive-definite matrix has strictly positive trace pairing with every
+nonzero positive-semidefinite matrix. -/
+theorem PosDef.trace_mul_pos_of_posSemidef_of_ne_zero
+    {A B : Matrix n n ℂ} (hA : A.PosDef) (hB : B.PosSemidef) (hB_ne : B ≠ 0) :
+    0 < trace (A * B) := by
+  refine lt_of_le_of_ne (hA.posSemidef.trace_mul_nonneg hB) ?_
+  simpa only [ne_eq, eq_comm] using fun hzero ↦
+    hB_ne (posSemidef_eq_zero_of_posDef_trace_mul_eq_zero hB hA hzero)
+
+/-- A nonzero positive-semidefinite matrix has strictly positive trace pairing
+with every positive-definite matrix. -/
+theorem PosSemidef.trace_mul_pos_of_ne_zero_of_posDef
+    {A B : Matrix n n ℂ} (hB : B.PosSemidef) (hB_ne : B ≠ 0) (hA : A.PosDef) :
+    0 < trace (B * A) := by
+  rw [trace_mul_comm]
+  exact hA.trace_mul_pos_of_posSemidef_of_ne_zero hB hB_ne
 
 end PosSemidefTrace
 

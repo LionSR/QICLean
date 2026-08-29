@@ -192,19 +192,6 @@ theorem upperCollatzWielandtValue_eq_top_of_not_nonempty
   have hset : upperCollatzWielandtSet T X = ∅ := Set.not_nonempty_iff_eq_empty.mp h
   simp [upperCollatzWielandtValue, hset]
 
-/-- A positive-definite weight has strictly positive trace pairing with every
-nonzero positive semidefinite matrix. -/
-private theorem trace_mul_pos_of_posDef_posSemidef_ne_zero
-    {X₀ Y : Mat} (hX₀ : X₀.PosDef) (hY : Y.PosSemidef) (hY_ne : Y ≠ 0) :
-    0 < Matrix.trace (X₀ * Y) := by
-  have hnonneg : 0 ≤ Matrix.trace (X₀ * Y) :=
-    hX₀.posSemidef.trace_mul_nonneg hY
-  have hne : Matrix.trace (X₀ * Y) ≠ 0 := by
-    intro hzero
-    exact hY_ne
-      (Matrix.posSemidef_eq_zero_of_posDef_trace_mul_eq_zero hY hX₀ hzero)
-  exact lt_of_le_of_ne hnonneg (by simpa only [ne_eq, eq_comm] using hne)
-
 /-- A real number `a` is lower Collatz--Wielandt feasible at `X` for `T` when
 `X` is a density matrix and `T X - a X` is positive semidefinite.
 
@@ -723,7 +710,7 @@ theorem exists_posDef_traceAdjointMap_eigenvector_at_perron [NeZero D]
       (Matrix.traceAdjointMap T) hT.traceAdjointMap
       (hIrr.traceAdjointMap hT) hTstar_ne
   have htrace_pos : 0 < Matrix.trace (X₀ * X) :=
-    trace_mul_pos_of_posDef_posSemidef_ne_zero hX₀ hX.posSemidef hX_ne
+    hX₀.trace_mul_pos_of_posSemidef_of_ne_zero hX.posSemidef hX_ne
   have htrace_ne : Matrix.trace (X₀ * X) ≠ 0 := ne_of_gt htrace_pos
   have hpair := Matrix.trace_traceAdjointMap_mul T X₀ X
   rw [hX₀_eig, hX_eig] at hpair
@@ -753,7 +740,7 @@ theorem positive_eigenvalue_eq_perron_of_irreducible_positive [NeZero D]
     exists_posDef_traceAdjointMap_eigenvector_at_perron
       T hT hIrr hr hX hX_eig
   have htrace_pos : 0 < Matrix.trace (X₀ * Y) :=
-    trace_mul_pos_of_posDef_posSemidef_ne_zero hX₀ hY hY_ne
+    hX₀.trace_mul_pos_of_posSemidef_of_ne_zero hY hY_ne
   have htrace_ne : Matrix.trace (X₀ * Y) ≠ 0 := ne_of_gt htrace_pos
   have hpair := Matrix.trace_traceAdjointMap_mul T X₀ Y
   rw [hX₀_eig, hY_eig] at hpair
@@ -782,7 +769,7 @@ theorem perron_le_upperCollatzWielandtFeasible [NeZero D]
     rw [hYzero, Matrix.trace_zero] at htrace
     norm_num at htrace
   have htrace_pos : 0 < Matrix.trace (X₀ * Y) :=
-    trace_mul_pos_of_posDef_posSemidef_ne_zero hX₀ hYa.1.1 hY_ne
+    hX₀.trace_mul_pos_of_posSemidef_of_ne_zero hYa.1.1 hY_ne
   have hpair := Matrix.trace_traceAdjointMap_mul T X₀ Y
   have htrace_map :
       Matrix.trace (X₀ * T Y) = (r : ℂ) * Matrix.trace (X₀ * Y) := by
