@@ -41,21 +41,6 @@ variable {D : ℕ}
 
 section OrthogonalTrace
 
-private theorem trace_mul_pos_of_posDef_posSemidef_ne_zero
-    {A B : Matrix (Fin D) (Fin D) ℂ}
-    (hA : A.PosDef) (hB : B.PosSemidef) (hB_ne : B ≠ 0) :
-    0 < Matrix.trace (B * A) := by
-  have hnonneg : 0 ≤ Matrix.trace (B * A) :=
-    Matrix.PosSemidef.trace_mul_nonneg hB hA.posSemidef
-  have hne : Matrix.trace (B * A) ≠ 0 := by
-    intro hzero
-    have hzero' : Matrix.trace (A * B) = 0 :=
-      (Matrix.trace_mul_comm A B).trans hzero
-    exact hB_ne
-      (Kraus.posSemidef_eq_zero_of_posDef_trace_mul_eq_zero
-        (hM := hB) (hρ := hA) hzero')
-  exact lt_of_le_of_ne hnonneg (by simpa only [ne_eq, eq_comm] using hne)
-
 /-- **Wolf Theorem 6.2, item 4**: if `E` is an irreducible completely positive map and
 `A`, `B` are nonzero PSD matrices with `trace (B * A) = 0`, then some iterate
 `E^t(A)` with `1 ≤ t ≤ D - 1` has strictly positive trace overlap with `B`.
@@ -76,7 +61,7 @@ theorem orthogonal_trace_pos_of_irreducible_cp
   have h_growth : ((T ^ n) A).PosDef := by
     simpa only using (growth_posDef_of_irreducible_cp E hCP hIrr A hA hA_ne)
   have htrace_growth : 0 < Matrix.trace (B * ((T ^ n) A)) :=
-    trace_mul_pos_of_posDef_posSemidef_ne_zero h_growth hB hB_ne
+    hB.trace_mul_pos_of_ne_zero_of_posDef hB_ne h_growth
   have h_expand :
       (T ^ n) A = ∑ k ∈ Finset.range (n + 1), n.choose k • ((E ^ k) A) := by
     simpa only [nsmul_eq_mul] using idPlusE_pow_apply_eq_sum (E := E) (n := n) A

@@ -6,6 +6,7 @@ Authors: TNLean contributors
 import QICLean.Channel.ChoiRectangular
 import QICLean.Channel.KrausRank
 import QICLean.Channel.KrausRepresentation
+import QICLean.Algebra.MatrixIsometryEntries
 
 /-!
 # Rectangular Kraus representation theorem
@@ -138,10 +139,10 @@ theorem exists_kraus_orthogonal_of_isKrausCP [NeZero d]
             Matrix (Fin d' × Fin d) (Fin d' × Fin d) ℂ) = 1 := by
       simpa [Matrix.star_eq_conjTranspose] using
         Matrix.UnitaryGroup.star_mul_self hτ.eigenvectorUnitary
-    have h := congrFun (congrFun hu m.1) n.1
-    simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply] at h
-    rw [h]
-    simp [Subtype.ext_iff, eq_comm]
+    simpa only [Subtype.ext_iff, eq_comm] using
+      Matrix.sum_star_mul_eq_ite_of_conjTranspose_mul_eq_one
+        (hτ.eigenvectorUnitary :
+          Matrix (Fin d' × Fin d) (Fin d' × Fin d) ℂ) hu m.1 n.1
   -- The Hilbert–Schmidt Gram matrix of the reconstructed family.
   have hgram : ∀ m n : {j : Fin d' × Fin d // hτ.eigenvalues j ≠ 0},
       ((Ks m)ᴴ * Ks n).trace =

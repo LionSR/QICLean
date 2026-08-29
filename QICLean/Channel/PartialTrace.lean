@@ -7,6 +7,7 @@ import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.Data.Complex.Basic
+import QICLean.Algebra.MatrixIsometryEntries
 
 /-!
 # Partial trace on bipartite matrices
@@ -166,10 +167,8 @@ theorem partialTraceRight_kronecker_conj_of_right_isometry
   classical
   ext i j
   have horth (x y : β) :
-      (∑ k : δ, B k x * star (B k y)) = if x = y then 1 else 0 := by
-    simpa only [Matrix.mul_apply, Matrix.conjTranspose_apply,
-      Matrix.one_apply, mul_comm, eq_comm] using
-      congrFun (congrFun hB y) x
+      (∑ k : δ, B k x * star (B k y)) = if x = y then 1 else 0 :=
+    sum_mul_star_eq_ite_of_conjTranspose_mul_eq_one B hB x y
   simp only [partialTraceRight_apply, Matrix.mul_apply,
     Matrix.conjTranspose_apply, kroneckerMap_apply, Fintype.sum_prod_type, star_mul]
   simp_rw [Finset.mul_sum, Finset.sum_mul]
@@ -336,10 +335,8 @@ theorem partialTraceLeft_kronecker_conj_of_left_isometry
   classical
   ext i j
   have horth (x y : α) :
-      (∑ k : γ, A k x * star (A k y)) = if x = y then 1 else 0 := by
-    simpa only [Matrix.mul_apply, Matrix.conjTranspose_apply,
-      Matrix.one_apply, mul_comm, eq_comm] using
-      congrFun (congrFun hA y) x
+      (∑ k : γ, A k x * star (A k y)) = if x = y then 1 else 0 :=
+    sum_mul_star_eq_ite_of_conjTranspose_mul_eq_one A hA x y
   simp only [partialTraceLeft_apply, Matrix.mul_apply,
     Matrix.conjTranspose_apply, kroneckerMap_apply, Fintype.sum_prod_type, star_mul]
   simp_rw [Finset.mul_sum, Finset.sum_mul]

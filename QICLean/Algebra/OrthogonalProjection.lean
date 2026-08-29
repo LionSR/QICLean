@@ -6,6 +6,7 @@ import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.PosDef
 import QICLean.Algebra.MatrixAux
+import QICLean.Algebra.MatrixIsometryEntries
 
 /-!
 # Orthogonal projections in finite matrix algebras
@@ -122,7 +123,8 @@ theorem IsOrthogonalProjection.exists_range_isometry
   let V : Matrix (Fin D) (Fin n) ℂ := fun i j ↦ Umat i (eS.symm j).1
   refine ⟨n, V, ?_, ?_⟩
   · ext j k
-    have hentry := congrFun (congrFun hU'U (eS.symm j).1) (eS.symm k).1
+    have hentry := Matrix.sum_star_mul_eq_ite_of_conjTranspose_mul_eq_one
+      Umat hU'U (eS.symm j).1 (eS.symm k).1
     have heq : (eS.symm j).1 = (eS.symm k).1 ↔ j = k := by
       constructor
       · intro h
@@ -136,11 +138,7 @@ theorem IsOrthogonalProjection.exists_range_isometry
         if (eS.symm j).1 = (eS.symm k).1 then 1 else 0 at hentry
     change (∑ i : Fin D, starRingEnd ℂ (Umat i ↑(eS.symm j)) *
       Umat i ↑(eS.symm k)) = if j = k then 1 else 0
-    by_cases hjk : j = k
-    · subst k
-      simpa using hentry
-    · have hval : (eS.symm j).1 ≠ (eS.symm k).1 := fun h ↦ hjk (heq.mp h)
-      simpa [hjk, hval] using hentry
+    simpa only [heq] using hentry
   · have hPdecomp : P = Umat * Matrix.diagonal f * Umatᴴ := by
       calc
         P = (Umat * Umatᴴ) * P * (Umat * Umatᴴ) := by rw [hUU]; simp

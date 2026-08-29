@@ -41,6 +41,7 @@ import QICLean.Algebra.MatrixFamilyAction
 import QICLean.Algebra.MatrixFamilySupport
 import QICLean.Algebra.MatrixGramConjugation
 import QICLean.Algebra.MatrixGramUnitary
+import QICLean.Algebra.MatrixIsometryEntries
 import QICLean.Algebra.MatrixIsometryKronecker
 import QICLean.Algebra.MatrixKernelRigidity
 import QICLean.Algebra.MatrixKroneckerEmbed

@@ -8,6 +8,7 @@ import QICLean.Channel.KrausRepresentation
 import QICLean.Channel.Stinespring
 import QICLean.Algebra.FinSum
 import QICLean.Algebra.MatrixGramUnitary
+import QICLean.Algebra.MatrixIsometryEntries
 import QICLean.Algebra.MatrixTracePairing
 
 /-!
@@ -237,9 +238,8 @@ theorem kraus_rectangular_freedom'
     rw [show ∑ x : ι₁, star (V' (e₁ x) (e₂ j)) * V' (e₁ x) (e₂ k) =
         ∑ β, star (V' β (e₂ j)) * V' β (e₂ k) from
       e₁.sum_comp (fun β => star (V' β (e₂ j)) * V' β (e₂ k))]
-    have h_entry := congr_fun (congr_fun hV'_iso (e₂ j)) (e₂ k)
-    change (∑ β, star (V' β (e₂ j)) * V' β (e₂ k)) =
-      if e₂ j = e₂ k then 1 else 0 at h_entry
+    have h_entry := Matrix.sum_star_mul_eq_ite_of_conjTranspose_mul_eq_one
+      V' hV'_iso (e₂ j) (e₂ k)
     simpa only [e₂.injective.eq_iff] using h_entry
   · -- B α = ∑ j, V(α,j) • A j
     intro α
