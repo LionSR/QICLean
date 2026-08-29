@@ -2082,12 +2082,9 @@ for every submultiplicative norm from the Duhamel identity, while
 Here Wolf's “any norm” refers to the operator norm induced by the chosen norm on
 the state space, as defined immediately before Proposition 7.1.
 
-The complete named-environment audit therefore classifies exactly two Chapter
-7 source environments as partial rather than exact:
+The complete named-environment audit therefore classifies exactly one Chapter
+7 source environment as partial rather than exact:
 
-- Proposition 7.5, “Irreducibility implies primitivity”: source clauses 1--3 are
-  packaged, while clauses 4--5 on faithful convergence and the Liouvillian
-  kernel are absent (partial-packaging).
 - Corollary 7.2, “Necessary conditions for relaxation”: the three hypotheses
   yield non-reducibility, but the source's faithful stationary state and global
   relaxation conclusion are not packaged (partial-packaging).
@@ -2109,7 +2106,25 @@ Theorem 7.1 is an exact completion. Equations (7.20)--(7.22) are represented by
 `gksl_iff_tracelessBasisKossakowskiForm`; the proof chooses traceless Lindblad
 operators, expands them as `Lⱼ = ∑ₖ Mⱼₖ Fₖ`, and uses `C = MᴴM`.
 
-Propositions 7.1--7.4, Theorem 7.1, and Corollary 7.1 are exact completions. The
+Proposition 7.5 is an exact completion. The theorem
+`wolf_prop_7_5_full_equivalence` packages all five printed clauses: one or all
+positive-time slices are irreducible, all positive-time slices are primitive,
+all density matrices relax to one faithful density matrix, and the generator
+has a simple faithful kernel. In the third clause, primitivity records both
+irreducibility and the absence of peripheral eigenvalues other than one, as in
+Wolf's definition. For the implication from the simple-kernel condition, one
+chooses a positive time whose fixed space is exactly the kernel of the
+generator. This follows from
+\(e^{tL}-I=(\int_0^t e^{sL}\,ds)L\), since the integral is invertible for all
+sufficiently small positive \(t\).
+
+Proposition 7.6 is also an exact completion. In the implication from an upper
+block-triangular Lindblad representation to a rank-deficient kernel element,
+the same choice of positive time identifies the fixed space of the channel
+with the kernel of the generator. Cesàro averaging within the invariant proper
+compression then supplies the required rank-deficient density matrix.
+
+Propositions 7.1--7.6, Theorem 7.1, and Corollary 7.1 are exact completions. The
 `\leanok` markers in the semigroup Blueprint certify individual Lean
 declarations; they must not be read as exact-coverage markers for a larger
 containing Wolf environment.

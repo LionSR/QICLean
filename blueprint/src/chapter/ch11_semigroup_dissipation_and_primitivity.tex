@@ -610,4 +610,75 @@
     already includes irreducibility of $T_t$ for every $t>0$.
 \end{proof}
 
+\begin{definition}[Faithful relaxation and a simple faithful kernel]
+    \label{def:qds_faithful_relaxation}
+    \lean{RelaxesTo, IsRelaxingQDS, HasSimpleKernel,
+        HasSimpleFaithfulKernel}\leanok
+    A semigroup $T$ \emph{relaxes to} a density matrix $\rho_\infty$ if
+    $\rho_\infty>0$ and
+    \begin{align}
+        \lim_{t\to\infty}T_t(\rho)=\rho_\infty
+        \label{eq:qds_faithful_relaxation}
+    \end{align}
+    for every density matrix $\rho$.  A generator $L$ has a \emph{simple
+    faithful kernel} if its kernel consists precisely of the scalar multiples
+    of a positive-definite density matrix.
+\end{definition}
+
+\begin{theorem}[Irreducibility implies primitivity]
+    \label{thm:wolf_prop_7_5_full_equivalence}
+    \lean{wolf_prop_7_5_full_equivalence,
+        trace_zero_tendsto_zero_of_primitive_unit_slice,
+        relaxation_and_simple_kernel_of_irreducible_time,
+        irreducible_unit_of_relaxesTo,
+        exists_irreducible_time_of_simple_kernel,
+        exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero,
+        expSemigroupCLM_sub_one_eq_intervalIntegral_mul,
+        exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one}\leanok
+    \uses{def:qds_faithful_relaxation,
+        thm:qds_irreducible_iff_primitive}
+    Let $T_t=e^{tL}$, $t\in\R_+$, be a norm-continuous dynamical semigroup
+    of trace-preserving completely positive maps.  The following statements
+    are equivalent:
+    \begin{enumerate}
+        \item There is a $t_0>0$ such that $T_{t_0}$ is irreducible.
+        \item $T_t$ is irreducible for every $t>0$.
+        \item $T_t$ is primitive for every $t>0$.
+        \item There is a $\rho_\infty>0$ such that
+              Eq.~\eqref{eq:qds_faithful_relaxation} holds for every density
+              matrix $\rho$.
+        \item $L$ has a one-dimensional kernel consisting of multiples of a
+              positive-definite density matrix $\rho_\infty$.
+    \end{enumerate}
+    This is \cite[Proposition~7.5]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:qds_irreducible_iff_primitive}
+    Conditions~1--3 follow from
+    Theorem~\ref{thm:qds_irreducible_iff_primitive}.  For condition~4, fix the
+    faithful stationary density $\rho_\infty$ of an irreducible slice.  The
+    powers of the primitive unit-time slice send every trace-zero matrix to
+    zero.  Writing $t=\lfloor t\rfloor+(t-\lfloor t\rfloor)$ and using the
+    uniform bound on the residual interval $[0,1]$ gives the continuous-time
+    limit.
+
+    Relaxation excludes a proper invariant compression: such a compression
+    would contain a density matrix fixed at every integer time, which would
+    have to equal the positive-definite limit.
+
+    For the implication from condition~5 to condition~1, choose $t_0>0$ so
+    that the fixed-point space of $e^{t_0L}$ is precisely $\ker L$.  Such a
+    time exists because
+    \begin{align}
+        e^{tL}-\Id
+        &=\left(\int_0^t e^{sL}\,ds\right)L,
+    \end{align}
+    and the integral factor is invertible for all sufficiently small positive
+    $t$.  Thus $e^{t_0L}$ has the unique fixed direction
+    $\C\rho_\infty$, with $\rho_\infty>0$, and is irreducible by
+    Theorem~6.4.  Conversely, $\ker L$ is contained in the fixed-point space
+    of every $e^{tL}$, so an irreducible slice forces condition~5.
+\end{proof}
+
 %% ---------------------------------------------------------

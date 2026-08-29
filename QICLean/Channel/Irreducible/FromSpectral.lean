@@ -62,44 +62,6 @@ noncomputable section
 
 /-! ## Small linear-algebra auxiliary lemmas -/
 
-private noncomputable def sandwichLinearMap
-    (L R : Matrix (Fin D) (Fin D) ℂ) :
-    Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ where
-  toFun X := L * X * R
-  map_add' X Y := by
-    simp [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
-  map_smul' a X := by
-    simp [Matrix.mul_assoc]
-
-private lemma trace_ne_zero_of_orthogonalProjection_ne_zero
-    {P : Matrix (Fin D) (Fin D) ℂ}
-    (hP : IsOrthogonalProjection P) (hP_ne : P ≠ 0) :
-    Matrix.trace P ≠ 0 := by
-  have hP_psd : P.PosSemidef := isOrthogonalProjection_posSemidef hP
-  intro htr
-  exact hP_ne ((hP_psd.trace_eq_zero_iff).1 htr)
-
-private lemma normalizedProjection_mem_densityMatrices
-    {P : Matrix (Fin D) (Fin D) ℂ}
-    (hP : IsOrthogonalProjection P) (hP_ne : P ≠ 0) :
-    (((Matrix.trace P)⁻¹) • P) ∈ densityMatrices D := by
-  have hP_psd : P.PosSemidef := isOrthogonalProjection_posSemidef hP
-  have htrP_ne : Matrix.trace P ≠ 0 := trace_ne_zero_of_orthogonalProjection_ne_zero hP hP_ne
-  refine ⟨?_, ?_⟩
-  · exact hP_psd.smul (inv_nonneg_of_nonneg hP_psd.trace_nonneg)
-  · simp [Matrix.trace_smul, htrP_ne]
-
-private lemma normalizedProjection_corner
-    {P : Matrix (Fin D) (Fin D) ℂ}
-    (hP : IsOrthogonalProjection P) :
-    P * (((Matrix.trace P)⁻¹) • P) * P = ((Matrix.trace P)⁻¹) • P := by
-  calc
-    P * (((Matrix.trace P)⁻¹) • P) * P
-        = (Matrix.trace P)⁻¹ • (P * P * P) := by
-            simp [Matrix.mul_assoc]
-    _ = (Matrix.trace P)⁻¹ • P := by
-          rw [hP.2, hP.2]
-
 /-- If `P` is a nonzero orthogonal projection and `ρ > 0`, then `P * ρ * P ≠ 0`. -/
 private theorem proj_mul_posDef_mul_proj_ne_zero
     {P ρ : Matrix (Fin D) (Fin D) ℂ}
@@ -272,72 +234,15 @@ theorem isIrreducibleMap_of_channel_posDef_fixedPoint_unique
   · exact Or.inl hP0
   by_cases hP1 : P = 1
   · exact Or.inr hP1
-  let ρ₀ : Matrix (Fin D) (Fin D) ℂ := ((Matrix.trace P)⁻¹) • P
-  have hρ₀_mem : ρ₀ ∈ densityMatrices D :=
-    normalizedProjection_mem_densityMatrices hP_proj hP0
-  have hρ₀_corner : P * ρ₀ * P = ρ₀ := by
-    simpa [ρ₀] using normalizedProjection_corner hP_proj
-  have hcorner_iter : ∀ n : ℕ, P * (E ^ n) ρ₀ * P = (E ^ n) ρ₀ := by
-    intro n
-    induction n with
-    | zero =>
-        simpa [pow_zero] using hρ₀_corner
-    | succ n ih =>
-        rw [pow_succ']
-        have h := hP_inv ((E ^ n) ρ₀)
-        simpa [ih] using h
-  have hces_mem : ∀ N : ℕ,
-      cesaroMean E ρ₀ (N + 1) ∈ densityMatrices D :=
-    IsChannel.cesaroMean_mem_densityMatrices (E := E) hE hρ₀_mem
-  have hces_corner : ∀ N : ℕ,
-      P * cesaroMean E ρ₀ (N + 1) * P = cesaroMean E ρ₀ (N + 1) := by
-    intro N
-    rw [cesaroMean_eq]
-    rw [Matrix.mul_smul, Matrix.smul_mul, Finset.mul_sum, Finset.sum_mul]
-    congr 1
-    exact Finset.sum_congr rfl (fun n _ => hcorner_iter n)
-  have : TopologicalSpace.PseudoMetrizableSpace (Matrix (Fin D) (Fin D) ℂ) :=
-    PseudoEMetricSpace.pseudoMetrizableSpace
-  have : FirstCountableTopology (Matrix (Fin D) (Fin D) ℂ) :=
-    TopologicalSpace.PseudoMetrizableSpace.firstCountableTopology
-  obtain ⟨σ, _hσ_mem, φ, hφ_mono, hφ_tendsto⟩ :=
-    densityMatrices_isCompact.tendsto_subseq hces_mem
-  have hσ_tendsto : Filter.Tendsto
-      (fun k => cesaroMean E ρ₀ (φ k + 1))
-      Filter.atTop (nhds σ) := by
-    convert hφ_tendsto using 1
-    ext k
-    rfl
-  have hσ_lim : σ ∈ densityMatrices D ∧ E σ = σ :=
-    IsChannel.cesaroMean_subseq_limit_fixedPoint (E := E) hE hρ₀_mem
-      hφ_mono.tendsto_atTop hσ_tendsto
-  have hσ_fix : E σ = σ := hσ_lim.2
+  obtain ⟨σ, hσ_mem, hσ_corner, hσ_fix⟩ :=
+    IsChannel.exists_fixed_density_of_preserves_compression
+      (E := E) hE hP_proj hP0 hP_inv
   have hσ_ne : σ ≠ 0 := by
     intro hσ0
-    have htr : Matrix.trace σ = 1 := hσ_lim.1.2
+    have htr : Matrix.trace σ = 1 := hσ_mem.2
     rw [hσ0, Matrix.trace_zero (Fin D) ℂ] at htr
     exact zero_ne_one htr
-  have hcorner_tendsto : Filter.Tendsto
-      (fun k => P * cesaroMean E ρ₀ (φ k + 1) * P)
-      Filter.atTop (nhds (P * σ * P)) := by
-    let corner : Matrix (Fin D) (Fin D) ℂ →L[ℂ] Matrix (Fin D) (Fin D) ℂ :=
-      LinearMap.toContinuousLinearMap (sandwichLinearMap (D := D) P P)
-    change Filter.Tendsto
-      ((sandwichLinearMap (D := D) P P) ∘ fun k => cesaroMean E ρ₀ (φ k + 1))
-      Filter.atTop (nhds ((sandwichLinearMap (D := D) P P) σ))
-    simpa [corner] using (corner.continuous.tendsto σ).comp hσ_tendsto
-  have hcorner_seq_eq :
-      (fun k => P * cesaroMean E ρ₀ (φ k + 1) * P) =
-        fun k => cesaroMean E ρ₀ (φ k + 1) := by
-    funext k
-    exact hces_corner (φ k)
-  have hcorner_tendsto' : Filter.Tendsto
-      (fun k => P * cesaroMean E ρ₀ (φ k + 1) * P)
-      Filter.atTop (nhds σ) := by
-    simpa [hcorner_seq_eq] using hσ_tendsto
-  have hσ_corner : P * σ * P = σ :=
-    tendsto_nhds_unique hcorner_tendsto hcorner_tendsto'
-  obtain ⟨c, hσ_eq⟩ := huniq σ hσ_lim.1.1 hσ_fix
+  obtain ⟨c, hσ_eq⟩ := huniq σ hσ_mem.1 hσ_fix
   have hc_ne : c ≠ 0 := by
     intro hc
     apply hσ_ne

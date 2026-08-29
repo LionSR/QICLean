@@ -32,6 +32,9 @@ points of the exponential semigroup.
 
 * `generator_apply_eq_zero_iff_expSemigroup_fixed_nonneg`:
   `L X = 0` iff `expSemigroup L t X = X` for all `t ≥ 0`.
+* `exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero`:
+  at some positive time, the fixed-point space of `expSemigroup L` is exactly
+  the kernel of `L`.
 * `generator_apply_eq_zero_iff_fixed_nonneg`:
   the same connection for any semigroup identified with `expSemigroup`.
 
@@ -40,7 +43,7 @@ Wolf Chapter 7.
 -/
 
 open scoped Matrix Matrix.Norms.Operator ComplexOrder BigOperators NNReal TNOperatorSpace
-open Matrix Finset NormedSpace
+open Matrix Finset NormedSpace TNLean
 
 noncomputable section
 
@@ -185,6 +188,50 @@ theorem generator_apply_eq_zero_iff_expSemigroup_fixed_nonneg
   constructor
   · exact expSemigroup_apply_eq_self_of_generator_apply_eq_zero L
   · exact generator_apply_eq_zero_of_expSemigroup_apply_eq_self L
+
+/-- For every finite-dimensional generator `L`, there is a positive time `t₀`
+at which the fixed-point space of `exp(t₀L)` is exactly `ker L`.
+
+The identity
+`exp(t₀L) - 1 = (∫ s in 0..t₀, exp(sL)) L`
+shows that a fixed point lies in `ker L` whenever the integral factor is
+invertible. Such a positive `t₀` exists because the normalized integral tends
+to the identity as `t₀ ↓ 0`. This is the non-resonant-time step used in Wolf
+Proposition 7.5. -/
+theorem exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero
+    (L : Mat →ₗ[ℂ] Mat) :
+    ∃ t₀ : ℝ, 0 < t₀ ∧
+      ∀ X : Mat, expSemigroup L t₀ X = X ↔ L X = 0 := by
+  let L' : MatrixCLM (Fin D) := endEquiv L
+  obtain ⟨t₀, ht₀, hP_unit⟩ :=
+    exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one
+      (fun t : ℝ => expSemigroupCLM L' t)
+      (expSemigroupCLM_zero L') (expSemigroupCLM_continuous L')
+  let P : MatrixCLM (Fin D) :=
+    intervalIntegral (fun t : ℝ => expSemigroupCLM L' t)
+      0 t₀ MeasureTheory.volume
+  have hP_unit' : IsUnit P := by
+    simpa [P] using hP_unit
+  have hP_injective : Function.Injective P :=
+    (ContinuousLinearMap.isUnit_iff_bijective.mp hP_unit').1
+  refine ⟨t₀, ht₀, fun X => ?_⟩
+  constructor
+  · intro hX
+    have hX' : expSemigroupCLM L' t₀ X = X := by
+      change endEquiv (expSemigroup L t₀) X = X
+      rw [expSemigroup_toCLM]
+      exact hX
+    have hzero : (expSemigroupCLM L' t₀ - 1) X = 0 := by
+      simpa using sub_eq_zero.mpr hX'
+    rw [expSemigroupCLM_sub_one_eq_intervalIntegral_mul] at hzero
+    have hPLX : P (L' X) = 0 := by
+      simpa [P] using hzero
+    have hLX' : L' X = 0 := by
+      apply hP_injective
+      simpa using hPLX
+    exact hLX'
+  · intro hLX
+    exact expSemigroup_apply_eq_self_of_generator_apply_eq_zero L hLX t₀ ht₀.le
 
 /-- Kernel elements of `L` are exactly the matrices fixed by a semigroup family
 `T` identified with `expSemigroup L` on nonnegative times. -/

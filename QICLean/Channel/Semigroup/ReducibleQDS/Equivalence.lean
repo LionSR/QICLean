@@ -5,7 +5,6 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Semigroup.ReducibleQDS.FixedDensity
 import QICLean.Channel.Semigroup.ReducibleQDS.GeneratorCompression
-import QICLean.Channel.Semigroup.ReducibleQDS.SubsequenceAnalysis
 import QICLean.Channel.Semigroup.LindbladForm.GKSLTheorem
 
 /-!
@@ -55,6 +54,27 @@ theorem isReducibleQDS_iff_generator_preserves_compression
 
 /-! ## The full equivalence (Wolf Proposition 7.6) -/
 
+/-- **Wolf Proposition 7.6, (4) → (2)**: Block-upper-triangular Lindblad data
+give a rank-deficient density matrix in the kernel of the generator.
+
+The triangular form yields an invariant compression. Choose `t₀ > 0` for
+which the fixed-point space of `exp(t₀L)` equals `ker L`; a stationary density
+matrix in the invariant compression then lies in `ker L`. -/
+theorem hasRankDeficientKernelElement_of_hasBlockUpperTriangularLindblad
+    {L : Mat →ₗ[ℂ] Mat}
+    (hGKSL : IsGKSLGenerator L)
+    (h : HasBlockUpperTriangularLindblad L) :
+    HasRankDeficientKernelElement L := by
+  obtain ⟨P, hP_nt, hT_pres⟩ :=
+    hasInvariantCompression_of_hasBlockUpperTriangularLindblad h
+  obtain ⟨t₀, ht₀, hfix⟩ :=
+    exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero L
+  obtain ⟨ρ, hρ_mem, hρ_corner, hρ_fix⟩ :=
+    IsChannel.exists_fixed_density_of_preserves_compression
+      (E := expSemigroup L t₀) (hGKSL t₀ ht₀.le)
+      hP_nt.1 hP_nt.2.1 (hT_pres t₀ ht₀.le)
+  exact ⟨ρ, hρ_mem, ⟨P, hP_nt, hρ_corner⟩, (hfix ρ).1 hρ_fix⟩
+
 /-- **Wolf Proposition 7.6, (2) → (4)**: A rank-deficient kernel element of a
 GKSL generator yields a block-upper-triangular Lindblad form. -/
 theorem hasBlockUpperTriangularLindblad_of_hasRankDeficientKernelElement
@@ -82,23 +102,23 @@ theorem wolf_prop_7_6_three_implies_four
   hasBlockUpperTriangularLindblad_of_hasInvariantCompression hGKSL h
 
 /-- **Wolf Proposition 7.6 (full equivalence)**: For a GKSL generator `L`, the
-four reducibility conditions are equivalent. We state the result by taking
-condition (1) as the base condition. -/
+four reducibility conditions are equivalent. The conclusion records the three
+adjacent equivalences in the order printed by Wolf. -/
 theorem wolf_prop_7_6_full_equivalence
     {L : Mat →ₗ[ℂ] Mat}
     (hGKSL : IsGKSLGenerator L) :
-    HasRankDeficientFixedDensity L ↔
-      HasRankDeficientKernelElement L ∧
-        HasInvariantCompression L ∧
-        HasBlockUpperTriangularLindblad L := by
-  constructor
-  · intro h1
-    refine ⟨?_, ?_, ?_⟩
-    · exact hasRankDeficientKernelElement_of_hasRankDeficientFixedDensity h1
-    · exact wolf_prop_7_6_one_implies_three hGKSL h1
-    · exact hasBlockUpperTriangularLindblad_of_hasRankDeficientKernelElement hGKSL
-        (hasRankDeficientKernelElement_of_hasRankDeficientFixedDensity h1)
-  · intro h1234
-    exact hasRankDeficientFixedDensity_of_hasRankDeficientKernelElement h1234.1
+    (HasRankDeficientFixedDensity L ↔ HasRankDeficientKernelElement L) ∧
+      (HasRankDeficientKernelElement L ↔ HasInvariantCompression L) ∧
+      (HasInvariantCompression L ↔ HasBlockUpperTriangularLindblad L) := by
+  refine ⟨wolf_prop_7_6_one_iff_two L, ?_, ?_⟩
+  · constructor
+    · intro h2
+      exact wolf_prop_7_6_four_implies_three
+        (hasBlockUpperTriangularLindblad_of_hasRankDeficientKernelElement hGKSL h2)
+    · intro h3
+      exact hasRankDeficientKernelElement_of_hasBlockUpperTriangularLindblad hGKSL
+        (wolf_prop_7_6_three_implies_four hGKSL h3)
+  · exact ⟨wolf_prop_7_6_three_implies_four hGKSL,
+      wolf_prop_7_6_four_implies_three⟩
 
 end -- noncomputable section
