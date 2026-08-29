@@ -1261,24 +1261,71 @@ corrections and the former CP scope restriction are recorded in the resolved not
   Full Cesàro convergence: for every density matrix `ρ`,
   `(1/N) ∑_{t=0}^{N-1} E^[t](ρ) → σ`.
 
-Supporting formalization in `QICLean.Channel.Irreducible.Ergodicity`:
-* `IsChannel.iter_mem_densityMatrices`: iterates of a channel preserve density matrices.
-* `IsChannel.cesaroMean_subseq_limit_fixedPoint`: any subsequential Cesàro limit is
-  a density-matrix fixed point (compactness + telescoping argument).
+Supporting formalization used by `QICLean.Channel.Irreducible.Ergodicity`:
+* `IsChannel.cesaroMean_mem_densityMatrices`: channel Cesàro means remain density
+  matrices.
+* `IsChannel.cesaroMean_subseq_limit_fixedPoint`: any subsequential Cesàro limit
+  is a density-matrix fixed point (compactness + telescoping argument).
 
-#### Wolf Theorem 6.4 (Irreducibility from spectral properties) — PARTIAL-SCOPE
+The reusable Cesàro infrastructure in `QICLean.Channel.FixedPoint.Cesaro` is now
+source-general: `IsPositiveMap.cesaroMean_mem_densityMatrices`,
+`IsPositiveMap.cesaroMean_subseq_limit_fixedPoint`, and
+`IsPositiveMap.exists_posSemidef_fixedPoint` assume only positivity and trace
+preservation.  This removes the CP restriction from the compactness and
+subsequential-limit steps needed for issue #475.  The source-facing full
+convergence theorem and the explicit comparison between the averages indexed by
+`0,...,N-1` and Wolf's `1,...,N` remain to be packaged, so Corollary 6.3 is not
+yet marked formalized.
 
-In `QICLean.Channel.Irreducible.FromSpectral`:
+#### Wolf Theorem 6.4 (Irreducibility from spectral properties) — FORMALIZED
+
+The source-general declarations are in
+`QICLean.Channel.Irreducible.PositiveMapSpectralCharacterization`:
+* `WolfSpectralProperties` and `HasWolfSpectralProperties` — the exact spectral
+  condition: a strictly positive real representative `r` of the spectral
+  radius, positive-definite right and trace-adjoint left eigenvectors at `r`,
+  and ordinary complex eigenspace dimension one.
+* `hasWolfSpectralProperties_of_irreducible_positive` — Theorem 6.3 applied to
+  an arbitrary irreducible positive map and its trace adjoint.
+* `isIrreducibleMap_of_hasWolfSpectralProperties` — Wolf's reverse implication.
+  The proof uses `r⁻¹ • similarityMap (CFC.sqrt Y)⁻¹ T`, verifies trace
+  preservation directly from `Matrix.traceAdjointMap`, and contradicts ordinary
+  eigenspace simplicity with a stationary density in a proper invariant corner.
+* `wolf_theorem_6_4` — the final positive-map equivalence, under `[NeZero D]`
+  and the necessary boundary hypothesis `T ≠ 0`.
+* `hasSpectralProperties_iff_hasWolfSpectralProperties_of_cp` — comparison with
+  the earlier finite-Kraus package.
+
+The positive trace-preserving invariant-corner input is
+`IsPositiveMap.exists_fixed_density_of_preserves_compression` in
+`QICLean.Channel.FixedPoint.Cesaro`; it assumes no Kraus representation or
+complete positivity.  The channel theorem with the former name is retained as
+a direct specialization.  Likewise,
+`isIrreducibleMap_of_positive_tracePreserving_posDef_fixedPoint_unique` in
+`QICLean.Channel.Irreducible.FromSpectral` is the source-general fixed-point
+contradiction, and `isIrreducibleMap_of_channel_posDef_fixedPoint_unique` is its
+channel specialization.
+
+The earlier restricted package remains available in
+`QICLean.Channel.Irreducible.FromSpectral`:
 * `HasSpectralProperties` — Kraus-witness bundle of the spectral assumptions
-  in Wolf's theorem (PD right/left eigenvectors, PSD uniqueness, spectral radius).
+  (PD right/left eigenvectors, PSD uniqueness, spectral radius).
 * `hasSpectralProperties_of_irreducible_cp` — the forward implication
   `irreducible → spectral properties`.
 * `isIrreducibleMap_of_hasSpectralProperties` — the reverse implication via
   TP gauge reduction + channel fixed-point contradiction.
 * `isIrreducibleMap_iff_spectral_properties` — the final iff statement for
-  the restricted finite-Kraus/complete-positive bundle. The source theorem is
-  stated for positive maps, so the containing environment remains a
-  partial-scope formalization.
+  the restricted finite-Kraus/complete-positive bundle.
+
+There is one necessary correction to the printed theorem.  On `M₁(ℂ)` the zero
+map is positive and irreducible, but its spectral radius is zero, so it cannot
+satisfy the displayed strict-positive condition `T(X) = r X > 0`.  The uniform
+source theorem therefore assumes `T ≠ 0`; no correction is needed in dimensions
+greater than one.  This boundary and the removal of the former CP/PSD-uniqueness
+restrictions are recorded in the resolved note
+`docs/paper-gaps/wolf_thm6_4_positive_map_spectral_characterization.tex` and in
+the central correction index
+`docs/paper-gaps/wolf_lecture_notes_errata.tex`.
 
 #### Wolf Theorem 6.5 (Spectral radius and positive eigenvectors) — PARTIAL-SCOPE
 

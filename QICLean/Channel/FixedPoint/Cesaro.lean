@@ -11,20 +11,22 @@ import QICLean.Channel.Schwarz.PositiveMapProperties
 /-!
 # Fixed point existence via Cesàro means
 
-This file proves that every quantum channel (CPTP map) on `M_D(ℂ)` has a nonzero
-PSD fixed point, using the Cesàro mean / Markov-Kakutani argument. It also proves
-the positive fixed-point decomposition of Wolf Proposition 6.8.
+This file proves that every positive trace-preserving linear map on `M_D(ℂ)`
+has a nonzero PSD fixed point, using the Cesàro mean / Markov-Kakutani argument.
+It also proves the positive fixed-point decomposition of Wolf Proposition 6.8.
 
-The decomposition theorem uses only positivity and trace preservation. The fixed-point
-existence theorem is stated for channels.
+All Cesàro existence theorems use only positivity and trace preservation. Their
+earlier channel declarations are retained as direct specializations.
 
 ## Main results
 
 * `cesaroMean`: the Cesàro mean of iterates of a linear map
 * `cesaroMean_telescope`: telescoping identity for Cesàro means
-* `IsChannel.exists_posSemidef_fixedPoint`: existence of PSD fixed point
-* `IsChannel.exists_fixed_density_of_preserves_compression`: existence of a
+* `IsPositiveMap.exists_posSemidef_fixedPoint`: existence of a PSD fixed point
+  for a positive trace-preserving map
+* `IsPositiveMap.exists_fixed_density_of_preserves_compression`: existence of a
   stationary density matrix in an invariant compression
+* the corresponding `IsChannel` declarations: channel specializations
 * `IsPositiveMap.posPart_negPart_fixed_of_fixedPoint`: Wolf Proposition 6.8 for
   positive trace-preserving maps, using the four canonical positive parts.
 * `IsPositiveMap.exists_posSemidef_fixedPoints_decomposition`: existential form of
@@ -334,9 +336,10 @@ theorem cesaroMean_telescope (X : Matrix (Fin D) (Fin D) ℂ) (N : ℕ) (_hN : 0
   rw [Finset.sum_range_sub (fun n => (E ^ n) X)]
   simp [pow_zero]
 
-/-- Iterates of a channel preserve density matrices. -/
-private lemma IsChannel.iter_mem_densityMatrices
-    (hE : IsChannel E) {ρ : Matrix (Fin D) (Fin D) ℂ}
+/-- Iterates of a positive trace-preserving map preserve density matrices. -/
+private lemma IsPositiveMap.iter_mem_densityMatrices
+    (hE : IsPositiveMap E) (hTP : IsTracePreservingMap E)
+    {ρ : Matrix (Fin D) (Fin D) ℂ}
     (hρ : ρ ∈ densityMatrices D) (n : ℕ) : (E ^ n) ρ ∈ densityMatrices D := by
   induction n with
   | zero =>
@@ -344,14 +347,17 @@ private lemma IsChannel.iter_mem_densityMatrices
       exact hρ
   | succ n ih =>
       rw [pow_succ']
-      exact IsChannel.map_densityMatrices E hE ((E ^ n) ρ) ih
+      change E ((E ^ n) ρ) ∈ densityMatrices D
+      exact ⟨hE _ ih.1, by rw [hTP, ih.2]⟩
 
-/-- Cesàro means of a channel applied to a density matrix remain density matrices. -/
-theorem IsChannel.cesaroMean_mem_densityMatrices
-    (hE : IsChannel E) {ρ : Matrix (Fin D) (Fin D) ℂ}
+/-- Cesàro means of a positive trace-preserving map applied to a density matrix
+remain density matrices. -/
+theorem IsPositiveMap.cesaroMean_mem_densityMatrices
+    (hE : IsPositiveMap E) (hTP : IsTracePreservingMap E)
+    {ρ : Matrix (Fin D) (Fin D) ℂ}
     (hρ : ρ ∈ densityMatrices D) :
     ∀ N : ℕ, cesaroMean E ρ (N + 1) ∈ densityMatrices D := by
-  have h_iter := IsChannel.iter_mem_densityMatrices (E := E) hE hρ
+  have h_iter := IsPositiveMap.iter_mem_densityMatrices (E := E) hE hTP hρ
   intro N
   refine ⟨?_, ?_⟩
   · rw [cesaroMean_eq]
@@ -363,18 +369,27 @@ theorem IsChannel.cesaroMean_mem_densityMatrices
       Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, one_div]
     exact inv_mul_cancel₀ (Nat.cast_ne_zero.mpr (Nat.succ_ne_zero N))
 
-/-- Any subsequential limit of the Cesàro means of a channel is a
-density-matrix fixed point. -/
-theorem IsChannel.cesaroMean_subseq_limit_fixedPoint
-    (hE : IsChannel E) {ρ σ : Matrix (Fin D) (Fin D) ℂ}
+/-- Channel specialization of
+`IsPositiveMap.cesaroMean_mem_densityMatrices`. -/
+theorem IsChannel.cesaroMean_mem_densityMatrices
+    (hE : IsChannel E) {ρ : Matrix (Fin D) (Fin D) ℂ}
+    (hρ : ρ ∈ densityMatrices D) :
+    ∀ N : ℕ, cesaroMean E ρ (N + 1) ∈ densityMatrices D :=
+  IsPositiveMap.cesaroMean_mem_densityMatrices (E := E) hE.pos hE.tp hρ
+
+/-- Any subsequential limit of the Cesàro means of a positive
+trace-preserving map is a density-matrix fixed point. -/
+theorem IsPositiveMap.cesaroMean_subseq_limit_fixedPoint
+    (hE : IsPositiveMap E) (hTP : IsTracePreservingMap E)
+    {ρ σ : Matrix (Fin D) (Fin D) ℂ}
     (hρ : ρ ∈ densityMatrices D)
     {ψ : ℕ → ℕ} (hψ_tendsto : Filter.Tendsto ψ Filter.atTop Filter.atTop)
     (hσ_tendsto : Filter.Tendsto (fun k => cesaroMean E ρ (ψ k + 1))
       Filter.atTop (nhds σ)) :
     σ ∈ densityMatrices D ∧ E σ = σ := by
-  have h_iter := IsChannel.iter_mem_densityMatrices (E := E) hE hρ
+  have h_iter := IsPositiveMap.iter_mem_densityMatrices (E := E) hE hTP hρ
   have hces_mem : ∀ N : ℕ, cesaroMean E ρ (N + 1) ∈ densityMatrices D :=
-    IsChannel.cesaroMean_mem_densityMatrices (E := E) hE hρ
+    IsPositiveMap.cesaroMean_mem_densityMatrices (E := E) hE hTP hρ
   have hσ_mem : σ ∈ densityMatrices D :=
     (densityMatrices_isCompact (D := D)).isClosed.mem_of_tendsto hσ_tendsto <|
       Filter.Eventually.of_forall fun k => hces_mem (ψ k)
@@ -413,12 +428,25 @@ theorem IsChannel.cesaroMean_subseq_limit_fixedPoint
     tendsto_nhds_unique (h_diff.congr h_telesc) h_rhs_zero
   exact ⟨hσ_mem, sub_eq_zero.mp h_eq⟩
 
-/-- **Existence of PSD fixed point for channels** (Cesàro mean argument).
+/-- Channel specialization of
+`IsPositiveMap.cesaroMean_subseq_limit_fixedPoint`. -/
+theorem IsChannel.cesaroMean_subseq_limit_fixedPoint
+    (hE : IsChannel E) {ρ σ : Matrix (Fin D) (Fin D) ℂ}
+    (hρ : ρ ∈ densityMatrices D)
+    {ψ : ℕ → ℕ} (hψ_tendsto : Filter.Tendsto ψ Filter.atTop Filter.atTop)
+    (hσ_tendsto : Filter.Tendsto (fun k => cesaroMean E ρ (ψ k + 1))
+      Filter.atTop (nhds σ)) :
+    σ ∈ densityMatrices D ∧ E σ = σ :=
+  IsPositiveMap.cesaroMean_subseq_limit_fixedPoint
+    (E := E) hE.pos hE.tp hρ hψ_tendsto hσ_tendsto
+
+/-- **Existence of a PSD fixed point for positive trace-preserving maps**
+(Cesàro mean argument).
 This is an alternative proof of **Wolf Theorem 6.11** (Stationary states)
 that avoids Brouwer's fixed point theorem (Wolf Theorem 6.10) entirely.
 
-Every trace-preserving positive map on `M_D(ℂ)` with `D > 0` has a
-nonzero PSD fixed point.
+Every trace-preserving positive map on `M_D(ℂ)` with `D > 0` has a nonzero PSD
+fixed point. No complete positivity or Kraus representation is used.
 
 Our proof uses only:
 - compactness of density matrices (finite-dimensional Heine-Borel)
@@ -431,19 +459,19 @@ Our proof uses only:
 3. Extract convergent subsequence `σ_{N_k} → σ`.
 4. `E(σ_N) - σ_N = (E^N(ρ₀) - ρ₀)/N → 0`.
 5. Hence `E(σ) = σ`. -/
-theorem IsChannel.exists_posSemidef_fixedPoint
-    (hE : IsChannel E) (hD : 0 < D) :
+theorem IsPositiveMap.exists_posSemidef_fixedPoint
+    (hE : IsPositiveMap E) (hTP : IsTracePreservingMap E) (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ.PosSemidef ∧ ρ ≠ 0 ∧ E ρ = ρ := by
   obtain ⟨ρ₀, hρ₀⟩ := densityMatrices_nonempty hD
   have hces_mem : ∀ N, cesaroMean E ρ₀ (N + 1) ∈ densityMatrices D :=
-    IsChannel.cesaroMean_mem_densityMatrices (E := E) hE hρ₀
+    IsPositiveMap.cesaroMean_mem_densityMatrices (E := E) hE hTP hρ₀
   have : FirstCountableTopology (Matrix (Fin D) (Fin D) ℂ) := by
     change FirstCountableTopology (Fin D → Fin D → ℂ)
     infer_instance
   obtain ⟨ρ, _hρ_mem, φ, hφ_mono, hφ_tendsto⟩ :=
     densityMatrices_isCompact.tendsto_subseq hces_mem
   have hρ_lim : ρ ∈ densityMatrices D ∧ E ρ = ρ :=
-    IsChannel.cesaroMean_subseq_limit_fixedPoint (E := E) hE hρ₀
+    IsPositiveMap.cesaroMean_subseq_limit_fixedPoint (E := E) hE hTP hρ₀
       hφ_mono.tendsto_atTop hφ_tendsto
   have hρ_ne : ρ ≠ 0 := by
     intro hρ_zero
@@ -452,10 +480,17 @@ theorem IsChannel.exists_posSemidef_fixedPoint
     exact zero_ne_one htr
   exact ⟨ρ, hρ_lim.1.1, hρ_ne, hρ_lim.2⟩
 
-/-- A channel preserving the compression `P M_D(ℂ) P` has a stationary density
-matrix supported in that compression. -/
-theorem IsChannel.exists_fixed_density_of_preserves_compression
-    (hE : IsChannel E) {P : Matrix (Fin D) (Fin D) ℂ}
+/-- Channel specialization of `IsPositiveMap.exists_posSemidef_fixedPoint`. -/
+theorem IsChannel.exists_posSemidef_fixedPoint
+    (hE : IsChannel E) (hD : 0 < D) :
+    ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ.PosSemidef ∧ ρ ≠ 0 ∧ E ρ = ρ :=
+  IsPositiveMap.exists_posSemidef_fixedPoint (E := E) hE.pos hE.tp hD
+
+/-- A positive trace-preserving map preserving the compression `P M_D(ℂ) P`
+has a stationary density matrix supported in that compression. -/
+theorem IsPositiveMap.exists_fixed_density_of_preserves_compression
+    (hE : IsPositiveMap E) (hTP : IsTracePreservingMap E)
+    {P : Matrix (Fin D) (Fin D) ℂ}
     (hP : IsOrthogonalProjection P) (hP_ne : P ≠ 0)
     (hE_pres : ∀ X : Matrix (Fin D) (Fin D) ℂ,
       P * E (P * X * P) * P = E (P * X * P)) :
@@ -485,7 +520,7 @@ theorem IsChannel.exists_fixed_density_of_preserves_compression
   let σ : ℕ → Matrix (Fin D) (Fin D) ℂ :=
     fun N => cesaroMean E ρ₀ (N + 1)
   have hσ_mem : ∀ N, σ N ∈ densityMatrices D :=
-    IsChannel.cesaroMean_mem_densityMatrices (E := E) hE hρ₀_mem
+    IsPositiveMap.cesaroMean_mem_densityMatrices (E := E) hE hTP hρ₀_mem
   have hσ_corner : ∀ N, P * σ N * P = σ N := by
     intro N
     change P * cesaroMean E ρ₀ (N + 1) * P = cesaroMean E ρ₀ (N + 1)
@@ -511,8 +546,20 @@ theorem IsChannel.exists_fixed_density_of_preserves_compression
     change Filter.Tendsto (σ ∘ φ) Filter.atTop (nhds ρ)
     exact hφ_tendsto
   have hρ_lim : ρ ∈ densityMatrices D ∧ E ρ = ρ :=
-    IsChannel.cesaroMean_subseq_limit_fixedPoint (E := E) hE hρ₀_mem
+    IsPositiveMap.cesaroMean_subseq_limit_fixedPoint (E := E) hE hTP hρ₀_mem
       hφ_mono.tendsto_atTop hρ_tendsto
   exact ⟨ρ, hρ_lim.1, hρ_corner, hρ_lim.2⟩
+
+/-- Channel specialization of
+`IsPositiveMap.exists_fixed_density_of_preserves_compression`. -/
+theorem IsChannel.exists_fixed_density_of_preserves_compression
+    (hE : IsChannel E) {P : Matrix (Fin D) (Fin D) ℂ}
+    (hP : IsOrthogonalProjection P) (hP_ne : P ≠ 0)
+    (hE_pres : ∀ X : Matrix (Fin D) (Fin D) ℂ,
+      P * E (P * X * P) * P = E (P * X * P)) :
+    ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ ∈ densityMatrices D ∧
+      P * ρ * P = ρ ∧ E ρ = ρ :=
+  IsPositiveMap.exists_fixed_density_of_preserves_compression
+    (E := E) hE.pos hE.tp hP hP_ne hE_pres
 
 end CesaroMean
