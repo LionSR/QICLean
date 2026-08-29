@@ -445,7 +445,8 @@ matrices, and let $\E_K$ be its Kraus map.
 
 \begin{theorem}[Fixed-length spreading from eventual word-span fullness]
     \label{thm:eigenvector_spreading_eventually_full}
-    \lean{Kraus.vectorSpreadSpan_eq_top_of_hasEventuallyFullWordSpan_of_eigenvector}
+    \lean{Kraus.vectorSpreadSpan_eq_top_of_cumulativeVectorSpan_eq_top_of_eigenvector,
+        Kraus.vectorSpreadSpan_eq_top_of_hasEventuallyFullWordSpan_of_eigenvector}
     \leanok
     \uses{def:kraus_eventually_full_word_span, def:vector_spread_span}
     Let $K=(K^i)_{i=0}^{d-1}$ be a finite family of $D\times D$ matrices, where
@@ -469,3 +470,140 @@ matrices, and let $\E_K$ be its Kraus map.
 Section~\ref{sec:app_wielandt_augmentation} proves the one-step augmentation
 facts used in cases~(2) and~(3). The blocking identities used in the general
 case are proved in Section~\ref{sec:app_wielandt_blocking_support}.
+
+In this section we return to the notation of
+\cite[Theorem~6.9]{Wolf2012Quantum}: $K_n$ is the complex linear span of the
+Kraus operators of the $n$-th power of the channel, $k=\dim K_1$ is the Kraus
+rank, and $q$ is the least integer such that $K_m=\MN{d}$ for every $m\geq q$.
+
+\begin{definition}[Kraus rank and quantum Wielandt index]
+    \label{def:wolf_kraus_rank_wielandt_index}
+    \lean{Kraus.krausRank, Kraus.wielandtIndex}
+    \leanok
+    \uses{def:wolf_6_8_explicit_thresholds, def:kraus_exact_word_span}
+    For a finite Kraus family on $\MN{d}$, define $k=\dim K_1$. When the
+    family has eventually full word spans, define
+    \begin{align}
+        q&=\min\{q_0\in\mathbb N:K_m=\MN{d}\text{ for every }m\geq q_0\}.
+        \notag
+    \end{align}
+    For a primitive quantum channel the set in the second definition is
+    nonempty by Theorem~\ref{thm:wolf_6_8_kraus_equivalences}.
+\end{definition}
+
+\begin{lemma}[Least-threshold consequences]
+    \label{lem:wolf_wielandt_index_minimal}
+    \lean{Kraus.hasFullWordSpanFrom_wielandtIndex,
+        Kraus.wielandtIndex_minimal,
+        Kraus.wielandtIndex_le_of_wordSpan_eq_top_of_isTP}
+    \leanok
+    \uses{def:wolf_kraus_rank_wielandt_index}
+    If the exact word spans are eventually full, then the least threshold
+    $q$ is itself admissible. It is no larger than any other admissible
+    threshold. In particular, for a trace-preserving Kraus family,
+    $K_N=\MN{d}$ implies $q\leq N$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The set of admissible thresholds is nonempty by eventual fullness, so its
+    infimum in $\mathbb N$ belongs to the set and is minimal. Trace preservation
+    propagates the identity $K_N=\MN{d}$ to every $K_m$ with $m\geq N$.
+\end{proof}
+
+\begin{lemma}[A bounded word with nonzero trace]
+    \label{lem:wolf_6_2_nonzero_trace_word}
+    \lean{Kraus.wolf_lemma_6_2}
+    \leanok
+    \uses{def:wolf_kraus_rank_wielandt_index}
+    Let $T:\MN{d}\to\MN{d}$ be a primitive quantum channel of Kraus rank
+    $k$. Then there are an integer $n$ and a word $K^{(n)}\in K_n$ such that
+    \begin{align}
+        1\leq n\leq d^2-k+1,
+        \qquad
+        \tr K^{(n)}\neq0.
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:wolf_6_8_kraus_equivalences}
+    Let $R_n$ be the span of the spaces $K_m$ with $1\leq m\leq n$.
+    Starting from $\dim R_1=k$, strict growth continues until $R_n=\MN{d}$;
+    otherwise equality at two consecutive levels would persist and contradict
+    primitivity. Thus $R_{d^2-k+1}=\MN{d}$. Since the identity has nonzero
+    trace, one of the spanning words occurring at a positive level has
+    nonzero trace.
+\end{proof}
+
+\begin{lemma}[Spreading from a Kraus operator with nonzero eigenvalue]
+    \label{lem:wolf_6_3_eigenvector_spreading}
+    \lean{Kraus.rectSpan_nilpIndex_strict_growth_of_hasEventuallyFullWordSpan,
+        Kraus.vecMulVec_eigenvector_mem_wordSpan_of_hasEventuallyFullWordSpan,
+        Kraus.wolf_lemma_6_3}
+    \leanok
+    \uses{def:kraus_exact_word_span, def:vector_spread_span}
+    Let $T:\MN{d}\to\MN{d}$ be a primitive quantum channel and suppose that
+    one of its Kraus operators, denoted by $A$, satisfies
+    $A\ket{\varphi}=\mu\ket{\varphi}$, where
+    $\varphi\neq0$ and $\mu\neq0$. Then
+    \begin{enumerate}
+        \item $K_{d-1}\ket{\varphi}=\C^d$;
+        \item if $A$ is not invertible, then
+            $\ketbra{\varphi}{\psi}\in K_{d^2-d+1}$ for every
+            $\psi\in\C^d$.
+    \end{enumerate}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:wolf_6_8_kraus_equivalences,
+        thm:eigenvector_spreading_eventually_full}
+    Part~(a) is Theorem~\ref{thm:eigenvector_spreading_eventually_full}.
+    For part~(b), decompose $A$ into its nonzero and zero generalized
+    eigenspaces. If $r$ is the largest zero Jordan-block size and
+    $\widetilde d$ is the rank of $A^d$, strict growth of the rectangular
+    spaces $A^rK_n$ reaches $A^r\MN{d}$ by level $d\widetilde d$.
+    Hence $\ketbra{\varphi}{\psi}\in K_{d\widetilde d+r}$. Finally,
+    $\widetilde d\leq d-r$ and $r\geq1$ give
+    $d\widetilde d+r\leq d^2-d+1$.
+\end{proof}
+
+\begin{theorem}[Quantum Wielandt inequality]
+    \label{thm:wolf_6_9_quantum_wielandt}
+    \lean{Kraus.wolf_theorem_6_9,
+        Kraus.wordSpan_eq_top_of_mem_wordSpan_one_of_isUnit,
+        Kraus.wordSpan_eq_top_of_mem_wordSpan_one_of_nonzero_eigenvalue,
+        Kraus.wielandtIndex_le_general,
+        Kraus.wielandtIndex_le_of_mem_wordSpan_one_of_isUnit,
+        Kraus.wielandtIndex_le_of_mem_wordSpan_one_of_nonzero_eigenvalue}
+    \leanok
+    \uses{def:wolf_kraus_rank_wielandt_index}
+    Let $T:\MN{d}\to\MN{d}$ be a primitive quantum channel of Kraus rank
+    $k$. Then the minimal threshold $q$ satisfies
+    \begin{enumerate}
+        \item in general, $q\leq(d^2-k+1)d^2$;
+        \item if $K_1$ contains an invertible element, then
+            $q\leq d^2-k+1$;
+        \item if $K_1$ contains an element with a nonzero eigenvalue, then
+            $q\leq d^2$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:wolf_6_2_nonzero_trace_word,
+        lem:wolf_6_3_eigenvector_spreading,
+        thm:kraus_word_span_upward_tp}
+    For part~(2), adjoining an invertible element already in $K_1$ does not
+    alter any $K_n$. Left multiplication by that element preserves linear
+    independence, so the dimensions grow strictly from $k$ until they reach
+    $d^2$. This gives $K_{d^2-k+1}=\MN{d}$.
+
+    For part~(1), Lemma~\ref{lem:wolf_6_2_nonzero_trace_word} gives a word
+    $K^{(n)}$ with nonzero trace and $n\leq d^2-k+1$. It has a nonzero
+    eigenvalue. Regard the length-$n$ words as the Kraus operators of a
+    blocked family and apply Lemma~\ref{lem:wolf_6_3_eigenvector_spreading}.
+    The invertible branch uses part~(2); in the noninvertible branch the
+    rank-one operators from part~(b), followed by the vector spreading in
+    part~(a), give $K_{nd^2}=\MN{d}$. Thus
+    $q\leq nd^2\leq(d^2-k+1)d^2$. Part~(3) is the same blocked argument with
+    $n=1$.
+\end{proof}

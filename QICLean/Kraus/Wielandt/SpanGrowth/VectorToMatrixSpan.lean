@@ -22,8 +22,9 @@ We currently formalize the **algebraic fixed-length matrix spanning** part of Le
 
 then word products of a (longer) fixed length span all matrices.
 
-For the full lemma, what remains is the *construction* of these rank-one operators
-from the eigenvalue/Fitting decomposition analysis.
+The required rank-one operators are constructed from the source's
+eigenvalue/Fitting decomposition in
+`QICLean.Kraus.Wielandt.RectangularSpan.EventualFullness`.
 -/
 
 open scoped Matrix
@@ -245,11 +246,9 @@ Assume:
 
 Then `wordSpan K (n+m) = ⊤`.
 
-This is the part of Lemma 2(b) that turns rank-one operators + vector spanning
-into full matrix spanning.
-
-The rank-one operators are constructed later by the Fitting-based extraction
-theorems in `TNLean.Wielandt.RankOne.ExtractionFull`.
+This is the part of Lemma 2(b) that turns rank-one operators and vector
+spanning into full matrix spanning. The rank-one hypothesis is supplied by
+`Kraus.vecMulVec_eigenvector_mem_wordSpan_of_hasEventuallyFullWordSpan`.
 -/
 theorem wordSpan_eq_top_of_vectorSpreadSpan_eq_top_of_rankOneBasis
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (φ : Fin D → ℂ) {n m : ℕ}
