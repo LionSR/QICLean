@@ -190,6 +190,34 @@ def TracelessBasisKossakowskiForm.toLinearMap
     Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ :=
   K.toKossakowskiForm.toLinearMap
 
+/-- The Lindblad form obtained from Wolf's factorization
+`C = (sqrt C)ᴴ * sqrt C` in the chosen traceless basis.
+
+Its Lindblad operators are
+`Lⱼ = ∑ₖ (sqrt C)ⱼₖ Fₖ`, as in the proof of Wolf, Theorem 7.1,
+`Notes/WolfNoteTexSource/ch07_semigroup_structure.tex`, lines 258--263. -/
+def TracelessBasisKossakowskiForm.sqrtLindbladForm
+    (K : TracelessBasisKossakowskiForm D) : LindbladForm D where
+  r := D ^ 2 - 1
+  H := K.toKossakowskiForm.H
+  L := fun j ↦ ∑ k, (CFC.sqrt K.C) j k • K.toKossakowskiForm.F k
+  H_hermitian := K.toKossakowskiForm.H_hermitian
+
+/-- The square-root Lindblad operators of a basis-level Kossakowski form are
+traceless. -/
+theorem TracelessBasisKossakowskiForm.sqrtLindbladForm_hasTracelessKraus
+    (K : TracelessBasisKossakowskiForm D) :
+    K.sqrtLindbladForm.HasTracelessKraus := by
+  intro j
+  simp only [TracelessBasisKossakowskiForm.sqrtLindbladForm,
+    Matrix.trace_sum, Matrix.trace_smul]
+  apply Finset.sum_eq_zero
+  intro k _
+  have hk : trace (K.F k : Matrix (Fin D) (Fin D) ℂ) = 0 := by
+    exact (K.F k).property
+  change (CFC.sqrt K.C) j k • trace (K.F k : Matrix (Fin D) (Fin D) ℂ) = 0
+  rw [hk, smul_zero]
+
 /-! ### Auxiliary lemmas for Kossakowski ↔ Lindblad conversion -/
 
 /-- The dissipator equals ½ of the Kossakowski commutator sum
@@ -241,7 +269,7 @@ private lemma adj_kraus_sum_eq_double_sum {r n : ℕ}
 
 /-- A factorization `C = BᴴB` converts a Kossakowski form into the
 corresponding Lindblad family `Lⱼ = ∑ₖ Bⱼₖ Fₖ`. -/
-private theorem KossakowskiForm.toLinearMap_eq_lindblad_of_factor
+theorem KossakowskiForm.toLinearMap_eq_lindblad_of_factor
     {r : ℕ} (K : KossakowskiForm D)
     (B : Matrix (Fin r) (Fin K.n) ℂ)
     (hB : K.C = Bᴴ * B) :
@@ -274,6 +302,26 @@ private theorem KossakowskiForm.toLinearMap_eq_lindblad_of_factor
   simp_rw [Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]
   simp_rw [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib,
     ← smul_sub, ← smul_add]
+
+/-- The basis-level Kossakowski form and its square-root Lindblad form define
+the same generator. -/
+theorem TracelessBasisKossakowskiForm.toLinearMap_eq_sqrtLindbladForm
+    (K : TracelessBasisKossakowskiForm D) :
+    K.toLinearMap = K.sqrtLindbladForm.toLinearMap := by
+  let B : Matrix (Fin (D ^ 2 - 1)) (Fin (D ^ 2 - 1)) ℂ := CFC.sqrt K.C
+  have hB : K.C = Bᴴ * B := by
+    have hC_nonneg : 0 ≤ K.C :=
+      Matrix.nonneg_iff_posSemidef.mpr K.C_posSemidef
+    have hsqrt_psd : (CFC.sqrt K.C).PosSemidef :=
+      Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg K.C)
+    change K.C = (CFC.sqrt K.C)ᴴ * CFC.sqrt K.C
+    rw [hsqrt_psd.isHermitian.eq]
+    simpa using (CFC.sqrt_mul_sqrt_self K.C hC_nonneg).symm
+  change K.toKossakowskiForm.toLinearMap =
+    (LindbladForm.mk (D ^ 2 - 1) K.toKossakowskiForm.H
+      (fun j ↦ ∑ k, B j k • K.toKossakowskiForm.F k)
+      K.toKossakowskiForm.H_hermitian).toLinearMap
+  exact K.toKossakowskiForm.toLinearMap_eq_lindblad_of_factor B hB
 
 /-- The Kossakowski form is equivalent to the Lindblad form:
 diagonalizing `C = M†M` converts between the two.

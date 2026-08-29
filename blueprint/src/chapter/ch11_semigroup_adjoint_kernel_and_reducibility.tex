@@ -423,9 +423,27 @@ The four equivalent reducibility conditions of
     \lean{kossakowskiRank}\leanok
     \uses{def:lindblad_form}
     The minimal number of Lindblad operators across all GKSL representations
-    of $L$, which equals the rank of the Kossakowski matrix in the
-    orthonormal-basis representation.
+    of $L$.
 \end{definition}
+
+\begin{theorem}[Kossakowski rank equals matrix rank]
+    \label{thm:kossakowski_rank_eq_matrix_rank}
+    \lean{TracelessBasisKossakowskiForm.kossakowskiRank_toLinearMap_eq_rank}\leanok
+    \uses{def:kossakowski_rank, def:kossakowski_form}
+    For a generator written in Wolf's traceless-basis form, the minimum
+    number of Lindblad operators equals $\rank(C)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Factor $C=(\sqrt C)^\dagger\sqrt C$.  The resulting Lindblad operators
+    are the images of the rows of $\sqrt C$ under the chosen basis
+    equivalence, so their span has dimension $\rank(C)$.  This gives the
+    upper bound after compressing the family to a basis of its span.  For the
+    reverse bound, shift an arbitrary minimizing representation to a
+    traceless representation without changing its cardinality.  Wolf's
+    Proposition~7.4(2) identifies its Lindblad span with the square-root
+    family's span.
+\end{proof}
 
 \begin{theorem}[$\kappa$ block vanishing from generator compression]%
     \label{thm:kappa_block_generator_compression}
@@ -490,9 +508,11 @@ The four equivalent reducibility conditions of
 
 \begin{theorem}[Large Kossakowski rank forbids block-upper-triangular form]
     \label{thm:large_kossakowski_rank_no_block_ut_ch12}
-    \lean{large_kossakowski_rank_implies_no_blockUpperTriangular}\leanok
-    \uses{def:kossakowski_rank, def:has_block_upper_triangular_lindblad}
-    If the Kossakowski rank satisfies $\rank(C)+d\ge d^2+1$, then no
+    \lean{TracelessBasisKossakowskiForm.large_rank_implies_no_blockUpperTriangular}\leanok
+    \uses{def:kossakowski_rank, def:kossakowski_form,
+        thm:kossakowski_rank_eq_matrix_rank,
+        def:has_block_upper_triangular_lindblad}
+    If the Kossakowski matrix satisfies $\rank(C)>d^2-d$, then no
     block-upper-triangular Lindblad form exists.
 \end{theorem}
 
@@ -559,8 +579,9 @@ The four equivalent reducibility conditions of
 
 \begin{theorem}[Large Kossakowski rank implies non-reducibility]
     \label{thm:not_isReducible_of_kossakowski_rank_ge}
-    \lean{not_isReducible_of_kossakowski_rank_ge}\leanok
-    \uses{def:is_gksl_generator, def:kossakowski_rank,
+    \lean{TracelessBasisKossakowskiForm.not_isReducible_of_rank_gt}\leanok
+    \uses{def:is_gksl_generator, def:kossakowski_rank, def:kossakowski_form,
+        thm:kossakowski_rank_eq_matrix_rank,
         thm:large_kossakowski_rank_no_block_ut_ch12,
         thm:not_isReducibleQDS_of_no_blockUpperTriangular_ch12}
     If $\rank(C)>d^2-d$, then the QDS is not reducible.

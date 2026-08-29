@@ -2089,6 +2089,16 @@ The complete named-environment audit therefore classifies exactly one Chapter
   yield non-reducibility, but the source's faithful stationary state and global
   relaxation conclusion are not packaged (partial-packaging).
 
+For Corollary 7.2(3), the source-facing rank statement itself is exact.
+`TracelessBasisKossakowskiForm.kossakowskiRank_toLinearMap_eq_rank` proves that
+the minimum size of a Lindblad representation is the matrix rank
+`K.C.rank`, using the factorization `C = (sqrt C)ᴴ * sqrt C` and the
+traceless-representation freedom of Proposition 7.4. Consequently,
+`TracelessBasisKossakowskiForm.not_isReducible_of_rank_gt` uses Wolf's literal
+hypothesis `D ^ 2 - D < K.C.rank`. The remaining partial-packaging status is
+only the stronger faithful-stationary-state and global-relaxation conclusion
+of the containing corollary.
+
 Proposition 7.4 is an exact completion. The shift formula and traceless choice
 are `generator_shift_invariance` and `exists_traceless_kraus_shift`.
 `generatorDecomp_traceless_representation_freedom` packages the second clause
