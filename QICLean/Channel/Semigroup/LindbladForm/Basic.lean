@@ -15,6 +15,7 @@ and proves basic properties.
 
 * `LindbladForm` — the standard GKSL/Lindblad form
   `L(ρ) = i[ρ, H] + Σⱼ (Lⱼ ρ Lⱼ† - ½{Lⱼ†Lⱼ, ρ})`.
+* `LindbladForm.HasTracelessKraus` — every Lindblad operator has trace zero.
 
 ## Main results
 
@@ -47,6 +48,14 @@ structure LindbladForm (D : ℕ) where
   L : Fin r → Matrix (Fin D) (Fin D) ℂ
   /-- The Hamiltonian is Hermitian. -/
   H_hermitian : H.IsHermitian
+
+/-- A Lindblad form has **traceless Lindblad operators** when
+`trace (Lⱼ) = 0` for every operator in the family.
+
+This is the normalization used in Wolf, Proposition 7.4 and Theorem 7.1,
+Equation (7.23). -/
+def LindbladForm.HasTracelessKraus (F : LindbladForm D) : Prop :=
+  ∀ j : Fin F.r, trace (F.L j) = 0
 
 /-- The dissipative part of a Lindblad form for a single operator:
 `Lⱼ ρ Lⱼ† - ½ Lⱼ†Lⱼ ρ - ½ ρ Lⱼ†Lⱼ`. -/

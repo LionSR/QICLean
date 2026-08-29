@@ -703,139 +703,31 @@ private theorem exists_traceless_blockUT_lindblad_form
           (LinearMap.mulRight ℂ P))) ⊓
          (LinearMap.ker (Matrix.traceLinearMap (Fin D) ℂ ℂ)) :
           Submodule ℂ Mat)) := by
-  -- D > 0 from nontrivial projection
   by_cases hD : D = 0
-  · subst hD; exact absurd (Subsingleton.elim P 0) hP.2.1
-  have : NeZero D := ⟨hD⟩
-  -- Get traceless shifts: c_j = -trace(L_j)/D
-  obtain ⟨c, hc⟩ := exists_traceless_kraus_shift G.L
-  -- Shifted operators L'_j = G.L j + c_j · I
-  set L' : Fin G.r → Mat := fun j => G.L j + c j • (1 : Mat) with hL'_def
-  -- Shifted Hamiltonian: H' = G.H - (I/2)·(Σ c'ⱼ Lⱼ - Σ cⱼ Lⱼ†)
-  set Δ : Mat := ∑ j : Fin G.r,
-    (starRingEnd ℂ (c j) • G.L j - c j • (G.L j)ᴴ) with hΔ_def
-  set H' : Mat := G.H - (Complex.I / 2) • Δ with hH'_def
-  -- H' is Hermitian
-  have hH'_herm : H'.IsHermitian := by
-    rw [hH'_def]
-    apply Matrix.IsHermitian.sub G.H_hermitian
-    rw [Matrix.IsHermitian, conjTranspose_smul]
-    have hstar_I2 : star (Complex.I / 2 : ℂ) = -(Complex.I / 2) := by
-      simp [Complex.conj_I]; ring
-    rw [hstar_I2, hΔ_def, conjTranspose_sum]
-    simp_rw [conjTranspose_sub, conjTranspose_smul, conjTranspose_conjTranspose,
-      RCLike.star_def, Complex.conj_conj]
-    rw [neg_smul, ← smul_neg]
-    congr 1
-    rw [show -(∑ x, (c x • (G.L x)ᴴ - starRingEnd ℂ (c x) • G.L x)) =
-      ∑ x, (starRingEnd ℂ (c x) • G.L x - c x • (G.L x)ᴴ) from by
-        rw [← Finset.sum_neg_distrib]; apply Finset.sum_congr rfl; intro j _
-        simp only [neg_sub]]
-  -- Construct the new LindbladForm
-  refine ⟨⟨G.r, H', L', hH'_herm⟩, ?_, ?_⟩
-  · -- Show toLinearMap agrees: use generator_shift_invariance
-    rw [hL_eq]
-    -- Both forms have the same generator via generator_shift_invariance.
-    rw [LindbladForm.toLinearMap_eq_generatorDecomp,
-        LindbladForm.toLinearMap_eq_generatorDecomp]
-    set κ_old : Mat := G.toGeneratorDecomp.κ
-    -- generator_shift_invariance with mu = 0
-    have hshift := generator_shift_invariance G.L κ_old c 0
-    simp only [Complex.ofReal_zero, mul_zero, zero_smul, add_zero] at hshift
-    -- Key: the new form's κ = shifted κ
-    set κ_shift : Mat := κ_old + ∑ i, starRingEnd ℂ (c i) • G.L i +
-      (1/2 : ℂ) • ∑ i, (starRingEnd ℂ (c i) * c i) • (1 : Mat)
-    -- The new form's κ
-    have hκ_new : (Complex.I • H' + (1/2 : ℂ) • ∑ j : Fin G.r, (L' j)ᴴ * L' j) =
-        κ_shift := by
-      -- Step 1: iH' = iG.H + (1/2)Δ
-      have h_iH' : Complex.I • H' =
-          Complex.I • G.H + (1/2 : ℂ) • Δ := by
-        rw [hH'_def, smul_sub, smul_smul]
-        have : Complex.I * (Complex.I / 2) = -(1/2 : ℂ) := by
-          field_simp; rw [Complex.I_sq]
-        rw [this, neg_smul, sub_neg_eq_add]
-      -- Step 2: ½Σ L'†L' = ½Σ G.L†G.L + ½Σ c' G.L + ½Σ c G.L† + ½Σ|c|² I
-      have h_adj : (1/2 : ℂ) • ∑ j : Fin G.r, (L' j)ᴴ * L' j =
-          (1/2 : ℂ) • ∑ j, (G.L j)ᴴ * G.L j +
-          (1/2 : ℂ) • ∑ j, starRingEnd ℂ (c j) • G.L j +
-          (1/2 : ℂ) • ∑ j, c j • (G.L j)ᴴ +
-          (1/2 : ℂ) • ∑ j, (starRingEnd ℂ (c j) * c j) • (1 : Mat) := by
-        rw [hL'_def]
-        simp_rw [conjTranspose_add, conjTranspose_smul, conjTranspose_one,
-          Matrix.add_mul, Matrix.mul_add, smul_mul_assoc, mul_smul_comm,
-          Matrix.one_mul, Matrix.mul_one, Finset.sum_add_distrib, smul_smul,
-          smul_add, Finset.smul_sum]
-        simp only [Complex.star_def]
-        abel
-      -- Step 3: Combine h_iH' and h_adj
-      rw [h_iH', h_adj, hΔ_def, Finset.smul_sum]
-      simp_rw [smul_sub]
-      simp_rw [Finset.sum_sub_distrib]
-      -- The key cancellation: ½Σc'L - ½ΣcL† + ½Σc'L + ½ΣcL† = Σc'L
-      have hcancel :
-          (∑ x, (1 / 2 : ℂ) • starRingEnd ℂ (c x) • G.L x -
-           ∑ x, (1 / 2 : ℂ) • c x • (G.L x)ᴴ) +
-          ((1 / 2 : ℂ) • ∑ j, starRingEnd ℂ (c j) • G.L j +
-           (1 / 2 : ℂ) • ∑ j, c j • (G.L j)ᴴ) =
-          ∑ i, starRingEnd ℂ (c i) • G.L i := by
-        rw [← Finset.smul_sum, ← Finset.smul_sum]
-        -- ½Σc'L - ½ΣcL† + ½Σc'L + ½ΣcL† = Σc'L
-        module
-      -- Now assemble
-      have : κ_shift = κ_old +
-          ∑ i, starRingEnd ℂ (c i) • G.L i +
-          (1 / 2 : ℂ) • ∑ i, (starRingEnd ℂ (c i) * c i) • (1 : Mat) := rfl
-      rw [this]; clear this
-      -- Group the sums on the LHS
-      -- LHS = iG.H + (½Σc'L - ½ΣcL†) + ½ΣG.L†G.L + ½Σc'L + ½ΣcL† + ½Σ|c|²I
-      -- = iG.H + ½ΣG.L†G.L + (½Σc'L - ½ΣcL† + ½Σc'L + ½ΣcL†) + ½Σ|c|²I
-      -- = iG.H + ½ΣG.L†G.L + Σc'L + ½Σ|c|²I
-      -- = κ_old + Σc'L + ½Σ|c|²I
-      have hκ_old_eq : κ_old = Complex.I • G.H +
-          (1 / 2 : ℂ) • ∑ j, (G.L j)ᴴ * G.L j := rfl
-      rw [hκ_old_eq]
-      -- Use hcancel to rewrite
-      -- LHS: iG.H + (½Σc'L - ½ΣcL†) + (½ΣG.L†G.L + ½Σc'L + ½ΣcL† + ½Σ|c|²I)
-      -- Group (½Σc'L - ½ΣcL†) + (½Σc'L + ½ΣcL†) = Σc'L using hcancel
-      -- Then LHS = iG.H + ½ΣG.L†G.L + Σc'L + ½Σ|c|²I = RHS
-      -- Set abbreviations for readability
-      set A := Complex.I • G.H
-      set B := ∑ x, (1 / 2 : ℂ) • starRingEnd ℂ (c x) • G.L x -
-               ∑ x, (1 / 2 : ℂ) • c x • (G.L x)ᴴ
-      set C := (1 / 2 : ℂ) • ∑ j, (G.L j)ᴴ * G.L j
-      set D_half := (1 / 2 : ℂ) • ∑ j, starRingEnd ℂ (c j) • G.L j
-      set E := (1 / 2 : ℂ) • ∑ j, c j • (G.L j)ᴴ
-      set F := (1 / 2 : ℂ) • ∑ j, (starRingEnd ℂ (c j) * c j) • (1 : Mat)
-      set S := ∑ i, starRingEnd ℂ (c i) • G.L i
-      -- hcancel : B + (D_half + E) = S
-      -- Goal: A + B + (C + D_half + E + F) = A + C + S + F
-      -- = A + C + (B + (D_half + E)) + F (by hcancel)
-      calc A + B + (C + D_half + E + F)
-          = A + C + (B + (D_half + E)) + F := by abel
-        _ = A + C + S + F := by rw [hcancel]
-    ext1 ρ
-    simp only [GeneratorDecomp.toLinearMap_apply, LindbladForm.toGeneratorDecomp]
-    -- Rewrite the new form's κ as κ_shift
-    rw [show (Complex.I • H' + (1 / 2 : ℂ) • ∑ x, (L' x)ᴴ * L' x) = κ_shift from hκ_new]
-    -- Unfold κ_old
-    change (∑ x, L' x * ρ * (L' x)ᴴ) - κ_shift * ρ - ρ * κ_shiftᴴ =
-      (∑ j, G.L j * ρ * (G.L j)ᴴ) - κ_old * ρ - ρ * κ_oldᴴ
-    exact hshift ρ
-  · -- Show each L'_j is in the traceless block-UT subspace
+  · subst D
+    exact absurd (Subsingleton.elim P 0) hP.2.1
+  let _ : NeZero D := ⟨hD⟩
+  let V : Submodule ℂ Mat :=
+    LinearMap.ker ((LinearMap.mulLeft ℂ (1 - P)).comp
+      (LinearMap.mulRight ℂ P))
+  have hone : (1 : Mat) ∈ V := by
+    change (1 - P) * ((1 : Mat) * P) = 0
+    rw [Matrix.one_mul]
+    exact IsIdempotentElem.one_sub_mul_self hP.1.2
+  have hmem : ∀ j : Fin G.r, G.L j ∈ V := by
     intro j
-    simp only [Submodule.mem_inf, LinearMap.mem_ker, LinearMap.comp_apply]
-    constructor
-    · -- Block-UT: (1-P) * L'_j * P = 0
-      simp only [LinearMap.mulLeft_apply, LinearMap.mulRight_apply]
-      rw [hL'_def]
-      simp only [Matrix.mul_add, Matrix.add_mul, smul_mul_assoc, mul_smul_comm]
-      rw [Matrix.one_mul, IsIdempotentElem.one_sub_mul_self hP.1.2, smul_zero, add_zero]
-      rw [← Matrix.mul_assoc]
-      exact hBlock j
-    · -- Traceless
-      simp only [Matrix.traceLinearMap_apply]
-      exact hc j
+    change (1 - P) * (G.L j * P) = 0
+    rw [← Matrix.mul_assoc]
+    exact hBlock j
+  obtain ⟨G', hmap, htrace, hV⟩ :=
+    G.exists_traceless_in_submodule V hone hmem
+  refine ⟨G', hmap.trans hL_eq.symm, ?_⟩
+  intro j
+  rw [Submodule.mem_inf]
+  constructor
+  · simpa [V] using hV j
+  · rw [LinearMap.mem_ker, Matrix.traceLinearMap_apply]
+    exact htrace j
 
 /-- Condition (3): Kossakowski rank `> D * D` forbids block-upper-triangular
 Lindblad decompositions (Wolf Corollary 7.2(3)).
