@@ -112,7 +112,108 @@
     Compactness then forces the whole sequence to converge to that limit.
 \end{proof}
 
-\section{A CP spectral characterization of irreducibility}
+\section{Spectral characterization of irreducibility for positive maps}
+
+\begin{definition}[Wolf spectral properties]
+    \label{def:wolf_spectral_properties}
+    \lean{HasWolfSpectralProperties}
+    \leanok
+    A linear map $T$ on $\MN{D}$ has the \emph{Wolf spectral properties} if
+    there are a real number $r>0$ and matrices $X,Y>0$ such that
+    \begin{align}
+        \varrho(T)&=r, \notag\\
+        T(X)&=rX, \notag\\
+        T^*(Y)&=rY,
+        \label{eq:qpf_wolf_spectral_eigenvectors}
+    \end{align}
+    and the ordinary complex eigenspace $\ker(T-r\Id)$ has dimension one.
+    Here $T^*$ is the adjoint for the bilinear trace pairing.  The last clause
+    is geometric nondegeneracy; it is not restricted to positive semidefinite
+    eigenvectors and does not assert algebraic simplicity.
+\end{definition}
+
+\begin{theorem}[Irreducibility gives the Wolf spectral properties]
+    \label{thm:wolf_spectral_properties_irred_positive}
+    \lean{hasWolfSpectralProperties_of_irreducible_positive}
+    \leanok
+    \uses{def:wolf_spectral_properties, def:positive_map,
+        def:irreducible_cp}
+    Let $D>0$, and let $T:\MN{D}\to\MN{D}$ be a nonzero irreducible
+    positive map.  Then $T$ has the Wolf spectral properties of
+    Definition~\ref{def:wolf_spectral_properties}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_irreducible_positive_spectral_radius,
+        thm:trace_adjoint_irreducible_positive}
+    The positive-map form of Wolf Theorem~6.3 gives a positive-definite right
+    eigenvector at the spectral radius and proves that its ordinary eigenspace
+    is one-dimensional.  Applying the trace-adjoint consequence of the same
+    theorem gives a positive-definite left eigenvector at the same eigenvalue.
+\end{proof}
+
+\begin{theorem}[Wolf spectral properties imply irreducibility]
+    \label{thm:irred_from_wolf_spectral_properties}
+    \lean{isIrreducibleMap_of_hasWolfSpectralProperties}
+    \leanok
+    \uses{def:wolf_spectral_properties, def:positive_map,
+        def:irreducible_cp}
+    Let $D>0$, and let $T:\MN{D}\to\MN{D}$ be positive.  If $T$ has the
+    Wolf spectral properties, then $T$ is irreducible.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{lem:similarity_irred, lem:cesaro_subseq_fixed}
+    Let $r,X,Y$ be the data in
+    (\ref{eq:qpf_wolf_spectral_eigenvectors}), put $S=\sqrt{Y}$, and define
+    exactly as in Wolf Equation~(6.34)
+    \begin{align}
+        T'(Z)
+          &=r^{-1}S\,T(S^{-1}ZS^{-1})S.
+        \label{eq:qpf_wolf_spectral_tp_gauge}
+    \end{align}
+    The map $T'$ is positive.  Trace duality and $T^*(Y)=rY$ give
+    \begin{align}
+        \tr(T'(Z))
+          &=r^{-1}\tr(YT(S^{-1}ZS^{-1}))
+           =\tr(Z),
+        \notag
+    \end{align}
+    so $T'$ is trace preserving, and $SXS>0$ is fixed by $T'$.
+
+    If $T'$ preserved a nonzero proper corner, positive trace-preserving
+    Ces\`aro averaging inside that corner would give a stationary density
+    matrix there.  Conjugating it by $S^{-1}$ produces an ordinary
+    $r$-eigenvector of $T$.  Eigenspace dimension one makes the corner state a
+    scalar multiple of $SXS$, which is impossible because $SXS$ has full
+    support.  Hence $T'$ is irreducible, and similarity invariance gives
+    irreducibility of $T$.
+\end{proof}
+
+\begin{theorem}[Wolf Theorem 6.4]
+    \label{thm:wolf_theorem_6_4}
+    \lean{wolf_theorem_6_4}
+    \leanok
+    \uses{def:wolf_spectral_properties, def:positive_map,
+        def:irreducible_cp}
+    Let $D>0$, and let $T:\MN{D}\to\MN{D}$ be a nonzero positive map.
+    Then $T$ is irreducible if and only if it has the Wolf spectral properties.
+    This is \cite[Theorem~6.4]{Wolf2012Quantum}, local source lines~698--721,
+    with one necessary boundary correction: on $\MN{1}$ the zero map is
+    irreducible but has spectral radius zero, so it cannot satisfy the printed
+    strict-positive condition $T(X)=rX>0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_spectral_properties_irred_positive,
+        thm:irred_from_wolf_spectral_properties}
+    Combine the preceding two theorems.
+\end{proof}
+
+\subsection{The earlier completely positive specialization}
 
 \begin{definition}[Restricted CP spectral properties]
     \label{def:has_spectral_properties}

@@ -102,11 +102,13 @@ convex domain and the limit argument used for channel fixed points.
 
 \begin{lemma}[Ces\`aro means remain density matrices]
     \label{lem:cesaro_mean_density}
-    \lean{IsChannel.cesaroMean_mem_densityMatrices}
+    \lean{IsPositiveMap.cesaroMean_mem_densityMatrices,
+        IsChannel.cesaroMean_mem_densityMatrices}
     \leanok
-    \uses{def:cesaro_mean, thm:channel_preserves_density, thm:density_convex}
-    Let $E$ be a quantum channel and $\rho\in\mc{D}_D$. Then, for every
-    $N\geq0$,
+    \uses{def:cesaro_mean, def:positive_map, def:trace_preserving,
+        thm:density_convex}
+    Let $E$ be a positive trace-preserving linear map and
+    $\rho\in\mc{D}_D$. Then, for every $N\geq0$,
     \begin{align}
         \frac{1}{N+1}\sum_{n=0}^{N}E^n(\rho)
          & \in\mc{D}_D.
@@ -115,8 +117,8 @@ convex domain and the limit argument used for channel fixed points.
 \end{lemma}
 
 \begin{proof}\leanok
-    Every iterate $E^n(\rho)$ belongs to $\mc{D}_D$ by
-    Theorem~\ref{thm:channel_preserves_density}. Equation
+    Positivity and trace preservation imply that every iterate
+    $E^n(\rho)$ belongs to $\mc{D}_D$. Equation
     (\ref{eq:qpf_cesaro_density}) is their convex average: positivity is
     preserved by sums and multiplication by $(N+1)^{-1}$, while its trace is
     $(N+1)^{-1}\sum_{n=0}^{N}1=1$.
@@ -124,11 +126,13 @@ convex domain and the limit argument used for channel fixed points.
 
 \begin{lemma}[Subsequential Ces\`aro limits are fixed points]
     \label{lem:cesaro_subseq_fixed}
-    \lean{IsChannel.cesaroMean_subseq_limit_fixedPoint}
+    \lean{IsPositiveMap.cesaroMean_subseq_limit_fixedPoint,
+        IsChannel.cesaroMean_subseq_limit_fixedPoint}
     \leanok
     \uses{lem:cesaro_mean_density, thm:density_compact,
         thm:cesaro_telescope}
-    Let $E$ be a quantum channel, $\rho\in\mc{D}_D$, and
+    Let $E$ be a positive trace-preserving linear map,
+    $\rho\in\mc{D}_D$, and
     $\psi:\N\to\N$ satisfy $\psi(k)\to\infty$. If
     \begin{align}
         \frac{1}{\psi(k)+1}\sum_{n=0}^{\psi(k)}E^n(\rho)

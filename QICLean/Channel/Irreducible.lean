@@ -24,6 +24,7 @@ import QICLean.Channel.Irreducible.Growth.Preservation
 import QICLean.Channel.Irreducible.KrausGauge
 import QICLean.Channel.Irreducible.KrausSetup
 import QICLean.Channel.Irreducible.PerronFrobenius
+import QICLean.Channel.Irreducible.PositiveMapSpectralCharacterization
 import QICLean.Channel.Irreducible.Scaling
 import QICLean.Channel.Irreducible.Similarity
 import QICLean.Channel.Irreducible.SpectralRadius
