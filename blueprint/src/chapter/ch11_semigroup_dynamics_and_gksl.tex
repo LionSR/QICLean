@@ -719,27 +719,36 @@ which shows that such generators have the standard Lindblad form.
 \begin{theorem}[Traceless Kraus operators exist]
     \label{thm:exists_traceless_kraus_shift}
     \lean{exists_traceless_kraus_shift}\leanok
-    Assume $d > 0$. Given any Kraus operators $\{K_j\}$, there exist
-    $c_j \in \C$ such that $K_j' = K_j+c_j\Id$ is traceless.
-    This is part of \cite[Proposition~7.4]{Wolf2012Quantum}.
+    Assume $d > 0$. Given any Kraus operators $\{L_i\}$, there exist
+    $c_i \in \C$ such that $L_i' = L_i+c_i\Id$ is traceless.
+    This is the final assertion of \cite[Proposition~7.4(1)]{Wolf2012Quantum}.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    Set $c_j = -\tr(K_j)/d$.
+    Set $c_i = -\tr(L_i)/d$.
 \end{proof}
 
 \begin{theorem}[Shift invariance of generators]
     \label{thm:generator_shift_invariance}
     \lean{generator_shift_invariance}\leanok
-    If $K_j' = K_j+c_j\Id$ and $\kappa'$ is adjusted per
-    \cite[Equation~(7.19)]{Wolf2012Quantum},
-    then $(\phi',\kappa')$ and $(\phi,\kappa)$ define the same generator.
+    Suppose $\phi(\rho)=\sum_iL_i\rho L_i^\dagger$. If
+    \begin{align}
+        L_i'&=L_i+c_i\Id, \label{eq:semigroup_kraus_shift}\\
+        \kappa'&=\kappa+\sum_i\overline{c_i}L_i+i\lambda\Id
+            +\frac12\sum_i|c_i|^2\Id,
+            \label{eq:semigroup_drift_shift}
+    \end{align}
+    where $\phi'(\rho)=\sum_iL_i'\rho(L_i')^\dagger$, then
+    $(\phi',\kappa')$ and $(\phi,\kappa)$ define the same generator.
+    This is \cite[Proposition~7.4(1), Equations~(7.18)--(7.19)]{Wolf2012Quantum}.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    Direct algebraic expansion.
+    Direct expansion of~(\ref{eq:semigroup_kraus_shift}) and
+    (\ref{eq:semigroup_drift_shift}) cancels the linear, quadratic, and
+    purely imaginary scalar terms.
 \end{proof}
 
 \subsection{Uniqueness of the traceless Lindblad form}
@@ -791,21 +800,43 @@ which shows that such generators have the standard Lindblad form.
     and skew-Hermiticity forces $c=i\lambda$ for some $\lambda\in\R$.
 \end{proof}
 
-\begin{theorem}[Combined uniqueness of the traceless Lindblad form]
+\begin{theorem}[Freedom between traceless representations]
     \label{thm:generatorDecomp_traceless_unique}
-    \lean{generatorDecomp_traceless_unique}\leanok
-    \uses{thm:generatorDecomp_traceless_unique_phi,
-        thm:generatorDecomp_traceless_unique_kappa}
-    If two Lindblad forms $F,F'$ induce the same generator and
-    both have traceless Kraus operators, then $\phi=\phi'$ and
-    $\kappa'=\kappa+i\lambda\,\Id$ for some $\lambda\in\R$.
+    \lean{generatorDecomp_traceless_representation_freedom,
+        generatorDecomp_traceless_unique_phi_of_kraus,
+        generatorDecomp_traceless_unique_kappa_modPhase_of_kraus,
+        generatorDecomp_traceless_unique}\leanok
+    \uses{def:generator_decomp, thm:kraus_rect_freedom}
+    Suppose $(\phi,\kappa)$ and $(\phi',\kappa')$ represent the same
+    generator, and let $\{L_i\}_{i=0}^{r-1}$ and
+    $\{L_i'\}_{i=0}^{r'-1}$ be traceless Kraus representations of
+    $\phi$ and $\phi'$, respectively. Then
+    \begin{align}
+        \phi&=\phi', \notag\\
+        \kappa&=\kappa'+i\lambda\Id \label{eq:semigroup_drift_unique}
+    \end{align}
+    for some $\lambda\in\R$. Put $N=\max\{r,r'\}$ and pad the smaller
+    family with zero operators to obtain
+    $\{\widetilde L_j\}_{j=0}^{N-1}$ and
+    $\{\widetilde L_i'\}_{i=0}^{N-1}$. There is a unitary
+    $U\in M_N(\C)$ such that
+    \begin{align}
+        \widetilde L_i'=\sum_{j=0}^{N-1}U_{ij}\widetilde L_j
+        \label{eq:semigroup_kraus_unitary}
+    \end{align}
+    for every $i$. This is \cite[Proposition~7.4(2)]{Wolf2012Quantum}.
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{thm:generatorDecomp_traceless_unique_phi,
-        thm:generatorDecomp_traceless_unique_kappa}
-    Combine Theorems~\ref{thm:generatorDecomp_traceless_unique_phi}
-    and~\ref{thm:generatorDecomp_traceless_unique_kappa}.
+    \uses{thm:kraus_rect_freedom}
+    Tracelessness makes the Choi matrices of the CP parts vanish on the
+    maximally entangled vector. Projecting the Choi matrix of the common
+    generator onto its orthogonal complement therefore gives $\phi=\phi'$.
+    The remaining generator equality and matrix units show that
+    $\kappa-\kappa'$ is a purely imaginary scalar matrix, proving
+    (\ref{eq:semigroup_drift_unique}). Theorem~\ref{thm:kraus_rect_freedom}
+    applied to the zero-padded Kraus families gives
+    (\ref{eq:semigroup_kraus_unitary}).
 \end{proof}
 
 \subsection{Trace-annihilation and trace preservation}

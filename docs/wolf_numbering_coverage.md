@@ -2061,12 +2061,9 @@ for every submultiplicative norm from the Duhamel identity, while
 Here Wolf's “any norm” refers to the operator norm induced by the chosen norm on
 the state space, as defined immediately before Proposition 7.1.
 
-The complete named-environment audit therefore classifies exactly four Chapter
+The complete named-environment audit therefore classifies exactly three Chapter
 7 source environments as partial rather than exact:
 
-- Proposition 7.4, “Freedom in representation of generators”: the shift,
-  tracelessness, uniqueness, and Kraus-freedom ingredients are formalized, but
-  not assembled under one source-facing proposition (partial-packaging).
 - Theorem 7.1, “Generators for semigroups of quantum channels”: the GKSL and
   Lindblad forms are proved, but the public Kossakowski package does not retain
   the exact fixed basis of the traceless subspace used in Equation (7.23)
@@ -2078,9 +2075,18 @@ The complete named-environment audit therefore classifies exactly four Chapter
   yield non-reducibility, but the source's faithful stationary state and global
   relaxation conclusion are not packaged (partial-packaging).
 
-Propositions 7.2 and 7.3 are exact completions. The `\leanok` markers in the
-semigroup Blueprint certify individual Lean declarations; they must not be read
-as exact-coverage markers for a larger containing Wolf environment.
+Proposition 7.4 is an exact completion. The shift formula and traceless choice
+are `generator_shift_invariance` and `exists_traceless_kraus_shift`.
+`generatorDecomp_traceless_representation_freedom` packages the second clause
+for arbitrary generator decompositions: it returns equality of the CP parts,
+the source-oriented equation $\kappa=\kappa'+i\lambda\Id$, and a unitary
+relation $L_i'=\sum_jU_{ij}L_j$ after both families are padded with zeros to
+the larger cardinality.
+
+Propositions 7.1--7.4 and Corollary 7.1 are exact completions. The `\leanok`
+markers in the semigroup Blueprint certify individual Lean declarations; they
+must not be read as exact-coverage markers for a larger containing Wolf
+environment.
 
 ---
 
