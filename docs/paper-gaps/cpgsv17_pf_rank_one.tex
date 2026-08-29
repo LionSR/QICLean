@@ -9,11 +9,11 @@
 
 \title{The Perron--Frobenius Rank-One Step in Cirac--Perez-Garcia--Schuch--Verstraete 2017 Appendix C.2}
 \author{}
-\date{2026-04-30}
+\date{2026-08-29}
 
 \begin{document}
 \maketitle
-\gapnote{false-source}{open}
+\gapnote{false-source}{resolved}
 
 \section{The assertion}
 \label{sec:cpgsv17_assertion}
@@ -1289,20 +1289,25 @@ area law, and the literal identity
         &= \mathcal T_{\mathcal K_s}.
     \label{eq:cpgsv17_absorbed_literal_transfer_idempotence}
 \end{align}
-The remaining obstruction is normality after coefficient absorption. If
-$A_s$ is normal, then the transfer map of $\mu_sA_s$ has spectral radius
-$|\mu_s|^2$. The global canonical-form convention supplies at least one
-unit-modulus coefficient, but it does not imply $|\mu_s|=1$ for every sector.
-Consequently, the normal Case-I structural theorem cannot be applied to all
-absorbed BNT representatives. The constructions from an explicitly supplied
-rank-one neighboring trace factorization remain valid restricted results, but
-they do not prove that such a factorization exists for every absorbed
-representative.
+Before the ambient counterexample in
+Section~\ref{sec:cpgsv17_caseii_resolution}, the remaining obstruction
+identified here was normality after coefficient absorption. If $A_s$ is
+normal, then the transfer map of $\mu_sA_s$ has spectral radius $|\mu_s|^2$.
+The global canonical-form convention supplies at least one unit-modulus
+coefficient, but it does not imply $|\mu_s|=1$ for every sector. Consequently,
+the normal Case-I structural theorem cannot be applied to all absorbed BNT
+representatives. The constructions from an explicitly supplied rank-one
+neighboring trace factorization remain valid restricted results, but they do
+not prove that such a factorization exists for every absorbed representative.
 
-The explicit example discussed in the conclusion realizes this normalization
-obstruction under every condition used in the simple Case-II passage, at the
-normalized fixed-representative boundary. It refutes the absorption inference,
-not the source assertion that some suitable factorization exists.
+The earlier two-sector absorbed-normality example
+\leanid{MPOTensor.CaseIIAbsorptionCounterexample.%
+ambient_isSAL_isSimpleCanonicalForm_and_firstAbsorbed_not_isNormalTensor}
+realizes this normalization obstruction under every condition used in the
+simple Case-II passage, at the normalized fixed-representative boundary. It
+refutes the absorption inference, but not the source assertion that some
+suitable factorization exists. The later ambient counterexample in
+Section~\ref{sec:cpgsv17_caseii_resolution} refutes that assertion.
 
 \section{The unit-closure-trace necessary condition}
 \label{sec:cpgsv17_unit_closure_trace}
@@ -1380,11 +1385,13 @@ trace admits no factorization of the required form. Second, the
 per-representative assertion of condition~(iv) carries the implicit
 normalization $\tr(\mathcal T_{\mathcal K_s})=1$ for each absorbed
 representative, whereas the ambient normalization at source lines 1755--1759
-constrains only the weighted sum over representatives. Whether the standing
-hypotheses of condition~(ii) imply this per-representative unit trace is part
-of the open content of the all-sector structure statement. Any admissible
-tensor violating it immediately refutes the printed per-representative
-assertion. Third, under literal zero correlation length, the condition says
+constrains only the weighted sum over representatives. The ambient
+counterexample described in Section~\ref{sec:cpgsv17_caseii_resolution}
+shows that the standing
+hypotheses of condition~(ii) do not imply the asserted representativewise
+factorization. Its obstruction representative violates the necessary
+factorization condition while the complete ambient tensor retains the source
+normalization. Third, under literal zero correlation length, the condition says
 that the physical-trace transfer of each absorbed representative is an
 idempotent of unit trace. The four-sector active-trace witness is consistent
 with this condition because its physical-trace transfer is a rank-one
@@ -1598,8 +1605,9 @@ idempotence, so the neighboring trace has the normalized factorization
     \label{eq:cpgsv17_bond_one_trace_factorization}
 \end{align}
 This is a conditional helper at the bond-one boundary. It does not derive the
-factorization for absorbed representatives of arbitrary virtual dimension, so
-\ghissue{6775} and its unrestricted Blueprint node remain open.
+factorization for absorbed representatives of arbitrary virtual dimension.
+Section~\ref{sec:cpgsv17_caseii_resolution} shows that the unrestricted
+representativewise assertion is false.
 
 This one-factorization result is a \emph{conditional helper}. It assumes a
 neighboring trace factorization of the whole tensor to which the channels are
@@ -1655,11 +1663,12 @@ preserve the trace selected by $Q$. Measuring $\Id-Q$ and preparing a fixed
 density matrix therefore completes each active map to a channel, while the
 complementary term vanishes on the closures. This resolves \ghissue{6807}
 without asserting that the active Markov projection is the ambient identity.
-Thus the outer-sector channel combination is complete. The source proof now
-has one remaining obligation: the source-context factorization in
-\ghissue{6775}. The direct sector-mixing problem formerly separated as
-\ghissue{6793} is a project-derived alternative, not another step asserted or
-used by Appendix C.2 of Ref.~\cite{Cirac2016MPDO_arXiv}.
+Thus the outer-sector channel combination is complete whenever the required
+representativewise factorizations are supplied. The source-context assertion
+that SAL and ZCL always supply them is refuted in
+Section~\ref{sec:cpgsv17_caseii_resolution}. The direct sector-mixing problem
+formerly separated as \ghissue{6793} is a project-derived alternative, not another step asserted or used by
+Appendix C.2 of Ref.~\cite{Cirac2016MPDO_arXiv}.
 
 The composition from supplied factorization data is complete end to end.
 Given, for every absorbed representative, a physical-sector factorization
@@ -1674,9 +1683,11 @@ Ref.~\cite{Cirac2016MPDO_arXiv}, and assembles them into the blocked channel
 pair of the complete tensor. The coarsest merging is packaged generically by
 \leanid{MPOTensor.PhysicalSectorFactorization.NeighboringTraceFactorization.%
 ofOneSector}: a single-sector factorization whose sole neighboring operator is
-positive semidefinite with unit trace suffices. The sole remaining obligation
-of the source implication (ii)$\Rightarrow$(v) is therefore the existence of
-these per-representative factorizations.
+positive semidefinite with unit trace suffices. This channel construction is
+therefore conditional on supplied per-representative factorizations. The
+printed Proposition~\texttt{prop2to3} route from condition~(ii) cannot provide
+them, as Section~\ref{sec:cpgsv17_caseii_resolution} shows. Any proof of
+(ii)$\Rightarrow$(v) must use a different argument.
 
 The all-cut Markov proof and the source-selected inverse-map calculation show
 that the raw four-sector tensor satisfies the displayed SAL, literal ZCL, and
@@ -1823,9 +1834,11 @@ transferMap_posDef_eigenvalue_lt_one}. Since this normalization has only one
 coefficient, the source convention at line 246 requires that coefficient to
 have unit modulus and therefore fails. Rescaling to unit weight destroys
 literal ZCL. This is the scale tension recorded in
-\path{docs/paper-gaps/cpsv16_unit_weight_rfp_scale_tension.tex}. Consequently,
-the construction does not resolve \ghissue{6775} or refute the printed
-source-context assertion.
+\path{docs/paper-gaps/cpsv16_unit_weight_rfp_scale_tension.tex}.
+Consequently, this construction by itself does not refute the printed
+source-context assertion. The ambient construction in
+Section~\ref{sec:cpgsv17_caseii_resolution} supplies the missing standing
+simple-biCF context and does refute it.
 
 The non-Cartesian tensor is not itself the normal tensor assumed in Case~I,
 and its normal representative loses literal ZCL. It therefore does not refute
@@ -1848,10 +1861,12 @@ Ref.~\cite{Cirac2016MPDO_arXiv} because it fails the paper's literal ZCL
 diagram.
 
 Independently, the repeated-copy theorem above refutes the exact printed
-implication (iv)$\Rightarrow$(v). The source-context
-(ii)$\Rightarrow$(iv) factorization remains \ghissue{6775}. Once it is
-supplied, the Proposition~\texttt{3to5} construction and its twice-applied
-channels for one representative are formalized by
+implication (iv)$\Rightarrow$(v). The source-context representativewise
+factorization used for (ii)$\Rightarrow$(iv) is refuted in
+Section~\ref{sec:cpgsv17_caseii_resolution}. If such factorization data are
+instead supplied as an additional hypothesis, the Proposition~\texttt{3to5}
+construction and its twice-applied channels for one representative are
+formalized by
 \leanid{MPOTensor.PhysicalSectorFactorization.NeighboringTraceFactorization.%
 blockTwo_isRFPViaTS}. Combining those supplied channel pairs through the
 orthogonal outer physical sectors then gives (ii)$\Rightarrow$(v); that
@@ -1859,6 +1874,48 @@ combination is formalized in \ghissue{6632}, and its trace-preserving
 completion outside the active support resolves \ghissue{6807}. The
 project-derived direct sector-mixing alternative in \ghissue{6793} is retired
 in favor of this source route.
+
+\subsection{Resolution of the Case-II source-context assertion (2026-08-29)}
+\label{sec:cpgsv17_caseii_resolution}
+
+The source-context question is resolved by a five-letter ambient simple-biCF
+counterexample. Its canonical coefficients are $(\mu,1)$ with
+$0<|\mu|<1$. It generates positive semidefinite periodic operators with
+strictly positive trace at every positive length, satisfies SAL, and obeys
+literal physical-trace idempotence. Its displayed canonical form is simple
+and in biCF, has a simultaneous one-site product-algebra span, and consists of
+two normal left-canonical representatives with orthogonal one-site physical
+supports. The coefficient $1$ supplies the global unit-modulus normalization
+required by the source.
+
+After the common coefficient is absorbed into the first representative, that
+representative admits no physical-sector factorization with positive
+semidefinite neighboring operators and normalized rank-one neighboring traces
+$\tr(\eta_{k,h})=a_kb_h$, $\sum_k a_kb_k=1$. The complete formal statement is
+\leanid{MPOTensor.NeighboringTraceObstructionAmbientCounterexample.%
+printed_theorem49_ii_to_iv_is_false}.
+
+This counterexample satisfies the standing assumptions used in the simple
+Case-II passage and contradicts the representativewise structural conclusion
+of Proposition~\texttt{prop2to3}. The low-level Case-I statements discussed
+above remain valid on their normal, injective surface; the false conclusion is
+the final Case-II claim that every absorbed BNT representative has the
+condition~(iv) structure. Thus the printed proof route from condition~(ii) to
+condition~(iv) is broken.
+
+This result merged in
+\href{https://github.com/LionSR/TNLean/pull/7405}{TNLean pull request \#7405},
+resolving
+\href{https://github.com/LionSR/TNLean/issues/6775}{TNLean issue \#6775}, and
+is synchronized here through
+\href{https://github.com/LionSR/QICLean/issues/516}{QICLean issue \#516}.
+The verdict is narrower than a counterexample to every channel construction.
+The channel construction used in the proof of
+Proposition~\texttt{prop2to5} remains valid conditionally once suitable
+representativewise factorization data are supplied, but the source no longer
+provides those data through Proposition~\texttt{prop2to3}. The counterexample
+does not by itself prove that the channel conclusion of
+Proposition~\texttt{prop2to5} is false by every possible argument.
 
 \bibliographystyle{alpha}
 \bibliography{references}
