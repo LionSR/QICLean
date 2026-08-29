@@ -14,7 +14,7 @@ import QICLean.Channel.Peripheral.ClosureFixedPointKraus
 import QICLean.Channel.FixedPoint.Cesaro
 import QICLean.Channel.Primitive
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.NumberTheory.Real.Irrational
+import Mathlib.Analysis.Real.Pi.Irrational
 
 /-!
 # Irreducibility implies primitivity for quantum dynamical semigroups — Proposition 7.5
@@ -34,8 +34,13 @@ The proof requires the following chain:
 **Step A** (continuous-time key): `T_{t₀}` irreducible → `T_t` irreducible for all `t > 0`.
 This is the core continuous-time fact: irreducibility propagates through the
 norm-continuous semigroup.  The Lean proof realizes this propagation in
-`irreducible_all_of_irreducible_time` by combining the unique faithful fixed
-density at the irreducible time with a primitive positive fractional slice.
+`irreducible_all_of_irreducible_time` along Wolf's irrational-rescaling route,
+with the small-time fixed-space lemma supplying both irreducible slices.  The unique
+faithful fixed density at the irreducible time gives a simple generator kernel.
+All sufficiently small slices therefore remain irreducible.  Applying the
+roots-of-unity theorem at two such slices with time ratio `π` rules out every
+nonzero purely imaginary generator eigenvalue.  Reverse fixed-space spectral
+mapping then propagates irreducibility to every positive time.
 
 **Step B**: `T_t` irreducible + channel → peripheral eigenvalues of `T_t` are roots
 of unity (Wolf Theorem 6.6). This channel-level result is available as
@@ -51,11 +56,9 @@ is one-dimensional.  Thus `V = c · σ'` (the unique faithful density fixed poin
 and `T_t σ' = μ σ'`.  Trace preservation forces `μ = 1`.
 
 The auxiliary lemmas `eigenvalue_exp_of_eigenvalue_generator`,
-`eq_zero_of_exp_mul_I_isRootOfUnity`, and `re_eq_zero_of_peripheral_generator`
-are fully proved.  The propagation theorem `irreducible_all_of_irreducible_time`
-in `IrreducibleAnalysis.lean` establishes Step A from the faithful fixed-density
-construction, the primitive fractional slice, and the one-dimensional fixed-point
-space obtained from that slice.
+`eq_zero_of_exp_mul_I_isRootOfUnity_one_pi`, and
+`re_eq_zero_of_peripheral_generator` are fully proved.  The reusable reverse
+spectral and fixed-space statements are in `SpectralMapping.lean`.
 
 ## References
 
@@ -128,40 +131,40 @@ theorem eigenvalue_exp_of_eigenvalue_generator
   rw [Complex.exp_eq_exp_ℂ]
   exact hs
 
-/-! ## Key lemma: exp(itθ) root of unity for all t > 0 implies θ = 0
+/-! ## Key lemma: roots of unity at two irrationally related times
 
-This is the number-theoretic heart of Proposition 7.5. If `exp(i t θ)` is a root of unity
-for every `t > 0`, then `θ = 0`. The proof uses the density of irrationals:
-`exp(i t θ)^p = 1` means `t p θ ∈ 2π ℤ`, but this cannot hold for all `t > 0`
-unless `θ = 0` (since `t ↦ t θ / (2π)` takes irrational values). -/
+This is the number-theoretic heart of Proposition 7.5.  Following Wolf,
+it suffices to compare two positive times whose ratio is irrational. -/
 
-/-- If `exp(i · t · θ)` is a root of unity for every `t > 0`, then `θ = 0`.
+/-- If `α` is irrational and both `exp(iθ)` and `exp(iαθ)` are roots of
+unity, then `θ = 0`.
 
-**Proof sketch**: For `t = 1`, `exp(iθ)^p₁ = 1` gives `p₁θ = 2πk₁` for some `k₁ ∈ ℤ`.
-For `t = √2`, `exp(i√2θ)^p₂ = 1` gives `√2 p₂ θ = 2πk₂`. Dividing:
-`√2 = k₂ p₁ / (k₁ p₂)`, contradicting the irrationality of `√2`. -/
-theorem eq_zero_of_exp_mul_I_isRootOfUnity
-    (θ : ℝ) (hroot : ∀ t : ℝ, 0 < t → ∃ p : ℕ, 0 < p ∧
-      Complex.exp (↑(t * θ) * Complex.I) ^ p = 1) :
+The first root relation gives `p₁θ = 2πk₁`; the second gives
+`p₂αθ = 2πk₂`.  A nonzero `θ` would therefore make `α` rational. -/
+theorem eq_zero_of_exp_mul_I_isRootOfUnity_of_irrational_rescaling
+    (α θ : ℝ) (hα : Irrational α)
+    (hroot_one : ∃ p : ℕ, 0 < p ∧
+      Complex.exp (↑θ * Complex.I) ^ p = 1)
+    (hroot_rescaled : ∃ p : ℕ, 0 < p ∧
+      Complex.exp (↑(α * θ) * Complex.I) ^ p = 1) :
     θ = 0 := by
   by_contra hθ
   -- Step 1: At t = 1, get p₁ > 0 with exp(iθ)^p₁ = 1
-  obtain ⟨p₁, hp₁, hexp₁⟩ := hroot 1 one_pos
-  rw [one_mul] at hexp₁
+  obtain ⟨p₁, hp₁, hexp₁⟩ := hroot_one
   -- exp(iθ)^p₁ = exp(ip₁θ) = 1
   rw [← Complex.exp_nat_mul] at hexp₁
   -- So p₁θ ∈ 2πℤ
   rw [Complex.exp_eq_one_iff] at hexp₁
   obtain ⟨k₁, hk₁⟩ := hexp₁
-  -- Step 2: At t = √2, get p₂ > 0 with exp(i√2θ)^p₂ = 1
-  obtain ⟨p₂, hp₂, hexp₂⟩ := hroot (Real.sqrt 2) (Real.sqrt_pos_of_pos two_pos)
+  -- Step 2: At t = α, get p₂ > 0 with exp(iαθ)^p₂ = 1
+  obtain ⟨p₂, hp₂, hexp₂⟩ := hroot_rescaled
   rw [← Complex.exp_nat_mul] at hexp₂
   rw [Complex.exp_eq_one_iff] at hexp₂
   obtain ⟨k₂, hk₂⟩ := hexp₂
   -- Step 3: From hk₁: ↑p₁ * (↑θ * I) = ↑k₁ * (2 * ↑π * I)
   --         i.e. p₁ · θ = 2π · k₁
-  -- From hk₂: ↑p₂ * (↑(√2 * θ) * I) = ↑k₂ * (2 * ↑π * I)
-  --         i.e. p₂ · √2 · θ = 2π · k₂
+  -- From hk₂: ↑p₂ * (↑(α * θ) * I) = ↑k₂ * (2 * ↑π * I)
+  --         i.e. p₂ · α · θ = 2π · k₂
   -- Extract real equations from complex identities
   -- hk₁ : ↑p₁ * (↑θ * I) = ↑k₁ * (2 * ↑π * I), multiply both sides by (-I)
   -- gives p₁ * θ = k₁ * (2π)
@@ -171,7 +174,7 @@ theorem eq_zero_of_exp_mul_I_isRootOfUnity
       Complex.I_re, Complex.I_im, Complex.intCast_re, Complex.intCast_im,
       Complex.natCast_re, Complex.natCast_im] at h
     linarith
-  have hreal₂ : (p₂ : ℝ) * (Real.sqrt 2 * θ) = k₂ * (2 * Real.pi) := by
+  have hreal₂ : (p₂ : ℝ) * (α * θ) = k₂ * (2 * Real.pi) := by
     have h := congr_arg Complex.im hk₂
     simp [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
       Complex.I_re, Complex.I_im, Complex.intCast_re, Complex.intCast_im,
@@ -185,20 +188,20 @@ theorem eq_zero_of_exp_mul_I_isRootOfUnity
     · exact absurd (Nat.cast_eq_zero.mp hp) (Nat.pos_iff_ne_zero.mp hp₁)
     · exact hθ hθ'
   -- Similarly p₂ > 0 and k₁ ≠ 0 imply θ ≠ 0 (already known)
-  -- Step 4: Derive √2 is rational — contradiction
+  -- Step 4: Derive α is rational — contradiction
   -- From hreal₁: θ = 2πk₁/p₁
-  -- From hreal₂: p₂ · √2 · θ = 2πk₂
-  -- Substituting: p₂ · √2 · (2πk₁/p₁) = 2πk₂
-  -- So: √2 = k₂ · p₁ / (k₁ · p₂)
+  -- From hreal₂: p₂ · α · θ = 2πk₂
+  -- Substituting: p₂ · α · (2πk₁/p₁) = 2πk₂
+  -- So: α = k₂ · p₁ / (k₁ · p₂)
   have hp₁_ne : (p₁ : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hp₁)
   have hp₂_ne : (p₂ : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hp₂)
   have hθ_ne : θ ≠ 0 := hθ
   -- From hreal₁: θ = k₁ * (2π) / p₁
-  -- From hreal₂: p₂ * √2 * (k₁ * (2π) / p₁) = k₂ * (2π)
-  -- So: p₂ * √2 * k₁ / p₁ = k₂
-  -- So: √2 = k₂ * p₁ / (p₂ * k₁)
-  -- Rewrite √2 as a ratio of integers to contradict irrationality
-  have hsqrt2 : Real.sqrt 2 = ↑(k₂ * ↑p₁) / ↑(k₁ * ↑p₂) := by
+  -- From hreal₂: p₂ * α * (k₁ * (2π) / p₁) = k₂ * (2π)
+  -- So: p₂ * α * k₁ / p₁ = k₂
+  -- So: α = k₂ * p₁ / (p₂ * k₁)
+  -- Rewrite α as a ratio of integers to contradict irrationality
+  have hα_rat : α = ↑(k₂ * ↑p₁) / ↑(k₁ * ↑p₂) := by
     push_cast
     have hpi_ne : Real.pi ≠ 0 := Real.pi_ne_zero
     -- From hreal₁: θ = k₁ * (2π) / p₁
@@ -208,7 +211,21 @@ theorem eq_zero_of_exp_mul_I_isRootOfUnity
     rw [hθ_eq] at hreal₂
     field_simp at hreal₂ ⊢
     nlinarith [hreal₂]
-  exact absurd hsqrt2 (irrational_sqrt_two.ne_rational _ _)
+  exact absurd hα_rat (hα.ne_rational _ _)
+
+/-- If both `exp(iθ)` and `exp(iπθ)` are roots of unity, then `θ = 0`.
+
+This is the irrational-rescaling argument used in Wolf, Chapter 7,
+Proposition 7.5, lines 279--280. -/
+theorem eq_zero_of_exp_mul_I_isRootOfUnity_one_pi
+    (θ : ℝ)
+    (hroot_one : ∃ p : ℕ, 0 < p ∧
+      Complex.exp (↑θ * Complex.I) ^ p = 1)
+    (hroot_pi : ∃ p : ℕ, 0 < p ∧
+      Complex.exp (↑(Real.pi * θ) * Complex.I) ^ p = 1) :
+    θ = 0 :=
+  eq_zero_of_exp_mul_I_isRootOfUnity_of_irrational_rescaling
+    Real.pi θ irrational_pi hroot_one hroot_pi
 
 /-- **Peripheral eigenvalues of the generator are purely imaginary.**
 If `L` generates a QDS of channels `T_t = exp(tL)` and `T_{t₀}` is irreducible,

@@ -48,28 +48,6 @@ lemma ne_zero_of_mem_densityMatrices' {ρ : Matrix (Fin D) (Fin D) ℂ}
   intro h; subst h
   simp [mem_densityMatrices, Matrix.trace_zero (Fin D) ℂ] at hρ
 
-/-- If a compression is preserved by a linear map, then it is preserved by every power. -/
-theorem compression_preserved_by_pow
-    (E : Mat →ₗ[ℂ] Mat) (P : Mat) (hP : IsOrthogonalProjection P)
-    (hInv : ∀ X : Mat, P * E (P * X * P) * P = E (P * X * P)) :
-    ∀ n : ℕ, ∀ X : Mat, P * (E ^ n) (P * X * P) * P = (E ^ n) (P * X * P) := by
-  intro n
-  induction n with
-  | zero =>
-      intro X
-      rw [pow_zero]
-      calc
-        P * (P * X * P) * P = ((P * P) * X) * (P * P) := by
-          simp [Matrix.mul_assoc]
-        _ = P * X * P := by
-          simp [Matrix.mul_assoc, hP.2]
-  | succ n ih =>
-      intro X
-      rw [pow_succ']
-      change P * E ((E ^ n) (P * X * P)) * P = E ((E ^ n) (P * X * P))
-      rw [← ih X]
-      exact hInv ((E ^ n) (P * X * P))
-
 /-- A genuine eigenvector of the generator stays an eigenvector for the whole semigroup. -/
 theorem expSemigroup_apply_eigenvector
     (L : Mat →ₗ[ℂ] Mat) (X : Mat) (μ : ℂ)

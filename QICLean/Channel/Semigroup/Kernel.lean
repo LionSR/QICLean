@@ -32,9 +32,11 @@ points of the exponential semigroup.
 
 * `generator_apply_eq_zero_iff_expSemigroup_fixed_nonneg`:
   `L X = 0` iff `expSemigroup L t X = X` for all `t ≥ 0`.
+* `exists_pos_forall_lt_expSemigroup_fixedPoint_iff_generator_apply_eq_zero`:
+  throughout some interval of positive times, the fixed-point space of
+  `expSemigroup L` is exactly the kernel of `L`.
 * `exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero`:
-  at some positive time, the fixed-point space of `expSemigroup L` is exactly
-  the kernel of `L`.
+  the corresponding existence statement at one positive time.
 * `generator_apply_eq_zero_iff_fixed_nonneg`:
   the same connection for any semigroup identified with `expSemigroup`.
 
@@ -189,39 +191,31 @@ theorem generator_apply_eq_zero_iff_expSemigroup_fixed_nonneg
   · exact expSemigroup_apply_eq_self_of_generator_apply_eq_zero L
   · exact generator_apply_eq_zero_of_expSemigroup_apply_eq_self L
 
-/-- For every finite-dimensional generator `L`, there is a positive time `t₀`
-at which the fixed-point space of `exp(t₀L)` is exactly `ker L`.
-
-The identity
-`exp(t₀L) - 1 = (∫ s in 0..t₀, exp(sL)) L`
-shows that a fixed point lies in `ker L` whenever the integral factor is
-invertible. Such a positive `t₀` exists because the normalized integral tends
-to the identity as `t₀ ↓ 0`. This is the non-resonant-time step used in Wolf
-Proposition 7.5. -/
-theorem exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero
-    (L : Mat →ₗ[ℂ] Mat) :
-    ∃ t₀ : ℝ, 0 < t₀ ∧
-      ∀ X : Mat, expSemigroup L t₀ X = X ↔ L X = 0 := by
+/-- If the integral factor in
+`exp(tL) - 1 = (∫ s in 0..t, exp(sL)) L` is invertible, then the fixed-point
+space of `exp(tL)` is exactly `ker L`. -/
+theorem expSemigroup_fixedPoint_iff_generator_apply_eq_zero_of_intervalIntegral_isUnit
+    (L : Mat →ₗ[ℂ] Mat) (t : ℝ) (ht : 0 ≤ t)
+    (hP_unit : IsUnit
+      (intervalIntegral (fun s : ℝ => expSemigroupCLM (endEquiv L) s)
+        0 t MeasureTheory.volume))
+    (X : Mat) :
+    expSemigroup L t X = X ↔ L X = 0 := by
   let L' : MatrixCLM (Fin D) := endEquiv L
-  obtain ⟨t₀, ht₀, hP_unit⟩ :=
-    exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one
-      (fun t : ℝ => expSemigroupCLM L' t)
-      (expSemigroupCLM_zero L') (expSemigroupCLM_continuous L')
   let P : MatrixCLM (Fin D) :=
-    intervalIntegral (fun t : ℝ => expSemigroupCLM L' t)
-      0 t₀ MeasureTheory.volume
+    intervalIntegral (fun s : ℝ => expSemigroupCLM L' s)
+      0 t MeasureTheory.volume
   have hP_unit' : IsUnit P := by
-    simpa [P] using hP_unit
+    simpa [P, L'] using hP_unit
   have hP_injective : Function.Injective P :=
     (ContinuousLinearMap.isUnit_iff_bijective.mp hP_unit').1
-  refine ⟨t₀, ht₀, fun X => ?_⟩
   constructor
   · intro hX
-    have hX' : expSemigroupCLM L' t₀ X = X := by
-      change endEquiv (expSemigroup L t₀) X = X
+    have hX' : expSemigroupCLM L' t X = X := by
+      change endEquiv (expSemigroup L t) X = X
       rw [expSemigroup_toCLM]
       exact hX
-    have hzero : (expSemigroupCLM L' t₀ - 1) X = 0 := by
+    have hzero : (expSemigroupCLM L' t - 1) X = 0 := by
       simpa using sub_eq_zero.mpr hX'
     rw [expSemigroupCLM_sub_one_eq_intervalIntegral_mul] at hzero
     have hPLX : P (L' X) = 0 := by
@@ -231,7 +225,40 @@ theorem exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero
       simpa using hPLX
     exact hLX'
   · intro hLX
-    exact expSemigroup_apply_eq_self_of_generator_apply_eq_zero L hLX t₀ ht₀.le
+    exact expSemigroup_apply_eq_self_of_generator_apply_eq_zero L hLX t ht
+
+/-- For every finite-dimensional generator `L`, there is a `δ > 0` such
+that the fixed-point space of `exp(tL)` is exactly `ker L` whenever
+`0 < t < δ`.
+
+The factorization
+`exp(tL) - 1 = (∫ s in 0..t, exp(sL)) L`
+shows that a fixed point lies in `ker L` whenever the integral factor is
+invertible.  The normalized integral tends to the identity as `t ↓ 0`, so
+this invertibility holds throughout a punctured right-neighborhood of zero.
+This is the nonresonant-time step used in Wolf Proposition 7.5. -/
+theorem exists_pos_forall_lt_expSemigroup_fixedPoint_iff_generator_apply_eq_zero
+    (L : Mat →ₗ[ℂ] Mat) :
+    ∃ δ : ℝ, 0 < δ ∧ ∀ t : ℝ, 0 < t → t < δ →
+      ∀ X : Mat, expSemigroup L t X = X ↔ L X = 0 := by
+  let L' : MatrixCLM (Fin D) := endEquiv L
+  obtain ⟨δ, hδ, hP_unit⟩ :=
+    exists_pos_forall_lt_intervalIntegral_isUnit_of_continuous_zero_eq_one
+      (fun t : ℝ => expSemigroupCLM L' t)
+      (expSemigroupCLM_zero L') (expSemigroupCLM_continuous L')
+  refine ⟨δ, hδ, fun t ht htδ X => ?_⟩
+  exact expSemigroup_fixedPoint_iff_generator_apply_eq_zero_of_intervalIntegral_isUnit
+    L t ht.le (by simpa [L'] using hP_unit t ht htδ) X
+
+/-- For every finite-dimensional generator `L`, there is a positive time `t₀`
+at which the fixed-point space of `exp(t₀L)` is exactly `ker L`. -/
+theorem exists_pos_expSemigroup_fixedPoint_iff_generator_apply_eq_zero
+    (L : Mat →ₗ[ℂ] Mat) :
+    ∃ t₀ : ℝ, 0 < t₀ ∧
+      ∀ X : Mat, expSemigroup L t₀ X = X ↔ L X = 0 := by
+  obtain ⟨δ, hδ, hfix⟩ :=
+    exists_pos_forall_lt_expSemigroup_fixedPoint_iff_generator_apply_eq_zero L
+  exact ⟨δ / 2, by positivity, hfix (δ / 2) (by positivity) (by linarith)⟩
 
 /-- Kernel elements of `L` are exactly the matrices fixed by a semigroup family
 `T` identified with `expSemigroup L` on nonnegative times. -/

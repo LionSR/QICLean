@@ -5,6 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Analysis.SpectralRadiusPowerDecay
 import QICLean.Channel.Semigroup.Primitivity.Helpers
+import QICLean.Channel.Semigroup.Primitivity.SpectralMapping
 import QICLean.Channel.Irreducible.FromSpectral
 import QICLean.Channel.Peripheral.IrreducibleChannel
 import QICLean.Channel.Semigroup.Primitivity.Basic
@@ -192,48 +193,6 @@ theorem primitive_of_irreducible_all
     (fun μ hμ_eig hμ_norm =>
       peripheral_eq_one_of_irreducible_all T hT hT_irr_all ht hμ_eig hμ_norm)
 
-def residualSliceIndex (u s : ℝ) (n : ℕ) : ℕ :=
-  Int.toNat ⌊((n : ℝ) * u) / s⌋
-
-def residualSliceTime (u s : ℝ) (n : ℕ) : ℝ :=
-  s * Int.fract (((n : ℝ) * u) / s)
-
-theorem residualSliceTime_mem_Icc
-    (u s : ℝ) (hs : 0 < s) :
-    ∀ n : ℕ, residualSliceTime u s n ∈ Set.Icc 0 s := by
-  intro n
-  dsimp [residualSliceTime]
-  refine Set.mem_Icc.mpr ?_
-  constructor
-  · exact mul_nonneg (le_of_lt hs) (Int.fract_nonneg _)
-  · have hlt : Int.fract (((n : ℝ) * u) / s) < 1 := Int.fract_lt_one _
-    nlinarith [hlt, hs]
-
-/-- For `u ≥ 0` and `s > 0`, we decompose
-`n * u = (residualSliceIndex u s n : ℝ) * s + residualSliceTime u s n`,
-where `residualSliceIndex u s n = Int.toNat ⌊((n : ℝ) * u) / s⌋` agrees with the
-(nonnegative) floor `⌊(n*u)/s⌋`. -/
-theorem residualSlice_decomp
-    (u s : ℝ) (hs : 0 < s) (hu : 0 ≤ u) :
-    ∀ n : ℕ, (n : ℝ) * u = (residualSliceIndex u s n : ℝ) * s + residualSliceTime u s n := by
-  intro n
-  have ha : ↑⌊((n : ℝ) * u / s)⌋ + Int.fract (((n : ℝ) * u) / s) = ((n : ℝ) * u) / s :=
-    Int.floor_add_fract (((n : ℝ) * u) / s)
-  have hfloor_nonneg : 0 ≤ ⌊((n : ℝ) * u) / s⌋ := by
-    apply Int.floor_nonneg.mpr
-    positivity
-  have htoNat : ((residualSliceIndex u s n : ℕ) : ℝ) = ↑⌊((n : ℝ) * u / s)⌋ := by
-    dsimp [residualSliceIndex]
-    exact_mod_cast Int.toNat_of_nonneg hfloor_nonneg
-  calc
-    (n : ℝ) * u = s * (((n : ℝ) * u) / s) := by field_simp [hs.ne']
-    _ = s * (↑⌊((n : ℝ) * u / s)⌋ + Int.fract (((n : ℝ) * u) / s)) := by
-          congr 1; exact ha.symm
-    _ = ((residualSliceIndex u s n : ℕ) : ℝ) * s + residualSliceTime u s n := by
-          dsimp [residualSliceTime]
-          rw [mul_add, htoNat]
-          ring
-
 theorem fixedPoint_at_nat_mul
     (T : ℝ → Mat →ₗ[ℂ] Mat)
     (hT : IsQuantumDynSemigroup T)
@@ -251,96 +210,6 @@ theorem fixedPoint_at_nat_mul
         simpa [ih] using hδ_fix
   rw [semigroup_pow T hT.semigroup.semigroup s (le_of_lt hs) k]
   exact hpow_fix k
-
-theorem residualSlice_apply_eq_of_fixedPoint
-    (T : ℝ → Mat →ₗ[ℂ] Mat)
-    (hT : IsQuantumDynSemigroup T)
-    (u : ℝ) (hu : 0 ≤ u)
-    (s : ℝ) (hs : 0 < s)
-    {δ : Mat}
-    (hδ_fix : T s δ = δ) :
-    ∀ n : ℕ, T ((n : ℝ) * u) δ = T (residualSliceTime u s n) δ := by
-  intro n
-  have hms_fix : T (((residualSliceIndex u s n : ℕ) : ℝ) * s) δ = δ :=
-    fixedPoint_at_nat_mul T hT s hs hδ_fix (residualSliceIndex u s n)
-  calc
-    T ((n : ℝ) * u) δ =
-        T (residualSliceTime u s n + ((residualSliceIndex u s n : ℕ) : ℝ) * s) δ := by
-          rw [residualSlice_decomp u s hs hu n, add_comm]
-    _ = T (residualSliceTime u s n) (T (((residualSliceIndex u s n : ℕ) : ℝ) * s) δ) := by
-          simp [LinearMap.comp_apply,
-            hT.semigroup.semigroup.comp (residualSliceTime u s n)
-              (((residualSliceIndex u s n : ℕ) : ℝ) * s)
-              (residualSliceTime_mem_Icc u s hs n).1
-              (mul_nonneg (Nat.cast_nonneg (residualSliceIndex u s n)) (le_of_lt hs))]
-    _ = T (residualSliceTime u s n) δ := by rw [hms_fix]
-
-/-- A convergent subsequence exists for residual slice times (by compactness of `[0, s]`). -/
-theorem exists_residualSlice_subseq_tendsto
-    (u s : ℝ) (hs : 0 < s) :
-    ∃ a ∈ Set.Icc 0 s, ∃ φ : ℕ ↪o ℕ,
-      Filter.Tendsto (fun k : ℕ => residualSliceTime u s (φ k)) Filter.atTop (nhds a) := by
-  obtain ⟨a, ha_mem, ψ, hψ_mono, hψ_tendsto⟩ :=
-    isCompact_Icc.tendsto_subseq (x := fun n : ℕ => residualSliceTime u s n)
-      (residualSliceTime_mem_Icc u s hs)
-  exact ⟨a, ha_mem, OrderEmbedding.ofStrictMono ψ hψ_mono, hψ_tendsto⟩
-
-/-- The residual slice limit vanishes (by continuity and uniqueness of limits). -/
-theorem residualSlice_limit_zero_of_fixedPoint
-    (T : ℝ → Mat →ₗ[ℂ] Mat)
-    (hT : IsQuantumDynSemigroup T)
-    (u : ℝ)
-    {s : ℝ} (_hs : 0 < s)
-    {δ : Mat}
-    (hδ_decay : Filter.Tendsto (fun n : ℕ => T ((n : ℝ) * u) δ) Filter.atTop (nhds 0))
-    (hres_eq : ∀ n : ℕ, T ((n : ℝ) * u) δ = T (residualSliceTime u s n) δ)
-    {a : ℝ} (_ha_mem : a ∈ Set.Icc 0 s)
-    (φ : ℕ ↪o ℕ)
-    (hφtendsto : Filter.Tendsto (fun k : ℕ => residualSliceTime u s (φ k)) Filter.atTop (nhds a)) :
-    T a δ = 0 := by
-  have hδ_cont : Continuous (fun t : ℝ => T t δ) := by
-    have hEval : Continuous (fun A : Mat →L[ℂ] Mat => A δ) :=
-      (ContinuousLinearMap.apply ℂ Mat δ).continuous
-    change Continuous ((fun A : Mat →L[ℂ] Mat => A δ) ∘ fun t : ℝ => endEquiv (T t))
-    exact hEval.comp hT.semigroup.continuous
-  have hsub_decay : Filter.Tendsto (fun k : ℕ => T ((↑(φ k) : ℝ) * u) δ)
-      Filter.atTop (nhds 0) :=
-    hδ_decay.comp φ.strictMono.tendsto_atTop
-  have hsub_res : Filter.Tendsto (fun k : ℕ => T (residualSliceTime u s (φ k)) δ)
-      Filter.atTop (nhds (T a δ)) :=
-    (hδ_cont.tendsto a).comp hφtendsto
-  have hsub_res_zero : Filter.Tendsto (fun k : ℕ => T (residualSliceTime u s (φ k)) δ)
-      Filter.atTop (nhds 0) :=
-    hsub_decay.congr' (Filter.Eventually.of_forall (fun k => hres_eq (φ k)))
-  exact tendsto_nhds_unique hsub_res hsub_res_zero
-
-/-- By compactness of `[0, s]`, the residual slice times admit a convergent subsequence
-whose limit `a` satisfies `T a δ = 0`. -/
-theorem exists_residual_time_eq_zero_of_fixedPoint
-    [NeZero D]
-    (T : ℝ → Mat →ₗ[ℂ] Mat)
-    (hT : IsQuantumDynSemigroup T)
-    (u : ℝ) (hu_nonneg : 0 ≤ u)
-    (s : ℝ) (hs : 0 < s)
-    {δ : Mat}
-    (hδ_decay : Filter.Tendsto (fun n : ℕ => T ((n : ℝ) * u) δ) Filter.atTop (nhds 0))
-    (hδ_fix : T s δ = δ) :
-    ∃ a ∈ Set.Icc 0 s, T a δ = 0 := by
-  obtain ⟨a, ha_mem, φ, hφtendsto⟩ := exists_residualSlice_subseq_tendsto u s hs
-  exact ⟨a, ha_mem, residualSlice_limit_zero_of_fixedPoint T hT u hs hδ_decay
-    (residualSlice_apply_eq_of_fixedPoint T hT u hu_nonneg s hs hδ_fix) ha_mem φ hφtendsto⟩
-
-theorem eq_zero_of_expSemigroup_apply_eq_zero
-    (L : Mat →ₗ[ℂ] Mat) {a : ℝ} {δ : Mat}
-    (hδ_zero_exp : expSemigroup L a δ = 0) :
-    δ = 0 := by
-  have h := congrArg (fun Y => expSemigroup L (-a) Y) hδ_zero_exp
-  simp only [map_zero] at h
-  have hcomp : (expSemigroup L (-a)) ((expSemigroup L a) δ) =
-      (expSemigroup L (-a)).comp (expSemigroup L a) δ := rfl
-  rw [hcomp, ← expSemigroup_comp, neg_add_cancel a,
-    expSemigroup_zero, LinearMap.id_apply] at h
-  exact h
 
 theorem fixed_density_fixed_for_all_times_of_irreducible_time
     [NeZero D]
@@ -380,96 +249,6 @@ theorem fixedPoint_eq_trace_smul_at_irreducible_time
       (by rw [Matrix.trace_sub, Matrix.trace_smul, hσ_mem.2, smul_eq_mul,
                mul_one, sub_self]))
 
-/-- A fraction slice has a peripheral eigenvector with nonzero trace. -/
-theorem exists_trace_ne_zero_eigenvector_of_fraction_slice
-    [NeZero D]
-    (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    {t₀ u : ℝ}
-    (hTt₀_eq_pow : T t₀ = (T u) ^ Nat.factorial (Module.finrank ℂ Mat))
-    (hTu_ch : IsChannel (T u))
-    (hTu_irr : IsIrreducibleMap (T u))
-    (σ : Mat) (hσ_pd : σ.PosDef)
-    (hTu_fix : T u σ = σ)
-    (hfixed_1d : ∀ X : Matrix (Fin D) (Fin D) ℂ, T t₀ X = X → X = Matrix.trace X • σ)
-    {μ : ℂ}
-    (hμ_eig : Module.End.HasEigenvalue (T u) μ)
-    (hμ_norm : ‖μ‖ = 1) :
-    ∃ X : Mat, X ≠ 0 ∧ T u X = μ • X ∧ Matrix.trace X ≠ 0 := by
-  have hμ_periph : μ ∈ peripheralEigenvalues (T u) := ⟨hμ_eig, hμ_norm⟩
-  have hpow_closed := peripheral_powers_closed_of_irreducible_channel_with_fixed
-    (T u) hTu_ch hTu_irr σ hσ_pd hTu_fix hμ_periph
-  obtain ⟨p, hp_pos, hp_le, hμp⟩ :=
-    bounded_root_of_peripheral_closed_powers (T u) μ hμ_periph hpow_closed
-  obtain ⟨X, hXev⟩ := hμ_eig.exists_hasEigenvector
-  have hX_ne : X ≠ 0 := hXev.2
-  have hX_eig : T u X = μ • X := Module.End.mem_eigenspace_iff.mp hXev.1
-  have hp_dvd : p ∣ Nat.factorial (Module.finrank ℂ Mat) := Nat.dvd_factorial hp_pos hp_le
-  obtain ⟨k, hk⟩ := hp_dvd
-  have hμN : μ ^ Nat.factorial (Module.finrank ℂ Mat) = 1 := by
-    rw [hk, pow_mul, hμp, one_pow]
-  refine ⟨X, hX_ne, hX_eig, ?_⟩
-  by_contra htrX
-  have hX_fix_t₀ : T t₀ X = X := by
-    calc
-      T t₀ X = ((T u) ^ Nat.factorial (Module.finrank ℂ Mat)) X := by rw [hTt₀_eq_pow]
-      _ = μ ^ Nat.factorial (Module.finrank ℂ Mat) • X :=
-        hXev.pow_apply (Nat.factorial (Module.finrank ℂ Mat))
-      _ = X := by simp [hμN]
-  have hX_span : X = Matrix.trace X • σ := hfixed_1d X hX_fix_t₀
-  have : X = 0 := by simpa [htrX] using hX_span
-  exact hX_ne this
-
-/-- Peripheral eigenvalues of a fraction slice are equal to `1`. -/
-theorem peripheral_eq_one_of_fraction_slice
-    [NeZero D]
-    (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    {t₀ u : ℝ}
-    (hTt₀_eq_pow : T t₀ = (T u) ^ Nat.factorial (Module.finrank ℂ Mat))
-    (hTu_ch : IsChannel (T u))
-    (hTu_irr : IsIrreducibleMap (T u))
-    (σ : Mat) (hσ_pd : σ.PosDef)
-    (hTu_fix : T u σ = σ)
-    (hfixed_1d : ∀ X : Matrix (Fin D) (Fin D) ℂ, T t₀ X = X → X = Matrix.trace X • σ)
-    {μ : ℂ}
-    (hμ_eig : Module.End.HasEigenvalue (T u) μ)
-    (hμ_norm : ‖μ‖ = 1) :
-    μ = 1 := by
-  obtain ⟨X, _, hX_eig, htrX_ne⟩ :=
-    exists_trace_ne_zero_eigenvector_of_fraction_slice
-      T hTt₀_eq_pow hTu_ch hTu_irr σ hσ_pd hTu_fix hfixed_1d hμ_eig hμ_norm
-  exact eigenvalue_eq_one_of_trace_preserving_eigenvector
-    (T u) hTu_ch.tp hX_eig htrX_ne
-
-/-- Fraction-slice hypotheses imply primitivity of the slice. -/
-theorem primitive_of_fraction_slice
-    [NeZero D]
-    (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    {t₀ u : ℝ}
-    (hTt₀_eq_pow : T t₀ = (T u) ^ Nat.factorial (Module.finrank ℂ Mat))
-    (hTu_ch : IsChannel (T u))
-    (hTu_irr : IsIrreducibleMap (T u))
-    (σ : Mat) (hσ_mem : σ ∈ densityMatrices D) (hσ_pd : σ.PosDef)
-    (hTu_fix : T u σ = σ)
-    (hfixed_1d : ∀ X : Matrix (Fin D) (Fin D) ℂ, T t₀ X = X → X = Matrix.trace X • σ) :
-    IsPrimitive (T u) := by
-  have hσ_ne := ne_zero_of_mem_densityMatrices' hσ_mem
-  exact isPrimitive_of_unique_norm_one (T u) σ hTu_fix hσ_ne
-    (fun μ hμ_eig hμ_norm =>
-      peripheral_eq_one_of_fraction_slice
-        T hTt₀_eq_pow hTu_ch hTu_irr σ hσ_pd hTu_fix hfixed_1d hμ_eig hμ_norm)
-
-theorem irreducible_of_fraction_slice
-    (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    {t₀ u : ℝ} {N : ℕ}
-    (hTt₀_eq_pow : T t₀ = (T u) ^ N)
-    (hirr : IsIrreducibleMap (T t₀)) :
-    IsIrreducibleMap (T u) := by
-  intro P hP_proj hP_inv
-  exact hirr P hP_proj (by
-    intro X
-    rw [hTt₀_eq_pow]
-    exact compression_preserved_by_pow (E := T u) (P := P) hP_proj hP_inv N X)
-
 theorem trace_zero_fixedPoint_tendsto_zero_of_primitive_slice
     [NeZero D]
     (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
@@ -490,99 +269,6 @@ theorem trace_zero_fixedPoint_tendsto_zero_of_primitive_slice
   filter_upwards [] with n
   rw [← semigroup_pow T hT.semigroup.semigroup u hu_nonneg n]
 
-theorem fixedPoint_eq_zero_of_trace_zero_of_primitive_slice
-    [NeZero D]
-    (L : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (hT : IsQuantumDynSemigroup T)
-    (hexp : ∀ t : ℝ, 0 ≤ t → T t = expSemigroup L t)
-    (u : ℝ) (hu_nonneg : 0 ≤ u)
-    (s : ℝ) (hs : 0 < s)
-    {δ : Mat}
-    (hδ_decay : Filter.Tendsto (fun n : ℕ => T ((n : ℝ) * u) δ) Filter.atTop (nhds 0))
-    (hδ_fix : T s δ = δ) :
-    δ = 0 := by
-  obtain ⟨a, ha_mem, hTa_zero⟩ :=
-    exists_residual_time_eq_zero_of_fixedPoint T hT u hu_nonneg s hs hδ_decay hδ_fix
-  have hδ_zero_exp : expSemigroup L a δ = 0 := by
-    rw [← hexp a ha_mem.1]
-    exact hTa_zero
-  exact eq_zero_of_expSemigroup_apply_eq_zero L hδ_zero_exp
-
-theorem exists_irreducible_fraction_slice
-    [NeZero D]
-    (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (hT : IsQuantumDynSemigroup T)
-    (t₀ : ℝ) (ht₀ : 0 < t₀)
-    (hirr : IsIrreducibleMap (T t₀))
-    (σ : Mat)
-    (hσ_fix_all : ∀ u : ℝ, 0 ≤ u → T u σ = σ) :
-    ∃ u : ℝ, 0 < u ∧ 0 ≤ u ∧ T t₀ = (T u) ^ Nat.factorial (Module.finrank ℂ Mat) ∧
-      IsChannel (T u) ∧ IsIrreducibleMap (T u) ∧ T u σ = σ := by
-  let N : ℕ := Nat.factorial (Module.finrank ℂ Mat)
-  have hN_pos : 0 < N := Nat.factorial_pos _
-  let u : ℝ := t₀ / N
-  have hu_nonneg : 0 ≤ u := le_of_lt <| div_pos ht₀ (Nat.cast_pos.mpr hN_pos)
-  have hu_pos : 0 < u := div_pos ht₀ (Nat.cast_pos.mpr hN_pos)
-  have hNu : (N : ℝ) * u = t₀ := by
-    dsimp [u]
-    field_simp [hN_pos.ne']
-  have hTt₀_eq_pow : T t₀ = (T u) ^ N := by
-    calc
-      T t₀ = T ((N : ℝ) * u) := by rw [hNu]
-      _ = (T u) ^ N := semigroup_pow T hT.semigroup.semigroup u hu_nonneg N
-  have hTu_ch : IsChannel (T u) := hT.channel u hu_nonneg
-  have hTu_fix : T u σ = σ := hσ_fix_all u hu_nonneg
-  have hTu_irr : IsIrreducibleMap (T u) := irreducible_of_fraction_slice T hTt₀_eq_pow hirr
-  exact ⟨u, hu_pos, hu_nonneg, hTt₀_eq_pow, hTu_ch, hTu_irr, hTu_fix⟩
-
-/-- For a primitive fraction slice, fixed points are trace multiples of `σ`. -/
-theorem fixedPoint_eq_trace_smul_of_primitive_slice
-    [NeZero D]
-    (L : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (hT : IsQuantumDynSemigroup T)
-    (hexp : ∀ t : ℝ, 0 ≤ t → T t = expSemigroup L t)
-    (σ : Mat) (hσ_mem : σ ∈ densityMatrices D)
-    (hσ_fix_all : ∀ u : ℝ, 0 ≤ u → T u σ = σ)
-    (u : ℝ) (hu_nonneg : 0 ≤ u)
-    (hTu_ch : IsChannel (T u))
-    (hTu_irr : IsIrreducibleMap (T u))
-    (hTu_fix : T u σ = σ)
-    (hTu_prim : IsPrimitive (T u))
-    (s : ℝ) (hs : 0 < s)
-    {τ : Mat} (hτ_fix : T s τ = τ) :
-    τ = Matrix.trace τ • σ := by
-  have hτ_tr0 : Matrix.trace (τ - Matrix.trace τ • σ) = 0 := by
-    rw [Matrix.trace_sub, Matrix.trace_smul, hσ_mem.2, smul_eq_mul, mul_one, sub_self]
-  have hτ_fix' : T s (τ - Matrix.trace τ • σ) = τ - Matrix.trace τ • σ := by
-    rw [map_sub, map_smul, hτ_fix, hσ_fix_all s (le_of_lt hs)]
-  have hdecay :=
-    trace_zero_fixedPoint_tendsto_zero_of_primitive_slice
-      T hT σ hσ_mem u hu_nonneg hTu_ch hTu_irr hTu_fix hTu_prim hτ_tr0
-  have hzero :=
-    fixedPoint_eq_zero_of_trace_zero_of_primitive_slice
-      L T hT hexp u hu_nonneg s hs hdecay hτ_fix'
-  exact sub_eq_zero.mp hzero
-
-/-- There exists a primitive slice at a positive rational fraction of `t₀`. -/
-theorem exists_primitive_fraction_slice
-    [NeZero D]
-    (T : ℝ → Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (hT : IsQuantumDynSemigroup T)
-    (t₀ : ℝ) (ht₀ : 0 < t₀)
-    (hirr : IsIrreducibleMap (T t₀))
-    (σ : Mat) (hσ_mem : σ ∈ densityMatrices D) (hσ_pd : σ.PosDef)
-    (hσ_fix_all : ∀ u : ℝ, 0 ≤ u → T u σ = σ)
-    (hfixed_1d : ∀ X : Matrix (Fin D) (Fin D) ℂ, T t₀ X = X → X = Matrix.trace X • σ) :
-    ∃ u : ℝ, 0 < u ∧ 0 ≤ u ∧ IsChannel (T u) ∧ IsIrreducibleMap (T u) ∧
-      T u σ = σ ∧ IsPrimitive (T u) := by
-  obtain ⟨u, hu_pos, hu_nonneg, hTt₀_eq_pow, hTu_ch, hTu_irr, hTu_fix⟩ :=
-    exists_irreducible_fraction_slice T hT t₀ ht₀ hirr σ hσ_fix_all
-  refine ⟨u, hu_pos, hu_nonneg, hTu_ch, hTu_irr, hTu_fix, ?_⟩
-  exact primitive_of_fraction_slice
-    T hTt₀_eq_pow hTu_ch hTu_irr σ hσ_mem hσ_pd hTu_fix hfixed_1d
-
 theorem irreducible_all_of_irreducible_time
     [NeZero D]
     (L : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
@@ -602,14 +288,116 @@ theorem irreducible_all_of_irreducible_time
   have hfixed_1d : ∀ X : Matrix (Fin D) (Fin D) ℂ, T t₀ X = X →
       X = Matrix.trace X • σ :=
     fixedPoint_eq_trace_smul_at_irreducible_time T t₀ hTt₀_ch hirr σ hσ_mem hσ_fix
-  obtain ⟨u, hu_pos, hu_nonneg, hTu_ch, hTu_irr, hTu_fix, hTu_prim⟩ :=
-    exists_primitive_fraction_slice T hT t₀ ht₀ hirr σ hσ_mem hσ_pd hσ_fix_all hfixed_1d
+  have hkernel_1d : ∀ X : Mat, L X = 0 → X = Matrix.trace X • σ := by
+    intro X hLX
+    exact hfixed_1d X
+      ((generator_apply_eq_zero_iff_fixed_nonneg L T hexp X).1 hLX t₀ (le_of_lt ht₀))
+  obtain ⟨δ, hδ_pos, hfixed_small⟩ :=
+    exists_pos_forall_lt_expSemigroup_fixedPoint_iff_generator_apply_eq_zero L
+  have hfixed_small_T : ∀ u : ℝ, 0 < u → u < δ →
+      ∀ X : Mat, T u X = X ↔ L X = 0 := by
+    intro u hu huδ X
+    rw [hexp u (le_of_lt hu)]
+    exact hfixed_small u hu huδ X
+  have hirr_small : ∀ u : ℝ, 0 < u → u < δ → IsIrreducibleMap (T u) := by
+    intro u hu huδ
+    apply isIrreducibleMap_of_channel_posDef_fixedPoint_unique
+      (T u) (hT.channel u (le_of_lt hu)) σ hσ_pd
+      (hσ_fix_all u (le_of_lt hu))
+    intro τ _hτ_psd hτ_fix
+    exact ⟨Matrix.trace τ, hkernel_1d τ ((hfixed_small_T u hu huδ τ).1 hτ_fix)⟩
+  let u : ℝ := δ / (2 * Real.pi)
+  have htwo_pi_pos : 0 < 2 * Real.pi := mul_pos two_pos Real.pi_pos
+  have hu_pos : 0 < u := by dsimp [u]; exact div_pos hδ_pos htwo_pi_pos
+  have hu_lt : u < δ := by
+    dsimp [u]
+    rw [div_lt_iff₀ htwo_pi_pos]
+    nlinarith [Real.two_le_pi]
+  have hpi_u_eq : Real.pi * u = δ / 2 := by
+    dsimp [u]
+    field_simp [Real.pi_ne_zero]
+  have hpi_u_pos : 0 < Real.pi * u := by rw [hpi_u_eq]; positivity
+  have hpi_u_lt : Real.pi * u < δ := by rw [hpi_u_eq]; linarith
+  have hTu_irr : IsIrreducibleMap (T u) := hirr_small u hu_pos hu_lt
+  have hTpi_irr : IsIrreducibleMap (T (Real.pi * u)) :=
+    hirr_small (Real.pi * u) hpi_u_pos hpi_u_lt
+  have hno_nonzero_imaginary_eigenvalue :
+      ∀ μ : ℂ, Module.End.HasEigenvalue L μ → μ.re = 0 → μ = 0 := by
+    intro μ hμ_eig hμ_re
+    obtain ⟨X, hX_eig⟩ := hμ_eig.exists_hasEigenvector
+    have hLX : L X = μ • X := Module.End.mem_eigenspace_iff.mp hX_eig.1
+    have hμ_form : μ = (μ.im : ℂ) * Complex.I := by
+      apply Complex.ext
+      · simp [hμ_re]
+      · simp
+    have hnorm_u : ‖Complex.exp ((u : ℂ) * μ)‖ = 1 := by
+      rw [Complex.norm_exp]
+      simp [Complex.mul_re, hμ_re]
+    have hnorm_pi :
+        ‖Complex.exp (((Real.pi * u : ℝ) : ℂ) * μ)‖ = 1 := by
+      rw [Complex.norm_exp]
+      simp [Complex.mul_re, hμ_re]
+    have heig_u : Module.End.HasEigenvalue (T u) (Complex.exp ((u : ℂ) * μ)) := by
+      rw [hexp u (le_of_lt hu_pos)]
+      exact hasEigenvalue_of_eigenvector_eq _ _ X
+        (expSemigroup_apply_eigenvector L X μ hLX u) hX_eig.2
+    have heig_pi : Module.End.HasEigenvalue (T (Real.pi * u))
+        (Complex.exp (((Real.pi * u : ℝ) : ℂ) * μ)) := by
+      rw [hexp (Real.pi * u) (le_of_lt hpi_u_pos)]
+      exact hasEigenvalue_of_eigenvector_eq _ _ X
+        (expSemigroup_apply_eigenvector L X μ hLX (Real.pi * u)) hX_eig.2
+    obtain ⟨p₁, hp₁_pos, hp₁_root⟩ :=
+      peripheral_isRootOfUnity_of_irreducible_channel
+        (T u) (hT.channel u (le_of_lt hu_pos)) hTu_irr
+        (Complex.exp ((u : ℂ) * μ)) ⟨heig_u, hnorm_u⟩
+    obtain ⟨p₂, hp₂_pos, hp₂_root⟩ :=
+      peripheral_isRootOfUnity_of_irreducible_channel
+        (T (Real.pi * u))
+        (hT.channel (Real.pi * u) (le_of_lt hpi_u_pos)) hTpi_irr
+        (Complex.exp (((Real.pi * u : ℝ) : ℂ) * μ))
+        ⟨heig_pi, hnorm_pi⟩
+    have hphase_u : (u : ℂ) * μ = ↑(u * μ.im) * Complex.I := by
+      calc
+        (u : ℂ) * μ = (u : ℂ) * ((μ.im : ℂ) * Complex.I) :=
+          congrArg ((u : ℂ) * ·) hμ_form
+        _ = ↑(u * μ.im) * Complex.I := by push_cast; ring
+    have hphase_pi :
+        ((Real.pi * u : ℝ) : ℂ) * μ =
+          ↑(Real.pi * (u * μ.im)) * Complex.I := by
+      calc
+        ((Real.pi * u : ℝ) : ℂ) * μ =
+            ((Real.pi * u : ℝ) : ℂ) * ((μ.im : ℂ) * Complex.I) :=
+          congrArg (((Real.pi * u : ℝ) : ℂ) * ·) hμ_form
+        _ = ↑(Real.pi * (u * μ.im)) * Complex.I := by push_cast; ring
+    have hroot_one : ∃ p : ℕ, 0 < p ∧
+        Complex.exp (↑(u * μ.im) * Complex.I) ^ p = 1 := by
+      refine ⟨p₁, hp₁_pos, ?_⟩
+      rw [← hphase_u]
+      exact hp₁_root
+    have hroot_pi : ∃ p : ℕ, 0 < p ∧
+        Complex.exp (↑(Real.pi * (u * μ.im)) * Complex.I) ^ p = 1 := by
+      refine ⟨p₂, hp₂_pos, ?_⟩
+      rw [← hphase_pi]
+      exact hp₂_root
+    have hphase_zero : u * μ.im = 0 :=
+      eq_zero_of_exp_mul_I_isRootOfUnity_one_pi
+        (u * μ.im) hroot_one hroot_pi
+    have hμ_im : μ.im = 0 := (mul_eq_zero.mp hphase_zero).resolve_left hu_pos.ne'
+    exact Complex.ext hμ_re hμ_im
   intro s hs
   apply isIrreducibleMap_of_channel_posDef_fixedPoint_unique (T s)
     (hT.channel s (le_of_lt hs)) σ hσ_pd (hσ_fix_all s (le_of_lt hs))
-  intro τ hτ_psd hτ_fix
+  intro τ _hτ_psd hτ_fix
   refine ⟨Matrix.trace τ, ?_⟩
-  exact fixedPoint_eq_trace_smul_of_primitive_slice
-    L T hT hexp σ hσ_mem hσ_fix_all u hu_nonneg hTu_ch hTu_irr hTu_fix hTu_prim s hs hτ_fix
+  apply hkernel_1d
+  by_contra hLτ_ne
+  obtain ⟨μ, hμ_ne, hμ_eig, hμ_root⟩ :=
+    exists_nonzero_generator_eigenvalue_of_expSemigroup_fixed_not_generator_fixed
+      L s hs.ne' (by rw [← hexp s (le_of_lt hs)]; exact hτ_fix) hLτ_ne
+  have hμ_norm : ‖Complex.exp ((s : ℂ) * μ)‖ = 1 := by
+    rw [hμ_root, norm_one]
+  have hμ_re : μ.re = 0 :=
+    re_eq_zero_of_peripheral_generator μ s hs hμ_norm
+  exact hμ_ne (hno_nonzero_imaginary_eigenvalue μ hμ_eig hμ_re)
 
 end -- noncomputable section

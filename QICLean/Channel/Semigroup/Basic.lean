@@ -201,6 +201,13 @@ theorem expSemigroupCLM_mul_neg
     expSemigroupCLM L t * expSemigroupCLM L (-t) = 1 := by
   rw [← expSemigroupCLM_add, add_neg_cancel, expSemigroupCLM_zero]
 
+/-- The exponential of a generator commutes with the generator. -/
+theorem expSemigroupCLM_mul_generator_comm
+    (L : MatrixCLM (Fin D)) (t : ℝ) :
+    expSemigroupCLM L t * L = L * expSemigroupCLM L t := by
+  unfold expSemigroupCLM
+  exact (((Commute.refl L).smul_left (t : ℂ)).exp_left).eq
+
 /-! ### Continuity of the exponential semigroup -/
 
 /-- The function `t ↦ exp(t • L)` is continuous in the CLM norm topology. -/
@@ -264,6 +271,48 @@ theorem hasDerivAt_expSemigroupCLM_zero
       (fun u : ℝ => expSemigroupCLM L u) L 0 := by
   have h := hasDerivAt_expSemigroupCLM L 0
   simpa [expSemigroupCLM_zero] using h
+
+/-- The time integral of an exponential semigroup commutes with its generator. -/
+theorem intervalIntegral_expSemigroupCLM_mul_generator_comm
+    (L : MatrixCLM (Fin D)) (t : ℝ) :
+    intervalIntegral (fun s : ℝ => expSemigroupCLM L s)
+        0 t MeasureTheory.volume * L =
+      L * intervalIntegral (fun s : ℝ => expSemigroupCLM L s)
+        0 t MeasureTheory.volume := by
+  let Rright : MatrixCLM (Fin D) →L[ℝ] MatrixCLM (Fin D) :=
+    ((ContinuousLinearMap.compL ℂ
+      (Matrix (Fin D) (Fin D) ℂ)
+      (Matrix (Fin D) (Fin D) ℂ)
+      (Matrix (Fin D) (Fin D) ℂ)).flip L).restrictScalars ℝ
+  let Lleft : MatrixCLM (Fin D) →L[ℝ] MatrixCLM (Fin D) :=
+    (ContinuousLinearMap.compL ℂ
+      (Matrix (Fin D) (Fin D) ℂ)
+      (Matrix (Fin D) (Fin D) ℂ)
+      (Matrix (Fin D) (Fin D) ℂ) L).restrictScalars ℝ
+  have hright (A : MatrixCLM (Fin D)) : Rright A = A * L := by
+    ext X
+    rfl
+  have hleft (A : MatrixCLM (Fin D)) : Lleft A = L * A := by
+    ext X
+    rfl
+  have hInt : IntervalIntegrable (fun s : ℝ => expSemigroupCLM L s)
+      MeasureTheory.volume 0 t :=
+    (expSemigroupCLM_continuous L).intervalIntegrable 0 t
+  calc
+    intervalIntegral (fun s : ℝ => expSemigroupCLM L s)
+          0 t MeasureTheory.volume * L =
+        Rright (intervalIntegral (fun s : ℝ => expSemigroupCLM L s)
+          0 t MeasureTheory.volume) := (hright _).symm
+    _ = intervalIntegral (fun s : ℝ => Rright (expSemigroupCLM L s))
+          0 t MeasureTheory.volume := (Rright.intervalIntegral_comp_comm hInt).symm
+    _ = intervalIntegral (fun s : ℝ => Lleft (expSemigroupCLM L s))
+          0 t MeasureTheory.volume := by
+            exact intervalIntegral.integral_congr fun s _ => by
+              rw [hright, hleft, expSemigroupCLM_mul_generator_comm]
+    _ = Lleft (intervalIntegral (fun s : ℝ => expSemigroupCLM L s)
+          0 t MeasureTheory.volume) := Lleft.intervalIntegral_comp_comm hInt
+    _ = L * intervalIntegral (fun s : ℝ => expSemigroupCLM L s)
+          0 t MeasureTheory.volume := hleft _
 
 /-- The exponential increment factors through its generator:
 
@@ -416,17 +465,17 @@ theorem expSemigroup_isContinuousDynSemigroup
 /-! ## Proposition 7.1: Continuous semigroup → exp(tL) -/
 
 /-- A continuous family of continuous linear endomorphisms that equals the identity at zero has
-an invertible positive-time integral.
+invertible integrals throughout some punctured right-neighborhood of zero.
 
 Indeed, the normalized integrals
 `ε⁻¹ • ∫ t in 0..ε, S t` converge to `S 0 = 1` as `ε ↓ 0`.  Since the group of
-units is open, one of these normalized integrals, and hence the corresponding
-unnormalized integral, is invertible. -/
-theorem exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one
+units is open, every sufficiently small positive normalized integral, and hence
+every corresponding unnormalized integral, is invertible. -/
+theorem exists_pos_forall_lt_intervalIntegral_isUnit_of_continuous_zero_eq_one
     (S : ℝ → MatrixCLM (Fin D))
     (hS_zero : S 0 = 1)
     (hS_cont : Continuous S) :
-    ∃ ε : ℝ, 0 < ε ∧
+    ∃ δ : ℝ, 0 < δ ∧ ∀ ε : ℝ, 0 < ε → ε < δ →
       IsUnit (intervalIntegral S 0 ε MeasureTheory.volume) := by
   let P : ℝ → MatrixCLM (Fin D) :=
     fun t : ℝ => intervalIntegral S 0 t MeasureTheory.volume
@@ -455,9 +504,12 @@ theorem exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one
   have hunit_event : ∀ᶠ h in nhdsWithin (0 : ℝ) (Set.Ioi 0),
       IsUnit (h⁻¹ • (P (0 + h) - P 0)) :=
     htend.eventually (Units.isOpen.mem_nhds isUnit_one)
-  obtain ⟨ε, hunitε, hε_mem⟩ := (hunit_event.and self_mem_nhdsWithin).exists
-  have hε_pos : 0 < ε := hε_mem
-  refine ⟨ε, hε_pos, ?_⟩
+  rw [Filter.Eventually, Metric.mem_nhdsWithin_iff] at hunit_event
+  obtain ⟨δ, hδ_pos, hδ⟩ := hunit_event
+  refine ⟨δ, hδ_pos, fun ε hε_pos hε_lt ↦ ?_⟩
+  have hunitε : IsUnit (ε⁻¹ • (P (0 + ε) - P 0)) := by
+    apply hδ
+    exact ⟨by simpa [Real.dist_eq, abs_of_pos hε_pos] using hε_lt, hε_pos⟩
   have hu1 : IsUnit (ε⁻¹ • P ε) := by
     simpa [hP_zero] using hunitε
   have hu2 : IsUnit (ε • (1 : MatrixCLM (Fin D))) := by
@@ -469,6 +521,19 @@ theorem exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one
   change IsUnit (P ε)
   rw [hfact]
   exact hu2.mul hu1
+
+/-- A continuous family of continuous linear endomorphisms that equals the identity at zero has
+an invertible positive-time integral. -/
+theorem exists_pos_intervalIntegral_isUnit_of_continuous_zero_eq_one
+    (S : ℝ → MatrixCLM (Fin D))
+    (hS_zero : S 0 = 1)
+    (hS_cont : Continuous S) :
+    ∃ ε : ℝ, 0 < ε ∧
+      IsUnit (intervalIntegral S 0 ε MeasureTheory.volume) := by
+  obtain ⟨δ, hδ_pos, hδ⟩ :=
+    exists_pos_forall_lt_intervalIntegral_isUnit_of_continuous_zero_eq_one
+      S hS_zero hS_cont
+  exact ⟨δ / 2, by positivity, hδ (δ / 2) (by positivity) (by linarith)⟩
 
 /-- In a finite-dimensional normed algebra, the Bochner integral `(1/ε) • ∫₀^ε S(t) dt`
 is close to `S(0) = 1` for small `ε`, hence invertible. From this and the semigroup
