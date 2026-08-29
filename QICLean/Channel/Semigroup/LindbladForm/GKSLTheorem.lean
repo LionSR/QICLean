@@ -15,6 +15,7 @@ This file proves the GKSL theorem characterizing generators of CPTP semigroups.
 ## Main results
 
 * `generator_shift_invariance` — **Proposition 7.4** (Kraus shift freedom).
+* `exists_traceless_kraus_shift` — **Proposition 7.4(1)** (traceless choice).
 * `IsGKSLGenerator` — definition.
 * `gksl_iff_lindbladForm` — **Theorem 7.1**: GKSL ↔ Lindblad form.
 -/
@@ -84,7 +85,7 @@ theorem generator_shift_invariance
   rw [hX]
   simpa [neg_smul] using hgoal
 
-/-- **Wolf Proposition 7.4 (item 2 — existence of traceless Kraus operators)**:
+/-- **Wolf Proposition 7.4(1), existence of traceless Kraus operators**:
 Given any Kraus representation `{Lⱼ}`, there exist shifts `cⱼ` such that
 `L'ⱼ = Lⱼ + cⱼ 𝟙` is traceless. -/
 theorem exists_traceless_kraus_shift
