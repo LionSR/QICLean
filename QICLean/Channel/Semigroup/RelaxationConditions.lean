@@ -3,7 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Channel.Semigroup.LindbladForm.GKSLTheorem
+import QICLean.Channel.Semigroup.KossakowskiRank
 import QICLean.Channel.Semigroup.ReducibleQDS.Equivalence
 
 /-!
@@ -29,10 +29,6 @@ variable {D : ℕ}
 
 local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
-/-- The `ℂ`-linear span of a Lindblad family's operators. -/
-def lindbladSpan (F : LindbladForm D) : Submodule ℂ Mat :=
-  Submodule.span ℂ (Set.range F.L)
-
 /-- The Lindblad span is closed under Hermitian conjugation, i.e. the `ℂ`-span
 of the Lindblad operators `{Lⱼ}` forms a `*`-subspace of `Mₐ(ℂ)`:
 for every `X = ∑ xⱼ Lⱼ` there exist `yⱼ` such that `X† = ∑ yⱼ Lⱼ`.
@@ -48,12 +44,6 @@ def HasLindbladSpanTrivialCommutant (F : LindbladForm D) : Prop :=
   ∀ A : Mat,
     (∀ j : Fin F.r, A * F.L j = F.L j * A) →
       ∃ c : ℂ, A = c • (1 : Mat)
-
-/-- The minimal number of Lindblad operators across all GKSL representations
-of `L`.  This equals the rank of the Kossakowski matrix in the
-orthonormal-basis representation (Wolf Section 7.1). -/
-def kossakowskiRank (L : Mat →ₗ[ℂ] Mat) : ℕ :=
-  sInf {n : ℕ | ∃ F : LindbladForm D, F.toLinearMap = L ∧ F.r = n}
 
 private theorem lower_left_block_vanishes_on_lindbladSpan
     {P : Mat} (F : LindbladForm D)
@@ -220,122 +210,6 @@ theorem hermitian_span_trivial_commutant_implies_no_blockUpperTriangular
     exact hleft.trans hright.symm
   obtain ⟨c, hP_scalar⟩ := hComm P hcommP
   exact not_isNontrivialProjection_of_eq_smul_one hP_nt hP_scalar
-
-/-- Bilinear sum identity for rectangular coefficient matrices:
-`Σⱼ (Σₖ A_{jk}•Fₖ) * M * (Σₖ A_{jk}•Fₖ)†`
-equals `Σₖₗ (A†A)_{lk} • (Fₖ * M * Fₗ†)`. -/
-private lemma bilinear_sum_identity {r n : ℕ}
-    (A : Matrix (Fin r) (Fin n) ℂ)
-    (f : Fin n → Mat)
-    (M : Mat) :
-    ∑ j : Fin r, (∑ k, A j k • f k) * M * (∑ k, A j k • f k)ᴴ =
-    ∑ k : Fin n, ∑ l : Fin n, (Aᴴ * A) l k • (f k * M * (f l)ᴴ) := by
-  simp_rw [conjTranspose_sum, Matrix.conjTranspose_smul, Complex.star_def]
-  simp_rw [Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm,
-    smul_smul, mul_assoc]
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro k _
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro l _
-  rw [← Finset.sum_smul]; congr 1
-  simp [conjTranspose_apply, mul_apply, mul_comm]
-
-/-- Adjoint variant: `Σⱼ Lⱼ†Lⱼ = Σₗ Σₖ (A†A)_{lk} • (Fₗ†Fₖ)`. -/
-private lemma bilinear_adj_sum_identity {r n : ℕ}
-    (A : Matrix (Fin r) (Fin n) ℂ)
-    (f : Fin n → Mat) :
-    ∑ j : Fin r, (∑ k, A j k • f k)ᴴ * (∑ k, A j k • f k) =
-    ∑ l : Fin n, ∑ k : Fin n, (Aᴴ * A) l k • ((f l)ᴴ * f k) := by
-  simp_rw [conjTranspose_sum, Matrix.conjTranspose_smul, Complex.star_def]
-  simp_rw [Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro l _
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro k _
-  rw [← Finset.sum_smul]; congr 1
-
-/-- Core construction: given a `LindbladForm` whose operators all lie in a
-submodule `V`, there exists a `LindbladForm` with `r ≤ finrank V` and the
-same `toLinearMap`. -/
-private theorem exists_lindblad_form_rank_le_finrank
-    (G : LindbladForm D) (V : Submodule ℂ Mat)
-    (hV : ∀ j : Fin G.r, G.L j ∈ V) :
-    ∃ G' : LindbladForm D,
-      G'.toLinearMap = G.toLinearMap ∧ G'.r ≤ Module.finrank ℂ V := by
-  -- m = finrank V
-  set m := Module.finrank ℂ V
-  -- Get a basis of V indexed by Fin m
-  have : Module.Finite ℂ V := inferInstance
-  have : Module.Free ℂ V := Module.Free.of_divisionRing ℂ V
-  let e := Module.finBasis ℂ V
-  -- Coordinate matrix: α_{jk} = (e.repr ⟨G.L j, hV j⟩) k
-  let α : Matrix (Fin G.r) (Fin m) ℂ := fun j k => (e.repr ⟨G.L j, hV j⟩) k
-  -- Each operator is Σ_k α_{jk} • e_k
-  have hL_expand : ∀ j, G.L j = ∑ k : Fin m, α j k • (e k : Mat) := by
-    intro j
-    have := e.sum_repr ⟨G.L j, hV j⟩
-    have : (⟨G.L j, hV j⟩ : V) = ∑ k, (e.repr ⟨G.L j, hV j⟩) k • e k := by
-      rw [← e.sum_equivFun ⟨G.L j, hV j⟩]
-      simp [Basis.equivFun_apply]
-    have hval := congrArg Subtype.val this
-    simp only [Submodule.coe_sum, Submodule.coe_smul] at hval
-    exact hval
-  -- Gram matrix C = α†α is PSD
-  have hC_psd : (αᴴ * α).PosSemidef :=
-    Matrix.posSemidef_conjTranspose_mul_self α
-  -- Factor C = B†B where B = √C
-  set B := CFC.sqrt (αᴴ * α)
-  have hC_factor : (αᴴ * α) = Bᴴ * B := by
-    have hB_psd := Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg (αᴴ * α))
-    rw [hB_psd.isHermitian.eq]
-    simpa using (CFC.sqrt_mul_sqrt_self _ (Matrix.nonneg_iff_posSemidef.mpr hC_psd)).symm
-  -- New operators: L'_i = Σ_k B_{ik} • e_k
-  let L' : Fin m → Mat := fun i => ∑ k : Fin m, B i k • (e k : Mat)
-  -- Build the new LindbladForm
-  refine ⟨⟨m, G.H, L', G.H_hermitian⟩, ?_, le_refl m⟩
-  -- Show toLinearMap agrees
-  -- Key: Σ_j L_j ρ L_j† = Σ_i L'_i ρ L'_i† (and similarly for L†L)
-  -- because both equal
-  -- Σ_{k,l} (α†α)_{lk} (e_k ρ e_l†) = Σ_{k,l} (B†B)_{lk} (e_k ρ e_l†)
-  let f : Fin m → Mat := fun k => (e k : Mat)
-  -- Rewrite sums using basis expansion
-  have hsum_expand : ∀ N : Mat,
-      ∑ j : Fin G.r, G.L j * N * (G.L j)ᴴ =
-      ∑ j : Fin G.r, (∑ k, α j k • f k) * N * (∑ k, α j k • f k)ᴴ := by
-    intro N; apply Finset.sum_congr rfl; intro j _; rw [hL_expand j]
-  have hadj_expand :
-      ∑ j : Fin G.r, (G.L j)ᴴ * G.L j =
-      ∑ j : Fin G.r, (∑ k, α j k • f k)ᴴ * (∑ k, α j k • f k) := by
-    apply Finset.sum_congr rfl; intro j _; rw [hL_expand j]
-  have hcp_eq : ∀ N : Mat,
-      ∑ j : Fin G.r, G.L j * N * (G.L j)ᴴ =
-      ∑ i : Fin m, L' i * N * (L' i)ᴴ := by
-    intro N
-    rw [hsum_expand N, bilinear_sum_identity α f N]
-    rw [show (∑ i : Fin m, L' i * N * (L' i)ᴴ) =
-      ∑ k, ∑ l, (Bᴴ * B) l k • (f k * N * (f l)ᴴ) from
-        bilinear_sum_identity B f N]
-    rw [hC_factor]
-  have hadj_eq :
-      ∑ j : Fin G.r, (G.L j)ᴴ * G.L j =
-      ∑ i : Fin m, (L' i)ᴴ * L' i := by
-    rw [hadj_expand, bilinear_adj_sum_identity α f]
-    rw [show (∑ i : Fin m, (L' i)ᴴ * L' i) =
-      ∑ l, ∑ k, (Bᴴ * B) l k • ((f l)ᴴ * f k) from
-        bilinear_adj_sum_identity B f]
-    rw [hC_factor]
-  ext1 ρ
-  simp only [LindbladForm.toLinearMap, LinearMap.coe_mk, AddHom.coe_mk]
-  congr 1
-  simp only [dissipator]
-  simp_rw [Finset.sum_sub_distrib]
-  congr 1
-  · congr 1
-    · exact (hcp_eq ρ).symm
-    · rw [← Finset.smul_sum, ← Finset.smul_sum,
-          ← Finset.sum_mul, ← Finset.sum_mul, hadj_eq]
-  · rw [← Finset.smul_sum, ← Finset.smul_sum,
-        ← Finset.mul_sum, ← Finset.mul_sum, hadj_eq]
 
 /-- If `1 ∈ ker φ`, then every matrix splits as a scalar multiple of `1`
 plus a traceless element, so `ker φ ⊔ ker(trace) = ⊤`. -/
@@ -729,11 +603,13 @@ private theorem exists_traceless_blockUT_lindblad_form
   · rw [LinearMap.mem_ker, Matrix.traceLinearMap_apply]
     exact htrace j
 
-/-- Condition (3): Kossakowski rank `> D * D` forbids block-upper-triangular
-Lindblad decompositions (Wolf Corollary 7.2(3)).
+/-- A minimum Lindblad rank greater than `D ^ 2 - D` forbids
+block-upper-triangular Lindblad decompositions.
 
-The hypothesis is stated using addition (`rank + D ≥ D ^ 2 + 1`) to avoid
-natural-number subtraction issues; this is equivalent to `rank > D * D`. -/
+The hypothesis is stated as `rank + D ≥ D ^ 2 + 1`, an equivalent form that
+avoids truncated subtraction on natural numbers. The source-facing
+Kossakowski-matrix formulation of Wolf, Corollary 7.2(3), is
+`TracelessBasisKossakowskiForm.large_rank_implies_no_blockUpperTriangular`. -/
 theorem large_kossakowski_rank_implies_no_blockUpperTriangular
     (F : LindbladForm D)
     (hRank : kossakowskiRank F.toLinearMap + D ≥ D ^ 2 + 1) :
@@ -749,7 +625,7 @@ theorem large_kossakowski_rank_implies_no_blockUpperTriangular
     exists_traceless_blockUT_lindblad_form hP_nt G F.toLinearMap hL_eq hBlock
   -- Construct a form with rank ≤ finrank V
   obtain ⟨G'', hG''_eq, hG''_r⟩ :=
-    exists_lindblad_form_rank_le_finrank G' V hG'_mem
+    G'.exists_equivalent_rank_le_finrank V hG'_mem
   -- kossakowskiRank ≤ G''.r
   have hkr : kossakowskiRank F.toLinearMap ≤ G''.r := by
     apply Nat.sInf_le
@@ -759,6 +635,22 @@ theorem large_kossakowski_rank_implies_no_blockUpperTriangular
     finrank_traceless_blockUT_add_D_le hP_nt
   -- But kossakowskiRank + D ≥ D² + 1
   omega
+
+/-- Wolf, Corollary 7.2(3), with the source hypothesis
+`D ^ 2 - D < rank(C)`: a Kossakowski matrix of this rank cannot admit a
+block-upper-triangular Lindblad representation. -/
+theorem TracelessBasisKossakowskiForm.large_rank_implies_no_blockUpperTriangular
+    (K : TracelessBasisKossakowskiForm D)
+    (hRank : D ^ 2 - D < K.C.rank) :
+    ¬ HasBlockUpperTriangularLindblad K.toLinearMap := by
+  have hRank' : kossakowskiRank K.toLinearMap + D ≥ D ^ 2 + 1 := by
+    rw [K.kossakowskiRank_toLinearMap_eq_rank]
+    omega
+  have hNoBlock := large_kossakowski_rank_implies_no_blockUpperTriangular
+    K.sqrtLindbladForm (by
+      rw [← K.toLinearMap_eq_sqrtLindbladForm]
+      exact hRank')
+  rwa [← K.toLinearMap_eq_sqrtLindbladForm] at hNoBlock
 
 /--
 If a GKSL generator has no block-upper-triangular Lindblad decomposition,
@@ -803,5 +695,15 @@ theorem not_isReducible_of_kossakowski_rank_ge
     ¬ IsReducibleQDS F.toLinearMap := by
   apply not_isReducibleQDS_of_no_blockUpperTriangular_lindblad hGKSL
   exact large_kossakowski_rank_implies_no_blockUpperTriangular F hRank
+
+/-- Wolf, Corollary 7.2(3), in the source notation: if
+`rank(C) > D ^ 2 - D`, then the quantum dynamical semigroup is not reducible. -/
+theorem TracelessBasisKossakowskiForm.not_isReducible_of_rank_gt
+    (K : TracelessBasisKossakowskiForm D)
+    (hRank : D ^ 2 - D < K.C.rank) :
+    ¬ IsReducibleQDS K.toLinearMap := by
+  apply not_isReducibleQDS_of_no_blockUpperTriangular_lindblad
+  · exact (gksl_iff_tracelessBasisKossakowskiForm K.toLinearMap).2 ⟨K, rfl⟩
+  · exact K.large_rank_implies_no_blockUpperTriangular hRank
 
 end -- noncomputable section

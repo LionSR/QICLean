@@ -104,8 +104,9 @@ theorem exists_traceless_kraus_shift
 /-- Shifting the Lindblad operators as in Wolf, Proposition 7.4,
 Equations (7.18)--(7.19), gives an equivalent Lindblad form with traceless
 operators. If the original operators lie in a linear subspace containing the
-identity, then the shifted operators remain in that subspace. -/
-theorem LindbladForm.exists_traceless_in_submodule
+identity, then the shifted operators remain in that subspace. The shift does
+not change the number of displayed operators. -/
+theorem LindbladForm.exists_traceless_in_submodule_same_rank
     (G : LindbladForm D)
     (V : Submodule ℂ (Matrix (Fin D) (Fin D) ℂ))
     (hone : (1 : Matrix (Fin D) (Fin D) ℂ) ∈ V)
@@ -114,7 +115,8 @@ theorem LindbladForm.exists_traceless_in_submodule
     ∃ G' : LindbladForm D,
       G'.toLinearMap = G.toLinearMap ∧
       G'.HasTracelessKraus ∧
-      ∀ j : Fin G'.r, G'.L j ∈ V := by
+      (∀ j : Fin G'.r, G'.L j ∈ V) ∧
+      G'.r = G.r := by
   obtain ⟨c, hc⟩ := exists_traceless_kraus_shift G.L
   set L' : Fin G.r → Matrix (Fin D) (Fin D) ℂ :=
     fun j ↦ G.L j + c j • (1 : Matrix (Fin D) (Fin D) ℂ) with hL'_def
@@ -140,7 +142,7 @@ theorem LindbladForm.exists_traceless_in_submodule
         apply Finset.sum_congr rfl
         intro j _
         simp only [neg_sub]]
-  refine ⟨⟨G.r, H', L', hH'_herm⟩, ?_, ?_, ?_⟩
+  refine ⟨⟨G.r, H', L', hH'_herm⟩, ?_, ?_, ?_, rfl⟩
   · rw [LindbladForm.toLinearMap_eq_generatorDecomp,
       LindbladForm.toLinearMap_eq_generatorDecomp]
     set κ_old : Matrix (Fin D) (Fin D) ℂ := G.toGeneratorDecomp.κ
@@ -216,6 +218,22 @@ theorem LindbladForm.exists_traceless_in_submodule
   · intro j
     rw [hL'_def]
     exact V.add_mem (hmem j) (V.smul_mem (c j) hone)
+
+/-- Shifting a Lindblad family to traceless operators preserves any linear
+subspace containing the identity. -/
+theorem LindbladForm.exists_traceless_in_submodule
+    (G : LindbladForm D)
+    (V : Submodule ℂ (Matrix (Fin D) (Fin D) ℂ))
+    (hone : (1 : Matrix (Fin D) (Fin D) ℂ) ∈ V)
+    (hmem : ∀ j : Fin G.r, G.L j ∈ V)
+    [NeZero D] :
+    ∃ G' : LindbladForm D,
+      G'.toLinearMap = G.toLinearMap ∧
+      G'.HasTracelessKraus ∧
+      ∀ j : Fin G'.r, G'.L j ∈ V := by
+  obtain ⟨G', hG', htr, hmem', -⟩ :=
+    G.exists_traceless_in_submodule_same_rank V hone hmem
+  exact ⟨G', hG', htr, hmem'⟩
 
 /-- Every Lindblad form has an equivalent form whose Lindblad operators are
 traceless (Wolf, Proposition 7.4(1)). -/

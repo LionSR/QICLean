@@ -14,6 +14,7 @@ import QICLean.Channel.Semigroup.GeneratorDefs
 import QICLean.Channel.Semigroup.HamiltonianIndependentContractivity
 import QICLean.Channel.Semigroup.Kernel
 import QICLean.Channel.Semigroup.KossakowskiForm
+import QICLean.Channel.Semigroup.KossakowskiRank
 import QICLean.Channel.Semigroup.LindbladForm
 import QICLean.Channel.Semigroup.LindbladForm.Basic
 import QICLean.Channel.Semigroup.LindbladForm.ChoiCCP
@@ -36,4 +37,5 @@ import QICLean.Channel.Semigroup.ReducibleQDS.Equivalence
 import QICLean.Channel.Semigroup.ReducibleQDS.FixedDensity
 import QICLean.Channel.Semigroup.ReducibleQDS.GeneratorCompression
 import QICLean.Channel.Semigroup.RelaxationConditions
+import QICLean.Channel.Semigroup.RelaxationCorollary
 import QICLean.Channel.Semigroup.WeightedLoweringContractivity
