@@ -2124,11 +2124,22 @@ positive-time slices are irreducible, all positive-time slices are primitive,
 all density matrices relax to one faithful density matrix, and the generator
 has a simple faithful kernel. In the third clause, primitivity records both
 irreducibility and the absence of peripheral eigenvalues other than one, as in
-Wolf's definition. For the implication from the simple-kernel condition, one
-chooses a positive time whose fixed space is exactly the kernel of the
+Wolf's definition.  The irreducibility-propagation proof now follows the
+argument on source lines 279--280: the simple faithful kernel makes every
+sufficiently small positive slice irreducible; the roots-of-unity theorem at
+two such times with irrational ratio `π` excludes every nonzero imaginary
+generator eigenvalue; and a fixed vector at any other positive time outside
+the generator kernel would yield a nonzero resonant eigenvalue
+\(\mu\) with \(e^{t\mu}=1\).  The latter reverse fixed-space statement is
+proved from the exponential integral factorization, rather than assumed from
+forward spectral mapping. For the implication from the simple-kernel condition,
+one chooses a positive time whose fixed space is exactly the kernel of the
 generator. This follows from
 \(e^{tL}-I=(\int_0^t e^{sL}\,ds)L\), since the integral is invertible for all
 sufficiently small positive \(t\).
+
+The formalization uses Wolf's rescaling factor \(\pi\) literally, via
+`irrational_pi`.
 
 Proposition 7.6 is also an exact completion. In the implication from an upper
 block-triangular Lindblad representation to a rank-deficient kernel element,

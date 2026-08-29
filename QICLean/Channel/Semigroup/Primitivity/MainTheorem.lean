@@ -24,8 +24,12 @@ The proof has two parts:
 `T_{t₀}` irreducible → `T_s` irreducible for ALL `s > 0`.
 Uses the kernel characterization: `ker(L) = Span{σ}` where `σ` is the unique
 faithful density fixed point of `T_{t₀}`. Then `σ` is fixed by all `T_s`
-(semigroup commutativity + density uniqueness). For each `s > 0`, `T_s`
-is shown irreducible via `isIrreducibleMap_of_channel_posDef_fixedPoint_unique`.
+(semigroup commutativity + density uniqueness).  Fixed spaces agree with
+`ker(L)` throughout a sufficiently small interval, so those slices are
+irreducible.  Roots of unity at the two irrationally related times `u` and
+`πu` exclude nonzero imaginary eigenvalues of `L`.  A fixed point of an
+arbitrary `T_s` outside `ker(L)` would produce precisely such a resonant
+generator eigenvalue, and is therefore impossible.
 
 **Part 2 — Roots of unity → primitivity**:
 Given irreducibility at all times, peripheral eigenvalues are roots of unity
@@ -35,11 +39,11 @@ the eigenvector `V` is a fixed point of `T_{pt}`. By irreducibility of
 point `σ'`, giving `T_t σ' = μ σ'`. Trace preservation then forces `μ = 1`.
 
 The Lean proof combines the propagation theorem
-`irreducible_all_of_irreducible_time` with the primitive-slice analysis in
+`irreducible_all_of_irreducible_time` with the peripheral analysis in
 `IrreducibleAnalysis.lean`: `primitive_of_irreducible_all` reduces primitivity
-to irreducibility at all positive times, while `exists_primitive_fraction_slice`
-and `fixedPoint_eq_trace_smul_of_primitive_slice` supply the fixed-point input
-for the propagation theorem. -/
+to irreducibility at all positive times, while the small-time fixed-space and
+reverse-resonance lemmas supply the fixed-point input for the propagation
+theorem. -/
 theorem irreducible_semigroup_implies_primitive
     [NeZero D]
     (L : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
