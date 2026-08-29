@@ -24,16 +24,18 @@ Kraus-span characterization of primitive channels is formalized here.
 
 ## Complete named-environment audit
 
-The August 25, 2026 audit covers all 153 literal lemma, proposition, theorem,
+The August 29, 2026 audit covers all 153 literal lemma, proposition, theorem,
 and corollary environments in the transcribed Wolf chapters. Definitions and
-examples are outside this named-result count. After the SIC--POVM migration,
-the dispositions are: 71 exact, 15 corrected or otherwise dispositioned, 10
-partial-packaging, 13 partial-scope, 2 obstructed, and 42 open. Fourteen of the
+examples are outside this named-result count. After completion of Corollary
+6.3, the dispositions are: 82 exact, 15 corrected or otherwise dispositioned,
+4 partial-packaging, 8 partial-scope, 2 obstructed, and 42 open. Fourteen of the
 15 corrected/dispositioned entries have an implemented corrected theorem; the
 remaining entry is a documented disposition rather than a replacement
-declaration. Thus 67 environments remain audit-unresolved
-(10 partial-packaging + 13 partial-scope + 2 obstructed + 42 open), and 68 do
-not have an implemented exact or corrected theorem.
+declaration. Thus 97 of the 153 named environments (63.4%) are exact or
+dispositioned, while 96 have an implemented exact or corrected theorem. There
+are 56 audit-unresolved environments (4 partial-packaging + 8 partial-scope + 2
+obstructed + 42 open), and 57 do not have an implemented exact or corrected
+theorem.
 
 Here "partial-packaging" means that substantial clauses or equation-level
 components are proved but no declaration packages the full source environment.
@@ -1250,32 +1252,46 @@ is used, and the separate pointwise development is not a prerequisite. Both
 corrections and the former CP scope restriction are recorded in the resolved note
 `docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex`.
 
-#### Wolf Corollary 6.3 (Time-average / ergodicity) — PARTIAL-SCOPE
+#### Wolf Corollary 6.3 (Time-average and ergodicity) — FORMALIZED
 
-* `IsChannel.exists_unique_density_fixedPoint_of_irreducible` —
-  `QICLean.Channel.Irreducible.Ergodicity`
-  Qualitative form: an irreducible channel has a unique density-matrix fixed
-  point, and it is positive definite. This is the quantum-channel
-  specialization of the source result.
-* `IsChannel.cesaroMean_tendsto_of_irreducible` — `QICLean.Channel.Irreducible.Ergodicity`
-  Full Cesàro convergence: for every density matrix `ρ`,
-  `(1/N) ∑_{t=0}^{N-1} E^[t](ρ) → σ`.
+The source-general declarations are in
+`QICLean.Channel.Irreducible.PositiveMapErgodicity`, following local source
+lines 723–741:
 
-Supporting formalization used by `QICLean.Channel.Irreducible.Ergodicity`:
-* `IsChannel.cesaroMean_mem_densityMatrices`: channel Cesàro means remain density
-  matrices.
-* `IsChannel.cesaroMean_subseq_limit_fixedPoint`: any subsequential Cesàro limit
-  is a density-matrix fixed point (compactness + telescoping argument).
+* `wolfTimeAverage` is Wolf's one-indexed average. The source-facing equality
+  `wolfTimeAverage_eq_oneIndexedSum` states it literally as
+  `(1/N) ∑_{t ∈ Finset.Icc 1 N} (T^t)(ρ)`.
+* `wolfTimeAverage_eq_cesaroMean` and
+  `wolfTimeAverage_eq_birkhoffAverage` identify this expression exactly with
+  the zero-indexed Cesàro or Birkhoff average whose initial matrix is `T ρ`.
+* `IsPositiveMap.wolfTimeAverage_tendsto_of_irreducible` proves convergence to
+  the unique positive-definite stationary density matrix for arbitrary
+  positive trace-preserving irreducible maps.
+* `wolf_corollary_6_3` is the exact source equivalence, under `[NeZero D]`:
+  irreducibility is equivalent to the existence of a unique density matrix
+  `σ > 0` such that every density matrix `ρ` satisfies
+  `(1/N) ∑_{t=1}^N (T^t)(ρ) → σ`.
 
-The reusable Cesàro infrastructure in `QICLean.Channel.FixedPoint.Cesaro` is now
-source-general: `IsPositiveMap.cesaroMean_mem_densityMatrices`,
-`IsPositiveMap.cesaroMean_subseq_limit_fixedPoint`, and
-`IsPositiveMap.exists_posSemidef_fixedPoint` assume only positivity and trace
-preservation.  This removes the CP restriction from the compactness and
-subsequential-limit steps needed for issue #475.  The source-facing full
-convergence theorem and the explicit comparison between the averages indexed by
-`0,...,N-1` and Wolf's `1,...,N` remain to be packaged, so Corollary 6.3 is not
-yet marked formalized.
+The fixed-state and zero-indexed convergence results in
+`QICLean.Channel.Irreducible.Ergodicity` have also been generalized to positive
+trace-preserving maps:
+
+* `IsPositiveMap.exists_unique_density_fixedPoint_of_irreducible` obtains the
+  positive-definite Perron density matrix, uses trace preservation to force its
+  eigenvalue to be one, and proves uniqueness from the one-dimensional ordinary
+  eigenspace.
+* `IsPositiveMap.cesaroMean_tendsto_of_irreducible` identifies the zero-indexed
+  limit with the mean-ergodic projection in Equation (6.14).
+* The declarations with the same suffixes in the `IsChannel` namespace retain
+  the former quantum-channel statements as direct specializations.
+
+The proof of the full equivalence uses the mean-ergodic projection, as in
+Wolf's proof, rather than the earlier compactness argument. In the reverse
+direction, every positive semidefinite stationary matrix is normalized to a
+density matrix and identified with `σ` from its constant time average. The
+positive trace-preserving invariant-corner criterion from the proof of Theorem
+6.4 then gives irreducibility. No complete positivity or Kraus representation
+is assumed.
 
 #### Wolf Theorem 6.4 (Irreducibility from spectral properties) — FORMALIZED
 

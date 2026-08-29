@@ -59,57 +59,148 @@
     projection is $0$ or $\Id$, so $E$ is irreducible.
 \end{proof}
 
-\section{Ergodicity of irreducible channels}
+\section{Time-average and ergodicity}
 
-\begin{theorem}[Unique density-matrix fixed point for an irreducible channel]
+\begin{theorem}[Unique stationary state for an irreducible positive trace-preserving map]
     \label{thm:channel_density_fp_irred}
-    \lean{IsChannel.exists_unique_density_fixedPoint_of_irreducible}
+    \lean{IsPositiveMap.exists_unique_density_fixedPoint_of_irreducible,
+        IsChannel.exists_unique_density_fixedPoint_of_irreducible}
     \leanok
-    \uses{def:channel, def:irreducible_cp}
-    Let $E$ be an irreducible quantum channel on $\MN{D}$ with $D > 0$.
-    Then there exists a unique density matrix $\sigma$ such that
-    $E(\sigma) = \sigma$.
-    The fixed point $\sigma$ is positive definite.
-    This is the fixed-point conclusion in the forward direction of
-    \cite[Corollary~6.3]{Wolf2012Quantum}, specialized to completely
-    positive trace-preserving maps.
+    \uses{def:positive_map, def:trace_preserving, def:irreducible_cp}
+    Let $T:\MN{D}\to\MN{D}$ be positive, trace-preserving, and irreducible,
+    with $D>0$. Then there is a unique density matrix $\sigma>0$ such that
+    $T(\sigma)=\sigma$. This is the fixed-point assertion used in
+    \cite[Corollary~6.3]{Wolf2012Quantum}, local source lines~723--741.
+    The quantum-channel statement is retained as a specialization.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    \uses{lem:cesaro_mean_density, lem:cesaro_subseq_fixed,
-        thm:psd_eigenvector_pd_irred, thm:psd_eigenvector_unique_irred}
-    Every Ces\`aro mean (\ref{eq:channel_cesaro_mean}) of a density matrix
-    stays inside the compact convex set of density matrices, so a subsequence
-    converges to a density matrix~$\sigma$.  The telescope identity
-    (\ref{eq:channel_cesaro_telescope}) gives
-    $E(\sigma)=\sigma$.  Theorem~\ref{thm:psd_eigenvector_pd_irred}
-    makes $\sigma$ positive definite.  If $\tau$ is another density-matrix
-    fixed point, Theorem~\ref{thm:psd_eigenvector_unique_irred} gives
-    $\tau=c\sigma$.  Taking traces yields $1=c$, hence $\tau=\sigma$.
+    \uses{thm:wolf_irreducible_positive_spectral_radius}
+    The positive-map Perron theorem gives a density matrix $\sigma>0$ and
+    $r\geq0$ such that $T(\sigma)=r\sigma$, with one-dimensional ordinary
+    eigenspace at~$r$. Trace preservation gives
+    $1=\tr(T(\sigma))=r\tr(\sigma)=r$, so $T(\sigma)=\sigma$.
+    Any other stationary density matrix lies in the same one-dimensional
+    eigenspace, hence equals $c\sigma$; taking traces gives $c=1$.
 \end{proof}
 
-\begin{theorem}[Ces\`aro convergence for irreducible channels]
+\begin{theorem}[Zero-indexed Ces\`aro convergence]
     \label{thm:channel_cesaro_irred}
-    \lean{IsChannel.cesaroMean_tendsto_of_irreducible}
+    \lean{IsPositiveMap.cesaroMean_tendsto_of_irreducible,
+        IsChannel.cesaroMean_tendsto_of_irreducible}
     \leanok
-    \uses{def:channel, def:irreducible_cp, def:cesaro_mean}
-    Let $E$ be an irreducible quantum channel on $\MN{D}$ with $D > 0$,
-    and let $\rho$ be any density matrix.
+    \uses{def:positive_map, def:trace_preserving, def:irreducible_cp,
+        def:cesaro_mean}
+    Let $T:\MN{D}\to\MN{D}$ be positive, trace-preserving, and irreducible,
+    with $D>0$, and let $\rho$ be a density matrix.
     Then the Ces\`aro means (\ref{eq:channel_cesaro_mean}) converge to the
-    unique positive definite density-matrix fixed point of~$E$.
-    This is the Ces\`aro-convergence conclusion in the forward direction of
-    \cite[Corollary~6.3]{Wolf2012Quantum}, specialized to quantum channels.
+    unique positive definite stationary density matrix of~$T$.
+    This is the zero-indexed companion of the one-indexed average in
+    \cite[Equation~(6.35)]{Wolf2012Quantum}. The quantum-channel statement is
+    retained as a specialization.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    \uses{thm:channel_density_fp_irred}
-    Every subsequential limit of the Ces\`aro means is again a density-matrix
-    fixed point.
-    By Theorem~\ref{thm:channel_density_fp_irred}, there is only one such
-    fixed point, so every convergent subsequence has the same limit.
-    Compactness then forces the whole sequence to converge to that limit.
+    \uses{thm:channel_density_fp_irred,
+        thm:positive_trace_preserving_mean_ergodic_projection}
+    Let $T_\infty$ be the mean-ergodic projection from
+    \cite[Equation~(6.14)]{Wolf2012Quantum}. The Ces\`aro means converge to
+    $T_\infty(\rho)$. The projection is positive and trace-preserving, and its
+    range is the stationary space, so $T_\infty(\rho)$ is a stationary density
+    matrix. Theorem~\ref{thm:channel_density_fp_irred} therefore identifies it
+    with~$\sigma$.
+\end{proof}
+
+\begin{definition}[One-indexed time average]
+    \label{def:time_average}
+    \lean{wolfTimeAverage}
+    \leanok
+    Let $T:\MN{D}\to\MN{D}$ be linear and let $\rho\in\MN{D}$. Following
+    \cite[Equation~(6.35)]{Wolf2012Quantum}, define
+    \begin{align}
+        A_N^T(\rho)
+        &:=\frac{1}{N}\sum_{t=1}^{N}T^t(\rho).
+        \label{eq:qpf_time_average}
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Time-average reindexing]
+    \label{thm:time_average_reindexing}
+    \lean{wolfTimeAverage_eq_oneIndexedSum,
+        wolfTimeAverage_eq_cesaroMean,
+        wolfTimeAverage_eq_birkhoffAverage}
+    \leanok
+    \uses{def:time_average, def:cesaro_mean}
+    For every $N$,
+    \begin{align}
+        A_N^T(\rho)
+        &=\frac{1}{N}\sum_{t=1}^{N}T^t(\rho)
+          =\frac{1}{N}\sum_{n=0}^{N-1}T^n(T(\rho)).
+        \label{eq:qpf_time_average_reindexing}
+    \end{align}
+    Thus Wolf's time average is exactly the Birkhoff average with initial
+    matrix $T(\rho)$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Reindex the interval $1\leq t\leq N$ by $t=n+1$ and use
+    $T^{n+1}(\rho)=T^n(T(\rho))$.
+\end{proof}
+
+\begin{theorem}[Time-average and ergodicity]
+    \label{thm:wolf_corollary_6_3}
+    \lean{wolf_corollary_6_3,
+        IsPositiveMap.wolfTimeAverage_tendsto_of_irreducible}
+    \leanok
+    \uses{def:positive_map, def:trace_preserving, def:irreducible_cp,
+        def:time_average}
+    Let $T:\MN{D}\to\MN{D}$ be positive and trace-preserving, with $D>0$.
+    The following are equivalent:
+    \begin{enumerate}
+        \item $T$ is irreducible;
+        \item there is a unique density matrix $\sigma>0$ such that, for every
+              density matrix~$\rho$,
+              \begin{align}
+                  \lim_{N\to\infty}\frac{1}{N}
+                  \sum_{t=1}^{N}T^t(\rho)
+                  &=\sigma.
+                  \tag{6.35}\label{eq:qpf_wolf_time_average}
+              \end{align}
+    \end{enumerate}
+    This is \cite[Corollary~6.3]{Wolf2012Quantum}, local source
+    lines~723--741.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:time_average_reindexing,
+        thm:channel_density_fp_irred,
+        thm:positive_trace_preserving_mean_ergodic_projection,
+        thm:wolf_theorem_6_4}
+    Let $T_\infty$ be the projection in
+    \cite[Equation~(6.14)]{Wolf2012Quantum}. By
+    Theorem~\ref{thm:time_average_reindexing} and
+    $T_\infty T=T_\infty$, the limit in
+    (\ref{eq:qpf_wolf_time_average}) is $T_\infty(\rho)$. If $T$ is
+    irreducible, Theorem~\ref{thm:channel_density_fp_irred} shows that the
+    stationary density space contains only~$\sigma$, so
+    $T_\infty(\rho)=\sigma$ for every density matrix~$\rho$.
+
+    Conversely, suppose (2) holds. Applying the mean-ergodic theorem to
+    $T(\sigma)$ gives
+    \begin{align}
+        \sigma=T_\infty(T(\sigma))=T_\infty(\sigma),
+        \notag
+    \end{align}
+    hence $T(\sigma)=\sigma$. If $X\geq0$ is a nonzero stationary matrix,
+    normalize it to $\rho_X=X/\tr(X)$. Its time averages are constantly
+    $\rho_X$, so (2) gives $\rho_X=\sigma$. Thus every positive semidefinite
+    stationary matrix is a scalar multiple of the positive definite
+    stationary matrix~$\sigma$. The invariant-corner implication in the proof
+    of Theorem~\ref{thm:wolf_theorem_6_4} now gives irreducibility.
 \end{proof}
 
 \section{Spectral characterization of irreducibility for positive maps}
