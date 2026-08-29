@@ -396,7 +396,7 @@ The four equivalent reducibility conditions of
 
 %% Source: \cite[Corollary~7.2]{Wolf2012Quantum}.
 
-\subsection{Sufficient conditions for non-reducibility}
+\subsection{Necessary conditions for relaxation}
 \label{sec:cor_7_2_sufficient_conditions}
 
 \begin{definition}[Lindblad span]\label{def:lindblad_span}
@@ -422,9 +422,47 @@ The four equivalent reducibility conditions of
 \begin{definition}[Kossakowski rank]\label{def:kossakowski_rank}
     \lean{kossakowskiRank}\leanok
     \uses{def:lindblad_form}
-    The minimal number of Lindblad operators across all GKSL representations
-    of $L$.
+    The infimum of the numbers of Lindblad operators across all
+    representations of $L$.  When such a representation exists, this is the
+    minimum; the definition is totalized to zero otherwise.
 \end{definition}
+
+\begin{lemma}[Compressing a Lindblad family]
+    \label{lem:lindblad_family_rank_compression}
+    \lean{LindbladForm.exists_equivalent_rank_le_finrank}
+    \leanok
+    \uses{def:lindblad_form}
+    If every Lindblad operator belongs to a linear subspace $V$, then the
+    same generator has a Lindblad representation with at most $\dim V$
+    operators.
+\end{lemma}
+
+\begin{proof}\leanok
+    Expand the Lindblad operators in a basis of $V$.  The Gram matrix of
+    their coefficient rows is positive semidefinite; its square root gives a
+    family indexed by a basis of $V$ with the same completely positive and
+    anticommutator sums.
+\end{proof}
+
+\begin{lemma}[Square-root Lindblad span]
+    \label{lem:kossakowski_sqrt_lindblad_span}
+    \lean{TracelessBasisKossakowskiForm.C_eq_conjTranspose_sqrt_mul_sqrt,
+        TracelessBasisKossakowskiForm.sqrtLindbladForm,
+        TracelessBasisKossakowskiForm.toLinearMap_eq_sqrtLindbladForm,
+        TracelessBasisKossakowskiForm.finrank_lindbladSpan_sqrtLindbladForm}
+    \leanok
+    \uses{def:kossakowski_form, def:lindblad_span}
+    The factorization $C=(\sqrt C)^\dagger\sqrt C$ gives Lindblad operators
+    $L_j=\sum_k(\sqrt C)_{jk}F_k$ for the same generator. Their linear span
+    has dimension $\rank(C)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The chosen traceless basis transports the row span of $\sqrt C$ to the
+    Lindblad span.  Since this transport is injective and
+    $\rank((\sqrt C)^\dagger\sqrt C)=\rank(\sqrt C)$, the two dimensions
+    agree.
+\end{proof}
 
 \begin{theorem}[Kossakowski rank equals matrix rank]
     \label{thm:kossakowski_rank_eq_matrix_rank}
@@ -435,6 +473,10 @@ The four equivalent reducibility conditions of
 \end{theorem}
 
 \begin{proof}\leanok
+    \uses{lem:lindblad_family_rank_compression,
+        lem:kossakowski_sqrt_lindblad_span,
+        thm:exists_traceless_kraus_shift,
+        thm:generatorDecomp_traceless_unique}
     Factor $C=(\sqrt C)^\dagger\sqrt C$.  The resulting Lindblad operators
     are the images of the rows of $\sqrt C$ under the chosen basis
     equivalence, so their span has dimension $\rank(C)$.  This gives the
@@ -538,6 +580,30 @@ The four equivalent reducibility conditions of
     would then produce a block-upper-triangular Lindblad form.
 \end{proof}
 
+\begin{theorem}[From non-reducibility to faithful relaxation]
+    \label{thm:not_reducible_implies_faithful_relaxation}
+    \lean{not_isReducibleQDS_iff_exists_irreducible_time,
+        relaxation_and_simple_kernel_of_not_isReducibleQDS}\leanok
+    \uses{def:is_reducible_qds_ch12,
+        def:qds_faithful_relaxation}
+    For a GKSL generator $L$, the semigroup is not reducible if and only if
+    $e^{t_0L}$ is irreducible for some $t_0>0$.  Consequently, a
+    non-reducible semigroup relaxes to a faithful stationary density matrix
+    $\rho_\infty$, and $\rho_\infty$ spans $\ker L$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:wolf_prop_7_5_full_equivalence,
+        thm:wolf_prop_7_6_full}
+    Choose $t_0>0$ for which the fixed-point space of $e^{t_0L}$ equals
+    $\ker L$.  If this channel had a nontrivial invariant compression, it
+    would have a density fixed point supported in that compression.  This
+    would be a rank-deficient element of $\ker L$, hence would make the
+    semigroup reducible by Proposition~7.6.  Thus $e^{t_0L}$ is irreducible,
+    and Proposition~7.5 supplies the faithful stationary density and global
+    convergence.
+\end{proof}
+
 \begin{theorem}[Full algebra generation implies non-reducibility]
     \label{thm:not_isReducible_of_generates_full_algebra}
     \lean{not_isReducible_of_generates_full_algebra}\leanok
@@ -592,4 +658,46 @@ The four equivalent reducibility conditions of
     The rank hypothesis rules out block-upper-triangular Lindblad data by
     Theorem~\ref{thm:large_kossakowski_rank_no_block_ut_ch12}. Then apply
     Theorem~\ref{thm:not_isReducibleQDS_of_no_blockUpperTriangular_ch12}.
+\end{proof}
+
+\begin{theorem}[Necessary conditions for relaxation]
+    \label{thm:wolf_corollary_7_2}
+    \lean{relaxation_and_simple_kernel_of_generates_full_algebra,
+        relaxation_and_simple_kernel_of_hermitian_span_trivial_commutant,
+        TracelessBasisKossakowskiForm.relaxation_and_simple_kernel_of_rank_gt,
+        wolf_corollary_7_2}\leanok
+    \uses{def:lindblad_span, def:is_lindblad_span_hermitian_closed,
+        def:has_lindblad_span_trivial_commutant, def:kossakowski_form,
+        def:qds_faithful_relaxation}
+    Let $T_t=e^{tL}:\MN{d}\to\MN{d}$ be a dynamical semigroup of
+    trace-preserving completely positive maps, with generator represented as
+    in Theorem~7.1.  There is a positive-definite stationary density matrix
+    $\rho_\infty$ such that
+    \begin{align}
+        \lim_{t\to\infty}T_t(\rho)&=\rho_\infty
+    \end{align}
+    for every density matrix $\rho$, if one of the following holds:
+    \begin{enumerate}
+        \item the algebra generated by the Lindblad operators $\{L_j\}$ and
+              $\kappa$ is all of $\MN{d}$;
+        \item the linear span of $\{L_j\}$ is Hermitian and has commutant
+              $\C\Id$;
+        \item the Kossakowski matrix in a fixed traceless basis satisfies
+              $\rank(C)>d^2-d$.
+    \end{enumerate}
+    Moreover, the same $\rho_\infty$ spans $\ker L$.
+    This is \cite[Corollary~7.2]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:not_reducible_implies_faithful_relaxation,
+        thm:not_isReducible_of_generates_full_algebra,
+        thm:not_isReducible_of_hermitian_span_trivial_commutant,
+        thm:not_isReducible_of_kossakowski_rank_ge,
+        thm:kossakowski_rank_eq_matrix_rank}
+    Each of the three hypotheses excludes a block-upper-triangular Lindblad
+    representation and hence excludes reducibility.  Apply
+    Theorem~\ref{thm:not_reducible_implies_faithful_relaxation}.  In the third
+    case, Theorem~\ref{thm:kossakowski_rank_eq_matrix_rank} identifies the
+    minimum Lindblad-family size with the literal matrix rank $\rank(C)$.
 \end{proof}

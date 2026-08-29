@@ -218,6 +218,18 @@ theorem TracelessBasisKossakowskiForm.sqrtLindbladForm_hasTracelessKraus
   change (CFC.sqrt K.C) j k • trace (K.F k : Matrix (Fin D) (Fin D) ℂ) = 0
   rw [hk, smul_zero]
 
+/-- Wolf's positive-semidefinite factorization of the Kossakowski matrix:
+`C = (sqrt C)† * sqrt C`. -/
+theorem TracelessBasisKossakowskiForm.C_eq_conjTranspose_sqrt_mul_sqrt
+    (K : TracelessBasisKossakowskiForm D) :
+    K.C = (CFC.sqrt K.C)ᴴ * CFC.sqrt K.C := by
+  have hC_nonneg : 0 ≤ K.C :=
+    Matrix.nonneg_iff_posSemidef.mpr K.C_posSemidef
+  have hsqrt_psd : (CFC.sqrt K.C).PosSemidef :=
+    Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg K.C)
+  rw [hsqrt_psd.isHermitian.eq]
+  simpa using (CFC.sqrt_mul_sqrt_self K.C hC_nonneg).symm
+
 /-! ### Auxiliary lemmas for Kossakowski ↔ Lindblad conversion -/
 
 /-- The dissipator equals ½ of the Kossakowski commutator sum
@@ -237,7 +249,7 @@ private lemma dissipator_eq_half_kossakowski
 
 /-- Bilinear sum identity: `Σⱼ (Σₖ B_{jk}•Fₖ) * M * (Σₖ B_{jk}•Fₖ)†`
 equals `Σₖₗ (B†B)_{lk} • (Fₖ * M * Fₗ†)`. Used in Kossakowski ↔ Lindblad. -/
-private lemma kraus_sum_eq_double_sum {r n : ℕ}
+theorem kraus_sum_eq_double_sum {r n : ℕ}
     (B : Matrix (Fin r) (Fin n) ℂ)
     (F : Fin n → Matrix (Fin D) (Fin D) ℂ)
     (M : Matrix (Fin D) (Fin D) ℂ) :
@@ -254,7 +266,7 @@ private lemma kraus_sum_eq_double_sum {r n : ℕ}
   simp [conjTranspose_apply, mul_apply, mul_comm]
 
 /-- Adjoint variant: `Σⱼ Lⱼ†Lⱼ = Σₗ Σₖ (B†B)_{lk} • (Fₗ†Fₖ)`. -/
-private lemma adj_kraus_sum_eq_double_sum {r n : ℕ}
+theorem adj_kraus_sum_eq_double_sum {r n : ℕ}
     (B : Matrix (Fin r) (Fin n) ℂ)
     (F : Fin n → Matrix (Fin D) (Fin D) ℂ) :
     ∑ j : Fin r, (∑ k, B j k • F k)ᴴ * (∑ k, B j k • F k) =
@@ -310,13 +322,7 @@ theorem TracelessBasisKossakowskiForm.toLinearMap_eq_sqrtLindbladForm
     K.toLinearMap = K.sqrtLindbladForm.toLinearMap := by
   let B : Matrix (Fin (D ^ 2 - 1)) (Fin (D ^ 2 - 1)) ℂ := CFC.sqrt K.C
   have hB : K.C = Bᴴ * B := by
-    have hC_nonneg : 0 ≤ K.C :=
-      Matrix.nonneg_iff_posSemidef.mpr K.C_posSemidef
-    have hsqrt_psd : (CFC.sqrt K.C).PosSemidef :=
-      Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg K.C)
-    change K.C = (CFC.sqrt K.C)ᴴ * CFC.sqrt K.C
-    rw [hsqrt_psd.isHermitian.eq]
-    simpa using (CFC.sqrt_mul_sqrt_self K.C hC_nonneg).symm
+    exact K.C_eq_conjTranspose_sqrt_mul_sqrt
   change K.toKossakowskiForm.toLinearMap =
     (LindbladForm.mk (D ^ 2 - 1) K.toKossakowskiForm.H
       (fun j ↦ ∑ k, B j k • K.toKossakowskiForm.F k)

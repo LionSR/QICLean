@@ -9,12 +9,14 @@ import QICLean.Channel.Semigroup.KossakowskiForm
 # Rank of the Kossakowski matrix
 
 This file relates the minimum number of Lindblad operators representing a
-generator to the rank of its Kossakowski matrix in Wolf's traceless basis.
+GKSL generator to the rank of its Kossakowski matrix in Wolf's traceless
+basis. The underlying rank definition is totalized for arbitrary linear maps.
 
 ## Main definitions
 
 * `lindbladSpan` is the linear span of a displayed Lindblad family.
-* `kossakowskiRank` is the minimum size of a Lindblad representation.
+* `kossakowskiRank` is the infimum of the sizes of Lindblad representations,
+  totalized to zero when there is no such representation.
 
 ## Main results
 
@@ -42,45 +44,14 @@ local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 def lindbladSpan (F : LindbladForm D) : Submodule ℂ Mat :=
   Submodule.span ℂ (Set.range F.L)
 
-/-- The minimum number of Lindblad operators among all representations of a
-fixed generator. -/
+/-- The infimum of the numbers of Lindblad operators in representations of a
+linear map. For a map admitting a Lindblad representation, this is the
+minimum such number. The definition is totalized to `0` when no representation
+exists. -/
 def kossakowskiRank (L : Mat →ₗ[ℂ] Mat) : ℕ :=
   sInf {n : ℕ | ∃ F : LindbladForm D, F.toLinearMap = L ∧ F.r = n}
 
 namespace LindbladForm
-
-/-- Bilinear sum identity for rectangular coefficient matrices:
-`Σⱼ (Σₖ Aⱼₖ•Fₖ) * M * (Σₖ Aⱼₖ•Fₖ)†`
-equals `Σₖₗ (A†A)ₗₖ • (Fₖ * M * Fₗ†)`. -/
-private lemma bilinear_sum_identity {r n : ℕ}
-    (A : Matrix (Fin r) (Fin n) ℂ)
-    (f : Fin n → Mat)
-    (M : Mat) :
-    ∑ j : Fin r, (∑ k, A j k • f k) * M * (∑ k, A j k • f k)ᴴ =
-    ∑ k : Fin n, ∑ l : Fin n, (Aᴴ * A) l k • (f k * M * (f l)ᴴ) := by
-  simp_rw [conjTranspose_sum, Matrix.conjTranspose_smul, Complex.star_def]
-  simp_rw [Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm,
-    smul_smul, mul_assoc]
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro k _
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro l _
-  rw [← Finset.sum_smul]; congr 1
-  simp [conjTranspose_apply, mul_apply, mul_comm]
-
-/-- Adjoint variant of `bilinear_sum_identity`. -/
-private lemma bilinear_adj_sum_identity {r n : ℕ}
-    (A : Matrix (Fin r) (Fin n) ℂ)
-    (f : Fin n → Mat) :
-    ∑ j : Fin r, (∑ k, A j k • f k)ᴴ * (∑ k, A j k • f k) =
-    ∑ l : Fin n, ∑ k : Fin n, (Aᴴ * A) l k • ((f l)ᴴ * f k) := by
-  simp_rw [conjTranspose_sum, Matrix.conjTranspose_smul, Complex.star_def]
-  simp_rw [Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro l _
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro k _
-  rw [← Finset.sum_smul]; congr 1
 
 /-- If every operator in a Lindblad family lies in a subspace `V`, the same
 generator admits a Lindblad representation with at most `finrank ℂ V`
@@ -130,18 +101,18 @@ theorem exists_equivalent_rank_le_finrank
       ∑ j : Fin G.r, G.L j * N * (G.L j)ᴴ =
       ∑ i : Fin m, L' i * N * (L' i)ᴴ := by
     intro N
-    rw [hsum_expand N, bilinear_sum_identity α f N]
+    rw [hsum_expand N, kraus_sum_eq_double_sum α f N]
     rw [show (∑ i : Fin m, L' i * N * (L' i)ᴴ) =
       ∑ k, ∑ l, (Bᴴ * B) l k • (f k * N * (f l)ᴴ) from
-        bilinear_sum_identity B f N]
+        kraus_sum_eq_double_sum B f N]
     rw [hC_factor]
   have hadj_eq :
       ∑ j : Fin G.r, (G.L j)ᴴ * G.L j =
       ∑ i : Fin m, (L' i)ᴴ * L' i := by
-    rw [hadj_expand, bilinear_adj_sum_identity α f]
+    rw [hadj_expand, adj_kraus_sum_eq_double_sum α f]
     rw [show (∑ i : Fin m, (L' i)ᴴ * L' i) =
       ∑ l, ∑ k, (Bᴴ * B) l k • ((f l)ᴴ * f k) from
-        bilinear_adj_sum_identity B f]
+        adj_kraus_sum_eq_double_sum B f]
     rw [hC_factor]
   ext1 ρ
   simp only [LindbladForm.toLinearMap, LinearMap.coe_mk, AddHom.coe_mk]
@@ -250,13 +221,7 @@ theorem TracelessBasisKossakowskiForm.finrank_lindbladSpan_sqrtLindbladForm
     rw [hspan, Submodule.finrank_map_subtype_eq,
       LinearEquiv.finrank_map_eq]
   have hC_factor : K.C = Bᴴ * B := by
-    have hC_nonneg : 0 ≤ K.C :=
-      Matrix.nonneg_iff_posSemidef.mpr K.C_posSemidef
-    have hB_psd : B.PosSemidef := by
-      exact Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg K.C)
-    change K.C = Bᴴ * B
-    rw [hB_psd.isHermitian.eq]
-    simpa [B] using (CFC.sqrt_mul_sqrt_self K.C hC_nonneg).symm
+    exact K.C_eq_conjTranspose_sqrt_mul_sqrt
   calc
     Module.finrank ℂ (lindbladSpan K.sqrtLindbladForm) =
         Module.finrank ℂ S := hfinrank

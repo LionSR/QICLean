@@ -2082,22 +2082,24 @@ for every submultiplicative norm from the Duhamel identity, while
 Here Wolf's “any norm” refers to the operator norm induced by the chosen norm on
 the state space, as defined immediately before Proposition 7.1.
 
-The complete named-environment audit therefore classifies exactly one Chapter
-7 source environment as partial rather than exact:
+The complete named-environment audit classifies no Chapter 7 source
+environment as partial.
 
-- Corollary 7.2, “Necessary conditions for relaxation”: the three hypotheses
-  yield non-reducibility, but the source's faithful stationary state and global
-  relaxation conclusion are not packaged (partial-packaging).
+Corollary 7.2 is an exact completion. The declaration
+`wolf_corollary_7_2` retains the three printed alternatives and returns one
+positive-definite stationary density matrix to which every density matrix
+converges. It also records the stronger conclusion, supplied by Proposition
+7.5, that the same density matrix spans the generator kernel. The three named
+wrappers expose each alternative separately without a redundant caller-supplied
+GKSL hypothesis.
 
-For Corollary 7.2(3), the source-facing rank statement itself is exact.
+For condition (3), the source-facing rank statement is literal.
 `TracelessBasisKossakowskiForm.kossakowskiRank_toLinearMap_eq_rank` proves that
 the minimum size of a Lindblad representation is the matrix rank
 `K.C.rank`, using the factorization `C = (sqrt C)ᴴ * sqrt C` and the
 traceless-representation freedom of Proposition 7.4. Consequently,
-`TracelessBasisKossakowskiForm.not_isReducible_of_rank_gt` uses Wolf's literal
-hypothesis `D ^ 2 - D < K.C.rank`. The remaining partial-packaging status is
-only the stronger faithful-stationary-state and global-relaxation conclusion
-of the containing corollary.
+`TracelessBasisKossakowskiForm.relaxation_and_simple_kernel_of_rank_gt` uses
+Wolf's literal hypothesis `D ^ 2 - D < K.C.rank`.
 
 Proposition 7.4 is an exact completion. The shift formula and traceless choice
 are `generator_shift_invariance` and `exists_traceless_kraus_shift`.
@@ -2134,10 +2136,10 @@ the same choice of positive time identifies the fixed space of the channel
 with the kernel of the generator. Cesàro averaging within the invariant proper
 compression then supplies the required rank-deficient density matrix.
 
-Propositions 7.1--7.6, Theorem 7.1, and Corollary 7.1 are exact completions. The
-`\leanok` markers in the semigroup Blueprint certify individual Lean
-declarations; they must not be read as exact-coverage markers for a larger
-containing Wolf environment.
+Propositions 7.1--7.6, Theorem 7.1, and Corollaries 7.1--7.2 are exact
+completions. The `\leanok` markers in the semigroup Blueprint certify
+individual Lean declarations; they must not be read as exact-coverage markers
+for a larger containing Wolf environment.
 
 ---
 
