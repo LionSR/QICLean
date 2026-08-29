@@ -102,23 +102,23 @@ theorem wolf_prop_7_6_three_implies_four
   hasBlockUpperTriangularLindblad_of_hasInvariantCompression hGKSL h
 
 /-- **Wolf Proposition 7.6 (full equivalence)**: For a GKSL generator `L`, the
-four reducibility conditions are equivalent. We state the result by taking
-condition (1) as the base condition. -/
+four reducibility conditions are equivalent. The conclusion records the three
+adjacent equivalences in the order printed by Wolf. -/
 theorem wolf_prop_7_6_full_equivalence
     {L : Mat →ₗ[ℂ] Mat}
     (hGKSL : IsGKSLGenerator L) :
-    HasRankDeficientFixedDensity L ↔
-      HasRankDeficientKernelElement L ∧
-        HasInvariantCompression L ∧
-        HasBlockUpperTriangularLindblad L := by
-  constructor
-  · intro h1
-    refine ⟨?_, ?_, ?_⟩
-    · exact hasRankDeficientKernelElement_of_hasRankDeficientFixedDensity h1
-    · exact wolf_prop_7_6_one_implies_three hGKSL h1
-    · exact hasBlockUpperTriangularLindblad_of_hasRankDeficientKernelElement hGKSL
-        (hasRankDeficientKernelElement_of_hasRankDeficientFixedDensity h1)
-  · intro h1234
-    exact hasRankDeficientFixedDensity_of_hasRankDeficientKernelElement h1234.1
+    (HasRankDeficientFixedDensity L ↔ HasRankDeficientKernelElement L) ∧
+      (HasRankDeficientKernelElement L ↔ HasInvariantCompression L) ∧
+      (HasInvariantCompression L ↔ HasBlockUpperTriangularLindblad L) := by
+  refine ⟨wolf_prop_7_6_one_iff_two L, ?_, ?_⟩
+  · constructor
+    · intro h2
+      exact wolf_prop_7_6_four_implies_three
+        (hasBlockUpperTriangularLindblad_of_hasRankDeficientKernelElement hGKSL h2)
+    · intro h3
+      exact hasRankDeficientKernelElement_of_hasBlockUpperTriangularLindblad hGKSL
+        (wolf_prop_7_6_three_implies_four hGKSL h3)
+  · exact ⟨wolf_prop_7_6_three_implies_four hGKSL,
+      wolf_prop_7_6_four_implies_three⟩
 
 end -- noncomputable section
