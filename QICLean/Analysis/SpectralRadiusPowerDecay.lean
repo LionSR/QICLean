@@ -20,6 +20,8 @@ strictly below one converge to zero.  This follows from Gelfand's formula
 ## Main results
 
 - `pow_tendsto_zero_of_spectralRadius_lt_one`
+- `geometric_bound_of_spectralRadius_lt`
+- `geometric_apply_bound_of_spectralRadius_lt`
 - `geometric_bound_of_spectralRadius_lt_one`
 - `geometric_apply_bound_of_spectralRadius_lt_one`
 - `spectralRadius_lt_one_of_eigenvalues_lt_one`
@@ -48,6 +50,73 @@ theorem pow_tendsto_zero_of_spectralRadius_lt_one
     rw [← coe_nnnorm, ← NNReal.coe_pow]; exact_mod_cast hn.le
   · exact tendsto_pow_atTop_nhds_zero_of_lt_one r.coe_nonneg (by exact_mod_cast hr_lt_one)
 
+/-- If the spectral radius of an element of a complex Banach algebra is strictly
+smaller than a prescribed rate $\lambda$, then its powers satisfy
+$\lVert a^n\rVert \le C\lambda^n$ for every $n$. The constant $C>0$ may depend
+on the prescribed rate $\lambda$. -/
+theorem geometric_bound_of_spectralRadius_lt
+    {A : Type*} [NormedRing A] [CompleteSpace A] [NormedAlgebra ℂ A]
+    (a : A) (rate : ℝ≥0) (ha : spectralRadius ℂ a < (rate : ℝ≥0∞)) :
+    ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, ‖a ^ n‖ ≤ C * (rate : ℝ) ^ n := by
+  have hrate_pos : 0 < (rate : ℝ) := by
+    exact_mod_cast (lt_of_le_of_lt
+      (show (0 : ℝ≥0∞) ≤ spectralRadius ℂ a from bot_le) ha)
+  have hev : ∀ᶠ n in Filter.atTop, ‖a ^ n‖₊ < rate ^ n := by
+    have gelfand := spectrum.pow_nnnorm_pow_one_div_tendsto_nhds_spectralRadius a
+    filter_upwards [gelfand.eventually (eventually_lt_nhds ha),
+      Filter.eventually_gt_atTop 0] with n hn hn_pos
+    rw [one_div, ENNReal.rpow_inv_lt_iff (Nat.cast_pos.mpr hn_pos)] at hn
+    rw [ENNReal.rpow_natCast] at hn
+    exact_mod_cast hn
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hev
+  let S : ℝ := Finset.sum (Finset.range N) fun k => ‖a ^ k‖ / (rate : ℝ) ^ k
+  let C : ℝ := S + 1
+  refine ⟨C, by positivity, ?_⟩
+  intro n
+  by_cases hn : N ≤ n
+  · have hnorm : ‖a ^ n‖ ≤ (rate : ℝ) ^ n := by
+      exact_mod_cast (hN n hn).le
+    have hC_ge_one : 1 ≤ C := by
+      have hS_nonneg : 0 ≤ S := by
+        dsimp [S]
+        positivity
+      dsimp [C]
+      linarith
+    calc
+      ‖a ^ n‖ ≤ (rate : ℝ) ^ n := hnorm
+      _ = 1 * (rate : ℝ) ^ n := by ring
+      _ ≤ C * (rate : ℝ) ^ n := by
+        gcongr
+  · have hn_lt : n < N := Nat.lt_of_not_ge hn
+    have hterm : ‖a ^ n‖ / (rate : ℝ) ^ n ≤ S := by
+      dsimp [S]
+      exact Finset.single_le_sum
+        (f := fun k => ‖a ^ k‖ / (rate : ℝ) ^ k)
+        (by intro k hk; positivity)
+        (Finset.mem_range.mpr hn_lt)
+    have hterm' : ‖a ^ n‖ ≤ S * (rate : ℝ) ^ n := by
+      exact (div_le_iff₀ (pow_pos hrate_pos n)).1 hterm
+    have hS_le_C : S ≤ C := by
+      dsimp [C]
+      linarith
+    calc
+      ‖a ^ n‖ ≤ S * (rate : ℝ) ^ n := hterm'
+      _ ≤ C * (rate : ℝ) ^ n := by
+        gcongr
+
+/-- If the spectral radius of a continuous linear endomorphism is strictly
+smaller than a prescribed rate $\lambda$, then
+$\lVert T^n x\rVert \le C\lambda^n\lVert x\rVert$ for every $n$ and $x$.
+The constant $C>0$ may depend on the prescribed rate $\lambda$. -/
+theorem geometric_apply_bound_of_spectralRadius_lt
+    {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
+    (T : V →L[ℂ] V) (rate : ℝ≥0)
+    (hT : spectralRadius ℂ T < (rate : ℝ≥0∞)) :
+    ∃ C : ℝ, 0 < C ∧
+      ∀ n : ℕ, ∀ x : V, ‖(T ^ n) x‖ ≤ C * (rate : ℝ) ^ n * ‖x‖ := by
+  rcases geometric_bound_of_spectralRadius_lt T rate hT with ⟨C, hC, hpow⟩
+  exact ⟨C, hC, fun n x => (T ^ n).le_of_opNorm_le (hpow n) x⟩
+
 /-- Gelfand's formula: if `spectralRadius(T) < 1`, then `‖T ^ n‖ ≤ C · r ^ n`
 for some `C > 0` and `0 < r < 1`, uniformly in `n`. -/
 theorem geometric_bound_of_spectralRadius_lt_one
@@ -57,54 +126,11 @@ theorem geometric_bound_of_spectralRadius_lt_one
     ∃ C r : ℝ, 0 < C ∧ 0 < r ∧ r < 1 ∧
       ∀ n : ℕ, ‖T ^ n‖ ≤ C * r ^ n := by
   obtain ⟨r, hr_above, hr_below⟩ := ENNReal.lt_iff_exists_nnreal_btwn.mp hT
-  have hr_lt_one : (r : ℝ) < 1 := by
-    exact_mod_cast hr_below
   have hr_pos : 0 < (r : ℝ) := by
     exact_mod_cast (lt_of_le_of_lt
       (show (0 : ℝ≥0∞) ≤ spectralRadius ℂ T from bot_le) hr_above)
-  have hev :
-      ∀ᶠ n in Filter.atTop, ‖T ^ n‖₊ < r ^ n := by
-    have gelfand := spectrum.pow_nnnorm_pow_one_div_tendsto_nhds_spectralRadius T
-    filter_upwards [gelfand.eventually (eventually_lt_nhds hr_above),
-      Filter.eventually_gt_atTop 0] with n hn hn_pos
-    rw [one_div, ENNReal.rpow_inv_lt_iff (Nat.cast_pos.mpr hn_pos)] at hn
-    rw [ENNReal.rpow_natCast] at hn
-    exact_mod_cast hn
-  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hev
-  let S : ℝ := Finset.sum (Finset.range N) fun k => ‖T ^ k‖ / (r : ℝ) ^ k
-  let C : ℝ := S + 1
-  refine ⟨C, r, by positivity, hr_pos, hr_lt_one, ?_⟩
-  intro n
-  by_cases hn : N ≤ n
-  · have hnorm : ‖T ^ n‖ ≤ (r : ℝ) ^ n := by
-      exact_mod_cast (hN n hn).le
-    have hC_ge_one : 1 ≤ C := by
-      have hS_nonneg : 0 ≤ S := by
-        dsimp [S]
-        positivity
-      dsimp [C]
-      linarith
-    calc
-      ‖T ^ n‖ ≤ (r : ℝ) ^ n := hnorm
-      _ = 1 * (r : ℝ) ^ n := by ring
-      _ ≤ C * (r : ℝ) ^ n := by
-        gcongr
-  · have hn_lt : n < N := Nat.lt_of_not_ge hn
-    have hterm : ‖T ^ n‖ / (r : ℝ) ^ n ≤ S := by
-      dsimp [S]
-      exact Finset.single_le_sum
-        (f := fun k => ‖T ^ k‖ / (r : ℝ) ^ k)
-        (by intro k hk; positivity)
-        (Finset.mem_range.mpr hn_lt)
-    have hterm' : ‖T ^ n‖ ≤ S * (r : ℝ) ^ n := by
-      exact (div_le_iff₀ (pow_pos hr_pos n)).1 hterm
-    have hS_le_C : S ≤ C := by
-      dsimp [C]
-      linarith
-    calc
-      ‖T ^ n‖ ≤ S * (r : ℝ) ^ n := hterm'
-      _ ≤ C * (r : ℝ) ^ n := by
-        gcongr
+  obtain ⟨C, hC, hpow⟩ := geometric_bound_of_spectralRadius_lt T r hr_above
+  exact ⟨C, r, hC, hr_pos, by exact_mod_cast hr_below, hpow⟩
 
 /-- If `spectralRadius(T) < 1`, then the powers of `T` satisfy the pointwise bound
 `‖T ^ n x‖ ≤ C · r ^ n · ‖x‖` for some `C > 0` and `0 < r < 1`. -/
