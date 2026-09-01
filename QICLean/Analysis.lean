@@ -98,6 +98,7 @@ import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
+import QICLean.Analysis.WeightedSupertrace
 import QICLean.Analysis.WeylMonotonicity
 import QICLean.Analysis.YamagamiBoundary
 import QICLean.Analysis.YamagamiCyclicMatrix
