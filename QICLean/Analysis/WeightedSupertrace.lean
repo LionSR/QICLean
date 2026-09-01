@@ -154,8 +154,9 @@ private noncomputable def weightedEquivEuclidean
       nlinarith [norm_nonneg (frobeniusLinearEquiv n (X * s)), norm_nonneg X]
   }
 
+open scoped Classical in
 private theorem entryL2Norm_mul_sqrt_eq_weighted_norm
-    {n : Type*} [Fintype n] [DecidableEq n]
+    {n : Type*} [Fintype n]
     (ρ : Matrix n n ℂ) (hρ : ρ.PosDef) (X : Matrix n n ℂ) :
     letI : NormedAddCommGroup (Matrix n n ℂ) :=
       Matrix.toMatrixNormedAddCommGroup ρ hρ
@@ -166,6 +167,7 @@ private theorem entryL2Norm_mul_sqrt_eq_weighted_norm
     letI : Norm (Matrix n n ℂ) :=
       (Matrix.toMatrixNormedAddCommGroup ρ hρ).toNorm
     entryL2Norm (X * CFC.sqrt ρ) = ‖X‖ := by
+  classical
   let : NormedAddCommGroup (Matrix n n ℂ) :=
     Matrix.toMatrixNormedAddCommGroup ρ hρ
   let : SeminormedAddCommGroup (Matrix n n ℂ) :=
@@ -257,15 +259,17 @@ private theorem twoSided_apply_single_factorization
         twoSidedTraceLeftFactor P E a d := by
   classical
   ext i j
-  simp only [Matrix.sum_apply, Matrix.smul_apply, twoSidedTraceLeftFactor,
-    smul_eq_mul]
-  simp [Matrix.mul_apply, Matrix.single_apply, Matrix.conjTranspose_apply,
-    ite_and, Finset.mul_sum]
-  simp_rw [Finset.sum_mul]
-  rw [Finset.sum_comm]
-  congr with a
-  congr with d
-  ring
+  have hcoord :
+      (∑ d, (∑ a, P i a * star (A b a)) * (P c d * E d j)) =
+        ∑ a, ∑ d, (star (A b a) * P c d) * (P i a * E d j) := by
+    simp_rw [Finset.sum_mul]
+    rw [Finset.sum_comm]
+    congr with a
+    congr with d
+    ring
+  simpa [Matrix.mul_apply, Matrix.single_apply, Matrix.conjTranspose_apply,
+    Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, ite_and, Finset.mul_sum,
+    twoSidedTraceLeftFactor] using hcoord
 
 private noncomputable def columnL2Norm
     {m n : Type*} [Fintype m] (A : Matrix m n ℂ) (j : n) : ℝ :=
