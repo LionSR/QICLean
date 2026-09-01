@@ -5,16 +5,17 @@ Authors: TNLean contributors
 -/
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Matrix.Basis
-import Mathlib.LinearAlgebra.Matrix.Trace
-import Mathlib.LinearAlgebra.Matrix.StdBasis
-import Mathlib.LinearAlgebra.Trace
 import Mathlib.LinearAlgebra.BilinearForm.Properties
-import Mathlib.LinearAlgebra.Matrix.Vec
 import Mathlib.LinearAlgebra.Dimension.Finite
+import Mathlib.LinearAlgebra.Eigenspace.Charpoly
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+import Mathlib.LinearAlgebra.Matrix.StdBasis
+import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Matrix.Vec
 import Mathlib.LinearAlgebra.Pi
 import Mathlib.LinearAlgebra.Span.Basic
+import Mathlib.LinearAlgebra.Trace
 
 /-!
 # Trace pairing tools for finite matrix algebras
@@ -44,6 +45,10 @@ linear map between matrix algebras.
 * `Matrix.trace_traceAdjointMap_mul` — the adjoint satisfies `tr(E*(ρ) X) = tr(ρ E(X))`
 * `Matrix.traceAdjointMap_apply_apply` — the entries of the adjoint against matrix units
 * `Matrix.traceAdjointMap_add` — the trace-pairing adjoint preserves sums
+* `Matrix.traceAdjointMap_sub` — the trace-pairing adjoint preserves differences
+* `Matrix.traceAdjointMap_toMatrix_transpose` — matrix-unit coordinates give the transpose
+* `Matrix.traceAdjointMap_charpoly` — the trace adjoint has the same characteristic polynomial
+* `Matrix.traceAdjointMap_hasEigenvalue_iff` — the trace adjoint has the same eigenvalues
 * `Matrix.traceAdjointMap_traceAdjointMap` — the trace-pairing adjoint is involutive
 * `Matrix.traceAdjointMap_comp` — the trace-pairing adjoint reverses composition
 -/
@@ -324,6 +329,64 @@ theorem traceAdjointMap_add {n m : Type*} [Fintype m]
   classical
   ext ρ i j
   simp [traceAdjointMap, Matrix.mul_add]
+
+/-- The trace-pairing adjoint preserves subtraction of linear maps. -/
+@[simp]
+theorem traceAdjointMap_sub {n m : Type*} [Fintype m]
+    (E F : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ) :
+    traceAdjointMap (E - F) = traceAdjointMap E - traceAdjointMap F := by
+  classical
+  ext ρ i j
+  simp [traceAdjointMap, Matrix.mul_sub]
+
+/-- In transposed matrix-unit coordinates, the matrix of the trace-pairing adjoint is the
+transpose of the matrix of the original endomorphism. -/
+theorem traceAdjointMap_toMatrix_transpose {n : Type*} [Fintype n] [DecidableEq n]
+    (E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) :
+    let b := Matrix.stdBasis ℂ n n
+    let bT := b.reindex (Equiv.prodComm n n)
+    LinearMap.toMatrix bT bT (traceAdjointMap E) =
+      (LinearMap.toMatrix b b E)ᵀ := by
+  let b := Matrix.stdBasis ℂ n n
+  let bT := b.reindex (Equiv.prodComm n n)
+  have hrepr (X : Matrix n n ℂ) (i j : n) : (b.repr X) (i, j) = X i j := by
+    simp [b, Matrix.stdBasis, Module.Basis.map_repr, Pi.basis_repr, Pi.basisFun_repr]
+  have hreprT (X : Matrix n n ℂ) (i j : n) : (bT.repr X) (i, j) = X j i := by
+    rw [Module.Basis.repr_reindex_apply]
+    exact hrepr X j i
+  have hb (i j : n) : b (i, j) = Matrix.single i j (1 : ℂ) := by
+    simpa [b] using Matrix.stdBasis_eq_single (R := ℂ) (m := n) (n := n) i j
+  have hbT (i j : n) : bT (i, j) = Matrix.single j i (1 : ℂ) := by
+    rw [Module.Basis.reindex_apply]
+    exact hb j i
+  change LinearMap.toMatrix bT bT (traceAdjointMap E) =
+    (LinearMap.toMatrix b b E)ᵀ
+  ext ⟨i, j⟩ ⟨k, l⟩
+  rw [Matrix.transpose_apply]
+  simp only [LinearMap.toMatrix_apply]
+  rw [hreprT, hrepr, hbT, hb, traceAdjointMap_apply_apply, Matrix.trace_single_mul]
+  exact one_smul ℂ _
+
+/-- The bilinear trace adjoint of a matrix endomorphism has the same characteristic
+polynomial as the original endomorphism. -/
+theorem traceAdjointMap_charpoly {n : Type*} [Fintype n]
+    (E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) :
+    (traceAdjointMap E).charpoly = E.charpoly := by
+  classical
+  let b := Matrix.stdBasis ℂ n n
+  let bT := b.reindex (Equiv.prodComm n n)
+  rw [← LinearMap.charpoly_toMatrix (traceAdjointMap E) bT,
+    ← LinearMap.charpoly_toMatrix E b, traceAdjointMap_toMatrix_transpose,
+    Matrix.charpoly_transpose]
+
+/-- The bilinear trace adjoint has exactly the eigenvalues of the original matrix
+endomorphism. In particular, the eigenvalues are not complex-conjugated. -/
+theorem traceAdjointMap_hasEigenvalue_iff {n : Type*} [Fintype n]
+    (E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) (μ : ℂ) :
+    Module.End.HasEigenvalue (traceAdjointMap E) μ ↔
+      Module.End.HasEigenvalue E μ := by
+  rw [Module.End.hasEigenvalue_iff_isRoot_charpoly,
+    Module.End.hasEigenvalue_iff_isRoot_charpoly, traceAdjointMap_charpoly]
 
 /-- The trace-pairing adjoint is involutive.
 
