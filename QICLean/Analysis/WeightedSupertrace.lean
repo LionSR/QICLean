@@ -7,8 +7,6 @@ import QICLean.Algebra.FrobeniusHilbert
 import QICLean.Algebra.MatrixTracePairing
 import QICLean.Analysis.MatrixSqrt
 
-import Mathlib.Analysis.CStarAlgebra.Matrix
-
 /-!
 # Weighted superoperator trace bound
 
@@ -19,7 +17,7 @@ The estimate is dimension-free apart from the exact weight factor
 
 ## Main result
 
-* `Matrix.norm_trace_comp_twoSidedMul_le_weighted` bounds the operator trace of
+* `Matrix.norm_trace_comp_two_sided_mul_le_weighted` bounds the operator trace of
   `F.comp (X ↦ Bᴴ * X * C)` by the weighted operator norm of `F` and the
   weighted norms of `B` and `C`.
 -/
@@ -495,7 +493,7 @@ end
 `X ↦ Bᴴ * X * C` is bounded by its operator norm for the `ρ`-weighted
 Hilbert--Schmidt structure.  The weight loss is exactly
 `(Matrix.trace ρ⁻¹).re`; in particular, no dimension-dependent factor occurs. -/
-theorem norm_trace_comp_twoSidedMul_le_weighted
+theorem norm_trace_comp_two_sided_mul_le_weighted
     {D : ℕ} (ρ : Matrix (Fin D) (Fin D) ℂ) (hρ : ρ.PosDef)
     (F : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
     (B C : Matrix (Fin D) (Fin D) ℂ) :
