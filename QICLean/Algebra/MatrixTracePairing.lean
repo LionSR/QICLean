@@ -5,17 +5,17 @@ Authors: TNLean contributors
 -/
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Matrix.Basis
-import Mathlib.LinearAlgebra.Matrix.Trace
-import Mathlib.LinearAlgebra.Matrix.StdBasis
-import Mathlib.LinearAlgebra.Trace
 import Mathlib.LinearAlgebra.BilinearForm.Properties
-import Mathlib.LinearAlgebra.Matrix.Vec
 import Mathlib.LinearAlgebra.Dimension.Finite
 import Mathlib.LinearAlgebra.Eigenspace.Charpoly
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+import Mathlib.LinearAlgebra.Matrix.StdBasis
+import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Matrix.Vec
 import Mathlib.LinearAlgebra.Pi
 import Mathlib.LinearAlgebra.Span.Basic
+import Mathlib.LinearAlgebra.Trace
 
 /-!
 # Trace pairing tools for finite matrix algebras
@@ -365,7 +365,7 @@ theorem traceAdjointMap_toMatrix_transpose {n : Type*} [Fintype n] [DecidableEq 
   rw [Matrix.transpose_apply]
   simp only [LinearMap.toMatrix_apply]
   rw [hreprT, hrepr, hbT, hb, traceAdjointMap_apply_apply, Matrix.trace_single_mul]
-  simp
+  exact one_smul ℂ _
 
 /-- The bilinear trace adjoint of a matrix endomorphism has the same characteristic
 polynomial as the original endomorphism. -/
