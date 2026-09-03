@@ -34,6 +34,7 @@ import QICLean.Algebra.HermitianUnitaryConjugacy
 import QICLean.Algebra.KramersDegeneracy
 import QICLean.Algebra.KroneckerFactorPositivity
 import QICLean.Algebra.MatrixAlgEquiv
+import QICLean.Algebra.MatrixAlgHomCentralizer
 import QICLean.Algebra.MatrixAux
 import QICLean.Algebra.MatrixCongruence
 import QICLean.Algebra.MatrixCyclicTracePower
