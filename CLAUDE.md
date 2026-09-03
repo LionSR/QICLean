@@ -360,3 +360,5 @@ for consumers.
 | Name | Kind | Use when | Defined in |
 |---|---|---|---|
 | `Kraus.map_compressed_fixedPoint` | helper theorem | Preserving a supported fixed point under finite-Kraus compression along an isometry | `QICLean/Channel/KrausCornerCompression.lean` |
+| `Matrix.isSimpleModule_pi` | helper theorem | Using simplicity of the defining module of a full matrix algebra over a field | `QICLean/Algebra/MatrixAlgHomCentralizer.lean` |
+| `IsSimpleRing.nonempty_linearEquiv_of_isSimpleModule` | helper theorem | Identifying two simple modules over a simple Artinian ring, instead of rebuilding the ideal/isotypic comparison | `QICLean/Algebra/MatrixAlgHomCentralizer.lean` |
