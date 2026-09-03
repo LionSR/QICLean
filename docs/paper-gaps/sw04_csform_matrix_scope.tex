@@ -1,0 +1,169 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{The Structure Theorem for Finite-Dimensional $C^\ast$-Algebras:
+    Matrix-Realized Single-Block Scope}
+\author{}
+\date{2026-09-03}
+
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{resolved}
+
+\section{The source statement}
+
+Schumacher and Werner state the structure theorem for finite-dimensional
+$C^\ast$-algebras as their Proposition~``Csform''
+\cite[lines~2082--2098]{SchumacherWerner2004}: every finite-dimensional
+$C^\ast$-algebra $\mathcal A$ is determined up to isomorphism by a finite
+sequence $n_1\geq n_2\geq\cdots\geq 1$ with
+\begin{align}
+    \mathcal A
+        &\cong\bigoplus_\mu\MN{n_\mu}.
+    \label{eq:sw04_csform_matrix_scope_source_decomposition}
+\end{align}
+The proof sketch given there cuts $\mathcal A$ by the minimal projections
+$z_\mu$ of its centre,
+\begin{align}
+    \mathcal A
+        &=\bigoplus_\mu z_\mu\mathcal A,
+    \label{eq:sw04_csform_matrix_scope_central_cut}
+\end{align}
+and asserts that each summand $z_\mu\mathcal A$, whose centre consists of the
+multiples of its unit, is isomorphic to a full matrix algebra $\MN{n_\mu}$.
+
+Gross, Nesme, Vogts and Werner use exactly this building-block assertion, not
+(\ref{eq:sw04_csform_matrix_scope_source_decomposition}) itself: a support
+algebra $\mathcal R_x$ with trivial centre ``must be isomorphic to
+$M_{r(x)}$''\cite[lines~1278--1282]{GrossNesmeVogtsWerner2012}.
+
+\section{The point at issue}
+
+Two features of
+(\ref{eq:sw04_csform_matrix_scope_source_decomposition}) are outside the
+formalized statement.
+
+First, $\mathcal A$ is an \emph{abstract} finite-dimensional $C^\ast$-algebra.
+The formalized statement quantifies over a $*$-subalgebra
+\begin{align}
+    S
+        &\subseteq\MN{D},
+    \label{eq:sw04_csform_matrix_scope_concrete_subalgebra}
+\end{align}
+that is, over an algebra already presented with a faithful finite-dimensional
+$*$-representation. Every finite-dimensional $C^\ast$-algebra admits such a
+presentation, but the passage from the abstract algebra to
+(\ref{eq:sw04_csform_matrix_scope_concrete_subalgebra}) is the
+Gelfand--Naimark theorem, which is not formalized here.
+
+Second, the formalized statement is the single-block case. The centre of $S$ is
+assumed to be the scalar image,
+\begin{align}
+    Z(S)
+        &=\C\cdot\one,
+    \label{eq:sw04_csform_matrix_scope_scalar_centre}
+\end{align}
+which is the hypothesis satisfied by one summand $z_\mu\mathcal A$ of
+(\ref{eq:sw04_csform_matrix_scope_central_cut}). Under
+(\ref{eq:sw04_csform_matrix_scope_scalar_centre}) the conclusion is a single
+full matrix algebra,
+\begin{align}
+    S
+        &\cong\MN{r},
+        \qquad r\geq 1,
+    \label{eq:sw04_csform_matrix_scope_single_block}
+\end{align}
+as a $*$-isomorphism.\footnote{Formal declaration:
+\leanid{StarSubalgebra.exists_starAlgEquiv_matrix_of_isCentral} in
+\doclink{QICLean/Algebra/StarSubalgebraFactor}.}
+The decomposition
+(\ref{eq:sw04_csform_matrix_scope_central_cut}) into minimal central
+projections, and with it the passage from
+(\ref{eq:sw04_csform_matrix_scope_single_block}) to
+(\ref{eq:sw04_csform_matrix_scope_source_decomposition}), is not formalized.
+
+\section{The formalized route}
+
+The formal proof does not follow the minimal-projection sketch. It uses the
+Wedderburn--Artin decomposition of $S$ as an abstract semisimple ring over the
+algebraically closed field $\C$,
+\begin{align}
+    S
+        &\cong\prod_{k=1}^{m}\MN{d_k},
+        \qquad d_k\geq 1,
+    \label{eq:sw04_csform_matrix_scope_wedderburn_product}
+\end{align}
+which is available because a $*$-subalgebra of $\MN{D}$ has vanishing Jacobson
+radical.\footnote{Formal declarations: \leanid{StarSubalgebra.isSemisimpleRing}
+and \leanid{StarSubalgebra.exists\_algEquiv\_pi\_matrix} in
+\doclink{QICLean/Algebra/StarSubalgebraSemisimple}.}
+Under (\ref{eq:sw04_csform_matrix_scope_scalar_centre}) the coordinate
+idempotent of the $k$-th factor of
+(\ref{eq:sw04_csform_matrix_scope_wedderburn_product}) is central, hence a
+scalar multiple of the unit; a scalar that is the unit in one coordinate and
+zero in another forces $m\leq 1$, and $m=0$ is excluded because $S$ contains
+the unit of $\MN{D}$. So $m=1$ and $S$ is a simple ring, and the Wedderburn
+theorem for simple algebras over $\C$ gives an algebra isomorphism
+\begin{align}
+    \varphi
+        &:S\longrightarrow\MN{r}.
+    \label{eq:sw04_csform_matrix_scope_algebra_isomorphism}
+\end{align}
+
+The isomorphism (\ref{eq:sw04_csform_matrix_scope_algebra_isomorphism}) is
+supplied by ring theory alone and carries no compatibility with the adjoint.
+The formal development therefore adds the step that the source leaves inside
+its phrase ``are then seen to be isomorphic'': transporting the adjoint of $S$
+through $\varphi$ gives an algebra automorphism of $\MN{r}$, which by
+Skolem--Noether is conjugation by an invertible $H$, so that
+\begin{align}
+    \varphi(y^\dagger)
+        &=H^{-1}\varphi(y)^\dagger H,
+        \qquad y\in S.
+    \label{eq:sw04_csform_matrix_scope_transported_adjoint}
+\end{align}
+Applying (\ref{eq:sw04_csform_matrix_scope_transported_adjoint}) twice shows
+that $H^\dagger$ is a scalar multiple of $H$. Evaluating the trace of
+$\varphi^{-1}$ on the rank-one matrices $Y=vw^\dagger$, for which
+\begin{align}
+    Y^\dagger HY
+        &=(v^\dagger Hv)\,ww^\dagger,
+    \label{eq:sw04_csform_matrix_scope_rank_one_sandwich}
+\end{align}
+shows that $v^\dagger Hv$ never vanishes for $v\neq 0$ and that, after $H$ is
+rescaled by one scalar, the Hermitian form has constant sign. The rescaled
+matrix is positive definite; writing it as $R^\dagger R$ with $R$ invertible,
+the corrected map
+\begin{align}
+    y
+        &\longmapsto R\,\varphi(y)\,R^{-1}
+    \label{eq:sw04_csform_matrix_scope_corrected_isomorphism}
+\end{align}
+preserves adjoints and realizes
+(\ref{eq:sw04_csform_matrix_scope_single_block}).\footnote{Formal declaration:
+\leanid{StarSubalgebra.exists\_starAlgEquiv\_of\_algEquiv\_matrix}.}
+
+\section{Verdict}
+
+\emph{Closed for the matrix-realized single-block case.} The formal statement
+proves (\ref{eq:sw04_csform_matrix_scope_single_block}) for a $*$-subalgebra of
+a nonzero full matrix algebra whose centre is scalar, which is the assertion
+used in \cite[lines~1278--1282]{GrossNesmeVogtsWerner2012}. It must not be
+cited as (\ref{eq:sw04_csform_matrix_scope_source_decomposition}): neither the
+abstract $C^\ast$-algebra generality nor the decomposition
+(\ref{eq:sw04_csform_matrix_scope_central_cut}) into minimal central
+projections is formalized. Removing the restriction requires the minimal
+central projections of $S$ and a compatible reassembly of the summands; the
+building block proved here is the step that reassembly would repeat for each
+$\mu$.\footnote{Consumer: \ghissue{463}.}
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
