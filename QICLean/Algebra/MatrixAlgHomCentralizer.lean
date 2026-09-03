@@ -73,7 +73,7 @@ action on `n → K` being `K`-linear only over a commutative `K`.
 
 Schumacher--Werner call this the defining representation of `M_d`
 (`LionSR/TNLean/Papers/quant-ph_0405174/qca.tex`, lines 2112--2114). -/
-theorem Matrix.isSimpleModule_pi {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n]
+lemma Matrix.isSimpleModule_pi {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n]
     {K : Type*} [Field K] : IsSimpleModule (Matrix n n K) (n → K) := by
   have : RingHomSurjective (Matrix.toLinAlgEquiv' (R := K) (n := n)).toRingHom :=
     ⟨Matrix.toLinAlgEquiv'.surjective⟩
@@ -89,7 +89,7 @@ Both are isomorphic to simple left ideals, and over a simple Artinian ring the r
 is isotypic, so its simple left ideals are mutually isomorphic. This is the general form of
 the property of `M_d` that Schumacher and Werner invoke as the uniqueness of the irreducible
 representation (`LionSR/TNLean/Papers/quant-ph_0405174/qca.tex`, lines 2112--2114). -/
-theorem IsSimpleRing.nonempty_linearEquiv_of_isSimpleModule
+lemma IsSimpleRing.nonempty_linearEquiv_of_isSimpleModule
     (R : Type*) [Ring R] [IsSimpleRing R] [IsArtinianRing R]
     (M : Type*) [AddCommGroup M] [Module R M] [IsSimpleModule R M]
     (N : Type*) [AddCommGroup N] [Module R N] [IsSimpleModule R N] :
