@@ -612,3 +612,166 @@ matrix-product vectors cites it across the chapter boundary.
     decomposition back to the original space gives
     (\ref{eq:spectral_ds_fixed_point_form}).
 \end{proof}
+
+\section{$*$-subalgebras with scalar centre}
+
+The decomposition of Theorem~\ref{thm:starSubalgebra_wedderburnArtin} has a
+single factor exactly when the centre of the subalgebra is as small as it can
+be. This is the building block of the structure theorem for finite-dimensional
+$C^*$-algebras \cite[lines~2082--2098]{SchumacherWerner2004}: cutting an
+algebra by the minimal projections of its centre leaves summands whose centre
+consists of the multiples of the unit, and each such summand is a full matrix
+algebra. The support algebras of a one-dimensional cellular automaton are
+identified with full matrix algebras in exactly this
+way~\cite[lines~1278--1282]{GrossNesmeVogtsWerner2012}.
+
+The source states the decomposition of an abstract finite-dimensional
+$C^*$-algebra into a direct sum of full matrix algebras. What follows treats a
+$*$-subalgebra of a full matrix algebra and proves the single-block statement,
+not that decomposition; see \cite{gap:sw04_csform_matrix_scope}.
+
+\begin{definition}[Conjugation by an invertible matrix]%
+    \label{def:matrix_innerAlgEquiv}
+    \lean{Matrix.innerAlgEquiv}
+    \lean{Matrix.innerAlgEquiv_apply}
+    \leanok
+    Let $R,K\in\MN{m}$ satisfy $RK=KR=\Id$. Conjugation
+    \begin{align}
+        X
+         & \longmapsto RXK
+        \label{eq:scalar_centre_conjugation}
+    \end{align}
+    is a $\C$-algebra automorphism of $\MN{m}$, with inverse $X\mapsto KXR$.
+\end{definition}
+
+An isomorphism produced by the Wedderburn theory of
+Theorem~\ref{thm:starSubalgebra_wedderburnArtin} respects only the ring
+structure. The next theorem corrects such an isomorphism, by a conjugation
+(\ref{eq:scalar_centre_conjugation}), into one that also intertwines the
+adjoints.
+
+\begin{theorem}[Adjoint-preserving correction of an isomorphism onto a matrix
+        algebra]%
+    \label{thm:starSubalgebra_starAlgEquiv_of_algEquiv_matrix}
+    \lean{StarSubalgebra.exists_starAlgEquiv_of_algEquiv_matrix}
+    \lean{Matrix.star_dotProduct_conjTranspose_mulVec}
+    \lean{Matrix.conjTranspose_vecMulVec_mul_mul_vecMulVec}
+    \leanok
+    \uses{def:matrix_innerAlgEquiv}
+    Let $S$ be a $*$-subalgebra of $\MD$ and let $\varphi:S\to\MN{m}$, with
+    $m\geq1$, be an isomorphism of $\C$-algebras. Then $S$ and $\MN{m}$ are
+    isomorphic as $*$-algebras.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{def:matrix_innerAlgEquiv, thm:skolem_noether}
+    Transporting the adjoint of $S$ through $\varphi$ gives the map
+    $Z\mapsto\varphi\bigl(\varphi^{-1}(Z)^\dagger\bigr)^\dagger$, a
+    $\C$-algebra automorphism of $\MN{m}$. By
+    Theorem~\ref{thm:skolem_noether} it is conjugation by an invertible $X$;
+    with $H=X^\dagger$ and $K=(X^{-1})^\dagger$, so that $HK=KH=\Id$,
+    \begin{align}
+        \varphi(y^\dagger)
+         & =K\,\varphi(y)^\dagger H,
+        \qquad y\in S.
+        \label{eq:scalar_centre_transported_adjoint}
+    \end{align}
+    Applying (\ref{eq:scalar_centre_transported_adjoint}) twice gives
+    $Z=KH^\dagger ZK^\dagger H$ for every $Z\in\MN{m}$, so $KH^\dagger$
+    commutes with every matrix and is therefore a scalar $c_0$, that is,
+    $H^\dagger=c_0H$.
+
+    Fix a coordinate vector $w$, put $W=ww^\dagger$ and
+    $c=\tr\varphi^{-1}(KW)$. For $v\neq0$ set $Y=vw^\dagger$ and
+    $y=\varphi^{-1}(Y)$. Then $y\neq0$, and
+    (\ref{eq:scalar_centre_transported_adjoint}) together with
+    \begin{align}
+        Y^\dagger HY
+         & =(v^\dagger Hv)\,W
+        \label{eq:scalar_centre_rank_one_sandwich}
+    \end{align}
+    gives $y^\dagger y=(v^\dagger Hv)\,\varphi^{-1}(KW)$ and hence
+    \begin{align}
+        \tr(y^\dagger y)
+         & =(v^\dagger Hv)\,c
+           >0.
+        \label{eq:scalar_centre_positive_pairing}
+    \end{align}
+    So $c\neq0$, and $v^\dagger Hv\neq0$ for every $v\neq0$. Conjugating the
+    Hermitian form of $H$ turns $H$ into $H^\dagger$, so
+    $\overline{v^\dagger Hv}=c_0\,v^\dagger Hv$; combined with the reality of
+    the left side of (\ref{eq:scalar_centre_positive_pairing}) this gives
+    $\overline{c}\,c_0=c$, which says that $cH$ is Hermitian. By
+    (\ref{eq:scalar_centre_positive_pairing}) its Hermitian form is positive
+    on nonzero vectors, so $cH$ is positive definite.
+
+    Replacing $H$ by $cH$ and $K$ by $c^{-1}K$ preserves
+    (\ref{eq:scalar_centre_transported_adjoint}) and the relations
+    $HK=KH=\Id$. Write $cH=R^\dagger R$ with $R$ invertible. Then
+    $K=R^{-1}(R^{-1})^\dagger$, and substituting into
+    (\ref{eq:scalar_centre_transported_adjoint}) gives
+    \begin{align}
+        R\,\varphi(y^\dagger)\,R^{-1}
+         & =\bigl(R\,\varphi(y)\,R^{-1}\bigr)^\dagger.
+        \label{eq:scalar_centre_corrected_isomorphism}
+    \end{align}
+    So the conjugated isomorphism $y\mapsto R\,\varphi(y)\,R^{-1}$ preserves
+    adjoints.
+\end{proof}
+
+\begin{theorem}[A $*$-subalgebra with scalar centre is simple]%
+    \label{thm:starSubalgebra_isSimpleRing_of_isCentral}
+    \lean{StarSubalgebra.isSimpleRing_of_isCentral}
+    \leanok
+    Let $S$ be a $*$-subalgebra of $\MD$ with $D\geq1$, and suppose the centre
+    of $S$ consists of the multiples of the unit. Then $S$ is a simple ring.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:starSubalgebra_wedderburnArtin}
+    By Theorem~\ref{thm:starSubalgebra_wedderburnArtin} there is an
+    isomorphism $S\cong\prod_{k=1}^{m}\MN{d_k}$ with every $d_k\geq1$. The
+    element that is the unit in the $k$-th coordinate and zero elsewhere is
+    central, hence a multiple $\lambda$ of the unit. If $m\geq2$, comparing
+    the $k$-th coordinate with another one gives $\lambda=1$ and $\lambda=0$,
+    which is impossible. If $m=0$ the product is trivial, whereas $S$ contains
+    the unit of $\MD$, which is nonzero because $D\geq1$. So $m=1$ and
+    $S\cong\MN{d_1}$ is simple.
+\end{proof}
+
+\begin{theorem}[A $*$-subalgebra with scalar centre is a full matrix algebra]%
+    \label{thm:starSubalgebra_starAlgEquiv_matrix_of_isCentral}
+    \lean{StarSubalgebra.exists_starAlgEquiv_matrix_of_isCentral}
+    \leanok
+    \uses{thm:starSubalgebra_isSimpleRing_of_isCentral}
+    Let $S$ be a $*$-subalgebra of $\MD$ with $D\geq1$, and suppose the centre
+    of $S$ consists of the multiples of the unit. Then there is $r\geq1$ and a
+    $*$-isomorphism $S\cong\MN{r}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:starSubalgebra_isSimpleRing_of_isCentral,
+        thm:starSubalgebra_starAlgEquiv_of_algEquiv_matrix}
+    By Theorem~\ref{thm:starSubalgebra_isSimpleRing_of_isCentral} the ring $S$
+    is simple, so the Wedderburn theorem for simple algebras over the
+    algebraically closed field $\C$ gives $r\geq1$ and an isomorphism of
+    $\C$-algebras $S\cong\MN{r}$. It preserves adjoints after the correction
+    of Theorem~\ref{thm:starSubalgebra_starAlgEquiv_of_algEquiv_matrix}.
+\end{proof}
+
+\begin{lemma}[Dimension of a subalgebra presented as a full matrix algebra]%
+    \label{lem:starSubalgebra_finrank_matrix_presentation}
+    \lean{StarSubalgebra.finrank_eq_mul_self_of_starAlgEquiv_matrix}
+    \leanok
+    Let $S$ be a $*$-subalgebra of $\MD$ admitting a $*$-isomorphism
+    $S\cong\MN{r}$. Then $\dim_{\C}S=r^2$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    A $*$-isomorphism is in particular a $\C$-linear isomorphism, and
+    $\dim_{\C}\MN{r}=r^2$.
+\end{proof}

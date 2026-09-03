@@ -85,6 +85,7 @@ import QICLean.Algebra.SkolemNoetherUnitary
 import QICLean.Algebra.SpinCover
 import QICLean.Algebra.StarSubalgebraBlockDiagonal
 import QICLean.Algebra.StarSubalgebraBlockForm
+import QICLean.Algebra.StarSubalgebraFactor
 import QICLean.Algebra.StarSubalgebraIntertwinerIsometry
 import QICLean.Algebra.StarSubalgebraIrreducibleDecomp
 import QICLean.Algebra.StarSubalgebraIsotypic
