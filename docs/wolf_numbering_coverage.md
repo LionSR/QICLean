@@ -24,15 +24,16 @@ Kraus-span characterization of primitive channels is formalized here.
 
 ## Complete named-environment audit
 
-The August 25, 2026 audit covers all 153 literal lemma, proposition, theorem,
+The August 29, 2026 audit covers all 153 literal lemma, proposition, theorem,
 and corollary environments in the transcribed Wolf chapters. Definitions and
-examples are outside this named-result count. After the SIC--POVM migration,
-the dispositions are: 71 exact, 15 corrected or otherwise dispositioned, 10
-partial-packaging, 13 partial-scope, 2 obstructed, and 42 open. Fourteen of the
-15 corrected/dispositioned entries have an implemented corrected theorem; the
-remaining entry is a documented disposition rather than a replacement
-declaration. Thus 67 environments remain audit-unresolved
-(10 partial-packaging + 13 partial-scope + 2 obstructed + 42 open), and 68 do
+examples are outside this named-result count. After the positive-map
+formalization of Theorem 6.2, the dispositions are: 82 exact, 15 corrected or
+otherwise dispositioned, 4 partial-packaging, 8 partial-scope, 2 obstructed,
+and 42 open. Fourteen of the 15 corrected/dispositioned entries have an
+implemented corrected theorem; the remaining entry is a documented
+disposition rather than a replacement declaration. Thus 56 environments
+remain audit-unresolved
+(4 partial-packaging + 8 partial-scope + 2 obstructed + 42 open), and 57 do
 not have an implemented exact or corrected theorem.
 
 Here "partial-packaging" means that substantial clauses or equation-level
@@ -1170,7 +1171,14 @@ conclusions.  The boundedness needed to form $T_\infty$ follows from
 
 ### Section 6.2 Irreducible maps and Perron–Frobenius theory
 
-#### Wolf Theorem 6.2 (Irreducible positive maps) — PARTIAL-SCOPE
+#### Wolf Theorem 6.2 (Irreducible positive maps) — FORMALIZED FOR POSITIVE MAPS
+
+* `wolf_theorem_6_2_tfae` — `QICLean.Channel.Irreducible.Growth`:
+  one theorem packages all four printed conditions for an arbitrary positive
+  map and proves that they are equivalent. The proof follows the source
+  implication graph `(1) → (2) → (3) → (1)` and
+  `(2) → (4) → (1)`. No complete-positivity, Kraus, trace-preservation, or
+  nonzero-map hypothesis is added.
 
 **Item 1** (definition via invariant projections):
 * `IsIrreducibleMap` — `QICLean.Channel.Irreducible.Basic`
@@ -1185,14 +1193,24 @@ conclusions.  The boundedness needed to form $T_\infty$ follows from
   specializations.
 
 **Item 3** (exponential condition `exp[tT](A) > 0`):
+* `exp_posDef_of_growth` — the source implication (2)→(3), using only
+  positivity and the growth conclusion for the given input.
+* `exp_posDef_of_irreducible` and
+  `irreducible_iff_exp_posDef_forall_of_positive` — the forward statement and
+  the equivalence at arbitrary positive-map scope.
 * `exp_posDef_of_irreducible_cp` and `irreducible_iff_exp_posDef_forall`
-  formalize the completely positive specialization. The source theorem is for
-  positive maps, and there is no single declaration packaging all four source
-  clauses.
+  retain the former completely positive statements as direct specializations.
 
 **Item 4** (orthogonal trace condition):
-* `orthogonal_trace_pos_of_irreducible_cp` — `QICLean.Channel.Irreducible.Growth`
-  For orthogonal PSD `A, B` (tr(BA)=0), ∃ t ∈ {1,...,D-1}, tr(B·T^t(A)) > 0.
+* `orthogonal_trace_pos_of_growth` — the source implication (2)→(4), by the
+  binomial trace expansion.
+* `orthogonal_trace_pos_of_irreducible` — for orthogonal nonzero PSD `A, B`
+  (`tr(BA)=0`), there is a `t ∈ {1,...,D-1}` with
+  `tr(B·T^t(A)) > 0`, for every positive irreducible map.
+* `irreducible_of_orthogonal_trace_pos_forall` — the source implication
+  (4)→(1), using `A=P` and `B=1-P` for a hypothetical invariant projection.
+* `orthogonal_trace_pos_of_irreducible_cp` retains the former completely
+  positive statement as a direct specialization.
 
 #### Wolf Theorem 6.3 (Spectral radius of irreducible maps) — FORMALIZED FOR POSITIVE MAPS
 

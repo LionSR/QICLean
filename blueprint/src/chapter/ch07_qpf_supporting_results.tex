@@ -407,10 +407,12 @@ outer square-root factors yields
 
 \begin{theorem}[Exponential truncation is positive definite]
     \label{thm:exp_truncation_pd_irred}
-    \lean{exp_truncation_posDef_of_irreducible_cp}
+    \lean{exp_truncation_posDef_of_growth,
+        exp_truncation_posDef_of_irreducible,
+        exp_truncation_posDef_of_irreducible_cp}
     \leanok
-    \uses{def:irreducible_cp, thm:growth_pd_irred}
-    Let $E$ be an irreducible completely positive map on $\MN{D}$,
+    \uses{def:positive_map, def:irreducible_cp, thm:growth_pd_irred}
+    Let $E$ be an irreducible positive map on $\MN{D}$,
     let $A \ge 0$ be nonzero, and let $t > 0$.
     Then the finite exponential truncation satisfies
     \begin{align}
@@ -418,8 +420,10 @@ outer square-root factors yields
          & >0.
         \label{eq:qpf_exp_truncation}
     \end{align}
-    This is the finite-sum core of the completely positive specialization of
-    \cite[Theorem~6.2(3)]{Wolf2012Quantum}.
+    This is the finite-sum core of
+    \cite[Theorem~6.2(3)]{Wolf2012Quantum}. Complete positivity is not used;
+    the former completely positive declaration is retained as a direct
+    specialization.
 \end{theorem}
 
 \begin{proof}

@@ -8,6 +8,22 @@
     means that $X$ is positive semidefinite.
 \end{definition}
 
+\begin{lemma}[Positive maps form an additive cone]
+    \label{lem:positive_map_add_nonnegative_smul}
+    \lean{IsPositiveMap.add, IsPositiveMap.nonneg_smul}
+    \leanok
+    \uses{def:positive_map}
+    If $S$ and $T$ are positive maps, then $S+T$ is positive. If
+    $c\in\mathbb R$ is non-negative and $T$ is positive, then $cT$ is
+    positive.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Both assertions follow from closure of the positive semidefinite cone
+    under addition and multiplication by non-negative real scalars.
+\end{proof}
+
 \begin{definition}[Trace-preserving map]\label{def:trace_preserving}
     \lean{IsTracePreservingMap}
     \leanok
