@@ -11,10 +11,10 @@ import QICLean.Algebra.MatrixAux
 import QICLean.Channel.FixedPoint.BrouwerDensityMatrices
 
 /-!
-# Perron–Frobenius eigenvector existence for CP maps
+# Perron–Frobenius eigenvector existence for positive maps
 
 This module provides the **existence** of a positive semidefinite eigenvector for
-a nonzero positive map on `M_D(ℂ)`, and derives from it a PosDef eigenvector of
+a positive map on `M_D(ℂ)`, and derives from it a PosDef eigenvector of
 the adjoint Kraus map of an irreducible Kraus family.
 
 The transfer-map specializations for MPS tensors (the trace-preserving and
@@ -23,16 +23,22 @@ unital gauge normalizations of an irreducible tensor) live in
 
 ## Brouwer fixed-point theorem on density matrices
 
-The core existence theorem `exists_posSemidef_eigenvector` is proved via Brouwer's
-fixed-point theorem applied to the normalization map
+The density-normalized existence theorem is proved via Brouwer's fixed-point
+theorem applied to the normalization map
 `ρ ↦ E(ρ) / tr(E(ρ))` on the compact convex set of density matrices.
+
+Wolf states Theorem 6.5 at local source lines 743--747 without giving a proof.
+The Brouwer argument in this module is supplied by the present development; it
+is not attributed to the lecture notes.
 
 The required density-matrix Brouwer theorem is proved in
 `TNLean.Channel.FixedPoint.BrouwerDensityMatrices`.
 
 ## Main results
 
-* `exists_posSemidef_eigenvector`: PSD eigenvector existence for positive maps
+* `exists_density_eigenvector_of_positive_of_nonvanishing`: density-normalized
+  eigenvector existence for positive maps which do not vanish on density matrices
+* `exists_posSemidef_eigenvector`: the established nonzero-PSD interface
   (with nonvanishing hypothesis, eigenvalue `r > 0`)
 * `exists_posSemidef_eigenvector_general`: PSD eigenvector existence for *any*
   positive map (no nonvanishing hypothesis, eigenvalue `r ≥ 0`)
@@ -54,20 +60,61 @@ variable {d D : ℕ}
 
 /-! ## Core existence theorem -/
 
+/-- A positive map which does not vanish on density matrices has a
+density-matrix eigenvector with a strictly positive real eigenvalue.
+
+This is the density-normalized Brouwer construction used in the
+positive-regularization proof of Wolf Theorem 6.5.  Wolf states that theorem,
+without a proof, at local source lines 743--747.  The fixed-point argument here
+is supplied by the present development. -/
+theorem exists_density_eigenvector_of_positive_of_nonvanishing
+    [NeZero D]
+    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (hpos : IsPositiveMap E)
+    (hNZ : ∀ ρ ∈ densityMatrices D, E ρ ≠ 0) :
+    ∃ ρ ∈ densityMatrices D, ∃ r : ℝ,
+      0 < r ∧ E ρ = (r : ℂ) • ρ := by
+  classical
+  have hMapsTo : Set.MapsTo (normMap (D := D) E) (densityMatrices D) (densityMatrices D) := by
+    intro ρ hρ
+    exact normMap_mem_densityMatrices (D := D) (E := E) hpos hNZ ρ hρ
+  have hCont : ContinuousOn (normMap (D := D) E) (densityMatrices D) :=
+    continuousOn_normMap_densityMatrices (D := D) (E := E) hpos hNZ
+  obtain ⟨ρ, hρ, hρfix⟩ :=
+    brouwer_fixedPoint_densityMatrices (D := D) (f := normMap (D := D) E) hCont hMapsTo
+  have hEρpsd : (E ρ).PosSemidef := hpos ρ hρ.1
+  have hEρne : E ρ ≠ 0 := hNZ ρ hρ
+  have htrace_ne : Matrix.trace (E ρ) ≠ 0 := by
+    intro htrace
+    exact hEρne ((hEρpsd.trace_eq_zero_iff).1 htrace)
+  have hEig : E ρ = Matrix.trace (E ρ) • ρ :=
+    (eq_normMap_iff_eigenvector (D := D) (E := E) ρ htrace_ne).1 hρfix
+  let r : ℝ := (Matrix.trace (E ρ)).re
+  have hr_nonneg : 0 ≤ r := by
+    simpa [r] using (RCLike.nonneg_iff.mp hEρpsd.trace_nonneg).1
+  have htrace_eq : Matrix.trace (E ρ) = (r : ℂ) := by
+    symm
+    exact
+      (RCLike.ofReal_eq_re_of_isSelfAdjoint
+        (IsSelfAdjoint.of_nonneg hEρpsd.trace_nonneg)).mp rfl
+  have hr_ne : r ≠ 0 := by
+    intro hr
+    exact htrace_ne (by simp [htrace_eq, hr])
+  have hr : 0 < r := lt_of_le_of_ne hr_nonneg (Ne.symm hr_ne)
+  exact ⟨ρ, hρ, r, hr, by simpa [htrace_eq] using hEig⟩
+
 /-- **Perron–Frobenius eigenvector existence for positive maps**
-(Wolf Theorem 6.5: Spectral radius and positive eigenvectors).
+(a fixed-point ingredient for Wolf Theorem 6.5).
 
 Let `E` be a positive linear map on `M_D(ℂ)` (with `D > 0`) such that `E ρ ≠ 0` for every
 nonzero PSD matrix `ρ`. Then there exists a nonzero PSD matrix `ρ` and a positive real `r`
 such that `E ρ = r • ρ`.
 
-Wolf Theorem 6.5 states this for *any* positive map (the spectral radius is always an
-eigenvalue with a PSD eigenvector). Our version adds the nonvanishing hypothesis
-`hNZ` to ensure `r > 0`.
+Wolf Theorem 6.5 states the stronger spectral-radius conclusion for every
+positive map.  The declaration here records the nonvanishing Brouwer
+ingredient and does not claim that its eigenvalue is the spectral radius.
 
-**Proof idea**: consider the normalization map `normMap E : ρ ↦ E(ρ) / tr(E(ρ))`
-on density matrices, apply the proved density-matrix Brouwer theorem to obtain a
-fixed point, then unfold the fixed-point identity using `eq_normMap_iff_eigenvector`. -/
+It is a wrapper around the density-normalized theorem above. -/
 theorem exists_posSemidef_eigenvector
     [NeZero D]
     (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
@@ -75,62 +122,21 @@ theorem exists_posSemidef_eigenvector
     (hNZ : ∀ {ρ : Matrix (Fin D) (Fin D) ℂ}, ρ.PosSemidef → ρ ≠ 0 → E ρ ≠ 0) :
     ∃ (ρ : Matrix (Fin D) (Fin D) ℂ) (r : ℝ),
       ρ.PosSemidef ∧ ρ ≠ 0 ∧ 0 < r ∧ E ρ = (r : ℂ) • ρ := by
-  classical
-  -- Nonvanishing on density matrices follows from nonvanishing on nonzero PSD matrices.
   have hNZ_density : ∀ ρ ∈ densityMatrices D, E ρ ≠ 0 := by
-    intro ρ hρ_mem
-    rcases hρ_mem with ⟨hρ_psd, hρ_tr⟩
-    have hρ_ne : ρ ≠ 0 := by
-      intro hρ0
-      have h := hρ_tr
-      simp [hρ0] at h -- closes the goal (since `trace 0 = 1` is impossible)
-    exact hNZ hρ_psd hρ_ne
-  -- `normMap E` is a continuous self-map of the density matrices.
-  have hMapsTo : Set.MapsTo (normMap (D := D) E) (densityMatrices D) (densityMatrices D) := by
-    intro ρ hρ_mem
-    exact normMap_mem_densityMatrices (D := D) (E := E) hpos hNZ_density ρ hρ_mem
-  have hCont : ContinuousOn (normMap (D := D) E) (densityMatrices D) :=
-    continuousOn_normMap_densityMatrices (D := D) (E := E) hpos hNZ_density
-  -- Apply the proved Brouwer fixed-point theorem on density matrices.
-  rcases
-      brouwer_fixedPoint_densityMatrices (D := D) (f := normMap (D := D) E) hCont hMapsTo with
-    ⟨ρ, hρ_mem, hρ_fix⟩
-  have hρ_psd : ρ.PosSemidef := hρ_mem.1
-  have hρ_tr : Matrix.trace ρ = 1 := hρ_mem.2
+    intro ρ hρ
+    apply hNZ hρ.1
+    intro hρzero
+    have := hρ.2
+    simp [hρzero] at this
+  obtain ⟨ρ, hρ, r, hr, hEig⟩ :=
+    exists_density_eigenvector_of_positive_of_nonvanishing E hpos hNZ_density
   have hρ_ne : ρ ≠ 0 := by
-    intro hρ0
-    have h := hρ_tr
-    simp [hρ0] at h -- closes the goal (since `trace 0 = 1` is impossible)
-  have hEρ_psd : (E ρ).PosSemidef := hpos ρ hρ_psd
-  have hEρ_ne : E ρ ≠ 0 := hNZ_density ρ hρ_mem
-  have htr_ne : Matrix.trace (E ρ) ≠ 0 := by
-    intro htr0
-    apply hEρ_ne
-    exact (hEρ_psd.trace_eq_zero_iff).1 htr0
-  -- Fixed point ⇒ eigenvector identity.
-  have hEig : E ρ = (Matrix.trace (E ρ)) • ρ :=
-    (eq_normMap_iff_eigenvector (D := D) (E := E) ρ htr_ne).1 hρ_fix
-  -- Extract a positive real eigenvalue from the nonnegative (real) trace.
-  set r : ℝ := (Matrix.trace (E ρ)).re
-  have hr_nonneg : 0 ≤ r := by
-    simpa [r] using (RCLike.nonneg_iff.mp hEρ_psd.trace_nonneg).1
-  have htr_eq : Matrix.trace (E ρ) = (r : ℂ) := by
-    symm
-    exact
-      (RCLike.ofReal_eq_re_of_isSelfAdjoint
-        (IsSelfAdjoint.of_nonneg hEρ_psd.trace_nonneg)).mp rfl
-  have hr_ne : r ≠ 0 := by
-    intro hr0
-    apply htr_ne
-    simp [htr_eq, hr0]
-  have hr_pos : 0 < r :=
-    lt_of_le_of_ne hr_nonneg (by simpa [eq_comm] using hr_ne)
-  have hEig' : E ρ = (r : ℂ) • ρ := by
-    simpa [htr_eq] using hEig
-  exact ⟨ρ, r, hρ_psd, hρ_ne, hr_pos, hEig'⟩
+    intro hρzero
+    have := hρ.2
+    simp [hρzero] at this
+  exact ⟨ρ, r, hρ.1, hρ_ne, hr, hEig⟩
 
-/-- **Perron–Frobenius eigenvector existence for general positive maps**
-(Wolf Theorem 6.5, without nonvanishing hypothesis).
+/-- **Perron–Frobenius eigenvector existence for general positive maps.**
 
 For *any* positive linear map `E` on `M_D(ℂ)` (with `D > 0`), there exists a
 nonzero PSD matrix `ρ` and a nonneg real `r ≥ 0` such that `E ρ = r • ρ`.
@@ -139,6 +145,10 @@ This generalises `exists_posSemidef_eigenvector` by removing the `hNZ` hypothesi
 (E need not be nonvanishing on the PSD cone). The trade-off is that the eigenvalue
 is only `0 ≤ r` (not `0 < r`): when E annihilates a nonzero PSD matrix, that
 matrix is itself an eigenvector for eigenvalue 0.
+
+This is weaker than Wolf Theorem 6.5: it does not identify `r` with the
+spectral radius.  Wolf states the stronger theorem, without a proof, at local
+source lines 743--747.
 
 The proof is a case split:
 * If E is nonvanishing on nonzero PSD matrices, apply `exists_posSemidef_eigenvector`.
@@ -165,18 +175,16 @@ theorem exists_posSemidef_eigenvector_general
 
 namespace Kraus
 
-/-- **PosDef eigenvector of the adjoint Kraus map**
-(combines Wolf Theorem 6.5 for existence with Wolf Theorem 6.3(2) for positive
-definiteness).
+/-- **PosDef eigenvector of the adjoint Kraus map.**
 
 For an irreducible finite Kraus family `K` with `D > 0` and some `K i ≠ 0`, there
 exist a positive definite matrix `σ` and a positive real `r` with
 `∑ᵢ (K i)ᴴ σ K i = r • σ`.
 
-This theorem applies `exists_posSemidef_eigenvector` (Wolf Theorem 6.5) to the
-conjugate-transposed Kraus map, noting that irreducibility passes to that family,
-and then upgrades the resulting PSD eigenvector to a PosDef one using
-irreducibility (Wolf Theorem 6.3 item 2). -/
+This theorem applies the project-supplied Brouwer theorem
+`exists_posSemidef_eigenvector` to the conjugate-transposed Kraus map, noting
+that irreducibility passes to that family, and then upgrades the resulting PSD
+eigenvector to a PosDef one using irreducibility (Wolf Theorem 6.3 item 2). -/
 theorem exists_posDef_adjoint_eigenvector
     [NeZero D]
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
