@@ -31,7 +31,7 @@ rev = "ec93e4daed4ad8b4784a9d760e492832e7711433"
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.34.0-rc1"
+rev = "v4.35.0-rc1"
 
 [[require]]
 name = "checkdecls"

@@ -122,7 +122,7 @@ theorem PosSemidef.norm_smul_one_sub_le {ι : Type*} [Fintype ι] [DecidableEq �
   have hle : ‖A‖ • (1 : Matrix ι ι ℂ) - A ≤ ‖A‖ • (1 : Matrix ι ι ℂ) := by
     rw [Matrix.le_iff]
     simpa using hA
-  have hmono := CStarAlgebra.norm_le_norm_of_nonneg_of_le hnn hle
+  have hmono := CStarAlgebra.norm_le_norm_of_le_of_nonneg hle hnn
   rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg (norm_nonneg A)] at hmono
   have hone : ‖(1 : Matrix ι ι ℂ)‖ ≤ 1 := by
     by_cases hnt : Nontrivial (Matrix ι ι ℂ)

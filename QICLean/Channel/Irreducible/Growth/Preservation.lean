@@ -78,7 +78,7 @@ theorem idPlusE_ne_zero
     have hre : (star v ⬝ᵥ (A *ᵥ v)).re = 0 := by linarith
     exact Complex.ext hre (hA.isHermitian.im_star_dotProduct_mulVec_self v)
   have h_vec : ∀ v : Fin D → ℂ, A *ᵥ v = 0 :=
-    fun v => (hA.dotProduct_mulVec_zero_iff v).mp (h_zero v)
+    fun v => (hA.dotProduct_mulVec_zero_iff (x := v)).mp (h_zero v)
   ext i j
   have := congr_fun (h_vec (Pi.single j 1)) i
   simp only [mulVec, dotProduct, Pi.zero_apply, Pi.single_apply, mul_ite, mul_one,

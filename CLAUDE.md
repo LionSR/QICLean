@@ -8,7 +8,7 @@ QICLean is a Lean 4 formalization of finite-dimensional **quantum-channel
 theory** (following Wolf's *Quantum Channels & Operations*), **quantum
 Wielandt theory**, and the **spectral / quantum Perron-Frobenius (QPF)
 theory** that channel irreducibility and primitivity rest on. Built on
-Mathlib v4.34.0-rc1.
+Mathlib v4.35.0-rc1.
 
 QICLean was extracted from TNLean (the tensor-network / matrix-product-state
 library), which formalizes the fundamental theorem of matrix product states
@@ -62,8 +62,8 @@ and the invariants a CI guard checks on both sides.
 
 ## Lean Toolchain & Dependencies
 
-- **Lean**: v4.34.0-rc1 (pinned in `lean-toolchain`, identical to TNLean's)
-- **Mathlib**: v4.34.0-rc1
+- **Lean**: v4.35.0-rc1 (pinned in `lean-toolchain`, identical to TNLean's)
+- **Mathlib**: v4.35.0-rc1
 - **checkdecls**: Blueprint declaration checker (PatrickMassot/checkdecls)
 - **Gametheory**: Custom Brouwer fixed-point theorem library (LionSR/Brouwer) — moved here from
   TNLean, since the quantum Perron-Frobenius existence argument is the only consumer

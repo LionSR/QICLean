@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.Module.BigOperators
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import Mathlib.Data.Matrix.Basic
 import Mathlib.LinearAlgebra.LinearIndependent.Defs
 import Mathlib.Order.Fin.Tuple

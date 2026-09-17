@@ -78,7 +78,7 @@ theorem ker_subset_of_hasConvexDecompositionWith
   rw [hlam1, hrho1] at hterm_zero
   have hc' : (c : ℂ) ≠ 0 := by exact_mod_cast hc.ne'
   have hquad : star v ⬝ᵥ (ρ1 *ᵥ v) = 0 := (mul_eq_zero.mp hterm_zero).resolve_left hc'
-  exact (Matrix.PosSemidef.dotProduct_mulVec_zero_iff hρ1PSD v).mp hquad
+  exact (Matrix.PosSemidef.dotProduct_mulVec_zero_iff hρ1PSD (x := v)).mp hquad
 
 /-- **Maximal weight in convex decomposition** (Wolf Ch. 1, line 371). For
 density operators `ρ`, `ρ₁` on the same space, there is a convex decomposition

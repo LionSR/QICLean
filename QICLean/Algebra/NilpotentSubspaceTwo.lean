@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
 import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 
 /-!
 # Nilpotent subspaces of 2×2 complex matrices

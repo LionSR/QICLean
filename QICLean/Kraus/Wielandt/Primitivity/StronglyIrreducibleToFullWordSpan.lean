@@ -10,7 +10,7 @@ import QICLean.Channel.Semigroup.Primitivity.IrreducibleAnalysis
 import QICLean.Kraus.Injectivity
 import QICLean.Kraus.TracePairing
 import Mathlib.Analysis.Complex.Basic
-import Mathlib.Data.Complex.BigOperators
+import Mathlib.Basic.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Topology.MetricSpace.ProperSpace
 import Mathlib.Analysis.Normed.Module.RCLike.Real

@@ -243,7 +243,7 @@ theorem isLocalMaxOn_inverseOperator_of_composed
     rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv S hS,
       Matrix.one_mulVec]
   rw [hfg] at hcomp
-  exact hcomp.on positiveInvertibles
+  exact hcomp.isLocalMaxOn positiveInvertibles
 
 /-- A local maximum at `a` in the original coordinates becomes a local
 maximum of `L_{S⁻¹}` at the normalized generator `b = (S a)/s`. -/
@@ -637,7 +637,7 @@ theorem hessianMatrix_mulVec_coordinateLog_eq_zero
     rw [dotProduct_hessianMatrix_mulVec, hSz]
     simp only [dotProduct_smul, smul_dotProduct, smul_eq_mul]
     ring
-  apply (hH.dotProduct_mulVec_zero_iff z).mp
+  apply (hH.dotProduct_mulVec_zero_iff (x := z)).mp
   simpa using hquad
 
 /-- The actual tangent `s S⁻¹(log b)` of the pulled-back curve is therefore a

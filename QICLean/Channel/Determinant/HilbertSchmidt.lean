@@ -181,7 +181,7 @@ lemma channelDet_norm_one_hs_norm_ge [NeZero d]
                 Module.Basis.coe_reindex, Function.comp_apply,
                 Equiv.sigmaEquivProd_symm_apply, Pi.basis_apply, Pi.basisFun_apply,
                 coe_ofLinearEquiv, LinearEquiv.trans_apply, coe_ofLinearEquiv_symm,
-                Module.Basis.repr_reindex, Finsupp.mapDomain_equiv_apply, Pi.basis_repr,
+                Module.Basis.repr_reindex, Finsupp.equivMapDomain_apply, Pi.basis_repr,
                 Pi.basisFun_repr, of_symm_apply, A, b]
       _ = ∑ ij : Fin d × Fin d,
             (Matrix.trace ((Φ (Matrix.stdBasis ℂ (Fin d) (Fin d) ij))ᴴ *

@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Algebra.NewtonGirard
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import Mathlib.Data.Matrix.Basic
 
 /-!

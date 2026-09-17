@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Algebra.MatrixTracePairing
 import QICLean.Kraus.MapIterate
 import Mathlib.Analysis.Complex.Basic
-import Mathlib.Data.Complex.BigOperators
+import Mathlib.Basic.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Trace
 
 /-!

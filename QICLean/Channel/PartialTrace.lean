@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Analysis.Matrix.PosDef
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import QICLean.Algebra.MatrixIsometryEntries
 
 /-!
