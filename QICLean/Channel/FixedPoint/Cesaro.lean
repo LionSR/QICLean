@@ -130,11 +130,11 @@ private theorem psd_orthogonal_difference_eq_zero
     intro j; rcases he_ker j with hA_ker | hB_ker
     · have h1 : star (e j) ⬝ᵥ (A + Y).mulVec (e j) = 0 := by
         rw [add_mulVec, hA_ker, zero_add]; exact hY_diag_zero j
-      have h2 := hAY.dotProduct_mulVec_zero_iff (e j) |>.mp h1
+      have h2 := hAY.dotProduct_mulVec_zero_iff (x := e j) |>.mp h1
       rw [add_mulVec, hA_ker, zero_add] at h2; exact h2
     · have h1 : star (e j) ⬝ᵥ (B + Y).mulVec (e j) = 0 := by
         rw [add_mulVec, hB_ker, zero_add]; exact hY_diag_zero j
-      have h2 := hBY.dotProduct_mulVec_zero_iff (e j) |>.mp h1
+      have h2 := hBY.dotProduct_mulVec_zero_iff (x := e j) |>.mp h1
       rw [add_mulVec, hB_ker, zero_add] at h2; exact h2
   -- Y * V = 0 (column by column) and V invertible ⟹ Y = 0
   have hYV_zero : Y * V = 0 := by

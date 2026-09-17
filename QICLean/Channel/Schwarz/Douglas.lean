@@ -297,7 +297,7 @@ theorem: if `ran A ⊆ ran B`, then `A = B * (B⁺ * A)`. -/
 theorem factorization_pinv (A B : Mat) (hAB : A.mulVecLin.range ≤ B.mulVecLin.range) :
     B * (pinv B * A) = A := by
   have hSPA : (posSemidefBB B).supportProj * A = A := by
-    have hle := ((douglas_tfae A B).out 0 1 (by rfl) (by rfl)).mp hAB
+    have hle := ((douglas_tfae A B).out 1 2).mp hAB
     rcases hle with ⟨μ, _hμ, hle'⟩
     exact supportProj_mul_eq_of_conjTranspose_le A B μ hle'
   calc

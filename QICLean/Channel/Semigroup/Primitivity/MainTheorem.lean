@@ -6,6 +6,13 @@ Authors: TNLean contributors
 import QICLean.Channel.Semigroup.Primitivity.IrreducibleAnalysis
 import QICLean.Channel.Semigroup.Primitivity.Basic
 
+/-!
+# Primitivity of a quantum dynamical semigroup
+
+This file assembles Wolf Proposition 7.5: if one time slice of a quantum dynamical
+semigroup is irreducible, then every positive time slice is primitive.
+-/
+
 open scoped Matrix ComplexOrder MatrixOrder BigOperators NNReal TNOperatorSpace
 open Matrix Finset NormedSpace
 

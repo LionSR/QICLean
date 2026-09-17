@@ -146,7 +146,7 @@ private theorem posSemidef_mulVec_eq_zero_of_not_dot_pos
     have h_re_zero : (star v ⬝ᵥ (M *ᵥ v)).re = 0 :=
       le_antisymm (le_of_not_gt h_re_not_pos) hre_nonneg
     exact Complex.ext h_re_zero him_zero
-  exact (hM.dotProduct_mulVec_zero_iff v).mp hq_zero
+  exact (hM.dotProduct_mulVec_zero_iff (x := v)).mp hq_zero
 
 -- Evaluates the operator exponential series at a matrix.
 private theorem exp_apply_terms_summable

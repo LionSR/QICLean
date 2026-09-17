@@ -118,7 +118,7 @@ theorem ker_subset_of_block_psd (P : Matrix (Fin D₁) (Fin D₁) ℂ)
     rw [block_quadratic_form P Q R 0 y]
     simp [hRy]
   have hMv_zero : (blockMatrix P Q R) *ᵥ Sum.elim (0 : Fin D₁ → ℂ) y = 0 :=
-    ((Matrix.PosSemidef.dotProduct_mulVec_zero_iff hM _).mp h_quad)
+    ((Matrix.PosSemidef.dotProduct_mulVec_zero_iff hM).mp h_quad)
   have h_comp : (blockMatrix P Q R) *ᵥ Sum.elim (0 : Fin D₁ → ℂ) y =
       Sum.elim (mulVec Q y) (mulVec R y) := by
     rw [blockMatrix, Matrix.fromBlocks_mulVec P Q (Qᴴ) R]

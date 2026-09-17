@@ -39,7 +39,7 @@ not declare an API under `namespace MPSTensor`.
 
 - [`elan`](https://github.com/leanprover/elan), the Lean toolchain manager.
   It reads [`lean-toolchain`](../lean-toolchain) and installs the pinned
-  version (`leanprover/lean4:v4.34.0-rc1`) automatically.
+  version (`leanprover/lean4:v4.35.0-rc1`) automatically.
 - [Visual Studio Code](https://code.visualstudio.com/) with the
   [Lean 4 extension](https://marketplace.visualstudio.com/items?itemName=leanprover.lean4),
   or another editor with Lean 4 language-server support.

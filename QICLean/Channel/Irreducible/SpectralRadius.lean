@@ -103,7 +103,7 @@ theorem spectralRadius_similarityMap_eq
       spectrum ℂ (Φ (similarityMap (D := D) C E)) = spectrum ℂ (Φ E) := by
     rw [hspec_left, hspec_alg, hspec_right]
   change spectralRadius ℂ (Φ (similarityMap (D := D) C E)) = spectralRadius ℂ (Φ E)
-  rw [spectralRadius, spectralRadius, hspec]
+  rw [spectralRadius_eq_of_unital, spectralRadius_eq_of_unital, hspec]
 
 /-- Peripheral eigenvalues are invariant under the congruence similarity
 `X ↦ C⁻¹ * E (C * X * Cᴴ) * (Cᴴ)⁻¹`.

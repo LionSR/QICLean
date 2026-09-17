@@ -70,13 +70,13 @@ theorem spectralRadius_eq_one_and_isPrimitive_of_transferMatrix_shifted_trace [N
       spectralRadius ℂ
           ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ)) T) = 1 := by
     apply le_antisymm
-    · rw [spectralRadius]
+    · rw [spectralRadius_eq_of_unital]
       refine iSup₂_le fun z hz => ?_
       have hzT : z ∈ spectrum ℂ T := hspecCont ▸ hz
       have hzEig : Module.End.HasEigenvalue T z :=
         Module.End.hasEigenvalue_iff_mem_spectrum.mpr hzT
       rcases hclass z (hmatrix_of_eigenvalue z hzEig) with rfl | rfl <;> norm_num
-    · rw [spectralRadius]
+    · rw [spectralRadius_eq_of_unital]
       have h1T : (1 : ℂ) ∈ spectrum ℂ T :=
         Module.End.hasEigenvalue_iff_mem_spectrum.mp h1EigT
       have h1Cont : (1 : ℂ) ∈

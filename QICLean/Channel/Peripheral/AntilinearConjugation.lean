@@ -251,5 +251,5 @@ theorem spectralRadius_entrywiseConjTransport
           spectrum ℂ
             ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ)) Φ) := by
     rw [AlgEquiv.spectrum_eq, AlgEquiv.spectrum_eq, spectrum_entrywiseConjTransport]
-  rw [spectralRadius, spectralRadius, hspec, iSup_image]
+  rw [spectralRadius_eq_of_unital, spectralRadius_eq_of_unital, hspec, iSup_image]
   simp only [nnnorm_star]

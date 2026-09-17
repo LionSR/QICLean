@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import Mathlib.Algebra.Ring.Idempotent
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.Analysis.Real.Sqrt
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.Trace
 import QICLean.Channel.TensorMap

@@ -8,7 +8,7 @@ import QICLean.Analysis.SuperoperatorResolvent
 import QICLean.Channel.Schwarz.PetzRecoverySupport
 import QICLean.Channel.Schwarz.SSAEqualityDPI
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic
-import Mathlib.Data.Complex.BigOperators
+import Mathlib.Basic.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Vec
 
 /-!

@@ -8,6 +8,14 @@ import QICLean.Channel.FixedPoint.CanonicalGauge
 import QICLean.Channel.KrausMap
 import QICLean.Channel.Semigroup.Primitivity.Basic
 
+/-!
+# Auxiliary lemmas for primitivity of quantum dynamical semigroups
+
+This file collects the semigroup-iteration, continuity, and positivity lemmas used in
+the proof of Wolf Proposition 7.5, which characterizes primitivity of a quantum
+dynamical semigroup.
+-/
+
 open scoped Matrix ComplexOrder MatrixOrder BigOperators NNReal TNOperatorSpace
 open Matrix Finset NormedSpace
 
