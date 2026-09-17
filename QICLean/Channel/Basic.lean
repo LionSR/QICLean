@@ -26,6 +26,8 @@ Chapters 3 and 6 of Wolf's lecture notes.
 ## Main results
 
 * `IsPositiveMap`: a linear map that preserves the PSD cone
+* `IsPositiveMap.add`, `IsPositiveMap.nonneg_smul`: the additive-cone closure
+  properties of positive maps
 * `IsTraceNonincreasingMap`: a linear endomorphism that does not increase the
   trace of positive semidefinite inputs
 * `IsCPMap`: a linear map that admits a Kraus representation
@@ -65,6 +67,30 @@ variable {m n : Type*} [Fintype n] [DecidableEq n]
 positive semidefinite matrices to positive semidefinite matrices. -/
 def IsPositiveMap (E : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ) : Prop :=
   ∀ X : Matrix n n ℂ, X.PosSemidef → (E X).PosSemidef
+
+omit [Fintype n] [DecidableEq n] in
+/-- The sum of two positive maps is positive.  Thus positive maps form an
+additive cone, as used in Wolf's positive perturbations and power-series
+arguments. -/
+theorem IsPositiveMap.add
+    {S T : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ}
+    (hS : IsPositiveMap S) (hT : IsPositiveMap T) :
+    IsPositiveMap (S + T) := by
+  intro X hX
+  simpa only [LinearMap.add_apply] using (hS X hX).add (hT X hX)
+
+omit [Fintype n] [DecidableEq n] in
+/-- A nonnegative real multiple of a positive map is positive.  The scalar is
+embedded in `ℂ`, matching the real coefficients in Wolf's binomial and
+exponential expansions. -/
+theorem IsPositiveMap.nonneg_smul
+    {T : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ}
+    (hT : IsPositiveMap T) {c : ℝ} (hc : 0 ≤ c) :
+    IsPositiveMap ((c : ℂ) • T) := by
+  intro X hX
+  have hc_complex : 0 ≤ (c : ℂ) := by
+    exact_mod_cast hc
+  simpa only [LinearMap.smul_apply, Complex.coe_smul] using (hT X hX).smul hc_complex
 
 /-- A linear map is **trace-preserving** if `Tr(E(X)) = Tr(X)` for all `X`. -/
 def IsTracePreservingMap (E : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) : Prop :=

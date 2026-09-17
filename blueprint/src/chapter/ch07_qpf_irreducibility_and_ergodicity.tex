@@ -1,12 +1,13 @@
-\section{Exponential positivity for irreducible CP maps}
+\section{Equivalent growth conditions for irreducible positive maps}
 
 
-\begin{theorem}[Exponential positivity for irreducible CP maps]
+\begin{theorem}[Exponential positivity for irreducible positive maps]
     \label{thm:exp_pd_irred}
-    \lean{exp_posDef_of_irreducible_cp}
+    \lean{exp_posDef_of_growth, exp_posDef_of_irreducible,
+        exp_posDef_of_irreducible_cp}
     \leanok
-    \uses{def:irreducible_cp}
-    Let $E$ be an irreducible completely positive map on $\MN{D}$,
+    \uses{def:positive_map, def:irreducible_cp}
+    Let $E$ be an irreducible positive map on $\MN{D}$,
     let $A \ge 0$ be nonzero, and let $t > 0$.
     Then
     \begin{align}
@@ -14,8 +15,10 @@
          & = \sum_{k=0}^{\infty}\frac{t^k}{k!}E^k(A)>0.
         \label{eq:qpf_exp_positive}
     \end{align}
-    This is the completely positive specialization of the forward implication
-    in~\cite[Theorem~6.2(3)]{Wolf2012Quantum}.
+    This is the forward implication in
+    \cite[Theorem~6.2(3)]{Wolf2012Quantum}. Complete positivity is not used;
+    the former completely positive declaration is retained as a direct
+    specialization.
 \end{theorem}
 
 \begin{proof}
@@ -30,13 +33,15 @@
 
 \begin{theorem}[Exponential characterization of irreducibility]
     \label{thm:wolf_6_2_item_3}
-    \lean{irreducible_iff_exp_posDef_forall}
+    \lean{irreducible_of_exp_posDef_forall,
+        irreducible_iff_exp_posDef_forall_of_positive,
+        irreducible_iff_exp_posDef_forall}
     \leanok
-    \uses{def:irreducible_cp}
-    Let $E$ be a completely positive map on $\MN{D}$. Then $E$ is
+    \uses{def:positive_map, def:irreducible_cp}
+    Let $E$ be a positive map on $\MN{D}$. Then $E$ is
     irreducible if and only if, for every $t>0$ and every nonzero
     $A\geq0$, one has $\exp(tE)(A)>0$.
-    This is the completely positive specialization of the equivalence in
+    This is the equivalence in
     \cite[Theorem~6.2(3)]{Wolf2012Quantum};
     Theorem~\ref{thm:exp_pd_irred} is its forward implication.
 \end{theorem}
@@ -56,7 +61,53 @@
     lies in the same corner. If $P\neq0$, then at $t=1$ the assumed positive
     definiteness is impossible unless $P=\Id$, because a positive definite
     matrix cannot be supported on a proper corner. Thus every invariant
-    projection is $0$ or $\Id$, so $E$ is irreducible.
+    projection is $0$ or $\Id$, so $E$ is irreducible. The former completely
+    positive declaration is retained as a direct specialization.
+\end{proof}
+
+\begin{theorem}[Irreducible positive maps]
+    \label{thm:wolf_6_2}
+    \lean{wolf_theorem_6_2_tfae,
+        irreducible_of_orthogonal_trace_pos_forall}
+    \leanok
+    \uses{def:positive_map, def:irreducible_cp, thm:growth_pd_irred,
+        thm:exp_pd_irred, thm:orthogonal_trace_cond}
+    Let $E:\MN{D}\to\MN{D}$ be a positive linear map. The following
+    conditions are equivalent:
+    \begin{enumerate}
+        \item If a Hermitian projection $P$ satisfies
+              $E(P\MN{D}P)\subseteq P\MN{D}P$, then
+              $P\in\{0,\Id\}$.
+        \item For every nonzero $A\geq0$,
+              $(\Id+E)^{D-1}(A)>0$.
+        \item For every nonzero $A\geq0$ and every $t>0$,
+              $\exp(tE)(A)>0$.
+        \item For every orthogonal pair of nonzero matrices $A,B\geq0$,
+              there is an integer $t\in\{1,\ldots,D-1\}$ such that
+              $\tr(BE^t(A))>0$.
+    \end{enumerate}
+    This is \cite[Theorem~6.2]{Wolf2012Quantum}, with the source's positive-map
+    hypothesis and without a Kraus or complete-positivity assumption.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:growth_pd_irred, thm:exp_pd_irred,
+        thm:orthogonal_trace_cond}
+    The implication (1)$\Rightarrow$(2) is the support-projection and kernel
+    descent argument of Theorem~\ref{thm:growth_pd_irred}.
+    For (2)$\Rightarrow$(3), suppose that a vector lies in the kernel of the
+    first $D$ terms of the exponential series. Positivity of the summands
+    forces $E^k(A)$ to annihilate that vector for $0\leq k\leq D-1$.
+    The binomial expansion of $(\Id+E)^{D-1}(A)$ then annihilates the same
+    vector, contradicting (2). For (3)$\Rightarrow$(1), an invariant corner contains
+    every $E^k(P)$ and hence $\exp(E)(P)$; positive definiteness then excludes
+    a proper nonzero $P$. The implication (2)$\Rightarrow$(4) is
+    Theorem~\ref{thm:orthogonal_trace_cond}. Finally, if (4) held while a
+    proper nonzero projection $P$ defined an invariant corner, then every
+    $E^t(P)$ would remain supported on $P$, and
+    $\tr((\Id-P)E^t(P))=0$ for every $t$. This contradicts (4) with
+    $A=P$ and $B=\Id-P$.
 \end{proof}
 
 \section{Ergodicity of irreducible channels}
