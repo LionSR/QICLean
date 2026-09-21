@@ -98,6 +98,7 @@ import QICLean.Algebra.StarSubalgebraSimpleModule
 import QICLean.Algebra.StarSubalgebraSpatial
 import QICLean.Algebra.StarSubalgebraUnitaryIntertwiner
 import QICLean.Algebra.SwapTrace
+import QICLean.Algebra.TraceFormDuality
 import QICLean.Algebra.TracePowerCharPoly
 import QICLean.Algebra.TracePurity
 import QICLean.Algebra.TraceReindex
