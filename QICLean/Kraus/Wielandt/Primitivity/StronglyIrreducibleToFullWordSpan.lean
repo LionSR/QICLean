@@ -6,6 +6,7 @@ Authors: TNLean contributors
 import QICLean.Analysis.SpectralRadiusPowerDecay
 import QICLean.Algebra.HermitianHelpers
 import QICLean.Algebra.MatrixOperatorSpace
+import QICLean.Algebra.TraceFormDuality
 import QICLean.Channel.Semigroup.Primitivity.IrreducibleAnalysis
 import QICLean.Kraus.Injectivity
 import QICLean.Kraus.TracePairing
@@ -111,62 +112,16 @@ This bounds the error term `Q_{(E − P_ρ)^n}(B)` uniformly. -/
 
 section UniformPositivity
 
-/-! #### Trace representation of dual functionals
-
-Every linear functional `φ : M_D(ℂ) → ℂ` can be represented as
-`φ(N) = tr(M_φ · N)` for a unique matrix `M_φ`.  We prove this concretely
-by exhibiting `M_φ i j = φ(e_{ji})` and checking the trace identity. -/
-
-/-- Every linear functional `φ` on `M_D(ℂ)` decomposes as
-`φ(N) = ∑_{i,j} N i j · φ(e_{ij})`. -/
-private theorem linearMap_apply_eq_sum
-    (φ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ℂ)
-    (N : Matrix (Fin D) (Fin D) ℂ) :
-    φ N = ∑ i : Fin D, ∑ j : Fin D,
-      N i j * φ (Matrix.single i j 1) := by
-  conv_lhs => rw [Matrix.matrix_eq_sum_single N]
-  simp only [map_sum]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  rw [show Matrix.single i j (N i j) = N i j • Matrix.single i j (1 : ℂ) by
-    rw [Matrix.smul_single, smul_eq_mul, mul_one]]
-  rw [LinearMap.map_smul, smul_eq_mul]
-
-/-- The **trace-pairing representation**: for every linear functional `φ`,
-`φ(N) = tr(M_φ · N)` where `M_φ i j = φ(e_{ji})`. -/
-private theorem phi_eq_trace_mul
-    (φ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ℂ)
-    (N : Matrix (Fin D) (Fin D) ℂ) :
-    φ N = Matrix.trace
-      ((Matrix.of fun i j => φ (Matrix.single j i 1)) * N) := by
-  rw [linearMap_apply_eq_sum φ N]
-  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply,
-    Matrix.of_apply]
-  rw [Finset.sum_comm]
-  congr 1; ext i; congr 1; ext j; ring
-
-/-- The representing matrix is zero iff the functional is zero. -/
-private theorem rep_eq_zero_iff [NeZero D]
-    (φ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ℂ) :
-    (Matrix.of fun i j =>
-      φ (Matrix.single j i (1 : ℂ))) = 0 ↔ φ = 0 := by
-  constructor
-  · intro hrep; ext N
-    rw [phi_eq_trace_mul φ N, hrep, zero_mul,
-      Matrix.trace_zero, LinearMap.zero_apply]
-  · intro hφ; ext i j
-    simp [Matrix.of_apply, hφ]
-
 /-! #### Lemma A: trace-pairing positivity → full word span -/
 
 /-- **Lemma A**: If the trace-pairing bilinear form `Q_{E^n}(B)` has
 strictly positive real part for every nonzero `B`, then the word span at
 length `n` is all of `M_D(ℂ)`.
 
-The proof goes by contradiction: if `wordSpan ≠ ⊤`, the dual annihilator
-contains a nonzero functional `φ`, which we represent as `N ↦ tr(M · N)`.
-Setting `B = M†` gives `tr(B† A_σ) = 0` for all words `σ`, so the
-trace-pairing identity forces `Q_{E^n}(B) = 0`, contradicting
-positivity. -/
+By nondegeneracy of the trace pairing it suffices to show that a matrix `M`
+with `tr(M A_σ) = 0` for every word `σ` vanishes. Setting `B = M†` makes the
+left-hand side of the trace-pairing identity vanish, so `Q_{E^n}(B) = 0`,
+which contradicts positivity unless `M = 0`. -/
 private theorem wordSpan_eq_top_of_tracePairBilin_re_pos
     [NeZero D]
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (n : ℕ)
@@ -174,25 +129,8 @@ private theorem wordSpan_eq_top_of_tracePairBilin_re_pos
       0 < (tracePairBilin
         (((mapLM K) ^ n : _)) B).re) :
     wordSpan K n = ⊤ := by
-  by_contra hne
-  -- Dual annihilator of a proper subspace is nontrivial
-  have hann : (wordSpan K n).dualAnnihilator ≠ ⊥ :=
-    fun h => hne (Submodule.dualAnnihilator_eq_bot_iff.mp h)
-  -- Get a nonzero functional φ vanishing on wordSpan
-  obtain ⟨φ, hφmem, hφne⟩ :=
-    Submodule.exists_mem_ne_zero_of_ne_bot hann
-  -- Construct M with φ(N) = tr(M · N)
-  set M := Matrix.of fun i j =>
-    φ (Matrix.single j i (1 : ℂ)) with hMdef
-  have hMne : M ≠ 0 := by
-    rwa [hMdef, ne_eq, rep_eq_zero_iff]
-  -- φ vanishes on generators: tr(M · A_σ) = 0
-  have hvanish : ∀ σ : Fin n → Fin d,
-      Matrix.trace (M * Kraus.evalWord K (List.ofFn σ)) = 0 := by
-    intro σ
-    rw [← phi_eq_trace_mul φ (Kraus.evalWord K (List.ofFn σ))]
-    exact (Submodule.mem_dualAnnihilator φ).mp hφmem _
-      (Submodule.subset_span ⟨σ, rfl⟩)
+  refine Matrix.eq_top_of_trace_separating fun M hM => ?_
+  by_contra hMne
   -- Set B = M†, so tr(B† A_σ) = tr(M A_σ) = 0
   set B := Mᴴ with hBdef
   have hBne : B ≠ 0 :=
@@ -201,7 +139,7 @@ private theorem wordSpan_eq_top_of_tracePairBilin_re_pos
       Matrix.trace (Bᴴ * Kraus.evalWord K (List.ofFn σ)) = 0 := by
     intro σ
     rw [hBdef, Matrix.conjTranspose_conjTranspose]
-    exact hvanish σ
+    exact hM _ (Submodule.subset_span ⟨σ, rfl⟩)
   -- tracePairBilin(E^n)(B).re > 0 by hypothesis
   have hrhs := hpos B hBne
   -- trace-pairing identity
