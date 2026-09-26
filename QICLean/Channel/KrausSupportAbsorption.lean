@@ -12,7 +12,7 @@ import QICLean.Channel.KrausMap
 The support of the output of a finite Kraus map on the identity absorbs every
 Kraus operator on the left. A vanishing output on the complementary support
 gives right absorption. Consequently, a trace-factorized Kraus map has each
-operator between the supports of its input effect and output matrix.
+operator between the supports of its positive input and output matrices.
 -/
 
 open scoped Matrix BigOperators ComplexOrder

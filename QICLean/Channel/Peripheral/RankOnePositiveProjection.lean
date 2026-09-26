@@ -24,11 +24,11 @@ open scoped ComplexOrder Matrix.Norms.L2Operator
 
 namespace IsPositiveMap
 
-/-- A rank-one positive idempotent map on a nonzero finite matrix algebra is a
-positive measure-and-prepare map. The output matrix is `T 1`, while the input
-effect is its trace-adjoint counterpart divided by `tr(T 1)`.
+/-- A rank-one positive idempotent map on a nonzero finite matrix algebra has
+a positive trace factorization. The output matrix is `T 1`, while the positive
+input matrix is its trace-adjoint counterpart divided by `tr(T 1)`.
 
-This is the channel-level rank-one projection decomposition used in
+This is the rank-one projection decomposition used in
 finite-dimensional transfer-map arguments. -/
 theorem exists_posSemidef_trace_factors_of_finrank_range_eq_one_of_idempotent
     {D : ℕ} [NeZero D]
