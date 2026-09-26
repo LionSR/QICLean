@@ -27,12 +27,6 @@ namespace Matrix
 
 variable {D : ℕ}
 
-/-- Column-by-column description of matrix multiplication on the left. -/
-lemma col_mul (P X : Matrix (Fin D) (Fin D) ℂ) (j : Fin D) :
-    (P * X).col j = P *ᵥ (X.col j) := by
-  ext i
-  simp [Matrix.col_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct]
-
 /-- Membership in `range (mulLeft P)` is equivalent to every column belonging to the range of
 `Matrix.toLin' P`. -/
 theorem mem_range_mulLeft_iff_cols
@@ -46,7 +40,7 @@ theorem mem_range_mulLeft_iff_cols
     rcases (LinearMap.mem_range).1 hM with ⟨X, rfl⟩
     refine (LinearMap.mem_range).2 ?_
     refine ⟨X.col j, ?_⟩
-    simp [LinearMap.mulLeft_apply, Matrix.toLin'_apply, col_mul]
+    simp [LinearMap.mulLeft_apply, Matrix.toLin'_apply, col_mul_eq_mulVec_col]
   · intro hcols
     have hcols' : ∀ j : Fin D, ∃ x : Fin D → ℂ, (Matrix.toLin' P) x = M.col j :=
       fun j => (LinearMap.mem_range).1 (hcols j)
@@ -63,7 +57,7 @@ theorem mem_range_mulLeft_iff_cols
     have hx' : P *ᵥ (x j) = M.col j := by
       simpa [Matrix.toLin'_apply] using hx j
     calc
-      (P * X).col j = P *ᵥ (X.col j) := col_mul P X j
+      (P * X).col j = P *ᵥ (X.col j) := col_mul_eq_mulVec_col
       _ = P *ᵥ (x j) := by simp [hXcol]
       _ = M.col j := hx'
 

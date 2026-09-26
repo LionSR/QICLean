@@ -42,14 +42,8 @@ theorem haCyclicWeight_mul_star (hd : 3 ≤ d) (γ : ℝ) (a b : Fin d) :
     haCyclicWeight d γ b a * star (haCyclicWeight d γ b a) =
       if a = haCyclicSucc b then (γ : ℂ) ^ 2
       else if b = haCyclicSucc a then ((γ : ℂ)⁻¹) ^ 2 else 1 := by
-  have hneg : (-1 : ZMod d) ≠ 1 := by
-    intro h
-    have h' : ((-1 : ℤ) : ZMod d) = ((1 : ℤ) : ZMod d) := by simpa using h
-    have hdvdz : (d : ℤ) ∣ (2 : ℤ) := by
-      simpa using
-        (ZMod.intCast_eq_intCast_iff_dvd_sub (-1 : ℤ) (1 : ℤ) d).mp h'
-    have hdvd : d ∣ 2 := Int.natCast_dvd_natCast.mp hdvdz
-    exact (by omega : ¬d ≤ 2) (Nat.le_of_dvd (by norm_num) hdvd)
+  have hneg : (-1 : ZMod d) ≠ 1 := fun h ↦ by
+    rcases ZMod.neg_one_eq_one_iff.mp h with h | h <;> omega
   have hoff_one {p q : Fin d}
       (h : ZMod.finEquiv d p - ZMod.finEquiv d q = 1) :
       p = haCyclicSucc q := by
