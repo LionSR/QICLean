@@ -15,6 +15,7 @@ import QICLean.Channel.CPDecomposition
 import QICLean.Channel.ChoiDoeblin
 import QICLean.Channel.ChoiJamiolkowski
 import QICLean.Channel.ChoiRectangular
+import QICLean.Channel.ChoiTraceFactorization
 import QICLean.Channel.ChoiTypeMap
 import QICLean.Channel.ChoiTypeMap.HaBlockTranspose
 import QICLean.Channel.ChoiTypeMap.HaNegativePairing
