@@ -108,6 +108,48 @@ The empty product is the identity matrix.
     Equation~\eqref{eq:kraus_iterate_choi_posdef_iff_word_span}.
 \end{proof}
 
+\begin{theorem}[Choi matrix of a trace-factorized map]
+    \label{thm:choi_trace_factorization}
+    \lean{ChoiJamiolkowski.choiMatrix_eq_kronecker_of_eq_trace_smul,
+        ChoiJamiolkowski.choiMatrix_posDef_of_eq_trace_smul}
+    \leanok
+    \uses{def:choi_matrix}
+    Let $L,R\in\MN{D}$ and let $T(X)=\tr(LX)R$. Then
+    \begin{align}
+        \tau_T&=D^{-1}(R\otimes L^{\mathsf T}).
+        \label{eq:choi_trace_factors}
+    \end{align}
+    If $L>0$ and $R>0$, then $\tau_T>0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    By the definition of the normalized Choi matrix, its entry at
+    $((i,j),(k,l))$ is $D^{-1}T(E_{jl})_{ik}$.
+    Since $\tr(LE_{jl})=L_{lj}$, this entry is $D^{-1}R_{ik}L_{lj}$,
+    which proves~(\ref{eq:choi_trace_factors}). Transposition and tensor
+    products preserve positive definiteness, and $D^{-1}>0$.
+\end{proof}
+
+\begin{theorem}[Positive-definite trace factors imply injectivity]
+    \label{thm:kraus_injective_trace_factors}
+    \lean{Kraus.isInjective_of_mapLM_eq_trace_smul}
+    \leanok
+    \uses{def:injective,def:transfer_map}
+    Suppose that $E(X)=\tr(LX)R$ for every $X\in\MN{D}$, where
+    $L,R>0$. Then the matrices $K_i$ span $\MN{D}$.
+    Neither trace preservation nor idempotence is required.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:choi_trace_factorization,
+        thm:kraus_iterate_choi_posdef_iff_word_span}
+    Theorem~\ref{thm:choi_trace_factorization} gives $\tau_E>0$.
+    Applying Theorem~\ref{thm:kraus_iterate_choi_posdef_iff_word_span}
+    with $m=1$ yields $\mathcal S_1=\MN{D}$.
+\end{proof}
+
 \begin{corollary}[Eventual Choi positivity]
     \label{cor:kraus_iterate_eventual_choi_posdef}
     \lean{Kraus.eventually_choiMatrix_mapLM_pow_posDef_iff_hasEventuallyFullWordSpan}
