@@ -244,6 +244,33 @@ outer square-root factors yields
     \end{align}
 \end{proof}
 
+\begin{theorem}[Left fixed point and gauge of a trace-factorized map]%
+    \label{thm:qpf_trace_factor_gauge}
+    \lean{Kraus.mapLM_conjTranspose_eq_self_of_eq_trace_smul,
+        Kraus.tpGauge_isTP_of_mapLM_eq_trace_smul}
+    \leanok
+    \uses{def:kraus_map}
+    Let $E(X)=\sum_i A_i X A_i^\dagger$ be a finite Kraus map on
+    $\MN{D}$. Suppose $L,R\in\MN{D}$ satisfy $\tr(LR)=1$ and
+    $E(X)=\tr(LX)R$ for every $X\in\MN{D}$.
+    Then $E^*(L)=L$. If in addition $L$ is positive definite, the family
+    $B_i=L^{1/2}A_iL^{-1/2}$ is trace-preserving:
+    $\sum_i B_i^\dagger B_i=\Id$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:kraus_tp_gauge_from_adjoint_fixed}
+    For every $X\in\MN{D}$, trace duality gives
+    \begin{align}
+        \tr(E^*(L)X)
+         & =\tr(LE(X))=\tr(LX)\tr(LR)=\tr(LX).
+        \notag
+    \end{align}
+    Nondegeneracy of the trace pairing gives $E^*(L)=L$.
+    When $L$ is positive definite,
+    Theorem~\ref{thm:kraus_tp_gauge_from_adjoint_fixed} applies.
+\end{proof}
+
 \section{Similarity bookkeeping}
 \label{sec:app_qpf_similarity}
 
