@@ -140,6 +140,7 @@ jobs:
               - 'docs/ci-automation.md'
               - 'docs/CONTRIBUTING.md'
             blueprint:
+              - '.github/workflows/pr-ci.yml'
               - 'blueprint/src/**'
               - 'blueprint/.chktexrc'
               - 'blueprint/latexindent.yaml'
@@ -402,9 +403,10 @@ jobs:
 
       - name: Lint LaTeX (chktex)
         if: env.TEX_CHANGED == 'true'
+        working-directory: blueprint/src
         run: |
-          find blueprint/src -name '*.tex' -not -path '*/Packages/*' -print0 \
-            | xargs -0 -r chktex -q -l blueprint/.chktexrc
+          find . -name '*.tex' -not -path '*/Packages/*' -print0 \
+            | xargs -0 -r chktex -q -l ../.chktexrc
 
       - name: Check LaTeX formatting (latexindent)
         if: env.TEX_CHANGED == 'true'
