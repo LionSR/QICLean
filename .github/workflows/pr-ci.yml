@@ -140,6 +140,7 @@ jobs:
               - 'docs/ci-automation.md'
               - 'docs/CONTRIBUTING.md'
             blueprint:
+              - '.github/workflows/pr-ci.yml'
               - 'blueprint/src/**'
               - 'blueprint/.chktexrc'
               - 'blueprint/latexindent.yaml'
