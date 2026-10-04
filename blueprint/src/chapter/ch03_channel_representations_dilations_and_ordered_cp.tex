@@ -877,6 +877,251 @@ a common dilation space.
     gives (\ref{eq:representations_open_system_rectangular_unitary}).
 \end{proof}
 
+\paragraph{Prescribed pure environments and deferred partial traces.}
+
+\begin{definition}[Fixed pure-environment insertion]
+    \label{def:fixed_environment_insertion}
+    \lean{Matrix.fixedEnvEmbedding}
+    \leanok
+    For finite-dimensional spaces $S,E$ with fixed orthonormal bases and a
+    chosen environment basis vector $\ket a$, define
+    $J_a:S\to S\otimes E$ by $J_a\ket s=\ket s\otimes\ket a$.
+\end{definition}
+
+\begin{theorem}[Fixed-environment insertion identities]
+    \label{thm:fixed_environment_insertion}
+    \lean{Matrix.fixedEnvEmbedding_conjTranspose_mul_self,
+        Matrix.mul_fixedEnvEmbedding_apply, Matrix.fixedEnvEmbedding_mul}
+    \leanok
+    \uses{def:fixed_environment_insertion}
+    The insertion satisfies $J_a^\dagger J_a=\Id_S$ and
+    $J_aA=(A\otimes\Id_E)J_a$ for every matrix $A$ on $S$.
+    For every matrix $U$ on $S\otimes E$, its initialized columns satisfy
+    $(UJ_a)_{(s,e),t}=U_{(s,e),(t,a)}$.
+\end{theorem}
+\begin{proof}\leanok
+    Expand the matrix products and use
+    $(J_a)_{(s,e),t}=\delta_{s,t}\delta_{e,a}$.
+\end{proof}
+
+\begin{theorem}[Unitary extension with a prescribed environment input]
+    \label{thm:fixed_environment_unitary_extension}
+    \lean{Matrix.exists_unitary_mul_fixedEnvEmbedding_eq}
+    \leanok
+    \uses{def:fixed_environment_insertion}
+    If $V:S\to S\otimes E$ is an isometry, then there is a unitary $U$ on
+    $S\otimes E$ such that $V=UJ_a$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:fixed_environment_insertion, lem:exists_unitary_mul_eq_of_gram_eq}
+    The matrices $V$ and $J_a$ have the same Gram matrix $\Id_S$.
+    Apply Lemma~\ref{lem:exists_unitary_mul_eq_of_gram_eq}.
+\end{proof}
+
+\begin{definition}[Pure-environment initialization]
+    \label{def:pure_environment_initialization}
+    \lean{Matrix.freshEnvironmentInput,
+        Matrix.freshEnvironmentInput_eq_kronecker, Matrix.freshEnvironmentInput_reindex}
+    \leanok
+    \uses{def:fixed_environment_insertion}
+    Define $\mathcal I_a(X)=J_aXJ_a^\dagger
+        =X\otimes\ketbra{a}{a}$ on all system matrices $X$.
+    Relabeling the system and environment bases by bijections $p,q$
+    carries $\mathcal I_a(X)$ to $\mathcal I_{q(a)}(p_*X)$, where $p_*X$
+    denotes the matrix in the relabeled system basis.
+\end{definition}
+
+\begin{definition}[Initialized environment blocks]
+    \label{def:initialized_environment_blocks}
+    \lean{Matrix.environmentKraus}
+    \leanok
+    For a matrix $U$ on $S\otimes E$ and basis indices $a,b$ of $E$, set
+    $(K_b)_{s,t}=U_{(s,b),(t,a)}$.
+\end{definition}
+
+\begin{theorem}[Reduced map from initialized columns]
+    \label{thm:initialized_environment_blocks}
+    \lean{Matrix.partialTrace_freshEnvironmentInput}
+    \leanok
+    \uses{def:pure_environment_initialization, def:initialized_environment_blocks}
+    For arbitrary matrices $U$ on $S\otimes E$ and $X$ on $S$,
+    $\tr_E[U\mathcal I_a(X)U^\dagger]=\sum_bK_bXK_b^\dagger$.
+\end{theorem}
+\begin{proof}\leanok
+    Expand the partial trace and the two matrix products.
+    The matrix $\ketbra{a}{a}$ fixes both input environment indices to $a$;
+    summation over the output environment index gives the stated blocks.
+\end{proof}
+
+\begin{theorem}[Normalized Kraus dilation with fixed pure input]
+    \label{thm:fixed_input_kraus_dilation}
+    \lean{Matrix.exists_freshEnvironment_unitary,
+        Matrix.exists_freshEnvironment_unitary_map}
+    \leanok
+    \uses{def:pure_environment_initialization}
+    Let $K_0,\ldots,K_{r-1}$ be matrices on $S$ satisfying
+    $\sum_jK_j^\dagger K_j=\Id_S$, and choose $a\in\{0,\ldots,r-1\}$.
+    There is a unitary $U$ on $S\otimes\C^r$ such that, for every
+    matrix $X$ on $S$,
+    \begin{align}
+        \sum_jK_jXK_j^\dagger
+         & =\tr_{\C^r}\!\left[U\mathcal I_a(X)U^\dagger\right].
+        \label{eq:representations_fixed_input_kraus}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:stinespring_v_conjTranspose_mul,
+        thm:stinespring_schrodinger_representation,
+        thm:fixed_environment_unitary_extension}
+    The Stinespring matrix $V$ and $J_a$ both have Gram matrix $\Id_S$.
+    Choose a unitary with $V=UJ_a$ and substitute into
+    $\sum_jK_jXK_j^\dagger=\tr_{\C^r}(VXV^\dagger)$.
+\end{proof}
+
+\begin{theorem}[Dimension-bounded dilation retaining the system factor]
+    \label{thm:bounded_retained_system_dilation}
+    \lean{Matrix.exists_bounded_freshEnvironment_unitary,
+        Matrix.exists_freshEnvironment_unitary_of_equiv}
+    \leanok
+    \uses{def:is_kraus_cptp, def:pure_environment_initialization}
+    Let $T:\MN{D}\to\MN{D}$ be completely positive and trace preserving.
+    Choose an environment dimension $R\geq D^2$ and a basis index
+    $a\in\{0,\ldots,R-1\}$. There is a unitary $U$ on
+    $\C^D\otimes\C^R$ such that, for every $X\in\MN{D}$,
+    \begin{align}
+        T(X) & =\tr_{\C^R}\!\left[
+            U\bigl(X\otimes\ketbra{a}{a}\bigr)U^\dagger\right].
+        \label{eq:representations_retained_system_dilation}
+    \end{align}
+    The retained output is the original first factor $\C^D$.
+    The same statement holds in arbitrary finite bases of cardinalities
+    $D$ and $R$. This is a square-system consequence of the construction in
+    \cite[Theorems~2.2 and~2.5]{Wolf2012Quantum}, with a prescribed input
+    vector and the sufficient environment bound $R\geq D^2$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:stinespring_rectangular, thm:kraus_rect_rank_minimal,
+        thm:fixed_environment_unitary_extension}
+    The Choi-rank bound gives a Stinespring isometry
+    $V:\C^D\to\C^D\otimes\C^R$.
+    Since $V^\dagger V=J_a^\dagger J_a=\Id_D$, choose a unitary
+    satisfying $V=UJ_a$ and substitute in the reduced-map identity.
+    Relabeling the two factors preserves both the pure input and the
+    partial trace.
+\end{proof}
+
+\begin{theorem}[Preservation of arbitrary reference operators]
+    \label{thm:pure_environment_reference}
+    \lean{Matrix.freshEnvironment_dilation_reference}
+    \leanok
+    \uses{def:pure_environment_initialization}
+    Write $\operatorname{Ad}_U(Z)=UZU^\dagger$. If
+    $T=\tr_E\circ\operatorname{Ad}_U\circ\mathcal I_a$, then for any
+    reference matrix index set $R$,
+    \begin{align}
+        T\otimes\Id_R
+         & =(\tr_E\otimes\Id_R)\circ
+        (\operatorname{Ad}_U\otimes\Id_R)\circ
+        (\mathcal I_a\otimes\Id_R).
+        \label{eq:representations_environment_reference}
+    \end{align}
+    This is an equality on all system--reference matrices.
+\end{theorem}
+\begin{proof}\leanok
+    Tensoring by the identity preserves composition of linear maps.
+\end{proof}
+
+\begin{definition}[Acting beside an earlier environment]
+    \label{def:fresh_environment_action}
+    \lean{Matrix.DeferredEnvironment.freshEnvironmentEquiv,
+        Matrix.DeferredEnvironment.freshEnvironmentEquiv_apply,
+        Matrix.DeferredEnvironment.freshEnvironmentEquiv_symm_apply,
+        Matrix.DeferredEnvironment.freshEnvironmentOp}
+    \leanok
+    Let $S,E,F$ be finite-dimensional spaces, and let
+    $\Sigma:(S\otimes E)\otimes F\to(S\otimes F)\otimes E$ send
+    $\ket{s,e,f}$ to $\ket{s,f,e}$. For a matrix $V$ on $S\otimes F$,
+    define $\widetilde V=\Sigma^\dagger(V\otimes\Id_E)\Sigma$.
+\end{definition}
+
+\begin{theorem}[Partial traces under exchange of environments]
+    \label{thm:environment_trace_exchange}
+    \lean{Matrix.DeferredEnvironment.partialTraceRight_freshEnvironmentEquiv,
+        Matrix.DeferredEnvironment.partialTraceRight_freshInput,
+        Matrix.DeferredEnvironment.partialTraceRight_freshEnvironmentOp}
+    \leanok
+    \uses{def:fresh_environment_action}
+    For arbitrary matrices $Z$ on $(S\otimes E)\otimes F$, $Y$ on
+    $S\otimes E$, $\tau$ on $F$, and $V$ on $S\otimes F$,
+    \begin{align}
+        \tr_E\tr_F Z & =\tr_F\tr_E(\Sigma Z\Sigma^\dagger),
+        \notag                                                   \\
+        \tr_E[\Sigma(Y\otimes\tau)\Sigma^\dagger]
+                     & =(\tr_EY)\otimes\tau,
+        \notag                                                   \\
+        \tr_E[\Sigma\widetilde VZ\widetilde V^\dagger\Sigma^\dagger]
+                     & =V\tr_E(\Sigma Z\Sigma^\dagger)V^\dagger.
+        \label{eq:representations_environment_exchange}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:partial_trace_product_isometry}
+    The first identity exchanges the finite sums over the two environment
+    bases. Expanding matrix entries gives the second identity.
+    The third follows from Lemma~\ref{lem:partial_trace_product_isometry}
+    applied to $V\otimes\Id_E$ in the reordered coordinates.
+\end{proof}
+
+\begin{theorem}[Deferring the trace of a correlated environment]
+    \label{thm:deferred_correlated_environment}
+    \lean{Matrix.DeferredEnvironment.trace_deferred_freshEnvironment}
+    \leanok
+    \uses{def:fresh_environment_action}
+    For arbitrary matrices $Y$ on $S\otimes E$, $\tau$ on $F$, and $V$
+    on $S\otimes F$,
+    \begin{align}
+        \tr_E\tr_F\!\left[\widetilde V(Y\otimes\tau)\widetilde V^\dagger\right]
+         & =\tr_F\!\left[V\bigl((\tr_EY)\otimes\tau\bigr)V^\dagger\right].
+        \label{eq:representations_deferred_environment}
+    \end{align}
+    The matrix $Y$ need not be a tensor product or a density matrix.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:environment_trace_exchange}
+    Apply Theorem~\ref{thm:environment_trace_exchange} with $Z=Y\otimes\tau$.
+    Discarding $E$ first gives $V((\tr_EY)\otimes\tau)V^\dagger$.
+    The remaining trace over $F$ gives~(\ref{eq:representations_deferred_environment}).
+\end{proof}
+
+\begin{theorem}[Composition with one final environment discard]
+    \label{thm:deferred_environment_composition}
+    \lean{Matrix.DeferredEnvironment.deferredEnvironment_comp,
+        Matrix.DeferredEnvironment.freshEnvironmentOp_mem_unitary,
+        Matrix.DeferredEnvironment.deferredEnvironment_comp_mem_unitary}
+    \leanok
+    \uses{def:fresh_environment_action}
+    For matrices $U$ on $S\otimes E$ and $V$ on $S\otimes F$, let
+    $C=\widetilde V(U\otimes\Id_F)$ and define
+    $\mathcal D_{U,\sigma}(X)=\tr_E[U(X\otimes\sigma)U^\dagger]$.
+    For arbitrary matrices $X$ on $S$, $\sigma$ on $E$, and $\tau$ on $F$,
+    \begin{align}
+        \tr_E\tr_F\!\left[C\bigl((X\otimes\sigma)\otimes\tau\bigr)C^\dagger\right]
+         & =\mathcal D_{V,\tau}\bigl(\mathcal D_{U,\sigma}(X)\bigr).
+        \label{eq:representations_deferred_composition}
+    \end{align}
+    If $V$ is unitary, so is $\widetilde V$; if both $U$ and $V$ are
+    unitary, then $C$ is unitary.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:deferred_correlated_environment}
+    Conjugation by $U\otimes\Id_F$ sends
+    $(X\otimes\sigma)\otimes\tau$ to
+    $[U(X\otimes\sigma)U^\dagger]\otimes\tau$.
+    Apply Theorem~\ref{thm:deferred_correlated_environment} to the first
+    factor. Unitarity is preserved by tensoring with an identity, by the
+    coordinate permutation $\Sigma$, and by multiplication.
+\end{proof}
+
 %% =========================================================
 \section{POVMs and Naimark dilation}
 \label{sec:povm_naimark}
