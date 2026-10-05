@@ -123,6 +123,7 @@ jobs:
           filters: |
             lean:
               - '**.lean'
+              - '.github/workflows/pr-ci.yml'
               - 'lakefile.*'
               - 'lean-toolchain'
               - 'lake-manifest.json'
@@ -207,6 +208,13 @@ jobs:
             lake build
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check pure-environment dilation regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/EnvironmentDilation.lean
 
       - name: Check changed Lean compilation times
         id: compilation-time

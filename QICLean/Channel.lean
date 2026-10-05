@@ -26,6 +26,7 @@ import QICLean.Channel.ComplementaryWeylTwirl
 import QICLean.Channel.CompletelyPositiveBridge
 import QICLean.Channel.DecomposablePPT
 import QICLean.Channel.DecomposableWitness
+import QICLean.Channel.DeferredEnvironmentTrace
 import QICLean.Channel.DensityRetract
 import QICLean.Channel.DetailedBalance
 import QICLean.Channel.Determinant
@@ -42,6 +43,8 @@ import QICLean.Channel.Determinant.UnitaryCharacterization
 import QICLean.Channel.DirectSumConditionalExpectation
 import QICLean.Channel.EnsembleEquivalence
 import QICLean.Channel.EntanglementWitness
+import QICLean.Channel.EnvironmentDilation
+import QICLean.Channel.EnvironmentEmbedding
 import QICLean.Channel.EnvironmentInducedInstrument
 import QICLean.Channel.FaithfulMarginalWhitenedChoi
 import QICLean.Channel.FixedPoint
