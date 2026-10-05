@@ -52,6 +52,7 @@ import QICLean.Analysis.LiebSubBoundary
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixFamilySupport
 import QICLean.Analysis.MatrixFittingRange
+import QICLean.Analysis.MatrixFramePerturbation
 import QICLean.Analysis.MatrixNonzeroTraceEigenvalue
 import QICLean.Analysis.MatrixReducedProjection
 import QICLean.Analysis.MatrixSqrt
