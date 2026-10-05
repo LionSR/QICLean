@@ -15,6 +15,7 @@ import QICLean.Channel.CPDecomposition
 import QICLean.Channel.ChoiDoeblin
 import QICLean.Channel.ChoiJamiolkowski
 import QICLean.Channel.ChoiRectangular
+import QICLean.Channel.ChoiResidual
 import QICLean.Channel.ChoiTypeMap
 import QICLean.Channel.ChoiTypeMap.HaBlockTranspose
 import QICLean.Channel.ChoiTypeMap.HaNegativePairing
@@ -91,6 +92,7 @@ import QICLean.Channel.OperatorSystemExtension
 import QICLean.Channel.OperatorSystemExtensionDirectSum
 import QICLean.Channel.OperatorSystemExtensionStarSubalgebra
 import QICLean.Channel.OrderedCP
+import QICLean.Channel.OrderedRectangular
 import QICLean.Channel.POVM
 import QICLean.Channel.POVM.RankOneNaimark
 import QICLean.Channel.POVM.SIC
@@ -139,5 +141,6 @@ import QICLean.Channel.WeylTwirl
 import QICLean.Channel.WhitenedChoi
 import QICLean.Channel.WielandtLowDim
 import QICLean.Channel.Wigner
+import QICLean.Channel.WindowMinorization
 import QICLean.Channel.WolfProps
 import QICLean.Channel.WolfTheorem68
