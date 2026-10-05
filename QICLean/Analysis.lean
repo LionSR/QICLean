@@ -33,6 +33,7 @@ import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
+import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.HayashiMarkovStructure
 import QICLean.Analysis.HermitianMatrixCone
 import QICLean.Analysis.IdempotentEndomorphism

@@ -201,6 +201,17 @@ jobs:
       # documenting the invariant this repository must keep true for TNLean;
       # TNLean's own pr-ci.yml carries the real comparison step.
 
+      - name: Build rectangular window API targets early
+        run: lake build QICLean.Channel.WindowMinorization QICLean.Kraus.RectangularChain QICLean.Algebra.MatrixDependentEntries QICLean.Analysis.GeometricDecay
+
+      - name: Check rectangular window regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/WindowMinorization.lean
+
+
       - name: Build Lean project and capture timings
         run: |
           set -eo pipefail
@@ -215,6 +226,7 @@ jobs:
           -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false
           -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
           QICLeanTest/EnvironmentDilation.lean
+
 
       - name: Check changed Lean compilation times
         id: compilation-time

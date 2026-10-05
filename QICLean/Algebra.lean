@@ -38,6 +38,7 @@ import QICLean.Algebra.MatrixAlgHomCentralizer
 import QICLean.Algebra.MatrixAux
 import QICLean.Algebra.MatrixCongruence
 import QICLean.Algebra.MatrixCyclicTracePower
+import QICLean.Algebra.MatrixDependentEntries
 import QICLean.Algebra.MatrixFamilyAction
 import QICLean.Algebra.MatrixFamilySupport
 import QICLean.Algebra.MatrixGramConjugation
