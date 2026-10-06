@@ -212,15 +212,16 @@ jobs:
           QICLeanTest/WindowMinorization.lean
 
 
-      - name: Build Hermitian intertwiner and exponential targets
+      - name: Build Hermitian intertwiner, path, and inner-action targets
         run: >
           lake build QICLean.Analysis.HermitianIntertwiner
           QICLean.Analysis.HermitianUnitaryPath QICLean.Analysis.KroneckerExponential
+          QICLean.Algebra.MatrixUnitConjugator QICLean.Analysis.DifferentiableInnerAction
 
-      - name: Check Hermitian intertwiner and path regressions strictly
+      - name: Check Hermitian intertwiner, path, and inner-action regressions strictly
         run: |
           set -e
-          for example in HermitianIntertwiner ContinuousHermitianPath; do
+          for example in HermitianIntertwiner ContinuousHermitianPath DifferentiableInnerAction; do
             LEAN_NUM_THREADS=1 lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
               -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
