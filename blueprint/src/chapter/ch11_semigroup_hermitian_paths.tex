@@ -1,0 +1,82 @@
+\section{Hermitian exponential paths}
+\label{sec:hermitian_exponential_paths}
+
+\begin{definition}[Exponential path of a matrix]
+    \label{def:hermitian_exponential_path}
+    \lean{Matrix.hermitianUnitaryPath}
+    \leanok
+    For a complex square matrix $H$ and $t\in\R$, set $U_H(t)=e^{itH}$.
+\end{definition}
+
+\begin{theorem}[Continuous unitary one-parameter group]
+    \label{thm:hermitian_exponential_group}
+    \lean{Matrix.hermitianUnitaryPath_mul_conjTranspose,
+        Matrix.hermitianUnitaryPath_zero,
+        Matrix.continuous_hermitianUnitaryPath,
+        Matrix.hermitianUnitaryPath_add,
+        Matrix.hermitianUnitaryRepresentation}
+    \leanok
+    \uses{def:hermitian_exponential_path}
+    For every complex square matrix $H$, the path $U_H$ is continuous,
+    $U_H(0)=\Id$, and $U_H(s+t)=U_H(s)U_H(t)$ for all real $s,t$.
+    If $H=H^\dagger$, then $U_H(t)U_H(t)^\dagger=\Id$, so $U_H$
+    is a continuous homomorphism from $(\R,+)$ to the unitary group.
+\end{theorem}
+\begin{proof}\leanok
+    Continuity follows from continuity of the matrix exponential.
+    The exponentials of $isH$ and $itH$ multiply to $e^{i(s+t)H}$
+    because the two exponents commute. For Hermitian $H$,
+    $(itH)^\dagger=-itH$, so $U_H(t)^\dagger=e^{-itH}$ and
+    $U_H(t)U_H(t)^\dagger=e^0=\Id$.
+\end{proof}
+
+\begin{theorem}[Nonscalar exponentials near the identity]
+    \label{thm:exponential_nonscalar_near_zero}
+    \lean{Matrix.eventually_hermitianUnitaryPath_nonscalar}
+    \leanok
+    \uses{def:hermitian_exponential_path}
+    Let $K$ be a complex square matrix with $K\notin\C\Id$.
+    There exists $\varepsilon>0$ such that
+    $e^{itK}\notin\C\Id$ whenever $0<|t|<\varepsilon$.
+    Hermiticity of $K$ is not required.
+\end{theorem}
+\begin{proof}\leanok
+    Since the common commutant of the matrix units consists of scalar
+    matrices, there is a matrix unit $B$ with $BK-KB\ne0$.
+    Define $f(t)=Be^{itK}-e^{itK}B$. Then $f(0)=0$ and
+    $f'(0)=i(BK-KB)\ne0$. Hence $f(t)/t\to f'(0)$ as $t\to0$ through
+    nonzero values, and $f(t)\ne0$ throughout a sufficiently small
+    punctured neighborhood. A scalar $e^{itK}$ would instead give $f(t)=0$.
+\end{proof}
+
+\begin{theorem}[Exponentials of tensor-factor actions]
+    \label{thm:exponential_kronecker_sum}
+    \lean{Matrix.exp_kronecker_sum, Matrix.exp_kronecker_one,
+        Matrix.exp_one_kronecker, Matrix.exp_map_conjugate,
+        Matrix.exp_rowCommutator}
+    \leanok
+    \uses{def:hermitian_exponential_path}
+    For complex square matrices $X,Y$, of possibly different sizes,
+    \begin{align}
+        e^{X\otimes\Id+\Id\otimes Y}&=e^X\otimes e^Y,\notag\\
+        e^{X\otimes\Id}&=e^X\otimes\Id,\notag\\
+        e^{\Id\otimes Y}&=\Id\otimes e^Y,\notag\\
+        e^{\overline X}&=\overline{e^X}.
+        \notag
+    \end{align}
+    In particular, for every complex square matrix $H$ and $t\in\R$,
+    \begin{align}
+        e^{it(H\otimes\Id-\Id\otimes\overline H)}
+        &=U_H(t)\otimes\overline{U_H(t)}.
+        \label{eq:semigroup_doubled_exponential}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    The continuous homomorphisms $X\mapsto X\otimes\Id$ and
+    $Y\mapsto\Id\otimes Y$ preserve the exponential series.
+    The two tensor-factor actions commute, so the exponential addition
+    formula gives the first identity. Transposition and adjunction
+    preserve the exponential, and their composition is entrywise
+    conjugation. Finally, $\overline{itH}=-it\overline H$; applying
+    the tensor-sum identity gives (\ref{eq:semigroup_doubled_exponential}).
+\end{proof}
