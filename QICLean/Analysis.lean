@@ -21,6 +21,7 @@ import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
 import QICLean.Analysis.DeterminantTraceBound
+import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.EntropyDecomposition

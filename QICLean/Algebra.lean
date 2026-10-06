@@ -58,6 +58,7 @@ import QICLean.Algebra.MatrixSpectralDecomp
 import QICLean.Algebra.MatrixStabilization
 import QICLean.Algebra.MatrixTracePairing
 import QICLean.Algebra.MatrixTracePowerContinuity
+import QICLean.Algebra.MatrixUnitConjugator
 import QICLean.Algebra.MatrixUnitaryBetween
 import QICLean.Algebra.MinkowskiCanonicalPair
 import QICLean.Algebra.NewtonGirard
