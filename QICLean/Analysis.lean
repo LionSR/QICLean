@@ -35,7 +35,9 @@ import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.HayashiMarkovStructure
+import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
+import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.IsometricCompression
@@ -43,6 +45,7 @@ import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KleinInequality
+import QICLean.Analysis.KroneckerExponential
 import QICLean.Analysis.KyFanNorm
 import QICLean.Analysis.LiebConcavity
 import QICLean.Analysis.LiebIntegrandConcave

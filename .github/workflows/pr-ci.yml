@@ -212,6 +212,21 @@ jobs:
           QICLeanTest/WindowMinorization.lean
 
 
+      - name: Build Hermitian intertwiner and exponential targets
+        run: >
+          lake build QICLean.Analysis.HermitianIntertwiner
+          QICLean.Analysis.HermitianUnitaryPath QICLean.Analysis.KroneckerExponential
+
+      - name: Check Hermitian intertwiner and path regressions strictly
+        run: |
+          set -e
+          for example in HermitianIntertwiner ContinuousHermitianPath; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
       - name: Build Lean project and capture timings
         run: |
           set -eo pipefail
