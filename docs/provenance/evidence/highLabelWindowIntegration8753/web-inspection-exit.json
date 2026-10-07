@@ -1,0 +1,13 @@
+{
+  "kind": "web-inspection",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 9.01,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/web-inspection.log",
+  "sha256": "6c9399ae184e1b17b0fb4af1ab2658ce51ca66e8b97b60ecea1315a7704dbbfa"
+}

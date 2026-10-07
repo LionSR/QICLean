@@ -1,0 +1,13 @@
+{
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "prebuilt_modules": {
+    "Mathlib": "9a387323c3dc0909926e9b8e73e1a95905f6666e6a811a44a8fecd8c35f12230",
+    "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics": "ccff260be2c64df31d938cc5e170e6eea9d57db8cfe26d31e7024175b9a06dd5",
+    "Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Commute": "71900727f599ca788953f74f3fd6982b1f1140054b0db230dd4db36e0182f779",
+    "Mathlib.Probability.Moments.Variance": "ce68ce2b8f83769b14286e14fddb20291b3d7b839197fc46280ac899bb815797",
+    "Mathlib.Probability.ProbabilityMassFunction.Integrals": "ed9d15891ce738f415863cb22af1f76244442b6db949db09753ee15863e2785b",
+    "Mathlib.MeasureTheory.Integral.Pi": "5bc8d795d9271cbb51a496e834ce0c331e47d46272b22eda7e5ed06d4932dbbd",
+    "Mathlib.Analysis.Matrix.HermitianFunctionalCalculus": "91eac4a1f50c1bd6d7a259440b590bebd6e2eb9f7b2de6fcfd946142c6d603ad",
+    "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic": "658e5b5955394ab27f3327fc3f4e9bc662fa14e0830fd51dc93a91668893aed2"
+  }
+}

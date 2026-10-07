@@ -1,0 +1,17 @@
+'TensorPower.exists_labelProj_mass_entropy_window' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.eventually_exists_labelProj_finKronecker_entropy_window' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'TensorPower.exists_label_sequence_mass_entropy_asymptotic' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Matrix.partialTraceLeft_vecMulVec_prod' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.norm_sq_one_kronecker_mulVec_prod' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.surprisalTail_pi_le_variance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Real.eventually_iid_tail_error_le_half' depends on axioms: [propext, Classical.choice, Quot.sound]

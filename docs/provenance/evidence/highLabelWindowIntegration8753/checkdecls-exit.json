@@ -1,0 +1,13 @@
+{
+  "kind": "checkdecls",
+  "command": [
+    "leanblueprint",
+    "checkdecls"
+  ],
+  "working_directory": "blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 57.25,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/checkdecls.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

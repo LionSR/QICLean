@@ -1,0 +1,17 @@
+import QICLean.Representation.HighLabelWindow
+
+/-! Exact-name kernel audit of the selected density and pure-state sequence and prerequisites. -/
+
+set_option linter.hashCommand false
+
+#print axioms TensorPower.exists_labelProj_mass_entropy_window
+#print axioms TensorPower.eventually_exists_labelProj_finKronecker_entropy_window
+#print axioms TensorPower.exists_label_sequence_mass_entropy_asymptotic
+#print axioms TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic
+#print axioms Matrix.partialTraceLeft_vecMulVec_prod
+#print axioms Matrix.norm_sq_one_kronecker_mulVec_prod
+#print axioms Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal
+#print axioms Entropy.surprisalTail_pi_le_variance
+#print axioms Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le
+#print axioms Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le
+#print axioms Real.eventually_iid_tail_error_le_half

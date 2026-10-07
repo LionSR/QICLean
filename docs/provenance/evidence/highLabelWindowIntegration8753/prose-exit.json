@@ -1,0 +1,15 @@
+{
+  "kind": "prose",
+  "command": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.47,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

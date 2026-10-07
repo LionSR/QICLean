@@ -1,0 +1,63 @@
+{
+  "result": "no vacuity signal found in the reviewed signatures, definitions or hypotheses",
+  "definitions": [
+    {
+      "file": "QICLean/Algebra/KroneckerFactorPositivity.lean",
+      "source_file_sha256": "832dbcc5c7cf03f35bf65cd62ac38be0cfd38bf6c1a638ed586ec5bd0ca9f2d1",
+      "lines": [
+        290,
+        293
+      ],
+      "term": "Matrix.finKronecker",
+      "definition_excerpt": "def finKronecker {N : \u2115} {\u03b1 : Fin N \u2192 Type*} [\u2200 n, Fintype (\u03b1 n)]\n    (A : (n : Fin N) \u2192 Matrix (\u03b1 n) (\u03b1 n) \u2102) :\n    Matrix ((n : Fin N) \u2192 \u03b1 n) ((n : Fin N) \u2192 \u03b1 n) \u2102 :=\n  Matrix.of fun x y => \u220f n, A n (x n) (y n)",
+      "meaning": "The matrix entry is literally the finite product of the one-copy entries."
+    },
+    {
+      "file": "QICLean/Representation/TensorPowerAction.lean",
+      "source_file_sha256": "bcdca5576ab5ba88513dd18e60b37ccd71ab31bdc4531d29fb5dca9db82fa6cc",
+      "lines": [
+        110,
+        117
+      ],
+      "term": "TensorPower.copyPerm",
+      "definition_excerpt": "def copyPerm : Equiv.Perm (Fin k) \u2192* Equiv.Perm (Fin k \u2192 \u03a9) where\n  toFun \u03c3 := Equiv.arrowCongr \u03c3 (Equiv.refl \u03a9)\n  map_one' := by ext; rfl\n  map_mul' \u03c3 \u03c4 := by ext; rfl\n\n@[simp]\ntheorem copyPerm_apply (\u03c3 : Equiv.Perm (Fin k)) (x : Fin k \u2192 \u03a9) (j : Fin k) :\n    copyPerm \u03a9 k \u03c3 x j = x (\u03c3\u207b\u00b9 j) := rfl",
+      "meaning": "The actual permutation action sends configuration x to j \u21a6 x(\u03c3\u207b\u00b9j)."
+    },
+    {
+      "file": "QICLean/Representation/LabelProjectors.lean",
+      "source_file_sha256": "629b51a379c8910c6bc6ce0fcf22b10aa36a49389dbb452563f1dda58b2ce5e4",
+      "lines": [
+        38,
+        39
+      ],
+      "term": "PermutationRepresentation.labelProj",
+      "definition_excerpt": "noncomputable def labelProj (\u03c6 : G \u2192* Equiv.Perm X) (l : IrrepLabel G) : Matrix X X \u2102 :=\n  groupAlgebraRep \u03c6 (IrrepLabel.centralIdem l)",
+      "meaning": "The represented Wedderburn central idempotent gives the actual isotypic matrix projector."
+    },
+    {
+      "file": "QICLean/Representation/IrrepLabels.lean",
+      "source_file_sha256": "83a7338cf6a30588efc8c9bc44c9912754d956519c43f768a8ee5d3da4b724b1",
+      "lines": [
+        54,
+        82
+      ],
+      "term": "IrrepLabel/dim/centralIdem",
+      "definition_excerpt": "def IrrepLabel : Type :=\n  Fin (MonoidAlgebra.exists_algEquiv_pi_matrix_complex G).choose\n\nnamespace IrrepLabel\n\nnoncomputable instance : Fintype (IrrepLabel G) := inferInstanceAs (Fintype (Fin _))\n\nnoncomputable instance : DecidableEq (IrrepLabel G) := inferInstanceAs (DecidableEq (Fin _))\n\nvariable {G}\n\n/-- The dimension `d_\u03bb` of the irreducible representation with label `\u03bb`. -/\nnoncomputable def dim (l : IrrepLabel G) : \u2115 :=\n  (MonoidAlgebra.exists_algEquiv_pi_matrix_complex G).choose_spec.choose l\n\ninstance (l : IrrepLabel G) : NeZero l.dim :=\n  (MonoidAlgebra.exists_algEquiv_pi_matrix_complex G).choose_spec.choose_spec.1 l\n\ntheorem dim_pos (l : IrrepLabel G) : 0 < l.dim := Nat.pos_of_ne_zero (NeZero.ne _)\n\nvariable (G) in\n/-- The fixed Artin\u2013Wedderburn isomorphism `\u2102[G] \u2243\u2090[\u2102] \u220f_\u03bb M_{d_\u03bb}(\u2102)`. -/\nnoncomputable def wedderburnEquiv :\n    MonoidAlgebra \u2102 G \u2243\u2090[\u2102] \u03a0 l : IrrepLabel G, Matrix (Fin l.dim) (Fin l.dim) \u2102 :=\n  (MonoidAlgebra.exists_algEquiv_pi_matrix_complex G).choose_spec.choose_spec.2.some\n\n/-- The central idempotent `e_\u03bb \u2208 \u2102[G]` of the label `\u03bb`. -/\nnoncomputable def centralIdem (l : IrrepLabel G) : MonoidAlgebra \u2102 G :=\n  (wedderburnEquiv G).symm (Pi.single l 1)",
+      "meaning": "Labels and dimensions come from the finite complex group-algebra matrix decomposition; the central idempotent is the inverse image of the block identity."
+    },
+    {
+      "file": "QICLean/Analysis/Entropy.lean",
+      "source_file_sha256": "4214fc56723f81c3a3b819a7d31b8cf3350c1c5981c286c8746d540dd2e3eec8",
+      "lines": [
+        96,
+        98
+      ],
+      "term": "vonNeumannEntropy",
+      "definition_excerpt": "noncomputable def vonNeumannEntropy\n    (\u03c1 : Matrix n n \u2102) (h\u03c1 : \u03c1.IsHermitian) : \u211d :=\n  \u2211 i, negMulLog (h\u03c1.eigenvalues i)",
+      "meaning": "Entropy is the sum of negative eigenvalue-times-log terms of the actual Hermitian matrix."
+    }
+  ],
+  "nontrivial_conclusions": "The actual tensor density or actual grouped product vector has an actual irreducible projection with quantitative positive mass, for one common sequence whose irreducible dimension entropy error is little-o.",
+  "hypothesis_review": "The finite criterion has an explicit tail premise and is advertised as auxiliary. The iid/common sequence need only PSD/trace one, and the pure theorem need only a unit bipartite vector. Neither required conclusion is supplied as a premise.",
+  "source_scope": "Only comparator:high-label selection at07 lines255\u2013281; initial uniform-pair occurrence, metric compatibility, amplification and final spatial area law are separate."
+}

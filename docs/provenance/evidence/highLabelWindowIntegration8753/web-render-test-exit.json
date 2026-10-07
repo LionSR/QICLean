@@ -1,0 +1,15 @@
+{
+  "kind": "web-render-test",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "scripts/test_blueprint_web_render.py",
+    "--web-root",
+    "blueprint/web"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 48.91,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/web-render-test.log",
+  "sha256": "fc9c7fb92a12ee9d72b6d4c91b589b4d2f8dee54ef9d60aaecbdda9e1a983cc9"
+}
