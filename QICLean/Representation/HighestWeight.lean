@@ -223,7 +223,8 @@ theorem gen_mul_sub_mul (a b c d : Fin q) :
       (if b = c then gen a d else 0) - (if d = a then gen c b else 0) := by
   rw [gen, gen, diagOp_mul_sub_mul]
   have : Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1
-      = (if b = c then Matrix.single a d 1 else 0) - (if d = a then Matrix.single c b 1 else 0) := by
+      = (if b = c then Matrix.single a d 1 else 0) -
+        (if d = a then Matrix.single c b 1 else 0) := by
     by_cases h1 : b = c <;> by_cases h2 : d = a
     · subst h1 h2; simp [single_mul_single_same]
     · subst h1; simp [h2]
@@ -579,8 +580,7 @@ theorem exists_isHighestWeight {V : Submodule ℂ ((Fin k → Fin q) → ℂ)}
       (isWeightVector_weightProj_mulVec _ u)⟩
     intro h
     have := congrFun h x
-    simp [weightProj_mulVec_apply] at this
-    exact hx this
+    exact hx (by simpa [weightProj_mulVec_apply] using this)
   obtain ⟨μ, hμS, hmax⟩ := exists_max_image S toLex hS
   obtain ⟨u, huV, hu0, hμ⟩ := (mem_filter.mp hμS).2
   refine ⟨μ, u, huV, hu0, hμ, fun a b hab => ?_⟩
@@ -640,8 +640,7 @@ theorem IsIrreducible.antitone_of_isHighestWeight {V : Submodule ℂ ((Fin k →
       obtain ⟨x, hx⟩ := Function.ne_iff.mp hv.ne_zero
       have := congrFun h0 (τ ∘ x)
       rw [relabel_mulVec_apply] at this
-      simp [τ, Function.comp_def] at this
-      exact hx this
+      exact hx (by simpa [τ, Function.comp_def] using this)
     have hle := hV.toLex_le hv hvV (hV.1 _ (relabel_mem_commutant τ) v hvV) hne
       (hv.isWeightVector.relabel_mulVec τ)
     have hlt : toLex μ < toLex (μ ∘ τ) :=
