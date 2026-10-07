@@ -1,0 +1,1012 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "p09-qic-weighted-source-error-sourceblock",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.sourceBlock",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-block-contraction"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-weightedsourceerror",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.weightedSourceError",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-exterior-input"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-weightedsourcequarter",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.weightedSourceQuarter",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-quarter-powers"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-weightedsourceerror_eq_halfweighted",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.weightedSourceError_eq_halfWeighted",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-exterior-input"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-quarterweighted_source_sum_eq_transpose",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.quarterWeighted_source_sum_eq_transpose",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-quarter-powers"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-rectangulartracenorm_weightedsourceerror_le",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.rectangularTraceNorm_weightedSourceError_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-quarter-powers"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-sourceproductprobability",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.sourceProductProbability",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-block-second-moment",
+            "eq:compression-dimension-free"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-sum_sourceproductprobability",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.sum_sourceProductProbability",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-block-second-moment",
+            "eq:compression-dimension-free"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-weighted_source_block_aggregation",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.weighted_source_block_aggregation",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-block-second-moment",
+            "eq:compression-dimension-free"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-weighted_source_block_sum_le_one",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.weighted_source_block_sum_le_one",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-block-second-moment",
+            "eq:compression-dimension-free"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-aestronglymeasurable_rectangulartracenorm_sum",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.aestronglyMeasurable_rectangularTraceNorm_sum",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-one-choice"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-integrable_weightedsourcequarter_norm",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.integrable_weightedSourceQuarter_norm",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-one-choice"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-integrable_rectangulartracenorm_weightedsourceerror",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.integrable_rectangularTraceNorm_weightedSourceError",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-one-choice"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-integral_frobeniusnormsq_weightedsourcequarter_eq",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.integral_frobeniusNormSq_weightedSourceQuarter_eq",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-block-second-moment"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-weighted-source-error-integral_rectangulartracenorm_weightedsourceerror_le",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/WeightedSourceError.lean",
+        "declaration": "ProbabilityTheory.integral_rectangularTraceNorm_weightedSourceError_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-one-choice"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized finite block aggregation and the covariance-to-expected trace-error calculation with explicit covariance hypotheses and genuine integrability."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-source-error-integrable_rectangulartracenorm_gaussiansourceerror",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/SourceError.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_rectangularTraceNorm_gaussianSourceError",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-block-second-moment",
+            "eq:compression-dimension-free",
+            "eq:compression-one-choice",
+            "eq:compression-product-covariance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently specialized the weighted trace-error calculation to the constructed independent Gaussian law, deriving covariance and integrability from the attributed Gaussian declarations."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-source-error-integral_frobeniusnormsq_gaussiansourcequarter_eq",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/SourceError.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_frobeniusNormSq_gaussianSourceQuarter_eq",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-block-second-moment",
+            "eq:compression-dimension-free",
+            "eq:compression-one-choice",
+            "eq:compression-product-covariance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently specialized the weighted trace-error calculation to the constructed independent Gaussian law, deriving covariance and integrability from the attributed Gaussian declarations."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-source-error-integral_rectangulartracenorm_gaussiansourceerror_le",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/SourceError.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_rectangularTraceNorm_gaussianSourceError_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-block-second-moment",
+            "eq:compression-dimension-free",
+            "eq:compression-one-choice",
+            "eq:compression-product-covariance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently specialized the weighted trace-error calculation to the constructed independent Gaussian law, deriving covariance and integrability from the attributed Gaussian declarations."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    }
+  ]
+}

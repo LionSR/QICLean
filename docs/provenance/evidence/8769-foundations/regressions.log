@@ -1,0 +1,11 @@
+Regression source: scripts/Tests/MatrixSecondMoment.lean
+'ProbabilityTheory.integrable_normSq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ProbabilityTheory.integral_normSq_sum_eq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ProbabilityTheory.integrable_frobenius_norm_sq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ProbabilityTheory.integral_frobenius_norm_sq_sum_eq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ProbabilityTheory.integral_frobenius_norm_sum_le_sqrt' depends on axioms: [propext, Classical.choice, Quot.sound]
+Regression source: QICLeanTest/WeightedRectangular.lean
+Regression source: QICLeanTest/ComplexGaussian.lean
+Regression source: QICLeanTest/IndependentGaussianSlots.lean
+Regression source: QICLeanTest/CompressionSampling.lean
+Regression source: QICLeanTest/IndependentCovariance.lean

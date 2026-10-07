@@ -1,0 +1,4 @@
+Regression source: QICLeanTest/GaussianProductSource.lean
+Regression source: QICLeanTest/WeightedSourceError.lean
+Regression source: QICLeanTest/RectangularTraceNormAlgebra.lean
+Regression source: QICLeanTest/GaussianSourceError.lean

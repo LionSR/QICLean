@@ -1,0 +1,669 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "p09-qic-domain-extension-isometricdomainextension",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.isometricDomainExtension",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: Extend a rectangular map by projecting onto an isometrically embedded domain. The definition does not require the embedding to be isometric."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-isometricdomainextensionmul",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.isometricDomainExtension_mul",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: The extended map agrees with the original map on the embedded domain."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-isometricdomainextensionmulrangeprojection",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.isometricDomainExtension_mul_rangeProjection",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: The extension is supported on the actual range projection of its domain embedding."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-normisometricdomainextension",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.norm_isometricDomainExtension",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: Adjoint domain extension preserves the exact L2 operator norm, even when the original domain or codomain is empty."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-normisometricdomainextensionleone",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.norm_isometricDomainExtension_le_one",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: A local contraction remains a contraction after extension to its common private ambient sector."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-normtolpmulvecofisometry",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.norm_toLp_mulVec_of_isometry",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: An actual column isometry preserves Euclidean vector norms, without a nonzero-vector or nonempty-space premise."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-isometricdomainextensionsigmablockinclusionmul",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.isometricDomainExtension_sigmaBlockInclusion_mul",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: The canonical branch extension recovers its original rectangular map."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-isometricdomainextensionsigmablockinclusionmulofne",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.isometricDomainExtension_sigmaBlockInclusion_mul_of_ne",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: A branch extension vanishes on every other branch's source sector."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-normisometricdomainextensionsigmablockinclusion",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.norm_isometricDomainExtension_sigmaBlockInclusion",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: Arbitrary finite private branch dimensions do not change the operator norm of the map extended by the canonical sector projection."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-normsigmablockinclusionmulvec",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.norm_sigmaBlockInclusion_mulVec",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: Canonical common-sector insertion preserves the actual norm of a branch vector, including zero and subnormalized vectors."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-normisometricdomainextensionsigmablockinclusionkroneckerone",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.norm_isometricDomainExtension_sigmaBlockInclusion_kronecker_one",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: Fixed external memory coordinates remain unchanged under private-sector extension, with exact operator-norm preservation."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-domain-extension-normsigmablockinclusionkroneckermulvec",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/IsometricDomainExtension.lean",
+        "declaration": "Matrix.norm_sigmaBlockInclusion_kronecker_mulVec",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-source-gate"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently defined or proved: Embedding both halves of an actual bipartite source into their common branch sectors preserves its norm. In particular, normalized sources remain normalized without bounds on the private dimensions."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    }
+  ]
+}
