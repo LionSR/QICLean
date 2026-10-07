@@ -1,0 +1,34 @@
+Actual direct Lean invocation metadata (not a Lake build):
+{
+  "module": "QICLean.Entropy.FiniteProduct",
+  "source": "/workspace/scratch/7637e06d0fc2/QICLean-two-family-entropy/QICLean/Entropy/FiniteProduct.lean",
+  "cwd": "/workspace/scratch/7637e06d0fc2/QICLean-two-family-entropy",
+  "unchanged_dependency": false,
+  "source_sha256": "c81834ee941566838df6b52588378a2c3c01121a34a3d95506dacf488cd2c1e2",
+  "command": [
+    "timeout",
+    "--signal=INT",
+    "--kill-after=5s",
+    "90s",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "-o",
+    "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/tmp/105626339671920/QICLean/Entropy/FiniteProduct.olean",
+    "-i",
+    "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/tmp/105626339671920/QICLean/Entropy/FiniteProduct.ilean",
+    "/workspace/scratch/7637e06d0fc2/QICLean-two-family-entropy/QICLean/Entropy/FiniteProduct.lean"
+  ],
+  "lean_path": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/batteries/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/plausible/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/Qq/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/aesop/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/importGraph/.lake/build/lib/lean",
+  "start": "2026-10-07T08:20:59.304443+00:00",
+  "elapsed_seconds": 2.951917509009945,
+  "exit_code": 0,
+  "log": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/logs/QICLean.Entropy.FiniteProduct.105626339967124.log",
+  "artifact_sha256": "1ca29e7858918c728f58b5f4223e2ff1d881b8b08700d9998e32305e0638ecc4"
+}
+
+Unmodified compiler output:

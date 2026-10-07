@@ -228,6 +228,22 @@ jobs:
               "QICLeanTest/$example.lean"
           done
 
+      - name: Build finite-product entropy and two-family targets
+        run: >
+          lake build QICLean.Channel.FiniteProduct QICLean.Entropy.Bipartite
+          QICLean.Entropy.FiniteProduct QICLean.Entropy.OrderedEntropyAlgebra
+          QICLean.Entropy.TwoFamilies QICLean.Entropy.FiniteProductConditional
+
+      - name: Check finite-product entropy regressions and axiom guards strictly
+        run: |
+          set -e
+          for example in OrderedEntropyAlgebra FiniteProductEntropy; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
       - name: Build Lean project and capture timings
         run: |
           set -eo pipefail
