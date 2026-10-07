@@ -1,0 +1,94 @@
+\section{Exact excitation sectors of physical replicas}
+\label{sec:replica_excitation}
+
+The component decomposition in \cite[Section~7]{OpenAI2026AreaLaw} is
+obtained from the actual ground and excited projections on each copy.
+Write $P=|\Omega\rangle\langle\Omega|$ and $Q=I-P$ on $\mathbb C^A$.
+
+\begin{definition}[Exact excitation sectors]
+\label{def:replica_excitation_projection}
+\lean{Matrix.replicaExcitationProjection}
+\leanok
+For $B\subseteq\{0,\ldots,k-1\}$, define
+\begin{align}
+ R_B=\bigotimes_{i=0}^{k-1}
+ \begin{cases}Q,&i\in B,\\ P,&i\notin B.\end{cases}
+ \label{eq:replica_excitation_projection}
+\end{align}
+\end{definition}
+
+\begin{theorem}[The orthogonal sector partition]
+\label{thm:replica_excitation_partition}
+\lean{Matrix.isStarProjection_replicaExcitationProjection,Matrix.sum_replicaExcitationProjection,Matrix.replicaExcitationProjection_mul_of_ne}
+\leanok
+\uses{def:replica_excitation_projection}
+For any $\Omega$, $\sum_B R_B=I$.
+If $\|\Omega\|=1$, each $R_B$ is an orthogonal projection and
+$R_BR_C=0$ whenever $B\ne C$.
+All assertions include $k=0$.
+\end{theorem}
+\begin{proof}
+\leanok
+Expanding $\bigotimes_i(P+Q)=I$ gives the sum identity. For a unit vector,
+$P^2=P=P^\dagger$ and $Q^2=Q=Q^\dagger$.
+These identities hold in each tensor factor. If $B\ne C$, a copy in their
+symmetric difference contributes either $PQ=0$ or $QP=0$.
+\end{proof}
+
+\begin{theorem}[Defect count on an exact sector]
+\label{thm:replica_sector_count}
+\lean{Matrix.replicaDefectCount_mul_replicaExcitationProjection}
+\leanok
+\uses{def:replica_operators,def:replica_excitation_projection}
+If $\|\Omega\|=1$, then $NR_B=|B|R_B$.
+\end{theorem}
+\begin{proof}
+\leanok
+A summand $Q_i$ of $N$ acts on $R_B$ as the identity if $i\in B$ and
+as zero otherwise. There are exactly $|B|$ identity contributions.
+\end{proof}
+
+\begin{theorem}[The literal spectral cutoff]
+\label{thm:replica_sector_cutoff}
+\lean{Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection}
+\leanok
+\uses{def:replica_operators,def:replica_excitation_projection}
+Suppose $\|\Omega\|=1$. For every $k\ge0$ and every $t\in\mathbb R$,
+\begin{align}
+ \mathbf1_{(-\infty,t]}(N)=\sum_{|B|\le t}R_B.
+ \label{eq:replica_sector_cutoff}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_excitation_partition,thm:replica_sector_count}
+In an orthonormal eigenbasis of $N$, the identity $NR_B=|B|R_B$ implies
+$f(N)R_B=f(|B|)R_B$ for every real function $f$.
+Multiply $f(N)$ by $I=\sum_B R_B$ and choose
+$f(r)=\mathbf1_{r\le t}$ to obtain (\ref{eq:replica_sector_cutoff}).
+\end{proof}
+
+\begin{theorem}[Cutoff components and their squared masses]
+\label{thm:replica_cutoff_decomposition}
+\lean{Matrix.replicaDefectCutoff_decomposition}
+\leanok
+\uses{def:replica_operators,def:replica_excitation_projection}
+Suppose $\|\Omega\|=1$ and let $\mathcal K$ be any finite-dimensional
+auxiliary space. For $u\in\mathcal H^{\otimes k}\otimes\mathcal K$, put
+$u_B=(R_B\otimes I_{\mathcal K})u$.
+If $(\mathbf1_{(-\infty,t]}(N)\otimes I_{\mathcal K})u=u$, then
+\begin{align}
+ u&=\sum_{|B|\le t}u_B,\label{eq:replica_components}\\
+ \sum_B\|u_B\|^2&=\|u\|^2.\label{eq:replica_component_mass}
+\end{align}
+No normalization of $u$ is required.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_sector_cutoff,thm:replica_excitation_partition}
+Apply (\ref{eq:replica_sector_cutoff}) to $u$ to obtain
+(\ref{eq:replica_components}). Since $R_B\otimes I$ is an orthogonal
+projection, $\|u_B\|^2=\langle u,(R_B\otimes I)u\rangle$.
+Sum this equality and use $\sum_B R_B=I$ to obtain
+(\ref{eq:replica_component_mass}).
+\end{proof}

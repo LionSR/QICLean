@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-replica-defect-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaDefect.lean",
+        "declaration": "Matrix.replicaHamiltonian",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:prevector",
+            "comparator:defect-mass"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
+      ],
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "8750-qic-replica-defect-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaDefect.lean",
+        "declaration": "Matrix.replicaDefectCount",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:defect-mass"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
+      ],
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "8750-qic-replica-defect-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaDefect.lean",
+        "declaration": "Matrix.replicaHamiltonian_mulVec_prod",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:prevector",
+            "comparator:defect-mass"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
+      ],
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "8750-qic-replica-defect-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaDefect.lean",
+        "declaration": "Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:prevector",
+            "comparator:defect-mass"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
+      ],
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "8750-qic-replica-defect-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaDefect.lean",
+        "declaration": "Matrix.PosSemidef.replica_gap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:defect-mass"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
+      ],
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "8750-qic-replica-defect-06",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaDefect.lean",
+        "declaration": "Matrix.posSemidef_replicaDefectCount",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:defect-mass"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
+      ],
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "8750-qic-replica-defect-07",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaDefect.lean",
+        "declaration": "Matrix.spectralCutoff_replica_gap_mass_ge",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:defect-mass"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
+      ],
+      "no_upstream_proof_text_reused": true
+    }
+  ]
+}
