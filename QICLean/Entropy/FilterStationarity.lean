@@ -11,6 +11,31 @@ import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 
 /-!
 # Stationarity of a filter under unitary conjugation
+
+Let positive filters `L_m, …, L_1` act on nested regions, and let `L_j` maximize the norm of
+`L_m ⋯ L_1 Ω` over its unitary orbit `e^{tB} L_j e^{-tB}`, `B* = -B`. If the outer filters
+`L_m, …, L_{j+1}` already commute with the regional states of the output on their regions,
+then so does `L_j`. This is the descending step of the stationarity argument.
+
+The first-order condition is `Re ⟨ψ, A (B L - L B) w⟩ = 0`, where `A` is the outer product.
+Writing `B L - L B = (B - L B L⁻¹) L`, the descending trace argument removes the outer
+filters, so `Re Tr (ρ L B L⁻¹) = 0` for every skew-Hermitian `B`. Hence `L⁻¹ ρ L` is
+Hermitian, and `L` commutes with `ρ`. No commutation between distinct filters is asserted.
+
+## Main results
+
+* `Entropy.re_inner_commutator_eq_zero_of_isLocalMax`: the first-order condition.
+* `Entropy.isHermitian_of_re_trace_mul_skew_eq_zero`,
+  `Entropy.commute_of_isHermitian_inv_mul_mul`: the matrix consequences.
+* `Entropy.inner_liftProd_conj`: the descending trace argument for a chain of filters.
+* `Entropy.commute_regionState_of_unitary_max`: stationarity of one filter.
+
+## References
+
+* Two-dimensional area-law manuscript (September 24, 2026), proof of Lemma 3.2
+  (`lem:initial-buffer`), `02-initial.tex`, lines 356–381, `eq:initial-filter-commutation`.
+
+Independently written from the manuscript; no upstream Lean proof text is reused.
 -/
 
 open Complex Matrix
@@ -81,6 +106,7 @@ theorem re_inner_commutator_eq_zero_of_isLocalMax {p : Type*} [Fintype p] [Decid
     (⟪toEuclideanLin (A * Φ K) w, toEuclideanLin (A * Φ (B * K - K * B)) w⟫_ℂ).re = 0 at h0
   linarith
 
+omit [DecidableEq m] in
 /-- A matrix whose trace pairing with every skew-Hermitian matrix has zero real part is
 Hermitian. -/
 theorem isHermitian_of_re_trace_mul_skew_eq_zero {M : Matrix m m ℂ}
@@ -245,8 +271,10 @@ theorem liftProdInv_mul_liftProd {φ : EuclideanSpace ℂ (SiteConfig n)} :
     rw [liftProdInv_cons, liftProd_cons, Matrix.mul_assoc, ← Matrix.mul_assoc (localLift p.1 _),
       localLift_inv_mul_localLift hu, Matrix.one_mul, liftProdInv_mul_liftProd hl]
 
+omit [DecidableEq V] in
 theorem isSupportedOn_one (D : Finset V) :
     IsSupportedOn (1 : Matrix (SiteConfig n) (SiteConfig n) ℂ) D := by
+  classical
   rw [← localLift_one (D := D)]; exact isSupportedOn_localLift _
 
 theorem isSupportedOn_liftProd (σ₀ : SiteConfig n) {D : Finset V} :
@@ -286,7 +314,8 @@ theorem inner_liftProd_conj {φ : EuclideanSpace ℂ (SiteConfig n)} (σ₀ : Si
 
 /-- The local lift as a linear map. -/
 noncomputable def localLiftₗ (D : Finset V) :
-    Matrix (RegionConfig n D) (RegionConfig n D) ℂ →ₗ[ℂ] Matrix (SiteConfig n) (SiteConfig n) ℂ where
+    Matrix (RegionConfig n D) (RegionConfig n D) ℂ →ₗ[ℂ]
+      Matrix (SiteConfig n) (SiteConfig n) ℂ where
   toFun := localLift D
   map_add' := localLift_add
   map_smul' := localLift_smul

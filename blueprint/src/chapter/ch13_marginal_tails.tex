@@ -346,3 +346,26 @@ depend on the common values there.
     and the last identity follows from cyclicity of the trace, since
     $K^{-1}\rho_{\varphi,D}K=\rho_{\varphi,D}$.
 \end{proof}
+
+\begin{lemma}[Stationarity of one filter]
+    \label{lem:filter_stationarity}
+    \lean{Entropy.re_inner_commutator_eq_zero_of_isLocalMax,
+        Entropy.isHermitian_of_re_trace_mul_skew_eq_zero,
+        Entropy.commute_of_isHermitian_inv_mul_mul, Entropy.inner_liftProd_conj,
+        Entropy.commute_regionState_of_unitary_max}
+    \leanok
+    \uses{lem:local_lift}
+    Let $K>0$ on a region $D$ maximize $\lVert A(K\otimes1)Cw\rVert$ over its
+    unitary orbit, where $A$ is a product of invertible filters on regions
+    containing $D$, each commuting with the regional state of the output
+    $\psi=A(K\otimes1)Cw$ on its region. Then $K$ commutes with $\rho_{\psi,D}$.
+\end{lemma}
+\begin{proof}\leanok
+    Differentiating along $\mathrm e^{tB}K\mathrm e^{-tB}$ with $B^*=-B$ gives
+    $\operatorname{Re}\langle\psi,A(BK-KB)w'\rangle=0$. Since
+    $BK-KB=(B-KBK^{-1})K$, the descending trace argument of
+    Lemma~\ref{lem:local_lift} removes the outer filters, and the expectation
+    of $B$ is imaginary. Hence $\operatorname{Re}\Tr(K^{-1}\rho KB)=0$ for every
+    skew-Hermitian $B$, so $K^{-1}\rho K$ is Hermitian. In the eigenbasis of
+    $K$ this forces $\rho K^2=K^2\rho$ and then $\rho K=K\rho$.
+\end{proof}

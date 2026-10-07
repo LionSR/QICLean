@@ -15,6 +15,7 @@ import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FilterConjugation
 import QICLean.Entropy.FilterMoment
+import QICLean.Entropy.FilterStationarity
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.GapSurprisal
