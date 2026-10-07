@@ -74,3 +74,10 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   new public tensor-vector definition or automation is introduced.
 - **Caveats:** Retain the canonical coordinate equivalence and every
   auxiliary coordinate. Empty products have value one.
+
+### Finite-product partial traces — candidate (2026-10-08)
+
+- **Pattern:** Reindex a partial trace by the existing finite-product splitting equivalence, insert the proved coordinate factorization, and factor the resulting finite sums.
+- **Seen:** Ground-copy contraction and norm preservation in `Analysis/ReplicaGoodCopyFactorization.lean`, and marginal identification in `Analysis/ReplicaGoodCopyDensity.lean`.
+- **Abstraction:** The existing `FiniteProduct.splitEquiv`, `Fintype.prod_sum`, and finite-sum multiplication lemmas supply the reindexing and product calculation. The new public density identities carry these calculations to later consumers; no new tactic is introduced.
+- **Caveat:** Normalization belongs only to the prescribed ground vector. The excitation component and its auxiliary marginal may have zero or arbitrary total mass.
