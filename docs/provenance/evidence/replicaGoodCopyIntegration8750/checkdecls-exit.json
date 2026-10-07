@@ -1,0 +1,15 @@
+{
+  "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+  "command": [
+    "lake",
+    "env",
+    ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+    "blueprint/lean_decls"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-07T21:15:06.310657+00:00",
+  "elapsed_seconds": 27.313,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/checkdecls.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

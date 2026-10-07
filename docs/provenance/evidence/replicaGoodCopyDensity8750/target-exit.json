@@ -1,0 +1,14 @@
+{
+  "source_revision": "0d00ac83ac5533452abdfed33e5b55f301f32b2b",
+  "argv": [
+    "lake",
+    "build",
+    "QICLean.Analysis.ReplicaGoodCopyDensity"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-07T23:35:21.735758+00:00",
+  "elapsed_seconds": 16.17713083300623,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodCopyDensity8750/target.log",
+  "sha256": "3184adda2ab8037473a6bf49b6b8a81a46dd7d836b316851bfbf7c5c20cf03b3"
+}

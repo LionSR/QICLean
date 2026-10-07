@@ -1,0 +1,788 @@
+theorem Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder.{u_1, u_2} : ∀ {A : Type u_1} {C : Type u_2}
+  [inst : Fintype A] [inst_1 : DecidableEq A] [inst_2 : Fintype C] [inst_3 : DecidableEq C] (Ω : A → ℂ),
+  ‖WithLp.toLp 2 Ω‖ = 1 →
+    ∀ {k : ℕ} (B : Finset (Fin k)) (u : (Fin k → A) × C → ℂ),
+      have w := (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u;
+      (Matrix.vecMulVec w (star w)).partialTraceLeft =
+        (Matrix.vecMulVec (Matrix.replicaGoodCopyRemainder Ω B w)
+            (star (Matrix.replicaGoodCopyRemainder Ω B w))).partialTraceLeft :=
+fun {A} {C} [Fintype A] [DecidableEq A] [Fintype C] [DecidableEq C] Ω hΩ {k} B u ↦
+  id
+    (have hdot :=
+      Eq.mp
+        (congr (congrArg Eq (Finset.sum_congr (Eq.refl Finset.univ) fun x a ↦ Eq.refl (Ω x * star (Ω x))))
+          (Eq.trans (congrFun' (congrArg HPow.hPow (Eq.trans (congrArg RCLike.ofReal hΩ) RCLike.ofReal_one)) 2)
+            (one_pow 2)))
+        (inner_self_eq_norm_sq_to_K (WithLp.toLp 2 Ω));
+    have hgood :=
+      Eq.mpr
+        (id
+          (congrFun'
+            (congrArg Eq
+              (Finset.sum_congr (Eq.refl Finset.univ) fun x a ↦
+                Eq.trans (congrArg (HMul.hMul (∏ i, Ω (x i))) (star_prod Finset.univ fun x_1 ↦ Ω (x x_1)))
+                  Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder._simp_1_1))
+            1))
+        (Eq.mp
+          (congrArg (Eq (∑ x, ∏ i, Ω (x i) * star (Ω (x i))))
+            (Eq.trans (Finset.prod_congr (Eq.refl Finset.univ) fun x a ↦ hdot) Finset.prod_const_one))
+          (Eq.symm (Fintype.prod_sum fun x a ↦ Ω a * star (Ω a))));
+    Matrix.ext fun c c' ↦
+      Eq.mpr
+        (id
+          (congrArg
+            (fun _a ↦
+              _a =
+                (Matrix.vecMulVec
+                      (Matrix.replicaGoodCopyRemainder Ω B
+                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                          u))
+                      (star
+                        (Matrix.replicaGoodCopyRemainder Ω B
+                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                1).mulVec
+                            u)))).partialTraceLeft
+                  c c')
+            (Matrix.partialTraceLeft_apply
+              (Matrix.vecMulVec
+                ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u)
+                (star
+                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u)))
+              c c')))
+        (Eq.mpr
+          (id
+            (congrArg
+              (fun _a ↦
+                _a =
+                  (Matrix.vecMulVec
+                        (Matrix.replicaGoodCopyRemainder Ω B
+                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                1).mulVec
+                            u))
+                        (star
+                          (Matrix.replicaGoodCopyRemainder Ω B
+                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                  1).mulVec
+                              u)))).partialTraceLeft
+                    c c')
+              (Eq.symm
+                (Equiv.sum_comp (FiniteProduct.splitEquiv (fun x ↦ A) B).symm fun k_1 ↦
+                  Matrix.vecMulVec
+                    ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u)
+                    (star
+                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                        u))
+                    (k_1, c) (k_1, c')))))
+          (Eq.mpr
+            (id
+              (congrFun'
+                (congrArg Eq
+                  (Eq.trans
+                    (Eq.trans
+                      (congrArg Finset.univ.sum
+                        (funext fun i ↦
+                          congr
+                            (congrArg HMul.hMul
+                              ((fun b g c ↦ Matrix.replicaExcitationProjection_mulVec_factorization Ω hΩ B u b g c) i.1
+                                i.2 c))
+                            (Eq.trans
+                              (congrArg star
+                                ((fun b g c ↦ Matrix.replicaExcitationProjection_mulVec_factorization Ω hΩ B u b g c)
+                                  i.1 i.2 c'))
+                              (star_mul (∏ i_1, Ω (i.2 i_1))
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (i.1, c'))))))
+                      (Fintype.sum_prod_type fun x ↦
+                        (∏ i, Ω (x.2 i)) *
+                            Matrix.replicaGoodCopyRemainder Ω B
+                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (x.1, c) *
+                          (star
+                              (Matrix.replicaGoodCopyRemainder Ω B
+                                ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)
+                                (x.1, c')) *
+                            star (∏ i, Ω (x.2 i)))))
+                    (Finset.sum_congr (Eq.refl Finset.univ) fun x a ↦
+                      Finset.sum_congr (Eq.refl Finset.univ) fun x_1 a ↦
+                        congr
+                          (congrArg HMul.hMul
+                            (congrFun'
+                              (congrArg HMul.hMul
+                                (Finset.prod_congr (Eq.refl Finset.univ) fun x a ↦ Eq.refl (Ω (x_1 x))))
+                              (Matrix.replicaGoodCopyRemainder Ω B
+                                ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)
+                                (x, c))))
+                          (congrArg
+                            (HMul.hMul
+                              (star
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (x, c'))))
+                            (congrArg star (Finset.prod_congr (Eq.refl Finset.univ) fun x a ↦ Eq.refl (Ω (x_1 x))))))))
+                (∑ k_1,
+                  Matrix.replicaGoodCopyRemainder Ω B
+                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                        u)
+                      (k_1, c) *
+                    star
+                      (Matrix.replicaGoodCopyRemainder Ω B
+                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                          u)
+                        (k_1, c')))))
+            (Finset.sum_congr rfl fun b a ↦
+              Trans.trans
+                (Eq.mpr
+                  (id
+                    (congrArg
+                      (fun _a ↦
+                        ∑ x,
+                            (∏ x_1, Ω (x x_1)) *
+                                Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (b, c) *
+                              (star
+                                  (Matrix.replicaGoodCopyRemainder Ω B
+                                    ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                          (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                      u)
+                                    (b, c')) *
+                                star (∏ x_1, Ω (x x_1))) =
+                          _a)
+                      (Finset.sum_mul Finset.univ (fun g ↦ (∏ i, Ω (g i)) * star (∏ i, Ω (g i)))
+                        (Matrix.replicaGoodCopyRemainder Ω B
+                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                  1).mulVec
+                              u)
+                            (b, c) *
+                          star
+                            (Matrix.replicaGoodCopyRemainder Ω B
+                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (b, c'))))))
+                  (Finset.sum_congr rfl fun g a ↦
+                    Mathlib.Tactic.Ring.of_eq
+                      (Mathlib.Tactic.Ring.Common.mul_congr
+                        (Mathlib.Tactic.Ring.Common.mul_congr
+                          (Mathlib.Tactic.Ring.Common.atom_pf (∏ x, Ω (g x)) rfl
+                            (Eq.mpr
+                              (id
+                                (congrArg
+                                  (fun _a ↦
+                                    (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                      (∏ x, Ω (g x)) ^ Nat.rawCast 1 * _a)
+                                  (Eq.symm rfl)))
+                              (Eq.refl ((∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                          (Mathlib.Tactic.Ring.Common.atom_pf
+                            (Matrix.replicaGoodCopyRemainder Ω B
+                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (b, c))
+                            rfl
+                            (Eq.mpr
+                              (id
+                                (congrArg
+                                  (fun _a ↦
+                                    Matrix.replicaGoodCopyRemainder Ω B
+                                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                  (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                              u)
+                                            (b, c) ^
+                                          Nat.rawCast 1 *
+                                        Nat.rawCast 1 =
+                                      Matrix.replicaGoodCopyRemainder Ω B
+                                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                  (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                              u)
+                                            (b, c) ^
+                                          Nat.rawCast 1 *
+                                        _a)
+                                  (Eq.symm rfl)))
+                              (Eq.refl
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1))))
+                          (Mathlib.Tactic.Ring.Common.add_mul
+                            (Mathlib.Tactic.Ring.Common.mul_add
+                              (Mathlib.Tactic.Ring.Common.mul_pf_left (∏ x, Ω (g x)) (Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.mul_pf_right
+                                  (Matrix.replicaGoodCopyRemainder Ω B
+                                    ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                          (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                      u)
+                                    (b, c))
+                                  (Nat.rawCast 1)
+                                  (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                    (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                      (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                      (Eq.refl 1)))))
+                              (Mathlib.Tactic.Ring.Common.mul_zero ((∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))
+                              (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                ((∏ x, Ω (g x)) ^ Nat.rawCast 1 *
+                                    (Matrix.replicaGoodCopyRemainder Ω B
+                                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                            u)
+                                          (b, c) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1) +
+                                  0)))
+                            (Mathlib.Tactic.Ring.Common.zero_mul
+                              (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1 +
+                                0))
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                              ((∏ x, Ω (g x)) ^ Nat.rawCast 1 *
+                                  (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1) +
+                                0))))
+                        (Mathlib.Tactic.Ring.Common.mul_congr
+                          (Mathlib.Tactic.Ring.Common.atom_pf
+                            (star
+                              (Matrix.replicaGoodCopyRemainder Ω B
+                                ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)
+                                (b, c')))
+                            rfl
+                            (Eq.mpr
+                              (id
+                                (congrArg
+                                  (fun _a ↦
+                                    star
+                                            (Matrix.replicaGoodCopyRemainder Ω B
+                                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                    (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                                u)
+                                              (b, c')) ^
+                                          Nat.rawCast 1 *
+                                        Nat.rawCast 1 =
+                                      star
+                                            (Matrix.replicaGoodCopyRemainder Ω B
+                                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                    (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                                u)
+                                              (b, c')) ^
+                                          Nat.rawCast 1 *
+                                        _a)
+                                  (Eq.symm rfl)))
+                              (Eq.refl
+                                (star
+                                      (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c')) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1))))
+                          (Mathlib.Tactic.Ring.Common.atom_pf (star (∏ x, Ω (g x))) rfl
+                            (Eq.mpr
+                              (id
+                                (congrArg
+                                  (fun _a ↦
+                                    star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                      star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * _a)
+                                  (Eq.symm rfl)))
+                              (Eq.refl (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                          (Mathlib.Tactic.Ring.Common.add_mul
+                            (Mathlib.Tactic.Ring.Common.mul_add
+                              (Mathlib.Tactic.Ring.Common.mul_pf_left
+                                (star
+                                  (Matrix.replicaGoodCopyRemainder Ω B
+                                    ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                          (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                      u)
+                                    (b, c')))
+                                (Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.mul_pf_right (star (∏ x, Ω (g x))) (Nat.rawCast 1)
+                                  (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                    (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                      (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                      (Eq.refl 1)))))
+                              (Mathlib.Tactic.Ring.Common.mul_zero
+                                (star
+                                      (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c')) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1))
+                              (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                (star
+                                        (Matrix.replicaGoodCopyRemainder Ω B
+                                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                            u)
+                                          (b, c')) ^
+                                      Nat.rawCast 1 *
+                                    (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                  0)))
+                            (Mathlib.Tactic.Ring.Common.zero_mul
+                              (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                              (star
+                                      (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c')) ^
+                                    Nat.rawCast 1 *
+                                  (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                0))))
+                        (Mathlib.Tactic.Ring.Common.add_mul
+                          (Mathlib.Tactic.Ring.Common.mul_add
+                            (Mathlib.Tactic.Ring.Common.mul_pf_left (∏ x, Ω (g x)) (Nat.rawCast 1)
+                              (Mathlib.Tactic.Ring.Common.mul_pf_left
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (b, c))
+                                (Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.mul_pf_right
+                                  (star
+                                    (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c')))
+                                  (Nat.rawCast 1)
+                                  (Mathlib.Tactic.Ring.Common.mul_pf_right (star (∏ x, Ω (g x))) (Nat.rawCast 1)
+                                    (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                      (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                        (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                        (Eq.refl 1)))))))
+                            (Mathlib.Tactic.Ring.Common.mul_zero
+                              ((∏ x, Ω (g x)) ^ Nat.rawCast 1 *
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1)))
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                              ((∏ x, Ω (g x)) ^ Nat.rawCast 1 *
+                                  (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c) ^
+                                      Nat.rawCast 1 *
+                                    (star
+                                          (Matrix.replicaGoodCopyRemainder Ω B
+                                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                  (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                              u)
+                                            (b, c')) ^
+                                        Nat.rawCast 1 *
+                                      (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))) +
+                                0)))
+                          (Mathlib.Tactic.Ring.Common.zero_mul
+                            (star
+                                    (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c')) ^
+                                  Nat.rawCast 1 *
+                                (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                              0))
+                          (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                            ((∏ x, Ω (g x)) ^ Nat.rawCast 1 *
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c) ^
+                                    Nat.rawCast 1 *
+                                  (star
+                                        (Matrix.replicaGoodCopyRemainder Ω B
+                                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                            u)
+                                          (b, c')) ^
+                                      Nat.rawCast 1 *
+                                    (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))) +
+                              0))))
+                      (Mathlib.Tactic.Ring.Common.mul_congr
+                        (Mathlib.Tactic.Ring.Common.mul_congr
+                          (Mathlib.Tactic.Ring.Common.atom_pf (∏ i, Ω (g i)) rfl
+                            (Eq.mpr
+                              (id
+                                (congrArg
+                                  (fun _a ↦
+                                    (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                      (∏ x, Ω (g x)) ^ Nat.rawCast 1 * _a)
+                                  (Eq.symm rfl)))
+                              (Eq.refl ((∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                          (Mathlib.Tactic.Ring.Common.atom_pf (star (∏ i, Ω (g i))) rfl
+                            (Eq.mpr
+                              (id
+                                (congrArg
+                                  (fun _a ↦
+                                    star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                      star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * _a)
+                                  (Eq.symm rfl)))
+                              (Eq.refl (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                          (Mathlib.Tactic.Ring.Common.add_mul
+                            (Mathlib.Tactic.Ring.Common.mul_add
+                              (Mathlib.Tactic.Ring.Common.mul_pf_left (∏ x, Ω (g x)) (Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.mul_pf_right (star (∏ x, Ω (g x))) (Nat.rawCast 1)
+                                  (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                    (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                      (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                      (Eq.refl 1)))))
+                              (Mathlib.Tactic.Ring.Common.mul_zero ((∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))
+                              (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                ((∏ x, Ω (g x)) ^ Nat.rawCast 1 *
+                                    (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                  0)))
+                            (Mathlib.Tactic.Ring.Common.zero_mul
+                              (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                              ((∏ x, Ω (g x)) ^ Nat.rawCast 1 * (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                0))))
+                        (Mathlib.Tactic.Ring.Common.mul_congr
+                          (Mathlib.Tactic.Ring.Common.atom_pf
+                            (Matrix.replicaGoodCopyRemainder Ω B
+                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (b, c))
+                            rfl
+                            (Eq.mpr
+                              (id
+                                (congrArg
+                                  (fun _a ↦
+                                    Matrix.replicaGoodCopyRemainder Ω B
+                                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                  (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                              u)
+                                            (b, c) ^
+                                          Nat.rawCast 1 *
+                                        Nat.rawCast 1 =
+                                      Matrix.replicaGoodCopyRemainder Ω B
+                                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                  (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                              u)
+                                            (b, c) ^
+                                          Nat.rawCast 1 *
+                                        _a)
+                                  (Eq.symm rfl)))
+                              (Eq.refl
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1))))
+                          (Mathlib.Tactic.Ring.Common.atom_pf
+                            (star
+                              (Matrix.replicaGoodCopyRemainder Ω B
+                                ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)
+                                (b, c')))
+                            rfl
+                            (Eq.mpr
+                              (id
+                                (congrArg
+                                  (fun _a ↦
+                                    star
+                                            (Matrix.replicaGoodCopyRemainder Ω B
+                                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                    (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                                u)
+                                              (b, c')) ^
+                                          Nat.rawCast 1 *
+                                        Nat.rawCast 1 =
+                                      star
+                                            (Matrix.replicaGoodCopyRemainder Ω B
+                                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                    (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                                u)
+                                              (b, c')) ^
+                                          Nat.rawCast 1 *
+                                        _a)
+                                  (Eq.symm rfl)))
+                              (Eq.refl
+                                (star
+                                      (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c')) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1))))
+                          (Mathlib.Tactic.Ring.Common.add_mul
+                            (Mathlib.Tactic.Ring.Common.mul_add
+                              (Mathlib.Tactic.Ring.Common.mul_pf_left
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (b, c))
+                                (Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.mul_pf_right
+                                  (star
+                                    (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c')))
+                                  (Nat.rawCast 1)
+                                  (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                    (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                      (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                      (Eq.refl 1)))))
+                              (Mathlib.Tactic.Ring.Common.mul_zero
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1))
+                              (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c) ^
+                                      Nat.rawCast 1 *
+                                    (star
+                                          (Matrix.replicaGoodCopyRemainder Ω B
+                                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                  (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                              u)
+                                            (b, c')) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1) +
+                                  0)))
+                            (Mathlib.Tactic.Ring.Common.zero_mul
+                              (star
+                                      (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c')) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1 +
+                                0))
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                              (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c) ^
+                                    Nat.rawCast 1 *
+                                  (star
+                                        (Matrix.replicaGoodCopyRemainder Ω B
+                                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                            u)
+                                          (b, c')) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1) +
+                                0))))
+                        (Mathlib.Tactic.Ring.Common.add_mul
+                          (Mathlib.Tactic.Ring.Common.mul_add
+                            (Mathlib.Tactic.Ring.Common.mul_pf_left (∏ x, Ω (g x)) (Nat.rawCast 1)
+                              (Mathlib.Tactic.Ring.Common.mul_pf_right
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (b, c))
+                                (Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.mul_pf_right
+                                  (star
+                                    (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c')))
+                                  (Nat.rawCast 1)
+                                  (Mathlib.Tactic.Ring.Common.mul_pf_left (star (∏ x, Ω (g x))) (Nat.rawCast 1)
+                                    (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                      (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                        (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                        (Eq.refl 1)))))))
+                            (Mathlib.Tactic.Ring.Common.mul_zero
+                              ((∏ x, Ω (g x)) ^ Nat.rawCast 1 * (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1)))
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                              ((∏ x, Ω (g x)) ^ Nat.rawCast 1 *
+                                  (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c) ^
+                                      Nat.rawCast 1 *
+                                    (star
+                                          (Matrix.replicaGoodCopyRemainder Ω B
+                                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                  (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                              u)
+                                            (b, c')) ^
+                                        Nat.rawCast 1 *
+                                      (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))) +
+                                0)))
+                          (Mathlib.Tactic.Ring.Common.zero_mul
+                            (Matrix.replicaGoodCopyRemainder Ω B
+                                    ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                          (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                      u)
+                                    (b, c) ^
+                                  Nat.rawCast 1 *
+                                (star
+                                      (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (b, c')) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1) +
+                              0))
+                          (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                            ((∏ x, Ω (g x)) ^ Nat.rawCast 1 *
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (b, c) ^
+                                    Nat.rawCast 1 *
+                                  (star
+                                        (Matrix.replicaGoodCopyRemainder Ω B
+                                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                                (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                            u)
+                                          (b, c')) ^
+                                      Nat.rawCast 1 *
+                                    (star (∏ x, Ω (g x)) ^ Nat.rawCast 1 * Nat.rawCast 1))) +
+                              0))))))
+                (Eq.mpr
+                  (id
+                    (congrArg
+                      (fun _a ↦
+                        _a *
+                            (Matrix.replicaGoodCopyRemainder Ω B
+                                ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)
+                                (b, c) *
+                              star
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (b, c'))) =
+                          Matrix.replicaGoodCopyRemainder Ω B
+                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (b, c) *
+                            star
+                              (Matrix.replicaGoodCopyRemainder Ω B
+                                ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)
+                                (b, c')))
+                      hgood))
+                  (Eq.mpr
+                    (id
+                      (congrArg
+                        (fun _a ↦
+                          _a =
+                            Matrix.replicaGoodCopyRemainder Ω B
+                                ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)
+                                (b, c) *
+                              star
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (b, c')))
+                        (one_mul
+                          (Matrix.replicaGoodCopyRemainder Ω B
+                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (b, c) *
+                            star
+                              (Matrix.replicaGoodCopyRemainder Ω B
+                                ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)
+                                (b, c'))))))
+                    (Eq.refl
+                      (Matrix.replicaGoodCopyRemainder Ω B
+                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                1).mulVec
+                            u)
+                          (b, c) *
+                        star
+                          (Matrix.replicaGoodCopyRemainder Ω B
+                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                  1).mulVec
+                              u)
+                            (b, c'))))))))))
+theorem Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density.{u_1, u_2} : ∀ {A : Type u_1}
+  {C : Type u_2} [inst : Fintype A] [inst_1 : DecidableEq A] [inst_2 : Fintype C] [inst_3 : DecidableEq C] (Ω : A → ℂ),
+  ‖WithLp.toLp 2 Ω‖ = 1 →
+    ∀ {k : ℕ} (B : Finset (Fin k)) (u : (Fin k → A) × C → ℂ),
+      have w := (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u;
+      have φ := fun g ↦ ∏ i, Ω (g i);
+      have f := fun x ↦ w ((FiniteProduct.splitEquiv (fun x ↦ A) B).symm (x.2, x.1.1), x.1.2);
+      (Matrix.vecMulVec f (star f)).partialTraceRight =
+        Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.vecMulVec φ (star φ))
+          (Matrix.vecMulVec w (star w)).partialTraceLeft :=
+fun {A} {C} [Fintype A] [DecidableEq A] [Fintype C] [DecidableEq C] Ω hΩ {k} B u ↦
+  id
+    (Eq.mpr
+      (id
+        (congrArg
+          (fun _a ↦
+            (Matrix.vecMulVec
+                  (fun x ↦
+                    (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u
+                      ((FiniteProduct.splitEquiv (fun x ↦ A) B).symm (x.2, x.1.1), x.1.2))
+                  (star fun x ↦
+                    (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u
+                      ((FiniteProduct.splitEquiv (fun x ↦ A) B).symm (x.2, x.1.1), x.1.2))).partialTraceRight =
+              Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                (Matrix.vecMulVec (fun g ↦ ∏ i, Ω (g i)) (star fun g ↦ ∏ i, Ω (g i))) _a)
+          (Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder Ω hΩ B u)))
+      (Matrix.goodAuxiliary_density_factorization_with_remainder✝ Ω hΩ B u))

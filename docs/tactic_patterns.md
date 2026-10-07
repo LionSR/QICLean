@@ -103,3 +103,22 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   fixedness from the stabilizer theorem. No new tactic is needed.
 - **Caveat:** Invariance alone does not imply that different copies are
   independent or establish a merge-moment bound.
+### Norm of a finite product of vectors — candidate (2026-10-07)
+
+- **Pattern:** Reduce normalization to a one-coordinate sum, then apply
+  `Fintype.prod_sum` to the literal finite product. For complex pairings,
+  distribute the product over multiplication; for squared norms, use
+  `norm_prod` and `Finset.prod_pow`.
+- **Seen:** The contraction recovery and norm equality in
+  `QICLean/Analysis/ReplicaGoodCopyFactorization.lean`; one file.
+- **Abstraction:** Existing finite sum and product identities suffice. No
+  new public tensor-vector definition or automation is introduced.
+- **Caveats:** Retain the canonical coordinate equivalence and every
+  auxiliary coordinate. Empty products have value one.
+
+### Finite-product partial traces — candidate (2026-10-08)
+
+- **Pattern:** Reindex a partial trace by the existing finite-product splitting equivalence, insert the proved coordinate factorization, and factor the resulting finite sums.
+- **Seen:** Ground-copy contraction and norm preservation in `Analysis/ReplicaGoodCopyFactorization.lean`, and marginal identification in `Analysis/ReplicaGoodCopyDensity.lean`.
+- **Abstraction:** The existing `FiniteProduct.splitEquiv`, `Fintype.prod_sum`, and finite-sum multiplication lemmas supply the reindexing and product calculation. The new public density identities carry these calculations to later consumers; no new tactic is introduced.
+- **Caveat:** Normalization belongs only to the prescribed ground vector. The excitation component and its auxiliary marginal may have zero or arbitrary total mass.

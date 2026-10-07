@@ -93,6 +93,8 @@ import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
 import QICLean.Analysis.ReplicaDefect
 import QICLean.Analysis.ReplicaExcitationDecomposition
 import QICLean.Analysis.ReplicaExcitationSymmetry
+import QICLean.Analysis.ReplicaGoodCopyDensity
+import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ResolventFunctionalCalculus

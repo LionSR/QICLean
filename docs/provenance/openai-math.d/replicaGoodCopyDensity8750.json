@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-good-copy-density-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodCopyDensity.lean",
+        "declaration": "Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Identify the actual whole-auxiliary marginal of the projected excitation component with the marginal of its literal contracted remainder. Only unit one-copy ground vector is used; zero components/copies are included."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "0d00ac83ac5533452abdfed33e5b55f301f32b2b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaGoodCopyDensity",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodCopyDensity8750/target.log",
+            "sha256": "3184adda2ab8037473a6bf49b6b8a81a46dd7d836b316851bfbf7c5c20cf03b3"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodCopyDensity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodCopyDensity8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/docs/provenance/evidence/replicaGoodCopyDensity8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodCopyDensity8750/axioms.log",
+            "sha256": "187fed53e7938f4079c83e58208df5d7b567188e7caf61ef4b171afc112addaa"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8750-qic-good-copy-density-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodCopyDensity.lean",
+        "declaration": "Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Trace the bad physical copies after canonical regrouping and derive the product of the good ground-state density with the actual auxiliary marginal of that same component. No product-state, independence or separately supplied marginal premise. Regional restriction, symmetry and moments remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "0d00ac83ac5533452abdfed33e5b55f301f32b2b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaGoodCopyDensity",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodCopyDensity8750/target.log",
+            "sha256": "3184adda2ab8037473a6bf49b6b8a81a46dd7d836b316851bfbf7c5c20cf03b3"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodCopyDensity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodCopyDensity8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/docs/provenance/evidence/replicaGoodCopyDensity8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodCopyDensity8750/axioms.log",
+            "sha256": "187fed53e7938f4079c83e58208df5d7b567188e7caf61ef4b171afc112addaa"
+          }
+        ]
+      }
+    }
+  ]
+}

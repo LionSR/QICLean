@@ -1,0 +1,15 @@
+{
+  "version": 12,
+  "diagnostics": [
+    {
+      "line": 78,
+      "severity": 1,
+      "message": "Tactic `rewrite` failed: Did not find an occurrence of the pattern\n  ∑ x, ∏ i, ?f i (x i)\nin the target expression\n  ∑ x, ∏ x_1, star (Ω (x x_1)) * Ω (x x_1) = 1\n\nA : Type u_1\ninst✝ : Fintype A\nΩ : A → ℂ\nhΩ : ‖WithLp.toLp 2 Ω‖ = 1\nk : ℕ\nB : Finset (Fin k)\nhdot : Ω ⬝ᵥ star Ω = 1\n⊢ ∑ x, ∏ x_1, star (Ω (x x_1)) * Ω (x x_1) = 1"
+    }
+  ],
+  "response": {
+    "id": 22,
+    "jsonrpc": "2.0",
+    "result": {}
+  }
+}

@@ -1,0 +1,6 @@
+[
+  "Matrix.replicaGoodCopyRemainder",
+  "Matrix.replicaExcitationProjection_mulVec_factorization",
+  "Matrix.replicaGoodCopy_factorization_of_fixed",
+  "Matrix.norm_replicaGoodCopyRemainder_of_fixed"
+]

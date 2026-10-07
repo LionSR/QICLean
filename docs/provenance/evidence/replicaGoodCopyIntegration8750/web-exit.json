@@ -1,0 +1,16 @@
+{
+  "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+  "command": [
+    "texra-blueprint",
+    "web"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+  "started_utc": "2026-10-07T21:13:17.264407+00:00",
+  "elapsed_seconds": 50.712,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/web.log",
+  "sha256": "8f9cc727f9cb8f075ba6c5fc5c637b2bfd3473d6734dfa4f6c8456a56c86b451",
+  "gzip_log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/web.log.gz",
+  "gzip_sha256": "a60b9bb8d6fd21adfc4e28188e0882cb9a5dfb4cf038a7717a79544100b58f8f",
+  "gzip_mtime": 0
+}
