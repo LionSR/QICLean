@@ -1,0 +1,13 @@
+{
+  "kind": "build",
+  "command": [
+    "lake",
+    "build"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 50.8,
+  "source_revision": "b994a7e7de3c23191976af08535bbae4a8b92dbc",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropyIntegration8753/build.log",
+  "sha256": "3458d977a61426a05aa5516a3a1b1e3b582ad6354ebc3ee6ef3aaf4ec0b5e2b2"
+}

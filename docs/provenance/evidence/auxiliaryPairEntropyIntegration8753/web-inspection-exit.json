@@ -1,0 +1,13 @@
+{
+  "kind": "web-inspection",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/auxiliaryPairEntropyIntegration8753/inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 4.8,
+  "source_revision": "b994a7e7de3c23191976af08535bbae4a8b92dbc",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropyIntegration8753/web-inspection.log",
+  "sha256": "4705df250184c21437726e7777b268a03d3975ef46dd20a47ea645250522d7ae"
+}

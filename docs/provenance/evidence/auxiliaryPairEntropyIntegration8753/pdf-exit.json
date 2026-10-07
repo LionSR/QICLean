@@ -1,0 +1,13 @@
+{
+  "kind": "pdf",
+  "command": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "working_directory": "blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 21.92,
+  "source_revision": "b994a7e7de3c23191976af08535bbae4a8b92dbc",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropyIntegration8753/pdf.log",
+  "sha256": "597c6b9d8661b3c489724caf60ca208bcc36d4d1cc08ac64df88e6feb03a1fb5"
+}

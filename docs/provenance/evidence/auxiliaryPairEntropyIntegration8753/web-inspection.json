@@ -1,0 +1,22 @@
+{
+  "links": [
+    "FiniteProduct.auxiliaryPair_entropyIdentity",
+    "FiniteProduct.auxiliaryPair_pre_nonneg"
+  ],
+  "errors": [],
+  "top": 47.9375,
+  "bottom": 743.875,
+  "mathElements": 16,
+  "mobile_section_bounds": {
+    "top": 112.328125,
+    "bottom": 1054.703125
+  },
+  "mobile_identity_display": {
+    "scrollWidth": 320,
+    "clientWidth": 310,
+    "overflowX": "auto",
+    "scrollLeft": 10
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360
+}

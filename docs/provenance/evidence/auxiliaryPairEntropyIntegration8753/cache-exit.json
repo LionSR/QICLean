@@ -1,0 +1,15 @@
+{
+  "kind": "cache",
+  "command": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 14.41,
+  "source_revision": "b994a7e7de3c23191976af08535bbae4a8b92dbc",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropyIntegration8753/cache.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

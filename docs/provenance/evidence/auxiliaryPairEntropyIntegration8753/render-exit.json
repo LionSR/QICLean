@@ -1,0 +1,21 @@
+{
+  "kind": "render",
+  "command": [
+    "pdftoppm",
+    "-f",
+    "392",
+    "-l",
+    "393",
+    "-r",
+    "110",
+    "-png",
+    "blueprint/print/print.pdf",
+    "docs/provenance/evidence/auxiliaryPairEntropyIntegration8753/render/page"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.5,
+  "source_revision": "b994a7e7de3c23191976af08535bbae4a8b92dbc",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropyIntegration8753/render.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

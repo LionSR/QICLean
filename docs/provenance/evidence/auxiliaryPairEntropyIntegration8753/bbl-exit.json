@@ -1,0 +1,13 @@
+{
+  "kind": "bbl",
+  "command": [
+    "texra-blueprint",
+    "bbl"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.35,
+  "source_revision": "b994a7e7de3c23191976af08535bbae4a8b92dbc",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropyIntegration8753/bbl.log",
+  "sha256": "cba8128525d90f350a2fa693771b81f01ba11d4a90ea67b959a68286f04dcfc0"
+}
