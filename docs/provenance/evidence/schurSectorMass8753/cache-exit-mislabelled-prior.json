@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 15.456887416003156,
+  "mathlib_revision": "3d425859e73fcfbef85b9638c2a91708ef4a22d4"
+}

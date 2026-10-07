@@ -1,0 +1,15 @@
+{
+  "source_revision": "cdb5485555253efc7156b619f9cec8c4153930fb",
+  "source_anchor": "OpenAI September 24 2026 area-law manuscript, 07-comparators.tex lines 255\u2013281, comparator:high-label",
+  "upstream_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "upstream_tex_sha256": "5c8d8dd55a283a7ffe9573067c631ea70d93b01c207a297aee02352c25d2573b",
+  "independent_root_review": "Root read the whole proof and signatures and approved positivity/completeness/cardinality and actual marginal/norm identities before final verification.",
+  "findings": [
+    "Actual central Schur projectors are Hermitian idempotents, hence PSD. Density trace masses are real and nonnegative. Zero projectors contribute zero, and completeness gives total mass one.",
+    "The actual nonzero-projector count is at most (k+1)^(card \u03a9)^2; averaging gives the reciprocal polynomial bound, with no permutation-invariance hypothesis.",
+    "The unit-vector density is the actual partialTraceLeft of vecMulVec v (star v). It is PSD and has trace one. The trace-pairing identity and Q\u1d34=Q=Q\u00b2 give the projected Euclidean norm square exactly.",
+    "The bound is positive for all natural k, including k=0, so the projected vector is nonzero. Empty one-copy or auxiliary basis cases require no extra hypothesis; if a unit vector or density cannot exist the original assumptions already exclude it.",
+    "No entropy-window, log d\u03bb asymptotic, common Bell sequence, initial uniform-pair occurrence, C-R label matching, or energy conclusion is asserted."
+  ],
+  "obstacles": []
+}

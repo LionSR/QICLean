@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-schur-sector-mass-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurSectorMass.lean",
+        "declaration": "TensorPower.exists_labelProj_trace_mass_ge",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Select an actual central Schur projector of trace mass at least the reciprocal polynomial from positivity, completeness, and the accepted count of nonzero sectors. No entropy-window conclusion is asserted."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "cdb5485555253efc7156b619f9cec8c4153930fb",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.SchurSectorMass",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurSectorMass8753/target.log",
+            "sha256": "f4ba655d37c23c1b05eb3a36631645f2226a5352ca8c3bfc61d308558b65540b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchurSectorMass.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurSectorMass8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurSectorMass8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurSectorMass8753/axioms.log",
+            "sha256": "571f1227d06b639a26489dd4c3c9be7a21a8fc92ec4c30023a9913bc35ca9588"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schur-sector-mass-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurSectorMass.lean",
+        "declaration": "TensorPower.exists_labelProj_norm_mass_ge",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Construct the actual reduced density of an arbitrary unit vector with an auxiliary factor and prove its Schur trace mass equals the projected squared norm; derive the reciprocal polynomial bound and nonzero projected vector."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "cdb5485555253efc7156b619f9cec8c4153930fb",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.SchurSectorMass",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurSectorMass8753/target.log",
+            "sha256": "f4ba655d37c23c1b05eb3a36631645f2226a5352ca8c3bfc61d308558b65540b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchurSectorMass.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurSectorMass8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurSectorMass8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurSectorMass8753/axioms.log",
+            "sha256": "571f1227d06b639a26489dd4c3c9be7a21a8fc92ec4c30023a9913bc35ca9588"
+          }
+        ]
+      }
+    }
+  ]
+}
