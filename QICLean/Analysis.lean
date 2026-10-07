@@ -118,6 +118,7 @@ import QICLean.Analysis.TwoProjectionCompression
 import QICLean.Analysis.TwoProjectionCompressionSpectrum
 import QICLean.Analysis.TwoProjectionDefectBlockSum
 import QICLean.Analysis.TwoProjectionReducedProjection
+import QICLean.Analysis.TypicalSet
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.WeightedCesaroMean

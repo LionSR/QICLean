@@ -223,3 +223,22 @@ depend on the common values there.
     dimension is positive, since $\Psi\ne0$. Apply
     Theorem~\ref{thm:marginal_tails}.
 \end{proof}
+
+\begin{lemma}[Typical sets]
+    \label{lem:typical_set}
+    \lean{Entropy.one_sub_surprisalTail_le_typicalMass,
+        Entropy.abs_log_card_typicalSet_sub_le, Entropy.abs_typicalEntropy_sub_le}
+    \leanok
+    Let $E$ be the set of indices with $p_i>0$ and $|-\log p_i-S|\le w$, and
+    let $z=\sum_{i\in E}p_i$. Then $z\ge1-\Pr\{|K-S|>w\}$. If $z>0$, then
+    $|\log|E|-S|\le w+|\log z|$, and the entropy $S'$ of the weights $p_i/z$
+    on $E$ satisfies $|S'-S|\le w+|\log z|$.
+\end{lemma}
+\begin{proof}\leanok
+    The indices outside $E$ with positive weight are exactly those in the
+    tail event. On $E$ every normalized surprisal $-\log(p_i/z)$ lies within
+    $w+|\log z|$ of $S$, since $\log z\le0$. Averaging gives the entropy bound.
+    Summing the normalized weights, each between
+    $\mathrm e^{-(S+c)}$ and $\mathrm e^{-(S-c)}$ with $c=w+|\log z|$, gives
+    the cardinality bound.
+\end{proof}
