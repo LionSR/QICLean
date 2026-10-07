@@ -15,7 +15,10 @@ import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
+import QICLean.Entropy.GapSurprisal
+import QICLean.Entropy.MarginalTails
 import QICLean.Entropy.MarkovChain
+import QICLean.Entropy.ModularExpectation
 import QICLean.Entropy.MutualInformation
 import QICLean.Entropy.MutualInformationBasic
 import QICLean.Entropy.MutualInformationDataProcessing
@@ -25,6 +28,7 @@ import QICLean.Entropy.PositiveOverlappingProduct
 import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.SSAEqualityCharacterization
+import QICLean.Entropy.SchmidtTilt
 import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
