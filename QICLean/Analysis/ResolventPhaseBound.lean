@@ -269,6 +269,126 @@ theorem integral_sqrtRatio_le {D : ℝ} (hD : 1 ≤ D) (hK : R.invQuadA ≤ D ^ 
     congr 1; simp only [L]; ring
   linarith
 
+theorem integral_sqrtRatio_eq_zero (hη : R.logGap = 0) :
+    ∫ v in Ioi (0 : ℝ), R.sqrtRatio v = 0 := by
+  have h0 : ∫ v in Ioi (0 : ℝ), R.defect v = 0 := by
+    rw [R.integrableOn_defect_and_integral.2, hη]
+  have hnn : 0 ≤ᵐ[volume.restrict (Ioi (0 : ℝ))] R.defect :=
+    (ae_restrict_iff' measurableSet_Ioi).2
+      (Eventually.of_forall fun v hv => R.defect_nonneg (le_of_lt hv))
+  have hae := (integral_eq_zero_iff_of_nonneg_ae hnn R.integrableOn_defect_and_integral.1).1 h0
+  rw [integral_congr_ae (g := fun _ => (0 : ℝ)) ?_, integral_zero]
+  filter_upwards [hae] with v hv
+  simp [sqrtRatio, hv]
+
+theorem integral_sqrtRatio_le_phaseRate {D : ℝ} (hD : 1 ≤ D) (hK : R.invQuadA ≤ D ^ 2)
+    (hM : R.quadB ≤ 1) :
+    ∫ v in Ioi (0 : ℝ), R.sqrtRatio v ≤ 4 * phaseRate D R.logGap := by
+  rcases (R.logGap_nonneg).lt_or_eq with hη | hη
+  · refine (R.integral_sqrtRatio_le hD hK hM hη).trans ?_
+    rw [phaseRate, if_pos hη, mul_add]
+    have hy0 : 0 < min 1 R.logGap := lt_min one_pos hη
+    have hlog : 0 ≤ R.logGap * Real.log (Real.exp 1 * D / min 1 R.logGap) := by
+      refine mul_nonneg hη.le (Real.log_nonneg ?_)
+      rw [le_div_iff₀ hy0, one_mul]
+      calc min 1 R.logGap ≤ 1 := min_le_left _ _
+        _ ≤ Real.exp 1 * 1 := by nlinarith [Real.add_one_le_exp (1 : ℝ)]
+        _ ≤ Real.exp 1 * D := by gcongr
+    have : √(2 * R.logGap * Real.log (Real.exp 1 * D / min 1 R.logGap)) ≤
+        4 * √(R.logGap * Real.log (Real.exp 1 * D / min 1 R.logGap)) := by
+      rw [mul_assoc, Real.sqrt_mul (by norm_num)]
+      gcongr
+      calc √2 ≤ √16 := Real.sqrt_le_sqrt (by norm_num)
+        _ = 4 := by rw [show (16 : ℝ) = 4 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]
+    linarith
+  · rw [R.integral_sqrtRatio_eq_zero hη.symm, phaseRate, if_neg (by rw [← hη]; exact lt_irrefl 0),
+      mul_zero]
+
+theorem norm_toLp_discrepancy_le {v : ℝ} (hv : 0 < v) :
+    ‖(WithLp.toLp 2 (R.discrepancy v) : EuclideanSpace ℂ n)‖ ≤ R.sqrtRatio v := by
+  rw [norm_eq_sqrt_re_inner (𝕜 := ℂ), sqrtRatio]
+  refine Real.sqrt_le_sqrt ?_
+  rw [EuclideanSpace.inner_toLp_toLp, dotProduct_comm, le_div_iff₀ hv, mul_comm]
+  exact R.mul_norm_discrepancy_sq_le hv.le
+
+theorem phaseGap_zero : R.phaseGap 0 = 0 := by
+  simp only [phaseGap, Complex.cpow_zero, spectralFun_one, one_mulVec, a0, sub_self]
+
+/-- The phase gap on the imaginary axis is bounded by `|sinh π u| / π · ∫₀^∞ √(h/v)`.
+Area-law manuscript, `04-conditional.tex`, lines 416–423. -/
+theorem norm_phaseGap_le_integral (u : ℝ) :
+    ‖(WithLp.toLp 2 (R.phaseGap (-(u * Complex.I))) : EuclideanSpace ℂ n)‖ ≤
+      |Real.sinh (Real.pi * u)| / Real.pi * ∫ v in Ioi (0 : ℝ), R.sqrtRatio v := by
+  have hS : 0 ≤ ∫ v in Ioi (0 : ℝ), R.sqrtRatio v :=
+    setIntegral_nonneg measurableSet_Ioi fun v _ => Real.sqrt_nonneg _
+  rcases eq_or_ne u 0 with rfl | hu
+  · simp only [Complex.ofReal_zero, zero_mul, neg_zero, R.phaseGap_zero]
+    simp only [WithLp.toLp_zero, norm_zero]
+    positivity
+  set p := R.phaseGap (-(u * Complex.I))
+  set P : EuclideanSpace ℂ n := WithLp.toLp 2 p
+  have hrep := R.dotProduct_phaseGap_eq_integral p hu
+  have hself : star p ⬝ᵥ p = ((‖P‖ : ℝ) : ℂ) ^ 2 := by
+    have h1 : star p ⬝ᵥ p = inner ℂ P P := by
+      rw [EuclideanSpace.inner_toLp_toLp, dotProduct_comm]
+    rw [h1, inner_self_eq_norm_sq_to_K]
+    rfl
+  have hsin : ‖-(Complex.sin (Real.pi * (-(u * Complex.I))) / Real.pi)‖ =
+      |Real.sinh (Real.pi * u)| / Real.pi := by
+    rw [norm_neg, norm_div, show (Real.pi : ℂ) * (-(u * Complex.I)) =
+        -(((Real.pi * u : ℝ) : ℂ) * Complex.I) by push_cast; ring,
+      Complex.sin_neg, norm_neg, Complex.sin_mul_I, norm_mul, Complex.norm_I, mul_one,
+      ← Complex.ofReal_sinh, Complex.norm_real, Real.norm_eq_abs, Complex.norm_real,
+      Real.norm_eq_abs, abs_of_pos Real.pi_pos]
+  have hint := R.integrableOn_sqrtRatio
+  have hbound : ‖∫ v in Ioi (0 : ℝ), (v : ℂ) ^ (-(u * Complex.I)) * (star p ⬝ᵥ R.discrepancy v)‖ ≤
+      ∫ v in Ioi (0 : ℝ), ‖P‖ * R.sqrtRatio v := by
+    refine norm_integral_le_of_norm_le (hint.const_mul _) ?_
+    refine (ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun v hv => ?_)
+    have hv' : (0 : ℝ) < v := hv
+    rw [norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hv']
+    simp only [Complex.neg_re, Complex.mul_re, Complex.ofReal_re, Complex.I_re, mul_zero,
+      Complex.ofReal_im, Complex.I_im, mul_one, sub_self, neg_zero, Real.rpow_zero, one_mul]
+    calc ‖star p ⬝ᵥ R.discrepancy v‖
+        = ‖inner ℂ P (WithLp.toLp 2 (R.discrepancy v) : EuclideanSpace ℂ n)‖ := by
+          rw [EuclideanSpace.inner_toLp_toLp, dotProduct_comm]
+      _ ≤ ‖P‖ * ‖(WithLp.toLp 2 (R.discrepancy v) : EuclideanSpace ℂ n)‖ := norm_inner_le_norm _ _
+      _ ≤ ‖P‖ * R.sqrtRatio v := by gcongr; exact R.norm_toLp_discrepancy_le hv'
+  have hmain : ‖P‖ ^ 2 ≤ |Real.sinh (Real.pi * u)| / Real.pi *
+      (‖P‖ * ∫ v in Ioi (0 : ℝ), R.sqrtRatio v) := by
+    have h := congrArg norm hrep
+    rw [hself, norm_mul, hsin, norm_pow, Complex.norm_real, Real.norm_eq_abs,
+      abs_of_nonneg (norm_nonneg _)] at h
+    rw [h, ← integral_const_mul]
+    gcongr
+  rcases (norm_nonneg P).lt_or_eq with hP | hP
+  · have : ‖P‖ * ‖P‖ ≤ ‖P‖ * (|Real.sinh (Real.pi * u)| / Real.pi *
+        ∫ v in Ioi (0 : ℝ), R.sqrtRatio v) := by nlinarith
+    exact le_of_mul_le_mul_left this hP
+  · rw [← hP]
+    have : 0 ≤ |Real.sinh (Real.pi * u)| / Real.pi := by positivity
+    positivity
+
+/-- **Phase-gap bound for a compression.**  If `⟨a₀, A⁻¹ a₀⟩ ≤ D²`, `⟨b₀, B b₀⟩ ≤ 1` and
+`D ≥ 1`, then for every real `u`,
+`‖A^{-iu} a₀ - V B^{-iu} b₀‖ ≤ 2 |sinh π u| 𝓡_η` with `η = ⟨b₀, log B b₀⟩ - ⟨a₀, log A a₀⟩`.
+Area-law manuscript, proof of Lemma 5.2, `04-conditional.tex`, lines 392–433. -/
+theorem norm_phaseGap_le_phaseRate {D : ℝ} (hD : 1 ≤ D) (hK : R.invQuadA ≤ D ^ 2)
+    (hM : R.quadB ≤ 1) (u : ℝ) :
+    ‖(WithLp.toLp 2 (R.phaseGap (-(u * Complex.I))) : EuclideanSpace ℂ n)‖ ≤
+      2 * |Real.sinh (Real.pi * u)| * phaseRate D R.logGap := by
+  have hR : 0 ≤ phaseRate D R.logGap := by
+    unfold phaseRate; split_ifs <;> positivity
+  refine (R.norm_phaseGap_le_integral u).trans ?_
+  have hS := R.integral_sqrtRatio_le_phaseRate hD hK hM
+  have hπ : 4 / Real.pi ≤ 2 := by
+    rw [div_le_iff₀ Real.pi_pos]; linarith [Real.two_le_pi]
+  calc |Real.sinh (Real.pi * u)| / Real.pi * ∫ v in Ioi (0 : ℝ), R.sqrtRatio v
+      ≤ |Real.sinh (Real.pi * u)| / Real.pi * (4 * phaseRate D R.logGap) := by gcongr
+    _ = |Real.sinh (Real.pi * u)| * (4 / Real.pi) * phaseRate D R.logGap := by ring
+    _ ≤ |Real.sinh (Real.pi * u)| * 2 * phaseRate D R.logGap := by gcongr
+    _ = 2 * |Real.sinh (Real.pi * u)| * phaseRate D R.logGap := by ring
+
 end ResolventCompression
 
 end Matrix
