@@ -469,3 +469,25 @@ depend on the common values there.
     the induction hypothesis, and replacing $K_j$ alone keeps the product
     feasible, so Proposition~\ref{prop:stationary_filter_clipped} applies.
 \end{proof}
+
+\begin{proposition}[Existence of an optimal nested product]
+    \label{prop:filter_maximizer}
+    \lean{Matrix.isCompact_setOf_conjTranspose_mul_self_eq_one,
+        Entropy.isCompact_floorSimplex, Entropy.isCompact_setOf_isFeasibleFilter,
+        Entropy.isFeasibleFilter_uniform, Entropy.continuous_norm_liftProd_chainList,
+        Entropy.exists_max_feasible_chain,
+        Entropy.toEuclideanLin_liftProd_chainList_ne_zero}
+    \leanok
+    Suppose every region $D_j$ carries at least one configuration and
+    $\#\cdot f_j\le 1$. Then the norm $\lVert L_{m-1}\cdots L_0\Omega\rVert$
+    attains its maximum over families of feasible filters. If moreover all floors
+    are positive and $\Omega\ne0$, every such product maps $\Omega$ to a nonzero
+    vector.
+\end{proposition}
+\begin{proof}\leanok
+    The feasible filters are the continuous image of the product of the compact
+    unitary group and the compact floored simplex, and the uniform filter is
+    feasible. The norm is continuous in the filters, so it attains its maximum
+    on the compact product of the feasible sets. Feasible filters with positive
+    floors are positive definite, hence invertible, and so is their product.
+\end{proof}
