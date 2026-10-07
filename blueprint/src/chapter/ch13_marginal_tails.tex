@@ -491,3 +491,74 @@ depend on the common values there.
     on the compact product of the feasible sets. Feasible filters with positive
     floors are positive definite, hence invertible, and so is their product.
 \end{proof}
+
+\begin{lemma}[Conjugation by the splitting filter]
+    \label{lem:split_filter_conjugation}
+    \lean{Entropy.inner_cutOperator, Entropy.cutOperator_mul, Entropy.inv_conj_diagonal,
+        Entropy.abs_re_inner_sub_conj_localLift_le}
+    \leanok
+    \uses{lem:filter_energy_term}
+    Let $\varphi$ be a unit vector, $B$ a region, and let $L=W\operatorname{diag}(l)W^*$ and
+    $\rho_{\varphi,B}=W\operatorname{diag}(q)W^*$ with $W$ unitary, $l>0$, and
+    $\lvert\log l_i-\log l_k\rvert\le\tfrac a2\lvert\log q_i-\log q_k\rvert$ for positive
+    $q_i,q_k$, where $a\le\tfrac12$. For a Hermitian operator $X$ supported on $S$ with
+    $\lVert X\rVert\le c_0$,
+    \[
+        \bigl\lvert\Re\bigl(\langle\varphi,X\varphi\rangle
+            -\langle\varphi,LXL^{-1}\varphi\rangle\bigr)\bigr\rvert
+        \le 4a^2d_S^2c_0,\qquad d_S=\prod_{v\in S}\dim\mathcal H_v.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    In cut coordinates for $B\mid B^c$ the operator $X$ is a sum of at most $d_S^2$ products
+    $c\otimes d$ with $\lVert c\rVert\lVert d\rVert\le c_0$, and
+    Lemma~\ref{lem:filter_energy_term} applies.
+\end{proof}
+
+\begin{lemma}[One interaction term]
+    \label{lem:chain_term_conjugation}
+    \lean{Entropy.liftProdInv_append, Entropy.List.filter_not_append_filter_of_upward,
+        Entropy.chainList_eq_append_of_upward, Entropy.chainList_eq_split,
+        Entropy.liftProd_mul_mul_liftProdInv_of_disjoint, Entropy.splitIndices,
+        Entropy.mem_splitIndices, Entropy.abs_re_inner_sub_chain_conj_le}
+    \leanok
+    \uses{lem:split_filter_conjugation, thm:all_filters_clipped}
+    Let $K_j$ be invertible filters on nested regions $D_j$, each commuting with the regional
+    state of the unit vector $\varphi$ and clipped relative to it with weight $a_j\le\tfrac12$.
+    Let $X$ be Hermitian, supported on $S$, with $\lVert X\rVert\le c_0$, and suppose that at
+    most one region meets $S$ without containing it. Then conjugation by the nested product
+    $K$ changes $\Re\langle\varphi,X\varphi\rangle$ by at most
+    $\sum_{j}4a_j^2d_S^2c_0$, the sum over the regions splitting $S$.
+\end{lemma}
+\begin{proof}\leanok
+    The filters on regions disjoint from $S$ commute with $X$. The filters on regions
+    containing $S$ drop out of the expectation by the descending trace argument. If a region
+    splits $S$, the regions after it contain $S$ and the regions before it are disjoint from
+    $S$, so only its conjugation remains, and Lemma~\ref{lem:split_filter_conjugation}
+    applies; otherwise the expectation is unchanged.
+\end{proof}
+
+\begin{theorem}[Excitation energy of the optimal nested product]
+    \label{thm:chain_energy}
+    \lean{Entropy.regionState_smul, Entropy.clipped_smul, Entropy.toEuclideanLin_conj_apply_eq,
+        Entropy.re_inner_sub_le_of_chain, Entropy.re_inner_sub_le_of_max}
+    \leanok
+    \uses{lem:chain_term_conjugation, prop:filter_maximizer}
+    Let feasible filters $K_j$ on nested regions $D_j$, with floors $f_j>0$,
+    $\#\cdot f_j<1$ and weights $0<a_j\le\tfrac12$, maximize
+    $\lVert L_{m-1}\cdots L_0\Omega\rVert$, where $\Omega\ne0$ satisfies $H\Omega=E_0\Omega$
+    for $H=\sum_ih_i$ with $h_i$ Hermitian, supported on $S_i$, $\lVert h_i\rVert\le c_0$, and
+    every $S_i$ split by at most one region. Then the normalized output
+    $\varphi=K\Omega/\lVert K\Omega\rVert$ satisfies
+    \[
+        \Re\langle\varphi,H\varphi\rangle-E_0
+        \le\sum_j4a_j^2\sum_{i\text{ crossing }D_j}d_{S_i}^2c_0 .
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    Since $KHK^{-1}\varphi=E_0\varphi$, the left side is the sum over $i$ of
+    $\Re\bigl(\langle\varphi,h_i\varphi\rangle-\langle\varphi,Kh_iK^{-1}\varphi\rangle\bigr)$.
+    By Theorem~\ref{thm:all_filters_clipped} every filter commutes with the regional state of
+    $\varphi$ and is clipped relative to it; Lemma~\ref{lem:chain_term_conjugation} bounds each
+    term, and exchanging the two sums gives the claim.
+\end{proof}

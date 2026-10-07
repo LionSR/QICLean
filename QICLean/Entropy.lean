@@ -14,6 +14,7 @@ import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FilterChain
+import QICLean.Entropy.FilterChainEnergy
 import QICLean.Entropy.FilterClipping
 import QICLean.Entropy.FilterConjugation
 import QICLean.Entropy.FilterEnergy
