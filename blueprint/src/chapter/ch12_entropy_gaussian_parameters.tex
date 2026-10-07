@@ -1,0 +1,81 @@
+\subsection{Uniform choices of variance and cutoff}
+\label{sec:gaussian_parameters}
+
+The variance and time cutoff in the reset argument
+of~\cite{OpenAI2026PolynomialPEPS} can be fixed uniformly in the buffer
+parameter and system size.
+% Source: polynomial-PEPS manuscript (September 24, 2026), lem:reset,
+% pinned peps-02-information-adc7f124.tex, lines 426--452, especially
+% lines 443--452, at openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% This subsection concerns the scalar error expressions only. It does not
+% establish an operator approximation, spatial locality, or a full reset.
+% The argument is scalar; no tensor-network diagram is needed.
+
+\begin{theorem}[Uniform Gaussian parameters]
+    \label{thm:gaussian_parameters}
+    \lean{GaussianFilter.exists_gaussian_parameter_constants,
+        GaussianFilter.gaussian_error_bounds_of_parameter_constants,
+        GaussianFilter.exists_gaussian_parameters}
+    \leanok
+    Let $\Delta>0$ and $r\ge0$ be real. There exist $A>0$ and $T_0>0$,
+    depending only on $\Delta$ and $r$, such that
+    \begin{align}
+        \frac{A\Delta^2}{2}&\ge 30+r,
+        \label{eq:gaussian_parameter_gap}
+    \end{align}
+    \begin{align}
+        \frac{T_0^2}{2A}&\ge 30+r.
+        \label{eq:gaussian_parameter_tail}
+    \end{align}
+    For every real $b\ge0$ and $L\ge1$, put
+    $B_*=1+b+\log L$, $h=AB_*$, and $T=T_0B_*$.
+    Then $h>0$, $T\ge0$, and
+    \begin{align}
+        e^{-h\Delta^2/2}&\le e^{-10b}L^{-r},
+        \label{eq:gaussian_parameter_error}
+    \end{align}
+    \begin{align}
+        2e^{-T^2/(2h)}&\le 2e^{-10b}L^{-r}.
+        \label{eq:gaussian_parameter_truncation}
+    \end{align}
+    These bounds also hold for any $A>0$ and $T_0\ge0$ satisfying
+    (\ref{eq:gaussian_parameter_gap}) and (\ref{eq:gaussian_parameter_tail}).
+\end{theorem}
+\begin{proof}\leanok
+    Choose $A=2(30+r)/\Delta^2$ and
+    $T_0=\sqrt{2A(30+r)}$. Both constants are positive, and
+    (\ref{eq:gaussian_parameter_gap}) and
+    (\ref{eq:gaussian_parameter_tail}) hold with equality.
+    Since $\log L\ge0$, one has $B_*\ge1$.
+    For any $c\ge30+r$, the inequalities $c\ge10$ and $c\ge r$ give
+    $cB_*=c+cb+c\log L\ge10b+r\log L$, and hence
+    \begin{align}
+        e^{-cB_*}&\le e^{-10b-r\log L}=e^{-10b}L^{-r}.
+        \label{eq:gaussian_parameter_scalar}
+    \end{align}
+    Apply~(\ref{eq:gaussian_parameter_scalar}) first to
+    $c=A\Delta^2/2$ and then to $c=T_0^2/(2A)$, using
+    $h\Delta^2/2=(A\Delta^2/2)B_*$ and
+    $T^2/(2h)=(T_0^2/(2A))B_*$.
+    Multiplying the second estimate by $2$ gives
+    (\ref{eq:gaussian_parameter_truncation}).
+\end{proof}
+
+\begin{corollary}[Polynomial error exponent]
+    \label{cor:gaussian_polynomial_parameters}
+    \lean{GaussianFilter.exists_gaussian_parameters_of_polynomial_exponent}
+    \leanok
+    \uses{thm:gaussian_parameters}
+    Let $\Delta>0$ and $p\ge0$ be real, and set $r_*=2p+10$.
+    The constants $A,T_0$ in Theorem~\ref{thm:gaussian_parameters} can be
+    chosen as functions of $\Delta,p$ before $b,L$ are specified. They
+    satisfy the two coefficient bounds with threshold $40+2p$, and
+    (\ref{eq:gaussian_parameter_error}) and
+    (\ref{eq:gaussian_parameter_truncation}) hold with $r=r_*$ for every
+    $b\ge0$ and $L\ge1$.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{thm:gaussian_parameters}
+    Since $r_*=2p+10\ge0$, apply Theorem~\ref{thm:gaussian_parameters}
+    with $r=r_*$.
+\end{proof}
