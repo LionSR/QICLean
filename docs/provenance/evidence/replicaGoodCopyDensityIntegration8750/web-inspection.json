@@ -1,0 +1,35 @@
+{
+  "links": [
+    "Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder",
+    "Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density"
+  ],
+  "errors": [],
+  "top": 1070.703125,
+  "bottom": 1887.234375,
+  "mathElements": 20,
+  "proofs": [
+    {
+      "height": 85.65625,
+      "text": "\n   Insert the coordinate factorization w(g,b,c)=\u03a9G(g)\u03c7(b,c) into the partial trace. Summing over g contributes \u2211g|\u03a9G(g)|2=\u220fi\u2208G\u2016\u03a9\u20162=1. The remaining sum is the stated marginal of \u03c7. \n\n  "
+    },
+    {
+      "height": 60.8125,
+      "text": "\n   The coordinate factorization gives |\u03a9G\u27e9\u27e8\u03a9G|\u2297TrH\u2297B|\u03c7\u27e9\u27e8\u03c7|. Apply the preceding theorem to identify its auxiliary factor. \n\n  "
+    }
+  ],
+  "mobile_section_bounds": {
+    "top": 980.359375,
+    "bottom": 2169.765625
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360,
+  "mobile_equation_scrolls": [
+    {
+      "class": "displaymath",
+      "width": 310,
+      "scrollWidth": 389,
+      "scrollLeft": 79,
+      "maximum": 79
+    }
+  ]
+}
