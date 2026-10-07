@@ -101,6 +101,7 @@ theorem marginalUF_affine (ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ) (a b
   · subst h; simp [Finset.card_univ]
   · simp [h]
 
+omit [Fintype U] in
 theorem marginalU_affine (ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ) (a b : ℝ) :
     marginalU (a • ρ + b • (1 : Matrix (X × (U × F)) (X × (U × F)) ℂ)) =
       a • marginalU ρ + (b * Fintype.card F * Fintype.card X) • (1 : Matrix U U ℂ) := by

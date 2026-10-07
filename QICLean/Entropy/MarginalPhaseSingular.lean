@@ -108,15 +108,18 @@ end Bound
 
 section Limits
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem tendsto_affF (c t : ℝ) :
     Tendsto (fun ε => affF X U F c ε t) (𝓝[>] 0) (𝓝 t) := by
   have : ContinuousAt (fun ε => affF X U F c ε t) 0 := by unfold affF; fun_prop
   have h := this.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))
   simpa [affF] using h
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem affF_zero (c ε : ℝ) : affF X U F c ε 0 = ε / Fintype.card (X × (U × F)) * c := by
   simp [affF]
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem affF_pos [Nonempty X] [Nonempty U] [Nonempty F] {c ε t : ℝ} (hc : 0 < c) (h0 : 0 < ε)
     (h1 : ε ≤ 1) (ht : 0 ≤ t) : 0 < affF X U F c ε t := by
   unfold affF
@@ -236,7 +239,8 @@ theorem norm_phaseDifference_le (htr : ρ.trace = 1) (u : ℝ) :
       rw [Real.sqrt_eq_rpow]
       exact (tendsto_cpow_affF hk' _).mul (tendsto_rpow_affF 1 _ _ (by norm_num))
   -- the `UF` phase
-  have hUF := tendsto_phaseFam_mul (X := X) (U := U) (F := F) hUFP (c := Fintype.card X) hcX (-u) oneKron hQP (by
+  have hUF := tendsto_phaseFam_mul (X := X) (U := U) (F := F) hUFP (c := Fintype.card X) hcX
+    (-u) oneKron hQP (by
     change ((1 : Matrix X X ℂ) ⊗ₖ kerProj hUFP.1) * (hatPhase hρH u * sqrtSpec hρH) = 0
     have hcomm : hatPhase hρH u * sqrtSpec hρH = sqrtSpec hρH * hatPhase hρH u := by
       rw [hatPhase, sqrtSpec, spectralFun_mul, spectralFun_mul, mul_comm]
@@ -248,7 +252,8 @@ theorem norm_phaseDifference_le (htr : ρ.trace = 1) (u : ℝ) :
   have hXU := tendsto_phaseFam_mul (X := X) (U := U) (F := F) hsP (c := Fintype.card F) hcF u
     (embedFLin (X := X) (U := U) (F := F)) hP (embedF_kerProj_mul_sqrtSpec hρ)
   -- the `U` phase
-  have hU := tendsto_phaseFam_mul (X := X) (U := U) (F := F) hUP (c := Fintype.card F * Fintype.card X) (mul_pos hcF hcX)
+  have hU := tendsto_phaseFam_mul (X := X) (U := U) (F := F) hUP
+    (c := Fintype.card F * Fintype.card X) (mul_pos hcF hcX)
     (-u) ((embedFLin (X := X) (U := U) (F := F)).comp oneKron) hXU (by
       change embedF ((1 : Matrix X X ℂ) ⊗ₖ kerProj hUP.1) * (embedF (hatPhase hsP.1 u) *
         sqrtSpec hρH) = 0
@@ -259,7 +264,8 @@ theorem norm_phaseDifference_le (htr : ρ.trace = 1) (u : ℝ) :
         (embedFLin (hatPhase hsP.1 u) * sqrtSpec hρH) -
       oneKron (hatPhase hUFP.1 (-u)) * (hatPhase hρH u * sqrtSpec hρH) =
       phaseDifference hρ u * sqrtSpec hρH := by
-    change embedF ((1 : Matrix X X ℂ) ⊗ₖ _) * (embedF _ * _) - ((1 : Matrix X X ℂ) ⊗ₖ _) * (_ * _) = _
+    change embedF ((1 : Matrix X X ℂ) ⊗ₖ _) * (embedF _ * _) -
+      ((1 : Matrix X X ℂ) ⊗ₖ _) * (_ * _) = _
     rw [phaseDifference, Matrix.sub_mul, ← embedF_mul, Matrix.mul_assoc, Matrix.mul_assoc]
   rw [hlimG] at hLHSmat
   -- the entropy function
@@ -315,7 +321,8 @@ theorem norm_phaseDifference_le (htr : ρ.trace = 1) (u : ℝ) :
     have hb := norm_approx_le hρ htr u hε.1 hε.2
     rw [hEf ε hε.1 hε.2, e] at hb
     convert hb using 4
-    change embedF ((1 : Matrix X X ℂ) ⊗ₖ _) * (embedF _ * _) - ((1 : Matrix X X ℂ) ⊗ₖ _) * (_ * _) = _
+    change embedF ((1 : Matrix X X ℂ) ⊗ₖ _) * (embedF _ * _) -
+      ((1 : Matrix X X ℂ) ⊗ₖ _) * (_ * _) = _
     rw [Matrix.sub_mul, ← embedF_mul, Matrix.mul_assoc, Matrix.mul_assoc]
   -- pass to the limit
   have hcont : Continuous fun M : Matrix (X × (U × F)) (X × (U × F)) ℂ =>
@@ -328,6 +335,63 @@ theorem norm_phaseDifference_le (htr : ρ.trace = 1) (u : ℝ) :
 
 
 end Main
+
+section Purification
+
+variable {P : Type*} [Fintype P] [DecidableEq P]
+
+theorem dotProduct_mulVec_eq_trace {n : Type*} [Fintype n] (M : Matrix n n ℂ) (θ : n → ℂ) :
+    star θ ⬝ᵥ (M *ᵥ θ) = (M * vecMulVec θ (star θ)).trace := by
+  rw [mul_vecMulVec, trace_vecMulVec, dotProduct_comm]
+
+theorem norm_toLp_sq_eq_re {n : Type*} [Fintype n] (v : n → ℂ) :
+    ‖(WithLp.toLp 2 v : EuclideanSpace ℂ n)‖ ^ 2 = (star v ⬝ᵥ v).re := by
+  rw [@norm_sq_eq_re_inner ℂ, EuclideanSpace.inner_toLp_toLp, dotProduct_comm]
+  rfl
+
+/-- For a vector `θ` on `S ⊗ P` with marginal `ρ` on `S` and an operator `T` on `S`,
+`‖(T ⊗ I_P) θ‖ = ‖T √ρ‖₂`.  Area-law manuscript, `04-conditional.tex`, line 453. -/
+theorem norm_kronecker_one_mulVec {S : Type*} [Fintype S] [DecidableEq S]
+    (θ : S × P → ℂ) (T : Matrix S S ℂ) :
+    ‖(WithLp.toLp 2 ((T ⊗ₖ (1 : Matrix P P ℂ)) *ᵥ θ) : EuclideanSpace ℂ (S × P))‖ =
+      ‖(WithLp.toLp 2
+          (vec (T * sqrtSpec ((posSemidef_vecMulVec_self_star θ).partialTraceRight).1)) :
+        EuclideanSpace ℂ (S × S))‖ := by
+  set hρ := (posSemidef_vecMulVec_self_star θ).partialTraceRight
+  refine (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 ?_
+  rw [norm_toLp_sq_eq_re, norm_toLp_sq_eq_re, star_vec_dotProduct_vec, star_mulVec_dotProduct,
+    mulVec_mulVec, dotProduct_mulVec_eq_trace, conjTranspose_kronecker, conjTranspose_one,
+    ← mul_kronecker_mul, Matrix.one_mul, trace_mul_comm, ← trace_partialTraceRight_mul,
+    conjTranspose_mul, sqrtSpec_conjTranspose]
+  conv_rhs => rw [Matrix.mul_assoc, trace_mul_comm]
+  simp only [Matrix.mul_assoc]
+  erw [sqrtSpec_mul_self hρ]
+  rw [trace_mul_comm, Matrix.mul_assoc]
+
+/-- **Marginal-phase comparison** (area-law manuscript, Lemma 5.2,
+`lem:conditional-phases`, `04-conditional.tex`, lines 321–339).  Let `θ` be a unit vector
+on `P, x, U, F` (indexed by `(x (U F)) × P`), with marginals `ρ_D`, `d = dim x` and
+`η = I(x:F|U)_θ`.  For every real `u`,
+`‖(ρ̂_U^{-iu} ρ̂_{xU}^{iu} - ρ̂_{UF}^{-iu} ρ̂_{xUF}^{iu}) θ‖ ≤ 2 |sinh π u| 𝓡_η`, where
+`ρ̂ = ρ + Π_{ker ρ}` and each operator acts as the identity on the unmentioned factors.
+The constant `2` is universal; no dimension other than `d` enters. -/
+theorem norm_phaseDifference_mulVec_le (θ : EuclideanSpace ℂ ((X × (U × F)) × P))
+    (hθ : ‖θ‖ = 1) (u : ℝ) :
+    ‖(WithLp.toLp 2 ((phaseDifference
+        (posSemidef_vecMulVec_self_star θ.ofLp).partialTraceRight u ⊗ₖ (1 : Matrix P P ℂ)) *ᵥ
+          θ.ofLp) : EuclideanSpace ℂ ((X × (U × F)) × P))‖ ≤
+      2 * |Real.sinh (Real.pi * u)| * phaseRate (Fintype.card X)
+        (condMutualInfo (partialTraceRight (vecMulVec θ.ofLp (star θ.ofLp)))
+          (posSemidef_vecMulVec_self_star θ.ofLp).partialTraceRight) := by
+  set hρ := (posSemidef_vecMulVec_self_star θ.ofLp).partialTraceRight
+  have htr : (partialTraceRight (vecMulVec θ.ofLp (star θ.ofLp))).trace = 1 := by
+    rw [trace_partialTraceRight, trace_vecMulVec, ← EuclideanSpace.inner_eq_star_dotProduct,
+      inner_self_eq_norm_sq_to_K, hθ]
+    simp
+  rw [norm_kronecker_one_mulVec]
+  exact norm_phaseDifference_le hρ htr u
+
+end Purification
 
 end Entropy.MarginalPhase
 

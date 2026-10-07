@@ -112,6 +112,7 @@ import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SpectralFilter
+import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius

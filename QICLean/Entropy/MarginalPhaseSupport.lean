@@ -41,7 +41,8 @@ variable {n : Type*} [Fintype n] [DecidableEq n] {M : Matrix n n ℂ}
 lines 14–25. -/
 def hatPhase (hM : M.IsHermitian) (u : ℝ) : Matrix n n ℂ :=
   spectralFun hM.eigenvectorUnitary
-    (fun k => if hM.eigenvalues k = 0 then 1 else ((hM.eigenvalues k : ℝ) : ℂ) ^ ((u : ℂ) * Complex.I))
+    (fun k => if hM.eigenvalues k = 0 then 1 else
+      ((hM.eigenvalues k : ℝ) : ℂ) ^ ((u : ℂ) * Complex.I))
 
 /-- The kernel projection `Π_{ker M}` in the eigenbasis of `M`. -/
 def kerProj (hM : M.IsHermitian) : Matrix n n ℂ :=
@@ -134,6 +135,7 @@ theorem posSemidef_marginalXU {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ} 
     (marginalXU ρ).PosSemidef :=
   (hρ.submatrix assocE).partialTraceRight
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem posSemidef_marginalU {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ} (hρ : ρ.PosSemidef) :
     (marginalU ρ).PosSemidef :=
   (posSemidef_marginalXU hρ).partialTraceLeft

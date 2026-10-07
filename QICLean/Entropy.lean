@@ -20,10 +20,14 @@ import QICLean.Entropy.FilterMoment
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.GapSurprisal
+import QICLean.Entropy.MarginalPhaseApprox
 import QICLean.Entropy.MarginalPhaseComparison
 import QICLean.Entropy.MarginalPhaseFaithful
+import QICLean.Entropy.MarginalPhaseLimit
 import QICLean.Entropy.MarginalPhaseQuantities
 import QICLean.Entropy.MarginalPhaseSetup
+import QICLean.Entropy.MarginalPhaseSingular
+import QICLean.Entropy.MarginalPhaseSupport
 import QICLean.Entropy.MarginalTails
 import QICLean.Entropy.MarkovChain
 import QICLean.Entropy.ModularExpectation

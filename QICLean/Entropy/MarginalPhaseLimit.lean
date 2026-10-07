@@ -52,6 +52,7 @@ theorem tendsto_spectralFun (U : unitary (Matrix n n ℂ)) {ι : Type*} {l : Fil
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+omit [DecidableEq m] in
 /-- **Phases on a converging family.**  Let `qₑ` be eigenvalue functions converging to `p`
 off the kernel and equal on the kernel to a common unimodular scalar `cₑ`.  If `Yₑ → Y₀`
 and the lifted kernel projection annihilates `Y₀`, then
