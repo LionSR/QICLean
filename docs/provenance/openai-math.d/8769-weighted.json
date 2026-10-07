@@ -2015,7 +2015,7 @@
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Channel/RectangularTraceNormContraction.lean",
-        "declaration": "Matrix.l2_opNorm_kronecker_one_le",
+        "declaration": "Matrix.l2_opNorm_kronecker_one_square_le",
         "name_status": "declared"
       },
       "paper_sources": [
@@ -2030,33 +2030,34 @@
       "license": "Apache-2.0",
       "notices": [],
       "changes": [
-        "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
+        "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib.",
+        "Main integration renames the independently proved square amplification specialization to avoid collision with the existing general rectangular lemma; the mathematical statement and proof are unchanged."
       ],
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "cf9df5f20a4328bbf5694afceeeacfea52eabd7d",
+        "revision": "0d7c56887caa60b3a0b1cf16df3a534c941f647a",
         "commands": [
           {
             "kind": "build",
-            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "command": "lake build QICLean.Channel.RectangularTraceNormContraction",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/build.log",
-            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+            "log": "docs/provenance/evidence/8769-foundations-integration/build.log",
+            "sha256": "f246cf2c1c65e28347cd296f200e844c6ead9f569f853735a1856d7f846808cf"
           },
           {
             "kind": "axioms",
             "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
-            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+            "log": "docs/provenance/evidence/8769-foundations-integration/axioms.log",
+            "sha256": "6f0c30e86b7169639b1cd51c1639389a59e753c220b6403189550727563f0a6a"
           },
           {
             "kind": "source-audit",
-            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "command": "python3 docs/provenance/evidence/8769-foundations-integration/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
-            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+            "log": "docs/provenance/evidence/8769-foundations-integration/source-audit.log",
+            "sha256": "53f39c147db9d0df83f333cc9cbdfd513f3296ec18f12b786316b0fd21170cd6"
           }
         ]
       },
@@ -2085,33 +2086,34 @@
       "license": "Apache-2.0",
       "notices": [],
       "changes": [
-        "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
+        "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib.",
+        "Main integration renames the independently proved square amplification specialization to avoid collision with the existing general rectangular lemma; the mathematical statement and proof are unchanged."
       ],
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "cf9df5f20a4328bbf5694afceeeacfea52eabd7d",
+        "revision": "0d7c56887caa60b3a0b1cf16df3a534c941f647a",
         "commands": [
           {
             "kind": "build",
-            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "command": "lake build QICLean.Channel.RectangularTraceNormContraction",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/build.log",
-            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+            "log": "docs/provenance/evidence/8769-foundations-integration/build.log",
+            "sha256": "f246cf2c1c65e28347cd296f200e844c6ead9f569f853735a1856d7f846808cf"
           },
           {
             "kind": "axioms",
             "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
-            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+            "log": "docs/provenance/evidence/8769-foundations-integration/axioms.log",
+            "sha256": "6f0c30e86b7169639b1cd51c1639389a59e753c220b6403189550727563f0a6a"
           },
           {
             "kind": "source-audit",
-            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "command": "python3 docs/provenance/evidence/8769-foundations-integration/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
-            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+            "log": "docs/provenance/evidence/8769-foundations-integration/source-audit.log",
+            "sha256": "53f39c147db9d0df83f333cc9cbdfd513f3296ec18f12b786316b0fd21170cd6"
           }
         ]
       },
@@ -2140,33 +2142,34 @@
       "license": "Apache-2.0",
       "notices": [],
       "changes": [
-        "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
+        "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib.",
+        "Main integration renames the independently proved square amplification specialization to avoid collision with the existing general rectangular lemma; the mathematical statement and proof are unchanged."
       ],
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "cf9df5f20a4328bbf5694afceeeacfea52eabd7d",
+        "revision": "0d7c56887caa60b3a0b1cf16df3a534c941f647a",
         "commands": [
           {
             "kind": "build",
-            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "command": "lake build QICLean.Channel.RectangularTraceNormContraction",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/build.log",
-            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+            "log": "docs/provenance/evidence/8769-foundations-integration/build.log",
+            "sha256": "f246cf2c1c65e28347cd296f200e844c6ead9f569f853735a1856d7f846808cf"
           },
           {
             "kind": "axioms",
             "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
-            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+            "log": "docs/provenance/evidence/8769-foundations-integration/axioms.log",
+            "sha256": "6f0c30e86b7169639b1cd51c1639389a59e753c220b6403189550727563f0a6a"
           },
           {
             "kind": "source-audit",
-            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "command": "python3 docs/provenance/evidence/8769-foundations-integration/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
-            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+            "log": "docs/provenance/evidence/8769-foundations-integration/source-audit.log",
+            "sha256": "53f39c147db9d0df83f333cc9cbdfd513f3296ec18f12b786316b0fd21170cd6"
           }
         ]
       },
@@ -2195,33 +2198,34 @@
       "license": "Apache-2.0",
       "notices": [],
       "changes": [
-        "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
+        "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib.",
+        "Main integration renames the independently proved square amplification specialization to avoid collision with the existing general rectangular lemma; the mathematical statement and proof are unchanged."
       ],
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "cf9df5f20a4328bbf5694afceeeacfea52eabd7d",
+        "revision": "0d7c56887caa60b3a0b1cf16df3a534c941f647a",
         "commands": [
           {
             "kind": "build",
-            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "command": "lake build QICLean.Channel.RectangularTraceNormContraction",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/build.log",
-            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+            "log": "docs/provenance/evidence/8769-foundations-integration/build.log",
+            "sha256": "f246cf2c1c65e28347cd296f200e844c6ead9f569f853735a1856d7f846808cf"
           },
           {
             "kind": "axioms",
             "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
-            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+            "log": "docs/provenance/evidence/8769-foundations-integration/axioms.log",
+            "sha256": "6f0c30e86b7169639b1cd51c1639389a59e753c220b6403189550727563f0a6a"
           },
           {
             "kind": "source-audit",
-            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "command": "python3 docs/provenance/evidence/8769-foundations-integration/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
             "exit_code": 0,
-            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
-            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+            "log": "docs/provenance/evidence/8769-foundations-integration/source-audit.log",
+            "sha256": "53f39c147db9d0df83f333cc9cbdfd513f3296ec18f12b786316b0fd21170cd6"
           }
         ]
       },
