@@ -23,8 +23,8 @@ has `H'`-energy `E` and the right vector has `H`-energy `E'`.
 
 The unitary-path and eigenvector arguments reuse
 `QICLean.Analysis.SpectralFilter.MatrixFilter`; the scalar Fourier transform reuses Mathlib's
-`ProbabilityTheory.charFun_gaussianReal`. Scope coordination: LionSR/TNLean issue #8766,
-comment 6041075081. No spatial locality or full reset conclusion is asserted here.
+`ProbabilityTheory.charFun_gaussianReal`.
+No spatial locality or full reset conclusion is asserted here.
 -/
 
 /-
