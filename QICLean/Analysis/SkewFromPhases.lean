@@ -284,6 +284,29 @@ theorem norm_sub_re_le_of_phase_bounds {f : ℂ → ℂ} (hf : Differentiable �
             gcongr
             exact Real.exp_le_one_iff.2 (by nlinarith [sq_nonneg u])
         _ ≤ K1 := by linarith
+  -- the line `Re z = b` and the strip bound
+  have hFstrip : ∀ z : ℂ, |z.re| ≤ b → ‖F z‖ ≤ K1 := by
+    intro z hz
+    have h1 := hnarrow z hz
+    have hz2 : z.re ^ 2 - z.im ^ 2 ≤ 1 / 64 := by
+      have : z.re ^ 2 ≤ b ^ 2 := by rw [← sq_abs]; exact pow_le_pow_left₀ (abs_nonneg _) hz 2
+      have : b ^ 2 ≤ 1 / 64 := by nlinarith
+      nlinarith [sq_nonneg z.im]
+    have hexp : Real.exp (z.re ^ 2 - z.im ^ 2) ≤ Real.exp 1 :=
+      Real.exp_le_exp.2 (hz2.trans (by norm_num))
+    have hE1 : 1 ≤ Real.exp 1 := Real.one_le_exp zero_le_one
+    have hE2 : Real.exp 1 * Real.exp 1 ≤ Real.exp (Real.pi ^ 2) := by
+      rw [← Real.exp_add]; apply Real.exp_le_exp.2
+      nlinarith [Real.two_le_pi]
+    calc ‖F z‖ = ‖f z - p‖ * Real.exp (z.re ^ 2 - z.im ^ 2) := by
+          simp only [F, norm_mul, hnormexp]
+      _ ≤ (Real.exp 1 + 1) * Real.exp 1 := by
+          gcongr
+          calc ‖f z - p‖ ≤ ‖f z‖ + ‖(p : ℂ)‖ := norm_sub_le _ _
+            _ ≤ Real.exp 1 + 1 := by
+              gcongr
+              rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hp]; exact hp1
+      _ ≤ K1 := by simp only [K1]; nlinarith
   sorry
 
 end Complex
