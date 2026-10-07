@@ -56,9 +56,11 @@ def margW (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : Matrix ((X × U) ×
 def margY (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : Matrix (X × U) (X × U) ℂ :=
   partialTraceRight (margW θ)
 
+omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem posSemidef_margP (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : (margP θ).PosSemidef :=
   (posSemidef_vecMulVec_self_star θ).partialTraceRight
 
+omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem posSemidef_margW (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : (margW θ).PosSemidef :=
   (posSemidef_vecMulVec_self_star θ).partialTraceLeft
 
@@ -93,10 +95,12 @@ def skewFun (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) (h : Matrix (P₀ �
 
 section Lifts
 
+omit [DecidableEq P₀] [DecidableEq P₁] in
 theorem liftP_mul (A B : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) :
     liftP (X := X) (U := U) (F := F) A * liftP B = liftP (A * B) := by
   rw [liftP, liftP, liftP, ← mul_kronecker_mul, Matrix.one_mul]
 
+omit [DecidableEq X] [DecidableEq U] in
 theorem liftY_mul (A B : Matrix (X × U) (X × U) ℂ) :
     liftY (P₀ := P₀) (P₁ := P₁) (F := F) A * liftY B = liftY (A * B) := by
   rw [liftY, liftY, liftY, ← mul_kronecker_mul, ← mul_kronecker_mul, Matrix.one_mul,
@@ -107,22 +111,27 @@ theorem liftP_liftY_comm (A : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) (B : Mat
   rw [liftP, liftY, ← mul_kronecker_mul, ← mul_kronecker_mul, Matrix.one_mul, Matrix.mul_one,
     Matrix.one_mul, Matrix.mul_one]
 
+omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [DecidableEq P₁] [Fintype X] [Fintype U] [Fintype F] in
 theorem conjTranspose_liftP (A : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) :
     (liftP (X := X) (U := U) (F := F) A)ᴴ = liftP Aᴴ := by
   rw [liftP, liftP, conjTranspose_kronecker, conjTranspose_one]
 
+omit [Fintype P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [DecidableEq U] [Fintype F] in
 theorem conjTranspose_liftY (B : Matrix (X × U) (X × U) ℂ) :
     (liftY (P₀ := P₀) (P₁ := P₁) (F := F) B)ᴴ = liftY Bᴴ := by
   rw [liftY, liftY, conjTranspose_kronecker, conjTranspose_kronecker, conjTranspose_one,
     conjTranspose_one]
 
+omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [Fintype F] in
 theorem conjTranspose_liftH (h : Matrix (P₀ × X) (P₀ × X) ℂ) :
     (liftH (U := U) (F := F) (P₁ := P₁) h)ᴴ = liftH hᴴ := by
   rw [liftH, liftH, conjTranspose_submatrix, conjTranspose_kronecker, conjTranspose_one]
 
+omit [Fintype P₀] [Fintype P₁] [Fintype X] [Fintype U] [Fintype F] in
 theorem liftP_one : liftP (X := X) (U := U) (F := F) (1 : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) = 1 := by
   rw [liftP, one_kronecker_one]
 
+omit [Fintype P₀] [Fintype P₁] [Fintype X] [Fintype U] [Fintype F] in
 theorem liftY_one : liftY (P₀ := P₀) (P₁ := P₁) (F := F) (1 : Matrix (X × U) (X × U) ℂ) = 1 := by
   rw [liftY, one_kronecker_one, one_kronecker_one]
 
@@ -183,10 +192,12 @@ theorem cfcC_supp_zero {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n �
   rw [eq_sub_iff_add_eq, cfcC_add hA, ← cfcC_one hA]
   congr 1; funext t; unfold suppPowFun kerFun; split_ifs <;> simp
 
+omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [DecidableEq P₁] [Fintype X] [Fintype U] [Fintype F] in
 theorem liftP_sub (A B : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) :
     liftP (X := X) (U := U) (F := F) (A - B) = liftP A - liftP B := by
   ext i j; simp [liftP, sub_mul]
 
+omit [Fintype P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [DecidableEq U] [Fintype F] in
 theorem liftY_sub (A B : Matrix (X × U) (X × U) ℂ) :
     liftY (P₀ := P₀) (P₁ := P₁) (F := F) (A - B) = liftY A - liftY B := by
   ext i j; simp [liftY, sub_mul, mul_sub]
@@ -282,6 +293,11 @@ theorem dotProduct_star_imag_vector (y : ℝ) :
     conjTranspose_liftY, conjTranspose_suppPow hY, conj_ofReal_mul_I, mulVec_mulVec, liftY_mul,
     suppPow_mul hY.1, neg_add_cancel, liftY_supp_zero_mulVec]
 
+omit [Fintype
+  P₀] [DecidableEq
+  P₀] [Fintype
+  P₁] [DecidableEq
+  P₁] [Fintype X] [DecidableEq X] [Fintype U] [DecidableEq U] [Fintype F] [DecidableEq F] in
 theorem regroup_injective :
     Function.Injective (regroup (P₀ := P₀) (P₁ := P₁) (X := X) (U := U) (F := F)) := by
   rintro ⟨⟨a, b⟩, ⟨⟨c, d⟩, e⟩⟩ ⟨⟨a', b'⟩, ⟨⟨c', d'⟩, e'⟩⟩ h
@@ -292,10 +308,12 @@ theorem regroup_injective :
 theorem liftH_one : liftH (P₁ := P₁) (U := U) (F := F) (1 : Matrix (P₀ × X) (P₀ × X) ℂ) = 1 := by
   rw [liftH, one_kronecker_one, submatrix_one _ regroup_injective]
 
+omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [Fintype F] in
 theorem liftH_sub (h₁ h₂ : Matrix (P₀ × X) (P₀ × X) ℂ) :
     liftH (P₁ := P₁) (U := U) (F := F) (h₁ - h₂) = liftH h₁ - liftH h₂ := by
   ext i j; simp [liftH, sub_mul]
 
+omit [DecidableEq P₀] [DecidableEq X] in
 theorem posSemidef_liftH {h : Matrix (P₀ × X) (P₀ × X) ℂ} (hh : h.PosSemidef) :
     (liftH (P₁ := P₁) (U := U) (F := F) h).PosSemidef :=
   (hh.kronecker PosSemidef.one).submatrix _
