@@ -1,0 +1,27 @@
+{
+  "source_revision": "fe621df0e0b9025b39172a750bc6e56ee692dc08",
+  "parent_release": "18155980ade0fce287c18e84a5b6ba3d5a8de185",
+  "coverage": "Entire new source including both private entry proofs and every public declaration.",
+  "files": [
+    {
+      "path": "QICLean/Representation/BadCopyLabelDimension.lean",
+      "sha256": "1deda08399968dbe15c24402c95e70658170291fb622dd38251b4a490aa9cd00",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/bad_copy_label_dimension.tex",
+      "sha256": "875fff728f9457ec32ecf03557665c6869d8f547432aaffdbdbb3a19d225cbf9",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-bad-copy-label-dimension.md",
+      "sha256": "9f06c6bfdb0bbd26cb20aede568d2cbbf1e8ea1774838c82eaba6bb48d972f1a",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "0e14564f8e414ca45aff9b94a9741a2a6e39238a70ff56cdce9e9fc629a0643f",
+      "coverage": "Entire file."
+    }
+  ]
+}
