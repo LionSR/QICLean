@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "method": "Direct visual inspection of MuPDF rasterizations and the generated web SVG rasterization",
+  "pdf_pages_inspected": [
+    3,
+    5,
+    6,
+    7
+  ],
+  "findings": [
+    "Doubled vector, residual identity, lower-gap hypotheses, unitary transport, and physical partial-swap conclusions are legible and unclipped on pages 5\u20136.",
+    "Definition and theorem badges remain with the statements; equation references display resolved numbers.",
+    "The reused compression picture on PDF page 3 and the actual generated web SVG both show K, F_A, K dagger from left to right, four internal physical contractions, and two original Q inputs and outputs.",
+    "Bibliography page 7 identifies the pinned Polynomial PEPS source used by the new leaf."
+  ],
+  "static_html_repair": "The first static-link check found that plasTeX omitted an anchor placed on the second line of an align. The grouped partial-swap conclusions now carry one label on the first line; final link checks pass.",
+  "pixel_sha256": {
+    "pdf-pages/page-3.png": "b5f8b2a5943f34ccbf0d40593203466345be94a1bd67c99f0b821942e533e5a5",
+    "pdf-pages/page-5.png": "e2f0192d36591f8594cc3f25c0198b19be9d362d177ddfc9375f32255d7684fa",
+    "pdf-pages/page-6.png": "039c22ff9164dae0fbc3dc137c6cfb96ee720116dda47c711778bc413eec7177",
+    "pdf-pages/page-7.png": "51deabf45d3e0c686970bf4d3fe214dc326a8a811efa3283ce3ec0bb6548f78e",
+    "diagram-web.png": "240de068bb95c85972baf703582eff73d2f6abc0a58a07f0bddfce38762d60dc"
+  },
+  "limits": [
+    "No live browser or MathJax execution",
+    "No responsive-layout review",
+    "No new diagram or equation-group identity introduced"
+  ]
+}

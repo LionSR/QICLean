@@ -1,0 +1,89 @@
+{
+  "status": "focused PDF, static HTML, declaration coverage, and Tenkz contraction records passed",
+  "source_sha256": {
+    "blueprint/src/chapter/ch12_entropy_physical_buffer_overlap.tex": "bb98535114b0ee29869893ee380d7ffb88cfacd80342ac12061ce838f4be6334",
+    "blueprint/src/chapter/ch12_entropy_doubled_system_gap.tex": "45e02877216ef61b7bcd8c795223bd62d123a7a282155128ff56519d5546e7ff",
+    "QICLean/Analysis/DoubledSystemGap.lean": "e354cd36fa70fe4d751a02833e28d961b3a1eb0405ae068b32d3225731e4a51b",
+    "QICLeanTest/DoubledSystemGap.lean": "2ea9a4e04a86eebc17793c65259c44d83033550c7880eadf422afa7d1950025c"
+  },
+  "target_labels": [
+    "sec:doubled_system_gap",
+    "eq:doubled_gap_residual",
+    "def:doubled_system",
+    "thm:doubled_vector_properties",
+    "eq:doubled_vector_product",
+    "thm:doubled_lower_gap",
+    "eq:doubled_gap_decomposition",
+    "eq:doubled_gap_bound",
+    "thm:doubled_unitary_transport",
+    "eq:doubled_gap_conjugation",
+    "thm:doubled_partial_swap_gap",
+    "eq:doubled_swap_conclusions"
+  ],
+  "declarations": [
+    "Matrix.doubledVector",
+    "Matrix.doubledHamiltonian",
+    "Matrix.vecMulVec_doubledVector",
+    "Matrix.sum_normSq_doubledVector",
+    "Matrix.norm_doubledVector",
+    "Matrix.doubledHamiltonian_mulVec",
+    "Matrix.doubledHamiltonian_gap_eq",
+    "Matrix.PosSemidef.doubled_gap",
+    "Matrix.norm_toLp_mulVec_of_unitary",
+    "Matrix.gap_unitary_conj_eq",
+    "Matrix.PosSemidef.gap_unitary_conj",
+    "Matrix.mulVec_unitary_conj_eigenvector",
+    "Matrix.doubled_gap_partialSwap"
+  ],
+  "pdf_pages": 7,
+  "html_pages": 6,
+  "new_declaration_links": 13,
+  "reused_declaration_links": 43,
+  "new_leanok_markers": 9,
+  "missing_internal_anchors": [],
+  "diagram": {
+    "new_pictures": 0,
+    "reused_tenkz_pictures": 1,
+    "atoms": [
+      "bufferK",
+      "bufferF",
+      "bufferKd"
+    ],
+    "internal_physical_contractions": 4,
+    "inputs": 2,
+    "outputs": 2,
+    "boundary": "phys:e:to, phys:e:to, phys:w:from, phys:w:from",
+    "pdf_and_standalone_semantics_agree": true,
+    "hard_equation_group_checks": 0
+  },
+  "artifacts": {
+    "blueprint/src/print.pdf": "7eeecfd7fdda490f4e88944c1ce56c004461d465ccc7f9b8c07e3dc9781eb852",
+    "blueprint/src/print.tnlog": "68e3231ee07925fce023be3454db54c12d83607ed09e5209be17f2f640472ef4",
+    "blueprint/web/ch-doubled_gap_focus.html": "f679efc9cd6c83a4c47e1f17e96f26a57806b513612d98a27baa1fc7298701ee",
+    "blueprint/web/dep_graph_document.html": "8d1152a39df2f4e3d7d7d6516c526acc21a5f2c6d7fddc9317d5696f79c03c3d",
+    "blueprint/web/sect0001.html": "0eb3bf08da325a6d8b0d478800cdfe0c3234d0270e6adee78e42b4823a5b9a40",
+    "blueprint/web/dep_graph_chapter_1.html": "7f84ddfecb2d9b78f47bb4cdc51859bb8f73faef29735e220f50f065e4d15223",
+    "blueprint/web/index.html": "9fb6b6a08350012b1b0acd119e67a831bcc8c71f8e02b2dbcb2a1ad847402079",
+    "blueprint/web/dep_graphs.html": "8a47dbbdd4fd57f6fd24000c2b3222c2f14b3f12f8b08aaca69292e40059f376",
+    "blueprint/web/tenkz_svg/tenkz-b101d2d678567a9c.svg": "c08c1355b9d8922f06733bcc3f100dae29bda8b0956772aa9f1fac540503b7b2",
+    "pdf-pages/page-3.png": "b5f8b2a5943f34ccbf0d40593203466345be94a1bd67c99f0b821942e533e5a5",
+    "pdf-pages/page-5.png": "e2f0192d36591f8594cc3f25c0198b19be9d362d177ddfc9375f32255d7684fa",
+    "pdf-pages/page-6.png": "039c22ff9164dae0fbc3dc137c6cfb96ee720116dda47c711778bc413eec7177",
+    "pdf-pages/page-2.png": "61824b28d6d4ce3f6f977f4385704b6a48d1fe00b762edb3634f8ab0f9ac8ec8",
+    "pdf-pages/page-1.png": "6cc4b3254b81b409a051b43e499813bc4ba67d1a3fa34c946be292f7de036c00",
+    "pdf-pages/page-4.png": "59bca98fe221a91ab160bf49363cf6a940bbb1d9c29b7ded6f95981d5680cba5",
+    "pdf-pages/page-7.png": "51deabf45d3e0c686970bf4d3fe214dc326a8a811efa3283ce3ec0bb6548f78e",
+    "diagram-web.png": "240de068bb95c85972baf703582eff73d2f6abc0a58a07f0bddfce38762d60dc"
+  },
+  "limits": [
+    "No Lean/Lake/cache execution by documentation worker",
+    "Strict source/test/axiom evidence is recorded separately at frozen b4 source bytes",
+    "No complete-book/root-import/CI validation claim",
+    "No live-browser, MathJax, or responsive-layout check",
+    "No external write or tracked binary"
+  ],
+  "build_environment_warnings": [
+    "xdvipdfmx: unavailable pdftex.map and kanjix.map",
+    "xdvipdfmx: duplicate report title-page destination @page.1; theorem/equation links checked separately"
+  ]
+}

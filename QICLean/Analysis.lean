@@ -24,6 +24,7 @@ import QICLean.Analysis.CyclicReciprocal
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
+import QICLean.Analysis.DoubledSystemGap
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.EntropyDecomposition
 import QICLean.Analysis.EntropyMarkovForward
@@ -73,6 +74,7 @@ import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
+import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.RectangleSimplePoles

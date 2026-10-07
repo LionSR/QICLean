@@ -1,0 +1,109 @@
+{
+  "frozen_revision": "b4acf6c00a3d0f6e150462bfd7d5cde4dddb584b",
+  "integrated_revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+  "source_sha256": {
+    "QICLean/Analysis/DoubledSystemGap.lean": "e354cd36fa70fe4d751a02833e28d961b3a1eb0405ae068b32d3225731e4a51b",
+    "QICLeanTest/DoubledSystemGap.lean": "2ea9a4e04a86eebc17793c65259c44d83033550c7880eadf422afa7d1950025c",
+    "docs/provenance/evidence/8766-doubled-gap/drivers/DoubledSystemGapRawAxioms.lean": "b81d4a7589dc81823e2e2fcbcd71bfb43fc9e85c75514b79dd8a5fb59e435109"
+  },
+  "declarations": [
+    "Matrix.doubledVector",
+    "Matrix.doubledHamiltonian",
+    "Matrix.vecMulVec_doubledVector",
+    "Matrix.sum_normSq_doubledVector",
+    "Matrix.norm_doubledVector",
+    "Matrix.doubledHamiltonian_mulVec",
+    "Matrix.doubledHamiltonian_gap_eq",
+    "Matrix.PosSemidef.doubled_gap",
+    "Matrix.norm_toLp_mulVec_of_unitary",
+    "Matrix.gap_unitary_conj_eq",
+    "Matrix.PosSemidef.gap_unitary_conj",
+    "Matrix.mulVec_unitary_conj_eigenvector",
+    "Matrix.doubled_gap_partialSwap"
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "normalization": [
+    {
+      "source": "<VALIDATION>/doubled-gap-strict-first.json",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/runs/doubled-gap-strict-first.json",
+      "original_sha256": "ca77b831f71e079d9aba63a9babaa291d5a7826e874d4e38074d936d6a057712",
+      "normalized_sha256": "f1905fab5d62656fddf2c6ed4d7fa3b57a28fa4f264af413182c04c4c7f52569"
+    },
+    {
+      "source": "<VALIDATION>/QICLean_Analysis_DoubledSystemGap.lean-doubled-gap-strict-first.log",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/logs/QICLean_Analysis_DoubledSystemGap.lean-doubled-gap-strict-first.log",
+      "original_sha256": "d8d07b841e49b56d6101d8ae1a02309fe74f195b27e7b006dde894065fdd4986",
+      "normalized_sha256": "d8d07b841e49b56d6101d8ae1a02309fe74f195b27e7b006dde894065fdd4986"
+    },
+    {
+      "source": "<VALIDATION>/QICLeanTest_DoubledSystemGap.lean-doubled-gap-strict-first.log",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/logs/QICLeanTest_DoubledSystemGap.lean-doubled-gap-strict-first.log",
+      "original_sha256": "e39fc020056b51915a537d4a99ea53e5f9d0ac808c8c272989972d42fc6a183e",
+      "normalized_sha256": "e39fc020056b51915a537d4a99ea53e5f9d0ac808c8c272989972d42fc6a183e"
+    },
+    {
+      "source": "<VALIDATION>/_workspace_scratch_757f4f120786_doubled-gap-8766-raw-audit.lean-doubled-gap-strict-first.log",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-gap-8766-raw-audit.lean-doubled-gap-strict-first.log",
+      "original_sha256": "07a0597681b93ff82adc96ea5ab0d17b32120aa5a25823b33cadc0097248c663",
+      "normalized_sha256": "07a0597681b93ff82adc96ea5ab0d17b32120aa5a25823b33cadc0097248c663"
+    },
+    {
+      "source": "<VALIDATION>/doubled-gap-tests-b4ac.json",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/runs/doubled-gap-tests-b4ac.json",
+      "original_sha256": "ede6b4c491f07236f899d48caf2c7da105aff0d0f4667efdb7cdfeafbe271943",
+      "normalized_sha256": "0badc1dfc7c42652a69e764324683d63e72df92a04a228055be9a9df0ba2983b"
+    },
+    {
+      "source": "<VALIDATION>/QICLeanTest_DoubledSystemGap.lean-doubled-gap-tests-b4ac.log",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/logs/QICLeanTest_DoubledSystemGap.lean-doubled-gap-tests-b4ac.log",
+      "original_sha256": "c88f060395afc37f8ef0feba0831443641c2a901d53ed6af871050556e54c143",
+      "normalized_sha256": "c88f060395afc37f8ef0feba0831443641c2a901d53ed6af871050556e54c143"
+    },
+    {
+      "source": "<VALIDATION>/doubled-integrated-57bf.json",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/runs/doubled-integrated-57bf.json",
+      "original_sha256": "7ee35ea09e7d663033fc44503403df27f0a10a77dde71cf2521dc132790b99b8",
+      "normalized_sha256": "0415bcd80e4728649d7828c88e7b0c5d52b6a99ea6ef6210a77c538f404b8ef7"
+    },
+    {
+      "source": "<VALIDATION>/doubled-integrated-57bf-0.log",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-0.log",
+      "original_sha256": "182c6d52fb79a2005156e3e2e3014975d833bbeb0a626a58bb7be1aa281962fd",
+      "normalized_sha256": "182c6d52fb79a2005156e3e2e3014975d833bbeb0a626a58bb7be1aa281962fd"
+    },
+    {
+      "source": "<VALIDATION>/doubled-integrated-57bf-1.log",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "<VALIDATION>/doubled-integrated-57bf-2.log",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-2.log",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "<VALIDATION>/doubled-integrated-57bf-3.log",
+      "destination": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+      "original_sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891",
+      "normalized_sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+    }
+  ],
+  "historical_failure": {
+    "run": "runs/doubled-gap-strict-first.json",
+    "entry_index": 1,
+    "status": "superseded by strict test pass at b4acf6c",
+    "old_test_sha256": "11589249273f6091b70c19b6c90afc05b689b0e85063e88ef6a057a410a2e6da"
+  },
+  "scope": [
+    "Frozen source elaboration, final regression/all13 guards, and raw13 axiom audit",
+    "Separately recorded integrated native target and strict source/test/raw checks at 57bfd1d",
+    "No full-root build or hosted CI claim",
+    "No Lean/Lake/cache execution by documentation worker"
+  ]
+}
