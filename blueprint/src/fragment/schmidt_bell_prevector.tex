@@ -1,0 +1,111 @@
+\section{Schmidt truncation and the common-label Bell projection}
+\label{sec:schmidt_bell_prevector}
+
+Let $\Omega\in\mathcal H_A\otimes\mathcal H_B$, and choose an orthonormal
+eigenbasis $(u_i)_{i\in A}$ of its actual marginal
+$\rho_A=\operatorname{Tr}_B|\Omega\rangle\langle\Omega|$, with eigenvalues
+$p_i$. Fix $E\subseteq A$, put $d=|E|$ and $z=\sum_{i\in E}p_i$, and suppose
+$z>0$. Identify $E$ with $\{0,\ldots,d-1\}$ by a bijection $\iota$.
+In these coordinates, set
+\begin{align}
+ J|r\rangle&=u_{\iota^{-1}(r)},\qquad
+ \chi=z^{-1/2}(J^\dagger\otimes I_B)\Omega,\qquad
+ \beta=\frac1{\sqrt d}\sum_{r=0}^{d-1}J|r\rangle\otimes|r\rangle.
+ \label{eq:schmidt_bell_selected_vectors}
+\end{align}
+The same coordinates are used on the two auxiliary systems $C$ and $R$.
+These constructions instantiate the Schmidt truncation and pinning step in
+\cite[Section~7]{OpenAI2026AreaLaw}, equations
+\textup{(comparator:prevector)}, \textup{(comparator:high-label)} and
+\textup{(comparator:bell-pin)}.
+The inverse-metric comparator bounds require the subsequent geometric and
+energy estimates.
+
+\begin{theorem}[The actual initial vector under the selected Bell projection]
+\label{thm:schmidt_bell_prevector_pin}
+\lean{TensorPower.selectedBellProjection_replicaPrevector}
+\leanok
+\uses{def:replica_prevector,def:compressed_typical_vector,def:typical_bell_projection}
+For $k\ge0$ and any actual central label $\lambda$ on $R^k$, let
+\begin{align}
+ v_{k,\lambda}&=\Omega^{\otimes k}\otimes
+                  (I_C\otimes\Pi_\lambda)u_d^{\otimes k},
+ &u_d&=\frac1{\sqrt d}\sum_{r=0}^{d-1}|r,r\rangle.
+ \label{eq:schmidt_bell_initial_vector}
+\end{align}
+Regroup the factors into $(AC)^k\otimes(R^k\otimes B^k)$ and put
+$Q_k=(|\beta\rangle\langle\beta|)^{\otimes k}\otimes I_{R^kB^k}$.
+Then
+\begin{align}
+ Q_k v_{k,\lambda}
+   &=\left(\frac{\sqrt z}{d}\right)^k
+       \bigl[I_{(AC)^k}\otimes(\Pi_\lambda\otimes I_{B^k})\bigr]
+       (\beta^{\otimes k}\otimes\chi^{\otimes k}).
+ \label{eq:schmidt_bell_actual_pin}
+\end{align}
+The right label acts on a factor disjoint from the Bell projection.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:typical_bell_powers_label,def:replica_prevector}
+Transport the selected coordinates from $E$ to $\{0,\ldots,d-1\}$.
+This transports the selected Bell projection, compressed vector and uniform
+pair by the same bijection. The finite-copy Bell identity for a disjoint
+operator therefore applies to the actual projector $\Pi_\lambda$.
+The coordinate regrouping is
+\begin{align}
+ ((a_j,c_j)_j,((r_j)_j,(b_j)_j))
+   &\longmapsto ((a_j,b_j)_j,((c_j)_j,(r_j)_j)).
+ \label{eq:schmidt_bell_regroup}
+\end{align}
+Matrix vectorization shows that the projected input is precisely
+\eqref{eq:schmidt_bell_initial_vector}: its physical factor is unchanged by
+the right auxiliary projection. Applying the finite-copy identity gives
+\eqref{eq:schmidt_bell_actual_pin}, with all $k$ scalar factors equal to
+$\sqrt z/d$.
+\end{proof}
+
+\begin{theorem}[The common sequence selected from the actual Schmidt truncation]
+\label{thm:schmidt_bell_prevector_sequence}
+\lean{TensorPower.exists_label_sequence_schmidtBellPrevector}
+\leanok
+\uses{def:replica_prevector,def:compressed_typical_vector}
+Suppose in addition that $\|\Omega\|=1$ and $H\Omega=E_0\Omega$, where
+$E_0\in\mathbb R$. Write $\psi(b,r)=\chi(r,b)$, so that
+\begin{align}
+ \|\psi\|&=1,\qquad
+ \rho_R=\operatorname{Tr}_B|\psi\rangle\langle\psi|
+     =\operatorname{diag}_{0\le r<d}(p_{\iota^{-1}(r)}/z).
+ \label{eq:schmidt_bell_actual_marginal}
+\end{align}
+There is one sequence $(\lambda_k)$ such that, for every $k\ge1$, the actual
+initial vector in \eqref{eq:schmidt_bell_initial_vector} is nonzero, has norm
+at most one, and satisfies
+\begin{align}
+ (\overline H_k\otimes I_{CR})v_{k,\lambda_k}&=E_0v_{k,\lambda_k},
+ &\overline H_k&=\frac1k\sum_{j=0}^{k-1}H^{(j)}.
+ \label{eq:schmidt_bell_mean_energy}
+\end{align}
+It has label $\lambda_k$ on both $C$ and $R$, and is fixed by simultaneous
+copy permutations of the physical and both auxiliary systems. For all
+sufficiently large $k$,
+\begin{align}
+ \|(I_{B^k}\otimes\Pi_{\lambda_k})\psi^{\otimes k}\|^2
+   &\ge\frac1{2(k+1)^{d^2}},\qquad
+ \log d_{\lambda_k}=kS(\rho_R)+o(k).
+ \label{eq:schmidt_bell_selected_mass_entropy}
+\end{align}
+The Bell identity \eqref{eq:schmidt_bell_actual_pin} applies to this same
+sequence.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:compressed_typical_vector,thm:replica_prevector_sequence}
+The compressed-vector marginal identity, followed by the coordinate
+bijection and the interchange of the two factors, gives
+\eqref{eq:schmidt_bell_actual_marginal}. These coordinate changes preserve
+the unit norm. Apply the common-sequence theorem for the actual initial
+vector to this $\psi$, the physical vector $\Omega$, and its eigenvector
+equation. Its selected mass and entropy are those of the actual density
+$\rho_R$ in \eqref{eq:schmidt_bell_actual_marginal}.
+\end{proof}

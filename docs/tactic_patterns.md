@@ -154,3 +154,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The actual matrix actions and vector factors are used. No
   supplied factorization or eigenvector statement for the initial vector
   replaces these calculations.
+
+### Projection after regrouping tensor factors — candidate (2026-10-08)
+
+- **Pattern:** Keep the physical coefficient fixed while an operator acts
+  on the selected auxiliary factor, and identify the result after regrouping
+  the physical and auxiliary coordinates.
+- **Seen:** `QICLean/Representation/SchmidtBellPrevector.lean` has one new
+  consumer. The earlier product-action and identity-spectator calculations
+  occur in `ReplicaPrevector.lean` and `ReplicaDefect.lean`.
+- **Abstraction:** The new calculation reuses Mathlib's
+  `Matrix.vec_mul_eq_mulVec` twice. A single private lemma applies this
+  matrix-vectorization identity to the two coordinate maps, and the public
+  result combines it with the existing finite-copy Bell identity. The
+  reindexing of that identity uses `Matrix.submatrix_mulVec_equiv`.
+- **Caveats:** The right auxiliary projector remains on its actual selected
+  copy space. The Bell projection acts on the physical and left auxiliary
+  factors; the asserted label of the projected output is the right label.
