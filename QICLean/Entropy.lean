@@ -28,5 +28,6 @@ import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
+import QICLean.Entropy.TypicalSpectrum
 import QICLean.Entropy.UnnormalizedStrongSubadditivity
 import QICLean.Entropy.VonNeumann
