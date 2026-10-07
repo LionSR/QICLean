@@ -1,0 +1,79 @@
+import took 1.68s
+QICLeanTest/CompressedPartialSwap.lean:19:4: error(lean.dependsOnNoncomputable): failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Complex.instDivInvMonoid', which is 'noncomputable'
+QICLeanTest/CompressedPartialSwap.lean:23:80: error: unsolved goals
+case unit.unit
+⊢ -((starRingEnd ℂ) 4 * Complex.I) / (starRingEnd ℂ) 5 * (4 * Complex.I / 5) +
+      (starRingEnd ℂ) 3 / (starRingEnd ℂ) 5 * (3 / 5) =
+    1
+interpretation of Mathlib.Tactic._aux_Mathlib_Tactic_NormNum_Core___elabRules_Mathlib_Tactic_normNum_1._boxed took 138ms
+QICLeanTest/CompressedPartialSwap.lean:34:68: error: unsolved goals
+⊢ -((starRingEnd ℂ) 4 * Complex.I) / (starRingEnd ℂ) 5 * (-((starRingEnd ℂ) 4 * Complex.I) / (starRingEnd ℂ) 5) *
+        (4 * Complex.I / 5 * (4 * Complex.I / 5)) +
+      (starRingEnd ℂ) 9 / (starRingEnd ℂ) 25 * (9 / 25) =
+    337 / 625
+interpretation of Mathlib.Tactic._aux_Mathlib_Tactic_NormNum_Core___elabRules_Mathlib_Tactic_normNum_1._boxed took 301ms
+'Equiv.partialSwap' does not depend on any axioms
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Equiv.partialSwap_apply' depends on axioms: [Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Equiv.partialSwap_symm' does not depend on any axioms
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Equiv.partialSwap_mul_self' depends on axioms: [Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.partialSwap' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.partialSwap_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.partialSwap_mulVec' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.partialSwap_isHermitian' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.partialSwap_mul_self' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.partialSwap_mem_unitaryGroup' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.norm_partialSwap_le_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.partialSwap_kronecker_mulVec' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.partialSwap_one_mulVec' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.kronecker_self_conjTranspose_mul_self' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.compressedPartialSwap' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.compressedPartialSwap_isHermitian' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.norm_conjTranspose_mul_mul_le_of_isometry' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.norm_compressedPartialSwap_le_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.star_dotProduct_compression' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.star_dotProduct_kronecker_compression' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.compressedPartialSwap_overlap' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.compressedPartialSwap_left_overlap' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+cumulative profiling times:
+	attribute application 0.0687ms
+	congr simp thm 3.25ms
+	elaboration 38.1ms
+	fix level params 1.05ms
+	import 1.68s
+	initialization 34.6ms
+	instantiate metavars 0.369ms
+	interpretation 959ms
+	let-to-have transformation 0.0333ms
+	linting 13.3ms
+	module linting 0.00161ms
+	norm_num 55.8ms
+	overlappingInstancesLinter 6.22ms
+	parsing 4.36ms
+	process pre-definitions 10.7ms
+	share common exprs 6.07ms
+	tactic execution 21.2ms
+	tacticAnalysis 22.4ms
+	type checking 67.6ms
+	typeclass inference 167ms

@@ -273,3 +273,76 @@ semidefinite matrices.
     $\operatorname{Tr}\Phi_j^\dagger(\rho)=\operatorname{Tr}(\rho\,\Phi_j(I))=\operatorname{Tr}\rho$
     by unitality.
 \end{proof}
+
+\subsection{The hyperbolic-sine Fourier multipliers}
+
+For $0<s<1/2$ let $g_s(z)=\sinh(sz)/\sinh(z/2)$ with $g_s(0)=2s$, and
+$m_s(u)=\sin(2\pi s)/(\cosh(2\pi u)+\cos(2\pi s))$.
+
+\begin{lemma}[The two Fourier multipliers]\label{lem:sinh_ratio_fourier}
+    \lean{Complex.integral_exp_mul_sinhRatioDensity, Real.sinhRatioDensity_pos,
+      Real.integral_sinhRatioDensity, Real.continuous_sinhRatio,
+      Real.exp_sub_one_div_two_sinh, Real.exp_neg_sub_one_div_two_sinh,
+      Complex.integral_exp_mul_qPlus, Complex.integral_exp_mul_qMinus,
+      Complex.norm_sinhRatioDensity_shift_le}
+    \leanok
+    \uses{lem:sinh_ratio_density_elementary, lem:rectangle_simple_poles}
+    For real $z$,
+    $g_s(z)=\int_{\mathbb R}e^{iuz}m_s(u)\,du$, $m_s(u)>0$ and
+    $\int_{\mathbb R}m_s(u)\,du=2s$. For $s=1/4$ the functions
+    $h_\pm(z)=(e^{\pm sz}-1)/(2\sinh(z/2))=\pm e^{\pm sz/2}g_{s/2}(z)$ have Fourier
+    densities $q_\pm(u)=\pm m_{s/2}(u\pm is/2)$ with
+    $|q_\pm(u)|\le m_s(u)/\sqrt2$. The quotients are interpreted continuously at
+    zero.
+\end{lemma}
+
+\begin{proof}\leanok
+    For fixed real $z\ne0$, integrate $e^{iuz}m_s(u)$ around the rectangle
+    between $\mathbb R$ and $\mathbb R+i$. The poles in the strip are
+    $i(1/2-s)$ and $i(1/2+s)$ with residues $\pm1/(2\pi i)$, and
+    $m_s(u+i)=m_s(u)$, so
+    $(1-e^{-z})\int e^{iuz}m_s(u)\,du=e^{-(1/2-s)z}-e^{-(1/2+s)z}$. Shifting the
+    contour of $m_{s/2}$ by $\pm is/2$ crosses no pole and gives $q_\pm$: in
+    the strip $|\operatorname{Im}w|\le s/2$ one has
+    $|\cosh(2\pi w)+\cos(\pi s)|\ge\cos(\pi s)\cosh(2\pi\operatorname{Re}w)$.
+    The shifted identities hold for every $0<s<1/2$, in particular for $s=1/4$.
+\end{proof}
+
+\begin{lemma}[Boundary integrals with simple poles]\label{lem:rectangle_simple_poles}
+    \lean{Complex.integral_boundary_rect_inv_sub,
+      Complex.integral_boundary_rect_eq_of_simple_poles}
+    \leanok
+    If $p$ lies strictly inside a rectangle, the boundary integral of $(u-p)^{-1}$
+    is $2\pi i$. If $f$ is holomorphic on the open rectangle away from finitely many
+    interior points $p$ and $f-\sum_pc_p(u-p)^{-1}$ extends continuously to the
+    closed rectangle, the boundary integral of $f$ is $2\pi i\sum_pc_p$.
+\end{lemma}
+
+\begin{proof}\leanok
+    On each edge a branch of the logarithm is a primitive of $(u-p)^{-1}$; the
+    four edge contributions sum to the change of argument $2\pi$. The regular
+    part has vanishing boundary integral by the Cauchy--Goursat theorem.
+\end{proof}
+
+\begin{lemma}[Elementary properties of the multipliers]\label{lem:sinh_ratio_density_elementary}
+    \lean{Real.continuous_sinhRatio, Real.sinhRatioDensity_pos,
+      Real.integrable_sinhRatioDensity, Real.integral_sinhRatioDensity,
+      Real.exp_sub_one_div_two_sinh, Real.exp_neg_sub_one_div_two_sinh,
+      Complex.norm_sinhRatioDensity_shift_le}
+    \leanok
+    The function $g_s$ is continuous, $m_s$ is positive and integrable with
+    $\int_{\mathbb R}m_s=2s$, for $z\ne0$ one has
+    $(e^{\pm sz}-1)/(2\sinh(z/2))=\pm e^{\pm sz/2}g_{s/2}(z)$, and for $s=1/4$,
+    $|m_{s/2}(u\pm is/2)|\le m_s(u)/\sqrt2$ for real $u$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The function $u\mapsto\pi^{-1}\arctan\bigl((e^{2\pi u}+\cos2\pi s)/\sin2\pi s\bigr)$
+    has derivative $m_s$ and limits $1/2-2s$ and $1/2$ at $-\infty$ and
+    $+\infty$. Near $z=0$ both $\sinh(sz)/z$ and $\sinh(z/2)/z$ have limits
+    $s$ and $1/2$. The factorization follows from
+    $e^{sz}-1=2e^{sz/2}\sinh(sz/2)$. At $s=1/4$ and $c=\cosh2\pi u$,
+    $m_s(u)=c^{-1}$ and $m_{s/2}(u\pm is/2)=(c+1\pm i\sinh2\pi u)^{-1}$, whose
+    modulus is $(2c(c+1))^{-1/2}\le(\sqrt2\,c)^{-1}$.
+\end{proof}
+

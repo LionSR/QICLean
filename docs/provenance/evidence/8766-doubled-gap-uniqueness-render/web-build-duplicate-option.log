@@ -1,0 +1,16 @@
+plasTeX version 3.1
+Traceback (most recent call last):
+  File "<WORKSPACE>/glm23-blueprint-venv/bin/plastex", line 8, in <module>
+    sys.exit(plastex())
+             ^^^^^^^^^
+  File "<WORKSPACE>/glm23-blueprint-venv/lib/python3.12/site-packages/plasTeX/client.py", line 72, in plastex
+    main(sys.argv[1:])
+  File "<WORKSPACE>/glm23-blueprint-venv/lib/python3.12/site-packages/plasTeX/client.py", line 46, in main
+    config.read(data["config"])
+  File "<WORKSPACE>/glm23-blueprint-venv/lib/python3.12/site-packages/plasTeX/ConfigManager.py", line 277, in read
+    data.read(filename)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/configparser.py", line 688, in read
+    self._read(fp, filename)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/configparser.py", line 1081, in _read
+    raise DuplicateOptionError(sectname, optname,
+configparser.DuplicateOptionError: While reading from 'plastex.cfg' [line  7]: option 'extra-templates' in section 'general' already exists

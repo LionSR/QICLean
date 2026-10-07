@@ -1,0 +1,182 @@
+[
+  {
+    "file": "QICLean/Analysis/CompressedPartialSwap.lean",
+    "sha256": "ed750b5ac10f70b032d5f824e001d686e3a6753153cef80527c8a35df49af7ad",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Analysis/CompressedPartialSwap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 4.004328456001531,
+    "log": "<VALIDATION_LOGS>/QICLean_Analysis_CompressedPartialSwap.lean-buffer-package-strict-bb14.log"
+  },
+  {
+    "file": "QICLean/Entropy/ProductOverlapPurity.lean",
+    "sha256": "1cbb2cbb2fd53286bd68c9c59717c3c2b27660c1ccf9724bb13af9667e66bebd",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Entropy/ProductOverlapPurity.lean"
+    ],
+    "exit_code": 1,
+    "seconds": 3.3700195510027697,
+    "log": "<VALIDATION_LOGS>/QICLean_Entropy_ProductOverlapPurity.lean-buffer-package-strict-bb14.log"
+  },
+  {
+    "file": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+    "sha256": "0dcf46d5f89f4eac70a91835392bee70fb4360ad8b6802ce354082cd9a02f6ad",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Entropy/PhysicalBufferOverlap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.7408425030007493,
+    "log": "<VALIDATION_LOGS>/QICLean_Entropy_PhysicalBufferOverlap.lean-buffer-package-strict-bb14.log"
+  },
+  {
+    "file": "QICLeanTest/CompressedPartialSwap.lean",
+    "sha256": "5afc9b64102c6986a985ebc7f56031bd0f3d1f2c3a9d38c49d25de8264972610",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/CompressedPartialSwap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.6046837649992085,
+    "log": "<VALIDATION_LOGS>/QICLeanTest_CompressedPartialSwap.lean-buffer-package-strict-bb14.log"
+  },
+  {
+    "file": "QICLeanTest/ProductOverlapPurity.lean",
+    "sha256": "22512a457dbee5be067db7f901077a865783365af4c6e97663c86777462f01dc",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/ProductOverlapPurity.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.6082540249990416,
+    "log": "<VALIDATION_LOGS>/QICLeanTest_ProductOverlapPurity.lean-buffer-package-strict-bb14.log"
+  },
+  {
+    "file": "QICLeanTest/PhysicalBufferOverlap.lean",
+    "sha256": "bed29f41efe035874611ef6c72bc6106b77182362ae3d784059e5672c68d6ec3",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/PhysicalBufferOverlap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.5443072609996307,
+    "log": "<VALIDATION_LOGS>/QICLeanTest_PhysicalBufferOverlap.lean-buffer-package-strict-bb14.log"
+  },
+  {
+    "file": "<RAW_COMPRESSED_DRIVER>",
+    "sha256": "eb23b86dfb1a4fc764aa15daa37c14a1a89a39af5e9c96e164956207770b2d78",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "<RAW_COMPRESSED_DRIVER>"
+    ],
+    "exit_code": 0,
+    "seconds": 2.7434711399982916,
+    "log": "<VALIDATION_LOGS>/_tmp_CompressedPartialSwapRawAxioms.lean-buffer-package-strict-bb14.log"
+  },
+  {
+    "file": "<RAW_PURITY_DRIVER>",
+    "sha256": "16c0a9a805f1248199413daf179cbb6fc867d81ce643a039a67cfdf2e1f5bdbf",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "<RAW_PURITY_DRIVER>"
+    ],
+    "exit_code": 0,
+    "seconds": 2.8538610770046944,
+    "log": "<VALIDATION_LOGS>/validation_ProductOverlapPurityRawAudit.lean-buffer-package-strict-bb14.log"
+  },
+  {
+    "file": "<RAW_ASSEMBLY_DRIVER>",
+    "sha256": "ff50fdf06c9e4b249e4e48c8673ff48cdf1b1f4407e2aaea5c0a374c2dfe0491",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "<RAW_ASSEMBLY_DRIVER>"
+    ],
+    "exit_code": 0,
+    "seconds": 2.9899382179937675,
+    "log": "<VALIDATION_LOGS>/validation_PhysicalBufferOverlapRawAudit.lean-buffer-package-strict-bb14.log"
+  }
+]

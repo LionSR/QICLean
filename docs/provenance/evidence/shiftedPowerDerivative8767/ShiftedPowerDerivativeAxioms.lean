@@ -1,0 +1,5 @@
+import QICLean.Analysis.ShiftedPowerDerivative
+set_option linter.hashCommand false
+#print axioms Matrix.PosSemidef.hasDerivAt_add_smul_one_rpow
+#print axioms Matrix.PosSemidef.hasDerivAt_add_exp_neg_smul_one_rpow
+#print axioms Matrix.PosSemidef.l2_opNorm_smul_add_smul_one_rpow_neg_one_le

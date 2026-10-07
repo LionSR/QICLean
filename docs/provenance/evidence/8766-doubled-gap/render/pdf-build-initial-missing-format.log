@@ -1,0 +1,45 @@
+Rc files read:
+  /etc/LatexMk
+Latexmk: This is Latexmk, John Collins, 11 Dec. 2024. Version 4.86.
+No existing .aux file, so I'll make a simple one, and require run of *latex.
+Latexmk: applying rule 'xelatex'...
+Rule 'xelatex':  Reasons for rerun
+Category 'other':
+  Rerun of 'xelatex' forced or previously required:
+    Reason or flag: 'Initial setup'
+
+------------
+Run number 1 of rule 'xelatex'
+------------
+------------
+Running 'xelatex -no-pdf -interaction=nonstopmode -halt-on-error -recorder  "print.tex"'
+------------
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2025/dev/Debian) (preloaded format=xelatex)
+ restricted \write18 enabled.
+
+kpathsea: Running mktexfmt xelatex.fmt
+mktexfmt: mktexfmt is using the following fmtutil.cnf files (in precedence order):
+mktexfmt: mktexfmt is using the following fmtutil.cnf file for writing changes:
+mktexfmt:   /home/agent/.texlive2025/texmf-config/web2c/fmtutil.cnf
+/usr/bin/mktexfmt: mkdir(/home/agent/.texlive2025/) failed for tree /home/agent/.texlive2025/texmf-var/web2c: Read-only file system at /usr/share/texlive/tlpkg/TeXLive/TLUtils.pm line 1247.
+I can't find the format file `xelatex.fmt'!
+Latexmk: No log file was found, neither the expected one, 'print.log', nor one in '.'.
+Latexmk: fls file doesn't appear to have been made.
+Latexmk: Getting log file 'print.log'
+Latexmk: Couldn't read log file 'print.log':
+  No such file or directory
+Latexmk: Errors, so I did not complete making targets
+Collected error summary (may duplicate other messages):
+  xelatex: Run of rule 'xelatex' gave a non-zero error code
+----------------------
+This message may duplicate earlier message.
+Latexmk: Failure in processing file 'print.tex':
+   *LaTeX didn't generate the expected log file 'print.log'
+----------------------
+
+Latexmk: Sometimes, the -f option can be used to get latexmk
+  to try to force complete processing.
+  But normally, you will need to correct the file(s) that caused the
+  error, and then rerun latexmk.
+  In some cases, it is best to clean out generated files before rerunning
+  latexmk after you've corrected the files.
