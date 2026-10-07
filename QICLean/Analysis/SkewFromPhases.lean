@@ -95,6 +95,43 @@ theorem norm_sub_sub_deriv_le {g : ℂ → ℂ} (hg : Differentiable ℂ g) {M �
     _ ≤ ‖t‖ ^ 2 * (3 * M / δ ^ 2) := mul_le_mul_of_nonneg_left (hqb t htb) (by positivity)
     _ = 3 * M * ‖t‖ ^ 2 / δ ^ 2 := by ring
 
+theorem abs_sinh_le_exp_abs (x : ℝ) : |Real.sinh x| ≤ Real.exp |x| := by
+  rw [Real.sinh_eq, abs_div, abs_two]
+  have h1 : |Real.exp x - Real.exp (-x)| ≤ Real.exp x + Real.exp (-x) := by
+    rw [abs_le]; constructor <;> linarith [Real.exp_pos x, Real.exp_pos (-x)]
+  have h2 : Real.exp x ≤ Real.exp |x| := Real.exp_le_exp.2 (le_abs_self x)
+  have h3 : Real.exp (-x) ≤ Real.exp |x| := Real.exp_le_exp.2 (neg_le_abs x)
+  linarith
+
+/-- The Gaussian damps the phase error: for `R ≥ 0`,
+`(4 |sinh π u| R + 4 sinh² (π u) R²) e^{-u²} ≤ 8 e^{π²} R` when `R ≤ 1`. -/
+theorem phaseError_mul_exp_le {R : ℝ} (hR : 0 ≤ R) (hR1 : R ≤ 1) (u : ℝ) :
+    (4 * |Real.sinh (Real.pi * u)| * R + 4 * Real.sinh (Real.pi * u) ^ 2 * R ^ 2) *
+      Real.exp (-u ^ 2) ≤ 8 * Real.exp (Real.pi ^ 2) * R := by
+  have hs := abs_sinh_le_exp_abs (Real.pi * u)
+  rw [abs_mul, abs_of_pos Real.pi_pos] at hs
+  have hs2 : Real.sinh (Real.pi * u) ^ 2 ≤ Real.exp (2 * (Real.pi * |u|)) := by
+    rw [← sq_abs, show 2 * (Real.pi * |u|) = Real.pi * |u| + Real.pi * |u| by ring,
+      Real.exp_add, sq]
+    exact mul_le_mul hs hs (abs_nonneg _) (Real.exp_pos _).le
+  have he1 : Real.exp (Real.pi * |u|) * Real.exp (-u ^ 2) ≤ Real.exp (Real.pi ^ 2) := by
+    rw [← Real.exp_add]; apply Real.exp_le_exp.2
+    nlinarith [sq_nonneg (|u| - Real.pi / 2), sq_abs u, Real.pi_pos]
+  have he2 : Real.exp (2 * (Real.pi * |u|)) * Real.exp (-u ^ 2) ≤ Real.exp (Real.pi ^ 2) := by
+    rw [← Real.exp_add]; apply Real.exp_le_exp.2
+    nlinarith [sq_nonneg (|u| - Real.pi), sq_abs u]
+  have hR2 : R ^ 2 ≤ R := by nlinarith
+  have hE := Real.exp_pos (-u ^ 2)
+  calc (4 * |Real.sinh (Real.pi * u)| * R + 4 * Real.sinh (Real.pi * u) ^ 2 * R ^ 2) *
+        Real.exp (-u ^ 2)
+      = 4 * R * (|Real.sinh (Real.pi * u)| * Real.exp (-u ^ 2)) +
+          4 * R ^ 2 * (Real.sinh (Real.pi * u) ^ 2 * Real.exp (-u ^ 2)) := by ring
+    _ ≤ 4 * R * Real.exp (Real.pi ^ 2) + 4 * R * Real.exp (Real.pi ^ 2) := by
+        gcongr
+        · exact (mul_le_mul_of_nonneg_right hs hE.le).trans he1
+        · exact (mul_le_mul_of_nonneg_right hs2 hE.le).trans he2
+    _ = 8 * Real.exp (Real.pi ^ 2) * R := by ring
+
 end Complex
 
 end
