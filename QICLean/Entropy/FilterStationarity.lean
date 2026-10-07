@@ -284,6 +284,88 @@ theorem inner_liftProd_conj {φ : EuclideanSpace ℂ (SiteConfig n)} (σ₀ : Si
       inner_conj_eq_of_isSupportedOn hu hc hmid σ₀]
     exact inner_liftProd_conj σ₀ hl fun q hq ↦ hY q (by simp [hq])
 
+/-- The local lift as a linear map. -/
+noncomputable def localLiftₗ (D : Finset V) :
+    Matrix (RegionConfig n D) (RegionConfig n D) ℂ →ₗ[ℂ] Matrix (SiteConfig n) (SiteConfig n) ℂ where
+  toFun := localLift D
+  map_add' := localLift_add
+  map_smul' := localLift_smul
+
+theorem regionState_isHermitian (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
+    (regionState D φ).IsHermitian :=
+  (posSemidef_vecMulVec_self_star _).partialTraceRight.isHermitian
+
+theorem toEuclideanLin_mul_apply' {m : Type*} [Fintype m] [DecidableEq m] (X Y : Matrix m m ℂ)
+    (v : EuclideanSpace ℂ m) :
+    toEuclideanLin (X * Y) v = toEuclideanLin X (toEuclideanLin Y v) := by
+  simp [toLpLin_apply, mulVec_mulVec]
+
+/-- **Stationarity of one filter.** Let `K > 0` on a region `D` maximize
+`‖A (K ⊗ 1) C w‖` over its unitary orbit, where `A` is the product of a descending chain for
+the output `ψ = A (K ⊗ 1) C w` whose regions contain `D`. Then `K` commutes with the regional
+state of `ψ` on `D`.
+Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 356–381,
+`eq:initial-filter-commutation`. -/
+theorem commute_regionState_of_unitary_max {D : Finset V}
+    {K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ} (hK : K.PosDef)
+    {outer : List (RegionFilter n)} (C : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (w : EuclideanSpace ℂ (SiteConfig n)) (σ₀ : SiteConfig n)
+    (hmax : ∀ U : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, Uᴴ * U = 1 →
+      ‖toEuclideanLin (liftProd outer * localLift D (U * K * Uᴴ) * C) w‖ ≤
+        ‖toEuclideanLin (liftProd outer * localLift D K * C) w‖)
+    (hchain : IsDescendingChain (toEuclideanLin (liftProd outer * localLift D K * C) w) outer)
+    (hsub : ∀ p ∈ outer, D ⊆ p.1) :
+    K * regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) =
+      regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) * K := by
+  set A := liftProd outer
+  set ψ := toEuclideanLin (A * localLift D K * C) w
+  set ρ := regionState D ψ
+  have hKu : IsUnit K.det := (Matrix.isUnit_iff_isUnit_det K).mp hK.isUnit
+  set Φ := (LinearMap.mulRight ℂ C) ∘ₗ localLiftₗ (n := n) D
+  have hΦ : ∀ M, A * Φ M = A * localLift D M * C := fun M ↦ by
+    simp [Φ, localLiftₗ, Matrix.mul_assoc]
+  -- the stationarity condition against every skew-Hermitian generator
+  have hstat : ∀ b : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, bᴴ = -b →
+      ((K⁻¹ * ρ * K * b).trace).re = 0 := by
+    intro b hb
+    have hloc : IsLocalMax (fun t : ℝ ↦ ‖toEuclideanLin (A * Φ (NormedSpace.exp ((t : ℂ) • b) *
+        K * NormedSpace.exp ((-(t : ℂ)) • b))) w‖ ^ 2) 0 := by
+      refine Filter.Eventually.of_forall fun t ↦ ?_
+      simp only [hΦ, Complex.ofReal_zero, zero_smul, neg_zero, NormedSpace.exp_zero,
+        Matrix.one_mul, Matrix.mul_one]
+      rw [← exp_smul_conjTranspose_of_skew hb t]
+      exact pow_le_pow_left₀ (norm_nonneg _) (hmax _
+        (exp_smul_conjTranspose_mul_self_of_skew hb t)) 2
+    have h1 := re_inner_commutator_eq_zero_of_isLocalMax Φ A K b w hloc
+    rw [hΦ, hΦ] at h1
+    -- rewrite the derivative vector through the chain
+    set Y := localLift D (b - K * b * K⁻¹)
+    have hvec : toEuclideanLin (A * localLift D (b * K - K * b) * C) w =
+        toEuclideanLin (A * Y * liftProdInv outer) ψ := by
+      have hbK : b * K - K * b = (b - K * b * K⁻¹) * K := by
+        rw [Matrix.sub_mul, Matrix.mul_assoc (K * b), nonsing_inv_mul _ hKu, Matrix.mul_one]
+      rw [hbK, localLift_mul, ← toEuclideanLin_mul_apply', show A * Y * liftProdInv outer *
+          (A * localLift D K * C) = A * Y * (liftProdInv outer * A) * localLift D K * C by
+          simp only [Matrix.mul_assoc], liftProdInv_mul_liftProd hchain, Matrix.mul_one]
+      simp only [Y, Matrix.mul_assoc]
+    rw [hvec] at h1
+    have hY : ∀ p ∈ outer, IsSupportedOn Y p.1 := fun p hp ↦
+      (isSupportedOn_localLift _).mono (hsub p hp)
+    rw [inner_liftProd_conj σ₀ hchain hY] at h1
+    have hskew : (localLift D b)ᴴ = -localLift D b := by
+      rw [← localLift_conjTranspose, hb, show -b = (-1 : ℂ) • b by simp, localLift_smul]
+      simp
+    have h2 := re_inner_eq_zero_of_skew hskew ψ
+    rw [inner_localLift] at h1 h2
+    rw [Matrix.mul_sub, trace_sub, Complex.sub_re, h2, zero_sub, neg_eq_zero] at h1
+    have hcyc : (ρ * (K * b * K⁻¹)).trace = (K⁻¹ * ρ * K * b).trace := by
+      rw [show ρ * (K * b * K⁻¹) = (ρ * K * b) * K⁻¹ by simp only [Matrix.mul_assoc],
+        trace_mul_comm, show K⁻¹ * (ρ * K * b) = K⁻¹ * ρ * K * b by simp only [Matrix.mul_assoc]]
+    rw [← hcyc]
+    exact h1
+  have hherm := isHermitian_of_re_trace_mul_skew_eq_zero hstat
+  exact commute_of_isHermitian_inv_mul_mul hK (regionState_isHermitian D ψ) hherm
+
 end Entropy
 
 end Chain
