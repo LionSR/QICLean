@@ -41,7 +41,9 @@ import QICLean.Entropy.PositiveOverlappingProduct
 import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.ProductOverlapPurity
 import QICLean.Entropy.PurificationSplitting
+import QICLean.Entropy.RegionUnion
 import QICLean.Entropy.SSAEqualityCharacterization
+import QICLean.Entropy.SchmidtPinning
 import QICLean.Entropy.SchmidtTilt
 import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.SupportedMarginalTails
