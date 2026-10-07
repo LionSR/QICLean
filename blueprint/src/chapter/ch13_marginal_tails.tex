@@ -321,3 +321,28 @@ depend on the common values there.
     of Lemma~\ref{lem:modular_conjugation_quadratic} gives the factor
     $2\lVert c\rVert\lVert d\rVert$.
 \end{proof}
+
+\begin{lemma}[Local lifts and the trace argument]
+    \label{lem:local_lift}
+    \lean{Entropy.localLift, Entropy.regionState, Entropy.localLift_mul,
+        Entropy.localLift_one, Entropy.localLift_conjTranspose,
+        Entropy.isSupportedOn_localLift, Entropy.IsSupportedOn.exists_localLift,
+        Entropy.IsSupportedOn.mono, Entropy.IsSupportedOn.mul, Entropy.inner_localLift,
+        Entropy.inner_localLift_conj_eq, Entropy.inner_conj_eq_of_isSupportedOn}
+    \leanok
+    \uses{lem:supported_product_decomposition}
+    The lift $K\mapsto K\otimes1$ from a region $D$ is a unital multiplicative
+    map compatible with adjoints, and its range is the set of operators
+    supported on $D$. Support is monotone in $D$ and closed under products.
+    For every vector $\varphi$, $\langle\varphi,(K\otimes1)\varphi\rangle=
+    \Tr\rho_{\varphi,D}K$. Consequently, if $K$ is invertible and commutes with
+    $\rho_{\varphi,D}$, then
+    $\langle\varphi,(K\otimes1)Y(K^{-1}\otimes1)\varphi\rangle=\langle\varphi,
+    Y\varphi\rangle$ for every $Y$ supported on $D$.
+\end{lemma}
+\begin{proof}\leanok
+    The algebraic properties hold for $K\otimes1$ and survive the relabelling.
+    The expectation formula is the defining property of the partial trace,
+    and the last identity follows from cyclicity of the trace, since
+    $K^{-1}\rho_{\varphi,D}K=\rho_{\varphi,D}$.
+\end{proof}
