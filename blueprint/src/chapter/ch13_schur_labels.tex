@@ -1,0 +1,172 @@
+%% =========================================================
+%% Chapter: Schur labels of tensor powers
+%% Group-algebra labels, permutation representations, and the Schur-label
+%% estimates of the area-law paper (Lemma 6.1, lem:schur).
+%% =========================================================
+
+\chapter{Schur Labels of Tensor Powers}\label{ch:schur_labels}
+
+This chapter develops the label calculus for permutations of the copies of a
+finite-dimensional tensor power that is used for symmetric replicas in the
+two-dimensional area-law argument~\cite{OpenAI2026AreaLaw}. The labels are the
+irreducible representations of the symmetric group $S_k$; we read them off
+from an Artin--Wedderburn decomposition of the complex group algebra, which
+treats every finite group in the same way. The identification of the labels of
+$S_k$ with partitions of $k$ enters only in the dimension and branching formulas.
+
+\section{Labels of a finite group}
+
+\begin{definition}[Irreducible labels and central idempotents]
+    \label{def:irrep_labels}
+    \lean{IrrepLabel, IrrepLabel.dim, IrrepLabel.wedderburnEquiv,
+        IrrepLabel.centralIdem, IrrepLabel.matrixUnit}
+    \leanok
+    Let $G$ be a finite group. By Maschke's theorem and the Artin--Wedderburn
+    theorem over $\C$ there is an algebra isomorphism
+    \[
+        \C[G]\;\cong\;\prod_{\lambda}M_{d_\lambda}(\C),
+    \]
+    and we fix one. Its factors are the labels $\lambda$ of $G$, and
+    $d_\lambda\ge1$ is the dimension of the irreducible representation with
+    label $\lambda$. The central idempotent $e_\lambda\in\C[G]$ and the matrix
+    units $e^\lambda_{ij}$ are the preimages of the identity and of the matrix
+    units of the factor $M_{d_\lambda}(\C)$.
+\end{definition}
+
+\begin{lemma}[Central idempotents]
+    \label{lem:irrep_central_idempotents}
+    \lean{IrrepLabel.centralIdem_mul_centralIdem, IrrepLabel.sum_centralIdem,
+        IrrepLabel.centralIdem_mul_comm, IrrepLabel.centralIdem_ne_zero,
+        IrrepLabel.invStar_centralIdem}
+    \leanok
+    \uses{def:irrep_labels}
+    The central idempotents are nonzero, central, mutually orthogonal, and sum
+    to the identity. Each is fixed by the conjugate-linear involution of
+    $\C[G]$ sending $c\,g$ to $\bar c\,g^{-1}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first four statements hold for the identities of the factors of a
+    product of matrix algebras. For the last, let $e=e_\lambda$, let $e^\ast$
+    be its image under the involution, and let $P$ be the image of $e$ in the
+    left regular representation, which is faithful and sends $e^\ast$ to the
+    adjoint $P^\ast$. Then $e^\ast$ is central, so $e^\ast e$ is a central
+    element of the factor $\lambda$ and equals $c\,e$ for a scalar $c$. Hence
+    $P^\ast P=cP$. If $c=0$ then $P=0$, which is impossible. Taking adjoints
+    gives $P^\ast=uP$ with $u=c/\bar c$, and idempotence of $P^\ast$ forces
+    $u=1$. Thus $P^\ast=P$, and faithfulness gives $e^\ast=e$.
+\end{proof}
+
+\begin{definition}[Permutation operators and label projectors]
+    \label{def:label_projectors}
+    \lean{PermutationRepresentation.permOp,
+        PermutationRepresentation.groupAlgebraRep,
+        PermutationRepresentation.labelProj,
+        PermutationRepresentation.labelObservable,
+        PermutationRepresentation.labelEntropy}
+    \leanok
+    \uses{def:irrep_labels}
+    Let $G$ act on a finite set $X$. The permutation operator $U(g)$ on $\C^X$
+    sends the basis vector $e_x$ to $e_{gx}$, and extends linearly to an algebra
+    homomorphism $\C[G]\to\mathrm{End}(\C^X)$. The label projector $\pi^\lambda$
+    is the image of $e_\lambda$. For a real function $f$ of the labels, the
+    label observable is $\sum_\lambda f(\lambda)\pi^\lambda$; for
+    $f(\lambda)=\log d_\lambda$ it is the observable
+    $F=\sum_\lambda(\log d_\lambda)\pi^\lambda$
+    of~\cite[equation~(replicas:F-definition)]{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Label projectors are a resolution of the identity]
+    \label{lem:label_projectors}
+    \lean{PermutationRepresentation.labelProj_mul_labelProj,
+        PermutationRepresentation.sum_labelProj,
+        PermutationRepresentation.isHermitian_labelProj,
+        PermutationRepresentation.commute_labelProj_of_forall_commute,
+        PermutationRepresentation.isHermitian_labelObservable}
+    \leanok
+    \uses{def:label_projectors, lem:irrep_central_idempotents}
+    The label projectors are mutually orthogonal orthogonal projections with sum
+    the identity, and they commute with every operator that commutes with all
+    permutation operators. Every label observable is self-adjoint.
+\end{lemma}
+
+\begin{proof}\leanok
+    Apply the homomorphism to the relations of
+    Lemma~\ref{lem:irrep_central_idempotents}. The image of the involution of
+    $\C[G]$ is the adjoint, since $U(g)^\ast=U(g^{-1})$, so each projector is
+    self-adjoint. An operator commuting with every $U(g)$ commutes with the
+    image of every element of $\C[G]$.
+\end{proof}
+
+\section{Copies of a tensor power}
+
+Let $\mathcal V=\bigotimes_{f\in F}\C^{n_f}$ be a finite-dimensional space
+with a specified finite tensor factorization, and let $k\ge0$. For a subsystem
+$Q\subseteq F$ and $\pi\in S_k$, the operator $U_Q(\pi)$ on
+$\mathcal V^{\otimes k}$ permutes the $k$ copies of the factors in $Q$ and acts
+as the identity on the other factors~\cite[Section~6]{OpenAI2026AreaLaw}.
+Thus $U(\pi)=U_F(\pi)$ permutes entire copies, and the symmetric subspace
+$\mathcal S_k=\Sym^k\mathcal V$ is the subspace fixed by every $U(\pi)$. The
+Schur-label projectors $\pi^\lambda_{Q,k}$ are the label projectors of the
+action $\pi\mapsto U_Q(\pi)$.
+
+\begin{definition}[Copy permutations and the symmetric subspace]
+    \label{def:copy_permutations}
+    \lean{TensorPower.copyPerm, TensorPower.subsystemPerm,
+        TensorPower.symmetricSubspace, PermutationRepresentation.symProj}
+    \leanok
+    \uses{def:label_projectors}
+    The copy permutations of a subsystem, the symmetric subspace, and the
+    averaging projector $\Pi_k=(k!)^{-1}\sum_{\pi\in S_k}U(\pi)$ onto it.
+\end{definition}
+
+\begin{lemma}[Central functions of $S_k$ are invariant under inversion]
+    \label{lem:symmetric_central_inverse}
+    \lean{IrrepLabel.coeff_conj_of_mem_center, IrrepLabel.coeff_inv_of_mem_center}
+    \leanok
+    The coefficients of a central element of $\C[G]$ form a class function.
+    For $G=S_k$, a central element has the same coefficient at $\pi$ and at
+    $\pi^{-1}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Compare the coefficients of $h\,a$ and $a\,h$ at $hg$. A permutation and
+    its inverse have the same cycle type, hence are conjugate.
+\end{proof}
+
+\section{The Schur-label estimates}
+
+The following entries formalize the six parts of the Schur-label
+lemma~\cite[Lemma 6.1]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Schur-label estimates, part 2: commutation and complements]
+    \label{thm:schur_label_commutation}
+    \lean{TensorPower.commute_groupAlgebraRep_subsystemPerm_of_subset,
+        TensorPower.commute_groupAlgebraRep_subsystemPerm_of_disjoint,
+        TensorPower.commute_labelProj_subsystemPerm_of_subset,
+        TensorPower.commute_labelProj_subsystemPerm_of_disjoint,
+        TensorPower.groupAlgebraRep_mulVec_compl_of_mem_symmetricSubspace,
+        TensorPower.labelProj_mulVec_compl_of_mem_symmetricSubspace,
+        TensorPower.labelProj_mul_symProj_compl}
+    \leanok
+    \uses{def:copy_permutations, lem:label_projectors}
+    Central label functions commute for nested or disjoint subsystems: if
+    $Q\subseteq Q'$, a central function of the copy permutations of $Q$
+    commutes with every operator generated by the copy permutations of $Q'$,
+    and operators generated by the copy permutations of disjoint subsystems
+    commute. On $\mathcal S_k$, complementary label projectors agree:
+    $\pi^\lambda_{Q,k}\Pi_k=\pi^\lambda_{Q^c,k}\Pi_k$, even when $Q$ and $Q^c$
+    have different dimensions.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:symmetric_central_inverse}
+    For $Q\subseteq Q'$ we have $U_{Q'}(\pi)=U_Q(\pi)U_{Q'\setminus Q}(\pi)$,
+    where the second factor commutes with every operator generated by $Q$ and
+    the first commutes with every central function of $Q$. Disjoint
+    commutation is immediate. On $\mathcal S_k$,
+    $U_Q(\pi)U_{Q^c}(\pi)z=z$, so $U_Q(\pi)z=U_{Q^c}(\pi^{-1})z$. Writing a
+    central element as $\sum_\pi a(\pi)\pi$ with $a(\pi)=a(\pi^{-1})$ and
+    reindexing by $\pi\mapsto\pi^{-1}$ shows that it acts in the same way
+    through $Q$ and through $Q^c$ on $z$.
+\end{proof}
