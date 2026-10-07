@@ -12,4 +12,5 @@ import QICLean.Analysis.OperatorMean.FiniteTree
 import QICLean.Analysis.OperatorMean.MatrixPowers
 import QICLean.Analysis.OperatorMean.MeanDerivative
 import QICLean.Analysis.OperatorMean.PowerDerivative
+import QICLean.Analysis.OperatorMean.TreeDerivative
 import QICLean.Analysis.OperatorMean.WeightedGeometricMean
