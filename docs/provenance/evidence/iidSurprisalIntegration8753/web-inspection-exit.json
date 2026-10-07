@@ -1,0 +1,13 @@
+{
+  "kind": "web-inspection",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 7.4,
+  "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+  "log": "docs/provenance/evidence/iidSurprisalIntegration8753/web-inspection.log",
+  "sha256": "185436660e046a60b61d04b993d03c7e546a8f66832d8ad1bfbc4158ce3cceec"
+}
