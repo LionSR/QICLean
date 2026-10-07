@@ -1,0 +1,20 @@
+{
+  "published_source_revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+  "locally_checked_revision": "445b333ec172cf5ad38160d1f6743c05b739eb27",
+  "identical_git_tree": "b1e42ed9f15b1ad49feea4a847dd4b17bd0f3faa",
+  "accepted_base": "378bef486fc0241dee8ad875ccaf659d51d33ac9",
+  "checked_source_files": {
+    ".github/workflows/pr-ci.yml": "6b36848b4c834fc1db316463544968908705490301aa3ecf5127d46212f7c644",
+    "QICLean/Analysis.lean": "033578b37f8d32b832f747f5d9375a682c9f7752c5b98fa3fa22dd7fcb2cf138",
+    "QICLean/Analysis/ShiftedDensityTruncation.lean": "43b497f22747cc905e3d2eb46328726adfcbc33a1a992d4768f9b7361281b65a",
+    "QICLeanTest/ShiftedDensityTruncation.lean": "97a29ae8007be562bc721434870b646336ec5fa248d7a57e5116b02f6a9d0a50",
+    "blueprint/src/chapter/ch01_deconstructing_quantum.tex": "677393177e42f8995bce305be94cac576dfd79e6a48675e1357a43d883d96d5c",
+    "blueprint/src/chapter/ch01_shifted_density_truncation.tex": "536a5bc2aef4b1a60cc506858b3c06764a8a724ae3834ede686043215a50e2a4",
+    "docs/formalization/shifted-density-truncation.md": "bee748defeb0e4e9e51fef9e423333272b6e62a3c07246866963358408fa8cb5",
+    "docs/glossary.md": "c44d8a80ae91054a0511b059b7f3c1794dffeb37c1cd492905fb4ef2a6f79ae5",
+    "docs/provenance/openai-math.d/shiftedDensityTruncation8767.json": "5dcef165843483ca7cc741e6b2c2411589223de3e2fead5c1f664711817c1cc6",
+    "docs/tactic_patterns.md": "3a5f1b94c76196660e10d8707afc745498d9b421f72708364feb519c6ef019f8"
+  },
+  "source_and_each_import_closure_hash_verified_before_and_after": true,
+  "raw_axioms_complete": 21
+}
