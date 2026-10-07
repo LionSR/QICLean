@@ -161,7 +161,8 @@ private theorem rectBoundaryIntegral_add {f g : ℂ → ℂ} {z w : ℂ}
 /-- The boundary integral of a finite sum of integrands continuous on the edges. -/
 private theorem rectBoundaryIntegral_finset_sum {ι : Type*} (P : Finset ι) {F : ι → ℂ → ℂ}
     {z w : ℂ} (hF : ∀ i ∈ P, ContinuousOn (F i) (rectEdges z w)) :
-    rectBoundaryIntegral (fun u ↦ ∑ i ∈ P, F i u) z w = ∑ i ∈ P, rectBoundaryIntegral (F i) z w := by
+    rectBoundaryIntegral (fun u ↦ ∑ i ∈ P, F i u) z w =
+      ∑ i ∈ P, rectBoundaryIntegral (F i) z w := by
   classical
   induction P using Finset.induction_on with
   | empty => simp [rectBoundaryIntegral]
@@ -183,13 +184,15 @@ private theorem rectBoundaryIntegral_congr {f g : ℂ → ℂ} {z w : ℂ}
     (h : ∀ u ∈ rectEdges z w, f u = g u) :
     rectBoundaryIntegral f z w = rectBoundaryIntegral g z w := by
   unfold rectBoundaryIntegral
-  congr 1; congr 1; congr 1
-  · exact integral_congr fun x hx ↦ h _ (by simp [rectEdges, mem_reProdIm, hx, left_mem_uIcc])
-  · exact integral_congr fun x hx ↦ h _ (by simp [rectEdges, mem_reProdIm, hx, right_mem_uIcc])
-  · congr 1
-    exact integral_congr fun y hy ↦ h _ (by simp [rectEdges, mem_reProdIm, hy, right_mem_uIcc])
-  · congr 1
-    exact integral_congr fun y hy ↦ h _ (by simp [rectEdges, mem_reProdIm, hy, left_mem_uIcc])
+  have e1 : (∫ x : ℝ in z.re..w.re, f (x + z.im * I)) = ∫ x : ℝ in z.re..w.re, g (x + z.im * I) :=
+    integral_congr fun x hx ↦ h _ (by simp [rectEdges, mem_reProdIm, hx, left_mem_uIcc])
+  have e2 : (∫ x : ℝ in z.re..w.re, f (x + w.im * I)) = ∫ x : ℝ in z.re..w.re, g (x + w.im * I) :=
+    integral_congr fun x hx ↦ h _ (by simp [rectEdges, mem_reProdIm, hx, right_mem_uIcc])
+  have e3 : (∫ y : ℝ in z.im..w.im, f (w.re + y * I)) = ∫ y : ℝ in z.im..w.im, g (w.re + y * I) :=
+    integral_congr fun y hy ↦ h _ (by simp [rectEdges, mem_reProdIm, hy, right_mem_uIcc])
+  have e4 : (∫ y : ℝ in z.im..w.im, f (z.re + y * I)) = ∫ y : ℝ in z.im..w.im, g (z.re + y * I) :=
+    integral_congr fun y hy ↦ h _ (by simp [rectEdges, mem_reProdIm, hy, left_mem_uIcc])
+  rw [e1, e2, e3, e4]
 
 /-- **Boundary integrals with simple poles.** Let `P` be a finite set of points strictly
 inside the rectangle with corners `z`, `w`. If `f` is complex differentiable on the open

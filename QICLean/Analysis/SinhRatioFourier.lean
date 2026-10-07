@@ -216,7 +216,8 @@ theorem deriv_densityDenom_pole₂ (s : ℝ) :
   push_cast; ring
 
 /-- The numerator `e^{iwz} sin(2πs)` of the integrand. -/
-noncomputable def fourierNumer (s z : ℝ) (w : ℂ) : ℂ := cexp (I * w * z) * Real.sin (2 * Real.pi * s)
+noncomputable def fourierNumer (s z : ℝ) (w : ℂ) : ℂ :=
+  cexp (I * w * z) * Real.sin (2 * Real.pi * s)
 
 theorem differentiable_fourierNumer (s z : ℝ) : Differentiable ℂ (fourierNumer s z) := by
   unfold fourierNumer; fun_prop
@@ -274,7 +275,8 @@ theorem rectBoundaryIntegral_fourierIntegrand {s : ℝ} (hs : s ∈ Ioo (0 : ℝ
   have hd₁ : deriv (densityDenom s) (pole₁ s) ≠ 0 := by
     rw [deriv_densityDenom_pole₁]; exact mul_ne_zero h2pi (mul_ne_zero hS I_ne_zero)
   have hd₂ : deriv (densityDenom s) (pole₂ s) ≠ 0 := by
-    rw [deriv_densityDenom_pole₂]; exact neg_ne_zero.mpr (mul_ne_zero h2pi (mul_ne_zero hS I_ne_zero))
+    rw [deriv_densityDenom_pole₂]
+    exact neg_ne_zero.mpr (mul_ne_zero h2pi (mul_ne_zero hS I_ne_zero))
   obtain ⟨G₁, hG₁c, hG₁⟩ := exists_continuousAt_div_sub_inv (differentiable_fourierNumer s z)
     (differentiable_densityDenom s) (densityDenom_pole₁ s) hd₁
   obtain ⟨G₂, hG₂c, hG₂⟩ := exists_continuousAt_div_sub_inv (differentiable_fourierNumer s z)
