@@ -1,0 +1,13 @@
+{
+  "source_revision": "0166379167f06562d5ee8f18b676f1ac511b3308",
+  "axioms": {
+    "exit_code": 0,
+    "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 docs/provenance/evidence/shiftedCommutationIntegration8767/Axioms.lean",
+    "exact_declarations": 57
+  },
+  "provenance": {
+    "exit_code": 0,
+    "command": "/tmp/qic-density-simplex-provenance-env/bin/python docs/provenance/evidence/shiftedCommutationIntegration8767/validate-owned.py /Users/siruilu/Local/agentFormalization/TNLean",
+    "owned_shards": 8
+  }
+}
