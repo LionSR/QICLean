@@ -38,6 +38,7 @@ import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.GapPerturbation
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
+import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
 import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
@@ -87,6 +88,7 @@ import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Analysis.RpowConvexity
 import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo
+import QICLean.Analysis.ScaleRecurrence
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
