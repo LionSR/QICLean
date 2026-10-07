@@ -25,7 +25,9 @@ exists. Nonzero vectors are handled by explicit normalization.
 The hypotheses that `Ω` is an eigenvector of `H` with eigenvalue `E₀` and that
 the ground vector is unique, which the source theorems also carry, are not
 needed for these consequences of the gap inequality; normalization of `Ω` is
-used only for the phase-error bound.
+used only for the phase-error bound. Positive semidefiniteness includes Hermiticity, so
+the operator gap inequality already forces `H` to be Hermitian; only the converse direction
+of the equivalence takes Hermiticity of `H` as a separate hypothesis.
 
 ## Main results
 
@@ -33,8 +35,9 @@ used only for the phase-error bound.
   `H - E₀ I - Δ (I - |Ω⟩⟨Ω|)`.
 * `Matrix.IsHermitian.posSemidef_gap_iff`: the operator gap inequality is
   equivalent to the quadratic-form gap inequality.
-* `sq_norm_sub_exp_smul_le_of_gap`: the operator-free estimate converting a
-  quadratic-form gap bound at one unit vector into a phase-error bound.
+* `exists_isMinOn_sq_norm_sub_exp_smul_le_of_gap` and `iInf_sq_norm_sub_exp_smul_le_of_gap`:
+  the operator-free estimate converting a quadratic-form gap bound at one unit vector into a
+  phase-error bound.
 * `Matrix.exists_isMinOn_sq_norm_sub_exp_smul_le_of_posSemidef_gap` and
   `Matrix.iInf_sq_norm_sub_exp_smul_le_of_posSemidef_gap`: the energy-to-phase-error
   bound with a minimizing phase.
@@ -103,9 +106,8 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 /-- The rank-one matrix `|Ω⟩⟨Ω|` acts by `ψ ↦ ⟨Ω, ψ⟩ Ω`. -/
 theorem toEuclideanLin_vecMulVec_star_self_apply (Ω ψ : EuclideanSpace ℂ n) :
     toEuclideanLin (vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))) ψ = ⟪Ω, ψ⟫_ℂ • Ω := by
-  ext i
-  simp [vecMulVec_apply, mulVec, dotProduct, PiLp.inner_apply, Finset.mul_sum, mul_comm,
-    mul_left_comm]
+  rw [← InnerProductSpace.symm_toEuclideanLin_rankOne, LinearEquiv.apply_symm_apply]
+  exact InnerProductSpace.rankOne_apply Ω Ω ψ
 
 /-- The quadratic form of the gap defect `H - E₀ I - Δ (I - |Ω⟩⟨Ω|)`. -/
 theorem re_inner_toEuclideanLin_gap (H : Matrix n n ℂ) (E₀ Δ : ℝ)

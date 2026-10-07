@@ -27,8 +27,13 @@ operators on a region into operators on the whole system.
 
 ## References
 
-* Polynomial-PEPS manuscript (September 24, 2026), `01-preliminaries.tex`: the Hamiltonian
-  is a sum of bounded local terms whose total is Hermitian.
+* Polynomial-PEPS manuscript (September 24, 2026), Theorem `thm:main`, `eq:model`,
+  `00-introduction.tex`, lines 39–44: a Hermitian Hamiltonian `H = ∑ h_v + ∑ h_e` with
+  `‖h_v‖, ‖h_e‖ ≤ J`, where only the total is assumed Hermitian.
+* The reduction reaches the hypothesis of the companion area-law theorem, in which every
+  summand is Hermitian: two-dimensional area-law manuscript (September 24, 2026),
+  `eq:hamiltonian`, `00-introduction.tex`, lines 19–23; Polynomial-PEPS manuscript,
+  `01-preliminaries.tex`, lines 52–56.
 
 Adapted from openai/math (Apache-2.0), commit adc7f1241b42e322a6451854ab7e4b4c146bf78a,
 file `lean/OAI/MathematicalPhysics/PEPSFilters/HamiltonianEnergy.lean`, declarations
