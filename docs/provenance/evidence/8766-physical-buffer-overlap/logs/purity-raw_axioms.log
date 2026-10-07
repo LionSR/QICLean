@@ -1,0 +1,23 @@
+import took 1.93s
+'Matrix.star_product_dotProduct_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.norm_product_overlap_le_schmidtCoeffMatrix' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.norm_product_overlap_pow_four_le_purity' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.norm_product_overlap_pow_four_le_purity_of_star_dotProduct_eq_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.star_doubled_dotProduct_partialSwap_eq_purity' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+cumulative profiling times:
+	elaboration 2.97ms
+	import 1.93s
+	initialization 28.6ms
+	interpretation 301ms
+	linting 1.64ms
+	module linting 0.0015ms
+	overlappingInstancesLinter 1.42ms
+	parsing 0.201ms
+	tacticAnalysis 6.85ms

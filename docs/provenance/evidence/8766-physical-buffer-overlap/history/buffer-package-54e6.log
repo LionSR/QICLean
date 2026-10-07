@@ -1,0 +1,29 @@
+✔ [3169/3171] Built QICLean.Analysis.CompressedPartialSwap (3.3s)
+✖ [3170/3171] Building QICLean.Entropy.ProductOverlapPurity (2.5s)
+trace: .> LEAN_PATH=<DEPENDENCY_WORKTREE>/.lake/packages/Cli/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/batteries/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/Qq/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/aesop/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/proofwidgets/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/importGraph/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/LeanSearchClient/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/plausible/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/Gametheory/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/mathlib/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/checkdecls/.lake/build/lib/lean:<VALIDATION_WORKTREE>/.lake/build/lib/lean <LEAN_TOOLCHAIN>/bin/lean <VALIDATION_WORKTREE>/QICLean/Entropy/ProductOverlapPurity.lean -o <VALIDATION_WORKTREE>/.lake/build/lib/lean/QICLean/Entropy/ProductOverlapPurity.olean -i <VALIDATION_WORKTREE>/.lake/build/lib/lean/QICLean/Entropy/ProductOverlapPurity.ilean -c <VALIDATION_WORKTREE>/.lake/build/ir/QICLean/Entropy/ProductOverlapPurity.c --setup <VALIDATION_WORKTREE>/.lake/build/ir/QICLean/Entropy/ProductOverlapPurity.setup.json --json
+info: QICLean/Entropy/ProductOverlapPurity.lean:139:2: Try this:
+  [apply] ring_nf
+
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+error: QICLean/Entropy/ProductOverlapPurity.lean:124:64: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝³ : Fintype A
+inst✝² : Fintype B
+inst✝¹ : DecidableEq A
+inst✝ : DecidableEq B
+χ : A × B → ℂ
+i : A
+hi : i ∈ Finset.univ
+j : A
+hj : j ∈ Finset.univ
+k : B
+hk : k ∈ Finset.univ
+l : B
+hl : l ∈ Finset.univ
+⊢ star (χ (j, k)) * star (χ (i, l)) * χ (j, l) * χ (i, k) = χ (i, l) * star (χ (j, l)) * χ (j, k) * star (χ (i, k))
+Some required targets logged failures:
+- QICLean.Entropy.ProductOverlapPurity
+error: build failed

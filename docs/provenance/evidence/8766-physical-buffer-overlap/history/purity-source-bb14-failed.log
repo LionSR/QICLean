@@ -1,0 +1,27 @@
+import took 1.89s
+QICLean/Entropy/ProductOverlapPurity.lean:39:100: error: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+cumulative profiling times:
+	attribute application 0.0694ms
+	congr simp thm 3.11ms
+	elaboration 42.6ms
+	fix level params 1.79ms
+	import 1.89s
+	initialization 31.3ms
+	instantiate metavars 1.13ms
+	interpretation 633ms
+	let-to-have transformation 0.142ms
+	linting 16.1ms
+	module linting 0.00152ms
+	norm_num 2.48ms
+	overlappingInstancesLinter 6.55ms
+	parsing 8.18ms
+	process pre-definitions 7.88ms
+	ring 23.8ms
+	share common exprs 6.52ms
+	simp 127ms
+	tactic execution 152ms
+	tacticAnalysis 21.5ms
+	type checking 86.6ms
+	typeclass inference 299ms

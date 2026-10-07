@@ -1,0 +1,60 @@
+✖ [2810/2811] Building QICLean.Analysis.CompressedPartialSwap (8.2s)
+trace: .> LEAN_PATH=<DEPENDENCY_WORKTREE>/.lake/packages/Cli/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/batteries/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/Qq/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/aesop/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/proofwidgets/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/importGraph/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/LeanSearchClient/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/plausible/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/Gametheory/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/mathlib/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/checkdecls/.lake/build/lib/lean:<VALIDATION_WORKTREE>/.lake/build/lib/lean <LEAN_TOOLCHAIN>/bin/lean <VALIDATION_WORKTREE>/QICLean/Analysis/CompressedPartialSwap.lean -o <VALIDATION_WORKTREE>/.lake/build/lib/lean/QICLean/Analysis/CompressedPartialSwap.olean -i <VALIDATION_WORKTREE>/.lake/build/lib/lean/QICLean/Analysis/CompressedPartialSwap.ilean -c <VALIDATION_WORKTREE>/.lake/build/ir/QICLean/Analysis/CompressedPartialSwap.c --setup <VALIDATION_WORKTREE>/.lake/build/ir/QICLean/Analysis/CompressedPartialSwap.setup.json --json
+error: QICLean/Analysis/CompressedPartialSwap.lean:61:74: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝¹ : DecidableEq A
+inst✝ : DecidableEq B
+p q : (A × B) × A × B
+⊢ (if q = ((p.2.1, p.1.2), p.1.1, p.2.2) then 1 else 0) = if q = ((p.2.1, p.1.2), p.1.1, p.2.2) then 1 else 0
+error: QICLean/Analysis/CompressedPartialSwap.lean:98:66: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝⁷ : Fintype A
+inst✝⁶ : Fintype B
+inst✝⁵ : DecidableEq A
+inst✝⁴ : DecidableEq B
+X : Type u_3
+Y : Type u_4
+inst✝³ : Fintype X
+inst✝² : Fintype Y
+inst✝¹ : DecidableEq X
+inst✝ : DecidableEq Y
+x : ((A × B) × A × B) × (X × Y) × X × Y → ℂ
+p : ((A × B) × A × B) × (X × Y) × X × Y
+⊢ (∑ x_1,
+      ∑ x_2,
+        ∑ x_3,
+          ∑ x_4,
+            ∑ x_5,
+              ∑ x_6,
+                ∑ x_7,
+                  ∑ x_8,
+                    if (x_5 = p.2.2.1 ∧ x_6 = p.2.1.2) ∧ x_7 = p.2.1.1 ∧ x_8 = p.2.2.2 then
+                      if (x_1 = p.1.2.1 ∧ x_2 = p.1.1.2) ∧ x_3 = p.1.1.1 ∧ x_4 = p.1.2.2 then
+                        x (((x_1, x_2), x_3, x_4), (x_5, x_6), x_7, x_8)
+                      else 0
+                    else 0) =
+    x (((p.1.2.1, p.1.1.2), p.1.1.1, p.1.2.2), (p.2.2.1, p.2.1.2), p.2.1.1, p.2.2.2)
+error: QICLean/Analysis/CompressedPartialSwap.lean:107:44: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝⁵ : Fintype A
+inst✝⁴ : Fintype B
+inst✝³ : DecidableEq A
+inst✝² : DecidableEq B
+Q : Type u_3
+inst✝¹ : Fintype Q
+inst✝ : DecidableEq Q
+x : ((A × B) × A × B) × Q → ℂ
+p : ((A × B) × A × B) × Q
+⊢ (∑ x_1,
+      ∑ x_2,
+        ∑ x_3,
+          ∑ x_4,
+            if (x_1 = p.1.2.1 ∧ x_2 = p.1.1.2) ∧ x_3 = p.1.1.1 ∧ x_4 = p.1.2.2 then x (((x_1, x_2), x_3, x_4), p.2)
+            else 0) =
+    x (((p.1.2.1, p.1.1.2), p.1.1.1, p.1.2.2), p.2)
+Some required targets logged failures:
+- QICLean.Analysis.CompressedPartialSwap
+error: build failed

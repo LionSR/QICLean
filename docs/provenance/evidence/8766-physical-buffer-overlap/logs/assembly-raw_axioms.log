@@ -1,0 +1,45 @@
+import took 1.9s
+'Equiv.bipartiteRegroup' does not depend on any axioms
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Equiv.doubledRegroup' does not depend on any axioms
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.doubledRegroup' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.physicalLeftSwap' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.regroupPurification' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.one_kronecker_mulVec_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.doubledRegroup_one_kronecker_mulVec' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.star_doubledRegroup_dotProduct' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.star_regroupPurification_dotProduct' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.star_tensorPurification_dotProduct_eq_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.exp_neg_half_le_re_overlap_of_norm_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.physicalLeftSwap_eq_mulVec' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.star_doubledRegroup_dotProduct_partialSwaps_eq_purity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.physicalLeftSwap_compressedPartialSwap_overlap_eq_purity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.exists_hermitian_contraction_physicalBuffer_overlap' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+cumulative profiling times:
+	elaboration 1.03ms
+	import 1.9s
+	initialization 31.7ms
+	interpretation 429ms
+	linting 3.99ms
+	module linting 0.00188ms
+	overlappingInstancesLinter 5.06ms
+	parsing 0.484ms
+	tacticAnalysis 16ms
