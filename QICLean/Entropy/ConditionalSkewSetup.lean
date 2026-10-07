@@ -206,6 +206,52 @@ theorem liftY_supp_zero_mulVec (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) 
 
 end Support
 
+section Powers
+
+theorem suppPow_mul {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.IsHermitian) (z w : ℂ) :
+    cfcC A (suppPowFun z) * cfcC A (suppPowFun w) = cfcC A (suppPowFun (z + w)) := by
+  rw [cfcC_mul hA]; congr 1; funext t
+  unfold suppPowFun
+  split_ifs with h
+  · simp
+  · rw [Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 h)]
+
+theorem conjTranspose_suppPow {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.PosSemidef) (z : ℂ) :
+    (cfcC A (suppPowFun z))ᴴ = cfcC A (suppPowFun (starRingEnd ℂ z)) := by
+  rw [conjTranspose_cfcC hA.1]
+  refine cfcC_congr_of_nonneg hA fun t ht => ?_
+  unfold suppPowFun
+  split_ifs with h
+  · simp
+  · have hpos : 0 < t := lt_of_le_of_ne ht (Ne.symm h)
+    have harg : (t : ℂ).arg ≠ Real.pi := by
+      rw [Complex.arg_ofReal_of_nonneg hpos.le]; exact Real.pi_ne_zero.symm
+    rw [Complex.cpow_conj _ _ harg, Complex.conj_ofReal]
+
+end Powers
+
+section Values
+
+theorem star_dotProduct_mulVec_eq {n : Type*} [Fintype n] (M : Matrix n n ℂ) (x y : n → ℂ) :
+    star x ⬝ᵥ (M *ᵥ y) = star (Mᴴ *ᵥ x) ⬝ᵥ y := by
+  rw [star_mulVec, conjTranspose_conjTranspose, dotProduct_mulVec]
+
+variable (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) (h : Matrix (P₀ × X) (P₀ × X) ℂ)
+
+/-- `f(0) = ⟨θ, h θ⟩`.  Area-law manuscript, `04-conditional.tex`, line 510. -/
+theorem skewFun_zero : skewFun θ h 0 = star θ ⬝ᵥ (liftH h *ᵥ θ) := by
+  have hP := (posSemidef_margP θ)
+  have hY := (posSemidef_margY θ)
+  rw [skewFun, neg_zero, ← mulVec_mulVec, liftY_supp_zero_mulVec, ← mulVec_mulVec,
+    liftP_supp_zero_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, star_dotProduct_mulVec_eq,
+    conjTranspose_liftP, conjTranspose_suppPow hP, map_zero, liftP_supp_zero_mulVec,
+    star_dotProduct_mulVec_eq, conjTranspose_liftY, conjTranspose_suppPow hY, map_zero,
+    liftY_supp_zero_mulVec]
+
+end Values
+
 end Entropy.ConditionalSkew
 
 end
