@@ -1,0 +1,85 @@
+\subsection{Typical Schmidt truncation}
+
+\begin{definition}[Selected pure vector]
+\label{def:entropy_typical_pure_state}
+\lean{Matrix.leftFilteredVector,Matrix.typicalPureState}
+\leanok
+Let $\psi\in\mathcal H_A\otimes\mathcal H_B$ and let
+$\rho_A=\operatorname{tr}_B|\psi\rangle\langle\psi|$.
+For a set $E$ of marginal eigenvalue indices with positive mass $z$, let
+$P_E$ be the selected spectral projection. The normalized typical truncation is
+\[
+ \psi_E=z^{-1/2}(P_E\otimes I_B)\psi.
+\]
+\end{definition}
+
+\begin{lemma}[Physical action and orthogonal marginal decomposition]
+\label{lem:entropy_typical_projection_split}
+\lean{Matrix.leftFilteredVector_eq_kronecker,Matrix.partialTraceLeft_projection_split}
+\leanok
+For any orthogonal projection $P$ on $\mathcal H_A$, put
+$\psi_P=(P\otimes I_B)\psi$ and $\psi_{I-P}=((I_A-P)\otimes I_B)\psi$.
+Then
+\[
+ \operatorname{tr}_A|\psi\rangle\langle\psi|
+ =\operatorname{tr}_A|\psi_P\rangle\langle\psi_P|
+  +\operatorname{tr}_A|\psi_{I-P}\rangle\langle\psi_{I-P}|.
+\]
+\end{lemma}
+\begin{proof}
+\leanok
+Writing the coefficient matrix as $C$, the action on the first tensor factor
+replaces $C$ by $PC$. Orthogonality gives
+$C^*C=(PC)^*(PC)+((I-P)C)^*((I-P)C)$.
+Taking entrywise complex conjugates gives the complementary-marginal identity.
+\end{proof}
+
+\begin{theorem}[Normalization, first marginal, and vector error]
+\label{thm:entropy_typical_pure_state}
+\lean{Matrix.partialTraceRight_typicalPureState,Matrix.norm_typicalPureState,
+  Matrix.inner_typicalPureState,Matrix.norm_sub_typicalPureState_sq,
+  Matrix.norm_sub_typicalPureState_sq_le}
+\leanok
+\uses{def:entropy_typical_pure_state,def:entropy_typical_density}
+If $z>0$, then $\|\psi_E\|=1$,
+$\operatorname{tr}_B|\psi_E\rangle\langle\psi_E|=z^{-1}P_E\rho_A P_E$, and
+$\langle\psi,\psi_E\rangle=\sqrt z$.
+If also $\|\psi\|=1$, then
+\[
+ \|\psi-\psi_E\|^2=2(1-\sqrt z)\le2(1-z).
+\]
+\end{theorem}
+\begin{proof}
+\leanok
+The first marginal transforms by conjugation with $P_E$ and scaling by $z^{-1}$.
+Its trace is one. Idempotence of $P_E$ gives the overlap $\sqrt z$.
+The norm identity follows by expanding the squared difference of two unit vectors;
+the inequality uses $0<z\le1$.
+\end{proof}
+
+\begin{theorem}[Complementary marginal estimates]
+\label{thm:entropy_typical_complementary_marginal}
+\lean{Matrix.partialTraceLeft_typicalPureState,
+  Matrix.partialTraceLeft_typicalPureState_decomposition,
+  Matrix.partialTraceLeft_typicalPureState_le,
+  Matrix.entropy_partialTraceLeft_typicalPureState_le}
+\leanok
+\uses{def:entropy_typical_pure_state,lem:entropy_typical_projection_split}
+Let $z>0$ and put $\psi_{\mathrm{rem}}=((I_A-P_E)\otimes I_B)\psi$.
+The complementary marginal satisfies
+\[
+ \rho_B=z\rho_{\psi_E,B}
+   +\operatorname{tr}_A|\psi_{\mathrm{rem}}\rangle\langle\psi_{\mathrm{rem}}|,
+ \qquad \rho_{\psi_E,B}\le z^{-1}\rho_B.
+\]
+If $\|\psi\|=1$, then $S(\rho_{\psi_E,B})\le S(\rho_B)/z$.
+These are the marginal estimates for the typical Schmidt truncation
+in \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+The two terms in the decomposition are positive. Dividing by $z$ gives the
+operator inequality. Entropy concavity gives the entropy inequality, after
+discarding the nonnegative entropy of the normalized remainder.
+When $z=1$, the zero remainder requires no normalization.
+\end{proof}
