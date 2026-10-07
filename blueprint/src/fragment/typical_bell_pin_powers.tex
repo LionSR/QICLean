@@ -30,8 +30,11 @@ The vector $\Omega$ need not have unit norm.
 \leanok
 \uses{thm:typical_bell_pin}
 For finite families of matrices and vectors, distributivity gives
-$\sum_y\prod_j M_j(x_j,y_j)v_j(y_j)
-=\prod_j\sum_{y_j}M_j(x_j,y_j)v_j(y_j)$.
+\begin{align}
+ \sum_y\prod_j M_j(x_j,y_j)v_j(y_j)
+   &=\prod_j\sum_{y_j}M_j(x_j,y_j)v_j(y_j).
+ \label{eq:bell_powers_productsum}
+\end{align}
 Apply the one-copy Bell contraction to each factor. The $k$ scalar factors
 give $\prod_jc=c^k$.
 \end{proof}
@@ -83,11 +86,18 @@ required for $\Lambda$.
 \begin{proof}
 \leanok
 \uses{thm:typical_bell_pin_powers}
-The coordinate equivalence sends the tuple
-$((a_j,c_j),(r_j,b_j))_j$ to
-$((a_j,c_j)_j,(r_j)_j,(b_j)_j)$.
+The coordinate equivalence acts by
+\begin{align}
+ ((a_j,c_j),(r_j,b_j))_j
+   &\longmapsto ((a_j,c_j)_j,((r_j)_j,(b_j)_j)).
+ \label{eq:bell_powers_coordinates}
+\end{align}
 It transports $(P\otimes I_{RB})^{\otimes k}$ to $Q$.
-Since $Q T_\Lambda=P^{\otimes k}\otimes(\Lambda\otimes I_{B^k})
-=T_\Lambda Q$, transport~(\ref{eq:bell_powers_contraction}) and apply
-$T_\Lambda$ to obtain~(\ref{eq:bell_powers_label}).
+Kronecker multiplication gives
+\begin{align}
+ Q T_\Lambda&=P^{\otimes k}\otimes(\Lambda\otimes I_{B^k})=T_\Lambda Q.
+ \label{eq:bell_powers_disjoint}
+\end{align}
+Transport~(\ref{eq:bell_powers_contraction}) and apply $T_\Lambda$.
+Using~(\ref{eq:bell_powers_disjoint}) gives~(\ref{eq:bell_powers_label}).
 \end{proof}
