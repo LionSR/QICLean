@@ -330,6 +330,30 @@ theorem skewFun_zero_nonneg (hh0 : 0 ≤ h) : 0 ≤ skewFun θ h 0 := by
   rw [skewFun_zero]
   exact (posSemidef_liftH (nonneg_iff_posSemidef.1 hh0)).dotProduct_mulVec_nonneg θ
 
+theorem skew_matrix_conjTranspose {A₁ A₂ : Matrix (P₀ × P₁) (P₀ × P₁) ℂ}
+    {B₁ B₂ : Matrix (X × U) (X × U) ℂ} {H : Matrix ((P₀ × P₁) × ((X × U) × F))
+      ((P₀ × P₁) × ((X × U) × F)) ℂ} (hH : Hᴴ = H) :
+    (liftP A₁ * liftY B₁ * H * liftP A₂ * liftY B₂)ᴴ =
+      liftP A₂ᴴ * liftY B₂ᴴ * H * liftP A₁ᴴ * liftY B₁ᴴ := by
+  rw [conjTranspose_mul, conjTranspose_mul, conjTranspose_mul, conjTranspose_mul, hH,
+    conjTranspose_liftP, conjTranspose_liftP, conjTranspose_liftY, conjTranspose_liftY]
+  rw [← liftP_liftY_comm A₁ᴴ, ← Matrix.mul_assoc (liftY B₂ᴴ), ← liftP_liftY_comm A₂ᴴ]
+  simp only [Matrix.mul_assoc]
+
+/-- The reflection `f(-z̄) = conj f(z)` for Hermitian `h`.  Area-law manuscript,
+`04-conditional.tex`, lines 529–530. -/
+theorem skewFun_neg_conj (hh : h.IsHermitian) (z : ℂ) :
+    skewFun θ h (-(starRingEnd ℂ z)) = starRingEnd ℂ (skewFun θ h z) := by
+  have hP := (posSemidef_margP θ)
+  have hY := (posSemidef_margY θ)
+  have hH : (liftH (P₁ := P₁) (U := U) (F := F) h)ᴴ = liftH h := by rw [conjTranspose_liftH, hh.eq]
+  have key : ∀ M : Matrix ((P₀ × P₁) × ((X × U) × F)) ((P₀ × P₁) × ((X × U) × F)) ℂ,
+      starRingEnd ℂ (star θ ⬝ᵥ (M *ᵥ θ)) = star θ ⬝ᵥ (Mᴴ *ᵥ θ) := by
+    intro M
+    rw [← Complex.star_def, star_dotProduct, star_star, star_mulVec_dotProduct]
+  rw [skewFun, skewFun, key, skew_matrix_conjTranspose hH, conjTranspose_suppPow hP,
+    conjTranspose_suppPow hP, conjTranspose_suppPow hY, conjTranspose_suppPow hY, map_neg, neg_neg]
+
 end Values
 
 end Entropy.ConditionalSkew
