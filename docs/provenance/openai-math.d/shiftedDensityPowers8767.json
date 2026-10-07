@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8767-qic-shifted-density-powers-01",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityPowers.lean",
+        "declaration": "Matrix.isCompact_setOf_posSemidef_trace_eq_one",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove compactness of all complex PSD trace-one matrices on an arbitrary finite index type, including an empty index type, by reindexing the existing QICLean result.",
+        "Generic support motivated by 03-patches.tex lines 51–114 only. This does not formalize the native ordered objective, minimum attainment, ordered-product norm bounds, stationarity, energy estimates or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-qic-shifted-density-powers-02",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityPowers.lean",
+        "declaration": "Matrix.setOf_posSemidef_trace_eq_one_nonempty",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove existence of a complex PSD trace-one matrix for every nonempty finite index type; do not assert existence on an empty index type.",
+        "Generic support motivated by 03-patches.tex lines 51–114 only. This does not formalize the native ordered objective, minimum attainment, ordered-product norm bounds, stationarity, energy estimates or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-qic-shifted-density-powers-03",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityPowers.lean",
+        "declaration": "Matrix.PosSemidef.add_smul_one_posDef",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove that adding b times the full-space identity to a PSD matrix is positive definite for b > 0, without assuming the original matrix is invertible.",
+        "Generic support motivated by 03-patches.tex lines 51–114 only. This does not formalize the native ordered objective, minimum attainment, ordered-product norm bounds, stationarity, energy estimates or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-qic-shifted-density-powers-04",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityPowers.lean",
+        "declaration": "Matrix.continuousOn_add_smul_one_rpow",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove actual continuous-functional-calculus continuity of x ↦ (x + bI)^r on the whole PSD cone for fixed b > 0 and every real r.",
+        "Generic support motivated by 03-patches.tex lines 51–114 only. This does not formalize the native ordered objective, minimum attainment, ordered-product norm bounds, stationarity, energy estimates or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-qic-shifted-density-powers-05",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityPowers.lean",
+        "declaration": "Matrix.PosSemidef.spectrum_add_smul_one_bounds",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-elementary-norm-bounds"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove that a trace-one PSD matrix shifted by bI has real spectrum contained in [b, 1+b] for b > 0.",
+        "Generic support motivated by 03-patches.tex lines 51–114 only. This does not formalize the native ordered objective, minimum attainment, ordered-product norm bounds, stationarity, energy estimates or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-qic-shifted-density-powers-06",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityPowers.lean",
+        "declaration": "Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonpos",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-elementary-norm-bounds"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the Euclidean operator-norm bound ‖(x + bI)^r‖ ≤ b^r for trace-one PSD x, b > 0 and r ≤ 0, including singular x and r = 0.",
+        "Generic support motivated by 03-patches.tex lines 51–114 only. This does not formalize the native ordered objective, minimum attainment, ordered-product norm bounds, stationarity, energy estimates or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-qic-shifted-density-powers-07",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityPowers.lean",
+        "declaration": "Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonneg",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-elementary-norm-bounds"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the Euclidean operator-norm bound ‖(x + bI)^r‖ ≤ (1+b)^r for trace-one PSD x, b > 0 and r ≥ 0, including singular x and r = 0.",
+        "Generic support motivated by 03-patches.tex lines 51–114 only. This does not formalize the native ordered objective, minimum attainment, ordered-product norm bounds, stationarity, energy estimates or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    }
+  ]
+}
