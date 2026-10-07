@@ -16,3 +16,4 @@ import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.TensorPowerAction
+import QICLean.Representation.UniformBellLabel
