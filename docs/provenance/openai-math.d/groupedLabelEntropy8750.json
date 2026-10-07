@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-grouped-label-entropy-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/GroupedLabelEntropy.lean",
+        "declaration": "TensorPower.groupedCopies_labelEntropy_bounds",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+          "labels": [
+            "lem:schur",
+            "replicas:group-dimensions"
+          ]
+        },
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:restriction-dimensions"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive the actual two-sided full-space label observable inequality from the existing compatible-triple dimension theorem and literal joint orthogonal resolution. Compatibility and binomial positivity are derived; neither is assumed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d7fa8954efaa2a5842359206ee98a6c91946e84a",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.GroupedLabelEntropy",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/groupedLabelEntropyBounds8750/build.log",
+            "sha256": "71d6f32e687b0a253dcaaf14f5ecaf58d2aece79107374a891c35f8d0930447b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Representation/GroupedLabelEntropy.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/groupedLabelEntropyBounds8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/groupedLabelEntropyBounds8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/groupedLabelEntropyBounds8750/axioms.log",
+            "sha256": "6e97a7b1faba1ceaec8084d4ee96feaf7fb00585867b1f9d4e250dea3153fe67"
+          }
+        ]
+      }
+    }
+  ]
+}
