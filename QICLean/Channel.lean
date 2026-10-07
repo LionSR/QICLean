@@ -82,6 +82,7 @@ import QICLean.Channel.MaximalOverlap
 import QICLean.Channel.MaximalWeightConvexDecomposition
 import QICLean.Channel.MaximallyEntangled
 import QICLean.Channel.MaximallyMixed
+import QICLean.Channel.NPositiveIntegral
 import QICLean.Channel.NPositivityChainStrict
 import QICLean.Channel.NPositivitySpectralCriterion
 import QICLean.Channel.NoInformationWithoutDisturbance
@@ -137,6 +138,7 @@ import QICLean.Channel.SupportedMarginalChannel
 import QICLean.Channel.TensorMap
 import QICLean.Channel.TransferMatrix
 import QICLean.Channel.TripartiteDecorrelation
+import QICLean.Channel.UhlmannIsometry
 import QICLean.Channel.WeightedHilbertSchmidt
 import QICLean.Channel.WeylTwirl
 import QICLean.Channel.WhitenedChoi

@@ -14,6 +14,8 @@ a fixed vector to equality of the positive square roots on that vector.
 
 ## Main results
 
+* `Matrix.cfc_rpowIntegrand₀₁_eq_resolvent` writes the Löwner real-power integrand
+  of a positive-semidefinite matrix in resolvent form.
 * `Matrix.sqrt_mulVec_eq_of_resolvent_mulVec_eq` shows that if two positive
   semidefinite matrices have the same shifted inverse on a vector for every
   positive shift, then their positive square roots agree on that vector.
@@ -46,8 +48,10 @@ private instance {n : Type*} [Fintype n] :
   let := Classical.decEq n
   exact ContinuousFunctionalCalculus.toNonUnital
 
-/-- Resolvent form of the Löwner real-power integrand. -/
-private lemma cfc_rpowIntegrand₀₁_eq_resolvent
+/-- Resolvent form of the Löwner real-power integrand:
+`t ^ p (t⁻¹ - (t + A)⁻¹) = t ^ (p - 1) - t ^ p (t + A)⁻¹` in the functional calculus of a
+positive-semidefinite matrix. -/
+theorem cfc_rpowIntegrand₀₁_eq_resolvent
     {n : Type*} [Fintype n] [DecidableEq n]
     {A : Matrix n n ℂ} (hA : A.PosSemidef) {p t : ℝ}
     (hp : p ∈ Ioo (0 : ℝ) 1) (ht : 0 < t) :

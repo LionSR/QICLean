@@ -10,7 +10,9 @@ Authors: QICLean contributors
 
 import QICLean.Entropy.Bipartite
 import QICLean.Entropy.ClassicalMutualInformation
+import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalTwoFamilies
+import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.MarkovChain
@@ -21,8 +23,10 @@ import QICLean.Entropy.MutualInformationOperatorSchmidt
 import QICLean.Entropy.OrderedEntropyAlgebra
 import QICLean.Entropy.PositiveOverlappingProduct
 import QICLean.Entropy.ProductMarginals
+import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
+import QICLean.Entropy.UnnormalizedStrongSubadditivity
 import QICLean.Entropy.VonNeumann
