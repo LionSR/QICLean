@@ -1,0 +1,81 @@
+\section{Conditional information from two ordered families}
+
+\begin{theorem}[Twice-entropy information bound]
+    \label{thm:finite_product_twice_entropy_information}
+    \lean{FiniteProduct.mutualInformation_le_two_entropy,
+        FiniteProduct.conditionalMutualInformation_le_two_entropy}
+    \leanok
+    \uses{def:finite_product_conditional_information,
+        thm:finite_product_entropy_complement,
+        thm:finite_product_entropy_subadditivity}
+    For a normalized pure state and disjoint $X,Y$,
+    $I_\psi(X:Y)\le2S_\psi(X)$.
+    If $D$ is disjoint from both $C$ and $Z$, then
+    $I_\psi(D:C\mid Z)\le2S_\psi(D)$.
+\end{theorem}
+\begin{proof}\leanok
+    Set $W=(X\cup Y)^c$. Since $Y^c=X\mathbin{\dot\cup}W$, purity and
+    subadditivity yield
+    $S_\psi(Y)=S_\psi(X\cup W)\le S_\psi(X)+S_\psi(W)
+    =S_\psi(X)+S_\psi(X\cup Y)$.
+    Expanding mutual information proves the first inequality. Apply it to
+    $D,C\cup Z$ and use
+    $I_\psi(D:C\mid Z)\le I_\psi(D:C\cup Z)$ for the second.
+\end{proof}
+
+\begin{theorem}[Conditional two-family bound]
+    \label{thm:finite_product_conditional_two_family_bound}
+    \lean{FiniteProduct.conditionalMutualInformation_le_two_family_sum}
+    \leanok
+    \uses{thm:finite_product_twice_entropy_information,
+        thm:finite_product_conditional_difference,
+        thm:finite_product_conditional_chain_duality}
+    Let $\psi$ be a normalized pure state on a finite product, and let
+    $G,B,C$ be pairwise-disjoint regions. Suppose
+    $G=D\mathbin{\dot\cup}\bigcup_{i\in\mathcal I_0}X_i
+       \mathbin{\dot\cup}\bigcup_{j\in\mathcal I_1}Y_j$
+    is a disjoint partition with a total order on each finite index set.
+    Put $F=(G\cup B\cup C)^c$, $P_i=\bigcup_{k<i}X_k$ and
+    $Q_j=\bigcup_{k<j}Y_k$. Assume
+    $I_\psi(X_i:C\cup B\cup P_i)\le\varepsilon_i$ and
+    $I_\psi(Y_j:C\cup F\cup Q_j)\le\delta_j$ for all indices.
+    Then
+    \begin{align}
+        I_\psi(G:C\mid B)
+        \le \sum_i\varepsilon_i+2S_\psi(D)+\sum_j\delta_j.
+        \notag
+    \end{align}
+    This is the entropy estimate inside the proof of
+    \cite[Lemma~3.2]{OpenAI2026PolynomialPEPS}, before the geometric counting
+    argument. No nonempty-region or sign condition on the errors is required.
+\end{theorem}
+\begin{proof}\leanok
+    Write $A_0=\bigcup_iX_i$ and $A_1=\bigcup_jY_j$. Apply the conditional
+    chain identity to the three blocks in the order $A_0,D,A_1$:
+    \begin{align}
+        I_\psi(G:C\mid B)
+        &=I_\psi(A_0:C\mid B)
+          +I_\psi(D:C\mid B\cup A_0)
+          +I_\psi(A_1:C\mid B\cup A_0\cup D).
+        \notag
+    \end{align}
+    The first term is bounded by the sum of the first family's ordinary
+    informations with its whole exterior and preceding union. The second
+    term is at most $2S_\psi(D)$. Pure-state duality on the entire last block
+    gives $I_\psi(A_1:C\mid B\cup A_0\cup D)=I_\psi(A_1:C\mid F)$.
+    Expand this last quantity in the second family's forward order and bound
+    each conditional term by information with $C\cup F\cup Q_j$.
+    Substitution of the two error bounds proves the result.
+\end{proof}
+
+\begin{theorem}[The complementary exterior in the two-family bound]
+    \label{thm:finite_product_conditional_source_exterior}
+    \lean{FiniteProduct.target_union_complement_eq_exterior}
+    \leanok
+    If $C$ is disjoint from $G$ and $B$, then
+    $C\cup(G\cup B\cup C)^c=(G\cup B)^c$.
+\end{theorem}
+\begin{proof}\leanok
+    An element outside $G\cup B$ either belongs to $C$ or lies outside all
+    three regions. Disjointness gives the reverse containment.
+\end{proof}

@@ -1,0 +1,34 @@
+Actual direct Lean invocation metadata (not a Lake build):
+{
+  "module": "QICLean.Entropy.OrderedEntropyAlgebra",
+  "source": "/workspace/scratch/7637e06d0fc2/QICLean-two-family-entropy/QICLean/Entropy/OrderedEntropyAlgebra.lean",
+  "cwd": "/workspace/scratch/7637e06d0fc2/QICLean-two-family-entropy",
+  "unchanged_dependency": false,
+  "source_sha256": "cf2591e313d37bbc41cfcceda42ae25f9bd144c1536ebb8dee93f9e10665fd0b",
+  "command": [
+    "timeout",
+    "--signal=INT",
+    "--kill-after=5s",
+    "90s",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "-o",
+    "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/tmp/105617621514224/QICLean/Entropy/OrderedEntropyAlgebra.olean",
+    "-i",
+    "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/tmp/105617621514224/QICLean/Entropy/OrderedEntropyAlgebra.ilean",
+    "/workspace/scratch/7637e06d0fc2/QICLean-two-family-entropy/QICLean/Entropy/OrderedEntropyAlgebra.lean"
+  ],
+  "lean_path": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/batteries/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/plausible/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/Qq/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/aesop/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/importGraph/.lake/build/lib/lean",
+  "start": "2026-10-07T08:20:50.586275+00:00",
+  "elapsed_seconds": 1.8362022939982126,
+  "exit_code": 0,
+  "log": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/logs/QICLean.Entropy.OrderedEntropyAlgebra.105617621799843.log",
+  "artifact_sha256": "947f918d7f3fa714c6f1f8d95429c81d8d71d2a62408f0e1c8d397b1b4f28980"
+}
+
+Unmodified compiler output:
