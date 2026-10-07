@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "source_snapshot": "ebb3194763b87d6c4909ef1a907911b6274af72c plus documented leaf edits",
+  "source_leaf_sha256": "241fcd5926db74e99fd743b852fe674978490329c3b7d43afb66196e6c0d150c",
+  "coverage": "16 declarations in six mathematical entries, 43 reused links, 11 checked markers",
+  "render": "Eight PDF pages, six HTML pages, all target labels and local anchors resolved",
+  "pixels": "Reviewed PDF pages 3, 5, 6, 7 and actual web SVG",
+  "tenkz": "One reused picture; zero hard/advisory sweep findings; four physical contractions, two inputs, two outputs; PDF/standalone events agree",
+  "scope": "Separate 16-declaration render; original 13-declaration render remains frozen and unchanged. No full-root or hosted-CI claim."
+}

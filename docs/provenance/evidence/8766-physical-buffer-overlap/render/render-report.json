@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "commit": "8a3db4d8bd2d15ec15be5746525c7ef7c9385b22",
+  "source_leaf_sha256": "bb98535114b0ee29869893ee380d7ffb88cfacd80342ac12061ce838f4be6334",
+  "production_sha256": {
+    "QICLean/Analysis/CompressedPartialSwap.lean": "ed750b5ac10f70b032d5f824e001d686e3a6753153cef80527c8a35df49af7ad",
+    "QICLean/Entropy/ProductOverlapPurity.lean": "60383cb8af62e0dd4b117e084150e0dd9c72bf527ad45c20c2b616522b1276d7",
+    "QICLean/Entropy/PhysicalBufferOverlap.lean": "0dcf46d5f89f4eac70a91835392bee70fb4360ad8b6802ce354082cd9a02f6ad"
+  },
+  "coverage": "42/42 changed public declarations; one reused splitting declaration; 43 distinct PDF/HTML declaration links; seven entries; 12 checked markers",
+  "render": "six PDF pages; six generated HTML pages; no missing internal anchors, duplicate IDs, missing local images, metadata leaks, or final TeX box/reference warnings",
+  "tenkz": "one actual event-swept picture; zero hard/advisory findings; K then F_A then K dagger; two physical Q inputs and two outputs; four internal physical contractions; PDF and standalone records agree",
+  "pixels": "Final PDF content pages 3\u20135 and the actual generated web SVG inspected; SVG rasterized with MuPDF without browser access",
+  "evidence": {
+    "focus-manifest.json": "<RENDER_FIXTURE>/focus-manifest.json",
+    "verification.json": "<RENDER_FIXTURE>/verification.json",
+    "visual-review.json": "<RENDER_FIXTURE>/visual-review.json",
+    "tenkz-sweep.log": "<RENDER_FIXTURE>/tenkz-sweep.log",
+    "blueprint/src/print.pdf": "<RENDER_FIXTURE>/blueprint/src/print.pdf",
+    "blueprint/web/ch-buffer_focus.html": "<RENDER_FIXTURE>/blueprint/web/ch-buffer_focus.html",
+    "diagram-web.png": "<RENDER_FIXTURE>/diagram-web.png"
+  },
+  "limits": [
+    "QIC complete-book Tenkz preamble/workflow integration pending",
+    "No live-browser/MathJax/responsive or full-book build",
+    "No Lean/Lake/cache execution by rendering worker",
+    "No remote write/publication or tracked binaries"
+  ]
+}
