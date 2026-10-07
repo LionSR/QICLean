@@ -257,6 +257,96 @@ theorem sliceIsometry_conj_apply (X : Matrix (((v : {v // v ∈ B}) → Fin (n v
     star_zero, ite_mul, one_mul, zero_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
     Finset.mem_univ, ite_true]
 
+theorem card_innerConfig_le (hn : ∀ v ∈ D, 1 ≤ n v) :
+    Fintype.card (InnerConfig n B D) ≤ ∏ v ∈ D, n v := by
+  classical
+  rw [Fintype.card_pi]
+  simp only [Fintype.card_fin]
+  rw [show (∏ w : {v // v ∈ D ∧ v ∈ B}, n w) = ∏ v ∈ D.filter (· ∈ B), n v from
+    (Finset.prod_subtype (D.filter (· ∈ B)) (by simp) n).symm]
+  exact Finset.prod_le_prod_of_subset_of_one_le' (Finset.filter_subset _ _)
+    fun v hv _ ↦ hn v hv
+
+/-- **Matrix-unit decomposition across a cut.** An operator supported on `D` is, in cut
+coordinates, a sum of at most `(∏_{v ∈ D} n_v)²` products `c ⊗ d'` with `‖c‖ ≤ 1` and
+`‖d'‖ ≤ ‖X‖`. The factors are the matrix units on `D ∩ B`, tensored with the identity on
+`B \ D`, and the corresponding compressions of `X`.
+Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 126–133. -/
+theorem IsSupportedOn.hasProductDecomposition {X : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+    (hX : IsSupportedOn X D) (σ₀ : SiteConfig n) (hn : ∀ v ∈ D, 1 ≤ n v) {c₀ : ℝ}
+    (hXn : ‖X‖ ≤ c₀) :
+    HasProductDecomposition (cutOperator B X) c₀ ((∏ v ∈ D, n v) ^ 2) := by
+  classical
+  set q₀ : OuterConfig n B D := outerPart ((cutEquiv n B) σ₀).1
+  set e := Fintype.equivFin (InnerConfig n B D × InnerConfig n B D)
+  set c : InnerConfig n B D × InnerConfig n B D → Matrix ((v : {v // v ∈ B}) → Fin (n v))
+      ((v : {v // v ∈ B}) → Fin (n v)) ℂ :=
+    fun p ↦ glueIsometry p.1 * (glueIsometry p.2)ᴴ
+  set d : InnerConfig n B D × InnerConfig n B D → Matrix ((v : {v // v ∉ B}) → Fin (n v))
+      ((v : {v // v ∉ B}) → Fin (n v)) ℂ :=
+    fun p ↦ (sliceIsometry (glueConfig p.1 q₀))ᴴ * cutOperator B X *
+      sliceIsometry (glueConfig p.2 q₀)
+  refine ⟨Fintype.card (InnerConfig n B D × InnerConfig n B D), fun k ↦ c (e.symm k),
+    fun k ↦ d (e.symm k), ?_, ?_, fun k ↦ ?_⟩
+  · rw [Fintype.card_prod, sq]
+    exact Nat.mul_le_mul (card_innerConfig_le hn) (card_innerConfig_le hn)
+  · rw [Equiv.sum_comp e.symm (fun p ↦ c p ⊗ₖ d p)]
+    ext ⟨x, y⟩ ⟨x', y'⟩
+    rw [Matrix.sum_apply]
+    change _ = ∑ p, c p x x' * d p y y'
+    simp only [c, d, glueIsometry_mul_conjTranspose_apply, sliceIsometry_conj_apply, ite_mul,
+      one_mul, zero_mul]
+    rw [Finset.sum_eq_single (innerPart x, innerPart x')]
+    · simp only [and_self, true_and]
+      split_ifs with hq
+      · refine hX.apply_eq (fun v hv ↦ ?_) (fun v hv ↦ ?_) (fun v hv ↦ ?_)
+        · by_cases hvB : v ∈ B
+          · simp only [reindex_apply, submatrix_apply, cutEquiv_symm_apply_mem _ _ hvB]
+            simp [glueConfig, hv, innerPart]
+          · simp only [cutEquiv_symm_apply_not_mem _ _ hvB]
+        · by_cases hvB : v ∈ B
+          · simp only [cutEquiv_symm_apply_mem _ _ hvB]
+            simp [glueConfig, hv, innerPart]
+          · simp only [cutEquiv_symm_apply_not_mem _ _ hvB]
+        · by_cases hvB : v ∈ B
+          · simp only [cutEquiv_symm_apply_mem _ _ hvB]
+            have hxv : x ⟨v, hvB⟩ = x' ⟨v, hvB⟩ := congrFun hq ⟨v, hv, hvB⟩
+            simp [glueConfig, hv, hxv]
+          · simp only [cutEquiv_symm_apply_not_mem _ _ hvB]
+      · obtain ⟨w, hw⟩ := Function.ne_iff.mp hq
+        refine hX.1 _ _ ⟨w.1, w.2.1, ?_⟩
+        rwa [cutEquiv_symm_apply_mem _ _ w.2.2, cutEquiv_symm_apply_mem _ _ w.2.2]
+    · rintro ⟨a, b⟩ _ hab
+      rw [if_neg]
+      rintro ⟨rfl, rfl, -⟩
+      exact hab rfl
+    · simp
+  · have hc : ‖c (e.symm k)‖ ≤ 1 := by
+      refine (l2_opNorm_mul _ _).trans ?_
+      rw [l2_opNorm_conjTranspose]
+      have h1 := norm_le_one_of_isometry (glueIsometry_conjTranspose_mul_self (e.symm k).1)
+      have h2 := norm_le_one_of_isometry (glueIsometry_conjTranspose_mul_self (e.symm k).2)
+      nlinarith [norm_nonneg (glueIsometry (B := B) (e.symm k).1),
+        norm_nonneg (glueIsometry (B := B) (e.symm k).2)]
+    have hd : ‖d (e.symm k)‖ ≤ ‖X‖ := by
+      have h1 := norm_le_one_of_isometry
+        (sliceIsometry_conjTranspose_mul_self (n := n) (glueConfig (e.symm k).1 q₀))
+      have h2 := norm_le_one_of_isometry
+        (sliceIsometry_conjTranspose_mul_self (n := n) (glueConfig (e.symm k).2 q₀))
+      have h3 : ‖cutOperator B X‖ = ‖X‖ := Matrix.l2_opNorm_reindex_equiv _ X
+      calc ‖d (e.symm k)‖ ≤ ‖(sliceIsometry (glueConfig (e.symm k).1 q₀))ᴴ‖ *
+            ‖cutOperator B X‖ * ‖sliceIsometry (glueConfig (e.symm k).2 q₀)‖ := by
+            refine (l2_opNorm_mul _ _).trans ?_
+            gcongr
+            exact l2_opNorm_mul _ _
+        _ ≤ 1 * ‖X‖ * 1 := by
+            rw [l2_opNorm_conjTranspose, h3]
+            gcongr
+        _ = ‖X‖ := by ring
+    calc ‖c (e.symm k)‖ * ‖d (e.symm k)‖ ≤ 1 * ‖X‖ :=
+          mul_le_mul hc hd (norm_nonneg _) zero_le_one
+      _ ≤ c₀ := by rw [one_mul]; exact hXn
+
 end Decomposition
 
 end Entropy
