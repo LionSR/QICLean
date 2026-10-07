@@ -69,6 +69,7 @@ import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
+import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
