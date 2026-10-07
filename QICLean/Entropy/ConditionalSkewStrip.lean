@@ -68,6 +68,43 @@ theorem norm_dotProduct_mulVec_le_of_nonneg_le_one {n : Type*} [Fintype n] [Deci
   exact (norm_star_dotProduct_le _ _).trans (mul_le_mul (hBw u) (hBw v) (norm_nonneg _)
     (norm_nonneg _))
 
+theorem norm_apply_le_one_of_nonneg_le_one {n : Type*} [Fintype n] [DecidableEq n]
+    {H : Matrix n n ℂ} (h0 : 0 ≤ H) (h1 : H ≤ 1) (i j : n) : ‖H i j‖ ≤ 1 := by
+  have h := norm_dotProduct_mulVec_le_of_nonneg_le_one h0 h1 (Pi.single i 1) (Pi.single j 1)
+  have hn : ∀ k : n, ‖(WithLp.toLp 2 (Pi.single k (1 : ℂ)) : EuclideanSpace ℂ n)‖ = 1 := by
+    intro k
+    have h2 := norm_toLp_sq_eq_re' (Pi.single k (1 : ℂ))
+    have h3 : star (Pi.single k (1 : ℂ)) ⬝ᵥ Pi.single k 1 = 1 := by
+      simp [dotProduct, Pi.single_apply]
+    rw [h3, Complex.one_re] at h2
+    have := norm_nonneg (WithLp.toLp 2 (Pi.single k (1 : ℂ)) : EuclideanSpace ℂ n)
+    nlinarith [sq_nonneg (‖(WithLp.toLp 2 (Pi.single k (1 : ℂ)) : EuclideanSpace ℂ n)‖ - 1)]
+  have he : star (Pi.single i (1 : ℂ)) ⬝ᵥ (H *ᵥ Pi.single j 1) = H i j := by
+    simp [mulVec_single, dotProduct, Pi.single_apply]
+  rw [he, hn, hn, one_mul] at h
+  exact h
+
+/-- The matrix unit `|a⟩⟨b| ⊗ I_{P₁}` on `P`. -/
+def unitP (a b : P₀) : Matrix (P₀ × P₁) (P₀ × P₁) ℂ := single a b 1 ⊗ₖ (1 : Matrix P₁ P₁ ℂ)
+
+/-- The matrix unit `|x⟩⟨x'| ⊗ I_U` on `Y`. -/
+def unitY (x x' : X) : Matrix (X × U) (X × U) ℂ := single x x' 1 ⊗ₖ (1 : Matrix U U ℂ)
+
+/-- Expansion of `h ⊗ I` in matrix units of `P₀ x`. -/
+theorem liftH_eq_sum (h : Matrix (P₀ × X) (P₀ × X) ℂ) :
+    liftH (P₁ := P₁) (U := U) (F := F) h =
+      ∑ i, ∑ j, h i j • (liftP (unitP (P₁ := P₁) i.1 j.1) * liftY (unitY (U := U) i.2 j.2)) := by
+  ext q q'
+  obtain ⟨⟨p₀, p₁⟩, ⟨⟨x, u⟩, f⟩⟩ := q
+  obtain ⟨⟨p₀', p₁'⟩, ⟨⟨x', u'⟩, f'⟩⟩ := q'
+  simp only [liftH, liftP, liftY, unitP, unitY, ← mul_kronecker_mul, Matrix.one_mul,
+    Matrix.mul_one, submatrix_apply, regroup, kroneckerMap_apply, Matrix.sum_apply,
+    Matrix.smul_apply, smul_eq_mul, single_apply, one_apply, Fintype.sum_prod_type]
+  simp only [ite_and, mul_ite, ite_mul, one_mul, mul_one, zero_mul, mul_zero,
+    Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_ite_irrel,
+    Finset.sum_const_zero, Prod.mk.injEq]
+  by_cases h1 : p₁ = p₁' <;> by_cases h2 : u = u' <;> by_cases h3 : f = f' <;> simp [h1, h2, h3]
+
 end Entropy.ConditionalSkew
 
 end
