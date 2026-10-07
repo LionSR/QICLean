@@ -424,3 +424,29 @@ depend on the common values there.
     Lemma~\ref{lem:filter_conjugation}. For disjoint supports, both operators
     are of the forms $A\otimes1$ and $1\otimes B$ across the same cut.
 \end{proof}
+
+\begin{proposition}[Stationary filters are clipped]
+    \label{prop:stationary_filter_clipped}
+    \lean{Entropy.IsFeasibleFilter, Entropy.IsFeasibleFilter.conj,
+        Entropy.IsFeasibleFilter.posDef, Entropy.trace_cfc_conj_diagonal,
+        Entropy.IsFeasibleFilter.of_common_basis, Entropy.trace_regionState,
+        Entropy.exists_clipped_of_max_feasible}
+    \leanok
+    \uses{lem:filter_stationarity, lem:filter_clipping, lem:commuting_hermitian}
+    A filter on $D$ is feasible at floor $f>0$ and weight $a>0$ when it is
+    $U\operatorname{diag}(y^{a/2})U^*$ with $U$ unitary, $y\ge f$ and $\sum y=1$.
+    Let a feasible filter $K$ maximize the output norm of
+    $A(K\otimes1)Cw$ among feasible filters, where $A$ is a product of filters
+    on regions containing $D$, each commuting with its regional state of the
+    output $\psi\ne0$, and let $\#\cdot f<1$. Then $K$ commutes with
+    $\rho_{\psi,D}$, and in a common eigenbasis $K=W\operatorname{diag}(l)W^*$,
+    $\rho_{\psi,D}=W\operatorname{diag}(q)W^*$ with
+    $|\log(l_i/l_k)|\le\frac a2|\log(q_i/q_k)|$ for positive $q_i,q_k$.
+\end{proposition}
+\begin{proof}\leanok
+    Unitary conjugation preserves feasibility, so Lemma~\ref{lem:filter_stationarity}
+    gives commutation. In a common eigenbasis the eigenvalues of $K$ are
+    $x^{a/2}$ with $x\ge f$, $\sum x=1$, by comparing $\Tr K^{2/a}$ in the two
+    bases, and diagonal variations in that basis are feasible.
+    Lemma~\ref{lem:filter_clipping} applies with $\sum q=\lVert\psi\rVert^2>0$.
+\end{proof}

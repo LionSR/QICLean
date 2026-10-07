@@ -17,6 +17,7 @@ import QICLean.Entropy.FilterClipping
 import QICLean.Entropy.FilterConjugation
 import QICLean.Entropy.FilterEnergy
 import QICLean.Entropy.FilterMoment
+import QICLean.Entropy.FilterOptimizer
 import QICLean.Entropy.FilterStationarity
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
