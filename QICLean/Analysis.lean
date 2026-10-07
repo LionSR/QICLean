@@ -28,6 +28,7 @@ import QICLean.Analysis.EntropyDecomposition
 import QICLean.Analysis.EntropyMarkovForward
 import QICLean.Analysis.EntropyMarkovReverse
 import QICLean.Analysis.EntropyReindex
+import QICLean.Analysis.EntropySubadditivity
 import QICLean.Analysis.FiniteCoordinateNowosad
 import QICLean.Analysis.FiniteCoordinateNowosad.Recursion
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
@@ -98,6 +99,7 @@ import QICLean.Analysis.SupportCompressedEntropy
 import QICLean.Analysis.SupportCompression
 import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.TraceCFC
+import QICLean.Analysis.TraceDistance
 import QICLean.Analysis.TraceNormAbs
 import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Analysis.TraceNormContractivity
