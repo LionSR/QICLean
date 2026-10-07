@@ -49,7 +49,8 @@ theorem isNPositiveMap_singleKrausMap (V : Matrix n n ℂ) (k : ℕ) :
 
 /-- An integral of almost everywhere `k`-positive continuous linear maps is `k`-positive. -/
 theorem IsNPositiveMap.integral {n' : Type*} [Fintype n'] [DecidableEq n'] {α : Type*}
-    [MeasurableSpace α] {μ : Measure α} {F : α → Matrix n n ℂ →L[ℂ] Matrix n' n' ℂ} (hF : Integrable F μ) {k : ℕ}
+    [MeasurableSpace α] {μ : Measure α} {F : α → Matrix n n ℂ →L[ℂ] Matrix n' n' ℂ}
+    (hF : Integrable F μ) {k : ℕ}
     (hpos : ∀ᵐ a ∂μ, IsNPositiveMap k (F a).toLinearMap) :
     IsNPositiveMap k (∫ a, F a ∂μ).toLinearMap := by
   intro X hX
