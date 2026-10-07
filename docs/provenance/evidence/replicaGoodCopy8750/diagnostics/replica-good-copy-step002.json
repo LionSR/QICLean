@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "diagnostics": [
+    {
+      "line": 51,
+      "severity": 1,
+      "message": "unsolved goals\nA : Type u_1\ninst✝¹ : Fintype A\ninst✝ : DecidableEq A\nΩ : A → ℂ\nk : ℕ\nB : Finset (Fin k)\nb : FiniteProduct.Configuration (fun x ↦ A) B\ng : FiniteProduct.Configuration (fun x ↦ A) Bᶜ\ny : Fin k → A\n⊢ (∏ x ∈ B, (1 - vecMulVec Ω (star Ω)) ((FiniteProduct.splitEquiv (fun x ↦ A) B).symm (b, g) x) (y x)) *\n      ∏ x ∈ Bᶜ, vecMulVec Ω (star Ω) ((FiniteProduct.splitEquiv (fun x ↦ A) B).symm (b, g) x) (y x) =\n    (∏ i, Ω (g i)) * ((∏ i, (1 - vecMulVec Ω (star Ω)) (b i) (y ↑i)) * ∏ i, star (Ω (y ↑i)))"
+    }
+  ],
+  "response": {
+    "id": 12,
+    "jsonrpc": "2.0",
+    "result": {}
+  }
+}

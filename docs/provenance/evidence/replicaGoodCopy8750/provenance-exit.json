@@ -1,0 +1,14 @@
+{
+  "source_revision": "38b658ef2ff408eda7a0a958071750bbf70de84b",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/replicaGoodCopy8750/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-07T21:10:10.808245+00:00",
+  "elapsed_seconds": 0.801,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodCopy8750/provenance.log",
+  "sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116"
+}

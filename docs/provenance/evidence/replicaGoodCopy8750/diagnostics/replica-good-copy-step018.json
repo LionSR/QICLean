@@ -1,0 +1,15 @@
+{
+  "version": 18,
+  "diagnostics": [
+    {
+      "line": 122,
+      "severity": 1,
+      "message": "unsolved goals\nA : Type u_1\nC : Type u_2\ninst✝³ : Fintype A\ninst✝² : DecidableEq A\ninst✝¹ : Fintype C\ninst✝ : DecidableEq C\nΩ : A → ℂ\nhΩ : ‖WithLp.toLp 2 Ω‖ = 1\nk : ℕ\nB : Finset (Fin k)\nu : (Fin k → A) × C → ℂ\nhu : kroneckerMap (fun x1 x2 ↦ x1 * x2) (replicaExcitationProjection Ω k B) 1 *ᵥ u = u\n⊢ ‖WithLp.toLp 2 (replicaGoodCopyRemainder Ω B u)‖ ^ 2 = ‖WithLp.toLp 2 u‖ ^ 2"
+    }
+  ],
+  "response": {
+    "id": 28,
+    "jsonrpc": "2.0",
+    "result": {}
+  }
+}

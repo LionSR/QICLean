@@ -1,0 +1,4 @@
+'Matrix.replicaGoodCopyRemainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.replicaExcitationProjection_mulVec_factorization' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.replicaGoodCopy_factorization_of_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.norm_replicaGoodCopyRemainder_of_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
