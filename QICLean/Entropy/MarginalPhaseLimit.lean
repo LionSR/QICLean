@@ -60,7 +60,7 @@ theorem tendsto_lift_spectralFun_mul (U : unitary (Matrix n n ℂ)) (lam : n →
     {ι : Type*} {l : Filter ι} (q : ι → n → ℂ) (p : n → ℂ) (c : ι → ℂ)
     (L : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ) (Y : ι → Matrix m m ℂ) (Y₀ : Matrix m m ℂ)
     (hq : ∀ k, lam k ≠ 0 → Tendsto (fun e => q e k) l (𝓝 (p k)))
-    (hqc : ∀ e k, lam k = 0 → q e k = c e) (hc : ∀ e, ‖c e‖ = 1)
+    (hqc : ∀ᶠ e in l, ∀ k, lam k = 0 → q e k = c e) (hc : ∀ᶠ e in l, ‖c e‖ = 1)
     (hY : Tendsto Y l (𝓝 Y₀))
     (hK : L (spectralFun U (fun k => if lam k = 0 then 1 else 0)) * Y₀ = 0) :
     Tendsto (fun e => L (spectralFun U (q e)) * Y e) l
@@ -68,11 +68,11 @@ theorem tendsto_lift_spectralFun_mul (U : unitary (Matrix n n ℂ)) (lam : n →
   set K := spectralFun U (fun k => if lam k = 0 then (1 : ℂ) else 0)
   set A : ι → Matrix n n ℂ := fun e => spectralFun U (fun k => if lam k = 0 then 0 else q e k)
   set A₀ := spectralFun U (fun k => if lam k = 0 then (0 : ℂ) else p k)
-  have hdecomp : ∀ e, spectralFun U (q e) = A e + c e • K := by
-    intro e
+  have hdecomp : ∀ᶠ e in l, spectralFun U (q e) = A e + c e • K := by
+    filter_upwards [hqc] with e he
     simp only [A, K, ← spectralFun_smul, ← spectralFun_add]
     congr 1; funext k
-    by_cases h : lam k = 0 <;> simp [h, hqc e k]
+    by_cases h : lam k = 0 <;> simp [h, he k]
   have hhat : spectralFun U (fun k => if lam k = 0 then 1 else p k) = A₀ + K := by
     simp only [A₀, K, ← spectralFun_add]
     congr 1; funext k
@@ -87,13 +87,15 @@ theorem tendsto_lift_spectralFun_mul (U : unitary (Matrix n n ℂ)) (lam : n →
   have h2 : Tendsto (fun e => c e • (L K * Y e)) l (𝓝 0) := by
     have h3 : Tendsto (fun e => L K * Y e) l (𝓝 (L K * Y₀)) := tendsto_const_nhds.mul hY
     rw [hK] at h3
-    refine squeeze_zero_norm (fun e => ?_) (tendsto_zero_iff_norm_tendsto_zero.1 h3)
-    rw [norm_smul, hc e, one_mul]
+    refine squeeze_zero_norm' ?_ (tendsto_zero_iff_norm_tendsto_zero.1 h3)
+    filter_upwards [hc] with e he
+    rw [norm_smul, he, one_mul]
   have h4 := h1.add h2
   rw [add_zero] at h4
   rw [hhat, map_add, Matrix.add_mul, hK, add_zero]
-  refine h4.congr fun e => ?_
-  rw [hdecomp, map_add, map_smul, Matrix.add_mul, Matrix.smul_mul]
+  refine h4.congr' ?_
+  filter_upwards [hdecomp] with e he
+  rw [he, map_add, map_smul, Matrix.add_mul, Matrix.smul_mul]
 
 /-- The rate `𝓡` is bounded near zero by a continuous function vanishing at zero. -/
 theorem phaseRate_le_of_lt_one {D x : ℝ} (hD : 1 ≤ D) (hx : x < 1) :
