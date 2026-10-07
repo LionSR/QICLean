@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Entropy
 
 import QICLean.Entropy.Bipartite
+import QICLean.Entropy.BufferDiscount
 import QICLean.Entropy.ClassicalMutualInformation
 import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalMovement
@@ -16,13 +17,17 @@ import QICLean.Entropy.ConditionalMovementEstimate
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FilterChain
+import QICLean.Entropy.FilterChainEnergy
 import QICLean.Entropy.FilterClipping
 import QICLean.Entropy.FilterConjugation
 import QICLean.Entropy.FilterEnergy
 import QICLean.Entropy.FilterMaximizer
 import QICLean.Entropy.FilterMoment
 import QICLean.Entropy.FilterOptimizer
+import QICLean.Entropy.FilterPower
+import QICLean.Entropy.FilterPrefix
 import QICLean.Entropy.FilterStationarity
+import QICLean.Entropy.FilterZeroFloor
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.GapSurprisal
@@ -48,7 +53,10 @@ import QICLean.Entropy.PositiveOverlappingProduct
 import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.ProductOverlapPurity
 import QICLean.Entropy.PurificationSplitting
+import QICLean.Entropy.RegionEntropy
+import QICLean.Entropy.RegionUnion
 import QICLean.Entropy.SSAEqualityCharacterization
+import QICLean.Entropy.SchmidtPinning
 import QICLean.Entropy.SchmidtTilt
 import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.SupportedMarginalTails
