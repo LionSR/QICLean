@@ -1,0 +1,245 @@
+\section{Spectral truncation of shifted powers}
+\label{sec:shifted_density_truncation}
+
+Let $I$ be a finite index set. All matrices in this section act on $\C^I$,
+and all norms are Euclidean operator norms. The rank is measured on this
+space, before tensoring with an identity on any other space.
+
+% Independent spectral ingredients for OpenAI, Polynomial PEPS approximation
+% of gapped square-grid ground states, September 24, 2026, 03-patches.tex,
+% lines 484--502, eq:patch-head-tail-bounds, at
+% adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% No minimizing tuple, entropy tail, regulator growth, tensor contraction,
+% or completion of Proposition 4.1 is asserted by these entries.
+
+\begin{definition}[Closed-threshold spectral projection]
+    \label{def:closed_threshold_projection}
+    \lean{Matrix.spectralProjectionGE}
+    \leanok
+    For a Hermitian matrix $A$ and $b\in\R$, let
+    $\Pi=\mathbf1_{[b,\infty)}(A)$ be the spectral projection onto the
+    eigenvalues at least $b$. An eigenvalue equal to $b$ is included.
+\end{definition}
+
+\begin{theorem}[Projection and commutation]
+    \label{thm:closed_threshold_projection}
+    \lean{Matrix.IsHermitian.spectralProjectionGE_eq_cfc,
+        Matrix.IsHermitian.isStarProjection_spectralProjectionGE,
+        Matrix.IsHermitian.commute_spectralProjectionGE}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    Let $A$ be Hermitian and $b\in\R$. The projection $\Pi$ is the
+    functional calculus of $\mathbf1_{[b,\infty)}$ at $A$, and satisfies
+    $\Pi^*=\Pi$, $\Pi^2=\Pi$, and $A\Pi=\Pi A$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The spectrum of $A$ is finite, so its indicator is continuous on that
+    spectrum. The functional calculus preserves real-valued functions and
+    products. The scalar identities $\mathbf1_{[b,\infty)}^2=
+        \mathbf1_{[b,\infty)}$ and
+    $t\mathbf1_{[b,\infty)}(t)=\mathbf1_{[b,\infty)}(t)t$
+    give the assertions.
+\end{proof}
+
+\begin{definition}[Head and tail of a shifted power]
+    \label{def:shifted_power_head_tail}
+    \lean{Matrix.shiftedPowerHead, Matrix.shiftedPowerTail}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    Let $A\ge0$, $b>0$, and $r\in\R$. Write $F=(A+b\Id)^r$ and define
+    \begin{align}
+        H & =F\Pi, & T & =F(\Id-\Pi).
+        \label{eq:shifted_power_split_definition}
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Functional calculus of the shifted power]
+    \label{thm:shifted_power_functional_calculus}
+    \lean{Matrix.PosSemidef.add_smul_one_rpow_eq_cfc,
+        Matrix.PosSemidef.commute_add_smul_one_rpow_spectralProjectionGE}
+    \leanok
+    \uses{def:shifted_power_head_tail}
+    If $A\ge0$, $b>0$, and $r\in\R$, then $F=f(A)$ for
+    $f(t)=(t+b)^r$, and $F\Pi=\Pi F$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:positive_identity_shift, thm:closed_threshold_projection}
+    The matrix $A+b\Id$ is positive definite by
+    Theorem~\ref{thm:positive_identity_shift}. Composing the functional
+    calculus for $t\mapsto t+b$ and $t\mapsto t^r$ gives $F=f(A)$.
+    Both $F$ and $\Pi$ are functions of $A$, so they commute.
+\end{proof}
+
+\begin{theorem}[Exact head--tail decomposition]
+    \label{thm:shifted_power_split}
+    \lean{Matrix.shiftedPowerHead_add_shiftedPowerTail}
+    \leanok
+    \uses{def:shifted_power_head_tail}
+    The matrices in~(\ref{eq:shifted_power_split_definition}) satisfy $H+T=F$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Distributivity gives $F\Pi+F(\Id-\Pi)=F$.
+\end{proof}
+
+\begin{theorem}[Scalar descriptions of the head and tail]
+    \label{thm:shifted_power_truncated_functions}
+    \lean{Matrix.PosSemidef.shiftedPowerHead_eq_cfc,
+        Matrix.PosSemidef.shiftedPowerTail_eq_cfc}
+    \leanok
+    \uses{def:shifted_power_head_tail}
+    Let $A\ge0$, $b>0$, and $r\in\R$. Then $H=h(A)$ and $T=t(A)$,
+    where
+    \begin{align}
+        h(\lambda) & =
+        \begin{cases}(\lambda+b)^r,&\lambda\ge b,\\0,&\lambda<b,\end{cases}
+        \label{eq:shifted_power_head_function} \\
+        t(\lambda) & =
+        \begin{cases}0,&\lambda\ge b,\\(\lambda+b)^r,&\lambda<b.\end{cases}
+        \label{eq:shifted_power_tail_function}
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:shifted_power_functional_calculus, thm:closed_threshold_projection}
+    Multiplication in the functional calculus gives
+    $h(\lambda)=(\lambda+b)^r\mathbf1_{[b,\infty)}(\lambda)$.
+    Subtraction gives
+    $t(\lambda)=(\lambda+b)^r-h(\lambda)$, yielding the two cases.
+\end{proof}
+
+\begin{theorem}[Positivity and orthogonality]
+    \label{thm:shifted_power_positive_orthogonal}
+    \lean{Matrix.PosSemidef.shiftedPowerHead_posSemidef,
+        Matrix.PosSemidef.shiftedPowerTail_posSemidef,
+        Matrix.PosSemidef.shiftedPowerHead_mul_shiftedPowerTail,
+        Matrix.PosSemidef.shiftedPowerTail_mul_shiftedPowerHead}
+    \leanok
+    \uses{def:shifted_power_head_tail}
+    For $A\ge0$, $b>0$, and every $r\in\R$, one has
+    $H\ge0$, $T\ge0$, and $HT=TH=0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:shifted_power_truncated_functions}
+    On the spectrum of $A$, $\lambda+b>0$. Thus both functions in
+    (\ref{eq:shifted_power_head_function}) and
+    (\ref{eq:shifted_power_tail_function}) are nonnegative, and their
+    pointwise product is zero. The functional calculus gives positivity
+    and $HT=0$. Taking adjoints gives $TH=0$.
+\end{proof}
+
+\begin{theorem}[Inverse shifted powers]
+    \label{thm:shifted_power_inverse}
+    \lean{Matrix.PosSemidef.add_smul_one_rpow_mul_neg}
+    \leanok
+    If $A\ge0$, $b>0$, and $r\in\R$, then
+    $(A+b\Id)^r(A+b\Id)^{-r}=\Id$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:positive_identity_shift}
+    Strict positivity of $A+b\Id$ permits multiplication of its real
+    powers. The exponents add to zero.
+\end{proof}
+
+\begin{theorem}[Range and rank of the head]
+    \label{thm:shifted_power_head_range}
+    \lean{Matrix.PosSemidef.range_shiftedPowerHead,
+        Matrix.PosSemidef.rank_shiftedPowerHead}
+    \leanok
+    \uses{def:shifted_power_head_tail}
+    For $A\ge0$, $b>0$, and $r\in\R$, the head satisfies
+    $\operatorname{ran}H=\operatorname{ran}\Pi$ and
+    $\operatorname{rank}H=\operatorname{rank}\Pi$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:shifted_power_functional_calculus, thm:shifted_power_inverse}
+    Commutation gives $H=\Pi F$, so
+    $\operatorname{ran}H\subseteq\operatorname{ran}\Pi$.
+    The inverse identity yields $\Pi=H(A+b\Id)^{-r}$, proving the reverse
+    inclusion. Taking dimensions gives equality of ranks.
+\end{proof}
+
+\begin{theorem}[Spectral counting and trace]
+    \label{thm:closed_threshold_rank_trace}
+    \lean{Matrix.PosSemidef.mul_rank_spectralProjectionGE_le_trace}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    For every $A\ge0$ and every real $b$,
+    $b\operatorname{rank}\Pi\le\operatorname{Re}\tr A$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:closed_threshold_projection}
+    The rank of an orthogonal projection equals its trace. If
+    $\lambda_i$ are the eigenvalues of $A$, then
+    \begin{align}
+        b\operatorname{rank}\Pi
+        =\sum_{i\in I}b\mathbf1_{[b,\infty)}(\lambda_i)
+        \le\sum_{i\in I}\lambda_i=\operatorname{Re}\tr A.
+    \end{align}
+    Each scalar inequality follows from $b\le\lambda_i$ on the selected
+    spectrum and $0\le\lambda_i$ on its complement.
+\end{proof}
+
+\begin{theorem}[Head rank for a density matrix]
+    \label{thm:shifted_density_head_rank}
+    \lean{Matrix.PosSemidef.rank_shiftedPowerHead_le}
+    \leanok
+    \uses{def:shifted_power_head_tail}
+    If $A\ge0$, $\tr A=1$, $b>0$, and $r\in\R$, then
+    $\operatorname{rank}H\le b^{-1}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:shifted_power_head_range, thm:closed_threshold_rank_trace}
+    Substitute $\operatorname{rank}H=\operatorname{rank}\Pi$ into the
+    trace inequality and divide by $b>0$.
+\end{proof}
+
+\begin{theorem}[Tail norm for nonnegative powers]
+    \label{thm:shifted_power_tail_norm}
+    \lean{Matrix.PosSemidef.l2_opNorm_shiftedPowerTail_le}
+    \leanok
+    \uses{def:shifted_power_head_tail}
+    If $A\ge0$, $b>0$, and $r\ge0$, then $\|T\|\le(2b)^r$.
+    No trace normalization is required.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:shifted_power_truncated_functions}
+    The tail function vanishes for $\lambda\ge b$. For the remaining
+    spectral values, $0\le\lambda<b$, so $0<\lambda+b<2b$ and
+    $(\lambda+b)^r\le(2b)^r$ by monotonicity for $r\ge0$.
+    The norm estimate for functional calculus gives the result.
+\end{proof}
+
+For $A\ge0$, $b>0$, and $r\in\R$, consider the orthogonal decomposition
+$\C^I=\operatorname{ran}\Pi\oplus\ker\Pi$. Let $F_{\ge b}$ and $F_{<b}$
+be the restrictions of $F$ to the two summands. The split has the form
+\begin{align}
+    H+T
+    =\begin{pmatrix}F_{\ge b}&0\\0&0\end{pmatrix}
+    +\begin{pmatrix}0&0\\0&F_{<b}\end{pmatrix}
+    =\begin{pmatrix}F_{\ge b}&0\\0&F_{<b}\end{pmatrix}=F.
+\end{align}
+The restriction $F_{\ge b}$ is invertible on $\operatorname{ran}\Pi$,
+which explains why truncating the power preserves the projection's rank.
+
+If $I$ is empty, the matrices, ranges, and ranks are zero, and the stated
+identities and estimates remain valid. A trace-one matrix cannot occur in
+that case. The exponent $r=0$ gives $F=\Id$, $H=\Pi$, and $T=\Id-\Pi$.
