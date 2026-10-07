@@ -244,6 +244,16 @@ jobs:
               "QICLeanTest/$example.lean"
           done
 
+      - name: Build conditional two-family entropy target
+        run: lake build QICLean.Entropy.ConditionalTwoFamilies
+
+      - name: Check conditional two-family entropy regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/ConditionalTwoFamilies.lean
+
       - name: Build Lean project and capture timings
         run: |
           set -eo pipefail

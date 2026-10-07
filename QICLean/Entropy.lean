@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Entropy.Bipartite
 import QICLean.Entropy.ClassicalMutualInformation
+import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.MarkovChain
