@@ -18,6 +18,7 @@ import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.FiniteProductTypicalState
 import QICLean.Entropy.GapSurprisal
 import QICLean.Entropy.MarginalTails
 import QICLean.Entropy.MarkovChain

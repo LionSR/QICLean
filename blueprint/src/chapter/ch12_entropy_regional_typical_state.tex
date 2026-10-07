@@ -11,9 +11,9 @@ $\rho_X=\operatorname{tr}_{X^c}|\psi\rangle\langle\psi|$.
 Given a set $E$ of its eigenvalue indices, let $P_E$ be the selected spectral
 projection and let $z=\operatorname{tr}(P_E\rho_X)$.
 The global selected vector is
-\[
+\begin{align}
  \psi_E=z^{-1/2}(P_E\otimes I_{X^c})\psi,
-\]
+\end{align}
 expressed in the original product basis. This vector is fixed by $X$ and $E$.
 \end{definition}
 
@@ -23,10 +23,10 @@ expressed in the original product basis. This vector is fixed by $X$ and $E$.
 \leanok
 \uses{def:entropy_regional_typical_state,thm:entropy_typical_pure_state}
 If $z>0$, then $\|\psi_E\|=1$ and
-\[
+\begin{align}
  \operatorname{tr}_{X^c}|\psi_E\rangle\langle\psi_E|
    =z^{-1}P_E\rho_XP_E.
-\]
+\end{align}
 \end{theorem}
 \begin{proof}
 \leanok
@@ -42,13 +42,13 @@ bipartite vector in these coordinates.
 \uses{def:entropy_regional_typical_state,thm:entropy_typical_complementary_subsystem}
 Let $z>0$. For every region $B$ disjoint from $X$, the same selected global
 vector satisfies
-\[
+\begin{align}
  \rho_{\psi_E,B}\le z^{-1}\rho_{\psi,B}.
-\]
+\end{align}
 If also $\|\psi\|=1$, then
-\[
+\begin{align}
  S_B(\psi_E)\le \frac{S_B(\psi)}{z}.
-\]
+\end{align}
 These are the disjoint-region estimates of
 \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
