@@ -159,6 +159,53 @@ theorem re_trace_sandwich_mul_le {n : Type*} [Fintype n] [DecidableEq n] {A : Ma
 
 end Contraction
 
+section Terms
+
+variable (θ : (P₀ × P₁) × ((X × U) × F) → ℂ)
+
+theorem trace_margP : (margP θ).trace = star θ ⬝ᵥ θ := by
+  rw [margP, trace_partialTraceRight, trace_vecMulVec, dotProduct_comm]
+
+theorem trace_margY : (margY θ).trace = star θ ⬝ᵥ θ := by
+  rw [margY, margW, trace_partialTraceRight, trace_partialTraceLeft, trace_vecMulVec,
+    dotProduct_comm]
+
+theorem normSq_liftP_mulVec (A : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) :
+    star (liftP (X := X) (U := U) (F := F) A *ᵥ θ) ⬝ᵥ (liftP A *ᵥ θ) =
+      (Aᴴ * A * margP θ).trace := by
+  rw [star_mulVec_dotProduct, mulVec_mulVec, conjTranspose_liftP, liftP_mul,
+    dotProduct_mulVec_eq_trace', trace_mul_comm, liftP, ← trace_partialTraceRight_mul,
+    trace_mul_comm]
+  rfl
+
+theorem normSq_liftY_mulVec (B : Matrix (X × U) (X × U) ℂ) :
+    star (liftY (P₀ := P₀) (P₁ := P₁) (F := F) B *ᵥ θ) ⬝ᵥ (liftY B *ᵥ θ) =
+      (Bᴴ * B * margY θ).trace := by
+  rw [star_mulVec_dotProduct, mulVec_mulVec, conjTranspose_liftY, liftY_mul,
+    dotProduct_mulVec_eq_trace', trace_mul_comm, liftY, ← trace_partialTraceLeft_mul,
+    ← trace_partialTraceRight_mul, trace_mul_comm]
+  rfl
+
+theorem lift_mul_rearrange (a₁ c a₂ : Matrix (P₀ × P₁) (P₀ × P₁) ℂ)
+    (b₁ d b₂ : Matrix (X × U) (X × U) ℂ) :
+    liftP (F := F) a₁ * liftY b₁ * (liftP c * liftY d) * liftP a₂ * liftY b₂ =
+      liftP (a₁ * c * a₂) * liftY (b₁ * d * b₂) := by
+  have e1 := (liftP_liftY_comm (F := F) c b₁).symm
+  have e2 := liftP_liftY_comm (F := F) a₂ d
+  have e3 := (liftP_liftY_comm (F := F) a₂ b₁).symm
+  rw [← liftP_mul, ← liftP_mul, ← liftY_mul, ← liftY_mul]
+  calc liftP a₁ * liftY b₁ * (liftP c * liftY d) * liftP a₂ * liftY b₂
+      = liftP a₁ * ((liftY b₁ * liftP c) * ((liftY d * liftP a₂) * liftY b₂)) := by
+        simp only [Matrix.mul_assoc]
+    _ = liftP a₁ * ((liftP c * liftY b₁) * ((liftP a₂ * liftY d) * liftY b₂)) := by
+        rw [e1, ← e2]
+    _ = liftP a₁ * (liftP c * ((liftY b₁ * liftP a₂) * (liftY d * liftY b₂))) := by
+        simp only [Matrix.mul_assoc]
+    _ = liftP a₁ * (liftP c * ((liftP a₂ * liftY b₁) * (liftY d * liftY b₂))) := by rw [e3]
+    _ = _ := by simp only [Matrix.mul_assoc]
+
+end Terms
+
 end Entropy.ConditionalSkew
 
 end
