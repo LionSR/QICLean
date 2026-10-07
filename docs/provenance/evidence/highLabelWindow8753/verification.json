@@ -1,0 +1,280 @@
+{
+  "source_revision": "89941482d3b3880b524e7d7f8a4adb1e2cc80aad",
+  "tested_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+  "source_files": {
+    "QICLean/Representation/HighLabelWindow.lean": "cbc03325767efb74265c4d4079a305990bd4ff20a805443a8a57574cec745a05",
+    "blueprint/src/fragment/high_label_window.tex": "8917726aec144b9589c02f02ede37dae403bb697b7a17db32b4d62a51e89022a",
+    "docs/formalization/high-label-window.md": "e26d3af92d80094fd1396772c802b2bd7a27659c72034d43d872121c82620c17"
+  },
+  "public_declarations": [
+    "TensorPower.exists_labelProj_mass_entropy_window",
+    "TensorPower.eventually_exists_labelProj_finKronecker_entropy_window",
+    "TensorPower.exists_label_sequence_mass_entropy_asymptotic",
+    "TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic"
+  ],
+  "commands": [
+    {
+      "kind": "axioms",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/highLabelWindow8753/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 41.87,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/axioms.log",
+      "sha256": "6842e8f06740a00a4ce33c6cdef355b9e353e21d6523dce177563799d38dfd14"
+    },
+    {
+      "kind": "cache",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 75.21,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/mathlib-cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "kind": "cache",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/highLabelWindow8753/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.41,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/mathlib-guard.log",
+      "sha256": "fe6fede23077bfd5e7469ec4f6787b977061ac192a2bf5307b6405eaff8afff1"
+    },
+    {
+      "kind": "prose",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.74,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "prose",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "047760b0e54ab75a550c6477ab453796f825fa92"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.26,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/prose-source.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "provenance",
+      "command": [
+        "/tmp/qic-density-simplex-provenance-env/bin/python",
+        "docs/provenance/evidence/highLabelWindow8753/check_provenance.py",
+        "--root",
+        ".",
+        "--validator",
+        "/tmp/tnlean-area-law-provenance-validator.py",
+        "--schema",
+        "/tmp/tnlean-area-law-provenance-schema.json"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.03,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/provenance.log",
+      "sha256": "b47d5eb1ef492cdc51bbe0871efda87ee672df65e1be8fd9eecae04985d2c953"
+    },
+    {
+      "kind": "render",
+      "command": [
+        "pdftoppm",
+        "-r",
+        "100",
+        "-png",
+        "output/pdf/high-label-window.pdf",
+        "docs/provenance/evidence/highLabelWindow8753/render/page"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.29,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "blueprint",
+      "command": [
+        "latexmk",
+        "-xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-outdir=tmp/pdfs/high-label-window",
+        "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper.tex"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 21.87,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-reviewed.log",
+      "sha256": "f75dd3628ea47a934a3750a165c9da4bdf31238d563ea9d1853e2795ac644c03"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "QICLean/Representation/HighLabelWindow.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 131.25,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Representation.HighLabelWindow"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 164.81,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/target.log",
+      "sha256": "b018b85a3a3baab795ab7f1f55b1ceb74271d4806fff367ad5ea426c4f7480e2"
+    },
+    {
+      "kind": "style",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/highLabelWindow8753/TextStyle.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 13.27,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "excluded_attempts": [
+    {
+      "record": {
+        "kind": "blueprint",
+        "command": [
+          "latexmk",
+          "-xelatex",
+          "-interaction=nonstopmode",
+          "-halt-on-error",
+          "-outdir=tmp/pdfs/high-label-window",
+          "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper.tex"
+        ],
+        "working_directory": ".",
+        "exit_code": 12,
+        "elapsed_seconds": 5.4,
+        "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+        "log": "docs/provenance/evidence/highLabelWindow8753/standalone-pdf.log",
+        "sha256": "66142c11de7dacd1bf970cc22e8327dd40f543238ed297f5276711f1307d505a"
+      },
+      "wrapper_snapshot": "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper-first-attempt.tex",
+      "wrapper_sha256": "a7661f2a342b8a2ff891f8eb0a4c3bf17ec570ee004b96997c3df156537bdff8",
+      "reason": "LaTeX exit12: a local standalone label command was outside the preamble.",
+      "claimed_as_successful_verification": false
+    },
+    {
+      "record": {
+        "kind": "blueprint",
+        "command": [
+          "latexmk",
+          "-xelatex",
+          "-interaction=nonstopmode",
+          "-halt-on-error",
+          "-outdir=tmp/pdfs/high-label-window",
+          "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper.tex"
+        ],
+        "working_directory": ".",
+        "exit_code": 0,
+        "elapsed_seconds": 9.29,
+        "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+        "log": "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-final.log",
+        "sha256": "f48a277ae883157b9a38d6bd057b0e91985d5d8e9c2d88c8f8b3ee585bc72a87"
+      },
+      "wrapper_snapshot": "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper-second-attempt.tex",
+      "wrapper_sha256": "3dec060c3dd20cf26c00f869d9970327c9a63fa8ebcb49fc0fb70de79f395999",
+      "reason": "LaTeX exit0 but omitted prerequisite references prevented final visual acceptance.",
+      "claimed_as_successful_verification": false
+    }
+  ],
+  "kernel_reports": 4,
+  "target_build_jobs": 3234,
+  "allowed_kernel_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "mathlib_source_rebuild": false,
+  "proof_holes": false,
+  "visual_inspection": {
+    "artifact": "output/pdf/high-label-window.pdf",
+    "sha256": "05ae674a3488e9c65b578e5548f131211c7c78fd81e8a1d9700de2762602c99d",
+    "pages": 3,
+    "images": {
+      "docs/provenance/evidence/highLabelWindow8753/render/page-1.png": "a7c90e7459b4135cdd3f7295f9086c20b6e5188af57d55f9a52a34d6ecc42f88",
+      "docs/provenance/evidence/highLabelWindow8753/render/page-2.png": "95ced607dff1b313c9798d2369039510ad0015740547f6d9b506c9200b00f7e0",
+      "docs/provenance/evidence/highLabelWindow8753/render/page-3.png": "50d843ad78e2cb24c1c05a10611d8ee3c8136803118aaf852614ff1c4d117e2c"
+    },
+    "result": "passed",
+    "inspection": "All three rendered pages inspected. The pure tensor-power prerequisite and all four high-label statements/proofs are legible; source citation and theorem dependencies resolve, no clipping or unresolved reference. Final wrapper includes the existing pure fragment; frozen mathematical fragments are unchanged.",
+    "attempts": [
+      {
+        "command_record": "standalone-pdf-exit.json",
+        "status": "failed",
+        "reason": "The first local standalone wrapper placed a label command outside the preamble; LaTeX exited12, no PDF. Frozen fragment unchanged."
+      },
+      {
+        "command_record": "standalone-pdf-final-exit.json",
+        "status": "not final visual acceptance",
+        "reason": "LaTeX exited0 but an omitted prerequisite theorem left unresolved dependency references. The final wrapper includes the actual existing prerequisite fragment."
+      }
+    ]
+  }
+}

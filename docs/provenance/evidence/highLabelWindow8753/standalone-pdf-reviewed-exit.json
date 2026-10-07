@@ -1,0 +1,17 @@
+{
+  "kind": "blueprint",
+  "command": [
+    "latexmk",
+    "-xelatex",
+    "-interaction=nonstopmode",
+    "-halt-on-error",
+    "-outdir=tmp/pdfs/high-label-window",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper.tex"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 21.87,
+  "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+  "log": "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-reviewed.log",
+  "sha256": "f75dd3628ea47a934a3750a165c9da4bdf31238d563ea9d1853e2795ac644c03"
+}

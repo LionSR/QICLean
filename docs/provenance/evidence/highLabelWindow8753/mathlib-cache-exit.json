@@ -1,0 +1,15 @@
+{
+  "kind": "cache",
+  "command": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 75.21,
+  "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+  "log": "docs/provenance/evidence/highLabelWindow8753/mathlib-cache.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}
