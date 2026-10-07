@@ -25,17 +25,19 @@ and the excitation energy of the optimal prefix.
 * `Entropy.sq_norm_inner_ge_of_gap`: the overlap from the gap and the energy.
 * `Entropy.sqrt_mul_chainOptimum_succ_le`, `Entropy.pow_sqrt_mul_chainOptimum_le`: the
   comparison under a global gap.
+* `Entropy.norm_localLift_sq_le_exp`: the bound `‖L Ω‖² ≤ exp (-a S + C a²)` for a feasible
+  filter on a region.
 
 ## References
 
 * Two-dimensional area-law manuscript (September 24, 2026), proof of Lemma 3.2
-  (`lem:initial-buffer`), `02-initial.tex`, lines 443–475 and 488–495.
+  (`lem:initial-buffer`), `02-initial.tex`, lines 443–495.
 
 Independently written from the manuscript; no upstream Lean proof text is reused.
 -/
 
 open Complex Matrix
-open scoped InnerProductSpace ComplexOrder Matrix.Norms.L2Operator
+open scoped InnerProductSpace ComplexOrder Kronecker Matrix.Norms.L2Operator
 
 namespace Entropy
 
@@ -301,5 +303,84 @@ theorem pow_sqrt_mul_chainOptimum_le (D : ℕ → Finset V) (hD : ∀ i j, i ≤
       ((Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.mpr hk)
         fun j _ _ ↦ hterm j).trans hE) (hx k hk)
   simpa [chainOptimum_zero, hΩ] using h
+
+/-- The eigenvalues of a feasible filter at a positive floor are nonnegative and their
+`2/a`-th powers sum to one. -/
+theorem IsFeasibleFilter.eigenvalues {m : Type*} [Fintype m] [DecidableEq m] {f a : ℝ}
+    (hf : 0 < f) (ha : 0 < a) {L : Matrix m m ℂ} (hL : IsFeasibleFilter f a L)
+    (hH : L.IsHermitian) :
+    (∀ j, 0 ≤ hH.eigenvalues j) ∧ ∑ j, hH.eigenvalues j ^ (2 / a) = 1 := by
+  set W : Matrix m m ℂ := ↑hH.eigenvectorUnitary
+  have hW : Wᴴ * W = 1 := by rw [← star_eq_conjTranspose]; exact Unitary.coe_star_mul_self _
+  have hLeq : L = W * diagonal (fun i ↦ (hH.eigenvalues i : ℂ)) * Wᴴ := by
+    conv_lhs => rw [hH.spectral_theorem]
+    simp [W, Unitary.conjStarAlgAut_apply, star_eq_conjTranspose, Function.comp_def]
+  obtain ⟨x, hx, hxs, hkx⟩ := hL.of_common_basis hf ha hW hLeq
+  have hxpos : ∀ i, 0 < x i := fun i ↦ hf.trans_le (hx i)
+  refine ⟨fun j ↦ hkx j ▸ Real.rpow_nonneg (hxpos j).le _, ?_⟩
+  rw [← hxs]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [hkx, ← Real.rpow_mul (hxpos j).le, show a / 2 * (2 / a) = 1 by field_simp, Real.rpow_one]
+
+/-- Applying an operator commutes with passing to cut coordinates. -/
+theorem cutVector_toEuclideanLin (B : Finset V) (Y : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (Ψ : EuclideanSpace ℂ (SiteConfig n)) :
+    cutVector B (toEuclideanLin Y Ψ) = toEuclideanLin (cutOperator B Y) (cutVector B Ψ) := by
+  ext x
+  simp only [toLpLin_apply, PiLp.toLp_apply, mulVec, dotProduct, reindex_apply, submatrix_apply]
+  exact (Equiv.sum_comp (cutEquiv n B).symm _).symm
+
+/-- **The filter norm bound on a region.** Let `H = ∑_i h_i` and `Ψ` be as in Lemma 3.1, and let
+`L` be a feasible filter on a region `B` with floor `f > 0` and weight `0 < a ≤ 1/2` such that
+`a/(1-a)` is admissible for the cut `B`. Then
+`‖L Ψ‖² ≤ exp (-a S(ρ_{Ψ,B}) + 1024 e ϑ ℬ_B a²)`, `ϑ = c₀/g₀`.
+Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 476–487. -/
+theorem norm_localLift_sq_le_exp {ι : Type*} [Fintype ι]
+    {h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ} {D : ι → Finset V} {c₀ E₀ g₀ : ℝ}
+    {Ψ : EuclideanSpace ℂ (SiteConfig n)} (hsupp : ∀ i, IsSupportedOn (h i) (D i))
+    (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀) (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hΨ : ‖Ψ‖ = 1)
+    (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
+    (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
+      (g₀ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ)))).PosSemidef)
+    {B : Finset V} {f a : ℝ} (hf : 0 < f) (ha : 0 < a) (ha2 : a ≤ 1 / 2)
+    {L : Matrix (RegionConfig n B) (RegionConfig n B) ℂ} (hL : IsFeasibleFilter f a L)
+    (hu : a / (1 - a) ≤
+      tailRadius (c₀ / g₀) (cutLogBudget (crossingTerms D B) (supportDim n ∘ D))) :
+    ‖toEuclideanLin (localLift B L) Ψ‖ ^ 2 ≤
+      Real.exp (-a * vonNeumannEntropy (regionState B Ψ) (regionState_isHermitian B Ψ) +
+        1024 * Real.exp 1 * (c₀ / g₀) *
+          cutLogBudget (crossingTerms D B) (supportDim n ∘ D) * a ^ 2) := by
+  have ha1 : a < 1 := by linarith
+  have h1a : 0 < 1 - a := by linarith
+  set ρ := regionState B Ψ
+  have hρ := regionState_isHermitian B Ψ
+  have hH : L.IsHermitian := (hL.posDef hf).1
+  obtain ⟨hLnn, hL1⟩ := hL.eigenvalues hf ha hH
+  have hnormeq : ‖toEuclideanLin (localLift B L) Ψ‖ =
+      ‖toEuclideanLin (L ⊗ₖ (1 : Matrix ((v : {v // v ∉ B}) → Fin (n v))
+        ((v : {v // v ∉ B}) → Fin (n v)) ℂ)) (cutVector B Ψ)‖ := by
+    rw [← norm_cutVector B, cutVector_toEuclideanLin, cutOperator_localLift]
+  have hΨ' : ‖cutVector B Ψ‖ = 1 := by rw [norm_cutVector, hΨ]
+  have hp : ∀ i, 0 ≤ hρ.eigenvalues i :=
+    ((posSemidef_vecMulVec_self_star _).partialTraceRight).eigenvalues_nonneg
+  have hs := sum_eigenvalues_partialTraceRight_eq_one hΨ' rfl hρ
+  have hM := surprisalMoment_pos hp hs (-a / (1 - a))
+  have hrpow := norm_kronecker_one_apply_sq_le_rpow hH hLnn ha ha1 hL1 (Ψ := cutVector B Ψ)
+    (ρ := ρ) rfl hρ
+  have hmom := log_surprisalMoment_cut_le hsupp hherm hc₀ hnorm hΨ hg₀ heig hgap
+    (B := B) (ρ := ρ) rfl hρ (u := -a / (1 - a)) (by
+      rw [abs_div, abs_neg, abs_of_pos ha, abs_of_pos h1a]; exact hu)
+  have hK : 0 ≤ Real.exp 1 * (c₀ / g₀) *
+      cutLogBudget (crossingTerms D B) (supportDim n ∘ D) := by
+    have := one_le_cutLogBudget (crossingTerms D B) (supportDim n ∘ D)
+    have : 0 ≤ c₀ / g₀ := div_nonneg hc₀ hg₀.le
+    positivity
+  rw [hnormeq]
+  refine hrpow.trans ((rpow_one_sub_le_exp_of_log_le (S := vonNeumannEntropy ρ hρ) hM hK ha
+    ha2 ?_).trans_eq ?_)
+  · refine hmom.trans_eq ?_
+    ring
+  · congr 1
+    ring
 
 end Entropy

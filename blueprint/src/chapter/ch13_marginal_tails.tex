@@ -260,7 +260,9 @@ depend on the common values there.
     \label{lem:filter_norm}
     \lean{Entropy.norm_kronecker_one_apply_sq,
         Entropy.norm_kronecker_one_apply_sq_le_rpow,
-        Entropy.norm_kronecker_one_apply_sq_le_exp}
+        Entropy.norm_kronecker_one_apply_sq_le_exp,
+        Entropy.sum_eigenvalues_partialTraceRight_eq_one,
+        Entropy.rpow_one_sub_le_exp_of_log_le}
     \leanok
     \uses{lem:trace_holder, thm:marginal_tails}
     Let $L\ge0$ act on $\mathcal H_B$ with $\Tr L^{2/a}=1$, $0<a<1$. For a
@@ -575,6 +577,22 @@ depend on the common values there.
 \begin{proof}\leanok
     $s\lVert\psi\rVert\le\lvert\langle\Omega,\psi\rangle\rvert
     =\lvert\langle L_k\Omega,L_{k-1}\cdots L_0\Omega\rangle\rvert$, and Cauchy--Schwarz applies.
+\end{proof}
+
+\begin{lemma}[Feasible filters on a region]
+    \label{lem:region_filter_norm}
+    \lean{Entropy.IsFeasibleFilter.eigenvalues, Entropy.cutVector_toEuclideanLin,
+        Entropy.norm_localLift_sq_le_exp}
+    \leanok
+    \uses{lem:filter_norm}
+    Under the hypotheses of Theorem~\ref{thm:marginal_tails} for the cut $B\mid B^c$, a
+    feasible filter $L$ on $B$ with positive floor and weight $0<a\le\tfrac12$, such that
+    $a/(1-a)$ is admissible for the cut, satisfies
+    $\lVert L\Psi\rVert^2\le\exp\bigl(-aS(\rho_{\Psi,B})+1024e\vartheta\mathcal B_Ba^2\bigr)$.
+\end{lemma}
+\begin{proof}\leanok
+    The eigenvalues of $L$ are nonnegative with $\sum_j l_j^{2/a}=1$. In cut coordinates
+    $L$ acts as $L\otimes1$, and Lemma~\ref{lem:filter_norm} applies.
 \end{proof}
 
 \begin{theorem}[The first norm comparison]
