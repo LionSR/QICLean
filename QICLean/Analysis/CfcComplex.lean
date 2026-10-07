@@ -86,6 +86,22 @@ theorem supportCPow_eq_cfcC {A : Matrix n n ℂ} (hA : A.IsHermitian) (z : ℂ) 
   rw [cfcC_eq_spectralFun hA]
   rfl
 
+theorem cfcC_add {A : Matrix n n ℂ} (hA : A.IsHermitian) (g₁ g₂ : ℝ → ℂ) :
+    cfcC A g₁ + cfcC A g₂ = cfcC A (fun t => g₁ t + g₂ t) := by
+  rw [cfcC_eq_spectralFun hA, cfcC_eq_spectralFun hA, cfcC_eq_spectralFun hA, ← spectralFun_add]
+  rfl
+
+theorem cfcC_one {A : Matrix n n ℂ} (hA : A.IsHermitian) : cfcC A (fun _ => 1) = 1 := by
+  rw [cfcC_eq_spectralFun hA]; exact spectralFun_one _
+
+theorem cfcC_id {A : Matrix n n ℂ} (hA : A.IsHermitian) : cfcC A (fun t => (t : ℂ)) = A := by
+  rw [cfcC_eq_spectralFun hA]; exact hA.spectralFun_eigenvectorUnitary
+
+theorem cfcC_congr_of_nonneg {A : Matrix n n ℂ} (hA : A.PosSemidef) {g₁ g₂ : ℝ → ℂ}
+    (h : ∀ t, 0 ≤ t → g₁ t = g₂ t) : cfcC A g₁ = cfcC A g₂ := by
+  rw [cfcC_eq_spectralFun hA.1, cfcC_eq_spectralFun hA.1]
+  congr 1; funext k; exact h _ (hA.eigenvalues_nonneg k)
+
 end Matrix
 
 end
