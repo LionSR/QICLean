@@ -136,6 +136,7 @@ import QICLean.Channel.SupportedMarginalChannel
 import QICLean.Channel.TensorMap
 import QICLean.Channel.TransferMatrix
 import QICLean.Channel.TripartiteDecorrelation
+import QICLean.Channel.UhlmannIsometry
 import QICLean.Channel.WeightedHilbertSchmidt
 import QICLean.Channel.WeylTwirl
 import QICLean.Channel.WhitenedChoi

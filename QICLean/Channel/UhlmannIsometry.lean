@@ -55,10 +55,11 @@ namespace Matrix
 `B : Matrix m k ℂ` and `A : Matrix m' k ℂ` with `card m' ≤ card m`, then $B=TA$ for an
 isometry `T : Matrix m m' ℂ`. -/
 theorem exists_isIsometry_mul_eq_of_conjTranspose_mul_eq
-    {m m' k : Type*} [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m'] [Fintype k]
+    {m m' k : Type*} [Fintype m] [Fintype m'] [DecidableEq m'] [Finite k]
     (B : Matrix m k ℂ) (A : Matrix m' k ℂ) (hGram : Bᴴ * B = Aᴴ * A)
     (hcard : Fintype.card m' ≤ Fintype.card m) :
     ∃ T : Matrix m m' ℂ, T.IsIsometry ∧ B = T * A := by
+  classical
   obtain ⟨ι⟩ : Nonempty (m' ↪ m) := Function.Embedding.nonempty_of_card_le hcard
   set E : Matrix m m' ℂ := (1 : Matrix m m ℂ).submatrix id ι with hEdef
   have hE : Eᴴ * E = 1 := by
@@ -78,7 +79,7 @@ theorem exists_isIsometry_mul_eq_of_conjTranspose_mul_eq
 `X : Matrix a m ℂ` and `Y : Matrix a m' ℂ` with `card m' ≤ card m`, then $X=YT^\dagger$
 for an isometry `T : Matrix m m' ℂ`. -/
 theorem exists_isIsometry_eq_mul_conjTranspose_of_mul_conjTranspose_eq
-    {a m m' : Type*} [Fintype a] [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m']
+    {a m m' : Type*} [Finite a] [Fintype m] [Fintype m'] [DecidableEq m']
     (X : Matrix a m ℂ) (Y : Matrix a m' ℂ) (hGram : X * Xᴴ = Y * Yᴴ)
     (hcard : Fintype.card m' ≤ Fintype.card m) :
     ∃ T : Matrix m m' ℂ, T.IsIsometry ∧ X = Y * Tᴴ := by
@@ -115,8 +116,7 @@ need not be minimal; `V` is defined on all of `R`.
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
 `01-preliminaries.tex:99–138`. -/
 theorem exists_isIsometry_star_dotProduct_eq_rootFidelity
-    {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R] [DecidableEq R]
-    [Fintype S] [DecidableEq S]
+    {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R] [DecidableEq R] [Fintype S]
     {ρ σ : Matrix A A ℂ} (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef)
     {ψ : A × R → ℂ} {φ : A × S → ℂ}
     (hψ : partialTraceRight (vecMulVec ψ (star ψ)) = ρ)
@@ -124,6 +124,7 @@ theorem exists_isIsometry_star_dotProduct_eq_rootFidelity
     (hAS : Fintype.card A ≤ Fintype.card S) (hRS : Fintype.card R ≤ Fintype.card S) :
     ∃ V : Matrix S R ℂ, V.IsIsometry ∧
       star φ ⬝ᵥ (((1 : Matrix A A ℂ) ⊗ₖ V) *ᵥ ψ) = (rootFidelity ρ σ : ℂ) := by
+  classical
   set Ψ := schmidtCoeffMatrix ψ
   set Φ := schmidtCoeffMatrix φ
   have hΨ : Ψ * Ψᴴ = ρ := (partialTraceRight_vecMulVec_eq ψ).symm.trans hψ
@@ -185,16 +186,16 @@ $\langle\varphi,(\mathbf 1\otimes V)\psi\rangle=F(\rho,\sigma)$ for the padded `
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
 `01-preliminaries.tex:99–138`. -/
 theorem exists_isIsometry_star_dotProduct_padPurification_eq_rootFidelity
-    {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R] [DecidableEq R]
-    [Fintype S] [DecidableEq S]
+    {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R] [DecidableEq R] [Fintype S]
     {ρ σ : Matrix A A ℂ} (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef)
     {ψ : A × R → ℂ} {φ : A × S → ℂ}
     (hψ : partialTraceRight (vecMulVec ψ (star ψ)) = ρ)
     (hφ : partialTraceRight (vecMulVec φ (star φ)) = σ) :
     ∃ V : Matrix (S ⊕ (A ⊕ R)) R ℂ, V.IsIsometry ∧
       star (padPurification φ) ⬝ᵥ (((1 : Matrix A A ℂ) ⊗ₖ V) *ᵥ ψ) =
-        (rootFidelity ρ σ : ℂ) :=
-  exists_isIsometry_star_dotProduct_eq_rootFidelity hρ hσ hψ
+        (rootFidelity ρ σ : ℂ) := by
+  classical
+  exact exists_isIsometry_star_dotProduct_eq_rootFidelity hρ hσ hψ
     ((partialTraceRight_vecMulVec_padPurification φ).trans hφ)
     (by simp only [Fintype.card_sum]; omega) (by simp only [Fintype.card_sum]; omega)
 
