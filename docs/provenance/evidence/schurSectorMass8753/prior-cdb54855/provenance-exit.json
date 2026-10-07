@@ -1,7 +1,7 @@
 {
-  "source_revision": "cda33ea41bed0823cfa742be6cd6af2ecdc0064f",
+  "source_revision": "cdb5485555253efc7156b619f9cec8c4153930fb",
   "production_sha256": {
-    "QICLean/Representation/SchurSectorMass.lean": "f7508a1357839b49d63a362c9ae415e16737d942d3ee39f3152bc78a3d36f705",
+    "QICLean/Representation/SchurSectorMass.lean": "0d707fd2b080ed1231a0336cab4f3136abc5b5f0191b8a3639252b764707c919",
     "blueprint/src/fragment/schur_sector_mass.tex": "8915129ebf8a6dce748c36e61cab45fb4bf95bfc9969e10cd58dddf3a12ac340",
     "docs/tactic_patterns.md": "ee843acaaea5e509a8d9e590a81eff3dd39c72ef7393ac152a1adb8943a52b89"
   },
@@ -11,8 +11,8 @@
     "/Users/siruilu/Local/agentFormalization/TNLean"
   ],
   "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-schur-sector-mass",
-  "exit_code": 0,
-  "elapsed_seconds": 0.49578354199184105,
+  "exit_code": 1,
+  "elapsed_seconds": 0.6017719579976983,
   "log": "docs/provenance/evidence/schurSectorMass8753/provenance.log",
-  "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+  "sha256": "717ddce3fce003d9d575023d0d2fb183c02cd979dc21894ed3b3267179757f79"
 }

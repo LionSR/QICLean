@@ -34,14 +34,14 @@
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "cdb5485555253efc7156b619f9cec8c4153930fb",
+        "revision": "cda33ea41bed0823cfa742be6cd6af2ecdc0064f",
         "commands": [
           {
             "kind": "build",
             "command": "lake build QICLean.Representation.SchurSectorMass",
             "exit_code": 0,
             "log": "docs/provenance/evidence/schurSectorMass8753/target.log",
-            "sha256": "f4ba655d37c23c1b05eb3a36631645f2226a5352ca8c3bfc61d308558b65540b"
+            "sha256": "635c2f04693d9e3f3bfc9f729a23a8e96f478f7918ee6293cfe4d92003a9d24a"
           },
           {
             "kind": "build",
@@ -89,14 +89,14 @@
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "cdb5485555253efc7156b619f9cec8c4153930fb",
+        "revision": "cda33ea41bed0823cfa742be6cd6af2ecdc0064f",
         "commands": [
           {
             "kind": "build",
             "command": "lake build QICLean.Representation.SchurSectorMass",
             "exit_code": 0,
             "log": "docs/provenance/evidence/schurSectorMass8753/target.log",
-            "sha256": "f4ba655d37c23c1b05eb3a36631645f2226a5352ca8c3bfc61d308558b65540b"
+            "sha256": "635c2f04693d9e3f3bfc9f729a23a8e96f478f7918ee6293cfe4d92003a9d24a"
           },
           {
             "kind": "build",

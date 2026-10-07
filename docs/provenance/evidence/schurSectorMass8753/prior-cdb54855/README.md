@@ -10,7 +10,7 @@ Euclidean norm squared, and the projected vector is nonzero. Both statements
 include zero copies and require no permutation invariance.
 
 The mathematical source is frozen at
-`cda33ea41bed0823cfa742be6cd6af2ecdc0064f`. The target build passes 3,101 jobs,
+`cdb5485555253efc7156b619f9cec8c4153930fb`. The target build passes 3,101 jobs,
 the complete source passes strict checking, and both exact stock-kernel
 reports use only `propext`, `Classical.choice`, and `Quot.sound`. The one
 owned original-provenance shard passes the TNLean validator and schema pinned
@@ -38,12 +38,3 @@ provenance shard.
 
 Complete library and blueprint inclusion checks are recorded separately in
 `schurSectorMassIntegration8753` after the two inclusion lines are committed.
-
-The initial provenance attempt at `cdb54855` failed because the independence
-notice began with uppercase `No`, whereas the pinned validator requires the
-exact lowercase phrase. The notice was corrected without altering any proof,
-then the target build, complete strict source, exact kernel reports, and
-provenance check were recaptured at `cda33ea4`. All initial records, including
-the unsuccessful provenance output, are preserved in `prior-cdb54855` and
-excluded from final successful bindings. Its historical README asserted a
-passed provenance check prematurely; the actual recorded exit is one.

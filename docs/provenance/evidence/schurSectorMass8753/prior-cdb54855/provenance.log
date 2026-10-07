@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/tmpw5ruxjnq/validator.py", line 290, in validate
+  File "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/tmpw5ruxjnq/validator.py", line 266, in check_entry
+  File "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/tmpw5ruxjnq/validator.py", line 172, in notice_block
+  File "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/tmpw5ruxjnq/validator.py", line 27, in require
+frozen_validator.Invalid: missing independence notice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-schur-sector-mass/docs/provenance/evidence/schurSectorMass8753/validate-owned.py", line 26, in <module>
+    total = module.validate(ledgers, schema, {"LionSR/QICLean": root}, scan=False)
+  File "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/tmpw5ruxjnq/validator.py", line 292, in validate
+frozen_validator.Invalid: 8753-qic-schur-sector-mass-01: missing independence notice
