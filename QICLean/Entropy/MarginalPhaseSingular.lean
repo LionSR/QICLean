@@ -135,6 +135,55 @@ theorem tendsto_rpow_affF (c t : ℝ) (s : ℝ) (hs : 0 < s) :
 
 end Limits
 
+section Main
+
+variable {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ} (hρ : ρ.PosSemidef)
+
+theorem hatPhase_eq_spectralFun {n : Type*} [Fintype n] [DecidableEq n] {M : Matrix n n ℂ}
+    (hM : M.IsHermitian) (v : ℝ) (z : ℂ) (hz : z = (v : ℂ) * Complex.I) :
+    spectralFun hM.eigenvectorUnitary
+        (fun k => if hM.eigenvalues k = 0 then 1 else ((hM.eigenvalues k : ℝ) : ℂ) ^ z) =
+      hatPhase hM v := by
+  rw [hatPhase, hz]
+
+theorem sqrtSpec_eq_rpow {n : Type*} [Fintype n] [DecidableEq n] {M : Matrix n n ℂ}
+    (hM : M.IsHermitian) :
+    sqrtSpec hM = spectralFun hM.eigenvectorUnitary
+      (fun k => ((hM.eigenvalues k ^ (1 / 2 : ℝ) : ℝ) : ℂ)) := by
+  rw [sqrtSpec]
+  congr 1; funext k
+  rw [Real.sqrt_eq_rpow]
+
+theorem norm_cpow_imag_eq_one {x : ℝ} (hx : 0 < x) (v : ℝ) :
+    ‖(x : ℂ) ^ ((v : ℂ) * Complex.I)‖ = 1 := by
+  rw [Complex.norm_cpow_eq_rpow_re_of_pos hx]
+  simp
+
+/-- The phase family converges on a family annihilated in the limit by the lifted kernel
+projection: the general step of the singular limit. -/
+theorem tendsto_phaseFam_mul [Nonempty X] [Nonempty U] [Nonempty F] {n m : Type*} [Fintype n]
+    [DecidableEq n] [Fintype m] [DecidableEq m] {M : Matrix n n ℂ} (hM : M.PosSemidef)
+    {c : ℝ} (hc : 0 < c) (v : ℝ) (L : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ)
+    {Y : ℝ → Matrix m m ℂ} {Y₀ : Matrix m m ℂ} (hY : Tendsto Y (𝓝[>] 0) (𝓝 Y₀))
+    (hK : L (kerProj hM.1) * Y₀ = 0) :
+    Tendsto (fun ε => L (phaseFam hM.1 (affF X U F c ε) ((v : ℂ) * Complex.I)) * Y ε)
+      (𝓝[>] 0) (𝓝 (L (hatPhase hM.1 v) * Y₀)) := by
+  have hpos : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε ∧ ε ≤ 1 := by
+    filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ) < 1 by norm_num)] with ε hε
+    exact ⟨hε.1, hε.2.le⟩
+  have h := tendsto_lift_spectralFun_mul hM.1.eigenvectorUnitary hM.1.eigenvalues
+    (fun ε k => ((affF X U F c ε (hM.1.eigenvalues k) : ℝ) : ℂ) ^ ((v : ℂ) * Complex.I))
+    (fun k => ((hM.1.eigenvalues k : ℝ) : ℂ) ^ ((v : ℂ) * Complex.I))
+    (fun ε => ((affF X U F c ε 0 : ℝ) : ℂ) ^ ((v : ℂ) * Complex.I)) L Y Y₀
+    (fun k hk => tendsto_cpow_affF (lt_of_le_of_ne (hM.eigenvalues_nonneg k) (Ne.symm hk)) _)
+    (Eventually.of_forall fun ε k hk => by simp only [hk])
+    (by
+      filter_upwards [hpos] with ε hε
+      exact norm_cpow_imag_eq_one (affF_pos hc hε.1 hε.2 le_rfl) v) hY hK
+  exact h
+
+end Main
+
 end Entropy.MarginalPhase
 
 end
