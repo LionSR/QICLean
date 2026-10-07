@@ -1,0 +1,93 @@
+{
+  "source_revision": "c6219ee822af21aa3db1168a8640d17ffa25b02f",
+  "artifact_marker_exit_code": 0,
+  "pdf": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy/output/pdf/area-law-analytic-integration-blueprint.pdf",
+  "pdf_sha256": "a881a04e96503408f684d799148c8b81a9611103de832246c81f700e6050f320",
+  "pdf_total_physical_pages": 410,
+  "visual_inspection": [
+    {
+      "section": "Positive regulators and spectral tails",
+      "physical_pages": [
+        14
+      ],
+      "printed_pages": [
+        13
+      ],
+      "defects": []
+    },
+    {
+      "section": "Typical Schmidt truncation",
+      "physical_pages": [
+        394,
+        395
+      ],
+      "printed_pages": [
+        393,
+        394
+      ],
+      "defects": []
+    },
+    {
+      "section": "Regularized density-simplex minima",
+      "physical_pages": [
+        395,
+        396
+      ],
+      "printed_pages": [
+        394,
+        395
+      ],
+      "defects": []
+    }
+  ],
+  "scope": "Full PDF, web and declaration checks; visual inspection restricted to the three newly integrated sections.",
+  "production_and_documentation_source_files_edited": [],
+  "final_latex_log_undefined_references_or_citations": false,
+  "full_book_overfull_hbox_count": 71,
+  "new_sections_overfull_boxes": false,
+  "web_new_entry_labels": {
+    "thm:patch_projection_trace": true,
+    "thm:patch_regulator_order": true,
+    "thm:patch_regulator_quarter": true,
+    "def:entropy_typical_pure_state": true,
+    "lem:entropy_typical_projection_split": true,
+    "thm:entropy_typical_pure_state": true,
+    "thm:entropy_typical_complementary_marginal": true,
+    "thm:entropy_typical_complementary_subsystem": true,
+    "thm:density_simplex_conditions": true,
+    "def:density_simplex_filter": true,
+    "thm:density_simplex_last_filter": true
+  },
+  "web_manuscript_citation_targets": {
+    "OpenAI2026AreaLaw": true,
+    "OpenAI2026PolynomialPEPS": true
+  },
+  "blueprint-pdf-exit.json": {
+    "command": "leanblueprint pdf",
+    "exit_code": 0,
+    "elapsed_seconds": 53.3,
+    "source_revision": "c6219ee822af21aa3db1168a8640d17ffa25b02f"
+  },
+  "blueprint-web-exit.json": {
+    "command": "leanblueprint web",
+    "exit_code": 0,
+    "elapsed_seconds": 96.0,
+    "source_revision": "c6219ee822af21aa3db1168a8640d17ffa25b02f"
+  },
+  "blueprint-checkdecls-exit.json": {
+    "command": "leanblueprint checkdecls",
+    "exit_code": 0,
+    "elapsed_seconds": 82.8,
+    "source_revision": "c6219ee822af21aa3db1168a8640d17ffa25b02f"
+  },
+  "logs": {
+    "axioms.log": "45cd78fb5d45d41352ca6c075f565be3567448e77cd10fe78908c242065bdc19",
+    "blueprint-checkdecls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "blueprint-pdf.log": "661ca0f1309064b831c9cef6dae14df1a9f304fa5e50102f4793c754eeb9da8a",
+    "blueprint-web.log": "008016fb5b6da34291b61ab759ff3183e7482d434c0a5577f236f2b0bcf30aaf",
+    "final-bibtex.log": "6038c8c150898fba1e7184c562490e5220698a75a96614902c7cc1f832126155",
+    "final-latex.log": "c058103fdb3a0d1e573ec092250d65f3214f3b0ff0cad4eb31b22ee85cd500d8",
+    "parent-full-lake-build.log": "ec0fa1adc2d5d6ec2ae8387afb83718063b43940ae7982281c5939b1c7df0cb0"
+  },
+  "own_render_intermediates_removed_after_inspection": true
+}
