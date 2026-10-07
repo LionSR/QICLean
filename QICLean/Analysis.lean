@@ -91,7 +91,12 @@ import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
+import QICLean.Analysis.ResolventDefect
+import QICLean.Analysis.ResolventDefectIntegral
 import QICLean.Analysis.ResolventFunctionalCalculus
+import QICLean.Analysis.ResolventMellin
+import QICLean.Analysis.ResolventPhaseBound
+import QICLean.Analysis.ResolventPhaseGap
 import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
@@ -109,6 +114,7 @@ import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SpectralFilter
+import QICLean.Analysis.SpectralKronecker
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
