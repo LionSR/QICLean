@@ -8,5 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.OperatorMean
 
+import QICLean.Analysis.OperatorMean.FiniteTree
 import QICLean.Analysis.OperatorMean.MatrixPowers
 import QICLean.Analysis.OperatorMean.WeightedGeometricMean
