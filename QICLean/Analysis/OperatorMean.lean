@@ -10,4 +10,5 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.OperatorMean.FiniteTree
 import QICLean.Analysis.OperatorMean.MatrixPowers
+import QICLean.Analysis.OperatorMean.PowerDerivative
 import QICLean.Analysis.OperatorMean.WeightedGeometricMean

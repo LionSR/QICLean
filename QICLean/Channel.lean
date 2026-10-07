@@ -82,6 +82,7 @@ import QICLean.Channel.MaximalOverlap
 import QICLean.Channel.MaximalWeightConvexDecomposition
 import QICLean.Channel.MaximallyEntangled
 import QICLean.Channel.MaximallyMixed
+import QICLean.Channel.NPositiveIntegral
 import QICLean.Channel.NPositivityChainStrict
 import QICLean.Channel.NPositivitySpectralCriterion
 import QICLean.Channel.NoInformationWithoutDisturbance
