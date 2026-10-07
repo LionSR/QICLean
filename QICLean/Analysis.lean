@@ -112,6 +112,7 @@ import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceDistance
+import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceNormAbs
 import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Analysis.TraceNormContractivity
