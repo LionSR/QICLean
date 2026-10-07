@@ -145,3 +145,21 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   stabilizer and auxiliary consequences reuse it. No new tactic is needed.
 - **Caveat:** The image is σB for the convention x(j)↦x(σ⁻¹j). An individual
   subset projection commutes only with its stabilizer, not arbitrary metrics.
+
+### Disjoint label preservation and a lifted quadratic bound — candidate (2026-10-08)
+
+- **Pattern:** Derive a whole-label fixed-vector equation for a literal
+  physical component by the identity-permutation case of excitation
+  symmetry. Lift an already derived positive semidefinite compression by
+  identities on all spectator registers, then cancel the Hermitian label
+  projection on both sides of its quadratic form.
+- **Seen:** `Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower`
+  in `QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean`; one mathematical
+  consumer.
+- **Abstraction:** Reuse `PosSemidef.kronecker`, `kroneckerBilinear`, and
+  the actual excitation fixed-vector theorem. The local linear map is the
+  literal identity lift, not a new public lifting construction.
+- **Caveats:** Only the original vector's label equation is assumed. The
+  component's label equation and the good/bad coordinate split are derived.
+  Do not replace either with a certificate or commute a physical excitation
+  projection through a band metric.
