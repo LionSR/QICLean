@@ -74,6 +74,7 @@ theorem trace_groupAlgebraRep_regular [DecidableEq G] (a : MonoidAlgebra ℂ G) 
 noncomputable def coordEquiv : MonoidAlgebra ℂ G ≃ₗ[ℂ] (G → ℂ) :=
   (coeffLinearEquiv ℂ).trans (Finsupp.linearEquivFunOnFinite ℂ ℂ G)
 
+omit [Group G] [Fintype X] [DecidableEq X] in
 theorem coordEquiv_apply (a : MonoidAlgebra ℂ G) (g : G) : coordEquiv a g = a.coeff g := rfl
 
 theorem groupAlgebraRep_regular_mulVec [DecidableEq G] (b : MonoidAlgebra ℂ G) (v : G → ℂ) :
@@ -86,7 +87,7 @@ theorem groupAlgebraRep_regular_mulVec [DecidableEq G] (b : MonoidAlgebra ℂ G)
     rw [LinearEquiv.apply_symm_apply, coordEquiv_apply, coeff_sum, Finset.sum_apply',
       sum_eq_single g]
     · simp [coeff_single]
-    · intro h _ hh; simp [coeff_single, Finsupp.single_apply, hh]
+    · intro h _ hh; simp [coeff_single, hh]
     · simp
   rw [hv, mul_sum, coeff_sum, Finset.sum_apply']
   simp only [mulVec, dotProduct, groupAlgebraRep_regular_apply]
@@ -98,7 +99,8 @@ theorem multiplicity_regular [DecidableEq G] (l : IrrepLabel G) :
     multiplicity (regular G) l = l.dim := by
   set o : Fin l.dim := ⟨0, l.dim_pos⟩
   set e := IrrepLabel.matrixUnit l o o
-  set P : (Π μ : IrrepLabel G, Matrix (Fin μ.dim) (Fin μ.dim) ℂ) := Pi.single l (Matrix.single o o 1)
+  set P : (Π μ : IrrepLabel G, Matrix (Fin μ.dim) (Fin μ.dim) ℂ) :=
+    Pi.single l (Matrix.single o o 1)
   -- the range of `ρ(e)` is the left ideal `e ℂ[G]`
   have h1 : LinearMap.range (toLin' (matrixUnitOp (regular G) l o o)) =
       (LinearMap.range (LinearMap.mulLeft ℂ e)).map
@@ -188,8 +190,9 @@ theorem block_centralIdem_mul (l μ : IrrepLabel G) (a : MonoidAlgebra ℂ G) :
   · simp [h]
 
 /-- `|G| e_λ(g) = d_λ tr W_λ(g⁻¹)`. -/
-theorem card_mul_coeff_centralIdem [DecidableEq G] (l : IrrepLabel G) (g : G) :
+theorem card_mul_coeff_centralIdem (l : IrrepLabel G) (g : G) :
     (Fintype.card G : ℂ) * (centralIdem l).coeff g = l.dim * (block l (single g⁻¹ 1)).trace := by
+  classical
   have h := trace_groupAlgebraRep (regular G) (centralIdem l * single g⁻¹ 1)
   rw [trace_groupAlgebraRep_regular, coeff_mul_single_apply, one_mul, inv_inv, mul_one] at h
   rw [h, sum_eq_single l]
@@ -202,7 +205,7 @@ end IrrepLabel
 
 namespace PermutationRepresentation
 
-variable {G X : Type*} [Group G] [Fintype G] [DecidableEq G] [Fintype X] [DecidableEq X]
+variable {G X : Type*} [Group G] [Fintype G] [Fintype X] [DecidableEq X]
   (φ : G →* Equiv.Perm X)
 
 /-- **Character projection** (`05-replicas.tex`, lines 164–169):

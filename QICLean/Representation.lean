@@ -23,11 +23,13 @@ import QICLean.Representation.IrrepLabelCount
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.JointIsotypic
+import QICLean.Representation.JucysRecursion
 import QICLean.Representation.LabelProjectors
 import QICLean.Representation.MergeDimensions
 import QICLean.Representation.MergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
+import QICLean.Representation.RegularTrace
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
 import QICLean.Representation.SchurSurprisal
@@ -36,3 +38,5 @@ import QICLean.Representation.SchurWeylLabels
 import QICLean.Representation.SchurWeylLift
 import QICLean.Representation.StarOperator
 import QICLean.Representation.TensorPowerAction
+import QICLean.Representation.WeylDimension
+import QICLean.Representation.WeylRecursion

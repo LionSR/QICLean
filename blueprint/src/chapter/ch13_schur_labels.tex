@@ -764,19 +764,70 @@ $\lambda$ factor.
     by $(\kappa_\lambda-\kappa_\nu)/(2k)$, which Lemma~\ref{lem:casimir} evaluates.
 \end{proof}
 
-\begin{theorem}[Schur-label estimates, part 1: labels and symmetric-group dimensions]
+\begin{lemma}[Character projection]
+    \label{lem:character_projection}
+    \lean{PermutationRepresentation.trace_groupAlgebraRep,
+        PermutationRepresentation.multiplicity_regular, IrrepLabel.card_mul_coeff_centralIdem,
+        PermutationRepresentation.characterSum_eq}
+    \leanok
+    \uses{lem:restriction}
+    For a permutation representation $\rho$ of a finite group $G$ with multiplicities
+    $m_\lambda$, $\tr\rho(a)=\sum_\lambda m_\lambda\tr W_\lambda(a)$. In the regular
+    representation $m_\lambda=d_\lambda$, so $|G|e_\lambda(g)=d_\lambda\tr
+    W_\lambda(g^{-1})$, and
+    $\sum_g\tr\rho(g^{-1})\,g=\sum_\lambda(|G|m_\lambda/d_\lambda)e_\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first formula is Lemma~\ref{lem:restriction} with $M=1$. In the regular
+    representation the image of a minimal idempotent is a left ideal of
+    $\C[G]$, which the Artin--Wedderburn isomorphism identifies with one row of the
+    $\lambda$ factor. The trace of the regular representation is $|G|$ times the
+    coefficient of the identity; apply it to $e_\lambda g^{-1}$ and compare
+    coefficients.
+\end{proof}
+
+\begin{lemma}[Fixed-point sum]
+    \label{lem:jucys}
+    \lean{TensorPower.fixSum, TensorPower.fixSum_succ}
+    \leanok
+    Let $Z_k=\sum_{\tau\in S_k}f(\tau)\tau$, where $f(\tau)$ is the number of
+    configurations of $(\C^q)^{\otimes k}$ fixed by $\tau$. Then
+    $Z_{k+1}=(q+X_{k+1})Z_k$, with $X_{k+1}=\sum_{j\le k}(j\ k{+}1)$ and $Z_k$
+    embedded through the permutations of the first $k$ copies.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every permutation of $k+1$ copies is uniquely $\sigma$ or $(j\ k{+}1)\sigma$ with
+    $\sigma$ permuting the first $k$ copies; these fix $qf(\sigma)$ and $f(\sigma)$
+    configurations respectively, the last copy being free or determined by copy $j$.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 1]
     \label{thm:schur_part1_dim}
     \lean{TensorPower.labelPart_eq_zero_of_labelProj_ne_zero,
-        TensorPower.schur_dim_eq_hookFormula, TensorPower.schur_abs_log_dim_sub_le}
+        TensorPower.schur_dim_eq_hookFormula, TensorPower.schur_abs_log_dim_sub_le,
+        TensorPower.schur_multiplicity_eq_weylFormula, TensorPower.multiplicity_eq_weylFormula,
+        TensorPower.sum_branchMult_mul_multiplicity}
     \leanok
-    \uses{thm:schur_weyl_labels, thm:dim_eq_hook, lem:hook_formula_entropy}
+    \uses{thm:schur_weyl_labels, thm:dim_eq_hook, lem:hook_formula_entropy,
+        lem:character_projection, lem:jucys}
     The labels occurring in $(\C^q)^{\otimes k}$ are the partitions of $k$ with at most
-    $q$ rows. For them $d_\lambda=k!\prod_{i<j}(l_i-l_j)/\prod_il_i!$ and
-    $|\log d_\lambda-kH(\lambda/k)|\le(q^2+q+1)(\log(k+q+2)+1)$. The Weyl dimension
-    formula for $V^{(q)}_\lambda$ is not part of this statement.
+    $q$ rows. For them, with $l_i=\lambda_i+q-i$,
+    $\dim V^{(q)}_\lambda=\prod_{i<j}(l_i-l_j)/(j-i)$,
+    $d_\lambda=k!\prod_{i<j}(l_i-l_j)/\prod_il_i!$, and
+    $|\log d_\lambda-kH(\lambda/k)|\le(q^2+q+1)(\log(k+q+2)+1)$. The number of labels and
+    the sum of the multiplicities are at most $(k+1)^{q^2}$ (Lemma~\ref{lem:multiplicity_count}).
 \end{theorem}
 
 \begin{proof}\leanok
-    Combine Theorem~\ref{thm:schur_weyl_labels}, Theorem~\ref{thm:dim_eq_hook} and
-    Lemma~\ref{lem:hook_formula_entropy}.
+    The labels and $d_\lambda$ come from Theorems~\ref{thm:schur_weyl_labels}
+    and~\ref{thm:dim_eq_hook}, and the asymptotics from
+    Lemma~\ref{lem:hook_formula_entropy}. By Lemma~\ref{lem:character_projection} the
+    fixed-point sum acts on $\lambda$ by $s_\lambda=k!m_\lambda/d_\lambda$. On a branch
+    $\nu=\lambda-e_i$, Lemma~\ref{lem:jucys} and the star-operator eigenvalue of
+    Theorem~\ref{thm:schur_part6} give $s_\lambda=(q+\lambda_i-i)s_\nu=l_is_\nu$.
+    Combined with the quotient $d_\nu/d_\lambda$ of Theorem~\ref{thm:schur_part6} this
+    is the recursion $W_\lambda\prod_{j\ne i}(l_i-1-l_j)=W_\nu\prod_{j\ne i}(l_i-l_j)$ of the
+    Weyl formula, and induction on $k$ gives $m_\lambda=W_\lambda$.
 \end{proof}

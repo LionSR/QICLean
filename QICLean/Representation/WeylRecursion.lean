@@ -127,7 +127,8 @@ theorem sum_weylFormula_add {p : Fin q → ℕ} (hp : Antitone p) :
   have hD : ∀ i, ∏ j ∈ univ.erase i, (L i - L j) ≠ 0 := fun i =>
     prod_ne_zero_iff.mpr fun j hj => sub_ne_zero.mpr fun h => (mem_erase.mp hj).1 (hinj h).symm
   have hterm : ∀ i, weylFormula (Function.update p i (p i + 1)) =
-      weylFormula p * ((∏ j ∈ univ.erase i, (L i + 1 - L j)) / ∏ j ∈ univ.erase i, (L i - L j)) := by
+      weylFormula p *
+        ((∏ j ∈ univ.erase i, (L i + 1 - L j)) / ∏ j ∈ univ.erase i, (L i - L j)) := by
     intro i
     have := weylFormula_update_add_mul p i
     field_simp [hD i]
