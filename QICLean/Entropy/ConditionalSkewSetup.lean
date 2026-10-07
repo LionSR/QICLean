@@ -282,6 +282,54 @@ theorem dotProduct_star_imag_vector (y : ℝ) :
     conjTranspose_liftY, conjTranspose_suppPow hY, conj_ofReal_mul_I, mulVec_mulVec, liftY_mul,
     suppPow_mul hY.1, neg_add_cancel, liftY_supp_zero_mulVec]
 
+theorem regroup_injective :
+    Function.Injective (regroup (P₀ := P₀) (P₁ := P₁) (X := X) (U := U) (F := F)) := by
+  rintro ⟨⟨a, b⟩, ⟨⟨c, d⟩, e⟩⟩ ⟨⟨a', b'⟩, ⟨⟨c', d'⟩, e'⟩⟩ h
+  simp only [regroup, Prod.mk.injEq] at h
+  obtain ⟨⟨rfl, rfl⟩, rfl, rfl, rfl⟩ := h
+  rfl
+
+theorem liftH_one : liftH (P₁ := P₁) (U := U) (F := F) (1 : Matrix (P₀ × X) (P₀ × X) ℂ) = 1 := by
+  rw [liftH, one_kronecker_one, submatrix_one _ regroup_injective]
+
+theorem liftH_sub (h₁ h₂ : Matrix (P₀ × X) (P₀ × X) ℂ) :
+    liftH (P₁ := P₁) (U := U) (F := F) (h₁ - h₂) = liftH h₁ - liftH h₂ := by
+  ext i j; simp [liftH, sub_mul]
+
+theorem posSemidef_liftH {h : Matrix (P₀ × X) (P₀ × X) ℂ} (hh : h.PosSemidef) :
+    (liftH (P₁ := P₁) (U := U) (F := F) h).PosSemidef :=
+  (hh.kronecker PosSemidef.one).submatrix _
+
+theorem norm_le_one_of_nonneg_le_one {a : ℂ} (h0 : 0 ≤ a) (h1 : a ≤ 1) : ‖a‖ ≤ 1 := by
+  rw [Complex.nonneg_iff] at h0
+  rw [Complex.le_def] at h1
+  have him : a.im = 0 := h0.2.symm
+  rw [Complex.norm_eq_sqrt_sq_add_sq, him]
+  simp only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, add_zero]
+  rw [Real.sqrt_sq h0.1]
+  simpa using h1.1
+
+/-- `|f(iy)| ≤ 1` for `0 ≤ h ≤ 1` and a unit vector `θ`.  Area-law manuscript,
+`04-conditional.tex`, lines 531–532. -/
+theorem norm_skewFun_imag_le (hθ : star θ ⬝ᵥ θ = 1) (hh0 : 0 ≤ h) (hh1 : h ≤ 1) (y : ℝ) :
+    ‖skewFun θ h ((y : ℂ) * Complex.I)‖ ≤ 1 := by
+  rw [skewFun_imag]
+  set v := liftP (cfcC (margP θ) (suppPowFun (-((y : ℂ) * Complex.I)))) *ᵥ
+    (liftY (P₀ := P₀) (P₁ := P₁) (F := F) (cfcC (margY θ) (suppPowFun ((y : ℂ) * Complex.I))) *ᵥ θ)
+  have hv : star v ⬝ᵥ v = 1 := by rw [dotProduct_star_imag_vector, hθ]
+  have hH0 := posSemidef_liftH (P₁ := P₁) (U := U) (F := F) (nonneg_iff_posSemidef.1 hh0)
+  have hH1 : (1 - liftH (P₁ := P₁) (U := U) (F := F) h).PosSemidef := by
+    rw [← liftH_one, ← liftH_sub]; exact posSemidef_liftH (le_iff.1 hh1)
+  refine norm_le_one_of_nonneg_le_one (hH0.dotProduct_mulVec_nonneg v) ?_
+  have := hH1.dotProduct_mulVec_nonneg v
+  rw [sub_mulVec, one_mulVec, dotProduct_sub, hv, sub_nonneg] at this
+  exact this
+
+/-- `f(0) = ⟨θ, h θ⟩ ≥ 0`. -/
+theorem skewFun_zero_nonneg (hh0 : 0 ≤ h) : 0 ≤ skewFun θ h 0 := by
+  rw [skewFun_zero]
+  exact (posSemidef_liftH (nonneg_iff_posSemidef.1 hh0)).dotProduct_mulVec_nonneg θ
+
 end Values
 
 end Entropy.ConditionalSkew
