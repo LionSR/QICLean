@@ -106,6 +106,35 @@ theorem norm_approx_le [Nonempty X] [Nonempty U] [Nonempty F] (htr : ρ.trace = 
 
 end Bound
 
+section Limits
+
+theorem tendsto_affF (c t : ℝ) :
+    Tendsto (fun ε => affF X U F c ε t) (𝓝[>] 0) (𝓝 t) := by
+  have : ContinuousAt (fun ε => affF X U F c ε t) 0 := by unfold affF; fun_prop
+  have h := this.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))
+  simpa [affF] using h
+
+theorem affF_zero (c ε : ℝ) : affF X U F c ε 0 = ε / Fintype.card (X × (U × F)) * c := by
+  simp [affF]
+
+theorem affF_pos [Nonempty X] [Nonempty U] [Nonempty F] {c ε t : ℝ} (hc : 0 < c) (h0 : 0 < ε)
+    (h1 : ε ≤ 1) (ht : 0 ≤ t) : 0 < affF X U F c ε t := by
+  unfold affF
+  have : (0 : ℝ) < Fintype.card (X × (U × F)) := Nat.cast_pos.2 Fintype.card_pos
+  have : 0 ≤ (1 - ε) * t := mul_nonneg (by linarith) ht
+  positivity
+
+theorem tendsto_cpow_affF {c t : ℝ} (ht : 0 < t) (z : ℂ) :
+    Tendsto (fun ε => ((affF X U F c ε t : ℝ) : ℂ) ^ z) (𝓝[>] 0) (𝓝 ((t : ℂ) ^ z)) :=
+  ((Complex.continuousAt_ofReal_cpow_const t z (Or.inr ht.ne')).tendsto).comp (tendsto_affF c t)
+
+theorem tendsto_rpow_affF (c t : ℝ) (s : ℝ) (hs : 0 < s) :
+    Tendsto (fun ε => ((affF X U F c ε t ^ s : ℝ) : ℂ)) (𝓝[>] 0) (𝓝 ((t ^ s : ℝ) : ℂ)) :=
+  Complex.continuous_ofReal.continuousAt.tendsto.comp
+    ((Real.continuousAt_rpow_const t s (Or.inr hs.le)).tendsto.comp (tendsto_affF c t))
+
+end Limits
+
 end Entropy.MarginalPhase
 
 end
