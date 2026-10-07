@@ -395,6 +395,28 @@ theorem commute_regionState_of_unitary_max {D : Finset V}
   have hherm := isHermitian_of_re_trace_mul_skew_eq_zero hstat
   exact commute_of_isHermitian_inv_mul_mul hK (regionState_isHermitian D ψ) hherm
 
+omit [Fintype V] [DecidableEq V] in
+/-- `A ⊗ 1` and `1 ⊗ B` commute. -/
+theorem kronecker_one_mul_one_kronecker_comm {a b : Type*} [Fintype a] [Fintype b]
+    [DecidableEq a] [DecidableEq b] (KA : Matrix a a ℂ) (KB : Matrix b b ℂ) :
+    KA.kroneckerMap (· * ·) (1 : Matrix b b ℂ) * (1 : Matrix a a ℂ).kroneckerMap (· * ·) KB =
+      (1 : Matrix a a ℂ).kroneckerMap (· * ·) KB * KA.kroneckerMap (· * ·) (1 : Matrix b b ℂ) := by
+  rw [← mul_kronecker_mul, ← mul_kronecker_mul]; simp
+
+/-- Operators supported on disjoint regions commute. -/
+theorem commute_of_isSupportedOn_disjoint {D D' : Finset V}
+    {X Y : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hX : IsSupportedOn X D)
+    (hY : IsSupportedOn Y D') (hDD : Disjoint D' D) (σ₀ : SiteConfig n) : X * Y = Y * X := by
+  have hcut : ∀ Z W : Matrix (SiteConfig n) (SiteConfig n) ℂ,
+      cutOperator D (Z * W) = cutOperator D Z * cutOperator D W := fun Z W ↦ by
+    simp [cutOperator, reindex_apply, submatrix_mul_equiv]
+  have hX' := hX.cutOperator_eq_kronecker_one (B := D) subset_rfl ((cutEquiv n D) σ₀).2
+  have hY' := hY.cutOperator_eq_one_kronecker hDD ((cutEquiv n D) σ₀).1
+  have h : cutOperator D (X * Y) = cutOperator D (Y * X) := by
+    rw [hcut, hcut, hX', hY']
+    exact kronecker_one_mul_one_kronecker_comm _ _
+  exact (reindex (cutEquiv n D) (cutEquiv n D)).injective h
+
 end Entropy
 
 end Chain
