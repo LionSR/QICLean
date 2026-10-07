@@ -1,0 +1,7 @@
+{
+  "command": "lake build",
+  "exit_code": 0,
+  "elapsed_seconds": 662.6,
+  "source_revision": "0166379167f06562d5ee8f18b676f1ac511b3308",
+  "mathlib_no_build_preflight_exit_code": 0
+}
