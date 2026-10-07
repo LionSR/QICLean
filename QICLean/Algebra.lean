@@ -34,6 +34,7 @@ import QICLean.Algebra.HermitianTracePower
 import QICLean.Algebra.HermitianUnitaryConjugacy
 import QICLean.Algebra.KramersDegeneracy
 import QICLean.Algebra.KroneckerFactorPositivity
+import QICLean.Algebra.L2OpNormReindex
 import QICLean.Algebra.MatrixAlgEquiv
 import QICLean.Algebra.MatrixAlgHomCentralizer
 import QICLean.Algebra.MatrixAux
@@ -71,6 +72,7 @@ import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OrthogonalProjection
 import QICLean.Algebra.OverlappingLiftAlgebra
+import QICLean.Algebra.PartialTraceDomination
 import QICLean.Algebra.PerronFrobenius
 import QICLean.Algebra.PiProductTrace
 import QICLean.Algebra.PosSemidefSupport
