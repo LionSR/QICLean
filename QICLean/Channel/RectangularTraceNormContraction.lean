@@ -23,7 +23,7 @@ OpenAI Lean code.
 
 /-!
 Provenance-ID: p09-qic-weighted-l2_opnorm_kronecker_one_le
-Downstream declaration: Matrix.l2_opNorm_kronecker_one_le
+Downstream declaration: Matrix.l2_opNorm_kronecker_one_square_le
 Source: September 24, 2026 paper.
 Labels: eq:compression-exterior-contraction.
 Independently formalized; no upstream Lean proof text reused.
@@ -63,7 +63,7 @@ variable {a b : Type*} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
 
 /-- Amplification by an identity preserves an operator-norm bound without a
 factor depending on the discarded register. -/
-theorem l2_opNorm_kronecker_one_le (M : Matrix a a ℂ) :
+theorem l2_opNorm_kronecker_one_square_le (M : Matrix a a ℂ) :
     ‖M ⊗ₖ (1 : Matrix b b ℂ)‖ ≤ ‖M‖ := by
   rw [l2_opNorm_def]
   apply ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg M)
@@ -91,7 +91,7 @@ theorem rectangularTraceNorm_partialTraceRight_le
   intro M hM
   rw [trace_partialTraceRight_conjTranspose_mul]
   exact norm_trace_conjTranspose_mul_le_rectangularTraceNorm H _
-    ((l2_opNorm_kronecker_one_le M).trans hM)
+    ((l2_opNorm_kronecker_one_square_le M).trans hM)
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
