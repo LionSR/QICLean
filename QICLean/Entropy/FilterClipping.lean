@@ -105,7 +105,7 @@ theorem hasDerivAt_conj_diagonal_rpow (U : Matrix m m ℂ) {x : m → ℝ} (hx :
     have h3 := h2.ofReal_comp
     convert h3 using 1
     push_cast
-    ring
+    simp only [zero_mul, add_zero]; ring
   exact (conjDiagonalCLM U).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hc
 
 end Curve
