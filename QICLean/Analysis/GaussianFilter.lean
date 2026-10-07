@@ -14,5 +14,6 @@ import QICLean.Analysis.GaussianFilter.MatrixIntegral
 import QICLean.Analysis.GaussianFilter.ParameterChoice
 import QICLean.Analysis.GaussianFilter.PhysicalBuffer
 import QICLean.Analysis.GaussianFilter.PhysicalBufferUniform
+import QICLean.Analysis.GaussianFilter.Reindex
 import QICLean.Analysis.GaussianFilter.SpectralGap
 import QICLean.Analysis.GaussianFilter.UniformGroundEstimate

@@ -1,0 +1,40 @@
+{
+  "final_status": "PASS",
+  "source_revision": "2d8487576c0612f77208236d86b754bf95cd51b8",
+  "render_directory": "/workspace/scratch/757f4f120786/gaussian-reindex-2d84875-combined-render",
+  "environment_script": "/workspace/scratch/757f4f120786/glm23-blueprint-env.sh",
+  "tenkz_revision": "08a6493f3605dcf2ca5b512823ccb2698dfc027b",
+  "command": "bash docs/provenance/evidence/8766-gaussian-reindex/render/run.sh /workspace/scratch/757f4f120786/qiclean-physical-buffer-gaussian-8766 /workspace/scratch/757f4f120786/gaussian-reindex-2d84875-combined-render",
+  "exit_code": 0,
+  "raster_command": "pdftoppm -f 15 -l 16 -scale-to 1400 -png blueprint/src/print.pdf page",
+  "raster_exit_code": 0,
+  "logs_sha256": {
+    "pdf-build.log": "679a104b19689cb0c95a3e4b22102e705cff4b0eb18e2d1fbe3e09863a3de91b",
+    "web-build.log": "58b461a23c0ec158b2d8fd5235efe55a858604fb8dd3ccbcda0e94df4d07ff44",
+    "tenkz-sweep.log": "b538b8a39648046b70581c374352c03ff337aa5709dc57dd4ff224da5d65f088",
+    "verify-final.log": "cc7440ad796c04254cfd9dd4849e5ec873f99f3f52cfb5ac207496ca5bba11f8",
+    "raster.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "nonfatal_warnings": [
+    "Initial latexmk passes reported references and citations before auxiliary files and bibliography were established; the final print.log has none.",
+    "Existing xdvipdfmx font-map warnings for pdftex.map and kanjix.map; output was generated and the new leaf glyphs were visually checked.",
+    "Existing title-page destination warning: Object @page.1 already defined. All source label and equation destinations verify.",
+    "dvisvgm is unavailable; the supported xelatex/PDF/pdftocairo path generated the inherited Tenkz SVG and its sweep passed."
+  ],
+  "earlier_attempts": [
+    {
+      "source_revision": "a2dd8b32f510d6de777919aba9383df1feed5ce0",
+      "scope": "Preliminary single-leaf PDF",
+      "result": "Default XeLaTeX format lookup failed before reading the source. The verified existing workspace environment supplied the cached format. No installation or toolchain change was made."
+    },
+    {
+      "source_revision": "01cc124b33521a9bcd9ef17d2d409f2770ea0901",
+      "scope": "Seven-leaf PDF and static HTML",
+      "result": "The verifier rejected two missing HTML equation anchors. Moving labels to the first align row fixed the source; a fresh seven-leaf fixture at 2d84875 passed all checks."
+    }
+  ],
+  "limits": [
+    "No Lean/Lake/checkdecls commands were run by this worker.",
+    "All generated PDFs, HTML, SVGs, page images, and raw logs remain outside Git."
+  ]
+}

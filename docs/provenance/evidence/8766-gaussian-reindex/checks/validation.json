@@ -1,0 +1,79 @@
+{
+  "checked_local_commit": "9bf6e4b04d9108f32afcfa675d925d6fd9e8a01f",
+  "scope": "Native GaussianFilter aggregate; strict production, consumers and six standard-axiom guards; raw axiom report. Hosted CI remains separate.",
+  "commands": [
+    {
+      "head": "9bf6e4b04d9108f32afcfa675d925d6fd9e8a01f",
+      "file": "aggregate",
+      "sha256": null,
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Analysis.GaussianFilter"
+      ],
+      "exit_code": 0,
+      "seconds": 3.5494373999972595,
+      "log": "gaussian-reindex-wired-9bf6e4b-0.log"
+    },
+    {
+      "head": "9bf6e4b04d9108f32afcfa675d925d6fd9e8a01f",
+      "file": "QICLean/Analysis/GaussianFilter/Reindex.lean",
+      "sha256": "9ee881a47ec1df3293409f621be5a2fedfdd1b2b564884f24184a34ef6f3b1ee",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/GaussianFilter/Reindex.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.9656317759945523,
+      "log": "gaussian-reindex-wired-9bf6e4b-1.log"
+    },
+    {
+      "head": "9bf6e4b04d9108f32afcfa675d925d6fd9e8a01f",
+      "file": "QICLeanTest/GaussianReindex.lean",
+      "sha256": "d77f7b514d2bed3ea39fcd80b52b5904d591ed0176979018fbeefd7641d2041a",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/GaussianReindex.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.0175126910035033,
+      "log": "gaussian-reindex-wired-9bf6e4b-2.log"
+    },
+    {
+      "head": "9bf6e4b04d9108f32afcfa675d925d6fd9e8a01f",
+      "file": "docs/provenance/evidence/8766-gaussian-reindex/drivers/GaussianReindexRawAxioms.lean",
+      "sha256": "19f05a261ba03d71c8f7b58174912e68366b78f1cca8355f029e3cc821f78d3a",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/8766-gaussian-reindex/drivers/GaussianReindexRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.6625297270074952,
+      "log": "gaussian-reindex-wired-9bf6e4b-3.log"
+    }
+  ]
+}
