@@ -1,6 +1,6 @@
 """Validate the source-bound leaf evidence and exact released good-copy parent."""
 from pathlib import Path
-import gzip,hashlib,io,json,re,subprocess,tarfile
+import gzip,hashlib,io,json,re,subprocess,tarfile,sys
 r=Path.cwd();p=Path(__file__).resolve().parent
 sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest();tracked=set(subprocess.check_output(['git','ls-files'],text=True).splitlines())
 m=json.loads((p/'verification.json').read_text());freeze=json.loads((p/'source-freeze.json').read_text())
@@ -15,9 +15,12 @@ parent=json.loads((p/'parent-preservation.json').read_text());archive=tarfile.op
 for n,h in parent['sha256'].items():
  original=archive.extractfile(n).read();assert hashlib.sha256(original).hexdigest()==h,n
  if n==parent['cumulative_ledger_exception']:assert (r/n).read_bytes().startswith(original) and sha(r/n)==parent['new_ledger_sha256'],n
+ elif '--allow-inclusion' in sys.argv and n in ['QICLean/Analysis.lean','blueprint/src/chapter/ch12_entropy.tex'] and sha(r/n)!=h:
+  addition=(b'import QICLean.Analysis.ReplicaGoodCopyDensity\n' if n=='QICLean/Analysis.lean' else b'\\input{fragment/replica_good_copy_density}\n')
+  current=(r/n).read_bytes();assert current.count(addition)==1 and current.replace(addition,b'')==original,n
  else:assert sha(r/n)==h,n
 reports=re.findall(r"'([^']+)' depends on axioms: \[([^\]]*)\]",(p/'axioms.log').read_text(),re.S)
 assert len(reports)==2 and {n for n,_ in reports}==set(m['declarations'])
 for _,a in reports:assert {s.strip() for s in a.split(',')}<={'propext','Classical.choice','Quot.sound'}
 print(len(m['checks']),'source-bound successful commands;',len(m['file_hashes']),'tracked hashes; two exact standard-kernel reports.')
-print('Four frozen source/exposition files and all',len(parent['sha256']),'released parent files preserved, with only the cumulative ledger appended.')
+print('Four frozen source/exposition files and all',len(parent['sha256']),'released parent files preserved, with the frozen cumulative ledger append and, only when requested, the two exact later inclusion lines.')
