@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.StripQuadratic
 import Mathlib.Analysis.Complex.Liouville
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
+import Mathlib.Analysis.Calculus.Deriv.Star
 
 /-!
 # Departure from the positive axis from phase control
@@ -185,6 +186,31 @@ theorem norm_deriv_le_of_phase {f : ℂ → ℂ} (hf : Differentiable ℂ f) {p 
         simp only [B, abs_div]
         rw [← sq_abs (Real.sinh _)]
         field_simp
+
+/-- The real part of the derivative at the origin vanishes under `f(-z̄) = conj f(z)`. -/
+theorem re_deriv_eq_zero_of_symm {f : ℂ → ℂ} (hf : Differentiable ℂ f)
+    (hsymm : ∀ z, f (-(conj z)) = conj (f z)) : (deriv f 0).re = 0 := by
+  set D := deriv f 0
+  have h1 : HasDerivAt (fun x : ℝ => f (-(x : ℂ))) (-D) 0 := by
+    have hn : HasDerivAt (fun x : ℝ => -(x : ℂ)) (-1) 0 := by
+      have := (hasDerivAt_neg (0 : ℝ)).ofReal_comp
+      convert this using 1
+      · funext x; push_cast; ring
+      · simp
+    have := ((hf (-((0 : ℝ) : ℂ))).hasDerivAt).comp (0 : ℝ) hn
+    simpa [Function.comp_def] using this
+  have h2 : HasDerivAt (fun x : ℝ => conj (f (x : ℂ))) (conj D) 0 := by
+    have := ((hf ((0 : ℝ) : ℂ)).hasDerivAt).comp_ofReal
+    have h3 := HasDerivAt.star this
+    simpa using h3
+  have heq : (fun x : ℝ => f (-(x : ℂ))) = fun x : ℝ => conj (f (x : ℂ)) := by
+    funext x
+    rw [← hsymm, Complex.conj_ofReal]
+  rw [heq] at h1
+  have := h1.unique h2
+  have hre := congrArg Complex.re this
+  simp only [neg_re, conj_re] at hre
+  linarith
 
 end Complex
 
