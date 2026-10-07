@@ -42,6 +42,7 @@ import QICLean.Entropy.PositiveOverlappingProduct
 import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.ProductOverlapPurity
 import QICLean.Entropy.PurificationSplitting
+import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionUnion
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.SchmidtPinning
