@@ -1,0 +1,19 @@
+{
+  "source_revision": "fe4a4fcc0f16ad229659c8997e86b59921383e0c",
+  "production_sha256": {
+    "QICLean/Representation/UniformBellLabel.lean": "4fcee84a243cef57d27480085cc0fb9203a05c604d35135fa0fdc0e9e7e52d06"
+  },
+  "argv": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+    "--root",
+    "QICLean/Representation",
+    "--top",
+    "8"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.07592091600236017,
+  "log": "docs/provenance/evidence/uniformBellLabel8753/tactic-patterns.log",
+  "sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8"
+}

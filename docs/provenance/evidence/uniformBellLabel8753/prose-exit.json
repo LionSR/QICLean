@@ -1,0 +1,20 @@
+{
+  "source_revision": "fe4a4fcc0f16ad229659c8997e86b59921383e0c",
+  "production_sha256": {
+    "QICLean/Representation/UniformBellLabel.lean": "4fcee84a243cef57d27480085cc0fb9203a05c604d35135fa0fdc0e9e7e52d06"
+  },
+  "argv": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--root",
+    ".",
+    "--diff-base",
+    "0c3485a4",
+    "--ci"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.25040145800448954,
+  "log": "docs/provenance/evidence/uniformBellLabel8753/prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}
