@@ -1,0 +1,86 @@
+\subsection{Typical spectral restrictions of density matrices}
+
+\begin{definition}[Selected spectral projection and normalized restriction]
+\label{def:entropy_typical_density}
+\lean{Matrix.IsHermitian.spectralSelection,
+  Matrix.IsHermitian.spectralRestrictionMass,
+  Matrix.IsHermitian.normalizedSpectralRestriction}
+\leanok
+Let $\rho$ be Hermitian, with an orthonormal eigenbasis $(u_i)_i$ and real
+eigenvalues $(p_i)_i$. For a finite set $E$ of eigenvalue indices, define
+\begin{align}
+ P_E&=\sum_{i\in E}|u_i\rangle\langle u_i|,
+ \label{eq:entropy_typical_projection}\\
+ z&=\sum_{i\in E}p_i,
+ \label{eq:entropy_typical_mass}\\
+ \rho_E&=\sum_{i\in E}\frac{p_i}{z}|u_i\rangle\langle u_i|.
+ \label{eq:entropy_typical_density}
+\end{align}
+\end{definition}
+
+\begin{theorem}[Projection and density properties]
+\label{thm:entropy_typical_density}
+\lean{Matrix.IsHermitian.isStarProjection_spectralSelection,
+  Matrix.IsHermitian.commute_spectralSelection,
+  Matrix.IsHermitian.normalizedSpectralRestriction_eq,
+  Matrix.PosSemidef.normalizedSpectralRestriction_posSemidef,
+  Matrix.IsHermitian.trace_normalizedSpectralRestriction,
+  Matrix.PosSemidef.spectralRestrictionMass_le_one}
+\leanok
+\uses{def:entropy_typical_density}
+The operator $P_E$ is an orthogonal projection and commutes with $\rho$.
+The normalized spectral restriction satisfies $\rho_E=z^{-1}P_E\rho P_E$.
+If $\rho\ge0$ and $z>0$, then $\rho_E\ge0$ and $\operatorname{tr}\rho_E=1$.
+If in addition $\operatorname{tr}\rho=1$, then $z\le1$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:entropy_typical_density}
+In the eigenbasis, $P_E$ is diagonal with entries zero or one, and
+$P_E\rho P_E$ is diagonal with entries $p_i$ on $E$ and zero elsewhere.
+The retained normalized eigenvalues are nonnegative and sum to one. Their
+unnormalized sum is at most the sum of all nonnegative eigenvalues, which is
+$\operatorname{tr}\rho$.
+\end{proof}
+
+\begin{theorem}[Rank and entropy of a spectral restriction]
+\label{thm:entropy_typical_density_spectrum}
+\lean{Matrix.IsHermitian.rank_normalizedSpectralRestriction,
+  Matrix.PosSemidef.entropy_normalizedSpectralRestriction}
+\leanok
+\uses{def:entropy_typical_density,def:entropy_normalized_restriction}
+If $z\ne0$ and every selected eigenvalue is positive, then
+$\operatorname{rank}\rho_E=|E|$. If $\rho\ge0$ and $z>0$, then
+$S(\rho_E)=S(p')$, where $p_i'=p_i/z$ for $i\in E$.
+\end{theorem}
+\begin{proof}
+\leanok
+Unitary conjugation preserves rank and von Neumann entropy. In the eigenbasis,
+the diagonal matrix has exactly $|E|$ nonzero entries, and its entropy is
+$-\sum_{i\in E}p_i'\log p_i'$. The zero entries contribute nothing.
+\end{proof}
+
+\begin{theorem}[Typical spectral rank and von Neumann entropy]
+\label{thm:entropy_typical_density_bounds}
+\lean{Matrix.PosSemidef.typicalSpectralRestriction_entropy_bounds}
+\leanok
+\uses{def:entropy_typical_density,def:von_neumann_entropy}
+Let $\rho\ge0$, let $S=S(\rho)$, and suppose that $z>0$ and
+$e^{-S-w}\le p_i\le e^{-S+w}$ for every $i\in E$. Then
+\begin{align}
+ |\log\operatorname{rank}\rho_E-S(\rho)|&\le w+|\log z|,
+ \label{eq:entropy_typical_rank_bound}\\
+ |S(\rho_E)-S(\rho)|&\le w+|\log z|.
+ \label{eq:entropy_typical_density_bound}
+\end{align}
+This gives the typical-Schmidt entropy estimates for actual reduced density
+matrices \cite[Section~8]{OpenAI2026AreaLaw}; zero eigenvalues outside $E$ are
+permitted.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:entropy_typical_density_spectrum,thm:entropy_typical_spectrum}
+The lower spectral bound makes all selected eigenvalues positive. Substitute
+$\operatorname{rank}\rho_E=|E|$ and $S(\rho_E)=S(p')$ into
+Theorem~\ref{thm:entropy_typical_spectrum}.
+\end{proof}
