@@ -1,0 +1,17 @@
+{
+  "kind": "blueprint",
+  "command": [
+    "latexmk",
+    "-xelatex",
+    "-interaction=nonstopmode",
+    "-halt-on-error",
+    "-outdir=tmp/pdfs/iid-surprisal",
+    "docs/provenance/evidence/iidSurprisal8753/standalone-wrapper.tex"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 2.83,
+  "source_revision": "a862136a75385465447223efcf08c009a959b660",
+  "log": "docs/provenance/evidence/iidSurprisal8753/blueprint.log",
+  "sha256": "62fb8fb92c22d9d8fe96cc82a49cdd118b1ca644fabe430a19ad2189cad265f8"
+}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "scripts/generate_import_aggregators.py",
+    "--check"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.99,
+  "source_revision": "847d88834d8050e3e3f670d5466548ebba5137ba",
+  "log_sha256": "39eb81233c203fe0dd47802ffeb92a43e738eaadf689b2d623d54a966063962c"
+}

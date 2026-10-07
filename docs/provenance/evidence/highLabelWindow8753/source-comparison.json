@@ -1,0 +1,29 @@
+{
+  "source_commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "source_lines": "07-comparators.tex255\u2013281",
+  "source_revision": "89941482d3b3880b524e7d7f8a4adb1e2cc80aad",
+  "public_declarations": [
+    "TensorPower.exists_labelProj_mass_entropy_window",
+    "TensorPower.eventually_exists_labelProj_finKronecker_entropy_window",
+    "TensorPower.exists_label_sequence_mass_entropy_asymptotic",
+    "TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic"
+  ],
+  "result": "no mathematical or signature-faithfulness issue found",
+  "finite_criterion": "Explicit auxiliary theorem with actual density surprisal-tail premise; it is discharged in the iid theorem, not advertised as an unrestricted source conclusion.",
+  "iid_window": "Actual canonical finKronecker constant density. Only PSD and trace one. Copy commutation and finite-product concentration derived, not assumed. Zero eigenvalue joint weights vanish.",
+  "common_sequence": "One dependent label sequence chosen for all k; same label gives eventual inverse polynomial trace mass and little-o error. Small k fallback is proved to exist using trace one.",
+  "pure_sequence": "Actual one-copy partialTraceLeft of rank-one density, literal product vector in grouped coordinates. Unit norm is the only vector hypothesis, squared norm is converted using actual product marginal/projection identity.",
+  "definitions_reviewed": [
+    "Matrix.finKronecker is the literal product of entries on finite configurations",
+    "PermutationRepresentation.labelProj is the central isotypic projector of actual copyPerm representation",
+    "vonNeumannEntropy is canonical entropy of actual reduced density",
+    "Asymptotics.IsLittleO is the standard eventual error criterion"
+  ],
+  "conclusions_not_claimed": [
+    "positive initial uniform-pair mass",
+    "metric/inverse bounds",
+    "amplification",
+    "ground-state area law",
+    "spatial physical realization"
+  ]
+}

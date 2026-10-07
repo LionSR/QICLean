@@ -1,0 +1,25 @@
+\subsection{Commutation recovered from a regularized filter}
+\label{sec:shifted_density_commutation}
+
+\begin{theorem}[Commutants of nonzero matrix powers]
+\label{thm:shifted_density_commutation}
+\lean{Matrix.PosDef.commute_rpow_iff,
+  Matrix.PosSemidef.commute_add_smul_one_rpow_iff,
+  Matrix.PosSemidef.commute_of_commute_shifted_inverse_power}
+\leanok
+Let $A$ be a positive definite complex matrix, $r\in\R\setminus\{0\}$,
+and $\rho$ any complex matrix of the same size. Then $A^r$ commutes with
+$\rho$ if and only if $A$ commutes with $\rho$.
+Consequently, if $x\ge0$ and $a,b>0$, commutation of $\rho$ with the
+regularized filter $(x+b\Id)^{-a/2}$ implies $[\rho,x]=0$.
+This is the functional-calculus implication in
+\cite[Section~4, descending stationarity]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}
+\leanok
+Functional calculus preserves commutation with an arbitrary matrix.
+The power identity $(A^r)^{1/r}=A$ gives the converse.
+For the shifted matrix, subtracting the scalar matrix $b\Id$ preserves
+commutation, and $-a/2\ne0$. Taking $r=2$ also recovers commutation
+with a positive definite filter $L$ from commutation with $L^2$.
+\end{proof}

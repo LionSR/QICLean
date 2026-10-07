@@ -1,0 +1,47 @@
+% OpenAI mathematical source adc7f1241b42e322a6451854ab7e4b4c146bf78a
+% Lines 130–147 followed by 255–281.
+\eqref{comparator:typical-set}, and a mean tree with metrics
+\eqref{comparator:metrics}. There is a sequence of common auxiliary
+labels $\lambda_k$ and nonzero vectors
+\begin{equation}
+ \mathrm{pre}_k=\pi_R^{\lambda_k}
+  (\widetilde\Omega\otimes\mathrm{Bell}_{CR})^{\otimes k}
+       \in\mathcal S_k,
+ \qquad \|\mathrm{pre}_k\|\le1,
+ \label{comparator:prevector}
+\end{equation}
+Here $\pi_R^{\lambda_k}$ is the Schur-label projection on the $R$ copies.
+These vectors are physical mean-energy eigenvectors of eigenvalue
+$\widetilde E_0$ and have label $\lambda_k$ on both $C$ and $R$.
+For every tree above, set
+\[
+ N=\|\mathcal M^{-s}\mathrm{pre}_k\|,
+ \qquad v=\mathcal M^{-s}\mathrm{pre}_k/N,
+ \qquad
+The auxiliary label must have at least inverse polynomial probability in
+$\mathrm{post}_k$.  We therefore select it using $\psi$, then impose
+it on the initial auxiliary pair.  Its initial probability need only
+be nonzero; the prevector remains unnormalized.
+
+In $\psi^{\otimes k}$, the iid surprisal on $R$ is
+$kS'+o(k)$ in probability.  For instance, at fixed system Chebyshev's
+inequality gives a window of width $k^{3/4}$.  By
+\eqref{comparator:label-remainder}, the difference between that surprisal
+and $F_R$ exceeds $k^{3/4}$ with probability at most
+$\poly(k)e^{-k^{3/4}/2}$.  The number of labels is polynomial.
+Consequently one can select $\lambda_k$ such that
+\begin{equation}
+ q_k:=\|\pi_R^{\lambda_k}\psi^{\otimes k}\|^2
+       \ge\poly(k)^{-1},\qquad
+ \log d_{\lambda_k}=kS'+o(k).
+ \label{comparator:high-label}
+\end{equation}
+The same label has positive probability on the initial uniform pair:
+every label allowed for $d_*$ occurs in the tensor power of a full-rank
+maximally mixed density.  This proves that \eqref{comparator:prevector}
+is nonzero.  Its physical part is unchanged by the auxiliary projection,
+so it is an exact mean-energy eigenvector.  On the repeated uniform pair,
+the $C$ and $R$ labels agree.  Each metric preserves these two labels:
+a central permutation operator on an auxiliary system commutes with the
+simultaneous permutations on a larger region containing it.  The tree
+preserves them as well.

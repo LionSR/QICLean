@@ -1,0 +1,30 @@
+{
+  "native_list": "docs/provenance/evidence/iidSurprisalIntegration8753/NativeDeclarations.txt",
+  "native_list_sha256": "19d13050bbc7346b612dd3be7a4dce652a483c552be9995675e2d3456eba8ec6",
+  "native_declarations": 3193,
+  "expected_four_names": [
+    "Entropy.surprisalTail_pi_le_variance",
+    "Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal",
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le",
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le"
+  ],
+  "contains_all_four": true,
+  "missing": [],
+  "rendered_document": "blueprint/web/ch-entropy.html",
+  "rendered_document_sha256": "073e114d0120b932b3e96d667ce2fc5a8f3fc8486f7d3dd3e0f032471dd7bd2a",
+  "rendered_doc_links": {
+    "Entropy.surprisalTail_pi_le_variance": [
+      "../docs/find/#doc/Entropy.surprisalTail_pi_le_variance"
+    ],
+    "Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal": [
+      "../docs/find/#doc/Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal"
+    ],
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le": [
+      "../docs/find/#doc/Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le"
+    ],
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le": [
+      "../docs/find/#doc/Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le"
+    ]
+  },
+  "result": "passed"
+}

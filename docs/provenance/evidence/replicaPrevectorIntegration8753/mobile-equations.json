@@ -1,0 +1,27 @@
+{
+  "equations": [
+    {
+      "id": "a0000002490",
+      "clientWidth": 312,
+      "scrollWidth": 312,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002492",
+      "clientWidth": 310,
+      "scrollWidth": 480,
+      "scrollLeft": 170,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002493",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    }
+  ],
+  "result": "passed",
+  "interpretation": "Long displays use horizontal scrolling within the equation box. Each right endpoint was reached and captured; the page itself has no horizontal overflow."
+}

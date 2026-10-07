@@ -1,0 +1,15 @@
+{
+  "kind": "cache",
+  "command": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 88.57,
+  "source_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
+  "log": "docs/provenance/evidence/replicaPrevector8753/mathlib-cache.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

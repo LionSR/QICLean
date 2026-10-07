@@ -1,0 +1,13 @@
+{
+  "kind": "reader",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/replicaPrevectorIntegration8753/inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 6.07,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/web-inspection.log",
+  "sha256": "68f71b2a8c97337b8fdd841c554c523bbf75d1c074e1703ab8aed1fdae5893d7"
+}

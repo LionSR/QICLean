@@ -1,0 +1,14 @@
+{
+  "source_revision": "3cc74d334c21d5693c6e2072c2e82e17630142c8",
+  "command": [
+    "python3",
+    "scripts/generate_import_aggregators.py",
+    "--check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-defect",
+  "started_utc": "2026-10-07T20:33:10.246747+00:00",
+  "elapsed_seconds": 0.398,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaDefectIntegration8750/imports.log",
+  "sha256": "4cfdd659efd71421782d0b57fe3667b802bf23a67c9e57b71115a77af3a2c970"
+}

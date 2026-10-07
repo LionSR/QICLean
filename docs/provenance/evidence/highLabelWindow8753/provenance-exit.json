@@ -1,0 +1,19 @@
+{
+  "kind": "provenance",
+  "command": [
+    "/tmp/qic-density-simplex-provenance-env/bin/python",
+    "docs/provenance/evidence/highLabelWindow8753/check_provenance.py",
+    "--root",
+    ".",
+    "--validator",
+    "/tmp/tnlean-area-law-provenance-validator.py",
+    "--schema",
+    "/tmp/tnlean-area-law-provenance-schema.json"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.03,
+  "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+  "log": "docs/provenance/evidence/highLabelWindow8753/provenance.log",
+  "sha256": "b47d5eb1ef492cdc51bbe0871efda87ee672df65e1be8fd9eecae04985d2c953"
+}

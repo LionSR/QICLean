@@ -1,0 +1,17 @@
+{
+  "source_revision": "2b2ce0a9e57ffff7c6044b4133c62f6f5afa0828",
+  "argv": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "exit_code": 0,
+  "elapsed_seconds": 0.3410619580099592,
+  "log": "docs/provenance/evidence/replicaSymmetryParentIntegration8750/paper-gaps.log",
+  "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+  "uncompressed_sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+  "uncompressed_bytes": 91,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

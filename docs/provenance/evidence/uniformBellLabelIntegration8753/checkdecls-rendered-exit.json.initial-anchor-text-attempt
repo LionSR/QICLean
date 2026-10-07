@@ -1,0 +1,16 @@
+{
+  "kind": "checkdecls-rendered",
+  "command": [
+    "lake",
+    "env",
+    ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+    "docs/provenance/evidence/uniformBellLabelIntegration8753/lean_decls"
+  ],
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "working_directory": ".",
+  "exit_code": 1,
+  "elapsed_seconds": 37.203572832993814,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/checkdecls-rendered.log",
+  "sha256": "929a6ef379199a6a010e786c453a9483a2b428a64823c1b276480bbcf29eb33e",
+  "input_sha256": "7e304d25c4873d383798cab7ee39c36cecb1ab10af8caf203c80eae762c9ed7e"
+}

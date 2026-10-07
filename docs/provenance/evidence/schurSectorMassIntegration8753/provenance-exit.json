@@ -1,0 +1,17 @@
+{
+  "source_revision": "56f188afeeb014a915287a32ef7372cf10648845",
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/schurSectorMassIntegration8753/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-schur-sector-mass",
+  "exit_code": 0,
+  "elapsed_seconds": 0.7304773329960881,
+  "log": "docs/provenance/evidence/schurSectorMassIntegration8753/provenance.log",
+  "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+  "uncompressed_sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+  "uncompressed_bytes": 69,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

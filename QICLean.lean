@@ -14,5 +14,6 @@ import QICLean.Channel
 import QICLean.Entropy
 import QICLean.Kraus
 import QICLean.QPF
+import QICLean.Representation
 import QICLean.Spectral
 import QICLean.Topology

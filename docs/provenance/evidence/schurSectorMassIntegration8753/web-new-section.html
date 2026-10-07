@@ -1,0 +1,155 @@
+<h1 id="sec:schur_sector_mass">13.20 Mass selection among Schur sectors</h1>
+
+<p>Let \(\Omega \) be a finite orthonormal basis of cardinality \(q\), and let \(\pi ^\lambda \) denote the central isotypic projectors for the copy-permutation representation on \((\mathbb C^\Omega )^{\otimes k}\), where \(k\ge 0\). Their sum is the identity, and the number of nonzero projectors is at most \((k+1)^{q^2}\). The following estimates give the generic mass selection step in <span class="cite">
+	[
+	
+	OpenAI2026AreaLaw
+	, Section&#160;7
+	]
+</span>. They impose no entropy window on the irreducible dimension \(d_\lambda \). The asymptotic relation \(\log d_{\lambda _k}=kS'+o(k)\) requires concentration and a further selection within the corresponding window. Positive occurrence on the initial uniform pair, matching of its two labels, and its energy condition are separate assertions. </p>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:schur_sector_trace_mass">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">13.20.1</span>
+    <span class="theorem_thmtitle">Density mass in a Schur sector</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="ch-entropy.html#thm:schur_sector_trace_mass">#</a>
+    
+    <a class="icon proof" href="ch-entropy.html#a0000002397"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="../docs/find/#doc/TensorPower.exists_labelProj_trace_mass_ge" class="lean_decl">TensorPower.exists_labelProj_trace_mass_ge</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>   For every positive semidefinite \(\rho \) on \((\mathbb C^\Omega )^{\otimes k}\) with \(\operatorname {tr}\rho =1\), there is an irreducible label \(\lambda \) such that \(\operatorname {tr}(\rho \pi ^\lambda )\ge (k+1)^{-q^2}\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000002397">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>Put \(L=\{ \lambda :\pi ^\lambda \ne 0\} \) and \(m_\lambda =\operatorname {tr}(\rho \pi ^\lambda )\). Positivity gives \(m_\lambda \ge 0\), and completeness gives \(\sum _{\lambda \in L}m_\lambda =1\), so \(L\) is nonempty. Since \(|L|\le (k+1)^{q^2}\), at least one summand is at least \((k+1)^{-q^2}\). </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:schur_sector_norm_mass">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">13.20.2</span>
+    <span class="theorem_thmtitle">Projected norm in a Schur sector</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="ch-entropy.html#thm:schur_sector_norm_mass">#</a>
+    
+    <a class="icon proof" href="ch-entropy.html#a0000002398"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="ch-entropy.html#thm:schur_sector_trace_mass">Theorem 13.20.1</a></li>
+          
+          <li><a href="ch-entropy.html#thm:schur_sector_trace_mass">Theorem 13.20.1</a></li>
+          
+          <li><a href="ch-entropy.html#thm:schur_sector_trace_mass">Theorem 13.20.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="../docs/find/#doc/TensorPower.exists_labelProj_norm_mass_ge" class="lean_decl">TensorPower.exists_labelProj_norm_mass_ge</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    Let \(S\) be a finite orthonormal basis and let \(v\) be a unit vector in \(\mathbb C^S\otimes (\mathbb C^\Omega )^{\otimes k}\). There is an irreducible label \(\lambda \) such that \(\| (I_S\otimes \pi ^\lambda )v\| ^2\ge (k+1)^{-q^2}\). In particular, \((I_S\otimes \pi ^\lambda )v\ne 0\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000002398">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> The reduced state \(\rho =\operatorname {tr}_S|v\rangle \langle v|\) is positive semidefinite and has trace one. Apply Theorem&#160;<a href="ch-entropy.html#thm:schur_sector_trace_mass">13.20.1</a> to \(\rho \). For \(Q=I_S\otimes \pi ^\lambda \), the trace-pairing identity and the Hermitian idempotence \(Q^*=Q=Q^2\) give </p>
+<div class="displaymath" id="eq:schur_sector_marginal_norm">
+  \begin{align}  \operatorname {tr}(\rho \pi ^\lambda ) & =\langle v,Qv\rangle =\langle Qv,Qv\rangle =\| Qv\| ^2. \label{eq:schur_sector_marginal_norm} \end{align}
+</div>
+<p> The lower bound is strictly positive, so \(Qv\ne 0\). </p>
+
+  </div>
+</div>

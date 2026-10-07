@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-regional-typical-state-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductTypicalState.lean",
+        "declaration": "FiniteProduct.typicalPureState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize one global normalized typical vector selected from the original actual X marginal, its canonical-coordinate action, norm, actual selected X marginal, and the actual marginal positive-semidefinite and entropy bounds simultaneously on every physical region disjoint from X. Canonical coordinate and marginal identities are proved internally; the selected vector never depends on the observed region. No supplied coordinate or marginal certificate, full-rank hypothesis, enlarged-region spectral assumption, or assumed entropy bound is used."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.FiniteProductTypicalState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/build.log",
+            "sha256": "02d82beddf3eb178664eced55f8442e5065340b36dd9a273de539720d8a855c9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/regionalTypicalState8753/FiniteProductTypicalStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/axioms.log",
+            "sha256": "02fd5813a0b267bde843838e078a77179dd062d6aada6473ca0fc8819ee2e12b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-regional-typical-state-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductTypicalState.lean",
+        "declaration": "FiniteProduct.split_typicalPureState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize one global normalized typical vector selected from the original actual X marginal, its canonical-coordinate action, norm, actual selected X marginal, and the actual marginal positive-semidefinite and entropy bounds simultaneously on every physical region disjoint from X. Canonical coordinate and marginal identities are proved internally; the selected vector never depends on the observed region. No supplied coordinate or marginal certificate, full-rank hypothesis, enlarged-region spectral assumption, or assumed entropy bound is used."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.FiniteProductTypicalState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/build.log",
+            "sha256": "02d82beddf3eb178664eced55f8442e5065340b36dd9a273de539720d8a855c9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/regionalTypicalState8753/FiniteProductTypicalStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/axioms.log",
+            "sha256": "02fd5813a0b267bde843838e078a77179dd062d6aada6473ca0fc8819ee2e12b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-regional-typical-state-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductTypicalState.lean",
+        "declaration": "FiniteProduct.norm_typicalPureState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize one global normalized typical vector selected from the original actual X marginal, its canonical-coordinate action, norm, actual selected X marginal, and the actual marginal positive-semidefinite and entropy bounds simultaneously on every physical region disjoint from X. Canonical coordinate and marginal identities are proved internally; the selected vector never depends on the observed region. No supplied coordinate or marginal certificate, full-rank hypothesis, enlarged-region spectral assumption, or assumed entropy bound is used."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.FiniteProductTypicalState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/build.log",
+            "sha256": "02d82beddf3eb178664eced55f8442e5065340b36dd9a273de539720d8a855c9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/regionalTypicalState8753/FiniteProductTypicalStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/axioms.log",
+            "sha256": "02fd5813a0b267bde843838e078a77179dd062d6aada6473ca0fc8819ee2e12b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-regional-typical-state-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductTypicalState.lean",
+        "declaration": "FiniteProduct.reducedPure_typicalPureState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize one global normalized typical vector selected from the original actual X marginal, its canonical-coordinate action, norm, actual selected X marginal, and the actual marginal positive-semidefinite and entropy bounds simultaneously on every physical region disjoint from X. Canonical coordinate and marginal identities are proved internally; the selected vector never depends on the observed region. No supplied coordinate or marginal certificate, full-rank hypothesis, enlarged-region spectral assumption, or assumed entropy bound is used."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.FiniteProductTypicalState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/build.log",
+            "sha256": "02d82beddf3eb178664eced55f8442e5065340b36dd9a273de539720d8a855c9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/regionalTypicalState8753/FiniteProductTypicalStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/axioms.log",
+            "sha256": "02fd5813a0b267bde843838e078a77179dd062d6aada6473ca0fc8819ee2e12b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-regional-typical-state-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductTypicalState.lean",
+        "declaration": "FiniteProduct.entropy_typicalPureState_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize one global normalized typical vector selected from the original actual X marginal, its canonical-coordinate action, norm, actual selected X marginal, and the actual marginal positive-semidefinite and entropy bounds simultaneously on every physical region disjoint from X. Canonical coordinate and marginal identities are proved internally; the selected vector never depends on the observed region. No supplied coordinate or marginal certificate, full-rank hypothesis, enlarged-region spectral assumption, or assumed entropy bound is used."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.FiniteProductTypicalState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/build.log",
+            "sha256": "02d82beddf3eb178664eced55f8442e5065340b36dd9a273de539720d8a855c9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/regionalTypicalState8753/FiniteProductTypicalStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/axioms.log",
+            "sha256": "02fd5813a0b267bde843838e078a77179dd062d6aada6473ca0fc8819ee2e12b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-regional-typical-state-06",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductTypicalState.lean",
+        "declaration": "FiniteProduct.reducedPure_typicalPureState_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize one global normalized typical vector selected from the original actual X marginal, its canonical-coordinate action, norm, actual selected X marginal, and the actual marginal positive-semidefinite and entropy bounds simultaneously on every physical region disjoint from X. Canonical coordinate and marginal identities are proved internally; the selected vector never depends on the observed region. No supplied coordinate or marginal certificate, full-rank hypothesis, enlarged-region spectral assumption, or assumed entropy bound is used."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.FiniteProductTypicalState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/build.log",
+            "sha256": "02d82beddf3eb178664eced55f8442e5065340b36dd9a273de539720d8a855c9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/regionalTypicalState8753/FiniteProductTypicalStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/axioms.log",
+            "sha256": "02fd5813a0b267bde843838e078a77179dd062d6aada6473ca0fc8819ee2e12b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/FiniteProductTypicalState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/regionalTypicalState8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    }
+  ]
+}

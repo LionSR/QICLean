@@ -1,0 +1,13 @@
+{
+  "kind": "web",
+  "command": [
+    "texra-blueprint",
+    "web"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 55.88,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/web.log",
+  "sha256": "b3b98af045df5b51a818f14ed3dce4e1f405b043eba295f3ecd66b31896f2a88"
+}

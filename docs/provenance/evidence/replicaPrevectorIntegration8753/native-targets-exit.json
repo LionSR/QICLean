@@ -1,0 +1,13 @@
+{
+  "kind": "native",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaPrevectorIntegration8753/check-native-targets.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.61,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/native-targets.log",
+  "sha256": "97425ee11220dd0e2dd56092436e8eb4abbbd4580b4c4e4a022264caf7e5f2ec"
+}

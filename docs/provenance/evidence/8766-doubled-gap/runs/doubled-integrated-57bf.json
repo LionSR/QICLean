@@ -1,0 +1,75 @@
+[
+  {
+    "head": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.DoubledSystemGap"
+    ],
+    "exit_code": 0,
+    "seconds": 1.5628712469988386,
+    "log": "<VALIDATION>/doubled-integrated-57bf-0.log"
+  },
+  {
+    "head": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+    "file": "QICLean/Analysis/DoubledSystemGap.lean",
+    "sha256": "e354cd36fa70fe4d751a02833e28d961b3a1eb0405ae068b32d3225731e4a51b",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Analysis/DoubledSystemGap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.621253068995429,
+    "log": "<VALIDATION>/doubled-integrated-57bf-1.log"
+  },
+  {
+    "head": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+    "file": "QICLeanTest/DoubledSystemGap.lean",
+    "sha256": "2ea9a4e04a86eebc17793c65259c44d83033550c7880eadf422afa7d1950025c",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/DoubledSystemGap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 4.269716424001672,
+    "log": "<VALIDATION>/doubled-integrated-57bf-2.log"
+  },
+  {
+    "head": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+    "file": "<RAW_DRIVER>",
+    "sha256": "b81d4a7589dc81823e2e2fcbcd71bfb43fc9e85c75514b79dd8a5fb59e435109",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "<RAW_DRIVER>"
+    ],
+    "exit_code": 0,
+    "seconds": 3.100567375004175,
+    "log": "<VALIDATION>/doubled-integrated-57bf-3.log"
+  }
+]

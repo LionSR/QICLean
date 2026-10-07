@@ -1,0 +1,306 @@
+Matrix.norm_sq_one_kronecker_mulVec_prod_omegaVec (d k : Nat)
+  (P : Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex)
+  (hP :
+    @IsStarProjection.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex)
+      (@Matrix.instMulOfFintypeOfAddCommMonoid.{0, 0} (Fin k → Fin d) Complex
+        (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+          fun (a : Fin k) => Fin.fintype d)
+        Complex.instMul Complex.instAddCommMonoid)
+      (@Matrix.instStar.{0, 0} (Fin k → Fin d) Complex
+        (@InvolutiveStar.toStar.{0} Complex
+          (@StarAddMonoid.toInvolutiveStar.{0} Complex
+            (@AddCommMonoid.toAddMonoid.{0} Complex
+              (@NonUnitalNonAssocSemiring.toAddCommMonoid.{0} Complex
+                (@NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring.{0} Complex
+                  (@NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing.{0} Complex
+                    (@NonUnitalCommRing.toNonUnitalNonAssocCommRing.{0} Complex Complex.instNonUnitalCommRing)))))
+            (@StarRing.toStarAddMonoid.{0} Complex
+              (@NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring.{0} Complex
+                (@NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing.{0} Complex
+                  (@NonUnitalCommRing.toNonUnitalNonAssocCommRing.{0} Complex Complex.instNonUnitalCommRing)))
+              Complex.instStarRing))))
+      P) :
+  @Eq.{1} Real
+    (@HPow.hPow.{0, 0, 0} Real Nat Real
+      (@instHPow.{0, 0} Real Nat (@NPow.toPow.{0} Real (@Monoid.toNPow.{0} Real Real.instMonoid)))
+      (@Norm.norm.{0}
+        (WithLp.{0}
+          (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+            (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+              (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+              (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+          (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex))
+        (@PiLp.instNorm.{0, 0}
+          (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+            (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+              (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+              (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+          (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d))
+          (fun (a : Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) => Complex)
+          (@instFintypeProd.{0, 0} (Fin k → Fin d) (Fin k → Fin d)
+            (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+              fun (a : Fin k) => Fin.fintype d)
+            (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+              fun (a : Fin k) => Fin.fintype d))
+          fun (i : Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) => Complex.instNorm)
+        (@WithLp.toLp.{0}
+          (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+            (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+              (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+              (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+          (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex)
+          (@Matrix.mulVec.{0, 0, 0} (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d))
+            (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) Complex
+            (@NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring.{0} Complex
+              (@NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing.{0} Complex
+                (@NonUnitalCommRing.toNonUnitalNonAssocCommRing.{0} Complex Complex.instNonUnitalCommRing)))
+            (@instFintypeProd.{0, 0} (Fin k → Fin d) (Fin k → Fin d)
+              (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+                fun (a : Fin k) => Fin.fintype d)
+              (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+                fun (a : Fin k) => Fin.fintype d))
+            (@Matrix.kroneckerMap.{0, 0, 0, 0, 0, 0, 0} Complex Complex Complex (Fin k → Fin d) (Fin k → Fin d)
+              (Fin k → Fin d) (Fin k → Fin d)
+              (fun (x1 x2 : Complex) =>
+                @HMul.hMul.{0, 0, 0} Complex Complex Complex (@instHMul.{0} Complex Complex.instMul) x1 x2)
+              (@OfNat.ofNat.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex) (nat_lit 1)
+                (@One.toOfNat1.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex)
+                  (@Matrix.one.{0, 0} (Fin k → Fin d) Complex
+                    (fun (a b : Fin k → Fin d) =>
+                      @Fintype.decidablePiFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d)
+                        (fun (a : Fin k) => instDecidableEqFin d) (Fin.fintype k) a b)
+                    Complex.instZero Complex.instOne)))
+              P)
+            fun (x : Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) =>
+            @Finset.prod.{0, 0} (Fin k) Complex (@CommRing.toCommMonoid.{0} Complex Complex.commRing)
+              (@Finset.univ.{0} (Fin k) (Fin.fintype k)) fun (i : Fin k) =>
+              Matrix.omegaVec d
+                (@Prod.mk.{0, 0} (Fin d) (Fin d) (@Prod.fst.{0, 0} (Fin k → Fin d) (Fin k → Fin d) x i)
+                  (@Prod.snd.{0, 0} (Fin k → Fin d) (Fin k → Fin d) x i)))))
+      (@OfNat.ofNat.{0} Nat (nat_lit 2) (instOfNatNat (nat_lit 2))))
+    (@HDiv.hDiv.{0, 0, 0} Real Real Real (@instHDiv.{0} Real (@DivInvMonoid.toDiv.{0} Real Real.instDivInvMonoid))
+      (Complex.re
+        (@Matrix.trace.{0, 0} (Fin k → Fin d) Complex
+          (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+            fun (a : Fin k) => Fin.fintype d)
+          Complex.instAddCommMonoid P))
+      (@HPow.hPow.{0, 0, 0} Real Nat Real
+        (@instHPow.{0, 0} Real Nat (@NPow.toPow.{0} Real (@Monoid.toNPow.{0} Real Real.instMonoid)))
+        (@Nat.cast.{0} Real Real.instNatCast d) k))
+`#`-commands, such as '#check', are not allowed in 'Mathlib' [linter.hashCommand]
+Matrix.one_kronecker_mulVec_prod_omegaVec_ne_zero_iff (d k : Nat)
+  (hd : @LT.lt.{0} Nat instLTNat (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0))) d)
+  (P : Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex) :
+  Iff
+    (@Ne.{1}
+      (WithLp.{0}
+        (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+          (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+            (@AddMonoidWithOne.toNatCast.{0} ENNReal
+              (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+            (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+              (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+        (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex))
+      (@WithLp.toLp.{0}
+        (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+          (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+            (@AddMonoidWithOne.toNatCast.{0} ENNReal
+              (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+            (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+              (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+        (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex)
+        (@Matrix.mulVec.{0, 0, 0} (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d))
+          (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) Complex
+          (@NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring.{0} Complex
+            (@NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing.{0} Complex
+              (@NonUnitalCommRing.toNonUnitalNonAssocCommRing.{0} Complex Complex.instNonUnitalCommRing)))
+          (@instFintypeProd.{0, 0} (Fin k → Fin d) (Fin k → Fin d)
+            (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+              fun (a : Fin k) => Fin.fintype d)
+            (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+              fun (a : Fin k) => Fin.fintype d))
+          (@Matrix.kroneckerMap.{0, 0, 0, 0, 0, 0, 0} Complex Complex Complex (Fin k → Fin d) (Fin k → Fin d)
+            (Fin k → Fin d) (Fin k → Fin d)
+            (fun (x1 x2 : Complex) =>
+              @HMul.hMul.{0, 0, 0} Complex Complex Complex (@instHMul.{0} Complex Complex.instMul) x1 x2)
+            (@OfNat.ofNat.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex) (nat_lit 1)
+              (@One.toOfNat1.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex)
+                (@Matrix.one.{0, 0} (Fin k → Fin d) Complex
+                  (fun (a b : Fin k → Fin d) =>
+                    @Fintype.decidablePiFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d)
+                      (fun (a : Fin k) => instDecidableEqFin d) (Fin.fintype k) a b)
+                  Complex.instZero Complex.instOne)))
+            P)
+          fun (x : Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) =>
+          @Finset.prod.{0, 0} (Fin k) Complex (@CommRing.toCommMonoid.{0} Complex Complex.commRing)
+            (@Finset.univ.{0} (Fin k) (Fin.fintype k)) fun (i : Fin k) =>
+            Matrix.omegaVec d
+              (@Prod.mk.{0, 0} (Fin d) (Fin d) (@Prod.fst.{0, 0} (Fin k → Fin d) (Fin k → Fin d) x i)
+                (@Prod.snd.{0, 0} (Fin k → Fin d) (Fin k → Fin d) x i))))
+      (@OfNat.ofNat.{0}
+        (WithLp.{0}
+          (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+            (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+              (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+              (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+          (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex))
+        (nat_lit 0)
+        (@Zero.toOfNat0.{0}
+          (WithLp.{0}
+            (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+              (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+                (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                  (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+                (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                  (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+            (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex))
+          (@NegZeroClass.toZero.{0}
+            (WithLp.{0}
+              (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+                (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+                  (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                    (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+                  (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                    (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+              (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex))
+            (@SubNegZeroMonoid.toNegZeroClass.{0}
+              (WithLp.{0}
+                (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+                  (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+                    (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                      (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+                    (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                      (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+                (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex))
+              (@SubtractionMonoid.toSubNegZeroMonoid.{0}
+                (WithLp.{0}
+                  (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+                    (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+                      (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                        (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+                      (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                        (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+                  (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex))
+                (@SubtractionCommMonoid.toSubtractionMonoid.{0}
+                  (WithLp.{0}
+                    (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+                      (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+                        (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                          (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+                        (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                          (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+                    (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex))
+                  (@AddCommGroup.toDivisionAddCommMonoid.{0}
+                    (WithLp.{0}
+                      (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+                        (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+                          (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                            (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+                          (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                            (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+                      (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex))
+                    (@WithLp.instAddCommGroup.{0}
+                      (@OfNat.ofNat.{0} ENNReal (nat_lit 2)
+                        (@instOfNatAtLeastTwo.{0} ENNReal (nat_lit 2)
+                          (@AddMonoidWithOne.toNatCast.{0} ENNReal
+                            (@AddCommMonoidWithOne.toAddMonoidWithOne.{0} ENNReal ENNReal.instAddCommMonoidWithOne))
+                          (@Nat.instAtLeastTwoHAddOfNat (@OfNat.ofNat.{0} Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
+                            (@Nat.instNeZeroSucc (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0)))))))
+                      (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex)
+                      (@Pi.addCommGroup.{0, 0} (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d))
+                        (fun (a : Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) => Complex)
+                        fun (i : Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) => Complex.addCommGroup))))))))))
+    (@Ne.{1} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex) P
+      (@OfNat.ofNat.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex) (nat_lit 0)
+        (@Zero.toOfNat0.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex)
+          (@Matrix.zero.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex Complex.instZero))))
+`#`-commands, such as '#check', are not allowed in 'Mathlib' [linter.hashCommand]
+TensorPower.labelProj_kronecker_mulVec_prod_omegaVec (d k : Nat)
+  (l :
+    @IrrepLabel.{0} (Equiv.Perm.{1} (Fin k)) (@Equiv.Perm.permGroup.{0} (Fin k))
+      (@Equiv.instFintype.{0, 0} (Fin k) (Fin k) (instDecidableEqFin k) (instDecidableEqFin k) (Fin.fintype k)
+        (Fin.fintype k))) :
+  @Eq.{1} (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d) → Complex)
+    (@Matrix.mulVec.{0, 0, 0} (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d))
+      (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) Complex
+      (@NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring.{0} Complex
+        (@NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing.{0} Complex
+          (@NonUnitalCommRing.toNonUnitalNonAssocCommRing.{0} Complex Complex.instNonUnitalCommRing)))
+      (@instFintypeProd.{0, 0} (Fin k → Fin d) (Fin k → Fin d)
+        (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+          fun (a : Fin k) => Fin.fintype d)
+        (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+          fun (a : Fin k) => Fin.fintype d))
+      (@Matrix.kroneckerMap.{0, 0, 0, 0, 0, 0, 0} Complex Complex Complex (Fin k → Fin d) (Fin k → Fin d)
+        (Fin k → Fin d) (Fin k → Fin d)
+        (fun (x1 x2 : Complex) =>
+          @HMul.hMul.{0, 0, 0} Complex Complex Complex (@instHMul.{0} Complex Complex.instMul) x1 x2)
+        (@PermutationRepresentation.labelProj.{0, 0} (Equiv.Perm.{1} (Fin k)) (Fin k → Fin d)
+          (@Equiv.Perm.permGroup.{0} (Fin k))
+          (@Equiv.instFintype.{0, 0} (Fin k) (Fin k) (instDecidableEqFin k) (instDecidableEqFin k) (Fin.fintype k)
+            (Fin.fintype k))
+          (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+            fun (a : Fin k) => Fin.fintype d)
+          (fun (a b : Fin k → Fin d) =>
+            @Fintype.decidablePiFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d)
+              (fun (a : Fin k) => instDecidableEqFin d) (Fin.fintype k) a b)
+          (TensorPower.copyPerm.{0} (Fin d) k) l)
+        (@OfNat.ofNat.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex) (nat_lit 1)
+          (@One.toOfNat1.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex)
+            (@Matrix.one.{0, 0} (Fin k → Fin d) Complex
+              (fun (a b : Fin k → Fin d) =>
+                @Fintype.decidablePiFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d)
+                  (fun (a : Fin k) => instDecidableEqFin d) (Fin.fintype k) a b)
+              Complex.instZero Complex.instOne))))
+      fun (x : Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) =>
+      @Finset.prod.{0, 0} (Fin k) Complex (@CommRing.toCommMonoid.{0} Complex Complex.commRing)
+        (@Finset.univ.{0} (Fin k) (Fin.fintype k)) fun (i : Fin k) =>
+        Matrix.omegaVec d
+          (@Prod.mk.{0, 0} (Fin d) (Fin d) (@Prod.fst.{0, 0} (Fin k → Fin d) (Fin k → Fin d) x i)
+            (@Prod.snd.{0, 0} (Fin k → Fin d) (Fin k → Fin d) x i)))
+    (@Matrix.mulVec.{0, 0, 0} (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d))
+      (Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) Complex
+      (@NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring.{0} Complex
+        (@NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing.{0} Complex
+          (@NonUnitalCommRing.toNonUnitalNonAssocCommRing.{0} Complex Complex.instNonUnitalCommRing)))
+      (@instFintypeProd.{0, 0} (Fin k → Fin d) (Fin k → Fin d)
+        (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+          fun (a : Fin k) => Fin.fintype d)
+        (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+          fun (a : Fin k) => Fin.fintype d))
+      (@Matrix.kroneckerMap.{0, 0, 0, 0, 0, 0, 0} Complex Complex Complex (Fin k → Fin d) (Fin k → Fin d)
+        (Fin k → Fin d) (Fin k → Fin d)
+        (fun (x1 x2 : Complex) =>
+          @HMul.hMul.{0, 0, 0} Complex Complex Complex (@instHMul.{0} Complex Complex.instMul) x1 x2)
+        (@OfNat.ofNat.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex) (nat_lit 1)
+          (@One.toOfNat1.{0} (Matrix.{0, 0, 0} (Fin k → Fin d) (Fin k → Fin d) Complex)
+            (@Matrix.one.{0, 0} (Fin k → Fin d) Complex
+              (fun (a b : Fin k → Fin d) =>
+                @Fintype.decidablePiFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d)
+                  (fun (a : Fin k) => instDecidableEqFin d) (Fin.fintype k) a b)
+              Complex.instZero Complex.instOne)))
+        (@PermutationRepresentation.labelProj.{0, 0} (Equiv.Perm.{1} (Fin k)) (Fin k → Fin d)
+          (@Equiv.Perm.permGroup.{0} (Fin k))
+          (@Equiv.instFintype.{0, 0} (Fin k) (Fin k) (instDecidableEqFin k) (instDecidableEqFin k) (Fin.fintype k)
+            (Fin.fintype k))
+          (@Pi.instFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d) (instDecidableEqFin k) (Fin.fintype k)
+            fun (a : Fin k) => Fin.fintype d)
+          (fun (a b : Fin k → Fin d) =>
+            @Fintype.decidablePiFintype.{0, 0} (Fin k) (fun (a : Fin k) => Fin d)
+              (fun (a : Fin k) => instDecidableEqFin d) (Fin.fintype k) a b)
+          (TensorPower.copyPerm.{0} (Fin d) k) l))
+      fun (x : Prod.{0, 0} (Fin k → Fin d) (Fin k → Fin d)) =>
+      @Finset.prod.{0, 0} (Fin k) Complex (@CommRing.toCommMonoid.{0} Complex Complex.commRing)
+        (@Finset.univ.{0} (Fin k) (Fin.fintype k)) fun (i : Fin k) =>
+        Matrix.omegaVec d
+          (@Prod.mk.{0, 0} (Fin d) (Fin d) (@Prod.fst.{0, 0} (Fin k → Fin d) (Fin k → Fin d) x i)
+            (@Prod.snd.{0, 0} (Fin k → Fin d) (Fin k → Fin d) x i)))
+`#`-commands, such as '#check', are not allowed in 'Mathlib' [linter.hashCommand]

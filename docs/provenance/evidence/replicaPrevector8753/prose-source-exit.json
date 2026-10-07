@@ -1,0 +1,15 @@
+{
+  "kind": "prose",
+  "command": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "3d9e0ad09ff5f4e6e226b726817010b9e3309d62"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.83,
+  "source_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
+  "log": "docs/provenance/evidence/replicaPrevector8753/prose-source.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

@@ -1,0 +1,22 @@
+{
+  "source_revision": "56f188afeeb014a915287a32ef7372cf10648845",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/schurSectorMassIntegration8753/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-schur-sector-mass",
+  "exit_code": 0,
+  "elapsed_seconds": 15.185658665999654,
+  "log": "docs/provenance/evidence/schurSectorMassIntegration8753/axioms.log",
+  "sha256": "571f1227d06b639a26489dd4c3c9be7a21a8fc92ec4c30023a9913bc35ca9588",
+  "uncompressed_sha256": "571f1227d06b639a26489dd4c3c9be7a21a8fc92ec4c30023a9913bc35ca9588",
+  "uncompressed_bytes": 207,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

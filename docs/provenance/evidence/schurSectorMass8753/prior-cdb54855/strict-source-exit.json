@@ -1,0 +1,23 @@
+{
+  "source_revision": "cdb5485555253efc7156b619f9cec8c4153930fb",
+  "production_sha256": {
+    "QICLean/Representation/SchurSectorMass.lean": "0d707fd2b080ed1231a0336cab4f3136abc5b5f0191b8a3639252b764707c919",
+    "blueprint/src/fragment/schur_sector_mass.tex": "8915129ebf8a6dce748c36e61cab45fb4bf95bfc9969e10cd58dddf3a12ac340",
+    "docs/tactic_patterns.md": "ee843acaaea5e509a8d9e590a81eff3dd39c72ef7393ac152a1adb8943a52b89"
+  },
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Representation/SchurSectorMass.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-schur-sector-mass",
+  "exit_code": 0,
+  "elapsed_seconds": 16.739999917001114,
+  "log": "docs/provenance/evidence/schurSectorMass8753/strict-source.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

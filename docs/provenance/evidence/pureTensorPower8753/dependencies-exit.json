@@ -1,0 +1,14 @@
+{
+  "status": "exploratory, excluded from final provenance",
+  "source_sha256": "259eb3829fa1441eda41a2afad0229ef14327d0f5ca6bde0443d76f39150c352",
+  "argv": [
+    "lake",
+    "build",
+    "QICLean.Algebra.KroneckerFactorPositivity",
+    "QICLean.Algebra.MatrixAux",
+    "QICLean.Channel.PartialTrace"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 3.8724665839981753,
+  "raw_log_sha256": "1376184e84301626aee03f8277a2b56a6984d032640217816de6de5b9e9b906f"
+}

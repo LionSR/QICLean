@@ -1,0 +1,11 @@
+{
+  "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+  "prebuilt_fetch_source_revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+  "fetch_exit_code": 0,
+  "fetch_raw_log": "docs/provenance/evidence/spectralCutoffMass8750/mathlib-cache.log",
+  "fetch_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+  "manifest_sha256": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf",
+  "manifest_unchanged_since_fetch": true,
+  "mathlib_olean_present_before_full_build": true,
+  "mathlib_source_build": false
+}

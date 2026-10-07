@@ -1,0 +1,13 @@
+{
+  "kind": "checkdecls",
+  "command": [
+    "leanblueprint",
+    "checkdecls"
+  ],
+  "working_directory": "blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 48.49,
+  "source_revision": "1681609e96a5d99864b5632df6086566dad0af40",
+  "log": "docs/provenance/evidence/iidTailThresholdIntegration8753/checkdecls.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

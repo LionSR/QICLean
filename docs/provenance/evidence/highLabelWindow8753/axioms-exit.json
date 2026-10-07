@@ -1,0 +1,19 @@
+{
+  "kind": "axioms",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/highLabelWindow8753/Axioms.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 41.87,
+  "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+  "log": "docs/provenance/evidence/highLabelWindow8753/axioms.log",
+  "sha256": "6842e8f06740a00a4ce33c6cdef355b9e353e21d6523dce177563799d38dfd14"
+}

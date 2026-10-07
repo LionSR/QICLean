@@ -1,0 +1,13 @@
+{
+  "kind": "web",
+  "command": [
+    "texra-blueprint",
+    "web"
+  ],
+  "working_directory": "blueprint",
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "exit_code": 0,
+  "elapsed_seconds": 51.85009425001044,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/web.log",
+  "sha256": "4332a35bf6618589d5ed7eb4dd9163dd7df37ae1d9ba77d6dd08eefb18a3938a"
+}

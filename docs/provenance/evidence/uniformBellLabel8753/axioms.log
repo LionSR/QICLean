@@ -1,0 +1,6 @@
+'Matrix.norm_sq_one_kronecker_mulVec_prod_omegaVec' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.one_kronecker_mulVec_prod_omegaVec_ne_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'TensorPower.labelProj_kronecker_mulVec_prod_omegaVec' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]

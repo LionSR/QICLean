@@ -1,0 +1,36 @@
+{
+  "result": "No vacuity or unsupported hypothesis found in the independently inspected definitions.",
+  "review": "The physical replica Hamiltonian is the literal sum of single-copy operators; the uniform vector has its actual diagonal amplitudes; the copy action is arrowCongr; labelProj is the represented central idempotent. The source result assumes the physical eigenvector equation, not a certificate for its replicated vector. Unit psi derives the actual density normalization.",
+  "definitions": [
+    {
+      "declaration": "Matrix.replicaHamiltonian",
+      "path": "QICLean/Analysis/ReplicaDefect.lean",
+      "file_sha256": "b349352101074287409ab34df6982825b1e1d50f94b06d520bf788dc5285f357",
+      "definition": "def replicaHamiltonian (H : Matrix A A \u2102) (k : \u2115) :\n    Matrix (Fin k \u2192 A) (Fin k \u2192 A) \u2102 :=\n  \u2211 i : Fin k, finKronecker (fun j : Fin k \u21a6 if j = i then H else 1)"
+    },
+    {
+      "declaration": "TensorPower.copyPerm",
+      "path": "QICLean/Representation/TensorPowerAction.lean",
+      "file_sha256": "bcdca5576ab5ba88513dd18e60b37ccd71ab31bdc4531d29fb5dca9db82fa6cc",
+      "definition": "def copyPerm : Equiv.Perm (Fin k) \u2192* Equiv.Perm (Fin k \u2192 \u03a9) where\n  toFun \u03c3 := Equiv.arrowCongr \u03c3 (Equiv.refl \u03a9)\n  map_one' := by ext; rfl\n  map_mul' \u03c3 \u03c4 := by ext; rfl"
+    },
+    {
+      "declaration": "Matrix.omegaVec",
+      "path": "QICLean/Channel/MaximallyEntangled.lean",
+      "file_sha256": "ad418d158d58e15914a5d71524d379f95e05147ea83fbb8626739c8f5ea084cd",
+      "definition": "noncomputable def omegaVec (d : \u2115) : Fin d \u00d7 Fin d \u2192 \u2102 :=\n  fun \u27e8i, j\u27e9 => if i = j then (1 : \u2102) / ((d : \u211d).sqrt : \u2102) else 0"
+    },
+    {
+      "declaration": "PermutationRepresentation.labelProj",
+      "path": "QICLean/Representation/LabelProjectors.lean",
+      "file_sha256": "629b51a379c8910c6bc6ce0fcf22b10aa36a49389dbb452563f1dda58b2ce5e4",
+      "definition": "noncomputable def labelProj (\u03c6 : G \u2192* Equiv.Perm X) (l : IrrepLabel G) : Matrix X X \u2102 :=\n  groupAlgebraRep \u03c6 (IrrepLabel.centralIdem l)"
+    },
+    {
+      "declaration": "Matrix.finKronecker",
+      "path": "QICLean/Algebra/KroneckerFactorPositivity.lean",
+      "file_sha256": "832dbcc5c7cf03f35bf65cd62ac38be0cfd38bf6c1a638ed586ec5bd0ca9f2d1",
+      "definition": "def finKronecker {N : \u2115} {\u03b1 : Fin N \u2192 Type*} [\u2200 n, Fintype (\u03b1 n)]\n    (A : (n : Fin N) \u2192 Matrix (\u03b1 n) (\u03b1 n) \u2102) :\n    Matrix ((n : Fin N) \u2192 \u03b1 n) ((n : Fin N) \u2192 \u03b1 n) \u2102 :=\n  Matrix.of fun x y => \u220f n, A n (x n) (y n)"
+    }
+  ]
+}

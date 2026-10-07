@@ -1,0 +1,13 @@
+{
+  "kind": "blueprint",
+  "command": [
+    "texra-blueprint",
+    "pdf"
+  ],
+  "working_directory": ".",
+  "exit_code": 2,
+  "elapsed_seconds": 0.14,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/pdf.log",
+  "sha256": "2d78d5c5743a69916ca0fe88ed9964beead3eff53c32c12ec6f911b8a9097246"
+}

@@ -1,0 +1,365 @@
+{
+  "parent_revision": "0c3485a499660de80843affa0b25b964c12a5193",
+  "source_revision": "a862136a75385465447223efcf08c009a959b660",
+  "leaf_evidence_revision": "c3b2f9300b19dfdd5112b2d8deb031652cc54c37",
+  "integration_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+  "commands": [
+    {
+      "kind": "cache",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 11.44,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "kind": "cache",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/iidSurprisal8753/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.06,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-guard.log",
+      "sha256": "3ec65beb9a721a77f6dcaa1adae317608779e7f84b6c085083d052f26dfdc3cc"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 980.16,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/build.log",
+      "sha256": "c9f50d331cbe14a3730a3889346452dfb82b64bb7703757caec9932fff1d35cc"
+    },
+    {
+      "kind": "imports",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.73,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/imports.log",
+      "sha256": "a91440ff931f9bf3af5e23182de5454e49da50a4fe2977fa02b95ea07e81da38"
+    },
+    {
+      "kind": "prose",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "0c3485a499660de80843affa0b25b964c12a5193"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.76,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "paper-gaps",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.24,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/paper-gaps.log",
+      "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f"
+    },
+    {
+      "kind": "bbl",
+      "command": [
+        "texra-blueprint",
+        "bbl"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.9,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/bbl.log",
+      "sha256": "93765f0011856c6280baf59b47a80754877d16fc8903b475fe7184d07ac4b7dc"
+    },
+    {
+      "kind": "tenkz",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 6.53,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/tenkz.log",
+      "sha256": "3b88929abcdbee3525599c9375fb60e9b77f325dd45c6fabcf1fa28ef953b42a"
+    },
+    {
+      "kind": "blueprint-sync",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.21,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/blueprint-sync.log",
+      "sha256": "c968b481a38ae11eca51fef97451cad3fd3ed14dc37f028869c702be07591d34"
+    },
+    {
+      "kind": "pdf",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 98.98,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/pdf.log",
+      "sha256": "e20e047345ef3e25793af6201dffb896a267eb4c6f4b5a9dd97276b75a65fb25"
+    },
+    {
+      "kind": "web",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 82.73,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/web.log",
+      "sha256": "fc9bd960d98632eff4fb9277bb64ce3a7635bccce15ec31eb119df812ac87ed7"
+    },
+    {
+      "kind": "axioms",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/iidSurprisalIntegration8753/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 21.64,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/axioms.log",
+      "sha256": "3697a24cb60bbb919cbf7432b11daa650ade527f4b46001f9b59ee94f22db729"
+    },
+    {
+      "kind": "provenance",
+      "command": [
+        "/tmp/qic-density-simplex-provenance-env/bin/python",
+        "docs/provenance/evidence/iidSurprisal8753/check_provenance.py",
+        "--root",
+        ".",
+        "--validator",
+        "/tmp/tnlean-area-law-provenance-validator.py",
+        "--schema",
+        "/tmp/tnlean-area-law-provenance-schema.json"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.55,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/provenance.log",
+      "sha256": "b47d5eb1ef492cdc51bbe0871efda87ee672df65e1be8fd9eecae04985d2c953"
+    },
+    {
+      "kind": "web-render-test",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 47.54,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/web-render-test.log",
+      "sha256": "5930922033fc9ddfe98df909fe04c05ada10118763f3e1c3a85c2a648b38e2c1"
+    },
+    {
+      "kind": "web-inspection",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/iidSurprisalIntegration8753/inspect-web.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 7.4,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/web-inspection.log",
+      "sha256": "185436660e046a60b61d04b993d03c7e546a8f66832d8ad1bfbc4158ce3cceec"
+    },
+    {
+      "kind": "render",
+      "command": [
+        "pdftoppm",
+        "-f",
+        "396",
+        "-l",
+        "397",
+        "-r",
+        "100",
+        "-png",
+        "blueprint/print/print.pdf",
+        "docs/provenance/evidence/iidSurprisalIntegration8753/render/page"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.47,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "checkdecls",
+      "command": [
+        "leanblueprint",
+        "checkdecls"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 14.4,
+      "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "native-targets",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/iidSurprisalIntegration8753/check-native-targets.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.12,
+      "source_revision": "88db73287e18f705ec3ae5cc3275d60b551bf123",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets.log",
+      "sha256": "ff71e382473e5e001f8fbe6313121ab8fb1d0ae0d3fab68fbfc235c43c8b0b13"
+    }
+  ],
+  "file_hashes": {
+    "QICLean/Entropy/IidSurprisal.lean": "f309d7b8812bd105dda3a9fca698e5f49bbdb1b747fdce99ec0556960896f41b",
+    "blueprint/src/fragment/iid_surprisal.tex": "47c03747b04745ea9b87e6df0c9f53ab8a770cf9d49f6de559c6cce5e48e6bee",
+    "docs/formalization/iid-surprisal.md": "42e108129f341f0a2ddc34ff4b6536fb7128891bee96264152afa34f7ab47bc6",
+    "QICLean/Entropy.lean": "0aaf7c2c138275a985fe44361da7565814544bd772430fbb11bee1fdd20b2188",
+    "blueprint/src/chapter/ch12_entropy.tex": "9903311281de3c03bb25beb9025f21c78e0ce52d3721cb602b78a312ebbf1aec",
+    "docs/provenance/openai-math.d/iidSurprisal8753.json": "9e5995a8fe3ab3971efbda469aab72603aaed56d911d6926ed6a33dd368893b1",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/Axioms.lean": "9f52a8f0e3cd478377fe79223801eb1d062101375f1f59c5a3ef554441ec3e3e",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/NativeDeclarations.txt": "19d13050bbc7346b612dd3be7a4dce652a483c552be9995675e2d3456eba8ec6",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/README.md": "6d1426a46e41cedd39d51fee4013e292979f23fc72de877765fc46ea26f405c8",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/axioms-exit.json": "96d3b97f1c7345ecaba59abb77147253886537dc1dd28030dc30ba6745a4e6f8",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/axioms.log": "3697a24cb60bbb919cbf7432b11daa650ade527f4b46001f9b59ee94f22db729",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/axioms.log.gz": "d46ed63aa1979fcaec0be6c9b03f4f24eb99ebab2c6d72259d508fa6a22496d7",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/bbl-exit.json": "8e9d61c9822af7f206e94b799bb55e64f31d478b551f33db2005b68b4c82add2",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/bbl.log": "93765f0011856c6280baf59b47a80754877d16fc8903b475fe7184d07ac4b7dc",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/bbl.log.gz": "40d99b84ca2454fb9dc82af56954cafbc7cbad29664299f2c961b5acc6d635be",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/blueprint-sync-exit.json": "ee5e843c9303b2f7f482acfa082d791c65a8defb161b99b55ac940bb12a201ac",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/blueprint-sync.log": "c968b481a38ae11eca51fef97451cad3fd3ed14dc37f028869c702be07591d34",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/blueprint-sync.log.gz": "d1b8c30131f041fce39b5081e273d6f5a999aa88057bb0a2f06a6c52dcf3d121",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/build-exit.json": "0bc76f4226a62fc284817633f1297682fa46179b324bec1335d429b75718c560",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/build.log": "c9f50d331cbe14a3730a3889346452dfb82b64bb7703757caec9932fff1d35cc",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/build.log.gz": "8ff602a09b925dcccdfcb621e23da8e4c79fdb287facdb70a3070e0d6bb37518",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/check-native-targets.py": "a30342d3d96b744227b95155ba66dea45564989ff0df4fa46555910514855981",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/checkdecls-exit.json": "112935788cdf653187ac87312390d7fe51eaa1f4f1f6af3553c7465aec8ce013",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/checkdecls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/checkdecls.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/compression.json": "1d6cc64bddbfc38a3e6766e591d90e19a1287e3588e1d68ead854ebe62493c10",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/imports-exit.json": "4c8f60aa9fd691b333eacc2a1c911e48a20a8c408cf820950a5a49750b620880",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/imports.log": "a91440ff931f9bf3af5e23182de5454e49da50a4fe2977fa02b95ea07e81da38",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/imports.log.gz": "834a08ad972e95cf6b623f99587e3822ee9360690a5c61f126e847aa95453491",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/inspect-web.py": "b6642a171ea945bd4cd361a124f1bfd4c6b8c16e08aa76eff4ab1295dbe1743b",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-cache-exit.json": "46f98b60007ea2bc1e39a6138503ce44ed936fa1f7baa65e50e522649cbac4ae",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-cache.log.gz": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-guard-exit.json": "c5646c96eb63401a45aadf0d400191ea8a4531e3d653b0924043b2c2e7405422",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-guard.log": "3ec65beb9a721a77f6dcaa1adae317608779e7f84b6c085083d052f26dfdc3cc",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-guard.log.gz": "4ff0bad6aabf7a8a3ebdbfa079a417b11220e575046087b6a10da8bb5e9323fc",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets-exit.json": "19b64416e4e7159281d27c934cb94e34d4cd260df07e470eff80ae143017c09c",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets.json": "ff71e382473e5e001f8fbe6313121ab8fb1d0ae0d3fab68fbfc235c43c8b0b13",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets.log": "ff71e382473e5e001f8fbe6313121ab8fb1d0ae0d3fab68fbfc235c43c8b0b13",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets.log.gz": "5fb9706612a22c8ec3e01e25aca119f7c0584388ae710dacf699aedd199e5a6c",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/paper-gaps-exit.json": "4f612da7a713ec6df256c046d6f9f47e0aa0b59a78afd09928da193f07c18ff6",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/paper-gaps.log": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/paper-gaps.log.gz": "197a885e0bccc91b171706011407c28391b3d96b6a1010413307990fea2cca36",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/pdf-exit.json": "3c299547d09bad905fe41ef34c09998f91b24b75a55545683eb0bd04b91dbbf2",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/pdf.log": "e20e047345ef3e25793af6201dffb896a267eb4c6f4b5a9dd97276b75a65fb25",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/pdf.log.gz": "b779ac2f99e7357015fe9f63738450d62bc17e4ceccbbd1a689f6cfb619330d3",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/prose-exit.json": "404fc3b95e856ae222e941dbff872995e8e9159a11b8024e6877b00018741b4f",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/provenance-exit.json": "14dfbc3f202ebbd15bd3d9bb578eb4a9afa659ecb9bdaeee07d1fbe950ad42ea",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/provenance.log": "b47d5eb1ef492cdc51bbe0871efda87ee672df65e1be8fd9eecae04985d2c953",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/provenance.log.gz": "f952b3d5ba8e06f49286a1786ec4e87c84bc8f3e3f952ed447338329025ff457",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/render/iid-web-desktop.png": "270b0549355db2df8431b08a3c684cefef8b1b851a3ce2330859a337c9d29d23",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/render/iid-web-mobile-proof-right.png": "bde4620b415a65f72f18ecbf4d6673606b335ef20cfb6c8a771f0cb93abc793c",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/render/iid-web-mobile.png": "9744540b46c569561bbd344e5297266922abfc228ccb52ffc04d21908ec86a65",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/render/page-396.png": "0ca2285c002104564d71f5e058df7892133998d689b345ae2c18f74354056c8e",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/render/page-397.png": "04d784e28d708b253bca330ce6e471e669343476e1739e6fdd65131751df4fc7",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/render-exit.json": "b34d1fcb9bfb82b4ab1b148461a96cc54de3624e48bc987c29b78ef56301a8fe",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/render-inspection.json": "1abdd2f052fc5a0b9d08b87333a7b090ce40991bbd47fa2b3700736b039ff006",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/render.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/render.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/source-preservation.json": "f6a3920dc8ad7d428b1803c88e96952fb879442d8ec9d94d63ac094b1c836411",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/tenkz-exit.json": "c593b47adafd7346047c7c2365c505abca1fd045e5f00c90e906a611755a1ce7",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/tenkz.log": "3b88929abcdbee3525599c9375fb60e9b77f325dd45c6fabcf1fa28ef953b42a",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/tenkz.log.gz": "9dbd795597221dcba096c9f3d91672fb44109dfd975f4711851b0f30f6d1413e",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/validate-manifest.py": "c8204c628c85cdc75331e9810d8b471ddb7fdaec4c8819f3ce9806f4347ecdc5",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web-exit.json": "440fb1e0da7d8a90887f9a249d56e9fc94dc1a042cdeb76870ca2c1b2e6f2479",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web-inspection-exit.json": "fd24faa5e7f4c63105a44658dff0fb9b59d724affbccdabcdda9ad0d1b5b66e4",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web-inspection.json": "5fef516825aa9160b34aad7df7a2d789b5e3b91cb264546ffb4d37d9a3e9487d",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web-inspection.log": "185436660e046a60b61d04b993d03c7e546a8f66832d8ad1bfbc4158ce3cceec",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web-inspection.log.gz": "e6ad77b1230ce1a765a2d3223467e7e68f0805f689e542611b131cb4d884ffc5",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web-render-test-exit.json": "c2ccd24a5c185bf5f5ad6323fb3e9885e278ca647c6b2370b3eec686526845c6",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web-render-test.log": "5930922033fc9ddfe98df909fe04c05ada10118763f3e1c3a85c2a648b38e2c1",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web-render-test.log.gz": "f7a319272a7634302774b6b45a5d6e8f52ab91e86c4da726ded8e9848b653ede",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web.log": "fc9bd960d98632eff4fb9277bb64ce3a7635bccce15ec31eb119df812ac87ed7",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/web.log.gz": "76c39b1495d01491c3276cf48482564f7dbdc273ad975524d96812596ce2bb0b"
+  },
+  "full_build_jobs": 9695,
+  "mathlib_source_rebuild": false,
+  "kernel_reports": 4,
+  "owned_provenance_entries": 4,
+  "native_declarations": 3193,
+  "blueprint_reference_occurrences": 3221,
+  "web_regression": {
+    "pages": 38,
+    "typeset": 36071
+  },
+  "visual_inspection": "passed",
+  "native_list_sha256": "19d13050bbc7346b612dd3be7a4dce652a483c552be9995675e2d3456eba8ec6",
+  "new_fragment_targets_all_present": true,
+  "rendered_doc_targets_all_present": true
+}

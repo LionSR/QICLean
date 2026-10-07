@@ -1,0 +1,48 @@
+{
+  "equations": [
+    {
+      "id": "a0000002479",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002480",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002482",
+      "clientWidth": 310,
+      "scrollWidth": 340,
+      "scrollLeft": 30,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002484",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002485",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002487",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    }
+  ],
+  "result": "passed",
+  "interpretation": "Long displays use horizontal scrolling within the equation box. Each right endpoint was reached and captured; the page itself has no horizontal overflow."
+}

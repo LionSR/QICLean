@@ -1,0 +1,16 @@
+{
+  "kind": "sync",
+  "command": [
+    "python3",
+    "scripts/blueprint_lean_sync.py",
+    "--root",
+    ".",
+    "--update-lean-decls"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.72,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/blueprint-sync.log",
+  "sha256": "519e452b211ab4cc2330b51c145f52042ca520d3d7222a9dcfe629fe06feb4fa"
+}

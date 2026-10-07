@@ -1,0 +1,13 @@
+{
+  "kind": "pdf",
+  "command": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "working_directory": "blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 38.76,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/pdf-final.log",
+  "sha256": "1feaa3f28415f740f16b006d09d76829cb76531e0380b7b16d5199449ac2a233"
+}

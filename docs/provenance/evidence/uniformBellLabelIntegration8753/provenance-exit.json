@@ -1,0 +1,14 @@
+{
+  "kind": "provenance",
+  "command": [
+    "/tmp/qic-density-simplex-provenance-env/bin/python",
+    "docs/provenance/evidence/uniformBellLabelIntegration8753/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "working_directory": ".",
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "exit_code": 0,
+  "elapsed_seconds": 0.3132299580029212,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/provenance.log",
+  "sha256": "a367add2016da425e0b0777cc3514315b4a0b21543987b9936c85bee79e7af01"
+}

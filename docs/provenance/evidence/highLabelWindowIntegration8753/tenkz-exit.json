@@ -1,0 +1,13 @@
+{
+  "kind": "tenkz",
+  "command": [
+    "python3",
+    "scripts/fetch_tenkz.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 3.97,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/tenkz.log",
+  "sha256": "6097295608ad8d1485b089f15af6cde000292c0afe7c5377d884b6485dba0444"
+}

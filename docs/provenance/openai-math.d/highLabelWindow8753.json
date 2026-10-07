@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-high-label-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/HighLabelWindow.lean",
+        "declaration": "TensorPower.exists_labelProj_mass_entropy_window",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove a finite criterion for an actual permutation-invariant density using the actual joint spectral resolution, surprisal tail, exponential remainder and polynomial count. The explicit finite tail criterion is auxiliary and is discharged in the iid theorem."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "89941482d3b3880b524e7d7f8a4adb1e2cc80aad",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/target.log",
+            "sha256": "b018b85a3a3baab795ab7f1f55b1ceb74271d4806fff367ad5ea426c4f7480e2",
+            "command": "lake build QICLean.Representation.HighLabelWindow"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/HighLabelWindow.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/axioms.log",
+            "sha256": "6842e8f06740a00a4ce33c6cdef355b9e353e21d6523dce177563799d38dfd14",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/highLabelWindow8753/Axioms.lean"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-high-label-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/HighLabelWindow.lean",
+        "declaration": "TensorPower.eventually_exists_labelProj_finKronecker_entropy_window",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "For an actual iid PSD trace-one density, derive eventual simultaneous inverse polynomial Schur mass and width2k^(3/4) dimension error. No full-rank, concentration or permutation-invariance hypothesis is supplied."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "89941482d3b3880b524e7d7f8a4adb1e2cc80aad",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/target.log",
+            "sha256": "b018b85a3a3baab795ab7f1f55b1ceb74271d4806fff367ad5ea426c4f7480e2",
+            "command": "lake build QICLean.Representation.HighLabelWindow"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/HighLabelWindow.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/axioms.log",
+            "sha256": "6842e8f06740a00a4ce33c6cdef355b9e353e21d6523dce177563799d38dfd14",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/highLabelWindow8753/Axioms.lean"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-high-label-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/HighLabelWindow.lean",
+        "declaration": "TensorPower.exists_label_sequence_mass_entropy_asymptotic",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Choose a single dependent label sequence satisfying actual tensor-density mass and entropy little-o asymptotic simultaneously. Prove fallback label existence at every small copy number."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "89941482d3b3880b524e7d7f8a4adb1e2cc80aad",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/target.log",
+            "sha256": "b018b85a3a3baab795ab7f1f55b1ceb74271d4806fff367ad5ea426c4f7480e2",
+            "command": "lake build QICLean.Representation.HighLabelWindow"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/HighLabelWindow.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/axioms.log",
+            "sha256": "6842e8f06740a00a4ce33c6cdef355b9e353e21d6523dce177563799d38dfd14",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/highLabelWindow8753/Axioms.lean"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-high-label-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/HighLabelWindow.lean",
+        "declaration": "TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Apply the same sequence to the true reduced density of an arbitrary unit bipartite vector, and derive actual grouped product-vector squared projection norm and entropy asymptotic with no supplied marginal or projection certificate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "89941482d3b3880b524e7d7f8a4adb1e2cc80aad",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/target.log",
+            "sha256": "b018b85a3a3baab795ab7f1f55b1ceb74271d4806fff367ad5ea426c4f7480e2",
+            "command": "lake build QICLean.Representation.HighLabelWindow"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/HighLabelWindow.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/highLabelWindow8753/axioms.log",
+            "sha256": "6842e8f06740a00a4ce33c6cdef355b9e353e21d6523dce177563799d38dfd14",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/highLabelWindow8753/Axioms.lean"
+          }
+        ]
+      }
+    }
+  ]
+}

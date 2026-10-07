@@ -1,0 +1,14 @@
+{
+  "kind": "imports",
+  "command": [
+    "python3",
+    "scripts/generate_import_aggregators.py",
+    "--check"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.68,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/imports.log",
+  "sha256": "fe7798b18c306fdf5ab91cc659700aa565c8333dba9302daceecb60e5d2a304f"
+}

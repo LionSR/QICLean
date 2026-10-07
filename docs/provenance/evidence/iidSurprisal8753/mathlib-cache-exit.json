@@ -1,0 +1,20 @@
+{
+  "kind": "cache",
+  "command": [
+    "lake",
+    "exe",
+    "cache",
+    "get",
+    "Mathlib.Probability.Moments.Variance",
+    "Mathlib.Probability.ProbabilityMassFunction.Integrals",
+    "Mathlib.MeasureTheory.Integral.Pi",
+    "Mathlib.Analysis.Matrix.HermitianFunctionalCalculus",
+    "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 12.89,
+  "source_revision": "a862136a75385465447223efcf08c009a959b660",
+  "log": "docs/provenance/evidence/iidSurprisal8753/mathlib-cache.log",
+  "sha256": "7ab0e72e9c712add68fe193f70b1f5b159e27b37e704802806a05b969a504675"
+}

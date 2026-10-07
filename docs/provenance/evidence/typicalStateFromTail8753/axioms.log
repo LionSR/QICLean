@@ -1,0 +1,4 @@
+'Matrix.PosSemidef.typicalSet_normalizedSpectralRestriction_bounds' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Matrix.typicalPureState_typicalSet_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]

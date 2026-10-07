@@ -1,0 +1,17 @@
+{
+  "kind": "blueprint",
+  "command": [
+    "latexmk",
+    "-xelatex",
+    "-interaction=nonstopmode",
+    "-halt-on-error",
+    "-outdir=tmp/pdfs/replica-prevector",
+    "docs/provenance/evidence/replicaPrevector8753/standalone-wrapper.tex"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 5.74,
+  "source_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
+  "log": "docs/provenance/evidence/replicaPrevector8753/standalone-pdf.log",
+  "sha256": "e0823ef88fb4687eee68d7be3dbfbc6fda187d7a3fbf9cd6e5ab31829c195efa"
+}

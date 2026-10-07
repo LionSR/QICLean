@@ -1,0 +1,10 @@
+{
+  "revision": "f0c7d137371f6b11ca1dd61692be37581c8adbaf",
+  "tested_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
+  "files": {
+    "QICLean/Representation/ReplicaPrevector.lean": "da9161e3b9f648bb2c9b9cb42cacad33957906bc4eaeccddb795252fd6b361c0",
+    "blueprint/src/fragment/replica_prevector.tex": "6d22534f6ff933bcf46328c1440c56b3df8ae1ff1c24a2be3c2eb177b9a495fe",
+    "docs/formalization/replica-prevector.md": "da52def25b8345412318572f9ee610d2d00879aa54baaeb9fe4198447e73cfef",
+    "docs/tactic_patterns.md": "3cc7542bce44d2a312acbdd1c5e7e18ba27156a04f50f88336c59da22a3313dc"
+  }
+}

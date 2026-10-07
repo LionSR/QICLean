@@ -1,0 +1,13 @@
+{
+  "status": "exploratory, excluded from final provenance",
+  "source_sha256": "2e44b8603a9b13727aea4699ba682e0bbdff8dd8a78d2c123b3f376864c4db55",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "QICLean/Entropy/PureTensorPower.lean"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 5.67609850000008,
+  "raw_log_sha256": "fde7d88a3146d4131b6c6a63cb328bafda6b5e9a802c618877bdfe9a4e57c875"
+}

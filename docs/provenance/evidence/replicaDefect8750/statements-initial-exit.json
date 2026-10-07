@@ -1,0 +1,18 @@
+{
+  "source_revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "docs/provenance/evidence/replicaDefect8750/Statements.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-defect",
+  "started_utc": "2026-10-07T20:27:20.112191+00:00",
+  "elapsed_seconds": 10.275,
+  "exit_code": 1,
+  "log": "docs/provenance/evidence/replicaDefect8750/statements.log",
+  "sha256": "05fcf5ce1b3f30ceca890875d8812a7bb26ccdc224e83ecfd01259efa0d6483f"
+}

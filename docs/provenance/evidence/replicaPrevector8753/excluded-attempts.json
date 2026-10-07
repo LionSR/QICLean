@@ -1,0 +1,27 @@
+[
+  {
+    "record": {
+      "kind": "axioms",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/replicaPrevector8753/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 1,
+      "elapsed_seconds": 12.44,
+      "source_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
+      "log": "docs/provenance/evidence/replicaPrevector8753/axioms.log",
+      "sha256": "6631f5ff47178eebca6b5c9e903d4af27dc1e28c04384c73a021831af7a50fbf"
+    },
+    "snapshot": "docs/provenance/evidence/replicaPrevector8753/Axioms-first-attempt.lean",
+    "snapshot_sha256": "2de94494235b7ce1817a5c6b67554afe4c208614ef3ca15c824c204153e2d36a",
+    "reason": "The first local audit wrapper placed its module docstring before the import, so the imported linter configuration was not registered when the command-line option was checked. Only the wrapper import/comment order was corrected. The final two-name standard-kernel audit passes; no production source changed.",
+    "claimed_as_successful_verification": false
+  }
+]

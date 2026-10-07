@@ -13,12 +13,16 @@ import QICLean.Entropy.ClassicalMutualInformation
 import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
+import QICLean.Entropy.FilterConjugation
 import QICLean.Entropy.FilterMoment
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.FiniteProductTypicalState
 import QICLean.Entropy.GapSurprisal
+import QICLean.Entropy.IidSurprisal
+import QICLean.Entropy.LocalLift
 import QICLean.Entropy.MarginalTails
 import QICLean.Entropy.MarkovChain
 import QICLean.Entropy.ModularExpectation
@@ -27,8 +31,11 @@ import QICLean.Entropy.MutualInformationBasic
 import QICLean.Entropy.MutualInformationDataProcessing
 import QICLean.Entropy.MutualInformationOperatorSchmidt
 import QICLean.Entropy.OrderedEntropyAlgebra
+import QICLean.Entropy.PhysicalBufferOverlap
 import QICLean.Entropy.PositiveOverlappingProduct
 import QICLean.Entropy.ProductMarginals
+import QICLean.Entropy.ProductOverlapPurity
+import QICLean.Entropy.PureTensorPower
 import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.SchmidtTilt
@@ -42,5 +49,6 @@ import QICLean.Entropy.TypicalDensity
 import QICLean.Entropy.TypicalPureCompression
 import QICLean.Entropy.TypicalPureState
 import QICLean.Entropy.TypicalSpectrum
+import QICLean.Entropy.TypicalStateFromTail
 import QICLean.Entropy.UnnormalizedStrongSubadditivity
 import QICLean.Entropy.VonNeumann

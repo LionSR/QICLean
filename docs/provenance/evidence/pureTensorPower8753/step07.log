@@ -1,0 +1,14 @@
+QICLean/Entropy/PureTensorPower.lean:47:8: warning: declaration uses `sorry`
+QICLean/Entropy/PureTensorPower.lean:78:2: error: unsolved goals
+S : Type u_1
+Ω : Type u_2
+inst✝² : Fintype S
+inst✝¹ : Fintype Ω
+inst✝ : DecidableEq S
+ψ : S × Ω → ℂ
+k : ℕ
+P : Matrix (Fin k → Ω) (Fin k → Ω) ℂ
+hP : IsStarProjection P
+⊢ ‖WithLp.toLp 2 (kroneckerMap (fun x1 x2 => x1 * x2) 1 P *ᵥ fun x => ∏ i, ψ (x.1 i, x.2 i))‖ ^ 2 =
+    (vecMulVec (fun x => ∏ i, ψ (x.1 i, x.2 i)) (star fun x => ∏ i, ψ (x.1 i, x.2 i)) *
+          kroneckerMap (fun x1 x2 => x1 * x2) 1 P).trace.re

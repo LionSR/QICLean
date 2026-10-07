@@ -1,0 +1,30 @@
+{
+  "source_revision": "aea9aa9c04c116af8370f139e62a4a0b1f07734d",
+  "parent_repair_revision": "7b1532162bac7c62bbaa98e0abc5dc3d93704711",
+  "preceding_evidence_revision": "b08449397f05d072d9947de1d99727d6f7e9ffbd",
+  "command": "texra-blueprint paper-gaps check",
+  "exit_code": 0,
+  "elapsed_seconds": 0.42,
+  "log_sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+  "texra_blueprint_version": "0.3.8",
+  "production_blueprint_regression_changes": [],
+  "preserved_file_hashes": {
+    "QICLean/Analysis/DensitySimplex.lean": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8",
+    "QICLean/Analysis/PatchRegulator.lean": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca",
+    "QICLean/Entropy/FiniteProductInformation.lean": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f",
+    "QICLean/Entropy/FiniteProductSplitting.lean": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739",
+    "QICLean/Entropy/TypicalDensity.lean": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914",
+    "QICLean/Entropy/TypicalPureState.lean": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01",
+    "QICLean/Entropy/TypicalSpectrum.lean": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4",
+    "QICLean/Analysis/ShiftedDensityCommutation.lean": "8a9e3272897a291decbe3b71babe59c6579f88a29523c3d836766d198634a249",
+    "QICLeanTest/ShiftedDensityCommutation.lean": "5c6203e79044d61baf4045585dd0dd1b4054e1304133e661da8114d329dfa146",
+    "blueprint/src/chapter/ch12_shifted_density_commutation.tex": "af92a0975e44e30a7f37dda63472eed917843e2a3f07d3c308ded55edbadc4d1",
+    "docs/formalization/shifted-density-commutation.md": "5fa39486ad6d25f4c8d73e7715071c4bc1752429825c51eb7192de509211f3ed"
+  },
+  "full_rebuild_performed": false,
+  "prior_bindings_validation": {
+    "command": "/tmp/qic-density-simplex-provenance-env/bin/python docs/provenance/evidence/shiftedCommutationIntegration8767/validate-owned.py /Users/siruilu/Local/agentFormalization/TNLean",
+    "exit_code": 0,
+    "log_sha256": "181497f40c4bd413ab25563bd975cff9f0d7da841e4d8daa93de71df4a61d83d"
+  }
+}

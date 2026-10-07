@@ -1,0 +1,14 @@
+{
+  "kind": "paper-gaps",
+  "command": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 2.24,
+  "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+  "log": "docs/provenance/evidence/iidSurprisalIntegration8753/paper-gaps.log",
+  "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f"
+}

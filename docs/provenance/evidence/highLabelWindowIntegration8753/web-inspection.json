@@ -1,0 +1,18 @@
+{
+  "links": [
+    "TensorPower.exists_labelProj_mass_entropy_window",
+    "TensorPower.eventually_exists_labelProj_finKronecker_entropy_window",
+    "TensorPower.exists_label_sequence_mass_entropy_asymptotic",
+    "TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic"
+  ],
+  "errors": [],
+  "top": 234.234375,
+  "bottom": 1887.375,
+  "mathElements": 57,
+  "mobile_section_bounds": {
+    "top": 112.46875,
+    "bottom": 2341.734375
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "build",
+  "command": [
+    "lake",
+    "build"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 62.96,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/build.log",
+  "sha256": "e61388d1c446219c6d0826905ed561f42fe30ac2059d150586f02e3106e0dc1a"
+}

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "lake",
+    "build",
+    "QICLean.Representation.CommutantDimension",
+    "QICLean.Channel.PartialTrace",
+    "QICLean.Algebra.MatrixAux"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 43.02238233400567,
+  "source_revision": "0c3485a499660de80843affa0b25b964c12a5193"
+}

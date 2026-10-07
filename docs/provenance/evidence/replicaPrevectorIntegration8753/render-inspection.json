@@ -1,0 +1,22 @@
+{
+  "artifact": "docs/provenance/evidence/replicaPrevectorIntegration8753/replica-prevector-blueprint.pdf",
+  "sha256": "4db6cc8c7095ef6cd3f0cc9a1973e6616cb894b7952061a93820825499eede52",
+  "pages": 433,
+  "physical_pages": [
+    412,
+    413
+  ],
+  "printed_pages": [
+    411,
+    412
+  ],
+  "images": {
+    "docs/provenance/evidence/replicaPrevectorIntegration8753/render/page-412.png": "c7f0add7fb0aa9fab7cac029a4e2f319cb9631fd5ad314b8cb7df3d109f4fc8b",
+    "docs/provenance/evidence/replicaPrevectorIntegration8753/render/page-413.png": "cc10c45740e4017a654c8c72ba4880f29a387667d02354f1c49b01cc839715af",
+    "docs/provenance/evidence/replicaPrevectorIntegration8753/render/replica-prevector-mobile-equation-1-right.png": "7fe69c5c1c1649bf1dc7ce2c34cb6c07b94d0cb6920dde30abf4733a3ae8a406",
+    "docs/provenance/evidence/replicaPrevectorIntegration8753/render/replica-prevector-web-desktop.png": "72f3cfccb5ba2f0a06a3fbbfc520d8e572f2d520b010d9d23ddafc5cc41b5281",
+    "docs/provenance/evidence/replicaPrevectorIntegration8753/render/replica-prevector-web-mobile.png": "183e6c3eff0f5be00d5c04a8c49d1a3ceb936a265799ecead99cbf40f51eb38d"
+  },
+  "result": "passed",
+  "inspection": "Both complete-book pages were visually inspected. The actual definition, all sequence assertions and full proof are legible, and the existing source citation resolves. The desktop and 360-pixel mobile section were inspected with the proof open. All three displays are accessible; the long energy display scrolls horizontally inside its equation box, and its complete right endpoint was photographed and inspected. No page overflow or MathJax error was found."
+}

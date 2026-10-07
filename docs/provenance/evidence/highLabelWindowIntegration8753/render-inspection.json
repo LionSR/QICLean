@@ -1,0 +1,21 @@
+{
+  "artifact": "output/pdf/high-label-window-blueprint.pdf",
+  "sha256": "784d580db7aa0945c2202fc73adf93e8114dea5f702c8a1975c6fdb0f6f54d0d",
+  "physical_pages": [
+    410,
+    411
+  ],
+  "printed_pages": [
+    409,
+    410
+  ],
+  "images": {
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/high-label-mobile-equation-2-right.png": "381d8a8590034d7b792654d68bdc98f855c30d9e905dbcaf972bfeec5d5fc7b6",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/high-label-web-desktop.png": "7e96ab607c30b597f8ea17e95445d0c11da8c32835e24b25de3e40409db13964",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/high-label-web-mobile.png": "670c848da9d6c6e584ee85cdab5c450d37fa6dfd59a819c467792f1a4a2bb219",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/page-410.png": "d764b6a8c3c645a11f8b53515045c4b9834d4ae3ab55e6c1bf6870184fb9b1d3",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/page-411.png": "30e6c0b1d066abc5ae1a8138d288f7358a5bf0bc41ff4e2370dd5014dad4c288"
+  },
+  "result": "passed",
+  "inspection": "Both complete-book pages inspected: pure marginal/projection identities and all four high-label statements and proofs are legible, source citations resolved. Desktop and mobile 360-pixel views inspected with proofs open. The one long iid display is horizontally scrollable inside its 310-pixel equation box; its right endpoint was captured and inspected. All other displays fit, and the page itself has no horizontal overflow or MathJax error."
+}

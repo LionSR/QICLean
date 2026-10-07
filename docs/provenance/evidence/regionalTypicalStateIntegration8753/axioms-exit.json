@@ -1,0 +1,16 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "docs/provenance/evidence/regionalTypicalStateIntegration8753/Axioms.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 9.1,
+  "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+  "log_sha256": "9bb5927f224968fd1ff8bad3420e59183a688db19faf0b17743a7def8edc9dfb"
+}

@@ -1,0 +1,21 @@
+{
+  "source_revision": "fe4a4fcc0f16ad229659c8997e86b59921383e0c",
+  "production_sha256": {
+    "QICLean/Representation/UniformBellLabel.lean": "4fcee84a243cef57d27480085cc0fb9203a05c604d35135fa0fdc0e9e7e52d06"
+  },
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/uniformBellLabel8753/Types.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 1,
+  "elapsed_seconds": 6.836891792001552,
+  "log": "docs/provenance/evidence/uniformBellLabel8753/types.log",
+  "sha256": "c459c1ca1c5a660ea46a973f4a12b3347a2a2606fde786a34cacc79a36305950"
+}

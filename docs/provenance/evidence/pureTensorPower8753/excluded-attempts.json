@@ -1,0 +1,25 @@
+{
+  "exploratory_command_records": [
+    "clean01-exit.json",
+    "dependencies-exit.json",
+    "excluded-dependencies-overlap-exit.json",
+    "prose-first-exit.json",
+    "step01-exit.json",
+    "step02-exit.json",
+    "step03-exit.json",
+    "step04-exit.json",
+    "step05-exit.json",
+    "step06-exit.json",
+    "step07-exit.json",
+    "step08-exit.json",
+    "step09-exit.json",
+    "step10-exit.json",
+    "step11-exit.json",
+    "step12-exit.json",
+    "step13-exit.json",
+    "step14-exit.json",
+    "tactic-patterns-exit.json"
+  ],
+  "audit_resource_failure": "excluded-audit-resource-failure.json",
+  "scope": "None of these exploratory or incomplete attempts supplies a final provenance command binding."
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "native-targets",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/check-native-targets.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 1,
+  "elapsed_seconds": 1.25,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets.log",
+  "sha256": "296e932dbd42775da5c6ed966b5842ea3e6b31d501bd40e075d75eed6d0715c7"
+}

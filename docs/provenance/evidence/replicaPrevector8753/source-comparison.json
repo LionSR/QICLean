@@ -1,0 +1,25 @@
+{
+  "source_commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "source_revision": "f0c7d137371f6b11ca1dd61692be37581c8adbaf",
+  "source_lines": [
+    "07-comparators.tex130\u2013147",
+    "07-comparators.tex255\u2013281"
+  ],
+  "declarations": [
+    "TensorPower.replicaPrevector",
+    "TensorPower.exists_label_sequence_replicaPrevector"
+  ],
+  "result": "No mathematical or signature-faithfulness issue found.",
+  "premises": "Only actual unit physical and bipartite vectors and the one-copy real eigenvalue equation. No positivity or gap premise is needed for the initial construction.",
+  "definition": "Literal physical product tensor, and actual right central label projection on the repeated uniform auxiliary pair, in canonical grouped copy coordinates.",
+  "fallback": "The actual partialTraceLeft of the rank-one psi density is proved positive semidefinite and trace one. Its tensor-power density and complete Schur sector resolution give positive projection mass for every k. Unsupported labels are replaced only where the original selected mass vanishes. The original asymptotic sequence has positive mass eventually, so eventual equality preserves both its quantitative mass bound and its little-o entropy error.",
+  "properties": "Positive dimension follows from unit psi. Nonzero label projector implies nonzero projected uniform pair; unit physical tensor preserves its norm. Orthogonal projection gives norm at most one. Mean energy is the actual replica Hamiltonian equation. Both auxiliary label equations and simultaneous permutation invariance follow from actual uniform-pair matching labels, projection idempotence and centrality.",
+  "not_claimed": [
+    "full comparator norm inequalities",
+    "inverse metric bounds",
+    "amplification",
+    "spatial realization",
+    "Schmidt truncation instantiation",
+    "inverse polynomial probability of initial uniform-pair projection"
+  ]
+}
