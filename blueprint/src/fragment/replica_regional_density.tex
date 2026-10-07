@@ -1,0 +1,52 @@
+\section{Regional product density on the good copies}
+\label{sec:replica_regional_density}
+
+Let \(\Omega\in\mathbb C^Q\otimes\mathbb C^T\) be unit, let
+\(B\subseteq\{1,\ldots,k\}\), and write \(G=B^c\) and \(m=|G|\).
+For an arbitrary vector \(u\) with auxiliary register \(\mathcal K\), set
+\(w=(R_B\otimes I_{\mathcal K})u\), where \(R_B\) is the exact physical
+excitation projection. Enumerate \(G\) in its canonical finite-set order.
+These are the regional reduced matrices used in \cite{OpenAI2026AreaLaw},
+Section~7, equation (comparator:merge-moments).
+
+\begin{theorem}[Actual regional density on the good copies]
+\label{thm:replica_regional_product_density}
+\lean{Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density}
+\leanok
+\uses{thm:replica_good_component,thm:replica_good_copy_auxiliary_density}
+Write \(\rho_Q=\operatorname{Tr}_T|\Omega\rangle\langle\Omega|\) and
+\(\rho_{\mathcal K}(w)=\operatorname{Tr}_{(QT)^{\otimes k}}
+|w\rangle\langle w|\). After regrouping the retained coordinates as
+\(Q^{\otimes m}\otimes\mathcal K\), one has
+\[
+ \operatorname{Tr}_{T^{\otimes G}(QT)^{\otimes B}}
+ |w\rangle\langle w|
+ =\rho_Q^{\otimes m}\otimes\rho_{\mathcal K}(w).
+\]
+Neither \(u\) nor \(w\) need be normalized or nonzero. Zero copies and
+empty good sets are included.
+\end{theorem}
+
+\begin{proof}
+\leanok
+\uses{thm:replica_good_component,thm:replica_good_copy_auxiliary_density}
+The exact excitation factorization writes the coordinates of \(w\) as
+\[
+ w(q,t,b,c)=\left(\prod_{i\in G}\Omega(q_i,t_i)\right)\chi(b,c).
+\]
+Summing the rank-one density over \(b\) gives the marginal of \(\chi\),
+which is the actual auxiliary marginal of \(w\). Summing over \(t\)
+factors into one sum per good copy:
+\[
+ \sum_{t\in T^G}\prod_{i\in G}
+ \Omega(q_i,t_i)\overline{\Omega(q'_i,t_i)}
+ =\prod_{i\in G}(\rho_Q)_{q_iq'_i}.
+\]
+The canonical enumeration identifies this product with
+\(\rho_Q^{\otimes m}\). Empty products have value one, so the same
+calculation includes \(m=0\).
+\end{proof}
+
+Tracing unwanted auxiliary registers preserves this product structure.
+The good-auxiliary permutation symmetry and the subsequent merge-moment
+estimate are separate assertions.
