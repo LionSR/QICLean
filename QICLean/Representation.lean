@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.GroupedCopies
+import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookFormula
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
@@ -20,4 +21,5 @@ import QICLean.Representation.MergeMoment
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurSurprisal
+import QICLean.Representation.SchurWeylCommutant
 import QICLean.Representation.TensorPowerAction
