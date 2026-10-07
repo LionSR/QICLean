@@ -1,0 +1,639 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "p09-qic-product-transport-ambientschmidtvector",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSchmidtVector",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Defined the ambient Schmidt vector through two arbitrary local basis matrices."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-ambientschmidtsource",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSchmidtSource",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Defined the ambient ket-bra outer product through four independent local basis matrices."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-sourcetransport",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.sourceTransport",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Defined transport of a rectangular coordinate source through the two ket and two bra endpoint bases."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-ambientsourceu",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSourceU",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Defined the first actual sampled source operator in independent ambient endpoint bases."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-ambientsourcev",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSourceV",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Defined the second actual sampled source operator in independent ambient endpoint bases, retaining its shared conjugate Gaussian coordinates."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-ambientsampledsource",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSampledSource",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Defined the actual ambient product-operator sample average on four independently sized endpoint spaces."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-ambientsourcecorrection",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSourceCorrection",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Defined the centered ambient replacement against its explicitly represented Schmidt outer-product target."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-ambientschmidtvector_eq_mulvec",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSchmidtVector_eq_mulVec",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Identified the ambient Schmidt vector with Kronecker-basis transport of its coordinate vector."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-sourcetransport_kronecker",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.sourceTransport_kronecker",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Proved that transporting a product operator factors into the two transported local operators."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-ambientsourceu_kronecker_ambientsourcev",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSourceU_kronecker_ambientSourceV",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Identified the actual ambient sampled product with transport of the coordinate sampled product."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-ambientsampledsource_eq_transport",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSampledSource_eq_transport",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Proved exact transport of the finite sampled average, with no basis isometry hypothesis."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-sourcetransport_schmidtsource",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.sourceTransport_schmidtSource",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Proved that the transported coordinate outer product is the represented ambient Schmidt outer product."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-ambientsourcecorrection_eq_transport",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.ambientSourceCorrection_eq_transport",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Proved exact transport of the actual centered source correction through arbitrary endpoint bases."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-integrable_ambientsourceu",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_ambientSourceU",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Proved matrix-valued integrability of the actual first ambient sampled factor for every sample index, without weight-sign or sample-count-positivity premises."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-integrable_ambientsourcev",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_ambientSourceV",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Proved matrix-valued integrability of the actual conjugate second ambient sampled factor for every sample index, without weight-sign or sample-count-positivity premises."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-integrable_ambientsampledsource_entry",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_ambientSampledSource_entry",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derived genuine integrability of each ambient sampled entry from finite coordinate integrability."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-integral_ambientsampledsource_entry",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_ambientSampledSource_entry",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Proved each ambient sampled entry has the correct represented Schmidt-source expectation."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-integrable_ambientsampledsource",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_ambientSampledSource",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Combined finite entry integrability into matrix-valued ambient sampled-source integrability."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-integral_ambientsampledsource",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_ambientSampledSource",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Proved matrix-valued ambient sampled-source unbiasedness through arbitrary endpoint bases."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-integrable_ambientsourcecorrection",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_ambientSourceCorrection",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derived matrix-valued integrability of the centered ambient source correction."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-product-transport-integral_ambientsourcecorrection",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_ambientSourceCorrection",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Proved that the actual ambient correction matrix has zero expectation."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    }
+  ]
+}

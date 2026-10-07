@@ -28,6 +28,141 @@ Theorem 5.2, source-only reduction and `eq:compression-effect-circuit-error`,
 These are original proofs; no OpenAI Lean code is copied or adapted.
 -/
 
+/-
+Provenance-ID: p09-qic-density-rescaledgatechain
+Downstream declaration: Matrix.rescaledGateChain
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-markedrescaledgatechain
+Downstream declaration: Matrix.markedRescaledGateChain
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-sourceonlyreadoutvector
+Downstream declaration: Matrix.sourceOnlyReadoutVector
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-sourceonlyreadoutdensity
+Downstream declaration: Matrix.sourceOnlyReadoutDensity
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-sourceonlyreadoutvector_norm_le_one
+Downstream declaration: Matrix.sourceOnlyReadoutVector_norm_le_one
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-sourceonlyreadoutvector_sub_norm_le
+Downstream declaration: Matrix.sourceOnlyReadoutVector_sub_norm_le
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_le_prefix
+Downstream declaration: Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_prefix
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_le_sum
+Downstream declaration: Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_sum
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_le
+Downstream declaration: Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_le_half
+Downstream declaration: Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_half
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_marked_sub_le
+Downstream declaration: Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_marked_sub_le_half
+Downstream declaration: Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le_half
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_marked_empty
+Downstream declaration: Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_empty
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-sourceonlyreadoutdensity_zero
+Downstream declaration: Matrix.sourceOnlyReadoutDensity_zero
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
+/-
+Provenance-ID: p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_zero
+Downstream declaration: Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_zero
+Source: September 24, 2026.
+Label: eq:compression-effect-circuit-error.
+Independently formalized; no upstream Lean proof text reused.
+Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
+-/
+
 open scoped Matrix Matrix.Norms.L2Operator
 
 noncomputable section

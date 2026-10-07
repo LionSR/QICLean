@@ -18,6 +18,7 @@ import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.ConicProgram
+import QICLean.Analysis.ContractionChain
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
 import QICLean.Analysis.DeterminantTraceBound
@@ -83,9 +84,11 @@ import QICLean.Analysis.SandwichedRenyiTwo
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
+import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
+import QICLean.Analysis.SubnormalizedPureStateError
 import QICLean.Analysis.SubperipheralSpectrum
 import QICLean.Analysis.SuperoperatorResolvent
 import QICLean.Analysis.SupportCompressedEntropy
