@@ -61,3 +61,22 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Scalar inequalities are required only on nonzero joint
   projections. Compatibility and the full-space order must be derived from
   the actual projections, rather than supplied as extra assumptions.
+
+### Spectator coordinates in a central projection — candidate (2026-10-07)
+
+- **Pattern:** Prove the actual permutation entry condition in split coordinates,
+  then expand the group-algebra sum to identify the central projection entry
+  as an identity on the fixed coordinates times the projection on the moving
+  coordinates. Nonvanishing on the whole space forces nonvanishing on the
+  moving coordinates.
+- **Seen:** The private entry proof in
+  `QICLean/Representation/BadCopyLabelDimension.lean`; one mathematical
+  consumer in one file.
+- **Abstraction:** Reuse the existing permutation-entry and group-algebra
+  formulas. The ensuing dimension estimate uses the existing
+  `dim_le_finrank_of_invariant` theorem; no new tactic or competing general
+  representation definition is introduced.
+- **Caveats:** The actual group action and specified coordinate split are
+  essential. Fixed-coordinate multiplicity must not be included in the
+  dimension of the moving tensor power. Empty coordinate sets and zero
+  moving coordinates remain included.
