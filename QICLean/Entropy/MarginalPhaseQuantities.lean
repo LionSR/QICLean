@@ -199,9 +199,10 @@ theorem re_logForm {M : Matrix (X × T) (X × T) ℂ} (hM : M.PosDef)
   set d : ℝ := (Fintype.card X : ℝ)
   have hd : 0 < d := Nat.cast_pos.2 Fintype.card_pos
   set W := hT.1.eigenvectorUnitary
+  set W1 := kroneckerUnitary (1 : unitary (Matrix X X ℂ)) W
   set μ := hT.1.eigenvalues
   set LT := spectralFun W (fun k => ((Real.log (μ k) : ℝ) : ℂ))
-  have hsplit := spectralFun_leftRight_add hM.1.eigenvectorUnitary (kroneckerUnitary (1 : unitary (Matrix X X ℂ)) W)
+  have hsplit := spectralFun_leftRight_add hM.1.eigenvectorUnitary (W1)
     hM.1.eigenvalues (fun p => d⁻¹ * μ p.2) (fun t => ((Real.log t : ℝ) : ℂ))
     (fun a => ((-Real.log a : ℝ) : ℂ)) (fun b => ((Real.log b : ℝ) : ℂ)) (fun k j => by
       have hk := hM.eigenvalues_pos k
@@ -209,9 +210,9 @@ theorem re_logForm {M : Matrix (X × T) (X × T) ℂ} (hM : M.PosDef)
       rw [Real.log_mul (Real.rpow_pos_of_pos hk _).ne' (mul_pos (inv_pos.2 hd) hj).ne',
         Real.log_rpow hk]
       push_cast; ring)
-  have hLS : spectralFun (kroneckerUnitary (1 : unitary (Matrix X X ℂ)) W) (fun p => ((Real.log (d⁻¹ * μ p.2) : ℝ) : ℂ)) =
+  have hLS : spectralFun (W1) (fun p => ((Real.log (d⁻¹ * μ p.2) : ℝ) : ℂ)) =
       ((-Real.log d : ℝ) : ℂ) • 1 + (1 : Matrix X X ℂ) ⊗ₖ LT := by
-    rw [← spectralFun_const (kroneckerUnitary (1 : unitary (Matrix X X ℂ)) W), show (1 : Matrix X X ℂ) = spectralFun 1
+    rw [← spectralFun_const (W1), show (1 : Matrix X X ℂ) = spectralFun 1
       (fun _ => 1) from (spectralFun_one _).symm, spectralFun_kronecker, ← spectralFun_add]
     congr 1
     funext p
@@ -240,7 +241,8 @@ theorem re_logForm {M : Matrix (X × T) (X × T) ℂ} (hM : M.PosDef)
           push_cast; ring
   have h2 : (partialTraceLeft M * LT).trace =
       ((-vonNeumannEntropy (partialTraceLeft M) hT.1 : ℝ) : ℂ) := by
-    calc (partialTraceLeft M * LT).trace = (spectralFun W (fun k => ((μ k : ℝ) : ℂ)) * LT).trace := by
+    calc (partialTraceLeft M * LT).trace =
+        (spectralFun W (fun k => ((μ k : ℝ) : ℂ)) * LT).trace := by
           rw [hT.1.spectralFun_eigenvectorUnitary]
       _ = _ := by
           rw [spectralFun_mul, trace_spectralFun, vonNeumannEntropy, ← Finset.sum_neg_distrib,

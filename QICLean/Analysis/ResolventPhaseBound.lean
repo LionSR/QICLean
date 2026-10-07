@@ -247,7 +247,8 @@ theorem integral_sqrtRatio_le {D : ℝ} (hD : 1 ≤ D) (hK : R.invQuadA ≤ D ^ 
           ring
       _ ≤ (t * η) / 2 + L / t / 2 := by
           gcongr
-          · rw [show η = ∫ v in Ioi (0 : ℝ), R.defect v from R.integrableOn_defect_and_integral.2.symm]
+          · rw [show η = ∫ v in Ioi (0 : ℝ), R.defect v from
+              R.integrableOn_defect_and_integral.2.symm]
             exact setIntegral_mono_set R.integrableOn_defect_and_integral.1
               ((ae_restrict_iff' measurableSet_Ioi).2
                 (Eventually.of_forall fun v hv => R.defect_nonneg (le_of_lt hv)))

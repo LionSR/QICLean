@@ -65,7 +65,8 @@ matrix `ρ` on `x (U F)` and every real `u`,
 theorem norm_phaseDifference_le_of_posDef [Nonempty X] [Nonempty F]
     {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ} (hρ : ρ.PosDef) (htr : ρ.trace = 1) (u : ℝ) :
     ‖(WithLp.toLp 2 (vec
-        ((embedF (((1 : Matrix X X ℂ) ⊗ₖ cpowSpec (posDef_marginalU (F := F) hρ) (-(u * Complex.I))) *
+        ((embedF (((1 : Matrix X X ℂ) ⊗ₖ
+            cpowSpec (posDef_marginalU (F := F) hρ) (-(u * Complex.I))) *
             cpowSpec (posDef_marginalXU (F := F) hρ) (u * Complex.I)) -
           ((1 : Matrix X X ℂ) ⊗ₖ cpowSpec (posDef_marginalUF hρ) (-(u * Complex.I))) *
             cpowSpec hρ (u * Complex.I)) * rpowSpec hρ (1 / 2))) :

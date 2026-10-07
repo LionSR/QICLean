@@ -49,7 +49,8 @@ def kroneckerUnitary (U : unitary (Matrix n n ℂ)) (W : unitary (Matrix m m ℂ
 /-- The entrywise complex conjugate of a unitary. -/
 def conjUnitary (U : unitary (Matrix n n ℂ)) : unitary (Matrix n n ℂ) :=
   ⟨(U : Matrix n n ℂ).map (starRingEnd ℂ), by
-    have e : ((U : Matrix n n ℂ).map (starRingEnd ℂ))ᴴ = ((U : Matrix n n ℂ)ᴴ).map (starRingEnd ℂ) := by
+    have e : ((U : Matrix n n ℂ).map (starRingEnd ℂ))ᴴ =
+        ((U : Matrix n n ℂ)ᴴ).map (starRingEnd ℂ) := by
       ext i j; simp [conjTranspose_apply]
     rw [Unitary.mem_iff, star_eq_conjTranspose, e, ← Matrix.map_mul, ← Matrix.map_mul,
       ← star_eq_conjTranspose, Unitary.star_mul_self_of_mem U.2, Unitary.mul_star_self_of_mem U.2,
