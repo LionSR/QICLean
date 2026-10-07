@@ -1,0 +1,59 @@
+{
+  "source_revision": "79b9d503971a4ff2409fa557e174b46b13fdbbda",
+  "base_revision": "3446fccdbe72e932aa9479c146c7f3d1b4faee88",
+  "files": {
+    "QICLean/Entropy/TypicalStateFromTail.lean": "149554ccbce80b00197d5f969c04d9674b0c60f2bbca38eb0f0c1771307fe555",
+    "blueprint/src/chapter/ch12_entropy_typical_tail.tex": "f8a9aaf3db1bc26ab3470ad1abbdc5224f006ca8c8d8b13b78e097562e5f720c",
+    "docs/formalization/typical-state-from-tail.md": "088135216e3b8ab623e275282604aa0763165015f7d4f72f84bdbc29eb07d6ec"
+  },
+  "declaration_count": 2,
+  "definitions_added": 0,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "mathlib_prebuilt_olean_verified": true,
+  "commands": [
+    {
+      "command": "lake exe cache get",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalStateFromTail8753/mathlib-cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "kind": "build",
+      "command": "lake build QICLean.Entropy.TypicalStateFromTail",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalStateFromTail8753/build.log",
+      "sha256": "8cdb6c743524b391c597411bdc17777bbc97f0ebdb28661f025e925f2afed090"
+    },
+    {
+      "kind": "build",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalStateFromTail.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalStateFromTail8753/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "axioms",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalStateFromTail8753/Axioms.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalStateFromTail8753/axioms.log",
+      "sha256": "c571344f71815c5d444866a4affe9e0ff8c5cfd5ae3d9e92b6e41f7081e562af"
+    },
+    {
+      "command": "/tmp/qic-density-simplex-provenance-env/bin/python docs/provenance/evidence/typicalStateFromTail8753/validate-owned.py /Users/siruilu/Local/agentFormalization/TNLean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalStateFromTail8753/provenance.log",
+      "sha256": "b166cdb46d76cd00c8f04d030f62bd77b7babdc0d0c01e238a6ecfe340371b30"
+    }
+  ],
+  "only_new_module_compiled": true,
+  "full_target_jobs": 3275,
+  "shared_aggregator_or_chapter_edits": false,
+  "frozen_provenance_policy": "806099b4dddcce591b3a62ee1921926a6af5ad55",
+  "logs": {
+    "axioms.log": "c571344f71815c5d444866a4affe9e0ff8c5cfd5ae3d9e92b6e41f7081e562af",
+    "build.log": "8cdb6c743524b391c597411bdc17777bbc97f0ebdb28661f025e925f2afed090",
+    "mathlib-cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "provenance.log": "b166cdb46d76cd00c8f04d030f62bd77b7babdc0d0c01e238a6ecfe340371b30",
+    "strict-source.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
