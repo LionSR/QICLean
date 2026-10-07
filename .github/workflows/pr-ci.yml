@@ -511,6 +511,10 @@ jobs:
         if: env.TEX_CHANGED == 'true'
         run: texra-blueprint bbl
 
+      - name: Build blueprint PDF
+        if: env.TEX_CHANGED == 'true'
+        run: leanblueprint pdf
+
       - name: Run texra-blueprint web and check for errors
         if: env.TEX_CHANGED == 'true'
         working-directory: blueprint
