@@ -37,6 +37,7 @@ import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
 import QICLean.Entropy.TypicalBellPin
+import QICLean.Entropy.TypicalBellPinPowers
 import QICLean.Entropy.TypicalDensity
 import QICLean.Entropy.TypicalPureCompression
 import QICLean.Entropy.TypicalPureState
