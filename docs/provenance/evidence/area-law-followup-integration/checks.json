@@ -1,0 +1,61 @@
+{
+  "source_revision": "69dada97baeec752c0a4ebcc0b22da78b6520969",
+  "base_revision": "e8570eeaa58d6191b99b34a4ac9c1281d4c34a0c",
+  "files": {
+    "QICLean/Entropy/TypicalSpectrum.lean": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4",
+    "QICLean/Entropy/TypicalDensity.lean": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914",
+    "QICLean/Entropy/FiniteProductSplitting.lean": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739",
+    "QICLean/Entropy/FiniteProductInformation.lean": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f"
+  },
+  "commands": [
+    {
+      "kind": "build",
+      "command": "lake build",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/area-law-followup-integration/full-build.log",
+      "sha256": "76e0dfa817d43ec76fc97736c0cc575b6ea2e4e1b5c8bb58e064422fcf5db54b"
+    },
+    {
+      "kind": "axioms",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true docs/provenance/evidence/area-law-followup-integration/Axioms.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/area-law-followup-integration/axioms.log",
+      "sha256": "761992ededa1d0a47756c8da528e5fe69783b5bea2871bd63abb60a1f006030d"
+    },
+    {
+      "kind": "regressions",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true QICLeanTest/FiniteProductInformation.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/area-law-followup-integration/information-regressions.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "regressions",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true QICLeanTest/FiniteProductSplitting.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/area-law-followup-integration/splitting-regressions.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "blueprint",
+      "command": "leanblueprint checkdecls",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/area-law-followup-integration/blueprint-checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "declaration_count": 27,
+  "full_library_jobs": 9661,
+  "visual_review": {
+    "pdf": "blueprint/print/print.pdf",
+    "physical_pages": [
+      390,
+      391,
+      392,
+      393
+    ],
+    "result": "passed; final rendered pages inspected after section-heading correction"
+  },
+  "source_reuse": "All four new production modules independently formalized; no upstream OpenAI Lean proof text reused.",
+  "blueprint_pdf_sha256": "7d461832bad144f010a8b3824c030e84f5637b23480da49e734e00db8b1a4d97"
+}
