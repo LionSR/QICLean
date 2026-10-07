@@ -31,14 +31,13 @@
         "Derive the ground/excited eigenvector dichotomy from a Hermitian Hamiltonian, a unit ground eigenvector, a positive-semidefinite gap defect, and a strictly positive gap lower bound. No equality with the actual spectral gap is asserted.",
         "Reuse Matrix.PosSemidef.eq_inner_smul_of_gap for the ground branch. Adapt the local quadratic-form, inner-product, and excited-orthogonality proof in SpectralFilter.filterIntegral_mulVec_of_posSemidef_gap, PositiveReplacement.lean lines 126\u2013146 and 175\u2013188 at LionSR/QICLean@3080ce291ad7f8796c5416a78af9a63ccf10ea2e. Exact source blobs, hashes, and license are recorded in docs/provenance/evidence/8766-gaussian-spectral/reuse.json.",
         "Source passage: 02-information.tex lines 426\u2013452. No OpenAI Lean proof text is copied or adapted; original describes OpenAI proof-text provenance, not absence of local QIC proof reuse.",
-        "Native, strict production, all three consumer checks, two exact standard-axiom guards, and two raw axiom reports passed at actual source revision 03c84b6e86a6b0cdf1f0affd25d0738379159bb5. Both historical failed runs are retained without relabeling their revision or result.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "Native, strict production, all three consumer checks, two exact standard-axiom guards, and two raw axiom reports passed at actual source revision 03c84b6e86a6b0cdf1f0affd25d0738379159bb5. Both historical failed runs are retained without relabeling their revision or result."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
         "commands": [
           {
             "kind": "build",
@@ -98,14 +97,13 @@
         "Use the proved ground/excited dichotomy and Mathlib OrthonormalBasis.sum_sq_norm_inner_right (Parseval) to avoid any dimension factor. The theorem is independent of the Gaussian integral modules, whose consumer must establish its exact coefficient hypothesis.",
         "Consumer checks cover h = 0, exact inverse-eigenbasis synthesis, and a two-dimensional shifted-projector model at E\u2080 = -7, \u0394 = 2, h = 2 with a norm-two non-real input. The concrete fixture adapts QICLeanTest/PositiveGapUniqueness.lean lines 27\u201348 at 3080ce291ad7f8796c5416a78af9a63ccf10ea2e, recorded in reuse.json.",
         "Source passage: eq:info-gaussian-two-sided, 02-information.tex lines 433\u2013443 within lines 426\u2013452. No OpenAI Lean proof text is copied or adapted. No claim to complete the integral, truncation, locality, regional-gap, or full-reset arguments.",
-        "Native, strict production, all three consumer checks, two exact standard-axiom guards, and two raw axiom reports passed at actual source revision 03c84b6e86a6b0cdf1f0affd25d0738379159bb5. Both historical failed runs are retained without relabeling their revision or result.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "Native, strict production, all three consumer checks, two exact standard-axiom guards, and two raw axiom reports passed at actual source revision 03c84b6e86a6b0cdf1f0affd25d0738379159bb5. Both historical failed runs are retained without relabeling their revision or result."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
         "commands": [
           {
             "kind": "build",

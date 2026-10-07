@@ -4,7 +4,6 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import runpy
 import sys
 
 PACKET = Path(__file__).resolve().parent
@@ -33,10 +32,7 @@ def digest(path):
 
 
 index = load(PACKET / "verification.json")
-current_ledger = load(ROOT / "docs/provenance/openai-math.d/gaussiankernel8766.json")
-binding = runpy.run_path(str(ROOT /
-    'docs/provenance/evidence/8766-gaussian-filter/public-binding/check_binding.py'))
-ledger = binding['validate_packet'](PACKET, index, current_ledger)
+ledger = load(ROOT / "docs/provenance/openai-math.d/gaussiankernel8766.json")
 for path in PACKET.rglob("*.json"):
     load(path)
 for item in index["normalization"]["original_to_normalized"]:
@@ -131,14 +127,11 @@ if len(sys.argv) == 2:
     schema = Path(sys.argv[1])
     require(digest(schema) == index["schema_check"]["schema_sha256"], "Schema differs")
     jsonschema.validate(ledger, load(schema))
-    jsonschema.validate(current_ledger, load(schema))
     schema_validated = True
 require(len(sys.argv) <= 2, "Usage: check.py [provenance-schema.json]")
 print(json.dumps({"status": "passed", "public_declarations": 15, "consumer_examples": 9,
                   "guarded_reports": 15, "raw_reports": 15, "historical_failures": 2,
                   "verified_source_revision": index["verified_source_revision"],
                   "schema_validated": schema_validated,
-                  'public_source_revision': binding['PUBLIC_REVISION'],
-                  'public_binding_validated': True,
                   "scope": "Retained evidence and file identities; no Lean or CI execution."},
                  indent=2))

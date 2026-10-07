@@ -1,0 +1,62 @@
+{
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+    "lines": [
+      426,
+      452
+    ],
+    "labels": [
+      "lem:reset",
+      "eq:info-gaussian-two-sided",
+      "eq:info-reset-overlap"
+    ]
+  },
+  "openai_lean_proof_text_reused": false,
+  "local_adaptations": [
+    {
+      "repository": "LionSR/QICLean",
+      "commit": "19d21bfcdbbc90df07bffd6ab936c20d6aa95731",
+      "path": "QICLeanTest/GaussianSpectralGap.lean",
+      "lines": [
+        61,
+        89
+      ],
+      "git_blob": "f89b6beeadfaea9f14afb9b874539fe10376b19e",
+      "sha256": "62415a9bdf588e3351add809e21ee25efda1f590513101bf4369e10e7b11815b",
+      "license": "Apache-2.0",
+      "description": "Shifted-projector model, Hermiticity, zero PSD gap defect and ground-vector proof adapted for actual-integral consumers."
+    },
+    {
+      "repository": "LionSR/QICLean",
+      "commit": "19d21bfcdbbc90df07bffd6ab936c20d6aa95731",
+      "path": "QICLeanTest/PositiveGapUniqueness.lean",
+      "lines": [
+        27,
+        48
+      ],
+      "git_blob": "d18483f5fa3983530681b27fa5ff88c51a17e4de",
+      "sha256": "c53502565a1e015c63f48c89c9ca18615a5cabefabafb6bcdf4d8fb5b92abdf9",
+      "license": "Apache-2.0",
+      "description": "Original local shifted-projector test fixture at common energy -7 and gap 2."
+    }
+  ],
+  "unchanged_reused_api": [
+    "GaussianFilter.inner_gaussianIntertwiner",
+    "GaussianFilter.norm_sub_ground_le_of_coefficients",
+    "SpectralFilter.mulVec_eigenvectorBasis_complex",
+    "Matrix.l2_opNorm_mulVec",
+    "GaussianFilter.gaussianIntertwiner_conjTranspose",
+    "GaussianFilter.gaussianIntertwinerTruncated_conjTranspose",
+    "GaussianFilter.norm_gaussianIntertwiner_le",
+    "GaussianFilter.norm_gaussianIntertwiner_sub_truncated_le",
+    "Matrix.toEuclideanLin_conjTranspose_eq_adjoint",
+    "LinearMap.adjoint_inner_right",
+    "inner_conj_symm",
+    "Matrix.l2_opNorm_conjTranspose",
+    "norm_add_le"
+  ],
+  "scope": "Actual finite-dimensional Gaussian two-sided ground-vector estimates and unrenormalized truncation; no locality, full reset, full-root build, public CI, or publication claim.",
+  "verification_owner": "Parent integration task; metadata assembly executes no Lean, Lake or cache commands."
+}

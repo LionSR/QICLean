@@ -1,0 +1,379 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "gaussian8766-integral-ground-estimate",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+        "declaration": "GaussianFilter.norm_gaussianIntertwiner_ground_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "lem:reset",
+            "eq:info-gaussian-two-sided",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive the actual integral coefficients by inner_gaussianIntertwiner and the Hermitian eigenbasis equation, then apply Gaussian spectral decay and the Euclidean operator norm. No Gaussian multiplier identity or final residual bound is assumed.",
+        "Source: 2026 Polynomial-PEPS lem:reset, 02-information.tex lines 426–452; real overlap originates in eq:info-reset-overlap, lines 402–414. Delta is a positive gap lower bound, not an asserted exact gap. No locality or full-reset claim.",
+        "No OpenAI Lean proof text reused. The proof composes existing local integral and spectral APIs; test fixture adaptation and exact local source identities are recorded in docs/provenance/evidence/8766-gaussian-ground/reuse.json.",
+        "Native target, strict production, five complex-phase/truncation consumers and five standard-axiom guards passed at actual source revision 2ae6e2590cb787e3c9c252ca043686b44cbd93fc. The raw driver was added at 90bcaa0d425ad9f7916ce322edfcb229ecec8b9d; its command revision is preserved separately in verification.json. Public recovery checkpoint 16b81356549158a8393aaea5085defd4c5022e71 has tree 41d46a48626973c9056f36ca6163fe3b5e23665d, equal to local 90bc; its checked production and consumer blobs equal 2ae6. The earlier 000af37 failed invocation is retained unchanged except executor-path normalization."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-0.log",
+            "sha256": "8ca2f4225ed8abed4f35666bc66f602253c8a75024e4ff2c89b839f038012c46"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/GaussianGroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-2.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-0.log",
+            "sha256": "79ff1ff49c370bcbbde151e8d746339fe00cf966bfc97a8b4550b1c902554e89"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8766-gaussian-ground/drivers/GaussianGroundRawAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-1.log",
+            "sha256": "90aa210f1f36c3d1daa14117e1be94e73645dd7409b2079f05a2696f8bc114d7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gaussian8766-integral-two-sided",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+        "declaration": "GaussianFilter.gaussianIntertwiner_two_sided_ground_estimate",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "lem:reset",
+            "eq:info-gaussian-two-sided",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Combine the forward estimate with the swapped-generator adjoint integral. The reverse coefficient is the complex conjugate of z = inner(Phi, W Psi); W need not be Hermitian.",
+        "Source: 2026 Polynomial-PEPS lem:reset, 02-information.tex lines 426–452; real overlap originates in eq:info-reset-overlap, lines 402–414. Delta is a positive gap lower bound, not an asserted exact gap. No locality or full-reset claim.",
+        "No OpenAI Lean proof text reused. The proof composes existing local integral and spectral APIs; test fixture adaptation and exact local source identities are recorded in docs/provenance/evidence/8766-gaussian-ground/reuse.json.",
+        "Native target, strict production, five complex-phase/truncation consumers and five standard-axiom guards passed at actual source revision 2ae6e2590cb787e3c9c252ca043686b44cbd93fc. The raw driver was added at 90bcaa0d425ad9f7916ce322edfcb229ecec8b9d; its command revision is preserved separately in verification.json. Public recovery checkpoint 16b81356549158a8393aaea5085defd4c5022e71 has tree 41d46a48626973c9056f36ca6163fe3b5e23665d, equal to local 90bc; its checked production and consumer blobs equal 2ae6. The earlier 000af37 failed invocation is retained unchanged except executor-path normalization."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-0.log",
+            "sha256": "8ca2f4225ed8abed4f35666bc66f602253c8a75024e4ff2c89b839f038012c46"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/GaussianGroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-2.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-0.log",
+            "sha256": "79ff1ff49c370bcbbde151e8d746339fe00cf966bfc97a8b4550b1c902554e89"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8766-gaussian-ground/drivers/GaussianGroundRawAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-1.log",
+            "sha256": "90aa210f1f36c3d1daa14117e1be94e73645dd7409b2079f05a2696f8bc114d7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gaussian8766-integral-real-contraction",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+        "declaration": "GaussianFilter.gaussianIntertwiner_two_sided_of_real_overlap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "lem:reset",
+            "eq:info-gaussian-two-sided",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Specialize to a contraction W with an explicitly real overlap, obtaining the two common-coefficient manuscript inequalities and the filter contraction. Hermiticity of W alone does not justify a real overlap.",
+        "Source: 2026 Polynomial-PEPS lem:reset, 02-information.tex lines 426–452; real overlap originates in eq:info-reset-overlap, lines 402–414. Delta is a positive gap lower bound, not an asserted exact gap. No locality or full-reset claim.",
+        "No OpenAI Lean proof text reused. The proof composes existing local integral and spectral APIs; test fixture adaptation and exact local source identities are recorded in docs/provenance/evidence/8766-gaussian-ground/reuse.json.",
+        "Native target, strict production, five complex-phase/truncation consumers and five standard-axiom guards passed at actual source revision 2ae6e2590cb787e3c9c252ca043686b44cbd93fc. The raw driver was added at 90bcaa0d425ad9f7916ce322edfcb229ecec8b9d; its command revision is preserved separately in verification.json. Public recovery checkpoint 16b81356549158a8393aaea5085defd4c5022e71 has tree 41d46a48626973c9056f36ca6163fe3b5e23665d, equal to local 90bc; its checked production and consumer blobs equal 2ae6. The earlier 000af37 failed invocation is retained unchanged except executor-path normalization."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-0.log",
+            "sha256": "8ca2f4225ed8abed4f35666bc66f602253c8a75024e4ff2c89b839f038012c46"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/GaussianGroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-2.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-0.log",
+            "sha256": "79ff1ff49c370bcbbde151e8d746339fe00cf966bfc97a8b4550b1c902554e89"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8766-gaussian-ground/drivers/GaussianGroundRawAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-1.log",
+            "sha256": "90aa210f1f36c3d1daa14117e1be94e73645dd7409b2079f05a2696f8bc114d7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gaussian8766-truncated-ground-estimate",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+        "declaration": "GaussianFilter.norm_gaussianIntertwinerTruncated_ground_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "lem:reset",
+            "eq:info-gaussian-two-sided",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Bound the unrenormalized truncated forward residual by the sum of the Gaussian residual and 2 exp(-T^2/(2h)) times norm(W), using the integral tail estimate and triangle inequality.",
+        "Source: 2026 Polynomial-PEPS lem:reset, 02-information.tex lines 426–452; real overlap originates in eq:info-reset-overlap, lines 402–414. Delta is a positive gap lower bound, not an asserted exact gap. No locality or full-reset claim.",
+        "No OpenAI Lean proof text reused. The proof composes existing local integral and spectral APIs; test fixture adaptation and exact local source identities are recorded in docs/provenance/evidence/8766-gaussian-ground/reuse.json.",
+        "Native target, strict production, five complex-phase/truncation consumers and five standard-axiom guards passed at actual source revision 2ae6e2590cb787e3c9c252ca043686b44cbd93fc. The raw driver was added at 90bcaa0d425ad9f7916ce322edfcb229ecec8b9d; its command revision is preserved separately in verification.json. Public recovery checkpoint 16b81356549158a8393aaea5085defd4c5022e71 has tree 41d46a48626973c9056f36ca6163fe3b5e23665d, equal to local 90bc; its checked production and consumer blobs equal 2ae6. The earlier 000af37 failed invocation is retained unchanged except executor-path normalization."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-0.log",
+            "sha256": "8ca2f4225ed8abed4f35666bc66f602253c8a75024e4ff2c89b839f038012c46"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/GaussianGroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-2.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-0.log",
+            "sha256": "79ff1ff49c370bcbbde151e8d746339fe00cf966bfc97a8b4550b1c902554e89"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8766-gaussian-ground/drivers/GaussianGroundRawAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-1.log",
+            "sha256": "90aa210f1f36c3d1daa14117e1be94e73645dd7409b2079f05a2696f8bc114d7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gaussian8766-truncated-two-sided",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+        "declaration": "GaussianFilter.gaussianIntertwinerTruncated_two_sided_ground_estimate",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "lem:reset",
+            "eq:info-gaussian-two-sided",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Obtain both unrenormalized truncated ground-vector estimates, retaining the conjugate coefficient on the adjoint side. T is nonnegative and variance may be zero.",
+        "Source: 2026 Polynomial-PEPS lem:reset, 02-information.tex lines 426–452; real overlap originates in eq:info-reset-overlap, lines 402–414. Delta is a positive gap lower bound, not an asserted exact gap. No locality or full-reset claim.",
+        "No OpenAI Lean proof text reused. The proof composes existing local integral and spectral APIs; test fixture adaptation and exact local source identities are recorded in docs/provenance/evidence/8766-gaussian-ground/reuse.json.",
+        "Native target, strict production, five complex-phase/truncation consumers and five standard-axiom guards passed at actual source revision 2ae6e2590cb787e3c9c252ca043686b44cbd93fc. The raw driver was added at 90bcaa0d425ad9f7916ce322edfcb229ecec8b9d; its command revision is preserved separately in verification.json. Public recovery checkpoint 16b81356549158a8393aaea5085defd4c5022e71 has tree 41d46a48626973c9056f36ca6163fe3b5e23665d, equal to local 90bc; its checked production and consumer blobs equal 2ae6. The earlier 000af37 failed invocation is retained unchanged except executor-path normalization."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-0.log",
+            "sha256": "8ca2f4225ed8abed4f35666bc66f602253c8a75024e4ff2c89b839f038012c46"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/GaussianGroundEstimate.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-2ae6-2.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.GaussianFilter.GroundEstimate",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-0.log",
+            "sha256": "79ff1ff49c370bcbbde151e8d746339fe00cf966bfc97a8b4550b1c902554e89"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8766-gaussian-ground/drivers/GaussianGroundRawAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-raw-90bc-1.log",
+            "sha256": "90aa210f1f36c3d1daa14117e1be94e73645dd7409b2079f05a2696f8bc114d7"
+          }
+        ]
+      }
+    }
+  ]
+}

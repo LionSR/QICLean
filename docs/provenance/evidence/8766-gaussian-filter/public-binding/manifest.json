@@ -1,0 +1,982 @@
+{
+  "format_version": 1,
+  "scope": "Metadata-only binding of 38 existing ledger entries to byte-identical public source; retained Lean/Lake runs are historical and were not rerun.",
+  "public_checkpoint": {
+    "repository": "LionSR/QICLean",
+    "remote": "https://github.com/LionSR/QICLean.git",
+    "branch": "codex/gaussian-two-generator-filter-8766",
+    "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+    "tree": "41d46a48626973c9056f36ca6163fe3b5e23665d",
+    "url": "https://github.com/LionSR/QICLean/commit/16b81356549158a8393aaea5085defd4c5022e71"
+  },
+  "source_tree_equivalence": {
+    "local_source_revision": "90bcaa0d425ad9f7916ce322edfcb229ecec8b9d",
+    "local_source_tree": "41d46a48626973c9056f36ca6163fe3b5e23665d",
+    "public_source_tree": "41d46a48626973c9056f36ca6163fe3b5e23665d",
+    "equal": true,
+    "local_commit_object": {
+      "path": "docs/provenance/evidence/8766-gaussian-filter/public-binding/local-source-commit.txt",
+      "sha256": "195f2314155318a9731222b019a7c81f606473295b3387e49a46db8a8f2e46e4",
+      "git_blob": "7604f0b8c996c5fae8a404889a747324fa4fd973",
+      "bytes": 263
+    },
+    "method": "Compare the complete public and local Git tree IDs. Preserve the raw local commit payload so its commit ID and tree can also be verified in a public-only object database."
+  },
+  "public_read": {
+    "command": [
+      "git",
+      "fetch",
+      "--no-tags",
+      "https://github.com/LionSR/QICLean.git",
+      "refs/heads/codex/gaussian-two-generator-filter-8766"
+    ],
+    "exit_code": 0,
+    "fetched_revision": "16b81356549158a8393aaea5085defd4c5022e71",
+    "fetched_tree": "41d46a48626973c9056f36ca6163fe3b5e23665d",
+    "remote_writes": false
+  },
+  "schema": {
+    "repository": "LionSR/TNLean",
+    "path": "docs/provenance/openai-math.schema.json",
+    "sha256": "a691d8e95b668c968365f2c7e33f614d49635aade8fdd4c2f27cd64f0cd6b459"
+  },
+  "packets": {
+    "kernel": {
+      "packet": "docs/provenance/evidence/8766-gaussian-kernel",
+      "current_ledger": "docs/provenance/openai-math.d/gaussiankernel8766.json",
+      "original_ledger": {
+        "path": "docs/provenance/evidence/8766-gaussian-filter/public-binding/original-ledgers/gaussiankernel8766.json",
+        "sha256": "9f94c86ed807e34e4b2702c4f14d2c63ea87821de50700779f61798c07ced7a4",
+        "git_blob": "372bb979f67d612c7c6798c3b0f1115eaec43421",
+        "bytes": 56147
+      },
+      "original_checker": {
+        "path": "docs/provenance/evidence/8766-gaussian-filter/public-binding/original-checkers/kernel-check.py",
+        "sha256": "93b834e69d4f9ad3e6fd41d962f8a150608d0bf057bd774c831cd644a0769c05",
+        "git_blob": "4071202cfd883fdbac6cb847f0f6daa501e04267",
+        "bytes": 6894
+      },
+      "historical_verified_source_revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
+      "declarations": 15,
+      "binding_note": "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed.",
+      "replaced_change_index": 3,
+      "source_files": [
+        {
+          "path": "QICLean/Analysis/GaussianFilter/Kernel.lean",
+          "sha256": "43f41e9a3b2a191fa4999eb68d906d2851a169d9c95e4f0576ea5df9d1bcdbef",
+          "git_blob": "fce0d043e337b2135d75dfd942e1ec706e0cdb4a",
+          "bytes": 8834,
+          "historical_source_revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        },
+        {
+          "path": "QICLeanTest/GaussianKernel.lean",
+          "sha256": "eb9af4b8b90a6bb9fc1abc930f11db91dbff584c5752e74d2a4d31a4c842a3cc",
+          "git_blob": "1079cbe159da5bc4f74fd2b7e2c20041b2f08790",
+          "bytes": 5915,
+          "historical_source_revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/drivers/GaussianKernelRawAxioms.lean",
+          "sha256": "c2099f8f411fab3c4f7745c8724cd937fbdc2a800849c25380c6fa27b2714543",
+          "git_blob": "b29477d6e2189e1c897f5dde7d50eac920aa1e74",
+          "bytes": 1023,
+          "historical_source_revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        }
+      ],
+      "adapted_source_files": [],
+      "selected_historical_runs": [
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-kernel/runs/gaussian-kernel-guards-e3a1.json",
+          "row": 0,
+          "kind": "native-target",
+          "actual_run_revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
+          "command": [
+            "lake",
+            "build",
+            "QICLean.Analysis.GaussianFilter.Kernel"
+          ],
+          "exit_code": 0,
+          "file": "aggregate",
+          "checked_file_sha256": null,
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-guards-e3a1-0.log",
+            "sha256": "414ad90cd85178976ebac313b4c4b4166f59b6474160ecc5e15be4997bf47778",
+            "git_blob": "d3747f17a80cd6578dd6b7cfb036622ff1168b36",
+            "bytes": 110
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-kernel/runs/gaussian-kernel-b45b.json",
+          "row": 1,
+          "kind": "strict-production",
+          "actual_run_revision": "b45bc4ae2196fc64724808a605ddd14c3d92fc1d",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "QICLean/Analysis/GaussianFilter/Kernel.lean"
+          ],
+          "exit_code": 0,
+          "file": "QICLean/Analysis/GaussianFilter/Kernel.lean",
+          "checked_file_sha256": "43f41e9a3b2a191fa4999eb68d906d2851a169d9c95e4f0576ea5df9d1bcdbef",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+            "bytes": 0
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-kernel/runs/gaussian-kernel-guards-e3a1.json",
+          "row": 1,
+          "kind": "strict-consumers-and-guards",
+          "actual_run_revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "QICLeanTest/GaussianKernel.lean"
+          ],
+          "exit_code": 0,
+          "file": "QICLeanTest/GaussianKernel.lean",
+          "checked_file_sha256": "eb9af4b8b90a6bb9fc1abc930f11db91dbff584c5752e74d2a4d31a4c842a3cc",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-guards-e3a1-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+            "bytes": 0
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-kernel/runs/gaussian-kernel-b45b.json",
+          "row": 3,
+          "kind": "strict-raw-axioms",
+          "actual_run_revision": "b45bc4ae2196fc64724808a605ddd14c3d92fc1d",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "docs/provenance/evidence/8766-gaussian-kernel/drivers/GaussianKernelRawAxioms.lean"
+          ],
+          "exit_code": 0,
+          "file": "docs/provenance/evidence/8766-gaussian-kernel/drivers/GaussianKernelRawAxioms.lean",
+          "checked_file_sha256": "c2099f8f411fab3c4f7745c8724cd937fbdc2a800849c25380c6fa27b2714543",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-3.log",
+            "sha256": "66d787eaf86c152083ecbf614028078d7825cb33df9d0a9885dd664e588996cd",
+            "git_blob": "a282b993479f08162eccda1209264574ed2fe874",
+            "bytes": 2666
+          }
+        }
+      ],
+      "retained_packet_files": [
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/README.md",
+          "sha256": "819cefaf4ee4e4e4700d722fd023112a94bdb4d4c19edd64bd13157a95de0c86",
+          "git_blob": "ea1f609ece18df7494e8bc44646690d59ec966eb",
+          "bytes": 4990
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/checks.json",
+          "sha256": "dd4e269fec65d8ad4c052b272081f6c4c233b4e308c0394acaf0eba0de2f2ee3",
+          "git_blob": "4c29ac6425ae214302be9f59abc02e40ee6e6bef",
+          "bytes": 334
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/drivers/GaussianKernelRawAxioms.lean",
+          "sha256": "c2099f8f411fab3c4f7745c8724cd937fbdc2a800849c25380c6fa27b2714543",
+          "git_blob": "b29477d6e2189e1c897f5dde7d50eac920aa1e74",
+          "bytes": 1023
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/history/logs/gaussian-kernel-2daa-0.log",
+          "sha256": "f81c2e51e365bbfdbdd22025313f6457952a9f518d764f541352df43caba9b94",
+          "git_blob": "179f0d32f32fa99af2c700d27324592c086b0142",
+          "bytes": 1634
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/history/logs/gaussian-kernel-a2bc-0.log",
+          "sha256": "1da780c64d152f0572b50b2c6d33b995422722b56869e2250337e821fa8172a8",
+          "git_blob": "cd81a23339f6b174237ba79086e392f7c310b239",
+          "bytes": 110
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/history/logs/gaussian-kernel-a2bc-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/history/logs/gaussian-kernel-a2bc-2.log",
+          "sha256": "a6a336552d057214e8408f14605dc47c85647e661cd92f6e7f99e5c6c9a946c8",
+          "git_blob": "e238cd2dcdd5cc9d8f984ceaf2d69fe3ce424387",
+          "bytes": 800
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/history/runs/gaussian-kernel-2daa.json",
+          "sha256": "f43f61f2cee2f67e9f10415aae1fb4a9e3fa870f06f1d38028f4ee23412b99a0",
+          "git_blob": "6e9144dbcd2a76cd306f8882118235d2585421ab",
+          "bytes": 365
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/history/runs/gaussian-kernel-a2bc.json",
+          "sha256": "c330f47ee6aaa5e6952ac985fe0035b5a329075705c37f58df01088178051bfe",
+          "git_blob": "fbf66c16fd7210ce9a8319c66849df16268ab009",
+          "bytes": 1704
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/library-reuse.json",
+          "sha256": "887061fe1161044ad6bcdfb3c5284a9fa1e19f8ad61da51ddcbfef81fc817037",
+          "git_blob": "62de0e44f75577e70c73fb54abd5c0c95b3d1457",
+          "bytes": 6026
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-0.log",
+          "sha256": "414ad90cd85178976ebac313b4c4b4166f59b6474160ecc5e15be4997bf47778",
+          "git_blob": "d3747f17a80cd6578dd6b7cfb036622ff1168b36",
+          "bytes": 110
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-2.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-3.log",
+          "sha256": "66d787eaf86c152083ecbf614028078d7825cb33df9d0a9885dd664e588996cd",
+          "git_blob": "a282b993479f08162eccda1209264574ed2fe874",
+          "bytes": 2666
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-guards-e3a1-0.log",
+          "sha256": "414ad90cd85178976ebac313b4c4b4166f59b6474160ecc5e15be4997bf47778",
+          "git_blob": "d3747f17a80cd6578dd6b7cfb036622ff1168b36",
+          "bytes": 110
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-guards-e3a1-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/runs/gaussian-kernel-b45b.json",
+          "sha256": "21d5dfdeeb45027c4eb9d38b960b5ffe024afee2d678dae71c7221ebdbcd6eed",
+          "git_blob": "048a97f3c6adc1e2b6a0d65b316160ac864f8097",
+          "bytes": 2433
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/runs/gaussian-kernel-guards-e3a1.json",
+          "sha256": "de227227b98f2a73127d6576aa5e3886fe79d485965688ea0197ba06fb9e27cd",
+          "git_blob": "8c4b283186c8204cbda862c4b4166a9587e143d4",
+          "bytes": 1022
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-kernel/verification.json",
+          "sha256": "88221c4bfffc80f42eb1b8ff104aa9cde31374833a6d17b903861eee2ac9d7e4",
+          "git_blob": "76b0ae8a8adae3edda1febebb95ed5638de8608f",
+          "bytes": 11175
+        }
+      ]
+    },
+    "matrix": {
+      "packet": "docs/provenance/evidence/8766-gaussian-matrix",
+      "current_ledger": "docs/provenance/openai-math.d/gaussian-matrix8766.json",
+      "original_ledger": {
+        "path": "docs/provenance/evidence/8766-gaussian-filter/public-binding/original-ledgers/gaussian-matrix8766.json",
+        "sha256": "ce07956daa4725f3dc9f330a7e5510294f93efcda9df34e3fa93a342c0875f85",
+        "git_blob": "a04b99beed2b9f4cab0fb9d833ebb7c7437781c0",
+        "bytes": 85153
+      },
+      "original_checker": {
+        "path": "docs/provenance/evidence/8766-gaussian-filter/public-binding/original-checkers/matrix-check.py",
+        "sha256": "68cd897b8d6c84d7d8e84e17e6cbe161d3cb8c4762d992519a13f618ffece5fe",
+        "git_blob": "f3fd756e873139e8c032bc126cc82288697409c6",
+        "bytes": 7146
+      },
+      "historical_verified_source_revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
+      "declarations": 21,
+      "binding_note": "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed.",
+      "replaced_change_index": 3,
+      "source_files": [
+        {
+          "path": "QICLean/Analysis/GaussianFilter/MatrixIntegral.lean",
+          "sha256": "9e94093b4b5f3c99729743dd874ce53312edd5868244130bb5f379bff9e42d30",
+          "git_blob": "bd4fcc22ba7fe3260cf06ee1e9161a6c25492ce2",
+          "bytes": 19222,
+          "historical_source_revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        },
+        {
+          "path": "QICLeanTest/GaussianMatrixIntegral.lean",
+          "sha256": "f3c93ba96c2d15fecf8dcb2c7135a478699c5dbcdfe760cda97173825acce9bf",
+          "git_blob": "937a4132e8260ef32eb688e1250ba49aaaeb8f2d",
+          "bytes": 6311,
+          "historical_source_revision": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralRawAxioms.lean",
+          "sha256": "ef8f585340d091d64da0d2c7462df3a9a20dbea725df4738662522da50e2a3e5",
+          "git_blob": "56902ff5633afe425e932d39f71ee1a860e51c39",
+          "bytes": 1657,
+          "historical_source_revision": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralGuardedAxioms.lean",
+          "sha256": "e1b7984ea8165d43e2a8a3d75ae504583c2eb444043540014890254d15c37d77",
+          "git_blob": "b1241926f99adfc341b8704c2d3a9e66a60139ce",
+          "bytes": 6958,
+          "historical_source_revision": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        }
+      ],
+      "adapted_source_files": [
+        {
+          "path": "QICLean/Analysis/SpectralFilter/MatrixFilter.lean",
+          "sha256": "5acf1a80ed8c5b66598400ee4ad2d0e2616186c11772562e8217f40424cdde5e",
+          "git_blob": "d9a41a09e6bf794300e47804e45018febce0e26f",
+          "bytes": 16724
+        }
+      ],
+      "selected_historical_runs": [
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-c5cd.json",
+          "row": 0,
+          "kind": "native-target",
+          "actual_run_revision": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+          "command": [
+            "lake",
+            "build",
+            "QICLean.Analysis.GaussianFilter.MatrixIntegral"
+          ],
+          "exit_code": 0,
+          "file": "aggregate",
+          "checked_file_sha256": null,
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-0.log",
+            "sha256": "e073cbf1113e0ad3f2db5983790b60978e908c4c6faf27380c7143c92e3df67e",
+            "git_blob": "d40ed9984aaeb2d18f899fe459a0025bd22ee5ba",
+            "bytes": 186
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-c5cd.json",
+          "row": 1,
+          "kind": "strict-production-before-attribution-correction",
+          "actual_run_revision": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "QICLean/Analysis/GaussianFilter/MatrixIntegral.lean"
+          ],
+          "exit_code": 0,
+          "file": "QICLean/Analysis/GaussianFilter/MatrixIntegral.lean",
+          "checked_file_sha256": "32d9c82c1c641c206a3032481ef17e348c6a1e3def135b97f7ed451095b37f2a",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+            "bytes": 0
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-c5cd.json",
+          "row": 2,
+          "kind": "strict-consumers",
+          "actual_run_revision": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "QICLeanTest/GaussianMatrixIntegral.lean"
+          ],
+          "exit_code": 0,
+          "file": "QICLeanTest/GaussianMatrixIntegral.lean",
+          "checked_file_sha256": "f3c93ba96c2d15fecf8dcb2c7135a478699c5dbcdfe760cda97173825acce9bf",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-2.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+            "bytes": 0
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-c5cd.json",
+          "row": 3,
+          "kind": "strict-raw-axioms",
+          "actual_run_revision": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralRawAxioms.lean"
+          ],
+          "exit_code": 0,
+          "file": "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralRawAxioms.lean",
+          "checked_file_sha256": "ef8f585340d091d64da0d2c7462df3a9a20dbea725df4738662522da50e2a3e5",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-3.log",
+            "sha256": "1b93465afb3708a66a624b52b2ede9f639ffcfb3ae80e1715e08374ced08c6b5",
+            "git_blob": "aa78f2b07a05da9089c32687bbc9655c5468aa6d",
+            "bytes": 4063
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-guards-c5cd.json",
+          "row": 1,
+          "kind": "strict-guarded-axioms",
+          "actual_run_revision": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralGuardedAxioms.lean"
+          ],
+          "exit_code": 0,
+          "file": "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralGuardedAxioms.lean",
+          "checked_file_sha256": "e1b7984ea8165d43e2a8a3d75ae504583c2eb444043540014890254d15c37d77",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-guards-c5cd-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+            "bytes": 0
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-source-4df7.json",
+          "row": 0,
+          "kind": "native-target-final",
+          "actual_run_revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
+          "command": [
+            "lake",
+            "build",
+            "QICLean.Analysis.GaussianFilter.MatrixIntegral"
+          ],
+          "exit_code": 0,
+          "file": "aggregate",
+          "checked_file_sha256": null,
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-source-4df7-0.log",
+            "sha256": "54e5a5bc90f3d0a98aece0750dcf5200a9450d17dd4e9f16844c950f318a8694",
+            "git_blob": "62809fb0f656203c92d9cb2487eb88579fd13a6f",
+            "bytes": 186
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-source-4df7.json",
+          "row": 1,
+          "kind": "strict-production-final",
+          "actual_run_revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "QICLean/Analysis/GaussianFilter/MatrixIntegral.lean"
+          ],
+          "exit_code": 0,
+          "file": "QICLean/Analysis/GaussianFilter/MatrixIntegral.lean",
+          "checked_file_sha256": "9e94093b4b5f3c99729743dd874ce53312edd5868244130bb5f379bff9e42d30",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-source-4df7-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+            "bytes": 0
+          }
+        }
+      ],
+      "retained_packet_files": [
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/README.md",
+          "sha256": "55c851e928839dd054fdfb2706244e82c841ee7280ad3c0b5b32b3e6b099fd39",
+          "git_blob": "14bf4bbcbc2c6a81146c1783c763480c9d73b76e",
+          "bytes": 5500
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/checks.json",
+          "sha256": "410ad04aa1d1ff4b574a6ee88c2a99c48d5aded8b3db3393eb03a094de252f33",
+          "git_blob": "ec067dac18adf1bdd7e8db501858aa67d9abb1f7",
+          "bytes": 340
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralGuardedAxioms.lean",
+          "sha256": "e1b7984ea8165d43e2a8a3d75ae504583c2eb444043540014890254d15c37d77",
+          "git_blob": "b1241926f99adfc341b8704c2d3a9e66a60139ce",
+          "bytes": 6958
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralRawAxioms.lean",
+          "sha256": "ef8f585340d091d64da0d2c7462df3a9a20dbea725df4738662522da50e2a3e5",
+          "git_blob": "56902ff5633afe425e932d39f71ee1a860e51c39",
+          "bytes": 1657
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-3b32-0.log",
+          "sha256": "4d11550e55f8772926763b9e596c10900ef8e8c4c8cfed308be1fd05b2c80820",
+          "git_blob": "65888eac28ace0839fc31208d2d8df8ead8f097e",
+          "bytes": 11933
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-a40d-0.log",
+          "sha256": "7a983bb39a100e5ee2029988efe5c954aa6c1a974a959b104c174459ba95f0b3",
+          "git_blob": "d93419f5c6696760425572a06eab414f72b8a910",
+          "bytes": 118
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-a40d-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-a40d-2.log",
+          "sha256": "db2a8549e278ed891426904d130171634657532e0815048420aca4d1eeb963d6",
+          "git_blob": "13a31451f0c73d79fc5f3e40c131ed2cbdd78eab",
+          "bytes": 1009
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-0.log",
+          "sha256": "e073cbf1113e0ad3f2db5983790b60978e908c4c6faf27380c7143c92e3df67e",
+          "git_blob": "d40ed9984aaeb2d18f899fe459a0025bd22ee5ba",
+          "bytes": 186
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-2.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-3.log",
+          "sha256": "1b93465afb3708a66a624b52b2ede9f639ffcfb3ae80e1715e08374ced08c6b5",
+          "git_blob": "aa78f2b07a05da9089c32687bbc9655c5468aa6d",
+          "bytes": 4063
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-4.log",
+          "sha256": "ad4bca922c4b9ff868c004684c44e762f50a89bf3a130718b7544fa3e3b8a948",
+          "git_blob": "775689b3e761dacbac819be6d0491836a9654051",
+          "bytes": 138
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-guards-c5cd-0.log",
+          "sha256": "206c55179ac76cdd4d7f464de058a7be0bf68cb9f8f2dea074c28134dc9bcd8b",
+          "git_blob": "efbd71407650b51e3236c5f1063d0aa523de94ef",
+          "bytes": 42
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-guards-c5cd-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-source-4df7-0.log",
+          "sha256": "54e5a5bc90f3d0a98aece0750dcf5200a9450d17dd4e9f16844c950f318a8694",
+          "git_blob": "62809fb0f656203c92d9cb2487eb88579fd13a6f",
+          "bytes": 186
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-source-4df7-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/metadata-check-history.json",
+          "sha256": "47448e2c34535ab4b231c780a897a337e3679f8a4f9ea22e82bc8013c014ed1d",
+          "git_blob": "7f148077ba57a8d2033f23e38d7accc1b18c23fd",
+          "bytes": 750
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/reuse.json",
+          "sha256": "875c128400a81529b2b95948092dd8b435059d4be4dc3a570d7afad3f57951e6",
+          "git_blob": "fefb03b0df3c723cfaf13d89c8cfba1695f4b47a",
+          "bytes": 4007
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/runner-incident.json",
+          "sha256": "81276245f4341d0591ad685cbd968c30bae0d21bdc6ad56d1728b0ec190b7a40",
+          "git_blob": "41dd7be9cf18f98851ad5238675238acb5448c3b",
+          "bytes": 688
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-3b32.json",
+          "sha256": "34f301723ca1fc3b1aabd82cbeb766ba07b9a3360cc9ba86fa76cdce446bac29",
+          "git_blob": "ef03bacf2d0496aac37d14e77f238d423c1836b1",
+          "bytes": 367
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-a40d.json",
+          "sha256": "ee869774f0a8a2d90d49ae7bff1df5d53924e5777d3eebdbef95dd925d7e2792",
+          "git_blob": "aba50a713d29aec98b78db5026603d3cc819a89b",
+          "bytes": 1721
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-c5cd.json",
+          "sha256": "344663e1d295b43d144350beb425dac36e0d5b4d95b7ad2ff0c559ba01b2def9",
+          "git_blob": "c9e668a959cd13a550f7cdc9805aaf796fc6b4ea",
+          "bytes": 2489
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-guards-c5cd.json",
+          "sha256": "10eda2e7ca3eaeb28641c085b0e64a0f28302d0007083a87c27c140434cfca7e",
+          "git_blob": "e043c2a2052c719c9829afc5ab784f995fe7d33b",
+          "bytes": 1157
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/runs/gaussian-matrix-source-4df7.json",
+          "sha256": "75e3a5d1d50cd507ca86b007ace15798d826e7fdbfb8ffba12171f3baa66c655",
+          "git_blob": "51c03fcc51267615a5abf63cbf0538fcfa3945b0",
+          "bytes": 1071
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-matrix/verification.json",
+          "sha256": "4abf170ebb8d5aa43be6d9fdcb238c7e3ccc876d255582e7d62c7361b2379d85",
+          "git_blob": "aff983c5af1e3545746cbc6099505147dab3921e",
+          "bytes": 13776
+        }
+      ]
+    },
+    "spectral": {
+      "packet": "docs/provenance/evidence/8766-gaussian-spectral",
+      "current_ledger": "docs/provenance/openai-math.d/gaussian-spectral8766.json",
+      "original_ledger": {
+        "path": "docs/provenance/evidence/8766-gaussian-filter/public-binding/original-ledgers/gaussian-spectral8766.json",
+        "sha256": "0b61e3e2bc1b2f7caa21fbd21159a0fc2cd3cb91b2ca17843934a3a24ae2c6f4",
+        "git_blob": "aea2af30246fdecb61c8f5ab1ef3e266d8cb4381",
+        "bytes": 8647
+      },
+      "original_checker": {
+        "path": "docs/provenance/evidence/8766-gaussian-filter/public-binding/original-checkers/spectral-check.py",
+        "sha256": "4bafd5adf68c3490626a9dc2292fefde9ca9404dd2b3e4b814284c766080d5b8",
+        "git_blob": "f08044f414e34e986e1d386c8bb3aeb94ac6a4d2",
+        "bytes": 6927
+      },
+      "historical_verified_source_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+      "declarations": 2,
+      "binding_note": "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed.",
+      "replaced_change_index": null,
+      "source_files": [
+        {
+          "path": "QICLean/Analysis/GaussianFilter/SpectralGap.lean",
+          "sha256": "3743ada0931869ae1cf419798ca0d920431404927b1b05f6b9918b7b50f56565",
+          "git_blob": "aa645c331af67660b1bc4d166fa8cb550461e7b7",
+          "bytes": 7546,
+          "historical_source_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        },
+        {
+          "path": "QICLeanTest/GaussianSpectralGap.lean",
+          "sha256": "62415a9bdf588e3351add809e21ee25efda1f590513101bf4369e10e7b11815b",
+          "git_blob": "f89b6beeadfaea9f14afb9b874539fe10376b19e",
+          "bytes": 5854,
+          "historical_source_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/drivers/GaussianSpectralRawAxioms.lean",
+          "sha256": "f5732097cb361f60b67ec816ddedd53732e8349b41f344647318af381d3c607a",
+          "git_blob": "71680243cbfed0ea95d6fd41259eaff2bb90526d",
+          "bytes": 401,
+          "historical_source_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+          "public_source_revision": "16b81356549158a8393aaea5085defd4c5022e71"
+        }
+      ],
+      "adapted_source_files": [
+        {
+          "path": "QICLean/Analysis/SpectralFilter/PositiveReplacement.lean",
+          "sha256": "0c1e771f4b641ac31b5de0f10f6ea6f7d75ee19789265422547d3edd1e0d4b54",
+          "git_blob": "6ba0a91ded2a2fa94dce4dfa7abf22bd5e2ba58d",
+          "bytes": 18510
+        },
+        {
+          "path": "QICLeanTest/PositiveGapUniqueness.lean",
+          "sha256": "c53502565a1e015c63f48c89c9ca18615a5cabefabafb6bcdf4d8fb5b92abdf9",
+          "git_blob": "d18483f5fa3983530681b27fa5ff88c51a17e4de",
+          "bytes": 6416
+        }
+      ],
+      "selected_historical_runs": [
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-spectral/runs/gaussian-spectral-03c8.json",
+          "row": 0,
+          "kind": "native-target",
+          "actual_run_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+          "command": [
+            "lake",
+            "build",
+            "QICLean.Analysis.GaussianFilter.SpectralGap"
+          ],
+          "exit_code": 0,
+          "file": "aggregate",
+          "checked_file_sha256": null,
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-0.log",
+            "sha256": "48f160aaee623ad0794b984fbff3531226f74f04fdea9cb0250d86ba032adcfc",
+            "git_blob": "62d06639dd98121138c03d7fa47872fefc846aef",
+            "bytes": 42
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-spectral/runs/gaussian-spectral-03c8.json",
+          "row": 1,
+          "kind": "strict-production",
+          "actual_run_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "QICLean/Analysis/GaussianFilter/SpectralGap.lean"
+          ],
+          "exit_code": 0,
+          "file": "QICLean/Analysis/GaussianFilter/SpectralGap.lean",
+          "checked_file_sha256": "3743ada0931869ae1cf419798ca0d920431404927b1b05f6b9918b7b50f56565",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+            "bytes": 0
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-spectral/runs/gaussian-spectral-03c8.json",
+          "row": 2,
+          "kind": "strict-consumers-and-guards",
+          "actual_run_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "QICLeanTest/GaussianSpectralGap.lean"
+          ],
+          "exit_code": 0,
+          "file": "QICLeanTest/GaussianSpectralGap.lean",
+          "checked_file_sha256": "62415a9bdf588e3351add809e21ee25efda1f590513101bf4369e10e7b11815b",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-2.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+            "bytes": 0
+          }
+        },
+        {
+          "record": "docs/provenance/evidence/8766-gaussian-spectral/runs/gaussian-spectral-03c8.json",
+          "row": 3,
+          "kind": "strict-raw-axioms",
+          "actual_run_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+          "command": [
+            "lake",
+            "env",
+            "lean",
+            "-DautoImplicit=false",
+            "-DrelaxedAutoImplicit=false",
+            "-Dpp.unicode.fun=true",
+            "-DmaxSynthPendingDepth=3",
+            "-Dlinter.mathlibStandardSet=true",
+            "-DwarningAsError=true",
+            "docs/provenance/evidence/8766-gaussian-spectral/drivers/GaussianSpectralRawAxioms.lean"
+          ],
+          "exit_code": 0,
+          "file": "docs/provenance/evidence/8766-gaussian-spectral/drivers/GaussianSpectralRawAxioms.lean",
+          "checked_file_sha256": "f5732097cb361f60b67ec816ddedd53732e8349b41f344647318af381d3c607a",
+          "log": {
+            "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-3.log",
+            "sha256": "ca4e08497b0f72d0fa15be2317d644a42ed7aaa90024e139f0e10a4b85ebe332",
+            "git_blob": "48c1ecba4c7347afd8b92af8ca35577be2911a93",
+            "bytes": 377
+          }
+        }
+      ],
+      "retained_packet_files": [
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/README.md",
+          "sha256": "17361d95fac9e90b35fbb9a3b842f5b09c51868ebddf60639daff7006ee0c9cb",
+          "git_blob": "0ba67d46ddd2d26362f4edbf955eeea0c6f8c059",
+          "bytes": 4476
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/checks.json",
+          "sha256": "36b6148d93511fd8ea4b594e896d97b5f3bd85970aacd29076b2f466347c5d4f",
+          "git_blob": "e373a87168da8baea5e925f4c386060e21ee9769",
+          "bytes": 305
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/drivers/GaussianSpectralRawAxioms.lean",
+          "sha256": "f5732097cb361f60b67ec816ddedd53732e8349b41f344647318af381d3c607a",
+          "git_blob": "71680243cbfed0ea95d6fd41259eaff2bb90526d",
+          "bytes": 401
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-0043-0.log",
+          "sha256": "b7c88ed50c5e2ac9d81ce1fc53fa9a4583f3a2e8e62ce3ba4f4e8ff49860c7b0",
+          "git_blob": "6e5d38516022719b99ae1d606bcb61801870663d",
+          "bytes": 115
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-0043-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-0043-2.log",
+          "sha256": "1d10758eb5ec7b43df97fa6bc00b1362078f92f1cf5bb9d02b3bb6d7ba3b2df2",
+          "git_blob": "bad64aa0d4d51486c50c872287f751439d006187",
+          "bytes": 442
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-0.log",
+          "sha256": "48f160aaee623ad0794b984fbff3531226f74f04fdea9cb0250d86ba032adcfc",
+          "git_blob": "62d06639dd98121138c03d7fa47872fefc846aef",
+          "bytes": 42
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-2.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "bytes": 0
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-3.log",
+          "sha256": "ca4e08497b0f72d0fa15be2317d644a42ed7aaa90024e139f0e10a4b85ebe332",
+          "git_blob": "48c1ecba4c7347afd8b92af8ca35577be2911a93",
+          "bytes": 377
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-7d2e-0.log",
+          "sha256": "676e27fe12b26bf99a2968db28d07a06d16da213ca262c9f84d4760290bd6001",
+          "git_blob": "04c378b65a9da58b6100107a1f99aedf6ba22142",
+          "bytes": 2266
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/metadata-check-history.json",
+          "sha256": "8cfb25b25a853ec0aef423ef144508ddbd6a86f5213947e6da541638f56c75d4",
+          "git_blob": "52d647b51efad00b99fdd72ab9903c55ed5e161c",
+          "bytes": 605
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/reuse.json",
+          "sha256": "7eba786206b3e97091b877ce94de80d27bc4ac7a046567ca8956da78c3f147a5",
+          "git_blob": "38d5a17ebac77a8d1282e7ab308b88e6f1a6b2f4",
+          "bytes": 2884
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/runs/gaussian-spectral-0043.json",
+          "sha256": "937282c7529224d55984b5eef2d22f19470d2a82e9ed866cfa61fa0885f04b9d",
+          "git_blob": "c43be8e54216dc00b7607aaad44539a4863e942b",
+          "bytes": 1718
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/runs/gaussian-spectral-03c8.json",
+          "sha256": "a26826b8f4c4a23579fa884fd3d9d6dd03aba881bf3e9c8745955da35be2e1fe",
+          "git_blob": "ebadc5c4e571786f9a9a6fcf4c6031bb5bae1afb",
+          "bytes": 2481
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/runs/gaussian-spectral-7d2e.json",
+          "sha256": "1e2638d2492fd6798d9d1f2d984fd0e309391ae01faf84b9400d77e63fe38030",
+          "git_blob": "06fd36304e3b878421e0784c3c81ee45c0d53fd4",
+          "bytes": 368
+        },
+        {
+          "path": "docs/provenance/evidence/8766-gaussian-spectral/verification.json",
+          "sha256": "0818a5d3471b1a0eef11b67684411e3f3500e759906d6f52d5d73a425b67965c",
+          "git_blob": "a285f24638a740de349f11c7fb25ec4510779b84",
+          "bytes": 7885
+        }
+      ]
+    }
+  },
+  "limits": [
+    "No Lean, Lake, full-root build, or CI job was executed for this binding.",
+    "The public revision identifies identical source bytes, not a new execution checkpoint.",
+    "Historical revisions, command arrays, timings, exit codes, selected runs, failed runs, normalized logs, and original pre-normalization hashes remain unchanged.",
+    "The public branch was read; no remote state was changed.",
+    "The ground-estimate ledger and rendering packet are maintained separately."
+  ]
+}

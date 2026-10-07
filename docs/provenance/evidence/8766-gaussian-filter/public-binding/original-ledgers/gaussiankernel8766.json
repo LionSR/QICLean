@@ -31,13 +31,13 @@
         "Define the centered density with h denoting variance, using Mathlib gaussianPDFReal.",
         "Reused API: ProbabilityTheory.gaussianPDFReal.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -96,13 +96,13 @@
         "Expose the paper formula (sqrt(2*pi*h))^-1 * exp(-t^2/(2*h)) by specializing the mean to zero.",
         "Reused API: ProbabilityTheory.gaussianPDFReal.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -161,13 +161,13 @@
         "Reuse pointwise nonnegativity of the Gaussian density.",
         "Reused API: ProbabilityTheory.gaussianPDFReal_nonneg.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -226,13 +226,13 @@
         "Reuse integrability of the real Gaussian density, including its zero-variance zero function.",
         "Reused API: ProbabilityTheory.integrable_gaussianPDFReal.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -291,13 +291,13 @@
         "Reuse Gaussian density normalization under the essential hypothesis h != 0.",
         "Reused API: ProbabilityTheory.integral_gaussianPDFReal_eq_one.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -356,13 +356,13 @@
         "Record that the zero-variance density is the zero function; it does not represent the Dirac measure.",
         "Reused API: ProbabilityTheory.gaussianPDFReal_zero_var.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -421,13 +421,13 @@
         "Convert weighted integrability to Gaussian-measure integrability at positive variance.",
         "Reused API: ProbabilityTheory.gaussianReal_of_var_ne_zero, MeasureTheory.integrable_withDensity_iff_integrable_smul', ProbabilityTheory.toReal_gaussianPDF.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -486,13 +486,13 @@
         "Reuse the general Gaussian-measure integral conversion in the density-to-measure direction.",
         "Reused API: ProbabilityTheory.integral_gaussianReal_eq_integral_smul.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -551,13 +551,13 @@
         "Derive the unrenormalized measurable-window conversion with indicator integrals.",
         "Reused API: MeasureTheory.integral_indicator, GaussianFilter.integral_kernel_smul.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -616,13 +616,13 @@
         "Identify set integrals of the density with real-valued Gaussian probabilities.",
         "Reused API: ProbabilityTheory.gaussianReal_apply_eq_integral, ENNReal.toReal_ofReal.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -681,13 +681,13 @@
         "Specialize the Gaussian characteristic function at angular frequency omega to exp(-h*omega^2/2); no 2*pi Fourier conversion is used.",
         "Reused API: MeasureTheory.charFun_apply_real, ProbabilityTheory.charFun_gaussianReal.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -746,13 +746,13 @@
         "Combine the angular-frequency characteristic integral with positive-variance density conversion.",
         "Reused API: GaussianFilter.integral_kernel_smul, GaussianFilter.integral_cexp.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -811,13 +811,13 @@
         "Derive HasSubgaussianMGF for the centered Gaussian directly from its exact MGF and exponential integrability.",
         "Reused API: ProbabilityTheory.mgf_id_gaussianReal, ProbabilityTheory.integrable_exp_mul_gaussianReal.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -876,13 +876,13 @@
         "Bound the complement of [-T,T] by the union of two one-sided events and add their Chernoff bounds. This is an original combination of existing Mathlib APIs, not a tail-bound assumption.",
         "Reused API: ProbabilityTheory.HasSubgaussianMGF.neg, ProbabilityTheory.HasSubgaussianMGF.measure_ge_le, MeasureTheory.measureReal_mono, MeasureTheory.measureReal_union_le.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",
@@ -941,13 +941,13 @@
         "Transfer the Gaussian probability tail bound to the unrenormalized density integral when h != 0.",
         "Reused API: GaussianFilter.integral_kernel_eq_measureReal, GaussianFilter.measure_compl_Icc_le.",
         "Source passage: lines 426–452. No OpenAI Lean proof text is copied or adapted. The original category describes OpenAI proof-text provenance; direct Mathlib delegation is recorded explicitly and does not claim new proofs of Gaussian integration.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision identifies local checked file bytes. Native and final consumer/guard checks ran at e3a17bc6af4f0b09b8ab49c533dace7218408c98; strict production and raw audits ran at b45bc4ae2196fc64724808a605ddd14c3d92fc1d. No command is relabeled as having run at another revision, and no CI/publication/blueprint result is asserted."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
         "commands": [
           {
             "kind": "build",

@@ -1,0 +1,129 @@
+✔ [3267/3269] Built QICLean.Analysis.GaussianFilter.Kernel (2.4s)
+✔ [3268/3269] Built QICLean.Analysis.GaussianFilter.MatrixIntegral (2.9s)
+✖ [3269/3269] Building QICLean.Analysis.GaussianFilter.GroundEstimate (3.4s)
+trace: .> LEAN_PATH=<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/Cli/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/batteries/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/Qq/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/aesop/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/proofwidgets/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/importGraph/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/LeanSearchClient/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/plausible/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/Gametheory/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/mathlib/.lake/build/lib/lean:<WORKSPACE>/area-law-graph-foundations-8745/.lake/packages/checkdecls/.lake/build/lib/lean:<WORKSPACE>/qiclean-buffer-compiler/.lake/build/lib/lean <WORKSPACE>/glm23-toolchains/lean-4.35.0-rc3-linux/bin/lean <WORKSPACE>/qiclean-buffer-compiler/QICLean/Analysis/GaussianFilter/GroundEstimate.lean -o <WORKSPACE>/qiclean-buffer-compiler/.lake/build/lib/lean/QICLean/Analysis/GaussianFilter/GroundEstimate.olean -i <WORKSPACE>/qiclean-buffer-compiler/.lake/build/lib/lean/QICLean/Analysis/GaussianFilter/GroundEstimate.ilean -c <WORKSPACE>/qiclean-buffer-compiler/.lake/build/ir/QICLean/Analysis/GaussianFilter/GroundEstimate.c --setup <WORKSPACE>/qiclean-buffer-compiler/.lake/build/ir/QICLean/Analysis/GaussianFilter/GroundEstimate.setup.json --json
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:82:13: failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:90:60: unsolved goals
+case e_a
+n : Type u_1
+inst✝¹ : Fintype n
+inst✝ : DecidableEq n
+h : ℝ≥0
+H' H : Matrix n n ℂ
+hH' : H'.IsHermitian
+hH : H.IsHermitian
+W : Matrix n n ℂ
+E₀ Δ : ℝ
+Ψ Φ : EuclideanSpace ℂ n
+hΨ : ‖Ψ‖ = 1
+hΦ : ‖Φ‖ = 1
+hHΨ : H *ᵥ Ψ.ofLp = ↑E₀ • Ψ.ofLp
+hH'Φ : H' *ᵥ Φ.ofLp = ↑E₀ • Φ.ofLp
+hgap' : sorry
+hΔ : 0 < Δ
+k : n
+⊢ -↑↑h * (↑(hH'.eigenvalues k) - ↑E₀) ^ 2 / 2 = -↑↑h * (↑(hH'.eigenvalues k) - ↑E₀) ^ 2 / 2
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:98:4: Type mismatch: After simplification, term
+  l2_opNorm_mulVec W Ψ
+ has type
+  @LE.le ℝ Real.instLE ‖(EuclideanSpace.equiv n ℂ).symm (W *ᵥ Ψ.ofLp)‖ ‖W‖
+but is expected to have type
+  @LE.le ℝ Real.instLE ‖(toEuclideanLin W) Ψ‖ ‖W‖
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:111:12: failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:113:13: failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:125:4: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⟪Φ, (toEuclideanLin W) Ψ⟫_?m.331
+in the target expression
+  ‖(toEuclideanLin (gaussianIntertwiner h H H' Wᴴ)) Φ - ⟪(toEuclideanLin W) Ψ, Φ⟫_ℂ • Ψ‖ ≤
+    Real.exp (-↑h * Δ ^ 2 / 2) * ‖Wᴴ‖
+
+n : Type u_1
+inst✝¹ : Fintype n
+inst✝ : DecidableEq n
+h : ℝ≥0
+H' H : Matrix n n ℂ
+hH' : H'.IsHermitian
+hH : H.IsHermitian
+W : Matrix n n ℂ
+E₀ Δ : ℝ
+Ψ Φ : EuclideanSpace ℂ n
+hΨ : ‖Ψ‖ = 1
+hΦ : ‖Φ‖ = 1
+hHΨ : H *ᵥ Ψ.ofLp = ↑E₀ • Ψ.ofLp
+hH'Φ : H' *ᵥ Φ.ofLp = ↑E₀ • Φ.ofLp
+hgap : sorry
+hgap' : sorry
+hΔ : 0 < Δ
+hreverse :
+  ‖(toEuclideanLin (gaussianIntertwiner h H H' Wᴴ)) Φ - ⟪(toEuclideanLin W) Ψ, Φ⟫_ℂ • Ψ‖ ≤
+    Real.exp (-↑h * Δ ^ 2 / 2) * ‖Wᴴ‖
+⊢ ‖(toEuclideanLin (gaussianIntertwiner h H' H W)ᴴ) Φ - star ⟪Φ, (toEuclideanLin W) Ψ⟫_ℂ • Ψ‖ ≤
+    Real.exp (-↑h * Δ ^ 2 / 2) * ‖W‖
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:137:12: failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:139:13: failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:165:13: failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:178:6: Type mismatch: After simplification, term
+  l2_opNorm_mulVec (N - M) Ψ
+ has type
+  @LE.le ℝ Real.instLE ‖(EuclideanSpace.equiv n ℂ).symm ((N - M) *ᵥ Ψ.ofLp)‖ ‖N - M‖
+but is expected to have type
+  @LE.le ℝ Real.instLE ‖(toEuclideanLin (N - M)) Ψ‖ ‖N - M‖
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:205:12: failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:207:13: failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/GaussianFilter/GroundEstimate.lean:220:4: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⟪Φ, (toEuclideanLin W) Ψ⟫_?m.342
+in the target expression
+  ‖(toEuclideanLin (gaussianIntertwinerTruncated h T H H' Wᴴ)) Φ - ⟪(toEuclideanLin W) Ψ, Φ⟫_ℂ • Ψ‖ ≤
+    (Real.exp (-↑h * Δ ^ 2 / 2) + 2 * Real.exp (-T ^ 2 / (2 * ↑h))) * ‖Wᴴ‖
+
+n : Type u_1
+inst✝¹ : Fintype n
+inst✝ : DecidableEq n
+h : ℝ≥0
+T : ℝ
+hT : 0 ≤ T
+H' H : Matrix n n ℂ
+hH' : H'.IsHermitian
+hH : H.IsHermitian
+W : Matrix n n ℂ
+E₀ Δ : ℝ
+Ψ Φ : EuclideanSpace ℂ n
+hΨ : ‖Ψ‖ = 1
+hΦ : ‖Φ‖ = 1
+hHΨ : H *ᵥ Ψ.ofLp = ↑E₀ • Ψ.ofLp
+hH'Φ : H' *ᵥ Φ.ofLp = ↑E₀ • Φ.ofLp
+hgap : sorry
+hgap' : sorry
+hΔ : 0 < Δ
+hreverse :
+  ‖(toEuclideanLin (gaussianIntertwinerTruncated h T H H' Wᴴ)) Φ - ⟪(toEuclideanLin W) Ψ, Φ⟫_ℂ • Ψ‖ ≤
+    (Real.exp (-↑h * Δ ^ 2 / 2) + 2 * Real.exp (-T ^ 2 / (2 * ↑h))) * ‖Wᴴ‖
+⊢ ‖(toEuclideanLin (gaussianIntertwinerTruncated h T H' H W)ᴴ) Φ - star ⟪Φ, (toEuclideanLin W) Ψ⟫_ℂ • Ψ‖ ≤
+    (Real.exp (-↑h * Δ ^ 2 / 2) + 2 * Real.exp (-T ^ 2 / (2 * ↑h))) * ‖W‖
+Some required targets logged failures:
+- QICLean.Analysis.GaussianFilter.GroundEstimate
+error: build failed

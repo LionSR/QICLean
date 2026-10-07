@@ -32,13 +32,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -98,13 +98,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -164,13 +164,13 @@
         "Adapt local QIC proof SpectralFilter.continuous_hermitianUnitaryPath_conj, QICLean/Analysis/SpectralFilter/MatrixFilter.lean, lines 121–124, at 3080ce291ad7f8796c5416a78af9a63ccf10ea2e; exact source blob and hash are retained in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -230,13 +230,13 @@
         "Adapt local QIC proof SpectralFilter.norm_hermitianUnitaryPath_conj, QICLean/Analysis/SpectralFilter/MatrixFilter.lean, lines 60–64, at 3080ce291ad7f8796c5416a78af9a63ccf10ea2e; exact source blob and hash are retained in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -296,13 +296,13 @@
         "Adapt local QIC proof SpectralFilter.integrable_filterIntegrand, QICLean/Analysis/SpectralFilter/MatrixFilter.lean, lines 127–135, at 3080ce291ad7f8796c5416a78af9a63ccf10ea2e; exact source blob and hash are retained in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -362,13 +362,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -428,13 +428,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -494,13 +494,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -560,13 +560,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -626,13 +626,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -692,13 +692,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -758,13 +758,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -824,13 +824,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -890,13 +890,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -956,13 +956,13 @@
         "Adapt local QIC proof SpectralFilter.filterIntegral_conjTranspose, QICLean/Analysis/SpectralFilter/MatrixFilter.lean, lines 188–200, at 3080ce291ad7f8796c5416a78af9a63ccf10ea2e; exact source blob and hash are retained in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -1022,13 +1022,13 @@
         "Adapt local QIC proof SpectralFilter.filterIntegral_conjTranspose, QICLean/Analysis/SpectralFilter/MatrixFilter.lean, lines 188–200, at 3080ce291ad7f8796c5416a78af9a63ccf10ea2e; exact source blob and hash are retained in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -1088,13 +1088,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -1154,13 +1154,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -1220,13 +1220,13 @@
         "Adapt local QIC proof SpectralFilter.dotProduct_conj_mulVec, QICLean/Analysis/SpectralFilter/MatrixFilter.lean, lines 96–111, at 3080ce291ad7f8796c5416a78af9a63ccf10ea2e; exact source blob and hash are retained in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -1286,13 +1286,13 @@
         "Adapt local QIC proof SpectralFilter.dotProduct_filterIntegral_mulVec, QICLean/Analysis/SpectralFilter/MatrixFilter.lean, lines 210–225, at 3080ce291ad7f8796c5416a78af9a63ccf10ea2e; exact source blob and hash are retained in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",
@@ -1352,13 +1352,13 @@
         "Derive this declaration using the two-generator integral and cited Mathlib APIs; local proof adaptations in its dependency chain are recorded explicitly in reuse.json.",
         "Source passage: Gaussian-filter portion of the information-reset proof, lines 426–452. The probability formulation includes zero variance; density conversions require h ≠ 0. The truncated integral is unrenormalized; the adjoint exchanges the two generators.",
         "No OpenAI Lean proof text is copied or adapted. The original category concerns OpenAI proof text; it does not deny the explicitly recorded local QIC proof reuse.",
-        "The verification revision binds this ledger to public LionSR/QICLean@16b81356549158a8393aaea5085defd4c5022e71 by exact source-byte equality. Historical executions retain their actual revisions, commands, and log hashes in the unchanged evidence packet and archived original ledger. No Lean/Lake command was rerun or relabeled as running at the public revision. The binding and complete source-tree equivalence are recorded in docs/provenance/evidence/8766-gaussian-filter/public-binding/manifest.json; no public CI result is claimed."
+        "The verification revision is the actual checked local source checkpoint. Unchanged consumers and raw/guarded audit drivers were checked at c5cd255; the corrected source was rechecked at 4df73de. No public CI, locality, ground-state norm estimate, or full information-reset conclusion is claimed."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+        "revision": "4df73de57fd0ba9f20349852d74af85a61e7880e",
         "commands": [
           {
             "kind": "build",

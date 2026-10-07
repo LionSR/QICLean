@@ -4,7 +4,6 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import runpy
 import shlex
 
 PACKET = Path(__file__).resolve().parent
@@ -33,10 +32,7 @@ def digest(path):
 
 
 index = load(PACKET / 'verification.json')
-current_ledger = load(ROOT / 'docs/provenance/openai-math.d/gaussian-spectral8766.json')
-binding = runpy.run_path(str(ROOT /
-    'docs/provenance/evidence/8766-gaussian-filter/public-binding/check_binding.py'))
-ledger = binding['validate_packet'](PACKET, index, current_ledger)
+ledger = load(ROOT / 'docs/provenance/openai-math.d/gaussian-spectral8766.json')
 for path in PACKET.rglob('*.json'):
     load(path)
 for row in index['normalization']['original_to_normalized']:
@@ -130,7 +126,5 @@ for path in PACKET.rglob('*'):
 print(json.dumps({'status': 'passed', 'public_declarations': 2, 'consumer_examples': 3,
                   'guarded_reports': 2, 'raw_reports': 2, 'historical_failures': 2,
                   'verified_source_revision': index['verified_source_revision'],
-                  'public_source_revision': binding['PUBLIC_REVISION'],
-                  'public_binding_validated': True,
                   'scope': 'Retained evidence and source identities; no Lean or CI execution.'},
                  indent=2))

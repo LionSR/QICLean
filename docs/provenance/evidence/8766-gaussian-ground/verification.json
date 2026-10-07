@@ -1,0 +1,196 @@
+{
+  "scope": "Actual finite-dimensional Gaussian two-sided ground-vector estimates and unrenormalized truncation; no locality, full reset, full-root build, public CI, or publication claim.",
+  "verified_source_revision": "16b81356549158a8393aaea5085defd4c5022e71",
+  "production_check_revision": "2ae6e2590cb787e3c9c252ca043686b44cbd93fc",
+  "raw_driver_revision": "90bcaa0d425ad9f7916ce322edfcb229ecec8b9d",
+  "public_checkpoint": {
+    "repository": "LionSR/QICLean",
+    "revision": "16b81356549158a8393aaea5085defd4c5022e71",
+    "branch": "codex/gaussian-two-generator-filter-8766",
+    "tree": "41d46a48626973c9056f36ca6163fe3b5e23665d",
+    "equivalent_local_revision": "90bcaa0d425ad9f7916ce322edfcb229ecec8b9d",
+    "locally_verified_tree": "41d46a48626973c9056f36ca6163fe3b5e23665d",
+    "verification_owner": "Metadata worker independently verified the fetched public Git object tree, local tree, and public/checked source blobs; the integration task fetched the official public branch.",
+    "evidence": "public-source-binding.json"
+  },
+  "source_files": [
+    {
+      "path": "QICLean/Analysis/GaussianFilter/GroundEstimate.lean",
+      "sha256": "36c57e508e9bf5e2e5f956f53a60745408e31c253c0d325911bf0605756d86f3",
+      "git_blob": "97abc7ac5edac1f1c9fc6488e02d688a88df3591",
+      "lines": 231,
+      "source_revision": "2ae6e2590cb787e3c9c252ca043686b44cbd93fc"
+    },
+    {
+      "path": "QICLeanTest/GaussianGroundEstimate.lean",
+      "sha256": "3874504619751dc8b2d0db0c3262ecad0487a6fed111e13f860913f56f36f919",
+      "git_blob": "690be13d9e2c86f7cee6f14780878e4c527afdf7",
+      "lines": 172,
+      "source_revision": "2ae6e2590cb787e3c9c252ca043686b44cbd93fc"
+    },
+    {
+      "path": "docs/provenance/evidence/8766-gaussian-ground/drivers/GaussianGroundRawAxioms.lean",
+      "sha256": "b040da28e4956dae855645da34de55746963d81d3bcea84c959739e8144dc970",
+      "git_blob": "6b6f75594b91df877d33fc60b20d2eeb84eaf113",
+      "lines": 14,
+      "source_revision": "90bcaa0d425ad9f7916ce322edfcb229ecec8b9d"
+    }
+  ],
+  "selected_successful_runs": [
+    {
+      "record": "runs/gaussian-ground-2ae6.json",
+      "row": 0,
+      "kind": "native-target",
+      "revision": "2ae6e2590cb787e3c9c252ca043686b44cbd93fc"
+    },
+    {
+      "record": "runs/gaussian-ground-2ae6.json",
+      "row": 1,
+      "kind": "strict-production",
+      "revision": "2ae6e2590cb787e3c9c252ca043686b44cbd93fc"
+    },
+    {
+      "record": "runs/gaussian-ground-2ae6.json",
+      "row": 2,
+      "kind": "strict-consumers-and-guards",
+      "revision": "2ae6e2590cb787e3c9c252ca043686b44cbd93fc"
+    },
+    {
+      "record": "runs/gaussian-ground-raw-90bc.json",
+      "row": 0,
+      "kind": "native-target-recheck",
+      "revision": "90bcaa0d425ad9f7916ce322edfcb229ecec8b9d"
+    },
+    {
+      "record": "runs/gaussian-ground-raw-90bc.json",
+      "row": 1,
+      "kind": "strict-raw-axioms",
+      "revision": "90bcaa0d425ad9f7916ce322edfcb229ecec8b9d"
+    }
+  ],
+  "public_declarations": 5,
+  "test_examples": 5,
+  "guarded_axiom_reports": 5,
+  "raw_axiom_reports": 5,
+  "raw_status": "passed",
+  "axioms": {
+    "GaussianFilter.norm_gaussianIntertwiner_ground_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "GaussianFilter.gaussianIntertwiner_two_sided_ground_estimate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "GaussianFilter.gaussianIntertwiner_two_sided_of_real_overlap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "GaussianFilter.norm_gaussianIntertwinerTruncated_ground_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "GaussianFilter.gaussianIntertwinerTruncated_two_sided_ground_estimate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "historical_failed_runs": [
+    {
+      "record": "runs/gaussian-ground-000a.json",
+      "row": 0,
+      "head": "000af37c19f9ddb2aa9e52654e3e981a5057bdf8",
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/8766-gaussian-ground/logs/gaussian-ground-000a-0.log"
+    }
+  ],
+  "normalization": {
+    "operations": [
+      "Replace private executor workspace and home prefixes by role tokens in complete logs.",
+      "Replace absolute log locations in command records with retained repository-relative paths.",
+      "Preserve all diagnostics, commands, exit codes, timings, and original source revisions."
+    ],
+    "original_to_normalized": [
+      {
+        "input_basename": "gaussian-ground-000a-0.log",
+        "original_sha256": "2f3723b91a8e656218dc37adfd53b64bff63bf5fbe1d422274b6572d35438a12",
+        "retained": "logs/gaussian-ground-000a-0.log",
+        "normalized_sha256": "407897362cc98c084abc50deaf9736d6a1f17dd3b590ab0a0d27eee75ac7b02d",
+        "normalized_bytes": 7537
+      },
+      {
+        "input_basename": "gaussian-ground-000a.json",
+        "original_sha256": "e423b84c5c8d8f452499da572b101ed06922b0ff624472f64f2f15034f32b2e2",
+        "retained": "runs/gaussian-ground-000a.json",
+        "normalized_sha256": "05b47d2893547e0421c7fb48d513b45e253150143f4f52e3dd1cfe2a838fc03d",
+        "normalized_bytes": 367
+      },
+      {
+        "input_basename": "gaussian-ground-2ae6-0.log",
+        "original_sha256": "8ca2f4225ed8abed4f35666bc66f602253c8a75024e4ff2c89b839f038012c46",
+        "retained": "logs/gaussian-ground-2ae6-0.log",
+        "normalized_sha256": "8ca2f4225ed8abed4f35666bc66f602253c8a75024e4ff2c89b839f038012c46",
+        "normalized_bytes": 118
+      },
+      {
+        "input_basename": "gaussian-ground-2ae6-1.log",
+        "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained": "logs/gaussian-ground-2ae6-1.log",
+        "normalized_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "normalized_bytes": 0
+      },
+      {
+        "input_basename": "gaussian-ground-2ae6-2.log",
+        "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained": "logs/gaussian-ground-2ae6-2.log",
+        "normalized_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "normalized_bytes": 0
+      },
+      {
+        "input_basename": "gaussian-ground-2ae6.json",
+        "original_sha256": "32a834b5919343967979024ac7f4b63bcc0498a275d87a5b2a95b4f700fc2772",
+        "retained": "runs/gaussian-ground-2ae6.json",
+        "normalized_sha256": "6a75b2c413fa7900c629719d6c20cb32f71f6adc3e9d8f2ee4140561d1e668a9",
+        "normalized_bytes": 1721
+      },
+      {
+        "input_basename": "gaussian-ground-raw-90bc-0.log",
+        "original_sha256": "79ff1ff49c370bcbbde151e8d746339fe00cf966bfc97a8b4550b1c902554e89",
+        "retained": "logs/gaussian-ground-raw-90bc-0.log",
+        "normalized_sha256": "79ff1ff49c370bcbbde151e8d746339fe00cf966bfc97a8b4550b1c902554e89",
+        "normalized_bytes": 194
+      },
+      {
+        "input_basename": "gaussian-ground-raw-90bc-1.log",
+        "original_sha256": "90aa210f1f36c3d1daa14117e1be94e73645dd7409b2079f05a2696f8bc114d7",
+        "retained": "logs/gaussian-ground-raw-90bc-1.log",
+        "normalized_sha256": "90aa210f1f36c3d1daa14117e1be94e73645dd7409b2079f05a2696f8bc114d7",
+        "normalized_bytes": 1022
+      },
+      {
+        "input_basename": "gaussian-ground-raw-90bc.json",
+        "original_sha256": "fc3d515a56fae8e90826c4cd88aca0e9d6be9e5576c4972487afdf449bb36280",
+        "retained": "runs/gaussian-ground-raw-90bc.json",
+        "normalized_sha256": "89a5d45bd4d852d8f322858e0221fa4adf9ecbf30fee557c484201e22ab6767f",
+        "normalized_bytes": 1125
+      }
+    ]
+  },
+  "limits": [
+    "All Lean, Lake, cache and axiom commands were executed by the parent integration task.",
+    "Production and consumers were checked at 2ae6; the later raw-driver command retains its actual revision separately.",
+    "The native module target reported 3269 jobs; this is not a full QIC root build.",
+    "No OpenAI Lean proof text was copied or adapted. Local QIC fixture adaptation and theorem reuse are separately attributed.",
+    "No source bytes, shared routers, workflows, blueprint files, dependency pins or remote state are changed by this packet."
+  ],
+  "schema_check": {
+    "result": "passed",
+    "schema_sha256": "a691d8e95b668c968365f2c7e33f614d49635aade8fdd4c2f27cd64f0cd6b459",
+    "method": "jsonschema.validate against the supplied provenance schema v1; not the full external policy checker."
+  }
+}

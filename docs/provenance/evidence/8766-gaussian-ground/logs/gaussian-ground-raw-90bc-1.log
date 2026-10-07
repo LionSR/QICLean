@@ -1,0 +1,16 @@
+'GaussianFilter.norm_gaussianIntertwiner_ground_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'GaussianFilter.gaussianIntertwiner_two_sided_ground_estimate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'GaussianFilter.gaussianIntertwiner_two_sided_of_real_overlap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'GaussianFilter.norm_gaussianIntertwinerTruncated_ground_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'GaussianFilter.gaussianIntertwinerTruncated_two_sided_ground_estimate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
