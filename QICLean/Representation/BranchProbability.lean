@@ -75,7 +75,8 @@ some row `i`. -/
 theorem labelProj_mul_labelProj_firstCopies_ne_zero_iff
     (l : IrrepLabel (Equiv.Perm (Fin (m + 1)))) (n : IrrepLabel (Equiv.Perm (Fin m))) :
     labelProj φ l * labelProj (φ.comp (firstCopies m)) n ≠ 0 ↔
-      labelProj φ l ≠ 0 ∧ ∃ i, labelPart l = Function.update (labelPart n) i (labelPart n i + 1) := by
+      labelProj φ l ≠ 0 ∧
+        ∃ i, labelPart l = Function.update (labelPart n) i (labelPart n i + 1) := by
   rw [(commute_labelProj_comp φ (firstCopies m) n l).symm.eq, labelProj_firstCopies, Ne,
     groupAlgebraRep_mul_labelProj_eq_zero_iff, block_restrict_centralIdem_eq_zero_iff]
   tauto
@@ -128,7 +129,7 @@ theorem dim_div_dim_eq {l : IrrepLabel (Equiv.Perm (Fin (m + 1)))}
   set i' : Fin q := ⟨i, hi⟩
   have hp : Antitone p := fun a b hab => labelPart_antitone l hab
   have hli : labelPart l i = labelPart n i + 1 := by rw [h, Function.update_self]
-  have h1 : 1 ≤ p i' := by simp [p, part, i', hli]
+  have h1 : 1 ≤ p i' := by simp [p, i', hli]
   have hn : part q n = Function.update p i' (p i' - 1) := by
     funext a
     by_cases ha : a = i'

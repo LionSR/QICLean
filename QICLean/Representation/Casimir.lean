@@ -44,7 +44,7 @@ variable {k}
 
 theorem single_mul_transpositionSum_mul (σ : Equiv.Perm (Fin k)) :
     single σ 1 * transpositionSum k * single σ⁻¹ 1 = transpositionSum k := by
-  simp only [transpositionSum, mul_sum, sum_mul, single_mul_single, mul_one, one_mul]
+  simp only [transpositionSum, mul_sum, sum_mul, single_mul_single, mul_one]
   refine sum_nbij' (fun p => (σ p.1, σ p.2)) (fun p => (σ⁻¹ p.1, σ⁻¹ p.2)) ?_ ?_ ?_ ?_ ?_
   · intro p hp
     simp only [offPairs, mem_filter, mem_univ, true_and] at hp ⊢
@@ -149,7 +149,7 @@ theorem sum_gen_mulVec_gen (u : (Fin k → Fin q) → ℂ) :
     intro i
     rw [sum_comm]
     refine sum_congr rfl fun j hj => ?_
-    rw [sum_ite_eq, if_pos (mem_univ _), update_update_eq_comp_swap x (mem_erase.mp hj).1.symm]
+    rw [sum_ite_eq, ite_eq_left (mem_univ _), update_update_eq_comp_swap x (mem_erase.mp hj).1.symm]
   have e : ∀ f : Fin q → Fin q → Fin k → ℂ,
       ∑ a, ∑ b, ∑ i, f a b i = ∑ i, ∑ b, ∑ a, f a b i := by
     intro f
