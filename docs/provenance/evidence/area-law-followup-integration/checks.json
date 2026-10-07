@@ -57,5 +57,18 @@
     "result": "passed; final rendered pages inspected after section-heading correction"
   },
   "source_reuse": "All four new production modules independently formalized; no upstream OpenAI Lean proof text reused.",
-  "blueprint_pdf_sha256": "7d461832bad144f010a8b3824c030e84f5637b23480da49e734e00db8b1a4d97"
+  "blueprint_pdf_sha256": "7d461832bad144f010a8b3824c030e84f5637b23480da49e734e00db8b1a4d97",
+  "provenance_policy": {
+    "repository": "LionSR/TNLean",
+    "revision": "c738e87489bc1b4ae1d58a6bdefb2c1cbd654114",
+    "validator_sha256": "8183e29f5a339bba37e28e9473aa7a6a42791282ed6877071dfd4096eda7cb65",
+    "schema_sha256": "a691d8e95b668c968365f2c7e33f614d49635aade8fdd4c2f27cd64f0cd6b459",
+    "validated_shards": [
+      "typicalSpectrum8753.json",
+      "typicalDensity8753.json",
+      "8761-finite-product-splitting.json",
+      "amplification-regional-information.json"
+    ],
+    "scope": "All four new shards and 27 combined exact-name kernel reports; unrelated historical records not re-audited."
+  }
 }
