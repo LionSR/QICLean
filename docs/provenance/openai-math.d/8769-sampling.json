@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "p09-qic-sampling-sum_nonempty_subsets_pow",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.sum_nonempty_subsets_pow",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -31,20 +31,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-sum_nonempty_subsets_weight",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.sum_nonempty_subsets_weight",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -61,20 +86,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-inverse_half_power",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.inverse_half_power",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -91,20 +141,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-sum_nonempty_subsets_rpow",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.sum_nonempty_subsets_rpow",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -121,20 +196,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-zero_slots_error",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.zero_slots_error",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -151,20 +251,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-binomial_error_le_exp",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.binomial_error_le_exp",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -181,20 +306,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-exp_eighth_sub_one_le_quarter",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.exp_eighth_sub_one_le_quarter",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -211,20 +361,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-binomial_error_le_quarter",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.binomial_error_le_quarter",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -241,20 +416,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-ratio_le_of_sample_count",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.ratio_le_of_sample_count",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -271,20 +471,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-error_le_quarter_of_sample_count",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.error_le_quarter_of_sample_count",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -301,20 +526,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-samplecount",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.sampleCount",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -331,20 +581,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-samplecount_bounds",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.sampleCount_bounds",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -361,20 +636,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-error_le_quarter_samplecount",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.error_le_quarter_sampleCount",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -391,20 +691,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-integral_error_le_binomial",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.integral_error_le_binomial",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -421,20 +746,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-integral_norm_sum_le_binomial",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.integral_norm_sum_le_binomial",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -451,20 +801,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-integral_norm_sum_le_sampling_error",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.integral_norm_sum_le_sampling_error",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -481,20 +856,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-exists_error_le_half_samplecount",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.exists_error_le_half_sampleCount",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -511,20 +911,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-exists_valid_error_le_half_samplecount",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.exists_valid_error_le_half_sampleCount",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -541,20 +966,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-sampling-exists_valid_norm_sum_le_half_samplecount",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/CompressionSampling.lean",
         "declaration": "CompressionSampling.exists_valid_norm_sum_le_half_sampleCount",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -571,20 +1021,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-independent-integral_product_mul_conj",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/IndependentCovariance.lean",
         "declaration": "IndependentCovariance.integral_product_mul_conj",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -601,20 +1076,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-independent-integrable_product_mul_conj",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/IndependentCovariance.lean",
         "declaration": "IndependentCovariance.integrable_product_mul_conj",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -631,20 +1131,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-independent-tensorcoefficient",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/IndependentCovariance.lean",
         "declaration": "IndependentCovariance.tensorCoefficient",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -661,20 +1186,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-independent-integrable_tensorcoefficient_mul_conj",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/IndependentCovariance.lean",
         "declaration": "IndependentCovariance.integrable_tensorCoefficient_mul_conj",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -691,20 +1241,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-independent-tensor_covariance_of_diagonal",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/IndependentCovariance.lean",
         "declaration": "IndependentCovariance.tensor_covariance_of_diagonal",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -721,20 +1296,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-independent-product_weighted_sqrt",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/IndependentCovariance.lean",
         "declaration": "IndependentCovariance.product_weighted_sqrt",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -751,20 +1351,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-independent-tensor_covariance_weighted",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/IndependentCovariance.lean",
         "declaration": "IndependentCovariance.tensor_covariance_weighted",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -781,20 +1406,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-independent-sum_product_weights_eq_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/IndependentCovariance.lean",
         "declaration": "IndependentCovariance.sum_product_weights_eq_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -811,20 +1461,45 @@
         "Independently formalized the manuscript sampling estimate or finite-product moment calculation using Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-pairedproductprobability",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.pairedProductProbability",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -841,20 +1516,45 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-pairedproductprobability_nonneg",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.pairedProductProbability_nonneg",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -871,20 +1571,45 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-sum_pairedproductprobability_eq_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.sum_pairedProductProbability_eq_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -901,20 +1626,45 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-independentdensitylaw",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.independentDensityLaw",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -931,20 +1681,45 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-independentdensitylawisprobabilitymeasure",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.independentDensityLawIsProbabilityMeasure",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -961,20 +1736,45 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-independentdensitycoefficient",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.independentDensityCoefficient",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -991,20 +1791,45 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-integrable_independentdensitycoefficient",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_independentDensityCoefficient",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1021,20 +1846,45 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-integrable_independentdensitycoefficient_mul_conj",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_independentDensityCoefficient_mul_conj",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1051,20 +1901,45 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-integral_independentdensitycoefficient_mul_conj",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.integral_independentDensityCoefficient_mul_conj",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1081,20 +1956,45 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-slots-integral_independentdensitycoefficient_eq_zero",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/IndependentSlots.lean",
         "declaration": "QICLean.ComplexGaussian.integral_independentDensityCoefficient_eq_zero",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1111,7 +2011,32 @@
         "Constructed the actual heterogeneous product Gaussian law and derived product covariance, integrability, normalization and centering."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     }

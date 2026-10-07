@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "p09-qic-weighted-l2_opnorm_mul_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.l2_opNorm_mul_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -31,20 +31,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.rectangularTraceNorm",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -61,20 +86,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm_square",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.rectangularTraceNorm_square",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -91,20 +141,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm_nonneg",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.rectangularTraceNorm_nonneg",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -121,20 +196,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm_eq_sum_fin",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.rectangularTraceNorm_eq_sum_fin",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -151,20 +251,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm_eq_sum_sqrt_eigenvalues",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.rectangularTraceNorm_eq_sum_sqrt_eigenvalues",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -181,20 +306,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-conjtranspose_mul_apply_self_eq_inner_rectangular",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.conjTranspose_mul_apply_self_eq_inner_rectangular",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -211,20 +361,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-norm_column_eq_sqrt_gram",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.norm_column_eq_sqrt_gram",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -241,20 +416,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-norm_trace_conjtranspose_mul_rectangular_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.norm_trace_conjTranspose_mul_rectangular_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -271,20 +471,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-l2_opnorm_unitary_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.l2_opNorm_unitary_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -301,20 +526,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-norm_trace_conjtranspose_mul_le_rectangulartracenorm",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.norm_trace_conjTranspose_mul_le_rectangularTraceNorm",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -331,20 +581,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-exists_contraction_trace_conjtranspose_mul_eq",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.exists_contraction_trace_conjTranspose_mul_eq",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -361,20 +636,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm_le_of_forall_contraction",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.rectangularTraceNorm_le_of_forall_contraction",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -391,20 +691,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm_mul_conjtranspose_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/RectangularTraceNorm.lean",
         "declaration": "Matrix.rectangularTraceNorm_mul_conjTranspose_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -421,20 +746,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-probabilityquarter",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.probabilityQuarter",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -452,20 +802,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-quarterweighted",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.quarterWeighted",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -483,20 +858,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-halfweighted",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.halfWeighted",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -514,20 +914,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-probabilityquarter_mul_self",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.probabilityQuarter_mul_self",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -545,20 +970,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-probabilityquarter_conjtranspose",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.probabilityQuarter_conjTranspose",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -576,20 +1026,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-halfweighted_eq_quarter_sandwich",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.halfWeighted_eq_quarter_sandwich",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -607,20 +1082,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-trace_halfweighted_conjtranspose_mul",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.trace_halfWeighted_conjTranspose_mul",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -638,20 +1138,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-quarterweighted_apply",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.quarterWeighted_apply",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -669,20 +1194,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-sum_norm_sq_column_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.sum_norm_sq_column_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -700,20 +1250,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-sum_norm_sq_row_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.sum_norm_sq_row_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -731,20 +1306,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-sum_sqrt_probability_mul_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.sum_sqrt_probability_mul_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -762,20 +1362,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-frobeniusnormsq_quarterweighted",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.frobeniusNormSq_quarterWeighted",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -793,20 +1418,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-frobeniusnormsq_quarterweighted_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.frobeniusNormSq_quarterWeighted_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -824,20 +1474,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-norm_trace_conjtranspose_mul_sq_le_frobeniusnormsq",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.norm_trace_conjTranspose_mul_sq_le_frobeniusNormSq",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -855,20 +1530,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm_halfweighted_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.rectangularTraceNorm_halfWeighted_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -886,20 +1586,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-sqrt_frobeniusnormsq_quarterweighted_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.sqrt_frobeniusNormSq_quarterWeighted_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -917,20 +1642,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-quarterweighted_transpose",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.quarterWeighted_transpose",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -948,20 +1698,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-frobeniusnormsq_quarterweighted_transpose",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.frobeniusNormSq_quarterWeighted_transpose",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -979,20 +1754,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-frobeniusnormsq_unitary_mul",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.frobeniusNormSq_unitary_mul",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1010,20 +1810,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-frobeniusnormsq_mul_unitary",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.frobeniusNormSq_mul_unitary",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1041,20 +1866,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-possemidef-rpow_quarter_spectral",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.PosSemidef.rpow_quarter_spectral",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1072,20 +1922,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-frobeniusnormsq_rpow_quarter_mul_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/WeightedRectangular.lean",
         "declaration": "Matrix.frobeniusNormSq_rpow_quarter_mul_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1103,20 +1978,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-l2_opnorm_kronecker_one_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Channel/RectangularTraceNormContraction.lean",
         "declaration": "Matrix.l2_opNorm_kronecker_one_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1133,20 +2033,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-trace_partialtraceright_conjtranspose_mul",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Channel/RectangularTraceNormContraction.lean",
         "declaration": "Matrix.trace_partialTraceRight_conjTranspose_mul",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1163,20 +2088,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm_partialtraceright_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Channel/RectangularTraceNormContraction.lean",
         "declaration": "Matrix.rectangularTraceNorm_partialTraceRight_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1193,20 +2143,45 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-weighted-rectangulartracenorm_partialtraceright_mul_conjtranspose_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Channel/RectangularTraceNormContraction.lean",
         "declaration": "Matrix.rectangularTraceNorm_partialTraceRight_mul_conjTranspose_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -1223,7 +2198,32 @@
         "Independently proved rectangular nuclear-norm duality, probability-weighted bounds, or separate-map contraction using QICLean and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8deb555c1fa91e9561720014fe4c3066c8402240",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.WeightedRectangular QICLean.Channel.RectangularTraceNormContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/build.log",
+            "sha256": "e052c76c888ecdd2d5b207a18a4fd60e2f822633bb53b0ae451d8bd36603038d"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionFoundationsAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/axioms.log",
+            "sha256": "a94e5e6990fd7a6793e309321c51676b2fc5625d77ae7c3f3d98eca8541eb095"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-foundations/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-foundations/source-audit.log",
+            "sha256": "fccdbe8599996832de277d1056f52864158fce5de02b0b7e0e565d74cd289f79"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     }
