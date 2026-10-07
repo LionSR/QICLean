@@ -111,26 +111,42 @@ theorem siteOp_mulVec_apply (j : Fin k) (A : Matrix Ω Ω ℂ) (u : (Fin k → �
   refine sum_congr rfl fun c _ => ?_
   rw [siteOp_apply, ite_eq_left (fun i hi => by simp [hi]), Function.update_self]
 
+omit [Fintype Ω] in
 theorem siteOp_add (j : Fin k) (A B : Matrix Ω Ω ℂ) :
     siteOp j (A + B) = siteOp j A + siteOp j B := by
   ext x y; simp only [siteOp_apply, Matrix.add_apply]; split_ifs <;> simp
 
+omit [Fintype Ω] in
 theorem siteOp_smul (j : Fin k) (c : ℂ) (A : Matrix Ω Ω ℂ) :
     siteOp j (c • A) = c • siteOp j A := by
   ext x y; simp only [siteOp_apply, Matrix.smul_apply]; split_ifs <;> simp
 
+omit [Fintype Ω] in
 theorem siteOp_sub (j : Fin k) (A B : Matrix Ω Ω ℂ) :
     siteOp j (A - B) = siteOp j A - siteOp j B := by
   ext x y; simp only [siteOp_apply, Matrix.sub_apply]; split_ifs <;> simp
 
+omit [Fintype Ω] in
 @[simp]
 theorem siteOp_zero (j : Fin k) : siteOp j (0 : Matrix Ω Ω ℂ) = 0 := by
   ext x y; simp [siteOp_apply]
 
+omit [Fintype Ω] in
 theorem diagOp_sub (A B : Matrix Ω Ω ℂ) :
     diagOp (k := k) (A - B) = diagOp A - diagOp B := by
   simp [diagOp, siteOp_sub, sum_sub_distrib]
 
+omit [Fintype Ω] in
+theorem diagOp_add (A B : Matrix Ω Ω ℂ) :
+    diagOp (k := k) (A + B) = diagOp A + diagOp B := by
+  simp [diagOp, siteOp_add, sum_add_distrib]
+
+omit [Fintype Ω] in
+theorem diagOp_smul (c : ℂ) (A : Matrix Ω Ω ℂ) :
+    diagOp (k := k) (c • A) = c • diagOp A := by
+  simp [diagOp, siteOp_smul, smul_sum]
+
+omit [Fintype Ω] in
 @[simp]
 theorem diagOp_zero : diagOp (k := k) (0 : Matrix Ω Ω ℂ) = 0 := by
   simp [diagOp]
@@ -269,5 +285,370 @@ theorem toLex_add_single_sub_single_lt {a b : Fin q} (h : b < a) (μ : Fin q →
     toLex (μ + Pi.single a 1 - Pi.single b 1) < toLex μ :=
   ⟨b, fun j hj => by simp [hj.ne, (hj.trans h).ne],
     by simp [h.ne]⟩
+
+/-- A highest-weight vector of weight `μ`: a nonzero weight vector annihilated by the
+raising operators `E_{ab}`, `a < b`. -/
+structure IsHighestWeight (μ : Fin q → ℤ) (u : (Fin k → Fin q) → ℂ) : Prop where
+  ne_zero : u ≠ 0
+  isWeightVector : IsWeightVector μ u
+  raising : ∀ a b, a < b → gen a b *ᵥ u = 0
+
+variable (q k) in
+/-- Invariance under the commutant of the copy permutations, equivalently (Schur–Weyl)
+under the diagonal `gl_q` action. -/
+def IsInvariant (V : Submodule ℂ ((Fin k → Fin q) → ℂ)) : Prop :=
+  ∀ M ∈ commutant (copyPerm (Fin q) k), ∀ u ∈ V, M *ᵥ u ∈ V
+
+variable (q k) in
+/-- Irreducibility under the commutant of the copy permutations. -/
+def IsIrreducible (V : Submodule ℂ ((Fin k → Fin q) → ℂ)) : Prop :=
+  IsInvariant q k V ∧ V ≠ ⊥ ∧ ∀ W ≤ V, IsInvariant q k W → W ≠ ⊥ → W = V
+
+/-- The vector `E_{a_1 b_1} ⋯ E_{a_r b_r} v` of a list of index pairs. -/
+def monomial (l : List (Fin q × Fin q)) (v : (Fin k → Fin q) → ℂ) : (Fin k → Fin q) → ℂ :=
+  (l.map fun p => gen p.1 p.2).prod *ᵥ v
+
+@[simp]
+theorem monomial_nil (v : (Fin k → Fin q) → ℂ) : monomial [] v = v := by
+  simp [monomial]
+
+theorem monomial_cons (p : Fin q × Fin q) (l : List (Fin q × Fin q))
+    (v : (Fin k → Fin q) → ℂ) : monomial (p :: l) v = gen p.1 p.2 *ᵥ monomial l v := by
+  simp [monomial, mulVec_mulVec]
+
+/-- A lowering list: every pair `(a, b)` has `b < a`. -/
+def IsLowering (l : List (Fin q × Fin q)) : Prop := ∀ p ∈ l, p.2 < p.1
+
+/-- The span of the lowering monomials applied to `v`. -/
+def lowerSpan (v : (Fin k → Fin q) → ℂ) : Submodule ℂ ((Fin k → Fin q) → ℂ) :=
+  Submodule.span ℂ {u | ∃ l, IsLowering l ∧ u = monomial l v}
+
+theorem monomial_mem_lowerSpan {l : List (Fin q × Fin q)} (hl : IsLowering l)
+    (v : (Fin k → Fin q) → ℂ) : monomial l v ∈ lowerSpan v :=
+  Submodule.subset_span ⟨l, hl, rfl⟩
+
+theorem self_mem_lowerSpan (v : (Fin k → Fin q) → ℂ) : v ∈ lowerSpan v := by
+  simpa using monomial_mem_lowerSpan (l := []) (fun _ h => by simp at h) v
+
+/-- Lowering monomials applied to a weight vector are weight vectors of lexicographically
+smaller weight. -/
+theorem IsWeightVector.monomial {μ : Fin q → ℤ} {v : (Fin k → Fin q) → ℂ}
+    (hv : IsWeightVector μ v) {l : List (Fin q × Fin q)} (hl : IsLowering l) :
+    ∃ ν, IsWeightVector ν (TensorPower.monomial l v) ∧ toLex ν ≤ toLex μ ∧
+      (l ≠ [] → toLex ν < toLex μ) := by
+  induction l with
+  | nil => exact ⟨μ, by simpa using hv, le_rfl, fun h => absurd rfl h⟩
+  | cons p l ih =>
+    obtain ⟨ν, hν, hle, -⟩ := ih fun r hr => hl r (List.mem_cons_of_mem _ hr)
+    have hlt := toLex_add_single_sub_single_lt (hl p List.mem_cons_self) ν
+    refine ⟨_, ?_, (hlt.trans_le hle).le, fun _ => hlt.trans_le hle⟩
+    rw [monomial_cons]
+    exact hν.gen_mulVec _ _
+
+theorem gen_mulVec_mem_lowerSpan_of_lt {a b : Fin q} (h : b < a)
+    {v u : (Fin k → Fin q) → ℂ} (hu : u ∈ lowerSpan v) : gen a b *ᵥ u ∈ lowerSpan v := by
+  induction hu using Submodule.span_induction with
+  | mem x hx =>
+    obtain ⟨l, hl, rfl⟩ := hx
+    rw [← monomial_cons (a, b)]
+    refine monomial_mem_lowerSpan (fun p hp => ?_) v
+    rcases List.mem_cons.mp hp with rfl | hp
+    · exact h
+    · exact hl p hp
+  | zero => simp
+  | add x y _ _ hx hy => rw [mulVec_add]; exact Submodule.add_mem _ hx hy
+  | smul c x _ hx => rw [mulVec_smul]; exact Submodule.smul_mem _ c hx
+
+/-- The span of the lowering monomials applied to a highest-weight vector is invariant
+under every operator `E_{ab}`. -/
+theorem IsHighestWeight.gen_mulVec_mem_lowerSpan {μ : Fin q → ℤ}
+    {v : (Fin k → Fin q) → ℂ} (hv : IsHighestWeight μ v) (a b : Fin q)
+    {u : (Fin k → Fin q) → ℂ} (hu : u ∈ lowerSpan v) : gen a b *ᵥ u ∈ lowerSpan v := by
+  -- first for the generators
+  have key : ∀ l, IsLowering l → ∀ a b, gen a b *ᵥ monomial l v ∈ lowerSpan v := by
+    intro l
+    induction l with
+    | nil =>
+      intro _ a b
+      rw [monomial_nil]
+      rcases lt_trichotomy a b with h | rfl | h
+      · rw [hv.raising a b h]; exact Submodule.zero_mem _
+      · rw [hv.isWeightVector.gen_self_mulVec]
+        exact Submodule.smul_mem _ _ (self_mem_lowerSpan v)
+      · exact gen_mulVec_mem_lowerSpan_of_lt h (self_mem_lowerSpan v)
+    | cons p l ih =>
+      intro hl a b
+      have hl' : IsLowering l := fun r hr => hl r (List.mem_cons_of_mem _ hr)
+      have hp : p.2 < p.1 := hl p List.mem_cons_self
+      have hcomm := gen_mul_sub_mul (k := k) a b p.1 p.2
+      rw [sub_eq_iff_eq_add] at hcomm
+      rw [monomial_cons, mulVec_mulVec, hcomm, add_mulVec, ← mulVec_mulVec]
+      refine Submodule.add_mem _ ?_ (gen_mulVec_mem_lowerSpan_of_lt hp (ih hl' a b))
+      rw [sub_mulVec]
+      refine Submodule.sub_mem _ ?_ ?_
+      · split_ifs
+        · exact ih hl' _ _
+        · simp
+      · split_ifs
+        · exact ih hl' _ _
+        · simp
+  induction hu using Submodule.span_induction with
+  | mem x hx =>
+    obtain ⟨l, hl, rfl⟩ := hx
+    exact key l hl a b
+  | zero => simp
+  | add x y _ _ hx hy => rw [mulVec_add]; exact Submodule.add_mem _ hx hy
+  | smul c x _ hx => rw [mulVec_smul]; exact Submodule.smul_mem _ c hx
+
+theorem diagOp_eq_sum_gen (A : Matrix (Fin q) (Fin q) ℂ) :
+    diagOp (k := k) A = ∑ a, ∑ b, A a b • gen a b := by
+  let L : Matrix (Fin q) (Fin q) ℂ →ₗ[ℂ] Matrix (Fin k → Fin q) (Fin k → Fin q) ℂ :=
+    { toFun := diagOp
+      map_add' := diagOp_add
+      map_smul' := diagOp_smul }
+  change L A = _
+  conv_lhs => rw [Matrix.matrix_eq_sum_single A]
+  simp only [map_sum]
+  refine sum_congr rfl fun a _ => sum_congr rfl fun b _ => ?_
+  rw [show Matrix.single a b (A a b) = A a b • Matrix.single a b 1 by simp, map_smul]
+  rfl
+
+/-- A subspace invariant under every operator `E_{ab}` is invariant under the commutant. -/
+theorem isInvariant_of_gen {V : Submodule ℂ ((Fin k → Fin q) → ℂ)}
+    (hV : ∀ a b, ∀ u ∈ V, gen a b *ᵥ u ∈ V) : IsInvariant q k V := by
+  intro M hM
+  have hM' : M ∈ diagAlgebra (Fin q) k := commutant_le_diagAlgebra hM
+  induction hM' using Algebra.adjoin_induction with
+  | mem x hx =>
+    obtain ⟨A, rfl⟩ := hx
+    intro u hu
+    rw [diagOp_eq_sum_gen, sum_mulVec]
+    refine Submodule.sum_mem _ fun a _ => ?_
+    rw [sum_mulVec]
+    exact Submodule.sum_mem _ fun b _ => by rw [smul_mulVec]; exact V.smul_mem _ (hV a b u hu)
+  | algebraMap r =>
+    intro u hu
+    rw [Algebra.algebraMap_eq_smul_one, smul_mulVec, one_mulVec]
+    exact V.smul_mem _ hu
+  | add x y hx hy ihx ihy =>
+    intro u hu
+    rw [add_mulVec]
+    exact V.add_mem (ihx (diagAlgebra_le_commutant hx) u hu)
+      (ihy (diagAlgebra_le_commutant hy) u hu)
+  | mul x y hx hy ihx ihy =>
+    intro u hu
+    rw [← mulVec_mulVec]
+    exact ihx (diagAlgebra_le_commutant hx) _ (ihy (diagAlgebra_le_commutant hy) u hu)
+
+theorem IsHighestWeight.isInvariant_lowerSpan {μ : Fin q → ℤ} {v : (Fin k → Fin q) → ℂ}
+    (hv : IsHighestWeight μ v) : IsInvariant q k (lowerSpan v) :=
+  isInvariant_of_gen fun a b _ hu => hv.gen_mulVec_mem_lowerSpan a b hu
+
+theorem lowerSpan_le {V : Submodule ℂ ((Fin k → Fin q) → ℂ)} (hV : IsInvariant q k V)
+    {v : (Fin k → Fin q) → ℂ} (hv : v ∈ V) : lowerSpan v ≤ V := by
+  refine Submodule.span_le.mpr ?_
+  rintro _ ⟨l, -, rfl⟩
+  induction l with
+  | nil => simpa using hv
+  | cons p l ih => rw [monomial_cons]; exact hV _ (gen_mem_commutant _ _) _ ih
+
+/-- The restriction of a vector to the configurations of weight `μ`. -/
+def weightProj (μ : Fin q → ℤ) : Matrix (Fin k → Fin q) (Fin k → Fin q) ℂ :=
+  Matrix.diagonal fun x => if weight x = μ then 1 else 0
+
+theorem weightProj_mulVec_apply (μ : Fin q → ℤ) (u : (Fin k → Fin q) → ℂ)
+    (x : Fin k → Fin q) : (weightProj μ *ᵥ u) x = if weight x = μ then u x else 0 := by
+  simp [weightProj, mulVec_diagonal]
+
+theorem IsWeightVector.weightProj_mulVec {μ : Fin q → ℤ} {u : (Fin k → Fin q) → ℂ}
+    (hu : IsWeightVector μ u) : weightProj μ *ᵥ u = u := by
+  funext x
+  rw [weightProj_mulVec_apply]
+  by_cases hx : u x = 0
+  · simp [hx]
+  · simp [hu x hx]
+
+theorem IsWeightVector.weightProj_mulVec_of_ne {μ ν : Fin q → ℤ} {u : (Fin k → Fin q) → ℂ}
+    (hu : IsWeightVector μ u) (h : ν ≠ μ) : weightProj ν *ᵥ u = 0 := by
+  funext x
+  rw [weightProj_mulVec_apply]
+  by_cases hx : u x = 0
+  · simp [hx]
+  · simp [hu x hx, Ne.symm h]
+
+theorem isWeightVector_weightProj_mulVec (μ : Fin q → ℤ) (u : (Fin k → Fin q) → ℂ) :
+    IsWeightVector μ (weightProj μ *ᵥ u) := by
+  intro x hx
+  rw [weightProj_mulVec_apply] at hx
+  by_contra h
+  simp [h] at hx
+
+theorem weight_comp_perm (x : Fin k → Fin q) (σ : Equiv.Perm (Fin k)) :
+    weight (x ∘ σ) = weight x := by
+  funext a
+  exact Fintype.sum_equiv σ _ _ fun j => rfl
+
+theorem weightProj_mem_commutant (μ : Fin q → ℤ) :
+    weightProj (k := k) μ ∈ commutant (copyPerm (Fin q) k) := by
+  refine mem_commutant_of_apply_eq _ fun σ x y => ?_
+  have h : weight ((copyPerm (Fin q) k σ) x) = weight x := weight_comp_perm x σ⁻¹
+  simp only [weightProj, diagonal_apply, EmbeddingLike.apply_eq_iff_eq, h]
+
+/-- Every vector of the lowering span of a highest-weight vector `v` of weight `μ` has
+`μ`-component a multiple of `v`, and no component of lexicographically larger weight. -/
+theorem IsHighestWeight.weightProj_mulVec_mem_span {μ : Fin q → ℤ}
+    {v : (Fin k → Fin q) → ℂ} (hv : IsHighestWeight μ v) {u : (Fin k → Fin q) → ℂ}
+    (hu : u ∈ lowerSpan v) (ν : Fin q → ℤ) :
+    weightProj ν *ᵥ u ∈ (if toLex ν = toLex μ then ℂ ∙ v else ⊥ :
+      Submodule ℂ ((Fin k → Fin q) → ℂ)) ∨ toLex ν < toLex μ := by
+  by_cases hlt : toLex ν < toLex μ
+  · exact Or.inr hlt
+  left
+  induction hu using Submodule.span_induction with
+  | mem x hx =>
+    obtain ⟨l, hl, rfl⟩ := hx
+    obtain ⟨ρ, hρ, hle, hstrict⟩ := hv.isWeightVector.monomial hl
+    rcases eq_or_ne l [] with rfl | hne
+    · simp only [monomial_nil]
+      split_ifs with h
+      · rw [toLex_inj.mp h, hv.isWeightVector.weightProj_mulVec]
+        exact Submodule.mem_span_singleton_self v
+      · rw [hv.isWeightVector.weightProj_mulVec_of_ne (fun e => h (by rw [e]))]
+        exact Submodule.zero_mem _
+    · have hne' : ν ≠ ρ := fun e => hlt (e ▸ hstrict hne)
+      rw [hρ.weightProj_mulVec_of_ne hne']
+      exact Submodule.zero_mem _
+  | zero => simp
+  | add x y _ _ hx hy => rw [mulVec_add]; exact Submodule.add_mem _ hx hy
+  | smul c x _ hx => rw [mulVec_smul]; exact Submodule.smul_mem _ c hx
+
+namespace IsIrreducible
+
+variable {V : Submodule ℂ ((Fin k → Fin q) → ℂ)} (hV : IsIrreducible q k V)
+  {μ : Fin q → ℤ} {v : (Fin k → Fin q) → ℂ} (hv : IsHighestWeight μ v) (hvV : v ∈ V)
+include hV hv hvV
+
+theorem lowerSpan_eq : lowerSpan v = V :=
+  hV.2.2 _ (lowerSpan_le hV.1 hvV) hv.isInvariant_lowerSpan
+    (fun h => hv.ne_zero (by simpa [h] using self_mem_lowerSpan v))
+
+/-- The weight space of an irreducible subspace at its highest weight is spanned by the
+highest-weight vector. -/
+theorem mem_span_of_isWeightVector {u : (Fin k → Fin q) → ℂ} (hu : u ∈ V)
+    (huμ : IsWeightVector μ u) : u ∈ ℂ ∙ v := by
+  rw [← hV.lowerSpan_eq hv hvV] at hu
+  rcases hv.weightProj_mulVec_mem_span hu μ with h | h
+  · rwa [ite_eq_left rfl, huμ.weightProj_mulVec] at h
+  · exact absurd h (lt_irrefl _)
+
+/-- Every weight of an irreducible subspace is lexicographically at most its highest
+weight. -/
+theorem toLex_le {ν : Fin q → ℤ} {u : (Fin k → Fin q) → ℂ} (hu : u ∈ V) (hne : u ≠ 0)
+    (hν : IsWeightVector ν u) : toLex ν ≤ toLex μ := by
+  rw [← hV.lowerSpan_eq hv hvV] at hu
+  rcases hv.weightProj_mulVec_mem_span hu ν with h | h
+  · rw [hν.weightProj_mulVec] at h
+    split_ifs at h with he
+    · exact he.le
+    · exact absurd ((Submodule.mem_bot ℂ).mp h) hne
+  · exact h.le
+
+/-- An irreducible subspace has a single highest weight. -/
+theorem weight_eq_of_isHighestWeight {ν : Fin q → ℤ} {u : (Fin k → Fin q) → ℂ}
+    (hu : IsHighestWeight ν u) (huV : u ∈ V) : ν = μ :=
+  toLex_inj.mp (le_antisymm (hV.toLex_le hv hvV huV hu.ne_zero hu.isWeightVector)
+    (hV.toLex_le hu huV hvV hv.ne_zero hv.isWeightVector))
+
+end IsIrreducible
+
+/-- A nonzero invariant subspace contains a highest-weight vector. -/
+theorem exists_isHighestWeight {V : Submodule ℂ ((Fin k → Fin q) → ℂ)}
+    (hV : IsInvariant q k V) (hne : V ≠ ⊥) :
+    ∃ μ v, v ∈ V ∧ IsHighestWeight μ v := by
+  classical
+  let S : Finset (Fin q → ℤ) := (univ.image (weight (k := k))).filter fun ν =>
+    ∃ u ∈ V, u ≠ 0 ∧ IsWeightVector ν u
+  have mem_S : ∀ ν (u : (Fin k → Fin q) → ℂ), u ∈ V → u ≠ 0 → IsWeightVector ν u → ν ∈ S := by
+    intro ν u hu hne hν
+    obtain ⟨x, hx⟩ := Function.ne_iff.mp hne
+    exact mem_filter.mpr ⟨mem_image.mpr ⟨x, mem_univ _, hν x hx⟩, u, hu, hne, hν⟩
+  have hS : S.Nonempty := by
+    obtain ⟨u, hu, hu0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne
+    obtain ⟨x, hx⟩ := Function.ne_iff.mp hu0
+    refine ⟨weight x, mem_S _ _ (hV _ (weightProj_mem_commutant _) u hu) ?_
+      (isWeightVector_weightProj_mulVec _ u)⟩
+    intro h
+    have := congrFun h x
+    simp [weightProj_mulVec_apply] at this
+    exact hx this
+  obtain ⟨μ, hμS, hmax⟩ := exists_max_image S toLex hS
+  obtain ⟨u, huV, hu0, hμ⟩ := (mem_filter.mp hμS).2
+  refine ⟨μ, u, huV, hu0, hμ, fun a b hab => ?_⟩
+  by_contra h
+  have hmem := mem_S _ _ (hV _ (gen_mem_commutant a b) u huV) h (hμ.gen_mulVec a b)
+  have hlt : toLex μ < toLex (μ + Pi.single a 1 - Pi.single b 1) := by
+    have := toLex_add_single_sub_single_lt hab (μ + Pi.single a 1 - Pi.single b 1)
+    rwa [show μ + Pi.single a 1 - Pi.single b 1 + Pi.single b 1 - Pi.single a 1 = μ by abel]
+      at this
+  exact absurd (hmax _ hmem) (not_le.mpr hlt)
+
+/-- The relabelling operator `(R_τ u)(x) = u(τ ∘ x)`, the action of the permutation
+matrix of `τ` on every copy. -/
+def relabel (τ : Equiv.Perm (Fin q)) : Matrix (Fin k → Fin q) (Fin k → Fin q) ℂ :=
+  fun x y => if y = τ ∘ x then 1 else 0
+
+theorem relabel_mulVec_apply (τ : Equiv.Perm (Fin q)) (u : (Fin k → Fin q) → ℂ)
+    (x : Fin k → Fin q) : (relabel τ *ᵥ u) x = u (τ ∘ x) := by
+  simp [relabel, mulVec, dotProduct]
+
+theorem relabel_mem_commutant (τ : Equiv.Perm (Fin q)) :
+    relabel (k := k) τ ∈ commutant (copyPerm (Fin q) k) := by
+  refine mem_commutant_of_apply_eq _ fun σ x y => ?_
+  simp only [relabel]
+  congr 1
+  apply propext
+  constructor
+  · intro h
+    funext j
+    simpa using congrFun h (σ j)
+  · rintro rfl
+    rfl
+
+theorem weight_comp_left (τ : Equiv.Perm (Fin q)) (x : Fin k → Fin q) (c : Fin q) :
+    weight (τ ∘ x) (τ c) = weight x c := by
+  simp [weight]
+
+theorem IsWeightVector.relabel_mulVec {μ : Fin q → ℤ} {u : (Fin k → Fin q) → ℂ}
+    (hu : IsWeightVector μ u) (τ : Equiv.Perm (Fin q)) :
+    IsWeightVector (μ ∘ τ) (relabel τ *ᵥ u) := by
+  intro x hx
+  rw [relabel_mulVec_apply] at hx
+  funext c
+  rw [Function.comp_apply, ← hu _ hx, weight_comp_left]
+
+/-- The highest weight of an irreducible subspace is a partition: it is weakly decreasing. -/
+theorem IsIrreducible.antitone_of_isHighestWeight {V : Submodule ℂ ((Fin k → Fin q) → ℂ)}
+    (hV : IsIrreducible q k V) {μ : Fin q → ℤ} {v : (Fin k → Fin q) → ℂ}
+    (hv : IsHighestWeight μ v) (hvV : v ∈ V) : Antitone μ := by
+  intro a b hab
+  rcases hab.lt_or_eq with hab | rfl
+  · by_contra h
+    push Not at h
+    set τ := Equiv.swap a b
+    have hne : relabel τ *ᵥ v ≠ 0 := by
+      intro h0
+      obtain ⟨x, hx⟩ := Function.ne_iff.mp hv.ne_zero
+      have := congrFun h0 (τ ∘ x)
+      rw [relabel_mulVec_apply] at this
+      simp [τ, Function.comp_def] at this
+      exact hx this
+    have hle := hV.toLex_le hv hvV (hV.1 _ (relabel_mem_commutant τ) v hvV) hne
+      (hv.isWeightVector.relabel_mulVec τ)
+    have hlt : toLex μ < toLex (μ ∘ τ) :=
+      ⟨a, fun j hj => by
+        simp [τ, Equiv.swap_apply_of_ne_of_ne hj.ne (hj.trans hab).ne],
+        by simpa [τ] using h⟩
+    exact absurd hle (not_le.mpr hlt)
+  · exact le_rfl
 
 end TensorPower
