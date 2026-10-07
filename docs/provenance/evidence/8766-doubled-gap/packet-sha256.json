@@ -1,8 +1,10 @@
 {
   "blueprint/src/chapter/ch12_entropy_doubled_system_gap.tex": "45e02877216ef61b7bcd8c795223bd62d123a7a282155128ff56519d5546e7ff",
-  "docs/provenance/evidence/8766-doubled-gap/README.md": "4d6a55620c20d58d58dee0d035fdb330c3585d64876501ab77406b09a55da958",
-  "docs/provenance/evidence/8766-doubled-gap/check.py": "0140d36bc54703f85f2cd4040bb04b8469ede1f55145cb4e87976d7f9913764d",
+  "docs/provenance/evidence/8766-doubled-gap/README.md": "45e0e5d8f5e4a8979d5daffc3f393d37fd058c3460d8e52fa1ec84e98f2c6a6d",
+  "docs/provenance/evidence/8766-doubled-gap/check.py": "965687911e0b80d12ceadfa267061b708aaa79e8e654d0af9e649ef84ce3ee6b",
   "docs/provenance/evidence/8766-doubled-gap/drivers/DoubledSystemGapRawAxioms.lean": "b81d4a7589dc81823e2e2fcbcd71bfb43fc9e85c75514b79dd8a5fb59e435109",
+  "docs/provenance/evidence/8766-doubled-gap/frozen-blueprint.json": "b04e77cc8867f4ffe9d00533093ce64332570763a0597f61d624e73bd1e4d2b5",
+  "docs/provenance/evidence/8766-doubled-gap/historical-ledger-57bf.json": "049345e567f3106231ba5f737136b2e5d4a28e5ffb31dc9328183bc7ac74de57",
   "docs/provenance/evidence/8766-doubled-gap/logs/QICLeanTest_DoubledSystemGap.lean-doubled-gap-strict-first.log": "e39fc020056b51915a537d4a99ea53e5f9d0ac808c8c272989972d42fc6a183e",
   "docs/provenance/evidence/8766-doubled-gap/logs/QICLeanTest_DoubledSystemGap.lean-doubled-gap-tests-b4ac.log": "c88f060395afc37f8ef0feba0831443641c2a901d53ed6af871050556e54c143",
   "docs/provenance/evidence/8766-doubled-gap/logs/QICLean_Analysis_DoubledSystemGap.lean-doubled-gap-strict-first.log": "d8d07b841e49b56d6101d8ae1a02309fe74f195b27e7b006dde894065fdd4986",
@@ -11,6 +13,7 @@
   "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-2.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891",
+  "docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json": "6f3462c89c7734b12809a48ad7f462964766bdcb4994a90a2f283439c48189ce",
   "docs/provenance/evidence/8766-doubled-gap/render/commands.json": "238820deca86e9f343cb5285cae55dbd4e293b368adabc5371471e607a876cd0",
   "docs/provenance/evidence/8766-doubled-gap/render/final-print.log": "38528407e00470c4038cd47f85cae55e27eb97a4b843793a0ccb1f24a84dab6a",
   "docs/provenance/evidence/8766-doubled-gap/render/final-print.tnlog": "68e3231ee07925fce023be3454db54c12d83607ed09e5209be17f2f640472ef4",
@@ -30,5 +33,5 @@
   "docs/provenance/evidence/8766-doubled-gap/runs/doubled-gap-tests-b4ac.json": "0badc1dfc7c42652a69e764324683d63e72df92a04a228055be9a9df0ba2983b",
   "docs/provenance/evidence/8766-doubled-gap/runs/doubled-integrated-57bf.json": "0415bcd80e4728649d7828c88e7b0c5d52b6a99ea6ef6210a77c538f404b8ef7",
   "docs/provenance/evidence/8766-doubled-gap/verification.json": "038c81ec040c0f644d736f9777a820fb5e436b525f9dc547bb71c44c696db9a4",
-  "docs/provenance/openai-math.d/doubled8766.json": "049345e567f3106231ba5f737136b2e5d4a28e5ffb31dc9328183bc7ac74de57"
+  "docs/provenance/openai-math.d/doubled8766.json": "3925e52d4165192ed1fb00d3f4b27f56b7cace7cb8fa8df2bd42c7124ec3717f"
 }

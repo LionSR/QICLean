@@ -5,13 +5,24 @@ from pathlib import Path
 import hashlib
 import json
 import re
+import subprocess
 
 PACKET = Path(__file__).resolve().parent
 ROOT = PACKET.parents[3]
 
 
+def evidence_bytes(path):
+    """Use the attested historical leaf for the original 13-link render."""
+    frozen = read_json(PACKET / "frozen-blueprint.json")
+    if path == ROOT / frozen["path"]:
+        return subprocess.check_output(
+            ["git", "show", f'{frozen["revision"]}:{frozen["path"]}'], cwd=ROOT
+        )
+    return path.read_bytes()
+
+
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hashlib.sha256(evidence_bytes(path)).hexdigest()
 
 
 def read_json(path):
@@ -30,7 +41,9 @@ def check():
     source = (ROOT / "QICLean/Analysis/DoubledSystemGap.lean").read_text()
     tests = (ROOT / "QICLeanTest/DoubledSystemGap.lean").read_text()
     raw = (PACKET / "drivers/DoubledSystemGapRawAxioms.lean").read_text()
-    leaf = (ROOT / "blueprint/src/chapter/ch12_entropy_doubled_system_gap.tex").read_text()
+    leaf = evidence_bytes(
+        ROOT / "blueprint/src/chapter/ch12_entropy_doubled_system_gap.tex"
+    ).decode()
     pairs = re.findall(
         r"^Provenance-ID: (\S+)\nDownstream declaration: (\S+)", source, re.M
     )
@@ -49,12 +62,27 @@ def check():
     assert not re.search(r"\b(?:sorry|admit|native_decide|unsafeCast)\b", source)
 
     ledger = read_json(ROOT / "docs/provenance/openai-math.d/doubled8766.json")
+    binding = read_json(PACKET / "public-checkpoint-attestation.json")
+    public_tree = subprocess.check_output(
+        ["git", "rev-parse", binding["public_revision"] + "^{tree}"], cwd=ROOT, text=True
+    ).strip()
+    assert public_tree == binding["public_tree"] == binding["local_checkpoint_tree"]
+    historical_ledger = read_json(PACKET / "historical-ledger-57bf.json")
+    assert all(
+        e["verification"]["revision"] == recorded["integrated_revision"]
+        for e in historical_ledger["entries"]
+    )
+    for name, digest in binding["source_sha256"].items():
+        public_bytes = subprocess.check_output(
+            ["git", "show", f'{binding["public_revision"]}:{name}'], cwd=ROOT
+        )
+        assert hashlib.sha256(public_bytes).hexdigest() == digest, name
     entries = ledger["entries"]
     assert len(entries) == 13
     assert {(x["id"], x["downstream"]["declaration"]) for x in entries} == set(pairs)
     for entry in entries:
         assert entry["no_upstream_proof_text_reused"] is True
-        assert entry["verification"]["revision"] == recorded["integrated_revision"]
+        assert entry["verification"]["revision"] == binding["public_revision"]
         for run in entry["verification"]["commands"]:
             assert run["exit_code"] == 0
             assert sha(ROOT / run["log"]) == run["sha256"]
@@ -86,7 +114,7 @@ def check():
     assert render["new_declaration_links"] == 13
     assert render["missing_internal_anchors"] == []
     assert render["diagram"]["pdf_and_standalone_semantics_agree"] is True
-    print("PASS: 13 source notices, blueprint links, guards, raw axioms, ledger entries, and evidence hashes")
+    print("PASS: 13 source notices, frozen blueprint links, guards, raw axioms, ledger entries, and evidence hashes")
 
 
 if __name__ == "__main__":

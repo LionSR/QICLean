@@ -1,0 +1,75 @@
+[
+  {
+    "head": "9b52983ef89dbf88e8b833c198953e3980dcbb5d",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.PositiveGapUniqueness"
+    ],
+    "exit_code": 0,
+    "seconds": 1.4462056329939514,
+    "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-9b52-0.log"
+  },
+  {
+    "head": "9b52983ef89dbf88e8b833c198953e3980dcbb5d",
+    "file": "QICLean/Analysis/PositiveGapUniqueness.lean",
+    "sha256": "1a004691a9d942a30dce0ed22c02e0658fe7fc9733dfe61b95381b76163701e7",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Analysis/PositiveGapUniqueness.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.596108063000429,
+    "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-9b52-1.log"
+  },
+  {
+    "head": "9b52983ef89dbf88e8b833c198953e3980dcbb5d",
+    "file": "QICLeanTest/PositiveGapUniqueness.lean",
+    "sha256": "c53502565a1e015c63f48c89c9ca18615a5cabefabafb6bcdf4d8fb5b92abdf9",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/PositiveGapUniqueness.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.3110790050050127,
+    "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-9b52-2.log"
+  },
+  {
+    "head": "9b52983ef89dbf88e8b833c198953e3980dcbb5d",
+    "file": "docs/provenance/evidence/8766-positive-gap-uniqueness/drivers/PositiveGapUniquenessRawAxioms.lean",
+    "sha256": "998d0b8abce9770e3d3d969354ed5f6ecd45ab7acff12d0fdc583f63680b7bbf",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "docs/provenance/evidence/8766-positive-gap-uniqueness/drivers/PositiveGapUniquenessRawAxioms.lean"
+    ],
+    "exit_code": 1,
+    "seconds": 2.842099252004118,
+    "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-9b52-3.log"
+  }
+]

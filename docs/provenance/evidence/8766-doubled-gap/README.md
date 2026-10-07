@@ -1,11 +1,27 @@
 # Doubled full-system gap: source and verification
 
-The new blueprint leaf is
+This packet records the original five-entry blueprint leaf at the frozen
+documentation revision identified in [`frozen-blueprint.json`](frozen-blueprint.json).
+The current leaf is
 [`ch12_entropy_doubled_system_gap.tex`](../../../../blueprint/src/chapter/ch12_entropy_doubled_system_gap.tex).
-It contains five mathematical entries and all 13 public declarations in
+The frozen leaf contains five mathematical entries and all 13 public declarations in
 [`DoubledSystemGap.lean`](../../../../QICLean/Analysis/DoubledSystemGap.lean).
 The matching 13-entry provenance ledger is
 [`doubled8766.json`](../../openai-math.d/doubled8766.json).
+The current ledger names public checkpoint
+`5a846a09030085ad1546d50163caad111f7748f4`; the exact source-byte and tree
+correspondence to the recorded local checks is in
+[`public-checkpoint-attestation.json`](public-checkpoint-attestation.json).
+The former local-revision ledger is retained unchanged in
+[`historical-ledger-57bf.json`](historical-ledger-57bf.json).
+This correspondence does not relabel any command as having run at the public
+checkpoint; all historical run records retain their original revisions and
+outcomes.
+The later strictly positive-gap uniqueness extension and its 16-link combined
+render are recorded separately in
+[`8766-doubled-gap-uniqueness-render`](../8766-doubled-gap-uniqueness-render/README.md).
+The checker reads the historical leaf from the recorded Git revision; it does
+not assert that the current extended leaf has the old render hash.
 
 ## Source correspondence
 
@@ -114,6 +130,7 @@ The render history retains the initial environment-only TeX lookup failures;
 the final render uses the already prepared TeX environment and formats.
 
 Run `python3 docs/provenance/evidence/8766-doubled-gap/check.py` from the
-repository root to verify this packet's hashes, provenance IDs,
+repository root with the frozen documentation revision available in Git to
+verify this packet's hashes, provenance IDs,
 declaration/guard/raw coverage, recorded source bytes, and standard-axiom
 sets. This checker does not execute Lean.

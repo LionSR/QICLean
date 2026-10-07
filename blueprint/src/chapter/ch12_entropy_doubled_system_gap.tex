@@ -13,9 +13,9 @@ The lower-gap assertion for the two replicas in
 \cite{OpenAI2026PolynomialPEPS} follows by decomposing their corresponding
 residual into positive semidefinite terms.
 % Source: pinned 02-information.tex, lines 415--425, the unnumbered passage
-% immediately after eq:info-reset-overlap. Only its normalized eigenvector,
-% ground-energy, and lower-gap assertions are claimed here. Local interaction
-% support, exact gap equality, and uniqueness are not declarations in this leaf.
+% immediately after eq:info-reset-overlap. The normalized eigenvector,
+% ground-energy, lower-gap, and strictly positive-gap uniqueness assertions
+% are covered here. Interaction support and exact gap equality are not claimed.
 
 \begin{definition}[Doubled vector and Hamiltonian]
     \label{def:doubled_system}
@@ -115,6 +115,45 @@ residual into positive semidefinite terms.
     $(UHU^\dagger)(U\Omega)=UH\Omega=E_0(U\Omega)$.
 \end{proof}
 
+\begin{theorem}[Uniqueness from a strictly positive lower gap]
+    \label{thm:positive_gap_uniqueness}
+    \lean{Matrix.PosSemidef.eq_inner_smul_of_gap,
+        Matrix.PosSemidef.eigenspace_eq_span_of_gap,
+        Matrix.PosSemidef.finrank_eigenspace_eq_one_of_gap}
+    \leanok
+    Suppose $R\ge0$, $\Delta>0$, and $\|\Omega\|=1$.
+    Every vector $\psi$ satisfying $H\psi=E_0\psi$ obeys
+    $\psi=\langle\Omega,\psi\rangle\Omega$.
+    The vector $\psi$ may be zero or unnormalized; no eigenvector equation
+    on $\Omega$ is required for this projection identity.
+    If also $H\Omega=E_0\Omega$, then
+    \begin{align}
+        \ker(H-E_0I)&=\spn_{\C}\{\Omega\}, &
+        \dim_{\C}\ker(H-E_0I)&=1.
+        \label{eq:positive_gap_ground_line}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    For $H\psi=E_0\psi$, the lower-gap inequality gives
+    \begin{align}
+        \Delta\bigl(\|\psi\|^2-|\langle\Omega,\psi\rangle|^2\bigr)
+            &\le \operatorname{Re}\langle\psi,H\psi\rangle
+                -E_0\|\psi\|^2=0.
+        \label{eq:positive_gap_energy}
+    \end{align}
+    Since $\Delta>0$ and $\|\Omega\|=1$,
+    \begin{align}
+        \|\psi-\langle\Omega,\psi\rangle\Omega\|^2
+            &=\|\psi\|^2-|\langle\Omega,\psi\rangle|^2\le0.
+        \label{eq:positive_gap_projection}
+    \end{align}
+    Thus the residual vector in~(\ref{eq:positive_gap_projection}) is zero.
+    Every vector in $\ker(H-E_0I)$ consequently belongs to
+    $\spn_{\C}\{\Omega\}$. The reverse inclusion follows from
+    $H\Omega=E_0\Omega$. Finally, $\|\Omega\|=1$ implies $\Omega\ne0$,
+    so its span has dimension one, proving~(\ref{eq:positive_gap_ground_line}).
+\end{proof}
+
 \begin{theorem}[The physical partial swap preserves the doubled gap]
     \label{thm:doubled_partial_swap_gap}
     \lean{Matrix.doubled_gap_partialSwap}
@@ -146,3 +185,16 @@ residual into positive semidefinite terms.
     Theorem~\ref{thm:doubled_unitary_transport}, with $U=F$ on the
     doubled space, gives~(\ref{eq:doubled_swap_conclusions}).
 \end{proof}
+
+If $\Delta>0$ in Theorem~\ref{thm:doubled_partial_swap_gap}, then
+Theorem~\ref{thm:positive_gap_uniqueness} applies to the doubled Hamiltonian
+before and after the physical partial swap. In particular,
+\begin{align}
+    \ker(\mathbb H-2E_0I)&=\spn_{\C}\{\Psi\}, &
+    \ker(\mathbb H'-2E_0I)&=\spn_{\C}\{\Phi\}.
+    \label{eq:doubled_unique_ground_lines}
+\end{align}
+Both eigenspaces in~(\ref{eq:doubled_unique_ground_lines}) have dimension
+one. Strict positivity is necessary: on $\C^2$, the Hamiltonian $H=E_0I$
+satisfies the lower-gap inequality for $\Delta=0$, while its eigenspace
+at $E_0$ has dimension two.

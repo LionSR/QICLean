@@ -29,14 +29,13 @@
       "notices": [],
       "changes": [
         "Define the physical product vector without changing complex phases.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -79,14 +78,13 @@
       "notices": [],
       "changes": [
         "Define the two-replica tensor sum on the doubled physical space.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -129,14 +127,13 @@
       "notices": [],
       "changes": [
         "Identify the rank-one product projector with the tensor square.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -179,14 +176,13 @@
       "notices": [],
       "changes": [
         "Factor its squared norm as a product of finite sums.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -229,14 +225,13 @@
       "notices": [],
       "changes": [
         "Prove normalization of the doubled vector.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -279,14 +274,13 @@
       "notices": [],
       "changes": [
         "Transport the ground-eigenvector equation to energy 2E0.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -329,14 +323,13 @@
       "notices": [],
       "changes": [
         "Prove the exact residual identity R tensor I + I tensor R + Delta(Q tensor Q).",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -379,14 +372,13 @@
       "notices": [],
       "changes": [
         "Prove preservation of a nonnegative lower-gap bound from normalization and a positive residual; no eigenvector hypothesis is needed for this inequality.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -429,14 +421,13 @@
       "notices": [],
       "changes": [
         "Prove Euclidean norm preservation by a unitary.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -479,14 +470,13 @@
       "notices": [],
       "changes": [
         "Prove exact conjugation of the rank-one gap residual.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -529,14 +519,13 @@
       "notices": [],
       "changes": [
         "Prove preservation of any real lower-gap bound under unitary conjugation.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -579,14 +568,13 @@
       "notices": [],
       "changes": [
         "Transport the eigenvector equation under unitary conjugation.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
@@ -629,14 +617,13 @@
       "notices": [],
       "changes": [
         "Specialize to the actual physical partial swap, with normalized vector, eigenvalue 2E0, and inherited lower gap on the original doubled physical space.",
-        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0.",
-        "Verification commands were recorded at local revision 57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0. The public verification revision contains byte-identical production and test sources; see docs/provenance/evidence/8766-doubled-gap/public-checkpoint-attestation.json. Historical command results and the former ledger are retained unchanged."
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
         "result": "passed",
         "repository": "LionSR/QICLean",
-        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
         "commands": [
           {
             "kind": "build",
