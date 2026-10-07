@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "p09-qic-product-transport-ambientschmidtvector",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSchmidtVector",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -31,20 +31,45 @@
         "Defined the ambient Schmidt vector through two arbitrary local basis matrices."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-ambientschmidtsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSchmidtSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -61,20 +86,45 @@
         "Defined the ambient ket-bra outer product through four independent local basis matrices."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-sourcetransport",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.sourceTransport",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -91,20 +141,45 @@
         "Defined transport of a rectangular coordinate source through the two ket and two bra endpoint bases."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-ambientsourceu",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSourceU",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -121,20 +196,45 @@
         "Defined the first actual sampled source operator in independent ambient endpoint bases."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-ambientsourcev",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSourceV",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -151,20 +251,45 @@
         "Defined the second actual sampled source operator in independent ambient endpoint bases, retaining its shared conjugate Gaussian coordinates."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-ambientsampledsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSampledSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -181,20 +306,45 @@
         "Defined the actual ambient product-operator sample average on four independently sized endpoint spaces."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-ambientsourcecorrection",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSourceCorrection",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -211,20 +361,45 @@
         "Defined the centered ambient replacement against its explicitly represented Schmidt outer-product target."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-ambientschmidtvector_eq_mulvec",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSchmidtVector_eq_mulVec",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -241,20 +416,45 @@
         "Identified the ambient Schmidt vector with Kronecker-basis transport of its coordinate vector."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-sourcetransport_kronecker",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.sourceTransport_kronecker",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -271,20 +471,45 @@
         "Proved that transporting a product operator factors into the two transported local operators."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-ambientsourceu_kronecker_ambientsourcev",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSourceU_kronecker_ambientSourceV",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -301,20 +526,45 @@
         "Identified the actual ambient sampled product with transport of the coordinate sampled product."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-ambientsampledsource_eq_transport",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSampledSource_eq_transport",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -331,20 +581,45 @@
         "Proved exact transport of the finite sampled average, with no basis isometry hypothesis."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-sourcetransport_schmidtsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.sourceTransport_schmidtSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -361,20 +636,45 @@
         "Proved that the transported coordinate outer product is the represented ambient Schmidt outer product."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-ambientsourcecorrection_eq_transport",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.ambientSourceCorrection_eq_transport",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -391,20 +691,45 @@
         "Proved exact transport of the actual centered source correction through arbitrary endpoint bases."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-integrable_ambientsourceu",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_ambientSourceU",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -421,20 +746,45 @@
         "Proved matrix-valued integrability of the actual first ambient sampled factor for every sample index, without weight-sign or sample-count-positivity premises."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-integrable_ambientsourcev",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_ambientSourceV",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -451,20 +801,45 @@
         "Proved matrix-valued integrability of the actual conjugate second ambient sampled factor for every sample index, without weight-sign or sample-count-positivity premises."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-integrable_ambientsampledsource_entry",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_ambientSampledSource_entry",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -481,20 +856,45 @@
         "Derived genuine integrability of each ambient sampled entry from finite coordinate integrability."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-integral_ambientsampledsource_entry",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.integral_ambientSampledSource_entry",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -511,20 +911,45 @@
         "Proved each ambient sampled entry has the correct represented Schmidt-source expectation."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-integrable_ambientsampledsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_ambientSampledSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -541,20 +966,45 @@
         "Combined finite entry integrability into matrix-valued ambient sampled-source integrability."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-integral_ambientsampledsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.integral_ambientSampledSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -571,20 +1021,45 @@
         "Proved matrix-valued ambient sampled-source unbiasedness through arbitrary endpoint bases."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-integrable_ambientsourcecorrection",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_ambientSourceCorrection",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -601,20 +1076,45 @@
         "Derived matrix-valued integrability of the centered ambient source correction."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-transport-integral_ambientsourcecorrection",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
         "declaration": "QICLean.ComplexGaussian.integral_ambientSourceCorrection",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -631,7 +1131,32 @@
         "Proved that the actual ambient correction matrix has zero expectation."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     }

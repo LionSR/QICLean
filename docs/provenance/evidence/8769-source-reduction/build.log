@@ -1,0 +1,5 @@
+✔ [3764/3767] Built QICLean.Analysis.SubnormalizedPureStateError (3.9s)
+✔ [3765/3767] Built QICLean.Analysis.ContractionChain (4.3s)
+✔ [3766/3767] Built QICLean.Probability.ComplexGaussian.ProductSourceTransport (4.1s)
+✔ [3767/3767] Built QICLean.Analysis.SourceOnlyDensityError (2.5s)
+Build completed successfully (3767 jobs).

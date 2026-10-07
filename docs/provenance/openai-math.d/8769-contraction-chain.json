@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "p09-qic-contraction-chain-contractionprefix",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ContractionChain.lean",
         "declaration": "Matrix.contractionPrefix",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -31,20 +31,45 @@
         "Defined chronological matrix composition through changing finite memory spaces, including a zero-length identity prefix."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-contraction-chain-l2_opnorm_one_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ContractionChain.lean",
         "declaration": "Matrix.l2_opNorm_one_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -61,20 +86,45 @@
         "Proved that the identity has operator norm at most one without a positive-dimension assumption."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-contraction-chain-contractionprefix_norm_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ContractionChain.lean",
         "declaration": "Matrix.contractionPrefix_norm_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -91,20 +141,45 @@
         "Proved that every prefix of a changing-domain contraction chain remains an operator contraction."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-contraction-chain-contractionprefix_sub_norm_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ContractionChain.lean",
         "declaration": "Matrix.contractionPrefix_sub_norm_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -121,20 +196,45 @@
         "Proved the changing-domain telescoping estimate by the sum of the individual gate errors."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-contraction-chain-contractionprefix_sub_norm_le_uniform",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ContractionChain.lean",
         "declaration": "Matrix.contractionPrefix_sub_norm_le_uniform",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -151,20 +251,45 @@
         "Derived the linear chain error budget from a uniform per-gate error bound."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-contraction-chain-contractionprefix_sub_norm_le_supported",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ContractionChain.lean",
         "declaration": "Matrix.contractionPrefix_sub_norm_le_supported",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -181,20 +306,45 @@
         "Proved the chain error budget using only the cardinality of a finite marked gate set, with bounded errors on that set and exact gate equality outside it; unchanged private gates do not contribute."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-contraction-chain-rescale_approximation",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ContractionChain.lean",
         "declaration": "NormedSpace.rescale_approximation",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -211,7 +361,32 @@
         "Proved that rescaling a delta-approximation by one over one plus delta restores contraction and costs at most twice delta, in a general real normed space."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     }

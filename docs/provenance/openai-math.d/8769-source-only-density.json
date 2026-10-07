@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "p09-qic-density-rescaledgatechain",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.rescaledGateChain",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -31,20 +31,45 @@
         "Defined common rescaling of the actual approximate changing-memory gates."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-markedrescaledgatechain",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.markedRescaledGateChain",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -61,20 +86,45 @@
         "Defined rescaling only at selected occurrences, retaining the exact original gate at every unmarked stage."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-sourceonlyreadoutvector",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.sourceOnlyReadoutVector",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -91,20 +141,45 @@
         "Defined the actual vector obtained from a chronological prefix and a common physical-plus-discard readout."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-sourceonlyreadoutdensity",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.sourceOnlyReadoutDensity",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -121,20 +196,45 @@
         "Defined the actual subnormalized physical density by partial trace of the final vector outer product."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-sourceonlyreadoutvector_norm_le_one",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.sourceOnlyReadoutVector_norm_le_one",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -151,20 +251,45 @@
         "Proved the actual readout vector remains subnormalized under contractive gates/readout and a subnormalized input."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-sourceonlyreadoutvector_sub_norm_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.sourceOnlyReadoutVector_sub_norm_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -181,20 +306,45 @@
         "Bound the actual common-readout vector error by the prefix operator error without assuming either prefix contractive."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_le_prefix",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_prefix",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -211,20 +361,45 @@
         "Composed genuine subnormalized vector-to-density error with the common-readout prefix estimate."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_le_sum",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_sum",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -241,20 +416,45 @@
         "Bound the actual physical density error by twice the sum of changing-memory gate errors."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -271,20 +471,45 @@
         "Proved the four-times-length-times-delta density budget for rescaling every approximate stage."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_le_half",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_half",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -301,20 +526,45 @@
         "Derived half-epsilon density accuracy from the positive-length approximation scale epsilon divided by eight times the length."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_marked_sub_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -331,20 +581,45 @@
         "Proved the actual physical density budget counts only selected gate occurrences; exact private stages incur no error."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_marked_sub_le_half",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le_half",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -361,20 +636,45 @@
         "Derived half-epsilon density accuracy using epsilon divided by eight times the positive marked-gate cardinality."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_marked_empty",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_empty",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -391,20 +691,45 @@
         "Proved exact zero physical density error for an empty marked set at arbitrary chronological length."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-sourceonlyreadoutdensity_zero",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.sourceOnlyReadoutDensity_zero",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -421,20 +746,45 @@
         "Proved that zero-length chains yield the same actual readout density for any two gate families."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-density-rectangulartracenorm_sourceonlyreadoutdensity_sub_zero",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SourceOnlyDensityError.lean",
         "declaration": "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_zero",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -451,7 +801,32 @@
         "Proved exact zero nuclear density error for zero-length chains without gate norm hypotheses."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     }

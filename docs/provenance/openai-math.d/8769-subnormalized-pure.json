@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "p09-qic-pure-euclideanouterproduct",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SubnormalizedPureStateError.lean",
         "declaration": "Matrix.euclideanOuterProduct",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -31,20 +31,45 @@
         "Defined the rectangular outer product of independent finite Euclidean ket and bra vectors with their actual norms."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-pure-trace_euclideanouterproduct_conjtranspose_mul",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SubnormalizedPureStateError.lean",
         "declaration": "Matrix.trace_euclideanOuterProduct_conjTranspose_mul",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -61,20 +86,45 @@
         "Derived the Hilbert-Schmidt trace pairing of a rectangular outer product as the corresponding vector inner product."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-pure-rectangulartracenorm_euclideanouterproduct_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SubnormalizedPureStateError.lean",
         "declaration": "Matrix.rectangularTraceNorm_euclideanOuterProduct_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -91,20 +141,45 @@
         "Proved the rank-one nuclear-norm upper bound from contraction duality without a nonzero-vector assumption."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-pure-euclideanouterproduct_self_sub",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SubnormalizedPureStateError.lean",
         "declaration": "Matrix.euclideanOuterProduct_self_sub",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -121,20 +196,45 @@
         "Split an absolute pure-density difference into two rectangular outer products without normalizing either vector."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-pure-rectangulartracenorm_pure_density_sub_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SubnormalizedPureStateError.lean",
         "declaration": "Matrix.rectangularTraceNorm_pure_density_sub_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -151,20 +251,45 @@
         "Proved the general absolute density error bound by the sum of vector norms times their vector error."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-pure-rectangulartracenorm_pure_density_sub_le_two",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SubnormalizedPureStateError.lean",
         "declaration": "Matrix.rectangularTraceNorm_pure_density_sub_le_two",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -181,20 +306,45 @@
         "Specialized the general density error bound to two subnormalized vectors to obtain the factor two."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-pure-rectangulartracenorm_partialtraceright_pure_density_sub_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SubnormalizedPureStateError.lean",
         "declaration": "Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -211,20 +361,45 @@
         "Composed the general pure-density error estimate with actual partial-trace contraction, without a discard-dimension factor."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-pure-rectangulartracenorm_partialtraceright_pure_density_sub_le_two",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/SubnormalizedPureStateError.lean",
         "declaration": "Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le_two",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -241,7 +416,32 @@
         "Proved the factor-two physical-density estimate after discarding a finite register for subnormalized vectors."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "ba4afd141b06de7889126d2ec18f25c1797d8f6f",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceOnlyDensityError QICLean.Probability.ComplexGaussian.ProductSourceTransport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/build.log",
+            "sha256": "77b8be5033d8fc2cf4067dc2e3c5a1a6ec1e603d053306527ab2a323c5304cf7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceReductionAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/axioms.log",
+            "sha256": "9058931dcdb2919c5576cab72069620b254f1808087d24e185bb00304a1a1c4b"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-reduction/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-reduction/source-audit.log",
+            "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     }
