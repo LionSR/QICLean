@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.GroupedCopies
+import QICLean.Representation.GroupedLabelEntropy
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.JointIsotypic
