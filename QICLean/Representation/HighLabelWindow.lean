@@ -6,6 +6,7 @@ Authors: TNLean contributors
 import QICLean.Representation.SchurSurprisal
 import QICLean.Entropy.IidSurprisal
 import QICLean.Analysis.ReplicaPermutationCovariance
+import QICLean.Analysis.IidTailThreshold
 
 /-!
 # Entropy windows for the actual Schur labels
@@ -17,7 +18,7 @@ The joint spectral projections permit both bounds to be applied to the
 same label distribution, including density matrices with a kernel.
 -/
 
-open Matrix PermutationRepresentation Module
+open Matrix PermutationRepresentation Module Filter
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
 namespace PermutationRepresentation
@@ -308,5 +309,91 @@ private theorem exists_labelProj_iid_of_tail_error (hρ : ρ.PosSemidef)
   have htail := hρ.re_trace_surprisalTail_finKronecker_three_quarters_le htr hk
   dsimp only at htail
   linarith
+
+end TensorPower
+
+namespace TensorPower
+
+variable {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {ρ : Matrix Ω Ω ℂ}
+
+/-- Actual tensor-power densities eventually have a Schur sector with inverse
+polynomial mass and irreducible logarithmic dimension within `2 k^(3/4)`
+of `k S(ρ)`. Only the one-copy density assumptions are required, including
+when the density is singular. This is the simultaneous mass and entropy-window
+selection in the OpenAI area-law manuscript, `07-comparators.tex`,
+lines 255–273, `comparator:high-label`. -/
+theorem eventually_exists_labelProj_finKronecker_entropy_window
+    (hρ : ρ.PosSemidef) (htr : ρ.trace = 1) :
+    ∀ᶠ k : ℕ in atTop, ∃ l : IrrepLabel (Equiv.Perm (Fin k)),
+      (2 * (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ))⁻¹ ≤
+        ((finKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) l).trace.re ∧
+      |Real.log l.dim - (k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian| ≤
+        2 * (k : ℝ) ^ (3 / 4 : ℝ) := by
+  let V := ∑ i, hρ.isHermitian.eigenvalues i *
+    (-Real.log (hρ.isHermitian.eigenvalues i) - vonNeumannEntropy ρ hρ.isHermitian) ^ 2
+  filter_upwards [Real.eventually_iid_tail_error_le_half V (Fintype.card Ω ^ 2)] with k hk
+  exact exists_labelProj_iid_of_tail_error hρ htr
+    (lt_of_lt_of_le Nat.zero_lt_one hk.1) hk.2
+
+end TensorPower
+
+namespace TensorPower
+
+variable {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {ρ : Matrix Ω Ω ℂ}
+
+/-- A single sequence of actual Schur labels has inverse polynomial mass
+and logarithmic dimension `k S(ρ) + o(k)`. The same label satisfies both
+conclusions. OpenAI area-law manuscript, `07-comparators.tex`, lines 255–273,
+`comparator:high-label`. There are no concentration or label-selection
+hypotheses beyond the one-copy density assumptions. -/
+theorem exists_label_sequence_mass_entropy_asymptotic
+    (hρ : ρ.PosSemidef) (htr : ρ.trace = 1) :
+    ∃ l : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)),
+      (∀ᶠ k : ℕ in atTop,
+        (2 * (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ))⁻¹ ≤
+          ((finKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) (l k)).trace.re) ∧
+      Asymptotics.IsLittleO atTop
+        (fun k : ℕ => Real.log (l k).dim - (k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian)
+        (fun k : ℕ => (k : ℝ)) := by
+  classical
+  have hnonempty (k : ℕ) : Nonempty (IrrepLabel (Equiv.Perm (Fin k))) := by
+    by_contra hn
+    let : IsEmpty (IrrepLabel (Equiv.Perm (Fin k))) := not_nonempty_iff.mp hn
+    have hzero : (∑ l, labelProj (copyPerm Ω k) l) = 0 := by simp
+    rw [sum_labelProj] at hzero
+    have h := congrArg (fun M => ((finKronecker (fun _ : Fin k => ρ)) * M).trace) hzero
+    simp only [Matrix.mul_one, Matrix.mul_zero, trace_zero,
+      trace_finKronecker_const htr k, one_ne_zero] at h
+  let P (k : ℕ) (l : IrrepLabel (Equiv.Perm (Fin k))) : Prop :=
+    (2 * (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ))⁻¹ ≤
+        ((finKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) l).trace.re ∧
+      |Real.log l.dim - (k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian| ≤
+        2 * (k : ℝ) ^ (3 / 4 : ℝ)
+  have hex : ∀ k, ∃ l, (∃ l', P k l') → P k l := by
+    intro k
+    by_cases hk : ∃ l, P k l
+    · exact ⟨hk.choose, fun _ => hk.choose_spec⟩
+    · exact ⟨(hnonempty k).some, fun h => False.elim (hk h)⟩
+  choose l hl using hex
+  have hwindow : ∀ᶠ k : ℕ in atTop, P k (l k) :=
+    (eventually_exists_labelProj_finKronecker_entropy_window hρ htr).mono
+      fun k hk => hl k hk
+  refine ⟨l, hwindow.mono (fun _ hk => hk.1), ?_⟩
+  apply Asymptotics.IsLittleO.of_bound
+  intro c hc
+  have hdecay : Tendsto (fun k : ℕ => 2 * (k : ℝ) ^ (-(1 / 4 : ℝ))) atTop (nhds 0) := by
+    simpa only [mul_zero, Function.comp_def] using
+      ((tendsto_rpow_neg_atTop (by norm_num : 0 < (1 / 4 : ℝ))).comp
+        tendsto_natCast_atTop_atTop).const_mul 2
+  filter_upwards [hwindow, eventually_ge_atTop 1,
+    hdecay.eventually (eventually_lt_nhds hc)] with k hk hk1 hkc
+  have hkR : 0 < (k : ℝ) := by exact_mod_cast lt_of_lt_of_le Nat.zero_lt_one hk1
+  rw [Real.norm_eq_abs, Real.norm_of_nonneg hkR.le]
+  calc |Real.log (l k).dim - (k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian| ≤
+        2 * (k : ℝ) ^ (3 / 4 : ℝ) := hk.2
+    _ = (2 * (k : ℝ) ^ (-(1 / 4 : ℝ))) * k := by
+      rw [show (3 / 4 : ℝ) = -(1 / 4) + 1 by norm_num, Real.rpow_add hkR, Real.rpow_one]
+      ring
+    _ ≤ c * (k : ℝ) := mul_le_mul_of_nonneg_right hkc.le hkR.le
 
 end TensorPower
