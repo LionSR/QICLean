@@ -1,0 +1,455 @@
+theorem Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density.{u_1, u_2, u_3} : ∀ {Q : Type u_1}
+  {T : Type u_2} {C : Type u_3} [inst : Fintype Q] [inst_1 : DecidableEq Q] [inst_2 : Fintype T]
+  [inst_3 : DecidableEq T] [inst_4 : Fintype C] [inst_5 : DecidableEq C] (Ω : Q × T → ℂ),
+  ‖WithLp.toLp 2 Ω‖ = 1 →
+    ∀ {k : ℕ} (B : Finset (Fin k)) (u : (Fin k → Q × T) × C → ℂ),
+      have w := (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u;
+      have f := fun x ↦
+        w
+          ((FiniteProduct.splitEquiv (fun x ↦ Q × T) B).symm
+              (x.2.2, fun i ↦ (x.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i))),
+            x.1.2);
+      (Matrix.vecMulVec f (star f)).partialTraceRight =
+        Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+          (Matrix.finKronecker fun x ↦ (Matrix.vecMulVec Ω (star Ω)).partialTraceRight)
+          (Matrix.vecMulVec w (star w)).partialTraceLeft :=
+fun {Q} {T} {C} [Fintype Q] [DecidableEq Q] [Fintype T] [DecidableEq T] [Fintype C] [DecidableEq C] Ω hΩ {k} B u ↦
+  id
+    (Eq.mpr
+      (id
+        (congrArg
+          (fun _a ↦
+            (Matrix.vecMulVec
+                  (fun x ↦
+                    (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u
+                      ((FiniteProduct.splitEquiv (fun x ↦ Q × T) B).symm
+                          (x.2.2, fun i ↦ (x.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i))),
+                        x.1.2))
+                  (star fun x ↦
+                    (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u
+                      ((FiniteProduct.splitEquiv (fun x ↦ Q × T) B).symm
+                          (x.2.2, fun i ↦ (x.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i))),
+                        x.1.2))).partialTraceRight =
+              Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                (Matrix.finKronecker fun x ↦ (Matrix.vecMulVec Ω (star Ω)).partialTraceRight) _a)
+          (Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder Ω hΩ B u)))
+      (have hprod := fun a b ↦ Equiv.prod_comp Bᶜ.equivFin fun i ↦ Ω (a i, b i);
+      Matrix.ext fun i ↦
+        Prod.casesOn (motive := fun x ↦
+          ∀ (j : (Fin Bᶜ.card → Q) × C),
+            (Matrix.vecMulVec
+                    (fun x ↦
+                      (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u
+                        ((FiniteProduct.splitEquiv (fun x ↦ Q × T) B).symm
+                            (x.2.2, fun i ↦ (x.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i))),
+                          x.1.2))
+                    (star fun x ↦
+                      (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u
+                        ((FiniteProduct.splitEquiv (fun x ↦ Q × T) B).symm
+                            (x.2.2, fun i ↦ (x.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i))),
+                          x.1.2))).partialTraceRight
+                x j =
+              Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                (Matrix.finKronecker fun x ↦ (Matrix.vecMulVec Ω (star Ω)).partialTraceRight)
+                (Matrix.vecMulVec
+                    (Matrix.replicaGoodCopyRemainder Ω B
+                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                        u))
+                    (star
+                      (Matrix.replicaGoodCopyRemainder Ω B
+                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                          u)))).partialTraceLeft
+                x j)
+          i fun q c j ↦
+          Prod.casesOn j fun q' c' ↦
+            Eq.mpr
+              (id
+                (congrFun'
+                  (congrArg Eq
+                    (Eq.trans
+                      (congrFun'
+                        (congrFun'
+                          (congrArg Matrix.partialTraceRight
+                            (congr
+                              (congrArg Matrix.vecMulVec
+                                (funext fun x ↦
+                                  (fun b g c ↦ Matrix.replicaExcitationProjection_mulVec_factorization Ω hΩ B u b g c)
+                                    x.2.2 (fun i ↦ (x.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i))) x.1.2))
+                              (congrArg star
+                                (funext fun x ↦
+                                  (fun b g c ↦ Matrix.replicaExcitationProjection_mulVec_factorization Ω hΩ B u b g c)
+                                    x.2.2 (fun i ↦ (x.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i))) x.1.2))))
+                          (q, c))
+                        (q', c'))
+                      (Eq.trans
+                        (Eq.trans
+                          (congrArg Finset.univ.sum
+                            (funext fun k_1 ↦
+                              congr
+                                (congrArg HMul.hMul
+                                  (congrFun'
+                                    (congrArg HMul.hMul
+                                      (Finset.prod_congr (Eq.refl Finset.univ) fun x a ↦
+                                        Eq.refl (Ω (q (Bᶜ.equivFin x), k_1.1 (Bᶜ.equivFin x)))))
+                                    (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (k_1.2, c))))
+                                (Eq.trans
+                                  (congrArg star
+                                    (congrFun'
+                                      (congrArg HMul.hMul
+                                        (Finset.prod_congr (Eq.refl Finset.univ) fun x a ↦
+                                          Eq.refl (Ω (q' (Bᶜ.equivFin x), k_1.1 (Bᶜ.equivFin x)))))
+                                      (Matrix.replicaGoodCopyRemainder Ω B
+                                        ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                              (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                          u)
+                                        (k_1.2, c'))))
+                                  (star_mul (∏ x, Ω (q' (Bᶜ.equivFin x), k_1.1 (Bᶜ.equivFin x)))
+                                    (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (k_1.2, c'))))))
+                          (Fintype.sum_prod_type fun x ↦
+                            (∏ x_1, Ω (q (Bᶜ.equivFin x_1), x.1 (Bᶜ.equivFin x_1))) *
+                                Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (x.2, c) *
+                              (star
+                                  (Matrix.replicaGoodCopyRemainder Ω B
+                                    ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                          (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                      u)
+                                    (x.2, c')) *
+                                star (∏ x_1, Ω (q' (Bᶜ.equivFin x_1), x.1 (Bᶜ.equivFin x_1))))))
+                        (Finset.sum_congr (Eq.refl Finset.univ) fun x a ↦
+                          Finset.sum_congr (Eq.refl Finset.univ) fun x_1 a ↦
+                            congr
+                              (congrArg HMul.hMul
+                                (congrFun'
+                                  (congrArg HMul.hMul
+                                    (Finset.prod_congr (Eq.refl Finset.univ) fun x_2 a ↦
+                                      Eq.refl (Ω (q (Bᶜ.equivFin x_2), x (Bᶜ.equivFin x_2)))))
+                                  (Matrix.replicaGoodCopyRemainder Ω B
+                                    ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                          (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                      u)
+                                    (x_1, c))))
+                              (congrArg
+                                (HMul.hMul
+                                  (star
+                                    (Matrix.replicaGoodCopyRemainder Ω B
+                                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                            (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                        u)
+                                      (x_1, c'))))
+                                (congrArg star
+                                  (Finset.prod_congr (Eq.refl Finset.univ) fun x_2 a ↦
+                                    Eq.refl (Ω (q' (Bᶜ.equivFin x_2), x (Bᶜ.equivFin x_2))))))))))
+                  ((∏ n, ∑ k, Ω (q n, k) * star (Ω (q' n, k))) *
+                    ∑ k_1,
+                      Matrix.replicaGoodCopyRemainder Ω B
+                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                1).mulVec
+                            u)
+                          (k_1, c) *
+                        star
+                          (Matrix.replicaGoodCopyRemainder Ω B
+                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                  1).mulVec
+                              u)
+                            (k_1, c')))))
+              (Eq.mpr
+                (id
+                  (congrFun'
+                    (congrArg Eq
+                      (Finset.sum_congr (Eq.refl Finset.univ) fun x a ↦
+                        Finset.sum_congr (Eq.refl Finset.univ) fun x_1 a ↦
+                          congr
+                            (congrArg HMul.hMul
+                              (congrFun' (congrArg HMul.hMul ((fun a b ↦ hprod a b) q x))
+                                (Matrix.replicaGoodCopyRemainder Ω B
+                                  ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                        1).mulVec
+                                    u)
+                                  (x_1, c))))
+                            (congrArg
+                              (HMul.hMul
+                                (star
+                                  (Matrix.replicaGoodCopyRemainder Ω B
+                                    ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+                                          (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                      u)
+                                    (x_1, c'))))
+                              (congrArg star ((fun a b ↦ hprod a b) q' x)))))
+                    ((∏ n, ∑ k, Ω (q n, k) * star (Ω (q' n, k))) *
+                      ∑ k_1,
+                        Matrix.replicaGoodCopyRemainder Ω B
+                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                  1).mulVec
+                              u)
+                            (k_1, c) *
+                          star
+                            (Matrix.replicaGoodCopyRemainder Ω B
+                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (k_1, c')))))
+                (let R :=
+                  Matrix.replicaGoodCopyRemainder Ω B
+                    ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u);
+                id
+                  (Trans.trans
+                    (Eq.mpr
+                      (id
+                        (congrArg
+                          (fun _a ↦
+                            ∑ t, ∑ b, (∏ i, Ω (q i, t i)) * R (b, c) * (star (R (b, c')) * star (∏ i, Ω (q' i, t i))) =
+                              _a)
+                          (Finset.sum_mul Finset.univ (fun t ↦ (∏ i, Ω (q i, t i)) * star (∏ i, Ω (q' i, t i)))
+                            (∑ b, R (b, c) * star (R (b, c'))))))
+                      (Finset.sum_congr rfl fun t a ↦
+                        Eq.mpr
+                          (id
+                            (congrArg
+                              (fun _a ↦
+                                ∑ b, (∏ i, Ω (q i, t i)) * R (b, c) * (star (R (b, c')) * star (∏ i, Ω (q' i, t i))) =
+                                  _a)
+                              (Finset.mul_sum Finset.univ (fun b ↦ R (b, c) * star (R (b, c')))
+                                ((∏ i, Ω (q i, t i)) * star (∏ i, Ω (q' i, t i))))))
+                          (Finset.sum_congr rfl fun b a ↦
+                            Mathlib.Tactic.Ring.of_eq
+                              (Mathlib.Tactic.Ring.Common.mul_congr
+                                (Mathlib.Tactic.Ring.Common.mul_congr
+                                  (Mathlib.Tactic.Ring.Common.atom_pf (∏ i, Ω (q i, t i)) rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a ↦
+                                            (∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                              (∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.atom_pf (R (b, c)) rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a ↦
+                                            R (b, c) ^ Nat.rawCast 1 * Nat.rawCast 1 = R (b, c) ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl (R (b, c) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.add_mul
+                                    (Mathlib.Tactic.Ring.Common.mul_add
+                                      (Mathlib.Tactic.Ring.Common.mul_pf_left (∏ i, Ω (q i, t i)) (Nat.rawCast 1)
+                                        (Mathlib.Tactic.Ring.Common.mul_pf_right (R (b, c)) (Nat.rawCast 1)
+                                          (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                            (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Eq.refl 1)))))
+                                      (Mathlib.Tactic.Ring.Common.mul_zero
+                                        ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))
+                                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                        ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                            (R (b, c) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                          0)))
+                                    (Mathlib.Tactic.Ring.Common.zero_mul (R (b, c) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                      ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                          (R (b, c) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                        0))))
+                                (Mathlib.Tactic.Ring.Common.mul_congr
+                                  (Mathlib.Tactic.Ring.Common.atom_pf (star (R (b, c'))) rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a ↦
+                                            star (R (b, c')) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                              star (R (b, c')) ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl (star (R (b, c')) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.atom_pf (star (∏ i, Ω (q' i, t i))) rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a ↦
+                                            star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                              star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.add_mul
+                                    (Mathlib.Tactic.Ring.Common.mul_add
+                                      (Mathlib.Tactic.Ring.Common.mul_pf_left (star (R (b, c'))) (Nat.rawCast 1)
+                                        (Mathlib.Tactic.Ring.Common.mul_pf_right (star (∏ i, Ω (q' i, t i)))
+                                          (Nat.rawCast 1)
+                                          (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                            (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Eq.refl 1)))))
+                                      (Mathlib.Tactic.Ring.Common.mul_zero
+                                        (star (R (b, c')) ^ Nat.rawCast 1 * Nat.rawCast 1))
+                                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                        (star (R (b, c')) ^ Nat.rawCast 1 *
+                                            (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                          0)))
+                                    (Mathlib.Tactic.Ring.Common.zero_mul
+                                      (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                      (star (R (b, c')) ^ Nat.rawCast 1 *
+                                          (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                        0))))
+                                (Mathlib.Tactic.Ring.Common.add_mul
+                                  (Mathlib.Tactic.Ring.Common.mul_add
+                                    (Mathlib.Tactic.Ring.Common.mul_pf_left (∏ i, Ω (q i, t i)) (Nat.rawCast 1)
+                                      (Mathlib.Tactic.Ring.Common.mul_pf_left (R (b, c)) (Nat.rawCast 1)
+                                        (Mathlib.Tactic.Ring.Common.mul_pf_right (star (R (b, c'))) (Nat.rawCast 1)
+                                          (Mathlib.Tactic.Ring.Common.mul_pf_right (star (∏ i, Ω (q' i, t i)))
+                                            (Nat.rawCast 1)
+                                            (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                              (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Eq.refl 1)))))))
+                                    (Mathlib.Tactic.Ring.Common.mul_zero
+                                      ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                        (R (b, c) ^ Nat.rawCast 1 * Nat.rawCast 1)))
+                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                      ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                          (R (b, c) ^ Nat.rawCast 1 *
+                                            (star (R (b, c')) ^ Nat.rawCast 1 *
+                                              (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))) +
+                                        0)))
+                                  (Mathlib.Tactic.Ring.Common.zero_mul
+                                    (star (R (b, c')) ^ Nat.rawCast 1 *
+                                        (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                      0))
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                    ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                        (R (b, c) ^ Nat.rawCast 1 *
+                                          (star (R (b, c')) ^ Nat.rawCast 1 *
+                                            (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))) +
+                                      0))))
+                              (Mathlib.Tactic.Ring.Common.mul_congr
+                                (Mathlib.Tactic.Ring.Common.mul_congr
+                                  (Mathlib.Tactic.Ring.Common.atom_pf (∏ i, Ω (q i, t i)) rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a ↦
+                                            (∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                              (∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.atom_pf (star (∏ i, Ω (q' i, t i))) rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a ↦
+                                            star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                              star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.add_mul
+                                    (Mathlib.Tactic.Ring.Common.mul_add
+                                      (Mathlib.Tactic.Ring.Common.mul_pf_left (∏ i, Ω (q i, t i)) (Nat.rawCast 1)
+                                        (Mathlib.Tactic.Ring.Common.mul_pf_right (star (∏ i, Ω (q' i, t i)))
+                                          (Nat.rawCast 1)
+                                          (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                            (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Eq.refl 1)))))
+                                      (Mathlib.Tactic.Ring.Common.mul_zero
+                                        ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))
+                                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                        ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                            (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                          0)))
+                                    (Mathlib.Tactic.Ring.Common.zero_mul
+                                      (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                      ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                          (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                        0))))
+                                (Mathlib.Tactic.Ring.Common.mul_congr
+                                  (Mathlib.Tactic.Ring.Common.atom_pf (R (b, c)) rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a ↦
+                                            R (b, c) ^ Nat.rawCast 1 * Nat.rawCast 1 = R (b, c) ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl (R (b, c) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.atom_pf (star (R (b, c'))) rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a ↦
+                                            star (R (b, c')) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                              star (R (b, c')) ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl (star (R (b, c')) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.add_mul
+                                    (Mathlib.Tactic.Ring.Common.mul_add
+                                      (Mathlib.Tactic.Ring.Common.mul_pf_left (R (b, c)) (Nat.rawCast 1)
+                                        (Mathlib.Tactic.Ring.Common.mul_pf_right (star (R (b, c'))) (Nat.rawCast 1)
+                                          (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                            (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Eq.refl 1)))))
+                                      (Mathlib.Tactic.Ring.Common.mul_zero (R (b, c) ^ Nat.rawCast 1 * Nat.rawCast 1))
+                                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                        (R (b, c) ^ Nat.rawCast 1 * (star (R (b, c')) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                          0)))
+                                    (Mathlib.Tactic.Ring.Common.zero_mul
+                                      (star (R (b, c')) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                      (R (b, c) ^ Nat.rawCast 1 * (star (R (b, c')) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                        0))))
+                                (Mathlib.Tactic.Ring.Common.add_mul
+                                  (Mathlib.Tactic.Ring.Common.mul_add
+                                    (Mathlib.Tactic.Ring.Common.mul_pf_left (∏ i, Ω (q i, t i)) (Nat.rawCast 1)
+                                      (Mathlib.Tactic.Ring.Common.mul_pf_right (R (b, c)) (Nat.rawCast 1)
+                                        (Mathlib.Tactic.Ring.Common.mul_pf_right (star (R (b, c'))) (Nat.rawCast 1)
+                                          (Mathlib.Tactic.Ring.Common.mul_pf_left (star (∏ i, Ω (q' i, t i)))
+                                            (Nat.rawCast 1)
+                                            (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                              (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw ℂ 1) (Eq.refl 1)))))))
+                                    (Mathlib.Tactic.Ring.Common.mul_zero
+                                      ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                        (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1)))
+                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                      ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                          (R (b, c) ^ Nat.rawCast 1 *
+                                            (star (R (b, c')) ^ Nat.rawCast 1 *
+                                              (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))) +
+                                        0)))
+                                  (Mathlib.Tactic.Ring.Common.zero_mul
+                                    (R (b, c) ^ Nat.rawCast 1 * (star (R (b, c')) ^ Nat.rawCast 1 * Nat.rawCast 1) + 0))
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                    ((∏ i, Ω (q i, t i)) ^ Nat.rawCast 1 *
+                                        (R (b, c) ^ Nat.rawCast 1 *
+                                          (star (R (b, c')) ^ Nat.rawCast 1 *
+                                            (star (∏ i, Ω (q' i, t i)) ^ Nat.rawCast 1 * Nat.rawCast 1))) +
+                                      0)))))))
+                    ((fun {α β γ} [HMul α β γ] a a_1 e_a ↦
+                        Eq.rec (motive := fun a_2 e_a ↦ ∀ (a_3 a_4 : β), a_3 = a_4 → a * a_3 = a_2 * a_4)
+                          (fun a_2 a_3 e_a ↦ e_a ▸ Eq.refl (a * a_2)) e_a)
+                      (∑ t, (∏ i, Ω (q i, t i)) * star (∏ i, Ω (q' i, t i))) (∏ i, ∑ t, Ω (q i, t) * star (Ω (q' i, t)))
+                      (Eq.mpr
+                        (id
+                          (congrFun'
+                            (congrArg Eq
+                              (Finset.sum_congr (Eq.refl Finset.univ) fun x a ↦
+                                Eq.trans
+                                  (congrArg (HMul.hMul (∏ i, Ω (q i, x i)))
+                                    (star_prod Finset.univ fun x_1 ↦ Ω (q' x_1, x x_1)))
+                                  Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density._simp_1_1))
+                            (∏ i, ∑ t, Ω (q i, t) * star (Ω (q' i, t)))))
+                        (Eq.symm (Fintype.prod_sum fun i t ↦ Ω (q i, t) * star (Ω (q' i, t)))))
+                      (∑ b, R (b, c) * star (R (b, c'))) (∑ b, R (b, c) * star (R (b, c')))
+                      (Eq.refl (∑ b, R (b, c) * star (R (b, c'))))))))))

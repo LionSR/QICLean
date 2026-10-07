@@ -1,0 +1,14 @@
+{
+  "source_revision": "84865e1359c36daaa20aef8d4fa267e28b97ba6d",
+  "argv": [
+    "lake",
+    "build",
+    "QICLean.Analysis.ReplicaRegionalDensity"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-07T23:56:35.991695+00:00",
+  "elapsed_seconds": 9.980441834006342,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaRegionalDensity8750/target.log",
+  "sha256": "5a46be5660e0aa291cab2677167a224aeacbf9652f42eb25d0ef69ec7005167e"
+}

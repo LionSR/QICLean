@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-regional-good-copy-density-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaRegionalDensity.lean",
+        "declaration": "Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Trace the complementary physical region on every good copy and all bad physical copies, using the chosen Finset.equivFin enumeration. The result is the finite Kronecker power of the original one-copy regional marginal tensored with the literal whole-auxiliary marginal of the same actual excitation component. Only the prescribed one-copy vector is unit; zero components/copies and empty good sets are included. Auxiliary restriction, symmetry and merge moments remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "84865e1359c36daaa20aef8d4fa267e28b97ba6d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaRegionalDensity",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaRegionalDensity8750/target.log",
+            "sha256": "5a46be5660e0aa291cab2677167a224aeacbf9652f42eb25d0ef69ec7005167e"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaRegionalDensity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaRegionalDensity8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaRegionalDensity8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaRegionalDensity8750/axioms.log",
+            "sha256": "bfc8e30e319512f77a3a48021e26806ae8d9d795a107895a86a715c19fd60749"
+          }
+        ]
+      }
+    }
+  ]
+}
