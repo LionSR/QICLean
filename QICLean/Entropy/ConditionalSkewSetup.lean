@@ -159,6 +159,51 @@ theorem liftY_mulVec_eq_zero (θ : (P₀ × P₁) × ((X × U) × F) → ℂ)
     ← trace_partialTraceLeft_mul, ← trace_partialTraceRight_mul]
   exact htr
 
+/-- The kernel indicator `t ↦ 1_{t = 0}`. -/
+def kerFun (t : ℝ) : ℂ := if t = 0 then 1 else 0
+
+theorem cfcC_ker_isHermitian {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.IsHermitian) : (cfcC A kerFun)ᴴ = cfcC A kerFun := by
+  rw [conjTranspose_cfcC hA]; congr 1; funext t; unfold kerFun; split_ifs <;> simp
+
+theorem cfcC_ker_mul_self {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.IsHermitian) : cfcC A kerFun * cfcC A kerFun = cfcC A kerFun := by
+  rw [cfcC_mul hA]; congr 1; funext t; unfold kerFun; split_ifs <;> simp
+
+theorem mul_cfcC_ker {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.IsHermitian) : A * cfcC A kerFun = 0 := by
+  calc A * cfcC A kerFun = cfcC A (fun t => (t : ℂ)) * cfcC A kerFun := by rw [cfcC_id hA]
+    _ = 0 := by
+      rw [cfcC_mul hA, cfcC_eq_spectralFun hA, ← zero_smul ℂ (1 : Matrix n n ℂ),
+        ← spectralFun_const hA.eigenvectorUnitary 0]
+      congr 1; funext k; unfold kerFun; split_ifs with h <;> simp [h]
+
+theorem cfcC_supp_zero {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.IsHermitian) : cfcC A (suppPowFun 0) = 1 - cfcC A kerFun := by
+  rw [eq_sub_iff_add_eq, cfcC_add hA, ← cfcC_one hA]
+  congr 1; funext t; unfold suppPowFun kerFun; split_ifs <;> simp
+
+theorem liftP_sub (A B : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) :
+    liftP (X := X) (U := U) (F := F) (A - B) = liftP A - liftP B := by
+  ext i j; simp [liftP, sub_mul]
+
+theorem liftY_sub (A B : Matrix (X × U) (X × U) ℂ) :
+    liftY (P₀ := P₀) (P₁ := P₁) (F := F) (A - B) = liftY A - liftY B := by
+  ext i j; simp [liftY, sub_mul, mul_sub]
+
+theorem liftP_supp_zero_mulVec (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) :
+    liftP (cfcC (margP θ) (suppPowFun 0)) *ᵥ θ = θ := by
+  have hA := (posSemidef_margP θ).1
+  rw [cfcC_supp_zero hA, liftP_sub, liftP_one, sub_mulVec,
+    one_mulVec, liftP_mulVec_eq_zero θ (cfcC_ker_isHermitian hA) (cfcC_ker_mul_self hA)
+      (by rw [mul_cfcC_ker hA, trace_zero]), sub_zero]
+
+theorem liftY_supp_zero_mulVec (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) :
+    liftY (P₀ := P₀) (P₁ := P₁) (F := F) (cfcC (margY θ) (suppPowFun 0)) *ᵥ θ = θ := by
+  have hA := (posSemidef_margY θ).1
+  rw [cfcC_supp_zero hA, liftY_sub, liftY_one, sub_mulVec, one_mulVec, liftY_mulVec_eq_zero θ (cfcC_ker_isHermitian hA)
+      (cfcC_ker_mul_self hA) (by rw [mul_cfcC_ker hA, trace_zero]), sub_zero]
+
 end Support
 
 end Entropy.ConditionalSkew
