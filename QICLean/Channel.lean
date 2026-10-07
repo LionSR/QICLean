@@ -115,6 +115,7 @@ import QICLean.Channel.ProjectiveResolution
 import QICLean.Channel.QuantumSteering
 import QICLean.Channel.QuantumWielandt
 import QICLean.Channel.RadonNikodym
+import QICLean.Channel.RectangularTraceNormContraction
 import QICLean.Channel.ReductionCriterion
 import QICLean.Channel.RightFactorConditionalExpectation
 import QICLean.Channel.SchmidtDecomposition

@@ -1,4 +1,6 @@
 /-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Authors: QICLean contributors
 Released under Apache 2.0 license as described in the file LICENSE.
 Assisted-by: OpenAI Codex (GPT-6).
 
@@ -26,6 +28,86 @@ constructed Gaussian coefficients, rather than assuming a desired covariance ide
 
 This file does not assert the distributed circuit reduction, rectangular trace-norm estimate,
 or network-dimension conclusion of the full compression theorem.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-pairedproductprobability
+Downstream declaration: QICLean.ComplexGaussian.pairedProductProbability
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-pairedproductprobability_nonneg
+Downstream declaration: QICLean.ComplexGaussian.pairedProductProbability_nonneg
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-sum_pairedproductprobability_eq_one
+Downstream declaration: QICLean.ComplexGaussian.sum_pairedProductProbability_eq_one
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-independentdensitylaw
+Downstream declaration: QICLean.ComplexGaussian.independentDensityLaw
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-independentdensitylawisprobabilitymeasure
+Downstream declaration: QICLean.ComplexGaussian.independentDensityLawIsProbabilityMeasure
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-independentdensitycoefficient
+Downstream declaration: QICLean.ComplexGaussian.independentDensityCoefficient
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-integrable_independentdensitycoefficient
+Downstream declaration: QICLean.ComplexGaussian.integrable_independentDensityCoefficient
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-integrable_independentdensitycoefficient_mul_conj
+Downstream declaration: QICLean.ComplexGaussian.integrable_independentDensityCoefficient_mul_conj
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-integral_independentdensitycoefficient_mul_conj
+Downstream declaration: QICLean.ComplexGaussian.integral_independentDensityCoefficient_mul_conj
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-slots-integral_independentdensitycoefficient_eq_zero
+Downstream declaration: QICLean.ComplexGaussian.integral_independentDensityCoefficient_eq_zero
+Source: September 24, 2026 paper.
+Labels: eq:compression-product-covariance.
+Independently formalized; no upstream Lean proof text reused.
 -/
 
 noncomputable section

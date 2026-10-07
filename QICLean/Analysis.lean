@@ -70,6 +70,7 @@ import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectionGeometry
+import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
@@ -104,6 +105,7 @@ import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
+import QICLean.Analysis.WeightedRectangular
 import QICLean.Analysis.WeightedSupertrace
 import QICLean.Analysis.WeylMonotonicity
 import QICLean.Analysis.YamagamiBoundary

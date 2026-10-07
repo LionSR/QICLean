@@ -23,7 +23,8 @@ example {m n : Type*} [Fintype m] [Fintype n]
 
 example {m n : Type*} [Fintype m] [Fintype n]
     (A : Fin 0 → Matrix m n ℂ) :
-    (∫ _ω : ℝ, ‖∑ i : Fin 0, (1 : ℂ) • A i‖ ^ 2 ∂Measure.dirac 0) = ∑ i : Fin 0, (0 : ℝ) * ‖A i‖ ^ 2 := by
+    (∫ _ω : ℝ, ‖∑ i : Fin 0, (1 : ℂ) • A i‖ ^ 2 ∂Measure.dirac 0) =
+      ∑ i : Fin 0, (0 : ℝ) * ‖A i‖ ^ 2 := by
   exact integral_frobenius_norm_sq_sum_eq_sum
     (fun _ _ => 1) (fun _ => 0)
     (by intro i; exact Fin.elim0 i)

@@ -1,0 +1,1881 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "p09-qic-gaussian-integral_standard_real_fourth",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_standard_real_fourth",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-realfield",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Field.lean",
+        "declaration": "OAI.ClassicalGaussian.field",
+        "lines": [
+          29,
+          29
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Field.lean#L29-L29"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.realField",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace from OAI.ClassicalGaussian to QICLean.ComplexGaussian and renamed field to\nrealField."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_realfield",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Law.lean",
+        "declaration": "OAI.ClassicalGaussian.memLp_field_nat",
+        "lines": [
+          251,
+          252
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L251-L252"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_realField",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace and renamed the real-field helper; generalized the exponent from natural\nnumbers to all finite ENNReal exponents with an explicit exclusion of infinity."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-integrable_realfield_pow",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Law.lean",
+        "declaration": "OAI.ClassicalGaussian.integrable_real_pow",
+        "lines": [
+          225,
+          229
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L225-L229"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_realField_pow",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Specialized the upstream real-function power-integrability proof to\nQICLean.ComplexGaussian.realField, with integrability supplied by the generalized MemLp helper.",
+        "Ancillary upstream specialization: OAI.ClassicalGaussian.integrable_field_pow, lean/OAI/Probability/ParisiFinite/Law.lean, https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L254-L256; expanded its delegation to the generic power-integrability proof."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-integral_realfield_mul",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Field.lean",
+        "declaration": "OAI.ClassicalGaussian.field_covariance",
+        "lines": [
+          39,
+          43
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Field.lean#L39-L43"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_realField_mul",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace and renamed field and field_covariance to realField and\nintegral_realField_mul.",
+        "Replaced broad upstream imports with direct Mathlib imports; omitted unrelated Gaussian-field\nmaterial."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-realfield_law",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Field.lean",
+        "declaration": "OAI.ClassicalGaussian.field_law",
+        "lines": [
+          103,
+          111
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Field.lean#L103-L111"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.realField_law",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace and renamed field and field_law to realField and realField_law.",
+        "Replaced broad upstream imports with direct Mathlib imports; omitted unrelated Gaussian-field\nmaterial."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-integral_realfield_fourth",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Law.lean",
+        "declaration": "OAI.ClassicalGaussian.field_fourth",
+        "lines": [
+          260,
+          279
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L260-L279"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_realField_fourth",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace, declaration names, and field notation to QICLean.ComplexGaussian.realField.",
+        "Replaced the upstream standard_fourth dependency with an independently proved Gaussian-MGF\nfourth-moment calculation."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_realfield_mul",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Law.lean",
+        "declaration": "OAI.ClassicalGaussian.memLp_field_product",
+        "lines": [
+          302,
+          307
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L302-L307"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_realField_mul",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace and renamed field and memLp_field_product to realField and\nmemLp_realField_mul.",
+        "Used the generalized MemLp real-field helper and direct Mathlib imports."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-integrable_realfield_four",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Law.lean",
+        "declaration": "OAI.ClassicalGaussian.integrable_field_four",
+        "lines": [
+          309,
+          312
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L309-L312"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_realField_four",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace and renamed field and the product-integrability declarations to the QICLean\nrealField names."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-real_fourth_polarization",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Law.lean",
+        "declaration": "OAI.ClassicalGaussian.polarization",
+        "lines": [
+          314,
+          317
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L314-L317"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.real_fourth_polarization",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace and formatting and exposed the previously private source identity as the named\nreusable theorem real_fourth_polarization."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-norm_four_eq_inner_self_sq",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Law.lean",
+        "declaration": "OAI.ClassicalGaussian.fourth_norm",
+        "lines": [
+          320,
+          321
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L320-L321"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.norm_four_eq_inner_self_sq",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace and argument name and exposed the previously private source norm identity as\nthe named reusable theorem norm_four_eq_inner_self_sq."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-integral_realfield_four_eq_pairings",
+      "status": "planned",
+      "reuse_kind": "adapted",
+      "upstream": {
+        "repository": "openai/math",
+        "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+        "path": "lean/OAI/Probability/ParisiFinite/Law.lean",
+        "declaration": "OAI.ClassicalGaussian.field_wick_four",
+        "lines": [
+          325,
+          358
+        ],
+        "url": "https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L325-L358"
+      },
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_realField_four_eq_pairings",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Changed the namespace, field notation, and helper names to QICLean.ComplexGaussian.",
+        "Used the independently proved scalar Gaussian fourth moment, direct Mathlib imports, and the\nseparately mapped real_fourth_polarization and norm_four_eq_inner_self_sq helpers."
+      ],
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "p09-qic-gaussian-linearfield",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.linearField",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-pairing",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.pairing",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_linearfield",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_linearField",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_linearfield_mul",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_linearField_mul",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_linearfield_mul",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_linearField_mul",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_linearfield_four",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_linearField_four",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-sample",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.Sample",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-law",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.law",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-coordinatevectors",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.coordinateVectors",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-coordinatecoefficients",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.coordinateCoefficients",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-coordinate",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.coordinate",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-coordinate_apply",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.coordinate_apply",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_coordinate",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_coordinate",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-conj_coordinate",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.conj_coordinate",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_conj_coordinate",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Basic.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_conj_coordinate",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-delta",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.delta",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-conj_delta",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.conj_delta",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-delta_comm",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.delta_comm",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_coordinate_mul_conj",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_coordinate_mul_conj",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_coordinate_mul",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_coordinate_mul",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_coordinate_mul_conj",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_coordinate_mul_conj",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integrable_coordinate_four",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_coordinate_four",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_coordinate_four_eq_pairings",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_coordinate_four_eq_pairings",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_coordinate_norm_sq",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_coordinate_norm_sq",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_coordinate_norm_four",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_coordinate_norm_four",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-centered",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.centered",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_centered",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_centered",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integrable_centered",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_centered",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_centered",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_centered",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_conj_centered",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_conj_centered",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integrable_centered_mul_conj",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_centered_mul_conj",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_centered_mul_conj",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_centered_mul_conj",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-sampleaverage",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.sampleAverage",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_sampleaverage",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_sampleAverage",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_sampleaverage",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_sampleAverage",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_sampleaverage_mul_conj",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_sampleAverage_mul_conj",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integrable_sampleaverage_mul_conj",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_sampleAverage_mul_conj",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-densityindex",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.DensityIndex",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-coefficientweight",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.coefficientWeight",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-coefficientweight_eq_product_quarter",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.coefficientWeight_eq_product_quarter",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-densitycoefficient",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.densityCoefficient",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-memlp_densitycoefficient",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.memLp_densityCoefficient",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_densitycoefficient",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_densityCoefficient",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integrable_densitycoefficient_mul_conj",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integrable_densityCoefficient_mul_conj",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    },
+    {
+      "id": "p09-qic-gaussian-integral_densitycoefficient_mul_conj",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/Covariance.lean",
+        "declaration": "QICLean.ComplexGaussian.integral_densityCoefficient_mul_conj",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-gaussian-covariance",
+            "eq:compression-slot-variance"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized this Gaussian construction or calculation from the manuscript and Mathlib."
+      ],
+      "verification": {
+        "result": "pending"
+      },
+      "no_upstream_proof_text_reused": true
+    }
+  ]
+}

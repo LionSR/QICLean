@@ -24,6 +24,182 @@ approximation of gapped square-grid ground states*, Theorem 5.2,
 No OpenAI Lean code is copied or adapted.
 -/
 
+/-!
+Provenance-ID: p09-qic-weighted-probabilityquarter
+Downstream declaration: Matrix.probabilityQuarter
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-quarterweighted
+Downstream declaration: Matrix.quarterWeighted
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-halfweighted
+Downstream declaration: Matrix.halfWeighted
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-probabilityquarter_mul_self
+Downstream declaration: Matrix.probabilityQuarter_mul_self
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-probabilityquarter_conjtranspose
+Downstream declaration: Matrix.probabilityQuarter_conjTranspose
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-halfweighted_eq_quarter_sandwich
+Downstream declaration: Matrix.halfWeighted_eq_quarter_sandwich
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-trace_halfweighted_conjtranspose_mul
+Downstream declaration: Matrix.trace_halfWeighted_conjTranspose_mul
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-quarterweighted_apply
+Downstream declaration: Matrix.quarterWeighted_apply
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-sum_norm_sq_column_le_one
+Downstream declaration: Matrix.sum_norm_sq_column_le_one
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-sum_norm_sq_row_le_one
+Downstream declaration: Matrix.sum_norm_sq_row_le_one
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-sum_sqrt_probability_mul_le_one
+Downstream declaration: Matrix.sum_sqrt_probability_mul_le_one
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-frobeniusnormsq_quarterweighted
+Downstream declaration: Matrix.frobeniusNormSq_quarterWeighted
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-frobeniusnormsq_quarterweighted_le_one
+Downstream declaration: Matrix.frobeniusNormSq_quarterWeighted_le_one
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-norm_trace_conjtranspose_mul_sq_le_frobeniusnormsq
+Downstream declaration: Matrix.norm_trace_conjTranspose_mul_sq_le_frobeniusNormSq
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-rectangulartracenorm_halfweighted_le
+Downstream declaration: Matrix.rectangularTraceNorm_halfWeighted_le
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-sqrt_frobeniusnormsq_quarterweighted_le_one
+Downstream declaration: Matrix.sqrt_frobeniusNormSq_quarterWeighted_le_one
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-quarterweighted_transpose
+Downstream declaration: Matrix.quarterWeighted_transpose
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-frobeniusnormsq_quarterweighted_transpose
+Downstream declaration: Matrix.frobeniusNormSq_quarterWeighted_transpose
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-frobeniusnormsq_unitary_mul
+Downstream declaration: Matrix.frobeniusNormSq_unitary_mul
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-frobeniusnormsq_mul_unitary
+Downstream declaration: Matrix.frobeniusNormSq_mul_unitary
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-possemidef-rpow_quarter_spectral
+Downstream declaration: Matrix.PosSemidef.rpow_quarter_spectral
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+/-!
+Provenance-ID: p09-qic-weighted-frobeniusnormsq_rpow_quarter_mul_le_one
+Downstream declaration: Matrix.frobeniusNormSq_rpow_quarter_mul_le_one
+Source: September 24, 2026 paper.
+Labels: eq:compression-quarter-powers, eq:compression-dimension-free.
+Independently formalized; no upstream Lean proof text reused.
+-/
+
 open scoped Matrix Matrix.Norms.L2Operator ComplexOrder MatrixOrder
 
 noncomputable section
