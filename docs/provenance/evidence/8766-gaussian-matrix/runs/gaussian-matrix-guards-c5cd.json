@@ -1,0 +1,35 @@
+[
+  {
+    "head": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.GaussianFilter.MatrixIntegral"
+    ],
+    "exit_code": 0,
+    "seconds": 1.5248437960108276,
+    "log": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-guards-c5cd-0.log"
+  },
+  {
+    "head": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+    "file": "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralGuardedAxioms.lean",
+    "sha256": "e1b7984ea8165d43e2a8a3d75ae504583c2eb444043540014890254d15c37d77",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralGuardedAxioms.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 2.8871239250001963,
+    "log": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-guards-c5cd-1.log"
+  }
+]

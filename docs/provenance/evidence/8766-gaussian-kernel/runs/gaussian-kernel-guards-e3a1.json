@@ -1,0 +1,35 @@
+[
+  {
+    "head": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.GaussianFilter.Kernel"
+    ],
+    "exit_code": 0,
+    "seconds": 4.142585203997442,
+    "log": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-guards-e3a1-0.log"
+  },
+  {
+    "head": "e3a17bc6af4f0b09b8ab49c533dace7218408c98",
+    "file": "QICLeanTest/GaussianKernel.lean",
+    "sha256": "eb9af4b8b90a6bb9fc1abc930f11db91dbff584c5752e74d2a4d31a4c842a3cc",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/GaussianKernel.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.5662424379988806,
+    "log": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-guards-e3a1-1.log"
+  }
+]

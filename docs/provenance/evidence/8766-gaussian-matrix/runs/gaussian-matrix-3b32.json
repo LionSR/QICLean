@@ -1,0 +1,15 @@
+[
+  {
+    "head": "3b32da1ca504598799139fe1a4ad4a2a3d4ed356",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.GaussianFilter.MatrixIntegral"
+    ],
+    "exit_code": 1,
+    "seconds": 24.084610896010417,
+    "log": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-3b32-0.log"
+  }
+]

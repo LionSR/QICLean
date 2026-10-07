@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "public_declarations": 2,
+  "consumer_examples": 3,
+  "guarded_reports": 2,
+  "raw_reports": 2,
+  "historical_failures": 2,
+  "verified_source_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+  "scope": "Retained evidence and source identities; no Lean or CI execution."
+}

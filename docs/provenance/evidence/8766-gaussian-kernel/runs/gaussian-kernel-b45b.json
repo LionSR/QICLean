@@ -1,0 +1,75 @@
+[
+  {
+    "head": "b45bc4ae2196fc64724808a605ddd14c3d92fc1d",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.GaussianFilter.Kernel"
+    ],
+    "exit_code": 0,
+    "seconds": 4.4582024779956555,
+    "log": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-0.log"
+  },
+  {
+    "head": "b45bc4ae2196fc64724808a605ddd14c3d92fc1d",
+    "file": "QICLean/Analysis/GaussianFilter/Kernel.lean",
+    "sha256": "43f41e9a3b2a191fa4999eb68d906d2851a169d9c95e4f0576ea5df9d1bcdbef",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Analysis/GaussianFilter/Kernel.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.442222102996311,
+    "log": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-1.log"
+  },
+  {
+    "head": "b45bc4ae2196fc64724808a605ddd14c3d92fc1d",
+    "file": "QICLeanTest/GaussianKernel.lean",
+    "sha256": "dc2c088d421982003621e5f7b69d007ef931342a285773abe6867205adb17dad",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/GaussianKernel.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.1791373710002517,
+    "log": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-2.log"
+  },
+  {
+    "head": "b45bc4ae2196fc64724808a605ddd14c3d92fc1d",
+    "file": "docs/provenance/evidence/8766-gaussian-kernel/drivers/GaussianKernelRawAxioms.lean",
+    "sha256": "c2099f8f411fab3c4f7745c8724cd937fbdc2a800849c25380c6fa27b2714543",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "docs/provenance/evidence/8766-gaussian-kernel/drivers/GaussianKernelRawAxioms.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 2.838672477999353,
+    "log": "docs/provenance/evidence/8766-gaussian-kernel/logs/gaussian-kernel-b45b-3.log"
+  }
+]

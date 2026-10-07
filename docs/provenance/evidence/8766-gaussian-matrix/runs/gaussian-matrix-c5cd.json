@@ -1,0 +1,75 @@
+[
+  {
+    "head": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.GaussianFilter.MatrixIntegral"
+    ],
+    "exit_code": 0,
+    "seconds": 6.8997613200044725,
+    "log": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-0.log"
+  },
+  {
+    "head": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+    "file": "QICLean/Analysis/GaussianFilter/MatrixIntegral.lean",
+    "sha256": "32d9c82c1c641c206a3032481ef17e348c6a1e3def135b97f7ed451095b37f2a",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Analysis/GaussianFilter/MatrixIntegral.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.324751396998181,
+    "log": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-1.log"
+  },
+  {
+    "head": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+    "file": "QICLeanTest/GaussianMatrixIntegral.lean",
+    "sha256": "f3c93ba96c2d15fecf8dcb2c7135a478699c5dbcdfe760cda97173825acce9bf",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/GaussianMatrixIntegral.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.3422008530033054,
+    "log": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-2.log"
+  },
+  {
+    "head": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+    "file": "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralRawAxioms.lean",
+    "sha256": "ef8f585340d091d64da0d2c7462df3a9a20dbea725df4738662522da50e2a3e5",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralRawAxioms.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.096296956995502,
+    "log": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-3.log"
+  }
+]

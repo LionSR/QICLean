@@ -1,0 +1,31 @@
+✖ [3128/3128] Building QICLean.Analysis.GaussianFilter.SpectralGap (3.4s)
+trace: .> LEAN_PATH=<MATHLIB_CACHE>/.lake/packages/Cli/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/batteries/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/Qq/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/aesop/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/proofwidgets/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/importGraph/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/LeanSearchClient/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/plausible/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/Gametheory/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/mathlib/.lake/build/lib/lean:<MATHLIB_CACHE>/.lake/packages/checkdecls/.lake/build/lib/lean:<QIC_COMPILER>/.lake/build/lib/lean <LEAN_TOOLCHAIN>/bin/lean <QIC_COMPILER>/QICLean/Analysis/GaussianFilter/SpectralGap.lean -o <QIC_COMPILER>/.lake/build/lib/lean/QICLean/Analysis/GaussianFilter/SpectralGap.olean -i <QIC_COMPILER>/.lake/build/lib/lean/QICLean/Analysis/GaussianFilter/SpectralGap.ilean -c <QIC_COMPILER>/.lake/build/ir/QICLean/Analysis/GaussianFilter/SpectralGap.c --setup <QIC_COMPILER>/.lake/build/ir/QICLean/Analysis/GaussianFilter/SpectralGap.setup.json --json
+error: QICLean/Analysis/GaussianFilter/SpectralGap.lean:76:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (starRingEnd ℂ) ↑?r
+in the target expression
+  star ↑lam • (star u ⬝ᵥ ω) = ↑E₀ • (star u ⬝ᵥ ω)
+
+n : Type u_1
+inst✝¹ : Fintype n
+inst✝ : DecidableEq n
+H : Matrix n n ℂ
+hH : H.IsHermitian
+E₀ Δ : ℝ
+Ω : EuclideanSpace ℂ n
+hΩ : ‖Ω‖ = 1
+hΔ : 0 < Δ
+k : n
+b : OrthonormalBasis n ℂ (EuclideanSpace ℂ n) := hH.eigenvectorBasis
+u : (i : n) → (fun x ↦ ℂ) i := (b k).ofLp
+hu : u = (b k).ofLp
+ω : (i : n) → (fun x ↦ ℂ) i := Ω.ofLp
+hHΩ : H *ᵥ ω = ↑E₀ • ω
+hgap : (H - ↑E₀ • 1 - ↑Δ • (1 - vecMulVec ω (star ω))).PosSemidef
+lam : ℝ := hH.eigenvalues k
+hHu : H *ᵥ u = ↑lam • u
+hlam : ¬lam = E₀
+h1 : star ↑lam • (star u ⬝ᵥ ω) = ↑E₀ • (star u ⬝ᵥ ω)
+⊢ star u ⬝ᵥ ω = 0
+Some required targets logged failures:
+- QICLean.Analysis.GaussianFilter.SpectralGap
+error: build failed

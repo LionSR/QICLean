@@ -1,0 +1,179 @@
+{
+  "scope": "Local Gaussian coefficient-to-norm spectral bridge; no integral, locality, regional-gap, truncation, full-reset, root-build, CI, publication, or blueprint-completeness claim.",
+  "verified_source_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+  "source_files": [
+    {
+      "path": "QICLean/Analysis/GaussianFilter/SpectralGap.lean",
+      "sha256": "3743ada0931869ae1cf419798ca0d920431404927b1b05f6b9918b7b50f56565",
+      "git_blob": "aa645c331af67660b1bc4d166fa8cb550461e7b7",
+      "lines": 157,
+      "source_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5"
+    },
+    {
+      "path": "QICLeanTest/GaussianSpectralGap.lean",
+      "sha256": "62415a9bdf588e3351add809e21ee25efda1f590513101bf4369e10e7b11815b",
+      "git_blob": "f89b6beeadfaea9f14afb9b874539fe10376b19e",
+      "lines": 127,
+      "source_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5"
+    },
+    {
+      "path": "docs/provenance/evidence/8766-gaussian-spectral/drivers/GaussianSpectralRawAxioms.lean",
+      "sha256": "f5732097cb361f60b67ec816ddedd53732e8349b41f344647318af381d3c607a",
+      "git_blob": "71680243cbfed0ea95d6fd41259eaff2bb90526d",
+      "lines": 11,
+      "source_revision": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5"
+    }
+  ],
+  "selected_successful_runs": [
+    {
+      "record": "runs/gaussian-spectral-03c8.json",
+      "row": 0,
+      "kind": "native-target"
+    },
+    {
+      "record": "runs/gaussian-spectral-03c8.json",
+      "row": 1,
+      "kind": "strict-production"
+    },
+    {
+      "record": "runs/gaussian-spectral-03c8.json",
+      "row": 2,
+      "kind": "strict-consumers-and-guards"
+    },
+    {
+      "record": "runs/gaussian-spectral-03c8.json",
+      "row": 3,
+      "kind": "strict-raw-axioms"
+    }
+  ],
+  "test_examples": 3,
+  "public_declarations": 2,
+  "guarded_axiom_reports": 2,
+  "raw_axiom_reports": 2,
+  "axioms": {
+    "GaussianFilter.eigenvector_ground_or_gap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "GaussianFilter.norm_sub_ground_le_of_coefficients": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "historical_failed_runs": [
+    {
+      "record": "runs/gaussian-spectral-0043.json",
+      "row": 2,
+      "head": "00432e195d0977f78c7467b7866672ba1d67c526",
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-0043-2.log"
+    },
+    {
+      "record": "runs/gaussian-spectral-7d2e.json",
+      "row": 0,
+      "head": "7d2ef5e507aead67b2943b9e3b9a76c771a192c8",
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-7d2e-0.log"
+    }
+  ],
+  "normalization": {
+    "operations": [
+      "Replace private dependency-cache, compiler-checkout, and toolchain prefixes by role tokens in logs.",
+      "Replace private log locations in command records with retained repository-relative paths.",
+      "Preserve every command, diagnostic, exit code, timing, and actual source revision; no diagnostic line is removed."
+    ],
+    "original_to_normalized": [
+      {
+        "input_basename": "gaussian-spectral-7d2e-0.log",
+        "original_sha256": "36dcc0e431afcdfdfe40f87c443df24a71200902b0ff86ad6e659cd17444c1d9",
+        "retained": "logs/gaussian-spectral-7d2e-0.log",
+        "normalized_sha256": "676e27fe12b26bf99a2968db28d07a06d16da213ca262c9f84d4760290bd6001",
+        "normalized_bytes": 2266
+      },
+      {
+        "input_basename": "gaussian-spectral-7d2e.json",
+        "original_sha256": "537f5bcdff5ff8be3577e99597a5421b99fb50914e79f145d81bdc3576df00db",
+        "retained": "runs/gaussian-spectral-7d2e.json",
+        "normalized_sha256": "1e2638d2492fd6798d9d1f2d984fd0e309391ae01faf84b9400d77e63fe38030",
+        "normalized_bytes": 368
+      },
+      {
+        "input_basename": "gaussian-spectral-0043-0.log",
+        "original_sha256": "b7c88ed50c5e2ac9d81ce1fc53fa9a4583f3a2e8e62ce3ba4f4e8ff49860c7b0",
+        "retained": "logs/gaussian-spectral-0043-0.log",
+        "normalized_sha256": "b7c88ed50c5e2ac9d81ce1fc53fa9a4583f3a2e8e62ce3ba4f4e8ff49860c7b0",
+        "normalized_bytes": 115
+      },
+      {
+        "input_basename": "gaussian-spectral-0043-1.log",
+        "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained": "logs/gaussian-spectral-0043-1.log",
+        "normalized_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "normalized_bytes": 0
+      },
+      {
+        "input_basename": "gaussian-spectral-0043-2.log",
+        "original_sha256": "1d10758eb5ec7b43df97fa6bc00b1362078f92f1cf5bb9d02b3bb6d7ba3b2df2",
+        "retained": "logs/gaussian-spectral-0043-2.log",
+        "normalized_sha256": "1d10758eb5ec7b43df97fa6bc00b1362078f92f1cf5bb9d02b3bb6d7ba3b2df2",
+        "normalized_bytes": 442
+      },
+      {
+        "input_basename": "gaussian-spectral-0043.json",
+        "original_sha256": "a0e07a506c075de4d93112154b9ef4da8f1dffc0091c138db363a391140273b5",
+        "retained": "runs/gaussian-spectral-0043.json",
+        "normalized_sha256": "937282c7529224d55984b5eef2d22f19470d2a82e9ed866cfa61fa0885f04b9d",
+        "normalized_bytes": 1718
+      },
+      {
+        "input_basename": "gaussian-spectral-03c8-0.log",
+        "original_sha256": "48f160aaee623ad0794b984fbff3531226f74f04fdea9cb0250d86ba032adcfc",
+        "retained": "logs/gaussian-spectral-03c8-0.log",
+        "normalized_sha256": "48f160aaee623ad0794b984fbff3531226f74f04fdea9cb0250d86ba032adcfc",
+        "normalized_bytes": 42
+      },
+      {
+        "input_basename": "gaussian-spectral-03c8-1.log",
+        "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained": "logs/gaussian-spectral-03c8-1.log",
+        "normalized_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "normalized_bytes": 0
+      },
+      {
+        "input_basename": "gaussian-spectral-03c8-2.log",
+        "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained": "logs/gaussian-spectral-03c8-2.log",
+        "normalized_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "normalized_bytes": 0
+      },
+      {
+        "input_basename": "gaussian-spectral-03c8-3.log",
+        "original_sha256": "ca4e08497b0f72d0fa15be2317d644a42ed7aaa90024e139f0e10a4b85ebe332",
+        "retained": "logs/gaussian-spectral-03c8-3.log",
+        "normalized_sha256": "ca4e08497b0f72d0fa15be2317d644a42ed7aaa90024e139f0e10a4b85ebe332",
+        "normalized_bytes": 377
+      },
+      {
+        "input_basename": "gaussian-spectral-03c8.json",
+        "original_sha256": "7fd68a7e5651bc4867bca81127c59ceb2be9f6a4e9bb8749562964a4352d77f6",
+        "retained": "runs/gaussian-spectral-03c8.json",
+        "normalized_sha256": "a26826b8f4c4a23579fa884fd3d9d6dd03aba881bf3e9c8745955da35be2e1fe",
+        "normalized_bytes": 2481
+      }
+    ]
+  },
+  "limits": [
+    "All retained Lean and Lake commands were executed by the parent integration task; no Lean or cache operations ran while assembling this metadata.",
+    "The successful native target reports 3128 jobs, not a full QIC root build.",
+    "The metadata commit preserves the exact production, consumer, and raw-driver bytes checked at 03c84b6e86a6b0cdf1f0affd25d0738379159bb5.",
+    "Local QIC proof adaptation is attributed separately from the absence of OpenAI Lean proof-text reuse.",
+    "No shared imports, workflows, blueprint files, dependency pins, or remote state are changed."
+  ],
+  "schema_check": {
+    "result": "passed",
+    "schema_sha256": "a691d8e95b668c968365f2c7e33f614d49635aade8fdd4c2f27cd64f0cd6b459",
+    "method": "jsonschema.validate against the supplied OpenAI provenance schema v1; not the complete upstream provenance policy checker."
+  }
+}

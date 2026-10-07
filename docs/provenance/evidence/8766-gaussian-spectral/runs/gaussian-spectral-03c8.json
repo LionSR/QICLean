@@ -1,0 +1,75 @@
+[
+  {
+    "head": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.GaussianFilter.SpectralGap"
+    ],
+    "exit_code": 0,
+    "seconds": 1.7875162749987794,
+    "log": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-0.log"
+  },
+  {
+    "head": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+    "file": "QICLean/Analysis/GaussianFilter/SpectralGap.lean",
+    "sha256": "3743ada0931869ae1cf419798ca0d920431404927b1b05f6b9918b7b50f56565",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Analysis/GaussianFilter/SpectralGap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 4.371510699987994,
+    "log": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-1.log"
+  },
+  {
+    "head": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+    "file": "QICLeanTest/GaussianSpectralGap.lean",
+    "sha256": "62415a9bdf588e3351add809e21ee25efda1f590513101bf4369e10e7b11815b",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/GaussianSpectralGap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.613481068998226,
+    "log": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-2.log"
+  },
+  {
+    "head": "03c84b6e86a6b0cdf1f0affd25d0738379159bb5",
+    "file": "docs/provenance/evidence/8766-gaussian-spectral/drivers/GaussianSpectralRawAxioms.lean",
+    "sha256": "f5732097cb361f60b67ec816ddedd53732e8349b41f344647318af381d3c607a",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "docs/provenance/evidence/8766-gaussian-spectral/drivers/GaussianSpectralRawAxioms.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 2.649410133002675,
+    "log": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-03c8-3.log"
+  }
+]

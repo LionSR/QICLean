@@ -1,0 +1,15 @@
+[
+  {
+    "head": "7d2ef5e507aead67b2943b9e3b9a76c771a192c8",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.GaussianFilter.SpectralGap"
+    ],
+    "exit_code": 1,
+    "seconds": 5.1173673840094125,
+    "log": "docs/provenance/evidence/8766-gaussian-spectral/logs/gaussian-spectral-7d2e-0.log"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "stage": "first metadata replay invocation",
+    "result": "failed",
+    "reason": "Redirecting output directly to checks.json created an empty JSON file before the checker scanned the packet. The JSON parser rejected that file. This was metadata assembly, not a Lean run.",
+    "repair": "Capture the complete successful output before writing checks.json, then replay with the saved report present."
+  },
+  {
+    "stage": "metadata replay after capture repair",
+    "result": "passed",
+    "command": "python3 docs/provenance/evidence/8766-gaussian-spectral/check.py",
+    "exit_code": 0
+  }
+]

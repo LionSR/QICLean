@@ -1,0 +1,10 @@
+{
+  "classification": "runner-missing-driver-path",
+  "revision": "c5cd25546f2333bcd986e2dcfc8dff1a88600e65",
+  "attempted_file": "docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralAxioms.lean",
+  "log": "docs/provenance/evidence/8766-gaussian-matrix/logs/gaussian-matrix-c5cd-4.log",
+  "command_receipt": null,
+  "exit_code": null,
+  "seconds": null,
+  "explanation": "After four successful recorded commands, the runner used a nonexistent driver filename. The original receipt stops before this attempt; its missing-file diagnostic is retained unchanged. The correct GaussianMatrixIntegralGuardedAxioms.lean then passed in gaussian-matrix-guards-c5cd.json."
+}

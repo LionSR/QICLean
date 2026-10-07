@@ -1,0 +1,55 @@
+[
+  {
+    "head": "a2bc118ac2843eed339a09a4136adf9aad9e1083",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.GaussianFilter.Kernel"
+    ],
+    "exit_code": 0,
+    "seconds": 4.363714024002547,
+    "log": "docs/provenance/evidence/8766-gaussian-kernel/history/logs/gaussian-kernel-a2bc-0.log"
+  },
+  {
+    "head": "a2bc118ac2843eed339a09a4136adf9aad9e1083",
+    "file": "QICLean/Analysis/GaussianFilter/Kernel.lean",
+    "sha256": "1b58d024edc09e670f93b3022d325dabee2c254c3efd8b791fb84dc2953289a5",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Analysis/GaussianFilter/Kernel.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.000942289989325,
+    "log": "docs/provenance/evidence/8766-gaussian-kernel/history/logs/gaussian-kernel-a2bc-1.log"
+  },
+  {
+    "head": "a2bc118ac2843eed339a09a4136adf9aad9e1083",
+    "file": "QICLeanTest/GaussianKernel.lean",
+    "sha256": "c99e3a9a0816ae48e9ecf6a852b94920a13e6426888a38ae26f6f279e03d0bfe",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/GaussianKernel.lean"
+    ],
+    "exit_code": 1,
+    "seconds": 3.145543185994029,
+    "log": "docs/provenance/evidence/8766-gaussian-kernel/history/logs/gaussian-kernel-a2bc-2.log"
+  }
+]
