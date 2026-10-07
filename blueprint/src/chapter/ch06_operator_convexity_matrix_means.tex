@@ -146,3 +146,95 @@ tree is part of the data; no associativity of matrix means is used.
     Lemma~\ref{lem:weighted_geometric_mean_vertex} handles two bands, and
     induction on $K$ handles the general case.
 \end{proof}
+
+\subsection{Normalized derivative maps}
+
+For $0<p<1$ and a positive semidefinite matrix $X$ the real power has the
+L\"owner representation
+$X^p=\kappa_p\int_0^\infty\bigl(t^{p-1}-t^p(t+X)^{-1}\bigr)\,dt$ with a positive
+constant $\kappa_p$. A linear map on matrices is called completely positive when
+its entrywise action on every matrix amplification preserves positive
+semidefinite matrices.
+
+\begin{lemma}[Derivative of a real power]\label{lem:rpow_frechet_derivative}
+    \lean{Matrix.rpow_eq_integral, Matrix.hasFDerivWithinAt_rpow,
+      Matrix.rpowFDeriv_apply, Matrix.isNPositiveMap_rpowFDeriv,
+      Matrix.rpowFDeriv_self}
+    \leanok
+    Let $0<p<1$ and let $C$ be positive definite. Along Hermitian matrices, the
+    map $X\mapsto X^p$ is Fr\'echet differentiable at $C$ with derivative
+    \begin{align}
+        D(C^p)[H]=\kappa_p\int_0^\infty t^p(t+C)^{-1}H(t+C)^{-1}\,dt.
+        \notag
+    \end{align}
+    This derivative is completely positive and satisfies $D(C^p)[C]=pC^p$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Near $C$ every shift $t+X$ is invertible with
+    $\|(t+X)^{-1}\|\le2(t+c)^{-1}$, where $C\ge cI$; hence the derivative of
+    the integrand is dominated by a multiple of
+    $t^p\bigl(t^{-1}-(t+c)^{-1}\bigr)$, which is integrable, and one may
+    differentiate under the integral sign. Each integrand is a positive multiple
+    of a sandwich map, so the integral is completely positive. The identity
+    $D(C^p)[C]=pC^p$ is the derivative at $s=1$ of $(sC)^p=s^pC^p$.
+\end{proof}
+
+\begin{lemma}[Normalized derivative maps at a vertex]\label{lem:mean_vertex_derivative_maps}
+    \lean{Matrix.hasFDerivWithinAt_geomMean_right, Matrix.hasFDerivWithinAt_geomMean_left,
+      Matrix.geomMeanDerivRight_self, Matrix.geomMeanDerivLeft_self,
+      Matrix.normalizedDerivMap_right_one, Matrix.normalizedDerivMap_left_one,
+      Matrix.isNPositiveMap_normalizedDerivMap_right,
+      Matrix.isNPositiveMap_normalizedDerivMap_left}
+    \leanok
+    \uses{def:weighted_geometric_mean, lem:rpow_frechet_derivative}
+    Let $A,B$ be positive definite, $0\le p\le1$ and $M=A\#_pB$. At a child $D$
+    of positive edge weight $w$, the map
+    $\Phi_D(Z)=w^{-1}M^{-1/2}\,\partial_DM[D^{1/2}ZD^{1/2}]\,M^{-1/2}$ is unital
+    and completely positive.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:weighted_geometric_mean_vertex}
+    By the chain rule,
+    $\partial_BM[H]=A^{1/2}D(C^p)[A^{-1/2}HA^{-1/2}]A^{1/2}$ with
+    $C=A^{-1/2}BA^{-1/2}$, a composition of completely positive maps; at the
+    endpoints $p=0,1$ the derivative of the power is zero or the identity.
+    Exchange symmetry gives $\partial_A$. The identity $D(C^p)[C]=pC^p$ gives
+    $\partial_BM[B]=pM$, and symmetrically $\partial_AM[A]=(1-p)M$, which is
+    unitality.
+\end{proof}
+
+\begin{theorem}[Normalized derivative maps of a mean tree]\label{thm:mean_tree_leaf_maps}
+    \lean{Matrix.MeanTree.hasFDerivWithinAt_eval_update, Matrix.MeanTree.derivLabel_self,
+      Matrix.MeanTree.sandwich_derivLabel_eq_smul_leafMap,
+      Matrix.MeanTree.isNPositiveMap_leafMap, Matrix.MeanTree.leafMap_one,
+      Matrix.MeanTree.leafMap_leaf, Matrix.MeanTree.leafMap_node_left,
+      Matrix.MeanTree.leafMap_node_right}
+    \leanok
+    \uses{def:mean_tree, lem:mean_vertex_derivative_maps}
+    Let a weighted binary tree have distinct leaves with positive definite inputs
+    $A_j$, terminal weights $w_j$ and root $M$. The root is Fr\'echet
+    differentiable in each input along Hermitian matrices. Composing the
+    normalized vertex maps from a leaf $j$ to the root gives a completely
+    positive map $\Phi_j$, the identity along an empty path, such that
+    \begin{align}
+        M^{-1/2}\,\partial_{A_j}M[A_j^{1/2}ZA_j^{1/2}]\,M^{-1/2}=w_j\Phi_j(Z),
+        \notag
+    \end{align}
+    and $\Phi_j$ is unital when $w_j>0$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:mean_tree_properties}
+    Since the leaves are distinct, at each vertex the input $A_j$ enters only one
+    child, and the chain rule applies with the partial derivatives of
+    Lemma~\ref{lem:mean_vertex_derivative_maps}. The square-root normalizations
+    cancel at successive vertices, so the normalized map at the root is the
+    composition of the normalized edge maps along the path. The Euler identities
+    propagate to $\partial_{A_j}M[A_j]=w_jM$, which gives unitality.
+\end{proof}
+
+% The block-diagonal clause of the source lemma (preservation of matrix blocks
+% and independence of the first block from the others) is not yet formalized;
+% see the remaining slice plan of the area-law program.
