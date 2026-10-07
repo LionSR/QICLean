@@ -186,3 +186,66 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     by the substitution $t=2\pi\xi$, gives the first identity; $\omega=0$
     gives $\int f=\chi(0)=1$.
 \end{proof}
+
+\section{Spectral filtering of a finite matrix}
+\label{sec:spectral_filter_matrix}
+
+\begin{definition}[Filtered operator]
+    \label{def:filter_integral}
+    \lean{SpectralFilter.filterIntegral}
+    \leanok
+    \uses{def:spectral_kernel}
+    For complex square matrices $H$ and $A$, set
+    $\mathcal F_H(A)=\int_\R f(t)\,e^{itH}Ae^{-itH}\,dt$, a Bochner integral
+    for the operator norm.
+\end{definition}
+
+\begin{theorem}[Basic properties of the filtered operator]
+    \label{thm:filter_integral_basic}
+    \lean{SpectralFilter.integrable_filterIntegrand,
+        SpectralFilter.norm_filterIntegral_le,
+        SpectralFilter.filterIntegral_add, SpectralFilter.filterIntegral_smul,
+        SpectralFilter.filterIntegral_finset_sum,
+        SpectralFilter.filterIntegral_self,
+        SpectralFilter.filterIntegral_conjTranspose,
+        SpectralFilter.isHermitian_filterIntegral}
+    \leanok
+    \uses{def:filter_integral, thm:quasilocal_filter}
+    Let $H$ be Hermitian. The integral defining $\mathcal F_H(A)$ converges in
+    norm, $\mathcal F_H$ is linear, $\|\mathcal F_H(A)\|\le\|f\|_1\|A\|$,
+    $\mathcal F_H(A)^\dagger=\mathcal F_H(A^\dagger)$, and
+    $\mathcal F_H(H)=H$.
+\end{theorem}
+\begin{proof}\leanok
+    Since $e^{itH}$ is unitary, $\|e^{itH}Ae^{-itH}\|=\|A\|$, and
+    $f$ is integrable by Theorem~\ref{thm:spectral_kernel_decay}. The adjoint
+    passes through the integral because $f$ is real. Finally $e^{itH}$
+    commutes with $H$, so $\mathcal F_H(H)=(\int f)\,H=H$.
+\end{proof}
+
+\begin{theorem}[Spectral multiplier]
+    \label{thm:filter_integral_multiplier}
+    \lean{SpectralFilter.dotProduct_filterIntegral_mulVec,
+        SpectralFilter.star_eigenvectorUnitary_mul_filterIntegral_mul_apply,
+        SpectralFilter.filterIntegral_mulVec_of_gap}
+    \leanok
+    \uses{def:filter_integral, thm:quasilocal_filter}
+    Let $H$ be Hermitian with $Hv=Ev$ and $Hw=E'w$. Then
+    $\langle v,\mathcal F_H(A)w\rangle=\chi(E-E')\langle v,Aw\rangle$. In an
+    orthonormal eigenbasis $(u_k)$ of $H$ with eigenvalues $\lambda_k$, the
+    entries of $\mathcal F_H(A)$ are those of $A$ multiplied by
+    $\chi(\lambda_k-\lambda_l)$. If moreover every eigenvalue $\lambda_k$
+    equals $E'$ or satisfies $|\lambda_k-E'|\ge\delta$, then
+    $\mathcal F_H(A)w=\sum_{\lambda_k=E'}\langle u_k,Aw\rangle u_k$, the
+    projection of $Aw$ onto the $E'$-eigenspace.
+\end{theorem}
+\begin{proof}\leanok
+    The exponential series gives $e^{-itH}w=e^{-itE'}w$ and
+    $\langle v,e^{itH}y\rangle=e^{itE}\langle v,y\rangle$, so the integrand
+    has matrix element $f(t)e^{it(E-E')}\langle v,Aw\rangle$, and Fourier
+    inversion (Theorem~\ref{thm:quasilocal_filter}) evaluates the integral.
+    For the last claim, $\chi(0)=1$ and $\chi$ vanishes outside
+    $(-\delta,\delta)$, so the coefficients of $\mathcal F_H(A)w$ in the
+    eigenbasis are $\langle u_k,Aw\rangle$ when $\lambda_k=E'$ and zero
+    otherwise.
+\end{proof}
