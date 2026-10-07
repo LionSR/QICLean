@@ -1,0 +1,25 @@
+\documentclass[a4paper]{report}
+
+\usepackage{geometry}
+\usepackage{expl3}
+\usepackage{amssymb, amsthm, mathtools}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage[unicode,colorlinks=true,linkcolor=blue,urlcolor=magenta,citecolor=blue]{hyperref}
+\usepackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+
+\input{/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin/blueprint/src/macros/common}
+\input{/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin/blueprint/src/macros/print}
+% Adapted from TNLean's print.tex: this blueprint carries no tensor-network
+% diagrams, so the tenkz package and macros/diagrams (tikz-cd "channel"
+% style built on a tenkz color) are not loaded here. See the packaging
+% report for the three diagrams dropped at extraction.
+
+\setlength{\emergencystretch}{1em}
+\begin{document}
+\input{/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin/blueprint/src/fragment/typical_pure_compression}
+\clearpage
+\input{/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin/blueprint/src/fragment/typical_bell_pin}
+\bibliographystyle{alpha}
+\bibliography{/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin/blueprint/src/references}
+\end{document}
