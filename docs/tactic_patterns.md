@@ -44,3 +44,19 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Commutation and the actual inverse identity are proved before
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
+
+### Joint spectral trace reduction — candidate (2026-10-07)
+
+- **Pattern:** Express the density and the tested observable through the
+  joint orthogonal resolution, multiply using its algebra homomorphism, and
+  take the trace as a finite weighted sum.
+- **Seen:** The surprisal tail, label-window mass and exponential remainder
+  in `QICLean/Representation/HighLabelWindow.lean` use the private
+  `re_trace_mul_joint_hom` lemma; the existing moment calculation in
+  `SchurSurprisal.lean` has the corresponding finite trace expansion.
+- **Abstraction:** A single private mathematical lemma handles all three
+  new uses. The existing resolution homomorphism and trace theorem remain
+  the common public results; no tactic is introduced.
+- **Caveats:** The density is positive semidefinite and permutation invariant.
+  Zero eigenvalues contribute zero mass. A trace expansion must not be
+  substituted for either concentration or the moment bound itself.
