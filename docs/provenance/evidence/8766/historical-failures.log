@@ -1,0 +1,44 @@
+Historical failed diagnostic headings; these are not current passing evidence.
+Execution traces, full goal contexts and profiling tables omitted; raw originals remain preserved locally.
+
+polar-core-first.log
+Initial native failure from uninstantiated Euclidean action and outdated API names.
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:37:15: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:38:25: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:41:38: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:42:24: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:49:15: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:49:42: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:51:25: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:53:10: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:53:37: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:63:5: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:63:34: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:64:46: Function expected at
+warning: QICLean/Analysis/PolarUnitaryCorrection.lean:66:40: `ContinuousLinearMap.sub_apply` has been deprecated: Use `_root_.sub_apply` instead
+warning: QICLean/Analysis/PolarUnitaryCorrection.lean:67:4: `ContinuousLinearMap.one_apply` has been deprecated: Use `one_apply_eq_self` instead
+warning: QICLean/Analysis/PolarUnitaryCorrection.lean:67:35: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:71:32: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:73:52: Invalid field `toStarMonoidHom`: The environment does not contain `StarAlgEquiv.toStarMonoidHom`, so it is not possible to project the field `toStarMonoidHom` from an expression
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:82:5: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:83:7: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:84:9: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:85:11: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:84:62: unsolved goals
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:114:9: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:115:11: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:117:9: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:118:11: Function expected at
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:118:38: Function expected at
+error: build failed
+
+polar-core-repair1.log
+Native repair still had positivity/inner-product and unitary rewrite goals.
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:41:4: Type mismatch: After simplification, term
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:44:2: linarith failed to find a contradiction
+error: QICLean/Analysis/PolarUnitaryCorrection.lean:91:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: build failed
+
+QICLeanTest_PolarUnitaryCorrectionKronecker.lean-polar-final-strict.log
+The final production files and all guards passed, but the universal spectator consumer initially introduced let-bound terms incorrectly.
+QICLeanTest/PolarUnitaryCorrectionKronecker.lean:27:72: error: Application type mismatch: The argument

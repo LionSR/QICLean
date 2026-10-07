@@ -1,0 +1,7 @@
+import QICLean.Entropy.ProductOverlapPurity
+
+#print axioms Matrix.star_product_dotProduct_eq
+#print axioms Matrix.norm_product_overlap_le_schmidtCoeffMatrix
+#print axioms Matrix.norm_product_overlap_pow_four_le_purity
+#print axioms Matrix.norm_product_overlap_pow_four_le_purity_of_star_dotProduct_eq_one
+#print axioms Matrix.star_doubled_dotProduct_partialSwap_eq_purity

@@ -1,0 +1,43 @@
+Local QIC source validation
+Executed revision: e3df85307bbc99b776f396d367eacdeb37bed292
+Verified module/test bytes at: c849b612e6e7c37c4c38263316681ff92b7ed5de
+Command: lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/PolarUnitaryCorrection.lean
+Exit code: 0
+Wall seconds: 4.337153711996507
+Warnings were errors; successful output contains no warnings.
+Output:
+
+import took 1.82s
+interpretation of Mathlib.Tactic._aux_Mathlib_Tactic_Linarith_Frontend___elabRules_Mathlib_Tactic_nlinarith_1._boxed took 293ms
+typeclass inference of StarHomClass took 180ms
+tactic execution of Lean.Parser.Tactic.rewriteSeq took 110ms
+tactic execution of Lean.Parser.Tactic.rewriteSeq took 106ms
+type checking took 103ms
+cumulative profiling times:
+	attribute application 0.398ms
+	blocked (unaccounted) 35.1ms
+	compilation (IR) 0.356ms
+	compilation (LCNF base) 13.7ms
+	compilation (LCNF impure) 2.66ms
+	compilation (LCNF mono) 4.33ms
+	congr simp thm 1.17ms
+	elaboration 209ms
+	fix level params 3.11ms
+	import 1.82s
+	initialization 27.6ms
+	instantiate metavars 3.16ms
+	interpretation 857ms
+	let-to-have transformation 0.734ms
+	linting 28.6ms
+	module linting 0.00197ms
+	norm_num 4.12ms
+	overlappingInstancesLinter 5.62ms
+	parsing 6.41ms
+	process pre-definitions 15.7ms
+	ring 14.2ms
+	share common exprs 12.6ms
+	simp 43.2ms
+	tactic execution 642ms
+	tacticAnalysis 26.9ms
+	type checking 462ms
+	typeclass inference 2.18s

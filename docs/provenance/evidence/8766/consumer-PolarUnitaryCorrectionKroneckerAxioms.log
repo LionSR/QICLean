@@ -1,0 +1,21 @@
+Local QIC source validation
+Executed revision: e3df85307bbc99b776f396d367eacdeb37bed292
+Verified module/test bytes at: c849b612e6e7c37c4c38263316681ff92b7ed5de
+Command: lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/PolarUnitaryCorrectionKroneckerAxioms.lean
+Exit code: 0
+Wall seconds: 3.130321085001924
+Warnings were errors; successful output contains no warnings.
+Output:
+
+import took 2.02s
+cumulative profiling times:
+	blocked (unaccounted) 14.6ms
+	elaboration 1.2ms
+	import 2.02s
+	initialization 31.9ms
+	interpretation 235ms
+	linting 1.2ms
+	module linting 0.00163ms
+	overlappingInstancesLinter 0.785ms
+	parsing 0.457ms
+	tacticAnalysis 4.06ms

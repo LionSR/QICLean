@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "positivegap8766-projection",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/PositiveGapUniqueness.lean",
+        "declaration": "Matrix.PosSemidef.eq_inner_smul_of_gap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "For a unit vector Ω and strictly positive Δ, derive ψ = inner Ω ψ • Ω from the PSD gap defect and Hψ = E₀ψ; ψ may be zero or unnormalized, and Ω need not be an eigenvector.",
+        "Adapt the ground-eigenbasis projection-residual argument in LionSR/QICLean SpectralFilter.filterIntegral_mulVec_of_posSemidef_gap (PositiveReplacement.lean, lines 151–170, commit 618a686200739b84c23170d2e2f0d52f440ca037); generalize the basis vector to arbitrary ψ and invoke the existing PosSemidef.gap_le API. This is local QIC proof reuse, not an independent proof-text claim.",
+        "Source passage: unnumbered uniqueness assertion after eq:info-reset-overlap, lines 415–425. No OpenAI Lean proof text is copied or adapted. The ledger original category refers to OpenAI proof-text provenance; local library adaptation is identified separately. No claim that Δ equals the actual gap.",
+        "The verification revision identifies byte-identical public checkpoint source. Actual native/raw checks ran at local 5bbc0fd9bd3e5ddca0016b5a684cd5fa1ac56f63; strict production and consumer checks ran at 9b52983ef89dbf88e8b833c198953e3980dcbb5d. The evidence packet binds these revisions and does not claim public CI passed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.PositiveGapUniqueness",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-raw-5bbc-0.log",
+            "sha256": "cd307639ca2c9ba34d94ffdb1742f67fa900cbb8335de0c9e3267ece19cacf4e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8766-positive-gap-uniqueness/drivers/PositiveGapUniquenessRawAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-raw-5bbc-1.log",
+            "sha256": "86876838126a42b33b100cd8a07b534854a5404d4b91763be563feb2bdaed2de"
+          }
+        ]
+      }
+    },
+    {
+      "id": "positivegap8766-eigenspace",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/PositiveGapUniqueness.lean",
+        "declaration": "Matrix.PosSemidef.eigenspace_eq_span_of_gap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "With the additional eigenvalue equation HΩ = E₀Ω, identify the entire eigenspace at E₀ with span {Ω}; reuse the projection theorem and Mathlib eigenspace/span interfaces.",
+        "Source passage: unnumbered uniqueness assertion after eq:info-reset-overlap, lines 415–425. No OpenAI Lean proof text is copied or adapted. The ledger original category refers to OpenAI proof-text provenance; local library adaptation is identified separately. No claim that Δ equals the actual gap.",
+        "The verification revision identifies byte-identical public checkpoint source. Actual native/raw checks ran at local 5bbc0fd9bd3e5ddca0016b5a684cd5fa1ac56f63; strict production and consumer checks ran at 9b52983ef89dbf88e8b833c198953e3980dcbb5d. The evidence packet binds these revisions and does not claim public CI passed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.PositiveGapUniqueness",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-raw-5bbc-0.log",
+            "sha256": "cd307639ca2c9ba34d94ffdb1742f67fa900cbb8335de0c9e3267ece19cacf4e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8766-positive-gap-uniqueness/drivers/PositiveGapUniquenessRawAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-raw-5bbc-1.log",
+            "sha256": "86876838126a42b33b100cd8a07b534854a5404d4b91763be563feb2bdaed2de"
+          }
+        ]
+      }
+    },
+    {
+      "id": "positivegap8766-dimension",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/PositiveGapUniqueness.lean",
+        "declaration": "Matrix.PosSemidef.finrank_eigenspace_eq_one_of_gap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "With HΩ = E₀Ω, derive finrank one from the eigenspace equality and Mathlib finrank_span_singleton, using normalization to prove Ω is nonzero.",
+        "Source passage: unnumbered uniqueness assertion after eq:info-reset-overlap, lines 415–425. No OpenAI Lean proof text is copied or adapted. The ledger original category refers to OpenAI proof-text provenance; local library adaptation is identified separately. No claim that Δ equals the actual gap.",
+        "The verification revision identifies byte-identical public checkpoint source. Actual native/raw checks ran at local 5bbc0fd9bd3e5ddca0016b5a684cd5fa1ac56f63; strict production and consumer checks ran at 9b52983ef89dbf88e8b833c198953e3980dcbb5d. The evidence packet binds these revisions and does not claim public CI passed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5a846a09030085ad1546d50163caad111f7748f4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.PositiveGapUniqueness",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-raw-5bbc-0.log",
+            "sha256": "cd307639ca2c9ba34d94ffdb1742f67fa900cbb8335de0c9e3267ece19cacf4e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8766-positive-gap-uniqueness/drivers/PositiveGapUniquenessRawAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-raw-5bbc-1.log",
+            "sha256": "86876838126a42b33b100cd8a07b534854a5404d4b91763be563feb2bdaed2de"
+          }
+        ]
+      }
+    }
+  ]
+}
