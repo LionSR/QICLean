@@ -1,0 +1,17 @@
+{
+  "repository": "LionSR/QICLean",
+  "published_branch": "dot/two-family-entropy",
+  "published_source_revision": "075e8f562c0efd7b5d603b8e75f639c8deacada0",
+  "locally_checked_source_revision": "b6aea0fd40759a74ed4cc9f7b4006139dde936f8",
+  "published_tree": "bba70edde76970ab9e1f6e6a47e2c45b1a156c23",
+  "locally_checked_tree": "bba70edde76970ab9e1f6e6a47e2c45b1a156c23",
+  "verification_commands": [
+    "git fetch origin dot/two-family-entropy",
+    "git rev-parse origin/dot/two-family-entropy",
+    "git diff --exit-code b6aea0fd40759a74ed4cc9f7b4006139dde936f8 075e8f562c0efd7b5d603b8e75f639c8deacada0"
+  ],
+  "ref_matches_expected_revision": true,
+  "tree_identity_verified": true,
+  "diff_exit_code": 0,
+  "raw_diff_output": ""
+}

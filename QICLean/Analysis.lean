@@ -66,6 +66,7 @@ import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
 import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.OperatorConvexity
+import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PosSemidefCommute
@@ -82,6 +83,7 @@ import QICLean.Analysis.SandwichedRenyiTwo
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
+import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay

@@ -1,0 +1,11 @@
+'FiniteProduct.conditionalMutualInformation_union_left' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.mutualInformation_le_two_entropy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.conditionalMutualInformation_le_two_entropy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.conditionalMutualInformation_biUnion_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.target_union_complement_eq_exterior' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.conditionalMutualInformation_le_two_family_mutualInformation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FiniteProduct.conditionalMutualInformation_le_two_family_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

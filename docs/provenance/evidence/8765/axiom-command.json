@@ -1,0 +1,31 @@
+{
+  "module": "ConditionalAxioms",
+  "source": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/ConditionalAxioms.lean",
+  "cwd": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation",
+  "unchanged_dependency": false,
+  "source_sha256": "9c19d13596f829b42a9239f00dea2d3e58996d53996f0c62497eeb40cc81000b",
+  "command": [
+    "timeout",
+    "--signal=INT",
+    "--kill-after=5s",
+    "90s",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "-o",
+    "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.olean",
+    "-i",
+    "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.ilean",
+    "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/ConditionalAxioms.lean"
+  ],
+  "lean_path": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/batteries/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/plausible/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/Qq/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/aesop/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/importGraph/.lake/build/lib/lean",
+  "start": "2026-10-07T09:12:13.501985+00:00",
+  "elapsed_seconds": 2.046077435996267,
+  "exit_code": 0,
+  "log": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/logs/ConditionalAxioms.108700537509265.log",
+  "artifact_sha256": "69958098e0e3ec806edf6d9111636a1fb7ccbc497245ffa58a856607513e646d"
+}

@@ -1,0 +1,9 @@
+import QICLean.Analysis.ShiftedDensityPowers
+set_option linter.hashCommand false
+#print axioms Matrix.isCompact_setOf_posSemidef_trace_eq_one
+#print axioms Matrix.setOf_posSemidef_trace_eq_one_nonempty
+#print axioms Matrix.PosSemidef.add_smul_one_posDef
+#print axioms Matrix.continuousOn_add_smul_one_rpow
+#print axioms Matrix.PosSemidef.spectrum_add_smul_one_bounds
+#print axioms Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonpos
+#print axioms Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonneg
