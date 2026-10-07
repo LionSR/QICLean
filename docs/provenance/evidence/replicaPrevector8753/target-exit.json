@@ -1,0 +1,14 @@
+{
+  "kind": "build",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Representation.ReplicaPrevector"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 41.02,
+  "source_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
+  "log": "docs/provenance/evidence/replicaPrevector8753/target.log",
+  "sha256": "3449d0d3002339b8a03ad6b4fc8a34b0b6e4aadc2a791691088af2874610b140"
+}

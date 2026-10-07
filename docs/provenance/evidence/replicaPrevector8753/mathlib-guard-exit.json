@@ -1,0 +1,13 @@
+{
+  "kind": "cache",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaPrevector8753/mathlib-guard.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.2,
+  "source_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
+  "log": "docs/provenance/evidence/replicaPrevector8753/mathlib-guard.log",
+  "sha256": "fe6fede23077bfd5e7469ec4f6787b977061ac192a2bf5307b6405eaff8afff1"
+}

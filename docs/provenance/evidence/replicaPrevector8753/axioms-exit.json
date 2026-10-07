@@ -1,0 +1,19 @@
+{
+  "kind": "axioms",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/replicaPrevector8753/Axioms.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 1,
+  "elapsed_seconds": 12.44,
+  "source_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
+  "log": "docs/provenance/evidence/replicaPrevector8753/axioms.log",
+  "sha256": "6631f5ff47178eebca6b5c9e903d4af27dc1e28c04384c73a021831af7a50fbf"
+}

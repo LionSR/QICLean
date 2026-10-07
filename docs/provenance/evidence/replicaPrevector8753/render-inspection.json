@@ -1,0 +1,13 @@
+{
+  "artifact": "docs/provenance/evidence/replicaPrevector8753/replica-prevector.pdf",
+  "sha256": "67b552f4e85a2924000a0c252343c8340fa3042ee4e0ad634100f7b5d773619f",
+  "pages": 4,
+  "images": {
+    "docs/provenance/evidence/replicaPrevector8753/render/page-1.png": "a7c90e7459b4135cdd3f7295f9086c20b6e5188af57d55f9a52a34d6ecc42f88",
+    "docs/provenance/evidence/replicaPrevector8753/render/page-2.png": "965caf0dda370ba3db047fa26674ab1f5a6cc48a84d7ddec027ce2df50b67335",
+    "docs/provenance/evidence/replicaPrevector8753/render/page-3.png": "42da5388586cc91319971c2a79e3b031c905388411e8cb82e7f0a9f1e08247a5",
+    "docs/provenance/evidence/replicaPrevector8753/render/page-4.png": "11809a18e8d8fdd286bec76546e6a207d187125540c9bfbca5b7c10810434543"
+  },
+  "result": "passed",
+  "inspection": "All four pages visually inspected. The actual initial-vector definition, full common-sequence statement and proof on page three are legible. Both prerequisites and the source citation resolve. No clipping, overlap or unreadable mathematical symbol was found."
+}
