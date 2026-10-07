@@ -17,7 +17,7 @@ owned original-provenance shard passes the TNLean validator and schema pinned
 at `806099b4dddcce591b3a62ee1921926a6af5ad55`, with immutable complete-file
 and raw-log bindings. The nine parent shards, their referenced production
 files, and their bound raw evidence are byte-identical to main
-`0c3485a499660de80843affa0b25b964c12a5193`. No fresh kernel audit of the 162
+`0c3485a499660de80843affa0b25b964c12a5193`. No fresh kernel audit of the 159
 parent declarations is claimed.
 
 The entropy-window and irreducible-dimension asymptotic, common Bell sequence,

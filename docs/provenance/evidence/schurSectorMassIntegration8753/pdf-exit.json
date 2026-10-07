@@ -1,0 +1,16 @@
+{
+  "source_revision": "56f188afeeb014a915287a32ef7372cf10648845",
+  "argv": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-schur-sector-mass/blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 53.41816479200497,
+  "log": "docs/provenance/evidence/schurSectorMassIntegration8753/pdf.log.gz",
+  "sha256": "a5437044ccf5053c8e244cb0b826c4631bf880bc477791f1ebe6751aea249bff",
+  "uncompressed_sha256": "0d2fc09a00f59624b63825bffe00b299e95a18eedc4c1d31d3859b555c5b318f",
+  "uncompressed_bytes": 796559,
+  "compressed": true,
+  "deterministic_gzip_mtime": 0
+}

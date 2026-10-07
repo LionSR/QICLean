@@ -1,0 +1,54 @@
+13.20 Mass selection among Schur sectors
+Let Ω be a finite orthonormal basis of cardinality 𝑞, and let 𝜋𝜆 denote the central isotypic
+projectors for the copy-permutation representation on (ℂΩ )⊗𝑘 , where 𝑘 ≥ 0. Their sum is the
+                                                                  2
+identity, and the number of nonzero projectors is at most (𝑘 + 1)𝑞 . The following estimates give
+the generic mass selection step in [Ope26b, Section 7]. They impose no entropy window on the
+irreducible dimension 𝑑𝜆 . The asymptotic relation log 𝑑𝜆𝑘 = 𝑘𝑆 ′ + 𝑜(𝑘) requires concentration
+and a further selection within the corresponding window. Positive occurrence on the initial
+uniform pair, matching of its two labels, and its energy condition are separate assertions.
+Theorem 13.20.1 (Density mass in a Schur sector). Lean ✓ Stmt For every positive semidefinite
+                                                                                          2
+𝜌 on (ℂΩ )⊗𝑘 with tr 𝜌 = 1, there is an irreducible label 𝜆 such that tr(𝜌𝜋𝜆 ) ≥ (𝑘 + 1)−𝑞 .
+Proof. ✓ Proof Put 𝐿 = {𝜆 ∶ 𝜋𝜆 ≠ 0} and 𝑚𝜆 = tr(𝜌𝜋𝜆 ). Positivity gives 𝑚𝜆 ≥ 0, and
+                                                                      2
+completeness gives ∑𝜆∈𝐿 𝑚𝜆 = 1, so 𝐿 is nonempty. Since |𝐿| ≤ (𝑘 + 1)𝑞 , at least one summand
+                     2
+is at least (𝑘 + 1)−𝑞 .
+Theorem 13.20.2 (Projected norm in a Schur sector). Lean ✓ Stmt Let 𝑆 be a finite orthonormal
+basis and let 𝑣 be a unit vector in ℂ𝑆 ⊗ (ℂΩ )⊗𝑘 . There is an irreducible label 𝜆 such that
+                          2
+‖(𝐼𝑆 ⊗ 𝜋𝜆 )𝑣‖2 ≥ (𝑘 + 1)−𝑞 . In particular, (𝐼𝑆 ⊗ 𝜋𝜆 )𝑣 ≠ 0.
+Proof. ✓ Proof The reduced state 𝜌 = tr𝑆 |𝑣⟩⟨𝑣| is positive semidefinite and has trace one. Apply
+Theorem 13.20.1 to 𝜌. For 𝑄 = 𝐼𝑆 ⊗𝜋𝜆 , the trace-pairing identity and the Hermitian idempotence
+𝑄∗ = 𝑄 = 𝑄2 give
+                              tr(𝜌𝜋𝜆 ) = ⟨𝑣, 𝑄𝑣⟩ = ⟨𝑄𝑣, 𝑄𝑣⟩ = ‖𝑄𝑣‖2 .                      (13.230)
+The lower bound is strictly positive, so 𝑄𝑣 ≠ 0.
+
+
+13.21 Trivial-factor corollaries
+The partial traces and von Neumann entropy are introduced in Chapter 13. This supplement
+collects elementary trace-preservation identities and the dimension-1 entropy bound that follow
+directly from those definitions. They are listed as separate results because each proof requires
+only unfolding definitions and re-indexing finite sums.
+Theorem 13.21.1 (Partial trace over 𝐴 preserves the full trace).    Lean   ✓ Stmt For any tripartite
+matrix 𝜌𝐴𝐵𝐶 , tr(𝜌𝐴𝐵𝐶 ) = tr(tr𝐴 (𝜌𝐴𝐵𝐶 )).
+Proof.   ✓ Proof Unfolding the definitions,
+
+                      tr(tr𝐴 (𝜌𝐴𝐵𝐶 )) = ∑ ∑(𝜌𝐴𝐵𝐶 )(𝑎,𝑏,𝑐)(𝑎,𝑏,𝑐) = tr(𝜌𝐴𝐵𝐶 ).
+                                        𝑏,𝑐   𝑎
+
+
+
+
+Theorem 13.21.2 (Partial trace over 𝐶 preserves the full trace).    Lean   ✓ Stmt For any tripartite
+matrix 𝜌𝐴𝐵𝐶 , tr(𝜌𝐴𝐵𝐶 ) = tr(tr𝐶 (𝜌𝐴𝐵𝐶 )).
+Proof.   ✓ Proof Unfolding the definitions,
+
+                      tr(tr𝐶 (𝜌𝐴𝐵𝐶 )) = ∑ ∑(𝜌𝐴𝐵𝐶 )(𝑎,𝑏,𝑐)(𝑎,𝑏,𝑐) = tr(𝜌𝐴𝐵𝐶 ).
+                                        𝑎,𝑏   𝑐
+
+
+
+
+                                                  395
