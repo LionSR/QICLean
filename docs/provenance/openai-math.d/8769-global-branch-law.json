@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "p09-qic-global-globalbranchlaw",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.globalBranchLaw",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -31,20 +31,45 @@
         "Defined one nested finite Gaussian product law over all source positions and their position-dependent ordered branch labels."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-globalbranchlawisprobabilitymeasure",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.globalBranchLawIsProbabilityMeasure",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -61,20 +86,45 @@
         "Proved the actual nested global sampling law is a probability measure."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-selectedbranchsamples",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.selectedBranchSamples",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -91,20 +141,45 @@
         "Defined the deterministic projection of a global sample to a chosen branch label at each corrected source position."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-measurepreserving_selectedbranchsamples",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.measurePreserving_selectedBranchSamples",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -121,20 +196,45 @@
         "Proved the actual selected-coordinate projection pushes the global product law to the checked independent corrected-slot law, without assuming the desired independence."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-selectedbranchdensitycoefficient",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.selectedBranchDensityCoefficient",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -151,20 +251,45 @@
         "Defined actual products of selected Gaussian correction coefficients on the single global sample space, indexed only by corrected positions."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-integrable_selectedbranchdensitycoefficient",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -181,20 +306,45 @@
         "Transported integrability of actual selected correction coefficients to the global Gaussian law, including the totalized zero-sample API."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-integrable_selectedbranchdensitycoefficient_mul_conj",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient_mul_conj",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -211,20 +361,45 @@
         "Transported integrability of selected coefficient conjugate products to the actual global law."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-integral_selectedbranchdensitycoefficient_mul_conj",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_mul_conj",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -241,20 +416,45 @@
         "Proved the exact diagonal covariance on the global law, with inverse-sample exponent equal to the corrected-position count; nonnegative weights and positive sample count are explicit."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-integral_selectedbranchdensitycoefficient_eq_zero",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_eq_zero",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -271,20 +471,45 @@
         "Proved centeredness of every nonempty selected correction product on the actual global Gaussian law."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-integrable_rectangulartracenorm_selectedbranchsourceerror",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_rectangularTraceNorm_selectedBranchSourceError",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -301,20 +526,45 @@
         "Proved integrability of the actual selected weighted rectangular nuclear error on the global law with explicit normalized nonnegative exterior weights."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-global-integral_rectangulartracenorm_selectedbranchsourceerror_le",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean",
         "declaration": "QICLean.ComplexGaussian.integral_rectangularTraceNorm_selectedBranchSourceError_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -331,7 +581,32 @@
         "Derived the actual global-law expected nuclear error bound k to minus half the corrected-position count, with positive sample count, normalized Schmidt weights and exterior operator contraction premises explicit."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     }

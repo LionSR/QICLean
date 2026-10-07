@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "p09-qic-gaussian-contraction-gaussiansourcecontraction",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
         "declaration": "QICLean.ComplexGaussian.gaussianSourceContraction",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -32,20 +32,45 @@
         "Independently defined or proved: The actual finite contraction of globally sampled source matrices for fixed branch labels."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-gaussian-contraction-correctedgaussiansourcecontraction",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
         "declaration": "QICLean.ComplexGaussian.correctedGaussianSourceContraction",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -63,20 +88,45 @@
         "Independently defined or proved: A literal corrected-position term: actual centered sources at `S`, exact sources elsewhere."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-gaussian-contraction-corrected_source_entry_product",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
         "declaration": "QICLean.ComplexGaussian.corrected_source_entry_product",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -94,20 +144,45 @@
         "Independently defined or proved: Actual correction-entry products use exactly the selected-position Gaussian coefficients."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-gaussian-contraction-correctedgaussiansourcecontraction_eq_sum",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
         "declaration": "QICLean.ComplexGaussian.correctedGaussianSourceContraction_eq_sum",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -125,20 +200,45 @@
         "Independently defined or proved: Each corrected contraction is the finite sum of its explicitly factored source entries."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-gaussian-contraction-gaussiansourcecontraction_sub",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
         "declaration": "QICLean.ComplexGaussian.gaussianSourceContraction_sub",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -156,20 +256,45 @@
         "Independently defined or proved: The actual sampled-minus-exact output is the literal nonempty corrected-position sum."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-gaussian-contraction-integrable_correctedgaussiansourcecontraction",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_correctedGaussianSourceContraction",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -187,20 +312,45 @@
         "Independently defined or proved: Every actual corrected-position contraction is Bochner-integrable."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-gaussian-contraction-integral_correctedgaussiansourcecontraction_eq_zero",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
         "declaration": "QICLean.ComplexGaussian.integral_correctedGaussianSourceContraction_eq_zero",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -218,20 +368,45 @@
         "Independently defined or proved: Every nonempty actual corrected-position contraction has zero global expectation."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-gaussian-contraction-integrable_gaussiansourcecontraction",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_gaussianSourceContraction",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -249,20 +424,45 @@
         "Independently defined or proved: The actual coefficient-contracted sampled output is globally Bochner-integrable."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-gaussian-contraction-integral_gaussiansourcecontraction",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
         "declaration": "QICLean.ComplexGaussian.integral_gaussianSourceContraction",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -280,7 +480,32 @@
         "Independently defined or proved: The actual sampled contraction is globally unbiased for the exact Schmidt-source contraction."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2e14ca2f7f61384a461822f67ff630ccd5ff51dd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.SourceContraction QICLean.Analysis.ChronologicalGarbageError QICLean.Analysis.IsometricDomainExtension QICLean.Probability.ComplexGaussian.GlobalBranchLaw QICLean.Probability.ComplexGaussian.SchmidtSource QICLean.Probability.ComplexGaussian.GaussianContraction",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/build.log",
+            "sha256": "a27589a36ce2538fc88e24acc2129531b4b8d68ade4ba01a915f121878b96751"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceBridgesAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/axioms.log",
+            "sha256": "9fd577485bccc025866d6584a8905811a54c11742396e1b0e082ad3719268c45"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-bridges/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-bridges/source-audit.log",
+            "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     }
