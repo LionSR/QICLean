@@ -1,0 +1,93 @@
+\section{Bell projections on finitely many copies}
+\label{sec:typical_bell_pin_powers}
+
+Let $\Omega\in\mathcal H_A\otimes\mathcal H_B$, and select a set $E$ of
+eigenvectors of its actual marginal
+$\rho_A=\operatorname{Tr}_B|\Omega\rangle\langle\Omega|$.
+Write $d=|E|$ and $z=\sum_{i\in E}p_i$, and suppose $z>0$.
+Let $\beta$, $P=|\beta\rangle\langle\beta|$, $\mathrm{pre}$ and
+$\mathrm{post}=\beta\otimes\chi$ be the one-copy constructions of
+Section~\ref{sec:typical_bell_pin}. Set $c=\sqrt z/d$.
+For each $k\ge0$, tensor powers are written in the basis indexed by
+$k$-tuples: the coefficient of $v^{\otimes k}$ at $x$ is
+$\prod_{j=0}^{k-1}v(x_j)$. These are the finite-copy consequences of
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[The finite-copy Bell contraction]
+\label{thm:typical_bell_pin_powers}
+\lean{Matrix.finKronecker_selectedBellProjection_bellPinPrevector}
+\leanok
+\uses{def:typical_bell_vectors,def:typical_bell_projection}
+For every $k\ge0$,
+\begin{align}
+ (P\otimes I_{RB})^{\otimes k}\mathrm{pre}^{\otimes k}
+   &=c^k\mathrm{post}^{\otimes k}.
+ \label{eq:bell_powers_contraction}
+\end{align}
+The vector $\Omega$ need not have unit norm.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:typical_bell_pin}
+For finite families of matrices and vectors, distributivity gives
+$\sum_y\prod_j M_j(x_j,y_j)v_j(y_j)
+=\prod_j\sum_{y_j}M_j(x_j,y_j)v_j(y_j)$.
+Apply the one-copy Bell contraction to each factor. The $k$ scalar factors
+give $\prod_jc=c^k$.
+\end{proof}
+
+\begin{theorem}[The repeated Bell vector and its projection]
+\label{thm:typical_bell_powers_projection}
+\lean{Matrix.norm_prod_selectedBellVector,Matrix.isStarProjection_finKronecker_selectedBellProjection,Matrix.prod_selectedBellVector_perm}
+\leanok
+\uses{def:typical_bell_projection}
+For every $k\ge0$, $\|\beta^{\otimes k}\|=1$, and $P^{\otimes k}$ is an
+orthogonal projection. Simultaneously permuting the $AC$ copies fixes
+$\beta^{\otimes k}$. The permutation assertion holds without the
+assumption $z>0$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:typical_bell_projection,def:typical_bell_projection}
+The same finite-product expansion gives
+$\langle\beta^{\otimes k},\beta^{\otimes k}\rangle
+=\prod_j\langle\beta,\beta\rangle=1$.
+Entrywise multiplication identifies
+$P^{\otimes k}=|\beta^{\otimes k}\rangle\langle\beta^{\otimes k}|$,
+so it is self-adjoint and idempotent.
+For any permutation $\sigma$, reindexing the finite product gives
+$\prod_j\beta(x_{\sigma(j)})=\prod_j\beta(x_j)$.
+\end{proof}
+
+\begin{theorem}[An operator on disjoint auxiliary copies]
+\label{thm:typical_bell_powers_label}
+\lean{Matrix.finKronecker_selectedBellProjection_bellPinPrevector_label}
+\leanok
+\uses{def:typical_bell_vectors,def:typical_bell_projection}
+Regroup the copies canonically as
+$\mathcal H_{AC}^{\otimes k}\otimes
+(\mathcal H_R^{\otimes k}\otimes\mathcal H_B^{\otimes k})$.
+Denote the transported product vectors by $\mathrm{pre}_k$ and
+$\mathrm{post}_k$. For any operator $\Lambda$ on
+$\mathcal H_R^{\otimes k}$, put
+$Q=P^{\otimes k}\otimes I_{R^kB^k}$ and
+$T_\Lambda=I_{(AC)^k}\otimes(\Lambda\otimes I_{B^k})$. Then
+\begin{align}
+ Q T_\Lambda\mathrm{pre}_k
+   &=c^kT_\Lambda\mathrm{post}_k.
+ \label{eq:bell_powers_label}
+\end{align}
+No self-adjointness, projection property or commutation assumption is
+required for $\Lambda$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:typical_bell_pin_powers}
+The coordinate equivalence sends the tuple
+$((a_j,c_j),(r_j,b_j))_j$ to
+$((a_j,c_j)_j,(r_j)_j,(b_j)_j)$.
+It transports $(P\otimes I_{RB})^{\otimes k}$ to $Q$.
+Since $Q T_\Lambda=P^{\otimes k}\otimes(\Lambda\otimes I_{B^k})
+=T_\Lambda Q$, transport~(\ref{eq:bell_powers_contraction}) and apply
+$T_\Lambda$ to obtain~(\ref{eq:bell_powers_label}).
+\end{proof}
