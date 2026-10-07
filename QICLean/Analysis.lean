@@ -16,6 +16,8 @@ import QICLean.Analysis.CStarMatrixKronecker
 import QICLean.Analysis.CfcConjugation
 import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
+import QICLean.Analysis.ChronologicalGarbage
+import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ContractionChain
@@ -43,6 +45,7 @@ import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.IsometricCompression
+import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
@@ -84,6 +87,7 @@ import QICLean.Analysis.SandwichedRenyiTwo
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
+import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
