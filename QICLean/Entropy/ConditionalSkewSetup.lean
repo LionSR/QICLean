@@ -250,6 +250,38 @@ theorem skewFun_zero : skewFun θ h 0 = star θ ⬝ᵥ (liftH h *ᵥ θ) := by
     star_dotProduct_mulVec_eq, conjTranspose_liftY, conjTranspose_suppPow hY, map_zero,
     liftY_supp_zero_mulVec]
 
+theorem conj_ofReal_mul_I (y : ℝ) : starRingEnd ℂ ((y : ℂ) * Complex.I) = -((y : ℂ) * Complex.I) := by
+  simp [Complex.conj_ofReal]
+
+/-- On the imaginary axis, `f(iy) = ⟨v, h v⟩` with `v = ρ_P^{[-iy]} ρ_Y^{[iy]} θ`.  Area-law
+manuscript, `04-conditional.tex`, lines 532–533. -/
+theorem skewFun_imag (y : ℝ) :
+    skewFun θ h ((y : ℂ) * Complex.I) =
+      star (liftP (cfcC (margP θ) (suppPowFun (-((y : ℂ) * Complex.I)))) *ᵥ
+          (liftY (cfcC (margY θ) (suppPowFun ((y : ℂ) * Complex.I))) *ᵥ θ)) ⬝ᵥ
+        (liftH h *ᵥ (liftP (cfcC (margP θ) (suppPowFun (-((y : ℂ) * Complex.I)))) *ᵥ
+          (liftY (cfcC (margY θ) (suppPowFun ((y : ℂ) * Complex.I))) *ᵥ θ))) := by
+  have hP := (posSemidef_margP θ)
+  have hY := (posSemidef_margY θ)
+  rw [skewFun, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec,
+    star_dotProduct_mulVec_eq, star_dotProduct_mulVec_eq, conjTranspose_liftP,
+    conjTranspose_suppPow hP, conj_ofReal_mul_I, conjTranspose_liftY, conjTranspose_suppPow hY,
+    map_neg, conj_ofReal_mul_I, neg_neg, mulVec_mulVec, ← liftP_liftY_comm, ← mulVec_mulVec]
+
+/-- The vector `v = ρ_P^{[-iy]} ρ_Y^{[iy]} θ` has the norm of `θ`. -/
+theorem dotProduct_star_imag_vector (y : ℝ) :
+    star (liftP (cfcC (margP θ) (suppPowFun (-((y : ℂ) * Complex.I)))) *ᵥ
+        (liftY (P₀ := P₀) (P₁ := P₁) (F := F) (cfcC (margY θ) (suppPowFun ((y : ℂ) * Complex.I))) *ᵥ θ)) ⬝ᵥ
+      (liftP (cfcC (margP θ) (suppPowFun (-((y : ℂ) * Complex.I)))) *ᵥ
+        (liftY (cfcC (margY θ) (suppPowFun ((y : ℂ) * Complex.I))) *ᵥ θ)) = star θ ⬝ᵥ θ := by
+  have hP := (posSemidef_margP θ)
+  have hY := (posSemidef_margY θ)
+  rw [star_mulVec_dotProduct, conjTranspose_liftP, conjTranspose_suppPow hP, map_neg,
+    conj_ofReal_mul_I, neg_neg, mulVec_mulVec, liftP_mul, suppPow_mul hP.1, add_neg_cancel,
+    mulVec_mulVec, liftP_liftY_comm, ← mulVec_mulVec, liftP_supp_zero_mulVec, star_mulVec_dotProduct,
+    conjTranspose_liftY, conjTranspose_suppPow hY, conj_ofReal_mul_I, mulVec_mulVec, liftY_mul,
+    suppPow_mul hY.1, neg_add_cancel, liftY_supp_zero_mulVec]
+
 end Values
 
 end Entropy.ConditionalSkew
