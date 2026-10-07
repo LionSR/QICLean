@@ -53,6 +53,7 @@ import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
+import QICLean.Analysis.KernelCompletion
 import QICLean.Analysis.KleinInequality
 import QICLean.Analysis.KroneckerExponential
 import QICLean.Analysis.KyFanNorm

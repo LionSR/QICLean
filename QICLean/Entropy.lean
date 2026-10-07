@@ -11,6 +11,8 @@ Authors: QICLean contributors
 import QICLean.Entropy.Bipartite
 import QICLean.Entropy.ClassicalMutualInformation
 import QICLean.Entropy.ConditionalEntropy
+import QICLean.Entropy.ConditionalMovement
+import QICLean.Entropy.ConditionalMovementEstimate
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FilterChain
