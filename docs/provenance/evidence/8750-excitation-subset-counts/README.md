@@ -25,12 +25,12 @@ raw log. Every new theorem's imported kernel report lists only `propext`,
 `admit`, `axiom`, `native_decide`, or `unsafeCast` in the new module.
 
 The PDF and web blueprint builds passed. Native declaration checking passed
-for the generated list of 3380 declarations, including all four new results.
+for the generated list of 3381 declarations, including all four new results.
 The rendered web check passed on 42 pages at mobile and desktop widths,
 with 37208 typeset mathematical elements. The PDF page containing both new
 theorem statements was visually inspected. The generated declaration list is
 retained as `lean_decls.txt`; these checks do not constitute a fresh kernel
-audit of the existing 3376 declarations.
+audit of the existing 3377 declarations.
 
 `metadata.json` records source-file digests and the commands, return codes,
 and raw-log digests. The four-entry provenance shard refers to the same frozen
