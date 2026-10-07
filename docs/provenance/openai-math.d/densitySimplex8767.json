@@ -7,7 +7,7 @@
   "entries": [
     {
       "id": "8767-density-simplex-01",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -35,12 +35,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.DensitySimplex",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/build.log",
+            "sha256": "7735b272c44abd09d340d09d59e84122bc75ca1566d37ae765e81d24c317f747"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 docs/provenance/evidence/densitySimplex8767/DensitySimplexAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/axioms.log",
+            "sha256": "06a31853ecd30bf753c56c3ef3f1b8bf831d405f53bcaf486793afcff5be12f6"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/DensitySimplex.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     },
     {
       "id": "8767-density-simplex-02",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -68,12 +93,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.DensitySimplex",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/build.log",
+            "sha256": "7735b272c44abd09d340d09d59e84122bc75ca1566d37ae765e81d24c317f747"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 docs/provenance/evidence/densitySimplex8767/DensitySimplexAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/axioms.log",
+            "sha256": "06a31853ecd30bf753c56c3ef3f1b8bf831d405f53bcaf486793afcff5be12f6"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/DensitySimplex.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     },
     {
       "id": "8767-density-simplex-03",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -101,12 +151,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.DensitySimplex",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/build.log",
+            "sha256": "7735b272c44abd09d340d09d59e84122bc75ca1566d37ae765e81d24c317f747"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 docs/provenance/evidence/densitySimplex8767/DensitySimplexAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/axioms.log",
+            "sha256": "06a31853ecd30bf753c56c3ef3f1b8bf831d405f53bcaf486793afcff5be12f6"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/DensitySimplex.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     },
     {
       "id": "8767-density-simplex-04",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -134,12 +209,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.DensitySimplex",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/build.log",
+            "sha256": "7735b272c44abd09d340d09d59e84122bc75ca1566d37ae765e81d24c317f747"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 docs/provenance/evidence/densitySimplex8767/DensitySimplexAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/axioms.log",
+            "sha256": "06a31853ecd30bf753c56c3ef3f1b8bf831d405f53bcaf486793afcff5be12f6"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/DensitySimplex.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     },
     {
       "id": "8767-density-simplex-05",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -167,12 +267,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.DensitySimplex",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/build.log",
+            "sha256": "7735b272c44abd09d340d09d59e84122bc75ca1566d37ae765e81d24c317f747"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 docs/provenance/evidence/densitySimplex8767/DensitySimplexAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/axioms.log",
+            "sha256": "06a31853ecd30bf753c56c3ef3f1b8bf831d405f53bcaf486793afcff5be12f6"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/DensitySimplex.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     },
     {
       "id": "8767-density-simplex-06",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -200,12 +325,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.DensitySimplex",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/build.log",
+            "sha256": "7735b272c44abd09d340d09d59e84122bc75ca1566d37ae765e81d24c317f747"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 docs/provenance/evidence/densitySimplex8767/DensitySimplexAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/axioms.log",
+            "sha256": "06a31853ecd30bf753c56c3ef3f1b8bf831d405f53bcaf486793afcff5be12f6"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/DensitySimplex.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     },
     {
       "id": "8767-density-simplex-07",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -233,12 +383,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.DensitySimplex",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/build.log",
+            "sha256": "7735b272c44abd09d340d09d59e84122bc75ca1566d37ae765e81d24c317f747"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 docs/provenance/evidence/densitySimplex8767/DensitySimplexAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/axioms.log",
+            "sha256": "06a31853ecd30bf753c56c3ef3f1b8bf831d405f53bcaf486793afcff5be12f6"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/DensitySimplex.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     },
     {
       "id": "8767-density-simplex-08",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -266,7 +441,32 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.DensitySimplex",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/build.log",
+            "sha256": "7735b272c44abd09d340d09d59e84122bc75ca1566d37ae765e81d24c317f747"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 docs/provenance/evidence/densitySimplex8767/DensitySimplexAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/axioms.log",
+            "sha256": "06a31853ecd30bf753c56c3ef3f1b8bf831d405f53bcaf486793afcff5be12f6"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/DensitySimplex.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/densitySimplex8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     }
   ]
