@@ -37,6 +37,7 @@ import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
+import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
 import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
@@ -56,6 +57,7 @@ import QICLean.Analysis.LiebOperatorConcave
 import QICLean.Analysis.LiebOperatorIntegral
 import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
+import QICLean.Analysis.LogClipping
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixFamilySupport
 import QICLean.Analysis.MatrixFittingRange
@@ -85,6 +87,7 @@ import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Analysis.RpowConvexity
 import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo
+import QICLean.Analysis.ScaleRecurrence
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
