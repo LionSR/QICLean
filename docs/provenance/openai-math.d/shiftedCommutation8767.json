@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8767-shifted-commutation-01",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityCommutation.lean",
+        "declaration": "Matrix.PosDef.commute_rpow_iff",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-stationarity-commutation"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Recover commutation with the defining density from commutation with its nonzero shifted power by existing inverse-power functional calculus. Native stationarity remains a separate premise."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-shifted-commutation-02",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityCommutation.lean",
+        "declaration": "Matrix.PosSemidef.commute_add_smul_one_rpow_iff",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-stationarity-commutation"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Recover commutation with the defining density from commutation with its nonzero shifted power by existing inverse-power functional calculus. Native stationarity remains a separate premise."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-shifted-commutation-03",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedDensityCommutation.lean",
+        "declaration": "Matrix.PosSemidef.commute_of_commute_shifted_inverse_power",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-stationarity-commutation"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Recover commutation with the defining density from commutation with its nonzero shifted power by existing inverse-power functional calculus. Native stationarity remains a separate premise."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    }
+  ]
+}
