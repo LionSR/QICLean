@@ -1,0 +1,15 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "032b230b2a18d9715b3741b3bf5d1fe1edc4e08f"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.12,
+  "source_revision": "fc3c07583efd46380d5c1143b37b5e825c9a5c4e",
+  "log": "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

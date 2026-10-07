@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/render-pdf.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 9.97,
+  "source_revision": "fc3c07583efd46380d5c1143b37b5e825c9a5c4e",
+  "log": "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/render.log",
+  "sha256": "d74d1a716c1e35363aca603cbb7fc30c83a24c1e432251fc78347bd67035b29a"
+}
