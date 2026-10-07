@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "8765-qic-conditional-01",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
         "declaration": "FiniteProduct.conditionalMutualInformation_union_left",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -32,19 +32,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "808ce9fbf889395ce5e5cad1e6e64f65f315abf0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.ilean /workspace/scratch/7637e06d0fc2/QICLean-conditional-two-family-entropy/QICLean/Entropy/ConditionalTwoFamilies.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/QICLean.Entropy.ConditionalTwoFamilies.log",
+            "sha256": "2d7a77ed4b71747bb906a0d5655c55ed062002a6a2ede7f469e45c2f384fa52a"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.ilean /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/ConditionalAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/axioms.log",
+            "sha256": "0b26ae3b93c1c31bc4895d57d58d8693617048ee0e5a42e6640ed54ba2e32f23"
+          }
+        ]
       }
     },
     {
       "id": "8765-qic-conditional-02",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
         "declaration": "FiniteProduct.mutualInformation_le_two_entropy",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -62,19 +80,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "808ce9fbf889395ce5e5cad1e6e64f65f315abf0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.ilean /workspace/scratch/7637e06d0fc2/QICLean-conditional-two-family-entropy/QICLean/Entropy/ConditionalTwoFamilies.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/QICLean.Entropy.ConditionalTwoFamilies.log",
+            "sha256": "2d7a77ed4b71747bb906a0d5655c55ed062002a6a2ede7f469e45c2f384fa52a"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.ilean /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/ConditionalAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/axioms.log",
+            "sha256": "0b26ae3b93c1c31bc4895d57d58d8693617048ee0e5a42e6640ed54ba2e32f23"
+          }
+        ]
       }
     },
     {
       "id": "8765-qic-conditional-03",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
         "declaration": "FiniteProduct.conditionalMutualInformation_le_two_entropy",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -92,19 +128,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "808ce9fbf889395ce5e5cad1e6e64f65f315abf0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.ilean /workspace/scratch/7637e06d0fc2/QICLean-conditional-two-family-entropy/QICLean/Entropy/ConditionalTwoFamilies.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/QICLean.Entropy.ConditionalTwoFamilies.log",
+            "sha256": "2d7a77ed4b71747bb906a0d5655c55ed062002a6a2ede7f469e45c2f384fa52a"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.ilean /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/ConditionalAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/axioms.log",
+            "sha256": "0b26ae3b93c1c31bc4895d57d58d8693617048ee0e5a42e6640ed54ba2e32f23"
+          }
+        ]
       }
     },
     {
       "id": "8765-qic-conditional-04",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
         "declaration": "FiniteProduct.conditionalMutualInformation_biUnion_le_sum",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -122,19 +176,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "808ce9fbf889395ce5e5cad1e6e64f65f315abf0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.ilean /workspace/scratch/7637e06d0fc2/QICLean-conditional-two-family-entropy/QICLean/Entropy/ConditionalTwoFamilies.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/QICLean.Entropy.ConditionalTwoFamilies.log",
+            "sha256": "2d7a77ed4b71747bb906a0d5655c55ed062002a6a2ede7f469e45c2f384fa52a"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.ilean /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/ConditionalAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/axioms.log",
+            "sha256": "0b26ae3b93c1c31bc4895d57d58d8693617048ee0e5a42e6640ed54ba2e32f23"
+          }
+        ]
       }
     },
     {
       "id": "8765-qic-conditional-05",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
         "declaration": "FiniteProduct.target_union_complement_eq_exterior",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -152,19 +224,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "808ce9fbf889395ce5e5cad1e6e64f65f315abf0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.ilean /workspace/scratch/7637e06d0fc2/QICLean-conditional-two-family-entropy/QICLean/Entropy/ConditionalTwoFamilies.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/QICLean.Entropy.ConditionalTwoFamilies.log",
+            "sha256": "2d7a77ed4b71747bb906a0d5655c55ed062002a6a2ede7f469e45c2f384fa52a"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.ilean /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/ConditionalAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/axioms.log",
+            "sha256": "0b26ae3b93c1c31bc4895d57d58d8693617048ee0e5a42e6640ed54ba2e32f23"
+          }
+        ]
       }
     },
     {
       "id": "8765-qic-conditional-06",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
         "declaration": "FiniteProduct.conditionalMutualInformation_le_two_family_mutualInformation",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -182,19 +272,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "808ce9fbf889395ce5e5cad1e6e64f65f315abf0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.ilean /workspace/scratch/7637e06d0fc2/QICLean-conditional-two-family-entropy/QICLean/Entropy/ConditionalTwoFamilies.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/QICLean.Entropy.ConditionalTwoFamilies.log",
+            "sha256": "2d7a77ed4b71747bb906a0d5655c55ed062002a6a2ede7f469e45c2f384fa52a"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.ilean /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/ConditionalAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/axioms.log",
+            "sha256": "0b26ae3b93c1c31bc4895d57d58d8693617048ee0e5a42e6640ed54ba2e32f23"
+          }
+        ]
       }
     },
     {
       "id": "8765-qic-conditional-07",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
         "declaration": "FiniteProduct.conditionalMutualInformation_le_two_family_sum",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -212,7 +320,25 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "808ce9fbf889395ce5e5cad1e6e64f65f315abf0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108564907015742/QICLean/Entropy/ConditionalTwoFamilies.ilean /workspace/scratch/7637e06d0fc2/QICLean-conditional-two-family-entropy/QICLean/Entropy/ConditionalTwoFamilies.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/QICLean.Entropy.ConditionalTwoFamilies.log",
+            "sha256": "2d7a77ed4b71747bb906a0d5655c55ed062002a6a2ede7f469e45c2f384fa52a"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.olean -i /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/tmp/108700537221703/ConditionalAxioms.ilean /workspace/scratch/7637e06d0fc2/conditional-two-family-validation/ConditionalAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8765/axioms.log",
+            "sha256": "0b26ae3b93c1c31bc4895d57d58d8693617048ee0e5a42e6640ed54ba2e32f23"
+          }
+        ]
       }
     }
   ]
