@@ -1,0 +1,204 @@
+{
+  "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+  "mathematical_leaf_revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+  "leaf_evidence_revision": "8cadec3a058c4db7fc845d69ed44c89d9d5833e0",
+  "parent_revision": "14778d7ee2e8c12efbf3a8029f7e5ef6d4d52bf4",
+  "production_bindings": {
+    "QICLean/Entropy/TypicalSpectrum.lean": {
+      "revision": "958a33256b1b679eea9994660c31706e4d604932",
+      "sha256": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4"
+    },
+    "QICLean/Entropy/TypicalDensity.lean": {
+      "revision": "cc89ef96c7390a92861cf45997f77d40cb394ed1",
+      "sha256": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914"
+    },
+    "QICLean/Entropy/FiniteProductSplitting.lean": {
+      "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+      "sha256": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739"
+    },
+    "QICLean/Entropy/FiniteProductInformation.lean": {
+      "revision": "e5fe5732e6c10a921793c1c03bee5403e5bf6362",
+      "sha256": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f"
+    },
+    "QICLean/Analysis/PatchRegulator.lean": {
+      "revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+      "sha256": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca"
+    },
+    "QICLean/Analysis/DensitySimplex.lean": {
+      "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+      "sha256": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8"
+    },
+    "QICLean/Entropy/TypicalPureState.lean": {
+      "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+      "sha256": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01"
+    },
+    "QICLean/Entropy/TypicalPureCompression.lean": {
+      "revision": "7076296aad42492bccb9b3bb321ca12b5565d0e9",
+      "sha256": "e0b2e684eaaa83f1969c7048dabcf1f7ec35d90edf7723598715895ebdb34b49"
+    },
+    "QICLean/Entropy/FiniteProductTypicalState.lean": {
+      "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+      "sha256": "92ab405b18f2cebd705c5fe3fba04a444e0f361e43ac9d796906c0e0b09bd226"
+    },
+    "QICLean/Analysis/ShiftedDensityCommutation.lean": {
+      "revision": "a85789dabd1a2c9f9966fa0b8fdcff160547e88b",
+      "sha256": "8a9e3272897a291decbe3b71babe59c6579f88a29523c3d836766d198634a249"
+    },
+    "QICLean/Entropy/TypicalStateFromTail.lean": {
+      "revision": "79b9d503971a4ff2409fa557e174b46b13fdbbda",
+      "sha256": "149554ccbce80b00197d5f969c04d9674b0c60f2bbca38eb0f0c1771307fe555"
+    },
+    "QICLean/Analysis/SpectralCutoffMass.lean": {
+      "revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+      "sha256": "2f77fe08c9482f508558cee3f2a0fb68f7626322bee49d46633cdc51f91ade4a"
+    }
+  },
+  "full_library_jobs": 9686,
+  "stock_kernel_reports": 75,
+  "unchanged_parent_reports": 73,
+  "parent_raw_audit_exact_prefix": true,
+  "owned_provenance_shards": 12,
+  "unchanged_parent_shards": 11,
+  "parent_and_leaf_log_bindings": 226,
+  "mathlib_prebuilt_cache": "Successful source8f0020f9 fetch, unchanged lake-manifest and existing Mathlib.olean checked before the complete build; see cache-guard.json.",
+  "native_declaration_count": 3123,
+  "native_checker_sha256": "67873de2b0bf2a3868d9b090017833275edb2ad500803ae0c9e60e536a878f14",
+  "native_checker_revision": "3d425859e73fcfbef85b9638c2a91708ef4a22d4",
+  "commands": {
+    "axioms": {
+      "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/spectralCutoffMassIntegration8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 6.202499151229858,
+      "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/axioms.log",
+      "sha256": "3441a8c5735131ca3e1a0a43b14513912d3fa85feb1ff17ccd454b6666e24d2d"
+    },
+    "checkdecls": {
+      "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+      "argv": [
+        "lake",
+        "env",
+        ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 38.60185194015503,
+      "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full-build": {
+      "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+      "argv": [
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 46.780434131622314,
+      "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/full-build.log.gz",
+      "uncompressed_sha256": "ccc173537499763ea99e3a6a4e9855654b3715a0b795b6246986845ed4a704b0",
+      "gzip_sha256": "cb63b81cdb3db1d1615ba78ea42509e038580c20f4ac6c75a0987b5af90bcce9",
+      "gzip_mtime": 0
+    },
+    "imports": {
+      "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+      "argv": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.39046812057495117,
+      "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/imports.log",
+      "sha256": "97145dff4573761990c98aa29565f4a382bbe97dbd00d7814ca9378ff5ea124c"
+    },
+    "paper-gaps": {
+      "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+      "argv": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.4220879077911377,
+      "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    "pdf": {
+      "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+      "argv": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy/blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 24.04898691177368,
+      "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/pdf.log.gz",
+      "uncompressed_sha256": "9348d246a4f0aac1b8ce314f8313eee96db1deb36daea58a09fd264631b937bd",
+      "gzip_sha256": "e39389f3486747213fa6281342a6e3ce1f77b217f98aa9656670c375b3f78bcf",
+      "gzip_mtime": 0
+    },
+    "prose-changed": {
+      "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+      "argv": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "14778d7e"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.15015506744384766,
+      "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/prose-changed.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    "provenance": {
+      "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/spectralCutoffMassIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 2.1353328227996826,
+      "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/provenance.log",
+      "sha256": "ce1b60ddbf98abd8ea388c778e17d8547c34e3e4466e77c6ac9a54618a259d4d"
+    },
+    "web": {
+      "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+      "argv": [
+        "leanblueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy/blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 49.522042989730835,
+      "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/web.log.gz",
+      "uncompressed_sha256": "d5ef5e0275b7e5dc1d4a9805749f719be6f167135811a148f1a96bc10c3727b6",
+      "gzip_sha256": "c9ee1a021aaef64fbf122af454689353bf65948e36acf9f0c03fc9baeb5088d1",
+      "gzip_mtime": 0
+    }
+  },
+  "pdf": {
+    "pages": 415,
+    "sha256": "97686f665d2492d2e22dab53e434fd3eb88626dc360dea269d616ca37219b715"
+  },
+  "visual_review": "All new statements and proofs on physical page400 inspected, no clipping or unresolved content.",
+  "claim_scope": "Generic numerical first-moment inequalities for the actual closed spectral cutoff; no actual replica or Hamiltonian theorem claimed.",
+  "mathematical_source_changed_during_verification": false,
+  "excluded_exploratory_check": "Leaf strict-first-exit.json preserved and excluded because it is unbound and predates final formatting edits."
+}
