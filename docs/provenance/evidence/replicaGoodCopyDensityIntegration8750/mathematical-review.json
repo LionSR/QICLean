@@ -1,0 +1,7 @@
+{
+  "source_revision": "0d00ac83ac5533452abdfed33e5b55f301f32b2b",
+  "paper_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "source_passage": "Section 7, comparator:merge-moments, lines 520\u2013549",
+  "review": "The good physical product comes from the actual excitation projection; tracing bad copies leaves the same actual whole-auxiliary marginal. Only the one-copy ground vector is unit. Neither the original vector nor the excitation component is assumed normalized or nonzero. Empty copy configurations are included. The canonical grouped coordinates retain (good physical, whole auxiliary) and trace only bad physical copies. Regional restrictions and subsequent symmetry and moment bounds remain separate.",
+  "result": "passed"
+}

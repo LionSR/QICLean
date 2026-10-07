@@ -1,0 +1,21 @@
+{
+  "result": "passed",
+  "both_proofs_visible": true,
+  "physical_pdf_pages": [
+    403,
+    404
+  ],
+  "printed_pdf_pages": [
+    402,
+    403
+  ],
+  "inspected_images": [
+    "docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/render/good-copy-density-web-desktop.png",
+    "docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/render/good-copy-density-web-mobile-equation-endpoints.png",
+    "docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/render/good-copy-density-web-mobile.png",
+    "docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/render/page-403.png",
+    "docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/render/page-404.png"
+  ],
+  "inspection": "Both mathematical statements, both complete proofs, and the scope paragraph were read in the two PDF pages and the full desktop and mobile section views. The longer mobile display has a local horizontal scroller; its initial and terminal views together display the full formula. No clipping, overlap, MathJax error or page-width overflow was found.",
+  "mobile_equation_endpoint_verified": true
+}

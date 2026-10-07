@@ -1,0 +1,14 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "scripts/generate_import_aggregators.py",
+    "--check"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.35,
+  "source_revision": "942add5cf83a5acc3864197e0844b2074875d6c9",
+  "log": "docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/imports.log",
+  "sha256": "f76635fe5ed6b51bec26f6c9365d06c770d3010c70afaba626dbb8f608e566f4"
+}

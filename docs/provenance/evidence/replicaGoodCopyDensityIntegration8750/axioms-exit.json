@@ -1,0 +1,23 @@
+{
+  "kind": "verification",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/Axioms.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 9.25,
+  "source_revision": "942add5cf83a5acc3864197e0844b2074875d6c9",
+  "log": "docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/axioms.log",
+  "sha256": "187fed53e7938f4079c83e58208df5d7b567188e7caf61ef4b171afc112addaa"
+}
