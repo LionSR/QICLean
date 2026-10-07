@@ -278,3 +278,111 @@ lemma~\cite[Lemma 6.1]{OpenAI2026AreaLaw}.
     \le\sum_\lambda\tr\pi^\lambda/d_\lambda=\sum_\lambda m_\lambda$, and
     Lemma~\ref{lem:multiplicity_count} bounds the last sum.
 \end{proof}
+
+\section{Merging subsystems and grouping copies}
+
+\begin{lemma}[Irreducible and joint blocks]
+    \label{lem:joint_blocks}
+    \lean{PermutationRepresentation.permOp_mul_matrixUnitOp,
+        PermutationRepresentation.matrixUnitOp_mul_permOp,
+        PermutationRepresentation.blockSpan, PermutationRepresentation.pairBlockSpan,
+        PermutationRepresentation.mul_dim_le_finrank_of_invariant}
+    \leanok
+    \uses{lem:isotypic_dimension}
+    For one action, the span of the vectors $E^\lambda_{j1}v$ is invariant and
+    has dimension at most $d_\lambda$. For two commuting actions with labels
+    $\alpha,\beta$ and matrix units $A_{ij},B_{ab}$, the span of the vectors
+    $A_{p1}B_{q1}z$ is invariant under both and has dimension at most
+    $d_\alpha d_\beta$, and every nonzero subspace of the joint isotypic
+    component invariant under both actions has dimension at least
+    $d_\alpha d_\beta$.
+\end{lemma}
+
+\begin{proof}\leanok
+    A permutation operator acts on $E^\lambda_{jo}$ from the left by
+    $\sum_pc_{pj}E^\lambda_{po}$ and on $E^\lambda_{oj}$ from the right by
+    $\sum_qc_{jq}E^\lambda_{oq}$. The lower bound repeats the proof of
+    Lemma~\ref{lem:isotypic_dimension} with the products $A_{ji}B_{ba}$.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 4: grouped copies]
+    \label{thm:schur_label_groups}
+    \lean{TensorPower.groupedCopies_dim, TensorPower.groupedCopies_commute,
+        TensorPower.index_range_youngHom,
+        PermutationRepresentation.mul_dim_le_dim_of_compatible,
+        PermutationRepresentation.dim_le_index_mul_of_compatible}
+    \leanok
+    \uses{lem:joint_blocks}
+    Split the $k$ copies into specified groups of sizes $k-r$ and $r$. If
+    their labels $\alpha,\beta$ on a fixed subsystem are compatible with the
+    full label $\lambda$, then
+    $d_\alpha d_\beta\le d_\lambda\le\binom{k}{r}d_\alpha d_\beta$. The group
+    label projectors commute with the full label projector.
+\end{theorem}
+
+\begin{proof}\leanok
+    Compatibility gives an irreducible block $B$ of $\lambda$ whose image $Y$
+    under $\pi^\alpha\pi^\beta$ is nonzero. $Y$ is invariant under both groups
+    and lies in the joint isotypic component, so
+    $d_\alpha d_\beta\le\dim Y\le\dim B\le d_\lambda$. For the upper bound
+    choose a joint block $Z\subseteq Y$ of dimension at most
+    $d_\alpha d_\beta$. The translates of $Z$ by coset representatives of the
+    Young subgroup span a nonzero invariant subspace of the $\lambda$-isotypic
+    component, of dimension at least $d_\lambda$ and at most
+    $\binom{k}{r}d_\alpha d_\beta$. Central elements of $S_k$ commute with
+    its subgroup algebras.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 3: merge dimensions]
+    \label{thm:schur_label_merge_dimensions}
+    \lean{TensorPower.merge_dim_le,
+        PermutationRepresentation.dim_le_mul_dim_of_compatible,
+        PermutationRepresentation.dim_le_mul_dim_of_compatible'}
+    \leanok
+    \uses{lem:joint_blocks, thm:schur_label_commutation}
+    If $Q,E$ are disjoint and their labels $\lambda,\mu$ are compatible with
+    the label $\nu$ on $QE$, then $d_\nu\le d_\lambda d_\mu$ and
+    $d_\lambda\le d_\nu d_\mu$.
+\end{theorem}
+
+\begin{proof}\leanok
+    A joint block of $\lambda,\mu$ meeting the $\nu$-isotypic component is
+    invariant under $U_{QE}(\pi)=U_Q(\pi)U_E(\pi)$ and has dimension at most
+    $d_\lambda d_\mu$; its image under $\pi^\nu$ has dimension at least
+    $d_\nu$. For the second inequality, let $S_k$ act on matrices by
+    $M\mapsto U_{QE}(\pi)MU_E(\pi)^{-1}$; with $P=\pi^\lambda\pi^\mu\pi^\nu$
+    this sends $P$ to $PU_Q(\pi)$, so the $\lambda$-projection of $P$ is $P$.
+    Writing $P=\sum_{j,b}E^\nu_{jo}NE^\mu_{ob}$ with
+    $N=E^\nu_{oj}PE^\mu_{bo}$, some span of the matrices
+    $E^\nu_{j'o}NE^\mu_{ob'}$ is invariant, of dimension at most
+    $d_\nu d_\mu$, and has nonzero $\lambda$-projection, of dimension at least
+    $d_\lambda$. This replaces the duality argument of the source.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 3: merge moment]
+    \label{thm:schur_label_merge_moment}
+    \lean{TensorPower.merge_conditional_le, TensorPower.merge_moment_le,
+        PermutationRepresentation.trace_mul_trace_eq,
+        PermutationRepresentation.merge_conditional_le,
+        PermutationRepresentation.merge_moment_le_sum_multiplicity}
+    \leanok
+    \uses{thm:schur_label_merge_dimensions, lem:multiplicity_count}
+    Let $\rho$ be a density matrix on $(Q\otimes E)^{\otimes k}$ invariant
+    under the copy permutations of $Q$ and of $E$, for instance a tensor
+    product of permutation-invariant density matrices, and $q=d_Qd_E$. The
+    conditional probability of $\nu$ given $\lambda,\mu$ is at most
+    $(k+1)^{q^2}d_\nu/(d_\lambda d_\mu)$, and for $0\le b\le1$,
+    \[
+        \E\left(\frac{d_\lambda d_\mu}{d_\nu}\right)^b\le(k+1)^{q^2}.
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    With $P=\pi^\lambda\pi^\mu$, the joint matrix units give
+    $\Tr(\rho Z)\tr P=\Tr(\rho P)\tr Z$ for $Z$ in their span, in particular
+    for $Z=\pi^\nu P$. Since $\tr P\ge d_\lambda d_\mu$ when $P\ne0$ and
+    $\tr(\pi^\nu P)\le\tr\pi^\nu=d_\nu m_\nu$, the conditional probability is
+    at most $m_\nu d_\nu/(d_\lambda d_\mu)$. When it is nonzero the labels are
+    compatible, so $R=d_\lambda d_\mu/d_\nu\ge1$ and $R^b\le R$. Summing,
+    the moment is at most $\sum_\nu m_\nu\le(k+1)^{q^2}$.
+\end{proof}

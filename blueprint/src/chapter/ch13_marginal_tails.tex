@@ -321,3 +321,173 @@ depend on the common values there.
     of Lemma~\ref{lem:modular_conjugation_quadratic} gives the factor
     $2\lVert c\rVert\lVert d\rVert$.
 \end{proof}
+
+\begin{lemma}[Local lifts and the trace argument]
+    \label{lem:local_lift}
+    \lean{Entropy.localLift, Entropy.regionState, Entropy.localLift_mul,
+        Entropy.localLift_one, Entropy.localLift_conjTranspose,
+        Entropy.isSupportedOn_localLift, Entropy.IsSupportedOn.exists_localLift,
+        Entropy.IsSupportedOn.mono, Entropy.IsSupportedOn.mul, Entropy.inner_localLift,
+        Entropy.inner_localLift_conj_eq, Entropy.inner_conj_eq_of_isSupportedOn}
+    \leanok
+    \uses{lem:supported_product_decomposition}
+    The lift $K\mapsto K\otimes1$ from a region $D$ is a unital multiplicative
+    map compatible with adjoints, and its range is the set of operators
+    supported on $D$. Support is monotone in $D$ and closed under products.
+    For every vector $\varphi$, $\langle\varphi,(K\otimes1)\varphi\rangle=
+    \Tr\rho_{\varphi,D}K$. Consequently, if $K$ is invertible and commutes with
+    $\rho_{\varphi,D}$, then
+    $\langle\varphi,(K\otimes1)Y(K^{-1}\otimes1)\varphi\rangle=\langle\varphi,
+    Y\varphi\rangle$ for every $Y$ supported on $D$.
+\end{lemma}
+\begin{proof}\leanok
+    The algebraic properties hold for $K\otimes1$ and survive the relabelling.
+    The expectation formula is the defining property of the partial trace,
+    and the last identity follows from cyclicity of the trace, since
+    $K^{-1}\rho_{\varphi,D}K=\rho_{\varphi,D}$.
+\end{proof}
+
+\begin{lemma}[Stationarity of one filter]
+    \label{lem:filter_stationarity}
+    \lean{Entropy.re_inner_commutator_eq_zero_of_isLocalMax,
+        Entropy.isHermitian_of_re_trace_mul_skew_eq_zero,
+        Entropy.commute_of_isHermitian_inv_mul_mul, Entropy.inner_liftProd_conj,
+        Entropy.commute_regionState_of_unitary_max}
+    \leanok
+    \uses{lem:local_lift}
+    Let $K>0$ on a region $D$ maximize $\lVert A(K\otimes1)Cw\rVert$ over its
+    unitary orbit, where $A$ is a product of invertible filters on regions
+    containing $D$, each commuting with the regional state of the output
+    $\psi=A(K\otimes1)Cw$ on its region. Then $K$ commutes with $\rho_{\psi,D}$.
+\end{lemma}
+\begin{proof}\leanok
+    Differentiating along $\mathrm e^{tB}K\mathrm e^{-tB}$ with $B^*=-B$ gives
+    $\operatorname{Re}\langle\psi,A(BK-KB)w'\rangle=0$. Since
+    $BK-KB=(B-KBK^{-1})K$, the descending trace argument of
+    Lemma~\ref{lem:local_lift} removes the outer filters, and the expectation
+    of $B$ is imaginary. Hence $\operatorname{Re}\Tr(K^{-1}\rho KB)=0$ for every
+    skew-Hermitian $B$, so $K^{-1}\rho K$ is Hermitian. In the eigenbasis of
+    $K$ this forces $\rho K^2=K^2\rho$ and then $\rho K=K\rho$.
+\end{proof}
+
+\begin{lemma}[Simultaneous diagonalization]
+    \label{lem:commuting_hermitian}
+    \lean{Matrix.exists_unitary_diagonal_of_commute}
+    \leanok
+    Commuting Hermitian matrices are diagonal in a common orthonormal basis.
+\end{lemma}
+\begin{proof}\leanok
+    The joint eigenspaces form an orthogonal internal direct sum; collect
+    orthonormal bases of the nonzero ones.
+\end{proof}
+
+\begin{lemma}[Clipping of a stationary filter]
+    \label{lem:filter_clipping}
+    \lean{Entropy.deriv_nonpos_of_le_right, Entropy.eq_max_div_of_floor_optimal,
+        Entropy.re_inner_deriv_nonpos_of_le_right, Entropy.hasDerivAt_conj_diagonal_rpow,
+        Entropy.ratio_le_of_diagonal_max, Entropy.abs_log_rpow_sub_le_of_ratio_le}
+    \leanok
+    \uses{lem:filter_stationarity, lem:clipped_filter_cost}
+    Let $K=U\operatorname{diag}(x^{a/2})U^*$ with $x\ge f>0$, $\sum x=1$, maximize
+    the output norm among the filters $U\operatorname{diag}(y^{a/2})U^*$ with
+    $y\ge f$, $\sum y=1$, and let the regional state of the output be
+    $U\operatorname{diag}(q)U^*$. Then $q_k/x_k\le q_i/x_i$ whenever $x_i>f$.
+    If moreover $\#\cdot f<1$, then $x_i=\max\{f,q_i/\lambda\}$ for some
+    $\lambda>0$, hence $|\log(x_i/x_k)^{a/2}|\le\frac a2|\log(q_i/q_k)|$ for
+    positive $q_i,q_k$.
+\end{lemma}
+\begin{proof}\leanok
+    Moving mass from coordinate $i$ to coordinate $k$ is feasible for small
+    $t>0$. Its first-order effect on the squared output norm is
+    $a\operatorname{Re}\Tr\rho G$ with $G=U\operatorname{diag}(v/x)U^*$, after
+    the descending trace argument, and equals $a(q_k/x_k-q_i/x_i)$. The
+    floor-constrained optimality condition and the contraction of a common
+    floor give the rest.
+\end{proof}
+
+\begin{lemma}[Conjugation by a filter commuting with the marginal]
+    \label{lem:filter_energy_term}
+    \lean{Entropy.toEuclideanLin_diagonal_kronecker_one, Entropy.inner_conj_unitary,
+        Entropy.abs_re_inner_sub_conj_le_of_common_basis,
+        Entropy.commute_of_isSupportedOn_disjoint}
+    \leanok
+    \uses{lem:filter_conjugation, lem:commuting_hermitian}
+    If the marginal of a unit vector is $U\operatorname{diag}(q)U^*$ and
+    $L=U\operatorname{diag}(l)U^*$ has clipped eigenvalue ratios with $a\le1/2$,
+    then conjugating a Hermitian $X=\sum c_\alpha\otimes d_\alpha$ by
+    $L\otimes1$ changes the real part of its expectation by at most
+    $4a^2\sum\lVert c_\alpha\rVert\lVert d_\alpha\rVert$. Operators supported on
+    disjoint regions commute.
+\end{lemma}
+\begin{proof}\leanok
+    Transport by $U^*\otimes1$ to the Schmidt coordinates and apply
+    Lemma~\ref{lem:filter_conjugation}. For disjoint supports, both operators
+    are of the forms $A\otimes1$ and $1\otimes B$ across the same cut.
+\end{proof}
+
+\begin{proposition}[Stationary filters are clipped]
+    \label{prop:stationary_filter_clipped}
+    \lean{Entropy.IsFeasibleFilter, Entropy.IsFeasibleFilter.conj,
+        Entropy.IsFeasibleFilter.posDef, Entropy.trace_cfc_conj_diagonal,
+        Entropy.IsFeasibleFilter.of_common_basis, Entropy.trace_regionState,
+        Entropy.exists_clipped_of_max_feasible}
+    \leanok
+    \uses{lem:filter_stationarity, lem:filter_clipping, lem:commuting_hermitian}
+    A filter on $D$ is feasible at floor $f>0$ and weight $a>0$ when it is
+    $U\operatorname{diag}(y^{a/2})U^*$ with $U$ unitary, $y\ge f$ and $\sum y=1$.
+    Let a feasible filter $K$ maximize the output norm of
+    $A(K\otimes1)Cw$ among feasible filters, where $A$ is a product of filters
+    on regions containing $D$, each commuting with its regional state of the
+    output $\psi\ne0$, and let $\#\cdot f<1$. Then $K$ commutes with
+    $\rho_{\psi,D}$, and in a common eigenbasis $K=W\operatorname{diag}(l)W^*$,
+    $\rho_{\psi,D}=W\operatorname{diag}(q)W^*$ with
+    $|\log(l_i/l_k)|\le\frac a2|\log(q_i/q_k)|$ for positive $q_i,q_k$.
+\end{proposition}
+\begin{proof}\leanok
+    Unitary conjugation preserves feasibility, so Lemma~\ref{lem:filter_stationarity}
+    gives commutation. In a common eigenbasis the eigenvalues of $K$ are
+    $x^{a/2}$ with $x\ge f$, $\sum x=1$, by comparing $\Tr K^{2/a}$ in the two
+    bases, and diagonal variations in that basis are feasible.
+    Lemma~\ref{lem:filter_clipping} applies with $\sum q=\lVert\psi\rVert^2>0$.
+\end{proof}
+
+\begin{theorem}[All stationary filters are clipped]
+    \label{thm:all_filters_clipped}
+    \lean{Entropy.chainList, Entropy.liftProd_chainList_split,
+        Entropy.chainList_update_of_ne, Entropy.isDescendingChain_map,
+        Entropy.forall_clipped_of_max}
+    \leanok
+    \uses{prop:stationary_filter_clipped}
+    Let feasible filters $K_j$ on nested regions $D_0\subseteq\dots\subseteq
+    D_{m-1}$ maximize $\lVert L_{m-1}\cdots L_0\Omega\rVert$ over the product of
+    the feasible sets, with nonzero output $\psi$ and $\#\cdot f_j<1$. Then for
+    every $j$, $K_j$ commutes with $\rho_{\psi,D_j}$, and in a common eigenbasis
+    its eigenvalue ratios are clipped.
+\end{theorem}
+\begin{proof}\leanok
+    Descending induction on $j$: the outer filters form a descending chain by
+    the induction hypothesis, and replacing $K_j$ alone keeps the product
+    feasible, so Proposition~\ref{prop:stationary_filter_clipped} applies.
+\end{proof}
+
+\begin{proposition}[Existence of an optimal nested product]
+    \label{prop:filter_maximizer}
+    \lean{Matrix.isCompact_setOf_conjTranspose_mul_self_eq_one,
+        Entropy.isCompact_floorSimplex, Entropy.isCompact_setOf_isFeasibleFilter,
+        Entropy.isFeasibleFilter_uniform, Entropy.continuous_norm_liftProd_chainList,
+        Entropy.exists_max_feasible_chain,
+        Entropy.toEuclideanLin_liftProd_chainList_ne_zero}
+    \leanok
+    Suppose every region $D_j$ carries at least one configuration and
+    $\#\cdot f_j\le 1$. Then the norm $\lVert L_{m-1}\cdots L_0\Omega\rVert$
+    attains its maximum over families of feasible filters. If moreover all floors
+    are positive and $\Omega\ne0$, every such product maps $\Omega$ to a nonzero
+    vector.
+\end{proposition}
+\begin{proof}\leanok
+    The feasible filters are the continuous image of the product of the compact
+    unitary group and the compact floored simplex, and the uniform filter is
+    feasible. The norm is continuous in the filters, so it attains its maximum
+    on the compact product of the feasible sets. Feasible filters with positive
+    floors are positive definite, hence invertible, and so is their product.
+\end{proof}
