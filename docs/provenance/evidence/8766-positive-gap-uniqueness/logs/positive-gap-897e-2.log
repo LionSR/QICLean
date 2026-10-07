@@ -1,0 +1,24 @@
+QICLeanTest/PositiveGapUniqueness.lean:31:8: error: automatically included section variable(s) unused in theorem `_private.QICLeanTest.PositiveGapUniqueness.0.PositiveGapUniquenessTest.gap`:
+  [Fintype n]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype n] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+QICLeanTest/PositiveGapUniqueness.lean:31:0: error: `gap` does not use the following hypothesis in its type:
+  • [Fintype n] (#2)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+QICLeanTest/PositiveGapUniqueness.lean:102:68: error: unsolved goals
+n : Type u_1
+inst✝¹ : Fintype n
+inst✝ : DecidableEq n
+⊢ col 0 true = 0
+QICLeanTest/PositiveGapUniqueness.lean:106:44: error: This simp argument is unused:
+  PiLp.single_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [EuclideanSpace.inner_single_left] at hcoord
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

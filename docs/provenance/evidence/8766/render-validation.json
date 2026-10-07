@@ -1,0 +1,77 @@
+{
+  "status": "passed focused PDF and static HTML verification",
+  "recorded_at_utc": "2026-10-07T10:47:08.660171+00:00",
+  "render_source_checkpoint": "c3481c598e6cdc11ca9a19aabb67cfbd6cb875f5",
+  "target_leaf": "blueprint/src/chapter/ch12_polar_unitary_correction.tex",
+  "target_sha256": "48cdbae1778838352375d81be5754614c8d648e7c3eb1b465d871f5e2c3ab8e7",
+  "lean_sources_sha256": {
+    "QICLean/Analysis/PolarUnitaryCorrection.lean": "dc2cd6e192fddb5bcb1ba4d9461806232597d420123f560ac72f9ab97fa5687d",
+    "QICLean/Analysis/PolarUnitaryCorrectionKronecker.lean": "3fc9ce7fd4d4427170df0f2513d38c1e719b7fb6869c0ce8d127ffb700460b26"
+  },
+  "verification": {
+    "public_declarations": 6,
+    "theorems": 3,
+    "proofs": 3,
+    "checked_markers": 6,
+    "pdf_pages": 4,
+    "pdf_declaration_links": 6,
+    "html_declaration_links": 6,
+    "source_declaration_names_exact": true,
+    "source_leaf_byte_identical": true,
+    "missing_html_anchors": [],
+    "duplicate_ids": {},
+    "error_sentinels": [],
+    "pdf_log_problems": [],
+    "diagrams": 0
+  },
+  "declarations": [
+    "Matrix.PosSemidef.norm_le_norm_add_toEuclideanCLM",
+    "Matrix.PosSemidef.norm_sub_le_add_residuals",
+    "Matrix.PosSemidef.norm_one_sub_le_norm_one_sub_sq",
+    "Matrix.exists_unitary_polar_correction",
+    "Matrix.norm_unitary_sub_le_add_residuals_of_mul_posSemidef",
+    "Matrix.unitary_polar_correction_kronecker_one"
+  ],
+  "mathematical_review": {
+    "norm": "All estimates use Hilbert-space vector norms, matching EuclideanSpace and toEuclideanCLM; no matrix operator-norm claim.",
+    "constants": "Coefficient 1 in the quadratic-defect estimate and coefficients 1 + 1 in the two-residual estimate are preserved in source, PDF, and static HTML.",
+    "polar_unitary": "One unitary U acts on the original space and supplies both estimates simultaneously for every vector; singular D and unnormalized vectors are allowed.",
+    "spectators": "U is fixed before arbitrary finite-dimensional spectator K; V = U tensor I_K preserves both estimates for arbitrary, possibly entangled vectors.",
+    "proof": "Positivity of I + P, equal-Gram unitary extension, and the square-root Kronecker identity are stated faithfully to the two Lean source files."
+  },
+  "visual_review": "All four PDF page images were inspected directly. No clipped or overlapping text, missing glyphs, illegible equations, or detached theorem headings were found. The continuation of the second proof across two content pages is readable.",
+  "tools": {
+    "texra-blueprint": "0.3.8",
+    "plasTeX": "3.1",
+    "leanblueprint": "0.0.20"
+  },
+  "fixture_only_changes": [
+    "content.tex contains a Quantum Entropy chapter wrapper and the exact polar-correction leaf.",
+    "Empty bibliography commands omitted from print.tex and web.tex; source references are direct hyperlinks."
+  ],
+  "warnings": [
+    "Inherited missing pdftex.map/kanjix.map and duplicate page.1 destination warnings; PDF output succeeded.",
+    "dvisvgm/vector imager unavailable; this algebraic leaf has no diagrams."
+  ],
+  "limits": [
+    "Focused section PDF and static HTML only; no full-book, live-browser, MathJax runtime, mobile, or click-interaction verification.",
+    "Declaration URL identifiers and generated local anchors were checked; remote doc publication and URL availability were not checked.",
+    "No Lean builds, cache changes, CI, or external publication performed. Native theorem and guard results are recorded separately."
+  ],
+  "artifacts_sha256": {
+    "blueprint/src/print.pdf": "b5afe607157ac82291e0be6aa6cda1f5aee3d24dec19f1913cda17e102f22688",
+    "blueprint/web/ch-entropy.html": "aa1b5c1d86dd2a5ac23e8ec248cf7d23c3f74d4079e784a123f8bc13f46ea3d8",
+    "blueprint/web/dep_graph_chapter_1.html": "169132ae341217636346b7214beac9d5a8653dd973e6c48719f5feb9d6d9b204",
+    "blueprint/web/dep_graph_document.html": "79e481e74104d1319bb6a395a53ce5f1cff96870ffa77067e96693ba8a4a4bf2",
+    "blueprint/web/dep_graphs.html": "165b847f70689d03f7f171fe4e12c4caedab82ae2936cc9ed6f1601b3c2128f0",
+    "blueprint/web/index.html": "f99a3ca7280edfe8575ad1d7b7392d9dcc0f7182a32af270cf6710299c40f3eb",
+    "pdf-pages/page-1.png": "c0d59511dea5b8be39bdf62e6cda623e73141d3d909c63cc26913a9935eb62be",
+    "pdf-pages/page-2.png": "a914f8a304b407f8b5e4bf7ab29f28e65252fa7010064bdbdee39c9df68caec6",
+    "pdf-pages/page-3.png": "2b79da6a783de442a8dbbcf6a990781669a28a1a719c3464123ab3ab8a9ae252",
+    "pdf-pages/page-4.png": "f6b6f9250caf744fce95f0541fe571edfb55e248446e5d076b7dcd86e463ce13"
+  },
+  "raw_render_logs_sha256": {
+    "pdf-build.log": "fea106f18f709f751775871abbc7e119d645088b8e6c63ee3e6ea36eca9e8b9f",
+    "web-build.log": "6f81e5867b359a5746f4aafe18796fb52fcbaeef7700c8d79601b3a958f8a1ce"
+  }
+}

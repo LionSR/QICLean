@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "leaf_sha256": "bb98535114b0ee29869893ee380d7ffb88cfacd80342ac12061ce838f4be6334",
+  "method": "PDF pages rasterized with pdftoppm at120dpi and visually inspected; emitted web SVG rasterized with MuPDF at3x and visually inspected; no browser used",
+  "inspected": {
+    "pdf-pages/page-3.png": "5716746b3b6d33b72b9140a89322e56074956ec775986d1b62282ac890af98b1",
+    "pdf-pages/page-4.png": "a94bc547a33521203dc412b13b242657e11ad435e13f97f208377a92d96efbfc",
+    "pdf-pages/page-5.png": "dc0a3b648bd3ff06642b4624d6099b9695b2fa3fdbb63f54d1fedf1113e95e6a",
+    "diagram-web.png": "d1b4f24fa255ecad3c8927b1aa3f317ba41ab634bfa78ac37ec42cecf2956e8a"
+  },
+  "observations": [
+    "Diagram reads left to right as K, F_A, K dagger",
+    "Two incoming and two outgoing Q legs retain original doubled buffer",
+    "Each internal wire is labeled A tensor B; all four contracted bundled legs are visible",
+    "PDF prose, equations, checked markers, and proof endings are legible without clipping or overlap",
+    "Final theorem and full proof occupy one content page"
+  ],
+  "limits": [
+    "No live-browser, MathJax, responsive-layout, or full-book validation"
+  ]
+}

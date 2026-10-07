@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "public_declarations": 3,
+  "consumer_examples": 8,
+  "guarded_reports": 3,
+  "raw_reports": 3,
+  "historical_failures": 4,
+  "public_checkpoint": "5a846a09030085ad1546d50163caad111f7748f4",
+  "scope": "Retained evidence and file identities; no Lean or CI execution."
+}

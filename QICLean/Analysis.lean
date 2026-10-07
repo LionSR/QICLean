@@ -17,12 +17,14 @@ import QICLean.Analysis.CfcConjugation
 import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CoisometricCompression
+import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
+import QICLean.Analysis.DoubledSystemGap
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.EntropyDecomposition
 import QICLean.Analysis.EntropyMarkovForward
@@ -59,6 +61,7 @@ import QICLean.Analysis.LiebOperatorConcave
 import QICLean.Analysis.LiebOperatorIntegral
 import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
+import QICLean.Analysis.LogClipping
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixFamilySupport
 import QICLean.Analysis.MatrixFittingRange
@@ -72,9 +75,13 @@ import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
+import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.PhaseError
+import QICLean.Analysis.PolarUnitaryCorrection
+import QICLean.Analysis.PolarUnitaryCorrectionKronecker
 import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
+import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.PureStateTraceDistance
@@ -113,6 +120,7 @@ import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceDistance
+import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceNormAbs
 import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Analysis.TraceNormContractivity
@@ -124,6 +132,7 @@ import QICLean.Analysis.TwoProjectionCompression
 import QICLean.Analysis.TwoProjectionCompressionSpectrum
 import QICLean.Analysis.TwoProjectionDefectBlockSum
 import QICLean.Analysis.TwoProjectionReducedProjection
+import QICLean.Analysis.TypicalSet
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.WeightedCesaroMean
