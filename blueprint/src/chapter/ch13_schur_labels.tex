@@ -386,3 +386,59 @@ lemma~\cite[Lemma 6.1]{OpenAI2026AreaLaw}.
     compatible, so $R=d_\lambda d_\mu/d_\nu\ge1$ and $R^b\le R$. Summing,
     the moment is at most $\sum_\nu m_\nu\le(k+1)^{q^2}$.
 \end{proof}
+
+\section{The dimension formulas}
+
+The first part of the Schur-label lemma identifies the labels of $S_k$
+occurring in $(\C^q)^{\otimes k}$ with the partitions $\lambda\vdash k$ of
+length at most $q$ and states the dimension formulas
+\[
+    \dim V^{(q)}_\lambda=\prod_{i<j}\frac{l_i-l_j}{j-i},\qquad
+    d_\lambda=\frac{k!\prod_{i<j}(l_i-l_j)}{\prod_il_i!},\qquad
+    l_i=\lambda_i+q-i.
+\]
+The identification is not yet formalized. The following lemmas concern the
+right-hand sides of these formulas.
+
+\begin{lemma}[Stirling bounds]
+    \label{lem:stirling_log_factorial}
+    \lean{Real.log_factorial_sub_nonneg, Real.log_factorial_sub_le,
+        Real.mul_log_add_sub_bounds}
+    \leanok
+    For every $n\ge0$,
+    $0\le\log n!-(n\log n-n)\le\log(n+2)+1$. For natural numbers $a,s$,
+    $0\le(a+s)\log(a+s)-a\log a\le s(\log(a+s)+1)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The lower bound is Stirling's inequality
+    $n!\ge\sqrt{2\pi n}(n/e)^n$. The upper bound follows because the Stirling
+    sequence $n!/(\sqrt{2n}(n/e)^n)$ decreases and equals $e/\sqrt2$ at
+    $n=1$. For the second statement use $\log(1+s/a)\le s/a$.
+\end{proof}
+
+\begin{lemma}[Entropy asymptotics of the dimension formula]
+    \label{lem:hook_formula_entropy}
+    \lean{Partition.hookFormula, Partition.entropyTerm,
+        Partition.abs_log_hookFormula_sub_le,
+        Partition.abs_log_hookFormula_sub_le_mul_log,
+        Partition.weylFormula, Partition.weylFormula_le}
+    \leanok
+    \uses{lem:stirling_log_factorial}
+    Let $\lambda\vdash k$ have length at most $q$, and let $D_\lambda$ be the
+    right-hand side of the formula for $d_\lambda$. Then
+    \[
+        |\log D_\lambda-kH(\lambda/k)|\le(q^2+q+1)\bigl(\log(k+q+2)+1\bigr),
+    \]
+    so $\log D_\lambda=kH(\lambda/k)+O_q(\log(k+2))$. The right-hand side of the
+    formula for $\dim V^{(q)}_\lambda$ is at most $(k+q)^{q^2}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $\log D_\lambda=\log k!+\sum_{i<j}\log(l_i-l_j)-\sum_i\log l_i!$ and
+    $kH(\lambda/k)=k\log k-\sum_i\lambda_i\log\lambda_i$. The difference is the
+    sum of the Stirling errors, the Vandermonde term, the shifts
+    $\sum_i(l_i-\lambda_i)\le q^2$, and $\sum_i(\lambda_i\log\lambda_i-l_i\log l_i)$;
+    each is bounded by Lemma~\ref{lem:stirling_log_factorial} using
+    $1\le l_i-l_j\le l_i\le k+q$.
+\end{proof}
