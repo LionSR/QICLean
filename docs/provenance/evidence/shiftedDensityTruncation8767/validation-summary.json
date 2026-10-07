@@ -1,0 +1,29 @@
+{
+  "public_declarations": 21,
+  "regression_examples": 18,
+  "public_axioms_clean": true,
+  "all_source_closures_unchanged": true,
+  "strict_runs": [
+    {
+      "module": "QICLean.Analysis.ShiftedDensityTruncation",
+      "elapsed_seconds": 4.6816590140078915,
+      "source_sha256": "43b497f22747cc905e3d2eb46328726adfcbc33a1a992d4768f9b7361281b65a",
+      "log": "/workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/logs/QICLean.Analysis.ShiftedDensityTruncation.119582222363423.log"
+    },
+    {
+      "module": "QICLeanTest.ShiftedDensityTruncation",
+      "elapsed_seconds": 3.8546900829969672,
+      "source_sha256": "97a29ae8007be562bc721434870b646336ec5fa248d7a57e5116b02f6a9d0a50",
+      "log": "/workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/logs/QICLeanTest.ShiftedDensityTruncation.119586953496256.log"
+    },
+    {
+      "module": "ShiftedDensityTruncationAxioms",
+      "elapsed_seconds": 2.273474654997699,
+      "source_sha256": "753ab291fb7a75c4782e65e22c711499f35c38fd8fc6bdf4924a89207379eb17",
+      "log": "/workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/logs/ShiftedDensityTruncationAxioms.119590853475808.log"
+    }
+  ],
+  "full_lake_build": "not run locally; full CI build required before direct regression",
+  "compile_reuse": "exact source and actual compiler output hashes; no fabricated traces",
+  "remote_mutations": "none"
+}
