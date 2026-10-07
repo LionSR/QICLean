@@ -79,7 +79,6 @@ theorem log_two_mul_le_two_mul_log {N d : ℕ} (hN : N ≤ d ^ 2) (hd : 1 ≤ d)
     rw [Real.log_mul two_ne_zero (by positivity), Real.log_pow]; push_cast; ring
   have h2 : Real.log 2 ≤ 2 := by
     have := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2); linarith
-  push_cast at h1
   linarith
 
 /-- The local conjugation estimate for a term with a product decomposition. -/
@@ -141,7 +140,7 @@ theorem re_inner_tilt_sub_le (hherm : ∀ i, (h i).IsHermitian) (hnorm : ∀ i, 
       have h3 : ∀ j, star (((Real.exp (u * -Real.log (p j)) / surprisalMoment p u : ℝ) : ℂ)) *
           1 * ⟪schmidtRow Ψ j, schmidtRow Ψ j⟫_ℂ =
           ((p j * Real.exp (u * -Real.log (p j)) / surprisalMoment p u : ℝ) : ℂ) := fun j ↦ by
-        rw [hrow, if_pos rfl, star_def, conj_ofReal]; push_cast; ring
+        rw [hrow, ite_eq_left_of_eq_true _ _ (eq_self _), star_def, conj_ofReal]; push_cast; ring
       simp_rw [h3]
       rw [← ofReal_sum, ← Finset.sum_div]
       change ((surprisalMoment p u / surprisalMoment p u : ℝ) : ℂ) = 1
@@ -226,7 +225,7 @@ theorem gap_surprisalMoment (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c�
   have hM := surprisalMoment_pos hp hs u
   have hexc := re_inner_tilt_sub_le hherm hnorm hone hdim hcross hp hs hrow heig hu hu'
   have hg := hgap.gap_le (tilt Ψ p u)
-  rw [norm_tilt hp hs hrow u, inner_tilt hp hs hrow u, norm_real, Real.norm_eq_abs, sq_abs,
+  rw [norm_tilt hp hs hrow u, inner_tilt hrow u, norm_real, Real.norm_eq_abs, sq_abs,
     div_pow, Real.sq_sqrt hM.le, one_pow, mul_one] at hg
   have hB : ∑ i ∈ Cr, Real.log (Real.exp 1 * dim i) ^ 2 ≤ cutLogBudget Cr dim := by
     unfold cutLogBudget; linarith
@@ -316,7 +315,8 @@ theorem log_surprisalMoment_le_of_schmidtRow (hherm : ∀ i, (h i).IsHermitian) 
   linarith
 
 /-- **Marginal tail bound in Schmidt coordinates.** Under the same hypotheses, for every
-`w ≥ 0`, `Pr {|K - S| > w} ≤ min {1, 2 e^{e/2} exp (-w / (32 √((1 + ϑ) ℬ)))}`.
+real `w` (the manuscript states `w ≥ 0`),
+`Pr {|K - S| > w} ≤ min {1, 2 e^{e/2} exp (-w / (32 √((1 + ϑ) ℬ)))}`.
 Area-law manuscript, Lemma 3.1, `02-initial.tex`, lines 64–69 and 204–207,
 `eq:initial-tail-probability`. -/
 theorem surprisalTail_le_of_schmidtRow (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀)
@@ -327,7 +327,7 @@ theorem surprisalTail_le_of_schmidtRow (hherm : ∀ i, (h i).IsHermitian) (hc₀
     {g₀ : ℝ} (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
     (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
       (g₀ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ)))).PosSemidef)
-    {w : ℝ} (hw : 0 ≤ w) :
+    (w : ℝ) :
     surprisalTail p (∑ j, Real.negMulLog (p j)) w ≤
       min 1 (2 * Real.exp (Real.exp 1 / 2) *
         Real.exp (-(w / (32 * Real.sqrt ((1 + c₀ / g₀) * cutLogBudget Cr dim))))) := by

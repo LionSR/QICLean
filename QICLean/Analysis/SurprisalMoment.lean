@@ -215,13 +215,15 @@ theorem surprisalTail_le {p : ι → ℝ} (hp : ∀ i, 0 ≤ p i) (hs : ∑ i, p
     simp only [surprisalMoment, Real.exp_add, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ ↦ by simp only [K]; ring
   have hpos := surprisalMoment_pos hp hs
-  have hA : ∑ i, p i * Real.exp (r * (K i - S - w)) ≤ Real.exp (C * r ^ 2) * Real.exp (-(r * w)) := by
+  have hA : ∑ i, p i * Real.exp (r * (K i - S - w)) ≤
+      Real.exp (C * r ^ 2) * Real.exp (-(r * w)) := by
     have := hM r (-(r * S) - r * w)
     rw [show (fun i ↦ p i * Real.exp (r * (K i - S - w))) =
       fun i ↦ p i * Real.exp (r * K i + (-(r * S) - r * w)) from funext fun i ↦ by ring_nf] at *
     rw [this, ← Real.exp_log (hpos r), ← Real.exp_add, ← Real.exp_add]
     exact Real.exp_le_exp.mpr (by linarith)
-  have hB : ∑ i, p i * Real.exp (r * (S - K i - w)) ≤ Real.exp (C * r ^ 2) * Real.exp (-(r * w)) := by
+  have hB : ∑ i, p i * Real.exp (r * (S - K i - w)) ≤
+      Real.exp (C * r ^ 2) * Real.exp (-(r * w)) := by
     have := hM (-r) (r * S - r * w)
     rw [show (fun i ↦ p i * Real.exp (r * (S - K i - w))) =
       fun i ↦ p i * Real.exp (-r * K i + (r * S - r * w)) from funext fun i ↦ by ring_nf] at *

@@ -87,9 +87,11 @@ theorem inner_rowWeight (a c : α → ℂ) (Θ : EuclideanSpace ℂ (α × β))
   simp only [map_mul]
   ring
 
+omit [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] in
 theorem rowWeight_one (Θ : EuclideanSpace ℂ (α × β)) : rowWeight (fun _ ↦ 1) Θ = Θ := by
   ext x; simp [rowWeight]
 
+omit [DecidableEq α] [DecidableEq β] in
 theorem norm_rowWeight_of_norm_eq_one {a : α → ℂ} (ha : ∀ j, ‖a j‖ = 1)
     (Θ : EuclideanSpace ℂ (α × β)) : ‖rowWeight a Θ‖ = ‖Θ‖ := by
   simp [rowWeight, EuclideanSpace.norm_eq, ha]
@@ -109,16 +111,16 @@ theorem norm_modularExpectation_mul_I_le (Θ : EuclideanSpace ℂ (α × β)) (s
     (X : Matrix (α × β) (α × β) ℂ) (y : ℝ) :
     ‖modularExpectation Θ s X (y * I)‖ ≤ ‖X‖ * ‖Θ‖ ^ 2 := by
   set a : α → ℂ := fun j ↦ exp (-(y * Real.log (s j) : ℝ) * I)
-  have ha : ∀ j, ‖a j‖ = 1 := fun j ↦ by rw [Complex.norm_exp]; simp [a]
+  have ha : ∀ j, ‖a j‖ = 1 := fun j ↦ by rw [Complex.norm_exp]; simp
   have h := inner_rowWeight a a Θ X
   have heq : modularExpectation Θ s X (y * I) =
       ⟪rowWeight a Θ, toEuclideanLin X (rowWeight a Θ)⟫_ℂ := by
     rw [h, modularExpectation]
     refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun k _ ↦ ?_
     congr 1
-    simp only [a, star_def, ← exp_conj, map_mul, conj_ofReal, conj_I, ← exp_add]
+    simp only [a, star_def, ← exp_conj, map_mul, conj_I, ← exp_add]
     congr 1
-    simp only [map_neg, map_mul, conj_ofReal]
+    simp only [map_neg, conj_ofReal]
     push_cast
     ring
   rw [heq]
@@ -130,6 +132,7 @@ theorem norm_modularExpectation_mul_I_le (Θ : EuclideanSpace ℂ (α × β)) (s
         exact ContinuousLinearMap.le_opNorm _ _
     _ = ‖X‖ * ‖Θ‖ ^ 2 := by rw [norm_rowWeight_of_norm_eq_one ha]; ring
 
+omit [DecidableEq α] [DecidableEq β] [Fintype α] in
 /-- The pairing matrix of a Hermitian operator is Hermitian. -/
 theorem star_schmidtPairing {X : Matrix (α × β) (α × β) ℂ} (hX : Matrix.IsHermitian X)
     (Θ : EuclideanSpace ℂ (α × β)) (j k : α) :
@@ -141,6 +144,7 @@ theorem star_schmidtPairing {X : Matrix (α × β) (α × β) ℂ} (hX : Matrix.
   simp only [star_def]
   ring
 
+omit [DecidableEq α] [DecidableEq β] in
 /-- **Real symmetry.** For Hermitian `X` and real `x`, `f(-x) = conj f(x)`.
 Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 151–153. -/
 theorem modularExpectation_neg {X : Matrix (α × β) (α × β) ℂ} (hX : Matrix.IsHermitian X)
@@ -154,18 +158,21 @@ theorem modularExpectation_neg {X : Matrix (α × β) (α × β) ℂ} (hX : Matr
   push_cast
   ring
 
+omit [DecidableEq α] [DecidableEq β] in
 /-- The modular function is entire. -/
 theorem differentiable_modularExpectation (Θ : EuclideanSpace ℂ (α × β)) (s : α → ℝ)
     (X : Matrix (α × β) (α × β) ℂ) : Differentiable ℂ (modularExpectation Θ s X) := by
   unfold modularExpectation
   fun_prop
 
+omit [Fintype α] [DecidableEq α] [DecidableEq β] in
 theorem schmidtPairing_add (Θ : EuclideanSpace ℂ (α × β)) (X Y : Matrix (α × β) (α × β) ℂ)
     (j k : α) : schmidtPairing Θ (X + Y) j k = schmidtPairing Θ X j k + schmidtPairing Θ Y j k := by
   simp only [schmidtPairing, Matrix.add_apply, ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun b _ ↦ Finset.sum_congr rfl fun b' _ ↦ ?_
   ring
 
+omit [DecidableEq α] [DecidableEq β] in
 theorem modularExpectation_sum {ι : Type*} (t : Finset ι) (Θ : EuclideanSpace ℂ (α × β))
     (s : α → ℝ) (X : ι → Matrix (α × β) (α × β) ℂ) (z : ℂ) :
     modularExpectation Θ s (∑ i ∈ t, X i) z = ∑ i ∈ t, modularExpectation Θ s (X i) z := by
@@ -188,11 +195,11 @@ theorem norm_toEuclideanLin_le {m : Type*} [Fintype m] [DecidableEq m] (A : Matr
 theorem sum_norm_apply_sq_le_left {m : Type*} [Fintype m] [DecidableEq m] (A : Matrix m m ℂ)
     (k : m) : ∑ j, ‖A j k‖ ^ 2 ≤ ‖A‖ ^ 2 := by
   have h := norm_toEuclideanLin_le A (EuclideanSpace.single k 1)
-  rw [EuclideanSpace.norm_single, norm_one, mul_one] at h
+  rw [PiLp.norm_single, norm_one, mul_one] at h
   have h2 := pow_le_pow_left₀ (norm_nonneg _) h 2
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _)] at h2
   convert h2 using 2 with j
-  simp [toLpLin_apply, mulVec, dotProduct, Pi.single_apply]
+  simp [toLpLin_apply]
 
 /-- Row entries of a matrix have square sum at most the squared operator norm. -/
 theorem sum_norm_apply_sq_le_right {m : Type*} [Fintype m] [DecidableEq m] (A : Matrix m m ℂ)
@@ -219,6 +226,7 @@ noncomputable def unitRow (Θ : EuclideanSpace ℂ (α × β)) (s : α → ℝ) 
     EuclideanSpace ℂ β :=
   ((Real.sqrt (s j) : ℂ))⁻¹ • schmidtRow Θ j
 
+omit [Fintype α] [DecidableEq β] in
 theorem schmidtRow_eq_smul_unitRow (hs : ∀ j, 0 ≤ s j)
     (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0) (j : α) :
     schmidtRow Θ j = (Real.sqrt (s j) : ℂ) • unitRow Θ s j := by
@@ -230,6 +238,7 @@ theorem schmidtRow_eq_smul_unitRow (hs : ∀ j, 0 ≤ s j)
       rw [Ne, ofReal_eq_zero, Real.sqrt_eq_zero (hs j)]; exact h
     simp [unitRow, smul_smul, mul_inv_cancel₀ this]
 
+omit [Fintype α] [DecidableEq β] in
 theorem inner_unitRow (hs : ∀ j, 0 ≤ s j)
     (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0) (j k : α) :
     ⟪unitRow Θ s j, unitRow Θ s k⟫_ℂ = if j = k ∧ s j ≠ 0 then 1 else 0 := by
@@ -242,10 +251,11 @@ theorem inner_unitRow (hs : ∀ j, 0 ≤ s j)
         rw [← ofReal_mul, Real.mul_self_sqrt (hs j)]
       have hne : (Real.sqrt (s j) : ℂ) ≠ 0 := by
         rw [Ne, ofReal_eq_zero, Real.sqrt_eq_zero (hs j)]; exact h
-      simp only [if_true, h, ne_eq, not_false_eq_true, and_self]
+      simp only [ite_true, h, ne_eq, not_false_eq_true, and_self]
       rw [← hsq]; field_simp
   · simp [hjk]
 
+omit [DecidableEq β] [Fintype α] in
 theorem norm_unitRow_le (hs : ∀ j, 0 ≤ s j)
     (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0) (j : α) :
     ‖unitRow Θ s j‖ ≤ 1 := by
@@ -256,6 +266,7 @@ theorem norm_unitRow_le (hs : ∀ j, 0 ≤ s j)
   · simp at h2; nlinarith [norm_nonneg (unitRow Θ s j)]
   · simp at h2; nlinarith [norm_nonneg (unitRow Θ s j)]
 
+omit [DecidableEq β] in
 /-- Bessel's inequality for the normalized rows. -/
 theorem sum_norm_inner_unitRow_sq_le (hs : ∀ j, 0 ≤ s j)
     (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0)
@@ -280,6 +291,7 @@ theorem sum_norm_inner_unitRow_sq_le (hs : ∀ j, 0 ≤ s j)
 
 end Rows
 
+omit [Fintype α] [DecidableEq α] in
 theorem schmidtPairing_kronecker (Θ : EuclideanSpace ℂ (α × β)) (c : Matrix α α ℂ)
     (d : Matrix β β ℂ) (j k : α) :
     schmidtPairing Θ (c ⊗ₖ d) j k =

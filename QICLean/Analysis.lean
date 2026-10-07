@@ -98,11 +98,13 @@ import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
 import QICLean.Analysis.SqrtHolder
+import QICLean.Analysis.StripQuadratic
 import QICLean.Analysis.SubperipheralSpectrum
 import QICLean.Analysis.SuperoperatorResolvent
 import QICLean.Analysis.SupportCompressedEntropy
 import QICLean.Analysis.SupportCompression
 import QICLean.Analysis.SupportLogJensen
+import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceDistance
 import QICLean.Analysis.TraceNormAbs

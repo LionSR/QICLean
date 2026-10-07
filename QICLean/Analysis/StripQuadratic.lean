@@ -147,8 +147,8 @@ theorem abs_re_sub_le_of_norm_le_closedBall {f : ℂ → ℂ} (hf : Differentiab
     ((differentiableOn_dslope (s := univ) Filter.univ_mem).mpr hk.differentiableOn).differentiableAt
       Filter.univ_mem
   have hq : Differentiable ℂ q := fun w ↦
-    ((differentiableOn_dslope (s := univ) Filter.univ_mem).mpr hk1.differentiableOn).differentiableAt
-      Filter.univ_mem
+    ((differentiableOn_dslope (s := univ) Filter.univ_mem).mpr
+      hk1.differentiableOn).differentiableAt Filter.univ_mem
   have hkq : ∀ w, k w = w ^ 2 * q w := by
     intro w
     have e1 := sub_smul_dslope k 0 w
