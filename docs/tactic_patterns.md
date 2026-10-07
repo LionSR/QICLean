@@ -82,3 +82,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   essential. Fixed-coordinate multiplicity must not be included in the
   dimension of the moving tensor power. Empty coordinate sets and zero
   moving coordinates remain included.
+
+### Compression by an actual central projection — candidate (2026-10-08)
+
+- **Pattern:** Apply `PosSemidef.conjTranspose_mul_mul_same` to a derived
+  matrix order inequality, then use Hermiticity, idempotence and the
+  actual central-observable eigenvalue identity to simplify the result.
+- **Seen:** `TensorPower.copyPerm_groupedGood_labelEntropy_compression` in
+  `QICLean/Representation/GoodAuxiliaryLabelCompression.lean`; one new
+  mathematical consumer. The existing support-compression arguments in
+  `SchurSurprisal.lean` also use the same Mathlib conjugation theorem.
+- **Abstraction:** Reuse the Mathlib conjugation theorem and the existing
+  `labelObservable_mul_labelProj` identity. No new tactic or generic
+  projection-compression definition is introduced.
+- **Caveats:** The central projection and its eigenvalue are derived from
+  the actual representation. Labels with zero projection need no separate
+  occurrence assumption; physical excitation support remains a distinct
+  assertion.
