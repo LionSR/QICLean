@@ -204,6 +204,41 @@ theorem lift_mul_rearrange (a₁ c a₂ : Matrix (P₀ × P₁) (P₀ × P₁) �
     _ = liftP a₁ * (liftP c * ((liftP a₂ * liftY b₁) * (liftY d * liftY b₂))) := by rw [e3]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+theorem norm_toLp_le_one_of_re_le {n : Type*} [Fintype n] {v : n → ℂ}
+    (h : (star v ⬝ᵥ v).re ≤ 1) : ‖(WithLp.toLp 2 v : EuclideanSpace ℂ n)‖ ≤ 1 := by
+  have h2 := norm_toLp_sq_eq_re' v
+  have := norm_nonneg (WithLp.toLp 2 v : EuclideanSpace ℂ n)
+  nlinarith
+
+/-- One term of the matrix-unit expansion has modulus at most one. -/
+theorem norm_skew_term_le (hθ : star θ ⬝ᵥ θ = 1) {c : Matrix (P₀ × P₁) (P₀ × P₁) ℂ}
+    (hc₁ : c * cᴴ ≤ 1) (hc₂ : cᴴ * c ≤ 1) {d : Matrix (X × U) (X × U) ℂ} (hd₁ : d * dᴴ ≤ 1)
+    (hd₂ : dᴴ * d ≤ 1) {z : ℂ} (hz₀ : 0 ≤ z.re) (hz₁ : z.re ≤ 1 / 2) :
+    ‖star θ ⬝ᵥ ((liftP (cfcC (margP θ) (suppPowFun z) * c * cfcC (margP θ) (suppPowFun (-z))) *
+      liftY (cfcC (margY θ) (suppPowFun (-z)) * d * cfcC (margY θ) (suppPowFun z))) *ᵥ θ)‖ ≤ 1 := by
+  have hP := posSemidef_margP θ
+  have hY := posSemidef_margY θ
+  have htrP : (margP θ).trace.re ≤ 1 := by rw [trace_margP, hθ, Complex.one_re]
+  have htrY : (margY θ).trace.re ≤ 1 := by rw [trace_margY, hθ, Complex.one_re]
+  rw [liftP_liftY_comm, ← mulVec_mulVec, star_dotProduct_mulVec_eq, conjTranspose_liftY]
+  refine (norm_star_dotProduct_le _ _).trans ?_
+  rw [← one_mul (1 : ℝ)]
+  refine mul_le_mul (norm_toLp_le_one_of_re_le ?_) (norm_toLp_le_one_of_re_le ?_) (norm_nonneg _)
+    zero_le_one
+  · have hB : (cfcC (margY θ) (suppPowFun (-z)) * d * cfcC (margY θ) (suppPowFun z))ᴴ =
+        cfcC (margY θ) (suppPowFun (starRingEnd ℂ z)) * dᴴ *
+          cfcC (margY θ) (suppPowFun (-(starRingEnd ℂ z))) := by
+      rw [conjTranspose_mul, conjTranspose_mul, conjTranspose_suppPow hY,
+        conjTranspose_suppPow hY, map_neg, Matrix.mul_assoc]
+    rw [normSq_liftY_mulVec, hB]
+    have hd₁' : dᴴ * dᴴᴴ ≤ 1 := by rwa [conjTranspose_conjTranspose]
+    have hd₂' : dᴴᴴ * dᴴ ≤ 1 := by rwa [conjTranspose_conjTranspose]
+    have := re_trace_sandwich_mul_le hY htrY hd₁' hd₂' (z := starRingEnd ℂ z)
+      (by simpa using hz₀) (by simpa using hz₁)
+    simpa [Matrix.mul_assoc] using this
+  · rw [normSq_liftP_mulVec]
+    exact re_trace_sandwich_mul_le hP htrP hc₁ hc₂ hz₀ hz₁
+
 end Terms
 
 end Entropy.ConditionalSkew
