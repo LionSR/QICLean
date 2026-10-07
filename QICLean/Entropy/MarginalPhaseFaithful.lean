@@ -47,9 +47,11 @@ section Faithful
 
 variable {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ}
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem posDef_marginalUF [Nonempty X] (hρ : ρ.PosDef) : (marginalUF ρ).PosDef :=
   hρ.partialTraceLeft
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem posDef_marginalXU [Nonempty F] (hρ : ρ.PosDef) : (marginalXU ρ).PosDef :=
   (hρ.submatrix assocE.injective).partialTraceRight
 
@@ -117,6 +119,7 @@ theorem spectralFun_sigmaF (hUF : (marginalUF ρ).PosDef) :
   funext p
   simp [sigmaFEig]
 
+omit [DecidableEq F] in
 theorem spectralFun_sigmaS (hU : (marginalU ρ).PosDef) :
     spectralFun (sigmaSUnitary hU) (fun p => (sigmaSEig hU p : ℂ)) = sigmaS ρ := by
   have h := spectralFun_kronecker (1 : unitary (Matrix X X ℂ)) hU.1.eigenvectorUnitary
@@ -127,12 +130,12 @@ theorem spectralFun_sigmaS (hU : (marginalU ρ).PosDef) :
   funext p
   simp [sigmaSEig]
 
-omit [DecidableEq X] [DecidableEq U] in
+omit [DecidableEq X] [DecidableEq U] [Fintype X] [Fintype U] [Fintype F] in
 theorem embedF_add (A B : Matrix (X × U) (X × U) ℂ) :
     embedF (F := F) (A + B) = embedF A + embedF B := by
   ext i j; simp [embedF, add_mul]
 
-omit [DecidableEq X] [DecidableEq U] in
+omit [DecidableEq X] [DecidableEq U] [Fintype X] [Fintype U] [Fintype F] in
 theorem embedF_smul (c : ℂ) (A : Matrix (X × U) (X × U) ℂ) :
     embedF (F := F) (c • A) = c • embedF A := by
   ext i j; simp [embedF, mul_assoc]
@@ -186,6 +189,91 @@ theorem linMatrix_isoMap_isometry :
       simp only [Matrix.mul_assoc], trace_mul_comm, rpowSpec_mul, Matrix.mul_assoc,
     rpowSpec_mul]
   norm_num [rpowSpec_zero]
+
+theorem trace_isoMap_conjTranspose_mul_mul (Z Y : Matrix (X × U) (X × U) ℂ)
+    (M N : Matrix (X × (U × F)) (X × (U × F)) ℂ) :
+    ((isoMap ρ hρ Z)ᴴ * M * isoMap ρ hρ Y * N).trace =
+      (embedF (rpowSpec (posDef_marginalXU hρ) (-1 / 2) * Zᴴ) * M *
+        embedF (Y * rpowSpec (posDef_marginalXU hρ) (-1 / 2)) *
+        (rpowSpec hρ (1 / 2) * N * rpowSpec hρ (1 / 2))).trace := by
+  rw [isoMap_apply, isoMap_apply, conjTranspose_mul, conjTranspose_embedF, conjTranspose_mul,
+    rpowSpec_isHermitian, rpowSpec_isHermitian]
+  rw [show rpowSpec hρ (1 / 2) * embedF (rpowSpec (posDef_marginalXU hρ) (-1 / 2) * Zᴴ) * M *
+      (embedF (Y * rpowSpec (posDef_marginalXU hρ) (-1 / 2)) * rpowSpec hρ (1 / 2)) * N =
+      rpowSpec hρ (1 / 2) * (embedF (rpowSpec (posDef_marginalXU hρ) (-1 / 2) * Zᴴ) * M *
+        embedF (Y * rpowSpec (posDef_marginalXU hρ) (-1 / 2)) * rpowSpec hρ (1 / 2) * N) by
+      simp only [Matrix.mul_assoc]]
+  rw [trace_mul_comm]
+  simp only [Matrix.mul_assoc]
+
+/-- The eigenbasis of `A = L_{σ_f} R_{ρ^{-1}}` on the Hilbert--Schmidt space. -/
+def unitaryA : unitary (Matrix ((X × (U × F)) × (X × (U × F))) ((X × (U × F)) × (X × (U × F))) ℂ) :=
+  kroneckerUnitary (conjUnitary hρ.1.eigenvectorUnitary) (sigmaFUnitary (posDef_marginalUF hρ))
+
+/-- The eigenvalues `σ_k / ρ_j` of `A`. -/
+def eigA (p : (X × (U × F)) × (X × (U × F))) : ℝ :=
+  hρ.1.eigenvalues p.1 ^ (-1 : ℝ) * sigmaFEig (posDef_marginalUF hρ) p.2
+
+/-- The eigenbasis of `B = L_{σ_s} R_{ρ_{xU}^{-1}}`. -/
+def unitaryB : unitary (Matrix ((X × U) × (X × U)) ((X × U) × (X × U)) ℂ) :=
+  kroneckerUnitary (conjUnitary (posDef_marginalXU (F := F) hρ).1.eigenvectorUnitary)
+    (sigmaSUnitary (posDef_marginalU hρ))
+
+/-- The eigenvalues of `B`. -/
+def eigB (p : (X × U) × (X × U)) : ℝ :=
+  (posDef_marginalXU (F := F) hρ).1.eigenvalues p.1 ^ (-1 : ℝ) *
+    sigmaSEig (posDef_marginalU (F := F) hρ) p.2
+
+omit [Nonempty F] in
+theorem spectralFun_eigA :
+    spectralFun (unitaryA hρ) (fun p => (eigA hρ p : ℂ)) = (rpowSpec hρ (-1))ᵀ ⊗ₖ sigmaF ρ := by
+  rw [rpowSpec, transpose_spectralFun, ← spectralFun_sigmaF (posDef_marginalUF hρ),
+    spectralFun_kronecker, unitaryA]
+  congr 1
+  funext p
+  simp [eigA]
+
+theorem spectralFun_eigB :
+    spectralFun (unitaryB hρ) (fun p => (eigB hρ p : ℂ)) =
+      (rpowSpec (posDef_marginalXU (F := F) hρ) (-1))ᵀ ⊗ₖ sigmaS ρ := by
+  rw [rpowSpec, transpose_spectralFun, ← spectralFun_sigmaS (posDef_marginalU hρ),
+    spectralFun_kronecker, unitaryB]
+  congr 1
+  funext p
+  simp [eigB]
+
+omit [Nonempty F] in
+theorem eigA_pos (p : (X × (U × F)) × (X × (U × F))) : 0 < eigA hρ p := by
+  have h1 := hρ.eigenvalues_pos p.1
+  have h2 := (posDef_marginalUF hρ).eigenvalues_pos p.2.2
+  unfold eigA sigmaFEig
+  have : (0 : ℝ) < Fintype.card X := Nat.cast_pos.2 Fintype.card_pos
+  positivity
+
+theorem eigB_pos (p : (X × U) × (X × U)) : 0 < eigB (F := F) hρ p := by
+  have h1 := (posDef_marginalXU (F := F) hρ).eigenvalues_pos p.1
+  have h2 := (posDef_marginalU (F := F) hρ).eigenvalues_pos p.2.2
+  unfold eigB sigmaSEig
+  have : (0 : ℝ) < Fintype.card X := Nat.cast_pos.2 Fintype.card_pos
+  positivity
+
+/-- `V* A V = B`.  Area-law manuscript, `04-conditional.tex`, lines 364–366. -/
+theorem linMatrix_isoMap_compress :
+    (linMatrix (isoMap ρ hρ))ᴴ * spectralFun (unitaryA hρ) (fun p => (eigA hρ p : ℂ)) *
+        linMatrix (isoMap ρ hρ) =
+      spectralFun (unitaryB hρ) (fun p => (eigB hρ p : ℂ)) := by
+  set hs := posDef_marginalXU (F := F) hρ
+  refine ext_star_vec_dotProduct_mulVec_vec fun Z Y => ?_
+  rw [spectralFun_eigA, spectralFun_eigB, ← mulVec_mulVec, ← mulVec_mulVec,
+    ← star_mulVec_dotProduct, linMatrix_mulVec_vec, linMatrix_mulVec_vec, kronecker_mulVec_vec,
+    kronecker_mulVec_vec, transpose_transpose, transpose_transpose, star_vec_dotProduct_vec,
+    star_vec_dotProduct_vec, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
+    trace_isoMap_conjTranspose_mul_mul, rpowSpec_mul, rpowSpec_mul]
+  norm_num [rpowSpec_zero]
+  rw [trace_mul_comm, ← Matrix.mul_assoc, embedF_mul, trace_mul_comm, trace_mul_embedF,
+    partialTraceRight_sigmaF, Matrix.mul_assoc Y, ← Matrix.mul_assoc _ _ Zᴴ, rpowSpec_mul]
+  norm_num
+  rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, trace_mul_comm]
 
 end Faithful
 
