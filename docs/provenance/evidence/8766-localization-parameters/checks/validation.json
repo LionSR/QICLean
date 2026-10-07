@@ -1,0 +1,103 @@
+{
+  "checked_local_commit": "ef3d4684394cb70e9f0bb3b73cbf11a6aaf7e9db",
+  "public_source_commit": "ea2475a2410f6db347b4dcfd124fca8a715241bd",
+  "identical_tree": "6e85fc5c0052bca2711627862d8cd77de6a7e500",
+  "module": "QICLean/Analysis/GaussianFilter/LocalizationParameters.lean",
+  "source_sha256": "755ca4006ce3484e10b6e85c4fbc27edff1a52594cb277b99931e9e14d5ad50b",
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+    "lines": [
+      546,
+      554
+    ]
+  },
+  "declarations": [
+    "GaussianFilter.exists_localization_parameter_constant",
+    "GaussianFilter.localization_error_bound_of_parameter_constant",
+    "GaussianFilter.exists_localization_parameters"
+  ],
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "authorship": "Independently written proofs from manuscript mathematics, using Mathlib. No upstream Lean proof text copied.",
+  "scope": "Scalar uniform parameter absorption and natural rounding only. No supported approximant or physical locality is constructed.",
+  "commands": [
+    {
+      "head": "ef3d4684394cb70e9f0bb3b73cbf11a6aaf7e9db",
+      "file": "aggregate",
+      "sha256": null,
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Analysis.GaussianFilter.LocalizationParameters"
+      ],
+      "exit_code": 0,
+      "seconds": 1.1271382400009315,
+      "log": "localization-checked-ef3d468-0.log"
+    },
+    {
+      "head": "ef3d4684394cb70e9f0bb3b73cbf11a6aaf7e9db",
+      "file": "QICLean/Analysis/GaussianFilter/LocalizationParameters.lean",
+      "sha256": "755ca4006ce3484e10b6e85c4fbc27edff1a52594cb277b99931e9e14d5ad50b",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/GaussianFilter/LocalizationParameters.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.1537392649916,
+      "log": "localization-checked-ef3d468-1.log"
+    },
+    {
+      "head": "ef3d4684394cb70e9f0bb3b73cbf11a6aaf7e9db",
+      "file": "QICLeanTest/GaussianLocalizationParameters.lean",
+      "sha256": "ce8b9e304bd117a7855427ff4848c68731b18ba7599cd5e68ca546d11430f2e3",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/GaussianLocalizationParameters.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.6286407640000107,
+      "log": "localization-checked-ef3d468-2.log"
+    },
+    {
+      "head": "ef3d4684394cb70e9f0bb3b73cbf11a6aaf7e9db",
+      "file": "docs/provenance/evidence/8766-localization-parameters/drivers/LocalizationParametersRawAxioms.lean",
+      "sha256": "2f8c7b97b75fca0fc21af777f3d904c3a888207931ca5a1dd7e04c5d319297d3",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/8766-localization-parameters/drivers/LocalizationParametersRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.1580551200022455,
+      "log": "localization-checked-ef3d468-3.log"
+    }
+  ]
+}

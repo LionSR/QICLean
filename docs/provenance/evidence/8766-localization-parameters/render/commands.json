@@ -1,0 +1,51 @@
+{
+  "final_status": "PASS",
+  "source_revision": "ef3d4684394cb70e9f0bb3b73cbf11a6aaf7e9db",
+  "render_directory": "${WORKSPACE}/localization-parameters-ef3d468-combined-render",
+  "environment_script": "${WORKSPACE}/glm23-blueprint-env.sh",
+  "tools": {
+    "texra-blueprint": "0.3.8",
+    "plasTeX": "3.1",
+    "leanblueprint": "0.0.20"
+  },
+  "tenkz_revision": "08a6493f3605dcf2ca5b512823ccb2698dfc027b",
+  "command": "source ${WORKSPACE}/glm23-blueprint-env.sh\nbash docs/provenance/evidence/8766-localization-parameters/render/run.sh ${WORKSPACE}/qiclean-physical-buffer-gaussian-8766 ${WORKSPACE}/localization-parameters-ef3d468-combined-render",
+  "exit_code": 0,
+  "final_verifier_command": "source ${WORKSPACE}/glm23-blueprint-env.sh\npython docs/provenance/evidence/8766-localization-parameters/render/verify.py --source-root ${WORKSPACE}/qiclean-physical-buffer-gaussian-8766 --render ${WORKSPACE}/localization-parameters-ef3d468-combined-render",
+  "final_verifier_exit_code": 0,
+  "raster_command": "pdftoppm -f 16 -l 17 -scale-to 1600 -png ${WORKSPACE}/localization-parameters-ef3d468-combined-render/blueprint/src/print.pdf ${WORKSPACE}/localization-parameters-ef3d468-combined-render/page",
+  "raster_exit_code": 0,
+  "logs_sha256": {
+    "pdf-build.log": "1c1198fbe62b5e5bcd034c736c5fe064131bd0a64f2786dca33c43041830b08b",
+    "web-build.log": "748f33f2fa9a5a7622dbce8c9c325859d7948231df5fc68116a9d2285866b067",
+    "tenkz-sweep.log": "b538b8a39648046b70581c374352c03ff337aa5709dc57dd4ff224da5d65f088",
+    "verify-final.log": "69f181ca3fc51d9e353f65932905f44817cd347a7b4d1fd3912f4027b692280b",
+    "raster.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "tenkz_sweep": {
+    "picture_count": 1,
+    "hard_findings": 0,
+    "advisories": 0,
+    "equation_group_scopes": 0,
+    "note": "The inherited picture lacks a tenkzeq scope, so no hard equation-group comparison is claimed. No scalar localization diagram was added."
+  },
+  "nonfatal_warnings": [
+    "Initial latexmk passes reported references and citations before auxiliary files and bibliography were established; the final print.log has none.",
+    "Existing xdvipdfmx font-map warnings for pdftex.map and kanjix.map; output was generated and the new leaf glyphs were visually checked.",
+    "Existing title-page destination warning: Object @page.1 already defined. All source label and equation destinations verify.",
+    "dvisvgm is unavailable; the supported xelatex/PDF/pdftocairo path generated the inherited Tenkz SVG and its sweep passed."
+  ],
+  "limits": [
+    "Focused PDF and static HTML only; no full-book, browser, MathJax runtime, or responsive-layout claim.",
+    "No Lean/Lake/checkdecls build or remote write; source parsing is not proof validation.",
+    "Generated PDF, HTML, diagram SVG, and page images stay outside Git.",
+    "Remote declaration-documentation URLs are checked for identity, not availability."
+  ],
+  "source_mutations": "None. Only the render evidence directory is changed in the repository; inherited Kernel/MatrixIntegral source and the held repair are untouched.",
+  "lean_commands": "None. No Lean/Lake/checkdecls build was invoked.",
+  "toolchain_changes": "None. Existing configured TeX formats, Python environment, and pinned Tenkz checkout were reused.",
+  "path_normalization": {
+    "rule": "The executor workspace root is represented as ${WORKSPACE}; all relative paths, arguments and source identities are unchanged.",
+    "original_command_record_sha256": "9f93149c500c2c4f1e71b29c08759a4c0bc160c5ccfdccf138da90d75bc67495"
+  }
+}

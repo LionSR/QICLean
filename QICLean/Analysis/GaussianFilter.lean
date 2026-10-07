@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.GaussianFilter.GroundEstimate
 import QICLean.Analysis.GaussianFilter.Kernel
+import QICLean.Analysis.GaussianFilter.LocalizationParameters
 import QICLean.Analysis.GaussianFilter.MatrixIntegral
 import QICLean.Analysis.GaussianFilter.ParameterChoice
 import QICLean.Analysis.GaussianFilter.PhysicalBuffer

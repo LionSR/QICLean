@@ -326,6 +326,7 @@ jobs:
             QICLeanTest/GaussianMatrixIntegral.lean \
             docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralGuardedAxioms.lean \
             QICLeanTest/GaussianReindex.lean \
+            QICLeanTest/GaussianLocalizationParameters.lean \
             QICLeanTest/GaussianSpectralGap.lean \
             QICLeanTest/GaussianGroundEstimate.lean \
             QICLeanTest/GaussianParameterChoice.lean \
