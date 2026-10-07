@@ -1,0 +1,1091 @@
+✔ [3121/3172] Built QICLean.Algebra.BlockPermutation (32s)
+✔ [3122/3172] Built QICLean.Algebra.MatrixFamilyAction (33s)
+✔ [3123/3172] Built QICLean.Algebra.OperatorBlock (35s)
+✔ [3124/3172] Built QICLean.Algebra.ConstantPowerSums (41s)
+✔ [3125/3172] Built QICLean.Algebra.HermitianPartSum (43s)
+✔ [3126/3172] Built QICLean.Algebra.FinSum (43s)
+✔ [3127/3172] Built QICLean.Algebra.DependentBlockDiagonal (44s)
+✔ [3129/3172] Built QICLean.Algebra.EqualRangeRightFactor (45s)
+✔ [3130/3172] Built QICLean.Algebra.SkolemNoether (47s)
+✔ [3131/3172] Built QICLean.Algebra.EigenspaceMap (47s)
+✔ [3132/3172] Built QICLean.Algebra.StarSubalgebraSpatial (50s)
+✔ [3133/3172] Built QICLean.Algebra.GramMatrixLI (50s)
+✔ [3134/3172] Built QICLean.Algebra.FrameOperator (50s)
+✔ [3135/3175] Built QICLean.Algebra.ComplexPhasePositivity (51s)
+✔ [3144/3195] Built QICLean.Algebra.FrobeniusHilbert (53s)
+✔ [3145/3195] Built QICLean.Algebra.OrthogonalProjection (54s)
+✔ [3146/3195] Built QICLean.Algebra.HermitianHelpers (55s)
+✔ [3147/3195] Built QICLean.Algebra.StarSubalgebraSemisimple (55s)
+✔ [3148/3195] Built QICLean.Algebra.MatrixTracePowerContinuity (21s)
+✔ [3149/3195] Built QICLean.Algebra.CompactSVD (57s)
+✔ [3150/3199] Built QICLean.Algebra.MatrixGramUnitary (58s)
+✔ [3152/3200] Built QICLean.Algebra.FiniteCauchySchwarz (13s)
+✔ [3153/3200] Built QICLean.Algebra.HermitianTracePower (29s)
+✔ [3154/3200] Built QICLean.Algebra.HermitianSpectrumPerturbation (28s)
+✔ [3155/3200] Built QICLean.Algebra.NewtonGirard (18s)
+✔ [3158/3200] Built QICLean.Algebra.HermitianUnitaryConjugacy (18s)
+✔ [3160/3200] Built QICLean.Algebra.KramersDegeneracy (19s)
+✔ [3161/3200] Built QICLean.Algebra.MatrixAlgHomCentralizer (15s)
+✔ [3164/3215] Built QICLean.Algebra.L2OpNormReindex (18s)
+✔ [3170/3215] Built QICLean.Algebra.MatrixCongruence (16s)
+✔ [3171/3215] Built QICLean.Algebra.MatrixDependentEntries (13s)
+✔ [3172/3215] Built QICLean.Algebra.MatrixAlgEquiv (15s)
+✔ [3178/3219] Built QICLean.Algebra.MatrixUnitaryBetween (17s)
+✔ [3180/3219] Built QICLean.Algebra.MatrixKroneckerEmbed (16s)
+✔ [3181/3221] Built QICLean.Algebra.StarSubalgebraIrreducibleDecomp (21s)
+✔ [3184/3221] Built QICLean.Algebra.MatrixMulRange (18s)
+✔ [3185/3221] Built QICLean.Algebra.BurnsideTheorem (27s)
+✔ [3186/3226] Built QICLean.Algebra.MatrixKernelRigidity (22s)
+✔ [3212/3258] Built QICLean.Algebra.MatrixPosDefTransport (24s)
+✔ [3213/3266] Built QICLean.Algebra.MatrixGramConjugation (23s)
+✔ [3219/3266] Built QICLean.Algebra.MatrixOperatorSpace (26s)
+✔ [3220/3266] Built QICLean.Algebra.PosSemidefSupport (26s)
+✔ [3221/3266] Built QICLean.Algebra.MatrixRankBaseChange (23s)
+✔ [3222/3266] Built QICLean.Algebra.SkolemNoetherUnitary (27s)
+✔ [3223/3277] Built QICLean.Algebra.MatrixRankClosed (27s)
+✔ [3225/3281] Built QICLean.Algebra.HermitianSpectrumMultiplicity (31s)
+✔ [3226/3281] Built QICLean.Algebra.MatrixUnitConjugator (28s)
+✔ [3227/3281] Built QICLean.Algebra.MatrixTracePairing (29s)
+✔ [3228/3281] Built QICLean.Algebra.MatrixRankKronecker (28s)
+✔ [3230/3281] Built QICLean.Algebra.PerronFrobenius.RankOne (34s)
+✔ [3231/3281] Built QICLean.Algebra.CornerCompression (39s)
+✔ [3232/3281] Built QICLean.Algebra.MatrixSpectralDecomp (36s)
+✔ [3233/3281] Built QICLean.Algebra.MatrixReindexUnitary (28s)
+✔ [3234/3283] Built QICLean.Algebra.MatrixIsometryKronecker (28s)
+✔ [3236/3283] Built QICLean.Algebra.PerronFrobenius.PrimitiveAperiodic (29s)
+✔ [3237/3283] Built QICLean.Algebra.PerronFrobenius.SupportStabilization (28s)
+✔ [3239/3283] Built QICLean.Algebra.NilpotentSubspaceTwo (38s)
+✔ [3240/3283] Built QICLean.Algebra.StarSubalgebraSimpleModule (46s)
+✔ [3241/3283] Built QICLean.Algebra.PiProductTrace (36s)
+✔ [3242/3283] Built QICLean.Algebra.StarSubalgebraSchur (49s)
+✔ [3244/3283] Built QICLean.Algebra.OperatorSchmidt (42s)
+✔ [3245/3283] Built QICLean.Algebra.MinkowskiCanonicalPair (53s)
+✔ [3246/3283] Built QICLean.Algebra.RankOneSandwich (36s)
+✔ [3247/3283] Built QICLean.Algebra.RectangularChoi (51s)
+✔ [3248/3287] Built QICLean.Algebra.PerronFrobenius.Substochastic (47s)
+✔ [3250/3306] Built QICLean.Algebra.PositiveSemidefiniteNormalization (48s)
+✔ [3254/3306] Built QICLean.Algebra.SkewSymmetricMatrix (36s)
+✔ [3255/3306] Built QICLean.Algebra.ScalarCommutant (39s)
+✔ [3257/3306] Built QICLean.Algebra.TracePowerCharPoly (38s)
+✔ [3258/3313] Built QICLean.Algebra.ScalarPowerSumIdentity (39s)
+✔ [3260/3316] Built QICLean.Algebra.NilMatrixSubalgebra (44s)
+✔ [3262/3316] Built QICLean.Algebra.EigenvectorProjection (48s)
+✔ [3263/3316] Built QICLean.Algebra.MatrixFamilySupport (48s)
+✔ [3265/3316] Built QICLean.Algebra.TracePurity (49s)
+✔ [3269/3316] Built QICLean.Algebra.PerronFrobenius.Idempotent (43s)
+✔ [3271/3316] Built QICLean.Algebra.HermitianSpectrumPreserver (45s)
+✔ [3272/3327] Built QICLean.Algebra.MatrixStabilization (41s)
+✔ [3279/3331] Built QICLean.Algebra.MatrixCyclicTracePower (39s)
+✔ [3289/3333] Built QICLean.Algebra.NilpotentSubspaceThree (29s)
+✔ [3290/3335] Built QICLean.Algebra.TraceReindex (25s)
+✔ [3293/3375] Built QICLean.Channel.TensorMap (26s)
+✔ [3311/3375] Built QICLean.Channel.Basic (39s)
+✔ [3312/3375] Built QICLean.Algebra.ZModCyclicSums (26s)
+✔ [3313/3375] Built QICLean.Algebra.UnitModulusPowerSum (25s)
+✔ [3314/3378] Built QICLean.Algebra.TraceFormDuality (29s)
+✔ [3317/3378] Built QICLean.Algebra.CornerSkolemNoether (44s)
+✔ [3321/3385] Built QICLean.Algebra.SpinCover.Basic (34s)
+✔ [3326/3385] Built QICLean.Algebra.StarSubalgebraIsotypic (35s)
+✔ [3330/3385] Built QICLean.Algebra.OperatorNormFrobenius (33s)
+✔ [3331/3385] Built QICLean.Analysis.AdjointEigenvalues (29s)
+✔ [3332/3386] Built QICLean.Analysis.TraceCFC (26s)
+✔ [3338/3389] Built QICLean.Algebra.ShiftedTracePowerSpectrum (28s)
+✔ [3340/3390] Built QICLean.Analysis.SchattenNorm (21s)
+✔ [3342/3391] Built QICLean.Analysis.OperatorNormConvergence (19s)
+✔ [3490/3542] Built QICLean.Algebra.PerronFrobenius.PerronVector (24s)
+✔ [3509/3569] Built QICLean.Analysis.Dirichlet (23s)
+✔ [3857/3918] Built QICLean.Algebra.StarSubalgebraFactor (48s)
+✔ [4016/4084] Built QICLean.Analysis.MeanErgodic (29s)
+✔ [4935/4993] Built QICLean.Channel.MaximallyEntangled (34s)
+✔ [5227/5292] Built QICLean.Channel.Schwarz.Basic (37s)
+✔ [5314/5376] Built QICLean.Analysis.SubperipheralSpectrum (35s)
+✔ [6212/6274] Built QICLean.Analysis.SpectralRadiusPowerDecay (43s)
+✔ [6369/6430] Built QICLean.Analysis.UnitarySchurTriangularization (44s)
+✔ [7683/7748] Built QICLean.Channel.Determinant.Basic (50s)
+✔ [7795/7880] Built QICLean.Channel.Schwarz.PositiveMapProperties (52s)
+✔ [7841/7910] Built QICLean.Algebra.StarSubalgebraIsotypicDecomp (49s)
+✔ [8070/8137] Built QICLean.Channel.DensityRetract (52s)
+✔ [8475/8542] Built QICLean.Algebra.StarSubalgebraIntertwinerIsometry (53s)
+✔ [8838/8907] Built QICLean.Algebra.ShiftedZeroTraceNilpotent (51s)
+✔ [9072/9695] Built QICLean.Algebra.PerronFrobenius (48s)
+✔ [9073/9695] Built QICLean.Analysis.TraceNormAbs (54s)
+✔ [9074/9695] Built QICLean.Algebra.SICPOVMBound (84s)
+✔ [9075/9695] Built QICLean.Channel.Semigroup.Basic (66s)
+✔ [9076/9695] Built QICLean.Algebra.SwapTrace (39s)
+✔ [9077/9695] Built QICLean.Algebra.SpinCover.EulerAngles (73s)
+✔ [9078/9695] Built QICLean.Channel.ChoiRectangular (45s)
+✔ [9079/9695] Built QICLean.Analysis.UpperTriangularBound (42s)
+✔ [9080/9695] Built QICLean.Channel.Primitive (41s)
+✔ [9081/9695] Built QICLean.Algebra.PositiveSkolemNoether (33s)
+✔ [9082/9695] Built QICLean.Channel.Determinant.Bound (35s)
+✔ [9083/9695] Built QICLean.Analysis.ProbabilityEntropy (28s)
+✔ [9084/9695] Built QICLean.Analysis.CfcLogAdditive (29s)
+✔ [9085/9695] Built QICLean.Algebra.StarSubalgebraUnitaryIntertwiner (31s)
+✔ [9086/9695] Built QICLean.Analysis.Birkhoff (29s)
+✔ [9087/9695] Built QICLean.Analysis.CStarMatrixKronecker (29s)
+✔ [9088/9695] Built QICLean.Analysis.MatrixFramePerturbation (28s)
+✔ [9089/9695] Built QICLean.Analysis.CfcConjugation (30s)
+⚠ [9090/9695] Built QICLean.Analysis.ConvexHullCompact (22s)
+warning: QICLean/Analysis/ConvexHullCompact.lean:65:4: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: QICLean/Analysis/ConvexHullCompact.lean:70:12: `isCompact_stdSimplex` has been deprecated: Use `Convexity.StdSimplex.compactSpace` instead
+
+Note: The updated constant has a different type:
+  ∀ (R : Type u_1) (M : Type u_2) [inst : Ring R] [inst_1 : TopologicalSpace R] [IsTopologicalRing R]
+    [inst_3 : PartialOrder R] [inst_4 : IsStrictOrderedRing R] [CompactIccSpace R] [OrderClosedTopology R] [Finite M],
+    CompactSpace (Convexity.StdSimplex R M)
+instead of
+  ∀ (𝕜 : Type u_1) (ι : Type u_2) [inst : Fintype ι] [inst_1 : TopologicalSpace 𝕜] [inst_2 : Semiring 𝕜]
+    [inst_3 : PartialOrder 𝕜] [OrderClosedTopology 𝕜] [ContinuousAdd 𝕜] [CompactIccSpace 𝕜] [IsOrderedAddMonoid 𝕜],
+    IsCompact (stdSimplex 𝕜 ι)
+warning: QICLean/Analysis/ConvexHullCompact.lean:99:23: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+✔ [9091/9695] Built QICLean.Channel.TransferMatrix (32s)
+✔ [9092/9695] Built QICLean.Analysis.CStarCompletion (32s)
+✔ [9093/9695] Built QICLean.Analysis.DifferentiableInnerAction (19s)
+✔ [9094/9695] Built QICLean.Channel.FixedPoint.StationaryProjection (17s)
+✔ [9095/9695] Built QICLean.Analysis.MatrixTraceInequalities (23s)
+✔ [9096/9695] Built QICLean.Channel.KrausRepresentation (16s)
+✔ [9097/9695] Built QICLean.Channel.Schwarz.AbstractMultiplicativeDomain (18s)
+⚠ [9098/9695] Built QICLean.Analysis.CyclicReciprocal (29s)
+warning: QICLean/Analysis/CyclicReciprocal.lean:103:44: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+✔ [9099/9695] Built QICLean.Channel.Schwarz.KadisonSchwarz (15s)
+✔ [9100/9695] Built QICLean.Analysis.ConicProgram (35s)
+✔ [9101/9695] Built QICLean.Analysis.IdempotentEndomorphism (15s)
+✔ [9102/9695] Built QICLean.Channel.MaximallyMixed (21s)
+✔ [9103/9695] Built QICLean.Channel.WeylTwirl (23s)
+✔ [9104/9695] Built QICLean.Analysis.FiniteCoordinateNowosad.Recursion (25s)
+✔ [9105/9695] Built QICLean.Analysis.SpectralQuadraticForm (26s)
+✔ [9106/9695] Built QICLean.Analysis.SuperoperatorResolvent (27s)
+✔ [9107/9695] Built QICLean.Analysis.LiebScalarIntegral (29s)
+✔ [9108/9695] Built QICLean.Analysis.PhaseError (27s)
+✔ [9109/9695] Built QICLean.Analysis.HarmonicWeights (28s)
+✔ [9110/9695] Built QICLean.Analysis.GeometricDecay (30s)
+✔ [9111/9695] Built QICLean.Analysis.NeumannInverse (29s)
+✔ [9112/9695] Built QICLean.Analysis.FittingDecomposition (34s)
+✔ [9113/9695] Built QICLean.Analysis.HermitianUnitaryPath (33s)
+✔ [9114/9695] Built QICLean.Analysis.JordanBlockPower (35s)
+✔ [9115/9695] Built QICLean.Analysis.KyFanNorm (38s)
+✔ [9116/9695] Built QICLean.Analysis.TwoProjectionReducedProjection (35s)
+✔ [9117/9695] Built QICLean.Analysis.MatrixNonzeroTraceEigenvalue (37s)
+✔ [9118/9695] Built QICLean.Analysis.PosSemidefCommute (34s)
+✔ [9119/9695] Built QICLean.Analysis.LogClipping (40s)
+✔ [9120/9695] Built QICLean.Analysis.HermitianMatrixCone (48s)
+✔ [9121/9695] Built QICLean.Channel.Schwarz.OperatorJensenIntegrands (54s)
+✔ [9122/9695] Built QICLean.Analysis.OrthogonalResolution (36s)
+✔ [9123/9695] Built QICLean.Analysis.PositiveGapTransfer (37s)
+✔ [9124/9695] Built QICLean.Analysis.ScaleRecurrence (34s)
+✔ [9125/9695] Built QICLean.Analysis.RectangleSimplePoles (39s)
+✔ [9126/9695] Built QICLean.Analysis.SqrtHolder (42s)
+✔ [9127/9695] Built QICLean.Analysis.SinhRatioDensity (43s)
+✔ [9128/9695] Built QICLean.Analysis.SpectralRadius (40s)
+✔ [9129/9695] Built QICLean.Analysis.SurprisalMoment (40s)
+✔ [9130/9695] Built QICLean.Analysis.StripQuadratic (42s)
+✔ [9131/9695] Built QICLean.Analysis.TraceHolder (40s)
+✔ [9132/9695] Built QICLean.Analysis.WeightedCesaroMean (33s)
+✔ [9133/9695] Built QICLean.Analysis.SpectralFilter.Profile (48s)
+✔ [9134/9695] Built QICLean.Analysis.RpowConvexity (55s)
+✔ [9136/9695] Built QICLean.Channel.PartialTranspose (35s)
+✔ [9138/9695] Built QICLean.Channel.SchmidtRank (34s)
+✔ [9139/9695] Built QICLean.Analysis.WeylMonotonicity (36s)
+✔ [9140/9695] Built QICLean.Channel.DeferredEnvironmentTrace (34s)
+✔ [9141/9695] Built QICLean.Channel.CompletelyPositiveBridge (36s)
+✔ [9142/9695] Built QICLean.Channel.Wigner.Upstream.Unitary (33s)
+✔ [9143/9695] Built QICLean.Channel.Irreducible.Basic (31s)
+✔ [9144/9695] Built QICLean.Channel.FiniteProduct (29s)
+✔ [9145/9695] Built QICLean.Kraus.Tactic.Attr (8.0s)
+✔ [9146/9695] Built QICLean.Channel.GaugeConjugation (26s)
+✔ [9147/9695] Built QICLean.Channel.FixedPoint.CornerAlgebra (29s)
+✔ [9148/9695] Built QICLean.Channel.Semigroup.WeightedLoweringContractivity (15s)
+✔ [9149/9695] Built QICLean.Kraus.Word (19s)
+✔ [9150/9695] Built QICLean.Entropy.OrderedEntropyAlgebra (15s)
+✔ [9151/9695] Built QICLean.Channel.FixedPoint.Cesaro (28s)
+✔ [9152/9695] Built QICLean.Channel.Irreducible.Growth.Preservation (27s)
+✔ [9153/9695] Built QICLean.Analysis.TwoProjectionCompression (58s)
+✔ [9154/9695] Built QICLean.Channel.Semigroup.GeneratorDefs (28s)
+✔ [9155/9695] Built QICLean.Channel.LorentzNormalForm.QubitNormalForm (34s)
+✔ [9156/9695] Built QICLean.Channel.OperatorSystem (34s)
+✔ [9157/9695] Built QICLean.Representation.PermutationRepresentation (37s)
+✔ [9158/9695] Built QICLean.Analysis.TraceNormVariational (42s)
+✔ [9159/9695] Built QICLean.Analysis.TraceNormContractivity (43s)
+✔ [9160/9695] Built QICLean.Channel.Semigroup.Kernel (43s)
+✔ [9161/9695] Built QICLean.Algebra.SpinCover (40s)
+✔ [9162/9695] Built QICLean.Channel.Schwarz.PositiveOnAbelian.Basic (46s)
+✔ [9163/9695] Built QICLean.Channel.Semigroup.Perturbation (45s)
+✔ [9164/9695] Built QICLean.Channel.CPDecomposition (43s)
+✔ [9165/9695] Built QICLean.Channel.KrausRank (44s)
+✔ [9166/9695] Built QICLean.Channel.Semigroup.ProductFormula (48s)
+✔ [9167/9695] Built QICLean.Entropy.ClassicalMutualInformation (38s)
+✔ [9168/9695] Built QICLean.Channel.FixedPoint.LimitingGramMetric (41s)
+✔ [9169/9695] Built QICLean.Channel.ChoiJamiolkowski (44s)
+✔ [9170/9695] Built QICLean.Kraus.PrimitiveFixedPoint.Basic (42s)
+✔ [9171/9695] Built QICLean.Channel.Determinant.Composition (37s)
+✔ [9172/9695] Built QICLean.Channel.Peripheral.Spectrum (41s)
+✔ [9173/9695] Built QICLean.Channel.Determinant.HilbertSchmidt (38s)
+✔ [9174/9695] Built QICLean.Analysis.Entropy (40s)
+✔ [9175/9695] Built QICLean.Analysis.CompressedPartialSwap (30s)
+✔ [9176/9695] Built QICLean.Algebra.StarSubalgebraIsotypicFactorization (38s)
+✔ [9177/9695] Built QICLean.Analysis.IsometricCompression (33s)
+✔ [9178/9695] Built QICLean.Analysis.CfcKronecker (36s)
+✔ [9179/9695] Built QICLean.Analysis.DeterminantTraceBound (35s)
+✔ [9180/9695] Built QICLean.Channel.FixedPoint.SupportInvariance (38s)
+✔ [9181/9695] Built QICLean.Analysis.ShiftedDensityPowers (37s)
+✔ [9182/9695] Built QICLean.Channel.NormalForm (39s)
+✔ [9183/9695] Built QICLean.Channel.ChoiTypeMap (41s)
+✔ [9184/9695] Built QICLean.Channel.KrausMap (37s)
+✔ [9185/9695] Built QICLean.Channel.Schwarz.TracePreserving (37s)
+✔ [9186/9695] Built QICLean.Channel.Stinespring (37s)
+✔ [9187/9695] Built QICLean.Channel.SelfDual (39s)
+✔ [9188/9695] Built QICLean.Channel.Schwarz.MultiplicativeDomain (36s)
+✔ [9189/9695] Built QICLean.Channel.Schwarz.Closure (37s)
+✔ [9190/9695] Built QICLean.Channel.FixedPoint.AbstractAlgebra (38s)
+✔ [9191/9695] Built QICLean.Analysis.TwoProjectionAngleBlock (37s)
+✔ [9192/9695] Built QICLean.Channel.ComplementaryWeylTwirl (34s)
+✔ [9193/9695] Built QICLean.Analysis.ProjectionGeometry (37s)
+✔ [9194/9695] Built QICLean.Analysis.YamagamiRegularBoundary (41s)
+ℹ [9195/9695] Replayed Gametheory.Scarf
+info: Gametheory/Scarf.lean:241:33: Try this:
+  [apply] rwa [h1.2] at hd
+
+Note: This linter can be disabled with `set_option linter.tacticAnalysis.rwaSuggestion false`
+info: Gametheory/Scarf.lean:246:33: Try this:
+  [apply] rwa [h1.2] at hd
+
+Note: This linter can be disabled with `set_option linter.tacticAnalysis.rwaSuggestion false`
+✔ [9196/9695] Built QICLean.Analysis.YamagamiBoundary (41s)
+✔ [9197/9695] Built QICLean.Analysis.FiniteCoordinateNowosad (29s)
+✔ [9198/9695] Built QICLean.Analysis.SupportLogJensen (27s)
+✔ [9199/9695] Built QICLean.Channel.Schwarz.DiagonalJensen (21s)
+✔ [9200/9695] Built QICLean.Analysis.LiebIntegrandConcave (23s)
+✔ [9201/9695] Built QICLean.Analysis.GlobalGap (24s)
+✔ [9202/9695] Built QICLean.Analysis.KroneckerExponential (29s)
+✔ [9203/9695] Built QICLean.Analysis.LiebOperatorIntegral (33s)
+✔ [9204/9695] Built QICLean.Analysis.InjectiveRangeProjector (35s)
+✔ [9205/9695] Built QICLean.Analysis.JordanSimilarity (31s)
+✔ [9206/9695] Built QICLean.Analysis.JordanBlockAsymptotics (31s)
+✔ [9207/9695] Built QICLean.Kraus.Tactic (12s)
+✔ [9208/9695] Built QICLean.Analysis.MatrixFittingRange (33s)
+✔ [9209/9695] Built QICLean.Analysis.TypicalSet (30s)
+✔ [9210/9695] Built QICLean.Analysis.WeightedPositiveKernel (32s)
+✔ [9211/9695] Built QICLean.Channel.MaximalOverlap (32s)
+✔ [9212/9695] Built QICLean.Analysis.SpectralFilter.Cutoff (33s)
+✔ [9213/9695] Built QICLean.Channel.Schwarz.UnitaryComparison (32s)
+✔ [9214/9695] Built QICLean.Analysis.SinhRatioFourier (37s)
+✔ [9215/9695] Built QICLean.Channel.Irreducible.Scaling (28s)
+✔ [9216/9695] Built QICLean.Channel.Schwarz.OperatorJensenAux (40s)
+✔ [9217/9695] Built QICLean.Entropy.ModularExpectation (36s)
+✔ [9218/9695] Built QICLean.Channel.Wigner.Upstream.TransitionProbability (32s)
+✔ [9219/9695] Built QICLean.Channel.PerronFrobenius.Normalization (27s)
+✔ [9220/9695] Built QICLean.Kraus.MultiBlockWord (13s)
+✔ [9221/9695] Built QICLean.Kraus.WordSpan (13s)
+✔ [9222/9695] Built QICLean.Channel.FixedPoint.CanonicalGauge (17s)
+✔ [9223/9695] Built QICLean.Kraus.Transfer (18s)
+✔ [9224/9695] Built QICLean.Kraus.MixedMap (18s)
+✔ [9225/9695] Built QICLean.Kraus.ProjectionTriangularTrace (22s)
+✔ [9226/9695] Built QICLean.Kraus.MapIterate (19s)
+✔ [9227/9695] Built QICLean.Channel.FixedPoint.StationarySpan (22s)
+✔ [9228/9695] Built QICLean.Channel.SchmidtDecomposition (50s)
+✔ [9229/9695] Built QICLean.Channel.Semigroup.LindbladForm.Basic (24s)
+✔ [9230/9695] Built QICLean.Analysis.RootFidelity (31s)
+✔ [9231/9695] Built QICLean.Analysis.TraceNormFrobenius (31s)
+✔ [9232/9695] Built QICLean.Analysis.RootChannel (70s)
+✔ [9233/9695] Built QICLean.Channel.OperatorSystemExtension (36s)
+✔ [9234/9695] Built QICLean.Representation.IrrepLabels (35s)
+✔ [9235/9695] Built QICLean.Analysis.TraceDistance (36s)
+✔ [9236/9695] Built QICLean.Analysis.TraceNormContractionCoefficient (38s)
+✔ [9237/9695] Built QICLean.Channel.Determinant.KrausRankTwo (38s)
+✔ [9238/9695] Built QICLean.Channel.KrausRectangular (39s)
+✔ [9239/9695] Built QICLean.Channel.Semigroup.CPClosure (42s)
+✔ [9240/9695] Built QICLean.Channel.Peripheral.Powers (37s)
+✔ [9241/9695] Built QICLean.Channel.Peripheral.PeriodicityRemoval (40s)
+✔ [9242/9695] Built QICLean.Channel.Peripheral.TransferMatrix (42s)
+✔ [9243/9695] Built QICLean.Channel.Schwarz.SchwarzNotCP (46s)
+✔ [9244/9695] Built QICLean.Channel.Schwarz.PositiveOnAbelian.Characterization (52s)
+✔ [9245/9695] Built QICLean.Channel.PositiveExamples (46s)
+✔ [9246/9695] Built QICLean.Channel.Schwarz.PositiveOnAbelian.Consequences (55s)
+✔ [9247/9695] Built QICLean.Channel.Peripheral.Conjugation (40s)
+✔ [9248/9695] Built QICLean.Channel.Peripheral.AdjointSpectrum (43s)
+✔ [9249/9695] Built QICLean.Channel.Peripheral.AntilinearConjugation (44s)
+✔ [9250/9695] Built QICLean.Analysis.EntropyReindex (51s)
+✔ [9251/9695] Built QICLean.Entropy.MutualInformationBasic (54s)
+⚠ [9252/9695] Replayed Gametheory.Brouwer
+warning: Gametheory/Brouwer.lean:39:34: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:49:45: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:370:14: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:370:37: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:374:33: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:374:33: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:391:42: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:391:42: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:403:32: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:506:40: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:506:63: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:507:65: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:525:38: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:548:23: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:549:46: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:551:55: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:552:46: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:566:34: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:566:57: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:626:34: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:626:57: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:631:87: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:685:122: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:686:83: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:705:65: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:706:53: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:713:48: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:717:48: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:732:83: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:740:81: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:742:81: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:743:46: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:746:83: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+✔ [9253/9695] Built QICLean.Entropy.VonNeumann (57s)
+✔ [9254/9695] Built QICLean.Entropy.TripartiteTrace (58s)
+✔ [9255/9695] Built QICLean.Analysis.HayashiMarkovStructure (61s)
+✔ [9256/9695] Built QICLean.Analysis.DoubledSystemGap (63s)
+✔ [9257/9695] Built QICLean.Analysis.KleinInequality (73s)
+✔ [9258/9695] Built QICLean.Channel.Schwarz.RelativeEntropyAncillaAdditivity (65s)
+✔ [9259/9695] Built QICLean.Algebra.StarSubalgebraBlockDiagonal (67s)
+✔ [9260/9695] Built QICLean.Channel.Determinant.ChoiBound (61s)
+✔ [9261/9695] Built QICLean.Kraus.InvariantProjection (59s)
+✔ [9262/9695] Built QICLean.Channel.Irreducible.FixedPoint (58s)
+✔ [9263/9695] Built QICLean.Kraus.PrimitiveFixedPoint.Peripheral (56s)
+✔ [9264/9695] Built QICLean.Analysis.ShiftedDensityTruncation (60s)
+✔ [9265/9695] Built QICLean.Channel.Schwarz.MultiplicativeDomainPowers (50s)
+✔ [9266/9695] Built QICLean.Channel.KrausCornerCompression (57s)
+✔ [9267/9695] Built QICLean.Channel.KrausFreedom (56s)
+✔ [9268/9695] Built QICLean.Channel.ChoiTypeMap.Positivity (61s)
+✔ [9269/9695] Built QICLean.Channel.Determinant.HeisenbergDual (54s)
+✔ [9270/9695] Built QICLean.Analysis.MatrixSqrt (72s)
+✔ [9271/9695] Built QICLean.Analysis.TwoProjectionCompressionSpectrum (41s)
+✔ [9272/9695] Built QICLean.Analysis.FiniteRangeKnabe (43s)
+✔ [9273/9695] Built QICLean.Analysis.FiniteCoordinateNowosad.Yamagami (41s)
+✔ [9274/9695] Built QICLean.Analysis.OperatorConvexity (46s)
+✔ [9275/9695] Built QICLean.Analysis.PositiveGapUniqueness (41s)
+✔ [9276/9695] Built QICLean.Kraus.Wielandt.SpanGrowth.CumulativeSpan (30s)
+✔ [9277/9695] Built QICLean.Kraus.Wielandt.RankOne.BoundedWord (31s)
+✔ [9278/9695] Built QICLean.Entropy.ProductOverlapPurity (39s)
+✔ [9279/9695] Built QICLean.Analysis.LiebOperatorConcave (44s)
+✔ [9280/9695] Built QICLean.Channel.NPositivitySpectralCriterion (39s)
+✔ [9281/9695] Built QICLean.Kraus.Wielandt.RankOne.Element (35s)
+✔ [9282/9695] Built QICLean.Kraus.Wielandt.RankOne.Extraction (35s)
+✔ [9283/9695] Built QICLean.Entropy.SchmidtTilt (38s)
+✔ [9284/9695] Built QICLean.Analysis.SpectralFilter.Kernel (40s)
+⚠ [9285/9695] Replayed Gametheory.Brouwer_product
+warning: Gametheory/Brouwer_product.lean:15:21: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:18:37: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:48:12: `WellFounded.min_le` has been deprecated: Use `WellFoundedLT.min_le` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.min_le` to `WellFoundedLT.min_le x`).
+
+Hint: Replace the deprecated name:
+  WellFoundedL̲T̲.min_le
+warning: Gametheory/Brouwer_product.lean:224:8: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:220:17: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:229:15: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:253:15: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:375:8: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:362:17: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:382:15: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+✔ [9286/9695] Built QICLean.Kraus.Injectivity (35s)
+✔ [9287/9695] Built QICLean.Analysis.SinhRatioShift (40s)
+✔ [9288/9695] Built QICLean.Channel.Wigner.Upstream.FrameReduction (39s)
+✔ [9289/9695] Built QICLean.Channel.Irreducible.Similarity (41s)
+✔ [9290/9695] Built QICLean.Kraus.TracePairing (35s)
+✔ [9291/9695] Built QICLean.Channel.Semigroup.LiouvillianKernel (28s)
+✔ [9292/9695] Built QICLean.Channel.Semigroup.LindbladForm.TraceBridge (27s)
+✔ [9293/9695] Built QICLean.Channel.Semigroup.PauliDissipation (36s)
+✔ [9294/9695] Built QICLean.Kraus.MixedMap.GaugeRigidity (45s)
+✔ [9295/9695] Built QICLean.Analysis.PureStateTraceDistance (24s)
+✔ [9296/9695] Built QICLean.Representation.LabelProjectors (26s)
+✔ [9297/9695] Built QICLean.Channel.Peripheral.PureStateFace (30s)
+✔ [9298/9695] Built QICLean.Channel.Semigroup.LindbladForm.ChoiCCP (38s)
+✔ [9299/9695] Built QICLean.Channel.POVM (42s)
+✔ [9300/9695] Built QICLean.Channel.Schwarz.RelativeEntropyUnitaryInvariance (40s)
+✔ [9301/9695] Built QICLean.Channel.Peripheral.CyclicDecomposition.Basic (42s)
+✔ [9302/9695] Built QICLean.Channel.Schwarz.PositiveOnAbelian (42s)
+✔ [9303/9695] Built QICLean.Channel.FixedPoint.MeanErgodicProjection (44s)
+✔ [9304/9695] Built QICLean.Channel.LorentzNormalForm.PauliBlockTruncation (43s)
+✔ [9305/9695] Built QICLean.Channel.Schwarz.SchwarzNormal (44s)
+✔ [9306/9695] Built QICLean.Channel.BreuerHallMap (49s)
+✔ [9307/9695] Built QICLean.Analysis.RootFidelityRelativeEntropy (50s)
+✔ [9308/9695] Built QICLean.Analysis.RelativeEntropyResolventIntegral (51s)
+✔ [9309/9695] Built QICLean.Algebra.StarSubalgebraBlockForm (51s)
+✔ [9310/9695] Built QICLean.Channel.Irreducible.FixedPointUniqueness (50s)
+✔ [9311/9695] Built QICLean.Analysis.ShiftedPowerDerivative (50s)
+✔ [9312/9695] Built QICLean.Channel.Schwarz.MultiplicativeDomainFull (49s)
+✔ [9313/9695] Built QICLean.Channel.Peripheral.ClosureFixedPointKraus (50s)
+✔ [9314/9695] Built QICLean.Kraus.IrreducibleAction (56s)
+✔ [9315/9695] Built QICLean.Channel.KrausUnitaryFreedom (48s)
+✔ [9316/9695] Built QICLean.Channel.WolfProps (53s)
+✔ [9317/9695] Built QICLean.Channel.Determinant.UnitaryCharacterization (49s)
+✔ [9318/9695] Built QICLean.Analysis.OperatorMean.MatrixPowers (46s)
+✔ [9319/9695] Built QICLean.Analysis.EntropyDecomposition (50s)
+✔ [9320/9695] Built QICLean.Channel.PSDConeAutomorphism.FaceDimension (44s)
+✔ [9321/9695] Built QICLean.Channel.LorentzNormalForm.Infimum (51s)
+✔ [9322/9695] Built QICLean.Channel.MaximalWeightConvexDecomposition (50s)
+✔ [9323/9695] Built QICLean.Channel.UhlmannIsometry (51s)
+✔ [9324/9695] Built QICLean.Channel.OrderedCP (59s)
+✔ [9325/9695] Built QICLean.Channel.Schwarz.Douglas (52s)
+✔ [9326/9695] Built QICLean.Analysis.SemidefiniteProgram (43s)
+✔ [9327/9695] Built QICLean.Channel.KrausGauge (51s)
+✔ [9328/9695] Built QICLean.Analysis.MatrixFamilySupport (36s)
+✔ [9329/9695] Built QICLean.Analysis.WeightedSupertrace (43s)
+✔ [9330/9695] Built QICLean.Channel.DetailedBalance (46s)
+✔ [9331/9695] Built QICLean.Analysis.PolarUnitaryCorrection (41s)
+✔ [9332/9695] Built QICLean.Analysis.MatrixReducedProjection (40s)
+✔ [9333/9695] Built QICLean.Analysis.HermitianIntertwiner (41s)
+✔ [9334/9695] Built QICLean.Channel.Schwarz.SupportResolvent (40s)
+✔ [9335/9695] Built QICLean.Analysis.ResolventFunctionalCalculus (43s)
+✔ [9336/9695] Built QICLean.Analysis.SupportCompression (39s)
+✔ [9337/9695] Built QICLean.Channel.KrausCPTP (40s)
+✔ [9338/9695] Built QICLean.Kraus.Wielandt.SpanGrowth.EigenvectorSpreading (25s)
+✔ [9339/9695] Built QICLean.Kraus.Wielandt.SpanGrowth.AlgebraSpan (26s)
+✔ [9340/9695] Built QICLean.Analysis.TwoProjectionAngleOrthogonality (32s)
+✔ [9341/9695] Built QICLean.Analysis.MarginalSupport (35s)
+✔ [9342/9695] Built QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima (30s)
+✔ [9343/9695] Built QICLean.Kraus.Wielandt.SpanGrowth.CumulativeToWordSpan (33s)
+✔ [9344/9695] Built QICLean.Entropy.FilterConjugation (33s)
+✔ [9345/9695] Built QICLean.Entropy.GapSurprisal (35s)
+✔ [9346/9695] Built QICLean.Kraus.Blocking (34s)
+✔ [9347/9695] Built QICLean.Kraus.NormalCommutant (34s)
+✔ [9348/9695] Built QICLean.Kraus.CPPrimitive (38s)
+✔ [9349/9695] Built QICLean.Analysis.SpectralFilter.Decay (40s)
+✔ [9350/9695] Built QICLean.Kraus.Wielandt.SpanGrowth.InvertibleWordSpan (36s)
+✔ [9351/9695] Built QICLean.Channel.Wigner.Upstream.PhaseNormalization (37s)
+✔ [9352/9695] Built QICLean.Analysis.LiebConcavity (47s)
+✔ [9353/9695] Built QICLean.Analysis.YamagamiCyclicMatrix (49s)
+✔ [9354/9695] Built QICLean.Representation.TensorPowerAction (35s)
+✔ [9355/9695] Built QICLean.Analysis.GapPerturbation (43s)
+✔ [9356/9695] Built QICLean.Representation.IsotypicDimension (35s)
+✔ [9357/9695] Built QICLean.Channel.POVM.SIC (36s)
+✔ [9358/9695] Built QICLean.Channel.NoInformationWithoutDisturbance (36s)
+✔ [9359/9695] Built QICLean.Channel.POVM.Uniqueness (36s)
+✔ [9360/9695] Built QICLean.Channel.POVM.RankOneNaimark (36s)
+✔ [9361/9695] Built QICLean.Channel.Peripheral.CyclicDecomposition.Primitivity (35s)
+✔ [9362/9695] Built QICLean.Channel.Peripheral.CyclicDecomposition.LetterShift (34s)
+✔ [9363/9695] Built QICLean.Channel.Semigroup.LindbladForm.EulerStep (46s)
+✔ [9364/9695] Built QICLean.Channel.Peripheral.CyclicDecomposition.CyclicProjections (33s)
+✔ [9365/9695] Built QICLean.Channel.FixedPoint.MaximalSupportBasic (34s)
+✔ [9366/9695] Built QICLean.Channel.Peripheral.JordanBlocks (33s)
+✔ [9367/9695] Built QICLean.Analysis.RelativeEntropySupportIntegral (31s)
+✔ [9368/9695] Built QICLean.Algebra.CommutingOverlappingDecomp (32s)
+✔ [9369/9695] Built QICLean.Channel.Schwarz.SchwarzSubnormal (35s)
+✔ [9370/9695] Built QICLean.Channel.Peripheral.CyclicGroupKraus (30s)
+✔ [9371/9695] Built QICLean.Channel.Semigroup.LindbladForm.Uniqueness (28s)
+✔ [9372/9695] Built QICLean.Channel.Peripheral.CyclicDecomposition.PeripheralUnitary (32s)
+✔ [9373/9695] Built QICLean.Channel.FixedPoint.Algebra (31s)
+✔ [9374/9695] Built QICLean.Channel.EnsembleEquivalence (22s)
+✔ [9375/9695] Built QICLean.Channel.InformationallyCompleteEffects (25s)
+✔ [9376/9695] Built QICLean.Channel.Wigner.ProjectivePureState (21s)
+✔ [9377/9695] Built QICLean.Analysis.EntropySubadditivity (19s)
+✔ [9378/9695] Built QICLean.Analysis.OperatorMean.WeightedGeometricMean (20s)
+✔ [9379/9695] Built QICLean.Analysis.EntropyMarkovReverse (21s)
+✔ [9380/9695] Built QICLean.Channel.Schwarz.SchurComplement (18s)
+✔ [9381/9695] Built QICLean.Channel.SingleKrausPositivity (16s)
+✔ [9382/9695] Built QICLean.Channel.RadonNikodym (22s)
+✔ [9383/9695] Built QICLean.Channel.ProjectiveResolution (14s)
+✔ [9384/9695] Built QICLean.Channel.SingleKraus (13s)
+✔ [9385/9695] Built QICLean.Analysis.PolarUnitaryCorrectionKronecker (20s)
+✔ [9386/9695] Built QICLean.Analysis.SandwichedRenyiTwo (18s)
+✔ [9387/9695] Built QICLean.Analysis.SemidefiniteDuality (21s)
+✔ [9388/9695] Built QICLean.Channel.Schwarz.TwoPositive (18s)
+✔ [9389/9695] Built QICLean.Channel.OrderedRectangular (15s)
+✔ [9390/9695] Built QICLean.Channel.SupportedMarginalChannel (16s)
+✔ [9391/9695] Built QICLean.Channel.StinespringRectangular (15s)
+✔ [9392/9695] Built QICLean.Channel.EnvironmentEmbedding (13s)
+✔ [9393/9695] Built QICLean.Channel.SupportCompletion (16s)
+✔ [9394/9695] Built QICLean.Channel.LocalizedKrausCPTP (15s)
+✔ [9395/9695] Built QICLean.Analysis.TwoProjectionDefectBlockSum (9.1s)
+✔ [9396/9695] Built QICLean.Kraus.Wielandt.SpanGrowth.VectorToMatrixSpan (11s)
+✔ [9397/9695] Built QICLean.Kraus.Wielandt.Primitivity.VectorSpreadPositivity (12s)
+✔ [9398/9695] Built QICLean.Kraus.Wielandt.Primitivity.EasyDirections (13s)
+✔ [9399/9695] Built QICLean.Channel.MarginalSupportAbsorption (12s)
+⚠ [9400/9695] Built QICLean.Topology.BrouwerProduct (99s)
+warning: QICLean/Topology/BrouwerProduct.lean:33:36: `stdSimplexHomeomorphUnitInterval` has been deprecated: Use `Convexity.StdSimplex.homeomorphI` instead
+
+Note: The updated constant has a different type:
+  Convexity.StdSimplex ℝ (Fin 2) ≃ₜ ↑unitInterval
+instead of
+  ↑(stdSimplex ℝ (Fin 2)) ≃ₜ ↑unitInterval
+✔ [9401/9695] Built QICLean.Channel.LorentzNormalForm.Basic (15s)
+✔ [9402/9695] Built QICLean.Analysis.CoisometricCompression (15s)
+✔ [9403/9695] Built QICLean.Kraus.Wielandt.SpanGrowth.NonzeroTraceProduct (16s)
+✔ [9404/9695] Built QICLean.QPF.PosDef (16s)
+✔ [9405/9695] Built QICLean.QPF.Primitive (16s)
+✔ [9406/9695] Built QICLean.Entropy.MarginalTails (18s)
+✔ [9407/9695] Built QICLean.Analysis.SpectralFilter.Inversion (18s)
+✔ [9408/9695] Built QICLean.Channel.Schwarz.OperatorConvexity (18s)
+✔ [9409/9695] Built QICLean.Channel.Schwarz.AndoLieb (18s)
+✔ [9410/9695] Built QICLean.Channel.Wigner.Upstream.CocycleConsistency (20s)
+✔ [9411/9695] Built QICLean.Analysis.LiebSubBoundary (19s)
+✔ [9412/9695] Built QICLean.Representation.SchurLabelCommutation (18s)
+✔ [9413/9695] Built QICLean.Channel.Peripheral.Cycles (18s)
+✔ [9414/9695] Built QICLean.Representation.CommutantDimension (20s)
+✔ [9415/9695] Built QICLean.Channel.FixedPoint.AbstractMaximalRank (20s)
+✔ [9416/9695] Built QICLean.Channel.Peripheral.SpectralProjection (20s)
+✔ [9417/9695] Built QICLean.Channel.Semigroup.LindbladForm.GKSLTheorem (20s)
+⚠ [9418/9695] Built QICLean.Channel.ChoiTypeMap.YamagamiPositivity (24s)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:166:25: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:175:13: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:181:23: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:182:45: `isClosed_stdSimplex` has been deprecated: Use `Convexity.StdSimplex.isClosedEmbedding_toFun_comp_weights` instead
+
+Note: The updated constant has a different type:
+  ∀ (R : Type u) [inst : PartialOrder R] [inst_1 : Ring R] [inst_2 : TopologicalSpace R]
+    [inst_3 : IsStrictOrderedRing R] [IsTopologicalRing R] [OrderClosedTopology R] (M : Type u_1) [Finite M],
+    Topology.IsClosedEmbedding fun t ↦ ⇑t.weights
+instead of
+  ∀ (𝕜 : Type u_1) (ι : Type u_2) [inst : Fintype ι] [inst_1 : TopologicalSpace 𝕜] [inst_2 : Semiring 𝕜]
+    [inst_3 : PartialOrder 𝕜] [OrderClosedTopology 𝕜] [ContinuousAdd 𝕜], IsClosed (stdSimplex 𝕜 ι)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:184:5: `isCompact_stdSimplex` has been deprecated: Use `Convexity.StdSimplex.compactSpace` instead
+
+Note: The updated constant has a different type:
+  ∀ (R : Type u_1) (M : Type u_2) [inst : Ring R] [inst_1 : TopologicalSpace R] [IsTopologicalRing R]
+    [inst_3 : PartialOrder R] [inst_4 : IsStrictOrderedRing R] [CompactIccSpace R] [OrderClosedTopology R] [Finite M],
+    CompactSpace (Convexity.StdSimplex R M)
+instead of
+  ∀ (𝕜 : Type u_1) (ι : Type u_2) [inst : Fintype ι] [inst_1 : TopologicalSpace 𝕜] [inst_2 : Semiring 𝕜]
+    [inst_3 : PartialOrder 𝕜] [OrderClosedTopology 𝕜] [ContinuousAdd 𝕜] [CompactIccSpace 𝕜] [IsOrderedAddMonoid 𝕜],
+    IsCompact (stdSimplex 𝕜 ι)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:263:48: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+✔ [9419/9695] Built QICLean.Algebra.OverlappingLiftAlgebra (18s)
+✔ [9420/9695] Built QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic (19s)
+✔ [9421/9695] Built QICLean.Channel.Peripheral.CyclicDecomposition.Decomposition (16s)
+✔ [9422/9695] Built QICLean.Channel.FixedPoint.ChoiEffros (16s)
+✔ [9423/9695] Built QICLean.Channel.FixedPoint.BlockForm (17s)
+✔ [9424/9695] Built QICLean.Channel.FixedPoint.WedderburnDecomp (21s)
+✔ [9425/9695] Built QICLean.Channel.FixedPoint.Corollaries (19s)
+✔ [9426/9695] Built QICLean.Channel.FixedPoint.CornerFixedPoints (20s)
+✔ [9427/9695] Built QICLean.Channel.KoashiImoto.CommonInvariantAlgebra (20s)
+✔ [9428/9695] Built QICLean.Channel.Wigner.TwoPureStateCharpoly (20s)
+✔ [9429/9695] Built QICLean.Channel.Wigner.PureStateCharpoly (21s)
+✔ [9430/9695] Built QICLean.Analysis.OperatorMean.FiniteTree (23s)
+✔ [9431/9695] Built QICLean.Analysis.SupportCompressedEntropy (23s)
+✔ [9432/9695] Built QICLean.Channel.QuantumSteering (24s)
+✔ [9433/9695] Built QICLean.Analysis.SandwichedRenyi (24s)
+✔ [9434/9695] Built QICLean.Channel.FixedPoint.MeanErgodicAdjoint (25s)
+✔ [9435/9695] Built QICLean.Channel.FixedPoint.DirectSumExtension (25s)
+✔ [9436/9695] Built QICLean.Channel.Schwarz.TwoVariable (26s)
+✔ [9437/9695] Built QICLean.Channel.PositiveFunctional (24s)
+✔ [9438/9695] Built QICLean.Channel.NPositiveIntegral (25s)
+✔ [9439/9695] Built QICLean.Kraus.RectangularChain (25s)
+✔ [9440/9695] Built QICLean.Channel.Schwarz.ChoiCompression (29s)
+✔ [9441/9695] Built QICLean.Channel.OpenSystemRectangular (24s)
+✔ [9442/9695] Built QICLean.Channel.OpenSystem (22s)
+✔ [9443/9695] Built QICLean.Kraus.Wielandt.RankOne.Construction (15s)
+✔ [9444/9695] Built QICLean.Channel.DecomposablePPT (19s)
+✔ [9445/9695] Built QICLean.Channel.ChoiDoeblin (20s)
+✔ [9446/9695] Built QICLean.Kraus.Wielandt.Inequality.EigenvectorSpreading (17s)
+✔ [9447/9695] Built QICLean.Channel.EnvironmentDilation (22s)
+✔ [9448/9695] Built QICLean.Kraus.Wielandt.RectangularSpan.Basic (17s)
+✔ [9449/9695] Built QICLean.Channel.KrausIterateChoi (16s)
+✔ [9450/9695] Built QICLean.Entropy.ProductMarginals (15s)
+✔ [9451/9695] Built QICLean.Channel.PetzRecovery (17s)
+✔ [9452/9695] Built QICLean.Channel.LorentzNormalForm.InvertibleFilter (16s)
+✔ [9453/9695] Built QICLean.Channel.LorentzNormalForm.NormalForm (19s)
+✔ [9454/9695] Built QICLean.Kraus.Wielandt.SpanGrowth (19s)
+✔ [9455/9695] Built QICLean.Kraus.Wielandt.RankOne.Products (20s)
+✔ [9456/9695] Built QICLean.Channel.LorentzNormalForm.SpinorAction (23s)
+✔ [9457/9695] Built QICLean.QPF.Uniqueness (20s)
+✔ [9458/9695] Built QICLean.Entropy.FilterMoment (24s)
+✔ [9459/9695] Built QICLean.Entropy.SupportedMarginalTails (24s)
+✔ [9460/9695] Built QICLean.Channel.Peripheral.MultiCycleDecomposition (23s)
+✔ [9461/9695] Built QICLean.Channel.Semigroup.LindbladForm (23s)
+✔ [9462/9695] Built QICLean.Analysis.SpectralFilter.MatrixFilter (25s)
+✔ [9463/9695] Built QICLean.Algebra (23s)
+✔ [9464/9695] Built QICLean.Channel.Peripheral.CesaroRecurrence (25s)
+✔ [9465/9695] Built QICLean.Channel.Peripheral.CyclicDecomposition (20s)
+✔ [9466/9695] Built QICLean.Representation.SchurSurprisal (25s)
+✔ [9467/9695] Built QICLean.Channel.Wigner.Upstream.ComplexReconstruction (26s)
+✔ [9468/9695] Built QICLean.Channel.Schwarz.SupportRelativeModular (23s)
+✔ [9469/9695] Built QICLean.Channel.Peripheral.GroupStructure (22s)
+✔ [9470/9695] Built QICLean.Channel.KoashiImoto.PooledKrausFamily (13s)
+✔ [9471/9695] Built QICLean.Channel.FixedPoint.CornerBlockForm (21s)
+✔ [9472/9695] Built QICLean.Channel.KoashiImoto.FiniteRealization (12s)
+✔ [9473/9695] Built QICLean.Channel.Schwarz.RelativeEntropyConvexity (29s)
+✔ [9474/9695] Built QICLean.Channel.FixedPoint.ConditionalExpectation (12s)
+✔ [9475/9695] Built QICLean.Channel.FixedPoint.StationarySupportRestriction (13s)
+✔ [9476/9695] Built QICLean.Channel.OperatorSystemExtensionDirectSum (9.9s)
+✔ [9477/9695] Built QICLean.Channel.FixedPoint.WeightedCornerFixedPoints (19s)
+✔ [9478/9695] Built QICLean.Channel.FixedPoint.ExtremeDensityStates (11s)
+✔ [9479/9695] Built QICLean.Channel.FixedPoint.DirectSumKraus (11s)
+✔ [9480/9695] Built QICLean.Channel.Schwarz.TwoVariableUnconditional (11s)
+✔ [9481/9695] Built QICLean.Channel.PositiveConditionalExpectation (11s)
+✔ [9482/9695] Built QICLean.Analysis.OperatorMean.PowerDerivative (13s)
+✔ [9483/9695] Built QICLean.Channel.Schwarz.PositiveOnAbelian.CompletePositivity (12s)
+✔ [9484/9695] Built QICLean.Channel.EnvironmentInducedInstrument (14s)
+✔ [9485/9695] Built QICLean.Kraus.Wielandt.RankOne.ExtractionFull (13s)
+✔ [9486/9695] Built QICLean.Channel.ChoiResidual (13s)
+✔ [9487/9695] Built QICLean.Kraus.Wielandt.Inequality (12s)
+✔ [9488/9695] Built QICLean.Channel.NPositivityChainStrict (15s)
+✔ [9489/9695] Built QICLean.Channel.BreuerHallIndecomposable (15s)
+✔ [9490/9695] Built QICLean.Kraus.Wielandt.RectangularSpan.Growth (14s)
+✔ [9491/9695] Built QICLean.Entropy.PurificationSplitting (14s)
+✔ [9492/9695] Built QICLean.QPF.Assembly (14s)
+✔ [9493/9695] Built QICLean.Channel.LorentzNormalForm.SpinorCover (17s)
+✔ [9494/9695] Built QICLean.Channel.Semigroup.ReducibleQDS.Defs (14s)
+✔ [9495/9695] Built QICLean.Entropy.LocalLift (17s)
+✔ [9496/9695] Built QICLean.Channel.PetzProductReference (21s)
+✔ [9497/9695] Built QICLean.Channel.Peripheral.AsymptoticImage (14s)
+✔ [9498/9695] Built QICLean.Representation (13s)
+✔ [9499/9695] Built QICLean.Analysis.SpectralFilter.PositiveReplacement (16s)
+✔ [9500/9695] Built QICLean.Channel.Peripheral.WeightedCesaro (14s)
+✔ [9501/9695] Built QICLean.Topology.CompactRetractFixedPoint (62s)
+✔ [9502/9695] Built QICLean.Channel.KoashiImoto.SingleWitness (13s)
+✔ [9503/9695] Built QICLean.Channel.Schwarz.SupportLeftRightRelativeModular (13s)
+✔ [9504/9695] Built QICLean.Channel.Wigner.Upstream.WignerRigidity (14s)
+✔ [9505/9695] Built QICLean.Channel.Semigroup.KossakowskiForm (20s)
+✔ [9506/9695] Built QICLean.Channel.Schwarz.SupportSourceDefect (14s)
+✔ [9507/9695] Built QICLean.Channel.RightFactorConditionalExpectation (12s)
+✔ [9508/9695] Built QICLean.Channel.Schwarz.RelativeEntropyDataProcessing (14s)
+✔ [9509/9695] Built QICLean.Channel.Irreducible.Growth.OneStep (12s)
+✔ [9510/9695] Built QICLean.Channel.Irreducible.AdjointFamily (11s)
+✔ [9511/9695] Built QICLean.Channel.FixedPoint.MaximalSupport (10s)
+✔ [9512/9695] Built QICLean.Channel.Schwarz.TwoVariableEquality (9.8s)
+✔ [9513/9695] Built QICLean.Channel.LorentzNormalForm.CanonicalQubitChannels (30s)
+✔ [9514/9695] Built QICLean.Channel.PositiveConditionalExpectationDirectSum (10s)
+✔ [9515/9695] Built QICLean.Kraus.Wielandt.RankOne (9.7s)
+✔ [9516/9695] Built QICLean.Analysis.OperatorMean.MeanDerivative (11s)
+✔ [9517/9695] Built QICLean.Channel.WindowMinorization (11s)
+✔ [9518/9695] Built QICLean.Channel.ReductionCriterion (12s)
+✔ [9519/9695] Built QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.Quantitative (11s)
+✔ [9520/9695] Built QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.Basic (12s)
+✔ [9521/9695] Built QICLean.Entropy.PhysicalBufferOverlap (14s)
+✔ [9522/9695] Built QICLean.QPF (15s)
+✔ [9523/9695] Built QICLean.Channel.Semigroup.ReducibleQDS.FixedDensity (18s)
+✔ [9524/9695] Built QICLean.Channel.Semigroup.ReducibleQDS.GeneratorCompression (20s)
+✔ [9525/9695] Built QICLean.Channel.Wigner.Upstream (19s)
+✔ [9526/9695] Built QICLean.Channel.KoashiImoto.MeanErgodicProjection (21s)
+✔ [9527/9695] Built QICLean.Channel.Semigroup.KossakowskiRank (24s)
+✔ [9528/9695] Built QICLean.Analysis.SpectralFilter.FilterLocality (26s)
+✔ [9529/9695] Built QICLean.Channel.Wigner.ProjectiveCarrierBridge (23s)
+✔ [9530/9695] Built QICLean.Channel.Schwarz.SupportRelativeEntropyGap (23s)
+✔ [9531/9695] Built QICLean.Channel.DirectSumConditionalExpectation (23s)
+✔ [9532/9695] Built QICLean.Channel.Schwarz.PetzRecoverySupport (23s)
+✔ [9533/9695] Built QICLean.Channel.FixedPoint.FullSupportBlockRetraction (23s)
+✔ [9534/9695] Built QICLean.Channel.Irreducible.Growth.KernelDescent (24s)
+✔ [9535/9695] Built QICLean.Analysis.OperatorMean.TreeDerivative (23s)
+✔ [9536/9695] Built QICLean.Channel.Separable (23s)
+✔ [9537/9695] Built QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.Sharp (25s)
+✔ [9538/9695] Built QICLean.Channel.Peripheral.RecurrentInverse (41s)
+✔ [9539/9695] Built QICLean.Channel.Schwarz.StrongSubadditivityPosDef (33s)
+✔ [9540/9695] Built QICLean.Channel.Semigroup.ReducibleQDS.Equivalence (36s)
+✔ [9541/9695] Built QICLean.Analysis.SpectralFilter (46s)
+✔ [9542/9695] Built QICLean.Channel.Schwarz.SupportRelativeEntropyEquality (48s)
+✔ [9543/9695] Built QICLean.Channel.Wigner.Rigidity (48s)
+✔ [9544/9695] Built QICLean.Channel.StarSubalgebraConditionalExpectation (48s)
+✔ [9545/9695] Built QICLean.Analysis.OperatorMean.LeafStates (45s)
+✔ [9546/9695] Built QICLean.Channel.Irreducible.Growth.OrthogonalTrace (47s)
+✔ [9547/9695] Built QICLean.Entropy.StrongSubadditivity (39s)
+✔ [9548/9695] Built QICLean.Channel.Irreducible.Growth.Exponential (48s)
+✔ [9549/9695] Built QICLean.Channel.FixedPoint.TraceAdjointDensityBlocks (50s)
+✔ [9550/9695] Built QICLean.Channel.SchmidtNumber (47s)
+✔ [9551/9695] Built QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.NilpIndex (42s)
+✔ [9552/9695] Built QICLean.Topology.CompactConvexFixedPoint (83s)
+✔ [9553/9695] Built QICLean.Channel.FixedPoint.BrouwerDensityMatrices (83s)
+✔ [9554/9695] Built QICLean.Entropy.UnnormalizedStrongSubadditivity (44s)
+✔ [9555/9695] Built QICLean.Channel.Schwarz.SSAEqualityDPI (45s)
+✔ [9556/9695] Built QICLean.Channel.TripartiteDecorrelation (46s)
+✔ [9557/9695] Built QICLean.Analysis.OperatorMean.BlockDiagonal (53s)
+✔ [9558/9695] Built QICLean.Channel.Semigroup.ReducibleQDS (33s)
+✔ [9559/9695] Built QICLean.Channel.Semigroup.RelaxationConditions (54s)
+✔ [9560/9695] Built QICLean.Channel.Wigner.SpectrumPreserver (37s)
+✔ [9561/9695] Built QICLean.Channel.OperatorSystemExtensionStarSubalgebra (37s)
+ℹ [9562/9695] Built QICLean.Channel.LorentzNormalForm.SpinorExponential (124s)
+info: QICLean/Channel/LorentzNormalForm/SpinorExponential.lean:452:47: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: QICLean/Channel/LorentzNormalForm/SpinorExponential.lean:454:47: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: QICLean/Channel/LorentzNormalForm/SpinorExponential.lean:484:46: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: QICLean/Channel/LorentzNormalForm/SpinorExponential.lean:486:46: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+✔ [9563/9695] Built QICLean.Entropy.Bipartite (47s)
+✔ [9564/9695] Built QICLean.Entropy.MutualInformation (47s)
+✔ [9565/9695] Built QICLean.Channel.Irreducible.Growth (48s)
+✔ [9566/9695] Built QICLean.Channel.KoashiImoto.FamilyFixedPointBlockForm (48s)
+✔ [9567/9695] Built QICLean.Channel.FixedPoint.DirectSumBlockRetraction (50s)
+✔ [9568/9695] Built QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux (49s)
+✔ [9569/9695] Built QICLean.Channel.FixedPoint.SupportCompressedDensityBlocks (51s)
+✔ [9570/9695] Built QICLean.Channel.SchmidtNumberFactors (50s)
+✔ [9571/9695] Built QICLean.Channel.SchmidtNumberCompact (50s)
+✔ [9572/9695] Built QICLean.Channel.ChoiTypeMap.HaTwoSimpleWitness (51s)
+✔ [9573/9695] Built QICLean.Analysis.OperatorMean (48s)
+✔ [9574/9695] Built QICLean.Entropy.ConditionalEntropy (53s)
+✔ [9575/9695] Built QICLean.Channel.Schwarz.PetzEqualityPrerequisites (61s)
+✔ [9576/9695] Built QICLean.Channel.Wigner (42s)
+✔ [9577/9695] Built QICLean.Channel.Semigroup.HamiltonianIndependentContractivity (46s)
+✔ [9578/9695] Built QICLean.Channel.PSDConeAutomorphism.RankPreserver (46s)
+✔ [9579/9695] Built QICLean.Channel.LorentzNormalForm (43s)
+✔ [9580/9695] Built QICLean.Entropy.FiniteProduct (46s)
+✔ [9581/9695] Built QICLean.Entropy.MutualInformationDataProcessing (51s)
+✔ [9582/9695] Built QICLean.Channel.KoashiImoto.NormalizedFamilyBlockForm (52s)
+✔ [9583/9695] Built QICLean.Channel.Irreducible.CollatzWielandt (56s)
+✔ [9584/9695] Built QICLean.Channel.FixedPoint.TraceNonincreasingProductSpan (56s)
+✔ [9585/9695] Built QICLean.Kraus.Wielandt.RectangularSpan.Universality (55s)
+✔ [9586/9695] Built QICLean.Channel.DecomposableWitness (55s)
+✔ [9587/9695] Built QICLean.Channel.FixedPoint.WolfTheorem614 (55s)
+✔ [9588/9695] Built QICLean.Channel.FixedPoint.AbstractCornerFixedPoints (57s)
+✔ [9589/9695] Built QICLean.Channel.EntanglementWitness (57s)
+✔ [9590/9695] Built QICLean.Entropy.ControlledContinuity (55s)
+✔ [9591/9695] Built QICLean.Channel.Schwarz.WeylSupportRelativeEntropyEquality (48s)
+✔ [9592/9695] Built QICLean.Channel.ChoiTypeMap.HaBlockTranspose (59s)
+✔ [9593/9695] Built QICLean.Channel.PSDConeAutomorphism.RankPreservation (43s)
+✔ [9594/9695] Built QICLean.Topology (123s)
+✔ [9595/9695] Built QICLean.Channel.FixedPoint.StationaryStates (122s)
+✔ [9596/9695] Built QICLean.Channel.PerronFrobenius.Existence (123s)
+✔ [9597/9695] Built QICLean.Entropy.TwoFamilies (40s)
+✔ [9598/9695] Built QICLean.Channel.Schwarz.WeylRelativeEntropyIntegral (59s)
+✔ [9599/9695] Built QICLean.Entropy.FiniteProductConditional (45s)
+✔ [9600/9695] Built QICLean.Channel.KoashiImoto.PreservingBlockAction (41s)
+✔ [9601/9695] Built QICLean.Kraus.Wielandt.RectangularSpan.EventualFullness (38s)
+✔ [9602/9695] Built QICLean.Channel.FixedPoint.TraceNonincreasingDirectSum (40s)
+✔ [9603/9695] Built QICLean.Channel.Peripheral.DensityBlockCoordinates (41s)
+✔ [9604/9695] Built QICLean.Channel.PositiveMapDetection (39s)
+✔ [9605/9695] Built QICLean.Channel.Schwarz.WeylSupportPetzRecovery (43s)
+✔ [9606/9695] Built QICLean.Channel.PSDConeAutomorphism (38s)
+✔ [9607/9695] Built QICLean.Channel.FixedPoint.AbstractWeightedFixedPoints (52s)
+✔ [9608/9695] Built QICLean.Channel.ChoiTypeMap.HaNegativePairing (45s)
+✔ [9609/9695] Built QICLean.Channel.Determinant.PositiveExtremality (42s)
+✔ [9610/9695] Built QICLean.Entropy.ConditionalTwoFamilies (33s)
+✔ [9611/9695] Built QICLean.Kraus.Wielandt.RectangularSpan (27s)
+✔ [9612/9695] Built QICLean.Channel.KoashiImoto.JointSupport (32s)
+✔ [9613/9695] Built QICLean.Channel.Peripheral.DensityBlockDynamics (28s)
+✔ [9614/9695] Built QICLean.Channel.FixedPoint.DirectSumTraceAdjoint (31s)
+✔ [9615/9695] Built QICLean.Channel.PPTIndecomposable (29s)
+✔ [9616/9695] Built QICLean.Channel.Peripheral.DirectSumFacePermutation (32s)
+✔ [9617/9695] Built QICLean.Channel.Schwarz.SSAEqualityPetzRecovery (24s)
+✔ [9618/9695] Built QICLean.Channel.ChoiTypeMap.Indecomposable (22s)
+✔ [9619/9695] Built QICLean.Channel.FixedPoint.MaximalRank (24s)
+✔ [9620/9695] Built QICLean.Channel.Determinant.PositiveInverse (26s)
+✔ [9621/9695] Built QICLean.Channel.PerronFrobenius (74s)
+✔ [9622/9695] Built QICLean.Channel.Irreducible.KrausSetup (75s)
+✔ [9623/9695] Built QICLean.Channel.Peripheral.SpectralRadius (77s)
+✔ [9624/9695] Built QICLean.Channel.Peripheral.SchurAsymptoticConvergence (81s)
+✔ [9625/9695] Built QICLean.Channel.Peripheral.DensityBlockFacePermutation (31s)
+✔ [9626/9695] Built QICLean.Channel.Peripheral.MatchedBlockEndomorphism (32s)
+✔ [9627/9695] Built QICLean.Channel.FixedPoint.DirectSumInverseKraus (34s)
+✔ [9628/9695] Built QICLean.Channel.Schwarz (31s)
+✔ [9629/9695] Built QICLean.Channel.KoashiImoto.InvariantConditionalFamily (33s)
+✔ [9630/9695] Built QICLean.Channel.Determinant (32s)
+✔ [9631/9695] Built QICLean.Channel.Peripheral.DensityBlockSchwarz (39s)
+✔ [9632/9695] Built QICLean.Channel.FixedPoint.DirectSumBlockPermutation (39s)
+✔ [9633/9695] Built QICLean.Channel.KoashiImoto.InvariantConditionalBlockForm (37s)
+✔ [9634/9695] Built QICLean.Channel.Peripheral.StructureOfCycles (18s)
+✔ [9635/9695] Built QICLean.Channel.KoashiImoto.MarkovBipartiteBlockForm (23s)
+✔ [9636/9695] Built QICLean.Channel.Peripheral.UnitalKraus (79s)
+✔ [9637/9695] Built QICLean.Channel.Irreducible.PerronFrobenius (81s)
+✔ [9638/9695] Built QICLean.Analysis.AsymptoticStateConvergence (77s)
+✔ [9639/9695] Built QICLean.Kraus.MixedMap.SpectralRadius (81s)
+✔ [9640/9695] Built QICLean.Channel.Irreducible.SpectralRadius (87s)
+✔ [9641/9695] Built QICLean.Channel.KoashiImoto.AmbientMarkovBipartiteBlockForm (50s)
+✔ [9642/9695] Built QICLean.Channel.KoashiImoto.MarkovDilation.Basic (27s)
+✔ [9643/9695] Built QICLean.Channel.Irreducible.Ergodicity (90s)
+✔ [9644/9695] Built QICLean.Channel.Peripheral.IrreducibleChannel (91s)
+✔ [9645/9695] Built QICLean.Channel.Irreducible.KrausGauge (85s)
+✖ [9646/9695] Building QICLean.Channel.KoashiImoto.MarkovDilation.SectorAction (30s)
+trace: .> LEAN_PATH=/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/Cli/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/Qq/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/lib/lean /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/QICLean/Channel/KoashiImoto/MarkovDilation/SectorAction.lean -o /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/lib/lean/QICLean/Channel/KoashiImoto/MarkovDilation/SectorAction.olean -i /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/lib/lean/QICLean/Channel/KoashiImoto/MarkovDilation/SectorAction.ilean -c /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/ir/QICLean/Channel/KoashiImoto/MarkovDilation/SectorAction.c --setup /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/ir/QICLean/Channel/KoashiImoto/MarkovDilation/SectorAction.setup.json --json
+error: failed to remove output hashes: resource exhausted (error code: 23, file table overflow)
+  file: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/ir/QICLean/Channel/KoashiImoto/MarkovDilation/SectorAction.bc.hash
+✔ [9647/9695] Built QICLean.Kraus.MixedMap.Gap (100s)
+✔ [9648/9695] Built QICLean.Channel.WeightedHilbertSchmidt (108s)
+✔ [9649/9695] Built QICLean.Channel.KoashiImoto.MarkovDilation.AmbientBlockAction (36s)
+✔ [9659/9695] Built QICLean.Channel.Peripheral (88s)
+✔ [9660/9695] Built QICLean.Kraus.PrimitiveFixedPoint.FromPeripheral (89s)
+✔ [9661/9695] Built QICLean.Channel.FixedPoint.StationarySupport (91s)
+✔ [9662/9695] Built QICLean.Kraus.Wielandt.Primitivity.VectorSpreadToPrimitive (89s)
+✔ [9663/9695] Built QICLean.Spectral.TransferOperatorGapRectNormalized (80s)
+✔ [9664/9695] Built QICLean.Channel.WhitenedChoi (75s)
+✔ [9665/9695] Built QICLean.Spectral.GaugeConstruction (81s)
+✔ [9666/9695] Built QICLean.Channel.Irreducible.FromSpectral (97s)
+✔ [9667/9695] Built QICLean.Channel.FixedPoint (48s)
+✔ [9668/9695] Built QICLean.Spectral.TransferOperatorGapNormalized (47s)
+✔ [9669/9695] Built QICLean.Channel.FaithfulMarginalWhitenedChoi (50s)
+✔ [9670/9695] Built QICLean.Kraus.PrimitiveFixedPoint.Irreducible (52s)
+✔ [9671/9695] Built QICLean.Channel.Semigroup.Primitivity.Basic (54s)
+✔ [9672/9695] Built QICLean.Channel.Irreducible.PositiveMapSpectralCharacterization (59s)
+✔ [9673/9695] Built QICLean.Kraus.PrimitiveFixedPoint (79s)
+✔ [9674/9695] Built QICLean.Spectral (89s)
+✔ [9675/9695] Built QICLean.Channel.Irreducible (73s)
+✔ [9676/9695] Built QICLean.Channel.MarginalSupportWhitenedChoi (86s)
+✔ [9677/9695] Built QICLean.Channel.Semigroup.Primitivity.Helpers (82s)
+✔ [9678/9695] Built QICLean.Entropy.MutualInformationOperatorSchmidt (68s)
+✔ [9680/9695] Built QICLean.Channel.Semigroup.Primitivity.SpectralMapping (69s)
+✔ [9681/9695] Built QICLean.Channel.Semigroup.Primitivity.IrreducibleAnalysis (92s)
+✔ [9682/9695] Built QICLean.Channel.Semigroup.Primitivity.MainTheorem (41s)
+✔ [9683/9695] Built QICLean.Kraus.Wielandt.Primitivity.StronglyIrreducibleToFullWordSpan (43s)
+✔ [9684/9695] Built QICLean.Channel.Semigroup.Primitivity (11s)
+✔ [9685/9695] Built QICLean.Channel.Semigroup.RelaxationCorollary (11s)
+✔ [9686/9695] Built QICLean.Kraus.Wielandt.Primitivity (12s)
+✔ [9687/9695] Built QICLean.Channel.WolfTheorem68 (12s)
+✔ [9688/9695] Built QICLean.Channel.Semigroup (8.0s)
+✔ [9689/9695] Built QICLean.Kraus.Wielandt (10s)
+✔ [9690/9695] Built QICLean.Channel.WielandtLowDim (10s)
+✔ [9691/9695] Built QICLean.Channel.QuantumWielandt (11s)
+✔ [9693/9695] Built QICLean.Kraus (7.4s)
+Some required targets logged failures:
+- QICLean.Channel.KoashiImoto.MarkovDilation.SectorAction
+error: build failed

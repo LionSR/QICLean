@@ -1,0 +1,55 @@
+PHYSICAL PAGE 396
+13.20 Reduced densities and masses of repeated pure states
+Let ℋ𝑆 = ℂ𝑆 and ℋ𝑅 = ℂΩ be finite-dimensional, and let 𝜓 ∈ ℋ𝑆 ⊗ ℋ𝑅 . Write 𝜌 = tr𝑆 |𝜓⟩⟨𝜓|
+for its actual reduced density, without imposing normalization. For 𝑘 ≥ 0, regroup the repeated
+vector into the two systems. Its coordinates, indexed by 𝑥 ∈ 𝑆 𝑘 and 𝑦 ∈ Ω𝑘 , are
+                                                       𝑘−1
+                                        𝑣𝑘 (𝑥, 𝑦) = ∏ 𝜓(𝑥𝑖 , 𝑦𝑖 ).                                    (13.230)
+                                                       𝑖=0
+
+These are the pure-state identities used in the Schur-sector argument of [Ope26b, Section 7].
+Theorem 13.20.1 (Reduced density of a repeated bipartite vector).                   Lean    ✓ Stmt For every 𝜓
+and every 𝑘 ≥ 0,
+
+                                          tr𝑆𝑘 |𝑣𝑘 ⟩⟨𝑣𝑘 | = 𝜌⊗𝑘 .                                     (13.231)
+                             𝑘
+Proof.   ✓ Proof For 𝑦, 𝑧 ∈ Ω , the matrix entry on the left is
+
+
+             ∑ ∏ 𝜓(𝑥𝑖 , 𝑦𝑖 )𝜓(𝑥𝑖 , 𝑧𝑖 ) = ∏ ∑ 𝜓(𝑠, 𝑦𝑖 )𝜓(𝑠, 𝑧𝑖 ) = ∏ 𝜌(𝑦𝑖 , 𝑧𝑖 ).                     (13.232)
+            𝑥∈𝑆 𝑘   𝑖                        𝑖   𝑠∈𝑆                     𝑖
+
+The middle equality is the distributive law for a finite product of sums.
+Theorem 13.20.2 (Projection mass of a repeated bipartite vector).                    Lean    ✓ Stmt For every
+orthogonal projector 𝑃 on ℋ⊗𝑘
+                           𝑅 ,
+
+                                    ‖(𝐼𝑆𝑘 ⊗ 𝑃 )𝑣𝑘 ‖2 = Re tr(𝜌⊗𝑘 𝑃 ).                                 (13.233)
+
+In particular, taking 𝑃 to be an actual central Schur projector gives the squared norm in that
+sector.
+
+Proof.   ✓ Proof The trace-pairing property of the partial trace and the preceding identity give
+
+
+                    tr(𝜌⊗𝑘 𝑃 ) = ⟨𝑣𝑘 , (𝐼𝑆𝑘 ⊗ 𝑃 )𝑣𝑘 ⟩ = ⟨(𝐼𝑆𝑘 ⊗ 𝑃 )𝑣𝑘 , (𝐼𝑆𝑘 ⊗ 𝑃 )𝑣𝑘 ⟩.               (13.234)
+
+The second equality uses 𝑃 = 𝑃 † = 𝑃 2 . Taking real parts proves the formula.
+
+   Both identities include zero copies and empty one-copy factors; no invertibility of 𝜌 is required.
+Concentration, the entropy window and selection of a common sequence of labels are separate
+assertions.
+
+
+13.21 Trivial-factor corollaries
+The partial traces and von Neumann entropy are introduced in Chapter 13. This supplement
+collects elementary trace-preservation identities and the dimension-1 entropy bound that follow
+directly from those definitions. They are listed as separate results because each proof requires
+only unfolding definitions and re-indexing finite sums.
+Theorem 13.21.1 (Partial trace over 𝐴 preserves the full trace).             Lean   ✓ Stmt For any tripartite
+matrix 𝜌𝐴𝐵𝐶 , tr(𝜌𝐴𝐵𝐶 ) = tr(tr𝐴 (𝜌𝐴𝐵𝐶 )).
+
+
+
+
+                                                       395

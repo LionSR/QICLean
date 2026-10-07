@@ -1,0 +1,17 @@
+{
+  "source_revision": "b9c8bd663c081e6128353eee979d266b1c4bdce0",
+  "argv": [
+    "python3",
+    "-c",
+    "import pathlib,json,hashlib,subprocess; e=pathlib.Path(\"docs/provenance/evidence/pureTensorPower8753\"); f=json.loads((e/\"source-freeze.json\").read_text()); assert all(hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()==h and hashlib.sha256(subprocess.check_output([\"git\",\"show\",f[\"source_revision\"]+\":\"+p])).hexdigest()==h for p,h in f[\"production_sha256\"].items()); parent=json.loads((e/\"parent-evidence-preservation.json\").read_text()); assert all(hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()==h for p,h in parent[\"sha256\"].items()); print(\"All frozen mathematical bytes and\",len(parent[\"sha256\"]),\"parent evidence/provenance files unchanged.\")"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 1.1164816670061555,
+  "log": "docs/provenance/evidence/pureTensorPowerIntegration8753/source-continuity.log",
+  "sha256": "be5a341745bac3b81dc195b158a9b84e0e331a1e2aa80093ff1ab3429c150920",
+  "uncompressed_sha256": "be5a341745bac3b81dc195b158a9b84e0e331a1e2aa80093ff1ab3429c150920",
+  "uncompressed_bytes": 82,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

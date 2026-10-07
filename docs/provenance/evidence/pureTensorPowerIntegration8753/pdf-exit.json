@@ -1,0 +1,16 @@
+{
+  "source_revision": "b9c8bd663c081e6128353eee979d266b1c4bdce0",
+  "argv": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 50.981234582999605,
+  "log": "docs/provenance/evidence/pureTensorPowerIntegration8753/pdf.log.gz",
+  "sha256": "88d506e21640492dd652dad0d195efc6b7f3f04bbf2a20c5549193271f43586a",
+  "uncompressed_sha256": "77061bb49682d95eac396512b0f69206d56263995f4ae76082e1cd30a8ec5c0a",
+  "uncompressed_bytes": 797011,
+  "compressed": true,
+  "deterministic_gzip_mtime": 0
+}

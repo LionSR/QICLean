@@ -1,0 +1,18 @@
+{
+  "source_revision": "b9c8bd663c081e6128353eee979d266b1c4bdce0",
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "scripts/test_blueprint_web_render.py",
+    "--web-root",
+    "blueprint/web"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 42.238803833010024,
+  "log": "docs/provenance/evidence/pureTensorPowerIntegration8753/whole-web-reader.log",
+  "sha256": "adde7b85ced5d69c28a5b0360074946fe183b3fbf25dc9387325efc592c6fcd6",
+  "uncompressed_sha256": "adde7b85ced5d69c28a5b0360074946fe183b3fbf25dc9387325efc592c6fcd6",
+  "uncompressed_bytes": 32,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}
