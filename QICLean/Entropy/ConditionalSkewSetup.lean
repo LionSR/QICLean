@@ -354,6 +354,49 @@ theorem skewFun_neg_conj (hh : h.IsHermitian) (z : ℂ) :
   rw [skewFun, skewFun, key, skew_matrix_conjTranspose hH, conjTranspose_suppPow hP,
     conjTranspose_suppPow hP, conjTranspose_suppPow hY, conjTranspose_suppPow hY, map_neg, neg_neg]
 
+theorem differentiable_suppPow_apply {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.IsHermitian) (c : ℂ) (i j : n) :
+    Differentiable ℂ (fun z => cfcC A (suppPowFun (c * z)) i j) := by
+  have h := differentiable_supportCPow_apply hA i j
+  simp only [supportCPow_eq_cfcC] at h
+  exact h.comp (differentiable_id.const_mul c)
+
+/-- `f` is entire. -/
+theorem differentiable_skewFun : Differentiable ℂ (skewFun θ h) := by
+  have hP := (posSemidef_margP θ).1
+  have hY := (posSemidef_margY θ).1
+  have hA : ∀ c : ℂ, ∀ i j, Differentiable ℂ (fun z =>
+      liftP (X := X) (U := U) (F := F) (cfcC (margP θ) (suppPowFun (c * z))) i j) := by
+    intro c i j
+    simp only [liftP, kroneckerMap_apply]
+    exact (differentiable_suppPow_apply hP c _ _).mul (differentiable_const _)
+  have hB : ∀ c : ℂ, ∀ i j, Differentiable ℂ (fun z =>
+      liftY (P₀ := P₀) (P₁ := P₁) (F := F) (cfcC (margY θ) (suppPowFun (c * z))) i j) := by
+    intro c i j
+    simp only [liftY, kroneckerMap_apply]
+    exact (differentiable_const _).mul ((differentiable_suppPow_apply hY c _ _).mul
+      (differentiable_const _))
+  have hM : ∀ i j, Differentiable ℂ (fun z =>
+      ((liftP (cfcC (margP θ) (suppPowFun (1 * z))) * liftY (cfcC (margY θ) (suppPowFun (-1 * z))) *
+        liftH h * liftP (cfcC (margP θ) (suppPowFun (-1 * z))) *
+        liftY (cfcC (margY θ) (suppPowFun (1 * z))) :
+          Matrix ((P₀ × P₁) × ((X × U) × F)) ((P₀ × P₁) × ((X × U) × F)) ℂ) i j)) := by
+    intro i j
+    refine differentiable_mul_apply (fun i j => ?_) (hB 1) i j
+    refine differentiable_mul_apply (fun i j => ?_) (hA (-1)) i j
+    refine differentiable_mul_apply (N := fun _ : ℂ => liftH (P₁ := P₁) (U := U) (F := F) h)
+      (fun i j => ?_) (fun i j => differentiable_const _) i j
+    exact differentiable_mul_apply (hA 1) (hB (-1)) i j
+  have heq : skewFun θ h = fun z => star θ ⬝ᵥ ((liftP (cfcC (margP θ) (suppPowFun (1 * z))) *
+      liftY (cfcC (margY θ) (suppPowFun (-1 * z))) * liftH h *
+      liftP (cfcC (margP θ) (suppPowFun (-1 * z))) *
+      liftY (cfcC (margY θ) (suppPowFun (1 * z)))) *ᵥ θ) := by
+    funext z; simp [skewFun]
+  rw [heq]
+  simp only [dotProduct, mulVec]
+  exact Differentiable.fun_sum fun i _ => (differentiable_const _).mul
+    (Differentiable.fun_sum fun j _ => (hM i j).mul (differentiable_const _))
+
 end Values
 
 end Entropy.ConditionalSkew
