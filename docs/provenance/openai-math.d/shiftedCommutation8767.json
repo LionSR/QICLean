@@ -7,7 +7,7 @@
   "entries": [
     {
       "id": "8767-shifted-commutation-01",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -32,12 +32,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a85789dabd1a2c9f9966fa0b8fdcff160547e88b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ShiftedDensityCommutation",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedCommutation8767/build.log",
+            "sha256": "d114f6b36ac602fe6ee743999af285e3ebb89b22e8820cd740944bba8abc3199"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 /Users/siruilu/Local/agentFormalization/QICLean/worktrees/finite-product-purification-splitting/docs/provenance/evidence/shiftedCommutation8767/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedCommutation8767/axioms.log",
+            "sha256": "402b62121fdb0c37c517962394b2b26cb189bbe097420770088d7f0c3c532826"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/ShiftedDensityCommutation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedCommutation8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     },
     {
       "id": "8767-shifted-commutation-02",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -62,12 +87,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a85789dabd1a2c9f9966fa0b8fdcff160547e88b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ShiftedDensityCommutation",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedCommutation8767/build.log",
+            "sha256": "d114f6b36ac602fe6ee743999af285e3ebb89b22e8820cd740944bba8abc3199"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 /Users/siruilu/Local/agentFormalization/QICLean/worktrees/finite-product-purification-splitting/docs/provenance/evidence/shiftedCommutation8767/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedCommutation8767/axioms.log",
+            "sha256": "402b62121fdb0c37c517962394b2b26cb189bbe097420770088d7f0c3c532826"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/ShiftedDensityCommutation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedCommutation8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     },
     {
       "id": "8767-shifted-commutation-03",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
@@ -92,7 +142,32 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a85789dabd1a2c9f9966fa0b8fdcff160547e88b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ShiftedDensityCommutation",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedCommutation8767/build.log",
+            "sha256": "d114f6b36ac602fe6ee743999af285e3ebb89b22e8820cd740944bba8abc3199"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 /Users/siruilu/Local/agentFormalization/QICLean/worktrees/finite-product-purification-splitting/docs/provenance/evidence/shiftedCommutation8767/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedCommutation8767/axioms.log",
+            "sha256": "402b62121fdb0c37c517962394b2b26cb189bbe097420770088d7f0c3c532826"
+          },
+          {
+            "kind": "source-audit",
+            "command": "lake env lean -DwarningAsError=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 QICLeanTest/ShiftedDensityCommutation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedCommutation8767/regression.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
       }
     }
   ]
