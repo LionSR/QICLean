@@ -261,15 +261,27 @@ theorem spectralCutoff_le_one (p : ℕ) {δ : ℝ} (hδ : 0 < δ) (ω : ℝ) :
     exact Real.exp_le_one_iff.mpr (by linarith)
   · exact zero_le_one
 
+theorem iteratedDeriv_spectralCutoff {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ) (n : ℕ) :
+    iteratedDeriv n (spectralCutoff p δ) = fun ω => (δ⁻¹) ^ n * profileDeriv p n (δ⁻¹ * ω) := by
+  rw [spectralCutoff_eq_comp p hδ,
+    iteratedDeriv_comp_const_mul ((contDiff_realProfile hp).of_le (by exact_mod_cast le_top)),
+    iteratedDeriv_realProfile hp]
+
+/-- Every derivative of `χ` vanishes for `|ω| ≥ δ`. -/
+theorem iteratedDeriv_spectralCutoff_eq_zero {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ)
+    (n : ℕ) {ω : ℝ} (hω : δ ≤ |ω|) : iteratedDeriv n (spectralCutoff p δ) ω = 0 := by
+  have h : ¬ |δ⁻¹ * ω| < 1 := by
+    rw [abs_mul, abs_inv, abs_of_pos hδ, inv_mul_lt_iff₀ hδ, mul_one]; exact hω.not_gt
+  rw [iteratedDeriv_spectralCutoff hp hδ]
+  simp only [profileDeriv, h, ↓reduceIte, mul_zero]
+
 /-- **Uniform derivative bound for `χ`** (the Gevrey estimate `eq:quasilocal-gevrey`,
 `03-quasilocal.tex`, lines 176–184, in integer-exponent form): for `n ≤ p k`,
 `|χ^{(n)}(ω)| ≤ δ^{-n} n! e (12 p)^n 2^k k!`. -/
 theorem abs_iteratedDeriv_spectralCutoff_le {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ)
     {n k : ℕ} (hnk : n ≤ p * k) (ω : ℝ) :
     |iteratedDeriv n (spectralCutoff p δ) ω| ≤ (δ⁻¹) ^ n * derivConst p n k := by
-  rw [spectralCutoff_eq_comp p hδ,
-    iteratedDeriv_comp_const_mul ((contDiff_realProfile hp).of_le (by exact_mod_cast le_top)),
-    iteratedDeriv_realProfile hp, abs_mul, abs_pow, abs_inv, abs_of_pos hδ]
+  rw [iteratedDeriv_spectralCutoff hp hδ, abs_mul, abs_pow, abs_inv, abs_of_pos hδ]
   gcongr
   refine (abs_profileDeriv_le hp hnk _).trans ?_
   have hc := derivConst_nonneg p n k
