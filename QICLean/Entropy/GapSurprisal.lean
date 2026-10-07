@@ -42,7 +42,7 @@ Independently written from the manuscript; no upstream Lean proof text is reused
 -/
 
 open Complex Matrix
-open scoped InnerProductSpace ComplexConjugate Kronecker Matrix.Norms.L2Operator
+open scoped InnerProductSpace ComplexConjugate ComplexOrder Kronecker Matrix.Norms.L2Operator
 
 namespace Entropy
 
@@ -182,6 +182,69 @@ theorem re_inner_tilt_sub_le (hherm : ∀ i, (h i).IsHermitian) (hnorm : ∀ i, 
         rw [Finset.sum_ite_mem, Finset.univ_inter]
     _ = _ := by
         rw [Finset.mul_sum, Finset.sum_mul]
+
+/-- The surprisal parameter `ℬ = 1 + ∑_{i ∈ I×} log² (e d_i)`.
+Area-law manuscript, Lemma 3.1, `02-initial.tex`, lines 51–55. -/
+noncomputable def cutLogBudget (Cr : Finset ι) (dim : ι → ℕ) : ℝ :=
+  1 + ∑ i ∈ Cr, Real.log (Real.exp 1 * dim i) ^ 2
+
+omit [Fintype ι] in
+theorem one_le_cutLogBudget (Cr : Finset ι) (dim : ι → ℕ) : 1 ≤ cutLogBudget Cr dim := by
+  unfold cutLogBudget
+  linarith [Finset.sum_nonneg fun i (_ : i ∈ Cr) ↦ sq_nonneg (Real.log (Real.exp 1 * dim i))]
+
+omit [Fintype ι] in
+theorem log_sq_le_cutLogBudget {i : ι} (hi : i ∈ Cr) :
+    Real.log (Real.exp 1 * dim i) ^ 2 ≤ cutLogBudget Cr dim := by
+  unfold cutLogBudget
+  have := Finset.single_le_sum (f := fun i ↦ Real.log (Real.exp 1 * dim i) ^ 2)
+    (fun i _ ↦ sq_nonneg _) hi
+  linarith
+
+/-- The endpoint `r = 1 / (32 √((1 + ϑ) ℬ))` of the admissible interval of the
+manuscript. -/
+noncomputable def tailRadius (ϑ B : ℝ) : ℝ := 1 / (32 * Real.sqrt ((1 + ϑ) * B))
+
+/-- **Gap moment inequality.** The global gap converts the tilted excitation bound into
+`(1 - 128 e ϑ ℬ u²) M(u) ≤ M(u/2)²`.
+Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 176–186. -/
+theorem gap_surprisalMoment (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀)
+    (hnorm : ∀ i, ‖h i‖ ≤ c₀)
+    (hone : ∀ i ∉ Cr, IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
+    (hcross : ∀ i ∈ Cr, HasProductDecomposition (h i) c₀ (dim i ^ 2))
+    (hΨ : ‖Ψ‖ = 1) (hp : ∀ j, 0 ≤ p j)
+    (hrow : ∀ j k, ⟪schmidtRow Ψ j, schmidtRow Ψ k⟫_ℂ = if j = k then (p j : ℂ) else 0)
+    {g₀ : ℝ} (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
+    (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
+      (g₀ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ)))).PosSemidef)
+    {u : ℝ} (hu : |u| ≤ 1 / 2)
+    (hu' : ∀ i ∈ Cr, |u| ≤ 1 / (8 * Real.log (Real.exp 1 * dim i))) :
+    (1 - 128 * Real.exp 1 * (c₀ / g₀) * cutLogBudget Cr dim * u ^ 2) * surprisalMoment p u ≤
+      surprisalMoment p (u / 2) ^ 2 := by
+  have hs := sum_eq_one_of_schmidtRow hΨ hrow
+  have hM := surprisalMoment_pos hp hs u
+  have hexc := re_inner_tilt_sub_le hherm hnorm hone hdim hcross hp hs hrow heig hu hu'
+  have hg := hgap.gap_le (tilt Ψ p u)
+  rw [norm_tilt hp hs hrow u, inner_tilt hp hs hrow u, norm_real, Real.norm_eq_abs, sq_abs,
+    div_pow, Real.sq_sqrt hM.le, one_pow, mul_one] at hg
+  have hB : ∑ i ∈ Cr, Real.log (Real.exp 1 * dim i) ^ 2 ≤ cutLogBudget Cr dim := by
+    unfold cutLogBudget; linarith
+  set B := cutLogBudget Cr dim
+  set M2 := surprisalMoment p (u / 2)
+  have h1 : g₀ * (1 - M2 ^ 2 / surprisalMoment p u) ≤
+      g₀ * (128 * Real.exp 1 * (c₀ / g₀) * B * u ^ 2) := by
+    have h2 : g₀ * (128 * Real.exp 1 * (c₀ / g₀) * B * u ^ 2) =
+        128 * Real.exp 1 * c₀ * B * u ^ 2 := by field_simp
+    rw [h2]
+    have h3 : 128 * Real.exp 1 * c₀ * (∑ i ∈ Cr, Real.log (Real.exp 1 * dim i) ^ 2) * u ^ 2 ≤
+        128 * Real.exp 1 * c₀ * B * u ^ 2 := by
+      have := Real.exp_pos 1
+      gcongr
+    nlinarith
+  have h4 := le_of_mul_le_mul_left h1 hg₀
+  have h5 : 1 - 128 * Real.exp 1 * (c₀ / g₀) * B * u ^ 2 ≤ M2 ^ 2 / surprisalMoment p u := by
+    linarith
+  exact (le_div_iff₀ hM).mp h5
 
 end Diagonal
 
