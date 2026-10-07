@@ -235,6 +235,41 @@ semidefinite matrices.
     propagate to $\partial_{A_j}M[A_j]=w_jM$, which gives unitality.
 \end{proof}
 
-% The block-diagonal clause of the source lemma (preservation of matrix blocks
-% and independence of the first block from the others) is not yet formalized;
-% see the remaining slice plan of the area-law program.
+\begin{theorem}[Block structure of the normalized derivative maps]\label{thm:mean_tree_leaf_maps_blocks}
+    \lean{Matrix.MeanTree.isBlockDiagonalMap_leafMap, Matrix.IsBlockDiagonalMap.toBlocks₁₁,
+      Matrix.IsBlockDiagonalMap.toBlocks₂₂, Matrix.MeanTree.eval_fromBlocks_diag,
+      Matrix.geomMean_fromBlocks_diag, Matrix.rpow_fromBlocks_diag}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps}
+    If all inputs of a weighted binary tree with distinct leaves are block
+    diagonal for a fixed orthogonal decomposition, the root is block diagonal and
+    the normalized leaf maps preserve each matrix block. On the first diagonal
+    block they are the normalized leaf maps of the tree of first diagonal blocks,
+    and they do not depend on the other diagonal blocks.
+\end{theorem}
+
+\begin{proof}\leanok
+    The functional calculus of a block-diagonal Hermitian matrix acts blockwise,
+    so the mean and the root are block diagonal. In the derivative integral every
+    sandwich factor $(t+C)^{-1}$ is block diagonal, so the derivative of the
+    power commutes with compression to each block and acts on the diagonal
+    blocks as the derivatives at the diagonal blocks. These properties are
+    preserved by sums, compositions, positive multiples and sandwiches by block
+    diagonal matrices, which build the leaf maps.
+\end{proof}
+
+\begin{corollary}[Leaf states]\label{cor:mean_tree_leaf_states}
+    \lean{Matrix.MeanTree.posSemidef_traceAdjoint_leafMap,
+      Matrix.MeanTree.trace_traceAdjoint_leafMap}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps}
+    For a leaf of positive terminal weight, the trace adjoint $\Phi_j^\dagger$,
+    defined by $\operatorname{Tr}(\Phi_j^\dagger(\rho)Z)=\operatorname{Tr}(\rho\,\Phi_j(Z))$,
+    maps density matrices to density matrices.
+\end{corollary}
+
+\begin{proof}\leanok
+    The trace adjoint of a positive map is positive, and
+    $\operatorname{Tr}\Phi_j^\dagger(\rho)=\operatorname{Tr}(\rho\,\Phi_j(I))=\operatorname{Tr}\rho$
+    by unitality.
+\end{proof}
