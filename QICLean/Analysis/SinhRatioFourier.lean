@@ -368,7 +368,9 @@ theorem rectBoundaryIntegral_fourierIntegrand {s : ℝ} (hs : s ∈ Ioo (0 : ℝ
     exact (differentiable_fourierNumer s z u).div (differentiable_densityDenom s u)
       (densityDenom_ne_zero hs h0 h1 huP.1 huP.2)
   rw [integral_boundary_rect_eq_of_simple_poles P c hP hg hgc hfd, Finset.sum_pair hne]
-  rw [show c p₁ = c₁ by simp [c], show c p₂ = c₂ by simp [c, Ne.symm hne]]
+  have hc₁ : c p₁ = c₁ := by simp [c]
+  have hc₂ : c p₂ = c₂ := by simp [c, Ne.symm hne]
+  rw [hc₁, hc₂]
   exact two_pi_I_mul_residues hs z
 
 /-- `‖cosh(a + ib)‖ ≥ |sinh a|`. -/
