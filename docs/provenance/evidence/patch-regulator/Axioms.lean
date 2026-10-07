@@ -1,0 +1,5 @@
+import QICLean.Analysis.PatchRegulator
+
+#print axioms Matrix.trace_le_smul_rank_add_complement_of_le
+#print axioms Matrix.PosSemidef.shiftedRegulator_bounds
+#print axioms Matrix.PosSemidef.trace_shiftedRegulator_le_quarter

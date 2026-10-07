@@ -1,0 +1,15 @@
+{
+  "kind": "cache",
+  "command": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 16.42,
+  "source_revision": "1681609e96a5d99864b5632df6086566dad0af40",
+  "log": "docs/provenance/evidence/iidTailThresholdIntegration8753/mathlib-cache.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

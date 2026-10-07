@@ -1,0 +1,10 @@
+{
+  "repository": "LionSR/TNLean",
+  "revision": "19646e13da1b4c7b63714c37ca4d0f575d6c0f13",
+  "sha256": {
+    "scripts/check_openai_provenance.py": "8183e29f5a339bba37e28e9473aa7a6a42791282ed6877071dfd4096eda7cb65",
+    "docs/provenance/openai-math.schema.json": "a691d8e95b668c968365f2c7e33f614d49635aade8fdd4c2f27cd64f0cd6b459"
+  },
+  "validation_scope": "Only the three records in the amplification-regional-information shard; scan=False.",
+  "dependency": "jsonschema==4.23.0"
+}

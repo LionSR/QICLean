@@ -1,0 +1,112 @@
+\section{A common sequence of high-mass entropy labels}
+\label{sec:high_label_window}
+
+Let $q=\dim\mathcal H_R$ and $N_k=(k+1)^{q^2}$. The permutation action
+on $\mathcal H_R^{\otimes k}$ has central projectors $\Pi_\lambda$,
+indexed by irreducible labels $\lambda$ of the symmetric group. Write
+$d_\lambda$ for the irreducible dimension. The following statements give
+the simultaneous selection in \cite[Section~7]{OpenAI2026AreaLaw},
+equation \textup{(comparator:high-label)}.
+
+\begin{theorem}[Finite entropy-window criterion]
+\label{thm:high_label_finite_window}
+\lean{TensorPower.exists_labelProj_mass_entropy_window}
+\leanok
+Let $\sigma$ be a density matrix on $\mathcal H_R^{\otimes k}$ which
+commutes with all copy permutations. Let $a\in\mathbb R$ and $w\ge0$.
+Set $L=-\log\sigma$, with the logarithm assigned value zero on the kernel.
+If
+\begin{align}
+ \operatorname{tr}\bigl(\sigma\,1_{\{|L-a|>w\}}\bigr)
+       +N_k e^{-w/2}\le\tfrac12,
+\end{align}
+then there is a label $\lambda$ such that
+\begin{align}
+ \operatorname{tr}(\sigma\Pi_\lambda)\ge\frac1{2N_k},
+ \qquad |\log d_\lambda-a|\le2w.
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+Resolve $\sigma$ and the central label projectors simultaneously. On a
+joint eigenspace of positive density eigenvalue $u$ and label $\lambda$,
+put $\ell=-\log u$ and $f=\log d_\lambda$. The eigenvalue multiplicity
+bound $u d_\lambda\le1$ implies $f\le\ell$.
+If $|f-a|>2w$, then either $|\ell-a|>w$ or $\ell-f>w$.
+The mass of the second event is bounded by $e^{-w/2}$ times the
+exponential moment of $(L-F)/2$, which is at most $N_k$.
+The hypothesis therefore leaves at least half of the total mass in the
+good labels. At most $N_k$ labels occur, so one good label has mass at
+least $(2N_k)^{-1}$. Zero eigenvalues contribute no mass.
+\end{proof}
+
+\begin{theorem}[Independent-copy entropy window]
+\label{thm:high_label_iid_window}
+\lean{TensorPower.eventually_exists_labelProj_finKronecker_entropy_window}
+\leanok
+\uses{thm:high_label_finite_window}
+For every density matrix $\rho$ on $\mathcal H_R$, for all sufficiently
+large $k$ there is a label $\lambda$ satisfying
+\begin{align}
+ \operatorname{tr}(\rho^{\otimes k}\Pi_\lambda)\ge\frac1{2N_k},
+ \qquad |\log d_\lambda-kS(\rho)|\le2k^{3/4}.
+\end{align}
+No invertibility of $\rho$ is assumed.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:high_label_finite_window}
+The independent-copy surprisal has mean $kS(\rho)$ and variance $kV$,
+where $V$ is its one-copy variance. Chebyshev's inequality at width
+$k^{3/4}$ bounds the tail by $V/\sqrt{k}$.
+The sum $V/\sqrt{k}+N_k e^{-k^{3/4}/2}$ tends to zero.
+The finite criterion applies for all sufficiently large $k$.
+\end{proof}
+
+\begin{theorem}[One sequence for mass and entropy]
+\label{thm:high_label_common_sequence}
+\lean{TensorPower.exists_label_sequence_mass_entropy_asymptotic}
+\leanok
+\uses{thm:high_label_iid_window}
+For every density matrix $\rho$, there is one sequence $(\lambda_k)_{k\ge0}$
+such that, for all sufficiently large $k$,
+\begin{align}
+ \operatorname{tr}(\rho^{\otimes k}\Pi_{\lambda_k})\ge\frac1{2N_k},
+\end{align}
+and
+\begin{align}
+ \log d_{\lambda_k}=kS(\rho)+o(k).
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:high_label_iid_window}
+Choose a label satisfying both conclusions of the preceding theorem for
+each sufficiently large $k$; at the remaining finitely many values choose
+any label. The normalized dimension error is at most $2k^{-1/4}$ and
+therefore tends to zero.
+\end{proof}
+
+\begin{theorem}[High-mass labels of actual pure tensor powers]
+\label{thm:high_label_pure_sequence}
+\lean{TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic}
+\leanok
+\uses{thm:high_label_common_sequence,thm:pure_tensor_power_projection_mass}
+Let $\psi\in\mathcal H_S\otimes\mathcal H_R$ be a unit vector, let
+$\rho=\operatorname{tr}_S|\psi\rangle\langle\psi|$, and let $v_k$ be its
+literal tensor power regrouped into $\mathcal H_S^{\otimes k}\otimes
+\mathcal H_R^{\otimes k}$. There is one sequence $(\lambda_k)$ for which,
+for all sufficiently large $k$,
+\begin{align}
+ \|(I\otimes\Pi_{\lambda_k})v_k\|^2\ge\frac1{2N_k},
+\end{align}
+and $\log d_{\lambda_k}=kS(\rho)+o(k)$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:high_label_common_sequence,thm:pure_tensor_power_projection_mass}
+The actual reduced density is positive semidefinite and has trace one.
+Apply the common-sequence theorem to this density. The projection-mass
+identity for actual pure tensor powers converts its trace mass into the
+stated squared norm.
+\end{proof}

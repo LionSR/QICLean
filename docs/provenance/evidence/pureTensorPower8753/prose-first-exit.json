@@ -1,0 +1,15 @@
+{
+  "status": "exploratory, excluded from final provenance",
+  "source_sha256": "27bed0db03f6d514faeb4e590bee5ea30b4523eabb60e0e3fb350b653392fd40",
+  "argv": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/TNLean/scripts/check_reader_facing_prose.py",
+    "--root",
+    ".",
+    "--diff-base",
+    "0c3485a499660de80843affa0b25b964c12a5193"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.3587460840062704,
+  "raw_log_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

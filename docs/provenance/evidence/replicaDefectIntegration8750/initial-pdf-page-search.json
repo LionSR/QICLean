@@ -1,0 +1,20 @@
+{
+  "hits": {
+    "Physical excitation counts and replica energy": [
+      7,
+      400
+    ],
+    "Exact excitation sectors of physical replicas": [
+      7,
+      401
+    ],
+    "Cutoff components and their squared masses": [
+      402
+    ],
+    "Actual cutoff mass from the physical mean energy": [
+      401
+    ]
+  },
+  "page_count": 417,
+  "pdf_sha256": "35a53ff23cd016ad039f02ce699e25cf931e241d4616b6171c0b3701208c69dc"
+}

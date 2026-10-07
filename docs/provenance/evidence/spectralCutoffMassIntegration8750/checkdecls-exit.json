@@ -1,0 +1,14 @@
+{
+  "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+  "argv": [
+    "lake",
+    "env",
+    ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+    "blueprint/lean_decls"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+  "exit_code": 0,
+  "elapsed_seconds": 38.60185194015503,
+  "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/checkdecls.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

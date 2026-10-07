@@ -1,0 +1,8 @@
+import QICLean.Entropy.FiniteProductSplitting
+
+#print axioms FiniteProduct.splitTwoRegionsEquiv
+#print axioms FiniteProduct.splitTwoRegionsState
+#print axioms FiniteProduct.partialTraceRight_splitTwoRegionsState
+#print axioms FiniteProduct.splitTwoRegionsState_unit
+#print axioms FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le
+#print axioms FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow

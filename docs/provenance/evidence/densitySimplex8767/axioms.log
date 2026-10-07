@@ -1,0 +1,8 @@
+'Entropy.simplex_ratio_conditions_of_isMinOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.simplexFilterObjective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.normalizedFilterWeights' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.hasFDerivAt_simplexFilterObjective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.simplexFilterObjective_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.normalizedFilterWeights_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.sum_normalizedFilterWeights' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.normalizedFilterWeights_clipped_of_isMinOn' depends on axioms: [propext, Classical.choice, Quot.sound]

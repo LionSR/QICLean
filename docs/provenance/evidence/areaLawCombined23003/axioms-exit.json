@@ -1,0 +1,17 @@
+{
+  "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "docs/provenance/evidence/areaLawCombined23003/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+  "exit_code": 0,
+  "elapsed_seconds": 5.023614883422852,
+  "log": "docs/provenance/evidence/areaLawCombined23003/axioms.log",
+  "sha256": "805012087823ef4ac38e11db6ee07323e953ee3e993dd1bb9e3c967c251d1e0e"
+}

@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-iid-surprisal-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/IidSurprisal.lean",
+        "declaration": "Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently derive the actual finite tensor-power spectral trace law and independent-copy Chebyshev concentration from the canonical eigenvalue distribution. Product logarithms are expanded only on nonzero product weights; no full-rank or supplied eigenbasis hypothesis is used. For PSD trace-one density matrices, the actual CFC threshold mass is at most k times the one-copy variance divided by w squared, and at width k^(3/4) the bound is the variance divided by sqrt k. The first three results allow k = 0; the simplified rate requires k > 0. Schur label selection and physical ground-state concentration are separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a862136a75385465447223efcf08c009a959b660",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/build.log",
+            "sha256": "c728c49a6df47505d87ff4aae6b64c6c88d3a452c2858df0fceb008e40e217db",
+            "command": "lake build QICLean.Entropy.IidSurprisal"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/IidSurprisal.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/axioms.log",
+            "sha256": "3697a24cb60bbb919cbf7432b11daa650ade527f4b46001f9b59ee94f22db729",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/iidSurprisal8753/IidSurprisalAxioms.lean"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-iid-surprisal-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/IidSurprisal.lean",
+        "declaration": "Entropy.surprisalTail_pi_le_variance",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently derive the actual finite tensor-power spectral trace law and independent-copy Chebyshev concentration from the canonical eigenvalue distribution. Product logarithms are expanded only on nonzero product weights; no full-rank or supplied eigenbasis hypothesis is used. For PSD trace-one density matrices, the actual CFC threshold mass is at most k times the one-copy variance divided by w squared, and at width k^(3/4) the bound is the variance divided by sqrt k. The first three results allow k = 0; the simplified rate requires k > 0. Schur label selection and physical ground-state concentration are separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a862136a75385465447223efcf08c009a959b660",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/build.log",
+            "sha256": "c728c49a6df47505d87ff4aae6b64c6c88d3a452c2858df0fceb008e40e217db",
+            "command": "lake build QICLean.Entropy.IidSurprisal"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/IidSurprisal.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/axioms.log",
+            "sha256": "3697a24cb60bbb919cbf7432b11daa650ade527f4b46001f9b59ee94f22db729",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/iidSurprisal8753/IidSurprisalAxioms.lean"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-iid-surprisal-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/IidSurprisal.lean",
+        "declaration": "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently derive the actual finite tensor-power spectral trace law and independent-copy Chebyshev concentration from the canonical eigenvalue distribution. Product logarithms are expanded only on nonzero product weights; no full-rank or supplied eigenbasis hypothesis is used. For PSD trace-one density matrices, the actual CFC threshold mass is at most k times the one-copy variance divided by w squared, and at width k^(3/4) the bound is the variance divided by sqrt k. The first three results allow k = 0; the simplified rate requires k > 0. Schur label selection and physical ground-state concentration are separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a862136a75385465447223efcf08c009a959b660",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/build.log",
+            "sha256": "c728c49a6df47505d87ff4aae6b64c6c88d3a452c2858df0fceb008e40e217db",
+            "command": "lake build QICLean.Entropy.IidSurprisal"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/IidSurprisal.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/axioms.log",
+            "sha256": "3697a24cb60bbb919cbf7432b11daa650ade527f4b46001f9b59ee94f22db729",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/iidSurprisal8753/IidSurprisalAxioms.lean"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-iid-surprisal-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/IidSurprisal.lean",
+        "declaration": "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently derive the actual finite tensor-power spectral trace law and independent-copy Chebyshev concentration from the canonical eigenvalue distribution. Product logarithms are expanded only on nonzero product weights; no full-rank or supplied eigenbasis hypothesis is used. For PSD trace-one density matrices, the actual CFC threshold mass is at most k times the one-copy variance divided by w squared, and at width k^(3/4) the bound is the variance divided by sqrt k. The first three results allow k = 0; the simplified rate requires k > 0. Schur label selection and physical ground-state concentration are separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a862136a75385465447223efcf08c009a959b660",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/build.log",
+            "sha256": "c728c49a6df47505d87ff4aae6b64c6c88d3a452c2858df0fceb008e40e217db",
+            "command": "lake build QICLean.Entropy.IidSurprisal"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/IidSurprisal.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/iidSurprisal8753/axioms.log",
+            "sha256": "3697a24cb60bbb919cbf7432b11daa650ade527f4b46001f9b59ee94f22db729",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/iidSurprisal8753/IidSurprisalAxioms.lean"
+          }
+        ]
+      }
+    }
+  ]
+}

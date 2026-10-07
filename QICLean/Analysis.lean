@@ -21,6 +21,7 @@ import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
+import QICLean.Analysis.DensitySimplex
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
@@ -46,6 +47,7 @@ import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
 import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
+import QICLean.Analysis.IidTailThreshold
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.JordanBlockAsymptotics
@@ -75,6 +77,7 @@ import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
+import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PolarUnitaryCorrection
 import QICLean.Analysis.PolarUnitaryCorrectionKronecker
@@ -88,6 +91,9 @@ import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
+import QICLean.Analysis.ReplicaDefect
+import QICLean.Analysis.ReplicaExcitationDecomposition
+import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ResolventFunctionalCalculus
 import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootFidelity
@@ -99,12 +105,14 @@ import QICLean.Analysis.ScaleRecurrence
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
+import QICLean.Analysis.ShiftedDensityCommutation
 import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.ShiftedDensityTruncation
 import QICLean.Analysis.ShiftedPowerDerivative
 import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
+import QICLean.Analysis.SpectralCutoffMass
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Analysis/SpectralCutoffMass.lean"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 5.279388832990662
+}

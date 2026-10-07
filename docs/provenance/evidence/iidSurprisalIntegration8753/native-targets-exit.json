@@ -1,0 +1,13 @@
+{
+  "kind": "native-targets",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/check-native-targets.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.12,
+  "source_revision": "88db73287e18f705ec3ae5cc3275d60b551bf123",
+  "log": "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets.log",
+  "sha256": "ff71e382473e5e001f8fbe6313121ab8fb1d0ae0d3fab68fbfc235c43c8b0b13"
+}

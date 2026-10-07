@@ -1,0 +1,54 @@
+{
+  "source_revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+  "source_sha256": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca",
+  "source_path": "QICLean/Analysis/PatchRegulator.lean",
+  "base_revision": "b38799319c3869e80e6213f67325b8abb014625e",
+  "commands": [
+    {
+      "kind": "build",
+      "command": "lake build QICLean.Analysis.PatchRegulator",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/patch-regulator/build.log",
+      "sha256": "6af178382c78bd88f4490940d1b5cb56de849e8cb910e92fd35af32678078e7b"
+    },
+    {
+      "kind": "axioms",
+      "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/patch-regulator/Axioms.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/patch-regulator/axioms.log",
+      "sha256": "87ed1948b53c3ab1d7a5b5d364fa239f7dcd6cfceb6233c5ca5ea33727cde79f"
+    },
+    {
+      "kind": "source-audit",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true QICLeanTest/PatchRegulator.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/patch-regulator/regressions.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "public_declarations": [
+    "Matrix.trace_le_smul_rank_add_complement_of_le",
+    "Matrix.PosSemidef.shiftedRegulator_bounds",
+    "Matrix.PosSemidef.trace_shiftedRegulator_le_quarter"
+  ],
+  "stock_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "provenance_policy": {
+    "repository": "LionSR/TNLean",
+    "revision": "806099b4dddcce591b3a62ee1921926a6af5ad55",
+    "validator_sha256": "8183e29f5a339bba37e28e9473aa7a6a42791282ed6877071dfd4096eda7cb65",
+    "schema_sha256": "a691d8e95b668c968365f2c7e33f614d49635aade8fdd4c2f27cd64f0cd6b459"
+  },
+  "regressions": [
+    "Explicit two-dimensional noncommuting projection",
+    "Rank-one singular density before the shift",
+    "Empty finite matrix index type"
+  ],
+  "independent_review": "A coordinated proof agent checked all three source and blueprint statements against the pinned manuscript. No issue found within their stated auxiliary scope.",
+  "regression_source_revision": "60d3c18691ab4e00547a999489b1b2be0dd04e34",
+  "regression_source_path": "QICLeanTest/PatchRegulator.lean",
+  "regression_source_sha256": "defa0a2fc97ba6f1a5cbfc4fe4a3243391701ee1bb547b96953dbbda811e1923"
+}

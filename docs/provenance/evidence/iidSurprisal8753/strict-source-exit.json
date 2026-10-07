@@ -1,0 +1,19 @@
+{
+  "kind": "build",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Entropy/IidSurprisal.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 7.91,
+  "source_revision": "a862136a75385465447223efcf08c009a959b660",
+  "log": "docs/provenance/evidence/iidSurprisal8753/strict-source.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

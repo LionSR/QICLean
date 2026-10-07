@@ -1,0 +1,22 @@
+{
+  "pdf": {
+    "path": "blueprint/print/print.pdf",
+    "sha256": "f0876afaf651380fade8d61a9d37da43fe4ba53ce90c66865f299f9a1eabb146",
+    "page_count": 412
+  },
+  "inspected_physical_pages": [
+    395,
+    396
+  ],
+  "findings": "The new section begins with its source citation and spectral notation on physical page395. Physical page396 shows dimension |E|, J-adjoint identities, normalized compressed vector, exact embedding, both marginal formulas and proof. Formulas and citations are readable, with no clipping or overlapping text; the adjacent density-simplex entry begins cleanly.",
+  "rendered_pages": [
+    {
+      "path": "docs/provenance/evidence/typicalPureCompressionIntegration8753/render/page-395.png",
+      "sha256": "ed0dfcc74285fb6c3b17582a3f63332eadf53fb5ac224b8b3b38b4c85a93195d"
+    },
+    {
+      "path": "docs/provenance/evidence/typicalPureCompressionIntegration8753/render/page-396.png",
+      "sha256": "1033ba2b1ef7ae1979b5dd622b596eeb8fc6d5f88abb92245610ed8bbad54f07"
+    }
+  ]
+}
