@@ -190,11 +190,12 @@ end Partition
 
 namespace Equiv.Perm
 
-variable {α : Type*} [Fintype α] [DecidableEq α]
+variable {α : Type*} [Fintype α]
 
 /-- The conjugacy classes of `Perm α` correspond to the partitions of `card α`. -/
 theorem nat_card_conjClasses :
     Nat.card (ConjClasses (Perm α)) = Fintype.card (Nat.Partition (Fintype.card α)) := by
+  classical
   let f : ConjClasses (Perm α) → Nat.Partition (Fintype.card α) :=
     fun C => Quotient.liftOn' C partition fun _ _ h => partition_eq_of_isConj.mp h
   have hf : Function.Bijective f := by
@@ -222,7 +223,7 @@ theorem nat_card_conjClasses :
         congr 1
         rw [hrep, Multiset.sum_replicate, smul_eq_mul, mul_one] at hsplit
         omega
-      show σ.partition.parts = p.parts
+      change σ.partition.parts = p.parts
       rw [parts_partition, hσ, ← sum_cycleType, hσ, ← hrest, Multiset.filter_add_not]
   rw [Nat.card_eq_of_bijective f hf, Nat.card_eq_fintype_card]
 

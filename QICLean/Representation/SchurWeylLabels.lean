@@ -92,7 +92,8 @@ theorem isIrreducible_multSpace {l : IrrepLabel (Equiv.Perm (Fin k))}
       change unitOp q l *ᵥ (R *ᵥ (unitOp q l *ᵥ w)) = v
       rw [unitOp_mulVec_of_mem hwV, hRw, unitOp_mulVec_of_mem hv]
     · intro j _ hj
-      rw [← mulVec_mulVec, ← unitOp_mulVec_of_mem hwV, mulVec_mulVec (M := matrixUnitOp (copyPerm (Fin q) k) l o j),
+      rw [← mulVec_mulVec, ← unitOp_mulVec_of_mem hwV,
+        mulVec_mulVec (M := matrixUnitOp (copyPerm (Fin q) k) l o j),
         matrixUnitOp_mul_matrixUnitOp_of_ne_index _ _ hj]
       simp
     · simp
