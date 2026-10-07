@@ -1,0 +1,4 @@
+'Real.log_choose_le_mul_binEntropy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Real.choose_le_exp_mul_binEntropy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Real.sum_choose_le_mul_exp_binEntropy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Finset.card_filter_powerset_le_mul_exp_binEntropy' depends on axioms: [propext, Classical.choice, Quot.sound]

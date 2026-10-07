@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "excitationsubsetcounts8750-real.log_choose_le_mul_binentropy.",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ExcitationSubsetCounts.lean",
+        "declaration": "Real.log_choose_le_mul_binEntropy",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:inverse-compression"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the scalar binomial and actual excitation-subset counting estimates at source lines 577\u2013590; endpoint cases are included.",
+        "Independent Lean proof; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "40d9ab9edbdbd96bf49e4934eb785e02417852e9",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ExcitationSubsetCounts",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/target.log",
+            "sha256": "e46604329711ee438d548504cee805e9dec7af3ea00c60340a3d4145822d8c53"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ExcitationSubsetCounts.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/full-build.log",
+            "sha256": "58d5c31274794e047e27bae1035ec6e02d1060b3ca18fbfccb47ac4f1c839a96"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8750-excitation-subset-counts/ImportedAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/axioms.log",
+            "sha256": "b91c955dadae3cc911282bc22a6ff6e53c0b2f18bcae2eec7661094afe37522d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "excitationsubsetcounts8750-real.choose_le_exp_mul_binentropy.",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ExcitationSubsetCounts.lean",
+        "declaration": "Real.choose_le_exp_mul_binEntropy",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:inverse-compression"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the scalar binomial and actual excitation-subset counting estimates at source lines 577\u2013590; endpoint cases are included.",
+        "Independent Lean proof; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "40d9ab9edbdbd96bf49e4934eb785e02417852e9",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ExcitationSubsetCounts",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/target.log",
+            "sha256": "e46604329711ee438d548504cee805e9dec7af3ea00c60340a3d4145822d8c53"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ExcitationSubsetCounts.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/full-build.log",
+            "sha256": "58d5c31274794e047e27bae1035ec6e02d1060b3ca18fbfccb47ac4f1c839a96"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8750-excitation-subset-counts/ImportedAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/axioms.log",
+            "sha256": "b91c955dadae3cc911282bc22a6ff6e53c0b2f18bcae2eec7661094afe37522d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "excitationsubsetcounts8750-real.sum_choose_le_mul_exp_binentropy.",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ExcitationSubsetCounts.lean",
+        "declaration": "Real.sum_choose_le_mul_exp_binEntropy",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:inverse-compression"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the scalar binomial and actual excitation-subset counting estimates at source lines 577\u2013590; endpoint cases are included.",
+        "Independent Lean proof; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "40d9ab9edbdbd96bf49e4934eb785e02417852e9",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ExcitationSubsetCounts",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/target.log",
+            "sha256": "e46604329711ee438d548504cee805e9dec7af3ea00c60340a3d4145822d8c53"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ExcitationSubsetCounts.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/full-build.log",
+            "sha256": "58d5c31274794e047e27bae1035ec6e02d1060b3ca18fbfccb47ac4f1c839a96"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8750-excitation-subset-counts/ImportedAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/axioms.log",
+            "sha256": "b91c955dadae3cc911282bc22a6ff6e53c0b2f18bcae2eec7661094afe37522d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "excitationsubsetcounts8750-finset.card_filter_powerset_le_mul_exp_binentropy.",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ExcitationSubsetCounts.lean",
+        "declaration": "Finset.card_filter_powerset_le_mul_exp_binEntropy",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:inverse-compression"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the scalar binomial and actual excitation-subset counting estimates at source lines 577\u2013590; endpoint cases are included.",
+        "Independent Lean proof; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "40d9ab9edbdbd96bf49e4934eb785e02417852e9",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ExcitationSubsetCounts",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/target.log",
+            "sha256": "e46604329711ee438d548504cee805e9dec7af3ea00c60340a3d4145822d8c53"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ExcitationSubsetCounts.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "lake build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/full-build.log",
+            "sha256": "58d5c31274794e047e27bae1035ec6e02d1060b3ca18fbfccb47ac4f1c839a96"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8750-excitation-subset-counts/ImportedAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/axioms.log",
+            "sha256": "b91c955dadae3cc911282bc22a6ff6e53c0b2f18bcae2eec7661094afe37522d"
+          }
+        ]
+      }
+    }
+  ]
+}

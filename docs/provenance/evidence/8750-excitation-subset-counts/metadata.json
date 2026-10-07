@@ -1,0 +1,121 @@
+{
+  "repository": "LionSR/QICLean",
+  "base_revision": "48425ea8ed2390a94c71870ac19142490e5df5b7",
+  "revision": "40d9ab9edbdbd96bf49e4934eb785e02417852e9",
+  "source_files": {
+    "QICLean/Analysis/ExcitationSubsetCounts.lean": "c8a84292713b79bbdf3b02d6b694be7c68895e0377898a522deff7a5c9caa643",
+    "QICLean/Analysis.lean": "091b31e23fcbe3c2c9238f2141466b7ed25f65bfb08961e82cc44ff67f0fbf35",
+    "blueprint/src/fragment/excitation_subset_counts.tex": "4f247a153dc26525e8f25460cca4cd892511a74ab33dee1c37426762328b7d00",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "77801ec5374705ab2b36957c7e5c89e039d6ab945596bfeaaf84cb41c2f9845f"
+  },
+  "commands": [
+    {
+      "kind": "build",
+      "command": "lake build QICLean.Analysis.ExcitationSubsetCounts",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/target.log",
+      "sha256": "e46604329711ee438d548504cee805e9dec7af3ea00c60340a3d4145822d8c53"
+    },
+    {
+      "kind": "build",
+      "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ExcitationSubsetCounts.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/strict.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "build",
+      "command": "lake build",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/full-build.log",
+      "sha256": "58d5c31274794e047e27bae1035ec6e02d1060b3ca18fbfccb47ac4f1c839a96"
+    },
+    {
+      "kind": "axioms",
+      "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8750-excitation-subset-counts/ImportedAxioms.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/axioms.log",
+      "sha256": "b91c955dadae3cc911282bc22a6ff6e53c0b2f18bcae2eec7661094afe37522d"
+    },
+    {
+      "kind": "blueprint",
+      "command": "(cd blueprint && leanblueprint checkdecls)",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "blueprint",
+      "command": "(cd blueprint && leanblueprint pdf)",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/pdf.log",
+      "sha256": "b1d9892d6bd6cfdfdffe806820ae743c05ac1f555c14730f0724d58105cbcbc7"
+    },
+    {
+      "kind": "blueprint",
+      "command": "(cd blueprint && texra-blueprint web)",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/web.log",
+      "sha256": "7fcd2dc6a84a8380df5daea300dfd8a7540ba368224cc1306d3af9c27cbc375c"
+    },
+    {
+      "kind": "cache",
+      "command": "lake exe cache get",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "kind": "source-audit",
+      "command": "python3 scripts/generate_import_aggregators.py --check",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/aggregators.log",
+      "sha256": "1a6304a9787c6ca772fa78dc0c4c0df0e89b2bfb00b2eaab7448ae640e99a80f"
+    },
+    {
+      "kind": "source-audit",
+      "command": "python3 /Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/patterns.log",
+      "sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8"
+    },
+    {
+      "kind": "blueprint",
+      "command": "python3 scripts/fetch_tenkz.py",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/tenkz.log",
+      "sha256": "59048e5e2b66eb0a03148b7c8662ae0b4762d4285cdd1ffb960d10ec8e13c845"
+    },
+    {
+      "kind": "blueprint",
+      "command": "uv run --with playwright --python /Users/siruilu/.local/share/uv/tools/texra-blueprint/bin/python python scripts/test_blueprint_web_render.py --web-root blueprint/web",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/render.log",
+      "sha256": "1b553c53cd10b0612cd59d751a292636896e34ad82afead27c858405596443d6"
+    },
+    {
+      "kind": "source-audit",
+      "command": "uv run --with jsonschema python docs/provenance/evidence/8750-excitation-subset-counts/check_provenance.py --validator /Users/siruilu/Local/agentFormalization/TNLean/scripts/check_openai_provenance.py --schema /Users/siruilu/Local/agentFormalization/TNLean/docs/provenance/openai-math.schema.json --upstream-root /private/tmp/tnlean-openai-math-audit.git",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/8750-excitation-subset-counts/logs/provenance.log",
+      "sha256": "4f197c64dbbd198ba7c4eed526de4533cbcd6238d111b95da45a55bfe8531214"
+    }
+  ],
+  "native_declarations": {
+    "count": 3381,
+    "log": "docs/provenance/evidence/8750-excitation-subset-counts/lean_decls.txt",
+    "sha256": "524fa74f23decf718f2466b6008d5f6244a51310165dd1a6d04d3fabac19c0c2",
+    "new_exports": [
+      "Real.log_choose_le_mul_binEntropy",
+      "Real.choose_le_exp_mul_binEntropy",
+      "Real.sum_choose_le_mul_exp_binEntropy",
+      "Finset.card_filter_powerset_le_mul_exp_binEntropy"
+    ]
+  },
+  "shared_validator": {
+    "repository": "LionSR/TNLean",
+    "revision": "e3e3dddb429a61dd710ec9c8a3635ba6460ae222",
+    "path": "scripts/check_openai_provenance.py",
+    "sha256": "8183e29f5a339bba37e28e9473aa7a6a42791282ed6877071dfd4096eda7cb65"
+  }
+}
