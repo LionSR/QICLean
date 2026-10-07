@@ -34,10 +34,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   `PosSemidef.commute_add_smul_one_rpow_spectralProjectionGE`,
   `PosSemidef.shiftedPowerHead_eq_cfc`, and
   `PosSemidef.shiftedPowerHead_mul_shiftedPowerTail` are representative
-  occurrences. Their scalar conclusions differ.
+  occurrences. In `QICLean/Analysis/SpectralCutoffMass.lean`,
+  `PosSemidef.smul_one_sub_spectralCutoff_le` uses the corresponding
+  pointwise order reduction; `PosSemidef.spectralCutoff_mass_ge` then takes
+  its quadratic form. Their scalar conclusions differ.
 - **Abstraction:** Continue using the existing `Matrix.IsHermitian.cfc_mul`
-  and `cfc_congr` results. A specialized automation rule is not justified
-  by repetition in this single module.
+  and `cfc_congr` results for identities, and the generic `cfc_le_iff`
+  result for order. The local `hcont` in the cutoff proof supplies
+  continuity on the finite spectrum for each scalar function without
+  repeating the same continuity argument. These existing mechanisms
+  already provide the scalar reduction; no new tactic is introduced.
 - **Caveats:** Continuity is required only on the finite spectrum. Do not
   claim global continuity of a threshold indicator. Nonnegativity and
   norm estimates still require the correct PSD and exponent hypotheses.
