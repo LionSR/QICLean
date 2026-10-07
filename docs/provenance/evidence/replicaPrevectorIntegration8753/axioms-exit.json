@@ -1,0 +1,19 @@
+{
+  "kind": "axioms",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/replicaPrevectorIntegration8753/Axioms.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 8.9,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/axioms.log",
+  "sha256": "fa6bcfae6c42030fb88d3c3be8d3c380869fca48d702cfbb4ca5612b8ea5a641"
+}

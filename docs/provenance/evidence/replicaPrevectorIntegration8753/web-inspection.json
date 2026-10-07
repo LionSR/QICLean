@@ -1,0 +1,16 @@
+{
+  "links": [
+    "TensorPower.replicaPrevector",
+    "TensorPower.exists_label_sequence_replicaPrevector"
+  ],
+  "errors": [],
+  "top": 805.046875,
+  "bottom": 1887.375,
+  "mathElements": 23,
+  "mobile_section_bounds": {
+    "top": 470.375,
+    "bottom": 2170.453125
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360
+}

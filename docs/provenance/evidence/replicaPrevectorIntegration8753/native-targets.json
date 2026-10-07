@@ -1,0 +1,372 @@
+{
+  "native_list": "docs/provenance/evidence/replicaPrevectorIntegration8753/NativeDeclarations.txt",
+  "native_list_sha256": "87131200e8e3ddde4bfbe7d95168c47ba7fef7af3b9073ea219bd67022261c99",
+  "native_declarations": 3301,
+  "active_fragments": {
+    "blueprint/src/fragment/high_label_window.tex": [
+      "TensorPower.eventually_exists_labelProj_finKronecker_entropy_window",
+      "TensorPower.exists_labelProj_mass_entropy_window",
+      "TensorPower.exists_label_sequence_mass_entropy_asymptotic",
+      "TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic"
+    ],
+    "blueprint/src/fragment/iid_surprisal.tex": [
+      "Entropy.surprisalTail_pi_le_variance",
+      "Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal",
+      "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le",
+      "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le"
+    ],
+    "blueprint/src/fragment/iid_tail_threshold.tex": [
+      "Real.eventually_iid_tail_error_le_half"
+    ],
+    "blueprint/src/fragment/pure_tensor_power.tex": [
+      "Matrix.norm_sq_one_kronecker_mulVec_prod",
+      "Matrix.partialTraceLeft_vecMulVec_prod"
+    ],
+    "blueprint/src/fragment/replica_defect.tex": [
+      "Matrix.PosSemidef.replica_gap",
+      "Matrix.posSemidef_replicaDefectCount",
+      "Matrix.replicaDefectCount",
+      "Matrix.replicaHamiltonian",
+      "Matrix.replicaHamiltonian_mulVec_prod",
+      "Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod",
+      "Matrix.spectralCutoff_replica_gap_mass_ge"
+    ],
+    "blueprint/src/fragment/replica_excitation_decomposition.tex": [
+      "Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection",
+      "Matrix.isStarProjection_replicaExcitationProjection",
+      "Matrix.replicaDefectCount_mul_replicaExcitationProjection",
+      "Matrix.replicaDefectCutoff_decomposition",
+      "Matrix.replicaExcitationProjection",
+      "Matrix.replicaExcitationProjection_mul_of_ne",
+      "Matrix.sum_replicaExcitationProjection"
+    ],
+    "blueprint/src/fragment/replica_permutation_covariance.tex": [
+      "Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed",
+      "Matrix.commute_cfc_replicaDefectCount_kronecker",
+      "Matrix.commute_cfc_replicaDefectCount_permOp",
+      "Matrix.commute_finKronecker_const_permOp",
+      "Matrix.commute_replicaHamiltonian_permOp"
+    ],
+    "blueprint/src/fragment/replica_prevector.tex": [
+      "TensorPower.exists_label_sequence_replicaPrevector",
+      "TensorPower.replicaPrevector"
+    ],
+    "blueprint/src/fragment/schur_sector_mass.tex": [
+      "TensorPower.exists_labelProj_norm_mass_ge",
+      "TensorPower.exists_labelProj_trace_mass_ge"
+    ],
+    "blueprint/src/fragment/spectral_cutoff_mass.tex": [
+      "Matrix.PosSemidef.smul_one_sub_spectralCutoff_le",
+      "Matrix.PosSemidef.spectralCutoff_mass_ge"
+    ],
+    "blueprint/src/fragment/typical_pure_compression.tex": [
+      "Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding",
+      "Matrix.IsHermitian.spectralSelectionEmbedding",
+      "Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose",
+      "Matrix.compressedTypicalPureState",
+      "Matrix.kronecker_mulVec_compressedTypicalPureState",
+      "Matrix.norm_compressedTypicalPureState",
+      "Matrix.partialTraceLeft_compressedTypicalPureState",
+      "Matrix.partialTraceRight_compressedTypicalPureState"
+    ],
+    "blueprint/src/fragment/uniform_bell_label.tex": [
+      "Matrix.norm_sq_one_kronecker_mulVec_prod_omegaVec",
+      "Matrix.one_kronecker_mulVec_prod_omegaVec_ne_zero_iff",
+      "TensorPower.labelProj_kronecker_mulVec_prod_omegaVec"
+    ]
+  },
+  "fragment_declarations": 47,
+  "owned_declarations": [
+    "TensorPower.exists_label_sequence_replicaPrevector",
+    "TensorPower.replicaPrevector"
+  ],
+  "contains_all_active_fragment_targets": true,
+  "contains_all_two_owned": true,
+  "missing": [],
+  "link_scope": "content pages; dependency graph repeats excluded",
+  "rendered_doc_links": {
+    "Matrix.commute_cfc_replicaDefectCount_permOp": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_cfc_replicaDefectCount_permOp"
+      }
+    ],
+    "Matrix.replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaExcitationProjection"
+      }
+    ],
+    "TensorPower.exists_labelProj_norm_mass_ge": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/TensorPower.exists_labelProj_norm_mass_ge"
+      }
+    ],
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le"
+      }
+    ],
+    "Matrix.sum_replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.sum_replicaExcitationProjection"
+      }
+    ],
+    "Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection"
+      }
+    ],
+    "Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal"
+      }
+    ],
+    "TensorPower.eventually_exists_labelProj_finKronecker_entropy_window": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/TensorPower.eventually_exists_labelProj_finKronecker_entropy_window"
+      }
+    ],
+    "Matrix.replicaDefectCutoff_decomposition": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaDefectCutoff_decomposition"
+      }
+    ],
+    "Matrix.partialTraceLeft_compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.partialTraceLeft_compressedTypicalPureState"
+      }
+    ],
+    "Matrix.replicaHamiltonian_mulVec_prod": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaHamiltonian_mulVec_prod"
+      }
+    ],
+    "Matrix.one_kronecker_mulVec_prod_omegaVec_ne_zero_iff": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.one_kronecker_mulVec_prod_omegaVec_ne_zero_iff"
+      }
+    ],
+    "Matrix.replicaDefectCount_mul_replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaDefectCount_mul_replicaExcitationProjection"
+      }
+    ],
+    "Matrix.posSemidef_replicaDefectCount": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.posSemidef_replicaDefectCount"
+      }
+    ],
+    "Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding"
+      }
+    ],
+    "Matrix.commute_replicaHamiltonian_permOp": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_replicaHamiltonian_permOp"
+      }
+    ],
+    "Matrix.commute_finKronecker_const_permOp": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_finKronecker_const_permOp"
+      }
+    ],
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le"
+      }
+    ],
+    "TensorPower.replicaPrevector": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/TensorPower.replicaPrevector"
+      }
+    ],
+    "Matrix.replicaExcitationProjection_mul_of_ne": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaExcitationProjection_mul_of_ne"
+      }
+    ],
+    "Entropy.surprisalTail_pi_le_variance": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Entropy.surprisalTail_pi_le_variance"
+      }
+    ],
+    "Matrix.norm_sq_one_kronecker_mulVec_prod_omegaVec": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.norm_sq_one_kronecker_mulVec_prod_omegaVec"
+      }
+    ],
+    "TensorPower.exists_label_sequence_mass_entropy_asymptotic": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/TensorPower.exists_label_sequence_mass_entropy_asymptotic"
+      }
+    ],
+    "TensorPower.exists_labelProj_trace_mass_ge": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/TensorPower.exists_labelProj_trace_mass_ge"
+      }
+    ],
+    "TensorPower.exists_labelProj_mass_entropy_window": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/TensorPower.exists_labelProj_mass_entropy_window"
+      }
+    ],
+    "TensorPower.labelProj_kronecker_mulVec_prod_omegaVec": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.labelProj_kronecker_mulVec_prod_omegaVec"
+      }
+    ],
+    "Matrix.PosSemidef.spectralCutoff_mass_ge": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.spectralCutoff_mass_ge"
+      }
+    ],
+    "Matrix.commute_cfc_replicaDefectCount_kronecker": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_cfc_replicaDefectCount_kronecker"
+      }
+    ],
+    "Matrix.IsHermitian.spectralSelectionEmbedding": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.IsHermitian.spectralSelectionEmbedding"
+      }
+    ],
+    "Matrix.isStarProjection_replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.isStarProjection_replicaExcitationProjection"
+      }
+    ],
+    "Matrix.compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.compressedTypicalPureState"
+      }
+    ],
+    "Matrix.replicaHamiltonian": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaHamiltonian"
+      }
+    ],
+    "Matrix.replicaDefectCount": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaDefectCount"
+      }
+    ],
+    "Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed"
+      }
+    ],
+    "Matrix.kronecker_mulVec_compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.kronecker_mulVec_compressedTypicalPureState"
+      }
+    ],
+    "Matrix.norm_compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.norm_compressedTypicalPureState"
+      }
+    ],
+    "TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic"
+      }
+    ],
+    "TensorPower.exists_label_sequence_replicaPrevector": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/TensorPower.exists_label_sequence_replicaPrevector"
+      }
+    ],
+    "Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose"
+      }
+    ],
+    "Matrix.partialTraceRight_compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.partialTraceRight_compressedTypicalPureState"
+      }
+    ],
+    "Matrix.PosSemidef.replica_gap": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.replica_gap"
+      }
+    ],
+    "Matrix.norm_sq_one_kronecker_mulVec_prod": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.norm_sq_one_kronecker_mulVec_prod"
+      }
+    ],
+    "Matrix.partialTraceLeft_vecMulVec_prod": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.partialTraceLeft_vecMulVec_prod"
+      }
+    ],
+    "Matrix.spectralCutoff_replica_gap_mass_ge": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.spectralCutoff_replica_gap_mass_ge"
+      }
+    ],
+    "Matrix.PosSemidef.smul_one_sub_spectralCutoff_le": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.smul_one_sub_spectralCutoff_le"
+      }
+    ],
+    "Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod"
+      }
+    ],
+    "Real.eventually_iid_tail_error_le_half": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Real.eventually_iid_tail_error_le_half"
+      }
+    ]
+  },
+  "result": "passed"
+}

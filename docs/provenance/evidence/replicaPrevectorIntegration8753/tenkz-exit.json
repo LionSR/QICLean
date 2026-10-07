@@ -1,0 +1,13 @@
+{
+  "kind": "tenkz",
+  "command": [
+    "python3",
+    "scripts/fetch_tenkz.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.87,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/tenkz.log",
+  "sha256": "cc4821bb4043262ce2ec966bdc8a954f71e96b5130e9a6636df53b61790af638"
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "bibliography",
+  "command": [
+    "texra-blueprint",
+    "bbl"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.38,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/bbl.log",
+  "sha256": "e96df2cdf4ff4d6e6afb90680bc6e9acdd2ae29f1fc2143a0d109c60acdd3f17"
+}

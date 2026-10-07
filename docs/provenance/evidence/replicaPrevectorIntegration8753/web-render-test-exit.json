@@ -1,0 +1,15 @@
+{
+  "kind": "reader",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "scripts/test_blueprint_web_render.py",
+    "--web-root",
+    "blueprint/web"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 46.84,
+  "source_revision": "3308fd84cbd72a230db098edc3bb79ae6d815a37",
+  "log": "docs/provenance/evidence/replicaPrevectorIntegration8753/web-render-test.log",
+  "sha256": "d1b3c1cc6c87a61d85c4b2b7a651a1116205efe13fca7243c09918aed0e3cd8a"
+}
