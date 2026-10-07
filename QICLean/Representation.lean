@@ -15,6 +15,7 @@ import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.JointIsotypic
 import QICLean.Representation.LabelProjectors
 import QICLean.Representation.MergeDimensions
+import QICLean.Representation.MergeMoment
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurSurprisal
