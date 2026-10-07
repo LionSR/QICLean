@@ -36,6 +36,7 @@ import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
+import QICLean.Analysis.FloorKKT
 import QICLean.Analysis.GapPerturbation
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
