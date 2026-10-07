@@ -1,0 +1,113 @@
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:56:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.pre_fin`:
+  [Fintype A]
+  [Fintype B]
+  [DecidableEq A]
+  [DecidableEq B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype A] [Fintype B] [DecidableEq A] [DecidableEq B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:65:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.pin_transport`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:89:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.label_pullback`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:181:58: warning: This simp argument is unused:
+  mul_assoc
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Matrix.vec, Matrix.mul_apply, Matrix.kroneckerMap_apply, Matrix.one_apply, Fintype.sum_prod_type,
+    Finset.mul_sum, mul_left_comm, mul_ite]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:211:4: error: Type mismatch: After simplification, term
+  projected_regroup (fun ac j => (ac j).1) (fun ac j => (ac j).2) (fun ab => ∏ j, Ω.ofLp (ab.1 j, ab.2 j))
+    (fun cr => ∏ j, Matrix.omegaVec E.card (cr.1 j, cr.2 j))
+    (PermutationRepresentation.labelProj (TensorPower.copyPerm (Fin E.card) k) l) x
+ has type
+  @Eq ℂ
+    ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+          (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+            (PermutationRepresentation.labelProj (TensorPower.copyPerm (Fin E.card) k) l) 1) *ᵥ
+        fun y => (∏ x, Ω.ofLp ((y.1 x).1, y.2.2 x)) * ∏ x, Matrix.omegaVec E.card ((y.1 x).2, y.2.1 x))
+      x)
+    ((∏ x_1, Ω.ofLp ((x.1 x_1).1, x.2.2 x_1)) *
+      (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+            (PermutationRepresentation.labelProj (TensorPower.copyPerm (Fin E.card) k) l) *ᵥ
+          fun cr => ∏ j, Matrix.omegaVec E.card (cr.1 j, cr.2 j))
+        (fun j => (x.1 j).2, x.2.1))
+but is expected to have type
+  @Eq ℂ
+    ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+          (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+            (PermutationRepresentation.labelProj (TensorPower.copyPerm (Fin E.card) k) l) 1) *ᵥ
+        fun x => (∏ x_1, Ω.ofLp ((x.1 x_1).1, x.2.2 x_1)) * ∏ x_1, Matrix.omegaVec E.card ((x.1 x_1).2, x.2.1 x_1))
+      x)
+    ((∏ x_1,
+        Ω.ofLp
+          ((Prod.map ⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => B).symm
+                ⇑(Equiv.refl ((Fin k → Fin E.card) × (Fin k → Fin E.card)))
+                (((Prod.map (⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => Fin E.card))
+                          (⇑(Equiv.prodComm (Fin k → Fin E.card) (Fin k → B))) x).1.1,
+                    (Prod.map (⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => Fin E.card))
+                          (⇑(Equiv.prodComm (Fin k → Fin E.card) (Fin k → B))) x).2.1),
+                  (Prod.map (⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => Fin E.card))
+                        (⇑(Equiv.prodComm (Fin k → Fin E.card) (Fin k → B))) x).1.2,
+                  (Prod.map (⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => Fin E.card))
+                        (⇑(Equiv.prodComm (Fin k → Fin E.card) (Fin k → B))) x).2.2)).1
+            x_1)) *
+      (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+            (PermutationRepresentation.labelProj (TensorPower.copyPerm (Fin E.card) k) l) *ᵥ
+          fun y => ∏ i, Matrix.omegaVec E.card (y.1 i, y.2 i))
+        (Prod.map ⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => B).symm
+            ⇑(Equiv.refl ((Fin k → Fin E.card) × (Fin k → Fin E.card)))
+            (((Prod.map (⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => Fin E.card))
+                      (⇑(Equiv.prodComm (Fin k → Fin E.card) (Fin k → B))) x).1.1,
+                (Prod.map (⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => Fin E.card))
+                      (⇑(Equiv.prodComm (Fin k → Fin E.card) (Fin k → B))) x).2.1),
+              (Prod.map (⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => Fin E.card))
+                    (⇑(Equiv.prodComm (Fin k → Fin E.card) (Fin k → B))) x).1.2,
+              (Prod.map (⇑(Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => Fin E.card))
+                    (⇑(Equiv.prodComm (Fin k → Fin E.card) (Fin k → B))) x).2.2)).2)
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:223:2: error: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝³ : Fintype A
+inst✝² : Fintype B
+inst✝¹ : DecidableEq A
+inst✝ : DecidableEq B
+Ω : EuclideanSpace ℂ (A × B)
+E : Finset A
+k : ℕ
+hz : 0 < ⋯.spectralRestrictionMass E
+l : IrrepLabel (Equiv.Perm (Fin k))
+r : (Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B) ≃
+  (Fin k → A × B) × (Fin k → Fin E.card) × (Fin k → Fin E.card) :=
+  (((Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => Fin E.card).prodCongr
+            (Equiv.prodComm (Fin k → Fin E.card) (Fin k → B))).trans
+        (Equiv.prodProdProdComm (Fin k → A) (Fin k → Fin E.card) (Fin k → B) (Fin k → Fin E.card))).trans
+    ((Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A) fun x => B).symm.prodCongr
+      (Equiv.refl ((Fin k → Fin E.card) × (Fin k → Fin E.card))))
+β : A × Fin E.card → ℂ := fun x => (Matrix.selectedBellVector Ω E).ofLp (x.1, E.equivFin.symm x.2)
+χ : Fin E.card × B → ℂ := fun x => (Matrix.compressedTypicalPureState Ω E).ofLp (E.equivFin.symm x.1, x.2)
+Pk : Matrix ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B))
+  ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B)) ℂ :=
+  Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.finKronecker fun x => Matrix.vecMulVec β (star β)) 1
+ΛR : Matrix ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B))
+  ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B)) ℂ :=
+  Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+    (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+      (PermutationRepresentation.labelProj (TensorPower.copyPerm (Fin E.card) k) l) 1)
+hraw :
+  (ΛR *ᵥ fun x => ∏ j, Ω.ofLp ((x.1 j).1, x.2.2 j) * Matrix.omegaVec E.card ((x.1 j).2, x.2.1 j)) =
+    TensorPower.replicaPrevector Ω.ofLp E.card k l ∘ ⇑r
+⊢ WithLp.toLp 2 (Pk *ᵥ TensorPower.replicaPrevector Ω.ofLp E.card k l ∘ ⇑r) =
+    (↑√(⋯.spectralRestrictionMass E) / ↑E.card) ^ k •
+      WithLp.toLp 2 (ΛR *ᵥ fun x => (∏ j, β (x.1 j)) * ∏ j, χ (x.2.1 j, x.2.2 j))

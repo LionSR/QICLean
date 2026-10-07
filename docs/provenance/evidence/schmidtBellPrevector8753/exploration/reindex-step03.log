@@ -1,0 +1,8 @@
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:23:18: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:23:18: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.

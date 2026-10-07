@@ -1,0 +1,25 @@
+{
+  "source_revision": "c20f3e46b48e95454ec681691992d961b38cf462",
+  "mathematical_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+  "pdf": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.pdf",
+  "pdf_sha256": "145f1b56f42e76ff34330058fd28436176bf9a0173e8c27fca35ad9e8a286f70",
+  "page_count": 8,
+  "physical_pages_reviewed": [
+    6,
+    7
+  ],
+  "images_sha256": {
+    "docs/provenance/evidence/schmidtBellPrevector8753/standalone-page-6.png": "6f223be9e91bcb880e1106c63e92def1c05eca38cba0691ca1055dad843b6352",
+    "docs/provenance/evidence/schmidtBellPrevector8753/standalone-page-7.png": "37468877fdb099905e01aa5701e809583babe12038ded98c5723bcee64191d12"
+  },
+  "latex_warnings": [],
+  "visual_review": "passed",
+  "confirmed": [
+    "The spectral embedding and compressed actual vector are legible.",
+    "The coefficient is (sqrt z / d)^k; the output projector acts on R only.",
+    "The physical and auxiliary coordinate regrouping is explicit.",
+    "The spectators are the actual k-copy auxiliary spaces.",
+    "The actual diagonal marginal, mean energy, common labels, selected mass and entropy asymptotic are legible.",
+    "Citations and equation references are resolved; no clipping, overlap or overflowing formula is visible."
+  ]
+}

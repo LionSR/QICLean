@@ -1,0 +1,58 @@
+[
+  {
+    "original_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.log",
+    "stored_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.log.gz",
+    "uncompressed_sha256": "56a466b8c656ccf769f71effbe7b7d5377ee7ddc1c834ce50d4c4701aa95ff74",
+    "sha256": "c204964a79200996b0c4ea653004c4aa1d920be3cb72c036fdc4e3fd0986a0ba",
+    "deterministic_gzip_mtime": 0
+  },
+  {
+    "original_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.aux",
+    "stored_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.aux.gz",
+    "uncompressed_sha256": "8cdc3554049436e5e9bf6afa0e6915e085d821f17958f7e3cbcc9759d20230ab",
+    "sha256": "64c2f208732eebfaf55bda423320bc1ac5dea178432c40ea730143b20ac2f656",
+    "deterministic_gzip_mtime": 0
+  },
+  {
+    "original_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/prior-67-standalone-wrapper.log",
+    "stored_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/prior-67-standalone-wrapper.log.gz",
+    "uncompressed_sha256": "b43c86ca510844a21ec39a6f34326b916b9fa8ca2ee6cfaba11bec09c2fdd730",
+    "sha256": "322eefae36e97d12dd9c5e9af53f40e1361a939a4c0081b6096d4f4ebe5efe2a",
+    "deterministic_gzip_mtime": 0
+  },
+  {
+    "original_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/prior-67-standalone-wrapper.aux",
+    "stored_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/prior-67-standalone-wrapper.aux.gz",
+    "uncompressed_sha256": "8cdc3554049436e5e9bf6afa0e6915e085d821f17958f7e3cbcc9759d20230ab",
+    "sha256": "64c2f208732eebfaf55bda423320bc1ac5dea178432c40ea730143b20ac2f656",
+    "deterministic_gzip_mtime": 0
+  },
+  {
+    "original_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-first.log",
+    "stored_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-first.log.gz",
+    "uncompressed_sha256": "05ed9f5c94212fbecc1bc4e951a7b1332f4e837bc84ef2a254409a8eb6b62eb7",
+    "sha256": "7c26acd7481322f3f1aac1bbe8d8b7986d21174309cde85b28311c4c07a20fd9",
+    "deterministic_gzip_mtime": 0
+  },
+  {
+    "original_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-second.log",
+    "stored_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-second.log.gz",
+    "uncompressed_sha256": "24429b6db81de9e23c68b12b0df5638ed1f65232b85116813a80d8daef456836",
+    "sha256": "850f405d76322ec3d1b1cb8d7e92633a09157fce1ed7008716790239820c544f",
+    "deterministic_gzip_mtime": 0
+  },
+  {
+    "original_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-final-first.log",
+    "stored_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-final-first.log.gz",
+    "uncompressed_sha256": "344bc642e4144803f7a590294968d0619d1272e675d61545bcd71ffa8c0700e4",
+    "sha256": "4d0d9a840172297442ae1953341183bbe2c548ade6c75a4952d62a956512b2ee",
+    "deterministic_gzip_mtime": 0
+  },
+  {
+    "original_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-final-second.log",
+    "stored_artifact": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-final-second.log.gz",
+    "uncompressed_sha256": "344bc642e4144803f7a590294968d0619d1272e675d61545bcd71ffa8c0700e4",
+    "sha256": "4d0d9a840172297442ae1953341183bbe2c548ade6c75a4952d62a956512b2ee",
+    "deterministic_gzip_mtime": 0
+  }
+]

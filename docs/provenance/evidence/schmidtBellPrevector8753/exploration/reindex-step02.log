@@ -1,0 +1,5 @@
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:21:65: error: Unknown identifier `hρA.isHermitian` at quotation precheck
+
+Note: You can use `set_option quotPrecheck false` to disable this check.
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:23:18: error: elaboration function for `_private._stdin.0.SchmidtBellPrototype.termZ` has not been implemented
+  z

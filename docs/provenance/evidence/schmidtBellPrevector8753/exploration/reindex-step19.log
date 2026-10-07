@@ -1,0 +1,33 @@
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:64:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.pin_transport`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:88:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.label_pullback`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:111:2: error: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝⁵ : Fintype A
+inst✝⁴ : Fintype B
+inst✝³ : DecidableEq A
+inst✝² : DecidableEq B
+Ω : EuclideanSpace ℂ (A × B)
+E : Finset A
+X : Type u_3
+Y : Type u_4
+inst✝¹ : Fintype X
+inst✝ : Fintype Y
+e : X ≃ Y
+P L : Matrix X X ℂ
+v w : X → ℂ
+c : ℂ
+h : WithLp.toLp 2 (P *ᵥ L *ᵥ v) = c • WithLp.toLp 2 (L *ᵥ w)
+x : Y
+⊢ (WithLp.toLp 2 fun x => (P *ᵥ fun x => (L *ᵥ fun x => v x) x) (e.symm x)).ofLp x =
+    (c • WithLp.toLp 2 fun x => (L *ᵥ fun x => w x) (e.symm x)).ofLp x

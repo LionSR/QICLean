@@ -1,0 +1,55 @@
+/tmp/qic-schmidt-bell-prototype-8753/Common.lean:14:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.selected_norm`:
+  [DecidableEq B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Common.lean:22:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.selected_marginal`:
+  [DecidableEq B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Common.lean:78:2: error: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝³ : Fintype A
+inst✝² : Fintype B
+inst✝¹ : DecidableEq A
+inst✝ : DecidableEq B
+Ω : EuclideanSpace ℂ (A × B)
+E : Finset A
+hz : 0 < ⋯.spectralRestrictionMass E
+hΩ : ‖Ω‖ = 1
+H : Matrix (A × B) (A × B) ℂ
+E₀ : ℝ
+hE : H *ᵥ Ω.ofLp = ↑E₀ • fun x => Ω.ofLp x
+ψ : B × Fin E.card → ℂ := fun x => (compressedTypicalPureState Ω E).ofLp (E.equivFin.symm x.2, x.1)
+hψ : ‖WithLp.toLp 2 ψ‖ = 1
+⊢ ‖WithLp.toLp 2 ψ‖ = 1 ∧
+    ((vecMulVec ψ (star ψ)).partialTraceLeft =
+        diagonal fun r => ↑(⋯.eigenvalues ↑(E.equivFin.symm r) / ⋯.spectralRestrictionMass E)) ∧
+      ∃ l,
+        (∀ (k : ℕ),
+            0 < k →
+              let v := replicaPrevector Ω.ofLp E.card k (l k);
+              let P := labelProj (copyPerm (Fin E.card) k) (l k);
+              WithLp.toLp 2 v ≠ 0 ∧
+                ‖WithLp.toLp 2 v‖ ≤ 1 ∧
+                  kroneckerMap (fun x1 x2 => x1 * x2) ((↑k)⁻¹ • H.replicaHamiltonian k) 1 *ᵥ v = ↑E₀ • v ∧
+                    kroneckerMap (fun x1 x2 => x1 * x2) 1 (kroneckerMap (fun x1 x2 => x1 * x2) P 1) *ᵥ v = v ∧
+                      kroneckerMap (fun x1 x2 => x1 * x2) 1 (kroneckerMap (fun x1 x2 => x1 * x2) 1 P) *ᵥ v = v ∧
+                        ∀ (σ : Equiv.Perm (Fin k)),
+                          kroneckerMap (fun x1 x2 => x1 * x2) ((permOp (copyPerm (A × B) k)) σ)
+                                (kroneckerMap (fun x1 x2 => x1 * x2) ((permOp (copyPerm (Fin E.card) k)) σ)
+                                  ((permOp (copyPerm (Fin E.card) k)) σ)) *ᵥ
+                              v =
+                            v) ∧
+          (∀ᶠ (k : ℕ) in atTop,
+              (2 * ↑((k + 1) ^ E.card ^ 2))⁻¹ ≤
+                ‖WithLp.toLp 2
+                      (kroneckerMap (fun x1 x2 => x1 * x2) 1 (labelProj (copyPerm (Fin E.card) k) (l k)) *ᵥ fun x =>
+                        ∏ i, ψ (x.1 i, x.2 i))‖ ^
+                  2) ∧
+            (fun k => Real.log ↑(l k).dim - ↑k * vonNeumannEntropy (vecMulVec ψ (star ψ)).partialTraceLeft ⋯) =o[atTop]
+              fun k => ↑k

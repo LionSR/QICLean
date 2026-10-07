@@ -1,0 +1,12 @@
+{
+  "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+  "base_revision": "d6dbfb2b497184c1cd8f4819b3d1429eca21aba8",
+  "production_sha256": {
+    "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+    "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+    "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+  },
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true
+}

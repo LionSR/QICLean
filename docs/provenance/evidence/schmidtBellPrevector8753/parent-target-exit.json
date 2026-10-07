@@ -1,0 +1,15 @@
+{
+  "source_revision": "d6dbfb2b497184c1cd8f4819b3d1429eca21aba8",
+  "argv": [
+    "lake",
+    "build",
+    "QICLean.Representation.ReplicaPrevector"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 51.6382218330109,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true,
+  "log": "docs/provenance/evidence/schmidtBellPrevector8753/parent-target.log",
+  "sha256": "5c4a76edbde4965b466ef2de2c912cc33121a26adca960b5b29cf9000cb08d39"
+}

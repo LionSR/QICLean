@@ -1,0 +1,384 @@
+0.1      The selected Schmidt space
+The relabeling of the selected Schmidt space in [OAI26, Section 7] is described by an explicit
+isometry. Let Ω ∈ ℋ𝐴 ⊗ℋ𝐵 and let 𝜌𝐴 = Tr𝐵 |Ω⟩⟨Ω|. Choose an orthonormal eigenbasis (𝑢𝑖 )𝑖∈𝐴
+of 𝜌𝐴 , with eigenvalues 𝑝𝑖 . For a selected set 𝐸 ⊆ 𝐴, write 𝑧 = ∑𝑖∈𝐸 𝑝𝑖 and 𝑃𝐸 = ∑𝑖∈𝐸 |𝑢𝑖 ⟩⟨𝑢𝑖 |.
+
+Definition 0.1.1 (The selected coordinate space).               Lean    ✓ Stmt   Let ℋ𝑅 = ℂ𝐸 , so that
+dim ℋ𝑅 = |𝐸|. Define 𝐽 ∶ ℋ𝑅 → ℋ𝐴 by 𝐽 |𝑖⟩ = 𝑢𝑖 .
+Theorem 0.1.2 (The spectral isometry).         Lean   Lean    ✓ Stmt The selected coordinate embedding
+satisfies 𝐽 † 𝐽 = 𝐼𝑅 and 𝐽 𝐽 † = 𝑃𝐸 .
+
+Proof.   ✓ Proof Orthonormality gives ⟨𝑢𝑖 , 𝑢𝑗 ⟩ = 𝛿𝑖𝑗 . The matrix 𝐽 𝐽         is ∑𝑖∈𝐸 |𝑢𝑖 ⟩⟨𝑢𝑖 | = 𝑃𝐸 .
+                                                                            †
+
+
+Definition 0.1.3 (The compressed selected vector).           Lean   ✓ Stmt If 𝑧 > 0, define 𝜒 = 𝑧
+                                                                                                       −1/2
+                                                                                                              (𝐽 † ⊗
+𝐼𝐵 )Ω on ℋ𝑅 ⊗ ℋ𝐵 .
+Theorem 0.1.4 (The marginals of the compressed selected vector). Lean                          Lean   Lean    Lean
+✓ Stmt Suppose 𝑧 > 0 and put Ω𝐸 = 𝑧      (𝑃𝐸 ⊗ 𝐼𝐵 )Ω. Then ‖𝜒‖ = 1 and
+                                    −1/2
+
+
+                                    (𝐽 ⊗ 𝐼𝐵 )𝜒 = Ω𝐸 ,                                                           (1)
+                                    Tr𝐵 |𝜒⟩⟨𝜒| = diag𝑖∈𝐸 (𝑝𝑖 /𝑧),                                               (2)
+                                    Tr𝑅 |𝜒⟩⟨𝜒| = Tr𝐴 |Ω𝐸 ⟩⟨Ω𝐸 |.                                                (3)
+
+In particular, every reduced state on a subsystem of 𝐵 is preserved by this relabeling, as required
+in the marginal comparison of Section 7.
+Proof. ✓ Proof The identity 𝐽 𝐽 † = 𝑃𝐸 gives (1). The coefficient matrix of 𝜒 is 𝑧−1/2 𝐽 † 𝐶Ω , and
+hence its first marginal is 𝑧 −1 𝐽 † 𝜌𝐴 𝐽 = diag𝑖∈𝐸 (𝑝𝑖 /𝑧). Tracing out an isometrically embedded
+factor gives (3). Taking the trace gives the same squared norm as Ω𝐸 , which is one.
+
+
+0.2      A Bell projection onto the selected space
+Let Ω ∈ ℋ𝐴 ⊗ ℋ𝐵 and let 𝜌𝐴 = Tr𝐵 |Ω⟩⟨Ω|. For a selected set 𝐸 of eigenvectors of 𝜌𝐴 , let
+𝐽 ∶ ℂ𝐸 → ℋ𝐴 be the selected spectral isometry. Write 𝑑 = |𝐸| and 𝑧 = ∑𝑖∈𝐸 𝑝𝑖 , and suppose
+𝑧 > 0. The auxiliary spaces ℋ𝐶 and ℋ𝑅 are copies of ℂ𝐸 . Put 𝑢 = 𝑑−1/2 ∑𝑖∈𝐸 |𝑖⟩𝐶 |𝑖⟩𝑅 and
+𝜒 = 𝑧 −1/2 (𝐽 † ⊗ 𝐼𝐵 )Ω. These are the one-copy constructions in [OAI26, Section 7].
+
+Definition 0.2.1 (The selected Bell vector and its outer product).               Lean   Lean    ✓ Stmt Define
+
+
+                                    𝛽 = 𝑑−1/2 ∑(𝐽 |𝑖⟩)𝐴 ⊗ |𝑖⟩𝐶 ,                                                (4)
+                                               𝑖∈𝐸
+                                    𝑃 = |𝛽⟩⟨𝛽|.                                                                 (5)
+
+Theorem 0.2.2 (Normalization and orthogonal projection). Lean Lean ✓ Stmt The selected Bell
+vector satisfies ‖𝛽‖ = 1, and 𝑃 is an orthogonal projection: 𝑃 2 = 𝑃 = 𝑃 † .
+Proof. ✓ Proof Positive selected mass implies 𝑑 > 0. The uniform pair has squared norm 𝑑 ⋅𝑑−1 =
+1. Since 𝐽 † 𝐽 = 𝐼𝑅 , the isometry 𝐽 ⊗ 𝐼𝐶 preserves this norm. Thus ⟨𝛽, 𝛽⟩ = 1, which gives
+𝑃 2 = 𝑃 = 𝑃 †.
+
+
+
+                                                  1
+Definition 0.2.3 (The one-copy vectors).          Lean   Lean       ✓ Stmt On (ℋ𝐴 ⊗ ℋ𝐶 ) ⊗ (ℋ𝑅 ⊗ ℋ𝐵 ),
+define pre𝑎𝑐𝑟𝑏 = Ω𝑎𝑏 𝑢𝑐𝑟 and post = 𝛽 ⊗ 𝜒.
+Theorem 0.2.4 (The one-copy Bell contraction).               Lean   ✓ Stmt For every Ω with positive selected
+mass,
+                                                             √
+                                                               𝑧
+                                     (𝑃 ⊗ 𝐼𝑅𝐵 )pre =             post.                                       (6)
+                                                              𝑑
+Proof. ✓ Proof Let 𝐶Ω be the coefficient matrix of Ω. The Kronecker delta in the auxiliary
+uniform pair gives
+                                                              √
+                                                                𝑧
+                      ((⟨𝛽|𝐴𝐶 ⊗ 𝐼𝑅𝐵 )pre) = 𝑑−1 (𝐽 † 𝐶Ω )𝑟𝑏 =     𝜒 .                  (7)
+                                         𝑟𝑏                   𝑑 𝑟𝑏
+Multiplication by |𝛽⟩ gives (6).
+
+
+0.3      Bell projections on finitely many copies
+Let Ω ∈ ℋ𝐴 ⊗ ℋ𝐵 , and select a set 𝐸 of eigenvectors of its actual marginal 𝜌𝐴 = Tr𝐵 |Ω⟩⟨Ω|.
+Write 𝑑 = |𝐸| and 𝑧 = ∑𝑖∈𝐸 𝑝𝑖 , and suppose 𝑧 > 0. Let 𝛽, 𝑃 = |𝛽⟩⟨𝛽|, pre and post = 𝛽 ⊗ 𝜒
+                                                        √
+be the one-copy constructions of Section 0.2. Set 𝑐 = 𝑧/𝑑. For each 𝑘 ≥ 0, tensor powers are
+written in the basis indexed by 𝑘-tuples: the coefficient of 𝑣⊗𝑘 at 𝑥 is ∏𝑗=0 𝑣(𝑥𝑗 ). These are the
+                                                                          𝑘−1
+
+finite-copy consequences of [OAI26, Section 7].
+Theorem 0.3.1 (The finite-copy Bell contraction).                Lean   ✓ Stmt For every 𝑘 ≥ 0,
+
+                                   (𝑃 ⊗ 𝐼𝑅𝐵 )⊗𝑘 pre⊗𝑘 = 𝑐𝑘 post⊗𝑘 .                                          (8)
+
+The vector Ω need not have unit norm.
+Proof.   ✓ Proof For finite families of matrices and vectors, distributivity gives
+
+                        ∑ ∏ 𝑀𝑗 (𝑥𝑗 , 𝑦𝑗 )𝑣𝑗 (𝑦𝑗 ) = ∏ ∑ 𝑀𝑗 (𝑥𝑗 , 𝑦𝑗 )𝑣𝑗 (𝑦𝑗 ).                               (9)
+                          𝑦    𝑗                         𝑗     𝑦𝑗
+
+
+Apply the one-copy Bell contraction to each factor. The 𝑘 scalar factors give ∏𝑗 𝑐 = 𝑐𝑘 .
+
+Theorem 0.3.2 (The repeated Bell vector and its projection). Lean Lean Lean ✓ Stmt For every
+𝑘 ≥ 0, ‖𝛽 ⊗𝑘 ‖ = 1, and 𝑃 ⊗𝑘 is an orthogonal projection. Simultaneously permuting the 𝐴𝐶 copies
+fixes 𝛽 ⊗𝑘 . The permutation assertion holds without the assumption 𝑧 > 0.
+Proof.   ✓ Proof The same finite-product expansion gives ⟨𝛽                  , 𝛽 ⊗𝑘 ⟩ = ∏𝑗 ⟨𝛽, 𝛽⟩ = 1. Entrywise
+                                                                        ⊗𝑘
+
+multiplication identifies 𝑃 = |𝛽 ⟩⟨𝛽 |, so it is self-adjoint and idempotent. For any permu-
+                              ⊗𝑘    ⊗𝑘     ⊗𝑘
+
+tation 𝜎, reindexing the finite product gives ∏𝑗 𝛽(𝑥𝜎(𝑗) ) = ∏𝑗 𝛽(𝑥𝑗 ).
+
+Theorem 0.3.3 (An operator on disjoint auxiliary copies). Lean ✓ Stmt Regroup the copies
+                𝐴𝐶 ⊗ (ℋ𝑅 ⊗ ℋ𝐵 ). Denote the transported product vectors by pre𝑘 and post𝑘 .
+canonically as ℋ⊗𝑘     ⊗𝑘      ⊗𝑘
+
+For any operator Λ on ℋ𝑅 , put 𝑄 = 𝑃 ⊗𝑘 ⊗ 𝐼𝑅𝑘 𝐵𝑘 and 𝑇Λ = 𝐼(𝐴𝐶)𝑘 ⊗ (Λ ⊗ 𝐼𝐵𝑘 ). Then
+                       ⊗𝑘
+
+
+                                         𝑄𝑇Λ pre𝑘 = 𝑐𝑘 𝑇Λ post𝑘 .                                          (10)
+
+No self-adjointness, projection property or commutation assumption is required for Λ.
+
+
+                                                    2
+Proof.   ✓ Proof The coordinate equivalence acts by
+
+
+                             ((𝑎𝑗 , 𝑐𝑗 ), (𝑟𝑗 , 𝑏𝑗 ))𝑗 ⟼ ((𝑎𝑗 , 𝑐𝑗 )𝑗 , ((𝑟𝑗 )𝑗 , (𝑏𝑗 )𝑗 )).                        (11)
+
+It transports (𝑃 ⊗ 𝐼𝑅𝐵 )⊗𝑘 to 𝑄. Kronecker multiplication gives
+
+                                     𝑄𝑇Λ = 𝑃 ⊗𝑘 ⊗ (Λ ⊗ 𝐼𝐵𝑘 ) = 𝑇Λ 𝑄.                                                (12)
+
+Transport (8) and apply 𝑇Λ . Using (12) gives (10).
+
+
+0.4      Reduced densities and masses of repeated pure states
+Let ℋ𝑆 = ℂ𝑆 and ℋ𝑅 = ℂΩ be finite-dimensional, and let 𝜓 ∈ ℋ𝑆 ⊗ ℋ𝑅 . Write 𝜌 = tr𝑆 |𝜓⟩⟨𝜓|
+for its actual reduced density, without imposing normalization. For 𝑘 ≥ 0, regroup the repeated
+vector into the two systems. Its coordinates, indexed by 𝑥 ∈ 𝑆 𝑘 and 𝑦 ∈ Ω𝑘 , are
+                                                           𝑘−1
+                                            𝑣𝑘 (𝑥, 𝑦) = ∏ 𝜓(𝑥𝑖 , 𝑦𝑖 ).                                              (13)
+                                                           𝑖=0
+
+These are the pure-state identities used in the Schur-sector argument of [OAI26, Section 7].
+
+Theorem 0.4.1 (Reduced density of a repeated bipartite vector).                         Lean     ✓ Stmt For every 𝜓 and
+every 𝑘 ≥ 0,
+
+                                              tr𝑆𝑘 |𝑣𝑘 ⟩⟨𝑣𝑘 | = 𝜌⊗𝑘 .                                               (14)
+
+Proof.   ✓ Proof For 𝑦, 𝑧 ∈ Ω , the matrix entry on the left is
+                             𝑘
+
+
+                 ∑ ∏ 𝜓(𝑥𝑖 , 𝑦𝑖 )𝜓(𝑥𝑖 , 𝑧𝑖 ) = ∏ ∑ 𝜓(𝑠, 𝑦𝑖 )𝜓(𝑠, 𝑧𝑖 ) = ∏ 𝜌(𝑦𝑖 , 𝑧𝑖 ).                               (15)
+                 𝑥∈𝑆 𝑘   𝑖                             𝑖   𝑠∈𝑆                            𝑖
+
+The middle equality is the distributive law for a finite product of sums.
+Theorem 0.4.2 (Projection mass of a repeated bipartite vector).                               Lean   ✓ Stmt For every or-
+thogonal projector 𝑃 on ℋ⊗𝑘
+                         𝑅 ,
+
+                                       ‖(𝐼𝑆𝑘 ⊗ 𝑃 )𝑣𝑘 ‖2 = Re tr(𝜌⊗𝑘 𝑃 ).                                            (16)
+
+In particular, taking 𝑃 to be an actual central Schur projector gives the squared norm in that
+sector.
+
+Proof.   ✓ Proof The trace-pairing property of the partial trace and the preceding identity give
+
+
+                   tr(𝜌⊗𝑘 𝑃 ) = ⟨𝑣𝑘 , (𝐼𝑆𝑘 ⊗ 𝑃 )𝑣𝑘 ⟩ = ⟨(𝐼𝑆𝑘 ⊗ 𝑃 )𝑣𝑘 , (𝐼𝑆𝑘 ⊗ 𝑃 )𝑣𝑘 ⟩.                              (17)
+
+The second equality uses 𝑃 = 𝑃 † = 𝑃 2 . Taking real parts proves the formula.
+   Both identities include zero copies and empty one-copy factors; no invertibility of 𝜌 is required.
+Concentration, the entropy window and selection of a common sequence of labels are separate
+assertions.
+
+
+
+
+                                                           3
+0.5     A common sequence of high-mass entropy labels
+Let 𝑞 = dim ℋ𝑅 and 𝑁𝑘 = (𝑘 + 1)𝑞 . The permutation action on ℋ⊗𝑘       𝑅 has central projectors
+                                         2
+
+
+Π𝜆 , indexed by irreducible labels 𝜆 of the symmetric group. Write 𝑑𝜆 for the irreducible dimen-
+sion. The following statements give the simultaneous selection in [OAI26, Section 7], equation
+(comparator:high-label).
+Theorem 0.5.1 (Finite entropy-window criterion). Lean ✓ Stmt Let 𝜎 be a density matrix on
+  𝑅 which commutes with all copy permutations. Let 𝑎 ∈ ℝ and 𝑤 ≥ 0. Set 𝐿 = − log 𝜎, with
+ℋ⊗𝑘
+the logarithm assigned value zero on the kernel. If
+
+                                    tr(𝜎 1{|𝐿−𝑎|>𝑤} ) + 𝑁𝑘 𝑒−𝑤/2 ≤ 12 ,                           (18)
+
+then there is a label 𝜆 such that
+                                               1
+                              tr(𝜎Π𝜆 ) ≥          ,       | log 𝑑𝜆 − 𝑎| ≤ 2𝑤.                     (19)
+                                              2𝑁𝑘
+
+Proof. ✓ Proof Resolve 𝜎 and the central label projectors simultaneously. On a joint eigenspace
+of positive density eigenvalue 𝑢 and label 𝜆, put ℓ = − log 𝑢 and 𝑓 = log 𝑑𝜆 . The eigenvalue
+multiplicity bound 𝑢𝑑𝜆 ≤ 1 implies 𝑓 ≤ ℓ. If |𝑓 − 𝑎| > 2𝑤, then either |ℓ − 𝑎| > 𝑤 or ℓ − 𝑓 > 𝑤.
+The mass of the second event is bounded by 𝑒−𝑤/2 times the exponential moment of (𝐿 − 𝐹 )/2,
+which is at most 𝑁𝑘 . The hypothesis therefore leaves at least half of the total mass in the good
+labels. At most 𝑁𝑘 labels occur, so one good label has mass at least (2𝑁𝑘 )−1 . Zero eigenvalues
+contribute no mass.
+Theorem 0.5.2 (Independent-copy entropy window). Lean ✓ Stmt For every density matrix 𝜌
+on ℋ𝑅 , for all sufficiently large 𝑘 there is a label 𝜆 satisfying
+
+                                          1
+                         tr(𝜌⊗𝑘 Π𝜆 ) ≥       ,        | log 𝑑𝜆 − 𝑘𝑆(𝜌)| ≤ 2𝑘3/4 .                 (20)
+                                         2𝑁𝑘
+
+No invertibility of 𝜌 is assumed.
+Proof. ✓ Proof The independent-copy surprisal has mean 𝑘𝑆(𝜌) and variance 𝑘𝑉 , √         where 𝑉 is its
+one-copy
+   √     variance.    Chebyshev’s   inequality at width  𝑘 3/4
+                                                               bounds  the  tail  by 𝑉 /   𝑘. The sum
+𝑉 / 𝑘 + 𝑁𝑘 𝑒 −𝑘3/4 /2
+                      tends to zero. The finite criterion applies for all sufficiently large 𝑘.
+Theorem 0.5.3 (One sequence for mass and entropy). Lean ✓ Stmt For every density matrix
+𝜌, there is one sequence (𝜆𝑘 )𝑘≥0 such that, for all sufficiently large 𝑘,
+
+                                                               1
+                                             tr(𝜌⊗𝑘 Π𝜆𝑘 ) ≥       ,                               (21)
+                                                              2𝑁𝑘
+
+and
+
+                                         log 𝑑𝜆𝑘 = 𝑘𝑆(𝜌) + 𝑜(𝑘).                                  (22)
+
+Proof. ✓ Proof Choose a label satisfying both conclusions of the preceding theorem for each
+sufficiently large 𝑘; at the remaining finitely many values choose any label. The normalized
+dimension error is at most 2𝑘−1/4 and therefore tends to zero.
+
+
+
+
+                                                      4
+Theorem 0.5.4 (High-mass labels of actual pure tensor powers). Lean ✓ Stmt Let 𝜓 ∈ ℋ𝑆 ⊗ℋ𝑅
+be a unit vector, let 𝜌 = tr𝑆 |𝜓⟩⟨𝜓|, and let 𝑣𝑘 be its literal tensor power regrouped into ℋ⊗𝑘
+                                                                                             𝑆 ⊗ℋ𝑅 .
+                                                                                                 ⊗𝑘
+
+There is one sequence (𝜆𝑘 ) for which, for all sufficiently large 𝑘,
+
+                                                           1
+                                     ‖(𝐼 ⊗ Π𝜆𝑘 )𝑣𝑘 ‖2 ≥       ,                                      (23)
+                                                          2𝑁𝑘
+
+and log 𝑑𝜆𝑘 = 𝑘𝑆(𝜌) + 𝑜(𝑘).
+Proof. ✓ Proof The actual reduced density is positive semidefinite and has trace one. Apply the
+common-sequence theorem to this density. The projection-mass identity for actual pure tensor
+powers converts its trace mass into the stated squared norm.
+
+
+0.6     The initial vector with common auxiliary labels
+Let Ω ∈ ℂ𝐴 and 𝜓 ∈ ℂ𝑆 ⊗ ℂ𝑑 be unit vectors. Suppose that 𝐻Ω = 𝐸0 Ω, with 𝐸0 ∈ ℝ. Write
+𝜌 = tr𝑆 |𝜓⟩⟨𝜓|. The initial vector below is the construction in [OAI26, Section 7], equations
+(comparator:prevector) and (comparator:high-label).
+
+Definition 0.6.1 (Initial vector in product coordinates). Lean ✓ Stmt Let 𝑢𝑑 = 𝑑−1/2 ∑𝑖=0 |𝑖, 𝑖⟩
+                                                                                               𝑑−1
+
+be the uniform auxiliary pair. Regroup its literal tensor power into the two auxiliary systems
+and write it as 𝑈𝑘 . For a central label projector Π𝜆 on (ℂ𝑑 )⊗𝑘 , define
+
+                                   𝑣𝑘,𝜆 = Ω⊗𝑘 ⊗ (𝐼𝐶 ⊗ Π𝜆 )𝑈𝑘 .                                       (24)
+
+All products and projections here act on the actual finite copy spaces.
+Theorem 0.6.2 (One sequence for the initial vector and selected mass).           Lean   ✓ Stmt There is
+one sequence (𝜆𝑘 ) for which every 𝑘 ≥ 1 satisfies
+
+                                                                               1 𝑘−1 (𝑖)
+             0 < ‖𝑣𝑘,𝜆𝑘 ‖ ≤ 1,    (𝐻 𝑘 ⊗ 𝐼𝐶𝑅 )𝑣𝑘,𝜆𝑘 = 𝐸0 𝑣𝑘,𝜆𝑘 ,        𝐻𝑘 =     ∑𝐻 .                (25)
+                                                                               𝑘 𝑖=0
+
+The vector has label 𝜆𝑘 on both auxiliary systems and is invariant under every simultaneous copy
+permutation on the physical, left auxiliary and right auxiliary systems. For all sufficiently large
+𝑘,
+                                                             1
+                                 ‖(𝐼𝑆𝑘 ⊗ Π𝜆𝑘 )𝜓⊗𝑘 ‖2 ≥              ,                                (26)
+                                                         2(𝑘 + 1)𝑑2
+
+and log 𝑑𝜆𝑘 = 𝑘𝑆(𝜌) + 𝑜(𝑘). The initial projection of 𝑈𝑘 is required only to be nonzero; no inverse
+polynomial lower bound on its probability is asserted.
+Proof. ✓ Proof Start with the common sequence selected from the actual density 𝜌. For any
+remaining copy number at which the selected sector has zero mass, choose a sector of positive
+mass using the complete central resolution of 𝜌⊗𝑘 . The original sequence has positive mass
+eventually, so these changes affect only finitely many terms and preserve the mass bound and
+entropy asymptotic.
+    Unit normalization of 𝜓 implies 𝑑 > 0. Every selected projector is nonzero, and hence acts
+nontrivially on the uniform pair. Tensoring with Ω⊗𝑘 preserves its norm. Orthogonal projection
+is contractive, and both unprojected tensor powers have norm one, giving the asserted norm
+
+
+                                                 5
+bounds. The one-copy eigenvector equation gives the mean-energy equation on the physical
+product, irrespective of the auxiliary vector.
+    The repeated uniform pair has matching left and right central labels. Idempotence therefore
+gives both fixed-label equations after projection. The uniform pair and the physical product are
+invariant under simultaneous copy permutations; centrality of the right label projector preserves
+this invariance after projection.
+
+
+0.7     Schmidt truncation and the common-label Bell projec-
+        tion
+Let Ω ∈ ℋ𝐴 ⊗ ℋ𝐵 , and choose an orthonormal eigenbasis (𝑢𝑖 )𝑖∈𝐴 of its actual marginal 𝜌𝐴 =
+Tr𝐵 |Ω⟩⟨Ω|, with eigenvalues 𝑝𝑖 . Fix 𝐸 ⊆ 𝐴, put 𝑑 = |𝐸| and 𝑧 = ∑𝑖∈𝐸 𝑝𝑖 , and suppose 𝑧 > 0.
+Identify 𝐸 with {0, … , 𝑑 − 1} by a bijection 𝜄. In these coordinates, set
+
+                                                                                  1 𝑑−1
+              𝐽 |𝑟⟩ = 𝑢𝜄−1 (𝑟) ,       𝜒 = 𝑧 −1/2 (𝐽 † ⊗ 𝐼𝐵 )Ω,              𝛽 = √ ∑ 𝐽 |𝑟⟩ ⊗ |𝑟⟩.               (27)
+                                                                                   𝑑 𝑟=0
+The same coordinates are used on the two auxiliary systems 𝐶 and 𝑅. These constructions
+instantiate the Schmidt truncation and pinning step in [OAI26, Section 7], equations (compara-
+tor:prevector), (comparator:high-label) and (comparator:bell-pin). The inverse-metric compara-
+tor bounds require the subsequent geometric and energy estimates.
+Theorem 0.7.1 (The actual initial vector under the selected Bell projection).                       Lean   ✓ Stmt For
+𝑘 ≥ 0 and any actual central label 𝜆 on 𝑅𝑘 , let
+
+                                                                                      1 𝑑−1
+                𝑣𝑘,𝜆 = Ω⊗𝑘 ⊗ (𝐼𝐶 𝑘 ⊗ Π𝜆 )𝑢⊗𝑘
+                                          𝑑 ,                                   𝑢𝑑 = √ ∑ |𝑟, 𝑟⟩.                (28)
+                                                                                       𝑑 𝑟=0
+
+Regroup the factors into (𝐴𝐶)𝑘 ⊗ (𝑅𝑘 ⊗ 𝐵𝑘 ) and put 𝑄𝑘 = (|𝛽⟩⟨𝛽|)⊗𝑘 ⊗ 𝐼𝑅𝑘 𝐵𝑘 . Then
+                                        √      𝑘
+                                          𝑧
+                       𝑄𝑘 𝑣𝑘,𝜆 = (          ) [𝐼(𝐴𝐶)𝑘 ⊗ (Π𝜆 ⊗ 𝐼𝐵𝑘 )](𝛽 ⊗𝑘 ⊗ 𝜒⊗𝑘 ).                              (29)
+                                         𝑑
+The right label acts on a factor disjoint from the Bell projection.
+Proof. ✓ Proof Transport the selected coordinates from 𝐸 to {0, … , 𝑑 − 1}. This transports
+the selected Bell projection, compressed vector and uniform pair by the same bijection. The
+finite-copy Bell identity for a disjoint operator therefore applies to the actual projector Π𝜆 . The
+coordinate regrouping is
+
+                         ((𝑎𝑗 , 𝑐𝑗 )𝑗 , ((𝑟𝑗 )𝑗 , (𝑏𝑗 )𝑗 )) ⟼ ((𝑎𝑗 , 𝑏𝑗 )𝑗 , ((𝑐𝑗 )𝑗 , (𝑟𝑗 )𝑗 )).               (30)
+
+Matrix vectorization shows that the projected input is precisely (28): its physical factor is un-
+changed by the right auxiliary
+                         √     projection. Applying the finite-copy identity gives (29), with all
+𝑘 scalar factors equal to 𝑧/𝑑.
+Theorem 0.7.2 (The common sequence selected from the actual Schmidt truncation). Lean
+✓ Stmt Suppose in addition that ‖Ω‖ = 1 and 𝐻Ω = 𝐸0 Ω, where 𝐸0 ∈ ℝ. Write 𝜓(𝑏, 𝑟) = 𝜒(𝑟, 𝑏),
+so that
+
+                       ‖𝜓‖ = 1,           𝜌𝑅 = Tr𝐵 |𝜓⟩⟨𝜓| = diag0≤𝑟<𝑑 (𝑝𝜄−1 (𝑟) /𝑧).                            (31)
+
+
+                                                            6
+There is one sequence (𝜆𝑘 ) such that, for every 𝑘 ≥ 1, the actual initial vector in (28) is nonzero,
+has norm at most one, and satisfies
+
+                                                                         1 𝑘−1 (𝑗)
+                 (𝐻 𝑘 ⊗ 𝐼𝐶 𝑘 𝑅𝑘 )𝑣𝑘,𝜆𝑘 = 𝐸0 𝑣𝑘,𝜆𝑘 ,               𝐻𝑘 =     ∑𝐻 .                 (32)
+                                                                         𝑘 𝑗=0
+
+It has label 𝜆𝑘 on both 𝐶 and 𝑅, and is fixed by simultaneous copy permutations of the physical
+and both auxiliary systems. For all sufficiently large 𝑘,
+                                              1
+                 ‖(𝐼𝐵𝑘 ⊗ Π𝜆𝑘 )𝜓⊗𝑘 ‖2 ≥               ,    log 𝑑𝜆𝑘 = 𝑘𝑆(𝜌𝑅 ) + 𝑜(𝑘).             (33)
+                                          2(𝑘 + 1)𝑑2
+
+The Bell identity (29) applies to this same sequence.
+Proof. ✓ Proof The compressed-vector marginal identity, followed by the coordinate bijection and
+the interchange of the two factors, gives (31). These coordinate changes preserve the unit norm.
+Apply the common-sequence theorem for the actual initial vector to this 𝜓, the physical vector
+Ω, and its eigenvector equation. Its selected mass and entropy are those of the actual density 𝜌𝑅
+in (31).
+
+
+
+
+                                                      7
+Bibliography
+
+[OAI26] OpenAI, A two-dimensional area law from a global spectral gap, September 24, 2026,
+        Section 7.
+
+
+
+
+                                            8
+

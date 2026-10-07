@@ -1,0 +1,53 @@
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:56:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.pre_fin`:
+  [Fintype A]
+  [Fintype B]
+  [DecidableEq A]
+  [DecidableEq B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype A] [Fintype B] [DecidableEq A] [DecidableEq B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:65:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.pin_transport`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:89:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.label_pullback`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:174:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 ?A *ᵥ Matrix.vec ?B
+in the target expression
+  (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) M 1) *ᵥ fun y =>
+        F (y.1.1, y.2.2) * u (y.1.2, y.2.1))
+      x =
+    F (x.1.1, x.2.2) * (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 M *ᵥ u) (x.1.2, x.2.1)
+
+A : Type u_1
+B : Type u_2
+inst✝⁸ : Fintype A
+inst✝⁷ : Fintype B
+inst✝⁶ : DecidableEq A
+inst✝⁵ : DecidableEq B
+Ω : EuclideanSpace ℂ (A × B)
+E : Finset A
+X : Type u_3
+C : Type u_4
+R : Type u_5
+inst✝⁴ : Fintype X
+inst✝³ : Fintype C
+inst✝² : Fintype R
+inst✝¹ : DecidableEq X
+inst✝ : DecidableEq C
+F : X × B → ℂ
+u : C × R → ℂ
+M : Matrix R R ℂ
+x : (X × C) × R × B
+⊢ (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) M 1) *ᵥ fun y =>
+        F (y.1.1, y.2.2) * u (y.1.2, y.2.1))
+      x =
+    F (x.1.1, x.2.2) * (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 M *ᵥ u) (x.1.2, x.2.1)

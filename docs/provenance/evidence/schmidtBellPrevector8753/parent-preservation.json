@@ -1,0 +1,10 @@
+{
+  "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+  "compared_parent_bindings": 1944,
+  "distinct_paths": 1732,
+  "parents": {
+    "9fd6e24c": 361,
+    "859f992782a0b78c48a397b957012749936c4837": 1583
+  },
+  "passed": true
+}

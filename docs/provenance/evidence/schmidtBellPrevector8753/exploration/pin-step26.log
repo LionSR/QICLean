@@ -1,0 +1,29 @@
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:56:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.pre_fin`:
+  [Fintype A]
+  [Fintype B]
+  [DecidableEq A]
+  [DecidableEq B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype A] [Fintype B] [DecidableEq A] [DecidableEq B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:65:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.pin_transport`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:89:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.label_pullback`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:181:58: warning: This simp argument is unused:
+  mul_assoc
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Matrix.vec, Matrix.mul_apply, Matrix.kroneckerMap_apply, Matrix.one_apply, Fintype.sum_prod_type,
+    Finset.mul_sum, mul_left_comm, mul_ite]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

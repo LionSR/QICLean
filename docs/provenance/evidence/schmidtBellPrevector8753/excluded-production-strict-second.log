@@ -1,0 +1,7 @@
+QICLean/Representation/SchmidtBellPrevector.lean:56:100: error: This line exceeds the 100 character limit, please shorten it!
+You can use "string gaps" to format long strings: within a string quotation, using a '\' at the end of a line allows you to continue the string on the following line, removing all intervening whitespace.
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+QICLean/Representation/SchmidtBellPrevector.lean:198:100: error: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`

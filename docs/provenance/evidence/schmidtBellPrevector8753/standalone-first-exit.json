@@ -1,0 +1,24 @@
+{
+  "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+  "production_sha256": {
+    "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+    "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+    "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+  },
+  "argv": [
+    "lualatex",
+    "-interaction=nonstopmode",
+    "-halt-on-error",
+    "-output-directory=docs/provenance/evidence/schmidtBellPrevector8753",
+    "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.tex"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "exit_code": 0,
+  "elapsed_seconds": 2.374635332991602,
+  "log": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-first.log.gz",
+  "sha256": "7c26acd7481322f3f1aac1bbe8d8b7986d21174309cde85b28311c4c07a20fd9",
+  "uncompressed_sha256": "05ed9f5c94212fbecc1bc4e951a7b1332f4e837bc84ef2a254409a8eb6b62eb7",
+  "uncompressed_bytes": 21549,
+  "compressed": true,
+  "deterministic_gzip_mtime": 0
+}

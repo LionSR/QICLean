@@ -1,0 +1,16 @@
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:62:2: error: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝³ : Fintype A
+inst✝² : Fintype B
+inst✝¹ : DecidableEq A
+inst✝ : DecidableEq B
+Ω : EuclideanSpace ℂ (A × B)
+E : Finset A
+a : A
+b : B
+c r : Fin E.card
+⊢ Ω.ofLp (a, b) *
+      Matrix.omegaVec (Fintype.card ↥E)
+        ((Fintype.equivFin ↥E) (E.equivFin.symm c), (Fintype.equivFin ↥E) (E.equivFin.symm r)) =
+    Ω.ofLp (a, b) * Matrix.omegaVec E.card (c, r)

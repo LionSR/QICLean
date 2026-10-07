@@ -1,0 +1,38 @@
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:77:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Matrix.kroneckerMap ?f ?A ?B).submatrix (Prod.map ?r ?r') (Prod.map ?c ?c')
+in the target expression
+  (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.finKronecker fun x => P) 1).submatrix
+      ⇑((Equiv.piCongrRight fun x => eX).prodCongr
+            ((Equiv.piCongrRight fun x => eR).prodCongr (Equiv.refl (Fin k → B)))).symm
+      ⇑((Equiv.piCongrRight fun x => eX).prodCongr
+            ((Equiv.piCongrRight fun x => eR).prodCongr (Equiv.refl (Fin k → B)))).symm =
+    Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.finKronecker fun x => P.submatrix ⇑eX.symm ⇑eX.symm) 1
+
+A : Type u_1
+B : Type u_2
+inst✝⁹ : Fintype A
+inst✝⁸ : Fintype B
+inst✝⁷ : DecidableEq A
+inst✝⁶ : DecidableEq B
+Ω : EuclideanSpace ℂ (A × B)
+E : Finset A
+X : Type u_3
+Y : Type u_4
+R : Type u_5
+S : Type u_6
+inst✝⁵ : Fintype X
+inst✝⁴ : Fintype Y
+inst✝³ : Fintype R
+inst✝² : Fintype S
+inst✝¹ : DecidableEq R
+inst✝ : DecidableEq S
+eX : X ≃ Y
+eR : R ≃ S
+P : Matrix X X ℂ
+k : ℕ
+⊢ (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.finKronecker fun x => P) 1).submatrix
+      ⇑((Equiv.piCongrRight fun x => eX).prodCongr
+            ((Equiv.piCongrRight fun x => eR).prodCongr (Equiv.refl (Fin k → B)))).symm
+      ⇑((Equiv.piCongrRight fun x => eX).prodCongr
+            ((Equiv.piCongrRight fun x => eR).prodCongr (Equiv.refl (Fin k → B)))).symm =
+    Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.finKronecker fun x => P.submatrix ⇑eX.symm ⇑eX.symm) 1

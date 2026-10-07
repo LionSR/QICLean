@@ -1,0 +1,34 @@
+{
+  "attempts": [
+    {
+      "log": "docs/provenance/evidence/schmidtBellPrevector8753/excluded-production-first.log",
+      "sha256": "89c88b3a7f8f03c3dd3718f795c52444d1b3bfbe2c52909c7d7cb6b3764f057d",
+      "status": "exploratory; excluded from final provenance bindings"
+    },
+    {
+      "log": "docs/provenance/evidence/schmidtBellPrevector8753/excluded-production-strict-first.log",
+      "sha256": "bd0b37718840fa1a10dd4d98b4884ae2185f83cae733a7c851771a41f02470d1",
+      "status": "exploratory; excluded from final provenance bindings"
+    },
+    {
+      "log": "docs/provenance/evidence/schmidtBellPrevector8753/excluded-production-strict-second.log",
+      "sha256": "4e7b22a2e1c90545d509e41825ce3aaf004317ab861518380edd8ffe5d10b6fa",
+      "status": "exploratory; excluded from final provenance bindings"
+    },
+    {
+      "log": "docs/provenance/evidence/schmidtBellPrevector8753/excluded-production-strict-third.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "exploratory; excluded from final provenance bindings"
+    }
+  ],
+  "scope": "The first production elaboration and three pre-freeze strict checks are exploratory. The first two strict checks failed only on formatting and unnecessary private finite-type hypotheses; the third passed before the final scope documentation. Canonical evidence is source-bound to 67e75fc6 in checks.json.",
+  "temporary_diagnostics": {
+    "directory": "docs/provenance/evidence/schmidtBellPrevector8753/exploration",
+    "scope": "Temporary proof-development diagnostics and snapshots have no canonical immutable production-source command binding and are excluded from final provenance."
+  },
+  "prior_fragment_render": {
+    "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "artifacts_prefix": "prior-67-standalone-wrapper",
+    "reason": "The final documentation revision writes the auxiliary k-copy spectators explicitly; final rendering binds to c20f3e46."
+  }
+}

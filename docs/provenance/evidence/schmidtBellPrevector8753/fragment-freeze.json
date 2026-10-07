@@ -1,0 +1,11 @@
+{
+  "revision": "c20f3e46b48e95454ec681691992d961b38cf462",
+  "mathematical_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+  "production_sha256": {
+    "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+    "blueprint/src/fragment/schmidt_bell_prevector.tex": "3e119994ac202e8ffbe0077477e6cb0ca64e8ed97588447465c76a2afe43f8af",
+    "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+  },
+  "unchanged_Lean_bytes": true,
+  "change": "The fragment explicitly denotes the k-copy auxiliary spectator spaces."
+}

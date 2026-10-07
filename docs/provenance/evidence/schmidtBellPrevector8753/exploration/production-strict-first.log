@@ -1,0 +1,23 @@
+QICLean/Representation/SchmidtBellPrevector.lean:56:100: error: This line exceeds the 100 character limit, please shorten it!
+You can use "string gaps" to format long strings: within a string quotation, using a '\' at the end of a line allows you to continue the string on the following line, removing all intervening whitespace.
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+QICLean/Representation/SchmidtBellPrevector.lean:96:0: error: `finKronecker_pin_submatrix` does not use the following hypotheses in its type:
+  • [Fintype R] (#9)
+  • [Fintype S] (#10)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+QICLean/Representation/SchmidtBellPrevector.lean:121:0: error: `kronecker_one_submatrix` does not use the following hypotheses in its type:
+  • [Fintype X] (#7)
+  • [Fintype Y] (#8)
+  • [Fintype R] (#9)
+  • [Fintype S] (#10)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+QICLean/Representation/SchmidtBellPrevector.lean:197:100: error: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`

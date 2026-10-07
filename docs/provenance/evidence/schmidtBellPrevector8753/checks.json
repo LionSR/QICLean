@@ -1,0 +1,276 @@
+{
+  "strict-source": {
+    "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "lake",
+      "env",
+      "lean",
+      "-DwarningAsError=true",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DrelaxedAutoImplicit=false",
+      "-DmaxSynthPendingDepth=3",
+      "QICLean/Representation/SchmidtBellPrevector.lean"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 7.082527999999002,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/strict-source.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "uncompressed_bytes": 0,
+    "compressed": false,
+    "deterministic_gzip_mtime": null
+  },
+  "target": {
+    "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "lake",
+      "build",
+      "QICLean.Representation.SchmidtBellPrevector"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 9.009938624993083,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/target.log",
+    "sha256": "2270ce09cccfcb51de0c1ac7d107763bb6dd490c6dbab3950bdb64294ca601fb",
+    "uncompressed_sha256": "2270ce09cccfcb51de0c1ac7d107763bb6dd490c6dbab3950bdb64294ca601fb",
+    "uncompressed_bytes": 115,
+    "compressed": false,
+    "deterministic_gzip_mtime": null
+  },
+  "axioms": {
+    "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "lake",
+      "env",
+      "lean",
+      "-DwarningAsError=true",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DrelaxedAutoImplicit=false",
+      "-DmaxSynthPendingDepth=3",
+      "docs/provenance/evidence/schmidtBellPrevector8753/Axioms.lean"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 6.061935750010889,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/axioms.log",
+    "sha256": "a31fd078e65910962f501c4cba6d1dbb4146c8c14cd1bfde0a5214ad1d13e6e7",
+    "uncompressed_sha256": "a31fd078e65910962f501c4cba6d1dbb4146c8c14cd1bfde0a5214ad1d13e6e7",
+    "uncompressed_bytes": 229,
+    "compressed": false,
+    "deterministic_gzip_mtime": null
+  },
+  "prose": {
+    "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "python3",
+      "/Users/siruilu/Local/agentFormalization/TNLean/scripts/check_reader_facing_prose.py",
+      "--root",
+      ".",
+      "--diff-base",
+      "d6dbfb2b497184c1cd8f4819b3d1429eca21aba8"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 0.11425612500170246,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/prose.log",
+    "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "uncompressed_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "uncompressed_bytes": 57,
+    "compressed": false,
+    "deterministic_gzip_mtime": null
+  },
+  "tactic-patterns": {
+    "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "python3",
+      "/Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+      "--root",
+      "QICLean/Representation",
+      "--top",
+      "2",
+      "--show-locations",
+      "2"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 0.06231574999401346,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/tactic-patterns.log",
+    "sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8",
+    "uncompressed_sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8",
+    "uncompressed_bytes": 61,
+    "compressed": false,
+    "deterministic_gzip_mtime": null
+  },
+  "provenance": {
+    "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "/Users/siruilu/miniforge3/bin/python3",
+      "docs/provenance/evidence/schmidtBellPrevector8753/validate-owned.py",
+      "/Users/siruilu/Local/agentFormalization/TNLean"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 0.3474077499995474,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/provenance.log",
+    "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+    "uncompressed_sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+    "uncompressed_bytes": 69,
+    "compressed": false,
+    "deterministic_gzip_mtime": null
+  },
+  "standalone-first": {
+    "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "lualatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=docs/provenance/evidence/schmidtBellPrevector8753",
+      "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.tex"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 2.374635332991602,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-first.log.gz",
+    "sha256": "7c26acd7481322f3f1aac1bbe8d8b7986d21174309cde85b28311c4c07a20fd9",
+    "uncompressed_sha256": "05ed9f5c94212fbecc1bc4e951a7b1332f4e837bc84ef2a254409a8eb6b62eb7",
+    "uncompressed_bytes": 21549,
+    "compressed": true,
+    "deterministic_gzip_mtime": 0
+  },
+  "standalone-second": {
+    "source_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "e68b64638660dc8abe00cfb2e5b6562d9128a32690f1acf68edb2308a9cf2272",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "lualatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=docs/provenance/evidence/schmidtBellPrevector8753",
+      "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.tex"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 2.041943917007302,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-second.log.gz",
+    "sha256": "850f405d76322ec3d1b1cb8d7e92633a09157fce1ed7008716790239820c544f",
+    "uncompressed_sha256": "24429b6db81de9e23c68b12b0df5638ed1f65232b85116813a80d8daef456836",
+    "uncompressed_bytes": 15040,
+    "compressed": true,
+    "deterministic_gzip_mtime": 0
+  },
+  "standalone-final-first": {
+    "source_revision": "c20f3e46b48e95454ec681691992d961b38cf462",
+    "mathematical_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "3e119994ac202e8ffbe0077477e6cb0ca64e8ed97588447465c76a2afe43f8af",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "lualatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=docs/provenance/evidence/schmidtBellPrevector8753",
+      "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.tex"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 2.0281063340080436,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-final-first.log.gz",
+    "sha256": "4d0d9a840172297442ae1953341183bbe2c548ade6c75a4952d62a956512b2ee",
+    "uncompressed_sha256": "344bc642e4144803f7a590294968d0619d1272e675d61545bcd71ffa8c0700e4",
+    "uncompressed_bytes": 15040,
+    "compressed": true,
+    "deterministic_gzip_mtime": 0
+  },
+  "standalone-final-second": {
+    "source_revision": "c20f3e46b48e95454ec681691992d961b38cf462",
+    "mathematical_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "3e119994ac202e8ffbe0077477e6cb0ca64e8ed97588447465c76a2afe43f8af",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "lualatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=docs/provenance/evidence/schmidtBellPrevector8753",
+      "docs/provenance/evidence/schmidtBellPrevector8753/standalone-wrapper.tex"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 1.7387195000046631,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/standalone-final-second.log.gz",
+    "sha256": "4d0d9a840172297442ae1953341183bbe2c548ade6c75a4952d62a956512b2ee",
+    "uncompressed_sha256": "344bc642e4144803f7a590294968d0619d1272e675d61545bcd71ffa8c0700e4",
+    "uncompressed_bytes": 15040,
+    "compressed": true,
+    "deterministic_gzip_mtime": 0
+  },
+  "prose-final": {
+    "source_revision": "c20f3e46b48e95454ec681691992d961b38cf462",
+    "mathematical_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+    "production_sha256": {
+      "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+      "blueprint/src/fragment/schmidt_bell_prevector.tex": "3e119994ac202e8ffbe0077477e6cb0ca64e8ed97588447465c76a2afe43f8af",
+      "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d"
+    },
+    "argv": [
+      "python3",
+      "/Users/siruilu/Local/agentFormalization/TNLean/scripts/check_reader_facing_prose.py",
+      "--root",
+      ".",
+      "--diff-base",
+      "d6dbfb2b497184c1cd8f4819b3d1429eca21aba8"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+    "exit_code": 0,
+    "elapsed_seconds": 0.10778320800454821,
+    "log": "docs/provenance/evidence/schmidtBellPrevector8753/prose-final.log",
+    "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "uncompressed_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "uncompressed_bytes": 57,
+    "compressed": false,
+    "deterministic_gzip_mtime": null
+  }
+}

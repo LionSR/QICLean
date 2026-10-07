@@ -1,0 +1,77 @@
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:65:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.pin_transport`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:89:0: warning: automatically included section variable(s) unused in theorem `SchmidtBellPrototype.label_pullback`:
+  [Fintype B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:153:4: error: Type mismatch: After simplification, term
+  label_pullback a.symm τ.symm (Λ.submatrix ⇑τ ⇑τ)
+ has type
+  @Eq
+    (Matrix ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B))
+      ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B)) ℂ)
+    ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+          (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Λ.submatrix ⇑τ ⇑τ) 1)).submatrix
+      ⇑(a.symm.prodCongr (τ.symm.prodCongr (Equiv.refl (Fin k → B))))
+      ⇑(a.symm.prodCongr (τ.symm.prodCongr (Equiv.refl (Fin k → B)))))
+    (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+      (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Λ.submatrix (fun x => x) fun x => x) 1))
+but is expected to have type
+  @Eq
+    (Matrix ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B))
+      ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B)) ℂ)
+    ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+          (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Λ.submatrix ⇑τ ⇑τ) 1)).submatrix
+      ⇑(a.symm.prodCongr (τ.symm.prodCongr (Equiv.refl (Fin k → B))))
+      ⇑(a.symm.prodCongr (τ.symm.prodCongr (Equiv.refl (Fin k → B)))))
+    (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) Λ 1))
+/tmp/qic-schmidt-bell-prototype-8753/Pin.lean:157:2: error: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝³ : Fintype A
+inst✝² : Fintype B
+inst✝¹ : DecidableEq A
+inst✝ : DecidableEq B
+Ω : EuclideanSpace ℂ (A × B)
+E : Finset A
+k : ℕ
+hz : 0 < ⋯.spectralRestrictionMass E
+Λ : Matrix (Fin k → Fin E.card) (Fin k → Fin E.card) ℂ
+β : A × Fin E.card → ℂ := fun x => (Matrix.selectedBellVector Ω E).ofLp (x.1, E.equivFin.symm x.2)
+χ : Fin E.card × B → ℂ := fun x => (Matrix.compressedTypicalPureState Ω E).ofLp (E.equivFin.symm x.1, x.2)
+Pk : Matrix ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B))
+  ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B)) ℂ :=
+  Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.finKronecker fun x => Matrix.vecMulVec β (star β)) 1
+ΛR : Matrix ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B))
+  ((Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B)) ℂ :=
+  Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) Λ 1)
+ι : ↥E ≃ Fin E.card := E.equivFin
+τ : (Fin k → ↥E) ≃ (Fin k → Fin E.card) := Equiv.piCongrRight fun x => ι
+a : (Fin k → A × ↥E) ≃ (Fin k → A × Fin E.card) := Equiv.piCongrRight fun x => (Equiv.refl A).prodCongr ι
+s : (Fin k → A × ↥E) × (Fin k → ↥E) × (Fin k → B) ≃ (Fin k → A × Fin E.card) × (Fin k → Fin E.card) × (Fin k → B) :=
+  a.prodCongr (τ.prodCongr (Equiv.refl (Fin k → B)))
+e : (Fin k → (A × ↥E) × ↥E × B) ≃ (Fin k → A × ↥E) × (Fin k → ↥E) × (Fin k → B) :=
+  (Equiv.arrowProdEquivProdArrow (Fin k) (fun x => A × ↥E) fun x => ↥E × B).trans
+    ((Equiv.refl (Fin k → A × ↥E)).prodCongr (Equiv.arrowProdEquivProdArrow (Fin k) (fun x => ↥E) fun x => B))
+PE : Matrix ((Fin k → A × ↥E) × (Fin k → ↥E) × (Fin k → B)) ((Fin k → A × ↥E) × (Fin k → ↥E) × (Fin k → B)) ℂ :=
+  Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.finKronecker fun x => Matrix.selectedBellProjection Ω E) 1
+LE : Matrix ((Fin k → A × ↥E) × (Fin k → ↥E) × (Fin k → B)) ((Fin k → A × ↥E) × (Fin k → ↥E) × (Fin k → B)) ℂ :=
+  Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Λ.submatrix ⇑τ ⇑τ) 1)
+h :
+  WithLp.toLp 2
+      (PE.submatrix ⇑s.symm ⇑s.symm *ᵥ
+        LE.submatrix ⇑s.symm ⇑s.symm *ᵥ (fun x => ∏ j, (Matrix.bellPinPrevector Ω E).ofLp (e.symm x j)) ∘ ⇑s.symm) =
+    (↑√(⋯.spectralRestrictionMass E) / ↑E.card) ^ k •
+      WithLp.toLp 2
+        (LE.submatrix ⇑s.symm ⇑s.symm *ᵥ (fun x => ∏ j, (Matrix.bellPinPostvector Ω E).ofLp (e.symm x j)) ∘ ⇑s.symm)
+hP : PE.submatrix ⇑s.symm ⇑s.symm = Pk
+hL : LE.submatrix ⇑s.symm ⇑s.symm = ΛR
+⊢ WithLp.toLp 2 (Pk *ᵥ ΛR *ᵥ fun x => ∏ j, Ω.ofLp ((x.1 j).1, x.2.2 j) * Matrix.omegaVec E.card ((x.1 j).2, x.2.1 j)) =
+    (↑√(⋯.spectralRestrictionMass E) / ↑E.card) ^ k •
+      WithLp.toLp 2 (ΛR *ᵥ fun x => (∏ j, β (x.1 j)) * ∏ j, χ (x.2.1 j, x.2.2 j))

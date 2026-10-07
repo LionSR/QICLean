@@ -1,0 +1,8 @@
+QICLean/Representation/SchmidtBellPrevector.lean:214:58: warning: This simp argument is unused:
+  mul_assoc
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Matrix.vec, Matrix.mul_apply, Matrix.kroneckerMap_apply, Matrix.one_apply, Fintype.sum_prod_type,
+    Finset.mul_sum, mul_left_comm, mul_ite]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

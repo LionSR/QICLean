@@ -1,0 +1,14 @@
+/tmp/qic-schmidt-bell-prototype-8753/Reindex.lean:40:2: error: Type mismatch: After simplification, term
+  congrArg (fun M => M.submatrix ⇑E.equivFin.symm ⇑E.equivFin.symm)
+    (Matrix.partialTraceRight_compressedTypicalPureState Ω E hz)
+ has type
+  @Eq (Matrix (Fin E.card) (Fin E.card) ℂ)
+    ((Matrix.vecMulVec (Matrix.compressedTypicalPureState Ω E).ofLp
+            (star (Matrix.compressedTypicalPureState Ω E).ofLp)).partialTraceRight.submatrix
+      ⇑E.equivFin.symm ⇑E.equivFin.symm)
+    (Matrix.diagonal ((fun i => ↑(⋯.eigenvalues ↑i / ⋯.spectralRestrictionMass E)) ∘ ⇑E.equivFin.symm))
+but is expected to have type
+  @Eq (Matrix (Fin E.card) (Fin E.card) ℂ)
+    (Matrix.vecMulVec (fun x => (Matrix.compressedTypicalPureState Ω E).ofLp (E.equivFin.symm x.2, x.1))
+        (star fun x => (Matrix.compressedTypicalPureState Ω E).ofLp (E.equivFin.symm x.2, x.1))).partialTraceLeft
+    (Matrix.diagonal fun r => ↑(⋯.eigenvalues ↑(E.equivFin.symm r) / ⋯.spectralRestrictionMass E))

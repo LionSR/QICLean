@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-schmidt-bell-prevector-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchmidtBellPrevector.lean",
+        "declaration": "TensorPower.selectedBellProjection_replicaPrevector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:bell-pin"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Instantiate the actual selected-coordinate Bell identity on literal Fin(E.card) auxiliary copies, identify its input with the canonically regrouped physical replicaPrevector, and obtain (sqrt z / E.card)^k with the actual right Schur projector for every k including zero. Positive actual selected mass is the only normalization premise."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.SchmidtBellPrevector",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schmidtBellPrevector8753/target.log",
+            "sha256": "2270ce09cccfcb51de0c1ac7d107763bb6dd490c6dbab3950bdb64294ca601fb"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchmidtBellPrevector.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schmidtBellPrevector8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schmidtBellPrevector8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schmidtBellPrevector8753/axioms.log",
+            "sha256": "a31fd078e65910962f501c4cba6d1dbb4146c8c14cd1bfde0a5214ad1d13e6e7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schmidt-bell-prevector-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchmidtBellPrevector.lean",
+        "declaration": "TensorPower.exists_label_sequence_schmidtBellPrevector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:prevector",
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive unit normalization and the actual normalized diagonal R marginal from the physical spectral restriction. Select the common label sequence from this actual vector; derive nonzero initial vectors, norm at most one, exact physical mean energy, both initial auxiliary labels, simultaneous permutation symmetry, eventual inverse polynomial selected mass, and the entropy asymptotic from unit physical norm and its actual eigenvector equation."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.SchmidtBellPrevector",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schmidtBellPrevector8753/target.log",
+            "sha256": "2270ce09cccfcb51de0c1ac7d107763bb6dd490c6dbab3950bdb64294ca601fb"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchmidtBellPrevector.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schmidtBellPrevector8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schmidtBellPrevector8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schmidtBellPrevector8753/axioms.log",
+            "sha256": "a31fd078e65910962f501c4cba6d1dbb4146c8c14cd1bfde0a5214ad1d13e6e7"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+'TensorPower.selectedBellProjection_replicaPrevector' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.exists_label_sequence_schmidtBellPrevector' depends on axioms: [propext, Classical.choice, Quot.sound]
