@@ -8,7 +8,9 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation
 
+import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.CommutantDimension
+import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy
 import QICLean.Representation.IrrepLabels
