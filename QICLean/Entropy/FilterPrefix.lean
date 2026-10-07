@@ -224,7 +224,8 @@ theorem sqrt_mul_chainOptimum_succ_le (D : ℕ → Finset V) (hD : ∀ i j, i �
       (Δ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
     {E : ℝ} (hE : ∑ j ∈ Finset.range (k + 1),
       4 * a j ^ 2 * ∑ i ∈ crossingTerms S (D j), supportDim n (S i) ^ 2 * c₀ ≤ E)
-    {x : ℝ} (hx : ∀ L, IsFeasibleFilter (f k) (a k) L → ‖toEuclideanLin (localLift (D k) L) Ω‖ ≤ x) :
+    {x : ℝ}
+    (hx : ∀ L, IsFeasibleFilter (f k) (a k) L → ‖toEuclideanLin (localLift (D k) L) Ω‖ ≤ x) :
     √(1 - E / Δ) * chainOptimum D f a (k + 1) Ω ≤ x * chainOptimum D f a k Ω := by
   have hΩ0 : Ω ≠ 0 := fun h0 ↦ by simp [h0] at hΩ
   obtain ⟨σ₀, -⟩ : ∃ σ, Ω σ ≠ 0 := by
