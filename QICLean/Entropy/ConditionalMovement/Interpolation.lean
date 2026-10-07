@@ -1,5 +1,30 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import Mathlib.Analysis.Complex.Hadamard
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import QICLean.Entropy.ConditionalMovement.SpectralPowers
+
+/-!
+# Matrix three-lines interpolation
+
+Hilbert--Schmidt norms, trace duality and the analytic strip products used in the
+complex interpolation of Section 5.1.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/Interpolation.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 
@@ -67,8 +92,8 @@ theorem hsSquare_unitary_left (U : unitary (Matrix ι ι ℂ)) (A : Matrix ι ι
   calc
     _ = trace ((U : Matrix ι ι ℂ) * (A * A.conjTranspose) * (U : Matrix ι ι ℂ).conjTranspose) := by
       simp only [Matrix.mul_assoc]
-    _ = trace ((U : Matrix ι ι ℂ).conjTranspose * (U : Matrix ι ι ℂ) * (A * A.conjTranspose))
-        := trace_mul_cycle _ _ _
+    _ = trace ((U : Matrix ι ι ℂ).conjTranspose * (U : Matrix ι ι ℂ) *
+        (A * A.conjTranspose)) := trace_mul_cycle _ _ _
     _ = _ := by rw [hu, one_mul]
 
 theorem norm_scalar_realpart (w : ℝ) (hw : 0 ≤ w) (z : ℂ) (hz : z.re ≠ 0) :
@@ -104,7 +129,8 @@ theorem dual_left_norm_trace (U : unitary (Matrix ι ι ℂ))
   calc
     _ ≤ ∑ i, w i * ‖((U : Matrix ι ι ℂ).conjTranspose * A * R.conjTranspose) i i‖ := by
       simpa only [norm_mul, hp] using norm_sum_le Finset.univ
-        (fun i => SupportedCurve.scalar (w i) (1 - z / 2) * ((U : Matrix ι ι ℂ).conjTranspose * A * R.conjTranspose) i i)
+        (fun i => SupportedCurve.scalar (w i) (1 - z / 2) *
+          ((U : Matrix ι ι ℂ).conjTranspose * A * R.conjTranspose) i i)
     _ ≤ ∑ i, w i * ‖A‖ := by
       apply Finset.sum_le_sum; intro i hi
       apply mul_le_mul_of_nonneg_left _ (hw i)
@@ -301,8 +327,8 @@ theorem stripProduct_right (U V : unitary (Matrix ι ι ℂ))
   have hs := norm_power_imaginary U p ((s : ℂ) * (z - 1)) (by simp [hz0, Complex.mul_re])
   have ht := norm_power_imaginary V r ((t : ℂ) * (z - 1)) (by simp [hz0, Complex.mul_re])
   have he : stripProduct U V p r s t z =
-      power U p ((s : ℂ) * (z - 1)) * stripProduct U V p r s t 1 * power V r ((t : ℂ) * (z - 1))
-          := by
+      power U p ((s : ℂ) * (z - 1)) * stripProduct U V p r s t 1 * power V r ((t : ℂ) *
+          (z - 1)) := by
     have hs' : (s : ℂ) * z = (s : ℂ) * (z - 1) + (s : ℂ) := by ring
     have ht' : (t : ℂ) * z = (t : ℂ) + (t : ℂ) * (z - 1) := by ring
     simp only [stripProduct, hs', ht', power_add, mul_one, Matrix.mul_assoc]
@@ -312,8 +338,8 @@ theorem stripProduct_right (U V : unitary (Matrix ι ι ℂ))
 theorem norm_power_strip (U : unitary (Matrix ι ι ℂ)) (p : ι → ℝ)
     (s : ℝ) (z : ℂ) (hz0 : 0 ≤ z.re) (hz1 : z.re ≤ 1) :
     ‖power U p ((s : ℂ) * z)‖ ≤ ∑ i, Real.exp |s * Real.log (p i)| := by
-  have hp (i : ι) : ‖SupportedCurve.scalar (p i) ((s : ℂ) * z)‖ ≤ Real.exp |s * Real.log (p i)|
-      := by
+  have hp (i : ι) : ‖SupportedCurve.scalar (p i) ((s : ℂ) * z)‖ ≤ Real.exp |s * Real.log
+      (p i)| := by
     by_cases h : p i = 0
     · simp [SupportedCurve.scalar, h]
     · simp only [SupportedCurve.scalar, ite_eq_right h, Complex.norm_exp, Complex.mul_re,
@@ -358,8 +384,8 @@ theorem stripProduct_hsSquare_one (U V : unitary (Matrix ι ι ℂ))
     Complex.conj_ofReal]
   congr 1
   calc
-    _ = trace (power U p (s : ℂ) * (power V r (t : ℂ) * power V r (t : ℂ)) * power U p (s : ℂ))
-        := by
+    _ = trace (power U p (s : ℂ) * (power V r (t : ℂ) * power V r (t : ℂ)) * power U p
+        (s : ℂ)) := by
       simp only [Matrix.mul_assoc]
     _ = trace ((power U p (s : ℂ) * power U p (s : ℂ)) * (power V r (t : ℂ) * power V r (t : ℂ))) :=
       trace_mul_cycle _ _ _

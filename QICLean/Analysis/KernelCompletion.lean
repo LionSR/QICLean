@@ -67,7 +67,8 @@ theorem kernelProjection_mul_kernelProjection (A : Matrix n n ℂ) :
     kernelProjection A * kernelProjection A = kernelProjection A := by
   have hfin : ∀ f : ℝ → ℝ, ContinuousOn f (spectrum ℝ A) := fun f =>
     (finite_real_spectrum (A := A)).continuousOn f
-  rw [kernelProjection, ← cfc_mul (fun t : ℝ => if t = 0 then (1 : ℝ) else 0) (fun t : ℝ => if t = 0 then (1 : ℝ) else 0) A (hfin _) (hfin _)]
+  rw [kernelProjection, ← cfc_mul (fun t : ℝ => if t = 0 then (1 : ℝ) else 0)
+    (fun t : ℝ => if t = 0 then (1 : ℝ) else 0) A (hfin _) (hfin _)]
   exact cfc_congr fun t _ => by split_ifs <;> simp
 
 /-- For `s ≠ 0`, the real power of the kernel completion is the real power of the
@@ -80,13 +81,15 @@ theorem cfc_rpow_kernelCompletion {A : Matrix n n ℂ} (hA : A.IsHermitian) {s :
     (finite_real_spectrum (A := A)).continuousOn f
   have hcomp : kernelCompletion A =
       cfc (fun t : ℝ => t + if t = 0 then (1 : ℝ) else 0) A := by
-    rw [cfc_add (a := A) (fun t : ℝ => t) (fun t : ℝ => if t = 0 then (1 : ℝ) else 0) (hfin _) (hfin _),
+    rw [cfc_add (a := A) (fun t : ℝ => t) (fun t : ℝ => if t = 0 then (1 : ℝ) else 0)
+      (hfin _) (hfin _),
       cfc_id' ℝ A (ha := hA.isSelfAdjoint)]
     rfl
   rw [hcomp, ← cfc_comp (fun t : ℝ => t ^ s) (fun t : ℝ => t + if t = 0 then (1 : ℝ) else 0) A
       hA.isSelfAdjoint
       (((finite_real_spectrum (A := A)).image _).continuousOn _) (hfin _),
-    kernelProjection, ← cfc_add (a := A) (fun t : ℝ => t ^ s) (fun t : ℝ => if t = 0 then (1 : ℝ) else 0) (hfin _) (hfin _)]
+    kernelProjection, ← cfc_add (a := A) (fun t : ℝ => t ^ s) (fun t : ℝ => if t = 0 then (1 : ℝ) else 0)
+      (hfin _) (hfin _)]
   refine cfc_congr fun t _ => ?_
   by_cases ht : t = 0
   · subst ht; simp [Real.zero_rpow hs]

@@ -1,5 +1,28 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
 import QICLean.Entropy.ConditionalMovement.SpectralPhase
+
+/-!
+# Rényi slack and phase bounds
+
+Scalar bounds relating the deficit of a Rényi overlap to differences of phases,
+including the case of vanishing support.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/RenyiSlack.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 
@@ -209,8 +232,8 @@ theorem phase_young (x y b t : ℝ) (hx : 0 ≤ x) (hy : 0 ≤ y)
   have hyp : 0 < y := lt_of_le_of_ne hy (Ne.symm hy0)
   have he : x * Real.exp (-b * (Real.log x - Real.log y)) = x ^ (1 - b) * y ^ b := by
     calc
-      _ = Real.exp (Real.log x) * Real.exp (-b * (Real.log x - Real.log y))
-          := by rw [Real.exp_log hxp]
+      _ = Real.exp (Real.log x) * Real.exp (-b *
+          (Real.log x - Real.log y)) := by rw [Real.exp_log hxp]
       _ = Real.exp (Real.log x * (1 - b) + Real.log y * b) := by rw [← Real.exp_add]; congr 1; ring
       _ = _ := by rw [Real.exp_add, Real.rpow_def_of_pos hxp, Real.rpow_def_of_pos hyp]
   have hg : x * gap b (Real.log x - Real.log y) = ((1 - b) * x + b * y - x ^ (1 - b) * y ^ b) := by

@@ -189,11 +189,11 @@ noncomputable def movementOperator (θ : (X × U) × (P × F) → ℂ)
     (σ : Matrix (X × P) (X × P) ℂ) (τ : Matrix (X × U) (X × U) ℂ) (a : ℝ) :
     Matrix ((X × U) × (P × F)) ((X × U) × (P × F)) ℂ :=
   liftXP (cfc (fun t : ℝ => t ^ (a / 2)) σ) *
-    liftXP ((1 : Matrix X X ℂ) ⊗ₖ
-      cfc (fun t : ℝ => t ^ (-a / 2)) (kernelCompletion (partialTraceLeft (movementMarginalXP θ)))) *
+    liftXP ((1 : Matrix X X ℂ) ⊗ₖ cfc (fun t : ℝ => t ^ (-a / 2))
+      (kernelCompletion (partialTraceLeft (movementMarginalXP θ)))) *
     liftXU (cfc (fun t : ℝ => t ^ (a / 2)) τ) *
-    liftXU ((1 : Matrix X X ℂ) ⊗ₖ
-      cfc (fun t : ℝ => t ^ (-a / 2)) (kernelCompletion (partialTraceLeft (movementMarginalXU θ))))
+    liftXU ((1 : Matrix X X ℂ) ⊗ₖ cfc (fun t : ℝ => t ^ (-a / 2))
+      (kernelCompletion (partialTraceLeft (movementMarginalXU θ))))
 
 end Movement
 
@@ -347,7 +347,8 @@ theorem conditionalMovement_norm_le :
   rw [hvec, norm_toLp_comp_equiv, heta]
   calc ‖(WithLp.toLp 2 (coefficientVector (S1 * (((1 : Matrix X X ℂ) ⊗ₖ RP) * reshuffle D))) :
         EuclideanSpace ℂ ((X × P) × (U × F)))‖
-      = ‖LocalMove.flattenCLM (S1 * tensorRightHom RP * reshuffle (T1 * tensorRightHom RU * C))‖ := by
+      = ‖LocalMove.flattenCLM
+          (S1 * tensorRightHom RP * reshuffle (T1 * tensorRightHom RU * C))‖ := by
         rw [Matrix.mul_assoc S1, Matrix.mul_assoc T1]; rfl
     _ ≤ _ := hh
     _ = _ := by congr 1; ring

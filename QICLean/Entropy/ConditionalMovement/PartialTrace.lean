@@ -1,5 +1,29 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
 import QICLean.Entropy.ConditionalMovement.LogCompression
+
+/-!
+# Partial traces, trace entropy and reindexing
+
+The partial traces `ptrL` and `ptrR`, the trace form `traceEntropy` of the von
+Neumann entropy, and the behaviour of positivity, traces and entropies under
+reindexing by equivalences.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/PartialTrace.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 
@@ -73,8 +97,8 @@ theorem ptrR_smul (t : ℝ) (A : Matrix (m × n) (m × n) ℂ) : ptrR (t • A) 
   ext; simp [ptrR, Finset.smul_sum]
 
 omit [Fintype m] in
-theorem ptrR_one : ptrR (1 : Matrix (m × n) (m × n) ℂ) = (Fintype.card n : ℝ) • (1 : Matrix m m ℂ)
-    := by
+theorem ptrR_one : ptrR (1 : Matrix (m × n) (m × n) ℂ) = (Fintype.card n : ℝ) •
+    (1 : Matrix m m ℂ) := by
   ext x y
   by_cases h : x = y <;> simp [ptrR, Matrix.one_apply, h]
 
@@ -184,8 +208,8 @@ theorem ptrL_smul (t : ℝ) (A : Matrix (m × n) (m × n) ℂ) : ptrL (t • A) 
   ext; simp [ptrL, Finset.smul_sum]
 
 omit [Fintype n] in
-theorem ptrL_one : ptrL (1 : Matrix (m × n) (m × n) ℂ) = (Fintype.card m : ℝ) • (1 : Matrix n n ℂ)
-    := by
+theorem ptrL_one : ptrL (1 : Matrix (m × n) (m × n) ℂ) = (Fintype.card m : ℝ) •
+    (1 : Matrix n n ℂ) := by
   ext x y
   by_cases h : x = y <;> simp [ptrL, Matrix.one_apply, h]
 

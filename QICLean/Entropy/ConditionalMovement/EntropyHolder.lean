@@ -1,5 +1,29 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
 import QICLean.Entropy.ConditionalMovement.NormalizedRows
+
+/-!
+# Spectral Hölder bounds
+
+The eigenvalue form `entropy` of the von Neumann entropy, diagonal comparisons under
+unitary conjugation, and Hölder-type trace bounds for powers of Gram matrices.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/EntropyHolder.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 

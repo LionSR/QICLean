@@ -1,6 +1,29 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
 import QICLean.Entropy.ConditionalMovement.FilterEntropy
 import QICLean.Entropy.ConditionalMovement.OptimizerStability
+
+/-!
+# The Hölder optimizer
+
+Real powers, Hilbert--Schmidt identities for roots, the Hölder optimizer weights and
+their stability, used to compare a Hölder overlap with the marginal density.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/Optimizer.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 
@@ -140,11 +163,11 @@ theorem hsSquare_left_real_power (U : unitary (Matrix ι ι ℂ)) (p : ι → �
   simp only [Complex.star_def, Complex.conj_ofReal]
   congr 1
   calc
-    _ = trace (power U p ((β / 2 : ℝ) : ℂ) * ((A * A.conjTranspose) * power U p ((β / 2 : ℝ) : ℂ)))
-        := by
+    _ = trace (power U p ((β / 2 : ℝ) : ℂ) * ((A * A.conjTranspose) * power U p
+        ((β / 2 : ℝ) : ℂ))) := by
       congr 1; simp only [Matrix.mul_assoc]
-    _ = trace (power U p ((β / 2 : ℝ) : ℂ) * power U p ((β / 2 : ℝ) : ℂ) * (A * A.conjTranspose))
-        := by
+    _ = trace (power U p ((β / 2 : ℝ) : ℂ) * power U p ((β / 2 : ℝ) : ℂ) *
+        (A * A.conjTranspose)) := by
       rw [← Matrix.mul_assoc, trace_mul_cycle]
     _ = _ := by
       rw [← power_add]
@@ -220,8 +243,8 @@ theorem one_filter_self_lower (U : unitary (Matrix ι ι ℂ)) (p r : ι → ℝ
   let C := power U p ((1 / 2 : ℝ) : ℂ)
   let D := power U p ((β / 2 : ℝ) : ℂ) * A
   have hc : hsSquare C = 1 := hsSquare_root_one U p hp hps
-  have ht : trace (C * D) = trace (power U p ((1 + β / 2 : ℝ) : ℂ) * power 1 r ((-β / 2 : ℝ) : ℂ))
-      :=
+  have ht : trace (C * D) = trace (power U p ((1 + β / 2 : ℝ) : ℂ) * power 1 r
+      ((-β / 2 : ℝ) : ℂ)) :=
     self_filter_trace U p r β
   let mu := ∑ j, ∑ i, p i * Complex.normSq ((U : Matrix ι ι ℂ) j i) *
       (Real.log (p i) - Real.log (r j))

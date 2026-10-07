@@ -1,5 +1,29 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
 import QICLean.Entropy.ConditionalMovement.SingularInterpolation
+
+/-!
+# Unitary covariance and the coefficient-matrix movement estimate
+
+Covariance of the movement word under local unitaries, and the movement estimate
+`one_copy_move_cfc` for an arbitrary unit coefficient matrix with real powers
+through `cfc`.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/UnitaryCovariance.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 
@@ -67,8 +91,8 @@ def transposeUnitary (U : unitary (Matrix m m ℂ)) : unitary (Matrix m m ℂ) :
         Matrix.conjTranspose_transpose, Matrix.transpose_conjTranspose] using h⟩
 
 theorem ptrL_rotate (A : Matrix (m × n) (m × n) ℂ) (U : Matrix n n ℂ) :
-    ptrL (tensorRightHom U * A * tensorRightHom U.conjTranspose) = U * ptrL A * U.conjTranspose
-        := by
+    ptrL (tensorRightHom U * A * tensorRightHom U.conjTranspose) =
+      U * ptrL A * U.conjTranspose := by
   apply Matrix.ext_iff_trace_mul_right.mpr
   intro B
   rw [← ptrL_dual]
@@ -377,8 +401,8 @@ theorem one_copy_move_cfc [Nonempty X] [Nonempty P]
     rw [← trace_real_spectral hB.isHermitian]
     change (ptrL (reshuffle C * (reshuffle C).conjTranspose)).trace.re = 1
     rw [trace_ptrL, ← hsEnergy_trace, hsEnergy_reshuffle, hC]
-  have hback : (TY : Matrix (X × Y) (X × Y) ℂ) * coefficient W * (RP : Matrix (P × F) (P × F) ℂ) = C
-      := by
+  have hback : (TY : Matrix (X × Y) (X × Y) ℂ) * coefficient W * (RP : Matrix (P × F)
+      (P × F) ℂ) = C := by
     change (TY : Matrix (X × Y) (X × Y) ℂ) * D * (RP : Matrix (P × F) (P × F) ℂ) = C
     dsimp only [D]
     rw [tensorRightUnitary_star, transposeUnitary_star, tensorLeftUnitary_star]

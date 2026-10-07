@@ -1,5 +1,28 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
 import QICLean.Entropy.ConditionalMovement.Purification
+
+/-!
+# Boundary estimates of the movement interpolation
+
+The two boundary bounds of the analytic interpolation in the proof of Lemma 5.1: the
+left boundary trace bound and the right boundary entropy bound.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/BoundaryEnergy.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 
@@ -61,11 +84,13 @@ theorem hsEnergy_imaginary_contraction (U : unitary (Matrix ι ι ℂ)) (p : ι 
   have he : (U : Matrix ι ι ℂ) * diagonal
       (fun i => SupportedCurve.scalar (p i) z) * star (U : Matrix ι ι ℂ) * C =
       (U : Matrix ι ι ℂ) * (diagonal
-          (fun i => SupportedCurve.scalar (p i) z) * ((star U : unitary (Matrix ι ι ℂ)) : Matrix ι ι ℂ) * C) := by
+          (fun i => SupportedCurve.scalar (p i) z) *
+            ((star U : unitary (Matrix ι ι ℂ)) : Matrix ι ι ℂ) * C) := by
     simp only [Unitary.coe_star, Matrix.mul_assoc]
   rw [he, hsEnergy_unitary_left]
   have hh : hsEnergy (diagonal
-      (fun i => SupportedCurve.scalar (p i) z) * ((star U : unitary (Matrix ι ι ℂ)) : Matrix ι ι ℂ) * C) ≤
+      (fun i => SupportedCurve.scalar (p i) z) *
+        ((star U : unitary (Matrix ι ι ℂ)) : Matrix ι ι ℂ) * C) ≤
       hsEnergy (((star U : unitary (Matrix ι ι ℂ)) : Matrix ι ι ℂ) * C) := by
     rw [Matrix.mul_assoc]
     simp only [hsEnergy, diagonal_mul, norm_mul, mul_pow]
@@ -88,11 +113,11 @@ theorem hsEnergy_left_real_power (U : unitary (Matrix ι ι ℂ)) (p : ι → �
   simp only [Complex.star_def, Complex.conj_ofReal]
   congr 1
   calc
-    _ = trace (power U p ((β / 2 : ℝ) : ℂ) * (C * C.conjTranspose) * power U p ((β / 2 : ℝ) : ℂ))
-        := by
+    _ = trace (power U p ((β / 2 : ℝ) : ℂ) * (C * C.conjTranspose) * power U p
+        ((β / 2 : ℝ) : ℂ)) := by
       simp only [Matrix.mul_assoc]
-    _ = trace (power U p ((β / 2 : ℝ) : ℂ) * power U p ((β / 2 : ℝ) : ℂ) * (C * C.conjTranspose))
-        := trace_mul_cycle _ _ _
+    _ = trace (power U p ((β / 2 : ℝ) : ℂ) * power U p ((β / 2 : ℝ) : ℂ) *
+        (C * C.conjTranspose)) := trace_mul_cycle _ _ _
     _ = _ := by
       rw [← power_add]
       congr 3
@@ -280,7 +305,8 @@ theorem left_boundary_trace
     hsEnergy (power S s (Complex.I * (t : ℂ)) *
       power 1 (fun j : X × P => p j.2) (-Complex.I * (t : ℂ)) *
       reshuffle (power V v (((β / 2 : ℝ) : ℂ) - Complex.I * (t : ℂ)) *
-        power 1 (fun j : X × Y => r j.2) (((-β / 2 : ℝ) : ℂ) + Complex.I * (t : ℂ)) * coefficient W)) ≤
+        power 1 (fun j : X × Y => r j.2) (((-β / 2 : ℝ) : ℂ) + Complex.I * (t : ℂ)) *
+          coefficient W)) ≤
       (trace (power V v (β : ℂ) * ((E : Matrix (X × Y) (X × Y) ℂ) * (R * R.conjTranspose) *
         (E : Matrix (X × Y) (X × Y) ℂ).conjTranspose))).re := by
   dsimp only
@@ -365,7 +391,8 @@ theorem boundary_pair_energy [Nonempty X] [Nonempty P]
     hsEnergy (power S s (Complex.I * (t : ℂ)) *
       power 1 (fun j : X × P => p j.2) (-Complex.I * (t : ℂ)) *
       reshuffle (power V v (((β / 2 : ℝ) : ℂ) - Complex.I * (t : ℂ)) *
-        power 1 (fun j : X × Y => r j.2) (((-β / 2 : ℝ) : ℂ) + Complex.I * (t : ℂ)) * coefficient W)) *
+        power 1 (fun j : X × Y => r j.2) (((-β / 2 : ℝ) : ℂ) + Complex.I * (t : ℂ)) *
+          coefficient W)) *
     hsEnergy (power S s (((β / 2 : ℝ) : ℂ) + Complex.I * (t : ℂ)) *
       power 1 (fun j : X × P => p j.2) (((-β / 2 : ℝ) : ℂ) - Complex.I * (t : ℂ)) *
       reshuffle (power V v (-Complex.I * (t : ℂ)) *

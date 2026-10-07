@@ -1,5 +1,28 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 import QICLean.Entropy.ConditionalMovement.EntropyHolder
+
+/-!
+# Spectral phase differences
+
+Energy and norm bounds for differences of imaginary powers of two densities.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/SpectralPhase.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 
@@ -58,8 +81,8 @@ theorem phase_difference_norm (x y : ℝ) :
     ring
   rw [he]
   calc
-    _ = ‖(Complex.exp (Complex.I * ((x - y : ℝ) : ℂ)) - 1) * Complex.exp (Complex.I * (y : ℂ))‖
-        := by
+    _ = ‖(Complex.exp (Complex.I * ((x - y : ℝ) : ℂ)) - 1) * Complex.exp (Complex.I *
+        (y : ℂ))‖ := by
       congr 1
       ring
     _ = _ := by rw [norm_mul]; simp [Complex.norm_exp]

@@ -1,5 +1,28 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
 import QICLean.Entropy.ConditionalMovement.Interpolation
+
+/-!
+# Normalized rows of a coefficient matrix
+
+Square roots, inverse roots and normalized rows of weighted Gram matrices, with the
+dual pairings and Rényi weight identities used in the conditional Schatten estimate.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/NormalizedRows.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 
@@ -126,8 +149,8 @@ theorem normalized_row_pairing (W : Matrix ι ι ℂ) (p : ι → ℝ)
     (hp : ∀ i, 0 ≤ p i) (hW : W * W.conjTranspose = diagonal (fun i => (p i : ℂ))) :
     W * (NormalizedRows.rows W p).conjTranspose = NormalizedRows.root p := by
   calc
-    _ = (NormalizedRows.root p * NormalizedRows.rows W p) * (NormalizedRows.rows W p).conjTranspose
-        := by
+    _ = (NormalizedRows.root p * NormalizedRows.rows W p) *
+        (NormalizedRows.rows W p).conjTranspose := by
       rw [NormalizedRows.reconstruction W p hp hW]
     _ = NormalizedRows.root p * (1 - NormalizedRows.kernel p) := by
       rw [Matrix.mul_assoc, NormalizedRows.rows_gram W p hp hW]
@@ -155,7 +178,8 @@ theorem dual_pairing (U : unitary (Matrix ι ι ℂ)) (A : Matrix ι ι ℂ)
     normalized_row_pairing W p hp hW
   calc
     _ = trace ((((U : Matrix ι ι ℂ).conjTranspose * A) * R.conjTranspose) *
-      diagonal (fun i => SupportedCurve.scalar (w i) (1 - z / 2))) := by simp only [Matrix.mul_assoc]
+      diagonal (fun i => SupportedCurve.scalar (w i) (1 - z / 2))) := by
+        simp only [Matrix.mul_assoc]
     _ = _ := by
       rw [hpair, NormalizedRows.root, diagonal_mul_diagonal, trace_diagonal]
       apply Finset.sum_congr rfl; intro i hi; exact mul_comm _ _

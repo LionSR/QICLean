@@ -1,6 +1,30 @@
-import Mathlib
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
 import QICLean.Entropy.ConditionalMovement.BoundaryEnergy
 import QICLean.Entropy.ConditionalMovement.ThreeLines
+
+/-!
+# The movement interpolation curve
+
+Continuous linear maps for matrix multiplication, reshuffling and flattening, and
+the analytic curve `G(z)` of the movement proof with its boundary values; the
+full-rank interpolation estimate.
+
+This module is part of the proof of the conditional movement estimate, Lemma 5.1
+(`lem:movement`) of the two-dimensional area-law manuscript (September 24, 2026),
+`04-conditional.tex`, lines 118–308; the source-faithful statement is
+`Entropy.conditionalMovement_norm_le` in `QICLean.Entropy.ConditionalMovementEstimate`.
+
+Adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/DoubleCurve.lean`, all declarations of the file;
+modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
+`ConditionalMovement`, the imports are restricted to the needed modules, and operator
+spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+-/
 
 namespace ConditionalMovement
 
@@ -135,12 +159,12 @@ theorem doubleCurve_left (C : Matrix (X × Y) (P × F) ℂ) (p : P → ℝ) (r :
   have h₂ : ((-β / 2 : ℝ) : ℂ) * z = -Complex.I * ((β * z.im / 2 : ℝ) : ℂ) := by
     conv_lhs => rw [hz']
     push_cast; ring
-  have h₃ : ((β / 2 : ℝ) : ℂ) * (1 - z) = ((β / 2 : ℝ) : ℂ) - Complex.I * ((β * z.im / 2 : ℝ) : ℂ)
-      := by
+  have h₃ : ((β / 2 : ℝ) : ℂ) * (1 - z) = ((β / 2 : ℝ) : ℂ) - Complex.I *
+      ((β * z.im / 2 : ℝ) : ℂ) := by
     conv_lhs => rw [hz']
     push_cast; ring
-  have h₄ : ((-β / 2 : ℝ) : ℂ) * (1 - z) = ((-β / 2 : ℝ) : ℂ) + Complex.I * ((β * z.im / 2 : ℝ) : ℂ)
-      := by
+  have h₄ : ((-β / 2 : ℝ) : ℂ) * (1 - z) = ((-β / 2 : ℝ) : ℂ) + Complex.I *
+      ((β * z.im / 2 : ℝ) : ℂ) := by
     conv_lhs => rw [hz']
     push_cast; ring
   simp only [doubleCurve, stripProduct, h₁, h₂, h₃, h₄]
@@ -158,12 +182,12 @@ theorem doubleCurve_right (C : Matrix (X × Y) (P × F) ℂ) (p : P → ℝ) (r 
         power 1 (fun j : X × Y => r j.2) (Complex.I * (t : ℂ)) * C) := by
   dsimp only
   have hz' : z = Complex.I * (z.im : ℂ) := by apply Complex.ext <;> simp [hz]
-  have h₁ : ((β / 2 : ℝ) : ℂ) * (z + 1) = ((β / 2 : ℝ) : ℂ) + Complex.I * ((β * z.im / 2 : ℝ) : ℂ)
-      := by
+  have h₁ : ((β / 2 : ℝ) : ℂ) * (z + 1) = ((β / 2 : ℝ) : ℂ) + Complex.I *
+      ((β * z.im / 2 : ℝ) : ℂ) := by
     conv_lhs => rw [hz']
     push_cast; ring
-  have h₂ : ((-β / 2 : ℝ) : ℂ) * (z + 1) = ((-β / 2 : ℝ) : ℂ) - Complex.I * ((β * z.im / 2 : ℝ) : ℂ)
-      := by
+  have h₂ : ((-β / 2 : ℝ) : ℂ) * (z + 1) = ((-β / 2 : ℝ) : ℂ) - Complex.I *
+      ((β * z.im / 2 : ℝ) : ℂ) := by
     conv_lhs => rw [hz']
     push_cast; ring
   have h₃ : ((β / 2 : ℝ) : ℂ) * (1 - (z + 1)) = -Complex.I * ((β * z.im / 2 : ℝ) : ℂ) := by
