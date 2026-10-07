@@ -15,13 +15,10 @@ import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
-<<<<<<< HEAD
 import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
-=======
 import QICLean.Entropy.GapSurprisal
 import QICLean.Entropy.MarginalTails
->>>>>>> 8f05f840
 import QICLean.Entropy.MarkovChain
 import QICLean.Entropy.ModularExpectation
 import QICLean.Entropy.MutualInformation
