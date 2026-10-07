@@ -277,6 +277,14 @@ jobs:
           -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
           QICLeanTest/ShiftedDensityTruncation.lean
 
+      - name: Check shifted power derivative regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s
+          lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/ShiftedPowerDerivative.lean
+
       - name: Check pure-environment dilation regressions strictly
         run: >
           LEAN_NUM_THREADS=1 lake env lean -j1

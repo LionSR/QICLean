@@ -35,8 +35,10 @@ import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
+import QICLean.Analysis.GapPerturbation
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
+import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
 import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
@@ -75,6 +77,7 @@ import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectionGeometry
+import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
@@ -86,11 +89,13 @@ import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Analysis.RpowConvexity
 import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo
+import QICLean.Analysis.ScaleRecurrence
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
 import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.ShiftedDensityTruncation
+import QICLean.Analysis.ShiftedPowerDerivative
 import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
