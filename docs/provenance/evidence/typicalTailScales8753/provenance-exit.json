@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/tmp/qic-density-simplex-provenance-env/bin/python",
+    "docs/provenance/evidence/typicalTailScales8753/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.21,
+  "log": "docs/provenance/evidence/typicalTailScales8753/provenance.log",
+  "sha256": "80b3664e13ee529a63ffa4ad0e70e8f0996ce6ac854883a636747d314ef15498"
+}

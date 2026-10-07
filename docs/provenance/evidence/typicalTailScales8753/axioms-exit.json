@@ -1,0 +1,16 @@
+{
+  "source_revision": "317ecbd4478f243b844fb8d4a1d70fbbfd9c1f9a",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "docs/provenance/evidence/typicalTailScales8753/Axioms.lean"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 13.38,
+  "log": "docs/provenance/evidence/typicalTailScales8753/axioms.log",
+  "sha256": "474a1bf74f70a7c19bfa192ed8d26818fb8934ce13095e0cb456d0c9e33f93b6"
+}
