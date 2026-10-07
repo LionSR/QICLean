@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Entropy.FilterStationarity
 import QICLean.Analysis.FloorKKT
+import QICLean.Analysis.LogClipping
 import QICLean.Analysis.CommutingHermitian
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Analysis.Calculus.Deriv.Prod
@@ -223,6 +224,37 @@ theorem ratio_le_of_diagonal_max {D : Finset V}
     have := mul_pos (by linarith : 0 < a / 2) h
     linarith
   linarith
+
+/-- **Clipping of a stationary filter, scalar form.** If `x ≥ f > 0`, `∑ x = 1`,
+`card · f < 1`, `q ≥ 0` with `∑ q > 0`, and `q_k / x_k ≤ q_i / x_i` whenever `x_i > f`, then
+`|log x_i^{a/2} - log x_k^{a/2}| ≤ (a/2) |log q_i - log q_k|` for positive `q_i, q_k` and
+`a ≥ 0`.
+Area-law manuscript, `02-initial.tex`, lines 400–405, `eq:initial-filter-clipping`. -/
+theorem abs_log_rpow_sub_le_of_ratio_le {ι : Type*} [Fintype ι] {x q : ι → ℝ} {f a : ℝ}
+    (hf : 0 < f) (ha : 0 ≤ a) (hx : ∀ i, f ≤ x i) (hsum : ∑ i, x i = 1)
+    (hcard : Fintype.card ι * f < 1) (hq : ∀ i, 0 ≤ q i) (hqs : 0 < ∑ i, q i)
+    (hratio : ∀ i k, f < x i → q k / x k ≤ q i / x i) {i k : ι} (hi : 0 < q i) (hk : 0 < q k) :
+    |Real.log (x i ^ (a / 2)) - Real.log (x k ^ (a / 2))| ≤
+      a / 2 * |Real.log (q i) - Real.log (q k)| := by
+  set Z := ∑ i, q i
+  -- a free coordinate exists
+  obtain ⟨i₀, hi₀⟩ : ∃ i₀, f < x i₀ := by
+    by_contra h
+    push Not at h
+    have : ∑ i, x i ≤ ∑ _i : ι, f := Finset.sum_le_sum fun i _ ↦ h i
+    simp at this
+    linarith
+  -- normalized weights satisfy the floor-constrained optimality condition
+  have hp : ∀ i, 0 ≤ q i / Z := fun i ↦ div_nonneg (hq i) hqs.le
+  have hps : ∑ i, q i / Z = 1 := by rw [← Finset.sum_div]; exact div_self hqs.ne'
+  have hratio' : ∀ i k, f < x i → q k / Z / x k ≤ q i / Z / x i := fun i k h ↦ by
+    rw [div_right_comm, div_right_comm (q i)]
+    exact div_le_div_of_nonneg_right (hratio i k h) hqs.le
+  obtain ⟨lam, hlam, hxeq⟩ := eq_max_div_of_floor_optimal hf hx hp hps hi₀ hratio'
+  rw [hxeq i, hxeq k]
+  have h := abs_log_clipped_sub_le hf hlam ha (div_pos hi hqs) (div_pos hk hqs)
+  rw [Real.log_div hi.ne' hqs.ne', Real.log_div hk.ne' hqs.ne'] at h
+  simpa using h
 
 end Clip
 
