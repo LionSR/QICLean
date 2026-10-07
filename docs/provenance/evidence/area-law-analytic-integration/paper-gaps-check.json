@@ -1,0 +1,13 @@
+{
+  "configuration_revision": "1258049862e9acf0408363652570d3385e0e304c",
+  "production_source_unchanged_from": "3446fccdbe72e932aa9479c146c7f3d1b4faee88",
+  "configuration_path": "texra-blueprint.toml",
+  "configuration_sha256": "df70971cd3fccc8f5155e02f0cc5b23887d676f28f994ecba8a894ea108fa457",
+  "command": "texra-blueprint paper-gaps check",
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/area-law-analytic-integration/paper-gaps-check.log",
+  "log_sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+  "resolved_referenced_notes": 60,
+  "remote_failure": "https://github.com/LionSR/QICLean/actions/runs/37661459181/job/112931833852",
+  "repair": "Register the openai source key; retain every paper-gap note path and proof-bound source citation."
+}

@@ -63,3 +63,13 @@ The final book has 411 physical pages. An independent visual review of physical
 pages 14 and 394–396 found their extracted text identical to the earlier inspected
 pages and their formulas, citations and layout clear. The final artifact hash is
 recorded in `latest-render-inspection.json`.
+
+The remote blueprint job at head `3446fccd` stopped before rendering because
+the new note's `openai` source key was absent from the paper-gap registry.
+Configuration revision `12580498` adds that single source registration. The
+actual `texra-blueprint paper-gaps check` then passed: all 60 referenced notes
+resolve and their source keys are registered. `paper-gaps-check.json` records
+the checked configuration and raw output hash. No mathematical source, note
+path, blueprint text or proof-bound citation changed, so the preceding kernel
+and full-book verification remain applicable. The remote job is rerun after
+publication of the metadata correction.
