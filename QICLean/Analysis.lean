@@ -97,6 +97,7 @@ import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
+import QICLean.Analysis.ReplicaRegionalDensity
 import QICLean.Analysis.ResolventFunctionalCalculus
 import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootFidelity
