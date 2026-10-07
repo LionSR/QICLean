@@ -4,8 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.ResolventDefect
-import Mathlib.MeasureTheory.Integral.IntegralEqImproper
-import Mathlib.Analysis.SpecialFunctions.Log.Deriv
+import QICLean.Analysis.ResolventMellin
 
 /-!
 # The integral of the resolvent defect
@@ -51,54 +50,6 @@ theorem re_dotProduct_self_eq_sum (U : unitary (Matrix n n ℂ)) (x : n → ℂ)
   have h := re_dotProduct_spectralFun_ofReal U (fun _ => 1) x
   simp only [Complex.ofReal_one, spectralFun_one, one_mulVec, one_mul] at h
   exact h
-
-/-- The scalar resolvent difference `1 / (λ + v) - 1 / (1 + v)` is integrable on
-`(0, ∞)` with integral `-log λ`. -/
-theorem integral_inv_add_sub_inv_one_add {l : ℝ} (hl : 0 < l) :
-    IntegrableOn (fun v : ℝ => (l + v)⁻¹ - (1 + v)⁻¹) (Ioi 0) ∧
-      ∫ v in Ioi (0 : ℝ), ((l + v)⁻¹ - (1 + v)⁻¹) = -Real.log l := by
-  set F : ℝ → ℝ := fun v => Real.log (l + v) - Real.log (1 + v)
-  have hderiv : ∀ x ∈ Ioi (0 : ℝ), HasDerivAt F ((l + x)⁻¹ - (1 + x)⁻¹) x := by
-    intro x hx
-    have hx' : (0 : ℝ) < x := hx
-    have h1 := ((hasDerivAt_id x).const_add l).log (by simp; linarith)
-    have h2 := ((hasDerivAt_id x).const_add 1).log (by simp; linarith)
-    have h := h1.sub h2
-    convert h using 1
-    · rfl
-    · simp [one_div]
-  have hcont : ContinuousWithinAt F (Ici 0) 0 := by
-    apply ContinuousAt.continuousWithinAt
-    apply ContinuousAt.sub
-    · exact (continuousAt_const.add continuousAt_id).log (by simp; linarith)
-    · exact (continuousAt_const.add continuousAt_id).log (by simp)
-  have hlim : Tendsto F atTop (𝓝 0) := by
-    have h : Tendsto (fun v : ℝ => (l + v) / (1 + v)) atTop (𝓝 1) := by
-      have := ((tendsto_const_nhds (x := l - 1)).div_atTop
-        (tendsto_atTop_add_const_left atTop 1 tendsto_id)).const_add 1
-      simp only [add_zero] at this
-      refine this.congr' ?_
-      filter_upwards [eventually_gt_atTop 0] with v hv
-      simp only [id]
-      field_simp
-      ring
-    have := (Real.continuousAt_log one_ne_zero).tendsto.comp h
-    rw [Real.log_one] at this
-    refine this.congr' ?_
-    filter_upwards [eventually_gt_atTop 0] with v hv
-    simp only [Function.comp, F]
-    rw [Real.log_div (by linarith) (by linarith)]
-  have hF0 : F 0 = Real.log l := by simp [F]
-  have hint : IntegrableOn (fun v : ℝ => (l + v)⁻¹ - (1 + v)⁻¹) (Ioi 0) := by
-    rcases le_total l 1 with h | h
-    · refine integrableOn_Ioi_deriv_of_nonneg hcont hderiv (fun x hx => ?_) hlim
-      have hx' : (0 : ℝ) < x := hx
-      exact sub_nonneg.2 (inv_anti₀ (by linarith : 0 < l + x) (by linarith : l + x ≤ 1 + x))
-    · refine integrableOn_Ioi_deriv_of_nonpos hcont hderiv (fun x hx => ?_) hlim
-      have hx' : (0 : ℝ) < x := hx
-      exact sub_nonpos.2 (inv_anti₀ (by linarith : 0 < 1 + x) (by linarith : 1 + x ≤ l + x))
-  refine ⟨hint, ?_⟩
-  rw [integral_Ioi_of_hasDerivAt_of_tendsto hcont hderiv hint hlim, hF0, zero_sub]
 
 namespace ResolventCompression
 
