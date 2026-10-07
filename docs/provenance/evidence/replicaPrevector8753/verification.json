@@ -1,7 +1,7 @@
 {
   "parent_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
   "source_revision": "f0c7d137371f6b11ca1dd61692be37581c8adbaf",
-  "tested_revision": "474e1597b56570f958f280fcf2eea6731df63afc",
+  "tested_revision": "eeeb7556e369cfee66b00050ed49c674f843eee3",
   "commands": [
     {
       "kind": "axioms",
@@ -201,7 +201,7 @@
   "file_hashes": {
     "docs/provenance/evidence/replicaPrevector8753/Axioms-first-attempt.lean": "2de94494235b7ce1817a5c6b67554afe4c208614ef3ca15c824c204153e2d36a",
     "docs/provenance/evidence/replicaPrevector8753/Axioms.lean": "86f2ba525a9630d7227224cf03cf2f83e0332d0d19aff5fc6919f7404ff2534d",
-    "docs/provenance/evidence/replicaPrevector8753/README.md": "d4986bfacca89444407b7f9b89c24178d23881d1b60d8f93819ceeea6b60e69d",
+    "docs/provenance/evidence/replicaPrevector8753/README.md": "55722b570b94151c0517d29bd54c7443256dda066f7b2d8ccd46071585ec6611",
     "docs/provenance/evidence/replicaPrevector8753/TextStyle.lean": "a3eebf9e12a410dfa7002f912a6151d135b310877bf6919043ea148345576c5f",
     "docs/provenance/evidence/replicaPrevector8753/axioms-exit.json": "6c7dbf1f5e78933b40596ac3ab84a060d9e68290d77465048f890465e136c40a",
     "docs/provenance/evidence/replicaPrevector8753/axioms-final-exit.json": "d6c8a87a08c681376714e3abeb2b2f6a5ced1897385dac520dced9cb3fa85645",
@@ -252,7 +252,7 @@
     "docs/provenance/evidence/replicaPrevector8753/text-style-exit.json": "64bec46806d356c296dfe1706b8f3e03330506831e115cb58dd0ae784d15a271",
     "docs/provenance/evidence/replicaPrevector8753/text-style.log": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
     "docs/provenance/evidence/replicaPrevector8753/text-style.log.gz": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
-    "docs/provenance/evidence/replicaPrevector8753/validate-manifest.py": "eb0991648bd212af4d555a6ce13af830804338c8f32825c49c3a26727a6e479e",
+    "docs/provenance/evidence/replicaPrevector8753/validate-manifest.py": "681e0aa2bf686a5d3c3b06d8f1e149eaf18821fbfe2acdeb119f88b935842e08",
     "QICLean/Representation/ReplicaPrevector.lean": "da9161e3b9f648bb2c9b9cb42cacad33957906bc4eaeccddb795252fd6b361c0",
     "blueprint/src/fragment/replica_prevector.tex": "6d22534f6ff933bcf46328c1440c56b3df8ae1ff1c24a2be3c2eb177b9a495fe",
     "docs/formalization/replica-prevector.md": "da52def25b8345412318572f9ee610d2d00879aa54baaeb9fe4198447e73cfef",

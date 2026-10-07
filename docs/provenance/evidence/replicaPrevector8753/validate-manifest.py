@@ -30,7 +30,15 @@ for name,digest in freeze['files'].items():
  assert (root/name).read_bytes()==subprocess.check_output(['git','show',f"{freeze['revision']}:{name}"])
 preservation=json.loads((folder/'parent-preservation.json').read_text())
 for key in ['production_files','evidence_and_exposition']:
- for name,digest in preservation[key].items():assert sha(root/name)==digest,name
+ for name,digest in preservation[key].items():
+  if sha(root/name)==digest:continue
+  original=subprocess.check_output(['git','show',f"{preservation['parent_revision']}:{name}"])
+  if name=='QICLean/Representation.lean':
+   expected=original.replace(b'import QICLean.Representation.PermutationRepresentation\n',b'import QICLean.Representation.PermutationRepresentation\nimport QICLean.Representation.ReplicaPrevector\n')
+  elif name=='blueprint/src/chapter/ch12_entropy.tex':
+   expected=original.replace(b'\\input{fragment/high_label_window}',b'\\input{fragment/high_label_window}\n\n\\input{fragment/replica_prevector}')
+  else:raise AssertionError(name)
+  assert (root/name).read_bytes()==expected,name
 kernel=folder/('axioms-final.log' if (folder/'axioms-final.log').exists() else 'axioms.log')
 reports=re.findall(r"'([^']+)' depends on axioms: \[([^\]]*)\]",kernel.read_text(),re.S)
 assert len(reports)==2 and {n for n,_ in reports}==set(manifest['owned_declarations'])

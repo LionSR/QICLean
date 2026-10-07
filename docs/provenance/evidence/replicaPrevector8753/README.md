@@ -35,3 +35,7 @@ all previously released HighLabelWindow, SchurSectorMass and UniformBellLabel
 source and evidence. Raw logs are tracked, with deterministic gzip and separate
 raw/compressed hashes. The manifest validator checks these records, the four
 frozen files, all command exits, failed attempts and the two exact kernel reports.
+
+After inclusion, the validator permits only the exact generated Representation
+import and unique chapter input recorded by the integration. All other parent
+bytes remain subject to the same literal comparison.
