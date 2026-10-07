@@ -1,0 +1,67 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "mathematical_leaf_revision": "317ecbd4478f243b844fb8d4a1d70fbbfd9c1f9a",
+  "parent_revision": "ca3ab6e017d6d8a32ca8b70d56694c781d769e72",
+  "branch": "feat/area-law-typical-tail-scales",
+  "initial_status": "?? output/\n",
+  "production_bindings": {
+    "QICLean/Entropy/TypicalSpectrum.lean": {
+      "revision": "958a33256b1b679eea9994660c31706e4d604932",
+      "sha256": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4"
+    },
+    "QICLean/Entropy/TypicalDensity.lean": {
+      "revision": "cc89ef96c7390a92861cf45997f77d40cb394ed1",
+      "sha256": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914"
+    },
+    "QICLean/Entropy/FiniteProductSplitting.lean": {
+      "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+      "sha256": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739"
+    },
+    "QICLean/Entropy/FiniteProductInformation.lean": {
+      "revision": "e5fe5732e6c10a921793c1c03bee5403e5bf6362",
+      "sha256": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f"
+    },
+    "QICLean/Analysis/PatchRegulator.lean": {
+      "revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+      "sha256": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca"
+    },
+    "QICLean/Analysis/DensitySimplex.lean": {
+      "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+      "sha256": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8"
+    },
+    "QICLean/Entropy/TypicalPureState.lean": {
+      "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+      "sha256": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01"
+    },
+    "QICLean/Entropy/TypicalStateFromTail.lean": {
+      "revision": "79b9d503971a4ff2409fa557e174b46b13fdbbda",
+      "sha256": "149554ccbce80b00197d5f969c04d9674b0c60f2bbca38eb0f0c1771307fe555"
+    },
+    "QICLean/Analysis/TypicalTailScales.lean": {
+      "revision": "317ecbd4478f243b844fb8d4a1d70fbbfd9c1f9a",
+      "sha256": "cc07bc68b5e5b304755679c8b56cfb8a7dd1cbb19329b695c95868f118020c53"
+    }
+  },
+  "parent_ledger_sha256": {
+    "typicalSpectrum8753.json": "b40abb8e4308cc9689c7653eb76e54d0bff05442855638172528070423c24346",
+    "typicalDensity8753.json": "50fc2d11278243664785c57d220ca3bfa16f9065d5d56b0d4547698972271383",
+    "8761-finite-product-splitting.json": "2f883e461556e2ebd6be0d1116f90a0e54940a51bc15873a24d15427e6255163",
+    "amplification-regional-information.json": "f2754a4e74a2b1b15413834a01ed5e73b79a261a0b4c28542c25b4f05a47d089",
+    "patch-regulator.json": "91524baf0d2728a33bc8933fcc827111b3748058aa9c52f70adc5818ea8b5366",
+    "densitySimplex8767.json": "044dd3aae0cb47b44e482686b48ab20dac296edc5021737cafb942c1dfdfe067",
+    "typicalPureState8753.json": "2b2f358e767fbd8d714f626e13618de940e63d8bb7b884065dee47d071c72713",
+    "typicalStateFromTail8753.json": "ca0aea7bd2bbc3bb7b78030ace8280b1e8490fabb1baa85b876be4f58ea4101b"
+  },
+  "declaration_count": 57,
+  "shard_count": 9,
+  "build_inputs": {
+    "lakefile.toml": "c40e0bb3a1ee5f9025d5c752d25c7c2f61622db813f79d6bee7d2412d8760907",
+    "lake-manifest.json": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf",
+    "lean-toolchain": "bc84812c94489d1e3e191baa1dc10d5eb684382d7fe9d2a5ab085e72c1c67e47",
+    "QICLean/Analysis.lean": "f6887049c1cbbffedeeb3b982a98d3014d2747ccf7bef7db0e0c8aceec2312e8",
+    "QICLean/Entropy.lean": "047b97651b682eecb0fe890521322c0941f52c5c6f226a37da767694ff0d8952",
+    "blueprint/src/chapter/ch12_entropy.tex": "61a4ab3e93e48dd29e2339a787829ab23fe66a42cfdcc2e253d1908e89acfb8f",
+    "blueprint/src/chapter/ch12_typical_tail_scales.tex": "4b509ac947fcf2724012e29ea8be9633c5ce5ca5bb18aacb74af2c45e956d6ca",
+    "texra-blueprint.toml": "df70971cd3fccc8f5155e02f0cc5b23887d676f28f994ecba8a894ea108fa457"
+  }
+}

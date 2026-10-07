@@ -1,0 +1,14 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "argv": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "ca3ab6e0"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+  "exit_code": 0,
+  "elapsed_seconds": 0.19974780082702637,
+  "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/prose-changed.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

@@ -1,0 +1,13 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/typicalTailScalesIntegration8753/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+  "exit_code": 0,
+  "elapsed_seconds": 1.9324982166290283,
+  "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/provenance.log",
+  "sha256": "a681900e668dd924e1653c384878dfa4cfec5e9db961b2a3004c932046f2c3a3"
+}

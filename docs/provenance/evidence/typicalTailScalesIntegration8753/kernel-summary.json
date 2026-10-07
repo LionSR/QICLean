@@ -1,0 +1,15 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "report_count": 57,
+  "parent_report_count": 56,
+  "all_parent_reports_identical": true,
+  "only_new_declaration": [
+    "Entropy.exists_typical_tail_bound_of_linear_budget"
+  ],
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "log_sha256": "6f9e20d5c0fc51a3c7391e283224effbbf1a06fb18013adcfa6754a67c39a666"
+}

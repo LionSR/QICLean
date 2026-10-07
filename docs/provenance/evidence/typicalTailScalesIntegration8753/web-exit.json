@@ -1,0 +1,14 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "argv": [
+    "leanblueprint",
+    "web"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum/blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 50.28868818283081,
+  "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/web.log.gz",
+  "uncompressed_sha256": "b010fdd68b68bbd7a036b70157b8714f159b49b44ba1b1cde9e08a6a7f16a312",
+  "gzip_sha256": "d125dc1344084b60aadd03dec6871d01c1fed88388297abe843a05811e30a8a4",
+  "gzip_mtime": 0
+}

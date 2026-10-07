@@ -1,0 +1,7 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "mathematical_review": "For fixed theta>=0 and C>0, positivity gives c=(32 sqrt((1+theta)C))^-1>0. If 0<B<=Cn and n>0, the tail exponent magnitude is at least c n^(1/10), because n^(3/5)/sqrt(n)=n^(1/10). The exponential is increasing, so the tail expression is bounded uniformly by 2 exp(e/2) exp(-c n^(1/10)). This stretched exponential is little-o of n^-100; a single natural threshold, enlarged to at least 2, gives the asserted uniform conclusion.",
+  "faithfulness": "This is an auxiliary scalar consequence of the cited expression. It assumes the linear budget bound in its application, does not derive a geometric bound, and does not assert the actual Hamiltonian marginal tail estimate.",
+  "obstacles": [],
+  "source_comparison": "The coefficient 2 exp(exp(1)/2), denominator 32 sqrt((1+theta)B), width n^(3/5), and inverse-polynomial exponent -100 match the cited immutable passages."
+}

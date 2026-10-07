@@ -1,0 +1,17 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "docs/provenance/evidence/typicalTailScalesIntegration8753/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+  "exit_code": 0,
+  "elapsed_seconds": 10.873745918273926,
+  "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/axioms.log",
+  "sha256": "6f9e20d5c0fc51a3c7391e283224effbbf1a06fb18013adcfa6754a67c39a666"
+}

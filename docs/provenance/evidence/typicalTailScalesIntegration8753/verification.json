@@ -1,0 +1,203 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "mathematical_leaf_revision": "317ecbd4478f243b844fb8d4a1d70fbbfd9c1f9a",
+  "parent_revision": "ca3ab6e017d6d8a32ca8b70d56694c781d769e72",
+  "full_library_jobs": 9683,
+  "mathlib_prebuilt_artifacts": 8943,
+  "stock_kernel_reports": 57,
+  "unchanged_parent_kernel_reports": 56,
+  "owned_provenance_shards": 9,
+  "owned_production_bindings": {
+    "QICLean/Entropy/TypicalSpectrum.lean": {
+      "revision": "958a33256b1b679eea9994660c31706e4d604932",
+      "sha256": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4"
+    },
+    "QICLean/Entropy/TypicalDensity.lean": {
+      "revision": "cc89ef96c7390a92861cf45997f77d40cb394ed1",
+      "sha256": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914"
+    },
+    "QICLean/Entropy/FiniteProductSplitting.lean": {
+      "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+      "sha256": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739"
+    },
+    "QICLean/Entropy/FiniteProductInformation.lean": {
+      "revision": "e5fe5732e6c10a921793c1c03bee5403e5bf6362",
+      "sha256": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f"
+    },
+    "QICLean/Analysis/PatchRegulator.lean": {
+      "revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+      "sha256": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca"
+    },
+    "QICLean/Analysis/DensitySimplex.lean": {
+      "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+      "sha256": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8"
+    },
+    "QICLean/Entropy/TypicalPureState.lean": {
+      "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+      "sha256": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01"
+    },
+    "QICLean/Entropy/TypicalStateFromTail.lean": {
+      "revision": "79b9d503971a4ff2409fa557e174b46b13fdbbda",
+      "sha256": "149554ccbce80b00197d5f969c04d9674b0c60f2bbca38eb0f0c1771307fe555"
+    },
+    "QICLean/Analysis/TypicalTailScales.lean": {
+      "revision": "317ecbd4478f243b844fb8d4a1d70fbbfd9c1f9a",
+      "sha256": "cc07bc68b5e5b304755679c8b56cfb8a7dd1cbb19329b695c95868f118020c53"
+    }
+  },
+  "parent_ledgers_unchanged": true,
+  "parent_and_leaf_log_bindings": 166,
+  "commands": {
+    "axioms": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "docs/provenance/evidence/typicalTailScalesIntegration8753/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+      "exit_code": 0,
+      "elapsed_seconds": 10.873745918273926,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/axioms.log",
+      "sha256": "6f9e20d5c0fc51a3c7391e283224effbbf1a06fb18013adcfa6754a67c39a666"
+    },
+    "checkdecls": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "lake",
+        "env",
+        ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+      "exit_code": 0,
+      "elapsed_seconds": 41.69754719734192,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full-build": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+      "exit_code": 0,
+      "elapsed_seconds": 50.80255627632141,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/full-build.log.gz",
+      "uncompressed_sha256": "4d11a9576971b64f927af24fff8800d77f530191eb7c50e1c65afa06c88f5922",
+      "gzip_sha256": "73c6a4a369c44c566900969992e97cb6b311484a4344513651c45bb71a02bea9",
+      "gzip_mtime": 0
+    },
+    "imports": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5001330375671387,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/imports.log",
+      "sha256": "1da3f5537e00ecdfa8f4f9a7228a0be910482e1c4374c237dc2c73b4839865e5"
+    },
+    "mathlib-cache": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+      "exit_code": 0,
+      "elapsed_seconds": 20.413850784301758,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/mathlib-cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    "paper-gaps": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5107240676879883,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    "pdf": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum/blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 25.186829805374146,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/pdf.log.gz",
+      "uncompressed_sha256": "51a3808a97b9c05db996b26add84a35db65a7ff9ce73a61b274d437758be0374",
+      "gzip_sha256": "67b58704ad63949f9f27e4e041cfe6bfaeb3b40682473917d22a95e7be3922b2",
+      "gzip_mtime": 0
+    },
+    "prose-changed": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "ca3ab6e0"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+      "exit_code": 0,
+      "elapsed_seconds": 0.19974780082702637,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/prose-changed.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    "provenance": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/typicalTailScalesIntegration8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+      "exit_code": 0,
+      "elapsed_seconds": 1.9324982166290283,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/provenance.log",
+      "sha256": "a681900e668dd924e1653c384878dfa4cfec5e9db961b2a3004c932046f2c3a3"
+    },
+    "web": {
+      "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+      "argv": [
+        "leanblueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum/blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 50.28868818283081,
+      "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/web.log.gz",
+      "uncompressed_sha256": "b010fdd68b68bbd7a036b70157b8714f159b49b44ba1b1cde9e08a6a7f16a312",
+      "gzip_sha256": "d125dc1344084b60aadd03dec6871d01c1fed88388297abe843a05811e30a8a4",
+      "gzip_mtime": 0
+    }
+  },
+  "native_declaration_count": 3105,
+  "native_checker_sha256": "67873de2b0bf2a3868d9b090017833275edb2ad500803ae0c9e60e536a878f14",
+  "native_checker_revision": "3d425859e73fcfbef85b9638c2a91708ef4a22d4",
+  "pdf": {
+    "pages": 412,
+    "sha256": "e81ef022893fb6a867ab7cd7d3ba67588b14cd17c00ab52877af27f88961e77b"
+  },
+  "visual_review": "New theorem and proof on physical pages 396\u2013397; no clipping or unresolved mathematical content.",
+  "claim_scope": "Uniform scalar decay under a linear budget, conditional on geometric budget and actual marginal-tail estimates in physical applications.",
+  "production_edits": false,
+  "excluded_leaf_first_audit": "Original missing-header/hash-command audit failure remains preserved and excluded; strict successful audit logs remain bound to the mathematical leaf."
+}

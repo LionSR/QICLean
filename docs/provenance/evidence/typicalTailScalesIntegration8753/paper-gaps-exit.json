@@ -1,0 +1,13 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "argv": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-typical-spectrum",
+  "exit_code": 0,
+  "elapsed_seconds": 0.5107240676879883,
+  "log": "docs/provenance/evidence/typicalTailScalesIntegration8753/paper-gaps.log",
+  "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+}

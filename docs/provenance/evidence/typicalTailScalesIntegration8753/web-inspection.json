@@ -1,0 +1,13 @@
+{
+  "source_revision": "6d9e055e0ab969a5fde3328f4581f6adc3a1f0fb",
+  "html_sha256": "3f65177b5347e554b13dcf618997923660528862f4de422b3a836ca53f7ba96f",
+  "new_labels": [
+    "sec:typical_tail_scales",
+    "thm:typical_tail_linear_budget"
+  ],
+  "new_declaration_link": "Entropy.exists_typical_tail_bound_of_linear_budget",
+  "source_citation_anchor_resolved": true,
+  "parse_warnings": 0,
+  "lean_decls_sha256": "b74651ab3c86b7eb2d9d7323cde8c197f4a392a1046f94cef818fd48685fe3a1",
+  "declaration_count": 3105
+}
