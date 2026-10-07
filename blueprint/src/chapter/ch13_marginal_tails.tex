@@ -165,3 +165,74 @@ $\sigma=\operatorname{diag}(s)$.
     moment bound. At $u=\pm1/(32\sqrt{(1+\vartheta)\mathcal B})$ the
     quadratic term is at most $\mathrm e/2$, which gives the tail.
 \end{proof}
+
+\section{Designated supports}
+\label{sec:marginal_tails_supports}
+
+Let $\mathcal H=\bigotimes_{v\in V}\C^{n_v}$. An operator is supported on
+$D\subseteq V$ when it acts as the identity outside $D$: its matrix
+elements vanish between configurations that differ outside $D$ and do not
+depend on the common values there.
+
+\begin{lemma}[Matrix-unit decomposition across a cut]
+    \label{lem:supported_product_decomposition}
+    \lean{Entropy.IsSupportedOn.isOneSided_of_subset,
+        Entropy.IsSupportedOn.isOneSided_of_disjoint,
+        Entropy.IsSupportedOn.hasProductDecomposition}
+    \leanok
+    Let $h$ be supported on $D$ and let $B\sqcup B^c=V$. If $D\subseteq B$ or
+    $D\subseteq B^c$, then $h$ acts on one factor of
+    $\mathcal H_B\otimes\mathcal H_{B^c}$. In general $h$ is a sum of at most
+    $d^2$ products $c_\alpha\otimes d_\alpha$ with $\lVert c_\alpha\rVert\le1$
+    and $\lVert d_\alpha\rVert\le\lVert h\rVert$, where
+    $d=\prod_{v\in D}n_v$.
+\end{lemma}
+\begin{proof}\leanok
+    The factor $c_\alpha$ is a matrix unit on $D\cap B$ tensored with the
+    identity on $B\setminus D$, written as $S_aS_b^*$ for isometries
+    $S_a$. The factor $d_\alpha$ is the compression $T_a^*hT_b$ along the
+    isometries $T_a\colon\psi\mapsto e_a\otimes\psi$. The identity
+    $h=\sum c_\alpha\otimes d_\alpha$ follows entrywise from the support
+    property, and there are $(\prod_{v\in D\cap B}n_v)^2\le d^2$ terms.
+\end{proof}
+
+\begin{theorem}[Marginal moment and tail bounds]
+    \label{thm:marginal_tails_supports}
+    \lean{Entropy.log_surprisalMoment_cut_le, Entropy.surprisalTail_cut_le}
+    \leanok
+    \uses{thm:marginal_tails, lem:supported_product_decomposition}
+    Let $\mathsf H=\sum_{i\in\mathcal I}h_i$ on $\mathcal H$ with $\mathcal I$
+    finite, each $h_i$ Hermitian with $\lVert h_i\rVert\le c_0$, $c_0\ge0$, and
+    supported on a designated set $D_i$. Let $\Psi$ be a unit vector with
+    $\mathsf H\Psi=E_0\Psi$ and $\mathsf H-E_0\ge g_0(1-\ket\Psi\bra\Psi)$,
+    $g_0>0$. Fix $B\sqcup B^c=V$, let $\mathcal I_\times$ be the indices whose
+    support meets both sides, $\rho=\Tr_{B^c}\ket\Psi\bra\Psi$,
+    $d_i=\prod_{v\in D_i}n_v$,
+    $\mathcal B=1+\sum_{i\in\mathcal I_\times}\log^2(\mathrm ed_i)$ and
+    $\vartheta=c_0/g_0$. Then the conclusions of
+    Theorem~\ref{thm:marginal_tails} hold:
+    $\log\mathbb E\,\mathrm e^{uK}\le uS+512\mathrm e\vartheta\mathcal Bu^2$
+    for $|u|\le1/(32\sqrt{(1+\vartheta)\mathcal B})$, and the stated tail bound
+    holds for every real $w$.
+\end{theorem}
+\begin{proof}\leanok
+    Pass to cut coordinates. The operator norm, Hermiticity, the eigenvalue
+    equation and the gap inequality are preserved by the relabelling.
+    Lemma~\ref{lem:supported_product_decomposition} supplies the one-sided
+    terms and the product decompositions of the crossing terms. Every local
+    dimension is positive, since $\Psi\ne0$. Apply
+    Theorem~\ref{thm:marginal_tails}.
+\end{proof}
+
+\begin{lemma}[Typical sets]
+    \label{lem:typical_set}
+    \lean{Entropy.one_sub_surprisalTail_le_typicalMass, Entropy.exp_le_of_mem_typicalSet}
+    \leanok
+    Let $E$ be the set of indices with $p_i>0$ and $|-\log p_i-S|\le w$, and
+    let $z=\sum_{i\in E}p_i$. Then $z\ge1-\Pr\{|K-S|>w\}$, and
+    $\mathrm e^{-S-w}\le p_i\le\mathrm e^{-S+w}$ for $i\in E$.
+\end{lemma}
+\begin{proof}\leanok
+    The indices outside $E$ with positive weight are exactly those in the
+    tail event. The weight bounds are the definition of $E$.
+\end{proof}
