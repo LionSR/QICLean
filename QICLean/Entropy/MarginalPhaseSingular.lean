@@ -255,7 +255,76 @@ theorem norm_phaseDifference_le (htr : ρ.trace = 1) (u : ℝ) :
       rw [← Matrix.mul_assoc, embedF_mul]
       exact embedF_kerProj_hatPhase_mul_sqrtSpec hρ u)
   have hLHSmat := hU.sub hUF
-  sorry
+  have hlimG : (embedFLin.comp oneKron) (hatPhase hUP.1 (-u)) *
+        (embedFLin (hatPhase hsP.1 u) * sqrtSpec hρH) -
+      oneKron (hatPhase hUFP.1 (-u)) * (hatPhase hρH u * sqrtSpec hρH) =
+      phaseDifference hρ u * sqrtSpec hρH := by
+    change embedF ((1 : Matrix X X ℂ) ⊗ₖ _) * (embedF _ * _) - ((1 : Matrix X X ℂ) ⊗ₖ _) * (_ * _) = _
+    rw [phaseDifference, Matrix.sub_mul, ← embedF_mul, Matrix.mul_assoc, Matrix.mul_assoc]
+  rw [hlimG] at hLHSmat
+  -- the entropy function
+  set Ef : ℝ → ℝ := fun ε =>
+    ∑ k, Real.negMulLog (affF X U F (Fintype.card F) ε (hsP.1.eigenvalues k)) +
+      ∑ k, Real.negMulLog (affF X U F (Fintype.card X) ε (hUFP.1.eigenvalues k)) -
+      ∑ k, Real.negMulLog (affF X U F (Fintype.card F * Fintype.card X) ε (hUP.1.eigenvalues k)) -
+      ∑ k, Real.negMulLog (affF X U F 1 ε (hρH.eigenvalues k))
+  have hEf : ∀ ε (h0 : 0 < ε) (h1 : ε ≤ 1),
+      condMutualInfo (approx ρ ε) (posDef_approx hρ h0 h1).posSemidef = Ef ε := by
+    intro ε h0 h1
+    have hpd := posDef_approx hρ h0 h1
+    have e1 := vonNeumannEntropy_of_eq_cfc (posSemidef_marginalXU hpd.posSemidef).1 hsP.1 _
+      (marginalXU_approx hρ ε)
+    have e2 := vonNeumannEntropy_of_eq_cfc (posSemidef_marginalUF hpd.posSemidef).1 hUFP.1 _
+      (marginalUF_approx hρ ε)
+    have e3 := vonNeumannEntropy_of_eq_cfc (posSemidef_marginalU hpd.posSemidef).1 hUP.1 _
+      (marginalU_approx hρ ε)
+    have e4 := vonNeumannEntropy_of_eq_cfc hpd.1 hρH _ (approx_eq_cfc hρH ε)
+    unfold condMutualInfo
+    erw [e1, e2, e3, e4]
+    simp only [Ef, affF, approxW, mul_one, mul_assoc]
+  have hEf0 : Ef 0 = condMutualInfo ρ hρ := by
+    simp only [Ef, affF, sub_zero, one_mul, zero_div, zero_mul, add_zero, condMutualInfo]
+    rfl
+  have hEfc : Tendsto Ef (𝓝[>] 0) (𝓝 (Ef 0)) := by
+    have : Continuous Ef := by
+      simp only [Ef, affF]
+      have := Real.continuous_negMulLog
+      fun_prop
+    exact (this.tendsto 0).mono_left nhdsWithin_le_nhds
+  have hEfnn : ∀ ε (h0 : 0 < ε) (h1 : ε ≤ 1), 0 ≤ Ef ε := by
+    intro ε h0 h1
+    rw [← hEf ε h0 h1, ← compression_logGap (posDef_approx hρ h0 h1)]
+    exact (compression (posDef_approx hρ h0 h1)).logGap_nonneg
+  have hη0 : 0 ≤ Ef 0 := by
+    refine ge_of_tendsto hEfc ?_
+    filter_upwards [hpos] with ε hε
+    exact hEfnn ε hε.1 hε.2
+  have hD : (1 : ℝ) ≤ Fintype.card X := Nat.one_le_cast.2 Fintype.card_pos
+  have hRHS := (tendsto_phaseRate hD hEfc hη0).const_mul (2 * |Real.sinh (Real.pi * u)|)
+  -- the bound along the approximation
+  have hbound : ∀ᶠ ε in 𝓝[>] (0 : ℝ),
+      ‖(WithLp.toLp 2 (vec ((embedFLin.comp oneKron) (phaseFam hUP.1
+          (affF X U F (Fintype.card F * Fintype.card X) ε) (((-u : ℝ) : ℂ) * Complex.I)) *
+          (embedFLin (phaseFam hsP.1 (affF X U F (Fintype.card F) ε) ((u : ℂ) * Complex.I)) *
+            P ε) - oneKron (phaseFam hUFP.1 (affF X U F (Fintype.card X) ε)
+              (((-u : ℝ) : ℂ) * Complex.I)) *
+          (phaseFam hρH (affF X U F 1 ε) ((u : ℂ) * Complex.I) * P ε))) :
+        EuclideanSpace ℂ ((X × (U × F)) × (X × (U × F))))‖ ≤
+        2 * |Real.sinh (Real.pi * u)| * phaseRate (Fintype.card X) (Ef ε) := by
+    filter_upwards [hpos] with ε hε
+    have hb := norm_approx_le hρ htr u hε.1 hε.2
+    rw [hEf ε hε.1 hε.2, e] at hb
+    convert hb using 4
+    change embedF ((1 : Matrix X X ℂ) ⊗ₖ _) * (embedF _ * _) - ((1 : Matrix X X ℂ) ⊗ₖ _) * (_ * _) = _
+    rw [Matrix.sub_mul, ← embedF_mul, Matrix.mul_assoc, Matrix.mul_assoc]
+  -- pass to the limit
+  have hcont : Continuous fun M : Matrix (X × (U × F)) (X × (U × F)) ℂ =>
+      ‖(WithLp.toLp 2 (vec M) : EuclideanSpace ℂ ((X × (U × F)) × (X × (U × F))))‖ := by
+    refine continuous_norm.comp ((PiLp.continuous_toLp 2 _).comp ?_)
+    exact continuous_pi fun p => (continuous_apply p.1).comp (continuous_apply p.2)
+  have hLHS := (hcont.tendsto _).comp hLHSmat
+  have := le_of_tendsto_of_tendsto hLHS hRHS hbound
+  rwa [hEf0] at this
 
 
 end Main
