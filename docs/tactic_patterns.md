@@ -13,6 +13,23 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
+
+- **Pattern:** Use the partial-trace pairing, cyclicity of trace and the pure
+  matrix trace to express a projected mass as a sesquilinear pairing. Move
+  the projector across that pairing, then use idempotence, self-adjointness
+  and the Euclidean norm identity.
+- **Seen:** The private `norm_sq_mulVec_eq_re_trace` calculation in
+  `QICLean/Entropy/PureTensorPower.lean`, and the local `hmass` calculation
+  in `TensorPower.exists_labelProj_norm_mass_ge` on the separate
+  `SchurSectorMass` contribution. These are two mathematical consumers.
+- **Abstraction:** The actual product marginal and projected-mass identities
+  are the public conclusions here. Keep the general pairing calculation
+  private while the two contributions remain independent; reconsider a
+  shared lemma when a third mathematical consumer occurs.
+- **Caveats:** Orthogonality is proved for the actual projector. Neither the
+  desired projected mass nor a supplied reduced-density identity is assumed.
+
 ### Finite-spectrum functional-calculus scalar reduction — candidate (2026-10-07)
 
 - **Pattern:** Rewrite matrices as Hermitian functional calculi, combine
