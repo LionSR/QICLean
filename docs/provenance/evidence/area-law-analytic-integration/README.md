@@ -50,3 +50,16 @@ the entire spectrum, simplex boundary points and a noncommuting projection.
 Their source revisions and passing commands remain in the individual component
 evidence directories; the combined audit does not claim a second execution of
 those unchanged tests.
+
+After incorporating accepted filter-moment and designated-support marginal-tail
+results from QICLean main, all seven production files remained byte-identical.
+At source revision `09fdda4f`, the complete library build passed with 9,681 jobs;
+PDF, web and declaration checks passed again, as did the combined 54-declaration
+kernel and provenance audits. The new kernel output is byte-identical to the
+preceding successful audit. `latest-checks.json` records this subsequent
+verification; the earlier records remain unchanged.
+
+The final book has 411 physical pages. An independent visual review of physical
+pages 14 and 394–396 found their extracted text identical to the earlier inspected
+pages and their formulas, citations and layout clear. The final artifact hash is
+recorded in `latest-render-inspection.json`.
