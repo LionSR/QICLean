@@ -1,0 +1,21 @@
+{
+  "kind": "render",
+  "command": [
+    "pdftoppm",
+    "-r",
+    "110",
+    "-f",
+    "403",
+    "-l",
+    "404",
+    "-png",
+    "output/pdf/excitation-stabilizer-blueprint.pdf",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/render/page"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.82,
+  "source_revision": "aca96d26559088c2c595325e3cd3ac303971bf0d",
+  "log": "docs/provenance/evidence/excitationStabilizerIntegration8750/render.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

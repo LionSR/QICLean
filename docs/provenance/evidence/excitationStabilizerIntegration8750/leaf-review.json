@@ -1,0 +1,17 @@
+{
+  "source_revision": "6c2e938246305038cb4e448499efcb04d2921c7f",
+  "result": "passed",
+  "frozen_files": 4,
+  "portable_leaf_hashes": 47,
+  "canonical_successful_commands": 10,
+  "excluded_attempts": 1,
+  "retained_parent_evidence_files": 795,
+  "standard_kernel_reports": 3,
+  "declarations": [
+    "Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq",
+    "Matrix.permOp_mul_replicaExcitationProjection",
+    "Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed"
+  ],
+  "independent_visual_inspection": "The retained one-page mathematical PDF image was independently inspected. All three statements, their proofs, the actual excitation matrices and source citation are legible.",
+  "mathematical_review": "The actual inverse-coordinate copy action gives image sigma B. The stabilizer condition is precisely the subgroup condition used for good/bad component symmetry; arbitrary auxiliary operators factor on the disjoint system. The proved commutation preserves the given fixed-vector equation and, with the identity physical permutation, its whole-copy auxiliary label. All algebraic identities include zero copies and need no normalization; no metric commutation is asserted."
+}

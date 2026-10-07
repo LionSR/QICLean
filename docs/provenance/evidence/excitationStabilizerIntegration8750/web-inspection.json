@@ -1,0 +1,17 @@
+{
+  "links": [
+    "Matrix.permOp_mul_replicaExcitationProjection",
+    "Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq",
+    "Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed"
+  ],
+  "errors": [],
+  "top": 47.75,
+  "bottom": 817.859375,
+  "mathElements": 32,
+  "mobile_section_bounds": {
+    "top": 112.171875,
+    "bottom": 1255.15625
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360
+}
