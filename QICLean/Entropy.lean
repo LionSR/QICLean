@@ -13,6 +13,7 @@ import QICLean.Entropy.ClassicalMutualInformation
 import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
+import QICLean.Entropy.FilterMoment
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.FiniteProductInformation
@@ -32,6 +33,7 @@ import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.SchmidtTilt
 import QICLean.Entropy.StrongSubadditivity
+import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
 import QICLean.Entropy.TypicalDensity

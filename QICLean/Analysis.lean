@@ -114,6 +114,7 @@ import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceDistance
+import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceNormAbs
 import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Analysis.TraceNormContractivity
@@ -125,6 +126,7 @@ import QICLean.Analysis.TwoProjectionCompression
 import QICLean.Analysis.TwoProjectionCompressionSpectrum
 import QICLean.Analysis.TwoProjectionDefectBlockSum
 import QICLean.Analysis.TwoProjectionReducedProjection
+import QICLean.Analysis.TypicalSet
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.WeightedCesaroMean
