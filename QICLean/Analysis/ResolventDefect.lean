@@ -103,6 +103,16 @@ theorem dotProduct_spectralFun_mulVec (U : unitary (Matrix n n ℂ)) (f : n → 
   simp only [RCLike.star_def]
   ring
 
+omit [DecidableEq n] [DecidableEq m] in
+theorem star_mulVec_dotProduct (W : Matrix n m ℂ) (x : m → ℂ) (y : n → ℂ) :
+    star (W *ᵥ x) ⬝ᵥ y = star x ⬝ᵥ (Wᴴ *ᵥ y) := by
+  rw [star_mulVec, ← dotProduct_mulVec]
+
+omit [DecidableEq n] in
+theorem star_mulVec_dotProduct_of_isHermitian {H : Matrix n n ℂ} (hH : H.IsHermitian)
+    (x y : n → ℂ) : star (H *ᵥ x) ⬝ᵥ y = star x ⬝ᵥ (H *ᵥ y) := by
+  rw [star_mulVec_dotProduct, hH.eq]
+
 /-- The data of a resolvent compression: positive definite `A = U_A diag(λ) U_A*` and
 `B = U_B diag(μ) U_B*`, an isometry `V` with `V* A V = B`, and a vector `b₀`.
 Area-law manuscript, proof of Lemma 5.2, `04-conditional.tex`, lines 352–367. -/
@@ -220,16 +230,6 @@ theorem opA_add_isHermitian (v : ℝ) : (R.opA + (v : ℂ) • 1).IsHermitian :=
   congr 1
   funext k
   simp
-
-omit [DecidableEq n] [DecidableEq m] in
-theorem star_mulVec_dotProduct (W : Matrix n m ℂ) (x : m → ℂ) (y : n → ℂ) :
-    star (W *ᵥ x) ⬝ᵥ y = star x ⬝ᵥ (Wᴴ *ᵥ y) := by
-  rw [star_mulVec, ← dotProduct_mulVec]
-
-omit [DecidableEq n] in
-theorem star_mulVec_dotProduct_of_isHermitian {H : Matrix n n ℂ} (hH : H.IsHermitian)
-    (x y : n → ℂ) : star (H *ᵥ x) ⬝ᵥ y = star x ⬝ᵥ (H *ᵥ y) := by
-  rw [star_mulVec_dotProduct, hH.eq]
 
 /-- The resolvent compression identity `⟨δ_v, (A + v) δ_v⟩ = ⟨a₀, (A + v)⁻¹ a₀⟩ -
 ⟨b₀, (B + v)⁻¹ b₀⟩` (Carlen--Vershynina, Lemma 2.1).  Area-law manuscript,
