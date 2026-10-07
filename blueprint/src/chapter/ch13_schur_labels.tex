@@ -444,6 +444,39 @@ these formulas.
     $1\le l_i-l_j\le l_i\le k+q$.
 \end{proof}
 
+\begin{lemma}[Recursions for the dimension formula]
+    \label{lem:hook_recursions}
+    \lean{Partition.sum_mul_prod_sub_one_div, Partition.sum_prod_add_one_div,
+        Partition.hookFormula_update_sub_mul, Partition.hookFormula_update_add_mul,
+        Partition.hookFormula_eq_sum_remove, Partition.sum_hookFormula_add,
+        Partition.hookFormula_eq_of_le}
+    \leanok
+    Let $\lambda$ be a partition of $k\ge1$ padded to length $q$ and $D_\lambda$ the
+    right-hand side of the formula for $d_\lambda$. Then
+    $D_\lambda=\sum_iD_{\lambda-e_i}$, the sum over the rows from which a box can be
+    removed, and $D_{\lambda-e_i}/D_\lambda=(l_i/k)\prod_{j\ne i}(l_i-1-l_j)/(l_i-l_j)$.
+    If the last row of $\lambda$ is empty, $\sum_iD_{\lambda+e_i}=(k+1)D_\lambda$, the
+    sum over the rows to which a box can be added. Appending empty rows does not
+    change $D_\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Changing one shifted part changes the Vandermonde product by the factor
+    $\prod_{j\ne i}(c-l_j)/(l_i-l_j)$; terms for rows that cannot lose or gain a box
+    vanish because two shifted parts coincide. The recursions reduce to the
+    interpolation identities
+    \[
+        \sum_i t_i\prod_{j\ne i}\frac{t_i-t_j-1}{t_i-t_j}=\sum_it_i-\binom q2,
+        \qquad
+        \sum_i\frac{\prod_{j\ne i_0}(t_i+1-t_j)}{\prod_{j\ne i}(t_i-t_j)}=1
+    \]
+    for distinct nodes, which follow from Lagrange interpolation: the sum
+    $\sum_iP(t_i)/\prod_{j\ne i}(t_i-t_j)$ is the coefficient of $X^{q-1}$ in any
+    polynomial $P$ of degree less than $q$; for the first identity apply this to
+    $X\bigl(\prod_j(X-t_j-1)-\prod_j(X-t_j)\bigr)+q\prod_j(X-t_j)$, whose top
+    coefficients are computed from $e_1$ and $e_2$ of the nodes.
+\end{proof}
+
 \section{Schur--Weyl duality and highest weights}
 
 For a matrix $A$ on $\C^q$ write $A^{(j)}$ for $A$ acting on the $j$-th copy of
