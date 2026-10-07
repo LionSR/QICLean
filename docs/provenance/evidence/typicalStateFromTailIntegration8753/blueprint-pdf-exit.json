@@ -1,0 +1,11 @@
+{
+  "command": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "working_directory": "blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 23.0,
+  "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+  "log_sha256": "91621d6e1e4ed90b0de2b9f8baf36fce9d75d6f9fdf5f6d29a0cdf90d07e4346"
+}
