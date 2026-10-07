@@ -275,6 +275,102 @@ theorem linMatrix_isoMap_compress :
   norm_num
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, trace_mul_comm]
 
+/-- The resolvent compression of a faithful state on `x (U F)`: `A = L_{σ_f} R_{ρ^{-1}}`,
+`B = L_{σ_s} R_{ρ_{xU}^{-1}}`, `V (Y √ρ_{xU}) = (Y ⊗ I_F) √ρ` and `b₀ = √ρ_{xU}`.
+Area-law manuscript, `04-conditional.tex`, lines 352–367. -/
+def compression : ResolventCompression ((X × (U × F)) × (X × (U × F))) ((X × U) × (X × U)) where
+  UA := unitaryA hρ
+  lam := eigA hρ
+  UB := unitaryB hρ
+  mu := eigB hρ
+  V := linMatrix (isoMap ρ hρ)
+  b0 := vec (rpowSpec (posDef_marginalXU hρ) (1 / 2))
+  lam_pos := eigA_pos hρ
+  mu_pos := eigB_pos hρ
+  isometry := linMatrix_isoMap_isometry hρ
+  compress := linMatrix_isoMap_compress hρ
+
+theorem compression_a0 : (compression hρ).a0 = vec (rpowSpec hρ (1 / 2)) := by
+  change linMatrix (isoMap ρ hρ) *ᵥ vec _ = _
+  rw [linMatrix_mulVec_vec, isoMap_apply, rpowSpec_mul]
+  norm_num [rpowSpec_zero, embedF_one]
+
+/-- Complex power `t ↦ t ^ z` of a positive definite matrix through its eigenbasis. -/
+def cpowSpec {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA : A.PosDef)
+    (z : ℂ) : Matrix n n ℂ :=
+  spectralFun hA.1.eigenvectorUnitary (fun k => ((hA.1.eigenvalues k : ℝ) : ℂ) ^ z)
+
+theorem ofReal_rpow_neg_one_mul_cpow {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (z : ℂ) :
+    (((a ^ (-1 : ℝ) * b : ℝ)) : ℂ) ^ z = (a : ℂ) ^ (-z) * (b : ℂ) ^ z := by
+  rw [Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (by positivity) hb.le,
+    Real.rpow_neg_one, Complex.ofReal_inv, Complex.inv_cpow _ _ (by
+      rw [Complex.arg_ofReal_of_nonneg ha.le]; exact Real.pi_pos.ne), ← Complex.cpow_neg]
+
+theorem rpowSpec_mul_cpowSpec_mul_rpowSpec {n : Type*} [Fintype n] [DecidableEq n]
+    {A : Matrix n n ℂ} (hA : A.PosDef) (z : ℂ) :
+    rpowSpec hA (1 / 2) * cpowSpec hA z * rpowSpec hA (-1 / 2) = cpowSpec hA z := by
+  rw [rpowSpec, cpowSpec, rpowSpec, spectralFun_mul, spectralFun_mul]
+  congr 1
+  funext k
+  have hk := hA.eigenvalues_pos k
+  simp only [Pi.mul_apply]
+  rw [mul_comm, ← mul_assoc, ← Complex.ofReal_mul, ← Real.rpow_add hk]
+  norm_num
+
+theorem rpowSpec_mul_cpowSpec_comm {n : Type*} [Fintype n] [DecidableEq n]
+    {A : Matrix n n ℂ} (hA : A.PosDef) (s : ℝ) (z : ℂ) :
+    rpowSpec hA s * cpowSpec hA z = cpowSpec hA z * rpowSpec hA s := by
+  rw [rpowSpec, cpowSpec, spectralFun_mul, spectralFun_mul, mul_comm]
+
+/-- The phase gap of the compression:
+`A^z a₀ - V B^z b₀ = (σ_f^z ρ^{-z} - (σ_s^z ρ_{xU}^{-z} ⊗ I_F)) √ρ`.  Area-law manuscript,
+`04-conditional.tex`, lines 434–444. -/
+theorem compression_phaseGap (z : ℂ) :
+    (compression hρ).phaseGap z =
+      vec ((spectralFun (sigmaFUnitary (posDef_marginalUF hρ))
+          (fun p => ((sigmaFEig (posDef_marginalUF hρ) p : ℝ) : ℂ) ^ z) * cpowSpec hρ (-z) -
+        embedF (spectralFun (sigmaSUnitary (posDef_marginalU (F := F) hρ))
+          (fun p => ((sigmaSEig (posDef_marginalU (F := F) hρ) p : ℝ) : ℂ) ^ z) *
+            cpowSpec (posDef_marginalXU (F := F) hρ) (-z))) * rpowSpec hρ (1 / 2)) := by
+  set hs := posDef_marginalXU (F := F) hρ
+  have hA : spectralFun (compression hρ).UA (fun k => ((compression hρ).lam k : ℂ) ^ z) =
+      (cpowSpec hρ (-z))ᵀ ⊗ₖ spectralFun (sigmaFUnitary (posDef_marginalUF hρ))
+        (fun p => ((sigmaFEig (posDef_marginalUF hρ) p : ℝ) : ℂ) ^ z) := by
+    refine spectralFun_leftRight_mul _ _ hρ.1.eigenvalues (sigmaFEig (posDef_marginalUF hρ))
+      (fun t => (t : ℂ) ^ z) (fun a => (a : ℂ) ^ (-z)) (fun b => (b : ℂ) ^ z) fun k j => ?_
+    refine ofReal_rpow_neg_one_mul_cpow (hρ.eigenvalues_pos k) ?_ z
+    have := (posDef_marginalUF hρ).eigenvalues_pos j.2
+    unfold sigmaFEig
+    have : (0 : ℝ) < Fintype.card X := Nat.cast_pos.2 Fintype.card_pos
+    positivity
+  have hB : spectralFun (compression hρ).UB (fun k => ((compression hρ).mu k : ℂ) ^ z) =
+      (cpowSpec hs (-z))ᵀ ⊗ₖ spectralFun (sigmaSUnitary (posDef_marginalU (F := F) hρ))
+        (fun p => ((sigmaSEig (posDef_marginalU (F := F) hρ) p : ℝ) : ℂ) ^ z) := by
+    refine spectralFun_leftRight_mul _ _ hs.1.eigenvalues
+      (sigmaSEig (posDef_marginalU (F := F) hρ))
+      (fun t => (t : ℂ) ^ z) (fun a => (a : ℂ) ^ (-z)) (fun b => (b : ℂ) ^ z) fun k j => ?_
+    refine ofReal_rpow_neg_one_mul_cpow (hs.eigenvalues_pos k) ?_ z
+    have := (posDef_marginalU (F := F) hρ).eigenvalues_pos j.2
+    unfold sigmaSEig
+    have : (0 : ℝ) < Fintype.card X := Nat.cast_pos.2 Fintype.card_pos
+    positivity
+  set SF := spectralFun (sigmaFUnitary (posDef_marginalUF hρ))
+    (fun p => ((sigmaFEig (posDef_marginalUF hρ) p : ℝ) : ℂ) ^ z)
+  set SS := spectralFun (sigmaSUnitary (posDef_marginalU (F := F) hρ))
+    (fun p => ((sigmaSEig (posDef_marginalU (F := F) hρ) p : ℝ) : ℂ) ^ z)
+  have h1 : SF * rpowSpec hρ (1 / 2) * cpowSpec hρ (-z) =
+      SF * cpowSpec hρ (-z) * rpowSpec hρ (1 / 2) := by
+    rw [Matrix.mul_assoc, rpowSpec_mul_cpowSpec_comm, Matrix.mul_assoc]
+  have h2 : SS * rpowSpec hs (1 / 2) * cpowSpec hs (-z) * rpowSpec hs (-1 / 2) =
+      SS * cpowSpec hs (-z) := by
+    rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (rpowSpec hs (1 / 2)),
+      rpowSpec_mul_cpowSpec_mul_rpowSpec]
+  rw [ResolventCompression.phaseGap, hA, hB, compression_a0, kronecker_mulVec_vec,
+    transpose_transpose]
+  change _ - linMatrix (isoMap ρ hρ) *ᵥ (_ *ᵥ vec (rpowSpec hs (1 / 2))) = _
+  rw [kronecker_mulVec_vec, transpose_transpose, linMatrix_mulVec_vec, isoMap_apply, h1, h2,
+    ← vec_sub, Matrix.sub_mul]
+
 end Faithful
 
 

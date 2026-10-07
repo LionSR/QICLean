@@ -128,6 +128,33 @@ theorem ext_star_vec_dotProduct_mulVec_vec {l k : Type*} [Fintype l] [DecidableE
   obtain ⟨Y, rfl⟩ := vec_bijective.2 y
   exact h Z Y
 
+/-- A multiplicative function of the eigenvalues `aⱼ⁻¹ bᵢ` of `Bᵀ ⊗ A`. -/
+theorem spectralFun_leftRight_mul (U : unitary (Matrix n n ℂ)) (W : unitary (Matrix m m ℂ))
+    (a : n → ℝ) (b : m → ℝ) (g : ℝ → ℂ) (φ ψ : ℝ → ℂ)
+    (hg : ∀ k j, g (a k ^ (-1 : ℝ) * b j) = φ (a k) * ψ (b j)) :
+    spectralFun (kroneckerUnitary (conjUnitary U) W) (fun p => g (a p.1 ^ (-1 : ℝ) * b p.2)) =
+      (spectralFun U (fun k => φ (a k)))ᵀ ⊗ₖ spectralFun W (fun j => ψ (b j)) := by
+  rw [transpose_spectralFun, spectralFun_kronecker]
+  congr 1
+  funext p
+  exact hg p.1 p.2
+
+/-- An additive function of the eigenvalues `aⱼ⁻¹ bᵢ` of `Bᵀ ⊗ A`. -/
+theorem spectralFun_leftRight_add (U : unitary (Matrix n n ℂ)) (W : unitary (Matrix m m ℂ))
+    (a : n → ℝ) (b : m → ℝ) (g : ℝ → ℂ) (φ ψ : ℝ → ℂ)
+    (hg : ∀ k j, g (a k ^ (-1 : ℝ) * b j) = φ (a k) + ψ (b j)) :
+    spectralFun (kroneckerUnitary (conjUnitary U) W) (fun p => g (a p.1 ^ (-1 : ℝ) * b p.2)) =
+      (spectralFun U (fun k => φ (a k)))ᵀ ⊗ₖ 1 + 1 ⊗ₖ spectralFun W (fun j => ψ (b j)) := by
+  have h1 : (1 : Matrix m m ℂ) = spectralFun W (fun _ => 1) := (spectralFun_one W).symm
+  have h2 : (1 : Matrix n n ℂ) = (spectralFun U (fun _ => 1))ᵀ := by
+    rw [spectralFun_one, transpose_one]
+  rw [h1, h2, transpose_spectralFun, transpose_spectralFun, spectralFun_kronecker,
+    spectralFun_kronecker, ← spectralFun_add]
+  congr 1
+  funext p
+  simp only [Pi.add_apply, mul_one, one_mul]
+  exact hg p.1 p.2
+
 end Matrix
 
 end
