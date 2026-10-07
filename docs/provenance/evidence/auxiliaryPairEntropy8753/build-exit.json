@@ -1,0 +1,14 @@
+{
+  "kind": "build",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Entropy.AuxiliaryPairEntropy"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 18.14,
+  "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/build.log",
+  "sha256": "ef8103e0c12bca9fee3ba655b066b7fbd793a22783dc002363c9eda2def0fb34"
+}

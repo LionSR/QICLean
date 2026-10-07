@@ -1,0 +1,58 @@
+{
+  "axioms.log": {
+    "raw_sha256": "839714c56fb53b9bab7cbf7b2eb727a3fa1c91ed47eeda5a43e2ec71c2a5e59b",
+    "gzip_sha256": "df33789676577ea13e1336ef09e930856c408e4980d20e5bc9751b3bc9ce0bac",
+    "raw_bytes": 205,
+    "gzip_bytes": 132,
+    "gzip_mtime": 0
+  },
+  "build.log": {
+    "raw_sha256": "ef8103e0c12bca9fee3ba655b066b7fbd793a22783dc002363c9eda2def0fb34",
+    "gzip_sha256": "f28d20b66a8d59070914a3dde9ff0b2890517f33bfc08202e3504b9c3b723e02",
+    "raw_bytes": 107,
+    "gzip_bytes": 115,
+    "gzip_mtime": 0
+  },
+  "cache.log": {
+    "raw_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "gzip_sha256": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "raw_bytes": 138,
+    "gzip_bytes": 140,
+    "gzip_mtime": 0
+  },
+  "operational/axioms.log": {
+    "raw_sha256": "cef5d7481eef78cc91fd231e3b94586eddb1b5a9b3b68cc8c48ddc6aa0251656",
+    "gzip_sha256": "9247da037e12c676b0e11713edaad3b39379f9b7821aca185ee791c05e8c7d0a",
+    "raw_bytes": 606,
+    "gzip_bytes": 357,
+    "gzip_mtime": 0
+  },
+  "provenance.log": {
+    "raw_sha256": "2b1ff20e95c19718d6388ed360220f2dde5e2ce5c3075fb86ea1e26cc4e78b66",
+    "gzip_sha256": "fcc955d90422865dcb929de65e101fa1c823821b1b9f0d40485dd6fc5d813c1c",
+    "raw_bytes": 342,
+    "gzip_bytes": 258,
+    "gzip_mtime": 0
+  },
+  "strict-source.log": {
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "raw_bytes": 0,
+    "gzip_bytes": 20,
+    "gzip_mtime": 0
+  },
+  "tactic-patterns.log": {
+    "raw_sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8",
+    "gzip_sha256": "bc6cec9ae69490ac43d43070ec45510b9589b0db787798b87cc631386c2bbd20",
+    "raw_bytes": 61,
+    "gzip_bytes": 76,
+    "gzip_mtime": 0
+  },
+  "text-style.log": {
+    "raw_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+    "raw_bytes": 2,
+    "gzip_bytes": 22,
+    "gzip_mtime": 0
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "kind": "text-style",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/TextStyle.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 3.1,
+  "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/text-style.log",
+  "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+}

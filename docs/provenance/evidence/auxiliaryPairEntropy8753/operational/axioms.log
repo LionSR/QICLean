@@ -1,0 +1,8 @@
+docs/provenance/evidence/auxiliaryPairEntropy8753/Axioms.lean:2:0: error: The module doc-string for a file should be the first command after the imports.
+Please, add a module doc-string (`/-! ... -/`) before `set_option linter.hashCommand false`.
+
+Hint: Type `m(odule docstring) + [tab]` to insert a template via snippet.
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+'FiniteProduct.auxiliaryPair_entropyIdentity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.auxiliaryPair_pre_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]

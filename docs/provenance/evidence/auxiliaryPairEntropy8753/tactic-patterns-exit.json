@@ -1,0 +1,15 @@
+{
+  "kind": "tactic-patterns",
+  "command": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+    "--root",
+    "/tmp/qic-auxiliary-entropy-owned"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.06,
+  "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/tactic-patterns.log",
+  "sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8"
+}

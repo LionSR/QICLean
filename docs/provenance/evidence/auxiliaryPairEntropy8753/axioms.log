@@ -1,0 +1,2 @@
+'FiniteProduct.auxiliaryPair_entropyIdentity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.auxiliaryPair_pre_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]

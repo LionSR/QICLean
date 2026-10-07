@@ -1,0 +1,170 @@
+{
+  "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+  "parent_revision": "7b1532162bac7c62bbaa98e0abc5dc3d93704711",
+  "files": {
+    "QICLean/Entropy/AuxiliaryPairEntropy.lean": "b3de7a0f4e7cc31d92882f6d8ed7819d44be85260d2bd03d3fe81d6e8ada8cbd",
+    "blueprint/src/fragment/auxiliary_pair_entropy.tex": "09a0f56ae9152bdc5cb2a43fe3263bf370d253090826702a7bd266cd37066af3",
+    "docs/provenance/openai-math.d/auxiliaryPairEntropy8753.json": "255b6ede1fcd8265368eeca41b2925381df0d2c0c6fd0b1b789f343a883f7a95"
+  },
+  "commands": [
+    {
+      "kind": "cache",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 14.35,
+      "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+      "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Entropy.AuxiliaryPairEntropy"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 18.14,
+      "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+      "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/build.log",
+      "sha256": "ef8103e0c12bca9fee3ba655b066b7fbd793a22783dc002363c9eda2def0fb34"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "QICLean/Entropy/AuxiliaryPairEntropy.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.39,
+      "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+      "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "axioms",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/auxiliaryPairEntropy8753/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 13.68,
+      "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+      "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/axioms.log",
+      "sha256": "839714c56fb53b9bab7cbf7b2eb727a3fa1c91ed47eeda5a43e2ec71c2a5e59b"
+    },
+    {
+      "kind": "text-style",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "docs/provenance/evidence/auxiliaryPairEntropy8753/TextStyle.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 3.1,
+      "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+      "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "kind": "tactic-patterns",
+      "command": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+        "--root",
+        "/tmp/qic-auxiliary-entropy-owned"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.06,
+      "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+      "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/tactic-patterns.log",
+      "sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8"
+    },
+    {
+      "kind": "provenance",
+      "command": [
+        "/tmp/qic-density-simplex-provenance-env/bin/python",
+        "docs/provenance/evidence/auxiliaryPairEntropy8753/check_provenance.py",
+        "--root",
+        ".",
+        "--validator",
+        "/tmp/tnlean-area-law-provenance-validator.py",
+        "--schema",
+        "/tmp/tnlean-area-law-provenance-schema.json"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.21,
+      "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+      "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/provenance.log",
+      "sha256": "2b1ff20e95c19718d6388ed360220f2dde5e2ce5c3075fb86ea1e26cc4e78b66"
+    }
+  ],
+  "declaration_count": 2,
+  "library_target_jobs": 3252,
+  "kernel_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "source_fidelity": "Exact regional entropy cancellation and pre-comparison nonnegativity only; no sharp norm comparison or assumed marginal equality.",
+  "independent_review": "Pure complements XU/YV, UY/XV, U/XYV prove the identity. Unit-state subadditivity across XU and V proves pre nonnegativity. All reductions are actual regional matrices.",
+  "operational_attempts_excluded_from_passed_commands": [
+    "operational/axioms-exit.json"
+  ],
+  "evidence_files": {
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/Axioms.lean": "7711c9298c60a29fedf7bfe9296aeb519ef7c9987626815f184ffa5ce372522b",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/README.md": "f5ac06385388a7ba69e8c29dba8edfcdca37b2375bfd68cf5dfa70e9deae1df0",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/TextStyle.lean": "0da3cb0677c1e45e43c50684591ceee1932ef878381d08993e322d4f053105fa",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/axioms-exit.json": "ce31ebb4dc82359c75f670b0d9950de38095a7517d3130a996301893df572338",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/axioms.log": "839714c56fb53b9bab7cbf7b2eb727a3fa1c91ed47eeda5a43e2ec71c2a5e59b",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/axioms.log.gz": "df33789676577ea13e1336ef09e930856c408e4980d20e5bc9751b3bc9ce0bac",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/build-exit.json": "f09c5b11bdb4e58e0575f133d9a8d84170c942cfd217d3a5cb262b74d50ca18c",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/build.log": "ef8103e0c12bca9fee3ba655b066b7fbd793a22783dc002363c9eda2def0fb34",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/build.log.gz": "f28d20b66a8d59070914a3dde9ff0b2890517f33bfc08202e3504b9c3b723e02",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/cache-exit.json": "b731b36396b5ecc4b59e9f1bd52e5e0786957db764193bd21d02d0812ccd779e",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/cache.log.gz": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/check_provenance.py": "8bb69c5d660d5fa32ee2e78b35feb65c74de7a4564a17c4edfce4c0e90bb7824",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/compression.json": "b74a4fea21192d076cf19fa47c6e1553e0a1bfdecc8159cc12fd273e215ac1bf",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/operational/axioms-exit.json": "00c29ba6e91779e1f54d81e4719e8edcc11510dc536c5d8ac3fd24e8d18c5246",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/operational/axioms.log": "cef5d7481eef78cc91fd231e3b94586eddb1b5a9b3b68cc8c48ddc6aa0251656",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/operational/axioms.log.gz": "9247da037e12c676b0e11713edaad3b39379f9b7821aca185ee791c05e8c7d0a",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/provenance-exit.json": "dd34a222885e69c2b8c25db3fbd2065d6dc507eb14faabec220e40b5c25f0e3d",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/provenance.log": "2b1ff20e95c19718d6388ed360220f2dde5e2ce5c3075fb86ea1e26cc4e78b66",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/provenance.log.gz": "fcc955d90422865dcb929de65e101fa1c823821b1b9f0d40485dd6fc5d813c1c",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/strict-source-exit.json": "6ad1893b0c2f233d2b4bbb2de989e15a28360f6cecf04ef8bc03e1cfd85cce40",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/strict-source.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/strict-source.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/tactic-patterns-exit.json": "2e923702d0cb4852db725e34406f7ccd175a141648afdf80e6f1e04ca2c2f6ce",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/tactic-patterns.log": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/tactic-patterns.log.gz": "bc6cec9ae69490ac43d43070ec45510b9589b0db787798b87cc631386c2bbd20",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/text-style-exit.json": "7fcc82719055a2766bc8dfa71e84e588dae00af060d9cd5721c538746c6ef7c5",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/text-style.log": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/text-style.log.gz": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+  }
+}

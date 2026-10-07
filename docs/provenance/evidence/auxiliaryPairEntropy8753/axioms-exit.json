@@ -1,0 +1,19 @@
+{
+  "kind": "axioms",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/auxiliaryPairEntropy8753/Axioms.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 13.68,
+  "source_revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+  "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/axioms.log",
+  "sha256": "839714c56fb53b9bab7cbf7b2eb727a3fa1c91ed47eeda5a43e2ec71c2a5e59b"
+}

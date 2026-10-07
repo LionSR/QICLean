@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-auxiliary-pair-entropy-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/AuxiliaryPairEntropy.lean",
+        "declaration": "FiniteProduct.auxiliaryPair_entropyIdentity",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:entropy-identity"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the exact physical regional entropy cancellation by pure-complement equality and the pre-comparison nonnegativity by normalized subadditivity. All entropies use actual regional reduced matrices of the same vector; no norm comparator or supplied marginal certificate is asserted."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/build.log",
+            "sha256": "ef8103e0c12bca9fee3ba655b066b7fbd793a22783dc002363c9eda2def0fb34",
+            "command": "lake build QICLean.Entropy.AuxiliaryPairEntropy"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/AuxiliaryPairEntropy.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/axioms.log",
+            "sha256": "839714c56fb53b9bab7cbf7b2eb727a3fa1c91ed47eeda5a43e2ec71c2a5e59b",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/auxiliaryPairEntropy8753/Axioms.lean"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-auxiliary-pair-entropy-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/AuxiliaryPairEntropy.lean",
+        "declaration": "FiniteProduct.auxiliaryPair_pre_nonneg",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:sharp-lower"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the exact physical regional entropy cancellation by pure-complement equality and the pre-comparison nonnegativity by normalized subadditivity. All entropies use actual regional reduced matrices of the same vector; no norm comparator or supplied marginal certificate is asserted."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "e392dc2821db957cd6d0b0c3c4d226f56c121c21",
+        "commands": [
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/build.log",
+            "sha256": "ef8103e0c12bca9fee3ba655b066b7fbd793a22783dc002363c9eda2def0fb34",
+            "command": "lake build QICLean.Entropy.AuxiliaryPairEntropy"
+          },
+          {
+            "kind": "build",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/AuxiliaryPairEntropy.lean"
+          },
+          {
+            "kind": "axioms",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/auxiliaryPairEntropy8753/axioms.log",
+            "sha256": "839714c56fb53b9bab7cbf7b2eb727a3fa1c91ed47eeda5a43e2ec71c2a5e59b",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/auxiliaryPairEntropy8753/Axioms.lean"
+          }
+        ]
+      }
+    }
+  ]
+}
