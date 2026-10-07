@@ -1,0 +1,16 @@
+{
+  "files": [
+    {
+      "raw_log": "docs/provenance/evidence/goodBadAuxiliaryIntegration8750/pdf.log",
+      "raw_sha256": "6c0355c95b3d18c6c96bff80c148be2557e0542b6a11bbd79fe8e7d663e10e86",
+      "raw_bytes": 153752,
+      "archive": "docs/provenance/evidence/goodBadAuxiliaryIntegration8750/pdf.log.gz",
+      "archive_sha256": "f3c03fd5995f3cccf1a8b0aa2ceff00b95196fa7a1b827a2044eed94016060e2",
+      "archive_bytes": 30416,
+      "gzip_mtime": 0,
+      "raw_log_retained_locally": true,
+      "committed_artifact": "archive"
+    }
+  ],
+  "original_exit_records_preserved_verbatim": true
+}
