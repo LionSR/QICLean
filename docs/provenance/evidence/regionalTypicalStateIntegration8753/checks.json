@@ -64,7 +64,9 @@
       "exit_code": 0,
       "elapsed_seconds": 49.85,
       "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
-      "log_sha256": "a0eed57ef2a98cb9d7c7d61354828ebc6ca8c5bbdae246fb3aa1bf794a5b900f"
+      "log_sha256": "a0eed57ef2a98cb9d7c7d61354828ebc6ca8c5bbdae246fb3aa1bf794a5b900f",
+      "compressed_log": "blueprint-pdf.log.gz",
+      "compressed_log_sha256": "25c5508427e3fce0611f572b5201db085ea5910b1b6082618a6df5aa0c6f05ad"
     },
     {
       "record": "blueprint-web-exit.json",
@@ -176,7 +178,6 @@
   "logs": {
     "axioms.log": "9bb5927f224968fd1ff8bad3420e59183a688db19faf0b17743a7def8edc9dfb",
     "blueprint-checkdecls.log": "1c4ccc6e08b956339a481fb0561f9220f3075d6a0ba652e715347b54b5e27b16",
-    "blueprint-pdf.log": "a0eed57ef2a98cb9d7c7d61354828ebc6ca8c5bbdae246fb3aa1bf794a5b900f",
     "blueprint-web.log": "e72f9c51da7b3bb7e942b9db2d9718a05f226ac2c91a7e87427a602d719b48d7",
     "final-bibtex.log": "6038c8c150898fba1e7184c562490e5220698a75a96614902c7cc1f832126155",
     "final-latex.log": "a0209043baeed1748287a7f6236e2a2450f9bd89f9ceff7f4e7bdb84a1168da3",
@@ -187,11 +188,18 @@
     "provenance-after-parent-merge.log": "5a9baea1960ea5b93855e7e71b273bd66735ae59dcb49804b1ccf47e274f7fe9",
     "provenance.log": "5a9baea1960ea5b93855e7e71b273bd66735ae59dcb49804b1ccf47e274f7fe9",
     "reader-prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
-    "web-inspection.log": "524dcfe8d74f4a0fc6eebe8ffaa66fadfdaa7392b2d9e52670b2ad5553f160df"
+    "web-inspection.log": "524dcfe8d74f4a0fc6eebe8ffaa66fadfdaa7392b2d9e52670b2ad5553f160df",
+    "blueprint-pdf.log.gz": "25c5508427e3fce0611f572b5201db085ea5910b1b6082618a6df5aa0c6f05ad"
   },
   "render_inspection": "render-inspection.json",
   "web_inspection": "web-inspection.json",
   "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
   "mathlib_prebuilt_olean_verified": true,
-  "lean_toolchain": "leanprover/lean4:v4.35.0-rc3"
+  "lean_toolchain": "leanprover/lean4:v4.35.0-rc3",
+  "compressed_logs": {
+    "blueprint-pdf.log.gz": {
+      "uncompressed_sha256": "a0eed57ef2a98cb9d7c7d61354828ebc6ca8c5bbdae246fb3aa1bf794a5b900f",
+      "compression": "gzip; original command output unchanged"
+    }
+  }
 }

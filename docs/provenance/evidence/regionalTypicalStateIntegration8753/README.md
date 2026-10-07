@@ -41,5 +41,10 @@ inspection; `web-inspection.json` records the three entries and six declaration
 links at both widths. The reproducible audit fixture and the frozen-policy
 validator are included. `inspect-web.py` is the exact web inspection script
 used, originally invoked from a temporary path with Playwright 1.55.0 and the
-installed texra-blueprint environment. No push or pull request was made from
-this branch.
+installed texra-blueprint environment.
+
+The complete PDF command log is retained as `blueprint-pdf.log.gz` to keep the
+review diff readable. Decompressing it reproduces the original command output
+byte for byte; both compressed and uncompressed hashes are recorded in
+`checks.json`, and the original exit record retains the uncompressed hash.
+This changes no production, regression, blueprint or verification-output bytes.
