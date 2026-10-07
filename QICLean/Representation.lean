@@ -14,4 +14,5 @@ import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.LabelProjectors
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.SchurLabelCommutation
+import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.TensorPowerAction
