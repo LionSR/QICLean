@@ -17,6 +17,7 @@ import QICLean.Analysis.CfcConjugation
 import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CoisometricCompression
+import QICLean.Analysis.CommutingHermitian
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
