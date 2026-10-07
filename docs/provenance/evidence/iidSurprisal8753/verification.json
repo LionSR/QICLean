@@ -1,0 +1,191 @@
+{
+  "source_revision": "a862136a75385465447223efcf08c009a959b660",
+  "parent_revision": "0c3485a499660de80843affa0b25b964c12a5193",
+  "source_files": {
+    "QICLean/Entropy/IidSurprisal.lean": "f309d7b8812bd105dda3a9fca698e5f49bbdb1b747fdce99ec0556960896f41b",
+    "blueprint/src/fragment/iid_surprisal.tex": "47c03747b04745ea9b87e6df0c9f53ab8a770cf9d49f6de559c6cce5e48e6bee",
+    "docs/formalization/iid-surprisal.md": "42e108129f341f0a2ddc34ff4b6536fb7128891bee96264152afa34f7ab47bc6"
+  },
+  "public_declarations": [
+    "Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal",
+    "Entropy.surprisalTail_pi_le_variance",
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le",
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le"
+  ],
+  "commands": [
+    {
+      "kind": "cache",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get",
+        "Mathlib.Probability.Moments.Variance",
+        "Mathlib.Probability.ProbabilityMassFunction.Integrals",
+        "Mathlib.MeasureTheory.Integral.Pi",
+        "Mathlib.Analysis.Matrix.HermitianFunctionalCalculus",
+        "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 12.89,
+      "source_revision": "a862136a75385465447223efcf08c009a959b660",
+      "log": "docs/provenance/evidence/iidSurprisal8753/mathlib-cache.log",
+      "sha256": "7ab0e72e9c712add68fe193f70b1f5b159e27b37e704802806a05b969a504675"
+    },
+    {
+      "kind": "cache",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/iidSurprisal8753/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07,
+      "source_revision": "a862136a75385465447223efcf08c009a959b660",
+      "log": "docs/provenance/evidence/iidSurprisal8753/mathlib-guard.log",
+      "sha256": "3ec65beb9a721a77f6dcaa1adae317608779e7f84b6c085083d052f26dfdc3cc"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Entropy.IidSurprisal"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 8.04,
+      "source_revision": "a862136a75385465447223efcf08c009a959b660",
+      "log": "docs/provenance/evidence/iidSurprisal8753/build.log",
+      "sha256": "c728c49a6df47505d87ff4aae6b64c6c88d3a452c2858df0fceb008e40e217db"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "QICLean/Entropy/IidSurprisal.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 7.91,
+      "source_revision": "a862136a75385465447223efcf08c009a959b660",
+      "log": "docs/provenance/evidence/iidSurprisal8753/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "axioms",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/iidSurprisal8753/IidSurprisalAxioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 7.39,
+      "source_revision": "a862136a75385465447223efcf08c009a959b660",
+      "log": "docs/provenance/evidence/iidSurprisal8753/axioms.log",
+      "sha256": "3697a24cb60bbb919cbf7432b11daa650ade527f4b46001f9b59ee94f22db729"
+    },
+    {
+      "kind": "style",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/iidSurprisal8753/IidSurprisalTextStyle.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 3.76,
+      "source_revision": "a862136a75385465447223efcf08c009a959b660",
+      "log": "docs/provenance/evidence/iidSurprisal8753/text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "kind": "blueprint",
+      "command": [
+        "latexmk",
+        "-xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-outdir=tmp/pdfs/iid-surprisal",
+        "docs/provenance/evidence/iidSurprisal8753/standalone-wrapper.tex"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.83,
+      "source_revision": "a862136a75385465447223efcf08c009a959b660",
+      "log": "docs/provenance/evidence/iidSurprisal8753/blueprint.log",
+      "sha256": "62fb8fb92c22d9d8fe96cc82a49cdd118b1ca644fabe430a19ad2189cad265f8"
+    },
+    {
+      "kind": "provenance",
+      "command": [
+        "/tmp/qic-density-simplex-provenance-env/bin/python",
+        "docs/provenance/evidence/iidSurprisal8753/check_provenance.py",
+        "--root",
+        ".",
+        "--validator",
+        "/tmp/tnlean-area-law-provenance-validator.py",
+        "--schema",
+        "/tmp/tnlean-area-law-provenance-schema.json"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.36,
+      "source_revision": "a862136a75385465447223efcf08c009a959b660",
+      "log": "docs/provenance/evidence/iidSurprisal8753/provenance.log",
+      "sha256": "b47d5eb1ef492cdc51bbe0871efda87ee672df65e1be8fd9eecae04985d2c953"
+    },
+    {
+      "kind": "prose",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "0c3485a499660de80843affa0b25b964c12a5193"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.38,
+      "source_revision": "a862136a75385465447223efcf08c009a959b660",
+      "log": "docs/provenance/evidence/iidSurprisal8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    }
+  ],
+  "kernel_reports": 4,
+  "allowed_kernel_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "target_build_jobs": 3178,
+  "proof_holes": false,
+  "mathlib_source_rebuild": false,
+  "visual_inspection": {
+    "artifact": "output/pdf/iid-surprisal.pdf",
+    "sha256": "b5dea109a3493d29aafd71b7bba6af0e3bc420bb9822ec11887356847e90cb1d",
+    "pages": 2,
+    "images": {
+      "docs/provenance/evidence/iidSurprisal8753/render/iid-page-1.png": "8e5b30b94df951f20b03b0b3ac52635a9a14572e458c8d3e0b4db96aa0686bb7",
+      "docs/provenance/evidence/iidSurprisal8753/render/iid-page-2.png": "60cf20e679ea6bc797f879ea38876c8215675b3f03653c8d375ca01072b6521b"
+    },
+    "result": "Both rendered pages inspected; formulas, citation and proof text are legible, with no clipping or unresolved references."
+  }
+}

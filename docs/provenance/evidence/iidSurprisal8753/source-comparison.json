@@ -1,0 +1,35 @@
+{
+  "mathematical_source": "openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+  "label": "comparator:high-label",
+  "lines": [
+    255,
+    281
+  ],
+  "scope": "Independent-copy surprisal concentration only. No Schur label selection or Lemma 3.1 physical concentration theorem is claimed.",
+  "declarations": [
+    {
+      "name": "Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal",
+      "extra_hypotheses": false,
+      "zero_eigenvalues_allowed": true
+    },
+    {
+      "name": "Entropy.surprisalTail_pi_le_variance",
+      "extra_hypotheses": false,
+      "zero_eigenvalues_allowed": true
+    },
+    {
+      "name": "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le",
+      "extra_hypotheses": false,
+      "zero_eigenvalues_allowed": true
+    },
+    {
+      "name": "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le",
+      "extra_hypotheses": false,
+      "zero_eigenvalues_allowed": true
+    }
+  ],
+  "spectral_trace_test_function": "arbitrary real function; continuity is needed only on the actual finite spectrum",
+  "normalization": "Only the concentration statements require trace one; the spectral trace law needs only PSD.",
+  "zero_copies": "The spectral law and generic-window bounds include k = 0; only the simplified rate requires positive k."
+}
