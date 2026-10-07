@@ -1,0 +1,101 @@
+\section{Copy symmetry and physical spectral cutoffs}
+\label{sec:replica_copy_covariance}
+
+Let $\mathcal H=\mathbb C^A$ be finite-dimensional, and let $U_\sigma$ be the
+operator permuting its $k\ge0$ copies by $\sigma\in S_k$.
+Write $H_\Sigma$ and $N$ for the physical replica operators of
+Definition~\ref{def:replica_operators}.
+The following commutation identities give the compatibility with symmetry
+and auxiliary sectors used in \cite[Section~7]{OpenAI2026AreaLaw}.
+They require no normalization of $\Omega$.
+
+\begin{theorem}[Copy symmetry of a replica sum]
+\label{thm:replica_sum_copy_commute}
+\lean{Matrix.commute_replicaHamiltonian_permOp}
+\leanok
+\uses{def:replica_operators}
+For every operator $H$ on $\mathcal H$ and every $\sigma\in S_k$,
+$H_\Sigma U_\sigma=U_\sigma H_\Sigma$.
+\end{theorem}
+\begin{proof}
+\leanok
+The $(x,y)$ matrix entry of $H_\Sigma$ is
+$\sum_i\prod_j K_{i,j}(x_j,y_j)$, where $K_{i,i}=H$ and $K_{i,j}=I$ for
+$j\ne i$. Replacing $x_j,y_j$ by $x_{\sigma^{-1}j},y_{\sigma^{-1}j}$ and
+reindexing both $i$ and $j$ by $\sigma^{-1}$ leaves the sum unchanged.
+Thus $H_\Sigma(\sigma x,\sigma y)=H_\Sigma(x,y)$, which is the stated
+commutation identity.
+\end{proof}
+
+\begin{theorem}[Copy symmetry of a tensor power]
+\label{thm:replica_product_copy_commute}
+\lean{Matrix.commute_finKronecker_const_permOp}
+\leanok
+For every operator $H$ on $\mathcal H$ and every $\sigma\in S_k$,
+$H^{\otimes k}U_\sigma=U_\sigma H^{\otimes k}$.
+In particular, the independent-copy density $\rho^{\otimes k}$ is
+permutation invariant.
+\end{theorem}
+\begin{proof}
+\leanok
+The matrix entry is $\prod_j H(x_j,y_j)$.
+Reindexing this product by $\sigma^{-1}$ proves invariance of the entries
+under simultaneous permutation of their two arguments, and hence commutation.
+\end{proof}
+
+\begin{theorem}[Copy symmetry of functions of the excitation count]
+\label{thm:replica_cfc_copy_commute}
+\lean{Matrix.commute_cfc_replicaDefectCount_permOp}
+\leanok
+\uses{thm:replica_sum_copy_commute}
+For every real function $f$ on the spectrum of $N$ and every $\sigma\in S_k$,
+$f(N)U_\sigma=U_\sigma f(N)$.
+In particular, the closed spectral cutoff $P_t=\mathbf1_{(-\infty,t]}(N)$
+commutes with every physical copy permutation.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_sum_copy_commute}
+The operator $N$ is the replica sum for $I-|\Omega\rangle\langle\Omega|$,
+so it commutes with $U_\sigma$. Real functional calculus preserves this
+commutation. Every function is continuous on the finite spectrum; no global
+continuity of the threshold indicator is needed.
+\end{proof}
+
+\begin{theorem}[Physical functions and auxiliary operators]
+\label{thm:replica_cfc_auxiliary_commute}
+\lean{Matrix.commute_cfc_replicaDefectCount_kronecker}
+\leanok
+\uses{thm:replica_cfc_copy_commute}
+For any finite-dimensional auxiliary space $\mathcal K$ and any operator
+$M$ on it, $f(N)\otimes I_{\mathcal K}$ commutes with $U_\sigma\otimes M$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_cfc_copy_commute}
+The two products are $(f(N)U_\sigma)\otimes M$ and
+$(U_\sigma f(N))\otimes M$, which agree.
+\end{proof}
+
+\begin{theorem}[Preservation of fixed symmetry and auxiliary sectors]
+\label{thm:replica_cfc_preserves_fixed}
+\lean{Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed}
+\leanok
+\uses{thm:replica_cfc_auxiliary_commute}
+If $(U_\sigma\otimes M)v=v$, then
+$(U_\sigma\otimes M)(f(N)\otimes I_{\mathcal K})v
+=(f(N)\otimes I_{\mathcal K})v$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_cfc_auxiliary_commute}
+Commute the two operators and use $(U_\sigma\otimes M)v=v$.
+Taking $M$ to be the simultaneous copy action on the auxiliary systems proves
+preservation of the symmetric space. Taking $\sigma$ to be the identity and
+$M$ to be either auxiliary Schur projector proves preservation of its fixed
+sector. Both applications include $f(N)=P_t$.
+\end{proof}
+
+The concentration estimate used to select an entropy window, the defect-mass
+bound, the decomposition into ground factors, and the inverse-metric bounds
+are separate assertions.

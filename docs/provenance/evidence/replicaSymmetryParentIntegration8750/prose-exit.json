@@ -1,0 +1,20 @@
+{
+  "source_revision": "2b2ce0a9e57ffff7c6044b4133c62f6f5afa0828",
+  "argv": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/TNLean/scripts/check_reader_facing_prose.py",
+    "--root",
+    ".",
+    "--diff-base",
+    "502ba621d485f15b72d8aa5582eaad62f351096b"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "exit_code": 0,
+  "elapsed_seconds": 0.11131170799490064,
+  "log": "docs/provenance/evidence/replicaSymmetryParentIntegration8750/prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+  "uncompressed_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+  "uncompressed_bytes": 57,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

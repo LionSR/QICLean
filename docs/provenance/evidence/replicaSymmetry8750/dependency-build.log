@@ -1,0 +1,7 @@
+✔ [3150/3155] Built QICLean.Representation.PermutationRepresentation (10s)
+✔ [3151/3155] Built QICLean.Analysis.SpectralCutoffMass (11s)
+✔ [3152/3155] Built QICLean.Representation.IrrepLabels (5.3s)
+✔ [3153/3155] Built QICLean.Analysis.ReplicaDefect (5.2s)
+✔ [3154/3155] Built QICLean.Representation.LabelProjectors (3.3s)
+✔ [3155/3155] Built QICLean.Representation.TensorPowerAction (3.9s)
+Build completed successfully (3155 jobs).

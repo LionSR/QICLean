@@ -1,0 +1,11 @@
+{
+  "command": [
+    "leanblueprint",
+    "web"
+  ],
+  "working_directory": "blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 49.93,
+  "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+  "log_sha256": "e72f9c51da7b3bb7e942b9db2d9718a05f226ac2c91a7e87427a602d719b48d7"
+}

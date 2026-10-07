@@ -1,0 +1,24 @@
+{
+  "result": "passed",
+  "pdf_pages": 427,
+  "selected_physical_pages": [
+    403,
+    404
+  ],
+  "selected_printed_pages": [
+    402,
+    403
+  ],
+  "pdf": "docs/provenance/evidence/excitationStabilizerIntegration8750/excitation-stabilizer-blueprint.pdf",
+  "pdf_sha256": "2d770e7fb9df92651af63b8aa6f2f4296663bb19def4a1d0beb287560b63dc8f",
+  "images": {
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/render/excitation-stabilizer-web-desktop.png": "1db87abf14d4ad82d7b0e07a4edf67380ead4d526be34c34e92c93de1d26f352",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/render/excitation-stabilizer-web-mobile.png": "5a55e6c2cef9fcdf2a94e4cddeb90b6092606dbf09cd1559b87962f92ee94663",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/render/page-403.png": "0008470cb89983f64595ea5556d4649cf86656f6cf029aa7078b7f00e0630db4",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/render/page-404.png": "c2dc98a06fbc96cd6978c243260b38e4505ae5a40f6c17a327a3ae475dbf83e0"
+  },
+  "inspection": "The two complete-book pages and the complete desktop and mobile section were visually inspected. All three statements and proofs, direct-image covariance, the stabilizer condition, arbitrary auxiliary matrix, and the final whole-copy label observation are legible. No clipped equations, missing mathematical symbols, citation failures, or page overflow were observed. The mobile page width equals its 360-pixel viewport.",
+  "web_math_elements": 32,
+  "whole_web_pages": 38,
+  "whole_web_typeset_elements": 37221
+}

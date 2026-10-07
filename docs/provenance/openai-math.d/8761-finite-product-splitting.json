@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8761-finite-product-splitting-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductSplitting.lean",
+        "declaration": "FiniteProduct.splitTwoRegionsEquiv",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/05-frames.tex",
+          "labels": [
+            "lem:splitting"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Compose the canonical finite-product split and disjoint-union coordinates with the existing finite enumerations."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build -KwarningAsError=true QICLean.Entropy.FiniteProductSplitting",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/build.log",
+            "sha256": "adb402ad3ce20180267d4582ffa52ae5ffd4e385d9a4d765909fc39f13c35ab7"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/FiniteProductSplitting.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/8761-finite-product-splitting/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/axioms.log",
+            "sha256": "1b986746dec95ade6eb62614ddc17f1e231f65a6e48dc1314cabe39f21c2a368"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8761-finite-product-splitting-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductSplitting.lean",
+        "declaration": "FiniteProduct.splitTwoRegionsState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/05-frames.tex",
+          "labels": [
+            "lem:splitting"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Express the original physical vector in the two-region and full-complement coordinates without truncation."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build -KwarningAsError=true QICLean.Entropy.FiniteProductSplitting",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/build.log",
+            "sha256": "adb402ad3ce20180267d4582ffa52ae5ffd4e385d9a4d765909fc39f13c35ab7"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/FiniteProductSplitting.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/8761-finite-product-splitting/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/axioms.log",
+            "sha256": "1b986746dec95ade6eb62614ddc17f1e231f65a6e48dc1314cabe39f21c2a368"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8761-finite-product-splitting-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductSplitting.lean",
+        "declaration": "FiniteProduct.partialTraceRight_splitTwoRegionsState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/05-frames.tex",
+          "labels": [
+            "lem:splitting"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Identify the actual coordinate right marginal with the existing regional joint density by definitional equality."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build -KwarningAsError=true QICLean.Entropy.FiniteProductSplitting",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/build.log",
+            "sha256": "adb402ad3ce20180267d4582ffa52ae5ffd4e385d9a4d765909fc39f13c35ab7"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/FiniteProductSplitting.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/8761-finite-product-splitting/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/axioms.log",
+            "sha256": "1b986746dec95ade6eb62614ddc17f1e231f65a6e48dc1314cabe39f21c2a368"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8761-finite-product-splitting-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductSplitting.lean",
+        "declaration": "FiniteProduct.splitTwoRegionsState_unit",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/05-frames.tex",
+          "labels": [
+            "lem:splitting"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive coordinate normalization from the trace of the actual normalized regional density."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build -KwarningAsError=true QICLean.Entropy.FiniteProductSplitting",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/build.log",
+            "sha256": "adb402ad3ce20180267d4582ffa52ae5ffd4e385d9a4d765909fc39f13c35ab7"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/FiniteProductSplitting.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/8761-finite-product-splitting/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/axioms.log",
+            "sha256": "1b986746dec95ade6eb62614ddc17f1e231f65a6e48dc1314cabe39f21c2a368"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8761-finite-product-splitting-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductSplitting.lean",
+        "declaration": "FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/05-frames.tex",
+          "labels": [
+            "lem:splitting"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Apply the proved Uhlmann purification splitting to the existing physical regional mutual information, retaining a full-domain complement isometry and unit output purifications."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build -KwarningAsError=true QICLean.Entropy.FiniteProductSplitting",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/build.log",
+            "sha256": "adb402ad3ce20180267d4582ffa52ae5ffd4e385d9a4d765909fc39f13c35ab7"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/FiniteProductSplitting.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/8761-finite-product-splitting/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/axioms.log",
+            "sha256": "1b986746dec95ade6eb62614ddc17f1e231f65a6e48dc1314cabe39f21c2a368"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8761-finite-product-splitting-06",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/FiniteProductSplitting.lean",
+        "declaration": "FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/05-frames.tex",
+          "labels": [
+            "lem:splitting"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Specialize the proved polynomial-accuracy purification bound to actual regional mutual information without adding a Hamiltonian or dimension hypothesis."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build -KwarningAsError=true QICLean.Entropy.FiniteProductSplitting",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/build.log",
+            "sha256": "adb402ad3ce20180267d4582ffa52ae5ffd4e385d9a4d765909fc39f13c35ab7"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/FiniteProductSplitting.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/8761-finite-product-splitting/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8761-finite-product-splitting/axioms.log",
+            "sha256": "1b986746dec95ade6eb62614ddc17f1e231f65a6e48dc1314cabe39f21c2a368"
+          }
+        ]
+      }
+    }
+  ]
+}

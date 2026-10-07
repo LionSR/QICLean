@@ -1,0 +1,455 @@
+{
+  "declaration_count": 89,
+  "parent_declaration_count": 75,
+  "new_declaration_count": 14,
+  "parent_raw_audit_exact_prefix": true,
+  "reports": {
+    "Entropy.normalizedRestriction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.sum_normalizedRestriction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.normalizedRestriction_pos": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.log_card_typical_centered": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.entropy_normalizedRestriction_typical_centered": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.typicalSpectrum_entropy_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.spectralSelection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.spectralRestrictionMass": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.normalizedSpectralRestriction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.isStarProjection_spectralSelection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.commute_spectralSelection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.normalizedSpectralRestriction_posSemidef": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.trace_normalizedSpectralRestriction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.normalizedSpectralRestriction_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.spectralRestrictionMass_le_one": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.rank_normalizedSpectralRestriction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.entropy_normalizedSpectralRestriction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.typicalSpectralRestriction_entropy_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.splitTwoRegionsEquiv": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.splitTwoRegionsState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.partialTraceRight_splitTwoRegionsState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.splitTwoRegionsState_unit": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.conditionalMutualInformation_nonneg": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.entropy_submodular": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.mutualInformation_mono_left": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.trace_le_smul_rank_add_complement_of_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.shiftedRegulator_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.trace_shiftedRegulator_le_quarter": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.simplex_ratio_conditions_of_isMinOn": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.simplexFilterObjective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.normalizedFilterWeights": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.hasFDerivAt_simplexFilterObjective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.simplexFilterObjective_pos": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.normalizedFilterWeights_nonneg": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.sum_normalizedFilterWeights": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Entropy.normalizedFilterWeights_clipped_of_isMinOn": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.leftFilteredVector": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.leftFilteredVector_eq_kronecker": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.partialTraceLeft_projection_split": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.typicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.partialTraceRight_typicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.norm_typicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.inner_typicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.norm_sub_typicalPureState_sq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.norm_sub_typicalPureState_sq_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.partialTraceLeft_typicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.partialTraceLeft_typicalPureState_decomposition": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.partialTraceLeft_typicalPureState_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.entropy_partialTraceLeft_typicalPureState_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.partialTraceRight_partialTraceLeft_typicalPureState_decomposition": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.partialTraceRight_partialTraceLeft_typicalPureState_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.entropy_partialTraceRight_partialTraceLeft_typicalPureState_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.spectralSelectionEmbedding": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.compressedTypicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.kronecker_mulVec_compressedTypicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.partialTraceRight_compressedTypicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.partialTraceLeft_compressedTypicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.norm_compressedTypicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.typicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.split_typicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.norm_typicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.reducedPure_typicalPureState": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.entropy_typicalPureState_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FiniteProduct.reducedPure_typicalPureState_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosDef.commute_rpow_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.commute_add_smul_one_rpow_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.commute_of_commute_shifted_inverse_power": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.typicalSet_normalizedSpectralRestriction_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.typicalPureState_typicalSet_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.smul_one_sub_spectralCutoff_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.spectralCutoff_mass_ge": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.replicaHamiltonian": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.replicaDefectCount": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.replicaHamiltonian_mulVec_prod": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.PosSemidef.replica_gap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.posSemidef_replicaDefectCount": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.spectralCutoff_replica_gap_mass_ge": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.replicaExcitationProjection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.isStarProjection_replicaExcitationProjection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.sum_replicaExcitationProjection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.replicaDefectCount_mul_replicaExcitationProjection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.replicaExcitationProjection_mul_of_ne": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Matrix.replicaDefectCutoff_decomposition": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "custom_axioms": [],
+  "sorryAx": false
+}

@@ -1,0 +1,11 @@
+{
+  "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+  "count": 73,
+  "distinct": 73,
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "log_sha256": "805012087823ef4ac38e11db6ee07323e953ee3e993dd1bb9e3c967c251d1e0e"
+}

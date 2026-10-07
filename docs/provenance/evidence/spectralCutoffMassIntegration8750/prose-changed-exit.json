@@ -1,0 +1,14 @@
+{
+  "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+  "argv": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "14778d7e"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+  "exit_code": 0,
+  "elapsed_seconds": 0.15015506744384766,
+  "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/prose-changed.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

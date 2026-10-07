@@ -1,0 +1,12 @@
+{
+  "command": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.34,
+  "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+  "log_sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+}

@@ -1,0 +1,1017 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-typical-pure-state-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.leftFilteredVector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.leftFilteredVector_eq_kronecker",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.partialTraceLeft_projection_split",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.typicalPureState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.partialTraceRight_typicalPureState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-06",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.norm_typicalPureState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-07",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.inner_typicalPureState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-08",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.norm_sub_typicalPureState_sq",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-09",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.norm_sub_typicalPureState_sq_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-10",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.partialTraceLeft_typicalPureState",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-11",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.partialTraceLeft_typicalPureState_decomposition",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-12",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.partialTraceLeft_typicalPureState_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-13",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.entropy_partialTraceLeft_typicalPureState_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalize the actual projected typical Schmidt vector, its physical first-factor action, normalization, actual marginals, exact vector error, and the complementary marginal positive-semidefinite and entropy bounds. No full-rank, dimension-ordering, assumed Schmidt-coordinate, or assumed entropy inequality hypotheses are used. The original source norm comparisons and Schur-label construction remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-14",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.partialTraceRight_partialTraceLeft_typicalPureState_decomposition",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual selected/discarded decomposition, positive-semidefinite bound, and entropy bound on an arbitrary factor of the complement by taking a further partial trace. No enlarged-region spectral hypothesis, full rank, assumed Schmidt coordinates, or assumed entropy bound is used."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-15",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.partialTraceRight_partialTraceLeft_typicalPureState_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual selected/discarded decomposition, positive-semidefinite bound, and entropy bound on an arbitrary factor of the complement by taking a further partial trace. No enlarged-region spectral hypothesis, full rank, assumed Schmidt coordinates, or assumed entropy bound is used."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-pure-state-16",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalPureState.lean",
+        "declaration": "Matrix.entropy_partialTraceRight_partialTraceLeft_typicalPureState_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:typical-set",
+            "comparator:post-marginal"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the actual selected/discarded decomposition, positive-semidefinite bound, and entropy bound on an arbitrary factor of the complement by taking a further partial trace. No enlarged-region spectral hypothesis, full rank, assumed Schmidt coordinates, or assumed entropy bound is used."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalPureState",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/build.log",
+            "sha256": "6d033fad084fa1749d2754adb962108851efb9f8db2ab37ec851664962f9de6f"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureStateSubsystem8753/TypicalPureStateAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/axioms.log",
+            "sha256": "62baf886a01fec7aba2a587c13da21127632bda80169f425bc9157a4894ccb8e"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLeanTest/TypicalPureState.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalPureStateSubsystem8753/regressions.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    }
+  ]
+}

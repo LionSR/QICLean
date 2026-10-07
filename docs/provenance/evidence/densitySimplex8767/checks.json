@@ -1,0 +1,101 @@
+{
+  "source_revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+  "base_revision": "b38799319c3869e80e6213f67325b8abb014625e",
+  "source_hashes": {
+    "QICLean/Analysis/DensitySimplex.lean": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8",
+    "QICLeanTest/DensitySimplex.lean": "3831036b95d7f7f5a366ab2955b3382316c9fb1ead9dd81e5b6956b50712a991",
+    "blueprint/src/chapter/ch12_density_simplex.tex": "69ba0286e0672171f40fcabe75030386649b924b520a6f244e916f94a2f16b4b",
+    "docs/formalization/density-simplex-minima.md": "3e0282ad98336731803f6a2a6126cff5940b3214f4f5db135d725612d8433e52"
+  },
+  "public_declarations": [
+    "Entropy.simplex_ratio_conditions_of_isMinOn",
+    "Entropy.simplexFilterObjective",
+    "Entropy.normalizedFilterWeights",
+    "Entropy.hasFDerivAt_simplexFilterObjective",
+    "Entropy.simplexFilterObjective_pos",
+    "Entropy.normalizedFilterWeights_nonneg",
+    "Entropy.sum_normalizedFilterWeights",
+    "Entropy.normalizedFilterWeights_clipped_of_isMinOn"
+  ],
+  "kernel_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "build": {
+    "command": "lake build QICLean.Analysis.DensitySimplex",
+    "exit_code": 0,
+    "duration_seconds": 17,
+    "mathlib_prebuilt_verified": true
+  },
+  "strict_axiom_audit": {
+    "exit_code": 0,
+    "public_declarations": 8,
+    "definitions_included": true
+  },
+  "strict_regressions": {
+    "exit_code": 0,
+    "examples": [
+      "boundary minimum with zero weight",
+      "feasible nonminimum",
+      "zero exponent minimum",
+      "failure of positive support multiplier at zero exponent"
+    ]
+  },
+  "text_style": {
+    "exit_code": 0,
+    "returned_error_files": 0,
+    "scope": [
+      "QICLean/Analysis/DensitySimplex.lean",
+      "QICLeanTest/DensitySimplex.lean"
+    ],
+    "python_repository_wide_linter": false
+  },
+  "tactic_pattern_scan": {
+    "exit_code": 0,
+    "scope": "exact copy of production module in /tmp/qic-density-simplex-owned",
+    "findings": 0
+  },
+  "provenance": {
+    "exit_code": 0,
+    "policy_repository": "LionSR/TNLean",
+    "policy_revision": "c738e87489bc1b4ae1d58a6bdefb2c1cbd654114",
+    "scope": "owned 8-row shard and complete public source notices"
+  },
+  "blueprint": {
+    "scope": "standalone rendering of exact auxiliary fragment with existing bibliography",
+    "pdflatex_exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "bibtex_exit_code": 0,
+    "undefined_references": false,
+    "overfull_boxes": false,
+    "pages": 1,
+    "visually_inspected": true,
+    "pdf_sha256": "3af1be41f407879ad32ec8ecbc90d2c5426ed91799062059b7ac65b765537c95",
+    "full_book_checkdecls": false
+  },
+  "scope": "Actual diagonal last-filter minimization only; native ordered noncommuting chain and full Proposition 4.1 remain unproved.",
+  "logs": {
+    "axioms.log": "06a31853ecd30bf753c56c3ef3f1b8bf831d405f53bcaf486793afcff5be12f6",
+    "blueprint-bibtex.log": "5e3bd5cad9dfc3e914eab6dafca72f8268f6fa417fca38d529cef313fa9631d7",
+    "blueprint-final.log": "75c467157400992065f598ebdddf60ad6d142846a78dedec2d717ef0ac5c1ccd",
+    "blueprint-second.log": "37e1c63303a007b0f8d357c277ee9a6c272d0aff23a7710e0967badc2a63c4cf",
+    "build.log": "7735b272c44abd09d340d09d59e84122bc75ca1566d37ae765e81d24c317f747",
+    "provenance.log": "4eacbeb60356909f64964c77c141e924542f850a91681a178ae98ceec526de7e",
+    "regression.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-audit.log": "56dcef25a76855ebce28f0812423d2d435d8888cdb2cfb2a134721891e0b8781",
+    "tactic-patterns.log": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8",
+    "text-style.log": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "source_token_audit": {
+    "exit_code": 0,
+    "scope": [
+      "QICLean/Analysis/DensitySimplex.lean",
+      "QICLeanTest/DensitySimplex.lean"
+    ],
+    "lexer": "frozen TNLean provenance policy"
+  }
+}

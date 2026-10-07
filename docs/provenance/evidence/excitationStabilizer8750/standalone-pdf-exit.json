@@ -1,0 +1,17 @@
+{
+  "source_revision": "6c2e938246305038cb4e448499efcb04d2921c7f",
+  "argv": [
+    "latexmk",
+    "-pdf",
+    "-interaction=nonstopmode",
+    "-halt-on-error",
+    "-outdir=docs/provenance/evidence/excitationStabilizer8750",
+    "docs/provenance/evidence/excitationStabilizer8750/standalone-wrapper.tex"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-07T22:46:55.314946+00:00",
+  "elapsed_seconds": 1.2819012499967357,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/excitationStabilizer8750/standalone-pdf.log",
+  "sha256": "f97459d6ac33b332b8d572d27f2e4ea9c9161707c74421941b0ac95cfd2ffb61"
+}
