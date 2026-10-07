@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Representation.SchurSurprisal
+import QICLean.Entropy.IidSurprisal
+import QICLean.Analysis.ReplicaPermutationCovariance
 
 /-!
 # Entropy windows for the actual Schur labels
@@ -270,5 +272,41 @@ theorem exists_labelProj_mass_entropy_window (hρ : ρ.PosSemidef)
       have hhalf : N * (2 * N)⁻¹ = (1 / 2 : ℝ) := by field_simp
       rwa [hhalf])
   exact ⟨l, hmL, (Finset.mem_filter.mp hl).2.2⟩
+
+end TensorPower
+
+namespace TensorPower
+
+variable {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {ρ : Matrix Ω Ω ℂ}
+
+omit [DecidableEq Ω] in
+private theorem trace_finKronecker_const (htr : ρ.trace = 1) (k : ℕ) :
+    (finKronecker (fun _ : Fin k => ρ)).trace = 1 := by
+  classical
+  change (∑ x : Fin k → Ω, ∏ j : Fin k, ρ (x j) (x j)) = 1
+  rw [← Fintype.prod_sum (fun (_ : Fin k) (i : Ω) => ρ i i)]
+  change (∏ _ : Fin k, ρ.trace) = 1
+  simp [htr]
+
+private theorem exists_labelProj_iid_of_tail_error (hρ : ρ.PosSemidef)
+    (htr : ρ.trace = 1) {k : ℕ} (hk : 0 < k)
+    (hsmall :
+      (∑ i, hρ.isHermitian.eigenvalues i *
+        (-Real.log (hρ.isHermitian.eigenvalues i) - vonNeumannEntropy ρ hρ.isHermitian) ^ 2) /
+          Real.sqrt (k : ℝ) +
+        (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ) *
+          Real.exp (-((k : ℝ) ^ (3 / 4 : ℝ)) / 2) ≤ 1 / 2) :
+    ∃ l : IrrepLabel (Equiv.Perm (Fin k)),
+      (2 * (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ))⁻¹ ≤
+        ((finKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) l).trace.re ∧
+      |Real.log l.dim - (k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian| ≤
+        2 * (k : ℝ) ^ (3 / 4 : ℝ) := by
+  have hρk := finKronecker_posSemidef (fun _ : Fin k => ρ) (fun _ => hρ)
+  apply exists_labelProj_mass_entropy_window hρk (trace_finKronecker_const htr k)
+    (fun σ => (Matrix.commute_finKronecker_const_permOp ρ k σ).symm)
+    ((k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
+  have htail := hρ.re_trace_surprisalTail_finKronecker_three_quarters_le htr hk
+  dsimp only at htail
+  linarith
 
 end TensorPower
