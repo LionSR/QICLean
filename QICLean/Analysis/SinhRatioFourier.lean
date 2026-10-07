@@ -368,7 +368,201 @@ theorem rectBoundaryIntegral_fourierIntegrand {s : ℝ} (hs : s ∈ Ioo (0 : ℝ
     exact (differentiable_fourierNumer s z u).div (differentiable_densityDenom s u)
       (densityDenom_ne_zero hs h0 h1 huP.1 huP.2)
   rw [integral_boundary_rect_eq_of_simple_poles P c hP hg hgc hfd, Finset.sum_pair hne]
-  simp only [c, if_pos rfl, if_neg (Ne.symm hne)]
+  rw [show c p₁ = c₁ by simp [c], show c p₂ = c₂ by simp [c, Ne.symm hne]]
   exact two_pi_I_mul_residues hs z
+
+/-- `‖cosh(a + ib)‖ ≥ |sinh a|`. -/
+theorem abs_sinh_le_norm_cosh (a b : ℝ) : |Real.sinh a| ≤ ‖cosh ((a : ℂ) + b * I)‖ := by
+  rw [cosh_ofReal_add_ofReal_mul_I, norm_def, ← Real.sqrt_sq_eq_abs]
+  apply Real.sqrt_le_sqrt
+  rw [normSq_apply]
+  simp only [add_re, ofReal_re, mul_re, I_re, mul_zero, ofReal_im, I_im, mul_one, sub_zero,
+    add_im, mul_im, zero_add, add_zero]
+  have h1 := Real.cosh_sq a
+  have h2 := Real.sin_sq_add_cos_sq b
+  nlinarith [sq_nonneg (Real.cos b), sq_nonneg (Real.sinh a)]
+
+/-- The density is periodic with period `i`. -/
+theorem densityDenom_add_I (s : ℝ) (w : ℂ) : densityDenom s (w + I) = densityDenom s w := by
+  rw [densityDenom, densityDenom, mul_add, cosh_add]
+  have h1 : cosh (2 * (Real.pi : ℂ) * I) = 1 := by
+    rw [cosh_mul_I, ← ofReal_ofNat, ← ofReal_mul, ← ofReal_cos, Real.cos_two_pi, ofReal_one]
+  have h2 : sinh (2 * (Real.pi : ℂ) * I) = 0 := by
+    rw [sinh_mul_I, ← ofReal_ofNat, ← ofReal_mul, ← ofReal_sin, Real.sin_two_pi, ofReal_zero,
+      zero_mul]
+  rw [h1, h2]; ring
+
+/-- On the top edge the integrand is `e^{-z}` times the integrand on the real line. -/
+theorem fourierIntegrand_add_I (s z : ℝ) (x : ℝ) :
+    fourierIntegrand s z ((x : ℂ) + I) = cexp (-(z : ℂ)) * fourierIntegrand s z x := by
+  rw [fourierIntegrand_eq, fourierIntegrand_eq, densityDenom_add_I]
+  have : I * ((x : ℂ) + I) * z = I * x * z + -(z : ℂ) := by ring_nf; rw [I_sq]; ring
+  rw [this, Complex.exp_add]; ring
+
+/-- On the real line the integrand has modulus `m_s(x)`. -/
+theorem norm_fourierIntegrand_ofReal (s z x : ℝ) :
+    ‖fourierIntegrand s z x‖ = |Real.sinhRatioDensity s x| := by
+  rw [fourierIntegrand, norm_mul]
+  have h1 : ‖cexp (I * x * z)‖ = 1 := by
+    rw [show I * (x : ℂ) * z = ((x * z : ℝ) : ℂ) * I by push_cast; ring, norm_exp_ofReal_mul_I]
+  have h2 : sinhRatioDensity s x = (Real.sinhRatioDensity s x : ℂ) := by
+    simp only [sinhRatioDensity, Real.sinhRatioDensity]
+    push_cast; rfl
+  rw [h1, one_mul, h2, norm_real, Real.norm_eq_abs]
+
+/-- The integrand is integrable on the real line. -/
+theorem integrable_fourierIntegrand {s : ℝ} (hs : s ∈ Ioo (0 : ℝ) (1 / 2)) (z : ℝ) :
+    Integrable (fun x : ℝ ↦ fourierIntegrand s z x) := by
+  have hcont : Continuous (fun x : ℝ ↦ fourierIntegrand s z x) := by
+    have hfdiv : (fun x : ℝ ↦ fourierIntegrand s z x) =
+        fun x : ℝ ↦ fourierNumer s z x / densityDenom s x := funext fun x ↦
+      fourierIntegrand_eq_div s z x
+    rw [hfdiv]
+    refine ((differentiable_fourierNumer s z).continuous.comp continuous_ofReal).div
+      ((differentiable_densityDenom s).continuous.comp continuous_ofReal) fun x ↦ ?_
+    exact densityDenom_ne_zero hs (by simp) (by simp)
+      (fun h ↦ by have := congrArg im h; simp [pole₁] at this; linarith [hs.2])
+      (fun h ↦ by have := congrArg im h; simp [pole₂] at this; linarith [hs.1])
+  refine (Real.integrable_sinhRatioDensity hs).mono' hcont.aestronglyMeasurable
+    (Eventually.of_forall fun x ↦ ?_)
+  rw [norm_fourierIntegrand_ofReal, abs_of_pos (Real.sinhRatioDensity_pos hs x)]
+
+/-- The bound on a vertical edge. -/
+theorem norm_fourierIntegrand_vertical_le {s : ℝ} (hs : s ∈ Ioo (0 : ℝ) (1 / 2)) (z : ℝ)
+    {x y : ℝ} (hy0 : 0 ≤ y) (hy1 : y ≤ 1) (hx : 1 < Real.sinh (2 * π * |x|)) :
+    ‖fourierIntegrand s z ((x : ℂ) + y * I)‖ ≤
+      Real.exp |z| * (Real.sin (2 * π * s) / (Real.sinh (2 * π * |x|) - 1)) := by
+  have hθ : 2 * π * s ∈ Ioo 0 π := ⟨by nlinarith [pi_pos, hs.1], by nlinarith [pi_pos, hs.2]⟩
+  have hS : 0 < Real.sin (2 * π * s) := sin_pos_of_pos_of_lt_pi hθ.1 hθ.2
+  rw [fourierIntegrand, norm_mul]
+  have hexp : ‖cexp (I * ((x : ℂ) + y * I) * z)‖ ≤ Real.exp |z| := by
+    rw [norm_exp]
+    apply Real.exp_le_exp.mpr
+    have : (I * ((x : ℂ) + y * I) * z).re = -(y * z) := by simp
+    rw [this]
+    have h1 : |y * z| ≤ |z| := by
+      rw [abs_mul, abs_of_nonneg hy0]; exact mul_le_of_le_one_left (abs_nonneg z) hy1
+    linarith [neg_abs_le (y * z)]
+  have hden : Real.sinh (2 * π * |x|) - 1 ≤ ‖densityDenom s ((x : ℂ) + y * I)‖ := by
+    have h1 := abs_sinh_le_norm_cosh (2 * π * x) (2 * π * y)
+    rw [Real.abs_sinh, abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 * π)] at h1
+    have h2 : ‖((Real.cos (2 * π * s) : ℝ) : ℂ)‖ ≤ 1 := by
+      rw [norm_real, Real.norm_eq_abs]; exact Real.abs_cos_le_one _
+    have heq : (2 * (Real.pi : ℂ) * ((x : ℂ) + y * I)) =
+        ((2 * π * x : ℝ) : ℂ) + ((2 * π * y : ℝ) : ℂ) * I := by push_cast; ring
+    rw [densityDenom, heq]
+    have := norm_sub_norm_le (cosh (((2 * π * x : ℝ) : ℂ) + ((2 * π * y : ℝ) : ℂ) * I))
+      (-((Real.cos (2 * π * s) : ℝ) : ℂ))
+    rw [sub_neg_eq_add, norm_neg] at this
+    linarith
+  have hmS : ‖sinhRatioDensity s ((x : ℂ) + y * I)‖ ≤
+      Real.sin (2 * π * s) / (Real.sinh (2 * π * |x|) - 1) := by
+    rw [sinhRatioDensity, norm_div, norm_real, Real.norm_eq_abs, abs_of_pos hS]
+    exact div_le_div_of_nonneg_left hS.le (by linarith) hden
+  exact mul_le_mul hexp hmS (norm_nonneg _) (Real.exp_pos _).le
+
+/-- The vertical edge integrals tend to zero. -/
+theorem tendsto_vertical_fourierIntegrand {s : ℝ} (hs : s ∈ Ioo (0 : ℝ) (1 / 2)) (z : ℝ)
+    (σ : ℝ) (hσ : |σ| = 1) :
+    Tendsto (fun R : ℝ ↦ ∫ y in (0 : ℝ)..1, fourierIntegrand s z (((σ * R : ℝ) : ℂ) + y * I))
+      atTop (𝓝 0) := by
+  set C := Real.exp |z| * Real.sin (2 * π * s)
+  have hlin : Tendsto (fun R : ℝ ↦ Real.sinh (2 * π * R) - 1) atTop atTop := by
+    refine tendsto_atTop_mono' atTop ?_ (tendsto_atTop_add_const_right _ (-1)
+      (tendsto_id.const_mul_atTop (by positivity : (0 : ℝ) < 2 * π)))
+    filter_upwards [eventually_ge_atTop (0 : ℝ)] with R hR
+    have := Real.self_le_sinh_iff.mpr (by positivity : (0 : ℝ) ≤ 2 * π * R)
+    simp only [id]; linarith
+  have hbound : Tendsto (fun R : ℝ ↦ C / (Real.sinh (2 * π * R) - 1)) atTop (𝓝 0) :=
+    tendsto_const_nhds.div_atTop hlin
+  refine squeeze_zero_norm' ?_ hbound
+  filter_upwards [hlin.eventually_gt_atTop 0, eventually_gt_atTop (0 : ℝ)] with R hR hR0
+  have hx : |σ * R| = R := by rw [abs_mul, hσ, one_mul, abs_of_pos hR0]
+  have hb : ∀ y ∈ Ι (0 : ℝ) 1, ‖fourierIntegrand s z (((σ * R : ℝ) : ℂ) + y * I)‖ ≤
+      C / (Real.sinh (2 * π * R) - 1) := by
+    intro y hy
+    rw [uIoc_of_le zero_le_one] at hy
+    have := norm_fourierIntegrand_vertical_le hs z hy.1.le hy.2 (by rw [hx]; linarith)
+    rw [hx] at this
+    calc _ ≤ _ := this
+      _ = C / (Real.sinh (2 * π * R) - 1) := by simp only [C]; ring
+  have := intervalIntegral.norm_integral_le_of_norm_le_const hb
+  simpa using this
+
+/-- **The Fourier formula for the hyperbolic-sine ratio.** For `0 < s < 1/2` and real `z`,
+`g_s(z) = ∫ e^{iuz} m_s(u) du`.
+
+Area-law paper, Lemma 7.3 (`transport:fourier`), display `transport:g-fourier`,
+`06-transport.tex` lines 194--199, proof lines 214--226. -/
+theorem integral_exp_mul_sinhRatioDensity {s : ℝ} (hs : s ∈ Ioo (0 : ℝ) (1 / 2)) (z : ℝ) :
+    ∫ u : ℝ, cexp (I * u * z) * (Real.sinhRatioDensity s u : ℂ) = (Real.sinhRatio s z : ℂ) := by
+  have hf : ∀ u : ℝ, cexp (I * u * z) * (Real.sinhRatioDensity s u : ℂ) =
+      fourierIntegrand s z u := by
+    intro u
+    rw [fourierIntegrand]
+    congr 1
+    simp only [sinhRatioDensity, Real.sinhRatioDensity]
+    push_cast; rfl
+  simp_rw [hf]
+  rcases eq_or_ne z 0 with rfl | hz
+  · have : ∀ u : ℝ, fourierIntegrand s 0 u = (Real.sinhRatioDensity s u : ℂ) := fun u ↦ by
+      rw [← hf]; simp
+    simp_rw [this]
+    rw [show (∫ u : ℝ, ((Real.sinhRatioDensity s u : ℝ) : ℂ)) =
+        ((∫ u : ℝ, Real.sinhRatioDensity s u : ℝ) : ℂ) from integral_ofReal,
+      Real.integral_sinhRatioDensity hs, Real.sinhRatio_zero]
+  · set F := ∫ u : ℝ, fourierIntegrand s z u
+    set E := cexp (-((1 / 2 - s : ℝ) * z)) - cexp (-((1 / 2 + s : ℝ) * z))
+    have hint := integrable_fourierIntegrand hs z
+    have hΦ : Tendsto (fun R : ℝ ↦ ∫ x in (-R)..R, fourierIntegrand s z x) atTop (𝓝 F) :=
+      intervalIntegral_tendsto_integral hint tendsto_neg_atTop_atBot tendsto_id
+    have hV₁ := tendsto_vertical_fourierIntegrand hs z 1 (by simp)
+    have hV₂ := tendsto_vertical_fourierIntegrand hs z (-1) (by simp)
+    have hlim : Tendsto (fun R : ℝ ↦ (1 - cexp (-(z : ℂ))) * (∫ x in (-R)..R,
+        fourierIntegrand s z x) + I * ((∫ y in (0 : ℝ)..1,
+          fourierIntegrand s z (((1 * R : ℝ) : ℂ) + y * I)) - ∫ y in (0 : ℝ)..1,
+          fourierIntegrand s z (((-1 * R : ℝ) : ℂ) + y * I))) atTop
+        (𝓝 ((1 - cexp (-(z : ℂ))) * F + I * (0 - 0))) :=
+      (hΦ.const_mul _).add ((hV₁.sub hV₂).const_mul I)
+    have hconst : ∀ᶠ R : ℝ in atTop, (1 - cexp (-(z : ℂ))) * (∫ x in (-R)..R,
+        fourierIntegrand s z x) + I * ((∫ y in (0 : ℝ)..1,
+          fourierIntegrand s z (((1 * R : ℝ) : ℂ) + y * I)) - ∫ y in (0 : ℝ)..1,
+          fourierIntegrand s z (((-1 * R : ℝ) : ℂ) + y * I)) = E := by
+      filter_upwards [eventually_gt_atTop (0 : ℝ)] with R hR
+      have h := rectBoundaryIntegral_fourierIntegrand hs z hR
+      unfold rectBoundaryIntegral at h
+      simp only [neg_re, ofReal_re, neg_im, ofReal_im, neg_zero, add_re, I_re, add_zero, add_im,
+        I_im, zero_add, ofReal_zero, zero_mul, smul_eq_mul, ofReal_neg, ofReal_one,
+        one_mul] at h
+      simp_rw [fourierIntegrand_add_I, intervalIntegral.integral_const_mul] at h
+      rw [show E = _ from h.symm]
+      simp only [one_mul, neg_mul, ofReal_neg]
+      ring
+    have hEq : (1 - cexp (-(z : ℂ))) * F = E := by
+      have := tendsto_nhds_unique (hlim.congr' hconst) tendsto_const_nhds
+      simpa using this
+    have hne : 1 - cexp (-(z : ℂ)) ≠ 0 := by
+      intro h
+      have h1 : cexp (-(z : ℂ)) = 1 := by linear_combination -h
+      rw [← ofReal_neg, ← ofReal_exp, ofReal_eq_one, Real.exp_eq_one_iff, neg_eq_zero] at h1
+      exact hz h1
+    have hrealR : Real.sinhRatio s z * (1 - Real.exp (-z)) =
+        Real.exp (-((1 / 2 - s) * z)) - Real.exp (-((1 / 2 + s) * z)) := by
+      rw [Real.sinhRatio_of_ne_zero s hz]
+      have hsh : Real.sinh (z / 2) ≠ 0 := by
+        rw [Ne, Real.sinh_eq_zero]; exact div_ne_zero hz two_ne_zero
+      rw [div_mul_eq_mul_div, div_eq_iff hsh, Real.sinh_eq, Real.sinh_eq]
+      rw [show -((1 / 2 - s) * z) = s * z + -(z / 2) by ring,
+        show -((1 / 2 + s) * z) = -(s * z) + -(z / 2) by ring, Real.exp_add, Real.exp_add,
+        show -z = -(z / 2) + -(z / 2) by ring, Real.exp_add, show -(s * z) = -(s * z) by rfl]
+      have : Real.exp (z / 2) * Real.exp (-(z / 2)) = 1 := by rw [← Real.exp_add]; simp
+      linear_combination (-(Real.exp (s * z) - Real.exp (-(s * z))) / 2) * this
+    have hreal : (Real.sinhRatio s z : ℂ) * (1 - cexp (-(z : ℂ))) = E := by
+      have := congrArg (fun x : ℝ ↦ (x : ℂ)) hrealR
+      simp only [E]
+      push_cast at this ⊢
+      exact this
+    calc F = E / (1 - cexp (-(z : ℂ))) := by rw [← hEq]; field_simp
+      _ = (Real.sinhRatio s z : ℂ) := by rw [← hreal]; field_simp
 
 end Complex
