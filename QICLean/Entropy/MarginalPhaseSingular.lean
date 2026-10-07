@@ -182,6 +182,62 @@ theorem tendsto_phaseFam_mul [Nonempty X] [Nonempty U] [Nonempty F] {n m : Type*
       exact norm_cpow_imag_eq_one (affF_pos hc hε.1 hε.2 le_rfl) v) hY hK
   exact h
 
+/-- **Marginal-phase comparison** (area-law manuscript, Lemma 5.2,
+`lem:conditional-phases`, `04-conditional.tex`, lines 321–339).  For a density matrix `ρ`
+on `x (U F)`, possibly singular, `d = dim x`, `η = I(x:F|U)_ρ` and every real `u`,
+`‖((ρ̂_U^{-iu} ρ̂_{xU}^{iu}) ⊗ I_F - ρ̂_{UF}^{-iu} ρ̂^{iu}) √ρ‖₂ ≤ 2 |sinh π u| 𝓡_η`, with
+kernel-completed phases.  The bound depends on no dimension other than `d`. -/
+theorem norm_phaseDifference_le (htr : ρ.trace = 1) (u : ℝ) :
+    ‖(WithLp.toLp 2 (vec (phaseDifference hρ u * sqrtSpec hρ.1)) :
+        EuclideanSpace ℂ ((X × (U × F)) × (X × (U × F))))‖ ≤
+      2 * |Real.sinh (Real.pi * u)| * phaseRate (Fintype.card X) (condMutualInfo ρ hρ) := by
+  have hne : Nonempty (X × (U × F)) := by
+    by_contra h
+    rw [not_nonempty_iff] at h
+    simp [Matrix.trace] at htr
+  have : Nonempty X := ⟨hne.some.1⟩
+  have : Nonempty U := ⟨hne.some.2.1⟩
+  have : Nonempty F := ⟨hne.some.2.2⟩
+  have hcX : (0 : ℝ) < Fintype.card X := Nat.cast_pos.2 Fintype.card_pos
+  have hcF : (0 : ℝ) < Fintype.card F := Nat.cast_pos.2 Fintype.card_pos
+  set hρH := hρ.1
+  set hsP := posSemidef_marginalXU hρ
+  set hUP := posSemidef_marginalU hρ
+  set hUFP := posSemidef_marginalUF hρ
+  have e : -((u : ℂ) * Complex.I) = ((-u : ℝ) : ℂ) * Complex.I := by push_cast; ring
+  -- the families
+  set P : ℝ → Matrix (X × (U × F)) (X × (U × F)) ℂ := fun ε => spectralFun hρH.eigenvectorUnitary
+    (fun k => ((affF X U F 1 ε (hρH.eigenvalues k) ^ (1 / 2 : ℝ) : ℝ) : ℂ))
+  have hpos : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε ∧ ε ≤ 1 := by
+    filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ) < 1 by norm_num)] with ε hε
+    exact ⟨hε.1, hε.2.le⟩
+  -- the square root converges
+  have hP : Tendsto P (𝓝[>] 0) (𝓝 (sqrtSpec hρH)) := by
+    rw [sqrtSpec_eq_rpow]
+    exact tendsto_spectralFun _ fun k => tendsto_rpow_affF 1 _ _ (by norm_num)
+  -- the innermost phase times the square root converges
+  have hQP : Tendsto (fun ε => phaseFam hρH (affF X U F 1 ε) ((u : ℂ) * Complex.I) * P ε)
+      (𝓝[>] 0) (𝓝 (hatPhase hρH u * sqrtSpec hρH)) := by
+    rw [hatPhase, sqrtSpec, spectralFun_mul]
+    simp only [phaseFam, P, spectralFun_mul]
+    refine tendsto_spectralFun _ fun k => ?_
+    simp only [Pi.mul_apply]
+    by_cases hk : hρH.eigenvalues k = 0
+    · simp only [hk, ite_true, Real.sqrt_zero, Complex.ofReal_zero, mul_zero]
+      rw [tendsto_zero_iff_norm_tendsto_zero]
+      have h0 := tendsto_rpow_affF (X := X) (U := U) (F := F) 1 0 (1 / 2) (by norm_num)
+      rw [Real.zero_rpow (by norm_num), Complex.ofReal_zero] at h0
+      have h0' := (tendsto_zero_iff_norm_tendsto_zero.1 h0)
+      refine h0'.congr' ?_
+      filter_upwards [hpos] with ε hε
+      rw [norm_mul, norm_cpow_imag_eq_one (affF_pos one_pos hε.1 hε.2 le_rfl), one_mul]
+    · have hk' : 0 < hρH.eigenvalues k := lt_of_le_of_ne (hρ.eigenvalues_nonneg k) (Ne.symm hk)
+      simp only [hk, ite_false]
+      rw [Real.sqrt_eq_rpow]
+      exact (tendsto_cpow_affF hk' _).mul (tendsto_rpow_affF 1 _ _ (by norm_num))
+  sorry
+
+
 end Main
 
 end Entropy.MarginalPhase
