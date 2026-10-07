@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Entropy
 
 import QICLean.Entropy.Bipartite
+import QICLean.Entropy.BufferDiscount
 import QICLean.Entropy.ClassicalMutualInformation
 import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalTwoFamilies
