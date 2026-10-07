@@ -35,9 +35,11 @@ import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.GeometricDecay
+import QICLean.Analysis.GlobalGap
 import QICLean.Analysis.HayashiMarkovStructure
 import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
+import QICLean.Analysis.HermitianPartSum
 import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.InjectiveRangeProjector
@@ -66,6 +68,7 @@ import QICLean.Analysis.MeanErgodic
 import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorNormConvergence
+import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.ProbabilityEntropy
