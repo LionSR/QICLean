@@ -76,3 +76,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Respect the inverse convention of `permOp`. Use the existing
   `Commute.cfc_real` to transfer actual commutation to real functional
   calculus; no continuity or invariance hypothesis on the cutoff is added.
+
+### Permutation covariance of exact sectors — candidate (2026-10-08)
+
+- **Pattern:** Reindex the one-copy product by the inverse permutation, tracking
+  the image of its distinguished subset, and reduce matrix multiplication by
+  permutation matrices with the existing `PEquiv` multiplication lemmas.
+- **Seen:** Exact-sector covariance in `Analysis/ReplicaExcitationSymmetry.lean`;
+  invariant-entry reduction in `Analysis/ReplicaPermutationCovariance.lean`.
+- **Abstraction:** The existing `PEquiv.toMatrix_toPEquiv_mul` and
+  `PEquiv.mul_toMatrix_toPEquiv` perform the matrix calculation in both files.
+  The public covariance theorem handles all actual excitation subsets; its
+  stabilizer and auxiliary consequences reuse it. No new tactic is needed.
+- **Caveat:** The image is σB for the convention x(j)↦x(σ⁻¹j). An individual
+  subset projection commutes only with its stabilizer, not arbitrary metrics.
