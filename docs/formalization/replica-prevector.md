@@ -1,0 +1,11 @@
+# Actual initial vectors with common auxiliary labels
+
+The module `QICLean/Representation/ReplicaPrevector.lean` constructs the initial vector of OpenAI, *A two-dimensional area law from a global spectral gap* (September 24, 2026), Section 7, source lines 130–147 and 255–281, `comparator:prevector` and `comparator:high-label`, at commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+
+Its input is a unit physical one-copy eigenvector Ω, its actual Hamiltonian H and real eigenvalue, and a unit bipartite vector ψ whose right system has dimension d. The reduced density is the actual partial trace of |ψ⟩⟨ψ|. The same selected-label sequence gives eventual inverse polynomial projection mass for the literal tensor powers of ψ and logarithmic dimension k S(ρ) + o(k).
+
+The initial vector is the physical tensor power multiplied by the actual right-label projection of the repeated uniform auxiliary pair. For every positive copy number it is nonzero, has norm at most one, is a physical mean-energy eigenvector, has the same label on both auxiliary systems, and is invariant under simultaneous copy permutations. Positive dimension is derived from normalization of ψ. No nonvanishing, normalization or symmetry certificate for the initial vector is supplied as a hypothesis.
+
+To meet the all-positive-copy-number assertion, any unsupported labels in the finite prefix of the asymptotic sequence are replaced by labels of positive mass in the actual selected density. Completeness and the existing polynomial sector-mass theorem produce these labels. The sequence remains unchanged eventually, so its entropy asymptotic and quantitative mass bound are preserved. Initial uniform-pair probability is merely nonzero and may be exponentially small.
+
+This establishes the initial-vector construction. It does not establish the full comparator proposition, inverse metrics, amplification, the Bell pinning identity for the selected physical state, or a spatial realization. In the area-law application ψ must be the actual normalized Schmidt truncation of the target; that instantiation and the later Bell and metric arguments remain separate. No upstream Lean proof text was reused. The unique mathematical fragment is `blueprint/src/fragment/replica_prevector.tex`.

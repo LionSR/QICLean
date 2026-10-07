@@ -137,3 +137,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   No new tactic is needed.
 - **Caveats:** The sector count gives a mass bound only; an entropy window
   requires a separate concentration estimate and a restricted selection.
+
+### Tensor-product actions in product coordinates — candidate (2026-10-08)
+
+- **Pattern:** Expand a Kronecker action on a product vector and apply the
+  distributive law for two finite sums. Factor the physical and auxiliary
+  actions before using their individual fixed-vector equations.
+- **Seen:** The two auxiliary-label equations and simultaneous symmetry in
+  `QICLean/Representation/ReplicaPrevector.lean` share the private generic
+  `kronecker_mulVec_product` lemma. The mean-energy calculation in
+  `QICLean/Analysis/ReplicaDefect.lean` has a prior identity-spectator variant.
+- **Abstraction:** The new calculation is written once and reused for all
+  three actions. The norm calculation reuses the existing public quadratic
+  form factorization. Reconsider a common algebraic action lemma when a
+  further independent consumer needs it; no tactic is introduced here.
+- **Caveats:** The actual matrix actions and vector factors are used. No
+  supplied factorization or eigenvector statement for the initial vector
+  replaces these calculations.

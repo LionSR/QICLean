@@ -1,0 +1,72 @@
+\section{The initial vector with common auxiliary labels}
+\label{sec:replica_prevector}
+
+Let $\Omega\in\mathbb C^A$ and
+$\psi\in\mathbb C^S\otimes\mathbb C^d$ be unit vectors. Suppose that
+$H\Omega=E_0\Omega$, with $E_0\in\mathbb R$.
+Write $\rho=\operatorname{tr}_S|\psi\rangle\langle\psi|$.
+The initial vector below is the construction in
+\cite[Section~7]{OpenAI2026AreaLaw}, equations
+\textup{(comparator:prevector)} and \textup{(comparator:high-label)}.
+
+\begin{definition}[Initial vector in product coordinates]
+\label{def:replica_prevector}
+\lean{TensorPower.replicaPrevector}
+\leanok
+Let $u_d=d^{-1/2}\sum_{i=0}^{d-1}|i,i\rangle$ be the uniform auxiliary pair.
+Regroup its literal tensor power into the two auxiliary systems and write it
+as $U_k$. For a central label projector $\Pi_\lambda$ on
+$(\mathbb C^d)^{\otimes k}$, define
+\begin{align}
+ v_{k,\lambda}=\Omega^{\otimes k}\otimes
+                     (I_C\otimes\Pi_\lambda)U_k.
+\end{align}
+All products and projections here act on the actual finite copy spaces.
+\end{definition}
+
+\begin{theorem}[One sequence for the initial vector and selected mass]
+\label{thm:replica_prevector_sequence}
+\lean{TensorPower.exists_label_sequence_replicaPrevector}
+\leanok
+\uses{def:replica_prevector,thm:high_label_pure_sequence}
+There is one sequence $(\lambda_k)$ for which every $k\ge1$ satisfies
+\begin{align}
+ 0<\|v_{k,\lambda_k}\|\le1,
+ \qquad (\overline H_k\otimes I_{CR})v_{k,\lambda_k}
+       =E_0v_{k,\lambda_k},
+ \qquad \overline H_k=\frac1k\sum_{i=0}^{k-1}H^{(i)}.
+\end{align}
+The vector has label $\lambda_k$ on both auxiliary systems and is invariant
+under every simultaneous copy permutation on the physical, left auxiliary
+and right auxiliary systems. For all sufficiently large $k$,
+\begin{align}
+ \|(I_{S^k}\otimes\Pi_{\lambda_k})\psi^{\otimes k}\|^2
+     \ge\frac1{2(k+1)^{d^2}},
+\end{align}
+and $\log d_{\lambda_k}=kS(\rho)+o(k)$.
+The initial projection of $U_k$ is required only to be nonzero; no inverse
+polynomial lower bound on its probability is asserted.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:replica_prevector,thm:high_label_pure_sequence}
+Start with the common sequence selected from the actual density $\rho$.
+For any remaining copy number at which the selected sector has zero mass,
+choose a sector of positive mass using the complete central resolution of
+$\rho^{\otimes k}$. The original sequence has positive mass eventually,
+so these changes affect only finitely many terms and preserve the mass
+bound and entropy asymptotic.
+
+Unit normalization of $\psi$ implies $d>0$. Every selected projector is
+nonzero, and hence acts nontrivially on the uniform pair. Tensoring with
+$\Omega^{\otimes k}$ preserves its norm. Orthogonal projection is contractive,
+and both unprojected tensor powers have norm one, giving the asserted norm
+bounds. The one-copy eigenvector equation gives the mean-energy equation
+on the physical product, irrespective of the auxiliary vector.
+
+The repeated uniform pair has matching left and right central labels.
+Idempotence therefore gives both fixed-label equations after projection.
+The uniform pair and the physical product are invariant under simultaneous
+copy permutations; centrality of the right label projector preserves this
+invariance after projection.
+\end{proof}
