@@ -111,7 +111,7 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     \lean{SpectralFilter.spectralKernel}
     \leanok
     \uses{def:spectral_cutoff}
-    Define $f(t)=(2\pi)^{-1}\int_\R\chi(\omega)\cos(t\omega)\,d\omega$.
+    Define $f(t)=(2\pi)^{-1}\int_{\R}\chi(\omega)\cos(t\omega)\,d\omega$.
 \end{definition}
 
 \begin{lemma}[Moments of the kernel]
@@ -173,11 +173,11 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     real even function $f(t)=(2\pi)^{-1}\int\chi(\omega)e^{-it\omega}\,d\omega$
     satisfies
     \[
-        \chi(\omega)=\int_\R f(t)e^{it\omega}\,dt,\qquad
+        \chi(\omega)=\int_{\R} f(t)e^{it\omega}\,dt,\qquad
         |f(t)|\le Ce^{-c|t|^\alpha},
     \]
     with $C,c>0$ depending only on $p$ and $\delta$. In particular
-    $\int_\R f=1$.
+    $\int_{\R} f=1$.
 \end{theorem}
 \begin{proof}\leanok
     The Fourier transform of $\chi$ at $\xi$ is $2\pi f(2\pi\xi)$, which is
@@ -196,7 +196,7 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     \leanok
     \uses{def:spectral_kernel}
     For complex square matrices $H$ and $A$, set
-    $\mathcal F_H(A)=\int_\R f(t)\,e^{itH}Ae^{-itH}\,dt$, a Bochner integral
+    $\mathcal F_H(A)=\int_{\R} f(t)\,e^{itH}Ae^{-itH}\,dt$, a Bochner integral
     for the operator norm.
 \end{definition}
 
