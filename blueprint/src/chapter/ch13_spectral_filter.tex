@@ -373,3 +373,103 @@ $P_\Omega=|\Omega\rangle\langle\Omega|$.
     commutes with both square roots, so its image is itself times
     $G^2+K^2=I$.
 \end{proof}
+
+\section{Locality of the positive constraints}
+\label{sec:positive_locality}
+
+Let $L$ be a linear map on matrices, playing the role of a conditional
+expectation onto operators supported in a ball of radius $l$, and write
+$\tau_t(A)=e^{itH}Ae^{-itH}$ and $\alpha=p/(p+1)$.
+
+\begin{lemma}[Kernel tail]
+    \label{lem:spectral_kernel_tail}
+    \lean{SpectralFilter.abs_spectralKernel_le_tail,
+        SpectralFilter.integrable_inv_one_add_abs_sq}
+    \leanok
+    \uses{thm:spectral_kernel_decay}
+    There is $K_0>0$ with
+    $|f(t)|\le K_0(1+|t|)^{-2}e^{-(c/2)T^\alpha}$ whenever $0\le T\le|t|$,
+    where $c$ is the decay rate of the kernel.
+\end{lemma}
+\begin{proof}\leanok
+    Multiply the bounds $|f(t)|\le A(1+|t|)^{-4}$ and
+    $|f(t)|\le Ke^{-c|t|^\alpha}$ and take square roots.
+\end{proof}
+
+\begin{theorem}[Localization of filtered operators]
+    \label{thm:filter_localization}
+    \lean{SpectralFilter.exists_norm_filterIntegral_sub_map_le',
+        SpectralFilter.exists_norm_filterIntegral_sub_map_le}
+    \leanok
+    \uses{lem:spectral_kernel_tail, def:filter_integral}
+    Let $C\ge0$ and $v,c>0$. There are $C',c'>0$, depending only on
+    $p,\delta,C,v,c$, such that
+    $\|\tau_t(A)-L\tau_t(A)\|\le\|A\|\min\{2,Ce^{v|t|-cl}\}$ for all $t$
+    implies $\|\mathcal F_H(A)-L\mathcal F_H(A)\|\le C'e^{-c'l^\alpha}\|A\|$.
+\end{theorem}
+\begin{proof}\leanok
+    The linear map $L$ passes through the integral. For $|t|\le cl/(2v)$ the
+    hypothesis gives the factor $Ce^{-cl/2}$; for larger $|t|$ use the bound
+    $2$ and Lemma~\ref{lem:spectral_kernel_tail}. Finally
+    $e^{-cl/2}\le e^{c/2}e^{-(c/2)l^\alpha}$.
+\end{proof}
+
+\begin{theorem}[Tail of the positive constraints]
+    \label{thm:positive_constraint_tail}
+    \lean{SpectralFilter.norm_abs_sub_map_abs_le,
+        SpectralFilter.exists_norm_positiveConstraint_sub_map_le}
+    \leanok
+    \uses{thm:filter_localization, thm:positive_replacement, lem:sqrt_holder}
+    If $L$ is a contraction, $M$ and $LM$ are Hermitian, and $L$ fixes $|LM|$,
+    then $\||M|-L|M|\|\le2(2\|M\|\|M-LM\|)^{1/2}$. Consequently, if $L$ is
+    moreover unital and preserves Hermitian matrices, and $h$ satisfies the
+    hypothesis of Theorem~\ref{thm:filter_localization} with $\|h\|\le J$,
+    then the positive constraint $k=|M|/c_*$ built from $h$ satisfies
+    $\|k-Lk\|\le C_3e^{-c_3l^\alpha}$, with constants depending only on
+    $p,\Delta,J,C,v,c$.
+\end{theorem}
+\begin{proof}\leanok
+    Write $|M|-L|M|=(|M|-|LM|)+L(|LM|-|M|)$ and apply
+    Lemma~\ref{lem:sqrt_holder}. Unitality gives $M-LM=\mathcal F_H(h)-L\mathcal F_H(h)$.
+\end{proof}
+
+\section{Stability of a global gap}
+\label{sec:gap_perturbation}
+
+\begin{lemma}[Trace distance of pure states]
+    \label{lem:pure_trace_distance}
+    \lean{Matrix.abs_eq_inv_sqrt_smul_mul_self,
+        Matrix.sub_mul_sub_mul_sub_of_idempotent, Matrix.traceDistance_vecMulVec_eq}
+    \leanok
+    For unit vectors $\psi,\phi$ the trace distance of
+    $|\psi\rangle\langle\psi|$ and $|\phi\rangle\langle\phi|$ is
+    $(1-|\langle\psi,\phi\rangle|^2)^{1/2}$.
+\end{lemma}
+\begin{proof}\leanok
+    With $X=P-Q$ and $s=|\langle\psi,\phi\rangle|^2$ one has $PQP=sP$ and
+    $QPQ=sQ$, hence $X^3=(1-s)X$; so $|X|=X^2/(1-s)^{1/2}$ and
+    $\operatorname{tr}X^2=2(1-s)$.
+\end{proof}
+
+\begin{theorem}[Stability of a global gap]
+    \label{thm:gap_perturbation}
+    \lean{exists_unit_eigenvector_re_inner_le, re_inner_smul_add_eigenvector,
+        exists_gap_of_norm_sub_le, Matrix.exists_posSemidef_gap_of_norm_sub_le}
+    \leanok
+    \uses{lem:pure_trace_distance}
+    Let $H_F\ge g(I-P_\Omega)$ with $H_F\Omega=0$, $\|\Omega\|=1$, $g>0$, and
+    let $H'\ge0$ with $\|H'-H_F\|\le\epsilon\le g/4$. Then $H'$ has a unit
+    ground vector $\Omega_0$ with energy $e_0\in[0,\epsilon]$ and
+    $H'-e_0I\ge(g/2)(I-P_{\Omega_0})$; after a choice of phase
+    $\|\Omega_0-\Omega\|\le2(\epsilon/g)^{1/2}$, and the trace distance of the
+    two pure states is at most $(2\epsilon/g)^{1/2}$.
+\end{theorem}
+\begin{proof}\leanok
+    A minimizer of the quadratic form on the unit sphere is an eigenvector.
+    For $\psi\perp\Omega_0$, a combination of $\psi$ and $\Omega_0$ orthogonal
+    to $\Omega$ has energy at least $(g-\epsilon)$ times its squared norm,
+    while the $\Omega_0$ component carries energy $e_0\le g-\epsilon$; hence
+    $\langle\psi,H'\psi\rangle\ge(g-\epsilon)\|\psi\|^2$. Testing on $\Omega$
+    gives $e_0\le\epsilon$, and the gap of $H_F$ at $\Omega_0$ gives
+    $g(1-|\langle\Omega,\Omega_0\rangle|^2)\le2\epsilon$.
+\end{proof}
