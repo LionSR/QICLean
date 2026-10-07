@@ -125,6 +125,38 @@ theorem kronecker_one_le_one {n m : Type*} [Fintype n] [DecidableEq n] [Fintype 
   rw [le_iff, h]
   exact (le_iff.1 hA).kronecker PosSemidef.one
 
+/-- The sandwich bound in the form `tr (Xᴴ X ρ) ≤ 1` for `X = ρ^{[z]} c ρ^{[-z]}`. -/
+theorem re_trace_sandwich_mul_le {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.PosSemidef) (htr : A.trace.re ≤ 1) {c : Matrix n n ℂ} (hc1 : c * cᴴ ≤ 1)
+    (hc2 : cᴴ * c ≤ 1) {z : ℂ} (hz0 : 0 ≤ z.re) (hz1 : z.re ≤ 1 / 2) :
+    ((cfcC A (suppPowFun z) * c * cfcC A (suppPowFun (-z)))ᴴ *
+      (cfcC A (suppPowFun z) * c * cfcC A (suppPowFun (-z))) * A).trace.re ≤ 1 := by
+  set X := cfcC A (suppPowFun z) * c * cfcC A (suppPowFun (-z))
+  set R := cfcC A (suppPowFun (1 / 2))
+  have hhalf : starRingEnd ℂ (1 / 2 : ℂ) = 1 / 2 := Complex.ext (by simp) (by simp)
+  have hR : Rᴴ = R := by rw [conjTranspose_suppPow hA, hhalf]
+  have hcfc : ∀ w : ℂ, supportCPow hA.1 w = cfcC A (suppPowFun w) := fun w =>
+    (supportCPow_eq_cfcC hA.1 w).trans rfl
+  have hRR : R * R = A := by
+    rw [suppPow_mul hA.1]
+    calc cfcC A (suppPowFun (1 / 2 + 1 / 2)) = cfcC A (fun t => (t : ℂ)) := by
+          refine cfcC_congr_of_nonneg hA fun t ht => ?_
+          unfold suppPowFun
+          split_ifs with h
+          · simp [h]
+          · norm_num
+      _ = A := cfcC_id hA.1
+  have hXR : X * R = supportCPow hA.1 z * c * supportCPow hA.1 (1 / 2 - z) := by
+    rw [hcfc, hcfc]
+    simp only [X, R, Matrix.mul_assoc, suppPow_mul hA.1]
+    congr 3; ring
+  have h := re_trace_supportCPow_sandwich_le hA htr hc1 hc2 hz0 hz1
+  rw [← hXR, conjTranspose_mul, hR] at h
+  calc (Xᴴ * X * A).trace.re = (R * Xᴴ * (X * R)).trace.re := by
+        rw [← hRR, ← Matrix.mul_assoc, trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
+          Matrix.mul_assoc (R * Xᴴ)]
+    _ ≤ 1 := h
+
 end Contraction
 
 end Entropy.ConditionalSkew
