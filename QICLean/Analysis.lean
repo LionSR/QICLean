@@ -89,6 +89,7 @@ import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
 import QICLean.Analysis.ShiftedDensityPowers
+import QICLean.Analysis.ShiftedDensityTruncation
 import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
