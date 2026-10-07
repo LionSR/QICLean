@@ -255,6 +255,19 @@
       "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
       "log": "docs/provenance/evidence/iidSurprisalIntegration8753/checkdecls.log",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "native-targets",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/iidSurprisalIntegration8753/check-native-targets.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.12,
+      "source_revision": "88db73287e18f705ec3ae5cc3275d60b551bf123",
+      "log": "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets.log",
+      "sha256": "ff71e382473e5e001f8fbe6313121ab8fb1d0ae0d3fab68fbfc235c43c8b0b13"
     }
   ],
   "file_hashes": {
@@ -265,7 +278,8 @@
     "blueprint/src/chapter/ch12_entropy.tex": "9903311281de3c03bb25beb9025f21c78e0ce52d3721cb602b78a312ebbf1aec",
     "docs/provenance/openai-math.d/iidSurprisal8753.json": "9e5995a8fe3ab3971efbda469aab72603aaed56d911d6926ed6a33dd368893b1",
     "docs/provenance/evidence/iidSurprisalIntegration8753/Axioms.lean": "9f52a8f0e3cd478377fe79223801eb1d062101375f1f59c5a3ef554441ec3e3e",
-    "docs/provenance/evidence/iidSurprisalIntegration8753/README.md": "b579717d17b67e3a8b07cb254c3db2f9818048774aabadc1892235911c4d8fb7",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/NativeDeclarations.txt": "19d13050bbc7346b612dd3be7a4dce652a483c552be9995675e2d3456eba8ec6",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/README.md": "6d1426a46e41cedd39d51fee4013e292979f23fc72de877765fc46ea26f405c8",
     "docs/provenance/evidence/iidSurprisalIntegration8753/axioms-exit.json": "96d3b97f1c7345ecaba59abb77147253886537dc1dd28030dc30ba6745a4e6f8",
     "docs/provenance/evidence/iidSurprisalIntegration8753/axioms.log": "3697a24cb60bbb919cbf7432b11daa650ade527f4b46001f9b59ee94f22db729",
     "docs/provenance/evidence/iidSurprisalIntegration8753/axioms.log.gz": "d46ed63aa1979fcaec0be6c9b03f4f24eb99ebab2c6d72259d508fa6a22496d7",
@@ -278,10 +292,11 @@
     "docs/provenance/evidence/iidSurprisalIntegration8753/build-exit.json": "0bc76f4226a62fc284817633f1297682fa46179b324bec1335d429b75718c560",
     "docs/provenance/evidence/iidSurprisalIntegration8753/build.log": "c9f50d331cbe14a3730a3889346452dfb82b64bb7703757caec9932fff1d35cc",
     "docs/provenance/evidence/iidSurprisalIntegration8753/build.log.gz": "8ff602a09b925dcccdfcb621e23da8e4c79fdb287facdb70a3070e0d6bb37518",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/check-native-targets.py": "a30342d3d96b744227b95155ba66dea45564989ff0df4fa46555910514855981",
     "docs/provenance/evidence/iidSurprisalIntegration8753/checkdecls-exit.json": "112935788cdf653187ac87312390d7fe51eaa1f4f1f6af3553c7465aec8ce013",
     "docs/provenance/evidence/iidSurprisalIntegration8753/checkdecls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "docs/provenance/evidence/iidSurprisalIntegration8753/checkdecls.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
-    "docs/provenance/evidence/iidSurprisalIntegration8753/compression.json": "ffcf49216853deb4d4b77a4265bcbe04dab16a73ee40074f10adde1d8280ee4a",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/compression.json": "1d6cc64bddbfc38a3e6766e591d90e19a1287e3588e1d68ead854ebe62493c10",
     "docs/provenance/evidence/iidSurprisalIntegration8753/imports-exit.json": "4c8f60aa9fd691b333eacc2a1c911e48a20a8c408cf820950a5a49750b620880",
     "docs/provenance/evidence/iidSurprisalIntegration8753/imports.log": "a91440ff931f9bf3af5e23182de5454e49da50a4fe2977fa02b95ea07e81da38",
     "docs/provenance/evidence/iidSurprisalIntegration8753/imports.log.gz": "834a08ad972e95cf6b623f99587e3822ee9360690a5c61f126e847aa95453491",
@@ -292,6 +307,10 @@
     "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-guard-exit.json": "c5646c96eb63401a45aadf0d400191ea8a4531e3d653b0924043b2c2e7405422",
     "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-guard.log": "3ec65beb9a721a77f6dcaa1adae317608779e7f84b6c085083d052f26dfdc3cc",
     "docs/provenance/evidence/iidSurprisalIntegration8753/mathlib-guard.log.gz": "4ff0bad6aabf7a8a3ebdbfa079a417b11220e575046087b6a10da8bb5e9323fc",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets-exit.json": "19b64416e4e7159281d27c934cb94e34d4cd260df07e470eff80ae143017c09c",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets.json": "ff71e382473e5e001f8fbe6313121ab8fb1d0ae0d3fab68fbfc235c43c8b0b13",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets.log": "ff71e382473e5e001f8fbe6313121ab8fb1d0ae0d3fab68fbfc235c43c8b0b13",
+    "docs/provenance/evidence/iidSurprisalIntegration8753/native-targets.log.gz": "5fb9706612a22c8ec3e01e25aca119f7c0584388ae710dacf699aedd199e5a6c",
     "docs/provenance/evidence/iidSurprisalIntegration8753/paper-gaps-exit.json": "4f612da7a713ec6df256c046d6f9f47e0aa0b59a78afd09928da193f07c18ff6",
     "docs/provenance/evidence/iidSurprisalIntegration8753/paper-gaps.log": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f",
     "docs/provenance/evidence/iidSurprisalIntegration8753/paper-gaps.log.gz": "197a885e0bccc91b171706011407c28391b3d96b6a1010413307990fea2cca36",
@@ -339,5 +358,8 @@
     "pages": 38,
     "typeset": 36071
   },
-  "visual_inspection": "passed"
+  "visual_inspection": "passed",
+  "native_list_sha256": "19d13050bbc7346b612dd3be7a4dce652a483c552be9995675e2d3456eba8ec6",
+  "new_fragment_targets_all_present": true,
+  "rendered_doc_targets_all_present": true
 }

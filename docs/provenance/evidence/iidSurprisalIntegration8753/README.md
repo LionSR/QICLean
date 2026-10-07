@@ -7,7 +7,7 @@ c3b2f930. The separate inclusion revision d265bd30 adds one generated entropy
 import and one input of the unique mathematical fragment in the entropy
 chapter. No bibliography item was added.
 
-All seventeen recorded verification commands exited successfully. The
+All eighteen recorded verification commands exited successfully. The
 genuine complete library build finished 9695 jobs. The pinned prebuilt
 Mathlib cache and named module guard passed; no Mathlib source was compiled.
 The strict exact-name audit reports only the three standard kernel axioms
@@ -15,7 +15,9 @@ for all four declarations. The frozen four-entry provenance policy passes.
 
 The blueprint PDF, web, paper registry, bibliography, synchronization and
 native declaration checker all pass. The native checker reads 3193 unique
-declarations. The whole-web regression inspects 38 pages and 36071 typeset
+declarations. `NativeDeclarations.txt` preserves the actual list;
+`native-targets.json` checks containment of all four new fragment targets
+and their exact rendered `#doc/` links. The whole-web regression inspects 38 pages and 36071 typeset
 mathematical expressions. The new section has four correct declaration
 links, no MathJax errors and no mobile page overflow. Its wide spectral
 formula is horizontally scrollable on mobile. The final bibliography and
