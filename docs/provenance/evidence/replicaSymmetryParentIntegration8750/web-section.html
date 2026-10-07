@@ -1,0 +1,397 @@
+<h1 id="sec:replica_copy_covariance">13.28 Copy symmetry and physical spectral cutoffs</h1>
+
+<p>Let \(\mathcal H=\mathbb C^A\) be finite-dimensional, and let \(U_\sigma \) be the operator permuting its \(k\ge 0\) copies by \(\sigma \in S_k\). Write \(H_\Sigma \) and \(N\) for the physical replica operators of Definition&#160;<a href="ch-entropy.html#def:replica_operators">13.24.1</a>. The following commutation identities give the compatibility with symmetry and auxiliary sectors used in <span class="cite">
+	[
+	
+	<a href="sect0001.html#OpenAI2026AreaLaw" >Ope26b</a>
+	, Section&#160;7
+	]
+</span>. They require no normalization of \(\Omega \). </p>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:replica_sum_copy_commute">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">13.28.1</span>
+    <span class="theorem_thmtitle">Copy symmetry of a replica sum</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="ch-entropy.html#thm:replica_sum_copy_commute">#</a>
+    
+    <a class="icon proof" href="ch-entropy.html#a0000002462"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="ch-entropy.html#def:replica_operators">Definition 13.24.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="../docs/find/#doc/Matrix.commute_replicaHamiltonian_permOp" class="lean_decl">Matrix.commute_replicaHamiltonian_permOp</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    For every operator \(H\) on \(\mathcal H\) and every \(\sigma \in S_k\), \(H_\Sigma U_\sigma =U_\sigma H_\Sigma \). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000002462">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>The \((x,y)\) matrix entry of \(H_\Sigma \) is \(\sum _i\prod _j K_{i,j}(x_j,y_j)\), where \(K_{i,i}=H\) and \(K_{i,j}=I\) for \(j\ne i\). Replacing \(x_j,y_j\) by \(x_{\sigma ^{-1}j},y_{\sigma ^{-1}j}\) and reindexing both \(i\) and \(j\) by \(\sigma ^{-1}\) leaves the sum unchanged. Thus \(H_\Sigma (\sigma x,\sigma y)=H_\Sigma (x,y)\), which is the stated commutation identity. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:replica_product_copy_commute">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">13.28.2</span>
+    <span class="theorem_thmtitle">Copy symmetry of a tensor power</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="ch-entropy.html#thm:replica_product_copy_commute">#</a>
+    
+    <a class="icon proof" href="ch-entropy.html#a0000002463"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="../docs/find/#doc/Matrix.commute_finKronecker_const_permOp" class="lean_decl">Matrix.commute_finKronecker_const_permOp</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>   For every operator \(H\) on \(\mathcal H\) and every \(\sigma \in S_k\), \(H^{\otimes k}U_\sigma =U_\sigma H^{\otimes k}\). In particular, the independent-copy density \(\rho ^{\otimes k}\) is permutation invariant. </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000002463">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>The matrix entry is \(\prod _j H(x_j,y_j)\). Reindexing this product by \(\sigma ^{-1}\) proves invariance of the entries under simultaneous permutation of their two arguments, and hence commutation. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:replica_cfc_copy_commute">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">13.28.3</span>
+    <span class="theorem_thmtitle">Copy symmetry of functions of the excitation count</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="ch-entropy.html#thm:replica_cfc_copy_commute">#</a>
+    
+    <a class="icon proof" href="ch-entropy.html#a0000002464"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="ch-entropy.html#thm:replica_sum_copy_commute">Theorem 13.28.1</a></li>
+          
+          <li><a href="ch-entropy.html#thm:replica_sum_copy_commute">Theorem 13.28.1</a></li>
+          
+          <li><a href="ch-entropy.html#thm:replica_sum_copy_commute">Theorem 13.28.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="../docs/find/#doc/Matrix.commute_cfc_replicaDefectCount_permOp" class="lean_decl">Matrix.commute_cfc_replicaDefectCount_permOp</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    For every real function \(f\) on the spectrum of \(N\) and every \(\sigma \in S_k\), \(f(N)U_\sigma =U_\sigma f(N)\). In particular, the closed spectral cutoff \(P_t=\mathbf1_{(-\infty ,t]}(N)\) commutes with every physical copy permutation. </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000002464">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> The operator \(N\) is the replica sum for \(I-|\Omega \rangle \langle \Omega |\), so it commutes with \(U_\sigma \). Real functional calculus preserves this commutation. Every function is continuous on the finite spectrum; no global continuity of the threshold indicator is needed. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:replica_cfc_auxiliary_commute">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">13.28.4</span>
+    <span class="theorem_thmtitle">Physical functions and auxiliary operators</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="ch-entropy.html#thm:replica_cfc_auxiliary_commute">#</a>
+    
+    <a class="icon proof" href="ch-entropy.html#a0000002465"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="ch-entropy.html#thm:replica_cfc_copy_commute">Theorem 13.28.3</a></li>
+          
+          <li><a href="ch-entropy.html#thm:replica_cfc_copy_commute">Theorem 13.28.3</a></li>
+          
+          <li><a href="ch-entropy.html#thm:replica_cfc_copy_commute">Theorem 13.28.3</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="../docs/find/#doc/Matrix.commute_cfc_replicaDefectCount_kronecker" class="lean_decl">Matrix.commute_cfc_replicaDefectCount_kronecker</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    For any finite-dimensional auxiliary space \(\mathcal K\) and any operator \(M\) on it, \(f(N)\otimes I_{\mathcal K}\) commutes with \(U_\sigma \otimes M\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000002465">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> The two products are \((f(N)U_\sigma )\otimes M\) and \((U_\sigma f(N))\otimes M\), which agree. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:replica_cfc_preserves_fixed">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">13.28.5</span>
+    <span class="theorem_thmtitle">Preservation of fixed symmetry and auxiliary sectors</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="ch-entropy.html#thm:replica_cfc_preserves_fixed">#</a>
+    
+    <a class="icon proof" href="ch-entropy.html#a0000002466"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="ch-entropy.html#thm:replica_cfc_auxiliary_commute">Theorem 13.28.4</a></li>
+          
+          <li><a href="ch-entropy.html#thm:replica_cfc_auxiliary_commute">Theorem 13.28.4</a></li>
+          
+          <li><a href="ch-entropy.html#thm:replica_cfc_auxiliary_commute">Theorem 13.28.4</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="../docs/find/#doc/Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed" class="lean_decl">Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    If \((U_\sigma \otimes M)v=v\), then \((U_\sigma \otimes M)(f(N)\otimes I_{\mathcal K})v =(f(N)\otimes I_{\mathcal K})v\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000002466">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Commute the two operators and use \((U_\sigma \otimes M)v=v\). Taking \(M\) to be the simultaneous copy action on the auxiliary systems proves preservation of the symmetric space. Taking \(\sigma \) to be the identity and \(M\) to be either auxiliary Schur projector proves preservation of its fixed sector. Both applications include \(f(N)=P_t\). </p>
+
+  </div>
+</div>
+<p>The concentration estimate used to select an entropy window, the defect-mass bound, the decomposition into ground factors, and the inverse-metric bounds are separate assertions.   </p>
