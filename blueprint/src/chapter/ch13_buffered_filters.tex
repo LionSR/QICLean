@@ -10,9 +10,8 @@
 
 The conditional-entropy discount in a buffered rectangle
 of~\cite[Lemma~3.2]{OpenAI2026AreaLaw} optimizes positive filters on nested
-contours. This chapter collects its scalar ingredients: the weights of the
-contours, the clipping of stationary filter eigenvalues and the resulting
-conjugation cost, and the iteration of the safe-box recurrence
+contours. This chapter collects two scalar ingredients: the weights of the
+contours and the iteration of the safe-box recurrence
 of~\cite[Proposition~3.3]{OpenAI2026AreaLaw}.
 
 \begin{lemma}[Harmonic weights]
@@ -34,26 +33,6 @@ of~\cite[Proposition~3.3]{OpenAI2026AreaLaw}.
     Cauchy--Schwarz. For the lower bound, $\log(x+D)-\log x\le D/x$
     telescopes to $\frac1D\log\frac{2r+D(m+1)}{2r+D}$, and
     $2r+D(m+1)\ge(P+1)r$ while $2r+D\le(2+D)r$.
-\end{proof}
-
-\begin{lemma}[Clipped eigenvalues and conjugation cost]
-    \label{lem:clipped_filter_cost}
-    \lean{Entropy.abs_log_max_sub_log_max_le, Entropy.abs_log_clipped_sub_le,
-        Entropy.cosh_sub_one_le, Entropy.sqrt_mul_cosh_sub_one_le}
-    \leanok
-    For $\varepsilon,\lambda>0$, $a\ge0$ and positive $p_i,p_k$, the numbers
-    $l_i=\max\{\varepsilon,p_i/\lambda\}^{a/2}$ satisfy
-    $|\log(l_i/l_k)|\le\frac a2|\log(p_i/p_k)|$. If $a\le1/2$, $p,q>0$ and
-    $|t|\le\frac a2|\log(p/q)|$, then
-    $\sqrt{pq}\,(\cosh t-1)\le2a^2(p+q)$.
-\end{lemma}
-\begin{proof}\leanok
-    A maximum with a common floor contracts differences of logarithms. For
-    the cost, write $p=\mathrm e^{m+z}$, $q=\mathrm e^{m-z}$, so that
-    $p+q=2\sqrt{pq}\cosh z$ and $|t|\le a|z|\le|z|/2$. Then
-    $\cosh t-1\le\frac{t^2}2\cosh t\le\frac{a^2z^2}2\cosh(z/2)$, using
-    $\sinh v\le v\cosh v$, and
-    $z^2\cosh(z/2)\le\frac{32}{\mathrm e^2}\mathrm e^{|z|}\le8\cosh z$.
 \end{proof}
 
 \begin{lemma}[Power bound from a scale recurrence]
