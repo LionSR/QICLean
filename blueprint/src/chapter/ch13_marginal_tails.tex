@@ -450,3 +450,22 @@ depend on the common values there.
     bases, and diagonal variations in that basis are feasible.
     Lemma~\ref{lem:filter_clipping} applies with $\sum q=\lVert\psi\rVert^2>0$.
 \end{proof}
+
+\begin{theorem}[All stationary filters are clipped]
+    \label{thm:all_filters_clipped}
+    \lean{Entropy.chainList, Entropy.liftProd_chainList_split,
+        Entropy.chainList_update_of_ne, Entropy.isDescendingChain_map,
+        Entropy.forall_clipped_of_max}
+    \leanok
+    \uses{prop:stationary_filter_clipped}
+    Let feasible filters $K_j$ on nested regions $D_0\subseteq\dots\subseteq
+    D_{m-1}$ maximize $\lVert L_{m-1}\cdots L_0\Omega\rVert$ over the product of
+    the feasible sets, with nonzero output $\psi$ and $\#\cdot f_j<1$. Then for
+    every $j$, $K_j$ commutes with $\rho_{\psi,D_j}$, and in a common eigenbasis
+    its eigenvalue ratios are clipped.
+\end{theorem}
+\begin{proof}\leanok
+    Descending induction on $j$: the outer filters form a descending chain by
+    the induction hypothesis, and replacing $K_j$ alone keeps the product
+    feasible, so Proposition~\ref{prop:stationary_filter_clipped} applies.
+\end{proof}
