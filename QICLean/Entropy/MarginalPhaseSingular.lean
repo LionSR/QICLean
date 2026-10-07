@@ -235,6 +235,26 @@ theorem norm_phaseDifference_le (htr : ρ.trace = 1) (u : ℝ) :
       simp only [hk, ite_false]
       rw [Real.sqrt_eq_rpow]
       exact (tendsto_cpow_affF hk' _).mul (tendsto_rpow_affF 1 _ _ (by norm_num))
+  -- the `UF` phase
+  have hUF := tendsto_phaseFam_mul (X := X) (U := U) (F := F) hUFP (c := Fintype.card X) hcX (-u) oneKron hQP (by
+    change ((1 : Matrix X X ℂ) ⊗ₖ kerProj hUFP.1) * (hatPhase hρH u * sqrtSpec hρH) = 0
+    have hcomm : hatPhase hρH u * sqrtSpec hρH = sqrtSpec hρH * hatPhase hρH u := by
+      rw [hatPhase, sqrtSpec, spectralFun_mul, spectralFun_mul, mul_comm]
+    have h0 := one_kronecker_kerProj_mul_sqrtSpec hρ hUFP.1
+    rw [hcomm, ← Matrix.mul_assoc]
+    erw [h0]
+    rw [Matrix.zero_mul])
+  -- the `xU` phase
+  have hXU := tendsto_phaseFam_mul (X := X) (U := U) (F := F) hsP (c := Fintype.card F) hcF u
+    (embedFLin (X := X) (U := U) (F := F)) hP (embedF_kerProj_mul_sqrtSpec hρ)
+  -- the `U` phase
+  have hU := tendsto_phaseFam_mul (X := X) (U := U) (F := F) hUP (c := Fintype.card F * Fintype.card X) (mul_pos hcF hcX)
+    (-u) ((embedFLin (X := X) (U := U) (F := F)).comp oneKron) hXU (by
+      change embedF ((1 : Matrix X X ℂ) ⊗ₖ kerProj hUP.1) * (embedF (hatPhase hsP.1 u) *
+        sqrtSpec hρH) = 0
+      rw [← Matrix.mul_assoc, embedF_mul]
+      exact embedF_kerProj_hatPhase_mul_sqrtSpec hρ u)
+  have hLHSmat := hU.sub hUF
   sorry
 
 
