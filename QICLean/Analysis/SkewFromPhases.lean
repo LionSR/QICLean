@@ -212,6 +212,80 @@ theorem re_deriv_eq_zero_of_symm {f : ℂ → ℂ} (hf : Differentiable ℂ f)
   simp only [neg_re, conj_re] at hre
   linarith
 
+/-- **Departure from the positive axis.**  Let `f` be entire with `f(-z̄) = conj f(z)`,
+`‖f(iy)‖ ≤ 1`, `‖f z‖ ≤ m` on `|Re z| ≤ 1/4` (with `1 ≤ m`, `1 ≤ ℓ`, `log m ≤ 2ℓ`), and
+`f 0 = p ≥ 0`, and suppose `‖f(iu) - p‖ ≤ 2√p E + E²` with `E = 2 |sinh π u| R`.  Then
+for real `|t| ≤ 1/(16ℓ)`,
+`‖f t‖ - Re f t ≤ t² (8π² R² + 24576 e^{π²} ℓ² √(min 1 R))`.  Area-law manuscript,
+proof of Lemma 5.3, `04-conditional.tex`, lines 562–600. -/
+theorem norm_sub_re_le_of_phase_bounds {f : ℂ → ℂ} (hf : Differentiable ℂ f)
+    {m ℓ R p : ℝ} (hm : 1 ≤ m) (hℓ : 1 ≤ ℓ) (hlog : Real.log m ≤ 2 * ℓ) (hR : 0 ≤ R)
+    (hp : 0 ≤ p) (hf0 : f 0 = p) (hsymm : ∀ z, f (-(conj z)) = conj (f z))
+    (him : ∀ y : ℝ, ‖f (y * I)‖ ≤ 1) (hstrip : ∀ z : ℂ, |z.re| ≤ 1 / 4 → ‖f z‖ ≤ m)
+    (hphase : ∀ u : ℝ, ‖f (u * I) - f 0‖ ≤
+      4 * √p * |Real.sinh (Real.pi * u)| * R + 4 * Real.sinh (Real.pi * u) ^ 2 * R ^ 2)
+    {t : ℝ} (ht : |t| ≤ 1 / (16 * ℓ)) :
+    ‖f t‖ - (f t).re ≤
+      t ^ 2 * (8 * Real.pi ^ 2 * R ^ 2 + 24576 * Real.exp (Real.pi ^ 2) * ℓ ^ 2 * √(min 1 R)) := by
+  have hℓ0 : 0 < ℓ := by linarith
+  set b : ℝ := 1 / (8 * ℓ) with hb
+  have hb0 : 0 < b := by positivity
+  have hb8 : b ≤ 1 / 8 := by rw [hb, div_le_div_iff₀ (by positivity) (by norm_num)]; linarith
+  set m' := min 1 R
+  have hm'0 : 0 ≤ m' := le_min zero_le_one hR
+  have hm'1 : m' ≤ 1 := min_le_left _ _
+  have hp1 : p ≤ 1 := by
+    have := him 0
+    simpa [hf0, abs_of_nonneg hp] using this
+  -- the narrow strip bound
+  have hnarrow : ∀ z : ℂ, |z.re| ≤ b → ‖f z‖ ≤ Real.exp 1 := fun z hz => by
+    simpa using norm_le_exp_one_mul_of_strip hf zero_le_one hm hℓ hlog him
+      (fun w hw => by simpa using hstrip w hw) hz
+  -- the Gaussian-damped function
+  set F : ℂ → ℂ := fun z => (f z - p) * Complex.exp (z ^ 2)
+  have hF : Differentiable ℂ F :=
+    (hf.sub (differentiable_const _)).mul (differentiable_exp.comp (differentiable_id.pow 2))
+  set K1 : ℝ := 8 * Real.exp (Real.pi ^ 2)
+  have hK1 : 2 ≤ K1 := by
+    have : 1 ≤ Real.exp (Real.pi ^ 2) := Real.one_le_exp (sq_nonneg _)
+    simp only [K1]; linarith
+  have hnormexp : ∀ z : ℂ, ‖Complex.exp (z ^ 2)‖ = Real.exp (z.re ^ 2 - z.im ^ 2) := by
+    intro z; rw [Complex.norm_exp]; congr 1; simp [sq]
+  -- the imaginary axis
+  have hFim : ∀ u : ℝ, ‖F (u * I)‖ ≤ K1 * m' := by
+    intro u
+    have hnorm : ‖F (u * I)‖ = ‖f (u * I) - p‖ * Real.exp (-u ^ 2) := by
+      simp only [F, norm_mul, hnormexp]; congr 2; simp
+    rw [hnorm]
+    rcases le_total R 1 with hR1 | hR1
+    · have hm' : m' = R := min_eq_right hR1
+      rw [hm']
+      have h1 := hphase u
+      rw [hf0] at h1
+      have hsp : √p ≤ 1 := Real.sqrt_le_one.mpr hp1
+      calc ‖f (u * I) - p‖ * Real.exp (-u ^ 2)
+          ≤ (4 * |Real.sinh (Real.pi * u)| * R + 4 * Real.sinh (Real.pi * u) ^ 2 * R ^ 2) *
+              Real.exp (-u ^ 2) := by
+            refine mul_le_mul_of_nonneg_right (h1.trans ?_) (Real.exp_pos _).le
+            have : 4 * √p * |Real.sinh (Real.pi * u)| * R ≤ 4 * 1 * |Real.sinh (Real.pi * u)| * R := by
+              gcongr
+            linarith
+        _ ≤ K1 * R := phaseError_mul_exp_le hR hR1 u
+    · have hm' : m' = 1 := min_eq_left hR1
+      rw [hm', mul_one]
+      have h2 : ‖f (u * I) - p‖ ≤ 2 := by
+        calc ‖f (u * I) - p‖ ≤ ‖f (u * I)‖ + ‖(p : ℂ)‖ := norm_sub_le _ _
+          _ ≤ 1 + 1 := by
+            gcongr
+            · exact him u
+            · rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hp]; exact hp1
+          _ = 2 := by norm_num
+      calc ‖f (u * I) - p‖ * Real.exp (-u ^ 2) ≤ 2 * 1 := by
+            gcongr
+            exact Real.exp_le_one_iff.2 (by nlinarith [sq_nonneg u])
+        _ ≤ K1 := by linarith
+  sorry
+
 end Complex
 
 end
