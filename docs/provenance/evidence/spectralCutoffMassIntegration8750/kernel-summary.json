@@ -1,0 +1,13 @@
+{
+  "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+  "exact_stock_report_count": 75,
+  "parent_report_count": 73,
+  "parent_raw_log_exact_prefix": true,
+  "parent_raw_sha256": "805012087823ef4ac38e11db6ee07323e953ee3e993dd1bb9e3c967c251d1e0e",
+  "combined_raw_sha256": "3441a8c5735131ca3e1a0a43b14513912d3fa85feb1ff17ccd454b6666e24d2d",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ]
+}
