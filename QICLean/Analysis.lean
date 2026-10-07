@@ -79,6 +79,7 @@ import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
 import QICLean.Analysis.ResolventFunctionalCalculus
+import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Analysis.RpowConvexity
@@ -95,6 +96,7 @@ import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
+import QICLean.Analysis.SqrtHolder
 import QICLean.Analysis.SubperipheralSpectrum
 import QICLean.Analysis.SuperoperatorResolvent
 import QICLean.Analysis.SupportCompressedEntropy
