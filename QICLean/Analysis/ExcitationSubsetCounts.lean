@@ -66,7 +66,7 @@ private theorem log_choose_le_mul_binEntropy_of_pos {p : ℝ}
 OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
 Section 7, `07-comparators.tex`, lines 577–578 (before `comparator:inverse-compression`).
 Original proof of `Real.log_choose_le_mul_binEntropy`; no upstream Lean proof text reused.
-Provenance-ID: excitationSubsetCounts8750-real.log_choose_le_mul_binEntropy.
+Provenance-ID: excitationsubsetcounts8750-real.log_choose_le_mul_binentropy.
 -/
 theorem log_choose_le_mul_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2)
     {k r : ℕ} (hr : (r : ℝ) ≤ p * k) :
@@ -83,7 +83,7 @@ theorem log_choose_le_mul_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2
 OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
 Section 7, `07-comparators.tex`, lines 577–578 (before `comparator:inverse-compression`).
 Original proof of `Real.choose_le_exp_mul_binEntropy`; no upstream Lean proof text reused.
-Provenance-ID: excitationSubsetCounts8750-real.choose_le_exp_mul_binEntropy.
+Provenance-ID: excitationsubsetcounts8750-real.choose_le_exp_mul_binentropy.
 -/
 theorem choose_le_exp_mul_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2)
     {k r : ℕ} (hr : (r : ℝ) ≤ p * k) :
@@ -96,7 +96,7 @@ theorem choose_le_exp_mul_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2
 OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
 Section 7, `07-comparators.tex`, lines 577–590 (before `comparator:inverse-compression`).
 Original proof of `Real.sum_choose_le_mul_exp_binEntropy`; no upstream Lean proof text reused.
-Provenance-ID: excitationSubsetCounts8750-real.sum_choose_le_mul_exp_binEntropy.
+Provenance-ID: excitationsubsetcounts8750-real.sum_choose_le_mul_exp_binentropy.
 -/
 theorem sum_choose_le_mul_exp_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2)
     (k : ℕ) :
@@ -124,7 +124,7 @@ OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2
 Section 7, `07-comparators.tex`, lines 577–590 (before `comparator:inverse-compression`).
 Original proof of `Finset.card_filter_powerset_le_mul_exp_binEntropy`;
 no upstream Lean proof text reused.
-Provenance-ID: excitationSubsetCounts8750-finset.card_filter_powerset_le_mul_exp_binEntropy.
+Provenance-ID: excitationsubsetcounts8750-finset.card_filter_powerset_le_mul_exp_binentropy.
 -/
 theorem card_filter_powerset_le_mul_exp_binEntropy (s : Finset α)
     {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2) :
