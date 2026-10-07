@@ -122,7 +122,8 @@ variable {α : Type*}
 
 OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
 Section 7, `07-comparators.tex`, lines 577–590 (before `comparator:inverse-compression`).
-Original proof of `Finset.card_filter_powerset_le_mul_exp_binEntropy`; no upstream Lean proof text reused.
+Original proof of `Finset.card_filter_powerset_le_mul_exp_binEntropy`;
+no upstream Lean proof text reused.
 Provenance-ID: excitationSubsetCounts8750-finset.card_filter_powerset_le_mul_exp_binEntropy.
 -/
 theorem card_filter_powerset_le_mul_exp_binEntropy (s : Finset α)
