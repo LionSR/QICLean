@@ -1,0 +1,16 @@
+{
+  "files": [
+    {
+      "raw_path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/pdf.log",
+      "raw_bytes": 115045,
+      "raw_sha256": "fa6d048ecd197fc0123984cedb28414c6013566f2166f82b22ec0ce95e3b400b",
+      "archive_path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/pdf.log.gz",
+      "archive_bytes": 22129,
+      "archive_sha256": "ec11c58971d33328a97b4d7942e53f8dcf5d7b2ed43eaefe8420c72ed8ad83d6",
+      "gzip_mtime": 0,
+      "raw_log_is_locally_retained": true,
+      "raw_log_is_tracked": false
+    }
+  ],
+  "individual_proof_bound_logs": "All original individual logs remain tracked and verbatim."
+}

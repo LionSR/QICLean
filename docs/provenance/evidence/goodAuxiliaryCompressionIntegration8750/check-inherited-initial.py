@@ -1,0 +1,35 @@
+"""Check immutable parent proof bytes and the original recorded evidence."""
+from pathlib import Path
+import hashlib,json,subprocess,re
+root=Path(__file__).resolve().parents[4];e=Path(__file__).resolve().parent
+refs=['1f2a868dd6fc465bea6e1823dc63bddc7a43dacd','0e64e1af3cd626df2230961c82e3c47a67939ad7','36c60c2515b79ef3dc3e185c6201bd44eab880db','477eacb601acb5b0eabafdcfbd6236b40f6dce35']
+rows=[]
+for rev in refs:
+ paths=subprocess.check_output(['git','ls-tree','-r','--name-only',rev,'docs/provenance/evidence','docs/provenance/openai-math.d'],cwd=root,text=True).splitlines()
+ for p in paths:
+  data=(root/p).read_bytes();old=subprocess.check_output(['git','show',rev+':'+p],cwd=root)
+  assert data==old,(rev,p)
+  rows.append({'revision':rev,'path':p,'sha256':hashlib.sha256(data).hexdigest()})
+write=lambda n,j:(e/n).write_text(json.dumps(j,indent=2)+'\n')
+write('inherited-byte-preservation.json',{'records':rows,'count':len(rows)})
+inventories=[]
+for p in sorted((root/'docs/provenance/evidence').glob('*/evidence-sha256.json')):
+ if p.parent==e:continue
+ obj=json.loads(p.read_text())
+ if isinstance(obj,list):items=obj
+ elif 'files' in obj:items=obj['files']
+ else:items=[{'path':str((p.parent/k).relative_to(root)) if not k.startswith('docs/') else k,'sha256':v} for k,v in obj.items()]
+ for item in items:
+  data=(root/item['path']).read_bytes();assert hashlib.sha256(data).hexdigest()==item['sha256'],(p,item['path'])
+ inventories.append({'inventory':str(p.relative_to(root)),'verified_bindings':len(items),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+write('inherited-inventory-check.json',{'inventories':inventories,'total_bindings':sum(x['verified_bindings'] for x in inventories)})
+proofs=[]
+for rev in refs[:2]:
+ paths=subprocess.check_output(['git','ls-tree','-r','--name-only',rev,'QICLean'],cwd=root,text=True).splitlines()
+ for p in paths:
+  if p in ['QICLean/Analysis.lean','QICLean/Representation.lean']:continue
+  data=(root/p).read_bytes();old=subprocess.check_output(['git','show',rev+':'+p],cwd=root)
+  assert data==old,(rev,p)
+  proofs.append({'revision':rev,'path':p,'sha256':hashlib.sha256(data).hexdigest()})
+write('production-preservation.json',{'records':proofs,'count':len(proofs),'excluded_generated_aggregators':['QICLean/Analysis.lean','QICLean/Representation.lean']})
+print('Preserved',len(rows),'parent evidence/shard bindings, verified',sum(x['verified_bindings'] for x in inventories),'inventory hashes and',len(proofs),'parent source bindings.')

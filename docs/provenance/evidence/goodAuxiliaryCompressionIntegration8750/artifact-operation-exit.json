@@ -1,0 +1,19 @@
+{
+  "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+  "command": [
+    "node",
+    "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+    "--operation-kind",
+    "edit",
+    "--expected-output-count",
+    "1",
+    "--output-format",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T23:42:07.290107+00:00",
+  "elapsed_seconds": 0.133,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/artifact-operation.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

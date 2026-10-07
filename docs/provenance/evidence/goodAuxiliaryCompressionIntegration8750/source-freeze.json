@@ -1,0 +1,55 @@
+{
+  "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+  "files": [
+    {
+      "path": "QICLean/Representation/GoodAuxiliaryLabelCompression.lean",
+      "sha256": "320841a255dbf8fd8fcb164b12e02197b7628bfc0949e93613af2a7adacc566a",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean",
+      "sha256": "28d9503f05d41b7229a5edaaa0406c34fa73d22735405b32a0a40902fc728d6c",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/good_auxiliary_label_compression.tex",
+      "sha256": "b3d0b6e59cb3b99f45d9e3c295fc8e9d6f3258337419bfb4c4f0d0e41de45c63",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/replica_good_auxiliary_label_bound.tex",
+      "sha256": "9ffdcc2279ae49074528c40642534776b41263f28edabfbfa0f9ec24c870effc",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-good-auxiliary-label-compression.md",
+      "sha256": "f6904560e4f04ae5e64238b77358d5448544551d79c7ceba7317fd74fbdf4366",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-replica-good-auxiliary-label-bound.md",
+      "sha256": "8e442c878b0a020bfb7009dbdcceb38f4c42016410da198aa1cbb3d2456d7bbe",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "ff4e4d369abf23550657eb03dc7a7be8d4e63253a4a041f5a2dcfcc2ac1393cb",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Analysis.lean",
+      "sha256": "6697fd5056f34159ad6f1d5f31ff3b8597228edc784e0c531c108543bb5940a5",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Representation.lean",
+      "sha256": "c12f0e9de5741de04dc25bb833837686bf44176e1a81e917b60495b83f910b7d",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/content.tex",
+      "sha256": "71115ee8782b933244607d0870a606354b9f8d76fe6cc41aad425fef651e4192",
+      "coverage": "Entire file."
+    }
+  ]
+}

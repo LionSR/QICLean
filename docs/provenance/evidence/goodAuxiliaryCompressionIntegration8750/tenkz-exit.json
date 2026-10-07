@@ -1,0 +1,13 @@
+{
+  "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+  "command": [
+    "python3",
+    "scripts/fetch_tenkz.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T23:38:58.223284+00:00",
+  "elapsed_seconds": 1.764,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/tenkz.log",
+  "sha256": "85b883e7882deff706af92a976224626b07289a7cdd6153cc0ca5f7aec62c325"
+}

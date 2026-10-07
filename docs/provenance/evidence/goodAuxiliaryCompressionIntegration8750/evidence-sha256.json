@@ -1,0 +1,486 @@
+{
+  "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+  "files": [
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/Axioms-initial.lean",
+      "sha256": "c1fe99b80c4ceec7f15b248eeb1eb9690f197e76f0bedd71883c54b42d4598bd",
+      "bytes": 169
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/Axioms.lean",
+      "sha256": "2c63f51d527b0c9738554e5c7a120f85981e1d52db68a10686c8705965cfdb8f",
+      "bytes": 282
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/README.md",
+      "sha256": "f8130e5fca5b5e8497eefb7ee70260c1e892ddfd0cc60940b2d18c73aed3bed9",
+      "bytes": 4530
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/artifact-operation-exit.json",
+      "sha256": "622c45474f99ef39f10b26c560396c2cd4cdc2534607eecaec5829673abbca27",
+      "bytes": 735
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/axioms-exit.json",
+      "sha256": "94407fb7db6e8624c07fc576070909947135a48294d0119e77e010d7ec20ac3c",
+      "bytes": 678
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/axioms-final-exit.json",
+      "sha256": "efc8e4fa6ae9730b9e48a7d08658a40e16207dfd18c89f93590aa9519f42f66f",
+      "bytes": 683
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/axioms-final.log",
+      "sha256": "f4c2c3db14ffdce76a5fdf0e77e7eb6134bb293bf327d53cca5a487335949520",
+      "bytes": 249
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/axioms.log",
+      "sha256": "a4f243637e8fe49abdc618a0667633f643279dcd13917f572cdfd3a4d6a8c499",
+      "bytes": 867
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/bibliography-exit.json",
+      "sha256": "c471ceb08b0ed866bfcbe14d9c2a4d1764d42ea54e63c3f3c18a75f72b3a448f",
+      "bytes": 569
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831",
+      "bytes": 169
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/cache-guard-exit.json",
+      "sha256": "a09fac6f84651367d10fe004ebd0913af7c4c843d9d069c6eca7574f93dd84b3",
+      "bytes": 562
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb",
+      "bytes": 61
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/cache-guard.py",
+      "sha256": "60c61c038e9cf222a429e09c703b78649e3b6be389fb0c10f8477f1316cb3651",
+      "bytes": 609
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-inherited-generated-only.py",
+      "sha256": "f615f8b5f8e1e3e1cce5d513ed4481b95097fe58018353df2c549ffc98b49103",
+      "bytes": 2581
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-inherited-initial.py",
+      "sha256": "0b9fa976f391378de5643940d6ff6f77587630dafab01b3ec737c2b86882668c",
+      "bytes": 2496
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-inherited.py",
+      "sha256": "f6c9cdbb92d5c15dee093b23329549c0eda0d0eb0a23e58f64049bf797d76875",
+      "bytes": 3585
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-manifest.py",
+      "sha256": "2ce115b9fdcf993b9712bfc360cfb6035db4ec91661eac796cba9e28a465c22f",
+      "bytes": 2164
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-native-targets.py",
+      "sha256": "59f477842018c7eda8a02849628f12baf97714a47f3dbbd5c14a0aa920dc895b",
+      "bytes": 952
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/checkdecls-exit.json",
+      "sha256": "cb791ff01072c830684ad6e315aea796226bfc2f267ccef08575fcd16747fa55",
+      "bytes": 570
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/compressed-logs.json",
+      "sha256": "fb9955761d5fd81f6a3c5520d3a0422bc08780603bd4141ad66b9f7a40b2c0e7",
+      "bytes": 659
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/copy-bibliography.py",
+      "sha256": "54f9d179b155aff7bc5e5b7fe90739c2f7ddaff2b0615e8c44a4f086f5bc4e1c",
+      "bytes": 461
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/declaration-sync-exit.json",
+      "sha256": "c22a9fbc0c4610314f76897ea9fbd3e78a5328eddeb99274c7a553dc1d4ca3b0",
+      "bytes": 568
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/declaration-sync.log",
+      "sha256": "48ac95cdb8366685cd5f26146a5c64acf488117ed8cf36d2328953d8c1657275",
+      "bytes": 8533
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/full-build-exit.json",
+      "sha256": "b349f1e05b7f096f9a53581c261d5cd7d9013a0085f6337d0b916fcbee568b4d",
+      "bytes": 485
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/full-build.log",
+      "sha256": "8a698133b8ffa78c01b302b090ecd7f8b35ac6ee348fe4a3b057a1809b1d75f3",
+      "bytes": 25250
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/generated-import-preservation.json",
+      "sha256": "b076e3ef1eea9e03cc3ac77874f07f83f80e8cd47dd93f02d940cf5dcd4d8a19",
+      "bytes": 26935
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/generated-output-hashes.json",
+      "sha256": "4bbfd9d59b44264cbbc19e381b8ce8f755d1d3b549d4cccc21f47a99e5bf1809",
+      "bytes": 7283
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/imports-exit.json",
+      "sha256": "34662989bd3bb61be24b01f9db15607a15bfd2ed09ab1bdd2b23d66659ce92d0",
+      "bytes": 532
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/imports.log",
+      "sha256": "dd4c7685d2e12f9dcf439066a577f66859672eae081b7f14b4213924fa2b95c9",
+      "bytes": 81
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/individual-source-preservation.json",
+      "sha256": "8e50c76ec7c82de6de780077ff45bff0b84e87eaed3d32948425beee4d910ea4",
+      "bytes": 2945
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-authoritative-exit.json",
+      "sha256": "276bc1c16fba0b722e4929bc9f12aea600f53aa8e989f3970c64c91c0d100d14",
+      "bytes": 578
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-authoritative.log",
+      "sha256": "c282746f6f2238d435185713b9de34b8c1f6628a4ce02006d1e33ac28d868da8",
+      "bytes": 110
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-byte-preservation.json",
+      "sha256": "f53c76dc2f16cf7ace05b857177984812cce9c4fa3efcaa53c33ee941a8b42b1",
+      "bytes": 788603
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-exit.json",
+      "sha256": "75603ea2ca0ad5774260cde82d6b669bcdcf493f4512749de9009065b8b2625c",
+      "bytes": 565
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-final-exit.json",
+      "sha256": "a4e7e9819f6b8a41dba269d60494e744f5aa9c59c65d8a20051972774e928f97",
+      "bytes": 570
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-final.log",
+      "sha256": "c282746f6f2238d435185713b9de34b8c1f6628a4ce02006d1e33ac28d868da8",
+      "bytes": 110
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-inventory-check.json",
+      "sha256": "614c13ba4f587f423ca35c531b298eefe211f44b225b0995fc508087048acd29",
+      "bytes": 3631
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-retry-exit.json",
+      "sha256": "15db6f8cd2611c0533dc9959536b648cb06988f3ea231f140a9a62b23119f82c",
+      "bytes": 571
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-retry.log",
+      "sha256": "5f8427bca8f288abf31f1aae67246f48f264cc58657ae816cd0bb309ca2d6a9d",
+      "bytes": 397
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited.log",
+      "sha256": "c6bce068cdd76a233a69911a5be0c268ef7f3f8c95fed0f076d31d753f84afc2",
+      "bytes": 374
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/kernel-summary.json",
+      "sha256": "dcf7ebc05a819602f88fe3ed53ee2f1fb31b86cd93d7c869d433cc7d72b45516",
+      "bytes": 621
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/mobile-equations.json",
+      "sha256": "7b90051ee7fb731ac856b45d8af314538f2c4dcda916964ca71cb3541d09e442",
+      "bytes": 505
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/native-targets-exit.json",
+      "sha256": "c2a4c843752c5761daf40d3422f4d3135660b79c7d84c9f821635be9c2748f46",
+      "bytes": 574
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/native-targets-final-exit.json",
+      "sha256": "ac9a23de18b8dc6b68e287a132485afdc62d52d5cf4fbf041b0dac9ab5d430fa",
+      "bytes": 580
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/native-targets-final.log",
+      "sha256": "70efe4894a8ce26d99151cec58add15ec1143814c9d3d479053a10fb2f47871f",
+      "bytes": 97
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/native-targets.json",
+      "sha256": "9796658970b289e0c2bbbc1527d5ed0f66d54e4f03f0efc4592cea1cc4254ff3",
+      "bytes": 369
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/native-targets.log",
+      "sha256": "70efe4894a8ce26d99151cec58add15ec1143814c9d3d479053a10fb2f47871f",
+      "bytes": 97
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/owned-shards.json",
+      "sha256": "19cd35bbae0873a63d77564d9b18d2b35a9d059261e6a43e95cfe098967deda2",
+      "bytes": 92
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/page-426.png",
+      "sha256": "58fe2de1eb888e408a22df7976cb95d87049195a72a499d677e3bb3a2a1e306e",
+      "bytes": 223917
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/page-427.png",
+      "sha256": "07fd452fce6fa336d18ae4b2e722f5ccaaa1779ce39e2d9a10515e3522a6b14f",
+      "bytes": 202236
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/paper-gaps-exit.json",
+      "sha256": "20a8de459ccb53ed92182499f86d6482e8151a2a0fb8710da8fd3f7f972249f9",
+      "bytes": 513
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+      "bytes": 91
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/pdf-exit.json",
+      "sha256": "e0f97d9cf3002f20c1c0f9cf1c3d63be2d0eb20f010bb1770512298a12610477",
+      "bytes": 495
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/pdf-page-search.json",
+      "sha256": "87f5c8b369e88213b3427195f226667b29812ffad70041890805c679a9b07078",
+      "bytes": 7714
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/pdf-visual-inspection.json",
+      "sha256": "d2352fe039e0f4258b3f164b0d8decdea456dd85f082183faa0214a11eae3eaf",
+      "bytes": 413
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/pdf.log.gz",
+      "sha256": "ec11c58971d33328a97b4d7942e53f8dcf5d7b2ed43eaefe8420c72ed8ad83d6",
+      "bytes": 22129
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/production-preservation.json",
+      "sha256": "ef1db86b65390d6d95f9146c86c4d680127cf70f1f703f010632c3ea6c90c28b",
+      "bytes": 366528
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/prose-exit.json",
+      "sha256": "eb9b5d8552d4ff1231e3927944fe9c924b15ee41a5419da20745a1434f2d5086",
+      "bytes": 580
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/provenance-exit.json",
+      "sha256": "584adfde412273c7a180974ff30cccd7d5769276dfdfdae08f0a227950b072fa",
+      "bytes": 648
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/provenance-final-exit.json",
+      "sha256": "9c22047fef5cc6defe0c3085a2fadcfc8d2ce28045265d3ea8e39313abf8c8ca",
+      "bytes": 654
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/provenance-final.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+      "bytes": 69
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/provenance.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+      "bytes": 69
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/run.py",
+      "sha256": "01d3b8e5adae55fd3142960734a2bb47fb3c018f96a74394634f19a9ff6e078d",
+      "bytes": 1212
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/sec-good_auxiliary_label_compression-web.png",
+      "sha256": "8ba03f479001422c5304199309138bf9841d83d399be265f2ac6794fb7421ce7",
+      "bytes": 263441
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/sec-replica_good_auxiliary_label_bound-web.png",
+      "sha256": "014c610e987ca52736196e412f504b6ee5c95a5d1a5e932caf3f891742482525",
+      "bytes": 264228
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/source-freeze.json",
+      "sha256": "f58b15c66d4db7f035ec41cd324770087d528fa39d21a15aa0fc6a39796a6578",
+      "bytes": 1990
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/tenkz-exit.json",
+      "sha256": "f96f107f034752496e627c35e082c4773a0eb847069d3c395bd55a1be01cab57",
+      "bytes": 499
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/tenkz.log",
+      "sha256": "85b883e7882deff706af92a976224626b07289a7cdd6153cc0ca5f7aec62c325",
+      "bytes": 151
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/thm-good_auxiliary_label_compression-web.png",
+      "sha256": "8ba03f479001422c5304199309138bf9841d83d399be265f2ac6794fb7421ce7",
+      "bytes": 263441
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/thm-replica_good_auxiliary_label_bound-web.png",
+      "sha256": "b6cd9cc39bb25137ac8886e6b67162af0efcbb5f74d7f9f3641d8566e33dfcf6",
+      "bytes": 275915
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/validate-owned.py",
+      "sha256": "af5b7a009e89ecce28d28eba8731ae9a93d3c9232ccda8aa1e3add4ebe8aab31",
+      "bytes": 1510
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/verification.json",
+      "sha256": "05ccaec64bc91e2d694b71514712c293b39579759f5c38cffaa6575f7b4f6d1e",
+      "bytes": 17820
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-exit.json",
+      "sha256": "ae4cf7f2c6a8189883ff3903b7d0bf9c5c49d82a01a59a1f2e223f8ad51abbc0",
+      "bytes": 497
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-good_auxiliary_label_compression-proof-1280.png",
+      "sha256": "a343a70ed5bd70ef6dd0ccd5ea5010cdf8e0f55ca0a36b28e984a1e57605f6e9",
+      "bytes": 41694
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-good_auxiliary_label_compression-proof-360.png",
+      "sha256": "d1cf61ffc33faa649626d4b92b7b8665cae1eb4337b16c0f94ab1040e2908ed7",
+      "bytes": 37150
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-good_auxiliary_label_compression-statement-1280.png",
+      "sha256": "e04717a6b280dee02701fe6efa2b847cd61908fb1855664d1040d815e22bf673",
+      "bytes": 51881
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-good_auxiliary_label_compression-statement-360.png",
+      "sha256": "370acd5660d33cbecad60b55ba652504b546cb19bcf9032072aceae8896b4609",
+      "bytes": 50672
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-qa.py",
+      "sha256": "e0baf2b2d1e78120edbea2dd55b1b8758e6e2fbf210f4b672b8ec178306169d5",
+      "bytes": 2436
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-reader-exit.json",
+      "sha256": "7111eb08425e565cbe9147b0c3c6ef17b5f5155027b1b0965789dc2e6bb862f5",
+      "bytes": 586
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-reader.log",
+      "sha256": "04bac1c9d42903f023ded19d5fef0f6ce13880af64c251be6c600e283991a540",
+      "bytes": 361
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-replica_good_auxiliary_label_bound-proof-1280.png",
+      "sha256": "5937ed035bd70382535be4cf05574d49cdfe552de068ecb67b67d6e88a9cf25e",
+      "bytes": 42144
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-replica_good_auxiliary_label_bound-proof-360.png",
+      "sha256": "1524b2e1b3165ea5c91d4041d5f7fc3b5b3d34d413420a5678d8ea0cdafb2690",
+      "bytes": 38428
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-replica_good_auxiliary_label_bound-statement-1280.png",
+      "sha256": "095a94eae0a5ce88e4b788abeb841cd67ab366882e3ffcb81f9a7ac5d43801b8",
+      "bytes": 71351
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-replica_good_auxiliary_label_bound-statement-360.png",
+      "sha256": "ea4d9270597b162e8a2effa2f1d7c6aa1eb335168e22e7975a1c86be2a4111b1",
+      "bytes": 68480
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-visual-exit.json",
+      "sha256": "82b359d26592e65d0fe2bc47380cdb9f04c866b24a8d2db5a2b670cb7ba72747",
+      "bytes": 590
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-visual-inspection.json",
+      "sha256": "db6c0ba43aff03542ae64a441cb9a9ea06b897486b75967dfc807ff02da5a3d6",
+      "bytes": 504
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-visual.log",
+      "sha256": "01e2bdd1398d23bbb68279fb8e1921602e33c4288295a783d919e53c73ab4924",
+      "bytes": 109
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-visual.py",
+      "sha256": "3946820774d1dfd6294824cf4f9209507a370b56c849af74a6efac04663bb406",
+      "bytes": 2472
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web.log",
+      "sha256": "af8bfd4c0b81bc2b9157e7a3d1c320993328a4a5cfc861bad4d5367ed37a59a8",
+      "bytes": 17041
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/whole-web-reader-exit.json",
+      "sha256": "7e0514b78fd9bed5cd642e56f1d67c7ffc8f080c907550d7e020aa29ad12cbb5",
+      "bytes": 594
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/whole-web-reader.log",
+      "sha256": "fc3ece73a9a18a6e87a825ae78eb1920ff0760c86cf6008d9e560839646ae6de",
+      "bytes": 32
+    },
+    {
+      "path": "docs/provenance/openai-math.d/goodAuxiliaryLabelCompression8750.json",
+      "sha256": "969196f8218307897200b80e526f87d0b0b473d7700467e82c16d3a9c07b7c6e",
+      "bytes": 2812
+    },
+    {
+      "path": "docs/provenance/openai-math.d/replicaGoodAuxiliaryLabelBound8750.json",
+      "sha256": "94b6f9261f1f103384276bee03fa1114ba6f197261b3040c758010c2b8e382ae",
+      "bytes": 2991
+    }
+  ],
+  "raw_pdf_log": "Locally retained; the deterministic archive and both hashes are bound instead."
+}
