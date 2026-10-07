@@ -81,6 +81,12 @@ def invQuadA : ℝ := ∑ k, (R.lam k)⁻¹ * R.weightA k
 /-- The quadratic form `⟨b₀, B b₀⟩`. -/
 def quadB : ℝ := ∑ j, R.mu j * R.weightB j
 
+theorem invQuadA_nonneg : 0 ≤ R.invQuadA :=
+  Finset.sum_nonneg fun k _ => mul_nonneg (inv_nonneg.2 (R.lam_pos k).le) (R.weightA_nonneg k)
+
+theorem quadB_nonneg : 0 ≤ R.quadB :=
+  Finset.sum_nonneg fun j _ => mul_nonneg (R.mu_pos j).le (R.weightB_nonneg j)
+
 /-- `h(v) ≤ ⟨a₀, A⁻¹ a₀⟩` for `v ≥ 0`.  Area-law manuscript, `04-conditional.tex`,
 lines 396–402. -/
 theorem defect_le_invQuadA {v : ℝ} (hv : 0 ≤ v) : R.defect v ≤ R.invQuadA := by
