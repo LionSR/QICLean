@@ -81,5 +81,37 @@ in \cite[Section~8]{OpenAI2026AreaLaw}.
 The two terms in the decomposition are positive. Dividing by $z$ gives the
 operator inequality. Entropy concavity gives the entropy inequality, after
 discarding the nonnegative entropy of the normalized remainder.
-When $z=1$, the zero remainder requires no normalization.
+For a unit input vector, when $z=1$, the zero remainder requires no normalization.
+\end{proof}
+
+
+\begin{theorem}[Marginals on subsystems of the complement]
+\label{thm:entropy_typical_complementary_subsystem}
+\lean{Matrix.partialTraceRight_partialTraceLeft_typicalPureState_decomposition,
+  Matrix.partialTraceRight_partialTraceLeft_typicalPureState_le,
+  Matrix.entropy_partialTraceRight_partialTraceLeft_typicalPureState_le}
+\leanok
+\uses{thm:entropy_typical_complementary_marginal}
+Let $\psi\in\mathcal H_A\otimes\mathcal H_B\otimes\mathcal H_C$ and let
+$\psi_E$ be its normalized spectral truncation on $A$, with selected mass $z>0$.
+Put $\rho_B=\operatorname{tr}_{AC}|\psi\rangle\langle\psi|$ and
+$\rho_{\psi_E,B}=\operatorname{tr}_{AC}|\psi_E\rangle\langle\psi_E|$.
+With the unnormalized discarded vector
+$\psi_{\mathrm{rem}}=((I_A-P_E)\otimes I_{BC})\psi$, one has
+\[
+ \rho_B=z\rho_{\psi_E,B}
+   +\operatorname{tr}_{AC}|\psi_{\mathrm{rem}}\rangle\langle\psi_{\mathrm{rem}}|,
+ \qquad \rho_{\psi_E,B}\le z^{-1}\rho_B.
+\]
+If $\|\psi\|=1$, then $S(\rho_{\psi_E,B})\le S(\rho_B)/z$.
+This proves the estimates in \cite[Section~8]{OpenAI2026AreaLaw}
+for every subsystem disjoint from the projected region.
+\end{theorem}
+\begin{proof}
+\leanok
+Take the partial trace over $C$ of the decomposition on $BC$.
+The resulting selected and discarded terms are positive, and their traces
+are $z$ and $1-z$ for a unit input vector. Positivity gives the operator
+inequality, and entropy concavity gives the entropy inequality.
+The discarded term remains unnormalized when its trace is zero.
 \end{proof}

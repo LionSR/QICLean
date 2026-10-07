@@ -24,5 +24,12 @@ the original marginal divided by the selected mass. Entropy concavity gives the
 corresponding entropy estimate. The case of selected mass one does not require
 normalizing the zero remainder.
 
+For an additional tensor factor, a further partial trace gives the same exact
+decomposition and inequalities on every subsystem of the complement. The
+selected and discarded contributions remain positive, and their traces are
+preserved. Entropy concavity applies directly to these actual subsystem
+marginals; no spectral truncation on the enlarged region is assumed. This
+covers the disjoint-subsystem quantifier in `comparator:post-marginal`.
+
 All proof text is independently written from the manuscript. Codex (GPT-6) assisted
 the formalization; no upstream Lean proof text was copied or adapted.

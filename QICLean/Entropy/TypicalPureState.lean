@@ -66,6 +66,15 @@ Matrix.partialTraceLeft_typicalPureState_le
 Provenance-ID: 8753-qic-typical-pure-state-13
 Downstream declaration:
 Matrix.entropy_partialTraceLeft_typicalPureState_le
+Provenance-ID: 8753-qic-typical-pure-state-14
+Downstream declaration:
+Matrix.partialTraceRight_partialTraceLeft_typicalPureState_decomposition
+Provenance-ID: 8753-qic-typical-pure-state-15
+Downstream declaration:
+Matrix.partialTraceRight_partialTraceLeft_typicalPureState_le
+Provenance-ID: 8753-qic-typical-pure-state-16
+Downstream declaration:
+Matrix.entropy_partialTraceRight_partialTraceLeft_typicalPureState_le
 -/
 
 open scoped BigOperators Matrix ComplexOrder InnerProductSpace Kronecker
@@ -348,5 +357,78 @@ theorem entropy_partialTraceLeft_typicalPureState_le (hψ : ‖ψ‖ = 1) (hz : 
   simpa only [← hsplit, ← partialTraceLeft_typicalPureState ψ E hz] using hc
 
 end Typical
+
+section ComplementarySubsystem
+
+variable {C : Type*} [Fintype C] [DecidableEq C]
+variable (ψ : EuclideanSpace ℂ (A × (B × C))) (E : Finset A)
+
+local notation "ρA" => partialTraceRight (vecMulVec ψ (star ψ))
+local notation "hρA" => Matrix.PosSemidef.partialTraceRight (posSemidef_vecMulVec_self_star ψ)
+local notation "zE" => Matrix.IsHermitian.spectralRestrictionMass
+  (Matrix.PosSemidef.isHermitian hρA) E
+local notation "PE" => Matrix.IsHermitian.spectralSelection
+  (Matrix.PosSemidef.isHermitian hρA) E
+local notation "ρB" => partialTraceRight (partialTraceLeft (vecMulVec ψ (star ψ)))
+local notation "σB" => partialTraceRight (partialTraceLeft
+  (vecMulVec (typicalPureState ψ E) (star (typicalPureState ψ E))))
+local notation "RB" => partialTraceRight (partialTraceLeft
+  (vecMulVec (leftFilteredVector (1 - PE) ψ) (star (leftFilteredVector (1 - PE) ψ))))
+local notation "MB" => partialTraceRight (partialTraceLeft
+  (vecMulVec (leftFilteredVector PE ψ) (star (leftFilteredVector PE ψ))))
+
+omit [DecidableEq B] [DecidableEq C] in
+/-- The actual marginal on any factor of the complement splits into selected and
+discarded contributions. OpenAI area-law manuscript, `comparator:post-marginal`. -/
+theorem partialTraceRight_partialTraceLeft_typicalPureState_decomposition (hz : 0 < zE) :
+    ρB = zE • σB + RB := by
+  have hs := congrArg partialTraceRight
+    (partialTraceLeft_typicalPureState_decomposition ψ E hz)
+  simpa only [partialTraceRight_add, partialTraceRight_real_smul] using hs
+
+omit [DecidableEq B] [DecidableEq C] in
+/-- The actual selected marginal on a factor of the complement is bounded by the
+original marginal divided by the selected mass, in positive-semidefinite order.
+OpenAI area-law manuscript, `comparator:post-marginal`. -/
+theorem partialTraceRight_partialTraceLeft_typicalPureState_le (hz : 0 < zE) :
+    (zE⁻¹ • ρB - σB).PosSemidef := by
+  rw [partialTraceRight_partialTraceLeft_typicalPureState_decomposition ψ E hz,
+    smul_add, smul_smul, inv_mul_cancel₀ hz.ne', one_smul, add_sub_cancel_left]
+  have hR := posSemidef_vecMulVec_self_star (leftFilteredVector (1 - PE) ψ)
+  exact hR.partialTraceLeft.partialTraceRight.smul (inv_nonneg.mpr hz.le)
+
+omit [DecidableEq C] in
+/-- Entropy of the actual selected marginal on any factor of the complement is
+bounded by the original marginal entropy divided by the selected mass.
+OpenAI area-law manuscript, `comparator:post-marginal`. -/
+theorem entropy_partialTraceRight_partialTraceLeft_typicalPureState_le
+    (hψ : ‖ψ‖ = 1) (hz : 0 < zE) :
+    vonNeumannEntropy σB
+        (posSemidef_vecMulVec_self_star
+          (typicalPureState ψ E)).partialTraceLeft.partialTraceRight.isHermitian ≤
+      vonNeumannEntropy ρB
+        (posSemidef_vecMulVec_self_star ψ).partialTraceLeft.partialTraceRight.isHermitian / zE := by
+  have hsplit := congrArg partialTraceRight (partialTraceLeft_projection_split ψ
+    ((hρA).isHermitian.isStarProjection_spectralSelection E))
+  simp only [partialTraceRight_add] at hsplit
+  have ht : (MB).trace.re = zE := by
+    rw [trace_partialTraceRight, trace_partialTraceLeft, ← trace_partialTraceRight,
+      trace_leftFiltered_spectralSelection ψ E hz.ne', Complex.ofReal_re]
+  have hc := normalized_entropy_le_of_sum
+    (posSemidef_vecMulVec_self_star (leftFilteredVector PE ψ)).partialTraceLeft.partialTraceRight
+    (posSemidef_vecMulVec_self_star
+      (leftFilteredVector (1 - PE) ψ)).partialTraceLeft.partialTraceRight
+    (by rw [← hsplit, trace_partialTraceRight, trace_partialTraceLeft,
+      trace_pure_of_norm_one ψ hψ])
+    (by simpa only [ht] using hz)
+  have hn : σB = zE⁻¹ • MB := by
+    have hs := congrArg partialTraceRight (partialTraceLeft_typicalPureState ψ E hz)
+    simpa only [partialTraceRight_real_smul] using hs
+  simp only [ht] at hc
+  apply (le_div_iff₀ hz).mpr
+  rw [mul_comm]
+  simpa only [← hsplit, ← hn] using hc
+
+end ComplementarySubsystem
 
 end Matrix
