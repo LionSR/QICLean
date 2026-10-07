@@ -54,7 +54,7 @@ compression-foundations packet. No project-specific axioms are permitted. -/
 #print axioms Matrix.frobeniusNormSq_unitary_mul
 #print axioms Matrix.halfWeighted
 #print axioms Matrix.halfWeighted_eq_quarter_sandwich
-#print axioms Matrix.l2_opNorm_kronecker_one_le
+#print axioms Matrix.l2_opNorm_kronecker_one_square_le
 #print axioms Matrix.l2_opNorm_mul_le_one
 #print axioms Matrix.l2_opNorm_unitary_le_one
 #print axioms Matrix.norm_column_eq_sqrt_gram

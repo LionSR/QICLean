@@ -262,12 +262,68 @@ jobs:
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
 
+      - name: Check shifted density power regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/ShiftedDensityPowers.lean
+
+      - name: Check compression foundations regressions strictly
+        run: |
+          set -euo pipefail
+          for example in ComplexGaussian CompressionSampling IndependentCovariance IndependentGaussianSlots WeightedRectangular; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+          LEAN_NUM_THREADS=1 lake env lean -j1 \
+            -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+            -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+            scripts/Tests/MatrixSecondMoment.lean
+
+      - name: Check compression source error regressions strictly
+        run: |
+          set -euo pipefail
+          for example in GaussianProductSource GaussianSourceError RectangularTraceNormAlgebra WeightedSourceError; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
+      - name: Check compression source reduction regressions strictly
+        run: |
+          set -euo pipefail
+          for example in ContractionChain GaussianProductSourceTransport SourceOnlyDensityError SubnormalizedPureStateError; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
+      - name: Check shifted density truncation regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s
+          lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/ShiftedDensityTruncation.lean
+
       - name: Check pure-environment dilation regressions strictly
         run: >
           LEAN_NUM_THREADS=1 lake env lean -j1
           -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false
           -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
           QICLeanTest/EnvironmentDilation.lean
+
+      - name: Check global-gap regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/GlobalGap.lean
 
 
       - name: Check changed Lean compilation times
@@ -488,6 +544,10 @@ jobs:
       - name: Build blueprint bibliography
         if: env.TEX_CHANGED == 'true'
         run: texra-blueprint bbl
+
+      - name: Build blueprint PDF
+        if: env.TEX_CHANGED == 'true'
+        run: leanblueprint pdf
 
       - name: Run texra-blueprint web and check for errors
         if: env.TEX_CHANGED == 'true'
