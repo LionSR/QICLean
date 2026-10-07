@@ -50,13 +50,6 @@
             "exit_code": 0,
             "log": "docs/provenance/evidence/patch-regulator/axioms.log",
             "sha256": "87ed1948b53c3ab1d7a5b5d364fa239f7dcd6cfceb6233c5ca5ea33727cde79f"
-          },
-          {
-            "kind": "source-audit",
-            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true QICLeanTest/PatchRegulator.lean",
-            "exit_code": 0,
-            "log": "docs/provenance/evidence/patch-regulator/regressions.log",
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
         ]
       }
@@ -107,13 +100,6 @@
             "exit_code": 0,
             "log": "docs/provenance/evidence/patch-regulator/axioms.log",
             "sha256": "87ed1948b53c3ab1d7a5b5d364fa239f7dcd6cfceb6233c5ca5ea33727cde79f"
-          },
-          {
-            "kind": "source-audit",
-            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true QICLeanTest/PatchRegulator.lean",
-            "exit_code": 0,
-            "log": "docs/provenance/evidence/patch-regulator/regressions.log",
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
         ]
       }
@@ -164,13 +150,6 @@
             "exit_code": 0,
             "log": "docs/provenance/evidence/patch-regulator/axioms.log",
             "sha256": "87ed1948b53c3ab1d7a5b5d364fa239f7dcd6cfceb6233c5ca5ea33727cde79f"
-          },
-          {
-            "kind": "source-audit",
-            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true QICLeanTest/PatchRegulator.lean",
-            "exit_code": 0,
-            "log": "docs/provenance/evidence/patch-regulator/regressions.log",
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
         ]
       }

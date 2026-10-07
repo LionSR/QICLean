@@ -47,5 +47,8 @@
     "Rank-one singular density before the shift",
     "Empty finite matrix index type"
   ],
-  "independent_review": "A coordinated proof agent checked all three source and blueprint statements against the pinned manuscript. No issue found within their stated auxiliary scope."
+  "independent_review": "A coordinated proof agent checked all three source and blueprint statements against the pinned manuscript. No issue found within their stated auxiliary scope.",
+  "regression_source_revision": "60d3c18691ab4e00547a999489b1b2be0dd04e34",
+  "regression_source_path": "QICLeanTest/PatchRegulator.lean",
+  "regression_source_sha256": "defa0a2fc97ba6f1a5cbfc4fe4a3243391701ee1bb547b96953dbbda811e1923"
 }
