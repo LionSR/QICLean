@@ -537,6 +537,10 @@ jobs:
           python3 scripts/test_tenkz_pic.py
           python3 scripts/test_tenkz_blueprint_sweep.py
 
+      - name: Build blueprint PDF
+        if: env.TEX_CHANGED == 'true'
+        run: leanblueprint pdf
+
       - name: Run texra-blueprint web and check for errors
         if: env.TEX_CHANGED == 'true'
         working-directory: blueprint
