@@ -83,6 +83,8 @@ import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
+import QICLean.Analysis.ReplicaDefect
+import QICLean.Analysis.ReplicaExcitationDecomposition
 import QICLean.Analysis.ResolventFunctionalCalculus
 import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootFidelity
