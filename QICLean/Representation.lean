@@ -15,6 +15,7 @@ import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.LabelProjectors
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.ReplicaPrevector
+import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurSectorMass
 import QICLean.Representation.SchurSurprisal
