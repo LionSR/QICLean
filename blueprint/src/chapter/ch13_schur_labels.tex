@@ -397,8 +397,9 @@ length at most $q$ and states the dimension formulas
     d_\lambda=\frac{k!\prod_{i<j}(l_i-l_j)}{\prod_il_i!},\qquad
     l_i=\lambda_i+q-i.
 \]
-The identification is not yet formalized. The following lemmas concern the
-right-hand sides of these formulas.
+The identification of the labels with partitions is proved in the section on
+Schur--Weyl duality below. The following lemmas concern the right-hand sides of
+these formulas.
 
 \begin{lemma}[Stirling bounds]
     \label{lem:stirling_log_factorial}
@@ -511,4 +512,94 @@ compared lexicographically.
     lowers the weight. Permuting the basis of $\C^q$ on every copy commutes with
     the copy permutations and permutes the weights; if $\mu_a<\mu_b$ for some
     $a<b$, the transposition of $a$ and $b$ would produce a weight above $\mu$.
+\end{proof}
+
+\section{The labels of the symmetric group are partitions}
+
+\begin{lemma}[Counting labels]
+    \label{lem:count_labels}
+    \lean{IrrepLabel.card_eq_card_conjClasses, Equiv.Perm.nat_card_conjClasses,
+        Partition.card_padded_self}
+    \leanok
+    The number of labels of a finite group is its number of conjugacy classes.
+    The conjugacy classes of $S_k$ correspond to the partitions of $k$, which
+    correspond to the weakly decreasing vectors of $k$ nonnegative integers
+    summing to $k$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The centre of $\C[G]$ is the algebra of tuples of scalars of the
+    Artin--Wedderburn decomposition, and also the space of class functions. Two
+    permutations are conjugate exactly when they have the same cycle type, and
+    every partition is a cycle type. A partition $p$ gives the decreasing vector
+    $i\mapsto\#\{\text{parts}>i\}$ of its conjugate, and a decreasing vector gives
+    the partition formed by its nonzero entries; both maps are injective, since a
+    decreasing vector takes values at least $v$ on an initial segment.
+\end{proof}
+
+\begin{lemma}[Column antisymmetrization]
+    \label{lem:column_antisymmetrizer}
+    \lean{TensorPower.isHighestWeight_columnVector}
+    \leanok
+    \uses{thm:highest_weight}
+    Let $\mu$ be a partition of $k$ padded to length $q$. Place the copies of
+    $(\C^q)^{\otimes k}$ in the boxes of the Young diagram of $\mu$, let $x$ assign
+    to each copy the row of its box, and let $C_\mu$ be the group of permutations
+    of the copies preserving every column. Then
+    $\sum_{\sigma\in C_\mu}\operatorname{sgn}(\sigma)U(\sigma)e_x$ is a
+    highest-weight vector of weight $\mu$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every term has weight $\mu$, and the coefficient of $e_x$ is one because a
+    column-preserving permutation fixing $x$ also preserves rows. For $a<b$ the
+    operator $E_{ab}$ commutes with the antisymmetrization and changes the value
+    of a copy in row $b$ to $a$; since $\mu_a\ge\mu_b$ the same column has a copy
+    in row $a$, and the transposition of these two copies fixes the new
+    configuration and reverses the sign, so the antisymmetrization vanishes.
+\end{proof}
+
+For a label $\lambda$ of $S_k$ the multiplicity space $V_\lambda$ in
+$(\C^q)^{\otimes k}$ is the range of the image of a diagonal matrix unit of the
+$\lambda$ factor. It is invariant under the commutant of the copy permutations
+and, when nonzero, irreducible; its highest weight is the \emph{shape} of
+$\lambda$.
+
+\begin{theorem}[Labels of the symmetric group]
+    \label{thm:labels_are_partitions}
+    \lean{TensorPower.isIrreducible_multSpace, TensorPower.labelShape,
+        TensorPower.labelShape_bijective}
+    \leanok
+    \uses{thm:highest_weight, lem:count_labels, lem:column_antisymmetrizer}
+    The shape of a label of $S_k$ in $(\C^k)^{\otimes k}$ is a partition of $k$,
+    and this is a bijection between the labels of $S_k$ and the partitions
+    of $k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The orbit of a configuration with distinct entries carries the regular
+    representation, so every label occurs. A highest-weight vector of weight
+    $\mu$ with a nonzero component of label $\lambda$ yields, through a matrix
+    unit, a highest-weight vector of weight $\mu$ in $V_\lambda$, so $\mu$ is the
+    shape of $\lambda$. Applied to Lemma~\ref{lem:column_antisymmetrizer}, every
+    partition is a shape. Lemma~\ref{lem:count_labels} gives equal cardinalities.
+\end{proof}
+
+\begin{theorem}[Labels occurring in a tensor power]
+    \label{thm:schur_weyl_labels}
+    \lean{TensorPower.multSpace_ne_bot_iff, TensorPower.shape_eq_labelShape,
+        TensorPower.labelProj_ne_zero_iff}
+    \leanok
+    \uses{thm:labels_are_partitions}
+    The label projector $\pi^\lambda$ on $(\C^q)^{\otimes k}$ is nonzero exactly
+    when the partition $\lambda$ has at most $q$ rows, and then the highest
+    weight of $V^{(q)}_\lambda$ is $\lambda$.
+\end{theorem}
+
+\begin{proof}\leanok
+    For $q\le q'$ the inclusion $\C^q\subseteq\C^{q'}$ induces an embedding of
+    tensor powers commuting with the copy permutations and mapping highest-weight
+    vectors of weight $\mu$ to highest-weight vectors of weight $\mu$ padded with
+    zeros. Compare with $q=k$, using Lemma~\ref{lem:column_antisymmetrizer} for
+    the converse.
 \end{proof}
