@@ -622,3 +622,22 @@ depend on the common values there.
     Lemma~\ref{lem:prefix_step} gives $\sqrt{1-E/\Delta}\,N_{k+1}\le x_kN_k$. Telescoping from
     $N_0=1$ gives the claim.
 \end{proof}
+
+\begin{proposition}[The first norm comparison at floor zero]
+    \label{prop:zero_floor_comparison}
+    \lean{Entropy.isFeasibleFilter_floorRaise, Entropy.norm_le_of_forall_floor,
+        Entropy.pow_sqrt_mul_norm_le_of_zero_floor}
+    \leanok
+    \uses{thm:first_norm_comparison}
+    Under the hypotheses of Theorem~\ref{thm:first_norm_comparison} with $E<\Delta$, and bounds
+    $\lVert L\Omega\rVert\le x_k$ for filters on $D_k$ feasible at any positive floor, every
+    family of $m$ nonnegative filters $L_j=U_j\operatorname{diag}(y_j^{a_j/2})U_j^*$ with
+    $y_j\ge0$ and $\sum y_j=1$ satisfies
+    $\sqrt{1-E/\Delta}^{\,m}\lVert L_{m-1}\cdots L_0\Omega\rVert\le\prod_{k<m}x_k$.
+\end{proposition}
+\begin{proof}\leanok
+    The filters $U_j\operatorname{diag}\bigl(((1-\delta)y_j+\delta/d_j)^{a_j/2}\bigr)U_j^*$ are
+    feasible at the floor $\delta/d_j$ and converge to $L_j$ as $\delta\downarrow0$. The bound
+    of Theorem~\ref{thm:first_norm_comparison} does not depend on the floor, and the output
+    norm is continuous in the filters.
+\end{proof}
