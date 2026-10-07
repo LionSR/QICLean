@@ -1,0 +1,327 @@
+%% =========================================================
+%% Expected trace error of corrected sources.
+%% Source: September 24, 2026 polynomial-PEPS preprint, Theorem 5.2.
+%% This chapter does not assert the circuit expansion or network conclusion.
+%% Owners supply checked source commits and audit logs before integration.
+%% =========================================================
+
+\chapter{Expected Trace Error of Corrected Sources}\label{ch:source_error}
+
+The Gaussian replacement of a Schmidt source is unbiased. Its centered
+entries have diagonal covariance, and fresh independent slots preserve
+that covariance under tensor products. Quarter-power comparisons and
+finite block aggregation then bound the expected trace error for a fixed
+contraction between the complete free input spaces.
+Finite branch sums and insertion of physical matrix units preserve the
+required trace-norm estimates.
+These are the source calculations in
+\cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+
+\section{An unbiased product-operator source}
+
+\begin{definition}[Sampled Schmidt-source operators]\label{def:source_product}
+    \lean{QICLean.ComplexGaussian.schmidtVector}
+    \lean{QICLean.ComplexGaussian.schmidtSource}
+    \lean{QICLean.ComplexGaussian.sourceU}
+    \lean{QICLean.ComplexGaussian.sourceV}
+    \lean{QICLean.ComplexGaussian.sampledSource}
+    \lean{QICLean.ComplexGaussian.sourceCorrection}
+    \lean{QICLean.ComplexGaussian.schmidtSource_apply}
+    \lean{QICLean.ComplexGaussian.sampledSource_apply}
+    \leanok
+    Let $A,C$ be finite sets with nonnegative weights $\lambda_a,\mu_c$,
+    and let $k$ be a positive integer. In the paired coordinate bases, put
+    $|\eta\rangle=\sum_a\sqrt{\lambda_a}|a,a\rangle$ and
+    $|\widetilde\eta\rangle=\sum_c\sqrt{\mu_c}|c,c\rangle$.
+    For independent standard circular complex Gaussian coordinates
+    $g^{(j)}_{ac}$, with $\mathbb E|g^{(j)}_{ac}|^2=1$, set
+    \begin{align}
+        (U_j)_{ac} & =(\lambda_a\mu_c)^{1/4}g^{(j)}_{ac},
+        \label{eq:source_u}                                          \\
+        (V_j)_{bd} & =(\lambda_b\mu_d)^{1/4}\overline{g^{(j)}_{bd}},
+        \label{eq:source_v}                                          \\
+        \widehat X & =\frac1k\sum_{j=0}^{k-1}U_j\otimes V_j,
+        \label{eq:source_sampled}                                    \\
+        X          & =|\eta\rangle\langle\widetilde\eta|,
+        \label{eq:source_target}                                     \\
+        \Delta     & =\widehat X-X.
+        \label{eq:source_correction}
+    \end{align}
+    Thus $X_{(a,b),(c,d)}=\sqrt{\lambda_a\mu_c}\delta_{ab}\delta_{cd}$,
+    and
+    \begin{align}
+        \widehat X_{(a,b),(c,d)}
+         & =(\lambda_a\lambda_b\mu_c\mu_d)^{1/4}
+        \frac1k\sum_{j=0}^{k-1}g^{(j)}_{ac}\overline{g^{(j)}_{bd}}.
+        \label{eq:source_sampled_entry}
+    \end{align}
+    This is \cite[Equation~(5.6)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-random-source, 04-compression.tex:279--309.
+    % The matrices have shape (A x A) by (C x C); the two supports may differ.
+\end{definition}
+
+\begin{theorem}[Unbiasedness and actual correction-entry covariance]
+    \label{thm:source_unbiased}
+    \lean{QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource}
+    \lean{QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta}
+    \lean{QICLean.ComplexGaussian.sourceCorrection_apply}
+    \lean{QICLean.ComplexGaussian.integrable_sourceCorrection_entry}
+    \lean{QICLean.ComplexGaussian.integrable_sourceCorrection_entry_mul_conj}
+    \lean{QICLean.ComplexGaussian.integral_sourceCorrection_entry_mul_conj}
+    \lean{QICLean.ComplexGaussian.integrable_sampledSource_entry}
+    \lean{QICLean.ComplexGaussian.integral_sampledSource_entry}
+    \lean{QICLean.ComplexGaussian.integrable_sampledSource}
+    \lean{QICLean.ComplexGaussian.integrable_sourceCorrection}
+    \lean{QICLean.ComplexGaussian.integral_sampledSource}
+    \lean{QICLean.ComplexGaussian.integral_sourceCorrection}
+    \leanok
+    \uses{def:source_product}
+    For the Gaussian probability law of Definition~\ref{def:source_product},
+    $\widehat X$ and $\Delta$ are integrable, with
+    $\mathbb E\widehat X=X$ and $\mathbb E\Delta=0$.
+    The correction entries are precisely
+    \begin{align}
+        \Delta_{(a,b),(c,d)}
+         & =(\lambda_a\lambda_b\mu_c\mu_d)^{1/4}
+        \left(\frac1k\sum_{j=0}^{k-1}g^{(j)}_{ac}
+        \overline{g^{(j)}_{bd}}-\delta_{ab}\delta_{cd}\right).
+        \label{eq:source_correction_entry}
+    \end{align}
+    Every conjugate pair product is integrable. For $p,r\in A\times A$
+    and $q,t\in C\times C$,
+    \begin{align}
+        \mathbb E[\Delta_{pq}\overline{\Delta_{rt}}]
+         & =\frac1k\sqrt{\lambda_{p_1}\lambda_{p_2}\mu_{q_1}\mu_{q_2}}
+        \delta_{pr}\delta_{qt}.
+        \label{eq:source_entry_covariance}
+    \end{align}
+    No normalization of the weight lists is required for these identities.
+    These are the unbiasedness and covariance calculations in
+    \cite[Equation~(5.6) and Equations~(5.7)--(5.8)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-random-source, eq:compression-gaussian-covariance,
+    % and eq:compression-slot-variance, 04-compression.tex:279--340.
+\end{theorem}
+
+\begin{proof}\leanok
+    Expanding the Kronecker product gives (\ref{eq:source_sampled_entry}).
+    The quarter weight times $\delta_{ab}\delta_{cd}$ equals $X$ entrywise,
+    giving (\ref{eq:source_correction_entry}). The average of the centered
+    Gaussian products has mean zero and covariance $k^{-1}$ times the
+    product of coordinate deltas, proving (\ref{eq:source_entry_covariance}).
+    Its $L^2$ bound gives entry and pair-product integrability. Finite
+    coordinate evaluation gives matrix integrability and permits the
+    entrywise expectations to be combined into the matrix identities.
+\end{proof}
+
+\section{Finite branch sums and physical matrix entries}
+
+\begin{theorem}[Complex coefficients in finite trace-norm sums]
+    \label{thm:source_branch_sum}
+    \lean{Matrix.rectangularTraceNorm_zero}
+    \lean{Matrix.rectangularTraceNorm_add_le}
+    \lean{Matrix.rectangularTraceNorm_smul}
+    \lean{Matrix.rectangularTraceNorm_sum_le}
+    \lean{Matrix.rectangularTraceNorm_sum_smul_le}
+    \lean{Matrix.rectangularTraceNorm_conjTranspose_le}
+    \lean{Matrix.rectangularTraceNorm_conjTranspose}
+    \leanok
+    For arbitrary rectangular complex matrices of a fixed size, the
+    trace norm satisfies $\lVert0\rVert_1=0$,
+    $\lVert A+B\rVert_1\leq\lVert A\rVert_1+\lVert B\rVert_1$,
+    $\lVert cA\rVert_1=|c|\lVert A\rVert_1$, and
+    $\lVert A^\dagger\rVert_1=\lVert A\rVert_1$.
+    For a finite set $B$ of branches and complex coefficients $c_\beta$,
+    \begin{align}
+        \Bigl\lVert\sum_{\beta\in B}c_\beta A_\beta\Bigr\rVert_1
+         & \leq\sum_{\beta\in B}|c_\beta|\lVert A_\beta\rVert_1.
+        \label{eq:source_branch_sum}
+    \end{align}
+    Taking all $c_\beta=1$ gives the unweighted finite-sum estimate; the
+    empty branch family gives zero.
+    These are the trace-norm properties used in the summation leading to
+    \cite[Equation~(5.19)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-total-error, 04-compression.tex:540--551.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_trace_duality}
+    For a contraction $V$, expand the trace pairing of the finite sum
+    into $\sum_\beta\overline{c_\beta}\tr(A_\beta^\dagger V)$.
+    The triangle inequality and trace-norm duality give
+    (\ref{eq:source_branch_sum}), including the additive bound and zero
+    case. An attaining contraction for $A$ gives the reverse scalar
+    inequality, hence exact homogeneity. Adjointing the test contraction
+    and cyclically permuting the trace gives
+    $\lVert A^\dagger\rVert_1\leq\lVert A\rVert_1$; applying this to the
+    adjoint gives equality.
+\end{proof}
+
+\begin{theorem}[Exact physical matrix-unit reinsertion]
+    \label{thm:source_physical_reinsertion}
+    \lean{Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self}
+    \lean{Matrix.rectangularTraceNorm_isometry_sandwich}
+    \lean{Matrix.basisRegisterInjection}
+    \lean{Matrix.basisRegisterInjection_conjTranspose_mul_self}
+    \lean{Matrix.basisRegisterInjection_sandwich_eq_single_kronecker}
+    \lean{Matrix.rectangularTraceNorm_single_kronecker}
+    \leanok
+    Let $A$ be any rectangular complex matrix, and let $K,L$ be
+    isometric embeddings of its ket and bra coordinate spaces. Thus
+    $K^\dagger K=\Id$ and $L^\dagger L=\Id$; both embeddings are operator
+    contractions, and
+    \begin{align}
+        \lVert KAL^\dagger\rVert_1 & =\lVert A\rVert_1.
+        \label{eq:source_isometric_insertion}
+    \end{align}
+    In particular, for finite physical ket and bra registers with
+    coordinates $x,y$, let $J_xv=|x\rangle\otimes v$ and
+    $J_yw=|y\rangle\otimes w$. These maps are isometries and satisfy
+    \begin{align}
+        J_xAJ_y^\dagger                            & =|x\rangle\langle y|\otimes A,
+        \label{eq:source_matrix_unit}                                               \\
+        \lVert|x\rangle\langle y|\otimes A\rVert_1 & =\lVert A\rVert_1.
+        \label{eq:source_physical_reinsertion}
+    \end{align}
+    The physical registers may differ, and no positivity or Hermiticity
+    assumption on $A$ is required.
+    This is the reinsertion step following
+    \cite[Equation~(5.18)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-one-choice, 04-compression.tex:535--538.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_exterior_contraction}
+    The isometry equations imply the operator contraction bounds.
+    Applying left and right trace-norm contraction gives one direction of
+    (\ref{eq:source_isometric_insertion}). For the reverse direction,
+    apply the adjoint contractions to $KAL^\dagger$ and use
+    $K^\dagger(KAL^\dagger)L=A$.
+    The identities $J_x^\dagger J_x=\Id$ and
+    (\ref{eq:source_matrix_unit}) follow by coordinate evaluation.
+    Substitute these isometries into (\ref{eq:source_isometric_insertion})
+    to obtain (\ref{eq:source_physical_reinsertion}).
+\end{proof}
+
+\section{Covariance and weighted block errors}
+
+\begin{theorem}[Expected trace error from diagonal covariance]
+    \label{thm:source_covariance_error}
+    \lean{ProbabilityTheory.sourceBlock}
+    \lean{ProbabilityTheory.weightedSourceError}
+    \lean{ProbabilityTheory.weightedSourceQuarter}
+    \lean{ProbabilityTheory.weightedSourceError_eq_halfWeighted}
+    \lean{ProbabilityTheory.quarterWeighted_source_sum_eq_transpose}
+    \lean{ProbabilityTheory.rectangularTraceNorm_weightedSourceError_le}
+    \lean{ProbabilityTheory.sourceProductProbability}
+    \lean{ProbabilityTheory.sum_sourceProductProbability}
+    \lean{ProbabilityTheory.weighted_source_block_aggregation}
+    \lean{ProbabilityTheory.weighted_source_block_sum_le_one}
+    \lean{ProbabilityTheory.aestronglyMeasurable_rectangularTraceNorm_sum}
+    \lean{ProbabilityTheory.integrable_weightedSourceQuarter_norm}
+    \lean{ProbabilityTheory.integrable_rectangularTraceNorm_weightedSourceError}
+    \lean{ProbabilityTheory.integral_frobeniusNormSq_weightedSourceQuarter_eq}
+    \lean{ProbabilityTheory.integral_rectangularTraceNorm_weightedSourceError_le}
+    \leanok
+    Let $I,L,T,U$ be finite index sets, let $p_i,\widetilde p_l$ be
+    nonnegative probability lists, and let $\tau,\widetilde\tau$ be
+    nonnegative diagonal trace-one matrices on the crossing-support spaces
+    $T,U$. Let $O:\C^{I\times T}\to\C^{L\times U}$ be a contraction,
+    with blocks $O_{li}:\C^T\to\C^U$.
+    On a probability space, let the complex coefficients $z_{il}$ have
+    integrable conjugate pair products and suppose, for $\kappa\geq0$,
+    \begin{align}
+        \mathbb E[z_{il}\overline{z_{i'l'}}]
+         & =\kappa\sqrt{p_i\widetilde p_l}\delta_{ii'}\delta_{ll'}.
+        \label{eq:source_covariance}
+    \end{align}
+    Define
+    \begin{align}
+        Z & =\sum_{i,l}z_{il}\tau^{1/2}O_{li}^{T}\widetilde\tau^{1/2},
+        \label{eq:source_exterior_input}                               \\
+        H & =\sum_{i,l}z_{il}\widetilde\tau^{1/4}O_{li}\tau^{1/4}.
+        \label{eq:source_quarter_sum}
+    \end{align}
+    The transpose is ordinary full transpose, preserving the coefficients.
+    The functions $\lVert Z\rVert_1$ and $\lVert H\rVert_2$ are integrable,
+    and
+    \begin{align}
+        \mathbb E\lVert H\rVert_2^2
+                                  & =\kappa\sum_{i,l}\sqrt{p_i\widetilde p_l}
+        \lVert\widetilde\tau^{1/4}O_{li}\tau^{1/4}\rVert_2^2,
+        \label{eq:source_block_moment}                                        \\
+        \mathbb E\lVert Z\rVert_1 & \leq\sqrt\kappa.
+        \label{eq:source_expected_error}
+    \end{align}
+    These are the covariance implication and block calculation in
+    \cite[Equations~(5.14)--(5.18)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-exterior-input, eq:compression-block-second-moment,
+    % eq:compression-dimension-free, eq:compression-one-choice, 04-compression.tex:480--533.
+    % The covariance and pair-product integrability are explicit premises here.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_quarter_weights, thm:random_matrix_moments}
+    Quarter-power comparison and ordinary transpose give
+    $\lVert Z\rVert_1\leq\lVert H\rVert_2$.
+    Diagonal covariance and Theorem~\ref{thm:random_matrix_moments} give
+    (\ref{eq:source_block_moment}). Put
+    $R=\diag(p)\otimes\tau$ and
+    $\widetilde R=\diag(\widetilde p)\otimes\widetilde\tau$.
+    Their diagonal lists $p_i\tau_t$ and $\widetilde p_l\widetilde\tau_u$
+    sum to one. Entrywise expansion gives the exact block aggregation
+    \begin{align}
+        \sum_{i,l}\sqrt{p_i\widetilde p_l}
+        \lVert\widetilde\tau^{1/4}O_{li}\tau^{1/4}\rVert_2^2
+         & =\lVert\widetilde R^{1/4}OR^{1/4}\rVert_2^2\leq1.
+        \label{eq:source_aggregation}
+    \end{align}
+    Pair-product integrability makes the Gram matrix $Z^\dagger Z$
+    almost everywhere measurable; taking its positive square root and
+    trace gives almost everywhere strong measurability of
+    $\lVert Z\rVert_1$.
+    The integrable square of $\lVert H\rVert_2$ gives its integrability,
+    and the pointwise comparison gives integrability of $\lVert Z\rVert_1$.
+    Finally, Cauchy--Schwarz on the probability space yields
+    $\mathbb E\lVert Z\rVert_1\leq\mathbb E\lVert H\rVert_2
+        \leq\sqrt{\mathbb E\lVert H\rVert_2^2}\leq\sqrt\kappa$.
+\end{proof}
+
+\begin{theorem}[Trace error under the constructed independent Gaussian law]
+    \label{thm:source_gaussian_error}
+    \lean{QICLean.ComplexGaussian.integrable_rectangularTraceNorm_gaussianSourceError}
+    \lean{QICLean.ComplexGaussian.integral_frobeniusNormSq_gaussianSourceQuarter_eq}
+    \lean{QICLean.ComplexGaussian.integral_rectangularTraceNorm_gaussianSourceError_le}
+    \leanok
+    Let $S$ be a finite set of corrected slots, with $s=|S|$. At each slot,
+    choose finite ket and bra supports $A_s,C_s$ and normalized nonnegative
+    endpoint weights. The corrected-register index sets are
+    $I=\prod_s(A_s\times A_s)$ and $L=\prod_s(C_s\times C_s)$.
+    Construct the Gaussian coefficients and their independent
+    product law as in Theorem~\ref{thm:random_gaussian_slots}.
+    Let $\tau,\widetilde\tau$ be nonnegative diagonal trace-one matrices,
+    and let $O$ be a contraction between the complete free registers.
+    For every positive sample count $k$, define $Z,H$ by
+    (\ref{eq:source_exterior_input}) and (\ref{eq:source_quarter_sum}).
+    Then $\lVert Z\rVert_1$ is integrable, the second moment of $H$ is
+    (\ref{eq:source_block_moment}) with $\kappa=k^{-s}$, and
+    \begin{align}
+        \mathbb E\lVert Z\rVert_1 & \leq k^{-s/2}.
+        \label{eq:source_gaussian_error}
+    \end{align}
+    Here the expectation uses the constructed independent Gaussian law.
+    This is \cite[Equation~(5.18)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-product-covariance, eq:compression-block-second-moment,
+    % eq:compression-dimension-free, eq:compression-one-choice, 04-compression.tex:394--538.
+    % No covariance, moment, or coefficient-measurability premise is added.
+    % The circuit must still supply the fixed full-register contraction O.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_gaussian_slots, thm:source_covariance_error}
+    The actual independent Gaussian law supplies the diagonal covariance
+    (\ref{eq:source_covariance}) with $\kappa=k^{-s}$ and supplies pair-product
+    integrability. Normalization of the endpoint lists gives normalization
+    of the product lists $p,\widetilde p$.
+    Apply Theorem~\ref{thm:source_covariance_error} and use
+    $\sqrt{k^{-s}}=k^{-s/2}$ for $k>0$.
+\end{proof}

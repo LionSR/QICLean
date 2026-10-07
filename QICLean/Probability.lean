@@ -12,3 +12,4 @@ import QICLean.Probability.ComplexGaussian
 import QICLean.Probability.CompressionSampling
 import QICLean.Probability.IndependentCovariance
 import QICLean.Probability.MatrixSecondMoment
+import QICLean.Probability.WeightedSourceError

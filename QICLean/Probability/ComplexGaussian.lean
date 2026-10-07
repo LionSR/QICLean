@@ -11,3 +11,5 @@ Authors: QICLean contributors
 import QICLean.Probability.ComplexGaussian.Basic
 import QICLean.Probability.ComplexGaussian.Covariance
 import QICLean.Probability.ComplexGaussian.IndependentSlots
+import QICLean.Probability.ComplexGaussian.ProductSource
+import QICLean.Probability.ComplexGaussian.SourceError

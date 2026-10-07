@@ -72,6 +72,7 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.RectangularTraceNorm
+import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
