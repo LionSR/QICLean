@@ -1,0 +1,488 @@
+[
+  {
+    "module": "QICLean.Channel.PartialTrace",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "6deff109171281a38a5b60edb671e82ff7667b2a5a7dcf40573309cd1bc28338",
+    "artifact_sha256": "e891e9e4f35717b1d4ac8ea8cfe87dc1f6b1b24e4daee2c850814aa297ab29b2",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/PartialTrace.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/PartialTrace.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Channel.SchmidtRank",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "37d897e01d54492ed8ef2f7658f5b7d0340868826526339343618c0129f19ea1",
+    "artifact_sha256": "0501ecd7507942b2858b15e75a7a44b4f0326905a30498feb0b18207367cbabc",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/SchmidtRank.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/SchmidtRank.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Channel.Basic",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "b71d13f5259e28d26b97f2bec53d4977e933c154969007409d0d5b359fa2d7a9",
+    "artifact_sha256": "af445b7c2f7b895bd229f347e34525b92ce2ef1789c65822be03f34537a93628",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Basic.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Basic.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Channel.ComplementaryWeylTwirl",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "28393c5e439887e101c5319eda4f7dac76f55adb055f3e05239559e31c2ff2fa",
+    "artifact_sha256": "09d1e5564b27890aceae43c9479291440b18d99ec630a5b3c6b3d4ae2a8f8e4d",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/ComplementaryWeylTwirl.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/ComplementaryWeylTwirl.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.MaximalOverlap",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "f65671a5b6b81e92d8cd8a80c8a6243ba11cbc413e6148143ce45c5bffee2ded",
+    "artifact_sha256": "dd0109069e66750b58cb4e2e3a8c703fd226253a3f710a96eedbc00554785221",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/MaximalOverlap.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/MaximalOverlap.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Channel.WeylTwirl",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "2a7c21168019ebfa80a9dd97b624442f2c76c54f345bbb51b39481ebedbeaa6e",
+    "artifact_sha256": "8c4a51fdeec99f33aaff2e4c5f7f65776acba248dc90fa82554620e5de6f6147",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/WeylTwirl.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/WeylTwirl.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.FiniteProduct",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "4f9d502adafc7ce4853b9973a11ff86a5a9004795b70e28cd40883a98dcdcbc6",
+    "artifact_sha256": "58d3aa9e7fbedf5c43f7465f8f6b7b552950aa05ad8cd5f5002a2acc34aea060",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/FiniteProduct.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/FiniteProduct.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Algebra.OrthogonalProjection",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "f10f3ad26c46dee516c162796db1ff6b5f95774fa7ebf00d88082c1f2fb805ea",
+    "artifact_sha256": "86de26607b9f6f0ddfca905612056c8b436db423849cbfde5b723bdc518db336",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/OrthogonalProjection.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/OrthogonalProjection.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Algebra.MatrixKroneckerEmbed",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "48e57d25a934c562ad97bb0e3b4ee0b9787796e7f9e3846c390615399e21e0ac",
+    "artifact_sha256": "75bdcb7c22c0a330cf84c0295bc31dba52211ac4798a564c0374bba11b67fb12",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/MatrixKroneckerEmbed.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/MatrixKroneckerEmbed.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Algebra.MatrixUnitaryBetween",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "59573146ed4419ccc2b12d2a95fae10196e3d9a6788abca6df43ac76d6c0aaa1",
+    "artifact_sha256": "e65553506b026f2d8ac523908938c7102e216a7539baa74f0ec40a7b6d54ab96",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/MatrixUnitaryBetween.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/MatrixUnitaryBetween.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Algebra.MatrixIsometryEntries",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "c9003209c02bf9895582c9550204b37e1709533ec1e6dfd2131ba706437becbb",
+    "artifact_sha256": "ad44d9fa653b34904590746875a23b0477220f9857f2274bf59eb21a58556d0d",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/MatrixIsometryEntries.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/MatrixIsometryEntries.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Algebra.MatrixReindexUnitary",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "1ce355a9c35ee1820532c11a3dfc337a86102e205d8d788f888ca476137916c7",
+    "artifact_sha256": "150a6e7dfce6f1812c5752b2b3f6df0ef71513092414a8e070818eb7cc01b766",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/MatrixReindexUnitary.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/MatrixReindexUnitary.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Algebra.FinSum",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "3ee0f9ef8c0a3a27664d0de6a49f7ea710a3fb572bf8e8d8c270cf753c418b39",
+    "artifact_sha256": "61a65d77afb96a98e86ec08a18a1781b5cf6aff6e96ffc3d47a887467325c810",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/FinSum.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/FinSum.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Algebra.MatrixAux",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "d63b6bf4ae5cc9aa51bc7ec59acba95858b64a7ee280c657fac5e7feb31e052c",
+    "artifact_sha256": "b5b3cc570aa6c6c65a6f7c21d4207749b8994388c42d5e21328df03e9ed38b84",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/MatrixAux.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/MatrixAux.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Algebra.KroneckerFactorPositivity",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "832dbcc5c7cf03f35bf65cd62ac38be0cfd38bf6c1a638ed586ec5bd0ca9f2d1",
+    "artifact_sha256": "96ed2fdcb5c9def58e05bf411b9743f1b1b29d208573f39ef3c8778b348db5e9",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/KroneckerFactorPositivity.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/KroneckerFactorPositivity.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Algebra.PosSemidefSupport",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "98d6807761fd25528b3543efa5b2043fee2369e8843acb48067390cc9f1b6a06",
+    "artifact_sha256": "55fc22a5cb35e6d55c5252b897f23dd7a89057d6f4dd0a0e696f403906262df4",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/PosSemidefSupport.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/PosSemidefSupport.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Algebra.HermitianHelpers",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "69559eb80e959d154766bba737ca7129612504613ff808c745e7a76e268241bc",
+    "artifact_sha256": "931e2e6d695102900dfe386a164c9f17487cb9cdfbeca8bbb7a3d2f5c818f56d",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/HermitianHelpers.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/HermitianHelpers.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Algebra.TraceReindex",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "5f2b6acbd8484f2e126ea5fba70cb49ad37eb58322336f42025bf2f4fe8c083b",
+    "artifact_sha256": "6bd3af092f226e1087cbfadcde182bdadc3a3154c5ba95ba92b0fd3a706c7ac6",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Algebra/TraceReindex.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Algebra/TraceReindex.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.LiebOperatorIntegral",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "60fb4af7b65fd0e62087c1bf98d5ae298bdeb35f0ec0c8f007abf77ecb06e5ae",
+    "artifact_sha256": "96d426f76423d6e9636a1388818b94dfed3c13cecd4458821c5bbe966ca23bd8",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/LiebOperatorIntegral.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/LiebOperatorIntegral.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.LiebIntegrandConcave",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "cc7ed0eb584ec2f7e6ec5fdcf5564e71d69b17a3eb16a8551de291b0cef73729",
+    "artifact_sha256": "6bee764be2ee66fef7eefd6662375c5a3b9bcb43bedda69a4e3fd882d657015a",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/LiebIntegrandConcave.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/LiebIntegrandConcave.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.MatrixSqrt",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "684db9b500b744bab7b26869625705f3648c0c49e8f25cc76f850e0516c5a421",
+    "artifact_sha256": "2726ff0a9b97291d8d08d10973b10c3df7a40c1ee141ec60363a441fdad1e4e9",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/MatrixSqrt.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/MatrixSqrt.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Analysis.OperatorConvexity",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "2aff2e1664c2b5bcaae6b0eea76a9ebc0b0f12939cd345b1d5da464891e434a9",
+    "artifact_sha256": "9cb266e5068dcc9254a02fe298a98ec21356aa25d770e31b31c28dc36b2e79c9",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/OperatorConvexity.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/OperatorConvexity.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.MarginalSupport",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "51a8ff3eefd58a428a3f81ff7557a96de948ceaa688dc086c865c4fad9bb9f7e",
+    "artifact_sha256": "7e1f012b1dddea33df6bf21b7fb0b47c36b42decb269bf1f1db7c43077cc8e1e",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/MarginalSupport.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/MarginalSupport.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.LiebScalarIntegral",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "0a6056e702176ab4c79809b877daad581f0893b868ec74de9cc55a54c3833b03",
+    "artifact_sha256": "0e29de90dc455e3ea5379d70d2dd2e39aa69f92ea8f5d62c626fe3b148704e7a",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/LiebScalarIntegral.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/LiebScalarIntegral.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.ProbabilityEntropy",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "000961a2a32b18f51714db64fe174124c15d2adf57b8d2745f3ee9f75c6a8f57",
+    "artifact_sha256": "e007669c21d42604b091fc9828bb062f0a052b62371ade1199bb285cdeefb669",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/ProbabilityEntropy.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/ProbabilityEntropy.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Analysis.SpectralQuadraticForm",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "425a8cb2c6ba9db0cf69868029c788b8f67b93b620339e6ece339941534651dd",
+    "artifact_sha256": "141daf14b8a341fdea51156d088a9601b0f1886f8a26e259a68582f66a9c9db0",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/SpectralQuadraticForm.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/SpectralQuadraticForm.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.SuperoperatorResolvent",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "0b729e5b22775c5a8b7933fd9f4f68351b1bb0eddea1a3ca3d645b080a665767",
+    "artifact_sha256": "abd2406ca5c53a8032a6e21e12bfbe0ea827e28dc88ed63eafcfcb07cd90af8e",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/SuperoperatorResolvent.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/SuperoperatorResolvent.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.KleinInequality",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "25bbec3b3d797a96c5e4e4478d96b2b215067c6e2867dbd1b524e88155d73b38",
+    "artifact_sha256": "24eb3fa0e7a5e4613488434dc4ed790e34a90bfae722a59e763593c4b8e43b55",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/KleinInequality.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/KleinInequality.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.LiebConcavity",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "6895b79c51d47acb052c22c68bba7d61b689182bed03aba66a3b72ee6b1c17c6",
+    "artifact_sha256": "09150fe24dac79f5218c0a41a5ab9e5b1c6b31ba1370355b6016d290a1824049",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/LiebConcavity.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/LiebConcavity.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.TraceCFC",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "5c439b388c03eb6728b39f55a13bf0d08ba37bdf8c2928d4a5f04cede0dd76d2",
+    "artifact_sha256": "4a7844bbee838ffb97ae1d76878f870e9b2d739d3a67ce6cac24698ba693c778",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/TraceCFC.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/TraceCFC.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Analysis.CfcKronecker",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "928703e2e8db716711566d7803cf0234a1c7988a2f566cfe1507e1e0a8ec7359",
+    "artifact_sha256": "302a4d8038afb30f1b0038376ba8c06d824da8e3a6225be21b009882d7695bd0",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/CfcKronecker.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/CfcKronecker.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Analysis.LiebOperatorConcave",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "5a538fad1ef4309d61ed0d8982a93e2b95bf5eb436122fa030bb9eef672e9eae",
+    "artifact_sha256": "35c3ea1ee9ff5fa79a11d8e9933cc7a54ab6f413a93b2182c82d560a9e4014cf",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/LiebOperatorConcave.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/LiebOperatorConcave.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.Entropy",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "4214fc56723f81c3a3b819a7d31b8cf3350c1c5981c286c8746d540dd2e3eec8",
+    "artifact_sha256": "1deaa356652b9ab4edc95e539a7a83da436b82765c7727aa347ce299c0ba3e3e",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/Entropy.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/Entropy.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Analysis.KyFanNorm",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "4753806c9e451722c39506b746a5c56ec0a214942fcf540d3ade8ddbdc5a91a9",
+    "artifact_sha256": "665854fcc4ade9f7ce9ce4be1c6374e9f7168c61db59f9bdfa2b5517024f8a30",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/KyFanNorm.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/KyFanNorm.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Analysis.EntropyReindex",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "b31fbf6c25da3319d79ab69227e6ee363f6423386b723cfd4cb9f84b8f2bc717",
+    "artifact_sha256": "1dfc8f694d8475140d7fc991842600d4dfe86538ed0a022b8cb5af57d113aea9",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/EntropyReindex.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/EntropyReindex.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Analysis.CfcConjugation",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "d2659256bc248f68dcbe28920d9a6ab85fc1d0547d98761cb4bba51f0d7eceed",
+    "artifact_sha256": "80f8c58112c9859089e412bcb866bc56dbb6d5bc5663090a753be2824bb72a57",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/CfcConjugation.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/CfcConjugation.olean",
+    "prior_record": "dependency-audit.json"
+  },
+  {
+    "module": "QICLean.Analysis.CfcLogAdditive",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "fa2efa76d77b1c937aff33445a869af35b88fce79dd40608a2aac6c1a464c714",
+    "artifact_sha256": "5d505f7965ff7dba30757e9f950b2efdedf99ba6d0a2a3b62e6fdc0f4b84134c",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Analysis/CfcLogAdditive.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Analysis/CfcLogAdditive.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Entropy.Bipartite",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "a7b0a9ee6ec999f82a94f81c02acf3d7b78188af41d3785d06455f7afdd1ca58",
+    "artifact_sha256": "6805efd3691ec91237c52c43acab71d248e108d8c5901c2c3e0be20a768dd450",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Entropy/Bipartite.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Entropy/Bipartite.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Entropy.StrongSubadditivity",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "cf61d19e0f87512e8cecfee42437791bf8e47470524b64893211a609079ddda5",
+    "artifact_sha256": "8476cef850ae0b586d76ee6cd02c4d780a22f80112cdd236e17d5f14185225ba",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Entropy/StrongSubadditivity.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Entropy/StrongSubadditivity.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Entropy.TripartiteTrace",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "6ac5fd24f38c8468a077cb5b407db6b4bc828986330aa6772f060b07c1ecfff6",
+    "artifact_sha256": "6340d8b64af85fc66bfea4cf491151ad2230ab1f4fa29817ddafbe2479d6266c",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Entropy/TripartiteTrace.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Entropy/TripartiteTrace.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Entropy.VonNeumann",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "562855d97298fede4c2492d63d0ecf5f0f869814c129f6691d0bde465d750cd6",
+    "artifact_sha256": "344d315969e3f6432adb5c891645a04ee9fb9fa69148dfacc574a4e9369d921e",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Entropy/VonNeumann.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Entropy/VonNeumann.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Entropy.TwoFamilies",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "c5645831bf583ab2dd3f5e541fecbb5cdc664cc5d74c3f9114d180ab1a48a038",
+    "artifact_sha256": "348c44190d7dd2dc2e5cb8d8c0ced197203e68eff78e750442d060ff64dd68cf",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Entropy/TwoFamilies.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Entropy/TwoFamilies.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Entropy.FiniteProductConditional",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "e701aa42beadb82539c1b5932b30510bd3b58a3aa495122c42e6be2888189439",
+    "artifact_sha256": "e87288d262e469c463471dd071d3e467719b8635bba08bc4ff254555d5104e1c",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Entropy/FiniteProductConditional.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Entropy/FiniteProductConditional.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Entropy.OrderedEntropyAlgebra",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "cf2591e313d37bbc41cfcceda42ae25f9bd144c1536ebb8dee93f9e10665fd0b",
+    "artifact_sha256": "947f918d7f3fa714c6f1f8d95429c81d8d71d2a62408f0e1c8d397b1b4f28980",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Entropy/OrderedEntropyAlgebra.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Entropy/OrderedEntropyAlgebra.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Entropy.FiniteProduct",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "c81834ee941566838df6b52588378a2c3c01121a34a3d95506dacf488cd2c1e2",
+    "artifact_sha256": "1ca29e7858918c728f58b5f4223e2ff1d881b8b08700d9998e32305e0638ecc4",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Entropy/FiniteProduct.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Entropy/FiniteProduct.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.Schwarz.OperatorJensenIntegrands",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "9b86d79021864f121cf516d14a07736bf7d9fae202bc6f2215e9d66d1dd9a658",
+    "artifact_sha256": "0b265d80f987c9f9fd0e70a3bc93ea580b824a2e61f27fab194a21e2af07e52e",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Schwarz/OperatorJensenIntegrands.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Schwarz/OperatorJensenIntegrands.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.Schwarz.RelativeEntropyDataProcessing",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "ed09b464d4faedb51e7879ddf388322e25cb4f4f1faf218437e8eaf9d3d4f580",
+    "artifact_sha256": "6ed7535e7c35b9a0a3359a91f0a8d2377be36e1a2f34e8e973d73c07c60946d9",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Schwarz/RelativeEntropyDataProcessing.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Schwarz/RelativeEntropyDataProcessing.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.Schwarz.DiagonalJensen",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "58f58626b13f47d2998e6d00e2aafec4f12d25efe532298a4b5c886defcc8022",
+    "artifact_sha256": "c39cef889bbc429eaf18a8faa3b15f40093c046fc38f19749898b4f599da7b17",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Schwarz/DiagonalJensen.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Schwarz/DiagonalJensen.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.Schwarz.StrongSubadditivityPosDef",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "1868e54d5d060847e37c478d58d167b0599c8005894479970c5a4a722d57eeb8",
+    "artifact_sha256": "0fc6428c0c88b8e5af1ca783c9656ec0013f9497924a2d6c081cd45ca9c8602c",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Schwarz/StrongSubadditivityPosDef.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Schwarz/StrongSubadditivityPosDef.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.Schwarz.AndoLieb",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "3f296a2a9b04998cca80e7738226028ee4f23575e4ef11c386031134aeecc4cf",
+    "artifact_sha256": "443bb7d8a0ba7302f857bcf50c6078e574f3bd703ddf5dc0e6f8a2eca37682b5",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Schwarz/AndoLieb.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Schwarz/AndoLieb.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.Schwarz.OperatorJensenAux",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "1dfd0ae27bfa11910bdd86b5f922b3348bcb2fd86b9d6201eafd5a357c14ee5e",
+    "artifact_sha256": "bbe6b359ec8ca3f9b24fc128724b19ac6e679412cfe1c6b95bc75f1f41613548",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Schwarz/OperatorJensenAux.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Schwarz/OperatorJensenAux.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.Schwarz.RelativeEntropyConvexity",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "caca5c020470625c7eb6500d08db7dc22e47db6539e011fb151ec588d31d821a",
+    "artifact_sha256": "b3cf5e46773019a922de5ff205dc01cd5c9867e9ac879bf506ebaad6c2ebf3d4",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Schwarz/RelativeEntropyConvexity.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Schwarz/RelativeEntropyConvexity.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.Schwarz.RelativeEntropyUnitaryInvariance",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "db3d20ffb3f76d861f933c4a362ad7e93f3cd7143fcd6cdaa2250a325a52d1b8",
+    "artifact_sha256": "cf7e63c165d072d9459152a62a34560813a94ca5006d7572599f776112e506e9",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Schwarz/RelativeEntropyUnitaryInvariance.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Schwarz/RelativeEntropyUnitaryInvariance.olean",
+    "prior_record": "actual-runs.json"
+  },
+  {
+    "module": "QICLean.Channel.Schwarz.RelativeEntropyAncillaAdditivity",
+    "source_revision": "e0d95bff81c11eab7db872a927d1d69f820d4f47",
+    "source_sha256": "7ba95cd9108f9d6d2fbbfb3c479a0956ebb044cbd627feaca11b907d349c5678",
+    "artifact_sha256": "6b4e60cab1064fc21ab2e13d28909345cec477802bd7e53f4be4ea5c1a670516",
+    "origin": "/workspace/scratch/7637e06d0fc2/two-family-entropy-validation/lib/lean/QICLean/Channel/Schwarz/RelativeEntropyAncillaAdditivity.olean",
+    "copy": "/workspace/scratch/7637e06d0fc2/conditional-two-family-validation/lib/lean/QICLean/Channel/Schwarz/RelativeEntropyAncillaAdditivity.olean",
+    "prior_record": "actual-runs.json"
+  }
+]
