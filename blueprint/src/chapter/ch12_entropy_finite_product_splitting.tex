@@ -1,0 +1,87 @@
+\section{Splitting finite regions by a complement isometry}
+
+Let $\Lambda$ be a finite set of sites with finite local bases $E_v$, and
+write $E_R=\prod_{v\in R}E_v$. Let $T,E\subseteq\Lambda$ be disjoint,
+put $U=\Lambda\setminus(T\cup E)$, and set $d_T=|E_T|$, $d_E=|E_E|$.
+Empty products have dimension one.
+
+\begin{definition}[Two-region coordinates]
+    \label{def:finite_product_splitting_coordinates}
+    \lean{FiniteProduct.splitTwoRegionsEquiv,
+        FiniteProduct.splitTwoRegionsState}
+    \leanok
+    Restricting a configuration to $T,E,U$ and enumerating the first two
+    bases gives a bijection
+    $E_\Lambda\simeq(\{1,\ldots,d_T\}\times\{1,\ldots,d_E\})\times E_U$.
+    Write $\widetilde\psi$ for the same vector in these coordinates.
+\end{definition}
+
+\begin{theorem}[The joint marginal in two-region coordinates]
+    \label{thm:finite_product_splitting_marginal}
+    \lean{FiniteProduct.partialTraceRight_splitTwoRegionsState,
+        FiniteProduct.splitTwoRegionsState_unit}
+    \leanok
+    \uses{def:finite_product_splitting_coordinates,
+        def:finite_product_regional_entropy}
+    The joint regional density matrix, expressed in the enumerated bases,
+    is $\rho_{TE}=\operatorname{Tr}_U
+    |\widetilde\psi\rangle\langle\widetilde\psi|$.
+    If $\|\psi\|=1$, then $\|\widetilde\psi\|=1$.
+\end{theorem}
+\begin{proof}\leanok
+    The partial trace sums the same coefficient products over $E_U$ as
+    the regional reduced density. Taking its trace gives
+    $\|\widetilde\psi\|^2=\operatorname{Tr}\rho_{TE}=1$.
+\end{proof}
+
+\begin{theorem}[Regional purification splitting]
+    \label{thm:finite_product_regional_splitting}
+    \lean{FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le}
+    \leanok
+    \uses{thm:finite_product_splitting_marginal,
+        def:finite_product_regional_entropy}
+    Let $\psi$ be a unit pure state, and put $b=I_\psi(T:E)$.
+    There are finite-dimensional spaces $\mathcal B_T,\mathcal B_E$, an
+    isometry $W:\mathcal H_U\to\mathcal B_T\otimes\mathcal B_E$, and
+    unit vectors $s\in\mathcal H_T\otimes\mathcal B_T$ and
+    $s'\in\mathcal H_E\otimes\mathcal B_E$ such that
+    \begin{align}
+        \|(\mathbf 1_{TE}\otimes W)\widetilde\psi-s\otimes s'\|
+        &\le\sqrt{2(1-e^{-b/2})}\le\sqrt b.
+        \label{eq:finite_product_splitting_error}
+    \end{align}
+    One may take $\mathcal B_T=\mathbb C^{d_T}$ and
+    $\mathcal B_E=\mathbb C^{d_E}\oplus\mathcal H_U$.
+    The isometry acts on all of $\mathcal H_U$.
+    This is the finite-product form of
+    \cite[Lemma~6.4]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    The joint marginal is the reduced density of $\widetilde\psi$ by
+    Theorem~\ref{thm:finite_product_splitting_marginal}, and its matrix
+    mutual information is $b$. Its support is contained in the support of
+    $\rho_T\otimes\rho_E$, so
+    $D(\rho_{TE}\Vert\rho_T\otimes\rho_E)=b$.
+    The purification splitting theorem gives an isometry on the entire
+    complement and two unit marginal purifications, with the first bound
+    in~(\ref{eq:finite_product_splitting_error}). Its proof uses the
+    root-fidelity lower bound $F\ge e^{-b/2}$ and the purification overlap
+    supplied by Uhlmann's theorem. Finally, $2(1-e^{-b/2})\le b$ gives the
+    second bound in~(\ref{eq:finite_product_splitting_error}).
+\end{proof}
+
+\begin{theorem}[Splitting at polynomial accuracy]
+    \label{thm:finite_product_splitting_polynomial}
+    \lean{FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow}
+    \leanok
+    \uses{thm:finite_product_regional_splitting}
+    Under the hypotheses of
+    Theorem~\ref{thm:finite_product_regional_splitting}, if $L>0$ and
+    $I_\psi(T:E)\le L^{-60}$, the same conclusion holds with vector error
+    at most $L^{-30}$.
+\end{theorem}
+\begin{proof}\leanok
+    Apply the polynomial-accuracy form of purification splitting to the
+    same coordinate state and its joint marginal. Its estimate follows
+    from $\sqrt{I_\psi(T:E)}\le\sqrt{L^{-60}}=L^{-30}$.
+\end{proof}

@@ -15,6 +15,7 @@ import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
+import QICLean.Entropy.FiniteProductSplitting
 import QICLean.Entropy.MarkovChain
 import QICLean.Entropy.MutualInformation
 import QICLean.Entropy.MutualInformationBasic
