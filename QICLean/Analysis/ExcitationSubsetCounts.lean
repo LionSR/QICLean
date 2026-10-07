@@ -65,6 +65,7 @@ private theorem log_choose_le_mul_binEntropy_of_pos {p : ℝ}
 
 OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
 Section 7, `07-comparators.tex`, lines 577–578 (before `comparator:inverse-compression`).
+Original proof of `Real.log_choose_le_mul_binEntropy`; no upstream Lean proof text reused.
 Provenance-ID: excitationSubsetCounts8750-real.log_choose_le_mul_binEntropy.
 -/
 theorem log_choose_le_mul_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2)
@@ -81,6 +82,7 @@ theorem log_choose_le_mul_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2
 
 OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
 Section 7, `07-comparators.tex`, lines 577–578 (before `comparator:inverse-compression`).
+Original proof of `Real.choose_le_exp_mul_binEntropy`; no upstream Lean proof text reused.
 Provenance-ID: excitationSubsetCounts8750-real.choose_le_exp_mul_binEntropy.
 -/
 theorem choose_le_exp_mul_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2)
@@ -93,6 +95,7 @@ theorem choose_le_exp_mul_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2
 
 OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
 Section 7, `07-comparators.tex`, lines 577–590 (before `comparator:inverse-compression`).
+Original proof of `Real.sum_choose_le_mul_exp_binEntropy`; no upstream Lean proof text reused.
 Provenance-ID: excitationSubsetCounts8750-real.sum_choose_le_mul_exp_binEntropy.
 -/
 theorem sum_choose_le_mul_exp_binEntropy {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1 / 2)
@@ -119,6 +122,7 @@ variable {α : Type*}
 
 OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
 Section 7, `07-comparators.tex`, lines 577–590 (before `comparator:inverse-compression`).
+Original proof of `Finset.card_filter_powerset_le_mul_exp_binEntropy`; no upstream Lean proof text reused.
 Provenance-ID: excitationSubsetCounts8750-finset.card_filter_powerset_le_mul_exp_binEntropy.
 -/
 theorem card_filter_powerset_le_mul_exp_binEntropy (s : Finset α)
