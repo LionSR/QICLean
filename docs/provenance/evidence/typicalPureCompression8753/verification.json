@@ -1,0 +1,66 @@
+{
+  "source_revision": "7076296aad42492bccb9b3bb321ca12b5565d0e9",
+  "parent_revision": "3446fccdbe72e932aa9479c146c7f3d1b4faee88",
+  "source_files": [
+    {
+      "path": "QICLean/Entropy/TypicalPureCompression.lean",
+      "sha256": "e0b2e684eaaa83f1969c7048dabcf1f7ec35d90edf7723598715895ebdb34b49",
+      "coverage": "Entire source file, including both private auxiliary proofs."
+    }
+  ],
+  "blueprint_fragment": {
+    "path": "blueprint/src/fragment/typical_pure_compression.tex",
+    "sha256": "e8c2bfe50ba435621f9ee0e7fdbdafa99afd8741f0f01e02c4a9fd6b4001418a"
+  },
+  "commands": [
+    {
+      "kind": "build",
+      "command": "lake build QICLean.Entropy.TypicalPureCompression",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalPureCompression8753/build.log",
+      "sha256": "4e4bdeb726bfb6fa565cb0eb8b1735979b3fd82ce26ff98db55a75daee1e32e2"
+    },
+    {
+      "kind": "build",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Entropy/TypicalPureCompression.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalPureCompression8753/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "axioms",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/typicalPureCompression8753/TypicalPureCompressionAxioms.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalPureCompression8753/axioms.log",
+      "sha256": "9e7c87dd27597425f4406e8ed157b4e7771036b7ec4ac9e485d3448804d99cb6"
+    }
+  ],
+  "public_declarations": [
+    "Matrix.IsHermitian.spectralSelectionEmbedding",
+    "Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding",
+    "Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose",
+    "Matrix.compressedTypicalPureState",
+    "Matrix.kronecker_mulVec_compressedTypicalPureState",
+    "Matrix.partialTraceRight_compressedTypicalPureState",
+    "Matrix.partialTraceLeft_compressedTypicalPureState",
+    "Matrix.norm_compressedTypicalPureState"
+  ],
+  "pending": [
+    "Integration into root import aggregator and chapter router",
+    "Combined full-library build and complete blueprint PDF/web/checkdecls"
+  ],
+  "additional_evidence": [
+    {
+      "path": "docs/provenance/evidence/typicalPureCompression8753/provenance.log",
+      "sha256": "77099c3def04e8028a40bf67f5b4e3e3843a986a23e2fe2b889bea7c500a6b26"
+    },
+    {
+      "path": "docs/provenance/evidence/typicalPureCompression8753/source-comparison.json",
+      "sha256": "b1b3763b30c5882266a0a45c103e506f8e0e9e4f646016ba673bc0d9346d4983"
+    },
+    {
+      "path": "docs/provenance/evidence/typicalPureCompression8753/TypicalPureCompressionAxioms.lean",
+      "sha256": "710e373c9c7d8845a29acdbde3cfc34e6d7e25ea538ed7acc1b3b9fdb3f7d076"
+    }
+  ]
+}
