@@ -69,11 +69,8 @@ import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
-<<<<<<< HEAD
-import QICLean.Analysis.PhaseError
-=======
 import QICLean.Analysis.OrthogonalResolution
->>>>>>> dea6d898 (feat(Representation): isotypic dimension, multiplicity count, and orthogonal resolutions)
+import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.ProbabilityEntropy
