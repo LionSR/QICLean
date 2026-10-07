@@ -1,0 +1,85 @@
+{
+  "source_revision": "d44122632c6d7d1b2d17a5d889fc8fe10bbb846e",
+  "environment": {
+    "texra-blueprint": "0.3.8",
+    "plasTeX": "3.1",
+    "leanblueprint": "0.0.20",
+    "latexmk": "4.86",
+    "xetex": "0.999996 (TeX Live 2025/dev/Debian)",
+    "tenkz_revision": "08a6493f3605dcf2ca5b512823ccb2698dfc027b",
+    "setup": "Existing blueprint virtual environment, cached TeX formats and configured TEXMF/TEXMFVAR/TEXMFCONFIG/TENKZ_ROOT; new fixture-local XDG_CACHE_HOME."
+  },
+  "commands": [
+    {
+      "command": "python prepare.py --source-root <SOURCE_ROOT> --output <NEW_EXTERNAL_FIXTURE>",
+      "exit_code": 0
+    },
+    {
+      "command": "latexmk -xelatex -interaction=nonstopmode -halt-on-error print.tex",
+      "exit_code": 0
+    },
+    {
+      "command": "cp print.bbl web.bbl",
+      "exit_code": 0
+    },
+    {
+      "command": "plastex -c plastex.cfg web.tex",
+      "exit_code": 0
+    },
+    {
+      "command": "python scripts/tenkz_blueprint_sweep.py --src blueprint/src --allow-empty",
+      "exit_code": 0
+    },
+    {
+      "command": "python verify.py --source-root <SOURCE_ROOT> --render <NEW_EXTERNAL_FIXTURE>",
+      "exit_code": 0,
+      "attempt": "initial"
+    },
+    {
+      "command": "pdftoppm -png -scale-to 1500 -f 13 -l 14 blueprint/src/print.pdf pdf-pages/page",
+      "exit_code": 0
+    },
+    {
+      "command": "pdftoppm -png -scale-to 1500 -f 3 -l 3 blueprint/src/print.pdf pdf-pages/page",
+      "exit_code": 0
+    },
+    {
+      "command": "python verify.py --source-root <SOURCE_ROOT> --render <NEW_EXTERNAL_FIXTURE>",
+      "exit_code": 0,
+      "attempt": "final, after adding an explicit HTML display-block attachment check"
+    },
+    {
+      "command": "bash -n run.sh",
+      "exit_code": 0,
+      "scope": "Syntax check of the reusable wrapper; equivalent render commands were executed individually above."
+    },
+    {
+      "command": "pdftoppm -png -scale-to 1500 -f 15 -l 15 blueprint/src/print.pdf pdf-pages/page",
+      "exit_code": 0
+    }
+  ],
+  "raw_log_sha256": {
+    "pdf-build.log": "761237b786fe6b44485ea0129f6be02278f3e1eb21e74cec8aaef8e6d20222ec",
+    "blueprint/src/print.log": "b0da44e12f2dc8a0acfbaef475f8d970424e99070475aefb60b90b308f5d20e2",
+    "web-build.log": "f1430673187e2d7e5930d00a665c5a7447541942c9329341c40ba2a746e7a6d4",
+    "tenkz-sweep.log": "b538b8a39648046b70581c374352c03ff337aa5709dc57dd4ff224da5d65f088",
+    "verify-attempt-1.log": "d38c705f24dadff99b525362974e3b44ae75faa320bdd0c1f3c24bf433c17c81",
+    "verify-final.log": "7607d7c5ac36bed25e549c4994112043775f5ef6ae982bafdc5223f1cc1f7e6a",
+    "raster-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raster-diagram.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raster-bibliography.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "warnings": [
+    "XeTeX PDF backend could not open pdftex.map and kanjix.map and reported a duplicate title-page page.1 destination. PDF generation, label destinations, declaration links, layout checks, and the inspected pages passed.",
+    "dvisvgm is absent. The existing diagram renderer used its xelatex/PDF/pdftocairo fallback; the resulting SVG exists, parses, and has no missing-image placeholder.",
+    "Tenkz sweep: one picture, zero hard findings, zero advisories. The inherited display has no tenkzeq scope, so no hard equation-group check ran."
+  ],
+  "failures": [],
+  "prior_evidence": "Earlier frozen three-leaf fixtures and bindings remain unchanged; no previous artifact or historical ledger was overwritten.",
+  "scope_limits": [
+    "Focused PDF and static HTML only; no full-book, browser, MathJax runtime, or responsive-layout claim.",
+    "No Lean/Lake/checkdecls build or remote write; source parsing is not proof validation.",
+    "Generated PDF, HTML, diagram SVG, and page images stay outside Git.",
+    "Remote declaration-documentation URLs are checked for identity, not availability."
+  ]
+}
