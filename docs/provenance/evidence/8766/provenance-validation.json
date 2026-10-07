@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "verified_source_revision": "c849b612e6e7c37c4c38263316681ff92b7ed5de",
+  "source_publication": {
+    "status": "local only; QIC repository publication held pending destination authorization",
+    "upstream_source_revision": null,
+    "pull_request": null,
+    "full_root_and_ci": "not run"
+  },
+  "repository": "LionSR/QICLean",
+  "public_theorems": 6,
+  "private_helpers": [
+    {
+      "source_name": "Matrix.norm_toEuclideanCLM_unitary",
+      "path": "QICLean/Analysis/PolarUnitaryCorrection.lean",
+      "line": 93
+    }
+  ],
+  "policy_revision": "a05ef8f8db19f28e987bf3ce599c5f284f96921f",
+  "policy_sha256": "09d4014860e4e8df855417587404c12e5fff4af318cf933588a1847c43e0773a",
+  "schema_sha256": "a691d8e95b668c968365f2c7e33f614d49635aade8fdd4c2f27cd64f0cd6b459",
+  "checks": [
+    "schema",
+    "exact QIC source bytes",
+    "declaration and notice identity",
+    "log hashes",
+    "exact named raw axiom output",
+    "all public declarations and provenance IDs in the two owned modules"
+  ],
+  "limits": [
+    "This validates only issue 8766; unrelated issue 8765 evidence and repository-wide notice coverage are not certified.",
+    "Pinned policy code is unchanged; QIC is supplied as an explicit repository root.",
+    "No Lean build, remote action, full QIC root or complete CI run is performed by this script."
+  ]
+}
