@@ -44,6 +44,9 @@ section Curve
 
 variable {m : Type*} [Fintype m] [DecidableEq m]
 
+-- The instances on `m` are used by the Euclidean operator norm inside the proof.
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
 /-- **One-sided first-order condition for a curve of filters.** If `M` has derivative `M'`
 at `0` and `‖A Φ(M t) w‖ ≤ ‖A Φ(M 0) w‖` for small `t > 0`, then
 `Re ⟨A Φ(M 0) w, A Φ(M') w⟩ ≤ 0`. -/
@@ -138,7 +141,8 @@ theorem trace_conj_diagonal_mul {m : Type*} [Fintype m] [DecidableEq m] {U : Mat
 `ψ` on regions containing `D`. If `ρ_{ψ,D} = U diag(q) U*`, then `q_k / x_k ≤ q_i / x_i`
 whenever `x_i > f`.
 Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 383–399. -/
-theorem ratio_le_of_diagonal_max {D : Finset V} {U : Matrix (RegionConfig n D) (RegionConfig n D) ℂ}
+theorem ratio_le_of_diagonal_max {D : Finset V}
+    {U : Matrix (RegionConfig n D) (RegionConfig n D) ℂ}
     (hU : Uᴴ * U = 1) {x q : RegionConfig n D → ℝ} {f a : ℝ} (ha : 0 < a) (hf : 0 < f)
     (hx : ∀ i, f ≤ x i) (hsum : ∑ i, x i = 1) {outer : List (RegionFilter n)}
     (C : Matrix (SiteConfig n) (SiteConfig n) ℂ) (w : EuclideanSpace ℂ (SiteConfig n))
@@ -176,10 +180,10 @@ theorem ratio_le_of_diagonal_max {D : Finset V} {U : Matrix (RegionConfig n D) (
     simp only [zero_mul, add_zero, hΦ]
     refine hmax _ (fun j ↦ ?_) ?_
     · by_cases hjk : j = k
-      · subst hjk; simp [v, Pi.single_apply, hik.symm, hx j, ht.1.le]; linarith [hx j, ht.1]
+      · subst hjk; simp [v, hik.symm]; linarith [hx j, ht.1]
       · by_cases hji : j = i
-        · subst hji; simp [v, Pi.single_apply, hjk]; linarith [ht.2]
-        · simp [v, Pi.single_apply, hjk, hji, hx j]
+        · subst hji; simp [v, hjk]; linarith [ht.2]
+        · simp [v, hjk, hji, hx j]
     · simp only [v, Pi.sub_apply, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib,
         ← Finset.mul_sum]
       simp [hsum]
@@ -202,7 +206,8 @@ theorem ratio_le_of_diagonal_max {D : Finset V} {U : Matrix (RegionConfig n D) (
   -- evaluate the sum
   have hreal : ∑ j, q j * (a / 2 * (v j / x j)) = a / 2 * (q k / x k - q i / x i) := by
     have hv : ∀ j, q j * (a / 2 * (v j / x j)) =
-        (if j = k then a / 2 * (q k / x k) else 0) - (if j = i then a / 2 * (q i / x i) else 0) := by
+        (if j = k then a / 2 * (q k / x k) else 0) -
+          (if j = i then a / 2 * (q i / x i) else 0) := by
       intro j
       simp only [v, Pi.sub_apply, Pi.single_apply]
       split_ifs with h1 h2 h2 <;> subst_vars <;> first | exact absurd rfl hik | ring
