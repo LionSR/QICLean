@@ -13,6 +13,7 @@ import QICLean.Analysis.AsymptoticStateConvergence
 import QICLean.Analysis.Birkhoff
 import QICLean.Analysis.CStarCompletion
 import QICLean.Analysis.CStarMatrixKronecker
+import QICLean.Analysis.CfcComplex
 import QICLean.Analysis.CfcConjugation
 import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
@@ -113,6 +114,7 @@ import QICLean.Analysis.ShiftedPowerDerivative
 import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
+import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
@@ -126,6 +128,7 @@ import QICLean.Analysis.SuperoperatorResolvent
 import QICLean.Analysis.SupportCompressedEntropy
 import QICLean.Analysis.SupportCompression
 import QICLean.Analysis.SupportLogJensen
+import QICLean.Analysis.SupportPower
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceDistance
