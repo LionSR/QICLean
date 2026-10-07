@@ -1,0 +1,15 @@
+{
+  "kind": "checkdecls",
+  "command": [
+    "lake",
+    "env",
+    ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+    "blueprint/lean_decls"
+  ],
+  "working_directory": ".",
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "exit_code": 0,
+  "elapsed_seconds": 38.249316125002224,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/checkdecls.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "paper-gaps",
+  "command": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "working_directory": ".",
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "exit_code": 0,
+  "elapsed_seconds": 0.3456304999999702,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/paper-gaps.log",
+  "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f"
+}

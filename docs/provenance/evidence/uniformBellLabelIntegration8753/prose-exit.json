@@ -1,0 +1,18 @@
+{
+  "kind": "prose",
+  "command": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--root",
+    ".",
+    "--diff-base",
+    "0c3485a4",
+    "--ci"
+  ],
+  "working_directory": ".",
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "exit_code": 0,
+  "elapsed_seconds": 0.22295616600604262,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

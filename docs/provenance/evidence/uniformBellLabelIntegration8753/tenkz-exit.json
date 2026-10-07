@@ -1,0 +1,13 @@
+{
+  "kind": "tenkz",
+  "command": [
+    "python3",
+    "scripts/fetch_tenkz.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "elapsed_seconds": 2.5351683750050142,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/tenkz.log",
+  "sha256": "cc4821bb4043262ce2ec966bdc8a954f71e96b5130e9a6636df53b61790af638"
+}

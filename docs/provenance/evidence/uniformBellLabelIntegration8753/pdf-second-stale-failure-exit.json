@@ -1,0 +1,13 @@
+{
+  "kind": "pdf",
+  "command": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "working_directory": "blueprint",
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "exit_code": 255,
+  "elapsed_seconds": 0.48398141701181885,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/pdf.log",
+  "sha256": "510ad0a00db827bdb7ffaa8b4bc2babd728840d8fc04a7705c9913acf1d75473"
+}

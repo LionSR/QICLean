@@ -1,0 +1,13 @@
+{
+  "kind": "build",
+  "command": [
+    "lake",
+    "build"
+  ],
+  "working_directory": ".",
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "exit_code": 0,
+  "elapsed_seconds": 73.676561166998,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/build.log",
+  "sha256": "c8060963b93b22a19f5d80182e032296d03eef467f2d9c378313760400981819"
+}

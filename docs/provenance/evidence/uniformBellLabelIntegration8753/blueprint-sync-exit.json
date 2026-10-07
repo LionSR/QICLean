@@ -1,0 +1,16 @@
+{
+  "kind": "blueprint-sync",
+  "command": [
+    "python3",
+    "scripts/blueprint_lean_sync.py",
+    "--root",
+    ".",
+    "--update-lean-decls"
+  ],
+  "working_directory": ".",
+  "source_revision": "4b601b25d6c232d6fc5f246625838beb2741191c",
+  "exit_code": 0,
+  "elapsed_seconds": 0.4903015419986332,
+  "log": "docs/provenance/evidence/uniformBellLabelIntegration8753/blueprint-sync.log",
+  "sha256": "e17d7e6c180443db08436345e43b153df02e14d39704da211947f26d86a472fe"
+}
