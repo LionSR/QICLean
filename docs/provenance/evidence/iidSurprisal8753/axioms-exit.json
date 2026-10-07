@@ -1,0 +1,19 @@
+{
+  "kind": "axioms",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/iidSurprisal8753/IidSurprisalAxioms.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 7.39,
+  "source_revision": "a862136a75385465447223efcf08c009a959b660",
+  "log": "docs/provenance/evidence/iidSurprisal8753/axioms.log",
+  "sha256": "3697a24cb60bbb919cbf7432b11daa650ade527f4b46001f9b59ee94f22db729"
+}

@@ -1,0 +1,24 @@
+{
+  "links": [
+    "Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal",
+    "Entropy.surprisalTail_pi_le_variance",
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le",
+    "Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le"
+  ],
+  "errors": [],
+  "top": 494.109375,
+  "bottom": 1887.359375,
+  "mathElements": 36,
+  "mobile_section_bounds": {
+    "top": 290.890625,
+    "bottom": 2170.203125
+  },
+  "mobile_proof_display": {
+    "scrollWidth": 383,
+    "clientWidth": 310,
+    "overflowX": "auto",
+    "scrollLeft": 73
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360
+}

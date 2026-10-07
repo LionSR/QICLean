@@ -1,0 +1,19 @@
+\documentclass[a4paper]{report}
+\usepackage{geometry}
+\usepackage{expl3}
+\usepackage{amssymb,amsthm,mathtools}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage[unicode,colorlinks=true,linkcolor=blue,urlcolor=magenta,citecolor=blue]{hyperref}
+\usepackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+\input{blueprint/src/macros/common}
+\input{blueprint/src/macros/print}
+\setlength{\emergencystretch}{1em}
+\begin{document}
+\input{blueprint/src/fragment/iid_surprisal}
+\begin{thebibliography}{OAI26}
+\bibitem[OAI26]{OpenAI2026AreaLaw}
+OpenAI, \emph{A two-dimensional area law from a global spectral gap},
+September 24, 2026, Section~7.
+\end{thebibliography}
+\end{document}

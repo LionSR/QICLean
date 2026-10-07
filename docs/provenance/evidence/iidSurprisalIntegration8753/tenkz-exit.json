@@ -1,0 +1,13 @@
+{
+  "kind": "tenkz",
+  "command": [
+    "python3",
+    "scripts/fetch_tenkz.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 6.53,
+  "source_revision": "d265bd3052cefdc5afa4c2d45f45d369d3cc1f0c",
+  "log": "docs/provenance/evidence/iidSurprisalIntegration8753/tenkz.log",
+  "sha256": "3b88929abcdbee3525599c9375fb60e9b77f325dd45c6fabcf1fa28ef953b42a"
+}

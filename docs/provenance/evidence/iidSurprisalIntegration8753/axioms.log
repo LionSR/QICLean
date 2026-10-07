@@ -1,0 +1,6 @@
+'Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.surprisalTail_pi_le_variance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
