@@ -13,6 +13,7 @@ import QICLean.Entropy.ClassicalMutualInformation
 import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
+import QICLean.Entropy.FilterConjugation
 import QICLean.Entropy.FilterMoment
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
