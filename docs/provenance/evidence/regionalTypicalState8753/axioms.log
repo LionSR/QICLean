@@ -1,0 +1,6 @@
+'FiniteProduct.typicalPureState' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.split_typicalPureState' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.norm_typicalPureState' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.reducedPure_typicalPureState' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.entropy_typicalPureState_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteProduct.reducedPure_typicalPureState_le' depends on axioms: [propext, Classical.choice, Quot.sound]
