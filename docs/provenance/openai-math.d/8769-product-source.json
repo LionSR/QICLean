@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "p09-qic-product-source-schmidtvector",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.schmidtVector",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -31,20 +31,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-schmidtsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.schmidtSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -61,20 +86,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-sourceu",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.sourceU",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -91,20 +141,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-sourcev",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.sourceV",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -121,20 +196,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-sampledsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.sampledSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -151,20 +251,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-sourcecorrection",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.sourceCorrection",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -181,20 +306,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-schmidtsource_apply",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.schmidtSource_apply",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -211,20 +361,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-sampledsource_apply",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.sampledSource_apply",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -241,20 +416,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-weighted_delta_eq_schmidtsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -271,20 +471,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-sampleaverage_eq_average_sub_delta",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -301,20 +526,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-sourcecorrection_apply",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.sourceCorrection_apply",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -332,20 +582,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-integrable_sourcecorrection_entry",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_sourceCorrection_entry",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -363,20 +638,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-integrable_sourcecorrection_entry_mul_conj",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_sourceCorrection_entry_mul_conj",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -394,20 +694,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-integral_sourcecorrection_entry_mul_conj",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.integral_sourceCorrection_entry_mul_conj",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -425,20 +750,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-integrable_sampledsource_entry",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_sampledSource_entry",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -455,20 +805,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-integral_sampledsource_entry",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.integral_sampledSource_entry",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -485,20 +860,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-integrable_sampledsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_sampledSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -515,20 +915,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-integrable_sourcecorrection",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.integrable_sourceCorrection",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -545,20 +970,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-integral_sampledsource",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.integral_sampledSource",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -575,20 +1025,45 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     },
     {
       "id": "p09-qic-product-source-integral_sourcecorrection",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Probability/ComplexGaussian/ProductSource.lean",
         "declaration": "QICLean.ComplexGaussian.integral_sourceCorrection",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -605,7 +1080,32 @@
         "Independently defined the actual Gaussian product-operator source and proved its entry identities, integrability, unbiasedness, or covariance using attributed Gaussian declarations and Mathlib."
       ],
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "03ee4c01eeddf5351f441bcd542631a9a997c251",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Probability QICLean.Analysis.RectangularTraceNormAlgebra",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/build.log",
+            "sha256": "fe37b48240323914956f8599d451d52e5e9daf78c66d1ace88b5b31740ec3ab3"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -Dlinter.hashCommand=false -DwarningAsError=true scripts/Tests/CompressionSourceErrorAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/axioms.log",
+            "sha256": "0c11f67e278bfb699eda5591a3ae30c914f88ddd4c9790c087fbb4be63f397e0"
+          },
+          {
+            "kind": "source-audit",
+            "command": "python3 docs/provenance/evidence/8769-source-error/source-audit.py /workspace/proof-build-logs/provenance-head8789/scripts/check_openai_provenance.py",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8769-source-error/source-audit.log",
+            "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f"
+          }
+        ]
       },
       "no_upstream_proof_text_reused": true
     }
