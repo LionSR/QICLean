@@ -74,6 +74,7 @@ import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
+import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PolarUnitaryCorrection
 import QICLean.Analysis.PolarUnitaryCorrectionKronecker
