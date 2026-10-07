@@ -1,0 +1,11 @@
+{
+  "source_worktree": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-iid-surprisal",
+  "source_and_target_seed_revision": "1d7c3bc96620a8bcaa48ef5f3dd17d94a7c19608",
+  "method": "scripts/seed_lake_build.sh; dry-run and exact-revision APFS clone both exited zero during setup.",
+  "same_revision_QIC_artifacts_reused": true,
+  "separate_regular_lake_directory": true,
+  "source_was_idle": true,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "named_prebuilt_module": "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics",
+  "mathlib_source_rebuild": false
+}

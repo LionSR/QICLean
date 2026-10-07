@@ -1,0 +1,184 @@
+{
+  "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+  "parent_revision": "1d7c3bc96620a8bcaa48ef5f3dd17d94a7c19608",
+  "source_files": {
+    "QICLean/Analysis/IidTailThreshold.lean": "776c686d87c89b56fb0dfd9a576093a96b9e1bdb57d453578a8a7a65baf6ee9c",
+    "blueprint/src/fragment/iid_tail_threshold.tex": "4ee9d1aa6714ae59dc5229e2545b7db2f74db715eb771ff7b41659630ea2b37d",
+    "docs/formalization/iid-tail-threshold.md": "eeee98cb07c5b418532b356db8736cb0cde3472ee7504e20a9040209a16f8bc8"
+  },
+  "public_declarations": [
+    "Real.eventually_iid_tail_error_le_half"
+  ],
+  "commands": [
+    {
+      "kind": "axioms",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/iidTailThreshold8753/IidTailThresholdAxioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.64,
+      "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+      "log": "docs/provenance/evidence/iidTailThreshold8753/axioms.log",
+      "sha256": "4753aa0c3938e2a37299ceab168d3f2050e2605337fd0a01710e85882532206e"
+    },
+    {
+      "kind": "blueprint",
+      "command": [
+        "latexmk",
+        "-xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-outdir=tmp/pdfs/iid-tail-threshold",
+        "docs/provenance/evidence/iidTailThreshold8753/standalone-wrapper.tex"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.86,
+      "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+      "log": "docs/provenance/evidence/iidTailThreshold8753/blueprint.log",
+      "sha256": "a7c3cae6d0d02ecdebc9ce1e848f3a5a2968613de75d46913047d3801b549238"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Analysis.IidTailThreshold"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.62,
+      "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+      "log": "docs/provenance/evidence/iidTailThreshold8753/build.log",
+      "sha256": "28752ac6f09b2b2568177151159deab370417dd9a0fc659ce137c1a804d3e3b9"
+    },
+    {
+      "kind": "cache",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get",
+        "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 8.61,
+      "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+      "log": "docs/provenance/evidence/iidTailThreshold8753/mathlib-cache.log",
+      "sha256": "52dc1e0e6cdced6abbdd6e2dcaf2690af156b2e744d9b1870131b9b73d211609"
+    },
+    {
+      "kind": "cache",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/iidTailThreshold8753/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.06,
+      "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+      "log": "docs/provenance/evidence/iidTailThreshold8753/mathlib-guard.log",
+      "sha256": "d2c2f7fab1fac91d67ae554514757a87faf8fdaeb72b5e7b5add6b3b6b0bf919"
+    },
+    {
+      "kind": "prose",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "1d7c3bc96620a8bcaa48ef5f3dd17d94a7c19608"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.21,
+      "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+      "log": "docs/provenance/evidence/iidTailThreshold8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "provenance",
+      "command": [
+        "/tmp/qic-density-simplex-provenance-env/bin/python",
+        "docs/provenance/evidence/iidTailThreshold8753/check_provenance.py",
+        "--root",
+        ".",
+        "--validator",
+        "/tmp/tnlean-area-law-provenance-validator.py",
+        "--schema",
+        "/tmp/tnlean-area-law-provenance-schema.json"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.41,
+      "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+      "log": "docs/provenance/evidence/iidTailThreshold8753/provenance.log",
+      "sha256": "d71036fe9041a27ed7a1b3fc26c4213621953d30b5a832c415b4d8b07b251636"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "QICLean/Analysis/IidTailThreshold.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.88,
+      "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+      "log": "docs/provenance/evidence/iidTailThreshold8753/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "style",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/iidTailThreshold8753/IidTailThresholdTextStyle.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 3.05,
+      "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+      "log": "docs/provenance/evidence/iidTailThreshold8753/text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "kernel_reports": 1,
+  "allowed_kernel_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "target_build_jobs": 2047,
+  "proof_holes": false,
+  "mathlib_source_rebuild": false,
+  "visual_inspection": {
+    "artifact": "output/pdf/iid-tail-threshold.pdf",
+    "sha256": "c1f38db4ca0fa645a43162d46b0f82072fdd724c3f51e44414262641f56da9f8",
+    "pages": 2,
+    "images": {
+      "docs/provenance/evidence/iidTailThreshold8753/render/threshold-page-1.png": "b8fcbbd31eb80dde7ff74a9f144eb72fd2e4d3854207102367b3b16cc38188cf",
+      "docs/provenance/evidence/iidTailThreshold8753/render/threshold-page-2.png": "60cf20e679ea6bc797f879ea38876c8215675b3f03653c8d375ca01072b6521b"
+    },
+    "result": "Both rendered pages inspected; the coefficient one half lies inside the exponential. Equations, proof and citation are legible, without clipping or unresolved references."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "kind": "cache",
+  "command": [
+    "lake",
+    "exe",
+    "cache",
+    "get",
+    "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 8.61,
+  "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+  "log": "docs/provenance/evidence/iidTailThreshold8753/mathlib-cache.log",
+  "sha256": "52dc1e0e6cdced6abbdd6e2dcaf2690af156b2e744d9b1870131b9b73d211609"
+}

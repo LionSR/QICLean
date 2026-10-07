@@ -1,0 +1,19 @@
+{
+  "kind": "axioms",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/iidTailThreshold8753/IidTailThresholdAxioms.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 5.64,
+  "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+  "log": "docs/provenance/evidence/iidTailThreshold8753/axioms.log",
+  "sha256": "4753aa0c3938e2a37299ceab168d3f2050e2605337fd0a01710e85882532206e"
+}
