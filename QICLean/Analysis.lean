@@ -65,6 +65,7 @@ import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
 import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.OperatorConvexity
+import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
