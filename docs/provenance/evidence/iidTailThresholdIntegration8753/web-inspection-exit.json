@@ -1,0 +1,13 @@
+{
+  "kind": "web-inspection",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/iidTailThresholdIntegration8753/inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 5.46,
+  "source_revision": "1681609e96a5d99864b5632df6086566dad0af40",
+  "log": "docs/provenance/evidence/iidTailThresholdIntegration8753/web-inspection.log",
+  "sha256": "3c6b716285aa18481f33d90506d75770f50401a0eb1b6af9553c8ccac947dfd8"
+}

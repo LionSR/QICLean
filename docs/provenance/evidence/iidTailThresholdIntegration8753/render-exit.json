@@ -1,0 +1,21 @@
+{
+  "kind": "render",
+  "command": [
+    "pdftoppm",
+    "-f",
+    "397",
+    "-l",
+    "398",
+    "-r",
+    "110",
+    "-png",
+    "blueprint/print/print.pdf",
+    "docs/provenance/evidence/iidTailThresholdIntegration8753/render/page"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.74,
+  "source_revision": "1681609e96a5d99864b5632df6086566dad0af40",
+  "log": "docs/provenance/evidence/iidTailThresholdIntegration8753/render.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
