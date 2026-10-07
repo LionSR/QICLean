@@ -60,10 +60,12 @@ The proofs are independently written using existing QICLean and Mathlib
 results. No OpenAI Lean proof text is copied or adapted. The separate
 `docs/provenance/openai-math.d/shiftedDensityPowers8767.json` shard records the
 manuscript as mathematical motivation and preserves the distinction from
-upstream code reuse. Its rows remain planned, with proposed names and pending
-verification, until publication supplies an immutable source revision and
-fresh verification evidence for these exact declarations. Passing local checks
-alone does not promote the provenance status.
+upstream code reuse. The immutable source snapshot
+`81ca38e523242fe7d1be1195f3e974c7a5da6134` retained planned records. The
+evidence commit activates all seven rows against that snapshot, using the
+original successful build and axiom logs, matching source hashes, and an
+identical-tree attestation. Full repository CI remains a separate acceptance
+gate; the local evidence does not claim an aggregate build.
 
 The blueprint entry is
 `blueprint/src/chapter/ch01_shifted_density_powers.tex`, included from the
