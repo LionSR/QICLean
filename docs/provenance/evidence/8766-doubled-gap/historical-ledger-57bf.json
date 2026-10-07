@@ -1,0 +1,646 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "doubled8766-vector",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.doubledVector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the physical product vector without changing complex phases.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-hamiltonian",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.doubledHamiltonian",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the two-replica tensor sum on the doubled physical space.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-projector",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.vecMulVec_doubledVector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Identify the rank-one product projector with the tensor square.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-sum-norm",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.sum_normSq_doubledVector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Factor its squared norm as a product of finite sums.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-normalization",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.norm_doubledVector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove normalization of the doubled vector.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-eigenvector",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.doubledHamiltonian_mulVec",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Transport the ground-eigenvector equation to energy 2E0.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-defect",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.doubledHamiltonian_gap_eq",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the exact residual identity R tensor I + I tensor R + Delta(Q tensor Q).",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-gap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.PosSemidef.doubled_gap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove preservation of a nonnegative lower-gap bound from normalization and a positive residual; no eigenvector hypothesis is needed for this inequality.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-unitary-norm",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.norm_toLp_mulVec_of_unitary",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove Euclidean norm preservation by a unitary.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-unitary-defect",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.gap_unitary_conj_eq",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove exact conjugation of the rank-one gap residual.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-unitary-gap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.PosSemidef.gap_unitary_conj",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove preservation of any real lower-gap bound under unitary conjugation.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-unitary-eigenvector",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.mulVec_unitary_conj_eigenvector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Transport the eigenvector equation under unitary conjugation.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    },
+    {
+      "id": "doubled8766-physical-swap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DoubledSystemGap.lean",
+        "declaration": "Matrix.doubled_gap_partialSwap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Specialize to the actual physical partial swap, with normalized vector, eigenvalue 2E0, and inherited lower gap on the original doubled physical space.",
+        "Original proof from the unnumbered passage after eq:info-reset-overlap, lines 415–425; no upstream Lean proof text reused. This is a lower-gap assertion, not exact-gap equality or uniqueness at Delta=0."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/DoubledSystemGap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-1.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-doubled-gap/logs/doubled-integrated-57bf-3.log",
+            "sha256": "b25c2dd887c7c339634821dc908a22f9bec62e6ff13d8cc33fe6522a361ad891"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+✔ [2457/2458] Built QICLean.Analysis.MatrixFramePerturbation (3.1s)
+✖ [2458/2458] Building QICLean.Analysis.CompressedPartialSwap (2.5s)
+trace: .> LEAN_PATH=<DEPENDENCY_WORKTREE>/.lake/packages/Cli/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/batteries/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/Qq/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/aesop/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/proofwidgets/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/importGraph/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/LeanSearchClient/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/plausible/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/Gametheory/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/mathlib/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/checkdecls/.lake/build/lib/lean:<VALIDATION_WORKTREE>/.lake/build/lib/lean <LEAN_TOOLCHAIN>/bin/lean <VALIDATION_WORKTREE>/QICLean/Analysis/CompressedPartialSwap.lean -o <VALIDATION_WORKTREE>/.lake/build/lib/lean/QICLean/Analysis/CompressedPartialSwap.olean -i <VALIDATION_WORKTREE>/.lake/build/lib/lean/QICLean/Analysis/CompressedPartialSwap.ilean -c <VALIDATION_WORKTREE>/.lake/build/ir/QICLean/Analysis/CompressedPartialSwap.c --setup <VALIDATION_WORKTREE>/.lake/build/ir/QICLean/Analysis/CompressedPartialSwap.setup.json --json
+error: QICLean/Analysis/CompressedPartialSwap.lean:45:45: unsolved goals
+case fst.snd
+A : Type u_1
+B : Type u_2
+p : (A × B) × A × B
+⊢ ((partialSwap A B * partialSwap A B) p).1.2 = (1 p).1.2
+
+case snd.fst
+A : Type u_1
+B : Type u_2
+p : (A × B) × A × B
+⊢ ((partialSwap A B * partialSwap A B) p).2.1 = (1 p).2.1
+
+case snd.snd
+A : Type u_1
+B : Type u_2
+p : (A × B) × A × B
+⊢ ((partialSwap A B * partialSwap A B) p).2.2 = (1 p).2.2
+error: QICLean/Analysis/CompressedPartialSwap.lean:65:52: Invalid field `IsHermitian`: The environment does not contain `Function.IsHermitian`, so it is not possible to project the field `IsHermitian` from an expression
+  partialSwap A B
+of type
+  (A × B) × A × B → (A × B) × A × B → ℂ
+error: QICLean/Analysis/CompressedPartialSwap.lean:66:29: Unknown identifier `A`
+error: QICLean/Analysis/CompressedPartialSwap.lean:66:31: Unknown identifier `B`
+error: QICLean/Analysis/CompressedPartialSwap.lean:78:36: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `?m.27` is a value of type
+  ?m.26
+warning: QICLean/Analysis/CompressedPartialSwap.lean:88:0: automatically included section variable(s) unused in theorem `Matrix.kronecker_self_conjTranspose_mul_self`:
+  [DecidableEq A]
+  [DecidableEq B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq A] [DecidableEq B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: QICLean/Analysis/CompressedPartialSwap.lean:87:0: `kronecker_self_conjTranspose_mul_self` does not use the following hypotheses in its type:
+  • [DecidableEq A] (#5)
+  • [DecidableEq B] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Analysis/CompressedPartialSwap.lean:87:0: `kronecker_self_conjTranspose_mul_self` does not use the following hypothesis in its type:
+  • [Fintype Q] (#8)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+error: QICLean/Analysis/CompressedPartialSwap.lean:102:57: Invalid field `IsHermitian`: The environment does not contain `Function.IsHermitian`, so it is not possible to project the field `IsHermitian` from an expression
+  V.compressedPartialSwap
+of type `Q × Q → Q × Q → ℂ`
+error: QICLean/Analysis/CompressedPartialSwap.lean:103:2: Unknown constant `Matrix.isHermitian_conjTranspose_mul_mul`
+error: QICLean/Analysis/CompressedPartialSwap.lean:108:58: failed to synthesize instance of type class
+  Norm (Matrix m m ℂ)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/CompressedPartialSwap.lean:111:19: failed to synthesize instance of type class
+  Norm (Matrix n m ℂ)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/CompressedPartialSwap.lean:111:26: failed to synthesize instance of type class
+  Norm (Matrix m m ℂ)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/CompressedPartialSwap.lean:114:12: failed to synthesize instance of type class
+  Norm (Matrix m m ℂ)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/CompressedPartialSwap.lean:117:8: failed to synthesize instance of type class
+  Norm (Matrix m m ℂ)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: QICLean/Analysis/CompressedPartialSwap.lean:112:13: failed to synthesize instance of type class
+  DecidableEq m
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+warning: QICLean/Analysis/CompressedPartialSwap.lean:122:8: declaration uses `sorry`
+Some required targets logged failures:
+- QICLean.Analysis.CompressedPartialSwap
+error: build failed

@@ -1,0 +1,62 @@
+[
+  {
+    "file": "QICLean/Analysis/DoubledSystemGap.lean",
+    "sha256": "e354cd36fa70fe4d751a02833e28d961b3a1eb0405ae068b32d3225731e4a51b",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Analysis/DoubledSystemGap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.5489750459964853,
+    "log": "<VALIDATION>/QICLean_Analysis_DoubledSystemGap.lean-doubled-gap-strict-first.log"
+  },
+  {
+    "file": "QICLeanTest/DoubledSystemGap.lean",
+    "sha256": "11589249273f6091b70c19b6c90afc05b689b0e85063e88ef6a057a410a2e6da",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/DoubledSystemGap.lean"
+    ],
+    "exit_code": 1,
+    "seconds": 4.05611648500053,
+    "log": "<VALIDATION>/QICLeanTest_DoubledSystemGap.lean-doubled-gap-strict-first.log"
+  },
+  {
+    "file": "<RAW_DRIVER>",
+    "sha256": "b81d4a7589dc81823e2e2fcbcd71bfb43fc9e85c75514b79dd8a5fb59e435109",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "<RAW_DRIVER>"
+    ],
+    "exit_code": 0,
+    "seconds": 2.8796421060033026,
+    "log": "<VALIDATION>/_workspace_scratch_757f4f120786_doubled-gap-8766-raw-audit.lean-doubled-gap-strict-first.log"
+  }
+]

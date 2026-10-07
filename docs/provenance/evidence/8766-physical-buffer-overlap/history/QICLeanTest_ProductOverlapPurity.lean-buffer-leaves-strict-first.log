@@ -1,0 +1,29 @@
+import took 1.98s
+interpretation of Mathlib.Tactic._aux_Mathlib_Tactic_NormNum_Core___elabRules_Mathlib_Tactic_normNum_1._boxed took 201ms
+cumulative profiling times:
+	attribute application 0.0553ms
+	blocked (unaccounted) 8.97ms
+	compilation (IR) 0.12ms
+	compilation (LCNF base) 1.37ms
+	compilation (LCNF impure) 0.676ms
+	compilation (LCNF mono) 2.25ms
+	congr simp thm 2.42ms
+	elaboration 24.2ms
+	fix level params 0.206ms
+	import 1.98s
+	initialization 32.2ms
+	instantiate metavars 0.0914ms
+	interpretation 545ms
+	let-to-have transformation 0.0137ms
+	linting 7.53ms
+	module linting 0.00162ms
+	norm_num 37.4ms
+	overlappingInstancesLinter 2.78ms
+	parsing 11.4ms
+	process pre-definitions 2.44ms
+	share common exprs 1.15ms
+	simp 29.1ms
+	tactic execution 2.49ms
+	tacticAnalysis 12.1ms
+	type checking 22.1ms
+	typeclass inference 67.8ms

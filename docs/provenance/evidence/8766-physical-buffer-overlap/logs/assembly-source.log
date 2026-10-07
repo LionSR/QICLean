@@ -1,0 +1,29 @@
+import took 1.93s
+typeclass inference of Nonempty took 101ms
+cumulative profiling times:
+	attribute application 0.183ms
+	compilation (IR) 0.363ms
+	compilation (LCNF base) 3.08ms
+	compilation (LCNF impure) 1.59ms
+	compilation (LCNF mono) 2.48ms
+	congr simp thm 7.65ms
+	elaboration 104ms
+	fix level params 3.18ms
+	import 1.93s
+	initialization 27.8ms
+	instantiate metavars 2.86ms
+	interpretation 1.07s
+	let-to-have transformation 0.315ms
+	linting 42.8ms
+	module linting 0.0019ms
+	norm_num 68.2ms
+	overlappingInstancesLinter 14.6ms
+	parsing 19.6ms
+	process pre-definitions 19.3ms
+	ring 34.1ms
+	share common exprs 12.5ms
+	simp 91.5ms
+	tactic execution 309ms
+	tacticAnalysis 53.4ms
+	type checking 82.7ms
+	typeclass inference 547ms

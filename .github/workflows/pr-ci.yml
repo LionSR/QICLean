@@ -2,11 +2,9 @@ name: PR CI
 
 # The pull-request pipeline: Lean build + style lint, blueprint lint and
 # Lean-blueprint sync, and the Lean module-policy guards. Adapted from
-# TNLean's pr-ci.yml (see ci/README.md for what was dropped and why): this
-# file keeps the Lean build/lint/blueprint jobs and the module-policy guards,
-# and drops every tenkz-specific job and path filter — QICLean's blueprint
-# has no tenkz diagram pipeline, and the tenkz shrink/corpus/RMP jobs (three
-# whole jobs in TNLean's pr-ci.yml) simply do not apply here.
+# TNLean's pr-ci.yml: keeps the Lean build/lint/blueprint jobs and the
+# module-policy guards. The existing blueprint job also renders and audits
+# the pinned tenkz package; TNLean's package/corpus/RMP jobs stay upstream.
 #
 # One workflow means one completion event for the auto-fix dispatcher and
 # per-job change gating: Lean-only changes skip the TeX pipeline, while
@@ -34,7 +32,15 @@ on:
       - 'docs/ci-automation.md'
       - 'docs/CONTRIBUTING.md'
       - '.github/workflows/pr-ci.yml'
+      - '.github/workflows/blueprint.yml'
+      - '.github/workflows/docgen.yml'
       - 'blueprint/src/**'
+      - 'tenkz.toml'
+      - 'scripts/fetch_tenkz.py'
+      - 'scripts/tenkz_paths.py'
+      - 'scripts/tenkz_blueprint_sweep.py'
+      - 'scripts/test_tenkz_blueprint_sweep.py'
+      - 'scripts/test_tenkz_pic.py'
       - 'blueprint/.chktexrc'
       - 'blueprint/latexindent.yaml'
       - 'scripts/blueprint_lean_sync.py'
@@ -74,7 +80,15 @@ on:
       - 'docs/ci-automation.md'
       - 'docs/CONTRIBUTING.md'
       - '.github/workflows/pr-ci.yml'
+      - '.github/workflows/blueprint.yml'
+      - '.github/workflows/docgen.yml'
       - 'blueprint/src/**'
+      - 'tenkz.toml'
+      - 'scripts/fetch_tenkz.py'
+      - 'scripts/tenkz_paths.py'
+      - 'scripts/tenkz_blueprint_sweep.py'
+      - 'scripts/test_tenkz_blueprint_sweep.py'
+      - 'scripts/test_tenkz_pic.py'
       - 'blueprint/.chktexrc'
       - 'blueprint/latexindent.yaml'
       - 'scripts/blueprint_lean_sync.py'
@@ -143,6 +157,14 @@ jobs:
             blueprint:
               - '.github/workflows/pr-ci.yml'
               - 'blueprint/src/**'
+              - '.github/workflows/blueprint.yml'
+              - '.github/workflows/docgen.yml'
+              - 'tenkz.toml'
+              - 'scripts/fetch_tenkz.py'
+              - 'scripts/tenkz_paths.py'
+              - 'scripts/tenkz_blueprint_sweep.py'
+              - 'scripts/test_tenkz_blueprint_sweep.py'
+              - 'scripts/test_tenkz_pic.py'
               - 'blueprint/.chktexrc'
               - 'blueprint/latexindent.yaml'
               - 'scripts/check_reader_facing_prose.py'
@@ -155,14 +177,6 @@ jobs:
               - 'blueprint/src/**'
               - 'docs/**/*.md'
               - 'texra-blueprint.toml'
-
-  # DROPPED from TNLean's pr-ci.yml: the tenkz-shrink, tenkz-corpus, and
-  # tenkz-rmp jobs. TNLean's blueprint draws tensor-network diagrams with a
-  # custom TikZ pipeline (tenkz); QICLean's blueprint has no diagram pipeline
-  # of that kind (channel/spectral-theory figures, if any, are ordinary
-  # commutative-diagram or plot content, not tenkz's tensor-network
-  # notation). If QICLean later adopts tenkz for some figure, port these
-  # jobs back from TNLean's pr-ci.yml rather than re-deriving them.
 
   build:
     needs: changes
@@ -311,6 +325,15 @@ jobs:
           -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
           QICLeanTest/GlobalGap.lean
 
+
+      - name: Check physical-buffer overlap regressions and all axiom guards strictly
+        run: |
+          for file in QICLeanTest/CompressedPartialSwap.lean QICLeanTest/ProductOverlapPurity.lean QICLeanTest/PhysicalBufferOverlap.lean QICLeanTest/DoubledSystemGap.lean QICLeanTest/PositiveGapUniqueness.lean; do
+            timeout --signal=INT --kill-after=5s 90s lake env lean -j1 \
+              -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
 
       - name: Check changed Lean compilation times
         id: compilation-time
@@ -494,16 +517,13 @@ jobs:
         with:
           extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.3.8'
 
+      - name: Fetch pinned tenkz package
+        if: env.TEX_CHANGED == 'true'
+        run: python3 scripts/fetch_tenkz.py
+
       - name: Check paper-gap references resolve
         if: env.TEX_CHANGED == 'true' || env.PAPER_GAPS_CHANGED == 'true'
         run: texra-blueprint paper-gaps check
-
-      # DROPPED from TNLean's blueprint job: every tenkz-specific step
-      # (native tenkz source lint, tenkz manual/example compilation, the
-      # picture-pipeline smoke test, the equation/label-overlap/PEPS-torus/
-      # index-routing/fusion-tree audits). Those exist only because TNLean's
-      # blueprint draws tensor-network diagrams with the tenkz TikZ
-      # pipeline; see the note on the dropped tenkz jobs above.
 
       - name: Lint LaTeX (chktex)
         if: env.TEX_CHANGED == 'true'
@@ -531,6 +551,12 @@ jobs:
         if: env.TEX_CHANGED == 'true'
         run: texra-blueprint bbl
 
+      - name: Check tenkz picture pipeline
+        if: env.TEX_CHANGED == 'true'
+        run: |
+          python3 scripts/test_tenkz_pic.py
+          python3 scripts/test_tenkz_blueprint_sweep.py
+
       - name: Build blueprint PDF
         if: env.TEX_CHANGED == 'true'
         run: leanblueprint pdf
@@ -552,6 +578,14 @@ jobs:
           if grep -q "WARNING: File not found:" "$tmp_output_file"; then
             echo "::warning::Blueprint has missing file references (see WARNING lines above)"
           fi
+          if grep -R "tenkz SVG unavailable" web --include='*.html'; then
+            echo "::error::Blueprint contains unrendered tenkz SVG placeholders"
+            exit 1
+          fi
+
+      - name: Sweep tenkz blueprint event streams
+        if: env.TEX_CHANGED == 'true'
+        run: python3 scripts/tenkz_blueprint_sweep.py --allow-empty
 
       # A zero exit status says the build ran, not that the pages read. This
       # opens every generated page (via playwright/chromium) and measures
