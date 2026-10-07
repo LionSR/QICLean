@@ -55,7 +55,7 @@ theorem exists_unitary_diagonal_of_commute {A B : Matrix n n ℂ} (hA : A.IsHerm
   have hfin : Set.Finite {i : ℂ × ℂ | V i ≠ ⊥} := by
     refine ((Module.End.finite_hasEigenvalue TB).prod (Module.End.finite_hasEigenvalue TA)).subset
       fun i hi ↦ ?_
-    simp only [Set.mem_setOf_eq] at hi ⊢
+    simp only [Set.mem_ofPred_eq] at hi ⊢
     obtain ⟨v, hv, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hi
     exact ⟨hasEigenvalue_of_hasEigenvector ⟨hv.2, hv0⟩,
       hasEigenvalue_of_hasEigenvector ⟨hv.1, hv0⟩⟩
