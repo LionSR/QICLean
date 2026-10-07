@@ -42,7 +42,7 @@ of the trace norm by a unitary, `Matrix.exists_mem_unitaryGroup_trace_eq_rootFid
 ## References
 
 * Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`, the
-  purification clause and its proof, `01-preliminaries.tex:99–138`.
+  purification clause and its proof, `01-preliminaries.tex:99–139`.
 * A. Uhlmann, *The "transition probability" in the state space of a ∗-algebra*,
   Rep. Math. Phys. 9 (1976), Sections 2 and 5.
 -/
@@ -114,7 +114,7 @@ $\langle\varphi,(\mathbf 1\otimes V)\psi\rangle=F(\rho,\sigma)$.  The purificati
 need not be minimal; `V` is defined on all of `R`.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
-`01-preliminaries.tex:99–138`. -/
+`01-preliminaries.tex:99–139`. -/
 theorem exists_isIsometry_star_dotProduct_eq_rootFidelity
     {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R] [DecidableEq R] [Fintype S]
     {ρ σ : Matrix A A ℂ} (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef)
@@ -184,7 +184,7 @@ an isometry `V` defined on all of `R` realizes
 $\langle\varphi,(\mathbf 1\otimes V)\psi\rangle=F(\rho,\sigma)$ for the padded `φ`.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
-`01-preliminaries.tex:99–138`. -/
+`01-preliminaries.tex:99–139`. -/
 theorem exists_isIsometry_star_dotProduct_padPurification_eq_rootFidelity
     {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R] [DecidableEq R] [Fintype S]
     {ρ σ : Matrix A A ℂ} (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef)

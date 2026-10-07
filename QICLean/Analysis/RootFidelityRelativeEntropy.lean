@@ -223,7 +223,7 @@ open Classical in
 $+\infty$ when the support condition $\ker\sigma\subseteq\ker\rho$ fails.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Section 2,
-`01-preliminaries.tex:80–83` ("with the usual infinite value when the support
+`01-preliminaries.tex:81–84` ("with the usual infinite value when the support
 condition fails"). -/
 noncomputable def extendedRelativeEntropy (ρ σ : Matrix n n ℂ) : EReal :=
   if ∀ v : n → ℂ, σ *ᵥ v = 0 → ρ *ᵥ v = 0 then (quantumRelativeEntropy ρ σ : EReal) else ⊤

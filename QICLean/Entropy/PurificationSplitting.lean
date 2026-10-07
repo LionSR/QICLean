@@ -43,9 +43,9 @@ vectors with real overlap `F` are at squared distance $2(1-F)$.
 ## References
 
 * Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
-  `01-preliminaries.tex:92–138`.
+  `01-preliminaries.tex:92–139`.
 * Polynomial-PEPS manuscript (September 24, 2026), Lemma 6.4 `lem:splitting` and its
-  proof, `05-frames.tex:352–390`.
+  proof, `05-frames.tex:352–391`.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Kronecker Matrix.Norms.L2Operator
@@ -55,7 +55,7 @@ matrix, $D(\rho_{AC}\Vert\rho_A\otimes\rho_C)=I(A:C)$, with the natural logarith
 both sides.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
-second identity of `eq:fidelity-information`, `01-preliminaries.tex:92–123`. -/
+second identity of `eq:fidelity-information`, `01-preliminaries.tex:92–124`. -/
 theorem quantumRelativeEntropy_traceRight_kronecker_traceLeft_eq_mutualInformation
     {dA dB : ℕ} {ρ : Matrix (Fin dA × Fin dB) (Fin dA × Fin dB) ℂ} (hρ : ρ.PosSemidef) :
     quantumRelativeEntropy ρ (Matrix.traceRight ρ ⊗ₖ Matrix.traceLeft ρ) =
@@ -108,7 +108,7 @@ isometry `V` from `R` to `S` brings `ψ` within
 $\sqrt{2(1-e^{-D(\rho\Vert\sigma)/2})}$ of `φ`.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
-`01-preliminaries.tex:99–138`. -/
+`01-preliminaries.tex:99–139`. -/
 theorem exists_isIsometry_norm_sub_le_of_purification
     {ρ σ : Matrix A A ℂ} {ψ : A × R → ℂ} {φ : A × S → ℂ}
     (hψ : partialTraceRight (vecMulVec ψ (star ψ)) = ρ)
@@ -187,7 +187,7 @@ $\lVert(\mathbf 1_{TE}\otimes V)\Omega-s\otimes s'\rVert\le\sqrt{2(1-e^{-b/2})}$
 $S(\rho_T)+S(\rho_E)-S(\rho)$.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 6.4 `lem:splitting`,
-`05-frames.tex:352–390`. -/
+`05-frames.tex:352–391`. -/
 theorem exists_isIsometry_norm_sub_tensorPurification_le
     (Ω : (T × E) × U → ℂ) (hΩ : star Ω ⬝ᵥ Ω = 1) {ρ : Matrix (T × E) (T × E) ℂ}
     (hρ : partialTraceRight (vecMulVec Ω (star Ω)) = ρ) :
@@ -240,7 +240,7 @@ $\lVert(\mathbf 1_{TE}\otimes V)\Omega-s\otimes s'\rVert\le\sqrt{2(1-e^{-b/2})}\
 No condition is imposed on the dimensions or on the state.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 6.4 `lem:splitting`,
-`05-frames.tex:352–390`. -/
+`05-frames.tex:352–391`. -/
 theorem exists_isIsometry_norm_sub_tensorPurification_le_mutualInformation
     {dT dE : ℕ} (Ω : (Fin dT × Fin dE) × U → ℂ) (hΩ : star Ω ⬝ᵥ Ω = 1)
     {ρ : Matrix (Fin dT × Fin dE) (Fin dT × Fin dE) ℂ}

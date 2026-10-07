@@ -40,7 +40,7 @@ finite type.
 
 * Polynomial-PEPS manuscript (September 24, 2026), Section 2, definition of
   $F(\rho,\sigma)=\lVert\sqrt\rho\sqrt\sigma\rVert_1$ before Lemma 2.2 `lem:fidelity`,
-  `01-preliminaries.tex:80–83`.
+  `01-preliminaries.tex:81–84`.
 * Michael M. Wolf, *Quantum Channels & Operations: Guided Tour*, Chapter 8,
   Eq. (8.11), for the variational form of the trace norm.
 -/
@@ -56,7 +56,7 @@ norm of the product of the positive square roots.  The trace norm is evaluated a
 transporting the product along the canonical enumeration `Fintype.equivFin n`.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Section 2,
-`01-preliminaries.tex:80–83`. -/
+`01-preliminaries.tex:81–84`. -/
 noncomputable def rootFidelity (ρ σ : Matrix n n ℂ) : ℝ :=
   traceNorm (reindex (Fintype.equivFin n) (Fintype.equivFin n) (CFC.sqrt ρ * CFC.sqrt σ))
 
