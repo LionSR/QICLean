@@ -115,6 +115,58 @@ theorem re_diag_conj_le_one {c : Matrix n n ℂ} (hc : c * cᴴ ≤ 1) (U : unit
   simp only [sub_apply, one_apply_eq, Complex.sub_re, Complex.one_re] at hd
   linarith [hd.1]
 
+theorem re_trace_conjTranspose_mul_self_eq_sum {m : Type*} [Fintype m] (N : Matrix n m ℂ) :
+    (Nᴴ * N).trace.re = ∑ j, ∑ k, Complex.normSq (N j k) := by
+  simp only [trace, diag, mul_apply, conjTranspose_apply, Complex.re_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
+  simp [Complex.normSq_apply, Complex.mul_re]
+
+theorem normSq_supportCPow_entry {a : ℝ} (ha : 0 ≤ a) (z : ℂ) :
+    Complex.normSq (if a = 0 then (0 : ℂ) else ((a : ℝ) : ℂ) ^ z) =
+      if a = 0 then 0 else a ^ (2 * z.re) := by
+  by_cases h : a = 0
+  · simp [h]
+  · have hpos : 0 < a := lt_of_le_of_ne ha (Ne.symm h)
+    simp only [h, ite_false]
+    rw [Complex.normSq_eq_norm_sq, norm_ofReal_cpow_of_pos hpos, ← Real.rpow_natCast,
+      ← Real.rpow_mul hpos.le]
+    ring_nf
+
+/-- **Sandwich bound.**  For a positive semidefinite `A` with `tr A ≤ 1`, a contraction `c`
+(`c cᴴ ≤ 1`, `cᴴ c ≤ 1`) and `0 ≤ Re z ≤ 1/2`, the Hilbert--Schmidt norm of
+`A^{[z]} c A^{[1/2 - z]}` is at most one.  Area-law manuscript, `04-conditional.tex`,
+lines 523–529. -/
+theorem re_trace_supportCPow_sandwich_le (hA : A.PosSemidef) (htr : A.trace.re ≤ 1)
+    {c : Matrix n n ℂ} (hc1 : c * cᴴ ≤ 1) (hc2 : cᴴ * c ≤ 1) {z : ℂ} (hz0 : 0 ≤ z.re)
+    (hz1 : z.re ≤ 1 / 2) :
+    ((supportCPow hA.1 z * c * supportCPow hA.1 (1 / 2 - z))ᴴ *
+      (supportCPow hA.1 z * c * supportCPow hA.1 (1 / 2 - z))).trace.re ≤ 1 := by
+  set U := hA.1.eigenvectorUnitary
+  set a := hA.1.eigenvalues
+  set φ : ℂ → n → ℂ := fun w k => if a k = 0 then 0 else ((a k : ℝ) : ℂ) ^ w
+  set c' := star (U : Matrix n n ℂ) * c * (U : Matrix n n ℂ)
+  set M := supportCPow hA.1 z * c * supportCPow hA.1 (1 / 2 - z)
+  have hUU : star (U : Matrix n n ℂ) * (U : Matrix n n ℂ) = 1 := Unitary.star_mul_self_of_mem U.2
+  have hUU' : (U : Matrix n n ℂ) * star (U : Matrix n n ℂ) = 1 := Unitary.mul_star_self_of_mem U.2
+  -- conjugate to the eigenbasis
+  set N := diagonal (φ z) * c' * diagonal (φ (1 / 2 - z))
+  have hM : M = (U : Matrix n n ℂ) * N * star (U : Matrix n n ℂ) := by
+    simp only [M, N, c', supportCPow, spectralFun, Matrix.mul_assoc]
+    rfl
+  have hUU2 : (U : Matrix n n ℂ)ᴴ * (U : Matrix n n ℂ) = 1 := by
+    rw [← star_eq_conjTranspose]; exact hUU
+  have htrace : (Mᴴ * M).trace = (Nᴴ * N).trace := by
+    rw [hM, conjTranspose_mul, conjTranspose_mul, star_eq_conjTranspose,
+      conjTranspose_conjTranspose]
+    rw [show (U : Matrix n n ℂ) * (Nᴴ * (U : Matrix n n ℂ)ᴴ) *
+        ((U : Matrix n n ℂ) * N * (U : Matrix n n ℂ)ᴴ) =
+        (U : Matrix n n ℂ) * (Nᴴ * ((U : Matrix n n ℂ)ᴴ * (U : Matrix n n ℂ)) * N) *
+          (U : Matrix n n ℂ)ᴴ by simp only [Matrix.mul_assoc],
+      hUU2, Matrix.mul_one, trace_mul_cycle, hUU2, Matrix.one_mul]
+  rw [htrace, re_trace_conjTranspose_mul_self_eq_sum]
+  sorry
+
 end Matrix
 
 end
