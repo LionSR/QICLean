@@ -27,8 +27,8 @@ Convexity of the exponential gives the bound for the absolute trace, and the tra
 norm dominates the absolute trace.  Terms with $p_i=0$ contribute zero.
 
 When the support condition fails the relative entropy is $+\infty$ and the bound
-reads $F\ge 0$; `Matrix.ofReal_exp_neg_div_two_le_ofReal_rootFidelity` states the
-inequality in that extended form.
+reads $F\ge 0$; `Matrix.exp_neg_extendedRelativeEntropy_div_two_le_rootFidelity`
+states the inequality in that extended form.
 
 ## Main results
 
@@ -229,7 +229,7 @@ noncomputable def extendedRelativeEntropy (ρ σ : Matrix n n ℂ) : EReal :=
   if ∀ v : n → ℂ, σ *ᵥ v = 0 → ρ *ᵥ v = 0 then (quantumRelativeEntropy ρ σ : EReal) else ⊤
 
 /-- **Affinity bound** (Lemma 2.2 `lem:fidelity`, first inequality, in the extended
-form).  For density matrices `ρ` and `σ`,
+form).  For a density matrix `ρ` and a positive semidefinite `σ`,
 $e^{-D(\rho\Vert\sigma)/2}\le F(\rho,\sigma)$, where $D$ takes the value $+\infty$
 outside the support condition and then the left side is zero.
 

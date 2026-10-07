@@ -117,14 +117,15 @@ Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity
 `01-preliminaries.tex:99–139`. -/
 theorem exists_isIsometry_star_dotProduct_eq_rootFidelity
     {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R] [DecidableEq R] [Fintype S]
-    {ρ σ : Matrix A A ℂ} (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef)
-    {ψ : A × R → ℂ} {φ : A × S → ℂ}
+    {ρ σ : Matrix A A ℂ} {ψ : A × R → ℂ} {φ : A × S → ℂ}
     (hψ : partialTraceRight (vecMulVec ψ (star ψ)) = ρ)
     (hφ : partialTraceRight (vecMulVec φ (star φ)) = σ)
     (hAS : Fintype.card A ≤ Fintype.card S) (hRS : Fintype.card R ≤ Fintype.card S) :
     ∃ V : Matrix S R ℂ, V.IsIsometry ∧
       star φ ⬝ᵥ (((1 : Matrix A A ℂ) ⊗ₖ V) *ᵥ ψ) = (rootFidelity ρ σ : ℂ) := by
   classical
+  have hρ : ρ.PosSemidef := hψ ▸ (posSemidef_vecMulVec_self_star ψ).partialTraceRight
+  have hσ : σ.PosSemidef := hφ ▸ (posSemidef_vecMulVec_self_star φ).partialTraceRight
   set Ψ := schmidtCoeffMatrix ψ
   set Φ := schmidtCoeffMatrix φ
   have hΨ : Ψ * Ψᴴ = ρ := (partialTraceRight_vecMulVec_eq ψ).symm.trans hψ
@@ -187,15 +188,14 @@ Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity
 `01-preliminaries.tex:99–139`. -/
 theorem exists_isIsometry_star_dotProduct_padPurification_eq_rootFidelity
     {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R] [DecidableEq R] [Fintype S]
-    {ρ σ : Matrix A A ℂ} (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef)
-    {ψ : A × R → ℂ} {φ : A × S → ℂ}
+    {ρ σ : Matrix A A ℂ} {ψ : A × R → ℂ} {φ : A × S → ℂ}
     (hψ : partialTraceRight (vecMulVec ψ (star ψ)) = ρ)
     (hφ : partialTraceRight (vecMulVec φ (star φ)) = σ) :
     ∃ V : Matrix (S ⊕ (A ⊕ R)) R ℂ, V.IsIsometry ∧
       star (padPurification φ) ⬝ᵥ (((1 : Matrix A A ℂ) ⊗ₖ V) *ᵥ ψ) =
         (rootFidelity ρ σ : ℂ) := by
   classical
-  exact exists_isIsometry_star_dotProduct_eq_rootFidelity hρ hσ hψ
+  exact exists_isIsometry_star_dotProduct_eq_rootFidelity hψ
     ((partialTraceRight_vecMulVec_padPurification φ).trans hφ)
     (by simp only [Fintype.card_sum]; omega) (by simp only [Fintype.card_sum]; omega)
 

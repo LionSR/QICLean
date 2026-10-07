@@ -3,6 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
+import QICLean.Algebra.MatrixIsometryKronecker
 import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Channel.UhlmannIsometry
 import QICLean.Entropy.ProductMarginals
@@ -28,17 +29,21 @@ vectors with real overlap `F` are at squared distance $2(1-F)$.
 
 ## Main results
 
-* `quantumRelativeEntropy_traceRight_kronecker_traceLeft_eq_mutualInformation` —
-  $D(\rho_{AC}\Vert\rho_A\otimes\rho_C)=I(A:C)$, natural logarithms.
 * `Matrix.exists_isIsometry_norm_sub_le_of_purification` — two unit purifications are
   within $\sqrt{2(1-e^{-D(\rho\Vert\sigma)/2})}$ after an isometry on the purifying
-  system, the "in particular" clause of Lemma 2.2.
+  system, when the purifying space of the target has room for both systems.
+* `Matrix.exists_isIsometry_norm_sub_padPurification_le` — the "in particular" clause
+  of Lemma 2.2: the same estimate after enlarging the purifying space of the target
+  by zero padding, with no condition on the dimensions.
 * `Matrix.exists_isIsometry_norm_sub_tensorPurification_le` — the splitting estimate
   with $b=D(\rho_{TE}\Vert\rho_T\otimes\rho_E)$, for arbitrary finite index types.
 * `Matrix.exists_isIsometry_norm_sub_tensorPurification_le_mutualInformation` —
   Lemma 6.4 `lem:splitting` with $b=I(T:E)$ and both inequalities.
 * `Matrix.exists_isIsometry_norm_sub_tensorPurification_le_zpow` — if
   $b\le L^{-60}$, the error is at most $L^{-30}$.
+
+The identity $D(\rho_{AC}\Vert\rho_A\otimes\rho_C)=I(A:C)$ of Lemma 2.2, with natural
+logarithms, is `quantumRelativeEntropy_product_marginals`; it is used here directly.
 
 ## References
 
@@ -49,18 +54,6 @@ vectors with real overlap `F` are at squared distance $2(1-F)$.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Kronecker Matrix.Norms.L2Operator
-
-/-- **Mutual information as relative entropy.**  For a positive semidefinite bipartite
-matrix, $D(\rho_{AC}\Vert\rho_A\otimes\rho_C)=I(A:C)$, with the natural logarithm on
-both sides.
-
-Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
-second identity of `eq:fidelity-information`, `01-preliminaries.tex:92–124`. -/
-theorem quantumRelativeEntropy_traceRight_kronecker_traceLeft_eq_mutualInformation
-    {dA dB : ℕ} {ρ : Matrix (Fin dA × Fin dB) (Fin dA × Fin dB) ℂ} (hρ : ρ.PosSemidef) :
-    quantumRelativeEntropy ρ (Matrix.traceRight ρ ⊗ₖ Matrix.traceLeft ρ) =
-      mutualInformation ρ hρ.isHermitian :=
-  quantumRelativeEntropy_product_marginals hρ
 
 /-- For every real `b`, $2(1-e^{-b/2})\le b$, so $\sqrt{2(1-e^{-b/2})}\le\sqrt b$. -/
 theorem Real.sqrt_two_mul_one_sub_exp_neg_half_le_sqrt (b : ℝ) :
@@ -93,19 +86,14 @@ theorem star_mulVec_dotProduct_mulVec_of_conjTranspose_mul_eq_one {ι κ : Type*
     (v : ι → ℂ) : star (K *ᵥ v) ⬝ᵥ (K *ᵥ v) = star v ⬝ᵥ v := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, hK, one_mulVec]
 
-omit [Fintype R] in
-/-- An isometry on the second factor gives an isometry `1 ⊗ V` on the product. -/
-theorem one_kronecker_conjTranspose_mul_self {V : Matrix S R ℂ} (hV : V.IsIsometry) :
-    ((1 : Matrix A A ℂ) ⊗ₖ V)ᴴ * ((1 : Matrix A A ℂ) ⊗ₖ V) = 1 := by
-  have hV' : Vᴴ * V = 1 := hV
-  rw [conjTranspose_kronecker, ← mul_kronecker_mul, conjTranspose_one, Matrix.one_mul, hV',
-    one_kronecker_one]
-
-/-- **Purification distance** (Lemma 2.2 `lem:fidelity`, "in particular" clause).  Let
+/-- **Purification distance, room-condition form** (Lemma 2.2 `lem:fidelity`, "in
+particular" clause, when the purifying space of `φ` is already large enough).  Let
 `ψ` and `φ` be unit purifications of `ρ` on `A × R` and of `σ` on `A × S`, with
 $\ker\sigma\subseteq\ker\rho$ and with `S` at least as large as `A` and `R`.  Then an
 isometry `V` from `R` to `S` brings `ψ` within
-$\sqrt{2(1-e^{-D(\rho\Vert\sigma)/2})}$ of `φ`.
+$\sqrt{2(1-e^{-D(\rho\Vert\sigma)/2})}$ of `φ`.  The source's form, with the
+purifying space enlarged and no condition on the dimensions, is
+`Matrix.exists_isIsometry_norm_sub_padPurification_le`.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
 `01-preliminaries.tex:99–139`. -/
@@ -122,12 +110,12 @@ theorem exists_isIsometry_norm_sub_le_of_purification
   have hρ : ρ.PosSemidef := hψ ▸ (posSemidef_vecMulVec_self_star ψ).partialTraceRight
   have hσ : σ.PosSemidef := hφ ▸ (posSemidef_vecMulVec_self_star φ).partialTraceRight
   have hρtr : ρ.trace = 1 := by rw [← hψ, trace_partialTraceRight_vecMulVec, hψ1]
-  obtain ⟨V, hV, hov⟩ := exists_isIsometry_star_dotProduct_eq_rootFidelity hρ hσ hψ hφ hAS hRS
+  obtain ⟨V, hV, hov⟩ := exists_isIsometry_star_dotProduct_eq_rootFidelity hψ hφ hAS hRS
   refine ⟨V, hV, ?_⟩
   set χ := ((1 : Matrix A A ℂ) ⊗ₖ V) *ᵥ ψ
   have hχ1 : star χ ⬝ᵥ χ = 1 := by
     rw [star_mulVec_dotProduct_mulVec_of_conjTranspose_mul_eq_one
-      (one_kronecker_conjTranspose_mul_self hV), hψ1]
+      (IsIsometry.kronecker (1 : Matrix A A ℂ) V (by simp [IsIsometry]) hV), hψ1]
   have hF := exp_neg_quantumRelativeEntropy_div_two_le_rootFidelity hρ hρtr hσ hsupp
   have hsq : ‖(WithLp.toLp 2 (χ - φ) : EuclideanSpace ℂ (A × S))‖ ^ 2
       = 2 * (1 - rootFidelity ρ σ) := by
@@ -138,6 +126,30 @@ theorem exists_isIsometry_norm_sub_le_of_purification
   rw [← Real.sqrt_sq (norm_nonneg _), hsq]
   refine Real.sqrt_le_sqrt ?_
   linarith
+
+/-- **Purification distance** (Lemma 2.2 `lem:fidelity`, "in particular" clause).  Let
+`ψ` and `φ` be unit purifications of `ρ` on `A × R` and of `σ` on `A × S`, with
+$\ker\sigma\subseteq\ker\rho$.  After enlarging the purifying space of `φ` to
+`S ⊕ (A ⊕ R)` by zero padding, an isometry `V` defined on all of `R` brings `ψ` within
+$\sqrt{2(1-e^{-D(\rho\Vert\sigma)/2})}$ of the padded `φ`.  No condition is imposed
+on the dimensions.
+
+Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
+`01-preliminaries.tex:99–139`. -/
+theorem exists_isIsometry_norm_sub_padPurification_le
+    {ρ σ : Matrix A A ℂ} {ψ : A × R → ℂ} {φ : A × S → ℂ}
+    (hψ : partialTraceRight (vecMulVec ψ (star ψ)) = ρ)
+    (hφ : partialTraceRight (vecMulVec φ (star φ)) = σ)
+    (hψ1 : star ψ ⬝ᵥ ψ = 1) (hφ1 : star φ ⬝ᵥ φ = 1)
+    (hsupp : ∀ v : A → ℂ, σ *ᵥ v = 0 → ρ *ᵥ v = 0) :
+    ∃ V : Matrix (S ⊕ (A ⊕ R)) R ℂ, V.IsIsometry ∧
+      ‖(WithLp.toLp 2 ((((1 : Matrix A A ℂ) ⊗ₖ V) *ᵥ ψ) - padPurification φ) :
+          EuclideanSpace ℂ (A × (S ⊕ (A ⊕ R))))‖ ≤
+        √(2 * (1 - Real.exp (-(quantumRelativeEntropy ρ σ / 2)))) := by
+  have hpad := partialTraceRight_vecMulVec_padPurification (K := A ⊕ R) φ
+  refine exists_isIsometry_norm_sub_le_of_purification hψ (hpad.trans hφ) hψ1 ?_ hsupp
+    (by simp only [Fintype.card_sum]; omega) (by simp only [Fintype.card_sum]; omega)
+  rw [← trace_partialTraceRight_vecMulVec, hpad, trace_partialTraceRight_vecMulVec, hφ1]
 
 end Purification
 
@@ -254,7 +266,9 @@ theorem exists_isIsometry_norm_sub_tensorPurification_le_mutualInformation
         √(2 * (1 - Real.exp (-(mutualInformation ρ hρH / 2)))) ∧
       √(2 * (1 - Real.exp (-(mutualInformation ρ hρH / 2)))) ≤ √(mutualInformation ρ hρH) := by
   have hρpsd : ρ.PosSemidef := hρ ▸ (posSemidef_vecMulVec_self_star Ω).partialTraceRight
-  have hb := quantumRelativeEntropy_traceRight_kronecker_traceLeft_eq_mutualInformation hρpsd
+  have hb : quantumRelativeEntropy ρ (partialTraceRight ρ ⊗ₖ partialTraceLeft ρ) =
+      mutualInformation ρ hρH :=
+    quantumRelativeEntropy_product_marginals hρpsd
   obtain ⟨V, s, s', hV, hs, hs', hnorm⟩ :=
     exists_isIsometry_norm_sub_tensorPurification_le Ω hΩ hρ
   refine ⟨V, s, s', hV, hs, hs', ?_, Real.sqrt_two_mul_one_sub_exp_neg_half_le_sqrt _⟩
