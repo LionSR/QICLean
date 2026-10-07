@@ -1,0 +1,7 @@
+'Matrix.isCompact_setOf_posSemidef_trace_eq_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.setOf_posSemidef_trace_eq_one_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.add_smul_one_posDef' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.continuousOn_add_smul_one_rpow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.spectrum_add_smul_one_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonpos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
