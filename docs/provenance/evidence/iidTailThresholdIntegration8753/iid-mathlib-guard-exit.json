@@ -1,0 +1,13 @@
+{
+  "kind": "cache",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/iidSurprisal8753/mathlib-guard.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.08,
+  "source_revision": "1681609e96a5d99864b5632df6086566dad0af40",
+  "log": "docs/provenance/evidence/iidTailThresholdIntegration8753/iid-mathlib-guard.log",
+  "sha256": "3ec65beb9a721a77f6dcaa1adae317608779e7f84b6c085083d052f26dfdc3cc"
+}

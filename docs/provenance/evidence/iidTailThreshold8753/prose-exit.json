@@ -1,0 +1,15 @@
+{
+  "kind": "prose",
+  "command": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "1d7c3bc96620a8bcaa48ef5f3dd17d94a7c19608"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.21,
+  "source_revision": "4665d148b770a504e4dd3cb8ac402e11cc68b5d4",
+  "log": "docs/provenance/evidence/iidTailThreshold8753/prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

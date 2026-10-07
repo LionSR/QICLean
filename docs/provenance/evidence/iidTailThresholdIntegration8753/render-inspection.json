@@ -1,0 +1,18 @@
+{
+  "pdf_artifact": "output/pdf/iid-tail-threshold-blueprint.pdf",
+  "pdf_sha256": "09efeaf35122768d87a54961f3080fb9c9f98d572365714e6198ee9d73e2a0bd",
+  "new_section_physical_page": 398,
+  "new_section_printed_page": 397,
+  "pages_rendered": [
+    397,
+    398
+  ],
+  "images": {
+    "docs/provenance/evidence/iidTailThresholdIntegration8753/render/page-397.png": "4ce872963534eb21ff1392ea973c9383efeb3cd3b0cacd5acbc44c7882d40ba3",
+    "docs/provenance/evidence/iidTailThresholdIntegration8753/render/page-398.png": "94581624aaacd776e5c588801820dda24ba06b54c367422c5a772f6a9059ccb6",
+    "docs/provenance/evidence/iidTailThresholdIntegration8753/render/threshold-web-desktop.png": "2419f25526af957bc9d5708425450c8725d73b520023b38d0e259ad849374156",
+    "docs/provenance/evidence/iidTailThresholdIntegration8753/render/threshold-web-mobile.png": "3309cd0144d8ffafcbe0e6500b34f8c0a9f8af4f89a256840b6f44276b8294d7"
+  },
+  "result": "passed",
+  "inspection": "The inherited concentration page and new numerical page are legible. The exact coefficient one half lies inside the exponential. Source citations resolve. Desktop and 360-pixel mobile views display the entire numerical theorem and open proof without clipping, MathJax errors or page overflow."
+}
