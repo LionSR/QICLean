@@ -26,11 +26,8 @@ import QICLean.Entropy.FilterStationarity
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.GapSurprisal
-<<<<<<< HEAD
-import QICLean.Entropy.MarginalPhaseApprox
-=======
 import QICLean.Entropy.LocalLift
->>>>>>> feat/area-law-marginal-phases
+import QICLean.Entropy.MarginalPhaseApprox
 import QICLean.Entropy.MarginalPhaseComparison
 import QICLean.Entropy.MarginalPhaseFaithful
 import QICLean.Entropy.MarginalPhaseLimit
