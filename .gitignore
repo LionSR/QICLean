@@ -4,6 +4,8 @@
 
 # Local build output (LaTeX artifacts, PDFs, etc.)
 /build/
+/.deps/
+blueprint/src/.tenkz_svg_cache/
 
 # LaTeX compilation artifacts
 *.aux

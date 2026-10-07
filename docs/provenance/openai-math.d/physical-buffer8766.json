@@ -1,0 +1,2082 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "physical-buffer8766-equiv.partialswap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Equiv.partialSwap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the permutation exchanging the first factors of two product copies.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-equiv.partialswap_apply",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Equiv.partialSwap_apply",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Expose the coordinate action of that permutation.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-equiv.partialswap_symm",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Equiv.partialSwap_symm",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that the permutation is its own inverse.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-equiv.partialswap_mul_self",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Equiv.partialSwap_mul_self",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that the permutation squared is the identity.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.partialswap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.partialSwap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the matrix of the partial-swap permutation.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.partialswap_apply",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.partialSwap_apply",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Expose the entries of the partial-swap matrix.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.partialswap_mulvec",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.partialSwap_mulVec",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Compute the action of the partial swap on a vector.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.partialswap_ishermitian",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.partialSwap_isHermitian",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that the partial-swap matrix is Hermitian.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.partialswap_mul_self",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.partialSwap_mul_self",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that the partial-swap matrix squared is the identity.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.partialswap_mem_unitarygroup",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.partialSwap_mem_unitaryGroup",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that the partial-swap matrix is unitary.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.norm_partialswap_le_one",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.norm_partialSwap_le_one",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Bound its operator norm by one, allowing empty index types.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.partialswap_kronecker_mulvec",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.partialSwap_kronecker_mulVec",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Compute the independent coordinate actions of two tensor-product partial swaps.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.partialswap_one_mulvec",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.partialSwap_one_mulVec",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Compute the physical-reference swap with an identity factor.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.kronecker_self_conjtranspose_mul_self",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.kronecker_self_conjTranspose_mul_self",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that the tensor square of an isometry remains an isometry.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.compressedpartialswap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.compressedPartialSwap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the compression of the auxiliary partial swap to the original doubled buffer.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.compressedpartialswap_ishermitian",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.compressedPartialSwap_isHermitian",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that the compressed partial swap is Hermitian.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.norm_conjtranspose_mul_mul_le_of_isometry",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.norm_conjTranspose_mul_mul_le_of_isometry",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the operator-norm bound for compression by an isometry.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.norm_compressedpartialswap_le_one",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.norm_compressedPartialSwap_le_one",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Bound the compressed partial-swap norm by one.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.star_dotproduct_compression",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.star_dotProduct_compression",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Transport an exact complex inner product through compression.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.star_dotproduct_kronecker_compression",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.star_dotProduct_kronecker_compression",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Transport an exact complex inner product through compression with an untouched reference factor.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.compressedpartialswap_overlap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.compressedPartialSwap_overlap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove exact overlap transport for the compressed partial swap.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.compressedpartialswap_left_overlap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CompressedPartialSwap.lean",
+        "declaration": "Matrix.compressedPartialSwap_left_overlap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove exact overlap transport with a physical-reference Hermitian operator.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/CompressedPartialSwap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-source.log",
+            "sha256": "7159e40593fc8badb8329a5b9514f41e3a54688ead1bd725d9977b7184df793b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_COMPRESSED_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/compressed-raw_axioms.log",
+            "sha256": "835f45109e8a7d44a164e98c65cfd4b9f77d1b83b6f5145ad1aac8ad38cef032"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.star_product_dotproduct_eq",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ProductOverlapPurity.lean",
+        "declaration": "Matrix.star_product_dotProduct_eq",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Express a complex product overlap using the coefficient matrix and the conjugated second factor.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/ProductOverlapPurity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-source.log",
+            "sha256": "9ff93a62f7549ef85b8b7c14bcf197ad5117a495a13c66ff8dfb51128034986b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_PURITY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-raw_axioms.log",
+            "sha256": "d74673553fc94793b4e9438852e5b92679f7b4cb3cdeb06ca50309dcc516d137"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.norm_product_overlap_le_schmidtcoeffmatrix",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ProductOverlapPurity.lean",
+        "declaration": "Matrix.norm_product_overlap_le_schmidtCoeffMatrix",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Bound normalized product overlap by the coefficient matrix operator norm.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/ProductOverlapPurity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-source.log",
+            "sha256": "9ff93a62f7549ef85b8b7c14bcf197ad5117a495a13c66ff8dfb51128034986b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_PURITY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-raw_axioms.log",
+            "sha256": "d74673553fc94793b4e9438852e5b92679f7b4cb3cdeb06ca50309dcc516d137"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.norm_product_overlap_pow_four_le_purity",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ProductOverlapPurity.lean",
+        "declaration": "Matrix.norm_product_overlap_pow_four_le_purity",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Bound the fourth power of normalized product overlap by reduced-state purity in arbitrary finite dimensions.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/ProductOverlapPurity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-source.log",
+            "sha256": "9ff93a62f7549ef85b8b7c14bcf197ad5117a495a13c66ff8dfb51128034986b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_PURITY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-raw_axioms.log",
+            "sha256": "d74673553fc94793b4e9438852e5b92679f7b4cb3cdeb06ca50309dcc516d137"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-product-overlap-purity-coordinate-normalization",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ProductOverlapPurity.lean",
+        "declaration": "Matrix.norm_product_overlap_pow_four_le_purity_of_star_dotProduct_eq_one",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive the product-overlap purity bound from coordinate inner-product normalizations.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/ProductOverlapPurity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-source.log",
+            "sha256": "9ff93a62f7549ef85b8b7c14bcf197ad5117a495a13c66ff8dfb51128034986b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_PURITY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-raw_axioms.log",
+            "sha256": "d74673553fc94793b4e9438852e5b92679f7b4cb3cdeb06ca50309dcc516d137"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.star_doubled_dotproduct_partialswap_eq_purity",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ProductOverlapPurity.lean",
+        "declaration": "Matrix.star_doubled_dotProduct_partialSwap_eq_purity",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the exact complex doubled-vector partial-swap identity for reduced-state purity.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/ProductOverlapPurity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-source.log",
+            "sha256": "9ff93a62f7549ef85b8b7c14bcf197ad5117a495a13c66ff8dfb51128034986b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_PURITY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/purity-raw_axioms.log",
+            "sha256": "d74673553fc94793b4e9438852e5b92679f7b4cb3cdeb06ca50309dcc516d137"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-equiv.bipartiteregroup",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Equiv.bipartiteRegroup",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the regrouping of four registers by first/third and second/fourth factors.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-equiv.doubledregroup",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Equiv.doubledRegroup",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the regrouping of two bipartite copies.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.doubledregroup",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.doubledRegroup",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the doubled state in grouped coordinates.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.physicalleftswap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.physicalLeftSwap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the physical-left swap in grouped coordinates.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.regrouppurification",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.regroupPurification",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the regrouped purification across the physical and auxiliary left/right split.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.one_kronecker_mulvec_apply",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.one_kronecker_mulVec_apply",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Compute a vector acted on by the identity tensor a matrix.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.doubledregroup_one_kronecker_mulvec",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.doubledRegroup_one_kronecker_mulVec",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Transport purification and doubling through the explicit regrouping.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.star_doubledregroup_dotproduct",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.star_doubledRegroup_dotProduct",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Compute the normalization of the doubled state.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.star_regrouppurification_dotproduct",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.star_regroupPurification_dotProduct",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that regrouping preserves the inner product.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.star_tensorpurification_dotproduct_eq_one",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.star_tensorPurification_dotProduct_eq_one",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove coordinate normalization of the tensor-product purification.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.exp_neg_half_le_re_overlap_of_norm_sub_le",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.exp_neg_half_le_re_overlap_of_norm_sub_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Convert the splitting distance bound to the lower bound exp(-b/2) on real overlap.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.physicalleftswap_eq_mulvec",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.physicalLeftSwap_eq_mulVec",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Identify the coordinate physical-left swap with its matrix action.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.star_doubledregroup_dotproduct_partialswaps_eq_purity",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.star_doubledRegroup_dotProduct_partialSwaps_eq_purity",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the two partial swaps give the regrouped reduced-state purity exactly.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.physicalleftswap_compressedpartialswap_overlap_eq_purity",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.physicalLeftSwap_compressedPartialSwap_overlap_eq_purity",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Transport the compressed physical-buffer overlap to that exact complex purity.",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "physical-buffer8766-matrix.exists_hermitian_contraction_physicalbuffer_overlap",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PhysicalBufferOverlap.lean",
+        "declaration": "Matrix.exists_hermitian_contraction_physicalBuffer_overlap",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-split-overlap",
+            "eq:info-reset-overlap"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Use the existing QIC#558 splitting estimate to construct a Hermitian contraction on the original Q × Q with exact complex overlap z and real z >= exp(-2b).",
+        "Independent Lean proof text for source lines 355–424; no upstream OpenAI Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "abd6b6a3285c00e023e9976cdc6235f6b4da676d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/PhysicalBufferOverlap.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-source.log",
+            "sha256": "b09032e6c49d760180c8ba2f90a2a169f7be972eda4e57f9355c27565706e54e"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean --profile -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true <RAW_ASSEMBLY_DRIVER>",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8766-physical-buffer-overlap/logs/assembly-raw_axioms.log",
+            "sha256": "8ff187a5944a415597e38123bc9fc6dc351ff9d7225949220e50df920a3e2f5a"
+          }
+        ]
+      }
+    }
+  ]
+}

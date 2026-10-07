@@ -1,0 +1,17 @@
+import QICLean.Entropy.PhysicalBufferOverlap
+
+#print axioms Equiv.bipartiteRegroup
+#print axioms Equiv.doubledRegroup
+#print axioms Matrix.doubledRegroup
+#print axioms Matrix.physicalLeftSwap
+#print axioms Matrix.regroupPurification
+#print axioms Matrix.one_kronecker_mulVec_apply
+#print axioms Matrix.doubledRegroup_one_kronecker_mulVec
+#print axioms Matrix.star_doubledRegroup_dotProduct
+#print axioms Matrix.star_regroupPurification_dotProduct
+#print axioms Matrix.star_tensorPurification_dotProduct_eq_one
+#print axioms Matrix.exp_neg_half_le_re_overlap_of_norm_sub_le
+#print axioms Matrix.physicalLeftSwap_eq_mulVec
+#print axioms Matrix.star_doubledRegroup_dotProduct_partialSwaps_eq_purity
+#print axioms Matrix.physicalLeftSwap_compressedPartialSwap_overlap_eq_purity
+#print axioms Matrix.exists_hermitian_contraction_physicalBuffer_overlap

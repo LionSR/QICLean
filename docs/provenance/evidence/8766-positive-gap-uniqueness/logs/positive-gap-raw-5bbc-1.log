@@ -1,0 +1,6 @@
+'Matrix.PosSemidef.eq_inner_smul_of_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.PosSemidef.eigenspace_eq_span_of_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.PosSemidef.finrank_eigenspace_eq_one_of_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
