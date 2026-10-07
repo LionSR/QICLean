@@ -1,0 +1,14 @@
+{
+  "kind": "build",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Entropy.TypicalBellPinPowers"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 10.0,
+  "source_revision": "502d0f43d6e86d9f68692a74f92a6c2b1f427ec6",
+  "log": "docs/provenance/evidence/typicalBellPinPowers8753/build.log",
+  "sha256": "07f658b748b8e0fecacd5a3a4425be4f0cb00264b10f2a8b7ef74d647b4c98d9"
+}

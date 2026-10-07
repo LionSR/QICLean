@@ -1,0 +1,7 @@
+'Matrix.finKronecker_selectedBellProjection_bellPinPrevector' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.finKronecker_selectedBellProjection_bellPinPrevector_label' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Matrix.norm_prod_selectedBellVector' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.isStarProjection_finKronecker_selectedBellProjection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.prod_selectedBellVector_perm' depends on axioms: [propext, Classical.choice, Quot.sound]

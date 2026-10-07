@@ -1,0 +1,19 @@
+{
+  "kind": "axioms",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/typicalBellPinPowers8753/TypicalBellPinPowersAxioms.lean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 6.32,
+  "source_revision": "502d0f43d6e86d9f68692a74f92a6c2b1f427ec6",
+  "log": "docs/provenance/evidence/typicalBellPinPowers8753/axioms.log",
+  "sha256": "39c8290f2962a273f391c0a8f8cc583adceec2095444633fea2a9acf6f2dfd87"
+}

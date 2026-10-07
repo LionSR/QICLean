@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-typical-bell-pin-powers-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalBellPinPowers.lean",
+        "declaration": "Matrix.finKronecker_selectedBellProjection_bellPinPrevector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:bell-pin"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently derive finite-copy Bell contraction from the actual one-copy vectors and spectral selection. Literal products use existing finKronecker; positive actual selected mass is the only normalization or pin premise, and the original vector need not be normalized. Prove the repeated Bell norm, orthogonal projection and simultaneous-copy invariance. Canonical arrow-product coordinates derive factoring of an arbitrary disjoint auxiliary operator without assuming commutation. Schur labels, metric commutation and the subsequent norm estimate are outside these statements."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "502d0f43d6e86d9f68692a74f92a6c2b1f427ec6",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalBellPinPowers",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/build.log",
+            "sha256": "07f658b748b8e0fecacd5a3a4425be4f0cb00264b10f2a8b7ef74d647b4c98d9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/TypicalBellPinPowers.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/typicalBellPinPowers8753/TypicalBellPinPowersAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/axioms.log",
+            "sha256": "39c8290f2962a273f391c0a8f8cc583adceec2095444633fea2a9acf6f2dfd87"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-bell-pin-powers-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalBellPinPowers.lean",
+        "declaration": "Matrix.finKronecker_selectedBellProjection_bellPinPrevector_label",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:bell-pin"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently derive finite-copy Bell contraction from the actual one-copy vectors and spectral selection. Literal products use existing finKronecker; positive actual selected mass is the only normalization or pin premise, and the original vector need not be normalized. Prove the repeated Bell norm, orthogonal projection and simultaneous-copy invariance. Canonical arrow-product coordinates derive factoring of an arbitrary disjoint auxiliary operator without assuming commutation. Schur labels, metric commutation and the subsequent norm estimate are outside these statements."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "502d0f43d6e86d9f68692a74f92a6c2b1f427ec6",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalBellPinPowers",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/build.log",
+            "sha256": "07f658b748b8e0fecacd5a3a4425be4f0cb00264b10f2a8b7ef74d647b4c98d9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/TypicalBellPinPowers.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/typicalBellPinPowers8753/TypicalBellPinPowersAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/axioms.log",
+            "sha256": "39c8290f2962a273f391c0a8f8cc583adceec2095444633fea2a9acf6f2dfd87"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-bell-pin-powers-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalBellPinPowers.lean",
+        "declaration": "Matrix.norm_prod_selectedBellVector",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:bell-pin"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently derive finite-copy Bell contraction from the actual one-copy vectors and spectral selection. Literal products use existing finKronecker; positive actual selected mass is the only normalization or pin premise, and the original vector need not be normalized. Prove the repeated Bell norm, orthogonal projection and simultaneous-copy invariance. Canonical arrow-product coordinates derive factoring of an arbitrary disjoint auxiliary operator without assuming commutation. Schur labels, metric commutation and the subsequent norm estimate are outside these statements."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "502d0f43d6e86d9f68692a74f92a6c2b1f427ec6",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalBellPinPowers",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/build.log",
+            "sha256": "07f658b748b8e0fecacd5a3a4425be4f0cb00264b10f2a8b7ef74d647b4c98d9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/TypicalBellPinPowers.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/typicalBellPinPowers8753/TypicalBellPinPowersAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/axioms.log",
+            "sha256": "39c8290f2962a273f391c0a8f8cc583adceec2095444633fea2a9acf6f2dfd87"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-bell-pin-powers-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalBellPinPowers.lean",
+        "declaration": "Matrix.isStarProjection_finKronecker_selectedBellProjection",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:bell-pin"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently derive finite-copy Bell contraction from the actual one-copy vectors and spectral selection. Literal products use existing finKronecker; positive actual selected mass is the only normalization or pin premise, and the original vector need not be normalized. Prove the repeated Bell norm, orthogonal projection and simultaneous-copy invariance. Canonical arrow-product coordinates derive factoring of an arbitrary disjoint auxiliary operator without assuming commutation. Schur labels, metric commutation and the subsequent norm estimate are outside these statements."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "502d0f43d6e86d9f68692a74f92a6c2b1f427ec6",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalBellPinPowers",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/build.log",
+            "sha256": "07f658b748b8e0fecacd5a3a4425be4f0cb00264b10f2a8b7ef74d647b4c98d9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/TypicalBellPinPowers.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/typicalBellPinPowers8753/TypicalBellPinPowersAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/axioms.log",
+            "sha256": "39c8290f2962a273f391c0a8f8cc583adceec2095444633fea2a9acf6f2dfd87"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-typical-bell-pin-powers-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/TypicalBellPinPowers.lean",
+        "declaration": "Matrix.prod_selectedBellVector_perm",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:bell-pin"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently derive finite-copy Bell contraction from the actual one-copy vectors and spectral selection. Literal products use existing finKronecker; positive actual selected mass is the only normalization or pin premise, and the original vector need not be normalized. Prove the repeated Bell norm, orthogonal projection and simultaneous-copy invariance. Canonical arrow-product coordinates derive factoring of an arbitrary disjoint auxiliary operator without assuming commutation. Schur labels, metric commutation and the subsequent norm estimate are outside these statements."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "502d0f43d6e86d9f68692a74f92a6c2b1f427ec6",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.TypicalBellPinPowers",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/build.log",
+            "sha256": "07f658b748b8e0fecacd5a3a4425be4f0cb00264b10f2a8b7ef74d647b4c98d9"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/TypicalBellPinPowers.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/typicalBellPinPowers8753/TypicalBellPinPowersAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/typicalBellPinPowers8753/axioms.log",
+            "sha256": "39c8290f2962a273f391c0a8f8cc583adceec2095444633fea2a9acf6f2dfd87"
+          }
+        ]
+      }
+    }
+  ]
+}

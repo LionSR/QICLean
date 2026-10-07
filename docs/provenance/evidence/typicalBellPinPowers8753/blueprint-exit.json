@@ -1,0 +1,17 @@
+{
+  "kind": "blueprint",
+  "command": [
+    "latexmk",
+    "-lualatex",
+    "-interaction=nonstopmode",
+    "-halt-on-error",
+    "-outdir=tmp/pdfs/bell-pin-powers",
+    "tmp/pdfs/bell-pin-powers/bell-pin-powers.tex"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 3.77,
+  "source_revision": "5f4a4a2b184836f441a8b3c63b39a7448f843f65",
+  "log": "docs/provenance/evidence/typicalBellPinPowers8753/blueprint.log",
+  "sha256": "3b6ad531fea422bb8dee982e128ddd4ae102c6427dd1383e532b2ec6a1078457"
+}
