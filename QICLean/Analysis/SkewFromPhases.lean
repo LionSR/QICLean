@@ -132,6 +132,60 @@ theorem phaseError_mul_exp_le {R : ℝ} (hR : 0 ≤ R) (hR1 : R ≤ 1) (u : ℝ)
         · exact (mul_le_mul_of_nonneg_right hs2 hE.le).trans he2
     _ = 8 * Real.exp (Real.pi ^ 2) * R := by ring
 
+theorem tendsto_sinh_pi_mul_div :
+    Tendsto (fun u : ℝ => Real.sinh (Real.pi * u) / u) (𝓝[≠] 0) (𝓝 Real.pi) := by
+  have h : HasDerivAt (fun u : ℝ => Real.sinh (Real.pi * u)) (Real.cosh (Real.pi * 0) * Real.pi) 0 :=
+    (Real.hasDerivAt_sinh _).comp 0 ((hasDerivAt_id 0).const_mul Real.pi |>.congr_deriv (by ring))
+  rw [hasDerivAt_iff_tendsto_slope] at h
+  simp only [mul_zero, Real.cosh_zero, one_mul] at h
+  refine h.congr' ?_
+  filter_upwards [self_mem_nhdsWithin] with u hu
+  simp [slope_def_field, div_eq_inv_mul]
+
+/-- The derivative at the origin is controlled by the phase error:
+`‖f'(0)‖ ≤ 4 π √p R`.  Area-law manuscript, `04-conditional.tex`, lines 568–572. -/
+theorem norm_deriv_le_of_phase {f : ℂ → ℂ} (hf : Differentiable ℂ f) {p R : ℝ}
+    (hphase : ∀ u : ℝ, ‖f (u * I) - f 0‖ ≤
+      4 * √p * |Real.sinh (Real.pi * u)| * R + 4 * Real.sinh (Real.pi * u) ^ 2 * R ^ 2) :
+    ‖deriv f 0‖ ≤ 4 * Real.pi * √p * R := by
+  set g : ℝ → ℂ := fun u => f (u * I)
+  have hg : HasDerivAt g (deriv f 0 * I) 0 := by
+    have h1 : HasDerivAt (fun u : ℝ => (u : ℂ) * I) I 0 := by
+      simpa using (hasDerivAt_id (0 : ℝ)).ofReal_comp.mul_const I
+    have h2 : HasDerivAt f (deriv f 0) ((0 : ℝ) * I : ℂ) := by
+      simpa using (hf 0).hasDerivAt
+    exact h2.comp (0 : ℝ) h1
+  have hslope := hasDerivAt_iff_tendsto_slope.1 hg
+  have hnorm := hslope.norm
+  rw [norm_mul, norm_I, mul_one] at hnorm
+  -- the bound on the slopes
+  set B : ℝ → ℝ := fun u => 4 * √p * |Real.sinh (Real.pi * u) / u| * R +
+    4 * |Real.sinh (Real.pi * u) / u| * |Real.sinh (Real.pi * u)| * R ^ 2
+  have hB : Tendsto B (𝓝[≠] 0) (𝓝 (4 * √p * |Real.pi| * R + 4 * |Real.pi| * |Real.sinh (Real.pi * 0)| * R ^ 2)) := by
+    have h1 := tendsto_sinh_pi_mul_div.abs
+    have h2 : Tendsto (fun u : ℝ => |Real.sinh (Real.pi * u)|) (𝓝[≠] 0)
+        (𝓝 |Real.sinh (Real.pi * 0)|) :=
+      ((Real.continuous_sinh.comp (continuous_const.mul continuous_id)).abs.tendsto 0).mono_left
+        nhdsWithin_le_nhds
+    exact ((tendsto_const_nhds.mul h1).mul tendsto_const_nhds).add
+      (((tendsto_const_nhds.mul h1).mul h2).mul tendsto_const_nhds)
+  simp only [mul_zero, Real.sinh_zero, abs_zero, abs_of_pos Real.pi_pos, zero_mul,
+    add_zero] at hB
+  rw [show 4 * Real.pi * √p * R = 4 * √p * Real.pi * R by ring]
+  refine le_of_tendsto_of_tendsto hnorm hB ?_
+  filter_upwards [self_mem_nhdsWithin] with u hu
+  have hu0 : u ≠ 0 := hu
+  rw [slope_def_module, norm_smul, sub_zero, norm_inv, Real.norm_eq_abs]
+  have h := hphase u
+  simp only [g, Complex.ofReal_zero, zero_mul] at h ⊢
+  calc |u|⁻¹ * ‖f (u * I) - f 0‖
+      ≤ |u|⁻¹ * (4 * √p * |Real.sinh (Real.pi * u)| * R +
+          4 * Real.sinh (Real.pi * u) ^ 2 * R ^ 2) := by gcongr
+    _ = B u := by
+        simp only [B, abs_div]
+        rw [← sq_abs (Real.sinh _)]
+        field_simp
+
 end Complex
 
 end
