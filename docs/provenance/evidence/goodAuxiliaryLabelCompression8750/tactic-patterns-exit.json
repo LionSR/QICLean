@@ -1,0 +1,17 @@
+{
+  "source_revision": "4689fb0bf7098493ca15ee95d8cff5cb9bbb84ad",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/tactic_pattern_scan.py",
+    "--root",
+    "QICLean",
+    "--top",
+    "15"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T23:14:56.888003+00:00",
+  "elapsed_seconds": 0.849,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/goodAuxiliaryLabelCompression8750/tactic-patterns.log",
+  "sha256": "ca5485e555c520cb07069b32278ef41c3ae1eb132a540174c2938e33b8243186"
+}
