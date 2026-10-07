@@ -30,6 +30,7 @@ import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.SchmidtTilt
 import QICLean.Entropy.StrongSubadditivity
+import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
 import QICLean.Entropy.UnnormalizedStrongSubadditivity
