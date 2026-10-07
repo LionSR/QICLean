@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.PartialTrace
+import QICLean.Analysis.TraceDistance
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 
 /-!
@@ -35,21 +36,6 @@ open scoped Matrix Kronecker
 
 noncomputable section
 
-namespace Matrix
-
-variable {α β : Type*} [Fintype α] [Fintype β] [DecidableEq β]
-
-/-- The right partial trace is adjoint to tensoring with the identity:
-`tr (tr_β Y · X) = tr (Y (X ⊗ I_β))`. -/
-theorem trace_partialTraceRight_mul (X : Matrix α α ℂ) (Y : Matrix (α × β) (α × β) ℂ) :
-    (partialTraceRight Y * X).trace = (Y * (X ⊗ₖ (1 : Matrix β β ℂ))).trace := by
-  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, partialTraceRight_apply,
-    kroneckerMap_apply, one_apply, Finset.sum_mul, Fintype.sum_prod_type, mul_ite, mul_one,
-    mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  rw [Finset.sum_comm]
-
-end Matrix
 
 namespace Entropy.MarginalPhase
 
