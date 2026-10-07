@@ -7,6 +7,7 @@ import QICLean.Representation.SchurSurprisal
 import QICLean.Entropy.IidSurprisal
 import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.IidTailThreshold
+import QICLean.Entropy.PureTensorPower
 
 /-!
 # Entropy windows for the actual Schur labels
@@ -16,6 +17,21 @@ The selection argument in the OpenAI area-law manuscript,
 with the exponential moment of its difference from the label observable.
 The joint spectral projections permit both bounds to be applied to the
 same label distribution, including density matrices with a kernel.
+-/
+
+/-
+Original joint spectral selection and actual independent-copy label sequence supporting
+OpenAI, A two-dimensional area law from a global spectral gap, September 24, 2026,
+07-comparators.tex lines 255–281, comparator:high-label.
+Independently formalized; no upstream Lean proof text reused.
+Provenance-ID: 8753-qic-high-label-01
+TensorPower.exists_labelProj_mass_entropy_window
+Provenance-ID: 8753-qic-high-label-02
+TensorPower.eventually_exists_labelProj_finKronecker_entropy_window
+Provenance-ID: 8753-qic-high-label-03
+TensorPower.exists_label_sequence_mass_entropy_asymptotic
+Provenance-ID: 8753-qic-high-label-04
+TensorPower.exists_label_sequence_pure_norm_entropy_asymptotic
 -/
 
 open Matrix PermutationRepresentation Module Filter
@@ -395,5 +411,46 @@ theorem exists_label_sequence_mass_entropy_asymptotic
       rw [show (3 / 4 : ℝ) = -(1 / 4) + 1 by norm_num, Real.rpow_add hkR, Real.rpow_one]
       ring
     _ ≤ c * (k : ℝ) := mul_le_mul_of_nonneg_right hkc.le hkR.le
+
+end TensorPower
+
+namespace TensorPower
+
+open scoped Kronecker InnerProductSpace
+
+variable {S Ω : Type*} [Fintype S] [DecidableEq S] [Fintype Ω] [DecidableEq Ω]
+
+/-- For a unit bipartite vector, one sequence of actual Schur labels has
+inverse polynomial squared projection norm and logarithmic dimension
+`k S(ρ) + o(k)`, where `ρ` is its actual one-copy reduced density.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 255–281,
+`comparator:high-label`. Singular reduced densities are allowed. -/
+theorem exists_label_sequence_pure_norm_entropy_asymptotic
+    (ψ : S × Ω → ℂ) (hψ : ‖WithLp.toLp 2 ψ‖ = 1) :
+    ∃ l : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)),
+      (∀ᶠ k : ℕ in atTop,
+        (2 * (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ))⁻¹ ≤
+          ‖WithLp.toLp 2
+            (((1 : Matrix (Fin k → S) (Fin k → S) ℂ) ⊗ₖ labelProj (copyPerm Ω k) (l k)) *ᵥ
+              (fun x : (Fin k → S) × (Fin k → Ω) => ∏ i, ψ (x.1 i, x.2 i)))‖ ^ 2) ∧
+      Asymptotics.IsLittleO atTop
+        (fun k : ℕ => Real.log (l k).dim - (k : ℝ) *
+          vonNeumannEntropy (partialTraceLeft (vecMulVec ψ (star ψ)))
+            (posSemidef_vecMulVec_self_star ψ).partialTraceLeft.isHermitian)
+        (fun k : ℕ => (k : ℝ)) := by
+  classical
+  have hρ := (posSemidef_vecMulVec_self_star ψ).partialTraceLeft
+  have htr : (partialTraceLeft (vecMulVec ψ (star ψ))).trace = 1 := by
+    rw [trace_partialTraceLeft]
+    change ⟪WithLp.toLp 2 ψ, WithLp.toLp 2 ψ⟫_ℂ = 1
+    simp [hψ]
+  obtain ⟨l, hmass, hdim⟩ := exists_label_sequence_mass_entropy_asymptotic hρ htr
+  refine ⟨l, ?_, hdim⟩
+  filter_upwards [hmass] with k hk
+  have hP : IsStarProjection (labelProj (copyPerm Ω k) (l k)) := by
+    rw [isStarProjection_iff']
+    exact ⟨labelProj_mul_self _ _, (isHermitian_labelProj _ _).isSelfAdjoint⟩
+  rw [norm_sq_one_kronecker_mulVec_prod ψ k _ hP]
+  exact hk
 
 end TensorPower
