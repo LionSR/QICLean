@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.SpectralFunUnique
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
+import Mathlib.Analysis.MeanInequalities
 
 /-!
 # Complex powers vanishing on the kernel
@@ -115,11 +116,19 @@ theorem re_diag_conj_le_one {c : Matrix n n ℂ} (hc : c * cᴴ ≤ 1) (U : unit
   simp only [sub_apply, one_apply_eq, Complex.sub_re, Complex.one_re] at hd
   linarith [hd.1]
 
+omit [DecidableEq n] in
 theorem re_trace_conjTranspose_mul_self_eq_sum {m : Type*} [Fintype m] (N : Matrix n m ℂ) :
     (Nᴴ * N).trace.re = ∑ j, ∑ k, Complex.normSq (N j k) := by
   simp only [trace, diag, mul_apply, conjTranspose_apply, Complex.re_sum]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
+  simp [Complex.normSq_apply, Complex.mul_re]
+
+omit [Fintype n] [DecidableEq n] in
+theorem sum_normSq_row_eq {m : Type*} [Fintype m] (N : Matrix n m ℂ) (j : n) :
+    ∑ k, Complex.normSq (N j k) = ((N * Nᴴ) j j).re := by
+  simp only [mul_apply, conjTranspose_apply, Complex.re_sum]
+  refine Finset.sum_congr rfl fun k _ => ?_
   simp [Complex.normSq_apply, Complex.mul_re]
 
 theorem normSq_supportCPow_entry {a : ℝ} (ha : 0 ≤ a) (z : ℂ) :
@@ -165,7 +174,68 @@ theorem re_trace_supportCPow_sandwich_le (hA : A.PosSemidef) (htr : A.trace.re �
           (U : Matrix n n ℂ)ᴴ by simp only [Matrix.mul_assoc],
       hUU2, Matrix.mul_one, trace_mul_cycle, hUU2, Matrix.one_mul]
   rw [htrace, re_trace_conjTranspose_mul_self_eq_sum]
-  sorry
+  set s := z.re
+  have ha : ∀ k, 0 ≤ a k := hA.eigenvalues_nonneg
+  -- the pointwise weights
+  have hw : ∀ j k, Complex.normSq (φ z j) * Complex.normSq (φ (1 / 2 - z) k) ≤
+      2 * s * a j + (1 - 2 * s) * a k := by
+    intro j k
+    simp only [φ, normSq_supportCPow_entry (ha j), normSq_supportCPow_entry (ha k)]
+    by_cases hj : a j = 0
+    · simp only [hj, ite_true, zero_mul]
+      nlinarith [ha k]
+    · by_cases hk : a k = 0
+      · simp only [hk, ite_true, mul_zero, hj, ite_false]
+        nlinarith [ha j]
+      · simp only [hj, hk, ite_false]
+        have hre : (1 / 2 - z).re = 1 / 2 - s := by simp [s]
+        rw [hre, show 2 * (1 / 2 - s) = 1 - 2 * s by ring]
+        exact Real.geom_mean_le_arith_mean2_weighted (by linarith) (by linarith) (ha j) (ha k)
+          (by ring)
+  have hrow : ∀ j, ∑ k, Complex.normSq (c' j k) ≤ 1 := by
+    intro j
+    have := re_diag_conj_le_one hc1 U j
+    change ((c' * c'ᴴ) j j).re ≤ 1 at this
+    rwa [← sum_normSq_row_eq] at this
+  have hcol : ∀ k, ∑ j, Complex.normSq (c' j k) ≤ 1 := by
+    intro k
+    have hc : cᴴ * cᴴᴴ ≤ 1 := by rwa [conjTranspose_conjTranspose]
+    have := re_diag_conj_le_one hc U k
+    have heq : star (U : Matrix n n ℂ) * cᴴ * (U : Matrix n n ℂ) = c'ᴴ := by
+      simp only [c', conjTranspose_mul, star_eq_conjTranspose, conjTranspose_conjTranspose,
+        Matrix.mul_assoc]
+    rw [heq, ← sum_normSq_row_eq] at this
+    simpa [conjTranspose_apply, Complex.normSq_conj] using this
+  have htrA : ∑ k, a k ≤ 1 := by
+    rw [hA.1.trace_eq_sum_eigenvalues] at htr
+    simpa using htr
+  calc ∑ j, ∑ k, Complex.normSq (N j k)
+      = ∑ j, ∑ k, Complex.normSq (c' j k) *
+          (Complex.normSq (φ z j) * Complex.normSq (φ (1 / 2 - z) k)) := by
+        refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
+        simp only [N, mul_diagonal, diagonal_mul, Complex.normSq_mul]
+        ring
+    _ ≤ ∑ j, ∑ k, Complex.normSq (c' j k) * (2 * s * a j + (1 - 2 * s) * a k) := by
+        gcongr with j _ k _
+        · exact Complex.normSq_nonneg _
+        · exact hw j k
+    _ = 2 * s * ∑ j, a j * ∑ k, Complex.normSq (c' j k) +
+          (1 - 2 * s) * ∑ k, a k * ∑ j, Complex.normSq (c' j k) := by
+        simp only [mul_add, Finset.sum_add_distrib, Finset.mul_sum]
+        congr 1
+        · refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring
+        · rw [Finset.sum_comm]
+          refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring
+    _ ≤ 2 * s * ∑ j, a j * 1 + (1 - 2 * s) * ∑ k, a k * 1 := by
+        have h2s : 0 ≤ 2 * s := by linarith
+        have h12s : 0 ≤ 1 - 2 * s := by linarith
+        apply add_le_add
+        · exact mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun j _ =>
+            mul_le_mul_of_nonneg_left (hrow j) (ha j)) h2s
+        · exact mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun k _ =>
+            mul_le_mul_of_nonneg_left (hcol k) (ha k)) h12s
+    _ = ∑ k, a k := by simp only [mul_one]; ring
+    _ ≤ 1 := htrA
 
 end Matrix
 
