@@ -61,3 +61,18 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Commutation and the actual inverse identity are proved before
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
+
+### Copy-permutation commutation from invariant entries — candidate (2026-10-07)
+
+- **Pattern:** Reindex a literal finite product, or a sum of such products, by
+  the inverse copy permutation; convert the resulting simultaneous row and
+  column invariance into matrix commutation.
+- **Seen:** The replica sum and constant tensor power in
+  `QICLean/Analysis/ReplicaPermutationCovariance.lean`; two consumers in one
+  file.
+- **Abstraction:** The private `commute_copyPerm_of_invariant_entries` shares
+  the matrix permutation calculation. The finite reindexing uses existing
+  `Fintype.sum_equiv` and `Fintype.prod_equiv`; no new tactic is introduced.
+- **Caveats:** Respect the inverse convention of `permOp`. Use the existing
+  `Commute.cfc_real` to transfer actual commutation to real functional
+  calculus; no continuity or invariance hypothesis on the cutoff is added.
