@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/tmp/qic-density-simplex-provenance-env/bin/python",
+    "docs/provenance/evidence/regionalTypicalStateIntegration8753/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.52,
+  "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+  "log_sha256": "5a9baea1960ea5b93855e7e71b273bd66735ae59dcb49804b1ccf47e274f7fe9"
+}
