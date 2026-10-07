@@ -1,0 +1,70 @@
+import QICLean.Analysis.DensitySimplex
+import QICLean.Analysis.PatchRegulator
+import QICLean.Entropy.FiniteProductInformation
+import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.TypicalDensity
+import QICLean.Entropy.TypicalPureState
+import QICLean.Entropy.TypicalSpectrum
+import QICLean.Entropy.TypicalStateFromTail
+
+/-! Kernel dependency reports for the integrated area-law auxiliary results. -/
+
+set_option linter.hashCommand false
+
+#print axioms Entropy.normalizedRestriction
+#print axioms Entropy.sum_normalizedRestriction
+#print axioms Entropy.normalizedRestriction_pos
+#print axioms Entropy.log_card_typical_centered
+#print axioms Entropy.entropy_normalizedRestriction_typical_centered
+#print axioms Entropy.typicalSpectrum_entropy_bounds
+#print axioms Matrix.IsHermitian.spectralSelection
+#print axioms Matrix.IsHermitian.spectralRestrictionMass
+#print axioms Matrix.IsHermitian.normalizedSpectralRestriction
+#print axioms Matrix.IsHermitian.isStarProjection_spectralSelection
+#print axioms Matrix.IsHermitian.commute_spectralSelection
+#print axioms Matrix.PosSemidef.normalizedSpectralRestriction_posSemidef
+#print axioms Matrix.IsHermitian.trace_normalizedSpectralRestriction
+#print axioms Matrix.IsHermitian.normalizedSpectralRestriction_eq
+#print axioms Matrix.PosSemidef.spectralRestrictionMass_le_one
+#print axioms Matrix.IsHermitian.rank_normalizedSpectralRestriction
+#print axioms Matrix.PosSemidef.entropy_normalizedSpectralRestriction
+#print axioms Matrix.PosSemidef.typicalSpectralRestriction_entropy_bounds
+#print axioms FiniteProduct.splitTwoRegionsEquiv
+#print axioms FiniteProduct.splitTwoRegionsState
+#print axioms FiniteProduct.partialTraceRight_splitTwoRegionsState
+#print axioms FiniteProduct.splitTwoRegionsState_unit
+#print axioms FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le
+#print axioms FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow
+#print axioms FiniteProduct.conditionalMutualInformation_nonneg
+#print axioms FiniteProduct.entropy_submodular
+#print axioms FiniteProduct.mutualInformation_mono_left
+#print axioms Matrix.trace_le_smul_rank_add_complement_of_le
+#print axioms Matrix.PosSemidef.shiftedRegulator_bounds
+#print axioms Matrix.PosSemidef.trace_shiftedRegulator_le_quarter
+#print axioms Entropy.simplex_ratio_conditions_of_isMinOn
+#print axioms Entropy.simplexFilterObjective
+#print axioms Entropy.normalizedFilterWeights
+#print axioms Entropy.hasFDerivAt_simplexFilterObjective
+#print axioms Entropy.simplexFilterObjective_pos
+#print axioms Entropy.normalizedFilterWeights_nonneg
+#print axioms Entropy.sum_normalizedFilterWeights
+#print axioms Entropy.normalizedFilterWeights_clipped_of_isMinOn
+#print axioms Matrix.leftFilteredVector
+#print axioms Matrix.leftFilteredVector_eq_kronecker
+#print axioms Matrix.partialTraceLeft_projection_split
+#print axioms Matrix.typicalPureState
+#print axioms Matrix.partialTraceRight_typicalPureState
+#print axioms Matrix.norm_typicalPureState
+#print axioms Matrix.inner_typicalPureState
+#print axioms Matrix.norm_sub_typicalPureState_sq
+#print axioms Matrix.norm_sub_typicalPureState_sq_le
+#print axioms Matrix.partialTraceLeft_typicalPureState
+#print axioms Matrix.partialTraceLeft_typicalPureState_decomposition
+#print axioms Matrix.partialTraceLeft_typicalPureState_le
+#print axioms Matrix.entropy_partialTraceLeft_typicalPureState_le
+#print axioms Matrix.partialTraceRight_partialTraceLeft_typicalPureState_decomposition
+#print axioms Matrix.partialTraceRight_partialTraceLeft_typicalPureState_le
+#print axioms Matrix.entropy_partialTraceRight_partialTraceLeft_typicalPureState_le
+
+#print axioms Matrix.PosSemidef.typicalSet_normalizedSpectralRestriction_bounds
+#print axioms Matrix.typicalPureState_typicalSet_bounds
