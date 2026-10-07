@@ -31,7 +31,7 @@ A two-dimensional area law from a global spectral gap, September 24, 2026,
 07-comparators.tex lines 255–281, comparator:high-label.
 Only generic mass selection is proved; the entropy window, common Bell
 sequence, initial positive occurrence, auxiliary-label matching, and energy
-statement remain separate. No upstream Lean proof text reused.
+statement remain separate; no upstream Lean proof text reused.
 Provenance-ID: 8753-qic-schur-sector-mass-01
 TensorPower.exists_labelProj_trace_mass_ge
 Provenance-ID: 8753-qic-schur-sector-mass-02
