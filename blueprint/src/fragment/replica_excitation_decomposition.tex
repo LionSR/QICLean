@@ -11,9 +11,8 @@ Write $P=|\Omega\rangle\langle\Omega|$ and $Q=I-P$ on $\mathbb C^A$.
 \leanok
 For $B\subseteq\{0,\ldots,k-1\}$, define
 \begin{align}
- R_B=\bigotimes_{i=0}^{k-1}
+ R_B=\bigotimes_{i=0}^{k-1}\label{eq:replica_excitation_projection}
  \begin{cases}Q,&i\in B,\\ P,&i\notin B.\end{cases}
- \label{eq:replica_excitation_projection}
 \end{align}
 \end{definition}
 
@@ -78,7 +77,9 @@ auxiliary space. For $u\in\mathcal H^{\otimes k}\otimes\mathcal K$, put
 $u_B=(R_B\otimes I_{\mathcal K})u$.
 If $(\mathbf1_{(-\infty,t]}(N)\otimes I_{\mathcal K})u=u$, then
 \begin{align}
- u&=\sum_{|B|\le t}u_B,\label{eq:replica_components}\\
+ u&=\sum_{|B|\le t}u_B,\label{eq:replica_components}
+\end{align}
+\begin{align}
  \sum_B\|u_B\|^2&=\|u\|^2.\label{eq:replica_component_mass}
 \end{align}
 No normalization of $u$ is required.
