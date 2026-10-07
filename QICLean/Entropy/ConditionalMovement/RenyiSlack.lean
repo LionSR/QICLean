@@ -252,8 +252,8 @@ theorem weighted_phase_no_support {ι κ : Type*} [Fintype ι] [Fintype κ]
       ring
     rw [he (1 - b) (fun _ i => p i), he b (fun j _ => q j), h1, mul_one]
     have hh := mul_le_mul_of_nonneg_left h2 hb.le
-    simpa only [mul_one] using sub_le_sub_right (by linarith : 1 - b + b * (∑ j, ∑ i,
-        u j i * q j) ≤ 1)
+    simpa only [mul_one] using
+      sub_le_sub_right (by linarith : 1 - b + b * (∑ j, ∑ i, u j i * q j) ≤ 1)
       (∑ j, ∑ i, u j i * (p i ^ (1 - b) * q j ^ b))
   calc
     _ ≤ ∑ j, ∑ i,

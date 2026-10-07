@@ -116,8 +116,8 @@ theorem paired_three_lines_vector_sq (F : ℂ → E) (hF : Differentiable ℂ F)
     ‖F (1 / 2)‖ ≤ Real.exp (A / 4 + B / 16) := by
   obtain ⟨g, hg, hgc⟩ := exists_dual_vector'' ℂ (F (1 / 2))
   have hn (z : ℂ) : ‖g (F z)‖ ≤ ‖F z‖ := by
-    exact (g.le_opNorm _).trans (by nlinarith only [mul_le_mul_of_nonneg_right hg (norm_nonneg
-        (F z))])
+    exact (g.le_opNorm _).trans
+      (by nlinarith only [mul_le_mul_of_nonneg_right hg (norm_nonneg (F z))])
   have hgb : ∃ K : ℝ, ∀ z : ℂ, 0 ≤ z.re → z.re ≤ 1 → ‖g (F z)‖ ≤ K := by
     obtain ⟨K, hK⟩ := hbounded
     exact ⟨K, fun z h0 h1 => (hn z).trans (hK z h0 h1)⟩

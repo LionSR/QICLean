@@ -100,8 +100,8 @@ theorem log_compression (A : Matrix m m ℂ) (hA : A.PosDef)
   have hB : B.PosDef := by
     simpa only [B, ← Matrix.star_eq_conjTranspose, hRstar] using
       hA.conjTranspose_mul_mul_same (Matrix.mulVec_injective_iff_isUnit.mpr hRunit)
-  have hS : S.PosDef := (hA.smul (by norm_num : (0 : ℝ) < 1 / 2)).add (hB.smul (by norm_num : (0
-      : ℝ) < 1 / 2))
+  have hS : S.PosDef :=
+    (hA.smul (by norm_num : (0 : ℝ) < 1 / 2)).add (hB.smul (by norm_num : (0 : ℝ) < 1 / 2))
   have hC : C.PosDef := hA.conjTranspose_mul_mul_same (isometry_mulVec_injective V hV)
   have hSV : S * V = V * C := by
     simp only [S, B, Matrix.add_mul, Matrix.smul_mul, Matrix.mul_assoc, hRV]
