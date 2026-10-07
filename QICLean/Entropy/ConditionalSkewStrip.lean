@@ -105,6 +105,28 @@ theorem liftH_eq_sum (h : Matrix (P₀ × X) (P₀ × X) ℂ) :
     Finset.sum_const_zero, Prod.mk.injEq]
   by_cases h1 : p₁ = p₁' <;> by_cases h2 : u = u' <;> by_cases h3 : f = f' <;> simp [h1, h2, h3]
 
+section Contraction
+
+theorem single_mul_conjTranspose_le_one {n : Type*} [Fintype n] [DecidableEq n] (a b : n) :
+    single a b (1 : ℂ) * (single a b 1)ᴴ ≤ 1 := by
+  rw [conjTranspose_single, star_one, single_mul_single_same, mul_one, le_iff]
+  have : (1 : Matrix n n ℂ) - single a a 1 = diagonal (fun k => if k = a then 0 else 1) := by
+    ext i j; by_cases hij : i = j <;> by_cases hi : i = a <;> simp [hij, hi, single_apply, one_apply]
+      <;> aesop
+  rw [this]
+  exact PosSemidef.diagonal fun k => by dsimp; split_ifs <;> norm_num
+
+theorem kronecker_one_le_one {n m : Type*} [Fintype n] [DecidableEq n] [Fintype m]
+    [DecidableEq m] {A : Matrix n n ℂ} (hA : A ≤ 1) : A ⊗ₖ (1 : Matrix m m ℂ) ≤ 1 := by
+  have h : (1 : Matrix (n × m) (n × m) ℂ) - A ⊗ₖ (1 : Matrix m m ℂ) =
+      (1 - A) ⊗ₖ (1 : Matrix m m ℂ) := by
+    ext ⟨a, b⟩ ⟨c, d⟩
+    by_cases h1 : a = c <;> by_cases h2 : b = d <;> simp [one_apply, h1, h2, sub_mul]
+  rw [le_iff, h]
+  exact (le_iff.1 hA).kronecker PosSemidef.one
+
+end Contraction
+
 end Entropy.ConditionalSkew
 
 end
