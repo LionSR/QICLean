@@ -13,7 +13,7 @@ that ground vector on every good copy. Tracing the complementary physical
 region on those copies, together with all bad physical copies, gives the
 tensor power of the original regional density, tensored with the literal
 auxiliary marginal of the same component. The good coordinates are enumerated
-by the canonical finite-set equivalence.
+by the chosen finite-set equivalence.
 
 This is the regional product step in *A two-dimensional area law from a
 global spectral gap*, `07-comparators.tex`, lines 520–549, equation

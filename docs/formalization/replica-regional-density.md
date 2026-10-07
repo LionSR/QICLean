@@ -7,7 +7,7 @@ part of every good copy gives ρ_Q^⊗|G|⊗ρ_K(w). Here ρ_Q is the original
 one-copy Q marginal of Ω, and ρ_K(w) is the literal auxiliary marginal of
 the same component. Both factors are derived from their vectors.
 
-The proof enumerates G by its canonical finite-set equivalence, uses the
+The proof enumerates G by its chosen finite-set equivalence, uses the
 proved excitation factorization, and applies the finite product-of-sums
 identity to the traced T coordinates. Normalization is used only to identify
 the contracted remainder's auxiliary density with the component's own density.
