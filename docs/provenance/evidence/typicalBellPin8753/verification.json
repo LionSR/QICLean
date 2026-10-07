@@ -1,0 +1,115 @@
+{
+  "source_revision": "90e6071e32453006906390bd4e4f71ff4c5251a0",
+  "parent_revision": "c8d6b2f7e576407d180c853a7ebb5ad84b342422",
+  "source_files": {
+    "QICLean/Entropy/TypicalBellPin.lean": "a02fd725ee43c98eaaaea7a09362a184f4d5859ecf619f4aaf26a92d584d9cae",
+    "blueprint/src/fragment/typical_bell_pin.tex": "44896beff3c143ca3d29b2303328ff27403ae6d0046abadcc41441f44ed671c6",
+    "docs/formalization/typical-bell-pin.md": "5ba63b9f42c148f799254b40a973cac883e220996c7cee860cf07d2cb2fb3350"
+  },
+  "public_declarations": [
+    "Matrix.selectedBellVector",
+    "Matrix.norm_selectedBellVector",
+    "Matrix.selectedBellProjection",
+    "Matrix.isStarProjection_selectedBellProjection",
+    "Matrix.bellPinPrevector",
+    "Matrix.bellPinPostvector",
+    "Matrix.selectedBellProjection_bellPinPrevector"
+  ],
+  "commands": [
+    {
+      "kind": "build",
+      "command": "lake build QICLean.Entropy.TypicalBellPin",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalBellPin8753/build.log",
+      "sha256": "3cde5ce78e176398fd7c0b7e89f7797b2dea3fa35624192aa0a14b45d177a9bc"
+    },
+    {
+      "kind": "build",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/TypicalBellPin.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalBellPin8753/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "axioms",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/typicalBellPin8753/TypicalBellPinAxioms.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalBellPin8753/axioms.log",
+      "sha256": "9e850c64e01310bb2165b3ed4c56b48068f90b355bfed77796ffbc5bb1d75a9f"
+    },
+    {
+      "kind": "text-style",
+      "command": "lake env lean docs/provenance/evidence/typicalBellPin8753/TypicalBellPinTextStyle.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalBellPin8753/text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "kind": "tactic-patterns",
+      "command": "python3 /Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py --root /tmp/qic-bell-pin-owned",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalBellPin8753/tactic-patterns.log",
+      "sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8"
+    },
+    {
+      "kind": "provenance",
+      "command": "/tmp/qic-density-simplex-provenance-env/bin/python docs/provenance/evidence/typicalBellPin8753/check_provenance.py --root . --validator /tmp/tnlean-area-law-provenance-validator.py --schema /tmp/tnlean-area-law-provenance-schema.json",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalBellPin8753/provenance.log",
+      "sha256": "77a3c7a56e87d3197e6d0ec8e40b6dd950dd31db050b7409df89e04339c3a387"
+    },
+    {
+      "kind": "blueprint",
+      "command": "latexmk -lualatex -interaction=nonstopmode -halt-on-error -outdir=tmp/pdfs/bell-pin tmp/pdfs/bell-pin/bell-pin.tex",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalBellPin8753/blueprint.log",
+      "sha256": "e42d18ebe51ae7a85ca527f096c55a6da090e3944ea54d890e469e7ca9c8bde5"
+    }
+  ],
+  "kernel_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "private_proof_coverage": "The strict-source command checks the entire module; all private constructions occur in the audited public dependency closure.",
+  "mathlib_prebuilt_verified": true,
+  "text_style_returned_error_files": 0,
+  "proof_token_audit": "Complete source, comment-aware frozen policy; no sorry, admit, axiom, native_decide or unsafeCast.",
+  "standalone_blueprint": {
+    "pdf": "output/pdf/typical-bell-pin.pdf",
+    "sha256": "f0c126b0117af70d766090d3068f60ecd445bb99804fbdc3cdf5a7dff3e4a44d",
+    "physical_pages": 3,
+    "inspected_physical_pages": [
+      1,
+      2,
+      3
+    ],
+    "new_section_physical_page": 2,
+    "undefined_references": false,
+    "overfull_boxes": false,
+    "visual_defects": false,
+    "scope": "Exact Bell and inherited compression fragments; standalone wrapper only."
+  },
+  "evidence_files": {
+    "docs/provenance/evidence/typicalBellPin8753/README.md": "719fb2087ca00a422cac696cbaf673761a8084bc27075ef882a1d2d9bf07e187",
+    "docs/provenance/evidence/typicalBellPin8753/TypicalBellPinAxioms.lean": "3ffbc0ed4cd7e206062cc304b38fe31acd2e433c6ab0438bc22676025fe1a349",
+    "docs/provenance/evidence/typicalBellPin8753/TypicalBellPinTextStyle.lean": "477cd276eaa00919bd5520c350bdaee22ce41e9ee17bff79dd9a0e348e7ef099",
+    "docs/provenance/evidence/typicalBellPin8753/axioms.log": "9e850c64e01310bb2165b3ed4c56b48068f90b355bfed77796ffbc5bb1d75a9f",
+    "docs/provenance/evidence/typicalBellPin8753/blueprint.log": "e42d18ebe51ae7a85ca527f096c55a6da090e3944ea54d890e469e7ca9c8bde5",
+    "docs/provenance/evidence/typicalBellPin8753/build.log": "3cde5ce78e176398fd7c0b7e89f7797b2dea3fa35624192aa0a14b45d177a9bc",
+    "docs/provenance/evidence/typicalBellPin8753/cache-seed.log": "30cf42d23cfe5c227f606c444e767de59e2c1b53a075e28e57ea669c4e1e8851",
+    "docs/provenance/evidence/typicalBellPin8753/check_provenance.py": "c6eda8be1078387c7dd4dc28a46bb5403f30d6c3fa82eeb96ee58341f51fe0a6",
+    "docs/provenance/evidence/typicalBellPin8753/mathlib-cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/typicalBellPin8753/provenance.log": "77a3c7a56e87d3197e6d0ec8e40b6dd950dd31db050b7409df89e04339c3a387",
+    "docs/provenance/evidence/typicalBellPin8753/render/bell-page-2.png": "aa8444ad634bfea6594a4ed85d3a2974f63b4d15062aee8e0c98978afebaa961",
+    "docs/provenance/evidence/typicalBellPin8753/source-comparison.json": "29e90ce6ec01b598b3706bd3c466845fb39b1acd2b9252a516fdd4265d61a635",
+    "docs/provenance/evidence/typicalBellPin8753/standalone-wrapper.tex": "26fcacee92670e7f628e7ba26cd3bc45510565527f0a6db359b78668adb51d28",
+    "docs/provenance/evidence/typicalBellPin8753/strict-source.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/typicalBellPin8753/tactic-patterns.log": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8",
+    "docs/provenance/evidence/typicalBellPin8753/text-style.log": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "pending": [
+    "Root import and chapter inclusion",
+    "Combined full-library build and blueprint PDF/web/checkdecls"
+  ]
+}

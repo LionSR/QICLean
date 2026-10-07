@@ -1,0 +1,37 @@
+{
+  "build.log": {
+    "path": "docs/provenance/evidence/typicalBellPinIntegration8753/build.log.gz",
+    "sha256": "6771abbca9e39b480ab90480ef21a5163d3ebf99e7480e1521614081a0908a3b",
+    "uncompressed_sha256": "8025b6faccdd691f0ebb2e5cb4f222e42891ac25c272052bfd006d64a8350ad5",
+    "uncompressed_bytes": 24365,
+    "compression": "deterministic gzip, mtime=0"
+  },
+  "pdf.log": {
+    "path": "docs/provenance/evidence/typicalBellPinIntegration8753/pdf.log.gz",
+    "sha256": "79142343817a5ec847790ddc21fd4be8d68d75a948b9eaaf43642b95c6b14455",
+    "uncompressed_sha256": "4162dc136781d0607f53752c02a1754921b7f32260ffdc1e3fe4500055de6011",
+    "uncompressed_bytes": 775765,
+    "compression": "deterministic gzip, mtime=0"
+  },
+  "web.log": {
+    "path": "docs/provenance/evidence/typicalBellPinIntegration8753/web.log.gz",
+    "sha256": "bd65fa1dc0de15b4a87397b56fbe739ba6b1a49ae3becc08ba7447e32cd5315f",
+    "uncompressed_sha256": "8c43c35adfb5a93567bbb6a7deb66983c8e32b84cef1fdca73f1ac67c6a9cc7b",
+    "uncompressed_bytes": 15698,
+    "compression": "deterministic gzip, mtime=0"
+  },
+  "print.log": {
+    "path": "docs/provenance/evidence/typicalBellPinIntegration8753/print.log.gz",
+    "sha256": "72366dbeaa6275ec58eadb59c7b6d02746f8df182319a6fc4c35f37c5a0ba4e2",
+    "uncompressed_sha256": "86f0b8d29ad323943bdb5ab12fc36a3b66106e378cf99e11d04ab95c19154209",
+    "uncompressed_bytes": 85241,
+    "compression": "deterministic gzip, mtime=0"
+  },
+  "blueprint-sync.log": {
+    "path": "docs/provenance/evidence/typicalBellPinIntegration8753/blueprint-sync.log.gz",
+    "sha256": "ae6c7ec45e7b7a03df11d8aa7ce485e1ec808c32cab6797d18a8e4b386631f17",
+    "uncompressed_sha256": "2202889ef0ffb036aca06334c97b92ab10666cc078835abfc97912dbbc32fd9f",
+    "uncompressed_bytes": 8008,
+    "compression": "deterministic gzip, mtime=0"
+  }
+}

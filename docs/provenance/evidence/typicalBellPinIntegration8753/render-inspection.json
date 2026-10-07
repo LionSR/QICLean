@@ -1,0 +1,30 @@
+{
+  "pdf": "blueprint/print/print.pdf",
+  "pdf_sha256": "f109d74be4982a92305a9aa330dc7e448453958fef57d2874ee1f0bf3fd075c1",
+  "physical_pages": [
+    396,
+    397
+  ],
+  "printed_pages": [
+    395,
+    396
+  ],
+  "section": "13.21 A Bell projection onto the selected space",
+  "visible_statements": "Four entries, all seven public declarations; positive selected mass and actual construction; normalization/projection; coefficient sqrt(z)/|E|; contraction proof.",
+  "pdf_visual_defects": false,
+  "new_fragment_overfull_boxes": false,
+  "undefined_references": false,
+  "web_views": [
+    "desktop with proofs expanded",
+    "mobile with proofs expanded",
+    "right end of locally scrolling proof display"
+  ],
+  "web_visual_defects": false,
+  "render_files": {
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/bell-web-desktop.png": "5ad5f0c7c47f20c949f9265fd604b2ba10b4ee38d7fd85ad76c482e081d89d1d",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/bell-web-mobile-proof-right.png": "6f6ca0113b867e6681ca7a4136c50c17413ab97744625527cf01165c81c0a6f6",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/bell-web-mobile.png": "2c738661827e1f2ff51e9511935209e4d9916b1bc8e33c6f6412576e95d07138",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/page-396.png": "5216fa51076741d14d7e0b840fc5410d1d2aefb46b9741308e1bbad801f8d923",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/page-397.png": "1d3d75adb58306449cff86911617ac88d04e541f96dfe2acb2621189fb9e4455"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "links": [
+    "Matrix.selectedBellVector",
+    "Matrix.selectedBellProjection",
+    "Matrix.norm_selectedBellVector",
+    "Matrix.isStarProjection_selectedBellProjection",
+    "Matrix.bellPinPrevector",
+    "Matrix.bellPinPostvector",
+    "Matrix.selectedBellProjection_bellPinPrevector"
+  ],
+  "errors": [],
+  "top": 47.5625,
+  "bottom": 992.6875,
+  "mathElements": 32,
+  "mobile_section_bounds": {
+    "top": 112.421875,
+    "bottom": 1318.390625
+  },
+  "mobile_proof_display": {
+    "scrollWidth": 372,
+    "clientWidth": 311,
+    "overflowX": "auto",
+    "scrollLeft": 61
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360
+}
