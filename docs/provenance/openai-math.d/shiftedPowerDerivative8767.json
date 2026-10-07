@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8767-qic-shifted-power-derivative-01",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedPowerDerivative.lean",
+        "declaration": "Matrix.PosSemidef.hasDerivAt_add_smul_one_rpow",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-uniform-local-lipschitz"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the real scalar-shift derivative of every real power of a finite complex positive semidefinite matrix, using a fixed eigenbasis and the accepted scalar-shift functional-calculus identity.",
+        "These are scalar-shift supporting results only. They do not prove a noncommuting matrix derivative, the minimum envelope, regulator growth, or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-qic-shifted-power-derivative-02",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedPowerDerivative.lean",
+        "declaration": "Matrix.PosSemidef.hasDerivAt_add_exp_neg_smul_one_rpow",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-uniform-local-lipschitz"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Apply the scalar chain rule to the exponentially decaying positive regulator b = exp(-R).",
+        "These are scalar-shift supporting results only. They do not prove a noncommuting matrix derivative, the minimum envelope, regulator growth, or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-qic-shifted-power-derivative-03",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ShiftedPowerDerivative.lean",
+        "declaration": "Matrix.PosSemidef.l2_opNorm_smul_add_smul_one_rpow_neg_one_le",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-uniform-local-lipschitz"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the Euclidean operator norm contraction of b times the inverse power for arbitrary positive semidefinite matrices without trace normalization.",
+        "These are scalar-shift supporting results only. They do not prove a noncommuting matrix derivative, the minimum envelope, regulator growth, or Proposition 4.1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    }
+  ]
+}
