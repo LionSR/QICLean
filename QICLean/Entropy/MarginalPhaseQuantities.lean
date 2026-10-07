@@ -50,6 +50,7 @@ def condMutualInfo (ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ) (hρ : ρ.P
       ((hρ.submatrix assocE).partialTraceRight.partialTraceLeft.isHermitian) -
     vonNeumannEntropy ρ hρ.isHermitian
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem trace_marginalXU (ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ) :
     (marginalXU ρ).trace = ρ.trace := by
   rw [marginalXU, trace_partialTraceRight, trace_submatrix_equiv]
@@ -99,6 +100,7 @@ theorem re_trace_mul_mul_mono {n : Type*} [Fintype n] [DecidableEq n] {R A B : M
   simp only [Complex.sub_re, Complex.zero_re] at this
   linarith [this.1]
 
+omit [Fintype U] [DecidableEq U] [Fintype F] [DecidableEq F] [Nonempty F] in
 theorem sigmaF_eq_smul : (Fintype.card X : ℂ) • ((1 : Matrix X X ℂ) ⊗ₖ marginalUF ρ) =
     ((Fintype.card X : ℝ) ^ 2) • sigmaF ρ := by
   have hd : (Fintype.card X : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Fintype.card_ne_zero
@@ -107,6 +109,7 @@ theorem sigmaF_eq_smul : (Fintype.card X : ℂ) • ((1 : Matrix X X ℂ) ⊗ₖ
   push_cast
   field_simp
 
+omit [DecidableEq U] [DecidableEq F] [Nonempty F] in
 theorem posDef_sigmaF (hρ : ρ.PosDef) : (sigmaF ρ).PosDef := by
   have hd : (0 : ℝ) < (Fintype.card X : ℝ)⁻¹ := inv_pos.2 (Nat.cast_pos.2 Fintype.card_pos)
   have h1 : ((Fintype.card X : ℝ)⁻¹ • (1 : Matrix X X ℂ)).PosDef := PosDef.one.smul hd
@@ -175,6 +178,111 @@ theorem compression_invQuadA_le :
   exact hc'
 
 end Faithful
+
+section LogForm
+
+variable {T : Type*} [Fintype T] [DecidableEq T] [Nonempty X]
+
+/-- The relative logarithmic form of `M` against `I_x / d ⊗ tr_x M`:
+`⟨√M, log(L_σ R_{M^{-1}}) √M⟩ = S(M) - (log d) tr M - S(tr_x M)`.  Area-law
+manuscript, `04-conditional.tex`, lines 386–390. -/
+theorem re_logForm {M : Matrix (X × T) (X × T) ℂ} (hM : M.PosDef)
+    (hT : (partialTraceLeft M).PosDef) :
+    (star (vec (rpowSpec hM (1 / 2))) ⬝ᵥ
+      (spectralFun (kroneckerUnitary (conjUnitary hM.1.eigenvectorUnitary)
+          (kroneckerUnitary 1 hT.1.eigenvectorUnitary))
+        (fun p => ((Real.log (hM.1.eigenvalues p.1 ^ (-1 : ℝ) *
+          ((Fintype.card X : ℝ)⁻¹ * hT.1.eigenvalues p.2.2)) : ℝ) : ℂ)) *ᵥ
+        vec (rpowSpec hM (1 / 2)))).re =
+      vonNeumannEntropy M hM.1 - Real.log (Fintype.card X) * M.trace.re -
+        vonNeumannEntropy (partialTraceLeft M) hT.1 := by
+  set d : ℝ := (Fintype.card X : ℝ)
+  have hd : 0 < d := Nat.cast_pos.2 Fintype.card_pos
+  set W := hT.1.eigenvectorUnitary
+  set μ := hT.1.eigenvalues
+  set LT := spectralFun W (fun k => ((Real.log (μ k) : ℝ) : ℂ))
+  have hsplit := spectralFun_leftRight_add hM.1.eigenvectorUnitary (kroneckerUnitary (1 : unitary (Matrix X X ℂ)) W)
+    hM.1.eigenvalues (fun p => d⁻¹ * μ p.2) (fun t => ((Real.log t : ℝ) : ℂ))
+    (fun a => ((-Real.log a : ℝ) : ℂ)) (fun b => ((Real.log b : ℝ) : ℂ)) (fun k j => by
+      have hk := hM.eigenvalues_pos k
+      have hj := hT.eigenvalues_pos j.2
+      rw [Real.log_mul (Real.rpow_pos_of_pos hk _).ne' (mul_pos (inv_pos.2 hd) hj).ne',
+        Real.log_rpow hk]
+      push_cast; ring)
+  have hLS : spectralFun (kroneckerUnitary (1 : unitary (Matrix X X ℂ)) W) (fun p => ((Real.log (d⁻¹ * μ p.2) : ℝ) : ℂ)) =
+      ((-Real.log d : ℝ) : ℂ) • 1 + (1 : Matrix X X ℂ) ⊗ₖ LT := by
+    rw [← spectralFun_const (kroneckerUnitary (1 : unitary (Matrix X X ℂ)) W), show (1 : Matrix X X ℂ) = spectralFun 1
+      (fun _ => 1) from (spectralFun_one _).symm, spectralFun_kronecker, ← spectralFun_add]
+    congr 1
+    funext p
+    have hj := hT.eigenvalues_pos p.2
+    simp only [Pi.add_apply, one_mul]
+    rw [Real.log_mul (inv_pos.2 hd).ne' hj.ne', Real.log_inv]
+    push_cast; ring
+  set NL := spectralFun hM.1.eigenvectorUnitary
+    (fun k => ((-Real.log (hM.1.eigenvalues k) : ℝ) : ℂ))
+  rw [hsplit, add_mulVec, kronecker_mulVec_vec, kronecker_mulVec_vec, transpose_transpose,
+    transpose_one, Matrix.one_mul, Matrix.mul_one, dotProduct_add, star_vec_dotProduct_vec,
+    star_vec_dotProduct_vec, rpowSpec_isHermitian, hLS, ← Matrix.mul_assoc, rpowSpec_mul,
+    ← Matrix.mul_assoc, rpowSpec_mul_mul_rpowSpec_half]
+  norm_num only
+  rw [rpowSpec_one, Matrix.add_mul, trace_add, Matrix.smul_mul, Matrix.one_mul, trace_smul,
+    trace_mul_comm ((1 : Matrix X X ℂ) ⊗ₖ LT), ← trace_partialTraceLeft_mul]
+  -- evaluate the traces in eigencoordinates
+  have h1 : (M * NL).trace = ((vonNeumannEntropy M hM.1 : ℝ) : ℂ) := by
+    calc (M * NL).trace = (spectralFun hM.1.eigenvectorUnitary
+          (fun k => ((hM.1.eigenvalues k : ℝ) : ℂ)) * NL).trace := by
+          rw [hM.1.spectralFun_eigenvectorUnitary]
+      _ = _ := by
+          rw [spectralFun_mul, trace_spectralFun, vonNeumannEntropy, Complex.ofReal_sum]
+          refine Finset.sum_congr rfl fun k _ => ?_
+          simp only [Pi.mul_apply, Real.negMulLog]
+          push_cast; ring
+  have h2 : (partialTraceLeft M * LT).trace =
+      ((-vonNeumannEntropy (partialTraceLeft M) hT.1 : ℝ) : ℂ) := by
+    calc (partialTraceLeft M * LT).trace = (spectralFun W (fun k => ((μ k : ℝ) : ℂ)) * LT).trace := by
+          rw [hT.1.spectralFun_eigenvectorUnitary]
+      _ = _ := by
+          rw [spectralFun_mul, trace_spectralFun, vonNeumannEntropy, ← Finset.sum_neg_distrib,
+            Complex.ofReal_sum]
+          refine Finset.sum_congr rfl fun k _ => ?_
+          simp only [Pi.mul_apply, Real.negMulLog]
+          push_cast; ring
+  rw [h1, h2, smul_eq_mul, Complex.add_re, Complex.add_re, Complex.mul_re]
+  simp only [Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]
+  ring
+
+end LogForm
+
+section FaithfulLog
+
+variable {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ} [Nonempty X] [Nonempty F] (hρ : ρ.PosDef)
+
+/-- `⟨b₀, log B b₀⟩ - ⟨a₀, log A a₀⟩ = I(x:F|U)`.  Area-law manuscript,
+`04-conditional.tex`, lines 383–390. -/
+theorem compression_logGap :
+    (compression hρ).logGap = condMutualInfo ρ hρ.posSemidef := by
+  set hs := posDef_marginalXU (F := F) hρ
+  have hA : ∑ k, Real.log ((compression hρ).lam k) * (compression hρ).weightA k =
+      vonNeumannEntropy ρ hρ.1 - Real.log (Fintype.card X) * ρ.trace.re -
+        vonNeumannEntropy (partialTraceLeft ρ) (posDef_marginalUF hρ).1 := by
+    rw [← re_logForm hρ (posDef_marginalUF hρ), ← compression_a0 hρ]
+    simp only [ResolventCompression.weightA]
+    rw [← re_dotProduct_spectralFun_ofReal]
+    rfl
+  have hB : ∑ j, Real.log ((compression hρ).mu j) * (compression hρ).weightB j =
+      vonNeumannEntropy (marginalXU ρ) hs.1 - Real.log (Fintype.card X) * ρ.trace.re -
+        vonNeumannEntropy (marginalU ρ) (posDef_marginalU (F := F) hρ).1 := by
+    have h := re_logForm hs (posDef_marginalU (F := F) hρ)
+    rw [trace_marginalXU] at h
+    simp only [ResolventCompression.weightB]
+    rw [← re_dotProduct_spectralFun_ofReal]
+    exact h
+  rw [ResolventCompression.logGap, hA, hB]
+  unfold condMutualInfo marginalUF
+  ring
+
+end FaithfulLog
 
 end Entropy.MarginalPhase
 
