@@ -58,6 +58,7 @@ import QICLean.Analysis.LiebOperatorConcave
 import QICLean.Analysis.LiebOperatorIntegral
 import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
+import QICLean.Analysis.LogClipping
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixFamilySupport
 import QICLean.Analysis.MatrixFittingRange

@@ -322,6 +322,49 @@ private theorem exp_mul_sqrt_le {a b t : ℝ} (ha : 0 < a) (hb : 0 < b) (ht : |t
   rw [heq]
   nlinarith
 
+/-- **Weighted row and column bound.** If the marginal of `Θ` is `diag s` with `∑ s = 1`,
+then `∑_{jk} (s_j + s_k) |c_{jk}| |⟨ω_j, d ω_k⟩| ≤ 2 ‖c‖ ‖d‖` for the normalized rows `ω`.
+Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 133–140. -/
+theorem sum_add_mul_norm_unitRow_le {Θ : EuclideanSpace ℂ (α × β)} {s : α → ℝ}
+    (hs : ∀ j, 0 ≤ s j) (hsum : ∑ j, s j = 1)
+    (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0)
+    (c : Matrix α α ℂ) (d : Matrix β β ℂ) :
+    ∑ j, ∑ k, (s j + s k) *
+      (‖c j k‖ * ‖⟪unitRow Θ s j, toEuclideanLin d (unitRow Θ s k)⟫_ℂ‖) ≤ 2 * (‖c‖ * ‖d‖) := by
+  set ω := unitRow Θ s
+  set D : α → α → ℂ := fun j k ↦ ⟪ω j, toEuclideanLin d (ω k)⟫_ℂ
+  have hrow (j : α) : ∑ k, ‖c j k‖ * ‖D j k‖ ≤ ‖c‖ * ‖d‖ := by
+    refine sum_mul_le_of_sum_sq_le _ _ _ (norm_nonneg _) (norm_nonneg _)
+      (sum_norm_apply_sq_le_right c j) ?_
+    have hD (k : α) : ‖D j k‖ = ‖⟪ω k, toEuclideanLin dᴴ (ω j)⟫_ℂ‖ := by
+      simp only [D]
+      rw [toEuclideanLin_conjTranspose_eq_adjoint, LinearMap.adjoint_inner_right,
+        norm_inner_symm]
+    simp only [hD]
+    refine (sum_norm_inner_unitRow_sq_le hs hΘ _).trans ?_
+    have h := (norm_toEuclideanLin_le dᴴ (ω j)).trans
+      (mul_le_of_le_one_right (norm_nonneg _) (norm_unitRow_le hs hΘ j))
+    rw [l2_opNorm_conjTranspose] at h
+    exact pow_le_pow_left₀ (norm_nonneg _) h 2
+  have hcol (k : α) : ∑ j, ‖c j k‖ * ‖D j k‖ ≤ ‖c‖ * ‖d‖ := by
+    refine sum_mul_le_of_sum_sq_le _ _ _ (norm_nonneg _) (norm_nonneg _)
+      (sum_norm_apply_sq_le_left c k) ?_
+    refine (sum_norm_inner_unitRow_sq_le hs hΘ _).trans ?_
+    have h := (norm_toEuclideanLin_le d (ω k)).trans
+      (mul_le_of_le_one_right (norm_nonneg _) (norm_unitRow_le hs hΘ k))
+    exact pow_le_pow_left₀ (norm_nonneg _) h 2
+  calc ∑ j, ∑ k, (s j + s k) * (‖c j k‖ * ‖D j k‖)
+      = ∑ j, s j * ∑ k, ‖c j k‖ * ‖D j k‖ + ∑ k, s k * ∑ j, ‖c j k‖ * ‖D j k‖ := by
+        simp only [add_mul, Finset.sum_add_distrib, Finset.mul_sum]
+        rw [Finset.sum_comm (f := fun j k ↦ s k * (‖c j k‖ * ‖D j k‖))]
+    _ ≤ ∑ j, s j * (‖c‖ * ‖d‖) + ∑ k, s k * (‖c‖ * ‖d‖) := by
+        gcongr with j _ k _
+        · exact hs j
+        · exact hrow j
+        · exact hs k
+        · exact hcol k
+    _ = 2 * (‖c‖ * ‖d‖) := by rw [← Finset.sum_mul, hsum]; ring
+
 /-- **Strip bound for a product observable.** If the marginal of `Θ` is `diag s` with
 `∑ s = 1`, then `|f(z)| ≤ 2 ‖c‖ ‖d‖` for `X = c ⊗ d` and `|Re z| ≤ 1/2`.
 Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 126–140. -/
@@ -353,40 +396,11 @@ theorem norm_modularExpectation_kronecker_le {Θ : EuclideanSpace ℂ (α × β)
     rcases (hs k).eq_or_lt with hk | hk
     · rw [← hk]; simp; linarith [hs j]
     exact exp_mul_sqrt_le hj hk (by linarith [abs_le.mp hz])
-  have hrow (j : α) : ∑ k, ‖c j k‖ * ‖D j k‖ ≤ ‖c‖ * ‖d‖ := by
-    refine sum_mul_le_of_sum_sq_le _ _ _ (norm_nonneg _) (norm_nonneg _)
-      (sum_norm_apply_sq_le_right c j) ?_
-    have hD (k : α) : ‖D j k‖ = ‖⟪ω k, toEuclideanLin dᴴ (ω j)⟫_ℂ‖ := by
-      simp only [D]
-      rw [toEuclideanLin_conjTranspose_eq_adjoint, LinearMap.adjoint_inner_right,
-        norm_inner_symm]
-    simp only [hD]
-    refine (sum_norm_inner_unitRow_sq_le hs hΘ _).trans ?_
-    have h := (norm_toEuclideanLin_le dᴴ (ω j)).trans
-      (mul_le_of_le_one_right (norm_nonneg _) (norm_unitRow_le hs hΘ j))
-    rw [l2_opNorm_conjTranspose] at h
-    exact pow_le_pow_left₀ (norm_nonneg _) h 2
-  have hcol (k : α) : ∑ j, ‖c j k‖ * ‖D j k‖ ≤ ‖c‖ * ‖d‖ := by
-    refine sum_mul_le_of_sum_sq_le _ _ _ (norm_nonneg _) (norm_nonneg _)
-      (sum_norm_apply_sq_le_left c k) ?_
-    refine (sum_norm_inner_unitRow_sq_le hs hΘ _).trans ?_
-    have h := (norm_toEuclideanLin_le d (ω k)).trans
-      (mul_le_of_le_one_right (norm_nonneg _) (norm_unitRow_le hs hΘ k))
-    exact pow_le_pow_left₀ (norm_nonneg _) h 2
   calc ‖modularExpectation Θ s (c ⊗ₖ d) z‖
       ≤ ∑ j, ∑ k, (s j + s k) * (‖c j k‖ * ‖D j k‖) := by
         refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ ↦ ?_)
         exact (norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ ↦ hterm j k)
-    _ = ∑ j, s j * ∑ k, ‖c j k‖ * ‖D j k‖ + ∑ k, s k * ∑ j, ‖c j k‖ * ‖D j k‖ := by
-        simp only [add_mul, Finset.sum_add_distrib, Finset.mul_sum]
-        rw [Finset.sum_comm (f := fun j k ↦ s k * (‖c j k‖ * ‖D j k‖))]
-    _ ≤ ∑ j, s j * (‖c‖ * ‖d‖) + ∑ k, s k * (‖c‖ * ‖d‖) := by
-        gcongr with j _ k _
-        · exact hs j
-        · exact hrow j
-        · exact hs k
-        · exact hcol k
-    _ = 2 * (‖c‖ * ‖d‖) := by rw [← Finset.sum_mul, hsum]; ring
+    _ ≤ 2 * (‖c‖ * ‖d‖) := sum_add_mul_norm_unitRow_le hs hsum hΘ c d
 
 /-- **Quadratic local conjugation estimate.** Let `Θ` be a unit vector with marginal
 `diag s`, and let `X` be Hermitian with `‖X‖ ≤ c₀` and `X = ∑_{a < N} c_a ⊗ d_a`, where
