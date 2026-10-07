@@ -641,3 +641,110 @@ depend on the common values there.
     of Theorem~\ref{thm:first_norm_comparison} does not depend on the floor, and the output
     norm is continuous in the filters.
 \end{proof}
+
+\begin{lemma}[Trial filters on a disjoint union]
+    \label{lem:trial_filters}
+    \lean{Entropy.localLift_apply, Entropy.regionUnionEquiv, Entropy.localLift_union_kronecker,
+        Entropy.isFeasibleFilter_union_kronecker, Entropy.pinProj, Entropy.pinProj_conjTranspose,
+        Entropy.pinProj_mul_self, Entropy.sum_pinProj, Entropy.eq_of_forall_trace_mul_eq,
+        Entropy.norm_toEuclideanLin_sq, Entropy.norm_sq_localLift_pinProj,
+        Entropy.inner_localLift_eq_sum_pinProj, Entropy.regionState_eq_sum_pinProj,
+        Entropy.mul_prod_map_mul_of_idempotent, Entropy.mul_prod_eq_prod_mul,
+        Entropy.norm_toEuclideanLin_le_of_proj, Entropy.norm_liftProd_trial_ge}
+    \leanok
+    Let $\rho_{\Omega,X}=U\operatorname{diag}(p)U^*$ and let $P_i$ be the projection onto the
+    $i$-th eigenvector $u_i$. Then $\lVert P_i\Omega\rVert^2=p_i$, and on every region $T$
+    disjoint from $X$ the regional state of $\Omega$ is the sum of those of the vectors
+    $P_i\Omega$. For regions $T_j$ disjoint from $X$ and filters $M_j$ on $T_j$, the filters
+    $P_i\otimes M_j$ on $X\cup T_j$ are nonnegative with $\operatorname{Tr}(P_i\otimes
+    M_j)^{2/a}=\operatorname{Tr}M_j^{2/a}$, and
+    $\lVert M_{m-1}\cdots M_0P_i\Omega\rVert\le\lVert(P_i\otimes M_{m-1})\cdots
+    (P_i\otimes M_0)\Omega\rVert$.
+\end{lemma}
+\begin{proof}\leanok
+    On a disjoint union the lift of $A\otimes B$ is the product of the lifts of $A$ and of $B$.
+    The projection $P_i$ commutes with the filters on the $T_j$, is idempotent, and does not
+    increase norms.
+\end{proof}
+
+\begin{theorem}[Complex powers and the three-lines bound]
+    \label{thm:filter_three_lines}
+    \lean{Entropy.specPow, Entropy.specPow_zero, Entropy.specPow_one, Entropy.specPow_add,
+        Entropy.specPow_conjTranspose, Entropy.specPow_conjTranspose_mul_self,
+        Entropy.hasDerivAt_specPow, Entropy.differentiable_specPow, Entropy.norm_specPow_le,
+        Entropy.localLift_injective, Entropy.localLiftCLM, Entropy.chainPow,
+        Entropy.chainPow_zero_length, Entropy.chainPow_succ, Entropy.chainPow_zero,
+        Entropy.chainPow_conjTranspose_mul_self, Entropy.chainPow_mul_conjTranspose_self,
+        Entropy.differentiable_chainPow, Entropy.norm_chainPow_le,
+        Entropy.hasDerivAt_chainPow_zero, Entropy.chainPow_eq_liftProd, Entropy.chainPow_one_add,
+        Entropy.applyCLM, Entropy.norm_toEuclideanLin_chainPow_le_rpow,
+        Entropy.sum_re_inner_log_le}
+    \leanok
+    Let $M_j=W_j\operatorname{diag}(l_j)W_j^*$ with $l_j>0$ be filters on nested regions $T_j$,
+    let $\xi$ be a unit vector, and suppose that every nested product of unitary conjugates
+    $V_j^*M_jV_j$, with $V_j$ unitary on $T_j$, has output norm at most $B>0$ on $\xi$. Then
+    $\lVert M_{k-1}^x\cdots M_0^x\xi\rVert\le B^x$ for $0\le x\le1$, and
+    $\sum_{j<k}\Re\langle\xi,\log M_j\,\xi\rangle\le\log B$.
+\end{theorem}
+\begin{proof}\leanok
+    The function $F(z)=M_{k-1}^z\cdots M_0^z\xi$ is entire and bounded on the strip
+    $0\le\Re z\le1$. On $\Re z=0$ every factor is unitary. On $\Re z=1$ the identity
+    $M_{k-1}^{1+iy}\cdots M_0^{1+iy}=(U_{k-1}\cdots U_0)(V_{k-2}^*M_{k-1}V_{k-2})\cdots M_0$,
+    with $U_j=M_j^{iy}$ and $V_j=U_j\cdots U_0$, writes $F(1+iy)$ as a unitary applied to a
+    nested product of unitary conjugates. The three-lines theorem gives $\lVert F(x)\rVert\le
+    B^x$. Since $F(0)=\xi$, the one-sided derivative of $\lVert F(x)\rVert^2-B^{2x}$ at $x=0$
+    is nonpositive, which is the second claim.
+\end{proof}
+
+\begin{theorem}[Strong subadditivity for regions]
+    \label{thm:region_ssa}
+    \lean{Entropy.regionEntropy, Entropy.trace_regionState_submatrix_mul,
+        Entropy.disjoint_union_of_disjoint, Entropy.tripleEquiv, Entropy.tripleEquiv_apply,
+        Entropy.localLift_tripleEquiv_kronecker_one, Entropy.regionState_posSemidef,
+        Entropy.tripleState, Entropy.partialTraceLeft_tripleState,
+        Entropy.partialTraceRight_regionState_union,
+        Entropy.partialTraceRight_reassoc_tripleState, Entropy.regionEntropy_ssa,
+        Entropy.regionEntropy_cond_anti}
+    \leanok
+    For pairwise disjoint regions $A,B,C$,
+    $S(A\cup B\cup C)+S(B)\le S(A\cup B)+S(B\cup C)$. In particular
+    $S(X\mid T)\le S(X\mid T')$ for $T'\subseteq T$ disjoint from $X$.
+\end{theorem}
+\begin{proof}\leanok
+    The regional states of $A\cup B$, $B\cup C$ and $B$ are the partial traces of the regional
+    state of $A\cup B\cup C$, viewed as a tripartite matrix, so strong subadditivity applies.
+\end{proof}
+
+\begin{theorem}[The entropy discount from a buffer]
+    \label{thm:buffer_discount}
+    \lean{Entropy.IsFeasibleFilter.mono_floor, Entropy.exists_trial_filter,
+        Entropy.neg_sum_le_log_of_trial, Entropy.sum_norm_sq_mul_regionEntropy_le,
+        Entropy.neg_two_mul_log_le_entropy, Entropy.sum_mul_condEntropy_le,
+        Entropy.two_mul_condEntropy_le}
+    \leanok
+    \uses{prop:zero_floor_comparison, lem:region_filter_norm, lem:trial_filters,
+        thm:filter_three_lines, thm:region_ssa}
+    Let $X$ be a region, $T_0\subseteq T_1\subseteq\cdots$ regions disjoint from $X$, and
+    $D_j=X\cup T_j$, with weights $0<a_j\le\tfrac12$ of total mass
+    $\sum_{j<m}a_j=2$. Let $\Omega$, $H$ and $\Delta$ be as in
+    Theorem~\ref{thm:first_norm_comparison} for the regions $D_j$, with energy budget at most
+    $E<\Delta$, and suppose every $a_j/(1-a_j)$ is admissible for the cut $D_j$. If every $T_j$
+    lies in a region $T$ disjoint from $X$, then
+    \[
+        2S(X\mid T)\le S(X)+\sum_{j<m}1024e\vartheta\mathcal B_ja_j^2
+            -m\log(1-E/\Delta).
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    By Proposition~\ref{prop:zero_floor_comparison} and Lemma~\ref{lem:region_filter_norm}, every
+    nested product of nonnegative filters on the $D_j$ has output norm at most
+    $B=\prod_k x_k/\sqrt{1-E/\Delta}^{\,m}$ with $x_k^2=\exp(-a_kS(D_k)+1024e\vartheta\mathcal
+    B_ka_k^2)$. For a Schmidt index $i$ with $p_i>0$, Lemma~\ref{lem:trial_filters} bounds the
+    nested products of filters on the $T_j$ applied to $\xi_i=P_i\Omega/\sqrt{p_i}$ by
+    $B/\sqrt{p_i}$. Theorem~\ref{thm:filter_three_lines} with the filters
+    $((1-\delta)\rho_{\xi_i,T_j}+\delta/d)^{a_j/2}$ gives, as $\delta\downarrow0$,
+    $-\sum_j\tfrac{a_j}2S_{\xi_i}(T_j)\le\log B-\tfrac12\log p_i$. Averaging with weights $p_i$
+    and using concavity of the entropy gives $-2\log B\le S(X)+\sum_ja_jS(T_j)$. Hence
+    $\sum_ja_jS(X\mid T_j)\le S(X)+\text{error}$, and Theorem~\ref{thm:region_ssa} bounds the
+    left side below by $2S(X\mid T)$.
+\end{proof}
