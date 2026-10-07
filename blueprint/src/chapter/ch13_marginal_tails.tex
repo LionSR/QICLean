@@ -236,3 +236,43 @@ depend on the common values there.
     The indices outside $E$ with positive weight are exactly those in the
     tail event. The weight bounds are the definition of $E$.
 \end{proof}
+
+\section{Normalized filters}
+\label{sec:marginal_tails_filters}
+
+\begin{lemma}[Trace Hölder inequality]
+    \label{lem:trace_holder}
+    \lean{Matrix.trace_mul_eq_sum_mul_normSq, Matrix.re_trace_mul_le_of_spectral,
+        Matrix.PosSemidef.re_trace_mul_le}
+    \leanok
+    For positive semidefinite $A,B$ with eigenvalues $a_i,b_j$ and
+    $1/p+1/q=1$, $p,q>1$,
+    $\operatorname{Re}\Tr(AB)\le(\sum_ia_i^p)^{1/p}(\sum_jb_j^q)^{1/q}$.
+\end{lemma}
+\begin{proof}\leanok
+    With $A=U\operatorname{diag}(a)U^*$ and $B=V\operatorname{diag}(b)V^*$,
+    $\Tr(AB)=\sum_{ij}a_ib_j|W_{ij}|^2$ for the unitary $W=U^*V$, whose squared
+    moduli are doubly stochastic. Apply the scalar Hölder inequality to
+    $a_i|W_{ij}|^{2/p}$ and $b_j|W_{ij}|^{2/q}$.
+\end{proof}
+
+\begin{lemma}[Norm of a normalized filter]
+    \label{lem:filter_norm}
+    \lean{Entropy.norm_kronecker_one_apply_sq,
+        Entropy.norm_kronecker_one_apply_sq_le_rpow,
+        Entropy.norm_kronecker_one_apply_sq_le_exp}
+    \leanok
+    \uses{lem:trace_holder, thm:marginal_tails}
+    Let $L\ge0$ act on $\mathcal H_B$ with $\Tr L^{2/a}=1$, $0<a<1$. For a
+    unit vector with marginal $\rho$, $\lVert(L\otimes1)\Psi\rVert^2=\Tr\rho
+    L^2\le(\Tr\rho^{1/(1-a)})^{1-a}=M(-a/(1-a))^{1-a}$. Under the hypotheses
+    of Theorem~\ref{thm:marginal_tails}, if $a\le1/2$ and
+    $a/(1-a)\le1/(32\sqrt{(1+\vartheta)\mathcal B})$, then
+    $\lVert(L\otimes1)\Psi\rVert^2\le\exp(-aS(\rho)+1024\mathrm e\vartheta
+    \mathcal Ba^2)$.
+\end{lemma}
+\begin{proof}\leanok
+    Apply Lemma~\ref{lem:trace_holder} with exponents $1/(1-a)$ and $1/a$ to
+    $\rho$ and $L^2$, then the moment bound at $u=-a/(1-a)$, and use
+    $1/(1-a)\le2$.
+\end{proof}
