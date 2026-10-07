@@ -249,3 +249,127 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     eigenbasis are $\langle u_k,Aw\rangle$ when $\lambda_k=E'$ and zero
     otherwise.
 \end{proof}
+
+\section{Positive replacement of a gapped Hamiltonian}
+\label{sec:positive_replacement}
+
+Throughout, $H=\sum_i h_i$ is a finite sum of Hermitian matrices with
+$\|h_i\|\le J$, $\Omega$ is a unit vector with $H\Omega=E_0\Omega$, and
+$H-E_0I\ge\Delta(I-P_\Omega)$ with $\Delta>0$, where
+$P_\Omega=|\Omega\rangle\langle\Omega|$.
+
+\begin{lemma}[Filtering below the gap]
+    \label{lem:filter_below_gap}
+    \lean{SpectralFilter.filterIntegral_mulVec_of_posSemidef_gap}
+    \leanok
+    \uses{thm:filter_integral_multiplier}
+    If $0<\delta\le\Delta$, then $\mathcal F_H(A)\Omega=\langle\Omega,A\Omega\rangle\Omega$
+    for every matrix $A$.
+\end{lemma}
+\begin{proof}\leanok
+    Test against an orthonormal eigenbasis $(u_k)$ of $H$. If
+    $\lambda_k=E_0$, the gap inequality at $u_k$ gives
+    $\Delta(1-|\langle\Omega,u_k\rangle|^2)\le0$, hence
+    $\|u_k-\langle\Omega,u_k\rangle\Omega\|^2=1-|\langle\Omega,u_k\rangle|^2=0$,
+    and $\chi(0)=1$. If $\lambda_k\ne E_0$, then $u_k\perp\Omega$, so the gap
+    inequality gives $\lambda_k-E_0\ge\Delta\ge\delta$ and $\chi$ vanishes.
+\end{proof}
+
+\begin{theorem}[Centered filtered terms]
+    \label{thm:centered_filter}
+    \lean{SpectralFilter.centeredFilter, SpectralFilter.isHermitian_centeredFilter,
+        SpectralFilter.centeredFilter_mulVec_eq_zero,
+        SpectralFilter.sum_centeredFilter, SpectralFilter.norm_centeredFilter_le}
+    \leanok
+    \uses{lem:filter_below_gap, thm:filter_integral_basic}
+    Let $0<\delta\le\Delta$ and
+    $M_i=\mathcal F_H(h_i)-\langle\Omega,h_i\Omega\rangle I$. Then $M_i$ is
+    Hermitian, $M_i\Omega=0$, $\sum_iM_i=H-E_0I$, and
+    $\|M_i\|\le\|h_i\|(\|f\|_1+1)$.
+\end{theorem}
+\begin{proof}\leanok
+    Lemma~\ref{lem:filter_below_gap} gives $M_i\Omega=0$. Linearity and
+    $\mathcal F_H(H)=H$ give the sum, since
+    $\sum_i\langle\Omega,h_i\Omega\rangle=\langle\Omega,H\Omega\rangle=E_0$.
+    The norm bound combines $\|\mathcal F_H(h_i)\|\le\|f\|_1\|h_i\|$ with
+    $|\langle\Omega,h_i\Omega\rangle|\le\|h_i\|$.
+\end{proof}
+
+\begin{lemma}[Square-root estimate]
+    \label{lem:sqrt_holder}
+    \lean{CFC.norm_sqrt_sub_sqrt_le, CFC.le_abs_of_isSelfAdjoint,
+        CFC.norm_abs_sub_abs_le}
+    \leanok
+    In a unital C*-algebra, $\|a^{1/2}-b^{1/2}\|\le\|a-b\|^{1/2}$ for
+    $a,b\ge0$. For self-adjoint $a,b$ one has $a\le|a|$ and
+    $\||a|-|b|\|\le((\|a\|+\|b\|)\|a-b\|)^{1/2}$.
+\end{lemma}
+\begin{proof}\leanok
+    With $\epsilon=\|a-b\|$, operator monotonicity of the square root gives
+    $a^{1/2}\le(b+\epsilon)^{1/2}\le b^{1/2}+\epsilon^{1/2}$, the last step
+    because $b+\epsilon\le(b^{1/2}+\epsilon^{1/2})^2$. Exchanging $a$ and $b$
+    bounds the norm. For the absolute values apply this to $a^2,b^2$ and use
+    $a^2-b^2=a(a-b)+(a-b)b$.
+\end{proof}
+
+\begin{theorem}[Positive replacement, spectral part]
+    \label{thm:positive_replacement}
+    \lean{SpectralFilter.positiveConstraint, SpectralFilter.positiveNormalization,
+        SpectralFilter.positiveConstraint_nonneg,
+        SpectralFilter.positiveConstraint_le_one,
+        SpectralFilter.positiveConstraint_mulVec_eq_zero,
+        SpectralFilter.smul_le_positiveConstraint,
+        SpectralFilter.positive_replacement}
+    \leanok
+    \uses{thm:centered_filter, lem:sqrt_holder}
+    Take $\delta=\Delta/2$, $c_*=\max\{1,J(\|f\|_1+1)\}$, and
+    $k_i=|M_i|/c_*$. Then $0\le k_i\le I$, $k_i\Omega=0$, and
+    \[
+        \sum_ik_i\ge c_*^{-1}(H-E_0I)\ge\frac{\Delta}{c_*}(I-P_\Omega).
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    Theorem~\ref{thm:centered_filter} gives $\|M_i\|\le c_*$, hence
+    $\|k_i\|\le1$. Since $|M_i|^2=M_i^2$, the kernel of $M_i$ lies in that of
+    $|M_i|$, so $k_i\Omega=0$. Finally $M_i\le|M_i|$ and $\sum_iM_i=H-E_0I$.
+\end{proof}
+
+\section{Square-root channels}
+\label{sec:root_channels}
+
+\begin{theorem}[Square roots and root channels]
+    \label{thm:root_channel}
+    \lean{Matrix.rootChannel, Matrix.norm_sum_conjTranspose_mul_mul_le,
+        Matrix.l2_opNorm_kronecker_one_le, Matrix.rootChannel_one,
+        Matrix.rootChannel_nonneg, Matrix.rootChannel_kronecker_nonneg,
+        Matrix.norm_rootChannel_le,
+        Matrix.norm_rootChannel_kronecker_le, Matrix.norm_rootChannel_sub_le,
+        Matrix.norm_rootChannel_kronecker_sub_le,
+        Matrix.sqrt_one_sub_mul_add_sqrt_mul, Matrix.norm_sqrt_sub_le,
+        Matrix.norm_sqrt_one_sub_sub_le, Matrix.sqrt_mulVec_eq_zero,
+        Matrix.sqrt_one_sub_mulVec_eq_self,
+        Matrix.rootChannel_sqrt_eq_self_of_commute}
+    \leanok
+    \uses{lem:sqrt_holder}
+    Let $0\le k,k'\le I$, $G=(I-k)^{1/2}$, $K=k^{1/2}$, and define $G',K'$
+    from $k'$. Then $G^2+K^2=I$, and
+    $\|G-G'\|,\|K-K'\|\le\|k-k'\|^{1/2}$; if $k\Omega=0$, then $K\Omega=0$
+    and $G\Omega=\Omega$. The map $\mathcal E(B)=GBG+KBK$ is unital and
+    completely positive, and for every finite auxiliary system the extension
+    $\mathcal E\otimes\mathrm{id}$ is a contraction in operator norm.
+    Moreover, uniformly in the auxiliary dimension,
+    \[
+        \|(\mathcal E-\mathcal E')\otimes\mathrm{id}\|
+        \le(\|G\|+\|G'\|)\|G-G'\|+(\|K\|+\|K'\|)\|K-K'\|,
+    \]
+    and $\mathcal E$ fixes every matrix commuting with $k$.
+\end{theorem}
+\begin{proof}\leanok
+    The map $v\mapsto Gv\oplus Kv$ is an isometry, and $\mathcal E(B)$ is the
+    compression of $B\oplus B$ by it; tensoring with the identity preserves
+    $G^2+K^2=I$. The difference bound follows from
+    $ABA-A'BA'=(A-A')BA+A'B(A-A')$ and $\|A\otimes I\|\le\|A\|$. The root
+    tails are Lemma~\ref{lem:sqrt_holder}. A matrix commuting with $k$
+    commutes with both square roots, so its image is itself times
+    $G^2+K^2=I$.
+\end{proof}
