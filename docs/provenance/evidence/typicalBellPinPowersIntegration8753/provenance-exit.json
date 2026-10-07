@@ -1,0 +1,14 @@
+{
+  "kind": "provenance",
+  "command": [
+    "/tmp/qic-density-simplex-provenance-env/bin/python",
+    "docs/provenance/evidence/typicalBellPinPowersIntegration8753/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 2.14,
+  "source_revision": "b5b4a4a191825b4f6a2bf84641c75a054357a30e",
+  "log": "docs/provenance/evidence/typicalBellPinPowersIntegration8753/provenance.log",
+  "sha256": "c058cbbf97770ec6a569130d144284fbaadd4be37e1a33018cc875b08080a35d"
+}

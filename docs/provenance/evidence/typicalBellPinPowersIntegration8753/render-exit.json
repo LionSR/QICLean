@@ -1,0 +1,21 @@
+{
+  "kind": "render",
+  "command": [
+    "pdftoppm",
+    "-f",
+    "397",
+    "-l",
+    "398",
+    "-r",
+    "110",
+    "-png",
+    "blueprint/print/print.pdf",
+    "docs/provenance/evidence/typicalBellPinPowersIntegration8753/render/page"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.43,
+  "source_revision": "b5b4a4a191825b4f6a2bf84641c75a054357a30e",
+  "log": "docs/provenance/evidence/typicalBellPinPowersIntegration8753/render.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

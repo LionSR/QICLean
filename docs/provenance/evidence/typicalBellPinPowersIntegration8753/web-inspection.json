@@ -1,0 +1,25 @@
+{
+  "links": [
+    "Matrix.finKronecker_selectedBellProjection_bellPinPrevector",
+    "Matrix.norm_prod_selectedBellVector",
+    "Matrix.isStarProjection_finKronecker_selectedBellProjection",
+    "Matrix.prod_selectedBellVector_perm",
+    "Matrix.finKronecker_selectedBellProjection_bellPinPrevector_label"
+  ],
+  "errors": [],
+  "top": 47.609375,
+  "bottom": 1283.75,
+  "mathElements": 46,
+  "mobile_section_bounds": {
+    "top": 112.09375,
+    "bottom": 1788.328125
+  },
+  "mobile_proof_display": {
+    "scrollWidth": 389,
+    "clientWidth": 311,
+    "overflowX": "auto",
+    "scrollLeft": 78
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360
+}

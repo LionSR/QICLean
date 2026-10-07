@@ -1,0 +1,35 @@
+{
+  "pdf_pages": [
+    397,
+    398
+  ],
+  "new_section_physical_pages": [
+    397
+  ],
+  "new_section_printed_pages": [
+    396
+  ],
+  "total_pdf_pages": 413,
+  "new_theorem_numbers": [
+    "13.22.1",
+    "13.22.2",
+    "13.22.3"
+  ],
+  "web_viewport_widths": [
+    1440,
+    360
+  ],
+  "new_exact_declaration_links": 5,
+  "new_math_elements": 46,
+  "mobile_page_width": 360,
+  "mobile_proof_display_scroll": {
+    "scroll_width": 389,
+    "client_width": 311,
+    "overflow_x": "auto",
+    "right_scroll": 78
+  },
+  "new_section_undefined_references": false,
+  "new_section_overfull_boxes": false,
+  "new_section_visual_defects": false,
+  "inspection": "Visual inspection of complete new section, its adjacent following PDF page, desktop and phone web images, and the right-hand end of the wide finite-product display. Parent book source remains unchanged outside the single inclusion."
+}

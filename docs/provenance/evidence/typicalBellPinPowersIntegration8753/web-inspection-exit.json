@@ -1,0 +1,13 @@
+{
+  "kind": "web-inspection",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/typicalBellPinPowersIntegration8753/inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 5.4,
+  "source_revision": "b5b4a4a191825b4f6a2bf84641c75a054357a30e",
+  "log": "docs/provenance/evidence/typicalBellPinPowersIntegration8753/web-inspection.log",
+  "sha256": "b01b054b8fa140b01e5b0daa5413c8e3edaf9303e7d351a4cf675d8a977f43dd"
+}

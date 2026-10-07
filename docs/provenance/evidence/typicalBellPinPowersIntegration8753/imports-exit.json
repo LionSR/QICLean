@@ -1,0 +1,14 @@
+{
+  "kind": "imports",
+  "command": [
+    "python3",
+    "scripts/generate_import_aggregators.py",
+    "--check"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.53,
+  "source_revision": "b5b4a4a191825b4f6a2bf84641c75a054357a30e",
+  "log": "docs/provenance/evidence/typicalBellPinPowersIntegration8753/imports.log",
+  "sha256": "fadb9181b8110832186093a87cbde30a5e52d7d3d1b967fedf84fb0fe77f50ed"
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "web",
+  "command": [
+    "texra-blueprint",
+    "web"
+  ],
+  "working_directory": "blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 50.25,
+  "source_revision": "b5b4a4a191825b4f6a2bf84641c75a054357a30e",
+  "log": "docs/provenance/evidence/typicalBellPinPowersIntegration8753/web.log",
+  "sha256": "27b16df8a7020050bd63021c404a0d48155757ffaa6d209bbccb66c0b3dfb8e3"
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "paper-gaps",
+  "command": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.63,
+  "source_revision": "b5b4a4a191825b4f6a2bf84641c75a054357a30e",
+  "log": "docs/provenance/evidence/typicalBellPinPowersIntegration8753/paper-gaps.log",
+  "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "bbl",
+  "command": [
+    "texra-blueprint",
+    "bbl"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.36,
+  "source_revision": "b5b4a4a191825b4f6a2bf84641c75a054357a30e",
+  "log": "docs/provenance/evidence/typicalBellPinPowersIntegration8753/bbl.log",
+  "sha256": "5d5dce9ea32d681a4f55533fc1c2af2271554a961373a7406af82bfe74829f05"
+}
