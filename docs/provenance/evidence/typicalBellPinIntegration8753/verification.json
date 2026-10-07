@@ -1,0 +1,239 @@
+{
+  "source_revision": "0e98b2bb797daead5312190905de9b20658182b9",
+  "parent_revision": "c8d6b2f7e576407d180c853a7ebb5ad84b342422",
+  "bell_source_revision": "90e6071e32453006906390bd4e4f71ff4c5251a0",
+  "bell_leaf_evidence_revision": "cec84e2532a4a4f77c0300528f07d15acd5f81db",
+  "files": {
+    "QICLean/Entropy/TypicalSpectrum.lean": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4",
+    "QICLean/Entropy/TypicalDensity.lean": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914",
+    "QICLean/Entropy/FiniteProductSplitting.lean": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739",
+    "QICLean/Entropy/FiniteProductInformation.lean": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f",
+    "QICLean/Analysis/PatchRegulator.lean": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca",
+    "QICLean/Analysis/DensitySimplex.lean": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8",
+    "QICLean/Entropy/TypicalPureState.lean": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01",
+    "QICLean/Entropy/TypicalPureCompression.lean": "e0b2e684eaaa83f1969c7048dabcf1f7ec35d90edf7723598715895ebdb34b49",
+    "QICLean/Entropy/TypicalBellPin.lean": "a02fd725ee43c98eaaaea7a09362a184f4d5859ecf619f4aaf26a92d584d9cae"
+  },
+  "inclusion_files": {
+    "QICLean/Entropy.lean": "4d2edc86e66883f545f3383d73cc47d87553a54d735da244c967f962372d050d",
+    "blueprint/src/chapter/ch12_entropy.tex": "0969f82e5bd15e1ee4d4ccc66e7ca4b036dfed378bbcff845db7544493963ba6"
+  },
+  "commands": [
+    {
+      "command": "lake exe cache get",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "command": "lake build",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/build.log.gz",
+      "sha256": "6771abbca9e39b480ab90480ef21a5163d3ebf99e7480e1521614081a0908a3b",
+      "uncompressed_sha256": "8025b6faccdd691f0ebb2e5cb4f222e42891ac25c272052bfd006d64a8350ad5",
+      "uncompressed_bytes": 24365,
+      "compression": "deterministic gzip, mtime=0"
+    },
+    {
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/typicalBellPinIntegration8753/Axioms.lean",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/axioms.log",
+      "sha256": "dbd6fb079cfa364ed42a8a9d989d09cf30e677c944481f94b9c4d4b6e4f4974b"
+    },
+    {
+      "command": "/tmp/qic-density-simplex-provenance-env/bin/python docs/provenance/evidence/typicalBellPinIntegration8753/validate-owned.py /Users/siruilu/Local/agentFormalization/TNLean",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/provenance.log",
+      "sha256": "a85d9069a06278ad2d4df59114c93dc31f6df2a4df0459b03aab7fb175e959b3"
+    },
+    {
+      "command": "texra-blueprint bbl",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/bbl.log",
+      "sha256": "a075514b0a11293a4688f6931dee0ea144068750faf4d8489f2844b8d8d06d2b"
+    },
+    {
+      "command": "leanblueprint pdf",
+      "exit_code": 0,
+      "working_directory": "blueprint",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/pdf.log.gz",
+      "sha256": "79142343817a5ec847790ddc21fd4be8d68d75a948b9eaaf43642b95c6b14455",
+      "uncompressed_sha256": "4162dc136781d0607f53752c02a1754921b7f32260ffdc1e3fe4500055de6011",
+      "uncompressed_bytes": 775765,
+      "compression": "deterministic gzip, mtime=0"
+    },
+    {
+      "command": "texra-blueprint web",
+      "exit_code": 0,
+      "working_directory": "blueprint",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/web.log.gz",
+      "sha256": "bd65fa1dc0de15b4a87397b56fbe739ba6b1a49ae3becc08ba7447e32cd5315f",
+      "uncompressed_sha256": "8c43c35adfb5a93567bbb6a7deb66983c8e32b84cef1fdca73f1ac67c6a9cc7b",
+      "uncompressed_bytes": 15698,
+      "compression": "deterministic gzip, mtime=0"
+    },
+    {
+      "command": "lake env .lake/packages/checkdecls/.lake/build/bin/checkdecls blueprint/lean_decls",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "python3 scripts/generate_import_aggregators.py --check",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/imports.log",
+      "sha256": "1da3f5537e00ecdfa8f4f9a7228a0be910482e1c4374c237dc2c73b4839865e5"
+    },
+    {
+      "command": "python3 scripts/check_reader_facing_prose.py --root . --diff-base c8d6b2f7e576407d180c853a7ebb5ad84b342422 --ci",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "command": "texra-blueprint paper-gaps check",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "command": "python3 scripts/blueprint_lean_sync.py --root . --update-lean-decls",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/blueprint-sync.log.gz",
+      "sha256": "ae6c7ec45e7b7a03df11d8aa7ce485e1ec808c32cab6797d18a8e4b386631f17",
+      "uncompressed_sha256": "2202889ef0ffb036aca06334c97b92ab10666cc078835abfc97912dbbc32fd9f",
+      "uncompressed_bytes": 8008,
+      "compression": "deterministic gzip, mtime=0"
+    },
+    {
+      "command": "/Users/siruilu/miniforge3/bin/python3 scripts/test_blueprint_web_render.py --web-root blueprint/web",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/web-render-test.log",
+      "sha256": "493d9f741400957971e1dc054cefc16548b2a32e57391c13a454c9b79627435c"
+    },
+    {
+      "command": "/Users/siruilu/miniforge3/bin/python3 docs/provenance/evidence/typicalBellPinIntegration8753/inspect-web.py",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/web-inspection.log",
+      "sha256": "6345fdbe626058147944e57195921720c1be3041f0d5cb2bd6324ab0811d8b9a"
+    },
+    {
+      "command": "pdftoppm -f 396 -l 397 -r 110 -png blueprint/print/print.pdf docs/provenance/evidence/typicalBellPinIntegration8753/render/page",
+      "exit_code": 0,
+      "working_directory": ".",
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "full_library_jobs": 9683,
+  "declaration_count": 69,
+  "owned_shards": [
+    "typicalSpectrum8753.json",
+    "typicalDensity8753.json",
+    "8761-finite-product-splitting.json",
+    "amplification-regional-information.json",
+    "patch-regulator.json",
+    "densitySimplex8767.json",
+    "typicalPureState8753.json",
+    "typicalPureCompression8753.json",
+    "typicalBellPin8753.json"
+  ],
+  "blueprint_declaration_count": 3117,
+  "kernel_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "mathlib_prebuilt_artifact": {
+    "path": ".lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean",
+    "sha256": "9a387323c3dc0909926e9b8e73e1a95905f6666e6a811a44a8fecd8c35f12230",
+    "fetch_exit_code": 0,
+    "verified_before_build": true
+  },
+  "native_declaration_checker": {
+    "package_revision": "3d425859e73fcfbef85b9638c2a91708ef4a22d4",
+    "executable_sha256": "67873de2b0bf2a3868d9b090017833275edb2ad500803ae0c9e60e536a878f14",
+    "source_path": ".lake/packages/checkdecls/Main.lean",
+    "source_sha256": "ffe21fade6dbf85c747658ed4ccd01ef9b8c6e7fa245846ee4d697a709f3f121"
+  },
+  "pdf": {
+    "path": "blueprint/print/print.pdf",
+    "sha256": "f109d74be4982a92305a9aa330dc7e448453958fef57d2874ee1f0bf3fd075c1",
+    "page_count": 412
+  },
+  "web_entropy_page": {
+    "path": "blueprint/web/ch-entropy.html",
+    "sha256": "7d7ff3ed77daabaf57b18c80d740b9d6286ff12941a12a86672e2796bb01c9d6"
+  },
+  "web_render_test": {
+    "pages": 36,
+    "typeset": 35827
+  },
+  "operational_attempts": [
+    {
+      "command": "lake env .lake/packages/checkdecls/.lake/build/bin/checkdecls blueprint/lean_decls",
+      "working_directory": "blueprint",
+      "exit_code": 255,
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/checkdecls-attempt1.log",
+      "sha256": "e441ee021b3500a067746624ff19d220f45a7299aefc6fc568df42ebaf170d82",
+      "cause": "Executable path is relative to the repository root; corrected working directory."
+    },
+    {
+      "command": "lake env .lake/packages/checkdecls/.lake/build/bin/checkdecls blueprint/lean_decls",
+      "working_directory": ".",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalBellPinIntegration8753/checkdecls-before-web-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scope": "Preliminary input before the web build completed; superseded by the final full native check."
+    }
+  ],
+  "production_source_binding": "All nine production files match their individual immutable source revisions; original leaf logs and provenance entries retained unchanged.",
+  "pending_verification": [],
+  "source_scope": "Actual one-copy Bell contraction with positive selected mass; no tensor or complementary label extension.",
+  "evidence_files": {
+    "docs/provenance/evidence/typicalBellPinIntegration8753/Axioms.lean": "3256096244bae0c846dbf21535f0994e5d877d89106b63e1df686dc9094aa131",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/README.md": "f74e5df4d76ea1ba19173dc0f4f3eedf6598a7e413559c6789c3a106546297b3",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/axioms.log": "dbd6fb079cfa364ed42a8a9d989d09cf30e677c944481f94b9c4d4b6e4f4974b",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/bbl.log": "a075514b0a11293a4688f6931dee0ea144068750faf4d8489f2844b8d8d06d2b",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/blueprint-sync.log.gz": "ae6c7ec45e7b7a03df11d8aa7ce485e1ec808c32cab6797d18a8e4b386631f17",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/build.log.gz": "6771abbca9e39b480ab90480ef21a5163d3ebf99e7480e1521614081a0908a3b",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/checkdecls-attempt1.log": "e441ee021b3500a067746624ff19d220f45a7299aefc6fc568df42ebaf170d82",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/checkdecls-before-web-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/checkdecls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/compression.json": "e07a79bc1829f68a141f9331c3fd827adcadcfdbab54f84a705f6b4e2497d4a0",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/imports.log": "1da3f5537e00ecdfa8f4f9a7228a0be910482e1c4374c237dc2c73b4839865e5",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/inspect-web.py": "cda9a0b35adc3a9f53fdc6716b4306c0207780add78eb14ebeff9db2fdb508c3",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/owned-shards.json": "735d56f20dd72f4ad9a55bdac7e190b187583d12b851a88c3653feb8f730f4f4",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/paper-gaps.log": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/pdf.log.gz": "79142343817a5ec847790ddc21fd4be8d68d75a948b9eaaf43642b95c6b14455",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/print.log.gz": "72366dbeaa6275ec58eadb59c7b6d02746f8df182319a6fc4c35f37c5a0ba4e2",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/provenance.log": "a85d9069a06278ad2d4df59114c93dc31f6df2a4df0459b03aab7fb175e959b3",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/bell-web-desktop.png": "5ad5f0c7c47f20c949f9265fd604b2ba10b4ee38d7fd85ad76c482e081d89d1d",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/bell-web-mobile-proof-right.png": "6f6ca0113b867e6681ca7a4136c50c17413ab97744625527cf01165c81c0a6f6",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/bell-web-mobile.png": "2c738661827e1f2ff51e9511935209e4d9916b1bc8e33c6f6412576e95d07138",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/page-396.png": "5216fa51076741d14d7e0b840fc5410d1d2aefb46b9741308e1bbad801f8d923",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render/page-397.png": "1d3d75adb58306449cff86911617ac88d04e541f96dfe2acb2621189fb9e4455",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render-inspection.json": "1ccc22db277c54b5d63dc186d6d42acbdf40b5532c239304ad03c71ef1e88b08",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/render.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/source-preservation.json": "86531ee29bac5cfb57bf995ffcb41e95ba97ed19c9a97857454e282d49bcaf63",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/validate-owned.py": "728c712e49a5f857e2f2986aef8fdea9cdfd276ceb2ab3213ac2435750b05940",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/web-inspection.json": "0386ed3bb24663ae259118255cc6cb8da728ba18115127fcd364a0910d6720a9",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/web-inspection.log": "6345fdbe626058147944e57195921720c1be3041f0d5cb2bd6324ab0811d8b9a",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/web-render-test.log": "493d9f741400957971e1dc054cefc16548b2a32e57391c13a454c9b79627435c",
+    "docs/provenance/evidence/typicalBellPinIntegration8753/web.log.gz": "bd65fa1dc0de15b4a87397b56fbe739ba6b1a49ae3becc08ba7447e32cd5315f"
+  }
+}

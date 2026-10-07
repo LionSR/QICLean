@@ -1,0 +1,24 @@
+{
+  "integration_revision": "0e98b2bb797daead5312190905de9b20658182b9",
+  "bell_source_revision": "90e6071e32453006906390bd4e4f71ff4c5251a0",
+  "bell_leaf_evidence_revision": "cec84e2532a4a4f77c0300528f07d15acd5f81db",
+  "production_files": {
+    "QICLean/Entropy/TypicalSpectrum.lean": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4",
+    "QICLean/Entropy/TypicalDensity.lean": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914",
+    "QICLean/Entropy/FiniteProductSplitting.lean": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739",
+    "QICLean/Entropy/FiniteProductInformation.lean": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f",
+    "QICLean/Analysis/PatchRegulator.lean": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca",
+    "QICLean/Analysis/DensitySimplex.lean": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8",
+    "QICLean/Entropy/TypicalPureState.lean": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01",
+    "QICLean/Entropy/TypicalPureCompression.lean": "e0b2e684eaaa83f1969c7048dabcf1f7ec35d90edf7723598715895ebdb34b49",
+    "QICLean/Entropy/TypicalBellPin.lean": "a02fd725ee43c98eaaaea7a09362a184f4d5859ecf619f4aaf26a92d584d9cae"
+  },
+  "bell_leaf_hashes_retained": true,
+  "all_parent_source_and_evidence_bindings_retained": true,
+  "only_inclusion_changes": [
+    "QICLean/Entropy.lean",
+    "blueprint/src/chapter/ch12_entropy.tex"
+  ],
+  "new_import_count": 1,
+  "new_chapter_input_count": 1
+}
