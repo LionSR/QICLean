@@ -11,7 +11,7 @@ import QICLean.Representation.SchurSurprisal
 
 For any permutation representation of the copy permutations, the central observables
 of the two groups of copies and of all copies satisfy
-`F_good + F_bad ≤ F_whole ≤ F_good + F_bad + log (k.choose r) • 1`.
+\(F_g + F_b \le F_w \le F_g + F_b + \log\binom{k}{r}\,I\).
 The good, bad, and whole label projections give an actual joint orthogonal resolution.
 On each nonzero joint projection, the subgroup dimension bounds give the corresponding
 scalar logarithmic inequalities.
@@ -27,6 +27,14 @@ open Matrix PermutationRepresentation
 open scoped MatrixOrder ComplexOrder
 
 namespace TensorPower
+
+/-
+Provenance-ID: 8750-qic-grouped-label-entropy-01
+Original formalization, no upstream Lean proof text reused.
+Declaration: TensorPower.groupedCopies_labelEntropy_bounds
+Manuscript: September 24, 2026, Lemma 6.1(4), lem:schur,
+replicas:group-dimensions; comparator:restriction-dimensions.
+-/
 
 private theorem resolution_hom_fst {X I J : Type*} [Fintype X] [DecidableEq X]
     [Fintype I] [DecidableEq I] [Fintype J] [DecidableEq J]
@@ -53,7 +61,7 @@ private theorem resolution_hom_snd {X I J : Type*} [Fintype X] [DecidableEq X]
 `comparator:restriction-dimensions`, `07-comparators.tex`, lines 455–467.
 For any permutation representation of the `k` copies and any specified split into
 `m` good copies and `r` bad copies, the subgroup label observables bound the whole
-label observable, with additive error `log (k.choose r)`.
+label observable, with additive error \(\log\binom{k}{r}\).
 
 The inequalities hold on the full representation space; compatibility of labels is
 proved on each nonzero joint projection, not assumed in the statement. -/
