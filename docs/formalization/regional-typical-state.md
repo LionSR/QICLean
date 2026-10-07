@@ -30,8 +30,8 @@ full-rank condition, or assumed marginal or entropy conclusion occurs.
 The designated-support marginal tails of QICLean PR 595 and the local-operator
 lifts of PR 603 address different constructions. This module reuses the existing
 FiniteProduct reductions and introduces no further regional-density or local-lift
-definition. Root imports and shared blueprint inclusion belong to the integration
-branch.
+definition. The entropy library includes this construction, and the blueprint
+records its normalization and disjoint-region estimates.
 
 Codex (GPT-6) assisted the independently written formalization. No upstream Lean
 proof text was copied or adapted.
