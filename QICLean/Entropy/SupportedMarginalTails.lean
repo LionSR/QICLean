@@ -99,12 +99,13 @@ theorem cutEquiv_symm_apply_not_mem (x : (v : {v // v ∈ B}) → Fin (n v))
     (cutEquiv n B).symm (x, y) v = y ⟨v, hv⟩ := by
   simp [Equiv.piEquivPiSubtypeProd, hv]
 
-/-- A term supported inside `B` acts on the first cut factor only. -/
-theorem IsSupportedOn.isOneSided_of_subset {X : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+/-- A term supported inside `B` is, in cut coordinates, a matrix on `B` tensored with the
+identity: its slice at any configuration `y₀` of `Bᶜ`. -/
+theorem IsSupportedOn.cutOperator_eq_kronecker_one {X : Matrix (SiteConfig n) (SiteConfig n) ℂ}
     {D : Finset V} (hX : IsSupportedOn X D) (hDB : D ⊆ B)
-    (y₀ : (v : {v // v ∉ B}) → Fin (n v)) : IsOneSided (cutOperator B X) := by
+    (y₀ : (v : {v // v ∉ B}) → Fin (n v)) :
+    cutOperator B X = (fun x x' ↦ cutOperator B X (x, y₀) (x', y₀)) ⊗ₖ (1 : Matrix _ _ ℂ) := by
   classical
-  refine Or.inl ⟨fun x x' ↦ cutOperator B X (x, y₀) (x', y₀), ?_⟩
   ext ⟨x, y⟩ ⟨x', y'⟩
   change cutOperator B X (x, y) (x', y') =
     cutOperator B X (x, y₀) (x', y₀) * (1 : Matrix _ _ ℂ) y y'
@@ -120,6 +121,12 @@ theorem IsSupportedOn.isOneSided_of_subset {X : Matrix (SiteConfig n) (SiteConfi
   · obtain ⟨w, hw⟩ := Function.ne_iff.mp hy
     refine hX.1 _ _ ⟨w.1, fun h ↦ w.2 (hDB h), ?_⟩
     rwa [cutEquiv_symm_apply_not_mem _ _ w.2, cutEquiv_symm_apply_not_mem _ _ w.2]
+
+/-- A term supported inside `B` acts on the first cut factor only. -/
+theorem IsSupportedOn.isOneSided_of_subset {X : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+    {D : Finset V} (hX : IsSupportedOn X D) (hDB : D ⊆ B)
+    (y₀ : (v : {v // v ∉ B}) → Fin (n v)) : IsOneSided (cutOperator B X) :=
+  Or.inl ⟨_, hX.cutOperator_eq_kronecker_one hDB y₀⟩
 
 /-- A term supported outside `B` acts on the second cut factor only. -/
 theorem IsSupportedOn.isOneSided_of_disjoint {X : Matrix (SiteConfig n) (SiteConfig n) ℂ}

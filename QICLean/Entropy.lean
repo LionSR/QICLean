@@ -18,6 +18,7 @@ import QICLean.Entropy.FilterMoment
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.GapSurprisal
+import QICLean.Entropy.LocalLift
 import QICLean.Entropy.MarginalTails
 import QICLean.Entropy.MarkovChain
 import QICLean.Entropy.ModularExpectation
