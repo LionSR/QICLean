@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8765-qic-conditional-01",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
+        "declaration": "FiniteProduct.conditionalMutualInformation_union_left",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-tile-cost"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove a generic finite-product entropy identity or bound in the conditional two-family chain argument. The exceptional cost is 2S(D); this does not formalize the geometric partition, dimension transport or full polylogarithmic cell lemma."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8765-qic-conditional-02",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
+        "declaration": "FiniteProduct.mutualInformation_le_two_entropy",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-tile-cost"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove a generic finite-product entropy identity or bound in the conditional two-family chain argument. The exceptional cost is 2S(D); this does not formalize the geometric partition, dimension transport or full polylogarithmic cell lemma."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8765-qic-conditional-03",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
+        "declaration": "FiniteProduct.conditionalMutualInformation_le_two_entropy",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-tile-cost"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove a generic finite-product entropy identity or bound in the conditional two-family chain argument. The exceptional cost is 2S(D); this does not formalize the geometric partition, dimension transport or full polylogarithmic cell lemma."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8765-qic-conditional-04",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
+        "declaration": "FiniteProduct.conditionalMutualInformation_biUnion_le_sum",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-tile-cost"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove a generic finite-product entropy identity or bound in the conditional two-family chain argument. The exceptional cost is 2S(D); this does not formalize the geometric partition, dimension transport or full polylogarithmic cell lemma."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8765-qic-conditional-05",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
+        "declaration": "FiniteProduct.target_union_complement_eq_exterior",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-tile-cost"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove a generic finite-product entropy identity or bound in the conditional two-family chain argument. The exceptional cost is 2S(D); this does not formalize the geometric partition, dimension transport or full polylogarithmic cell lemma."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8765-qic-conditional-06",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
+        "declaration": "FiniteProduct.conditionalMutualInformation_le_two_family_mutualInformation",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-tile-cost"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove a generic finite-product entropy identity or bound in the conditional two-family chain argument. The exceptional cost is 2S(D); this does not formalize the geometric partition, dimension transport or full polylogarithmic cell lemma."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8765-qic-conditional-07",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ConditionalTwoFamilies.lean",
+        "declaration": "FiniteProduct.conditionalMutualInformation_le_two_family_sum",
+        "name_status": "proposed"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex",
+          "labels": [
+            "eq:info-tile-cost"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove a generic finite-product entropy identity or bound in the conditional two-family chain argument. The exceptional cost is 2S(D); this does not formalize the geometric partition, dimension transport or full polylogarithmic cell lemma."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    }
+  ]
+}
