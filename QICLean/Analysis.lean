@@ -74,6 +74,7 @@ import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectionGeometry
+import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
@@ -88,6 +89,7 @@ import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
 import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.SinhRatioDensity
+import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
