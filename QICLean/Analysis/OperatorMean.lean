@@ -9,4 +9,5 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Analysis.OperatorMean
 
 import QICLean.Analysis.OperatorMean.MatrixPowers
+import QICLean.Analysis.OperatorMean.PowerDerivative
 import QICLean.Analysis.OperatorMean.WeightedGeometricMean
