@@ -42,7 +42,7 @@ noncomputable def regionEntropy (D : Finset V) (Ω : EuclideanSpace ℂ (SiteCon
   vonNeumannEntropy (regionState D Ω) (regionState_isHermitian D Ω)
 
 /-- Expectations of reindexed regional states. -/
-theorem trace_regionState_submatrix_mul {D : Finset V} {κ : Type*} [Fintype κ] [DecidableEq κ]
+theorem trace_regionState_submatrix_mul {D : Finset V} {κ : Type*} [Fintype κ]
     (f : RegionConfig n D ≃ κ) (Ω : EuclideanSpace ℂ (SiteConfig n)) (K : Matrix κ κ ℂ) :
     ((regionState D Ω).submatrix f.symm f.symm * K).trace =
       ⟪Ω, toEuclideanLin (localLift D (K.submatrix f f)) Ω⟫_ℂ := by
@@ -127,7 +127,8 @@ noncomputable def tripleState (Ω : EuclideanSpace ℂ (SiteConfig n)) :
 /-- The `B ∪ C` marginal of the tripartite state. -/
 theorem partialTraceLeft_tripleState (Ω : EuclideanSpace ℂ (SiteConfig n)) :
     partialTraceLeft (tripleState hAB hAC hBC Ω) =
-      (regionState (B ∪ C) Ω).submatrix (regionUnionEquiv hBC).symm (regionUnionEquiv hBC).symm := by
+      (regionState (B ∪ C) Ω).submatrix (regionUnionEquiv hBC).symm
+        (regionUnionEquiv hBC).symm := by
   refine eq_of_forall_trace_mul_eq fun N ↦ ?_
   rw [tripleState, trace_partialTraceLeft_mul, trace_regionState_submatrix_mul,
     trace_regionState_submatrix_mul]
@@ -158,7 +159,8 @@ theorem partialTraceRight_regionState_union (hBC : Disjoint B C)
 /-- The `A ∪ B` marginal of the tripartite state. -/
 theorem partialTraceRight_reassoc_tripleState (Ω : EuclideanSpace ℂ (SiteConfig n)) :
     partialTraceRight (reassoc (tripleState hAB hAC hBC Ω)) =
-      (regionState (A ∪ B) Ω).submatrix (regionUnionEquiv hAB).symm (regionUnionEquiv hAB).symm := by
+      (regionState (A ∪ B) Ω).submatrix (regionUnionEquiv hAB).symm
+        (regionUnionEquiv hAB).symm := by
   refine eq_of_forall_trace_mul_eq fun M ↦ ?_
   have hre : reassoc (tripleState hAB hAC hBC Ω) =
       (regionState (A ∪ (B ∪ C)) Ω).submatrix
