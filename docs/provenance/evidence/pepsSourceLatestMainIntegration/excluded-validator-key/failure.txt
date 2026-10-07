@@ -1,0 +1,1 @@
+The first manifest-validator invocation exited 1 during metadata checking: KeyError: 'total_source_targets'. The native-targets report uses a different key. All recorded Lean, blueprint and preservation commands had already passed. This is an evidence-helper error, not a proof or build failure.

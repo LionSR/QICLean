@@ -1,0 +1,84 @@
+{
+  "result": "passed",
+  "entries": [
+    {
+      "anchor": "thm:random_sample_count",
+      "local_equation_scrolls": [],
+      "page_width": 360
+    },
+    {
+      "anchor": "thm:random_realization",
+      "local_equation_scrolls": [],
+      "page_width": 360
+    },
+    {
+      "anchor": "thm:source_unbiased",
+      "local_equation_scrolls": [
+        {
+          "class": "displaymath",
+          "width": 310,
+          "scrollWidth": 365,
+          "scrollLeft": 55,
+          "maximum": 55
+        }
+      ],
+      "page_width": 360
+    },
+    {
+      "anchor": "thm:source_gaussian_error",
+      "local_equation_scrolls": [],
+      "page_width": 360
+    },
+    {
+      "anchor": "thm:reduction_chain",
+      "local_equation_scrolls": [
+        {
+          "class": "displaymath",
+          "width": 311,
+          "scrollWidth": 452,
+          "scrollLeft": 141,
+          "maximum": 141
+        }
+      ],
+      "page_width": 360
+    },
+    {
+      "anchor": "thm:reduction_readout",
+      "local_equation_scrolls": [
+        {
+          "class": "displaymath",
+          "width": 310,
+          "scrollWidth": 373,
+          "scrollLeft": 63,
+          "maximum": 63
+        }
+      ],
+      "page_width": 360
+    },
+    {
+      "anchor": "def:construction_contraction",
+      "local_equation_scrolls": [],
+      "page_width": 360
+    },
+    {
+      "anchor": "thm:construction_position_expansion",
+      "local_equation_scrolls": [],
+      "page_width": 360
+    },
+    {
+      "anchor": "thm:construction_original_density_error",
+      "local_equation_scrolls": [
+        {
+          "class": "displaymath",
+          "width": 310,
+          "scrollWidth": 415,
+          "scrollLeft": 105,
+          "maximum": 105
+        }
+      ],
+      "page_width": 360
+    }
+  ],
+  "equation_scrollers_reach_right_endpoint": true,
+  "mobile_width": 360
+}

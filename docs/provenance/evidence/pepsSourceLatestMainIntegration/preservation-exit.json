@@ -1,0 +1,13 @@
+{
+  "source_revision": "035e5cc6f208e7b069132ef8eff8c8afbfa012d9",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/pepsSourceLatestMainIntegration/check-preservation.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "started_utc": "2026-10-07T23:38:07.939641+00:00",
+  "elapsed_seconds": 29.830654374993173,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/pepsSourceLatestMainIntegration/preservation.log",
+  "sha256": "53fdf640e110933757f6f49478ce496cd9f7f4dc4c3883a3a034ad433461f1ec"
+}
