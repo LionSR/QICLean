@@ -1,0 +1,94 @@
+{
+  "source_revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+  "parent_revision": "14778d7ee2e8c12efbf3a8029f7e5ef6d4d52bf4",
+  "public_declarations": [
+    "Matrix.PosSemidef.smul_one_sub_spectralCutoff_le",
+    "Matrix.PosSemidef.spectralCutoff_mass_ge"
+  ],
+  "stock_kernel_report_count": 2,
+  "whole_file_sha256": "2f77fe08c9482f508558cee3f2a0fb68f7626322bee49d46633cdc51f91ade4a",
+  "fragment_sha256": "24aea9d0dd3076965445b058a00203c28dbd24ba3ede8b9dbdb0a8432299f29d",
+  "commands": [
+    {
+      "source_revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/spectralCutoffMass8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 15.535285949707031,
+      "log": "docs/provenance/evidence/spectralCutoffMass8750/axioms.log",
+      "sha256": "dab67f7b40ad7a2792d99cfad386fb5cd08246c610892f627ebacc203ada99b6"
+    },
+    {
+      "source_revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+      "argv": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 58.00594210624695,
+      "log": "docs/provenance/evidence/spectralCutoffMass8750/mathlib-cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "source_revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/spectralCutoffMass8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5741720199584961,
+      "log": "docs/provenance/evidence/spectralCutoffMass8750/provenance.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+    },
+    {
+      "source_revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "QICLean/Analysis/SpectralCutoffMass.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 40.78122091293335,
+      "log": "docs/provenance/evidence/spectralCutoffMass8750/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+      "argv": [
+        "lake",
+        "build",
+        "QICLean.Analysis.SpectralCutoffMass"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 42.433053970336914,
+      "log": "docs/provenance/evidence/spectralCutoffMass8750/target.log",
+      "sha256": "152be382cb89bf1dd3dbff4e7b502011859d62970dff356fd81d9b689e8bde3e"
+    }
+  ],
+  "excluded_exploratory_check": "strict-first-exit.json; no immutable source binding and predates final formatting edits",
+  "pending": [
+    "single generated Analysis import and unique entropy input",
+    "complete library and blueprint verification"
+  ]
+}

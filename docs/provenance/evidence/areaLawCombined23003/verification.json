@@ -1,0 +1,289 @@
+{
+  "proof_verification_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+  "final_publication_source_revision": "4311709afbb0cc0441d68b1997d125c566ce8e65",
+  "only_source_repair": "Restoration of the entropy chapter header; every chapter input and all Lean files are unchanged.",
+  "production_file_count": 11,
+  "provenance_shard_count": 11,
+  "exact_stock_kernel_report_count": 73,
+  "full_library_jobs": 9685,
+  "mathlib_prebuilt_artifacts": 8943,
+  "final_native_declaration_count": 3121,
+  "native_checker_sha256": "67873de2b0bf2a3868d9b090017833275edb2ad500803ae0c9e60e536a878f14",
+  "native_checker_revision": "3d425859e73fcfbef85b9638c2a91708ef4a22d4",
+  "final_pdf": {
+    "sha256": "e8c2ea06e6940c40e89b9b3292050616de407b0828f5e7963847ded3be48fecd",
+    "pages": 414
+  },
+  "owned_production_bindings": {
+    "QICLean/Entropy/TypicalSpectrum.lean": {
+      "revision": "958a33256b1b679eea9994660c31706e4d604932",
+      "sha256": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4"
+    },
+    "QICLean/Entropy/TypicalDensity.lean": {
+      "revision": "cc89ef96c7390a92861cf45997f77d40cb394ed1",
+      "sha256": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914"
+    },
+    "QICLean/Entropy/FiniteProductSplitting.lean": {
+      "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+      "sha256": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739"
+    },
+    "QICLean/Entropy/FiniteProductInformation.lean": {
+      "revision": "e5fe5732e6c10a921793c1c03bee5403e5bf6362",
+      "sha256": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f"
+    },
+    "QICLean/Analysis/PatchRegulator.lean": {
+      "revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+      "sha256": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca"
+    },
+    "QICLean/Analysis/DensitySimplex.lean": {
+      "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+      "sha256": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8"
+    },
+    "QICLean/Entropy/TypicalPureState.lean": {
+      "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+      "sha256": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01"
+    },
+    "QICLean/Entropy/TypicalPureCompression.lean": {
+      "revision": "7076296aad42492bccb9b3bb321ca12b5565d0e9",
+      "sha256": "e0b2e684eaaa83f1969c7048dabcf1f7ec35d90edf7723598715895ebdb34b49"
+    },
+    "QICLean/Entropy/FiniteProductTypicalState.lean": {
+      "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+      "sha256": "92ab405b18f2cebd705c5fe3fba04a444e0f361e43ac9d796906c0e0b09bd226"
+    },
+    "QICLean/Analysis/ShiftedDensityCommutation.lean": {
+      "revision": "a85789dabd1a2c9f9966fa0b8fdcff160547e88b",
+      "sha256": "8a9e3272897a291decbe3b71babe59c6579f88a29523c3d836766d198634a249"
+    },
+    "QICLean/Entropy/TypicalStateFromTail.lean": {
+      "revision": "79b9d503971a4ff2409fa557e174b46b13fdbbda",
+      "sha256": "149554ccbce80b00197d5f969c04d9674b0c60f2bbca38eb0f0c1771307fe555"
+    }
+  },
+  "commands": {
+    "axioms": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "docs/provenance/evidence/areaLawCombined23003/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 5.023614883422852,
+      "log": "docs/provenance/evidence/areaLawCombined23003/axioms.log",
+      "sha256": "805012087823ef4ac38e11db6ee07323e953ee3e993dd1bb9e3c967c251d1e0e"
+    },
+    "final-checkdecls": {
+      "source_revision": "4311709afbb0cc0441d68b1997d125c566ce8e65",
+      "argv": [
+        "lake",
+        "env",
+        ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 48.128764152526855,
+      "log": "docs/provenance/evidence/areaLawCombined23003/final-checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-imports": {
+      "source_revision": "4311709afbb0cc0441d68b1997d125c566ce8e65",
+      "argv": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3800380229949951,
+      "log": "docs/provenance/evidence/areaLawCombined23003/final-imports.log",
+      "sha256": "64fd84c3abebd1a1ca56ab3d853c00bbd2ab0544066283e3a9c3cc469d4df227"
+    },
+    "final-paper-gaps": {
+      "source_revision": "4311709afbb0cc0441d68b1997d125c566ce8e65",
+      "argv": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3775339126586914,
+      "log": "docs/provenance/evidence/areaLawCombined23003/final-paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    "final-pdf": {
+      "source_revision": "4311709afbb0cc0441d68b1997d125c566ce8e65",
+      "argv": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy/blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 35.51686906814575,
+      "log": "docs/provenance/evidence/areaLawCombined23003/final-pdf.log.gz",
+      "uncompressed_sha256": "461ec89ceafa425cf461544e30f3aa9e6a1f39e19db18693fb6a6b111f77b5b7",
+      "gzip_sha256": "c6cf2711571f7a6a4a0fb57aaf1cdb0f2b2d915266d89d9132a4358ed7b5e5dc",
+      "gzip_mtime": 0
+    },
+    "final-prose-changed": {
+      "source_revision": "4311709afbb0cc0441d68b1997d125c566ce8e65",
+      "argv": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "7b153216"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5710179805755615,
+      "log": "docs/provenance/evidence/areaLawCombined23003/final-prose-changed.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    "final-web": {
+      "source_revision": "4311709afbb0cc0441d68b1997d125c566ce8e65",
+      "argv": [
+        "leanblueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy/blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 53.23521590232849,
+      "log": "docs/provenance/evidence/areaLawCombined23003/final-web.log.gz",
+      "uncompressed_sha256": "b5a5fd6786401599b58e1eef16c990377b8e82dead8a0dc2642932cc1f0cdfa0",
+      "gzip_sha256": "56977d15343dda825038f1c0bf01417437c028f77e16d55078585e33bfc17fd0",
+      "gzip_mtime": 0
+    },
+    "full-build": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 43.43628716468811,
+      "log": "docs/provenance/evidence/areaLawCombined23003/full-build.log.gz",
+      "uncompressed_sha256": "d5ecc3f8ea9d9ff1385ae20be3412092c9570c081f13a1e280fa5f9767287ed7",
+      "gzip_sha256": "6cec2247de8de6895c42bd4f89de7d4735832d62e5972a113a3810ed543fcb90",
+      "gzip_mtime": 0
+    },
+    "imports": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.24592995643615723,
+      "log": "docs/provenance/evidence/areaLawCombined23003/imports.log",
+      "sha256": "64fd84c3abebd1a1ca56ab3d853c00bbd2ab0544066283e3a9c3cc469d4df227"
+    },
+    "mathlib-cache": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 11.207322120666504,
+      "log": "docs/provenance/evidence/areaLawCombined23003/mathlib-cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    "paper-gaps": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.4009270668029785,
+      "log": "docs/provenance/evidence/areaLawCombined23003/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    "pdf": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy/blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 22.086594820022583,
+      "log": "docs/provenance/evidence/areaLawCombined23003/pdf.log.gz",
+      "uncompressed_sha256": "2178d9fe824566db4198ab80aeb0f4c6735ca990d830e84be1c5e833851aafa2",
+      "gzip_sha256": "ffcece1fcd9a0f7243f516559b3b4e14f90e5f55406e515c0dcf28abf64227a0",
+      "gzip_mtime": 0
+    },
+    "prose-changed": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "7b153216"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5769851207733154,
+      "log": "docs/provenance/evidence/areaLawCombined23003/prose-changed.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    "prose": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "python3",
+        "scripts/check_reader_facing_prose.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 1,
+      "elapsed_seconds": 1.4094290733337402,
+      "log": "docs/provenance/evidence/areaLawCombined23003/prose.log",
+      "sha256": "73d34d1fdca076dc40f7c722b7e5ed7833e29770a868ea245d670e12c09e8a27"
+    },
+    "provenance": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/areaLawCombined23003/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+      "exit_code": 0,
+      "elapsed_seconds": 2.1453213691711426,
+      "log": "docs/provenance/evidence/areaLawCombined23003/provenance.log",
+      "sha256": "bac1a3ae062db8584d0eb357281b525bd1ae4afca3b7316db850a280c89f4998"
+    },
+    "web": {
+      "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+      "argv": [
+        "leanblueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy/blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 49.56958198547363,
+      "log": "docs/provenance/evidence/areaLawCombined23003/web.log.gz",
+      "uncompressed_sha256": "fd890c4e201c60becd901d08d98070eb9292e98b6ddaf39595744140194e2373",
+      "gzip_sha256": "5037702761c25e94bf0b0f7c443d09e6cb2622bda50e778cd08c78fbc58cfa32",
+      "gzip_mtime": 0
+    }
+  },
+  "publication_review": "All ten new blueprint entries and their proofs inspected; final book references and citations resolved.",
+  "whole_repository_prose_scan": "Exit 1: nine preexisting issue-reference violations in six unchanged modules. Added-line prose scan against 7b153216 exits 0.",
+  "first_rendering_status": "Not accepted: the combined chapter heading was commented out. Its complete raw logs and exact PDF binding are preserved; it was corrected at 4311709a.",
+  "claim_scope": "Combined compatibility of the accepted finite-dimensional constructions and estimates, not a new proof of the complete ground-state area law."
+}

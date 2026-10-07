@@ -1,0 +1,23 @@
+{
+  "source_revision": "8c611f14b4e6162790157e86935caeaf17d0cc17",
+  "production_sha256": {
+    "QICLean/Analysis/ReplicaPermutationCovariance.lean": "8ad62d7fc3f6b29e83a2b91b2b6cf000000325349c82d6ac056ee593f66f7049",
+    "blueprint/src/fragment/replica_permutation_covariance.tex": "ed13bf4bab9fb319e8fc780fc3e02a4e8a8aaa3ef3984c9d385f737bbb6cf572",
+    "docs/tactic_patterns.md": "70c5b7b684ebcbdf9b96ac9a034565dee89e8232cb71fdbceaefd21740fd9059"
+  },
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Analysis/ReplicaPermutationCovariance.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "exit_code": 0,
+  "elapsed_seconds": 38.03570379099983,
+  "log": "docs/provenance/evidence/replicaSymmetry8750/strict-source.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

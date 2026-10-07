@@ -1,0 +1,13 @@
+{
+  "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/spectralCutoffMassIntegration8750/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+  "exit_code": 0,
+  "elapsed_seconds": 2.1353328227996826,
+  "log": "docs/provenance/evidence/spectralCutoffMassIntegration8750/provenance.log",
+  "sha256": "ce1b60ddbf98abd8ea388c778e17d8547c34e3e4466e77c6ac9a54618a259d4d"
+}

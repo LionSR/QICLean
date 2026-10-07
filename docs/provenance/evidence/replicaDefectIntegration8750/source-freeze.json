@@ -1,0 +1,175 @@
+{
+  "source_revision": "8a519b3f63e91e7f4628097bd000161156269504",
+  "mathematical_leaf_revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+  "leaf_evidence_revision": "b78ba041939010bf7d5c2ef99a871200afcca272",
+  "published_cutoff_parent": "7942433ebdc8d96d8e42cf380f1c9475a53ff6c5",
+  "declaration_count": 89,
+  "shard_count": 14,
+  "production_bindings": {
+    "QICLean/Entropy/TypicalSpectrum.lean": {
+      "revision": "958a33256b1b679eea9994660c31706e4d604932",
+      "sha256": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4"
+    },
+    "QICLean/Entropy/TypicalDensity.lean": {
+      "revision": "cc89ef96c7390a92861cf45997f77d40cb394ed1",
+      "sha256": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914"
+    },
+    "QICLean/Entropy/FiniteProductSplitting.lean": {
+      "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+      "sha256": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739"
+    },
+    "QICLean/Entropy/FiniteProductInformation.lean": {
+      "revision": "e5fe5732e6c10a921793c1c03bee5403e5bf6362",
+      "sha256": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f"
+    },
+    "QICLean/Analysis/PatchRegulator.lean": {
+      "revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+      "sha256": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca"
+    },
+    "QICLean/Analysis/DensitySimplex.lean": {
+      "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+      "sha256": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8"
+    },
+    "QICLean/Entropy/TypicalPureState.lean": {
+      "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+      "sha256": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01"
+    },
+    "QICLean/Entropy/TypicalPureCompression.lean": {
+      "revision": "7076296aad42492bccb9b3bb321ca12b5565d0e9",
+      "sha256": "e0b2e684eaaa83f1969c7048dabcf1f7ec35d90edf7723598715895ebdb34b49"
+    },
+    "QICLean/Entropy/FiniteProductTypicalState.lean": {
+      "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+      "sha256": "92ab405b18f2cebd705c5fe3fba04a444e0f361e43ac9d796906c0e0b09bd226"
+    },
+    "QICLean/Analysis/ShiftedDensityCommutation.lean": {
+      "revision": "a85789dabd1a2c9f9966fa0b8fdcff160547e88b",
+      "sha256": "8a9e3272897a291decbe3b71babe59c6579f88a29523c3d836766d198634a249"
+    },
+    "QICLean/Entropy/TypicalStateFromTail.lean": {
+      "revision": "79b9d503971a4ff2409fa557e174b46b13fdbbda",
+      "sha256": "149554ccbce80b00197d5f969c04d9674b0c60f2bbca38eb0f0c1771307fe555"
+    },
+    "QICLean/Analysis/SpectralCutoffMass.lean": {
+      "revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+      "sha256": "2f77fe08c9482f508558cee3f2a0fb68f7626322bee49d46633cdc51f91ade4a"
+    },
+    "QICLean/Analysis/ReplicaDefect.lean": {
+      "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+      "sha256": "b349352101074287409ab34df6982825b1e1d50f94b06d520bf788dc5285f357"
+    },
+    "QICLean/Analysis/ReplicaExcitationDecomposition.lean": {
+      "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+      "sha256": "7302690f7b083ff1326abf663f497e5c707ca5344a68cebe8cc5ac10fe94e900"
+    }
+  },
+  "files": [
+    {
+      "path": "QICLean/Entropy/TypicalSpectrum.lean",
+      "sha256": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4"
+    },
+    {
+      "path": "QICLean/Entropy/TypicalDensity.lean",
+      "sha256": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914"
+    },
+    {
+      "path": "QICLean/Entropy/FiniteProductSplitting.lean",
+      "sha256": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739"
+    },
+    {
+      "path": "QICLean/Entropy/FiniteProductInformation.lean",
+      "sha256": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f"
+    },
+    {
+      "path": "QICLean/Analysis/PatchRegulator.lean",
+      "sha256": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca"
+    },
+    {
+      "path": "QICLean/Analysis/DensitySimplex.lean",
+      "sha256": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8"
+    },
+    {
+      "path": "QICLean/Entropy/TypicalPureState.lean",
+      "sha256": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01"
+    },
+    {
+      "path": "QICLean/Entropy/TypicalPureCompression.lean",
+      "sha256": "e0b2e684eaaa83f1969c7048dabcf1f7ec35d90edf7723598715895ebdb34b49"
+    },
+    {
+      "path": "QICLean/Entropy/FiniteProductTypicalState.lean",
+      "sha256": "92ab405b18f2cebd705c5fe3fba04a444e0f361e43ac9d796906c0e0b09bd226"
+    },
+    {
+      "path": "QICLean/Analysis/ShiftedDensityCommutation.lean",
+      "sha256": "8a9e3272897a291decbe3b71babe59c6579f88a29523c3d836766d198634a249"
+    },
+    {
+      "path": "QICLean/Entropy/TypicalStateFromTail.lean",
+      "sha256": "149554ccbce80b00197d5f969c04d9674b0c60f2bbca38eb0f0c1771307fe555"
+    },
+    {
+      "path": "QICLean/Analysis/SpectralCutoffMass.lean",
+      "sha256": "2f77fe08c9482f508558cee3f2a0fb68f7626322bee49d46633cdc51f91ade4a"
+    },
+    {
+      "path": "QICLean/Analysis/ReplicaDefect.lean",
+      "sha256": "b349352101074287409ab34df6982825b1e1d50f94b06d520bf788dc5285f357"
+    },
+    {
+      "path": "QICLean/Analysis/ReplicaExcitationDecomposition.lean",
+      "sha256": "7302690f7b083ff1326abf663f497e5c707ca5344a68cebe8cc5ac10fe94e900"
+    },
+    {
+      "path": "lakefile.toml",
+      "sha256": "c40e0bb3a1ee5f9025d5c752d25c7c2f61622db813f79d6bee7d2412d8760907"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf"
+    },
+    {
+      "path": "lean-toolchain",
+      "sha256": "bc84812c94489d1e3e191baa1dc10d5eb684382d7fe9d2a5ab085e72c1c67e47"
+    },
+    {
+      "path": "QICLean/Analysis.lean",
+      "sha256": "3693c5488a8276ef214653ef97da085d0e65d4e015d8cbb78fcb56b76db24329"
+    },
+    {
+      "path": "QICLean/Entropy.lean",
+      "sha256": "00fe953f2912f3f18bcefa82a21538297f7d800e1eab3d370fb91104ae592d10"
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy.tex",
+      "sha256": "5c8bf19a88476097fca21f194c3db0212ed7e76ef2f5a8e41e8f7939deffbc81"
+    },
+    {
+      "path": "blueprint/src/fragment/replica_defect.tex",
+      "sha256": "7d4ae970af08b5e71586c8e4c10dd7daa88c0c672969d866eed1ea0a59d4b547"
+    },
+    {
+      "path": "blueprint/src/fragment/replica_excitation_decomposition.tex",
+      "sha256": "ecd289f68dc08defc7134ef223adcee305a4ae737a54e32857e1f7a112bd57a9"
+    },
+    {
+      "path": "blueprint/src/fragment/spectral_cutoff_mass.tex",
+      "sha256": "24aea9d0dd3076965445b058a00203c28dbd24ba3ede8b9dbdb0a8432299f29d"
+    },
+    {
+      "path": "texra-blueprint.toml",
+      "sha256": "df70971cd3fccc8f5155e02f0cc5b23887d676f28f994ecba8a894ea108fa457"
+    },
+    {
+      "path": "docs/area-law-replica-defect.md",
+      "sha256": "05eded943ae6099c148707c8e62dcf20978aaee9c3c73e74d4c303fc65c06ccf"
+    }
+  ],
+  "preserved_cutoff": {
+    "path": "QICLean/Analysis/SpectralCutoffMass.lean",
+    "sha256": "2f77fe08c9482f508558cee3f2a0fb68f7626322bee49d46633cdc51f91ade4a",
+    "byte_identical_to_original": true
+  },
+  "initial_inclusion_revision": "3cc74d334c21d5693c6e2072c2e82e17630142c8",
+  "documentation_repair": "Only separate formula displays and placement of one label; no statement, assumption or proof changed."
+}

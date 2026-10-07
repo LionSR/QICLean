@@ -1,0 +1,74 @@
+\section{The selected Schmidt space}
+\label{sec:typical_pure_compression}
+
+The relabeling of the selected Schmidt space in
+\cite[Section~7]{OpenAI2026AreaLaw} is described by an explicit isometry.
+Let $\Omega\in\mathcal H_A\otimes\mathcal H_B$ and let
+$\rho_A=\operatorname{Tr}_B|\Omega\rangle\langle\Omega|$.
+Choose an orthonormal eigenbasis $(u_i)_{i\in A}$ of $\rho_A$, with
+eigenvalues $p_i$. For a selected set $E\subseteq A$, write
+$z=\sum_{i\in E}p_i$ and
+$P_E=\sum_{i\in E}|u_i\rangle\langle u_i|$.
+
+\begin{definition}[The selected coordinate space]
+\label{def:typical_selection_embedding}
+\lean{Matrix.IsHermitian.spectralSelectionEmbedding}
+\leanok
+Let $\mathcal H_R=\mathbb C^E$, so that $\dim\mathcal H_R=|E|$.
+Define $J:\mathcal H_R\to\mathcal H_A$ by $J|i\rangle=u_i$.
+\end{definition}
+
+\begin{theorem}[The spectral isometry]
+\label{thm:typical_selection_embedding}
+\lean{Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding,Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose}
+\leanok
+The selected coordinate embedding satisfies $J^\dagger J=I_R$ and
+$JJ^\dagger=P_E$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:typical_selection_embedding}
+Orthonormality gives $\langle u_i,u_j\rangle=\delta_{ij}$.
+The matrix $JJ^\dagger$ is
+$\sum_{i\in E}|u_i\rangle\langle u_i|=P_E$.
+\end{proof}
+
+\begin{definition}[The compressed selected vector]
+\label{def:compressed_typical_vector}
+\lean{Matrix.compressedTypicalPureState}
+\leanok
+\uses{def:typical_selection_embedding}
+If $z>0$, define
+$\chi=z^{-1/2}(J^\dagger\otimes I_B)\Omega$
+on $\mathcal H_R\otimes\mathcal H_B$.
+\end{definition}
+
+\begin{theorem}[The marginals of the compressed selected vector]
+\label{thm:compressed_typical_vector}
+\lean{Matrix.kronecker_mulVec_compressedTypicalPureState,Matrix.partialTraceRight_compressedTypicalPureState,Matrix.partialTraceLeft_compressedTypicalPureState,Matrix.norm_compressedTypicalPureState}
+\leanok
+\uses{def:compressed_typical_vector}
+Suppose $z>0$ and put $\Omega_E=z^{-1/2}(P_E\otimes I_B)\Omega$.
+Then $\|\chi\|=1$ and
+\begin{align}
+  (J\otimes I_B)\chi&=\Omega_E,\label{eq:compressed_typical_embedding}\\
+  \operatorname{Tr}_B|\chi\rangle\langle\chi|
+    &=\operatorname{diag}_{i\in E}(p_i/z),\label{eq:compressed_typical_diagonal}\\
+  \operatorname{Tr}_R|\chi\rangle\langle\chi|
+    &=\operatorname{Tr}_A|\Omega_E\rangle\langle\Omega_E|.
+    \label{eq:compressed_typical_complement}
+\end{align}
+In particular, every reduced state on a subsystem of $B$ is preserved by
+this relabeling, as required in the marginal comparison of Section~7.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:typical_selection_embedding,def:compressed_typical_vector}
+The identity $JJ^\dagger=P_E$ gives
+(\ref{eq:compressed_typical_embedding}). The coefficient matrix of $\chi$ is
+$z^{-1/2}J^\dagger C_\Omega$, and hence its first marginal is
+$z^{-1}J^\dagger\rho_AJ=\operatorname{diag}_{i\in E}(p_i/z)$.
+Tracing out an isometrically embedded factor gives
+(\ref{eq:compressed_typical_complement}). Taking the trace gives the same
+squared norm as $\Omega_E$, which is one.
+\end{proof}

@@ -1,0 +1,24 @@
+{
+  "source_revision": "cc89ef96c7390a92861cf45997f77d40cb394ed1",
+  "source_sha256": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914",
+  "base_revision": "c7a904b2bc203906aa2f5c4a44f61fa465ee2eaf",
+  "scalar_dependency_source_revision": "958a33256b1b679eea9994660c31706e4d604932",
+  "commands": [
+    {
+      "kind": "build",
+      "command": "lake build QICLean.Entropy.TypicalDensity",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalDensity8753/build.log",
+      "sha256": "5094ac905e808717bf75c3042803c7bf2a55cf61080cdaebad1688dfc26294dd"
+    },
+    {
+      "kind": "axioms",
+      "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true docs/provenance/evidence/typicalDensity8753/TypicalDensityAxioms.lean",
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/typicalDensity8753/axioms.log",
+      "sha256": "1e74e9ba0ccb4f77bee077f715396d17bbbcf517168dc6aec8f693999de037ba"
+    }
+  ],
+  "full_library_build": "deferred to combined integration branch",
+  "global_blueprint_check": "deferred to combined integration branch"
+}

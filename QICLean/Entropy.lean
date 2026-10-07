@@ -17,6 +17,9 @@ import QICLean.Entropy.FilterConjugation
 import QICLean.Entropy.FilterMoment
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
+import QICLean.Entropy.FiniteProductInformation
+import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.FiniteProductTypicalState
 import QICLean.Entropy.GapSurprisal
 import QICLean.Entropy.IidSurprisal
 import QICLean.Entropy.LocalLift
@@ -39,5 +42,10 @@ import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
+import QICLean.Entropy.TypicalDensity
+import QICLean.Entropy.TypicalPureCompression
+import QICLean.Entropy.TypicalPureState
+import QICLean.Entropy.TypicalSpectrum
+import QICLean.Entropy.TypicalStateFromTail
 import QICLean.Entropy.UnnormalizedStrongSubadditivity
 import QICLean.Entropy.VonNeumann

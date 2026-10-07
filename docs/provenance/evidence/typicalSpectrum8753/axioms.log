@@ -1,0 +1,6 @@
+'Entropy.normalizedRestriction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.sum_normalizedRestriction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.normalizedRestriction_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.log_card_typical_centered' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.entropy_normalizedRestriction_typical_centered' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.typicalSpectrum_entropy_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]

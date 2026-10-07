@@ -1,0 +1,51 @@
+{
+  "final-pdf.log": {
+    "gzip_file": "final-pdf.log.gz",
+    "gzip_sha256": "c6cf2711571f7a6a4a0fb57aaf1cdb0f2b2d915266d89d9132a4358ed7b5e5dc",
+    "uncompressed_sha256": "461ec89ceafa425cf461544e30f3aa9e6a1f39e19db18693fb6a6b111f77b5b7",
+    "uncompressed_bytes": 136871,
+    "gzip_mtime": 0
+  },
+  "final-print.log": {
+    "gzip_file": "final-print.log.gz",
+    "gzip_sha256": "04133c612b994fb10daf0cab3ea4bc234a11920a1822c19529cfbcd259511314",
+    "uncompressed_sha256": "59e87553a0de2c94efc2473483f2377c363fed80a27e602927674392db13b901",
+    "uncompressed_bytes": 85432,
+    "gzip_mtime": 0
+  },
+  "final-web.log": {
+    "gzip_file": "final-web.log.gz",
+    "gzip_sha256": "56977d15343dda825038f1c0bf01417437c028f77e16d55078585e33bfc17fd0",
+    "uncompressed_sha256": "b5a5fd6786401599b58e1eef16c990377b8e82dead8a0dc2642932cc1f0cdfa0",
+    "uncompressed_bytes": 15817,
+    "gzip_mtime": 0
+  },
+  "full-build.log": {
+    "gzip_file": "full-build.log.gz",
+    "gzip_sha256": "6cec2247de8de6895c42bd4f89de7d4735832d62e5972a113a3810ed543fcb90",
+    "uncompressed_sha256": "d5ecc3f8ea9d9ff1385ae20be3412092c9570c081f13a1e280fa5f9767287ed7",
+    "uncompressed_bytes": 24684,
+    "gzip_mtime": 0
+  },
+  "pdf.log": {
+    "gzip_file": "pdf.log.gz",
+    "gzip_sha256": "ffcece1fcd9a0f7243f516559b3b4e14f90e5f55406e515c0dcf28abf64227a0",
+    "uncompressed_sha256": "2178d9fe824566db4198ab80aeb0f4c6735ca990d830e84be1c5e833851aafa2",
+    "uncompressed_bytes": 92087,
+    "gzip_mtime": 0
+  },
+  "print23003.log": {
+    "gzip_file": "print23003.log.gz",
+    "gzip_sha256": "149abb95db5f32e8e01002fa3cef4093c793e4c7a8f0b42c926ad6a5c726baa0",
+    "uncompressed_sha256": "4f54b0b9f570e443444916d6f0b8909ea805e43b5dcb44f9420a68c9a7ae945b",
+    "uncompressed_bytes": 85329,
+    "gzip_mtime": 0
+  },
+  "web.log": {
+    "gzip_file": "web.log.gz",
+    "gzip_sha256": "5037702761c25e94bf0b0f7c443d09e6cb2622bda50e778cd08c78fbc58cfa32",
+    "uncompressed_sha256": "fd890c4e201c60becd901d08d98070eb9292e98b6ddaf39595744140194e2373",
+    "uncompressed_bytes": 15795,
+    "gzip_mtime": 0
+  }
+}

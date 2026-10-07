@@ -1,0 +1,3 @@
+'Matrix.trace_le_smul_rank_add_complement_of_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.shiftedRegulator_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.trace_shiftedRegulator_le_quarter' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,0 +1,14 @@
+{
+  "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+  "argv": [
+    "leanblueprint",
+    "web"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy/blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 49.56958198547363,
+  "log": "docs/provenance/evidence/areaLawCombined23003/web.log.gz",
+  "uncompressed_sha256": "fd890c4e201c60becd901d08d98070eb9292e98b6ddaf39595744140194e2373",
+  "gzip_sha256": "5037702761c25e94bf0b0f7c443d09e6cb2622bda50e778cd08c78fbc58cfa32",
+  "gzip_mtime": 0
+}

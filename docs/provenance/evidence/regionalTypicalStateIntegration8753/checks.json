@@ -1,0 +1,205 @@
+{
+  "mathematical_source_revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+  "checked_inclusion_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+  "parent_evidence_merge_revision": "c62d908622220efd6732e91109983e9a533357e9",
+  "parent_branch": "feat/area-law-analytic-integration",
+  "parent_revision": "3446fccdbe72e932aa9479c146c7f3d1b4faee88",
+  "files": {
+    "QICLean/Entropy/FiniteProductTypicalState.lean": "92ab405b18f2cebd705c5fe3fba04a444e0f361e43ac9d796906c0e0b09bd226",
+    "QICLean/Entropy.lean": "6a33fcfd4b52473b3f57a87aa50a080a7a9bd21a02283c29726b7610748f583f",
+    "blueprint/src/chapter/ch12_entropy.tex": "65281936c5ffedfffeb16fcbd43d35e6b0c4c1d90d869e7ba4d444057678dc77",
+    "blueprint/src/chapter/ch12_entropy_regional_typical_state.tex": "512d7924ff0457465dafdcd04cf165fe31adf9bebcfbac5ca03866d769cec9dc"
+  },
+  "preserved_parent_production_files": {
+    "QICLean/Analysis/DensitySimplex.lean": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8",
+    "QICLean/Analysis/PatchRegulator.lean": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca",
+    "QICLean/Entropy/FiniteProductInformation.lean": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f",
+    "QICLean/Entropy/FiniteProductSplitting.lean": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739",
+    "QICLean/Entropy/TypicalDensity.lean": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914",
+    "QICLean/Entropy/TypicalPureState.lean": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01",
+    "QICLean/Entropy/TypicalSpectrum.lean": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4"
+  },
+  "source_byte_binding": "All six regional source bindings remain at 9366e598; all inherited 54 bindings are preserved. The parent merge changed only evidence.",
+  "full_library_jobs": 9682,
+  "declaration_count": 60,
+  "new_declaration_count": 6,
+  "owned_provenance_shards": 8,
+  "commands": [
+    {
+      "record": "axioms-exit.json",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "docs/provenance/evidence/regionalTypicalStateIntegration8753/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 9.1,
+      "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+      "log_sha256": "9bb5927f224968fd1ff8bad3420e59183a688db19faf0b17743a7def8edc9dfb"
+    },
+    {
+      "record": "blueprint-checkdecls-exit.json",
+      "command": [
+        "leanblueprint",
+        "checkdecls"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 43.83,
+      "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+      "log_sha256": "1c4ccc6e08b956339a481fb0561f9220f3075d6a0ba652e715347b54b5e27b16"
+    },
+    {
+      "record": "blueprint-pdf-exit.json",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 49.85,
+      "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+      "log_sha256": "a0eed57ef2a98cb9d7c7d61354828ebc6ca8c5bbdae246fb3aa1bf794a5b900f",
+      "compressed_log": "blueprint-pdf.log.gz",
+      "compressed_log_sha256": "25c5508427e3fce0611f572b5201db085ea5910b1b6082618a6df5aa0c6f05ad"
+    },
+    {
+      "record": "blueprint-web-exit.json",
+      "command": [
+        "leanblueprint",
+        "web"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 49.93,
+      "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+      "log_sha256": "e72f9c51da7b3bb7e942b9db2d9718a05f226ac2c91a7e87427a602d719b48d7"
+    },
+    {
+      "record": "full-lake-build-exit.json",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "started_revision": "847d88834d8050e3e3f670d5466548ebba5137ba",
+      "completed_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+      "lean_tree_unchanged_during_build": true,
+      "log_sha256": "3f0b2a11ec58ea80fc6e284427adecd6270c4acb674be91c129a7f39040b2ab7",
+      "jobs": 9682
+    },
+    {
+      "record": "import-aggregators-exit.json",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.99,
+      "source_revision": "847d88834d8050e3e3f670d5466548ebba5137ba",
+      "log_sha256": "39eb81233c203fe0dd47802ffeb92a43e738eaadf689b2d623d54a966063962c"
+    },
+    {
+      "record": "mathlib-cache-exit.json",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "started_revision": "847d88834d8050e3e3f670d5466548ebba5137ba",
+      "completed_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+      "lean_tree_unchanged_during_build": true,
+      "log_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "record": "provenance-after-parent-merge-exit.json",
+      "command": [
+        "/tmp/qic-density-simplex-provenance-env/bin/python",
+        "docs/provenance/evidence/regionalTypicalStateIntegration8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.19,
+      "source_revision": "c62d908622220efd6732e91109983e9a533357e9",
+      "log_sha256": "5a9baea1960ea5b93855e7e71b273bd66735ae59dcb49804b1ccf47e274f7fe9"
+    },
+    {
+      "record": "provenance-exit.json",
+      "command": [
+        "/tmp/qic-density-simplex-provenance-env/bin/python",
+        "docs/provenance/evidence/regionalTypicalStateIntegration8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.52,
+      "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+      "log_sha256": "5a9baea1960ea5b93855e7e71b273bd66735ae59dcb49804b1ccf47e274f7fe9"
+    },
+    {
+      "record": "reader-prose-exit.json",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "09fdda4f"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.42,
+      "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+      "log_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "record": "web-inspection-exit.json",
+      "command": [
+        "/tmp/qic-regional-blueprint-env/bin/python",
+        "/tmp/qic-regional-inspect-web.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 7.81,
+      "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+      "log_sha256": "524dcfe8d74f4a0fc6eebe8ffaa66fadfdaa7392b2d9e52670b2ad5553f160df"
+    }
+  ],
+  "logs": {
+    "axioms.log": "9bb5927f224968fd1ff8bad3420e59183a688db19faf0b17743a7def8edc9dfb",
+    "blueprint-checkdecls.log": "1c4ccc6e08b956339a481fb0561f9220f3075d6a0ba652e715347b54b5e27b16",
+    "blueprint-web.log": "e72f9c51da7b3bb7e942b9db2d9718a05f226ac2c91a7e87427a602d719b48d7",
+    "final-bibtex.log": "6038c8c150898fba1e7184c562490e5220698a75a96614902c7cc1f832126155",
+    "final-latex.log": "a0209043baeed1748287a7f6236e2a2450f9bd89f9ceff7f4e7bdb84a1168da3",
+    "full-lake-build.log": "3f0b2a11ec58ea80fc6e284427adecd6270c4acb674be91c129a7f39040b2ab7",
+    "import-aggregators.log": "39eb81233c203fe0dd47802ffeb92a43e738eaadf689b2d623d54a966063962c",
+    "mathlib-cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "pdf-artifact-marker.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance-after-parent-merge.log": "5a9baea1960ea5b93855e7e71b273bd66735ae59dcb49804b1ccf47e274f7fe9",
+    "provenance.log": "5a9baea1960ea5b93855e7e71b273bd66735ae59dcb49804b1ccf47e274f7fe9",
+    "reader-prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "web-inspection.log": "524dcfe8d74f4a0fc6eebe8ffaa66fadfdaa7392b2d9e52670b2ad5553f160df",
+    "blueprint-pdf.log.gz": "25c5508427e3fce0611f572b5201db085ea5910b1b6082618a6df5aa0c6f05ad"
+  },
+  "render_inspection": "render-inspection.json",
+  "web_inspection": "web-inspection.json",
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "mathlib_prebuilt_olean_verified": true,
+  "lean_toolchain": "leanprover/lean4:v4.35.0-rc3",
+  "compressed_logs": {
+    "blueprint-pdf.log.gz": {
+      "uncompressed_sha256": "a0eed57ef2a98cb9d7c7d61354828ebc6ca8c5bbdae246fb3aa1bf794a5b900f",
+      "compression": "gzip; original command output unchanged"
+    }
+  }
+}

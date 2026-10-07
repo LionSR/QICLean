@@ -1,0 +1,32 @@
+{
+  "Positive regulators and spectral tails": [
+    2,
+    14
+  ],
+  "Projection trace estimate": [
+    14
+  ],
+  "Bounds on a shifted regulator": [
+    14
+  ],
+  "uniform small-regulator bound": [
+    14
+  ],
+  "Regularized density-simplex minima": [
+    7,
+    395
+  ],
+  "Last-filter minimum": [
+    396
+  ],
+  "Typical Schmidt truncation": [
+    7,
+    394
+  ],
+  "Complementary marginal estimates": [
+    395
+  ],
+  "Marginals on subsystems of the complement": [
+    395
+  ]
+}

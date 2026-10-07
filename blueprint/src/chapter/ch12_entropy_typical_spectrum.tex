@@ -1,0 +1,73 @@
+\section{Typical spectral restrictions}
+
+\subsection{Normalization of typical spectral weights}
+
+\begin{definition}[Normalized restriction]
+\label{def:entropy_normalized_restriction}
+\lean{Entropy.normalizedRestriction}
+\leanok
+Let $E$ be a finite set of indices, and let $(p_i)_{i\in E}$ be real weights.
+Writing $z=\sum_{i\in E}p_i$, their normalized restriction is $p_i'=p_i/z$.
+At zero mass, the normalized restriction is defined to be zero.
+\end{definition}
+
+\begin{theorem}[Normalization]
+\label{thm:entropy_normalized_restriction}
+\lean{Entropy.sum_normalizedRestriction, Entropy.normalizedRestriction_pos}
+\leanok
+\uses{def:entropy_normalized_restriction}
+If $z\ne0$, then $\sum_{i\in E}p_i'=1$. If $z>0$ and $p_i>0$, then $p_i'>0$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:entropy_normalized_restriction}
+Division by $z$ gives $\sum_{i\in E}p_i'=z/z=1$.
+Division of a positive selected weight by positive mass is positive.
+\end{proof}
+
+\begin{theorem}[Centered typical-spectrum estimates]
+\label{thm:entropy_typical_centered}
+\lean{Entropy.log_card_typical_centered,
+  Entropy.entropy_normalizedRestriction_typical_centered}
+\leanok
+\uses{def:entropy_normalized_restriction}
+Suppose that $z=\sum_{i\in E}p_i>0$, and that real numbers $S,w$ satisfy
+$e^{-S-w}\le p_i\le e^{-S+w}$ for every $i\in E$. Then
+\begin{align}
+ |\log|E|-S-\log z|&\le w,
+ \label{eq:entropy_typical_card_center}\\
+ |S(p')-S-\log z|&\le w.
+ \label{eq:entropy_typical_entropy_center}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:entropy_normalized_restriction}
+The positivity of $z$ implies $E\ne\varnothing$. Summing the bounds on $p_i$
+gives $|E|e^{-S-w}\le z\le |E|e^{-S+w}$. Taking logarithms proves
+(\ref{eq:entropy_typical_card_center}). Also, each $p_i'$ is positive and
+$S-w+\log z\le-\log p_i'\le S+w+\log z$. Multiplication by $p_i'$ and summation,
+using $\sum_i p_i'=1$, proves (\ref{eq:entropy_typical_entropy_center}).
+\end{proof}
+
+\begin{theorem}[Typical-spectrum cardinality and entropy]
+\label{thm:entropy_typical_spectrum}
+\lean{Entropy.typicalSpectrum_entropy_bounds}
+\leanok
+\uses{def:entropy_normalized_restriction}
+Under the hypotheses of Theorem~\ref{thm:entropy_typical_centered},
+\begin{align}
+ |\log|E|-S|&\le w+|\log z|,
+ \label{eq:entropy_typical_card_bound}\\
+ |S(p')-S|&\le w+|\log z|.
+ \label{eq:entropy_typical_entropy_bound}
+\end{align}
+These are the typical-Schmidt entropy estimates
+\cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:entropy_typical_centered}
+Apply the triangle inequality to
+$x-S=(x-S-\log z)+\log z$, first with $x=\log|E|$ and then with $x=S(p')$.
+\end{proof}

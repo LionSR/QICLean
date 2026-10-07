@@ -1,0 +1,8 @@
+{
+  "final-print.log.gz": {
+    "gzip_sha256": "b35bf82779d6df676bb0a44d97a33e61373c211a1ca34c7fc942ccba4bf39cca",
+    "uncompressed_sha256": "d5154d7a3255988cb5b2bcda81e1359aa963bfbccfc2ad33abb1d1efe71af40b",
+    "uncompressed_bytes": 99884,
+    "gzip_mtime": 0
+  }
+}

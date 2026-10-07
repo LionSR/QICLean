@@ -1,0 +1,25 @@
+{
+  "merge_revision": "5181e09d7b02f0a600a713a973836eadf06614c0",
+  "previous_published_regional_revision": "4b49e011001edfbb0bc6987cbecb1604a0918a75",
+  "parent_revision": "7b153216",
+  "command": "texra-blueprint paper-gaps check",
+  "exit_code": 0,
+  "log_sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+  "registered_slugs": 60,
+  "source_test_blueprint_tree_objects_unchanged": {
+    "QICLean": "7b1d3bc1bd99591a4e187131d4b9efadfcccc739",
+    "QICLeanTest": "1b0f54b243d5d15a4e4e7b790c2182aa38ef12dd",
+    "blueprint/src": "0657658d8fff523ba210d612786ebd458e940e21"
+  },
+  "files": {
+    "QICLean/Entropy/FiniteProductTypicalState.lean": "92ab405b18f2cebd705c5fe3fba04a444e0f361e43ac9d796906c0e0b09bd226",
+    "QICLeanTest/FiniteProductTypicalState.lean": "76fd51e93f3dc6de4acaeeb1488cf00a0b377c9304f84523f0c2e4132f7d66ff",
+    "QICLean/Entropy.lean": "6a33fcfd4b52473b3f57a87aa50a080a7a9bd21a02283c29726b7610748f583f",
+    "blueprint/src/chapter/ch12_entropy.tex": "65281936c5ffedfffeb16fcbd43d35e6b0c4c1d90d869e7ba4d444057678dc77",
+    "blueprint/src/chapter/ch12_entropy_regional_typical_state.tex": "512d7924ff0457465dafdcd04cf165fe31adf9bebcfbac5ca03866d769cec9dc",
+    "docs/formalization/regional-typical-state.md": "9f4d0d096ebcac063a02f2c8b46050eed709e27f1f7e6a810923b50427ae7417"
+  },
+  "regional_source_bindings_preserved": 6,
+  "full_build_repeated": false,
+  "scope": "The parent merge repairs the registry and adds parent evidence. Lean production/test sources and blueprint source bytes are unchanged."
+}

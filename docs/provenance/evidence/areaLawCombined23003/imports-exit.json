@@ -1,0 +1,13 @@
+{
+  "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+  "argv": [
+    "python3",
+    "scripts/generate_import_aggregators.py",
+    "--check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+  "exit_code": 0,
+  "elapsed_seconds": 0.24592995643615723,
+  "log": "docs/provenance/evidence/areaLawCombined23003/imports.log",
+  "sha256": "64fd84c3abebd1a1ca56ab3d853c00bbd2ab0544066283e3a9c3cc469d4df227"
+}
