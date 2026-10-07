@@ -1,0 +1,345 @@
+blueprint-sync.log
+Raw SHA256: d0c0012c59cd39f70b027d60938eaf335534ade4f13f8fd2bc34057a374c9e30
+Scanning Lean source tree …
+  Found 7696 declarations in Lean source
+Scanning blueprint .tex files …
+  Found 2993 unique \lean{} references in blueprint
+  Found 3025 theorem-like blueprint entries
+
+======================================================================
+  BLUEPRINT ↔ LEAN SYNC REPORT
+======================================================================
+
+Per-chapter formalization progress:
+  Chapter                                             Done / Total       %
+  --------------------------------------------------------------------
+  ch01_coherent_frames.tex                               4 /     4  100.0%
+  ch01_cyclic_trace_power.tex                            1 /     1  100.0%
+  ch01_positive_maps.tex                                85 /    85  100.0%
+  ch01_shifted_density_powers.tex                        7 /     7  100.0%
+  ch01_shifted_density_truncation.tex                   21 /    21  100.0%
+  ch01_shifted_power_derivative.tex                      3 /     3  100.0%
+  ch01_spectrum_and_wigner.tex                          39 /    39  100.0%
+  ch01_states.tex                                       12 /    12  100.0%
+  ch02_channels_peripheral_spectrum_and_primitivity.tex    37 /    37  100.0%
+  ch02_channels_positive_map_and_channel_foundations.tex    26 /    26  100.0%
+  ch02_channels_rectangular_kraus_maps.tex              61 /    61  100.0%
+  ch02_channels_tensor_maps_and_controlled_trace.tex     8 /     8  100.0%
+  ch02_channels_transfer_map_foundations.tex            16 /    16  100.0%
+  ch03_channel_representations_choi_and_kraus.tex       71 /    71  100.0%
+  ch03_channel_representations_choi_foundations.tex     13 /    13  100.0%
+  ch03_channel_representations_determinant_choi_bound.tex    10 /    10  100.0%
+  ch03_channel_representations_dilations_and_ordered_cp.tex   111 /   111  100.0%
+  ch03_channel_representations_ensemble_equivalence.tex     9 /     9  100.0%
+  ch03_channel_representations_hermitian_intertwiners.tex     7 /     7  100.0%
+  ch03_channel_representations_kraus_iterate_choi.tex     8 /     8  100.0%
+  ch03_channel_representations_no_information_without_disturbance.tex     5 /     5  100.0%
+  ch03_channel_representations_normal_forms_and_determinant.tex   255 /   255  100.0%
+  ch03_channel_representations_rectangular_choi_bounds.tex     6 /     6  100.0%
+  ch03_channel_representations_self_dual.tex            24 /    24  100.0%
+  ch03_channel_representations_sic_povms.tex            19 /    19  100.0%
+  ch03_channel_representations_transfer_matrix_identities.tex     5 /     5  100.0%
+  ch04_convex_structure.tex                             71 /    71  100.0%
+  ch04_positive_not_cp_choi_and_decomposable_maps.tex   200 /   200  100.0%
+  ch04_positive_not_cp_kramers_degeneracy.tex           10 /    10  100.0%
+  ch04_positive_not_cp_npositivity_infimum.tex          10 /    10  100.0%
+  ch04_positive_not_cp_positivity_reduction_and_breuer_hall.tex    38 /    38  100.0%
+  ch04_positive_not_cp_ppt_and_separable_states.tex     21 /    21  100.0%
+  ch04_positive_not_cp_schmidt_number_and_entanglement.tex    12 /    12  100.0%
+  ch04_positive_not_cp_supporting_results.tex           53 /    53  100.0%
+  ch04_positive_not_cp_trace_normalization_and_lorentz_cone.tex     3 /     3  100.0%
+  ch04_positive_not_cp_two_positive_schmidt_and_choi.tex    50 /    50  100.0%
+  ch05_schwarz_abstract_domains_and_order.tex           41 /    41  100.0%
+  ch05_schwarz_douglas.tex                               6 /     6  100.0%
+  ch05_schwarz_ft_core.tex                              15 /    15  100.0%
+  ch05_schwarz_retractions_and_peripheral_equality.tex     5 /     5  100.0%
+  ch05_schwarz_schur_complement.tex                      6 /     6  100.0%
+  ch05_schwarz_supporting_results.tex                   13 /    13  100.0%
+  ch06_operator_convexity_lieb_and_resolvent.tex        18 /    18  100.0%
+  ch06_operator_convexity_matrix_means.tex              77 /    77  100.0%
+  ch06_operator_convexity_schwarz_and_jensen.tex        33 /    33  100.0%
+  ch07_qpf.tex                                          92 /    92  100.0%
+  ch07_qpf_cesaro_fixed_points.tex                      46 /    46  100.0%
+  ch07_qpf_irreducibility_and_ergodicity.tex            18 /    18  100.0%
+  ch07_qpf_supporting_results.tex                       24 /    24  100.0%
+  ch07_qpf_weighted_cesaro.tex                          13 /    13  100.0%
+  ch08_spectral_ft_peripheral_cyclic.tex                 6 /     6  100.0%
+  ch08_spectral_supporting_results.tex                  27 /    27  100.0%
+  ch09_channel_asymptotics_corner_and_overlap_decompositions.tex    24 /    24  100.0%
+  ch09_channel_asymptotics_detailed_balance.tex          5 /     5  100.0%
+  ch09_channel_asymptotics_direct_sum_corners_and_maximal_support.tex    13 /    13  100.0%
+  ch09_channel_asymptotics_direct_sum_schwarz_maps.tex    62 /    62  100.0%
+  ch09_channel_asymptotics_fixed_point_algebras.tex     14 /    14  100.0%
+  ch09_channel_asymptotics_fixed_point_structure_and_cycles.tex   128 /   128  100.0%
+  ch09_channel_asymptotics_fixed_points_and_wedderburn_i.tex    53 /    53  100.0%
+  ch09_channel_asymptotics_jordan_block_power.tex       10 /    10  100.0%
+  ch09_channel_asymptotics_mean_ergodic.tex             20 /    20  100.0%
+  ch09_channel_asymptotics_supporting_results.tex       13 /    13  100.0%
+  ch09_channel_asymptotics_upper_triangular_power.tex    23 /    23  100.0%
+  ch09_channel_asymptotics_wedderburn_ii.tex            48 /    48  100.0%
+  ch10_wielandt_cumulative_bound.tex                    40 /    40  100.0%
+  ch10_wielandt_supporting_results.tex                   9 /     9  100.0%
+  ch11_semigroup_adjoint_kernel_and_reducibility.tex    53 /    53  100.0%
+  ch11_semigroup_dissipation_and_primitivity.tex        68 /    68  100.0%
+  ch11_semigroup_dynamics_and_gksl.tex                  82 /    82  100.0%
+  ch11_semigroup_hermitian_paths.tex                    16 /    16  100.0%
+  ch12_entropy_classical_operator_schmidt_and_renyi.tex    64 /    64  100.0%
+  ch12_entropy_conditional_continuity.tex               22 /    22  100.0%
+  ch12_entropy_conditional_two_families.tex              4 /     4  100.0%
+  ch12_entropy_corollaries.tex                           4 /     4  100.0%
+  ch12_entropy_data_processing.tex                       3 /     3  100.0%
+  ch12_entropy_finite_product.tex                       12 /    12  100.0%
+  ch12_entropy_majorization.tex                          2 /     2  100.0%
+  ch12_entropy_mutual_information.tex                   11 /    11  100.0%
+  ch12_entropy_trace_norm.tex                           60 /    60  100.0%
+  ch12_entropy_tripartite_and_ssa_i.tex                 58 /    58  100.0%
+  ch12_entropy_tripartite_and_ssa_ii.tex               117 /   117  100.0%
+  ch12_entropy_von_neumann_and_relative_i.tex           38 /    38  100.0%
+  ch12_entropy_von_neumann_and_relative_ii.tex          80 /    80  100.0%
+  ch12_rectangular_windows.tex                          31 /    31  100.0%
+  ch13_spectral_filter.tex                              67 /    67  100.0%
+  --------------------------------------------------------------------
+  TOTAL                                               3025 /  3025  100.0%
+
+✓ Blueprint and Lean code are in sync.
+
+JSON report written to ../shifted-power-derivative-validation/docs/blueprint-sync.json
+
+======================================================================
+  CHANGED LEAN DECLARATIONS ↔ BLUEPRINT COVERAGE
+======================================================================
+
+✓ No changed def/theorem/lemma declarations are missing blueprint entries.
+
+
+check-imports.log
+Raw SHA256: 0890e75b4f50e6794bb7e118b931006cbe1ce9171f74aafb2bfedf4bc4301099
+Import aggregators are current: 32 generated files cover 663 production modules.
+
+chktex.log
+Raw SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+
+file-policy-tests.log
+Raw SHA256: 45087b28132bff7ae5e45b9845c044a1c5eb4c2e48f7393a7de7daea15c1f117
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.082s
+
+OK
+
+generate-imports.log
+Raw SHA256: 2e474088243a5838c094ef549830b8aea42c63cb16fcd59fb9aa2af2931573fd
+Updating QICLean/Analysis.lean
+Generated 32 import aggregators covering 663 production modules.
+
+hotspot-tests.log
+Raw SHA256: 74c03fc16fde9a2dfeff03db0ec8f472a5a8dfed04e9e982a912b4b7f64faee3
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.002s
+
+OK
+
+import-tests.log
+Raw SHA256: f1d3cbb20f163ae5e2fff4defbe5e5555b64befbe115d13f5522afb4216ccf1a
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.016s
+
+OK
+
+name-collisions.log
+Raw SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+
+numbered.log
+Raw SHA256: 8b3c151ec01c03ccd4d45c7a1af4f3c95f17920af7027649de90d2e802bae468
+Checked 693 tracked production Lean files: 0 numbered debt, 2 semantic exceptions, 0 new violations.
+
+oversized.log
+Raw SHA256: ccb5f4a3e39e0e14fb62223e311a5a36692736a1ebedb05b24f87c9dbd336421
+Scanned 712 .lean files, 0 nonexempt files exceed 1000 lines (0 known, 0 new); validated 0 of 0 exact aggregator exemption(s).
+All nonexempt .lean files are within the line limit.
+
+prose-diff.log
+Raw SHA256: d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2
+✓ No newly added reader-facing prose violations found.
+
+prose-new-files.log
+Raw SHA256: 8ef05d2d1a04e97b1c7233df05f3cc6d27c1a168b17b9fcb0bb33495e5c8d087
+PASS: full new production, regression, and blueprint sources have no reader-facing prose violations.
+
+prose.log
+Raw SHA256: 9b678b2c51225544a8aee6f89e9e525619b262464f3ac5aa0b5c771e12fe799b
+::error file=QICLean/Analysis/Entropy.lean,line=52,title=Reader-facing prose::Lean docstrings and comments should cite the mathematical note, not an issue number.
+QICLean/Analysis/Entropy.lean:52: Lean docstrings and comments should cite the mathematical note, not an issue number.
+  `TNLean.lean` for CI validation. See issue #239 for the deferred proof plan.
+::error file=QICLean/Entropy/StrongSubadditivity.lean,line=15,title=Reader-facing prose::Lean docstrings and comments should cite the mathematical note, not an issue number.
+QICLean/Entropy/StrongSubadditivity.lean:15: Lean docstrings and comments should cite the mathematical note, not an issue number.
+  roadmap of issue #613 for the Simple MPDO RFP track (issue #236,
+::error file=QICLean/Entropy/StrongSubadditivity.lean,line=16,title=Reader-facing prose::Lean docstrings and comments should cite the mathematical note, not an issue number.
+QICLean/Entropy/StrongSubadditivity.lean:16: Lean docstrings and comments should cite the mathematical note, not an issue number.
+  umbrella #239).
+::error file=QICLean/Entropy/MutualInformation.lean,line=20,title=Reader-facing prose::Lean docstrings and comments should cite the mathematical note, not an issue number.
+QICLean/Entropy/MutualInformation.lean:20: Lean docstrings and comments should cite the mathematical note, not an issue number.
+  consequences used by the MPDO / RFP track (issues #236, #239, #785):
+::error file=QICLean/Entropy/MutualInformation.lean,line=34,title=Reader-facing prose::Lean docstrings and comments should cite the mathematical note, not an issue number.
+QICLean/Entropy/MutualInformation.lean:34: Lean docstrings and comments should cite the mathematical note, not an issue number.
+  (see issue #613, #236, #239, #785).
+::error file=QICLean/Entropy/VonNeumann.lean,line=14,title=Reader-facing prose::Lean docstrings and comments should cite the mathematical note, not an issue number.
+QICLean/Entropy/VonNeumann.lean:14: Lean docstrings and comments should cite the mathematical note, not an issue number.
+  (see issue #236, infrastructure request #613, and the umbrella task
+::error file=QICLean/Entropy/VonNeumann.lean,line=15,title=Reader-facing prose::Lean docstrings and comments should cite the mathematical note, not an issue number.
+QICLean/Entropy/VonNeumann.lean:15: Lean docstrings and comments should cite the mathematical note, not an issue number.
+  #239).
+::error file=QICLean/Entropy/MarkovChain.lean,line=48,title=Reader-facing prose::Lean docstrings and comments should cite the mathematical note, not an issue number.
+QICLean/Entropy/MarkovChain.lean:48: Lean docstrings and comments should cite the mathematical note, not an issue number.
+  * arXiv:1606.00608 Appendix C (the downstream target of issue #632 / #236)
+::error file=QICLean/Channel/Peripheral/Cycles.lean,line=30,title=Reader-facing prose::Lean docstrings and comments should cite the mathematical note, not an issue number.
+QICLean/Channel/Peripheral/Cycles.lean:30: Lean docstrings and comments should cite the mathematical note, not an issue number.
+  fixed-point algebra, issues #27/#360) and is left to future work.
+::error::Reader-facing prose violates the lean-conventions prose_style reference (see docs/project_conventions.md).
+
+provenance-schema.log
+Raw SHA256: 8fad935eafd8a1f69d09723d0b9023f5d14b955144f19dcdf05d88ab9b6f32d8
+PASS: all three planned/pending entries validate against accepted schema.
+
+tactic-patterns.log
+Raw SHA256: da1a544f6fe3978bb11a6671c8e5c33f0ae17f5ea67f37798cb5223262b96f81
+# Repeated tactic patterns (>= 3 occurrences)
+# Ranked by lines x occurrences; showing top 20
+
+## 3 occurrences x 8 lines (weight 24)
+    apply continuousOn_finsetSum Finset.univ
+    intro i _
+    apply continuousOn_finsetSum Finset.univ
+    intro j _ t ht
+    have ht0 : 0 < t := ht
+    have hα : 0 < α i := hA.eigenvalues_pos i
+    have hβ : 0 < β j := hB.eigenvalues_pos j
+    have hden : α i + t * β j ≠ 0 := by positivity
+  at: Analysis/RelativeEntropyResolventIntegral.lean:661, Analysis/RelativeEntropyResolventIntegral.lean:690, Analysis/RelativeEntropyResolventIntegral.lean:919
+
+## 4 occurrences x 6 lines (weight 24)
+    have hDαY : Dα * Y = fun i j => (α i : ℂ) * Y i j := by
+    ext i j
+    simp only [Dα, Matrix.diagonal_mul]
+    have hYDβ : Y * Dβ = fun i j => Y i j * (β j : ℂ) := by
+    ext i j
+    simp only [Dβ, Matrix.mul_diagonal]
+  at: Analysis/RelativeEntropyResolventIntegral.lean:235, Analysis/RelativeEntropyResolventIntegral.lean:405, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:181, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:283
+
+## 3 occurrences x 6 lines (weight 18)
+    have hdet : M.det.re = ∏ i, hM.1.eigenvalues i := by
+    simp only [hM.1.det_eq_prod_eigenvalues, ← RCLike.ofReal_prod]
+    exact RCLike.ofReal_re (K := ℂ) _
+    have htr : M.trace.re = ∑ i, hM.1.eigenvalues i := by
+    simp only [hM.1.trace_eq_sum_eigenvalues, ← RCLike.ofReal_sum]
+    exact RCLike.ofReal_re (K := ℂ) _
+  at: Analysis/DeterminantTraceBound.lean:68, Analysis/MatrixTraceInequalities.lean:242, Analysis/MatrixTraceInequalities.lean:269
+
+## 3 occurrences x 6 lines (weight 18)
+    rcases h₁ : decompB b₁ with ⟨j₁, l₁, r₁⟩
+    rcases h₂ : decompB b₂ with ⟨j₂, l₂, r₂⟩
+    simp only [blockState_apply]
+    by_cases hj : j₁ = j₂
+    · subst hj
+    simp only [dite_eq_left, cast_eq]
+  at: Analysis/EntropyMarkovReverse.lean:222, Analysis/EntropyMarkovReverse.lean:467, Analysis/EntropyMarkovReverse.lean:507
+
+## 3 occurrences x 6 lines (weight 18)
+    have hAform : A = UA * Dα * star UA := by
+    simpa only [UA, Dα, α] using hA.isHermitian.spectral_form
+    have hBform : B = UB * Dβ * star UB := by
+    simpa only [UB, Dβ, β] using hB.isHermitian.spectral_form
+    have hUA : star UA * UA = 1 := by
+    simpa only [UA] using
+  at: Analysis/RelativeEntropyResolventIntegral.lean:261, Analysis/RelativeEntropyResolventIntegral.lean:431, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:319
+
+## 6 occurrences x 3 lines (weight 18)
+    unfold coordinatePairing
+    apply Finset.sum_congr rfl
+    intro i _
+  at: Analysis/FiniteCoordinateNowosad/Recursion.lean:153, Analysis/FiniteCoordinateNowosad/Recursion.lean:167, Analysis/FiniteCoordinateNowosad/Recursion.lean:177, Analysis/FiniteCoordinateNowosad/Recursion.lean:288, Analysis/FiniteCoordinateNowosad/Recursion.lean:299 (+1 more)
+
+## 4 occurrences x 4 lines (weight 16)
+    have hAform : A = UA * Dα * star UA := by
+    simpa only [UA, Dα, α] using hA.isHermitian.spectral_form
+    have hBform : B = UB * Dβ * star UB := by
+    simpa only [UB, Dβ, β] using hB.isHermitian.spectral_form
+  at: Analysis/RelativeEntropyResolventIntegral.lean:261, Analysis/RelativeEntropyResolventIntegral.lean:431, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:217, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:319
+
+## 4 occurrences x 4 lines (weight 16)
+    apply Finset.sum_congr rfl
+    intro i _
+    apply Finset.sum_congr rfl
+    intro j _
+  at: Analysis/RelativeEntropyResolventIntegral.lean:356, Analysis/RelativeEntropyResolventIntegral.lean:865, Analysis/RelativeEntropyResolventIntegral.lean:971, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:785
+
+## 3 occurrences x 4 lines (weight 12)
+    change vecMulVec ψ (fun p => star (ψ p)) * vecMulVec φ (fun p => star (φ p)) = 0
+    rw [Matrix.vecMulVec_mul_vecMulVec, horth, zero_smul]
+    ext
+    simp [Matrix.vecMulVec_apply]
+  at: Analysis/AsymptoticStateConvergence.lean:57, Analysis/TraceNormContractionCoefficient.lean:304, Analysis/TraceNormContractionCoefficient.lean:361
+
+## 3 occurrences x 4 lines (weight 12)
+    unfold coordinatePairing
+    apply Finset.sum_congr rfl
+    intro i _
+    simp only [Pi.mul_apply, Pi.pow_apply]
+  at: Analysis/FiniteCoordinateNowosad/Recursion.lean:288, Analysis/FiniteCoordinateNowosad/Recursion.lean:299, Analysis/FiniteCoordinateNowosad/Recursion.lean:308
+
+## 4 occurrences x 3 lines (weight 12)
+    unfold coordinateSum
+    apply Finset.sum_congr rfl
+    intro i _
+  at: Analysis/FiniteCoordinateNowosad/Yamagami.lean:504, Analysis/FiniteCoordinateNowosad.lean:52, Analysis/FiniteCoordinateNowosad.lean:427, Analysis/YamagamiCyclicMatrix.lean:662
+
+## 4 occurrences x 3 lines (weight 12)
+    have hApsd : A.PosSemidef := Matrix.nonneg_iff_posSemidef.mp hA
+    have hTApsd : (T A).PosSemidef := hT A hApsd
+    have hTA : 0 ≤ T A := Matrix.nonneg_iff_posSemidef.mpr hTApsd
+  at: Analysis/LiebConcavity.lean:252, Analysis/LiebConcavity.lean:280, Analysis/LiebConcavity.lean:307, Analysis/LiebConcavity.lean:465
+
+## 4 occurrences x 3 lines (weight 12)
+    apply continuousOn_finsetSum Finset.univ
+    intro i _
+    apply continuousOn_finsetSum Finset.univ
+  at: Analysis/RelativeEntropyResolventIntegral.lean:661, Analysis/RelativeEntropyResolventIntegral.lean:690, Analysis/RelativeEntropyResolventIntegral.lean:919, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:815
+
+## 3 occurrences x 3 lines (weight 9)
+    set UA : Matrix m m ℂ := (hA.isHermitian.eigenvectorUnitary : Matrix m m ℂ) with hUA
+    set UB : Matrix n n ℂ := (hB.isHermitian.eigenvectorUnitary : Matrix n n ℂ) with hUB
+    set U : Matrix (m × n) (m × n) ℂ := UA ⊗ₖ UB with hU
+  at: Analysis/CfcKronecker.lean:106, Analysis/CfcKronecker.lean:190, Analysis/EntropyDecomposition.lean:163
+
+## 3 occurrences x 3 lines (weight 9)
+    rw [← map_add]
+    congr 1
+    ext <;> simp
+  at: Analysis/ConicProgram.lean:324, Analysis/ConicProgram.lean:337, Analysis/ConicProgram.lean:363
+
+## 3 occurrences x 3 lines (weight 9)
+    rfl
+    rw [hTrace]
+    simp only [Y, Complex.re_sum]
+  at: Analysis/RelativeEntropyResolventIntegral.lean:353, Analysis/RelativeEntropyResolventIntegral.lean:523, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:554
+
+## 3 occurrences x 3 lines (weight 9)
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl
+    intro j _
+  at: Analysis/RelativeEntropyResolventIntegral.lean:526, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:454, Analysis/RelativeEntropySupportLeftRightQuadratic.lean:557
+
+## 3 occurrences x 3 lines (weight 9)
+    fun_prop
+    refine hspectral.congr (fun t ht => ?_)
+    simpa only [α, β, W, P] using
+  at: Analysis/RelativeEntropyResolventIntegral.lean:670, Analysis/RelativeEntropyResolventIntegral.lean:699, Analysis/RelativeEntropyResolventIntegral.lean:930
+
+## 3 occurrences x 3 lines (weight 9)
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl
+    intro k _
+  at: Analysis/YamagamiCyclicMatrix.lean:71, Analysis/YamagamiCyclicMatrix.lean:239, Analysis/YamagamiCyclicMatrix.lean:388
+

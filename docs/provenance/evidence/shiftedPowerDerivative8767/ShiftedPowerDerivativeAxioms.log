@@ -1,0 +1,5 @@
+'Matrix.PosSemidef.hasDerivAt_add_smul_one_rpow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.hasDerivAt_add_exp_neg_smul_one_rpow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.l2_opNorm_smul_add_smul_one_rpow_neg_one_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

@@ -1,0 +1,61 @@
+\section{Derivatives with respect to a scalar shift}
+\label{sec:shifted_power_derivative}
+
+Let $I$ be a finite index set and let $A\in\C^{I\times I}$ be positive
+semidefinite. Norms are Euclidean operator norms. The matrix $A$ may be
+singular, and $I$ may be empty.
+
+% Independent supporting facts for OpenAI, Polynomial PEPS approximation
+% of gapped square-grid ground states, September 24, 2026, 03-patches.tex,
+% lines 425--451, at adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% No assertion about the minimum envelope or regulator growth is made here.
+
+\begin{theorem}[Derivative of a shifted power]
+    \label{thm:shifted_power_derivative}
+    \lean{Matrix.PosSemidef.hasDerivAt_add_smul_one_rpow}
+    \leanok
+    For every $b>0$ and $r\in\R$, the function $s\mapsto(A+s\Id)^r$
+    has derivative $r(A+b\Id)^{r-1}$ at $b$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:shifted_power_functional_calculus}
+    Fix a unitary eigenbasis $A=U\operatorname{diag}(\lambda_i)U^*$.
+    For $s>0$, the shifted power is
+    $U\operatorname{diag}((\lambda_i+s)^r)U^*$.
+    Each scalar coordinate has derivative
+    $r(\lambda_i+b)^{r-1}$ because $\lambda_i+b>0$.
+    The maps taking diagonal entries to a matrix and multiplying by the
+    fixed matrices $U$ and $U^*$ are continuous linear maps. Applying them
+    to the coordinate derivatives gives the claimed derivative.
+\end{proof}
+
+\begin{theorem}[Exponential regularization]
+    \label{thm:exp_regularization_derivative}
+    \lean{Matrix.PosSemidef.hasDerivAt_add_exp_neg_smul_one_rpow}
+    \leanok
+    For every $R,r\in\R$, the function $s\mapsto(A+e^{-s}\Id)^r$
+    has derivative $-re^{-R}(A+e^{-R}\Id)^{r-1}$ at $R$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:shifted_power_derivative}
+    The chain rule and $\frac{d}{dR}e^{-R}=-e^{-R}$ give the assertion.
+\end{proof}
+
+\begin{theorem}[Shifted inverse contraction]
+    \label{thm:shifted_inverse_contraction}
+    \lean{Matrix.PosSemidef.l2_opNorm_smul_add_smul_one_rpow_neg_one_le}
+    \leanok
+    For every $b>0$, one has $\|b(A+b\Id)^{-1}\|\le1$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:shifted_power_functional_calculus}
+    The matrix is the functional calculus of $t\mapsto b/(t+b)$ at $A$.
+    Every eigenvalue $t$ of $A$ is nonnegative, so $0\le b/(t+b)\le1$.
+    The operator norm bound follows from this scalar bound on the spectrum.
+\end{proof}
