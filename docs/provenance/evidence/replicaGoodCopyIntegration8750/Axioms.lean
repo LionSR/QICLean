@@ -1,0 +1,119 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Analysis.ReplicaExcitationDecomposition
+import QICLean.Analysis.ReplicaGoodCopyFactorization
+import QICLean.Analysis.DensitySimplex
+import QICLean.Analysis.PatchRegulator
+import QICLean.Analysis.ShiftedDensityCommutation
+import QICLean.Analysis.SpectralCutoffMass
+import QICLean.Entropy.FiniteProductInformation
+import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.FiniteProductTypicalState
+import QICLean.Entropy.TypicalDensity
+import QICLean.Entropy.TypicalPureCompression
+import QICLean.Entropy.TypicalPureState
+import QICLean.Entropy.TypicalSpectrum
+import QICLean.Entropy.TypicalStateFromTail
+
+/-! Strict kernel audit of fourteen owned area-law auxiliary modules. -/
+
+set_option linter.hashCommand false
+
+#print axioms Entropy.normalizedRestriction
+#print axioms Entropy.sum_normalizedRestriction
+#print axioms Entropy.normalizedRestriction_pos
+#print axioms Entropy.log_card_typical_centered
+#print axioms Entropy.entropy_normalizedRestriction_typical_centered
+#print axioms Entropy.typicalSpectrum_entropy_bounds
+#print axioms Matrix.IsHermitian.spectralSelection
+#print axioms Matrix.IsHermitian.spectralRestrictionMass
+#print axioms Matrix.IsHermitian.normalizedSpectralRestriction
+#print axioms Matrix.IsHermitian.isStarProjection_spectralSelection
+#print axioms Matrix.IsHermitian.commute_spectralSelection
+#print axioms Matrix.PosSemidef.normalizedSpectralRestriction_posSemidef
+#print axioms Matrix.IsHermitian.trace_normalizedSpectralRestriction
+#print axioms Matrix.IsHermitian.normalizedSpectralRestriction_eq
+#print axioms Matrix.PosSemidef.spectralRestrictionMass_le_one
+#print axioms Matrix.IsHermitian.rank_normalizedSpectralRestriction
+#print axioms Matrix.PosSemidef.entropy_normalizedSpectralRestriction
+#print axioms Matrix.PosSemidef.typicalSpectralRestriction_entropy_bounds
+#print axioms FiniteProduct.splitTwoRegionsEquiv
+#print axioms FiniteProduct.splitTwoRegionsState
+#print axioms FiniteProduct.partialTraceRight_splitTwoRegionsState
+#print axioms FiniteProduct.splitTwoRegionsState_unit
+#print axioms FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le
+#print axioms FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow
+#print axioms FiniteProduct.conditionalMutualInformation_nonneg
+#print axioms FiniteProduct.entropy_submodular
+#print axioms FiniteProduct.mutualInformation_mono_left
+#print axioms Matrix.trace_le_smul_rank_add_complement_of_le
+#print axioms Matrix.PosSemidef.shiftedRegulator_bounds
+#print axioms Matrix.PosSemidef.trace_shiftedRegulator_le_quarter
+#print axioms Entropy.simplex_ratio_conditions_of_isMinOn
+#print axioms Entropy.simplexFilterObjective
+#print axioms Entropy.normalizedFilterWeights
+#print axioms Entropy.hasFDerivAt_simplexFilterObjective
+#print axioms Entropy.simplexFilterObjective_pos
+#print axioms Entropy.normalizedFilterWeights_nonneg
+#print axioms Entropy.sum_normalizedFilterWeights
+#print axioms Entropy.normalizedFilterWeights_clipped_of_isMinOn
+#print axioms Matrix.leftFilteredVector
+#print axioms Matrix.leftFilteredVector_eq_kronecker
+#print axioms Matrix.partialTraceLeft_projection_split
+#print axioms Matrix.typicalPureState
+#print axioms Matrix.partialTraceRight_typicalPureState
+#print axioms Matrix.norm_typicalPureState
+#print axioms Matrix.inner_typicalPureState
+#print axioms Matrix.norm_sub_typicalPureState_sq
+#print axioms Matrix.norm_sub_typicalPureState_sq_le
+#print axioms Matrix.partialTraceLeft_typicalPureState
+#print axioms Matrix.partialTraceLeft_typicalPureState_decomposition
+#print axioms Matrix.partialTraceLeft_typicalPureState_le
+#print axioms Matrix.entropy_partialTraceLeft_typicalPureState_le
+#print axioms Matrix.partialTraceRight_partialTraceLeft_typicalPureState_decomposition
+#print axioms Matrix.partialTraceRight_partialTraceLeft_typicalPureState_le
+#print axioms Matrix.entropy_partialTraceRight_partialTraceLeft_typicalPureState_le
+#print axioms Matrix.IsHermitian.spectralSelectionEmbedding
+#print axioms Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding
+#print axioms Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose
+#print axioms Matrix.compressedTypicalPureState
+#print axioms Matrix.kronecker_mulVec_compressedTypicalPureState
+#print axioms Matrix.partialTraceRight_compressedTypicalPureState
+#print axioms Matrix.partialTraceLeft_compressedTypicalPureState
+#print axioms Matrix.norm_compressedTypicalPureState
+#print axioms FiniteProduct.typicalPureState
+#print axioms FiniteProduct.split_typicalPureState
+#print axioms FiniteProduct.norm_typicalPureState
+#print axioms FiniteProduct.reducedPure_typicalPureState
+#print axioms FiniteProduct.entropy_typicalPureState_le
+#print axioms FiniteProduct.reducedPure_typicalPureState_le
+#print axioms Matrix.PosDef.commute_rpow_iff
+#print axioms Matrix.PosSemidef.commute_add_smul_one_rpow_iff
+#print axioms Matrix.PosSemidef.commute_of_commute_shifted_inverse_power
+#print axioms Matrix.PosSemidef.typicalSet_normalizedSpectralRestriction_bounds
+#print axioms Matrix.typicalPureState_typicalSet_bounds
+#print axioms Matrix.PosSemidef.smul_one_sub_spectralCutoff_le
+#print axioms Matrix.PosSemidef.spectralCutoff_mass_ge
+
+#print axioms Matrix.replicaHamiltonian
+#print axioms Matrix.replicaDefectCount
+#print axioms Matrix.replicaHamiltonian_mulVec_prod
+#print axioms Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod
+#print axioms Matrix.PosSemidef.replica_gap
+#print axioms Matrix.posSemidef_replicaDefectCount
+#print axioms Matrix.spectralCutoff_replica_gap_mass_ge
+#print axioms Matrix.replicaExcitationProjection
+#print axioms Matrix.isStarProjection_replicaExcitationProjection
+#print axioms Matrix.sum_replicaExcitationProjection
+#print axioms Matrix.replicaDefectCount_mul_replicaExcitationProjection
+#print axioms Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection
+#print axioms Matrix.replicaExcitationProjection_mul_of_ne
+#print axioms Matrix.replicaDefectCutoff_decomposition
+
+#print axioms Matrix.replicaGoodCopyRemainder
+#print axioms Matrix.replicaExcitationProjection_mulVec_factorization
+#print axioms Matrix.replicaGoodCopy_factorization_of_fixed
+#print axioms Matrix.norm_replicaGoodCopyRemainder_of_fixed
