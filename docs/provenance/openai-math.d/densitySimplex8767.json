@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8767-density-simplex-01",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DensitySimplex.lean",
+        "declaration": "Entropy.simplex_ratio_conditions_of_isMinOn",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem",
+            "eq:patch-simplex-derivative",
+            "eq:patch-kkt",
+            "eq:patch-clipped-eigenvalues"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove first-order necessary conditions from an actual closed-simplex minimum, and derive the concrete last-filter derivative and clipped normalized weights. No full noncommuting ordered-chain minimizer theorem or Proposition 4.1 is claimed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-density-simplex-02",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DensitySimplex.lean",
+        "declaration": "Entropy.simplexFilterObjective",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem",
+            "eq:patch-simplex-derivative",
+            "eq:patch-kkt",
+            "eq:patch-clipped-eigenvalues"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove first-order necessary conditions from an actual closed-simplex minimum, and derive the concrete last-filter derivative and clipped normalized weights. No full noncommuting ordered-chain minimizer theorem or Proposition 4.1 is claimed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-density-simplex-03",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DensitySimplex.lean",
+        "declaration": "Entropy.normalizedFilterWeights",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem",
+            "eq:patch-simplex-derivative",
+            "eq:patch-kkt",
+            "eq:patch-clipped-eigenvalues"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove first-order necessary conditions from an actual closed-simplex minimum, and derive the concrete last-filter derivative and clipped normalized weights. No full noncommuting ordered-chain minimizer theorem or Proposition 4.1 is claimed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-density-simplex-04",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DensitySimplex.lean",
+        "declaration": "Entropy.hasFDerivAt_simplexFilterObjective",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem",
+            "eq:patch-simplex-derivative",
+            "eq:patch-kkt",
+            "eq:patch-clipped-eigenvalues"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove first-order necessary conditions from an actual closed-simplex minimum, and derive the concrete last-filter derivative and clipped normalized weights. No full noncommuting ordered-chain minimizer theorem or Proposition 4.1 is claimed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-density-simplex-05",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DensitySimplex.lean",
+        "declaration": "Entropy.simplexFilterObjective_pos",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem",
+            "eq:patch-simplex-derivative",
+            "eq:patch-kkt",
+            "eq:patch-clipped-eigenvalues"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove first-order necessary conditions from an actual closed-simplex minimum, and derive the concrete last-filter derivative and clipped normalized weights. No full noncommuting ordered-chain minimizer theorem or Proposition 4.1 is claimed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-density-simplex-06",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DensitySimplex.lean",
+        "declaration": "Entropy.normalizedFilterWeights_nonneg",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem",
+            "eq:patch-simplex-derivative",
+            "eq:patch-kkt",
+            "eq:patch-clipped-eigenvalues"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove first-order necessary conditions from an actual closed-simplex minimum, and derive the concrete last-filter derivative and clipped normalized weights. No full noncommuting ordered-chain minimizer theorem or Proposition 4.1 is claimed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-density-simplex-07",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DensitySimplex.lean",
+        "declaration": "Entropy.sum_normalizedFilterWeights",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem",
+            "eq:patch-simplex-derivative",
+            "eq:patch-kkt",
+            "eq:patch-clipped-eigenvalues"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove first-order necessary conditions from an actual closed-simplex minimum, and derive the concrete last-filter derivative and clipped normalized weights. No full noncommuting ordered-chain minimizer theorem or Proposition 4.1 is claimed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    },
+    {
+      "id": "8767-density-simplex-08",
+      "status": "planned",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/DensitySimplex.lean",
+        "declaration": "Entropy.normalizedFilterWeights_clipped_of_isMinOn",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-variational-problem",
+            "eq:patch-simplex-derivative",
+            "eq:patch-kkt",
+            "eq:patch-clipped-eigenvalues"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove first-order necessary conditions from an actual closed-simplex minimum, and derive the concrete last-filter derivative and clipped normalized weights. No full noncommuting ordered-chain minimizer theorem or Proposition 4.1 is claimed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "pending"
+      }
+    }
+  ]
+}
