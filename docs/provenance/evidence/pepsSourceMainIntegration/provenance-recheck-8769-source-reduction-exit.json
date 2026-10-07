@@ -1,0 +1,14 @@
+{
+  "source_revision": "9fabbcb948ef1fb41a573f596495c42a55cb8e7a",
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/8769-source-reduction/source-audit.py",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/docs/provenance/evidence/pepsSourceMainIntegration/provenance-policy.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "started_utc": "2026-10-07T23:11:41.640748+00:00",
+  "elapsed_seconds": 0.1918747089948738,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-recheck-8769-source-reduction.log",
+  "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d"
+}
