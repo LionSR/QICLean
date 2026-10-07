@@ -1,0 +1,15 @@
+{
+  "source_revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Analysis.ReplicaDefect",
+    "QICLean.Analysis.ReplicaExcitationDecomposition"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-defect",
+  "started_utc": "2026-10-07T20:26:45.436349+00:00",
+  "elapsed_seconds": 18.202,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaDefect8750/build.log",
+  "sha256": "cd2643cb6d39881b65169413406afd13f1190ff627841df36bd0651e9f92ee37"
+}

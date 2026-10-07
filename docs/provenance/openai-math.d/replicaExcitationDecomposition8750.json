@@ -30,7 +30,35 @@
       "changes": [
         "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
       ],
-      "no_upstream_proof_text_reused": true
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaDefect QICLean.Analysis.ReplicaExcitationDecomposition",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/build.log",
+            "sha256": "cd2643cb6d39881b65169413406afd13f1190ff627841df36bd0651e9f92ee37"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Analysis/ReplicaExcitationDecomposition.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/strict-sectors.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/replicaDefect8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/axioms.log",
+            "sha256": "8a82e8eefc328c3e935d38339d875b314d354f3d22c8f0a0f2cb75445435ebc8"
+          }
+        ]
+      }
     },
     {
       "id": "8750-qic-replica-excitation-02",
@@ -57,7 +85,35 @@
       "changes": [
         "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
       ],
-      "no_upstream_proof_text_reused": true
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaDefect QICLean.Analysis.ReplicaExcitationDecomposition",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/build.log",
+            "sha256": "cd2643cb6d39881b65169413406afd13f1190ff627841df36bd0651e9f92ee37"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Analysis/ReplicaExcitationDecomposition.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/strict-sectors.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/replicaDefect8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/axioms.log",
+            "sha256": "8a82e8eefc328c3e935d38339d875b314d354f3d22c8f0a0f2cb75445435ebc8"
+          }
+        ]
+      }
     },
     {
       "id": "8750-qic-replica-excitation-03",
@@ -84,7 +140,35 @@
       "changes": [
         "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
       ],
-      "no_upstream_proof_text_reused": true
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaDefect QICLean.Analysis.ReplicaExcitationDecomposition",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/build.log",
+            "sha256": "cd2643cb6d39881b65169413406afd13f1190ff627841df36bd0651e9f92ee37"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Analysis/ReplicaExcitationDecomposition.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/strict-sectors.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/replicaDefect8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/axioms.log",
+            "sha256": "8a82e8eefc328c3e935d38339d875b314d354f3d22c8f0a0f2cb75445435ebc8"
+          }
+        ]
+      }
     },
     {
       "id": "8750-qic-replica-excitation-04",
@@ -111,7 +195,35 @@
       "changes": [
         "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
       ],
-      "no_upstream_proof_text_reused": true
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaDefect QICLean.Analysis.ReplicaExcitationDecomposition",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/build.log",
+            "sha256": "cd2643cb6d39881b65169413406afd13f1190ff627841df36bd0651e9f92ee37"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Analysis/ReplicaExcitationDecomposition.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/strict-sectors.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/replicaDefect8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/axioms.log",
+            "sha256": "8a82e8eefc328c3e935d38339d875b314d354f3d22c8f0a0f2cb75445435ebc8"
+          }
+        ]
+      }
     },
     {
       "id": "8750-qic-replica-excitation-05",
@@ -138,7 +250,35 @@
       "changes": [
         "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
       ],
-      "no_upstream_proof_text_reused": true
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaDefect QICLean.Analysis.ReplicaExcitationDecomposition",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/build.log",
+            "sha256": "cd2643cb6d39881b65169413406afd13f1190ff627841df36bd0651e9f92ee37"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Analysis/ReplicaExcitationDecomposition.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/strict-sectors.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/replicaDefect8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/axioms.log",
+            "sha256": "8a82e8eefc328c3e935d38339d875b314d354f3d22c8f0a0f2cb75445435ebc8"
+          }
+        ]
+      }
     },
     {
       "id": "8750-qic-replica-excitation-06",
@@ -165,7 +305,35 @@
       "changes": [
         "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
       ],
-      "no_upstream_proof_text_reused": true
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaDefect QICLean.Analysis.ReplicaExcitationDecomposition",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/build.log",
+            "sha256": "cd2643cb6d39881b65169413406afd13f1190ff627841df36bd0651e9f92ee37"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Analysis/ReplicaExcitationDecomposition.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/strict-sectors.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/replicaDefect8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/axioms.log",
+            "sha256": "8a82e8eefc328c3e935d38339d875b314d354f3d22c8f0a0f2cb75445435ebc8"
+          }
+        ]
+      }
     },
     {
       "id": "8750-qic-replica-excitation-07",
@@ -192,7 +360,35 @@
       "changes": [
         "Independently prove the actual physical replica constructions and their stated energy or exact-sector identities; no replica gap, cutoff mass, spectral partition or product eigenvalue is assumed."
       ],
-      "no_upstream_proof_text_reused": true
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaDefect QICLean.Analysis.ReplicaExcitationDecomposition",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/build.log",
+            "sha256": "cd2643cb6d39881b65169413406afd13f1190ff627841df36bd0651e9f92ee37"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Analysis/ReplicaExcitationDecomposition.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/strict-sectors.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/replicaDefect8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaDefect8750/axioms.log",
+            "sha256": "8a82e8eefc328c3e935d38339d875b314d354f3d22c8f0a0f2cb75445435ebc8"
+          }
+        ]
+      }
     }
   ]
 }
