@@ -369,3 +369,58 @@ depend on the common values there.
     skew-Hermitian $B$, so $K^{-1}\rho K$ is Hermitian. In the eigenbasis of
     $K$ this forces $\rho K^2=K^2\rho$ and then $\rho K=K\rho$.
 \end{proof}
+
+\begin{lemma}[Simultaneous diagonalization]
+    \label{lem:commuting_hermitian}
+    \lean{Matrix.exists_unitary_diagonal_of_commute}
+    \leanok
+    Commuting Hermitian matrices are diagonal in a common orthonormal basis.
+\end{lemma}
+\begin{proof}\leanok
+    The joint eigenspaces form an orthogonal internal direct sum; collect
+    orthonormal bases of the nonzero ones.
+\end{proof}
+
+\begin{lemma}[Clipping of a stationary filter]
+    \label{lem:filter_clipping}
+    \lean{Entropy.deriv_nonpos_of_le_right, Entropy.eq_max_div_of_floor_optimal,
+        Entropy.re_inner_deriv_nonpos_of_le_right, Entropy.hasDerivAt_conj_diagonal_rpow,
+        Entropy.ratio_le_of_diagonal_max, Entropy.abs_log_rpow_sub_le_of_ratio_le}
+    \leanok
+    \uses{lem:filter_stationarity, lem:clipped_filter_cost}
+    Let $K=U\operatorname{diag}(x^{a/2})U^*$ with $x\ge f>0$, $\sum x=1$, maximize
+    the output norm among the filters $U\operatorname{diag}(y^{a/2})U^*$ with
+    $y\ge f$, $\sum y=1$, and let the regional state of the output be
+    $U\operatorname{diag}(q)U^*$. Then $q_k/x_k\le q_i/x_i$ whenever $x_i>f$.
+    If moreover $\#\cdot f<1$, then $x_i=\max\{f,q_i/\lambda\}$ for some
+    $\lambda>0$, hence $|\log(x_i/x_k)^{a/2}|\le\frac a2|\log(q_i/q_k)|$ for
+    positive $q_i,q_k$.
+\end{lemma}
+\begin{proof}\leanok
+    Moving mass from coordinate $i$ to coordinate $k$ is feasible for small
+    $t>0$. Its first-order effect on the squared output norm is
+    $a\operatorname{Re}\Tr\rho G$ with $G=U\operatorname{diag}(v/x)U^*$, after
+    the descending trace argument, and equals $a(q_k/x_k-q_i/x_i)$. The
+    floor-constrained optimality condition and the contraction of a common
+    floor give the rest.
+\end{proof}
+
+\begin{lemma}[Conjugation by a filter commuting with the marginal]
+    \label{lem:filter_energy_term}
+    \lean{Entropy.toEuclideanLin_diagonal_kronecker_one, Entropy.inner_conj_unitary,
+        Entropy.abs_re_inner_sub_conj_le_of_common_basis,
+        Entropy.commute_of_isSupportedOn_disjoint}
+    \leanok
+    \uses{lem:filter_conjugation, lem:commuting_hermitian}
+    If the marginal of a unit vector is $U\operatorname{diag}(q)U^*$ and
+    $L=U\operatorname{diag}(l)U^*$ has clipped eigenvalue ratios with $a\le1/2$,
+    then conjugating a Hermitian $X=\sum c_\alpha\otimes d_\alpha$ by
+    $L\otimes1$ changes the real part of its expectation by at most
+    $4a^2\sum\lVert c_\alpha\rVert\lVert d_\alpha\rVert$. Operators supported on
+    disjoint regions commute.
+\end{lemma}
+\begin{proof}\leanok
+    Transport by $U^*\otimes1$ to the Schmidt coordinates and apply
+    Lemma~\ref{lem:filter_conjugation}. For disjoint supports, both operators
+    are of the forms $A\otimes1$ and $1\otimes B$ across the same cut.
+\end{proof}
