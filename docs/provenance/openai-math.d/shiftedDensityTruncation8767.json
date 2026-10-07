@@ -7,14 +7,14 @@
   "entries": [
     {
       "id": "8767-qic-shifted-density-truncation-01",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.spectralProjectionGE",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -33,19 +33,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-02",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.shiftedPowerHead",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -64,19 +82,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-03",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.shiftedPowerTail",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -95,19 +131,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-04",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.IsHermitian.spectralProjectionGE_eq_cfc",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -126,19 +180,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-05",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.IsHermitian.isStarProjection_spectralProjectionGE",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -157,19 +229,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-06",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.IsHermitian.commute_spectralProjectionGE",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -188,19 +278,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-07",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.add_smul_one_rpow_eq_cfc",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -219,19 +327,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-08",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.commute_add_smul_one_rpow_spectralProjectionGE",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -250,19 +376,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-09",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.shiftedPowerHead_add_shiftedPowerTail",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -281,19 +425,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-10",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.shiftedPowerHead_eq_cfc",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -312,19 +474,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-11",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.shiftedPowerTail_eq_cfc",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -343,19 +523,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-12",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.shiftedPowerHead_posSemidef",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -374,19 +572,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-13",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.shiftedPowerTail_posSemidef",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -405,19 +621,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-14",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.shiftedPowerHead_mul_shiftedPowerTail",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -436,19 +670,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-15",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.shiftedPowerTail_mul_shiftedPowerHead",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -467,19 +719,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-16",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.add_smul_one_rpow_mul_neg",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -498,19 +768,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-17",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.range_shiftedPowerHead",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -529,19 +817,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-18",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.rank_shiftedPowerHead",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -560,19 +866,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-19",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.mul_rank_spectralProjectionGE_le_trace",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -591,19 +915,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-20",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.rank_shiftedPowerHead_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -622,19 +964,37 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     },
     {
       "id": "8767-qic-shifted-density-truncation-21",
-      "status": "planned",
+      "status": "ported",
       "reuse_kind": "original",
       "upstream": null,
       "downstream": {
         "repository": "LionSR/QICLean",
         "path": "QICLean/Analysis/ShiftedDensityTruncation.lean",
         "declaration": "Matrix.PosSemidef.l2_opNorm_shiftedPowerTail_le",
-        "name_status": "proposed"
+        "name_status": "declared"
       },
       "paper_sources": [
         {
@@ -653,7 +1013,25 @@
       ],
       "no_upstream_proof_text_reused": true,
       "verification": {
-        "result": "pending"
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d4ce6280ba30a0176214a5dd5b22ec9b2b0fdc0b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119582213772509/QICLean/Analysis/ShiftedDensityTruncation.ilean /workspace/scratch/7637e06d0fc2/QICLean-shifted-density-truncation/QICLean/Analysis/ShiftedDensityTruncation.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/QICLean.Analysis.ShiftedDensityTruncation.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "timeout --signal=INT --kill-after=5s 90s lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true -o /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.olean -i /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/tmp/119590843996510/ShiftedDensityTruncationAxioms.ilean /workspace/scratch/7637e06d0fc2/shifted-density-truncation-validation/ShiftedDensityTruncationAxioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/shiftedDensityTruncation8767/ShiftedDensityTruncationAxioms.log",
+            "sha256": "bab75babd3f17a76eb09004f769dcbdfb270fa8c8f90b4ac2a9e07954dc90b0b"
+          }
+        ]
       }
     }
   ]
