@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-replica-marginal-symmetry-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaMarginalSymmetry.lean",
+        "declaration": "PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive commutation of the literal partial trace of a rank-one density from simultaneous fixedness, using actual permutation isometries and partial-trace covariance. No normalization or independent-copy premise."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "84057ec47d715328375b322cb4129f88709323ed",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaMarginalSymmetry",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaMarginalSymmetry8750/target.log",
+            "sha256": "6480be60fa00ba6f91ee140936b43bcde85c9d7c727aad500c4362a4f6dffdee"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/ReplicaMarginalSymmetry.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaMarginalSymmetry8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/replicaMarginalSymmetry8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaMarginalSymmetry8750/axioms.log",
+            "sha256": "cfe292b620b72edd9586b229c7de362f78f5146c50d77e68b7e9ec07ff7eb4c3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8750-qic-replica-marginal-symmetry-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaMarginalSymmetry.lean",
+        "declaration": "Matrix.commute_partialTraceLeft_replicaExcitationComponent",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive symmetry of the actual excitation component from the proved stabilizer result, then obtain commutation of its actual auxiliary marginal. Register selection/regrouping and merge-moment bounds remain separate."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "84057ec47d715328375b322cb4129f88709323ed",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaMarginalSymmetry",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaMarginalSymmetry8750/target.log",
+            "sha256": "6480be60fa00ba6f91ee140936b43bcde85c9d7c727aad500c4362a4f6dffdee"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/ReplicaMarginalSymmetry.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaMarginalSymmetry8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/replicaMarginalSymmetry8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaMarginalSymmetry8750/axioms.log",
+            "sha256": "cfe292b620b72edd9586b229c7de362f78f5146c50d77e68b7e9ec07ff7eb4c3"
+          }
+        ]
+      }
+    }
+  ]
+}

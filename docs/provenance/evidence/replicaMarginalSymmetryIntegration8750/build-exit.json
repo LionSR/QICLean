@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "lake",
+    "build"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 59.51,
+  "source_revision": "fc3c07583efd46380d5c1143b37b5e825c9a5c4e",
+  "log": "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/build.log",
+  "sha256": "cf9e2b553557eb122b8737edccc1e01894f474e1aa9bf0a2da3139208c6a34ba"
+}

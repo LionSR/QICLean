@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaMarginalSymmetry8750/validate-manifest.py", line 20, in <module>
+    for name in names:assert "'"+name+"' depends on axioms: [propext, Classical.choice, Quot.sound]" in raw,name
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp

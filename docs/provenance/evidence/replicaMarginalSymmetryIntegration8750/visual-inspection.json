@@ -1,0 +1,18 @@
+{
+  "result": "passed",
+  "pdf_pages": 428,
+  "physical_pages": [
+    404
+  ],
+  "printed_pages": [
+    403
+  ],
+  "images": {
+    "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/render/marginal-symmetry-web-desktop.png": "f179e1328ea9745c41b1f771947175bd9a7696a726af5ebb3a61cf73262233c5",
+    "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/render/marginal-symmetry-web-mobile.png": "7f6f80e56ff4fedc267d00f884a035914d5ebe1fc3c6d1160cccaa32195fbfe2",
+    "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/render/page-404.png": "202a221d2d24510372ebb60712e42fcf0a2a3c0e29d7caa9f1f5ae4a18ea050b"
+  },
+  "inspection": "The complete-book page and complete desktop and mobile section were visually inspected. Both actual marginal symmetry statements, both open proofs, the stabilizer hypothesis, the actual reduced matrices and the scope qualification are legible. No clipped display, missing mathematical symbol, citation failure, overlapped text or mobile page-width overflow was observed. The mobile page and its displays fit within 360 pixels.",
+  "whole_web_pages": 38,
+  "whole_web_typeset_elements": 37279
+}

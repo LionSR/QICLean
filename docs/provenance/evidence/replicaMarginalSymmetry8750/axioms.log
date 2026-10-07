@@ -1,0 +1,4 @@
+'PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Matrix.commute_partialTraceLeft_replicaExcitationComponent' depends on axioms: [propext, Classical.choice, Quot.sound]
