@@ -326,7 +326,11 @@ jobs:
             QICLeanTest/GaussianMatrixIntegral.lean \
             docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralGuardedAxioms.lean \
             QICLeanTest/GaussianSpectralGap.lean \
-            QICLeanTest/GaussianGroundEstimate.lean; do
+            QICLeanTest/GaussianGroundEstimate.lean \
+            QICLeanTest/GaussianParameterChoice.lean \
+            QICLeanTest/GaussianUniformGroundEstimate.lean \
+            QICLeanTest/PhysicalBufferGaussianFilter.lean \
+            QICLeanTest/PhysicalBufferUniform.lean; do
             timeout --signal=INT --kill-after=5s 90s lake env lean -j1 \
               -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true \
               -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \

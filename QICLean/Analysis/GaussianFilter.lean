@@ -11,4 +11,8 @@ Authors: QICLean contributors
 import QICLean.Analysis.GaussianFilter.GroundEstimate
 import QICLean.Analysis.GaussianFilter.Kernel
 import QICLean.Analysis.GaussianFilter.MatrixIntegral
+import QICLean.Analysis.GaussianFilter.ParameterChoice
+import QICLean.Analysis.GaussianFilter.PhysicalBuffer
+import QICLean.Analysis.GaussianFilter.PhysicalBufferUniform
 import QICLean.Analysis.GaussianFilter.SpectralGap
+import QICLean.Analysis.GaussianFilter.UniformGroundEstimate
