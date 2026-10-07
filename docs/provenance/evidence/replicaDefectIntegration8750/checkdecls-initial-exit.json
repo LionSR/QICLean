@@ -1,0 +1,15 @@
+{
+  "source_revision": "3cc74d334c21d5693c6e2072c2e82e17630142c8",
+  "command": [
+    "lake",
+    "env",
+    ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+    "blueprint/lean_decls"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-defect",
+  "started_utc": "2026-10-07T20:37:25.143216+00:00",
+  "elapsed_seconds": 26.365,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaDefectIntegration8750/checkdecls.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

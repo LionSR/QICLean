@@ -1,0 +1,10 @@
+{
+  "parent_revision": "7942433ebdc8d96d8e42cf380f1c9475a53ff6c5",
+  "path": "docs/provenance/evidence/spectralCutoffMassIntegration8750/axioms.log",
+  "sha256": "3441a8c5735131ca3e1a0a43b14513912d3fa85feb1ff17ccd454b6666e24d2d",
+  "byte_identical_to_parent": true,
+  "parent_declaration_count": 75,
+  "parent_ledger_count": 12,
+  "parent_ledgers_byte_identical": true,
+  "total_prior_and_new_bound_commands": 268
+}
