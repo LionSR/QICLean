@@ -228,6 +228,32 @@ jobs:
               "QICLeanTest/$example.lean"
           done
 
+      - name: Build finite-product entropy and two-family targets
+        run: >
+          lake build QICLean.Channel.FiniteProduct QICLean.Entropy.Bipartite
+          QICLean.Entropy.FiniteProduct QICLean.Entropy.OrderedEntropyAlgebra
+          QICLean.Entropy.TwoFamilies QICLean.Entropy.FiniteProductConditional
+
+      - name: Check finite-product entropy regressions and axiom guards strictly
+        run: |
+          set -e
+          for example in OrderedEntropyAlgebra FiniteProductEntropy; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
+      - name: Build conditional two-family entropy target
+        run: lake build QICLean.Entropy.ConditionalTwoFamilies
+
+      - name: Check conditional two-family entropy regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/ConditionalTwoFamilies.lean
+
       - name: Build Lean project and capture timings
         run: |
           set -eo pipefail
@@ -236,12 +262,26 @@ jobs:
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
 
+      - name: Check shifted density power regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/ShiftedDensityPowers.lean
+
       - name: Check pure-environment dilation regressions strictly
         run: >
           LEAN_NUM_THREADS=1 lake env lean -j1
           -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false
           -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
           QICLeanTest/EnvironmentDilation.lean
+
+      - name: Check global-gap regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/GlobalGap.lean
 
 
       - name: Check changed Lean compilation times

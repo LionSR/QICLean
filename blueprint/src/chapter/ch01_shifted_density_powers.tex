@@ -1,0 +1,109 @@
+\section{Positive shifts of density matrices}
+\label{sec:shifted_density_powers}
+
+Let $I$ be a finite index set and write
+$\mathcal D_I=\{x\in\C^{I\times I}:x\ge0,\ \tr(x)=1\}$.
+All norms in this section are operator norms for the Euclidean norm on
+$\C^I$. For $b>0$, real powers of $x+b\Id$ are taken on the full space.
+
+% Independent finite-dimensional support for the regularized filters in
+% OpenAI, Polynomial PEPS approximation of gapped square-grid ground states,
+% September 24, 2026, 03-patches.tex, lines 51--114, at
+% adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% These entries do not assert the ordered-product objective, its minimum,
+% stationarity, energy estimates, or Proposition 4.1.
+
+\begin{theorem}[Compactness and existence of density matrices]
+    \label{thm:density_finite_index_compact}
+    \lean{Matrix.isCompact_setOf_posSemidef_trace_eq_one,
+        Matrix.setOf_posSemidef_trace_eq_one_nonempty}
+    \leanok
+    The set $\mathcal D_I$ is compact. If $I$ is nonempty, then
+    $\mathcal D_I$ is nonempty.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:density_compact, thm:density_nonempty}
+    Choose a bijection from $\{0,\ldots,|I|-1\}$ to $I$.
+    Reindexing rows and columns preserves positive semidefiniteness and
+    trace, and is continuous. Thus $\mathcal D_I$ is the continuous image
+    of the compact set of density matrices in dimension $|I|$ from
+    Theorem~\ref{thm:density_compact}. If $I$ is nonempty, then $|I|>0$,
+    and reindexing a density matrix supplied by
+    Theorem~\ref{thm:density_nonempty} proves existence.
+\end{proof}
+
+\begin{theorem}[Positive identity shift]
+    \label{thm:positive_identity_shift}
+    \lean{Matrix.PosSemidef.add_smul_one_posDef}
+    \leanok
+    If $x\ge0$ and $b>0$, then $x+b\Id$ is positive definite.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The matrix $b\Id$ is positive definite. Adding the positive
+    semidefinite matrix $x$ preserves positive definiteness.
+\end{proof}
+
+\begin{theorem}[Continuity of shifted real powers]
+    \label{thm:shifted_real_power_continuous}
+    \lean{Matrix.continuousOn_add_smul_one_rpow}
+    \leanok
+    For every fixed $b>0$ and $r\in\R$, the function
+    $x\mapsto(x+b\Id)^r$ is continuous on the positive semidefinite cone.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:positive_identity_shift}
+    The affine map $x\mapsto x+b\Id$ is continuous and, by
+    Theorem~\ref{thm:positive_identity_shift}, takes the positive
+    semidefinite cone into the strictly positive matrices. Continuous
+    functional calculus makes $y\mapsto y^r$ continuous on that set.
+    Composing these two maps proves the assertion.
+\end{proof}
+
+\begin{theorem}[Spectrum of a shifted density matrix]
+    \label{thm:shifted_density_spectrum}
+    \lean{Matrix.PosSemidef.spectrum_add_smul_one_bounds}
+    \leanok
+    If $x\in\mathcal D_I$ and $b>0$, then
+    $\spec(x+b\Id)\subseteq[b,1+b]$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:positive_identity_shift}
+    Positivity and the trace condition give
+    $\|x\|\le\tr(x)=1$, hence $0\le x\le\Id$.
+    Adding $b\Id$ yields
+    $b\Id\le x+b\Id\le(1+b)\Id$.
+    The matrix $x+b\Id$ is Hermitian by
+    Theorem~\ref{thm:positive_identity_shift}, so these order inequalities
+    give the corresponding lower and upper bounds on its spectrum.
+\end{proof}
+
+\begin{theorem}[Norm bounds for shifted density powers]
+    \label{thm:shifted_density_power_norm}
+    \lean{Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonpos,
+        Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonneg}
+    \leanok
+    Let $x\in\mathcal D_I$, $b>0$, and $r\in\R$.
+    If $r\le0$, then $\|(x+b\Id)^r\|\le b^r$.
+    If $r\ge0$, then $\|(x+b\Id)^r\|\le(1+b)^r$.
+    These bounds include $r=0$ and singular density matrices $x$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:positive_identity_shift, thm:shifted_density_spectrum}
+    The norm estimate for continuous functional calculus bounds
+    $\|(x+b\Id)^r\|$ by any uniform bound on $|t^r|$ over
+    $t\in\spec(x+b\Id)$. By
+    Theorem~\ref{thm:shifted_density_spectrum}, $b\le t\le1+b$.
+    The function $t\mapsto t^r$ is positive there, decreasing for
+    $r\le0$ and increasing for $r\ge0$. Its respective bounds are
+    therefore $b^r$ and $(1+b)^r$.
+\end{proof}
