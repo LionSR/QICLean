@@ -9,6 +9,7 @@ import QICLean.Entropy.TypicalSpectrum
 
 set_option linter.hashCommand false
 
+#print axioms Entropy.normalizedRestriction
 #print axioms Entropy.sum_normalizedRestriction
 #print axioms Entropy.normalizedRestriction_pos
 #print axioms Entropy.log_card_typical_centered

@@ -16,6 +16,8 @@ eigenvalues $(p_i)_i$. For a finite set $E$ of eigenvalue indices, define
  \rho_E&=\sum_{i\in E}\frac{p_i}{z}|u_i\rangle\langle u_i|.
  \label{eq:entropy_typical_density}
 \end{align}
+With the convention $0^{-1}=0$, the normalized restriction at zero mass is the
+zero matrix.
 \end{definition}
 
 \begin{theorem}[Projection and density properties]
@@ -30,16 +32,19 @@ eigenvalues $(p_i)_i$. For a finite set $E$ of eigenvalue indices, define
 \uses{def:entropy_typical_density}
 The operator $P_E$ is an orthogonal projection and commutes with $\rho$.
 The normalized spectral restriction satisfies $\rho_E=z^{-1}P_E\rho P_E$.
-If $\rho\ge0$ and $z>0$, then $\rho_E\ge0$ and $\operatorname{tr}\rho_E=1$.
-If in addition $\operatorname{tr}\rho=1$, then $z\le1$.
+If $z\ne0$, then $\operatorname{tr}\rho_E=1$.
+If $\rho\ge0$ and $z>0$, then $\rho_E\ge0$.
+If $\rho\ge0$ and $\operatorname{tr}\rho=1$, then $z\le1$.
 \end{theorem}
 \begin{proof}
 \leanok
 \uses{def:entropy_typical_density}
 In the eigenbasis, $P_E$ is diagonal with entries zero or one, and
 $P_E\rho P_E$ is diagonal with entries $p_i$ on $E$ and zero elsewhere.
-The retained normalized eigenvalues are nonnegative and sum to one. Their
-unnormalized sum is at most the sum of all nonnegative eigenvalues, which is
+When $z\ne0$, the normalized eigenvalues sum to $z/z=1$.
+When $\rho\ge0$ and $z>0$, the retained normalized eigenvalues are nonnegative
+and sum to one. Their unnormalized sum is at most the sum of all nonnegative
+eigenvalues, which is
 $\operatorname{tr}\rho$.
 \end{proof}
 

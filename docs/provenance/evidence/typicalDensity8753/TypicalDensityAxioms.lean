@@ -9,6 +9,9 @@ import QICLean.Entropy.TypicalDensity
 
 set_option linter.hashCommand false
 
+#print axioms Matrix.IsHermitian.spectralSelection
+#print axioms Matrix.IsHermitian.spectralRestrictionMass
+#print axioms Matrix.IsHermitian.normalizedSpectralRestriction
 #print axioms Matrix.IsHermitian.isStarProjection_spectralSelection
 #print axioms Matrix.IsHermitian.commute_spectralSelection
 #print axioms Matrix.PosSemidef.normalizedSpectralRestriction_posSemidef

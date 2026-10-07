@@ -1,3 +1,6 @@
+'Matrix.IsHermitian.spectralSelection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.IsHermitian.spectralRestrictionMass' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.IsHermitian.normalizedSpectralRestriction' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Matrix.IsHermitian.isStarProjection_spectralSelection' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Matrix.IsHermitian.commute_spectralSelection' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Matrix.PosSemidef.normalizedSpectralRestriction_posSemidef' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -15,7 +15,7 @@
       "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true docs/provenance/evidence/typicalSpectrum8753/TypicalSpectrumAxioms.lean",
       "exit_code": 0,
       "log": "docs/provenance/evidence/typicalSpectrum8753/axioms.log",
-      "sha256": "f29bb9c368b95955205c680d83aec07fe5d213828bb6cf96cae0890bfc89f4c1"
+      "sha256": "546cfdfe0dcf0606b5496c829982141f8d6cdcd45e0cb68c130ab346c6e475c0"
     }
   ],
   "full_library_build": "deferred to combined integration branch",
