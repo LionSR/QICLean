@@ -380,7 +380,52 @@ theorem norm_sub_re_le_of_phase_bounds {f : ℂ → ℂ} (hf : Differentiable �
   have htaylor := norm_sub_sub_deriv_le hg (by positivity) hdisk htn
   rw [hgd] at htaylor
   simp only [hf0, sub_self, sub_zero] at htaylor
-  sorry
+  have hD := norm_deriv_le_of_phase hf hphase
+  have hReD : D.re = 0 := re_deriv_eq_zero_of_symm hf hsymm
+  set Rm := f t - p - t * D
+  have hft : f t = p + t * D + Rm := by simp only [Rm]; ring
+  -- the linear part
+  have hlin : ‖(p : ℂ) + t * D‖ - p ≤ 8 * Real.pi ^ 2 * t ^ 2 * R ^ 2 := by
+    have hnormD : ‖D‖ = |D.im| := by
+      rw [Complex.norm_eq_sqrt_sq_add_sq, hReD]; simp [Real.sqrt_sq_eq_abs]
+    have hsq : ‖(p : ℂ) + t * D‖ ^ 2 = p ^ 2 + t ^ 2 * ‖D‖ ^ 2 := by
+      rw [Complex.sq_norm, Complex.normSq_apply, hnormD, sq_abs]
+      simp [hReD]; ring
+    rcases hp.eq_or_lt with hp0 | hp0
+    · subst hp0
+      have : ‖D‖ ≤ 0 := by simpa using hD
+      have hD0 : ‖D‖ = 0 := le_antisymm this (norm_nonneg _)
+      rw [norm_eq_zero] at hD0
+      simp [hD0]; positivity
+    · have hD2 : t ^ 2 * ‖D‖ ^ 2 ≤ t ^ 2 * (16 * Real.pi ^ 2 * p * R ^ 2) := by
+        gcongr
+        calc ‖D‖ ^ 2 ≤ (4 * Real.pi * √p * R) ^ 2 := pow_le_pow_left₀ (norm_nonneg _) hD 2
+          _ = 16 * Real.pi ^ 2 * p * R ^ 2 := by
+            rw [mul_pow, mul_pow, mul_pow, Real.sq_sqrt hp0.le]; ring
+      have hbound : ‖(p : ℂ) + t * D‖ ≤ p + 8 * Real.pi ^ 2 * t ^ 2 * R ^ 2 := by
+        rw [← pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero, hsq]
+        nlinarith [sq_nonneg (8 * Real.pi ^ 2 * t ^ 2 * R ^ 2)]
+      linarith
+  -- assemble
+  have hRe : (f t).re = p + Rm.re := by
+    rw [hft]; simp [hReD]
+  have hnorm : ‖f t‖ ≤ ‖(p : ℂ) + t * D‖ + ‖Rm‖ := by rw [hft]; exact norm_add_le _ _
+  have hRmre : -‖Rm‖ ≤ Rm.re := by
+    have := abs_re_le_norm Rm; linarith [neg_abs_le Rm.re]
+  have hb2 : (b / 2) ^ 2 = 1 / (256 * ℓ ^ 2) := by rw [hb]; field_simp; ring
+  have htn2 : ‖(t : ℂ)‖ ^ 2 = t ^ 2 := by rw [Complex.norm_real, Real.norm_eq_abs, sq_abs]
+  have hRm : 2 * ‖Rm‖ ≤ t ^ 2 * (12288 * Real.exp (Real.pi ^ 2 + 1) * ℓ ^ 2 * √m') := by
+    have h := htaylor
+    rw [htn2, hb2] at h
+    have hM : M = Real.exp 1 * (8 * Real.exp (Real.pi ^ 2) * √m') := rfl
+    have he : Real.exp (Real.pi ^ 2 + 1) = Real.exp (Real.pi ^ 2) * Real.exp 1 := Real.exp_add _ _
+    calc 2 * ‖Rm‖ ≤ 2 * (3 * M * t ^ 2 / (1 / (256 * ℓ ^ 2))) := by gcongr
+      _ = t ^ 2 * (12288 * Real.exp (Real.pi ^ 2 + 1) * ℓ ^ 2 * √m') := by
+          rw [hM, he]; field_simp; ring
+  calc ‖f t‖ - (f t).re ≤ (‖(p : ℂ) + t * D‖ - p) + 2 * ‖Rm‖ := by rw [hRe]; linarith
+    _ ≤ 8 * Real.pi ^ 2 * t ^ 2 * R ^ 2 +
+        t ^ 2 * (12288 * Real.exp (Real.pi ^ 2 + 1) * ℓ ^ 2 * √m') := add_le_add hlin hRm
+    _ = _ := by ring
 
 end Complex
 
