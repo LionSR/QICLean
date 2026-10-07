@@ -216,7 +216,7 @@ theorem re_deriv_eq_zero_of_symm {f : ℂ → ℂ} (hf : Differentiable ℂ f)
 `‖f(iy)‖ ≤ 1`, `‖f z‖ ≤ m` on `|Re z| ≤ 1/4` (with `1 ≤ m`, `1 ≤ ℓ`, `log m ≤ 2ℓ`), and
 `f 0 = p ≥ 0`, and suppose `‖f(iu) - p‖ ≤ 2√p E + E²` with `E = 2 |sinh π u| R`.  Then
 for real `|t| ≤ 1/(16ℓ)`,
-`‖f t‖ - Re f t ≤ t² (8π² R² + 24576 e^{π²} ℓ² √(min 1 R))`.  Area-law manuscript,
+`‖f t‖ - Re f t ≤ t² (8π² R² + 12288 e^{π²+1} ℓ² √(min 1 R))`.  Area-law manuscript,
 proof of Lemma 5.3, `04-conditional.tex`, lines 562–600. -/
 theorem norm_sub_re_le_of_phase_bounds {f : ℂ → ℂ} (hf : Differentiable ℂ f)
     {m ℓ R p : ℝ} (hm : 1 ≤ m) (hℓ : 1 ≤ ℓ) (hlog : Real.log m ≤ 2 * ℓ) (hR : 0 ≤ R)
@@ -226,7 +226,7 @@ theorem norm_sub_re_le_of_phase_bounds {f : ℂ → ℂ} (hf : Differentiable �
       4 * √p * |Real.sinh (Real.pi * u)| * R + 4 * Real.sinh (Real.pi * u) ^ 2 * R ^ 2)
     {t : ℝ} (ht : |t| ≤ 1 / (16 * ℓ)) :
     ‖f t‖ - (f t).re ≤
-      t ^ 2 * (8 * Real.pi ^ 2 * R ^ 2 + 24576 * Real.exp (Real.pi ^ 2) * ℓ ^ 2 * √(min 1 R)) := by
+      t ^ 2 * (8 * Real.pi ^ 2 * R ^ 2 + 12288 * Real.exp (Real.pi ^ 2 + 1) * ℓ ^ 2 * √(min 1 R)) := by
   have hℓ0 : 0 < ℓ := by linarith
   set b : ℝ := 1 / (8 * ℓ) with hb
   have hb0 : 0 < b := by positivity
@@ -307,6 +307,79 @@ theorem norm_sub_re_le_of_phase_bounds {f : ℂ → ℂ} (hf : Differentiable �
               gcongr
               rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hp]; exact hp1
       _ ≤ K1 := by simp only [K1]; nlinarith
+  -- three lines on `0 ≤ Re z ≤ b`
+  have hthree : ∀ z : ℂ, 0 ≤ z.re → z.re ≤ b / 2 → ‖F z‖ ≤ K1 * √m' := by
+    intro z hz0 hz1
+    have hzS : z ∈ HadamardThreeLines.verticalClosedStrip 0 b := ⟨hz0, by linarith⟩
+    have hB : BddAbove ((norm ∘ F) '' HadamardThreeLines.verticalClosedStrip 0 b) := by
+      refine ⟨K1, ?_⟩
+      rintro _ ⟨w, ⟨hw0, hw1⟩, rfl⟩
+      exact hFstrip w (by rw [abs_of_nonneg hw0]; exact hw1)
+    have ha : ∀ w ∈ re ⁻¹' {(0 : ℝ)}, ‖F w‖ ≤ K1 * m' := by
+      intro w hw
+      have hw' : w = (w.im : ℂ) * I := by
+        apply Complex.ext <;> simp [show w.re = 0 from hw]
+      rw [hw']; exact hFim w.im
+    have hb' : ∀ w ∈ re ⁻¹' {b}, ‖F w‖ ≤ K1 := by
+      intro w hw
+      exact hFstrip w (by rw [show w.re = b from hw, abs_of_pos hb0])
+    have h3 := HadamardThreeLines.norm_le_interp_of_mem_verticalClosedStrip' hb0 hzS
+      hF.diffContOnCl hB ha hb'
+    set s := (z.re - 0) / (b - 0)
+    have hs0 : 0 ≤ s := div_nonneg (by linarith) (by linarith)
+    have hs1 : s ≤ 1 / 2 := by
+      rw [div_le_iff₀ (by linarith)]; linarith
+    have hK10 : 0 < K1 := by linarith
+    have hsplit : (K1 * m') ^ (1 - s) * K1 ^ s = K1 * m' ^ (1 - s) := by
+      rw [Real.mul_rpow hK10.le hm'0, mul_comm (K1 ^ (1 - s)), mul_assoc, ← Real.rpow_add hK10]
+      simp [mul_comm]
+    rw [hsplit] at h3
+    have hpow : m' ^ (1 - s) ≤ m' ^ (1 / 2 : ℝ) :=
+      Real.rpow_le_rpow_of_exponent_ge' hm'0 hm'1 (by norm_num) (by linarith)
+    rw [Real.sqrt_eq_rpow]
+    exact h3.trans (mul_le_mul_of_nonneg_left hpow hK10.le)
+  -- the reflection
+  have hFsymm : ∀ w : ℂ, F (-(conj w)) = conj (F w) := by
+    intro w
+    simp only [F, map_mul, map_sub, Complex.conj_ofReal, hsymm, ← Complex.exp_conj, map_pow,
+      neg_sq]
+  have hthree' : ∀ z : ℂ, |z.re| ≤ b / 2 → ‖F z‖ ≤ K1 * √m' := by
+    intro z hz
+    rcases le_total 0 z.re with h0 | h0
+    · exact hthree z h0 ((le_abs_self _).trans hz)
+    · have h := hthree (-(conj z)) (by simp; linarith) (by simp; linarith [neg_abs_le z.re])
+      rwa [hFsymm, Complex.norm_conj] at h
+  -- the disk bound for `f - p`
+  set M : ℝ := Real.exp 1 * (K1 * √m')
+  have hdisk : ∀ z ∈ closedBall (0 : ℂ) (b / 2), ‖f z - p‖ ≤ M := by
+    intro z hz
+    have hzn : ‖z‖ ≤ b / 2 := by simpa using hz
+    have hre : |z.re| ≤ b / 2 := (abs_re_le_norm z).trans hzn
+    have heq : f z - p = F z * Complex.exp (-(z ^ 2)) := by
+      simp only [F, mul_assoc, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, mul_one]
+    rw [heq, norm_mul, Complex.norm_exp]
+    have hexp : Real.exp (-(z ^ 2)).re ≤ Real.exp 1 := by
+      apply Real.exp_le_exp.2
+      have : -(z ^ 2).re ≤ ‖z‖ ^ 2 := by
+        have := abs_re_le_norm (z ^ 2); rw [norm_pow] at this
+        linarith [neg_abs_le (z ^ 2).re]
+      have : ‖z‖ ^ 2 ≤ 1 := by nlinarith [norm_nonneg z]
+      simp only [neg_re]; linarith
+    calc ‖F z‖ * Real.exp (-(z ^ 2)).re ≤ (K1 * √m') * Real.exp 1 :=
+          mul_le_mul (hthree' z hre) hexp (Real.exp_pos _).le (by positivity)
+      _ = M := by ring
+  -- the Taylor remainder
+  set D := deriv f 0
+  have hg : Differentiable ℂ (fun z => f z - p) := hf.sub (differentiable_const _)
+  have hgd : deriv (fun z => f z - p) 0 = D := by
+    simp [D, deriv_sub_const]
+  have htn : ‖(t : ℂ)‖ ≤ b / 2 := by
+    rw [Complex.norm_real, Real.norm_eq_abs]
+    calc |t| ≤ 1 / (16 * ℓ) := ht
+      _ = b / 2 := by rw [hb]; field_simp; ring
+  have htaylor := norm_sub_sub_deriv_le hg (by positivity) hdisk htn
+  rw [hgd] at htaylor
+  simp only [hf0, sub_self, sub_zero] at htaylor
   sorry
 
 end Complex
