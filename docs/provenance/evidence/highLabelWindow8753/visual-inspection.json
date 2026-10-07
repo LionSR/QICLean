@@ -1,0 +1,24 @@
+{
+  "artifact": "output/pdf/high-label-window.pdf",
+  "sha256": "05ae674a3488e9c65b578e5548f131211c7c78fd81e8a1d9700de2762602c99d",
+  "pages": 3,
+  "images": {
+    "docs/provenance/evidence/highLabelWindow8753/render/page-1.png": "a7c90e7459b4135cdd3f7295f9086c20b6e5188af57d55f9a52a34d6ecc42f88",
+    "docs/provenance/evidence/highLabelWindow8753/render/page-2.png": "95ced607dff1b313c9798d2369039510ad0015740547f6d9b506c9200b00f7e0",
+    "docs/provenance/evidence/highLabelWindow8753/render/page-3.png": "50d843ad78e2cb24c1c05a10611d8ee3c8136803118aaf852614ff1c4d117e2c"
+  },
+  "result": "passed",
+  "inspection": "All three rendered pages inspected. The pure tensor-power prerequisite and all four high-label statements/proofs are legible; source citation and theorem dependencies resolve, no clipping or unresolved reference. Final wrapper includes the existing pure fragment; frozen mathematical fragments are unchanged.",
+  "attempts": [
+    {
+      "command_record": "standalone-pdf-exit.json",
+      "status": "failed",
+      "reason": "The first local standalone wrapper placed a label command outside the preamble; LaTeX exited12, no PDF. Frozen fragment unchanged."
+    },
+    {
+      "command_record": "standalone-pdf-final-exit.json",
+      "status": "not final visual acceptance",
+      "reason": "LaTeX exited0 but an omitted prerequisite theorem left unresolved dependency references. The final wrapper includes the actual existing prerequisite fragment."
+    }
+  ]
+}

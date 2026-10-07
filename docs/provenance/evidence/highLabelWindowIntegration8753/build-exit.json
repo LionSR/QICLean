@@ -1,0 +1,13 @@
+{
+  "kind": "build",
+  "command": [
+    "lake",
+    "build"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 305.41,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/build.log",
+  "sha256": "e0727b3c150056bfb4bf0a52f155ec1066f89a1bda1535044b49897439890b09"
+}

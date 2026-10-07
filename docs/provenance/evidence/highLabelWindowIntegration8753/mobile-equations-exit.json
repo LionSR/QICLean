@@ -1,0 +1,13 @@
+{
+  "kind": "mobile-equations",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/inspect-mobile-equations.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 4.9,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/mobile-equations.log",
+  "sha256": "baeb9a725af1f0517e1d7361a147e8f6b363ee82d202520a866a8b58c1430b84"
+}

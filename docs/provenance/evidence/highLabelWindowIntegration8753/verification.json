@@ -1,0 +1,470 @@
+{
+  "parent_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+  "source_revision": "89941482d3b3880b524e7d7f8a4adb1e2cc80aad",
+  "leaf_evidence_revision": "f0417671cd01e5f10866b05cd95e765f6d0a4a37",
+  "integration_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "commands": [
+    {
+      "kind": "axioms",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/highLabelWindowIntegration8753/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 99.8,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/axioms.log",
+      "sha256": "77b5f1602a53f370cfa61a8c9a703dda19ac85ba5b75d8638f552f62720c29f4"
+    },
+    {
+      "kind": "bbl",
+      "command": [
+        "texra-blueprint",
+        "bbl"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/bbl.log",
+      "sha256": "31c21ef9cd50a30103909f482ff2f6ca35c062d2c65b5cbfc8d9279eac4bffa4"
+    },
+    {
+      "kind": "blueprint-sync",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 3.03,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/blueprint-sync.log",
+      "sha256": "13550042d98894d0fe760f4f42c06293f3f19398fcf0b426e34076699920da42"
+    },
+    {
+      "kind": "build",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 305.41,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/build.log",
+      "sha256": "e0727b3c150056bfb4bf0a52f155ec1066f89a1bda1535044b49897439890b09"
+    },
+    {
+      "kind": "checkdecls",
+      "command": [
+        "leanblueprint",
+        "checkdecls"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 57.25,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "imports",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.99,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/imports.log",
+      "sha256": "b42ad5d7c6ad835d48e5806ed013777fc25d400ecf0a1e7e71b8a3d8c3a8b08c"
+    },
+    {
+      "kind": "cache",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 109.28,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/mathlib-cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "kind": "cache",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/highLabelWindow8753/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.56,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/mathlib-guard.log",
+      "sha256": "fe6fede23077bfd5e7469ec4f6787b977061ac192a2bf5307b6405eaff8afff1"
+    },
+    {
+      "kind": "mobile-equations",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/highLabelWindowIntegration8753/inspect-mobile-equations.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 4.9,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/mobile-equations.log",
+      "sha256": "baeb9a725af1f0517e1d7361a147e8f6b363ee82d202520a866a8b58c1430b84"
+    },
+    {
+      "kind": "native-targets",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/highLabelWindowIntegration8753/check-native-targets.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.95,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets-final.log",
+      "sha256": "4be2bbe76a6fb801be6b827f6b8d49278fef0a7113105fb0e6fa710a0b7226a4"
+    },
+    {
+      "kind": "paper-gaps",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 4.04,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "kind": "pdf",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 57.97,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/pdf.log",
+      "sha256": "fd2b82880f77ebc2f9b1da87be6143316589ed5c4c3d97afa0d8fee58f992020"
+    },
+    {
+      "kind": "prose",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.47,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "provenance",
+      "command": [
+        "/tmp/qic-density-simplex-provenance-env/bin/python",
+        "docs/provenance/evidence/highLabelWindowIntegration8753/check_provenance.py",
+        "--root",
+        ".",
+        "--validator",
+        "/tmp/tnlean-area-law-provenance-validator.py",
+        "--schema",
+        "/tmp/tnlean-area-law-provenance-schema.json"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.7,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/provenance.log",
+      "sha256": "8d3923efcdb59f02d8348b2d7232208a20d7ac20e5b9ca0affbcf0338c7196b5"
+    },
+    {
+      "kind": "render",
+      "command": [
+        "pdftoppm",
+        "-f",
+        "410",
+        "-l",
+        "411",
+        "-r",
+        "110",
+        "-png",
+        "blueprint/print/print.pdf",
+        "docs/provenance/evidence/highLabelWindowIntegration8753/render/page"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.42,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "tenkz",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 3.97,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/tenkz.log",
+      "sha256": "6097295608ad8d1485b089f15af6cde000292c0afe7c5377d884b6485dba0444"
+    },
+    {
+      "kind": "web",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 55.88,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/web.log",
+      "sha256": "b3b98af045df5b51a818f14ed3dce4e1f405b043eba295f3ecd66b31896f2a88"
+    },
+    {
+      "kind": "web-inspection",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/highLabelWindowIntegration8753/inspect-web.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 9.01,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/web-inspection.log",
+      "sha256": "6c9399ae184e1b17b0fb4af1ab2658ce51ca66e8b97b60ecea1315a7704dbbfa"
+    },
+    {
+      "kind": "web-render-test",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 48.91,
+      "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+      "log": "docs/provenance/evidence/highLabelWindowIntegration8753/web-render-test.log",
+      "sha256": "fc9c7fb92a12ee9d72b6d4c91b589b4d2f8dee54ef9d60aaecbdda9e1a983cc9"
+    }
+  ],
+  "excluded_attempts": [
+    {
+      "record": {
+        "kind": "native-targets",
+        "command": [
+          "python3",
+          "docs/provenance/evidence/highLabelWindowIntegration8753/check-native-targets.py"
+        ],
+        "working_directory": ".",
+        "exit_code": 1,
+        "elapsed_seconds": 1.25,
+        "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+        "log": "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets.log",
+        "sha256": "296e932dbd42775da5c6ed966b5842ea3e6b31d501bd40e075d75eed6d0715c7"
+      },
+      "snapshot": "docs/provenance/evidence/highLabelWindowIntegration8753/check-native-targets-first-attempt.py",
+      "snapshot_sha256": "298bef58af8ae4f3cae1a27e2e314073551f34fce6b8cbe4d840ea340e9707fa",
+      "reason": "The first local helper counted deliberate dependency-graph copies as duplicate content links. Native name containment already passed. The final helper counts content pages, excluding repeated dependency-graph links. No mathematical, chapter or generated web source changed.",
+      "claimed_as_successful_verification": false
+    }
+  ],
+  "file_hashes": {
+    "docs/provenance/evidence/highLabelWindowIntegration8753/Axioms.lean": "8992d34105a6b7ac5d349e5875a33d2aba7586d0e1a3ab93e2e26b20ca08f1ef",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/NativeDeclarations.txt": "632d9d5e243f44087ff37e60183803c9c0e83c9befa38639629c209a56eff95d",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/README.md": "8f0129f885a1007d5017a4eaf9689d2848d41418440d1416a2e142b88ede20e9",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/axioms-exit.json": "e094c219ea68f6ad12070761c7cae5eaf152e2959c7ba06dbb35101165928f40",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/axioms.log": "77b5f1602a53f370cfa61a8c9a703dda19ac85ba5b75d8638f552f62720c29f4",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/axioms.log.gz": "86a797f0c9c3cd3974d3457ca85f64c1df4f3d234040ecd954c3dac3c9941fb7",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/bbl-exit.json": "fab0526ce076c50bc2e0d8c1ccd4172c5aece83ae1dad614b204e09233c165bd",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/bbl.log": "31c21ef9cd50a30103909f482ff2f6ca35c062d2c65b5cbfc8d9279eac4bffa4",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/bbl.log.gz": "68c869412937c0ee4783b852ae67cf051afc5d4268e7ae73955ef43aba660a2e",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/blueprint-sync-exit.json": "b2d3932e6304cb9b372fefe2b586a40e0fe9bf4f02519a6a54af5a7d8e6eb4e5",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/blueprint-sync.log": "13550042d98894d0fe760f4f42c06293f3f19398fcf0b426e34076699920da42",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/blueprint-sync.log.gz": "533347a0a9a83355b1b3849e8040e7270d504f9f10228addf93b307476b8cf81",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/build-exit.json": "720570f5497442a037bb1d81258801ce94f52ab54969d5f2cc41b9efd1464102",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/build.log": "e0727b3c150056bfb4bf0a52f155ec1066f89a1bda1535044b49897439890b09",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/build.log.gz": "14cd229e1dbba56183b36064c1bd589f2051433ba4dc1648417952695f2e1c50",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/check-native-targets-first-attempt.py": "298bef58af8ae4f3cae1a27e2e314073551f34fce6b8cbe4d840ea340e9707fa",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/check-native-targets.py": "64e76c01d10ea971c7cd8cfd9817f4d4a36bb3c0b988f3bdba6f1a893d3c1769",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/check_provenance.py": "a8c84ae07f7c68676e10f902830cf35353218dc50debfb0722f9698a57a2a609",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/checkdecls-exit.json": "6e0dc70a7785d17de93e59449d8591845e5919f27c2a60713e7005b66852f35a",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/checkdecls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/checkdecls.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/compression.json": "58d2e2862a53c47e658f07e81376df344bbf57089b81b3e45c7da0eb77caba7d",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/definition-review.json": "5ed4d0046fbf62aab1d7311fa2cd9e931a9ace5e67e42cfb45e64299ce5a60ed",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/excluded-attempts.json": "8907e164b09c0a009233b142cee8ff8836c8bb413416cc649c71f7fd6a302540",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/imports-exit.json": "836f9fa2683aa1da4859cf5ca051327e41c3ce5d5a621b5b5daceb8a447b26d0",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/imports.log": "b42ad5d7c6ad835d48e5806ed013777fc25d400ecf0a1e7e71b8a3d8c3a8b08c",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/imports.log.gz": "6d1fcc8424c82999b90a2e759845255c8e9fa7ddd5500f8203c301fcc0e3c528",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/inspect-mobile-equations.py": "c9f30002bff3bab70505468eda3bd35ee709bc374dd8a018b26288a3830977ff",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/inspect-web.py": "f57af7a43070e1cbf20d20e9b7002d4f33006eb8a7ead6da9fedddafbb4a661e",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mathlib-cache-exit.json": "ebe24f2c539f4e78132971d574597d7b51ada659beb6e98fd00efd29308c4aa3",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mathlib-cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mathlib-cache.log.gz": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mathlib-guard-exit.json": "48ce3800434ca2b69f397255f677d0fac86c2f67611341afbf4a978fd48c82c1",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mathlib-guard.log": "fe6fede23077bfd5e7469ec4f6787b977061ac192a2bf5307b6405eaff8afff1",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mathlib-guard.log.gz": "0261898b450ae01f8ef9292bb1467634a3a72c86b428b6b84c13c9b7a7ecea36",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mobile-equations-exit.json": "19b30832f0f5d9fb8a2789b42069a7d79c2a6733ece55699a85ad642b9ccce43",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mobile-equations.json": "baeb9a725af1f0517e1d7361a147e8f6b363ee82d202520a866a8b58c1430b84",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mobile-equations.log": "baeb9a725af1f0517e1d7361a147e8f6b363ee82d202520a866a8b58c1430b84",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/mobile-equations.log.gz": "1327ca037612d05bc7eac2b494a3487528b2b02f0216815af89a5425d1c4aea5",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets-exit.json": "64a55b6cc3fa5739b78b66d6502b6226a18e4949203fca744e2c8e37c53cffd7",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets-final-exit.json": "3791b2928255f9624ffa9d7498adf62b511bc34fb79a11f9940e4d9d4bb8c527",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets-final.log": "4be2bbe76a6fb801be6b827f6b8d49278fef0a7113105fb0e6fa710a0b7226a4",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets-final.log.gz": "43656bf878c38e5060d6d5ec05296b61885a421b6a4ce6eace977e44596d8ace",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets.json": "4be2bbe76a6fb801be6b827f6b8d49278fef0a7113105fb0e6fa710a0b7226a4",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets.log": "296e932dbd42775da5c6ed966b5842ea3e6b31d501bd40e075d75eed6d0715c7",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/native-targets.log.gz": "60f5f558c3ad19d7ba2c01ebf494e3bd69cbffc2a0df28592dd58aac44e05d1d",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/paper-gaps-exit.json": "9bed7d0616e98d20ba97a95248c278cbe724ddb3103f18f039a271687a8d6ec3",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/paper-gaps.log": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/paper-gaps.log.gz": "daa5bc242751cef680bcc2ef9e4e40bf806993a1426781e6f26c31a344c88d25",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/pdf-exit.json": "72725a284096d931290eae16dd04cab7fe94f947c096b2d0f2b2485a39963b2b",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/pdf-page-selection.json": "03fe8a38cad5f80cfcbb213beda217153eaf4dd49fa636989ab8287f4953f805",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/pdf.log": "fd2b82880f77ebc2f9b1da87be6143316589ed5c4c3d97afa0d8fee58f992020",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/pdf.log.gz": "cce221472f337072a2bb02aa91084342a22de636841cf252eda3ff7e595b214c",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/prose-exit.json": "d4a25bb78888edf463c3aedb72ff1418a017a685f1e7d6582b4d4745034cc0d0",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/provenance-exit.json": "285b70e6b2c38f22495416a09a09a9332eb09595e59f196e52b61ab55f253647",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/provenance.log": "8d3923efcdb59f02d8348b2d7232208a20d7ac20e5b9ca0affbcf0338c7196b5",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/provenance.log.gz": "faa85c6aba3722b0423acfc5c12ab6b6bd8ef6398aac501e92e38dcf44719242",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/high-label-mobile-equation-2-right.png": "381d8a8590034d7b792654d68bdc98f855c30d9e905dbcaf972bfeec5d5fc7b6",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/high-label-web-desktop.png": "7e96ab607c30b597f8ea17e95445d0c11da8c32835e24b25de3e40409db13964",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/high-label-web-mobile.png": "670c848da9d6c6e584ee85cdab5c450d37fa6dfd59a819c467792f1a4a2bb219",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/page-410.png": "d764b6a8c3c645a11f8b53515045c4b9834d4ae3ab55e6c1bf6870184fb9b1d3",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render/page-411.png": "30e6c0b1d066abc5ae1a8138d288f7358a5bf0bc41ff4e2370dd5014dad4c288",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render-exit.json": "bbda5ca289b0f271d479bf7405bec985cd8bbd93dc2fd93cdce2fb70c31ab6f6",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render-inspection.json": "646140f741faeda3db5b2790d87213d2dcc9833f7ff678e20b502ea34741b0f7",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/render.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/source-preservation.json": "5be68d76fa1932955a7e8c76f014147999c48da04a9e32cbca2ff63e94eefdd1",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/tenkz-exit.json": "43166ac60d96039d3df708bfd79a26bf67bedf634eeddad1654a9e72142d079a",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/tenkz.log": "6097295608ad8d1485b089f15af6cde000292c0afe7c5377d884b6485dba0444",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/tenkz.log.gz": "ebb4e2a7cc5e4d89859d150aee07d7cf3e335e17b1ffb8d90a028163469da4ba",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/validate-manifest.py": "f0613d5e5df8e32855022dcd071c66e701b9672837b64dac8a0a9042b4f0e535",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web-exit.json": "bcd8cceae8c11d942dd0ed4842cb49e87c94ba00dad586abb7439898b6795d50",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web-inspection-exit.json": "2ff4efbc58df947616a8d06140a9cf91b2490a1b7df241ba6fa6129ba18587b2",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web-inspection.json": "966ab80d1f8d38b5b565426f811812b06b8e5707c7e835c5e2464b3aa032118a",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web-inspection.log": "6c9399ae184e1b17b0fb4af1ab2658ce51ca66e8b97b60ecea1315a7704dbbfa",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web-inspection.log.gz": "d9db69100eb2de7770551436ee5c21c120cd44d8c6ca6b16ea86a11439b523ad",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web-render-test-exit.json": "e0181df3441bb3c4219ff20bcdc5283e3661f1d49696eacb77a3c2055ab99e18",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web-render-test.log": "fc9c7fb92a12ee9d72b6d4c91b589b4d2f8dee54ef9d60aaecbdda9e1a983cc9",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web-render-test.log.gz": "5a5040c2f44b572b766660c6a9faef4ca72bf2cae7c168575802940db81e9409",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web.log": "b3b98af045df5b51a818f14ed3dce4e1f405b043eba295f3ecd66b31896f2a88",
+    "docs/provenance/evidence/highLabelWindowIntegration8753/web.log.gz": "81fa63e368b83d3c8882b919eb3aeffe076e3f910ae766f9013d61d4cb79efa1",
+    "docs/provenance/evidence/highLabelWindow8753/Axioms.lean": "7bf20a00716f303bdaed3cf569dedae1b432e532b600e54ba1976b8d15faef06",
+    "docs/provenance/evidence/highLabelWindow8753/README.md": "3481a96c316ebb313941faa07ada57e59cd0f39126e1190a4f529923c919f704",
+    "docs/provenance/evidence/highLabelWindow8753/TextStyle.lean": "e85c94cc69aa82d71546ffb8a58ba3ff5a099aa89048bc177628bb71e171c8b7",
+    "docs/provenance/evidence/highLabelWindow8753/axioms-exit.json": "7e9a363f422be59a7fea10e8db66edc7bcfc7bdac0c5249b3f136fab5cf5961f",
+    "docs/provenance/evidence/highLabelWindow8753/axioms.log": "6842e8f06740a00a4ce33c6cdef355b9e353e21d6523dce177563799d38dfd14",
+    "docs/provenance/evidence/highLabelWindow8753/axioms.log.gz": "f82e0add0144ff47100a2a9be90c972097ebf4541e41095c9b0bd13ba6e030b9",
+    "docs/provenance/evidence/highLabelWindow8753/check_provenance.py": "a6a6cd35fe142ea1d5f52140acc91fff9f9add9b884fec5f7db0a3f94e24ce55",
+    "docs/provenance/evidence/highLabelWindow8753/compression.json": "cd01f886559587569c92c3a0eb2b0920ac66121f91968298966f8592b76a3965",
+    "docs/provenance/evidence/highLabelWindow8753/excluded-attempts.json": "2810c105e8d4d34c566c11f840c1bd1e2f5710cc35b67abc6f3f59da1a3e1090",
+    "docs/provenance/evidence/highLabelWindow8753/mathlib-cache-exit.json": "e513d245b3111ddcf9282448b0e8878af941919072f990a5b59f61abb8523de7",
+    "docs/provenance/evidence/highLabelWindow8753/mathlib-cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/highLabelWindow8753/mathlib-cache.log.gz": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "docs/provenance/evidence/highLabelWindow8753/mathlib-guard-exit.json": "3432a82ab98e1993bc3cf7d56b515e2a3f52711e99dcbf96d15424cafc1e71d5",
+    "docs/provenance/evidence/highLabelWindow8753/mathlib-guard.log": "fe6fede23077bfd5e7469ec4f6787b977061ac192a2bf5307b6405eaff8afff1",
+    "docs/provenance/evidence/highLabelWindow8753/mathlib-guard.log.gz": "0261898b450ae01f8ef9292bb1467634a3a72c86b428b6b84c13c9b7a7ecea36",
+    "docs/provenance/evidence/highLabelWindow8753/mathlib-guard.py": "b5d017eb1bc495f61585364756dfe40921468bf1fe46d815542221e761193aea",
+    "docs/provenance/evidence/highLabelWindow8753/prose-exit.json": "d31652221280624cdc5992dd2e1011cab6238d78ad7be07b0a324cce612763fb",
+    "docs/provenance/evidence/highLabelWindow8753/prose-source-exit.json": "8988f70e6b1006f2dfe5f6103db3aea619ae6b77ac0ae963c0cd2d165c590eb4",
+    "docs/provenance/evidence/highLabelWindow8753/prose-source.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/highLabelWindow8753/prose-source.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/highLabelWindow8753/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/highLabelWindow8753/prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/highLabelWindow8753/provenance-exit.json": "f3552aaf9555864073a9e67250c9c3ae46519ee60fe7f4d296a92c8ae256a63f",
+    "docs/provenance/evidence/highLabelWindow8753/provenance.log": "b47d5eb1ef492cdc51bbe0871efda87ee672df65e1be8fd9eecae04985d2c953",
+    "docs/provenance/evidence/highLabelWindow8753/provenance.log.gz": "f952b3d5ba8e06f49286a1786ec4e87c84bc8f3e3f952ed447338329025ff457",
+    "docs/provenance/evidence/highLabelWindow8753/render/page-1.png": "a7c90e7459b4135cdd3f7295f9086c20b6e5188af57d55f9a52a34d6ecc42f88",
+    "docs/provenance/evidence/highLabelWindow8753/render/page-2.png": "95ced607dff1b313c9798d2369039510ad0015740547f6d9b506c9200b00f7e0",
+    "docs/provenance/evidence/highLabelWindow8753/render/page-3.png": "50d843ad78e2cb24c1c05a10611d8ee3c8136803118aaf852614ff1c4d117e2c",
+    "docs/provenance/evidence/highLabelWindow8753/render-exit.json": "dc2f974e623a5eb99a2e8ffbf69e6e3ff9fd070d148d4ac651ae700bfc8089fa",
+    "docs/provenance/evidence/highLabelWindow8753/render.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/highLabelWindow8753/render.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/highLabelWindow8753/source-comparison.json": "c146cdda3b664ee9471c92931fe897b3ea3d200cb037bf81b84e1ba05d94ec54",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-exit.json": "f19d117ad1196d1c42c4c282a7fa52c84d9d1404ef5140967c6b0697a22ffe93",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-final-exit.json": "fabd511f7228bf54ee22f9bd90fcb2a021b773e27cc7dc50fcfa876cc550d313",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-final.log": "f48a277ae883157b9a38d6bd057b0e91985d5d8e9c2d88c8f8b3ee585bc72a87",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-final.log.gz": "82427eeba98b399f7b84e2e9d6f786a2949dd18ae4b9287b8a9cf9cb8e0cbaac",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-reviewed-exit.json": "87bf100b9b31b884ae98036349a5441587703b85b446b548bc9fc47f22783362",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-reviewed.log": "f75dd3628ea47a934a3750a165c9da4bdf31238d563ea9d1853e2795ac644c03",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-reviewed.log.gz": "eb56b63619937d7436b3be530d5915c11b70aedb8f07471987a40f3901985ba3",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-pdf.log": "66142c11de7dacd1bf970cc22e8327dd40f543238ed297f5276711f1307d505a",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-pdf.log.gz": "0b43171cdc8ffd1cf12ae44795432091e5546479c24494a8f30e6c5f0641d087",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper-first-attempt.tex": "a7661f2a342b8a2ff891f8eb0a4c3bf17ec570ee004b96997c3df156537bdff8",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper-second-attempt.tex": "3dec060c3dd20cf26c00f869d9970327c9a63fa8ebcb49fc0fb70de79f395999",
+    "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper.tex": "7009e0fe4953ad356cca04ffd87f0a8dea716786615f5b6627aa3329e21a74e9",
+    "docs/provenance/evidence/highLabelWindow8753/strict-source-exit.json": "e19afcdaec64e220564a60dac11866e396a58af1602b4b604a0640202e0fd469",
+    "docs/provenance/evidence/highLabelWindow8753/strict-source.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/highLabelWindow8753/strict-source.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/highLabelWindow8753/target-exit.json": "94c4cf212cdc9f67d9aa9a34bb48240cb902bef873469a9aa1ade23dd6ce903c",
+    "docs/provenance/evidence/highLabelWindow8753/target.log": "b018b85a3a3baab795ab7f1f55b1ceb74271d4806fff367ad5ea426c4f7480e2",
+    "docs/provenance/evidence/highLabelWindow8753/target.log.gz": "c1dc3a22cae33faed88be8acd6055425f0f01d8266f78f97d74a0cb490d78196",
+    "docs/provenance/evidence/highLabelWindow8753/text-style-exit.json": "32daa7ac25ec772b37fd966814d99b7d045e61662ad662b487ccbaf6b82a1d45",
+    "docs/provenance/evidence/highLabelWindow8753/text-style.log": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "docs/provenance/evidence/highLabelWindow8753/text-style.log.gz": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+    "docs/provenance/evidence/highLabelWindow8753/verification.json": "733ec440438c402b84bb5bffe53c6462105628a9ed242469ace89ecfcf996c79",
+    "docs/provenance/evidence/highLabelWindow8753/visual-inspection.json": "2532c39412b35d010f6d97a0e459c58c054d8fa2552590a119de5b167eb0436a",
+    "QICLean/Representation.lean": "b7def07b25e8d7cf88d75e9415c1e4b22f410a68a011038d0814d3449621669f",
+    "QICLean/Entropy.lean": "125c1ee617c011e9744e5bc87e88a7f0027eae0889cd1cf4878d7743ac9bc330",
+    "blueprint/src/chapter/ch12_entropy.tex": "48b5f43cf6cfe264da00ea556d7a8a38578e224a76d7cdf3a72550cce401c4bc",
+    "QICLean/Representation/HighLabelWindow.lean": "cbc03325767efb74265c4d4079a305990bd4ff20a805443a8a57574cec745a05",
+    "blueprint/src/fragment/high_label_window.tex": "8917726aec144b9589c02f02ede37dae403bb697b7a17db32b4d62a51e89022a",
+    "docs/formalization/high-label-window.md": "e26d3af92d80094fd1396772c802b2bd7a27659c72034d43d872121c82620c17",
+    "docs/provenance/openai-math.d/highLabelWindow8753.json": "cd0b069070f14295924dae6e115f210930308c18cd38361a6b6fccdee427a392",
+    "docs/provenance/openai-math.d/pureTensorPower8753.json": "75ca058ffe23bd31452b8f4b852203d7a777f51b7221fdea2622e93e3e0218b5",
+    "docs/provenance/openai-math.d/iidSurprisal8753.json": "9e5995a8fe3ab3971efbda469aab72603aaed56d911d6926ed6a33dd368893b1",
+    "docs/provenance/openai-math.d/iidTailThreshold8753.json": "d1de3a3fb2be24a288b91f33f71cb1dadf60d6a43a07f40d7158663456108ea2"
+  },
+  "kernel_reports": 11,
+  "owned_shards": 4,
+  "target_build_jobs": 9713,
+  "native_declarations": 3294,
+  "native_list_sha256": "632d9d5e243f44087ff37e60183803c9c0e83c9befa38639629c209a56eff95d",
+  "active_fragment_declarations": 40,
+  "whole_web_regression": {
+    "pages": 38,
+    "typeset": 37405
+  },
+  "mathlib_source_rebuild": false,
+  "proof_holes": false,
+  "excluded_attempts_claimed_as_success": false
+}

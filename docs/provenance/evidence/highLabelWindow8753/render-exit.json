@@ -1,0 +1,17 @@
+{
+  "kind": "render",
+  "command": [
+    "pdftoppm",
+    "-r",
+    "100",
+    "-png",
+    "output/pdf/high-label-window.pdf",
+    "docs/provenance/evidence/highLabelWindow8753/render/page"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.29,
+  "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+  "log": "docs/provenance/evidence/highLabelWindow8753/render.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

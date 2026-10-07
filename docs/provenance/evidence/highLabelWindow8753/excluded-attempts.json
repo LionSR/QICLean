@@ -1,0 +1,48 @@
+[
+  {
+    "record": {
+      "kind": "blueprint",
+      "command": [
+        "latexmk",
+        "-xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-outdir=tmp/pdfs/high-label-window",
+        "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper.tex"
+      ],
+      "working_directory": ".",
+      "exit_code": 12,
+      "elapsed_seconds": 5.4,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/standalone-pdf.log",
+      "sha256": "66142c11de7dacd1bf970cc22e8327dd40f543238ed297f5276711f1307d505a"
+    },
+    "wrapper_snapshot": "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper-first-attempt.tex",
+    "wrapper_sha256": "a7661f2a342b8a2ff891f8eb0a4c3bf17ec570ee004b96997c3df156537bdff8",
+    "reason": "LaTeX exit12: a local standalone label command was outside the preamble.",
+    "claimed_as_successful_verification": false
+  },
+  {
+    "record": {
+      "kind": "blueprint",
+      "command": [
+        "latexmk",
+        "-xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-outdir=tmp/pdfs/high-label-window",
+        "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper.tex"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 9.29,
+      "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+      "log": "docs/provenance/evidence/highLabelWindow8753/standalone-pdf-final.log",
+      "sha256": "f48a277ae883157b9a38d6bd057b0e91985d5d8e9c2d88c8f8b3ee585bc72a87"
+    },
+    "wrapper_snapshot": "docs/provenance/evidence/highLabelWindow8753/standalone-wrapper-second-attempt.tex",
+    "wrapper_sha256": "3dec060c3dd20cf26c00f869d9970327c9a63fa8ebcb49fc0fb70de79f395999",
+    "reason": "LaTeX exit0 but omitted prerequisite references prevented final visual acceptance.",
+    "claimed_as_successful_verification": false
+  }
+]

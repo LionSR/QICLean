@@ -1,0 +1,13 @@
+{
+  "kind": "bbl",
+  "command": [
+    "texra-blueprint",
+    "bbl"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.3,
+  "source_revision": "553ff030d9c9ad385de5abe3f8e07bc88b8b1b77",
+  "log": "docs/provenance/evidence/highLabelWindowIntegration8753/bbl.log",
+  "sha256": "31c21ef9cd50a30103909f482ff2f6ca35c062d2c65b5cbfc8d9279eac4bffa4"
+}

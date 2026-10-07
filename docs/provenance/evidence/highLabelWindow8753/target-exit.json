@@ -1,0 +1,14 @@
+{
+  "kind": "build",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Representation.HighLabelWindow"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 164.81,
+  "source_revision": "ad3c3d3bcdc89ecef0bdc880227574d77c4c5227",
+  "log": "docs/provenance/evidence/highLabelWindow8753/target.log",
+  "sha256": "b018b85a3a3baab795ab7f1f55b1ceb74271d4806fff367ad5ea426c4f7480e2"
+}

@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Representation
 
 import QICLean.Representation.CommutantDimension
+import QICLean.Representation.HighLabelWindow
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.LabelProjectors
