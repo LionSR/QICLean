@@ -8,7 +8,9 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation
 
+import QICLean.Representation.CommutantDimension
 import QICLean.Representation.IrrepLabels
+import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.LabelProjectors
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.SchurLabelCommutation
