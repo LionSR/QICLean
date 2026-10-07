@@ -1,0 +1,15 @@
+Local QIC source validation
+Executed revision: c849b612e6e7c37c4c38263316681ff92b7ed5de
+Verified module/test bytes at: c849b612e6e7c37c4c38263316681ff92b7ed5de
+Command: lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/8766/PolarAxioms.lean
+Exit code: 0
+Wall seconds: not recorded
+Raw audit header was present before execution; total wall time was not recorded.
+Output:
+
+'Matrix.PosSemidef.norm_le_norm_add_toEuclideanCLM' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.norm_sub_le_add_residuals' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.norm_one_sub_le_norm_one_sub_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.norm_unitary_sub_le_add_residuals_of_mul_posSemidef' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.exists_unitary_polar_correction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.unitary_polar_correction_kronecker_one' depends on axioms: [propext, Classical.choice, Quot.sound]
