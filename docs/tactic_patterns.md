@@ -90,3 +90,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   stabilizer and auxiliary consequences reuse it. No new tactic is needed.
 - **Caveat:** The image is σB for the convention x(j)↦x(σ⁻¹j). An individual
   subset projection commutes only with its stabilizer, not arbitrary metrics.
+
+### Marginal invariance from a simultaneous fixed vector — candidate (2026-10-08)
+
+- **Pattern:** Convert a fixed-vector equation into conjugation invariance of
+  its rank-one density, apply existing partial-trace covariance, and cancel
+  the adjoint of the retained unitary.
+- **Seen:** `Analysis/ReplicaMarginalSymmetry.lean`; one mathematical
+  calculation and its excitation-component corollary.
+- **Abstraction:** The public fixed-vector theorem supplies the common
+  partial-trace step. The component corollary reuses it after deriving
+  fixedness from the stabilizer theorem. No new tactic is needed.
+- **Caveat:** Invariance alone does not imply that different copies are
+  independent or establish a merge-moment bound.
