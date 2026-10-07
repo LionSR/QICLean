@@ -14,7 +14,7 @@ original proof text. Every declaration has an explicit source notice and a
 record in an issue-owned provenance shard. The unchanged upstream Apache 2.0
 license is retained in `LICENSES/openai-math-Apache-2.0.txt`.
 
-The proof revision is `8deb555c1fa91e9561720014fe4c3066c8402240`. Each shard
+The proof revision is `cf9df5f20a4328bbf5694afceeeacfea52eabd7d`. Each shard
 records the exact revision, commands, successful exit codes and SHA-256 hashes
 of the build, compiled axiom and source-audit transcripts. Its `ported` status
 applies to the recorded declaration; it does not assert that the paper's full
