@@ -562,3 +562,45 @@ depend on the common values there.
     $\varphi$ and is clipped relative to it; Lemma~\ref{lem:chain_term_conjugation} bounds each
     term, and exchanging the two sums gives the claim.
 \end{proof}
+
+\begin{lemma}[One step of the first norm comparison]
+    \label{lem:prefix_step}
+    \lean{Entropy.chainList_lt_last, Entropy.chainList_last_lt, Entropy.liftProd_chainList_succ,
+        Entropy.mul_norm_le_of_overlap}
+    \leanok
+    Let $\psi=L_k\cdots L_0\Omega$ with $L_k$ Hermitian, suppose the normalization of $\psi$
+    has overlap at least $s$ with $\Omega$, and $\lVert L_{k-1}\cdots L_0\Omega\rVert\le N$.
+    Then $s\lVert\psi\rVert\le\lVert L_k\Omega\rVert N$.
+\end{lemma}
+\begin{proof}\leanok
+    $s\lVert\psi\rVert\le\lvert\langle\Omega,\psi\rangle\rvert
+    =\lvert\langle L_k\Omega,L_{k-1}\cdots L_0\Omega\rangle\rvert$, and Cauchy--Schwarz applies.
+\end{proof}
+
+\begin{theorem}[The first norm comparison]
+    \label{thm:first_norm_comparison}
+    \lean{Entropy.chainOptimum, Entropy.chainOptimum_zero, Entropy.exists_eq_chainOptimum,
+        Entropy.norm_le_chainOptimum, Entropy.pow_mul_le_prod_of_step,
+        Entropy.sq_norm_inner_ge_of_gap, Entropy.sqrt_mul_chainOptimum_succ_le,
+        Entropy.pow_sqrt_mul_chainOptimum_le}
+    \leanok
+    \uses{lem:prefix_step, thm:chain_energy, prop:filter_maximizer}
+    Let $N_k$ be the largest output norm $\lVert L_{k-1}\cdots L_0\Omega\rVert$ over feasible
+    filters on the first $k$ nested regions, where the floors are positive with
+    $\#\cdot f_j<1$ and $0<a_j\le\tfrac12$. Let $\Omega$ be a unit vector with
+    $H\Omega=E_0\Omega$ and $H-E_0\ge\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$, where
+    $\Delta>0$ and $H=\sum_ih_i$ with $h_i$ Hermitian, supported on $S_i$, $\lVert h_i\rVert\le c_0$,
+    and every $S_i$ split by at most one region. If
+    $\sum_{j<m}4a_j^2\sum_{i\text{ crossing }D_j}d_{S_i}^2c_0\le E$ and every feasible filter
+    on $D_k$ has $\lVert L\Omega\rVert\le x_k$, then
+    \[
+        \sqrt{1-E/\Delta}^{\,m}N_m\le\prod_{k<m}x_k .
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    The optimum is attained by Proposition~\ref{prop:filter_maximizer}. By
+    Theorem~\ref{thm:chain_energy} and the gap, the normalized output of an optimal prefix of
+    length $k+1$ has squared overlap at least $1-E/\Delta$ with $\Omega$, and
+    Lemma~\ref{lem:prefix_step} gives $\sqrt{1-E/\Delta}\,N_{k+1}\le x_kN_k$. Telescoping from
+    $N_0=1$ gives the claim.
+\end{proof}
