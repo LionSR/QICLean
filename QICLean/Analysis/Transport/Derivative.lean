@@ -196,13 +196,7 @@ theorem trace_transportState {J : Type*} [DecidableEq J] {T' : MeanTree J}
   rw [transportState, trace_traceAdjoint_leafMap hA T' hw, trace_vecMulVec, dotProduct_comm,
     star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, conjTranspose_imagPow_mul_imagPow, one_mulVec]
 
-/-- `N²` is positive and continuous on `[0, 1]` (`06-transport.tex` lines 769--771). -/
-theorem continuous_filteredNormSq_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
-    {A : H → Matrix n n ℂ} {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef)
-    (hA' : ∀ h c, (A' h c).PosDef) (pre : n → ℂ) :
-    Continuous fun q => filteredNormSq (interpPath T S A A' q) pre := by
-  sorry
-
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] in
 theorem filteredNormSq_pos {M : Matrix n n ℂ} (hM : M.PosDef) {pre : n → ℂ} (hpre : pre ≠ 0) :
     0 < filteredNormSq M pre := by
   have hne : filteredRaw M pre ≠ 0 := by
@@ -212,6 +206,32 @@ theorem filteredNormSq_pos {M : Matrix n n ℂ} (hM : M.PosDef) {pre : n → ℂ
       rw [filteredRaw, mulVec_mulVec, hM.rpow_mul_rpow_neg, one_mulVec]
     rw [← this, h0, mulVec_zero]
   exact (Complex.pos_iff.mp (dotProduct_star_self_pos_iff.mpr hne)).1
+
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] in
+/-- `star (M^{-1/4} pre) ⬝ᵥ M^{-1/4} pre = N²` as a complex number. -/
+theorem star_dotProduct_filteredRaw (M : Matrix n n ℂ) (pre : n → ℂ) :
+    star (filteredRaw M pre) ⬝ᵥ filteredRaw M pre = (filteredNormSq M pre : ℂ) := by
+  have h0 : 0 ≤ star (filteredRaw M pre) ⬝ᵥ filteredRaw M pre := dotProduct_star_self_nonneg _
+  apply Complex.ext
+  · simp [filteredNormSq]
+  · simpa [filteredNormSq] using (Complex.nonneg_iff.mp h0).2.symm
+
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] in
+/-- The filtered vector is a unit vector. -/
+theorem star_dotProduct_filteredVector {M : Matrix n n ℂ} (hM : M.PosDef) {pre : n → ℂ}
+    (hpre : pre ≠ 0) : star (filteredVector M pre) ⬝ᵥ filteredVector M pre = 1 := by
+  have hN := filteredNormSq_pos hM hpre
+  rw [filteredVector, star_smul, smul_dotProduct, dotProduct_smul, star_dotProduct_filteredRaw]
+  simp only [smul_eq_mul, Complex.star_def, map_inv₀, Complex.conj_ofReal]
+  rw [← Complex.ofReal_inv, ← Complex.ofReal_mul, ← Complex.ofReal_mul, ← mul_assoc,
+    ← mul_inv, Real.mul_self_sqrt hN.le, inv_mul_cancel₀ hN.ne', Complex.ofReal_one]
+
+/-- `N²` is positive and continuous on `[0, 1]` (`06-transport.tex` lines 769--771). -/
+theorem continuous_filteredNormSq_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
+    {A : H → Matrix n n ℂ} {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef)
+    (hA' : ∀ h c, (A' h c).PosDef) (pre : n → ℂ) :
+    Continuous fun q => filteredNormSq (interpPath T S A A' q) pre := by
+  sorry
 
 /-- **Integration over a closed subinterval** (`06-transport.tex` lines 427--429 and
 769--779): the derivative of `-log N²` is interval integrable on `[p₀, p₁] ⊆ [0, 1]`, and
