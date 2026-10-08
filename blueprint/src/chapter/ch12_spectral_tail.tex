@@ -1,0 +1,93 @@
+\section{Entropy bounds for canonical spectral tails}
+\label{sec:entropy_spectral_tail}
+
+Let $\sigma$ be a positive semidefinite matrix of trace one on a finite
+index set $I$, and write $S(\sigma)=-\sum_i\lambda_i\log\lambda_i$ with
+$0\log0=0$. Let $Q_t=\mathbf 1_{[t,\infty)}(\sigma)$.
+These estimates give the finite-dimensional entropy step in
+\cite[Section~4, constant-tail ranks]{OpenAI2026PolynomialPEPS}.
+% The global-gap area law giving the entropy bound and the actual filtered-state
+% closeness estimate remain separate obligations.
+
+\begin{theorem}[Entropy Markov bound]
+\label{thm:entropy_spectral_tail}
+\lean{Matrix.IsHermitian.trace_complement_spectralProjectionGE,
+Matrix.PosSemidef.trace_complement_spectralProjectionGE_le_entropy,
+Matrix.PosSemidef.spectralProjectionGE_exp_entropy_bounds}
+\leanok
+For $0<t<1$ the complementary mass satisfies
+\begin{align}
+ \tr((\Id-Q_t)\sigma)
+ &=\sum_{\lambda_i<t}\lambda_i
+ \le\frac{S(\sigma)}{-\log t}.
+\end{align}
+If $S(\sigma)\le M$, $M>0$ and $c>0$, then at $t=e^{-cM}$,
+$\rank Q_t\le e^{cM}$ and $\tr((\Id-Q_t)\sigma)\le1/c$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:closed_threshold_rank_trace}
+Every eigenvalue lies in $[0,1]$. If $0<\lambda_i<t$, then
+$\lambda_i(-\log t)\le-\lambda_i\log\lambda_i$; at zero both sides vanish.
+The other entropy summands are nonnegative. The rank estimate follows from
+$t\rank Q_t\le\tr\sigma=1$. Eigenvalues equal to $t$ belong to the head.
+\end{proof}
+
+\begin{theorem}[Zero entropy]
+\label{thm:entropy_spectral_tail_zero}
+\lean{Matrix.PosSemidef.spectralProjectionGE_one_of_entropy_nonpos}
+\leanok
+If $S(\sigma)\le0$, then $\rank Q_1\le1$ and
+$\tr((\Id-Q_1)\sigma)=0$.
+\end{theorem}
+\begin{proof}
+\leanok
+Each entropy summand is nonnegative, so each vanishes. Since
+$-s\log s>0$ for $0<s<1$, every eigenvalue is zero or one.
+\end{proof}
+
+\begin{theorem}[Transfer with a fixed projection]
+\label{thm:entropy_spectral_tail_transfer}
+\lean{Matrix.re_trace_mul_sub_le_traceDistance,
+Matrix.PosSemidef.trace_complement_spectralProjectionGE_le_entropy_add_distance}
+\leanok
+Let $\rho,\sigma$ be Hermitian matrices of equal trace and $0\le E\le\Id$.
+Then $\Re\tr(E\rho)-\Re\tr(E\sigma)\le\delta(\rho,\sigma)$, where
+$\delta(\rho,\sigma)=\frac12\|\rho-\sigma\|_1$.
+In particular, for density $\sigma$, Hermitian trace-one $\rho$ and $0<t<1$,
+\begin{align}
+ \Re\tr((\Id-Q_t)\rho)
+ \le\frac{S(\sigma)}{-\log t}+\delta(\rho,\sigma).
+\end{align}
+No commutation with $\rho$ is required.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:trace_distance_jordan,thm:entropy_spectral_tail}
+Write $\rho-\sigma=H_+-H_-$. Positivity gives
+$\tr(EH_-)\ge0$ and $\tr(EH_+)\le\tr H_+=\delta(\rho,\sigma)$.
+Apply this estimate to $E=\Id-Q_t$ and use the entropy bound.
+\end{proof}
+
+\begin{theorem}[Constant tail and regulator consequence]
+\label{thm:entropy_spectral_tail_regulator}
+\lean{Matrix.PosSemidef.spectralProjectionGE_constant_tail,
+Matrix.PosSemidef.trace_shiftedRegulator_le_quarter_of_entropy}
+\leanok
+Suppose $S(\sigma)\le M$, $M>0$, $\rho$ is Hermitian of trace one and
+$\|\rho-\sigma\|_1\le1/16$. Then $Q=Q_{e^{-16M}}$ satisfies
+$\rank Q\le e^{16M}$ and $\Re\tr((\Id-Q)\rho)\le1/8$.
+If moreover $\rho,x\ge0$ commute, $C>0$, $u\ge0$,
+$M=C(1+u)$, $R\ge(16C+\log8)(1+u)$, and $\rho\le x+e^{-R}\Id$, then
+\begin{align}
+ \tr\bigl(e^{-R}\rho(x+e^{-R}\Id)^{-1}\bigr)\le\frac14.
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:entropy_spectral_tail,thm:entropy_spectral_tail_transfer,
+thm:patch_regulator_quarter}
+The original-state tail is at most $1/16$. Transfer contributes at most
+$1/32$, hence the weaker bound $1/8$ follows. Apply the positive-regulator
+estimate with the same $Q$ and rank exponent $16C$.
+\end{proof}
