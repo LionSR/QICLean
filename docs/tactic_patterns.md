@@ -129,35 +129,22 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   dimension of the moving tensor power. Empty coordinate sets and zero
   moving coordinates remain included.
 
-### Sector mass from a finite resolution — candidate (2026-10-07)
+### Compression by an actual central projection — candidate (2026-10-08)
 
-- **Pattern:** Restrict trace masses to the nonzero projections, use positivity
-  and completeness to obtain a nonempty set of total mass one, and apply
-  `Finset.exists_le_of_sum_le` with a bound on the number of projections.
-- **Seen:** `TensorPower.exists_labelProj_trace_mass_ge` in
-  `QICLean/Representation/SchurSectorMass.lean`; one mathematical consumer.
-- **Abstraction:** Reuse the existing finite-sum comparison theorem. The
-  projected-vector result applies this trace result to the actual reduced
-  state and uses the trace-pairing and Hermitian-idempotent norm identities.
-  No new tactic is needed.
-- **Caveats:** The sector count gives a mass bound only; an entropy window
-  requires a separate concentration estimate and a restricted selection.
-
-### Joint spectral trace reduction — candidate (2026-10-07)
-
-- **Pattern:** Express the density and the tested observable through the
-  joint orthogonal resolution, multiply using its algebra homomorphism, and
-  take the trace as a finite weighted sum.
-- **Seen:** The surprisal tail, label-window mass and exponential remainder
-  in `QICLean/Representation/HighLabelWindow.lean` use the private
-  `re_trace_mul_joint_hom` lemma; the existing moment calculation in
-  `SchurSurprisal.lean` has the corresponding finite trace expansion.
-- **Abstraction:** A single private mathematical lemma handles all three
-  new uses. The existing resolution homomorphism and trace theorem remain
-  the common public results; no tactic is introduced.
-- **Caveats:** The density is positive semidefinite and permutation invariant.
-  Zero eigenvalues contribute zero mass. A trace expansion must not be
-  substituted for either concentration or the moment bound itself.
+- **Pattern:** Apply `PosSemidef.conjTranspose_mul_mul_same` to a derived
+  matrix order inequality, then use Hermiticity, idempotence and the
+  actual central-observable eigenvalue identity to simplify the result.
+- **Seen:** `TensorPower.copyPerm_groupedGood_labelEntropy_compression` in
+  `QICLean/Representation/GoodAuxiliaryLabelCompression.lean`; one new
+  mathematical consumer. The existing support-compression arguments in
+  `SchurSurprisal.lean` also use the same Mathlib conjugation theorem.
+- **Abstraction:** Reuse the Mathlib conjugation theorem and the existing
+  `labelObservable_mul_labelProj` identity. No new tactic or generic
+  projection-compression definition is introduced.
+- **Caveats:** The central projection and its eigenvalue are derived from
+  the actual representation. Labels with zero projection need no separate
+  occurrence assumption; physical excitation support remains a distinct
+  assertion.
 
 ### Copy-permutation commutation from invariant entries — candidate (2026-10-07)
 
@@ -187,6 +174,54 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   stabilizer and auxiliary consequences reuse it. No new tactic is needed.
 - **Caveat:** The image is σB for the convention x(j)↦x(σ⁻¹j). An individual
   subset projection commutes only with its stabilizer, not arbitrary metrics.
+
+### Disjoint label preservation and a lifted quadratic bound — candidate (2026-10-08)
+
+- **Pattern:** Derive a whole-label fixed-vector equation for a literal
+  physical component by the identity-permutation case of excitation
+  symmetry. Lift an already derived positive semidefinite compression by
+  identities on all spectator registers, then cancel the Hermitian label
+  projection on both sides of its quadratic form.
+- **Seen:** `Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower`
+  in `QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean`; one mathematical
+  consumer.
+- **Abstraction:** Reuse `PosSemidef.kronecker`, `kroneckerBilinear`, and
+  the actual excitation fixed-vector theorem. The local linear map is the
+  literal identity lift, not a new public lifting construction.
+- **Caveats:** Only the original vector's label equation is assumed. The
+  component's label equation and the good/bad coordinate split are derived.
+  Do not replace either with a certificate or commute a physical excitation
+  projection through a band metric.
+
+### Sector mass from a finite resolution — candidate (2026-10-07)
+
+- **Pattern:** Restrict trace masses to the nonzero projections, use positivity
+  and completeness to obtain a nonempty set of total mass one, and apply
+  `Finset.exists_le_of_sum_le` with a bound on the number of projections.
+- **Seen:** `TensorPower.exists_labelProj_trace_mass_ge` in
+  `QICLean/Representation/SchurSectorMass.lean`; one mathematical consumer.
+- **Abstraction:** Reuse the existing finite-sum comparison theorem. The
+  projected-vector result applies this trace result to the actual reduced
+  state and uses the trace-pairing and Hermitian-idempotent norm identities.
+  No new tactic is needed.
+- **Caveats:** The sector count gives a mass bound only; an entropy window
+  requires a separate concentration estimate and a restricted selection.
+
+### Joint spectral trace reduction — candidate (2026-10-07)
+
+- **Pattern:** Express the density and the tested observable through the
+  joint orthogonal resolution, multiply using its algebra homomorphism, and
+  take the trace as a finite weighted sum.
+- **Seen:** The surprisal tail, label-window mass and exponential remainder
+  in `QICLean/Representation/HighLabelWindow.lean` use the private
+  `re_trace_mul_joint_hom` lemma; the existing moment calculation in
+  `SchurSurprisal.lean` has the corresponding finite trace expansion.
+- **Abstraction:** A single private mathematical lemma handles all three
+  new uses. The existing resolution homomorphism and trace theorem remain
+  the common public results; no tactic is introduced.
+- **Caveats:** The density is positive semidefinite and permutation invariant.
+  Zero eigenvalues contribute zero mass. A trace expansion must not be
+  substituted for either concentration or the moment bound itself.
 
 ### Marginal invariance from a simultaneous fixed vector — candidate (2026-10-08)
 

@@ -22,7 +22,8 @@ This module proves the exact orthogonal component decomposition and its squared
 mass identity. Stabilizer invariance, ground-factor decomposition and the Schur
 metric comparisons are separate steps of the source argument.
 
-Independently formalized; no upstream Lean proof text reused.
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-

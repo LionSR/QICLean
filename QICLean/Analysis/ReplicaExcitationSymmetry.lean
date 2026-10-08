@@ -19,6 +19,9 @@ estimates in the OpenAI area-law manuscript, `07-comparators.tex`, lines 441–4
 The algebraic identities require no normalization of the one-copy vector and
 include zero copies. When that vector is unit, the existing excitation-sector
 theorem identifies these matrices as the actual orthogonal projections.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-

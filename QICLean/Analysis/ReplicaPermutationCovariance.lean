@@ -26,6 +26,9 @@ No normalization of the one-copy vector is needed for commutation. The
 Hamiltonian gap estimate, mass bound, ground-factor decomposition and
 inverse-metric estimates, independent-copy concentration and entropy-window
 selection are separate statements.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-

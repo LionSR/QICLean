@@ -18,7 +18,8 @@ OpenAI, *A two-dimensional area law from a global spectral gap* (September 24,
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 The actual replica defect count and its gap inequality are separate results.
 
-Independently formalized; no upstream Lean proof text reused.
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-

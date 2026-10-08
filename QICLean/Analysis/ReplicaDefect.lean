@@ -22,7 +22,8 @@ OpenAI, *A two-dimensional area law from a global spectral gap* (September 24,
 Copy-permutation compatibility, ground-factor decomposition and metric estimates
 are separate steps of the source argument.
 
-Independently formalized; no upstream Lean proof text reused.
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-

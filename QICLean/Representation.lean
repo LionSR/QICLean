@@ -23,6 +23,7 @@ import QICLean.Representation.CoherentSymbolLimit
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.ExteriorPieri
+import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy

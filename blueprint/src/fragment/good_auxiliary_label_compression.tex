@@ -1,0 +1,41 @@
+\section{The good auxiliary observable on a whole label}
+\label{sec:good_auxiliary_label_compression}
+
+The preceding whole-space comparison restricts to each actual whole-copy
+label subspace. The restricted good-copy observable retains the whole
+logarithmic dimension, up to the same bad-copy and binomial corrections.
+
+\begin{theorem}[Good auxiliary bound on a whole label]
+\label{thm:good_auxiliary_label_compression}
+\lean{TensorPower.copyPerm_groupedGood_labelEntropy_compression}
+\leanok
+Let $C$ be a finite coordinate set, put $d=|C|$, and specify groups of $m$
+good and $r$ bad copies with $m+r=k$. For the actual copy-permutation action
+on $\mathbb C^{C^k}$, write $F_g$ for the good-copy logarithmic label
+observable and $P_\lambda$ for the whole-copy central projection of an
+irreducible label of dimension $d_\lambda$. Then $F_g$ commutes with
+$P_\lambda$, and
+\[
+ \left(\log d_\lambda-r\log d-\log\binom{k}{r}\right)P_\lambda
+       \le P_\lambda F_g P_\lambda.
+\]
+No occurrence assumption is imposed on $\lambda$. Empty coordinate sets
+and zero copy groups are included, with the convention $\log0=0$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:good_auxiliary_label_entropy}
+Every permutation of the good copies is also a whole-copy permutation,
+so it commutes with the whole-copy central projection. Summing the
+central projections of the good-copy representation proves the stated
+commutation. Compress the preceding whole-space upper bound for $F_w$
+by $P_\lambda$. Since $P_\lambda$ is an orthogonal projection and
+$F_wP_\lambda=(\log d_\lambda)P_\lambda$, the compressed inequality is
+exactly the stated lower bound. This argument also includes
+$P_\lambda=0$.
+\end{proof}
+
+This is the whole-label support step in
+\cite[Section~7, equation \textup{(comparator:good-auxiliary)}]{OpenAI2026AreaLaw}.
+To apply it to an actual physical excitation component, the whole-copy
+auxiliary label must be preserved under that physical projection.
