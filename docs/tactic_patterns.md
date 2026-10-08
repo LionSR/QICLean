@@ -116,6 +116,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   fixedness from the stabilizer theorem. No new tactic is needed.
 - **Caveat:** Invariance alone does not imply that different copies are
   independent or establish a merge-moment bound.
+
 ### Norm of a finite product of vectors — candidate (2026-10-07)
 
 - **Pattern:** Reduce normalization to a one-coordinate sum, then apply
@@ -143,6 +144,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Seen:** `Analysis/ReplicaRegionalDensity.lean`; the auxiliary marginal calculation in `Analysis/ReplicaGoodCopyDensity.lean` uses the same existing finite-product identities.
 - **Abstraction:** Existing `Equiv.prod_comp`, `Fintype.prod_sum` and finite-sum multiplication lemmas perform the calculation. The new regional density theorem carries it to the physical consumer; no new tactic is introduced.
 - **Caveat:** Keep the literal excitation component and its own auxiliary density. Only the prescribed one-copy ground vector is normalized.
+
 ### Contraction of the repeated uniform pair — candidate (2026-10-07)
 
 - **Pattern:** Expand a Kronecker action against the actual repeated uniform
