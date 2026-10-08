@@ -207,6 +207,82 @@ theorem coherentIntegral_affine {k : ℕ} (a : Ω) {ρ : Matrix (Fin k → Ω) (
   rw [hI]
   linear_combination α * h1
 
+section LogResolvent
+
+open Set Filter Topology
+
+/-- The resolvent kernel `1/(1+s) - 1/(x+s)` of the logarithm. -/
+def logKernel (s x : ℝ) : ℝ := (1 + s)⁻¹ - (x + s)⁻¹
+
+/-- The antiderivative `log(1+s) - log(x+s)` of the kernel in `s`. -/
+private theorem hasDerivAt_logKernel_primitive {x s : ℝ} (hx : 0 < x) (hs : 0 ≤ s) :
+    HasDerivAt (fun s => Real.log (1 + s) - Real.log (x + s)) (logKernel s x) s := by
+  have h1 : (1 + s) ≠ 0 := by positivity
+  have h2 : (x + s) ≠ 0 := by positivity
+  have := (((hasDerivAt_id s).const_add 1).log h1).sub (((hasDerivAt_id s).const_add x).log h2)
+  convert this using 1
+  · rfl
+  · simp [logKernel]
+
+private theorem tendsto_logKernel_primitive {x : ℝ} (hx : 0 < x) :
+    Tendsto (fun s => Real.log (1 + s) - Real.log (x + s)) atTop (𝓝 0) := by
+  have hq : Tendsto (fun s : ℝ => 1 + (1 - x) / (x + s)) atTop (𝓝 1) := by
+    have : Tendsto (fun s : ℝ => (1 - x) / (x + s)) atTop (𝓝 0) :=
+      tendsto_const_nhds.div_atTop (tendsto_atTop_add_const_left _ _ tendsto_id)
+    simpa using this.const_add 1
+  have hlog := ((Real.continuousAt_log one_ne_zero).tendsto.comp hq)
+  rw [Real.log_one] at hlog
+  refine hlog.congr' ?_
+  filter_upwards [eventually_gt_atTop 0] with s hs
+  have h1 : (0 : ℝ) < 1 + s := by linarith
+  have h2 : 0 < x + s := by linarith
+  simp only [Function.comp]
+  rw [← Real.log_div h1.ne' h2.ne']
+  congr 1
+  field_simp
+  ring
+
+/-- **Resolvent representation of the logarithm**: for `x > 0`,
+`log x = ∫_0^∞ (1/(1+s) - 1/(x+s)) ds`, and the integrand is integrable. -/
+theorem integrableOn_logKernel {x : ℝ} (hx : 0 < x) :
+    IntegrableOn (fun s => logKernel s x) (Ioi 0) := by
+  have hd : ∀ s ∈ Ici (0 : ℝ), HasDerivAt (fun s => Real.log (1 + s) - Real.log (x + s))
+      (logKernel s x) s := fun s hs => hasDerivAt_logKernel_primitive hx hs
+  rcases le_total 1 x with h | h
+  · refine integrableOn_Ioi_deriv_of_nonneg' hd (fun s hs => ?_) (tendsto_logKernel_primitive hx)
+    have hs : (0 : ℝ) < s := hs
+    simp only [logKernel, sub_nonneg]
+    exact inv_anti₀ (by linarith) (by linarith)
+  · refine integrableOn_Ioi_deriv_of_nonpos ?_ (fun s hs => hd s (Ioi_subset_Ici_self hs)) (fun s hs => ?_)
+      (tendsto_logKernel_primitive hx)
+    · exact (hd 0 self_mem_Ici).continuousAt.continuousWithinAt
+    have hs : (0 : ℝ) < s := hs
+    simp only [logKernel, sub_nonpos]
+    exact inv_anti₀ (by linarith) (by linarith)
+
+theorem integral_logKernel {x : ℝ} (hx : 0 < x) :
+    ∫ s in Ioi 0, logKernel s x = Real.log x := by
+  rw [integral_Ioi_of_hasDerivAt_of_tendsto' (fun s hs => hasDerivAt_logKernel_primitive hx hs)
+    (integrableOn_logKernel hx) (tendsto_logKernel_primitive hx)]
+  simp
+
+/-- The kernel is monotone in `x`. -/
+theorem logKernel_mono {s x y : ℝ} (hs : 0 ≤ s) (hx : 0 < x) (hxy : x ≤ y) :
+    logKernel s x ≤ logKernel s y := by
+  simp only [logKernel]
+  have : (y + s)⁻¹ ≤ (x + s)⁻¹ := inv_anti₀ (by linarith) (by linarith)
+  linarith
+
+/-- A two-sided integrable bound for the kernel on `[m, M]`. -/
+theorem abs_logKernel_le {s x m M : ℝ} (hs : 0 ≤ s) (hm : 0 < m) (hmx : m ≤ x) (hxM : x ≤ M) :
+    |logKernel s x| ≤ |logKernel s m| + |logKernel s M| := by
+  have h1 := logKernel_mono hs hm hmx
+  have h2 := logKernel_mono hs (hm.trans_le hmx) hxM
+  rw [abs_le]
+  constructor <;> cases abs_cases (logKernel s m) <;> cases abs_cases (logKernel s M) <;> linarith
+
+end LogResolvent
+
 /-- **Operator Jensen inequality for the logarithm** (`06-transport.tex`, display
 `transport:log-jensen`, lines 526--546), compressed to `𝒮_k`: for continuous `f > 0`,
 `Π 𝒬_k(log f) Π ≤ Π log(𝒬_k(f) + (1 - Π)) Π`. -/
