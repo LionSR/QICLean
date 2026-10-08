@@ -289,6 +289,169 @@ theorem exists_auxBlock {A h : Matrix n n ℂ} (hA : A.PosDef) (hh : h.PosSemide
       mul_sub]
     abel
 
+/-! ### Infinitesimal congruence covariance and the block rotation -/
+
+section Rotation
+
+open NormedSpace Set
+
+variable {m : Type*} [Fintype m] [DecidableEq m]
+
+theorem hasDerivAt_star_exp_mul_mul_exp (X P : Matrix m m ℂ) :
+    HasDerivAt (fun t : ℝ => star (exp (t • X)) * P * exp (t • X)) (Xᴴ * P + P * X) 0 := by
+  have hexp : ∀ Y : Matrix m m ℂ, HasDerivAt (fun t : ℝ => exp (t • Y)) Y 0 := fun Y => by
+    simpa using hasDerivAt_exp_smul_const (𝕂 := ℝ) Y 0
+  have hstar : ∀ t : ℝ, star (exp (t • X)) = exp (t • Xᴴ) := by
+    intro t
+    rw [star_eq_conjTranspose, ← Matrix.exp_conjTranspose, conjTranspose_smul, star_trivial]
+  simp_rw [hstar]
+  have := ((hexp Xᴴ).mul_const P).mul (hexp X)
+  simp only [zero_smul, NormedSpace.exp_zero, Matrix.mul_one, Matrix.one_mul] at this
+  exact this
+
+theorem posDef_star_mul_mul {P S : Matrix m m ℂ} (hP : P.PosDef) (hS : IsUnit S) :
+    (star S * P * S).PosDef :=
+  (Matrix.IsUnit.posDef_star_left_conjugate_iff hS).mpr hP
+
+theorem geomMeanDeriv_congr {P R : Matrix m m ℂ} (hP : P.PosDef) (hR : R.PosDef) {p : ℝ}
+    (hp : p ∈ Icc (0 : ℝ) 1) (X : Matrix m m ℂ) :
+    geomMeanDerivLeft p P R (Xᴴ * P + P * X) + geomMeanDerivRight p P R (Xᴴ * R + R * X) =
+      Xᴴ * geomMean p P R + geomMean p P R * X := by
+  set S : ℝ → Matrix m m ℂ := fun t => exp (t • X)
+  set V : ℝ → Matrix m m ℂ := fun t => exp (t • -X)
+  have hinv : ∀ t : ℝ, V t * S t = 1 := by
+    intro t
+    simp only [V, S]
+    rw [← Matrix.exp_add_of_commute _ _ (((Commute.refl X).neg_left.smul_left t).smul_right t),
+      ← smul_add, neg_add_cancel, smul_zero, NormedSpace.exp_zero]
+  have hSu : ∀ t, IsUnit (S t) := fun t => Matrix.isUnit_exp _
+  have hVu : ∀ t, IsUnit (V t) := fun t => Matrix.isUnit_exp _
+  have hherm : ∀ (Q : Matrix m m ℂ) (W : Matrix m m ℂ), Q.IsHermitian →
+      (star W * Q * W) ∈ hermitianSet m := by
+    intro Q W hQ
+    change (star W * Q * W).IsHermitian
+    unfold IsHermitian
+    rw [conjTranspose_mul, conjTranspose_mul, star_eq_conjTranspose, conjTranspose_conjTranspose,
+      hQ.eq, Matrix.mul_assoc]
+  have hid : ∀ t, geomMean p (star (S t) * P * S t) R =
+      star (S t) * geomMean p P (star (V t) * R * V t) * S t := by
+    intro t
+    have h := geomMean_star_conj hP (posDef_star_mul_mul hR (hVu t)) (hSu t) p
+    have hR' : star (S t) * (star (V t) * R * V t) * S t = R := by
+      calc _ = star (V t * S t) * R * (V t * S t) := by rw [star_mul]; noncomm_ring
+        _ = R := by rw [hinv, star_one, Matrix.one_mul, Matrix.mul_one]
+    rwa [hR'] at h
+  -- derivative of the left side
+  have ha := hasDerivAt_star_exp_mul_mul_exp X P
+  have hb := hasDerivAt_star_exp_mul_mul_exp (-X) R
+  have hS0 : S 0 = 1 := by simp [S]
+  have hV0 : V 0 = 1 := by simp [V]
+  have hL : HasDerivAt (fun t => geomMean p (star (S t) * P * S t) R)
+      (geomMeanDerivLeft p P R (Xᴴ * P + P * X)) 0 := by
+    have h1 := (hasFDerivWithinAt_geomMean_left hP hR hp).restrictScalars ℝ
+    have h2 : HasDerivWithinAt (fun t : ℝ => star (S t) * P * S t) (Xᴴ * P + P * X) univ 0 :=
+      ha.hasDerivWithinAt
+    have h3 := HasFDerivWithinAt.comp_hasDerivWithinAt_of_eq (0 : ℝ) h1 h2
+      (fun t _ => hherm P (S t) hP.isHermitian) (by simp [hS0])
+    exact h3.hasDerivAt Filter.univ_mem
+  have hψ : HasDerivAt (fun t => geomMean p P (star (V t) * R * V t))
+      (geomMeanDerivRight p P R ((-X)ᴴ * R + R * -X)) 0 := by
+    have h1 := (hasFDerivWithinAt_geomMean_right hP hR hp).restrictScalars ℝ
+    have h2 : HasDerivWithinAt (fun t : ℝ => star (V t) * R * V t) ((-X)ᴴ * R + R * -X) univ 0 :=
+      hb.hasDerivWithinAt
+    have h3 := HasFDerivWithinAt.comp_hasDerivWithinAt_of_eq (0 : ℝ) h1 h2
+      (fun t _ => hherm R (V t) hR.isHermitian) (by simp [hV0])
+    exact h3.hasDerivAt Filter.univ_mem
+  have hexpX : HasDerivAt S X 0 := by
+    simpa using hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0
+  have hstarS : HasDerivAt (fun t => star (S t)) Xᴴ 0 := by
+    have hst : ∀ t : ℝ, star (S t) = exp (t • Xᴴ) := by
+      intro t
+      rw [star_eq_conjTranspose, ← Matrix.exp_conjTranspose, conjTranspose_smul, star_trivial]
+    simp_rw [hst]
+    simpa using hasDerivAt_exp_smul_const (𝕂 := ℝ) Xᴴ 0
+  have hR := (hstarS.mul hψ).mul hexpX
+  have hfun : (fun t => geomMean p (star (S t) * P * S t) R) =
+      fun t => star (S t) * geomMean p P (star (V t) * R * V t) * S t := funext hid
+  rw [hfun] at hL
+  have heq := hL.unique hR
+  simp only [Pi.mul_apply, hS0, hV0, star_one, Matrix.one_mul, Matrix.mul_one, conjTranspose_neg,
+    Matrix.neg_mul, Matrix.mul_neg, ← neg_add, map_neg] at heq
+  rw [heq]; abel
+
+
+
+open MeanTree in
+theorem sum_derivLabel_congr {M : J → Matrix m m ℂ} (hM : ∀ j, (M j).PosDef) (T' : MeanTree J)
+    (X : Matrix m m ℂ) :
+    ∑ j, T'.derivLabel M j (Xᴴ * M j + M j * X) = Xᴴ * T'.eval M + T'.eval M * X := by
+  induction T' with
+  | leaf i =>
+    rw [Finset.sum_eq_single i (fun j _ hj => by simp [derivLabel, Ne.symm hj]) (by simp)]
+    simp [derivLabel]
+  | node p l r ihl ihr =>
+    simp only [derivLabel, _root_.add_apply, ContinuousLinearMap.comp_apply,
+      Finset.sum_add_distrib, ← map_sum, ihl, ihr, eval_node]
+    exact geomMeanDeriv_congr (posDef_eval hM l) (posDef_eval hM r) p.2 X
+
+open MeanTree in
+theorem sum_derivLabel_commutator {M : J → Matrix m m ℂ} (hM : ∀ j, (M j).PosDef)
+    (T' : MeanTree J) {L : Matrix m m ℂ} (hL : L.IsHermitian) :
+    ∑ j, T'.derivLabel M j (M j * L - L * M j) = T'.eval M * L - L * T'.eval M := by
+  have h := sum_derivLabel_congr hM T' (Complex.I • L)
+  have hX : (Complex.I • L)ᴴ = -(Complex.I • L) := by
+    rw [conjTranspose_smul, hL.eq, Complex.star_def, Complex.conj_I, neg_smul]
+  have e : ∀ Y : Matrix m m ℂ, (Complex.I • L)ᴴ * Y + Y * (Complex.I • L) =
+      Complex.I • (Y * L - L * Y) := by
+    intro Y; rw [hX, smul_sub, Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_smul]; abel
+  simp only [e, map_smul, ← Finset.smul_sum] at h
+  exact smul_right_injective _ Complex.I_ne_zero h
+
+open MeanTree in
+/-- **The block-rotation identity** (`06-transport.tex`, display `transport:block-rotation`,
+lines 680--686): `2 sinh(ad_{log 𝕄}/2) L = ∑_j π_j Φ̂_j(K_j)`, written as
+`𝕄^{1/2} L 𝕄^{-1/2} - 𝕄^{-1/2} L 𝕄^{1/2}`. -/
+theorem sum_weight_smul_leafMap_rotation {M : J → Matrix m m ℂ} (hM : ∀ j, (M j).PosDef)
+    (T' : MeanTree J) (hw : ∀ j, T'.weight j ≠ 0) {L : Matrix m m ℂ} (hL : L.IsHermitian) :
+    ∑ j, T'.weight j • T'.leafMap M j (M j ^ (1 / 2 : ℝ) * L * M j ^ (-(1 / 2) : ℝ) -
+        M j ^ (-(1 / 2) : ℝ) * L * M j ^ (1 / 2 : ℝ)) =
+      T'.eval M ^ (1 / 2 : ℝ) * L * T'.eval M ^ (-(1 / 2) : ℝ) -
+        T'.eval M ^ (-(1 / 2) : ℝ) * L * T'.eval M ^ (1 / 2 : ℝ) := by
+  set R := T'.eval M
+  have hR : R.PosDef := posDef_eval hM T'
+  have hterm : ∀ j, T'.weight j • T'.leafMap M j (M j ^ (1 / 2 : ℝ) * L * M j ^ (-(1 / 2) : ℝ) -
+      M j ^ (-(1 / 2) : ℝ) * L * M j ^ (1 / 2 : ℝ)) =
+      R ^ (-(1 / 2) : ℝ) * T'.derivLabel M j (M j * L - L * M j) * R ^ (-(1 / 2) : ℝ) := by
+    intro j
+    have hK : M j ^ (1 / 2 : ℝ) * (M j ^ (1 / 2 : ℝ) * L * M j ^ (-(1 / 2) : ℝ) -
+        M j ^ (-(1 / 2) : ℝ) * L * M j ^ (1 / 2 : ℝ)) * M j ^ (1 / 2 : ℝ) = M j * L - L * M j := by
+      have h1 := (hM j).rpow_half_mul_rpow_half
+      have h2 := (hM j).rpow_mul_rpow_neg (1 / 2)
+      have h3 := (hM j).rpow_neg_mul_rpow (1 / 2)
+      calc _ = (M j ^ (1 / 2 : ℝ) * M j ^ (1 / 2 : ℝ)) * L *
+            (M j ^ (-(1 / 2) : ℝ) * M j ^ (1 / 2 : ℝ)) -
+          (M j ^ (1 / 2 : ℝ) * M j ^ (-(1 / 2) : ℝ)) * L *
+            (M j ^ (1 / 2 : ℝ) * M j ^ (1 / 2 : ℝ)) := by noncomm_ring
+        _ = _ := by rw [h1, h2, h3, Matrix.mul_one, Matrix.one_mul]
+    simp only [leafMap, normalizedDerivMap, _root_.smul_apply,
+      ContinuousLinearMap.comp_apply, sandwichL_apply, smul_smul, mul_inv_cancel₀ (hw j),
+      one_smul, hK]
+    rfl
+  simp only [hterm, ← Finset.sum_mul, ← Finset.mul_sum, sum_derivLabel_commutator hM T' hL]
+  have h1 := hR.rpow_half_mul_rpow_half
+  have h2 := hR.rpow_mul_rpow_neg (1 / 2)
+  have h3 := hR.rpow_neg_mul_rpow (1 / 2)
+  calc R ^ (-(1 / 2) : ℝ) * (R * L - L * R) * R ^ (-(1 / 2) : ℝ)
+      = R ^ (-(1 / 2) : ℝ) * (R ^ (1 / 2 : ℝ) * R ^ (1 / 2 : ℝ)) * L * R ^ (-(1 / 2) : ℝ) -
+        R ^ (-(1 / 2) : ℝ) * L * (R ^ (1 / 2 : ℝ) * R ^ (1 / 2 : ℝ)) * R ^ (-(1 / 2) : ℝ) := by
+        rw [h1]; noncomm_ring
+    _ = (R ^ (-(1 / 2) : ℝ) * R ^ (1 / 2 : ℝ)) * R ^ (1 / 2 : ℝ) * L * R ^ (-(1 / 2) : ℝ) -
+        R ^ (-(1 / 2) : ℝ) * L * R ^ (1 / 2 : ℝ) * (R ^ (1 / 2 : ℝ) * R ^ (-(1 / 2) : ℝ)) := by
+        noncomm_ring
+    _ = _ := by rw [h2, h3, Matrix.one_mul, Matrix.mul_one]
+
+end Rotation
+
 /-- The error vectors `E_± = 𝓑^{±s} T M^{∓s} - T` of the block root
 (`06-transport.tex`, display `transport:E-def`), with `s = 1/4` and `T = h^{1/2}`. -/
 noncomputable def errorOp (M Broot h : Matrix n n ℂ) (sign : Bool) : Matrix n n ℂ :=
