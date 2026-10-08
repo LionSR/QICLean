@@ -336,6 +336,14 @@ jobs:
             QICLeanTest/PositiveGapUniqueness.lean \
             QICLeanTest/PoissonWord.lean \
             QICLeanTest/PoissonWordAxioms.lean \
+            QICLeanTest/PoissonWordCounts.lean \
+            QICLeanTest/PoissonWordCountsAxioms.lean \
+            QICLeanTest/PoissonWordIndependentCounts.lean \
+            QICLeanTest/PoissonWordIndependentCountsAxioms.lean \
+            QICLeanTest/FiniteUniformConditioning.lean \
+            QICLeanTest/FiniteUniformConditioningAxioms.lean \
+            QICLeanTest/PoissonWordUniformOrder.lean \
+            QICLeanTest/PoissonWordUniformOrderAxioms.lean \
             QICLeanTest/ContractionWordDecay.lean \
             QICLeanTest/ContractionWordDecayAxioms.lean \
             QICLeanTest/ContractionWordDecaySpectator.lean \

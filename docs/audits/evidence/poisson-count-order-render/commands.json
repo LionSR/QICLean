@@ -1,0 +1,175 @@
+{
+  "source_revision": "487c65996fa26916d1d1e4b23e277607075035ba",
+  "commands": [
+    {
+      "argv": [
+        "${WORKSPACE}/glm23-blueprint-venv/bin/python",
+        "${REPO}/docs/audits/evidence/poisson-count-order-render/prepare_fixture.py"
+      ],
+      "working_directory": "${REPO}",
+      "log": "prepare-fixture.log",
+      "started_at_utc": "2026-10-08T05:35:23.615240+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "latexmk",
+        "-xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "print.tex"
+      ],
+      "working_directory": "${RENDER_DIR}/blueprint/src",
+      "log": "pdf-build.log",
+      "started_at_utc": "2026-10-08T05:35:23.800459+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "plastex",
+        "-c",
+        "plastex.cfg",
+        "web.tex"
+      ],
+      "working_directory": "${RENDER_DIR}/blueprint/src",
+      "log": "web-build.log",
+      "started_at_utc": "2026-10-08T05:35:43.115069+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "pdftoppm",
+        "-scale-to",
+        "1500",
+        "-png",
+        "blueprint/src/print.pdf",
+        "pdf-pages/page"
+      ],
+      "working_directory": "${RENDER_DIR}",
+      "log": "pdf-raster.log",
+      "started_at_utc": "2026-10-08T05:35:43.962862+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "pdfinfo",
+        "blueprint/src/print.pdf"
+      ],
+      "working_directory": "${RENDER_DIR}",
+      "log": "pdf-info.txt",
+      "started_at_utc": "2026-10-08T05:35:45.223155+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "${WORKSPACE}/glm23-blueprint-venv/bin/python",
+        "${REPO}/docs/audits/evidence/poisson-count-order-render/verify_render.py"
+      ],
+      "working_directory": "${REPO}",
+      "log": "verify-render-first.log",
+      "started_at_utc": "2026-10-08T05:35:45.239966+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "dot",
+        "-Gbgcolor=white",
+        "-Tpng",
+        "dependency-graph.dot",
+        "-o",
+        "dependency-graph-white.png"
+      ],
+      "working_directory": "${RENDER_DIR}",
+      "log": "graph-render.log",
+      "started_at_utc": "2026-10-08T05:35:45.620359+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "${WORKSPACE}/glm23-blueprint-venv/bin/python",
+        "${REPO}/docs/audits/evidence/poisson-count-order-render/verify_render.py"
+      ],
+      "working_directory": "${REPO}",
+      "log": "verify-render.log",
+      "started_at_utc": "2026-10-08T05:35:45.680800+00:00",
+      "exit_code": 0
+    }
+  ],
+  "public_source": {
+    "revision": "487c65996fa26916d1d1e4b23e277607075035ba",
+    "url": "https://github.com/LionSR/QICLean/commit/487c65996fa26916d1d1e4b23e277607075035ba",
+    "tree": "9fdd8230fdd4e8af0e35f78f51253ec8dadecdbb",
+    "fresh_render_performed": true
+  },
+  "environment": {
+    "setup": "source \"${WORKSPACE}/glm23-blueprint-env.sh\"",
+    "WORKSPACE": "Workspace containing the existing render environment and pinned-paper-sources directory",
+    "SOURCE_REVISION": "487c65996fa26916d1d1e4b23e277607075035ba",
+    "RENDER_DIR": "Fresh local output directory; the verified run used a tmpfs directory",
+    "XDG_CACHE_HOME": "${WORKSPACE}/8766-unitary-evolution-focused/font-cache",
+    "environment_script_sha256": "3a538bdefcda033a0d3a55eda7102007c6789d6da004b28bb47033a17fb6c70b",
+    "tool_versions": {
+      "texra-blueprint": "0.3.8",
+      "plasTeX": "3.1",
+      "leanblueprint": "0.0.20"
+    }
+  },
+  "additional_operations": [
+    "After the PDF build, copy print.bbl to web.bbl byte-for-byte before plasTeX.",
+    "Inspect all seven final PDF page PNGs and the final dependency-graph PNG.",
+    "Read the final static HTML math payloads and run all local-reference and graph checks."
+  ],
+  "raw_logs": {
+    "graph-render.log": {
+      "retained_at": "${RENDER_DIR}/graph-render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pdf-build.log": {
+      "retained_at": "${RENDER_DIR}/pdf-build.log",
+      "sha256": "f59248d912860cf50bd3bccbf920b23c97b4d88c971f18265ab4fbe4a07e720a"
+    },
+    "pdf-raster.log": {
+      "retained_at": "${RENDER_DIR}/pdf-raster.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prepare-fixture.log": {
+      "retained_at": "${RENDER_DIR}/prepare-fixture.log",
+      "sha256": "af55c81e816918695755f7ce2f895a826bf1e02daf347e52708d7b512b872d13"
+    },
+    "verify-render-first.log": {
+      "retained_at": "${RENDER_DIR}/verify-render-first.log",
+      "sha256": "050145c9cf850894fd4b7789c40b3ea517746d97bdefdbd9176057bbc9841e09"
+    },
+    "verify-render.log": {
+      "retained_at": "${RENDER_DIR}/verify-render.log",
+      "sha256": "050145c9cf850894fd4b7789c40b3ea517746d97bdefdbd9176057bbc9841e09"
+    },
+    "web-build.log": {
+      "retained_at": "${RENDER_DIR}/web-build.log",
+      "sha256": "ced08f7d8f7c3939774ae60e24ea6f5eb787b677d92f60887aa5e8b279c4ff75"
+    },
+    "pdf-info.txt": {
+      "retained_at": "${RENDER_DIR}/pdf-info.txt",
+      "sha256": "556f458654b46728af2078bb2ef745bab5af0c7fc7a48a2eddbd7f076939b2f2"
+    },
+    "print.log": {
+      "retained_at": "${RENDER_DIR}/blueprint/src/print.log",
+      "sha256": "8a8d06664803b0f9a20d9425e57627f1baac0deaae7cbb91ec1e2dbee92de9c3"
+    }
+  },
+  "replay_scripts": {
+    "prepare_fixture.py": {
+      "published_sha256": "8470c83da8a6251dfa533d5123962927952e53aae115f2fb76a99b8f950af1f7"
+    },
+    "verify_render.py": {
+      "published_sha256": "1aeccbf7b7cd9d7369d3605ac08f083d40ef31d48129cbad9312e1d8c2a373ec"
+    },
+    "run_render.py": {
+      "published_sha256": "ae41266774c50dae55490697657d186732fc8a736e045697741e9cd6e95ff321"
+    },
+    "check.py": {
+      "published_sha256": "fb85f2475b40f89ef2d4e16d33af17c0eadb2228bef4dd81f2486f28874c24da"
+    }
+  },
+  "normalization": "Executor-specific source and output paths are replaced by ${REPO}, ${WORKSPACE}, and ${RENDER_DIR} in the command record only; raw logs are unchanged."
+}
