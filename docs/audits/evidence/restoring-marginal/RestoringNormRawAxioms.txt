@@ -1,0 +1,6 @@
+'Entropy.restoringGram_le_compressed_partialTrace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.restoringGram_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.blankOuterProduct_isStarProjection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.restoringOperator_norm_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.columnOperator_norm_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Entropy.restoringOperators_norm_le_exp' depends on axioms: [propext, Classical.choice, Quot.sound]

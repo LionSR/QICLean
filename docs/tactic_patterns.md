@@ -11,7 +11,65 @@ No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
+### Joint central-label resolution — existing mathematical lemmas (2026-10-07)
+
+- **Pattern:** Form the product of commuting orthogonal resolutions, express
+  the observables as functions of this joint resolution, and prove matrix
+  order from scalar inequalities on its nonzero components.
+- **Seen:** `TensorPower.copyPerm_groupedCopies_labelEntropy_bounds` in
+  `QICLean/Representation/GoodAuxiliaryLabelEntropy.lean`, as well as `TensorPower.groupedCopies_labelEntropy_bounds` in
+  `QICLean/Representation/GroupedLabelEntropy.lean` and
+  `PermutationRepresentation.supportProj_mul_labelEntropy_mul_supportProj_le`
+  in `QICLean/Representation/SchurSurprisal.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.prod` and
+  `posSemidef_hom_of_ne_zero`. The coordinate functions of a product
+  resolution are recovered by summing the other factor to the identity;
+  the new module has two private lemmas for this elementary calculation.
+- **Caveats:** Scalar inequalities are required only on nonzero joint
+  projections. Compatibility and the full-space order must be derived from
+  the actual projections, rather than supplied as extra assumptions.
+
+### Unit-blank contraction in restoration — promoted lemmas (2026-10-08)
+
+- **Pattern:** Expand restoring matrix entries and contract unit ancillary
+  blanks through `∑ i, star (b i) * b i = 1`.
+- **Seen:** The copied-vector identity in `RestoringVectors.lean` and the actual
+  ground-component coefficient proof in `RestoringGroundComponent.lean`.
+- **Abstraction:** Promote the already proved blank normalization and restoring
+  entry formula as `restoringBlank_sum_eq_one` and
+  `restoringOperatorWithAncilla_apply`, preserving their existing proof bodies.
+  The new coefficient proof reuses both instead of duplicating those expansions.
+- **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
+  over the whole basis, including coordinates with zero assigned probability.
+
 ## Candidates
+
+### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
+
+- **Pattern:** Use the partial-trace pairing, cyclicity of trace and the pure
+  matrix trace to express a projected mass as a sesquilinear pairing. Move
+  the projector across that pairing, then use idempotence, self-adjointness
+  and the Euclidean norm identity.
+- **Seen:** The private `norm_sq_mulVec_eq_re_trace` calculation in
+  `QICLean/Entropy/PureTensorPower.lean`, and the local `hmass` calculation
+  in `TensorPower.exists_labelProj_norm_mass_ge` on the separate
+  `SchurSectorMass` contribution. These are two mathematical consumers.
+- **Abstraction:** The actual product marginal and projected-mass identities
+  are the public conclusions here. Keep the general pairing calculation
+  private while the two contributions remain independent; reconsider a
+  shared lemma when a third mathematical consumer occurs.
+- **Caveats:** Orthogonality is proved for the actual projector. Neither the
+  desired projected mass nor a supplied reduced-density identity is assumed.
+### Commutation with a matrix inverse — candidate (2026-10-07)
+
+- **Pattern:** Give a positive definite matrix its existing `Invertible`
+  instance, use `Commute.invOf_right` or `commute_invOf`, and rewrite
+  `Matrix.invOf_eq_nonsing_inv`.
+- **Seen:** Three inverse-commutation steps in
+  `QICLean/Analysis/PatchRegulator.lean`; one file.
+- **Abstraction:** The existing Mathlib commutation lemmas suffice. Retain
+  this record until independent occurrences in another file justify a
+  matrix-specific lemma; no new tactic is introduced.
 
 ### Finite-spectrum functional-calculus scalar reduction — candidate (2026-10-07)
 
@@ -44,3 +102,50 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Commutation and the actual inverse identity are proved before
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
+
+### Spectator coordinates in a central projection — candidate (2026-10-07)
+
+- **Pattern:** Prove the actual permutation entry condition in split coordinates,
+  then expand the group-algebra sum to identify the central projection entry
+  as an identity on the fixed coordinates times the projection on the moving
+  coordinates. Nonvanishing on the whole space forces nonvanishing on the
+  moving coordinates.
+- **Seen:** The private entry proof in
+  `QICLean/Representation/BadCopyLabelDimension.lean`; one mathematical
+  consumer in one file.
+- **Abstraction:** Reuse the existing permutation-entry and group-algebra
+  formulas. The ensuing dimension estimate uses the existing
+  `dim_le_finrank_of_invariant` theorem; no new tactic or competing general
+  representation definition is introduced.
+- **Caveats:** The actual group action and specified coordinate split are
+  essential. Fixed-coordinate multiplicity must not be included in the
+  dimension of the moving tensor power. Empty coordinate sets and zero
+  moving coordinates remain included.
+
+### Sector mass from a finite resolution — candidate (2026-10-07)
+
+- **Pattern:** Restrict trace masses to the nonzero projections, use positivity
+  and completeness to obtain a nonempty set of total mass one, and apply
+  `Finset.exists_le_of_sum_le` with a bound on the number of projections.
+- **Seen:** `TensorPower.exists_labelProj_trace_mass_ge` in
+  `QICLean/Representation/SchurSectorMass.lean`; one mathematical consumer.
+- **Abstraction:** Reuse the existing finite-sum comparison theorem. The
+  projected-vector result applies this trace result to the actual reduced
+  state and uses the trace-pairing and Hermitian-idempotent norm identities.
+  No new tactic is needed.
+- **Caveats:** The sector count gives a mass bound only; an entropy window
+  requires a separate concentration estimate and a restricted selection.
+
+### Contraction of the repeated uniform pair — candidate (2026-10-07)
+
+- **Pattern:** Expand a Kronecker action against the actual repeated uniform
+  pair, rewrite its coordinates as a scalar times the equality indicator,
+  and contract one coordinate sum.
+- **Seen:** The two private coordinate identities in
+  `QICLean/Representation/UniformBellLabel.lean`; two occurrences in one file.
+- **Abstraction:** The public projected-norm and nonzero-occurrence theorems
+  supply the mathematical consequences. A separate tactic is not warranted
+  by two coordinate contractions.
+- **Caveats:** The normalization depends on the actual one-copy dimension;
+  nonzero occurrence requires that dimension to be positive. The central
+  Schur label equality additionally uses inversion-invariant coefficients.

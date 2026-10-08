@@ -1,0 +1,38 @@
+\section{Relabeling Poissonized words}
+\label{sec:poisson_word_relabel}
+
+\begin{definition}[Relabeling a word]
+\label{def:poisson_word_relabel}
+\lean{PoissonWord.relabel, PoissonWord.relabel_apply,
+PoissonWord.length_relabel, PoissonWord.relabel_nil}
+\leanok
+\uses{def:poisson_word_measure}
+For a bijection $e:I\to J$ of alphabets, let $e^{\mathcal W}$ apply $e$
+to each letter of a finite word, in its original position. Thus
+$e^{\mathcal W}(i_0,\ldots,i_{m-1})=(e(i_0),\ldots,e(i_{m-1}))$.
+This is a bijection of word spaces, preserves length, and sends the empty
+word to the empty word.
+\end{definition}
+
+\begin{theorem}[Invariance under relabeling]
+\label{thm:poisson_word_relabel}
+\lean{PoissonWord.map_relabel, PoissonWord.measurePreserving_relabel}
+\leanok
+\uses{def:poisson_word_relabel}
+For finite alphabets $I,J$, a bijection $e:I\to J$, and every $t\geq0$,
+the map $e^{\mathcal W}$ preserves the Poissonized word measures:
+\begin{align}
+ (e^{\mathcal W})_*\mu_{I,t}&=\mu_{J,t}.
+ \label{eq:poisson_relabel_law}
+\end{align}
+This includes empty alphabets and zero time.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_normalization, def:poisson_word_relabel}
+The inverse image of a singleton $\{v\}$ is the singleton
+$\{(e^{\mathcal W})^{-1}(v)\}$. Its word has length $|v|$, and $|I|=|J|$,
+so the two singleton masses are both $e^{-|J|t}t^{|v|}/|v|!$.
+Equality on singletons proves equality of the measures on the countable
+word space. Every map between these discrete spaces is measurable.
+\end{proof}

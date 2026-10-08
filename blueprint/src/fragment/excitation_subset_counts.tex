@@ -1,0 +1,58 @@
+\section{Counting excitation subsets}
+
+For $0\le\tau\le1/2$, write
+$h(\tau)=-\tau\log\tau-(1-\tau)\log(1-\tau)$, with $0\log0=0$.
+All logarithms are natural.
+
+\begin{theorem}[Binary-entropy bound for binomial coefficients]
+    \label{thm:excitation_binomial_entropy}
+    \lean{Real.log_choose_le_mul_binEntropy, Real.choose_le_exp_mul_binEntropy}
+    \leanok
+    Let $k,r$ be nonnegative integers and $0\le\tau\le1/2$.
+    If $r\le\tau k$, then
+    \begin{align}
+        \log\binom{k}{r}&\le kh(\tau),\\
+        \binom{k}{r}&\le e^{kh(\tau)}.
+    \end{align}
+    These are the binomial estimates used before the inverse-compression
+    inequality in~\cite[Section~7]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}\leanok
+    If $\tau=0$, then $r=0$ and both claims are equalities.
+    Otherwise $r\le k$ and each nonnegative term in the binomial expansion
+    of $(\tau+(1-\tau))^k=1$ is at most $1$. Hence
+    \begin{align}
+        \log\binom{k}{r}
+        &\le-r\log\tau-(k-r)\log(1-\tau)\\
+        &=kh(\tau)+(\tau k-r)\log\frac{\tau}{1-\tau}
+        \le kh(\tau).
+    \end{align}
+    The last inequality follows from $\tau\le1/2$ and $r\le\tau k$.
+    Exponentiating proves the second claim.
+\end{proof}
+
+\begin{theorem}[Binary-entropy bound for excitation subsets]
+    \label{thm:excitation_subset_entropy}
+    \lean{Real.sum_choose_le_mul_exp_binEntropy,
+        Finset.card_filter_powerset_le_mul_exp_binEntropy}
+    \leanok
+    \uses{thm:excitation_binomial_entropy}
+    Let $S$ be a finite set with $k$ elements and $0\le\tau\le1/2$.
+    Then
+    \begin{align}
+        \sum_{\substack{0\le r\le k\\r\le\tau k}}\binom{k}{r}
+        &\le(k+1)e^{kh(\tau)},\\
+        \bigl|\{B\subseteq S:|B|\le\tau k\}\bigr|
+        &\le(k+1)e^{kh(\tau)}.
+    \end{align}
+    This is the subset-count estimate preceding the inverse-compression
+    inequality in~\cite[Section~7]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}\leanok
+    There are at most $k+1$ admissible cardinalities, each contributing at
+    most $e^{kh(\tau)}$ by Theorem~\ref{thm:excitation_binomial_entropy}.
+    Every admissible subset belongs to the family of subsets of cardinality
+    $r$ for one admissible $r$, and that family has $\binom{k}{r}$ members.
+\end{proof}

@@ -1,0 +1,422 @@
+{
+  "source_head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+  "checks": [
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "aggregate",
+      "sha256": null,
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Entropy.RestoringMarginal",
+        "QICLean.Entropy.RestoringOperators",
+        "QICLean.Analysis.SupportInverseSandwich",
+        "QICLean.Entropy.RestoringNorm",
+        "QICLean.Entropy.RestoringVectors"
+      ],
+      "exit_code": 0,
+      "seconds": 1.4346907270082738,
+      "log_sha256": "8093cf649a6ada07564f1556719222c4da1c7da7cf08e75dd8cd5697076cc211",
+      "log_bytes": 42
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLean/Analysis/SupportInverseSandwich.lean",
+      "sha256": "8d1ee6ecfafafe144c595738e24403e5fded8e45cb853e0b722b06f202ddd2dc",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/SupportInverseSandwich.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.8590545519982697,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLean/Entropy/RestoringMarginal.lean",
+      "sha256": "02e3697b6b74ec3cd89dcb8a3d33614e07c080284aec9bd0829e4cd0592801d7",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Entropy/RestoringMarginal.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.9422757660067873,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLean/Entropy/RestoringOperators.lean",
+      "sha256": "a7934cdfb92f0c58c61a9bbfd1feeccb2336b111719c07873fa5670d4f6528fb",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Entropy/RestoringOperators.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.2082380589999957,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/SupportInverseSandwich.lean",
+      "sha256": "3e316f3f2e6bd96db1206f6d2017deed0c94348e815f5781e2c02b5ab11a314e",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/SupportInverseSandwich.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.5523216820001835,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/SupportInverseSandwichAxioms.lean",
+      "sha256": "18852bc2d68560a3184a07377cdf2802ec36b51a0f290a8ba9756163c435e4b5",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/SupportInverseSandwichAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.665146758998162,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/RestoringMarginal.lean",
+      "sha256": "cd37d977631f7d27ab8291042a3dc977ef383b3de3b7dd559b35542c793e8f2b",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringMarginal.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.533897687011631,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/RestoringMarginalAxioms.lean",
+      "sha256": "0748ec0d2b0091c73cf92bd064611ceecaa45889f17cd478ae1d7311de87c7d6",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringMarginalAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.558576379000442,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/RestoringOperators.lean",
+      "sha256": "39b157ddda438a206fbf39372220e158e01c7628cc43042636d1e5076462b764",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringOperators.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.7234428059891798,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/RestoringOperatorsAxioms.lean",
+      "sha256": "b5b13832445c7492b27fe17974524811bc2b68beaf231d87c12169ec3487618b",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringOperatorsAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.4410207769979024,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean",
+      "sha256": "0048b0dab04e51ac73a35e9aa2d9a02473043cc2dafb700e0a8123929cd33d15",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.6939532160031376,
+      "log_sha256": "6ea99bed21b122b24bb7da930f7ab43f2d03a07bc2bdd3552810710d62860cda",
+      "log_bytes": 771
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "docs/audits/evidence/restoring-marginal/RestoringMarginalRawAxioms.lean",
+      "sha256": "6aae65bff35719566505dae7f9b69b4b25a76cdc78cf4e8be77c663c6ff70b3b",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/restoring-marginal/RestoringMarginalRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.742744748000405,
+      "log_sha256": "03ca2c2ebb52667e456a43b4d34c88485a04db954160dc519819dd85807c5a2b",
+      "log_bytes": 1252
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "docs/audits/evidence/restoring-marginal/RestoringOperatorsRawAxioms.lean",
+      "sha256": "c5498932cc32d4ed4b2e1eb218805d03ca41cdc67222bb050b5d2ad6687feb8f",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/restoring-marginal/RestoringOperatorsRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.633151389003615,
+      "log_sha256": "c29148e8238cd1e765b80f42f41862849b90052c471295ad271e6a9b0ba0c600",
+      "log_bytes": 2538
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLean/Entropy/RestoringNorm.lean",
+      "sha256": "6c8965df5fd8880baa13d46e651854224ea49e60d3aeb1dac07f155ec2478946",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Entropy/RestoringNorm.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.2028516219870653,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLean/Entropy/RestoringVectors.lean",
+      "sha256": "d0f18a0701141f3c2f74d235c833c922a6ed753157ffb5f43096d49133745c1e",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Entropy/RestoringVectors.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 4.246765584000968,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/RestoringNorm.lean",
+      "sha256": "20104c3cbe6811aca948e184ca8592f2dc3e20cd523074081959b21d4521a64d",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringNorm.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.254544576993794,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/RestoringNormAxioms.lean",
+      "sha256": "8154346013846ebd3c7d9a146b55721b15db4fe049b440988ba8c80ab528439d",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringNormAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.592985356997815,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/RestoringVectors.lean",
+      "sha256": "0ffbb97b4bfb602860d1969bf2ed1c4d123eebbe54c17c2d2a8e3faa6df5e47d",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringVectors.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.8606754140055273,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "QICLeanTest/RestoringVectorsAxioms.lean",
+      "sha256": "5d341d5ab93a36d05af8c1328652a8b0458309e73f74c1cfb779aeb4a0c9ee30",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringVectorsAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.5727995370107237,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+      "file": "docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean",
+      "sha256": "4da5a717f9098f2c878c58bc7bd1ff4eab5ccef9ce238e24c11b809d5a53b613",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.6741200059914263,
+      "log_sha256": "88ee60037976a4e98c1316d0eb73ff40586a3fa8b01ad9f7aac9bf42c57735f9",
+      "log_bytes": 1079
+    }
+  ]
+}

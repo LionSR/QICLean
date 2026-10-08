@@ -25,38 +25,14 @@ noncomputable section
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- Complex-valued Kronecker delta. -/
-/-
-Provenance-ID: p09-qic-gaussian-delta
-Downstream declaration: QICLean.ComplexGaussian.delta
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 def delta (a b : ι) : ℂ := if a = b then 1 else 0
 
 omit [Fintype ι] in
-/-
-Provenance-ID: p09-qic-gaussian-conj_delta
-Downstream declaration: QICLean.ComplexGaussian.conj_delta
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 @[simp] theorem conj_delta (a b : ι) : conj (delta a b) = delta a b := by
   unfold delta
   split <;> simp
 
 omit [Fintype ι] in
-/-
-Provenance-ID: p09-qic-gaussian-delta_comm
-Downstream declaration: QICLean.ComplexGaussian.delta_comm
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem delta_comm (a b : ι) : delta a b = delta b a := by
   simp only [delta, eq_comm]
 
@@ -114,14 +90,6 @@ private theorem pairing_conj_coordinate (a b : ι) :
 
 /-- The normalized complex coordinates have identity covariance.
 Source: `04-compression.tex:306–309`. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_coordinate_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integral_coordinate_mul_conj
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_coordinate_mul_conj (a b : ι) :
     (∫ x, coordinate a x * conj (coordinate b x) ∂law ι) = delta a b := by
   simp_rw [conj_coordinate]
@@ -129,41 +97,17 @@ theorem integral_coordinate_mul_conj (a b : ι) :
 
 omit [DecidableEq ι] in
 /-- Circular coordinates have vanishing bilinear covariance. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_coordinate_mul
-Downstream declaration: QICLean.ComplexGaussian.integral_coordinate_mul
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_coordinate_mul (a b : ι) :
     (∫ x, coordinate a x * coordinate b x ∂law ι) = 0 :=
   (integral_linearField_mul _ _ _ _).trans (pairing_coordinate a b)
 
 omit [DecidableEq ι] in
-/-
-Provenance-ID: p09-qic-gaussian-memlp_coordinate_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.memLp_coordinate_mul_conj
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem memLp_coordinate_mul_conj (a b : ι) :
     MemLp (fun x ↦ coordinate a x * conj (coordinate b x)) 2 (law ι) := by
   simp_rw [conj_coordinate]
   exact memLp_linearField_mul _ _ _ _
 
 omit [DecidableEq ι] in
-/-
-Provenance-ID: p09-qic-gaussian-integrable_coordinate_four
-Downstream declaration: QICLean.ComplexGaussian.integrable_coordinate_four
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integrable_coordinate_four (a b c d : ι) :
     Integrable (fun x ↦ (coordinate a x * conj (coordinate b x)) *
       conj (coordinate c x * conj (coordinate d x))) (law ι) := by
@@ -175,14 +119,6 @@ theorem integrable_coordinate_four (a b c d : ι) :
 
 /-- Complex fourth pairing, including the value `2` when all indices coincide.
 Source: `04-compression.tex:326–334`. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_coordinate_four_eq_pairings
-Downstream declaration: QICLean.ComplexGaussian.integral_coordinate_four_eq_pairings
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_coordinate_four_eq_pairings (a b c d : ι) :
     (∫ x, (coordinate a x * conj (coordinate b x)) *
       conj (coordinate c x * conj (coordinate d x)) ∂law ι) =
@@ -198,14 +134,6 @@ theorem integral_coordinate_four_eq_pairings (a b c d : ι) :
 
 omit [DecidableEq ι] in
 /-- Unit second moment of a standard circular complex Gaussian. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_coordinate_norm_sq
-Downstream declaration: QICLean.ComplexGaussian.integral_coordinate_norm_sq
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_coordinate_norm_sq (a : ι) :
     (∫ x, ‖coordinate a x‖ ^ 2 ∂law ι) = 1 := by
   classical
@@ -216,14 +144,6 @@ theorem integral_coordinate_norm_sq (a : ι) :
 omit [DecidableEq ι] in
 /-- The fourth moment is `2`, including the coincident-index case needed for centering.
 Source: `04-compression.tex:328–334`. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_coordinate_norm_four
-Downstream declaration: QICLean.ComplexGaussian.integral_coordinate_norm_four
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_coordinate_norm_four (a : ι) :
     (∫ x, ‖coordinate a x‖ ^ 4 ∂law ι) = 2 := by
   classical
@@ -240,61 +160,21 @@ theorem integral_coordinate_norm_four (a : ι) :
 
 /-- The centered coefficient of a single random source. Source:
 `04-compression.tex:311–324`, equation `compression-gaussian-covariance`. -/
-/-
-Provenance-ID: p09-qic-gaussian-centered
-Downstream declaration: QICLean.ComplexGaussian.centered
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 def centered (a b : ι) (x : Sample ι) : ℂ :=
   coordinate a x * conj (coordinate b x) - delta a b
 
-/-
-Provenance-ID: p09-qic-gaussian-memlp_centered
-Downstream declaration: QICLean.ComplexGaussian.memLp_centered
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem memLp_centered (a b : ι) : MemLp (centered a b) 2 (law ι) :=
   (memLp_coordinate_mul_conj a b).sub (memLp_const _)
 
-/-
-Provenance-ID: p09-qic-gaussian-integrable_centered
-Downstream declaration: QICLean.ComplexGaussian.integrable_centered
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integrable_centered (a b : ι) : Integrable (centered a b) (law ι) :=
   (memLp_centered a b).integrable (by norm_num)
 
-/-
-Provenance-ID: p09-qic-gaussian-integral_centered
-Downstream declaration: QICLean.ComplexGaussian.integral_centered
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_centered (a b : ι) : (∫ x, centered a b x ∂law ι) = 0 := by
   unfold centered
   rw [integral_sub ((memLp_coordinate_mul_conj a b).integrable (by norm_num))
     (integrable_const _), integral_coordinate_mul_conj]
   simp
 
-/-
-Provenance-ID: p09-qic-gaussian-memlp_conj_centered
-Downstream declaration: QICLean.ComplexGaussian.memLp_conj_centered
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem memLp_conj_centered (a b : ι) :
     MemLp (fun x ↦ conj (centered a b x)) 2 (law ι) := by
   have he (x : Sample ι) : conj (centered a b x) = centered b a x := by
@@ -302,28 +182,12 @@ theorem memLp_conj_centered (a b : ι) :
   simp_rw [he]
   exact memLp_centered b a
 
-/-
-Provenance-ID: p09-qic-gaussian-integrable_centered_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integrable_centered_mul_conj
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integrable_centered_mul_conj (a b c d : ι) :
     Integrable (fun x ↦ centered a b x * conj (centered c d x)) (law ι) :=
   (memLp_centered a b).integrable_mul (memLp_conj_centered c d)
 
 /-- The centered circular complex Gaussian covariance, with all coincident-index cases.
 Source: `eq:compression-gaussian-covariance`, `04-compression.tex:320–334`. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_centered_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integral_centered_mul_conj
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_centered_mul_conj (a b c d : ι) :
     (∫ x, centered a b x * conj (centered c d x) ∂law ι) = delta a c * delta b d := by
   have he (x : Sample ι) : centered a b x * conj (centered c d x) =
@@ -351,37 +215,13 @@ theorem integral_centered_mul_conj (a b c d : ι) :
 
 /-- Sample mean of centered density-source coefficients, using fresh independent Gaussian
 coordinates for each sample. Source: `04-compression.tex:311–338`. -/
-/-
-Provenance-ID: p09-qic-gaussian-sampleaverage
-Downstream declaration: QICLean.ComplexGaussian.sampleAverage
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 def sampleAverage (k : ℕ) (a b : ι) (x : Sample (Fin k × ι)) : ℂ :=
   (k : ℂ)⁻¹ * ∑ j : Fin k, centered (j, a) (j, b) x
 
-/-
-Provenance-ID: p09-qic-gaussian-memlp_sampleaverage
-Downstream declaration: QICLean.ComplexGaussian.memLp_sampleAverage
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem memLp_sampleAverage (k : ℕ) (a b : ι) :
     MemLp (sampleAverage k a b) 2 (law (Fin k × ι)) :=
   (memLp_finsetSum _ fun j _ ↦ memLp_centered (j, a) (j, b)).const_mul _
 
-/-
-Provenance-ID: p09-qic-gaussian-integral_sampleaverage
-Downstream declaration: QICLean.ComplexGaussian.integral_sampleAverage
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_sampleAverage (k : ℕ) (a b : ι) :
     (∫ x, sampleAverage k a b x ∂law (Fin k × ι)) = 0 := by
   unfold sampleAverage
@@ -400,14 +240,6 @@ private theorem integral_cross_sample (k : ℕ) (a b c d : ι) (j l : Fin k) :
 /-- Exact `1/k` centered covariance for averaged source coefficients. No restriction on
 coincidences of `a,b,c,d`, and no dimension factor. Source: `eq:compression-slot-variance`,
 `04-compression.tex:311–340`. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_sampleaverage_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integral_sampleAverage_mul_conj
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_sampleAverage_mul_conj (k : ℕ) (hk : 0 < k) (a b c d : ι) :
     (∫ x, sampleAverage k a b x * conj (sampleAverage k c d x)
       ∂law (Fin k × ι)) = (k : ℂ)⁻¹ * (delta a c * delta b d) := by
@@ -433,14 +265,6 @@ theorem integral_sampleAverage_mul_conj (k : ℕ) (hk : 0 < k) (a b c d : ι) :
   field_simp [hn]
 
 /-- Integrability of every averaged coefficient product, for matrix second-moment use. -/
-/-
-Provenance-ID: p09-qic-gaussian-integrable_sampleaverage_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integrable_sampleAverage_mul_conj
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integrable_sampleAverage_mul_conj (k : ℕ) (a b c d : ι) :
     Integrable (fun x ↦ sampleAverage k a b x * conj (sampleAverage k c d x))
       (law (Fin k × ι)) := by
@@ -461,26 +285,10 @@ section DensityCoefficients
 variable {A C : Type*} [Fintype A] [Fintype C] [DecidableEq A] [DecidableEq C]
 
 /-- Ket endpoint pair together with bra endpoint pair for a density-source entry. -/
-/-
-Provenance-ID: p09-qic-gaussian-densityindex
-Downstream declaration: QICLean.ComplexGaussian.DensityIndex
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 abbrev DensityIndex (A C : Type*) := (A × A) × (C × C)
 
 /-- Quarter-power weight of a density-source coefficient.
 Source: `04-compression.tex:311–318`. -/
-/-
-Provenance-ID: p09-qic-gaussian-coefficientweight
-Downstream declaration: QICLean.ComplexGaussian.coefficientWeight
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 def coefficientWeight (lam : A → ℝ) (mu : C → ℝ) (e : DensityIndex A C) : ℝ :=
   ((lam e.1.1 * lam e.1.2) * (mu e.2.1 * mu e.2.2)) ^ (1 / 4 : ℝ)
 
@@ -488,14 +296,6 @@ omit [Fintype A] [Fintype C] [DecidableEq A] [DecidableEq C] in
 /-- The whole-product quarter weight equals the two factors appearing in the sampled
 ket/bra operators, including zero Schmidt probabilities. Source:
 `eq:compression-random-source`, `04-compression.tex:294–317`. -/
-/-
-Provenance-ID: p09-qic-gaussian-coefficientweight_eq_product_quarter
-Downstream declaration: QICLean.ComplexGaussian.coefficientWeight_eq_product_quarter
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem coefficientWeight_eq_product_quarter (lam : A → ℝ) (mu : C → ℝ)
     (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) (e : DensityIndex A C) :
     coefficientWeight lam mu e = (lam e.1.1 * mu e.2.1) ^ (1 / 4 : ℝ) *
@@ -507,26 +307,10 @@ theorem coefficientWeight_eq_product_quarter (lam : A → ℝ) (mu : C → ℝ)
 
 /-- Weighted centered coefficient of the sampled source. The Gaussian coordinate index
 combines one ket index and one bra index, as in `04-compression.tex:311–318`. -/
-/-
-Provenance-ID: p09-qic-gaussian-densitycoefficient
-Downstream declaration: QICLean.ComplexGaussian.densityCoefficient
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 def densityCoefficient (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (e : DensityIndex A C) (x : Sample (Fin k × (A × C))) : ℂ :=
   (coefficientWeight lam mu e : ℂ) * sampleAverage k (e.1.1, e.2.1) (e.1.2, e.2.2) x
 
-/-
-Provenance-ID: p09-qic-gaussian-memlp_densitycoefficient
-Downstream declaration: QICLean.ComplexGaussian.memLp_densityCoefficient
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem memLp_densityCoefficient (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (e : DensityIndex A C) :
     MemLp (densityCoefficient k lam mu e) 2 (law (Fin k × (A × C))) :=
@@ -534,14 +318,6 @@ theorem memLp_densityCoefficient (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
 
 /-- The weighted random replacement is unbiased, since its correction has mean zero.
 Source: `04-compression.tex:306–318`. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_densitycoefficient
-Downstream declaration: QICLean.ComplexGaussian.integral_densityCoefficient
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_densityCoefficient (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (e : DensityIndex A C) :
     (∫ x, densityCoefficient k lam mu e x ∂law (Fin k × (A × C))) = 0 := by
@@ -553,14 +329,6 @@ private theorem quarter_power_sq (t : ℝ) (ht : 0 ≤ t) :
   rw [← Real.rpow_natCast, ← Real.rpow_mul ht, Real.sqrt_eq_rpow]
   norm_num
 
-/-
-Provenance-ID: p09-qic-gaussian-integrable_densitycoefficient_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integrable_densityCoefficient_mul_conj
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integrable_densityCoefficient_mul_conj (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (e f : DensityIndex A C) :
     Integrable (fun x ↦ densityCoefficient k lam mu e x *
@@ -580,14 +348,6 @@ theorem integrable_densityCoefficient_mul_conj (k : ℕ) (lam : A → ℝ) (mu :
 possibly different ket and bra supports. Zero Schmidt probabilities are allowed; no bound
 depends on the support dimensions. Source: `eq:compression-slot-variance`,
 `04-compression.tex:311–340`. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_densitycoefficient_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integral_densityCoefficient_mul_conj
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-slot-variance.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_densityCoefficient_mul_conj (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (e f : DensityIndex A C) :

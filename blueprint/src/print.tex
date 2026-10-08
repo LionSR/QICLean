@@ -10,10 +10,8 @@
 
 \input{macros/common}
 \input{macros/print}
-% Adapted from TNLean's print.tex: this blueprint carries no tensor-network
-% diagrams, so the tenkz package and macros/diagrams (tikz-cd "channel"
-% style built on a tenkz color) are not loaded here. See the packaging
-% report for the three diagrams dropped at extraction.
+\usepackage{tenkz}
+\input{macros/diagrams}
 
 \providecommand{\blueprinttitle}{Quantum Information and Channels:\\
   \large A formalization blueprint}

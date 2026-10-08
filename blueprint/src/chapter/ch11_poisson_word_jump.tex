@@ -1,0 +1,200 @@
+\section{The bounded real Poisson word jump formula}
+\label{sec:poisson_word_jump}
+
+Let $I$ be a finite alphabet, $\mathcal W_I$ its finite words, and
+$\mu_{I,t}$ the probability measure of
+Definition~\ref{def:poisson_word_measure}.  Write $\varnothing$ for the
+empty word, $[i]$ for a one-letter word, and $u[i]$ for concatenation.
+Letters occur in chronological order: the next letter is appended on the
+right.  Accordingly, if a letter $i$ acts by an operator $\Phi_i$, then
+$B_{u[i]}=\Phi_i(B_u)$; the new operator is outermost.
+For bounded real observables, the finite-word identity below supplies
+the probability calculation in \cite{OpenAI2026AreaLaw},
+\texttt{09-amplification.tex}, lines 159--171.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% This section proves a finite-word identity, not the clock-process
+% identification, spatial propagation estimate, or Gronwall argument.
+
+\begin{theorem}[Finite prefix telescoping]
+\label{thm:poisson_word_prefix_increment}
+\lean{PoissonWord.take_succ_eq_append_singleton,
+PoissonWord.sum_prefix_increment}
+\leanok
+\uses{def:poisson_word_split, def:poisson_word_insert}
+For any alphabet $I$, any $f:\mathcal W_I\to\mathbb R$, and any word $w$,
+the next prefix is $w_{<j+1}=w_{<j}[w_j]$ for $0\leq j<|w|$, and
+\begin{align}
+ \sum_{j=0}^{|w|-1}
+ \bigl(f(w_{<j}[w_j])-f(w_{<j})\bigr)
+ &=f(w)-f(\varnothing).
+ \label{eq:poisson_jump_telescope}
+\end{align}
+No finiteness assumption on $I$ or bound on $f$ is needed.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:poisson_word_append, def:poisson_word_split,
+def:poisson_word_insert}
+Taking the first $j+1$ letters amounts to taking the first $j$ and
+appending the letter at position $j$.  Substituting this equality into
+the sum gives successive differences
+$f(w_{<j+1})-f(w_{<j})$.  They telescope between
+$w_{<0}=\varnothing$ and $w_{<|w|}=w$.
+\end{proof}
+
+\begin{lemma}[Bounded real observables]
+\label{lem:poisson_word_bounded_signed}
+\lean{PoissonWord.integrable_of_abs_le_const,
+PoissonWord.measurable_integral_of_abs_le_const}
+\leanok
+\uses{def:poisson_word_measure}
+Suppose $I$ is finite and $f:\mathcal W_I\to\mathbb R$ satisfies
+$|f(w)|\leq C$ for every word $w$, where $C\in\mathbb R$.
+Then $f\in L^1(\mu_{I,t})$ for every $t\geq0$, and the function
+$s\mapsto\int f\,d\mu_{I,\max(s,0)}$ is measurable on $\mathbb R$.
+\end{lemma}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_normalization, lem:poisson_word_bounded_real_kernel}
+Every function on the discrete word space is measurable.  Domination
+by the integrable constant $C$ gives integrability.  Write
+$f=f^+-f^-$, where $f^+=\max(f,0)$ and $f^-=\max(-f,0)$.
+Both parts take values in $[0,C]$ and have measurable expectations by
+Lemma~\ref{lem:poisson_word_bounded_real_kernel}.  Their difference is
+the expectation of $f$ and is therefore measurable.
+\end{proof}
+
+\begin{theorem}[Integrability of signed prefix occupation]
+\label{thm:poisson_word_signed_integrability}
+\lean{PoissonWord.integrable_sum_prefix_of_abs_le_const,
+PoissonWord.integrableOn_sum_word_integral_of_abs_le_const}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_split}
+Let $T\geq0$ and $F:\mathcal W_I\times I\to\mathbb R$, where $I$ is
+finite.  Suppose $|F(u,i)|\leq C$ for every $u,i$, with $C\in\mathbb R$.
+Then the marked-prefix sum
+$w\mapsto\sum_{j<|w|}F(w_{<j},w_j)$ belongs to $L^1(\mu_{I,T})$,
+and
+\begin{align}
+ s\longmapsto\sum_{i\in I}\int_{\mathcal W_I}
+ F(u,i)\,d\mu_{I,\max(s,0)}(u)
+ \label{eq:poisson_jump_time_integrand}
+\end{align}
+is integrable on $(0,T]$.  Each kernel $F(\cdot,i)$ belongs to
+$L^1(\mu_{I,s})$ for every $s\geq0$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_real_length, lem:poisson_word_bounded_signed,
+lem:poisson_word_normalization}
+The triangle inequality gives
+$|\sum_{j<|w|}F(w_{<j},w_j)|\leq C|w|$.
+The length is integrable by Lemma~\ref{lem:poisson_word_real_length},
+so the marked-prefix sum is integrable.  For each $i$, the function
+$F(\cdot,i)$ is integrable and has a measurable expectation by
+Lemma~\ref{lem:poisson_word_bounded_signed}.  Since $\mu_{I,s}$ has
+mass one, its expectation has absolute value at most $C$.
+It is therefore integrable on an interval of finite length; summing
+over the finite alphabet proves time integrability.
+\end{proof}
+
+\begin{theorem}[Signed marked-prefix expectation]
+\label{thm:poisson_word_signed_prefix}
+\lean{PoissonWord.integral_sum_prefix_of_abs_le_const}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_split}
+For a finite alphabet $I$, $T\geq0$, and
+$F:\mathcal W_I\times I\to\mathbb R$ satisfying $|F(u,i)|\leq C$
+for a real constant $C$ and every $u,i$,
+\begin{align}
+ \begin{aligned}
+ &\int_{\mathcal W_I}\sum_{j<|w|}F(w_{<j},w_j)\,d\mu_{I,T}(w)
+ \\
+ &\qquad=\int_0^T\sum_{i\in I}\int_{\mathcal W_I}
+ F(u,i)\,d\mu_{I,s}(u)\,ds.
+ \end{aligned}
+ \label{eq:poisson_jump_signed_prefix}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_bounded_real_kernel,
+lem:poisson_word_real_time_integrable, thm:poisson_word_real_prefix}
+Set $F^+=\max(F,0)$ and $F^-=\max(-F,0)$, so that
+$F=F^+-F^-$ and $0\leq F^\pm\leq C$.
+The bounded nonnegative word kernels, marked-prefix sums, and time
+integrands are integrable.  Thus subtraction commutes with each
+finite sum and integral in~(\ref{eq:poisson_jump_signed_prefix}).
+Apply Theorem~\ref{thm:poisson_word_real_prefix} to $F^+$ and $F^-$
+and subtract the two equalities.
+\end{proof}
+
+\begin{theorem}[Bounded real Poisson word jump formula]
+\label{thm:poisson_word_jump}
+\lean{PoissonWord.integral_sub_eq_integral_sum_increment}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_insert}
+Let $I$ be finite, $T\geq0$, and $f:\mathcal W_I\to\mathbb R$.
+Suppose $|f(w)|\leq C$ for every $w$, where $C\in\mathbb R$.
+Then
+\begin{align}
+ \begin{aligned}
+ &\int_{\mathcal W_I}f(w)\,d\mu_{I,T}(w)-f(\varnothing)
+ \\
+ &\qquad=\int_0^T\sum_{i\in I}\int_{\mathcal W_I}
+ \bigl(f(u[i])-f(u)\bigr)\,d\mu_{I,s}(u)\,ds.
+ \end{aligned}
+ \label{eq:poisson_jump_formula}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:poisson_word_signed_prefix,
+thm:poisson_word_prefix_increment, lem:poisson_word_bounded_signed}
+The increment kernel $F(u,i)=f(u[i])-f(u)$ satisfies
+$|F(u,i)|\leq|f(u[i])|+|f(u)|\leq2C$.
+Apply~(\ref{eq:poisson_jump_signed_prefix}) to $F$.
+By~(\ref{eq:poisson_jump_telescope}), its marked-prefix sum equals
+$f(w)-f(\varnothing)$ for every word.  The integrability of $f$ and
+the unit mass of $\mu_{I,T}$ turn this expectation into
+$\int f\,d\mu_{I,T}-f(\varnothing)$.
+\end{proof}
+
+\begin{theorem}[Integral bound from one-letter increments]
+\label{thm:poisson_word_jump_upper}
+\lean{PoissonWord.integral_le_add_integral_sum_of_increment_le}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_insert}
+Let $I$ be finite, $T\geq0$, and $f:\mathcal W_I\to\mathbb R$ with
+$|f(w)|\leq C$ for all $w$, where $C\in\mathbb R$.
+Suppose $G:\mathcal W_I\times I\to\mathbb R$ and $D\in\mathbb R$
+satisfy $0\leq G(u,i)\leq D$ and $f(u[i])-f(u)\leq G(u,i)$
+for every $u,i$.  Then
+\begin{align}
+ \begin{aligned}
+ &\int_{\mathcal W_I}f(w)\,d\mu_{I,T}(w)
+ \\
+ &\qquad\leq f(\varnothing)+\int_0^T\sum_{i\in I}\int_{\mathcal W_I}
+ G(u,i)\,d\mu_{I,s}(u)\,ds.
+ \end{aligned}
+ \label{eq:poisson_jump_upper}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:poisson_word_prefix_increment,
+lem:poisson_word_bounded_signed, thm:poisson_word_real_prefix}
+Sum the increment bounds along the actual prefixes of a fixed word.
+The telescope~(\ref{eq:poisson_jump_telescope}) gives
+$f(w)-f(\varnothing)\leq\sum_{j<|w|}G(w_{<j},w_j)$.
+Both sides are integrable: $f$ is bounded, and the right side is at most
+$D|w|$.  Integrate this inequality, apply the real marked-prefix
+identity~(\ref{eq:poisson_word_real_prefix}) to $G$, and add
+$f(\varnothing)$.
+\end{proof}
+
+All identities include $T=0$ and the empty alphabet.  The word and time
+integrability needed in~(\ref{eq:poisson_jump_formula}) follows from
+the bound $2C$ and Theorem~\ref{thm:poisson_word_signed_integrability}.
+Identification with clock paths, spatial estimates on the increments,
+and a subsequent Gronwall bound require separate arguments.
