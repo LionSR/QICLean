@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Representation.ReplicaIntegral
 import QICLean.Representation.CoherentResolution
 import QICLean.Entropy.LocalLift
+import Mathlib.MeasureTheory.SpecificCodomains.WithLp
 
 /-!
 # The integral representation in lifted form
@@ -124,6 +125,38 @@ theorem norm_tensorVec (k : ℕ) (v : Ω → ℂ) :
       Fintype.prod_sum]
     simp only [← prod_pow]
   exact (pow_left_inj₀ (norm_nonneg _) (pow_nonneg (norm_nonneg _) _) two_ne_zero).mp h2
+
+omit [DecidableEq Ω] in
+/-- Bounding an averaged operator on a vector by its pointwise bound. -/
+theorem norm_of_integral_mulVec_le {Ω' : Type*} [MeasurableSpace Ω'] {P : Measure Ω'}
+    [IsProbabilityMeasure P] (G : Ω' → Matrix Ω Ω ℂ) (hG : ∀ x y, Integrable (fun ω => G ω x y) P)
+    (u : Ω → ℂ) {B : ℝ} (hB : ∀ᵐ ω ∂P, ‖(EuclideanSpace.equiv Ω ℂ).symm (G ω *ᵥ u)‖ ≤ B) :
+    ‖(EuclideanSpace.equiv Ω ℂ).symm ((Matrix.of fun x y => ∫ ω, G ω x y ∂P) *ᵥ u)‖ ≤ B := by
+  set F : Ω' → EuclideanSpace ℂ Ω := fun ω => (EuclideanSpace.equiv Ω ℂ).symm (G ω *ᵥ u)
+  have hF : ∀ x, Integrable (fun ω => F ω x) P := fun x => by
+    change Integrable (fun ω => (G ω *ᵥ u) x) P
+    simp only [mulVec, dotProduct]
+    exact integrable_finsetSum _ fun y _ => (hG x y).mul_const _
+  have heq : (EuclideanSpace.equiv Ω ℂ).symm ((Matrix.of fun x y => ∫ ω, G ω x y ∂P) *ᵥ u) =
+      ∫ ω, F ω ∂P := by
+    ext x
+    rw [eval_integral_piLp hF]
+    change ((Matrix.of fun x y => ∫ ω, G ω x y ∂P) *ᵥ u) x = ∫ ω, (G ω *ᵥ u) x ∂P
+    simp only [mulVec, dotProduct, of_apply]
+    rw [integral_finsetSum _ fun y _ => (hG x y).mul_const _]
+    exact sum_congr rfl fun y _ => (integral_mul_const _ _).symm
+  rw [heq]
+  have h := norm_integral_le_of_norm_le_const (μ := P) (f := F) hB
+  rwa [probReal_univ, mul_one] at h
+
+omit [DecidableEq Ω] in
+theorem mul_of_integral {Ω' : Type*} [MeasurableSpace Ω'] {P : Measure Ω'} (A : Matrix Ω Ω ℂ)
+    (H : Ω' → Matrix Ω Ω ℂ) (hH : ∀ x y, Integrable (fun ω => H ω x y) P) :
+    A * Matrix.of (fun x y => ∫ ω, H ω x y ∂P) = Matrix.of fun x y => ∫ ω, (A * H ω) x y ∂P := by
+  ext x y
+  simp only [Matrix.mul_apply, of_apply]
+  rw [integral_finsetSum _ fun z _ => (hH z y).const_mul _]
+  exact sum_congr rfl fun z _ => (integral_const_mul _ _).symm
 
 end Vectors
 
