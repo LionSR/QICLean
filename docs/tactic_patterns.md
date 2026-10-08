@@ -296,3 +296,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   directly. No additional private helper or tactic is needed.
 - **Caveats:** Operator factorization preserves correlations in the common
   matrix. It does not justify multiplying two marginal trace pairings.
+
+### Simultaneous retained and discarded coordinate changes — candidate (2026-10-08)
+
+- **Pattern:** Prove covariance of the literal excitation operator by its finite
+  product entries, apply `submatrix_mulVec_equiv` to the actual component, and
+  transport its partial trace using `partialTraceRight_submatrix_prod_equiv`.
+- **Seen:** The exchanged common-density proof in
+  `QICLean/Analysis/ReplicaGoodPairMarginal.lean`; one mathematical consumer.
+- **Abstraction:** Private coordinate-covariance lemmas share the operator and
+  vector calculation. Finite-sum reorderings use an explicit coordinate
+  equivalence and `Equiv.sum_comp`, rather than a looping sum-commutation simp
+  rule. No new tactic is introduced.
+- **Caveats:** The physical and auxiliary regions are exchanged together; the
+  component must be derived from the original vector and excitation operator.
+  Neither normalization nor a supplied covariance identity is assumed.
+  For a three-factor physical space, preserve the middle factor under the
+  exterior-region exchange and trace all of its copies in the common density.
