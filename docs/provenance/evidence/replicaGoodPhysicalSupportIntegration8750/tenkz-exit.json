@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "scripts/fetch_tenkz.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.74,
+  "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/tenkz.log",
+  "sha256": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9"
+}

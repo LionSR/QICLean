@@ -1,0 +1,12 @@
+TensorPower.fiveFactorCopiesEquiv.{u_1} (ι : Fin 5 → Type u_1) (m : ℕ) :
+  TensorPower.Config m ι ≃ (Fin m → ι 0 × ι 1 × ι 2) × (Fin m → ι 3) × (Fin m → ι 4)
+Matrix.replicaGoodConfigurationMarginal.{u_1} (ι : Fin 5 → Type u_1) [(f : Fin 5) → Fintype (ι f)]
+  [(f : Fin 5) → DecidableEq (ι f)] (Ω : ι 0 × ι 1 × ι 2 → ℂ) (k : ℕ) (B : Finset (Fin k))
+  (u : (Fin k → ι 0 × ι 1 × ι 2) × (Fin k → ι 3) × (Fin k → ι 4) → ℂ) :
+  Matrix (TensorPower.Config Bᶜ.card ι) (TensorPower.Config Bᶜ.card ι) ℂ
+Matrix.symProj_mul_replicaGoodConfigurationMarginal.{u_1} (ι : Fin 5 → Type u_1) [(f : Fin 5) → Fintype (ι f)]
+  [(f : Fin 5) → DecidableEq (ι f)] (Ω : ι 0 × ι 1 × ι 2 → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) (k : ℕ) (B : Finset (Fin k))
+  (u : (Fin k → ι 0 × ι 1 × ι 2) × (Fin k → ι 3) × (Fin k → ι 4) → ℂ) :
+  PermutationRepresentation.symProj (TensorPower.subsystemPerm Bᶜ.card ι {0, 1, 2}) *
+      Matrix.replicaGoodConfigurationMarginal ι Ω k B u =
+    Matrix.replicaGoodConfigurationMarginal ι Ω k B u

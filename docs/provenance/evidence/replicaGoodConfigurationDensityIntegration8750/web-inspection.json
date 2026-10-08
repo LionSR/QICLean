@@ -1,0 +1,32 @@
+{
+  "links": [
+    "TensorPower.fiveFactorCopiesEquiv",
+    "Matrix.replicaGoodConfigurationMarginal",
+    "Matrix.symProj_mul_replicaGoodConfigurationMarginal"
+  ],
+  "errors": [],
+  "top": 225.734375,
+  "bottom": 1886.890625,
+  "mathElements": 62,
+  "proofs": [
+    {
+      "height": 411.03125,
+      "text": "\n  First trace only the bad physical copies of |w\u27e9\u27e8w|, obtaining M on the good physical copies and the whole auxiliary register. The physical-support identity gives \n\n  (Pm\u2297I)M=M,\n\n where Pm symmetrizes the m copies of A. Regroup each auxiliary register into its good and bad coordinates and trace the bad coordinates. Interchanging the finite sums shows that physical left multiplication passes through this partial trace. Hence the resulting grouped density N satisfies \n\n  (Pm\u2297ICm\u00d7Rm)N=N.\n\n The same finite-sum interchange identifies N with \u03c1G expressed in the coordinates em. \nFor each copy permutation, em transforms its physical-only action into the copy permutation of Am tensored with the auxiliary identity. This follows directly from the coordinate entries. Averaging these identities transforms PQYV into Pm\u2297I. Returning to the five-factor coordinates proves the assertion. \n\n  "
+    }
+  ],
+  "mobile_section_bounds": {
+    "top": 112.421875,
+    "bottom": 2517.765625
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360,
+  "mobile_equation_scrolls": [
+    {
+      "class": "displaymath",
+      "width": 312,
+      "scrollWidth": 336,
+      "scrollLeft": 24,
+      "maximum": 24
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+QICLean/Analysis/ReplicaGoodConfigurationDensity.lean:191:0: error: `partialTraceRightAlong_kronecker_mul_left` does not use the following hypothesis in its type:
+  • [DecidableEq A] (#6)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`

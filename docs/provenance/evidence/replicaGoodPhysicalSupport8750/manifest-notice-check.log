@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodPhysicalSupport8750/validate-manifest.py", line 35, in <module>
+    assert c['log'] in tracked and sha(r/c['log'])==c['sha256']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

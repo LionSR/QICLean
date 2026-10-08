@@ -1,0 +1,24 @@
+{
+  "result": "passed",
+  "mathematical_source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "book_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+  "pdf": "good-configuration-blueprint.pdf",
+  "pdf_total_pages": 440,
+  "physical_pages": [
+    415,
+    416
+  ],
+  "printed_pages": [
+    414,
+    415
+  ],
+  "views": [
+    "All three complete entries at desktop1440 and mobile360, including the entire support proof.",
+    "Density formula mobile initial and right endpoint inspected; one accessible24px horizontal scroll, no inaccessible clipping.",
+    "Both PDF pages cover all new statements and the complete proof; factor order and all-good-Y retention clear.",
+    "Existing OpenAI2026AreaLaw bibliography key resolves to Ope26b."
+  ],
+  "mobile_page_width": 360,
+  "all_good_middle_physical_coordinates_retained": true,
+  "new_marginal_identities_not_claimed": true
+}

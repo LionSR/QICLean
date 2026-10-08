@@ -408,3 +408,29 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Seen:** `Analysis/ReplicaGoodPairMarginal.lean` and `Analysis/ReplicaTwoMergeMoment.lean`; two independent consumers, respectively the marginal exchange and its norm consequence.
 - **Abstraction:** The existing matrix reindexing and coordinate isometry results supply the algebra. These two consumers retain private excitation calculations. Before a third consumer is added, extract their shared mathematical covariance statement and replace the repeated calculations.
 - **Caveat:** Exchange both exterior physical and auxiliary regions while preserving the independent middle physical region. Derive covariance and simultaneous fixedness from actual coordinates; do not supply them as additional hypotheses.
+### Chosen copy enumeration and actual density support — candidate (2026-10-08)
+
+- **Pattern:** Transport an actual reduced density through a chosen finite-set
+  enumeration, apply its proved product formula, and use a fixed tensor vector
+  to show support in the physical symmetric subspace.
+- **Seen:** `Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density`
+  in `QICLean/Analysis/ReplicaGoodPhysicalSupport.lean`; one consumer.
+- **Abstraction:** Reuse `partialTraceRight_submatrix_prod_equiv`,
+  `Equiv.prod_comp`, `symProj_mulVec_of_mem`, `mul_vecMulVec` and
+  `mul_kronecker_mul`. No new tactic or parallel marginal is introduced.
+- **Caveats:** The product formula is derived from the actual excitation
+  component. In Q tensor Y tensor V, every middle Y coordinate must be retained
+  until physical symmetrization. The original vector need not be symmetric.
+
+### Physical support through an auxiliary partial trace — candidate (2026-10-08)
+
+- **Pattern:** Regroup the actual retained density, trace a discarded auxiliary
+  factor, and move multiplication by a physical operator through this trace.
+- **Seen:** `Analysis/ReplicaGoodConfigurationDensity.lean`; one consumer.
+- **Abstraction:** Private finite-sum lemmas identify the literal rank-one
+  trace and prove the left-multiplication identity. The coordinate transport
+  is proved from permutation entries and their finite average. No new tactic
+  is introduced.
+- **Caveats:** All good middle physical coordinates are retained. The density
+  and its support are derived from the same actual excitation component;
+  neither a coordinate identity nor a support hypothesis is supplied.

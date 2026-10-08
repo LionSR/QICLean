@@ -1,0 +1,341 @@
+{
+  "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "declarations": [
+    "TensorPower.fiveFactorCopiesEquiv",
+    "Matrix.replicaGoodConfigurationMarginal",
+    "Matrix.symProj_mul_replicaGoodConfigurationMarginal"
+  ],
+  "checks": [
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:37:11.865987+00:00",
+      "elapsed_seconds": 24.831299791985657,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/axioms.log",
+      "sha256": "a1887561ca3c99f504059a20690094f2a789b735eab1e6778c387355cd66ad17"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=2",
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:35:21.652431+00:00",
+      "elapsed_seconds": 26.502240208006697,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/mathlib-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:35:52.119215+00:00",
+      "elapsed_seconds": 0.08190749998902902,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/guard.log",
+      "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/check-hazards.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:36:07.046198+00:00",
+      "elapsed_seconds": 0.04346441599773243,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/hazards.log",
+      "sha256": "0b5c4cb7507eb8f209eebb05abaf0627ed619a78e58ed0111ee05fdd01907455"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/validate-manifest.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:40:48.607716+00:00",
+      "elapsed_seconds": 1.9568150409904774,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/manifest-check.log",
+      "sha256": "5146d866e3a4edc916dc2bdd9bf4916a3bd4ef8792734e18cc3c14ee6a79c395"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/pattern-scan.py",
+        "--root",
+        "QICLean",
+        "--top",
+        "8"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:36:07.046229+00:00",
+      "elapsed_seconds": 0.8071832499990705,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/patterns.log",
+      "sha256": "e0bd21141908fab9c334e398aa04f7a098670288f35683ec5213d9422af17778"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:36:07.046241+00:00",
+      "elapsed_seconds": 2.0629847919917665,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/preservation.log",
+      "sha256": "7d440a835fbdefec91e4803fd10bead5b2e32f81fa911933de8e3097532d6e63"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "1c5769be"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:36:07.046152+00:00",
+      "elapsed_seconds": 0.40055720799136907,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:37:45.958009+00:00",
+      "elapsed_seconds": 0.8613163749978412,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/provenance.log",
+      "sha256": "a367add2016da425e0b0777cc3514315b4a0b21543987b9936c85bee79e7af01"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "pdflatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-output-directory",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-wrapper.tex"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:39:58.693234+00:00",
+      "elapsed_seconds": 0.4411336249904707,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-final.log",
+      "sha256": "b8eb113d65c35ab8032e4237df3d45f33c74a94a7c9e0a7ba652cd5ca1862732"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "pdflatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-output-directory",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-wrapper.tex"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:39:53.977964+00:00",
+      "elapsed_seconds": 0.4958071659784764,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-first.log",
+      "sha256": "07d3948e423e58589ff5d725dcdf23db9d7304012d2db48265e25af4b4cc1070"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/render-standalone.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:40:02.801413+00:00",
+      "elapsed_seconds": 2.124346124997828,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-render.log",
+      "sha256": "864624304757e53db64ec16e93e6591ed3efff90aaeaca73aab538ae15ec166a"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/Statements.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:37:11.865987+00:00",
+      "elapsed_seconds": 24.83107154199388,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/statements.log",
+      "sha256": "0b3fdf307cbab3d2cce6aea11273c739956345733924c9dd63070afd028acfb0"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/ReplicaGoodConfigurationDensity.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:36:39.954101+00:00",
+      "elapsed_seconds": 20.04049537499668,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/strict.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=2",
+        "lake",
+        "build",
+        "QICLean.Analysis.ReplicaGoodConfigurationDensity"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T03:35:56.936779+00:00",
+      "elapsed_seconds": 26.44872979199863,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/target.log",
+      "sha256": "4c7032492f3a549fc50a13b27e1094fe0ae71434bbfef844db1c44143ca8120c"
+    }
+  ],
+  "excluded_checks": [],
+  "historical_checks": [],
+  "file_hashes": {
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/Axioms.lean": "63a0b6c78e286360356663f6629ed67a49ce1c203aa204e77b1ec45432cc1539",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/README.md": "567e2986e17a3744b0039e9f00561f5967d86d5c69657a1d1aa5de5e5c5efc02",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/Statements.lean": "1907f87e9c52f72aad1cdba65b6f5d34f47b8e36576016ef6d3d2f0b095e63ab",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/axioms-exit.json": "afcdf86dab57206f30d077fe75534b7b4401bad129f91b78191321f1426b8f47",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/axioms.log": "a1887561ca3c99f504059a20690094f2a789b735eab1e6778c387355cd66ad17",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/axioms.log.gz": "0fc6f411a390473b717fea57d5d1d5666bde79aba788de177cba427e4281d814",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/cache-exit.json": "35c04f4f0e419a3455037b7a99b649bfb426ceee9b2033cab3889315bbed9d42",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/cache.log.gz": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/capture.py": "64c647a23e9fefc6356f98d5ab9d39460fbc7cf8d930ce2dafde55a73346b5a3",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/check-hazards.py": "94b10df448a10a538c502c6a08a8da7ad1971d0b65864f882d793949037ca63c",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/check-preservation.py": "83db1c2034654b56fc05231b40e5e572f4a0729a90335cdeed1c0ffdfad43ccd",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/collect-manifest.py": "8e40b5e4e6affd9f3ac0b40307faedb7b3f9860d1cbba22c22d6215596929c5a",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/compression.json": "efac9b6fdc23264f1998f52bb1cfab8ad7b2302c780e0b141048c6c434809e2d",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/excluded-pre-freeze-source.lean.txt": "b9b66a55b9ed8c83fae99fb39a46b08298ac21a4fafe3c612216c71590239f06",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/excluded-pre-freeze-tool-output.txt": "97acdc3da869992da78cc94a9573dc687ed9ec23adb61ca8a576afcb13325bec",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/excluded-pre-freeze.json": "4385a8df7c7b85b9a43175eea71509878601a8412431a761adc1f11be6ee9777",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/guard-exit.json": "5b802fec791b89719c1aaf82f0296ebe8a434a382dbcb7e1d34c8630e458a30e",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/guard.log": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/guard.log.gz": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/hazards-exit.json": "cc44d43d81e9ab851335b76fde429274ee208faecbd6234cba1091ad2857c960",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/hazards.log": "0b5c4cb7507eb8f209eebb05abaf0627ed619a78e58ed0111ee05fdd01907455",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/hazards.log.gz": "2530c1f34c854e95828660699ca4ab328ab21dff000b62ce9102b17acab990a9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/manifest-check-exit.json": "fbb4e59fdebeaa40bb34649889c418bd653a3234572cf516cd56954e6dd12160",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/manifest-check.log": "5146d866e3a4edc916dc2bdd9bf4916a3bd4ef8792734e18cc3c14ee6a79c395",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/manifest-check.log.gz": "cda6693ae4031447638975e8c747575129ce988eac0f32166df9f2211e383896",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/mathematical-review.json": "d9c589d4804717ceca5818b61c44316ba83ea7d39cbc2b490b042ebbe9b785e8",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/mathlib-guard.py": "7735e65b032808f8e4f6a672cec0c4a72ee8b81fa84177b9330fc44a71d456f5",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/owned-shards.json": "d0ebe2e210dfe4aa88062bdc120eeee4bc6cb83b71f827d79a35b2dbe7777987",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/parent-preservation.json": "0cdd33ea30684ba3567f81b213260f233ffcbdcc24b07fb2573d7fc8f25e59e4",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/pattern-scan.py": "d6c4e9a12ccc192ca92de9a56f1850753dc2bc44724c647e90fc51a3ddaa4b4b",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/patterns-exit.json": "166fb1e44d5a19cf97d56cef09ad5cb5a427f804b00682dd63d1f162b80ead2e",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/patterns.log": "e0bd21141908fab9c334e398aa04f7a098670288f35683ec5213d9422af17778",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/patterns.log.gz": "a275ba589fd92c2c6f76e5c4839bfc53b6c198daad5a0f90580fd1561620a8f9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/preservation-exit.json": "c93a6b6a20b014805dec5278963ed68b98acd2adb7ce5f9d1108ef4bb0d1c335",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/preservation.log": "7d440a835fbdefec91e4803fd10bead5b2e32f81fa911933de8e3097532d6e63",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/preservation.log.gz": "2b12f4096c968aa05a24d05b55b326f99f0d91f763b59e6b2fb0213d9d876246",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/prose-exit.json": "801c368868fc4f72722601287747d920ef971319096d82548bf263aabc36f908",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/provenance-exit.json": "f593012094072c0a9419816d92805e2df732fc00834a8bf7f7b21363769c4316",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/provenance.log": "a367add2016da425e0b0777cc3514315b4a0b21543987b9936c85bee79e7af01",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/provenance.log.gz": "f03ff765c770991871bde6f1546873bd22936ea177963387ab4de28fc3b135c6",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/render-standalone.py": "e135901bc4886f12e6788ab0eb48140c5350beacf7b025c724d5e1ce46b04fd2",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/source-freeze.json": "16ed14ac74d4a8aa061f81d7bb97c182fff80ed6afe354f3d9635721d3068f49",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-final-exit.json": "2366a5e6d495bed772141e434ee720d4e286f173763184025eccd5c4567ef8f1",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-final.log": "b8eb113d65c35ab8032e4237df3d45f33c74a94a7c9e0a7ba652cd5ca1862732",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-final.log.gz": "ed027cd7374dbf3768dd37b12faff0ea1e61b0265d197d4d191ef44b441fe176",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-first-exit.json": "fd8a99cd4544adb9e54afcf79d214ae0223ce43b0b6aa88ae0875285f64da199",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-first.log": "07d3948e423e58589ff5d725dcdf23db9d7304012d2db48265e25af4b4cc1070",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-first.log.gz": "d5c15c34e2d24a175e88fb377910af889cfd53c07762681c4b8ba54f6cb6709d",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-page-1.png": "b89cf70735fba0ed988cd5dc96c210013104dd87d01d48ea71f16617a4f252e7",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-page-2.png": "01e319ff2ebf1076a4d4ab91ab6515dd99b42b9d7a00dddf39e7af69d44f42ce",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-render-exit.json": "c088f434eddc3838df1bafdd13196f4d226173ee5c9424d1f9caad5fbe212a0a",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-render.log": "864624304757e53db64ec16e93e6591ed3efff90aaeaca73aab538ae15ec166a",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-render.log.gz": "825871f292b1bfe5a112d9240823088e179854edf658d8081cc681851412d0dd",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-wrapper.pdf": "793a0131aef753855c2d2e9d7696dc2a5082412863003dd916ac693318fdb21b",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-wrapper.tex": "7580955ad5ea1cd4883ed41f7325509154160f22a2cf37d518450fe32054fb88",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/statements-exit.json": "b0d53efc67fa811b14e4fe430e26769a4d176d292aa1dc981bdbf8094d03fa84",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/statements.log": "0b3fdf307cbab3d2cce6aea11273c739956345733924c9dd63070afd028acfb0",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/statements.log.gz": "7e40e4a8f9f1ce67f9daef7aff4ff6a146552f00574f45bf3943ba79a9710b90",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/strict-exit.json": "9793902fdcb3340e3315c82bf24c589044ef255aa32b4ee7a034f96a116ae376",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/strict.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/strict.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/target-exit.json": "815705d8b7aa6372ebc9136cf6295230ec2bc9e56b61bd224c407ae51a3710d0",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/target.log": "4c7032492f3a549fc50a13b27e1094fe0ae71434bbfef844db1c44143ca8120c",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/target.log.gz": "ff29f146b1d8631c08467c523caef931de6c5f8d56a275b8ab4058c94b68153b",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/validate-manifest.py": "5b2342d5cf89ab9fa4c46b0a46feec9abeaaf96976239686ce90b0985f44833f",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/validate-owned.py": "ebe35f1ede4897acfc505d62a34fbbf715be9c11f88f0a93073044c95259e614",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/visual-inspection.json": "2464da73da560004fcff65a095b5e14221569e45dea2d2a89c66ad2f7c4555cb",
+    "QICLean/Analysis/ReplicaGoodConfigurationDensity.lean": "f1d4d451ce80e3335facc9cc447d400a0ec69d09b8106216ca0ca322ba9d6bee",
+    "blueprint/src/fragment/replica_good_configuration_density.tex": "020eae87a1d2ecbae5e21c96af4c90a5706e9a71689ca60e1191c1cc35bd8c41",
+    "docs/formalization/replica-good-configuration-density.md": "91829d011f210958adfb95882b4e4670e810232a230466a78f3567a1e48a1167",
+    "docs/tactic_patterns.md": "f5356aa5b7866396d60b71ad2e34d37d4f6b96818c2577249cf811a9d69598eb",
+    "docs/provenance/openai-math.d/replicaGoodConfigurationDensity8750.json": "def500186e5a56c555d868d0b3f35ba8eb75339c833d6c51a7b2df06c6877e13"
+  },
+  "inventory_exclusions": [
+    "verification.json: self inventory",
+    "standalone-wrapper.aux/out/log: local TeX auxiliaries; stdout is recorded separately"
+  ],
+  "scope": "Two original definitions and one actual full-good density support theorem. All good Y retained; no inherited mathematical audits repeated."
+}

@@ -1,0 +1,16 @@
+{
+  "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "mathematical_introduction": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "exposition_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "production_sha256": {
+    "QICLean/Analysis/ReplicaGoodConfigurationDensity.lean": "f1d4d451ce80e3335facc9cc447d400a0ec69d09b8106216ca0ca322ba9d6bee",
+    "blueprint/src/fragment/replica_good_configuration_density.tex": "020eae87a1d2ecbae5e21c96af4c90a5706e9a71689ca60e1191c1cc35bd8c41",
+    "docs/formalization/replica-good-configuration-density.md": "91829d011f210958adfb95882b4e4670e810232a230466a78f3567a1e48a1167",
+    "docs/tactic_patterns.md": "f5356aa5b7866396d60b71ad2e34d37d4f6b96818c2577249cf811a9d69598eb"
+  },
+  "inclusion_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+  "inclusion_sha256": {
+    "QICLean/Analysis.lean": "b25834767dcb107cad8c0b4155ac0a040b616ca9d1984140088c266beda34298",
+    "blueprint/src/chapter/ch12_entropy.tex": "3ef751780c69427225bde4a77e61960085e93dfbb4941cdf22ff2c30726c9a2b"
+  }
+}

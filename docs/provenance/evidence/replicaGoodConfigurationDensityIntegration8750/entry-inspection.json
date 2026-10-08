@@ -1,0 +1,75 @@
+[
+  {
+    "top": 980.953125,
+    "bottom": 1300.40625,
+    "proofs": [],
+    "errors": [],
+    "id": "def:five_factor_copies_equiv",
+    "view": "desktop",
+    "screenshot": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-1-desktop.png"
+  },
+  {
+    "top": 1308.40625,
+    "bottom": 1753.828125,
+    "proofs": [],
+    "errors": [],
+    "id": "def:replica_good_configuration_marginal",
+    "view": "desktop",
+    "screenshot": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-2-desktop.png"
+  },
+  {
+    "top": 1761.828125,
+    "bottom": 2411.671875,
+    "proofs": [
+      {
+        "height": 411.03125,
+        "text": "\n  First trace only the bad physical copies of |w\u27e9\u27e8w|, obtaining M on the good physical copies and the whole auxiliary register. The physical-support identity gives \n\n  (Pm\u2297I)M=M,\n\n where Pm symmetrizes the m copies of A. Regroup each auxiliary register into its good and bad coordinates and trace the bad coordinates. Interchanging the finite sums shows that physical left multiplication passes through this partial trace. Hence the resulting grouped density N satisfies \n\n  (Pm\u2297ICm\u00d7Rm)N=N.\n\n The same finite-sum interchange identifies N with \u03c1G expressed in the coordinates em. \nFor each copy permutation, em transforms its physical-only action into the copy permutation of Am tensored with the auxiliary identity. This follows directly from the coordinate entries. Averaging these identities transforms PQYV into Pm\u2297I. Returning to the five-factor coordinates proves the assertion. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_configuration_support",
+    "view": "desktop",
+    "screenshot": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-3-desktop.png"
+  },
+  {
+    "top": 111.859375,
+    "bottom": 522.53125,
+    "proofs": [],
+    "errors": [],
+    "id": "def:five_factor_copies_equiv",
+    "view": "mobile",
+    "screenshot": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-1-mobile.png",
+    "horizontal_endpoints": []
+  },
+  {
+    "top": 405.53125,
+    "bottom": 1099.015625,
+    "proofs": [],
+    "errors": [],
+    "id": "def:replica_good_configuration_marginal",
+    "view": "mobile",
+    "screenshot": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-2-mobile.png",
+    "horizontal_endpoints": [
+      {
+        "width": 312,
+        "total": 336,
+        "end": 24
+      }
+    ]
+  },
+  {
+    "top": 1107.015625,
+    "bottom": 2027.328125,
+    "proofs": [
+      {
+        "height": 612.6875,
+        "text": "\n  First trace only the bad physical copies of |w\u27e9\u27e8w|, obtaining M on the good physical copies and the whole auxiliary register. The physical-support identity gives \n\n  (Pm\u2297I)M=M,\n\n where Pm symmetrizes the m copies of A. Regroup each auxiliary register into its good and bad coordinates and trace the bad coordinates. Interchanging the finite sums shows that physical left multiplication passes through this partial trace. Hence the resulting grouped density N satisfies \n\n  (Pm\u2297ICm\u00d7Rm)N=N.\n\n The same finite-sum interchange identifies N with \u03c1G expressed in the coordinates em. \nFor each copy permutation, em transforms its physical-only action into the copy permutation of Am tensored with the auxiliary identity. This follows directly from the coordinate entries. Averaging these identities transforms PQYV into Pm\u2297I. Returning to the five-factor coordinates proves the assertion. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_configuration_support",
+    "view": "mobile",
+    "screenshot": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-3-mobile.png",
+    "horizontal_endpoints": []
+  }
+]

@@ -1,0 +1,106 @@
+\section{The actual full good-copy density}
+\label{sec:replica_good_configuration_density}
+
+The physical factors are $Q,Y,V$, with $Y$ an independent middle factor;
+the auxiliary factors are $C,R$. The reduction below retains all five
+factors on the good copies. In particular, every good $Y$ coordinate is
+retained until the physical symmetric projection is applied.
+
+\begin{definition}[Five-factor copy coordinates]
+\label{def:five_factor_copies_equiv}
+\lean{TensorPower.fiveFactorCopiesEquiv}
+\leanok
+Let $Q,Y,V,C,R$ be coordinate sets and let $m\geq0$. A configuration $x$
+assigns one coordinate in each of these five sets to each copy $j$.
+The equivalence $e_m$ groups these coordinates as
+\begin{align}
+ e_m(x)&=(a,(c,r)),\\
+ a_j&=(x_{j,Q},(x_{j,Y},x_{j,V})),\\
+ c_j&=x_{j,C},\qquad r_j=x_{j,R}.
+\end{align}
+Thus its range is
+\begin{align}
+ (Q\times(Y\times V))^m\times(C^m\times R^m).
+\end{align}
+The inverse places the five coordinates back in the same copy. This
+includes $m=0$.
+\end{definition}
+
+\begin{definition}[Actual full good-copy density]
+\label{def:replica_good_configuration_marginal}
+\lean{Matrix.replicaGoodConfigurationMarginal}
+\leanok
+\uses{def:five_factor_copies_equiv,def:good_bad_copies_equiv,def:replica_excitation_projection}
+Let all five coordinate sets be finite. Put $A=Q\times(Y\times V)$,
+let $\Omega\in\mathbb C^A$, and let
+\begin{align}
+ u\in\mathbb C^{A^k}\otimes\mathbb C^{C^k}\otimes\mathbb C^{R^k}
+\end{align}
+be arbitrary. For $B\subseteq\{0,\ldots,k-1\}$, put $G=B^c$,
+$m=|G|$ and $b=|B|$. Form the actual component
+$w=(R_B\otimes I)u$.
+Use the same chosen enumeration of $G$ in all five factors and the chosen
+enumeration of $B$ in each auxiliary factor.
+
+For a retained configuration $x$, write $e_m(x)=(a,(c,r))$.
+A discarded configuration consists of a physical assignment $d\in A^B$
+and auxiliary assignments $c'\in C^b$, $r'\in R^b$.
+Reconstruct the original physical register by placing $a$ on $G$ and $d$
+on $B$. Reconstruct the two auxiliary registers by placing $(c,r)$ on $G$
+and $(c',r')$ on $B$. Let $f_B(x,(d,c',r'))$ be the value of $w$ at
+these reconstructed coordinates. Define
+\begin{align}
+ \rho_G(x,x')
+ &=\sum_{d,c',r'} f_B(x,(d,c',r'))
+     \overline{f_B(x',(d,c',r'))}.
+\end{align}
+This is the actual unnormalized rank-one partial trace. Only the bad
+physical and auxiliary copies are discarded. No condition on $\Omega$ or
+$u$ is imposed in the definition.
+\end{definition}
+
+\begin{theorem}[Physical symmetric support of the full good-copy density]
+\label{thm:replica_good_configuration_support}
+\lean{Matrix.symProj_mul_replicaGoodConfigurationMarginal}
+\leanok
+\uses{def:replica_good_configuration_marginal,thm:replica_good_physical_support}
+In the preceding definition suppose $\|\Omega\|=1$. Let $P_{QYV}$ be the
+average of the simultaneous copy-permutation operators on the physical
+factors $Q,Y,V$, acting trivially on $C,R$. Then
+\begin{align}
+ P_{QYV}\rho_G=\rho_G.
+\end{align}
+The original vector $u$ need not be symmetric, unit or nonzero. Zero
+components, zero copies and empty good sets are included.
+\end{theorem}
+\begin{proof}
+\leanok
+First trace only the bad physical copies of $|w\rangle\langle w|$,
+obtaining $M$ on the good physical copies and the whole auxiliary register.
+The physical-support identity gives
+\begin{align}
+ (P_m\otimes I)M=M,
+\end{align}
+where $P_m$ symmetrizes the $m$ copies of $A$.
+Regroup each auxiliary register into its good and bad coordinates and
+trace the bad coordinates. Interchanging the finite sums shows that
+physical left multiplication passes through this partial trace. Hence the
+resulting grouped density $N$ satisfies
+\begin{align}
+ (P_m\otimes I_{C^m\times R^m})N=N.
+\end{align}
+The same finite-sum interchange identifies $N$ with $\rho_G$ expressed in
+the coordinates $e_m$.
+
+For each copy permutation, $e_m$ transforms its physical-only action into
+the copy permutation of $A^m$ tensored with the auxiliary identity. This
+follows directly from the coordinate entries. Averaging these identities
+transforms $P_{QYV}$ into $P_m\otimes I$. Returning to the five-factor
+coordinates proves the assertion.
+\end{proof}
+
+This establishes the actual physical symmetric-support step used in
+\cite[Section~7]{OpenAI2026AreaLaw}, retaining the independent middle
+physical factor. The compatible physical spectral projection and the
+further reduction that traces the good $Y$ coordinates are separate
+assertions.

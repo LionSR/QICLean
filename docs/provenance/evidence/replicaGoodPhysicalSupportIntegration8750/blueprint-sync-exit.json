@@ -1,0 +1,16 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "scripts/blueprint_lean_sync.py",
+    "--root",
+    ".",
+    "--update-lean-decls"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.94,
+  "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/blueprint-sync.log",
+  "sha256": "bc0b7d3d98ca922c19634339a19779eba8ddb1ac41e687e418def6423caa16ea"
+}

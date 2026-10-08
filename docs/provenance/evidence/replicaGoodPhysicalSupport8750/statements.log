@@ -1,0 +1,14 @@
+docs/provenance/evidence/replicaGoodPhysicalSupport8750/Statements.lean:2:0: error: The module doc-string for a file should be the first command after the imports.
+Please, add a module doc-string (`/-! ... -/`) before `set_option linter.hashCommand false`.
+
+Hint: Type `m(odule docstring) + [tab]` to insert a template via snippet.
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density.{u_1, u_2} {A : Type u_1} {C : Type u_2} [Fintype A]
+  [DecidableEq A] [Fintype C] [DecidableEq C] (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) {k : ℕ} (B : Finset (Fin k))
+  (u : (Fin k → A) × C → ℂ) :
+  have w := (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u;
+  have f := fun x ↦ w ((FiniteProduct.splitEquiv (fun x ↦ A) B).symm (x.2, fun i ↦ x.1.1 (Bᶜ.equivFin i)), x.1.2);
+  Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (PermutationRepresentation.symProj (TensorPower.copyPerm A Bᶜ.card)) 1 *
+      (Matrix.vecMulVec f (star f)).partialTraceRight =
+    (Matrix.vecMulVec f (star f)).partialTraceRight

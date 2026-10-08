@@ -1,0 +1,17 @@
+{
+  "source_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodPhysicalSupport8750/pattern-scan.py",
+    "--root",
+    "QICLean",
+    "--top",
+    "5"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T02:22:54.997088+00:00",
+  "elapsed_seconds": 2.7127905420056777,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/patterns.log",
+  "sha256": "bfe91ff4c46806437ef76c4ec6e6a302f2e0e46f491307f6c47d5467375c26d4"
+}

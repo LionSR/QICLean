@@ -1,0 +1,15 @@
+{
+  "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "result": "passed",
+  "pdf": "standalone-wrapper.pdf",
+  "pages_inspected": [
+    1,
+    2
+  ],
+  "checks": [
+    "Both definitions and complete support theorem/proof visually inspected.",
+    "All formulas and copy-factor order legible; no clipping or overlap.",
+    "Every good middle Y retained; only bad physical/C/R traced.",
+    "Existing manuscript citation resolves; degenerate cases and arbitrary original vector stated."
+  ]
+}
