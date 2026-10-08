@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-good-configuration-density-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodConfigurationDensity.lean",
+        "declaration": "TensorPower.fiveFactorCopiesEquiv",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Explicit pointwise equivalence from five-factor configurations, ordered Q,Y,V,C,R, to all physical copies grouped before C and R. Arbitrary finite coordinate factors and zero copies. Source07 lines23,103\u2013110,513\u2013517. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=2 lake build QICLean.Analysis.ReplicaGoodConfigurationDensity",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/target.log",
+            "sha256": "4c7032492f3a549fc50a13b27e1094fe0ae71434bbfef844db1c44143ca8120c"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodConfigurationDensity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/replicaGoodConfigurationDensity8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/axioms.log",
+            "sha256": "a1887561ca3c99f504059a20690094f2a789b735eab1e6778c387355cd66ad17"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8750-qic-good-configuration-density-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodConfigurationDensity.lean",
+        "declaration": "Matrix.replicaGoodConfigurationMarginal",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Literal rank-one partial trace of the same actual excitation component, retaining all good Q,Y,V,C,R and tracing only bad physical/C/R. The same chosen good enumeration is used throughout; no normalization, symmetry or supplied coordinate identity. Source07 lines23,103\u2013110,520\u2013549. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=2 lake build QICLean.Analysis.ReplicaGoodConfigurationDensity",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/target.log",
+            "sha256": "4c7032492f3a549fc50a13b27e1094fe0ae71434bbfef844db1c44143ca8120c"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodConfigurationDensity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/replicaGoodConfigurationDensity8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/axioms.log",
+            "sha256": "a1887561ca3c99f504059a20690094f2a789b735eab1e6778c387355cd66ad17"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8750-qic-good-configuration-density-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodConfigurationDensity.lean",
+        "declaration": "Matrix.symProj_mul_replicaGoodConfigurationMarginal",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive support of that actual full-good density under the physical-only simultaneous QYV copy symmetrizer. Only unit one-copy Omega; arbitrary original u, k including zero, B and zero component. Derive projector transport from actual permutation entries and averaging, and auxiliary partial-trace multiplication from finite sums. All good Y retained; no supplied symmetry/support/reindex premise. Source07 lines23,103\u2013110,513\u2013517,520\u2013549. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=2 lake build QICLean.Analysis.ReplicaGoodConfigurationDensity",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/target.log",
+            "sha256": "4c7032492f3a549fc50a13b27e1094fe0ae71434bbfef844db1c44143ca8120c"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodConfigurationDensity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/replicaGoodConfigurationDensity8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/axioms.log",
+            "sha256": "a1887561ca3c99f504059a20690094f2a789b735eab1e6778c387355cd66ad17"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/check-hazards.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T03:36:07.046198+00:00",
+  "elapsed_seconds": 0.04346441599773243,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/hazards.log",
+  "sha256": "0b5c4cb7507eb8f209eebb05abaf0627ed619a78e58ed0111ee05fdd01907455"
+}

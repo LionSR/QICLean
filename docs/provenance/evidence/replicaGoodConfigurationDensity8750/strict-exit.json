@@ -1,0 +1,23 @@
+{
+  "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "QICLean/Analysis/ReplicaGoodConfigurationDensity.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T03:36:39.954101+00:00",
+  "elapsed_seconds": 20.04049537499668,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/strict.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
