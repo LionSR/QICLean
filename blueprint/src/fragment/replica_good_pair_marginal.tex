@@ -1,15 +1,16 @@
 \section{A common density for the two good regions}
 \label{sec:replica_good_pair_marginal}
 
-Let $Q,V,C,R$ be finite coordinate sets and let $k\geq0$.
+Let $Q,Y,V,C,R$ be finite coordinate sets and let $k\geq0$.
 For $B\subseteq\{0,\ldots,k-1\}$, put $G=B^c$ and $m=|G|$.
 Choose one enumeration of $G$ for all four good regions, and one enumeration
 of $B$ for both bad auxiliary regions. For arbitrary
-$\Omega\in\mathbb C^Q\otimes\mathbb C^V$ and
-$u\in(QV)^{\otimes k}\otimes C^{\otimes k}\otimes R^{\otimes k}$,
+$\Omega\in\mathbb C^Q\otimes\mathbb C^Y\otimes\mathbb C^V$ and
+$u\in(QYV)^{\otimes k}\otimes C^{\otimes k}\otimes R^{\otimes k}$,
 put $w=(R_B\otimes I)u$. Here $R_B$ is the excitation operator determined
 by $\Omega$; it is an orthogonal projection when $\Omega$ is unit.
-The following coordinate identities identify the two reduced matrices used
+The following coordinate identities trace every middle physical coordinate and identify
+the two reduced matrices used
 in \cite[Section~7]{OpenAI2026AreaLaw}, equation
 (comparator:merge-moments). No permutation symmetry is required.
 
@@ -24,11 +25,13 @@ Regroup the same component $w$ into retained and discarded factors:
    &=(Q^{\otimes m}\otimes C^{\otimes m})
       \otimes(V^{\otimes m}\otimes R^{\otimes m}),\\
  \mathcal H_{\mathrm{tr}}
-   &=(QV)^{\otimes|B|}\otimes C^{\otimes|B|}\otimes R^{\otimes|B|}.
+   &=Y^{\otimes m}\otimes(QYV)^{\otimes|B|}\otimes C^{\otimes|B|}\otimes R^{\otimes|B|}.
 \end{align}
 The common density $\Gamma_B(u)$ is
 $\operatorname{Tr}_{\mathcal H_{\mathrm{tr}}}|w\rangle\langle w|$.
-It retains all four good regions and is unnormalized.
+It retains the four exterior good regions and is unnormalized. The discarded
+factors include the good middle copies and the middle coordinates within the
+bad physical copies, so every middle physical coordinate is traced.
 \end{definition}
 
 \begin{theorem}[First actual marginal]
@@ -54,10 +57,12 @@ as the definition of $\rho_{Q_G C_G}(w)$. A finite-sum reordering proves the ide
 \lean{Matrix.partialTraceLeft_replicaGoodPairMarginal}
 \leanok
 \uses{def:replica_good_pair_marginal,def:replica_good_regional_auxiliary_marginal}
-Exchange the physical regions and the auxiliary regions simultaneously:
+Exchange the exterior physical regions and the auxiliary regions simultaneously,
+preserving the independent middle region:
 \begin{align}
- \Omega'(v,q)&=\Omega(q,v),\\
- u'(x,(r,c))&=u\bigl((i\mapsto\operatorname{swap}(x_i)),(c,r)\bigr).
+ \tau(q,(y,v))&=(v,(y,q)),\\
+ \Omega'(v,(y,q))&=\Omega(q,(y,v)),\\
+ u'(x,(r,c))&=u\bigl((i\mapsto\tau^{-1}(x_i)),(c,r)\bigr).
 \end{align}
 Let $w'=(R'_B\otimes I)u'$ be the actual component determined by $\Omega'$.
 Then
@@ -69,7 +74,7 @@ chosen excitation component.
 \end{theorem}
 \begin{proof}
 \leanok
-A change of one-copy coordinates carries each factor of the excitation
+The physical exchange preserves the middle coordinate and carries each factor of the excitation
 operator to the corresponding factor for the exchanged vector. Tensoring
 and applying it to the exchanged original vector therefore gives exactly
 the exchanged component. The physical good/bad split respects this exchange.

@@ -245,3 +245,5 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The physical and auxiliary regions are exchanged together; the
   component must be derived from the original vector and excitation operator.
   Neither normalization nor a supplied covariance identity is assumed.
+  For a three-factor physical space, preserve the middle factor under the
+  exterior-region exchange and trace all of its copies in the common density.
