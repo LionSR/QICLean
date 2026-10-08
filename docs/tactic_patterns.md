@@ -57,3 +57,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Commutation and the actual inverse identity are proved before
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
+
+### Rectangular sandwich intertwining — candidate (2026-10-08)
+
+- **Pattern:** Normalize products to the left to use `L₁ * J = J * L₂`,
+  then to the right to use its adjoint, obtaining transport of `J * H * Jᴴ`.
+- **Seen:** The resolvent sandwich in `PowerDerivativeIntertwine.lean` and
+  the real-power sandwich in `GeometricMeanDerivativeIntertwine.lean`.
+- **Abstraction:** The latter proof uses one local identity for both its
+  inner and outer sandwiches. There are two occurrences across two files;
+  no new tactic is needed.
+- **Caveats:** Use `Matrix.mul_assoc` for rectangular products. The direction
+  is arbitrary; no isometry or nonempty index set is required. Hermiticity
+  is used to derive the adjoint intertwining equation.

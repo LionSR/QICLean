@@ -1,0 +1,69 @@
+\section{Intertwining derivatives of the weighted geometric mean}
+\label{sec:geometric_mean_derivative_intertwine}
+
+Let $F_p(A,B)=A\#_p B$ for positive definite matrices and $p\in[0,1]$.
+Write $D_iF_p(A,B)$ for the complex-linear extension of its derivative
+in the $i$th argument. If $C=A^{-1/2}BA^{-1/2}$, the derivative formula is
+\begin{align*}
+  D_2F_p(A,B)[H]
+    &=A^{1/2}\mathcal D_p(C)[A^{-1/2}HA^{-1/2}]A^{1/2},
+\end{align*}
+where $\mathcal D_p(C)$ denotes the power derivative from
+Section~\ref{sec:power_derivative_intertwine}.
+Also $D_1F_p(A,B)=D_2F_{1-p}(B,A)$.
+These are the derivative formulas used in the proof of
+Lemma~7.2 of~\cite{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Intertwining the geometric-mean derivatives]
+  \label{thm:geometric_mean_derivative_intertwine}
+  \lean{Matrix.geomMeanDerivRight_intertwine,
+    Matrix.geomMeanDerivLeft_intertwine}
+  \leanok
+  Let $A_1,B_1$ and $A_2,B_2$ be positive definite matrices on two
+  finite-dimensional complex Hilbert spaces. Suppose that a linear map $J$
+  satisfies $A_1J=JA_2$ and $B_1J=JB_2$.
+  For $p\in[0,1]$, $i\in\{1,2\}$ and every matrix $H$ on the second space,
+  \begin{align*}
+    D_iF_p(A_1,B_1)[JHJ^*]
+      &=J D_iF_p(A_2,B_2)[H]J^*.
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:power_derivative_intertwine}
+  Functional calculus gives $A_1^sJ=JA_2^s$ for every real $s$.
+  Taking adjoints gives $J^*A_1^s=A_2^sJ^*$, and hence
+  \begin{align*}
+    A_1^s(JHJ^*)A_1^s&=J(A_2^sHA_2^s)J^*.
+  \end{align*}
+  The positive definite matrices $C_j=A_j^{-1/2}B_jA_j^{-1/2}$
+  satisfy $C_1J=JC_2$. Applying
+  Theorem~\ref{thm:power_derivative_intertwine} to $C_1,C_2$,
+  and moving the inner and outer sandwich factors across $J$ and $J^*$,
+  proves the assertion for $i=2$. Exchange $A$ and $B$ and replace $p$ by
+  $1-p$ to obtain the assertion for $i=1$.
+\end{proof}
+
+\begin{theorem}[Compression of the geometric-mean derivatives]
+  \label{thm:geometric_mean_derivative_compress}
+  \lean{Matrix.geomMeanDerivRight_compress,
+    Matrix.geomMeanDerivLeft_compress}
+  \leanok
+  Under the hypotheses of
+  Theorem~\ref{thm:geometric_mean_derivative_intertwine},
+  every matrix $X$ on the first space satisfies
+  \begin{align*}
+    J^*D_iF_p(A_1,B_1)[X]J
+      &=D_iF_p(A_2,B_2)[J^*XJ]
+  \end{align*}
+  for $p\in[0,1]$ and $i\in\{1,2\}$.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:geometric_mean_derivative_intertwine}
+  Taking adjoints gives $A_2J^*=J^*A_1$ and $B_2J^*=J^*B_1$.
+  Apply Theorem~\ref{thm:geometric_mean_derivative_intertwine}
+  with the matrix pairs exchanged and intertwiner $J^*$.
+\end{proof}
