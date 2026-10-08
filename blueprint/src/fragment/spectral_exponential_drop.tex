@@ -1,0 +1,54 @@
+\section{Dropping a nonnegative spectral term}
+\label{sec:spectral-exponential-drop}
+
+The rough component estimate in
+\cite[Section~7, lines~553--555]{OpenAI2026AreaLaw} drops a nonnegative
+spectral term after restricting to its nonnegative spectrum. The following
+inequalities express that step for commuting Hermitian matrices.
+
+\begin{theorem}[Exponential bound on a nonnegative spectral subspace]
+\label{thm:spectral-exponential-drop-order}
+\lean{Matrix.spectralProjectionGE_exp_smul_sub_le}
+\uses{thm:resolution-product-coordinates}
+\leanok
+Let $G,H$ be commuting Hermitian matrices, let $a\ge0$, and put
+$J=\mathbf1_{[0,\infty)}(G)$. Then
+\begin{align}
+ Je^{a(H-G)}J&\le e^{aH}.
+ \label{eq:spectral_drop_order}
+\end{align}
+No positivity condition is imposed on the spectrum of $G$ outside the range
+of $J$. Zero eigenvalues are retained.
+\end{theorem}
+
+\begin{proof}
+\leanok
+Use the joint spectral resolution of $G$ and $H$. On a joint component with
+eigenvalues $g,h$, the left side is $e^{a(h-g)}$ if $g\ge0$, and zero
+otherwise. In the first case $e^{a(h-g)}\le e^{ah}$; in the second case
+$0\le e^{ah}$. Summing these nonnegative differences against the actual
+Hermitian joint projections proves (\ref{eq:spectral_drop_order}).
+\end{proof}
+
+\begin{theorem}[Exponential moment of a supported positive weight]
+\label{thm:spectral-exponential-drop-trace}
+\lean{Matrix.PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul}
+\uses{thm:spectral-exponential-drop-order}
+\leanok
+Under the same hypotheses, if $\rho\ge0$ and $J\rho=\rho$, then
+\begin{align}
+ \operatorname{ReTr}\bigl(\rho e^{a(H-G)}\bigr)
+ &\le\operatorname{ReTr}\bigl(\rho e^{aH}\bigr).
+ \label{eq:spectral_drop_trace}
+\end{align}
+The trace weight need not be normalized or commute with $G$ or $H$.
+Zero weights and zero-dimensional ambient spaces are included.
+\end{theorem}
+
+\begin{proof}
+\leanok
+Taking adjoints of $J\rho=\rho$ gives $\rho J=\rho$.
+Cyclicity of the trace therefore removes both copies of $J$ from the
+left side of the positive trace pairing of (\ref{eq:spectral_drop_order})
+with $\rho$. This gives (\ref{eq:spectral_drop_trace}).
+\end{proof}

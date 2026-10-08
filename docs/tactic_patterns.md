@@ -303,3 +303,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Derive the physical intertwining identity before applying the
   spectral fact. An independent middle physical region cannot be identified
   with the combined exterior region on the whole space.
+
+### Supported exponential trace compression — candidate (2026-10-08)
+
+- **Pattern:** Obtain right support by taking adjoints of the left support
+  equation, then use trace cyclicity to remove both spectral projections.
+- **Seen:** `Matrix.PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul`
+  in `Analysis/SpectralExponentialDrop.lean`; one mathematical consumer.
+- **Abstraction:** Retain the direct adjoint and trace identities. A second
+  result with the same compression calculation may justify a general trace
+  lemma; no new tactic is introduced.
+- **Caveats:** Left support implies right support because both the trace weight
+  and the spectral projection are Hermitian. Support alone does not imply
+  commutation with the other observable.
