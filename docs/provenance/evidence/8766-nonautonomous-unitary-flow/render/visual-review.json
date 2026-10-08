@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "source_revision": "220aa2735fbc5f1629c2782edb6b43ae8951ceb3",
+  "pdf_review": {
+    "initial_pages_directly_viewed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "final_pages_directly_reinspected": [
+      3,
+      5,
+      7
+    ],
+    "all_final_page_pngs_byte_identical_to_initial": true,
+    "findings": [
+      "Readable title, contents, five mathematics pages, and bibliography.",
+      "No clipped text, overlap, missing glyphs, overfull displays, or detached theorem headings.",
+      "Global-existence proof continues cleanly from page 3 to 4; Duhamel norm and explicit-product derivative proofs continue cleanly onto pages 5 and 7.",
+      "Statement/proof check badges, all 19 numbered equations, and source citation are legible."
+    ]
+  },
+  "static_html_review": [
+    "Inspected generated chapter and both graph modal sources, including oriented integrals, relative derivative, projected generator, and explicit product.",
+    "All 50 explicit prime tokens survive as mathematical primes; no U+2019 appears in display mathematics.",
+    "Every declaration link identifier, generated local reference target, bibliography anchor, and dependency modal is checked by verify_render.py."
+  ],
+  "dependency_graph": {
+    "method": "Extract actual generated renderDot payload; render with Graphviz and a white background solely for pixel inspection. No live graph browser used.",
+    "nodes": 14,
+    "rendered_edges": 16,
+    "explicit_uses_edges": 22,
+    "reachability_matches": true,
+    "findings": "All labels readable. Green theorem nodes and light-green definition node correctly connect global existence, unitarity, Duhamel, projected regularity/Hermiticity/bound, unique evolution, and explicit-product comparison.",
+    "dot_sha256": "4935fb9ebccbdfcd6e7baac37e10271ea3da77740e08e7c218140192871a05a9",
+    "inspection_png_sha256": "7c9d170b9113e427f4dba26b68fcd1420b842fcf58f5cc672cb5d6365828ab52"
+  },
+  "mathematical_review": {
+    "normalization": "Euclidean operator norm throughout, identity initial value for the unitary results, and no extra dimension or factor-two constant. Empty finite index sets remain allowed.",
+    "existence": "rho=||X0||+1, L=2(M+1)rho, delta=1/(2(M+1)); L delta=rho gives a lifespan independent of initial time and matrix. Autonomous field (1,A(s)X) yields a(t)=t. Unitarity is derived after existence.",
+    "duhamel_sign": "For U\u2032=iGU and V\u2032=iHV, (U*V)\u2032=U* i(H-G)V. The exact integral retains orientation from 0 to t; only the norm bound takes the absolute integral, giving epsilon |t| for negative as well as positive time.",
+    "unitarity_and_uniqueness": "U*U is differentiated to zero, square-matrix unitarity follows, and zero generator error proves uniqueness without requiring the competing path to be unitary.",
+    "projected_generator": "P(exp(itH) B exp(-itH)); P is complex linear, with regularity supplied by finite dimensionality. Hermitian preservation and contraction supply Hermiticity and ||G||<=||B||; idempotence is not assumed.",
+    "product_order": "V(t)=exp(itHprime) exp(-itH), G(t)=exp(itHprime)(Hprime-H)exp(-itHprime). Inserting exp(-itHprime)exp(itHprime)=I preserves this order. Hermiticity is unnecessary for the differential identity.",
+    "comparison_quantifiers": "The constructed U is fixed before choosing t and epsilon. The error bound applies on J_t and compares the explicit product to U with coefficient one.",
+    "paper_scope": "Pinned source lines 513-536 give the same product and generator order. This generic projected-map construction does not assert physical support of a localized evolution or completion of the reset theorem."
+  },
+  "warnings": [
+    "Inherited xdvipdfmx unavailable pdftex.map/kanjix.map warnings and duplicate title/contents page.1 destination; all theorem/equation targets are separately checked.",
+    "plasTeX cannot find a vector imager (dvisvgm); this algebraic leaf contains zero diagrams."
+  ],
+  "limitations": [
+    "Focused fixture only; no full-book build or live browser/MathJax runtime/responsive/click testing.",
+    "Declaration identifiers and generated local anchors verified; remote doc URL availability/publication not verified.",
+    "No Lean/Lake/checkdecls builds or CI performed by render worker.",
+    "No new tensor diagram; Tenkz picture validation is not applicable."
+  ]
+}
