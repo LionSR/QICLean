@@ -33,12 +33,6 @@ Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-Sept
 build/sections/07-comparators.tex, lines 273–281.
 Labels: comparator:high-label, comparator:prevector.
 Independently formalized; no upstream Lean proof text reused.
-Provenance-ID: 8753-qic-uniform-bell-label-01
-Downstream declaration: Matrix.norm_sq_one_kronecker_mulVec_prod_omegaVec
-Provenance-ID: 8753-qic-uniform-bell-label-02
-Downstream declaration: Matrix.one_kronecker_mulVec_prod_omegaVec_ne_zero_iff
-Provenance-ID: 8753-qic-uniform-bell-label-03
-Downstream declaration: TensorPower.labelProj_kronecker_mulVec_prod_omegaVec
 -/
 
 open scoped BigOperators Matrix Kronecker

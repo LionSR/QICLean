@@ -27,18 +27,8 @@ All vector norms below are the Hilbert-space norms of `EuclideanSpace`.
 open scoped Matrix InnerProductSpace MatrixOrder ComplexOrder
 
 /-!
-## Declaration provenance
+## Source notice
 
-Provenance-ID: 8766-possemidef-norm_le_norm_add_toeuclideanclm
-Downstream declaration: Matrix.PosSemidef.norm_le_norm_add_toEuclideanCLM
-Provenance-ID: 8766-possemidef-norm_sub_le_add_residuals
-Downstream declaration: Matrix.PosSemidef.norm_sub_le_add_residuals
-Provenance-ID: 8766-possemidef-norm_one_sub_le_norm_one_sub_sq
-Downstream declaration: Matrix.PosSemidef.norm_one_sub_le_norm_one_sub_sq
-Provenance-ID: 8766-norm_unitary_sub_le_add_residuals_of_mul_possemidef
-Downstream declaration: Matrix.norm_unitary_sub_le_add_residuals_of_mul_posSemidef
-Provenance-ID: 8766-exists_unitary_polar_correction
-Downstream declaration: Matrix.exists_unitary_polar_correction
 Source: September 24, 2026, eq:info-reset-polar-errors and eq:info-reset-unitary.
 <https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex>
 Source: September 24, 2026, eq:amplification-unitary-error.

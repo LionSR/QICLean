@@ -1,0 +1,178 @@
+\section{The physical ground component}
+\label{sec:restoring_ground_component}
+
+Keep the spaces, full coordinate bases, and enlarged coordinate order
+$(((s,e),(x,y)),z)$ of Section~\ref{sec:restoring_vectors}.
+The ground-component estimate in the restoration construction of
+\emph{A two-dimensional area law from a global spectral gap}, in the section
+``Amplifying the collar estimate,'' is proved for the actual physical vector
+and its reduced density.
+
+\begin{definition}[Reduced density and physical ground component]
+    \label{def:restoring_ground_component}
+    \lean{Entropy.restoringReducedDensity, Entropy.restoringGroundOuterProduct,
+        Entropy.restoringGroundComponent}
+    \leanok
+    \uses{def:restoring_vectors, def:restoring_operators}
+    For a physical vector $\Omega\in X\otimes Y\otimes Z$, put
+    \begin{align}
+        \rho_{XY}&=\operatorname{tr}_Z|\Omega\rangle\langle\Omega|,
+        &P_\Omega&=I_s\otimes I_e\otimes|\Omega\rangle\langle\Omega|,
+        \label{eq:restoring_ground_definition}\\
+        g&=P_\Omega R_0\phi,
+        &\phi&=\mathcal R_X\Omega.
+    \end{align}
+    The physical and ancillary factors are reassociated in the stated
+    coordinate order. Write
+    $M_X=\operatorname{tr}_Y((I_X\otimes T)\rho_{XY}Q)$.
+\end{definition}
+
+\begin{theorem}[Normalization of the physical density and projection]
+    \label{thm:restoring_ground_normalization}
+    \lean{Entropy.restoringReducedDensity_posSemidef,
+        Entropy.restoringReducedDensity_trace,
+        Entropy.restoringGroundOuterProduct_isStarProjection,
+        Entropy.restoringGroundOuterProduct_mulVec_apply}
+    \leanok
+    \uses{def:restoring_ground_component}
+    The reduced density is positive semidefinite. If $\|\Omega\|=1$,
+    then $\tr\rho_{XY}=1$ and $P_\Omega$ is an orthogonal projection.
+    For every enlarged vector $v$, every ancillary pair $(s,e)$, and
+    every physical coordinate $(a,z)$,
+    \begin{align}
+        (P_\Omega v)_{seaz}
+          &=\Omega_{az}\sum_{b,w}\overline{\Omega_{bw}}v_{sebw}.
+        \label{eq:restoring_ground_contraction}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Positivity is preserved by the partial trace, and
+    $\tr\rho_{XY}=\langle\Omega,\Omega\rangle$.
+    The identity
+    $(|\Omega\rangle\langle\Omega|)^2
+      =\|\Omega\|^2|\Omega\rangle\langle\Omega|$
+    proves idempotence when $\|\Omega\|=1$; self-adjointness is immediate.
+    Expanding matrix multiplication gives
+    (\ref{eq:restoring_ground_contraction}).
+\end{proof}
+
+\begin{theorem}[Unit blanks and restoring entries]
+    \label{thm:restoring_blank_coordinates}
+    \lean{Entropy.restoringBlank_sum_eq_one,
+        Entropy.restoringOperatorWithAncilla_apply,
+        Entropy.restoringGlobal_copy_apply}
+    \leanok
+    \uses{def:restoring_vectors, def:restoring_operators}
+    Write $b=0_s$, $c=0_X$, and
+    $w_s=\mathbf1_{s\in E}(\sqrt{p_s})^{-1}$.
+    A unit blank satisfies $\sum_u\overline{b_u}b_u=1$.
+    The restoring operator with its ancillary spectator has entries
+    \begin{align}
+        (R_0)_{(s,e),a;(s',e'),(x,y)}
+          &=w_s\overline{b_{s'}}\overline{c_x}
+            \sum_k Q_{a,(s,k)}T_{ky}\,\mathbf1_{e=e'}.
+        \label{eq:restoring_ground_entries}
+    \end{align}
+    If $\|b\|=\|c\|=1$, then
+    \begin{align}
+        (R_0\phi)_{seaz}
+          &=w_s\sum_{j,k}Q_{a,(s,k)}T_{kj}\Omega_{ejz}.
+        \label{eq:restoring_copied_entries}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Substitute the basis columns into the definition of $R_0$.
+    Acting on $\phi_{s'exyz}=b_{s'}c_x\Omega_{eyz}$ contracts the two
+    factors $\sum_{s'}|b_{s'}|^2$ and $\sum_x|c_x|^2$ to one.
+\end{proof}
+
+\begin{theorem}[Actual ground coefficients]
+    \label{thm:restoring_ground_coefficients}
+    \lean{Entropy.restoringMarginal_reducedDensity_apply,
+        Entropy.restoringGroundComponent_apply}
+    \leanok
+    \uses{def:restoring_ground_component}
+    For arbitrary $Q,T,\Omega$,
+    \begin{align}
+        (M_X)_{es}
+          &=\sum_{a,z,j,k}\overline{\Omega_{az}}
+              Q_{a,(s,k)}T_{kj}\Omega_{ejz}.
+        \label{eq:restoring_marginal_coefficients}
+    \end{align}
+    With unit $s$ and $X$ blanks, the actual ground component satisfies
+    \begin{align}
+        g_{seaz}&=w_s(M_X)_{es}\Omega_{az}.
+        \label{eq:restoring_ground_coefficients}
+    \end{align}
+    The coordinate $e$ ranges over the entire basis of $X$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:restoring_ground_normalization, thm:restoring_blank_coordinates}
+    Expand $\rho_{XY}=\operatorname{tr}_Z|\Omega\rangle\langle\Omega|$
+    in the definition of $M_X$ and reorder its finite sums to obtain
+    (\ref{eq:restoring_marginal_coefficients}). Substitute
+    (\ref{eq:restoring_copied_entries}) into
+    (\ref{eq:restoring_ground_contraction}).
+\end{proof}
+
+\begin{theorem}[Squared ground norm and the initial vector]
+    \label{thm:restoring_ground_norm_identity}
+    \lean{Entropy.restoringGroundComponent_norm_sq,
+        Entropy.restoringGroundComponent_column_eq}
+    \leanok
+    \uses{def:restoring_ground_component}
+    Suppose $\|\Omega\|=\|0_s\|=\|0_X\|=1$ and $p_x>0$ for $x\in E$.
+    Then
+    \begin{align}
+        \|g\|^2
+          &=\sum_{x\in E}\sum_{y\in\mathsf X}
+              \frac{|(M_X)_{yx}|^2}{p_x}.
+        \label{eq:restoring_ground_norm_identity}
+    \end{align}
+    For every additional unit blank $0_e$, one also has
+    $g=P_\Omega B_0\psi$, where
+    $\psi=|0_s,0_e\rangle\otimes\Omega$.
+    This last equality requires only that the $X$ and $e$ blanks be unit.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:restoring_ground_coefficients, thm:restoring_column_vector}
+    Sum the squared moduli in (\ref{eq:restoring_ground_coefficients}).
+    The physical sum is $\|\Omega\|^2=1$, while
+    $|w_x|^2=p_x^{-1}$ on $E$ and vanishes off $E$.
+    The column-vector identity gives the expression using $\psi$.
+\end{proof}
+
+\begin{theorem}[Physical ground-component bound]
+    \label{thm:restoring_ground_bound}
+    \lean{Entropy.restoringGroundComponent_trace_chain,
+        Entropy.restoringGroundComponent_norm_le_one}
+    \leanok
+    \uses{def:restoring_ground_component}
+    Assume the normalization and selected positivity conditions of
+    Theorem~\ref{thm:restoring_ground_norm_identity}. Suppose that $Q,T$
+    are orthogonal projections, $[\rho_{XY},Q]=0$, and
+    $\rho_X=\operatorname{tr}_Y\rho_{XY}=\operatorname{diag}(p_x)$.
+    Then
+    \begin{align}
+        \|P_\Omega R_0\phi\|^2
+          &\le\operatorname{Re}\tr(M_X\rho_X^+M_X)
+           \le\operatorname{Re}\tr M_X\le1,
+        \label{eq:restoring_ground_bound}
+    \end{align}
+    and consequently $\|P_\Omega R_0\phi\|\le1$.
+    The marginal may be singular, and no commutation between $Q$ and
+    $I_X\otimes T$ is assumed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:restoring_ground_norm_identity, thm:restoring_ground_normalization,
+        thm:restoring_marginal_order, thm:restoring_coefficient_bound}
+    The actual reduced matrix satisfies $0\le M_X\le\rho_X$.
+    Apply the selected coefficient trace bound to
+    (\ref{eq:restoring_ground_norm_identity}). Finally,
+    $\rho_X-M_X\ge0$ and $\tr\rho_X=\tr\rho_{XY}=1$ give
+    $\operatorname{Re}\tr M_X\le1$.
+\end{proof}
+
+% Primary source: adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
+% build/sections/09-amplification.tex:417--446.

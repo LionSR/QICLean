@@ -27,45 +27,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/10-geometry.tex
 Labels: geometry:cancellation.
-Provenance-ID: 8760-qic-regional-01
-Downstream declaration:
-FiniteProduct.entropy
-Provenance-ID: 8760-qic-regional-02
-Downstream declaration:
-FiniteProduct.reducedPure_eq_partialTrace
-Provenance-ID: 8760-qic-regional-03
-Downstream declaration:
-FiniteProduct.split_compl_symm
-Provenance-ID: 8760-qic-regional-04
-Downstream declaration:
-FiniteProduct.reducedPure_compl_eq_partialTraceLeft
-Provenance-ID: 8760-qic-regional-05
-Downstream declaration:
-FiniteProduct.entropy_compl
-Provenance-ID: 8760-qic-regional-06
-Downstream declaration:
-FiniteProduct.entropy_empty
-Provenance-ID: 8760-qic-regional-07
-Downstream declaration:
-FiniteProduct.entropy_univ
-Provenance-ID: 8760-qic-regional-08
-Downstream declaration:
-FiniteProduct.entropy_union_le
-Provenance-ID: 8760-qic-regional-09
-Downstream declaration:
-FiniteProduct.mutualInformation
-Provenance-ID: 8760-qic-regional-10
-Downstream declaration:
-FiniteProduct.jointMatrix
-Provenance-ID: 8760-qic-regional-11
-Downstream declaration:
-FiniteProduct.jointMatrix_posSemidef
-Provenance-ID: 8760-qic-regional-12
-Downstream declaration:
-FiniteProduct.mutualInformation_eq_matrix
-Provenance-ID: 8760-qic-regional-13
-Downstream declaration:
-FiniteProduct.mutualInformation_nonneg
 -/
 
 open scoped BigOperators Matrix ComplexOrder
