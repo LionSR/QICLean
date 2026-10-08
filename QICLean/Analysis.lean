@@ -22,6 +22,8 @@ import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingHermitian
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
+import QICLean.Analysis.ContractionWordDecay
+import QICLean.Analysis.ContractionWordDecaySpectator
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
 import QICLean.Analysis.DeterminantTraceBound
@@ -84,6 +86,7 @@ import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
 import QICLean.Analysis.PhaseError
+import QICLean.Analysis.PoissonContractionDecay
 import QICLean.Analysis.PolarUnitaryCorrection
 import QICLean.Analysis.PolarUnitaryCorrectionKronecker
 import QICLean.Analysis.PosSemidefCommute
@@ -103,6 +106,7 @@ import QICLean.Analysis.ResolventFunctionalCalculus
 import QICLean.Analysis.ResolventMellin
 import QICLean.Analysis.ResolventPhaseBound
 import QICLean.Analysis.ResolventPhaseGap
+import QICLean.Analysis.RestoringCoefficientBound
 import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
@@ -132,12 +136,14 @@ import QICLean.Analysis.SubperipheralSpectrum
 import QICLean.Analysis.SuperoperatorResolvent
 import QICLean.Analysis.SupportCompressedEntropy
 import QICLean.Analysis.SupportCompression
+import QICLean.Analysis.SupportInverseSandwich
 import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SupportPower
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceDistance
 import QICLean.Analysis.TraceHolder
+import QICLean.Analysis.TraceMulBound
 import QICLean.Analysis.TraceNormAbs
 import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Analysis.TraceNormContractivity

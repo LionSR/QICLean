@@ -525,6 +525,108 @@ eigenbasis. The following statements show that such averages are central label f
     for $k+m$ copies with $\sigma\otimes G$.
 \end{proof}
 
+\begin{definition}[The coherent measure]
+    \label{def:coherent_measure}
+    \lean{TensorPower.coherentIntegral, TensorPower.coherentIntegral_one,
+        TensorPower.coherentIntegral_trace_coherentProj,
+        TensorPower.norm_coherentIntegral_trace_coherentProj_le}
+    \leanok
+    \uses{thm:coherent_resolution, thm:finite_husimi_identity}
+    For a density matrix $\sigma$ on the symmetric subspace of $k$ copies, the coherent
+    measure is $d\mu_\sigma(\theta)=D_k\Tr(\sigma P_{\theta,k})\,d\theta$, where $\theta=Ue$
+    for Haar-distributed $U$. It is a probability measure, and
+    $\bigl|\int\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle\,d\mu_\sigma\bigr|\le\|G\|$
+    for every operator $G$ on $m$ copies.
+\end{definition}
+
+\begin{proof}\leanok
+    The coherent-state resolution gives total mass $\Tr(\sigma\Pi_k)=\Tr\sigma=1$. The
+    density $D_k\Tr(\sigma P_{\theta,k})$ is nonnegative, and
+    $|\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle|\le\|G\|$ for a unit vector
+    $\theta$.
+\end{proof}
+
+\begin{definition}[Injection averages]
+    \label{def:injection_average}
+    \lean{TensorPower.placeSplit, TensorPower.placeOp, TensorPower.injectionAverage,
+        TensorPower.l2_opNorm_injectionAverage_le}
+    \leanok
+    For an operator $G$ on $m$ copies and an ordered injection $\iota$ of $m$ copies into
+    $k$ copies, $G_\iota$ is $G$ on the copies $\iota(1),\dots,\iota(m)$ and the identity
+    elsewhere. The injection average $\mathcal T_{k,m}(G)$ is the average of $G_\iota$ over
+    all ordered injections; $\|\mathcal T_{k,m}(G)\|\le\|G\|$.
+\end{definition}
+
+\begin{lemma}[Partial trace of matched swaps]
+    \label{lem:matched_swaps}
+    \lean{TensorPower.injectionSwap, TensorPower.trace_kronecker_mul_injectionSwap}
+    \leanok
+    \uses{def:injection_average}
+    Let $\pi_\iota$ exchange the copy $\iota(j)$ with the copy $k+j$ for every $j$. Then
+    $\Tr[(\sigma\otimes G)U(\pi_\iota)]=\Tr(\sigma G_\iota)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write configurations of $k+m$ copies as a configuration $u$ of the first $k$ copies and
+    $w$ of the last $m$. The permutation $\pi_\iota$ sends $(u,w)$ to the configuration whose
+    first part is $u$ with $w$ inserted at $\iota$ and whose last part is $u\circ\iota$; the
+    trace is the resulting partial trace.
+\end{proof}
+
+\begin{theorem}[Uniform coherent approximation]
+    \label{thm:uniform_husimi}
+    \lean{Matrix.PosSemidef.norm_trace_mul_le, Equiv.Perm.card_filter_apply_eq_mul,
+        TensorPower.sum_goodPerms, TensorPower.card_filter_not_goodPerms_mul_le,
+        TensorPower.permOp_mul_copyKronecker, TensorPower.norm_exchangeTrace_le,
+        TensorPower.factorial_mul_trace_copyKronecker_mul_symProj,
+        TensorPower.norm_trace_mul_injectionAverage_sub_coherentIntegral_le}
+    \leanok
+    \uses{def:coherent_measure, lem:matched_swaps}
+    For a density matrix $\sigma$ on the symmetric subspace of $k\ge1$ copies and an
+    operator $G$ on $m$ copies,
+    \[
+        \left|\Tr\sigma\mathcal T_{k,m}(G)
+            -\int\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle\,d\mu_\sigma\right|
+        \le\frac{4m^2(1+d^m)^2\|G\|}{k},
+    \]
+    where $d$ is the one-copy dimension.
+\end{theorem}
+
+\begin{proof}\leanok
+    Expand $\Pi_{k+m}$ into permutations in the finite-copy identity. A permutation sending
+    each of the last $m$ copies into the first $k$ is uniquely $\pi_\iota\gamma$ with
+    $\gamma$ fixing the last $m$ copies; symmetry of $\sigma$ absorbs $\gamma$, and the
+    previous lemma evaluates $\pi_\iota$. These permutations therefore contribute their
+    proportion times $\Tr\sigma\mathcal T_{k,m}(G)$. The other permutations send a
+    prescribed one of the last copies to a prescribed one of them for some pair, so they
+    form a fraction at most $m^2/(k+m)$, and each term is at most $d^m\|G\|$ in absolute
+    value because $|\Tr(\rho M)|\le\Tr\rho\,\|M\|$ for $\rho\ge0$. The normalization
+    $D_k/D_{k+m}$ is eliminated with the case $G=1$, where the coherent measure has total
+    mass one. For small $k$ both terms are bounded by $\|G\|$.
+\end{proof}
+
+\begin{theorem}[Products of injection averages]
+    \label{thm:injection_product}
+    \lean{TensorPower.placeOp_castAdd_mul_placeOp_natAdd,
+        Function.Embedding.card_filter_apply_eq_mul, TensorPower.sum_filter_not_overlapPairs,
+        TensorPower.card_overlapPairs_mul_le, TensorPower.norm_injectionAverage_mul_sub_le}
+    \leanok
+    \uses{def:injection_average}
+    For operators $G$ on $m$ copies and $H$ on $n$ copies and every $k\ge1$,
+    \[
+        \|\mathcal T_{k,m}(G)\mathcal T_{k,n}(H)-\mathcal T_{k,m+n}(G\otimes H)\|
+        \le\frac{2mn\|G\|\|H\|}{k}.
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    If $\iota,\kappa$ are the restrictions of an injection $\lambda$ of $m+n$ copies, then
+    $G_\iota H_\kappa=(G\otimes H)_\lambda$, and pairs of injections with disjoint images
+    correspond to injections of $m+n$ copies. A pair has $\iota(a)=\kappa(b)$ for prescribed
+    $a,b$ with probability $1/k$, so pairs with intersecting images form a fraction at most
+    $mn/k$. These pairs and the change of normalization each cost at most that fraction
+    times $\|G\|\|H\|$.
+
 \section{The gamma integral}
 
 The integral representation of the metrics draws the eigenvalues $s$ of a density matrix with

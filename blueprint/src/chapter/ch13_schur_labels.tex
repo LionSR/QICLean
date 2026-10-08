@@ -882,10 +882,10 @@ $e_r(y)=\sum_{|S|=r}\prod_{i\in S}y_i$ for the elementary symmetric polynomial.
 
 \begin{proof}\leanok
     The diagonal entry of $A_r\operatorname{diag}(y)^{\otimes r}$ at a configuration
-    $z$ is $\prod_jy_{z_j}$ times the signed count of permutations fixing $z$, which is
-    one when the entries of $z$ are distinct and zero otherwise, since a transposition of
-    two equal entries reverses the sign. Each set of $r$ distinct entries arises from $r!$
-    configurations.
+    $z$ is $\frac1{r!}\prod_jy_{z_j}$ times the signed count of permutations fixing $z$,
+    which is one when the entries of $z$ are distinct and zero otherwise, since a
+    transposition of two equal entries reverses the sign. Each set of $r$ distinct entries
+    arises from $r!$ configurations, which cancels the factor $\frac1{r!}$.
 \end{proof}
 
 \begin{lemma}[Highest weights in $V_\mu\otimes\Lambda^r$]
@@ -934,8 +934,10 @@ $e_r(y)=\sum_{|S|=r}\prod_{i\in S}y_i$ for the elementary symmetric polynomial.
     By Lemma~\ref{lem:restriction}, $\Tr\bigl(\rho(a)\operatorname{diag}(y)^{\otimes k}\bigr)
     =\sum_\lambda\tr W_\lambda(a)\chi_\lambda(y)$ for every $a\in\C[S_k]$, and for
     $a=e^\mu_{00}\otimes A_r$ the left side is $\chi_\mu(y)e_r(y)$ by
-    Lemma~\ref{lem:exterior_character}. Lemma~\ref{lem:exterior_highest_weight} bounds the
-    coefficients by one on these partitions and by zero elsewhere. At $y=1$ the two sides
+    Lemma~\ref{lem:exterior_character}. Labels with more than $q$ rows contribute nothing,
+    since their characters vanish. For the other labels,
+    Lemma~\ref{lem:exterior_highest_weight} bounds the coefficients by one on these
+    partitions and by zero elsewhere. At $y=1$ the two sides
     are $\binom qrm_\mu$ and $\sum_\lambda c(\lambda)m_\lambda$, while the Weyl dimension
     formula and Lemma~\ref{lem:alternant_pieri} give $\sum_\lambda m_\lambda=\binom qrm_\mu$
     over the same partitions; the summands with $\mu+1_S$ not a partition vanish because two

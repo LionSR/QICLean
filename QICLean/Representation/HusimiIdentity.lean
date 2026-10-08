@@ -11,7 +11,7 @@ import QICLean.Algebra.TraceReindex
 
 For a density matrix `σ` on `k` copies and an operator `G` on `m` copies, the area-law paper
 (*A two-dimensional area law from a global spectral gap*, `05-replicas.tex`, equation
-`replicas:finite-husimi`, lines 704–713, citing Chiribella) uses
+`replicas:finite-husimi`, lines 719–727, citing Chiribella) uses
 
 `∫ ⟨θ^{⊗m}, G θ^{⊗m}⟩ dμ_σ(θ) = (D_k / D_{k+m}) Tr[(σ ⊗ G) Π_{k+m}]`,
 
