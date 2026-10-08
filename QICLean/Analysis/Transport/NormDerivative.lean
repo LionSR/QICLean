@@ -169,4 +169,94 @@ theorem quadForm_eigen {U K : Matrix n n ℂ} (hU : star U * U = 1) (e c : n →
   rw [mulVec_diagonal, star_mul']
   ring
 
+/-! ### The derivative of `M^{-1/2}` along a path -/
+
+theorem filteredNormSq_eq {M : Matrix n n ℂ} (hM : M.PosDef) (pre : n → ℂ) :
+    filteredNormSq M pre = (star pre ⬝ᵥ (M ^ (-(1 / 2) : ℝ) *ᵥ pre)).re := by
+  unfold filteredNormSq filteredRaw
+  rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, (hM.rpow_isHermitian _).eq,
+    hM.rpow_mul_rpow]
+  norm_num
+
+theorem rpow_neg_half_mul_self_mul {M : Matrix n n ℂ} (hM : M.PosDef) :
+    M ^ (-(1 / 2) : ℝ) * M * M ^ (-(1 / 2) : ℝ) = 1 := by
+  conv_lhs => rw [show M ^ (-(1 / 2) : ℝ) * M = M ^ (-(1 / 2) : ℝ) * M ^ (1 : ℝ) by
+    rw [hM.rpow_one]]
+  rw [hM.rpow_mul_rpow, hM.rpow_mul_rpow]
+  norm_num
+  exact hM.rpow_zero
+
+/-- `q ↦ M(q)^{-1/2}` is differentiable along a differentiable path of positive definite
+matrices, and its derivative `G'` satisfies `G' M G + G M' G + G M G' = 0`. -/
+theorem exists_hasDerivAt_rpow_neg_half {M : ℝ → Matrix n n ℂ} {D : Matrix n n ℂ} {p : ℝ}
+    (hM : ∀ q, (M q).PosDef) (hD : HasDerivAt M D p) :
+    ∃ G' : Matrix n n ℂ, HasDerivAt (fun q => M q ^ (-(1 / 2) : ℝ)) G' p ∧
+      G' * M p * M p ^ (-(1 / 2) : ℝ) + M p ^ (-(1 / 2) : ℝ) * D * M p ^ (-(1 / 2) : ℝ) +
+        M p ^ (-(1 / 2) : ℝ) * M p * G' = 0 := by
+  have hd := (differentiableWithinAt_rpow_neg_half (hM p)).hasFDerivWithinAt
+  have hm : MapsTo M univ (hermitianSet n) := fun q _ => (hM q).isHermitian
+  have h := (hd.restrictScalars ℝ).comp_hasDerivWithinAt p hD.hasDerivWithinAt hm
+  rw [hasDerivWithinAt_univ] at h
+  obtain ⟨G', hG⟩ : ∃ G', HasDerivAt (fun q => M q ^ (-(1 / 2) : ℝ)) G' p :=
+    ⟨_, by convert h using 1; rfl⟩
+  refine ⟨G', hG, ?_⟩
+  have hprod := (hG.mul hD).mul hG
+  have hconst : ((fun q => M q ^ (-(1 / 2) : ℝ)) * M * fun q => M q ^ (-(1 / 2) : ℝ)) =
+      fun _ => 1 :=
+    funext fun q => rpow_neg_half_mul_self_mul (hM q)
+  rw [hconst] at hprod
+  have := hprod.unique (hasDerivAt_const p (1 : Matrix n n ℂ))
+  rw [← this]
+  simp only [Pi.mul_apply]
+  noncomm_ring
+
+/-! ### The norm derivative -/
+
+/-- Conjugating a sum `G' M G + G D G + G M G' = 0` into the eigenbasis of `M`. -/
+theorem relation_eigen {M G' D : Matrix n n ℂ} (hM : M.PosDef)
+    (hrel : G' * M * M ^ (-(1 / 2) : ℝ) + M ^ (-(1 / 2) : ℝ) * D * M ^ (-(1 / 2) : ℝ) +
+      M ^ (-(1 / 2) : ℝ) * M * G' = 0) (r t : n) :
+    (star (eigU hM.isHermitian) * G' * eigU hM.isHermitian) r t *
+        (((hM.isHermitian.eigenvalues t ^ (1 / 2 : ℝ) : ℝ) : ℂ) +
+          ((hM.isHermitian.eigenvalues r ^ (1 / 2 : ℝ) : ℝ) : ℂ)) =
+      -(((hM.isHermitian.eigenvalues r ^ (-(1 / 2) : ℝ) : ℝ) : ℂ) *
+        (star (eigU hM.isHermitian) * D * eigU hM.isHermitian) r t *
+          ((hM.isHermitian.eigenvalues t ^ (-(1 / 2) : ℝ) : ℝ) : ℂ)) := by
+  set U := eigU hM.isHermitian
+  set x := hM.isHermitian.eigenvalues
+  have hx : ∀ i, 0 < x i := hM.eigenvalues_pos
+  have hUU : star U * U = 1 := star_eigU_mul _
+  have hUU' : U * star U = 1 := eigU_mul_star _
+  have hc : ∀ X : Matrix n n ℂ, star U * (U * X) = X := fun X => by
+    rw [← Matrix.mul_assoc, hUU, Matrix.one_mul]
+  have hMe : M = U * diagonal (fun i => ((x i : ℝ) : ℂ)) * star U := by
+    conv_lhs => rw [← hM.rpow_one, rpow_eq_eigen hM]
+    simp [x, U]
+  have hGe : M ^ (-(1 / 2) : ℝ) = U * diagonal (fun i => ((x i ^ (-(1 / 2) : ℝ) : ℝ) : ℂ)) *
+      star U := rpow_eq_eigen hM _
+  have hG'e : G' = U * (star U * G' * U) * star U := by
+    simp only [← Matrix.mul_assoc, hUU', Matrix.one_mul]
+    rw [Matrix.mul_assoc, hUU', Matrix.mul_one]
+  have hDe : D = U * (star U * D * U) * star U := by
+    simp only [← Matrix.mul_assoc, hUU', Matrix.one_mul]
+    rw [Matrix.mul_assoc, hUU', Matrix.mul_one]
+  set g := star U * G' * U
+  set d := star U * D * U
+  rw [hGe, hG'e, hDe, hMe] at hrel
+  have h2 := congrArg (fun X => star U * X * U) hrel
+  simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hc, hUU, Matrix.mul_one,
+    Matrix.mul_zero, Matrix.zero_mul] at h2
+  have h3 := congrFun (congrFun h2 r) t
+  simp only [← Matrix.mul_assoc, add_apply, zero_apply, mul_diagonal, diagonal_mul,
+    diagonal_mul_diagonal] at h3
+  have e : ∀ i, ((x i : ℝ) : ℂ) * ((x i ^ (-(1 / 2) : ℝ) : ℝ) : ℂ) =
+      ((x i ^ (1 / 2 : ℝ) : ℝ) : ℂ) := by
+    intro i
+    rw [← Complex.ofReal_mul]
+    congr 1
+    rw [show x i * x i ^ (-(1 / 2) : ℝ) = x i ^ (1 : ℝ) * x i ^ (-(1 / 2) : ℝ) by
+      rw [Real.rpow_one], ← Real.rpow_add (hx i)]
+    norm_num
+  linear_combination h3 - g r t * e t - g r t * e r
+
 end Matrix.Transport
