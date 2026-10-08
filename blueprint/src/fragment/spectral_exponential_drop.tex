@@ -1,0 +1,40 @@
+\begin{lemma}[Dropping a nonnegative spectral term]
+\label{lem:spectral-exponential-drop}
+\lean{Matrix.spectralProjectionGE_exp_smul_sub_le}
+\leanok
+Let $G,H$ be commuting Hermitian operators, let $a\ge0$, and put
+$J=\mathbf1_{[0,\infty)}(G)$. Then
+\begin{align*}
+ J e^{a(H-G)}J\le e^{aH}.
+\end{align*}
+No positivity of $G$ outside the range of $J$ is required.
+\end{lemma}
+
+\begin{proof}\leanok
+\uses{thm:orthogonal_resolution_product_first,thm:orthogonal_resolution_product_second}
+In the joint spectral resolution of $G$ and $H$, the left coefficient is
+$\mathbf1_{g\ge0}e^{a(h-g)}$, which is at most $e^{ah}$.
+\end{proof}
+
+\begin{theorem}[Supported exponential trace inequality]
+\label{thm:supported-exponential-trace-drop}
+\lean{Matrix.PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul}
+\leanok
+Under the preceding assumptions, let $\rho$ be positive semidefinite
+and satisfy $J\rho=\rho$. Then
+\begin{align*}
+ \operatorname{Re}\operatorname{Tr}(\rho e^{a(H-G)})
+ \le\operatorname{Re}\operatorname{Tr}(\rho e^{aH}).
+\end{align*}
+The density need not be normalized, and it need not commute with $G$ or $H$.
+This is an auxiliary spectral estimate for the component argument in
+\cite[Section~7, lines 553--555]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}\leanok
+\uses{lem:spectral-exponential-drop}
+Taking adjoints gives $\rho J=\rho$. Cyclicity of the trace therefore
+identifies the left-hand side with
+$\operatorname{Re}\operatorname{Tr}(\rho J e^{a(H-G)}J)$.
+Apply the preceding operator inequality and positivity of the trace pairing.
+\end{proof}

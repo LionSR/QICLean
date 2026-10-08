@@ -1,0 +1,57 @@
+\section{Coordinates of a product resolution}
+\label{sec:orthogonal_resolution_product_coordinates}
+
+Let $I,J,N$ be finite sets. Suppose that
+$(P_i)_{i\in I}$ and $(Q_j)_{j\in J}$ are mutually orthogonal
+idempotent matrices in $\C^{N\times N}$, each with sum $\Id$.
+Assume that $E_{i,j}=P_iQ_j$ also forms an orthogonal resolution of
+$\Id$. This holds, in particular, when every $P_i$ commutes with every
+$Q_j$. Write
+\begin{align*}
+  \Phi_P(f)&=\sum_{i\in I}f(i)P_i,&
+  \Phi_Q(g)&=\sum_{j\in J}g(j)Q_j,&
+  \Phi_E(h)&=\sum_{i\in I}\sum_{j\in J}h(i,j)P_iQ_j.
+\end{align*}
+The following elementary identities underlie the joint central-label
+calculations in Lemma~6.1 and the exponential moment calculations in
+Section~7 of~\cite{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Functions of the first coordinate]
+  \label{thm:orthogonal_resolution_product_first}
+  \lean{Matrix.IsOrthogonalResolution.prod_hom_fst}
+  \leanok
+  For every $f:I\to\C$,
+  \begin{align*}
+    \Phi_E\bigl((i,j)\mapsto f(i)\bigr)=\Phi_P(f).
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Summing first over the second coordinate gives
+  \begin{align*}
+    \sum_i\sum_j f(i)P_iQ_j
+      &=\sum_i f(i)P_i\Bigl(\sum_jQ_j\Bigr)
+       =\sum_i f(i)P_i.
+  \end{align*}
+\end{proof}
+
+\begin{theorem}[Functions of the second coordinate]
+  \label{thm:orthogonal_resolution_product_second}
+  \lean{Matrix.IsOrthogonalResolution.prod_hom_snd}
+  \leanok
+  For every $g:J\to\C$,
+  \begin{align*}
+    \Phi_E\bigl((i,j)\mapsto g(j)\bigr)=\Phi_Q(g).
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Interchanging the two finite sums gives
+  \begin{align*}
+    \sum_i\sum_j g(j)P_iQ_j
+      &=\sum_j g(j)\Bigl(\sum_iP_i\Bigr)Q_j
+       =\sum_j g(j)Q_j.
+  \end{align*}
+\end{proof}
