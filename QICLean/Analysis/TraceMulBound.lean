@@ -15,7 +15,7 @@ import QICLean.Algebra.L2OpNormReindex
 * `Matrix.l2_opNorm_one_kronecker_le` — `‖1 ⊗ G‖ ≤ ‖G‖`.
 
 These are used for the coherent-measure estimates of the area-law paper (*A two-dimensional
-area law from a global spectral gap*, `05-replicas.tex`, lines 697–733).
+area law from a global spectral gap*, `05-replicas.tex`, lines 712–747).
 -/
 
 open scoped Matrix Kronecker Matrix.Norms.L2Operator MatrixOrder ComplexOrder

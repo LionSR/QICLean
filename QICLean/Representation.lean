@@ -13,6 +13,7 @@ import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri
 import QICLean.Representation.Casimir
 import QICLean.Representation.CentralLabelFunction
+import QICLean.Representation.CoherentMeasure
 import QICLean.Representation.CoherentResolution
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
@@ -22,6 +23,7 @@ import QICLean.Representation.HookDimension
 import QICLean.Representation.HookFormula
 import QICLean.Representation.HookRecursion
 import QICLean.Representation.HusimiIdentity
+import QICLean.Representation.InjectionAverage
 import QICLean.Representation.IrrepLabelCount
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
@@ -50,6 +52,7 @@ import QICLean.Representation.StarOperator
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TrivialLabel
+import QICLean.Representation.UniformHusimi
 import QICLean.Representation.UnitaryCommutant
 import QICLean.Representation.UnitaryTwirl
 import QICLean.Representation.WeylDimension

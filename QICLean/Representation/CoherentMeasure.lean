@@ -11,7 +11,7 @@ import QICLean.Analysis.TraceMulBound
 
 For a density matrix `σ` supported on the symmetric subspace `𝒮_k`, the area-law paper
 (*A two-dimensional area law from a global spectral gap*, `05-replicas.tex`, equation
-`replicas:husimi`, lines 609–618) defines the coherent probability measure
+`replicas:husimi`, lines 602–606) defines the coherent probability measure
 
 `dμ_σ(θ) = D_k Tr(σ P_{θ,k}) dθ`,
 
@@ -30,7 +30,7 @@ the image of the Haar measure under `U ↦ U e_a`, and `coherentIntegral a σ φ
 ## References
 
 * OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
-  section file `05-replicas.tex`, lines 603–618 and 704–713.
+  section file `05-replicas.tex`, lines 596–606 and 719–727.
   Source revision: `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 

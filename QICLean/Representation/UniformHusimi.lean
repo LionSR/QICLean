@@ -12,7 +12,7 @@ import QICLean.Representation.CoherentMeasure
 For a symmetric density matrix `σ` on `k` copies, the coherent measure is
 `dμ_σ(θ) = D_k Tr(σ P_{θ,k}) dθ`, with `D_k = Tr Π_k`. The area-law paper
 (*A two-dimensional area law from a global spectral gap*, `05-replicas.tex`, equation
-`replicas:uniform-husimi`, lines 714–733) proves, for an operator `G` on `m` copies,
+`replicas:uniform-husimi`, lines 712–747) proves, for an operator `G` on `m` copies,
 
 `|Tr σ 𝒯_{k,m}(G) - ∫ ⟨θ^{⊗m}, G θ^{⊗m}⟩ dμ_σ(θ)| ≤ C_{d,m} ‖G‖ / k`,
 
@@ -23,6 +23,11 @@ is the exchange permutation `π_ι` of an injection `ι`, followed by a permutat
 other permutations form a fraction at most `m² / (k + m)` and each contributes at most
 `d^m ‖G‖`. The normalization `D_k / D_{k+m}` is eliminated with the case `G = 1`, where the
 coherent measure has total mass one.
+
+The source absorbs permutations of the first `k` copies on both sides of each good permutation
+and estimates `D_k / D_{k+m} = 1 + O(k⁻¹)` directly; the argument here absorbs them on one side
+and normalizes with `G = 1`. The estimate proved is the source's, with the explicit constant
+`C_{d,m} = 4 m² (1 + d^m)²`.
 
 ## Main declarations
 
@@ -36,7 +41,7 @@ coherent measure has total mass one.
 ## References
 
 * OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
-  Lemma 6.4 (`lem:symbol`), section file `05-replicas.tex`, lines 697–733.
+  Lemma 6.4 (`lem:symbol`), section file `05-replicas.tex`, lines 712–747.
   Source revision: `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
@@ -98,7 +103,7 @@ def fixLastPerms : Finset (Perm (Fin (k + m))) :=
 
 /-- **Fiber decomposition of the good permutations**: every permutation sending the last `m`
 copies into the first `k` is uniquely `π_ι γ` with `γ` fixing the last `m` copies
-(`05-replicas.tex`, lines 716–719). -/
+(`05-replicas.tex`, lines 728–736). -/
 theorem sum_goodPerms {β : Type*} [AddCommMonoid β] (f : Perm (Fin (k + m)) → β) :
     ∑ π ∈ goodPerms k m, f π =
       ∑ ι : Fin m ↪ Fin k, ∑ γ ∈ fixLastPerms k m, f (injectionSwap ι * γ) := by
@@ -143,7 +148,7 @@ theorem sum_goodPerms {β : Type*} [AddCommMonoid β] (f : Perm (Fin (k + m)) �
     · simp only
       rw [← mul_assoc, injectionSwap_mul_self, one_mul]
 
-/-- **Counting the other permutations** (`05-replicas.tex`, lines 714–716): the permutations
+/-- **Counting the other permutations** (`05-replicas.tex`, lines 728–730): the permutations
 sending some one of the last `m` copies into the last `m` form a fraction at most
 `m² / (k + m)`. -/
 theorem card_filter_not_goodPerms_mul_le :
@@ -232,7 +237,7 @@ theorem castAdd_restrictFirst {γ : Perm (Fin (k + m))} (hγ : γ ∈ fixLastPer
   Fin.castAdd_castLT _ _ _
 
 /-- A symmetric `σ` absorbs the permutations fixing the last `m` copies:
-`U(γ) (σ ⊗ G) = σ ⊗ G` (`05-replicas.tex`, lines 719–720). -/
+`U(γ) (σ ⊗ G) = σ ⊗ G` (`05-replicas.tex`, lines 735–736). -/
 theorem permOp_mul_copyKronecker {σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
     (hσ : ∀ π, permOp (copyPerm Ω k) π * σ = σ) (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ)
     {γ : Perm (Fin (k + m))} (hγ : γ ∈ fixLastPerms k m) :
@@ -298,7 +303,7 @@ theorem sum_goodPerms_exchangeTrace_one {σ : Matrix (Fin k → Ω) (Fin k → �
   rw [sum_goodPerms_exchangeTrace hσ, card_goodPerms]
   simp [placeOp_one, hσt, Finset.card_univ, mul_comm]
 
-/-- **Each term of the permutation expansion is bounded** (`05-replicas.tex`, line 722):
+/-- **Each term of the permutation expansion is bounded** (`05-replicas.tex`, lines 738–739):
 `|Tr[(σ ⊗ G) U(π)]| ≤ d^m ‖G‖` for a density matrix `σ`. -/
 theorem norm_exchangeTrace_le {σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hσp : σ.PosSemidef)
     (hσt : σ.trace = 1) (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) (π : Perm (Fin (k + m))) :
@@ -338,7 +343,7 @@ theorem trace_copyKronecker_mul_symProj (σ : Matrix (Fin k → Ω) (Fin k → �
     Fintype.card_fin, smul_eq_mul]
   rfl
 
-/-- **Permutation expansion of `Tr[(σ ⊗ G) Π_{k+m}]`** (`05-replicas.tex`, lines 714–722):
+/-- **Permutation expansion of `Tr[(σ ⊗ G) Π_{k+m}]`** (`05-replicas.tex`, lines 728–739):
 `(k+m)! Tr[(σ ⊗ G) Π_{k+m}] = #(good) Tr σ 𝒯_{k,m}(G) + ∑_{bad} Tr[(σ ⊗ G) U(π)]`. -/
 theorem factorial_mul_trace_copyKronecker_mul_symProj {σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
     (hσ : ∀ π, permOp (copyPerm Ω k) π * σ = σ) (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) :
@@ -395,7 +400,7 @@ theorem le_of_mul_le_of_bad_le {x y b d M N K μ : ℝ} (hx0 : 0 ≤ x) (hd : 0 
     linarith
 
 /-- **Uniform coherent-measure approximation** (`05-replicas.tex`, equation
-`replicas:uniform-husimi`, lines 714–733): for a density matrix `σ` on the symmetric subspace
+`replicas:uniform-husimi`, lines 712–747): for a density matrix `σ` on the symmetric subspace
 of `k ≥ 1` copies and an operator `G` on `m` copies,
 `|Tr σ 𝒯_{k,m}(G) - ∫ ⟨θ^{⊗m}, G θ^{⊗m}⟩ dμ_σ(θ)| ≤ C_{d,m} ‖G‖ / k`, with
 `C_{d,m} = 4 m² (1 + d^m)²` and `d = dim V`. -/

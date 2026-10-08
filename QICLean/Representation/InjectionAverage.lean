@@ -13,14 +13,14 @@ import QICLean.Algebra.L2OpNormReindex
 For an operator `G` on `m` copies and an ordered injection `ι : Fin m ↪ Fin k`, let
 `G_ι` be `G` placed on the copies `ι 0, …, ι (m - 1)` of `V^{⊗k}`, tensored with the identity
 on the other copies. The area-law paper (*A two-dimensional area law from a global spectral
-gap*, `05-replicas.tex`, lines 697–702) writes `𝒯_{k,m}(G)` for the average of `G_ι` over all
+gap*, `05-replicas.tex`, lines 714–716) writes `𝒯_{k,m}(G)` for the average of `G_ι` over all
 ordered injections.
 
 The comparison of `Tr σ 𝒯_{k,m}(G)` with the coherent measure (equation
 `replicas:uniform-husimi`) evaluates the permutation expansion of `Π_{k+m}` against `σ ⊗ G`.
 For the permutation `π_ι` of `k + m` copies exchanging the copy `ι j` with the copy `k + j`
 for every `j`, `Tr[(σ ⊗ G) U(π_ι)] = Tr[σ G_ι]`: this is the partial-trace evaluation of
-`m` disjoint swaps in the proof of that equation (lines 714–721).
+`m` disjoint swaps in the proof of that equation (lines 728–737).
 
 ## Main declarations
 
@@ -33,7 +33,7 @@ for every `j`, `Tr[(σ ⊗ G) U(π_ι)] = Tr[σ G_ι]`: this is the partial-trac
 ## References
 
 * OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
-  Lemma 6.4 (`lem:symbol`), section file `05-replicas.tex`, lines 697–725.
+  Lemma 6.4 (`lem:symbol`), section file `05-replicas.tex`, lines 712–737.
   Source revision: `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
@@ -108,7 +108,7 @@ theorem l2_opNorm_placeOp_le (ι : Fin m ↪ Fin k) (G : Matrix (Fin m → Ω) (
   rw [placeOp, l2_opNorm_reindex_equiv]
   exact l2_opNorm_kronecker_one_le G
 
-/-- **Injection average** (`05-replicas.tex`, line 699): `𝒯_{k,m}(G)` is the average of `G_ι`
+/-- **Injection average** (`05-replicas.tex`, lines 714–716): `𝒯_{k,m}(G)` is the average of `G_ι`
 over all ordered injections `ι : Fin m ↪ Fin k`. It vanishes when `k < m`. -/
 noncomputable def injectionAverage (k m : ℕ) (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) :
     Matrix (Fin k → Ω) (Fin k → Ω) ℂ :=
@@ -164,7 +164,7 @@ theorem injectionSwapFun_involutive (ι : Fin m ↪ Fin k) :
   · rw [injectionSwapFun_natAdd, injectionSwapFun_castAdd_self]
 
 /-- **The exchange permutation** `π_ι` of `k + m` copies, swapping the copy `ι j` with the copy
-`k + j` for every `j` (`05-replicas.tex`, lines 714–721). -/
+`k + j` for every `j` (`05-replicas.tex`, lines 730–737). -/
 noncomputable def injectionSwap (ι : Fin m ↪ Fin k) : Equiv.Perm (Fin (k + m)) :=
   (injectionSwapFun_involutive ι).toPerm _
 
@@ -208,7 +208,7 @@ theorem splitCopies_copyPerm_injectionSwap (ι : Fin m ↪ Fin k) (u : Fin k →
       injectionSwap_inv, injectionSwap_apply, injectionSwapFun_natAdd, Fin.append_left,
       Function.comp_apply]
 
-/-- **Partial trace of the exchange permutation** (`05-replicas.tex`, lines 714–721):
+/-- **Partial trace of the exchange permutation** (`05-replicas.tex`, lines 730–737):
 `Tr[(σ ⊗ G) U(π_ι)] = Tr[σ G_ι]`, where `σ ⊗ G` acts on the first `k` and the last `m`
 copies. -/
 theorem trace_kronecker_mul_injectionSwap (ι : Fin m ↪ Fin k)
