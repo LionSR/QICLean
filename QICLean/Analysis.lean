@@ -27,6 +27,7 @@ import QICLean.Analysis.ContractionWordDecay
 import QICLean.Analysis.ContractionWordDecaySpectator
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
+import QICLean.Analysis.DensitySimplex
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
@@ -38,6 +39,7 @@ import QICLean.Analysis.EntropyMarkovForward
 import QICLean.Analysis.EntropyMarkovReverse
 import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
+import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
 import QICLean.Analysis.FiniteCoordinateNowosad
 import QICLean.Analysis.FiniteCoordinateNowosad.Recursion
@@ -48,6 +50,7 @@ import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.FloorKKT
 import QICLean.Analysis.GammaRatio
 import QICLean.Analysis.GapPerturbation
+import QICLean.Analysis.GaussianFilter
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
 import QICLean.Analysis.HarmonicWeights
@@ -56,6 +59,7 @@ import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
 import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
+import QICLean.Analysis.IidTailThreshold
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.JordanBlockAsymptotics
@@ -88,6 +92,7 @@ import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
+import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PoissonContractionDecay
 import QICLean.Analysis.PolarUnitaryCorrection
@@ -97,9 +102,11 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
+import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
+import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
@@ -120,6 +127,7 @@ import QICLean.Analysis.ScaleRecurrence
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
+import QICLean.Analysis.ShiftedDensityCommutation
 import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.ShiftedDensityTruncation
 import QICLean.Analysis.ShiftedPowerDerivative
@@ -167,6 +175,7 @@ import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
+import QICLean.Analysis.WeightedRectangular
 import QICLean.Analysis.WeightedSupertrace
 import QICLean.Analysis.WeylMonotonicity
 import QICLean.Analysis.YamagamiBoundary

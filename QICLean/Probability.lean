@@ -8,7 +8,11 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Probability
 
+import QICLean.Probability.ComplexGaussian
+import QICLean.Probability.CompressionSampling
 import QICLean.Probability.FiniteUniformConditioning
+import QICLean.Probability.IndependentCovariance
+import QICLean.Probability.MatrixSecondMoment
 import QICLean.Probability.PoissonWord
 import QICLean.Probability.PoissonWordAppend
 import QICLean.Probability.PoissonWordCounts

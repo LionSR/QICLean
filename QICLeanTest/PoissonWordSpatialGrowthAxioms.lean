@@ -22,4 +22,3 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 -/
 #guard_msgs (whitespace := lax) in
 #print axioms PoissonWord.eq_zero_of_spatial_growth_of_infEDist_eq_top
-

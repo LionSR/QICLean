@@ -1,0 +1,74 @@
+\section{Positive regulators and spectral tails}
+\label{sec:patch_regulator}
+
+Let $I$ be a finite index set. Matrix inequalities refer to the order defined
+by positive semidefiniteness. The following estimates give the operator and
+trace consequences used in \cite[Section~4, regulator estimate]{OpenAI2026PolynomialPEPS}.
+
+% These are auxiliary estimates with the displayed order, rank, and tail
+% hypotheses. They do not assert stationarity of the ordered patch objective
+% or Proposition 4.1 of the source manuscript.
+
+\begin{theorem}[Projection trace estimate]
+\label{thm:patch_projection_trace}
+\lean{Matrix.trace_le_smul_rank_add_complement_of_le}
+\leanok
+Let $Q\in\C^{I\times I}$ be an orthogonal projection, $b\in\R$, and
+$T,\rho\in\C^{I\times I}$. If $T\le b\Id$ and $T\le\rho$, then
+\begin{align}
+ \tr T\le b\rank Q+\tr((\Id-Q)\rho).
+\end{align}
+No commutation with $Q$ is required.
+\end{theorem}
+\begin{proof}
+\leanok
+Positivity of the two trace pairings gives
+\begin{align}
+ 0&\le\tr(Q(b\Id-T))=b\rank Q-\tr(QT),\notag\\
+ 0&\le\tr((\Id-Q)(\rho-T))
+   =\tr((\Id-Q)\rho)-\tr T+\tr(QT).
+\end{align}
+Adding these inequalities proves the claim.
+\end{proof}
+
+\begin{theorem}[Bounds on a shifted regulator]
+\label{thm:patch_regulator_order}
+\lean{Matrix.PosSemidef.shiftedRegulator_bounds}
+\leanok
+Suppose $x,\rho\in\C^{I\times I}$ are positive semidefinite and commute.
+Let $b>0$ and assume $\rho\le x+b\Id$. Then the matrix
+$T=b\rho(x+b\Id)^{-1}$ satisfies $0\le T\le b\Id$ and $T\le\rho$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:positive_identity_shift}
+Set $K=x+b\Id$. The matrices $K$ and $K^{-1}$ are positive definite,
+and $\rho$ and $x$ commute with $K^{-1}$. Thus $T\ge0$, and
+\begin{align}
+ b\Id-T&=b(K-\rho)K^{-1}\ge0,\notag\\
+ \rho-T&=\rho xK^{-1}\ge0.
+\end{align}
+Each product on the right consists of commuting positive matrices.
+\end{proof}
+
+\begin{theorem}[A uniform small-regulator bound]
+\label{thm:patch_regulator_quarter}
+\lean{Matrix.PosSemidef.trace_shiftedRegulator_le_quarter}
+\leanok
+Let $x,\rho\in\C^{I\times I}$ be commuting positive semidefinite matrices,
+$Q$ an orthogonal projection, and $C,u,R\in\R$. Assume $u\ge0$,
+$R\ge(C+\log8)(1+u)$, $\rho\le x+e^{-R}\Id$,
+$\rank Q\le e^{C(1+u)}$, and $\tr((\Id-Q)\rho)\le1/8$.
+Then $T=e^{-R}\rho(x+e^{-R}\Id)^{-1}$ satisfies $\tr T\le1/4$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:patch_projection_trace,thm:patch_regulator_order}
+The preceding two theorems give
+\begin{align}
+ \tr T\le e^{-R}\rank Q+\tr((\Id-Q)\rho)
+         \le e^{-R+C(1+u)}+\frac18.
+\end{align}
+Since $\log8\ge0$ and $u\ge0$, the radius assumption implies
+$-R+C(1+u)\le-\log8$. The exponential term is therefore at most $1/8$.
+\end{proof}

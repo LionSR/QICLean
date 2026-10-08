@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{The remaining stationarity step for the patch regulator}
+\author{}
+\date{2026-10-07}
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{open}
+
+\section{Source argument}
+The September 24, 2026 manuscript \emph{Polynomial PEPS approximation of
+gapped square-grid ground states} minimizes the norm of an ordered product
+of regional shifted powers. In \path{03-patches.tex}, lines 130--205,
+descending trace calculations give commuting regional minimizing densities
+$x_j$ and output marginals $\rho_j$. The eigenvalue conditions
+\texttt{eq:patch-simplex-derivative}, \texttt{eq:patch-kkt}, and
+\texttt{eq:patch-clipped-eigenvalues} imply $\rho_j\le x_j+bI$.
+The source is fixed at commit
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a} of
+\href{https://github.com/openai/math}{openai/math}.
+
+\section{Proved operator consequences}
+The results in \path{QICLean/Analysis/PatchRegulator.lean} prove the following
+finite-dimensional implications. For commuting positive matrices $x,\rho$,
+$b>0$, and $\rho\le x+bI$, the actual regulator
+$T=b\rho(x+bI)^{-1}$ satisfies $0\le T\le bI$ and $T\le\rho$.
+For every orthogonal projection $Q$,
+\begin{align}
+ \operatorname{tr}T\le b\operatorname{rank}Q+
+   \operatorname{tr}((I-Q)\rho).
+\end{align}
+This estimate does not require $Q$ to commute with $T$ or $\rho$.
+The source's exponential rank and constant-tail inequalities imply
+$\operatorname{tr}T\le1/4$ at its stated starting radius. These are
+auxiliary implications with their hypotheses explicitly stated; they do not
+assert those hypotheses at every minimizer of the ordered patch objective.
+
+\section{Required continuation}
+The remaining work is to derive the commutation and derivative identities
+for the actual ordered objective by descending trace calculations, with
+the same normalized output marginals as in the source. Closed-simplex
+first-order conditions can then imply the density order, and the regulator
+estimate can be applied without an additional hypothesis on minimizers.
+A separable scalar shifted-power objective is sufficient for the last-filter
+calculation; it must not be identified with the full ordered objective
+without this argument. Until the continuation is proved, the unconditional
+active-minimizer trace bound and Proposition 4.1 remain unformalized.
+\end{document}

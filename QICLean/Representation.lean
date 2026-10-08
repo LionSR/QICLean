@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Representation
 
 import QICLean.Representation.Alternant
+import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.BranchProbability
 import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri
@@ -22,7 +23,9 @@ import QICLean.Representation.CoherentSymbolLimit
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.ExteriorPieri
+import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GroupedCopies
+import QICLean.Representation.GroupedLabelEntropy
 import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookDimension
 import QICLean.Representation.HookFormula
@@ -65,6 +68,7 @@ import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
+import QICLean.Representation.SchurSectorMass
 import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
 import QICLean.Representation.SchurWeylLabels
@@ -77,6 +81,7 @@ import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow
 import QICLean.Representation.TrivialLabel
+import QICLean.Representation.UniformBellLabel
 import QICLean.Representation.UniformHusimi
 import QICLean.Representation.UnitaryCommutant
 import QICLean.Representation.UnitaryTwirl
