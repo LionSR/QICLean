@@ -1,0 +1,10 @@
+QICLean/Representation/PairMergeDeficit.lean:176:38: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  PartialOrder ℂ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+QICLean/Representation/PairMergeDeficit.lean:177:76: error(lean.unknownIdentifier): Unknown identifier `Q`
+QICLean/Representation/PairMergeDeficit.lean:177:78: error(lean.unknownIdentifier): Unknown identifier `C`
+QICLean/Representation/PairMergeDeficit.lean:177:80: error(lean.unknownIdentifier): Unknown identifier `m`
+QICLean/Representation/PairMergeDeficit.lean:178:25: error(lean.unknownIdentifier): Unknown identifier `Q`
+QICLean/Representation/PairMergeDeficit.lean:178:27: error(lean.unknownIdentifier): Unknown identifier `C`
+QICLean/Representation/PairMergeDeficit.lean:178:29: error(lean.unknownIdentifier): Unknown identifier `m`

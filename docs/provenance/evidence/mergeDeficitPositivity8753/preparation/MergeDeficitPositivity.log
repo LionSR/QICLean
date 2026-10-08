@@ -1,0 +1,17 @@
+/tmp/MergeDeficitPositivity.lean:186:97: error: unsolved goals
+case e_6
+G : Type u_1
+X : Type u_2
+inst✝³ : Group G
+inst✝² : Fintype G
+inst✝¹ : Fintype X
+inst✝ : DecidableEq X
+φQ φE φQE : G →* Equiv.Perm X
+hcomm : ∀ (g h : G), Commute (φQ g) (φE h)
+hprod : ∀ (g : G), φQE g = φQ g * φE g
+R : IsOrthogonalResolution fun p => labelProj φQ p.1.1 * labelProj φE p.1.2 * labelProj φQE p.2 := ⋯
+⊢ (((fun p => ↑(Real.log ↑p.1.1.dim)) + fun p => ↑(Real.log ↑p.1.2.dim)) - fun p => ↑(Real.log ↑p.2.dim)) = fun p =>
+    ↑(Real.log ↑p.1.1.dim + Real.log ↑p.1.2.dim - Real.log ↑p.2.dim)
+/tmp/MergeDeficitPositivity.lean:192:10: error(lean.unknownIdentifier): Unknown constant `Matrix.isHermitian_mul_of_commute`
+/tmp/MergeDeficitPositivity.lean:193:4: error: No goals to be solved
+/tmp/MergeDeficitPositivity.lean:203:17: error(lean.unknownIdentifier): Unknown identifier `dim_le_mul_dim_of_compatible`

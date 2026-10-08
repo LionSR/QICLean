@@ -1,0 +1,13 @@
+{
+  "source_revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/mergeDeficitPositivity8753/mathlib-guard.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T01:48:46.895585+00:00",
+  "elapsed_seconds": 0.1762507499952335,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeDeficitPositivity8753/guard.log",
+  "sha256": "ad631e6b79aa65bc41bf843e71fcc7aa7de2827bec5ebabdd88585512b335d7f"
+}

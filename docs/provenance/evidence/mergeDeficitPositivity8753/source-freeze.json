@@ -1,0 +1,13 @@
+{
+  "source_revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+  "prerequisite_revision": "3bb6311333b197a57644ae9daad066ec1e76ef9a",
+  "upstream_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "production_sha256": {
+    "QICLean/Representation/MergeExponential.lean": "41c7687131b00ddcc7f917726a0b4aa6ee1671ccba5f88f855a5e9c9b79d7520",
+    "QICLean/Representation/PairMergeDeficit.lean": "377b50c53594dad450c569b0119574de5d75a807ea1baa5e446373bbaf5dade4",
+    "QICLean/Analysis/SpectralProjectionIntertwiner.lean": "5cec1d759695dfb93b92f63f68dc07aa11a4a736fdbd3208cc1fdbdd70cf1669",
+    "blueprint/src/fragment/merge_deficit_positivity.tex": "7712fa7364901cb83e10019983a2b01d662d286f954e70811855c4fbf89e3dbd",
+    "docs/openai-area-law-merge-deficit-positivity.md": "ed3c95910d372835161286e7f5a349042353e60322e73553f8141a9d7f07a4ed",
+    "docs/tactic_patterns.md": "ff56c06954c3c6eb76935eeb21dc016543caaa823b1460134d25c1a12dab71c2"
+  }
+}

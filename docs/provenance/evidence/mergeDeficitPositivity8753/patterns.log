@@ -1,0 +1,71 @@
+# Repeated tactic patterns (>= 3 occurrences)
+# Ranked by lines x occurrences; showing top 8
+
+## 12 occurrences x 4 lines (weight 48)
+    apply Finset.sum_congr rfl
+    intro i _
+    apply Finset.sum_congr rfl
+    intro j _
+  at: QICLean/Algebra/SwapTrace.lean:61, QICLean/Algebra/SwapTrace.lean:69, QICLean/Analysis/RelativeEntropyResolventIntegral.lean:356 (+9 more)
+
+## 13 occurrences x 3 lines (weight 39)
+    apply Finset.sum_congr rfl
+    intro i _
+    apply Finset.sum_congr rfl
+  at: QICLean/Algebra/SwapTrace.lean:61, QICLean/Algebra/SwapTrace.lean:69, QICLean/Analysis/RelativeEntropyResolventIntegral.lean:356 (+10 more)
+
+## 5 occurrences x 7 lines (weight 35)
+    · intro i
+    simp
+    · intro i u v
+    simp [mul_assoc, mul_add]
+    · intro i
+    simp
+    · intro i u v
+  at: QICLean/Channel/Schwarz/TwoPositive.lean:422, QICLean/Channel/Schwarz/TwoPositive.lean:426, QICLean/Channel/Schwarz/TwoPositive.lean:453 (+2 more)
+
+## 4 occurrences x 8 lines (weight 32)
+    · intro i
+    simp
+    · intro i u v
+    simp [mul_assoc, mul_add]
+    · intro i
+    simp
+    · intro i u v
+    simp [mul_assoc, mul_add]
+  at: QICLean/Channel/Schwarz/TwoPositive.lean:422, QICLean/Channel/Schwarz/TwoPositive.lean:426, QICLean/Channel/Schwarz/TwoPositive.lean:453 (+1 more)
+
+## 9 occurrences x 3 lines (weight 27)
+    letI : Semiring hQ.Corner := instSemiringCorner _ hQ
+    letI : Algebra ℂ hQ.Corner := MatrixCorner.instAlgebraComplexCorner hQ
+    letI : Star hQ.Corner := MatrixCorner.cornerStar hQ
+  at: QICLean/Channel/FixedPoint/AbstractCornerFixedPoints.lean:236, QICLean/Channel/FixedPoint/AbstractCornerFixedPoints.lean:247, QICLean/Channel/FixedPoint/AbstractCornerFixedPoints.lean:303 (+6 more)
+
+## 9 occurrences x 3 lines (weight 27)
+    · intro i
+    simp
+    · intro i u v
+  at: QICLean/Channel/Schwarz/TwoPositive.lean:422, QICLean/Channel/Schwarz/TwoPositive.lean:426, QICLean/Channel/Schwarz/TwoPositive.lean:430 (+6 more)
+
+## 3 occurrences x 8 lines (weight 24)
+    apply continuousOn_finsetSum Finset.univ
+    intro i _
+    apply continuousOn_finsetSum Finset.univ
+    intro j _ t ht
+    have ht0 : 0 < t := ht
+    have hα : 0 < α i := hA.eigenvalues_pos i
+    have hβ : 0 < β j := hB.eigenvalues_pos j
+    have hden : α i + t * β j ≠ 0 := by positivity
+  at: QICLean/Analysis/RelativeEntropyResolventIntegral.lean:661, QICLean/Analysis/RelativeEntropyResolventIntegral.lean:690, QICLean/Analysis/RelativeEntropyResolventIntegral.lean:919
+
+## 3 occurrences x 8 lines (weight 24)
+    simpa [hσdef, Matrix.conjTranspose_conjTranspose] using this
+    have hσfix : map C σ = σ := by
+    have hmapA : map A ρ = ρ := by
+    have heq : map A ρ = Q * map K ρ * Q := by
+    rw [hAdef]
+    exact map_cornerCompressionKraus_eq K hQproj (Z := ρ) hQρQ
+    rw [heq, hρ_fix, hQρQ]
+    rw [hσdef]
+  at: QICLean/Channel/FixedPoint/CornerBlockForm.lean:115, QICLean/Channel/FixedPoint/CornerFixedPoints.lean:224, QICLean/Channel/FixedPoint/WeightedCornerFixedPoints.lean:172
+

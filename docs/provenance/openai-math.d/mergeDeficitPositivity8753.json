@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-merge-deficit-positivity-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/MergeExponential.lean",
+        "declaration": "PermutationRepresentation.posSemidef_mergeDeficit",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original actual merge positivity and auxiliary closed spectral projection facts. Compatibility is derived on nonzero actual joint projections. The physical intertwining identity is a separate source-facing result. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Representation.MergeExponential QICLean.Representation.PairMergeDeficit QICLean.Analysis.SpectralProjectionIntertwiner",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/target.log",
+            "sha256": "93c532a5213850a1af93a94b1d76223c3e0dadec0fc3839b0f4cb87e22eaa5bd"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Representation/MergeExponential.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/strict-merge.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/mergeDeficitPositivity8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/axioms.log",
+            "sha256": "346819b053fb49ac86b361194bdae721808a94a64c881c1e717b095322551e0d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-merge-deficit-positivity-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeDeficit.lean",
+        "declaration": "TensorPower.posSemidef_pairMergeDeficit",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original actual merge positivity and auxiliary closed spectral projection facts. Compatibility is derived on nonzero actual joint projections. The physical intertwining identity is a separate source-facing result. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Representation.MergeExponential QICLean.Representation.PairMergeDeficit QICLean.Analysis.SpectralProjectionIntertwiner",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/target.log",
+            "sha256": "93c532a5213850a1af93a94b1d76223c3e0dadec0fc3839b0f4cb87e22eaa5bd"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Representation/PairMergeDeficit.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/strict-pair.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/mergeDeficitPositivity8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/axioms.log",
+            "sha256": "346819b053fb49ac86b361194bdae721808a94a64c881c1e717b095322551e0d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-merge-deficit-positivity-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/SpectralProjectionIntertwiner.lean",
+        "declaration": "Matrix.PosSemidef.spectralProjectionGE_zero",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original actual merge positivity and auxiliary closed spectral projection facts. Compatibility is derived on nonzero actual joint projections. The physical intertwining identity is a separate source-facing result. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Representation.MergeExponential QICLean.Representation.PairMergeDeficit QICLean.Analysis.SpectralProjectionIntertwiner",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/target.log",
+            "sha256": "93c532a5213850a1af93a94b1d76223c3e0dadec0fc3839b0f4cb87e22eaa5bd"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/SpectralProjectionIntertwiner.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/strict-spectral.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/mergeDeficitPositivity8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/axioms.log",
+            "sha256": "346819b053fb49ac86b361194bdae721808a94a64c881c1e717b095322551e0d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-merge-deficit-positivity-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/SpectralProjectionIntertwiner.lean",
+        "declaration": "Matrix.spectralProjectionGE_zero_mul_of_intertwine",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original actual merge positivity and auxiliary closed spectral projection facts. Compatibility is derived on nonzero actual joint projections. The physical intertwining identity is a separate source-facing result. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Representation.MergeExponential QICLean.Representation.PairMergeDeficit QICLean.Analysis.SpectralProjectionIntertwiner",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/target.log",
+            "sha256": "93c532a5213850a1af93a94b1d76223c3e0dadec0fc3839b0f4cb87e22eaa5bd"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/SpectralProjectionIntertwiner.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/strict-spectral.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/mergeDeficitPositivity8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeDeficitPositivity8753/axioms.log",
+            "sha256": "346819b053fb49ac86b361194bdae721808a94a64c881c1e717b095322551e0d"
+          }
+        ]
+      }
+    }
+  ]
+}

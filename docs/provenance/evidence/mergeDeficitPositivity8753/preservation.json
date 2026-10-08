@@ -1,0 +1,13 @@
+{
+  "prerequisite_revision": "3bb6311333b197a57644ae9daad066ec1e76ef9a",
+  "source_revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+  "unchanged_parent_files": 4380,
+  "new_files": [
+    "QICLean/Analysis/SpectralProjectionIntertwiner.lean",
+    "blueprint/src/fragment/merge_deficit_positivity.tex",
+    "docs/openai-area-law-merge-deficit-positivity.md"
+  ],
+  "existing_module_changes": "One required import and an appended new theorem per module; all original declarations and proof bodies are exact.",
+  "all_parent_provenance_preserved": true,
+  "ledger_append_only": true
+}

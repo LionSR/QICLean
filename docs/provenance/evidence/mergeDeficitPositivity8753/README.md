@@ -1,0 +1,9 @@
+This directory records four declarations at mathematical source `a9415ed990a9b0ccb8998506881b21b8be8f6154`: generic actual merge-deficit positivity, its literal paired-copy specialization, the identity nonnegative spectral projection of a positive matrix, and the nonnegative projection on a rectangular intertwined range.
+
+The source derives dimension compatibility only for nonzero actual joint projections. It neither assumes label compatibility nor identifies the independent physical middle region Y with the combined QV region. The physical complementary-label intertwining identity and compatible-projector commutation are separate assertions.
+
+The own pinned prebuilt Mathlib guard passed. The three-module target build passed with 3,512 jobs; no Mathlib source was rebuilt. All three strict source checks passed, as did four exact imported standard-kernel reports, eight unchanged-parent reports, original four-entry provenance, source statements, prose, hazards and pattern checks. The diagnostic audit files intentionally contain print/check commands; their standard-linter informational messages are retained. Every audit command returned zero and every report uses only propext, Classical.choice and Quot.sound.
+
+Both existing proof modules add one required import and one appended theorem. All eight original declarations and proof bodies are unchanged, as are every prerequisite provenance artifact. The source-preservation checker initially required an incorrect blank-line separator; its initial helper and failed command are retained, and the corrected check passed without a proof change. Earlier unfrozen preparation failures are retained separately under preparation/.
+
+The complete library and book checks belong to the subsequent integration record. They are not claimed by this leaf evidence. Run check-manifest.py from the repository root, with --git after the evidence commit, to verify the retained source and artifacts.

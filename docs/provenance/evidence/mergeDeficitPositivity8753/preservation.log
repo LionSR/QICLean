@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/docs/provenance/evidence/mergeDeficitPositivity8753/check-preservation.py", line 8, in <module>
+    old=subprocess.check_output(['git','show',parent+':'+name],text=True);new=(r/name).read_text();start=new.index('/-\nProvenance-ID: 8753-qic-merge-deficit-positivity-');prefix=new[:start].replace(extra,'');end='end PermutationRepresentation\n' if 'MergeExponential' in name else 'end TensorPower\n';assert prefix.rstrip()+'\n\n'+end==old,name
+                                                                                                                                                                                                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: QICLean/Representation/PairMergeDeficit.lean

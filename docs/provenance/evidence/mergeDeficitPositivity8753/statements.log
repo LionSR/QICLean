@@ -1,0 +1,16 @@
+PermutationRepresentation.posSemidef_mergeDeficit.{u_1, u_2} {G : Type u_1} {X : Type u_2} [Group G] [Fintype G]
+  [Fintype X] [DecidableEq X] {φQ φE φQE : G →* Equiv.Perm X} (hcomm : ∀ (g h : G), Commute (φQ g) (φE h))
+  (hprod : ∀ (g : G), φQE g = φQ g * φE g) :
+  (PermutationRepresentation.labelEntropy φQ + PermutationRepresentation.labelEntropy φE -
+      PermutationRepresentation.labelEntropy φQE).PosSemidef
+`#`-commands, such as '#check', are not allowed in 'Mathlib' [linter.hashCommand]
+TensorPower.posSemidef_pairMergeDeficit.{u_1, u_2} (Q : Type u_1) (C : Type u_2) [Fintype Q] [Fintype C] [DecidableEq Q]
+  [DecidableEq C] (m : ℕ) : (TensorPower.pairMergeDeficit Q C m).PosSemidef
+`#`-commands, such as '#check', are not allowed in 'Mathlib' [linter.hashCommand]
+Matrix.PosSemidef.spectralProjectionGE_zero.{u_2} {n : Type u_2} [Fintype n] [DecidableEq n] {B : Matrix n n ℂ}
+  (hB : B.PosSemidef) : B.spectralProjectionGE 0 = 1
+`#`-commands, such as '#check', are not allowed in 'Mathlib' [linter.hashCommand]
+Matrix.spectralProjectionGE_zero_mul_of_intertwine.{u_1, u_2} {m : Type u_1} {n : Type u_2} [Fintype m] [Fintype n]
+  [DecidableEq m] {A : Matrix m m ℂ} {B : Matrix n n ℂ} (hA : A.IsHermitian) (hB : B.PosSemidef) (V : Matrix m n ℂ)
+  (hV : A * V = V * B) : A.spectralProjectionGE 0 * V = V
+`#`-commands, such as '#check', are not allowed in 'Mathlib' [linter.hashCommand]
