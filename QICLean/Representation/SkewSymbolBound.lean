@@ -47,6 +47,17 @@ structure SkewPartition (P₀ P₁ x U F : Finset V) : Prop where
   YF : Disjoint (x ∪ U) F
   cover : ∀ v, v ∈ P₀ ∪ P₁ ∨ v ∈ x ∪ U ∨ v ∈ F
 
+/-- Real powers through the complex functional calculus agree with real powers on positive
+matrices. -/
+theorem cfcC_suppPowFun_ofReal {m : Type*} [Fintype m] [DecidableEq m] {A : Matrix m m ℂ}
+    (hA : A.PosSemidef) (s : ℝ) : cfcC A (suppPowFun (s : ℂ)) = cfc (suppRpow s) A := by
+  rw [cfcC_congr_of_nonneg hA (g₂ := fun t => ((suppRpow s t : ℝ) : ℂ)) fun t ht => ?_]
+  · simp only [cfcC, Complex.ofReal_re, Complex.ofReal_im, cfc_const_zero, smul_zero, add_zero]
+  · rcases ht.eq_or_lt with h0 | h0
+    · simp [suppPowFun, suppRpow, ← h0]
+    · simp only [suppPowFun, suppRpow, h0.ne', ↓reduceIte]
+      exact (Complex.ofReal_cpow ht s).symm
+
 namespace SkewPartition
 
 variable {P₀ P₁ x U F : Finset V} (hp : SkewPartition P₀ P₁ x U F)
@@ -174,6 +185,129 @@ theorem isRegionSplit_H : IsRegionSplit (P₀ ∪ x) (regionUnionEquiv hp.P₀x)
       have nm := fun v => hp.not_mem_of_mem (v := v)
       refine ⟨fun v hv => h v ?_, fun v hv => h v ?_, fun v hv => h v ?_⟩ <;>
         simp only [Finset.mem_union, not_or] <;> have := nm v <;> tauto
+
+omit hp in
+theorem margY_eq {A₀ A₁ X' U' F' : Type*} [Fintype A₀] [Fintype A₁] [Fintype X'] [Fintype U']
+    [Fintype F'] (w : (A₀ × A₁) × ((X' × U') × F') → ℂ) :
+    margY w = partialTraceRight (vecMulVec (w ∘ regroupY.symm) (star (w ∘ regroupY.symm))) := by
+  ext a b
+  simp only [margY, margW, partialTraceRight_apply, partialTraceLeft, vecMulVec_apply,
+    Function.comp_apply, Pi.star_apply, Fintype.sum_prod_type]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun _ _ => ?_
+  rw [Finset.sum_comm]
+  rfl
+
+omit hp in
+theorem liftY_eq {A₀ A₁ X' U' F' : Type*} [Fintype A₀] [DecidableEq A₀] [Fintype A₁]
+    [DecidableEq A₁] [Fintype X'] [DecidableEq X'] [Fintype U'] [DecidableEq U'] [Fintype F']
+    [DecidableEq F'] (B : Matrix (X' × U') (X' × U') ℂ) :
+    liftY (P₀ := A₀) (P₁ := A₁) (F := F') B =
+      (B ⊗ₖ (1 : Matrix ((A₀ × A₁) × F') ((A₀ × A₁) × F') ℂ)).submatrix regroupY regroupY := by
+  ext q q'
+  simp only [liftY, regroupY, Equiv.coe_fn_mk, submatrix_apply, kroneckerMap_apply, one_apply,
+    Prod.ext_iff]
+  split_ifs <;> simp_all
+
+variable (n) in
+/-- The vector `θ` in the coordinates `(P₀ P₁)((x U) F)`. -/
+def transport (θ : SiteConfig n → ℂ) :
+    (RegionConfig n P₀ × RegionConfig n P₁) × ((RegionConfig n x × RegionConfig n U) ×
+      RegionConfig n F) → ℂ :=
+  θ ∘ (SkewPartition.equiv (n := n) hp).symm
+
+theorem margP_transport (θ : SiteConfig n → ℂ) :
+    margP (hp.transport n θ) =
+      (regionState (P₀ ∪ P₁) (WithLp.toLp 2 θ)).submatrix (regionUnionEquiv hp.P₀P₁).symm
+        (regionUnionEquiv hp.P₀P₁).symm :=
+  hp.isRegionSplit_P.partialTraceRight_vecMulVec θ
+
+theorem margY_transport (θ : SiteConfig n → ℂ) :
+    margY (hp.transport n θ) =
+      (regionState (x ∪ U) (WithLp.toLp 2 θ)).submatrix (regionUnionEquiv hp.xU).symm
+        (regionUnionEquiv hp.xU).symm := by
+  rw [margY_eq]
+  exact hp.isRegionSplit_Y.partialTraceRight_vecMulVec θ
+
+theorem liftP_eq (K : Matrix (RegionConfig n (P₀ ∪ P₁)) (RegionConfig n (P₀ ∪ P₁)) ℂ) :
+    liftP (X := RegionConfig n x) (U := RegionConfig n U) (F := RegionConfig n F)
+      (K.submatrix (regionUnionEquiv hp.P₀P₁).symm (regionUnionEquiv hp.P₀P₁).symm) =
+      (localLift (P₀ ∪ P₁) K).submatrix (SkewPartition.equiv hp).symm
+        (SkewPartition.equiv hp).symm :=
+  (hp.isRegionSplit_P.localLift_submatrix K).symm
+
+theorem liftY_eq' (K : Matrix (RegionConfig n (x ∪ U)) (RegionConfig n (x ∪ U)) ℂ) :
+    liftY (P₀ := RegionConfig n P₀) (P₁ := RegionConfig n P₁) (F := RegionConfig n F)
+      (K.submatrix (regionUnionEquiv hp.xU).symm (regionUnionEquiv hp.xU).symm) =
+      (localLift (x ∪ U) K).submatrix (SkewPartition.equiv hp).symm
+        (SkewPartition.equiv hp).symm := by
+  rw [liftY_eq, ← hp.isRegionSplit_Y.localLift_submatrix K, submatrix_submatrix]
+  rfl
+
+theorem liftH_eq (K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfig n (P₀ ∪ x)) ℂ) :
+    liftH (P₁ := RegionConfig n P₁) (U := RegionConfig n U) (F := RegionConfig n F)
+      (K.submatrix (regionUnionEquiv hp.P₀x).symm (regionUnionEquiv hp.P₀x).symm) =
+      (localLift (P₀ ∪ x) K).submatrix (SkewPartition.equiv hp).symm
+        (SkewPartition.equiv hp).symm := by
+  rw [liftH, ← hp.isRegionSplit_H.localLift_submatrix K, submatrix_submatrix]
+  rfl
+
+/-- **`f_θ` in the coordinates of Lemma 5.3**: for `h = lift_{P₀ x} K`, the symbol of
+Lemma 6.4 is the function `f(s)` of Lemma 5.3 for the transported vector. -/
+theorem skewFun_transport (K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfig n (P₀ ∪ x)) ℂ)
+    (θ : SiteConfig n → ℂ) (s : ℝ) :
+    skewFun (hp.transport n θ)
+        (K.submatrix (regionUnionEquiv hp.P₀x).symm (regionUnionEquiv hp.P₀x).symm) (s : ℂ) =
+      markedScalarSymbol s (P₀ ∪ P₁) (x ∪ U) (localLift (P₀ ∪ x) K) θ := by
+  have hP := regionState_posSemidef (P₀ ∪ P₁) (WithLp.toLp 2 θ)
+  have hY := regionState_posSemidef (x ∪ U) (WithLp.toLp 2 θ)
+  have hneg : -(s : ℂ) = ((-s : ℝ) : ℂ) := by push_cast; ring
+  rw [skewFun, margP_transport, margY_transport, hneg,
+    cfcC_submatrix_equiv hP.isHermitian, cfcC_submatrix_equiv hP.isHermitian,
+    cfcC_submatrix_equiv hY.isHermitian, cfcC_submatrix_equiv hY.isHermitian,
+    hp.liftP_eq, hp.liftP_eq, hp.liftY_eq', hp.liftY_eq', hp.liftH_eq]
+  simp only [submatrix_mul_equiv]
+  rw [transport, star_dotProduct_submatrix_mulVec, markedScalarSymbol, regionPow, regionPow,
+    regionPow, regionPow, cfcC_suppPowFun_ofReal hP, cfcC_suppPowFun_ofReal hP,
+    cfcC_suppPowFun_ofReal hY, cfcC_suppPowFun_ofReal hY]
+
+theorem star_transport_dotProduct (θ : SiteConfig n → ℂ) :
+    star (hp.transport n θ) ⬝ᵥ hp.transport n θ = star θ ⬝ᵥ θ :=
+  Fintype.sum_equiv (SkewPartition.equiv hp).symm _ _ fun _ => rfl
+
+/-- **Lemma 5.3 for the symbol of Lemma 6.4** (`05-replicas.tex`, lines 838–843): for
+`h = lift_{P₀ x} K` with `0 ≤ K ≤ 1`, `d_h = (dim P₀)(dim x)`, `0 < a` and
+`a log (e d_h) ≤ 1/8`, the symbol `f_θ` at `t = a/2` satisfies
+`|f_θ| - Re f_θ ≤ C a² log⁴(e d_h) η_θ^{1/8}` on unit vectors, where
+`η_θ = I(x:F|U)_θ`. -/
+theorem markedScalarSymbol_skew_le
+    {K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfig n (P₀ ∪ x)) ℂ} (hK0 : 0 ≤ K)
+    (hK1 : K ≤ 1) {a : ℝ} (ha : 0 < a)
+    (hac : a * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
+      Fintype.card (RegionConfig n x))) ≤ 1 / 8) {θ : SiteConfig n → ℂ} (hθ : θ ∈ unitSphere) :
+    ‖markedScalarSymbol (a / 2) (P₀ ∪ P₁) (x ∪ U) (localLift (P₀ ∪ x) K) θ‖ -
+        (markedScalarSymbol (a / 2) (P₀ ∪ P₁) (x ∪ U) (localLift (P₀ ∪ x) K) θ).re ≤
+      skewConst * a ^ 2 * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
+        Fintype.card (RegionConfig n x))) ^ 4 * skewEta (hp.transport n θ) ^ (1 / 8 : ℝ) := by
+  set φ := regionUnionEquiv (n := n) hp.P₀x
+  have hθ' : star (hp.transport n θ) ⬝ᵥ hp.transport n θ = 1 := by
+    rw [star_transport_dotProduct, dotProduct_comm]; exact hθ
+  have hh0 : 0 ≤ K.submatrix φ.symm φ.symm :=
+    nonneg_iff_posSemidef.mpr ((nonneg_iff_posSemidef.mp hK0).submatrix _)
+  have hh1 : K.submatrix φ.symm φ.symm ≤ 1 := by
+    rw [Matrix.le_iff] at hK1 ⊢
+    have : (1 : Matrix (RegionConfig n P₀ × RegionConfig n x) (RegionConfig n P₀ ×
+        RegionConfig n x) ℂ) - K.submatrix φ.symm φ.symm = (1 - K).submatrix φ.symm φ.symm := by
+      ext i j
+      simp [one_apply]
+    rw [this]
+    exact hK1.submatrix _
+  have hcard : (Fintype.card (RegionConfig n P₀ × RegionConfig n x) : ℝ) =
+      Fintype.card (RegionConfig n P₀) * Fintype.card (RegionConfig n x) := by
+    rw [Fintype.card_prod, Nat.cast_mul]
+  have h := conditionalSkew_le hθ' hh0 hh1 ha (by rwa [hcard])
+  rw [hcard, hp.skewFun_transport K θ (a / 2)] at h
+  exact h
 
 end SkewPartition
 
