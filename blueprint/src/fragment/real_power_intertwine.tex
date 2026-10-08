@@ -1,0 +1,41 @@
+\section{Real powers along a rectangular intertwiner}
+\label{sec:real_power_intertwine}
+
+For a positive semidefinite matrix $A$ and $s\in\R$, define $A^s$
+by the spectral calculus. A positive eigenvalue $x$ contributes $x^s$.
+At a zero eigenvalue the coefficient is $1$ when $s=0$ and $0$ when
+$s\neq0$. Thus a negative power vanishes on the kernel; it does not
+assert the existence of an inverse there.
+The following auxiliary identity applies to the functional-calculus
+calculations in Section~6
+of~\cite{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Intertwining real powers]
+  \label{thm:real_power_intertwine}
+  \lean{Matrix.PosSemidef.rpow_intertwine}
+  \leanok
+  Let $A$ and $B$ be positive semidefinite matrices on finite-dimensional
+  complex Hilbert spaces, and let $J$ be a linear map from the space of
+  $B$ to the space of $A$. If $AJ=JB$, then, for every $s\in\R$,
+  \begin{align}
+    A^sJ&=JB^s.
+  \end{align}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Choose orthonormal eigenbases of $A$ and $B$, with eigenvalues
+  $(a_i)$ and $(b_j)$, and write $K$ for the matrix of $J$ in these
+  bases. The intertwining equation gives
+  \begin{align}
+    (a_i-b_j)K_{ij}&=0.
+  \end{align}
+  Hence $K_{ij}=0$ whenever $a_i\neq b_j$. Applying the same scalar
+  power function, with the stated convention at zero, to both sets of
+  eigenvalues gives
+  \begin{align}
+    a_i^sK_{ij}&=K_{ij}b_j^s.
+  \end{align}
+  Returning to the original bases proves the assertion. The argument
+  requires no isometry condition on $J$ and includes empty index sets.
+\end{proof}

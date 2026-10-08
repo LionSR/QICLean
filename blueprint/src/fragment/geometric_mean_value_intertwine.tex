@@ -1,0 +1,47 @@
+\section{The binary geometric-mean formula along an intertwiner}
+\label{sec:geometric_mean_value_intertwine}
+
+For positive definite matrices $A,B$ and any $p\in\R$, write
+\begin{align}
+  F_p(A,B)&=A^{1/2}(A^{-1/2}BA^{-1/2})^pA^{1/2}.
+\end{align}
+For $p\in[0,1]$ this is the weighted geometric mean. The identity
+below concerns this binary formula at every real $p$.
+It is auxiliary to the mean definition in Section~6
+of~\cite{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Intertwining the binary mean]
+  \label{thm:geometric_mean_value_intertwine}
+  \lean{Matrix.geomMean_intertwine}
+  \leanok
+  Let $A_1,B_1$ and $A_2,B_2$ be positive definite matrices on two
+  finite-dimensional complex Hilbert spaces. Suppose that a linear map
+  $J$ from the second space to the first satisfies
+  \begin{align}
+    A_1J&=JA_2,& B_1J&=JB_2.
+  \end{align}
+  Then, for every $p\in\R$,
+  \begin{align}
+    F_p(A_1,B_1)J&=JF_p(A_2,B_2).
+  \end{align}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:real_power_intertwine}
+  Theorem~\ref{thm:real_power_intertwine} gives $A_1^sJ=JA_2^s$
+  for every $s\in\R$. Put $C_i=A_i^{-1/2}B_iA_i^{-1/2}$.
+  These matrices are positive definite, and the two intertwining
+  equations imply
+  \begin{align}
+    C_1J&=JC_2.
+  \end{align}
+  The same theorem therefore gives $C_1^pJ=JC_2^p$. Moving the two
+  outer square-root factors across $J$ yields
+  \begin{align}
+    A_1^{1/2}C_1^pA_1^{1/2}J
+      &=JA_2^{1/2}C_2^pA_2^{1/2}.
+  \end{align}
+  This is the asserted identity. No isometry or normalization of $J$
+  is used.
+\end{proof}

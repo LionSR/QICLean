@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.OperatorMean.PowerDerivativeIntertwine
-import QICLean.Entropy.ConditionalMovement.LogCompression
+import QICLean.Analysis.OperatorMean.RealPowerIntertwine
 
 /-!
 # Rectangular intertwining of a geometric-mean derivative
@@ -39,11 +39,8 @@ theorem geomMeanDerivRight_intertwine
     geomMeanDerivRight p A₁ B₁ (J * H * Jᴴ) =
       J * geomMeanDerivRight p A₂ B₂ H * Jᴴ := by
   unfold geomMeanDerivRight
-  have hpow (s : ℝ) : A₁ ^ s * J = J * A₂ ^ s := by
-    rw [CFC.rpow_eq_cfc_real hA₁.posSemidef.nonneg,
-      CFC.rpow_eq_cfc_real hA₂.posSemidef.nonneg]
-    exact ConditionalMovement.QuantumSSA.cfc_intertwine
-      hA₁.isHermitian hA₂.isHermitian J hAJ (fun x : ℝ ↦ x ^ s)
+  have hpow (s : ℝ) : A₁ ^ s * J = J * A₂ ^ s :=
+    hA₁.posSemidef.rpow_intertwine hA₂.posSemidef J hAJ s
   simp only [ContinuousLinearMap.comp_apply, sandwichL_apply]
   have hstar (s : ℝ) : Jᴴ * A₁ ^ s = A₂ ^ s * Jᴴ := by
     simpa only [conjTranspose_mul, (hA₁.rpow_isHermitian s).eq,

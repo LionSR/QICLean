@@ -1,0 +1,41 @@
+\section{The projection obtained by finite-group averaging}
+\label{sec:symmetric_projection}
+
+Let $G$ be a finite group, let $X$ be a finite set, and let
+$\varphi:G\to\mathrm{Sym}(X)$ be a homomorphism. Write $U_g$ for
+its permutation matrix on $\C^X$, and put
+\begin{align}
+  P&=\frac1{|G|}\sum_{g\in G}U_g.
+\end{align}
+The finite group is nonempty, so the averaging factor is defined.
+This construction supplies the simultaneous symmetric projection
+used in Section~7 of~\cite{OpenAI2026AreaLaw}:
+for permutations of the copies, the one-copy coordinate set retains
+all physical and auxiliary factors, including the middle physical
+factor. The statement below is the general projection identity.
+
+\begin{theorem}[The finite-group symmetrizer is an orthogonal projection]
+  \label{thm:symmetric_projection}
+  \lean{PermutationRepresentation.isStarProjection_symProj}
+  \leanok
+  For every finite group action by permutations as above,
+  \begin{align}
+    P^2&=P,& P^*&=P.
+  \end{align}
+  The coordinate set $X$ may be empty.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  For every vector $v$, the average $Pv$ is fixed by each $U_h$,
+  since left multiplication by $h$ permutes the summation indices.
+  Averaging a fixed vector leaves it unchanged. Hence $P^2v=Pv$
+  for every $v$, proving $P^2=P$. Each permutation matrix satisfies
+  $U_g^*=U_{g^{-1}}$, and inversion permutes the elements of $G$.
+  Therefore
+  \begin{align}
+    P^*&=\frac1{|G|}\sum_{g\in G}U_{g^{-1}}=P.
+  \end{align}
+  Both identities remain valid on the zero-dimensional space
+  $\C^\varnothing$.
+\end{proof}

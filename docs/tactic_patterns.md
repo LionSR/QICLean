@@ -24,6 +24,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
   over the whole basis, including coordinates with zero assigned probability.
 
+### Rectangular real-power transport — promoted lemma (2026-10-08)
+
+- **Pattern:** Express a real matrix power as a finite Hermitian functional
+  calculus and transport it along a rectangular intertwiner.
+- **Seen:** Once in `GeometricMeanDerivativeIntertwine.lean` and twice in
+  `GeometricMeanIntertwine.lean`, for the input and whitened matrices.
+- **Abstraction:** `Matrix.PosSemidef.rpow_intertwine` in
+  `RealPowerIntertwine.lean`; all three occurrences use this lemma.
+- **Caveats:** Every real exponent is allowed. Negative powers vanish on the
+  kernel, and exponent zero gives the identity. No isometry is required.
+
 ## Candidates
 
 ### Finite-spectrum functional-calculus scalar reduction — candidate (2026-10-07)
