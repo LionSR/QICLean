@@ -842,6 +842,47 @@ eigenbasis. The following statements show that such averages are central label f
     preceding lemma. The trace limit then follows from the coherent symbol calculus.
 \end{proof}
 
+\begin{lemma}[Continuous functions of coherent symbols]
+    \label{lem:coherent_symbol_function}
+    \lean{Matrix.IsHermitian.abs_eigenvalues_le, TensorPower.HasCoherentSymbol.pow,
+        TensorPower.HasCoherentSymbol.aeval, TensorPower.HasCoherentSymbol.symProj_mul,
+        TensorPower.HasCoherentSymbol.cfc, TensorPower.HasCoherentSymbol.abs}
+    \leanok
+    \uses{lem:coherent_symbol_limit}
+    Let $X_k$ be Hermitian with eigenvalues in $[a,b]$ and coherent symbol $f$, with $f$
+    real with values in $[a,b]$ on unit vectors, and let $\varphi$ be continuous on $[a,b]$.
+    Then $\varphi(X_k)$ has coherent symbol $\varphi\circ f$. In particular, if $X_k$ has
+    coherent symbol $f$, then $\bigl(\Pi_kX_k^\ast X_k\bigr)^{1/2}$ has coherent symbol $|f|$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Approximate $\varphi$ uniformly on $[a,b]$ by a polynomial $p$. Then
+    $\|\varphi(X_k)-p(X_k)\|\le\sup_{[a,b]}|\varphi-p|$, and $p(X_k)$ has coherent symbol
+    $p\circ f$ by the product calculus. For the absolute value, $\Pi_kX_k^\ast X_k
+    =(X_k\Pi_k)^\ast(X_k\Pi_k)$ is positive with norm at most $\sup_k\|X_k\Pi_k\|^2$, and
+    its symbol is $|f|^2$.
+\end{proof}
+
+\begin{theorem}[Skew symbol]
+    \label{thm:skew_symbol}
+    \lean{TensorPower.skewOperator, TensorPower.HasCoherentSymbol.skew,
+        TensorPower.eventually_norm_trace_skewOperator_markedSimilarity_sub_le}
+    \leanok
+    \uses{thm:marked_similarity_symbol, lem:coherent_symbol_function}
+    Let $\mathcal D_k=|O_k|+|O_k^\ast|-O_k-O_k^\ast$, with absolute values taken on
+    $\mathcal S_k$. Uniformly in symmetric density matrices $\sigma$,
+    \[
+        \Tr\sigma\mathcal D_k=2\int\bigl(|f_\theta|-\operatorname{Re}f_\theta\bigr)
+        \,d\mu_\sigma(\theta)+o_k(1).
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    Both $|O_k|$ and $|O_k^\ast|$ have coherent symbol $|f_\theta|$ by the previous lemma,
+    whether or not $O_k$ is normal, and $O_k+O_k^\ast$ has symbol $2\operatorname{Re}f_\theta$.
+    Apply the trace limit of the coherent symbol calculus.
+\end{proof}
+
 \section{The gamma integral}
 
 The integral representation of the metrics draws the eigenvalues $s$ of a density matrix with
@@ -943,67 +984,6 @@ weight $(\sum_ix_i)^{-a}e^{-\sum_ix_i}$; the quotients of gamma values are the s
     Here $D=c+tk$ and $D-tk=c$ for $l$, while $D=c$ for $\delta$. The factors $d!\,t^N$ cancel,
     and $a_\delta(l)/a_\delta(\delta)=W_\lambda$ because $a_\delta$ is a fixed sign times the
     Vandermonde product and $a_\delta(\delta)$ is the product of the differences $j-i$.
-\end{proof}
-
-\begin{lemma}[Sums of injection averages]
-    \label{lem:injection_poly}
-    \lean{TensorPower.placeOp_trans_perm, TensorPower.commute_symProj_injectionAverage,
-        TensorPower.conjTranspose_injectionAverage, TensorPower.coherentExpect,
-        TensorPower.coherentExpect_conjTranspose, TensorPower.coherentExpect_copyKronecker,
-        TensorPower.norm_coherentIntegral_le, TensorPower.IsInjectionPoly,
-        TensorPower.IsInjectionPoly.exists_mul,
-        TensorPower.IsInjectionPoly.exists_norm_trace_sub_coherentIntegral_le}
-    \leanok
-    \uses{thm:uniform_husimi, thm:injection_product}
-    Let $Y_k=\sum_i\mathcal T_{k,r_i}(G_i)$ for finitely many fixed operators $G_i$, with
-    symbol $\psi(\theta)=\sum_i\langle\theta^{\otimes r_i},G_i\theta^{\otimes r_i}\rangle$.
-    Then $Y_k$ commutes with the copy permutations, $Y_k^\ast$ has symbol
-    $\overline\psi$, the product of two such sums is, up to $O(k^{-1})$ in operator norm, a
-    third one whose symbol is the product of the symbols, and
-    $|\Tr\sigma Y_k-\int\psi\,d\mu_\sigma|=O(k^{-1})$ uniformly in symmetric density matrices
-    $\sigma$.
-\end{lemma}
-
-\begin{proof}\leanok
-    Relocating a placement by a copy permutation conjugates it by that permutation, and
-    relocation permutes the injections. Product vectors factor:
-    $\langle\theta^{\otimes(m+n)},(G\otimes H)\theta^{\otimes(m+n)}\rangle
-    =\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle
-    \langle\theta^{\otimes n},H\theta^{\otimes n}\rangle$. The product estimate and the trace
-    estimate follow termwise from the two previous theorems.
-\end{proof}
-
-\begin{theorem}[Coherent symbol calculus]
-    \label{thm:coherent_symbol}
-    \lean{TensorPower.unitSphere, TensorPower.isCompact_unitSphere,
-        TensorPower.HasCoherentSymbol, TensorPower.HasCoherentSymbol.add,
-        TensorPower.HasCoherentSymbol.smul, TensorPower.HasCoherentSymbol.conjTranspose,
-        TensorPower.HasCoherentSymbol.mul,
-        TensorPower.HasCoherentSymbol.eventually_norm_trace_sub_le,
-        TensorPower.HasCoherentSymbol.freeAlgebra}
-    \leanok
-    \uses{lem:injection_poly}
-    Say that operators $X_k$ have coherent symbol $f$ if they commute with $\Pi_k$, are
-    uniformly bounded on $\mathcal S_k$, $f$ is continuous on unit vectors, and for every
-    $\varepsilon>0$ some sum of injection averages $Y_k$ with symbol $\psi$ satisfies
-    $|f-\psi|\le\varepsilon$ on unit vectors and $\|(X_k-Y_k)\Pi_k\|\le\varepsilon$ for large
-    $k$. This property is preserved by sums, scalar multiples, adjoints with the conjugate
-    symbol, and products with the product symbol. Consequently, for every noncommutative
-    polynomial $q$ in two variables, $q(X_k,X_k^\ast)$ has coherent symbol
-    $q(f,\overline f)$, and
-    \[
-        \sup_\sigma\left|\Tr\sigma X_k-\int f\,d\mu_\sigma\right|\longrightarrow0
-    \]
-    over symmetric density matrices $\sigma$.
-\end{theorem}
-
-\begin{proof}\leanok
-    For products, write
-    $XX'\Pi=X\Pi(X'-Y')\Pi+(X-Y)\Pi Y'\Pi+YY'\Pi$, using that all factors commute with
-    $\Pi$, and approximate $YY'$ by the previous lemma. Symbols are bounded on the compact
-    unit sphere, so the symbol errors combine in the same way. For the trace limit,
-    $|\Tr\sigma(X_k-Y_k)|\le\|(X_k-Y_k)\Pi_k\|$, the coherent measure is a probability measure,
-    and the previous lemma treats $Y_k$. Polynomials follow by induction.
 \end{proof}
 
 \section{The integral representation}

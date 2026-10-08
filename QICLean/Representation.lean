@@ -17,6 +17,7 @@ import QICLean.Representation.CentralLabelFunction
 import QICLean.Representation.CoherentMeasure
 import QICLean.Representation.CoherentResolution
 import QICLean.Representation.CoherentSymbol
+import QICLean.Representation.CoherentSymbolFunction
 import QICLean.Representation.CoherentSymbolLimit
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
@@ -59,6 +60,7 @@ import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
+import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
