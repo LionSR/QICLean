@@ -283,6 +283,90 @@ theorem abs_logKernel_le {s x m M : ℝ} (hs : 0 ≤ s) (hm : 0 < m) (hmx : m �
 
 end LogResolvent
 
+section MatrixLog
+
+open Set Filter
+
+variable {m : Type*} [Fintype m] [DecidableEq m]
+
+/-- The spectrum of a positive definite matrix lies in a compact interval `[lo, hi]` with
+`lo > 0`. -/
+theorem exists_spectrum_subset_Icc {X : Matrix m m ℂ} (hX : X.PosDef) :
+    ∃ lo hi : ℝ, 0 < lo ∧ lo ≤ hi ∧ ∀ z ∈ spectrum ℝ X, lo ≤ z ∧ z ≤ hi := by
+  rcases (spectrum ℝ X).eq_empty_or_nonempty with he | hne
+  · exact ⟨1, 1, one_pos, le_rfl, by simp [he]⟩
+  obtain ⟨zl, hzl, hl⟩ := (spectrum.isCompact X).exists_isMinOn hne continuousOn_id
+  obtain ⟨zh, hzh, hh⟩ := (spectrum.isCompact X).exists_isMaxOn hne continuousOn_id
+  exact ⟨zl, zh, hX.isStrictlyPositive.spectrum_pos hzl, hl hzh, fun z hz => ⟨hl hz, hh hz⟩⟩
+
+/-- **Resolvent representation of the matrix logarithm**:
+`log X = ∫_0^∞ k_s(X) ds` with `k_s(x) = 1/(1+s) - 1/(x+s)`, for positive definite `X`. -/
+theorem integrableOn_cfc_logKernel {X : Matrix m m ℂ} (hX : X.PosDef) :
+    IntegrableOn (fun s => cfc (logKernel s) X) (Ioi 0) ∧
+      CFC.log X = ∫ s in Ioi 0, cfc (logKernel s) X := by
+  obtain ⟨lo, hi, hlo, hlohi, hsp⟩ := exists_spectrum_subset_Icc hX
+  have hhi : 0 < hi := hlo.trans_le hlohi
+  have hcont : ContinuousOn (Function.uncurry logKernel) (Ioi 0 ×ˢ spectrum ℝ X) := by
+    refine ContinuousOn.sub ?_ ?_
+    · refine (continuousOn_const.add continuousOn_fst).inv₀ fun q hq => ?_
+      have : (0 : ℝ) < q.1 := hq.1
+      exact (by linarith : (0 : ℝ) < 1 + q.1).ne'
+    · refine (continuousOn_snd.add continuousOn_fst).inv₀ fun q hq => ?_
+      have h1 : (0 : ℝ) < q.1 := hq.1
+      have h2 := (hsp _ hq.2).1
+      have : 0 < q.2 + q.1 := by linarith
+      exact this.ne'
+  have hbound : ∀ᵐ s ∂(MeasureTheory.volume.restrict (Ioi (0 : ℝ))), ∀ z ∈ spectrum ℝ X,
+      ‖logKernel s z‖ ≤ |logKernel s lo| + |logKernel s hi| :=
+    MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ioi fun s hs z hz => by
+      rw [Real.norm_eq_abs]
+      exact abs_logKernel_le (le_of_lt hs) hlo (hsp z hz).1 (hsp z hz).2
+  have hbi : MeasureTheory.HasFiniteIntegral (fun s => |logKernel s lo| + |logKernel s hi|)
+      (MeasureTheory.volume.restrict (Ioi (0 : ℝ))) :=
+    ((integrableOn_logKernel hlo).abs.add (integrableOn_logKernel hhi).abs).hasFiniteIntegral
+  refine ⟨integrableOn_cfc measurableSet_Ioi logKernel _ X hcont hbound hbi, ?_⟩
+  rw [← cfc_setIntegral measurableSet_Ioi logKernel _ X hcont hbound hbi, CFC.log]
+  refine cfc_congr fun z hz => ?_
+  exact (integral_logKernel (hlo.trans_le (hsp z hz).1)).symm
+
+/-- The resolvent `(X + s)⁻¹` through the functional calculus. -/
+noncomputable def resolvent (X : Matrix m m ℂ) (s : ℝ) : Matrix m m ℂ :=
+  cfc (fun x : ℝ => (x + s)⁻¹) X
+
+theorem cfc_logKernel {X : Matrix m m ℂ} (hX : X.PosDef) {s : ℝ} (hs : 0 ≤ s) :
+    cfc (logKernel s) X = (1 + s)⁻¹ • (1 : Matrix m m ℂ) - resolvent X s := by
+  have hc : ContinuousOn (fun x : ℝ => (x + s)⁻¹) (spectrum ℝ X) :=
+    (continuousOn_id.add continuousOn_const).inv₀ fun z hz => by
+      have := hX.isStrictlyPositive.spectrum_pos hz
+      exact (by simp only [id_eq]; linarith : (0 : ℝ) < id z + s).ne'
+  rw [show logKernel s = fun x => (fun _ => (1 + s)⁻¹) x - (fun x : ℝ => (x + s)⁻¹) x from rfl,
+    cfc_sub _ _ X continuousOn_const hc, cfc_const _ X hX.isHermitian.isSelfAdjoint,
+    Algebra.algebraMap_eq_smul_one, resolvent]
+
+theorem add_smul_one_mul_resolvent {X : Matrix m m ℂ} (hX : X.PosDef) {s : ℝ} (hs : 0 ≤ s) :
+    (X + s • (1 : Matrix m m ℂ)) * resolvent X s = 1 := by
+  have hX' : IsSelfAdjoint X := hX.isHermitian.isSelfAdjoint
+  have hpos : ∀ z ∈ spectrum ℝ X, z + s ≠ 0 := fun z hz => by
+    have := hX.isStrictlyPositive.spectrum_pos hz
+    exact (by linarith : (0 : ℝ) < z + s).ne'
+  have hc : ContinuousOn (fun x : ℝ => (x + s)⁻¹) (spectrum ℝ X) :=
+    (continuousOn_id.add continuousOn_const).inv₀ hpos
+  have hlin : cfc (fun x : ℝ => x + s) X = X + s • (1 : Matrix m m ℂ) := by
+    rw [cfc_add_const s (fun x : ℝ => x) X continuousOn_id hX', cfc_id' ℝ X hX',
+      Algebra.algebraMap_eq_smul_one]
+  rw [← hlin, resolvent, ← cfc_mul (fun x : ℝ => x + s) (fun x : ℝ => (x + s)⁻¹) X
+    (continuousOn_id.add continuousOn_const) hc, ← cfc_one ℝ X hX']
+  exact cfc_congr fun z hz => mul_inv_cancel₀ (hpos z hz)
+
+theorem commute_resolvent {X Y : Matrix m m ℂ} (h : Commute X Y) (s : ℝ) :
+    Commute (resolvent X s) Y :=
+  Commute.cfc_real h _
+
+theorem isHermitian_resolvent (X : Matrix m m ℂ) (s : ℝ) : (resolvent X s).IsHermitian :=
+  cfc_predicate (p := IsSelfAdjoint) _ X
+
+end MatrixLog
+
 /-- **Operator Jensen inequality for the logarithm** (`06-transport.tex`, display
 `transport:log-jensen`, lines 526--546), compressed to `𝒮_k`: for continuous `f > 0`,
 `Π 𝒬_k(log f) Π ≤ Π log(𝒬_k(f) + (1 - Π)) Π`. -/
