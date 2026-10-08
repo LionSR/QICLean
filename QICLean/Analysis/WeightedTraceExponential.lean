@@ -51,7 +51,7 @@ private theorem re_trace_product_le_half_sum_squares {ρ A B : Matrix X X ℂ} (
 Provenance-ID: 8750-qic-weighted-trace-exponential-01
 Original formalization, no upstream Lean proof text reused.
 Declaration: Matrix.PosSemidef.re_trace_mul_exp_add_le_half_sum
-Manuscript: September 24, 2026, comparator rough estimate, lines 553–555.
+Manuscript: September 24, 2026, comparator:component-inverse, lines 553–555.
 -/
 
 open scoped Matrix.Norms.Operator in
