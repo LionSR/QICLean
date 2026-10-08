@@ -32,7 +32,8 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 theorem PosDef.rpow_eq_exp_smul_log {C : Matrix n n ℂ} (hC : C.PosDef) (q : ℝ) :
     C ^ q = exp (q • CFC.log C) := by
   have hsa : IsSelfAdjoint (CFC.log C) := IsSelfAdjoint.log
-  rw [CFC.rpow_eq_cfc_real hC.posSemidef.nonneg, ← CFC.real_exp_eq_normedSpace_exp ((IsSelfAdjoint.all q).smul hsa),
+  rw [CFC.rpow_eq_cfc_real hC.posSemidef.nonneg,
+    ← CFC.real_exp_eq_normedSpace_exp ((IsSelfAdjoint.all q).smul hsa),
     CFC.log, ← cfc_const_mul q Real.log C (C.finite_real_spectrum.continuousOn _),
     ← cfc_comp' Real.exp (fun x => q * Real.log x) C Real.continuous_exp.continuousOn
       (C.finite_real_spectrum.continuousOn _)]

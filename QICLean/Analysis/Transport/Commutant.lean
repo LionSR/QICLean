@@ -119,7 +119,7 @@ theorem leafMap_mul_right (hA : ∀ i, (A i).PosDef) {Z : Matrix n n ℂ}
     (PosDef.commute_rpow_left (posDef_eval hA T) (commute_eval_right hA hZ T).symm _).symm
   have hAj : Commute Z (A j ^ (1 / 2 : ℝ)) :=
     (PosDef.commute_rpow_left (hA j) (hZ j).symm _).symm
-  simp only [leafMap, normalizedDerivMap, ContinuousLinearMap.coe_smul', Pi.smul_apply,
+  simp only [leafMap, normalizedDerivMap, FunLike.coe_smul, Pi.smul_apply,
     ContinuousLinearMap.comp_apply, sandwichL_apply]
   rw [sandwich_mul_right hAj, derivLabel_mul_right hA hZ, sandwich_mul_right hM, smul_mul_assoc]
 

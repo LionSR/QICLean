@@ -35,6 +35,7 @@ theorem intervalIntegrable_entropyGain (hD : D.IsAdmissible) {t : ℝ} (ht : 0 �
     IntervalIntegrable (fun p => D.entropyGain n t k pre p) volume p₀ p₁ := by
   sorry
 
+omit [∀ h, Fintype (C h)] in
 /-- **Integrated entropy gain** (`06-transport.tex` lines 427--429): integrating the
 pointwise bound `L(p) ≤ -∂_p log N(p)²` over `[p₀, p₁] ⊆ [0, 1]`. -/
 theorem integral_le_log_filteredNormSq_sub (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t)

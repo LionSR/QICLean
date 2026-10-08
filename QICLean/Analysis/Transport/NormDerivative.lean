@@ -134,7 +134,8 @@ theorem imagPow_eq_eigen {M : Matrix n n ℂ} (hM : M.IsHermitian) (u : ℝ) :
   have hUinv : (eigU hM)⁻¹ = star (eigU hM) := Matrix.inv_eq_left_inv (star_eigU_mul hM)
   have hunit : IsUnit (eigU hM) := isUnit_iff_exists_inv.mpr ⟨_, eigU_mul_star hM⟩
   rw [imagPow, hermitianUnitaryPath, log_eq_eigen hM]
-  have hsm : (-u : ℝ) • (I • (eigU hM * diagonal (fun i => ((Real.log (hM.eigenvalues i) : ℝ) : ℂ)) *
+  have hsm : (-u : ℝ) • (I • (eigU hM *
+    diagonal (fun i => ((Real.log (hM.eigenvalues i) : ℝ) : ℂ)) *
       star (eigU hM))) = eigU hM * diagonal (fun i => ((-u : ℝ) : ℂ) *
         (I * (Real.log (hM.eigenvalues i) : ℂ))) * (eigU hM)⁻¹ := by
     rw [hUinv]
@@ -179,7 +180,8 @@ theorem quadForm_imagPow_eq_sum {M : Matrix n n ℂ} (hM : M.IsHermitian) (X : M
     star (imagPow M u *ᵥ v) ⬝ᵥ (X *ᵥ (imagPow M u *ᵥ v)) =
       ∑ k : n × n, (star ((star (eigU hM) *ᵥ v) k.1) * (star (eigU hM) * X * eigU hM) k.1 k.2 *
         (star (eigU hM) *ᵥ v) k.2) *
-          cexp (I * u * ((Real.log (hM.eigenvalues k.1) - Real.log (hM.eigenvalues k.2) : ℝ) : ℂ)) := by
+          cexp (I * u *
+            ((Real.log (hM.eigenvalues k.1) - Real.log (hM.eigenvalues k.2) : ℝ) : ℂ)) := by
   have hUU' := eigU_mul_star hM
   have hv : v = eigU hM *ᵥ (star (eigU hM) *ᵥ v) := by rw [mulVec_mulVec, hUU', one_mulVec]
   have hX : X = eigU hM * (star (eigU hM) * X * eigU hM) * star (eigU hM) := by
@@ -472,7 +474,8 @@ theorem hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt {M : ℝ → Matrix n n 
     ring
   simp only [hint]
   rw [integral_fourierWeight_mul_re_sum, hL, Fintype.sum_prod_type' (f := fun r t =>
-    (star (c r) * K r t * c t) * ((Real.sinhRatio (1 / 4) (Real.log (x r) - Real.log (x t)) : ℝ) : ℂ))]
+    (star (c r) * K r t * c t) *
+      ((Real.sinhRatio (1 / 4) (Real.log (x r) - Real.log (x t)) : ℝ) : ℂ))]
   have hterm : ∀ r t, (star (c r) * K r t * c t) *
       ((Real.sinhRatio (1 / 4) (Real.log (x r) - Real.log (x t)) : ℝ) : ℂ) =
       -(star (a r) * g r t * a t) * ((N2 : ℂ))⁻¹ := by

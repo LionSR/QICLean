@@ -63,10 +63,12 @@ theorem weight_map_apply (T : MeanTree ι) {g : ι → κ} (hg : Function.Inject
   · intro h hh
     simp [Pi.single_eq_of_ne' (hg.ne hh)]
 
+omit [DecidableEq ι] in
 theorem weight_map_of_forall_ne (T : MeanTree ι) {g : ι → κ} {j : κ} (hj : ∀ c, g c ≠ j) :
     (T.map g).weight j = 0 :=
   weight_bind_eq_zero T fun h => by simp [Pi.single_eq_of_ne' (hj h)]
 
+omit [DecidableEq ι] [DecidableEq κ] in
 theorem mem_labels_map (T : MeanTree ι) {g : ι → κ} {j : κ} (hj : j ∈ (T.map g).labels) :
     ∃ c, g c = j := by
   induction T with
@@ -122,6 +124,7 @@ noncomputable def interpPath (T : MeanTree H) (S : ∀ h, MeanTree (C h))
     (A : H → Matrix n n ℂ) (A' : ∀ h, C h → Matrix n n ℂ) (q : ℝ) : Matrix n n ℂ :=
   interpRoot T S A A' (projIcc (0 : ℝ) 1 zero_le_one q)
 
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] in
 theorem posDef_interpRoot {T : MeanTree H} {S : ∀ h, MeanTree (C h)} {A : H → Matrix n n ℂ}
     {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef) (hA' : ∀ h c, (A' h c).PosDef)
     (p : I) : (interpRoot T S A A' p).PosDef :=
@@ -193,6 +196,7 @@ theorem hasDerivAt_eval_bind {S : ∀ h, MeanTree (C h)}
     simp only [interpTree, MeanTree.bind, derivLabel, _root_.add_apply,
       ContinuousLinearMap.comp_apply, map_sum, Finset.sum_add_distrib]
 
+omit [∀ h, Fintype (C h)] in
 /-- **The derivative at the root** (`06-transport.tex`, displays
 `transport:node-p-derivative` and `transport:root-p-derivative`, lines 442--468):
 `𝖧 = M^{-1/2} ∂_p M M^{-1/2} = ∑_h w_h Φ_{(h,old)}(log C_h)`. The coefficient is `w_h`,
@@ -236,6 +240,7 @@ theorem star_dotProduct_mulVec_eq_trace_traceAdjointMap
   rw [trace_traceAdjointMap_mul, vecMulVec_mul, trace_vecMulVec, dotProduct_mulVec,
     dotProduct_comm]
 
+omit [∀ h, Fintype (C h)] in
 /-- **Exact derivative** (area-law paper, Proposition 7.4, display
 `transport:exact-derivative`, `06-transport.tex` lines 402--408): for `0 < p < 1` and
 nonzero `pre`,
@@ -301,7 +306,7 @@ theorem trace_transportState {J : Type*} [DecidableEq J] {T' : MeanTree J}
   rw [transportState, trace_traceAdjoint_leafMap hA T' hw, trace_vecMulVec, dotProduct_comm,
     star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, conjTranspose_imagPow_mul_imagPow, one_mulVec]
 
-omit [∀ h, Fintype (C h)] in
+omit [∀ h, Fintype (C h)] [Fintype H] [DecidableEq H] [∀ h, DecidableEq (C h)] in
 /-- The interpolated subtree depends continuously on the interpolation parameter. -/
 theorem continuous_eval_interpTree {S : ∀ h, MeanTree (C h)} {A : H → Matrix n n ℂ}
     {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef) (hA' : ∀ h c, (A' h c).PosDef)
@@ -330,13 +335,14 @@ theorem continuous_eval_interpTree {S : ∀ h, MeanTree (C h)} {A : H → Matrix
       fun y _ => ⟨(posDef_eval hIn (interpTree l S y)).isHermitian,
         (posDef_eval hIn (interpTree rr S y)).isHermitian⟩
 
-omit [∀ h, Fintype (C h)] in
+omit [∀ h, Fintype (C h)] [Fintype H] [DecidableEq H] [∀ h, DecidableEq (C h)] in
 /-- The interpolation path is continuous. -/
 theorem continuous_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
     {A : H → Matrix n n ℂ} {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef)
     (hA' : ∀ h c, (A' h c).PosDef) : Continuous (interpPath T S A A') :=
   (continuous_eval_interpTree hA hA' T).comp continuous_projIcc
 
+omit [∀ h, Fintype (C h)] [Fintype H] [DecidableEq H] [∀ h, DecidableEq (C h)] in
 /-- `N²` is positive and continuous on `[0, 1]` (`06-transport.tex` lines 769--771). -/
 theorem continuous_filteredNormSq_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
     {A : H → Matrix n n ℂ} {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef)
@@ -371,6 +377,7 @@ theorem abs_re_trace_mul_le {R X : Matrix n n ℂ} (hR : R.PosSemidef) (hX : X.I
   rw [abs_le]
   constructor <;> linarith
 
+omit [∀ h, Fintype (C h)] in
 /-- The derivative of `-log N²` is bounded uniformly in `p ∈ (0, 1)` (`06-transport.tex`
 lines 771--775: the states are densities and the weights sum to one). -/
 theorem exists_abs_exactDerivative_le {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
@@ -409,6 +416,7 @@ theorem exists_abs_exactDerivative_le {T : MeanTree H} {S : ∀ h, MeanTree (C h
   simp only [abs_mul, abs_of_pos hm]
   exact mul_le_mul_of_nonneg_left hb hm.le
 
+omit [∀ h, Fintype (C h)] in
 /-- **Integration over a closed subinterval** (`06-transport.tex` lines 427--429 and
 769--779): the derivative of `-log N²` is interval integrable on `[p₀, p₁] ⊆ [0, 1]`, and
 its integral is the difference of the continuous endpoint values. -/

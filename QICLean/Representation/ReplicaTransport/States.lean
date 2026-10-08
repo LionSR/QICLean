@@ -108,6 +108,7 @@ namespace TransportData
 variable {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
   [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
 
+omit [Fintype H] [∀ h, Fintype (C h)] in
 /-- Every terminal partition is a partition. -/
 theorem isPartition_leafPart (hD : D.IsAdmissible) (j : Σ h, Option (C h)) (g : Fin K) :
     (D.leafPart j g).IsPartition := by
@@ -115,6 +116,7 @@ theorem isPartition_leafPart (hD : D.IsAdmissible) (j : Σ h, Option (C h)) (g :
   · exact hD.old_isPartition h g
   · exact Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g)
 
+omit [Fintype H] [∀ h, Fintype (C h)] in
 /-- The terminal inputs are positive definite. -/
 theorem posDef_input (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
     (hcomm : D.CrossBandCommute n t k) (j : Σ h, Option (C h)) :
@@ -126,6 +128,8 @@ theorem posDef_input (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
   · exact key
   · exact key
 
+omit [∀ v, NeZero (n v)] [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)]
+  [∀ h, DecidableEq (C h)] in
 /-- The terminal inputs commute with every copy permutation. -/
 theorem commute_permOp_input {t : ℝ} (k : ℕ) (s : Equiv.Perm (Fin k))
     (j : Σ h, Option (C h)) :
@@ -149,6 +153,7 @@ theorem commute_permOp_input {t : ℝ} (k : ℕ) (s : Equiv.Perm (Fin k))
   · exact key
   · exact key
 
+omit [Fintype H] [∀ h, Fintype (C h)] in
 /-- Every terminal weight is positive for `0 < p < 1`. -/
 theorem weight_tree_pos (hD : D.IsAdmissible) {p : ℝ} (hp : p ∈ Ioo 0 1)
     (j : Σ h, Option (C h)) : 0 < (D.tree (projIcc (0 : ℝ) 1 zero_le_one p)).weight j := by
@@ -160,12 +165,14 @@ theorem weight_tree_pos (hD : D.IsAdmissible) {p : ℝ} (hp : p ∈ Ioo 0 1)
   · rw [tree, MeanTree.weight_interpTree_new, hp']
     exact mul_pos (mul_pos hp.1 (hD.histWeight_pos h)) (hD.choiceWeight_pos h c)
 
+omit [Fintype H] [∀ h, Fintype (C h)] in
 /-- The transport states are density matrices on `𝒮_k` (`06-transport.tex` line 491). -/
 theorem posSemidef_state (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
     (hcomm : D.CrossBandCommute n t k) (pre : Config k (fun v => Fin (n v)) → ℂ) (p : ℝ)
     (j : Σ h, Option (C h)) (u : ℝ) : (D.state n t k pre p j u).PosSemidef :=
   Transport.posSemidef_transportState (D.posDef_input hD ht hcomm) _ _ _
 
+omit [Fintype H] [∀ h, Fintype (C h)] in
 theorem trace_state (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
     (hcomm : D.CrossBandCommute n t k) {pre : Config k (fun v => Fin (n v)) → ℂ}
     (hpre : pre ≠ 0) {p : ℝ} (hp : p ∈ Ioo 0 1) (j : Σ h, Option (C h)) (u : ℝ) :
@@ -175,6 +182,7 @@ theorem trace_state (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
   exact Transport.star_dotProduct_filteredVector
     (MeanTree.posDef_eval (D.posDef_input hD ht hcomm) _) hpre
 
+omit [Fintype H] [∀ h, Fintype (C h)] in
 theorem symProj_mul_state (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
     (hcomm : D.CrossBandCommute n t k) {pre : Config k (fun v => Fin (n v)) → ℂ}
     (hpre : pre ∈ symmetricSubspace k (fun v => Fin (n v))) (p : ℝ)
@@ -187,6 +195,7 @@ theorem symProj_mul_state (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : �
     (MeanTree.posDef_eval hIn _) (MeanTree.commute_eval_right hIn hP _)
     (symProj_mulVec_of_mem _ hpre)) j u
 
+omit [∀ h, Fintype (C h)] in
 /-- **Exact derivative for replica histories** (area-law paper, Proposition 7.4, display
 `transport:exact-derivative`, `06-transport.tex` lines 402--408). -/
 theorem hasDerivAt_exactDerivative (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
