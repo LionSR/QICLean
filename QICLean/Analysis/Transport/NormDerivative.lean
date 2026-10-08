@@ -216,6 +216,43 @@ theorem exists_hasDerivAt_rpow_neg_half {M : ℝ → Matrix n n ℂ} {D : Matrix
 
 /-! ### The norm derivative -/
 
+/-- One matrix coefficient of the norm derivative (`06-transport.tex` lines 476--481). -/
+theorem coeff_identity {xr xt N2 : ℝ} (hxr : 0 < xr) (hxt : 0 < xt) (hN : 0 < N2)
+    (ar at' drt grt : ℂ)
+    (hrel : grt * (((xt ^ (1 / 2 : ℝ) : ℝ) : ℂ) + ((xr ^ (1 / 2 : ℝ) : ℝ) : ℂ)) =
+      -(((xr ^ (-(1 / 2) : ℝ) : ℝ) : ℂ) * drt * ((xt ^ (-(1 / 2) : ℝ) : ℝ) : ℂ))) :
+    star (((Real.sqrt N2 : ℂ))⁻¹ * ((xr ^ (-(1 / 4) : ℝ) : ℝ) : ℂ) * ar) *
+        (((xr ^ (-(1 / 2) : ℝ) : ℝ) : ℂ) * drt * ((xt ^ (-(1 / 2) : ℝ) : ℝ) : ℂ)) *
+        (((Real.sqrt N2 : ℂ))⁻¹ * ((xt ^ (-(1 / 4) : ℝ) : ℝ) : ℂ) * at') *
+        ((Real.sinhRatio (1 / 4) (Real.log xr - Real.log xt) : ℝ) : ℂ) =
+      -(star ar * grt * at') * ((N2 : ℂ))⁻¹ := by
+  have hS : 0 < xt ^ (1 / 2 : ℝ) + xr ^ (1 / 2 : ℝ) := by positivity
+  have hs := rpow_mul_sinhRatio_quarter hxr hxt
+  have hs' : ((xr ^ (-(1 / 4) : ℝ) : ℝ) : ℂ) * ((xt ^ (-(1 / 4) : ℝ) : ℝ) : ℂ) *
+      (((xr ^ (-(1 / 2) : ℝ) : ℝ) : ℂ) * ((xt ^ (-(1 / 2) : ℝ) : ℝ) : ℂ)) *
+      ((Real.sinhRatio (1 / 4) (Real.log xr - Real.log xt) : ℝ) : ℂ) *
+      (((xt ^ (1 / 2 : ℝ) : ℝ) : ℂ) + ((xr ^ (1 / 2 : ℝ) : ℝ) : ℂ)) =
+      ((xr ^ (-(1 / 2) : ℝ) : ℝ) : ℂ) * ((xt ^ (-(1 / 2) : ℝ) : ℝ) : ℂ) := by
+    have : xr ^ (-(1 / 4) : ℝ) * xt ^ (-(1 / 4) : ℝ) * (xr ^ (-(1 / 2) : ℝ) * xt ^ (-(1 / 2) : ℝ)) *
+        Real.sinhRatio (1 / 4) (Real.log xr - Real.log xt) *
+        (xt ^ (1 / 2 : ℝ) + xr ^ (1 / 2 : ℝ)) = xr ^ (-(1 / 2) : ℝ) * xt ^ (-(1 / 2) : ℝ) := by
+      rw [hs, add_comm (xt ^ (1 / 2 : ℝ))]
+      field_simp
+    exact_mod_cast this
+  have hs2 : ((Real.sqrt N2 : ℂ))⁻¹ ^ 2 = ((N2 : ℂ))⁻¹ := by
+    rw [inv_pow, ← Complex.ofReal_pow, Real.sq_sqrt hN.le]
+  have hstar : star (((Real.sqrt N2 : ℂ))⁻¹ * ((xr ^ (-(1 / 4) : ℝ) : ℝ) : ℂ) * ar) =
+      ((Real.sqrt N2 : ℂ))⁻¹ * ((xr ^ (-(1 / 4) : ℝ) : ℝ) : ℂ) * star ar := by
+    simp [Complex.conj_ofReal, mul_comm]
+  have hSne : (((xt ^ (1 / 2 : ℝ) : ℝ) : ℂ) + ((xr ^ (1 / 2 : ℝ) : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hS.ne'
+  rw [hstar]
+  apply mul_right_cancel₀ hSne
+  linear_combination (((Real.sqrt N2 : ℂ))⁻¹ ^ 2 * (star ar * drt * at')) * hs' +
+    (star ar * at' * ((N2 : ℂ))⁻¹) * hrel +
+    (star ar * drt * at' * ((xr ^ (-(1 / 2) : ℝ) : ℝ) : ℂ) *
+      ((xt ^ (-(1 / 2) : ℝ) : ℝ) : ℂ)) * hs2
+
 theorem filteredNormSq_pos {M : Matrix n n ℂ} (hM : M.PosDef) {pre : n → ℂ} (hpre : pre ≠ 0) :
     0 < filteredNormSq M pre := by
   have hne : filteredRaw M pre ≠ 0 := by
@@ -343,6 +380,9 @@ theorem hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt {M : ℝ → Matrix n n 
     rw [Matrix.mul_assoc, hUU', Matrix.mul_one]
   have hpow : ∀ s : ℝ, Mp ^ s = U * diagonal (fun i => ((x i ^ s : ℝ) : ℂ)) * star U :=
     fun s => rpow_eq_eigen hMp s
+  have hrel_e : ∀ r t, g r t * (((x t ^ (1 / 2 : ℝ) : ℝ) : ℂ) + ((x r ^ (1 / 2 : ℝ) : ℝ) : ℂ)) =
+      -(((x r ^ (-(1 / 2) : ℝ) : ℝ) : ℂ) * d r t * ((x t ^ (-(1 / 2) : ℝ) : ℝ) : ℂ)) :=
+    relation_eigen hMp hrel
   clear_value a g d
   -- The left side in coordinates.
   have hL : star pre ⬝ᵥ (G' *ᵥ pre) = ∑ r, ∑ t, star (a r) * g r t * a t := by
@@ -350,6 +390,50 @@ theorem hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt {M : ℝ → Matrix n n 
     simp only [dotProduct, mulVec, Pi.star_apply, Finset.mul_sum]
     refine Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun t _ => ?_
     ring
-  sorry
+  -- The right side in coordinates.
+  set c : n → ℂ := fun r => ((Real.sqrt N2 : ℂ))⁻¹ * ((x r ^ (-(1 / 4) : ℝ) : ℝ) : ℂ) * a r
+    with hc_def
+  set X : n → ℂ := fun i => ((x i ^ (-(1 / 2) : ℝ) : ℝ) : ℂ)
+  set K : Matrix n n ℂ := diagonal X * d * diagonal X
+  have hv : filteredVector Mp pre = U *ᵥ c := by
+    rw [filteredVector, filteredRaw, hpow]
+    change ((Real.sqrt N2 : ℂ))⁻¹ • _ = _
+    rw [hpre_e, conj_mulVec_mulVec hUU, ← mulVec_smul]
+    congr 1
+    ext r
+    simp only [Pi.smul_apply, mulVec_diagonal, smul_eq_mul, c]
+    ring
+  have hH : Mp ^ (-(1 / 2) : ℝ) * D * Mp ^ (-(1 / 2) : ℝ) = U * K * star U := by
+    rw [hpow, hDe]
+    simp only [K, X, Matrix.mul_assoc, hc]
+  have hint : ∀ u : ℝ, star (imagPow Mp u *ᵥ filteredVector Mp pre) ⬝ᵥ
+      ((Mp ^ (-(1 / 2) : ℝ) * D * Mp ^ (-(1 / 2) : ℝ)) *ᵥ (imagPow Mp u *ᵥ filteredVector Mp pre)) =
+      ∑ k : n × n, (star (c k.1) * K k.1 k.2 * c k.2) *
+        cexp (I * u * ((Real.log (x k.1) - Real.log (x k.2) : ℝ) : ℂ)) := by
+    intro u
+    rw [imagPow_eq_eigen hMp.isHermitian u, hH, hv, quadForm_eigen hUU, ← Finset.sum_product']
+    refine Finset.sum_congr rfl fun k _ => ?_
+    have he : star (cexp (((-u : ℝ) : ℂ) * (I * (Real.log (x k.1) : ℂ)))) *
+        cexp (((-u : ℝ) : ℂ) * (I * (Real.log (x k.2) : ℂ))) =
+        cexp (I * u * ((Real.log (x k.1) - Real.log (x k.2) : ℝ) : ℂ)) := by
+      rw [Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]
+      congr 1
+      simp only [map_mul, Complex.conj_ofReal, Complex.conj_I]
+      push_cast
+      ring
+    rw [← he]
+    ring
+  simp only [hint]
+  rw [integral_fourierWeight_mul_re_sum, hL, Fintype.sum_prod_type' (f := fun r t =>
+    (star (c r) * K r t * c t) * ((Real.sinhRatio (1 / 4) (Real.log (x r) - Real.log (x t)) : ℝ) : ℂ))]
+  have hterm : ∀ r t, (star (c r) * K r t * c t) *
+      ((Real.sinhRatio (1 / 4) (Real.log (x r) - Real.log (x t)) : ℝ) : ℂ) =
+      -(star (a r) * g r t * a t) * ((N2 : ℂ))⁻¹ := by
+    intro r t
+    have hK : K r t = X r * d r t * X t := by simp [K, mul_diagonal, diagonal_mul]
+    rw [hK]
+    exact coeff_identity (hx r) (hx t) hNp _ _ _ _ (hrel_e r t)
+  simp only [hterm, ← Finset.sum_mul, Finset.sum_neg_distrib, neg_mul, Complex.neg_re]
+  rw [← Complex.ofReal_inv, Complex.re_mul_ofReal, div_eq_mul_inv]
 
 end Matrix.Transport

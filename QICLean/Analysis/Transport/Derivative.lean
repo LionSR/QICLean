@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.Transport.PathDerivative
+import QICLean.Analysis.Transport.NormDerivative
 
 /-!
 # The exact derivative of the filtered norm
@@ -226,21 +226,6 @@ theorem exists_hasDerivAt_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)
   unfold interpPath interpRoot
   rw [key, weight_interpTree_old, hpI, smul_smul, ← mul_assoc,
     inv_mul_cancel₀ (by linarith [hp.2] : (1 - p) ≠ 0), one_mul]
-
-/-- **The derivative of the filtered norm** (`06-transport.tex`, display
-`transport:norm-derivative` and the Fourier formula `transport:g-fourier`,
-lines 470--491): for a differentiable path of positive definite matrices with
-`M(p)^{-1/2} M'(p) M(p)^{-1/2} = 𝖧`,
-`-∂_p log N² = ∫ m_{1/4}(u) ⟨M^{-iu} v, 𝖧 M^{-iu} v⟩ du`. -/
-theorem hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt {M : ℝ → Matrix n n ℂ}
-    {D : Matrix n n ℂ} {p : ℝ} (hM : ∀ q, (M q).PosDef) (hD : HasDerivAt M D p)
-    {pre : n → ℂ} (hpre : pre ≠ 0) :
-    HasDerivAt (fun q => -Real.log (filteredNormSq (M q) pre))
-      (∫ u, fourierWeight u *
-        (star (imagPow (M p) u *ᵥ filteredVector (M p) pre) ⬝ᵥ
-          ((M p ^ (-(1 / 2) : ℝ) * D * M p ^ (-(1 / 2) : ℝ)) *ᵥ
-            (imagPow (M p) u *ᵥ filteredVector (M p) pre))).re) p := by
-  sorry
 
 omit [DecidableEq n] in
 /-- Moving a positive map to its trace adjoint: `⟨w, Φ(Z) w⟩ = Tr(Φ^*(|w⟩⟨w|) Z)`
