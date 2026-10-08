@@ -1,0 +1,14 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/validate-manifest.py",
+    "--allow-inclusion"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.36,
+  "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+  "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/leaf-preservation.log",
+  "sha256": "a155894a52754f004f2ddcc703e2655eda40a616eef4a49773e96b79b892d3a3"
+}

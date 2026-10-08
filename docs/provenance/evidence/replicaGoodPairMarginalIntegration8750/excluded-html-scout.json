@@ -1,0 +1,13 @@
+{
+  "classification": "Excluded read-only exploratory HTML inspection, not a mathematical or book verification command",
+  "actual_command": [
+    "python3",
+    "-"
+  ],
+  "working_directory": ".",
+  "stdin": "from pathlib import Path\nfrom bs4 import BeautifulSoup\ns=BeautifulSoup(Path('blueprint/web/ch-entropy.html').read_text(),'html.parser');a=s.find(id='sec:replica_good_pair_marginal')\nfor n in [a,*a.next_siblings]:\n if not getattr(n,'name',None):continue\n if n is not a and n.name=='h1':break\n print(n.name,n.get('id'),n.get('class'),n.get_text(' ',strip=True)[:130])\n",
+  "actual_exit_code": 1,
+  "tool_output": "Traceback (most recent call last):\n  File \"<stdin>\", line 2, in <module>\nModuleNotFoundError: No module named 'bs4'\n",
+  "raw_capture": "No separate raw stdout file was saved for this exploratory command; the displayed tool output is recorded as such.",
+  "resolution": "Inspected the generated HTML with rg, then ran the recorded Playwright full-entry checks successfully. No production or frozen evidence files changed."
+}

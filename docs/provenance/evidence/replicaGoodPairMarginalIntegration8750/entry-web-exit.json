@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/inspect-entries.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 6.23,
+  "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+  "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/entry-web.log",
+  "sha256": "69f399d15a16d4095e05e9c4c3e3ae6c5bd6ed1a007fb648252cf4959757dc24"
+}
