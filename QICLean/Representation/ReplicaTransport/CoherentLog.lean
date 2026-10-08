@@ -545,6 +545,64 @@ theorem le_coherentAverage_inv {g : (Ω → ℂ) → ℝ} (hg : Continuous g) (h
   convert hfin using 1
   abel
 
+omit [Fintype Ω] [DecidableEq Ω] in
+private theorem mul_resolvent_aux {α : Type*} [Ring α] {P R B : α} (hPP : P * P = P)
+    (hRP : Commute R P) (hBP : Commute B P) (hRB : R * B = 1) :
+    R * P * (B * P) * (R * P) = R * P := by
+  calc R * P * (B * P) * (R * P) = R * (P * B) * (P * (R * P)) := by simp only [mul_assoc]
+    _ = R * (B * P) * (P * (R * P)) := by rw [← hBP.eq]
+    _ = R * B * ((P * P) * R) * P := by simp only [mul_assoc]
+    _ = R * B * (R * P) * P := by rw [hPP, ← hRP.eq]
+    _ = (R * B) * R * (P * P) := by simp only [mul_assoc]
+    _ = R * P := by rw [hRB, hPP, one_mul]
+
+/-- **Resolvent form of the Jensen step** (`06-transport.tex` lines 526--546): if `Y` is
+positive definite, commutes with `Π`, and `Π Y Π = 𝒬_k(f)`, then for each `s ≥ 0`
+`𝒬_k(k_s ∘ f) ≤ Π k_s(Y) Π` for the resolvent kernel `k_s(x) = 1/(1+s) - 1/(x+s)`. -/
+theorem coherentAverage_logKernel_le {f : (Ω → ℂ) → ℝ} (hf : Continuous f)
+    (hpos : ∀ θ, 0 < f θ) {Y : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hY : Y.PosDef)
+    (hYP : Commute Y (symProj (copyPerm Ω k)))
+    (hPYP : symProj (copyPerm Ω k) * Y * symProj (copyPerm Ω k) = coherentAverage k a f)
+    {s : ℝ} (hs : 0 ≤ s) :
+    coherentAverage k a (fun θ => logKernel s (f θ)) ≤
+      symProj (copyPerm Ω k) * cfc (logKernel s) Y * symProj (copyPerm Ω k) := by
+  set P := symProj (copyPerm Ω k) with hPdef
+  have hPP : P * P = P := symProj_mul_self k
+  have hPh : P.IsHermitian := isHermitian_symProj k
+  set R := resolvent Y s with hRdef
+  set B := Y + s • (1 : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) with hBdef
+  have hBR : B * R = 1 := add_smul_one_mul_resolvent hY hs
+  have hRP : Commute R P := commute_resolvent hYP s
+  have hBP : Commute B P := hYP.add_left ((Commute.one_left P).smul_left s)
+  have hRB' : Commute R B :=
+    (commute_resolvent (Commute.refl Y) s).add_right ((Commute.one_right R).smul_right s)
+  have hRB : R * B = 1 := by rw [hRB'.eq, hBR]
+  have hQf : coherentAverage k a f = Y * P := by
+    rw [← hPYP, ← hYP.eq, mul_assoc, hPP]
+  have hQs : coherentAverage k a (fun θ => f θ + s) = B * P := by
+    rw [coherentAverage_add k a hf continuous_const, coherentAverage_const, hQf, hBdef, add_mul,
+      smul_mul_assoc, one_mul]
+  have hXdef : P * R * P = R * P := by rw [← hRP.eq, mul_assoc, hPP]
+  have hXh : (P * R * P).IsHermitian := by
+    unfold IsHermitian
+    rw [conjTranspose_mul, conjTranspose_mul, hPh.eq, (isHermitian_resolvent Y s).eq, mul_assoc]
+  have hXP : P * R * P * P = P * R * P := by rw [mul_assoc, hPP]
+  have hPX : P * (P * R * P) = P * R * P := by rw [← mul_assoc, ← mul_assoc, hPP]
+  have hXQ : P * R * P * coherentAverage k a (fun θ => f θ + s) * (P * R * P) = P * R * P := by
+    rw [hQs, hXdef]
+    exact mul_resolvent_aux hPP hRP hBP hRB
+  have hle := le_coherentAverage_inv k a (g := fun θ => f θ + s) (hf.add continuous_const)
+    (fun θ => add_pos_of_pos_of_nonneg (hpos θ) hs) hXh hXQ hXP hPX
+  have hinv : Continuous fun θ => (f θ + s)⁻¹ :=
+    (hf.add continuous_const).inv₀ fun θ => (add_pos_of_pos_of_nonneg (hpos θ) hs).ne'
+  have hL : coherentAverage k a (fun θ => logKernel s (f θ)) =
+      (1 + s)⁻¹ • P - coherentAverage k a (fun θ => (f θ + s)⁻¹) := by
+    rw [← coherentAverage_const, ← coherentAverage_sub k a continuous_const hinv]
+    rfl
+  rw [hL, cfc_logKernel hY hs, ← hRdef, mul_sub, sub_mul, mul_smul_comm, mul_one, smul_mul_assoc,
+    hPP]
+  exact sub_le_sub_left hle _
+
 end Jensen
 
 /-- **Operator Jensen inequality for the logarithm** (`06-transport.tex`, display
