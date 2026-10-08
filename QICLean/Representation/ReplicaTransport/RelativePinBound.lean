@@ -233,11 +233,7 @@ theorem relativePinBound : RelativePinBound.{u} := by
 
 /-- **Proposition 7.4, entropy and energy transport, assuming only the split-leaf skew bound**
 (area-law paper, `prop:transport`, `06-transport.tex` lines 377--434): the relative coherent
-pin is `TensorPower.ReplicaTransport.relativePinBound`.
-
-**Scope restriction (full-space commutation):** as in
-`transport_of_relativePin_of_splitSkewBound`; see
-`docs/paper-gaps/oai26_transport_crossband_commutation.tex`. -/
+pin is `TensorPower.ReplicaTransport.relativePinBound`. -/
 theorem transport_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
     ∃ c₀ Cent eent Cen een : ℝ, 0 < c₀ ∧
       ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]

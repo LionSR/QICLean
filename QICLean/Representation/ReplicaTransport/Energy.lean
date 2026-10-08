@@ -20,7 +20,7 @@ Proof outline:
 
 * `commute_input_copyMean_of_not_mem_splitLeaves` — an unsplit leaf metric commutes with
   `hbar_i` (lines 359--364);
-* `skewSquare_input_eq_bandMetric` — at a split leaf only the exceptional band fails to
+* `skewSquare_input_eq_symBandMetric` — at a split leaf only the exceptional band fails to
   commute, and the other factors cancel in `O_{i,j}` (lines 732--735);
 * `splitEta_eq_splitBandEta` — `η_{i,j}` is the split entropy of the exceptional band;
 * `trace_state_skewSquare_le` — Lemma 6.5 at every split term--leaf pair, with one common
@@ -294,7 +294,7 @@ omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h
   [∀ v, NeZero (n v)] in
 /-- A terminal input is the product of the band metrics of its leaf. -/
 theorem input_eq_prod (t : ℝ) (k : ℕ) (j : Σ h, Option (C h)) :
-    D.input n t k j = (List.ofFn fun g => bandMetric n t k (D.leafPart j g)).prod := by
+    D.input n t k j = (List.ofFn fun g => symBandMetric n t k (D.leafPart j g)).prod := by
   rcases j with ⟨h, _ | c⟩ <;> rfl
 
 omit [∀ h, DecidableEq (C h)] [DecidableEq H] [Fintype ι] [∀ v, NeZero (n v)] in
@@ -313,8 +313,9 @@ theorem commute_input_copyMean_of_not_mem_splitLeaves (hD : D.IsAdmissible) {t :
   rw [input_eq_prod]
   refine Commute.list_prod_left _ _ fun M hM => ?_
   obtain ⟨g, rfl⟩ := List.mem_ofFn.mp hM
-  exact commute_bandMetric_copyMean_of_contains (D.isPartition_leafPart hD j g) k (hEsupp i)
-    (D.forall_contains_of_not_mem_splitLeaves E hj g)
+  exact commute_symBandMetric_of_commute (fun s => commute_copyPerm_copyMean k _ s)
+    (commute_bandMetric_copyMean_of_contains (D.isPartition_leafPart hD j g) k (hEsupp i)
+      (D.forall_contains_of_not_mem_splitLeaves E hj g))
 
 omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] [Fintype ι]
   [∀ v, NeZero (n v)] in
@@ -335,18 +336,22 @@ theorem isPartition_leafPart' (hD : D.IsAdmissible) (j : Σ h, Option (C h)) (g 
 omit [Fintype H] [∀ h, Fintype (C h)] [Fintype ι] in
 /-- **Single-band reduction at a split leaf** (`06-transport.tex` lines 732--735): if `g`
 is the exceptional band of `D_i` at `j`, the other band factors cancel in
-`O_{i,j} = A_j^{-1/2} hbar_i A_j^{1/2}`, so the skew square is that of the band metric. -/
-theorem skewSquare_input_eq_bandMetric (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
+`O_{i,j} = A_j^{-1/2} hbar_i A_j^{1/2}`, so the skew square is that of the band metric. The
+statement is for the band metrics on `𝒮_k` extended by the identity; against a symmetric
+density matrix this is the skew square of `bandMetric` (`mul_skewSquare_symBandMetric`). -/
+theorem skewSquare_input_eq_symBandMetric (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
     (hcomm : D.CrossBandCommute n t k) (hEsupp : ∀ i, IsSupportedOn (E.term i) (E.support i))
     (hcompat : D.SupportCompatible E) {i : ι} {j : Σ h, Option (C h)} {g : Fin K}
     (hg : ¬ (D.leafPart j g).Contains (E.support i)) :
     Transport.skewSquare (D.input n t k j) (copyMean n k (E.term i)) =
-      Transport.skewSquare (bandMetric n t k (D.leafPart j g)) (copyMean n k (E.term i)) := by
-  have key := Matrix.list_ofFn_prod_rpow_conj (fun g => bandMetric n t k (D.leafPart j g))
-    (fun g => posDef_bandMetric (D.isPartition_leafPart' hD j g) ht k)
-    (fun g g' hgg => hcomm j j g g' hgg) g (X := copyMean n k (E.term i)) fun g' hg' =>
-      commute_bandMetric_copyMean_of_contains (D.isPartition_leafPart' hD j g') k (hEsupp i)
-        (D.contains_of_ne E hcompat hg hg')
+      Transport.skewSquare (symBandMetric n t k (D.leafPart j g)) (copyMean n k (E.term i)) := by
+  have key := Matrix.list_ofFn_prod_rpow_conj (fun g => symBandMetric n t k (D.leafPart j g))
+    (fun g => posDef_symBandMetric (D.isPartition_leafPart' hD j g) ht k)
+    (fun g g' hgg => (D.crossBandCommute_iff t k).mp hcomm j j g g' hgg) g
+    (X := copyMean n k (E.term i)) fun g' hg' =>
+      commute_symBandMetric_of_commute (fun s => commute_copyPerm_copyMean k _ s)
+        (commute_bandMetric_copyMean_of_contains (D.isPartition_leafPart' hD j g') k (hEsupp i)
+          (D.contains_of_ne E hcompat hg hg'))
   rw [← input_eq_prod] at key
   simp only [Transport.skewSquare, key]
 
@@ -420,7 +425,9 @@ theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}
             ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ) :=
         funext fun θ => by rw [D.splitEta_eq_splitBandEta E hcompat hg]
       dsimp only
-      rw [D.skewSquare_input_eq_bandMetric E hD (by linarith) (hcomm k) hEsupp hcompat hg, hfun]
+      rw [D.skewSquare_input_eq_symBandMetric E hD (by linarith) (hcomm k) hEsupp hcompat hg,
+        mul_skewSquare_symBandMetric (D.isPartition_leafPart hD j g) (by linarith)
+          (fun s => commute_copyPerm_copyMean k _ s) hρ.isHermitian hsymρ, hfun]
       refine hb.trans (add_le_add ?_ le_rfl)
       have hI := realCoherentIntegral_nonneg (base n) hρ (f := fun θ => splitBandEta n
         (D.leafPart j g) (E.support i) ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))
