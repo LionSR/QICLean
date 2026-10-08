@@ -1,0 +1,73 @@
+\subsection{Letter counts and multiplicities}
+\label{sec:poisson_word_counts}
+
+% Combinatorial intermediate for area-law09-amplification.tex, lines 49--54
+% and 237--253; no chronological clock-process identification is asserted.
+Let $I$ be a finite alphabet.
+
+\begin{definition}[Letter count vector]
+\label{def:poisson_word_count_vector}
+\lean{WordMultiplicity.countsFinsupp, WordMultiplicity.sum_counts,
+PoissonWord.countVector, PoissonWord.countEvent, PoissonWord.countFiber,
+PoissonWord.countVector_nil, PoissonWord.sum_countVector,
+PoissonWord.length_eq_sum_of_countVector_eq}
+\leanok
+\uses{def:poisson_word_measure}
+For a word $w\in I^{\{0,\ldots,m-1\}}$, define
+$C(w)=\sum_{j=0}^{m-1}e_{w(j)}$, where $e_i$ is the vector equal to one at
+$i$ and zero elsewhere. Thus $C(w)_i$ is the number of occurrences of $i$,
+and $\sum_{i\in I}C(w)_i=m$ when $I$ is finite.
+The empty word has count vector zero.
+For $n\in\N^I$, put $\mathcal W_n=\{w\in\mathcal W:C(w)=n\}$.
+Every word in $\mathcal W_n$ has length $\sum_{i\in I}n_i$.
+\end{definition}
+
+\begin{lemma}[Fixed-length multiplicity]
+\label{lem:word_multiplicity_card}
+\lean{WordMultiplicity.card_counts_eq}
+\leanok
+\uses{def:poisson_word_count_vector}
+For a finite alphabet $I$, a nonnegative count vector $n\in\N^I$, and
+$m\in\N$, the number of length-$m$ words with count vector $n$ is
+\begin{align}
+ \bigl|\{w\in I^{\{0,\ldots,m-1\}}:C(w)=n\}\bigr|
+ &=\begin{cases}
+    \displaystyle\frac{(\sum_{i\in I}n_i)!}{\prod_{i\in I}n_i!},
+       &\sum_{i\in I}n_i=m,\\
+    0,&\sum_{i\in I}n_i\ne m.
+   \end{cases}
+ \label{eq:word_multiplicity_card}
+\end{align}
+\end{lemma}
+\begin{proof}
+\leanok
+Expand $(\sum_{i\in I}X_i)^m$ by choosing a variable at each of the $m$
+positions. The monomial contributed by $w$ is
+$\prod_{j=0}^{m-1}X_{w(j)}=X^{C(w)}$.
+Hence the coefficient of $X^n$ counts exactly the words with $C(w)=n$.
+The multinomial theorem gives the same coefficient as the right side
+of (\ref{eq:word_multiplicity_card}).
+\end{proof}
+
+\begin{lemma}[Cardinality of a count fiber]
+\label{lem:poisson_word_count_fiber}
+\lean{PoissonWord.countFiberEquiv, PoissonWord.instFintypeCountFiber,
+PoissonWord.finite_countEvent, PoissonWord.card_countFiber,
+PoissonWord.card_countFiber_eq_factorial, PoissonWord.countFiber_nonempty,
+PoissonWord.countEvent_nonempty}
+\leanok
+\uses{def:poisson_word_count_vector}
+For every finite alphabet $I$ and count vector $n\in\N^I$, the set
+$\mathcal W_n$ is finite and nonempty, with
+$|\mathcal W_n|=(\sum_{i\in I}n_i)!/\prod_{i\in I}n_i!$.
+This includes $I=\varnothing$ and the zero count vector; in both cases the
+cardinality is one.
+\end{lemma}
+\begin{proof}
+\leanok
+\uses{lem:word_multiplicity_card}
+Every element of $\mathcal W_n$ has length $\sum_i n_i$, so retaining or
+forgetting this fixed length gives a bijection with the finite set counted
+in Lemma~\ref{lem:word_multiplicity_card}.
+Its cardinality is the multinomial coefficient, which is positive.
+\end{proof}
