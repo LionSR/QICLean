@@ -140,6 +140,14 @@ theorem commute_permOp_bandMetric (t : ℝ) (k : ℕ) (π : PYF V) (s : Equiv.Pe
   exact ((((commute_inv_of_commute (hW _)).mul_right (commute_inv_of_commute (hW _))).mul_right
     (hW _)).pow_right 2)
 
+omit [Fintype V] [DecidableEq V] in
+/-- `log(e dim x) ≥ 1`. -/
+theorem one_le_logDim (x : Finset V) : 1 ≤ logDim n x := by
+  have hP : 1 ≤ ∏ v ∈ x, (n v : ℝ) := Finset.one_le_prod₀ fun v _ => by
+    exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne (n v))
+  rw [logDim, Real.log_mul (Real.exp_pos 1).ne' (by linarith), Real.log_exp]
+  linarith [Real.log_nonneg hP]
+
 omit [∀ v, NeZero (n v)] in
 /-- The entropy of a region of a pure state is continuous in the vector: the reduced matrix is
 quadratic in the vector and `ρ ↦ Tr η(ρ)` is continuous on Hermitian matrices. -/
@@ -276,6 +284,42 @@ theorem smul_coherentProj_le_bandRelRatio (hD : D.IsAdmissible) {t : ℝ} (ht : 
       rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]
       exact Finset.sum_congr rfl fun c _ => by simp only [hx]; ring
 
+omit [∀ v, NeZero (n v)] [Fintype H] [∀ h, Fintype (C h)] in
+/-- `u ↦ m_{1/4}(u) Re Tr(σ_{j,u} Y)` is integrable: the state is a continuous function of the
+unitary `M^{-iu}`, which ranges over the compact unitary group. -/
+theorem integrable_fourierWeight_mul_trace_state (t : ℝ) (k : ℕ)
+    (pre : Config k (fun v => Fin (n v)) → ℂ) (p : ℝ) (j : Σ h, Option (C h))
+    (Y : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ) :
+    MeasureTheory.Integrable fun u =>
+      Matrix.Transport.fourierWeight u * (D.state n t k pre p j u * Y).trace.re := by
+  set M := (D.tree (projIcc (0 : ℝ) 1 zero_le_one p)).eval (D.input n t k)
+  set v := Matrix.Transport.filteredVector (D.rootPath n t k p) pre
+  set Φ := traceAdjointMap ((D.tree (projIcc (0 : ℝ) 1 zero_le_one p)).leafMap
+    (D.input n t k) j).toLinearMap
+  let G : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ → ℝ := fun U =>
+    (Φ (vecMulVec (U *ᵥ v) (star (U *ᵥ v))) * Y).trace.re
+  have hvec : Continuous fun U : Matrix (Config k fun v => Fin (n v))
+      (Config k fun v => Fin (n v)) ℂ => vecMulVec (U *ᵥ v) (star (U *ᵥ v)) := by
+    refine continuous_pi fun x => continuous_pi fun y => ?_
+    simp only [vecMulVec_apply, mulVec, dotProduct, Pi.star_apply]
+    fun_prop
+  have hG : Continuous G := Complex.continuous_re.comp
+    (((Φ.continuous_of_finiteDimensional.comp hvec).mul continuous_const).matrix_trace)
+  have hstate : ∀ u, (D.state n t k pre p j u * Y).trace.re =
+      G (hermitianUnitaryPath (CFC.log M) (-u)) := fun u => rfl
+  obtain ⟨Cb, hCb⟩ := (isCompact_unitaryGroup (Config k fun v => Fin (n v))).exists_bound_of_continuousOn
+    hG.continuousOn
+  have hmem : ∀ u, hermitianUnitaryPath (CFC.log M) (-u) ∈
+      (unitaryGroup (Config k fun v => Fin (n v)) ℂ : Set _) := fun u =>
+    Matrix.mem_unitaryGroup_iff.mpr (hermitianUnitaryPath_mul_conjTranspose _
+      (IsSelfAdjoint.log (a := M)) (-u))
+  simp_rw [hstate]
+  have hint := (Real.integrable_sinhRatioDensity (s := 1 / 4) (by norm_num)).bdd_mul
+    (f := fun u => G (hermitianUnitaryPath (CFC.log M) (-u)))
+    ((hG.comp ((continuous_hermitianUnitaryPath _).comp continuous_neg)).aestronglyMeasurable)
+    (Filter.Eventually.of_forall fun u => hCb _ (hmem u))
+  simpa [mul_comm, Matrix.Transport.fourierWeight] using hint
+
 omit [Fintype H] [∀ h, Fintype (C h)] in
 /-- **Band factorization** `log C_h = ∑_g log C_{h,g}` (`06-transport.tex`, display
 `transport:relative-factorization`, lines 501--509). -/
@@ -337,7 +381,202 @@ theorem exists_entropyGain_le_exactDerivative :
               (k : ℝ) * a * D.entropyGain n (a / 2) k pre p -
                   Cent * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ eent - β k ≤
                 D.exactDerivative n (a / 2) k pre p := by
-  sorry
+  obtain ⟨c₁, Cpin, epin, hc₁, hpinAll⟩ := exists_relativePin
+  refine ⟨min c₁ (1 / 4), |Cpin| / 2, max epin 0, lt_min hc₁ (by norm_num), ?_⟩
+  intro V _ _ n _ K H _ _ C _ _ D hD a ℓ ha hℓ haℓ hcomm hdim
+  have haℓc : a * ℓ ≤ c₁ := haℓ.trans (min_le_left _ _)
+  have ha4 : a ≤ 1 / 4 := by
+    have : a * 1 ≤ a * ℓ := mul_le_mul_of_nonneg_left hℓ ha.le
+    linarith [min_le_right c₁ (1 / 4 : ℝ)]
+  have ht0 : (0 : ℝ) < a / 2 := by positivity
+  have ht4 : a / 2 < 1 / 4 := by linarith
+  have h2t : 2 * (a / 2) = a := by ring
+  have hbound : ∀ h (c : C h) g, 2 * (a / 2) * logDim n (D.move h c g).subsystem ≤ c₁ :=
+    fun h c g => by
+      rw [h2t]
+      exact (mul_le_mul_of_nonneg_left (hdim h c g) ha.le).trans haℓc
+  choose b hbpos hbO hbpin using fun h (c : C h) g => hpinAll n (D.old h g)
+    (hD.old_isPartition h g) (D.move h c g) (hD.move_isValid h c g) ht0 ht4 (hbound h c g)
+  -- A common prefactor `b_k = exp(-L_k)`.
+  set L : ℕ → ℝ := fun k => ∑ x : (Σ h, C h × Fin K),
+    max (-Real.log (b x.1 x.2.1 x.2.2 k)) 0 with hL
+  have hLx : ∀ k h (c : C h) g, -Real.log (b h c g k) ≤ L k := fun k h c g =>
+    (le_max_left _ _).trans (Finset.single_le_sum (f := fun x : (Σ h, C h × Fin K) =>
+      max (-Real.log (b x.1 x.2.1 x.2.2 k)) 0) (fun _ _ => le_max_right _ _)
+      (Finset.mem_univ ⟨h, c, g⟩))
+  set bmin : ℕ → ℝ := fun k => Real.exp (-L k) with hbmin
+  have hbmin_pos : ∀ k, 0 < bmin k := fun k => Real.exp_pos _
+  have hbmin_le : ∀ k h (c : C h) g, bmin k ≤ b h c g k := fun k h c g => by
+    calc Real.exp (-L k) ≤ Real.exp (Real.log (b h c g k)) :=
+          Real.exp_le_exp.mpr (by linarith [hLx k h c g])
+      _ = b h c g k := Real.exp_log (hbpos h c g k)
+  have hLO : L =O[atTop] fun k : ℕ => Real.log (k + 1) := by
+    refine Asymptotics.IsBigO.fun_sum fun x _ => ?_
+    refine (Asymptotics.IsBigO.of_bound 1 (Filter.Eventually.of_forall fun k => ?_)).trans
+      (hbO x.1 x.2.1 x.2.2)
+    simp only [Real.norm_eq_abs, one_mul]
+    rw [abs_of_nonneg (le_max_right _ _)]
+    exact max_le (le_abs_self _) (abs_nonneg _)
+  -- A common error `E = |C| a^{1/4} ℓ^{max(e,0)}`.
+  set Err : ℝ := |Cpin| * a ^ (1 / 4 : ℝ) * ℓ ^ (max epin 0) with hErrDef
+  have hErr : ∀ h (c : C h) g, Cpin * (2 * (a / 2)) ^ (1 / 4 : ℝ) *
+      logDim n (D.move h c g).subsystem ^ epin ≤ Err := by
+    intro h c g
+    rw [h2t]
+    have hx1 := one_le_logDim (n := n) (D.move h c g).subsystem
+    have hxℓ := hdim h c g
+    have hpow : logDim n (D.move h c g).subsystem ^ epin ≤ ℓ ^ (max epin 0) := by
+      rcases le_total 0 epin with he | he
+      · rw [max_eq_left he]
+        exact Real.rpow_le_rpow (by linarith) hxℓ he
+      · rw [max_eq_right he, Real.rpow_zero]
+        exact Real.rpow_le_one_of_one_le_of_nonpos hx1 he
+    have hA : 0 ≤ a ^ (1 / 4 : ℝ) := Real.rpow_nonneg ha.le _
+    have hx0 : 0 ≤ logDim n (D.move h c g).subsystem ^ epin := Real.rpow_nonneg (by linarith) _
+    calc Cpin * a ^ (1 / 4 : ℝ) * logDim n (D.move h c g).subsystem ^ epin
+        ≤ |Cpin| * a ^ (1 / 4 : ℝ) * logDim n (D.move h c g).subsystem ^ epin :=
+          mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self _) hA) hx0
+      _ ≤ Err := mul_le_mul_of_nonneg_left hpow (mul_nonneg (abs_nonneg _) hA)
+  -- Per-move pins with the common prefactor and error.
+  have hpinU : ∀ (k : ℕ) h g (θ : SiteConfig n → ℂ), star θ ⬝ᵥ θ = 1 → ∀ c : C h,
+      (bmin k * Real.exp ((k : ℝ) * (2 * (a / 2)) *
+        (moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ) - Err))) •
+          coherentProj k θ ≤
+        bandMetric n (a / 2) k (D.old h g) ^ (-(1 / 2) : ℝ) *
+          bandMetric n (a / 2) k (D.new h c g) *
+            bandMetric n (a / 2) k (D.old h g) ^ (-(1 / 2) : ℝ) := by
+    intro k h g θ hθ c
+    refine le_trans ?_ (hbpin h c g k θ hθ)
+    refine smul_le_smul_of_nonneg_right ?_
+      (nonneg_iff_posSemidef.mpr (posSemidef_vecMulVec_self_star _))
+    refine mul_le_mul (hbmin_le k h c g) (Real.exp_le_exp.mpr ?_) (Real.exp_pos _).le
+      (hbpos h c g k).le
+    have hk : 0 ≤ (k : ℝ) * (2 * (a / 2)) := by positivity
+    exact mul_le_mul_of_nonneg_left (by linarith [hErr h c g]) hk
+  -- The band gain: the conditional pin and the logarithmic passage.
+  set F : ∀ h, Fin K → (SiteConfig n → ℂ) → ℝ := fun h g θ => ∑ c, (D.choiceTree h).weight c *
+    moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ) with hFdef
+  have hFc : ∀ h g, Continuous (F h g) := fun h g =>
+    continuous_finsetSum _ fun c _ => continuous_const.mul (continuous_moveEta _ _)
+  have hgain : ∀ (k : ℕ) h g (ρ : Matrix (Config k fun v => Fin (n v))
+      (Config k fun v => Fin (n v)) ℂ), ρ.PosSemidef → ρ.trace = 1 →
+      symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+      Real.log (bmin k) + (k : ℝ) * a * (coherentIntegral k (base n) ρ (F h g) - Err) -
+          Real.log (symDim (SiteConfig n) k) ≤
+        (ρ * CFC.log (D.bandRelRatio n (a / 2) k h g)).trace.re := by
+    intro k h g ρ hρ htr hsym
+    have key := coherentIntegral_sub_log_le_re_trace_mul_log (base n)
+      (D.posDef_bandRelRatio hD ht0.le k h g)
+      (fun s => D.commute_permOp_bandRelRatio (t := a / 2) k h g s)
+      (φ := fun θ => (Real.log (bmin k) - (k : ℝ) * a * Err) + ((k : ℝ) * a) * F h g θ)
+      (continuous_const.add (continuous_const.mul (hFc h g))) (fun θ hθ => by
+        have hc := D.smul_coherentProj_le_bandRelRatio hD ht0.le k h g (hbmin_pos k) θ
+          (hpinU k h g θ hθ)
+        rw [h2t] at hc
+        convert hc using 2
+        rw [show Real.log (bmin k) - (k : ℝ) * a * Err + (k : ℝ) * a * F h g θ =
+            Real.log (bmin k) + (k : ℝ) * a * (F h g θ - Err) by ring, Real.exp_add,
+          Real.exp_log (hbmin_pos k)])
+      hρ htr hsym
+    rw [coherentIntegral_affine (base n) htr hsym (hFc h g)] at key
+    linarith
+  -- Summation over bands at fixed history and Fourier time.
+  have hsum : ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
+      pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1, ∀ h u,
+      (k : ℝ) * a * ∑ g, coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u)
+          (F h g) - K * ((k : ℝ) * a * Err + Real.log (symDim (SiteConfig n) k) -
+            Real.log (bmin k)) ≤
+        (D.state n (a / 2) k pre p ⟨h, none⟩ u * CFC.log (D.relRatio n (a / 2) k h)).trace.re := by
+    intro k pre hsym hpre p hp h u
+    set ρs := D.state n (a / 2) k pre p ⟨h, none⟩ u
+    have hσ := D.posSemidef_state hD ht0.le (hcomm k) pre p ⟨h, none⟩ u
+    have hσ1 := D.trace_state hD ht0.le (hcomm k) hpre hp ⟨h, none⟩ u
+    have hσs := D.symProj_mul_state hD ht0.le (hcomm k) hsym p ⟨h, none⟩ u
+    rw [D.cfc_log_relRatio_eq_sum hD ht0.le (hcomm k) h, Matrix.mul_sum, Matrix.trace_sum,
+      Complex.re_sum]
+    have hle := Finset.sum_le_sum fun g (_ : g ∈ Finset.univ) => hgain k h g ρs hσ hσ1 hσs
+    have hcalc : ∑ g : Fin K, (Real.log (bmin k) + (k : ℝ) * a *
+        (coherentIntegral k (base n) ρs (F h g) - Err) - Real.log (symDim (SiteConfig n) k)) =
+        (k : ℝ) * a * ∑ g, coherentIntegral k (base n) ρs (F h g) - K * ((k : ℝ) * a * Err +
+          Real.log (symDim (SiteConfig n) k) - Real.log (bmin k)) := by
+      simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.mul_sum, mul_sub,
+        Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+      ring
+    linarith
+  -- Integration in the Fourier time and summation over histories.
+  refine ⟨fun k => (K : ℝ) / 2 * (Real.log (symDim (SiteConfig n) k) + L k),
+    ((log_symDim_isBigO (Ω := SiteConfig n)).add hLO).const_mul_left _, ?_⟩
+  intro k pre hsym hpre p hp
+  have hm := Real.integral_sinhRatioDensity (s := 1 / 4) (by norm_num)
+  have hmi : MeasureTheory.Integrable Matrix.Transport.fourierWeight :=
+    Real.integrable_sinhRatioDensity (s := 1 / 4) (by norm_num)
+  have hm' : ∫ u, Matrix.Transport.fourierWeight u = 1 / 2 := by
+    change ∫ u, Real.sinhRatioDensity (1 / 4) u = 1 / 2
+    rw [hm]; norm_num
+  have hEint : ∀ h g, MeasureTheory.Integrable fun u => Matrix.Transport.fourierWeight u *
+      coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) := by
+    intro h g
+    refine (D.integrable_fourierWeight_mul_trace_state (a / 2) k pre p ⟨h, none⟩
+      (coherentAverage k (base n) (F h g))).congr (Filter.Eventually.of_forall fun u => ?_)
+    simp only [trace_mul_coherentAverage k (base n) (hFc h g)]
+  set β' := (K : ℝ) * ((k : ℝ) * a * Err + Real.log (symDim (SiteConfig n) k) -
+    Real.log (bmin k))
+  have hhist : ∀ h, (k : ℝ) * a * ∑ g, (∫ u, Matrix.Transport.fourierWeight u *
+      coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) - β' / 2 ≤
+      ∫ u, Matrix.Transport.fourierWeight u *
+        (D.state n (a / 2) k pre p ⟨h, none⟩ u * CFC.log (D.relRatio n (a / 2) k h)).trace.re := by
+    intro h
+    have e : ∀ u, Matrix.Transport.fourierWeight u * ((k : ℝ) * a * ∑ g,
+        coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) - β') =
+        (∑ g, (k : ℝ) * a * (Matrix.Transport.fourierWeight u *
+          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g))) -
+            β' * Matrix.Transport.fourierWeight u := fun u => by
+      rw [mul_sub, Finset.mul_sum, Finset.mul_sum]
+      congr 1
+      · exact Finset.sum_congr rfl fun g _ => by ring
+      · ring
+    have hsumint : MeasureTheory.Integrable fun u => ∑ g, (k : ℝ) * a *
+        (Matrix.Transport.fourierWeight u *
+          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) :=
+      MeasureTheory.integrable_finsetSum _ fun g _ => (hEint h g).const_mul _
+    have hlowint : MeasureTheory.Integrable fun u => Matrix.Transport.fourierWeight u *
+        ((k : ℝ) * a * ∑ g,
+          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) - β') :=
+      (hsumint.sub (hmi.const_mul β')).congr (Filter.Eventually.of_forall fun u => (e u).symm)
+    have hlow : ∫ u, Matrix.Transport.fourierWeight u * ((k : ℝ) * a * ∑ g,
+        coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) - β') =
+        (k : ℝ) * a * ∑ g, (∫ u, Matrix.Transport.fourierWeight u *
+          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
+            β' / 2 := by
+      rw [MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall e),
+        MeasureTheory.integral_sub hsumint (hmi.const_mul _),
+        MeasureTheory.integral_finsetSum _ fun g _ => (hEint h g).const_mul _,
+        MeasureTheory.integral_const_mul, hm']
+      simp only [MeasureTheory.integral_const_mul]
+      rw [Finset.mul_sum]
+      ring
+    rw [← hlow]
+    refine MeasureTheory.integral_mono hlowint
+      (D.integrable_fourierWeight_mul_trace_state (a / 2) k pre p ⟨h, none⟩ _) fun u => ?_
+    exact mul_le_mul_of_nonneg_left (hsum k pre hsym hpre p hp h u)
+      (Real.sinhRatioDensity_pos (by norm_num) u).le
+  have hw := D.histTree.sum_weight
+  calc (k : ℝ) * a * D.entropyGain n (a / 2) k pre p -
+        |Cpin| / 2 * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ max epin 0 -
+          (K : ℝ) / 2 * (Real.log (symDim (SiteConfig n) k) + L k)
+      = ∑ h, D.histTree.weight h * ((k : ℝ) * a * ∑ g, (∫ u, Matrix.Transport.fourierWeight u *
+          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
+            β' / 2) := by
+        simp only [mul_sub, Finset.sum_sub_distrib, ← Finset.sum_mul, hw, one_mul, entropyGain,
+          β', hbmin, Real.log_exp, hErrDef]
+        simp only [Finset.mul_sum]
+        rw [Finset.sum_comm]
+        simp only [hFdef]
+        ring_nf
+        sorry
+    _ ≤ D.exactDerivative n (a / 2) k pre p :=
+        Finset.sum_le_sum fun h _ => mul_le_mul_of_nonneg_left (hhist h)
+          (hD.histWeight_pos h).le
 
 end TransportData
 
