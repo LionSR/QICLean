@@ -883,6 +883,68 @@ eigenbasis. The following statements show that such averages are central label f
     Apply the trace limit of the coherent symbol calculus.
 \end{proof}
 
+\begin{lemma}[Regions as tensor factors]
+    \label{lem:region_split}
+    \lean{Entropy.IsRegionSplit, Entropy.IsRegionSplit.localLift_submatrix,
+        Entropy.IsRegionSplit.partialTraceRight_vecMulVec, Entropy.regionSplitEquiv,
+        Entropy.star_dotProduct_submatrix_mulVec, TensorPower.SkewPartition,
+        TensorPower.SkewPartition.equiv, TensorPower.SkewPartition.transport,
+        TensorPower.SkewPartition.skewFun_transport}
+    \leanok
+    \uses{lem:marginal_powers}
+    Let $\mathcal V$ be partitioned as $P=P_0P_1$, $Y=xU$ and $F$, and identify the
+    configurations of $\mathcal V$ with those of $(P_0P_1)((xU)F)$. Lifts from a region and
+    marginals on a region agree with the corresponding tensor-factor lifts and partial
+    traces. In particular, if $h$ is supported on $P_0x$, the symbol $f_\theta$ at $t$ is
+    the function $f(t)$ of the conditional skew estimate for the transported vector.
+\end{lemma}
+
+\begin{proof}\leanok
+    Compare matrix entries: a lift from $D$ is nonzero only between configurations that
+    agree off $D$, and the marginal on $D$ sums over the configurations off $D$. The real
+    powers through the complex functional calculus agree with the real powers on positive
+    marginals.
+\end{proof}
+
+\begin{lemma}[Continuity of the entropy]
+    \label{lem:entropy_continuity}
+    \lean{Matrix.vonNeumannEntropy_eq_re_trace_cfc, Matrix.continuousOn_vonNeumannEntropy,
+        TensorPower.continuousOn_condMutualInfo,
+        TensorPower.SkewPartition.continuousOn_skewEta_transport}
+    \leanok
+    The von Neumann entropy is continuous along continuous families of Hermitian matrices
+    with eigenvalues in $[0,1]$. Hence $\theta\mapsto\eta_\theta=I(x:F|U)_\theta$ is continuous
+    on unit vectors.
+\end{lemma}
+
+\begin{proof}\leanok
+    $S(\rho)=\Tr(-\rho\log\rho)$ is the trace of a continuous function of $\rho$ on $[0,1]$,
+    and the continuous functional calculus is continuous in the operator.
+\end{proof}
+
+\begin{theorem}[Skew bound]
+    \label{thm:skew_bound}
+    \lean{TensorPower.re_coherentIntegral_le, TensorPower.coherentIntegral_const_mul,
+        TensorPower.SkewPartition.markedScalarSymbol_skew_le,
+        TensorPower.SkewPartition.eventually_re_trace_skewOperator_le}
+    \leanok
+    \uses{thm:skew_symbol, lem:region_split, lem:entropy_continuity, thm:conditional_skew}
+    Let $h$ be supported on $P_0x$ with $0\le h\le I$, $d_h=(\dim P_0)(\dim x)$,
+    $\eta_\theta=I(x:F|U)_\theta$, and let $0<a$ with $a\log(ed_h)\le1/8$ and $t=a/2$. Then
+    $|f_\theta|-\operatorname{Re}f_\theta\le Ca^2\log^4(ed_h)\eta_\theta^{1/8}$ on unit vectors,
+    and uniformly in symmetric density matrices $\sigma$,
+    \[
+        \Tr\sigma\mathcal D_k\le2Ca^2\log^4(ed_h)\int\eta_\theta^{1/8}\,d\mu_\sigma(\theta)
+        +o_k(1).
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    The pointwise bound is the conditional skew estimate read on regions. Integrate it
+    against the coherent measure, which is a positive measure, using the skew symbol and the
+    continuity of both integrands.
+\end{proof}
+
 \section{The gamma integral}
 
 The integral representation of the metrics draws the eigenvalues $s$ of a density matrix with
