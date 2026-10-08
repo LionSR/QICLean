@@ -27,6 +27,7 @@ import QICLean.Analysis.ContractionWordDecay
 import QICLean.Analysis.ContractionWordDecaySpectator
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
+import QICLean.Analysis.DensitySimplex
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
@@ -88,6 +89,7 @@ import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
+import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PoissonContractionDecay
 import QICLean.Analysis.PolarUnitaryCorrection
