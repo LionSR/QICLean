@@ -1,6 +1,6 @@
 # A rough exponential estimate for an excitation component
 
-Let the five independent factors be \(Q,Y,V,C,R\), and let \(\Omega\) be a
+Let the five distinct tensor factors be \(Q,Y,V,C,R\), and let \(\Omega\) be a
 unit vector on \(Q\otimes Y\otimes V\). Suppose the original vector \(u\)
 is fixed by simultaneous permutations of its physical, \(C\) and \(R\)
 copy strings. For a set \(B\) of bad copies put \(m=|B^c|\) and
@@ -26,7 +26,7 @@ K&=\frac{(m+1)^{(|Q|\,|C|)^2}+(m+1)^{(|V|\,|R|)^2}}{2}.
 For every \(0\le a\le 1/2\),
 
 \[
-\operatorname{Re}\operatorname{Tr}\!left(
+\operatorname{Re}\operatorname{Tr}\!\left(
 \Gamma\exp\!\left[a(D_C+D_R-G)\right]\right)
 \le K\|w\|^2=KM.
 \]
