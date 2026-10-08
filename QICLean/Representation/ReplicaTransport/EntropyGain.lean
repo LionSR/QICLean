@@ -567,13 +567,33 @@ theorem exists_entropyGain_le_exactDerivative :
       = ∑ h, D.histTree.weight h * ((k : ℝ) * a * ∑ g, (∫ u, Matrix.Transport.fourierWeight u *
           coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
             β' / 2) := by
-        simp only [mul_sub, Finset.sum_sub_distrib, ← Finset.sum_mul, hw, one_mul, entropyGain,
-          β', hbmin, Real.log_exp, hErrDef]
-        simp only [Finset.mul_sum]
-        rw [Finset.sum_comm]
-        simp only [hFdef]
-        ring_nf
-        sorry
+        have hEG : D.entropyGain n (a / 2) k pre p = ∑ h, D.histTree.weight h * ∑ g,
+            ∫ u, Matrix.Transport.fourierWeight u *
+              coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) := by
+          unfold entropyGain
+          simp only [Finset.mul_sum]
+          rfl
+        have hRHS : ∑ h, D.histTree.weight h * ((k : ℝ) * a * ∑ g,
+            (∫ u, Matrix.Transport.fourierWeight u *
+              coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
+                β' / 2) = (k : ℝ) * a * ∑ h, D.histTree.weight h * ∑ g,
+            (∫ u, Matrix.Transport.fourierWeight u *
+              coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
+                β' / 2 := by
+          have e2 : ∀ (h : H) (X : ℝ), D.histTree.weight h * ((k : ℝ) * a * X - β' / 2) =
+              (k : ℝ) * a * (D.histTree.weight h * X) - D.histTree.weight h * (β' / 2) :=
+            fun h X => by ring
+          simp_rw [e2]
+          rw [Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.sum_mul, hw, one_mul]
+        have hlogb : Real.log (bmin k) = -L k := Real.log_exp _
+        have key : ∀ S : ℝ, (k : ℝ) * a * S -
+            |Cpin| / 2 * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ max epin 0 -
+              (K : ℝ) / 2 * (Real.log (symDim (SiteConfig n) k) + L k) =
+            (k : ℝ) * a * S - β' / 2 := fun S => by
+          simp only [β', hlogb, hErrDef]
+          ring
+        rw [hEG, hRHS]
+        exact key _
     _ ≤ D.exactDerivative n (a / 2) k pre p :=
         Finset.sum_le_sum fun h _ => mul_le_mul_of_nonneg_left (hhist h)
           (hD.histWeight_pos h).le
