@@ -1,0 +1,4 @@
+'Matrix.replicaGoodPairMarginal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.partialTraceRight_replicaGoodPairMarginal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.partialTraceLeft_replicaGoodPairMarginal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.trace_replicaGoodPairMarginal' depends on axioms: [propext, Classical.choice, Quot.sound]

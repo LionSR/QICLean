@@ -1,0 +1,15 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "127e81f0"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.12,
+  "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+  "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

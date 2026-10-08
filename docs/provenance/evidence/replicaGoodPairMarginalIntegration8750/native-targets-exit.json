@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/check-native-targets.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.62,
+  "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+  "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native-targets.log",
+  "sha256": "e18bdef47fbe0affc2dd24fe4a7c70a09dc0341d74fb6dce0c5c4fec468c647e"
+}

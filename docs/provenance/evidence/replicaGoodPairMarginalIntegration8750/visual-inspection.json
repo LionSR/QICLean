@@ -1,0 +1,27 @@
+{
+  "result": "passed",
+  "mathematical_source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+  "book_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+  "physical_pages": [
+    413,
+    414
+  ],
+  "printed_pages": [
+    412,
+    413
+  ],
+  "pdf_pages": 438,
+  "pdf_inspected": [
+    "Definition with retained QC/VR and discarded good Y, bad QYV, bad C/R",
+    "First marginal and full finite-sum proof",
+    "Second marginal, actual Y-preserving swap and full covariance proof",
+    "Complex trace mass and full norm proof"
+  ],
+  "web_inspected": [
+    "Complete section on mobile",
+    "All four complete mathematical entries on desktop and mobile; all three expanded proofs"
+  ],
+  "entry_views": 8,
+  "mobile_formula_endpoints": 0,
+  "observations": "All statements and proofs are legible. No formula clipping, overlap, page overflow or unresolved mathematical citation. The definition visibly traces every middle physical coordinate. Every mobile formula fits its container, so no horizontal scrolling endpoints are required."
+}

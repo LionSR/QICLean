@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/check-preservation.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.75,
+  "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+  "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-preservation.log",
+  "sha256": "c6cb333ccbed65bca049d50fc3e2e985b24acbc2e0b7954235eb0dbc78bd6c2a"
+}
