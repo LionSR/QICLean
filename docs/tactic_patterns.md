@@ -193,6 +193,39 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   Do not replace either with a certificate or commute a physical excitation
   projection through a band metric.
 
+### Marginal invariance from a simultaneous fixed vector — candidate (2026-10-08)
+
+- **Pattern:** Convert a fixed-vector equation into conjugation invariance of
+  its rank-one density, apply existing partial-trace covariance, and cancel
+  the adjoint of the retained unitary.
+- **Seen:** `Analysis/ReplicaMarginalSymmetry.lean`; one mathematical
+  calculation and its excitation-component corollary.
+- **Abstraction:** The public fixed-vector theorem supplies the common
+  partial-trace step. The component corollary reuses it after deriving
+  fixedness from the stabilizer theorem. No new tactic is needed.
+- **Caveat:** Invariance alone does not imply that different copies are
+  independent or establish a merge-moment bound.
+
+### Actual copy-coordinate regrouping before a partial trace — candidate (2026-10-08)
+
+- **Pattern:** Construct the good/bad coordinate equivalence, derive its actual
+  permutation action, reindex the literal product operator and transport a
+  fixed-vector equation before applying partial-trace covariance.
+- **Seen:** The chosen complement/subset split appears in
+  `Analysis/ReplicaGoodAuxiliaryLabelBound.lean` and
+  `Analysis/ReplicaGoodAuxiliaryMarginal.lean` (two files). The latter also
+  reuses the configuration and matrix-entry calculations in its marginal
+  theorem.
+- **Abstraction:** The public good/bad configuration equivalence is the common
+  mathematical construction for subsequent consumers. The earlier frozen
+  label-bound source remains unchanged; new consumers should reuse this
+  public construction rather than add a third private split. Existing
+  reindexing and marginal-symmetry theorems supply the action and trace
+  steps; no new tactic is required.
+- **Caveat:** A compatible regrouped action or an invariant marginal must be
+  derived. It must not be introduced as a supplied certificate. Chosen
+  finite-set equivalences need not enumerate the copies in increasing order.
+
 ### Sector mass from a finite resolution — candidate (2026-10-07)
 
 - **Pattern:** Restrict trace masses to the nonzero projections, use positivity
@@ -222,19 +255,6 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The density is positive semidefinite and permutation invariant.
   Zero eigenvalues contribute zero mass. A trace expansion must not be
   substituted for either concentration or the moment bound itself.
-
-### Marginal invariance from a simultaneous fixed vector — candidate (2026-10-08)
-
-- **Pattern:** Convert a fixed-vector equation into conjugation invariance of
-  its rank-one density, apply existing partial-trace covariance, and cancel
-  the adjoint of the retained unitary.
-- **Seen:** `Analysis/ReplicaMarginalSymmetry.lean`; one mathematical
-  calculation and its excitation-component corollary.
-- **Abstraction:** The public fixed-vector theorem supplies the common
-  partial-trace step. The component corollary reuses it after deriving
-  fixedness from the stabilizer theorem. No new tactic is needed.
-- **Caveat:** Invariance alone does not imply that different copies are
-  independent or establish a merge-moment bound.
 
 ### Norm of a finite product of vectors — candidate (2026-10-07)
 
