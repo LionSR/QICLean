@@ -85,7 +85,7 @@ as such; the unconditional proposition remains open.
     Lemma~\ref{lem:transport_states_commutant}.
 \end{proof}
 
-\begin{theorem}[Entropy and energy transport, assuming Lemmas 6.4 and 6.5]
+\begin{theorem}[Entropy and energy transport, assuming Lemmas 6.4 and 6.5 and full-space band commutation]
     \label{thm:replica_transport_conditional}
     \lean{TensorPower.ReplicaTransport.transport_of_relativePin_of_splitSkewBound,
       TensorPower.ReplicaTransport.TransportData.exists_entropyGain_le_exactDerivative_of_relativePin,
@@ -97,6 +97,11 @@ as such; the unconditional proposition remains open.
       lem:transport_energy_block}
     Assume the conclusion of the relative coherent pin~\cite[Lemma~6.4]{OpenAI2026AreaLaw}
     and of the skew bound~\cite[Lemma~6.5]{OpenAI2026AreaLaw} at a split leaf.
+    Assume also that metrics from different bands commute as operators on the full
+    tensor power $\mathcal V^{\otimes k}$, for every $k$. This is stronger than the
+    source condition, which asks for commutation on $\mathcal S_k$ only, and it can
+    fail for the overlapping bands of the source's multi-band application; see the
+    note~\cite{gap:oai26_transport_crossband_commutation}.
     Then the conclusions of~\cite[Proposition~7.4]{OpenAI2026AreaLaw} hold: with
     $a=2t$, $\ell\ge1$ bounding $\log(e\dim x)$ for every transferred subsystem and
     $\log(e\dim D_i)$ for every split term, and $a\ell$ below a universal

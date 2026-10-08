@@ -48,7 +48,12 @@ namespace TensorPower.ReplicaTransport
 `06-transport.tex` lines 377--434), assuming the relative coherent pin of Lemma 6.4 and the
 split-leaf skew bound of Lemma 6.5 in the forms `RelativePinBound` and `SplitSkewBound`.
 The source proves those lemmas in its replica section; here they are hypotheses until the
-replica-metric formalization supplies them. -/
+replica-metric formalization supplies them.
+
+**Scope restriction (full-space commutation):** the hypothesis `D.CrossBandCommute` asks for
+commutation of different bands' metrics on the full tensor power, not only on `𝒮_k` as in
+the source (`06-transport.tex` lines 273--276); see
+`docs/paper-gaps/oai26_transport_crossband_commutation.tex`. -/
 theorem transport_of_relativePin_of_splitSkewBound (hpin : RelativePinBound.{u})
     (hskew : SplitSkewBound.{u}) :
     ∃ c₀ Cent eent Cen een : ℝ, 0 < c₀ ∧
