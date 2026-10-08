@@ -3,8 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.OrthogonalProjection
-import QICLean.Representation.SymmetricProjection
+import QICLean.Representation.SymmetricRangeIsometry
 
 /-!
 # An isometric coordinate representation of simultaneous symmetric copies
@@ -45,20 +44,7 @@ theorem exists_symmetricSubspace_isometry
     let S := symProj (copyPerm ((f : Fin 5) → ι f) k)
     ∃ (n : ℕ) (J : Matrix (Config k ι) (Fin n) ℂ),
       Jᴴ * J = 1 ∧ J * Jᴴ = S := by
-  let e : Config k ι ≃ Fin (Fintype.card (Config k ι)) :=
-    Fintype.equivFin (Config k ι)
-  have hS := PermutationRepresentation.isStarProjection_symProj
+  exact PermutationRepresentation.exists_symProj_isometry
     (copyPerm ((f : Fin 5) → ι f) k)
-  have hP : IsOrthogonalProjection
-      ((symProj (copyPerm ((f : Fin 5) → ι f) k)).submatrix e.symm e.symm) :=
-    ⟨hS.isSelfAdjoint.isHermitian.submatrix e.symm, by
-      rw [Matrix.submatrix_mul_equiv, hS.isIdempotentElem.eq]⟩
-  obtain ⟨n, V, hV, hVS⟩ := hP.exists_range_isometry
-  refine ⟨n, V.submatrix e (Equiv.refl (Fin n)), ?_, ?_⟩
-  · rw [Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, hV,
-      Matrix.submatrix_one_equiv]
-  · simp only [Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, hVS,
-      Matrix.submatrix_submatrix, Function.comp_def, Equiv.symm_apply_apply]
-    rfl
 
 end TensorPower

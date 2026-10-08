@@ -1,0 +1,63 @@
+% Source: OpenAI2026AreaLaw, 05-replicas.tex, lines 15--20,
+% and 07-comparators.tex, lines 427--439.
+% Manuscript revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\section{Isometric coordinates for a finite-group invariant subspace}
+\label{sec:symmetric_range_isometry}
+
+Let $G$ be a finite group, let $X$ be a finite coordinate set, and let
+$\varphi:G\to\mathrm{Sym}(X)$ be a homomorphism. Write $U_g$ for the
+corresponding permutation matrix on $\C^X$, and define the actual average
+\begin{align}
+  S&=\frac{1}{|G|}\sum_{g\in G}U_g.
+\end{align}
+The group is nonempty, so $|G|>0$. By
+Theorem~\ref{thm:symmetric_projection}, $S$ is an orthogonal projection.
+This finite-group construction is auxiliary to the simultaneous symmetric
+subspaces in Sections~5 and~7 of~\cite{OpenAI2026AreaLaw}.
+
+\begin{theorem}[An isometry onto the range of the group average]
+  \label{thm:symmetric_range_isometry}
+  \lean{PermutationRepresentation.exists_symProj_isometry}
+  \leanok
+  For every finite group action by permutations as above, there exist an
+  integer $n\geq0$ and a complex matrix
+  $J\in\C^{X\times\{0,\ldots,n-1\}}$ such that
+  \begin{align}
+    J^*J&=\Id_n, \\
+    JJ^*&=S.
+  \end{align}
+  The coordinate set $X$ may be empty, and $n=0$ is allowed.
+  The action need not be faithful.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:symmetric_projection}
+  Choose a bijection $e:X\to\{0,\ldots,|X|-1\}$ and form the matrix
+  \begin{align}
+    \widetilde S_{ij}&=S_{e^{-1}(i),e^{-1}(j)}.
+  \end{align}
+  Reindexing preserves self-adjointness and idempotence, so
+  $\widetilde S$ is an orthogonal projection. The range-isometry
+  factorization of a finite-dimensional orthogonal projection gives
+  an integer $n\geq0$ and a matrix $V$ satisfying
+  \begin{align}
+    V^*V&=\Id_n, \\
+    VV^*&=\widetilde S.
+  \end{align}
+  Concretely, the columns of $V$ are orthonormal eigenvectors of
+  $\widetilde S$ for eigenvalue $1$; its other eigenvalues are $0$.
+  Set $J_{xj}=V_{e(x),j}$. Changing the finite summation index by $e$
+  gives $J^*J=V^*V=\Id_n$, while
+  \begin{align}
+    (JJ^*)_{xy}&=(VV^*)_{e(x),e(y)}
+       =\widetilde S_{e(x),e(y)}=S_{xy}.
+  \end{align}
+  These identities also hold with empty row or column sets. In particular,
+  if $X$ is empty, the construction has $n=0$.
+\end{proof}
+
+For $G=\mathfrak S_k$ acting by the same copy permutation on all five
+factors $Q,Y,V,C,R$, this gives
+Theorem~\ref{thm:replica_symmetric_range_isometry}. The middle physical
+factor $Y$ remains part of the coordinate set.

@@ -35,17 +35,10 @@ constructs coordinates for its range.
 
 \begin{proof}
   \leanok
-  \uses{thm:symmetric_projection}
-  By Theorem~\ref{thm:symmetric_projection}, the actual average $S_k$
-  is self-adjoint and idempotent. Enumerate the finite set
-  $\mathcal X_k$ to regard it as a matrix on a finite coordinate
-  space. An orthogonal projection admits an orthonormal eigenbasis,
-  and its eigenvalues belong to $\{0,1\}$. Let $n$ be the number of
-  eigenvectors with eigenvalue $1$, and form a matrix whose columns
-  are those vectors. Its columns are orthonormal, and their range
-  projection is $S_k$. Transporting the rows back to the original
-  configuration set gives $J$ and the two asserted identities.
-  If the projection has zero range, the column set is empty and
-  $n=0$. The construction also applies at $k=0$, when the empty
-  configuration is the sole basis index.
+  \uses{thm:symmetric_range_isometry}
+  Apply Theorem~\ref{thm:symmetric_range_isometry} to the finite group
+  $\mathfrak S_k$ and its simultaneous copy-permutation action on
+  $\mathcal X_k$. The group average is exactly $S_k$.
+  This includes $k=0$, when the empty configuration is the sole
+  coordinate, and empty one-copy factors.
 \end{proof}
