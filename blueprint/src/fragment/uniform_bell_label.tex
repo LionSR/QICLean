@@ -1,0 +1,62 @@
+\section{Labels on a uniform auxiliary pair}
+\label{sec:uniform_bell_label}
+
+For a positive integer $d$, write
+$\omega_d=d^{-1/2}\sum_{i=1}^d e_i\otimes e_i$. Regrouping the factors in
+$\omega_d^{\otimes k}$ gives a vector $w_{d,k}$ in
+$(\mathbb C^d)^{\otimes k}\otimes(\mathbb C^d)^{\otimes k}$ with entries
+\[
+ w_{d,k}(x,y)=d^{-k/2}\mathbf 1_{x=y}.
+\]
+For $k=0$ this is the scalar vector $1$. These are the uniform auxiliary
+pairs used in \cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Mass on one half of the uniform pair]
+\label{thm:uniform_bell_projection_mass}
+\lean{Matrix.norm_sq_one_kronecker_mulVec_prod_omegaVec}
+\leanok
+For every orthogonal projector $P$ on $(\mathbb C^d)^{\otimes k}$,
+\[
+ \|(I\otimes P)w_{d,k}\|^2=d^{-k}\operatorname{tr}P.
+\]
+\end{theorem}
+\begin{proof}\leanok
+The entry at $(x,y)$ is $d^{-k/2}P_{y,x}$. Thus
+$\|(I\otimes P)w_{d,k}\|^2=d^{-k}\operatorname{tr}(P^*P)
+=d^{-k}\operatorname{tr}P$.
+\end{proof}
+
+\begin{theorem}[Nonzero occurrence on the uniform pair]
+\label{thm:uniform_bell_projection_nonzero}
+\lean{Matrix.one_kronecker_mulVec_prod_omegaVec_ne_zero_iff}
+\leanok
+For every operator $P$ on $(\mathbb C^d)^{\otimes k}$,
+$(I\otimes P)w_{d,k}\ne0$ if and only if $P\ne0$.
+\end{theorem}
+\begin{proof}\leanok
+Since $d>0$, the coefficient $d^{-k/2}$ is nonzero. The coordinate identity
+$((I\otimes P)w_{d,k})(x,y)=d^{-k/2}P_{y,x}$ proves both directions.
+\end{proof}
+
+\begin{theorem}[Matching labels on the uniform pair]
+\label{thm:uniform_bell_matching_labels}
+\lean{TensorPower.labelProj_kronecker_mulVec_prod_omegaVec}
+\leanok
+For every irreducible label $\lambda$ of the copy-permutation representation,
+\[
+ (\pi^\lambda\otimes I)w_{d,k}
+ =(I\otimes\pi^\lambda)w_{d,k}.
+\]
+\end{theorem}
+\begin{proof}\leanok
+Every permutation in $S_k$ is conjugate to its inverse, so a central element
+of $\mathbb C[S_k]$ has inversion-invariant coefficients. Transposing the
+permutation representation sends each permutation to its inverse; hence
+$(\pi^\lambda)^T=\pi^\lambda$. The two coordinate expressions are therefore
+$d^{-k/2}\pi^\lambda_{x,y}=d^{-k/2}\pi^\lambda_{y,x}$.
+\end{proof}
+
+A label with nonzero mass in any vector has a nonzero projector, and hence
+occurs with positive mass on the uniform pair. This initial occurrence
+requires no inverse polynomial lower bound. Selection of a label with
+$\log d_{\lambda_k}=kS'+o(k)$ is a separate concentration argument.
