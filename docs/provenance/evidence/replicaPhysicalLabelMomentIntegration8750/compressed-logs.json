@@ -1,0 +1,13 @@
+{
+  "files": [
+    {
+      "raw_path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/pdf.log",
+      "archive_path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/pdf.log.gz",
+      "raw_bytes": 108070,
+      "archive_bytes": 22023,
+      "raw_sha256": "088e56b0a84040e241a55b99218d58657025a1f7c83fc7ae271fcf144638d16f",
+      "archive_sha256": "794d13c722f9aca6711348344e0b413214a3473f2bb27a3178488cc397399bfc",
+      "compression": "gzip.compress(raw,mtime=0); original bytes recover exactly."
+    }
+  ]
+}

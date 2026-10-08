@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/collect.py"
+  ],
+  "exit_code": 1,
+  "cause": "FileNotFoundError for the historical leaf axioms.log name in the new metadata collector. The leaf report is actually bound-axioms.log, recorded authoritatively in its unchanged kernel-summary.json. Corrected only the new collector path; production/exposition/check logs unchanged.",
+  "diagnostic": "FileNotFoundError: [Errno 2] No such file or directory: docs/provenance/evidence/replicaPhysicalLabelMoment8750/axioms.log"
+}

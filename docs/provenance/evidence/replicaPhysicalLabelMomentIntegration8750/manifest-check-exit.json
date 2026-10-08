@@ -1,0 +1,14 @@
+{
+  "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/check-manifest.py",
+    "--index"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:06:10.331036+00:00",
+  "elapsed_seconds": 4.852,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/manifest-check.log",
+  "sha256": "534ab93d453ad52ddf06b239fcebaae0396410839b543b19a4faa04cf2cb21c7"
+}

@@ -1,0 +1,19 @@
+{
+  "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "command": [
+    "node",
+    "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+    "--operation-kind",
+    "edit",
+    "--expected-output-count",
+    "1",
+    "--output-format",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:51:36.968113+00:00",
+  "elapsed_seconds": 0.13,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/artifact-operation.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,110 @@
+{
+  "all_images_inspected": true,
+  "widths": [
+    1280,
+    360
+  ],
+  "images": [
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/sec-replica_physical_label_moment-web.png",
+      "sha256": "5852f924f0197092985d20d66ea7dc13375e050930987f58283d53cbd7242097",
+      "bytes": 252187
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/thm-replica_physical_label_moment-web.png",
+      "sha256": "067706a23c38c7a9574298bde02f21bc8add3a444bbad7946210c29e3320c6ee",
+      "bytes": 253787
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context-0-360.png",
+      "sha256": "d03ece22c6f0e672463d62631488cbc2be24f68f72ed00d96407b16cf542c8b2",
+      "bytes": 21032
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context-1-360.png",
+      "sha256": "301bb2d0506c8f7cdcced7409e7fe5b07dada26dd410c513b028574f785ebaf8",
+      "bytes": 3311
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context-2-360.png",
+      "sha256": "ef1255808b5b4e601de0479f29cf39ec84e06a2645f3c7d07c0a1611e4cd6754",
+      "bytes": 22417
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context-3-360.png",
+      "sha256": "faf8ff566f50887fd9d9a5c072aa84421a18a422601ca608dde23a2391948bb5",
+      "bytes": 4222
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-equation-content-right-360.png",
+      "sha256": "39ec7c2341cfee3c4e7e8bf4d195d252c20e5c716ab49d82166516cf99113280",
+      "bytes": 98338
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-replica_physical_label_moment-proof-1280.png",
+      "sha256": "bc93625d7e1f3caffdc911029aab9c794d4277dfe1731c5f7c722f81147db7dd",
+      "bytes": 42697
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-replica_physical_label_moment-proof-360.png",
+      "sha256": "ed802e363bef25aa8ab1df82dcea5cb94aaa60785d51ef95e06b657e8a45ca8b",
+      "bytes": 38841
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-replica_physical_label_moment-statement-1280.png",
+      "sha256": "498a01e16cb2648df48759a35fa54c7e2a4f0e0c17051cb0218b0f7d0399bcab",
+      "bytes": 20317
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-replica_physical_label_moment-statement-360.png",
+      "sha256": "dd6ec6fce0b63728e51b0850c41d636f52083076c50ba2acdee7138b54633ef5",
+      "bytes": 20197
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-scope-1280.png",
+      "sha256": "85ff15aad3e0648aaca1cb72e0b61ca018a0c20aaa8702f19f76ccdc2bb1d399",
+      "bytes": 40725
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-scope-360.png",
+      "sha256": "253c36fe3c82ca858168c7174d0bf8e51cf8ceaac84eee38f058801e8fa24ed6",
+      "bytes": 37407
+    }
+  ],
+  "inspection": "Complete setting, statement, full open proof and closing scope paragraph inspected at desktop/mobile widths. Both setting displays fit their local containers. The main numbered equation uses the existing reader horizontal scroll container; its right endpoint was reached and the full equality and closing equation number inspected. No production layout change was needed.",
+  "mobile_context_displays": [
+    {
+      "width": 344,
+      "scrollWidth": 344,
+      "overflow": "auto",
+      "context": 1,
+      "index": 0
+    },
+    {
+      "width": 344,
+      "scrollWidth": 344,
+      "overflow": "auto",
+      "context": 3,
+      "index": 0
+    }
+  ],
+  "mobile_statement_displays": [
+    {
+      "width": 272,
+      "scrollWidth": 272,
+      "overflow": "visible",
+      "theorem": "replica_physical_label_moment",
+      "kind": "statement",
+      "index": 0
+    }
+  ],
+  "mobile_reader_right_endpoint": {
+    "class": "content",
+    "width": 360,
+    "scrollWidth": 394,
+    "left": 34,
+    "max": 34,
+    "overflow": "auto"
+  },
+  "source_scope_checked": "Unit one-copy ground vector only; arbitrary exterior register and vector, all real exponent, zero copies and zero component included; exact expectation without signed analytic rate claim."
+}

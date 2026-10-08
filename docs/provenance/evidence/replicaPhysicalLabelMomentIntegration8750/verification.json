@@ -1,0 +1,411 @@
+{
+  "mathematical_source_revision": "fc4db3db1dc27f565637d218adc1fe0bf4de7e6d",
+  "leaf_evidence_revision": "a2b266d6804ec5f4b870d639d2c551e52d69e5f5",
+  "unique_inclusion_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "checked_source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "published_parent_revision": "a820e67e2f30782485361fa71c8c0763981f8edb",
+  "declarations": [
+    "Matrix.trace_exp_labelEntropy_replicaExcitationComponent_eq"
+  ],
+  "checks": [
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "node",
+        "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+        "--operation-kind",
+        "edit",
+        "--expected-output-count",
+        "1",
+        "--output-format",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:51:36.968113+00:00",
+      "elapsed_seconds": 0.13,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:51:08.031212+00:00",
+      "elapsed_seconds": 16.72,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/axioms-final.log",
+      "sha256": "87cbce79ea5b063258694a5a4ae0a5c12291e21cb7ec0a0d3621b92076a344eb"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/copy-bibliography.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:56:15.531956+00:00",
+      "elapsed_seconds": 0.048,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:49:12.743002+00:00",
+      "elapsed_seconds": 12.375,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/cache-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:49:44.520780+00:00",
+      "elapsed_seconds": 0.058,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/cache-guard.log",
+      "sha256": "7a261f40a8457739d006e91b8e261aca127802d54aa7d6c19f323ec71e0dc9d4"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "leanblueprint",
+        "checkdecls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T02:58:02.526658+00:00",
+      "elapsed_seconds": 26.059,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:51:08.031184+00:00",
+      "elapsed_seconds": 0.673,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/declaration-sync.log",
+      "sha256": "60f49829bd7a87dce337b8f56805e208bafb25e7032ad256fe9908dcb351c781"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:49:44.698430+00:00",
+      "elapsed_seconds": 39.15,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/full-build.log",
+      "sha256": "eced47080c9d71d93102bb7ebf244e0f948b602022b288bb2229702b0cc1ed56"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:49:35.640316+00:00",
+      "elapsed_seconds": 0.414,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/imports.log",
+      "sha256": "3676753c68de02ebb95ce44770a8579bcf66720370b267b5abcfb73e12c02aea"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/check-inherited.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:49:35.640151+00:00",
+      "elapsed_seconds": 2.796,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/inherited.log",
+      "sha256": "27333659e04237ef49f69411520abbd635dd034043def836fccfd37db90fbc07"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/check-inherited.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:04:28.681752+00:00",
+      "elapsed_seconds": 2.789,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/inherited-final.log",
+      "sha256": "4af08a268060a5a9679d800c4b218db4221f18bd49fe7d13dcac822e3844c159"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/check-native-targets.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:56:07.966435+00:00",
+      "elapsed_seconds": 0.052,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/native-before-web.log",
+      "sha256": "41379ced0e8ad33c7b8ea6b355f5eac666cd0dcc5858224c18294ab33f916f5f"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/check-native-targets.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:58:02.526565+00:00",
+      "elapsed_seconds": 0.066,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/native-targets.log",
+      "sha256": "c87358637fcaa27968c4ddca2a98abf6c6922d2835e7cce89c92983fc7206c57"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:49:35.640176+00:00",
+      "elapsed_seconds": 0.531,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T02:51:41.504815+00:00",
+      "elapsed_seconds": 27.255,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/pdf.log",
+      "sha256": "088e56b0a84040e241a55b99218d58657025a1f7c83fc7ae271fcf144638d16f"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "a2b266d6"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:49:35.640345+00:00",
+      "elapsed_seconds": 0.106,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:56:07.336564+00:00",
+      "elapsed_seconds": 0.494,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/provenance-final.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:51:08.031186+00:00",
+      "elapsed_seconds": 1.152,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/tenkz.log",
+      "sha256": "b10dd226fcfb59e9eb52b06bc040d251e35cd38d571c963ece4bf0e5263f2d8d"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:58:44.220501+00:00",
+      "elapsed_seconds": 1.659,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context.log",
+      "sha256": "de484e5594a9aa9c37c11d2c73d3602bf67ac8c8312e43f61dc0a4ca5a08cf66"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:01:48.333209+00:00",
+      "elapsed_seconds": 1.642,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context-final.log",
+      "sha256": "de484e5594a9aa9c37c11d2c73d3602bf67ac8c8312e43f61dc0a4ca5a08cf66"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-endpoint.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:02:36.859688+00:00",
+      "elapsed_seconds": 1.657,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-endpoint.log",
+      "sha256": "b6992d81c45ffb0de40e521225072776e57b7987808abb2c45877f27ae1cd830"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T02:56:29.058247+00:00",
+      "elapsed_seconds": 60.949,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web.log",
+      "sha256": "e95f42842f28cc3ac7f051c6c58333083798e2e352a0185b1cdad416b53a093d"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-qa.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:58:02.526871+00:00",
+      "elapsed_seconds": 2.832,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-reader.log",
+      "sha256": "0512d0e2631240863ae8fb9019d757a5732183ebecd5ea04a1597e539a63a029"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-visual.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:58:02.526603+00:00",
+      "elapsed_seconds": 2.835,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-visual.log",
+      "sha256": "7e00090d0c17766a78259210e6a606e304129301fda1c4d90ae6c4921d2e442e"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-visual.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:01:46.034347+00:00",
+      "elapsed_seconds": 2.161,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-visual-final.log",
+      "sha256": "7e00090d0c17766a78259210e6a606e304129301fda1c4d90ae6c4921d2e442e"
+    },
+    {
+      "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:58:02.526564+00:00",
+      "elapsed_seconds": 52.793,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/whole-web-reader.log",
+      "sha256": "5fca1ad1bf57da143a2f890ccb6cf0d2d54e8f5897fe7e8adbdc5fdf0f886bd6"
+    }
+  ],
+  "complete_library_jobs": 9826,
+  "complete_pdf_pages": 473,
+  "native_inventory": {
+    "declaration_lines": 3766,
+    "unique_declarations": 3766,
+    "owned_declarations": [
+      "Matrix.trace_exp_labelEntropy_replicaExcitationComponent_eq"
+    ],
+    "unique_fragment_input": [
+      "blueprint/src/chapter/ch13_schur_labels.tex"
+    ],
+    "each_occurs_once": true
+  },
+  "whole_web_reader": {
+    "pages": 50,
+    "typeset": 41028
+  },
+  "fresh_owned_original_provenance_entries": 1,
+  "fresh_owned_standard_kernel_reports": 1,
+  "inherited_evidence": "Mechanical SHA/Git preservation only; all49 original leaf files and89 portable parent bindings preserved; inherited semantic audits not repeated.",
+  "shared_source_exceptions": {
+    "authoritative_parent": "a2b266d6804ec5f4b870d639d2c551e52d69e5f5",
+    "QICLean/Analysis.lean": "Exactly one generated import QICLean.Analysis.ReplicaPhysicalLabelMoment.",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "Exactly one final input fragment/replica_physical_label_moment, with surrounding newline."
+  },
+  "historical_diagnostics": [
+    {
+      "record": "native-before-web-exit.json",
+      "exit_code": 1,
+      "cause": "The chapter-only pre-web sync inventory had3692 declarations and excluded fragment targets. The early native inventory assertion failed before the actual complete web generation. The complete web generated3766 unique declarations including the owned target exactly once; final native helper and actual checkdecls passed0. No proof/source change."
+    },
+    {
+      "packet": "docs/provenance/evidence/replicaPhysicalLabelMoment8750",
+      "cause": "The original leaf retains two audit-wrapper module-header/hash-command linter failures. Corrected wrappers and every final source-bound mathematical check passed. Frozen proof/exposition unchanged."
+    }
+  ],
+  "mathematical_scope": "Exact complex physical label-exponential trace identity for all real exponents, derived from the actual excitation component and regional product density. No signed centred label-moment rate or sharp comparator is assumed or proved."
+}

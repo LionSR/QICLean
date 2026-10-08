@@ -1,0 +1,16 @@
+{
+  "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "command": [
+    "python3",
+    "scripts/blueprint_lean_sync.py",
+    "--root",
+    ".",
+    "--update-lean-decls"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:51:08.031184+00:00",
+  "elapsed_seconds": 0.673,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/declaration-sync.log",
+  "sha256": "60f49829bd7a87dce337b8f56805e208bafb25e7032ad256fe9908dcb351c781"
+}

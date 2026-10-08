@@ -1,0 +1,41 @@
+{
+  "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "mathematical_source_revision": "fc4db3db1dc27f565637d218adc1fe0bf4de7e6d",
+  "leaf_evidence_revision": "a2b266d6804ec5f4b870d639d2c551e52d69e5f5",
+  "parent_revision": "a2b266d6804ec5f4b870d639d2c551e52d69e5f5",
+  "unique_inclusion_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "declarations": [
+    "Matrix.trace_exp_labelEntropy_replicaExcitationComponent_eq"
+  ],
+  "files": [
+    {
+      "path": "QICLean/Analysis/ReplicaPhysicalLabelMoment.lean",
+      "sha256": "3465f1fe6d72ce241df520e320ad64c0b71a8c961560c0d13a94e8cb34f0f358",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/replica_physical_label_moment.tex",
+      "sha256": "87fc43994a117266323eca3feda235bd2509970dec3f7b7b2962b5790c76cee1",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-replica-physical-label-moment.md",
+      "sha256": "93e5bb5592ece1f7a57af1bdcf2a5ddec86032d006f34c13153f15dd6048ab6a",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Analysis.lean",
+      "sha256": "e724b0522153c67233d54c2f28c4e31a07615d6d11ecd2ec023ae119a9e91814",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_schur_labels.tex",
+      "sha256": "57dd9e5a92dca6b774aef17245a4137f26645cb92aa4bd50dce7930e639abdd3",
+      "coverage": "Entire file."
+    }
+  ],
+  "preserved_published_branch": {
+    "branch": "feat/area-law-two-deficit-moment",
+    "revision": "a820e67e2f30782485361fa71c8c0763981f8edb"
+  }
+}
