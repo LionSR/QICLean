@@ -18,10 +18,10 @@ matrix $\rho$ on $\mathcal S_k$, $\int f\,d\mu_\rho$ denotes the coherent
 integral $D_k\int f(\theta)\operatorname{Tr}(\rho P_{\theta,k})\,d\theta$, where
 $P_{\theta,k}$ projects onto $\theta^{\otimes k}$ and $D_k=\dim\mathcal S_k$.
 
-The source proves the relative coherent pin (Lemma~6.4) and the skew bound
-(Lemma~6.5) in its replica section. Those two lemmas are not yet formalized, so
-the assembled estimate below takes their conclusions as hypotheses and is stated
-as such; the unconditional proposition remains open.
+The source proves the relative coherent pin and the skew bound in its replica
+section. The assembled estimate is first proved assuming their conclusions in the
+form used at a single band; both forms are then derived from the replica lemmas,
+which gives the proposition without hypotheses beyond those of the source.
 
 \section{The logarithmic passage}
 
@@ -67,6 +67,38 @@ as such; the unconditional proposition remains open.
 
 \section{The assembled estimate}
 
+\begin{lemma}[Band metrics on the symmetric subspace]\label{lem:replica_symmetric_metric}
+    \lean{Matrix.mul_cfc_eq_mul_cfc_of_mul_eq, Matrix.cfc_proj_mul_add,
+      Matrix.PosDef.proj_mul_add_one_sub, Matrix.proj_mul_add_one_sub_mul,
+      Matrix.PosDef.whiten_proj_mul_add_one_sub,
+      TensorPower.ReplicaTransport.symBandMetric,
+      TensorPower.ReplicaTransport.posDef_symBandMetric,
+      TensorPower.ReplicaTransport.commute_permOp_symBandMetric,
+      TensorPower.ReplicaTransport.TransportData.crossBandCommute_iff,
+      TensorPower.ReplicaTransport.le_whiten_symBandMetric,
+      TensorPower.ReplicaTransport.mul_skewSquare_symBandMetric}
+    \leanok
+    Let $\Pi$ be the projection onto $\mathcal S_k$ and let $A$ be a band metric, which
+    commutes with $\Pi$. The operator $\widetilde A=\Pi A+(I-\Pi)$ is positive definite,
+    agrees with $A$ on $\mathcal S_k$ and commutes with the copy permutations. Two such
+    operators $\widetilde A,\widetilde B$ commute exactly when $A$ and $B$ commute on
+    $\mathcal S_k$. Moreover
+    $\widetilde A^{-1/2}\widetilde B\widetilde A^{-1/2}=\Pi A^{-1/2}BA^{-1/2}+(I-\Pi)$, so
+    every lower bound $Q\le A^{-1/2}BA^{-1/2}$ with $\Pi Q\Pi=Q$ holds for the extended
+    operators, and for every $X$ commuting with $\Pi$ the skew squares of $\widetilde A$ and
+    of $A$ have the same expectation in every density matrix on $\mathcal S_k$.
+\end{lemma}
+
+\begin{proof}\leanok
+    If $P$ commutes with a Hermitian $Z$ and $PY=PZ$ for a Hermitian $Y$, then $PY^k=PZ^k$
+    for all $k$; interpolating $f$ by one polynomial on the two finite spectra gives
+    $Pf(Y)=Pf(Z)$. Applied with $P=\Pi$ and $P=I-\Pi$ this computes
+    $f(\Pi Y+(I-\Pi)Z)=\Pi f(Y)+(I-\Pi)f(Z)$, in particular the powers of $\widetilde A$.
+    The identity $\widetilde A\widetilde B=\Pi AB+(I-\Pi)$ gives the commutation criterion,
+    and positivity follows by splitting a vector into its components in $\mathcal S_k$ and
+    its complement.
+\end{proof}
+
 \begin{lemma}[Transport states on replicas]\label{lem:replica_transport_states}
     \lean{TensorPower.ReplicaTransport.TransportData.posSemidef_state,
       TensorPower.ReplicaTransport.TransportData.trace_state,
@@ -85,7 +117,7 @@ as such; the unconditional proposition remains open.
     Lemma~\ref{lem:transport_states_commutant}.
 \end{proof}
 
-\begin{theorem}[Entropy and energy transport, assuming Lemmas 6.4 and 6.5 and full-space band commutation]
+\begin{theorem}[Entropy and energy transport, assuming Lemmas 6.3 and 6.4]
     \label{thm:replica_transport_conditional}
     \lean{TensorPower.ReplicaTransport.transport_of_relativePin_of_splitSkewBound,
       TensorPower.ReplicaTransport.TransportData.exists_entropyGain_le_exactDerivative_of_relativePin,
@@ -94,14 +126,14 @@ as such; the unconditional proposition remains open.
       TensorPower.ReplicaTransport.TransportData.cfc_log_relRatio_eq_sum}
     \leanok
     \uses{lem:replica_log_passage, lem:replica_transport_states,
-      lem:transport_energy_block}
-    Assume the conclusion of the relative coherent pin~\cite[Lemma~6.4]{OpenAI2026AreaLaw}
-    and of the skew bound~\cite[Lemma~6.5]{OpenAI2026AreaLaw} at a split leaf.
-    Assume also that metrics from different bands commute as operators on the full
-    tensor power $\mathcal V^{\otimes k}$, for every $k$. This is stronger than the
-    source condition, which asks for commutation on $\mathcal S_k$ only, and it can
-    fail for the overlapping bands of the source's multi-band application; see the
-    note~\cite{gap:oai26_transport_crossband_commutation}.
+      lem:transport_energy_block, lem:replica_symmetric_metric}
+    Assume the conclusion of the relative coherent pin~\cite[Lemma~6.3]{OpenAI2026AreaLaw}
+    and of the skew bound~\cite[Lemma~6.4]{OpenAI2026AreaLaw} at a split leaf, and that
+    metrics from different bands commute on $\mathcal S_k$, for every $k$, as in the
+    source. The mean trees are evaluated on the band metrics extended by the identity off
+    $\mathcal S_k$ (Lemma~\ref{lem:replica_symmetric_metric}), which agree with the
+    source's operators on $\mathcal S_k$; an earlier formalization assumed commutation on
+    the full tensor power instead~\cite{gap:oai26_transport_crossband_commutation}.
     Then the conclusions of~\cite[Proposition~7.4]{OpenAI2026AreaLaw} hold: with
     $a=2t$, $\ell\ge1$ bounding $\log(e\dim x)$ for every transferred subsystem and
     $\log(e\dim D_i)$ for every split term, and $a\ell$ below a universal
@@ -118,7 +150,8 @@ as such; the unconditional proposition remains open.
 \end{theorem}
 
 \begin{proof}\leanok
-    The relative ratio factors over bands, $\log C_h=\sum_g\log C_{h,g}$. The
+    The extended band metrics of different bands commute, so the relative ratio factors
+    over bands, $\log C_h=\sum_g\log C_{h,g}$. The
     relative pin and projection transfer give the conditional pin of each band
     (\texttt{06-transport.tex} lines 513--531), and the logarithmic passage turns
     it into the entropy lower bound (lines 495--583). For the energy, the
@@ -128,7 +161,7 @@ as such; the unconditional proposition remains open.
     term with $\bar Hx=E_0x$ (lines 588--766).
 \end{proof}
 
-\begin{theorem}[Entropy and energy transport, assuming the split-leaf skew bound and full-space band commutation]
+\begin{theorem}[Entropy and energy transport, assuming the split-leaf skew bound]
     \label{thm:replica_transport_skew_conditional}
     \lean{Matrix.smul_vecMulVec_le_of_forall,
       TensorPower.ReplicaTransport.fourPartition_of_isPartition,
@@ -140,8 +173,7 @@ as such; the unconditional proposition remains open.
     The relative coherent pin holds in the form assumed in
     Theorem~\ref{thm:replica_transport_conditional}. Hence the conclusions
     of~\cite[Proposition~7.4]{OpenAI2026AreaLaw} hold assuming only the skew bound at a
-    split leaf and the full-space band commutation of
-    Theorem~\ref{thm:replica_transport_conditional}.
+    split leaf.
 \end{theorem}
 
 \begin{proof}\leanok
@@ -169,7 +201,80 @@ as such; the unconditional proposition remains open.
 \begin{proof}\leanok
     Integrate the pointwise bound and apply
     Lemma~\ref{lem:transport_integrated_derivative} (\texttt{06-transport.tex}
-    lines 427--429 and 769--779). Taking $L$ to be the entropy-gain lower bound
-    additionally requires its measurability in $p$, which the source does not
-    address.
+    lines 427--429 and 769--779).
+\end{proof}
+
+\begin{lemma}[Integrability of the entropy gain]\label{lem:replica_entropy_gain_integrable}
+    \lean{Matrix.MeanTree.hasDerivAt_eval_update_path,
+      Matrix.Transport.hasDerivAt_neg_log_filteredNormSq_leafPerturbation,
+      TensorPower.ReplicaTransport.TransportData.aestronglyMeasurable_integral_state,
+      TensorPower.ReplicaTransport.TransportData.abs_integral_state_le,
+      TensorPower.ReplicaTransport.TransportData.intervalIntegrable_entropyGain}
+    \leanok
+    \uses{lem:replica_transport_states}
+    For fixed $k$ and nonzero $x\in\mathcal S_k$, the entropy-gain term of
+    \cite[Proposition~7.4]{OpenAI2026AreaLaw} is integrable in $p$ on $[0,1]$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Each summand is $G(p)=\int m_{1/4}(u)\operatorname{Tr}(\sigma_{h,u}Q)\,du$ with $Q$
+    Hermitian. Replacing the old input $A_h$ by $A_h^{1/2}e^{\delta Q}A_h^{1/2}$ changes
+    $-\log N(p)^2$ at $\delta=0$ at rate $(1-p)w_hG(p)$, by the norm-derivative formula and
+    the leaf identity. For fixed $\delta$ the perturbed norm is continuous in $p$, so
+    $(1-p)w_hG(p)$ is a pointwise limit of continuous functions on $(0,1)$ and hence
+    measurable. The states are density matrices, so $|G(p)|\le\|Q\|/2$. The source asserts
+    the integration (\texttt{06-transport.tex} lines 427--429) and bounds the integrand
+    (lines 769--779); measurability is the remaining point.
+\end{proof}
+
+\begin{theorem}[The skew bound at a split leaf]\label{thm:replica_split_skew_bound}
+    \lean{TensorPower.re_coherentIntegral_ofReal,
+      TensorPower.mul_skewOperator_eq_mul_skewSquare,
+      TensorPower.ReplicaTransport.posSemidef_of_localLift,
+      TensorPower.ReplicaTransport.exists_tendsto_zero_forall_le,
+      TensorPower.ReplicaTransport.eventually_re_trace_skewSquare_le,
+      TensorPower.ReplicaTransport.splitSkewBound}
+    \leanok
+    \uses{thm:replica_transport_skew_conditional}
+    Let $0\le h\le1$ have designated support $D$ meeting $Y$ and exactly one of the outer
+    parts of a partition, let $0<t<1/4$, $a=2t$ and $a\log(e\dim D)\le1/8$. Then, uniformly
+    over density matrices $\rho$ on $\mathcal S_k$,
+    $\operatorname{Tr}(\rho\mathsf D_k)\le 2C a^2\log^4(e\dim D)\int\eta^{1/8}\,d\mu_\rho+r_k$
+    with $r_k\to0$, where $\mathsf D_k$ is the skew square of the band metric and $\eta$ is
+    the entropy of the split.
+\end{theorem}
+
+\begin{proof}\leanok
+    For a split towards $P$ put $P_0=D\cap P$ and $x=D\cap Y$. Then $D=P_0\cup x$, so $h$ is
+    the lift of an operator $0\le K\le1$ on $P_0x$ and $\dim D=(\dim P_0)(\dim x)$. The skew
+    operator of~\cite[Lemma~6.4]{OpenAI2026AreaLaw} takes its absolute values on
+    $\mathcal S_k$; for $Z$ commuting with the projection $\Pi$ onto $\mathcal S_k$,
+    $\Pi|\Pi Z|=\Pi|Z|$, so the two skew operators have the same expectation in every
+    density matrix on $\mathcal S_k$. The entropy $S_\theta(x|P)+S_\theta(x|Y\setminus x)$
+    of the skew bound is $I_\theta(x:F|P)$. A split towards $F$ is the same with the outer
+    parts exchanged. The skew bound holds with an additive $\varepsilon$ for all large $k$;
+    for fixed $k$ the excess over symmetric density matrices is bounded by the operator norm
+    of the skew square, and its supremum is the remainder $r_k$.
+\end{proof}
+
+\begin{theorem}[Entropy and energy transport]\label{thm:replica_transport}
+    \lean{TensorPower.ReplicaTransport.transport}
+    \leanok
+    \uses{thm:replica_transport_skew_conditional, thm:replica_split_skew_bound,
+      cor:replica_transport_integrated, lem:replica_entropy_gain_integrable}
+    The conclusions of~\cite[Proposition~7.4]{OpenAI2026AreaLaw} hold under the hypotheses
+    of the source: admissible finite history and choice data, cross-band commutation on
+    $\mathcal S_k$, positive contractions with designated supports compatible with the
+    terminal partitions, and $\ell\ge1$ bounding the logarithmic dimensions with $a\ell$
+    below a universal threshold. Namely, for every $k$ and nonzero $x\in\mathcal S_k$: at
+    every $0<p<1$ the exact derivative, the entropy-gain lower bound and the energy bound
+    hold, and the entropy-gain lower bound integrates over every $[p_0,p_1]\subseteq[0,1]$
+    to $\log N(p_0)^2-\log N(p_1)^2$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Combine Theorem~\ref{thm:replica_transport_skew_conditional} with
+    Theorem~\ref{thm:replica_split_skew_bound}. For the integrated form, apply
+    Corollary~\ref{cor:replica_transport_integrated} with the entropy-gain lower bound,
+    which is integrable by Lemma~\ref{lem:replica_entropy_gain_integrable}.
 \end{proof}

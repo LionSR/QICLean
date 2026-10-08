@@ -26,6 +26,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Commutation with a matrix inverse — candidate (2026-10-07)
+
+- **Pattern:** Give a positive definite matrix its existing `Invertible`
+  instance, use `Commute.invOf_right` or `commute_invOf`, and rewrite
+  `Matrix.invOf_eq_nonsing_inv`.
+- **Seen:** Three inverse-commutation steps in
+  `QICLean/Analysis/PatchRegulator.lean`; one file.
+- **Abstraction:** The existing Mathlib commutation lemmas suffice. Retain
+  this record until independent occurrences in another file justify a
+  matrix-specific lemma; no new tactic is introduced.
+
 ### Finite-spectrum functional-calculus scalar reduction — candidate (2026-10-07)
 
 - **Pattern:** Rewrite matrices as Hermitian functional calculi, combine
@@ -57,3 +68,33 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Commutation and the actual inverse identity are proved before
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
+
+### Joint central-label resolution — candidate (2026-10-07)
+
+- **Pattern:** Form the product of commuting orthogonal resolutions, express
+  the observables as functions of this joint resolution, and prove matrix
+  order from scalar inequalities on its nonzero components.
+- **Seen:** `TensorPower.groupedCopies_labelEntropy_bounds` in
+  `QICLean/Representation/GroupedLabelEntropy.lean` and
+  `PermutationRepresentation.supportProj_mul_labelEntropy_mul_supportProj_le`
+  in `QICLean/Representation/SchurSurprisal.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.prod` and
+  `posSemidef_hom_of_ne_zero`. The coordinate functions of a product
+  resolution are recovered by summing the other factor to the identity;
+  the new module has two private lemmas for this elementary calculation.
+- **Caveats:** Scalar inequalities are required only on nonzero joint
+  projections. Compatibility and the full-space order must be derived from
+  the actual projections, rather than supplied as extra assumptions.
+### Contraction of the repeated uniform pair — candidate (2026-10-07)
+
+- **Pattern:** Expand a Kronecker action against the actual repeated uniform
+  pair, rewrite its coordinates as a scalar times the equality indicator,
+  and contract one coordinate sum.
+- **Seen:** The two private coordinate identities in
+  `QICLean/Representation/UniformBellLabel.lean`; two occurrences in one file.
+- **Abstraction:** The public projected-norm and nonzero-occurrence theorems
+  supply the mathematical consequences. A separate tactic is not warranted
+  by two coordinate contractions.
+- **Caveats:** The normalization depends on the actual one-copy dimension;
+  nonzero occurrence requires that dimension to be positive. The central
+  Schur label equality additionally uses inversion-invariant coefficients.

@@ -12,8 +12,12 @@ import QICLean.Representation.ReplicaTransport.CoherentLog
 import QICLean.Representation.ReplicaTransport.Energy
 import QICLean.Representation.ReplicaTransport.EntropyGain
 import QICLean.Representation.ReplicaTransport.Integrated
+import QICLean.Representation.ReplicaTransport.IntegratedEntropy
 import QICLean.Representation.ReplicaTransport.Prerequisites
 import QICLean.Representation.ReplicaTransport.Proposition
 import QICLean.Representation.ReplicaTransport.RelativePinBound
 import QICLean.Representation.ReplicaTransport.Setup
+import QICLean.Representation.ReplicaTransport.SplitSkewBound
 import QICLean.Representation.ReplicaTransport.States
+import QICLean.Representation.ReplicaTransport.SymmetricMetric
+import QICLean.Representation.ReplicaTransport.Transport

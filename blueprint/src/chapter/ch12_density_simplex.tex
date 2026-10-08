@@ -1,0 +1,83 @@
+\section{Regularized density-simplex minima}
+
+\begin{theorem}[Simplex necessary conditions]
+\label{thm:density_simplex_conditions}
+\lean{Entropy.simplex_ratio_conditions_of_isMinOn}
+\leanok
+Let $I$ be finite, let $x,p\in\mathbb R^I$ be nonnegative with
+$\sum_i x_i=\sum_i p_i=1$, and let $b,c>0$. Suppose that
+$f:\mathbb R^I\to\mathbb R$ attains its minimum over the probability
+simplex at $x$ and is Fr\'echet differentiable there, with
+\begin{align}
+ Df(x)v&=-c\sum_i\frac{p_i}{x_i+b}v_i.
+ \label{eq:density_simplex_derivative}
+\end{align}
+Then there exists $0<\lambda\le1$ such that
+\begin{align}
+ \frac{p_i}{x_i+b}&\le\lambda,
+ \label{eq:density_simplex_ratio}\\
+ x_i>0&\implies\frac{p_i}{x_i+b}=\lambda,
+ \label{eq:density_simplex_support}\\
+ x_i+b&=\max\{p_i/\lambda,b\}.
+ \label{eq:density_simplex_clipping}
+\end{align}
+These are the simplex necessary conditions used in the patch-filter
+argument of \cite[Section~4]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}
+\leanok
+Set $\lambda=\sum_i x_ip_i/(x_i+b)$. At a minimum, the derivative
+in the feasible direction $e_i-x$ is nonnegative, proving
+(\ref{eq:density_simplex_ratio}). The nonnegative summands in
+$\sum_i x_i(\lambda-p_i/(x_i+b))=0$ vanish individually; this proves
+(\ref{eq:density_simplex_support}). Since $\sum_i p_i=1$,
+some $p_i$ is positive and hence $\lambda>0$. Moreover,
+$1=\lambda+b\sum_i p_i/(x_i+b)$ gives $\lambda\le1$.
+Separating $x_i=0$ and $x_i>0$ proves
+(\ref{eq:density_simplex_clipping}).
+\end{proof}
+
+\begin{definition}[Diagonal regularized filter]
+\label{def:density_simplex_filter}
+\lean{Entropy.simplexFilterObjective, Entropy.normalizedFilterWeights}
+\leanok
+For real $a,b$ and initial real weights $r_i$, define
+\begin{align}
+ F(y)&=\sum_i r_i(y_i+b)^{-a},
+ \label{eq:density_simplex_objective}\\
+ p_i(x)&=\frac{r_i(x_i+b)^{-a}}{F(x)}.
+ \label{eq:density_simplex_weights}
+\end{align}
+When $r_i\ge0$ are squared input amplitudes, $x$ is a diagonal density,
+and $b>0$, $F(x)$ is the squared norm after applying
+the filter $(x+bI)^{-a/2}$. The quotient is defined to be zero when
+$F(x)=0$.
+\end{definition}
+
+\begin{theorem}[Last-filter minimum]
+\label{thm:density_simplex_last_filter}
+\lean{Entropy.hasFDerivAt_simplexFilterObjective,
+  Entropy.simplexFilterObjective_pos,
+  Entropy.normalizedFilterWeights_nonneg,
+  Entropy.sum_normalizedFilterWeights,
+  Entropy.normalizedFilterWeights_clipped_of_isMinOn}
+\leanok
+\uses{def:density_simplex_filter}
+If $x_i+b>0$ for every $i$, then $F$ is Fr\'echet differentiable at
+$x$, with $DF(x)v=-a\sum_i r_i(x_i+b)^{-a-1}v_i$.
+Suppose further that $r_i\ge0$, $\sum_i r_i>0$, $b>0$, and
+$x_i\ge0$. Then $F(x)>0$, $p_i(x)\ge0$, and $\sum_i p_i(x)=1$.
+If also $a>0$, $\sum_i x_i=1$, and $x$ minimizes the actual
+function $F$ on the probability simplex, then the normalized
+weights $p_i(x)$ satisfy (\ref{eq:density_simplex_ratio})--
+(\ref{eq:density_simplex_clipping}) for some $0<\lambda\le1$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:density_simplex_conditions, def:density_simplex_filter}
+Differentiate each summand in (\ref{eq:density_simplex_objective}).
+At least one $r_i$ is positive, giving $F(x)>0$; division by this
+positive number proves normalization. Rewriting the derivative gives
+$DF(x)v=-aF(x)\sum_i p_i(x)v_i/(x_i+b)$. Apply
+Theorem~\ref{thm:density_simplex_conditions} with $c=aF(x)>0$.
+\end{proof}
