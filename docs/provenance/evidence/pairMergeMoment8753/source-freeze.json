@@ -1,0 +1,11 @@
+{
+  "source_revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+  "mathematical_revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+  "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+  "production_sha256": {
+    "QICLean/Representation/PairMergeMoment.lean": "8377a7ac4e5ed15edbfb0e7316095b438ff44f18b10627b23da94f5b6afee0e3",
+    "blueprint/src/fragment/pair_merge_moment.tex": "79b443f15dddc72ab0db66cea4ac50faaf3e28baed0d6c10f5d70f7c85b53c2e",
+    "docs/openai-area-law-pair-merge-moment.md": "02683cdf1d5822147cdca12e2b0159d4f367f1f3fb4534fbbaa85ab8493f1d62",
+    "docs/tactic_patterns.md": "495789840c66407614607842cce346d1a946ffc384ebe65a4ff0b4132527fb7b"
+  }
+}
