@@ -173,6 +173,53 @@ theorem quadForm_eigen {U K : Matrix n n ℂ} (hU : star U * U = 1) (e c : n →
   rw [mulVec_diagonal, star_mul']
   ring
 
+/-- The quadratic form along `u ↦ M^{-iu} v` is a finite exponential sum. -/
+theorem quadForm_imagPow_eq_sum {M : Matrix n n ℂ} (hM : M.IsHermitian) (X : Matrix n n ℂ)
+    (v : n → ℂ) (u : ℝ) :
+    star (imagPow M u *ᵥ v) ⬝ᵥ (X *ᵥ (imagPow M u *ᵥ v)) =
+      ∑ k : n × n, (star ((star (eigU hM) *ᵥ v) k.1) * (star (eigU hM) * X * eigU hM) k.1 k.2 *
+        (star (eigU hM) *ᵥ v) k.2) *
+          cexp (I * u * ((Real.log (hM.eigenvalues k.1) - Real.log (hM.eigenvalues k.2) : ℝ) : ℂ)) := by
+  have hUU' := eigU_mul_star hM
+  have hv : v = eigU hM *ᵥ (star (eigU hM) *ᵥ v) := by rw [mulVec_mulVec, hUU', one_mulVec]
+  have hX : X = eigU hM * (star (eigU hM) * X * eigU hM) * star (eigU hM) := by
+    simp only [← Matrix.mul_assoc, hUU', Matrix.one_mul]
+    rw [Matrix.mul_assoc, hUU', Matrix.mul_one]
+  conv_lhs => rw [hv, hX]
+  rw [imagPow_eq_eigen hM u, quadForm_eigen (star_eigU_mul hM), ← Finset.sum_product']
+  refine Finset.sum_congr rfl fun k _ => ?_
+  have he : star (cexp (((-u : ℝ) : ℂ) * (I * (Real.log (hM.eigenvalues k.1) : ℂ)))) *
+      cexp (((-u : ℝ) : ℂ) * (I * (Real.log (hM.eigenvalues k.2) : ℂ))) =
+      cexp (I * u * ((Real.log (hM.eigenvalues k.1) - Real.log (hM.eigenvalues k.2) : ℝ) : ℂ)) := by
+    rw [Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]
+    congr 1
+    simp only [map_mul, Complex.conj_ofReal, Complex.conj_I]
+    push_cast
+    ring
+  rw [← he]
+  ring
+
+theorem integrable_fourierWeight_mul_re_sum {κ : Type*} [Fintype κ] (z : κ → ℝ) (β : κ → ℂ) :
+    Integrable fun u : ℝ => fourierWeight u * (∑ k, β k * cexp (I * u * z k)).re := by
+  have h : (fun u : ℝ => fourierWeight u * (∑ k, β k * cexp (I * u * z k)).re) =
+      fun u : ℝ => (∑ k, β k * (cexp (I * u * z k) * (fourierWeight u : ℂ))).re := by
+    funext u
+    rw [← Complex.re_ofReal_mul, Finset.mul_sum]
+    congr 1
+    refine Finset.sum_congr rfl fun k _ => ?_
+    ring
+  rw [h]
+  exact (integrable_finsetSum _ fun k _ =>
+    (integrable_cexp_mul_fourierWeight (z k)).const_mul (β k)).re
+
+/-- The Fourier-weighted quadratic form along `u ↦ M^{-iu} v` is integrable. -/
+theorem integrable_fourierWeight_mul_quadForm {M : Matrix n n ℂ} (hM : M.IsHermitian)
+    (X : Matrix n n ℂ) (v : n → ℂ) :
+    Integrable fun u : ℝ => fourierWeight u *
+      (star (imagPow M u *ᵥ v) ⬝ᵥ (X *ᵥ (imagPow M u *ᵥ v))).re := by
+  simp only [quadForm_imagPow_eq_sum hM]
+  exact integrable_fourierWeight_mul_re_sum _ _
+
 /-! ### The derivative of `M^{-1/2}` along a path -/
 
 theorem filteredNormSq_eq {M : Matrix n n ℂ} (hM : M.PosDef) (pre : n → ℂ) :

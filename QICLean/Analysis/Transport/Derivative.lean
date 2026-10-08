@@ -254,7 +254,30 @@ theorem hasDerivAt_neg_log_filteredNormSq {T : MeanTree H} {S : ∀ h, MeanTree 
   have h1 := hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt hM hD hpre
   convert h1 using 1
   -- Insert `transport:root-p-derivative` and move each leaf map to its trace adjoint.
-  sorry
+  rw [hDH]
+  set Mp := interpPath T S A A' p
+  set v := filteredVector Mp pre
+  set T' := interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)
+  have hMh : Mp.IsHermitian := (hM p).isHermitian
+  have hint : ∀ h, Integrable fun u : ℝ => fourierWeight u *
+      (star (imagPow Mp u *ᵥ v) ⬝ᵥ (T'.leafMap (interpInput A A') ⟨h, none⟩
+        (CFC.log (relRatio S A A' h)) *ᵥ (imagPow Mp u *ᵥ v))).re :=
+    fun h => integrable_fourierWeight_mul_quadForm hMh _ _
+  have htr : ∀ h u, (transportState T' (interpInput A A') v ⟨h, none⟩ u *
+      CFC.log (relRatio S A A' h)).trace =
+      star (imagPow Mp u *ᵥ v) ⬝ᵥ (T'.leafMap (interpInput A A') ⟨h, none⟩
+        (CFC.log (relRatio S A A' h)) *ᵥ (imagPow Mp u *ᵥ v)) := fun h u =>
+    (star_dotProduct_mulVec_eq_trace_traceAdjointMap
+      (T'.leafMap (interpInput A A') ⟨h, none⟩).toLinearMap _ _).symm
+  simp only [htr]
+  simp_rw [← integral_const_mul]
+  rw [← integral_finsetSum _ fun h _ => (hint h).const_mul (T.weight h)]
+  congr 1
+  funext u
+  rw [sum_mulVec, dotProduct_sum, Complex.re_sum, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun h _ => ?_
+  rw [smul_mulVec, dotProduct_smul, Complex.smul_re]
+  ring
 
 omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] in
 /-- `M^{-iu}` is unitary. -/
