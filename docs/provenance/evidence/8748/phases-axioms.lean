@@ -1,5 +1,0 @@
-import QICLean.Entropy.MarginalPhaseSingular
-#print axioms Entropy.MarginalPhase.norm_phaseDifference_mulVec_le
-#print axioms Entropy.MarginalPhase.norm_phaseDifference_le
-#print axioms Entropy.MarginalPhase.norm_phaseDifference_le_of_posDef
-#print axioms Matrix.ResolventCompression.norm_phaseGap_le_phaseRate

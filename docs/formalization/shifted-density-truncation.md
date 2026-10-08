@@ -67,7 +67,7 @@ b 1_[b,∞)(λᵢ) by λᵢ. Dividing by b in the trace-one case gives the head-
 bound. On the tail spectrum, 0 ≤ λ < b, so 0 < λ + b < 2b; scalar monotonicity
 for r ≥ 0 and the functional-calculus norm bound give the tail estimate.
 
-## Scope and provenance
+## Scope and attribution
 
 This is the single-matrix inside-space step of `eq:patch-head-tail-bounds`.
 It does not choose or prove existence of a minimizing tuple, prove an
@@ -78,14 +78,7 @@ closed-threshold projection. The mathematical generalization to any positive
 b and all real r where valid is explicit; the tail estimate retains r ≥ 0.
 
 All proofs are independently written from QICLean and Mathlib results. No
-OpenAI Lean proof text is reused. The distinct shard
-`docs/provenance/openai-math.d/shiftedDensityTruncation8767.json` has one row
-for each of the 21 public declarations and does not modify the earlier
-shifted-density-power provenance. Its source-freeze rows remain
-`planned` / `proposed` / `pending`. Activation requires a verified published
-immutable source revision, exact source hashes, and matching successful
-build and axiom evidence. Source-level documentation checks are not a full
-Lean build or remote CI result.
+OpenAI Lean proof text is reused.
 
 The blueprint is
 `blueprint/src/chapter/ch01_shifted_density_truncation.tex`, routed from the

@@ -30,16 +30,6 @@ Original proofs for OpenAI, *A two-dimensional area law from a global spectral g
 September 24, 2026, `02-information.tex`, lines 355–424, `eq:info-reset-overlap`.
 Paper source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
 No upstream Lean declaration or proof text is reused.
-Provenance-ID: physical-buffer8766-matrix.star_product_dotproduct_eq
-Downstream declaration: Matrix.star_product_dotProduct_eq
-Provenance-ID: physical-buffer8766-matrix.norm_product_overlap_le_schmidtcoeffmatrix
-Downstream declaration: Matrix.norm_product_overlap_le_schmidtCoeffMatrix
-Provenance-ID: physical-buffer8766-matrix.norm_product_overlap_pow_four_le_purity
-Downstream declaration: Matrix.norm_product_overlap_pow_four_le_purity
-Provenance-ID: physical-buffer8766-product-overlap-purity-coordinate-normalization
-Downstream declaration: Matrix.norm_product_overlap_pow_four_le_purity_of_star_dotProduct_eq_one
-Provenance-ID: physical-buffer8766-matrix.star_doubled_dotproduct_partialswap_eq_purity
-Downstream declaration: Matrix.star_doubled_dotProduct_partialSwap_eq_purity
 -/
 
 open scoped BigOperators Matrix Matrix.Norms.L2Operator InnerProductSpace

@@ -626,6 +626,68 @@ eigenbasis. The following statements show that such averages are central label f
     $a,b$ with probability $1/k$, so pairs with intersecting images form a fraction at most
     $mn/k$. These pairs and the change of normalization each cost at most that fraction
     times $\|G\|\|H\|$.
+\end{proof}
+
+\begin{lemma}[Sums of injection averages]
+    \label{lem:injection_poly}
+    \lean{TensorPower.placeOp_trans_perm, TensorPower.commute_symProj_injectionAverage,
+        TensorPower.conjTranspose_injectionAverage, TensorPower.coherentExpect,
+        TensorPower.coherentExpect_conjTranspose, TensorPower.coherentExpect_copyKronecker,
+        TensorPower.norm_coherentIntegral_le, TensorPower.IsInjectionPoly,
+        TensorPower.IsInjectionPoly.exists_mul,
+        TensorPower.IsInjectionPoly.exists_norm_trace_sub_coherentIntegral_le}
+    \leanok
+    \uses{thm:uniform_husimi, thm:injection_product}
+    Let $Y_k=\sum_i\mathcal T_{k,r_i}(G_i)$ for finitely many fixed operators $G_i$, with
+    symbol $\psi(\theta)=\sum_i\langle\theta^{\otimes r_i},G_i\theta^{\otimes r_i}\rangle$.
+    Then $Y_k$ commutes with the copy permutations, $Y_k^\ast$ has symbol
+    $\overline\psi$, the product of two such sums is, up to $O(k^{-1})$ in operator norm, a
+    third one whose symbol is the product of the symbols, and
+    $|\Tr\sigma Y_k-\int\psi\,d\mu_\sigma|=O(k^{-1})$ uniformly in symmetric density matrices
+    $\sigma$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Relocating a placement by a copy permutation conjugates it by that permutation, and
+    relocation permutes the injections. Product vectors factor:
+    $\langle\theta^{\otimes(m+n)},(G\otimes H)\theta^{\otimes(m+n)}\rangle
+    =\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle
+    \langle\theta^{\otimes n},H\theta^{\otimes n}\rangle$. The product estimate and the trace
+    estimate follow termwise from the two previous theorems.
+\end{proof}
+
+\begin{theorem}[Coherent symbol calculus]
+    \label{thm:coherent_symbol}
+    \lean{TensorPower.unitSphere, TensorPower.isCompact_unitSphere,
+        TensorPower.HasCoherentSymbol, TensorPower.HasCoherentSymbol.add,
+        TensorPower.HasCoherentSymbol.smul, TensorPower.HasCoherentSymbol.conjTranspose,
+        TensorPower.HasCoherentSymbol.mul,
+        TensorPower.HasCoherentSymbol.eventually_norm_trace_sub_le,
+        TensorPower.HasCoherentSymbol.freeAlgebra}
+    \leanok
+    \uses{lem:injection_poly}
+    Say that operators $X_k$ have coherent symbol $f$ if they commute with $\Pi_k$, are
+    uniformly bounded on $\mathcal S_k$, $f$ is continuous on unit vectors, and for every
+    $\varepsilon>0$ some sum of injection averages $Y_k$ with symbol $\psi$ satisfies
+    $|f-\psi|\le\varepsilon$ on unit vectors and $\|(X_k-Y_k)\Pi_k\|\le\varepsilon$ for large
+    $k$. This property is preserved by sums, scalar multiples, adjoints with the conjugate
+    symbol, and products with the product symbol. Consequently, for every noncommutative
+    polynomial $q$ in two variables, $q(X_k,X_k^\ast)$ has coherent symbol
+    $q(f,\overline f)$, and
+    \[
+        \sup_\sigma\left|\Tr\sigma X_k-\int f\,d\mu_\sigma\right|\longrightarrow0
+    \]
+    over symmetric density matrices $\sigma$.
+\end{theorem}
+
+\begin{proof}\leanok
+    For products, write
+    $XX'\Pi=X\Pi(X'-Y')\Pi+(X-Y)\Pi Y'\Pi+YY'\Pi$, using that all factors commute with
+    $\Pi$, and approximate $YY'$ by the previous lemma. Symbols are bounded on the compact
+    unit sphere, so the symbol errors combine in the same way. For the trace limit,
+    $|\Tr\sigma(X_k-Y_k)|\le\|(X_k-Y_k)\Pi_k\|$, the coherent measure is a probability measure,
+    and the previous lemma treats $Y_k$. Polynomials follow by induction.
+\end{proof}
 
 \section{The gamma integral}
 
@@ -730,6 +792,66 @@ weight $(\sum_ix_i)^{-a}e^{-\sum_ix_i}$; the quotients of gamma values are the s
     Vandermonde product and $a_\delta(\delta)$ is the product of the differences $j-i$.
 \end{proof}
 
+\begin{lemma}[Sums of injection averages]
+    \label{lem:injection_poly}
+    \lean{TensorPower.placeOp_trans_perm, TensorPower.commute_symProj_injectionAverage,
+        TensorPower.conjTranspose_injectionAverage, TensorPower.coherentExpect,
+        TensorPower.coherentExpect_conjTranspose, TensorPower.coherentExpect_copyKronecker,
+        TensorPower.norm_coherentIntegral_le, TensorPower.IsInjectionPoly,
+        TensorPower.IsInjectionPoly.exists_mul,
+        TensorPower.IsInjectionPoly.exists_norm_trace_sub_coherentIntegral_le}
+    \leanok
+    \uses{thm:uniform_husimi, thm:injection_product}
+    Let $Y_k=\sum_i\mathcal T_{k,r_i}(G_i)$ for finitely many fixed operators $G_i$, with
+    symbol $\psi(\theta)=\sum_i\langle\theta^{\otimes r_i},G_i\theta^{\otimes r_i}\rangle$.
+    Then $Y_k$ commutes with the copy permutations, $Y_k^\ast$ has symbol
+    $\overline\psi$, the product of two such sums is, up to $O(k^{-1})$ in operator norm, a
+    third one whose symbol is the product of the symbols, and
+    $|\Tr\sigma Y_k-\int\psi\,d\mu_\sigma|=O(k^{-1})$ uniformly in symmetric density matrices
+    $\sigma$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Relocating a placement by a copy permutation conjugates it by that permutation, and
+    relocation permutes the injections. Product vectors factor:
+    $\langle\theta^{\otimes(m+n)},(G\otimes H)\theta^{\otimes(m+n)}\rangle
+    =\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle
+    \langle\theta^{\otimes n},H\theta^{\otimes n}\rangle$. The product estimate and the trace
+    estimate follow termwise from the two previous theorems.
+\end{proof}
+
+\begin{theorem}[Coherent symbol calculus]
+    \label{thm:coherent_symbol}
+    \lean{TensorPower.unitSphere, TensorPower.isCompact_unitSphere,
+        TensorPower.HasCoherentSymbol, TensorPower.HasCoherentSymbol.add,
+        TensorPower.HasCoherentSymbol.smul, TensorPower.HasCoherentSymbol.conjTranspose,
+        TensorPower.HasCoherentSymbol.mul,
+        TensorPower.HasCoherentSymbol.eventually_norm_trace_sub_le,
+        TensorPower.HasCoherentSymbol.freeAlgebra}
+    \leanok
+    \uses{lem:injection_poly}
+    Say that operators $X_k$ have coherent symbol $f$ if they commute with $\Pi_k$, are
+    uniformly bounded on $\mathcal S_k$, $f$ is continuous on unit vectors, and for every
+    $\varepsilon>0$ some sum of injection averages $Y_k$ with symbol $\psi$ satisfies
+    $|f-\psi|\le\varepsilon$ on unit vectors and $\|(X_k-Y_k)\Pi_k\|\le\varepsilon$ for large
+    $k$. This property is preserved by sums, scalar multiples, adjoints with the conjugate
+    symbol, and products with the product symbol. Consequently, for every noncommutative
+    polynomial $q$ in two variables, $q(X_k,X_k^\ast)$ has coherent symbol
+    $q(f,\overline f)$, and
+    \[
+        \sup_\sigma\left|\Tr\sigma X_k-\int f\,d\mu_\sigma\right|\longrightarrow0
+    \]
+    over symmetric density matrices $\sigma$.
+\end{theorem}
+
+\begin{proof}\leanok
+    For products, write
+    $XX'\Pi=X\Pi(X'-Y')\Pi+(X-Y)\Pi Y'\Pi+YY'\Pi$, using that all factors commute with
+    $\Pi$, and approximate $YY'$ by the previous lemma. Symbols are bounded on the compact
+    unit sphere, so the symbol errors combine in the same way. For the trace limit,
+    $|\Tr\sigma(X_k-Y_k)|\le\|(X_k-Y_k)\Pi_k\|$, the coherent measure is a probability measure,
+    and the previous lemma treats $Y_k$. Polynomials follow by induction.
+\end{proof}
 \section{The integral representation}
 
 \begin{lemma}[Powers of compressions]
