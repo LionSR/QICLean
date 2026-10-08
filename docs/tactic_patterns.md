@@ -143,6 +143,22 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The sector count gives a mass bound only; an entropy window
   requires a separate concentration estimate and a restricted selection.
 
+### Joint spectral trace reduction — candidate (2026-10-07)
+
+- **Pattern:** Express the density and the tested observable through the
+  joint orthogonal resolution, multiply using its algebra homomorphism, and
+  take the trace as a finite weighted sum.
+- **Seen:** The surprisal tail, label-window mass and exponential remainder
+  in `QICLean/Representation/HighLabelWindow.lean` use the private
+  `re_trace_mul_joint_hom` lemma; the existing moment calculation in
+  `SchurSurprisal.lean` has the corresponding finite trace expansion.
+- **Abstraction:** A single private mathematical lemma handles all three
+  new uses. The existing resolution homomorphism and trace theorem remain
+  the common public results; no tactic is introduced.
+- **Caveats:** The density is positive semidefinite and permutation invariant.
+  Zero eigenvalues contribute zero mass. A trace expansion must not be
+  substituted for either concentration or the moment bound itself.
+
 ### Copy-permutation commutation from invariant entries — candidate (2026-10-07)
 
 - **Pattern:** Reindex a literal finite product, or a sum of such products, by
@@ -225,3 +241,37 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The normalization depends on the actual one-copy dimension;
   nonzero occurrence requires that dimension to be positive. The central
   Schur label equality additionally uses inversion-invariant coefficients.
+
+### Tensor-product actions in product coordinates — candidate (2026-10-08)
+
+- **Pattern:** Expand a Kronecker action on a product vector and apply the
+  distributive law for two finite sums. Factor the physical and auxiliary
+  actions before using their individual fixed-vector equations.
+- **Seen:** The two auxiliary-label equations and simultaneous symmetry in
+  `QICLean/Representation/ReplicaPrevector.lean` share the private generic
+  `kronecker_mulVec_product` lemma. The mean-energy calculation in
+  `QICLean/Analysis/ReplicaDefect.lean` has a prior identity-spectator variant.
+- **Abstraction:** The new calculation is written once and reused for all
+  three actions. The norm calculation reuses the existing public quadratic
+  form factorization. Reconsider a common algebraic action lemma when a
+  further independent consumer needs it; no tactic is introduced here.
+- **Caveats:** The actual matrix actions and vector factors are used. No
+  supplied factorization or eigenvector statement for the initial vector
+  replaces these calculations.
+
+### Projection after regrouping tensor factors — candidate (2026-10-08)
+
+- **Pattern:** Keep the physical coefficient fixed while an operator acts
+  on the selected auxiliary factor, and identify the result after regrouping
+  the physical and auxiliary coordinates.
+- **Seen:** `QICLean/Representation/SchmidtBellPrevector.lean` has one new
+  consumer. The earlier product-action and identity-spectator calculations
+  occur in `ReplicaPrevector.lean` and `ReplicaDefect.lean`.
+- **Abstraction:** The new calculation reuses Mathlib's
+  `Matrix.vec_mul_eq_mulVec` twice. A single private lemma applies this
+  matrix-vectorization identity to the two coordinate maps, and the public
+  result combines it with the existing finite-copy Bell identity. The
+  reindexing of that identity uses `Matrix.submatrix_mulVec_equiv`.
+- **Caveats:** The right auxiliary projector remains on its actual selected
+  copy space. The Bell projection acts on the physical and left auxiliary
+  factors; the asserted label of the projected output is the right label.
