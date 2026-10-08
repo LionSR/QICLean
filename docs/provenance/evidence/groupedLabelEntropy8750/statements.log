@@ -1,0 +1,9 @@
+@TensorPower.groupedCopies_labelEntropy_bounds : ∀ {m r k : ℕ} (e : Fin m ⊕ Fin r ≃ Fin k) {X : Type u_1}
+  [inst : Fintype X] [inst_1 : DecidableEq X] (φ : Equiv.Perm (Fin k) →* Equiv.Perm X),
+  PermutationRepresentation.labelEntropy (φ.comp (TensorPower.groupHom₁ e)) +
+        PermutationRepresentation.labelEntropy (φ.comp (TensorPower.groupHom₂ e)) ≤
+      PermutationRepresentation.labelEntropy φ ∧
+    PermutationRepresentation.labelEntropy φ ≤
+      PermutationRepresentation.labelEntropy (φ.comp (TensorPower.groupHom₁ e)) +
+          PermutationRepresentation.labelEntropy (φ.comp (TensorPower.groupHom₂ e)) +
+        ↑(Real.log ↑(k.choose r)) • 1

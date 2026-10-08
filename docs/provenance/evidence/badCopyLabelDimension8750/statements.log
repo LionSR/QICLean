@@ -1,0 +1,91 @@
+theorem TensorPower.groupHom₂_labelProj_dim_le.{u_1} : ∀ {m r k : ℕ} (e : Fin m ⊕ Fin r ≃ Fin k) {C : Type u_1}
+  [inst : Fintype C] [inst_1 : DecidableEq C] (β : IrrepLabel (Equiv.Perm (Fin r))),
+  PermutationRepresentation.labelProj ((TensorPower.copyPerm C k).comp (TensorPower.groupHom₂ e)) β ≠ 0 →
+    β.dim ≤ Fintype.card C ^ r :=
+fun {m r k} e {C} [inst : Fintype C] [inst_1 : DecidableEq C] β hβ =>
+  have hr := fun hz =>
+    hβ
+      (Matrix.ext fun x y =>
+        of_eq_true
+          (Eq.trans
+            (congrFun'
+              (congrArg Eq
+                (Eq.trans
+                  ((fun x_0 x_1 x_2 x y =>
+                      (fun x_0 x_1 x_2 => TensorPower.bad_copy_labelProj_entry✝ e β) x_0 x_1 x_2 x y)
+                    C inst inst_1 x y)
+                  (Eq.trans
+                    (ite.congr_simp ((fun i => x (e (Sum.inl i))) = fun i => y (e (Sum.inl i)))
+                      ((fun i => x (e (Sum.inl i))) = fun i => y (e (Sum.inl i)))
+                      (Eq.refl ((fun i => x (e (Sum.inl i))) = fun i => y (e (Sum.inl i))))
+                      (PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β (fun i => x (e (Sum.inr i)))
+                        fun i => y (e (Sum.inr i)))
+                      0 (congrArg (fun x_1 => x_1 (fun i => x (e (Sum.inr i))) fun i => y (e (Sum.inr i))) hz) 0 0
+                      (Eq.refl 0))
+                    (ite_self 0))))
+              0)
+            (eq_self 0)));
+  let W := (Matrix.toLin' (PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β)).range;
+  have hW := fun g w hw =>
+    Exists.casesOn hw fun v h =>
+      h ▸
+        Exists.intro (((PermutationRepresentation.permOp (TensorPower.copyPerm C r)) g).mulVec v)
+          (Eq.mpr
+            (id
+              (congr
+                (congrArg Eq
+                  (Matrix.mulVec_mulVec v (PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β)
+                    ((PermutationRepresentation.permOp (TensorPower.copyPerm C r)) g)))
+                (Matrix.mulVec_mulVec v ((PermutationRepresentation.permOp (TensorPower.copyPerm C r)) g)
+                  (PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β))))
+            (Eq.mpr
+              (id
+                (congrArg
+                  (fun _a =>
+                    _a.mulVec v =
+                      ((PermutationRepresentation.permOp (TensorPower.copyPerm C r)) g *
+                            PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β).mulVec
+                        v)
+                  (Commute.eq (PermutationRepresentation.commute_labelProj_permOp (TensorPower.copyPerm C r) β g))))
+              (Eq.refl
+                (((PermutationRepresentation.permOp (TensorPower.copyPerm C r)) g *
+                      PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β).mulVec
+                  v))));
+  have hfix := fun w hw =>
+    Exists.casesOn hw fun v h =>
+      h ▸
+        of_eq_true
+          (Eq.trans
+            (congrFun'
+              (congrArg Eq
+                (Eq.trans
+                  (Matrix.mulVec_mulVec v (PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β)
+                    (PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β))
+                  (congrFun'
+                    (congrArg Matrix.mulVec (PermutationRepresentation.labelProj_mul_self (TensorPower.copyPerm C r) β))
+                    v)))
+              ((PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β).mulVec v))
+            (eq_self ((PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β).mulVec v)));
+  have hne :=
+    Eq.mpr (id (congrArg (fun _a => _a) (Ne.eq_1 W ⊥)))
+      (Eq.mpr (id (congrArg (fun _a => ¬_a) (propext LinearMap.range_eq_bot)))
+        (Eq.mpr
+          (id
+            (congrArg (fun _a => ¬Matrix.toLin' (PermutationRepresentation.labelProj (TensorPower.copyPerm C r) β) = _a)
+              (Eq.symm (map_zero Matrix.toLin'))))
+          (Eq.mpr
+            (id (congrArg (fun _a => ¬_a) (propext (Function.Injective.eq_iff (LinearEquiv.injective Matrix.toLin')))))
+            hr)));
+  Trans.trans
+    (Trans.trans (PermutationRepresentation.dim_le_finrank_of_invariant (TensorPower.copyPerm C r) β hW hfix hne)
+      (Submodule.finrank_le W))
+    (of_eq_true
+      (Eq.trans
+        (congrFun'
+          (congrArg Eq
+            (Eq.trans (Module.finrank_fintype_fun_eq_card ℂ)
+              (Eq.trans Fintype.card_pi
+                (Eq.trans (Finset.prod_const (Fintype.card C))
+                  (congrArg (HPow.hPow (Fintype.card C)) (Fintype.card_fin r))))))
+          (Fintype.card C ^ r))
+        (eq_self (Fintype.card C ^ r))))

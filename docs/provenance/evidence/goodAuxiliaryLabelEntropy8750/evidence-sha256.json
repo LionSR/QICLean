@@ -1,0 +1,181 @@
+{
+  "source_revision": "0b6ff5a3f75635c5e829e476b18209e3cd4d9fec",
+  "files": [
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/Axioms.lean",
+      "sha256": "f2ba3b4001c7c5650173d8c9bec68cd2861fa98b67f2ba2bc45184cffcb1430e",
+      "bytes": 246
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/README.md",
+      "sha256": "7a2ae1b4b63e360c9327d9c1ded726dbcb37caad05fd5a063a82e5ca9a66d0f7",
+      "bytes": 2364
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/Statements.lean",
+      "sha256": "de36b12e3deb49a3363230b7b31f717db61b5d3d198eb8e165fc014e67ca0575",
+      "bytes": 208
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/TextStyle.lean",
+      "sha256": "d2a674ab423e1d6b8b8c1fe557ddf7103ff1e1b24fb67048dfe54223e2e9b059",
+      "bytes": 403
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/axioms-exit.json",
+      "sha256": "585eaa4ace472a55c2d325ae108bb5e79e28dd570b360efc328a47365967b744",
+      "bytes": 658
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/axioms.log",
+      "sha256": "ab8f195d219b8b26f3e5e861391536e955bd6f9b49402a34ce184469f67db09a",
+      "bytes": 116
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/build-exit.json",
+      "sha256": "551a355d97c76b437863f62b21db18951936d26e7588c46a430fffacfdf3f4bf",
+      "bytes": 525
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/build.log",
+      "sha256": "27f63566e662a028d9d261bfdd4bc4ac31c47307e3e73767c2835f3963cfdfc0",
+      "bytes": 120
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/cache-guard-exit.json",
+      "sha256": "71c39cfeb8b1e34fb15b64004e1a42bea344f4cad8195406197e3bb23afa083c",
+      "bytes": 542
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb",
+      "bytes": 61
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/cache-guard.py",
+      "sha256": "60c61c038e9cf222a429e09c703b78649e3b6be389fb0c10f8477f1316cb3651",
+      "bytes": 609
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/kernel-summary.json",
+      "sha256": "e8458bf753868696cebf64b09a8a9a706508665955b2631676c7a3d9bd751c9c",
+      "bytes": 256
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/owned-shards.json",
+      "sha256": "1bbbf72ca17928100cced7e6f652ce39dd558c18ee91177cd4523bbd655f9db2",
+      "bytes": 39
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/prose-exit.json",
+      "sha256": "245583b61721c3afed2630655496629ead63d157dd7fb1c8d92957d4bffff89b",
+      "bytes": 570
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/provenance-exit.json",
+      "sha256": "08bbd773e1b598109d69b6aedc8dfcf2dd9310fea9923acc1aaee52b52f8d6c4",
+      "bytes": 628
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/provenance.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764",
+      "bytes": 69
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/public-declarations.json",
+      "sha256": "43649bb957cbe1e41f7361ab41072c13eba2fadff141bf0bf012fb349903521c",
+      "bytes": 59
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/run.py",
+      "sha256": "d51fbffc390befb695ba01abba7f8bb7e763f75b6c23efb0c4584c9231585925",
+      "bytes": 1133
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/source-audit.json",
+      "sha256": "c253e39079643783aba2fd219ff67ce2d661d2583e436e479749666f3eb8d6ff",
+      "bytes": 662
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/source-comparison.json",
+      "sha256": "6989d4a195a1f17884e2dbac2f3db1287030d6c8cdcf6a75b85ed29f5531f583",
+      "bytes": 1127
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/source-freeze.json",
+      "sha256": "5c5e725d074e736d129a7480a9b323d1dc9d673f0fa3b1e8291e0f9a93f47e83",
+      "bytes": 1106
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/statements-exit.json",
+      "sha256": "5eaaf7cc7bef31c8d900ae316e1535ddfd1c46db3522cf68721a699b0df5dc81",
+      "bytes": 666
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/statements.log",
+      "sha256": "b4bbfd7e7e7eba94006031f3871abda658d7b7e3dba933e6458b8b31bc5212af",
+      "bytes": 6065
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/strict-source-exit.json",
+      "sha256": "0c20b7ae5df1b69da4ea68144f8c03e340067a25e75f6a611ee18b36d5e734f0",
+      "bytes": 652
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/tactic-patterns-exit.json",
+      "sha256": "2235acc72fc329855501968e9a9a2f9c3f3556d38861be889a9b9ac6df214fa7",
+      "bytes": 606
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/tactic-patterns.log",
+      "sha256": "ca5485e555c520cb07069b32278ef41c3ae1eb132a540174c2938e33b8243186",
+      "bytes": 5819
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/tactic-scanner-source.json",
+      "sha256": "6f68c8b2d6a9603e0c538b3eee5891c1116b9e16469cac7baad3178cdc3c9e3e",
+      "bytes": 260
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/tactic_pattern_scan.py",
+      "sha256": "d6c4e9a12ccc192ca92de9a56f1850753dc2bc44724c647e90fc51a3ddaa4b4b",
+      "bytes": 6706
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/text-style-exit.json",
+      "sha256": "b57491d4a4c308c9f820b0280239cc5d915625238ce1039a82ed0129896d2229",
+      "bytes": 665
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/validate-owned.py",
+      "sha256": "376174f3f47c7d5e10cd86c8c1f280512daab2c436be39fc2e48c36d9d964d2e",
+      "bytes": 1504
+    },
+    {
+      "path": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/verification.json",
+      "sha256": "4333ebb495fcb598796dc5c09912aee021133e18857c1df4d08b16e0727ff607",
+      "bytes": 6633
+    },
+    {
+      "path": "docs/provenance/openai-math.d/goodAuxiliaryLabelEntropy8750.json",
+      "sha256": "5b885bce7679028146a86e1f801b40945357967c3cd22ca737ad6c818b822aa6",
+      "bytes": 2782
+    }
+  ],
+  "inventory_excluded_from_itself": true
+}

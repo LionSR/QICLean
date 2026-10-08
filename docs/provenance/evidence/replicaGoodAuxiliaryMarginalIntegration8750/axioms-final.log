@@ -1,0 +1,3 @@
+'TensorPower.goodBadCopiesEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.replicaGoodAuxiliaryMarginal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.commute_replicaGoodAuxiliaryMarginal_copyPerm' depends on axioms: [propext, Classical.choice, Quot.sound]

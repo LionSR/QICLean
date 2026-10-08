@@ -1,0 +1,32 @@
+{
+  "reports": [
+    {
+      "declaration": "TensorPower.goodBadCopiesEquiv",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "standard_only": true
+    },
+    {
+      "declaration": "Matrix.replicaGoodAuxiliaryMarginal",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "standard_only": true
+    },
+    {
+      "declaration": "Matrix.commute_replicaGoodAuxiliaryMarginal_copyPerm",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "standard_only": true
+    }
+  ],
+  "count": 3
+}

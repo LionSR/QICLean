@@ -13,8 +13,14 @@ import QICLean.Entropy.ClassicalMutualInformation
 import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
+import QICLean.Entropy.FilterChain
+import QICLean.Entropy.FilterClipping
 import QICLean.Entropy.FilterConjugation
+import QICLean.Entropy.FilterEnergy
+import QICLean.Entropy.FilterMaximizer
 import QICLean.Entropy.FilterMoment
+import QICLean.Entropy.FilterOptimizer
+import QICLean.Entropy.FilterStationarity
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.FiniteProductInformation

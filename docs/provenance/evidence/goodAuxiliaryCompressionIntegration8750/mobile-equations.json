@@ -1,0 +1,26 @@
+[
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "theorem": "good_auxiliary_label_compression",
+    "kind": "statement",
+    "index": 0
+  },
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "theorem": "replica_good_auxiliary_label_bound",
+    "kind": "statement",
+    "index": 0
+  },
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "theorem": "replica_good_auxiliary_label_bound",
+    "kind": "statement",
+    "index": 1
+  }
+]

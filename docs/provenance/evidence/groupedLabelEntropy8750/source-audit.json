@@ -1,0 +1,10 @@
+{
+  "source_revision": "e15c46e0679bcddc122d1366b9363853a9df9441",
+  "complete_source_checked": true,
+  "hazards": [],
+  "public_declarations": [
+    "TensorPower.groupedCopies_labelEntropy_bounds"
+  ],
+  "private_proofs_covered_by_whole_file_digest": true,
+  "extra_compatibility_or_dimension_hypotheses": false
+}

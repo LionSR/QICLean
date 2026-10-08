@@ -1,0 +1,37 @@
+{
+  "source_revision": "d3c2710149ae35128407a6ffcbd1d4d3e66311f0",
+  "production_source_revision": "d7fa8954efaa2a5842359206ee98a6c91946e84a",
+  "base_revision": "4572774633055960f1f5296c2624324834b02b29",
+  "files": [
+    {
+      "path": "QICLean/Representation/GroupedLabelEntropy.lean",
+      "sha256": "41339c6a0469d4abc18b25be36f2937666ea68fa8cb944fdf33c0501e6ccc446",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/grouped_label_entropy.tex",
+      "sha256": "306dd9dd758390b4c3608424d6891a3c0ca19dcea446686bc87947790dcb7f7e",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-grouped-label-entropy.md",
+      "sha256": "9ece9889f0ef74c4676731d446b0dc436662b641062f18dc9f531eb9533042e3",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "8790a2f80b61ad1abece75fb2e7e1c0175ed3cfac49655bcfb0c4446e18cf8b8",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Representation.lean",
+      "sha256": "b30488191e3125def0f256ab4c309869f0b8e423212b9a69f360c13ea41d6d84",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/content.tex",
+      "sha256": "cd5309311ff6f452fc1cdc3a381e9a82e767d8c23730b1e177b1c15a791a0040",
+      "coverage": "Entire file."
+    }
+  ]
+}

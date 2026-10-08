@@ -1,0 +1,69 @@
+{
+  "source_revision": "6352dc06b4f0010d085a50d05ab2ec7555ad6334",
+  "parent_release": "18155980ade0fce287c18e84a5b6ba3d5a8de185",
+  "grouped_source_revision": "d7fa8954efaa2a5842359206ee98a6c91946e84a",
+  "bad_copy_source_revision": "fe621df0e0b9025b39172a750bc6e56ee692dc08",
+  "good_auxiliary_source_revision": "0b6ff5a3f75635c5e829e476b18209e3cd4d9fec",
+  "files": [
+    {
+      "path": "QICLean/Representation/GroupedLabelEntropy.lean",
+      "sha256": "41339c6a0469d4abc18b25be36f2937666ea68fa8cb944fdf33c0501e6ccc446",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Representation/BadCopyLabelDimension.lean",
+      "sha256": "1deda08399968dbe15c24402c95e70658170291fb622dd38251b4a490aa9cd00",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Representation/GoodAuxiliaryLabelEntropy.lean",
+      "sha256": "1271344ceba586973e679661e33d94a7cf94c96216361e8239bdaf78f0c76d4e",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/grouped_label_entropy.tex",
+      "sha256": "306dd9dd758390b4c3608424d6891a3c0ca19dcea446686bc87947790dcb7f7e",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/bad_copy_label_dimension.tex",
+      "sha256": "875fff728f9457ec32ecf03557665c6869d8f547432aaffdbdbb3a19d225cbf9",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/good_auxiliary_label_entropy.tex",
+      "sha256": "ac20cb99fe6f4d6ca4180ca5bd305aa8075b1049b6d6baa1fc578a3d33b17d02",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-grouped-label-entropy.md",
+      "sha256": "9ece9889f0ef74c4676731d446b0dc436662b641062f18dc9f531eb9533042e3",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-bad-copy-label-dimension.md",
+      "sha256": "9f06c6bfdb0bbd26cb20aede568d2cbbf1e8ea1774838c82eaba6bb48d972f1a",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-good-auxiliary-label-entropy.md",
+      "sha256": "ea82c1f48f9c35825a9b75058988340a17e4e463906a7fe314ec6943cb72f68a",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "fc3f4ca3292de934e77c7d857d5aa4aed03faf64e110203ab50d57f98f028088",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Representation.lean",
+      "sha256": "f0ea9fa892aac1cfdacb4aefae3bfd87883f39962c5a7e581c33fbc2eda1d74d",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/content.tex",
+      "sha256": "a6ee6a13f8c7c4d0d5eef5afebe8f9a4d0928f1a242d2a8eb112959d5c3f82ce",
+      "coverage": "Entire file."
+    }
+  ]
+}

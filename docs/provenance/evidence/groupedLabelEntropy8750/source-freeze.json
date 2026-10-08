@@ -1,0 +1,26 @@
+{
+  "source_revision": "e15c46e0679bcddc122d1366b9363853a9df9441",
+  "base_revision": "4572774633055960f1f5296c2624324834b02b29",
+  "files": [
+    {
+      "path": "QICLean/Representation/GroupedLabelEntropy.lean",
+      "sha256": "8b04890d70f4ea84ea8224d039f5f4a0958d2c5dc85182b1f8c7128dcd857e4a",
+      "coverage": "Entire file, including every private proof where applicable."
+    },
+    {
+      "path": "blueprint/src/fragment/grouped_label_entropy.tex",
+      "sha256": "306dd9dd758390b4c3608424d6891a3c0ca19dcea446686bc87947790dcb7f7e",
+      "coverage": "Entire file, including every private proof where applicable."
+    },
+    {
+      "path": "docs/area-law-grouped-label-entropy.md",
+      "sha256": "9ece9889f0ef74c4676731d446b0dc436662b641062f18dc9f531eb9533042e3",
+      "coverage": "Entire file, including every private proof where applicable."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "8790a2f80b61ad1abece75fb2e7e1c0175ed3cfac49655bcfb0c4446e18cf8b8",
+      "coverage": "Entire file, including every private proof where applicable."
+    }
+  ]
+}

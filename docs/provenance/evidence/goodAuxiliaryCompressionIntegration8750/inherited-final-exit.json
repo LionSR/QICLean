@@ -1,0 +1,13 @@
+{
+  "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-inherited.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T23:42:06.545844+00:00",
+  "elapsed_seconds": 0.526,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-final.log",
+  "sha256": "c282746f6f2238d435185713b9de34b8c1f6628a4ce02006d1e33ac28d868da8"
+}

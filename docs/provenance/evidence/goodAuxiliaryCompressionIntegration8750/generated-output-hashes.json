@@ -1,0 +1,215 @@
+{
+  "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+  "files": [
+    {
+      "path": "blueprint/print/print.pdf",
+      "bytes": 2776833,
+      "sha256": "c6fbcb3f6615a4bdf660a0b7f0117a4f8b96676259a5657ce51dd6eb050cf64f"
+    },
+    {
+      "path": "blueprint/print/print.bbl",
+      "bytes": 14706,
+      "sha256": "1c9c49ee1de060dc40e74b44b1cbcd0a961b662280ac2dcdc5439d3556e24695"
+    },
+    {
+      "path": "blueprint/src/web.bbl",
+      "bytes": 14706,
+      "sha256": "1c9c49ee1de060dc40e74b44b1cbcd0a961b662280ac2dcdc5439d3556e24695"
+    },
+    {
+      "path": "blueprint/lean_decls",
+      "bytes": 139987,
+      "sha256": "4348a240643d51e1ee1b962c4cc9d1e6b8262f0e5f3f6c2e0313f70a647f967a"
+    },
+    {
+      "path": "blueprint/web/ch-buffered_filters.html",
+      "bytes": 62317,
+      "sha256": "a09daae850ebc5759f9e8ebf6ef512f659d7ad227c7efd8a8e28ef2408f52741"
+    },
+    {
+      "path": "blueprint/web/ch-channel_asymptotics.html",
+      "bytes": 768903,
+      "sha256": "f9e9c98c768de62512b68d7182aab9ac7970f7734e52cd501b424c764a121fcd"
+    },
+    {
+      "path": "blueprint/web/ch-channel_representations.html",
+      "bytes": 837023,
+      "sha256": "c129bab5376ee1e806ed9591f81e5b46f0146cf849bae3ac32331d928b2f8c89"
+    },
+    {
+      "path": "blueprint/web/ch-channels.html",
+      "bytes": 323653,
+      "sha256": "eb18fa08e4682ff06f2a9a62f9acabdd20f225a7e4e204d2f34f1e14913df1e4"
+    },
+    {
+      "path": "blueprint/web/ch-convex_structure.html",
+      "bytes": 99772,
+      "sha256": "5f75c9524c1daff6f7f83b7a67902ffc580327704cc8be2edb3ecf51960e6179"
+    },
+    {
+      "path": "blueprint/web/ch-deconstructing_quantum.html",
+      "bytes": 435416,
+      "sha256": "627caff31b4061ecf136184311da2d5d6c1b8131e7a41dda2de40ca6d4927e06"
+    },
+    {
+      "path": "blueprint/web/ch-entropy.html",
+      "bytes": 1259719,
+      "sha256": "873b36489a6290b1d5ab24ff7115eda4da4bcf259153168402cbe86e0a4df656"
+    },
+    {
+      "path": "blueprint/web/ch-marginal_tails.html",
+      "bytes": 125343,
+      "sha256": "5e833efb0c2e9b41dfb8debf1564cb4995fdd00bdb11066ce679301c160e8844"
+    },
+    {
+      "path": "blueprint/web/ch-operator_convexity.html",
+      "bytes": 237984,
+      "sha256": "faed596fb3e77bf76be42d351a2fd31e9998250f6dfa029b0f909aea2db49568"
+    },
+    {
+      "path": "blueprint/web/ch-positive_not_cp.html",
+      "bytes": 760158,
+      "sha256": "81467744d1f220d9e174a2ef3055daa05e43b0242c7bd4c3a3d16f3bd1710004"
+    },
+    {
+      "path": "blueprint/web/ch-qpf.html",
+      "bytes": 404150,
+      "sha256": "3f9079ef75096618981a2d6b85fb838ee25fd1210a1dbb875ffd06c9e01bccdb"
+    },
+    {
+      "path": "blueprint/web/ch-schur_labels.html",
+      "bytes": 129007,
+      "sha256": "e13f55e8a82957436165eb372e7e16f99666c1f5f6174f20478b1a788e5826d7"
+    },
+    {
+      "path": "blueprint/web/ch-schwarz.html",
+      "bytes": 260670,
+      "sha256": "b6f0fdb208bc7fb327e13c767af9653625b15a3ff3c8be2b3be880db97d654b0"
+    },
+    {
+      "path": "blueprint/web/ch-semigroup.html",
+      "bytes": 446562,
+      "sha256": "51f2542df9880c969f076cfda270287ca9524c95d5d921b5821e77e484a99b40"
+    },
+    {
+      "path": "blueprint/web/ch-spectral.html",
+      "bytes": 150899,
+      "sha256": "959936517b3cc7d1a0a88826a263ea7f34ab0711c85a44ccca971a8a772bbdc6"
+    },
+    {
+      "path": "blueprint/web/ch-spectral_filter.html",
+      "bytes": 124268,
+      "sha256": "1cc1314ffc7519b10e40aa48a11759a754d57fa15b9c2ff98baa1772a2c52877"
+    },
+    {
+      "path": "blueprint/web/ch-wielandt.html",
+      "bytes": 164057,
+      "sha256": "53052538b496a5967adad054cd4374d3d2d8849da392070eede477999cd8d6c2"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_1.html",
+      "bytes": 248592,
+      "sha256": "c3ec4c0ca6a689e701df49d65d01940eecd1fe26faa2c6cab1e210cdebad0dbf"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_10.html",
+      "bytes": 446814,
+      "sha256": "169416b445d05a09d84fe4e25b87556210ae0590fca1ed15c017e5685b60e803"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_11.html",
+      "bytes": 91743,
+      "sha256": "892591767ba76c33f4163c387501376ee1371f10c28bbfe134f7de71459fc98c"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_12.html",
+      "bytes": 240066,
+      "sha256": "2ef7ee8f125c3952f7c19cca2037586b0e6d0901c8dc06d057736a681629ac71"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_13.html",
+      "bytes": 769301,
+      "sha256": "f3e4b358f43ee8415f6a26f9f4057675dbb5766772af8fdac4fc2bf2f0f5c286"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_14.html",
+      "bytes": 9665,
+      "sha256": "32c02e7d80336ce9f317f433e5cbad9420a87525bdbe2446f52e49b5a742a5f2"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_15.html",
+      "bytes": 47043,
+      "sha256": "6dcb93b8b6fb5f8c4b875b8c0f7916445e747d08dc1b8a2d887eb4fdb00c23b9"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_16.html",
+      "bytes": 49706,
+      "sha256": "37cbd7d8fc115c567aba1ec3b5cb1d7728bb207c940aff203135ebf2ec9a32bd"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_17.html",
+      "bytes": 50792,
+      "sha256": "8fcffb1fd9da7a0daa396f0d05fc33886cfc1c1ed981512cb8e9bfaa93b1d9fc"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_2.html",
+      "bytes": 180409,
+      "sha256": "9f60521f8a9702b62e0c5a1bffd3f6912927336b505459ed893840cebe6efdf8"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_3.html",
+      "bytes": 503700,
+      "sha256": "00effb3568e574e2a4ed1f09ba45bcaf5859f870328dc1dc21889c722578a881"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_4.html",
+      "bytes": 411248,
+      "sha256": "6ab3f5b15275ae8870869df0e8d36716e29df9a93859e037f29069c15d3173ac"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_5.html",
+      "bytes": 36358,
+      "sha256": "6402516bec7ab0ccd309784325f11c8188fb6dfe2c01602aa3d7e07144a6cf87"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_6.html",
+      "bytes": 120754,
+      "sha256": "ac1a1d2b9fb4224cf2ae705adf1dd10588f68863aa6c6ee4d01e7d370da83761"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_7.html",
+      "bytes": 106964,
+      "sha256": "2f1082feb1a172c6c93a405b9411179b5f5971af7955fb2b1a33be6c7b3a98b4"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_8.html",
+      "bytes": 235871,
+      "sha256": "6ea67b4122871f3199b07c374260740e0d06e83cc149db5dce3234409c2bf963"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_9.html",
+      "bytes": 74432,
+      "sha256": "8c6e4b48cec572d7b8e6ccfc4bdf89e807ac5343b9c525ee57c95d5890fa322f"
+    },
+    {
+      "path": "blueprint/web/dep_graph_document.html",
+      "bytes": 3105335,
+      "sha256": "d27725031b70e9a6007588869e75bdf97ca799afe064cec975d645d718cb2be7"
+    },
+    {
+      "path": "blueprint/web/dep_graphs.html",
+      "bytes": 2573,
+      "sha256": "5434b34aaa3a7ef821d0b8eb80cb42ad78f3610ce81574e1c69a1b75d2b1b22d"
+    },
+    {
+      "path": "blueprint/web/index.html",
+      "bytes": 106244,
+      "sha256": "a0e328d5b78c53b23c293f2433f8852e1fb2dcbb6a308a3be56c02340e8a02a3"
+    },
+    {
+      "path": "blueprint/web/sect0001.html",
+      "bytes": 73285,
+      "sha256": "030299c7a85f4eed9056a8d550f7ff48da62348ebb27dbaabbb4acec44a75207"
+    }
+  ]
+}

@@ -1,0 +1,414 @@
+{
+  "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+  "status": "Complete combined library and blueprint verification",
+  "required_successful_checks": [
+    "full-build",
+    "cache-guard",
+    "imports",
+    "prose",
+    "paper-gaps",
+    "inherited-final",
+    "declaration-sync",
+    "tenkz",
+    "axioms-final",
+    "provenance-final",
+    "pdf",
+    "bibliography",
+    "web",
+    "checkdecls",
+    "native-targets-final",
+    "web-reader",
+    "web-visual",
+    "whole-web-reader"
+  ],
+  "all_required_checks_exit_zero": true,
+  "all_command_records": [
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "node",
+        "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+        "--operation-kind",
+        "edit",
+        "--expected-output-count",
+        "1",
+        "--output-format",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:42:07.290107+00:00",
+      "elapsed_seconds": 0.133,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:41:40.324771+00:00",
+      "elapsed_seconds": 8.658,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/axioms.log",
+      "sha256": "a4f243637e8fe49abdc618a0667633f643279dcd13917f572cdfd3a4d6a8c499"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:42:30.589009+00:00",
+      "elapsed_seconds": 8.98,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/axioms-final.log",
+      "sha256": "f4c2c3db14ffdce76a5fdf0e77e7eb6134bb293bf327d53cca5a487335949520"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/copy-bibliography.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:42:46.119321+00:00",
+      "elapsed_seconds": 0.071,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/cache-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:37:58.408877+00:00",
+      "elapsed_seconds": 0.361,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "lake",
+        "env",
+        ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:44:18.446991+00:00",
+      "elapsed_seconds": 33.67,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:38:57.508707+00:00",
+      "elapsed_seconds": 0.492,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/declaration-sync.log",
+      "sha256": "48ac95cdb8366685cd5f26146a5c64acf488117ed8cf36d2328953d8c1657275"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:40:34.996136+00:00",
+      "elapsed_seconds": 50.409,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/full-build.log",
+      "sha256": "8a698133b8ffa78c01b302b090ecd7f8b35ac6ee348fe4a3b057a1809b1d75f3"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:37:58.408146+00:00",
+      "elapsed_seconds": 0.529,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/imports.log",
+      "sha256": "dd4c7685d2e12f9dcf439066a577f66859672eae081b7f14b4213924fa2b95c9"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-inherited.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:41:25.738962+00:00",
+      "elapsed_seconds": 0.595,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-authoritative.log",
+      "sha256": "c282746f6f2238d435185713b9de34b8c1f6628a4ce02006d1e33ac28d868da8"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-inherited.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:37:38.011027+00:00",
+      "elapsed_seconds": 74.386,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited.log",
+      "sha256": "c6bce068cdd76a233a69911a5be0c268ef7f3f8c95fed0f076d31d753f84afc2"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-inherited.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:42:06.545844+00:00",
+      "elapsed_seconds": 0.526,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-final.log",
+      "sha256": "c282746f6f2238d435185713b9de34b8c1f6628a4ce02006d1e33ac28d868da8"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-inherited.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:39:15.935050+00:00",
+      "elapsed_seconds": 85.196,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-retry.log",
+      "sha256": "5f8427bca8f288abf31f1aae67246f48f264cc58657ae816cd0bb309ca2d6a9d"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-native-targets.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:44:52.338813+00:00",
+      "elapsed_seconds": 0.033,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/native-targets.log",
+      "sha256": "70efe4894a8ce26d99151cec58add15ec1143814c9d3d479053a10fb2f47871f"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-native-targets.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:45:42.861586+00:00",
+      "elapsed_seconds": 0.035,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/native-targets-final.log",
+      "sha256": "70efe4894a8ce26d99151cec58add15ec1143814c9d3d479053a10fb2f47871f"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:37:58.408608+00:00",
+      "elapsed_seconds": 0.596,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy/blueprint",
+      "started_utc": "2026-10-07T23:42:07.643106+00:00",
+      "elapsed_seconds": 25.979,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/pdf.log",
+      "sha256": "fa6d048ecd197fc0123984cedb28414c6013566f2166f82b22ec0ce95e3b400b"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "28ef1a54a146cd1e62bb10109cdc4f22d2cebc00"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:37:58.408331+00:00",
+      "elapsed_seconds": 0.242,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:42:19.482864+00:00",
+      "elapsed_seconds": 0.237,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/provenance.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:42:57.772112+00:00",
+      "elapsed_seconds": 0.536,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/provenance-final.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:38:58.223284+00:00",
+      "elapsed_seconds": 1.764,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/tenkz.log",
+      "sha256": "85b883e7882deff706af92a976224626b07289a7cdd6153cc0ca5f7aec62c325"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy/blueprint",
+      "started_utc": "2026-10-07T23:42:46.495016+00:00",
+      "elapsed_seconds": 54.061,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web.log",
+      "sha256": "af8bfd4c0b81bc2b9157e7a3d1c320993328a4a5cfc861bad4d5367ed37a59a8"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-qa.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:44:18.446542+00:00",
+      "elapsed_seconds": 2.755,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-reader.log",
+      "sha256": "04bac1c9d42903f023ded19d5fef0f6ce13880af64c251be6c600e283991a540"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-visual.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:44:21.421646+00:00",
+      "elapsed_seconds": 2.155,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-visual.log",
+      "sha256": "01e2bdd1398d23bbb68279fb8e1921602e33c4288295a783d919e53c73ab4924"
+    },
+    {
+      "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+      "started_utc": "2026-10-07T23:44:54.758026+00:00",
+      "elapsed_seconds": 45.532,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/whole-web-reader.log",
+      "sha256": "fc3ece73a9a18a6e87a825ae78eb1920ff0760c86cf6008d9e560839646ae6de"
+    }
+  ],
+  "retained_initial_failures": [
+    {
+      "record": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/axioms-exit.json",
+      "exit_code": 1
+    },
+    {
+      "record": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-exit.json",
+      "exit_code": 1
+    },
+    {
+      "record": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/inherited-retry-exit.json",
+      "exit_code": 1
+    }
+  ],
+  "full_library_jobs": 9727,
+  "fresh_exact_kernel_reports": 2,
+  "fresh_original_provenance_shards": 2,
+  "inherited_evidence_shard_bindings": 3175,
+  "inherited_inventory_hashes": 687,
+  "parent_handwritten_source_bindings": 1427,
+  "accepted_main_source_exception": "SupportedMarginalTails.lean retains #632 blob9341be83dd4b03e5f719900bf25f587c942def52, replacing the older #633 blob742d75125b42a25d73f23176cd5a9c614a46f9e5; this was already accepted in main by #613. No source edit occurred in this contribution.",
+  "generated_import_changed_paths": "generated-import-preservation.json",
+  "pdf_pages": 432,
+  "physical_pages_inspected": [
+    426,
+    427
+  ],
+  "native_declarations": 3344,
+  "whole_web_pages": 38,
+  "whole_web_typeset_elements": 37811,
+  "new_mobile_display_count": 3,
+  "new_mobile_displays_fit": true,
+  "all_new_source_files_exact": true
+}

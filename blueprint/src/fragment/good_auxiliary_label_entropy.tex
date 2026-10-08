@@ -1,0 +1,40 @@
+\section{A whole-space bound for the good auxiliary labels}
+\label{sec:good_auxiliary_label_entropy}
+
+The logarithmic dimension comparison under restriction, together with the
+actual occurring-label dimension bound on the bad copies, yields an
+operator inequality before measuring a physical excitation component.
+
+\begin{theorem}[Good auxiliary label bound]
+\label{thm:good_auxiliary_label_entropy}
+\lean{TensorPower.copyPerm_groupedCopies_labelEntropy_bounds}
+\leanok
+Let $C$ be a finite coordinate set, put $d=|C|$, and specify a split of the
+$k$ copies into groups of sizes $m$ and $r$, where $m+r=k$. For the actual
+copy-permutation action on $\mathbb C^{C^k}$, let $F_g,F_b,F_w$ denote the
+central logarithmic label observables for the good, bad and whole groups.
+Using the real logarithm extended by $\log0=0$, one has, on the whole space,
+\begin{align}
+ F_b&\le r\log d\,I,\\
+ F_w&\le F_g+\left(r\log d+\log\binom{k}{r}\right)I.
+ \label{eq:good_auxiliary_label_entropy}
+\end{align}
+Empty coordinate sets and zero copy groups are included.
+\end{theorem}
+\begin{proof}
+\leanok
+Every nonzero bad-label projection has irreducible dimension
+$d_\beta\le d^r$. Positivity of $d_\beta$ permits taking logarithms,
+which gives $\log d_\beta\le r\log d$. Summing over the actual orthogonal
+resolution gives the first inequality; zero projections contribute nothing.
+The subgroup operator bound gives
+$F_w\le F_g+F_b+\log\binom{k}{r}\,I$. Adding the first inequality proves
+the second one. The empty cases use the stated total logarithm convention.
+\end{proof}
+
+This is the operator input to
+\cite[Section~7, equation \textup{(comparator:good-auxiliary)}]{OpenAI2026AreaLaw}.
+To apply it to an excitation component, one still uses the actual
+whole-label threshold and preservation of whole-copy auxiliary labels
+under the physical excitation projection. No commutation of that projection
+with the band metric is claimed here.

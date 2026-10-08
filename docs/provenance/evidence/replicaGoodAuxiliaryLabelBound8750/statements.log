@@ -1,0 +1,292 @@
+theorem Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower.{u_1, u_2, u_3} : ∀ {A : Type u_1}
+  {C : Type u_2} {D : Type u_3} [inst : Fintype A] [inst_1 : DecidableEq A] [inst_2 : Fintype C]
+  [inst_3 : DecidableEq C] [inst_4 : Fintype D] [inst_5 : DecidableEq D] (Ω : A → ℂ) (k : ℕ) (B : Finset (Fin k))
+  (l : IrrepLabel (Equiv.Perm (Fin k))) (v : (Fin k → A) × (Fin k → C) × D → ℂ),
+  (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+            (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+              (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) 1)).mulVec
+        v =
+      v →
+    have e := Matrix.replicaGoodBadSplit✝ B;
+    have w := (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec v;
+    (Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)) * (star w ⬝ᵥ w).re ≤
+      (star w ⬝ᵥ
+          (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+                (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                  (PermutationRepresentation.labelEntropy ((TensorPower.copyPerm C k).comp (TensorPower.groupHom₁ e)))
+                  1)).mulVec
+            w).re :=
+fun {A} {C} {D} [Fintype A] [DecidableEq A] [Fintype C] [DecidableEq C] [Fintype D] [DecidableEq D] Ω k B l v hv =>
+  id
+    (let w := (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec v;
+    have hw :=
+      Eq.mp
+        (congrFun'
+          (congrArg Eq
+            (congrFun'
+              (congrArg Matrix.mulVec
+                (congrFun'
+                  (congrArg (Matrix.kroneckerMap fun x1 x2 => x1 * x2)
+                    (map_one (PermutationRepresentation.permOp (TensorPower.copyPerm A k))))
+                  (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                    (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) 1)))
+              ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec v)))
+          ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec v))
+        (Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed Ω k B 1
+          (of_eq_true (Eq.trans (congrFun' (congrArg Eq Finset.image_id) B) (eq_self B)))
+          (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)
+            1)
+          v
+          (Eq.mpr
+            (id
+              (congrFun'
+                (congrArg Eq
+                  (congrFun'
+                    (congrArg Matrix.mulVec
+                      (congrFun'
+                        (congrArg (Matrix.kroneckerMap fun x1 x2 => x1 * x2)
+                          (map_one (PermutationRepresentation.permOp (TensorPower.copyPerm A k))))
+                        (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                          (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) 1)))
+                    v))
+                v))
+            hv));
+    have hc := (TensorPower.copyPerm_groupedGood_labelEntropy_compression (Matrix.replicaGoodBadSplit✝ B) l).right;
+    let L := Matrix.kroneckerBilinear 1 ∘ₗ Matrix.kroneckerBilinear.flip 1;
+    have h :=
+      Matrix.PosSemidef.kronecker Matrix.PosSemidef.one
+        (Matrix.PosSemidef.kronecker (Matrix.le_iff.mp hc) Matrix.PosSemidef.one);
+    have hLmul := fun M N =>
+      id
+        (of_eq_true
+          (Eq.trans
+            (congrArg
+              (Eq (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (M * N) 1)))
+              (Eq.trans
+                (Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower._simp_1_1 1 1
+                  (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) M 1) (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) N 1))
+                (congr (congrArg (Matrix.kroneckerMap fun x1 x2 => x1 * x2) (mul_one 1))
+                  (Eq.trans (Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower._simp_1_1 M N 1 1)
+                    (congrArg (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (M * N)) (mul_one 1))))))
+            (eq_self
+              (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1 (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (M * N) 1)))));
+    have hLP :=
+      id
+        (of_eq_true
+          (Eq.trans
+            (congrFun'
+              (congrArg Eq
+                (Eq.trans
+                  (Matrix.conjTranspose_kronecker 1
+                    (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                      (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) 1))
+                  (congr (congrArg (Matrix.kroneckerMap fun x1 x2 => x1 * x2) Matrix.conjTranspose_one)
+                    (Eq.trans
+                      (Matrix.conjTranspose_kronecker (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)
+                        1)
+                      (congr
+                        (congrArg (Matrix.kroneckerMap fun x1 x2 => x1 * x2)
+                          ((fun x_0 x_1 x_2 x_3 =>
+                              (fun x_0 x_1 x_2 x_3 =>
+                                  Matrix.IsHermitian.eq (PermutationRepresentation.isHermitian_labelProj x_3 l))
+                                x_0 x_1 x_2 x_3)
+                            (Fin k → C) Pi.instFintype (fun a b => Fintype.decidablePiFintype a b)
+                            (TensorPower.copyPerm C k)))
+                        Matrix.conjTranspose_one)))))
+              (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+                (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                  (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) 1)))
+            (eq_self
+              (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) 1
+                (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                  (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) 1)))));
+    id
+      (fun hw =>
+        have hwleft :=
+          Eq.mpr (id (congrArg (fun _a => Matrix.vecMul (star w) _a = star w) (Eq.symm hLP)))
+            (Eq.mpr
+              (id
+                (congrArg (fun _a => _a = star w)
+                  (Eq.symm
+                    (Matrix.star_mulVec (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)) w))))
+              (Eq.mpr (id (congrArg (fun _a => star _a = star w) hw)) (Eq.refl (star w))));
+        have hq :=
+          (RCLike.nonneg_iff.mp
+              (Matrix.PosSemidef.dotProduct_mulVec_nonneg
+                (Eq.mp
+                  (congrArg
+                    (fun _a =>
+                      (L
+                            (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l *
+                                PermutationRepresentation.labelEntropy
+                                  ((TensorPower.copyPerm C k).comp
+                                    (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))) *
+                              PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) -
+                          _a).PosSemidef)
+                    (map_smul L
+                      (↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)))
+                      (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)))
+                  (Eq.mp
+                    (congrArg (fun _a => _a.PosSemidef)
+                      (map_sub L
+                        (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l *
+                            PermutationRepresentation.labelEntropy
+                              ((TensorPower.copyPerm C k).comp
+                                (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))) *
+                          PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)
+                        (↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)) •
+                          PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)))
+                    h))
+                w)).left;
+        sub_nonneg.mp
+          (Eq.mp
+            (congrArg (LE.le 0)
+              (congrArg
+                (HSub.hSub
+                  (star w ⬝ᵥ
+                      (L
+                            (PermutationRepresentation.labelEntropy
+                              ((TensorPower.copyPerm C k).comp
+                                (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))))).mulVec
+                        w).re)
+                (Eq.trans
+                  (Complex.mul_re
+                    (↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)))
+                    (star w ⬝ᵥ w))
+                  (Eq.trans
+                    (congrArg
+                      (HSub.hSub
+                        ((Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)) *
+                          (star w ⬝ᵥ w).re))
+                      (zero_mul (star w ⬝ᵥ w).im))
+                    (sub_zero
+                      ((Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)) *
+                        (star w ⬝ᵥ w).re))))))
+            (Eq.mp
+              (congrArg
+                (fun _a =>
+                  0 ≤
+                    RCLike.re
+                      (_a ⬝ᵥ
+                          (L
+                                (PermutationRepresentation.labelEntropy
+                                  ((TensorPower.copyPerm C k).comp
+                                    (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))))).mulVec
+                            w -
+                        ↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)) •
+                          (star w ⬝ᵥ w)))
+                hwleft)
+              (Eq.mp
+                (congrArg
+                  (fun _a =>
+                    0 ≤
+                      RCLike.re
+                        (_a -
+                          ↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)) •
+                            (star w ⬝ᵥ w)))
+                  (Matrix.dotProduct_mulVec (star w)
+                    (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l))
+                    ((L
+                          (PermutationRepresentation.labelEntropy
+                            ((TensorPower.copyPerm C k).comp
+                              (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))))).mulVec
+                      w)))
+                (Eq.mp
+                  (congrArg (LE.le 0)
+                    (congrArg (⇑RCLike.re)
+                      (Eq.trans
+                        (Eq.trans
+                          (congrArg (dotProduct (star w))
+                            (Eq.trans
+                              (Eq.trans
+                                (congrFun'
+                                  (congrArg Matrix.mulVec
+                                    (congrFun'
+                                      (congrArg HSub.hSub
+                                        (Eq.trans
+                                          ((fun M N => hLmul M N)
+                                            (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l *
+                                              PermutationRepresentation.labelEntropy
+                                                ((TensorPower.copyPerm C k).comp
+                                                  (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))))
+                                            (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l))
+                                          (congrFun'
+                                            (congrArg HMul.hMul
+                                              ((fun M N => hLmul M N)
+                                                (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)
+                                                (PermutationRepresentation.labelEntropy
+                                                  ((TensorPower.copyPerm C k).comp
+                                                    (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))))))
+                                            (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)))))
+                                      (↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) -
+                                            Real.log ↑(k.choose B.card)) •
+                                        L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l))))
+                                  w)
+                                (Matrix.sub_mulVec
+                                  (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) *
+                                      L
+                                        (PermutationRepresentation.labelEntropy
+                                          ((TensorPower.copyPerm C k).comp
+                                            (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B)))) *
+                                    L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l))
+                                  (↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) -
+                                        Real.log ↑(k.choose B.card)) •
+                                    L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l))
+                                  w))
+                              (congr
+                                (congrArg HSub.hSub
+                                  (Eq.trans
+                                    (Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower._simp_1_2 w
+                                      (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) *
+                                        L
+                                          (PermutationRepresentation.labelEntropy
+                                            ((TensorPower.copyPerm C k).comp
+                                              (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B)))))
+                                      (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)))
+                                    (Eq.trans
+                                      (congrArg
+                                        (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l) *
+                                            L
+                                              (PermutationRepresentation.labelEntropy
+                                                ((TensorPower.copyPerm C k).comp
+                                                  (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))))).mulVec
+                                        hw)
+                                      (Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower._simp_1_2 w
+                                        (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l))
+                                        (L
+                                          (PermutationRepresentation.labelEntropy
+                                            ((TensorPower.copyPerm C k).comp
+                                              (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B)))))))))
+                                (Eq.trans
+                                  (Matrix.smul_mulVec
+                                    (↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) -
+                                        Real.log ↑(k.choose B.card)))
+                                    (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)) w)
+                                  (congrArg
+                                    (HSMul.hSMul
+                                      ↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) -
+                                          Real.log ↑(k.choose B.card)))
+                                    hw)))))
+                          (dotProduct_sub (star w)
+                            ((L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)).mulVec
+                              ((L
+                                    (PermutationRepresentation.labelEntropy
+                                      ((TensorPower.copyPerm C k).comp
+                                        (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))))).mulVec
+                                w))
+                            (↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)) •
+                              w)))
+                        (congrArg
+                          (HSub.hSub
+                            (star w ⬝ᵥ
+                              (L (PermutationRepresentation.labelProj (TensorPower.copyPerm C k) l)).mulVec
+                                ((L
+                                      (PermutationRepresentation.labelEntropy
+                                        ((TensorPower.copyPerm C k).comp
+                                          (TensorPower.groupHom₁ (Matrix.replicaGoodBadSplit✝ B))))).mulVec
+                                  w)))
+                          (dotProduct_smul
+                            (↑(Real.log ↑l.dim - ↑B.card * Real.log ↑(Fintype.card C) - Real.log ↑(k.choose B.card)))
+                            (star w) w)))))
+                  hq)))))
+      hw)

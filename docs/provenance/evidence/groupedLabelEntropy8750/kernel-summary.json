@@ -1,0 +1,11 @@
+{
+  "count": 1,
+  "names": {
+    "TensorPower.groupedCopies_labelEntropy_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "all_standard": true
+}

@@ -1,0 +1,19 @@
+{
+  "physical_pages": [
+    404,
+    405
+  ],
+  "printed_pages": [
+    403,
+    404
+  ],
+  "inspected": [
+    "chosen good/bad configuration equivalence",
+    "actual whole auxiliary marginal and retained-good matrix trace formula",
+    "permutation symmetry statement with all assumptions",
+    "entire stabilizer/regrouping/partial-trace proof",
+    "source reference and remaining scope"
+  ],
+  "result": "All new definitions, statement and complete proof visually inspected; no clipping, overlap, unresolved glyphs or unreadable displays.",
+  "pdf_sha256": "f10452f44aa6d15adba43134bf5851987391d759b093cf91415324ea0e1c47bb"
+}

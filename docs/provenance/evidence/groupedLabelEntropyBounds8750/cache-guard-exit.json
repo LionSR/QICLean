@@ -1,0 +1,13 @@
+{
+  "source_revision": "d7fa8954efaa2a5842359206ee98a6c91946e84a",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/groupedLabelEntropyBounds8750/cache-guard.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T21:50:58.004477+00:00",
+  "elapsed_seconds": 2.271,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/groupedLabelEntropyBounds8750/cache-guard.log",
+  "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+}

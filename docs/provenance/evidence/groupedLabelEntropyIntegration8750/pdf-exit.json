@@ -1,0 +1,13 @@
+{
+  "source_revision": "d3c2710149ae35128407a6ffcbd1d4d3e66311f0",
+  "command": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy/blueprint",
+  "started_utc": "2026-10-07T22:22:42.138273+00:00",
+  "elapsed_seconds": 48.189,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/groupedLabelEntropyIntegration8750/pdf.log",
+  "sha256": "95974831e705c4571048c1d07e439e4301c85edd4b8d897d86dff23b23fce52c"
+}
