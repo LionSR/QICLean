@@ -343,4 +343,95 @@ theorem integral_unitary_sampleEntry (hd : 0 < d) {t : ℝ} (ht : 0 ≤ t) {k : 
     apply mul_left_cancel₀ hdim
     linear_combination h1
 
+/-- The average of one label term over the spectral law is `w_k(λ) π^λ`. -/
+theorem integral_specMeasure_label (hd : 0 < d) {t : ℝ} (ht : 0 < t) {k : ℕ}
+    (a b : Fin k → Fin d) (l : IrrepLabel (Equiv.Perm (Fin k))) :
+    Integrable (fun x => glChar d l (fun i => (((x i / ∑ j, x j) ^ t : ℝ) : ℂ)) /
+        multiplicity (copyPerm (Fin d) k) l * labelProj (copyPerm (Fin d) k) l a b)
+      (specMeasure d t) ∧
+    ∫ x, glChar d l (fun i => (((x i / ∑ j, x j) ^ t : ℝ) : ℂ)) /
+        multiplicity (copyPerm (Fin d) k) l * labelProj (copyPerm (Fin d) k) l a b
+        ∂(specMeasure d t) =
+      (replicaWeight t (part d l) : ℂ) * labelProj (copyPerm (Fin d) k) l a b := by
+  by_cases hπ : labelProj (copyPerm (Fin d) k) l = 0
+  · simp [hπ]
+  have hl : HasRows d l := labelPart_eq_zero_of_labelProj_ne_zero hπ
+  have hm := multiplicity_eq_weylFormula (q := d) l hl
+  have hW : weylFormula (part d l) ≠ 0 := by
+    rw [← hm]; exact_mod_cast (multiplicity_pos hl).ne'
+  set Z := specNorm d t
+  have hZ : 0 < Z := specNorm_pos hd ht
+  set G : (Fin d → ℝ) → ℝ := fun x => alternant (delta d) x *
+    alternant (shiftedPart (part d l)) (fun i => x i ^ t) * (∑ i, x i) ^ (-(t * k)) *
+      Real.exp (-∑ i, x i)
+  have hsum : ((∑ i, part d l i : ℕ) : ℝ) = k := by rw [sum_part hl]
+  have hD : t * k < d + ((∑ i, delta d i : ℕ) : ℝ) +
+      t * ∑ i, ((shiftedPart (part d l) i : ℕ) : ℝ) := by
+    have h1 : ∑ i, ((shiftedPart (part d l) i : ℕ) : ℝ) = k + (d.choose 2 : ℕ) := by
+      rw [← Nat.cast_sum, sum_shiftedPart_nat, Nat.cast_add, hsum]
+    have h2 : (0 : ℝ) ≤ ((∑ i, delta d i : ℕ) : ℝ) := Nat.cast_nonneg _
+    have h3 : (0 : ℝ) ≤ ((d.choose 2 : ℕ) : ℝ) := Nat.cast_nonneg _
+    have : (0 : ℝ) < d := by exact_mod_cast hd
+    rw [h1]
+    nlinarith
+  have hGint : Integrable G (orthant d) := integrable_gammaIntegrand hd ht.le _ (by positivity) hD
+  have hpt : ∀ᵐ x ∂(orthant d), (specDensity d t x / Z) •
+      (glChar d l (fun i => (((x i / ∑ j, x j) ^ t : ℝ) : ℂ)) /
+        multiplicity (copyPerm (Fin d) k) l * labelProj (copyPerm (Fin d) k) l a b) =
+      ((G x / (Z * weylFormula (part d l)) : ℝ) : ℂ) * labelProj (copyPerm (Fin d) k) l a b := by
+    filter_upwards [ae_orthant_pos] with x hx
+    have h := specDensity_mul_glChar (t := t) hl hd hx
+    rw [Complex.real_smul, ← hm]
+    have hm' : ((multiplicity (copyPerm (Fin d) k) l : ℝ) : ℂ) ≠ 0 := by
+      exact_mod_cast (multiplicity_pos hl).ne'
+    have hZ' : (Z : ℂ) ≠ 0 := by exact_mod_cast hZ.ne'
+    push_cast
+    rw [← h]
+    field_simp
+  -- integrability over the spectral law
+  have hint0 : Integrable (fun x => (specDensity d t x / Z) •
+      (glChar d l (fun i => (((x i / ∑ j, x j) ^ t : ℝ) : ℂ)) /
+        multiplicity (copyPerm (Fin d) k) l * labelProj (copyPerm (Fin d) k) l a b))
+      (orthant d) :=
+    (((hGint.div_const _).ofReal (𝕜 := ℂ)).mul_const _).congr
+      (hpt.mono fun x hx => hx.symm)
+  refine ⟨?_, ?_⟩
+  · rw [specMeasure, integrable_withDensity_iff_integrable_smul (measurable_specWeight ht.le)]
+    refine hint0.congr ((coe_specWeight_ae hd ht).mono fun x hx => ?_)
+    simp only [NNReal.smul_def, hx]
+    rfl
+  · rw [integral_specMeasure hd ht, integral_congr_ae hpt, integral_mul_const,
+      integral_complex_ofReal, integral_div, replicaWeight_eq_gammaIntegral hd ht
+      (antitone_part l), hsum]
+    rfl
+
+/-- **The full-dimensional integral representation** (`05-replicas.tex`, Lemma 6.2, equation
+`replicas:W-integral`, lines 336–364): for the samples `σ = U diag(x/∑ x) U†` of the spectral
+law with a Haar-distributed unitary `U`, `∫ (σ^t)^{⊗k} = ∑_λ w_k(λ) π^λ` on `(ℂ^d)^{⊗k}`. -/
+theorem integral_specSample_tensorPow (hd : 0 < d) {t : ℝ} (ht : 0 < t) {k : ℕ}
+    (a b : Fin k → Fin d) :
+    Integrable (fun ω : (Fin d → ℝ) × unitaryGroup (Fin d) ℂ =>
+        tensorPow (k := k) (specSample ω.1 ω.2 ^ t) a b)
+      ((specMeasure d t).prod (unitaryHaar (Fin d))) ∧
+    ∫ ω, tensorPow (k := k) (specSample ω.1 ω.2 ^ t) a b
+        ∂((specMeasure d t).prod (unitaryHaar (Fin d))) =
+      ∑ l, (replicaWeight t (part d l) : ℂ) * labelProj (copyPerm (Fin d) k) l a b := by
+  have := isProbabilityMeasure_specMeasure hd ht
+  have heq : (fun ω : (Fin d → ℝ) × unitaryGroup (Fin d) ℂ =>
+      tensorPow (k := k) (specSample ω.1 ω.2 ^ t) a b) =ᵐ[(specMeasure d t).prod
+        (unitaryHaar (Fin d))] sampleEntry t a b :=
+    ae_prod_pos.mono fun ω hω => tensorPow_specSample_rpow_apply hd ht.le hω ω.2 a b
+  have hint : Integrable (sampleEntry t a b) ((specMeasure d t).prod (unitaryHaar (Fin d))) :=
+    Integrable.of_bound (measurable_sampleEntry t a b).aestronglyMeasurable ((d : ℝ) ^ k)
+      (ae_prod_pos.mono fun ω hω => norm_sampleEntry_le hd ht.le a b hω)
+  refine ⟨hint.congr heq.symm, ?_⟩
+  rw [integral_congr_ae heq, integral_prod _ hint]
+  have hinner : ∀ᵐ x ∂(specMeasure d t), ∫ U, sampleEntry t a b (x, U) ∂(unitaryHaar (Fin d)) =
+      ∑ l, glChar d l (fun i => (((x i / ∑ j, x j) ^ t : ℝ) : ℂ)) /
+        multiplicity (copyPerm (Fin d) k) l * labelProj (copyPerm (Fin d) k) l a b :=
+    ae_specMeasure_pos.mono fun x hx => integral_unitary_sampleEntry hd ht.le a b hx
+  rw [integral_congr_ae hinner, integral_finsetSum _ fun l _ =>
+    (integral_specMeasure_label hd ht a b l).1]
+  exact sum_congr rfl fun l _ => (integral_specMeasure_label hd ht a b l).2
+
 end TensorPower
