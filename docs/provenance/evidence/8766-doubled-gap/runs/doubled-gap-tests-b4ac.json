@@ -1,0 +1,22 @@
+[
+  {
+    "file": "QICLeanTest/DoubledSystemGap.lean",
+    "sha256": "2ea9a4e04a86eebc17793c65259c44d83033550c7880eadf422afa7d1950025c",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/DoubledSystemGap.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 4.223363577002601,
+    "log": "<VALIDATION>/QICLeanTest_DoubledSystemGap.lean-doubled-gap-tests-b4ac.log"
+  }
+]

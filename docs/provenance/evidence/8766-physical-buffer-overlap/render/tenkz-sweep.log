@@ -1,0 +1,3 @@
+tenkz-blueprint-sweep: 1 picture(s) in 1 unit(s), 0 with hard findings, 0 advisory(ies)
+  equation displays: 1; carrying a tenkzeq scope (hard group checks): 0; read through the source `=` (advisory only): 1
+  NOTE: no blueprint display declares an equation scope, so no hard group check ran over the volume; the migration is #5693.

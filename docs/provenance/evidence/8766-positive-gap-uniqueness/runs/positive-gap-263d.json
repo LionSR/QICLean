@@ -1,0 +1,15 @@
+[
+  {
+    "head": "263dc86027c416be7513a9c8faadc91f6f1d6d99",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.PositiveGapUniqueness"
+    ],
+    "exit_code": 1,
+    "seconds": 4.555947521002963,
+    "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-263d-0.log"
+  }
+]
