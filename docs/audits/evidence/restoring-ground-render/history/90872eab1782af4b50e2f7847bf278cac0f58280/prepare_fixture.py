@@ -4,8 +4,8 @@ import hashlib, importlib.metadata, json, os, subprocess
 
 BASE = Path(os.environ['WORKSPACE'])
 ROOT = BASE / 'qiclean-singular-restoration-8757'
-OUT = BASE / 'restoring-ground-citation-focused'
-REV = os.environ.get('SOURCE_REVISION', 'bbdafdcc6e56d1a90f882b1508c4e6adc67ea2bc')
+OUT = BASE / 'restoring-ground-focused'
+REV = os.environ.get('SOURCE_REVISION', '90872eab1782af4b50e2f7847bf278cac0f58280')
 LEAVES = ['blueprint/src/chapter/ch12_support_inverse_sandwich.tex',
           'blueprint/src/chapter/ch12_entropy_restoring_operators.tex',
           'blueprint/src/chapter/ch12_entropy_restoring_norm.tex',
@@ -45,7 +45,6 @@ context = context_text[start:end] + '\n'
 wrapper = '\\chapter{Quantum entropy}\n\\label{ch:restoring_ground_focus}\n\\input{partial-trace-context}\n' + ''.join('\\input{' + p.removeprefix('blueprint/src/').removesuffix('.tex') + '}\n' for p in LEAVES)
 (OUT / 'blueprint/src/content.tex').write_text(wrapper)
 paper = BASE / 'pinned-paper-sources/arealaw-09-amplification-adc7f124.tex'
-assert paper.read_text().splitlines()[0] == r'\section{Amplifying the collar estimate}\label{sec:amplification}'
 assert sha(paper.read_bytes()) == '17cb317a40f7348cce2fff888a5a3b8c6fb5e9b240d0bc9eca27452db482807f'
 manifest = {
     'source_revision': REV, 'target_leaves': LEAVES,
@@ -58,7 +57,7 @@ manifest = {
     'production_lines': sum(len(frozen(p).splitlines()) for p in MODULES),
     'fixture_only_changes': ['Replace content.tex with one Quantum entropy chapter wrapper selecting six byte-identical frozen restoration leaves plus the exact partial-trace definition excerpt for cross-reference context. All selected repository preambles, macros, packages, templates, bibliography, and configuration are unchanged.'],
     'tools': {p: importlib.metadata.version(p) for p in ['texra-blueprint', 'plasTeX', 'leanblueprint']},
-    'paper': {'section_title': 'Amplifying the collar estimate', 'revision': 'adc7f1241b42e322a6451854ab7e4b4c146bf78a', 'upstream_path': 'preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex', 'lines': [324, 446], 'retained_local_source': '${WORKSPACE}/pinned-paper-sources/arealaw-09-amplification-adc7f124.tex', 'sha256': sha(paper.read_bytes())},
+    'paper': {'revision': 'adc7f1241b42e322a6451854ab7e4b4c146bf78a', 'upstream_path': 'preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex', 'lines': [324, 446], 'retained_local_source': '${WORKSPACE}/pinned-paper-sources/arealaw-09-amplification-adc7f124.tex', 'sha256': sha(paper.read_bytes())},
     'scope': 'Focused PDF and static HTML; no Lean/Lake/checkdecls, full-book build, live browser, remote documentation access, or publication.'
 }
 assert manifest['tools']['texra-blueprint'] == '0.3.8'

@@ -1,13 +1,7 @@
 {
   "environment": "source ${WORKSPACE}/glm23-blueprint-env.sh && export WORKSPACE=${WORKSPACE}",
-  "working_directory": "${WORKSPACE}/restoring-ground-focused/blueprint/src",
+  "working_directory": "${WORKSPACE}/restoring-ground-citation-focused/blueprint/src",
   "commands": [
-    {
-      "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
-      "command": "git fetch origin codex/singular-restoration-8757",
-      "exit_code": 0,
-      "purpose": "Materialize public historical 54-declaration ancestor; no remote mutation."
-    },
     {
       "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
       "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/restoring-ground-render/prepare_fixture.py",
@@ -22,82 +16,88 @@
       "exit_code": 0
     },
     {
-      "working_directory": "${WORKSPACE}/restoring-ground-focused",
+      "working_directory": "${WORKSPACE}/restoring-ground-citation-focused",
       "command": "mkdir -p pdf-pages && pdftoppm -scale-to 1500 -png blueprint/src/print.pdf pdf-pages/page > pdf-raster.log 2>&1 && pdfinfo blueprint/src/print.pdf > pdf-info.txt",
       "exit_code": 0
     },
     {
       "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
-      "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/restoring-ground-render/verify_render.py > ${WORKSPACE}/restoring-ground-focused/verify-render.log 2>&1",
+      "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/restoring-ground-render/verify_render.py > ${WORKSPACE}/restoring-ground-citation-focused/verify-render.log 2>&1",
       "exit_code": 0
     },
     {
-      "working_directory": "${WORKSPACE}/restoring-ground-focused",
+      "working_directory": "${WORKSPACE}/restoring-ground-citation-focused",
       "command": "export XDG_CACHE_HOME=${WORKSPACE}/8766-unitary-evolution-focused/font-cache && dot -Gbgcolor=white -Tpng dependency-graph.dot -o dependency-graph-white.png",
       "exit_code": 0
     },
     {
       "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
-      "command": "python3 ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/restoring-norm-vectors-render/check.py --source-revision 2bddde9e49330bab20260b002b7f0ba7de51918e > ${WORKSPACE}/restoring-ground-focused/historical-54-check.log 2>&1",
+      "command": "python3 ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/restoring-norm-vectors-render/check.py --source-revision 2bddde9e49330bab20260b002b7f0ba7de51918e > ${WORKSPACE}/restoring-ground-citation-focused/historical-54-check.log 2>&1",
       "exit_code": 0
     },
     {
       "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
-      "command": "python3 ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/singular-restoration-render/check.py > ${WORKSPACE}/restoring-ground-focused/core-check.log 2>&1",
+      "command": "python3 ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/singular-restoration-render/check.py --source-revision 2bddde9e49330bab20260b002b7f0ba7de51918e > ${WORKSPACE}/restoring-ground-citation-focused/core-check.log 2>&1",
       "exit_code": 0
     }
   ],
   "notes": [
-    "Successful command segments reconstructed from tool records, with environment setup factored out. This is a replay recipe, not a byte-for-byte shell transcript.",
-    "Final verification ran after both web generation and PDF rasterization completed. All final PDF pages and the actual graph were directly inspected.",
-    "Original first-pass artifacts/logs remain in restoring-ground-focused-initial. All earlier core/norm/vector raw artifacts and original frozen source/artifact records remain separate and unchanged.",
-    "The exact public historical ancestor was fetched as explicitly requested. No package/tool/paper downloads, Lean/Lake/checkdecls, pin changes, CI, external writes or binary/LFS uploads occurred. The existing font cache was reused."
+    "Successful command segments reconstructed from tool records; this is a replay recipe, not a byte-for-byte shell transcript.",
+    "This rerender verifies the factual citation correction. The old 76-declaration packet and raw render remain unchanged as historical evidence. All twelve new PDF pages and the current graph were inspected.",
+    "Only the three visible citation fragments differ across generated HTML text. All proof/declaration text is unchanged after removing documentation comments.",
+    "No Lean/Lake/checkdecls, new downloads, pin changes, CI, external writes or binary/LFS uploads. Installed texra-blueprint 0.3.8 and the existing font cache were reused."
   ],
   "raw_logs": {
     "pdf-build.log": {
-      "retained_at": "${WORKSPACE}/restoring-ground-focused/pdf-build.log",
-      "sha256": "843064fb43c37099514ef0982d42b0f051316d44c61a88b62e299110808c0d9b"
+      "retained_at": "${WORKSPACE}/restoring-ground-citation-focused/pdf-build.log",
+      "sha256": "e02cbc63fe14da95a621acecc00e6bc5edcbead3fb4e2747da457d284ca85eca"
     },
     "web-build.log": {
-      "retained_at": "${WORKSPACE}/restoring-ground-focused/web-build.log",
-      "sha256": "562e44729bddb630b1cd5174cfd078776c7e1da5fa90b95bda47937afb91ced6"
+      "retained_at": "${WORKSPACE}/restoring-ground-citation-focused/web-build.log",
+      "sha256": "65bf95640dfb20a2b226865872a8d30954d26175ac9655e3ccd85f66cbcc447c"
     },
     "pdf-raster.log": {
-      "retained_at": "${WORKSPACE}/restoring-ground-focused/pdf-raster.log",
+      "retained_at": "${WORKSPACE}/restoring-ground-citation-focused/pdf-raster.log",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "verify-render.log": {
-      "retained_at": "${WORKSPACE}/restoring-ground-focused/verify-render.log",
-      "sha256": "1fa6cbffc87e873788c8b731e7915deca4a0f00be5ee83cc1d2ac8e294013df8"
+      "retained_at": "${WORKSPACE}/restoring-ground-citation-focused/verify-render.log",
+      "sha256": "1e1219171d6373c9d0238e016ef5482ea502649ae886b719b6e7951fb8fd9c51"
     },
     "blueprint/src/print.log": {
-      "retained_at": "${WORKSPACE}/restoring-ground-focused/blueprint/src/print.log",
-      "sha256": "63b054e8182fb72579bd8cf3e4e802cbf0b5b5e22284cec52d19e805f31a492c"
+      "retained_at": "${WORKSPACE}/restoring-ground-citation-focused/blueprint/src/print.log",
+      "sha256": "054bb4cb4d5486a620cec2cfdeae87c8fd48747261ae6621e1026650cc18b264"
     },
     "historical-54-check.log": {
-      "retained_at": "${WORKSPACE}/restoring-ground-focused/historical-54-check.log",
+      "retained_at": "${WORKSPACE}/restoring-ground-citation-focused/historical-54-check.log",
       "sha256": "b296cb1340a9d2e559bc7cc4eff502224caef3e0a4c99b89930a9dc5c133db6e"
     },
     "core-check.log": {
-      "retained_at": "${WORKSPACE}/restoring-ground-focused/core-check.log",
-      "sha256": "3639bb7e17afa9b5531b52f5637fd125dde02624978a5de959f4e215941659f9"
+      "retained_at": "${WORKSPACE}/restoring-ground-citation-focused/core-check.log",
+      "sha256": "4f975c365ed4c1507c47036cdb9fa7b04e5f4dcb5003c22fb31e2c91e39b276a"
     }
   },
   "replay_scripts": {
     "prepare_fixture.py": {
-      "published_sha256": "b0dc5a0014e146395cd10b21501b812ac0d0765a8685b1e0b054a9586c210e57"
+      "published_sha256": "a6843fea706b6b817174df041df53575020bcc0c994933d8ebfe270b8cab776e"
     },
     "verify_render.py": {
-      "published_sha256": "eb58b234edc16bb4ad431043fffa40d9e6df9d83ccdcc0f9b1228e764bf8e524"
+      "published_sha256": "534a513a1b779e7dc082e26fd4ca7fb835035c822a1f85db571cb404ee9799e7"
     },
     "check.py": {
-      "published_sha256": "032698b24caa2e406a050d93af2e54eeaa41cc91b31d5d2300244c6d09b9b5dc"
+      "published_sha256": "384fa43e912fafd8f0c4e1530a3fff38bd8fddec31f275c5738bd931c4211292"
     }
   },
   "environment_script_sha256": "3a538bdefcda033a0d3a55eda7102007c6789d6da004b28bb47033a17fb6c70b",
   "normalization": {
-    "rule": "Replace executor-private workspace root with literal ${WORKSPACE}; no other recorded arguments changed.",
-    "original_record": "${WORKSPACE}/restoring-ground-focused/commands-original.json",
-    "original_record_sha256": "64be6539f0b6338b6b5803359b14e4a0f9222eebecf2feb394b893d6486f1f1e"
+    "rule": "Replace executor-private workspace root with literal ${WORKSPACE}; no other current recorded arguments changed.",
+    "original_record": "${WORKSPACE}/restoring-ground-citation-focused/commands-original.json",
+    "original_record_sha256": "ed77150c5fc04cdcc7c27dcf1ba869875ed7a3b788ed4acab16f88095817d66a"
+  },
+  "post_render_source_validation": {
+    "source_revision": "e9ea0011787e7f440aaa55abcc151ba3b9982b7a",
+    "record": "source-transfer.json",
+    "new_render_run": false,
+    "actual_render_commands_and_original_raw_record_unchanged": true
   }
 }

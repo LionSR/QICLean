@@ -59,3 +59,11 @@ Checker maintenance: later norm/vector leaves extend the shared chapter router.
 The checker now requires the two original includes exactly once and preserves
 the historical router hash; all substantive core source bytes and all original
 render/artifact records remain unchanged. This is not a new core render.
+
+After the factual amplification-citation correction, this is historical evidence.
+Use `python check.py --source-revision 2bddde9e49330bab20260b002b7f0ba7de51918e`
+to select the public ancestor explicitly. Every original substantive source and
+fixture input matches its historical hash; that ancestor has additional router
+includes, which are not claimed to match the original router byte-for-byte.
+The original render records retain their old citations as historical provenance.
+Current corrected-source validation belongs to `../restoring-ground-render/`.

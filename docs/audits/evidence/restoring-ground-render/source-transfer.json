@@ -1,37 +1,31 @@
 {
-  "source_revision": "bbdafdcc6e56d1a90f882b1508c4e6adc67ea2bc",
-  "target_leaves": [
-    "blueprint/src/chapter/ch12_support_inverse_sandwich.tex",
-    "blueprint/src/chapter/ch12_entropy_restoring_operators.tex",
-    "blueprint/src/chapter/ch12_entropy_restoring_norm.tex",
-    "blueprint/src/chapter/ch12_entropy_restoring_vectors.tex",
-    "blueprint/src/chapter/restoring_coefficient_bound.tex",
-    "blueprint/src/chapter/ch12_entropy_restoring_ground_component.tex"
-  ],
-  "new_leaves": [
-    "blueprint/src/chapter/restoring_coefficient_bound.tex",
-    "blueprint/src/chapter/ch12_entropy_restoring_ground_component.tex"
-  ],
-  "context": {
-    "source_path": "blueprint/src/chapter/ch03_channel_representations_choi_and_kraus.tex",
-    "first_line": 11,
-    "last_line": 28,
-    "fixture_path": "blueprint/src/partial-trace-context.tex",
-    "sha256": "b0fe20b8db655856b383ad5e3873415b9b262a6b7ba89a032dd70d12e016cec4",
-    "declarations": [
-      "Matrix.traceLeft",
-      "Matrix.traceRight",
-      "Matrix.partialTraceRight",
-      "Matrix.partialTraceRight_apply"
-    ]
+  "status": "passed",
+  "method": "Unchanged-render-input artifact transfer; no new rendering or Lean compilation performed.",
+  "actual_render_source_revision": "bbdafdcc6e56d1a90f882b1508c4e6adc67ea2bc",
+  "current_validation_source_revision": "e9ea0011787e7f440aaa55abcc151ba3b9982b7a",
+  "changed_source_files": {
+    "QICLean/Analysis/SupportInverseSandwich.lean": {
+      "render_source_sha256": "ad13e0f55e3977a089a7305c022db070305607dd06badbeea3e99aa734ca71ae",
+      "current_source_sha256": "6b0f3517cdcebfd8105c10673d1d88354b2699ed55d9310b9888fa41229abf78",
+      "code_after_removing_block_comments_sha256": "0000abf3b656a30398668be244c3dc8d4890036ff377c98169370f37eb9cdb8a",
+      "proof_and_declaration_text_unchanged": true,
+      "line_count_unchanged": true
+    },
+    "QICLean/Analysis/RestoringCoefficientBound.lean": {
+      "render_source_sha256": "b715a6cb9480f912a5839232e0b6999eea7d1a4e1c0d77469d384caf4da7c51c",
+      "current_source_sha256": "aacaab5cbb61047b89a1edd4d2d812214c99e935595badcf37ba3834ca746a8f",
+      "code_after_removing_block_comments_sha256": "84dc1aea345f58287dad394c20d4171690d1097eb9b28c275387534c13022aa1",
+      "proof_and_declaration_text_unchanged": true,
+      "line_count_unchanged": true
+    }
   },
-  "source_sha256": {
-    "QICLean/Analysis/SupportInverseSandwich.lean": "ad13e0f55e3977a089a7305c022db070305607dd06badbeea3e99aa734ca71ae",
+  "current_source_sha256": {
+    "QICLean/Analysis/SupportInverseSandwich.lean": "6b0f3517cdcebfd8105c10673d1d88354b2699ed55d9310b9888fa41229abf78",
     "QICLean/Entropy/RestoringMarginal.lean": "02e3697b6b74ec3cd89dcb8a3d33614e07c080284aec9bd0829e4cd0592801d7",
     "QICLean/Entropy/RestoringOperators.lean": "a7934cdfb92f0c58c61a9bbfd1feeccb2336b111719c07873fa5670d4f6528fb",
     "QICLean/Entropy/RestoringNorm.lean": "6c8965df5fd8880baa13d46e651854224ea49e60d3aeb1dac07f155ec2478946",
     "QICLean/Entropy/RestoringVectors.lean": "d3fe9e01a6cb0289bf453af5dc5a7bb14a83438abe7555150957538ebea9d7e6",
-    "QICLean/Analysis/RestoringCoefficientBound.lean": "b715a6cb9480f912a5839232e0b6999eea7d1a4e1c0d77469d384caf4da7c51c",
+    "QICLean/Analysis/RestoringCoefficientBound.lean": "aacaab5cbb61047b89a1edd4d2d812214c99e935595badcf37ba3834ca746a8f",
     "QICLean/Entropy/RestoringGroundComponent.lean": "0534b415654445b36b2d38b9378c17361702fed48b4ba887305961c643407f60",
     "QICLeanTest/SupportInverseSandwich.lean": "3e316f3f2e6bd96db1206f6d2017deed0c94348e815f5781e2c02b5ab11a314e",
     "QICLeanTest/SupportInverseSandwichAxioms.lean": "18852bc2d68560a3184a07377cdf2802ec36b51a0f290a8ba9756163c435e4b5",
@@ -62,7 +56,7 @@
     "QICLean/Channel/PartialTrace.lean": "6deff109171281a38a5b60edb671e82ff7667b2a5a7dcf40573309cd1bc28338",
     "blueprint/src/chapter/ch12_entropy.tex": "b01d9c2186a46c59126a409a08eb1429962568092a08f7adad6ea66d248ed897"
   },
-  "fixture_source_sha256": {
+  "unchanged_fixture_source_sha256": {
     "blueprint/src/Packages/tenkz_pic.py": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",
     "blueprint/src/blueprint.sty": "bba6dd0bcae52e864efd02a248f4b8cccc9f62ba82e5ec8f8045c5944d841a8d",
     "blueprint/src/extra_styles.css": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1",
@@ -89,58 +83,42 @@
     "scripts/tenkz_paths.py": "b301db3e900ab33d7d43cc271a914361b989034d106ebe66713343beb37e1236",
     "scripts/test_blueprint_web_render.py": "c8b8f8ef96f6c9539a0ea99980b54302ae4b29ebd920ddce87824d13f8aa28b5"
   },
-  "fixture_wrapper_sha256": "0ef6f3cef8c02f3cf3ebf85e81b611e42afcbbe7661e1f84fd081dc25fa07382",
-  "production_modules": [
-    "QICLean/Analysis/SupportInverseSandwich.lean",
-    "QICLean/Entropy/RestoringMarginal.lean",
-    "QICLean/Entropy/RestoringOperators.lean",
-    "QICLean/Entropy/RestoringNorm.lean",
-    "QICLean/Entropy/RestoringVectors.lean",
-    "QICLean/Analysis/RestoringCoefficientBound.lean",
-    "QICLean/Entropy/RestoringGroundComponent.lean"
-  ],
-  "test_modules": [
-    "QICLeanTest/SupportInverseSandwich.lean",
-    "QICLeanTest/SupportInverseSandwichAxioms.lean",
-    "QICLeanTest/RestoringMarginal.lean",
-    "QICLeanTest/RestoringMarginalAxioms.lean",
-    "QICLeanTest/RestoringOperators.lean",
-    "QICLeanTest/RestoringOperatorsAxioms.lean",
-    "QICLeanTest/RestoringNorm.lean",
-    "QICLeanTest/RestoringNormAxioms.lean",
-    "QICLeanTest/RestoringVectors.lean",
-    "QICLeanTest/RestoringVectorsAxioms.lean",
-    "QICLeanTest/RestoringCoefficientBound.lean",
-    "QICLeanTest/RestoringCoefficientBoundAxioms.lean",
-    "QICLeanTest/RestoringGroundComponent.lean",
-    "QICLeanTest/RestoringGroundComponentAxioms.lean"
-  ],
-  "raw_axiom_drivers": [
-    "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean",
-    "docs/audits/evidence/restoring-marginal/RestoringMarginalRawAxioms.lean",
-    "docs/audits/evidence/restoring-marginal/RestoringOperatorsRawAxioms.lean",
-    "docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean",
-    "docs/audits/evidence/restoring-ground-component/RestoringGroundComponentRawAxioms.lean"
-  ],
+  "context_excerpt_unchanged": true,
+  "fixture_wrapper_unchanged": true,
   "production_lines": 1740,
-  "fixture_only_changes": [
-    "Replace content.tex with one Quantum entropy chapter wrapper selecting six byte-identical frozen restoration leaves plus the exact partial-trace definition excerpt for cross-reference context. All selected repository preambles, macros, packages, templates, bibliography, and configuration are unchanged."
-  ],
-  "tools": {
-    "texra-blueprint": "0.3.8",
-    "plasTeX": "3.1",
-    "leanblueprint": "0.0.20"
+  "public_declarations": 76,
+  "retained_render_record_sha256": {
+    "focus-manifest.json": "31e80f2d96f1156df6b5d15a13577d27b473a727a810fabab5decd1fa582dace",
+    "verification.json": "056d64a3ac30616e0890c835fe903be251eb331be35b2684051544cb698849b4",
+    "visual-review.json": "bdbe18b827d41f5071357ebe7bf24433a447022a54bb21125f10772afbdac156"
   },
-  "paper": {
-    "section_title": "Amplifying the collar estimate",
-    "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
-    "upstream_path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex",
-    "lines": [
-      324,
-      446
-    ],
-    "retained_local_source": "${WORKSPACE}/pinned-paper-sources/arealaw-09-amplification-adc7f124.tex",
-    "sha256": "17cb317a40f7348cce2fff888a5a3b8c6fb5e9b240d0bc9eca27452db482807f"
+  "retained_artifact_sha256": {
+    "blueprint/src/print.pdf": "c0568c44e46d2ba575371207424f68736deed67e514d0ff472fc84e5a56739c0",
+    "blueprint/src/print.aux": "4200ed8d32fca8414981f592c399867f57e3adb86cbc0c6a2e761ff0d1449ab4",
+    "dependency-graph.dot": "61c54a725c3572cd3f3ee965bd8becdda640b04ad0609482cb06ccd79c797ebe",
+    "blueprint/web/ch-restoring_ground_focus.html": "96b8484b71ee51b75c9172f913a0cf43e6df61cb2468731721f59d1cdd708255",
+    "blueprint/web/dep_graph_chapter_1.html": "470bdb39c3441260b9eb47121d8b2abd69410174b5cc804824f82d6896f899ab",
+    "blueprint/web/dep_graph_document.html": "8ff04fc35036c72c8df94d10ebaa70b13201826b3bb9d81857ba1c24d91ff0ba",
+    "blueprint/web/dep_graphs.html": "dcf7e2b96ec0c46434d9fedf3086578d4ee8c10f13c4921dc9ec59b8215d1b8b",
+    "blueprint/web/index.html": "b5b068589a635c2d973dcf3c9a6e87f33d782f3283c52c44be12b30dc73a1c9d",
+    "blueprint/web/sect0001.html": "9c10110d604f7759017dfbe814bbdeca9df0491f3a1170587420e1474cd78fd0",
+    "pdf-pages/page-01.png": "71fa102d47acedc070814368696fea4a09a9eb25707b2282e548ad306c249abb",
+    "pdf-pages/page-02.png": "61a73e0cdcc097bec72dc6aad095962d5af2d6059b2a54e290ba37343f71bc06",
+    "pdf-pages/page-03.png": "a25b56f09def7de41386cbce724273d54b480b6e68b1e75d25c013dbfafb484b",
+    "pdf-pages/page-04.png": "371604d466cdba2eac58d699ad4b5d4dd84d1313f8faba2b9f9966f56f5d781c",
+    "pdf-pages/page-05.png": "f50a4e8814dd52c91602e74bd0c2bce9878dcb5782bb9ac9f97064c66d35db2a",
+    "pdf-pages/page-06.png": "5dd16fe5c311ba2060c6019e3166bfcac730dc0095e77a242d311859526eb0d5",
+    "pdf-pages/page-07.png": "0234be41eb6b3d2283550da081a08879e85064566e9fb2a3c831136069d0128c",
+    "pdf-pages/page-08.png": "25f4e63da71519ad743211b4e9940427fee4836d101b735c549e4df5cdd85a38",
+    "pdf-pages/page-09.png": "9f19b8659a23c46549638d946c1271628019e71e147b40f3d27e116c243ee970",
+    "pdf-pages/page-10.png": "32745810a56f8414311823c41a695e6304d5658478307a61a0d7d251db7634e9",
+    "pdf-pages/page-11.png": "00551462c0711c5b239dfb67b6ba24f9ea1974304f625267c39288e8e349e1ed",
+    "pdf-pages/page-12.png": "4234e884b2500be90da80981b5caed6056630dc8a8148337990cbf962606610f"
   },
-  "scope": "Focused PDF and static HTML; no Lean/Lake/checkdecls, full-book build, live browser, remote documentation access, or publication."
+  "artifacts_rehashed_against_original_records": true,
+  "raw_render_directory": "${WORKSPACE}/restoring-ground-citation-focused",
+  "scope": "Only two documentation-comment lines changed. TeX leaves, macros, bibliography, templates, configuration, context excerpt, wrapper, all proof/declaration text and all rendered artifacts are unchanged. Actual render commands/source identity remain attached to bbdafdc, not relabeled as a new render at e9ea001.",
+  "fixture_wrapper_sha256": "0ef6f3cef8c02f3cf3ebf85e81b611e42afcbbe7661e1f84fd081dc25fa07382",
+  "context_excerpt_sha256": "b0fe20b8db655856b383ad5e3873415b9b262a6b7ba89a032dd70d12e016cec4",
+  "actual_raw_command_record_sha256": "ed77150c5fc04cdcc7c27dcf1ba869875ed7a3b788ed4acab16f88095817d66a"
 }

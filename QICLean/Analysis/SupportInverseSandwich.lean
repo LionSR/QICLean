@@ -18,7 +18,7 @@ two positive congruences. This uses only the generalized-inverse identity
 `ρ⁺ * ρ * ρ⁺ = ρ⁺`; no inverse on the ambient space is required.
 
 These are the matrix-order steps in the restoration construction of
-*A two-dimensional area law from a global spectral gap*, Section 9,
+*A two-dimensional area law from a global spectral gap*,
 `09-amplification.tex`, lines 417–446, at revision
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 The proofs here are independently written from the matrix APIs in QICLean
@@ -33,7 +33,7 @@ variable {n : Type*} [Fintype n] {M ρ : Matrix n n ℂ}
 
 /-- Positive-semidefinite order reverses kernel inclusion. In particular,
 the support condition in the restoration construction follows from its
-order hypothesis (Section 9, lines 417–446). -/
+order hypothesis (`09-amplification.tex`, lines 417–446). -/
 theorem mulVec_eq_zero_of_le (hM : M.PosSemidef) (hMρ : M ≤ ρ)
     (v : n → ℂ) (hv : ρ *ᵥ v = 0) : M *ᵥ v = 0 := by
   apply hM.dotProduct_mulVec_zero_iff.mp
@@ -44,14 +44,14 @@ theorem mulVec_eq_zero_of_le (hM : M.PosSemidef) (hMρ : M ≤ ρ)
 variable [DecidableEq n]
 
 /-- A positive matrix dominated by `ρ` is absorbed on the right by the
-support projection of `ρ` (Section 9, lines 417–446). -/
+support projection of `ρ` (`09-amplification.tex`, lines 417–446). -/
 theorem mul_supportProj_eq_self_of_le (hM : M.PosSemidef) (hρ : ρ.PosSemidef)
     (hMρ : M ≤ ρ) : M * hρ.supportProj = M :=
   hρ.isHermitian.mul_supportProj_eq_self_of_mulVec_kernel_le
     (hM.mulVec_eq_zero_of_le hMρ)
 
 /-- A positive matrix dominated by `ρ` is absorbed on the left by the
-support projection of `ρ` (Section 9, lines 417–446). -/
+support projection of `ρ` (`09-amplification.tex`, lines 417–446). -/
 theorem supportProj_mul_eq_self_of_le (hM : M.PosSemidef) (hρ : ρ.PosSemidef)
     (hMρ : M ≤ ρ) : hρ.supportProj * M = M := by
   simpa only [Matrix.conjTranspose_mul, hρ.supportProj_isHermitian.eq,
@@ -59,7 +59,7 @@ theorem supportProj_mul_eq_self_of_le (hM : M.PosSemidef) (hρ : ρ.PosSemidef)
     congrArg Matrix.conjTranspose (hM.mul_supportProj_eq_self_of_le hρ hMρ)
 
 /-- Normalization by the support inverse square root sends `0 ≤ M ≤ ρ`
-below the support projection of `ρ` (Section 9, lines 417–446). -/
+below the support projection of `ρ` (`09-amplification.tex`, lines 417–446). -/
 theorem supportInvSqrt_mul_mul_supportInvSqrt_le_supportProj
     (hρ : ρ.PosSemidef) (hMρ : M ≤ ρ) :
     hρ.supportInvSqrt * M * hρ.supportInvSqrt ≤ hρ.supportProj := by
@@ -71,7 +71,7 @@ theorem supportInvSqrt_mul_mul_supportInvSqrt_le_supportProj
 
 /-- The difference between a matrix and its support-inverse sandwich is a
 sum of two congruences. Positivity of the summands gives the singular
-restoration bound in Section 9, lines 417–446. -/
+restoration bound in `09-amplification.tex`, lines 417–446. -/
 theorem sub_mul_supportInv_mul_eq (hM : M.PosSemidef) (hρ : ρ.PosSemidef) :
     M - M * hρ.supportInv * M =
       (1 - M * hρ.supportInv) * M * (1 - M * hρ.supportInv)ᴴ +
@@ -90,7 +90,7 @@ theorem sub_mul_supportInv_mul_eq (hM : M.PosSemidef) (hρ : ρ.PosSemidef) :
     _ = _ := by noncomm_ring
 
 /-- If `0 ≤ M ≤ ρ`, the support-inverse sandwich difference is positive
-semidefinite. This is the singular matrix-order bound used in Section 9,
+semidefinite. This is the singular matrix-order bound used in `09-amplification.tex`,
 lines 417–446, with no full-rank or commutation hypothesis. -/
 theorem sub_mul_supportInv_mul_posSemidef (hM : M.PosSemidef) (hρ : ρ.PosSemidef)
     (hMρ : M ≤ ρ) : (M - M * hρ.supportInv * M).PosSemidef := by
@@ -100,7 +100,7 @@ theorem sub_mul_supportInv_mul_posSemidef (hM : M.PosSemidef) (hρ : ρ.PosSemid
 
 /-- If `0 ≤ M ≤ ρ`, then `M ρ⁺ M ≤ M`, with the inverse taken only on
 the support of `ρ`. This is the sandwich bound in the restoration
-construction of Section 9, lines 417–446. -/
+construction of `09-amplification.tex`, lines 417–446. -/
 theorem mul_supportInv_mul_le (hM : M.PosSemidef) (hρ : ρ.PosSemidef)
     (hMρ : M ≤ ρ) : M * hρ.supportInv * M ≤ M :=
   hM.sub_mul_supportInv_mul_posSemidef hρ hMρ

@@ -15,7 +15,7 @@ weighted index to any selected set can only decrease this sum. The other
 index still ranges over the entire ambient space.
 
 These are the coefficient and trace steps in the restoration construction
-of *A two-dimensional area law from a global spectral gap*, Section 9,
+of *A two-dimensional area law from a global spectral gap*,
 `09-amplification.tex`, lines 417–446, at revision
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 The proofs here are independently written from the matrix APIs in QICLean

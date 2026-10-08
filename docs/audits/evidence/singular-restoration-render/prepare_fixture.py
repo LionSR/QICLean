@@ -5,7 +5,7 @@ import hashlib, importlib.metadata, json, os, subprocess
 BASE = Path(os.environ['WORKSPACE'])
 ROOT = BASE / 'qiclean-singular-restoration-8757'
 OUT = BASE / 'singular-restoration-focused'
-REV = os.environ.get('SOURCE_REVISION', '8ecbed7f053226cd5f8b912514777d986e7cf702')
+REV = os.environ.get('SOURCE_REVISION', '2bddde9e49330bab20260b002b7f0ba7de51918e')
 LEAVES = ['blueprint/src/chapter/ch12_support_inverse_sandwich.tex',
           'blueprint/src/chapter/ch12_entropy_restoring_operators.tex']
 MODULES = ['QICLean/Analysis/SupportInverseSandwich.lean',

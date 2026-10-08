@@ -1,6 +1,6 @@
 # Focused physical ground-component render
 
-Actual render source (retained artifacts): `bbdafdcc6e56d1a90f882b1508c4e6adc67ea2bc`.
+Frozen render source: `90872eab1782af4b50e2f7847bf278cac0f58280`.
 
 This separate fixture renders the six restoration leaves plus the exact existing
 partial-trace definition as context. It covers all 76 public package declarations
@@ -19,10 +19,8 @@ box, missing-character or undefined-reference warnings.
 The first render found a missing static anchor for the ground definition and a
 2.09pt overfull coefficient-theorem condition. The narrow repair moves the label
 to its first align row and states the identical condition as “If M≥0, then.”
-That layout repair left the mathematical statements and Lean inputs unchanged.
-Initial artifacts and raw logs remain retained separately. The subsequent
-citation correction updates three blueprint leaves and documentation comments
-in two Lean modules; all declaration/proof text remains unchanged.
+The mathematical statements and Lean source bytes are unchanged. Initial
+artifacts and raw logs are retained separately and hashed in this packet.
 
 The mathematical review checks the actual reduced density of Ω, ancillary
 identities and spectator order, the coefficient M_yx/√p_x, the full row basis,
@@ -61,32 +59,3 @@ and independently matched to every original source hash. Run:
 `python3 docs/audits/evidence/restoring-norm-vectors-render/check.py --source-revision 2bddde9e49330bab20260b002b7f0ba7de51918e`.
 Its original render/source/artifact records remain unchanged. The new checker
 checks the current 76-declaration source; these two claims are kept distinct.
-
-## Factual citation correction and history
-
-The manuscript section is “Amplifying the collar estimate.” Its source filename
-`09-amplification.tex` does not establish its section number. All incorrect
-numbered citations in the authored restoration leaves and related module
-documentation are corrected in this current render. `citation-correction.json`
-records the five-file scope and byte-identical code after removing comments.
-
-The entire prior 76-declaration packet is copied verbatim under
-`history/90872eab1782af4b50e2f7847bf278cac0f58280/`, including its original
-hashes and then-current citation text. Its raw render remains untouched at
-`${WORKSPACE}/restoring-ground-focused`; the current raw render uses
-`${WORKSPACE}/restoring-ground-citation-focused`. The archive is historical
-evidence, not a claim that the old citation is correct.
-
-The historical core checker now also selects the public ancestor explicitly:
-`python3 docs/audits/evidence/singular-restoration-render/check.py --source-revision 2bddde9e49330bab20260b002b7f0ba7de51918e`.
-Both historical checkers pass separately from the current corrected-source checker.
-
-## Documentation-only source transfer
-
-Current hash-validation source: `e9ea0011787e7f440aaa55abcc151ba3b9982b7a`.
-Two overlong Lean documentation lines were shortened after the actual render.
-`source-transfer.json` verifies every render input byte, the context/wrapper,
-all retained artifact hashes and unchanged proof/declaration text. The checker
-validates the new comment hashes against current source. No new render is
-claimed: the actual render source, commands, manifest, verification record and
-visual review remain attached to `bbdafdcc6e56d1a90f882b1508c4e6adc67ea2bc`.

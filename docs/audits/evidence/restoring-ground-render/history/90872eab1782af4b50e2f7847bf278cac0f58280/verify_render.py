@@ -9,7 +9,7 @@ from pypdf import PdfReader
 
 BASE = Path(os.environ['WORKSPACE'])
 ROOT = BASE / 'qiclean-singular-restoration-8757'
-OUT = BASE / 'restoring-ground-citation-focused'
+OUT = BASE / 'restoring-ground-focused'
 manifest = json.loads((OUT / 'focus-manifest.json').read_text())
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 rev = manifest['source_revision']
@@ -54,11 +54,6 @@ assert len(labels) == len(set(labels))
 refs = re.findall(r'\\ref\{([^}]+)\}', source)
 assert set(refs) <= set(labels)
 assert not re.search(r'\\begin\{(?:tikzpicture|tenkz)', source)
-# Citation numbers are not inferred from the source filename prefix.
-for path in manifest['target_leaves'] + manifest['production_modules']:
-    assert not re.search(r'\b[Ss]ection[~\s]+9\b', frozen(path).decode()), path
-for name in ['ch12_support_inverse_sandwich.tex', 'restoring_coefficient_bound.tex', 'ch12_entropy_restoring_ground_component.tex']:
-    assert 'Amplifying the collar estimate' in frozen('blueprint/src/chapter/' + name).decode(), name
 
 class Page(HTMLParser):
     def __init__(self, text):
@@ -162,7 +157,6 @@ result={
  'status':'passed' if not (warnings or missing or missing_labels) else 'quality findings require review', 'recorded_at_utc':datetime.now(timezone.utc).isoformat(),
  'source_revision':rev, 'source_sha256':manifest['source_sha256'],
  'counts':{'production_modules':7,'production_lines':manifest['production_lines'],'public_declarations':len(public),'new_public_declarations':len(new_decls),'context_declarations':4,'theorems':kinds['theorem'],'definitions':kinds['def'],'source_inspected_consumers':consumers,'source_inspected_axiom_guards':len(guards),'blueprint_entries':len(entries),'proofs':source.count('\\begin{proof}'),'checked_markers':source.count('\\leanok'),'equation_labels':sum(x.startswith('eq:') for x in labels),'all_labels':len(labels),'pdf_pages':len(pdf.pages),'html_pages':len(pages),'pdf_declaration_links':len(pdfdecls),'html_chapter_declaration_links':len(chapter.lean),'html_all_declaration_links':sum(len(p.lean) for p in pages.values()),'pdf_internal_link_annotations':len(destlinks),'explicit_dependency_edges':len(explicit),'diagrams':0},
- 'citation_checks':{'section_title':'Amplifying the collar estimate','incorrect_section_9_references_in_package_sources':0,'paper_title_verified_from_pinned_file':True},
  'declarations':package_decls,'new_declarations':new_decls,'context_declarations':manifest['context']['declarations'],'html_declaration_hrefs':chapter.lean,'pdf_declaration_uris':[u for u in uris if '/find/' in u and '#doc/' in u],'labels':labels,'html_files':list(pages),'html_chapter_classes':dict(chapter.classes),'dependency_graphs':graph_records,'explicit_dependency_edges':sorted(explicit),
  'missing_internal_anchors':missing,'missing_label_anchors':missing_labels,'duplicate_html_ids':[],'tex_box_reference_warnings':warnings,'curly_math_prime_serialization':curly,
  'artifact_sha256':{str(p.relative_to(OUT)):sha(p) for p in artifacts},
