@@ -7,8 +7,8 @@
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/README.md",
-      "sha256": "27d8e2942591fbd336a1916c49acaae815b7279ea23ad2dde4f6f9925e19cda2",
-      "bytes": 1166
+      "sha256": "7351e83cbca9f8479b2f7ef1b2edc33d235e57b62bbc2ca816f2b34a403c1330",
+      "bytes": 1739
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/artifact-operation-exit.json",
@@ -67,8 +67,8 @@
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py",
-      "sha256": "7aa9b779d09dcd13a6b473025df0b862b48b000b926adcb250a5411e398670bd",
-      "bytes": 1476
+      "sha256": "18b0eed17bac9879c5759931b820bf3a157e5e374749e3d7c58b72a02236ddad",
+      "bytes": 3176
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/checkdecls-exit.json",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/collect.py",
-      "sha256": "a4f36f0db06e279ecad875b965ebc25d943829e0e5d26fe21989b17c4481b777",
-      "bytes": 4582
+      "sha256": "9adbf9f21c34a5bdf8655c1bcc26477ae24a956f5d406778fc2937d6126c5852",
+      "bytes": 4872
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/compressed-logs.json",
@@ -171,6 +171,16 @@
       "bytes": 31
     },
     {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/packaging-resource-diagnostic.json",
+      "sha256": "3343381290eaa866de407920a35db53f8ba611eeddc4f94488f14a75f00dae0f",
+      "bytes": 681
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/packaging-resource-diagnostic.txt",
+      "sha256": "dc233a888062ef9bec5fb85ff54bc79109d074a84f3bc53ba5135b15e6fb5d19",
+      "bytes": 751
+    },
+    {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/page-460.png",
       "sha256": "47cfcef72c16d37de87f8a4782e0eea554b05473b51e4389e171fa9e7cc5392c",
       "bytes": 210991
@@ -214,6 +224,36 @@
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/pdf.log.gz",
       "sha256": "70d1ae511b8905b6b3af74bd1a5ea9c7d5cbdaec9c12baef5cddc48e3707d24f",
       "bytes": 22193
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/post-commit-resource-diagnostic.json",
+      "sha256": "44c8c74e940074f3a2407413101d1b9acaf6ee73256ee67ce393aaf60fd74681",
+      "bytes": 827
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/post-commit-resource-diagnostic.txt",
+      "sha256": "7adf58a69854aa3ee548b0bc062c915ac6ec13ea73f616d2aa00e4ba00d2d362",
+      "bytes": 629
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/post-commit-retry-exit.json",
+      "sha256": "f13bfbcbe5aaeb5a14b9d78e54005e3e471e15d588a23525c56af2cb8fc2bb5b",
+      "bytes": 567
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/post-commit-retry.log",
+      "sha256": "15ecebd41d26f58b477ee52d2384c68393c09b35b014d63955e0dc79c02d411b",
+      "bytes": 1170
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-batch-exit.json",
+      "sha256": "33b4e6eec2220e8de535a7e7ad0b3944d7b5e39bf4f73d2dde5c808841fad496",
+      "bytes": 558
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-batch.log",
+      "sha256": "628762b953459a0d1c9d24e39106f3f9fe2b288422c1aa809b0caf727f1b95cf",
+      "bytes": 658
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-exit.json",
@@ -292,8 +332,8 @@
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/verification.json",
-      "sha256": "7820008835efcf3a7fe1c713958bc04a732ca4994b360e43fa56a07d886df0ff",
-      "bytes": 14367
+      "sha256": "3d6da4c65162eb8fb5952160430a28129ddd168bb748ee4d005fc9d26506747a",
+      "bytes": 17267
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-exit.json",

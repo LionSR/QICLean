@@ -17,6 +17,14 @@ negative comparison retains arbitrary real exponents and arbitrary positive
 mass. The tensor-copy estimate explicitly requires exponents between zero
 and one half.
 
+The first post-commit hash check encountered a system resource error: the
+Git read of an unchanged parent file terminated with SIGBUS. Its exception
+excerpt is retained explicitly as a tool-output transcript. After the
+coordinated recovery run ended, the same read-only hash check passed. A subsequent packaging check encountered the same global file-table limit.
+The integration preservation harness now performs the identical Git-object
+comparisons in one batch; the original frozen leaf checker is unchanged. No
+mathematical or rendering check was repeated or changed.
+
 Run from the repository root:
 
 ```sh

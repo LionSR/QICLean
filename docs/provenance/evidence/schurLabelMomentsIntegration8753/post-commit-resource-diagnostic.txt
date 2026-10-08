@@ -1,0 +1,9 @@
+Post-commit validator diagnostic, verbatim exception excerpt from tool session 67995:
+
+subprocess.CalledProcessError: Command ['git', 'show', 'd21af4657ca03bf6a71aa738d72efd71f5eb7521:QICLean/Channel/Semigroup/Basic.lean'] died with <Signals.SIGBUS: 10>.
+
+The resulting parent-byte check propagated exit 1 through compare-source.py,
+schurLabelMoments8753/check-manifest.py, check-preservation.py and the complete
+integration check-manifest.py. The source and the 83 portable bindings had
+already passed the unstaged and staged checks. No production, exposition,
+parent evidence, compiled artifact or rendered output was changed.

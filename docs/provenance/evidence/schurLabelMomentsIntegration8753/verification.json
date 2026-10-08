@@ -190,6 +190,33 @@
       "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
       "command": [
         "python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-manifest.py",
+        "--git"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T04:05:39.296904+00:00",
+      "elapsed_seconds": 28.924,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/post-commit-retry.log",
+      "sha256": "15ecebd41d26f58b477ee52d2384c68393c09b35b014d63955e0dc79c02d411b"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T04:10:37.165367+00:00",
+      "elapsed_seconds": 0.768,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-batch.log",
+      "sha256": "628762b953459a0d1c9d24e39106f3f9fe2b288422c1aa809b0caf727f1b95cf"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
         "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py"
       ],
       "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
@@ -319,6 +346,37 @@
   "original_owned_provenance_entries": 3,
   "source_scope": "Centered Schur-label transfer from supported surprisal moments. Positive comparison u>=0 with trace-one; negative comparison arbitrary real u without normalization; tensor-copy polynomial remainder for 0<=u and 2u<=1. Signed independent-copy rate estimate remains downstream.",
   "preservation": "Frozen four mathematical/exposition files and entire canonical leaf exact; external Lean SHA2d460... and original22 historical records retained. Checked Holder parent source/evidence mechanically preserved with exact generated Representation import exception; ledger authority6c. No unchanged parent semantic audit repeated.",
+  "packaging_resource_diagnostic": {
+    "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+    "command": [
+      "python3",
+      "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-manifest.py",
+      "--index"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+    "tool_session_id": 16150,
+    "exit_code": 1,
+    "capture_kind": "Verbatim failing exception excerpts from tool output with separately marked context.",
+    "cause": "Global OS file-table exhaustion during an unchanged-parent Git read.",
+    "repair": "Integration-only single batch object read performs the same byte comparisons. Original frozen leaf and mathematical source unchanged."
+  },
+  "historical_resource_diagnostic": {
+    "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+    "evidence_revision": "c8ed87d0f1e26a60db49a601cad9fb9782009aba",
+    "command": [
+      "python3",
+      "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-manifest.py",
+      "--git"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+    "tool_session_id": 67995,
+    "exit_code": 1,
+    "capture_kind": "Verbatim failing exception excerpt from tool output; contextual prose explicitly separated.",
+    "diagnostic": "Unchanged-parent git-show subprocess died SIGBUS during the system resource incident.",
+    "scope": "Read-only post-commit hash validator; all frozen-source semantic/build/book checks passed.",
+    "retry_plan": "Repeat only the text/hash validator after the coordinated recovery run ends."
+  },
+  "resource_retry_exit": 0,
   "shared_source_exceptions": {
     "authoritative_parent": "fd7d585b87e56aedb9326a70973280145dc98fc5",
     "QICLean/Representation.lean": "Exactly one generated SchurLabelMoments import.",
