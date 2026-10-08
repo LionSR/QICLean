@@ -186,4 +186,31 @@ theorem eigenvalues_regionState_mem (Q : Finset V) {θ : SiteConfig n → ℂ}
   rw [← hsum]
   exact Finset.single_le_sum (fun j _ => hnn j) (Finset.mem_univ i)
 
+/-- **Vector norms of functions of a marginal**: if `λ φ(λ)² ≤ B` at every eigenvalue of
+`ρ_Q`, then `‖φ(ρ_Q) θ‖² ≤ B d_Q`, because `‖φ(ρ_Q) θ‖² = Tr ρ_Q φ(ρ_Q)²`
+(`05-replicas.tex`, lines 815–820). -/
+theorem norm_localLift_cfc_mulVec_sq_le (Q : Finset V) (θ : SiteConfig n → ℂ) (φ : ℝ → ℝ)
+    {B : ℝ} (hB : ∀ i, (isHermitian_regionState Q θ).eigenvalues i *
+      φ ((isHermitian_regionState Q θ).eigenvalues i) ^ 2 ≤ B) :
+    ‖(EuclideanSpace.equiv _ ℂ).symm
+        (localLift Q (cfc φ (regionState Q (WithLp.toLp 2 θ))) *ᵥ θ)‖ ^ 2 ≤
+      B * Fintype.card (RegionConfig n Q) := by
+  set ρ := regionState Q (WithLp.toLp 2 θ)
+  have hρ : ρ.IsHermitian := isHermitian_regionState Q θ
+  set L := localLift Q (cfc φ ρ)
+  have hsa : (cfc φ ρ)ᴴ = cfc φ ρ := (cfc_predicate φ ρ : IsSelfAdjoint (cfc φ ρ))
+  have hLL : Lᴴ * L = localLift Q (cfc (fun x => φ x * φ x) ρ) := by
+    rw [← localLift_conjTranspose, hsa, ← localLift_mul, hρ.cfc_mul_cfc]
+  have hdot : star (L *ᵥ θ) ⬝ᵥ (L *ᵥ θ) =
+      ∑ i, ((hρ.eigenvalues i * (φ (hρ.eigenvalues i) * φ (hρ.eigenvalues i)) : ℝ) : ℂ) := by
+    rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, hLL, star_dotProduct_localLift_mulVec,
+      hρ.mul_cfc, Matrix.IsHermitian.cfc_eq hρ, IsHermitian.trace_cfc_eq_sum]
+    rfl
+  rw [← re_star_dotProduct_self_eq_norm_sq, hdot]
+  simp only [map_sum, RCLike.re_to_complex, Complex.ofReal_re]
+  calc ∑ i, hρ.eigenvalues i * (φ (hρ.eigenvalues i) * φ (hρ.eigenvalues i))
+      ≤ ∑ _i : RegionConfig n Q, B := Finset.sum_le_sum fun i _ => by
+        have := hB i; rw [sq] at this; exact this
+    _ = B * Fintype.card (RegionConfig n Q) := by
+        rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]
 end TensorPower
