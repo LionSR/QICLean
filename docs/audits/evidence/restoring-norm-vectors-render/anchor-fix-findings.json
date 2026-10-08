@@ -1,0 +1,62 @@
+{
+  "source_revision": "fc2af2b56160113a03a65dc065102ff4eb118759",
+  "status": "passed",
+  "reason_for_final_rerender": "Replace the norm proof\u2019s inaccurate twice count with a statement about all tensor factors; no displayed inequality or Lean source change.",
+  "counts": {
+    "production_modules": 5,
+    "production_lines": 1282,
+    "public_declarations": 54,
+    "new_public_declarations": 25,
+    "context_declarations": 4,
+    "theorems": 34,
+    "definitions": 20,
+    "source_inspected_consumers": 30,
+    "source_inspected_axiom_guards": 54,
+    "blueprint_entries": 20,
+    "proofs": 16,
+    "checked_markers": 36,
+    "equation_labels": 15,
+    "all_labels": 39,
+    "pdf_pages": 9,
+    "html_pages": 6,
+    "pdf_declaration_links": 58,
+    "html_chapter_declaration_links": 58,
+    "html_all_declaration_links": 174,
+    "pdf_internal_link_annotations": 25,
+    "explicit_dependency_edges": 25,
+    "diagrams": 0
+  },
+  "artifact_sha256": {
+    "blueprint/src/print.pdf": "614f19a7ca8acdddac6c3dbe48f9286ba05dbd2c8eede26121c04dde2f93cd8f",
+    "blueprint/src/print.aux": "09e2df0f005db97ff891f71feb8b8247dfc3e9e7e81380d71428660e04382236",
+    "dependency-graph.dot": "8a653316e549474402e0f3400f244b545e6c7a349f2a3bb81401cbc927251a38",
+    "blueprint/web/ch-restoring_norm_vectors_focus.html": "550cfb4b3c153aa6a63d996a514d0e1ffba46838c0b69036584d431b356f5882",
+    "blueprint/web/dep_graph_chapter_1.html": "8ea5280cbe0296ddeed76040f0e4f6ac1bf96e78836b27d5758defd4ea3bf09b",
+    "blueprint/web/dep_graph_document.html": "eef443e27590b9c2dd207295a01d21a8ddb5f340f6adcb07eefdeb144ad17ed8",
+    "blueprint/web/dep_graphs.html": "58184ab2f1aa422fa0b9293c5253143a1e93db1fbb22f096f0f94459c0f3b0b8",
+    "blueprint/web/index.html": "a7bcc1342812cd112dd0bc198f0cf7711271411a289aa38b7c4be00539558c9e",
+    "blueprint/web/sect0001.html": "b74bb0375900a9c2d437390561974fe188b104d312162da6b971f75eb72f5cd8",
+    "pdf-pages/page-1.png": "71fa102d47acedc070814368696fea4a09a9eb25707b2282e548ad306c249abb",
+    "pdf-pages/page-2.png": "4c0c4ef0075fcae3aefb58efa5c6f26de345169e4dab6f5229deec6e07655e50",
+    "pdf-pages/page-3.png": "a67438fc6a02a5a6c874e1e603187527b1fed95873ee8768ffa62b57cc209248",
+    "pdf-pages/page-4.png": "371604d466cdba2eac58d699ad4b5d4dd84d1313f8faba2b9f9966f56f5d781c",
+    "pdf-pages/page-5.png": "f50a4e8814dd52c91602e74bd0c2bce9878dcb5782bb9ac9f97064c66d35db2a",
+    "pdf-pages/page-6.png": "5dd16fe5c311ba2060c6019e3166bfcac730dc0095e77a242d311859526eb0d5",
+    "pdf-pages/page-7.png": "19023ddb4bbe8f91ce93cbba3f781d7b24707e6b3b23e4b6ceab15172993e510",
+    "pdf-pages/page-8.png": "25f4e63da71519ad743211b4e9940427fee4836d101b735c549e4df5cdd85a38",
+    "pdf-pages/page-9.png": "0ea2a394b71fafd2d7a02c7822c571f9c5ef9805ba72389b4caea14a3a0f8287"
+  },
+  "raw_log_sha256": {
+    "pdf-build.log": "a554783e85bcf7309e0528641f9dafb4d1fc3ec031a0cd3408f25c03cde5c1ae",
+    "web-build.log": "779cbae3f0bf92b3ea944156c8b49b2c9d4e4e8792be44b9f34a17c256c3660d",
+    "pdf-raster.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verify-render.log": "3f71f5223c542a8cbe75ee43bb6086dfa528787589bd9255c4fb99e12403a122",
+    "blueprint/src/print.log": "9e124f2e7b089d292959ef691ee3a3418d8fe210075d421ddafcf37e7193d4ec"
+  },
+  "retained_local_directory": "${WORKSPACE}/restoring-norm-vectors-focused-anchors",
+  "inspection": "All nine PDF pages and graph directly viewed; static new-leaf mathematics and all generated references verified.",
+  "final_resolution": {
+    "source_revision": "947cfcb24904c7ba5c83e9723f9c0db994731935",
+    "status": "passed"
+  }
+}

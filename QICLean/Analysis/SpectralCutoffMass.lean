@@ -27,12 +27,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Label: comparator:defect-mass.
-Provenance-ID: 8750-qic-spectral-cutoff-mass-01
-Downstream declaration:
-Matrix.PosSemidef.smul_one_sub_spectralCutoff_le
-Provenance-ID: 8750-qic-spectral-cutoff-mass-02
-Downstream declaration:
-Matrix.PosSemidef.spectralCutoff_mass_ge
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
