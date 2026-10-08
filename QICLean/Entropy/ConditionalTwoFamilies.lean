@@ -30,27 +30,6 @@ Manuscript:
 preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/
 build/sections/02-information.tex
 Labels: eq:info-tile-cost.
-Provenance-ID: 8765-qic-conditional-01
-Downstream declaration:
-FiniteProduct.conditionalMutualInformation_union_left
-Provenance-ID: 8765-qic-conditional-02
-Downstream declaration:
-FiniteProduct.mutualInformation_le_two_entropy
-Provenance-ID: 8765-qic-conditional-03
-Downstream declaration:
-FiniteProduct.conditionalMutualInformation_le_two_entropy
-Provenance-ID: 8765-qic-conditional-04
-Downstream declaration:
-FiniteProduct.conditionalMutualInformation_biUnion_le_sum
-Provenance-ID: 8765-qic-conditional-05
-Downstream declaration:
-FiniteProduct.target_union_complement_eq_exterior
-Provenance-ID: 8765-qic-conditional-06
-Downstream declaration:
-FiniteProduct.conditionalMutualInformation_le_two_family_mutualInformation
-Provenance-ID: 8765-qic-conditional-07
-Downstream declaration:
-FiniteProduct.conditionalMutualInformation_le_two_family_sum
 -/
 
 open scoped BigOperators

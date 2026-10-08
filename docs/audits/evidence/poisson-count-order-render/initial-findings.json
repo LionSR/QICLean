@@ -1,0 +1,24 @@
+{
+  "source_revision": "facb3ee405925779f7ad4b83519986053781feb6",
+  "status": "quality findings require review",
+  "finding": "One missing static HTML equation anchor caused by a nested cases display in the existing multiplicity leaf.",
+  "missing_internal_anchors": [
+    [
+      "ch-poisson_count_order_focus.html",
+      "ch-poisson_count_order_focus.html#eq:word_multiplicity_card",
+      "anchor"
+    ]
+  ],
+  "missing_label_anchors": [
+    "eq:word_multiplicity_card"
+  ],
+  "repair": "Equivalent single multinomial display and a separate sentence for the impossible length case.",
+  "initial_raw_log_sha256": {
+    "pdf-build.log": "4d160dc4466c4e8790058f401c08da2c97807b330546a53ea5f4e69bba79e07c",
+    "web-build.log": "0ee6065df466f317cad6b2ec226ee44433bcfa49143bcef67126a3a5496bb877",
+    "pdf-raster.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "initial_pdf_sha256": "7848e770461a2147562f3398ab594ec59e7d78fc9ad1f17eaa1cfc3693161ecc",
+  "final_public_source_revision": "487c65996fa26916d1d1e4b23e277607075035ba",
+  "final_quality_status": "passed"
+}

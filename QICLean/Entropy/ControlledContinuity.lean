@@ -66,7 +66,6 @@ upstream form `η(δ) - η(1 + δ)`; the square-root consequence, the bound for
 
 /-
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-conditional-abs-homogeneous
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyContinuity.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.conditional_abs_le_homogeneous
@@ -75,7 +74,6 @@ Downstream declaration: Entropy.abs_conditionalEntropy_le_re_trace_mul_log_card
 Changes for TNLean/QICLean: Stated for Entropy.conditionalEntropy; no Nonempty hypotheses.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-conditional-continuity
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyContinuity.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.conditional_continuity
@@ -85,7 +83,6 @@ Changes for TNLean/QICLean: Modulus stated as (1 + δ) * Real.binEntropy (δ / (
 with the upstream negMulLog form; trace hypotheses on the complex trace; no Nonempty hypotheses.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-log-sqrt
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyContinuity.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.log_one_add_le_two_sqrt
@@ -94,7 +91,6 @@ Downstream declaration: Entropy.log_one_add_le_two_mul_sqrt
 Changes for TNLean/QICLean: Renamed; implicit nonnegativity argument.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-mixing-modulus
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyContinuity.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.mixing_modulus_le

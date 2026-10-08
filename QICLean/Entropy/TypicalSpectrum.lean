@@ -32,24 +32,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Labels: comparator:typical-set, comparator:typical-entropies.
-Provenance-ID: 8753-qic-typical-01
-Downstream declaration:
-Entropy.normalizedRestriction
-Provenance-ID: 8753-qic-typical-02
-Downstream declaration:
-Entropy.sum_normalizedRestriction
-Provenance-ID: 8753-qic-typical-03
-Downstream declaration:
-Entropy.normalizedRestriction_pos
-Provenance-ID: 8753-qic-typical-04
-Downstream declaration:
-Entropy.log_card_typical_centered
-Provenance-ID: 8753-qic-typical-05
-Downstream declaration:
-Entropy.entropy_normalizedRestriction_typical_centered
-Provenance-ID: 8753-qic-typical-06
-Downstream declaration:
-Entropy.typicalSpectrum_entropy_bounds
 -/
 
 open scoped BigOperators
