@@ -397,4 +397,163 @@ theorem norm_markedSimilarity_sub_polyWord_le {t s CR CI : ℝ} (ht0 : 0 ≤ t) 
   refine (norm_pairing_approx_le _ _ _ _ hx hMx hy hMy').trans (le_of_eq ?_)
   ring
 
+/-- **Lemma 6.4, the coherent symbol** (`05-replicas.tex`, lines 615–638 and 663–836): for
+disjoint `P, Y, F`, `0 < t < 1/2` and `h` supported on `P ∪ Y`, the similarity transforms
+`O_k = A_k^{-1/2} hbar A_k^{1/2}` have, on the symmetric subspace, the coherent symbol
+`f_θ = ⟨θ, ρ_P^t ρ_Y^{-t} h ρ_P^{-t} ρ_Y^t θ⟩`. -/
+theorem hasCoherentSymbol_markedSimilarity {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1 / 2)
+    {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
+    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y)) :
+    HasCoherentSymbol (Ω := SiteConfig n) (fun k => markedSimilarity n t k P Y F h)
+      (markedScalarSymbol t P Y h) := by
+  set ι : V → Type := fun v => Fin (n v)
+  have σ₀ : SiteConfig n := fun _ => 0
+  obtain ⟨N, b, a, hb, ha, hdec⟩ :=
+    (show IsSupportedOn h (Y ∪ P) by rwa [Finset.union_comm]).exists_sum_mul hPY.symm σ₀
+  obtain ⟨C₁, hC₁⟩ := exists_l2_opNorm_markedRatio_sub_le ι ht0 (by linarith)
+  obtain ⟨CR₀, hCR₀⟩ := exists_l2_opNorm_markedRatio_le ι ht0 (by linarith)
+  obtain ⟨CI₀, hCI₀⟩ := exists_norm_markedRatio_inv_mulVec_le ι ht0 ht1
+  obtain ⟨C₂, hC₂⟩ := exists_norm_markedRatio_inv_sub_clipped_le ι ht0 ht1
+  obtain ⟨Cb, hCb⟩ := exists_norm_markedSimilarity_mulVec_le ht0 ht1 hPY hPF hYF hh
+  set CR := max CR₀ 0
+  set CI := max CI₀ 0
+  have hCR : 0 ≤ CR := le_max_right _ _
+  have hCI : 0 ≤ CI := le_max_right _ _
+  have hmv : ∀ {k : ℕ} (M : Matrix (Fin k → SiteConfig n) (Fin k → SiteConfig n) ℂ)
+      (v : (Fin k → SiteConfig n) → ℂ),
+      ‖(EuclideanSpace.equiv _ ℂ).symm (M *ᵥ v)‖ ≤ ‖M‖ * ‖(EuclideanSpace.equiv _ ℂ).symm v‖ :=
+    fun M v => by simpa using M.l2_opNorm_mulVec ((EuclideanSpace.equiv _ ℂ).symm v)
+  have hzero : markedSimilarity n t 0 P Y F h = 0 := by
+    have h0 : copyMean n 0 h = 0 := by simp [copyMean]
+    simp [markedSimilarity, h0]
+  refine HasCoherentSymbol.of_approx (fun k => ?_) ⟨max Cb 0, fun k => ?_⟩ fun ε hε => ?_
+  · -- Commutation with the symmetric projector.
+    rcases k with _ | m
+    · exact hzero ▸ Commute.zero_right _
+    · exact commute_symProj_of_forall (commute_copyPerm_markedSimilarity_succ ht0.le m hPY hPF
+        hYF hh)
+  · -- Uniform boundedness on the symmetric subspace.
+    refine l2_opNorm_le_of_forall (le_max_right _ _) fun v => ?_
+    rw [← mulVec_mulVec]
+    have hPv : ‖(EuclideanSpace.equiv _ ℂ).symm (symProj (copyPerm (SiteConfig n) k) *ᵥ v)‖ ≤
+        ‖(EuclideanSpace.equiv _ ℂ).symm v‖ :=
+      (hmv _ _).trans (mul_le_of_le_one_left (norm_nonneg _) l2_opNorm_symProj_le)
+    calc _ ≤ Cb * ‖(EuclideanSpace.equiv _ ℂ).symm (symProj (copyPerm (SiteConfig n) k) *ᵥ v)‖ :=
+          hCb k _ (symProj_mulVec_mem _ v)
+      _ ≤ max Cb 0 * ‖(EuclideanSpace.equiv _ ℂ).symm
+            (symProj (copyPerm (SiteConfig n) k) *ᵥ v)‖ :=
+          mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _)
+      _ ≤ max Cb 0 * ‖(EuclideanSpace.equiv _ ℂ).symm v‖ :=
+          mul_le_mul_of_nonneg_left hPv (le_max_right _ _)
+  -- The approximation: first `δ`, then the polynomials, then `k`.
+  set dP : ℝ := (Fintype.card (RegionConfig n P) : ℝ)
+  set dY : ℝ := (Fintype.card (RegionConfig n Y) : ℝ)
+  set S := ∑ i, ‖a i‖ * ‖b i‖
+  set Kop := (2 * CI + 6) * CR * CI + (CR * CI + 2 * CI + 6) * (2 * CI + 6)
+  set Ksym := (√dY + 4) * √dP + (2 * √dY + 4) * (√dP + 4)
+  have hS : 0 ≤ S := Finset.sum_nonneg fun i _ => by positivity
+  have hKop : 0 ≤ Kop := by positivity
+  have hKsym : 0 ≤ Ksym := by positivity
+  set s := min 1 (ε / ((Kop + Ksym) * S + 1))
+  have hs0 : 0 < s := lt_min one_pos (by positivity)
+  have hs1 : s ≤ 1 := min_le_left _ _
+  have hsK : ∀ K, 0 ≤ K → K ≤ Kop + Ksym → s * K * S ≤ ε := fun K hK0 hK => by
+    have h1 : s ≤ ε / ((Kop + Ksym) * S + 1) := min_le_right _ _
+    have h2 : s * ((Kop + Ksym) * S + 1) ≤ ε := by
+      rwa [le_div_iff₀ (by positivity)] at h1
+    nlinarith [mul_le_mul_of_nonneg_left hK hs0.le, mul_nonneg hs0.le hK0]
+  set C₂' := max C₂ 0
+  set r := (1 - 2 * t) / 2
+  have hr : 0 < r := by simp only [r]; linarith
+  obtain ⟨δ, hδ0, hδ1, hδr⟩ := exists_rpow_le hr
+    (show 0 < s / (C₂' + √dP + √dY + 1) by positivity)
+  have hδr' : ∀ c, 0 ≤ c → c ≤ C₂' + √dP + √dY + 1 → c * δ ^ r ≤ s := fun c hc0 hc => by
+    rw [le_div_iff₀ (by positivity)] at hδr
+    have := mul_le_mul hc (le_refl (δ ^ r)) (Real.rpow_nonneg hδ0.le _) (by positivity)
+    nlinarith [Real.rpow_nonneg hδ0.le r]
+  have hsqrt : ∀ d : ℝ, 0 ≤ d → √d ≤ C₂' + √dP + √dY + 1 → √(d * δ ^ (1 - 2 * t)) ≤ s :=
+    fun d hd hdle => by
+      have : √(d * δ ^ (1 - 2 * t)) = √d * δ ^ r := by
+        rw [Real.sqrt_mul hd, Real.sqrt_eq_rpow (δ ^ (1 - 2 * t)), ← Real.rpow_mul hδ0.le]
+        congr 2
+        simp only [r]; ring
+      rw [this]
+      exact hδr' _ (Real.sqrt_nonneg _) hdle
+  have hdP : √(dP * δ ^ (1 - 2 * t)) ≤ s :=
+    hsqrt dP (by positivity) (by have := Real.sqrt_nonneg dY; have := le_max_right C₂ 0; linarith)
+  have hdY : √(dY * δ ^ (1 - 2 * t)) ≤ s :=
+    hsqrt dY (by positivity) (by have := Real.sqrt_nonneg dP; have := le_max_right C₂ 0; linarith)
+  have hclip : C₂ * δ ^ r ≤ s := (mul_le_mul_of_nonneg_right (le_max_left C₂ 0)
+    (Real.rpow_nonneg hδ0.le _)).trans (hδr' _ (le_max_right _ _) (by
+      have := Real.sqrt_nonneg dP; have := Real.sqrt_nonneg dY; linarith))
+  -- The polynomials.
+  have hfc : ContinuousOn (fun x : ℝ => max x 0 ^ t) (Set.Icc (-1) 1) :=
+    ((continuous_id.max continuous_const).rpow_const fun _ => Or.inr ht0.le).continuousOn
+  have hgc : ContinuousOn (fun x : ℝ => max x δ ^ (-t)) (Set.Icc (-1) 1) :=
+    ((continuous_id.max continuous_const).rpow_const fun x =>
+      Or.inl (lt_max_of_lt_right hδ0).ne').continuousOn
+  obtain ⟨p, hp⟩ := exists_polynomial_near_of_continuousOn (-1) 1 _ hfc s hs0
+  obtain ⟨q, hq⟩ := exists_polynomial_near_of_continuousOn (-1) 1 _ hgc s hs0
+  have hp' : ∀ x ∈ Set.Icc (-1 : ℝ) 1, |max x 0 ^ t - p.eval x| ≤ s := fun x hx => by
+    rw [abs_sub_comm]; exact (hp x hx).le
+  have hq' : ∀ x ∈ Set.Icc (-1 : ℝ) 1, |max x δ ^ (-t) - q.eval x| ≤ s := fun x hx => by
+    rw [abs_sub_comm]; exact (hq x hx).le
+  refine ⟨HasMarkedSymbol.compress (polyWord P Y a b p q),
+    fun θ => star θ ⬝ᵥ (polyWordSymbol P Y a b p q θ *ᵥ θ),
+    (hasMarkedSymbol_polyWord P Y a b p q).hasCoherentSymbol_compress, fun θ hθ => ?_, ?_⟩
+  · exact (norm_markedScalarSymbol_sub_le ht0 ht1 hδ0 hs0.le hs1 hPY ha hb hdec hp' hq' hdP hdY
+      hθ).trans (hsK Ksym hKsym (by linarith))
+  -- The operator side, for large `k`.
+  obtain ⟨K₁, hK₁⟩ := hC₂ δ hδ0 hδ1 s hs0
+  have hlim : Tendsto (fun m : ℕ => C₁ * ((m + 1 : ℕ) : ℝ) ^ (-t)) atTop (nhds 0) := by
+    have := (tendsto_rpow_neg_atTop ht0).comp
+      (tendsto_natCast_atTop_atTop.comp (tendsto_add_atTop_nat 1))
+    simpa using this.const_mul C₁
+  obtain ⟨K₂, hK₂⟩ := eventually_atTop.mp (hlim.eventually (ge_mem_nhds hs0))
+  filter_upwards [eventually_ge_atTop (K₁ + K₂ + 1)] with k hk
+  obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, by omega⟩
+  have hm1 : K₁ ≤ m := by omega
+  have hm2 : K₂ ≤ m := by omega
+  have hfJ : ∀ x ∈ Set.Icc (-1 : ℝ) 1, |max x 0 ^ t| ≤ 1 := fun x hx => by
+    rw [abs_of_nonneg (Real.rpow_nonneg (le_max_right _ _) _)]
+    exact Real.rpow_le_one (le_max_right _ _) (max_le hx.2 zero_le_one) ht0.le
+  refine (norm_markedSimilarity_sub_polyWord_le (F := F) ht0.le m hs0.le hs1 hCR hCI hPY hPF
+    hYF hh ha hb hdec ?_ ?_ ?_ ?_ ?_).trans (hsK Kop hKop (by linarith))
+  · intro Q _
+    calc _ ≤ ‖markedRatio ι t m Q - cfc (fun x : ℝ => max x 0 ^ t)
+            (starOp (subsystemPerm (m + 1) ι Q))‖ +
+          ‖cfc (fun x : ℝ => max x 0 ^ t) (starOp (subsystemPerm (m + 1) ι Q)) -
+            aeval (starOp (subsystemPerm (m + 1) ι Q)) p‖ := norm_sub_le_norm_sub_add_norm_sub _ _ _
+      _ ≤ s + s := add_le_add ((hC₁ m Q).trans (hK₂ m hm2))
+          (l2_opNorm_cfc_starOp_sub_aeval_le m Q _ p hs0.le hp')
+      _ = 2 * s := by ring
+  · intro Q _
+    refine l2_opNorm_aeval_starOp_le m Q p (by norm_num) fun x hx => ?_
+    have h1 := hp' x hx
+    have h2 := hfJ x hx
+    calc |p.eval x| = |max x 0 ^ t - (max x 0 ^ t - p.eval x)| := by ring_nf
+      _ ≤ |max x 0 ^ t| + |max x 0 ^ t - p.eval x| := abs_sub _ _
+      _ ≤ 2 := by linarith
+  · intro Q _
+    exact (hCR₀ m Q).trans (le_max_left _ _)
+  · intro Q _ z hz
+    exact (hCI₀ m Q z hz).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _))
+  · intro Q _ z hz
+    have hsplit : (markedRatio ι t m Q)⁻¹ *ᵥ z - aeval (starOp (subsystemPerm (m + 1) ι Q)) q *ᵥ z =
+        ((markedRatio ι t m Q)⁻¹ - cfc (fun x : ℝ => max x δ ^ (-t))
+          (starOp (subsystemPerm (m + 1) ι Q))) *ᵥ z +
+        (cfc (fun x : ℝ => max x δ ^ (-t)) (starOp (subsystemPerm (m + 1) ι Q)) -
+          aeval (starOp (subsystemPerm (m + 1) ι Q)) q) *ᵥ z := by
+      rw [sub_mulVec, sub_mulVec]; abel
+    rw [hsplit, map_add]
+    have hz0 := norm_nonneg ((EuclideanSpace.equiv _ ℂ).symm z)
+    calc _ ≤ (C₂ * δ ^ r + s) * ‖(EuclideanSpace.equiv _ ℂ).symm z‖ +
+          s * ‖(EuclideanSpace.equiv _ ℂ).symm z‖ :=
+          (norm_add_le _ _).trans (add_le_add (hK₁ m hm1 Q z hz) ((hmv _ _).trans
+            (mul_le_mul_of_nonneg_right (l2_opNorm_cfc_starOp_sub_aeval_le m Q _ q hs0.le hq')
+              hz0)))
+      _ ≤ (s + s) * ‖(EuclideanSpace.equiv _ ℂ).symm z‖ +
+          s * ‖(EuclideanSpace.equiv _ ℂ).symm z‖ := by gcongr
+      _ = 3 * s * ‖(EuclideanSpace.equiv _ ℂ).symm z‖ := by ring
+
 end TensorPower
