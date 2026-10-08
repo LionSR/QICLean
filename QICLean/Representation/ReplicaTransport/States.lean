@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.ReplicaTransport.Setup
 import QICLean.Analysis.Transport.Derivative
+import QICLean.Analysis.Transport.Commutant
 
 /-!
 # Metrics, transport states and the exact derivative for replica histories
@@ -179,7 +180,12 @@ theorem symProj_mul_state (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : �
     (hpre : pre ∈ symmetricSubspace k (fun v => Fin (n v))) (p : ℝ)
     (j : Σ h, Option (C h)) (u : ℝ) :
     symProj (copyPerm (SiteConfig n) k) * D.state n t k pre p j u = D.state n t k pre p j u := by
-  sorry
+  have hIn := D.posDef_input hD ht hcomm
+  have hP : ∀ j, Commute (symProj (copyPerm (SiteConfig n) k)) (D.input n t k j) := fun j =>
+    (Commute.sum_left _ _ _ fun s _ => D.commute_permOp_input k s j).smul_left _
+  exact Transport.mul_transportState hIn hP (Transport.mulVec_filteredVector
+    (MeanTree.posDef_eval hIn _) (MeanTree.commute_eval_right hIn hP _)
+    (symProj_mulVec_of_mem _ hpre)) j u
 
 /-- **Exact derivative for replica histories** (area-law paper, Proposition 7.4, display
 `transport:exact-derivative`, `06-transport.tex` lines 402--408). -/

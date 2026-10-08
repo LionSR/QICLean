@@ -8,6 +8,9 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.Transport
 
+import QICLean.Analysis.Transport.Commutant
 import QICLean.Analysis.Transport.Defs
 import QICLean.Analysis.Transport.Derivative
 import QICLean.Analysis.Transport.EnergyBlock
+import QICLean.Analysis.Transport.NormDerivative
+import QICLean.Analysis.Transport.PathDerivative
