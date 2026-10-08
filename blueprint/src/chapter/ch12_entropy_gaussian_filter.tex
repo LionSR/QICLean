@@ -514,3 +514,123 @@ real for two different vectors.
     adjoint estimate, with overlap $\overline z$ and unchanged norm
     $\|W^\dagger\|=\|W\|$.
 \end{proof}
+
+\subsection{The filter on the original physical buffer}
+
+Let $\mathcal H=\mathcal H_R\otimes\mathcal H_C\otimes\mathcal H_Q$.
+Regroup the two replicas by the permutation unitary $U_e$ defined on
+elementary tensors by
+$U_e((r_1\otimes c_1\otimes q_1)\otimes
+(r_2\otimes c_2\otimes q_2))
+=((r_1\otimes c_1)\otimes(r_2\otimes c_2))\otimes(q_1\otimes q_2)$.
+On this regrouped space, $S=F_R\otimes I_{Q^{\otimes2}}$ exchanges the
+two $R$ registers and fixes both $C$ registers and both $Q$ registers.
+For an operator $H$ on $\mathcal H$ and a vector $\Omega\in\mathcal H$, set
+\begin{align}
+    \mathbb H&=U_e(H\otimes I+I\otimes H)U_e^\dagger,
+        & \mathbb H'&=S\mathbb H S^\dagger,
+        \label{eq:physical_gaussian_system}\\
+    \Psi&=U_e(\Omega\otimes\Omega), & \Phi&=S\Psi.
+        \notag
+\end{align}
+% Source: peps-02-information-adc7f124.tex, lines 402--452.
+% The composition below proves the physical-buffer Gaussian step only.
+% Interaction support, regional hypotheses, and the full reset lemma remain open.
+
+\begin{theorem}[Hermiticity from the gap residual]
+    \label{thm:physical_gaussian_hermitian}
+    \lean{Matrix.isHermitian_of_posSemidef_gap}
+    \leanok
+    For $E_0,\Delta\in\R$ and any $\Omega$, if
+    $H-E_0I-\Delta(I-\ketbra{\Omega}{\Omega})$ is positive semidefinite,
+    then $H$ is Hermitian.
+\end{theorem}
+\begin{proof}\leanok
+    The residual is Hermitian. Adding the Hermitian operators
+    $\Delta(I-\ketbra{\Omega}{\Omega})$ and $E_0I$ gives $H$.
+\end{proof}
+
+\begin{theorem}[The regrouped ground-state pair]
+    \label{thm:physical_gaussian_ground_pair}
+    \lean{Matrix.physicalBuffer_ground_pair}
+    \leanok
+    \uses{def:physical_buffer_regrouping, def:doubled_system}
+    Suppose $\|\Omega\|=1$, $H\Omega=E_0\Omega$, $\Delta\ge0$, and
+    $H-E_0I-\Delta(I-\ketbra{\Omega}{\Omega})\succeq0$.
+    For the operators and vectors in
+    (\ref{eq:physical_gaussian_system}), both generators are Hermitian,
+    $\|\Psi\|=\|\Phi\|=1$, and
+    \begin{align}
+        \mathbb H\Psi&=2E_0\Psi,
+            & \mathbb H'\Phi&=2E_0\Phi,
+            \label{eq:physical_gaussian_gaps}\\
+        \mathbb H-2E_0I&\succeq
+            \Delta(I-\ketbra{\Psi}{\Psi}),
+            & \mathbb H'-2E_0I&\succeq
+            \Delta(I-\ketbra{\Phi}{\Phi}).
+            \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:doubled_vector_properties, thm:doubled_lower_gap,
+        thm:doubled_unitary_transport, thm:physical_gaussian_hermitian}
+    Doubling gives $\|\Omega\otimes\Omega\|=\|\Omega\|^2=1$,
+    ground energy $2E_0$, and the same lower gap $\Delta$ by
+    Theorems~\ref{thm:doubled_vector_properties} and
+    \ref{thm:doubled_lower_gap}.
+    Conjugation by $U_e$ transports the gap residual and eigenvector
+    equation to $\mathbb H,\Psi$.
+    Since $S$ is unitary, a second conjugation transports them to
+    $\mathbb H',\Phi$ and preserves normalization.
+    The two residuals imply Hermiticity by
+    Theorem~\ref{thm:physical_gaussian_hermitian}.
+\end{proof}
+
+\begin{theorem}[Entropy-controlled physical-buffer Gaussian filter]
+    \label{thm:physical_buffer_gaussian_filter}
+    \lean{GaussianFilter.exists_physicalBuffer_gaussian_filter}
+    \leanok
+    \uses{thm:physical_gaussian_ground_pair, def:gaussian_filter_integrals}
+    Under the original-system hypotheses of
+    Theorem~\ref{thm:physical_gaussian_ground_pair}, suppose $\Delta>0$,
+    $b\ge0$, and
+    $D(\rho_{RC}\Vert\rho_R\otimes\rho_C)\le b$, where
+    $\rho_{RC}=\operatorname{Tr}_Q\ketbra{\Omega}{\Omega}$.
+    There are a Hermitian contraction $W$ on $\mathcal H_Q^{\otimes2}$
+    and a real number $z\ge e^{-2b}$ such that, with
+    $V=I_{(RC)^{\otimes2}}\otimes W$,
+    $\langle\Phi,V\Psi\rangle=z$.
+    The same $W,z$ satisfy the following statements for every $h\ge0$
+    and $T\ge0$. For the actual integrals
+    $M_h=M_h(\mathbb H',\mathbb H;V)$ and
+    $M_h^T=M_h^T(\mathbb H',\mathbb H;V)$,
+    \begin{align}
+        \|M_h\|&\le1, & \|M_h^T\|&\le1,
+            \label{eq:physical_gaussian_errors}\\
+        \|M_h\Psi-z\Phi\|&\le e^{-h\Delta^2/2},
+            & \|M_h^\dagger\Phi-z\Psi\|&\le e^{-h\Delta^2/2},
+            \notag\\
+        \|M_h^T\Psi-z\Phi\|&\le e^{-h\Delta^2/2}+\tau_h(T),
+            & \|(M_h^T)^\dagger\Phi-z\Psi\|&\le
+                e^{-h\Delta^2/2}+\tau_h(T).
+            \notag
+    \end{align}
+    For $h>0$, $\tau_h(T)=2e^{-T^2/(2h)}$. At $h=0$, the probability
+    integral gives $M_0=V$ and the displayed bounds use $\tau_0(T)=2$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:physical_buffer_controlled_overlap,
+        thm:physical_gaussian_ground_pair, thm:gaussian_real_overlap,
+        thm:gaussian_filter_contraction, thm:gaussian_truncated_two_sided}
+    Theorem~\ref{thm:physical_buffer_controlled_overlap} supplies $W,z$
+    before $h,T$ are chosen. Tensoring with the identity is contractive,
+    so $\|V\|\le\|W\|\le1$.
+    Theorem~\ref{thm:physical_gaussian_ground_pair} supplies both normalized
+    ground vectors, their common energy, and both lower-gap estimates
+    from the original Hamiltonian.
+    Apply Theorem~\ref{thm:gaussian_real_overlap} with the real coefficient
+    $z$ to obtain the full-integral bounds. Apply
+    Theorems~\ref{thm:gaussian_filter_contraction} and
+    \ref{thm:gaussian_truncated_two_sided} to obtain the truncated bounds,
+    using $\overline z=z$ and $\|V\|\le1$.
+\end{proof}

@@ -114,6 +114,11 @@ import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
+import QICLean.Analysis.ReplicaDefect
+import QICLean.Analysis.ReplicaExcitationDecomposition
+import QICLean.Analysis.ReplicaExcitationSymmetry
+import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
+import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ResolventDefect
 import QICLean.Analysis.ResolventDefectIntegral
 import QICLean.Analysis.ResolventFunctionalCalculus
@@ -141,6 +146,7 @@ import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
+import QICLean.Analysis.SpectralCutoffMass
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
@@ -176,6 +182,7 @@ import QICLean.Analysis.TwoProjectionCompressionSpectrum
 import QICLean.Analysis.TwoProjectionDefectBlockSum
 import QICLean.Analysis.TwoProjectionReducedProjection
 import QICLean.Analysis.TypicalSet
+import QICLean.Analysis.TypicalTailScales
 import QICLean.Analysis.UnitaryEvolution
 import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
