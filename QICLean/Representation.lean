@@ -40,7 +40,10 @@ import QICLean.Representation.MergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.RegularTrace
+import QICLean.Representation.RelativePin
 import QICLean.Representation.RelativePinAlgebra
+import QICLean.Representation.RelativePinCommute
+import QICLean.Representation.RelativePinCompensator
 import QICLean.Representation.ReplicaGammaIntegral
 import QICLean.Representation.ReplicaIntegral
 import QICLean.Representation.ReplicaLift

@@ -934,3 +934,107 @@ weight $(\sum_ix_i)^{-a}e^{-\sum_ix_i}$; the quotients of gamma values are the s
     then $\tau^t=B$, and Lemma~\ref{lem:trace_compression} with $p=1/t\ge1$ gives
     $\Tr\tau\le\Tr\sigma=1$. The measure $\zeta_Q$ is the law of $\tau$.
 \end{proof}
+
+\section{The relative coherent pin}
+
+Let $P,x,Y_0,F$ partition the sites, let $A_k=A_k(P,xY_0,F)$ and $B_k=A_k(Px,Y_0,F)$ be the
+partition metrics before and after moving $x$ from the middle part to $P$, and let
+$C_{x,k}=A_k^{-1/2}B_kA_k^{-1/2}$. For a unit vector $\theta$ write
+$P_{\theta,k}=|\theta^{\otimes k}\rangle\langle\theta^{\otimes k}|$ and
+$\eta_\theta=S_\theta(x|P)+S_\theta(x|Y_0)$.
+
+\begin{lemma}[The inverse quadratic form of a move]
+    \label{lem:move_inverse}
+    \lean{TensorPower.norm_star_dotProduct_sq_le_inv, TensorPower.IsLabelFunctionOn,
+        TensorPower.relativeMetric, TensorPower.moveWord, TensorPower.leafRoot_inv_mul_leafRoot,
+        TensorPower.posDef_relativeMetric_and_inv,
+        TensorPower.norm_star_dotProduct_sq_le_moveWord}
+    \leanok
+    \uses{thm:replica_metric_basic}
+    $C_{x,k}>0$, and for all $z,w$,
+    $|\langle z,w\rangle|^2\le\|W_{Px,k}W_{xY_0,k}W_{P,k}^{-1}W_{Y_0,k}^{-1}z\|^2
+    \langle w,C_{x,k}w\rangle$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For $C>0$, Cauchy--Schwarz gives $|\langle z,w\rangle|^2\le\langle z,C^{-1}z\rangle
+    \langle w,Cw\rangle$. With $A_k^{1/2}=W_P^{-1}W_F^{-1}W_{xY_0}$ and
+    $B_k^{1/2}=W_{Px}^{-1}W_F^{-1}W_{Y_0}$,
+    $\langle z,C_{x,k}^{-1}z\rangle=\|B_k^{-1/2}A_k^{1/2}z\|^2$; the $F$ factors cancel and the
+    remaining nested or disjoint central factors commute.
+\end{proof}
+
+\begin{lemma}[The compensators]
+    \label{lem:compensator}
+    \lean{TensorPower.tensorPow_rpow, TensorPower.trace_tensorPow,
+        TensorPower.l2_opNorm_labelObservable_mul_tensorPow_rpow_le,
+        TensorPower.reindex_labelObservable_subsystemPerm,
+        TensorPower.exists_l2_opNorm_compensator_le,
+        TensorPower.commute_labelObservable_tensorPow_of_subset,
+        TensorPower.commute_labelObservable_tensorPow_of_disjoint}
+    \leanok
+    \uses{thm:schur_label_surprisal, thm:replica_metric_basic}
+    There is $C$ such that $\|W_{R,k}^{-1}(\rho_R^t)^{\otimes k}\|\le(k+2)^C$ for every
+    region $R$ and every density matrix $\rho_R$ on $R$. Label functions of $Q$ commute with
+    $M^{\otimes k}$ for $M$ supported on a region contained in or disjoint from $Q$.
+\end{lemma}
+
+\begin{proof}\leanok
+    $(\rho_R^{\otimes k})^t=(\rho_R^t)^{\otimes k}$. In the joint resolution of
+    $\rho_R^{\otimes k}$ and the label projectors, an eigenvalue $u$ occurring in the
+    $\lambda$ block satisfies $ud_\lambda\le1$, and $w_k(\lambda)^{-1}\le(k+2)^Cd_\lambda^t$ by
+    the entropy asymptotics; hence each weight $w_k(\lambda)^{-1}u^t$ is at most $(k+2)^C$.
+    Copy permutations of $Q$ act on the copies of $Q$, on which $M^{\otimes k}$ is symmetric;
+    for $M$ off $Q$ write them as full copy permutations times inverse copy permutations of
+    the complement.
+\end{proof}
+
+\begin{lemma}[Lemma 5.1 for local operators]
+    \label{lem:regional_movement}
+    \lean{Entropy.FourPartition, Entropy.frameEquiv, Entropy.reindex_localLift_PX,
+        Entropy.reindex_localLift_XY, Entropy.reindex_localLift_P, Entropy.reindex_localLift_Y,
+        Entropy.regionalMoveOperator, Entropy.regionalMovement_norm_le,
+        Entropy.localLift_kernelProjection_P_mulVec, Entropy.localLift_kernelProjection_Y_mulVec}
+    \leanok
+    \uses{thm:conditional_movement}
+    For a unit vector $\theta$ on the sites and positive semidefinite $\sigma$ on $Px$, $\tau$
+    on $xY_0$ of trace at most one, the word
+    $\sigma^{a/2}\hat\rho_P^{-a/2}\tau^{a/2}\hat\rho_{Y_0}^{-a/2}\theta$, each factor acting
+    on its region, satisfies the bound of Lemma 5.1. The kernel projections of $\rho_P$ and
+    $\rho_{Y_0}$ annihilate $\theta$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The configurations of the sites split as those of $x$, $Y_0$, $P$ and $F$; in these
+    coordinates the operators are those of Lemma 5.1.
+\end{proof}
+
+\begin{theorem}[Lemma 6.3, the relative coherent pin]
+    \label{thm:relative_pin}
+    \lean{TensorPower.exists_replicaMetric_integral_localLift, TensorPower.norm_tensorVec,
+        TensorPower.norm_of_integral_mulVec_le, Matrix.rpow_mul_cfc_kernelCompletion,
+        TensorPower.relativePin}
+    \leanok
+    \uses{lem:move_inverse, lem:compensator, lem:regional_movement,
+        thm:replica_metric_integral}
+    There are universal constants $C,c>0$ such that, for $0<t\le1$, $a=2t$ and
+    $a\log(e\dim x)\le c$, there is a polynomial $p(k)$, uniform in $\theta$, with
+    \[
+        C_{x,k}\ge p(k)^{-1}\exp\bigl\{ka[\eta_\theta-Ca^{1/4}\log^2(e\dim x)]\bigr\}
+            P_{\theta,k}.
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    By Lemma~\ref{lem:move_inverse} it suffices to bound
+    $\|W_{Px}W_{xY_0}W_P^{-1}W_{Y_0}^{-1}\theta^{\otimes k}\|$. Since $\rho_R^t\hat\rho_R^{-t}$ is
+    the support projection of $\rho_R$, $W_P^{-1}W_{Y_0}^{-1}\theta^{\otimes k}=T_PT_{Y_0}y$ with
+    $T_R=W_R^{-1}(\rho_R^t)^{\otimes k}$ and $y=(\hat\rho_P^{-t}\hat\rho_{Y_0}^{-t}\theta)^{\otimes k}$;
+    the compensators commute with $W_{Px}$ and $W_{xY_0}$ and have polynomial norm. Expanding
+    both numerators by the integral representation,
+    $\|W_{Px}W_{xY_0}y\|$ is at most the supremum of
+    $\|\sigma^t\tau^t\hat\rho_P^{-t}\hat\rho_{Y_0}^{-t}\theta\|^k$, which
+    Lemma~\ref{lem:regional_movement} bounds by $\exp(-ka\eta_\theta/2+kCa^{5/4}\ell^2)$, with
+    $\ell=\log(e\dim x)$ and $C$ the constant of Lemma 5.1. Squaring gives the claim with twice
+    that constant.
+\end{proof}

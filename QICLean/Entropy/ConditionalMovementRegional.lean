@@ -188,7 +188,8 @@ theorem reindex_localLift_PX (M : Matrix (RegionConfig n (P ∪ x)) (RegionConfi
     Equiv.prodProdProdComm_symm, Equiv.prodProdProdComm_apply]
   by_cases hc : (q.1.2, q.2.2) = (q'.1.2, q'.2.2)
   · rw [ite_eq_left ((frameEquiv_symm_eq_off_PX h q q').mpr hc), ite_eq_left hc, mul_one]
-  · rw [ite_eq_right (fun h' => hc ((frameEquiv_symm_eq_off_PX h q q').mp h')), ite_eq_right hc, mul_zero]
+  · rw [ite_eq_right (fun h' => hc ((frameEquiv_symm_eq_off_PX h q q').mp h')),
+      ite_eq_right hc, mul_zero]
 
 omit [Fintype V] in
 theorem frameEquiv_symm_eq_off_XY
@@ -417,7 +418,8 @@ theorem liftXP_kernelProjection_mulVec (θ : (X × U) × (P × F) → ℂ) :
       θ = 0 := by
   let C : Matrix (X × U) (P × F) ℂ := fun i j => θ (i, j)
   have hv : θ = coefficientVector C := rfl
-  have hP : partialTraceLeft (movementMarginalXP θ) = ptrL (reshuffle C * (reshuffle C)ᴴ) := by
+  have hP : partialTraceLeft (movementMarginalXP θ) =
+      ptrL (reshuffle C * (reshuffle C)ᴴ) := by
     rw [hv, movementMarginalXP_eq]; rfl
   rw [hP, hv, coefficientVector_eq_reshuffle_comp, liftXP_mulVec,
     one_kronecker_kernelProjection_mul]

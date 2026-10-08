@@ -284,7 +284,8 @@ theorem relativePin :
     exact mul_le_mul hTY hWW (norm_nonneg _) (by positivity)
   have key := norm_star_dotProduct_sq_le_moveWord ht0.le k h.moveParts z w (n := n) (F := F)
   have hre : 0 ≤ (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re :=
-    (posDef_relativeMetric_and_inv ht0.le k h.moveParts (n := n)).1.posSemidef.re_dotProduct_nonneg w
+    (posDef_relativeMetric_and_inv ht0.le k h.moveParts (n := n)).1.posSemidef.re_dotProduct_nonneg
+      w
   set X := Real.exp (k * (2 * t) * (η - 2 * C₀ * (2 * t) ^ (1 / 4 : ℝ) * ℓ ^ 2))
   have hX : 0 ≤ X := (Real.exp_pos _).le
   have hk : (0 : ℝ) < (k : ℝ) + 2 := by positivity

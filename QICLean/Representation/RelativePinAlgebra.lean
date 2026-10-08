@@ -239,7 +239,8 @@ theorem posDef_relativeMetric_and_inv {t : ℝ} (ht : 0 ≤ t) (k : ℕ) {P x Y�
   refine ⟨?_, fun z => ?_⟩
   · have hBB : (RB * RB).PosDef := by
       have := (Matrix.PosDef.one (n := Config k fun v => Fin (n v))
-        (R := ℂ)).conjTranspose_mul_mul_same (B := RB) (Matrix.mulVec_injective_iff_isUnit.mpr ((isUnit_iff_isUnit_det _).mpr hBu))
+        (R := ℂ)).conjTranspose_mul_mul_same (B := RB)
+        (Matrix.mulVec_injective_iff_isUnit.mpr ((isUnit_iff_isUnit_det _).mpr hBu))
       rwa [Matrix.mul_one, hB.isHermitian] at this
     have hinj : Function.Injective RA⁻¹.mulVec := Matrix.mulVec_injective_iff_isUnit.mpr
       ((isUnit_iff_isUnit_det _).mpr (isUnit_nonsing_inv_det RA hAu))
