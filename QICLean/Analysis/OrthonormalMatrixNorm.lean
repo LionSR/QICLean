@@ -26,7 +26,6 @@ variable {𝕜 E F m n : Type*} [RCLike 𝕜]
   [Fintype m] [Fintype n] [DecidableEq n]
 
 /-- Passing to arbitrary finite orthonormal coordinates preserves the operator norm. -/
-
 theorem norm_toMatrix_orthonormal (T : E →L[𝕜] F)
     (bIn : OrthonormalBasis n 𝕜 E) (bOut : OrthonormalBasis m 𝕜 F) :
     ‖LinearMap.toMatrix bIn.toBasis bOut.toBasis T.toLinearMap‖ = ‖T‖ := by

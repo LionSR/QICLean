@@ -48,7 +48,6 @@ The weights have their actual norm-squared mass, including the zero vector.
 Source: `eq:compression-random-source`, `04-compression.tex:281–289`;
 Schmidt existence is supplied by Wolf Proposition 1.1 through
 `Matrix.exists_isSchmidtDecomposition`. -/
-
 theorem exists_schmidtSourceFrames {L R : Type*} [Fintype L] [Fintype R]
     (ψ : EuclideanSpace ℂ (L × R)) :
     ∃ (lam : Fin (min (Fintype.card L) (Fintype.card R)) → ℝ)
@@ -88,7 +87,6 @@ theorem exists_schmidtSourceFrames {L R : Type*} [Fintype L] [Fintype R]
 
 /-- Unit-norm source vectors give actual normalized Schmidt probability lists.
 Source: `eq:compression-random-source`, `04-compression.tex:281–290`. -/
-
 theorem exists_probability_schmidtSourceFrames {L R : Type*} [Fintype L] [Fintype R]
     (ψ : EuclideanSpace ℂ (L × R)) (hψ : ‖ψ‖ = 1) :
     ∃ (lam : Fin (min (Fintype.card L) (Fintype.card R)) → ℝ)
@@ -103,7 +101,6 @@ theorem exists_probability_schmidtSourceFrames {L R : Type*} [Fintype L] [Fintyp
 Schmidt weights and local isometries obtained from the genuine Schmidt theorem.
 The ket and bra endpoint dimensions may differ. Source:
 `eq:compression-random-source`, `04-compression.tex:279–309`. -/
-
 theorem exists_schmidtSourceReplacement {L R Lt Rt : Type*}
     [Fintype L] [Fintype R] [Fintype Lt] [Fintype Rt]
     (ψ : EuclideanSpace ℂ (L × R)) (φ : EuclideanSpace ℂ (Lt × Rt))

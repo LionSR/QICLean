@@ -37,7 +37,6 @@ universe u v
 
 /-- The previously appended inventory, in chronological order. The empty
 inventory is a one-dimensional scalar register. -/
-
 @[reducible] def garbageInventory (B : ℕ → Type u) : ℕ → Type u
   | 0 => PUnit
   | t + 1 => garbageInventory B t × B t
@@ -62,18 +61,15 @@ inventory is a one-dimensional scalar register. -/
 variable {m n b c : Type*}
 
 /-- Coordinate tensor product of two arbitrary finite Euclidean vectors. -/
-
 def euclideanTensorVector (v : EuclideanSpace ℂ m) (w : EuclideanSpace ℂ n) :
     EuclideanSpace ℂ (m × n) := WithLp.toLp 2 (fun p ↦ v p.1 * w p.2)
 
 @[simp]
-
 theorem euclideanTensorVector_apply (v : EuclideanSpace ℂ m)
     (w : EuclideanSpace ℂ n) (i : m) (j : n) :
     euclideanTensorVector v w (i, j) = v i * w j := rfl
 
 /-- Tensor products multiply actual vector norms, with no nonzero assumption. -/
-
 theorem norm_euclideanTensorVector [Fintype m] [Fintype n] (v : EuclideanSpace ℂ m)
     (w : EuclideanSpace ℂ n) : ‖euclideanTensorVector v w‖ = ‖v‖ * ‖w‖ := by
   apply (sq_eq_sq₀ (norm_nonneg _) (mul_nonneg (norm_nonneg _) (norm_nonneg _))).mp
@@ -82,7 +78,6 @@ theorem norm_euclideanTensorVector [Fintype m] [Fintype n] (v : EuclideanSpace �
   rw [Finset.sum_mul_sum]
 
 /-- Outer products retain the literal tensor-factor placement. -/
-
 theorem euclideanOuterProduct_tensorVector (v : EuclideanSpace ℂ m)
     (w : EuclideanSpace ℂ n) :
     euclideanOuterProduct (euclideanTensorVector v w) (euclideanTensorVector v w) =
@@ -93,7 +88,6 @@ theorem euclideanOuterProduct_tensorVector (v : EuclideanSpace ℂ m)
   ring
 
 /-- The trace of the actual pure density is the squared Euclidean norm. -/
-
 theorem trace_euclideanOuterProduct_self [Fintype n] (w : EuclideanSpace ℂ n) :
     (euclideanOuterProduct w w).trace = (‖w‖ : ℂ) ^ 2 := by
   calc
@@ -104,7 +98,6 @@ theorem trace_euclideanOuterProduct_self [Fintype n] (w : EuclideanSpace ℂ n) 
 
 /-- Discarding a fresh normalized pure register preserves the exact density,
 also for zero or subnormalized working vectors. -/
-
 theorem partialTraceRight_tensorVector [Fintype n] (v : EuclideanSpace ℂ m)
     (w : EuclideanSpace ℂ n) (hw : ‖w‖ = 1) :
     partialTraceRight (euclideanOuterProduct
@@ -118,19 +111,16 @@ variable [Fintype n] [Fintype c] [DecidableEq c]
 
 /-- Lift a map that creates a new register, leaving every earlier register
 idle. The output order is memory, earlier inventory, fresh register. -/
-
 def idleGarbageLift (A : Matrix (m × b) n ℂ) :
     Matrix (m × (c × b)) (n × c) ℂ :=
   fun y x ↦ A (y.1, y.2.2) x.1 * if y.2.1 = x.2 then 1 else 0
 
 /-- Append the specified pure vector after an actual working-memory gate. -/
-
 def appendGarbageGate (G : Matrix m n ℂ) (γ : EuclideanSpace ℂ b) :
     Matrix (m × b) n ℂ := fun y x ↦ G y.1 x * γ y.2
 
 /-- The idle coefficient lift acts only on the working memory and fresh
 register, without altering any earlier inventory coordinate. -/
-
 theorem idleGarbageLift_mulVec (A : Matrix (m × b) n ℂ)
     (ξ : EuclideanSpace ℂ (n × c)) (y : m) (k : c) (e : b) :
     (idleGarbageLift A *ᵥ WithLp.ofLp ξ) (y, (k, e)) =
@@ -140,7 +130,6 @@ theorem idleGarbageLift_mulVec (A : Matrix (m × b) n ℂ)
     mul_ite, ite_mul]
 
 /-- One chronological ideal stage preserves the tensor factorization. -/
-
 theorem idleGarbageLift_append_mulVec [DecidableEq n] (G : Matrix m n ℂ)
     (γ : EuclideanSpace ℂ b) (v : EuclideanSpace ℂ n) (w : EuclideanSpace ℂ c) :
     toEuclideanLin (idleGarbageLift (appendGarbageGate G γ))
@@ -157,7 +146,6 @@ theorem idleGarbageLift_append_mulVec [DecidableEq n] (G : Matrix m n ℂ)
 omit [Fintype n] [Fintype c] in
 /-- The idle lift is exactly a rectangular identity amplification followed
 by the stated output-register permutation. -/
-
 theorem idleGarbageLift_eq_kronecker_submatrix (A : Matrix (m × b) n ℂ) :
     idleGarbageLift (c := c) A =
       (A ⊗ₖ (1 : Matrix c c ℂ)).submatrix
@@ -167,7 +155,6 @@ theorem idleGarbageLift_eq_kronecker_submatrix (A : Matrix (m × b) n ℂ) :
 
 /-- Keeping earlier inventories idle introduces no dimension factor into
 the operator norm, even for empty memory or inventory spaces. -/
-
 theorem norm_idleGarbageLift_le [Fintype m] [Fintype b] [DecidableEq n]
     (A : Matrix (m × b) n ℂ) : ‖idleGarbageLift (c := c) A‖ ≤ ‖A‖ := by
   rw [l2_opNorm_def]
@@ -192,7 +179,6 @@ theorem norm_idleGarbageLift_le [Fintype m] [Fintype b] [DecidableEq n]
 
 omit [Fintype n] [Fintype c] in
 /-- The idle lift respects actual differences of replacement coefficients. -/
-
 theorem idleGarbageLift_sub (A A' : Matrix (m × b) n ℂ) :
     idleGarbageLift (c := c) (A - A') = idleGarbageLift A - idleGarbageLift A' := by
   ext y x
@@ -200,7 +186,6 @@ theorem idleGarbageLift_sub (A A' : Matrix (m × b) n ℂ) :
 
 /-- A replacement's operator error is preserved when the earlier garbage
 is kept idle; no restriction is imposed on its correlations. -/
-
 theorem norm_idleGarbageLift_sub_le [Fintype m] [Fintype b] [DecidableEq n]
     (A A' : Matrix (m × b) n ℂ) :
     ‖idleGarbageLift (c := c) A - idleGarbageLift A'‖ ≤ ‖A - A'‖ := by
@@ -210,7 +195,6 @@ theorem norm_idleGarbageLift_sub_le [Fintype m] [Fintype b] [DecidableEq n]
 omit [Fintype c] [DecidableEq c] in
 /-- Appending a pure register acts on every actual input by a coordinate
 tensor product, without requiring unit norm. -/
-
 theorem appendGarbageGate_mulVec [DecidableEq n] (G : Matrix m n ℂ)
     (γ : EuclideanSpace ℂ b) (v : EuclideanSpace ℂ n) :
     toEuclideanLin (appendGarbageGate G γ) v =
@@ -223,7 +207,6 @@ theorem appendGarbageGate_mulVec [DecidableEq n] (G : Matrix m n ℂ)
 omit [Fintype c] [DecidableEq c] in
 /-- The norm cost of appending an arbitrary pure register is its vector
 norm, rather than its dimension. -/
-
 theorem norm_appendGarbageGate_le [Fintype m] [Fintype b] [DecidableEq n]
     (G : Matrix m n ℂ) (γ : EuclideanSpace ℂ b) :
     ‖appendGarbageGate G γ‖ ≤ ‖G‖ * ‖γ‖ := by
@@ -237,7 +220,6 @@ theorem norm_appendGarbageGate_le [Fintype m] [Fintype b] [DecidableEq n]
     (by ring)
 
 /-- The final identity amplification leaves the entire inventory unchanged. -/
-
 theorem kronecker_one_tensorVector [DecidableEq n] (K : Matrix m n ℂ)
     (v : EuclideanSpace ℂ n) (w : EuclideanSpace ℂ c) :
     toEuclideanLin (K ⊗ₖ (1 : Matrix c c ℂ)) (euclideanTensorVector v w) =
@@ -253,7 +235,6 @@ theorem kronecker_one_tensorVector [DecidableEq n] (K : Matrix m n ℂ)
 
 /-- An arbitrary rectangular readout amplified by the garbage identity has
 the same operator bound, including empty spaces. -/
-
 theorem norm_kronecker_one_rectangular_le [Fintype m] [DecidableEq n]
     (K : Matrix m n ℂ) : ‖K ⊗ₖ (1 : Matrix c c ℂ)‖ ≤ ‖K‖ := by
   rw [l2_opNorm_def]
@@ -267,14 +248,12 @@ variable {D : ℕ → Type v} {B : ℕ → Type u}
 
 /-- Product of the supplied fresh inventory vectors through the first `t`
 stages; the initial scalar factor has coefficient one. -/
-
 def cumulativeGarbageVector (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) :
     (t : ℕ) → EuclideanSpace ℂ (garbageInventory B t)
   | 0 => WithLp.toLp 2 (fun _ ↦ 1)
   | t + 1 => euclideanTensorVector (cumulativeGarbageVector γ t) (γ t)
 
 /-- The concrete chain of ideal gates with all accumulated inventories idle. -/
-
 def chronologicalGarbageChain
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (t : ℕ) :
@@ -284,7 +263,6 @@ def chronologicalGarbageChain
 
 /-- Actual replacement stages lifted into the same chronological inventory.
 The supplied maps may create correlations with their fresh output registers. -/
-
 def chronologicalReplacementChain
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ) (t : ℕ) :
     Matrix (D (t + 1) × garbageInventory B (t + 1))
@@ -292,7 +270,6 @@ def chronologicalReplacementChain
 
 /-- The lifted replacement's actual error against the ideal fresh-inventory
 gate is bounded by its original per-gate error, independent of old garbage. -/
-
 theorem chronologicalReplacementChain_sub_norm_le
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
@@ -302,7 +279,6 @@ theorem chronologicalReplacementChain_sub_norm_le
 
 /-- Contractive replacement gates remain contractive after all earlier
 inventories are kept idle. -/
-
 theorem chronologicalReplacementChain_norm_le_one
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
     (hA : ∀ t, ‖A t‖ ≤ 1) (t : ℕ) : ‖chronologicalReplacementChain A t‖ ≤ 1 :=
@@ -311,7 +287,6 @@ theorem chronologicalReplacementChain_norm_le_one
 omit [∀ t, DecidableEq (B t)] in
 /-- Every accumulated ideal inventory is normalized when its supplied
 stage vectors are normalized. No dimension lower bounds are imposed. -/
-
 theorem norm_cumulativeGarbageVector
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1) (t : ℕ) :
     ‖cumulativeGarbageVector γ t‖ = 1 := by
@@ -324,7 +299,6 @@ theorem norm_cumulativeGarbageVector
 
 /-- Exact evaluation of the augmented chronological prefix, without any
 normalization or contraction assumptions on the gates or vectors. -/
-
 theorem chronologicalGarbageChain_prefix_vector
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (ψ : EuclideanSpace ℂ (D 0)) (t : ℕ) :
@@ -342,7 +316,6 @@ theorem chronologicalGarbageChain_prefix_vector
 
 /-- Literal discarded density of the augmented ideal circuit equals the
 original circuit density. The working input need not be normalized. -/
-
 theorem chronologicalGarbageChain_discard_density
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1)
@@ -359,7 +332,6 @@ theorem chronologicalGarbageChain_discard_density
 
 /-- The actual ideal augmented stages are contractions whenever the
 working gates contract and the supplied fresh vectors are normalized. -/
-
 theorem chronologicalGarbageChain_norm_le_one
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t))
@@ -372,7 +344,6 @@ variable {P E : Type*} [Fintype E]
 
 /-- Actual readout of the augmented prefix, acting identically on the
 accumulated inventory. Its output order is `(physical, owned)`, then inventory. -/
-
 def chronologicalGarbageReadout
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (ψ : EuclideanSpace ℂ (D 0)) (t : ℕ)
@@ -385,7 +356,6 @@ def chronologicalGarbageReadout
 
 omit [Fintype E] in
 /-- Exact final vector factorization for the common physical readout. -/
-
 theorem chronologicalGarbageReadout_eq
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (ψ : EuclideanSpace ℂ (D 0)) (t : ℕ)
@@ -400,7 +370,6 @@ theorem chronologicalGarbageReadout_eq
 /-- Discard the actual accumulated inventories and the originally owned
 readout register: the resulting physical density equals the original circuit's
 readout density. No gate, readout or input normalization is needed. -/
-
 theorem chronologicalGarbageReadout_discard_density
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1)

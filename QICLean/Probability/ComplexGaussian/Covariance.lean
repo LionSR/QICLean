@@ -25,17 +25,14 @@ noncomputable section
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- Complex-valued Kronecker delta. -/
-
 def delta (a b : ι) : ℂ := if a = b then 1 else 0
 
 omit [Fintype ι] in
-
 @[simp] theorem conj_delta (a b : ι) : conj (delta a b) = delta a b := by
   unfold delta
   split <;> simp
 
 omit [Fintype ι] in
-
 theorem delta_comm (a b : ι) : delta a b = delta b a := by
   simp only [delta, eq_comm]
 
@@ -93,7 +90,6 @@ private theorem pairing_conj_coordinate (a b : ι) :
 
 /-- The normalized complex coordinates have identity covariance.
 Source: `04-compression.tex:306–309`. -/
-
 theorem integral_coordinate_mul_conj (a b : ι) :
     (∫ x, coordinate a x * conj (coordinate b x) ∂law ι) = delta a b := by
   simp_rw [conj_coordinate]
@@ -101,20 +97,17 @@ theorem integral_coordinate_mul_conj (a b : ι) :
 
 omit [DecidableEq ι] in
 /-- Circular coordinates have vanishing bilinear covariance. -/
-
 theorem integral_coordinate_mul (a b : ι) :
     (∫ x, coordinate a x * coordinate b x ∂law ι) = 0 :=
   (integral_linearField_mul _ _ _ _).trans (pairing_coordinate a b)
 
 omit [DecidableEq ι] in
-
 theorem memLp_coordinate_mul_conj (a b : ι) :
     MemLp (fun x ↦ coordinate a x * conj (coordinate b x)) 2 (law ι) := by
   simp_rw [conj_coordinate]
   exact memLp_linearField_mul _ _ _ _
 
 omit [DecidableEq ι] in
-
 theorem integrable_coordinate_four (a b c d : ι) :
     Integrable (fun x ↦ (coordinate a x * conj (coordinate b x)) *
       conj (coordinate c x * conj (coordinate d x))) (law ι) := by
@@ -126,7 +119,6 @@ theorem integrable_coordinate_four (a b c d : ι) :
 
 /-- Complex fourth pairing, including the value `2` when all indices coincide.
 Source: `04-compression.tex:326–334`. -/
-
 theorem integral_coordinate_four_eq_pairings (a b c d : ι) :
     (∫ x, (coordinate a x * conj (coordinate b x)) *
       conj (coordinate c x * conj (coordinate d x)) ∂law ι) =
@@ -142,7 +134,6 @@ theorem integral_coordinate_four_eq_pairings (a b c d : ι) :
 
 omit [DecidableEq ι] in
 /-- Unit second moment of a standard circular complex Gaussian. -/
-
 theorem integral_coordinate_norm_sq (a : ι) :
     (∫ x, ‖coordinate a x‖ ^ 2 ∂law ι) = 1 := by
   classical
@@ -153,7 +144,6 @@ theorem integral_coordinate_norm_sq (a : ι) :
 omit [DecidableEq ι] in
 /-- The fourth moment is `2`, including the coincident-index case needed for centering.
 Source: `04-compression.tex:328–334`. -/
-
 theorem integral_coordinate_norm_four (a : ι) :
     (∫ x, ‖coordinate a x‖ ^ 4 ∂law ι) = 2 := by
   classical
@@ -170,7 +160,6 @@ theorem integral_coordinate_norm_four (a : ι) :
 
 /-- The centered coefficient of a single random source. Source:
 `04-compression.tex:311–324`, equation `compression-gaussian-covariance`. -/
-
 def centered (a b : ι) (x : Sample ι) : ℂ :=
   coordinate a x * conj (coordinate b x) - delta a b
 
@@ -199,7 +188,6 @@ theorem integrable_centered_mul_conj (a b c d : ι) :
 
 /-- The centered circular complex Gaussian covariance, with all coincident-index cases.
 Source: `eq:compression-gaussian-covariance`, `04-compression.tex:320–334`. -/
-
 theorem integral_centered_mul_conj (a b c d : ι) :
     (∫ x, centered a b x * conj (centered c d x) ∂law ι) = delta a c * delta b d := by
   have he (x : Sample ι) : centered a b x * conj (centered c d x) =
@@ -227,7 +215,6 @@ theorem integral_centered_mul_conj (a b c d : ι) :
 
 /-- Sample mean of centered density-source coefficients, using fresh independent Gaussian
 coordinates for each sample. Source: `04-compression.tex:311–338`. -/
-
 def sampleAverage (k : ℕ) (a b : ι) (x : Sample (Fin k × ι)) : ℂ :=
   (k : ℂ)⁻¹ * ∑ j : Fin k, centered (j, a) (j, b) x
 
@@ -253,7 +240,6 @@ private theorem integral_cross_sample (k : ℕ) (a b c d : ι) (j l : Fin k) :
 /-- Exact `1/k` centered covariance for averaged source coefficients. No restriction on
 coincidences of `a,b,c,d`, and no dimension factor. Source: `eq:compression-slot-variance`,
 `04-compression.tex:311–340`. -/
-
 theorem integral_sampleAverage_mul_conj (k : ℕ) (hk : 0 < k) (a b c d : ι) :
     (∫ x, sampleAverage k a b x * conj (sampleAverage k c d x)
       ∂law (Fin k × ι)) = (k : ℂ)⁻¹ * (delta a c * delta b d) := by
@@ -279,7 +265,6 @@ theorem integral_sampleAverage_mul_conj (k : ℕ) (hk : 0 < k) (a b c d : ι) :
   field_simp [hn]
 
 /-- Integrability of every averaged coefficient product, for matrix second-moment use. -/
-
 theorem integrable_sampleAverage_mul_conj (k : ℕ) (a b c d : ι) :
     Integrable (fun x ↦ sampleAverage k a b x * conj (sampleAverage k c d x))
       (law (Fin k × ι)) := by
@@ -300,12 +285,10 @@ section DensityCoefficients
 variable {A C : Type*} [Fintype A] [Fintype C] [DecidableEq A] [DecidableEq C]
 
 /-- Ket endpoint pair together with bra endpoint pair for a density-source entry. -/
-
 abbrev DensityIndex (A C : Type*) := (A × A) × (C × C)
 
 /-- Quarter-power weight of a density-source coefficient.
 Source: `04-compression.tex:311–318`. -/
-
 def coefficientWeight (lam : A → ℝ) (mu : C → ℝ) (e : DensityIndex A C) : ℝ :=
   ((lam e.1.1 * lam e.1.2) * (mu e.2.1 * mu e.2.2)) ^ (1 / 4 : ℝ)
 
@@ -313,7 +296,6 @@ omit [Fintype A] [Fintype C] [DecidableEq A] [DecidableEq C] in
 /-- The whole-product quarter weight equals the two factors appearing in the sampled
 ket/bra operators, including zero Schmidt probabilities. Source:
 `eq:compression-random-source`, `04-compression.tex:294–317`. -/
-
 theorem coefficientWeight_eq_product_quarter (lam : A → ℝ) (mu : C → ℝ)
     (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) (e : DensityIndex A C) :
     coefficientWeight lam mu e = (lam e.1.1 * mu e.2.1) ^ (1 / 4 : ℝ) *
@@ -325,7 +307,6 @@ theorem coefficientWeight_eq_product_quarter (lam : A → ℝ) (mu : C → ℝ)
 
 /-- Weighted centered coefficient of the sampled source. The Gaussian coordinate index
 combines one ket index and one bra index, as in `04-compression.tex:311–318`. -/
-
 def densityCoefficient (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (e : DensityIndex A C) (x : Sample (Fin k × (A × C))) : ℂ :=
   (coefficientWeight lam mu e : ℂ) * sampleAverage k (e.1.1, e.2.1) (e.1.2, e.2.2) x
@@ -337,7 +318,6 @@ theorem memLp_densityCoefficient (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
 
 /-- The weighted random replacement is unbiased, since its correction has mean zero.
 Source: `04-compression.tex:306–318`. -/
-
 theorem integral_densityCoefficient (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (e : DensityIndex A C) :
     (∫ x, densityCoefficient k lam mu e x ∂law (Fin k × (A × C))) = 0 := by
@@ -368,7 +348,6 @@ theorem integrable_densityCoefficient_mul_conj (k : ℕ) (lam : A → ℝ) (mu :
 possibly different ket and bra supports. Zero Schmidt probabilities are allowed; no bound
 depends on the support dimensions. Source: `eq:compression-slot-variance`,
 `04-compression.tex:311–340`. -/
-
 theorem integral_densityCoefficient_mul_conj (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (e f : DensityIndex A C) :

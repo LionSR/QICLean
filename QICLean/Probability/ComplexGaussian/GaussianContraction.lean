@@ -46,7 +46,6 @@ variable {P : Type*} [Fintype P] [DecidableEq P] {B : P → Type*} [∀ p, Finty
 
 /-- The actual finite contraction of globally sampled source matrices for fixed branch labels.
 Source: Theorem 5.2, `eq:compression-random-source`, `04-compression.tex:279--340`. -/
-
 def gaussianSourceContraction (k : ℕ) (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ)
     (coeff : ((p : P) → (A p (σ p) × A p (σ p)) × (C p (σ p) × C p (σ p))) →
@@ -56,7 +55,6 @@ def gaussianSourceContraction (k : ℕ) (σ : (p : P) → B p)
 
 /-- A literal corrected-position term: actual centered sources at `S`, exact sources elsewhere.
 Source: Theorem 5.2, `eq:compression-subset-expansion`, `04-compression.tex:342--379`. -/
-
 def correctedGaussianSourceContraction (k : ℕ) (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ)
     (coeff : ((p : P) → (A p (σ p) × A p (σ p)) × (C p (σ p) × C p (σ p))) →
@@ -69,7 +67,6 @@ def correctedGaussianSourceContraction (k : ℕ) (σ : (p : P) → B p)
 omit [∀ p, Fintype (B p)] in
 /-- Actual correction-entry products use exactly the selected-position Gaussian coefficients.
 Source: Theorem 5.2, `eq:compression-random-source`, `04-compression.tex:311--379`. -/
-
 theorem corrected_source_entry_product (k : ℕ) (hk : 0 < k) (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ)
     (hlam : ∀ p a, 0 ≤ lam p a) (hmu : ∀ p c, 0 ≤ mu p c) (S : Finset P)
@@ -108,7 +105,6 @@ theorem corrected_source_entry_product (k : ℕ) (hk : 0 < k) (σ : (p : P) → 
 omit [∀ p, Fintype (B p)] in
 /-- Each corrected contraction is the finite sum of its explicitly factored source entries.
 Source: Theorem 5.2, `eq:compression-subset-expansion`, `04-compression.tex:342--379`. -/
-
 theorem correctedGaussianSourceContraction_eq_sum (k : ℕ) (hk : 0 < k)
     (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ)
@@ -126,7 +122,6 @@ theorem correctedGaussianSourceContraction_eq_sum (k : ℕ) (hk : 0 < k)
 omit [∀ p, Fintype (B p)] in
 /-- The actual sampled-minus-exact output is the literal nonempty corrected-position sum.
 Source: Theorem 5.2, `eq:compression-subset-expansion`, `04-compression.tex:342--355`. -/
-
 theorem gaussianSourceContraction_sub (k : ℕ) (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ)
     (coeff : ((p : P) → (A p (σ p) × A p (σ p)) × (C p (σ p) × C p (σ p))) →
@@ -186,7 +181,6 @@ private theorem integrable_corrected_entry (k : ℕ) (hk : 0 < k) (σ : (p : P) 
 
 /-- Every actual corrected-position contraction is Bochner-integrable.
 Source: Theorem 5.2, `eq:compression-subset-expansion`, `04-compression.tex:342--379`. -/
-
 theorem integrable_correctedGaussianSourceContraction (k : ℕ) (hk : 0 < k)
     (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ)
@@ -200,7 +194,6 @@ theorem integrable_correctedGaussianSourceContraction (k : ℕ) (hk : 0 < k)
 /-- Every nonempty actual corrected-position contraction has zero global expectation.
 Source: Theorem 5.2, centered corrections and `eq:compression-subset-expansion`,
 `04-compression.tex:311--379`. No coefficient norm or probability normalization is needed. -/
-
 theorem integral_correctedGaussianSourceContraction_eq_zero (k : ℕ) (hk : 0 < k)
     (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ)
@@ -248,7 +241,6 @@ omit [∀ p b, DecidableEq (A p b)] [∀ p b, DecidableEq (C p b)] in
 open Classical in
 /-- The actual coefficient-contracted sampled output is globally Bochner-integrable.
 Source: Theorem 5.2, `eq:compression-subset-expansion`, `04-compression.tex:342--379`. -/
-
 theorem integrable_gaussianSourceContraction (k : ℕ) (hk : 0 < k) (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ)
     (hlam : ∀ p a, 0 ≤ lam p a) (hmu : ∀ p c, 0 ≤ mu p c)
@@ -261,7 +253,6 @@ theorem integrable_gaussianSourceContraction (k : ℕ) (hk : 0 < k) (σ : (p : P
 Source: Theorem 5.2, `eq:compression-random-source` and `eq:compression-subset-expansion`,
 `04-compression.tex:279--379`. The result follows from the literal nonempty-position expansion;
 there is no supplied output expectation identity, coefficient norm or normalized weight premise. -/
-
 theorem integral_gaussianSourceContraction (k : ℕ) (hk : 0 < k) (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ)
     (hlam : ∀ p a, 0 ≤ lam p a) (hmu : ∀ p c, 0 ≤ mu p c)

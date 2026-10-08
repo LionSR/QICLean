@@ -36,14 +36,12 @@ local instance {m n : Type*} [Fintype m] [Fintype n] : ContinuousENorm (Matrix m
 
 /-- The ambient Schmidt vector in explicit local bases.
 Source: `04-compression.tex:281–289`. -/
-
 def ambientSchmidtVector (lam : A → ℝ) (E : Matrix W A ℂ) (F : Matrix X A ℂ)
     (p : W × X) : ℂ :=
   ∑ a, (Real.sqrt (lam a) : ℂ) * E p.1 a * F p.2 a
 
 /-- The actual ambient ket/bra outer product specified by the two Schmidt representations.
 Source: `eq:compression-random-source`, `04-compression.tex:281–305`. -/
-
 def ambientSchmidtSource (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
     Matrix (W × X) (Y × Z) ℂ :=
@@ -52,7 +50,6 @@ def ambientSchmidtSource (lam : A → ℝ) (mu : C → ℝ)
 
 /-- Transport a rectangular coordinate source through its ket and bra endpoint bases.
 Source: `eq:compression-random-source`, `04-compression.tex:294–309`. -/
-
 def sourceTransport (E : Matrix W A ℂ) (F : Matrix X A ℂ)
     (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (M : Matrix (A × A) (C × C) ℂ) : Matrix (W × X) (Y × Z) ℂ :=
@@ -60,7 +57,6 @@ def sourceTransport (E : Matrix W A ℂ) (F : Matrix X A ℂ)
 
 /-- The first actual sampled source operator in its ambient endpoint bases.
 Source: `eq:compression-random-source`, `04-compression.tex:294–297`. -/
-
 def ambientSourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (Et : Matrix Y C ℂ) (j : Fin k)
     (x : Sample (Fin k × (A × C))) : Matrix W Y ℂ :=
@@ -68,7 +64,6 @@ def ambientSourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
 
 /-- The second actual sampled source operator in its ambient endpoint bases.
 Source: `eq:compression-random-source`, `04-compression.tex:297–300`. -/
-
 def ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (F : Matrix X A ℂ) (Ft : Matrix Z C ℂ) (j : Fin k)
     (x : Sample (Fin k × (A × C))) : Matrix X Z ℂ :=
@@ -76,7 +71,6 @@ def ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
 
 /-- The sampled product-operator average acting between ambient endpoint spaces.
 Source: `eq:compression-random-source`, `04-compression.tex:300–309`. -/
-
 def ambientSampledSource (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (x : Sample (Fin k × (A × C))) : Matrix (W × X) (Y × Z) ℂ :=
@@ -85,14 +79,12 @@ def ambientSampledSource (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
 
 /-- The actual centered ambient source replacement.
 Source: `eq:compression-random-source`, `04-compression.tex:302–305`. -/
-
 def ambientSourceCorrection (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (x : Sample (Fin k × (A × C))) : Matrix (W × X) (Y × Z) ℂ :=
   ambientSampledSource k lam mu E F Et Ft x - ambientSchmidtSource lam mu E F Et Ft
 
 omit [Fintype C] [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq C] in
-
 theorem ambientSchmidtVector_eq_mulVec (lam : A → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) :
     ambientSchmidtVector lam E F = (E ⊗ₖ F) *ᵥ schmidtVector lam := by
@@ -108,7 +100,6 @@ theorem ambientSchmidtVector_eq_mulVec (lam : A → ℝ)
   ring
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-
 theorem sourceTransport_kronecker (E : Matrix W A ℂ) (F : Matrix X A ℂ)
     (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) (U V : Matrix A C ℂ) :
     sourceTransport E F Et Ft (U ⊗ₖ V) =
@@ -116,7 +107,6 @@ theorem sourceTransport_kronecker (E : Matrix W A ℂ) (F : Matrix X A ℂ)
   simp only [sourceTransport, Matrix.mul_kronecker_mul, Matrix.conjTranspose_kronecker]
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-
 theorem ambientSourceU_kronecker_ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (j : Fin k) (x : Sample (Fin k × (A × C))) :
@@ -125,7 +115,6 @@ theorem ambientSourceU_kronecker_ambientSourceV (k : ℕ) (lam : A → ℝ) (mu 
   (sourceTransport_kronecker E F Et Ft _ _).symm
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-
 theorem ambientSampledSource_eq_transport (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (x : Sample (Fin k × (A × C))) :
@@ -136,7 +125,6 @@ theorem ambientSampledSource_eq_transport (k : ℕ) (lam : A → ℝ) (mu : C �
     Matrix.mul_sum, Matrix.sum_mul]
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] in
-
 theorem sourceTransport_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
     sourceTransport E F Et Ft (schmidtSource lam mu) =
@@ -148,7 +136,6 @@ theorem sourceTransport_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
   exact (Matrix.star_mulVec _ _).symm
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] in
-
 theorem ambientSourceCorrection_eq_transport (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (x : Sample (Fin k × (A × C))) :
@@ -195,7 +182,6 @@ private theorem integrable_matrix_of_entries {Ω m n : Type*} [MeasurableSpace �
   exact hpi.congr'_enorm hMatrix (Filter.Eventually.of_forall fun _ ↦ rfl)
 
 omit [Fintype X] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-
 theorem integrable_ambientSourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (Et : Matrix Y C ℂ) (j : Fin k) :
     Integrable (ambientSourceU k lam mu E Et j) (law (Fin k × (A × C))) := by
@@ -207,7 +193,6 @@ theorem integrable_ambientSourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
   exact ((memLp_coordinate (j, (a, c)) 1 (by norm_num)).integrable (by norm_num)).const_mul _
 
 omit [Fintype W] [Fintype Y] [DecidableEq A] [DecidableEq C] in
-
 theorem integrable_ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (F : Matrix X A ℂ) (Ft : Matrix Z C ℂ) (j : Fin k) :
     Integrable (ambientSourceV k lam mu F Ft j) (law (Fin k × (A × C))) := by
@@ -220,7 +205,6 @@ theorem integrable_ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (by norm_num)).const_mul _
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-
 theorem integrable_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
@@ -232,7 +216,6 @@ theorem integrable_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
     (integrable_sampledSource_entry k hk lam mu hlam hmu) p q
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-
 theorem integral_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
@@ -249,7 +232,6 @@ theorem integral_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
   exact congrArg (fun M ↦ M p q) (sourceTransport_schmidtSource lam mu E F Et Ft)
 
 omit [DecidableEq A] [DecidableEq C] in
-
 theorem integrable_ambientSampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
@@ -260,7 +242,6 @@ theorem integrable_ambientSampledSource (k : ℕ) (hk : 0 < k)
 omit [DecidableEq A] [DecidableEq C] in
 /-- Genuine matrix-valued unbiasedness in the ambient endpoint spaces.
 Source: `eq:compression-random-source`, `04-compression.tex:294–309`. -/
-
 theorem integral_ambientSampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
@@ -278,7 +259,6 @@ theorem integral_ambientSampledSource (k : ℕ) (hk : 0 < k)
     integral_ambientSampledSource_entry k hk lam mu hlam hmu]
 
 omit [DecidableEq A] [DecidableEq C] in
-
 theorem integrable_ambientSourceCorrection (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
@@ -287,7 +267,6 @@ theorem integrable_ambientSourceCorrection (k : ℕ) (hk : 0 < k)
   (integrable_ambientSampledSource k hk lam mu hlam hmu E F Et Ft).sub (integrable_const _)
 
 omit [DecidableEq A] [DecidableEq C] in
-
 theorem integral_ambientSourceCorrection (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :

@@ -40,7 +40,6 @@ variable {D B : ℕ → Type*}
 
 /-- Use the supplied replacement at marked stages, rescaled by `1 + δ`;
 every other stage is exactly the ideal gate with its fresh pure inventory. -/
-
 def markedChronologicalGarbageChain
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
@@ -55,7 +54,6 @@ variable {P E : Type*} [Fintype E]
 /-- Physical density of an actual augmented gate chain. The common readout
 acts as `K ⊗ I`; first discard the accumulated inventory, then the originally
 owned readout register. The initial inventory has the scalar coefficient one. -/
-
 def chronologicalGarbageDensity
     (H : (t : ℕ) → Matrix (D (t + 1) × garbageInventory B (t + 1))
       (D t × garbageInventory B t) ℂ)
@@ -68,7 +66,6 @@ def chronologicalGarbageDensity
 
 /-- The actual ideal augmented circuit has exactly the original physical
 density, for arbitrary gates, input and common readout. -/
-
 theorem chronologicalGarbageDensity_ideal
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1)
@@ -82,7 +79,6 @@ theorem chronologicalGarbageDensity_ideal
 /-- An empty marked set retains the original physical density exactly,
 regardless of the circuit length, replacement maps or approximation scale. -/
 @[simp]
-
 theorem chronologicalGarbageDensity_marked_empty
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
@@ -100,7 +96,6 @@ theorem chronologicalGarbageDensity_marked_empty
 /-- Zero stages give the original physical density even when future fresh
 spaces are empty and their vectors are unnormalized. No gate is evaluated. -/
 @[simp]
-
 theorem chronologicalGarbageDensity_zero
     (H : (t : ℕ) → Matrix (D (t + 1) × garbageInventory B (t + 1))
       (D t × garbageInventory B t) ℂ)
@@ -122,7 +117,6 @@ variable [Fintype P] [DecidableEq P]
 need approximate their ideal appended-vector gates. The marked set may contain
 stages beyond `n`; they merely weaken the bound. Source: Theorem 5.2,
 `eq:compression-effect-circuit-error`, `04-compression.tex:199–229`. -/
-
 theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
@@ -156,7 +150,6 @@ theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le
 
 /-- The paper's approximation scale `ε / (8 |S|)` gives the actual physical
 density budget `ε / 2`, counting only marked occurrences. -/
-
 theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
@@ -180,7 +173,6 @@ theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half
 /-- Empty marked set has zero absolute error against the original physical
 density; no contraction or input normalization hypothesis is needed. -/
 @[simp]
-
 theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_empty
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)

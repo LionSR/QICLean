@@ -31,7 +31,6 @@ variable {P : Type*} [Fintype P] [DecidableEq P] {R C : P → Type*}
 
 /-- Contract a finite coefficient array with all source entries. Each source position
 has its own arbitrary rectangular row and column spaces. -/
-
 noncomputable def sourceContraction
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ) :
     MultilinearMap ℂ (fun p => Matrix (R p) (C p) ℂ) (Matrix m n ℂ) :=
@@ -41,7 +40,6 @@ noncomputable def sourceContraction
       map_smul' := fun _ _ => rfl }).smulRight (coeff x)
 
 /-- The construction evaluates to the literal sum of products of source entries. -/
-
 theorem sourceContraction_apply
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X : (p : P) → Matrix (R p) (C p) ℂ) :
@@ -51,7 +49,6 @@ theorem sourceContraction_apply
   rfl
 
 /-- Entrywise form of the actual contraction; the coefficients are deterministic. -/
-
 theorem sourceContraction_apply_apply
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X : (p : P) → Matrix (R p) (C p) ℂ) (a : m) (b : n) :
@@ -67,7 +64,6 @@ theorem sourceContraction_apply_apply
 
 /-- Expand corrections at a specified finite set of positions, leaving every other
 source exact. This is an identity of actual matrix contractions. -/
-
 theorem sourceContraction_piecewise_add
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) (T : Finset P) :
@@ -77,7 +73,6 @@ theorem sourceContraction_piecewise_add
 
 /-- Replacing every source by an exact source plus a correction expands over the
 subsets of positions, independently of the number of branch labels. -/
-
 theorem sourceContraction_add
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) :
@@ -86,7 +81,6 @@ theorem sourceContraction_add
   (sourceContraction coeff).map_add_univ E X
 
 /-- Subtracting the exact contraction removes exactly the empty correction subset. -/
-
 theorem sourceContraction_piecewise_sub
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) (T : Finset P) :
@@ -97,7 +91,6 @@ theorem sourceContraction_piecewise_sub
   simp
 
 /-- The complete sampled-minus-exact contraction is its nonempty-position expansion. -/
-
 theorem sourceContraction_sub
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) :
@@ -110,7 +103,6 @@ variable [Fintype m] [Fintype n] [DecidableEq n]
 
 /-- Bound the actual error by the nuclear errors of its nonempty-position terms;
 the matrices may be rectangular, non-Hermitian and nonpositive. -/
-
 theorem rectangularTraceNorm_sourceContraction_sub_le
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) :

@@ -42,19 +42,16 @@ local instance : ContinuousENorm (Matrix (A × A) (C × C) ℂ) :=
 
 /-- A Schmidt vector in its paired basis, with amplitudes `sqrt(lam a)`.
 Source: `04-compression.tex:281–289`. -/
-
 def schmidtVector (lam : A → ℝ) (p : A × A) : ℂ :=
   if p.1 = p.2 then (Real.sqrt (lam p.1) : ℂ) else 0
 
 /-- The rectangular Schmidt ket/bra outer-product target.
 Source: `eq:compression-random-source`, `04-compression.tex:281–305`. -/
-
 def schmidtSource (lam : A → ℝ) (mu : C → ℝ) : Matrix (A × A) (C × C) ℂ :=
   Matrix.vecMulVec (schmidtVector lam) (fun q ↦ conj (schmidtVector mu q))
 
 /-- The first sampled rectangular source operator `U_j`.
 Source: `eq:compression-random-source`, `04-compression.tex:294–297`. -/
-
 def sourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
     (x : Sample (Fin k × (A × C))) : Matrix A C ℂ :=
   Matrix.of fun a c ↦ (((lam a * mu c) ^ (1 / 4 : ℝ) : ℝ) : ℂ) *
@@ -62,7 +59,6 @@ def sourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
 
 /-- The second sampled rectangular source operator `V_j`, using the conjugate of the
 same Gaussian family as `U_j`. Source: `04-compression.tex:297–300`. -/
-
 def sourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
     (x : Sample (Fin k × (A × C))) : Matrix A C ℂ :=
   Matrix.of fun b d ↦ (((lam b * mu d) ^ (1 / 4 : ℝ) : ℝ) : ℂ) *
@@ -70,20 +66,17 @@ def sourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
 
 /-- The sampled product-operator replacement `Xhat = k⁻¹ sum_j U_j ⊗ V_j`.
 Source: `eq:compression-random-source`, `04-compression.tex:300–305`. -/
-
 def sampledSource (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (x : Sample (Fin k × (A × C))) : Matrix (A × A) (C × C) ℂ :=
   (k : ℂ)⁻¹ • ∑ j : Fin k, sourceU k lam mu j x ⊗ₖ sourceV k lam mu j x
 
 /-- The actual centered sampled matrix, without positivity or Hermiticity assumptions.
 Source: `eq:compression-random-source`, `04-compression.tex:302–305`. -/
-
 def sourceCorrection (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (x : Sample (Fin k × (A × C))) : Matrix (A × A) (C × C) ℂ :=
   sampledSource k lam mu x - schmidtSource lam mu
 
 omit [Fintype A] [Fintype C] in
-
 theorem schmidtSource_apply (lam : A → ℝ) (mu : C → ℝ) (p : A × A) (q : C × C) :
     schmidtSource lam mu p q =
       if p.1 = p.2 ∧ q.1 = q.2 then
@@ -92,7 +85,6 @@ theorem schmidtSource_apply (lam : A → ℝ) (mu : C → ℝ) (p : A × A) (q :
     simp [schmidtSource, Matrix.vecMulVec_apply, schmidtVector, hp, hq]
 
 omit [DecidableEq A] [DecidableEq C] in
-
 theorem sampledSource_apply (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (x : Sample (Fin k × (A × C))) (p : A × A) (q : C × C) :
@@ -115,7 +107,6 @@ private theorem quarter_square (t : ℝ) (ht : 0 ≤ t) :
   norm_num
 
 omit [Fintype A] [Fintype C] in
-
 theorem weighted_delta_eq_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
     (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) (p : A × A) (q : C × C) :
     (coefficientWeight lam mu (p, q) : ℂ) * delta (p.1, q.1) (p.2, q.2) =
@@ -147,7 +138,6 @@ theorem sampleAverage_eq_average_sub_delta {ι : Type*} [Fintype ι] [DecidableE
 /-- Each entry of the actual centered source replacement is precisely the Gaussian
 coefficient whose diagonal covariance was proved earlier. Source:
 `04-compression.tex:311–318`. -/
-
 theorem sourceCorrection_apply (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (x : Sample (Fin k × (A × C))) (p : A × A) (q : C × C) :
@@ -167,7 +157,6 @@ theorem integrable_sourceCorrection_entry (k : ℕ) (hk : 0 < k)
 
 /-- Pair integrability for entries of the actual source-correction matrix, rather than
 an abstract family assumed to satisfy the desired covariance. -/
-
 theorem integrable_sourceCorrection_entry_mul_conj (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (p r : A × A) (q t : C × C) :
@@ -179,7 +168,6 @@ theorem integrable_sourceCorrection_entry_mul_conj (k : ℕ) (hk : 0 < k)
 /-- The covariance of the actual source-correction entries, including coincident indices
 and zero Schmidt weights. Source: `eq:compression-gaussian-covariance`,
 `04-compression.tex:311–328`. -/
-
 theorem integral_sourceCorrection_entry_mul_conj (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (p r : A × A) (q t : C × C) :
@@ -191,7 +179,6 @@ theorem integral_sourceCorrection_entry_mul_conj (k : ℕ) (hk : 0 < k)
   exact integral_densityCoefficient_mul_conj k hk lam mu hlam hmu (p, q) (r, t)
 
 omit [DecidableEq A] [DecidableEq C] in
-
 theorem integrable_sampledSource_entry (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (p : A × A) (q : C × C) :
@@ -218,7 +205,6 @@ theorem integral_sampledSource_entry (k : ℕ) (hk : 0 < k)
   simp
 
 omit [DecidableEq A] [DecidableEq C] in
-
 theorem integrable_sampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) :
     Integrable (sampledSource k lam mu) (law (Fin k × (A × C))) := by
@@ -243,7 +229,6 @@ theorem integrable_sourceCorrection (k : ℕ) (hk : 0 < k)
 /-- The actual product-operator replacement has the exact Schmidt outer product as its
 expectation, with no sample norm bound or full-support hypothesis. Source:
 `eq:compression-random-source`, `04-compression.tex:279–309`. -/
-
 theorem integral_sampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) :
     (∫ x, sampledSource k lam mu x ∂law (Fin k × (A × C))) = schmidtSource lam mu := by

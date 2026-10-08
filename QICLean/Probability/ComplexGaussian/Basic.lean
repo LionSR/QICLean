@@ -43,7 +43,6 @@ noncomputable section
 
 /-- The scalar fourth moment underlying the complex pairing formula
 (`04-compression.tex:326–334`). -/
-
 theorem integral_standard_real_fourth :
     (∫ x : ℝ, x ^ 4 ∂gaussianReal 0 1) = 3 := by
   let f : ℝ → ℝ := fun t ↦ Real.exp (t ^ 2 / 2)
@@ -243,12 +242,10 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
 
 /-- A complex linear combination of two real Gaussian coordinates. -/
-
 def linearField (v : Fin 2 → E) (c : Fin 2 → ℂ) (x : E) : ℂ :=
   ∑ i, c i * (realField (v i) x : ℂ)
 
 /-- The bilinear (without conjugation) second moment of two complex Gaussian fields. -/
-
 def pairing (v w : Fin 2 → E) (c d : Fin 2 → ℂ) : ℂ :=
   ∑ i, ∑ j, c i * d j * (⟪v i, w j⟫ : ℂ)
 
@@ -294,7 +291,6 @@ theorem integral_linearField_mul (v w : Fin 2 → E) (c d : Fin 2 → ℂ) :
 
 /-- The fourth-moment pairing formula for complex linear Gaussian fields.
 This is the real Isserlis identity extended by complex multilinearity. -/
-
 theorem integral_linearField_four (v w u z : Fin 2 → E) (c d e f : Fin 2 → ℂ) :
     (∫ x, linearField v c x * linearField w d x *
       (linearField u e x * linearField z f x) ∂stdGaussian E) =
@@ -331,28 +327,23 @@ section Coordinates
 variable {ι : Type*} [Fintype ι]
 
 /-- Sample space for a finite family of circular complex Gaussians. -/
-
 abbrev Sample (ι : Type*) [Fintype ι] := EuclideanSpace ℝ (ι × Fin 2)
 
 /-- Joint law of the independent real coordinates forming the complex Gaussians. -/
-
 def law (ι : Type*) [Fintype ι] : Measure (Sample ι) := stdGaussian (Sample ι)
 
 instance : IsProbabilityMeasure (law ι) := inferInstanceAs (IsProbabilityMeasure (stdGaussian _))
 
 /-- The real coordinate vectors of the `i`-th complex Gaussian. -/
-
 def coordinateVectors (i : ι) (j : Fin 2) : Sample ι :=
   EuclideanSpace.basisFun (ι × Fin 2) ℝ (i, j)
 
 /-- Coefficients for unit-variance circular complex coordinates. -/
-
 def coordinateCoefficients (j : Fin 2) : ℂ :=
   if j = 0 then (Real.sqrt 2 : ℂ)⁻¹ else Complex.I * (Real.sqrt 2 : ℂ)⁻¹
 
 /-- A standard circular complex Gaussian coordinate, normalized by `E |g|² = 1`.
 Source: `04-compression.tex:291–297`. -/
-
 def coordinate (i : ι) : Sample ι → ℂ :=
   linearField (coordinateVectors i) coordinateCoefficients
 
@@ -364,7 +355,6 @@ theorem coordinate_apply (i : ι) (x : Sample ι) :
   ring
 
 /-- All finite moments of the canonical circular complex coordinates exist. -/
-
 theorem memLp_coordinate (i : ι) (p : ℝ≥0∞) (hp : p ≠ ∞) :
     MemLp (coordinate i) p (law ι) := memLp_linearField _ _ p hp
 
