@@ -1,0 +1,107 @@
+[
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms.log",
+    "raw_sha256": "d01fd0967d7179bdee394bd2451896dc1e2393f4dfde0f4eeda7f36eb8127eec",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms.log.gz",
+    "gzip_sha256": "36662a2d8c03770ccf4c65956e9130d76c8896fe9a9cb8134e7fde1801233226",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/cache.log",
+    "raw_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/cache.log.gz",
+    "gzip_sha256": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/guard.log",
+    "raw_sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/guard.log.gz",
+    "gzip_sha256": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/hazards.log",
+    "raw_sha256": "edd3cd77c9cd6f79d8f81cae4b7f535f1dec8be8d3845fb0201daadb96c79137",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/hazards.log.gz",
+    "gzip_sha256": "ac4a2f55adc14f35621f8b8882760abe8fcc0cb82382c8d482336b3115f12405",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/manifest-check.log",
+    "raw_sha256": "ba1e18af93492cf692931f042bbde6c6a93f4b4e6b8de887bdcc29eab0d52639",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/manifest-check.log.gz",
+    "gzip_sha256": "3a17d8d73309b27199b19a8c319390bea5129b85afefb66b7d5983ef072bb39f",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/patterns.log",
+    "raw_sha256": "bfe91ff4c46806437ef76c4ec6e6a302f2e0e46f491307f6c47d5467375c26d4",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/patterns.log.gz",
+    "gzip_sha256": "70a6c3b4ab4659c144a875ef4a6725734f5de7479ada7c852c0cb929ec5b799c",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/preservation.log",
+    "raw_sha256": "e0d594621baa464655d32be193ef79f7f7fba90c5a04b5f136613f28ec9b0b1b",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/preservation.log.gz",
+    "gzip_sha256": "02247e96b148924e3d0581c1ceaac6671ecc301faa035fe869ee2b2aae56f0bc",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/prose.log",
+    "raw_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/prose.log.gz",
+    "gzip_sha256": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/provenance.log",
+    "raw_sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/provenance.log.gz",
+    "gzip_sha256": "0f4505c363e308ff7fea94ec3b259161b432753924b6677321a89720267a74e9",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf.log",
+    "raw_sha256": "dfb740ff98c4b7847889362a8f5051b3bddf667cf63121cdd6645ab9ac0e0143",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf.log.gz",
+    "gzip_sha256": "dd4d8b82d795d4f2bf7fc238cbea4c236cfeb1db724b2a6e90e11602023a9bfc",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf-final.log",
+    "raw_sha256": "509458cd830ad308a2181a15b7d721a7eda8c0489924c7d5abaec0bafcf3b289",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf-final.log.gz",
+    "gzip_sha256": "5072b586fd1a747a8f06bd1ecaa22cc5ebc7b37ce78cc7006fe35aa58499696b",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-render.log",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-render.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/statements.log",
+    "raw_sha256": "fa999dfb705c22c213ef3ea180a193679ca1e8cd4a383ae5d510ac34a720fff9",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/statements.log.gz",
+    "gzip_sha256": "d9a8ef19056b72cc4208326d6a7354d22e8dabc72cfb2ebfa678f737329cdb95",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source.log",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPairMarginal8750/target.log",
+    "raw_sha256": "e1e054a918843324ce3c20d65fcc2e84bfabb68fea7320379bda32b428781734",
+    "gzip": "docs/provenance/evidence/replicaGoodPairMarginal8750/target.log.gz",
+    "gzip_sha256": "49e5319ba1a436c4bf790807089adbf7ea3223d595e7764cf0f4871825d0307b",
+    "mtime": 0
+  }
+]

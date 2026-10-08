@@ -1,0 +1,133 @@
+def Matrix.replicaGoodPairMarginal.{u_1, u_2, u_3, u_4, u_5} : {Q : Type u_1} →
+  {Y : Type u_2} →
+    {V : Type u_3} →
+      {C : Type u_4} →
+        {R : Type u_5} →
+          [Fintype Q] →
+            [DecidableEq Q] →
+              [Fintype Y] →
+                [DecidableEq Y] →
+                  [Fintype V] →
+                    [DecidableEq V] →
+                      [Fintype C] →
+                        [DecidableEq C] →
+                          [Fintype R] →
+                            [DecidableEq R] →
+                              (Q × Y × V → ℂ) →
+                                (k : ℕ) →
+                                  (B : Finset (Fin k)) →
+                                    ((Fin k → Q × Y × V) × (Fin k → C) × (Fin k → R) → ℂ) →
+                                      Matrix
+                                        (((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C)) ×
+                                          (Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))
+                                        (((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C)) ×
+                                          (Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))
+                                        ℂ :=
+fun {Q} {Y} {V} {C} {R} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y] [Fintype V] [DecidableEq V] [Fintype C]
+    [DecidableEq C] [Fintype R] [DecidableEq R] Ω k B u ↦
+  have w := (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u;
+  have f := fun x ↦
+    w
+      ((FiniteProduct.splitEquiv (fun x ↦ Q × Y × V) B).symm
+          (x.2.2.1, fun i ↦ (x.1.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i), x.1.2.1 (Bᶜ.equivFin i))),
+        (TensorPower.goodBadCopiesEquiv C B).symm (x.1.1.2, x.2.2.2.1),
+        (TensorPower.goodBadCopiesEquiv R B).symm (x.1.2.2, x.2.2.2.2));
+  (Matrix.vecMulVec f (star f)).partialTraceRight
+theorem Matrix.partialTraceRight_replicaGoodPairMarginal.{u_1, u_2, u_3, u_4, u_5} : ∀ {Q : Type u_1} {Y : Type u_2}
+  {V : Type u_3} {C : Type u_4} {R : Type u_5} [inst : Fintype Q] [inst_1 : DecidableEq Q] [inst_2 : Fintype Y]
+  [inst_3 : DecidableEq Y] [inst_4 : Fintype V] [inst_5 : DecidableEq V] [inst_6 : Fintype C] [inst_7 : DecidableEq C]
+  [inst_8 : Fintype R] [inst_9 : DecidableEq R] (Ω : Q × Y × V → ℂ) (k : ℕ) (B : Finset (Fin k))
+  (u : (Fin k → Q × Y × V) × (Fin k → C) × (Fin k → R) → ℂ),
+  (Matrix.replicaGoodPairMarginal Ω k B u).partialTraceRight = Matrix.replicaGoodRegionalAuxiliaryMarginal Ω k B u :=
+fun {Q} {Y} {V} {C} {R} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y] [Fintype V] [DecidableEq V] [Fintype C]
+    [DecidableEq C] [Fintype R] [DecidableEq R] Ω k B u ↦
+  id
+    (Matrix.trace_split_last_auxiliary✝ (Equiv.arrowProdEquivProdArrow (Fin Bᶜ.card) (fun x ↦ Y) fun x ↦ V)
+      (TensorPower.goodBadCopiesEquiv R B) fun x ↦
+      (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u
+        ((FiniteProduct.splitEquiv (fun x ↦ Q × Y × V) B).symm
+            (x.1.2, fun i ↦ (x.1.1.1 (Bᶜ.equivFin i), x.1.1.2 (Bᶜ.equivFin i))),
+          (TensorPower.goodBadCopiesEquiv C B).symm x.2.1, x.2.2))
+theorem Matrix.partialTraceLeft_replicaGoodPairMarginal.{u_1, u_2, u_3, u_4, u_5} : ∀ {Q : Type u_1} {Y : Type u_2}
+  {V : Type u_3} {C : Type u_4} {R : Type u_5} [inst : Fintype Q] [inst_1 : DecidableEq Q] [inst_2 : Fintype Y]
+  [inst_3 : DecidableEq Y] [inst_4 : Fintype V] [inst_5 : DecidableEq V] [inst_6 : Fintype C] [inst_7 : DecidableEq C]
+  [inst_8 : Fintype R] [inst_9 : DecidableEq R] (Ω : Q × Y × V → ℂ) (k : ℕ) (B : Finset (Fin k))
+  (u : (Fin k → Q × Y × V) × (Fin k → C) × (Fin k → R) → ℂ),
+  (Matrix.replicaGoodPairMarginal Ω k B u).partialTraceLeft =
+    Matrix.replicaGoodRegionalAuxiliaryMarginal (fun x ↦ Ω (x.2.2, x.2.1, x.1)) k B fun x ↦
+      u (fun i ↦ ((x.1 i).2.2, (x.1 i).2.1, (x.1 i).1), x.2.2, x.2.1) :=
+fun {Q} {Y} {V} {C} {R} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y] [Fintype V] [DecidableEq V] [Fintype C]
+    [DecidableEq C] [Fintype R] [DecidableEq R] Ω k B u ↦
+  Eq.mpr
+    (id
+      (congrArg (fun _a ↦ (Matrix.replicaGoodPairMarginal Ω k B u).partialTraceLeft = _a)
+        (Eq.symm
+          (Matrix.partialTraceRight_replicaGoodPairMarginal (fun x ↦ Ω (x.2.2, x.2.1, x.1)) k B fun x ↦
+            u (fun i ↦ ((x.1 i).2.2, (x.1 i).2.1, (x.1 i).1), x.2.2, x.2.1)))))
+    (Eq.mpr
+      (id
+        (congrArg (fun _a ↦ (Matrix.replicaGoodPairMarginal Ω k B u).partialTraceLeft = _a.partialTraceRight)
+          (Matrix.pairMarginal_swap✝ Ω k B u)))
+      (Eq.refl (Matrix.replicaGoodPairMarginal Ω k B u).partialTraceLeft))
+theorem Matrix.trace_replicaGoodPairMarginal.{u_1, u_2, u_3, u_4, u_5} : ∀ {Q : Type u_1} {Y : Type u_2} {V : Type u_3}
+  {C : Type u_4} {R : Type u_5} [inst : Fintype Q] [inst_1 : DecidableEq Q] [inst_2 : Fintype Y]
+  [inst_3 : DecidableEq Y] [inst_4 : Fintype V] [inst_5 : DecidableEq V] [inst_6 : Fintype C] [inst_7 : DecidableEq C]
+  [inst_8 : Fintype R] [inst_9 : DecidableEq R] (Ω : Q × Y × V → ℂ) (k : ℕ) (B : Finset (Fin k))
+  (u : (Fin k → Q × Y × V) × (Fin k → C) × (Fin k → R) → ℂ),
+  (Matrix.replicaGoodPairMarginal Ω k B u).trace =
+    ↑(‖WithLp.toLp 2
+            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u)‖ ^
+        2) :=
+fun {Q} {Y} {V} {C} {R} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y] [Fintype V] [DecidableEq V] [Fintype C]
+    [DecidableEq C] [Fintype R] [DecidableEq R] Ω k B u ↦
+  let w := (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u;
+  let e := Matrix.goodPairCoordinates✝ Q Y V C R B;
+  id
+    (Eq.mpr
+      (id
+        (congrArg (fun _a ↦ _a = ↑(‖WithLp.toLp 2 w‖ ^ 2))
+          (Matrix.trace_partialTraceRight ((Matrix.vecMulVec w (star w)).submatrix ⇑e.symm ⇑e.symm))))
+      (Eq.mpr
+        (id
+          (congrArg (fun _a ↦ _a = ↑(‖WithLp.toLp 2 w‖ ^ 2))
+            (Matrix.trace_submatrix_equiv e.symm (Matrix.vecMulVec w (star w)))))
+        (Eq.mpr (id (congrArg (fun _a ↦ _a = ↑(‖WithLp.toLp 2 w‖ ^ 2)) (Matrix.trace_vecMulVec w (star w))))
+          (Eq.mpr
+            (id
+              (congrArg (fun _a ↦ _a = ↑(‖WithLp.toLp 2 w‖ ^ 2))
+                (Eq.symm
+                  (EuclideanSpace.inner_eq_star_dotProduct
+                    (WithLp.toLp 2
+                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                        u))
+                    (WithLp.toLp 2
+                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                        u))))))
+            (Eq.mpr
+              (id
+                (congrArg (fun _a ↦ _a = ↑(‖WithLp.toLp 2 w‖ ^ 2))
+                  (inner_self_eq_norm_sq_to_K
+                    (WithLp.toLp 2
+                      ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                        u)))))
+              (of_eq_true
+                (Eq.trans
+                  (congrArg
+                    (Eq
+                      (↑‖WithLp.toLp 2
+                              ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)‖ ^
+                        2))
+                    (Complex.ofReal_pow
+                      ‖WithLp.toLp 2
+                          ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                1).mulVec
+                            u)‖
+                      2))
+                  (eq_self
+                    (↑‖WithLp.toLp 2
+                            ((Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                  1).mulVec
+                              u)‖ ^
+                      2)))))))))

@@ -107,6 +107,7 @@ import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
 import QICLean.Analysis.ReplicaGoodAuxiliaryMarginal
 import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
+import QICLean.Analysis.ReplicaGoodPairMarginal
 import QICLean.Analysis.ReplicaJointDensity
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
