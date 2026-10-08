@@ -842,6 +842,46 @@ eigenbasis. The following statements show that such averages are central label f
     preceding lemma. The trace limit then follows from the coherent symbol calculus.
 \end{proof}
 
+\begin{lemma}[Continuous functions of coherent symbols]
+    \label{lem:coherent_symbol_function}
+    \lean{Matrix.IsHermitian.abs_eigenvalues_le, TensorPower.HasCoherentSymbol.pow,
+        TensorPower.HasCoherentSymbol.aeval, TensorPower.HasCoherentSymbol.symProj_mul,
+        TensorPower.HasCoherentSymbol.cfc, TensorPower.HasCoherentSymbol.abs}
+    \leanok
+    \uses{lem:coherent_symbol_limit}
+    Let $X_k$ be Hermitian with eigenvalues in $[a,b]$ and coherent symbol $f$, with $f$
+    real with values in $[a,b]$ on unit vectors, and let $\varphi$ be continuous on $[a,b]$.
+    Then $\varphi(X_k)$ has coherent symbol $\varphi\circ f$. In particular, if $X_k$ has
+    coherent symbol $f$, then $\bigl(\Pi_kX_k^\ast X_k\bigr)^{1/2}$ has coherent symbol $|f|$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Approximate $\varphi$ uniformly on $[a,b]$ by a polynomial $p$. Then
+    $\|\varphi(X_k)-p(X_k)\|\le\sup_{[a,b]}|\varphi-p|$, and $p(X_k)$ has coherent symbol
+    $p\circ f$ by the product calculus. For the absolute value, $\Pi_kX_k^\ast X_k
+    =(X_k\Pi_k)^\ast(X_k\Pi_k)$ is positive with norm at most $\sup_k\|X_k\Pi_k\|^2$, and
+    its symbol is $|f|^2$.
+\end{proof}
+
+\begin{theorem}[Skew symbol]
+    \label{thm:skew_symbol}
+    \lean{TensorPower.skewOperator, TensorPower.HasCoherentSymbol.skew,
+        TensorPower.eventually_norm_trace_skewOperator_markedSimilarity_sub_le}
+    \leanok
+    \uses{thm:marked_similarity_symbol, lem:coherent_symbol_function}
+    Let $\mathcal D_k=|O_k|+|O_k^\ast|-O_k-O_k^\ast$, with absolute values taken on
+    $\mathcal S_k$. Uniformly in symmetric density matrices $\sigma$,
+    \[
+        \Tr\sigma\mathcal D_k=2\int\bigl(|f_\theta|-\operatorname{Re}f_\theta\bigr)
+        \,d\mu_\sigma(\theta)+o_k(1).
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    Both $|O_k|$ and $|O_k^\ast|$ have coherent symbol $|f_\theta|$ by the previous lemma,
+    whether or not $O_k$ is normal, and $O_k+O_k^\ast$ has symbol $2\operatorname{Re}f_\theta$.
+    Apply the trace limit of the coherent symbol calculus.
+
 \section{The gamma integral}
 
 The integral representation of the metrics draws the eigenvalues $s$ of a density matrix with
