@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.ReplicaTransport.Setup
+import QICLean.Representation.CoherentSymbol
 
 /-!
 # The logarithmic passage from a rank-one pin to every symmetric state
@@ -49,7 +50,7 @@ theorem continuous_coherentProj {X : Type*} [TopologicalSpace X] (k : ℕ) {θ :
   fun_prop
 
 /-- The integrand of a coherent average is Haar integrable. -/
-theorem integrable_coherentIntegrand (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} (hf : Continuous f) :
+theorem integrable_smul_coherentProj (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} (hf : Continuous f) :
     Integrable (fun U : unitaryGroup Ω ℂ => (f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) : ℂ) •
       coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)) (unitaryHaar Ω) :=
   ((Complex.continuous_ofReal.comp (hf.comp (continuous_coherentVec a))).smul
@@ -140,7 +141,7 @@ def coherentAverage (k : ℕ) (a : Ω) (f : (Ω → ℂ) → ℝ) : Matrix (Fin 
 theorem trace_mul_coherentAverage (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} (hf : Continuous f)
     (ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) :
     (ρ * coherentAverage k a f).trace.re = realCoherentIntegral k a ρ f := by
-  have hF := integrable_coherentIntegrand k a hf
+  have hF := integrable_smul_coherentProj k a hf
   let L : Matrix (Fin k → Ω) (Fin k → Ω) ℂ →L[ℂ] ℂ :=
     LinearMap.toContinuousLinearMap ((Matrix.traceLinearMap _ ℂ ℂ) ∘ₗ LinearMap.mulLeft ℂ ρ)
   have hL : ∀ M, L M = (ρ * M).trace := fun M => rfl
@@ -159,7 +160,7 @@ theorem trace_mul_coherentAverage (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} 
 theorem coherentAverage_one (k : ℕ) (a : Ω) :
     coherentAverage k a (fun _ => 1) = symProj (copyPerm Ω k) := by
   have hD : (symDim Ω k : ℂ) ≠ 0 := by exact_mod_cast (symDim_pos k a).ne'
-  have hF := integrable_coherentIntegrand k a (f := fun _ => 1) continuous_const
+  have hF := integrable_smul_coherentProj k a (f := fun _ => 1) continuous_const
   ext x y
   let L : Matrix (Fin k → Ω) (Fin k → Ω) ℂ →L[ℂ] ℂ :=
     LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ x y)
@@ -372,14 +373,6 @@ section AverageAlgebra
 
 variable (k : ℕ) (a : Ω)
 
-/-- The symmetric projector is Hermitian. -/
-theorem isHermitian_symProj : (symProj (copyPerm Ω k)).IsHermitian := by
-  rw [IsHermitian, symProj, conjTranspose_smul, conjTranspose_sum]
-  simp_rw [conjTranspose_permOp]
-  congr 1
-  · simp
-  · exact Fintype.sum_equiv (Equiv.inv _) _ _ fun _ => rfl
-
 omit [DecidableEq Ω] in
 set_option linter.unusedFintypeInType false in
 theorem isHermitian_coherentProj (θ : Ω → ℂ) : (coherentProj k θ).IsHermitian :=
@@ -392,7 +385,7 @@ theorem symProj_mul_coherentProj (θ : Ω → ℂ) :
 theorem coherentProj_mul_symProj (θ : Ω → ℂ) :
     coherentProj k θ * symProj (copyPerm Ω k) = coherentProj k θ := by
   have h := congrArg conjTranspose (symProj_mul_coherentProj k θ)
-  rwa [conjTranspose_mul, (isHermitian_symProj k).eq, (isHermitian_coherentProj k θ).eq] at h
+  rwa [conjTranspose_mul, (isHermitian_symProj (k := k)).eq, (isHermitian_coherentProj k θ).eq] at h
 
 /-- Left multiplication by a fixed matrix commutes with the Haar integral. -/
 theorem mul_integral {X : Type*} [Fintype X] [DecidableEq X] (B : Matrix X X ℂ)
@@ -408,24 +401,24 @@ theorem integral_mul {X : Type*} [Fintype X] [DecidableEq X] (B : Matrix X X ℂ
 
 theorem symProj_mul_coherentAverage {f : (Ω → ℂ) → ℝ} (hf : Continuous f) :
     symProj (copyPerm Ω k) * coherentAverage k a f = coherentAverage k a f := by
-  rw [coherentAverage, mul_smul_comm, mul_integral _ (integrable_coherentIntegrand k a hf)]
+  rw [coherentAverage, mul_smul_comm, mul_integral _ (integrable_smul_coherentProj k a hf)]
   simp_rw [mul_smul_comm, symProj_mul_coherentProj]
 
 theorem coherentAverage_mul_symProj {f : (Ω → ℂ) → ℝ} (hf : Continuous f) :
     coherentAverage k a f * symProj (copyPerm Ω k) = coherentAverage k a f := by
-  rw [coherentAverage, smul_mul_assoc, integral_mul _ (integrable_coherentIntegrand k a hf)]
+  rw [coherentAverage, smul_mul_assoc, integral_mul _ (integrable_smul_coherentProj k a hf)]
   simp_rw [smul_mul_assoc, coherentProj_mul_symProj]
 
 theorem coherentAverage_sub {f g : (Ω → ℂ) → ℝ} (hf : Continuous f) (hg : Continuous g) :
     coherentAverage k a (fun θ => f θ - g θ) = coherentAverage k a f - coherentAverage k a g := by
   simp only [coherentAverage, ← smul_sub]
-  rw [← integral_sub (integrable_coherentIntegrand k a hf) (integrable_coherentIntegrand k a hg)]
+  rw [← integral_sub (integrable_smul_coherentProj k a hf) (integrable_smul_coherentProj k a hg)]
   simp_rw [Complex.ofReal_sub, sub_smul]
 
 theorem coherentAverage_add {f g : (Ω → ℂ) → ℝ} (hf : Continuous f) (hg : Continuous g) :
     coherentAverage k a (fun θ => f θ + g θ) = coherentAverage k a f + coherentAverage k a g := by
   simp only [coherentAverage, ← smul_add]
-  rw [← integral_add (integrable_coherentIntegrand k a hf) (integrable_coherentIntegrand k a hg)]
+  rw [← integral_add (integrable_smul_coherentProj k a hf) (integrable_smul_coherentProj k a hg)]
   simp_rw [Complex.ofReal_add, add_smul]
 
 theorem coherentAverage_const (c : ℝ) :
@@ -491,9 +484,9 @@ theorem le_coherentAverage_inv {g : (Ω → ℂ) → ℝ} (hg : Continuous g) (h
     (hPX : symProj (copyPerm Ω k) * X = X) :
     X ≤ coherentAverage k a (fun θ => (g θ)⁻¹) := by
   have hgi : Continuous fun θ => (g θ)⁻¹ := hg.inv₀ fun θ => (hpos θ).ne'
-  have hFg := integrable_coherentIntegrand k a hg
-  have hF1 := integrable_coherentIntegrand k a (f := fun _ => 1) continuous_const
-  have hFi := integrable_coherentIntegrand k a hgi
+  have hFg := integrable_smul_coherentProj k a hg
+  have hF1 := integrable_smul_coherentProj k a (f := fun _ => 1) continuous_const
+  have hFi := integrable_smul_coherentProj k a hgi
   have h0 := ((ContinuousLinearMap.mul ℂ _) X).integrable_comp hFg
   have h1 := ((ContinuousLinearMap.mul ℂ _).flip X).integrable_comp h0
   have h2 := ((ContinuousLinearMap.mul ℂ _) X).integrable_comp hF1
@@ -573,7 +566,7 @@ theorem coherentAverage_logKernel_le {f : (Ω → ℂ) → ℝ} (hf : Continuous
       symProj (copyPerm Ω k) * cfc (logKernel s) Y * symProj (copyPerm Ω k) := by
   set P := symProj (copyPerm Ω k) with hPdef
   have hPP : P * P = P := symProj_mul_self k
-  have hPh : P.IsHermitian := isHermitian_symProj k
+  have hPh : P.IsHermitian := isHermitian_symProj (k := k)
   set R := resolvent Y s with hRdef
   set B := Y + s • (1 : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) with hBdef
   have hBR : B * R = 1 := add_smul_one_mul_resolvent hY hs
@@ -666,12 +659,12 @@ theorem coherentAverage_log_eq_integral {f : (Ω → ℂ) → ℝ} (hf : Continu
 /-- The projector `Π` is positive semidefinite. -/
 theorem posSemidef_symProj : (symProj (copyPerm Ω k)).PosSemidef := by
   have h := posSemidef_conjTranspose_mul_self (symProj (copyPerm Ω k))
-  rwa [(isHermitian_symProj k).eq, symProj_mul_self] at h
+  rwa [(isHermitian_symProj (k := k)).eq, symProj_mul_self] at h
 
 /-- The complementary projector `1 - Π` is positive semidefinite. -/
 theorem posSemidef_one_sub_symProj : (1 - symProj (copyPerm Ω k)).PosSemidef := by
   have h := posSemidef_conjTranspose_mul_self (1 - symProj (copyPerm Ω k))
-  rwa [conjTranspose_sub, conjTranspose_one, (isHermitian_symProj k).eq, sub_mul, mul_sub,
+  rwa [conjTranspose_sub, conjTranspose_one, (isHermitian_symProj (k := k)).eq, sub_mul, mul_sub,
     mul_sub, one_mul, mul_one, one_mul, symProj_mul_self, sub_self, sub_zero] at h
 
 theorem mul_coherentAverage_add_smul_symProj {f : (Ω → ℂ) → ℝ} (hf : Continuous f) (c : ℝ) :
@@ -770,7 +763,7 @@ theorem realCoherentIntegral_sub_log_le_re_trace_mul_log {k : ℕ} (a : Ω)
   set Q := coherentAverage k a (fun θ => Real.exp (φ θ))
   -- integrating the pin against Haar measure: `D⁻¹ 𝒬_k(e^φ) ≤ X`
   have hQX : (X - (D : ℝ)⁻¹ • Q).PosSemidef := by
-    have hF := integrable_coherentIntegrand k a hfe
+    have hF := integrable_smul_coherentProj k a hfe
     have e1 : (D : ℝ)⁻¹ • Q = ∫ U, ((Real.exp (φ (θ U)) : ℝ) : ℂ) • coherentProj k (θ U) ∂μ := by
       simp only [Q, coherentAverage]
       rw [← Complex.coe_smul, smul_smul, Complex.ofReal_inv, Complex.ofReal_natCast,
@@ -789,7 +782,7 @@ theorem realCoherentIntegral_sub_log_le_re_trace_mul_log {k : ℕ} (a : Ω)
   have hc : 0 < (D : ℝ) * ε := mul_pos hD hε
   set Y := Q + ((D : ℝ) * ε) • (1 - P)
   have hY : Y.PosDef := posDef_coherentAverage_add_smul k a hfe (fun _ => Real.exp_pos _) hc
-  have hPh : P.IsHermitian := isHermitian_symProj k
+  have hPh : P.IsHermitian := isHermitian_symProj (k := k)
   have hPP : P * P = P := symProj_mul_self k
   have hXP : X * P = P * X := by
     simp only [hPdef, symProj, mul_smul_comm, smul_mul_assoc, Finset.mul_sum, Finset.sum_mul]
