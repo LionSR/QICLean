@@ -83,5 +83,6 @@ import QICLean.Entropy.TypicalDensity
 import QICLean.Entropy.TypicalPureCompression
 import QICLean.Entropy.TypicalPureState
 import QICLean.Entropy.TypicalSpectrum
+import QICLean.Entropy.TypicalStateFromTail
 import QICLean.Entropy.UnnormalizedStrongSubadditivity
 import QICLean.Entropy.VonNeumann
