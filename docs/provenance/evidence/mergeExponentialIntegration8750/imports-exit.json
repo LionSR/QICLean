@@ -1,0 +1,14 @@
+{
+  "source_revision": "042d02048532174df8e6b9cade48b615d281f1e9",
+  "command": [
+    "python3",
+    "scripts/generate_import_aggregators.py",
+    "--check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T00:35:45.451888+00:00",
+  "elapsed_seconds": 1.265,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeExponentialIntegration8750/imports.log",
+  "sha256": "1bac29848581061aac9a7fb95b5460ac265dcc00fb1bfbbfe5bcfa9612ae8cd9"
+}

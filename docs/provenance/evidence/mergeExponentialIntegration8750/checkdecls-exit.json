@@ -1,0 +1,15 @@
+{
+  "source_revision": "042d02048532174df8e6b9cade48b615d281f1e9",
+  "command": [
+    "lake",
+    "env",
+    ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+    "blueprint/lean_decls"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T00:47:25.644683+00:00",
+  "elapsed_seconds": 39.675,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeExponentialIntegration8750/checkdecls.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
