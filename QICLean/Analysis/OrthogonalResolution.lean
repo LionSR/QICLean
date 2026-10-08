@@ -115,6 +115,38 @@ theorem prod {Q : κ → Matrix n n ℂ} (hQ : IsOrthogonalResolution Q)
     rw [Fintype.sum_prod_type]
     simp_rw [← Finset.mul_sum, hQ.sum_eq, mul_one, hP.sum_eq]
 
+/-
+Provenance-ID: 8753-qic-weighted-trace-holder-01
+Original formalization, no upstream Lean proof text reused.
+Declaration: Matrix.IsOrthogonalResolution.prod_hom_fst
+Manuscript: September 24, 2026, comparator:component-inverse, lines 553–560.
+-/
+
+/-- A function of the first coordinate of a product resolution recovers the
+first resolution. This is the marginal calculation in OpenAI area-law Section 7,
+lines 553–560, and the joint label calculations in Lemma 6.1. -/
+theorem prod_hom_fst {Q : κ → Matrix n n ℂ} (hQ : IsOrthogonalResolution Q)
+    (hPQ : IsOrthogonalResolution fun p : ι × κ => P p.1 * Q p.2) (f : ι → ℂ) :
+    hPQ.hom (fun p => f p.1) = hP.hom f := by
+  rw [hom_apply, hom_apply, Fintype.sum_prod_type]
+  simp only [← Finset.smul_sum, ← Finset.mul_sum, hQ.sum_eq, mul_one]
+
+/-
+Provenance-ID: 8753-qic-weighted-trace-holder-02
+Original formalization, no upstream Lean proof text reused.
+Declaration: Matrix.IsOrthogonalResolution.prod_hom_snd
+Manuscript: September 24, 2026, comparator:component-inverse, lines 553–560.
+-/
+
+/-- A function of the second coordinate of a product resolution recovers the
+second resolution. This is the marginal calculation in OpenAI area-law Section 7,
+lines 553–560, and the joint label calculations in Lemma 6.1. -/
+theorem prod_hom_snd {Q : κ → Matrix n n ℂ} (hQ : IsOrthogonalResolution Q)
+    (hPQ : IsOrthogonalResolution fun p : ι × κ => P p.1 * Q p.2) (f : κ → ℂ) :
+    hPQ.hom (fun p => f p.2) = hQ.hom f := by
+  rw [hom_apply, hom_apply, Fintype.sum_prod_type, Finset.sum_comm]
+  simp only [← Finset.smul_sum, ← Finset.sum_mul, hP.sum_eq, one_mul]
+
 /-- The image of a real function under a resolution by Hermitian idempotents is
 Hermitian. -/
 theorem isHermitian_hom (hH : ∀ i, (P i).IsHermitian) (f : ι → ℝ) :

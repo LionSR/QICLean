@@ -59,12 +59,14 @@ private theorem mergeResolution_hom_left (hcomm : ∀ g h, Commute (φQ g) (φE 
     (mergeResolution hcomm hprod).hom (fun p => (Real.log p.1.1.dim : ℂ)) =
       labelEntropy φQ := by
   classical
-  rw [Matrix.IsOrthogonalResolution.hom_apply, labelEntropy, labelObservable,
-    Fintype.sum_prod_type, Fintype.sum_prod_type]
-  refine Finset.sum_congr rfl fun l _ => ?_
-  dsimp only
-  simp_rw [← Finset.smul_sum, ← Finset.mul_sum, sum_labelProj, mul_one]
-  rw [← Finset.mul_sum, sum_labelProj, mul_one]
+  let R := (isOrthogonalResolution_labelProj φQ).prod
+    (isOrthogonalResolution_labelProj φE)
+    (fun l μ => commute_groupAlgebraRep_of_commute φQ φE hcomm _ _)
+  exact (R.prod_hom_fst (isOrthogonalResolution_labelProj φQE)
+    (mergeResolution hcomm hprod) (fun p => (Real.log p.1.dim : ℂ))).trans
+      (((isOrthogonalResolution_labelProj φQ).prod_hom_fst
+        (isOrthogonalResolution_labelProj φE) R (fun l => (Real.log l.dim : ℂ))).trans
+          (labelObservable_eq_hom φQ (fun l => Real.log l.dim)).symm)
 
 /-- The second marginal of the joint label resolution gives the second label observable.
 OpenAI area-law manuscript, `05-replicas.tex`, lines 112–115, and
@@ -74,13 +76,15 @@ private theorem mergeResolution_hom_middle (hcomm : ∀ g h, Commute (φQ g) (φ
     (mergeResolution hcomm hprod).hom (fun p => (Real.log p.1.2.dim : ℂ)) =
       labelEntropy φE := by
   classical
-  rw [Matrix.IsOrthogonalResolution.hom_apply, labelEntropy, labelObservable,
-    Fintype.sum_prod_type, Fintype.sum_prod_type]
-  dsimp only
-  simp_rw [← Finset.smul_sum, ← Finset.mul_sum, sum_labelProj, mul_one]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun μ _ => ?_
-  rw [← Finset.smul_sum, ← Finset.sum_mul, sum_labelProj, one_mul]
+  let R := (isOrthogonalResolution_labelProj φQ).prod
+    (isOrthogonalResolution_labelProj φE)
+    (fun l μ => commute_groupAlgebraRep_of_commute φQ φE hcomm _ _)
+  exact (R.prod_hom_fst (isOrthogonalResolution_labelProj φQE)
+    (mergeResolution hcomm hprod) (fun p => (Real.log p.2.dim : ℂ))).trans
+      (((isOrthogonalResolution_labelProj φQ).prod_hom_snd
+        (isOrthogonalResolution_labelProj φE) R (fun l => (Real.log l.dim : ℂ))).trans
+          (labelObservable_eq_hom φE (fun l => Real.log l.dim)).symm)
+
 /-- The combined marginal of the joint label resolution gives the combined label observable.
 OpenAI area-law manuscript, `05-replicas.tex`, lines 112–115, and
 `07-comparators.tex`, lines 501–549. -/
@@ -89,13 +93,12 @@ private theorem mergeResolution_hom_right (hcomm : ∀ g h, Commute (φQ g) (φE
     (mergeResolution hcomm hprod).hom (fun p => (Real.log p.2.dim : ℂ)) =
       labelEntropy φQE := by
   classical
-  rw [Matrix.IsOrthogonalResolution.hom_apply, labelEntropy, labelObservable,
-    Fintype.sum_prod_type, Finset.sum_comm]
-  refine Finset.sum_congr rfl fun ν _ => ?_
-  dsimp only
-  rw [← Finset.smul_sum, ← Finset.sum_mul, Fintype.sum_prod_type]
-  simp_rw [← Finset.mul_sum, sum_labelProj, mul_one]
-  rw [sum_labelProj, one_mul]
+  let R := (isOrthogonalResolution_labelProj φQ).prod
+    (isOrthogonalResolution_labelProj φE)
+    (fun l μ => commute_groupAlgebraRep_of_commute φQ φE hcomm _ _)
+  exact (R.prod_hom_snd (isOrthogonalResolution_labelProj φQE)
+    (mergeResolution hcomm hprod) (fun l => (Real.log l.dim : ℂ))).trans
+      (labelObservable_eq_hom φQE (fun l => Real.log l.dim)).symm
 
 /-- The exponential of a logarithmic dimension difference is a real power of its ratio.
 OpenAI area-law manuscript, `05-replicas.tex`, lines 112–115, and

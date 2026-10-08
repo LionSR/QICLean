@@ -1,0 +1,99 @@
+\section{Weighted exponential trace inequalities}
+\label{sec:weighted-trace-holder}
+
+The sharp component estimate in
+\cite[Section~7, lines~553--560]{OpenAI2026AreaLaw} applies H\"older's
+inequality to five commuting Hermitian operators. The following finite-dimensional
+inequalities give that analytic step for a positive semidefinite trace weight
+of arbitrary mass.
+
+\begin{theorem}[Coordinate functions of a product resolution]
+\label{thm:resolution-product-coordinates}
+\lean{Matrix.IsOrthogonalResolution.prod_hom_fst,
+Matrix.IsOrthogonalResolution.prod_hom_snd}
+\leanok
+Let $(P_i)_{i\in I}$ and $(Q_j)_{j\in J}$ be finite orthogonal resolutions
+of the identity, and suppose their products $P_iQ_j$ also form an orthogonal
+resolution. For arbitrary complex functions $f$ on $I$ and $g$ on $J$,
+\begin{align}
+ \sum_{i,j}f(i)P_iQ_j&=\sum_i f(i)P_i,\\
+ \sum_{i,j}g(j)P_iQ_j&=\sum_j g(j)Q_j.
+\end{align}
+\end{theorem}
+
+\begin{proof}
+\leanok
+Sum the unused resolution to the identity. These identities require no
+positivity or Hermiticity of the resolutions.
+\end{proof}
+
+\begin{theorem}[Weighted exponential trace inequality]
+\label{thm:weighted-trace-holder-binary}
+\lean{Matrix.PosSemidef.re_trace_mul_exp_smul_add_le,
+Matrix.PosSemidef.re_trace_mul_exp_nonneg}
+\uses{thm:resolution-product-coordinates}
+\leanok
+Let $\rho\ge0$, and let $A,B$ be commuting Hermitian matrices on a finite-dimensional
+space. For $0\le t\le1$,
+\begin{align}
+ \operatorname{ReTr}\bigl(\rho e^{tA+(1-t)B}\bigr)
+ &\le \bigl(\operatorname{ReTr}(\rho e^A)\bigr)^t
+        \bigl(\operatorname{ReTr}(\rho e^B)\bigr)^{1-t}.
+ \label{eq:weighted_holder_binary}
+\end{align}
+Each exponential trace is nonnegative. The matrix $\rho$ need not have trace
+one or commute with $A$ or $B$; zero weights and a zero-dimensional space
+are included.
+\end{theorem}
+
+\begin{proof}
+\leanok
+The joint spectral projections $P_iQ_j$ are Hermitian orthogonal projections,
+and their trace weights $\mu_{ij}=\operatorname{ReTr}(\rho P_iQ_j)$ are nonnegative.
+The exponential traces are the corresponding weighted scalar sums.
+For nonnegative weights $\mu_i$ and $s_j$ with $\sum_j s_j=1$, scalar weighted
+H\"older gives
+\begin{align}
+ \sum_i\mu_i\exp\!\left(\sum_j s_jx_{ji}\right)
+ &\le\prod_j\left(\sum_i\mu_i e^{x_{ji}}\right)^{s_j}.
+ \label{eq:weighted_holder_scalar}
+\end{align}
+Here is a direct proof of (\ref{eq:weighted_holder_scalar}). If all $\mu_i$ vanish,
+the left side is zero. Otherwise put $M_j=\sum_i\mu_i e^{x_{ji}}>0$.
+Convexity of the exponential, applied to $x_{ji}-\log M_j$, gives
+\begin{align}
+ e^{\sum_j s_jx_{ji}}
+ &\le e^{\sum_j s_j\log M_j}\sum_j s_j e^{x_{ji}-\log M_j}.
+\end{align}
+Multiply by $\mu_i$ and sum in $i$; each normalized inner sum is one.
+This proves (\ref{eq:weighted_holder_scalar}), and the two joint spectral
+coordinates give (\ref{eq:weighted_holder_binary}). A single spectral
+resolution proves nonnegativity of the exponential trace.
+\end{proof}
+
+\begin{theorem}[Equal-weight finite-family trace inequality]
+\label{thm:weighted-trace-holder-finite}
+\lean{Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod}
+\uses{thm:weighted-trace-holder-binary}
+\leanok
+Let $r\ge1$ be an integer, let $A_1,\ldots,A_r$ be pairwise commuting
+Hermitian matrices, and let $\rho\ge0$. For every real $a$,
+\begin{align}
+ \operatorname{ReTr}\left(\rho e^{a\sum_{j=1}^r A_j}\right)
+ &\le\prod_{j=1}^r
+       \left(\operatorname{ReTr}(\rho e^{raA_j})\right)^{1/r}.
+ \label{eq:weighted_holder_finite}
+\end{align}
+In particular, $r=5$ gives the fifth-root product in the sharp component
+estimate. No normalization or commutation condition is imposed on $\rho$.
+\end{theorem}
+
+\begin{proof}
+\leanok
+Induct on $r$. The case $r=1$ is equality. For $r\ge2$, set
+$B=\sum_{j=2}^r A_j$ and apply (\ref{eq:weighted_holder_binary}) to
+$raA_1$ and $raB/(r-1)$ with weight $t=1/r$. Apply the induction hypothesis
+to $B$ with exponent $ra/(r-1)$. Raising that bound to $1-1/r$ gives
+exponent $(1/(r-1))(1-1/r)=1/r$ on every remaining factor.
+All bases are nonnegative, so this argument also includes zero traces.
+\end{proof}

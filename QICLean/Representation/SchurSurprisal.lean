@@ -111,20 +111,18 @@ theorem isHermitian_joint (p : hρ.isHermitian.eigenvalueSet × IrrepLabel G) :
 /-- Functions of the eigenvalue factor of the joint resolution. -/
 theorem joint_hom_fst (f : ℝ → ℝ) :
     (isOrthogonalResolution_joint hρ hinv).hom (fun p => (f p.1 : ℂ)) = hρ.isHermitian.cfc f := by
-  rw [hρ.isHermitian.cfc_eq_hom, IsOrthogonalResolution.hom_apply,
-    IsOrthogonalResolution.hom_apply, Fintype.sum_prod_type]
-  refine Finset.sum_congr rfl fun u _ => ?_
-  dsimp only
-  rw [← Finset.smul_sum, ← Finset.mul_sum, sum_labelProj, mul_one]
+  have h := hρ.isHermitian.isOrthogonalResolution_spectralProj.prod_hom_fst
+    (isOrthogonalResolution_labelProj φ)
+    (isOrthogonalResolution_joint hρ hinv) (fun u => (f u : ℂ))
+  exact h.trans (hρ.isHermitian.cfc_eq_hom f).symm
 
 /-- Functions of the label factor of the joint resolution. -/
 theorem joint_hom_snd (f : IrrepLabel G → ℝ) :
     (isOrthogonalResolution_joint hρ hinv).hom (fun p => (f p.2 : ℂ)) = labelObservable φ f := by
-  rw [labelObservable, IsOrthogonalResolution.hom_apply, Fintype.sum_prod_type, Finset.sum_comm]
-  refine Finset.sum_congr rfl fun l _ => ?_
-  simp_rw [← Finset.smul_sum, ← Finset.sum_mul,
-    hρ.isHermitian.isOrthogonalResolution_spectralProj.sum_eq,
-    one_mul]
+  have h := hρ.isHermitian.isOrthogonalResolution_spectralProj.prod_hom_snd
+    (isOrthogonalResolution_labelProj φ)
+    (isOrthogonalResolution_joint hρ hinv) (fun l => (f l : ℂ))
+  exact h.trans (labelObservable_eq_hom φ f).symm
 
 /-- The trace of a joint projection is the dimension of its range. -/
 theorem trace_joint (p : hρ.isHermitian.eigenvalueSet × IrrepLabel G) :

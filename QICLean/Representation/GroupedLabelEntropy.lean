@@ -36,26 +36,6 @@ Manuscript: September 24, 2026, Lemma 6.1(4), lem:schur,
 replicas:group-dimensions; comparator:restriction-dimensions.
 -/
 
-private theorem resolution_hom_fst {X I J : Type*} [Fintype X] [DecidableEq X]
-    [Fintype I] [DecidableEq I] [Fintype J] [DecidableEq J]
-    {P : I → Matrix X X ℂ} {Q : J → Matrix X X ℂ}
-    (hP : IsOrthogonalResolution P) (hQ : IsOrthogonalResolution Q)
-    (hc : ∀ i j, Commute (P i) (Q j)) (f : I → ℂ) :
-    (hP.prod hQ hc).hom (fun p => f p.1) = hP.hom f := by
-  rw [IsOrthogonalResolution.hom_apply, IsOrthogonalResolution.hom_apply,
-    Fintype.sum_prod_type]
-  simp only [← Finset.smul_sum, ← Finset.mul_sum, hQ.sum_eq, mul_one]
-
-private theorem resolution_hom_snd {X I J : Type*} [Fintype X] [DecidableEq X]
-    [Fintype I] [DecidableEq I] [Fintype J] [DecidableEq J]
-    {P : I → Matrix X X ℂ} {Q : J → Matrix X X ℂ}
-    (hP : IsOrthogonalResolution P) (hQ : IsOrthogonalResolution Q)
-    (hc : ∀ i j, Commute (P i) (Q j)) (f : J → ℂ) :
-    (hP.prod hQ hc).hom (fun p => f p.2) = hQ.hom f := by
-  rw [IsOrthogonalResolution.hom_apply, IsOrthogonalResolution.hom_apply,
-    Fintype.sum_prod_type, Finset.sum_comm]
-  simp only [← Finset.smul_sum, ← Finset.sum_mul, hP.sum_eq, one_mul]
-
 /-- *A two-dimensional area law from a global spectral gap*, Lemma 6.1(4),
 `05-replicas.tex`, lines 116–123; its operator use is equation
 `comparator:restriction-dimensions`, `07-comparators.tex`, lines 455–467.
@@ -95,16 +75,16 @@ theorem groupedCopies_labelEntropy_bounds {m r k : ℕ} (e : Fin m ⊕ Fin r ≃
         (isHermitian_labelProj _ p.2) |>.mp (hcW p.1 p.2)
   have hGood : R.hom (fun p => (Real.log p.1.1.dim : ℂ)) =
       labelEntropy (φ.comp (groupHom₁ e)) :=
-    (resolution_hom_fst hGB hW hcW (fun p => (Real.log p.1.dim : ℂ))).trans
-      ((resolution_hom_fst hG hB hc (fun α => (Real.log α.dim : ℂ))).trans
+    (Matrix.IsOrthogonalResolution.prod_hom_fst hGB hW R (fun p => (Real.log p.1.dim : ℂ))).trans
+      ((Matrix.IsOrthogonalResolution.prod_hom_fst hG hB hGB (fun α => (Real.log α.dim : ℂ))).trans
         (labelObservable_eq_hom _ (fun α => Real.log α.dim)).symm)
   have hBad : R.hom (fun p => (Real.log p.1.2.dim : ℂ)) =
       labelEntropy (φ.comp (groupHom₂ e)) :=
-    (resolution_hom_fst hGB hW hcW (fun p => (Real.log p.2.dim : ℂ))).trans
-      ((resolution_hom_snd hG hB hc (fun β => (Real.log β.dim : ℂ))).trans
+    (Matrix.IsOrthogonalResolution.prod_hom_fst hGB hW R (fun p => (Real.log p.2.dim : ℂ))).trans
+      ((Matrix.IsOrthogonalResolution.prod_hom_snd hG hB hGB (fun β => (Real.log β.dim : ℂ))).trans
         (labelObservable_eq_hom _ (fun β => Real.log β.dim)).symm)
   have hWhole : R.hom (fun p => (Real.log p.2.dim : ℂ)) = labelEntropy φ :=
-    (resolution_hom_snd hGB hW hcW (fun l => (Real.log l.dim : ℂ))).trans
+    (Matrix.IsOrthogonalResolution.prod_hom_snd hGB hW R (fun l => (Real.log l.dim : ℂ))).trans
       (labelObservable_eq_hom _ (fun l => Real.log l.dim)).symm
   have hk : m + r = k := by simpa using Fintype.card_congr e
   have hchoose : (0 : ℝ) < k.choose r := by
