@@ -1,0 +1,29 @@
+{
+  "equations": [
+    {
+      "id": "a0000002544",
+      "clientWidth": 344,
+      "scrollWidth": 344,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:pair_merge_deficit_lifts",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:pair_merge_deficit_trace_left",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    }
+  ],
+  "result": "passed",
+  "overflowing_display_count": 0,
+  "right_endpoint_capture_count": 0,
+  "interpretation": "All three display boxes fit the mobile content width; no horizontal scrolling or right-endpoint capture is required."
+}

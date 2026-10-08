@@ -1,0 +1,28 @@
+{
+  "pdf": "blueprint/print/print.pdf",
+  "pdf_sha256": "94460cecb305a541ccae33db3e09ed6142351f862383d2ef4ef6a727ba6b5049",
+  "pages": 448,
+  "markers": {
+    "The actual paired merge deficit": [
+      436
+    ],
+    "The two lifted exponential factors": [
+      436
+    ],
+    "The individual traces on the common space": [
+      436
+    ],
+    "The two merge deficits on a common copy space": [
+      436
+    ]
+  },
+  "inspected_physical_pages": [
+    436
+  ],
+  "text_sha256": "e2307ec9eb135b80fa072fdc6f53f6240edb7be8fa248e2bb1f1bdc5ccd7f330",
+  "compressed_text_sha256": "f244a5fd1d3f70cfeb21fc61b951d03a79185e86722436874a6ed8c8e4b2d5cd",
+  "deterministic_gzip_mtime": 0,
+  "schur_chapter_heading_present": true,
+  "new_pages_have_no_unresolved_references": true,
+  "visual_review": "pending"
+}

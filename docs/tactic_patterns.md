@@ -277,3 +277,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   tactic is introduced.
 - **Caveats:** Both marginals must belong to the same excitation component.
   Retain the actual trace mass; do not assume a nonzero or unit component.
+
+### Tensor-factor exponential and trace identities — candidate (2026-10-08)
+
+- **Pattern:** Move a scalar through a Kronecker product, exponentiate the
+  actual identity extension, and pair with a common matrix by partial trace.
+- **Seen:** The common-space exponential and two complex trace equalities in
+  `QICLean/Representation/PairMergeDeficit.lean`; their generic calculations
+  already live in `KroneckerExponential.lean`, `TraceDistance.lean` and
+  `Channel/PartialTrace.lean`.
+- **Abstraction:** Use the existing exponential and trace-pairing theorems
+  directly. No additional private helper or tactic is needed.
+- **Caveats:** Operator factorization preserves correlations in the common
+  matrix. It does not justify multiplying two marginal trace pairings.

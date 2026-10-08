@@ -1,0 +1,9 @@
+# Actual paired merge deficits
+
+The six declarations and original exposition are fixed at `f028f8c6ea5290b8e8ddf08893ead50d89ea2174`, based on published paired-moment parent `ef7442f03ea09bb7997295304ba4ddc289b540b0`. The mathematical module has SHA-256 `f41591ccbf444d719eafdb35f2f4c59d98e2f0b588f757ba7365600f449c0004`. It names the actual deficit, proves Hermiticity and commutation of the two literal identity extensions, factors their exponential and gives both complex partial-trace pairings for arbitrary common matrices. Correlations are retained.
+
+The fixed target build passed with 3123 jobs. Strict whole-file checking, all six exact-name kernel axiom reports and the one owned provenance shard passed. Every report has an actual argument list, exit, working directory, source revision, four production hashes and raw-log hash. The Mathlib cache fetch and named prebuilt-artifact guard passed before any Lean check; no Mathlib source build was used. The earlier scratch and production pre-freeze check are retained as excluded exploration, rather than being used as final verification.
+
+All 1912 inherited tracked paths were compared with the parent. Only the tactic ledger changed, by an exact append. The published paired source, exposition and evidence remain unchanged. Only the six new declarations are newly audited; no audit of unchanged declarations is claimed.
+
+Independent mathematical review of the complete source and fragment passed. Before eventual complete-book checks, a separate exposition-only child will replace the opening display by two aligned rows, use parenthesized references and place the component-identification proof-status sentence in a LaTeX comment. The original fragment hash is preserved here. No Lean change is required or planned. The generated import, chapter inclusion and complete-library, PDF, web and native declaration checks remain pending at this leaf evidence commit.

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/docs/provenance/evidence/pairMergeDeficitIntegration8753/validate-manifest.py", line 30, in <module>
+    assert (root / changed[0]).read_bytes().replace(b"import QICLean.Representation.PairMergeMoment\n", b"") == get(changed[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
