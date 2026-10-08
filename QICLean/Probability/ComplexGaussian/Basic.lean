@@ -43,14 +43,6 @@ noncomputable section
 
 /-- The scalar fourth moment underlying the complex pairing formula
 (`04-compression.tex:326–334`). -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_standard_real_fourth
-Downstream declaration: QICLean.ComplexGaussian.integral_standard_real_fourth
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_standard_real_fourth :
     (∫ x : ℝ, x ^ 4 ∂gaussianReal 0 1) = 3 := by
   let f : ℝ → ℝ := fun t ↦ Real.exp (t ^ 2 / 2)
@@ -92,71 +84,18 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
 
 /-- A real linear coordinate of the standard Gaussian. -/
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-realfield
-Downstream declaration: QICLean.ComplexGaussian.realField
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Field.lean
-Upstream declaration: OAI.ClassicalGaussian.field
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Field.lean#L29-L29
-Changes for TNLean/QICLean:
-Changed the namespace from OAI.ClassicalGaussian to QICLean.ComplexGaussian and renamed field to
-realField.
--/
 def realField (a : E) (x : E) : ℝ := ⟪a, x⟫
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-memlp_realfield
-Downstream declaration: QICLean.ComplexGaussian.memLp_realField
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Law.lean
-Upstream declaration: OAI.ClassicalGaussian.memLp_field_nat
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L251-L252
-Changes for TNLean/QICLean:
-Changed the namespace and renamed the real-field helper; generalized the exponent from natural
-numbers to all finite ENNReal exponents with an explicit exclusion of infinity.
--/
 theorem memLp_realField (a : E) (p : ℝ≥0∞) (hp : p ≠ ∞) :
     MemLp (realField a) p (stdGaussian E) :=
   (innerSL ℝ a).comp_memLp' (IsGaussian.memLp_id (stdGaussian E) p hp)
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-integrable_realfield_pow
-Downstream declaration: QICLean.ComplexGaussian.integrable_realField_pow
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Law.lean
-Upstream declaration: OAI.ClassicalGaussian.integrable_real_pow
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L225-L229
-Changes for TNLean/QICLean:
-Specialized the upstream real-function power-integrability proof to
-QICLean.ComplexGaussian.realField, with integrability supplied by the generalized MemLp helper.
-Changes for TNLean/QICLean:
-Ancillary upstream specialization: OAI.ClassicalGaussian.integrable_field_pow, lean/OAI/Probability/ParisiFinite/Law.lean, https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L254-L256; expanded its delegation to the generic power-integrability proof.
--/
 theorem integrable_realField_pow (a : E) (n : ℕ) :
     Integrable (fun x ↦ realField a x ^ n) (stdGaussian E) := by
   have h := memLp_realField a n (by simp)
   exact h.integrable_norm_pow'.mono' (h.aestronglyMeasurable.pow n)
     (Filter.Eventually.of_forall fun x ↦ le_of_eq (norm_pow _ _))
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-integral_realfield_mul
-Downstream declaration: QICLean.ComplexGaussian.integral_realField_mul
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Field.lean
-Upstream declaration: OAI.ClassicalGaussian.field_covariance
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Field.lean#L39-L43
-Changes for TNLean/QICLean:
-Changed the namespace and renamed field and field_covariance to realField and
-integral_realField_mul.
-Changes for TNLean/QICLean:
-Replaced broad upstream imports with direct Mathlib imports; omitted unrelated Gaussian-field
-material.
--/
 theorem integral_realField_mul (a b : E) :
     (∫ x, realField a x * realField b x ∂stdGaussian E) = ⟪a, b⟫ := by
   have h := covarianceBilin_apply (μ := stdGaussian E) IsGaussian.memLp_two_id a b
@@ -164,20 +103,6 @@ theorem integral_realField_mul (a b : E) :
   simpa only [realField, id_eq, integral_id_stdGaussian, sub_zero,
     innerSL_apply_apply ℝ] using h.symm
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-realfield_law
-Downstream declaration: QICLean.ComplexGaussian.realField_law
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Field.lean
-Upstream declaration: OAI.ClassicalGaussian.field_law
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Field.lean#L103-L111
-Changes for TNLean/QICLean:
-Changed the namespace and renamed field and field_law to realField and realField_law.
-Changes for TNLean/QICLean:
-Replaced broad upstream imports with direct Mathlib imports; omitted unrelated Gaussian-field
-material.
--/
 theorem realField_law (a : E) :
     (stdGaussian E).map (realField a) = gaussianReal 0 (‖a‖₊ ^ 2) := by
   change (stdGaussian E).map (innerSL ℝ a) = _
@@ -189,20 +114,6 @@ theorem realField_law (a : E) :
   simp only [Real.coe_toNNReal', NNReal.coe_pow, coe_nnnorm,
     sup_eq_left.mpr (sq_nonneg ‖a‖)]
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-integral_realfield_fourth
-Downstream declaration: QICLean.ComplexGaussian.integral_realField_fourth
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Law.lean
-Upstream declaration: OAI.ClassicalGaussian.field_fourth
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L260-L279
-Changes for TNLean/QICLean:
-Changed the namespace, declaration names, and field notation to QICLean.ComplexGaussian.realField.
-Changes for TNLean/QICLean:
-Replaced the upstream standard_fourth dependency with an independently proved Gaussian-MGF
-fourth-moment calculation.
--/
 theorem integral_realField_fourth (a : E) :
     (∫ x, realField a x ^ 4 ∂stdGaussian E) = 3 * ‖a‖ ^ 4 := by
   have hf : HasLaw (realField a) (gaussianReal 0 (‖a‖₊ ^ 2)) (stdGaussian E) :=
@@ -224,20 +135,6 @@ theorem integral_realField_fourth (a : E) :
       simp only [mul_pow, integral_const_mul, integral_standard_real_fourth]
       ring
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-memlp_realfield_mul
-Downstream declaration: QICLean.ComplexGaussian.memLp_realField_mul
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Law.lean
-Upstream declaration: OAI.ClassicalGaussian.memLp_field_product
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L302-L307
-Changes for TNLean/QICLean:
-Changed the namespace and renamed field and memLp_field_product to realField and
-memLp_realField_mul.
-Changes for TNLean/QICLean:
-Used the generalized MemLp real-field helper and direct Mathlib imports.
--/
 theorem memLp_realField_mul (a b : E) :
     MemLp (fun x ↦ realField a x * realField b x) 2 (stdGaussian E) := by
   let : ENNReal.HolderTriple 4 4 2 := ⟨by
@@ -246,36 +143,12 @@ theorem memLp_realField_mul (a b : E) :
   exact (memLp_realField a 4 (by norm_num)).fun_mul
     (memLp_realField b 4 (by norm_num))
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-integrable_realfield_four
-Downstream declaration: QICLean.ComplexGaussian.integrable_realField_four
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Law.lean
-Upstream declaration: OAI.ClassicalGaussian.integrable_field_four
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L309-L312
-Changes for TNLean/QICLean:
-Changed the namespace and renamed field and the product-integrability declarations to the QICLean
-realField names.
--/
 theorem integrable_realField_four (a b c d : E) :
     Integrable (fun x ↦ realField a x * realField b x *
       (realField c x * realField d x)) (stdGaussian E) :=
   (memLp_realField_mul a b).integrable_mul (memLp_realField_mul c d)
 
 /-- Fourth polarization of a real product, used in Isserlis' formula. -/
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-real_fourth_polarization
-Downstream declaration: QICLean.ComplexGaussian.real_fourth_polarization
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Law.lean
-Upstream declaration: OAI.ClassicalGaussian.polarization
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L314-L317
-Changes for TNLean/QICLean:
-Changed the namespace and formatting and exposed the previously private source identity as the named
-reusable theorem real_fourth_polarization.
--/
 theorem real_fourth_polarization (a b c d : ℝ) :
     192 * (a * b * (c * d)) =
       (a + b + c + d) ^ 4 - (a + b + c - d) ^ 4 -
@@ -285,37 +158,11 @@ theorem real_fourth_polarization (a b c d : ℝ) :
 
 omit [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] in
 /-- Fourth power of the real Hilbert-space norm in terms of its quadratic form. -/
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-norm_four_eq_inner_self_sq
-Downstream declaration: QICLean.ComplexGaussian.norm_four_eq_inner_self_sq
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Law.lean
-Upstream declaration: OAI.ClassicalGaussian.fourth_norm
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L320-L321
-Changes for TNLean/QICLean:
-Changed the namespace and argument name and exposed the previously private source norm identity as
-the named reusable theorem norm_four_eq_inner_self_sq.
--/
 theorem norm_four_eq_inner_self_sq (v : E) : ‖v‖ ^ 4 = ⟪v, v⟫ ^ 2 := by
   rw [show (4 : ℕ) = 2 * 2 from rfl, pow_mul, real_inner_self_eq_norm_sq]
 
 /-- Real Isserlis formula. It applies to coincident coordinates as well as distinct ones.
 Adapted from `OAI.ClassicalGaussian.field_wick_four` at the commit in the file notice. -/
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: p09-qic-gaussian-integral_realfield_four_eq_pairings
-Downstream declaration: QICLean.ComplexGaussian.integral_realField_four_eq_pairings
-Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
-Upstream file: lean/OAI/Probability/ParisiFinite/Law.lean
-Upstream declaration: OAI.ClassicalGaussian.field_wick_four
-Upstream URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Probability/ParisiFinite/Law.lean#L325-L358
-Changes for TNLean/QICLean:
-Changed the namespace, field notation, and helper names to QICLean.ComplexGaussian.
-Changes for TNLean/QICLean:
-Used the independently proved scalar Gaussian fourth moment, direct Mathlib imports, and the
-separately mapped real_fourth_polarization and norm_four_eq_inner_self_sq helpers.
--/
 theorem integral_realField_four_eq_pairings (a b c d : E) :
     (∫ x, realField a x * realField b x * (realField c x * realField d x)
       ∂stdGaussian E) =
@@ -362,50 +209,18 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
 
 /-- A complex linear combination of two real Gaussian coordinates. -/
-/-
-Provenance-ID: p09-qic-gaussian-linearfield
-Downstream declaration: QICLean.ComplexGaussian.linearField
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 def linearField (v : Fin 2 → E) (c : Fin 2 → ℂ) (x : E) : ℂ :=
   ∑ i, c i * (realField (v i) x : ℂ)
 
 /-- The bilinear (without conjugation) second moment of two complex Gaussian fields. -/
-/-
-Provenance-ID: p09-qic-gaussian-pairing
-Downstream declaration: QICLean.ComplexGaussian.pairing
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 def pairing (v w : Fin 2 → E) (c d : Fin 2 → ℂ) : ℂ :=
   ∑ i, ∑ j, c i * d j * (⟪v i, w j⟫ : ℂ)
 
-/-
-Provenance-ID: p09-qic-gaussian-memlp_linearfield
-Downstream declaration: QICLean.ComplexGaussian.memLp_linearField
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem memLp_linearField (v : Fin 2 → E) (c : Fin 2 → ℂ)
     (p : ℝ≥0∞) (hp : p ≠ ∞) : MemLp (linearField v c) p (stdGaussian E) := by
   unfold linearField
   exact memLp_finsetSum _ fun i _ ↦ (memLp_realField (v i) p hp).ofReal.const_mul (c i)
 
-/-
-Provenance-ID: p09-qic-gaussian-memlp_linearfield_mul
-Downstream declaration: QICLean.ComplexGaussian.memLp_linearField_mul
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem memLp_linearField_mul (v w : Fin 2 → E) (c d : Fin 2 → ℂ) :
     MemLp (fun x ↦ linearField v c x * linearField w d x) 2 (stdGaussian E) := by
   let : ENNReal.HolderTriple 4 4 2 := ⟨by
@@ -424,14 +239,6 @@ private theorem integrable_complex_realField_four (a b c d : E) :
       (realField c x * realField d x) : ℝ) : ℂ)) (stdGaussian E) := by
   exact Complex.ofRealCLM.integrable_comp (integrable_realField_four a b c d)
 
-/-
-Provenance-ID: p09-qic-gaussian-integral_linearfield_mul
-Downstream declaration: QICLean.ComplexGaussian.integral_linearField_mul
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_linearField_mul (v w : Fin 2 → E) (c d : Fin 2 → ℂ) :
     (∫ x, linearField v c x * linearField w d x ∂stdGaussian E) = pairing v w c d := by
   have he (x : E) : linearField v c x * linearField w d x =
@@ -451,14 +258,6 @@ theorem integral_linearField_mul (v w : Fin 2 → E) (c d : Fin 2 → ℂ) :
 
 /-- The fourth-moment pairing formula for complex linear Gaussian fields.
 This is the real Isserlis identity extended by complex multilinearity. -/
-/-
-Provenance-ID: p09-qic-gaussian-integral_linearfield_four
-Downstream declaration: QICLean.ComplexGaussian.integral_linearField_four
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem integral_linearField_four (v w u z : Fin 2 → E) (c d e f : Fin 2 → ℂ) :
     (∫ x, linearField v c x * linearField w d x *
       (linearField u e x * linearField z f x) ∂stdGaussian E) =
@@ -495,74 +294,26 @@ section Coordinates
 variable {ι : Type*} [Fintype ι]
 
 /-- Sample space for a finite family of circular complex Gaussians. -/
-/-
-Provenance-ID: p09-qic-gaussian-sample
-Downstream declaration: QICLean.ComplexGaussian.Sample
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 abbrev Sample (ι : Type*) [Fintype ι] := EuclideanSpace ℝ (ι × Fin 2)
 
 /-- Joint law of the independent real coordinates forming the complex Gaussians. -/
-/-
-Provenance-ID: p09-qic-gaussian-law
-Downstream declaration: QICLean.ComplexGaussian.law
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 def law (ι : Type*) [Fintype ι] : Measure (Sample ι) := stdGaussian (Sample ι)
 
 instance : IsProbabilityMeasure (law ι) := inferInstanceAs (IsProbabilityMeasure (stdGaussian _))
 
 /-- The real coordinate vectors of the `i`-th complex Gaussian. -/
-/-
-Provenance-ID: p09-qic-gaussian-coordinatevectors
-Downstream declaration: QICLean.ComplexGaussian.coordinateVectors
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 def coordinateVectors (i : ι) (j : Fin 2) : Sample ι :=
   EuclideanSpace.basisFun (ι × Fin 2) ℝ (i, j)
 
 /-- Coefficients for unit-variance circular complex coordinates. -/
-/-
-Provenance-ID: p09-qic-gaussian-coordinatecoefficients
-Downstream declaration: QICLean.ComplexGaussian.coordinateCoefficients
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 def coordinateCoefficients (j : Fin 2) : ℂ :=
   if j = 0 then (Real.sqrt 2 : ℂ)⁻¹ else Complex.I * (Real.sqrt 2 : ℂ)⁻¹
 
 /-- A standard circular complex Gaussian coordinate, normalized by `E |g|² = 1`.
 Source: `04-compression.tex:291–297`. -/
-/-
-Provenance-ID: p09-qic-gaussian-coordinate
-Downstream declaration: QICLean.ComplexGaussian.coordinate
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 def coordinate (i : ι) : Sample ι → ℂ :=
   linearField (coordinateVectors i) coordinateCoefficients
 
-/-
-Provenance-ID: p09-qic-gaussian-coordinate_apply
-Downstream declaration: QICLean.ComplexGaussian.coordinate_apply
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem coordinate_apply (i : ι) (x : Sample ι) :
     coordinate i x = ((x (i, 0) : ℂ) + Complex.I * (x (i, 1) : ℂ)) /
       (Real.sqrt 2 : ℂ) := by
@@ -571,38 +322,14 @@ theorem coordinate_apply (i : ι) (x : Sample ι) :
   ring
 
 /-- All finite moments of the canonical circular complex coordinates exist. -/
-/-
-Provenance-ID: p09-qic-gaussian-memlp_coordinate
-Downstream declaration: QICLean.ComplexGaussian.memLp_coordinate
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem memLp_coordinate (i : ι) (p : ℝ≥0∞) (hp : p ≠ ∞) :
     MemLp (coordinate i) p (law ι) := memLp_linearField _ _ p hp
 
-/-
-Provenance-ID: p09-qic-gaussian-conj_coordinate
-Downstream declaration: QICLean.ComplexGaussian.conj_coordinate
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem conj_coordinate (i : ι) (x : Sample ι) :
     conj (coordinate i x) =
       linearField (coordinateVectors i) (fun j ↦ conj (coordinateCoefficients j)) x := by
   simp [coordinate, linearField, map_mul]
 
-/-
-Provenance-ID: p09-qic-gaussian-memlp_conj_coordinate
-Downstream declaration: QICLean.ComplexGaussian.memLp_conj_coordinate
-Source: September 24, 2026.
-Paper: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
-Labels: eq:compression-gaussian-covariance, eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
--/
 theorem memLp_conj_coordinate (i : ι) (p : ℝ≥0∞) (hp : p ≠ ∞) :
     MemLp (fun x ↦ conj (coordinate i x)) p (law ι) := by
   simp_rw [conj_coordinate]

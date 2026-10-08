@@ -11,7 +11,31 @@ No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
+### Unit-blank contraction in restoration — promoted lemmas (2026-10-08)
+
+- **Pattern:** Expand restoring matrix entries and contract unit ancillary
+  blanks through `∑ i, star (b i) * b i = 1`.
+- **Seen:** The copied-vector identity in `RestoringVectors.lean` and the actual
+  ground-component coefficient proof in `RestoringGroundComponent.lean`.
+- **Abstraction:** Promote the already proved blank normalization and restoring
+  entry formula as `restoringBlank_sum_eq_one` and
+  `restoringOperatorWithAncilla_apply`, preserving their existing proof bodies.
+  The new coefficient proof reuses both instead of duplicating those expansions.
+- **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
+  over the whole basis, including coordinates with zero assigned probability.
+
 ## Candidates
+
+### Commutation with a matrix inverse — candidate (2026-10-07)
+
+- **Pattern:** Give a positive definite matrix its existing `Invertible`
+  instance, use `Commute.invOf_right` or `commute_invOf`, and rewrite
+  `Matrix.invOf_eq_nonsing_inv`.
+- **Seen:** Three inverse-commutation steps in
+  `QICLean/Analysis/PatchRegulator.lean`; one file.
+- **Abstraction:** The existing Mathlib commutation lemmas suffice. Retain
+  this record until independent occurrences in another file justify a
+  matrix-specific lemma; no new tactic is introduced.
 
 ### Finite-spectrum functional-calculus scalar reduction — candidate (2026-10-07)
 
@@ -44,3 +68,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Commutation and the actual inverse identity are proved before
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
+
+### Contraction of the repeated uniform pair — candidate (2026-10-07)
+
+- **Pattern:** Expand a Kronecker action against the actual repeated uniform
+  pair, rewrite its coordinates as a scalar times the equality indicator,
+  and contract one coordinate sum.
+- **Seen:** The two private coordinate identities in
+  `QICLean/Representation/UniformBellLabel.lean`; two occurrences in one file.
+- **Abstraction:** The public projected-norm and nonzero-occurrence theorems
+  supply the mathematical consequences. A separate tactic is not warranted
+  by two coordinate contractions.
+- **Caveats:** The normalization depends on the actual one-copy dimension;
+  nonzero occurrence requires that dimension to be positive. The central
+  Schur label equality additionally uses inversion-invariant coefficients.
