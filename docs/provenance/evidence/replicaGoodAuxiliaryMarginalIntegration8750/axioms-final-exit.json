@@ -1,0 +1,18 @@
+{
+  "source_revision": "272718145ed2fa1ec58adfeb5e5620355be971d0",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "docs/provenance/evidence/replicaGoodAuxiliaryMarginalIntegration8750/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-08T00:16:58.962615+00:00",
+  "elapsed_seconds": 9.942,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodAuxiliaryMarginalIntegration8750/axioms-final.log",
+  "sha256": "17ced8e0f26e68aa1e4afecf495f04aa14ce6673b80b0aaa5b88b9d8b33533c3"
+}

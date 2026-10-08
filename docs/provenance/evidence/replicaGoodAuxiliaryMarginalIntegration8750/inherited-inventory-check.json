@@ -1,0 +1,100 @@
+{
+  "inventories": [
+    {
+      "inventory": "docs/provenance/evidence/areaLawCombined23003/evidence-sha256.json",
+      "verified_bindings": 56,
+      "sha256": "752f59a69c3d5668080a262c4c41f80a3f34abeca8b114d06db052630c210eed"
+    },
+    {
+      "inventory": "docs/provenance/evidence/badCopyLabelDimension8750/evidence-sha256.json",
+      "verified_bindings": 31,
+      "sha256": "80e99d009262a698ce82afa7e0decdf2ca0cb8d72fb3d952b870ac2460445523"
+    },
+    {
+      "inventory": "docs/provenance/evidence/excitationStabilizer8750/evidence-sha256.json",
+      "verified_bindings": 47,
+      "sha256": "b691fa7bc0b554c8d4967415a20200d44a7d8d5ff196b96b00f3477c981aea45"
+    },
+    {
+      "inventory": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/evidence-sha256.json",
+      "verified_bindings": 96,
+      "sha256": "70d35de0a97633d48a5df6e780b0174967c10235c32df811b14c040579aa8caa"
+    },
+    {
+      "inventory": "docs/provenance/evidence/goodAuxiliaryLabelCompression8750/evidence-sha256.json",
+      "verified_bindings": 34,
+      "sha256": "b5ce89efecf465019b25d9d5d9fb73f6d03938b6e993a7a75003ba5de6ceb206"
+    },
+    {
+      "inventory": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/evidence-sha256.json",
+      "verified_bindings": 35,
+      "sha256": "d81ca9f4a5ae119f3a9f12f7b79b0b18d82a5811eb16b6b780fef220e58cccef"
+    },
+    {
+      "inventory": "docs/provenance/evidence/goodBadAuxiliaryIntegration8750/evidence-sha256.json",
+      "verified_bindings": 71,
+      "sha256": "fcea3e7ef7650487e94d52464d06ea7c6db7778dbf8eead39467dedc26239b2d"
+    },
+    {
+      "inventory": "docs/provenance/evidence/groupedLabelEntropyBounds8750/evidence-sha256.json",
+      "verified_bindings": 33,
+      "sha256": "8c0efce5b3d6b87914696dab285f927f75b0029181db6b59d5f09e74e215a541"
+    },
+    {
+      "inventory": "docs/provenance/evidence/groupedLabelEntropyIntegration8750/evidence-sha256.json",
+      "verified_bindings": 66,
+      "sha256": "28149d92778a8a79a5693efa858e72ac4ff3394636a6edb90405d3b7ee2798b9"
+    },
+    {
+      "inventory": "docs/provenance/evidence/replicaDefect8750/evidence-sha256.json",
+      "verified_bindings": 41,
+      "sha256": "8f90e3a6e7edcd8dd226ea5ae1ae428d9f851f8ad6dd59f915c03697eec4995a"
+    },
+    {
+      "inventory": "docs/provenance/evidence/replicaDefectIntegration8750/evidence-sha256.json",
+      "verified_bindings": 69,
+      "sha256": "2cf30d2affa619bf4a93acc3b0277879a427a0805d62ba3029e0e8c12f0c1c6c"
+    },
+    {
+      "inventory": "docs/provenance/evidence/replicaGoodAuxiliaryLabelBound8750/evidence-sha256.json",
+      "verified_bindings": 35,
+      "sha256": "b4e7abf051503dcce87adcc87a7c7b0952b1c0a53588b35140b3326c093c4d43"
+    },
+    {
+      "inventory": "docs/provenance/evidence/replicaGoodAuxiliaryMarginal8750/evidence-sha256.json",
+      "verified_bindings": 39,
+      "sha256": "49786775cad3c7558181c695c6dec054790aa579baa3c9ad32c07963cb8d56e3"
+    },
+    {
+      "inventory": "docs/provenance/evidence/replicaMarginalSymmetry8750/evidence-sha256.json",
+      "verified_bindings": 38,
+      "sha256": "fddfd40b59e3d2c49e9086a95765658f867ae293635cc6bc55a8b9af82567ec4"
+    },
+    {
+      "inventory": "docs/provenance/evidence/replicaSymmetry8750/evidence-sha256.json",
+      "verified_bindings": 26,
+      "sha256": "9ea0569d8f596d3a91d21e38ea74c09f0760a8be385591069bdf3a9b28244e6a"
+    },
+    {
+      "inventory": "docs/provenance/evidence/replicaSymmetryIntegration8750/evidence-sha256.json",
+      "verified_bindings": 41,
+      "sha256": "485f7f64e70b458e696410d30a0ce2a25a71dd5adc028f54d5bd94b79d7244b4"
+    },
+    {
+      "inventory": "docs/provenance/evidence/replicaSymmetryParentIntegration8750/evidence-sha256.json",
+      "verified_bindings": 47,
+      "sha256": "fe01428fe796b9b6accd0b592c1747261caed58a84e174b4fc35bf156842fa6a"
+    },
+    {
+      "inventory": "docs/provenance/evidence/spectralCutoffMass8750/evidence-sha256.json",
+      "verified_bindings": 20,
+      "sha256": "2448b42ebba57e925ae132d3c958c0ac788f656787dd48d043bc6d587c8f6970"
+    },
+    {
+      "inventory": "docs/provenance/evidence/spectralCutoffMassIntegration8750/evidence-sha256.json",
+      "verified_bindings": 35,
+      "sha256": "4794b4d1ce89e4b8085c9411f03d0318f94fc515856991f4c6e71bed8bb92b2c"
+    }
+  ],
+  "total_bindings": 860
+}
