@@ -30,9 +30,6 @@ Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-Sept
 build/sections/07-comparators.tex
 Labels: comparator:typical-set.
 Additional manuscript passage: build/sections/02-initial.tex, Lemma 3.1 (lem:tail).
-Provenance-ID: 8753-qic-typical-tail-scale-01
-Downstream declaration:
-Entropy.exists_typical_tail_bound_of_linear_budget
 -/
 
 open Filter Asymptotics

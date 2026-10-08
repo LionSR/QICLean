@@ -52,7 +52,6 @@ Theorem 8.16 as formalized in `QICLean/Analysis/TraceNormContractivity.lean`.
 
 /-
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-trace-distance
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyContinuity.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.traceDistance
@@ -61,7 +60,6 @@ Downstream declaration: Matrix.traceDistance
 Changes for TNLean/QICLean: Placed in the Matrix namespace.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-trace-distance-parts
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyContinuity.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.traceDistance_parts
@@ -70,7 +68,6 @@ Downstream declaration: Matrix.re_trace_posPart_eq_traceDistance
 Changes for TNLean/QICLean: Trace-equality hypothesis on the complex trace.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-trace-distance-nonneg
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyContinuity.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.traceDistance_nonneg

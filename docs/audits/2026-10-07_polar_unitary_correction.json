@@ -1,0 +1,163 @@
+{
+  "status": "locally checked draft; QIC publication held, no upstream source commit or PR",
+  "repository": "LionSR/QICLean",
+  "verified_local_production_revision": "c849b612e6e7c37c4c38263316681ff92b7ed5de",
+  "source_publication": {
+    "status": "local only; QIC repository publication held pending destination authorization",
+    "upstream_source_revision": null,
+    "pull_request": null,
+    "full_root_and_ci": "not run"
+  },
+  "production_modules": 2,
+  "public_theorems": 6,
+  "private_helpers": [
+    {
+      "name": "Matrix.norm_toEuclideanCLM_unitary",
+      "path": "QICLean/Analysis/PolarUnitaryCorrection.lean",
+      "line": 93
+    }
+  ],
+  "consumer_examples": 6,
+  "permanent_guards": 6,
+  "raw_reports": 6,
+  "production_lines": 255,
+  "production": [
+    {
+      "path": "QICLean/Analysis/PolarUnitaryCorrection.lean",
+      "sha256": "dc2cd6e192fddb5bcb1ba4d9461806232597d420123f560ac72f9ab97fa5687d",
+      "lines": 158,
+      "declarations": [
+        {
+          "name": "Matrix.PosSemidef.norm_le_norm_add_toEuclideanCLM",
+          "kind": "theorem",
+          "line": 58,
+          "private": false,
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "Matrix.PosSemidef.norm_sub_le_add_residuals",
+          "kind": "theorem",
+          "line": 70,
+          "private": false,
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "Matrix.PosSemidef.norm_one_sub_le_norm_one_sub_sq",
+          "kind": "theorem",
+          "line": 84,
+          "private": false,
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "Matrix.norm_toEuclideanCLM_unitary",
+          "kind": "theorem",
+          "line": 93,
+          "private": true
+        },
+        {
+          "name": "Matrix.norm_unitary_sub_le_add_residuals_of_mul_posSemidef",
+          "kind": "theorem",
+          "line": 102,
+          "private": false,
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "Matrix.exists_unitary_polar_correction",
+          "kind": "theorem",
+          "line": 133,
+          "private": false,
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "QICLean/Analysis/PolarUnitaryCorrectionKronecker.lean",
+      "sha256": "3fc9ce7fd4d4427170df0f2513d38c1e719b7fb6869c0ce8d127ffb700460b26",
+      "lines": 97,
+      "declarations": [
+        {
+          "name": "Matrix.unitary_polar_correction_kronecker_one",
+          "kind": "theorem",
+          "line": 52,
+          "private": false,
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "consumers": [
+    {
+      "path": "QICLeanTest/PolarUnitaryCorrection.lean",
+      "sha256": "080752af03095760726a9527bed3f9f459e73c1b89c754d7df1caa8ef6936f7a",
+      "examples": 4,
+      "guards": 0
+    },
+    {
+      "path": "QICLeanTest/PolarUnitaryCorrectionAxioms.lean",
+      "sha256": "dd189e3ce85a9a1942b42805b3df08fb53fdf5d9987fd5732ca0a883ab927d99",
+      "examples": 0,
+      "guards": 5
+    },
+    {
+      "path": "QICLeanTest/PolarUnitaryCorrectionKroneckerAxioms.lean",
+      "sha256": "b42538a2ba835de6fc7005f34f3b7a10ecf8e6d2900eaae5463d3d7b4720b9cc",
+      "examples": 0,
+      "guards": 1
+    },
+    {
+      "path": "QICLeanTest/PolarUnitaryCorrectionKronecker.lean",
+      "sha256": "e914858bd61c332d7e151a221aa7523fd7007d9ea3af5912f4e41288ce1a2b9c",
+      "examples": 2,
+      "guards": 0
+    }
+  ],
+  "lean_toolchain": "leanprover/lean4:v4.35.0-rc3",
+  "dependencies": {
+    "checkdecls": "3d425859e73fcfbef85b9638c2a91708ef4a22d4",
+    "mathlib": "c55e6e786f49471c72fbddbec5415808896aec1e",
+    "Gametheory": "ec93e4daed4ad8b4784a9d760e492832e7711433",
+    "plausible": "fb13df72ecefd8ddbf9291021d7f33a8673eb57b",
+    "LeanSearchClient": "29ff470276c725ae01505d55b17148c18fc7dfd3",
+    "importGraph": "7e81a29bda33a6b257bd37557a6aa6aebe175d96",
+    "proofwidgets": "c643bbb3c24f8a25f9c14e3a6b1ceb13d01f3de1",
+    "aesop": "a90fbf7b02ff06a0deebf74088dff9e5fe02c9ea",
+    "Qq": "37b0ba0b26109cf9f9c541f0f9557e50cfa1a3b9",
+    "batteries": "3b7c8101932390d60e92a3f3d917901d5b5a773b",
+    "Cli": "843844fa601dd56767b1eb22b7ada5b64d5e567a"
+  },
+  "native_strict_raw_records": "docs/provenance/evidence/8766/validation.json",
+  "ledger": "docs/provenance/openai-math.d/8766.json",
+  "provenance_validation": "docs/provenance/evidence/8766/provenance-validation.json",
+  "render": "docs/provenance/evidence/8766/render-validation.json",
+  "history": "docs/provenance/evidence/8766/history.json",
+  "authorship": "Original source proofs by the OpenAI Codex GPT-6-assisted team; no OpenAI Lean code copied or adapted.",
+  "limitations": [
+    "No QIC root build or full CI claim.",
+    "No geometric reset/support theorem, complete amplification or area-law theorem.",
+    "The unrelated issue 8765 ledger and its evidence are not changed or certified."
+  ]
+}
