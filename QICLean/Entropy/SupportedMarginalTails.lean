@@ -272,25 +272,31 @@ theorem sliceIsometry_conj_apply (X : Matrix (((v : {v // v ∈ B}) → Fin (n v
     star_zero, ite_mul, one_mul, zero_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
     Finset.mem_univ, ite_true]
 
-theorem card_innerConfig_le (hn : ∀ v ∈ D, 1 ≤ n v) :
-    Fintype.card (InnerConfig n B D) ≤ ∏ v ∈ D, n v := by
+/-- The dimension of the configurations on the inside portion of a designated support.
+Polynomial-PEPS manuscript, `03-patches.tex`, lines 302–309. -/
+theorem card_innerConfig :
+    Fintype.card (InnerConfig n B D) = ∏ v ∈ D ∩ B, n v := by
   classical
   rw [Fintype.card_pi]
   simp only [Fintype.card_fin]
-  rw [show (∏ w : {v // v ∈ D ∧ v ∈ B}, n w) = ∏ v ∈ D.filter (· ∈ B), n v from
-    (Finset.prod_subtype (D.filter (· ∈ B)) (by simp) n).symm]
-  exact Finset.prod_le_prod_of_subset_of_one_le (Finset.filter_subset _ _)
+  exact (Finset.prod_subtype (D ∩ B) (by simp) n).symm
+
+theorem card_innerConfig_le (hn : ∀ v ∈ D, 1 ≤ n v) :
+    Fintype.card (InnerConfig n B D) ≤ ∏ v ∈ D, n v := by
+  rw [card_innerConfig]
+  exact Finset.prod_le_prod_of_subset_of_one_le Finset.inter_subset_left
     fun v hv _ ↦ hn v hv
 
 /-- **Matrix-unit decomposition across a cut.** An operator supported on `D` is, in cut
-coordinates, a sum of at most `(∏_{v ∈ D} n_v)²` products `c ⊗ d'` with `‖c‖ ≤ 1` and
+coordinates, a sum of at most `card (InnerConfig n B D)²` products `c ⊗ d'` with `‖c‖ ≤ 1` and
 `‖d'‖ ≤ ‖X‖`. The factors are the matrix units on `D ∩ B`, tensored with the identity on
 `B \ D`, and the corresponding compressions of `X`.
-Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 126–133. -/
-theorem IsSupportedOn.hasProductDecomposition {X : Matrix (SiteConfig n) (SiteConfig n) ℂ}
-    (hX : IsSupportedOn X D) (σ₀ : SiteConfig n) (hn : ∀ v ∈ D, 1 ≤ n v) {c₀ : ℝ}
+Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 126–133;
+Polynomial-PEPS manuscript, `03-patches.tex`, lines 302–319. -/
+theorem IsSupportedOn.hasProductDecomposition_inner {X : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+    (hX : IsSupportedOn X D) (σ₀ : SiteConfig n) {c₀ : ℝ}
     (hXn : ‖X‖ ≤ c₀) :
-    HasProductDecomposition (cutOperator B X) c₀ ((∏ v ∈ D, n v) ^ 2) := by
+    HasProductDecomposition (cutOperator B X) c₀ (Fintype.card (InnerConfig n B D) ^ 2) := by
   classical
   set q₀ : OuterConfig n B D := outerPart ((cutEquiv n B) σ₀).1
   set e := Fintype.equivFin (InnerConfig n B D × InnerConfig n B D)
@@ -303,8 +309,7 @@ theorem IsSupportedOn.hasProductDecomposition {X : Matrix (SiteConfig n) (SiteCo
       sliceIsometry (glueConfig p.2 q₀)
   refine ⟨Fintype.card (InnerConfig n B D × InnerConfig n B D), fun k ↦ c (e.symm k),
     fun k ↦ d (e.symm k), ?_, ?_, fun k ↦ ?_⟩
-  · rw [Fintype.card_prod, sq]
-    exact Nat.mul_le_mul (card_innerConfig_le hn) (card_innerConfig_le hn)
+  · simp [Fintype.card_prod, sq]
   · rw [Equiv.sum_comp e.symm (fun p ↦ c p ⊗ₖ d p)]
     ext ⟨x, y⟩ ⟨x', y'⟩
     rw [Matrix.sum_apply]
@@ -361,6 +366,16 @@ theorem IsSupportedOn.hasProductDecomposition {X : Matrix (SiteConfig n) (SiteCo
     calc ‖c (e.symm k)‖ * ‖d (e.symm k)‖ ≤ 1 * ‖X‖ :=
           mul_le_mul hc hd (norm_nonneg _) zero_le_one
       _ ≤ c₀ := by rw [one_mul]; exact hXn
+
+/-- The full designated-support bound follows from the inside-support matrix-unit count.
+Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 126–133. -/
+theorem IsSupportedOn.hasProductDecomposition {X : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+    (hX : IsSupportedOn X D) (σ₀ : SiteConfig n) (hn : ∀ v ∈ D, 1 ≤ n v) {c₀ : ℝ}
+    (hXn : ‖X‖ ≤ c₀) :
+    HasProductDecomposition (cutOperator B X) c₀ ((∏ v ∈ D, n v) ^ 2) := by
+  obtain ⟨M, c, d, hM, hdec, hcd⟩ := hX.hasProductDecomposition_inner (B := B) σ₀ hXn
+  refine ⟨M, c, d, hM.trans ?_, hdec, hcd⟩
+  exact Nat.pow_le_pow_left (card_innerConfig_le hn) 2
 
 end Decomposition
 
