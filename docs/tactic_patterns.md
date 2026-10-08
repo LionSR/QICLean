@@ -68,3 +68,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Commutation and the actual inverse identity are proved before
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
+
+### Contraction of the repeated uniform pair — candidate (2026-10-07)
+
+- **Pattern:** Expand a Kronecker action against the actual repeated uniform
+  pair, rewrite its coordinates as a scalar times the equality indicator,
+  and contract one coordinate sum.
+- **Seen:** The two private coordinate identities in
+  `QICLean/Representation/UniformBellLabel.lean`; two occurrences in one file.
+- **Abstraction:** The public projected-norm and nonzero-occurrence theorems
+  supply the mathematical consequences. A separate tactic is not warranted
+  by two coordinate contractions.
+- **Caveats:** The normalization depends on the actual one-copy dimension;
+  nonzero occurrence requires that dimension to be positive. The central
+  Schur label equality additionally uses inversion-invariant coefficients.
