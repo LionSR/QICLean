@@ -8,10 +8,13 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation
 
+import QICLean.Representation.Branching
+import QICLean.Representation.BranchingPieri
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.HighestWeight
+import QICLean.Representation.HookDimension
 import QICLean.Representation.HookFormula
 import QICLean.Representation.HookRecursion
 import QICLean.Representation.IrrepLabelCount

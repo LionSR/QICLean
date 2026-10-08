@@ -636,3 +636,73 @@ $\lambda$.
     zeros. Compare with $q=k$, using Lemma~\ref{lem:column_antisymmetrizer} for
     the converse.
 \end{proof}
+
+\section{Branching and the dimension formula}
+
+Let $S_{k-1}\subseteq S_k$ permute the first $k-1$ copies. For labels $\lambda$ of
+$S_k$ and $\nu$ of $S_{k-1}$, let $c(\lambda,\nu)$ be the multiplicity of $\nu$ in
+the restriction of $\lambda$, the rank of the image of a minimal idempotent of the
+$\nu$ factor of $\C[S_{k-1}]$ in the $\lambda$ factor of $\C[S_k]$.
+
+\begin{lemma}[Restriction]
+    \label{lem:restriction}
+    \lean{IrrepLabel.branchMult, IrrepLabel.dim_eq_sum_branchMult, IrrepLabel.sum_dim_sq,
+        PermutationRepresentation.trace_mul_groupAlgebraRep_mul_labelProj,
+        PermutationRepresentation.groupAlgebraRep_mul_labelProj_eq_zero_iff}
+    \leanok
+    For a subgroup $H$ of a finite group $G$, $d_\lambda=\sum_\nu c(\lambda,\nu)d_\nu$
+    and $\sum_\lambda d_\lambda^2=|G|$. For a permutation representation $\rho$ of $G$,
+    an element $a$ of $\C[G]$ with $\lambda$ block $W_\lambda(a)$, and an operator $M$
+    commuting with $\rho$,
+    $d_\lambda\Tr\bigl(M\rho(a)\pi^\lambda\bigr)=\tr W_\lambda(a)\Tr(M\pi^\lambda)$,
+    and $\rho(a)\pi^\lambda=0$ exactly when $\pi^\lambda=0$ or $W_\lambda(a)=0$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The central idempotents of $H$ sum to one, and the block of the central
+    idempotent of $\nu$ has trace $d_\nu c(\lambda,\nu)$. The Artin--Wedderburn
+    isomorphism preserves dimension. Finally
+    $\rho(a)\pi^\lambda=\sum_{ij}W_\lambda(a)_{ij}E^\lambda_{ij}$ and
+    $\Tr(ME^\lambda_{ij})=\delta_{ij}\Tr(ME^\lambda_{00})$.
+\end{proof}
+
+\begin{lemma}[Restriction multiplicities are at most one]
+    \label{lem:pieri}
+    \lean{TensorPower.finrank_hwSpace_fixed_le_one, TensorPower.branchMult_le_one_and}
+    \leanok
+    \uses{thm:schur_weyl_labels, lem:restriction}
+    $c(\lambda,\nu)\le1$, and $c(\lambda,\nu)=0$ unless $\lambda=\nu+e_i$ for some
+    row $i$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Work in $(\C^k)^{\otimes k}=(\C^k)^{\otimes(k-1)}\otimes\C^k$. A highest-weight
+    vector of weight $\mu$ fixed by a minimal idempotent of $\nu$ in the first $k-1$
+    copies has components along the last copy in $V_\nu$, and its last nonzero
+    component, at row $i$, is a highest-weight vector of weight $\mu-e_i$; hence
+    $\mu=\nu+e_i$, and the component at row $i$ determines the vector, so these
+    vectors span at most a line. The images of the matrix units of $\lambda$ applied
+    to a highest-weight vector of $V_\lambda$ embed the range of the block of the
+    minimal idempotent into this space.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 1: the dimension of the symmetric-group factor]
+    \label{thm:dim_eq_hook}
+    \lean{TensorPower.dim_eq_hookFormula, TensorPower.dim_eq_hookFormula_of_rows,
+        TensorPower.branchMult_eq_one_iff}
+    \leanok
+    \uses{lem:pieri, lem:hook_recursions, thm:labels_are_partitions}
+    For a partition $\lambda\vdash k$ padded to any length $q$ at least its number of
+    rows, $d_\lambda=k!\prod_{i<j}(l_i-l_j)/\prod_il_i!$ with $l_i=\lambda_i+q-i$.
+    Moreover $c(\lambda,\nu)=1$ if $\lambda=\nu+e_i$ for some row $i$ and
+    $c(\lambda,\nu)=0$ otherwise.
+\end{theorem}
+
+\begin{proof}\leanok
+    By induction on $k$. From Lemma~\ref{lem:pieri},
+    $d_\lambda=\sum_\nu c(\lambda,\nu)d_\nu\le\sum_iD_{\lambda-e_i}=D_\lambda$, and
+    $\sum_\lambda D_\lambda d_\lambda=\sum_\nu d_\nu\sum_\lambda c(\lambda,\nu)D_\lambda
+    \le\sum_\nu d_\nu\sum_iD_{\nu+e_i}=k\sum_\nu d_\nu^2=k!=\sum_\lambda d_\lambda^2$,
+    using Lemma~\ref{lem:hook_recursions}. Hence $d_\lambda=D_\lambda$, and a missing
+    removable row would make the first inequality strict.
+\end{proof}
