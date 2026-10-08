@@ -160,4 +160,99 @@ theorem commute_placeOp_siteOp (ι : Fin m ↪ Fin k) (G : Matrix (Fin m → Ω)
   ext x y
   rw [key, key']
 
+theorem l2_opNorm_oneCopy (a : Matrix Ω Ω ℂ) : ‖oneCopy a‖ = ‖a‖ := by
+  rw [oneCopy, l2_opNorm_reindex_equiv]
+
+/-- **An injection average almost commutes with a one-copy operator**:
+`‖[𝒯_{k,r}(G), a^{(j)}]‖ ≤ 2r ‖G‖ ‖a‖ / k`, since only placements meeting `j` fail to
+commute and they form a fraction `r / k`. -/
+theorem norm_injectionAverage_mul_siteOp_sub_le {r : ℕ} (G : Matrix (Fin r → Ω) (Fin r → Ω) ℂ)
+    (j : Fin k) (A : Matrix Ω Ω ℂ) :
+    ‖injectionAverage k r G * siteOp j A - siteOp j A * injectionAverage k r G‖ ≤
+      2 * r * ‖G‖ * ‖A‖ / k := by
+  have hk : (0 : ℝ) < k := by exact_mod_cast j.pos
+  set N := Fintype.card (Fin r ↪ Fin k)
+  set S : Finset (Fin r ↪ Fin k) := {ι | ∃ a, ι a = j}
+  have hS : #S * k ≤ r * N := by
+    have hsub : S ⊆ Finset.univ.biUnion fun a : Fin r =>
+        ({ι : Fin r ↪ Fin k | ι a = j} : Finset _) := by
+      intro ι hι
+      simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hι
+      simpa using hι
+    calc #S * k ≤ (∑ a : Fin r, #({ι : Fin r ↪ Fin k | ι a = j} : Finset _)) * k := by
+          gcongr
+          exact (Finset.card_le_card hsub).trans Finset.card_biUnion_le
+      _ = r * N := by
+          have h := fun a : Fin r => Function.Embedding.card_filter_apply_eq_mul (α := Fin k) a j
+          simp only [Fintype.card_fin] at h
+          rw [Finset.sum_mul, Finset.sum_congr rfl fun a _ => h a]
+          simp [N]
+  have hsplit : injectionAverage k r G * siteOp j A - siteOp j A * injectionAverage k r G =
+      (N : ℂ)⁻¹ • ∑ ι ∈ S, (placeOp ι G * siteOp j A - siteOp j A * placeOp ι G) := by
+    rw [injectionAverage, Matrix.smul_mul, Matrix.mul_smul, ← smul_sub, Finset.sum_mul,
+      Finset.mul_sum, ← Finset.sum_sub_distrib]
+    congr 1
+    rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun ι : Fin r ↪ Fin k => ∃ a, ι a = j)]
+    rw [Finset.sum_eq_zero (s := Finset.filter (fun ι : Fin r ↪ Fin k => ¬ ∃ a, ι a = j)
+      Finset.univ), add_zero]
+    intro ι hι
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_exists] at hι
+    rw [(commute_placeOp_siteOp ι G hι A).eq, sub_self]
+  rw [hsplit]
+  rcases Nat.eq_zero_or_pos N with hN | hN
+  · rw [hN, Nat.cast_zero, _root_.inv_zero, zero_smul, norm_zero]; positivity
+  have hNR : (0 : ℝ) < N := by exact_mod_cast hN
+  refine (norm_smul_le _ _).trans ?_
+  rw [norm_inv, Complex.norm_natCast]
+  calc (N : ℝ)⁻¹ * ‖∑ ι ∈ S, (placeOp ι G * siteOp j A - siteOp j A * placeOp ι G)‖
+      ≤ (N : ℝ)⁻¹ * (#S * (2 * ‖G‖ * ‖A‖)) := by
+        gcongr
+        refine (norm_sum_le _ _).trans ?_
+        rw [← nsmul_eq_mul, ← Finset.sum_const]
+        refine Finset.sum_le_sum fun ι _ => (norm_sub_le _ _).trans ?_
+        have h1 := l2_opNorm_placeOp_le ι G
+        have h2 := l2_opNorm_siteOp_le j A
+        calc ‖placeOp ι G * siteOp j A‖ + ‖siteOp j A * placeOp ι G‖
+            ≤ ‖G‖ * ‖A‖ + ‖A‖ * ‖G‖ := add_le_add
+              ((l2_opNorm_mul _ _).trans (mul_le_mul h1 h2 (norm_nonneg _) (norm_nonneg _)))
+              ((l2_opNorm_mul _ _).trans (mul_le_mul h2 h1 (norm_nonneg _) (norm_nonneg _)))
+          _ = 2 * ‖G‖ * ‖A‖ := by ring
+    _ ≤ 2 * r * ‖G‖ * ‖A‖ / k := by
+        have hS' : (#S : ℝ) * k ≤ r * N := by exact_mod_cast hS
+        rw [le_div_iff₀ hk]
+        have hGA : 0 ≤ ‖G‖ * ‖A‖ := mul_nonneg (norm_nonneg _) (norm_nonneg _)
+        calc (N : ℝ)⁻¹ * (#S * (2 * ‖G‖ * ‖A‖)) * k = (N : ℝ)⁻¹ * (#S * k) * (2 * (‖G‖ * ‖A‖)) := by
+              ring
+          _ ≤ (N : ℝ)⁻¹ * (r * N) * (2 * (‖G‖ * ‖A‖)) := by gcongr
+          _ = 2 * r * ‖G‖ * ‖A‖ := by field_simp
+
+theorem symProj_mul_permOp (π : Equiv.Perm (Fin k)) :
+    symProj (copyPerm Ω k) * permOp (copyPerm Ω k) π = symProj (copyPerm Ω k) := by
+  have h := congrArg conjTranspose (permOp_mul_symProj (copyPerm Ω k) π⁻¹)
+  rwa [conjTranspose_mul, isHermitian_symProj.eq, conjTranspose_permOp, inv_inv] at h
+
+/-- **Compressing a one-copy operator**: `Π a^{(j)} Π = 𝒯_{k,1}(a) Π`, since all placements
+of one copy are conjugate under copy permutations. -/
+theorem symProj_mul_siteOp_mul_symProj (j : Fin k) (A : Matrix Ω Ω ℂ) :
+    symProj (copyPerm Ω k) * siteOp j A * symProj (copyPerm Ω k) =
+      injectionAverage k 1 (oneCopy A) * symProj (copyPerm Ω k) := by
+  set P := symProj (copyPerm Ω k)
+  have hconj : ∀ ι : Fin 1 ↪ Fin k, P * placeOp ι (oneCopy A) * P = P * siteOp j A * P := by
+    intro ι
+    have hι : ι = (singleEmb j).trans (Equiv.swap j (ι 0)).toEmbedding := by
+      ext a
+      rw [Subsingleton.elim a 0]
+      simp
+    rw [hι, placeOp_trans_perm, placeOp_single, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
+      symProj_mul_permOp, Matrix.mul_assoc _ (permOp _ _) P, permOp_mul_symProj]
+  have hN : Fintype.card (Fin 1 ↪ Fin k) = k := by
+    rw [Fintype.card_embedding_eq, Fintype.card_fin, Fintype.card_fin, Nat.descFactorial_one]
+  have hk : (k : ℂ) ≠ 0 := by exact_mod_cast j.pos.ne'
+  calc P * siteOp j A * P = P * injectionAverage k 1 (oneCopy A) * P := by
+        rw [injectionAverage, Matrix.mul_smul, Matrix.smul_mul, Finset.mul_sum, Finset.sum_mul,
+          Finset.sum_congr rfl fun ι _ => hconj ι, Finset.sum_const, Finset.card_univ, hN,
+          ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hk, one_smul]
+    _ = injectionAverage k 1 (oneCopy A) * P := by
+        rw [(commute_symProj_injectionAverage _).eq, Matrix.mul_assoc, symProj_mul_symProj]
+
 end TensorPower
