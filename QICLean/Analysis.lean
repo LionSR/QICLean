@@ -82,6 +82,7 @@ import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
+import QICLean.Analysis.OrthonormalMatrixNorm
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PolarUnitaryCorrection
 import QICLean.Analysis.PolarUnitaryCorrectionKronecker
