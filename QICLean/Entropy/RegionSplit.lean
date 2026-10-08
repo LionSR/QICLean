@@ -150,7 +150,7 @@ theorem trans_prodCongr (he : IsRegionSplit D φ e) {A' B' : Type*} (ψ : A ≃ 
 end IsRegionSplit
 
 /-- Configurations of `V = D ∪ D'` (disjoint) as pairs of configurations of `D` and `D'`. -/
-def splitEquiv {D D' : Finset V} (hDD : Disjoint D D') (hcov : ∀ v, v ∈ D ∨ v ∈ D') :
+def regionSplitEquiv {D D' : Finset V} (hDD : Disjoint D D') (hcov : ∀ v, v ∈ D ∨ v ∈ D') :
     SiteConfig n ≃ RegionConfig n D × RegionConfig n D' where
   toFun σ := (fun v => σ v, fun v => σ v)
   invFun p v := if h : v ∈ D then p.1 ⟨v, h⟩ else p.2 ⟨v, (hcov v).resolve_left h⟩
@@ -164,9 +164,9 @@ def splitEquiv {D D' : Finset V} (hDD : Disjoint D D') (hcov : ∀ v, v ∈ D �
       simp [this]
 
 omit [Fintype V] in
-theorem isRegionSplit_splitEquiv {D D' : Finset V} (hDD : Disjoint D D')
+theorem isRegionSplit_regionSplitEquiv {D D' : Finset V} (hDD : Disjoint D D')
     (hcov : ∀ v, v ∈ D ∨ v ∈ D') :
-    IsRegionSplit D (Equiv.refl _) (splitEquiv (n := n) hDD hcov) where
+    IsRegionSplit D (Equiv.refl _) (regionSplitEquiv (n := n) hDD hcov) where
   fst σ := rfl
   snd σ τ := by
     change (fun v : {v // v ∈ D'} => σ v) = (fun v : {v // v ∈ D'} => τ v) ↔ _
