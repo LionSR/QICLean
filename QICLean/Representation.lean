@@ -17,6 +17,7 @@ import QICLean.Representation.CentralLabelFunction
 import QICLean.Representation.CoherentMeasure
 import QICLean.Representation.CoherentResolution
 import QICLean.Representation.CoherentSymbol
+import QICLean.Representation.CoherentSymbolLimit
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.ExteriorPieri
@@ -35,10 +36,14 @@ import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.JointIsotypic
 import QICLean.Representation.JucysRecursion
 import QICLean.Representation.LabelProjectors
+import QICLean.Representation.MarkedSimilaritySymbol
+import QICLean.Representation.MarkedStar
+import QICLean.Representation.MarkedSymbol
 import QICLean.Representation.MergeDimensions
 import QICLean.Representation.MergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
+import QICLean.Representation.RegionPowerSymbol
 import QICLean.Representation.RegularTrace
 import QICLean.Representation.ReplicaGammaIntegral
 import QICLean.Representation.ReplicaIntegral
@@ -57,6 +62,7 @@ import QICLean.Representation.SchurWeylCommutant
 import QICLean.Representation.SchurWeylLabels
 import QICLean.Representation.SchurWeylLift
 import QICLean.Representation.SplitCopies
+import QICLean.Representation.StarFunction
 import QICLean.Representation.StarOperator
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
