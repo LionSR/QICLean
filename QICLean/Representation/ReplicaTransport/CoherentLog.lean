@@ -56,6 +56,53 @@ theorem integrable_coherentIntegrand (k : ℕ) (a : Ω) {f : (Ω → ℂ) → �
     (continuous_coherentProj k (continuous_coherentVec a))).integrable_of_hasCompactSupport
       (HasCompactSupport.of_compactSpace _)
 
+/-- The letter counts of a word of length `k`. -/
+def letterCount (k : ℕ) (x : Fin k → Ω) : Ω → Fin (k + 1) := fun c =>
+  ⟨(Finset.univ.filter fun j => x j = c).card,
+    Nat.lt_succ_of_le ((Finset.card_filter_le _ _).trans (by simp))⟩
+
+omit [Fintype Ω] in
+/-- Two words with the same letter counts differ by a permutation of the positions. -/
+theorem exists_perm_of_letterCount_eq {k : ℕ} {x y : Fin k → Ω}
+    (h : letterCount k x = letterCount k y) : ∃ σ : Equiv.Perm (Fin k), y ∘ σ = x := by
+  have e : ∀ c, {j // x j = c} ≃ {j // y j = c} := fun c => Fintype.equivOfCardEq (by
+    rw [Fintype.card_subtype, Fintype.card_subtype]
+    exact congrArg Fin.val (congrFun h c))
+  exact ⟨Equiv.ofFiberEquiv e, funext fun j => Equiv.ofFiberEquiv_map e j⟩
+
+/-- A symmetric vector is invariant under permuting the positions of its argument. -/
+theorem apply_comp_of_mem_invariantSubspace {k : ℕ} {v : (Fin k → Ω) → ℂ}
+    (hv : v ∈ invariantSubspace (copyPerm Ω k)) (x : Fin k → Ω) (σ : Equiv.Perm (Fin k)) :
+    v (x ∘ σ) = v x := by
+  have := congrFun (hv σ) x
+  rw [permOp_mulVec, Function.comp_apply, ← map_inv] at this
+  rw [show x ∘ σ = copyPerm Ω k σ⁻¹ x from funext fun j => by rw [copyPerm_apply, inv_inv]; rfl]
+  exact this
+
+/-- `D_k ≤ (k + 1)^{dim}`: a symmetric vector is determined by its values on one word of each
+letter-count profile. -/
+theorem symDim_le (k : ℕ) : symDim Ω k ≤ (k + 1) ^ Fintype.card Ω := by
+  classical
+  let R := Set.range (letterCount (Ω := Ω) k)
+  let rep : R → (Fin k → Ω) := fun c => c.2.choose
+  let L : invariantSubspace (copyPerm Ω k) →ₗ[ℂ] (R → ℂ) :=
+    { toFun := fun v c => (v : (Fin k → Ω) → ℂ) (rep c)
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl }
+  have hL : Function.Injective L := by
+    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro v hv
+    ext x
+    let c : R := ⟨letterCount k x, x, rfl⟩
+    obtain ⟨σ, hσ⟩ := exists_perm_of_letterCount_eq (c.2.choose_spec)
+    have h0 : (v : (Fin k → Ω) → ℂ) (rep c) = 0 := congrFun hv c
+    rw [show rep c = x ∘ σ from hσ.symm, apply_comp_of_mem_invariantSubspace v.2] at h0
+    simpa using h0
+  calc symDim Ω k ≤ Module.finrank ℂ (R → ℂ) := LinearMap.finrank_le_finrank_of_injective hL
+    _ = Fintype.card R := Module.finrank_fintype_fun_eq_card ℂ
+    _ ≤ Fintype.card (Ω → Fin (k + 1)) := Fintype.card_subtype_le _
+    _ = (k + 1) ^ Fintype.card Ω := by simp
+
 /-- The coherent average `𝒬_k(f) = D_k ∫ f(θ) P_{θ,k} dθ` (`06-transport.tex` line 523). -/
 def coherentAverage (k : ℕ) (a : Ω) (f : (Ω → ℂ) → ℝ) : Matrix (Fin k → Ω) (Fin k → Ω) ℂ :=
   (symDim Ω k : ℂ) • ∫ U, (f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) : ℂ) •
@@ -107,6 +154,15 @@ theorem coherentIntegral_sub_log_le_re_trace_mul_log {k : ℕ} (a : Ω)
 /-- `D_k` is polynomial in `k`: `log D_k = O(log (k + 1))`. -/
 theorem log_symDim_isBigO :
     (fun k : ℕ => Real.log (symDim Ω k)) =O[Filter.atTop] fun k : ℕ => Real.log (k + 1) := by
-  sorry
+  refine Asymptotics.IsBigO.of_bound (Fintype.card Ω) (Filter.Eventually.of_forall fun k => ?_)
+  have hk : (1 : ℝ) ≤ k + 1 := by linarith [(Nat.cast_nonneg k : (0 : ℝ) ≤ k)]
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (Real.log_natCast_nonneg _),
+    abs_of_nonneg (Real.log_nonneg hk)]
+  rcases Nat.eq_zero_or_pos (symDim Ω k) with h | h
+  · rw [h, Nat.cast_zero, Real.log_zero]
+    exact mul_nonneg (Nat.cast_nonneg _) (Real.log_nonneg hk)
+  · calc Real.log (symDim Ω k) ≤ Real.log (((k + 1) ^ Fintype.card Ω : ℕ) : ℝ) :=
+          Real.log_le_log (by exact_mod_cast h) (by exact_mod_cast symDim_le k)
+      _ = Fintype.card Ω * Real.log (k + 1) := by push_cast; rw [Real.log_pow]
 
 end TensorPower
