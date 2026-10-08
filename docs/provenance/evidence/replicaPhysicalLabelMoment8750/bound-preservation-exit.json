@@ -1,0 +1,13 @@
+{
+  "source_revision": "fc4db3db1dc27f565637d218adc1fe0bf4de7e6d",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaPhysicalLabelMoment8750/check-preservation.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:40:07.611991+00:00",
+  "elapsed_seconds": 5.045,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-preservation.log",
+  "sha256": "af1dc04af5bc686e95b92e924c0572b116bbc2c2950c41e93cba8d3330c272a4"
+}

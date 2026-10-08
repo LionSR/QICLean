@@ -1,0 +1,15 @@
+{
+  "source_revision": "fc4db3db1dc27f565637d218adc1fe0bf4de7e6d",
+  "command": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:38:40.353412+00:00",
+  "elapsed_seconds": 14.735,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-cache-fetch.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

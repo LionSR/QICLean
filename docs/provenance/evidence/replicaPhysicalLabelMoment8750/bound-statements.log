@@ -1,0 +1,193 @@
+theorem Matrix.trace_exp_labelEntropy_replicaExcitationComponent_eq.{u_1, u_2, u_3} : ∀ {Q : Type u_1} {T : Type u_2}
+  {K : Type u_3} [inst : Fintype Q] [inst_1 : DecidableEq Q] [inst_2 : Fintype T] [inst_3 : DecidableEq T]
+  [inst_4 : Fintype K] [inst_5 : DecidableEq K] (Ω : Q × T → ℂ),
+  ‖WithLp.toLp 2 Ω‖ = 1 →
+    ∀ {k : ℕ} (B : Finset (Fin k)) (u : (Fin k → Q × T) × K → ℂ) (a : ℝ),
+      let m := Bᶜ.card;
+      have w := (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u;
+      have f := fun x =>
+        w
+          ((FiniteProduct.splitEquiv (fun x => Q × T) B).symm
+              (x.2.2, fun i => (x.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i))),
+            x.1.2);
+      have F := PermutationRepresentation.labelEntropy (TensorPower.copyPerm Q m);
+      have ρ := Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight;
+      (Matrix.vecMulVec f (star f) *
+            NormedSpace.exp
+              (↑a •
+                Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) F 1) 1)).trace =
+        ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace :=
+fun {Q} {T} {K} [Fintype Q] [DecidableEq Q] [Fintype T] [DecidableEq T] [Fintype K] [DecidableEq K] Ω hΩ {k} B u a =>
+  let m := Bᶜ.card;
+  let w := (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u;
+  let f := fun x =>
+    w
+      ((FiniteProduct.splitEquiv (fun x => Q × T) B).symm
+          (x.2.2, fun i => (x.1.1 (Bᶜ.equivFin i), x.2.1 (Bᶜ.equivFin i))),
+        x.1.2);
+  let F := PermutationRepresentation.labelEntropy (TensorPower.copyPerm Q m);
+  let ρ := Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight;
+  Eq.mpr
+    (id
+      (congrArg
+        (fun _a =>
+          (Matrix.vecMulVec f (star f) * NormedSpace.exp _a).trace =
+            ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+        (Eq.symm (Matrix.smul_kronecker (↑a) (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) F 1) 1))))
+    (Eq.mpr
+      (id
+        (congrArg
+          (fun _a =>
+            (Matrix.vecMulVec f (star f) * _a).trace = ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+          (Matrix.exp_kronecker_one (↑a • Matrix.kroneckerMap (fun x1 x2 => x1 * x2) F 1))))
+      (Eq.mpr
+        (id
+          (congrArg (fun _a => _a = ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+            (Eq.symm
+              (Matrix.trace_partialTraceRight_mul
+                (NormedSpace.exp (↑a • Matrix.kroneckerMap (fun x1 x2 => x1 * x2) F 1))
+                (Matrix.vecMulVec f (star f))))))
+        (Eq.mpr
+          (id
+            (congrArg
+              (fun _a =>
+                (_a * NormedSpace.exp (↑a • Matrix.kroneckerMap (fun x1 x2 => x1 * x2) F 1)).trace =
+                  ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+              (Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density Ω hΩ B u)))
+          (Eq.mpr
+            (id
+              (congrArg
+                (fun _a =>
+                  (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                          (Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight)
+                          (Matrix.vecMulVec
+                              ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (star
+                                ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u))).partialTraceLeft *
+                        NormedSpace.exp _a).trace =
+                    ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+                (Eq.symm (Matrix.smul_kronecker (↑a) F 1))))
+            (Eq.mpr
+              (id
+                (congrArg
+                  (fun _a =>
+                    (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                            (Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight)
+                            (Matrix.vecMulVec
+                                ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)
+                                (star
+                                  ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                                        (Matrix.replicaExcitationProjection Ω k B) 1).mulVec
+                                    u))).partialTraceLeft *
+                          _a).trace =
+                      ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+                  (Matrix.exp_kronecker_one (↑a • F))))
+              (Eq.mpr
+                (id
+                  (congrArg (fun _a => _a.trace = ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+                    (Eq.symm
+                      (Matrix.mul_kronecker_mul
+                        (Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight)
+                        (NormedSpace.exp (↑a • F))
+                        (Matrix.vecMulVec
+                            ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                  1).mulVec
+                              u)
+                            (star
+                              ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u))).partialTraceLeft
+                        1))))
+                (Eq.mpr
+                  (id
+                    (congrArg
+                      (fun _a =>
+                        (Matrix.kroneckerMap (fun x1 x2 => x1 * x2)
+                              ((Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight) *
+                                NormedSpace.exp (↑a • F))
+                              _a).trace =
+                          ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+                      (Matrix.mul_one
+                        (Matrix.vecMulVec
+                            ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                  1).mulVec
+                              u)
+                            (star
+                              ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u))).partialTraceLeft)))
+                  (Eq.mpr
+                    (id
+                      (congrArg (fun _a => _a = ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+                        (Matrix.trace_kronecker
+                          ((Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight) *
+                            NormedSpace.exp (↑a • F))
+                          (Matrix.vecMulVec
+                              ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (star
+                                ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u))).partialTraceLeft)))
+                    (Eq.mpr
+                      (id
+                        (congrArg
+                          (fun _a =>
+                            ((Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight) *
+                                    NormedSpace.exp (↑a • F)).trace *
+                                _a =
+                              ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+                          (Matrix.trace_partialTraceLeft
+                            (Matrix.vecMulVec
+                              ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (star
+                                ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u))))))
+                      (Eq.mpr
+                        (id
+                          (congrArg
+                            (fun _a =>
+                              ((Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight) *
+                                      NormedSpace.exp (↑a • F)).trace *
+                                  _a =
+                                ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+                            (Matrix.trace_vecMulVec
+                              ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                    1).mulVec
+                                u)
+                              (star
+                                ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B)
+                                      1).mulVec
+                                  u)))))
+                        (Eq.mpr
+                          (id
+                            (congrArg
+                              (fun _a =>
+                                ((Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight) *
+                                        NormedSpace.exp (↑a • F)).trace *
+                                    _a =
+                                  ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+                              (Eq.symm (EuclideanSpace.inner_eq_star_dotProduct (WithLp.toLp 2 w) (WithLp.toLp 2 w)))))
+                          (Eq.mpr
+                            (id
+                              (congrArg
+                                (fun _a =>
+                                  ((Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight) *
+                                          NormedSpace.exp (↑a • F)).trace *
+                                      _a =
+                                    ↑‖WithLp.toLp 2 w‖ ^ 2 * (ρ * NormedSpace.exp (↑a • F)).trace)
+                                (inner_self_eq_norm_sq_to_K (WithLp.toLp 2 w))))
+                            (mul_comm
+                              ((Matrix.finKronecker fun x => (Matrix.vecMulVec Ω (star Ω)).partialTraceRight) *
+                                  NormedSpace.exp (↑a • F)).trace
+                              (↑‖WithLp.toLp 2 w‖ ^ 2))))))))))))))
