@@ -30,27 +30,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Labels: comparator:bell-pin, comparator:prevector.
-Provenance-ID: 8753-qic-typical-bell-pin-01
-Downstream declaration:
-Matrix.selectedBellVector
-Provenance-ID: 8753-qic-typical-bell-pin-02
-Downstream declaration:
-Matrix.norm_selectedBellVector
-Provenance-ID: 8753-qic-typical-bell-pin-03
-Downstream declaration:
-Matrix.selectedBellProjection
-Provenance-ID: 8753-qic-typical-bell-pin-04
-Downstream declaration:
-Matrix.isStarProjection_selectedBellProjection
-Provenance-ID: 8753-qic-typical-bell-pin-05
-Downstream declaration:
-Matrix.bellPinPrevector
-Provenance-ID: 8753-qic-typical-bell-pin-06
-Downstream declaration:
-Matrix.bellPinPostvector
-Provenance-ID: 8753-qic-typical-bell-pin-07
-Downstream declaration:
-Matrix.selectedBellProjection_bellPinPrevector
 -/
 
 open scoped BigOperators Matrix Kronecker ComplexOrder InnerProductSpace

@@ -1,7 +1,0 @@
-'Matrix.selectedBellVector' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.norm_selectedBellVector' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.selectedBellProjection' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.isStarProjection_selectedBellProjection' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.bellPinPrevector' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.bellPinPostvector' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.selectedBellProjection_bellPinPrevector' depends on axioms: [propext, Classical.choice, Quot.sound]
