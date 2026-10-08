@@ -1,0 +1,13 @@
+{
+  "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+  "command": [
+    "texra-blueprint",
+    "web"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+  "started_utc": "2026-10-08T02:18:51.989505+00:00",
+  "elapsed_seconds": 163.681,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web.log",
+  "sha256": "de9c269861b6f18645d00f3c300aa7924b011f110c92230f98652c97b8542b25"
+}

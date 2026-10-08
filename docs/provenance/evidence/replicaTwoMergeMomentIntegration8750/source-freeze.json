@@ -1,0 +1,66 @@
+{
+  "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+  "parent_revision": "1966e51e1f8df9bf72d0f26d0b31fcd34634d1fe",
+  "declarations": [
+    "Matrix.replicaGoodPairMarginal_exp_sum_mergeDeficit_le"
+  ],
+  "files": [
+    {
+      "path": "QICLean/Analysis/ReplicaTwoMergeMoment.lean",
+      "sha256": "bc7b38e35122b52d119043d4118590bce1a80750f33d5187c8968374588cdc9c",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/replica_two_merge_moment.tex",
+      "sha256": "9cdcf5752bcbbcbce480d5ca8920af497e6cc9219fa49c5e5cbf88517f165132",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-replica-two-merge-moment.md",
+      "sha256": "6fc9560bcd2526bcf7049be8d708e53aa94911121e2eed5eacb5fd805941f429",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "1ef7e87561b2ead9c7c21d1db864c754116e20470ffa2cda4da09c76c6ee0344",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Analysis.lean",
+      "sha256": "05ef26b64e12f36c8976af8ceb5354babc0b72acd4dc497a575b3becc53fe8a3",
+      "coverage": "Entire unique inclusion file."
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_schur_labels.tex",
+      "sha256": "e7ff8b92a22fca5d8b85857593cb638f8298db884fd34f7fb3e4333fdde09bbf",
+      "coverage": "Entire unique inclusion file."
+    }
+  ],
+  "preserved_published_branch": {
+    "branch": "feat/area-law-weighted-trace-exponential",
+    "revision": "2c3b04b6d031d94b05729b940ed22eae89217081"
+  },
+  "mathematical_source_revision": "7c8099cf9790cc72e1c17bbbde9ac65f4eb24bd1",
+  "leaf_evidence_revision": "1966e51e1f8df9bf72d0f26d0b31fcd34634d1fe",
+  "unique_inclusion_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+  "coverage": "Entire final proof, auxiliary fragment, reader note, cumulative ledger and exact unique generated import/chapter inclusion.",
+  "mathematical_source_parent_revision": "b8d02f2fb12811f5cc335482d616a94c17caf64c",
+  "prerequisites": [
+    {
+      "pull_request": 652,
+      "revision": "b5ba8ae27c0a86858a02e62337cf66a343a9d6ad"
+    },
+    {
+      "pull_request": 654,
+      "revision": "2c3b04b6d031d94b05729b940ed22eae89217081"
+    },
+    {
+      "pull_request": 655,
+      "revision": "038138a077800f1b4b2f82378e423bddd8de9582"
+    },
+    {
+      "pull_request": 656,
+      "revision": "3652227dc5ddcefa91d8b0e4aa45f489f696ee57"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "declarations": [
+    "Matrix.replicaGoodPairMarginal_exp_sum_mergeDeficit_le"
+  ],
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+  "raw_log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/axioms-final.log",
+  "sha256": "9d1b97cbfcd3cba8c95f8a344bb44b955685c7854cca09d30dba13a2b7fcb2ea",
+  "matches_original_leaf_raw_report": true
+}

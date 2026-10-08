@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/validate-owned.py", line 14, in <module>
+    tnlean = Path(sys.argv[1]).resolve()
+                  ~~~~~~~~^^^
+IndexError: list index out of range

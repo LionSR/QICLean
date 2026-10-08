@@ -1,0 +1,14 @@
+{
+  "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/check-manifest.py",
+    "--index"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:25:45.626385+00:00",
+  "elapsed_seconds": 10.185,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/manifest-check.log",
+  "sha256": "acff803094cd86b389170e59c77dd2cfdfc9a929c3b6fa7c16e6e6996266bd53"
+}

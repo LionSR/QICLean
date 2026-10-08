@@ -1,0 +1,65 @@
+{
+  "all_images_inspected": true,
+  "widths": [
+    1280,
+    360
+  ],
+  "inspection": "Complete full-QYV setting, actual common density, both deficits and polynomial coefficients, complete statement and proof inspected at desktop/mobile widths. Both local mobile context formula right endpoints inspected; no page-level sideways scroll or clipped prose.",
+  "images": [
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/sec-replica_two_merge_moment-web.png",
+      "sha256": "1f240734a4b529fa5cad1dff67a942f7e2b72d9a1e89f9d9cd235335904a1100"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/thm-replica_two_merge_moment-web.png",
+      "sha256": "079aca12ec6670d685c11660503f3eae1254a93bad97767eb8664eb2e5d69546"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context-0-360.png",
+      "sha256": "b201437129d43188cc7e0733e3b94fd0ac9505767c4db8c56c48fe0eae779859"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context-1-360.png",
+      "sha256": "581f79d8fdd8683129195fa6284cb556ff4dfb64c76e1d4e6cddce17d8ed9c53"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context-2-360.png",
+      "sha256": "a6f2a8b28a9e5a78593ca732ac83dcbe5bda218f67c8308b390f512c5a075be3"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context-2-display-0-360-right.png",
+      "sha256": "857d8d41d04d3e77ed3d1d9670df098e600fc6910d3b2d245da3be799084ee32"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context-3-360.png",
+      "sha256": "b19bff632e2a2763b537e2ff88e12267aa818fa2dc74e5bc34a73a0b43b23502"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context-4-360.png",
+      "sha256": "459ce45950736b9c10c9d6185358ee19fac18ce794978f18d7737ebac38208f8"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context-4-display-0-360-right.png",
+      "sha256": "5939a21d9819aaaf0e095611396e2ab305b98fa2d3c188f8ccf87ac3546dda98"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-replica_two_merge_moment-proof-1280.png",
+      "sha256": "e9cea311c837b258d569e9095ec343d97273de15e73aafd1d0cc8a7e9d84926b"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-replica_two_merge_moment-proof-360.png",
+      "sha256": "910c6aa0e36761f5939ade271b91e0be4f7ecfb4e43e17c604107979010f852e"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-replica_two_merge_moment-statement-1280.png",
+      "sha256": "51c43366f96f3605c60deab732d6e027e6f43d57bd6352d2bfb5339644b45c92"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-replica_two_merge_moment-statement-360.png",
+      "sha256": "fd22a33d6f73206f61013deb8846dd068999c43d1ad83c83b82852051baf0d6f"
+    }
+  ],
+  "mobile_displayed_formulas": 4,
+  "mobile_context_right_endpoints": 2,
+  "source_scope_checked": "Original symmetry/unit \u03a9 only; Y traced entirely and preserved by Q\u2194V exchange; same actual component mass; auxiliary arithmetic-mean polynomial estimate."
+}
