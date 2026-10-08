@@ -22,6 +22,8 @@ import QICLean.Representation.MergeDimensions
 import QICLean.Representation.MergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
+import QICLean.Representation.ReplicaRatio
+import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
