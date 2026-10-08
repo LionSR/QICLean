@@ -15,6 +15,7 @@ import QICLean.Representation.Casimir
 import QICLean.Representation.CentralLabelFunction
 import QICLean.Representation.CoherentMeasure
 import QICLean.Representation.CoherentResolution
+import QICLean.Representation.CoherentSymbol
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.GroupedCopies
@@ -24,6 +25,7 @@ import QICLean.Representation.HookFormula
 import QICLean.Representation.HookRecursion
 import QICLean.Representation.HusimiIdentity
 import QICLean.Representation.InjectionAverage
+import QICLean.Representation.InjectionPoly
 import QICLean.Representation.InjectionProduct
 import QICLean.Representation.IrrepLabelCount
 import QICLean.Representation.IrrepLabels
