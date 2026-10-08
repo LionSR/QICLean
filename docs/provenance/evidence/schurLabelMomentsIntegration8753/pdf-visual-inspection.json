@@ -1,0 +1,24 @@
+{
+  "physical_pages": [
+    460,
+    461
+  ],
+  "printed_pages": [
+    459,
+    460
+  ],
+  "all_pages_inspected": true,
+  "images": [
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/page-460.png",
+      "sha256": "47cfcef72c16d37de87f8a4782e0eea554b05473b51e4389e171fa9e7cc5392c",
+      "bytes": 210991
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/page-461.png",
+      "sha256": "1ca17f27fc6f6af0ed273ad3ce125e9a3c6cc8cdf2a30e2943a5a2f68e4957e2",
+      "bytes": 194975
+    }
+  ],
+  "inspection": "Both complete rendered pages inspected. The supported logarithm convention, positive comparison and full proof, arbitrary-real negative comparison and full proof, and copy-transfer polynomial bound and full proof are readable. Radical extent and exponent q squared are clear, with no clipping or overlap."
+}

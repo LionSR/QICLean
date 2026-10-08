@@ -1,0 +1,13 @@
+{
+  "files": [
+    {
+      "raw_path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/pdf.log",
+      "archive_path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/pdf.log.gz",
+      "raw_bytes": 108560,
+      "archive_bytes": 22193,
+      "raw_sha256": "659d45c0648e244fcc3ef6f808889bad0170c658d1d744d942f17e6716d43033",
+      "archive_sha256": "70d1ae511b8905b6b3af74bd1a5ea9c7d5cbdaec9c12baef5cddc48e3707d24f",
+      "compression": "gzip.compress(raw,mtime=0); original bytes recover exactly."
+    }
+  ]
+}

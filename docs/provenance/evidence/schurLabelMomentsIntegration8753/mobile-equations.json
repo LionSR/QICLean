@@ -1,0 +1,30 @@
+[
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "label": "schur-label-positive-centered",
+    "kind": "statement",
+    "index": 0
+  },
+  {
+    "width": 310,
+    "scrollWidth": 319,
+    "overflow": "auto",
+    "label": "schur-label-negative-centered",
+    "kind": "statement",
+    "index": 0,
+    "right_endpoint": {
+      "left": 9,
+      "max": 9
+    }
+  },
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "label": "schur-label-copy-centered",
+    "kind": "statement",
+    "index": 0
+  }
+]
