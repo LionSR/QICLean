@@ -23,6 +23,7 @@ import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.ExteriorPieri
 import QICLean.Representation.GroupedCopies
+import QICLean.Representation.GroupedLabelEntropy
 import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookDimension
 import QICLean.Representation.HookFormula
