@@ -1,6 +1,0 @@
-{"typeset": 288, "anchors": {"sec:bad_copy_label_dimension": true, "thm:bad_copy_label_dimension": true, "sec:good_auxiliary_label_entropy": true, "thm:good_auxiliary_label_entropy": true, "eq:good_auxiliary_label_entropy": false}, "widths": {"360": {"scrollWidth": 360, "clientWidth": 360, "escaped": []}, "1440": {"scrollWidth": 1440, "clientWidth": 1440, "escaped": []}}}
-Traceback (most recent call last):
-  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy/docs/provenance/evidence/goodBadAuxiliaryIntegration8750/web-qa.py", line 39, in <module>
-    assert all(anchors.values()),anchors
-           ~~~^^^^^^^^^^^^^^^^^^
-AssertionError: {'sec:bad_copy_label_dimension': True, 'thm:bad_copy_label_dimension': True, 'sec:good_auxiliary_label_entropy': True, 'thm:good_auxiliary_label_entropy': True, 'eq:good_auxiliary_label_entropy': False}

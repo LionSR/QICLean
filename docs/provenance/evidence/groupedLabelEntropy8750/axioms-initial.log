@@ -1,8 +1,0 @@
-'TensorPower.groupedCopies_labelEntropy_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
-docs/provenance/evidence/groupedLabelEntropy8750/Axioms.lean:3:0: error: The module doc-string for a file should be the first command after the imports.
-Please, add a module doc-string (`/-! ... -/`) before `#print axioms TensorPower.groupedCopies_labelEntropy_bounds`.
-
-Hint: Type `m(odule docstring) + [tab]` to insert a template via snippet.
-
-Note: This linter can be disabled with `set_option linter.style.header false`
-`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]

@@ -1,0 +1,19 @@
+Previous HEAD position was fe118d3 fix(Probability): use current set membership simp lemma
+HEAD is now at edf1f1f test(Probability): exercise finite conditioning and uniform word order
+'ProbabilityTheory.measure_eq_count_mul_of_finite_constant_singletons' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ProbabilityTheory.restrict_eq_smul_count_of_finite_constant_singletons' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ProbabilityTheory.cond_eq_uniformOn_of_finite_constant_singletons' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'PoissonWord.cond_countEvent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PoissonWord.measure_countEvent_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PoissonWord.cond_countEvent_of_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PoissonWord.measure_countEvent_zero_time_of_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PoissonWord.cond_countEvent_zero_time_of_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PoissonWord.countsThenUniform' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PoissonWord.countsThenUniform_eq_measure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PoissonWord.instIsProbabilityMeasureCountsThenUniform' depends on axioms: [propext, Classical.choice, Quot.sound]

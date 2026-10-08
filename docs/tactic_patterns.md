@@ -29,6 +29,18 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   projections. Compatibility and the full-space order must be derived from
   the actual projections, rather than supplied as extra assumptions.
 
+### Unit-blank contraction in restoration — promoted lemmas (2026-10-08)
+
+- **Pattern:** Expand restoring matrix entries and contract unit ancillary
+  blanks through `∑ i, star (b i) * b i = 1`.
+- **Seen:** The copied-vector identity in `RestoringVectors.lean` and the actual
+  ground-component coefficient proof in `RestoringGroundComponent.lean`.
+- **Abstraction:** Promote the already proved blank normalization and restoring
+  entry formula as `restoringBlank_sum_eq_one` and
+  `restoringOperatorWithAncilla_apply`, preserving their existing proof bodies.
+  The new coefficient proof reuses both instead of duplicating those expansions.
+- **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
+  over the whole basis, including coordinates with zero assigned probability.
 
 ## Candidates
 
