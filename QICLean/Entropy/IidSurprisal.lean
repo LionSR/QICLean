@@ -36,18 +36,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Labels: comparator:high-label.
-Provenance-ID: 8753-qic-iid-surprisal-01
-Downstream declaration:
-Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal
-Provenance-ID: 8753-qic-iid-surprisal-02
-Downstream declaration:
-Entropy.surprisalTail_pi_le_variance
-Provenance-ID: 8753-qic-iid-surprisal-03
-Downstream declaration:
-Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le
-Provenance-ID: 8753-qic-iid-surprisal-04
-Downstream declaration:
-Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le
 -/
 
 open scoped BigOperators Matrix Kronecker ComplexOrder Matrix.Norms.L2Operator

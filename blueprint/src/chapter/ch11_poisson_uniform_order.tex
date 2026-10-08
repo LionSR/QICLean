@@ -1,0 +1,108 @@
+\section{Independent counts and uniform word order}
+\label{sec:poisson_uniform_order}
+
+Retain the finite alphabet $I$, the word law $\mu_t$ for $t\ge0$, and
+$C_n=\mathcal W_n=\{w:C(w)=n\}$ for $n\in\N^I$.
+The following is a characterization at a single fixed time, supplying the
+count-and-order description relevant to \cite{OpenAI2026AreaLaw},
+\texttt{09-amplification.tex}, lines 49--54 and 237--253.
+
+\begin{theorem}[Conditional word order]
+\label{thm:poisson_conditional_order}
+\lean{PoissonWord.cond_countEvent, PoissonWord.measure_countEvent_pos,
+PoissonWord.cond_countEvent_of_pos}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_count_vector}
+If $\mu_t(C_n)\ne0$, then the actual conditional word law is
+\begin{align}
+ \mu_t(\,\cdot\mid C_n)&=\operatorname{Unif}(C_n).
+ \label{eq:poisson_conditional_order}
+\end{align}
+For $t>0$, every count vector $n$ satisfies $\mu_t(C_n)>0$, so this
+conditional identity holds for every $n\in\N^I$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_count_fiber, lem:poisson_count_event_mass,
+lem:poisson_word_normalization, thm:finite_uniform_conditioning}
+The event $C_n$ is finite. Every word in it has length $m=\sum_i n_i$
+and the same singleton mass $e^{-Nt}t^m/m!$, where $N=|I|$.
+Theorem~\ref{thm:finite_uniform_conditioning} applies to this finite
+probability measure whenever the event mass is nonzero.
+For $t>0$, that common mass is strictly positive, and $C_n$ is nonempty.
+Consequently $\mu_t(C_n)=|C_n|e^{-Nt}t^m/m!>0$.
+\end{proof}
+
+\begin{lemma}[Null count events at zero time]
+\label{lem:poisson_null_count_conditioning}
+\lean{PoissonWord.measure_countEvent_zero_time_of_ne,
+PoissonWord.cond_countEvent_zero_time_of_ne}
+\leanok
+\uses{def:poisson_word_count_vector}
+At $t=0$, every $n\ne0$ satisfies
+\begin{align}
+ \mu_0(C_n)&=0,& \mu_0(\,\cdot\mid C_n)&=0.
+ \label{eq:poisson_null_count_conditioning}
+\end{align}
+The second equality uses the totalized conditional-measure convention in
+Lean: conditioning on a null event gives the zero measure.
+For $n=0$, the fiber consists only of the empty word and has mass one,
+so the conditional law is its point mass.
+\end{lemma}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_normalization, def:poisson_word_count_vector}
+At zero time $\mu_0$ is the point mass at the empty word, whose count vector
+is zero. Thus $C_n$ has zero mass when $n\ne0$; the definition of conditioning
+then gives the zero measure. A word with zero total count has length zero.
+\end{proof}
+
+\begin{definition}[Count-and-order sampler]
+\label{def:poisson_counts_then_uniform}
+\lean{PoissonWord.countsThenUniform}
+\leanok
+\uses{def:poisson_word_count_vector, lem:poisson_word_count_fiber}
+Put $\nu_t=\bigotimes_{i\in I}\operatorname{Poisson}(t)$ and define
+\begin{align}
+ \widehat\mu_t
+   &=\sum_{n\in\N^I}\nu_t(\{n\})\operatorname{Unif}(C_n).
+ \label{eq:poisson_counts_then_uniform}
+\end{align}
+This samples independent counts and then a uniform compatible word.
+Every $C_n$ is finite and nonempty, including at $t=0$.
+\end{definition}
+
+\begin{theorem}[Reconstruction of the word law]
+\label{thm:poisson_counts_then_uniform}
+\lean{PoissonWord.countsThenUniform_eq_measure,
+PoissonWord.instIsProbabilityMeasureCountsThenUniform}
+\leanok
+\uses{def:poisson_counts_then_uniform, def:poisson_word_measure}
+For every $t\ge0$,
+\begin{align}
+ \widehat\mu_t&=\mu_t.
+ \label{eq:poisson_counts_then_uniform_eq}
+\end{align}
+In particular, the count-and-order sampler is a probability measure.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:poisson_independent_counts, thm:poisson_conditional_order,
+lem:poisson_word_normalization}
+Fix a word $w$. In (\ref{eq:poisson_counts_then_uniform}), only
+$n=C(w)$ can contribute to its singleton mass: all other uniform measures
+are supported on disjoint fibers. The count law gives
+$\nu_t(\{n\})=\mu_t(C_n)$.
+If this mass is positive, (\ref{eq:poisson_conditional_order}) shows that
+its contribution is $\mu_t(C_n)\mu_t(\{w\}\mid C_n)=\mu_t(\{w\})$.
+If the fiber has zero mass, both the contribution and $\mu_t(\{w\})$
+vanish. Thus the two measures agree on every singleton of the countable
+word space, proving equality and normalization.
+\end{proof}
+
+When $I=\varnothing$, the only count vector is zero, the only word is
+empty, and both measures are its point mass for every $t\ge0$.
+The reconstruction also holds at $t=0$: impossible count vectors receive
+zero mixture weight even though their combinatorial fibers are nonempty.
+These results construct no event times, independent-increment process,
+pathwise clock coupling, or locality estimate.
