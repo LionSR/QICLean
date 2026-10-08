@@ -1,0 +1,19 @@
+{
+  "source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "QICLean.Analysis.WeightedTraceHolder",
+    "QICLean.Representation.GroupedLabelEntropy",
+    "QICLean.Representation.MergeExponential",
+    "QICLean.Representation.SchurSurprisal"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:17:51.368754+00:00",
+  "elapsed_seconds": 37.702,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-target.log",
+  "sha256": "d8a5560abadf930f628f0b0707a52ecda7aa06f1a46be974d4965bf2f3f3194b"
+}

@@ -1,0 +1,91 @@
+{
+  "authoritative_parent_revision": "f675fee80416c966989bc8bc124a3d54b1348492",
+  "source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "refreshed_declarations": [
+    {
+      "path": "QICLean/Representation/SchurSurprisal.lean",
+      "declaration": "PermutationRepresentation.joint_hom_fst",
+      "signature_byte_identical": true,
+      "signature_sha256": "e91dc5c13b5ca24512ad3d526c8851e79e0fdc996d26a7f558d8c7d7bb8e9cbe",
+      "old_proof_body_sha256": "f892326d39558510f59a7e89e6e131aad7f788ead32ff25c17cd4b2a399c275c",
+      "new_proof_body_sha256": "4f7b309cd9c2596dc718889370a6169d586e49f5f49f42eb3b0a670ffe662d63",
+      "proof_body_byte_identical": false,
+      "refresh_reason": "Direct public proof simplification."
+    },
+    {
+      "path": "QICLean/Representation/SchurSurprisal.lean",
+      "declaration": "PermutationRepresentation.joint_hom_snd",
+      "signature_byte_identical": true,
+      "signature_sha256": "18d97579d98ab9837914ebafd24ccad9caddf2c43c532b40224ba42eed177f86",
+      "old_proof_body_sha256": "53366513bfe4b23c4243f75bfeddb3f91c61e227ca6b4a54dac9a56aba4af92c",
+      "new_proof_body_sha256": "06095e3e868396d88f573b240930e872a584dc663aac3a2d7588ee62cd889deb",
+      "proof_body_byte_identical": false,
+      "refresh_reason": "Direct public proof simplification."
+    },
+    {
+      "path": "QICLean/Representation/GroupedLabelEntropy.lean",
+      "declaration": "TensorPower.groupedCopies_labelEntropy_bounds",
+      "signature_byte_identical": true,
+      "signature_sha256": "559f1aa6d876f85b09334931fc5a06e51fcfa15cc915c0986d4f742f1c5e21ab",
+      "old_proof_body_sha256": "d18cc320e838559a97fe71cedcb7a41e713c985292973d595e40753b70e1ec2a",
+      "new_proof_body_sha256": "0cb6bac9c961c4619d0a5beacb26a8d2b700312fa8eec01b0623fb9927c09d46",
+      "proof_body_byte_identical": false,
+      "refresh_reason": "Direct public proof simplification."
+    },
+    {
+      "path": "QICLean/Representation/MergeExponential.lean",
+      "declaration": "PermutationRepresentation.exp_mergeDeficit_eq_sum",
+      "signature_byte_identical": true,
+      "signature_sha256": "a767e7509e1c22653f08567c455bab14825eb2c5f1467400b2b66c2a0272f8a5",
+      "old_proof_body_sha256": "d0d88b78273f21b4844501e940bd255e4bab464208bf57bb08a2fff33f5ccdd7",
+      "new_proof_body_sha256": "d0d88b78273f21b4844501e940bd255e4bab464208bf57bb08a2fff33f5ccdd7",
+      "proof_body_byte_identical": true,
+      "refresh_reason": "Unchanged public body; its actual private marginal helpers were simplified."
+    },
+    {
+      "path": "QICLean/Representation/MergeExponential.lean",
+      "declaration": "PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum",
+      "signature_byte_identical": true,
+      "signature_sha256": "d2067f34990a814bacd487a8c3ecdad15cdc829320d88e952b42d5bee44ddf0a",
+      "old_proof_body_sha256": "9bd968241d73ea738547eca914f360c6291b8c1af2ea918f8b04ab7c996315bf",
+      "new_proof_body_sha256": "9bd968241d73ea738547eca914f360c6291b8c1af2ea918f8b04ab7c996315bf",
+      "proof_body_byte_identical": true,
+      "refresh_reason": "Unchanged public body; its actual private marginal helpers were simplified."
+    },
+    {
+      "path": "QICLean/Representation/MergeExponential.lean",
+      "declaration": "PermutationRepresentation.posSemidef_mergeDeficit",
+      "signature_byte_identical": true,
+      "signature_sha256": "cd6c4e69a7e87c6b03b3212510de92a347a0814a14decaecae6a6d2ce3fa5643",
+      "old_proof_body_sha256": "180a352514db439e6295cd82c622786120d1de79ceda36d333e9b5d05beed9cd",
+      "new_proof_body_sha256": "180a352514db439e6295cd82c622786120d1de79ceda36d333e9b5d05beed9cd",
+      "proof_body_byte_identical": true,
+      "refresh_reason": "Unchanged public body; its actual private marginal helpers were simplified."
+    }
+  ],
+  "original_provenance_preserved": [
+    {
+      "path": "docs/provenance/openai-math.d/groupedLabelEntropy8750.json",
+      "sha256": "b63b784c11c7f18c1ce97e54f47a8fd5bf6343ffa923c4cd705c5b312b4658f6",
+      "preserved": "Whole original provenance record and historical verification; fresh child verification is separate."
+    },
+    {
+      "path": "docs/provenance/openai-math.d/mergeExponential8750.json",
+      "sha256": "8451f38759c6593fef9dfebcc72f0940999838e15ea7e22817f277378d7a8cb8",
+      "preserved": "Whole original provenance record and historical verification; fresh child verification is separate."
+    },
+    {
+      "path": "docs/provenance/openai-math.d/mergeDeficitPositivity8753.json",
+      "sha256": "feb007cf5a2d55fec7bd56fb935ba42f06af6b9b79c59f060d8d0e0787a0f009",
+      "preserved": "Whole original provenance record and historical verification; fresh child verification is separate."
+    }
+  ],
+  "new_declarations": [
+    "Matrix.IsOrthogonalResolution.prod_hom_fst",
+    "Matrix.IsOrthogonalResolution.prod_hom_snd",
+    "Matrix.PosSemidef.re_trace_mul_exp_smul_add_le",
+    "Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod",
+    "Matrix.PosSemidef.re_trace_mul_exp_nonneg"
+  ],
+  "scope": "Five frozen Lean files, exposition and ledger only; no broad parent semantic audit is claimed."
+}

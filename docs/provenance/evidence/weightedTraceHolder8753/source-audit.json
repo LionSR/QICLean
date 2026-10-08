@@ -1,0 +1,29 @@
+{
+  "production_files": [
+    {
+      "path": "QICLean/Analysis/OrthogonalResolution.lean",
+      "forbidden_code_tokens": []
+    },
+    {
+      "path": "QICLean/Analysis/WeightedTraceHolder.lean",
+      "forbidden_code_tokens": []
+    },
+    {
+      "path": "QICLean/Representation/GroupedLabelEntropy.lean",
+      "forbidden_code_tokens": []
+    },
+    {
+      "path": "QICLean/Representation/MergeExponential.lean",
+      "forbidden_code_tokens": []
+    },
+    {
+      "path": "QICLean/Representation/SchurSurprisal.lean",
+      "forbidden_code_tokens": []
+    }
+  ],
+  "new_original_notices": 5,
+  "owned_declarations": 5,
+  "refreshed_declarations": 6,
+  "manuscript_commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "faithfulness": "Auxiliary commuting exponential trace inequalities with arbitrary PSD weight; actual five physical factors, moment rates and sharp comparator remain downstream."
+}
