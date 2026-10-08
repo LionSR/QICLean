@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Entropy
 
+import QICLean.Entropy.AuxiliaryPairEntropy
 import QICLean.Entropy.Bipartite
 import QICLean.Entropy.BufferDiscount
 import QICLean.Entropy.ClassicalMutualInformation
@@ -36,6 +37,7 @@ import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.FiniteProductTypicalState
 import QICLean.Entropy.GapSurprisal
 import QICLean.Entropy.IidSurprisal
 import QICLean.Entropy.LocalLift
@@ -78,6 +80,7 @@ import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
 import QICLean.Entropy.TypicalDensity
+import QICLean.Entropy.TypicalPureCompression
 import QICLean.Entropy.TypicalPureState
 import QICLean.Entropy.TypicalSpectrum
 import QICLean.Entropy.UnnormalizedStrongSubadditivity
