@@ -1,0 +1,68 @@
+% Source: OpenAI2026AreaLaw, 06-transport.tex, transport:states, lines 393--401.
+% Manuscript revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\section{Embedding the transport matrices}
+\label{sec:transport_state_intertwine}
+
+For positive definite inputs $(A_i)_{i\in I}$ and a weighted binary tree $T$,
+write $M_T(A)$ for the root and $\Phi_{T,j}^A$ for its normalized leaf map.
+For a root vector $v$ and $u\in\mathbb R$, define
+\begin{align}
+  \sigma_{T,j,u}^A(v)
+    &=(\Phi_{T,j}^A)^*
+       \bigl(|M_T(A)^{-iu}v\rangle\langle M_T(A)^{-iu}v|\bigr).
+\end{align}
+This definition uses the transport-state formula of~\cite{OpenAI2026AreaLaw},
+display \texttt{transport:states}. The following auxiliary identities apply
+to arbitrary root vectors under a common intertwiner of the inputs.
+
+\begin{lemma}[Imaginary powers and a rectangular intertwiner]
+  \label{lem:imaginary_power_intertwine}
+  \lean{Matrix.Transport.imagPow_intertwine}
+  \leanok
+  Let $M,N$ be positive definite matrices on finite-dimensional complex
+  Hilbert spaces and let $J$ map the second space to the first.
+  If $MJ=JN$, then every $u\in\mathbb R$ satisfies
+  \begin{align}
+    M^{-iu}J&=JN^{-iu}.
+  \end{align}
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  The finite-dimensional functional calculus gives $(\log M)J=J\log N$.
+  Multiplication by $-iu$ preserves this identity, as does taking matrix
+  exponentials. Thus $\exp(-iu\log M)J=J\exp(-iu\log N)$.
+\end{proof}
+
+\begin{theorem}[Transport matrices under a common intertwiner]
+  \label{thm:transport_state_intertwine}
+  \lean{Matrix.Transport.transportState_intertwine}
+  \leanok
+  Let $(A_i)_{i\in I}$ and $(B_i)_{i\in I}$ be positive definite inputs
+  on two finite-dimensional complex Hilbert spaces.
+  Let $J$ map the second space to the first and suppose that
+  $A_iJ=JB_i$ for every $i\in I$.
+  Then every weighted binary tree $T$, label $j$, root vector $v$ on the
+  second space and real $u$ satisfy
+  \begin{align}
+    \sigma_{T,j,u}^A(Jv)&=J\sigma_{T,j,u}^B(v)J^*.
+  \end{align}
+  The same tree, labels and weights are used on both sides. Repeated labels
+  and zero terminal weights are allowed.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:mean_tree_intertwine, lem:imaginary_power_intertwine,
+    thm:trace_adjoint_leaf_map_intertwine}
+  Theorem~\ref{thm:mean_tree_intertwine} gives $M_T(A)J=JM_T(B)$.
+  Lemma~\ref{lem:imaginary_power_intertwine} therefore gives
+  $M_T(A)^{-iu}Jv=JM_T(B)^{-iu}v$.
+  Put $w=M_T(B)^{-iu}v$. Since $|Jw\rangle\langle Jw|
+  =J|w\rangle\langle w|J^*$, Theorem~\ref{thm:trace_adjoint_leaf_map_intertwine}
+  yields the stated identity.
+\end{proof}
+
+These identities hold for arbitrary rectangular $J$.
+If $J$ is an isometry, it also preserves the norm of every root vector;
+this is a separate assertion.
