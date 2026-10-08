@@ -18,11 +18,9 @@ $1\le i\le d$, and set
         \prod_{i=1}^d\frac{\Gamma(1+tl_i)}{\Gamma(1+t(d-i))}.
 \]
 The metric of a subsystem $Q$ is $W_{Q,k}=\sum_\lambda w_k(\lambda)\pi^\lambda_{Q,k}$.
-This chapter proves the scalar properties of $w_k$ on which the operator
-statements of the paper's Lemma~6.2 rest: positivity, the exact marked ratio,
-the entropy asymptotics, and the size and limit of the marked ratio. The
-integral representation of $W_{Q,k}$ and the operator forms of these estimates
-are not yet formalized.
+This chapter proves the scalar properties of $w_k$, and from them the operator
+statements of the paper's Lemma~6.2 other than the integral representation of
+$W_{Q,k}$.
 
 \section{Ratios of Gamma values}
 
@@ -149,3 +147,197 @@ label-wise form of the comparison of $W_{Q,k}$ with $e^{-tF_{Q,k}}$.
 On a removable branch the star operator has eigenvalue $(\lambda_i-i)/k=(l_i-d)/k$,
 so this lemma is the scalar content of the convergence of the marked ratio of
 the metrics to the positive part of the star operator raised to the power $t$.
+
+\section{Functional calculus on an orthogonal resolution}
+
+\begin{lemma}[Functions of an orthogonal resolution]
+    \label{lem:orthogonal_resolution_cfc}
+    \lean{Matrix.IsOrthogonalResolution.aeval_hom,
+        Matrix.IsOrthogonalResolution.spectrum_hom_subset,
+        Matrix.IsOrthogonalResolution.cfc_hom,
+        Matrix.IsOrthogonalResolution.l2_opNorm_hom_le,
+        Matrix.IsOrthogonalResolution.re_star_dotProduct_hom_mulVec_self,
+        Matrix.IsOrthogonalResolution.sum_weight}
+    \leanok
+    \uses{lem:orthogonal_resolution}
+    Let $P_i$ be Hermitian idempotents with $P_iP_j=\delta_{ij}P_i$ and
+    $\sum_iP_i=I$, and let $g$ be real. Then $f(\sum_ig_iP_i)=\sum_if(g_i)P_i$ for
+    every real function $f$. If $|c_i|\le M$ whenever $P_i\ne0$, then
+    $\|\sum_ic_iP_i\|\le M$ in operator norm. For every vector $z$,
+    $\|\sum_ic_iP_iz\|^2=\sum_i|c_i|^2\|P_iz\|^2$ and $\sum_i\|P_iz\|^2=\|z\|^2$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Polynomials act pointwise, and the spectrum lies in the range of $g$, so
+    interpolating $f$ on that finite set by a polynomial proves the first claim.
+    For the second, $A^\ast A=\sum_i|c_i|^2P_i\le M^2I$ and
+    $\|A\|^2=\|A^\ast A\|$.
+\end{proof}
+
+\section{The metrics}
+
+Let $\mathcal V=\bigotimes_f\C^{\iota_f}$ have dimension $d$, and let a subsystem
+$Q$ be a set of factors. A label occurring on $Q^{\otimes k}$ has at most $d_Q\le d$
+rows.
+
+\begin{lemma}[Labels of a subsystem]
+    \label{lem:subsystem_label_transport}
+    \lean{PermutationRepresentation.labelProj_of_intertwine,
+        PermutationRepresentation.labelProj_prodLeft,
+        TensorPower.labelProj_subsystemPerm_eq,
+        TensorPower.labelPart_eq_zero_of_subsystemPerm,
+        TensorPower.card_subConfig_le}
+    \leanok
+    Under $\mathcal V^{\otimes k}\cong Q^{\otimes k}\otimes(Q^c)^{\otimes k}$, the
+    label projector $\pi^\lambda_{Q,k}$ is the label projector of $Q^{\otimes k}$
+    tensored with the identity. Consequently a label with $\pi^\lambda_{Q,k}\ne0$
+    has at most $d_Q$ rows, and $d_Q\le d$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Intertwined permutation actions have the same group-algebra image up to
+    relabelling the basis, and an action on the first factor of a product gives
+    the image tensored with the identity. The row bound is the corresponding
+    statement for $(\C^{d_Q})^{\otimes k}$.
+\end{proof}
+
+\begin{theorem}[Positivity, centrality and complements]
+    \label{thm:replica_metric_basic}
+    \lean{TensorPower.replicaMetric, TensorPower.posDef_replicaMetric,
+        TensorPower.replicaMetric_zero, TensorPower.commute_replicaMetric_permOp,
+        TensorPower.commute_replicaMetric_of_subset,
+        TensorPower.commute_replicaMetric_of_disjoint,
+        TensorPower.replicaMetric_mul_symProj_compl}
+    \leanok
+    \uses{lem:replica_weight_ratio, thm:schur_label_commutation}
+    Let $t\ge0$ and assume every factor is nonzero. The metric
+    $W_{Q,k}=\sum_\lambda w_k(\lambda)\pi^\lambda_{Q,k}$ is positive definite,
+    commutes with the copy permutations of $Q$ and with the metrics of nested and
+    disjoint subsystems, and $W_{Q,0}=I$. On the symmetric subspace,
+    $W_{Q,k}=W_{Q^c,k}$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The weights are positive and the label projectors form an orthogonal
+    resolution of the identity. The other claims hold for every central label
+    function, by the commutation and complement properties of the label
+    projectors.
+\end{proof}
+
+\begin{theorem}[Comparison with the label observable]
+    \label{thm:replica_metric_comparison}
+    \lean{TensorPower.exists_abs_log_replicaLabelWeight_add_le,
+        TensorPower.cfc_exp_labelEntropy, TensorPower.exists_replicaMetric_comparison}
+    \leanok
+    \uses{lem:replica_weight_entropy, lem:hook_formula_entropy,
+        lem:subsystem_label_transport, lem:orthogonal_resolution_cfc}
+    Let $t>0$. There is $C$, depending only on $d$ and $t$, such that for every
+    subsystem $Q$ and every $k$,
+    \[
+        (k+2)^{-C}e^{-tF_{Q,k}}\le W_{Q,k}\le(k+2)^Ce^{-tF_{Q,k}}.
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    Both sides are functions of the label projectors, so it suffices to compare
+    the coefficients of the labels that occur. Such a label has at most $d$ rows,
+    $d_\lambda$ equals the dimension formula, and the entropy asymptotics of the
+    dimension formula and of the label function give
+    $|\log w_k(\lambda)+t\log d_\lambda|\le C\log(k+2)$.
+\end{proof}
+
+\section{The marked ratio of the metrics}
+
+Let $k=m+1$. Extend $W_{Q,k-1}$ by the identity on the last copy, put
+$R_{Q,k}=W_{Q,k}W_{Q,k-1}^{-1}$, and let $J_{Q,k}$ be the normalized star
+operator of $Q$.
+
+\begin{lemma}[Branch decomposition of the marked ratio]
+    \label{lem:marked_ratio_branches}
+    \lean{TensorPower.snocEquiv, TensorPower.replicaMetricFirst,
+        TensorPower.replicaMetricFirst_eq, TensorPower.markedRatio,
+        TensorPower.starOp_subsystemPerm_eq_hom, TensorPower.markedRatio_eq_hom,
+        TensorPower.exists_branch_scalars}
+    \leanok
+    \uses{thm:replica_metric_basic, lem:replica_weight_ratio}
+    In the joint resolution by the label $\lambda$ of all copies and the label
+    $\nu$ of the first $k-1$ copies, $R_{Q,k}$ and $J_{Q,k}$ are diagonal. On a
+    nonzero block, $\nu=\lambda-e_i$, the ratio acts by $r(k,l_i)$ and the star
+    operator by $(l_i-d)/k$, where $1\le l_i\le k+d$ is the shifted part of
+    $\lambda$ padded to length $d$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The extended metric is the central label function of the copy permutations
+    fixing the last copy. On a nonzero block the labels are compatible, so
+    $\nu=\lambda-e_i$; the star eigenvalue is the one of the Schur-label
+    estimates, and the ratio of label functions is the exact marked ratio.
+\end{proof}
+
+\begin{theorem}[Forward marked ratio]
+    \label{thm:marked_ratio_forward}
+    \lean{TensorPower.exists_l2_opNorm_markedRatio_sub_le,
+        TensorPower.exists_l2_opNorm_markedRatio_le}
+    \leanok
+    \uses{lem:marked_ratio_branches, lem:replica_ratio_limit, lem:replica_ratio_bounds,
+        lem:orthogonal_resolution_cfc}
+    Let $0<t<1$. There are constants such that, on the entire tensor space and
+    for every subsystem,
+    $\|R_{Q,k}-(J_{Q,k})_+^t\|\le Ck^{-t}$ and $\|R_{Q,k}\|\le C$. In particular
+    $\|R_{Q,k}-(J_{Q,k})_+^t\|\to0$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Both operators are diagonal in the branch decomposition; apply the limit and
+    the bounds of the marked ratio blockwise and the operator-norm bound on an
+    orthogonal resolution.
+\end{proof}
+
+\begin{lemma}[Branch weights of a symmetric vector]
+    \label{lem:symmetric_branch_weights}
+    \lean{TensorPower.complAverage, TensorPower.trace_complAverage_mul,
+        TensorPower.commute_complAverage, TensorPower.weight_branch,
+        TensorPower.card_branch_le, TensorPower.exists_branch_data}
+    \leanok
+    \uses{lem:marked_ratio_branches, lem:subsystem_label_transport}
+    Let $z\in\mathcal S_k$. On a branch $\nu=\lambda-e_i$,
+    $d_\lambda\|\pi^\lambda\pi^\nu z\|^2=d_\nu\|\pi^\lambda z\|^2$; hence
+    $\|\pi^\lambda\pi^\nu z\|^2\le2^d(l_i/k)\|\pi^\lambda z\|^2$. Each label has at
+    most $d$ branches with nonzero projector.
+\end{lemma}
+
+\begin{proof}\leanok
+    The average of $|z\rangle\langle z|$ over the copy permutations of $Q^c$ commutes
+    with the copy permutations of $Q$, because $z$ is symmetric, and pairs with every
+    operator generated by them as $k!\,|z\rangle\langle z|$; this is the matrix form
+    of the permutation invariance of the $Q$ marginal. The branch-probability
+    identity of the Schur-label estimates applies to it. Distinct branches of one
+    label differ in their removed row.
+\end{proof}
+
+\begin{theorem}[Inverse marked ratio on symmetric vectors]
+    \label{thm:marked_ratio_inverse}
+    \lean{TensorPower.markedRatio_inv_eq_hom,
+        TensorPower.exists_norm_markedRatio_inv_mulVec_le,
+        TensorPower.exists_markedRatio_inv_sub_clipped_sq_le,
+        TensorPower.exists_norm_markedRatio_inv_sub_clipped_le}
+    \leanok
+    \uses{lem:symmetric_branch_weights, lem:replica_ratio_bounds, lem:replica_ratio_limit}
+    Let $0<t<1/2$. There is $C$ such that $\|R_{Q,k}^{-1}z\|\le C\|z\|$ for every
+    $z\in\mathcal S_k$, and, for every $0<\delta<1$,
+    \[
+        \limsup_{k\to\infty}\sup_{z\in\mathcal S_k,\ \|z\|=1}
+        \bigl\|\bigl(R_{Q,k}^{-1}-\max(J_{Q,k},\delta)^{-t}\bigr)z\bigr\|
+        \le C\delta^{(1-2t)/2}.
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    Both operators are diagonal in the branch decomposition. On a branch,
+    $r^{-2}\|\pi^\lambda\pi^\nu z\|^2\le C(l_i/k)^{1-2t}\|\pi^\lambda z\|^2$, and summing
+    over at most $d$ branches and over labels gives the first bound. For the second,
+    on $J\ge\delta$ the clipped inverse differs from $r^{-1}$ by $O(k^{-t}\delta^{-2t})$.
+    On $J<\delta$, $l_i/k<\delta+d/k$, and both inverses contribute at most
+    $C\bigl((\delta+d/k)^{1-2t}+\delta^{-2t}(\delta+d/k)\bigr)\|\pi^\lambda z\|^2$.
+    Let $k\to\infty$ and take square roots.
+\end{proof}

@@ -30,6 +30,9 @@ import QICLean.Representation.MergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.RegularTrace
+import QICLean.Representation.ReplicaMarkedRatio
+import QICLean.Representation.ReplicaMarkedRatioInverse
+import QICLean.Representation.ReplicaMetric
 import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
@@ -39,6 +42,7 @@ import QICLean.Representation.SchurWeylCommutant
 import QICLean.Representation.SchurWeylLabels
 import QICLean.Representation.SchurWeylLift
 import QICLean.Representation.StarOperator
+import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.WeylDimension
 import QICLean.Representation.WeylRecursion
