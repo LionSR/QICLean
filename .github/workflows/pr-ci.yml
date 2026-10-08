@@ -348,6 +348,8 @@ jobs:
             QICLeanTest/PoissonWordRealOccupationAxioms.lean \
             QICLeanTest/PoissonWordJump.lean \
             QICLeanTest/PoissonWordJumpAxioms.lean \
+            QICLeanTest/PoissonWordWeightedGrowth.lean \
+            QICLeanTest/PoissonWordWeightedGrowthAxioms.lean \
             QICLeanTest/TaggedInterleavings.lean \
             QICLeanTest/TaggedInterleavingsAxioms.lean \
             QICLeanTest/PoissonWordThinning.lean \

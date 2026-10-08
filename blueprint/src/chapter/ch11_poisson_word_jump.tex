@@ -107,10 +107,12 @@ For a finite alphabet $I$, $T\geq0$, and
 $F:\mathcal W_I\times I\to\mathbb R$ satisfying $|F(u,i)|\leq C$
 for a real constant $C$ and every $u,i$,
 \begin{align}
+ \begin{aligned}
  &\int_{\mathcal W_I}\sum_{j<|w|}F(w_{<j},w_j)\,d\mu_{I,T}(w)
- \notag\\
+ \\
  &\qquad=\int_0^T\sum_{i\in I}\int_{\mathcal W_I}
  F(u,i)\,d\mu_{I,s}(u)\,ds.
+ \end{aligned}
  \label{eq:poisson_jump_signed_prefix}
 \end{align}
 \end{theorem}
@@ -136,10 +138,12 @@ Let $I$ be finite, $T\geq0$, and $f:\mathcal W_I\to\mathbb R$.
 Suppose $|f(w)|\leq C$ for every $w$, where $C\in\mathbb R$.
 Then
 \begin{align}
+ \begin{aligned}
  &\int_{\mathcal W_I}f(w)\,d\mu_{I,T}(w)-f(\varnothing)
- \notag\\
+ \\
  &\qquad=\int_0^T\sum_{i\in I}\int_{\mathcal W_I}
  \bigl(f(u[i])-f(u)\bigr)\,d\mu_{I,s}(u)\,ds.
+ \end{aligned}
  \label{eq:poisson_jump_formula}
 \end{align}
 \end{theorem}
@@ -167,10 +171,12 @@ Suppose $G:\mathcal W_I\times I\to\mathbb R$ and $D\in\mathbb R$
 satisfy $0\leq G(u,i)\leq D$ and $f(u[i])-f(u)\leq G(u,i)$
 for every $u,i$.  Then
 \begin{align}
+ \begin{aligned}
  &\int_{\mathcal W_I}f(w)\,d\mu_{I,T}(w)
- \notag\\
+ \\
  &\qquad\leq f(\varnothing)+\int_0^T\sum_{i\in I}\int_{\mathcal W_I}
  G(u,i)\,d\mu_{I,s}(u)\,ds.
+ \end{aligned}
  \label{eq:poisson_jump_upper}
 \end{align}
 \end{theorem}
