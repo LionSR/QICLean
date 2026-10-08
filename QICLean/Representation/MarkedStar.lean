@@ -181,8 +181,10 @@ theorem sum_expect_regionUnit_smul (Q : Finset V) (θ : SiteConfig n → ℂ) :
       rw [EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm]
       rfl
     rw [h, regionUnit, inner_localLift, Matrix.trace]
-    simp [Matrix.mul_apply, Matrix.single_apply]
-  simp only [hexp, regionUnit, ← localLift_smul, ← localLift_sum, margLift]
+    simp only [Matrix.diag, Matrix.mul_apply, Matrix.single_apply, mul_ite, mul_one, mul_zero]
+    simp only [ite_and, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
+  simp only [hexp]
+  simp only [regionUnit, ← localLift_smul, ← localLift_sum, margLift]
   congr 1
   rw [Finset.sum_comm]
   conv_rhs => rw [Matrix.matrix_eq_sum_single (regionState Q (WithLp.toLp 2 θ))]
@@ -196,12 +198,13 @@ theorem injectionAverage_oneCopy_eq {Ω : Type*} [Fintype Ω] [DecidableEq Ω] (
     rw [Fintype.card_embedding_eq, Fintype.card_fin, Fintype.card_fin, Nat.descFactorial_one]
   rw [injectionAverage, hN]
   congr 1
-  refine Fintype.sum_equiv ⟨fun ι => ι 0, singleEmb, fun ι => ?_, fun j => rfl⟩ _ _ fun ι => ?_
-  · ext a; rw [Subsingleton.elim a 0]; rfl
-  · have hι : ι = singleEmb (ι 0) := by ext a; rw [Subsingleton.elim a 0]; rfl
-    simp only [Equiv.coe_fn_mk]
-    conv_lhs => rw [hι]
-    exact placeOp_single _ _
+  have hι : ∀ ι : Fin 1 ↪ Fin k, singleEmb (ι 0) = ι := fun ι =>
+    Function.Embedding.ext fun a => by fin_cases a; rfl
+  refine Fintype.sum_equiv (Equiv.mk (fun ι : Fin 1 ↪ Fin k => ι 0) singleEmb hι fun j => rfl)
+    _ _ fun ι => ?_
+  change placeOp ι (oneCopy A) = siteOp (ι 0) A
+  conv_lhs => rw [← hι ι]
+  exact placeOp_single _ _
 
 /-- **The star operator splits into donor averages** (`05-replicas.tex`, lines 776–789):
 `J_{Q,k} = ∑_{a,b} 𝒯_{k,1}(E_{ab}) E_{ba}^{(k)} - k⁻¹ ∑_{a,b} (E_{ab} E_{ba})^{(k)}`. -/
@@ -210,9 +213,16 @@ theorem starOp_subsystemPerm_eq (m : ℕ) (Q : Finset V) :
       ∑ a, ∑ b, injectionAverage (m + 1) 1 (oneCopy (regionUnit Q a b)) *
           siteOp (Fin.last m) (regionUnit Q b a) -
         ((m + 1 : ℕ) : ℂ)⁻¹ • siteOp (Fin.last m) (∑ a, ∑ b, regionUnit Q a b * regionUnit Q b a) := by
-  rw [starOp]
-  simp only [fun j : Fin m => permOp_subsystemPerm_swap_eq_sum (k := m + 1) (n := n) Q
-    (Fin.castSucc_lt_last j).ne, injectionAverage_oneCopy_eq, Fin.sum_univ_castSucc]
-  sorry
+  have hsw : ∀ j : Fin m, permOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)
+      (Equiv.swap (Fin.castSucc j) (Fin.last m)) = ∑ a, ∑ b,
+        siteOp (Fin.castSucc j) (regionUnit Q a b) * siteOp (Fin.last m) (regionUnit Q b a) :=
+    fun j => permOp_subsystemPerm_swap_eq_sum Q (Fin.castSucc_lt_last j).ne
+  rw [starOp, Finset.sum_congr rfl fun j _ => hsw j]
+  simp only [injectionAverage_oneCopy_eq, Fin.sum_univ_castSucc, siteOp_sum, siteOp_mul_siteOp,
+    Matrix.smul_mul, Matrix.add_mul, Finset.sum_mul, Finset.sum_add_distrib, smul_add,
+    Finset.smul_sum]
+  rw [add_sub_cancel_right, Finset.sum_comm]
+  refine Finset.sum_congr rfl fun a _ => ?_
+  rw [Finset.sum_comm]
 
 end TensorPower
