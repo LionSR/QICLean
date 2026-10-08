@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation
 
+import QICLean.Representation.Alternant
 import QICLean.Representation.BranchProbability
 import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri
@@ -17,6 +18,7 @@ import QICLean.Representation.CoherentMeasure
 import QICLean.Representation.CoherentResolution
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
+import QICLean.Representation.ExteriorPieri
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookDimension
@@ -49,6 +51,7 @@ import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
 import QICLean.Representation.SchurWeylLabels
 import QICLean.Representation.SchurWeylLift
+import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarOperator
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
@@ -56,5 +59,6 @@ import QICLean.Representation.TrivialLabel
 import QICLean.Representation.UniformHusimi
 import QICLean.Representation.UnitaryCommutant
 import QICLean.Representation.UnitaryTwirl
+import QICLean.Representation.WeylCharacter
 import QICLean.Representation.WeylDimension
 import QICLean.Representation.WeylRecursion
