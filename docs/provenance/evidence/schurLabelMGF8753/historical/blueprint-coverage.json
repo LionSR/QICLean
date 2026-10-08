@@ -1,0 +1,11 @@
+{
+  "chapter": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-label-moments/blueprint/src/fragment/schur_label_moment_bounds.tex",
+  "sha256": "c49680e9ab6349210f18d4cd73d16ef560408cf417b23992a6d4003beb971729",
+  "declaration_tags": [
+    "TensorPower.log_centered_labelEntropy_moments_le",
+    "TensorPower.log_centered_labelEntropy_moments_uniform"
+  ],
+  "exact_once": true,
+  "rendered": false,
+  "full_checkdecls_run": false
+}

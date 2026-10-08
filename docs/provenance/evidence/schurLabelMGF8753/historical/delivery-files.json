@@ -1,0 +1,10 @@
+[
+  {
+    "path": "QICLean/Representation/SchurLabelMomentBounds.lean",
+    "sha256": "9845b65181ba4dc234344bc280f08147c4d799d8198abc4be48a7bf9f256e4b0"
+  },
+  {
+    "path": "blueprint/src/fragment/schur_label_moment_bounds.tex",
+    "sha256": "c49680e9ab6349210f18d4cd73d16ef560408cf417b23992a6d4003beb971729"
+  }
+]

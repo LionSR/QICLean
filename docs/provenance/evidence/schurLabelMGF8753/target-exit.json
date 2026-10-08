@@ -1,0 +1,14 @@
+{
+  "source_revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Representation.SchurLabelMomentBounds"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T03:55:50.761646+00:00",
+  "elapsed_seconds": 21.263,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGF8753/target.log",
+  "sha256": "389605759d56301ac7696e8d25e801f6c0545498fccbb9c806ad637a470eeaea"
+}

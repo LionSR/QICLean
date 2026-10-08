@@ -1,0 +1,15 @@
+{
+  "source_revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+  "command": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T03:55:33.654499+00:00",
+  "elapsed_seconds": 16.828,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGF8753/cache-fetch.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

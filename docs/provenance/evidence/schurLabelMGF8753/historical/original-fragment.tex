@@ -1,0 +1,61 @@
+\section{Quantitative bounds for the centered label moments}
+\label{sec:schur-label-moment-bounds}
+
+The following conditional estimate gives the scalar step in
+\cite[Section~7, lines~227--238]{OpenAI2026AreaLaw}. Its hypothesis concerns
+the centered surprisal on all copies. Deriving that hypothesis from the
+one-copy marginal estimate by independence is a separate assertion.
+
+\begin{theorem}[Quadratic label moments with an explicit logarithmic loss]
+\label{thm:schur-label-moment-bounds}
+\lean{TensorPower.log_centered_labelEntropy_moments_le,
+TensorPower.log_centered_labelEntropy_moments_uniform}
+\uses{thm:schur-label-copy-centered}
+\leanok
+Let $\rho$ be a permutation-invariant density matrix on $Q^{\otimes k}$,
+where $\dim Q=q$. Write $F$ for its Schur-label observable and $L=-\log\rho$
+on the support of $\rho$, with zero value on the kernel. For a real center
+$s$, put
+\[
+ M_A(t;s)=\operatorname{ReTr}\bigl(\rho e^{t(A-sI)}\bigr).
+\]
+Suppose $C_0\ge0$, $c_0>0$, and $\mathcal B\ge1$, and assume the actual
+centered surprisal estimate
+\[
+ \log M_L(t;s)\le C_0k\mathcal B t^2
+ \qquad\left(|t|\le\frac{c_0}{\sqrt{\mathcal B}}\right).
+\]
+Then $c=\min(c_0,1)/2$ is positive. For $0\le u\le c/\sqrt{\mathcal B}$,
+\begin{align*}
+ \log M_F(u;s)&\le C_0k\mathcal B u^2,\\
+ \log M_F(-u;s)&\le 2C_0k\mathcal B u^2
+                  +\frac{q^2}{2}\log(k+1).
+\end{align*}
+In particular, throughout the symmetric interval
+$|t|\le c/\sqrt{\mathcal B}$,
+\[
+ \log M_F(t;s)\le 2C_0k\mathcal B t^2
+                      +\frac{q^2}{2}\log(k+1).
+\]
+The quadratic coefficient and the interval constant are independent of $q$.
+The center is arbitrary; the specialization $s=kS(Q)$ requires the actual
+independent-copy surprisal estimate at that center.
+\end{theorem}
+
+\begin{proof}
+\leanok
+Every Hermitian exponential is positive definite. Its trace pairing with
+$\rho\ge0$, $\operatorname{Tr}\rho=1$, is therefore strictly positive,
+so logarithmic monotonicity applies to the preceding moment comparisons.
+Since $\sqrt{\mathcal B}\ge1$, the chosen range gives both $2u\le1$ and
+$2u\le c_0/\sqrt{\mathcal B}$. The positive comparison immediately gives
+the first bound. For the negative comparison,
+\begin{align*}
+ \log M_F(-u;s)
+ &\le \tfrac12\log M_L(-2u;s)+\tfrac12 q^2\log(k+1)\\
+ &\le 2C_0k\mathcal B u^2+\tfrac12 q^2\log(k+1).
+\end{align*}
+Finally, $C_0k\mathcal B t^2$ and $\log(k+1)$ are nonnegative, so the
+larger bound also covers the positive sign. All zero-copy and singular-state
+cases remain included.
+\end{proof}

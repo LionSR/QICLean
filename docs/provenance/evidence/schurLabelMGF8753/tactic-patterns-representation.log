@@ -1,0 +1,9 @@
+# Repeated tactic patterns (>= 3 occurrences)
+# Ranked by lines x occurrences; showing top 10
+
+## 3 occurrences x 3 lines (weight 9)
+    funext i
+    by_cases hij : i = j
+    · subst hij; simp
+  at: Representation/HighestWeight.lean:105, Representation/SchurWeylCommutant.lean:180, Representation/SchurWeylLift.lean:118
+

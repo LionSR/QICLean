@@ -1,0 +1,15 @@
+{
+  "source_revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "docs/provenance/evidence/schurLabelMGF8753/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T03:57:02.240067+00:00",
+  "elapsed_seconds": 27.128,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGF8753/bound-axioms.log",
+  "sha256": "14929a2f79496742330dbe90e32f3c5f6a3c1cfcd52da5449f9bb58aeb6a7ef7"
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "path": "QICLean/Representation/SchurLabelMomentBounds.lean",
+    "declaration": "TensorPower.log_centered_labelEntropy_moments_le",
+    "id": "8753-qic-schur-label-mgf-01"
+  },
+  {
+    "path": "QICLean/Representation/SchurLabelMomentBounds.lean",
+    "declaration": "TensorPower.log_centered_labelEntropy_moments_uniform",
+    "id": "8753-qic-schur-label-mgf-02"
+  }
+]

@@ -1,0 +1,4 @@
+import QICLean.Representation.SchurLabelMomentBounds
+set_option linter.hashCommand false
+#check TensorPower.log_centered_labelEntropy_moments_le
+#check TensorPower.log_centered_labelEntropy_moments_uniform

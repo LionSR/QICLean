@@ -1,0 +1,33 @@
+TensorPower.log_centered_labelEntropy_moments_le.{u_1} {Ω : Type u_1} [Fintype Ω] [DecidableEq Ω] {k : ℕ}
+  {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hρ : ρ.PosSemidef) (htr : ρ.trace = 1)
+  (hinv : ∀ (σ : Equiv.Perm (Fin k)), Commute ((PermutationRepresentation.permOp (TensorPower.copyPerm Ω k)) σ) ρ)
+  (s C₀ c₀ ℬ : ℝ) (hℬ : 1 ≤ ℬ)
+  (hL :
+    ∀ (t : ℝ),
+      |t| ≤ c₀ / √ℬ → Real.log (ρ * NormedSpace.exp (↑t • (-CFC.log ρ - ↑s • 1))).trace.re ≤ C₀ * ↑k * ℬ * t ^ 2)
+  (u : ℝ) (hu : 0 ≤ u) (hur : u ≤ min c₀ 1 / 2 / √ℬ) :
+  Real.log
+        (ρ *
+              NormedSpace.exp
+                (↑u • (PermutationRepresentation.labelEntropy (TensorPower.copyPerm Ω k) - ↑s • 1))).trace.re ≤
+      C₀ * ↑k * ℬ * u ^ 2 ∧
+    Real.log
+        (ρ *
+              NormedSpace.exp
+                (-↑u • (PermutationRepresentation.labelEntropy (TensorPower.copyPerm Ω k) - ↑s • 1))).trace.re ≤
+      2 * C₀ * ↑k * ℬ * u ^ 2 + ↑(Fintype.card Ω) ^ 2 / 2 * Real.log (↑k + 1)
+TensorPower.log_centered_labelEntropy_moments_uniform.{u_1} {Ω : Type u_1} [Fintype Ω] [DecidableEq Ω] {k : ℕ}
+  {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hρ : ρ.PosSemidef) (htr : ρ.trace = 1)
+  (hinv : ∀ (σ : Equiv.Perm (Fin k)), Commute ((PermutationRepresentation.permOp (TensorPower.copyPerm Ω k)) σ) ρ)
+  (s C₀ c₀ ℬ : ℝ) (hC : 0 ≤ C₀) (hc : 0 < c₀) (hℬ : 1 ≤ ℬ)
+  (hL :
+    ∀ (t : ℝ),
+      |t| ≤ c₀ / √ℬ → Real.log (ρ * NormedSpace.exp (↑t • (-CFC.log ρ - ↑s • 1))).trace.re ≤ C₀ * ↑k * ℬ * t ^ 2) :
+  0 < min c₀ 1 / 2 ∧
+    ∀ (t : ℝ),
+      |t| ≤ min c₀ 1 / 2 / √ℬ →
+        Real.log
+            (ρ *
+                  NormedSpace.exp
+                    (↑t • (PermutationRepresentation.labelEntropy (TensorPower.copyPerm Ω k) - ↑s • 1))).trace.re ≤
+          2 * C₀ * ↑k * ℬ * t ^ 2 + ↑(Fintype.card Ω) ^ 2 / 2 * Real.log (↑k + 1)

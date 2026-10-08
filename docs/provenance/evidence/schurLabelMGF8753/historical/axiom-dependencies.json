@@ -1,0 +1,12 @@
+{
+  "TensorPower.log_centered_labelEntropy_moments_le": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "TensorPower.log_centered_labelEntropy_moments_uniform": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "source_revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+  "parent_revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+  "files": [
+    {
+      "path": "QICLean/Representation/SchurLabelMomentBounds.lean",
+      "sha256": "9845b65181ba4dc234344bc280f08147c4d799d8198abc4be48a7bf9f256e4b0"
+    },
+    {
+      "path": "blueprint/src/fragment/schur_label_moment_bounds.tex",
+      "sha256": "f3ee5c87ad606c01cf0fc1034178dc11ff475ea1e177d3b63f5811199c118a39"
+    },
+    {
+      "path": "docs/openai-area-law-schur-label-mgf.md",
+      "sha256": "6c7a46617a74c89a576b397d0af924e985605ef2d5eb034e0f860d4b2d9a895e"
+    }
+  ]
+}

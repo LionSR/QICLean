@@ -1,0 +1,14 @@
+{
+  "source_revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+  "command": [
+    "/opt/homebrew/bin/python3",
+    "docs/provenance/evidence/schurLabelMGF8753/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T03:58:18.222653+00:00",
+  "elapsed_seconds": 0.084,
+  "exit_code": 1,
+  "log": "docs/provenance/evidence/schurLabelMGF8753/provenance.log",
+  "sha256": "0a1ab920b625eb5167d0afcd7d27316768747ff5d1ccaf6810a7a208b84d0d97"
+}
