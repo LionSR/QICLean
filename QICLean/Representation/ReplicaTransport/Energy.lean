@@ -209,7 +209,7 @@ theorem coherentIntegral_nonneg {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {k : 
   rw [coherentProj, Matrix.mul_vecMulVec, Matrix.trace_vecMulVec, dotProduct_comm]
   exact (Complex.nonneg_iff.mp (hρ.dotProduct_mulVec_nonneg _)).1
 
-omit [DecidableEq V] in
+omit [Fintype V] [DecidableEq V] in
 /-- `log(e dim x) ≥ 1`. -/
 theorem one_le_logDim (x : Finset V) : 1 ≤ logDim n x := by
   unfold logDim
@@ -219,7 +219,7 @@ theorem one_le_logDim (x : Finset V) : 1 ≤ logDim n x := by
   rw [Real.log_mul (Real.exp_pos 1).ne' (by positivity), Real.log_exp]
   linarith [Real.log_nonneg h1]
 
-omit [∀ v, NeZero (n v)] in
+omit [DecidableEq V] [∀ v, NeZero (n v)] in
 /-- The copy mean of a positive semidefinite operator is positive semidefinite. -/
 theorem posSemidef_copyMean {k : ℕ} {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
     (hh : h.PosSemidef) : (copyMean n k h).PosSemidef := by
@@ -276,7 +276,7 @@ theorem integrable_fourierWeight_mul_trace_transportState {m : Type*} [Fintype m
   · rw [heq]; exact (hG.comp hpath).aestronglyMeasurable
   · exact hc _ (hmem u)
 
-/-- The entropy `η_{i,j}^{1/8}` is continuous in the one-copy vector. -/
+/-- The split entropy of one band is continuous in the one-copy vector. -/
 theorem continuous_splitBandEta (π : PYF V) (D : Finset V) :
     Continuous fun θ : SiteConfig n → ℂ =>
       splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ) := by
@@ -284,11 +284,11 @@ theorem continuous_splitBandEta (π : PYF V) (D : Finset V) :
   by_cases hP : π.SplitsToP D
   · have : (fun θ : SiteConfig n → ℂ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ)) =
         fun θ => moveEta n π (.toP (D ∩ π.Y)) ((EuclideanSpace.equiv _ ℂ).symm θ) := by
-      funext θ; simp only [splitBandEta, moveEta, if_pos hP]
+      funext θ; simp only [splitBandEta, moveEta, hP, ↓reduceIte]
     rw [this]; exact continuous_moveEta π _
   · have : (fun θ : SiteConfig n → ℂ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ)) =
         fun θ => moveEta n π (.toF (D ∩ π.Y)) ((EuclideanSpace.equiv _ ℂ).symm θ) := by
-      funext θ; simp only [splitBandEta, moveEta, if_neg hP]
+      funext θ; simp only [splitBandEta, moveEta, hP, ↓reduceIte]
     rw [this]; exact continuous_moveEta π _
 
 namespace TransportData
@@ -297,19 +297,21 @@ variable {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
   [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
   {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι)
 
-omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] [∀ v, NeZero (n v)] in
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)]
+  [∀ v, NeZero (n v)] in
 /-- A terminal input is the product of the band metrics of its leaf. -/
 theorem input_eq_prod (t : ℝ) (k : ℕ) (j : Σ h, Option (C h)) :
     D.input n t k j = (List.ofFn fun g => bandMetric n t k (D.leafPart j g)).prod := by
   rcases j with ⟨h, _ | c⟩ <;> rfl
 
-omit [∀ h, DecidableEq (C h)] [DecidableEq H] in
+omit [∀ h, DecidableEq (C h)] [DecidableEq H] [Fintype ι] [∀ v, NeZero (n v)] in
 theorem forall_contains_of_not_mem_splitLeaves {i : ι} {j : Σ h, Option (C h)}
     (hj : j ∉ D.splitLeaves E i) (g : Fin K) : (D.leafPart j g).Contains (E.support i) := by
   classical
   by_contra hg
   exact hj (Finset.mem_filter.mpr ⟨Finset.mem_univ _, g, hg⟩)
 
+omit [Fintype ι] [∀ v, NeZero (n v)] in
 /-- **Unsplit leaves commute with the term** (`06-transport.tex` lines 359--364). -/
 theorem commute_input_copyMean_of_not_mem_splitLeaves (hD : D.IsAdmissible) {t : ℝ}
     (k : ℕ) (hEsupp : ∀ i, IsSupportedOn (E.term i) (E.support i)) {i : ι}
@@ -321,13 +323,23 @@ theorem commute_input_copyMean_of_not_mem_splitLeaves (hD : D.IsAdmissible) {t :
   exact commute_bandMetric_copyMean_of_contains (D.isPartition_leafPart hD j g) k (hEsupp i)
     (D.forall_contains_of_not_mem_splitLeaves E hj g)
 
-omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] [Fintype ι] [∀ v, NeZero (n v)] in
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] [Fintype ι]
+  [∀ v, NeZero (n v)] in
 /-- At a split leaf with exceptional band `g`, every other band contains the support. -/
 theorem contains_of_ne (hcompat : D.SupportCompatible E) {i : ι} {j : Σ h, Option (C h)}
     {g : Fin K} (hg : ¬ (D.leafPart j g).Contains (E.support i)) {g' : Fin K} (hg' : g' ≠ g) :
     (D.leafPart j g').Contains (E.support i) :=
   ((hcompat j i g).resolve_left hg).2 g' hg'
 
+omit [Fintype H] [∀ h, Fintype (C h)] [Fintype ι] in
+/-- Every terminal partition is a partition (no finiteness of the history data needed). -/
+theorem isPartition_leafPart' (hD : D.IsAdmissible) (j : Σ h, Option (C h)) (g : Fin K) :
+    (D.leafPart j g).IsPartition := by
+  rcases j with ⟨h, _ | c⟩
+  · exact hD.old_isPartition h g
+  · exact Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g)
+
+omit [Fintype H] [∀ h, Fintype (C h)] [Fintype ι] in
 /-- **Single-band reduction at a split leaf** (`06-transport.tex` lines 732--735): if `g`
 is the exceptional band of `D_i` at `j`, the other band factors cancel in
 `O_{i,j} = A_j^{-1/2} h̄_i A_j^{1/2}`, so the skew square is that of the band metric. -/
@@ -338,14 +350,15 @@ theorem skewSquare_input_eq_bandMetric (hD : D.IsAdmissible) {t : ℝ} (ht : 0 �
     Transport.skewSquare (D.input n t k j) (copyMean n k (E.term i)) =
       Transport.skewSquare (bandMetric n t k (D.leafPart j g)) (copyMean n k (E.term i)) := by
   have key := Matrix.list_ofFn_prod_rpow_conj (fun g => bandMetric n t k (D.leafPart j g))
-    (fun g => posDef_bandMetric (D.isPartition_leafPart hD j g) ht k)
+    (fun g => posDef_bandMetric (D.isPartition_leafPart' hD j g) ht k)
     (fun g g' hgg => hcomm j j g g' hgg) g (X := copyMean n k (E.term i)) fun g' hg' =>
-      commute_bandMetric_copyMean_of_contains (D.isPartition_leafPart hD j g') k (hEsupp i)
+      commute_bandMetric_copyMean_of_contains (D.isPartition_leafPart' hD j g') k (hEsupp i)
         (D.contains_of_ne E hcompat hg hg')
   rw [← input_eq_prod] at key
   simp only [Transport.skewSquare, key]
 
-omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] [Fintype ι] in
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] [Fintype ι]
+  [∀ v, NeZero (n v)] in
 /-- `η_{i,j}` is the split entropy of the unique exceptional band. -/
 theorem splitEta_eq_splitBandEta (hcompat : D.SupportCompatible E) {i : ι}
     {j : Σ h, Option (C h)} {g : Fin K} (hg : ¬ (D.leafPart j g).Contains (E.support i))
@@ -435,12 +448,13 @@ theorem exists_trace_skewSquare_le :
       (fun x _ => abs_nonneg _) (Finset.mem_univ (i, j)))
 
 omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] [Fintype ι] in
+/-- `η_{i,j}^{1/8}` is continuous in the one-copy vector. -/
 theorem continuous_splitEta_rpow (i : ι) (j : Σ h, Option (C h)) :
     Continuous fun θ : SiteConfig n → ℂ =>
       D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ) := by
   refine Continuous.rpow_const ?_ fun _ => Or.inr (by norm_num)
   unfold splitEta
-  exact continuous_finset_sum _ fun g _ => continuous_splitBandEta _ _
+  exact continuous_finsetSum _ fun g _ => continuous_splitBandEta _ _
 
 /-- **Energy estimate** (area-law paper, Proposition 7.4, display `transport:energy`,
 `06-transport.tex` lines 417--426 and 588--766). The split weight `W_i(p)` enters twice;
@@ -599,7 +613,7 @@ theorem exists_energy_le :
         3 / 4 * (Fintype.card ι : ℝ) * r k := by
       have hWW : ∑ i, W i * W i ≤ Fintype.card ι := by
         calc ∑ i, W i * W i ≤ ∑ _i : ι, (1 : ℝ) :=
-              Finset.sum_le_sum fun i _ => mul_le_one₀ (hW1 i) (hW0 i) (hW1 i)
+              Finset.sum_le_sum fun i _ => by nlinarith [hW0 i, hW1 i]
           _ = Fintype.card ι := by simp
       have := mul_le_mul_of_nonneg_left hWW (by linarith [hr0 k] : (0 : ℝ) ≤ 3 / 4 * r k)
       rw [hκ]
