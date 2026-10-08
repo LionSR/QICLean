@@ -190,7 +190,8 @@ theorem coherentExpect_copyKronecker (G : Matrix (Fin m → Ω) (Fin m → Ω) �
   have hP : coherentProj (m + n) θ = reindex (splitCopies m n).symm (splitCopies m n).symm
       (coherentProj m θ ⊗ₖ coherentProj n θ) := by
     rw [← coherentProj_split m n θ]; simp
-  rw [coherentExpect, coherentExpect, coherentExpect, copyKronecker, hP, reindex_apply, reindex_apply, submatrix_mul_equiv,
+  rw [coherentExpect, coherentExpect, coherentExpect, copyKronecker, hP, reindex_apply,
+    reindex_apply, submatrix_mul_equiv,
     ← mul_kronecker_mul, ← trace_kronecker]
   have := Matrix.trace_reindex (splitCopies m n).symm
     ((G * coherentProj m θ) ⊗ₖ (H * coherentProj n θ))
@@ -313,12 +314,12 @@ theorem add (hY : IsInjectionPoly Y ψ) (hY' : IsInjectionPoly Y' ψ') :
   obtain ⟨N, G, hY, hψ⟩ := hY
   obtain ⟨N', G', hY', hψ'⟩ := hY'
   refine ⟨N + N', Fin.append G G', fun k => ?_, fun θ => ?_⟩
-  · show Y k + Y' k = _
+  · change Y k + Y' k = _
     rw [Fin.sum_univ_add, hY, hY']
     congr 1
     · exact Finset.sum_congr rfl fun i _ => by rw [Fin.append_left]
     · exact Finset.sum_congr rfl fun i _ => by rw [Fin.append_right]
-  · show ψ θ + ψ' θ = _
+  · change ψ θ + ψ' θ = _
     rw [Fin.sum_univ_add, hψ, hψ']
     congr 1
     · exact Finset.sum_congr rfl fun i _ => by rw [Fin.append_left]
@@ -376,17 +377,18 @@ theorem exists_mul (hY : IsInjectionPoly Y ψ) (hY' : IsInjectionPoly Y' ψ') :
   refine ⟨fun k => ∑ p, injectionAverage k (H p).1 (H p).2, ⟨N * N', H, fun k => rfl,
     fun θ => ?_⟩, ∑ i, ∑ i', 2 * (G i).1 * (G' i').1 * ‖(G i).2‖ * ‖(G' i').2‖,
     fun k hk => ?_⟩
-  · show ψ θ * ψ' θ = _
+  · change ψ θ * ψ' θ = _
     rw [hψ, hψ', Finset.sum_mul_sum]
     simp only [H, coherentExpect_copyKronecker]
-    exact (sum_finProdFinEquiv_symm fun i i' => coherentExpect (G i).2 θ * coherentExpect (G' i').2 θ).symm
+    exact (sum_finProdFinEquiv_symm fun i i' =>
+      coherentExpect (G i).2 θ * coherentExpect (G' i').2 θ).symm
   · have hZ : ∑ p, injectionAverage k (H p).1 (H p).2 =
         ∑ i, ∑ i', injectionAverage k ((G i).1 + (G' i').1)
           (copyKronecker (G i).2 (G' i').2) := by
       simp only [H]
       exact sum_finProdFinEquiv_symm fun i i' => injectionAverage k ((G i).1 + (G' i').1)
         (copyKronecker (G i).2 (G' i').2)
-    show ‖Y k * Y' k - ∑ p, injectionAverage k (H p).1 (H p).2‖ ≤ _
+    change ‖Y k * Y' k - ∑ p, injectionAverage k (H p).1 (H p).2‖ ≤ _
     rw [hZ, hY, hY', Finset.sum_mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]
     refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
     rw [← Finset.sum_sub_distrib, Finset.sum_div]
