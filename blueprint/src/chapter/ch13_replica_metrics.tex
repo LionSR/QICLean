@@ -841,3 +841,167 @@ eigenbasis. The following statements show that such averages are central label f
     corresponding marginal, and the clipping is removed on the one-copy side by the
     preceding lemma. The trace limit then follows from the coherent symbol calculus.
 \end{proof}
+
+\section{The gamma integral}
+
+The integral representation of the metrics draws the eigenvalues $s$ of a density matrix with
+a density proportional to $\Delta(s)\Delta(s^t)$. The following statements compute the
+resulting averages of characters. Write $\delta_j=d-j$, $a_\alpha(y)=\det[y_i^{\alpha_j}]$ for
+the alternant, $l$ for the shifted parts of a label, $N=\binom d2$, and
+$D=d+N+t\sum_jl_j$. In place of the simplex we integrate over the positive orthant with the
+weight $(\sum_ix_i)^{-a}e^{-\sum_ix_i}$; the quotients of gamma values are the same.
+
+\begin{lemma}[The Beta integral on the half-line]
+    \label{lem:beta_half_line}
+    \lean{Real.integrableOn_rpow_mul_one_add_rpow, Real.integral_rpow_mul_one_add_rpow}
+    \leanok
+    For $a,b>0$,
+    $\int_0^\infty u^{a-1}(1+u)^{-(a+b)}\,du=\Gamma(a)\Gamma(b)/\Gamma(a+b)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Substitute $x=u/(1+u)$ in the Beta integral $\int_0^1x^{a-1}(1-x)^{b-1}\,dx$.
+\end{proof}
+
+\begin{lemma}[Monomial integrals]
+    \label{lem:orthant_monomials}
+    \lean{Partition.orthant, Partition.orthMono, Partition.integral_monomial,
+        Partition.integrable_monomial, Partition.integral_monomial_mul_rpow_sum,
+        Partition.integrable_monomial_mul_rpow_sum, Partition.integral_monomial_mul_rpow_sum'}
+    \leanok
+    \uses{lem:beta_half_line}
+    Let $u_i>-1$ and $E=d+\sum_iu_i$. For $b>0$,
+    $\int_{(0,\infty)^d}\prod_ix_i^{u_i}e^{-bx_i}\,dx=\prod_i\Gamma(1+u_i)b^{-1-u_i}$, and for
+    $0\le a<E$,
+    \[
+        \int_{(0,\infty)^d}\prod_ix_i^{u_i}\Bigl(\sum_ix_i\Bigr)^{-a}e^{-\sum_ix_i}\,dx
+        =\prod_i\Gamma(1+u_i)\,\frac{\Gamma(E-a)}{\Gamma(E)}.
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    The first integral factorizes into one-dimensional gamma integrals. For the second,
+    insert $\Gamma(a)r^{-a}=\int_0^\infty v^{a-1}e^{-rv}\,dv$ with $r=\sum_ix_i$, exchange the
+    integrals, evaluate the inner one by the first formula with $b=1+v$, and apply the Beta
+    integral.
+\end{proof}
+
+\begin{lemma}[A determinant of gamma values]
+    \label{lem:gamma_determinant}
+    \lean{Partition.risingPoly, Partition.Gamma_one_add_add_nat, Partition.revPerm,
+        Partition.alternant_delta_eq, Partition.det_risingPoly, Partition.det_Gamma,
+        Partition.alternant_mul_left}
+    \leanok
+    For $t\ge0$,
+    $\det[\Gamma(1+\delta_i+tl_j)]_{i,j}=\prod_j\Gamma(1+tl_j)\cdot a_\delta(tl)$, and
+    $a_\delta(tl)=t^Na_\delta(l)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    $\Gamma(1+tl+n)=\Gamma(1+tl)(1+tl)(2+tl)\cdots(n+tl)$, a monic polynomial of degree $n$ in
+    $tl$. A determinant of monic polynomials of degrees $\delta_i$ evaluated at the points
+    $tl_j$ equals the Vandermonde determinant with the same ordering of degrees, which is
+    $a_\delta(tl)$.
+\end{proof}
+
+\begin{theorem}[The gamma integral]
+    \label{thm:gamma_integral}
+    \lean{Partition.gammaIntegral, Partition.alternant_mul_alternant_rpow,
+        Partition.gammaIntegral_eq_sum, Partition.integrable_gammaIntegrand,
+        Partition.sum_sign_prod_Gamma, Partition.gammaIntegral_eq,
+        Partition.alternant_delta_mul_rpow_nonneg}
+    \leanok
+    \uses{lem:orthant_monomials, lem:gamma_determinant, lem:alternant_pieri}
+    For $t\ge0$ and $0\le a<D$,
+    \[
+        \int_{(0,\infty)^d}a_\delta(x)a_l(x^t)\Bigl(\sum_ix_i\Bigr)^{-a}e^{-\sum_ix_i}\,dx
+        =d!\,t^N\prod_j\Gamma(1+tl_j)\,a_\delta(l)\,\frac{\Gamma(D-a)}{\Gamma(D)},
+    \]
+    the integrand is integrable, and $a_\delta(x)a_\delta(x^t)\ge0$ on the orthant.
+\end{theorem}
+
+\begin{proof}\leanok
+    Expand both alternants over permutations; each product is a monomial with exponents
+    $\delta_{\sigma^{-1}i}+tl_{\tau^{-1}i}$, whose sum is $N+t\sum_jl_j$. The previous lemma
+    integrates each term, and the double sum over $\sigma,\tau$ collapses to $d!$ copies of
+    $\det[\Gamma(1+\delta_i+tl_j)]$. Finally
+    $a_\delta(x)a_\delta(x^t)=\prod_{i<j}(x_j-x_i)(x_j^t-x_i^t)$.
+\end{proof}
+
+\begin{theorem}[The label function as a normalized gamma integral]
+    \label{thm:replica_weight_gamma}
+    \lean{Partition.alternant_delta_eq_vand, Partition.weylFormula_eq_alternant_div,
+        Partition.replicaWeight_eq_gammaIntegral}
+    \leanok
+    \uses{thm:gamma_integral, lem:replica_weight_ratio}
+    Let $J_a(l)$ denote the integral of the previous theorem and $W_\lambda$ the Weyl dimension
+    formula. For $t>0$ and a partition $\lambda\vdash k$ with at most $d$ rows,
+    $w_k(\lambda)=J_{tk}(l)/\bigl(J_0(\delta)W_\lambda\bigr)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Here $D=c+tk$ and $D-tk=c$ for $l$, while $D=c$ for $\delta$. The factors $d!\,t^N$ cancel,
+    and $a_\delta(l)/a_\delta(\delta)=W_\lambda$ because $a_\delta$ is a fixed sign times the
+    Vandermonde product and $a_\delta(\delta)$ is the product of the differences $j-i$.
+\end{proof}
+
+\begin{lemma}[Sums of injection averages]
+    \label{lem:injection_poly}
+    \lean{TensorPower.placeOp_trans_perm, TensorPower.commute_symProj_injectionAverage,
+        TensorPower.conjTranspose_injectionAverage, TensorPower.coherentExpect,
+        TensorPower.coherentExpect_conjTranspose, TensorPower.coherentExpect_copyKronecker,
+        TensorPower.norm_coherentIntegral_le, TensorPower.IsInjectionPoly,
+        TensorPower.IsInjectionPoly.exists_mul,
+        TensorPower.IsInjectionPoly.exists_norm_trace_sub_coherentIntegral_le}
+    \leanok
+    \uses{thm:uniform_husimi, thm:injection_product}
+    Let $Y_k=\sum_i\mathcal T_{k,r_i}(G_i)$ for finitely many fixed operators $G_i$, with
+    symbol $\psi(\theta)=\sum_i\langle\theta^{\otimes r_i},G_i\theta^{\otimes r_i}\rangle$.
+    Then $Y_k$ commutes with the copy permutations, $Y_k^\ast$ has symbol
+    $\overline\psi$, the product of two such sums is, up to $O(k^{-1})$ in operator norm, a
+    third one whose symbol is the product of the symbols, and
+    $|\Tr\sigma Y_k-\int\psi\,d\mu_\sigma|=O(k^{-1})$ uniformly in symmetric density matrices
+    $\sigma$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Relocating a placement by a copy permutation conjugates it by that permutation, and
+    relocation permutes the injections. Product vectors factor:
+    $\langle\theta^{\otimes(m+n)},(G\otimes H)\theta^{\otimes(m+n)}\rangle
+    =\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle
+    \langle\theta^{\otimes n},H\theta^{\otimes n}\rangle$. The product estimate and the trace
+    estimate follow termwise from the two previous theorems.
+\end{proof}
+
+\begin{theorem}[Coherent symbol calculus]
+    \label{thm:coherent_symbol}
+    \lean{TensorPower.unitSphere, TensorPower.isCompact_unitSphere,
+        TensorPower.HasCoherentSymbol, TensorPower.HasCoherentSymbol.add,
+        TensorPower.HasCoherentSymbol.smul, TensorPower.HasCoherentSymbol.conjTranspose,
+        TensorPower.HasCoherentSymbol.mul,
+        TensorPower.HasCoherentSymbol.eventually_norm_trace_sub_le,
+        TensorPower.HasCoherentSymbol.freeAlgebra}
+    \leanok
+    \uses{lem:injection_poly}
+    Say that operators $X_k$ have coherent symbol $f$ if they commute with $\Pi_k$, are
+    uniformly bounded on $\mathcal S_k$, $f$ is continuous on unit vectors, and for every
+    $\varepsilon>0$ some sum of injection averages $Y_k$ with symbol $\psi$ satisfies
+    $|f-\psi|\le\varepsilon$ on unit vectors and $\|(X_k-Y_k)\Pi_k\|\le\varepsilon$ for large
+    $k$. This property is preserved by sums, scalar multiples, adjoints with the conjugate
+    symbol, and products with the product symbol. Consequently, for every noncommutative
+    polynomial $q$ in two variables, $q(X_k,X_k^\ast)$ has coherent symbol
+    $q(f,\overline f)$, and
+    \[
+        \sup_\sigma\left|\Tr\sigma X_k-\int f\,d\mu_\sigma\right|\longrightarrow0
+    \]
+    over symmetric density matrices $\sigma$.
+\end{theorem}
+
+\begin{proof}\leanok
+    For products, write
+    $XX'\Pi=X\Pi(X'-Y')\Pi+(X-Y)\Pi Y'\Pi+YY'\Pi$, using that all factors commute with
+    $\Pi$, and approximate $YY'$ by the previous lemma. Symbols are bounded on the compact
+    unit sphere, so the symbol errors combine in the same way. For the trace limit,
+    $|\Tr\sigma(X_k-Y_k)|\le\|(X_k-Y_k)\Pi_k\|$, the coherent measure is a probability measure,
+    and the previous lemma treats $Y_k$. Polynomials follow by induction.
+\end{proof}
