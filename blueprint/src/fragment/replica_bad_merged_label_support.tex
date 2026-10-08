@@ -1,0 +1,42 @@
+\begin{theorem}[Combined labels on simultaneous symmetric copies]
+\label{thm:replica-bad-merged-label-support}
+\lean{TensorPower.spectralProjectionGE_mergedLabel_mul_symProj}
+\leanok
+Let $Q,Y,V,C,R$ be five finite-dimensional complex Hilbert spaces and let $r\ge0$ be an integer.
+On $(Q\otimes Y\otimes V\otimes C\otimes R)^{\otimes r}$, let
+$U_T(\sigma)$ permute the copies of the factors in $T$ and fix the other
+factors. Let $\Pi_T^\lambda$ be its central label projections, and put
+$F_T=\sum_\lambda(\log d_\lambda)\Pi_T^\lambda$.
+Define
+\begin{align*}
+ P_{\mathrm{all}}
+   &=\frac1{r!}\sum_{\sigma\in S_r}U_{QYVCR}(\sigma),\\
+ H&=F_{QC}+F_{VR}-F_Y.
+\end{align*}
+Then the closed nonnegative spectral projection of $H$ fixes the
+simultaneous symmetric subspace:
+\begin{align*}
+ \mathbf1_{[0,\infty)}(H)P_{\mathrm{all}}&=P_{\mathrm{all}}.
+\end{align*}
+Zero copies and zero-dimensional factors are included. This is the
+spectral-support implication used for the bad-copy group in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+\leanok
+\uses{thm:schur_label_commutation,thm:merge-deficit-positivity,thm:nonnegative-spectral-intertwiner}
+Complementary labels agree on the simultaneous symmetric subspace.
+Summing their projection identities with coefficient $\log d_\lambda$
+gives $F_YP_{\mathrm{all}}=F_{QCVR}P_{\mathrm{all}}$.
+The disjoint-region merge dimension inequality gives
+$D=F_{QC}+F_{VR}-F_{QCVR}\ge0$.
+Centrality of each label projection implies commutation with every
+simultaneous all-factor permutation. Averaging and summing therefore give
+$DP_{\mathrm{all}}=P_{\mathrm{all}}D$. Consequently,
+\begin{align*}
+ HP_{\mathrm{all}}&=P_{\mathrm{all}}D.
+\end{align*}
+Spectral intertwining with the positive semidefinite matrix $D$ yields
+$\mathbf1_{[0,\infty)}(H)P_{\mathrm{all}}=P_{\mathrm{all}}$.
+\end{proof}
