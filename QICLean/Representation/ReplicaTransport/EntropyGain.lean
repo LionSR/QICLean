@@ -19,7 +19,8 @@ with `β_k = O(log(k+1))` independent of `p` and `pre`.
 Proof outline:
 
 * `cfc_log_relRatio_eq_sum` — band factorization `log C_h = ∑_g log C_{h,g}`
-  (display `transport:relative-factorization`, Lemma 7.1);
+  (display `transport:relative-factorization`, Lemma 7.1), for the band metrics on `𝒮_k`
+  extended by the identity (`symBandMetric`), which commute across bands;
 * `bandRelRatio_eq_eval` — congruence covariance identifies `C_{h,g}` with the
   conditional choice tree of the single-move relative metrics;
 * `smul_coherentProj_le_bandRelRatio` — Lemma 6.4 and projection transfer give the
@@ -53,19 +54,6 @@ private theorem commute_rpow_of_commute {X A : Matrix m m ℂ} (h : Commute X A)
     Commute X (A ^ r) := by
   rw [CFC.rpow_def]
   exact (Commute.cfc_nnreal h.symm _).symm
-
-/-- An invertible matrix commuting with `A` commutes with `A⁻¹`. -/
-private theorem commute_inv_right_of_commute {X A : Matrix m m ℂ} (h : Commute X A) :
-    Commute X A⁻¹ := by
-  by_cases hA : IsUnit A.det
-  · have h1 : A⁻¹ * A = 1 := nonsing_inv_mul A hA
-    have h2 : A * A⁻¹ = 1 := mul_nonsing_inv A hA
-    calc X * A⁻¹ = A⁻¹ * (A * X) * A⁻¹ := by
-          rw [← Matrix.mul_assoc, h1, Matrix.one_mul]
-      _ = A⁻¹ * (X * A) * A⁻¹ := by rw [h.eq]
-      _ = A⁻¹ * X := by rw [Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one]
-  · rw [nonsing_inv_apply_not_isUnit A hA]
-    exact Commute.zero_right X
 
 /-- A matrix commuting with every input commutes with the root of any weighted tree; no
 positivity of the inputs is needed. -/
@@ -132,18 +120,6 @@ private theorem cfc_log_listProd {K : ℕ} {X : Fin K → Matrix m m ℂ} (hX : 
 
 end Helpers
 
-omit [∀ v, NeZero (n v)] in
-/-- Band metrics commute with the permutations of entire copies. -/
-theorem commute_permOp_bandMetric (t : ℝ) (k : ℕ) (π : PYF V) (s : Equiv.Perm (Fin k)) :
-    Commute (permOp (copyPerm (SiteConfig n) k) s) (bandMetric n t k π) := by
-  have hW : ∀ Q : Finset V, Commute (permOp (copyPerm (SiteConfig n) k) s)
-      (replicaMetric (fun v => Fin (n v)) t k Q) := fun Q =>
-    commute_copyPerm_labelObservable k Q _ s
-  unfold bandMetric leafMetric leafRoot
-  exact ((((commute_inv_right_of_commute (hW _)).mul_right
-    (commute_inv_right_of_commute (hW _))).mul_right
-    (hW _)).pow_right 2)
-
 omit [Fintype V] [DecidableEq V] in
 /-- `log(e dim x) ≥ 1`. -/
 theorem one_le_logDim (x : Finset V) : 1 ≤ logDim n x := by
@@ -204,9 +180,9 @@ is the conditional choice tree of the new band-`g` metrics (`06-transport.tex`, 
 `transport:relative-factorization`). -/
 def bandRelRatio (t : ℝ) (k : ℕ) (h : H) (g : Fin K) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
-  bandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ) *
-    (D.choiceTree h).eval (fun c => bandMetric n t k (D.new h c g)) *
-      bandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ)
+  symBandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ) *
+    (D.choiceTree h).eval (fun c => symBandMetric n t k (D.new h c g)) *
+      symBandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ)
 
 omit [Fintype H] [∀ h, Fintype (C h)] in
 /-- **Congruence covariance** (`06-transport.tex` lines 510--512): `C_{h,g}` is the
@@ -215,11 +191,11 @@ conditional choice tree of the single-move relative metrics
 theorem bandRelRatio_eq_eval (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) (k : ℕ) (h : H)
     (g : Fin K) :
     D.bandRelRatio n t k h g = (D.choiceTree h).eval (fun c =>
-      bandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ) * bandMetric n t k (D.new h c g) *
-        bandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ)) := by
-  have hA := posDef_bandMetric (n := n) (hD.old_isPartition h g) ht k
-  have hB : ∀ c, (bandMetric n t k (D.new h c g)).PosDef := fun c =>
-    posDef_bandMetric (Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g))
+      symBandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ) * symBandMetric n t k (D.new h c g) *
+        symBandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ)) := by
+  have hA := posDef_symBandMetric (n := n) (hD.old_isPartition h g) ht k
+  have hB : ∀ c, (symBandMetric n t k (D.new h c g)).PosDef := fun c =>
+    posDef_symBandMetric (Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g))
       ht k
   have := Matrix.MeanTree.eval_star_conj hB (hA.rpow (-(1 / 2) : ℝ)).isUnit (D.choiceTree h)
   simp only [hA.star_rpow] at this
@@ -229,9 +205,9 @@ omit [Fintype H] [∀ h, Fintype (C h)] in
 /-- The band relative ratios are positive definite. -/
 theorem posDef_bandRelRatio (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) (k : ℕ) (h : H)
     (g : Fin K) : (D.bandRelRatio n t k h g).PosDef := by
-  have hA := posDef_bandMetric (n := n) (hD.old_isPartition h g) ht k
-  have hB : ∀ c, (bandMetric n t k (D.new h c g)).PosDef := fun c =>
-    posDef_bandMetric (Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g))
+  have hA := posDef_symBandMetric (n := n) (hD.old_isPartition h g) ht k
+  have hB : ∀ c, (symBandMetric n t k (D.new h c g)).PosDef := fun c =>
+    posDef_symBandMetric (Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g))
       ht k
   rw [D.bandRelRatio_eq_eval hD ht]
   exact Matrix.MeanTree.posDef_eval (fun c => hA.whiten (hB c)) _
@@ -243,9 +219,9 @@ theorem commute_permOp_bandRelRatio {t : ℝ} (k : ℕ) (h : H) (g : Fin K)
     (s : Equiv.Perm (Fin k)) :
     Commute (permOp (copyPerm (SiteConfig n) k) s) (D.bandRelRatio n t k h g) := by
   unfold bandRelRatio
-  have hA := commute_permOp_bandMetric (n := n) t k (D.old h g) s
+  have hA := commute_permOp_symBandMetric (n := n) t k (D.old h g) s
   exact ((commute_rpow_of_commute hA _).mul_right (commute_eval_of_commute
-    (fun c => commute_permOp_bandMetric t k _ s) _)).mul_right (commute_rpow_of_commute hA _)
+    (fun c => commute_permOp_symBandMetric t k _ s) _)).mul_right (commute_rpow_of_commute hA _)
 
 omit [Fintype H] in
 /-- **Conditional pin** (`06-transport.tex`, display `transport:conditional-pin`,
@@ -256,14 +232,14 @@ theorem smul_coherentProj_le_bandRelRatio (hD : D.IsAdmissible) {t : ℝ} (ht : 
     (hpin : ∀ c, (b * Real.exp ((k : ℝ) * (2 * t) *
         (moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ) - Err))) •
           coherentProj k θ ≤
-        bandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ) * bandMetric n t k (D.new h c g) *
-          bandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ)) :
+        symBandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ) * symBandMetric n t k (D.new h c g) *
+          symBandMetric n t k (D.old h g) ^ (-(1 / 2) : ℝ)) :
     (b * Real.exp ((k : ℝ) * (2 * t) * (∑ c, (D.choiceTree h).weight c *
         moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ) - Err))) •
           coherentProj k θ ≤ D.bandRelRatio n t k h g := by
-  have hA := posDef_bandMetric (n := n) (hD.old_isPartition h g) ht k
-  have hB : ∀ c, (bandMetric n t k (D.new h c g)).PosDef := fun c =>
-    posDef_bandMetric (Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g))
+  have hA := posDef_symBandMetric (n := n) (hD.old_isPartition h g) ht k
+  have hB : ∀ c, (symBandMetric n t k (D.new h c g)).PosDef := fun c =>
+    posDef_symBandMetric (Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g))
       ht k
   rw [D.bandRelRatio_eq_eval hD ht]
   set x : C h → ℝ := fun c => (k : ℝ) * (2 * t) *
@@ -331,38 +307,40 @@ omit [Fintype H] [∀ h, Fintype (C h)] in
 theorem cfc_log_relRatio_eq_sum (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
     (hcomm : D.CrossBandCommute n t k) (h : H) :
     CFC.log (D.relRatio n t k h) = ∑ g, CFC.log (D.bandRelRatio n t k h g) := by
-  have hA : ∀ g, (bandMetric n t k (D.old h g)).PosDef := fun g =>
-    posDef_bandMetric (hD.old_isPartition h g) ht k
-  have hN : ∀ c g, (bandMetric n t k (D.new h c g)).PosDef := fun c g =>
-    posDef_bandMetric (Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g))
+  have hc := (D.crossBandCommute_iff t k).mp hcomm
+  have hA : ∀ g, (symBandMetric n t k (D.old h g)).PosDef := fun g =>
+    posDef_symBandMetric (hD.old_isPartition h g) ht k
+  have hN : ∀ c g, (symBandMetric n t k (D.new h c g)).PosDef := fun c g =>
+    posDef_symBandMetric (Move.isPartition_apply (hD.old_isPartition h g) (hD.move_isValid h c g))
       ht k
-  have hNN : ∀ c c' g g', g ≠ g' → Commute (bandMetric n t k (D.new h c g))
-      (bandMetric n t k (D.new h c' g')) := fun c c' g g' hg =>
-    hcomm ⟨h, some c⟩ ⟨h, some c'⟩ g g' hg
-  have hB : ∀ g, ((D.choiceTree h).eval fun c => bandMetric n t k (D.new h c g)).PosDef :=
+  have hNN : ∀ c c' g g', g ≠ g' → Commute (symBandMetric n t k (D.new h c g))
+      (symBandMetric n t k (D.new h c' g')) := fun c c' g g' hg =>
+    hc ⟨h, some c⟩ ⟨h, some c'⟩ g g' hg
+  have hB : ∀ g, ((D.choiceTree h).eval fun c => symBandMetric n t k (D.new h c g)).PosDef :=
     fun g => Matrix.MeanTree.posDef_eval (fun c => hN c g) _
-  have hAB : ∀ g g', g ≠ g' → Commute (bandMetric n t k (D.old h g))
-      ((D.choiceTree h).eval fun c => bandMetric n t k (D.new h c g')) := fun g g' hg =>
-    commute_eval_of_commute (fun c => hcomm ⟨h, none⟩ ⟨h, some c⟩ g g' hg) _
-  have hAA : ∀ g g', g ≠ g' → Commute (bandMetric n t k (D.old h g))
-      (bandMetric n t k (D.old h g')) := fun g g' hg => hcomm ⟨h, none⟩ ⟨h, none⟩ g g' hg
+  have hAB : ∀ g g', g ≠ g' → Commute (symBandMetric n t k (D.old h g))
+      ((D.choiceTree h).eval fun c => symBandMetric n t k (D.new h c g')) := fun g g' hg =>
+    commute_eval_of_commute (fun c => hc ⟨h, none⟩ ⟨h, some c⟩ g g' hg) _
+  have hAA : ∀ g g', g ≠ g' → Commute (symBandMetric n t k (D.old h g))
+      (symBandMetric n t k (D.old h g')) := fun g g' hg => hc ⟨h, none⟩ ⟨h, none⟩ g g' hg
   have hrel : D.relRatio n t k h = (List.ofFn fun g => D.bandRelRatio n t k h g).prod := by
     simp only [relRatio, Matrix.Transport.relRatio, Matrix.Transport.choiceRoot, oldMetric,
       bandRelRatio]
-    rw [show D.newMetric n t k h = fun c => (List.ofFn fun g => bandMetric n t k (D.new h c g)).prod
-      from rfl, Matrix.MeanTree.eval_listProd_ofFn (fun c g => hN c g) hNN]
+    rw [show D.newMetric n t k h =
+        fun c => (List.ofFn fun g => symBandMetric n t k (D.new h c g)).prod from rfl,
+      Matrix.MeanTree.eval_listProd_ofFn (fun c g => hN c g) hNN]
     exact listProd_whiten hA hB hAA hAB
   rw [hrel]
   refine cfc_log_listProd (fun g => D.posDef_bandRelRatio hD ht k h g) fun g g' hg => ?_
   have hBB := Matrix.MeanTree.commute_eval_band (fun c g => hN c g) hNN (D.choiceTree h) hg
-  have r1 : ∀ r : ℝ, Commute (bandMetric n t k (D.old h g) ^ r)
-      (bandMetric n t k (D.old h g') ^ (-(1 / 2) : ℝ)) := fun r =>
+  have r1 : ∀ r : ℝ, Commute (symBandMetric n t k (D.old h g) ^ r)
+      (symBandMetric n t k (D.old h g') ^ (-(1 / 2) : ℝ)) := fun r =>
     (hA g).commute_rpow (hA g') (hAA g g' hg) r _
-  have r2 : ∀ r : ℝ, Commute (bandMetric n t k (D.old h g) ^ r)
-      ((D.choiceTree h).eval fun c => bandMetric n t k (D.new h c g')) := fun r =>
+  have r2 : ∀ r : ℝ, Commute (symBandMetric n t k (D.old h g) ^ r)
+      ((D.choiceTree h).eval fun c => symBandMetric n t k (D.new h c g')) := fun r =>
     (hA g).commute_rpow_left (hAB g g' hg) r
-  have r3 : ∀ r : ℝ, Commute ((D.choiceTree h).eval fun c => bandMetric n t k (D.new h c g))
-      (bandMetric n t k (D.old h g') ^ r) := fun r =>
+  have r3 : ∀ r : ℝ, Commute ((D.choiceTree h).eval fun c => symBandMetric n t k (D.new h c g))
+      (symBandMetric n t k (D.old h g') ^ r) := fun r =>
     ((hA g').commute_rpow_left (hAB g' g hg.symm) r).symm
   unfold bandRelRatio
   refine Commute.mul_left (Commute.mul_left ?_ ?_) ?_
@@ -448,11 +426,13 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePin
       (bmin k * Real.exp ((k : ℝ) * (2 * (a / 2)) *
         (moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ) - Err))) •
           coherentProj k θ ≤
-        bandMetric n (a / 2) k (D.old h g) ^ (-(1 / 2) : ℝ) *
-          bandMetric n (a / 2) k (D.new h c g) *
-            bandMetric n (a / 2) k (D.old h g) ^ (-(1 / 2) : ℝ) := by
+        symBandMetric n (a / 2) k (D.old h g) ^ (-(1 / 2) : ℝ) *
+          symBandMetric n (a / 2) k (D.new h c g) *
+            symBandMetric n (a / 2) k (D.old h g) ^ (-(1 / 2) : ℝ) := by
     intro k h g θ hθ c
-    refine le_trans ?_ (hbpin h c g k θ hθ)
+    refine le_whiten_symBandMetric (hD.old_isPartition h g) ht0.le k (D.new h c g) ?_
+      (le_trans ?_ (hbpin h c g k θ hθ))
+    · rw [Matrix.mul_smul, Matrix.smul_mul, symProj_mul_coherentProj, coherentProj_mul_symProj]
     refine smul_le_smul_of_nonneg_right ?_
       (nonneg_iff_posSemidef.mpr (posSemidef_vecMulVec_self_star _))
     refine mul_le_mul (hbmin_le k h c g) (Real.exp_le_exp.mpr ?_) (Real.exp_pos _).le

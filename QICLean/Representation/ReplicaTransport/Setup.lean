@@ -21,7 +21,8 @@ This file fixes the data of the area-law paper, Proposition 7.4 (`prop:transport
   `η = I(x : F | P)` (display `transport:move-eta`; exchange `P, F` for a move to `F`);
 * a finite weighted history tree, old partitions in `K` bands, conditional choice trees
   and new partitions, the old and new metrics `A_h`, `A_{h,c}`, and the root `M(p)`;
-* cross-band commutation (line 268);
+* cross-band commutation on `𝒮_k` (lines 268--276), with every band metric represented on
+  `V^{⊗k}` as `Π A Π + (1 - Π)` (`symBandMetric`);
 * positive contractions `h_i` with designated supports `D_i`, splits at terminal leaves,
   `η_{i,j}`, `W_i(p)` and `Hbar = ∑_i hbar_i` (lines 335--362);
 * the coherent measure `dμ_σ(θ) = D_k Tr(σ P_{θ,k}) dθ` (display
@@ -104,6 +105,18 @@ def bandMetric (t : ℝ) (k : ℕ) (π : PYF V) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
   leafMetric n t k π.P π.Y π.F
 
+/-- The band metric on `𝒮_k`, extended by the identity on the orthogonal complement:
+`Π A(P, Y, F) + (1 - Π)`, where `Π` is the projection onto `𝒮_k`. The source's band metric
+is an operator on `𝒮_k` (display `transport:band-metric`); the formal band metric commutes
+with the copy permutations, so it preserves `𝒮_k`, and this operator agrees with it there.
+On the orthogonal complement it is the identity, which no symmetric vector or symmetric
+density matrix sees. Products of these operators over bands are the source's products on
+`𝒮_k`, and they commute on the whole space exactly when the band metrics commute on `𝒮_k`. -/
+def symBandMetric (t : ℝ) (k : ℕ) (π : PYF V) :
+    Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
+  symProj (copyPerm (SiteConfig n) k) * bandMetric n t k π +
+    (1 - symProj (copyPerm (SiteConfig n) k))
+
 /-- `log(e dim x)` for a subsystem `x`. -/
 def logDim (x : Finset V) : ℝ := Real.log (Real.exp 1 * ∏ v ∈ x, (n v : ℝ))
 
@@ -171,28 +184,26 @@ structure IsAdmissible [DecidableEq H] [∀ h, DecidableEq (C h)] : Prop where
   old_isPartition : ∀ h g, (D.old h g).IsPartition
   move_isValid : ∀ h c g, (D.move h c g).IsValid (D.old h g)
 
-/-- **Cross-band commutation** (`06-transport.tex` lines 268--271): every old or new metric
+/-- **Cross-band commutation** (`06-transport.tex` lines 268--276): every old or new metric
 from band `g` commutes with every old or new metric from band `g' ≠ g`, at all histories and
-choices.
-
-**Scope restriction (full-space commutation):** the source asks for commutation of the band
-metrics on `𝒮_k` (`07-comparators.tex` lines 26--35 identify complementary labels there);
-this predicate asks for it on the full tensor power, which is strictly stronger and fails for
-overlapping, non-nested bands. Documented in
-`docs/paper-gaps/oai26_transport_crossband_commutation.tex`. -/
+choices, as operators on `𝒮_k`. The band metrics preserve `𝒮_k`; the condition asks that
+`A A' w = A' A w` for every symmetric vector `w`. Commutation within a band is not required. -/
 def CrossBandCommute (t : ℝ) (k : ℕ) : Prop :=
-  ∀ j j' g g', g ≠ g' →
-    Commute (bandMetric n t k (D.leafPart j g)) (bandMetric n t k (D.leafPart j' g'))
+  ∀ j j' g g', g ≠ g' → ∀ w ∈ symmetricSubspace k (fun v => Fin (n v)),
+    bandMetric n t k (D.leafPart j g) *ᵥ (bandMetric n t k (D.leafPart j' g') *ᵥ w) =
+      bandMetric n t k (D.leafPart j' g') *ᵥ (bandMetric n t k (D.leafPart j g) *ᵥ w)
 
-/-- The old metric `A_h = ∏_g A_{h,g}`. -/
+/-- The old metric `A_h = ∏_g A_{h,g}` on `𝒮_k`, extended by the identity on the orthogonal
+complement (`symBandMetric`). -/
 def oldMetric (t : ℝ) (k : ℕ) (h : H) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
-  (List.ofFn fun g => bandMetric n t k (D.old h g)).prod
+  (List.ofFn fun g => symBandMetric n t k (D.old h g)).prod
 
-/-- The new metric `A_{h,c} = ∏_g A_{h,c,g}`. -/
+/-- The new metric `A_{h,c} = ∏_g A_{h,c,g}` on `𝒮_k`, extended by the identity on the
+orthogonal complement (`symBandMetric`). -/
 def newMetric (t : ℝ) (k : ℕ) (h : H) (c : C h) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
-  (List.ofFn fun g => bandMetric n t k (D.new h c g)).prod
+  (List.ofFn fun g => symBandMetric n t k (D.new h c g)).prod
 
 /-- The terminal tree at parameter `p`. -/
 def tree (p : I) : Matrix.MeanTree (Σ h, Option (C h)) :=

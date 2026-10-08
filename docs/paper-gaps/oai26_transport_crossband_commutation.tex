@@ -6,13 +6,14 @@
 
 \input{./command.tex}
 
-\title{Cross-Band Commutation in the Transport Estimate of the Area-Law Paper}
+\title{Cross-Band Commutation in the Transport Estimate of the Area-Law Paper\\
+{\large (restriction resolved 2026-10-08)}}
 \author{}
 \date{2026-10-08}
 
 \begin{document}
 \maketitle
-\gapnote{scope-restriction}{open}
+\gapnote{scope-restriction}{resolved}
 
 \section{The source hypothesis}
 
@@ -29,17 +30,14 @@ metric algebras commute only after complementary labels are identified on the
 symmetric space, using $W_{Q,k}=W_{Q^c,k}$ on $\mathcal S_k$
 (\path{05-replicas.tex}, line~312).
 
-\section{The formal restriction}
+\section{The former formal restriction}
 
 The formal band metric is the operator
 $(W_P^{-1}W_F^{-1}W_Y)^2$ on the full tensor power
 $\mathcal V^{\otimes k}$. It commutes with the copy permutations, so it
-preserves $\mathcal S_k$ and restricts there to the source metric. The formal
-cross-band hypothesis asks for commutation of these operators on all of
-$\mathcal V^{\otimes k}$, for every $k$.\footnote{Formal declarations:
-\leanid{TensorPower.ReplicaTransport.TransportData.CrossBandCommute} in
-\path{QICLean/Representation/ReplicaTransport/Setup.lean}, assumed for every $k$ by
-\leanid{TensorPower.ReplicaTransport.transport_of_relativePin_of_splitSkewBound}.}
+preserves $\mathcal S_k$ and restricts there to the source metric. The first
+formal cross-band hypothesis asked for commutation of these operators on all of
+$\mathcal V^{\otimes k}$, for every $k$.
 
 Commutation on the full tensor power implies commutation on $\mathcal S_k$,
 but the converse fails. Central label functions of two subsystems $Q,Q'$
@@ -58,31 +56,54 @@ bands is nested or disjoint, except $F_g=RV_g$ and $P_{g'}=CXU_{g'}$, which
 overlap in $V_g\cap U_{g'}$ without nesting. The remaining factors of each
 band commute with every factor of the other band, so the full-space
 commutation of $A_g$ and $A_{g'}$ reduces to that of $W_{RV_g}$ and
-$W_{CXU_{g'}}$, which fails in general. The formal theorem therefore proves
+$W_{CXU_{g'}}$, which fails in general. The first formal theorem therefore proved
 Proposition~7.4 under a commutation hypothesis that the source does not
-impose and that its multi-band application need not satisfy; for one band,
-or for bands whose factors are pairwise nested or disjoint, the two
-hypotheses agree in effect.
+impose and that its multi-band application need not satisfy.
 
-\section{Elimination plan}
+\section{Resolution}
 
-Replace each band metric in the tree by
-$\Pi A\Pi+(I-\Pi)$, where $\Pi$ is the projection onto $\mathcal S_k$. This
-operator is positive definite, agrees with $A$ on $\mathcal S_k$, and two such
-operators commute on $\mathcal V^{\otimes k}$ exactly when the restrictions of
-the original metrics to $\mathcal S_k$ commute. Restating the cross-band
-hypothesis for these operators gives the source hypothesis. The positivity,
-logarithm factorization and energy arguments then go through unchanged on
-$\mathcal S_k$, and the relative pin and skew bound are needed only on
-symmetric vectors and symmetric densities, which is how they are already
-stated.
+Let $\Pi$ be the projection onto $\mathcal S_k$. Each band metric $A$ commutes
+with $\Pi$, and the mean trees now take as inputs the products over bands of
+the operators
+\[
+  \widetilde A=\Pi A+(I-\Pi),
+\]
+which equal $A$ on $\mathcal S_k$ and the identity on its orthogonal
+complement.\footnote{Formal declarations:
+\leanid{TensorPower.ReplicaTransport.symBandMetric} and the restated
+\leanid{TensorPower.ReplicaTransport.TransportData.CrossBandCommute} in
+\path{QICLean/Representation/ReplicaTransport/Setup.lean}, with the properties below
+in \path{QICLean/Representation/ReplicaTransport/SymmetricMetric.lean}.}
+The cross-band hypothesis is now the source condition: $AA'w=A'Aw$ for every
+$w\in\mathcal S_k$ and all metrics $A,A'$ of different bands. The following
+facts make the transport argument go through unchanged.
+\begin{enumerate}
+\item $\widetilde A$ is positive definite and commutes with the copy
+  permutations.
+\item $\widetilde A\widetilde B=\Pi AB+(I-\Pi)$, so $\widetilde A$ and
+  $\widetilde B$ commute on $\mathcal V^{\otimes k}$ exactly when
+  $\Pi AB=\Pi BA$, that is, when $A$ and $B$ commute on $\mathcal S_k$.
+\item For a commuting projection, functional calculus acts block by block:
+  $f(\Pi Y+(I-\Pi)Z)=\Pi f(Y)+(I-\Pi)f(Z)$. The proof interpolates $f$ by one
+  polynomial on the two finite spectra. Hence
+  $\widetilde A^{-1/2}\widetilde B\widetilde A^{-1/2}
+   =\Pi A^{-1/2}BA^{-1/2}+(I-\Pi)$, and the relative coherent pin, whose
+  lower bound $P_{\theta,k}$ satisfies $\Pi P_{\theta,k}\Pi=P_{\theta,k}$,
+  transfers to the extended metrics.
+\item For $X$ commuting with $\Pi$, the skew squares of $\widetilde A$ and of
+  $A$ agree after multiplication by $\Pi$, so they have the same expectation in
+  every density matrix on $\mathcal S_k$. The skew bound of the source
+  therefore applies at a split leaf.
+\end{enumerate}
+On $\mathcal S_k$ the roots, the filtered vectors and the transport states are
+those of the source, since every input preserves $\mathcal S_k$ and agrees there
+with the source's metric.
 
 \section{Verdict}
 
-\textbf{Verdict: scope restriction.} The conditional transport theorem proves
-the conclusions of Proposition~7.4 of Ref.~\cite{OpenAI2026AreaLaw} assuming
-cross-band commutation on the full tensor power rather than on the symmetric
-subspace. The source-faithful statement remains open.
+\textbf{Verdict: resolved.} The transport estimate is formalized with the
+source's cross-band commutation condition on $\mathcal S_k$. Commutation on
+the full tensor power is no longer assumed.
 
 \bibliographystyle{alpha}
 \bibliography{references}
