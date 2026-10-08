@@ -1,0 +1,81 @@
+% Source: OpenAI2026AreaLaw, 06-transport.tex, transport:filtered-vector,
+% lines 388--392. Revision adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\section{Filtering under an isometric embedding}
+\label{sec:filtering_intertwine}
+
+Let $M$ be positive semidefinite on a finite-dimensional complex Hilbert
+space. Define $M^{-1/4}$ by applying $t\mapsto t^{-1/4}$ to its positive
+eigenvalues and sending its zero eigenvalues to zero. For a vector $v$, put
+\begin{align}
+  f_M(v)&=M^{-1/4}v, &
+  N_M(v)&=\|f_M(v)\|, &
+  V_M(v)&=N_M(v)^{-1}f_M(v),
+\end{align}
+where the last expression is zero when $N_M(v)=0$.
+For positive definite $M$, these are the filtering formulas used in the
+transport estimate of~\cite{OpenAI2026AreaLaw}.
+The following identities are auxiliary to that construction.
+
+\begin{theorem}[The unnormalized filtered vector under an intertwiner]
+  \label{thm:filtered_raw_intertwine}
+  \lean{Matrix.Transport.filteredRaw_intertwine}
+  \leanok
+  Let $M,N$ be positive semidefinite matrices on two finite-dimensional
+  complex Hilbert spaces. Suppose that $J$ maps the second space to the
+  first and $MJ=JN$. Then every vector $v$ on the second space satisfies
+  \begin{align}
+    f_M(Jv)&=Jf_N(v).
+  \end{align}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:real_power_intertwine}
+  Apply Theorem~\ref{thm:real_power_intertwine} with exponent $-1/4$
+  to obtain $M^{-1/4}J=JN^{-1/4}$, then evaluate this identity at $v$.
+\end{proof}
+
+\begin{theorem}[The filtering norm under an isometry]
+  \label{thm:filtered_norm_sq_intertwine}
+  \lean{Matrix.Transport.filteredNormSq_intertwine}
+  \leanok
+  Under the preceding hypotheses, suppose also that $J^*J=I$.
+  Then every vector $v$ satisfies
+  \begin{align}
+    N_M(Jv)^2&=N_N(v)^2.
+  \end{align}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:filtered_raw_intertwine}
+  Put $w=f_N(v)$. Theorem~\ref{thm:filtered_raw_intertwine} gives
+  $f_M(Jv)=Jw$. The identity $J^*J=I$ then gives
+  \begin{align}
+    \|Jw\|^2&=\langle Jw,Jw\rangle
+       =\langle w,J^*Jw\rangle=\|w\|^2.
+  \end{align}
+\end{proof}
+
+\begin{theorem}[The normalized filtering formula under an isometry]
+  \label{thm:filtered_vector_intertwine}
+  \lean{Matrix.Transport.filteredVector_intertwine}
+  \leanok
+  Under the same hypotheses, every vector $v$ satisfies
+  \begin{align}
+    V_M(Jv)&=JV_N(v).
+  \end{align}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:filtered_raw_intertwine, thm:filtered_norm_sq_intertwine}
+  Theorem~\ref{thm:filtered_norm_sq_intertwine} gives equality of the
+  squared norms and hence of their nonnegative square roots.
+  The common scalar $N_N(v)^{-1}$ therefore multiplies both unnormalized vectors.
+  Apply Theorem~\ref{thm:filtered_raw_intertwine} and move that scalar
+  through $J$. This argument also applies when the common scalar is zero.
+\end{proof}
+
+The last identity preserves the normalized formula. A unit-norm conclusion
+requires a nonzero filtering norm and is a separate assertion.
