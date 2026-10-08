@@ -25,6 +25,7 @@ import QICLean.Representation.LabelProjectors
 import QICLean.Representation.MergeDimensions
 import QICLean.Representation.MergeExponential
 import QICLean.Representation.MergeMoment
+import QICLean.Representation.PairMergeDeficit
 import QICLean.Representation.PairMergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation

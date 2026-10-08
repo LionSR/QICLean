@@ -1,0 +1,16 @@
+{
+  "parent_revision": "ef7442f03ea09bb7997295304ba4ddc289b540b0",
+  "parent_paths": 1912,
+  "unchanged_parent_paths": 1909,
+  "permitted_changes": [
+    "QICLean/Representation.lean",
+    "blueprint/src/chapter/ch13_schur_labels.tex",
+    "docs/tactic_patterns.md"
+  ],
+  "import_and_input_exactly_one_line_each": true,
+  "ledger_is_exact_append": true,
+  "all_24_leaf_artifacts_unchanged": true,
+  "frozen_Lean_reader_ledger_unchanged": true,
+  "old_published_pair_branch": "ef7442f03ea09bb7997295304ba4ddc289b540b0",
+  "result": "passed"
+}

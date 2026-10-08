@@ -1,0 +1,10 @@
+{
+  "parent_revision": "ef7442f03ea09bb7997295304ba4ddc289b540b0",
+  "parent_paths": 1912,
+  "unchanged_paths": 1911,
+  "changed_paths": [
+    "docs/tactic_patterns.md"
+  ],
+  "ledger_old_bytes_exact_prefix": true,
+  "result": "passed"
+}

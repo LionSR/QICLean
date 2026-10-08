@@ -1,0 +1,29 @@
+{
+  "mathematical_revision": "f028f8c6ea5290b8e8ddf08893ead50d89ea2174",
+  "excluded_from_final_kernel_provenance": [
+    {
+      "path": "docs/provenance/evidence/pairMergeDeficit8753/excluded-scratch.lean",
+      "reason": "Exploratory proof before the immutable production revision."
+    },
+    {
+      "path": "docs/provenance/evidence/pairMergeDeficit8753/production-pre-freeze-strict-exit.json",
+      "reason": "Successful exploratory source check before the immutable production revision."
+    }
+  ],
+  "cache_record": "docs/provenance/evidence/pairMergeDeficit8753/cache-exit.json",
+  "cache_record_scope": "Operational prebuilt-cache fetch before the final source revision; final inclusion has a separately recorded named-Mathlib guard.",
+  "failed_final_checks": [],
+  "superseded_reader_metadata": [
+    {
+      "path": "docs/provenance/evidence/pairMergeDeficitIntegration8753/initial-mobile-equations.json",
+      "reason": "The initial successful test used a generic description of scrolling captures although all three measured displays fit. Final metadata now reports the actual overflowing and captured counts, both zero; initial log and actual exit0 are preserved."
+    }
+  ],
+  "failed_evidence_helpers": [
+    {
+      "path": "docs/provenance/evidence/pairMergeDeficitIntegration8753/initial-validation-exit.json",
+      "exit_code": 1,
+      "reason": "The evidence helper still removed the parent PairMergeMoment import instead of the new PairMergeDeficit import. Only this preservation-helper name was corrected; no source, proof, build or book artifact changed. The old helper and raw failed output are preserved."
+    }
+  ]
+}

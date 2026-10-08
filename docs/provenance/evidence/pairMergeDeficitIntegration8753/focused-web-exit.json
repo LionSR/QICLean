@@ -1,0 +1,28 @@
+{
+  "source_revision": "2bb2d5de832f2ed381b68d07884e49860bb95a6d",
+  "mathematical_revision": "f028f8c6ea5290b8e8ddf08893ead50d89ea2174",
+  "production_sha256": {
+    "QICLean/Representation/PairMergeDeficit.lean": "f41591ccbf444d719eafdb35f2f4c59d98e2f0b588f757ba7365600f449c0004",
+    "blueprint/src/fragment/pair_merge_deficit.tex": "fced0e2bac969937fc3f01bb4874ae2ec9b3c37c61cdc3ffa4be8463d262856e",
+    "docs/openai-area-law-pair-merge-deficit.md": "e4c385c7187f9a8fac949148559e1d94eca8bbec64bcd90833e8db25bc37ec7d",
+    "docs/tactic_patterns.md": "277e99a6a8493052327a85f50f8d8f182c467eae414009e06bc3e6671bee85f0",
+    "QICLean/Representation.lean": "618ab690995afb6d78d745c9b4a2e1612df98eeba0da8eafec373e51242ed13b",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "94decec8d5f16705b68db5a0d53405909ba5ae28eab50b37e9fa5e8fbc6d38c6"
+  },
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/pairMergeDeficitIntegration8753/inspect-web.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 3.4857237079995684,
+  "log": "docs/provenance/evidence/pairMergeDeficitIntegration8753/focused-web.log",
+  "sha256": "b89cee1b5e8aff10c9d465d983d2a922d7c5ad731dd393cdb2f2f9cb480fb1b3",
+  "uncompressed_sha256": "b89cee1b5e8aff10c9d465d983d2a922d7c5ad731dd393cdb2f2f9cb480fb1b3",
+  "uncompressed_bytes": 113,
+  "compressed": false,
+  "deterministic_gzip_mtime": null,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true
+}

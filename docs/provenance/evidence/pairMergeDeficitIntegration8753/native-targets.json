@@ -1,0 +1,118 @@
+{
+  "native_list": "docs/provenance/evidence/pairMergeDeficitIntegration8753/NativeDeclarations.txt",
+  "native_list_sha256": "16b38126ab1a64f04ac4809bbf617ea1d5c6f7062a2c9e7b5c2a75ee45902bc4",
+  "native_declarations": 3640,
+  "active_fragments": {
+    "blueprint/src/fragment/pair_merge_deficit.tex": [
+      "TensorPower.commute_pairMergeDeficit_lifts",
+      "TensorPower.exp_pairMergeDeficit_lifts",
+      "TensorPower.isHermitian_pairMergeDeficit",
+      "TensorPower.pairMergeDeficit",
+      "TensorPower.trace_exp_pairMergeDeficit_left",
+      "TensorPower.trace_exp_pairMergeDeficit_right"
+    ],
+    "blueprint/src/fragment/pair_merge_moment.tex": [
+      "TensorPower.commute_pairCopy",
+      "TensorPower.pairCopyBoth",
+      "TensorPower.pairCopyBoth_eq_mul",
+      "TensorPower.pairCopyLeft",
+      "TensorPower.pairCopyRight",
+      "TensorPower.pair_merge_moment_le",
+      "TensorPower.pair_merge_moment_le_mul_trace"
+    ]
+  },
+  "fragment_declarations": 13,
+  "owned_declarations": [
+    "TensorPower.commute_pairMergeDeficit_lifts",
+    "TensorPower.exp_pairMergeDeficit_lifts",
+    "TensorPower.isHermitian_pairMergeDeficit",
+    "TensorPower.pairMergeDeficit",
+    "TensorPower.trace_exp_pairMergeDeficit_left",
+    "TensorPower.trace_exp_pairMergeDeficit_right"
+  ],
+  "contains_all_active_fragment_targets": true,
+  "contains_all_six_owned": true,
+  "missing": [],
+  "link_scope": "content pages; dependency graph repeats excluded",
+  "rendered_doc_links": {
+    "TensorPower.trace_exp_pairMergeDeficit_left": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.trace_exp_pairMergeDeficit_left"
+      }
+    ],
+    "TensorPower.pair_merge_moment_le_mul_trace": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pair_merge_moment_le_mul_trace"
+      }
+    ],
+    "TensorPower.isHermitian_pairMergeDeficit": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.isHermitian_pairMergeDeficit"
+      }
+    ],
+    "TensorPower.commute_pairMergeDeficit_lifts": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.commute_pairMergeDeficit_lifts"
+      }
+    ],
+    "TensorPower.pairCopyRight": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyRight"
+      }
+    ],
+    "TensorPower.commute_pairCopy": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.commute_pairCopy"
+      }
+    ],
+    "TensorPower.pairCopyBoth_eq_mul": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyBoth_eq_mul"
+      }
+    ],
+    "TensorPower.pairMergeDeficit": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairMergeDeficit"
+      }
+    ],
+    "TensorPower.exp_pairMergeDeficit_lifts": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.exp_pairMergeDeficit_lifts"
+      }
+    ],
+    "TensorPower.trace_exp_pairMergeDeficit_right": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.trace_exp_pairMergeDeficit_right"
+      }
+    ],
+    "TensorPower.pair_merge_moment_le": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pair_merge_moment_le"
+      }
+    ],
+    "TensorPower.pairCopyLeft": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyLeft"
+      }
+    ],
+    "TensorPower.pairCopyBoth": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyBoth"
+      }
+    ]
+  },
+  "result": "passed"
+}
