@@ -451,6 +451,112 @@ theorem replicaMetric_conj_siteOp_mul {t : ℝ} (ht : 0 ≤ t) (m : ℕ) {P Y : 
     _ = WY⁻¹ * b' * (WY * (WP * a' * WP⁻¹)) := by rw [hY.eq]
     _ = WY⁻¹ * b' * WY * (WP * a' * WP⁻¹) := by simp only [mul_assoc]
 
+/-- **The `F` factors cancel** (`05-replicas.tex`, lines 668–671):
+`O_{m+1} = W_Y^{-1} W_P hbar W_P^{-1} W_Y`. -/
+theorem markedSimilarity_succ_eq {t : ℝ} (ht0 : 0 ≤ t) (m : ℕ) {P Y F : Finset V}
+    (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
+    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y)) :
+    markedSimilarity n t (m + 1) P Y F h =
+      (replicaMetric (fun v => Fin (n v)) t (m + 1) Y)⁻¹ *
+        replicaMetric (fun v => Fin (n v)) t (m + 1) P * copyMean n (m + 1) h *
+          ((replicaMetric (fun v => Fin (n v)) t (m + 1) P)⁻¹ *
+            replicaMetric (fun v => Fin (n v)) t (m + 1) Y) := by
+  have hw : ∀ l, replicaLabelWeight (k := m + 1) (fun v => Fin (n v)) t l ≠ 0 :=
+    fun l => (replicaLabelWeight_pos _ ht0 l).ne'
+  set WP := replicaMetric (fun v => Fin (n v)) t (m + 1) P with hWP
+  set WF := replicaMetric (fun v => Fin (n v)) t (m + 1) F with hWF
+  set WY := replicaMetric (fun v => Fin (n v)) t (m + 1) Y with hWY
+  have hWPi : WP⁻¹ = labelObservable (subsystemPerm (m + 1) (fun v => Fin (n v)) P)
+      fun l => (replicaLabelWeight (fun v => Fin (n v)) t l)⁻¹ := labelObservable_inv _ hw
+  have hWP1 : WP * WP⁻¹ = 1 := labelObservable_mul_inv_self _ hw
+  have hWF1 : WF * WF⁻¹ = 1 := labelObservable_mul_inv_self _ hw
+  have hWY1 : WY⁻¹ * WY = 1 := labelObservable_inv_mul_self _ hw
+  have hFP : Commute WF WP := commute_labelObservable_of_commute _ _
+    (commute_subsystemPerm_of_disjoint (m + 1) _ hPF.symm) _ _
+  have hFPi : Commute WF WP⁻¹ := by
+    rw [hWPi]
+    exact commute_labelObservable_of_commute _ _
+      (commute_subsystemPerm_of_disjoint (m + 1) _ hPF.symm) _ _
+  have hFC : Commute WF (copyMean n (m + 1) h) := by
+    refine Commute.smul_right (Commute.sum_right _ _ _ fun j _ => ?_) _
+    exact commute_labelObservable_siteOp_of_disjoint hh
+      (Finset.disjoint_union_right.mpr ⟨hPF.symm, hYF.symm⟩) j _
+  have hrootinv : (leafRoot n t (m + 1) P Y F)⁻¹ = WY⁻¹ * WF * WP := by
+    refine Matrix.inv_eq_left_inv ?_
+    change WY⁻¹ * WF * WP * (WP⁻¹ * WF⁻¹ * WY) = 1
+    calc WY⁻¹ * WF * WP * (WP⁻¹ * WF⁻¹ * WY) = WY⁻¹ * WF * (WP * WP⁻¹) * WF⁻¹ * WY := by
+          simp only [mul_assoc]
+      _ = 1 := by rw [hWP1, mul_one, mul_assoc WY⁻¹, hWF1, mul_one, hWY1]
+  rw [markedSimilarity, sqrt_leafMetric ht0 (m + 1) hPY hPF hYF, hrootinv]
+  change WY⁻¹ * WF * WP * copyMean n (m + 1) h * (WP⁻¹ * WF⁻¹ * WY) =
+    WY⁻¹ * WP * copyMean n (m + 1) h * (WP⁻¹ * WY)
+  have hX : Commute WF (WP * copyMean n (m + 1) h * WP⁻¹) :=
+    (hFP.mul_right hFC).mul_right hFPi
+  calc WY⁻¹ * WF * WP * copyMean n (m + 1) h * (WP⁻¹ * WF⁻¹ * WY)
+      = WY⁻¹ * (WF * (WP * copyMean n (m + 1) h * WP⁻¹)) * WF⁻¹ * WY := by
+        simp only [mul_assoc]
+    _ = WY⁻¹ * ((WP * copyMean n (m + 1) h * WP⁻¹) * WF) * WF⁻¹ * WY := by rw [hX.eq]
+    _ = WY⁻¹ * (WP * copyMean n (m + 1) h * WP⁻¹) * (WF * WF⁻¹) * WY := by
+        simp only [mul_assoc]
+    _ = WY⁻¹ * WP * copyMean n (m + 1) h * (WP⁻¹ * WY) := by
+        rw [hWF1, mul_one]; simp only [mul_assoc]
+
+/-- The similarity transform commutes with the permutations of entire copies. -/
+theorem commute_copyPerm_markedSimilarity_succ {t : ℝ} (ht0 : 0 ≤ t) (m : ℕ)
+    {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
+    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y))
+    (τ : Equiv.Perm (Fin (m + 1))) :
+    Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) (markedSimilarity n t (m + 1) P Y F h) := by
+  have hw : ∀ l, replicaLabelWeight (k := m + 1) (fun v => Fin (n v)) t l ≠ 0 :=
+    fun l => (replicaLabelWeight_pos _ ht0 l).ne'
+  rw [markedSimilarity_succ_eq ht0 m hPY hPF hYF hh, replicaMetric_inv_eq ht0,
+    replicaMetric_inv_eq ht0]
+  refine (((Commute.mul_right ?_ ?_).mul_right ?_).mul_right (Commute.mul_right ?_ ?_)) <;>
+    first
+    | exact commute_copyPerm_labelObservable _ _ _ τ
+    | exact commute_copyPerm_copyMean _ h τ
+
+/-- **The quadratic form of the similarity transform** (`05-replicas.tex`, lines 672–686):
+writing `h = ∑_i b_i a_i` with `b_i` supported on `Y` and `a_i` on `P`, for symmetric `u, z`,
+`⟨u, O_{m+1} z⟩ = ∑_i ⟨u, (R_Y^{-1} b_i^{(k)} R_Y)(R_P a_i^{(k)} R_P^{-1}) z⟩`. -/
+theorem star_dotProduct_markedSimilarity_eq_sum {t : ℝ} (ht0 : 0 ≤ t) (m : ℕ)
+    {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
+    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y)) {N : ℕ}
+    {a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ} (ha : ∀ i, IsSupportedOn (a i) P)
+    (hb : ∀ i, IsSupportedOn (b i) Y) (hdec : h = ∑ i, b i * a i)
+    {u z : Config (m + 1) (fun v => Fin (n v)) → ℂ}
+    (hu : u ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)))
+    (hz : z ∈ symmetricSubspace (m + 1) (fun v => Fin (n v))) :
+    star u ⬝ᵥ (markedSimilarity n t (m + 1) P Y F h *ᵥ z) = ∑ i, star u ⬝ᵥ
+      ((((markedRatio (fun v => Fin (n v)) t m Y)⁻¹ * siteOp (Fin.last m) (b i) *
+          markedRatio (fun v => Fin (n v)) t m Y) *
+        (markedRatio (fun v => Fin (n v)) t m P * siteOp (Fin.last m) (a i) *
+          (markedRatio (fun v => Fin (n v)) t m P)⁻¹)) *ᵥ z) := by
+  have hw : ∀ l, replicaLabelWeight (k := m + 1) (fun v => Fin (n v)) t l ≠ 0 :=
+    fun l => (replicaLabelWeight_pos _ ht0 l).ne'
+  set WP := replicaMetric (fun v => Fin (n v)) t (m + 1) P
+  set WY := replicaMetric (fun v => Fin (n v)) t (m + 1) Y
+  have hcWP : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WP := fun τ =>
+    commute_copyPerm_labelObservable _ P _ τ
+  have hcWY : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WY := fun τ =>
+    commute_copyPerm_labelObservable _ Y _ τ
+  have hcWPi : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WP⁻¹ := fun τ => by
+    rw [replicaMetric_inv_eq ht0]; exact commute_copyPerm_labelObservable _ P _ τ
+  have hcWYi : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WY⁻¹ := fun τ => by
+    rw [replicaMetric_inv_eq ht0]; exact commute_copyPerm_labelObservable _ Y _ τ
+  have hcM : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) (WY⁻¹ * WP) :=
+    fun τ => (hcWYi τ).mul_right (hcWP τ)
+  have hcN : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) (WP⁻¹ * WY) :=
+    fun τ => (hcWPi τ).mul_right (hcWY τ)
+  rw [markedSimilarity_succ_eq ht0 m hPY hPF hYF hh,
+    star_dotProduct_copyMean_eq (Fin.last m) h hcM hcN hu hz, hdec, siteOp_sum]
+  simp_rw [← siteOp_mul_siteOp]
+  rw [Finset.mul_sum, Finset.sum_mul, sum_mulVec, dotProduct_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [← replicaMetric_conj_siteOp_mul ht0 m hPY (ha i) (hb i)]
+  simp only [mul_assoc]
+  rfl
+
 /-- **Lemma 6.4, uniform boundedness** (`05-replicas.tex`, lines 621–622 and 666–692): for a
 one-copy operator `h` supported on `P ∪ Y`, `sup_k ‖O_k‖ < ∞` on the symmetric subspace,
 with a bound depending on the fixed system, `t` and `h`. -/
@@ -481,86 +587,15 @@ theorem exists_norm_markedSimilarity_mulVec_le {t : ℝ} (ht0 : 0 < t) (ht1 : t 
     simp only [markedSimilarity, h0, mul_zero, zero_mul, zero_mulVec]
     simp only [map_zero, norm_zero]
     positivity
-  have hw : ∀ l, replicaLabelWeight (k := m + 1) (fun v => Fin (n v)) t l ≠ 0 :=
-    fun l => (replicaLabelWeight_pos _ ht0.le l).ne'
-  set WP := replicaMetric (fun v => Fin (n v)) t (m + 1) P with hWP
-  set WF := replicaMetric (fun v => Fin (n v)) t (m + 1) F with hWF
-  set WY := replicaMetric (fun v => Fin (n v)) t (m + 1) Y with hWY
-  have hWPi : WP⁻¹ = labelObservable (subsystemPerm (m + 1) (fun v => Fin (n v)) P)
-      fun l => (replicaLabelWeight (fun v => Fin (n v)) t l)⁻¹ := labelObservable_inv _ hw
-  have hWFi : WF⁻¹ = labelObservable (subsystemPerm (m + 1) (fun v => Fin (n v)) F)
-      fun l => (replicaLabelWeight (fun v => Fin (n v)) t l)⁻¹ := labelObservable_inv _ hw
-  have hWYi : WY⁻¹ = labelObservable (subsystemPerm (m + 1) (fun v => Fin (n v)) Y)
-      fun l => (replicaLabelWeight (fun v => Fin (n v)) t l)⁻¹ := labelObservable_inv _ hw
-  have hWP1 : WP * WP⁻¹ = 1 := labelObservable_mul_inv_self _ hw
-  have hWF1 : WF * WF⁻¹ = 1 := labelObservable_mul_inv_self _ hw
-  have hWY1 : WY⁻¹ * WY = 1 := labelObservable_inv_mul_self _ hw
-  -- The `F` factors cancel.
-  have hFP : Commute WF WP := commute_labelObservable_of_commute _ _
-    (commute_subsystemPerm_of_disjoint (m + 1) _ hPF.symm) _ _
-  have hFPi : Commute WF WP⁻¹ := by
-    rw [hWPi]
-    exact commute_labelObservable_of_commute _ _
-      (commute_subsystemPerm_of_disjoint (m + 1) _ hPF.symm) _ _
-  have hFC : Commute WF (copyMean n (m + 1) h) := by
-    refine Commute.smul_right (Commute.sum_right _ _ _ fun j _ => ?_) _
-    exact commute_labelObservable_siteOp_of_disjoint hh
-      (Finset.disjoint_union_right.mpr ⟨hPF.symm, hYF.symm⟩) j _
-  have hrootinv : (leafRoot n t (m + 1) P Y F)⁻¹ = WY⁻¹ * WF * WP := by
-    refine Matrix.inv_eq_left_inv ?_
-    change WY⁻¹ * WF * WP * (WP⁻¹ * WF⁻¹ * WY) = 1
-    calc WY⁻¹ * WF * WP * (WP⁻¹ * WF⁻¹ * WY) = WY⁻¹ * WF * (WP * WP⁻¹) * WF⁻¹ * WY := by
-          simp only [mul_assoc]
-      _ = 1 := by rw [hWP1, mul_one, mul_assoc WY⁻¹, hWF1, mul_one, hWY1]
-  have hO : markedSimilarity n t (m + 1) P Y F h =
-      WY⁻¹ * WP * copyMean n (m + 1) h * (WP⁻¹ * WY) := by
-    rw [markedSimilarity, sqrt_leafMetric ht0.le (m + 1) hPY hPF hYF, hrootinv]
-    change WY⁻¹ * WF * WP * copyMean n (m + 1) h * (WP⁻¹ * WF⁻¹ * WY) =
-      WY⁻¹ * WP * copyMean n (m + 1) h * (WP⁻¹ * WY)
-    have hX : Commute WF (WP * copyMean n (m + 1) h * WP⁻¹) :=
-      (hFP.mul_right hFC).mul_right hFPi
-    calc WY⁻¹ * WF * WP * copyMean n (m + 1) h * (WP⁻¹ * WF⁻¹ * WY)
-        = WY⁻¹ * (WF * (WP * copyMean n (m + 1) h * WP⁻¹)) * WF⁻¹ * WY := by
-          simp only [mul_assoc]
-      _ = WY⁻¹ * ((WP * copyMean n (m + 1) h * WP⁻¹) * WF) * WF⁻¹ * WY := by rw [hX.eq]
-      _ = WY⁻¹ * (WP * copyMean n (m + 1) h * WP⁻¹) * (WF * WF⁻¹) * WY := by
-          simp only [mul_assoc]
-      _ = WY⁻¹ * WP * copyMean n (m + 1) h * (WP⁻¹ * WY) := by
-          rw [hWF1, mul_one]; simp only [mul_assoc]
-  -- Commutation with the permutations of entire copies.
-  have hcWP : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WP := fun τ =>
-    commute_copyPerm_labelObservable _ P _ τ
-  have hcWY : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WY := fun τ =>
-    commute_copyPerm_labelObservable _ Y _ τ
-  have hcWPi : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WP⁻¹ := fun τ => by
-    rw [hWPi]; exact commute_copyPerm_labelObservable _ P _ τ
-  have hcWYi : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WY⁻¹ := fun τ => by
-    rw [hWYi]; exact commute_copyPerm_labelObservable _ Y _ τ
-  have hcM : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) (WY⁻¹ * WP) :=
-    fun τ => (hcWYi τ).mul_right (hcWP τ)
-  have hcN : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) (WP⁻¹ * WY) :=
-    fun τ => (hcWPi τ).mul_right (hcWY τ)
   have hcO : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ)
-      (markedSimilarity n t (m + 1) P Y F h) := fun τ => by
-    rw [hO]; exact ((hcM τ).mul_right (commute_copyPerm_copyMean _ h τ)).mul_right (hcN τ)
+      (markedSimilarity n t (m + 1) P Y F h) :=
+    commute_copyPerm_markedSimilarity_succ ht0.le m hPY hPF hYF hh
   set u := markedSimilarity n t (m + 1) P Y F h *ᵥ z with hu_def
   have hu : u ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)) := fun τ => by
     change permOp (copyPerm (SiteConfig n) (m + 1)) τ *ᵥ u = u
     rw [hu_def, mulVec_mulVec, (hcO τ).eq, ← mulVec_mulVec, hz τ]
-  -- Reduce to the last copy and decompose.
-  have hkey : star u ⬝ᵥ u = ∑ i, star u ⬝ᵥ
-      ((((markedRatio (fun v => Fin (n v)) t m Y)⁻¹ * siteOp (Fin.last m) (b i) *
-          markedRatio (fun v => Fin (n v)) t m Y) *
-        (markedRatio (fun v => Fin (n v)) t m P * siteOp (Fin.last m) (a i) *
-          (markedRatio (fun v => Fin (n v)) t m P)⁻¹)) *ᵥ z) := by
-    change star u ⬝ᵥ (markedSimilarity n t (m + 1) P Y F h *ᵥ z) = _
-    rw [hO, star_dotProduct_copyMean_eq (Fin.last m) h hcM hcN hu hz, hdec, siteOp_sum]
-    simp_rw [← siteOp_mul_siteOp]
-    rw [Finset.mul_sum, Finset.sum_mul, sum_mulVec, dotProduct_sum]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [← replicaMetric_conj_siteOp_mul ht0.le m hPY (ha i) (hb i)]
-    simp only [mul_assoc]
-    rfl
+  have hkey := star_dotProduct_markedSimilarity_eq_sum (F := F) ht0.le m hPY hPF hYF hh ha hb
+    hdec hu hz
   -- Bound each term: both inverses act directly on symmetric vectors.
   have hRherm : ∀ Q, (markedRatio (fun v => Fin (n v)) t m Q).IsHermitian := fun Q => by
     rw [markedRatio_eq_hom _ ht0.le]
