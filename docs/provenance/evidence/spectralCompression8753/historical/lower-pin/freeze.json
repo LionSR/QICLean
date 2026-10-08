@@ -1,0 +1,23 @@
+{
+  "source": "/tmp/tnlean-lower-pin-check/LowerPin.lean",
+  "source_sha256": "edb435b3e0c8dd03ff9b0affa250433cb784f6316452191b546c13fb696cf6a5",
+  "strict_log": "/tmp/tnlean-lower-pin-check/step07.log",
+  "strict_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "audit_source": "/tmp/tnlean-lower-pin-check/LowerPinAudit.lean",
+  "all_public_audit_log": "/tmp/tnlean-lower-pin-check/all-public-axioms.log",
+  "all_public_audit_log_sha256": "60ad7806f80c16f7cba437c15fcf93cdeb19994d28cfe2aff93617778dfd33ca",
+  "exports": [
+    "Matrix.mul_conjTranspose_le_smul_one_of_conjTranspose_mul_le",
+    "Matrix.PosDef.inv_smul_projection_le_of_compression_inv_le"
+  ],
+  "dependencies": "Mathlib only; no QICLean source imported",
+  "approved_environment": "/private/tmp/tnlean-actual-corrected-bound/env.json",
+  "approved_environment_sha256": "883042351542627c77e494132559b59b427e6b1b1cac75b25c5e7b9221bc533a",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "source_labels": [
+    "comparator:inverse-compression",
+    "comparator:lower-pin"
+  ],
+  "canonical_lake_build": false,
+  "full_library_audit": false
+}

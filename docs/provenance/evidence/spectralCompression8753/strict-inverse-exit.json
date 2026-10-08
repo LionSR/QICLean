@@ -1,0 +1,23 @@
+{
+  "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "-DautoImplicit=false",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "QICLean/Analysis/InverseCompressionLowerBound.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T04:16:32.323041+00:00",
+  "elapsed_seconds": 12.073,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/spectralCompression8753/strict-inverse.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

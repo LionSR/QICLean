@@ -1,0 +1,18 @@
+{
+  "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "docs/provenance/evidence/spectralCompression8753/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T04:16:44.627441+00:00",
+  "elapsed_seconds": 5.131,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/spectralCompression8753/bound-axioms.log",
+  "sha256": "f6f2f22a71a70b366e9a5cc97ed35c61168a714cb3af115105ec4c31fe982ee1"
+}

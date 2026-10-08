@@ -1,0 +1,18 @@
+{
+  "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "docs/provenance/evidence/spectralCompression8753/TextStyle.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T04:36:29.008520+00:00",
+  "elapsed_seconds": 2.318,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/spectralCompression8753/corrected-text-style.log",
+  "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+}

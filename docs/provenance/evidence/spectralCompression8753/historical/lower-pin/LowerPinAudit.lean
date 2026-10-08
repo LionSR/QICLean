@@ -1,0 +1,5 @@
+import LowerPin
+set_option linter.hashCommand false in
+#print axioms Matrix.mul_conjTranspose_le_smul_one_of_conjTranspose_mul_le
+set_option linter.hashCommand false in
+#print axioms Matrix.PosDef.inv_smul_projection_le_of_compression_inv_le

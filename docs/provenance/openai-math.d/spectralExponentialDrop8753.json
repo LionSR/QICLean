@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-spectral-exponential-drop-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/SpectralExponentialDrop.lean",
+        "declaration": "Matrix.spectralProjectionGE_exp_smul_sub_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary finite-dimensional implication. Actual excitation-density support, component moment estimates and the full comparator are separate. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Analysis.SpectralExponentialDrop",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-target-spectral.log",
+            "sha256": "08b5ebb4e90133239a2016c0777a4c1e845a8e4bd651567da66efbfe2c86868e"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Analysis.InverseCompressionLowerBound",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-target-inverse.log",
+            "sha256": "5840e43a967ed28f64ab568638cce6e384f0e27752121ea165c16ee2631bed12"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DautoImplicit=false -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/SpectralExponentialDrop.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-strict-spectral.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DautoImplicit=false -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/InverseCompressionLowerBound.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-strict-inverse.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 docs/provenance/evidence/spectralCompression8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-axioms.log",
+            "sha256": "f6f2f22a71a70b366e9a5cc97ed35c61168a714cb3af115105ec4c31fe982ee1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-spectral-exponential-drop-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/SpectralExponentialDrop.lean",
+        "declaration": "Matrix.PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary finite-dimensional implication. Actual excitation-density support, component moment estimates and the full comparator are separate. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Analysis.SpectralExponentialDrop",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-target-spectral.log",
+            "sha256": "08b5ebb4e90133239a2016c0777a4c1e845a8e4bd651567da66efbfe2c86868e"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Analysis.InverseCompressionLowerBound",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-target-inverse.log",
+            "sha256": "5840e43a967ed28f64ab568638cce6e384f0e27752121ea165c16ee2631bed12"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DautoImplicit=false -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/SpectralExponentialDrop.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-strict-spectral.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DautoImplicit=false -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/InverseCompressionLowerBound.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-strict-inverse.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 docs/provenance/evidence/spectralCompression8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/spectralCompression8753/corrected-axioms.log",
+            "sha256": "f6f2f22a71a70b366e9a5cc97ed35c61168a714cb3af115105ec4c31fe982ee1"
+          }
+        ]
+      }
+    }
+  ]
+}

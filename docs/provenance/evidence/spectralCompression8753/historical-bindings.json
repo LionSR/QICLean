@@ -1,0 +1,140 @@
+[
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step06.log",
+    "original_path": "/tmp/tnlean-lower-pin-check/step06.log",
+    "sha256": "69222fcb85b437dbdb2094435597d3880c220631a591cdbb9be933b6999e66ef"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/LowerPinAudit.lean",
+    "original_path": "/tmp/tnlean-lower-pin-check/LowerPinAudit.lean",
+    "sha256": "98299092826d6c4dde923e9e3a55dc60642d3eb9a5daa741d5ab1f1c4f1c8fd4"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/LowerPin.lean",
+    "original_path": "/tmp/tnlean-lower-pin-check/LowerPin.lean",
+    "sha256": "edb435b3e0c8dd03ff9b0affa250433cb784f6316452191b546c13fb696cf6a5"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step07.log",
+    "original_path": "/tmp/tnlean-lower-pin-check/step07.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step05.log",
+    "original_path": "/tmp/tnlean-lower-pin-check/step05.log",
+    "sha256": "033ed9aa377f509396ae00f56c129c8d4aaf1300e15151f8803428df26d640ae"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step04.log",
+    "original_path": "/tmp/tnlean-lower-pin-check/step04.log",
+    "sha256": "4d6a6079fa8a57a6d2ad8007af7df2b72b133f896185b7b92abc5cb1c9986b01"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step01.log",
+    "original_path": "/tmp/tnlean-lower-pin-check/step01.log",
+    "sha256": "e83aa26c0a7a1f960e2ad365bee659a4350c46103b550fe2be90c59010cc6050"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step03.log",
+    "original_path": "/tmp/tnlean-lower-pin-check/step03.log",
+    "sha256": "ea06d4eea2c676b484f4b1dc2ad1fa7485ad6e256e1f2fb45a17dead2829e9a3"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step02.log",
+    "original_path": "/tmp/tnlean-lower-pin-check/step02.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/all-public-axioms.log",
+    "original_path": "/tmp/tnlean-lower-pin-check/all-public-axioms.log",
+    "sha256": "60ad7806f80c16f7cba437c15fcf93cdeb19994d28cfe2aff93617778dfd33ca"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/freeze.json",
+    "original_path": "/tmp/tnlean-lower-pin-check/freeze.json",
+    "sha256": "7dbe0a6e50e9f880ead1dec0205a18d09e9c45f0401e5d03fd1a4320a4f84056"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop.lean",
+    "original_path": "/tmp/SpectralExpDrop.lean",
+    "sha256": "ec8936f2eaf62df8509a153311faca4161632c54dc4f2b426f8ebb6d338f2307"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt1.log",
+    "original_path": "/tmp/SpectralExpDrop-trace-attempt1.log",
+    "sha256": "9e2961d611dc1ca9c82102a6e862281083a03d00814f03f0513be9c14c04b7f1"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt2.log",
+    "original_path": "/tmp/SpectralExpDrop-trace-attempt2.log",
+    "sha256": "7ab0f3ec37b41d2a958826923dfaf18527627fdcd16caa76dc8868c22554b01d"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt3.log",
+    "original_path": "/tmp/SpectralExpDrop-trace-attempt3.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/LowerPin-root-strict.log",
+    "original_path": "/tmp/LowerPin-root-strict.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/InverseCompressionLowerBound-strict.log",
+    "original_path": "/tmp/InverseCompressionLowerBound-strict.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt1.log",
+    "original_path": "/tmp/SpectralExpDrop-attempt1.log",
+    "sha256": "807a9cc145531f8d890cf3bd4a3dc0d2066f417158b5696676d4455207399cad"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt2.log",
+    "original_path": "/tmp/SpectralExpDrop-attempt2.log",
+    "sha256": "ecbb5ee7ec72639c9f23f033f26c6ce49395f23b30feb0b95a30ee1d2e784002"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt3.log",
+    "original_path": "/tmp/SpectralExpDrop-attempt3.log",
+    "sha256": "7ab0f3ec37b41d2a958826923dfaf18527627fdcd16caa76dc8868c22554b01d"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExponentialDrop-production-strict.log",
+    "original_path": "/tmp/SpectralExponentialDrop-production-strict.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin-approved-env.json",
+    "original_path": "/private/tmp/tnlean-actual-corrected-bound/env.json",
+    "sha256": "883042351542627c77e494132559b59b427e6b1b1cac75b25c5e7b9221bc533a"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/QICLean/Analysis/InverseCompressionLowerBound.lean",
+    "sha256": "949bbad01afec71c44f5fb8b0d5c65ce967e98350f5f4db3b6fb1fc8076fcabe"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/QICLean/Analysis/SpectralExponentialDrop.lean",
+    "sha256": "f30b48d5c753a51a726bcd2d5182436e8611c8beaad035447c6cfc0d37a035d9"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/blueprint/src/fragment/inverse_compression_lower_bound.tex",
+    "sha256": "c567d636a564903056e82b5a5950de76d03e4e62bd219da6dda55029ddc67b4e"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/blueprint/src/fragment/spectral_exponential_drop.tex",
+    "sha256": "380665037ab8dfe58b845d40b7daa2e127a538a9a6de25467c63e6ee4fc25d46"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/docs/openai-area-law-inverse-compression-lower-bound.md",
+    "sha256": "5e87c48c52055c2e4824cacb5468aaa55f77b949f0beb1a3b02c3c97b0698670"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/docs/openai-area-law-spectral-exponential-drop.md",
+    "sha256": "ece348cbf1e13ed1afbe673a76d2fd078a022a066e49393de96a99f92700efbf"
+  },
+  {
+    "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/docs/tactic_patterns.md",
+    "sha256": "440c8abd450aa6c76f03fa481382caa3d25ce14ac95b8fd42703843824a5ba90"
+  }
+]
