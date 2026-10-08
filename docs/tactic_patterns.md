@@ -222,3 +222,11 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveat:** A compatible regrouped action or an invariant marginal must be
   derived. It must not be introduced as a supplied certificate. Chosen
   finite-set equivalences need not enumerate the copies in increasing order.
+
+
+### Composition of retained auxiliary traces — candidate (2026-10-08)
+
+- **Pattern:** Regroup the auxiliary register by an explicit product equivalence, compose the partial traces of a rank-one density, then trace only the auxiliary factor of a proved Kronecker product.
+- **Seen:** `Analysis/ReplicaJointDensity.lean`; regional product calculations appear in `Analysis/ReplicaRegionalDensity.lean`.
+- **Abstraction:** Existing partial-trace composition and covariance results give the regrouping. The finite-sum Kronecker identity is private; no new tactic is introduced.
+- **Caveat:** Retain the actual component and its own auxiliary density. A product identity is derived from the prescribed one-copy ground vector rather than supplied as a premise.

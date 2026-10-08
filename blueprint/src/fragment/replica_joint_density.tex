@@ -1,0 +1,59 @@
+\section{Joint density on the good physical and auxiliary copies}
+\label{sec:replica_joint_density}
+
+Let $Q,T,C,D$ be finite coordinate sets, let $k\geq0$, and let
+$B\subseteq\{0,\ldots,k-1\}$ be the bad copies. Write $G=B^c$ and
+$m=|G|$. Choose the same enumeration of $G$ for the physical and auxiliary
+coordinates. For arbitrary $\Omega\in\mathbb C^Q\otimes\mathbb C^T$ and
+$u\in(\mathbb C^Q\otimes\mathbb C^T)^{\otimes k}
+\otimes(\mathbb C^C)^{\otimes k}\otimes(\mathbb C^D)^{\otimes k}$,
+put $w=(R_B\otimes I)u$, where $R_B$ is the excitation operator determined by $\Omega$.
+For unit $\Omega$, it is the physical excitation projection.
+These are the reduced matrices in \cite[Section~7]{OpenAI2026AreaLaw},
+equation (comparator:merge-moments).
+
+\begin{definition}[Actual joint marginal on the good copies]
+\label{def:replica_good_regional_auxiliary_marginal}
+\lean{Matrix.replicaGoodRegionalAuxiliaryMarginal}
+\leanok
+\uses{def:good_bad_copies_equiv}
+Regroup $w$ as a vector on
+$(Q^{\otimes m}\otimes C^{\otimes m})\otimes
+(C^{\otimes|B|}\otimes D^{\otimes k}\otimes
+T^{\otimes m}\otimes(QT)^{\otimes|B|})$.
+The joint marginal $\rho_{Q_GC_G}(w)$ is the partial trace of
+$|w\rangle\langle w|$ over the second factor. Thus it retains the good
+physical $Q$ coordinates and the good auxiliary $C$ coordinates of the
+same component, without normalization.
+\end{definition}
+
+\begin{theorem}[Actual joint product density]
+\label{thm:replica_good_regional_auxiliary_density}
+\lean{Matrix.replicaGoodRegionalAuxiliaryMarginal_eq}
+\leanok
+\uses{def:replica_good_regional_auxiliary_marginal,def:replica_good_auxiliary_marginal}
+Suppose $\|\Omega\|=1$. Set
+$\rho_Q=\operatorname{Tr}_T|\Omega\rangle\langle\Omega|$, and let
+$\rho_{C_G}(w)$ be the actual good auxiliary marginal of $w$. Then
+\begin{align}
+ \rho_{Q_GC_G}(w)&=\rho_Q^{\otimes m}\otimes\rho_{C_G}(w).
+ \label{eq:replica_joint_product}
+\end{align}
+The original vector and its component may be unnormalized or zero.
+The identity includes zero copies and empty good sets.
+\end{theorem}
+
+\begin{proof}
+\leanok
+\uses{thm:replica_regional_product_density}
+Before tracing auxiliary coordinates, the regional density theorem gives
+$\rho_{Q_G\mathcal K}(w)=\rho_Q^{\otimes m}\otimes\rho_{\mathcal K}(w)$,
+where $\mathcal K=C^{\otimes k}\otimes D^{\otimes k}$.
+Regroup $\mathcal K$ as $C^{\otimes m}\otimes
+(C^{\otimes|B|}\otimes D^{\otimes k})$ and trace the second factor.
+Composition of partial traces gives the literal joint marginal on the left.
+On the right, the partial trace acts only on $\rho_{\mathcal K}(w)$ and
+produces its actual good auxiliary marginal, proving
+(\ref{eq:replica_joint_product}). Empty coordinate products are singletons,
+so the same calculation applies when $m=0$ or $k=0$.
+\end{proof}
