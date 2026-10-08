@@ -706,3 +706,77 @@ $\nu$ factor of $\C[S_{k-1}]$ in the $\lambda$ factor of $\C[S_k]$.
     using Lemma~\ref{lem:hook_recursions}. Hence $d_\lambda=D_\lambda$, and a missing
     removable row would make the first inequality strict.
 \end{proof}
+
+\section{The star operator and branch probabilities}
+
+Let $T_k=\sum_{i\ne j}(i\ j)\in\C[S_k]$, the sum over ordered pairs of distinct copies,
+and let $\kappa_\lambda$ be the scalar by which this central element acts on the
+$\lambda$ factor.
+
+\begin{lemma}[Casimir identity]
+    \label{lem:casimir}
+    \lean{IrrepLabel.transpositionSum_mul_comm, IrrepLabel.casimir,
+        TensorPower.sum_gen_mulVec_gen, TensorPower.casimir_eq}
+    \leanok
+    \uses{thm:schur_weyl_labels}
+    On $(\C^q)^{\otimes k}$, $\sum_{a,b}E_{ab}E_{ba}=kq+T_k$. Consequently, for a
+    label $\lambda$ with at most $q$ rows,
+    $\kappa_\lambda=\sum_a\lambda_a^2+\sum_{a<b}(\lambda_a-\lambda_b)-kq$.
+\end{lemma}
+
+\begin{proof}\leanok
+    A matrix unit summed over its index pairs acts on two distinct copies as their
+    transposition and on one copy as $q$ times the identity. On a highest-weight
+    vector of weight $\lambda$ in $V_\lambda$ the diagonal terms give $\lambda_a^2$,
+    and for $a<b$ the commutator $[E_{ab},E_{ba}]=E_{aa}-E_{bb}$ gives
+    $\lambda_a-\lambda_b$, while the terms with $a>b$ vanish.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 6]
+    \label{thm:schur_part6}
+    \lean{TensorPower.schur_branch_compatible_iff, TensorPower.schur_branch_probability,
+        TensorPower.schur_starOp_eigenvalue,
+        PermutationRepresentation.labelProj_mul_labelProj_firstCopies_ne_zero_iff,
+        PermutationRepresentation.trace_mul_labelProj_mul_labelProj_firstCopies,
+        PermutationRepresentation.starOp_mul_branch,
+        TensorPower.dim_div_dim_eq, TensorPower.dim_div_dim_le}
+    \leanok
+    \uses{thm:dim_eq_hook, lem:casimir, lem:restriction}
+    On $(\C^q)^{\otimes k}$, the full label $\lambda$ and the label $\nu$ of the first
+    $k-1$ copies are compatible precisely when $\lambda$ occurs and
+    $\nu=\lambda-e_i$ for a removable row $i$. For every operator $\rho$ commuting
+    with the copy permutations, $d_\lambda\Tr(\rho\pi^\lambda\pi^\nu)=d_\nu
+    \Tr(\rho\pi^\lambda)$ on that branch, so in a permutation-invariant state the
+    branch has conditional probability
+    \[
+        p_{\lambda,i}=\frac{d_{\lambda-e_i}}{d_\lambda}
+        =\frac{l_i}{k}\prod_{j\ne i}\frac{l_i-1-l_j}{l_i-l_j}\le2^q\frac{l_i}{k}.
+    \]
+    The normalized star operator $J=\frac1k\sum_{j<k}U((j\ k))$ acts on the branch by
+    $(\lambda_i-i)/k$, with rows indexed from one.
+\end{theorem}
+
+\begin{proof}\leanok
+    Compatibility and the probability follow from Lemma~\ref{lem:restriction} and the
+    branching rule of Theorem~\ref{thm:dim_eq_hook}; the quotient is the recursion of
+    Lemma~\ref{lem:hook_recursions}, whose factors with $j<i$ are at most two and with
+    $j>i$ at most one. Since $2kJ=T_k-T_{k-1}$, the star operator acts on the branch
+    by $(\kappa_\lambda-\kappa_\nu)/(2k)$, which Lemma~\ref{lem:casimir} evaluates.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 1: labels and symmetric-group dimensions]
+    \label{thm:schur_part1_dim}
+    \lean{TensorPower.labelPart_eq_zero_of_labelProj_ne_zero,
+        TensorPower.schur_dim_eq_hookFormula, TensorPower.schur_abs_log_dim_sub_le}
+    \leanok
+    \uses{thm:schur_weyl_labels, thm:dim_eq_hook, lem:hook_formula_entropy}
+    The labels occurring in $(\C^q)^{\otimes k}$ are the partitions of $k$ with at most
+    $q$ rows. For them $d_\lambda=k!\prod_{i<j}(l_i-l_j)/\prod_il_i!$ and
+    $|\log d_\lambda-kH(\lambda/k)|\le(q^2+q+1)(\log(k+q+2)+1)$. The Weyl dimension
+    formula for $V^{(q)}_\lambda$ is not part of this statement.
+\end{theorem}
+
+\begin{proof}\leanok
+    Combine Theorem~\ref{thm:schur_weyl_labels}, Theorem~\ref{thm:dim_eq_hook} and
+    Lemma~\ref{lem:hook_formula_entropy}.
+\end{proof}
