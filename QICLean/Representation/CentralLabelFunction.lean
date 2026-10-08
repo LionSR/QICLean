@@ -30,12 +30,13 @@ open Matrix
 
 namespace Matrix
 
-variable {X : Type*} [Fintype X] [DecidableEq X]
+variable {X : Type*} [Fintype X]
 
 /-- An operator `N = P N P` in the corner of an idempotent `P` that commutes with `P B P` for
 every `B` is a scalar multiple of `P`. -/
 theorem exists_eq_smul_of_commute_corner {P N : Matrix X X ℂ} (hP : P * P = P)
     (hN : P * N * P = N) (h : ∀ B, Commute N (P * B * P)) : ∃ c : ℂ, N = c • P := by
+  classical
   have hNP : N * P = N := by rw [← hN, mul_assoc, hP]
   have hPN : P * N = N := by rw [← hN, ← mul_assoc, ← mul_assoc, hP]
   by_cases hP0 : P = 0

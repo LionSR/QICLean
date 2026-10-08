@@ -190,7 +190,8 @@ theorem isRotationPair_imag {a b : Ω} (hab : a ≠ b) :
       (Complex.I • (single a b 1 + single b a 1)) := by
   have hK : (single a b (1 : ℂ) + single b a 1) * (single a b 1 + single b a 1) =
       single a a 1 + single b b 1 := by
-    simp [add_mul, mul_add, single_mul_single_same, hab, hab.symm]
+    simp only [add_mul, mul_add, single_mul_single_same, mul_one, single_mul_single_of_ne,
+      ne_eq, hab, hab.symm, not_false_eq_true, zero_add, add_zero]
     exact add_comm _ _
   have hKh : (single a b (1 : ℂ) + single b a 1)ᴴ = single a b 1 + single b a 1 := by
     simp [conjTranspose_single, add_comm]
@@ -201,7 +202,8 @@ theorem isRotationPair_imag {a b : Ω} (hab : a ≠ b) :
     simp [add_mul, mul_add, single_mul_single_same, hab, hab.symm]
   · rw [smul_mul_assoc]
     congr 1
-    simp [add_mul, mul_add, single_mul_single_same, hab, hab.symm]
+    simp only [add_mul, mul_add, single_mul_single_same, mul_one, single_mul_single_of_ne,
+      ne_eq, hab, hab.symm, not_false_eq_true, zero_add, add_zero]
     exact add_comm _ _
   · rw [smul_mul_smul_comm, Complex.I_mul_I, hK, neg_one_smul]
   · simp [conjTranspose_single]
