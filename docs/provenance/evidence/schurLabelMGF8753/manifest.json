@@ -274,7 +274,7 @@
     },
     {
       "path": "docs/provenance/evidence/schurLabelMGF8753/check-manifest.py",
-      "sha256": "478b5903e0a1d7ca11d84e418c79424f57b80c5ac689e27c935b60fb30b8260c"
+      "sha256": "7ac3959c3b7b376045c1f53a6e775d060ab0acb65e446f47e7f1c951c902dd21"
     },
     {
       "path": "docs/provenance/evidence/schurLabelMGF8753/compression.json",
@@ -510,7 +510,8 @@
     },
     {
       "path": "docs/provenance/evidence/schurLabelMGF8753/tactic-patterns-representation.log",
-      "sha256": "796c11e9345384346932a40214b9def6b5833287072fb6052c8601cefeb0f64a"
+      "sha256": "796c11e9345384346932a40214b9def6b5833287072fb6052c8601cefeb0f64a",
+      "compressed_only": true
     },
     {
       "path": "docs/provenance/evidence/schurLabelMGF8753/tactic-patterns-representation.log.gz",
