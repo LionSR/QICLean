@@ -1,0 +1,103 @@
+\section{Surprisal moments of independent copies}
+\label{sec:schur-label-iid-moments}
+
+The independent-copy step in
+\cite[Section~7, lines~75--85 and 227--238]{OpenAI2026AreaLaw}
+uses only the positive eigenvalues of a density matrix. We retain this
+convention by weighting the exponential by the eigenvalue itself.
+
+\begin{lemma}[Multiplicative functions of tensor powers]
+\label{lem:cfc-finite-tensor-power}
+\lean{Matrix.finKronecker_cons,Matrix.cfc_finKronecker_const}
+\leanok
+Let $A\ge0$ act on a finite-dimensional Hilbert space. Suppose
+$f:\mathbb R\to\mathbb R$ satisfies $f(1)=1$ and
+$f(xy)=f(x)f(y)$ for $x,y\ge0$. Then, for every integer $k\ge0$,
+\begin{align*}
+ f(A^{\otimes k})=f(A)^{\otimes k}.
+\end{align*}
+Here the zero-copy tensor power is the identity on $\mathbb C$.
+More generally, separating the first factor of a finite tensor product
+agrees with the canonical identification of a configuration with its
+first coordinate and its remaining coordinates.
+\end{lemma}
+
+\begin{proof}
+\leanok
+Separate the first factor and apply the multiplicative functional calculus
+for two positive matrices. Induction proves the assertion; the zero-copy
+case is precisely $f(1)=1$. Since the spectra are finite, no continuity
+hypothesis on $f$ is needed.
+\end{proof}
+
+\begin{lemma}[Exact centered surprisal moments]
+\label{lem:schur-label-iid-moment-identity}
+\lean{Matrix.re_trace_mul_exp_centered_neg_log_eq_surprisalMoment,
+Matrix.re_trace_mul_exp_centered_neg_log_finKronecker}
+\uses{lem:cfc-finite-tensor-power}
+\leanok
+For a Hermitian matrix $A$ with eigenvalues $\lambda_j$, real $s,t$, and
+$L_A=-\log A$ defined by spectral calculus, one has
+\begin{align*}
+ \operatorname{ReTr}\bigl(Ae^{t(L_A-sI)}\bigr)
+ =e^{-ts}\sum_j\lambda_j e^{-t\log\lambda_j}.
+\end{align*}
+The real logarithm here is defined at zero by zero and, for a negative
+argument, as the logarithm of its absolute value. In particular, for
+$A\ge0$, each zero eigenvalue contributes zero, including when $t=1$.
+If $\rho_k=A^{\otimes k}$, then
+\begin{align*}
+ \operatorname{ReTr}\bigl(\rho_k e^{t(L_{\rho_k}-ksI)}\bigr)
+ =\left[\operatorname{ReTr}\bigl(Ae^{t(L_A-sI)}\bigr)\right]^k.
+\end{align*}
+This last assertion holds for all real $s,t$ and every $k\ge0$.
+\end{lemma}
+
+\begin{proof}
+\leanok
+The first equality follows by diagonalization. For the second, apply the
+preceding lemma to $f_t(x)=x e^{-t\log x}$. This function vanishes at zero;
+when both factors are positive, its multiplicativity follows from
+$\log(xy)=\log x+\log y$. The trace of a tensor product is the product
+of the traces, and $e^{-tks}=(e^{-ts})^k$.
+\end{proof}
+
+\begin{theorem}[Label moments from the one-copy hypothesis]
+\label{thm:schur-label-iid-mgf}
+\lean{TensorPower.log_centered_surprisalMoment_finKronecker_le,
+TensorPower.log_centered_labelEntropy_finKronecker_le}
+\uses{lem:schur-label-iid-moment-identity,thm:schur-label-moment-bounds}
+\leanok
+Let $\sigma\ge0$ have trace one on a space of dimension $q$, and write
+$S(\sigma)=-\sum_j\lambda_j\log\lambda_j$. Suppose $C_0\ge0$,
+$c_0>0$, $\mathcal B\ge1$, and
+\begin{align*}
+ \log\sum_j\lambda_j e^{-t\log\lambda_j}
+ \le tS(\sigma)+C_0\mathcal B t^2
+ \qquad\left(|t|\le\frac{c_0}{\sqrt{\mathcal B}}\right).
+\end{align*}
+For $\rho_k=\sigma^{\otimes k}$ and $L_k=-\log\rho_k$ on its support,
+\begin{align*}
+ \log\operatorname{ReTr}\bigl(\rho_k e^{t(L_k-kS(\sigma)I)}\bigr)
+ \le C_0k\mathcal B t^2
+ \qquad\left(|t|\le\frac{c_0}{\sqrt{\mathcal B}}\right).
+\end{align*}
+Let $F_k$ be the actual Schur-label observable for the permutation of these
+$k$ copies, and put $c=\min(c_0,1)/2>0$. Then
+\begin{align*}
+ \log\operatorname{ReTr}\bigl(\rho_k e^{t(F_k-kS(\sigma)I)}\bigr)
+ \le 2C_0k\mathcal B t^2+\frac{q^2}{2}\log(k+1)
+ \qquad\left(|t|\le\frac{c}{\sqrt{\mathcal B}}\right).
+\end{align*}
+No full-rank hypothesis is required.
+\end{theorem}
+
+\begin{proof}
+\leanok
+The scalar one-copy moment is strictly positive because its nonnegative
+weights sum to one. Taking logarithms of the exact tensor-power identity
+multiplies the centered one-copy logarithm by $k$, proving the first bound.
+The actual tensor-power state is positive, has trace one, and is invariant
+under copy permutations. The quantitative signed-moment comparison therefore
+gives the second bound, with the indicated common interval.
+\end{proof}

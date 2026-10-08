@@ -317,3 +317,27 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   inequality and is not counted as another logarithmic comparison.
 - **Caveat:** The zero-eigenvalue case must be treated separately. The comparison
   is used only on nonzero joint projections, never as a global label inequality.
+
+### Head and tail of a finite Kronecker product — promoted (2026-10-08)
+
+- **Pattern:** Identify configurations by their first coordinate and their
+  remaining coordinates, then split the product of matrix entries.
+- **Seen:** The positivity and positive-rescaling proofs in
+  `Algebra/KroneckerFactorPositivity.lean`, and the tensor-power functional
+  calculus in `Analysis/CfcFinKronecker.lean`.
+- **Abstraction:** `Matrix.finKronecker_cons`, placed immediately after the
+  definition in `KroneckerFactorPositivity.lean`. Both prior proofs now use
+  this equality. The zero-copy case is handled separately.
+- **Caveat:** The index equivalence is explicit and preserves dependent
+  factor spaces; it does not identify a zero-copy space with an empty space.
+
+### Trace of a constant finite tensor product — candidate (2026-10-08)
+
+- **Pattern:** Expand the trace and use `Fintype.prod_sum` to factor its sum.
+- **Seen:** The private `trace_finKronecker_const` in
+  `Analysis/ReplicaComponentMergeMoment.lean` and the same scalar identity in
+  `Representation/SchurLabelIIDMoments.lean`.
+- **Abstraction:** Two short occurrences currently use the existing finite
+  product-of-sums theorem. A third independent use should promote the trace
+  identity beside the finite tensor product and refactor both call sites.
+- **Caveat:** The zero-copy trace is one, including an empty one-copy index set.

@@ -297,6 +297,25 @@ def finKronecker {N : ℕ} {α : Fin N → Type*} [∀ n, Fintype (α n)]
     finKronecker A x y = ∏ n, A n (x n) (y n) :=
   rfl
 
+/-
+Provenance-ID: 8753-qic-schur-iid-01
+Original formalization, no upstream Lean proof text reused.
+Promoted from the existing internal head-tail calculations; both consumers are refactored.
+Declaration: Matrix.finKronecker_cons
+Manuscript: September 24, 2026, comparator:mgf-data and comparator:signed-label-moments.
+-/
+
+/-- Separating the first tensor factor from a finite Kronecker product, with the
+canonical identification of configurations by their head and tail. -/
+theorem finKronecker_cons {N : ℕ} {I : Fin (N + 1) → Type*}
+    [∀ i, Fintype (I i)] (M : (i : Fin (N + 1)) → Matrix (I i) (I i) ℂ) :
+    (finKronecker M).submatrix (Fin.consEquiv I) (Fin.consEquiv I) =
+      M 0 ⊗ₖ finKronecker (Fin.tail M) := by
+  ext ⟨a, x⟩ ⟨b, y⟩
+  rw [Matrix.submatrix_apply, finKronecker_apply,
+    Matrix.kroneckerMap_apply, Fin.prod_univ_succ]
+  simp [Fin.cons_zero, Fin.cons_succ, finKronecker_apply, Fin.tail]
+
 /-- A finite Kronecker product of positive semidefinite matrices is positive
 semidefinite. -/
 theorem finKronecker_posSemidef :
@@ -319,14 +338,7 @@ theorem finKronecker_posSemidef :
       have htail := ih (Fin.tail M) (fun i ↦ hM i.succ)
       have hprod := (hM 0).kronecker htail
       rw [← posSemidef_submatrix_equiv (M := finKronecker M) (Fin.consEquiv I)]
-      have heq :
-          (finKronecker M).submatrix (Fin.consEquiv I) (Fin.consEquiv I) =
-            M 0 ⊗ₖ finKronecker (Fin.tail M) := by
-        ext ⟨a, x⟩ ⟨b, y⟩
-        rw [Matrix.submatrix_apply, finKronecker_apply,
-          Matrix.kroneckerMap_apply, Fin.prod_univ_succ]
-        simp [Fin.cons_zero, Fin.cons_succ, finKronecker_apply, Fin.tail]
-      rw [heq]
+      rw [finKronecker_cons]
       exact hprod
 
 /-- A finite Kronecker product of nonzero matrices is nonzero: the entry at a
@@ -402,16 +414,8 @@ theorem exists_pi_smul_posSemidef_of_finKronecker_posSemidef :
     intro α _ A hA hAne
     classical
     have : NeZero N := ⟨by omega⟩
-    have hsplit : (finKronecker A).submatrix (Fin.consEquiv α) (Fin.consEquiv α) =
-        (A 0) ⊗ₖ (finKronecker (Fin.tail A)) := by
-      ext p q
-      obtain ⟨a, f⟩ := p
-      obtain ⟨b, g⟩ := q
-      change finKronecker A (Fin.cons a f) (Fin.cons b g) = _
-      rw [finKronecker_apply, Matrix.kroneckerMap_apply, Fin.prod_univ_succ]
-      simp [Fin.cons_zero, Fin.cons_succ, finKronecker_apply, Fin.tail]
     have hAB : ((A 0) ⊗ₖ (finKronecker (Fin.tail A))).PosSemidef := by
-      rw [← hsplit]
+      rw [← finKronecker_cons]
       exact hA.submatrix _
     have htailNe : ∀ j : Fin N, Fin.tail A j ≠ 0 := fun j => hAne j.succ
     have hBne : finKronecker (Fin.tail A) ≠ 0 := finKronecker_ne_zero htailNe
