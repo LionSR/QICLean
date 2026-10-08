@@ -341,3 +341,186 @@ operator of $Q$.
     $C\bigl((\delta+d/k)^{1-2t}+\delta^{-2t}(\delta+d/k)\bigr)\|\pi^\lambda z\|^2$.
     Let $k\to\infty$ and take square roots.
 \end{proof}
+
+\section{Similarity transforms of copy means}
+
+Let $\mathcal V=\bigotimes_v\C^{n_v}$ with every $n_v\ge1$, let $P,Y,F$ be disjoint
+sets of factors, and let $A_k=(W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k})^2$ be the partition
+metric. For a one-copy operator $h$ supported on $P\cup Y$, write $h^{(j)}$ for $h$
+acting on the $j$-th copy, $\bar h=k^{-1}\sum_jh^{(j)}$, and
+$O_k=A_k^{-1/2}\bar hA_k^{1/2}$.
+
+\begin{lemma}[One-copy operators on replicas]
+    \label{lem:replica_site_operators}
+    \lean{PermutationRepresentation.commute_permOp_of_apply_eq,
+        TensorPower.siteOp_apply_of_isSupportedOn,
+        TensorPower.commute_permOp_subsystemPerm_siteOp_of_disjoint,
+        TensorPower.commute_permOp_subsystemPerm_siteOp_of_fix,
+        TensorPower.permOp_copyPerm_mul_siteOp, TensorPower.siteOp_eq_reindex,
+        TensorPower.l2_opNorm_siteOp_le, Entropy.IsSupportedOn.exists_sum_mul}
+    \leanok
+    The operator $h^{(j)}$ commutes with the copy permutations of every subsystem
+    disjoint from the support of $h$, and with every copy permutation of a subsystem
+    that fixes the copy $j$. A permutation $\tau$ of entire copies conjugates $h^{(j)}$
+    to $h^{(\tau j)}$, and $\|h^{(j)}\|\le\|h\|$. An operator supported on a disjoint
+    union $X\cup T$ is a finite sum of products $a_ib_i$ with $a_i$ supported on $X$
+    and $b_i$ supported on $T$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first two statements compare matrix entries: $h^{(j)}$ is nonzero only
+    between configurations that agree outside the support factors of copy $j$, and
+    the permutations in question preserve this relation and these factors. The
+    operator $h^{(j)}$ is $h\otimes I$ after splitting off copy $j$. For the
+    decomposition, expand a local operator on $X\cup T$ in matrix units.
+\end{proof}
+
+\begin{theorem}[Uniform boundedness of the similarity transform]
+    \label{thm:marked_similarity_bounded}
+    \lean{TensorPower.leafRoot, TensorPower.leafMetric, TensorPower.copyMean,
+        TensorPower.markedSimilarity, TensorPower.sqrt_leafMetric,
+        TensorPower.star_dotProduct_copyMean_eq, TensorPower.replicaMetric_conj_siteOp_mul,
+        TensorPower.exists_norm_markedSimilarity_mulVec_le}
+    \leanok
+    \uses{lem:replica_site_operators, thm:marked_ratio_forward, thm:marked_ratio_inverse,
+        thm:replica_metric_basic}
+    Let $0<t<1/2$. For fixed $P,Y,F$ and $h$ there is $C$, depending on $\mathcal V$, $t$,
+    the partition and $h$, such that
+    $\|O_kz\|\le C\|z\|$ for every $k$ and every $z\in\mathcal S_k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The square root of $A_k$ is $W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k}$, the $F$ factors
+    commute with $\bar h$ and cancel, and $O_k$ preserves $\mathcal S_k$. Between
+    symmetric vectors, $h^{(k)}$ may replace $\bar h$. Write $h=\sum_ib_ia_i$ with $b_i$
+    supported on $Y$ and $a_i$ on $P$. Since the metric of the first $k-1$ copies
+    commutes with operators on the last copy,
+    \[
+        W_Y^{-1}W_P(b_ia_i)^{(k)}W_P^{-1}W_Y
+        =\bigl(R_Y^{-1}b_i^{(k)}R_Y\bigr)\bigl(R_Pa_i^{(k)}R_P^{-1}\bigr).
+    \]
+    Hence $\langle w,O_kz\rangle=\sum_i\langle R_Yb_i^{(k)\ast}R_Y^{-1}w,
+    R_Pa_i^{(k)}R_P^{-1}z\rangle$ for symmetric $w,z$, in which both inverses act on
+    symmetric vectors. The forward and inverse bounds on the marked ratio bound each
+    term by $C_i\|w\|\|z\|$; take $w=O_kz$.
+\end{proof}
+
+\section{Unitary twirls}
+
+The integral representation of the metrics averages over a Haar-distributed unitary
+eigenbasis. The following statements show that such averages are central label functions.
+
+\begin{lemma}[Central label functions]
+    \label{lem:central_label_function}
+    \lean{Matrix.exists_eq_smul_of_commute_corner,
+        PermutationRepresentation.exists_eq_sum_labelProj_of_commute}
+    \leanok
+    \uses{lem:label_projectors}
+    For a permutation action of a finite group, an operator commuting with the
+    permutation operators and with every operator of their commutant is
+    $\sum_\lambda c_\lambda\pi^\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    On the corner of the matrix unit $E^\lambda_{00}$ the operator commutes with every
+    compressed matrix, because the averages $\sum_jE^\lambda_{j0}BE^\lambda_{0j}$ lie in
+    the commutant; hence it is a multiple of the corner projection there. The matrix
+    units $E^\lambda_{i0}$ carry this multiple to the whole block.
+\end{proof}
+
+\begin{lemma}[The differentiated unitary action]
+    \label{lem:unitary_commutant}
+    \lean{TensorPower.rotation, TensorPower.rotation_mem_unitaryGroup,
+        TensorPower.commute_diagOp_of_commute_tensorPow_rotation,
+        TensorPower.commute_diagOp_of_forall_unitary,
+        TensorPower.exists_eq_sum_labelProj_of_forall_unitary}
+    \leanok
+    \uses{thm:schur_weyl_commutant, lem:central_label_function}
+    An operator on $(\C^q)^{\otimes k}$ commuting with $U^{\otimes k}$ for every unitary
+    $U$ commutes with $\sum_jA^{(j)}$ for every matrix $A$. If it also commutes with the
+    copy permutations, it is a central label function.
+\end{lemma}
+
+\begin{proof}\leanok
+    Differentiate along the one-parameter unitary groups
+    $1+(\cos\theta-1)P+(\sin\theta)J$ with
+    $(P,J)=(e_{aa}+e_{bb},e_{ab}-e_{ba})$, $(e_{aa}+e_{bb},i(e_{ab}+e_{ba}))$ and
+    $(e_{aa},ie_{aa})$, whose derivatives at $\theta=0$ span all matrices. By
+    Schur--Weyl duality the diagonal actions generate the commutant of the copy
+    permutations.
+\end{proof}
+
+\begin{theorem}[The unitary twirl]
+    \label{thm:unitary_twirl}
+    \lean{Matrix.isCompact_unitaryGroup, Matrix.unitaryHaar, TensorPower.unitaryTwirl,
+        TensorPower.tensorPow_mul_unitaryTwirl, TensorPower.commute_permOp_unitaryTwirl,
+        TensorPower.trace_labelProj_mul_unitaryTwirl,
+        TensorPower.unitaryTwirl_eq_sum_labelProj}
+    \leanok
+    \uses{lem:unitary_commutant}
+    Let $A$ commute with the copy permutations, and let
+    $T(A)=\int U^{\otimes k}A(U^{\otimes k})^\ast\,dU$ over the Haar probability measure
+    of the compact unitary group. Then $T(A)=\sum_\lambda c_\lambda\pi^\lambda$ with
+    $c_\lambda\Tr\pi^\lambda=\Tr(\pi^\lambda A)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Left invariance of Haar measure makes $T(A)$ commute with every unitary tensor
+    power, and $T(A)$ commutes with the copy permutations because tensor powers and $A$
+    do. The previous lemma gives the central form. The label projectors commute with
+    unitary tensor powers, so $\Tr(\pi^\lambda T(A))=\Tr(\pi^\lambda A)$.
+\end{proof}
+
+\begin{lemma}[The trivial label]
+    \label{lem:trivial_label}
+    \lean{IrrepLabel.averagingElement, IrrepLabel.augmentation,
+        IrrepLabel.exists_centralIdem_eq_averagingElement,
+        PermutationRepresentation.exists_labelProj_eq_symProj}
+    \leanok
+    \uses{def:irrep_labels}
+    The averaging element $|G|^{-1}\sum_gg$ of $\C[G]$ is one of the central idempotents
+    $e_\lambda$. Hence, for every permutation action, the projector onto the invariant
+    vectors is a label projector.
+\end{lemma}
+
+\begin{proof}\leanok
+    The averaging element $\varepsilon$ satisfies $\varepsilon a=\operatorname{aug}(a)\varepsilon$.
+    The augmentations of the $e_\lambda$ are idempotent, sum to one and have vanishing
+    pairwise products, so exactly one $e_{\lambda_0}$ has $\varepsilon e_{\lambda_0}=\varepsilon$.
+    In the simple block of $\lambda_0$ the central idempotent $\varepsilon e_{\lambda_0}$ is
+    nonzero, hence equal to $e_{\lambda_0}$.
+\end{proof}
+
+\begin{theorem}[Coherent-state resolution]
+    \label{thm:coherent_resolution}
+    \lean{TensorPower.tensorVec, TensorPower.tensorPow_mulVec_tensorVec,
+        TensorPower.tensorVec_mem_symmetricSubspace, TensorPower.coherentProj,
+        TensorPower.unitaryTwirl_coherentProj}
+    \leanok
+    \uses{thm:unitary_twirl, lem:trivial_label}
+    For a unit basis vector $e$, $\int P_{Ue,k}\,dU=D_k^{-1}\Pi_k$, where
+    $P_{\theta,k}=|\theta^{\otimes k}\rangle\langle\theta^{\otimes k}|$, $\Pi_k$ is the
+    projector onto the symmetric subspace and $D_k=\Tr\Pi_k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The integral is the twirl of $P_{e,k}$, a central label function with coefficients
+    fixed by $\langle e^{\otimes k},\pi^\lambda e^{\otimes k}\rangle$. The symmetric vector
+    $e^{\otimes k}$ lies in the range of the trivial label projector $\Pi_k$ and is
+    orthogonal to the other label projectors.
+\end{proof}
+
+\begin{theorem}[Finite-copy coherent identity]
+    \label{thm:finite_husimi_identity}
+    \lean{TensorPower.splitCopies, TensorPower.coherentProj_split,
+        TensorPower.trace_mul_integral, TensorPower.integral_coherent_pairing}
+    \leanok
+    \uses{thm:coherent_resolution}
+    For $\sigma$ on $k$ copies and $G$ on $m$ copies,
+    $\int\Tr(\sigma P_{Ue,k})\Tr(GP_{Ue,m})\,dU=D_{k+m}^{-1}\Tr[(\sigma\otimes G)\Pi_{k+m}]$.
+\end{theorem}
+
+\begin{proof}\leanok
+    $P_{\theta,k+m}=P_{\theta,k}\otimes P_{\theta,m}$; pair the coherent-state resolution
+    for $k+m$ copies with $\sigma\otimes G$.
+\end{proof}

@@ -350,7 +350,11 @@ jobs:
             QICLeanTest/RestoringNorm.lean \
             QICLeanTest/RestoringNormAxioms.lean \
             QICLeanTest/RestoringVectors.lean \
-            QICLeanTest/RestoringVectorsAxioms.lean; do
+            QICLeanTest/RestoringVectorsAxioms.lean \
+            QICLeanTest/RestoringCoefficientBound.lean \
+            QICLeanTest/RestoringCoefficientBoundAxioms.lean \
+            QICLeanTest/RestoringGroundComponent.lean \
+            QICLeanTest/RestoringGroundComponentAxioms.lean; do
             timeout --signal=INT --kill-after=5s 90s lake env lean -j1 \
               -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true \
               -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \

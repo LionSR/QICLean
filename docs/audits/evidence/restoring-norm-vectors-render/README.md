@@ -58,3 +58,11 @@ it still checks every substantive core source byte and preserves the historical
 router/artifact hashes, while requiring both original core includes exactly once.
 Its successful current-head run is recorded in this packet; the core was not
 rerendered or relabeled as a new result.
+
+Historical replay after the 76-declaration extension: public ancestor
+`2bddde9e49330bab20260b002b7f0ba7de51918e` contains byte-identical render
+inputs. Run `python check.py --source-revision 2bddde9e49330bab20260b002b7f0ba7de51918e`.
+The preparation script now defaults to that public source. The original frozen
+render revision and all original source/artifact hashes remain unchanged. This
+checker validates the selected historical source, not the later 76-declaration
+current tree.

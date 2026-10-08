@@ -102,6 +102,7 @@ import QICLean.Analysis.ResolventFunctionalCalculus
 import QICLean.Analysis.ResolventMellin
 import QICLean.Analysis.ResolventPhaseBound
 import QICLean.Analysis.ResolventPhaseGap
+import QICLean.Analysis.RestoringCoefficientBound
 import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
@@ -151,6 +152,7 @@ import QICLean.Analysis.TwoProjectionDefectBlockSum
 import QICLean.Analysis.TwoProjectionReducedProjection
 import QICLean.Analysis.TypicalSet
 import QICLean.Analysis.UnitaryEvolution
+import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.WeightedCesaroMean

@@ -158,3 +158,19 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 -/
 #guard_msgs (whitespace := lax) in
 #print axioms Entropy.restoringGlobal_adjoint_error_le
+
+/--
+info: 'Entropy.restoringBlank_sum_eq_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+---
+info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Entropy.restoringBlank_sum_eq_one
+
+/--
+info: 'Entropy.restoringOperatorWithAncilla_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+---
+info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Entropy.restoringOperatorWithAncilla_apply

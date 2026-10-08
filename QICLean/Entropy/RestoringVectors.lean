@@ -114,7 +114,9 @@ noncomputable def restoringPhysicalLift
     restoringPhysicalGrouping restoringPhysicalGrouping
 
 omit [DecidableEq X] in
-private theorem blank_sum_eq_one (b : X → ℂ)
+/-- A unit ancillary blank has squared coordinate norm one.
+Source: `09-amplification.tex`, lines 331–332. -/
+theorem restoringBlank_sum_eq_one (b : X → ℂ)
     (hb : ‖WithLp.toLp 2 b‖ = 1) : ∑ i, star (b i) * b i = 1 := by
   calc
     _ = inner ℂ (WithLp.toLp 2 b) (WithLp.toLp 2 b) := by
@@ -142,7 +144,9 @@ private theorem physical_block_apply (Q : Matrix (X × Y) (X × Y) ℂ)
   intro k _
   ring
 
-private theorem restoring_with_ancilla_apply (E : Finset X) (p : X → ℝ)
+/-- The coordinate entries of the actual restoring operator with its spectator ancilla.
+Source: `09-amplification.tex`, lines 350–358. -/
+theorem restoringOperatorWithAncilla_apply (E : Finset X) (p : X → ℝ)
     (sBlank xBlank : X → ℂ) (Q : Matrix (X × Y) (X × Y) ℂ)
     (T : Matrix Y Y ℂ) (s e s' e' : X) (a : X × Y) (x : X) (y : Y) :
     restoringOperatorWithAncilla E p sBlank xBlank Q T ((s, e), a) ((s', e'), (x, y)) =
@@ -192,11 +196,11 @@ theorem restoringGlobal_mulVec_copy [DecidableEq Z] (E : Finset X) (p : X → �
     restoringGlobal E p sBlank xBlank Q T *ᵥ (restoringCopy sBlank xBlank Ω).ofLp =
       restoringColumnGlobal E p sBlank eBlank Q T *ᵥ
         (restoringInitial sBlank eBlank Ω).ofLp := by
-  have hx' := blank_sum_eq_one xBlank hx
-  have he' := blank_sum_eq_one eBlank he
+  have hx' := restoringBlank_sum_eq_one xBlank hx
+  have he' := restoringBlank_sum_eq_one eBlank he
   ext ⟨⟨⟨s, e⟩, x, y⟩, z⟩
   simp only [restoringGlobal, restoringColumnGlobal, kronecker_one_mulVec_apply,
-    Fintype.sum_prod_type, restoring_with_ancilla_apply, column_operator_apply,
+    Fintype.sum_prod_type, restoringOperatorWithAncilla_apply, column_operator_apply,
     restoringCopy, restoringInitial, WithLp.ofLp_toLp]
   by_cases hse : s ∈ E
   · simp only [hse, ite_true, mul_ite, ite_mul, mul_zero, zero_mul, mul_one,
@@ -278,7 +282,7 @@ theorem restoringGlobal_adjoint_restored [DecidableEq Z]
   ext ⟨⟨⟨s, e⟩, x, y⟩, z⟩
   simp only [restoringGlobal, conjTranspose_kronecker, conjTranspose_one,
     kronecker_one_mulVec_apply, Fintype.sum_prod_type, Matrix.conjTranspose_apply,
-    restoring_with_ancilla_apply, restoringRestored, restoringCopy,
+    restoringOperatorWithAncilla_apply, restoringRestored, restoringCopy,
     WithLp.ofLp_toLp, Matrix.mul_apply, restoringSelectedProjection,
     kroneckerMap_apply, Matrix.diagonal_apply]
   simp only [star_mul, star_star, star_sum, apply_ite, star_zero,

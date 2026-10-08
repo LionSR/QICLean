@@ -70,19 +70,31 @@
   },
   "replay_scripts": {
     "prepare_fixture.py": {
-      "published_sha256": "f2be6bdfeb6d027822ea408810549319329957454a93967cbe45eced2d9df562"
+      "published_sha256": "0277e2d58355dc11cc70ba73e84d561a490b9f096d28ba5c290ce9913b12960c"
     },
     "verify_render.py": {
       "published_sha256": "edbd36e543751ceb39f8bb9497fe46ddecfc25fabbcaa7965acf279e5363132c"
     },
     "check.py": {
-      "published_sha256": "5c7f354ea0ab822563941440525f34242c0317bd477bda1d1106de7123b246d3"
+      "published_sha256": "d9ba9f172b63c1552d55e6cc0156d92e9c266f2e8bb4d3fca67630e152bf8bcf"
     }
   },
   "environment_script_sha256": "3a538bdefcda033a0d3a55eda7102007c6789d6da004b28bb47033a17fb6c70b",
   "normalization": {
     "rule": "Replace executor-private workspace root with literal ${WORKSPACE}; no other recorded arguments changed.",
     "original_record": "${WORKSPACE}/restoring-norm-vectors-focused/commands-original.json",
-    "original_record_sha256": "6738064d6fd0d6cadc33b1ea6567e65f0b6f212b24c18106774a201259ab7afc"
+    "original_record_sha256": "6738064d6fd0d6cadc33b1ea6567e65f0b6f212b24c18106774a201259ab7afc",
+    "maintenance_note": "The published checker/preparation hashes and historical replay metadata were updated after publication. Original raw commands, frozen source hashes and artifact records remain unchanged."
+  },
+  "historical_checker_maintenance": {
+    "public_replay_revision": "2bddde9e49330bab20260b002b7f0ba7de51918e",
+    "reason": "The 76-declaration extension promotes two vector lemmas, changing substantive source bytes. The historical checker now reads every source blob from the explicitly selected public 54-declaration ancestor; the preparation script defaults to that public replay source.",
+    "original_render_records_unchanged": {
+      "focus-manifest.json": "90f86acbb7883cef8b066e5167c23ec68236ddc9c30aa904ca74c15a52e297aa",
+      "verification.json": "2162b70033f441d20260a7c2aed3789e6890f3697b477a4a77485402bdd7c09c",
+      "visual-review.json": "e5b2d9955b88c2b699ce325a7c04016aa4c77943b790b0af8272a0a8903ed3d1",
+      "initial-findings.json": "f913de8a47d9d58ef3a02cd04575efe5b17aea70874d25dbbc74b49f8b643693",
+      "anchor-fix-findings.json": "c8aa46e2772d58a218e6c3e2272a2a509d44ab2c09d12fb308a1a405e31dcfef"
+    }
   }
 }

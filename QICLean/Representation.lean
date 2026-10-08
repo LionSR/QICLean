@@ -12,6 +12,8 @@ import QICLean.Representation.BranchProbability
 import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri
 import QICLean.Representation.Casimir
+import QICLean.Representation.CentralLabelFunction
+import QICLean.Representation.CoherentResolution
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.GroupedCopies
@@ -19,6 +21,7 @@ import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookDimension
 import QICLean.Representation.HookFormula
 import QICLean.Representation.HookRecursion
+import QICLean.Representation.HusimiIdentity
 import QICLean.Representation.IrrepLabelCount
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
@@ -34,6 +37,8 @@ import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
 import QICLean.Representation.ReplicaMetric
 import QICLean.Representation.ReplicaRatio
+import QICLean.Representation.ReplicaSimilarity
+import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
@@ -44,5 +49,8 @@ import QICLean.Representation.SchurWeylLift
 import QICLean.Representation.StarOperator
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
+import QICLean.Representation.TrivialLabel
+import QICLean.Representation.UnitaryCommutant
+import QICLean.Representation.UnitaryTwirl
 import QICLean.Representation.WeylDimension
 import QICLean.Representation.WeylRecursion
