@@ -1,0 +1,228 @@
+{
+  "mathematical_source_revision": "523a72b62e49b834574dc4e990a761e8891d1cc5",
+  "full_library_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+  "book_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+  "successful_checks": [
+    {
+      "source_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+      "argv": [
+        "node",
+        "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+        "--operation-kind",
+        "edit",
+        "--expected-output-count",
+        "1",
+        "--output-format",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:10:54.923969+00:00",
+      "elapsed_seconds": 0.13561149999441113,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:14:03.191019+00:00",
+      "elapsed_seconds": 14.092857750001713,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/axioms-final.log",
+      "sha256": "86ab331be933a6f8baa3b8f4ddcd3c56c800b0c1c6d9d09eebce0fe316b9c9de"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/copy-bibliography.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:14:32.037862+00:00",
+      "elapsed_seconds": 0.04471595899667591,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "lake",
+        "env",
+        ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:17:12.110907+00:00",
+      "elapsed_seconds": 33.9704101249954,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/web-visual.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:17:12.110907+00:00",
+      "elapsed_seconds": 2.8733427920087706,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/focused-web.log",
+      "sha256": "68da51cb710d0c7301a30a7f21735a8f865f3315a88a745e5bf5c507e3bd6057"
+    },
+    {
+      "source_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T00:58:44.973845+00:00",
+      "elapsed_seconds": 671.6704205419956,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/full-build.log",
+      "sha256": "39ffd39403d63f4299a6ae50113108a6d92dc5f2de828cdc8d229d187cd3286e"
+    },
+    {
+      "source_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/mathlib-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T00:58:44.838268+00:00",
+      "elapsed_seconds": 0.0847137500095414,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/guard.log",
+      "sha256": "7a261f40a8457739d006e91b8e261aca127802d54aa7d6c19f323ec71e0dc9d4"
+    },
+    {
+      "source_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+      "argv": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:06:55.133888+00:00",
+      "elapsed_seconds": 0.7805599159910344,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/imports.log",
+      "sha256": "549ded2b48fdc966e6e5e57d1349a44f57bd9e7d9c0a0f9dc5f875ed291c4b0c"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/check-native-targets.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:17:13.277586+00:00",
+      "elapsed_seconds": 0.062122250004904345,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/native-targets.log",
+      "sha256": "897fbb8811017f4a86b19957cdc2ed73297d2b776184a9d79de86370a17564c2"
+    },
+    {
+      "source_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+      "argv": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/blueprint",
+      "started_utc": "2026-10-08T01:10:55.105460+00:00",
+      "elapsed_seconds": 43.97174329099653,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/pdf.log",
+      "sha256": "8472a848a45c1607ec17ba4341e9a74042b6edc8866a9923a1206287b480d90a"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/pdf-pages.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:15:18.172904+00:00",
+      "elapsed_seconds": 10.929362708004192,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/pdf-render.log",
+      "sha256": "e7c37ad3ccecbbe8c945be33901c4ecd6c38948c521a8246bac7cde4a32f707b"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/blueprint",
+      "started_utc": "2026-10-08T01:13:35.409398+00:00",
+      "elapsed_seconds": 27.14622654199775,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/pdf-revised.log",
+      "sha256": "01617178cd0a942b26c5829bb6f4b4ed88e3f739a56edebe06aa58161c9a7088"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/check-provenance.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:26:36.697203+00:00",
+      "elapsed_seconds": 0.16657545800262596,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/provenance.log",
+      "sha256": "57a77402837a4709a395b9d75d00e9add1048c3fe75e2320f70f1b4a5352da43"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "texra-blueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/blueprint",
+      "started_utc": "2026-10-08T01:14:32.130850+00:00",
+      "elapsed_seconds": 58.42339170900232,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/web.log",
+      "sha256": "07d79b5422a65ac8de961ceefe7a1c6557c7b9d1c21ec868bfb027df400e4856"
+    },
+    {
+      "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T01:17:12.110910+00:00",
+      "elapsed_seconds": 53.945526957992115,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/whole-web.log",
+      "sha256": "ffa009488e525c10ab4de1e3ea2aeb620e3e18f609d8f95d353f6beda6dd797b"
+    }
+  ],
+  "scope": "One actual QC component moment. No complete inverse-compression estimate or ground-state area-law theorem is asserted.",
+  "initial_pdf_retained": true,
+  "fresh_imported_kernel_reports": 1
+}

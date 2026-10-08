@@ -1,0 +1,13 @@
+{
+  "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/copy-bibliography.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T01:14:32.037862+00:00",
+  "elapsed_seconds": 0.04471595899667591,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/bibliography.log",
+  "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+}

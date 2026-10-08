@@ -1,0 +1,13 @@
+{
+  "source_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+  "argv": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/blueprint",
+  "started_utc": "2026-10-08T01:10:55.105460+00:00",
+  "elapsed_seconds": 43.97174329099653,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/pdf.log",
+  "sha256": "8472a848a45c1607ec17ba4341e9a74042b6edc8866a9923a1206287b480d90a"
+}
