@@ -1,0 +1,13 @@
+{
+  "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/check-hazards.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T01:44:27.333495+00:00",
+  "elapsed_seconds": 0.0381162910052808,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/hazards.log",
+  "sha256": "edd3cd77c9cd6f79d8f81cae4b7f535f1dec8be8d3845fb0201daadb96c79137"
+}

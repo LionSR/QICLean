@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-good-pair-marginal-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+        "declaration": "Matrix.replicaGoodPairMarginal",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the literal common density of the actual original excitation component on QC tensor VR, tracing all middle Y copies and bad exterior/auxiliary copies. Use one chosen good enumeration. Arbitrary \u03a9 on Q tensor Y tensor V, k including zero, B and u. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=2 lake build QICLean.Analysis.ReplicaGoodPairMarginal",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/target.log",
+            "sha256": "e1e054a918843324ce3c20d65fcc2e84bfabb68fea7320379bda32b428781734"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/replicaGoodPairMarginal8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms.log",
+            "sha256": "d01fd0967d7179bdee394bd2451896dc1e2393f4dfde0f4eeda7f36eb8127eec"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8750-qic-good-pair-marginal-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+        "declaration": "Matrix.partialTraceRight_replicaGoodPairMarginal",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive its actual QC partial trace as the existing regional auxiliary marginal with physical complement Y tensor V. Split the literal remaining auxiliary configurations and reorder the finite trace sums. No normalization, fixedness or supplied marginal identity."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=2 lake build QICLean.Analysis.ReplicaGoodPairMarginal",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/target.log",
+            "sha256": "e1e054a918843324ce3c20d65fcc2e84bfabb68fea7320379bda32b428781734"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/replicaGoodPairMarginal8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms.log",
+            "sha256": "d01fd0967d7179bdee394bd2451896dc1e2393f4dfde0f4eeda7f36eb8127eec"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8750-qic-good-pair-marginal-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+        "declaration": "Matrix.partialTraceLeft_replicaGoodPairMarginal",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive its actual VR partial trace using the exterior physical exchange Q tensor Y tensor V to V tensor Y tensor Q preserving Y and the simultaneous C/R exchange. Prove actual excitation covariance, then transport the same component and its trace. No independent second component or supplied covariance identity."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=2 lake build QICLean.Analysis.ReplicaGoodPairMarginal",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/target.log",
+            "sha256": "e1e054a918843324ce3c20d65fcc2e84bfabb68fea7320379bda32b428781734"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/replicaGoodPairMarginal8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms.log",
+            "sha256": "d01fd0967d7179bdee394bd2451896dc1e2393f4dfde0f4eeda7f36eb8127eec"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8750-qic-good-pair-marginal-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+        "declaration": "Matrix.trace_replicaGoodPairMarginal",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the common density trace equals the squared norm of the actual original excitation component, with real squared norm included into the complex numbers. Use the explicit full coordinate equivalence; include zero components, zero copies and empty good sets."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=2 lake build QICLean.Analysis.ReplicaGoodPairMarginal",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/target.log",
+            "sha256": "e1e054a918843324ce3c20d65fcc2e84bfabb68fea7320379bda32b428781734"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/replicaGoodPairMarginal8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms.log",
+            "sha256": "d01fd0967d7179bdee394bd2451896dc1e2393f4dfde0f4eeda7f36eb8127eec"
+          }
+        ]
+      }
+    }
+  ]
+}

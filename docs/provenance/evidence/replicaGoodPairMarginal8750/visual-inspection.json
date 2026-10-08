@@ -1,0 +1,14 @@
+{
+  "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+  "pdf": "standalone-wrapper.pdf",
+  "pages": [
+    1,
+    2
+  ],
+  "inspected": "Both complete pages viewed at 1600 px. All four statements and three proofs visible; retained/traced factor order and physical exchange preserving Y agree with Lean; citation resolved; no clipped text, overlap or missing formula endpoints.",
+  "images": [
+    "standalone-page-1.png",
+    "standalone-page-2.png"
+  ],
+  "result": "passed"
+}

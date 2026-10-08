@@ -1,0 +1,15 @@
+{
+  "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+  "argv": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T01:43:42.106222+00:00",
+  "elapsed_seconds": 13.933725374998176,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/cache.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

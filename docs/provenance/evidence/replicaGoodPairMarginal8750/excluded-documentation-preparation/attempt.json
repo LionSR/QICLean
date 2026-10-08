@@ -1,0 +1,23 @@
+{
+  "stage": "unfrozen documentation preparation",
+  "actual_exit_code": 1,
+  "source_path_at_attempt": "QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+  "tool_session_id": 90731,
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "QICLean/Analysis/ReplicaGoodPairMarginal.lean"
+  ],
+  "unfrozen_source_sha256": "b966dcf67b3bdebf5d8bf1e75b106c053ab8f69791094e7ea7f6545dace86b00",
+  "reason": "The initial documentation generator accidentally included text between docstrings, inserting duplicate predecessor declarations and causing parsing/type/long-line errors. Replaced the generator with explicit docstrings; the approved generalized mathematical scratch was unchanged. All subsequent frozen-source checks passed.",
+  "stdout_status": "Reported Lean diagnostics are present in the tool conversation; no raw byte stdout log was saved for this pre-freeze elaboration. It is excluded from successful source-bound evidence."
+}

@@ -1,0 +1,11 @@
+{
+  "bipartition_predecessor": "d416537a",
+  "full_physical_source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+  "scope_correction": "The manuscript has physical Q tensor Y tensor V. The predecessor treated only Q tensor V. The current four APIs trace all middle Y coordinates and prove the actual swapped marginal preserving Y. No parallel bipartition API remains.",
+  "source_lines": [
+    23,
+    "103\u2013110",
+    "524\u2013549"
+  ],
+  "root_read_only_mathematical_review": "Approved entire generalized scratch and all four public statements before source freeze."
+}
