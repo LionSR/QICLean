@@ -1,0 +1,14 @@
+{
+  "parent_revision": "ab5264325521b5f7fa1719217512c655e0820e4f",
+  "source_revision": "523a72b62e49b834574dc4e990a761e8891d1cc5",
+  "unchanged_parent_files": 3840,
+  "append_only": [
+    "docs/tactic_patterns.md"
+  ],
+  "added_files": [
+    "QICLean/Analysis/ReplicaComponentMergeMoment.lean",
+    "blueprint/src/fragment/replica_component_merge_moment.tex",
+    "docs/openai-area-law-component-merge-moment.md"
+  ],
+  "no_parent_proof_or_provenance_changed": true
+}

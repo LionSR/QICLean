@@ -1,0 +1,273 @@
+{
+  "individual_evidence_revision": "1966e51e1f8df9bf72d0f26d0b31fcd34634d1fe",
+  "records": [
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/Axioms.lean",
+      "sha256": "07b07814262674aca39642e3840664d0854cc2e82d5e29f9e0e84cc4ed1c95b4"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/README.md",
+      "sha256": "d8f51881a4cce6ab33288ebad4b6e69c0d9bbd994eff11b2545d58e78fa04d69"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/Statements.lean",
+      "sha256": "504708d51e104b6b6163a104b6df1a654849d8b1051344ad1afa5ef73b7ea185"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/TextStyle.lean",
+      "sha256": "354e9ff3972342b1e8677290b63916717350f1765098b447926df7ba051943eb"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-axioms-exit.json",
+      "sha256": "ec6fa3f87ffdfa993124b0f0a9cb10e8a6cd24fcfc27cd881c766d4ce06b3466"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-axioms.log",
+      "sha256": "9d1b97cbfcd3cba8c95f8a344bb44b955685c7854cca09d30dba13a2b7fcb2ea"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-build-exit.json",
+      "sha256": "f8fce3c9bfc17c7bf843e0631b9ad38254b0bf73d6dc3d310c8b7539ab024c66"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-build.log",
+      "sha256": "dbcaf8b62e0f685df5658d7a0928366eadc6541776e0ff9f100f1f480c78ca7b"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-cache-fetch-exit.json",
+      "sha256": "c56bb8bac3191bbbbf15dd35d1ec20ffafecb4a55e51545b6e1522206a4efaef"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-cache-guard-exit.json",
+      "sha256": "82149aaf4b0270b1b3f4714c2111b32a83fc2301ff0b0854713489132cd72d3f"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-cache-guard.log",
+      "sha256": "7a261f40a8457739d006e91b8e261aca127802d54aa7d6c19f323ec71e0dc9d4"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-hazards-exit.json",
+      "sha256": "534c880e4e20512f882f1d5c4933a6c0c02fc98a5f54481ba95cab357f08e498"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-hazards.log",
+      "sha256": "3d65a2effdce0c087f5e87280ff7176cdba567e175c929ef4b5fe6c4c621d027"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-patterns-exit.json",
+      "sha256": "882ca9b331af9c5f9f5a3f6cd4ec7c13d01ea615359b476a943ae0178c5d6f47"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-patterns.log",
+      "sha256": "0c1c6d800ce000f31c33b3fd35e5df0d1569c96537577aa3fbe56e0551ee7bb9"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-preservation-exit.json",
+      "sha256": "0de37b3f102468e3a2a71232085d188d9f46526eb577d34f27401261232491a0"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-preservation-final-exit.json",
+      "sha256": "0c3074edb0412901888de6782be6ce8daa9aa1b1ef1b32d3a00c33d00e7172f5"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-preservation-final.log",
+      "sha256": "efbfcadf26007c400f648383a4672d815aa12c8b6f0ba5ec1ed4c69cdb673a83"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-preservation.log",
+      "sha256": "efbfcadf26007c400f648383a4672d815aa12c8b6f0ba5ec1ed4c69cdb673a83"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-prose-exit.json",
+      "sha256": "22ed93477a686c84709cd82e7f65d81e77b49a8fe08ade1a64149433812c90c7"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-provenance-exit.json",
+      "sha256": "a798584a565a039a29d585e13917d833e441d429525f6e182088d35336206646"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-provenance-final-exit.json",
+      "sha256": "d4afd8349f09a7c579a018591bd4d2a6a070d3f5fcf3b831f1cd40a58ec85a70"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-provenance-final.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-provenance.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-statements-exit.json",
+      "sha256": "3237ad09ba29e3dbe76026c837b619f6882dad3782cd90c253e9318bf2c5051c"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-statements.log",
+      "sha256": "c7541c7d6b4773f67f2857998d916c6bd355a31096021e7c48dff904072ea718"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-strict-source-exit.json",
+      "sha256": "d2136820e2703ab8bb88aa12f77bb3a92eb48b780fdfd7c5d065052696a84d5b"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-text-style-exit.json",
+      "sha256": "449509072a5a1af1e54e65360a8cd1c5015cb167b1a15022c60dd2e699a14921"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/cache-guard.py",
+      "sha256": "006b200da78598bd4ed7609ccf5f614d42e07c32e720339a8860e5b259eb9b26"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/check-hazards.py",
+      "sha256": "51e2a180f57a85b4c92d47342b7937e3595eee2000b194b3927e7dc040dd91c4"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/check-manifest.py",
+      "sha256": "ee658f678b7e59d7599762e28881583f9716cd6020bc266b25ce079a3c11def3"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/check-preservation.py",
+      "sha256": "7707fe2335fbc7171b346dfbf3c1546df0d7438274ccd02b98638e33ce9ead2a"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/compressed-inventories.json",
+      "sha256": "58c719174a8c47088f012e998ae932570d9f91f068a484a6743545e0a29356aa"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/evidence-sha256.json",
+      "sha256": "943fa416974a1166939e0aaa48324a61c97ea704048f6ab5bb136b583c70aed7"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/inherited-byte-preservation.json.gz",
+      "sha256": "5d9c2600c36a3e6d513077f7e71304ba3edb912806c9c8cade2ceedd3ffcc53b"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/kernel-summary.json",
+      "sha256": "a7fde10e5308c24a687c0304d5f45366565e5d76f48ae63d2865e1434c6990ea"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/manifest-check-exit.json",
+      "sha256": "d0b26d53cb3007357cae9cb54128c42b6c7154f8875009de60569c140bb0ad98"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/manifest-check.log",
+      "sha256": "8b49c21189347661ab27743bc8cfe8a91c04ca2ec5d2ba217bb289c1be93433e"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/merge-resolutions.json",
+      "sha256": "fff91da1f407b73e1f8db089142938c0e22a0ee9d6f64951cef921dd827764a2"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/owned-shards.json",
+      "sha256": "f6569e830ba76398bfcbfa242e1a2acc260e04278bf18430634143ae81644fe0"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/preexisting-output-preservation.json",
+      "sha256": "3fb77c4abee9438a6398c04def77f160b6b43840598d181c0fd8d56fdd4c357d"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/replica-two-merge-docstring-placement.lean.txt",
+      "sha256": "c7df68a3cef96a8fc1224ed0b24749da890036153cde3ca0db5cfa9175d0ea90"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/replica-two-merge-production-prefreeze-corrected-exit.json",
+      "sha256": "9357e949023222d39b2aabdca7a6db17170bfeb59d29068e4f18feb48b4943c6"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/replica-two-merge-production-prefreeze-corrected.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/replica-two-merge-production-prefreeze-exit.json",
+      "sha256": "0f9cb6f7b3ca77c4205c120de2b7a0468978f4c8dbb817582dac54e01394ddd7"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/replica-two-merge-production-prefreeze-final.log",
+      "sha256": "1b1dce8185fbc28ffa033db0db2b5d87069c356c22e0eed0b58db6a40ebb710a"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/replica-two-merge-production-prefreeze-retry-exit.json",
+      "sha256": "cd601450462befa9536953612af0e7c8998bffa98ec1c9563e04d676b3157ec1"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/replica-two-merge-production-prefreeze.log",
+      "sha256": "1b1dce8185fbc28ffa033db0db2b5d87069c356c22e0eed0b58db6a40ebb710a"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/run.py",
+      "sha256": "172eb657bc830f4931dde5808fe7fa6b5cf57fce2bb03a43657b63838039cdc6"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/scouting.json",
+      "sha256": "e803c0362cde3ea3cc7712fde176e1313ba294f94106e9359a25fcd4a5d0946f"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/source-freeze.json",
+      "sha256": "a2af7c0ecf3ca97357287f615db28c0e7c8b971c334b76a9e2170c46b5ca9b26"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/tactic_pattern_scan.py",
+      "sha256": "d6c4e9a12ccc192ca92de9a56f1850753dc2bc44724c647e90fc51a3ddaa4b4b"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-parent-source-comparison.json.gz",
+      "sha256": "52fbfa3c5f10f94c5864c3110fd150f9ff04b4a09c2308cc3bbbe986a6b6c6aa"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-prerequisite-cache-exit.json",
+      "sha256": "a69b6e422505d3a6394b1e6da80dda894c9f880b2e0fab11f088fc92cc7f05cb"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-prerequisite-cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-prerequisite-guard-exit.json",
+      "sha256": "71c3ba044a82834453c1e3fca590eef1771ad2e0cd14b35040d0c4dacc215e48"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-prerequisite-guard.log",
+      "sha256": "7a261f40a8457739d006e91b8e261aca127802d54aa7d6c19f323ec71e0dc9d4"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-prerequisite-production-preservation.json",
+      "sha256": "b951073cceeaf048acf3e4ecaa94921bfb689c260caceb7c450c5cf5ec8be673"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-prerequisite-target-exit.json",
+      "sha256": "1de91fddd5ea9e19928407c0920cd175454b01fd1833dd41bb6bc5de9b5e1eb8"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-prerequisite-target.log",
+      "sha256": "a94cf8a959a2a16d65be63bb754f7dd7a398d24eda89085f030b9b66c96d1bd7"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/validate-owned.py",
+      "sha256": "59b124fef21625389a4d0809f83f450c81ca26dc5d0451b0d387d643357f7fc8"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMoment8750/verification.json",
+      "sha256": "3528b68e30b52321f7c6875a6d777a7c436d86a14a8299929fc630b25421fa91"
+    },
+    {
+      "path": "docs/provenance/openai-math.d/replicaTwoMergeMoment8750.json",
+      "sha256": "32bebf906654393d1e36e1281b9fcebb9ed62cefd7818ff0821e671f8aeab257"
+    }
+  ]
+}

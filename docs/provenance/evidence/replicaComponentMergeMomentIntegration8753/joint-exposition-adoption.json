@@ -1,0 +1,9 @@
+{
+  "library_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+  "book_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+  "joint_density_checked_head": "771e955ae728db3e88af04114b5773843fc04eef",
+  "exposition_revision": "7840e716185f9d477c3c135192f3ec0573813e14",
+  "all_lean_sources_and_dependency_pins_unchanged": true,
+  "initial_pdf_attempt": "pdf-exit.json",
+  "reason_for_revised_pdf": "Adopt the independently checked two-row coordinate display before the final combined book; preserve the original successful PDF attempt."
+}

@@ -1,0 +1,13 @@
+{
+  "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/mergeExponential8750/check-inherited.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T00:31:19.218987+00:00",
+  "elapsed_seconds": 0.611,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeExponential8750/inherited.log",
+  "sha256": "2a2c7616909c563ba36c97b34d315bd09b8d7c34ae6737fc3eba09d3dc866852"
+}

@@ -1,0 +1,4 @@
+import QICLean.Entropy.ConditionalMovementEstimate
+#print axioms Entropy.conditionalMovement_norm_le
+#print axioms ConditionalMovement.LocalMove.one_copy_move_cfc
+#print axioms Matrix.cfc_rpow_kernelCompletion

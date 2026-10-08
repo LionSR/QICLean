@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "no_upstream_proof_text_reused": true,
+      "id": "8750-qic-weighted-trace-exponential-01",
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/WeightedTraceExponential.lean",
+        "declaration": "Matrix.PosSemidef.re_trace_mul_exp_add_le_half_sum",
+        "name_status": "declared"
+      },
+      "changes": [
+        "Derive the auxiliary arithmetic-mean inequality from positive weighted trace of the actual exponential difference square. The positive semidefinite weight is unnormalized and need not commute with the two commuting Hermitian generators; every real exponent and empty coordinate sets are included. This is distinct from the printed Cauchy\u2013Schwarz geometric-mean estimate in Section7 lines553\u2013555."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.WeightedTraceExponential",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceExponential8750/bound-build.log",
+            "sha256": "6b6c7504ffd337b8d0ac99749c090d977443960cea0058207772c9ed3d1ee7b8"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/WeightedTraceExponential.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceExponential8750/bound-strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/weightedTraceExponential8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceExponential8750/bound-axioms.log",
+            "sha256": "84b339d88eba6c3d6e8b60311bfe3028771580b14b3fdf9ac8cf602d5c44d59c"
+          }
+        ]
+      }
+    }
+  ]
+}

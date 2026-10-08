@@ -1,0 +1,63 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Analysis.RectangularTraceNormAlgebra
+import QICLean.Probability.ComplexGaussian.ProductSource
+import QICLean.Probability.ComplexGaussian.SourceError
+import QICLean.Probability.WeightedSourceError
+
+/-! Kernel reports for all named declarations in the actual source-error packet. -/
+
+#print axioms Matrix.basisRegisterInjection
+#print axioms Matrix.basisRegisterInjection_conjTranspose_mul_self
+#print axioms Matrix.basisRegisterInjection_sandwich_eq_single_kronecker
+#print axioms Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self
+#print axioms Matrix.rectangularTraceNorm_add_le
+#print axioms Matrix.rectangularTraceNorm_conjTranspose
+#print axioms Matrix.rectangularTraceNorm_conjTranspose_le
+#print axioms Matrix.rectangularTraceNorm_isometry_sandwich
+#print axioms Matrix.rectangularTraceNorm_single_kronecker
+#print axioms Matrix.rectangularTraceNorm_smul
+#print axioms Matrix.rectangularTraceNorm_sum_le
+#print axioms Matrix.rectangularTraceNorm_sum_smul_le
+#print axioms Matrix.rectangularTraceNorm_zero
+#print axioms ProbabilityTheory.aestronglyMeasurable_rectangularTraceNorm_sum
+#print axioms ProbabilityTheory.integrable_rectangularTraceNorm_weightedSourceError
+#print axioms ProbabilityTheory.integrable_weightedSourceQuarter_norm
+#print axioms ProbabilityTheory.integral_frobeniusNormSq_weightedSourceQuarter_eq
+#print axioms ProbabilityTheory.integral_rectangularTraceNorm_weightedSourceError_le
+#print axioms ProbabilityTheory.quarterWeighted_source_sum_eq_transpose
+#print axioms ProbabilityTheory.rectangularTraceNorm_weightedSourceError_le
+#print axioms ProbabilityTheory.sourceBlock
+#print axioms ProbabilityTheory.sourceProductProbability
+#print axioms ProbabilityTheory.sum_sourceProductProbability
+#print axioms ProbabilityTheory.weightedSourceError
+#print axioms ProbabilityTheory.weightedSourceError_eq_halfWeighted
+#print axioms ProbabilityTheory.weightedSourceQuarter
+#print axioms ProbabilityTheory.weighted_source_block_aggregation
+#print axioms ProbabilityTheory.weighted_source_block_sum_le_one
+#print axioms QICLean.ComplexGaussian.integrable_rectangularTraceNorm_gaussianSourceError
+#print axioms QICLean.ComplexGaussian.integrable_sampledSource
+#print axioms QICLean.ComplexGaussian.integrable_sampledSource_entry
+#print axioms QICLean.ComplexGaussian.integrable_sourceCorrection
+#print axioms QICLean.ComplexGaussian.integrable_sourceCorrection_entry
+#print axioms QICLean.ComplexGaussian.integrable_sourceCorrection_entry_mul_conj
+#print axioms QICLean.ComplexGaussian.integral_frobeniusNormSq_gaussianSourceQuarter_eq
+#print axioms QICLean.ComplexGaussian.integral_rectangularTraceNorm_gaussianSourceError_le
+#print axioms QICLean.ComplexGaussian.integral_sampledSource
+#print axioms QICLean.ComplexGaussian.integral_sampledSource_entry
+#print axioms QICLean.ComplexGaussian.integral_sourceCorrection
+#print axioms QICLean.ComplexGaussian.integral_sourceCorrection_entry_mul_conj
+#print axioms QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta
+#print axioms QICLean.ComplexGaussian.sampledSource
+#print axioms QICLean.ComplexGaussian.sampledSource_apply
+#print axioms QICLean.ComplexGaussian.schmidtSource
+#print axioms QICLean.ComplexGaussian.schmidtSource_apply
+#print axioms QICLean.ComplexGaussian.schmidtVector
+#print axioms QICLean.ComplexGaussian.sourceCorrection
+#print axioms QICLean.ComplexGaussian.sourceCorrection_apply
+#print axioms QICLean.ComplexGaussian.sourceU
+#print axioms QICLean.ComplexGaussian.sourceV
+#print axioms QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource

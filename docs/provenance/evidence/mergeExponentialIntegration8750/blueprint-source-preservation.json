@@ -1,0 +1,882 @@
+{
+  "records": [
+    {
+      "path": "blueprint/src/Packages/tenkz_pic.py",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",
+      "current_sha256": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/blueprint.sty",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "bba6dd0bcae52e864efd02a248f4b8cccc9f62ba82e5ec8f8045c5944d841a8d",
+      "current_sha256": "bba6dd0bcae52e864efd02a248f4b8cccc9f62ba82e5ec8f8045c5944d841a8d",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch01_coherent_frames.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "775019b59ef6aec5c3b4c68ee48798c88ffcd8e47347f21780b4fde7b4b57b99",
+      "current_sha256": "775019b59ef6aec5c3b4c68ee48798c88ffcd8e47347f21780b4fde7b4b57b99",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch01_cyclic_trace_power.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "2eb4199f675de3fb81ac27cf7566cf2635efb0687feec5c69d48e25a222e05d5",
+      "current_sha256": "2eb4199f675de3fb81ac27cf7566cf2635efb0687feec5c69d48e25a222e05d5",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch01_deconstructing_quantum.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "142ef0443ccee4fad816f2a670929cb6af21134503522a56550d144431ebcd55",
+      "current_sha256": "142ef0443ccee4fad816f2a670929cb6af21134503522a56550d144431ebcd55",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch01_positive_maps.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "371d3cfc0c97f67dba8eb59c18e3d81efd27db33b767f92f54aedf5890cb444f",
+      "current_sha256": "371d3cfc0c97f67dba8eb59c18e3d81efd27db33b767f92f54aedf5890cb444f",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch01_shifted_density_powers.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "6531d7b8e9c214e3ea601e5eb9c8bcc928643e4bffec4e2b0e794243d7a60b27",
+      "current_sha256": "6531d7b8e9c214e3ea601e5eb9c8bcc928643e4bffec4e2b0e794243d7a60b27",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch01_shifted_density_truncation.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "aa762027de4b26f021a97e832644c2b55446c2439ca16f5a7a9cd3c302828729",
+      "current_sha256": "aa762027de4b26f021a97e832644c2b55446c2439ca16f5a7a9cd3c302828729",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch01_shifted_power_derivative.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "c96424350425f43bedc37110f498ff5132c1fb4e4ea6899e2b54f427b1c520c3",
+      "current_sha256": "c96424350425f43bedc37110f498ff5132c1fb4e4ea6899e2b54f427b1c520c3",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch01_spectrum_and_wigner.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "ce13c291609d49813b8ff518874d65baedb44d7fd1564e9f3f61bc3423effc29",
+      "current_sha256": "ce13c291609d49813b8ff518874d65baedb44d7fd1564e9f3f61bc3423effc29",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch01_states.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "62dfb0a6031c25efa2a1f739c39d43d54d61527410b5a7918e99b6c6f1704bc9",
+      "current_sha256": "62dfb0a6031c25efa2a1f739c39d43d54d61527410b5a7918e99b6c6f1704bc9",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch02_channels.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "6dc4aafbb117c998a6ad7a4f47df993e98f33da5702e95c51d34a24f191ce814",
+      "current_sha256": "6dc4aafbb117c998a6ad7a4f47df993e98f33da5702e95c51d34a24f191ce814",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch02_channels_peripheral_spectrum_and_primitivity.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "b10242b4d330c7d5092add007e62410d1f5c14b2eb55d830af3ab927fd997540",
+      "current_sha256": "b10242b4d330c7d5092add007e62410d1f5c14b2eb55d830af3ab927fd997540",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch02_channels_positive_map_and_channel_foundations.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "ddf36d477ede68119b595942bef0d8030590e1e656c369362e0a330778491e50",
+      "current_sha256": "ddf36d477ede68119b595942bef0d8030590e1e656c369362e0a330778491e50",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch02_channels_rectangular_kraus_maps.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "a01652104b2f878f679a81baab736b43d45f740a912986369ca2df58e12d747b",
+      "current_sha256": "a01652104b2f878f679a81baab736b43d45f740a912986369ca2df58e12d747b",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch02_channels_tensor_maps_and_controlled_trace.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "76444a515aaefce8654bb788b90691800f32a52fcd35e8eaf9473efb5c0b6921",
+      "current_sha256": "76444a515aaefce8654bb788b90691800f32a52fcd35e8eaf9473efb5c0b6921",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch02_channels_transfer_map_foundations.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "63a6ba3c3da90b3c4f3977004ca447199ab31d909103fc6957172b32bdcf5477",
+      "current_sha256": "63a6ba3c3da90b3c4f3977004ca447199ab31d909103fc6957172b32bdcf5477",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "869ded16f1405c829d457ad721d42ec86628c888e4700be75edcfe8b3b31eb8d",
+      "current_sha256": "869ded16f1405c829d457ad721d42ec86628c888e4700be75edcfe8b3b31eb8d",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_choi_and_kraus.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "9a127280db5f05684fa22aefd5049e26df94e91455b4d4d1f72375c079486400",
+      "current_sha256": "9a127280db5f05684fa22aefd5049e26df94e91455b4d4d1f72375c079486400",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_choi_foundations.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "9be26e140d084000cb7c60703b991bb5e9418d53f1fbbd8d78fbc04412b7bf88",
+      "current_sha256": "9be26e140d084000cb7c60703b991bb5e9418d53f1fbbd8d78fbc04412b7bf88",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_determinant_choi_bound.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "e4b4800d0810ad10ee955aa4da83c0d13430a55879850ae12917d49f879081ff",
+      "current_sha256": "e4b4800d0810ad10ee955aa4da83c0d13430a55879850ae12917d49f879081ff",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_dilations_and_ordered_cp.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "9fc1000cb4d91051f4454e9885f3a857339090319412495ba476b69fdba7b150",
+      "current_sha256": "9fc1000cb4d91051f4454e9885f3a857339090319412495ba476b69fdba7b150",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_ensemble_equivalence.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "b89c1771ed4b6e6be4e53df38ba0e48775470a7d53c977e7b44ca04ced9f4819",
+      "current_sha256": "b89c1771ed4b6e6be4e53df38ba0e48775470a7d53c977e7b44ca04ced9f4819",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_hermitian_intertwiners.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "81da0703c1cc394e62a45b80bedd917ff9cfc21f9bc5caa6ad6e45d9c3faad62",
+      "current_sha256": "81da0703c1cc394e62a45b80bedd917ff9cfc21f9bc5caa6ad6e45d9c3faad62",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_kraus_iterate_choi.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "e33d95cc9270f191a36ded33ff88b9b50bcf6745371688de69678fe88d99ad71",
+      "current_sha256": "e33d95cc9270f191a36ded33ff88b9b50bcf6745371688de69678fe88d99ad71",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_no_information_without_disturbance.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "6a69c2b4ecf464df36f6c0f4477149fde33b9991e6781fa1a438a8576ded5039",
+      "current_sha256": "6a69c2b4ecf464df36f6c0f4477149fde33b9991e6781fa1a438a8576ded5039",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_normal_forms_and_determinant.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "63ebcecf85ceb5f9543e1ad70541342deebc12163b3422c6e68261a081e48db3",
+      "current_sha256": "63ebcecf85ceb5f9543e1ad70541342deebc12163b3422c6e68261a081e48db3",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_rectangular_choi_bounds.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "4583cba91a298d3b456a3c04aec2530b04594e8fbdd26b973c9dd02dfae69565",
+      "current_sha256": "4583cba91a298d3b456a3c04aec2530b04594e8fbdd26b973c9dd02dfae69565",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_self_dual.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "5c7ab37c9f17c3d65dc085d52e2ab9203c0cf5a3977ba13796df1b1673404f03",
+      "current_sha256": "5c7ab37c9f17c3d65dc085d52e2ab9203c0cf5a3977ba13796df1b1673404f03",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_sic_povms.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "043fdc812d1d4c29fe876e1335fa34923b3eae84b2d936d73ac9dde428f85c35",
+      "current_sha256": "043fdc812d1d4c29fe876e1335fa34923b3eae84b2d936d73ac9dde428f85c35",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch03_channel_representations_transfer_matrix_identities.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "91d5b3c6d5da0189933b0fed0b2739b588c5959d06012beeedfc92271a51c807",
+      "current_sha256": "91d5b3c6d5da0189933b0fed0b2739b588c5959d06012beeedfc92271a51c807",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_convex_structure.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "9423b8796ff8076ed8bdcf557ba4a8b5eefbeea92d598626fb42f68d69a87d2b",
+      "current_sha256": "9423b8796ff8076ed8bdcf557ba4a8b5eefbeea92d598626fb42f68d69a87d2b",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "bad9f4875e44148a2aea149dd2aef294ae648ad37dc3616cae1f6b6fc382a82f",
+      "current_sha256": "bad9f4875e44148a2aea149dd2aef294ae648ad37dc3616cae1f6b6fc382a82f",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp_choi_and_decomposable_maps.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "658ccb65512485578081b6539c3b28966463eed75327af80f1bf990bf44e9ddc",
+      "current_sha256": "658ccb65512485578081b6539c3b28966463eed75327af80f1bf990bf44e9ddc",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp_kramers_degeneracy.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "e6da735f176736cbce781eda7ce035fcaf2ba1116904723b51cff9d2a69c6081",
+      "current_sha256": "e6da735f176736cbce781eda7ce035fcaf2ba1116904723b51cff9d2a69c6081",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp_npositivity_infimum.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "c9f4c7b9a2557a4e84d62d0cdb3a884e2f06455315407b95c5966b75ba65a70a",
+      "current_sha256": "c9f4c7b9a2557a4e84d62d0cdb3a884e2f06455315407b95c5966b75ba65a70a",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp_positivity_reduction_and_breuer_hall.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "d2cb660f89f5118c645ca5f869352ec8127745443b65db93a4e3a7a15ff213be",
+      "current_sha256": "d2cb660f89f5118c645ca5f869352ec8127745443b65db93a4e3a7a15ff213be",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp_ppt_and_separable_states.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "c8adea67bc2917316695b8b9710d2a4dc69bbec0f53ce2faf2ba198ed835052c",
+      "current_sha256": "c8adea67bc2917316695b8b9710d2a4dc69bbec0f53ce2faf2ba198ed835052c",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp_schmidt_number_and_entanglement.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "f4019c03fa1ca5ec6964a8e43fb39ceb75793ef498f5f403a2de22deba3a57fa",
+      "current_sha256": "f4019c03fa1ca5ec6964a8e43fb39ceb75793ef498f5f403a2de22deba3a57fa",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp_supporting_results.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "bad3b2f58b5b31143a0a16f410d6109d0fb508ee7819bfd3fc1e34f12f590619",
+      "current_sha256": "bad3b2f58b5b31143a0a16f410d6109d0fb508ee7819bfd3fc1e34f12f590619",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp_trace_normalization_and_lorentz_cone.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "a4f1e4d41e273c2bb51e8f9d0416cec7fcccc83d643fd125632436f63b3f8a13",
+      "current_sha256": "a4f1e4d41e273c2bb51e8f9d0416cec7fcccc83d643fd125632436f63b3f8a13",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch04_positive_not_cp_two_positive_schmidt_and_choi.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "3b566470725937a9e680ef53deef550218454b8bb6b0f3763fb8c8e3955a9b1b",
+      "current_sha256": "3b566470725937a9e680ef53deef550218454b8bb6b0f3763fb8c8e3955a9b1b",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch05_schwarz.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "9f1b93f77c58197b656b7431223156babced39e6e80a46fdec27a8a03bcd558b",
+      "current_sha256": "9f1b93f77c58197b656b7431223156babced39e6e80a46fdec27a8a03bcd558b",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch05_schwarz_abstract_domains_and_order.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "7bcc2f41de98fcd5ff5e74d311df2be3350d05335badca7a520baef5c08be68b",
+      "current_sha256": "7bcc2f41de98fcd5ff5e74d311df2be3350d05335badca7a520baef5c08be68b",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch05_schwarz_douglas.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "51b1e943f276341320bf07638253c944673f22b95f75ae58cf3a30aeba8444c8",
+      "current_sha256": "51b1e943f276341320bf07638253c944673f22b95f75ae58cf3a30aeba8444c8",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch05_schwarz_ft_core.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "5b1f31c47525025f6c8561fb9e204f2741d9afae18d01d88f8ad7bb7483b64a2",
+      "current_sha256": "5b1f31c47525025f6c8561fb9e204f2741d9afae18d01d88f8ad7bb7483b64a2",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch05_schwarz_retractions_and_peripheral_equality.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "d1441527f8e7d096cda18e877ccb422df2dc0d21b7b5bceb9594aec7f9cd0119",
+      "current_sha256": "d1441527f8e7d096cda18e877ccb422df2dc0d21b7b5bceb9594aec7f9cd0119",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch05_schwarz_schur_complement.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "654543152bf28ca824c49e2d6ea892459cecb478ec18eee04602470acc59d5fd",
+      "current_sha256": "654543152bf28ca824c49e2d6ea892459cecb478ec18eee04602470acc59d5fd",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch05_schwarz_supporting_results.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "8403ce9acbf6cb920d2d10d3b42a08bdea5dd513e39004e35aafe70a1addafc4",
+      "current_sha256": "8403ce9acbf6cb920d2d10d3b42a08bdea5dd513e39004e35aafe70a1addafc4",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch06_operator_convexity.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "f8ed1e14e14f30b63c994e65c60c0a987cb5a14899b866fc28d28811d3bb91fd",
+      "current_sha256": "f8ed1e14e14f30b63c994e65c60c0a987cb5a14899b866fc28d28811d3bb91fd",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch06_operator_convexity_lieb_and_resolvent.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "7e7c9a9e72fe3234edafe9d5031ee0148e95b163468e6d1cfce2cde001fff0a3",
+      "current_sha256": "7e7c9a9e72fe3234edafe9d5031ee0148e95b163468e6d1cfce2cde001fff0a3",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch06_operator_convexity_matrix_means.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "d6506b731556f9a91bb20c2a40976d9e9b75ae8a440e2fe9d6d98cfba098885c",
+      "current_sha256": "d6506b731556f9a91bb20c2a40976d9e9b75ae8a440e2fe9d6d98cfba098885c",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch06_operator_convexity_schwarz_and_jensen.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "906b5077b5fd7ca32deadfd9e897808497cb7ae020bb88f9fe42a4184e44353e",
+      "current_sha256": "906b5077b5fd7ca32deadfd9e897808497cb7ae020bb88f9fe42a4184e44353e",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch07_qpf.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "f884d0dac3b1ffa802a113c66c764ab0d22765708843bdec312dc47c8c1bf589",
+      "current_sha256": "f884d0dac3b1ffa802a113c66c764ab0d22765708843bdec312dc47c8c1bf589",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch07_qpf_cesaro_fixed_points.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "ce1a421f58010e0958a43c83792af6efa4ae8cc63c11c19b9b796c24cf4c7f3b",
+      "current_sha256": "ce1a421f58010e0958a43c83792af6efa4ae8cc63c11c19b9b796c24cf4c7f3b",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch07_qpf_irreducibility_and_ergodicity.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "4836792815c62112396f24f87f1970f71fb627af567e407b5f9e70e235153431",
+      "current_sha256": "4836792815c62112396f24f87f1970f71fb627af567e407b5f9e70e235153431",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch07_qpf_supporting_results.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "ede9a8f3e5a20ebfd90de6b6e58fdd9ea1e79fcf030a45270a3e9be80fb64914",
+      "current_sha256": "ede9a8f3e5a20ebfd90de6b6e58fdd9ea1e79fcf030a45270a3e9be80fb64914",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch07_qpf_weighted_cesaro.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "e4b87193622b1d930c0499fbd5183f646745751fb95ea343616b44dde737a443",
+      "current_sha256": "e4b87193622b1d930c0499fbd5183f646745751fb95ea343616b44dde737a443",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch08_spectral.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "036bb17d1f8f7be6f9dcef3576e06148daa8a2b621a4e8f6d5a4c53dacb09abd",
+      "current_sha256": "036bb17d1f8f7be6f9dcef3576e06148daa8a2b621a4e8f6d5a4c53dacb09abd",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch08_spectral_ft_peripheral_cyclic.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "a8e21e211abf7dd404f7870ee3f19185533c8038dd23d519401fcac0090ccd40",
+      "current_sha256": "a8e21e211abf7dd404f7870ee3f19185533c8038dd23d519401fcac0090ccd40",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch08_spectral_supporting_results.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "5471cd9f0cc81fe34d26106227a6613358c9c75402477e967bcd0611452b1cf4",
+      "current_sha256": "5471cd9f0cc81fe34d26106227a6613358c9c75402477e967bcd0611452b1cf4",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "9b81fc5d534b37e477acf6966e8c1bbc06163fcecb55d688df4c82b9b4533f64",
+      "current_sha256": "9b81fc5d534b37e477acf6966e8c1bbc06163fcecb55d688df4c82b9b4533f64",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_corner_and_overlap_decompositions.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "e28e7f5d3541cc7f5a9f59a7023a7428d8e289ba8789e074b746548d3dc93a31",
+      "current_sha256": "e28e7f5d3541cc7f5a9f59a7023a7428d8e289ba8789e074b746548d3dc93a31",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_detailed_balance.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "562cd43bc2a954a5fe6767d594784cdc09c74a50d8892ed67f6197802c721043",
+      "current_sha256": "562cd43bc2a954a5fe6767d594784cdc09c74a50d8892ed67f6197802c721043",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_direct_sum_corners_and_maximal_support.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "b6e2697af5e431a547494eda5a449d2b6e9476990f1dec1675ccc16c1fc6c7f1",
+      "current_sha256": "b6e2697af5e431a547494eda5a449d2b6e9476990f1dec1675ccc16c1fc6c7f1",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_direct_sum_schwarz_maps.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "99900283270a19a51006966408d4ece506081bbccff6da5ed71833bf33a4a55b",
+      "current_sha256": "99900283270a19a51006966408d4ece506081bbccff6da5ed71833bf33a4a55b",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_fixed_point_algebras.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "052283e0f59e3b98e15667316787af4514dd9bdc0570b6156f6c700e0dc0c137",
+      "current_sha256": "052283e0f59e3b98e15667316787af4514dd9bdc0570b6156f6c700e0dc0c137",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_fixed_point_structure_and_cycles.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "ff2056d8c1f83633dd781feee8690834ce4cdfde0f1551aeabae8a6cd0356753",
+      "current_sha256": "ff2056d8c1f83633dd781feee8690834ce4cdfde0f1551aeabae8a6cd0356753",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_fixed_points_and_wedderburn_i.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "2fc3cb55313f54b0616af1786c65996dabef9c5f9f08c38a7ce57ee2890873ca",
+      "current_sha256": "2fc3cb55313f54b0616af1786c65996dabef9c5f9f08c38a7ce57ee2890873ca",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_jordan_block_power.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "116c19ba71cd730912c7bdcc6caa09e3837627599964cbff87bf52895aedef12",
+      "current_sha256": "116c19ba71cd730912c7bdcc6caa09e3837627599964cbff87bf52895aedef12",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_mean_ergodic.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "218f9533d41a7a6c194d04db6a771cdf5c8a2cf56dc69e367956be68ce97c632",
+      "current_sha256": "218f9533d41a7a6c194d04db6a771cdf5c8a2cf56dc69e367956be68ce97c632",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_supporting_results.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "c00a3bdd94adbf2bc9fec3f8c7c961bc43c051874d42518dc3ab112e3f4a786e",
+      "current_sha256": "c00a3bdd94adbf2bc9fec3f8c7c961bc43c051874d42518dc3ab112e3f4a786e",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_upper_triangular_power.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "258d050f61bf22f3d20f3e38e3208a27633bd75293691b374db155e3e76d52de",
+      "current_sha256": "258d050f61bf22f3d20f3e38e3208a27633bd75293691b374db155e3e76d52de",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch09_channel_asymptotics_wedderburn_ii.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "5da88a90c469962493171530ff895f58d60ef919c6dcbb6cee5cd3fddaae4c78",
+      "current_sha256": "5da88a90c469962493171530ff895f58d60ef919c6dcbb6cee5cd3fddaae4c78",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch10_wielandt.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "d14222151f6ba3332d47c8aeb56c62e0500fdbc72381b2911a298f4833061679",
+      "current_sha256": "d14222151f6ba3332d47c8aeb56c62e0500fdbc72381b2911a298f4833061679",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch10_wielandt_cumulative_bound.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "585b7459c77b54068393d47a418a44128c096be3cc3ead4f82e8b9c566fc7b28",
+      "current_sha256": "585b7459c77b54068393d47a418a44128c096be3cc3ead4f82e8b9c566fc7b28",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch10_wielandt_supporting_results.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "630b560b34a41283984970a6e8c5a6cff5fc3b2ee15e76c4e573c4dc5d72429f",
+      "current_sha256": "630b560b34a41283984970a6e8c5a6cff5fc3b2ee15e76c4e573c4dc5d72429f",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch11_semigroup.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "2ed656116416898894c57fb95275aa09eb9f02739d179ce454b0720d2f588471",
+      "current_sha256": "2ed656116416898894c57fb95275aa09eb9f02739d179ce454b0720d2f588471",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch11_semigroup_adjoint_kernel_and_reducibility.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "e315e88cf863ea3e43d59b17183c4de6aa17af4f65ceb450bd3ff0b6a83477d5",
+      "current_sha256": "e315e88cf863ea3e43d59b17183c4de6aa17af4f65ceb450bd3ff0b6a83477d5",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch11_semigroup_dissipation_and_primitivity.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "820c0f5dd44dafd705f34490b1af9f0f464c64e8842ec831b0911f45722d2341",
+      "current_sha256": "820c0f5dd44dafd705f34490b1af9f0f464c64e8842ec831b0911f45722d2341",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch11_semigroup_dynamics_and_gksl.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "1f5d72c92e666072d3729814c187e0d13f19bbd624926a1ca434bbf50917e3ac",
+      "current_sha256": "1f5d72c92e666072d3729814c187e0d13f19bbd624926a1ca434bbf50917e3ac",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch11_semigroup_hermitian_paths.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "d4f85ff686a9b39c72f76eeb80a6f9821b24b09f2e35a122a2d684de259c6b41",
+      "current_sha256": "d4f85ff686a9b39c72f76eeb80a6f9821b24b09f2e35a122a2d684de259c6b41",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "c4b4ad989ab778730cd5ff266178e5639cd24cefb7640239ab158bc4807900f2",
+      "current_sha256": "c4b4ad989ab778730cd5ff266178e5639cd24cefb7640239ab158bc4807900f2",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_classical_operator_schmidt_and_renyi.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "03002cb07d322cd749e86792ec62679b6aa9deeaf3985765622956b984a97245",
+      "current_sha256": "03002cb07d322cd749e86792ec62679b6aa9deeaf3985765622956b984a97245",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_conditional_continuity.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "6b1224345818c8b4788f41077c6b95611cfcd2ba881c74b597b45c3a7f5bfcb9",
+      "current_sha256": "6b1224345818c8b4788f41077c6b95611cfcd2ba881c74b597b45c3a7f5bfcb9",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_conditional_two_families.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "d35866b8262e477bd93c01ff8f5ed26251ac4aa64d721a2d86ab2e95959bd478",
+      "current_sha256": "d35866b8262e477bd93c01ff8f5ed26251ac4aa64d721a2d86ab2e95959bd478",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_corollaries.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "a3125115240c3ec16ddd98a93f4cf4576703f88f86d857bc66a7873314114535",
+      "current_sha256": "a3125115240c3ec16ddd98a93f4cf4576703f88f86d857bc66a7873314114535",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_data_processing.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "445261b4ff010d2a3c719efc899a1e10ca10170c7a0708d908d333e0a83ddfa0",
+      "current_sha256": "445261b4ff010d2a3c719efc899a1e10ca10170c7a0708d908d333e0a83ddfa0",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_doubled_system_gap.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "241fcd5926db74e99fd743b852fe674978490329c3b7d43afb66196e6c0d150c",
+      "current_sha256": "241fcd5926db74e99fd743b852fe674978490329c3b7d43afb66196e6c0d150c",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_finite_product.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "743faab9352ed13c258294bb69b0e55d7ebc6f9ac1f188483456fb40dcd17626",
+      "current_sha256": "743faab9352ed13c258294bb69b0e55d7ebc6f9ac1f188483456fb40dcd17626",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_majorization.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "3b7700343ec1a25e65d3af28a306365cb82bdf993c08f97370a59bcc918d68a1",
+      "current_sha256": "3b7700343ec1a25e65d3af28a306365cb82bdf993c08f97370a59bcc918d68a1",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_mutual_information.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "8f3043e56d006203b1aed3bc062b5499f4b10cb6bc5d67f5c0a1a81ab6d86d6a",
+      "current_sha256": "8f3043e56d006203b1aed3bc062b5499f4b10cb6bc5d67f5c0a1a81ab6d86d6a",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_physical_buffer_overlap.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "bb98535114b0ee29869893ee380d7ffb88cfacd80342ac12061ce838f4be6334",
+      "current_sha256": "bb98535114b0ee29869893ee380d7ffb88cfacd80342ac12061ce838f4be6334",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_trace_norm.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "1869361761a4941a05d79c143f8c2c5adbf5408e58347e5cb8296dad664ca3d3",
+      "current_sha256": "1869361761a4941a05d79c143f8c2c5adbf5408e58347e5cb8296dad664ca3d3",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_tripartite_and_ssa_i.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "665a84633fc563f595c6c340e550bcde8f655729be8485cd166afe241a434e6c",
+      "current_sha256": "665a84633fc563f595c6c340e550bcde8f655729be8485cd166afe241a434e6c",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_tripartite_and_ssa_ii.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "01ac4bc1296a77cddef9ab88b3a29f1f5a5a01cbb005236d3a2298d08358dd80",
+      "current_sha256": "01ac4bc1296a77cddef9ab88b3a29f1f5a5a01cbb005236d3a2298d08358dd80",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_von_neumann_and_relative_i.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "b258a1bd4887f23031a33f3a707c30141c291c4bc74cdbdcfb1e7df0d2dfc23a",
+      "current_sha256": "b258a1bd4887f23031a33f3a707c30141c291c4bc74cdbdcfb1e7df0d2dfc23a",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_entropy_von_neumann_and_relative_ii.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "d799d439587ab68f6898a92e1f9d7d3ad67a85b55ae2f3dab87821acb5703243",
+      "current_sha256": "d799d439587ab68f6898a92e1f9d7d3ad67a85b55ae2f3dab87821acb5703243",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_polar_unitary_correction.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "48cdbae1778838352375d81be5754614c8d648e7c3eb1b465d871f5e2c3ab8e7",
+      "current_sha256": "48cdbae1778838352375d81be5754614c8d648e7c3eb1b465d871f5e2c3ab8e7",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch12_rectangular_windows.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "9d2a2cf790946a57efb840c32b905e9f6c73961fbc8d51ebbe6d1c19978e13ca",
+      "current_sha256": "9d2a2cf790946a57efb840c32b905e9f6c73961fbc8d51ebbe6d1c19978e13ca",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_buffered_filters.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "fd8bc652d01898e5e46d5a7c894da980db4210ec06c61f605e87ead5b4357a73",
+      "current_sha256": "fd8bc652d01898e5e46d5a7c894da980db4210ec06c61f605e87ead5b4357a73",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_conditional_movement.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "4935a25a36dd974a831417dac3238a155191e2c26ca960a7a876bfcf1827e944",
+      "current_sha256": "4935a25a36dd974a831417dac3238a155191e2c26ca960a7a876bfcf1827e944",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_marginal_phase.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "0f6bd4aedf6019c530b1679238a6189db90847f3d43870d6315f3b3c9e651b5b",
+      "current_sha256": "0f6bd4aedf6019c530b1679238a6189db90847f3d43870d6315f3b3c9e651b5b",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_marginal_tails.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "aabd943cf4e949605197f297081d2f0eb53062500a283ae1efcb6e14351fcae2",
+      "current_sha256": "aabd943cf4e949605197f297081d2f0eb53062500a283ae1efcb6e14351fcae2",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_random_sources.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "4d02514c0e339e6d61389f820e1abcea973974d227b9db077f9d3e2859dc5c6d",
+      "current_sha256": "4d02514c0e339e6d61389f820e1abcea973974d227b9db077f9d3e2859dc5c6d",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_schur_labels.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "7e8931e25eb3ae0a7cc0bc0dd90e4f008e591568030108912533d8607e9b5644",
+      "current_sha256": "fd973ce5f62901a315e0362ee0458fd082468c9da61bcc8043a9df73e003338b",
+      "exact_original_bytes": false
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_source_bridges.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "23e374905708376ad8fa06ea0680d3e4ac271141e29fb66c81fef0f76d9378a0",
+      "current_sha256": "23e374905708376ad8fa06ea0680d3e4ac271141e29fb66c81fef0f76d9378a0",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_source_error.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "44861675998aea1859dce629cb1d613ef41259498c048fdd7fc0bc8279b61bb2",
+      "current_sha256": "44861675998aea1859dce629cb1d613ef41259498c048fdd7fc0bc8279b61bb2",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_source_reduction.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "97b6edf89886ff114dbf34517c1fe3fd49ed30ed538ebadf9f0aaa826db9d6f0",
+      "current_sha256": "97b6edf89886ff114dbf34517c1fe3fd49ed30ed538ebadf9f0aaa826db9d6f0",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_spectral_filter.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "cf74687469356d2a69a9a42b2cbe151164e33fc452d6bd07ef8ca0ba3f3f9301",
+      "current_sha256": "cf74687469356d2a69a9a42b2cbe151164e33fc452d6bd07ef8ca0ba3f3f9301",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/content.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "bd430bc02928028c1b737524dc2b19c9c7766295b3d91bfc452e625eef105cde",
+      "current_sha256": "bd430bc02928028c1b737524dc2b19c9c7766295b3d91bfc452e625eef105cde",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/extra_styles.css",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1",
+      "current_sha256": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/latexmkrc",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "6bf5c08358866b42ad8062b7dcf7fa08b892361af7dd5547235f31aed33629e0",
+      "current_sha256": "6bf5c08358866b42ad8062b7dcf7fa08b892361af7dd5547235f31aed33629e0",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/macros/common.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "923294d75aa08e713fe7400eceac858eb6bb5f95667eeaf2d4bb202e9a35ec35",
+      "current_sha256": "923294d75aa08e713fe7400eceac858eb6bb5f95667eeaf2d4bb202e9a35ec35",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/macros/diagrams.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "275794e8e3fcf74aa7c000b38420f9150dd52017ea61216875103dc62908bf2e",
+      "current_sha256": "275794e8e3fcf74aa7c000b38420f9150dd52017ea61216875103dc62908bf2e",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/macros/print.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "e7abb3c60f1d2125b3c5ff72a14c408755e418b9654c9c661841efb1f54e1d10",
+      "current_sha256": "e7abb3c60f1d2125b3c5ff72a14c408755e418b9654c9c661841efb1f54e1d10",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/macros/web.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "3906fd9caafca22ceec080aca9c95a0cde575d7ecf7e70ef43156eadce0ca080",
+      "current_sha256": "3906fd9caafca22ceec080aca9c95a0cde575d7ecf7e70ef43156eadce0ca080",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/plastex.cfg",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "c6dd8278bcdc1c3106607dc114dee52a84a136e9cfa04e2a4d2f8d0b4c3e0378",
+      "current_sha256": "c6dd8278bcdc1c3106607dc114dee52a84a136e9cfa04e2a4d2f8d0b4c3e0378",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/plastex_templates/DocumentCommands.jinja2s",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "38fb147cde71e0c9e943ca6a7645950f12869d1d19b6f2cd843f56c8f0add921",
+      "current_sha256": "38fb147cde71e0c9e943ca6a7645950f12869d1d19b6f2cd843f56c8f0add921",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/plastex_templates/TenkzPictures.jinja2s",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "879380488675beb1bc55fe420f966e6a5f3fa86b9c1cf76489ace0e5dbb4c3c5",
+      "current_sha256": "879380488675beb1bc55fe420f966e6a5f3fa86b9c1cf76489ace0e5dbb4c3c5",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/print.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "a80284c614ecaff007283ca80bbe7285fae1796ded5cc21bd36dcea1a41794f0",
+      "current_sha256": "a80284c614ecaff007283ca80bbe7285fae1796ded5cc21bd36dcea1a41794f0",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/references.bib",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "e1a3c3fc4670fcc744cb44ad5457206de9ce86322848c3df53bb1395b0e74420",
+      "current_sha256": "e1a3c3fc4670fcc744cb44ad5457206de9ce86322848c3df53bb1395b0e74420",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/tenkz_pic.sty",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "adf747cb82f51ce4da80003c3352c58164f60ce04a33cbb1d6b560e1042004f5",
+      "current_sha256": "adf747cb82f51ce4da80003c3352c58164f60ce04a33cbb1d6b560e1042004f5",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/texra_patches.sty",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "d97f038370fb8fe469682196ab4e99bb1bd8c761a7ba5a4d34f51f6ad4027302",
+      "current_sha256": "d97f038370fb8fe469682196ab4e99bb1bd8c761a7ba5a4d34f51f6ad4027302",
+      "exact_original_bytes": true
+    },
+    {
+      "path": "blueprint/src/web.tex",
+      "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+      "parent_sha256": "3381d2bf7da7dcda9a7e309c6fb070bb3ee7620ca5c8649b802074826bd1a9a4",
+      "current_sha256": "3381d2bf7da7dcda9a7e309c6fb070bb3ee7620ca5c8649b802074826bd1a9a4",
+      "exact_original_bytes": true
+    }
+  ],
+  "count": 125,
+  "sole_changed_existing_path": "blueprint/src/chapter/ch13_schur_labels.tex",
+  "change": "Append the unique auxiliary fragment input, preceded by one blank line; entire chapter is frozen at the inclusion revision."
+}

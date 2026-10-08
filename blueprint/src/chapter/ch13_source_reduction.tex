@@ -1,0 +1,324 @@
+%% =========================================================
+%% Ambient sources and source-only density reduction.
+%% Source: September 24, 2026 polynomial-PEPS preprint, Theorem 5.2.
+%% The prescribed memory chain and common readout are explicit hypotheses.
+%% Circuit, garbage-storage, gate-participation, and network identifications remain open.
+%% =========================================================
+
+\chapter{Ambient Sources and Density Reduction}\label{ch:source_reduction}
+
+Local endpoint maps transport the Gaussian product source into ambient
+spaces while preserving its expectation. A separate contraction calculation
+bounds the physical density error when selected gates are approximated and
+rescaled. The input and output vectors retain their subnormalization.
+These calculations give the source and error estimates used in
+\cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+
+\section{Ambient endpoint coordinates}
+
+\begin{definition}[Transport through four endpoint maps]
+    \label{def:reduction_ambient_transport}
+    \lean{QICLean.ComplexGaussian.ambientSchmidtVector}
+    \lean{QICLean.ComplexGaussian.ambientSchmidtSource}
+    \lean{QICLean.ComplexGaussian.sourceTransport}
+    \lean{QICLean.ComplexGaussian.ambientSourceU}
+    \lean{QICLean.ComplexGaussian.ambientSourceV}
+    \lean{QICLean.ComplexGaussian.ambientSampledSource}
+    \lean{QICLean.ComplexGaussian.ambientSourceCorrection}
+    \lean{QICLean.ComplexGaussian.ambientSchmidtVector_eq_mulVec}
+    \lean{QICLean.ComplexGaussian.sourceTransport_kronecker}
+    \lean{QICLean.ComplexGaussian.ambientSourceU_kronecker_ambientSourceV}
+    \lean{QICLean.ComplexGaussian.ambientSampledSource_eq_transport}
+    \lean{QICLean.ComplexGaussian.sourceTransport_schmidtSource}
+    \lean{QICLean.ComplexGaussian.ambientSourceCorrection_eq_transport}
+    \leanok
+    \uses{def:source_product}
+    Let $A,C,W,X,Y,Z$ be finite index sets. Choose arbitrary fixed endpoint
+    maps $E:\C^A\to\C^W$, $F:\C^A\to\C^X$,
+    $\widetilde E:\C^C\to\C^Y$, and
+    $\widetilde F:\C^C\to\C^Z$.
+    For nonnegative real weights $\lambda,\mu$, define
+    \begin{align}
+        |\eta_{E,F}\rangle
+                      & =\sum_a\sqrt{\lambda_a}\,E|a\rangle\otimes F|a\rangle,
+        \label{eq:reduction_ambient_vector}                                                    \\
+        X_{\mathrm{amb}}
+                      & =|\eta_{E,F}\rangle\langle\widetilde\eta_{\widetilde E,\widetilde F}|,
+        \label{eq:reduction_ambient_target}                                                    \\
+        \mathcal T(M) & =(E\otimes F)M(\widetilde E\otimes\widetilde F)^\dagger.
+        \label{eq:reduction_ambient_transport}
+    \end{align}
+    The second ambient vector uses the weights $\mu$.
+    For the coordinate sampled factors of Definition~\ref{def:source_product},
+    put $U_j^{\mathrm{amb}}=EU_j\widetilde E^\dagger$ and
+    $V_j^{\mathrm{amb}}=FV_j\widetilde F^\dagger$. Then
+    \begin{align}
+        \mathcal T(U\otimes V)
+                         & =(EU\widetilde E^\dagger)\otimes(FV\widetilde F^\dagger),
+        \label{eq:reduction_ambient_product}                                                    \\
+        \widehat X_{\mathrm{amb}}
+                         & =\frac1k\sum_{j=0}^{k-1}U_j^{\mathrm{amb}}\otimes V_j^{\mathrm{amb}}
+        =\mathcal T(\widehat X),
+        \label{eq:reduction_ambient_sample}                                                     \\
+        X_{\mathrm{amb}} & =\mathcal T(X),
+        \label{eq:reduction_ambient_exact}                                                      \\
+        \Delta_{\mathrm{amb}}
+                         & =\widehat X_{\mathrm{amb}}-X_{\mathrm{amb}}=\mathcal T(\Delta).
+        \label{eq:reduction_ambient_correction}
+    \end{align}
+    In particular, the represented ambient vector is the endpoint
+    transport of its paired coordinate Schmidt vector.
+    These are the ambient-coordinate forms of
+    \cite[Equation~(5.6)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-random-source, 04-compression.tex:279--309.
+    % The algebraic transport identities hold for arbitrary endpoint maps.
+\end{definition}
+
+\begin{theorem}[Unbiased ambient product sources]
+    \label{thm:reduction_ambient_unbiased}
+    \lean{QICLean.ComplexGaussian.integrable_ambientSourceU}
+    \lean{QICLean.ComplexGaussian.integrable_ambientSourceV}
+    \lean{QICLean.ComplexGaussian.integrable_ambientSampledSource_entry}
+    \lean{QICLean.ComplexGaussian.integral_ambientSampledSource_entry}
+    \lean{QICLean.ComplexGaussian.integrable_ambientSampledSource}
+    \lean{QICLean.ComplexGaussian.integral_ambientSampledSource}
+    \lean{QICLean.ComplexGaussian.integrable_ambientSourceCorrection}
+    \lean{QICLean.ComplexGaussian.integral_ambientSourceCorrection}
+    \leanok
+    \uses{def:reduction_ambient_transport}
+    For the actual circular complex Gaussian law, each ambient factor
+    $U_j^{\mathrm{amb}},V_j^{\mathrm{amb}}$ is matrix-valued integrable;
+    this integrability holds for arbitrary fixed real coefficient weights.
+    If $k>0$ and the endpoint weights are nonnegative,
+    both $\widehat X_{\mathrm{amb}}$ and $\Delta_{\mathrm{amb}}$ are
+    integrable, entrywise and as matrices, and
+    \begin{align}
+        \mathbb E\widehat X_{\mathrm{amb}} & =X_{\mathrm{amb}},
+        \label{eq:reduction_ambient_mean}                       \\
+        \mathbb E\Delta_{\mathrm{amb}}     & =0.
+        \label{eq:reduction_ambient_centered}
+    \end{align}
+    These expectation identities hold for arbitrary fixed endpoint maps;
+    the isometry equations govern the separate norm-preservation estimate
+    of Theorem~\ref{thm:source_physical_reinsertion}.
+    This is the unbiased replacement in
+    \cite[Equation~(5.6)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-random-source, 04-compression.tex:294--309.
+    % Abstract Schmidt existence is available; the explicit endpoint maps are data here.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:source_unbiased}
+    Each factor entry is a finite linear combination of integrable
+    Gaussian coordinates. Finite matrix evaluation gives factor
+    integrability. The transport identities express every ambient source
+    entry as a finite linear combination of coordinate source entries.
+    Integrate these sums and use $\mathbb E\widehat X=X$ from
+    Theorem~\ref{thm:source_unbiased}. Transport of the target gives
+    (\ref{eq:reduction_ambient_mean}); subtracting it gives
+    (\ref{eq:reduction_ambient_centered}). Finite evaluation combines the
+    entry identities into the matrix-valued identities.
+\end{proof}
+
+\section{Subnormalized vectors and changing memories}
+
+\begin{theorem}[Absolute density error for subnormalized vectors]
+    \label{thm:reduction_pure_error}
+    \lean{Matrix.euclideanOuterProduct}
+    \lean{Matrix.trace_euclideanOuterProduct_conjTranspose_mul}
+    \lean{Matrix.rectangularTraceNorm_euclideanOuterProduct_le}
+    \lean{Matrix.euclideanOuterProduct_self_sub}
+    \lean{Matrix.rectangularTraceNorm_pure_density_sub_le}
+    \lean{Matrix.rectangularTraceNorm_pure_density_sub_le_two}
+    \lean{Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le}
+    \lean{Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le_two}
+    \leanok
+    For finite Euclidean spaces, the rectangular outer product has entries
+    $(|u\rangle\langle v|)_{ij}=u_i\overline{v_j}$ and satisfies
+    $\lVert|u\rangle\langle v|\rVert_1\leq\lVert u\rVert\lVert v\rVert$.
+    For vectors $v,w$ in the same space,
+    \begin{align}
+        \lVert|v\rangle\langle v|-|w\rangle\langle w|\rVert_1
+         & \leq(\lVert v\rVert+\lVert w\rVert)\lVert v-w\rVert.
+        \label{eq:reduction_pure_error}
+    \end{align}
+    Discarding a finite register preserves this upper bound. In particular,
+    if $\lVert v\rVert,\lVert w\rVert\leq1$, both the full and retained
+    density errors are at most $2\lVert v-w\rVert$.
+    Zero vectors and zero-dimensional spaces are allowed.
+    This is the vector-to-density estimate preceding
+    \cite[Equation~(5.3)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-effect-circuit-error, 04-compression.tex:218--229.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_trace_duality, thm:source_branch_sum,
+        thm:random_exterior_contraction}
+    The trace pairing is
+    $\tr((|u\rangle\langle v|)^\dagger U)=\langle u,Uv\rangle$.
+    A test contraction $U$ and Cauchy--Schwarz bound its absolute value by
+    $\lVert u\rVert\lVert v\rVert$, so trace-norm duality gives the
+    outer-product bound. Split the density difference as
+    $|v-w\rangle\langle v|+|w\rangle\langle v-w|$ and use the triangle
+    inequality to obtain (\ref{eq:reduction_pure_error}). Partial-trace
+    contraction gives the retained-density bound. The two upper norm
+    bounds give the factor two.
+\end{proof}
+
+\begin{theorem}[Telescoping and rescaling through changing memory spaces]
+    \label{thm:reduction_chain}
+    \lean{Matrix.contractionPrefix}
+    \lean{Matrix.l2_opNorm_one_le}
+    \lean{Matrix.contractionPrefix_norm_le_one}
+    \lean{Matrix.contractionPrefix_sub_norm_le}
+    \lean{Matrix.contractionPrefix_sub_norm_le_uniform}
+    \lean{Matrix.contractionPrefix_sub_norm_le_supported}
+    \lean{NormedSpace.rescale_approximation}
+    \leanok
+    Let $D_t$ be finite index sets, and let
+    $G_t,H_t:\C^{D_t}\to\C^{D_{t+1}}$ be contractions for every
+    $t\in\N$. Define the chronological prefixes by
+    $\Pi_G(0)=\Id$ and $\Pi_G(t+1)=G_t\Pi_G(t)$.
+    Each prefix is a contraction, including the identity on an empty
+    space, and
+    \begin{align}
+        \lVert\Pi_G(n)-\Pi_H(n)\rVert
+         & \leq\sum_{t=0}^{n-1}\lVert G_t-H_t\rVert.
+        \label{eq:reduction_telescoping}
+    \end{align}
+    A uniform error bound $\lVert G_t-H_t\rVert\leq\delta$ gives the
+    bound $n\delta$. More generally, for a finite marked set $S\subset\N$
+    and $\delta\geq0$, errors at most $\delta$ on $S$ and exact equality
+    outside $S$ give $\lVert\Pi_G(n)-\Pi_H(n)\rVert\leq|S|\delta$.
+    In a real normed space, if $\lVert G\rVert\leq1$ and
+    $\lVert A-G\rVert\leq\delta$ with $\delta\geq0$, then
+    $\lVert A/(1+\delta)\rVert\leq1$ and
+    $\lVert A/(1+\delta)-G\rVert\leq2\delta$.
+    These are the contraction estimates used before
+    \cite[Equation~(5.3)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-effect-circuit-error, 04-compression.tex:210--229.
+    % Gate families are indexed by all naturals; finite circuits can be extended afterward.
+\end{theorem}
+
+\begin{proof}\leanok
+    Induct on the prefix length. At the next stage, use
+    \begin{align}
+        \Pi_G(t+1)-\Pi_H(t+1)
+         & =G_t(\Pi_G(t)-\Pi_H(t))+(G_t-H_t)\Pi_H(t).
+        \label{eq:reduction_telescoping_step}
+    \end{align}
+    Submultiplicativity and the prefix contraction bound add the next
+    gate error. If the gates agree outside $S$, only indices in
+    $S\cap\{0,\ldots,n-1\}$ contribute; their number is at most $|S|$.
+    For rescaling, $\lVert A\rVert\leq1+\delta$ gives the contraction
+    bound. The decomposition
+    $A/(1+\delta)-G=(A-G)/(1+\delta)
+        +((1+\delta)^{-1}-1)G$ gives the error bound $2\delta$.
+\end{proof}
+
+\section{Actual readout densities and marked error budgets}
+
+\begin{theorem}[Physical densities from a common contractive readout]
+    \label{thm:reduction_readout}
+    \lean{Matrix.sourceOnlyReadoutVector}
+    \lean{Matrix.sourceOnlyReadoutDensity}
+    \lean{Matrix.sourceOnlyReadoutVector_norm_le_one}
+    \lean{Matrix.sourceOnlyReadoutVector_sub_norm_le}
+    \lean{Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_prefix}
+    \lean{Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_sum}
+    \lean{Matrix.sourceOnlyReadoutDensity_zero}
+    \lean{Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_zero}
+    \leanok
+    Let $\psi\in\C^{D_0}$ satisfy $\lVert\psi\rVert\leq1$, and let
+    $K:\C^{D_n}\to\C^{P\times E}$ be a common contraction into finite
+    physical and discarded registers. Define the actual final vector and
+    retained density by
+    \begin{align}
+        v_G    & =K\Pi_G(n)\psi,
+        \label{eq:reduction_readout_vector}       \\
+        \rho_G & =\Tr_E(|v_G\rangle\langle v_G|).
+        \label{eq:reduction_readout_density}
+    \end{align}
+    For arbitrary gate families,
+    $\lVert v_H-v_G\rVert\leq\lVert\Pi_H(n)-\Pi_G(n)\rVert$.
+    If both families are contractions, $v_G,v_H$ have norm at most one and
+    \begin{align}
+        \lVert\rho_H-\rho_G\rVert_1
+         & \leq2\lVert\Pi_H(n)-\Pi_G(n)\rVert
+        \leq2\sum_{t=0}^{n-1}\lVert H_t-G_t\rVert.
+        \label{eq:reduction_readout_error}
+    \end{align}
+    For $n=0$ the densities coincide and their trace-norm difference is
+    zero; this equality holds for arbitrary $\psi,K,G,H$.
+    These are the actual vector and density estimates used in
+    \cite[Equation~(5.3)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-effect-circuit-error, 04-compression.tex:214--229.
+    % A caller supplies the common readout and its circuit interpretation.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:reduction_chain, thm:reduction_pure_error}
+    The common readout gives
+    $v_H-v_G=K(\Pi_H(n)-\Pi_G(n))\psi$; its contraction bound and
+    $\lVert\psi\rVert\leq1$ give the vector estimate. Prefix and readout
+    contraction also give the two upper vector norm bounds. Apply
+    Theorem~\ref{thm:reduction_pure_error}, then
+    (\ref{eq:reduction_telescoping}). At zero length both prefixes are
+    the same identity, so the actual densities agree.
+\end{proof}
+
+\begin{theorem}[Half-accuracy density budget for marked approximate gates]
+    \label{thm:reduction_marked_budget}
+    \lean{Matrix.rescaledGateChain}
+    \lean{Matrix.markedRescaledGateChain}
+    \lean{Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le}
+    \lean{Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_half}
+    \lean{Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le}
+    \lean{Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le_half}
+    \lean{Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_empty}
+    \leanok
+    Let $G_t$ be contractions on the prescribed changing memory spaces,
+    and let $\psi,K$ satisfy the hypotheses of
+    Theorem~\ref{thm:reduction_readout}. Choose a finite marked set $S$
+    and $\delta\geq0$, with $\lVert A_t-G_t\rVert\leq\delta$ for
+    every $t\in S$. Set
+    \begin{align}
+        H_t & =\begin{cases}
+                   A_t/(1+\delta), & t\in S,    \\
+                   G_t,            & t\notin S.
+               \end{cases}
+        \label{eq:reduction_marked_gates}
+    \end{align}
+    For the actual densities of (\ref{eq:reduction_readout_density}),
+    \begin{align}
+        \lVert\rho_H-\rho_G\rVert_1 & \leq4|S|\delta.
+        \label{eq:reduction_marked_error}
+    \end{align}
+    If $|S|>0$ and $\epsilon\geq0$, the choice
+    $\delta=\epsilon/(8|S|)$ gives error at most $\epsilon/2$.
+    For $S=\varnothing$, $H=G$ and the density error is exactly zero,
+    for arbitrary input, readout, and rescaling parameter.
+    Unmarked private stages remain exact.
+    If all stages are approximated with a uniform error bound and
+    $H_t=A_t/(1+\delta)$ for every $t$, the corresponding estimate is
+    $4n\delta$; for $n>0$ and $\epsilon\geq0$, taking
+    $\delta=\epsilon/(8n)$ gives the same
+    half-accuracy bound.
+    With the nonprivate gate count $M=|S|$, this is
+    \cite[Equation~(5.3)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-effect-circuit-error, 04-compression.tex:199--229.
+    % Identifying S, the memory chain, and common K with the concrete circuit is separate.
+    % These entries do not construct appended-garbage semantics or a final operator network.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:reduction_chain, thm:reduction_readout}
+    Rescaling gives $\lVert H_t\rVert\leq1$ and
+    $\lVert H_t-G_t\rVert\leq2\delta$ on $S$; outside $S$ the error
+    is zero. The supported telescoping bound gives prefix error at most
+    $2|S|\delta$. Formula (\ref{eq:reduction_readout_error}) doubles this
+    to (\ref{eq:reduction_marked_error}). For positive $|S|$,
+    $4|S|\epsilon/(8|S|)=\epsilon/2$.
+    The uniform case uses the uniform telescoping estimate in the same
+    way. An empty marked set makes the two chains identical.
+\end{proof}

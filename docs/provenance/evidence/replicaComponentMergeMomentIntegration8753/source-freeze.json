@@ -1,0 +1,27 @@
+{
+  "source_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+  "prerequisite_revision": "ab5264325521b5f7fa1719217512c655e0820e4f",
+  "upstream_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "production_sha256": {
+    "QICLean/Analysis/ReplicaComponentMergeMoment.lean": "ff2e0c4ff9c5f2ae6ce3669736cd32fb452c9661b6ae78907286d1995ae4cac7",
+    "blueprint/src/fragment/replica_component_merge_moment.tex": "56d88c6378c4a66146aecc8c619cb029cce046e6d1984e06c75dca8bd6602714",
+    "docs/openai-area-law-component-merge-moment.md": "622bb54994abd6ae00b1e780afbfee90d094409f88bf36b5e057ce599ef34866",
+    "docs/tactic_patterns.md": "ac746897284bcbd506a3c2bc8ce2cc1d5361b411d56e073eb751ac25971c1ed3"
+  },
+  "mathematical_source_revision": "523a72b62e49b834574dc4e990a761e8891d1cc5",
+  "inclusion_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+  "leaf_evidence_revision": "16d90bff",
+  "checked_prerequisite_heads": [
+    "5a83568097c77798bdd3f77dc892c338749381bf",
+    "ef7442f03ea09bb7997295304ba4ddc289b540b0"
+  ],
+  "integration_sha256": {
+    "QICLean/Analysis.lean": "061e4e82d2b1f344b6786c07c704d7a58df83197192624ce64adb1e766203d30",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "67f105075ef47b7694071e29c5ddf8f88996e833fe91e6772df12b59b2c52bf6",
+    "blueprint/src/fragment/replica_joint_density.tex": "47a1fada68f1df1bc301eec1ca4d42e547a2313f981214edb0c6d1a209be2748"
+  },
+  "full_library_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+  "book_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+  "checked_joint_density_head": "771e955ae728db3e88af04114b5773843fc04eef",
+  "joint_density_exposition_revision": "7840e716185f9d477c3c135192f3ec0573813e14"
+}

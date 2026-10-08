@@ -1,0 +1,97 @@
+{
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/bbl.log": {
+    "sha256": "be107a2b66006fc777ba6c71fb7e52b5ad6b98ace09ea388977c36d9c78782d0",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/bbl.log.gz",
+    "gzip_sha256": "2837d07c9c16cf3325881b6950b0b956e4f620473fd306de06dce88fa0c54879"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/blueprint-sync.log": {
+    "sha256": "2f8866e41765ba04df0585bf6d0362868bfcfc926248c59ee2b39776dacfa77c",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/blueprint-sync.log.gz",
+    "gzip_sha256": "4d4d6219404fb77930e81177def2db45398c9153c67e7180a26f07f33cda1f56"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/cache.log": {
+    "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/cache.log.gz",
+    "gzip_sha256": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/diagrams.log": {
+    "sha256": "609d1a0c8802981a6dfd30f9f6a8b3388ebf6aaaae1913b95b285eceb3b134a9",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/diagrams.log.gz",
+    "gzip_sha256": "d2679ea3c214619bf5711c890d0eb4f6d61f5cafb2857037c8dde378aab29928"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/focused-web.log": {
+    "sha256": "8c4f760badc7c8a6a90b509585b6368b0b0eaf349b059bba895900e209aa6766",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/focused-web.log.gz",
+    "gzip_sha256": "23c85fa530eaf76adf3e96dccfdeff363800ff8c4193b13ee66d031b3d8acd54"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/full-build.log": {
+    "sha256": "c5d49328bffc92951a268454864c061969c894272e4fc78793d46aab212bd23e",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/full-build.log.gz",
+    "gzip_sha256": "6e8fa77e7485db54e34a7c4aceb9f195908f673634c3209ccac00f5cba3596ac"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/guard.log": {
+    "sha256": "30ff08c40079727ccde93c9addec3fb28d6b3fde8fb2de84f4f7d34c29be5f53",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/guard.log.gz",
+    "gzip_sha256": "a2cdae52cb954216a3bf0669fb96471c8c44603400006d4e0a3ad0bdcdf34a6c"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/imports.log": {
+    "sha256": "6e7c23fdf07094f202cd13204191908e29c9afb3a3be5bc48e97c7d1de361102",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/imports.log.gz",
+    "gzip_sha256": "e63ddce73ba0e0586165e1735aa94ba8fc82ec93e06ca0790d02c56c8a43557a"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/mobile-equation-scroll.log": {
+    "sha256": "1a5ecff9ed91f67a832c457bee71614bd9393992b6d6911a1233b397dcecf3e2",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/mobile-equation-scroll.log.gz",
+    "gzip_sha256": "584cc787c2daf540d1f87b944a1e84dd807c2e839850d83d30b35baffb415d2f"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/native-targets.log": {
+    "sha256": "e72d7c66a61567dcb0baa8f9916ffc49e7e9bbeddaa41e07b7bbba2a11be11bd",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/native-targets.log.gz",
+    "gzip_sha256": "dcae713f9b5b98222c2cbc9e69f2257519713d5f3e4bdfe297542e1b2ed804d7"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/native.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/native.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/paper-gaps.log": {
+    "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/paper-gaps.log.gz",
+    "gzip_sha256": "197a885e0bccc91b171706011407c28391b3d96b6a1010413307990fea2cca36"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/pdf.log": {
+    "sha256": "228052757dd8c8b825ed4bceddbf66b6e0b6370baa19ad20a8ea4d1f0108c5d8",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/pdf.log.gz",
+    "gzip_sha256": "54a4bd7c8eaddc03c01e7cde7ce8586f407085da5a0e6dee28fa2cf6f8597f00"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/preservation.log": {
+    "sha256": "53fdf640e110933757f6f49478ce496cd9f7f4dc4c3883a3a034ad433461f1ec",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/preservation.log.gz",
+    "gzip_sha256": "a359d37d1c73e8b756578d7d14625faf26530acd5a62905f059318dc4ae6b48f"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/render-pdf.log": {
+    "sha256": "3905b79fe5acf75eda6be14e78dd4203e2e4460c07b4864241164390847de2a8",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/render-pdf.log.gz",
+    "gzip_sha256": "b9d51631ab073ba95f3b70f6a6b4699ed28d758780ffd039f24892a3cade93c4"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/render-schur-pages.log": {
+    "sha256": "1b18edffcc616565d9b046318634648c3d950196f12614e2a550a8d3ce728d07",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/render-schur-pages.log.gz",
+    "gzip_sha256": "d025551ac4488a345b8bf14285aeb17af4e320d0289302c88ade28fca281f6e6"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/source-contraction-kernels.log": {
+    "sha256": "ee7ac944c8627fdab34760c7b29384615ae39e0b5e12a3544e475e22800acb95",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/source-contraction-kernels.log.gz",
+    "gzip_sha256": "48f8c1caf6e8f40304f5a3275c70bc9c0d7e8f819c951bc5a9ec80e4eff3b5de"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/web.log": {
+    "sha256": "8a12d7df0147ab9e2f4c998e3ee316204b034abcdceac18ca1e155618ed9d549",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/web.log.gz",
+    "gzip_sha256": "1f600455414ecbe122224b7ce5fd3c30e35237371d33fa12ba07a45d28b7623f"
+  },
+  "docs/provenance/evidence/pepsSourceLatestMainIntegration/whole-web.log": {
+    "sha256": "b1b4b5099af250f7d421aaf63f828c21f44909da1a2293dc07501f9b21d60297",
+    "gzip": "docs/provenance/evidence/pepsSourceLatestMainIntegration/whole-web.log.gz",
+    "gzip_sha256": "225b382022b3bc3bc38759402e628a69a041f814d248d8a76809c4f3088fb3b6"
+  }
+}

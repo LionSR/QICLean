@@ -1,0 +1,28 @@
+{
+  "links": [
+    "TensorPower.pairMergeDeficit",
+    "TensorPower.isHermitian_pairMergeDeficit",
+    "TensorPower.commute_pairMergeDeficit_lifts",
+    "TensorPower.exp_pairMergeDeficit_lifts",
+    "TensorPower.trace_exp_pairMergeDeficit_left",
+    "TensorPower.trace_exp_pairMergeDeficit_right"
+  ],
+  "errors": [],
+  "top": 48.40625,
+  "bottom": 1182.359375,
+  "mathElements": 21,
+  "mobile_section_bounds": {
+    "top": 111.78125,
+    "bottom": 1710.796875
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360,
+  "visual_review": "passed",
+  "desktop_viewport_width": 1440,
+  "visual_findings": [
+    "All three mathematical entries and all complete proofs are visible on desktop and at360px mobile width.",
+    "The two aligned spaces and the exponential and trace identities are clear; each of the three display boxes fits the mobile content width.",
+    "No MathJax errors or page overflow; the manuscript citation and exponential reference are visible.",
+    "The component-identification status sentence is absent and the mathematical correlation caution remains visible."
+  ]
+}

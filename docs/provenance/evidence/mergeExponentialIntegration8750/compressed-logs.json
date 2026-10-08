@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "raw_path": "docs/provenance/evidence/mergeExponentialIntegration8750/pdf.log",
+      "archive_path": "docs/provenance/evidence/mergeExponentialIntegration8750/pdf.log.gz",
+      "raw_bytes": 182507,
+      "archive_bytes": 34533,
+      "raw_sha256": "15c1f9ecdcb3bb14080db6ad1c2021a5b8207e8db07b0579c530afef0d3e7b9a",
+      "archive_sha256": "38e1294ce5232ce3ab6eedd32a2e6332bc61e49d266731eb4b162a1f2e138150",
+      "gzip_mtime": 0,
+      "original_raw_retained_locally": true
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "source_revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+  "parent_revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+  "preserved_published_branch": {
+    "branch": "feat/area-law-merge-exponential",
+    "revision": "5a83568097c77798bdd3f77dc892c338749381bf"
+  },
+  "declarations": [
+    "Matrix.PosSemidef.re_trace_mul_exp_add_le_half_sum"
+  ],
+  "coverage": "Entire production source including private product inequality, mathematical fragment, reader note and ledger.",
+  "files": [
+    {
+      "path": "QICLean/Analysis/WeightedTraceExponential.lean",
+      "sha256": "08b5b6af2335c789429a7514cc8a1516b9bf3c8dca930b471dd013ee8feb27e0",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/weighted_trace_exponential.tex",
+      "sha256": "a99d2cd07862522179c1a12f785c935f7c2b83ab21dfec6c44a47711f7cb179f",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-weighted-trace-exponential.md",
+      "sha256": "489ed7c2ba37e10138ce7d5366cbc1f8febbf33fddd5770ee5acd9a3df062c5d",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "9bb4a04ebdc73ebffdcc4a4cc5b65f365d066ae978f320b1ed8b49ae25cb227a",
+      "coverage": "Entire file."
+    }
+  ],
+  "superseded_documentation_revision": "96387e42dfb5674898fb2b3fb26c2679b3f00e4b"
+}

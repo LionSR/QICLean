@@ -1,0 +1,13 @@
+{
+  "source_revision": null,
+  "phase": "pre-freeze import and source check",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/weightedTraceExponential8750/cache-guard.py"
+  ],
+  "started_utc": "2026-10-08T00:55:50.853222+00:00",
+  "elapsed_seconds": 0.277,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceExponential8750/initial-cache-guard.log",
+  "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+}

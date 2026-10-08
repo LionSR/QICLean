@@ -1,0 +1,29 @@
+{
+  "mathematical_revision": "f028f8c6ea5290b8e8ddf08893ead50d89ea2174",
+  "artifacts_sha256": {
+    "docs/provenance/evidence/pairMergeDeficit8753/Axioms.lean": "24580c43e0a59e93f2c1d9c6c2f9405af7bf38aae0b60c05dbf59e1f85b9131e",
+    "docs/provenance/evidence/pairMergeDeficit8753/README.md": "bc221cbd18bd3623da9f79ff92650640c2bc489873635796c933832091447ab0",
+    "docs/provenance/evidence/pairMergeDeficit8753/axioms-exit.json": "27e085e8758e9f71bd74b8cfaac0a78c6597b456cac54ffed6d2a7336d2b4545",
+    "docs/provenance/evidence/pairMergeDeficit8753/axioms.log": "e0c49c5fc832a0001aaaed29f73314ca8d60b7bd41eaa829030dd3a1d843b55d",
+    "docs/provenance/evidence/pairMergeDeficit8753/cache-exit.json": "241049a6b8a41dcb09687b27d20fff2c0dfe9e9ec39d6784233a15e3dbdeb683",
+    "docs/provenance/evidence/pairMergeDeficit8753/cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/pairMergeDeficit8753/excluded-scratch.lean": "7dce0f9f6148954b3bf406d8f25ce2a96969372f9ee3e68c9d5efae6764f549f",
+    "docs/provenance/evidence/pairMergeDeficit8753/owned-shards.json": "0a73d3cb6ea994ce3397bffa685e0c5c30a2a88a7ee7a483b15f590c62f512ab",
+    "docs/provenance/evidence/pairMergeDeficit8753/parent-before.json": "0a18944d3c23d5abcd86d7f9336df0c15ee59360d0ba1bf583c898db63748744",
+    "docs/provenance/evidence/pairMergeDeficit8753/parent-preservation.json": "14d3ab813bd35d49ecec446f9ba3273138a9322af678b97c1c921c6a57ec8ff5",
+    "docs/provenance/evidence/pairMergeDeficit8753/patterns-exit.json": "a74760339dbf9d0af39ce585dc80969879931f929eac687d28a2cae7601f4055",
+    "docs/provenance/evidence/pairMergeDeficit8753/patterns.log.gz": "c59cd49fce60fd7a86cc8bf5369a079fc56ad135610e87e6b3e7465489255f5a",
+    "docs/provenance/evidence/pairMergeDeficit8753/production-pre-freeze-strict-exit.json": "0cedf252ef6a2fd34727f3452517fe1f5fd3d6d8557bb3659d9d7d58023a0c4c",
+    "docs/provenance/evidence/pairMergeDeficit8753/production-pre-freeze-strict.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/pairMergeDeficit8753/provenance-exit.json": "a410116a348412c48cf42ac29accbf2d7d4d619330bbb2dbc2b8c3f02876deea",
+    "docs/provenance/evidence/pairMergeDeficit8753/provenance.log": "d2eec7ecc9fd23507f7fcfaa382e6a590ae13dd667e936442233b2d5f672f59f",
+    "docs/provenance/evidence/pairMergeDeficit8753/record-command.py": "98319955cd78dcc9846bfea30a25ffe18228f79ff5a5e26fecabc4ba713312c8",
+    "docs/provenance/evidence/pairMergeDeficit8753/source-freeze.json": "1d86d9fe3ec0b89debafdfd38e76d2ee7575ca2a07ec7d25341e55f2e8d47e77",
+    "docs/provenance/evidence/pairMergeDeficit8753/strict-source-exit.json": "b9408d1836d7a07876bc389b6a849ee63fc4eb0c8719c48a4f218feedf69009d",
+    "docs/provenance/evidence/pairMergeDeficit8753/strict-source.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/pairMergeDeficit8753/target-exit.json": "c669eff9dcda9a4cb86710efcfca08aa59e355ce88f5f6861d13a62f9df2d681",
+    "docs/provenance/evidence/pairMergeDeficit8753/target.log": "c22cacd4e025712d7adbf803b8e130275ce7072f453f5a31871ee2df415a574b",
+    "docs/provenance/evidence/pairMergeDeficit8753/validate-owned.py": "9e400fa98b7c9062a7c9748cb76adadfc384b24a9cd33a4ce04c32a6438013ea",
+    "docs/provenance/openai-math.d/pairMergeDeficit8753.json": "97bc03c02584785c7b6d52475f5da183cf1d1f867de4dadf34d2952a9aebc8be"
+  }
+}

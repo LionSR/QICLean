@@ -1,0 +1,13 @@
+{
+  "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+  "parent_paths": 1806,
+  "unchanged_paths": 1803,
+  "changed_paths": [
+    "QICLean/Representation.lean",
+    "blueprint/src/chapter/ch13_schur_labels.tex",
+    "docs/tactic_patterns.md"
+  ],
+  "only_generated_import_unique_chapter_input_and_ledger_append": true,
+  "leaf_artifacts_preserved": 35,
+  "result": "passed"
+}

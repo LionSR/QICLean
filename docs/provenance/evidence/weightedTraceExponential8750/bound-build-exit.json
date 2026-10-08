@@ -1,0 +1,14 @@
+{
+  "source_revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Analysis.WeightedTraceExponential"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T00:59:54.687448+00:00",
+  "elapsed_seconds": 22.22,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceExponential8750/bound-build.log",
+  "sha256": "6b6c7504ffd337b8d0ac99749c090d977443960cea0058207772c9ed3d1ee7b8"
+}

@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-pair-merge-moment-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeMoment.lean",
+        "declaration": "TensorPower.pairCopyLeft",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+          "labels": [
+            "sec:replicas"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Construct the actual copy-permutation action on the Q factor of the literal paired basis, fixing C."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeMoment",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/target.log",
+            "sha256": "73069d774fde7bc7efab29b7526ae47905d0de7253a0a1ba98b5bbbd6f5d1a33"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeMoment.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeMoment8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/axioms.log",
+            "sha256": "9ba49f71b87fd6286fcd4ffa9987c43796fd4fee38d3702ebcd237db52bf4f74"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-moment-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeMoment.lean",
+        "declaration": "TensorPower.pairCopyRight",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+          "labels": [
+            "sec:replicas"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Construct the actual copy-permutation action on C, fixing Q."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeMoment",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/target.log",
+            "sha256": "73069d774fde7bc7efab29b7526ae47905d0de7253a0a1ba98b5bbbd6f5d1a33"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeMoment.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeMoment8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/axioms.log",
+            "sha256": "9ba49f71b87fd6286fcd4ffa9987c43796fd4fee38d3702ebcd237db52bf4f74"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-moment-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeMoment.lean",
+        "declaration": "TensorPower.pairCopyBoth",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+          "labels": [
+            "sec:replicas"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Construct the simultaneous copy-permutation action on both factors."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeMoment",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/target.log",
+            "sha256": "73069d774fde7bc7efab29b7526ae47905d0de7253a0a1ba98b5bbbd6f5d1a33"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeMoment.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeMoment8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/axioms.log",
+            "sha256": "9ba49f71b87fd6286fcd4ffa9987c43796fd4fee38d3702ebcd237db52bf4f74"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-moment-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeMoment.lean",
+        "declaration": "TensorPower.commute_pairCopy",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+          "labels": [
+            "sec:replicas"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove commutation of the two actual separate actions by their coordinate formulas."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeMoment",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/target.log",
+            "sha256": "73069d774fde7bc7efab29b7526ae47905d0de7253a0a1ba98b5bbbd6f5d1a33"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeMoment.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeMoment8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/axioms.log",
+            "sha256": "9ba49f71b87fd6286fcd4ffa9987c43796fd4fee38d3702ebcd237db52bf4f74"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-moment-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeMoment.lean",
+        "declaration": "TensorPower.pairCopyBoth_eq_mul",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+          "labels": [
+            "sec:replicas"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that the actual simultaneous action is the product of the two separate actions."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeMoment",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/target.log",
+            "sha256": "73069d774fde7bc7efab29b7526ae47905d0de7253a0a1ba98b5bbbd6f5d1a33"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeMoment.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeMoment8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/axioms.log",
+            "sha256": "9ba49f71b87fd6286fcd4ffa9987c43796fd4fee38d3702ebcd237db52bf4f74"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-moment-06",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeMoment.lean",
+        "declaration": "TensorPower.pair_merge_moment_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+          "labels": [
+            "replicas:merge-moment"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Transport the accepted finite-family merge-moment theorem to the literal paired basis; derive all three action identities and use positive trace-one density and actual separate invariance, with polynomial exponent (card Q * card C)^2 and every b <= 1."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeMoment",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/target.log",
+            "sha256": "73069d774fde7bc7efab29b7526ae47905d0de7253a0a1ba98b5bbbd6f5d1a33"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeMoment.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeMoment8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/axioms.log",
+            "sha256": "9ba49f71b87fd6286fcd4ffa9987c43796fd4fee38d3702ebcd237db52bf4f74"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-moment-07",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeMoment.lean",
+        "declaration": "TensorPower.pair_merge_moment_le_mul_trace",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive the homogeneous bound with actual trace mass by total positive normalization, including zero trace and empty basis; no supplied compatibility or multiplicity certificate is assumed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeMoment",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/target.log",
+            "sha256": "73069d774fde7bc7efab29b7526ae47905d0de7253a0a1ba98b5bbbd6f5d1a33"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeMoment.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeMoment8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeMoment8753/axioms.log",
+            "sha256": "9ba49f71b87fd6286fcd4ffa9987c43796fd4fee38d3702ebcd237db52bf4f74"
+          }
+        ]
+      }
+    }
+  ]
+}

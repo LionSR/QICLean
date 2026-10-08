@@ -1,0 +1,86 @@
+%% =========================================================
+%% Chapter: The conditional movement estimate
+%% Source: OpenAI, "A two-dimensional area law from a global spectral gap"
+%%         (September 24, 2026), Lemma 5.1, 04-conditional.tex lines 14-308
+%% =========================================================
+
+\chapter{The Conditional Movement Estimate}
+\label{ch:conditional_movement}
+
+This chapter states the first conditional operator estimate
+of~\cite[Lemma~5.1]{OpenAI2026AreaLaw}. A small subsystem $x$ of a pure state
+changes sides between two systems $U$ and $P$; the norm of a vector obtained
+by conjugating the state with marginal powers then decays at the rate of the
+conditional information cost of the move. The constants are universal, and
+the admissible exponents depend only on the dimension of $x$.
+
+For a positive semidefinite matrix $\rho$ write $\Pi_{\ker\rho}$ for the
+spectral projection onto its kernel and $\widehat\rho=\rho+\Pi_{\ker\rho}$ for
+its kernel completion.
+
+\begin{definition}[Kernel projection and kernel completion]
+    \label{def:kernel_completion}
+    \lean{Matrix.kernelProjection, Matrix.kernelCompletion}
+    \leanok
+    For a square complex matrix $\rho$, the kernel projection is
+    $\Pi_{\ker\rho}=\mathbf 1_{\{0\}}(\rho)$, computed through the continuous
+    functional calculus, and the kernel completion is
+    $\widehat\rho=\rho+\Pi_{\ker\rho}$.
+\end{definition}
+
+\begin{lemma}[Real powers of the kernel completion]
+    \label{lem:kernel_completion_rpow}
+    \lean{Matrix.kernelProjection_mul_self,
+        Matrix.kernelProjection_mul_kernelProjection,
+        Matrix.cfc_rpow_kernelCompletion}
+    \leanok
+    \uses{def:kernel_completion}
+    Let $\rho$ be Hermitian. Then $\Pi_{\ker\rho}\rho=0$,
+    $\Pi_{\ker\rho}^2=\Pi_{\ker\rho}$, and for every real $s\ne0$,
+    $\widehat\rho^{\,s}=\rho^s+\Pi_{\ker\rho}$, where $\rho^s$ vanishes on the
+    kernel.
+\end{lemma}
+
+\begin{proof}\leanok
+    All three identities are identities of functions on the spectrum of
+    $\rho$; for the last one use $0^s=0$ when $s\ne0$.
+\end{proof}
+
+\begin{theorem}[Conditional movement estimate]
+    \label{thm:conditional_movement}
+    \lean{Entropy.conditionalMovement_norm_le}
+    \leanok
+    \uses{lem:kernel_completion_rpow, def:conditional_entropy}
+    Let $\theta$ be a unit vector on four finite-dimensional systems
+    $P,x,U,F$, and let $\rho_D$ denote its marginal on $D$. Set $d=\dim x$,
+    $\ell=\log(ed)$ and $\eta=S(x|P)_\theta+S(x|U)_\theta$. There are
+    universal constants $c,C>0$ such that, for $0<a\ell\le c$ and arbitrary
+    positive semidefinite $\sigma$ on $xP$ and $\tau$ on $xU$ of trace at
+    most one,
+    \[
+      \bigl\|\sigma^{a/2}\widehat\rho_P^{\,-a/2}
+        \tau^{a/2}\widehat\rho_U^{\,-a/2}\theta\bigr\|
+      \le\exp\Bigl(-\frac a2\eta+Ca^{5/4}\ell^2\Bigr).
+    \]
+    One may take $C=200000$ and $c=1/8$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Identify $\theta$ with its coefficient matrix from $xU$ to $PF$. The
+    kernel projection of $\rho_U$ annihilates $\theta$, since its expectation
+    in $\theta$ is $\operatorname{tr}(\Pi_{\ker\rho_U}\rho_U)=0$. The kernel
+    projection of $\rho_P$ annihilates every vector obtained from $\theta$ by
+    an operator on $xU$, because the two operators act on different factors.
+    By the preceding lemma both kernel completions may therefore be replaced
+    by the powers vanishing on the kernels. For these powers the estimate is
+    the interpolation argument of~\cite[proof of Lemma~5.1]{OpenAI2026AreaLaw}:
+    the analytic family
+    $G(z)=\sigma^{az}\rho_P^{-az}\tau^{a(1-z)}\rho_U^{-a(1-z)}\theta$ on the
+    strip $0\le\operatorname{Re}z\le1$ is bounded on the left boundary by the
+    conditional Schatten estimate with the slack $\lambda(u)$ retained, the
+    slack controls the movement of the state arriving at the right boundary,
+    continuity of the conditional entropy with controlled system $x$ bounds
+    the right boundary, and the three-lines inequality with harmonic weights
+    $du/(2\cosh\pi u)$ combines the two. Faithful $\sigma,\tau$ are removed
+    by regularization of their eigenvalues.
+\end{proof}

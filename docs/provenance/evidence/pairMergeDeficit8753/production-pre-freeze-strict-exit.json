@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Representation/PairMergeDeficit.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 21.453518415990402,
+  "source_sha256": "f41591ccbf444d719eafdb35f2f4c59d98e2f0b588f757ba7365600f449c0004",
+  "parent_revision": "ef7442f03ea09bb7997295304ba4ddc289b540b0",
+  "excluded_from_final_provenance": true,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

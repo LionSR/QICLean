@@ -1,0 +1,160 @@
+import QICLean.Representation.MergeMoment
+import Mathlib.LinearAlgebra.Matrix.PosDef
+import Mathlib.Logic.Equiv.Fin.Basic
+
+open Matrix PermutationRepresentation
+open scoped ComplexOrder
+namespace TensorPower
+
+private def productPermAction {G X Y : Type*} [Group G]
+    (φ : G →* Equiv.Perm X) (ψ : G →* Equiv.Perm Y) : G →* Equiv.Perm (X × Y) where
+  toFun σ := Equiv.prodCongr (φ σ) (ψ σ)
+  map_one' := by ext <;> simp
+  map_mul' σ τ := by ext <;> simp
+
+variable (Q C : Type*) (m : ℕ)
+
+/-- Permute the Q copies and leave the C copies fixed. -/
+def pairCopyLeft : Equiv.Perm (Fin m) →* Equiv.Perm ((Fin m → Q) × (Fin m → C)) :=
+  productPermAction (copyPerm Q m) 1
+
+/-- Permute the C copies and leave the Q copies fixed. -/
+def pairCopyRight : Equiv.Perm (Fin m) →* Equiv.Perm ((Fin m → Q) × (Fin m → C)) :=
+  productPermAction 1 (copyPerm C m)
+
+/-- Permute the Q and C copies simultaneously. -/
+def pairCopyBoth : Equiv.Perm (Fin m) →* Equiv.Perm ((Fin m → Q) × (Fin m → C)) :=
+  productPermAction (copyPerm Q m) (copyPerm C m)
+
+/-- Copy permutations of the two separate factors commute. -/
+theorem commute_pairCopy (σ τ : Equiv.Perm (Fin m)) :
+    Commute (pairCopyLeft Q C m σ) (pairCopyRight Q C m τ) := by
+  ext <;> rfl
+
+/-- The simultaneous action is the product of the two separate actions. -/
+theorem pairCopyBoth_eq_mul (σ : Equiv.Perm (Fin m)) :
+    pairCopyBoth Q C m σ = pairCopyLeft Q C m σ * pairCopyRight Q C m σ := by
+  ext <;> rfl
+
+universe u v
+
+private def pairFamily (Q : Type u) (C : Type v) (i : Fin 2) : Type (max u v) :=
+  Fin.cases (ULift.{v} Q) (fun _ => ULift.{u} C) i
+
+private instance pairFamilyFintype [Fintype Q] [Fintype C] (i : Fin 2) :
+    Fintype (pairFamily Q C i) := by
+  refine Fin.cases ?_ (fun _ => ?_) i <;> dsimp [pairFamily] <;> infer_instance
+
+private instance pairFamilyDecidableEq [DecidableEq Q] [DecidableEq C] (i : Fin 2) :
+    DecidableEq (pairFamily Q C i) := by
+  refine Fin.cases ?_ (fun _ => ?_) i <;> dsimp [pairFamily] <;> infer_instance
+
+private def pairConfigEquiv : Config m (pairFamily Q C) ≃
+    ((Fin m → Q) × (Fin m → C)) :=
+  (Equiv.piCongrRight fun _ => (piFinTwoEquiv (pairFamily Q C)).trans
+    (Equiv.prodCongr Equiv.ulift Equiv.ulift)).trans
+    (Equiv.arrowProdEquivProdArrow (Fin m) (fun _ => Q) (fun _ => C))
+
+private lemma pairConfig_left (σ : Equiv.Perm (Fin m)) (x : Config m (pairFamily Q C)) :
+    pairConfigEquiv Q C m (subsystemPerm m (pairFamily Q C) {0} σ x) =
+      pairCopyLeft Q C m σ (pairConfigEquiv Q C m x) := by
+  ext j <;> simp [pairConfigEquiv, pairCopyLeft, productPermAction, subsystemPerm_apply,
+    copyPerm_apply, Equiv.prodCongr]
+
+private lemma pairConfig_right (σ : Equiv.Perm (Fin m)) (x : Config m (pairFamily Q C)) :
+    pairConfigEquiv Q C m (subsystemPerm m (pairFamily Q C) {0}ᶜ σ x) =
+      pairCopyRight Q C m σ (pairConfigEquiv Q C m x) := by
+  ext j <;> simp [pairConfigEquiv, pairCopyRight, productPermAction, subsystemPerm_apply,
+    copyPerm_apply, Equiv.prodCongr]
+
+private lemma pairConfig_both (σ : Equiv.Perm (Fin m)) (x : Config m (pairFamily Q C)) :
+    pairConfigEquiv Q C m (copyPerm ((i : Fin 2) → pairFamily Q C i) m σ x) =
+      pairCopyBoth Q C m σ (pairConfigEquiv Q C m x) := by
+  ext j <;> rfl
+
+private lemma permOp_submatrix {G X Y : Type*} [Group G]
+    [Fintype X] [DecidableEq X] [Fintype Y] [DecidableEq Y]
+    (e : X ≃ Y) (φ : G →* Equiv.Perm X) (ψ : G →* Equiv.Perm Y)
+    (he : ∀ g x, e (φ g x) = ψ g (e x)) (g : G) :
+    (permOp ψ g).submatrix e e = permOp φ g := by
+  ext x y
+  simp only [submatrix_apply, permOp_apply_apply, ← he g y, e.injective.eq_iff]
+
+private lemma labelProj_submatrix {G X Y : Type*} [Group G] [Fintype G]
+    [Fintype X] [DecidableEq X] [Fintype Y] [DecidableEq Y]
+    (e : X ≃ Y) (φ : G →* Equiv.Perm X) (ψ : G →* Equiv.Perm Y)
+    (he : ∀ g x, e (φ g x) = ψ g (e x)) (l : IrrepLabel G) :
+    (labelProj ψ l).submatrix e e = labelProj φ l := by
+  ext x y
+  simp only [labelProj, groupAlgebraRep_eq_sum, submatrix_apply, Matrix.sum_apply,
+    Matrix.smul_apply]
+  simp_rw [← submatrix_apply (permOp ψ _), permOp_submatrix e φ ψ he]
+
+private lemma trace_submatrix {X Y : Type*} [Fintype X] [Fintype Y]
+    (e : X ≃ Y) (M : Matrix Y Y ℂ) : (M.submatrix e e).trace = M.trace := by
+  exact Fintype.sum_equiv e _ _ (fun _ => rfl)
+
+private lemma commute_submatrix {X Y : Type*} [Fintype X] [Fintype Y]
+    (e : X ≃ Y) {M N : Matrix Y Y ℂ} (h : Commute M N) :
+    Commute (M.submatrix e e) (N.submatrix e e) := by
+  change M.submatrix e e * N.submatrix e e = N.submatrix e e * M.submatrix e e
+  simp only [submatrix_mul_equiv, h.eq]
+
+private lemma card_pairFamily [Fintype Q] [Fintype C] :
+    Fintype.card ((i : Fin 2) → pairFamily Q C i) = Fintype.card Q * Fintype.card C := by
+  simpa using Fintype.card_congr ((piFinTwoEquiv (pairFamily Q C)).trans
+    (Equiv.prodCongr Equiv.ulift Equiv.ulift))
+
+variable [Fintype Q] [Fintype C] [DecidableEq Q] [DecidableEq C]
+
+/-- The merge moment on the literal paired copy basis.
+
+This is the paired-coordinate form of OpenAI, September 24, 2026,
+`05-replicas.tex`, lines 112–115, equation `replicas:merge-moment`.
+The actual density is positive, has trace one and is invariant under each
+separate copy action. No additional representation or multiplicity premise
+is supplied. The statement includes zero copies and empty finite factors. -/
+theorem pair_merge_moment_le
+    {ρ : Matrix ((Fin m → Q) × (Fin m → C)) ((Fin m → Q) × (Fin m → C)) ℂ}
+    (hρ : ρ.PosSemidef) (htr : ρ.trace = 1)
+    (hρQ : ∀ σ, Commute (permOp (pairCopyLeft Q C m) σ) ρ)
+    (hρC : ∀ σ, Commute (permOp (pairCopyRight Q C m) σ) ρ) {b : ℝ} (hb : b ≤ 1) :
+    ∑ l, ∑ μ, ∑ ν, (ρ * (labelProj (pairCopyLeft Q C m) l *
+        labelProj (pairCopyRight Q C m) μ * labelProj (pairCopyBoth Q C m) ν)).trace.re *
+        (((l.dim * μ.dim : ℕ) : ℝ) / ν.dim) ^ b ≤
+      ((m + 1) ^ ((Fintype.card Q * Fintype.card C) ^ 2) : ℕ) := by
+  let e := pairConfigEquiv Q C m
+  have hρQ' : ∀ σ, Commute (permOp (subsystemPerm m (pairFamily Q C) {0}) σ)
+      (ρ.submatrix e e) := by
+    intro σ
+    have h := commute_submatrix e (hρQ σ)
+    rwa [permOp_submatrix e _ _ (pairConfig_left Q C m)] at h
+  have hρC' : ∀ σ, Commute (permOp (subsystemPerm m (pairFamily Q C) {0}ᶜ) σ)
+      (ρ.submatrix e e) := by
+    intro σ
+    have h := commute_submatrix e (hρC σ)
+    rwa [permOp_submatrix e _ _ (pairConfig_right Q C m)] at h
+  have h := merge_moment_le (ι := pairFamily Q C) (k := m) {0} (hρ.submatrix e)
+    (by rw [trace_submatrix e, htr]) hρQ' hρC' hb
+  rw [card_pairFamily Q C] at h
+  convert h using 1
+  apply Finset.sum_congr rfl
+  intro l _
+  apply Finset.sum_congr rfl
+  intro μ _
+  apply Finset.sum_congr rfl
+  intro ν _
+  congr 1
+  rw [← trace_submatrix e (ρ * (labelProj (pairCopyLeft Q C m) l *
+    labelProj (pairCopyRight Q C m) μ * labelProj (pairCopyBoth Q C m) ν))]
+  simp only [← submatrix_mul_equiv _ _ e e e]
+  rw [labelProj_submatrix e _ _ (pairConfig_left Q C m),
+    labelProj_submatrix e _ _ (pairConfig_right Q C m),
+    labelProj_submatrix e _ _ (pairConfig_both Q C m)]
+
+end TensorPower
+
+set_option linter.hashCommand false
+#print axioms TensorPower.commute_pairCopy
+#print axioms TensorPower.pairCopyBoth_eq_mul
+#print axioms TensorPower.pair_merge_moment_le

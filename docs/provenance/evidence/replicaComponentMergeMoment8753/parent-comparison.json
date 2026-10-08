@@ -1,0 +1,21 @@
+{
+  "69b31fc6bbb94576c69def6d42d3153b39afcf04": {
+    "proof_changes": [
+      "QICLean/Algebra.lean",
+      "QICLean/Analysis.lean",
+      "QICLean/Channel.lean",
+      "QICLean/Entropy.lean",
+      "QICLean/Entropy/FilterMoment.lean",
+      "QICLean/Representation.lean"
+    ],
+    "evidence_changes": []
+  },
+  "90afecd265ca5547b9de350dcd35afc0fe49bbcc": {
+    "proof_changes": [
+      "QICLean/Analysis.lean",
+      "QICLean/Entropy.lean",
+      "QICLean/Representation.lean"
+    ],
+    "evidence_changes": []
+  }
+}

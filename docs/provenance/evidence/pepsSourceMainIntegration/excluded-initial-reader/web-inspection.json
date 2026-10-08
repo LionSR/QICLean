@@ -1,0 +1,315 @@
+{
+  "result": "passed",
+  "entries": [
+    {
+      "anchor": "thm:random_sample_count",
+      "document": "blueprint/web/ch-random_sources.html",
+      "desktop": {
+        "top": 1560.953125,
+        "bottom": 1868.328125,
+        "links": [
+          "CompressionSampling.sampleCount",
+          "CompressionSampling.sampleCount_bounds",
+          "CompressionSampling.ratio_le_of_sample_count",
+          "CompressionSampling.binomial_error_le_quarter",
+          "CompressionSampling.error_le_quarter_of_sample_count",
+          "CompressionSampling.error_le_quarter_sampleCount"
+        ],
+        "errors": [],
+        "math": 12,
+        "width": 1440
+      },
+      "mobile": {
+        "top": 1744.015625,
+        "bottom": 2165.015625,
+        "links": [
+          "CompressionSampling.sampleCount",
+          "CompressionSampling.sampleCount_bounds",
+          "CompressionSampling.ratio_le_of_sample_count",
+          "CompressionSampling.binomial_error_le_quarter",
+          "CompressionSampling.error_le_quarter_of_sample_count",
+          "CompressionSampling.error_le_quarter_sampleCount"
+        ],
+        "errors": [],
+        "math": 12,
+        "width": 360
+      }
+    },
+    {
+      "anchor": "thm:random_realization",
+      "document": "blueprint/web/ch-random_sources.html",
+      "desktop": {
+        "top": 2207.65625,
+        "bottom": 2356.53125,
+        "links": [
+          "CompressionSampling.exists_error_le_half_sampleCount",
+          "CompressionSampling.exists_valid_error_le_half_sampleCount",
+          "CompressionSampling.exists_valid_norm_sum_le_half_sampleCount"
+        ],
+        "errors": [],
+        "math": 14,
+        "width": 1440
+      },
+      "mobile": {
+        "top": 2640.375,
+        "bottom": 2925.28125,
+        "links": [
+          "CompressionSampling.exists_error_le_half_sampleCount",
+          "CompressionSampling.exists_valid_error_le_half_sampleCount",
+          "CompressionSampling.exists_valid_norm_sum_le_half_sampleCount"
+        ],
+        "errors": [],
+        "math": 14,
+        "width": 360
+      }
+    },
+    {
+      "anchor": "thm:source_unbiased",
+      "document": "blueprint/web/ch-source_error.html",
+      "desktop": {
+        "top": 224.921875,
+        "bottom": 578.921875,
+        "links": [
+          "QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource",
+          "QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta",
+          "QICLean.ComplexGaussian.sourceCorrection_apply",
+          "QICLean.ComplexGaussian.integrable_sourceCorrection_entry",
+          "QICLean.ComplexGaussian.integrable_sourceCorrection_entry_mul_conj",
+          "QICLean.ComplexGaussian.integral_sourceCorrection_entry_mul_conj",
+          "QICLean.ComplexGaussian.integrable_sampledSource_entry",
+          "QICLean.ComplexGaussian.integral_sampledSource_entry",
+          "QICLean.ComplexGaussian.integrable_sampledSource",
+          "QICLean.ComplexGaussian.integrable_sourceCorrection",
+          "QICLean.ComplexGaussian.integral_sampledSource",
+          "QICLean.ComplexGaussian.integral_sourceCorrection"
+        ],
+        "errors": [],
+        "math": 8,
+        "width": 1440
+      },
+      "mobile": {
+        "top": 111.765625,
+        "bottom": 579.390625,
+        "links": [
+          "QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource",
+          "QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta",
+          "QICLean.ComplexGaussian.sourceCorrection_apply",
+          "QICLean.ComplexGaussian.integrable_sourceCorrection_entry",
+          "QICLean.ComplexGaussian.integrable_sourceCorrection_entry_mul_conj",
+          "QICLean.ComplexGaussian.integral_sourceCorrection_entry_mul_conj",
+          "QICLean.ComplexGaussian.integrable_sampledSource_entry",
+          "QICLean.ComplexGaussian.integral_sampledSource_entry",
+          "QICLean.ComplexGaussian.integrable_sampledSource",
+          "QICLean.ComplexGaussian.integrable_sourceCorrection",
+          "QICLean.ComplexGaussian.integral_sampledSource",
+          "QICLean.ComplexGaussian.integral_sourceCorrection"
+        ],
+        "errors": [],
+        "math": 8,
+        "width": 360
+      }
+    },
+    {
+      "anchor": "thm:source_gaussian_error",
+      "document": "blueprint/web/ch-source_error.html",
+      "desktop": {
+        "top": 2052.875,
+        "bottom": 2356.640625,
+        "links": [
+          "QICLean.ComplexGaussian.integrable_rectangularTraceNorm_gaussianSourceError",
+          "QICLean.ComplexGaussian.integral_frobeniusNormSq_gaussianSourceQuarter_eq",
+          "QICLean.ComplexGaussian.integral_rectangularTraceNorm_gaussianSourceError_le"
+        ],
+        "errors": [],
+        "math": 13,
+        "width": 1440
+      },
+      "mobile": {
+        "top": 2415.84375,
+        "bottom": 2924.453125,
+        "links": [
+          "QICLean.ComplexGaussian.integrable_rectangularTraceNorm_gaussianSourceError",
+          "QICLean.ComplexGaussian.integral_frobeniusNormSq_gaussianSourceQuarter_eq",
+          "QICLean.ComplexGaussian.integral_rectangularTraceNorm_gaussianSourceError_le"
+        ],
+        "errors": [],
+        "math": 13,
+        "width": 360
+      }
+    },
+    {
+      "anchor": "thm:reduction_chain",
+      "document": "blueprint/web/ch-source_reduction.html",
+      "desktop": {
+        "top": 1089.65625,
+        "bottom": 1399.796875,
+        "links": [
+          "Matrix.contractionPrefix",
+          "Matrix.l2_opNorm_one_le",
+          "Matrix.contractionPrefix_norm_le_one",
+          "Matrix.contractionPrefix_sub_norm_le",
+          "Matrix.contractionPrefix_sub_norm_le_uniform",
+          "Matrix.contractionPrefix_sub_norm_le_supported",
+          "NormedSpace.rescale_approximation"
+        ],
+        "errors": [],
+        "math": 19,
+        "width": 1440
+      },
+      "mobile": {
+        "top": 1013.046875,
+        "bottom": 1550.4375,
+        "links": [
+          "Matrix.contractionPrefix",
+          "Matrix.l2_opNorm_one_le",
+          "Matrix.contractionPrefix_norm_le_one",
+          "Matrix.contractionPrefix_sub_norm_le",
+          "Matrix.contractionPrefix_sub_norm_le_uniform",
+          "Matrix.contractionPrefix_sub_norm_le_supported",
+          "NormedSpace.rescale_approximation"
+        ],
+        "errors": [],
+        "math": 19,
+        "width": 360
+      }
+    },
+    {
+      "anchor": "thm:reduction_readout",
+      "document": "blueprint/web/ch-source_reduction.html",
+      "desktop": {
+        "top": 1523,
+        "bottom": 1919.015625,
+        "links": [
+          "Matrix.sourceOnlyReadoutVector",
+          "Matrix.sourceOnlyReadoutDensity",
+          "Matrix.sourceOnlyReadoutVector_norm_le_one",
+          "Matrix.sourceOnlyReadoutVector_sub_norm_le",
+          "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_prefix",
+          "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_sum",
+          "Matrix.sourceOnlyReadoutDensity_zero",
+          "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_zero"
+        ],
+        "errors": [],
+        "math": 9,
+        "width": 1440
+      },
+      "mobile": {
+        "top": 1705.640625,
+        "bottom": 2260.09375,
+        "links": [
+          "Matrix.sourceOnlyReadoutVector",
+          "Matrix.sourceOnlyReadoutDensity",
+          "Matrix.sourceOnlyReadoutVector_norm_le_one",
+          "Matrix.sourceOnlyReadoutVector_sub_norm_le",
+          "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_prefix",
+          "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_sum",
+          "Matrix.sourceOnlyReadoutDensity_zero",
+          "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_zero"
+        ],
+        "errors": [],
+        "math": 9,
+        "width": 360
+      }
+    },
+    {
+      "anchor": "def:construction_contraction",
+      "document": "blueprint/web/ch-source_constructions.html",
+      "desktop": {
+        "top": 47.78125,
+        "bottom": 336.140625,
+        "links": [
+          "Matrix.sourceContraction",
+          "Matrix.sourceContraction_apply",
+          "Matrix.sourceContraction_apply_apply"
+        ],
+        "errors": [],
+        "math": 7,
+        "width": 1440
+      },
+      "mobile": {
+        "top": 111.71875,
+        "bottom": 491.296875,
+        "links": [
+          "Matrix.sourceContraction",
+          "Matrix.sourceContraction_apply",
+          "Matrix.sourceContraction_apply_apply"
+        ],
+        "errors": [],
+        "math": 7,
+        "width": 360
+      }
+    },
+    {
+      "anchor": "thm:construction_position_expansion",
+      "document": "blueprint/web/ch-source_constructions.html",
+      "desktop": {
+        "top": 48.140625,
+        "bottom": 432.515625,
+        "links": [
+          "Matrix.sourceContraction_piecewise_add",
+          "Matrix.sourceContraction_add",
+          "Matrix.sourceContraction_piecewise_sub",
+          "Matrix.sourceContraction_sub",
+          "Matrix.rectangularTraceNorm_sourceContraction_sub_le"
+        ],
+        "errors": [],
+        "math": 15,
+        "width": 1440
+      },
+      "mobile": {
+        "top": 112.296875,
+        "bottom": 610.296875,
+        "links": [
+          "Matrix.sourceContraction_piecewise_add",
+          "Matrix.sourceContraction_add",
+          "Matrix.sourceContraction_piecewise_sub",
+          "Matrix.sourceContraction_sub",
+          "Matrix.rectangularTraceNorm_sourceContraction_sub_le"
+        ],
+        "errors": [],
+        "math": 15,
+        "width": 360
+      }
+    },
+    {
+      "anchor": "thm:construction_original_density_error",
+      "document": "blueprint/web/ch-source_constructions.html",
+      "desktop": {
+        "top": 1796.390625,
+        "bottom": 2356.8125,
+        "links": [
+          "Matrix.markedChronologicalGarbageChain",
+          "Matrix.chronologicalGarbageDensity",
+          "Matrix.chronologicalGarbageDensity_ideal",
+          "Matrix.chronologicalGarbageDensity_marked_empty",
+          "Matrix.chronologicalGarbageDensity_zero",
+          "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le",
+          "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half",
+          "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_empty"
+        ],
+        "errors": [],
+        "math": 19,
+        "width": 1440
+      },
+      "mobile": {
+        "top": 2114.421875,
+        "bottom": 2924.5,
+        "links": [
+          "Matrix.markedChronologicalGarbageChain",
+          "Matrix.chronologicalGarbageDensity",
+          "Matrix.chronologicalGarbageDensity_ideal",
+          "Matrix.chronologicalGarbageDensity_marked_empty",
+          "Matrix.chronologicalGarbageDensity_zero",
+          "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le",
+          "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half",
+          "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_empty"
+        ],
+        "errors": [],
+        "math": 19,
+        "width": 360
+      }
+    }
+  ],
+  "desktop_width": 1440,
+  "mobile_width": 360
+}

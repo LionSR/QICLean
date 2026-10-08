@@ -1,0 +1,34 @@
+[
+  {
+    "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "argv": [
+      "gh",
+      "api",
+      "-H",
+      "Accept: application/vnd.github.raw+json",
+      "repos/openai/math/contents/preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex?ref=adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4557372499984922,
+    "sha256": "e5c927a30f38b511f2a6d6d2fc2f9f0b9dadfcec27992d7253b0f86a3d4258d6",
+    "local_bytes_equal_immutable_remote": true,
+    "artifact": "docs/provenance/evidence/pairMergeMoment8753/upstream-source05.tex"
+  },
+  {
+    "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "argv": [
+      "gh",
+      "api",
+      "-H",
+      "Accept: application/vnd.github.raw+json",
+      "repos/openai/math/contents/preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex?ref=adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.48988454199570697,
+    "sha256": "5c8d8dd55a283a7ffe9573067c631ea70d93b01c207a297aee02352c25d2573b",
+    "local_bytes_equal_immutable_remote": true,
+    "artifact": "docs/provenance/evidence/pairMergeMoment8753/upstream-source07.tex"
+  }
+]

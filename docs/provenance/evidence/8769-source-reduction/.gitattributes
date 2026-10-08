@@ -1,0 +1,2 @@
+# Preserve exact recorded raw command transcripts.
+*.log -whitespace

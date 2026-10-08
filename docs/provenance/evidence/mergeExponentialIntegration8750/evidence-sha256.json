@@ -1,0 +1,348 @@
+{
+  "files": [
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/Axioms.lean",
+      "sha256": "ca6da8ede1bf56abea2fbfec78ed9b0e8586d7583a97286f751dfc0c1be29f59"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/README.md",
+      "sha256": "7cb4681a87149724ee357d082fc586a8f04711adb0430205510d984d26b17b77"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/artifact-operation-exit.json",
+      "sha256": "309ef92cb336abc168fe50b0bafa469d2885191323dfc53b3f3050c2659ffaa3"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/axioms-final-exit.json",
+      "sha256": "92a59104a54f27426d79b58f8f0b15d7ea3365caffb21c471551b55a8daff789"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/axioms-final.log",
+      "sha256": "f5cc24d6e83bfef913f041f9c9b67ca3bd1903d9b22d1a508876890fe05c25f1"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/bibliography-exit.json",
+      "sha256": "4b355e37849a2935639ae4b9df46ab749dd4a1b757644828be294f4ce945df47"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/blueprint-source-preservation.json",
+      "sha256": "768bb77030cc89b25a2724c50fd86f1e7eed28d56a6bbe126e4c7446cc451a97"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/cache-fetch-exit.json",
+      "sha256": "a204e2f8178d5aa58819feb0f88000f5cf25aa74a4516f8139a848802d9639d8"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/cache-guard-exit.json",
+      "sha256": "8f7726f6d1ae95447e73c9964c009eba96ec72eacf2f02005f334e57df552d43"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/cache-guard.py",
+      "sha256": "60c61c038e9cf222a429e09c703b78649e3b6be389fb0c10f8477f1316cb3651"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/check-inherited.py",
+      "sha256": "00c19c7bac95b4cb16889dce4017261c8b49c6659888c99c18c9ba1994701d46"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/check-manifest.py",
+      "sha256": "3f86d2ae07b0c359defe60a6e37dcb49af77a53b8553e6588e752a675dea4d14"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/check-native-targets.py",
+      "sha256": "aeda3aad103ecc773d4bddbd21443ddebd6941701a74bf7f542668337366ed76"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/checkdecls-exit.json",
+      "sha256": "9fca7d3619d9725d6594449966313380efd897d9f26c1e27ab75da42989e120a"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/compressed-logs.json",
+      "sha256": "db143b67044eac28201537cab4f2d2ff4699db1ed74a1ef731ae8b3846727115"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/copy-bibliography.py",
+      "sha256": "54f9d179b155aff7bc5e5b7fe90739c2f7ddaff2b0615e8c44a4f086f5bc4e1c"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/declaration-sync-exit.json",
+      "sha256": "9b1bea4a9e96f4fe96de147f78a20565ee9c385a70d6802326e5e93299b2217a"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/declaration-sync.log",
+      "sha256": "6ad1270958a4096c1ea1fbf021207227838ab65113091e8781bb5c281844aacf"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/full-build-exit.json",
+      "sha256": "f87685d05d9827216e356b497e224ed2cd216c90e50e4fe818596d1097af17a1"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/full-build.log",
+      "sha256": "668e5680520e6fbae88eb3896aa2a70362a6da3ce62c0641c8b9ab6818b1f133"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/generated-import-preservation.json",
+      "sha256": "dabceefe0055f98450a1c4e297e961a834e97d29d9558d0532c02738ee49875e"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/generated-output-hashes.json",
+      "sha256": "37c450e2cf97058c611ad19cf2233983e96336a5d17cddeede4a96d9676dec8b"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/imports-exit.json",
+      "sha256": "65efd2d644566ec68e8fda8d0d336aa77403ec8b646b33f4996f1420f2867bf4"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/imports.log",
+      "sha256": "1bac29848581061aac9a7fb95b5460ac265dcc00fb1bfbbfe5bcfa9612ae8cd9"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/individual-source-preservation.json",
+      "sha256": "e63a06fe14e45cc7c46ffbaa017fbced2b5415a30fba7126e9e8dc108050ddda"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/inherited-byte-preservation.json",
+      "sha256": "91c156bdea5a3574a1214c27999818301a53b2dd97eb4ce2077f8d6e6e54ca38"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/inherited-exit.json",
+      "sha256": "642a92e6ca2c94f465c452d343965e25175f4567d05a9207aa36b6e03ad497db"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/inherited-inventory-check.json",
+      "sha256": "f81976423189f70a68aa73b808cc279d49ec6351894486cce4b4ca0229c6514b"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/inherited.log",
+      "sha256": "f3a8c67b69c1ea5b7f2d490910a729d884be454faa856b98e105f5b3e59a29da"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/kernel-summary.json",
+      "sha256": "c1e29752e4f727f33008082004adff79e1121348ee2cadeabc8bfef8273835c6"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/mobile-equations.json",
+      "sha256": "63589bc308d03ec054681db51a5800ae0d4b1535f9aa717f6662a562d9ba28c4"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/native-targets-exit.json",
+      "sha256": "fba56725b758961a6cbaf6a5311fc24f30e44f5f99d03607691a6e1c53c954d8"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/native-targets.json",
+      "sha256": "08c99f2aa8463531989663d50ced667b2f0ede5240ad3f958614400fca9c0318"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/native-targets.log",
+      "sha256": "a51dd033a1beeb8f066a1da5fba2f182e3f62978de55349a13a0cc9a21a5fbde"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/owned-shards.json",
+      "sha256": "279720cc5aa8cd078aff4776aa823846e052561c855bee4bd91799c63e80328e"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/page-437.png",
+      "sha256": "e32902624a0438cb32dcec2072d01f516c4a6a135a039adde3736bcdf1eabacb"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/paper-gaps-exit.json",
+      "sha256": "c9bddc05ecebe19423a82bab38c365c5bc74abe3c1d2755439f28511f9ae52d8"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/paper-gaps.log",
+      "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/pdf-exit.json",
+      "sha256": "6960b13d30f7a0b23e925fa64d5bcf57862aca9c2833668e358a43d9c07e25c6"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/pdf-page-search.json",
+      "sha256": "63cb23856c6054ecb3c9ad7d0760464c3556c706dfd3d2ace502380fbcb5a866"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/pdf-visual-inspection.json",
+      "sha256": "066bcb00b1146478906e364e05997775e6efe34c90a74d11f1ecbe76484a43a0"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/pdf.log.gz",
+      "sha256": "38e1294ce5232ce3ab6eedd32a2e6332bc61e49d266731eb4b162a1f2e138150"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/preexisting-output-preservation.json",
+      "sha256": "3fb77c4abee9438a6398c04def77f160b6b43840598d181c0fd8d56fdd4c357d"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/production-preservation.json",
+      "sha256": "9e2d42d8178af0ae53de01b182691e0a9c6364d2a9c36e8c8757d4dd51617a27"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/prose-exit.json",
+      "sha256": "3fd30f350df5c78eb96128f447cbb401824b5a1e42d4fa280558ef7a3dd5b4ef"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/provenance-final-exit.json",
+      "sha256": "2f6e25b8462e4ac11f5d51c8d3b312ddda7b4cf5484ef22a65773cf90abeda94"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/provenance-final.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/run.py",
+      "sha256": "6388eeffd3b728d7082c460460d19e69669e529be779f18552bb11679d1a3f27"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/sec-merge_exponential-web.png",
+      "sha256": "c8f1c4506621d9272cfed5a88951ee2b5708f1a78a936c6fc94d0e9bae86673d"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/source-freeze.json",
+      "sha256": "2fdf969b59643f0d3f21ab2cee695bad56cea1019c5a66096443bae38fc81c79"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/tenkz-exit.json",
+      "sha256": "44b28ae9a5c99c70b8d554209dad36158e350c44cbc736030d3398223ffa04c8"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/tenkz.log",
+      "sha256": "b10dd226fcfb59e9eb52b06bc040d251e35cd38d571c963ece4bf0e5263f2d8d"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/thm-exp_merge_deficit_eq_sum-web.png",
+      "sha256": "a5163a2d885fb12a2f4b59d8e02249ba5a154d98a6ca2b850a974a996077cac3"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/thm-re_trace_exp_merge_deficit_eq_sum-web.png",
+      "sha256": "d34469505e20ee4336d4863aefcd262511f543dfb80d70c1472dc8b9a2dbb7e5"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/validate-owned.py",
+      "sha256": "2e21e14081abb23be17bb68a8ce629f357c4903c8c83cbfc54c554bded716699"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/verification.json",
+      "sha256": "4b579d34cbef76cf041ba5ac234805e9c5601b76fbda2b6c21df878fd0569f06"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-exit.json",
+      "sha256": "fbdff1bee7a31dc219f5cb92bcdcbcfbd1f6a3ae27389cfed7213ba40b97531e"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-exp_merge_deficit_eq_sum-proof-1280.png",
+      "sha256": "8da6881e0f54feb40377c3e81e44fbfb5c87bf03aacd7d650d13f7656a8b831f"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-exp_merge_deficit_eq_sum-proof-360.png",
+      "sha256": "b0ecceda732d548bdfa27cafa4983703834dc655db3a8b57dfbad0cefbdd00af"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-exp_merge_deficit_eq_sum-statement-1280.png",
+      "sha256": "fa09cee82a683d6dca88090f4066100603d4aed499e328d39034e74b89144bc0"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-exp_merge_deficit_eq_sum-statement-360.png",
+      "sha256": "b9378cab51f82cca2d791832a9dae55e2b7fcf80b18fa883ed94d7259365b511"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-merge_exponential-prelude-1280.png",
+      "sha256": "5b67d779111e11686ff4eab3575a85cf7c57fce2e5459499906036f444fe4a25"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-merge_exponential-prelude-360.png",
+      "sha256": "d1fece1b50efc5de0f6c82428cfec77e8e9bc7ab21bc12dd69bd46eb2975926d"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-merge_exponential-prelude-display-360-right.png",
+      "sha256": "4c977c1a712ca83c454b3021e4b2774670ff9ed4a3a55e9da2ba4b121faf3ea6"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-qa.py",
+      "sha256": "4215846c0eee6e1e898dacfcfa8a315c1e1ad156fe64f05cb26d23c75911c924"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-re_trace_exp_merge_deficit_eq_sum-proof-1280.png",
+      "sha256": "55aac2883f73ee80dd5d194498d70260e784adfc6c3e52ac68a03fec0e788bf3"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-re_trace_exp_merge_deficit_eq_sum-proof-360.png",
+      "sha256": "86537245057aa6ee5746b02402a3dc77dc42c26fae699d5175b4f50a693ded38"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-re_trace_exp_merge_deficit_eq_sum-statement-1280.png",
+      "sha256": "776e8e547ae68465edfce3beed7186cf56058a31b7eab1b0199640d602a38b73"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-re_trace_exp_merge_deficit_eq_sum-statement-360.png",
+      "sha256": "2fc71560441f93cb0323486e701e8aad942d69f680f56ae315de9cd531776a57"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-re_trace_exp_merge_deficit_eq_sum-statement-display-0-360-right.png",
+      "sha256": "9c9af92c73b567d22906dbe3e98da5c4e93767f72313bc0ec8ffbbbc76506ae0"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-reader-exit.json",
+      "sha256": "5993f127e65fac91bb4a4e1768f97a7125721a5d4da2fa395662351bdb7a722e"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-reader.log",
+      "sha256": "6e694eda61bc96214ef9941ea16661a5cccddc89520d443bcccc104b113962d1"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-visual-exit.json",
+      "sha256": "029af588fde6b6a1cb8924a5e28997986e134c1c246ccb48df0d638db8546771"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-visual-inspection.json",
+      "sha256": "9818560967be6cce9c72a9c0a61c113636c2f8968b175186456c4c11ca151bf6"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-visual.log",
+      "sha256": "84deabe5ebccf7f3bb17bd5eaea9f2d1deff450827dec3be2d4f7c627f8cf1ae"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web-visual.py",
+      "sha256": "8c312cc387e18db6a898fa61f15b373012dd5b479d4560745526e7c52c605329"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/web.log",
+      "sha256": "4da1991bc7a77e55cd53412cd61689b841dc73e3e4b6fda0239e690f689c9356"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/whole-web-reader-exit.json",
+      "sha256": "fc7a80078084d0318cadeceb854d6ebb27a2d6990a544be4bf066ef9eeccd29b"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponentialIntegration8750/whole-web-reader.log",
+      "sha256": "eca5b0d6e17e4b1ac8802db754c351043e9535c10d65a39b69281fffcc91a8cc"
+    },
+    {
+      "path": "docs/provenance/openai-math.d/mergeExponential8750.json",
+      "sha256": "8451f38759c6593fef9dfebcc72f0940999838e15ea7e22817f277378d7a8cb8"
+    }
+  ]
+}

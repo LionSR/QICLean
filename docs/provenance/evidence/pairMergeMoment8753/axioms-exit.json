@@ -1,0 +1,32 @@
+{
+  "source_revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+  "mathematical_revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+  "production_sha256": {
+    "QICLean/Representation/PairMergeMoment.lean": "8377a7ac4e5ed15edbfb0e7316095b438ff44f18b10627b23da94f5b6afee0e3",
+    "blueprint/src/fragment/pair_merge_moment.tex": "79b443f15dddc72ab0db66cea4ac50faaf3e28baed0d6c10f5d70f7c85b53c2e",
+    "docs/openai-area-law-pair-merge-moment.md": "02683cdf1d5822147cdca12e2b0159d4f367f1f3fb4534fbbaa85ab8493f1d62",
+    "docs/tactic_patterns.md": "495789840c66407614607842cce346d1a946ffc384ebe65a4ff0b4132527fb7b"
+  },
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/pairMergeMoment8753/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 9.611263084007078,
+  "log": "docs/provenance/evidence/pairMergeMoment8753/axioms.log",
+  "sha256": "9ba49f71b87fd6286fcd4ffa9987c43796fd4fee38d3702ebcd237db52bf4f74",
+  "uncompressed_sha256": "9ba49f71b87fd6286fcd4ffa9987c43796fd4fee38d3702ebcd237db52bf4f74",
+  "uncompressed_bytes": 640,
+  "compressed": false,
+  "deterministic_gzip_mtime": null,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true
+}

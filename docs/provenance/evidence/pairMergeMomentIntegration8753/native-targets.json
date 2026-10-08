@@ -1,0 +1,75 @@
+{
+  "native_list": "docs/provenance/evidence/pairMergeMomentIntegration8753/NativeDeclarations.txt",
+  "native_list_sha256": "1ab5438736f5961ce012fac5eccd0f31cc930df4cb78d8a372f111bf890c2a07",
+  "native_declarations": 3634,
+  "active_fragments": {
+    "blueprint/src/fragment/pair_merge_moment.tex": [
+      "TensorPower.commute_pairCopy",
+      "TensorPower.pairCopyBoth",
+      "TensorPower.pairCopyBoth_eq_mul",
+      "TensorPower.pairCopyLeft",
+      "TensorPower.pairCopyRight",
+      "TensorPower.pair_merge_moment_le",
+      "TensorPower.pair_merge_moment_le_mul_trace"
+    ]
+  },
+  "fragment_declarations": 7,
+  "owned_declarations": [
+    "TensorPower.commute_pairCopy",
+    "TensorPower.pairCopyBoth",
+    "TensorPower.pairCopyBoth_eq_mul",
+    "TensorPower.pairCopyLeft",
+    "TensorPower.pairCopyRight",
+    "TensorPower.pair_merge_moment_le",
+    "TensorPower.pair_merge_moment_le_mul_trace"
+  ],
+  "contains_all_active_fragment_targets": true,
+  "contains_all_seven_owned": true,
+  "missing": [],
+  "link_scope": "content pages; dependency graph repeats excluded",
+  "rendered_doc_links": {
+    "TensorPower.pair_merge_moment_le": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pair_merge_moment_le"
+      }
+    ],
+    "TensorPower.commute_pairCopy": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.commute_pairCopy"
+      }
+    ],
+    "TensorPower.pairCopyBoth": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyBoth"
+      }
+    ],
+    "TensorPower.pairCopyLeft": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyLeft"
+      }
+    ],
+    "TensorPower.pair_merge_moment_le_mul_trace": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pair_merge_moment_le_mul_trace"
+      }
+    ],
+    "TensorPower.pairCopyRight": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyRight"
+      }
+    ],
+    "TensorPower.pairCopyBoth_eq_mul": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyBoth_eq_mul"
+      }
+    ]
+  },
+  "result": "passed"
+}

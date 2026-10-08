@@ -1,0 +1,15 @@
+{
+  "source_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T00:58:44.973845+00:00",
+  "elapsed_seconds": 671.6704205419956,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/full-build.log",
+  "sha256": "39ffd39403d63f4299a6ae50113108a6d92dc5f2de828cdc8d229d187cd3286e"
+}

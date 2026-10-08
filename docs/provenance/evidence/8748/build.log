@@ -1,0 +1,350 @@
+⚠ [2765/2939] Replayed QICLean.Analysis.KernelCompletion
+warning: QICLean/Analysis/KernelCompletion.lean:91:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+⚠ [3265/3511] Replayed QICLean.Entropy.ConditionalMovement.ConditionalCollision
+warning: QICLean/Entropy/ConditionalMovement/ConditionalCollision.lean:67:0: `collision_le` does not use the following hypotheses in its type:
+  • [DecidableEq X] (#7)
+  • [DecidableEq F] (#9)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/ConditionalCollision.lean:129:0: `density_pos` does not use the following hypotheses in its type:
+  • [Fintype X] (#4)
+  • [Fintype P] (#5)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/ConditionalCollision.lean:141:0: `conditional_spectral_mgf` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3267/3511] Replayed QICLean.Entropy.ConditionalMovement.ConditionalPhase
+warning: QICLean/Entropy/ConditionalMovement/ConditionalPhase.lean:107:0: `conditional_spectral_second_moment` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/ConditionalPhase.lean:202:0: `conditional_phase_continuity` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3569/3596] Replayed QICLean.Entropy.ConditionalMovement.LogCompression
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:95:0: `compression_mono` does not use the following hypothesis in its type:
+  • [Fintype n] (#4)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:281:0: `sqrt_posDef` does not use the following hypothesis in its type outside of proofs:
+  • [DecidableEq m] (#3) (used in type, but only in a proof)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:284:0: `sqrt_square` does not use the following hypothesis in its type outside of proofs:
+  • [DecidableEq m] (#3) (used in type, but only in a proof)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:296:0: `eq_of_vec_pairing` does not use the following hypothesis in its type:
+  • [DecidableEq m] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3570/3596] Replayed QICLean.Entropy.ConditionalMovement.PartialTrace
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:55:0: `ptrR_posSemidef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:55:0: `ptrR_posSemidef` does not use the following hypothesis in its type:
+  • [Fintype m] (#3)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:60:0: `ptrR_posDef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:60:0: `ptrR_posDef` does not use the following hypothesis in its type:
+  • [Fintype m] (#3)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:72:2: `simp [tensorLeftHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrR, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:74:2: `exact Finset.sum_congr rfl fun x _ => Finset.sum_comm`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 72!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:78:2: `simp [tensorRightHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrL, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:80:2: `rw [Finset.sum_comm]`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 78!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:78:2: `simp [tensorRightHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrL, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:81:2: `apply Finset.sum_congr rfl`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 78!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:78:2: `simp [tensorRightHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrL, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:82:2: `intro i hi`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 78!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:78:2: `simp [tensorRightHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrL, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:83:2: `exact Finset.sum_comm`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 78!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:192:0: `ptrL_posSemidef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:192:0: `ptrL_posSemidef` does not use the following hypothesis in its type:
+  • [Fintype n] (#4)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:197:0: `ptrL_posDef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:197:0: `ptrL_posDef` does not use the following hypothesis in its type:
+  • [Fintype n] (#4)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+⚠ [3572/3596] Replayed QICLean.Entropy.ConditionalMovement.EntropyBounds
+warning: QICLean/Entropy/ConditionalMovement/EntropyBounds.lean:39:0: `block_posSemidef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/EntropyBounds.lean:39:0: `block_posSemidef` does not use the following hypotheses in its type:
+  • [Fintype m] (#3)
+  • [Fintype n] (#4)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/EntropyBounds.lean:135:0: `trace_mul_mono_right` does not use the following hypothesis in its type:
+  • [DecidableEq n] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3574/3596] Replayed QICLean.Entropy.ConditionalMovement.EntropyContinuity
+warning: QICLean/Entropy/ConditionalMovement/EntropyContinuity.lean:39:0: `posSemidef_zero_of_trace_re_zero` does not use the following hypothesis in its type:
+  • [DecidableEq n] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3575/3596] Replayed QICLean.Entropy.ConditionalMovement.FilterEntropy
+warning: QICLean/Entropy/ConditionalMovement/FilterEntropy.lean:177:0: `one_filter_entropy_bound` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3577/3596] Replayed QICLean.Entropy.ConditionalMovement.Optimizer
+warning: QICLean/Entropy/ConditionalMovement/Optimizer.lean:419:0: `conditional_optimizer_root_stability` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3582/3596] Replayed QICLean.Entropy.ConditionalMovement.FilterSlack
+warning: QICLean/Entropy/ConditionalMovement/FilterSlack.lean:159:0: `conditional_optimizer_deficit` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/FilterSlack.lean:205:0: `coefficient_energy` does not use the following hypothesis in its type:
+  • [DecidableEq X] (#7)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/FilterSlack.lean:219:0: `conditional_modular_distance` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3585/3596] Replayed QICLean.Entropy.ConditionalMovement.Purification
+warning: QICLean/Entropy/ConditionalMovement/Purification.lean:75:0: `opposite_entropy_absorbed` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/Purification.lean:219:0: `one_filter_purification_bound` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3586/3596] Replayed QICLean.Entropy.ConditionalMovement.BoundaryEnergy
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:135:0: `paired_entropy_boundary` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:234:0: `coefficient_kernel` does not use the following hypothesis in its type:
+  • [Fintype Y] (#5)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:265:0: `one_filter_with_marginal_phase` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:337:0: `right_boundary_entropy` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:375:0: `boundary_pair_energy` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3593/3596] Replayed QICLean.Entropy.ConditionalMovement.DoubleCurve
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:56:0: `matrixMul_differentiable` does not use the following hypotheses in its type:
+  • [DecidableEq κ] (#7)
+  • [DecidableEq ζ] (#8)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:56:0: `matrixMul_differentiable` does not use the following hypotheses in its type:
+  • [Fintype ι] (#4)
+  • [Fintype ζ] (#6)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:92:0: `doubleCurve_differentiable` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:112:0: `doubleCurve_bounded` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:201:0: `one_copy_interpolation_fullrank` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3594/3596] Replayed QICLean.Entropy.ConditionalMovement.SingularInterpolation
+warning: QICLean/Entropy/ConditionalMovement/SingularInterpolation.lean:100:0: `one_copy_interpolation` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/SingularInterpolation.lean:157:0: `one_copy_move_schmidt` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3595/3596] Replayed QICLean.Entropy.ConditionalMovement.UnitaryCovariance
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:51:2: `rw [Finset.sum_comm]`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:52:2: `apply Finset.sum_congr rfl`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:53:2: `intro y' hy'`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:54:2: `apply Finset.sum_congr rfl`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:55:2: `intro p' hp'`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:348:0: `one_copy_move_cfc` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [3596/3596] Replayed QICLean.Entropy.ConditionalMovementEstimate
+warning: QICLean/Entropy/ConditionalMovementEstimate.lean:158:0: `movementMarginalXU_posSemidef` does not use the following hypotheses in its type:
+  • [Fintype X] (#5)
+  • [Fintype U] (#6)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovementEstimate.lean:163:0: `movementMarginalXP_posSemidef` does not use the following hypotheses in its type:
+  • [Fintype X] (#5)
+  • [Fintype P] (#7)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+Build completed successfully (3596 jobs).

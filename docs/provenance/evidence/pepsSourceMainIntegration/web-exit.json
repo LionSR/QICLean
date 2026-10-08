@@ -1,0 +1,13 @@
+{
+  "source_revision": "9fabbcb948ef1fb41a573f596495c42a55cb8e7a",
+  "argv": [
+    "texra-blueprint",
+    "web"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "started_utc": "2026-10-07T23:12:04.339722+00:00",
+  "elapsed_seconds": 55.728671042001224,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/pepsSourceMainIntegration/web.log",
+  "sha256": "b914c2da3f9b2067cbc227689bbf08879d512d605eba40dbca4d21161bf572c2"
+}

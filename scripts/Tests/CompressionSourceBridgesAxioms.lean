@@ -1,0 +1,99 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Analysis.ChronologicalGarbage
+import QICLean.Analysis.ChronologicalGarbageError
+import QICLean.Analysis.IsometricDomainExtension
+import QICLean.Analysis.SourceContraction
+import QICLean.Probability.ComplexGaussian.GaussianContraction
+import QICLean.Probability.ComplexGaussian.GlobalBranchLaw
+import QICLean.Probability.ComplexGaussian.SchmidtSource
+
+/-! Audit every public declaration in the source-bridges packet. -/
+
+#print axioms Matrix.sourceContraction
+#print axioms Matrix.sourceContraction_apply
+#print axioms Matrix.sourceContraction_apply_apply
+#print axioms Matrix.sourceContraction_piecewise_add
+#print axioms Matrix.sourceContraction_add
+#print axioms Matrix.sourceContraction_piecewise_sub
+#print axioms Matrix.sourceContraction_sub
+#print axioms Matrix.rectangularTraceNorm_sourceContraction_sub_le
+#print axioms Matrix.garbageInventory
+#print axioms Matrix.garbageInventoryFintype
+#print axioms Matrix.garbageInventoryDecidableEq
+#print axioms Matrix.euclideanTensorVector
+#print axioms Matrix.euclideanTensorVector_apply
+#print axioms Matrix.norm_euclideanTensorVector
+#print axioms Matrix.euclideanOuterProduct_tensorVector
+#print axioms Matrix.trace_euclideanOuterProduct_self
+#print axioms Matrix.partialTraceRight_tensorVector
+#print axioms Matrix.idleGarbageLift
+#print axioms Matrix.appendGarbageGate
+#print axioms Matrix.idleGarbageLift_mulVec
+#print axioms Matrix.idleGarbageLift_append_mulVec
+#print axioms Matrix.idleGarbageLift_eq_kronecker_submatrix
+#print axioms Matrix.norm_idleGarbageLift_le
+#print axioms Matrix.idleGarbageLift_sub
+#print axioms Matrix.norm_idleGarbageLift_sub_le
+#print axioms Matrix.appendGarbageGate_mulVec
+#print axioms Matrix.norm_appendGarbageGate_le
+#print axioms Matrix.kronecker_one_tensorVector
+#print axioms Matrix.norm_kronecker_one_rectangular_le
+#print axioms Matrix.cumulativeGarbageVector
+#print axioms Matrix.chronologicalGarbageChain
+#print axioms Matrix.chronologicalReplacementChain
+#print axioms Matrix.chronologicalReplacementChain_sub_norm_le
+#print axioms Matrix.chronologicalReplacementChain_norm_le_one
+#print axioms Matrix.norm_cumulativeGarbageVector
+#print axioms Matrix.chronologicalGarbageChain_prefix_vector
+#print axioms Matrix.chronologicalGarbageChain_discard_density
+#print axioms Matrix.chronologicalGarbageChain_norm_le_one
+#print axioms Matrix.chronologicalGarbageReadout
+#print axioms Matrix.chronologicalGarbageReadout_eq
+#print axioms Matrix.chronologicalGarbageReadout_discard_density
+#print axioms Matrix.markedChronologicalGarbageChain
+#print axioms Matrix.chronologicalGarbageDensity
+#print axioms Matrix.chronologicalGarbageDensity_ideal
+#print axioms Matrix.chronologicalGarbageDensity_marked_empty
+#print axioms Matrix.chronologicalGarbageDensity_zero
+#print axioms Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le
+#print axioms Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half
+#print axioms Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_empty
+#print axioms QICLean.ComplexGaussian.globalBranchLaw
+#print axioms QICLean.ComplexGaussian.globalBranchLawIsProbabilityMeasure
+#print axioms QICLean.ComplexGaussian.selectedBranchSamples
+#print axioms QICLean.ComplexGaussian.measurePreserving_selectedBranchSamples
+#print axioms QICLean.ComplexGaussian.selectedBranchDensityCoefficient
+#print axioms QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient
+#print axioms QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient_mul_conj
+#print axioms QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_mul_conj
+#print axioms QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_eq_zero
+#print axioms QICLean.ComplexGaussian.integrable_rectangularTraceNorm_selectedBranchSourceError
+#print axioms QICLean.ComplexGaussian.integral_rectangularTraceNorm_selectedBranchSourceError_le
+#print axioms QICLean.ComplexGaussian.exists_schmidtSourceFrames
+#print axioms QICLean.ComplexGaussian.exists_probability_schmidtSourceFrames
+#print axioms QICLean.ComplexGaussian.exists_schmidtSourceReplacement
+#print axioms Matrix.isometricDomainExtension
+#print axioms Matrix.isometricDomainExtension_mul
+#print axioms Matrix.isometricDomainExtension_mul_rangeProjection
+#print axioms Matrix.norm_isometricDomainExtension
+#print axioms Matrix.norm_isometricDomainExtension_le_one
+#print axioms Matrix.norm_toLp_mulVec_of_isometry
+#print axioms Matrix.isometricDomainExtension_sigmaBlockInclusion_mul
+#print axioms Matrix.isometricDomainExtension_sigmaBlockInclusion_mul_of_ne
+#print axioms Matrix.norm_isometricDomainExtension_sigmaBlockInclusion
+#print axioms Matrix.norm_sigmaBlockInclusion_mulVec
+#print axioms Matrix.norm_isometricDomainExtension_sigmaBlockInclusion_kronecker_one
+#print axioms Matrix.norm_sigmaBlockInclusion_kronecker_mulVec
+#print axioms QICLean.ComplexGaussian.gaussianSourceContraction
+#print axioms QICLean.ComplexGaussian.correctedGaussianSourceContraction
+#print axioms QICLean.ComplexGaussian.corrected_source_entry_product
+#print axioms QICLean.ComplexGaussian.correctedGaussianSourceContraction_eq_sum
+#print axioms QICLean.ComplexGaussian.gaussianSourceContraction_sub
+#print axioms QICLean.ComplexGaussian.integrable_correctedGaussianSourceContraction
+#print axioms QICLean.ComplexGaussian.integral_correctedGaussianSourceContraction_eq_zero
+#print axioms QICLean.ComplexGaussian.integrable_gaussianSourceContraction
+#print axioms QICLean.ComplexGaussian.integral_gaussianSourceContraction

@@ -1,0 +1,474 @@
+{
+  "mathematical_source_revision": "7c8099cf9790cc72e1c17bbbde9ac65f4eb24bd1",
+  "leaf_evidence_revision": "1966e51e1f8df9bf72d0f26d0b31fcd34634d1fe",
+  "unique_inclusion_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+  "checked_source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+  "declarations": [
+    "Matrix.replicaGoodPairMarginal_exp_sum_mergeDeficit_le"
+  ],
+  "prerequisites": [
+    {
+      "pull_request": 652,
+      "revision": "b5ba8ae27c0a86858a02e62337cf66a343a9d6ad"
+    },
+    {
+      "pull_request": 654,
+      "revision": "2c3b04b6d031d94b05729b940ed22eae89217081"
+    },
+    {
+      "pull_request": 655,
+      "revision": "038138a077800f1b4b2f82378e423bddd8de9582"
+    },
+    {
+      "pull_request": 656,
+      "revision": "3652227dc5ddcefa91d8b0e4aa45f489f696ee57"
+    }
+  ],
+  "checks": [
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "node",
+        "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+        "--operation-kind",
+        "edit",
+        "--expected-output-count",
+        "1",
+        "--output-format",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:17:26.636577+00:00",
+      "elapsed_seconds": 0.197,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:15:00.637026+00:00",
+      "elapsed_seconds": 26.079,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/axioms-final.log",
+      "sha256": "9d1b97cbfcd3cba8c95f8a344bb44b955685c7854cca09d30dba13a2b7fcb2ea"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/copy-bibliography.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:18:43.104613+00:00",
+      "elapsed_seconds": 0.077,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:12:27.172072+00:00",
+      "elapsed_seconds": 17.985,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/cache-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:13:16.704697+00:00",
+      "elapsed_seconds": 0.067,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/cache-guard.log",
+      "sha256": "7a261f40a8457739d006e91b8e261aca127802d54aa7d6c19f323ec71e0dc9d4"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "leanblueprint",
+        "checkdecls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T02:20:28.754723+00:00",
+      "elapsed_seconds": 90.072,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:17:17.483926+00:00",
+      "elapsed_seconds": 1.237,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/declaration-sync.log",
+      "sha256": "b48a58b65bbbc9bc023eff790f82f6ce4c88ce64925ba85bb96ad57d460f8985"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:13:21.493595+00:00",
+      "elapsed_seconds": 47.744,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/full-build.log",
+      "sha256": "a465e6749a7891d8626e00fbbbcf3c24d39132c15bcd4d79ab8c7b5587a0d28c"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:13:57.090070+00:00",
+      "elapsed_seconds": 0.503,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/imports.log",
+      "sha256": "7da6d9e483963c336782e84b7daa6e535e4d1a90ed8d59627d1e28b574fd6776"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/check-inherited.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:13:57.762549+00:00",
+      "elapsed_seconds": 2.445,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/inherited.log",
+      "sha256": "c57f37e2fae76c8f61a7e53c31e2355d312a8d56bf8bf74a9960214c87b7cc7a"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/check-manifest.py",
+        "--index"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:25:17.210001+00:00",
+      "elapsed_seconds": 0.221,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/manifest-index-preliminary.log",
+      "sha256": "6969d68f2ab9687cb2fdf328680ccbb1d9901bae03d780a31dd619cf3af27203"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/check-native-targets.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:20:28.786070+00:00",
+      "elapsed_seconds": 0.248,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/native-targets.log",
+      "sha256": "9042e976308da15a86f28ecfe895b62ba2ab5c7059a98c48290115a6918c1f7a"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:15:00.637186+00:00",
+      "elapsed_seconds": 0.807,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T02:17:36.034027+00:00",
+      "elapsed_seconds": 48.945,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/pdf.log",
+      "sha256": "4e358391af3cd06901b12813fad3ff132f80a2e5e42f0be3906819ae17d0b952"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "1966e51e"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:15:00.637176+00:00",
+      "elapsed_seconds": 0.125,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:19:33.838254+00:00",
+      "elapsed_seconds": 2.523,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/provenance-final.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/validate-owned.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:19:08.055595+00:00",
+      "elapsed_seconds": 0.359,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/provenance-helper-invocation.log",
+      "sha256": "314e8ed18df588094c08fa7134fd555caab7541468149c59887f31bd28e78b77"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:15:00.637022+00:00",
+      "elapsed_seconds": 1.378,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/tenkz.log",
+      "sha256": "b10dd226fcfb59e9eb52b06bc040d251e35cd38d571c963ece4bf0e5263f2d8d"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:23:42.713463+00:00",
+      "elapsed_seconds": 4.619,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context.log",
+      "sha256": "196b94e3e5fb53e9abd922c4a031f76420e72faea10187945e37ebf462d656bb"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:23:13.951677+00:00",
+      "elapsed_seconds": 5.594,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-context-preliminary.log",
+      "sha256": "196b94e3e5fb53e9abd922c4a031f76420e72faea10187945e37ebf462d656bb"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T02:18:51.989505+00:00",
+      "elapsed_seconds": 163.681,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web.log",
+      "sha256": "de9c269861b6f18645d00f3c300aa7924b011f110c92230f98652c97b8542b25"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-qa.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:22:07.646840+00:00",
+      "elapsed_seconds": 5.264,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-reader.log",
+      "sha256": "dd9a5cbfebdd3b9d9dee892ccef1a3bd2df1dbbb3d520801411c7e3e897ed0c9"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-visual.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:22:07.627014+00:00",
+      "elapsed_seconds": 5.879,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/web-visual.log",
+      "sha256": "524bd5c62b78854c3e15d34bd283683e435eda037674265c6a24d9ab445ff8c8"
+    },
+    {
+      "source_revision": "589ae55806e541367ff6debd6a55cf2a840270d4",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T02:22:07.611538+00:00",
+      "elapsed_seconds": 59.659,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/whole-web-reader.log",
+      "sha256": "74894893b114112fe33fd548dcc0de34b1bd48d7bb460ab37678769a158a70f7"
+    }
+  ],
+  "counts": {
+    "full_library_jobs": 9825,
+    "fresh_exact_kernel_reports": 1,
+    "owned_original_shards": 1,
+    "owned_original_provenance_entries": 1,
+    "parent_evidence_and_mathematical_file_bindings": 3459,
+    "parent_production_source_comparisons": 3285,
+    "preserved_individual_leaf_files": 67,
+    "pdf_pages": 472,
+    "physical_pages_inspected": [
+      459,
+      460
+    ],
+    "printed_pages_inspected": [
+      458,
+      459
+    ],
+    "native_unique_declarations": 3765,
+    "whole_web_pages": 50,
+    "whole_web_typeset_elements": 40984,
+    "mobile_displayed_formulas": 4,
+    "mobile_scrolling_right_endpoints": 2
+  },
+  "all_fresh_kernel_reports_standard_only": true,
+  "no_inherited_semantic_reruns": true,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "mathlib_source_rebuild": false,
+  "integration_failures": [
+    {
+      "record": "provenance-helper-invocation-exit.json",
+      "scope": "Packaging helper invoked without required policy-root argument; raised IndexError before validation. Corrected invocation and log-path helper then real policy validation passed. No frozen source changed."
+    },
+    {
+      "record": "manifest-index-preliminary-exit.json",
+      "scope": "Initial index verification found ignored raw command logs omitted by ordinary Git staging; exact inventory paths explicitly staged afterward. No frozen source changed."
+    }
+  ],
+  "individual_preliminary_failures_retained": "Original packet retains two unfrozen documentation-placement checks; all frozen source-bound checks passed.",
+  "source_scope": "Actual full-QYV common density; both moments derived from original simultaneous symmetry and unit \u03a9; auxiliary arithmetic-mean polynomial estimate, not the printed geometric-mean or inverse-filter theorem.",
+  "exact_preservation_exceptions": {
+    "allowed_source_differences": [
+      {
+        "path": "QICLean/Algebra.lean",
+        "kind": "generated imports",
+        "resolution": "Union of existing imports; no declaration proof text."
+      },
+      {
+        "path": "QICLean/Analysis.lean",
+        "kind": "generated imports",
+        "resolution": "Union of existing imports; no declaration proof text."
+      },
+      {
+        "path": "QICLean/Channel.lean",
+        "kind": "generated imports",
+        "resolution": "Union of existing imports; no declaration proof text."
+      },
+      {
+        "path": "QICLean/Entropy.lean",
+        "kind": "generated imports",
+        "resolution": "Union of existing imports; no declaration proof text."
+      },
+      {
+        "path": "QICLean/Representation.lean",
+        "kind": "generated imports",
+        "resolution": "Union of existing imports; no declaration proof text."
+      },
+      {
+        "path": "QICLean/Entropy/FilterMoment.lean",
+        "kind": "accepted prerequisite advancement",
+        "authoritative_parent": "b5ba8ae27c0a86858a02e62337cf66a343a9d6ad",
+        "resolution": "Exact accepted #652 helper source; all proof text from that parent retained."
+      }
+    ],
+    "shared_documentation_resolutions": [
+      {
+        "path": "blueprint/src/chapter/ch13_schur_labels.tex",
+        "resolution": "Retain the unique weighted-exponential and component-moment inputs once each."
+      },
+      {
+        "path": "docs/tactic_patterns.md",
+        "resolution": "Retain every distinct parent candidate, followed by the new two-consumer covariance candidate."
+      }
+    ],
+    "joins": [
+      "8e8be726",
+      "d004b61c",
+      "2e7a3732",
+      "b8d02f2f"
+    ]
+  },
+  "integration_source_additions": {
+    "authoritative_parent": "1966e51e1f8df9bf72d0f26d0b31fcd34634d1fe",
+    "changed_existing_paths": [
+      "QICLean/Analysis.lean",
+      "blueprint/src/chapter/ch13_schur_labels.tex"
+    ],
+    "resolution": "Exactly one new generated import and exactly one unique fragment input; no changes to any previously frozen mathematical source or exposition."
+  },
+  "preserved_published_branch": {
+    "branch": "feat/area-law-weighted-trace-exponential",
+    "revision": "2c3b04b6d031d94b05729b940ed22eae89217081"
+  },
+  "preexisting_output_preserved": true,
+  "visual_inspection": {
+    "pdf": "pdf-visual-inspection.json",
+    "web": "web-visual-inspection.json"
+  },
+  "pdf_output_sha256": "43d44f6b86a6c6192c210642fbc2e3ac2f8abc11d1fb782462ba19bcc27ecafd"
+}

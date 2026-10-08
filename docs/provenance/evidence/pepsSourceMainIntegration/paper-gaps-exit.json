@@ -1,0 +1,14 @@
+{
+  "source_revision": "9fabbcb948ef1fb41a573f596495c42a55cb8e7a",
+  "argv": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "started_utc": "2026-10-07T23:10:57.731882+00:00",
+  "elapsed_seconds": 0.3537519160017837,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/pepsSourceMainIntegration/paper-gaps.log",
+  "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f"
+}

@@ -1,0 +1,3 @@
+'TensorPower.commute_pairCopy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.pairCopyBoth_eq_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.pair_merge_moment_le' depends on axioms: [propext, Classical.choice, Quot.sound]

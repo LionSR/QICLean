@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "raw_path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/pdf.log",
+      "archive_path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/pdf.log.gz",
+      "raw_bytes": 103964,
+      "archive_bytes": 21017,
+      "raw_sha256": "c753703f946b62680f4a4c1eaed0f4a44db9894155079da985d8b02e55717cf4",
+      "archive_sha256": "9e93c84acad72f2bad318c8a91ef2fdca329aedaa00e5458cea571675560b9b6",
+      "gzip_mtime": 0,
+      "original_raw_retained_locally": true
+    }
+  ]
+}

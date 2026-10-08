@@ -1,0 +1,66 @@
+\section{Exponential expansion of merge deficits}
+\label{sec:merge_exponential}
+
+Let $G$ be a finite group and $X$ a finite coordinate set. Let
+$\phi_Q,\phi_E,\phi_{QE}$ be permutation representations on $X$ satisfying
+\[
+ \phi_Q(g)\phi_E(h)=\phi_E(h)\phi_Q(g),\qquad
+ \phi_{QE}(g)=\phi_Q(g)\phi_E(g)\quad(g,h\in G).
+\]
+Write $P_Q^\lambda,P_E^\mu,P_{QE}^\nu$ for their actual irreducible-label
+projections and $d_\lambda,d_\mu,d_\nu$ for the irreducible dimensions.
+Let $F_Q,F_E,F_{QE}$ be the logarithmic dimension observables and set
+$D=F_Q+F_E-F_{QE}$. These are the merge deficits in
+\cite[Section~7, equations \textup{(comparator:merge-decomposition)} and
+\textup{(comparator:merge-moments)}]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Exact exponential expansion]
+\label{thm:exp_merge_deficit_eq_sum}
+\lean{PermutationRepresentation.exp_mergeDeficit_eq_sum}
+\leanok
+For every $b\in\mathbb R$,
+\[
+ e^{bD}=\sum_{\lambda,\mu,\nu}
+ \left(\frac{d_\lambda d_\mu}{d_\nu}\right)^b
+ P_Q^\lambda P_E^\mu P_{QE}^\nu.
+\]
+This identity includes empty ambient coordinate sets and absent labels.
+\end{theorem}
+\begin{proof}
+\leanok
+The separate label resolutions commute. Centrality of their projections
+also gives commutation with the combined action and its label projections.
+Hence the actual products $P_Q^\lambda P_E^\mu P_{QE}^\nu$ form a joint
+orthogonal resolution. Its three marginals give the three logarithmic
+dimension observables. Thus $D$ has value
+$\log d_\lambda+\log d_\mu-\log d_\nu$ on each joint summand.
+Compute the exponential on each summand. Positivity of all irreducible
+dimensions identifies the coefficient with the stated ratio power.
+\end{proof}
+
+\begin{theorem}[Exact trace expansion]
+\label{thm:re_trace_exp_merge_deficit_eq_sum}
+\lean{PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum}
+\leanok
+For every complex matrix $\rho$ on $X$ and every $b\in\mathbb R$,
+\[
+ \operatorname{Re}\operatorname{Tr}(\rho e^{bD})
+ =\sum_{\lambda,\mu,\nu}
+   \operatorname{Re}\operatorname{Tr}
+      (\rho P_Q^\lambda P_E^\mu P_{QE}^\nu)
+   \left(\frac{d_\lambda d_\mu}{d_\nu}\right)^b.
+\]
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:exp_merge_deficit_eq_sum}
+Insert the preceding expansion and distribute multiplication and trace
+over the finite sums. The coefficients are real, so they factor out of
+the real trace pairing.
+\end{proof}
+
+For a density matrix this identifies the exponential expectation with the
+finite-label expression in
+\cite[Section~5, equation \textup{(replicas:merge-moment)}]{OpenAI2026AreaLaw}.
+The invariance hypotheses and the numerical bound for that expectation
+belong to the subsequent moment estimate.

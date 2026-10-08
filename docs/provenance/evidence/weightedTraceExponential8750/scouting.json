@@ -1,0 +1,7 @@
+{
+  "no_equivalent_found": true,
+  "searched": ["QICLean/Analysis", "QICLean/Algebra", "QICLean exponential declarations", "Mathlib/Analysis/Normed/Algebra", "Mathlib/Analysis/Matrix", "Mathlib/LinearAlgebra/Matrix"],
+  "existing_results_reused": ["Matrix.PosSemidef.trace_mul_nonneg (QICLean/Algebra/MatrixAux.lean)", "Matrix.posSemidef_conjTranspose_mul_self", "Matrix.exp_add_of_commute", "Commute.exp", "IsSelfAdjoint.exp"],
+  "proof": "Apply PSD trace positivity to the Hermitian difference square, then identify the exponential product and squares by actual commutation.",
+  "scope": "Separate arithmetic-mean auxiliary for source07 lines553–555; no claim to the printed geometric-mean inequality or full comparator."
+}

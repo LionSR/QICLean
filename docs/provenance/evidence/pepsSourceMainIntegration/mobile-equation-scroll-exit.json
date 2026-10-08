@@ -1,0 +1,13 @@
+{
+  "source_revision": "9fabbcb948ef1fb41a573f596495c42a55cb8e7a",
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/pepsSourceMainIntegration/inspect-equation-scroll.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "started_utc": "2026-10-07T23:16:07.847114+00:00",
+  "elapsed_seconds": 8.56718029199692,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/pepsSourceMainIntegration/mobile-equation-scroll.log",
+  "sha256": "1a5ecff9ed91f67a832c457bee71614bd9393992b6d6911a1233b397dcecf3e2"
+}

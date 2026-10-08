@@ -1,0 +1,230 @@
+{
+  "source_revision": "90afecd265ca5547b9de350dcd35afc0fe49bbcc",
+  "mathematical_revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+  "actual_successful_command_count": 18,
+  "checks": {
+    "bbl": {
+      "argv": [
+        "texra-blueprint",
+        "bbl"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.33458879200043157,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/bbl.log.gz",
+      "sha256": "2837d07c9c16cf3325881b6950b0b956e4f620473fd306de06dce88fa0c54879",
+      "uncompressed_sha256": "be107a2b66006fc777ba6c71fb7e52b5ad6b98ace09ea388977c36d9c78782d0"
+    },
+    "blueprint-sync": {
+      "argv": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5366521249961806,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/blueprint-sync.log.gz",
+      "sha256": "567332046bc9dc67209dba11d05844ba7feebc11992894a40f240aacb8c03a47",
+      "uncompressed_sha256": "1cdaf44520691707a4cabf060303e53eb60bc06c957a080c9fa64939633cee15"
+    },
+    "cache-guard": {
+      "argv": [
+        "python3",
+        "-c",
+        "import json, pathlib, subprocess; root=pathlib.Path.cwd(); m=json.loads((root/\"lake-manifest.json\").read_text()); pinned=next(p[\"rev\"] for p in m[\"packages\"] if p[\"name\"]==\"mathlib\"); actual=subprocess.check_output([\"git\",\"-C\",\".lake/packages/mathlib\",\"rev-parse\",\"HEAD\"],text=True).strip(); artifact=root/\".lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean\"; assert pinned==actual==\"c55e6e786f49471c72fbddbec5415808896aec1e\"; assert artifact.is_file(); print(json.dumps(dict(named_mathlib_revision=pinned,actual_mathlib_revision=actual,Mathlib_olean_exists=True)))"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.06010495800001081,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/cache-guard.log",
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "uncompressed_sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778"
+    },
+    "focused-web": {
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/pairMergeMomentIntegration8753/inspect-web.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 3.4780198340013158,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/focused-web.log",
+      "sha256": "d3c26ffe904e981c46e518b55a1fc92689ac8292888b82ae9704296ea17ec2a5",
+      "uncompressed_sha256": "d3c26ffe904e981c46e518b55a1fc92689ac8292888b82ae9704296ea17ec2a5"
+    },
+    "full-build": {
+      "argv": [
+        "lake",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 51.23958116599533,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/full-build.log.gz",
+      "sha256": "e258e60e81f6045008a13b2f4aff776480a44da029982e85f02d691ebe73609c",
+      "uncompressed_sha256": "db94c51f69984414740ff9301dd5a8618260439b9a7e7b09300b4aa9594a26a2"
+    },
+    "imports": {
+      "argv": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.7829032089939574,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/imports.log",
+      "sha256": "1bac29848581061aac9a7fb95b5460ac265dcc00fb1bfbbfe5bcfa9612ae8cd9",
+      "uncompressed_sha256": "1bac29848581061aac9a7fb95b5460ac265dcc00fb1bfbbfe5bcfa9612ae8cd9"
+    },
+    "inspect-pdf": {
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/pairMergeMomentIntegration8753/inspect-pdf.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.0124210830108495,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/inspect-pdf.log",
+      "sha256": "23080c034e13f967a83357ab656ff5cd618e12e96d1c767e8876f79b0993da1d",
+      "uncompressed_sha256": "23080c034e13f967a83357ab656ff5cd618e12e96d1c767e8876f79b0993da1d"
+    },
+    "mobile-equations": {
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/pairMergeMomentIntegration8753/inspect-mobile-equations.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.2228103750094306,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/mobile-equations.log",
+      "sha256": "c3873af57de046d4ad931407b85b9449dc583e40080bfe568a42a99dd3948da2",
+      "uncompressed_sha256": "c3873af57de046d4ad931407b85b9449dc583e40080bfe568a42a99dd3948da2"
+    },
+    "native-checkdecls": {
+      "argv": [
+        "lake",
+        "env",
+        ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 35.488182999994024,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/native-checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-targets": {
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/pairMergeMomentIntegration8753/check-native-targets.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.6379288750031264,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/native-targets.log",
+      "sha256": "5f86153d4fbf3c627de061cd89e955d631daf9316051161e93fd2846b1d8f976",
+      "uncompressed_sha256": "5f86153d4fbf3c627de061cd89e955d631daf9316051161e93fd2846b1d8f976"
+    },
+    "pdf": {
+      "argv": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 28.126717292005196,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/pdf.log.gz",
+      "sha256": "a68cb4574f280a45e58723fca6208f9db640749e67444bda1ff7278eba0f59bc",
+      "uncompressed_sha256": "fdf3274eea00a605a27bef0feb0fc33ec00cd48c294bd1526765850981630eb5"
+    },
+    "pdf-heading": {
+      "argv": [
+        "pdftoppm",
+        "-f",
+        "434",
+        "-l",
+        "434",
+        "-scale-to",
+        "1800",
+        "-png",
+        "-singlefile",
+        "blueprint/print/print.pdf",
+        "docs/provenance/evidence/pairMergeMomentIntegration8753/render/pair-merge-moment-page-434"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.40657587500754744,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/pdf-heading.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "preservation-validation": {
+      "argv": [
+        "python3",
+        "-c",
+        "import json, hashlib, pathlib, subprocess; p=pathlib.Path(\"docs/provenance/evidence/pairMergeMoment8753\"); b=json.loads((p/\"parent-before.json\").read_text()); allowed={\"QICLean/Representation.lean\",\"blueprint/src/chapter/ch13_schur_labels.tex\",\"docs/tactic_patterns.md\"}; changed={n for n,h in b[\"files_sha256\"].items() if hashlib.sha256(pathlib.Path(n).read_bytes()).hexdigest()!=h}; assert changed==allowed; m=json.loads((p/\"manifest.json\").read_text()); assert all(hashlib.sha256(pathlib.Path(n).read_bytes()).hexdigest()==h for n,h in m[\"artifacts_sha256\"].items()); print(\"Inherited1806 paths preserved except exact import/input/ledger append; all35 leaf artifacts unchanged.\")"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5923789170046803,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/preservation-validation.log",
+      "sha256": "703394fe1315f47eec7ca7b56d0ec5740badcfc5146098f6bed2ece61abf2b2c",
+      "uncompressed_sha256": "703394fe1315f47eec7ca7b56d0ec5740badcfc5146098f6bed2ece61abf2b2c"
+    },
+    "prose": {
+      "argv": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/TNLean/scripts/check_reader_facing_prose.py",
+        "--root",
+        ".",
+        "--diff-base",
+        "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.18281100000604056,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "uncompressed_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    "registry": {
+      "argv": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.8139570409985026,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/registry.log",
+      "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f",
+      "uncompressed_sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f"
+    },
+    "validation": {
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/pairMergeMomentIntegration8753/validate-manifest.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.4588539999967907,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/validation.log",
+      "sha256": "d2d4a1be88fd37478f8b738e7f98f688e3725fbd04699ea9dea2ab087f751f35",
+      "uncompressed_sha256": "d2d4a1be88fd37478f8b738e7f98f688e3725fbd04699ea9dea2ab087f751f35"
+    },
+    "web": {
+      "argv": [
+        "texra-blueprint",
+        "web"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 54.91936812498898,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/web.log.gz",
+      "sha256": "9cf82f423fc42d7b560e89844e8a41e1464256d06ee4111f0af7d35e8388210d",
+      "uncompressed_sha256": "d4feef43aac1c8426febfc9bcad0a8531e1adf553c85b144f208a2e72819e61a"
+    },
+    "whole-web": {
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 52.49030958399817,
+      "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/whole-web.log",
+      "sha256": "5fe603e623b4e5b7973466f78789104b1f276a0a766f83e8167ee7d3b2d2409c",
+      "uncompressed_sha256": "5fe603e623b4e5b7973466f78789104b1f276a0a766f83e8167ee7d3b2d2409c"
+    }
+  },
+  "result": "passed"
+}

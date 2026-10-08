@@ -1,0 +1,103 @@
+\section{Merge moments on paired copy spaces}
+\label{sec:pair_merge_moment}
+
+Let $Q$ and $C$ be finite orthonormal bases and $m\ge0$. The separate
+copy strings give the basis $Q^m\times C^m$ of
+$\mathcal H_m=\ell^2(Q)^{\otimes m}\otimes\ell^2(C)^{\otimes m}$.
+Write $q=|Q|\,|C|$. The merge-moment estimate in
+\cite[Lemma~6.1(3)]{OpenAI2026AreaLaw} applies directly in these coordinates.
+Its homogeneous form retains the actual mass of a positive component,
+as needed in the merge-moment argument of Section~7 of that source.
+The construction of the physical components and the exponential deficit
+interpretation require additional arguments.
+
+\begin{definition}[The separate and simultaneous copy actions]
+\label{def:pair_copy_actions}
+\lean{TensorPower.pairCopyLeft, TensorPower.pairCopyRight,
+  TensorPower.pairCopyBoth, TensorPower.commute_pairCopy,
+  TensorPower.pairCopyBoth_eq_mul}
+\leanok
+For $\sigma\in S_m$ and $(x,c)\in Q^m\times C^m$, put
+\begin{align}
+ u_Q(\sigma)(x,c)&=(x\circ\sigma^{-1},c), &
+ u_C(\sigma)(x,c)&=(x,c\circ\sigma^{-1}),\notag\\
+ u_{QC}(\sigma)(x,c)&=(x\circ\sigma^{-1},c\circ\sigma^{-1}).
+ \label{eq:pair_copy_actions}
+\end{align}
+Let $U_Q,U_C,U_{QC}$ be their permutation operators. The separate actions
+commute, and $u_{QC}(\sigma)=u_Q(\sigma)u_C(\sigma)$.
+Let $\Pi^Q_\lambda,\Pi^C_\mu,\Pi^{QC}_\nu$ be the corresponding central
+Schur projectors, with irreducible dimensions $d_\lambda,d_\mu,d_\nu$.
+\end{definition}
+\begin{proof}
+\leanok
+The two separate actions change different coordinates of $(x,c)$.
+Applying both with the same permutation gives the simultaneous action.
+\end{proof}
+
+\begin{theorem}[The normalized paired merge moment]
+\label{thm:pair_merge_moment}
+\lean{TensorPower.pair_merge_moment_le}
+\leanok
+\uses{def:pair_copy_actions,thm:schur_label_merge_moment}
+Suppose $\rho\ge0$, $\Tr\rho=1$, and $\rho$ commutes with
+$U_Q(\sigma)$ and $U_C(\sigma)$ for every $\sigma\in S_m$.
+For every real $b\le1$,
+\begin{align}
+ \sum_{\lambda,\mu,\nu}
+  \Re\Tr\!\left(\rho\Pi^Q_\lambda\Pi^C_\mu\Pi^{QC}_\nu\right)
+  \left(\frac{d_\lambda d_\mu}{d_\nu}\right)^b
+  &\le(m+1)^{q^2}.
+ \label{eq:pair_merge_moment}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:schur_label_merge_moment}
+Identify a configuration with its two copy strings:
+\[
+ ((x_j,c_j))_{j=0}^{m-1}
+   \longmapsto ((x_j)_{j=0}^{m-1},(c_j)_{j=0}^{m-1}).
+\]
+This bijection transports the density and all three copy actions. It
+therefore transports their central projectors and preserves every trace
+in \eqref{eq:pair_merge_moment}. The separate invariances are unchanged,
+and the one-copy dimension is exactly $q$. The proof of
+Theorem~\ref{thm:schur_label_merge_moment} uses
+$d_\lambda d_\mu/d_\nu\ge1$ on every nonzero joint block. Consequently,
+its bound applies for every $b\le1$, including negative $b$.
+\end{proof}
+
+\begin{theorem}[The paired merge moment with its actual trace mass]
+\label{thm:pair_merge_moment_mass}
+\lean{TensorPower.pair_merge_moment_le_mul_trace}
+\leanok
+\uses{def:pair_copy_actions,thm:pair_merge_moment}
+Suppose $\rho\ge0$ and $\rho$ commutes with both separate copy actions.
+No normalization or positive-mass condition is imposed. For every real
+$b\le1$,
+\begin{align}
+ \sum_{\lambda,\mu,\nu}
+  \Re\Tr\!\left(\rho\Pi^Q_\lambda\Pi^C_\mu\Pi^{QC}_\nu\right)
+  \left(\frac{d_\lambda d_\mu}{d_\nu}\right)^b
+  &\le(m+1)^{q^2}\Re\Tr\rho.
+ \label{eq:pair_merge_moment_mass}
+\end{align}
+The statement includes $m=0$, empty bases and zero-trace components.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:pair_merge_moment}
+Set $r=\Re\Tr\rho\ge0$. If the basis is empty then $\rho=0$.
+Otherwise choose the total normalization
+\[
+ \eta=\begin{cases}
+   \rho/r,&r>0,\\
+   I/\dim\mathcal H_m,&r=0.
+ \end{cases}
+\]
+It is positive, has trace one and retains both separate invariances.
+Positivity implies $\rho=0$ when $r=0$, so $r\eta=\rho$ in both cases.
+Apply \eqref{eq:pair_merge_moment} to $\eta$ and multiply by $r$.
+Trace linearity gives \eqref{eq:pair_merge_moment_mass}.
+\end{proof}

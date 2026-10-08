@@ -1,0 +1,157 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Analysis.RectangularTraceNorm
+import QICLean.Analysis.WeightedRectangular
+import QICLean.Channel.RectangularTraceNormContraction
+import QICLean.Probability.ComplexGaussian.Basic
+import QICLean.Probability.ComplexGaussian.Covariance
+import QICLean.Probability.ComplexGaussian.IndependentSlots
+import QICLean.Probability.CompressionSampling
+import QICLean.Probability.IndependentCovariance
+import QICLean.Probability.MatrixSecondMoment
+
+/-! Kernel dependency reports for every named public declaration in the first
+compression-foundations packet. No project-specific axioms are permitted. -/
+
+#print axioms CompressionSampling.binomial_error_le_exp
+#print axioms CompressionSampling.binomial_error_le_quarter
+#print axioms CompressionSampling.error_le_quarter_of_sample_count
+#print axioms CompressionSampling.error_le_quarter_sampleCount
+#print axioms CompressionSampling.exists_error_le_half_sampleCount
+#print axioms CompressionSampling.exists_valid_error_le_half_sampleCount
+#print axioms CompressionSampling.exists_valid_norm_sum_le_half_sampleCount
+#print axioms CompressionSampling.exp_eighth_sub_one_le_quarter
+#print axioms CompressionSampling.integral_error_le_binomial
+#print axioms CompressionSampling.integral_norm_sum_le_binomial
+#print axioms CompressionSampling.integral_norm_sum_le_sampling_error
+#print axioms CompressionSampling.inverse_half_power
+#print axioms CompressionSampling.ratio_le_of_sample_count
+#print axioms CompressionSampling.sampleCount
+#print axioms CompressionSampling.sampleCount_bounds
+#print axioms CompressionSampling.sum_nonempty_subsets_pow
+#print axioms CompressionSampling.sum_nonempty_subsets_rpow
+#print axioms CompressionSampling.sum_nonempty_subsets_weight
+#print axioms CompressionSampling.zero_slots_error
+#print axioms IndependentCovariance.integrable_product_mul_conj
+#print axioms IndependentCovariance.integrable_tensorCoefficient_mul_conj
+#print axioms IndependentCovariance.integral_product_mul_conj
+#print axioms IndependentCovariance.product_weighted_sqrt
+#print axioms IndependentCovariance.sum_product_weights_eq_one
+#print axioms IndependentCovariance.tensorCoefficient
+#print axioms IndependentCovariance.tensor_covariance_of_diagonal
+#print axioms IndependentCovariance.tensor_covariance_weighted
+#print axioms Matrix.PosSemidef.rpow_quarter_spectral
+#print axioms Matrix.conjTranspose_mul_apply_self_eq_inner_rectangular
+#print axioms Matrix.exists_contraction_trace_conjTranspose_mul_eq
+#print axioms Matrix.frobeniusNormSq_mul_unitary
+#print axioms Matrix.frobeniusNormSq_quarterWeighted
+#print axioms Matrix.frobeniusNormSq_quarterWeighted_le_one
+#print axioms Matrix.frobeniusNormSq_quarterWeighted_transpose
+#print axioms Matrix.frobeniusNormSq_rpow_quarter_mul_le_one
+#print axioms Matrix.frobeniusNormSq_unitary_mul
+#print axioms Matrix.halfWeighted
+#print axioms Matrix.halfWeighted_eq_quarter_sandwich
+#print axioms Matrix.l2_opNorm_kronecker_one_square_le
+#print axioms Matrix.l2_opNorm_mul_le_one
+#print axioms Matrix.l2_opNorm_unitary_le_one
+#print axioms Matrix.norm_column_eq_sqrt_gram
+#print axioms Matrix.norm_trace_conjTranspose_mul_le_rectangularTraceNorm
+#print axioms Matrix.norm_trace_conjTranspose_mul_rectangular_le
+#print axioms Matrix.norm_trace_conjTranspose_mul_sq_le_frobeniusNormSq
+#print axioms Matrix.probabilityQuarter
+#print axioms Matrix.probabilityQuarter_conjTranspose
+#print axioms Matrix.probabilityQuarter_mul_self
+#print axioms Matrix.quarterWeighted
+#print axioms Matrix.quarterWeighted_apply
+#print axioms Matrix.quarterWeighted_transpose
+#print axioms Matrix.rectangularTraceNorm
+#print axioms Matrix.rectangularTraceNorm_eq_sum_fin
+#print axioms Matrix.rectangularTraceNorm_eq_sum_sqrt_eigenvalues
+#print axioms Matrix.rectangularTraceNorm_halfWeighted_le
+#print axioms Matrix.rectangularTraceNorm_le_of_forall_contraction
+#print axioms Matrix.rectangularTraceNorm_mul_conjTranspose_le
+#print axioms Matrix.rectangularTraceNorm_nonneg
+#print axioms Matrix.rectangularTraceNorm_partialTraceRight_le
+#print axioms Matrix.rectangularTraceNorm_partialTraceRight_mul_conjTranspose_le
+#print axioms Matrix.rectangularTraceNorm_square
+#print axioms Matrix.sqrt_frobeniusNormSq_quarterWeighted_le_one
+#print axioms Matrix.sum_norm_sq_column_le_one
+#print axioms Matrix.sum_norm_sq_row_le_one
+#print axioms Matrix.sum_sqrt_probability_mul_le_one
+#print axioms Matrix.trace_halfWeighted_conjTranspose_mul
+#print axioms Matrix.trace_partialTraceRight_conjTranspose_mul
+#print axioms ProbabilityTheory.integrable_frobenius_norm_sq_sum
+#print axioms ProbabilityTheory.integrable_normSq_sum
+#print axioms ProbabilityTheory.integral_frobenius_norm_sq_sum_eq_sum
+#print axioms ProbabilityTheory.integral_frobenius_norm_sum_le_sqrt
+#print axioms ProbabilityTheory.integral_normSq_sum_eq_sum
+#print axioms QICLean.ComplexGaussian.DensityIndex
+#print axioms QICLean.ComplexGaussian.Sample
+#print axioms QICLean.ComplexGaussian.centered
+#print axioms QICLean.ComplexGaussian.coefficientWeight
+#print axioms QICLean.ComplexGaussian.coefficientWeight_eq_product_quarter
+#print axioms QICLean.ComplexGaussian.conj_coordinate
+#print axioms QICLean.ComplexGaussian.conj_delta
+#print axioms QICLean.ComplexGaussian.coordinate
+#print axioms QICLean.ComplexGaussian.coordinateCoefficients
+#print axioms QICLean.ComplexGaussian.coordinateVectors
+#print axioms QICLean.ComplexGaussian.coordinate_apply
+#print axioms QICLean.ComplexGaussian.delta
+#print axioms QICLean.ComplexGaussian.delta_comm
+#print axioms QICLean.ComplexGaussian.densityCoefficient
+#print axioms QICLean.ComplexGaussian.independentDensityCoefficient
+#print axioms QICLean.ComplexGaussian.independentDensityLaw
+#print axioms QICLean.ComplexGaussian.independentDensityLawIsProbabilityMeasure
+#print axioms QICLean.ComplexGaussian.integrable_centered
+#print axioms QICLean.ComplexGaussian.integrable_centered_mul_conj
+#print axioms QICLean.ComplexGaussian.integrable_coordinate_four
+#print axioms QICLean.ComplexGaussian.integrable_densityCoefficient_mul_conj
+#print axioms QICLean.ComplexGaussian.integrable_independentDensityCoefficient
+#print axioms QICLean.ComplexGaussian.integrable_independentDensityCoefficient_mul_conj
+#print axioms QICLean.ComplexGaussian.integrable_realField_four
+#print axioms QICLean.ComplexGaussian.integrable_realField_pow
+#print axioms QICLean.ComplexGaussian.integrable_sampleAverage_mul_conj
+#print axioms QICLean.ComplexGaussian.integral_centered
+#print axioms QICLean.ComplexGaussian.integral_centered_mul_conj
+#print axioms QICLean.ComplexGaussian.integral_coordinate_four_eq_pairings
+#print axioms QICLean.ComplexGaussian.integral_coordinate_mul
+#print axioms QICLean.ComplexGaussian.integral_coordinate_mul_conj
+#print axioms QICLean.ComplexGaussian.integral_coordinate_norm_four
+#print axioms QICLean.ComplexGaussian.integral_coordinate_norm_sq
+#print axioms QICLean.ComplexGaussian.integral_densityCoefficient
+#print axioms QICLean.ComplexGaussian.integral_densityCoefficient_mul_conj
+#print axioms QICLean.ComplexGaussian.integral_independentDensityCoefficient_eq_zero
+#print axioms QICLean.ComplexGaussian.integral_independentDensityCoefficient_mul_conj
+#print axioms QICLean.ComplexGaussian.integral_linearField_four
+#print axioms QICLean.ComplexGaussian.integral_linearField_mul
+#print axioms QICLean.ComplexGaussian.integral_realField_four_eq_pairings
+#print axioms QICLean.ComplexGaussian.integral_realField_fourth
+#print axioms QICLean.ComplexGaussian.integral_realField_mul
+#print axioms QICLean.ComplexGaussian.integral_sampleAverage
+#print axioms QICLean.ComplexGaussian.integral_sampleAverage_mul_conj
+#print axioms QICLean.ComplexGaussian.integral_standard_real_fourth
+#print axioms QICLean.ComplexGaussian.law
+#print axioms QICLean.ComplexGaussian.linearField
+#print axioms QICLean.ComplexGaussian.memLp_centered
+#print axioms QICLean.ComplexGaussian.memLp_conj_centered
+#print axioms QICLean.ComplexGaussian.memLp_conj_coordinate
+#print axioms QICLean.ComplexGaussian.memLp_coordinate
+#print axioms QICLean.ComplexGaussian.memLp_coordinate_mul_conj
+#print axioms QICLean.ComplexGaussian.memLp_densityCoefficient
+#print axioms QICLean.ComplexGaussian.memLp_linearField
+#print axioms QICLean.ComplexGaussian.memLp_linearField_mul
+#print axioms QICLean.ComplexGaussian.memLp_realField
+#print axioms QICLean.ComplexGaussian.memLp_realField_mul
+#print axioms QICLean.ComplexGaussian.memLp_sampleAverage
+#print axioms QICLean.ComplexGaussian.norm_four_eq_inner_self_sq
+#print axioms QICLean.ComplexGaussian.pairedProductProbability
+#print axioms QICLean.ComplexGaussian.pairedProductProbability_nonneg
+#print axioms QICLean.ComplexGaussian.pairing
+#print axioms QICLean.ComplexGaussian.realField
+#print axioms QICLean.ComplexGaussian.realField_law
+#print axioms QICLean.ComplexGaussian.real_fourth_polarization
+#print axioms QICLean.ComplexGaussian.sampleAverage
+#print axioms QICLean.ComplexGaussian.sum_pairedProductProbability_eq_one

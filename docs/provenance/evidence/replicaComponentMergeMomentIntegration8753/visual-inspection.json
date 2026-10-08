@@ -1,0 +1,18 @@
+{
+  "reviewer": "root mathematician agent",
+  "book_revision": "3587609fbbd2c903dc4c862a2d1e48a328fa2edd",
+  "pdf_physical_pages_inspected": [
+    457
+  ],
+  "web_images_inspected": [
+    "web-prelude-360.png",
+    "web-statement-360.png",
+    "web-proof-360.png"
+  ],
+  "result": "passed",
+  "findings": [
+    "The actual component definition, hypotheses, exponential moment and proof are fully visible on the PDF page.",
+    "The mobile statement fits the viewport, and the complete proof is visible in its dedicated image.",
+    "The formula uses the same selected component norm on the right and includes the exponent range b <= 1."
+  ]
+}

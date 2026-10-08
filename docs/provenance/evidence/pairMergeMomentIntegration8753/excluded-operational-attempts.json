@@ -1,0 +1,23 @@
+{
+  "excluded_from_mathematical_provenance": true,
+  "attempts": [
+    {
+      "operation": "Draft parent-preservation metadata helper",
+      "exit_code": 1,
+      "diagnostic": "KeyError: 'source_revision'",
+      "resolution": "Use the actual baseline key revision. No production file changed."
+    },
+    {
+      "operation": "Initial staged whitespace check of raw evidence",
+      "exit_code": 2,
+      "diagnostic": "tactic-patterns.log:9: new blank line at EOF.",
+      "resolution": "Preserve the raw bytes in deterministic gzip and record both hashes; staged whitespace check then passed."
+    },
+    {
+      "operation": "Default Python web-test help probe",
+      "exit_code": 1,
+      "diagnostic": "ModuleNotFoundError: No module named 'playwright'",
+      "resolution": "Use the existing Miniforge Python with Playwright. No package installation or source change."
+    }
+  ]
+}

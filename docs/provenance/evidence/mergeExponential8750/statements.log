@@ -1,0 +1,364 @@
+theorem PermutationRepresentation.exp_mergeDeficit_eq_sum.{u_1, u_2} : ∀ {G : Type u_1} {X : Type u_2} [inst : Group G]
+  [inst_1 : Fintype G] [inst_2 : Fintype X] [inst_3 : DecidableEq X] {φQ φE φQE : G →* Equiv.Perm X},
+  (∀ (g h : G), Commute (φQ g) (φE h)) →
+    (∀ (g : G), φQE g = φQ g * φE g) →
+      ∀ (b : ℝ),
+        NormedSpace.exp
+            (↑b •
+              (PermutationRepresentation.labelEntropy φQ + PermutationRepresentation.labelEntropy φE -
+                PermutationRepresentation.labelEntropy φQE)) =
+          ∑ l,
+            ∑ μ,
+              ∑ ν,
+                ↑((↑(l.dim * μ.dim) / ↑ν.dim) ^ b) •
+                  (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                    PermutationRepresentation.labelProj φQE ν) :=
+fun {G} {X} [Group G] [Fintype G] [Fintype X] [DecidableEq X] {φQ φE φQE} hcomm hprod b =>
+  let R := PermutationRepresentation.mergeResolution✝ hcomm hprod;
+  have hD :=
+    Eq.mpr
+      (id
+        (congrArg
+          (fun _a =>
+            ↑b • (_a + PermutationRepresentation.labelEntropy φE - PermutationRepresentation.labelEntropy φQE) =
+              R.hom fun p => ↑b * (↑(Real.log ↑p.1.1.dim) + ↑(Real.log ↑p.1.2.dim) - ↑(Real.log ↑p.2.dim)))
+          (Eq.symm (PermutationRepresentation.mergeResolution_hom_left✝ hcomm hprod))))
+      (Eq.mpr
+        (id
+          (congrArg
+            (fun _a =>
+              ↑b •
+                  (((PermutationRepresentation.mergeResolution✝ hcomm hprod).hom fun p => ↑(Real.log ↑p.1.1.dim)) + _a -
+                    PermutationRepresentation.labelEntropy φQE) =
+                R.hom fun p => ↑b * (↑(Real.log ↑p.1.1.dim) + ↑(Real.log ↑p.1.2.dim) - ↑(Real.log ↑p.2.dim)))
+            (Eq.symm (PermutationRepresentation.mergeResolution_hom_middle✝ hcomm hprod))))
+        (Eq.mpr
+          (id
+            (congrArg
+              (fun _a =>
+                ↑b •
+                    ((((PermutationRepresentation.mergeResolution✝ hcomm hprod).hom fun p => ↑(Real.log ↑p.1.1.dim)) +
+                        (PermutationRepresentation.mergeResolution✝ hcomm hprod).hom fun p => ↑(Real.log ↑p.1.2.dim)) -
+                      _a) =
+                  R.hom fun p => ↑b * (↑(Real.log ↑p.1.1.dim) + ↑(Real.log ↑p.1.2.dim) - ↑(Real.log ↑p.2.dim)))
+              (Eq.symm (PermutationRepresentation.mergeResolution_hom_right✝ hcomm hprod))))
+          (Eq.mpr
+            (id
+              (congrArg
+                (fun _a =>
+                  ↑b •
+                      (_a -
+                        (PermutationRepresentation.mergeResolution✝ hcomm hprod).hom fun p => ↑(Real.log ↑p.2.dim)) =
+                    R.hom fun p => ↑b * (↑(Real.log ↑p.1.1.dim) + ↑(Real.log ↑p.1.2.dim) - ↑(Real.log ↑p.2.dim)))
+                (Eq.symm
+                  (map_add (PermutationRepresentation.mergeResolution✝ hcomm hprod).hom
+                    (fun p => ↑(Real.log ↑p.1.1.dim)) fun p => ↑(Real.log ↑p.1.2.dim)))))
+            (Eq.mpr
+              (id
+                (congrArg
+                  (fun _a =>
+                    ↑b • _a =
+                      R.hom fun p => ↑b * (↑(Real.log ↑p.1.1.dim) + ↑(Real.log ↑p.1.2.dim) - ↑(Real.log ↑p.2.dim)))
+                  (Eq.symm
+                    (map_sub (PermutationRepresentation.mergeResolution✝ hcomm hprod).hom
+                      ((fun p => ↑(Real.log ↑p.1.1.dim)) + fun p => ↑(Real.log ↑p.1.2.dim)) fun p =>
+                      ↑(Real.log ↑p.2.dim)))))
+              (Eq.mpr
+                (id
+                  (congrArg
+                    (fun _a =>
+                      _a = R.hom fun p => ↑b * (↑(Real.log ↑p.1.1.dim) + ↑(Real.log ↑p.1.2.dim) - ↑(Real.log ↑p.2.dim)))
+                    (Eq.symm
+                      (map_smul (PermutationRepresentation.mergeResolution✝ hcomm hprod).hom (↑b)
+                        (((fun p => ↑(Real.log ↑p.1.1.dim)) + fun p => ↑(Real.log ↑p.1.2.dim)) - fun p =>
+                          ↑(Real.log ↑p.2.dim))))))
+                ((fun {F} {α} {β} [DFunLike F α β] a a_1 e_a =>
+                    Eq.rec (motive := fun a_2 e_a => ∀ (a_3 : α), a a_3 = a_2 a_3) (fun a_2 => Eq.refl (a a_2)) e_a)
+                  (PermutationRepresentation.mergeResolution✝ hcomm hprod).hom R.hom
+                  (Eq.refl (PermutationRepresentation.mergeResolution✝ hcomm hprod).hom)
+                  (↑b •
+                    (((fun p => ↑(Real.log ↑p.1.1.dim)) + fun p => ↑(Real.log ↑p.1.2.dim)) - fun p =>
+                      ↑(Real.log ↑p.2.dim)))))))));
+  Eq.mpr
+    (id
+      (congrArg
+        (fun _a =>
+          NormedSpace.exp _a =
+            ∑ l,
+              ∑ μ,
+                ∑ ν,
+                  ↑((↑(l.dim * μ.dim) / ↑ν.dim) ^ b) •
+                    (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                      PermutationRepresentation.labelProj φQE ν))
+        hD))
+    (Eq.mpr
+      (id
+        (congrArg
+          (fun _a =>
+            _a =
+              ∑ l,
+                ∑ μ,
+                  ∑ ν,
+                    ↑((↑(l.dim * μ.dim) / ↑ν.dim) ^ b) •
+                      (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                        PermutationRepresentation.labelProj φQE ν))
+          (Matrix.IsOrthogonalResolution.exp_hom R fun p =>
+            ↑b * (↑(Real.log ↑p.1.1.dim) + ↑(Real.log ↑p.1.2.dim) - ↑(Real.log ↑p.2.dim)))))
+      (Eq.mpr
+        (id
+          (congrArg
+            (fun _a =>
+              _a =
+                ∑ l,
+                  ∑ μ,
+                    ∑ ν,
+                      ↑((↑(l.dim * μ.dim) / ↑ν.dim) ^ b) •
+                        (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                          PermutationRepresentation.labelProj φQE ν))
+            (Matrix.IsOrthogonalResolution.hom_apply R fun i =>
+              Complex.exp (↑b * (↑(Real.log ↑i.1.1.dim) + ↑(Real.log ↑i.1.2.dim) - ↑(Real.log ↑i.2.dim))))))
+        (Eq.mpr
+          (id
+            (congrArg
+              (fun _a =>
+                _a =
+                  ∑ l,
+                    ∑ μ,
+                      ∑ ν,
+                        ↑((↑(l.dim * μ.dim) / ↑ν.dim) ^ b) •
+                          (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                            PermutationRepresentation.labelProj φQE ν))
+              (Fintype.sum_prod_type fun i =>
+                Complex.exp (↑b * (↑(Real.log ↑i.1.1.dim) + ↑(Real.log ↑i.1.2.dim) - ↑(Real.log ↑i.2.dim))) •
+                  (PermutationRepresentation.labelProj φQ i.1.1 * PermutationRepresentation.labelProj φE i.1.2 *
+                    PermutationRepresentation.labelProj φQE i.2))))
+          (Eq.mpr
+            (id
+              (congrArg
+                (fun _a =>
+                  _a =
+                    ∑ l,
+                      ∑ μ,
+                        ∑ ν,
+                          ↑((↑(l.dim * μ.dim) / ↑ν.dim) ^ b) •
+                            (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                              PermutationRepresentation.labelProj φQE ν))
+                (Fintype.sum_prod_type fun x =>
+                  ∑ y,
+                    Complex.exp
+                        (↑b * (↑(Real.log ↑(x, y).1.1.dim) + ↑(Real.log ↑(x, y).1.2.dim) - ↑(Real.log ↑(x, y).2.dim))) •
+                      (PermutationRepresentation.labelProj φQ (x, y).1.1 *
+                          PermutationRepresentation.labelProj φE (x, y).1.2 *
+                        PermutationRepresentation.labelProj φQE (x, y).2))))
+            (Finset.sum_congr rfl fun l x =>
+              Finset.sum_congr rfl fun μ x =>
+                Finset.sum_congr rfl fun ν x =>
+                  id
+                    (Eq.mpr
+                      (id
+                        (congrArg
+                          (fun _a =>
+                            _a •
+                                (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                                  PermutationRepresentation.labelProj φQE ν) =
+                              ↑((↑(l.dim * μ.dim) / ↑ν.dim) ^ b) •
+                                (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                                  PermutationRepresentation.labelProj φQE ν))
+                          (PermutationRepresentation.exp_mergeScalar✝ (↑l.dim) (↑μ.dim) (↑ν.dim) b
+                            (cast
+                              (Eq.symm
+                                (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑l.dim)
+                                  Nat.cast_lt._simp_1))
+                              (IrrepLabel.dim_pos l))
+                            (cast
+                              (Eq.symm
+                                (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑μ.dim)
+                                  Nat.cast_lt._simp_1))
+                              (IrrepLabel.dim_pos μ))
+                            (cast
+                              (Eq.symm
+                                (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑ν.dim)
+                                  Nat.cast_lt._simp_1))
+                              (IrrepLabel.dim_pos ν)))))
+                      (Eq.mpr
+                        (id
+                          (congrArg
+                            (fun _a =>
+                              ↑((↑l.dim * ↑μ.dim / ↑ν.dim) ^ b) •
+                                  (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                                    PermutationRepresentation.labelProj φQE ν) =
+                                ↑((_a / ↑ν.dim) ^ b) •
+                                  (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                                    PermutationRepresentation.labelProj φQE ν))
+                            (Nat.cast_mul l.dim μ.dim)))
+                        (Eq.refl
+                          (↑((↑l.dim * ↑μ.dim / ↑ν.dim) ^ b) •
+                            (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                              PermutationRepresentation.labelProj φQE ν))))))))))
+theorem PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum.{u_1, u_2} : ∀ {G : Type u_1} {X : Type u_2}
+  [inst : Group G] [inst_1 : Fintype G] [inst_2 : Fintype X] [inst_3 : DecidableEq X] {φQ φE φQE : G →* Equiv.Perm X},
+  (∀ (g h : G), Commute (φQ g) (φE h)) →
+    (∀ (g : G), φQE g = φQ g * φE g) →
+      ∀ (b : ℝ) (ρ : Matrix X X ℂ),
+        (ρ *
+                NormedSpace.exp
+                  (↑b •
+                    (PermutationRepresentation.labelEntropy φQ + PermutationRepresentation.labelEntropy φE -
+                      PermutationRepresentation.labelEntropy φQE))).trace.re =
+          ∑ l,
+            ∑ μ,
+              ∑ ν,
+                (ρ *
+                        (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                          PermutationRepresentation.labelProj φQE ν)).trace.re *
+                  (↑(l.dim * μ.dim) / ↑ν.dim) ^ b :=
+fun {G} {X} [Group G] [Fintype G] [Fintype X] [DecidableEq X] {φQ φE φQE} hcomm hprod b ρ =>
+  Eq.mpr
+    (id
+      (congrArg
+        (fun _a =>
+          (ρ * _a).trace.re =
+            ∑ l,
+              ∑ μ,
+                ∑ ν,
+                  (ρ *
+                          (PermutationRepresentation.labelProj φQ l * PermutationRepresentation.labelProj φE μ *
+                            PermutationRepresentation.labelProj φQE ν)).trace.re *
+                    (↑(l.dim * μ.dim) / ↑ν.dim) ^ b)
+        (PermutationRepresentation.exp_mergeDeficit_eq_sum hcomm hprod b)))
+    (of_eq_true
+      (Eq.trans
+        (congr
+          (congrArg Eq
+            (Eq.trans
+              (Eq.trans
+                (congrArg Complex.re
+                  (Eq.trans
+                    (Eq.trans
+                      (congrArg Matrix.trace
+                        (Eq.trans
+                          (Matrix.mul_sum Finset.univ
+                            (fun a =>
+                              ∑ μ,
+                                ∑ ν,
+                                  ↑((↑(a.dim * μ.dim) / ↑ν.dim) ^ b) •
+                                    (PermutationRepresentation.labelProj φQ a *
+                                        PermutationRepresentation.labelProj φE μ *
+                                      PermutationRepresentation.labelProj φQE ν))
+                            ρ)
+                          (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                            Eq.trans
+                              (Matrix.mul_sum Finset.univ
+                                (fun a =>
+                                  ∑ ν,
+                                    ↑((↑(x.dim * a.dim) / ↑ν.dim) ^ b) •
+                                      (PermutationRepresentation.labelProj φQ x *
+                                          PermutationRepresentation.labelProj φE a *
+                                        PermutationRepresentation.labelProj φQE ν))
+                                ρ)
+                              (Finset.sum_congr (Eq.refl Finset.univ) fun x_1 a =>
+                                Eq.trans
+                                  (Matrix.mul_sum Finset.univ
+                                    (fun a =>
+                                      ↑((↑(x.dim * x_1.dim) / ↑a.dim) ^ b) •
+                                        (PermutationRepresentation.labelProj φQ x *
+                                            PermutationRepresentation.labelProj φE x_1 *
+                                          PermutationRepresentation.labelProj φQE a))
+                                    ρ)
+                                  (Finset.sum_congr (Eq.refl Finset.univ) fun x_2 a =>
+                                    Matrix.mul_smul ρ (↑((↑(x.dim * x_1.dim) / ↑x_2.dim) ^ b))
+                                      (PermutationRepresentation.labelProj φQ x *
+                                          PermutationRepresentation.labelProj φE x_1 *
+                                        PermutationRepresentation.labelProj φQE x_2))))))
+                      (Matrix.trace_sum Finset.univ fun i =>
+                        ∑ x,
+                          ∑ x_1,
+                            ↑((↑(i.dim * x.dim) / ↑x_1.dim) ^ b) •
+                              (ρ *
+                                (PermutationRepresentation.labelProj φQ i * PermutationRepresentation.labelProj φE x *
+                                  PermutationRepresentation.labelProj φQE x_1))))
+                    (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                      Eq.trans
+                        (Matrix.trace_sum Finset.univ fun i =>
+                          ∑ x_1,
+                            ↑((↑(x.dim * i.dim) / ↑x_1.dim) ^ b) •
+                              (ρ *
+                                (PermutationRepresentation.labelProj φQ x * PermutationRepresentation.labelProj φE i *
+                                  PermutationRepresentation.labelProj φQE x_1)))
+                        (Finset.sum_congr (Eq.refl Finset.univ) fun x_1 a =>
+                          Eq.trans
+                            (Matrix.trace_sum Finset.univ fun i =>
+                              ↑((↑(x.dim * x_1.dim) / ↑i.dim) ^ b) •
+                                (ρ *
+                                  (PermutationRepresentation.labelProj φQ x *
+                                      PermutationRepresentation.labelProj φE x_1 *
+                                    PermutationRepresentation.labelProj φQE i)))
+                            (Finset.sum_congr (Eq.refl Finset.univ) fun x_2 a =>
+                              Matrix.trace_smul (↑((↑(x.dim * x_1.dim) / ↑x_2.dim) ^ b))
+                                (ρ *
+                                  (PermutationRepresentation.labelProj φQ x *
+                                      PermutationRepresentation.labelProj φE x_1 *
+                                    PermutationRepresentation.labelProj φQE x_2)))))))
+                (Complex.re_sum Finset.univ fun i =>
+                  ∑ x,
+                    ∑ x_1,
+                      ↑((↑(i.dim * x.dim) / ↑x_1.dim) ^ b) *
+                        (ρ *
+                            (PermutationRepresentation.labelProj φQ i * PermutationRepresentation.labelProj φE x *
+                              PermutationRepresentation.labelProj φQE x_1)).trace))
+              (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                Eq.trans
+                  (Complex.re_sum Finset.univ fun i =>
+                    ∑ x_1,
+                      ↑((↑(x.dim * i.dim) / ↑x_1.dim) ^ b) *
+                        (ρ *
+                            (PermutationRepresentation.labelProj φQ x * PermutationRepresentation.labelProj φE i *
+                              PermutationRepresentation.labelProj φQE x_1)).trace)
+                  (Finset.sum_congr (Eq.refl Finset.univ) fun x_1 a =>
+                    Eq.trans
+                      (Complex.re_sum Finset.univ fun i =>
+                        ↑((↑(x.dim * x_1.dim) / ↑i.dim) ^ b) *
+                          (ρ *
+                              (PermutationRepresentation.labelProj φQ x * PermutationRepresentation.labelProj φE x_1 *
+                                PermutationRepresentation.labelProj φQE i)).trace)
+                      (Finset.sum_congr (Eq.refl Finset.univ) fun x_2 a =>
+                        Eq.trans
+                          (Complex.mul_re (↑((↑(x.dim * x_1.dim) / ↑x_2.dim) ^ b))
+                            (ρ *
+                                (PermutationRepresentation.labelProj φQ x * PermutationRepresentation.labelProj φE x_1 *
+                                  PermutationRepresentation.labelProj φQE x_2)).trace)
+                          (Eq.trans
+                            (congrArg
+                              (HSub.hSub
+                                ((↑(x.dim * x_1.dim) / ↑x_2.dim) ^ b *
+                                  (ρ *
+                                        (PermutationRepresentation.labelProj φQ x *
+                                            PermutationRepresentation.labelProj φE x_1 *
+                                          PermutationRepresentation.labelProj φQE x_2)).trace.re))
+                              (zero_mul
+                                (ρ *
+                                      (PermutationRepresentation.labelProj φQ x *
+                                          PermutationRepresentation.labelProj φE x_1 *
+                                        PermutationRepresentation.labelProj φQE x_2)).trace.im))
+                            (sub_zero
+                              ((↑(x.dim * x_1.dim) / ↑x_2.dim) ^ b *
+                                (ρ *
+                                      (PermutationRepresentation.labelProj φQ x *
+                                          PermutationRepresentation.labelProj φE x_1 *
+                                        PermutationRepresentation.labelProj φQE x_2)).trace.re))))))))
+          (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+            Finset.sum_congr (Eq.refl Finset.univ) fun x_1 a =>
+              Finset.sum_congr (Eq.refl Finset.univ) fun x_2 a =>
+                mul_comm
+                  (ρ *
+                        (PermutationRepresentation.labelProj φQ x * PermutationRepresentation.labelProj φE x_1 *
+                          PermutationRepresentation.labelProj φQE x_2)).trace.re
+                  ((↑(x.dim * x_1.dim) / ↑x_2.dim) ^ b)))
+        (eq_self
+          (∑ x,
+            ∑ x_1,
+              ∑ x_2,
+                (↑(x.dim * x_1.dim) / ↑x_2.dim) ^ b *
+                  (ρ *
+                        (PermutationRepresentation.labelProj φQ x * PermutationRepresentation.labelProj φE x_1 *
+                          PermutationRepresentation.labelProj φQE x_2)).trace.re))))

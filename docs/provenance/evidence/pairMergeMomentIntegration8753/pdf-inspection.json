@@ -1,0 +1,29 @@
+{
+  "pdf": "blueprint/print/print.pdf",
+  "pdf_sha256": "751d2537caac9e20889884b82359895abdd4fec78aa8c36f8572803537d6d26d",
+  "pages": 447,
+  "markers": {
+    "The separate and simultaneous copy actions": [
+      435
+    ],
+    "The normalized paired merge moment": [
+      435
+    ],
+    "The paired merge moment with its actual trace mass": [
+      435
+    ]
+  },
+  "inspected_physical_pages": [
+    434,
+    435,
+    436
+  ],
+  "text_sha256": "952db231ba4d2b5166eba0a03d6833af2b3cdb5ba0edadeee8c9edb778aa2f4d",
+  "compressed_text_sha256": "27b8e0f8ebf30de46a371ba3433ceb346834929e427317ede08061ac7ac0612c",
+  "deterministic_gzip_mtime": 0,
+  "schur_chapter_heading_present": true,
+  "new_pages_have_no_unresolved_references": true,
+  "visual_review": "passed",
+  "visual_observations": "The section heading and hypotheses are visible on physical434. All three entries, all five displayed formulas, their complete proofs, resolved citations and numbered references fit within the page on435; the next section begins cleanly on436. No clipping, overlap or unresolved references.",
+  "archived_pdf": "docs/provenance/evidence/pairMergeMomentIntegration8753/render/complete-blueprint.pdf"
+}

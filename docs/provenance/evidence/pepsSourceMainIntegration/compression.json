@@ -1,0 +1,272 @@
+[
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/bbl.log",
+    "sha256": "be107a2b66006fc777ba6c71fb7e52b5ad6b98ace09ea388977c36d9c78782d0",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/bbl.log.gz",
+    "gzip_sha256": "2837d07c9c16cf3325881b6950b0b956e4f620473fd306de06dce88fa0c54879"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/blueprint-sync.log",
+    "sha256": "53121f6181536fb7c762676cf583a86dcbf1a950e0e14150c955aa60d756514b",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/blueprint-sync.log.gz",
+    "gzip_sha256": "4a4dd342d5ba558b613bb9e7e50e6086d96e000827ef6b51571285f593df48c0"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/cache.log",
+    "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/cache.log.gz",
+    "gzip_sha256": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/compatibility.log",
+    "sha256": "c0b5e6f4d03fcda893ce9b12526b6cf285e96d2782a4beb73f4e9d5675d56a29",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/compatibility.log.gz",
+    "gzip_sha256": "c1f224482584268b928f328944818baa73cce87fd9683497584a7b7e67cea4aa"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/focused-web-complete.log",
+    "sha256": "8c4f760badc7c8a6a90b509585b6368b0b0eaf349b059bba895900e209aa6766",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/focused-web-complete.log.gz",
+    "gzip_sha256": "23c85fa530eaf76adf3e96dccfdeff363800ff8c4193b13ee66d031b3d8acd54"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/focused-web.log",
+    "sha256": "8c4f760badc7c8a6a90b509585b6368b0b0eaf349b059bba895900e209aa6766",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/focused-web.log.gz",
+    "gzip_sha256": "23c85fa530eaf76adf3e96dccfdeff363800ff8c4193b13ee66d031b3d8acd54"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/full-build.log",
+    "sha256": "9dba832f3216f15739d7b13643d793337d35abdf80e5deffc2cd45617d653314",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/full-build.log.gz",
+    "gzip_sha256": "b60a09cd84eee2cd6680ecb7790803bca747dbc46d2bfa3726fc3d982f3dc29b"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/guard.log",
+    "sha256": "a9e3eab275f243dab654497cf31bb209a58a98e8237d18323b3b1c0c6d35c983",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/guard.log.gz",
+    "gzip_sha256": "0d4c45bd94b4e93cba7b8db2405dbd16ec92df0b602579e34e55215dbf6c057e"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/imports.log",
+    "sha256": "8067d9f4a59f3edd1cf0f491a7e307c129884cdc02238dff229792bf8550f99a",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/imports.log.gz",
+    "gzip_sha256": "d0e8d8b1fcd11081bf1b613c662d247e7f5355274a847b9e03e44f8dcb467742"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/mobile-equation-scroll.log",
+    "sha256": "1a5ecff9ed91f67a832c457bee71614bd9393992b6d6911a1233b397dcecf3e2",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/mobile-equation-scroll.log.gz",
+    "gzip_sha256": "584cc787c2daf540d1f87b944a1e84dd807c2e839850d83d30b35baffb415d2f"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/native-targets.log",
+    "sha256": "592b9a264bb5e94729039521d242c91dc4e56507217b7db3e724f7f99ee7e2a9",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/native-targets.log.gz",
+    "gzip_sha256": "285a35ec72e2ee8cd204280e91968b5f552f7a1842faebacc6774afdd42f60f7"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/native.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/native.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/paper-gaps.log",
+    "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/paper-gaps.log.gz",
+    "gzip_sha256": "197a885e0bccc91b171706011407c28391b3d96b6a1010413307990fea2cca36"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/pdf.log",
+    "sha256": "1ef1d1487aca00697f51b86c2ef611c295636227006d4fba0cb7fd83d4e775f1",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/pdf.log.gz",
+    "gzip_sha256": "47f63da1048fbdf3d093032764be5910840f6b6519cd00fa6ed18d3466c4dbd4"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-8769-foundations-integration.log",
+    "sha256": "5450a6ae3b20dd5e9d05d8052b3d82ac9d5b96d4cc51fcaed1b26b48c323c672",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-8769-foundations-integration.log.gz",
+    "gzip_sha256": "577297afd62980fce4b1f78a8075c8ba3f85196fc06f4a64c2bc333a03742c6a"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-recheck-8769-foundations-integration.log",
+    "sha256": "53f39c147db9d0df83f333cc9cbdfd513f3296ec18f12b786316b0fd21170cd6",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-recheck-8769-foundations-integration.log.gz",
+    "gzip_sha256": "4e539660356ec334e83aa8c18c47f24c97968b8fc0d20d01aab020a712f6d387"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-recheck-8769-source-bridges.log",
+    "sha256": "f88973a0b71028ab600f65f1b5f255f029de7ca05b5cb37943765c6cb82515d5",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-recheck-8769-source-bridges.log.gz",
+    "gzip_sha256": "de67c5cf6968073e075b4e77ea6d53ed45aeedfb8ffb0a7bfbc71d7ed74faf0f"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-recheck-8769-source-error.log",
+    "sha256": "6ed62a7a0ccfcc88fc9c961dcb5571cdcdbd56362a325505243a96f65460379f",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-recheck-8769-source-error.log.gz",
+    "gzip_sha256": "4aa6f48b0bb99537ead45b9d8d0c68dd431894085db6a0bbb390b0b6523d03a6"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-recheck-8769-source-reduction.log",
+    "sha256": "8fa0b4ffe17a51d298c2793201eceebae965291826026a1cc151d39ddf84ed6d",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-recheck-8769-source-reduction.log.gz",
+    "gzip_sha256": "02587290dd1fa680d01c6adbbd1ad86180726438f19ffb8878907ced1ee80088"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-ChronologicalGarbage.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-ChronologicalGarbage.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-ChronologicalGarbageError.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-ChronologicalGarbageError.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-ComplexGaussian.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-ComplexGaussian.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-CompressionSampling.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-CompressionSampling.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-ContractionChain.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-ContractionChain.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GaussianContraction.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GaussianContraction.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GaussianProductSource.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GaussianProductSource.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GaussianProductSourceTransport.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GaussianProductSourceTransport.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GaussianSourceError.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GaussianSourceError.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GlobalBranchLaw.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-GlobalBranchLaw.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-IndependentCovariance.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-IndependentCovariance.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-IndependentGaussianSlots.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-IndependentGaussianSlots.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-IsometricDomainExtension.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-IsometricDomainExtension.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-MatrixSecondMoment.log",
+    "sha256": "aabc2ef9c3dd6073ae370a2bce67d9862620b55abba50c588d8b693ad29fe8fc",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-MatrixSecondMoment.log.gz",
+    "gzip_sha256": "4ad1f46bfda27271b31300a45815c7fe2bcf956fd3cb251c895536deca128fcd"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-RectangularTraceNormAlgebra.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-RectangularTraceNormAlgebra.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-SchmidtSource.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-SchmidtSource.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-SourceContraction.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-SourceContraction.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-SourceOnlyDensityError.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-SourceOnlyDensityError.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-SubnormalizedPureStateError.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-SubnormalizedPureStateError.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-WeightedRectangular.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-WeightedRectangular.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-WeightedSourceError.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/regression-WeightedSourceError.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/render-pdf.log",
+    "sha256": "3905b79fe5acf75eda6be14e78dd4203e2e4460c07b4864241164390847de2a8",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/render-pdf.log.gz",
+    "gzip_sha256": "b9d51631ab073ba95f3b70f6a6b4699ed28d758780ffd039f24892a3cade93c4"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/source-contraction-kernels.log",
+    "sha256": "ee7ac944c8627fdab34760c7b29384615ae39e0b5e12a3544e475e22800acb95",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/source-contraction-kernels.log.gz",
+    "gzip_sha256": "48f8c1caf6e8f40304f5a3275c70bc9c0d7e8f819c951bc5a9ec80e4eff3b5de"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/tenkz.log",
+    "sha256": "609d1a0c8802981a6dfd30f9f6a8b3388ebf6aaaae1913b95b285eceb3b134a9",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/tenkz.log.gz",
+    "gzip_sha256": "d2679ea3c214619bf5711c890d0eb4f6d61f5cafb2857037c8dde378aab29928"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/web.log",
+    "sha256": "b914c2da3f9b2067cbc227689bbf08879d512d605eba40dbca4d21161bf572c2",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/web.log.gz",
+    "gzip_sha256": "1d47e597d07206cdf4082bd6a37a560ae54e531fba4c9d07c25941a4496a63d5"
+  },
+  {
+    "path": "docs/provenance/evidence/pepsSourceMainIntegration/whole-web.log",
+    "sha256": "32e377668c88183987e349cfcf24560b678bf2371e714a3ce6eb2317f9d4bb5d",
+    "gzip_path": "docs/provenance/evidence/pepsSourceMainIntegration/whole-web.log.gz",
+    "gzip_sha256": "a97362cbd725028deac3a8542360a945c3078e417f0facdece68ff05edb450bd"
+  }
+]

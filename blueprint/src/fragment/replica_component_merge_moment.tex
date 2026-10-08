@@ -1,0 +1,53 @@
+\section{Merge moments of excitation components}
+\label{sec:replica_component_merge_moment}
+
+Let $Q,T,C,D$ be finite coordinate sets, let $k\geq0$, and let
+$B\subseteq\{0,\ldots,k-1\}$. Put $G=B^c$ and $m=|G|$, with the same
+chosen enumeration of $G$ in each retained register. Let
+$\Omega\in\mathbb C^Q\otimes\mathbb C^T$ be unit, and let
+$u\in(\mathbb C^Q\otimes\mathbb C^T)^{\otimes k}
+\otimes(\mathbb C^C)^{\otimes k}\otimes(\mathbb C^D)^{\otimes k}$
+be invariant under simultaneous permutation of all three copy strings.
+Write $w=(R_B\otimes I)u$ for its actual excitation component and
+$\rho=\rho_{Q_GC_G}(w)$ for its actual joint marginal.
+The logarithmic dimension observables $F_Q,F_C,F_{QC}$ correspond to
+permuting the good $Q$ copies, the good $C$ copies, and both together.
+Set $D_C=F_Q+F_C-F_{QC}$.
+
+\begin{theorem}[Actual component exponential merge moment]
+\label{thm:replica_component_merge_moment}
+\lean{Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le}
+\leanok
+\uses{def:replica_good_regional_auxiliary_marginal,def:pair_copy_actions}
+For every real $b\leq1$,
+\begin{align}
+ \operatorname{Re}\operatorname{Tr}(\rho e^{bD_C})
+ &\leq (m+1)^{(|Q|\,|C|)^2}\|w\|^2.
+ \label{eq:replica_component_merge}
+\end{align}
+This is the unnormalized form of the first exponential moment in
+\cite[Section~7, equation \textup{(comparator:merge-moments)}]{OpenAI2026AreaLaw}.
+It includes $w=0$, $m=0$ and $k=0$.
+\end{theorem}
+
+\begin{proof}
+\leanok
+\uses{thm:replica_good_regional_auxiliary_density,thm:replica_good_auxiliary_marginal_commute,thm:pair_merge_moment_mass,thm:re_trace_exp_merge_deficit_eq_sum}
+The joint density identity gives
+$\rho=\rho_Q^{\otimes m}\otimes\rho_{C_G}(w)$, where
+$\rho_Q=\operatorname{Tr}_T|\Omega\rangle\langle\Omega|$.
+The tensor power is invariant under the $Q$ permutations, and the actual
+auxiliary marginal is invariant under the $C$ permutations.
+The latter invariance follows from the assumed simultaneous symmetry of
+$u$, excitation projection, and partial trace.
+Thus the positive matrix $\rho$ is invariant under both separate actions.
+The exponential trace expansion and the homogeneous paired merge-moment
+bound imply
+$\operatorname{Re}\operatorname{Tr}(\rho e^{bD_C})
+\leq(m+1)^{(|Q|\,|C|)^2}\operatorname{Tr}\rho$.
+Partial traces and coordinate bijections preserve the trace. Since
+$\operatorname{Tr}\rho_Q=\|\Omega\|^2=1$, the trace of the product density
+is $\operatorname{Tr}\rho=\operatorname{Tr}|w\rangle\langle w|=\|w\|^2$.
+This proves (\ref{eq:replica_component_merge}). No division by the component
+mass is needed.
+\end{proof}

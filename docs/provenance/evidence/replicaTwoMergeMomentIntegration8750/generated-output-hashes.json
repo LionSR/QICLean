@@ -1,0 +1,29 @@
+{
+  "files": [
+    {
+      "path": "blueprint/print/print.pdf",
+      "sha256": "43d44f6b86a6c6192c210642fbc2e3ac2f8abc11d1fb782462ba19bcc27ecafd",
+      "bytes": 3014999
+    },
+    {
+      "path": "blueprint/print/print.bbl",
+      "sha256": "1c9c49ee1de060dc40e74b44b1cbcd0a961b662280ac2dcdc5439d3556e24695",
+      "bytes": 14706
+    },
+    {
+      "path": "blueprint/lean_decls",
+      "sha256": "fc4821cd003cfefbb8946e7c49cbb686b2d8a008fe91e2f77e9d8c2956d6a869",
+      "bytes": 158154
+    },
+    {
+      "path": "blueprint/web/ch-schur_labels.html",
+      "sha256": "8da55cbd8cc752a7399752a75aa34f8029dc63b7f35e050cee4118e6ea22966d",
+      "bytes": 205902
+    },
+    {
+      "path": "output/pdf/area-law-replica-two-merge-moment-blueprint.pdf",
+      "sha256": "43d44f6b86a6c6192c210642fbc2e3ac2f8abc11d1fb782462ba19bcc27ecafd",
+      "bytes": 3014999
+    }
+  ]
+}

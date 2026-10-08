@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-pair-merge-deficit-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeDeficit.lean",
+        "declaration": "TensorPower.pairMergeDeficit",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the actual paired copy merge deficit by its three Schur-label entropy observables."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f028f8c6ea5290b8e8ddf08893ead50d89ea2174",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeDeficit",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/target.log",
+            "sha256": "c22cacd4e025712d7adbf803b8e130275ce7072f453f5a31871ee2df415a574b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeDeficit.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeDeficit8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/axioms.log",
+            "sha256": "e0c49c5fc832a0001aaaed29f73314ca8d60b7bd41eaa829030dd3a1d843b55d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-deficit-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeDeficit.lean",
+        "declaration": "TensorPower.isHermitian_pairMergeDeficit",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove Hermiticity from the actual real label observables; no supplied self-adjointness hypothesis."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f028f8c6ea5290b8e8ddf08893ead50d89ea2174",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeDeficit",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/target.log",
+            "sha256": "c22cacd4e025712d7adbf803b8e130275ce7072f453f5a31871ee2df415a574b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeDeficit.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeDeficit8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/axioms.log",
+            "sha256": "e0c49c5fc832a0001aaaed29f73314ca8d60b7bd41eaa829030dd3a1d843b55d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-deficit-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeDeficit.lean",
+        "declaration": "TensorPower.commute_pairMergeDeficit_lifts",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove commutation of the actual QC and VR identity extensions on the literal common paired basis."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f028f8c6ea5290b8e8ddf08893ead50d89ea2174",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeDeficit",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/target.log",
+            "sha256": "c22cacd4e025712d7adbf803b8e130275ce7072f453f5a31871ee2df415a574b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeDeficit.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeDeficit8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/axioms.log",
+            "sha256": "e0c49c5fc832a0001aaaed29f73314ca8d60b7bd41eaa829030dd3a1d843b55d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-deficit-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeDeficit.lean",
+        "declaration": "TensorPower.exp_pairMergeDeficit_lifts",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Use the existing Kronecker exponential identities to factor the exponential of the actual lifted sum, for arbitrary real parameters."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f028f8c6ea5290b8e8ddf08893ead50d89ea2174",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeDeficit",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/target.log",
+            "sha256": "c22cacd4e025712d7adbf803b8e130275ce7072f453f5a31871ee2df415a574b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeDeficit.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeDeficit8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/axioms.log",
+            "sha256": "e0c49c5fc832a0001aaaed29f73314ca8d60b7bd41eaa829030dd3a1d843b55d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-deficit-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeDeficit.lean",
+        "declaration": "TensorPower.trace_exp_pairMergeDeficit_left",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Use the exact right partial-trace pairing to identify the complex trace of the actual QC exponential against an arbitrary common matrix; correlations are preserved."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f028f8c6ea5290b8e8ddf08893ead50d89ea2174",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeDeficit",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/target.log",
+            "sha256": "c22cacd4e025712d7adbf803b8e130275ce7072f453f5a31871ee2df415a574b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeDeficit.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeDeficit8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/axioms.log",
+            "sha256": "e0c49c5fc832a0001aaaed29f73314ca8d60b7bd41eaa829030dd3a1d843b55d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pair-merge-deficit-06",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PairMergeDeficit.lean",
+        "declaration": "TensorPower.trace_exp_pairMergeDeficit_right",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Use the exact left partial-trace pairing to identify the complex trace of the actual VR exponential against an arbitrary common matrix; no normalization or invariance premise."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f028f8c6ea5290b8e8ddf08893ead50d89ea2174",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PairMergeDeficit",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/target.log",
+            "sha256": "c22cacd4e025712d7adbf803b8e130275ce7072f453f5a31871ee2df415a574b"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PairMergeDeficit.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pairMergeDeficit8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pairMergeDeficit8753/axioms.log",
+            "sha256": "e0c49c5fc832a0001aaaed29f73314ca8d60b7bd41eaa829030dd3a1d843b55d"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "inventories": [
+    {
+      "inventory": "docs/provenance/evidence/mergeExponential8750/evidence-sha256.json",
+      "verified_bindings": 46,
+      "sha256": "b90891247738c8fedd3feac596205364c20d7980a0f0acecbdf71609e7986305"
+    },
+    {
+      "inventory": "docs/provenance/evidence/pepsSourceLatestMainIntegration/manifest.json",
+      "verified_bindings": 114,
+      "sha256": "ffd39bf78b4165b3d02eb2df86debb4d3596a65b6805fb949ea74817a336210b"
+    }
+  ],
+  "total_bindings": 160
+}

@@ -274,3 +274,77 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** All good middle physical coordinates are retained. The density
   and its support are derived from the same actual excitation component;
   neither a coordinate identity nor a support hypothesis is supplied.
+
+### Covariance under a finite coordinate bijection — candidate (2026-10-08)
+
+- **Pattern:** Transport a density and permutation operators by one basis
+  bijection, obtain the central projectors by the group-algebra sum, and
+  compare the actual product traces using finite-sum reindexing.
+- **Seen:** The three copy actions and joint trace in
+  `QICLean/Representation/PairMergeMoment.lean` share one private transport
+  calculation. The matrix products reuse `Matrix.submatrix_mul_equiv`.
+- **Abstraction:** Keep the common permutation/projector and trace calculations
+  as private lemmas. No new tactic is justified by one mathematical module.
+- **Caveats:** Use the same coordinate bijection for the density and all three
+  actions; separate permutation invariance is a premise of the auxiliary
+  theorem and must be proved in its physical application.
+
+### Total normalization of an invariant positive component — candidate (2026-10-08)
+
+- **Pattern:** Preserve commutation under total trace normalization and recover
+  an unnormalized moment by multiplication by the nonnegative actual trace.
+- **Seen:** `TensorPower.pair_merge_moment_le_mul_trace`; the independent
+  homogeneous merge-moment argument uses the same normalization calculation.
+- **Abstraction:** Reuse the existing positive normalization, trace-one and
+  reconstruction lemmas. Record a shared commutation lemma if further
+  independent consumers appear; no general multiplicity interface is added.
+- **Caveats:** At zero trace the positive matrix is zero and the normalized
+  choice is a scalar identity. Empty bases require their own zero-matrix case.
+### Exponential on an actual joint label resolution — candidate (2026-10-08)
+
+- **Pattern:** Construct a joint resolution from commuting actual label projections, identify its marginal observables using the projection sums, and apply `Matrix.IsOrthogonalResolution.exp_hom` before a positive-dimension scalar logarithm calculation.
+- **Seen:** `Representation/SchurSurprisal.lean` and `Representation/MergeExponential.lean`; two mathematical exponential calculations in two files.
+- **Abstraction:** The existing resolution homomorphism and `exp_hom` already supply the functional-calculus step. Continue using these results and finite-sum identities; no additional tactic or duplicate spectral calculus is introduced.
+- **Caveat:** Derive the joint resolution from the actual projections. Positive irreducible dimensions justify the logarithms even when their ambient label projections vanish.
+
+### Positive weighted trace of a difference square — candidate (2026-10-08)
+
+- **Pattern:** Apply positive-semidefinite trace positivity to `(U - V)ᴴ * (U - V)`, then use Hermitian symmetry and commutation to identify the product terms and obtain the arithmetic-mean bound.
+- **Seen:** `Analysis/WeightedTraceExponential.lean`; one calculation, reused for exponential matrices in the same file.
+- **Abstraction:** The private product inequality isolates this calculation. Existing `Matrix.PosSemidef.trace_mul_nonneg` and exponential commutation identities supply the mathematical steps; no new tactic is needed.
+- **Caveat:** Commutation of the two factors is a hypothesis, while no commutation with the positive semidefinite trace weight is used.
+### Product-density invariance and actual trace mass — candidate (2026-10-08)
+
+- **Pattern:** Identify each separate copy permutation with an operator on
+  one factor tensored with the identity. Use `mul_kronecker_mul` to derive
+  invariance of the actual product density, then partial-trace preservation
+  and the unit one-copy trace to recover the component's squared norm.
+- **Seen:** `Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le`
+  in `QICLean/Analysis/ReplicaComponentMergeMoment.lean`; one mathematical
+  consumer. The two separate actions use different factor invariances.
+- **Abstraction:** Reuse the existing permutation entries, tensor-product
+  multiplication, partial-trace preservation, and paired homogeneous moment
+  theorem. The two elementary factor calculations remain private. No new
+  tactic is introduced.
+- **Caveats:** Both marginals must belong to the same excitation component.
+  Retain the actual trace mass; do not assume a nonzero or unit component.
+
+### Tensor-factor exponential and trace identities — candidate (2026-10-08)
+
+- **Pattern:** Move a scalar through a Kronecker product, exponentiate the
+  actual identity extension, and pair with a common matrix by partial trace.
+- **Seen:** The common-space exponential and two complex trace equalities in
+  `QICLean/Representation/PairMergeDeficit.lean`; their generic calculations
+  already live in `KroneckerExponential.lean`, `TraceDistance.lean` and
+  `Channel/PartialTrace.lean`.
+- **Abstraction:** Use the existing exponential and trace-pairing theorems
+  directly. No additional private helper or tactic is needed.
+- **Caveats:** Operator factorization preserves correlations in the common
+  matrix. It does not justify multiplying two marginal trace pairings.
+
+### Excitation covariance under physical coordinate exchange — candidate (2026-10-08)
+
+- **Pattern:** Transport the literal finite product of ground and defect factors through a one-copy coordinate equivalence, then transport the actual selected vector by `submatrix_mulVec_equiv`. A coordinate isometry preserves its Euclidean norm.
+- **Seen:** `Analysis/ReplicaGoodPairMarginal.lean` and `Analysis/ReplicaTwoMergeMoment.lean`; two independent consumers, respectively the marginal exchange and its norm consequence.
+- **Abstraction:** The existing matrix reindexing and coordinate isometry results supply the algebra. These two consumers retain private excitation calculations. Before a third consumer is added, extract their shared mathematical covariance statement and replace the repeated calculations.
+- **Caveat:** Exchange both exterior physical and auxiliary regions while preserving the independent middle physical region. Derive covariance and simultaneous fixedness from actual coordinates; do not supply them as additional hypotheses.

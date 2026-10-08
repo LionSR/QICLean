@@ -1,0 +1,16 @@
+{
+  "physical_pages": [
+    437
+  ],
+  "printed_pages": [
+    436
+  ],
+  "inspected": [
+    "explicit commuting/product-action hypotheses",
+    "both exact exponential and arbitrary-matrix trace statements",
+    "both complete proofs",
+    "source references and subsequent moment scope"
+  ],
+  "result": "Both complete statements, formulas and proofs visually inspected; no clipping, overlap, unresolved symbols or unreadable displays.",
+  "pdf_sha256": "7cd5fda89568c74ea9addbfe496024909efbd2ab78d788c877f9bb462a660620"
+}

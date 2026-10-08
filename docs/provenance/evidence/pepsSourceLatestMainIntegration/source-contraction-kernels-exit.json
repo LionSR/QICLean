@@ -1,0 +1,19 @@
+{
+  "source_revision": "035e5cc6f208e7b069132ef8eff8c8afbfa012d9",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/pepsSourceLatestMainIntegration/SourceContractionAxioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "started_utc": "2026-10-07T23:26:50.745945+00:00",
+  "elapsed_seconds": 16.35706116700021,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/pepsSourceLatestMainIntegration/source-contraction-kernels.log",
+  "sha256": "ee7ac944c8627fdab34760c7b29384615ae39e0b5e12a3544e475e22800acb95"
+}

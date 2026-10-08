@@ -1,0 +1,6 @@
+'TensorPower.pairMergeDeficit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.isHermitian_pairMergeDeficit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.commute_pairMergeDeficit_lifts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.exp_pairMergeDeficit_lifts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.trace_exp_pairMergeDeficit_left' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.trace_exp_pairMergeDeficit_right' depends on axioms: [propext, Classical.choice, Quot.sound]

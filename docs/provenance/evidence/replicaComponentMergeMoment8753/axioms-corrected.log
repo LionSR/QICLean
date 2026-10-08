@@ -1,0 +1,3 @@
+'Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

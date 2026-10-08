@@ -1,0 +1,34 @@
+[
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "theorem": "exp_merge_deficit_eq_sum",
+    "kind": "statement",
+    "index": 0
+  },
+  {
+    "width": 310,
+    "scrollWidth": 343,
+    "overflow": "auto",
+    "theorem": "re_trace_exp_merge_deficit_eq_sum",
+    "kind": "statement",
+    "index": 0,
+    "right_endpoint": {
+      "left": 33,
+      "max": 33
+    }
+  },
+  {
+    "width": 344,
+    "scrollWidth": 468,
+    "overflow": "auto",
+    "theorem": "merge_exponential",
+    "kind": "prelude",
+    "index": 6,
+    "right_endpoint": {
+      "left": 124,
+      "max": 124
+    }
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "source_revision": "9fabbcb948ef1fb41a573f596495c42a55cb8e7a",
+  "argv": [
+    "python3",
+    "-c",
+    "import os,subprocess,sys;os.chdir(\"blueprint\");sys.exit(subprocess.call([\"leanblueprint\",\"pdf\"]))"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "started_utc": "2026-10-07T23:11:21.526855+00:00",
+  "elapsed_seconds": 42.222002249996876,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/pepsSourceMainIntegration/pdf.log",
+  "sha256": "1ef1d1487aca00697f51b86c2ef611c295636227006d4fba0cb7fd83d4e775f1"
+}

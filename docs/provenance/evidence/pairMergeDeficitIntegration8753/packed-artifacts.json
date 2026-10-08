@@ -1,0 +1,44 @@
+{
+  "docs/provenance/evidence/pairMergeDeficitIntegration8753/bbl.log.gz": {
+    "compressed_sha256": "2837d07c9c16cf3325881b6950b0b956e4f620473fd306de06dce88fa0c54879",
+    "uncompressed_sha256": "be107a2b66006fc777ba6c71fb7e52b5ad6b98ace09ea388977c36d9c78782d0",
+    "uncompressed_bytes": 117,
+    "deterministic_gzip_mtime": 0
+  },
+  "docs/provenance/evidence/pairMergeDeficitIntegration8753/blueprint-sync.log.gz": {
+    "compressed_sha256": "dbe1bf59af57d7130d2e89e401935d085c478c029a319a79326d72243af59aec",
+    "uncompressed_sha256": "03e044eed0e2dfdadba7153c80748b6e7ea5cd600e22063cbe8c73b8d881aff8",
+    "uncompressed_bytes": 8233,
+    "deterministic_gzip_mtime": 0
+  },
+  "docs/provenance/evidence/pairMergeDeficitIntegration8753/complete-book-text.txt.gz": {
+    "compressed_sha256": "f244a5fd1d3f70cfeb21fc61b951d03a79185e86722436874a6ed8c8e4b2d5cd",
+    "uncompressed_sha256": "e2307ec9eb135b80fa072fdc6f53f6240edb7be8fa248e2bb1f1bdc5ccd7f330",
+    "uncompressed_bytes": 1602835,
+    "deterministic_gzip_mtime": 0
+  },
+  "docs/provenance/evidence/pairMergeDeficitIntegration8753/full-build.log.gz": {
+    "compressed_sha256": "3c02ce791620ff4b77807ade02441e9dcec08ed1ea32a05e5672e9f0d36ba42f",
+    "uncompressed_sha256": "40d103daae3a14d4b3fa69892532c23b59ff43d064d6055923db063760b622ff",
+    "uncompressed_bytes": 58357,
+    "deterministic_gzip_mtime": 0
+  },
+  "docs/provenance/evidence/pairMergeDeficitIntegration8753/pdf.log.gz": {
+    "compressed_sha256": "02476671da815a43b7034695d4363a2a41a195d99ad554ae63d70135b38fd626",
+    "uncompressed_sha256": "407dbf44a65a594878278d5abdd2cfa268117f2284d982679508cbde2cdcbd41",
+    "uncompressed_bytes": 104147,
+    "deterministic_gzip_mtime": 0
+  },
+  "docs/provenance/evidence/pairMergeDeficitIntegration8753/render/complete-pair-merge-deficit-book.pdf.gz": {
+    "compressed_sha256": "18774d4357a8750d6fe017ccbcb5f70160d1ea5079add8dc2189a645087478b2",
+    "uncompressed_sha256": "94460cecb305a541ccae33db3e09ed6142351f862383d2ef4ef6a727ba6b5049",
+    "uncompressed_bytes": 2874220,
+    "deterministic_gzip_mtime": 0
+  },
+  "docs/provenance/evidence/pairMergeDeficitIntegration8753/web.log.gz": {
+    "compressed_sha256": "de18f605dae756e400dac7c5762c6f3ebf049e72930124160435f1ee6c7fe355",
+    "uncompressed_sha256": "8c8897102bedbae172c64231a2a93482284b9af4304ab083b58b34f25d39a25d",
+    "uncompressed_bytes": 16677,
+    "deterministic_gzip_mtime": 0
+  }
+}

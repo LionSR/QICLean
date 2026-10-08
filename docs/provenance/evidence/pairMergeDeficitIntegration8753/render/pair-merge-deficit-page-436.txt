@@ -1,0 +1,51 @@
+21.7      The two merge deficits on a common copy space
+Let 𝑄, 𝐶, 𝑉 , 𝑅 be finite orthonormal bases, with 𝑚 ≥ 0 copies of each. Use the same enumeration
+of the copies in all four factors, and put
+                                     ℋ𝑄𝐶 = ℓ2 (𝑄)⊗𝑚 ⊗ ℓ2 (𝐶)⊗𝑚 ,
+                                     ℋ𝑉 𝑅 = ℓ2 (𝑉 )⊗𝑚 ⊗ ℓ2 (𝑅)⊗𝑚 .
+The common space is ℋ𝑄𝐶 ⊗ ℋ𝑉 𝑅 . The separate and simultaneous copy actions of Defini-
+tion 21.6.1 define the actual central logarithmic dimension observables in each pair. These are
+the two local merge deficits used in [Ope26b, Section 7].
+Definition 21.7.1 (The actual paired merge deficit). Lean Lean ✓ Stmt For the 𝑄𝐶 pair set
+𝐷𝐶 = 𝐹𝑄 + 𝐹𝐶 − 𝐹𝑄𝐶 , and for the 𝑉 𝑅 pair set 𝐷𝑅 = 𝐹𝑉 + 𝐹𝑅 − 𝐹𝑉 𝑅 . Each operator is
+                                     ̂𝐶 = 𝐷𝐶 ⊗ 𝐼𝑉 𝑅 and 𝐷
+Hermitian. On the common space write 𝐷                    ̂𝑅 = 𝐼𝑄𝐶 ⊗ 𝐷𝑅 .
+Proof. ✓ Proof Each logarithmic dimension observable is a real linear combination of orthogonal
+central projectors. Sums and differences of Hermitian operators remain Hermitian, as do their
+extensions by an identity.
+Theorem 21.7.2 (The two lifted exponential factors).                   Lean    Lean   ✓ Stmt The lifted deficits
+commute. For all real 𝑎, 𝑏,
+                                           ̂   ̂
+                                       𝑒𝑎𝐷𝐶 +𝑏𝐷𝑅 = 𝑒𝑎𝐷𝐶 ⊗ 𝑒𝑏𝐷𝑅 .                                         (21.4)
+
+Proof. ✓ Proof The two products 𝐷   ̂𝐶 𝐷̂𝑅 and 𝐷̂𝑅 𝐷̂𝐶 both equal 𝐷𝐶 ⊗ 𝐷𝑅 . For commuting
+operators the exponential of their sum is the product of their exponentials. Exponentiating
+either tensor-factor extension adjoins the same identity, giving (21.4).
+Theorem 21.7.3 (The individual traces on the common space). Lean Lean ✓ Stmt Let 𝜌 be any
+matrix on the common space, and let 𝜌𝑄𝐶 = Tr𝑉 𝑅 𝜌 and 𝜌𝑉 𝑅 = Tr𝑄𝐶 𝜌. For all real 𝑎, 𝑏,
+                                               ̂
+                                     Tr(𝜌𝑒𝑎𝐷𝐶 ) = Tr(𝜌𝑄𝐶 𝑒𝑎𝐷𝐶 ),                                         (21.5)
+                                               ̂
+                                      Tr(𝜌𝑒𝑏𝐷𝑅 ) = Tr(𝜌𝑉 𝑅 𝑒𝑏𝐷𝑅 ).                                       (21.6)
+The matrix need not be normalized, invariant under copy permutations, or independent between
+the two pairs. The identities are complex trace equalities, and hence also hold for their real parts.
+Proof. ✓ Proof The partial trace is adjoint to adjoining an identity under the trace pairing. Apply
+this identity to each local exponential, using the identity for its tensor-factor extension.
+    A joint exponential trace retains the correlations in 𝜌; no product of marginal trace pairings
+follows from the operator factorization alone.
+
+
+21.8      The dimension formulas
+The first part of the Schur-label lemma identifies the labels of 𝑆𝑘 occurring in (ℂ𝑞 )⊗𝑘 with the
+partitions 𝜆 ⊢ 𝑘 of length at most 𝑞 and states the dimension formulas
+
+                     (𝑞)       𝑙𝑖 − 𝑙𝑗                𝑘! ∏𝑖<𝑗 (𝑙𝑖 − 𝑙𝑗 )
+              dim 𝑉𝜆 = ∏               ,       𝑑𝜆 =                        ,    𝑙𝑖 = 𝜆𝑖 + 𝑞 − 𝑖.
+                           𝑖<𝑗
+                                𝑗−𝑖                         ∏ 𝑖 𝑙𝑖 !
+
+The identification of the labels with partitions is proved in the section on Schur–Weyl duality
+below. The following lemmas concern the right-hand sides of these formulas.
+
+
+                                                      435

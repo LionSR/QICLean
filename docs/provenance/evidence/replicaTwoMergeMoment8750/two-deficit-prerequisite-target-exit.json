@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "lake",
+    "build",
+    "QICLean.Analysis.ReplicaComponentMergeMoment",
+    "QICLean.Representation.PairMergeDeficit",
+    "QICLean.Analysis.ReplicaGoodPairMarginal"
+  ],
+  "source_head": "2e7a37320c811a42fc79f88be57795a6eacd070c",
+  "exit_code": 0,
+  "elapsed_seconds": 32.80236482620239,
+  "log": "/tmp/two-deficit-prerequisite-target.log"
+}
