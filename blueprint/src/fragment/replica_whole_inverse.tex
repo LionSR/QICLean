@@ -1,0 +1,79 @@
+\section{A whole-space inverse replica-metric comparison}
+\label{sec:replica_whole_inverse}
+
+Let $\mathcal V$ be a finite set, let $(\mathcal H_v)_{v\in\mathcal V}$
+be nonzero finite-dimensional complex Hilbert spaces, and set
+$\mathcal H=\bigotimes_{v\in\mathcal V}\mathcal H_v$.
+For $S\subseteq\mathcal V$, let $\pi_{S,k}^{\lambda}$ be the central
+projection for the label $\lambda$ of the permutation action on the
+$k$ copies of $S$, acting as the identity on the other tensor factors.
+Write $d_\lambda$ for the dimension of the irreducible representation.
+The replica weights $w_k(\lambda)$ are those of
+the replica-weight definition in Section~6 of~\cite{OpenAI2026AreaLaw},
+with every label padded to the common dimension $\dim\mathcal H$.
+Thus, for $t>0$, the actual replica metrics and label observables are
+\begin{align*}
+  W_{S,k}&=\sum_\lambda w_k(\lambda)\pi_{S,k}^{\lambda},&
+  F_{S,k}&=\sum_\lambda(\log d_\lambda)\pi_{S,k}^{\lambda}.
+\end{align*}
+The following auxiliary estimate supplies the whole-space comparison
+used in Section~7, lines 454--476 of the manuscript, before separating
+good and bad copies.
+
+\begin{theorem}[Inverse of a product of disjoint replica metrics]
+  \label{thm:replica_whole_inverse}
+  \lean{TensorPower.exists_replicaMetric_inv_square_le_exp}
+  \leanok
+  For every $t>0$, there is a constant $C\geq0$ such that, for every
+  integer $k\geq0$ and every three pairwise disjoint subsets
+  $P,Y,F\subseteq\mathcal V$,
+  \begin{align*}
+    \bigl((W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k})^2\bigr)^{-1}
+      &\leq (k+2)^C
+        \exp\bigl(-2t(F_{P,k}+F_{F,k}-F_{Y,k})\bigr).
+  \end{align*}
+  The inequality holds on $\mathcal H^{\otimes k}$, and includes
+  empty subsystems and zero copies.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  The central projections of disjoint subsystems commute. Their
+  products
+  \begin{align*}
+    E_{\alpha,\beta,\gamma}
+      &=\pi_{P,k}^{\alpha}\pi_{F,k}^{\beta}\pi_{Y,k}^{\gamma}
+  \end{align*}
+  therefore form an orthogonal resolution of the identity. All replica
+  weights are positive. On this resolution the inverse on the left has
+  coefficient
+  \begin{align*}
+    q_{\alpha,\beta,\gamma}
+      &=\left(\frac{w_k(\alpha)w_k(\beta)}{w_k(\gamma)}\right)^2,
+  \end{align*}
+  whereas the exponential on the right has coefficient
+  $\exp(-2t g_{\alpha,\beta,\gamma})$, where
+  \begin{align*}
+    g_{\alpha,\beta,\gamma}
+      &=\log d_\alpha+\log d_\beta-\log d_\gamma.
+  \end{align*}
+  The weight comparison in Lemma~6.2 of~\cite{OpenAI2026AreaLaw}
+  gives a constant $C_0\geq0$, uniform in $k$ and $S$, such that
+  \begin{align*}
+    \bigl|\log w_k(\lambda)+t\log d_\lambda\bigr|
+      &\leq C_0\log(k+2)
+  \end{align*}
+  whenever $\pi_{S,k}^{\lambda}\neq0$. If
+  $E_{\alpha,\beta,\gamma}\neq0$, each of its three factors is nonzero.
+  Applying the upper weight bound to $\alpha,\beta$ and the lower
+  bound to $\gamma$ yields
+  \begin{align*}
+    \log q_{\alpha,\beta,\gamma}
+      &\leq -2t g_{\alpha,\beta,\gamma}+6C_0\log(k+2),\\
+    q_{\alpha,\beta,\gamma}
+      &\leq (k+2)^{6C_0}\exp(-2t g_{\alpha,\beta,\gamma}).
+  \end{align*}
+  The difference of the two operators is consequently a sum of
+  nonnegative multiples of orthogonal projections. This proves the
+  assertion with $C=6C_0$.
+\end{proof}
