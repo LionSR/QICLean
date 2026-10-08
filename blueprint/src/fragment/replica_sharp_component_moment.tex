@@ -1,0 +1,77 @@
+\section{A sharp exponential estimate for an excitation component}
+\label{sec:replica_sharp_component_moment}
+
+The following auxiliary estimate concerns the exponential pairing in
+\cite[Section~7, lines~556--560]{OpenAI2026AreaLaw}. The inverse metric and
+the scalar factor from the good auxiliary labels remain separate arguments.
+
+\begin{theorem}[Sharp exponential estimate with the component mass]
+\label{thm:replica_sharp_component_moment}
+\lean{Matrix.replicaGoodConfigurationMarginal_exp_mergeDeficits_le_of_surprisalMoment}
+\uses{thm:weighted-trace-holder-finite,
+thm:replica_good_configuration_sum_merge_moment,thm:replica_good_configuration_label_moment}
+Let $Q,Y,V,C,R$ be finite coordinate sets, and let $\Omega$ be a unit vector
+on the three distinct physical factors $Q\otimes Y\otimes V$. Let $u$ be
+fixed by simultaneous permutations of its physical, $C$ and $R$ copy
+strings. For a set $B$ of bad copies define
+\begin{align*}
+ R_B&=\bigotimes_{i=1}^k R_i,\qquad
+ R_i=\begin{cases}
+ I-|\Omega\rangle\langle\Omega|,&i\in B,\\
+ |\Omega\rangle\langle\Omega|,&i\notin B.
+ \end{cases}
+\end{align*}
+Put
+\begin{align*}
+ m=|B^c|,\qquad w=(R_B\otimes I)u,\qquad M=\|w\|^2.
+\end{align*}
+Let $\Gamma$ be the actual density retaining all five factors on the good
+copies and tracing the bad copies, with the same chosen enumeration in
+every factor. Let $F_T=\sum_\lambda(\log d_\lambda)P_T^\lambda$ be the
+central label observable for permutations of the copies of $T$, and put
+\begin{align*}
+ G&=F_Q+F_V-F_Y,\\
+ D_C&=F_Q+F_C-F_{QC},\qquad D_R=F_V+F_R-F_{VR},\\
+ K&=\frac{(m+1)^{(|Q|\,|C|)^2}+(m+1)^{(|V|\,|R|)^2}}2.
+\end{align*}
+For $T\in\{Q,Y,V\}$ let $\sigma_T$ be the actual one-copy marginal of
+$|\Omega\rangle\langle\Omega|$, and let $S_T=S(\sigma_T)$. Suppose
+$C_0\ge0$, $c_0>0$, $\mathcal B\ge1$, and, for every $s$ with
+$|s|\le c_0/\sqrt{\mathcal B}$,
+\begin{align*}
+ \log\!\sum_{p>0}p\,e^{-s\log p}
+ \le sS_T+C_0\mathcal B s^2.
+\end{align*}
+where the sum runs over the positive eigenvalues of $\sigma_T$, with
+multiplicity. If $a\ge0$ and
+$5a\le\min(c_0,1)/(2\sqrt{\mathcal B})$, then
+\begin{align*}
+ &\operatorname{ReTr}\bigl(\Gamma e^{a(D_C+D_R-G)}\bigr)\\
+ &\quad\le M K^{2/5}\exp\!\left\{
+ -am(S_Q+S_V-S_Y)+30C_0m\mathcal B a^2
+ +\frac{|Q|^2+|Y|^2+|V|^2}{10}\log(m+1)\right\}.
+\end{align*}
+No normalization or nonvanishing of the component is required. The
+statement includes zero copies and an empty set of good copies.
+\end{theorem}
+
+\begin{proof}
+The actual density is positive semidefinite. The seven regions
+$Q,C,QC,V,R,VR,Y$ are nested or disjoint, so their central label
+observables commute. Apply the weighted five-factor H\"older inequality to
+\begin{align*}
+ A_0=A_1=(D_C+D_R)/2,\qquad
+ A_2=-F_Q,\quad A_3=-F_V,\quad A_4=F_Y.
+\end{align*}
+Their sum is $D_C+D_R-G$. The actual sum-merge bound at $5a/2$ bounds
+each of the first two moments by $MK$. The three physical moments, at
+$-5a,-5a,5a$, are evaluated in the actual one-copy marginals and give
+exponents
+\begin{align*}
+ -5amS_Q+50C_0m\mathcal B a^2+\tfrac{|Q|^2}{2}\log(m+1),\\
+ -5amS_V+50C_0m\mathcal B a^2+\tfrac{|V|^2}{2}\log(m+1),\\
+  5amS_Y+50C_0m\mathcal B a^2+\tfrac{|Y|^2}{2}\log(m+1).
+\end{align*}
+Taking the product of the five fifth roots gives the stated bound. The
+scalar product identity retains the mass $M$ without dividing by it.
+\end{proof}

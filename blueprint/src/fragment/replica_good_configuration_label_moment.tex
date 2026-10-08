@@ -1,0 +1,67 @@
+\subsection{Signed physical moments of the full good-copy density}
+\label{sec:replica_good_configuration_label_moment}
+
+Let the physical factors be $Q,Y,V$ and the auxiliary factors be $C,R$.
+The middle factor $Y$ is a separate tensor factor. Let $\Omega$ be a unit
+vector on the physical space, possibly entangled among these factors, and form $w=(R_B\otimes I)u$ from an arbitrary
+original vector $u$. Put $m=|B^c|$, and let $\rho_G$ be the actual density
+retaining all five factors on the good copies and tracing only bad copies,
+as in Definition~\ref{def:replica_good_configuration_marginal}.
+
+\begin{theorem}[Signed centered physical label moment]
+\label{thm:replica_good_configuration_label_moment}
+\lean{Matrix.re_trace_mul_exp_centered_labelEntropy_replicaGoodConfigurationMarginal_le}
+\leanok
+\uses{def:replica_good_configuration_marginal,thm:pure_tensor_power_marginal,
+thm:schur-label-iid-mgf}
+Fix a physical factor $A\in\{Q,Y,V\}$, of dimension $q_A$, and set
+\begin{align}
+ \sigma_A&=\operatorname{Tr}_{\{Q,Y,V\}\setminus\{A\}}
+               |\Omega\rangle\langle\Omega|,\\
+ S_A&=S(\sigma_A).
+\end{align}
+Suppose $C_0\geq0$, $c_0>0$, $\mathcal B\geq1$, and the positive
+eigenvalues $p_j$ of this actual one-copy marginal satisfy, for every $s$
+with $|s|\leq c_0/\sqrt{\mathcal B}$,
+\begin{align}
+ \log\sum_jp_j e^{-s\log p_j}
+ \leq sS_A+C_0\mathcal B s^2.
+\end{align}
+Let $\widehat F_A^{(m)}$ be the logarithmic label-dimension observable for
+the actual permutations of the $m$ good $A$ copies, acting as the identity
+on the other factors. Then, for every $t$ with
+$|t|\leq\min(c_0,1)/(2\sqrt{\mathcal B})$,
+\begin{align}
+ \operatorname{ReTr}\!\left(\rho_G
+ e^{t(\widehat F_A^{(m)}-mS_AI)}\right)
+ &\leq\|w\|^2\exp\!\left(
+       2C_0m\mathcal B t^2+\frac{q_A^2}{2}\log(m+1)\right).
+ \label{eq:replica_good_configuration_label_moment}
+\end{align}
+The original vector need not be unit or symmetric. Zero components and
+zero good copies are included; the marginal may be singular.
+\end{theorem}
+
+\begin{proof}
+\leanok
+The actual good physical-copy density is the pure ground-state power
+tensored with the same component's actual good auxiliary density. Regroup
+the good physical copies into the complementary physical factor and $A$.
+Their actual reduced density is $\sigma_A^{\otimes m}$ by the product
+marginal identity. The central copy-permutation sums carry the singleton
+label observable to its action on these $A$ copies, with identities on
+the other factors. The exponential and partial-trace pairings therefore
+give exactly
+\begin{align}
+ \operatorname{ReTr}\!\left(\rho_G
+ e^{t(\widehat F_A^{(m)}-mS_AI)}\right)
+ =\|w\|^2\operatorname{ReTr}\!\left(
+ \sigma_A^{\otimes m}e^{t(F_A^{(m)}-mS_AI)}\right).
+\end{align}
+Apply the independent-copy logarithmic estimate, exponentiate, and
+multiply by the nonnegative scalar $\|w\|^2$. No division by the component
+mass is used.
+\end{proof}
+
+This is the physical moment estimate used in
+\cite[Section~7, lines~75--85, 227--238 and 556--560]{OpenAI2026AreaLaw}.
