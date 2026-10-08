@@ -49,6 +49,7 @@ import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.FloorKKT
 import QICLean.Analysis.GammaRatio
 import QICLean.Analysis.GapPerturbation
+import QICLean.Analysis.GaussianFilter
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
 import QICLean.Analysis.HarmonicWeights
