@@ -15,10 +15,10 @@ The transport estimate consumes two results of the replica section of the area-l
 * the skew bound of Lemma 6.5 (`lem:symbol`, display `replicas:skew-bound`,
   `05-replicas.tex` lines 615--660), in the form used at a split leaf.
 
-These statements are the interface expected from the replica-metric work (TNLean issue
-#8750). They are recorded here as propositions on the band metric of
-`ReplicaTransport.Setup`, and the transport estimate is proved assuming them; once the
-replica-metric declarations land, both propositions are discharged by applying them.
+Both lemmas belong to the replica section of the source and are not formalized yet. They
+are recorded here as propositions on the band metric of `ReplicaTransport.Setup`, and the
+transport estimate is proved assuming them; once the replica-metric lemmas are formalized,
+both propositions are discharged by applying them.
 
 `SplitSkewBound` is the case of Lemma 6.5 used at a split leaf: the
 designated support meets `Y` and exactly one outer part. The source lemma requires only
