@@ -341,3 +341,66 @@ operator of $Q$.
     $C\bigl((\delta+d/k)^{1-2t}+\delta^{-2t}(\delta+d/k)\bigr)\|\pi^\lambda z\|^2$.
     Let $k\to\infty$ and take square roots.
 \end{proof}
+
+\section{Similarity transforms of copy means}
+
+Let $\mathcal V=\bigotimes_v\C^{n_v}$ with every $n_v\ge1$, let $P,Y,F$ be disjoint
+sets of factors, and let $A_k=(W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k})^2$ be the partition
+metric. For a one-copy operator $h$ supported on $P\cup Y$, write $h^{(j)}$ for $h$
+acting on the $j$-th copy, $\bar h=k^{-1}\sum_jh^{(j)}$, and
+$O_k=A_k^{-1/2}\bar hA_k^{1/2}$.
+
+\begin{lemma}[One-copy operators on replicas]
+    \label{lem:replica_site_operators}
+    \lean{PermutationRepresentation.commute_permOp_of_apply_eq,
+        TensorPower.siteOp_apply_of_isSupportedOn,
+        TensorPower.commute_permOp_subsystemPerm_siteOp_of_disjoint,
+        TensorPower.commute_permOp_subsystemPerm_siteOp_of_fix,
+        TensorPower.permOp_copyPerm_mul_siteOp, TensorPower.siteOp_eq_reindex,
+        TensorPower.l2_opNorm_siteOp_le, Entropy.IsSupportedOn.exists_sum_mul}
+    \leanok
+    The operator $h^{(j)}$ commutes with the copy permutations of every subsystem
+    disjoint from the support of $h$, and with every copy permutation of a subsystem
+    that fixes the copy $j$. A permutation $\tau$ of entire copies conjugates $h^{(j)}$
+    to $h^{(\tau j)}$, and $\|h^{(j)}\|\le\|h\|$. An operator supported on a disjoint
+    union $X\cup T$ is a finite sum of products $a_ib_i$ with $a_i$ supported on $X$
+    and $b_i$ supported on $T$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first two statements compare matrix entries: $h^{(j)}$ is nonzero only
+    between configurations that agree outside the support factors of copy $j$, and
+    the permutations in question preserve this relation and these factors. The
+    operator $h^{(j)}$ is $h\otimes I$ after splitting off copy $j$. For the
+    decomposition, expand a local operator on $X\cup T$ in matrix units.
+\end{proof}
+
+\begin{theorem}[Uniform boundedness of the similarity transform]
+    \label{thm:marked_similarity_bounded}
+    \lean{TensorPower.leafRoot, TensorPower.leafMetric, TensorPower.copyMean,
+        TensorPower.markedSimilarity, TensorPower.sqrt_leafMetric,
+        TensorPower.star_dotProduct_copyMean_eq, TensorPower.replicaMetric_conj_siteOp_mul,
+        TensorPower.exists_norm_markedSimilarity_mulVec_le}
+    \leanok
+    \uses{lem:replica_site_operators, thm:marked_ratio_forward, thm:marked_ratio_inverse,
+        thm:replica_metric_basic}
+    Let $0<t<1/2$. For fixed $P,Y,F$ and $h$ there is $C$, depending on $\mathcal V$, $t$,
+    the partition and $h$, such that
+    $\|O_kz\|\le C\|z\|$ for every $k$ and every $z\in\mathcal S_k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The square root of $A_k$ is $W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k}$, the $F$ factors
+    commute with $\bar h$ and cancel, and $O_k$ preserves $\mathcal S_k$. Between
+    symmetric vectors, $h^{(k)}$ may replace $\bar h$. Write $h=\sum_ib_ia_i$ with $b_i$
+    supported on $Y$ and $a_i$ on $P$. Since the metric of the first $k-1$ copies
+    commutes with operators on the last copy,
+    \[
+        W_Y^{-1}W_P(b_ia_i)^{(k)}W_P^{-1}W_Y
+        =\bigl(R_Y^{-1}b_i^{(k)}R_Y\bigr)\bigl(R_Pa_i^{(k)}R_P^{-1}\bigr).
+    \]
+    Hence $\langle w,O_kz\rangle=\sum_i\langle R_Yb_i^{(k)\ast}R_Y^{-1}w,
+    R_Pa_i^{(k)}R_P^{-1}z\rangle$ for symmetric $w,z$, in which both inverses act on
+    symmetric vectors. The forward and inverse bounds on the marked ratio bound each
+    term by $C_i\|w\|\|z\|$; take $w=O_kz$.
+\end{proof}

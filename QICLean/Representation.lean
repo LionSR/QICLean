@@ -34,6 +34,8 @@ import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
 import QICLean.Representation.ReplicaMetric
 import QICLean.Representation.ReplicaRatio
+import QICLean.Representation.ReplicaSimilarity
+import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
