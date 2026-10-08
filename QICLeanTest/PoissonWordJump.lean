@@ -74,7 +74,9 @@ example :
         (if List.ofFn (nil : Word Bool).2 = [false, true] then 1 else 0) :=
       sum_prefix_increment (fun u : Word Bool ↦
         if List.ofFn u.2 = [false, true] then 1 else 0) ⟨2, ![false, true]⟩
-    _ = 1 := by norm_num [nil, List.ofFn_succ]
+    _ = 1 := by
+      change (1 : ℝ) - 0 = 1
+      norm_num
 
 -- The empty-word indicator has negative jumps; signed subtraction is essential.
 example {ι : Type*} [Fintype ι] (T : ℝ≥0) :
@@ -88,7 +90,7 @@ example {ι : Type*} [Fintype ι] (T : ℝ≥0) :
     (fun u : Word ι ↦ if u.1 = 0 then (1 : ℝ) else 0) hb
 
 example {ι : Type*} [Fintype ι] (f : Word ι → ℝ) {C : ℝ}
-    (hb : ∀ u, |f u| ≤ C) : (∫ w, f w ∂measure ι 0) = f nil := by
+    (_hb : ∀ u, |f u| ≤ C) : (∫ w, f w ∂measure ι 0) = f nil := by
   simp
 
 example (T : ℝ≥0) (f : Word (Fin 0) → ℝ) {C : ℝ}
