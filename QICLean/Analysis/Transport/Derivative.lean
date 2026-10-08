@@ -301,12 +301,56 @@ theorem trace_transportState {J : Type*} [DecidableEq J] {T' : MeanTree J}
   rw [transportState, trace_traceAdjoint_leafMap hA T' hw, trace_vecMulVec, dotProduct_comm,
     star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, conjTranspose_imagPow_mul_imagPow, one_mulVec]
 
+omit [∀ h, Fintype (C h)] in
+/-- The interpolated subtree depends continuously on the interpolation parameter. -/
+theorem continuous_eval_interpTree {S : ∀ h, MeanTree (C h)} {A : H → Matrix n n ℂ}
+    {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef) (hA' : ∀ h c, (A' h c).PosDef)
+    (T₀ : MeanTree H) :
+    Continuous fun x : I => (interpTree T₀ S x).eval (interpInput A A') := by
+  have hIn : ∀ j, (interpInput A A' j).PosDef := fun j => match j with
+    | ⟨h, none⟩ => hA h
+    | ⟨h, some c⟩ => hA' h c
+  induction T₀ with
+  | leaf h₀ =>
+    have hB : (choiceRoot S A' h₀).PosDef := posDef_eval (hA' h₀) _
+    have hfun : (fun x : I => (interpTree (leaf h₀) S x).eval (interpInput A A')) =
+        fun x : I => geomMean x (A h₀) (choiceRoot S A' h₀) := by
+      funext x
+      simp only [interpTree, MeanTree.bind, eval_node, eval_leaf, eval_map_choice, interpInput]
+    rw [hfun]
+    exact (continuous_iff_continuousAt.mpr fun q =>
+      (hasDerivAt_geomMean_param (hA h₀) hB q).continuousAt).comp continuous_subtype_val
+  | node r l rr ihl ihr =>
+    refine continuous_iff_continuousAt.mpr fun x => ?_
+    rw [← continuousWithinAt_univ]
+    have hg := (differentiableWithinAt_geomMean (posDef_eval hIn (interpTree l S x))
+      (posDef_eval hIn (interpTree rr S x)) r.2).continuousWithinAt
+    exact ContinuousWithinAt.comp (f := fun y : I => ((interpTree l S y).eval (interpInput A A'),
+        (interpTree rr S y).eval (interpInput A A'))) hg (ihl.prodMk ihr).continuousWithinAt
+      fun y _ => ⟨(posDef_eval hIn (interpTree l S y)).isHermitian,
+        (posDef_eval hIn (interpTree rr S y)).isHermitian⟩
+
+omit [∀ h, Fintype (C h)] in
+/-- The interpolation path is continuous. -/
+theorem continuous_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
+    {A : H → Matrix n n ℂ} {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef)
+    (hA' : ∀ h c, (A' h c).PosDef) : Continuous (interpPath T S A A') :=
+  (continuous_eval_interpTree hA hA' T).comp continuous_projIcc
+
 /-- `N²` is positive and continuous on `[0, 1]` (`06-transport.tex` lines 769--771). -/
 theorem continuous_filteredNormSq_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
     {A : H → Matrix n n ℂ} {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef)
     (hA' : ∀ h c, (A' h c).PosDef) (pre : n → ℂ) :
     Continuous fun q => filteredNormSq (interpPath T S A A' q) pre := by
-  sorry
+  have hM : ∀ q, (interpPath T S A A' q).PosDef := fun q => posDef_interpRoot hA hA' _
+  simp_rw [filteredNormSq_eq (hM _)]
+  have hc : Continuous fun q => interpPath T S A A' q ^ (-(1 / 2) : ℝ) := by
+    refine continuous_iff_continuousAt.mpr fun q => ?_
+    rw [← continuousWithinAt_univ]
+    exact (differentiableWithinAt_rpow_neg_half (hM q)).continuousWithinAt.comp
+      (continuous_interpPath hA hA').continuousWithinAt fun y _ => (hM y).isHermitian
+  exact Complex.continuous_re.comp (continuous_const.dotProduct
+    (hc.matrix_mulVec continuous_const))
 
 /-- **Integration over a closed subinterval** (`06-transport.tex` lines 427--429 and
 769--779): the derivative of `-log N²` is interval integrable on `[p₀, p₁] ⊆ [0, 1]`, and
