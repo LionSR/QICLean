@@ -325,3 +325,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   facts are derived for the five specified actions. No global positivity
   of the physical operator or preservation of the physical symmetric
   projection under a merge is assumed.
+
+### Hölder for a fixed family of subsystem observables — candidate (2026-10-08)
+
+- **Pattern:** Extend actual nested/disjoint central-projector commutation to
+  real label observables, verify the finite family of subsystem sets, and
+  derive the commutation of signed sums before applying finite trace Hölder.
+- **Seen:** `Representation/PhysicalMergeHolder.lean` uses the existing
+  projector results in `SchurLabelCommutation.lean`. The private observable
+  extension also occurs in `CompatiblePhysicalLabel.lean`; two occurrences
+  in two files, below the threshold for a new public helper.
+- **Abstraction:** Reuse `Commute.sum_left`, `Commute.sum_right` and direct
+  addition/subtraction/negation closure. The five signed combinations share
+  one private two-sided calculation. The general finite trace inequality
+  remains in `Analysis/WeightedTraceHolder.lean`; no new tactic is introduced.
+- **Caveats:** Derive every commutation from the actual subsystem actions.
+  An arbitrary positive semidefinite trace weight need not commute with the
+  observables. The factor Y is independent of the combined exterior QV.
