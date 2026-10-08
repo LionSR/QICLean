@@ -1,0 +1,91 @@
+\section{Independent thinning of ordered words}
+\label{sec:poisson_word_thinning}
+
+Let $I$ and $J$ be disjoint tagged alphabets. For $t\geq 0$, write
+$\mu_{I,t}$ for the Poissonized word measure of
+Definition~\ref{def:poisson_word_measure}. The following coupling concerns
+the retained and omitted ordered words from one sample at a fixed time.
+
+\begin{definition}[The two filtered words]
+    \label{def:poisson_word_filters}
+    \lean{PoissonWord.leftWord, PoissonWord.rightWord,
+        PoissonWord.leftWord_nil, PoissonWord.rightWord_nil,
+        PoissonWord.leftWord_length_add_rightWord_length,
+        PoissonWord.thinningEvent, PoissonWord.thinningFiber}
+    \leanok
+    \uses{def:poisson_word_measure}
+    For a word $w$ over $I\sqcup J$, let $L(w)$ retain its $I$-letters
+    and let $R(w)$ retain its $J$-letters, preserving their original order.
+    Both filters send the empty word to the empty word, and
+    $|L(w)|+|R(w)|=|w|$. For prescribed words $u$ over $I$ and $v$ over $J$,
+    put $E(u,v)=\{w:L(w)=u,\ R(w)=v\}$.
+\end{definition}
+
+\begin{lemma}[Finite joint fibers]
+    \label{lem:poisson_thinning_fiber}
+    \lean{PoissonWord.instFintypeThinningFiber, PoissonWord.finite_thinningEvent,
+        PoissonWord.length_eq_add_of_mem_thinningEvent, PoissonWord.card_thinningFiber}
+    \leanok
+    \uses{def:poisson_word_filters}
+    For any alphabets $I,J$, the set $E(u,v)$ is finite. Every member has
+    length $|u|+|v|$, and $|E(u,v)|=\binom{|u|+|v|}{|u|}$.
+    This formula allows repeated letters in either prescribed word.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:tagged_interleavings_filter, lem:tagged_interleavings_count,
+        lem:tagged_interleavings_length}
+    The words in $E(u,v)$ are precisely the tagged interleavings of $u$ and $v$.
+    Their duplicate-free enumeration has $\binom{|u|+|v|}{|u|}$ members.
+    The two filters partition the positions of each member.
+\end{proof}
+
+\begin{lemma}[Joint filtered-word masses]
+    \label{lem:poisson_thinning_mass}
+    \lean{PoissonWord.measure_thinningEvent, PoissonWord.choose_mul_weight_sum,
+        PoissonWord.measure_thinningEvent_eq_mul}
+    \leanok
+    \uses{def:poisson_word_filters}
+    Suppose $I$ and $J$ are finite, with cardinalities $a$ and $b$.
+    For $m=|u|$ and $n=|v|$, the joint event has mass
+    \begin{align}
+        \mu_{I\sqcup J,t}(E(u,v))
+        &=\binom{m+n}{m}e^{-(a+b)t}\frac{t^{m+n}}{(m+n)!}
+          =\left(e^{-at}\frac{t^m}{m!}\right)
+           \left(e^{-bt}\frac{t^n}{n!}\right)
+          =\mu_{I,t}(\{u\})\mu_{J,t}(\{v\}).
+        \label{eq:poisson_thinning_mass}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:poisson_thinning_fiber, lem:poisson_word_normalization}
+    Sum the common atomic mass over the finite joint fiber. The identity
+    $\binom{m+n}{m}m!n!=(m+n)!$, exponential addition, and
+    $t^{m+n}=t^mt^n$ give (\ref{eq:poisson_thinning_mass}). Only positive
+    factorials are canceled, so the calculation also applies at $t=0$.
+\end{proof}
+
+\begin{theorem}[Independent ordered-word thinning]
+    \label{thm:poisson_word_thinning}
+    \lean{PoissonWord.map_leftWord_rightWord, PoissonWord.map_leftWord,
+        PoissonWord.map_rightWord, PoissonWord.indepFun_leftWord_rightWord}
+    \leanok
+    \uses{def:poisson_word_filters}
+    For finite alphabets $I,J$ and every $t\geq 0$, the joint distribution
+    of $L(w)$ and $R(w)$ under $\mu_{I\sqcup J,t}$ is
+    \begin{align}
+        (L,R)_*\mu_{I\sqcup J,t}=\mu_{I,t}\otimes\mu_{J,t}.
+        \label{eq:poisson_thinning_law}
+    \end{align}
+    Thus the two ordered subwords are independent, with respective laws
+    $\mu_{I,t}$ and $\mu_{J,t}$. Either alphabet may be empty.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:poisson_thinning_mass, lem:poisson_word_normalization}
+    The set of pairs of finite words is countable. Equality of its singleton
+    masses in (\ref{eq:poisson_thinning_mass}) proves
+    (\ref{eq:poisson_thinning_law}). The coordinate projections give the two
+    marginals, and the product joint law gives independence.
+\end{proof}
