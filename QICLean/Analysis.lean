@@ -156,6 +156,7 @@ import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
 import QICLean.Analysis.WeightedRectangular
 import QICLean.Analysis.WeightedSupertrace
+import QICLean.Analysis.WeightedTraceExponential
 import QICLean.Analysis.WeylMonotonicity
 import QICLean.Analysis.YamagamiBoundary
 import QICLean.Analysis.YamagamiCyclicMatrix
