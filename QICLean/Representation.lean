@@ -17,6 +17,7 @@ import QICLean.Representation.CentralLabelFunction
 import QICLean.Representation.CoherentMeasure
 import QICLean.Representation.CoherentResolution
 import QICLean.Representation.CoherentSymbol
+import QICLean.Representation.CoherentSymbolFunction
 import QICLean.Representation.CoherentSymbolLimit
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
