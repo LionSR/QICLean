@@ -93,4 +93,20 @@ theorem rpowDeriv_intertwine
         Ring.inverse (t • (1 : Matrix m m ℂ) + B))) * Jᴴ) = _
     rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/-- Compression of the complex-linear power derivative on an arbitrary
+direction. Auxiliary to OpenAI's area-law manuscript, Lemma 7.2,
+`06-transport.tex`, lines 158–164, revision
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+The intertwiner may be rectangular and need not be an isometry. -/
+theorem rpowDeriv_compress
+    {A : Matrix n n ℂ} {B : Matrix m m ℂ}
+    (hA : A.PosDef) (hB : B.PosDef)
+    (J : Matrix n m ℂ) (hAJ : A * J = J * B)
+    {p : ℝ} (hp : p ∈ Icc (0 : ℝ) 1) (X : Matrix n n ℂ) :
+    Jᴴ * rpowDeriv p A X * J = rpowDeriv p B (Jᴴ * X * J) := by
+  have hstar := congrArg Matrix.conjTranspose hAJ
+  simp only [Matrix.conjTranspose_mul, hA.isHermitian.eq, hB.isHermitian.eq] at hstar
+  simpa only [Matrix.conjTranspose_conjTranspose] using
+    (rpowDeriv_intertwine hB hA Jᴴ hstar.symm hp X).symm
+
 end Matrix

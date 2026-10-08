@@ -40,3 +40,23 @@ Lemma~7.2 of~\cite{OpenAI2026AreaLaw}.
   and therefore passes through the integrable derivative formula.
   This proves the assertion.
 \end{proof}
+
+\begin{corollary}[Compression of the power derivative]
+  \label{cor:power_derivative_compress}
+  \lean{Matrix.rpowDeriv_compress}
+  \leanok
+  Let $A$ and $B$ be positive definite matrices on finite-dimensional
+  complex Hilbert spaces, and let $J$ satisfy $AJ=JB$.
+  For every $p\in[0,1]$ and every matrix $X$ on the space of $A$,
+  \begin{align*}
+    J^*\mathcal D_p(A)[X]J
+      &=\mathcal D_p(B)[J^*XJ].
+  \end{align*}
+\end{corollary}
+
+\begin{proof}
+  \leanok
+  Taking adjoints of $AJ=JB$ gives $BJ^*=J^*A$.
+  Apply Theorem~\ref{thm:power_derivative_intertwine} with $A,B$
+  exchanged and with intertwiner $J^*$.
+\end{proof}
