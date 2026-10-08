@@ -151,6 +151,10 @@ theorem star_mulVec_dotProduct_mulVec {U : Matrix n n ℂ} (hU : star U * U = 1)
     star (U *ᵥ a) ⬝ᵥ (U *ᵥ b) = star a ⬝ᵥ b := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, ← star_eq_conjTranspose, hU, one_mulVec]
 
+theorem conj_mulVec_mulVec {U : Matrix n n ℂ} (hU : star U * U = 1) (K : Matrix n n ℂ)
+    (y : n → ℂ) : (U * K * star U) *ᵥ (U *ᵥ y) = U *ᵥ (K *ᵥ y) := by
+  rw [mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hU, Matrix.mul_one, mulVec_mulVec]
+
 /-- **The quadratic form in spectral coordinates.** For `W = U diag(e) U*`, `H = U K U*` and
 `v = U c`, `⟨W v, H W v⟩ = ∑_{r,t} c̄_r ē_r K_{rt} e_t c_t`. -/
 theorem quadForm_eigen {U K : Matrix n n ℂ} (hU : star U * U = 1) (e c : n → ℂ) :
@@ -212,6 +216,34 @@ theorem exists_hasDerivAt_rpow_neg_half {M : ℝ → Matrix n n ℂ} {D : Matrix
 
 /-! ### The norm derivative -/
 
+theorem filteredNormSq_pos {M : Matrix n n ℂ} (hM : M.PosDef) {pre : n → ℂ} (hpre : pre ≠ 0) :
+    0 < filteredNormSq M pre := by
+  have hne : filteredRaw M pre ≠ 0 := by
+    intro h0
+    apply hpre
+    have : M ^ (1 / 4 : ℝ) *ᵥ filteredRaw M pre = pre := by
+      rw [filteredRaw, mulVec_mulVec, hM.rpow_mul_rpow_neg, one_mulVec]
+    rw [← this, h0, mulVec_zero]
+  exact (Complex.pos_iff.mp (dotProduct_star_self_pos_iff.mpr hne)).1
+
+/-- `star (M^{-1/4} pre) ⬝ᵥ M^{-1/4} pre = N²` as a complex number. -/
+theorem star_dotProduct_filteredRaw (M : Matrix n n ℂ) (pre : n → ℂ) :
+    star (filteredRaw M pre) ⬝ᵥ filteredRaw M pre = (filteredNormSq M pre : ℂ) := by
+  have h0 : 0 ≤ star (filteredRaw M pre) ⬝ᵥ filteredRaw M pre := dotProduct_star_self_nonneg _
+  apply Complex.ext
+  · simp [filteredNormSq]
+  · simpa [filteredNormSq] using (Complex.nonneg_iff.mp h0).2.symm
+
+/-- The filtered vector is a unit vector. -/
+theorem star_dotProduct_filteredVector {M : Matrix n n ℂ} (hM : M.PosDef) {pre : n → ℂ}
+    (hpre : pre ≠ 0) : star (filteredVector M pre) ⬝ᵥ filteredVector M pre = 1 := by
+  have hN := filteredNormSq_pos hM hpre
+  rw [filteredVector, star_smul, smul_dotProduct, dotProduct_smul, star_dotProduct_filteredRaw]
+  simp only [smul_eq_mul, Complex.star_def, map_inv₀, Complex.conj_ofReal]
+  rw [← Complex.ofReal_inv, ← Complex.ofReal_mul, ← Complex.ofReal_mul, ← mul_assoc,
+    ← mul_inv, Real.mul_self_sqrt hN.le, inv_mul_cancel₀ hN.ne', Complex.ofReal_one]
+
+
 /-- Conjugating a sum `G' M G + G D G + G M G' = 0` into the eigenbasis of `M`. -/
 theorem relation_eigen {M G' D : Matrix n n ℂ} (hM : M.PosDef)
     (hrel : G' * M * M ^ (-(1 / 2) : ℝ) + M ^ (-(1 / 2) : ℝ) * D * M ^ (-(1 / 2) : ℝ) +
@@ -258,5 +290,66 @@ theorem relation_eigen {M G' D : Matrix n n ℂ} (hM : M.PosDef)
       rw [Real.rpow_one], ← Real.rpow_add (hx i)]
     norm_num
   linear_combination h3 - g r t * e t - g r t * e r
+
+/-- **The derivative of the filtered norm** (`06-transport.tex`, display
+`transport:norm-derivative` and the Fourier formula `transport:g-fourier`,
+lines 470--491): for a differentiable path of positive definite matrices with
+`M(p)^{-1/2} M'(p) M(p)^{-1/2} = 𝖧`,
+`-∂_p log N² = ∫ m_{1/4}(u) ⟨M^{-iu} v, 𝖧 M^{-iu} v⟩ du`. -/
+theorem hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt {M : ℝ → Matrix n n ℂ}
+    {D : Matrix n n ℂ} {p : ℝ} (hM : ∀ q, (M q).PosDef) (hD : HasDerivAt M D p)
+    {pre : n → ℂ} (hpre : pre ≠ 0) :
+    HasDerivAt (fun q => -Real.log (filteredNormSq (M q) pre))
+      (∫ u, fourierWeight u *
+        (star (imagPow (M p) u *ᵥ filteredVector (M p) pre) ⬝ᵥ
+          ((M p ^ (-(1 / 2) : ℝ) * D * M p ^ (-(1 / 2) : ℝ)) *ᵥ
+            (imagPow (M p) u *ᵥ filteredVector (M p) pre))).re) p := by
+  obtain ⟨G', hG, hrel⟩ := exists_hasDerivAt_rpow_neg_half hM hD
+  -- The derivative of `N²`.
+  let Ll : Matrix n n ℂ →ₗ[ℂ] ℂ :=
+    { toFun := fun X => star pre ⬝ᵥ (X *ᵥ pre)
+      map_add' := fun X Y => by simp [add_mulVec, dotProduct_add]
+      map_smul' := fun c X => by simp [smul_mulVec, dotProduct_smul] }
+  have hN : HasDerivAt (fun q => filteredNormSq (M q) pre) (star pre ⬝ᵥ (G' *ᵥ pre)).re p := by
+    have h1 := Complex.reCLM.hasFDerivAt.comp_hasDerivAt p
+      (((LinearMap.toContinuousLinearMap Ll).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt p hG)
+    convert h1 using 1
+    · funext q
+      simp [filteredNormSq_eq (hM q), Ll]
+    · rfl
+  have hNp := filteredNormSq_pos (hM p) hpre
+  have hlog := (hN.log hNp.ne').neg
+  convert hlog using 1
+  -- Spectral coordinates at `p`.
+  set Mp := M p with hMp_def
+  have hMp : Mp.PosDef := hM p
+  set U := eigU hMp.isHermitian
+  set x := hMp.isHermitian.eigenvalues
+  have hx : ∀ i, 0 < x i := hMp.eigenvalues_pos
+  have hUU : star U * U = 1 := star_eigU_mul _
+  have hUU' : U * star U = 1 := eigU_mul_star _
+  have hc : ∀ X : Matrix n n ℂ, star U * (U * X) = X := fun X => by
+    rw [← Matrix.mul_assoc, hUU, Matrix.one_mul]
+  set N2 := filteredNormSq Mp pre
+  set a := star U *ᵥ pre
+  set g := star U * G' * U
+  set d := star U * D * U
+  have hpre_e : pre = U *ᵥ a := by rw [mulVec_mulVec, hUU', one_mulVec]
+  have hG'e : G' = U * g * star U := by
+    simp only [g, ← Matrix.mul_assoc, hUU', Matrix.one_mul]
+    rw [Matrix.mul_assoc, hUU', Matrix.mul_one]
+  have hDe : D = U * d * star U := by
+    simp only [d, ← Matrix.mul_assoc, hUU', Matrix.one_mul]
+    rw [Matrix.mul_assoc, hUU', Matrix.mul_one]
+  have hpow : ∀ s : ℝ, Mp ^ s = U * diagonal (fun i => ((x i ^ s : ℝ) : ℂ)) * star U :=
+    fun s => rpow_eq_eigen hMp s
+  clear_value a g d
+  -- The left side in coordinates.
+  have hL : star pre ⬝ᵥ (G' *ᵥ pre) = ∑ r, ∑ t, star (a r) * g r t * a t := by
+    rw [hG'e, hpre_e, conj_mulVec_mulVec hUU, star_mulVec_dotProduct_mulVec hUU]
+    simp only [dotProduct, mulVec, Pi.star_apply, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun t _ => ?_
+    ring
+  sorry
 
 end Matrix.Transport
