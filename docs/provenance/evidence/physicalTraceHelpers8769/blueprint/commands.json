@@ -1,0 +1,104 @@
+[
+  {
+    "name": "sync",
+    "command": [
+      "python3",
+      "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers/scripts/blueprint_lean_sync.py",
+      "--root",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x",
+      "--report",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x/sync.json",
+      "--ci",
+      "--update-lean-decls"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers",
+    "returncode": 0,
+    "seconds": 0.546,
+    "log_sha256": "0151986a053a356c97891bb0cddbd7b73d1f4e9504dcf7a3e20bdf92a124ac7e"
+  },
+  {
+    "name": "pdf",
+    "command": [
+      "latexmk",
+      "-lualatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "focused.tex"
+    ],
+    "cwd": "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x/blueprint/src",
+    "returncode": 0,
+    "seconds": 7.385,
+    "log_sha256": "11ab76849eda87bddf7b9e02f28b3eb28f6585837b3484e12990114b930198b7"
+  },
+  {
+    "name": "init-disposable-project",
+    "command": [
+      "git",
+      "init",
+      "-q"
+    ],
+    "cwd": "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x",
+    "returncode": 0,
+    "seconds": 0.031,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "web",
+    "command": [
+      "/Users/siruilu/.local/share/uv/tools/texra-blueprint/bin/leanblueprint",
+      "web"
+    ],
+    "cwd": "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x/blueprint",
+    "returncode": 0,
+    "seconds": 1.363,
+    "log_sha256": "90ca21385be2e1a2ce24953ae6a3be81ae4a1043488d2922e47a5cbcd334a80b"
+  },
+  {
+    "name": "browser",
+    "command": [
+      "/tmp/qic-regional-blueprint-env/bin/python",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x/scripts/test_blueprint_web_render.py",
+      "--web-root",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x/blueprint/web"
+    ],
+    "cwd": "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x",
+    "returncode": 0,
+    "seconds": 4.163,
+    "log_sha256": "e352bf0830efc7b7fb14dc97c1540020c70daebe76d671da332633f206d8c982"
+  },
+  {
+    "name": "restore-full-declarations",
+    "command": [
+      "python3",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x/scripts/blueprint_lean_sync.py",
+      "--root",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x",
+      "--report",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x/sync-final.json",
+      "--ci",
+      "--update-lean-decls"
+    ],
+    "cwd": "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x",
+    "returncode": 0,
+    "seconds": 0.594,
+    "log_sha256": "4725f77ac2097f62db67e0f66314c85bdf02dc4b12d88680ac33b6070e230d09"
+  },
+  {
+    "name": "render",
+    "command": [
+      "pdftoppm",
+      "-f",
+      "3",
+      "-singlefile",
+      "-scale-to",
+      "1400",
+      "-png",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x/blueprint/src/focused.pdf",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x/theorem-page"
+    ],
+    "cwd": "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-trace-blueprint-64k_ug8x",
+    "returncode": 0,
+    "seconds": 0.301,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

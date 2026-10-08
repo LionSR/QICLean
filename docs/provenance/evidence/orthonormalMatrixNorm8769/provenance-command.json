@@ -1,0 +1,19 @@
+{
+  "command": [
+    "uv",
+    "run",
+    "--no-project",
+    "--with",
+    "jsonschema==4.26.0",
+    "python",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/orthonormal-matrix-norm/docs/provenance/evidence/orthonormalMatrixNorm8769/check-provenance.py",
+    "--root",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/orthonormal-matrix-norm",
+    "--upstream-root",
+    "/private/tmp/tnlean-openai-math-audit.git"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/orthonormal-matrix-norm",
+  "returncode": 0,
+  "seconds": 0.413,
+  "log_sha256": "f55d71a133769d99099fa5774223a535f46216ecf9994bd1e8b5500674664846"
+}

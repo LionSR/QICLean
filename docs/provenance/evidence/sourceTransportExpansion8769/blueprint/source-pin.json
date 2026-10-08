@@ -1,0 +1,10 @@
+{
+  "source_revision": "b298f3fb6439c3e149d6788249fae868e3f9ed50",
+  "checked_files": 954,
+  "all_source_hashes_match": true,
+  "visual_review": {
+    "pdf_page": 4,
+    "result": "pass",
+    "notes": "The complete new theorem and proof are readable. Supporting definitions are included; final TeX has no warnings."
+  }
+}

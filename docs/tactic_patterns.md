@@ -11,6 +11,23 @@ No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
+### Operator norm in orthonormal coordinates — promoted (2026-10-08)
+
+- **Pattern:** Identify the matrix of a continuous linear map in finite
+  orthonormal input and output bases, then transfer its operator-norm bound.
+- **Result:** `ContinuousLinearMap.norm_toMatrix_orthonormal` in
+  `QICLean/Analysis/OrthonormalMatrixNorm.lean` gives equality of norms.
+  It reuses Mathlib's Euclidean matrix norm and invariance under composition
+  with linear isometric equivalences. Rectangular matrices and empty bases
+  require no separate cases.
+- **Consumers:** TNLean's `Word.norm_preparedMatrix_le_one`,
+  `Word.norm_freeSourceMatrix_le_one`, and the new
+  `Word.norm_physicalOutputMatrix_le_one` in `ExteriorSourceContraction`.
+- **Decision:** The third application justifies one general equality. The
+  prepared TNLean refactor removes the two older coordinate-vector proofs;
+  it will be applied together with the dependency update. No custom tactic
+  or duplicate coordinate-norm theorem is introduced.
+
 ## Candidates
 
 ### Finite-spectrum functional-calculus scalar reduction — candidate (2026-10-07)

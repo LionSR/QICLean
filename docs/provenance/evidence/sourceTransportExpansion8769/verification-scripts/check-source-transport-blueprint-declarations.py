@@ -1,0 +1,6 @@
+from pathlib import Path
+import hashlib,json,os,shutil,subprocess,time
+b=Path('/private/tmp/qic-source-transport-expansion');cfg=json.loads((b/'env.json').read_text());bp=Path((b/'blueprint-dir').read_text().strip());out=b/'declaration-check';out.mkdir(exist_ok=True);shutil.copy2(bp/'blueprint/lean_decls',out/'lean_declarations.txt');s=Path('/private/tmp/tnlean-source-main-integration/declaration-check/Declarations.lean').read_text().replace('import TNLean','import QICLean');(out/'Declarations.lean').write_text(s)
+cmd=[cfg['lean'],*cfg['options'],'-DwarningAsError=true','Declarations.lean'];env=os.environ.copy();env['LEAN_PATH']=cfg['LEAN_PATH'];t=time.monotonic();r=subprocess.run(cmd,cwd=out,env=env,capture_output=True,text=True);(out/'declarations.log').write_text(r.stdout+r.stderr);sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();record={'command':cmd,'cwd':str(out),'LEAN_PATH':cfg['LEAN_PATH'],'returncode':r.returncode,'seconds':round(time.monotonic()-t,3),'source_sha256':sha(out/'Declarations.lean'),'log_sha256':sha(out/'declarations.log'),'scope':'Direct Lean full-root declaration presence check, not Lake checkdecls.'}
+if r.returncode==0:record['checked_count']=int((out/'checked-count.txt').read_text())
+(out/'command.json').write_text(json.dumps(record,indent=2)+'\n');print(record);assert r.returncode==0,r.stdout+r.stderr

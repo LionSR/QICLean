@@ -1,0 +1,4 @@
+Source revision: b298f3fb6439c3e149d6788249fae868e3f9ed50
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true Axioms.lean
+
+'QICLean.ComplexGaussian.sourceTransport_eq_sum_rankOne' depends on axioms: [propext, Classical.choice, Quot.sound]
