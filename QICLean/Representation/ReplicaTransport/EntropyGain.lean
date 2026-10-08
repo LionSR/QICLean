@@ -307,8 +307,9 @@ theorem integrable_fourierWeight_mul_trace_state (t : ℝ) (k : ℕ)
     (((Φ.continuous_of_finiteDimensional.comp hvec).mul continuous_const).matrix_trace)
   have hstate : ∀ u, (D.state n t k pre p j u * Y).trace.re =
       G (hermitianUnitaryPath (CFC.log M) (-u)) := fun u => rfl
-  obtain ⟨Cb, hCb⟩ := (isCompact_unitaryGroup (Config k fun v => Fin (n v))).exists_bound_of_continuousOn
-    hG.continuousOn
+  obtain ⟨Cb, hCb⟩ :=
+    (isCompact_unitaryGroup (Config k fun v => Fin (n v))).exists_bound_of_continuousOn
+      hG.continuousOn
   have hmem : ∀ u, hermitianUnitaryPath (CFC.log M) (-u) ∈
       (unitaryGroup (Config k fun v => Fin (n v)) ℂ : Set _) := fun u =>
     Matrix.mem_unitaryGroup_iff.mpr (hermitianUnitaryPath_mul_conjTranspose _

@@ -253,7 +253,8 @@ theorem integrableOn_logKernel {x : ℝ} (hx : 0 < x) :
     have hs : (0 : ℝ) < s := hs
     simp only [logKernel, sub_nonneg]
     exact inv_anti₀ (by linarith) (by linarith)
-  · refine integrableOn_Ioi_deriv_of_nonpos ?_ (fun s hs => hd s (Ioi_subset_Ici_self hs)) (fun s hs => ?_)
+  · refine integrableOn_Ioi_deriv_of_nonpos ?_ (fun s hs => hd s (Ioi_subset_Ici_self hs))
+      (fun s hs => ?_)
       (tendsto_logKernel_primitive hx)
     · exact (hd 0 self_mem_Ici).continuousAt.continuousWithinAt
     have hs : (0 : ℝ) < s := hs
@@ -380,6 +381,7 @@ theorem isHermitian_symProj : (symProj (copyPerm Ω k)).IsHermitian := by
   · exact Fintype.sum_equiv (Equiv.inv _) _ _ fun _ => rfl
 
 omit [DecidableEq Ω] in
+set_option linter.unusedFintypeInType false in
 theorem isHermitian_coherentProj (θ : Ω → ℂ) : (coherentProj k θ).IsHermitian :=
   (posSemidef_vecMulVec_self_star _).isHermitian
 
@@ -610,7 +612,8 @@ theorem coherentAverage_logKernel_le {f : (Ω → ℂ) → ℝ} (hf : Continuous
 lower bound is positive for a positive function. -/
 theorem exists_bounds_coherentVec {f : (Ω → ℂ) → ℝ} (hf : Continuous f) (hpos : ∀ θ, 0 < f θ) :
     ∃ lo hi : ℝ, 0 < lo ∧ ∀ U : unitaryGroup Ω ℂ,
-      lo ≤ f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) ∧ f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) ≤ hi := by
+      lo ≤ f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) ∧
+        f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) ≤ hi := by
   have hc := hf.comp (continuous_coherentVec a)
   obtain ⟨U₀, -, hmin⟩ := isCompact_univ.exists_isMinOn Set.univ_nonempty hc.continuousOn
   obtain ⟨U₁, -, hmax⟩ := isCompact_univ.exists_isMaxOn Set.univ_nonempty hc.continuousOn
@@ -731,7 +734,7 @@ theorem coherentAverage_log_le_of_pos {f : (Ω → ℂ) → ℝ} (hf : Continuou
     ← integral_sub hint2 hintQ]
   refine integral_nonneg_of_ae ?_
   filter_upwards [ae_restrict_mem measurableSet_Ioi] with s hs
-  show (0 : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) ≤ _
+  change (0 : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) ≤ _
   exact sub_nonneg.mpr (coherentAverage_logKernel_le k a hf hpos hY hYP hPYP (le_of_lt hs))
 
 end Jensen
@@ -779,7 +782,7 @@ theorem coherentIntegral_sub_log_le_re_trace_mul_log {k : ℕ} (a : Ω)
     rw [Pi.zero_apply, sub_nonneg, Complex.coe_smul]
     exact hpin _ (star_coherentVec_dotProduct a U)
   -- a positive filler on the complement of `𝒮_k`
-  haveI : Nonempty (Fin k → Ω) := ⟨fun _ => a⟩
+  have : Nonempty (Fin k → Ω) := ⟨fun _ => a⟩
   obtain ⟨ε, hε, hεX⟩ := (CFC.exists_pos_algebraMap_le_iff X hX.isHermitian.isSelfAdjoint).mpr
     fun x hx => hX.isStrictlyPositive.spectrum_pos hx
   rw [Algebra.algebraMap_eq_smul_one] at hεX
@@ -789,7 +792,6 @@ theorem coherentIntegral_sub_log_le_re_trace_mul_log {k : ℕ} (a : Ω)
   have hPh : P.IsHermitian := isHermitian_symProj k
   have hPP : P * P = P := symProj_mul_self k
   have hXP : X * P = P * X := by
-    have h := fun σ => (hXc σ).symm.eq
     simp only [hPdef, symProj, mul_smul_comm, smul_mul_assoc, Finset.mul_sum, Finset.sum_mul]
     congr 1
     exact Finset.sum_congr rfl fun σ _ => ((hXc σ).eq).symm
