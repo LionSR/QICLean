@@ -530,8 +530,8 @@ theorem mulVec_eq_zero_of_smul_add {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
         rw [eq_neg_iff_add_eq_zero, add_comm, ← hsplit]
       rw [heq, neg_nonpos]; exact hge
     exact le_of_mul_le_mul_left hle hbC
-  exact ⟨(hσ₁.dotProduct_mulVec_zero_iff v).mp hzero₁,
-    (hσ₂.dotProduct_mulVec_zero_iff v).mp hzero₂⟩
+  exact ⟨(hσ₁.dotProduct_mulVec_zero_iff (x := v)).mp hzero₁,
+    (hσ₂.dotProduct_mulVec_zero_iff (x := v)).mp hzero₂⟩
 
 open TNLean.Klein in
 /-- **Both-arguments trace-log limit.** For positive semidefinite \(\sigma\)

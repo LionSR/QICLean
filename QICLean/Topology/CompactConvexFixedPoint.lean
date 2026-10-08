@@ -72,7 +72,7 @@ theorem nearest_inner_nonpos
     sub_mem_posTangentConeAt_of_segment_subset (hK_conv.segment_subset hp hy)
   have hderiv := ((hasFDerivAt_id p).const_sub x).norm_sq
   have hnonneg :=
-    hmin.localize.hasFDerivWithinAt_nonneg hderiv.hasFDerivWithinAt htangent
+    hmin.isLocalMinOn.hasFDerivWithinAt_nonneg hderiv.hasFDerivWithinAt htangent
   have hxp : inner ℝ x (y - p) ≤ inner ℝ p (y - p) := by
     simpa [smul_apply, ContinuousLinearMap.comp_apply] using hnonneg
   rw [inner_sub_left]

@@ -323,10 +323,12 @@ and~\cite{Evans1978Spectral}.
 \end{proof}
 
 \begin{theorem}[Orthogonal trace condition]\label{thm:orthogonal_trace_cond}
-    \lean{orthogonal_trace_pos_of_irreducible_cp}
+    \lean{orthogonal_trace_pos_of_growth,
+        orthogonal_trace_pos_of_irreducible,
+        orthogonal_trace_pos_of_irreducible_cp}
     \leanok
-    \uses{def:irreducible_cp}
-    Let $E$ be an irreducible completely positive map on $\MN{D}$,
+    \uses{def:positive_map, def:irreducible_cp}
+    Let $E$ be an irreducible positive map on $\MN{D}$,
     and let $A, B \ge 0$ be nonzero positive semidefinite matrices
     with $\tr(BA) = 0$.
     Then there exists $t$ with $1 \le t \le D - 1$ such that
@@ -353,7 +355,8 @@ and~\cite{Evans1978Spectral}.
     a strictly positive term.
     This proves the implication (2)$\Rightarrow$(4) in
     \cite[Theorem~6.2(4)]{Wolf2012Quantum} by a binomial expansion and
-    positivity.
+    positivity. Complete positivity is not used; the former completely
+    positive declaration is retained as a direct specialization.
 \end{proof}
 
 \section{Uniqueness}

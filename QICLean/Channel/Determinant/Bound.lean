@@ -251,18 +251,10 @@ most `1`. -/
 lemma norm_prod_le_one_of_forall_mem'
     (s : Multiset ℂ) (hs : ∀ μ ∈ s, ‖μ‖ ≤ 1) :
     ‖s.prod‖ ≤ 1 := by
-  induction s using Multiset.induction with
-  | empty => simp only [Multiset.prod_zero, one_mem, CStarRing.norm_of_mem_unitary,
-      Std.le_refl]
-  | @cons a s ih =>
-      have ha : ‖a‖ ≤ 1 := hs a (Multiset.mem_cons_self a s)
-      have hs' : ∀ ν ∈ s, ‖ν‖ ≤ 1 := fun ν hν => hs ν (Multiset.mem_cons_of_mem hν)
-      calc
-        ‖(a ::ₘ s).prod‖ = ‖a * s.prod‖ := by
-          simp only [Multiset.prod_cons, Complex.norm_mul]
-        _ = ‖a‖ * ‖s.prod‖ := by rw [norm_mul]
-        _ ≤ 1 * 1 := by gcongr; exact ih hs'
-        _ = 1 := by norm_num
+  rw [← coe_nnnorm, Multiset.nnnorm_prod, ← NNReal.coe_one, NNReal.coe_le_coe]
+  refine (Multiset.prod_le_pow_card _ 1 fun _ h ↦ ?_).trans_eq (one_pow _)
+  obtain ⟨μ, hμ, rfl⟩ := Multiset.mem_map.mp h
+  exact_mod_cast hs μ hμ
 
 end Internal
 end ChannelDeterminant

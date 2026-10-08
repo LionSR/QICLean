@@ -7,20 +7,23 @@ import QICLean.Channel.Irreducible.Growth.KernelDescent
 import QICLean.Channel.Schwarz.Basic
 
 /-!
-# Orthogonal-trace condition for irreducible CP maps
+# Orthogonal-trace condition for irreducible positive maps
 
-Wolf Theorem 6.2, item 4: if $E$ is an irreducible completely positive map on
+Wolf Theorem 6.2, item 4: if $E$ is an irreducible positive map on
 $M_D(\mathbb{C})$ and $A$, $B$ are nonzero PSD matrices with
 $\operatorname{tr}(BA) = 0$, then some iterate $E^t(A)$ with
 $1 \leq t \leq D - 1$ has strictly positive trace overlap with $B$.
 
 The proof expands the positive-definite matrix $(\mathrm{id} + E)^{D - 1}(A)$
-supplied by the growth condition (`growth_posDef_of_irreducible_cp`) as a
+supplied by the growth condition (`growth_posDef_of_irreducible`) as a
 binomial sum and isolates the contribution from a nonzero iterate.
 
 ## Main statements
 
-* `orthogonal_trace_pos_of_irreducible_cp` — Wolf Theorem 6.2, item 4.
+* `orthogonal_trace_pos_of_growth` — Wolf's implication `(2) → (4)`.
+* `orthogonal_trace_pos_of_irreducible` — Wolf Theorem 6.2, item 4.
+* `irreducible_of_orthogonal_trace_pos_forall` — Wolf's implication `(4) → (1)`.
+* `orthogonal_trace_pos_of_irreducible_cp` — completely positive specialization.
 
 ## References
 
@@ -29,7 +32,7 @@ binomial sum and isolates the contribution from a nonzero iterate.
 
 ## Tags
 
-irreducible, completely positive, trace overlap, Wolf theorem
+irreducible, positive map, trace overlap, Wolf theorem
 -/
 
 open scoped Matrix ComplexOrder BigOperators
@@ -41,17 +44,19 @@ variable {D : ℕ}
 
 section OrthogonalTrace
 
-/-- **Wolf Theorem 6.2, item 4**: if `E` is an irreducible completely positive map and
-`A`, `B` are nonzero PSD matrices with `trace (B * A) = 0`, then some iterate
-`E^t(A)` with `1 ≤ t ≤ D - 1` has strictly positive trace overlap with `B`.
+/-- **Wolf Theorem 6.2, `(2) → (4)`.**  If the growth matrix
+`(id + E)^(D - 1) A` is positive definite, then every nonzero positive
+semidefinite `B` orthogonal to `A` has positive trace overlap with some
+`E^t A`, where `1 ≤ t ≤ D - 1`.
 
-The proof expands the positive-definite matrix `(LinearMap.id + E)^(D - 1) A`
-supplied by `growth_posDef_of_irreducible_cp`. -/
-theorem orthogonal_trace_pos_of_irreducible_cp
+The proof is Wolf's binomial expansion and uses only positivity of `E`. -/
+theorem orthogonal_trace_pos_of_growth
     (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (hCP : IsCPMap E) (hIrr : IsIrreducibleMap E)
+    (hE : IsPositiveMap E)
     (A B : Matrix (Fin D) (Fin D) ℂ)
-    (hA : A.PosSemidef) (hA_ne : A ≠ 0)
+    (hA : A.PosSemidef)
+    (hGrowth :
+      ((((LinearMap.id : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)) + E) ^ (D - 1)) A).PosDef)
     (hB : B.PosSemidef) (hB_ne : B ≠ 0)
     (horth : Matrix.trace (B * A) = 0) :
     ∃ t : ℕ, 0 < t ∧ t ≤ D - 1 ∧ 0 < Matrix.trace (B * ((E ^ t) A)) := by
@@ -59,7 +64,7 @@ theorem orthogonal_trace_pos_of_irreducible_cp
   let T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ) := LinearMap.id + E
   let n : ℕ := D - 1
   have h_growth : ((T ^ n) A).PosDef := by
-    simpa only using (growth_posDef_of_irreducible_cp E hCP hIrr A hA hA_ne)
+    simpa only [T, n] using hGrowth
   have htrace_growth : 0 < Matrix.trace (B * ((T ^ n) A)) :=
     hB.trace_mul_pos_of_ne_zero_of_posDef hB_ne h_growth
   have h_expand :
@@ -88,7 +93,7 @@ theorem orthogonal_trace_pos_of_irreducible_cp
     · have ht_pos : 0 < t := Nat.pos_iff_ne_zero.mpr ht0
       have ht_le : t ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp ht)
       have hterm_nonneg : 0 ≤ Matrix.trace (B * ((E ^ t) A)) :=
-        Matrix.PosSemidef.trace_mul_nonneg hB (iterate_posSemidef hCP.isPositiveMap hA t)
+        Matrix.PosSemidef.trace_mul_nonneg hB (iterate_posSemidef hE hA t)
       have hterm_not_pos : ¬ 0 < Matrix.trace (B * ((E ^ t) A)) := by
         intro hpos
         exact hno ⟨t, ht_pos, ht_le, hpos⟩
@@ -108,5 +113,77 @@ theorem orthogonal_trace_pos_of_irreducible_cp
   have : Matrix.trace (B * ((T ^ n) A)) = 0 := by
     rw [htrace_expand, hsum_zero]
   exact (ne_of_gt htrace_growth) this
+
+/-- Wolf Theorem 6.2, `(1) → (4)`, at the source's positive-map scope. -/
+theorem orthogonal_trace_pos_of_irreducible
+    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (hE : IsPositiveMap E) (hIrr : IsIrreducibleMap E)
+    (A B : Matrix (Fin D) (Fin D) ℂ)
+    (hA : A.PosSemidef) (hA_ne : A ≠ 0)
+    (hB : B.PosSemidef) (hB_ne : B ≠ 0)
+    (horth : Matrix.trace (B * A) = 0) :
+    ∃ t : ℕ, 0 < t ∧ t ≤ D - 1 ∧ 0 < Matrix.trace (B * ((E ^ t) A)) :=
+  orthogonal_trace_pos_of_growth E hE A B hA
+    (growth_posDef_of_irreducible E hE hIrr A hA hA_ne) hB hB_ne horth
+
+/-- Completely positive specialization of
+`orthogonal_trace_pos_of_irreducible`. -/
+theorem orthogonal_trace_pos_of_irreducible_cp
+    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (hCP : IsCPMap E) (hIrr : IsIrreducibleMap E)
+    (A B : Matrix (Fin D) (Fin D) ℂ)
+    (hA : A.PosSemidef) (hA_ne : A ≠ 0)
+    (hB : B.PosSemidef) (hB_ne : B ≠ 0)
+    (horth : Matrix.trace (B * A) = 0) :
+    ∃ t : ℕ, 0 < t ∧ t ≤ D - 1 ∧ 0 < Matrix.trace (B * ((E ^ t) A)) :=
+  orthogonal_trace_pos_of_irreducible E hCP.isPositiveMap hIrr
+    A B hA hA_ne hB hB_ne horth
+
+/-- Wolf Theorem 6.2, `(4) → (1)`: the orthogonal trace-connectivity
+condition implies irreducibility.  If a proper nonzero projection `P`
+preserved a corner, then every iterate `E^t P` would remain in that corner,
+so its trace overlap with `1 - P` would vanish. -/
+theorem irreducible_of_orthogonal_trace_pos_forall
+    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (hTrace :
+      ∀ A B : Matrix (Fin D) (Fin D) ℂ,
+        A.PosSemidef → A ≠ 0 → B.PosSemidef → B ≠ 0 →
+        Matrix.trace (B * A) = 0 →
+        ∃ t : ℕ, 0 < t ∧ t ≤ D - 1 ∧ 0 < Matrix.trace (B * ((E ^ t) A))) :
+    IsIrreducibleMap E := by
+  intro P hP hP_invariant
+  by_cases hP_zero : P = 0
+  · exact Or.inl hP_zero
+  by_cases hP_one : P = 1
+  · exact Or.inr hP_one
+  exfalso
+  have hP_psd : P.PosSemidef := isOrthogonalProjection_posSemidef hP
+  have hP_compl_psd : (1 - P).PosSemidef :=
+    isOrthogonalProjection_posSemidef hP.one_sub
+  have hP_compl_ne : 1 - P ≠ 0 :=
+    sub_ne_zero.mpr (Ne.symm hP_one)
+  have horth : Matrix.trace ((1 - P) * P) = 0 := by
+    rw [IsIdempotentElem.one_sub_mul_self hP.2, Matrix.trace_zero]
+  obtain ⟨t, _ht_pos, _ht_le, ht_trace_pos⟩ :=
+    hTrace P (1 - P) hP_psd hP_zero hP_compl_psd hP_compl_ne horth
+  have hiterate_supported :
+      ∀ n : ℕ, P * ((E ^ n) P) * P = (E ^ n) P := by
+    intro n
+    induction n with
+    | zero => simp only [pow_zero, Module.End.one_apply, hP.2]
+    | succ n ih =>
+        rw [pow_succ', Module.End.mul_apply]
+        simpa only [ih] using hP_invariant ((E ^ n) P)
+  have hcomplement_mul : (1 - P) * ((E ^ t) P) = 0 := by
+    calc
+      (1 - P) * ((E ^ t) P) = (1 - P) * (P * ((E ^ t) P) * P) := by
+        rw [hiterate_supported t]
+      _ = ((1 - P) * P) * (((E ^ t) P) * P) := by
+        simp only [Matrix.mul_assoc]
+      _ = 0 := by
+        rw [IsIdempotentElem.one_sub_mul_self hP.2, Matrix.zero_mul]
+  have ht_trace_zero : Matrix.trace ((1 - P) * ((E ^ t) P)) = 0 := by
+    rw [hcomplement_mul, Matrix.trace_zero]
+  exact (ne_of_gt ht_trace_pos) ht_trace_zero
 
 end OrthogonalTrace

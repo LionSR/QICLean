@@ -791,7 +791,7 @@ theorem mulVec_eq_zero_of_sum_mulVec_eq_zero_of_mem
       simpa only [sum_mulVec, dotProduct_sum, dotProduct_zero] using h
     exact (Finset.sum_eq_zero_iff_of_nonneg
       (fun i hi ↦ (hB i hi).dotProduct_mulVec_nonneg v)).mp hsum k hk
-  exact ((hB k hk).dotProduct_mulVec_zero_iff v).mp hqk
+  exact ((hB k hk).dotProduct_mulVec_zero_iff (x := v)).mp hqk
 
 /-- If a finite sum of positive-semidefinite matrices annihilates a vector,
 then every matrix in the family annihilates that vector. -/

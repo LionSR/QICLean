@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import Mathlib.Algebra.Order.Archimedean.Basic
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Analysis.Complex.Order
-import Mathlib.Data.Complex.BigOperators
+import Mathlib.Basic.Complex.BigOperators
 
 /-!
 # Constant power sums

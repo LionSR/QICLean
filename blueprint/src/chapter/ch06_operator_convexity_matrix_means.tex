@@ -1,0 +1,453 @@
+\section{Weighted geometric means and finite mean trees}\label{sec:matrix_mean_trees}
+
+This section follows the first part of the transport section of
+\cite{OpenAI2026AreaLaw} (Section~7, Lemma~7.1). For positive definite
+matrices $A,B$ and a real parameter $p$, the weighted geometric mean is the
+operation of Kubo and Ando~\cite{KuboAndo1980Means}
+\begin{align}
+    A\#_p B = A^{1/2}\bigl(A^{-1/2}BA^{-1/2}\bigr)^p A^{1/2}.
+    \notag
+\end{align}
+Finite binary trees of such means carry perturbations from the leaves to the
+root. Only positive definite inputs occur; the mean is never evaluated on
+singular matrices.
+
+\begin{definition}[Weighted geometric mean]\label{def:weighted_geometric_mean}
+    \lean{Matrix.geomMean}
+    \leanok
+    For positive definite complex matrices $A,B$ and $p\in\mathbb R$, set
+    $A\#_pB=A^{1/2}(A^{-1/2}BA^{-1/2})^pA^{1/2}$, where the real powers are
+    taken in the functional calculus of positive definite matrices.
+\end{definition}
+
+\begin{lemma}[One-vertex properties of the mean]\label{lem:weighted_geometric_mean_vertex}
+    \lean{Matrix.PosDef.geomMean, Matrix.geomMean_zero, Matrix.geomMean_one,
+      Matrix.geomMean_star_conj, Matrix.geomMean_smul, Matrix.geomMean_comm,
+      Matrix.geomMean_mono_right, Matrix.geomMean_mono_left,
+      Matrix.re_dotProduct_rpow_mulVec_le, Matrix.re_dotProduct_geomMean_le,
+      Matrix.geomMean_mul_of_commute, Matrix.commute_geomMean_of_commute}
+    \leanok
+    \uses{def:weighted_geometric_mean}
+    Let $A,B$ be positive definite. Then $A\#_pB$ is positive definite,
+    $A\#_0B=A$, $A\#_1B=B$, and:
+    \begin{enumerate}
+        \item $(S^*AS)\#_p(S^*BS)=S^*(A\#_pB)S$ for every invertible $S$;
+        \item $(cA)\#_p(dB)=c^{1-p}d^p\,(A\#_pB)$ for $c,d>0$;
+        \item $A\#_pB=B\#_{1-p}A$;
+        \item for $0\le p\le1$ the mean is monotone in each argument, and for
+        every vector $z$,
+        $\langle z,(A\#_pB)z\rangle\le\langle z,Az\rangle^{1-p}\langle z,Bz\rangle^p$;
+        \item if $A_1,B_1$ commute with $A_2,B_2$, then
+        $(A_1A_2)\#_p(B_1B_2)=(A_1\#_pB_1)(A_2\#_pB_2)$, and the two factors
+        commute.
+    \end{enumerate}
+\end{lemma}
+
+\begin{proof}\leanok
+    For an invertible $S$ put $\widehat A=S^*AS$ and
+    $U=A^{1/2}S\widehat A^{-1/2}$. Then $U^*U=I$, and
+    $\widehat A^{-1/2}S^*BS\widehat A^{-1/2}=U^*(A^{-1/2}BA^{-1/2})U$, so
+    unitary covariance of the functional calculus gives the congruence rule.
+    Scalar homogeneity follows from $(cX)^r=c^rX^r$. Congruence by
+    $A^{-1/2}$ reduces exchange symmetry to the identity
+    $C^p=C^{1/2}(C^{-1})^{1-p}C^{1/2}$ for $C=A^{-1/2}BA^{-1/2}$.
+    Monotonicity in $B$ follows from operator monotonicity of $C\mapsto C^p$
+    for $0\le p\le1$, and monotonicity in $A$ from exchange symmetry. For the
+    vector inequality, write $w=A^{1/2}z$; then
+    $\langle z,(A\#_pB)z\rangle=\langle w,C^pw\rangle$, and Jensen's inequality
+    for the concave function $x\mapsto x^p$ against the spectral measure of $C$
+    in the unit vector $w/\|w\|$ gives
+    $\langle w,C^pw\rangle\le\|w\|^{2(1-p)}\langle w,Cw\rangle^p$. For the
+    product rule, the inverse square root of $A_1A_2$ factors, the whitened
+    second argument is the product of the two commuting positive definite
+    matrices $A_g^{-1/2}B_gA_g^{-1/2}$, and the $p$th power of a product of
+    commuting positive definite matrices is the product of the powers.
+\end{proof}
+
+A weighted binary tree is a finite rooted binary tree with a parameter
+$p\in[0,1]$ at each internal vertex, whose two outgoing edges have weights
+$1-p$ and $p$. Its leaves carry labels $j$, and the terminal weight $w_j$ of a
+label is the sum, over the leaves carrying it, of the products of edge weights
+along the root-to-leaf paths. Assigning positive definite matrices $A_j$ to the
+labels and evaluating each internal vertex by $\#_p$ defines the root $M$. The
+tree is part of the data; no associativity of matrix means is used.
+
+\begin{definition}[Weighted binary tree of means]\label{def:mean_tree}
+    \lean{Matrix.MeanTree, Matrix.MeanTree.eval, Matrix.MeanTree.weight}
+    \leanok
+    \uses{def:weighted_geometric_mean}
+    A weighted binary tree is either a leaf with a label $j$ or an internal
+    vertex with a parameter $p\in[0,1]$ and two subtrees. Its root on inputs
+    $(A_j)$ is $A_j$ at a leaf and $M_l\#_pM_r$ at an internal vertex with
+    subtree roots $M_l$, $M_r$. The terminal weights are $\delta_j$ at a leaf
+    and $(1-p)w^{(l)}+p\,w^{(r)}$ at an internal vertex.
+\end{definition}
+
+\begin{lemma}[Terminal weights and contraction]\label{lem:mean_tree_weights}
+    \lean{Matrix.MeanTree.weight_nonneg, Matrix.MeanTree.sum_weight,
+      Matrix.MeanTree.eval_node_zero, Matrix.MeanTree.eval_node_one,
+      Matrix.MeanTree.weight_node_zero, Matrix.MeanTree.weight_node_one}
+    \leanok
+    \uses{def:mean_tree}
+    The terminal weights are nonnegative and sum to one. An edge of weight
+    zero may be omitted and the vertex with one remaining child contracted:
+    this changes neither the root nor the terminal weights.
+\end{lemma}
+
+\begin{proof}\leanok
+    Induction on the tree, using $(1-p)+p=1$ and the endpoint values
+    $A\#_0B=A$, $A\#_1B=B$ of Lemma~\ref{lem:weighted_geometric_mean_vertex}.
+\end{proof}
+
+\begin{theorem}[Properties of a finite mean tree]\label{thm:mean_tree_properties}
+    \lean{Matrix.MeanTree.posDef_eval, Matrix.MeanTree.eval_star_conj,
+      Matrix.MeanTree.eval_mono, Matrix.MeanTree.eval_smul,
+      Matrix.MeanTree.re_dotProduct_eval_le, Matrix.MeanTree.smul_le_eval,
+      Matrix.MeanTree.eval_listProd_ofFn, Matrix.MeanTree.commute_eval_band}
+    \leanok
+    \uses{def:mean_tree}
+    Let a weighted binary tree have terminal weights $w_j$ and positive
+    definite inputs $A_j$, and let $M$ be its root. Then $M$ is positive
+    definite, commutes with invertible congruence, is monotone in the inputs,
+    and satisfies
+    $\mathcal T(c_jA_j:j)=\bigl(\prod_jc_j^{w_j}\bigr)M$ for $c_j>0$. For every
+    vector $z$,
+    \begin{align}
+        \langle z,Mz\rangle\le\prod_j\langle z,A_jz\rangle^{w_j}.
+        \notag
+    \end{align}
+    If $P$ is positive semidefinite (in particular, an orthogonal projection)
+    and $A_j\ge c_jP$ with $c_j>0$, then $M\ge\bigl(\prod_jc_j^{w_j}\bigr)P$.
+    Finally, if $A_j=\prod_{g=1}^KA_{j,g}$ with positive definite factors and
+    every factor from band $g$ commutes with every factor from band $g'\ne g$,
+    then $M=\prod_{g=1}^KM_g$, where $M_g$ is the root of the same tree with
+    inputs $A_{j,g}$, and the factors $M_g$ commute.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:weighted_geometric_mean_vertex, lem:mean_tree_weights}
+    Positivity, congruence, monotonicity, homogeneity and the vector
+    inequality follow by induction from
+    Lemma~\ref{lem:weighted_geometric_mean_vertex}; in the inductive step for
+    the vector inequality the exponents combine because all terminal weights
+    are nonnegative. For the lower bound, fix $0<\varepsilon<1$ and choose
+    $\lambda_j>0$ with $A_j\ge\lambda_jI$. Then
+    $A_j-(1-\varepsilon)c_jP=(1-\varepsilon)(A_j-c_jP)+\varepsilon A_j
+    \ge\varepsilon\lambda_jI$, so a common $\delta>0$ with
+    $(1-\varepsilon)c_j\delta\le\varepsilon\lambda_j$ gives
+    $A_j\ge(1-\varepsilon)c_j(P+\delta I)$, a positive definite input.
+    Monotonicity, homogeneity, the sum rule for the terminal weights, and the
+    fact that a tree with a constant input $X$ returns $X$ give
+    $M\ge(1-\varepsilon)\bigl(\prod_jc_j^{w_j}\bigr)(P+\delta I)
+    \ge(1-\varepsilon)\bigl(\prod_jc_j^{w_j}\bigr)P$; let $\varepsilon\to0$.
+    For the band factorization, a matrix commuting with all inputs commutes
+    with the root, so the roots of trees with inputs from different bands
+    commute; induction over the tree with the product rule of
+    Lemma~\ref{lem:weighted_geometric_mean_vertex} handles two bands, and
+    induction on $K$ handles the general case.
+\end{proof}
+
+\subsection{Normalized derivative maps}
+
+For $0<p<1$ and a positive semidefinite matrix $X$ the real power has the
+L\"owner representation
+$X^p=\kappa_p\int_0^\infty\bigl(t^{p-1}-t^p(t+X)^{-1}\bigr)\,dt$ with a positive
+constant $\kappa_p$. A linear map on matrices is called completely positive when
+its entrywise action on every matrix amplification preserves positive
+semidefinite matrices.
+
+\begin{lemma}[Derivative of a real power]\label{lem:rpow_frechet_derivative}
+    \lean{Matrix.rpow_eq_integral, Matrix.hasFDerivWithinAt_rpow,
+      Matrix.rpowFDeriv_apply, Matrix.isNPositiveMap_rpowFDeriv,
+      Matrix.rpowFDeriv_self}
+    \leanok
+    Let $0<p<1$ and let $C$ be positive definite. Along Hermitian matrices, the
+    map $X\mapsto X^p$ is Fr\'echet differentiable at $C$ with derivative
+    \begin{align}
+        D(C^p)[H]=\kappa_p\int_0^\infty t^p(t+C)^{-1}H(t+C)^{-1}\,dt.
+        \notag
+    \end{align}
+    This derivative is completely positive and satisfies $D(C^p)[C]=pC^p$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Near $C$ every shift $t+X$ is invertible with
+    $\|(t+X)^{-1}\|\le2(t+c)^{-1}$, where $C\ge cI$; hence the derivative of
+    the integrand is dominated by a multiple of
+    $t^p\bigl(t^{-1}-(t+c)^{-1}\bigr)$, which is integrable, and one may
+    differentiate under the integral sign. Each integrand is a positive multiple
+    of a sandwich map, so the integral is completely positive. The identity
+    $D(C^p)[C]=pC^p$ is the derivative at $s=1$ of $(sC)^p=s^pC^p$.
+\end{proof}
+
+\begin{lemma}[Normalized derivative maps at a vertex]\label{lem:mean_vertex_derivative_maps}
+    \lean{Matrix.hasFDerivWithinAt_geomMean_right, Matrix.hasFDerivWithinAt_geomMean_left,
+      Matrix.geomMeanDerivRight_self, Matrix.geomMeanDerivLeft_self,
+      Matrix.normalizedDerivMap_right_one, Matrix.normalizedDerivMap_left_one,
+      Matrix.isNPositiveMap_normalizedDerivMap_right,
+      Matrix.isNPositiveMap_normalizedDerivMap_left}
+    \leanok
+    \uses{def:weighted_geometric_mean, lem:rpow_frechet_derivative}
+    Let $A,B$ be positive definite, $0\le p\le1$ and $M=A\#_pB$. At a child $D$
+    of positive edge weight $w$, the map
+    $\Phi_D(Z)=w^{-1}M^{-1/2}\,\partial_DM[D^{1/2}ZD^{1/2}]\,M^{-1/2}$ is unital
+    and completely positive.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:weighted_geometric_mean_vertex}
+    By the chain rule,
+    $\partial_BM[H]=A^{1/2}D(C^p)[A^{-1/2}HA^{-1/2}]A^{1/2}$ with
+    $C=A^{-1/2}BA^{-1/2}$, a composition of completely positive maps; at the
+    endpoints $p=0,1$ the derivative of the power is zero or the identity.
+    Exchange symmetry gives $\partial_A$. The identity $D(C^p)[C]=pC^p$ gives
+    $\partial_BM[B]=pM$, and symmetrically $\partial_AM[A]=(1-p)M$, which is
+    unitality.
+\end{proof}
+
+\begin{theorem}[Normalized derivative maps of a mean tree]\label{thm:mean_tree_leaf_maps}
+    \lean{Matrix.MeanTree.hasFDerivWithinAt_eval_update, Matrix.MeanTree.derivLabel_self,
+      Matrix.MeanTree.sandwich_derivLabel_eq_smul_leafMap,
+      Matrix.MeanTree.isNPositiveMap_leafMap, Matrix.MeanTree.leafMap_one,
+      Matrix.MeanTree.leafMap_leaf, Matrix.MeanTree.leafMap_node_left,
+      Matrix.MeanTree.leafMap_node_right}
+    \leanok
+    \uses{def:mean_tree, lem:mean_vertex_derivative_maps}
+    Let a weighted binary tree have distinct leaves with positive definite inputs
+    $A_j$, terminal weights $w_j$ and root $M$. The root is Fr\'echet
+    differentiable in each input along Hermitian matrices. Composing the
+    normalized vertex maps from a leaf $j$ to the root gives a completely
+    positive map $\Phi_j$, the identity along an empty path, such that
+    \begin{align}
+        M^{-1/2}\,\partial_{A_j}M[A_j^{1/2}ZA_j^{1/2}]\,M^{-1/2}=w_j\Phi_j(Z),
+        \notag
+    \end{align}
+    and $\Phi_j$ is unital when $w_j>0$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:mean_tree_properties}
+    Since the leaves are distinct, at each vertex the input $A_j$ enters only one
+    child, and the chain rule applies with the partial derivatives of
+    Lemma~\ref{lem:mean_vertex_derivative_maps}. The square-root normalizations
+    cancel at successive vertices, so the normalized map at the root is the
+    composition of the normalized edge maps along the path. The Euler identities
+    propagate to $\partial_{A_j}M[A_j]=w_jM$, which gives unitality.
+\end{proof}
+
+\begin{theorem}[Block structure of the normalized derivative maps]\label{thm:mean_tree_leaf_maps_blocks}
+    \lean{Matrix.MeanTree.isBlockDiagonalMap_leafMap, Matrix.IsBlockDiagonalMap.toBlocks₁₁,
+      Matrix.IsBlockDiagonalMap.toBlocks₂₂, Matrix.MeanTree.eval_fromBlocks_diag,
+      Matrix.geomMean_fromBlocks_diag, Matrix.rpow_fromBlocks_diag}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps}
+    If all inputs of a weighted binary tree with distinct leaves are block
+    diagonal for a fixed orthogonal decomposition, the root is block diagonal and
+    the normalized leaf maps preserve each matrix block. On the first diagonal
+    block they are the normalized leaf maps of the tree of first diagonal blocks,
+    and they do not depend on the other diagonal blocks.
+\end{theorem}
+
+\begin{proof}\leanok
+    The functional calculus of a block-diagonal Hermitian matrix acts blockwise,
+    so the mean and the root are block diagonal. In the derivative integral every
+    sandwich factor $(t+C)^{-1}$ is block diagonal, so the derivative of the
+    power commutes with compression to each block and acts on the diagonal
+    blocks as the derivatives at the diagonal blocks. These properties are
+    preserved by sums, compositions, positive multiples and sandwiches by block
+    diagonal matrices, which build the leaf maps.
+\end{proof}
+
+\begin{corollary}[Leaf states]\label{cor:mean_tree_leaf_states}
+    \lean{Matrix.MeanTree.posSemidef_traceAdjoint_leafMap,
+      Matrix.MeanTree.trace_traceAdjoint_leafMap}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps}
+    For a leaf of positive terminal weight, the trace adjoint $\Phi_j^\dagger$,
+    defined by $\operatorname{Tr}(\Phi_j^\dagger(\rho)Z)=\operatorname{Tr}(\rho\,\Phi_j(Z))$,
+    maps density matrices to density matrices.
+\end{corollary}
+
+\begin{proof}\leanok
+    The trace adjoint of a positive map is positive, and
+    $\operatorname{Tr}\Phi_j^\dagger(\rho)=\operatorname{Tr}(\rho\,\Phi_j(I))=\operatorname{Tr}\rho$
+    by unitality.
+\end{proof}
+
+\subsection{The hyperbolic-sine Fourier multipliers}
+
+For $0<s<1/2$ let $g_s(z)=\sinh(sz)/\sinh(z/2)$ with $g_s(0)=2s$, and
+$m_s(u)=\sin(2\pi s)/(\cosh(2\pi u)+\cos(2\pi s))$.
+
+\begin{lemma}[The two Fourier multipliers]\label{lem:sinh_ratio_fourier}
+    \lean{Complex.integral_exp_mul_sinhRatioDensity, Real.sinhRatioDensity_pos,
+      Real.integral_sinhRatioDensity, Real.continuous_sinhRatio,
+      Real.exp_sub_one_div_two_sinh, Real.exp_neg_sub_one_div_two_sinh,
+      Complex.integral_exp_mul_qPlus, Complex.integral_exp_mul_qMinus,
+      Complex.norm_sinhRatioDensity_shift_le}
+    \leanok
+    \uses{lem:sinh_ratio_density_elementary, lem:rectangle_simple_poles}
+    For real $z$,
+    $g_s(z)=\int_{\mathbb R}e^{iuz}m_s(u)\,du$, $m_s(u)>0$ and
+    $\int_{\mathbb R}m_s(u)\,du=2s$. For $s=1/4$ the functions
+    $h_\pm(z)=(e^{\pm sz}-1)/(2\sinh(z/2))=\pm e^{\pm sz/2}g_{s/2}(z)$ have Fourier
+    densities $q_\pm(u)=\pm m_{s/2}(u\pm is/2)$ with
+    $|q_\pm(u)|\le m_s(u)/\sqrt2$. The quotients are interpreted continuously at
+    zero.
+\end{lemma}
+
+\begin{proof}\leanok
+    For fixed real $z\ne0$, integrate $e^{iuz}m_s(u)$ around the rectangle
+    between $\mathbb R$ and $\mathbb R+i$. The poles in the strip are
+    $i(1/2-s)$ and $i(1/2+s)$ with residues $\pm1/(2\pi i)$, and
+    $m_s(u+i)=m_s(u)$, so
+    $(1-e^{-z})\int e^{iuz}m_s(u)\,du=e^{-(1/2-s)z}-e^{-(1/2+s)z}$. Shifting the
+    contour of $m_{s/2}$ by $\pm is/2$ crosses no pole and gives $q_\pm$: in
+    the strip $|\operatorname{Im}w|\le s/2$ one has
+    $|\cosh(2\pi w)+\cos(\pi s)|\ge\cos(\pi s)\cosh(2\pi\operatorname{Re}w)$.
+    The shifted identities hold for every $0<s<1/2$, in particular for $s=1/4$.
+\end{proof}
+
+\begin{lemma}[Boundary integrals with simple poles]\label{lem:rectangle_simple_poles}
+    \lean{Complex.integral_boundary_rect_inv_sub,
+      Complex.integral_boundary_rect_eq_of_simple_poles}
+    \leanok
+    If $p$ lies strictly inside a rectangle, the boundary integral of $(u-p)^{-1}$
+    is $2\pi i$. If $f$ is holomorphic on the open rectangle away from finitely many
+    interior points $p$ and $f-\sum_pc_p(u-p)^{-1}$ extends continuously to the
+    closed rectangle, the boundary integral of $f$ is $2\pi i\sum_pc_p$.
+\end{lemma}
+
+\begin{proof}\leanok
+    On each edge a branch of the logarithm is a primitive of $(u-p)^{-1}$; the
+    four edge contributions sum to the change of argument $2\pi$. The regular
+    part has vanishing boundary integral by the Cauchy--Goursat theorem.
+\end{proof}
+
+\begin{lemma}[Elementary properties of the multipliers]\label{lem:sinh_ratio_density_elementary}
+    \lean{Real.continuous_sinhRatio, Real.sinhRatioDensity_pos,
+      Real.integrable_sinhRatioDensity, Real.integral_sinhRatioDensity,
+      Real.exp_sub_one_div_two_sinh, Real.exp_neg_sub_one_div_two_sinh,
+      Complex.norm_sinhRatioDensity_shift_le}
+    \leanok
+    The function $g_s$ is continuous, $m_s$ is positive and integrable with
+    $\int_{\mathbb R}m_s=2s$, for $z\ne0$ one has
+    $(e^{\pm sz}-1)/(2\sinh(z/2))=\pm e^{\pm sz/2}g_{s/2}(z)$, and for $s=1/4$,
+    $|m_{s/2}(u\pm is/2)|\le m_s(u)/\sqrt2$ for real $u$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The function $u\mapsto\pi^{-1}\arctan\bigl((e^{2\pi u}+\cos2\pi s)/\sin2\pi s\bigr)$
+    has derivative $m_s$ and limits $1/2-2s$ and $1/2$ at $-\infty$ and
+    $+\infty$. Near $z=0$ both $\sinh(sz)/z$ and $\sinh(z/2)/z$ have limits
+    $s$ and $1/2$. The factorization follows from
+    $e^{sz}-1=2e^{sz/2}\sinh(sz/2)$. At $s=1/4$ and $c=\cosh2\pi u$,
+    $m_s(u)=c^{-1}$ and $m_{s/2}(u\pm is/2)=(c+1\pm i\sinh2\pi u)^{-1}$, whose
+    modulus is $(2c(c+1))^{-1/2}\le(\sqrt2\,c)^{-1}$.
+\end{proof}
+
+
+\subsection{The filtered transport path}
+
+This subsection records the matrix part of the entropy and energy transport
+estimate of the area-law paper (Proposition 7.4, \texttt{06-transport.tex}
+lines 377--434). Fix a mean tree $T$ with leaves $h$ and positive weights
+$w_h$, a mean tree $S_h$ for every $h$, positive definite old inputs $A_h$ and
+new inputs $A'_{h,c}$. Let $B_h$ be the root of $S_h$ on the inputs $A'_{h,c}$
+and $C_h=A_h^{-1/2}B_hA_h^{-1/2}$. For $0\le p\le1$ the interpolated tree
+replaces each leaf $h$ of $T$ by the vertex $A_h\#_pB_h$; let $M(p)$ be its
+root. For a nonzero vector $x$ put $N(p)=\|M(p)^{-1/4}x\|$,
+$v(p)=M(p)^{-1/4}x/N(p)$, and define the transport states
+$\sigma_{j,u}=\Phi_j^\dagger\bigl(|M^{-iu}v\rangle\langle M^{-iu}v|\bigr)$, where
+$\Phi_j$ are the normalized derivative maps of the interpolated tree.
+
+\begin{lemma}[Exact derivative of the filtered norm]\label{lem:transport_exact_derivative}
+    \lean{Matrix.Transport.hasDerivAt_neg_log_filteredNormSq,
+      Matrix.Transport.hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt,
+      Matrix.Transport.exists_hasDerivAt_interpPath,
+      Matrix.MeanTree.weight_interpTree_old, Matrix.MeanTree.weight_interpTree_new,
+      Matrix.Transport.posSemidef_transportState, Matrix.Transport.trace_transportState}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps, cor:mean_tree_leaf_states, lem:sinh_ratio_fourier}
+    The transport states are density matrices. For $0<p<1$,
+    \[
+      -\partial_p\log N(p)^2=\sum_hw_h\int_{\mathbb R}m_{1/4}(u)
+      \operatorname{Tr}\bigl(\sigma_{(h,\mathrm{old}),u}\log C_h\bigr)\,du .
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    The terminal weights of the interpolated tree are $w_h(1-p)$ at the old leaf
+    and $w_hp\,\pi_c^{S_h}$ at the new leaves. Differentiating the vertex
+    $A_h\#_pB_h=A_h^{1/2}C_h^pA_h^{1/2}$ and the tree gives
+    $M^{-1/2}\partial_pMM^{-1/2}=\sum_hw_h\Phi_{(h,\mathrm{old})}(\log C_h)$
+    (\texttt{06-transport.tex} lines 442--468). In an eigenbasis of $M$ the
+    derivative of $\|M^{-1/4}x\|^2$ has coefficients
+    $g_{1/4}(\log x_r-\log x_t)$, and the Fourier formula for $g_{1/4}$ turns
+    them into the integral over $u$ (lines 470--489). Passing each map to its
+    trace adjoint gives the stated form (lines 490--494).
+\end{proof}
+
+\begin{lemma}[Integration over closed subintervals]\label{lem:transport_integrated_derivative}
+    \lean{Matrix.Transport.log_filteredNormSq_sub_eq_integral,
+      Matrix.Transport.continuous_filteredNormSq_interpPath,
+      Matrix.Transport.filteredNormSq_pos}
+    \leanok
+    \uses{lem:transport_exact_derivative}
+    The function $N$ is continuous and positive on $[0,1]$. For
+    $0\le p_0\le p_1\le1$ the right side of the exact derivative is integrable
+    on $[p_0,p_1]$, and its integral equals
+    $\log N(p_0)^2-\log N(p_1)^2$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The derivative is bounded uniformly in $p$ by
+    $\sum_hw_h\,\|\log C_h\|\int m_{1/4}$, since the transport states are
+    density matrices. The fundamental theorem of calculus applies to the
+    continuous function $-\log N^2$ (\texttt{06-transport.tex} lines 769--779).
+\end{proof}
+
+\begin{lemma}[Transport states and the commutant]\label{lem:transport_states_commutant}
+    \lean{Matrix.Transport.mul_transportState, Matrix.Transport.mulVec_filteredVector}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps}
+    If $Z$ commutes with every input of a mean tree and fixes the vector $v$, then
+    $Z\sigma_{j,u}=\sigma_{j,u}$ for every leaf $j$ and every real $u$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every map in the construction of the normalized derivative maps is a right
+    module map over $Z$, so $\Phi_j(XZ)=\Phi_j(X)Z$ and dually
+    $\Phi_j^\dagger(ZY)=Z\Phi_j^\dagger(Y)$. The matrix $Z$ commutes with the root
+    and hence fixes $M^{-iu}v$.
+\end{proof}
+
+\begin{lemma}[Energy of the filtered vector for one term]\label{lem:transport_energy_block}
+    \lean{Matrix.Transport.re_star_dotProduct_mulVec_le_energy,
+      Matrix.Transport.exists_auxBlock, Matrix.Transport.norm_sq_errorVec_le,
+      Matrix.Transport.nsq_conj_sub_le}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps_blocks, lem:sinh_ratio_fourier}
+    Let a mean tree have positive weights $\pi_j$, positive definite inputs $A_j$
+    and root $M$, let $h\ge0$ commute with $A_j$ for every leaf $j$ outside a finite
+    set $S$, and put $W=\sum_{j\in S}\pi_j$. Let $\mathsf D_j$ be the skew square of
+    $O_j=A_j^{-1/2}hA_j^{1/2}$. For every vector $v$,
+    \[
+      \langle v,hv\rangle\le2\operatorname{Re}\langle M^{-1/4}v,hM^{1/4}v\rangle
+      +\tfrac32W\sum_{j\in S}\pi_j\int_{\mathbb R}m_{1/4}(u)
+      \operatorname{Tr}(\sigma_{j,u}\mathsf D_j)\,du .
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    Factor $h=T^*T$ with $T=h^{1/2}$; the source factors through the last copy,
+    and any factorization serves. An auxiliary second diagonal block $B_j$ gives
+    $Y_j^*Z_j=O_j$ with $(Y_j-Z_j)^*(Y_j-Z_j)=\mathsf D_j$, and $Y_j=Z_j$ off $S$
+    (\texttt{06-transport.tex} lines 604--656). On the doubled space a
+    block-rotation identity writes the rotated commutator as
+    $\sum_{j\in S}\pi_j\widehat\Phi_j(K_j)$. The Fourier densities $q_\pm$,
+    Cauchy--Schwarz and the Schwarz inequality for the unital two-positive leaf
+    maps bound both error vectors by $\tfrac14W\sum_{j\in S}\pi_j\int
+    m_{1/4}\operatorname{Tr}(\sigma_{j,u}\mathsf D_j)$ (lines 658--729), and the
+    similarity pairing closes the estimate (lines 730--766).
+\end{proof}

@@ -209,20 +209,20 @@ theorem hasSpectralProperties_of_irreducible_cp
       unique_psd_eigenvector := hunique
       spectralRadius_eq := hrad }⟩
 
-/-! ## Channel lemma for the reverse implication -/
+/-! ## Positive trace-preserving lemma for the reverse implication -/
 
-/-- A channel with a positive-definite fixed point and no other PSD fixed points
-except scalar multiples of it is irreducible.
+/-- A positive trace-preserving map with a positive-definite fixed point and no
+other PSD fixed points except scalar multiples of it is irreducible.
 
 This is the fixed-point contradiction at the heart of Wolf's proof of
 Theorem 6.4.  If a nontrivial invariant projection `P` existed, the Cesàro mean
 inside the corner `P M_D P` would produce a density-matrix fixed point supported
 in that corner.  It cannot be a scalar multiple of a positive-definite fixed
 point on the whole space. -/
-theorem isIrreducibleMap_of_channel_posDef_fixedPoint_unique
+theorem isIrreducibleMap_of_positive_tracePreserving_posDef_fixedPoint_unique
     [NeZero D]
     (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (hE : IsChannel E)
+    (hE : IsPositiveMap E) (hTP : IsTracePreservingMap E)
     (ρ : Matrix (Fin D) (Fin D) ℂ)
     (hρ_pd : ρ.PosDef)
     (_hρ_fix : E ρ = ρ)
@@ -235,8 +235,8 @@ theorem isIrreducibleMap_of_channel_posDef_fixedPoint_unique
   by_cases hP1 : P = 1
   · exact Or.inr hP1
   obtain ⟨σ, hσ_mem, hσ_corner, hσ_fix⟩ :=
-    IsChannel.exists_fixed_density_of_preserves_compression
-      (E := E) hE hP_proj hP0 hP_inv
+    IsPositiveMap.exists_fixed_density_of_preserves_compression
+      (E := E) hE hTP hP_proj hP0 hP_inv
   have hσ_ne : σ ≠ 0 := by
     intro hσ0
     have htr : Matrix.trace σ = 1 := hσ_mem.2
@@ -266,6 +266,21 @@ theorem isIrreducibleMap_of_channel_posDef_fixedPoint_unique
       _ = 0 := by simp [Matrix.mul_assoc, hPQ]
   exfalso
   exact (proj_mul_posDef_mul_proj_ne_zero hQ_proj.1 hQ_proj.2 hQ_ne hρ_pd) hQρQ_zero
+
+/-- Channel specialization of
+`isIrreducibleMap_of_positive_tracePreserving_posDef_fixedPoint_unique`. -/
+theorem isIrreducibleMap_of_channel_posDef_fixedPoint_unique
+    [NeZero D]
+    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (hE : IsChannel E)
+    (ρ : Matrix (Fin D) (Fin D) ℂ)
+    (hρ_pd : ρ.PosDef)
+    (hρ_fix : E ρ = ρ)
+    (huniq : ∀ σ : Matrix (Fin D) (Fin D) ℂ,
+      σ.PosSemidef → E σ = σ → ∃ c : ℂ, σ = c • ρ) :
+    IsIrreducibleMap E :=
+  isIrreducibleMap_of_positive_tracePreserving_posDef_fixedPoint_unique
+    E hE.pos hE.tp ρ hρ_pd hρ_fix huniq
 
 /-! ## Reverse implication: spectral properties ⇒ irreducible -/
 

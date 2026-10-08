@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import Mathlib.Algebra.Order.Chebyshev
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 
@@ -101,9 +101,7 @@ theorem sq_sum_eq_card_mul_sum_sq_iff :
       intro x hx
       exact sum_nonneg fun y hy ↦ sq_nonneg _
     have hinner := (sum_eq_zero_iff_of_nonneg houter).mp hsum i hi
-    have hterm :=
-      (sum_eq_zero_iff_of_nonneg (fun y hy ↦ sq_nonneg (f i - f y))).mp hinner j hj
-    nlinarith
+    exact sub_eq_zero.mp ((sum_sq_eq_zero_iff _ _).mp hinner j hj)
   · intro h
     by_cases hs : s.Nonempty
     · obtain ⟨i, hi⟩ := hs

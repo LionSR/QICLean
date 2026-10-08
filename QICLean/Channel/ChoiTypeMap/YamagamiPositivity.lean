@@ -280,7 +280,7 @@ private theorem functional_card_le_one_of_positive
   have hlocalFunctional :
       IsLocalMaxOn (functional N m (N : ℝ)) positiveInvertibles b :=
     (hbGlobal.isLocalMax
-      (isOpen_positiveInvertibles.mem_nhds hbPositive)).on positiveInvertibles
+      (isOpen_positiveInvertibles.mem_nhds hbPositive)).isLocalMaxOn positiveInvertibles
   have hS := forwardMatrix_isUnit_det N m hN hm₁ hm₂ (N : ℝ) le_rfl
   have hlocalLambda : IsLocalMaxOn
       (fun z ↦ lambdaT (inverseOperator (forwardMatrix N m (N : ℝ)))

@@ -104,8 +104,9 @@ theorem HasComplementaryFixedPointGap.complement_eigenvalue_norm_lt_one
     rw [AlgEquiv.spectrum_eq]
     exact hν.mem_spectrum
   have hν_le : (‖ν‖₊ : ENNReal) ≤ spectralRadius ℂ
-      ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ)) Ê) :=
-    @le_iSup₂ ENNReal ℂ (· ∈ spectrum ℂ _) _
+      ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ)) Ê) := by
+    rw [spectralRadius_eq_of_unital]
+    exact @le_iSup₂ ENNReal ℂ (· ∈ spectrum ℂ _) _
       (fun z _ ↦ (‖z‖₊ : ENNReal)) ν hν_mem
   have hν_lt : (‖ν‖₊ : ENNReal) < 1 :=
     lt_of_le_of_lt hν_le hP.complementary_transfer_map_gap

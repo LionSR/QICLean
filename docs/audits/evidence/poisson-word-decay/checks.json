@@ -1,0 +1,295 @@
+{
+  "source_head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+  "checks": [
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "aggregate",
+      "sha256": null,
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Analysis.PoissonContractionDecay"
+      ],
+      "exit_code": 0,
+      "seconds": 1.453474438007106,
+      "log_sha256": "59f7831279c6dc728978a6bbeac201b76900090d2855930045073bc18bac3c50",
+      "log_bytes": 42
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLean/Probability/PoissonWord.lean",
+      "sha256": "b80d9226661c59bfa805b9c387ebc808eaacf315d618aaf2f9a1cf7ae704bf2b",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Probability/PoissonWord.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.122675799007993,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLean/Analysis/ContractionWordDecay.lean",
+      "sha256": "bd647850a2a4b2a8abfd0bc1f5669727eb166221e7a771ce4eb54db9c85a54e4",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/ContractionWordDecay.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 4.49487481500546,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLean/Analysis/ContractionWordDecaySpectator.lean",
+      "sha256": "58dc2cee6715ef1e0083b93c8272da982f5295f562b35e865b5a7962fb2efbd4",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/ContractionWordDecaySpectator.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.5995566280034836,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLean/Analysis/PoissonContractionDecay.lean",
+      "sha256": "ce67d892fe50eae2d6bfe01bab8a0b7c2459dbe8cbbc3c94c96b0066a3649147",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/PoissonContractionDecay.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.1411468329897616,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLeanTest/PoissonWord.lean",
+      "sha256": "2f5bbc469d4d991bcfaecf7f67574c476a31287f52d48de756c80244c867cdc6",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWord.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.1170779340027366,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLeanTest/PoissonWordAxioms.lean",
+      "sha256": "b78854841adb5306d27cb27e779b54916f00b000d0d818de2f98a84ebad21f93",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWordAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.7249893400003202,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLeanTest/ContractionWordDecay.lean",
+      "sha256": "abcac7adadb093794dc25c568710ec4cc4642c496fe0e93a89622bbde5637c01",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/ContractionWordDecay.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 5.040608583003632,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLeanTest/ContractionWordDecayAxioms.lean",
+      "sha256": "70bf2ed11363a94e8691805b6b1e334731983d144a5a0e8c54a1d17edaa35803",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/ContractionWordDecayAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.7580450440000277,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLeanTest/ContractionWordDecaySpectator.lean",
+      "sha256": "fa2a7de080bbf62f71545f489b4831b5f5a582587bc04cbd03ea5d06cde183a8",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/ContractionWordDecaySpectator.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.2178676329931477,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLeanTest/ContractionWordDecaySpectatorAxioms.lean",
+      "sha256": "63c1eca976df1e5061731ef1993ac316300cf965974c48dc1216eef0d4a74673",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/ContractionWordDecaySpectatorAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.7504465360107133,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLeanTest/PoissonContractionDecay.lean",
+      "sha256": "40bd528c6480dc2b68dc38526a8430ff9c9d56b6b4a6ab752c7f95f0bf469214",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonContractionDecay.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.350539685008698,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "QICLeanTest/PoissonContractionDecayAxioms.lean",
+      "sha256": "751c56cea4a4a99b15b40c3e44ca2d85a53f9dcd3c073dde961e93baec8b1d20",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonContractionDecayAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.7384736569947563,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+      "file": "docs/audits/evidence/poisson-word-decay/PoissonWordDecayRawAxioms.lean",
+      "sha256": "8d2d0b21d8b54268e9b7835b7f2ce65ea1f1dec3aa3e84fe69ee615bd21a46bc",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/poisson-word-decay/PoissonWordDecayRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.8109017929964466,
+      "log_sha256": "6ca4596c8c9c9c67b027dd6669ba03bfcc622bf2371cf24ead01e3ee1c574cb1",
+      "log_bytes": 9220
+    }
+  ],
+  "public_constants": 52,
+  "consumer_examples": 24,
+  "production_lines": 639
+}

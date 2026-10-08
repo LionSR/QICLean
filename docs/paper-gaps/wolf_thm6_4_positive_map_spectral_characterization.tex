@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\input{./command.tex}
+
+\title{Wolf Theorem 6.4: Positive-Map Scope and the Zero-Map Boundary}
+\author{}
+\date{2026-08-29}
+
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{Source statement}
+
+Theorem~6.4 of Ref.~\cite{Wolf2012Quantum} concerns a positive linear map
+\begin{align}
+  T
+    &: \MN{D}\longrightarrow\MN{D}
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_map}
+\end{align}
+with spectral radius $r$.  It states that irreducibility is equivalent to the
+following three properties:
+\begin{enumerate}
+  \item $r$ is an ordinary nondegenerate eigenvalue of $T$;
+  \item there is an $X>0$ satisfying $T(X)=rX$;
+  \item there is a $Y>0$ satisfying $T^*(Y)=rY$.
+\end{enumerate}
+Here $T^*$ is the adjoint for the bilinear trace pairing
+\begin{align}
+  \tr\!\left(T^*(Y)Z\right)
+    &=\tr\!\left(YT(Z)\right).
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_trace_pairing}
+\end{align}
+The exact local source is
+\path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex}, lines~698--721.
+No complete-positivity or Kraus hypothesis occurs in the statement or proof.
+
+The word ``nondegenerate'' is geometric: the ordinary complex eigenspace at
+$r$ has dimension one.  The source does not assert algebraic simplicity or a
+one-dimensional generalized eigenspace.
+
+\section{Formal statement}
+
+The witness structure \leanid{WolfSpectralProperties} and predicate
+\leanid{HasWolfSpectralProperties} in
+\doclink{QICLean/Channel/Irreducible/PositiveMapSpectralCharacterization}
+record a real number $r>0$
+and matrices $X,Y>0$ such that
+\begin{align}
+  \varrho(T)
+    &=r,
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_radius}\\
+  T(X)
+    &=rX,
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_right}\\
+  \operatorname{traceAdjointMap}(T)(Y)
+    &=rY,
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_left}\\
+  \dim_{\mathbb C}\ker(T-r\Id)
+    &=1.
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_simple}
+\end{align}
+Thus the left eigenvector is source-facing and does not depend on a choice of
+Kraus family.
+
+For a nonzero positive map on a nonzero full matrix algebra, the declaration
+\leanid{wolf_theorem_6_4} proves
+\begin{align}
+  T\text{ is irreducible}
+    \quad\Longleftrightarrow\quad
+  T\text{ has the properties
+    \eqref{eq:wolf_thm6_4_positive_map_spectral_characterization_radius}--
+    \eqref{eq:wolf_thm6_4_positive_map_spectral_characterization_simple}}.
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_iff}
+\end{align}
+The Lean hypotheses are \leanid{IsPositiveMap T}, $T\neq0$, and
+\leanid{NeZero D}.  There is no complete-positivity assumption.
+
+\section{Necessary boundary correction}
+
+The printed statement does not exclude the zero map, although its displayed
+condition requires
+\begin{align}
+  T(X)
+    &=rX>0.
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_printed_strict}
+\end{align}
+On $\MN{1}$, the zero map is positive and irreducible: the only orthogonal
+projections are $0$ and $\Id$.  Its spectral radius is zero, so
+\eqref{eq:wolf_thm6_4_positive_map_spectral_characterization_printed_strict}
+is impossible.  The printed equivalence is therefore false at this boundary.
+
+The hypothesis $T\neq0$ is the uniform correction.  If $D>1$, irreducibility
+already excludes the zero map.  The assumption \leanid{NeZero D} separately
+excludes the empty matrix algebra, in which positive-definite density witnesses
+are unavailable.
+
+\section{Source-faithful proof}
+
+For the forward implication,
+\leanid{hasWolfSpectralProperties_of_irreducible_positive} applies the
+positive-map form of Theorem~6.3 to $T$.  It obtains $X>0$, the ordinary
+one-dimensional $r$-eigenspace, and the spectral-radius identity.  The
+trace-adjoint consequence of Theorem~6.3 supplies $Y>0$ at the same eigenvalue.
+
+For the reverse implication, set $S=\sqrt{Y}$ and define exactly the transform
+used at local source lines~712--714,
+\begin{align}
+  T'
+    &=r^{-1}\,\operatorname{similarityMap}(S^{-1},T),
+  \qquad
+  T'(Z)=r^{-1}S\,T(S^{-1}ZS^{-1})S.
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_gauge}
+\end{align}
+Positivity is preserved by congruence and positive rescaling.  Trace
+preservation follows directly from
+\eqref{eq:wolf_thm6_4_positive_map_spectral_characterization_trace_pairing}:
+for $W=S^{-1}ZS^{-1}$,
+\begin{align}
+  \tr(T'(Z))
+    &=r^{-1}\tr(YT(W))
+      =r^{-1}\tr(T^*(Y)W)
+      =\tr(Z).
+  \label{eq:wolf_thm6_4_positive_map_spectral_characterization_tp}
+\end{align}
+Moreover, $X'=SXS>0$ is fixed by $T'$.
+
+If $T'$ preserved a proper corner $P\MN{D}P$, the positive trace-preserving
+Ces\`aro theorem
+\leanid{IsPositiveMap.exists_fixed_density_of_preserves_compression} would
+produce a stationary density matrix $\tau$ in that corner.  Pulling $\tau$
+back through $S^{-1}$ gives an ordinary $r$-eigenvector of $T$.  The
+one-dimensional eigenspace therefore makes $\tau$ a scalar multiple of $X'$,
+which is impossible because $X'>0$ has full support whereas $\tau$ lies in a
+proper corner.  This is precisely the contradiction at local source
+lines~715--720.
+
+The earlier finite-Kraus package remains available through
+\leanid{HasSpectralProperties}.  The declaration
+\leanid{hasSpectralProperties_iff_hasWolfSpectralProperties_of_cp} proves that,
+for a nonzero completely positive map, it is equivalent to the source-general
+package.  It is therefore a specialization rather than the statement of
+Theorem~6.4 itself.
+
+\section{Verdict}
+
+\textbf{Verdict: resolved, with one necessary source correction.}  The former
+Kraus/complete-positive restriction and the former uniqueness-only-among-PSD
+formulation have been removed from the source-facing theorem.  Ordinary
+eigenspace nondegeneracy and the trace-pairing left eigenvector are explicit.
+The additional hypothesis $T\neq0$ is necessary only because the printed
+equivalence fails for the irreducible zero map on $\MN{1}$.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

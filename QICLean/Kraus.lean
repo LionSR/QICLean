@@ -26,6 +26,7 @@ import QICLean.Kraus.PrimitiveFixedPoint.FromPeripheral
 import QICLean.Kraus.PrimitiveFixedPoint.Irreducible
 import QICLean.Kraus.PrimitiveFixedPoint.Peripheral
 import QICLean.Kraus.ProjectionTriangularTrace
+import QICLean.Kraus.RectangularChain
 import QICLean.Kraus.Tactic
 import QICLean.Kraus.TracePairing
 import QICLean.Kraus.Transfer

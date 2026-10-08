@@ -686,6 +686,29 @@ They do not alter the proof for a nonzero irreducible map once the second
 global extremum is interpreted as the infimum in
 Eq.~\ref{eq:wolf_lecture_notes_errata_theorem63_correct_upper_global}.
 
+\section{The one-dimensional zero-map boundary in Theorem~6.4}
+\label{sec:theorem-6-4}
+
+\paragraph{Formalization trigger.}
+The corrected equivalence is formalized by \leanid{wolf_theorem_6_4}.  Its
+positive-map scope, ordinary eigenspace condition, and proof by Wolf's
+similarity transform are documented in
+\path{docs/paper-gaps/wolf_thm6_4_positive_map_spectral_characterization.tex}.
+
+\paragraph{Printed assertion and correction.}
+Wolf's Theorem~6.4 states the equivalence for every positive map
+\cite[Theorem~6.4]{Wolf2012Quantum}.  The zero map on $\MN{1}$ is irreducible,
+but its spectral radius is zero and it has no matrices satisfying the printed
+strict condition $T(X)=\varrho X>0$.  Thus the equivalence requires either
+$T\neq0$ or an explicit exclusion of this one-dimensional boundary.  The Lean
+theorem assumes $D>0$ and $T\neq0$.  When $D>1$, irreducibility already excludes
+the zero map.
+
+\paragraph{Classification.}
+This is the same well-posedness correction as the zero-map boundary in
+Theorem~6.3, discussed in Section~\ref{sec:theorem-6-3}; it does not alter the
+similarity and invariant-corner proof for a nonzero map.
+
 \section{The missing order hypothesis in the unitary comparison}
 \label{sec:unitary-comparison}
 

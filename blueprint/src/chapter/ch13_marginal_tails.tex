@@ -1,0 +1,750 @@
+%% =========================================================
+%% Chapter: Marginal surprisal moments under a global gap
+%% Source: OpenAI, "A two-dimensional area law from a global spectral gap"
+%%         (September 24, 2026), Lemma 3.1, 02-initial.tex lines 34-207
+%% =========================================================
+
+\chapter{Marginal Surprisal Moments Under a Global Gap}
+\label{ch:marginal_tails}
+
+For a gapped ground vector of a sum of bounded terms on a bipartite space,
+the negative logarithm of a marginal eigenvalue, sampled with that
+eigenvalue as its probability, concentrates around the entropy of the
+marginal. This chapter proves the moment and tail bounds
+of~\cite[Lemma~3.1]{OpenAI2026AreaLaw} for a bipartition $\mathcal
+H_B\otimes\mathcal H_{B^c}$. Every term acts on one factor only, except the
+crossing terms, each of which is a sum of at most $d_i^2$ products
+$c_\alpha\otimes d_\alpha$ with $\lVert c_\alpha\rVert\lVert d_\alpha\rVert\le c_0$.
+A term supported on sites of total dimension $d_i$ has such a
+decomposition through the matrix units on its portion in $B$.
+
+Throughout, $p$ is a probability vector, $K$ takes the value $-\log p_j$
+with probability $p_j$, $M(u)=\mathbb E\,\mathrm e^{uK}=\sum_{p_j>0}p_j^{1-u}$, and
+$S=\mathbb E K$ is the Shannon entropy.
+
+\section{Scalar estimates}
+\label{sec:marginal_tails_scalar}
+
+\begin{lemma}[Quadratic real part from three lines]
+    \label{lem:strip_quadratic}
+    \lean{Complex.norm_le_exp_one_mul_of_strip,
+        Complex.abs_re_sub_le_of_norm_le_closedBall,
+        Complex.abs_re_sub_le_of_strip}
+    \leanok
+    Let $f$ be entire with $f(-x)=\overline{f(x)}$ for real $x$,
+    $|f(\mathrm iy)|\le c$ for real $y$, and $|f(z)|\le cm$ for
+    $|\operatorname{Re}z|\le1/4$, where $m\ge1$. If $\ell\ge1$ and
+    $\log m\le2\ell$, then $|f(z)|\le\mathrm ec$ for
+    $|\operatorname{Re}z|\le1/(8\ell)$, and
+    $|\operatorname{Re}(f(x)-f(0))|\le128\mathrm ec\ell^2x^2$ for real
+    $|x|\le1/(8\ell)$.
+\end{lemma}
+\begin{proof}\leanok
+    The three-lines theorem on the strips between real parts $0$ and $\pm1/4$
+    gives $|f(z)|\le c\,m^{4|\operatorname{Re}z|}\le\mathrm ec$. Put
+    $k(z)=f(z)+f(-z)-2f(0)$, so that $k(0)=k'(0)=0$ and $|k|\le4\mathrm ec$
+    on the disk of radius $\delta=1/(8\ell)$. The function $k(z)/z^2$ is
+    entire, and the maximum principle bounds it by $4\mathrm ec/\delta^2$ on
+    the disk. Since $\operatorname{Re}f(-x)=\operatorname{Re}f(x)$, the
+    quantity $\operatorname{Re}(f(x)-f(0))$ equals $\operatorname{Re}k(x)/2$.
+    Only the real part of the linear Taylor coefficient vanishes.
+\end{proof}
+
+\begin{lemma}[Halving recurrence and exponential tails]
+    \label{lem:surprisal_halving}
+    \lean{Entropy.hasDerivAt_log_surprisalMoment, Entropy.le_mul_add_of_halving,
+        Entropy.log_surprisalMoment_le_of_gap, Entropy.surprisalTail_le}
+    \leanok
+    The function $L=\log M$ satisfies $L(0)=0$ and $L'(0)=S$. If $K_0\ge0$,
+    $K_0u^2\le1/2$ and $(1-K_0u^2)M(u)\le M(u/2)^2$ for all $|u|\le r$, then
+    $L(u)\le uS+4K_0u^2$ for $|u|\le r$. If $L(\pm r)\le\pm rS+Cr^2$ with
+    $r>0$, then $\Pr\{|K-S|>w\}\le2\mathrm e^{Cr^2}\mathrm e^{-rw}$.
+\end{lemma}
+\begin{proof}\leanok
+    The recurrence gives $L(u)\le2L(u/2)+2K_0u^2$ because
+    $-\log(1-v)\le2v$ for $0\le v\le1/2$. Iterating, $2^jL(u/2^j)\to uS$, and
+    the geometric series of quadratic terms sums to at most
+    $4K_0u^2$. The tail is exponential Markov at $u=\pm r$.
+\end{proof}
+
+\section{Modular conjugation}
+\label{sec:marginal_tails_modular}
+
+Let $\Theta$ be a unit vector whose marginal on $\mathcal H_B$ is
+$\operatorname{diag}(s)$, with rows $\Theta_j$. For an operator $X$ put
+$f(z)=\sum_{j,k}\mathrm e^{z(\log s_j-\log s_k)}\langle\Theta_j,X_{jk}\Theta_k\rangle$,
+which is $\langle\Theta,\sigma^zX\sigma^{-z}\Theta\rangle$ on the support of
+$\sigma=\operatorname{diag}(s)$.
+
+\begin{lemma}[Local conjugation estimate]
+    \label{lem:modular_conjugation_quadratic}
+    \lean{Entropy.modularExpectation_zero, Entropy.norm_modularExpectation_mul_I_le,
+        Entropy.modularExpectation_neg, Entropy.norm_modularExpectation_kronecker_le,
+        Entropy.abs_re_modularExpectation_sub_le}
+    \leanok
+    \uses{lem:strip_quadratic}
+    One has $f(0)=\langle\Theta,X\Theta\rangle$ and $|f(\mathrm iy)|\le\lVert X\rVert $,
+    and $f(-x)=\overline{f(x)}$ for Hermitian $X$. For $X=c\otimes d$ and
+    $|\operatorname{Re}z|\le1/2$, $|f(z)|\le2\lVert c\rVert \lVert d\rVert $. Consequently,
+    if $X$ is Hermitian, $\lVert X\rVert \le c_0$ and $X$ is a sum of $N$ products
+    with $\lVert c_\alpha\rVert\lVert d_\alpha\rVert\le c_0$, then
+    $|\operatorname{Re}(f(x)-f(0))|\le128\mathrm ec_0\ell^2x^2$ whenever
+    $\ell\ge1$, $\log(2N)\le2\ell$ and $|x|\le1/(8\ell)$.
+\end{lemma}
+\begin{proof}\leanok
+    On the imaginary axis $f$ is an expectation in a vector with the same
+    norm. For a product, write $\Theta_j=\sqrt{s_j}\,\omega_j$ with orthonormal
+    $\omega_j$. The weights satisfy
+    $|s_j^{1/2+z}s_k^{1/2-z}|\le s_j+s_k$, and Cauchy--Schwarz with Bessel's
+    inequality bounds every row and column sum of
+    $|c_{jk}\langle\omega_j,d\,\omega_k\rangle|$ by $\lVert c\rVert \lVert d\rVert $. The last
+    claim is Lemma~\ref{lem:strip_quadratic} with $m=2N$.
+\end{proof}
+
+\section{The moment and tail bounds}
+\label{sec:marginal_tails_main}
+
+\begin{lemma}[Marginal tilt]
+    \label{lem:marginal_tilt}
+    \lean{Entropy.norm_tilt, Entropy.inner_tilt,
+        Entropy.modularExpectation_tilt_tiltExponent,
+        Entropy.modularExpectation_kronecker_one, Entropy.modularExpectation_one_kronecker,
+        Entropy.re_inner_tilt_sub_le, Entropy.gap_surprisalMoment}
+    \leanok
+    \uses{lem:modular_conjugation_quadratic}
+    Suppose the marginal of the ground vector $\Psi$ is $\operatorname{diag}(p)$.
+    The vector $\Theta=F\Psi/\sqrt{M(u)}$, $F=\operatorname{diag}(p^{-u/2})$ on
+    the support, is a unit vector with marginal proportional to $p^{1-u}$ and
+    $\langle\Psi,\Theta\rangle=M(u/2)/\sqrt{M(u)}$. At
+    $z_u=-u/(2(1-u))$ its modular function is $\langle F^2\Psi,X\Psi\rangle/M(u)$,
+    and one-sided terms have constant modular function. For
+    $|u|\le1/2$ and $|u|\le1/(8\log(\mathrm ed_i))$ at every crossing term,
+    $\langle\Theta,(\mathsf H-E_0)\Theta\rangle\le128\mathrm ec_0\mathcal Bu^2$,
+    and the gap gives $(1-128\mathrm e\vartheta\mathcal Bu^2)M(u)\le M(u/2)^2$.
+\end{lemma}
+\begin{proof}\leanok
+    Summing the value at $z_u$ over all terms gives
+    $\langle F^2\Psi,\mathsf H\Psi\rangle/M(u)=E_0$. The excitation energy is
+    therefore the sum of $\operatorname{Re}(f_i(0)-f_i(z_u))$ over the crossing
+    terms, each bounded by Lemma~\ref{lem:modular_conjugation_quadratic}
+    since $|z_u|\le|u|$. The gap inequality
+    $\mathsf H-E_0\ge g_0(1-\ket\Psi\bra\Psi)$ then bounds
+    $1-|\langle\Psi,\Theta\rangle|^2$.
+\end{proof}
+
+\begin{theorem}[Marginal moment and tail bounds, bipartite form]
+    \label{thm:marginal_tails}
+    \lean{Entropy.log_surprisalMoment_eigenvalues_le,
+        Entropy.surprisalTail_eigenvalues_le}
+    \leanok
+    \uses{lem:marginal_tilt, lem:surprisal_halving}
+    Let $\mathsf H=\sum_ih_i$ on $\mathcal H_B\otimes\mathcal H_{B^c}$ with
+    Hermitian terms, $\lVert h_i\rVert\le c_0$, $c_0\ge0$, each term acting on one
+    factor except the crossing terms $i\in\mathcal I_\times$, each a sum of
+    at most $d_i^2$ products with factor norms at most $c_0$, $d_i\ge1$. Let
+    $\Psi$ be a unit vector with $\mathsf H\Psi=E_0\Psi$ and
+    $\mathsf H-E_0\ge g_0(1-\ket\Psi\bra\Psi)$, $g_0>0$. Let $\rho$ be its
+    marginal on $\mathcal H_B$, $p$ the eigenvalues of $\rho$, $S=S(\rho)$,
+    $\mathcal B=1+\sum_{i\in\mathcal I_\times}\log^2(\mathrm ed_i)$ and
+    $\vartheta=c_0/g_0$. Then
+    $\log\mathbb E\,\mathrm e^{uK}\le uS+512\mathrm e\vartheta\mathcal Bu^2$ for
+    $|u|\le1/(32\sqrt{(1+\vartheta)\mathcal B})$, and for every real $w$
+    \[
+        \Pr\{|K-S|>w\}\le\min\Bigl\{1,\,2\mathrm e^{\mathrm e/2}
+        \exp\Bigl(-\frac{w}{32\sqrt{(1+\vartheta)\mathcal B}}\Bigr)\Bigr\}.
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    Conjugating by $U^*\otimes1$, where $U$ diagonalizes $\rho$, preserves
+    one-sided terms, product decompositions with their factor norms, the
+    eigenvalue equation and the gap inequality, and makes the marginal
+    diagonal. On the admissible interval every halving stays admissible,
+    $|u|\le1/32$, $\log(\mathrm ed_i)\le\sqrt{\mathcal B}$ and
+    $128\mathrm e\vartheta\mathcal Bu^2\le1/2$, so
+    Lemmas~\ref{lem:marginal_tilt} and~\ref{lem:surprisal_halving} give the
+    moment bound. At $u=\pm1/(32\sqrt{(1+\vartheta)\mathcal B})$ the
+    quadratic term is at most $\mathrm e/2$, which gives the tail.
+\end{proof}
+
+\section{Designated supports}
+\label{sec:marginal_tails_supports}
+
+Let $\mathcal H=\bigotimes_{v\in V}\C^{n_v}$. An operator is supported on
+$D\subseteq V$ when it acts as the identity outside $D$: its matrix
+elements vanish between configurations that differ outside $D$ and do not
+depend on the common values there.
+
+\begin{lemma}[Matrix-unit decomposition across a cut]
+    \label{lem:supported_product_decomposition}
+    \lean{Entropy.IsSupportedOn.isOneSided_of_subset,
+        Entropy.IsSupportedOn.isOneSided_of_disjoint,
+        Entropy.IsSupportedOn.hasProductDecomposition}
+    \leanok
+    Let $h$ be supported on $D$ and let $B\sqcup B^c=V$. If $D\subseteq B$ or
+    $D\subseteq B^c$, then $h$ acts on one factor of
+    $\mathcal H_B\otimes\mathcal H_{B^c}$. In general $h$ is a sum of at most
+    $d^2$ products $c_\alpha\otimes d_\alpha$ with $\lVert c_\alpha\rVert\le1$
+    and $\lVert d_\alpha\rVert\le\lVert h\rVert$, where
+    $d=\prod_{v\in D}n_v$.
+\end{lemma}
+\begin{proof}\leanok
+    The factor $c_\alpha$ is a matrix unit on $D\cap B$ tensored with the
+    identity on $B\setminus D$, written as $S_aS_b^*$ for isometries
+    $S_a$. The factor $d_\alpha$ is the compression $T_a^*hT_b$ along the
+    isometries $T_a\colon\psi\mapsto e_a\otimes\psi$. The identity
+    $h=\sum c_\alpha\otimes d_\alpha$ follows entrywise from the support
+    property, and there are $(\prod_{v\in D\cap B}n_v)^2\le d^2$ terms.
+\end{proof}
+
+\begin{theorem}[Marginal moment and tail bounds]
+    \label{thm:marginal_tails_supports}
+    \lean{Entropy.log_surprisalMoment_cut_le, Entropy.surprisalTail_cut_le}
+    \leanok
+    \uses{thm:marginal_tails, lem:supported_product_decomposition}
+    Let $\mathsf H=\sum_{i\in\mathcal I}h_i$ on $\mathcal H$ with $\mathcal I$
+    finite, each $h_i$ Hermitian with $\lVert h_i\rVert\le c_0$, $c_0\ge0$, and
+    supported on a designated set $D_i$. Let $\Psi$ be a unit vector with
+    $\mathsf H\Psi=E_0\Psi$ and $\mathsf H-E_0\ge g_0(1-\ket\Psi\bra\Psi)$,
+    $g_0>0$. Fix $B\sqcup B^c=V$, let $\mathcal I_\times$ be the indices whose
+    support meets both sides, $\rho=\Tr_{B^c}\ket\Psi\bra\Psi$,
+    $d_i=\prod_{v\in D_i}n_v$,
+    $\mathcal B=1+\sum_{i\in\mathcal I_\times}\log^2(\mathrm ed_i)$ and
+    $\vartheta=c_0/g_0$. Then the conclusions of
+    Theorem~\ref{thm:marginal_tails} hold:
+    $\log\mathbb E\,\mathrm e^{uK}\le uS+512\mathrm e\vartheta\mathcal Bu^2$
+    for $|u|\le1/(32\sqrt{(1+\vartheta)\mathcal B})$, and the stated tail bound
+    holds for every real $w$.
+\end{theorem}
+\begin{proof}\leanok
+    Pass to cut coordinates. The operator norm, Hermiticity, the eigenvalue
+    equation and the gap inequality are preserved by the relabelling.
+    Lemma~\ref{lem:supported_product_decomposition} supplies the one-sided
+    terms and the product decompositions of the crossing terms. Every local
+    dimension is positive, since $\Psi\ne0$. Apply
+    Theorem~\ref{thm:marginal_tails}.
+\end{proof}
+
+\begin{lemma}[Typical sets]
+    \label{lem:typical_set}
+    \lean{Entropy.one_sub_surprisalTail_le_typicalMass, Entropy.exp_le_of_mem_typicalSet}
+    \leanok
+    Let $E$ be the set of indices with $p_i>0$ and $|-\log p_i-S|\le w$, and
+    let $z=\sum_{i\in E}p_i$. Then $z\ge1-\Pr\{|K-S|>w\}$, and
+    $\mathrm e^{-S-w}\le p_i\le\mathrm e^{-S+w}$ for $i\in E$.
+\end{lemma}
+\begin{proof}\leanok
+    The indices outside $E$ with positive weight are exactly those in the
+    tail event. The weight bounds are the definition of $E$.
+\end{proof}
+
+\section{Normalized filters}
+\label{sec:marginal_tails_filters}
+
+\begin{lemma}[Trace Hölder inequality]
+    \label{lem:trace_holder}
+    \lean{Matrix.trace_mul_eq_sum_mul_normSq, Matrix.re_trace_mul_le_of_spectral,
+        Matrix.PosSemidef.re_trace_mul_le}
+    \leanok
+    For positive semidefinite $A,B$ with eigenvalues $a_i,b_j$ and
+    $1/p+1/q=1$, $p,q>1$,
+    $\operatorname{Re}\Tr(AB)\le(\sum_ia_i^p)^{1/p}(\sum_jb_j^q)^{1/q}$.
+\end{lemma}
+\begin{proof}\leanok
+    With $A=U\operatorname{diag}(a)U^*$ and $B=V\operatorname{diag}(b)V^*$,
+    $\Tr(AB)=\sum_{ij}a_ib_j|W_{ij}|^2$ for the unitary $W=U^*V$, whose squared
+    moduli are doubly stochastic. Apply the scalar Hölder inequality to
+    $a_i|W_{ij}|^{2/p}$ and $b_j|W_{ij}|^{2/q}$.
+\end{proof}
+
+\begin{lemma}[Norm of a normalized filter]
+    \label{lem:filter_norm}
+    \lean{Entropy.norm_kronecker_one_apply_sq,
+        Entropy.norm_kronecker_one_apply_sq_le_rpow,
+        Entropy.norm_kronecker_one_apply_sq_le_exp,
+        Entropy.sum_eigenvalues_partialTraceRight_eq_one,
+        Entropy.rpow_one_sub_le_exp_of_log_le}
+    \leanok
+    \uses{lem:trace_holder, thm:marginal_tails}
+    Let $L\ge0$ act on $\mathcal H_B$ with $\Tr L^{2/a}=1$, $0<a<1$. For a
+    unit vector with marginal $\rho$, $\lVert(L\otimes1)\Psi\rVert^2=\Tr\rho
+    L^2\le(\Tr\rho^{1/(1-a)})^{1-a}=M(-a/(1-a))^{1-a}$. Under the hypotheses
+    of Theorem~\ref{thm:marginal_tails}, if $a\le1/2$ and
+    $a/(1-a)\le1/(32\sqrt{(1+\vartheta)\mathcal B})$, then
+    $\lVert(L\otimes1)\Psi\rVert^2\le\exp(-aS(\rho)+1024\mathrm e\vartheta
+    \mathcal Ba^2)$.
+\end{lemma}
+\begin{proof}\leanok
+    Apply Lemma~\ref{lem:trace_holder} with exponents $1/(1-a)$ and $1/a$ to
+    $\rho$ and $L^2$, then the moment bound at $u=-a/(1-a)$, and use
+    $1/(1-a)\le2$.
+\end{proof}
+
+\begin{lemma}[Clipped eigenvalues and conjugation cost]
+    \label{lem:clipped_filter_cost}
+    \lean{Entropy.abs_log_max_sub_log_max_le, Entropy.abs_log_clipped_sub_le,
+        Entropy.cosh_sub_one_le, Entropy.sqrt_mul_cosh_sub_one_le}
+    \leanok
+    For $\varepsilon,\lambda>0$, $a\ge0$ and positive $p_i,p_k$, the numbers
+    $l_i=\max\{\varepsilon,p_i/\lambda\}^{a/2}$ satisfy
+    $|\log(l_i/l_k)|\le\frac a2|\log(p_i/p_k)|$. If $a\le1/2$, $p,q>0$ and
+    $|t|\le\frac a2|\log(p/q)|$, then
+    $\sqrt{pq}\,(\cosh t-1)\le2a^2(p+q)$.
+\end{lemma}
+\begin{proof}\leanok
+    A maximum with a common floor contracts differences of logarithms. For
+    the cost, write $p=\mathrm e^{m+z}$, $q=\mathrm e^{m-z}$, so that
+    $p+q=2\sqrt{pq}\cosh z$ and $|t|\le a|z|\le|z|/2$. Then
+    $\cosh t-1\le\frac{t^2}2\cosh t\le\frac{a^2z^2}2\cosh(z/2)$, using
+    $\sinh v\le v\cosh v$, and
+    $z^2\cosh(z/2)\le\frac{32}{\mathrm e^2}\mathrm e^{|z|}\le8\cosh z$.
+\end{proof}
+
+\begin{lemma}[Conjugation by a clipped filter]
+    \label{lem:filter_conjugation}
+    \lean{Entropy.sum_add_mul_norm_unitRow_le, Entropy.inner_rowWeight_inv,
+        Entropy.re_sum_sub_conj_eq, Entropy.abs_re_inner_sub_inner_conj_le}
+    \leanok
+    \uses{lem:modular_conjugation_quadratic, lem:clipped_filter_cost}
+    Let the marginal of $\Theta$ be $\operatorname{diag}(s)$ with $\sum s=1$, let
+    $X=\sum_\alpha c_\alpha\otimes d_\alpha$ be Hermitian, and let $L=
+    \operatorname{diag}(l)$ with $l>0$ and
+    $|\log(l_j/l_k)|\le\frac a2|\log(s_j/s_k)|$ for positive $s_j,s_k$, where
+    $a\le1/2$. Then
+    $|\operatorname{Re}(\langle\Theta,X\Theta\rangle-\langle\Theta,(L\otimes1)
+    X(L^{-1}\otimes1)\Theta\rangle)|\le4a^2\sum_\alpha\lVert c_\alpha\rVert
+    \lVert d_\alpha\rVert$.
+\end{lemma}
+\begin{proof}\leanok
+    Hermitian pairing writes the real part as
+    $-\sum_{jk}(\cosh\log(l_j/l_k)-1)\operatorname{Re}T_{jk}$. For a product
+    term $|T_{jk}|=\sqrt{s_js_k}\,|c_{jk}||\langle\omega_j,d\,\omega_k\rangle|$,
+    Lemma~\ref{lem:clipped_filter_cost} bounds the hyperbolic coefficient
+    times $\sqrt{s_js_k}$ by $2a^2(s_j+s_k)$, and the row and column estimate
+    of Lemma~\ref{lem:modular_conjugation_quadratic} gives the factor
+    $2\lVert c\rVert\lVert d\rVert$.
+\end{proof}
+
+\begin{lemma}[Local lifts and the trace argument]
+    \label{lem:local_lift}
+    \lean{Entropy.localLift, Entropy.regionState, Entropy.localLift_mul,
+        Entropy.localLift_one, Entropy.localLift_conjTranspose,
+        Entropy.isSupportedOn_localLift, Entropy.IsSupportedOn.exists_localLift,
+        Entropy.IsSupportedOn.mono, Entropy.IsSupportedOn.mul, Entropy.inner_localLift,
+        Entropy.inner_localLift_conj_eq, Entropy.inner_conj_eq_of_isSupportedOn}
+    \leanok
+    \uses{lem:supported_product_decomposition}
+    The lift $K\mapsto K\otimes1$ from a region $D$ is a unital multiplicative
+    map compatible with adjoints, and its range is the set of operators
+    supported on $D$. Support is monotone in $D$ and closed under products.
+    For every vector $\varphi$, $\langle\varphi,(K\otimes1)\varphi\rangle=
+    \Tr\rho_{\varphi,D}K$. Consequently, if $K$ is invertible and commutes with
+    $\rho_{\varphi,D}$, then
+    $\langle\varphi,(K\otimes1)Y(K^{-1}\otimes1)\varphi\rangle=\langle\varphi,
+    Y\varphi\rangle$ for every $Y$ supported on $D$.
+\end{lemma}
+\begin{proof}\leanok
+    The algebraic properties hold for $K\otimes1$ and survive the relabelling.
+    The expectation formula is the defining property of the partial trace,
+    and the last identity follows from cyclicity of the trace, since
+    $K^{-1}\rho_{\varphi,D}K=\rho_{\varphi,D}$.
+\end{proof}
+
+\begin{lemma}[Stationarity of one filter]
+    \label{lem:filter_stationarity}
+    \lean{Entropy.re_inner_commutator_eq_zero_of_isLocalMax,
+        Entropy.isHermitian_of_re_trace_mul_skew_eq_zero,
+        Entropy.commute_of_isHermitian_inv_mul_mul, Entropy.inner_liftProd_conj,
+        Entropy.commute_regionState_of_unitary_max}
+    \leanok
+    \uses{lem:local_lift}
+    Let $K>0$ on a region $D$ maximize $\lVert A(K\otimes1)Cw\rVert$ over its
+    unitary orbit, where $A$ is a product of invertible filters on regions
+    containing $D$, each commuting with the regional state of the output
+    $\psi=A(K\otimes1)Cw$ on its region. Then $K$ commutes with $\rho_{\psi,D}$.
+\end{lemma}
+\begin{proof}\leanok
+    Differentiating along $\mathrm e^{tB}K\mathrm e^{-tB}$ with $B^*=-B$ gives
+    $\operatorname{Re}\langle\psi,A(BK-KB)w'\rangle=0$. Since
+    $BK-KB=(B-KBK^{-1})K$, the descending trace argument of
+    Lemma~\ref{lem:local_lift} removes the outer filters, and the expectation
+    of $B$ is imaginary. Hence $\operatorname{Re}\Tr(K^{-1}\rho KB)=0$ for every
+    skew-Hermitian $B$, so $K^{-1}\rho K$ is Hermitian. In the eigenbasis of
+    $K$ this forces $\rho K^2=K^2\rho$ and then $\rho K=K\rho$.
+\end{proof}
+
+\begin{lemma}[Simultaneous diagonalization]
+    \label{lem:commuting_hermitian}
+    \lean{Matrix.exists_unitary_diagonal_of_commute}
+    \leanok
+    Commuting Hermitian matrices are diagonal in a common orthonormal basis.
+\end{lemma}
+\begin{proof}\leanok
+    The joint eigenspaces form an orthogonal internal direct sum; collect
+    orthonormal bases of the nonzero ones.
+\end{proof}
+
+\begin{lemma}[Clipping of a stationary filter]
+    \label{lem:filter_clipping}
+    \lean{Entropy.deriv_nonpos_of_le_right, Entropy.eq_max_div_of_floor_optimal,
+        Entropy.re_inner_deriv_nonpos_of_le_right, Entropy.hasDerivAt_conj_diagonal_rpow,
+        Entropy.ratio_le_of_diagonal_max, Entropy.abs_log_rpow_sub_le_of_ratio_le}
+    \leanok
+    \uses{lem:filter_stationarity, lem:clipped_filter_cost}
+    Let $K=U\operatorname{diag}(x^{a/2})U^*$ with $x\ge f>0$, $\sum x=1$, maximize
+    the output norm among the filters $U\operatorname{diag}(y^{a/2})U^*$ with
+    $y\ge f$, $\sum y=1$, and let the regional state of the output be
+    $U\operatorname{diag}(q)U^*$. Then $q_k/x_k\le q_i/x_i$ whenever $x_i>f$.
+    If moreover $\#\cdot f<1$, then $x_i=\max\{f,q_i/\lambda\}$ for some
+    $\lambda>0$, hence $|\log(x_i/x_k)^{a/2}|\le\frac a2|\log(q_i/q_k)|$ for
+    positive $q_i,q_k$.
+\end{lemma}
+\begin{proof}\leanok
+    Moving mass from coordinate $i$ to coordinate $k$ is feasible for small
+    $t>0$. Its first-order effect on the squared output norm is
+    $a\operatorname{Re}\Tr\rho G$ with $G=U\operatorname{diag}(v/x)U^*$, after
+    the descending trace argument, and equals $a(q_k/x_k-q_i/x_i)$. The
+    floor-constrained optimality condition and the contraction of a common
+    floor give the rest.
+\end{proof}
+
+\begin{lemma}[Conjugation by a filter commuting with the marginal]
+    \label{lem:filter_energy_term}
+    \lean{Entropy.toEuclideanLin_diagonal_kronecker_one, Entropy.inner_conj_unitary,
+        Entropy.abs_re_inner_sub_conj_le_of_common_basis,
+        Entropy.commute_of_isSupportedOn_disjoint}
+    \leanok
+    \uses{lem:filter_conjugation, lem:commuting_hermitian}
+    If the marginal of a unit vector is $U\operatorname{diag}(q)U^*$ and
+    $L=U\operatorname{diag}(l)U^*$ has clipped eigenvalue ratios with $a\le1/2$,
+    then conjugating a Hermitian $X=\sum c_\alpha\otimes d_\alpha$ by
+    $L\otimes1$ changes the real part of its expectation by at most
+    $4a^2\sum\lVert c_\alpha\rVert\lVert d_\alpha\rVert$. Operators supported on
+    disjoint regions commute.
+\end{lemma}
+\begin{proof}\leanok
+    Transport by $U^*\otimes1$ to the Schmidt coordinates and apply
+    Lemma~\ref{lem:filter_conjugation}. For disjoint supports, both operators
+    are of the forms $A\otimes1$ and $1\otimes B$ across the same cut.
+\end{proof}
+
+\begin{proposition}[Stationary filters are clipped]
+    \label{prop:stationary_filter_clipped}
+    \lean{Entropy.IsFeasibleFilter, Entropy.IsFeasibleFilter.conj,
+        Entropy.IsFeasibleFilter.posDef, Entropy.trace_cfc_conj_diagonal,
+        Entropy.IsFeasibleFilter.of_common_basis, Entropy.trace_regionState,
+        Entropy.exists_clipped_of_max_feasible}
+    \leanok
+    \uses{lem:filter_stationarity, lem:filter_clipping, lem:commuting_hermitian}
+    A filter on $D$ is feasible at floor $f>0$ and weight $a>0$ when it is
+    $U\operatorname{diag}(y^{a/2})U^*$ with $U$ unitary, $y\ge f$ and $\sum y=1$.
+    Let a feasible filter $K$ maximize the output norm of
+    $A(K\otimes1)Cw$ among feasible filters, where $A$ is a product of filters
+    on regions containing $D$, each commuting with its regional state of the
+    output $\psi\ne0$, and let $\#\cdot f<1$. Then $K$ commutes with
+    $\rho_{\psi,D}$, and in a common eigenbasis $K=W\operatorname{diag}(l)W^*$,
+    $\rho_{\psi,D}=W\operatorname{diag}(q)W^*$ with
+    $|\log(l_i/l_k)|\le\frac a2|\log(q_i/q_k)|$ for positive $q_i,q_k$.
+\end{proposition}
+\begin{proof}\leanok
+    Unitary conjugation preserves feasibility, so Lemma~\ref{lem:filter_stationarity}
+    gives commutation. In a common eigenbasis the eigenvalues of $K$ are
+    $x^{a/2}$ with $x\ge f$, $\sum x=1$, by comparing $\Tr K^{2/a}$ in the two
+    bases, and diagonal variations in that basis are feasible.
+    Lemma~\ref{lem:filter_clipping} applies with $\sum q=\lVert\psi\rVert^2>0$.
+\end{proof}
+
+\begin{theorem}[All stationary filters are clipped]
+    \label{thm:all_filters_clipped}
+    \lean{Entropy.chainList, Entropy.liftProd_chainList_split,
+        Entropy.chainList_update_of_ne, Entropy.isDescendingChain_map,
+        Entropy.forall_clipped_of_max}
+    \leanok
+    \uses{prop:stationary_filter_clipped}
+    Let feasible filters $K_j$ on nested regions $D_0\subseteq\dots\subseteq
+    D_{m-1}$ maximize $\lVert L_{m-1}\cdots L_0\Omega\rVert$ over the product of
+    the feasible sets, with nonzero output $\psi$ and $\#\cdot f_j<1$. Then for
+    every $j$, $K_j$ commutes with $\rho_{\psi,D_j}$, and in a common eigenbasis
+    its eigenvalue ratios are clipped.
+\end{theorem}
+\begin{proof}\leanok
+    Descending induction on $j$: the outer filters form a descending chain by
+    the induction hypothesis, and replacing $K_j$ alone keeps the product
+    feasible, so Proposition~\ref{prop:stationary_filter_clipped} applies.
+\end{proof}
+
+\begin{proposition}[Existence of an optimal nested product]
+    \label{prop:filter_maximizer}
+    \lean{Matrix.isCompact_setOf_conjTranspose_mul_self_eq_one,
+        Entropy.isCompact_floorSimplex, Entropy.isCompact_setOf_isFeasibleFilter,
+        Entropy.isFeasibleFilter_uniform, Entropy.continuous_norm_liftProd_chainList,
+        Entropy.exists_max_feasible_chain,
+        Entropy.toEuclideanLin_liftProd_chainList_ne_zero}
+    \leanok
+    Suppose every region $D_j$ carries at least one configuration and
+    $\#\cdot f_j\le 1$. Then the norm $\lVert L_{m-1}\cdots L_0\Omega\rVert$
+    attains its maximum over families of feasible filters. If moreover all floors
+    are positive and $\Omega\ne0$, every such product maps $\Omega$ to a nonzero
+    vector.
+\end{proposition}
+\begin{proof}\leanok
+    The feasible filters are the continuous image of the product of the compact
+    unitary group and the compact floored simplex, and the uniform filter is
+    feasible. The norm is continuous in the filters, so it attains its maximum
+    on the compact product of the feasible sets. Feasible filters with positive
+    floors are positive definite, hence invertible, and so is their product.
+\end{proof}
+
+\begin{lemma}[Conjugation by the splitting filter]
+    \label{lem:split_filter_conjugation}
+    \lean{Entropy.inner_cutOperator, Entropy.cutOperator_mul, Entropy.inv_conj_diagonal,
+        Entropy.abs_re_inner_sub_conj_localLift_le}
+    \leanok
+    \uses{lem:filter_energy_term}
+    Let $\varphi$ be a unit vector, $B$ a region, and let $L=W\operatorname{diag}(l)W^*$ and
+    $\rho_{\varphi,B}=W\operatorname{diag}(q)W^*$ with $W$ unitary, $l>0$, and
+    $\lvert\log l_i-\log l_k\rvert\le\tfrac a2\lvert\log q_i-\log q_k\rvert$ for positive
+    $q_i,q_k$, where $a\le\tfrac12$. For a Hermitian operator $X$ supported on $S$ with
+    $\lVert X\rVert\le c_0$,
+    \[
+        \bigl\lvert\Re\bigl(\langle\varphi,X\varphi\rangle
+            -\langle\varphi,LXL^{-1}\varphi\rangle\bigr)\bigr\rvert
+        \le 4a^2d_S^2c_0,\qquad d_S=\prod_{v\in S}\dim\mathcal H_v.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    In cut coordinates for $B\mid B^c$ the operator $X$ is a sum of at most $d_S^2$ products
+    $c\otimes d$ with $\lVert c\rVert\lVert d\rVert\le c_0$, and
+    Lemma~\ref{lem:filter_energy_term} applies.
+\end{proof}
+
+\begin{lemma}[One interaction term]
+    \label{lem:chain_term_conjugation}
+    \lean{Entropy.liftProdInv_append, Entropy.List.filter_not_append_filter_of_upward,
+        Entropy.chainList_eq_append_of_upward, Entropy.chainList_eq_split,
+        Entropy.liftProd_mul_mul_liftProdInv_of_disjoint, Entropy.splitIndices,
+        Entropy.mem_splitIndices, Entropy.abs_re_inner_sub_chain_conj_le}
+    \leanok
+    \uses{lem:split_filter_conjugation, thm:all_filters_clipped}
+    Let $K_j$ be invertible filters on nested regions $D_j$, each commuting with the regional
+    state of the unit vector $\varphi$ and clipped relative to it with weight $a_j\le\tfrac12$.
+    Let $X$ be Hermitian, supported on $S$, with $\lVert X\rVert\le c_0$, and suppose that at
+    most one region meets $S$ without containing it. Then conjugation by the nested product
+    $K$ changes $\Re\langle\varphi,X\varphi\rangle$ by at most
+    $\sum_{j}4a_j^2d_S^2c_0$, the sum over the regions splitting $S$.
+\end{lemma}
+\begin{proof}\leanok
+    The filters on regions disjoint from $S$ commute with $X$. The filters on regions
+    containing $S$ drop out of the expectation by the descending trace argument. If a region
+    splits $S$, the regions after it contain $S$ and the regions before it are disjoint from
+    $S$, so only its conjugation remains, and Lemma~\ref{lem:split_filter_conjugation}
+    applies; otherwise the expectation is unchanged.
+\end{proof}
+
+\begin{theorem}[Excitation energy of the optimal nested product]
+    \label{thm:chain_energy}
+    \lean{Entropy.regionState_smul, Entropy.clipped_smul, Entropy.toEuclideanLin_conj_apply_eq,
+        Entropy.re_inner_sub_le_of_chain, Entropy.re_inner_sub_le_of_max}
+    \leanok
+    \uses{lem:chain_term_conjugation, prop:filter_maximizer}
+    Let feasible filters $K_j$ on nested regions $D_j$, with floors $f_j>0$,
+    $\#\cdot f_j<1$ and weights $0<a_j\le\tfrac12$, maximize
+    $\lVert L_{m-1}\cdots L_0\Omega\rVert$, where $\Omega\ne0$ satisfies $H\Omega=E_0\Omega$
+    for $H=\sum_ih_i$ with $h_i$ Hermitian, supported on $S_i$, $\lVert h_i\rVert\le c_0$, and
+    every $S_i$ split by at most one region. Then the normalized output
+    $\varphi=K\Omega/\lVert K\Omega\rVert$ satisfies
+    \[
+        \Re\langle\varphi,H\varphi\rangle-E_0
+        \le\sum_j4a_j^2\sum_{i\text{ crossing }D_j}d_{S_i}^2c_0 .
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    Since $KHK^{-1}\varphi=E_0\varphi$, the left side is the sum over $i$ of
+    $\Re\bigl(\langle\varphi,h_i\varphi\rangle-\langle\varphi,Kh_iK^{-1}\varphi\rangle\bigr)$.
+    By Theorem~\ref{thm:all_filters_clipped} every filter commutes with the regional state of
+    $\varphi$ and is clipped relative to it; Lemma~\ref{lem:chain_term_conjugation} bounds each
+    term, and exchanging the two sums gives the claim.
+\end{proof}
+
+\begin{lemma}[One step of the first norm comparison]
+    \label{lem:prefix_step}
+    \lean{Entropy.chainList_lt_last, Entropy.chainList_last_lt, Entropy.liftProd_chainList_succ,
+        Entropy.mul_norm_le_of_overlap}
+    \leanok
+    Let $\psi=L_k\cdots L_0\Omega$ with $L_k$ Hermitian, suppose the normalization of $\psi$
+    has overlap at least $s$ with $\Omega$, and $\lVert L_{k-1}\cdots L_0\Omega\rVert\le N$.
+    Then $s\lVert\psi\rVert\le\lVert L_k\Omega\rVert N$.
+\end{lemma}
+\begin{proof}\leanok
+    $s\lVert\psi\rVert\le\lvert\langle\Omega,\psi\rangle\rvert
+    =\lvert\langle L_k\Omega,L_{k-1}\cdots L_0\Omega\rangle\rvert$, and Cauchy--Schwarz applies.
+\end{proof}
+
+\begin{lemma}[Feasible filters on a region]
+    \label{lem:region_filter_norm}
+    \lean{Entropy.IsFeasibleFilter.eigenvalues, Entropy.cutVector_toEuclideanLin,
+        Entropy.norm_localLift_sq_le_exp}
+    \leanok
+    \uses{lem:filter_norm}
+    Under the hypotheses of Theorem~\ref{thm:marginal_tails} for the cut $B\mid B^c$, a
+    feasible filter $L$ on $B$ with positive floor and weight $0<a\le\tfrac12$, such that
+    $a/(1-a)$ is admissible for the cut, satisfies
+    $\lVert L\Psi\rVert^2\le\exp\bigl(-aS(\rho_{\Psi,B})+1024e\vartheta\mathcal B_Ba^2\bigr)$.
+\end{lemma}
+\begin{proof}\leanok
+    The eigenvalues of $L$ are nonnegative with $\sum_j l_j^{2/a}=1$. In cut coordinates
+    $L$ acts as $L\otimes1$, and Lemma~\ref{lem:filter_norm} applies.
+\end{proof}
+
+\begin{theorem}[The first norm comparison]
+    \label{thm:first_norm_comparison}
+    \lean{Entropy.chainOptimum, Entropy.chainOptimum_zero, Entropy.exists_eq_chainOptimum,
+        Entropy.norm_le_chainOptimum, Entropy.pow_mul_le_prod_of_step,
+        Entropy.sq_norm_inner_ge_of_gap, Entropy.sqrt_mul_chainOptimum_succ_le,
+        Entropy.pow_sqrt_mul_chainOptimum_le}
+    \leanok
+    \uses{lem:prefix_step, thm:chain_energy, prop:filter_maximizer}
+    Let $N_k$ be the largest output norm $\lVert L_{k-1}\cdots L_0\Omega\rVert$ over feasible
+    filters on the first $k$ nested regions, where the floors are positive with
+    $\#\cdot f_j<1$ and $0<a_j\le\tfrac12$. Let $\Omega$ be a unit vector with
+    $H\Omega=E_0\Omega$ and $H-E_0\ge\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$, where
+    $\Delta>0$ and $H=\sum_ih_i$ with $h_i$ Hermitian, supported on $S_i$, $\lVert h_i\rVert\le c_0$,
+    and every $S_i$ split by at most one region. If
+    $\sum_{j<m}4a_j^2\sum_{i\text{ crossing }D_j}d_{S_i}^2c_0\le E$ and every feasible filter
+    on $D_k$ has $\lVert L\Omega\rVert\le x_k$, then
+    \[
+        \sqrt{1-E/\Delta}^{\,m}N_m\le\prod_{k<m}x_k .
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    The optimum is attained by Proposition~\ref{prop:filter_maximizer}. By
+    Theorem~\ref{thm:chain_energy} and the gap, the normalized output of an optimal prefix of
+    length $k+1$ has squared overlap at least $1-E/\Delta$ with $\Omega$, and
+    Lemma~\ref{lem:prefix_step} gives $\sqrt{1-E/\Delta}\,N_{k+1}\le x_kN_k$. Telescoping from
+    $N_0=1$ gives the claim.
+\end{proof}
+
+\begin{proposition}[The first norm comparison at floor zero]
+    \label{prop:zero_floor_comparison}
+    \lean{Entropy.isFeasibleFilter_floorRaise, Entropy.norm_le_of_forall_floor,
+        Entropy.pow_sqrt_mul_norm_le_of_zero_floor}
+    \leanok
+    \uses{thm:first_norm_comparison}
+    Under the hypotheses of Theorem~\ref{thm:first_norm_comparison} with $E<\Delta$, and bounds
+    $\lVert L\Omega\rVert\le x_k$ for filters on $D_k$ feasible at any positive floor, every
+    family of $m$ nonnegative filters $L_j=U_j\operatorname{diag}(y_j^{a_j/2})U_j^*$ with
+    $y_j\ge0$ and $\sum y_j=1$ satisfies
+    $\sqrt{1-E/\Delta}^{\,m}\lVert L_{m-1}\cdots L_0\Omega\rVert\le\prod_{k<m}x_k$.
+\end{proposition}
+\begin{proof}\leanok
+    The filters $U_j\operatorname{diag}\bigl(((1-\delta)y_j+\delta/d_j)^{a_j/2}\bigr)U_j^*$ are
+    feasible at the floor $\delta/d_j$ and converge to $L_j$ as $\delta\downarrow0$. The bound
+    of Theorem~\ref{thm:first_norm_comparison} does not depend on the floor, and the output
+    norm is continuous in the filters.
+\end{proof}
+
+\begin{lemma}[Trial filters on a disjoint union]
+    \label{lem:trial_filters}
+    \lean{Entropy.localLift_apply, Entropy.regionUnionEquiv, Entropy.localLift_union_kronecker,
+        Entropy.isFeasibleFilter_union_kronecker, Entropy.pinProj, Entropy.pinProj_conjTranspose,
+        Entropy.pinProj_mul_self, Entropy.sum_pinProj, Entropy.eq_of_forall_trace_mul_eq,
+        Entropy.norm_toEuclideanLin_sq, Entropy.norm_sq_localLift_pinProj,
+        Entropy.inner_localLift_eq_sum_pinProj, Entropy.regionState_eq_sum_pinProj,
+        Entropy.mul_prod_map_mul_of_idempotent, Entropy.mul_prod_eq_prod_mul,
+        Entropy.norm_toEuclideanLin_le_of_proj, Entropy.norm_liftProd_trial_ge}
+    \leanok
+    Let $\rho_{\Omega,X}=U\operatorname{diag}(p)U^*$ and let $P_i$ be the projection onto the
+    $i$-th eigenvector $u_i$. Then $\lVert P_i\Omega\rVert^2=p_i$, and on every region $T$
+    disjoint from $X$ the regional state of $\Omega$ is the sum of those of the vectors
+    $P_i\Omega$. For regions $T_j$ disjoint from $X$ and filters $M_j$ on $T_j$, the filters
+    $P_i\otimes M_j$ on $X\cup T_j$ are nonnegative with $\operatorname{Tr}(P_i\otimes
+    M_j)^{2/a}=\operatorname{Tr}M_j^{2/a}$, and
+    $\lVert M_{m-1}\cdots M_0P_i\Omega\rVert\le\lVert(P_i\otimes M_{m-1})\cdots
+    (P_i\otimes M_0)\Omega\rVert$.
+\end{lemma}
+\begin{proof}\leanok
+    On a disjoint union the lift of $A\otimes B$ is the product of the lifts of $A$ and of $B$.
+    The projection $P_i$ commutes with the filters on the $T_j$, is idempotent, and does not
+    increase norms.
+\end{proof}
+
+\begin{theorem}[Complex powers and the three-lines bound]
+    \label{thm:filter_three_lines}
+    \lean{Entropy.specPow, Entropy.specPow_zero, Entropy.specPow_one, Entropy.specPow_add,
+        Entropy.specPow_conjTranspose, Entropy.specPow_conjTranspose_mul_self,
+        Entropy.hasDerivAt_specPow, Entropy.differentiable_specPow, Entropy.norm_specPow_le,
+        Entropy.localLift_injective, Entropy.localLiftCLM, Entropy.chainPow,
+        Entropy.chainPow_zero_length, Entropy.chainPow_succ, Entropy.chainPow_zero,
+        Entropy.chainPow_conjTranspose_mul_self, Entropy.chainPow_mul_conjTranspose_self,
+        Entropy.differentiable_chainPow, Entropy.norm_chainPow_le,
+        Entropy.hasDerivAt_chainPow_zero, Entropy.chainPow_eq_liftProd, Entropy.chainPow_one_add,
+        Entropy.applyCLM, Entropy.norm_toEuclideanLin_chainPow_le_rpow,
+        Entropy.sum_re_inner_log_le}
+    \leanok
+    Let $M_j=W_j\operatorname{diag}(l_j)W_j^*$ with $l_j>0$ be filters on nested regions $T_j$,
+    let $\xi$ be a unit vector, and suppose that every nested product of unitary conjugates
+    $V_j^*M_jV_j$, with $V_j$ unitary on $T_j$, has output norm at most $B>0$ on $\xi$. Then
+    $\lVert M_{k-1}^x\cdots M_0^x\xi\rVert\le B^x$ for $0\le x\le1$, and
+    $\sum_{j<k}\Re\langle\xi,\log M_j\,\xi\rangle\le\log B$.
+\end{theorem}
+\begin{proof}\leanok
+    The function $F(z)=M_{k-1}^z\cdots M_0^z\xi$ is entire and bounded on the strip
+    $0\le\Re z\le1$. On $\Re z=0$ every factor is unitary. On $\Re z=1$ the identity
+    $M_{k-1}^{1+iy}\cdots M_0^{1+iy}=(U_{k-1}\cdots U_0)(V_{k-2}^*M_{k-1}V_{k-2})\cdots M_0$,
+    with $U_j=M_j^{iy}$ and $V_j=U_j\cdots U_0$, writes $F(1+iy)$ as a unitary applied to a
+    nested product of unitary conjugates. The three-lines theorem gives $\lVert F(x)\rVert\le
+    B^x$. Since $F(0)=\xi$, the one-sided derivative of $\lVert F(x)\rVert^2-B^{2x}$ at $x=0$
+    is nonpositive, which is the second claim.
+\end{proof}
+
+\begin{theorem}[Strong subadditivity for regions]
+    \label{thm:region_ssa}
+    \lean{Entropy.regionEntropy, Entropy.trace_regionState_submatrix_mul,
+        Entropy.disjoint_union_of_disjoint, Entropy.tripleEquiv, Entropy.tripleEquiv_apply,
+        Entropy.localLift_tripleEquiv_kronecker_one, Entropy.regionState_posSemidef,
+        Entropy.tripleState, Entropy.partialTraceLeft_tripleState,
+        Entropy.partialTraceRight_regionState_union,
+        Entropy.partialTraceRight_reassoc_tripleState, Entropy.regionEntropy_ssa,
+        Entropy.regionEntropy_cond_anti}
+    \leanok
+    For pairwise disjoint regions $A,B,C$,
+    $S(A\cup B\cup C)+S(B)\le S(A\cup B)+S(B\cup C)$. In particular
+    $S(X\mid T)\le S(X\mid T')$ for $T'\subseteq T$ disjoint from $X$.
+\end{theorem}
+\begin{proof}\leanok
+    The regional states of $A\cup B$, $B\cup C$ and $B$ are the partial traces of the regional
+    state of $A\cup B\cup C$, viewed as a tripartite matrix, so strong subadditivity applies.
+\end{proof}
+
+\begin{theorem}[The entropy discount from a buffer]
+    \label{thm:buffer_discount}
+    \lean{Entropy.IsFeasibleFilter.mono_floor, Entropy.exists_trial_filter,
+        Entropy.neg_sum_le_log_of_trial, Entropy.sum_norm_sq_mul_regionEntropy_le,
+        Entropy.neg_two_mul_log_le_entropy, Entropy.sum_mul_condEntropy_le,
+        Entropy.two_mul_condEntropy_le}
+    \leanok
+    \uses{prop:zero_floor_comparison, lem:region_filter_norm, lem:trial_filters,
+        thm:filter_three_lines, thm:region_ssa}
+    Let $X$ be a region, $T_0\subseteq T_1\subseteq\cdots$ regions disjoint from $X$, and
+    $D_j=X\cup T_j$, with weights $0<a_j\le\tfrac12$ of total mass
+    $\sum_{j<m}a_j=2$. Let $\Omega$, $H$ and $\Delta$ be as in
+    Theorem~\ref{thm:first_norm_comparison} for the regions $D_j$, with energy budget at most
+    $E<\Delta$, and suppose every $a_j/(1-a_j)$ is admissible for the cut $D_j$. If every $T_j$
+    lies in a region $T$ disjoint from $X$, then
+    \[
+        2S(X\mid T)\le S(X)+\sum_{j<m}1024e\vartheta\mathcal B_ja_j^2
+            -m\log(1-E/\Delta).
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    By Proposition~\ref{prop:zero_floor_comparison} and Lemma~\ref{lem:region_filter_norm}, every
+    nested product of nonnegative filters on the $D_j$ has output norm at most
+    $B=\prod_k x_k/\sqrt{1-E/\Delta}^{\,m}$ with $x_k^2=\exp(-a_kS(D_k)+1024e\vartheta\mathcal
+    B_ka_k^2)$. For a Schmidt index $i$ with $p_i>0$, Lemma~\ref{lem:trial_filters} bounds the
+    nested products of filters on the $T_j$ applied to $\xi_i=P_i\Omega/\sqrt{p_i}$ by
+    $B/\sqrt{p_i}$. Theorem~\ref{thm:filter_three_lines} with the filters
+    $((1-\delta)\rho_{\xi_i,T_j}+\delta/d)^{a_j/2}$ gives, as $\delta\downarrow0$,
+    $-\sum_j\tfrac{a_j}2S_{\xi_i}(T_j)\le\log B-\tfrac12\log p_i$. Averaging with weights $p_i$
+    and using concavity of the entropy gives $-2\log B\le S(X)+\sum_ja_jS(T_j)$. Hence
+    $\sum_ja_jS(X\mid T_j)\le S(X)+\text{error}$, and Theorem~\ref{thm:region_ssa} bounds the
+    left side below by $2S(X\mid T)$.
+\end{proof}
