@@ -66,6 +66,13 @@ theorem exists_auxBlock {A h : Matrix n n ℂ} (hA : A.PosDef) (hh : h.PosSemide
       (Commute A h → auxY A B h = auxZ A B h) := by
   sorry
 
+omit [DecidableEq n] in
+/-- Moving matrices across the Euclidean pairing:
+`⟨X v, Y w⟩ = ⟨v, X^* Y w⟩`. -/
+theorem star_mulVec_dotProduct_mulVec (X Y : Matrix n n ℂ) (v w : n → ℂ) :
+    star (X *ᵥ v) ⬝ᵥ (Y *ᵥ w) = star v ⬝ᵥ ((Xᴴ * Y) *ᵥ w) := by
+  rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec]
+
 /-- The error vectors `E_± = 𝓑^{±s} T M^{∓s} - T` of the block root
 (`06-transport.tex`, display `transport:E-def`), with `s = 1/4` and `T = h^{1/2}`. -/
 noncomputable def errorOp (M Broot h : Matrix n n ℂ) (sign : Bool) : Matrix n n ℂ :=
@@ -98,14 +105,39 @@ theorem re_inner_errorVec_eq {M Broot h : Matrix n n ℂ} (hM : M.PosDef) (hB : 
     (star ((CFC.sqrt h + errorOp M Broot h true) *ᵥ v) ⬝ᵥ
         ((CFC.sqrt h + errorOp M Broot h false) *ᵥ v)).re =
       (star (M ^ (-(1 / 4) : ℝ) *ᵥ v) ⬝ᵥ (h *ᵥ (M ^ (1 / 4 : ℝ) *ᵥ v))).re := by
-  sorry
+  have hT : (CFC.sqrt h)ᴴ = CFC.sqrt h := (CFC.sqrt_nonneg h).isSelfAdjoint.star_eq
+  have hTT : CFC.sqrt h * CFC.sqrt h = h :=
+    CFC.sqrt_mul_sqrt_self h (Matrix.nonneg_iff_posSemidef.mpr hh)
+  have h1 : CFC.sqrt h + errorOp M Broot h true =
+      Broot ^ (1 / 4 : ℝ) * CFC.sqrt h * M ^ (-(1 / 4) : ℝ) := by
+    simp [errorOp]
+  have h2 : CFC.sqrt h + errorOp M Broot h false =
+      Broot ^ (-(1 / 4) : ℝ) * CFC.sqrt h * M ^ (1 / 4 : ℝ) := by
+    simp [errorOp]
+  rw [h1, h2, star_mulVec_dotProduct_mulVec, star_mulVec_dotProduct_mulVec, mulVec_mulVec]
+  congr 3
+  rw [conjTranspose_mul, conjTranspose_mul, hT, (hB.rpow_isHermitian _).eq,
+    (hM.rpow_isHermitian _).eq]
+  calc _ = M ^ (-(1 / 4) : ℝ) * CFC.sqrt h * (Broot ^ (1 / 4 : ℝ) * Broot ^ (-(1 / 4) : ℝ)) *
+          CFC.sqrt h * M ^ (1 / 4 : ℝ) := by noncomm_ring
+    _ = M ^ (-(1 / 4) : ℝ) * h * M ^ (1 / 4 : ℝ) := by
+      rw [hB.rpow_mul_rpow_neg, Matrix.mul_one]; conv_rhs => rw [← hTT]
+      noncomm_ring
 
+omit [DecidableEq n] in
 /-- `Re⟨(x + e₊), (x + e₋)⟩ ≥ ½‖x‖² - (3/2)(‖e₊‖² + ‖e₋‖²)`
 (`06-transport.tex`, display `transport:energy-similarity`, second line, lines 754--757). -/
 theorem re_inner_add_add_ge (x e₁ e₂ : n → ℂ) :
     1 / 2 * (star x ⬝ᵥ x).re - 3 / 2 * ((star e₁ ⬝ᵥ e₁).re + (star e₂ ⬝ᵥ e₂).re) ≤
       (star (x + e₁) ⬝ᵥ (x + e₂)).re := by
-  sorry
+  simp only [dotProduct, Pi.star_apply, Pi.add_apply, Complex.re_sum, Finset.mul_sum,
+    ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]
+  refine Finset.sum_le_sum fun i _ => ?_
+  simp only [Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.add_re,
+    Complex.add_im]
+  nlinarith [sq_nonneg ((x i).re + (e₁ i).re + (e₂ i).re),
+    sq_nonneg ((x i).im + (e₁ i).im + (e₂ i).im), sq_nonneg (e₁ i).re, sq_nonneg (e₁ i).im,
+    sq_nonneg (e₂ i).re, sq_nonneg (e₂ i).im]
 
 /-- **Energy of the filtered vector, one term** (`06-transport.tex` lines 588--766):
 `⟨v, h v⟩ ≤ 2 Re⟨M^{-s} v, h M^s v⟩ + (3/2) W ∑_{j∈S} π_j ∫ m_s Tr(σ_{j,u} 𝖣_j) du`. -/
@@ -118,6 +150,18 @@ theorem re_star_dotProduct_mulVec_le_energy (T' : MeanTree J) {A : J → Matrix 
         3 / 2 * (∑ j ∈ S, T'.weight j) *
           ∑ j ∈ S, T'.weight j * ∫ u, fourierWeight u *
             (transportState T' A v j u * skewSquare (A j) h).trace.re := by
-  sorry
+  choose B hB hYZ hD hC using fun j => exists_auxBlock (hA j) hh
+  have hp := norm_sq_errorVec_le T' hA hB hw hh S hYZ hD (fun j hj => hC j (hS j hj)) v true
+  have hm := norm_sq_errorVec_le T' hA hB hw hh S hYZ hD (fun j hj => hC j (hS j hj)) v false
+  have heq := re_inner_errorVec_eq (posDef_eval hA T') (posDef_eval hB T') hh v
+  have hge := re_inner_add_add_ge (CFC.sqrt h *ᵥ v) (errorOp (T'.eval A) (T'.eval B) h true *ᵥ v)
+    (errorOp (T'.eval A) (T'.eval B) h false *ᵥ v)
+  rw [← add_mulVec, ← add_mulVec, heq] at hge
+  have hT : (CFC.sqrt h)ᴴ = CFC.sqrt h := (CFC.sqrt_nonneg h).isSelfAdjoint.star_eq
+  have hTT : CFC.sqrt h * CFC.sqrt h = h :=
+    CFC.sqrt_mul_sqrt_self h (Matrix.nonneg_iff_posSemidef.mpr hh)
+  rw [star_mulVec_dotProduct_mulVec, hT, hTT] at hge
+  simp only at hp hm
+  linarith
 
 end Matrix.Transport
