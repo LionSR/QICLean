@@ -323,4 +323,79 @@ theorem card_goodPerms :
   rw [Finset.card_eq_sum_ones, sum_goodPerms]
   simp [Finset.card_univ]
 
+/-- The good part of the permutation expansion is `#(good) · Tr σ 𝒯_{k,m}(G)`. -/
+theorem sum_goodPerms_exchangeTrace_eq {σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
+    (hσ : ∀ π, permOp (copyPerm Ω k) π * σ = σ) (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) :
+    ∑ π ∈ goodPerms k m, exchangeTrace σ G π =
+      #(goodPerms k m) * (σ * injectionAverage k m G).trace := by
+  rw [sum_goodPerms_exchangeTrace hσ, card_goodPerms, injectionAverage, Matrix.mul_smul,
+    trace_smul, Matrix.mul_sum, trace_sum, smul_eq_mul]
+  rcases eq_or_ne (Fintype.card (Fin m ↪ Fin k)) 0 with hN | hN
+  · have : IsEmpty (Fin m ↪ Fin k) := Fintype.card_eq_zero_iff.mp hN
+    simp [Finset.univ_eq_empty]
+  · have hN' : (Fintype.card (Fin m ↪ Fin k) : ℂ) ≠ 0 := by exact_mod_cast hN
+    push_cast
+    field_simp
+
+/-- With `G = 1` every good term equals `Tr σ`. -/
+theorem sum_goodPerms_exchangeTrace_one {σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
+    (hσ : ∀ π, permOp (copyPerm Ω k) π * σ = σ) (hσt : σ.trace = 1) :
+    ∑ π ∈ goodPerms k m, exchangeTrace σ (1 : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) π =
+      #(goodPerms k m) := by
+  rw [sum_goodPerms_exchangeTrace hσ, card_goodPerms]
+  simp [placeOp_one, hσt, Finset.card_univ, mul_comm]
+
+/-- **Each term of the permutation expansion is bounded** (`05-replicas.tex`, line 722):
+`|Tr[(σ ⊗ G) U(π)]| ≤ d^m ‖G‖` for a density matrix `σ`. -/
+theorem norm_exchangeTrace_le {σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hσp : σ.PosSemidef)
+    (hσt : σ.trace = 1) (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) (π : Perm (Fin (k + m))) :
+    ‖exchangeTrace σ G π‖ ≤ (Fintype.card Ω : ℝ) ^ m * ‖G‖ := by
+  set e := (splitCopies (Ω := Ω) k m).symm
+  have hM : copyKronecker σ G =
+      reindex e e (σ ⊗ₖ (1 : Matrix (Fin m → Ω) (Fin m → Ω) ℂ)) *
+        reindex e e ((1 : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) ⊗ₖ G) := by
+    simp only [copyKronecker, reindex_apply]
+    rw [submatrix_mul_equiv, ← mul_kronecker_mul, Matrix.mul_one, Matrix.one_mul]
+  have hR : (reindex e e (σ ⊗ₖ (1 : Matrix (Fin m → Ω) (Fin m → Ω) ℂ))).PosSemidef :=
+    (hσp.kronecker PosSemidef.one).submatrix _
+  have htr : (reindex e e (σ ⊗ₖ (1 : Matrix (Fin m → Ω) (Fin m → Ω) ℂ))).trace.re =
+      (Fintype.card Ω : ℝ) ^ m := by
+    rw [trace_reindex, trace_kronecker, hσt, trace_one, one_mul, Fintype.card_fun,
+      Fintype.card_fin]
+    norm_cast
+  rw [exchangeTrace, hM, Matrix.mul_assoc]
+  refine (hR.norm_trace_mul_le _).trans ?_
+  rw [htr]
+  gcongr
+  refine (l2_opNorm_mul _ _).trans ?_
+  calc ‖reindex e e ((1 : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) ⊗ₖ G)‖ *
+        ‖permOp (copyPerm Ω (k + m)) π‖ ≤ ‖G‖ * 1 := by
+        gcongr
+        · rw [l2_opNorm_reindex_equiv]
+          exact l2_opNorm_one_kronecker_le G
+        · exact l2_opNorm_permOp_le _ _
+    _ = ‖G‖ := mul_one _
+
+/-- The trace against `Π_{k+m}` is the average of the permutation expansion. -/
+theorem trace_copyKronecker_mul_symProj (σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ)
+    (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) :
+    (copyKronecker σ G * symProj (copyPerm Ω (k + m))).trace =
+      ((k + m)! : ℂ)⁻¹ * ∑ π, exchangeTrace σ G π := by
+  rw [symProj, Matrix.mul_smul, trace_smul, Matrix.mul_sum, trace_sum, Fintype.card_perm,
+    Fintype.card_fin, smul_eq_mul]
+  rfl
+
+/-- **Permutation expansion of `Tr[(σ ⊗ G) Π_{k+m}]`** (`05-replicas.tex`, lines 714–722):
+`(k+m)! Tr[(σ ⊗ G) Π_{k+m}] = #(good) Tr σ 𝒯_{k,m}(G) + ∑_{bad} Tr[(σ ⊗ G) U(π)]`. -/
+theorem factorial_mul_trace_copyKronecker_mul_symProj {σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
+    (hσ : ∀ π, permOp (copyPerm Ω k) π * σ = σ) (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) :
+    ((k + m)! : ℂ) * (copyKronecker σ G * symProj (copyPerm Ω (k + m))).trace =
+      #(goodPerms k m) * (σ * injectionAverage k m G).trace +
+        ∑ π ∈ {π : Perm (Fin (k + m)) | ¬ ∀ j : Fin m, (π (Fin.natAdd k j) : ℕ) < k},
+          exchangeTrace σ G π := by
+  rw [trace_copyKronecker_mul_symProj, ← mul_assoc,
+    mul_inv_cancel₀ (by exact_mod_cast (Nat.factorial_pos _).ne'), one_mul,
+    ← sum_goodPerms_exchangeTrace_eq hσ]
+  exact (Finset.sum_filter_add_sum_filter_not _ _ _).symm
+
 end TensorPower
