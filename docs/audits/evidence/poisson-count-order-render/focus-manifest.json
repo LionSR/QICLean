@@ -1,0 +1,99 @@
+{
+  "source_revision": "487c65996fa26916d1d1e4b23e277607075035ba",
+  "target_leaves": [
+    "blueprint/src/chapter/ch11_poisson_word_counts.tex",
+    "blueprint/src/chapter/ch11_poisson_independent_counts.tex",
+    "blueprint/src/chapter/ch11_finite_uniform_conditioning.tex",
+    "blueprint/src/chapter/ch11_poisson_uniform_order.tex"
+  ],
+  "context_leaves": [
+    "blueprint/src/chapter/ch11_poisson_word.tex"
+  ],
+  "render_leaves": [
+    "blueprint/src/chapter/ch11_poisson_word.tex",
+    "blueprint/src/chapter/ch11_poisson_word_counts.tex",
+    "blueprint/src/chapter/ch11_poisson_independent_counts.tex",
+    "blueprint/src/chapter/ch11_finite_uniform_conditioning.tex",
+    "blueprint/src/chapter/ch11_poisson_uniform_order.tex"
+  ],
+  "production_modules": [
+    "QICLean/Algebra/WordMultiplicity.lean",
+    "QICLean/Probability/PoissonWordCounts.lean",
+    "QICLean/Probability/PoissonWordIndependentCounts.lean",
+    "QICLean/Probability/FiniteUniformConditioning.lean",
+    "QICLean/Probability/PoissonWordUniformOrder.lean"
+  ],
+  "context_modules": [
+    "QICLean/Probability/PoissonWord.lean"
+  ],
+  "source_sha256": {
+    "QICLean/Algebra/WordMultiplicity.lean": "d391217a58689a236250485de05e5563424967380d3fbee0313bf343ac1a9a59",
+    "QICLean/Probability/PoissonWordCounts.lean": "1551f5fa7905699468de7a93429b5858c96b3f64ef855ac682273b31a1363332",
+    "QICLean/Probability/PoissonWordIndependentCounts.lean": "dd170a85f6664dfd4116efc75d8d55d1597d5269dfcd447d1d257f841221185b",
+    "QICLean/Probability/FiniteUniformConditioning.lean": "bdc529fcb48ab124f4920faec9afb7f560b85315040b3f8224d65b39e5de02bd",
+    "QICLean/Probability/PoissonWordUniformOrder.lean": "d3579232f8959d8d127596b648bae8b3ca9b37a14c1a08b7988d9e140f09b31d",
+    "QICLean/Probability/PoissonWord.lean": "f7fb672ec289580dbc5422dffc7eac8fbcec3409810cea42ffe2253816bba659",
+    "blueprint/src/chapter/ch11_poisson_word.tex": "13a91ae881d0df890714d9beb58e3c71a6a365069000396798c020c05fdd20c3",
+    "blueprint/src/chapter/ch11_poisson_word_counts.tex": "905ae54a85ada57a3b0ac31c7fc99dcf8ad2cc6be3825ade16a458bacb311412",
+    "blueprint/src/chapter/ch11_poisson_independent_counts.tex": "8e91af287959fe61c500c43669d8bc3f4126de9bf41479af38c3db229ed24769",
+    "blueprint/src/chapter/ch11_finite_uniform_conditioning.tex": "a4c86313f6e833bb69c34c0a29c27d51127c6be8935ab465bed21ccad8e16b38",
+    "blueprint/src/chapter/ch11_poisson_uniform_order.tex": "21dff1c776659a31f451462b8190d2254838f55e2481a3523c29294d4cbf56c4",
+    "blueprint/src/content.tex": "a150a2999395c17087cd382bbe1cca2aefece259feb9e5aadcee266aa37565ed",
+    "lean-toolchain": "bc84812c94489d1e3e191baa1dc10d5eb684382d7fe9d2a5ab085e72c1c67e47",
+    "lake-manifest.json": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf",
+    "lakefile.toml": "c40e0bb3a1ee5f9025d5c752d25c7c2f61622db813f79d6bee7d2412d8760907",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9"
+  },
+  "fixture_source_sha256": {
+    "blueprint/src/Packages/tenkz_pic.py": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",
+    "blueprint/src/blueprint.sty": "bba6dd0bcae52e864efd02a248f4b8cccc9f62ba82e5ec8f8045c5944d841a8d",
+    "blueprint/src/extra_styles.css": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1",
+    "blueprint/src/latexmkrc": "6bf5c08358866b42ad8062b7dcf7fa08b892361af7dd5547235f31aed33629e0",
+    "blueprint/src/macros/common.tex": "923294d75aa08e713fe7400eceac858eb6bb5f95667eeaf2d4bb202e9a35ec35",
+    "blueprint/src/macros/diagrams.tex": "275794e8e3fcf74aa7c000b38420f9150dd52017ea61216875103dc62908bf2e",
+    "blueprint/src/macros/print.tex": "e7abb3c60f1d2125b3c5ff72a14c408755e418b9654c9c661841efb1f54e1d10",
+    "blueprint/src/macros/web.tex": "3906fd9caafca22ceec080aca9c95a0cde575d7ecf7e70ef43156eadce0ca080",
+    "blueprint/src/plastex.cfg": "c6dd8278bcdc1c3106607dc114dee52a84a136e9cfa04e2a4d2f8d0b4c3e0378",
+    "blueprint/src/plastex_templates/DocumentCommands.jinja2s": "38fb147cde71e0c9e943ca6a7645950f12869d1d19b6f2cd843f56c8f0add921",
+    "blueprint/src/plastex_templates/TenkzPictures.jinja2s": "879380488675beb1bc55fe420f966e6a5f3fa86b9c1cf76489ace0e5dbb4c3c5",
+    "blueprint/src/print.tex": "a80284c614ecaff007283ca80bbe7285fae1796ded5cc21bd36dcea1a41794f0",
+    "blueprint/src/references.bib": "e1a3c3fc4670fcc744cb44ad5457206de9ce86322848c3df53bb1395b0e74420",
+    "blueprint/src/tenkz_pic.sty": "adf747cb82f51ce4da80003c3352c58164f60ce04a33cbb1d6b560e1042004f5",
+    "blueprint/src/texra_patches.sty": "d97f038370fb8fe469682196ab4e99bb1bd8c761a7ba5a4d34f51f6ad4027302",
+    "blueprint/src/web.tex": "3381d2bf7da7dcda9a7e309c6fb070bb3ee7620ca5c8649b802074826bd1a9a4",
+    "blueprint/src/chapter/ch11_poisson_word.tex": "13a91ae881d0df890714d9beb58e3c71a6a365069000396798c020c05fdd20c3",
+    "blueprint/src/chapter/ch11_poisson_word_counts.tex": "905ae54a85ada57a3b0ac31c7fc99dcf8ad2cc6be3825ade16a458bacb311412",
+    "blueprint/src/chapter/ch11_poisson_independent_counts.tex": "8e91af287959fe61c500c43669d8bc3f4126de9bf41479af38c3db229ed24769",
+    "blueprint/src/chapter/ch11_finite_uniform_conditioning.tex": "a4c86313f6e833bb69c34c0a29c27d51127c6be8935ab465bed21ccad8e16b38",
+    "blueprint/src/chapter/ch11_poisson_uniform_order.tex": "21dff1c776659a31f451462b8190d2254838f55e2481a3523c29294d4cbf56c4",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9",
+    "scripts/tenkz_paths.py": "b301db3e900ab33d7d43cc271a914361b989034d106ebe66713343beb37e1236",
+    "scripts/test_blueprint_web_render.py": "c8b8f8ef96f6c9539a0ea99980b54302ae4b29ebd920ddce87824d13f8aa28b5"
+  },
+  "fixture_wrapper_sha256": "d75af4d49e57e25c0610716e3aa54ae7b00daf872af701e9edb78be9a9be970a",
+  "production_lines": 456,
+  "fixture_only_changes": [
+    "Replace content.tex with a single chapter wrapper selecting four target leaves and the prerequisite word-law leaf. All five leaves and all copied repository rendering context are byte-identical to the stated committed source."
+  ],
+  "tools": {
+    "texra-blueprint": "0.3.8",
+    "plasTeX": "3.1",
+    "leanblueprint": "0.0.20"
+  },
+  "paper": {
+    "section_title": "Amplifying the collar estimate",
+    "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "upstream_path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex",
+    "estimate_lines": [
+      237,
+      253
+    ],
+    "chronology_lines": [
+      49,
+      54
+    ],
+    "retained_local_source": "${WORKSPACE}/pinned-paper-sources/arealaw-09-amplification-adc7f124.tex",
+    "sha256": "17cb317a40f7348cce2fff888a5a3b8c6fb5e9b240d0bc9eca27452db482807f"
+  },
+  "scope": "Focused PDF and static HTML render of the fixed-time count-and-order package. No Lean compilation, full-book build, remote documentation check, external write, clock process, or locality theorem."
+}

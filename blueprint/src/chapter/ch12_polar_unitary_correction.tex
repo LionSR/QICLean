@@ -1,0 +1,113 @@
+\section{Unitary polar correction}
+\label{sec:polar_unitary_correction}
+
+Let $\mathcal H$ be a finite-dimensional complex Hilbert space. All norms
+in this section are vector norms. The operator $D:\mathcal H\to\mathcal H$
+may be singular, and the vectors need not be normalized. The estimates below
+give the polar steps in
+\emph{Polynomial PEPS approximation of gapped square-grid ground states},
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex\#L565-L595}{Section 2},
+and \emph{A two-dimensional area law from a global spectral gap},
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex\#L524-L545}{Section 9},
+in their September 24, 2026 versions.
+
+\begin{theorem}[Positive operators and two residuals]
+    \label{thm:positive_two_residuals}
+    \lean{Matrix.PosSemidef.norm_le_norm_add_toEuclideanCLM,
+        Matrix.PosSemidef.norm_sub_le_add_residuals,
+        Matrix.PosSemidef.norm_one_sub_le_norm_one_sub_sq}
+    \leanok
+    If $P\ge0$, then for all $x,y\in\mathcal H$,
+    \begin{align}
+        \|x\|      & \le\|(I+P)x\|,        \\
+        \|x-y\|    & \le\|Px-y\|+\|Py-x\|, \\
+        \|(I-P)x\| & \le\|(I-P^2)x\|.
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    Positivity gives
+    \begin{align}
+        \|(I+P)x\|^2
+         & =\|x\|^2+2\operatorname{Re}\langle x,Px\rangle+\|Px\|^2
+        \ge\|x\|^2.
+        \label{eq:polar_positive_expansion}
+    \end{align}
+    Taking square roots in~(\ref{eq:polar_positive_expansion}) at $x-y$ gives
+    $\|x-y\|\le\|(I+P)(x-y)\|$. Use
+    $(I+P)(x-y)=(Px-y)-(Py-x)$ and the triangle inequality.
+    Similarly, (\ref{eq:polar_positive_expansion}) applied to $(I-P)x$
+    gives the final estimate.
+\end{proof}
+
+\begin{theorem}[One unitary for both polar estimates]
+    \label{thm:unitary_polar_correction}
+    \lean{Matrix.exists_unitary_polar_correction,
+        Matrix.norm_unitary_sub_le_add_residuals_of_mul_posSemidef}
+    \leanok
+    Put $|D|=(D^\dagger D)^{1/2}$. There is a unitary
+    $U:\mathcal H\to\mathcal H$ such that $D=U|D|$ and,
+    simultaneously for all $\psi,\phi,\eta\in\mathcal H$,
+    \begin{align}
+        \|(U-D)\psi\|  & \le\|(I-D^\dagger D)\psi\|,               \\
+        \|U\phi-\eta\| & \le\|D\phi-\eta\|+\|D^\dagger\eta-\phi\|.
+    \end{align}
+    The second inequality holds for every factorization $D=UP$ with $U$
+    unitary and $P\ge0$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:positive_two_residuals}
+    Set $P=(D^\dagger D)^{1/2}$. The equal Gram matrices
+    $D^\dagger D=P^\dagger P$ give an isometry from the range of $P$ to
+    the range of $D$, taking $Px$ to $Dx$. These ranges have equal
+    dimension, as do their orthogonal complements in $\mathcal H$.
+    Extending between the complements therefore gives a unitary $U$ on
+    $\mathcal H$ with $D=UP$.
+
+    Unitary invariance and Theorem~\ref{thm:positive_two_residuals} give
+    \begin{align}
+        \|(U-D)\psi\| & =\|(I-P)\psi\|
+        \le\|(I-P^2)\psi\|=\|(I-D^\dagger D)\psi\|.
+    \end{align}
+    For the second inequality put $\xi=U^\dagger\eta$. Then
+    \begin{align}
+        \|U\phi-\eta\| & =\|\phi-\xi\|
+        \le\|P\phi-\xi\|+\|P\xi-\phi\|
+        =\|D\phi-\eta\|+\|D^\dagger\eta-\phi\|.
+    \end{align}
+    Only positivity of $P$ and unitarity of $U$ enter this argument;
+    neither an inverse of $D$ nor a larger Hilbert space is required.
+\end{proof}
+
+\begin{theorem}[A fixed polar unitary with arbitrary spectators]
+    \label{thm:unitary_polar_spectator}
+    \lean{Matrix.unitary_polar_correction_kronecker_one}
+    \leanok
+    Fix any unitary $U$ satisfying $D=U(D^\dagger D)^{1/2}$.
+    For every finite-dimensional complex Hilbert space $\mathcal K$, put
+    $E=D\otimes I_{\mathcal K}$ and $V=U\otimes I_{\mathcal K}$.
+    Then $V$ is unitary, $E=V(E^\dagger E)^{1/2}$, and
+    \begin{align}
+        \|(V-E)\psi\|  & \le\|(I-E^\dagger E)\psi\|,              \\
+        \|V\phi-\eta\| & \le\|E\phi-\eta\|+\|E^\dagger\eta-\phi\|
+    \end{align}
+    for arbitrary $\psi,\phi,\eta\in\mathcal H\otimes\mathcal K$.
+    The same local $U$ is used for every spectator space; the vectors
+    need not be product vectors.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:positive_two_residuals,thm:unitary_polar_correction}
+    Unitarity follows from
+    $(U\otimes I)^\dagger(U\otimes I)=I$.
+    Positive square roots satisfy
+    \begin{align}
+        (E^\dagger E)^{1/2}
+         & =(D^\dagger D)^{1/2}\otimes I_{\mathcal K},
+    \end{align}
+    so the fixed factorization tensors to $E=V(E^\dagger E)^{1/2}$.
+    Apply the two norm arguments of
+    Theorem~\ref{thm:unitary_polar_correction} on
+    $\mathcal H\otimes\mathcal K$.
+\end{proof}

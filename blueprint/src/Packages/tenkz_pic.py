@@ -1,0 +1,526 @@
+r"""plasTeX renderers for tenkz tensor-network pictures (spec §1.5, §5.1).
+
+The ``tenkz`` picture environment (the kernel surface, bound at package
+load since the S4 surface swap) and the plain ``tikzcd`` environment that
+carries the blueprint's commutative diagrams are registered here as
+**verbatim-captured units**: plasTeX never tokenizes a picture body.  Each
+captured unit is compiled **standalone** against the pinned tenkz package
+   (``scripts/fetch_tenkz.py``, then ``TEXINPUTS=<tenkz>/tex/tenkz//``)
+and converted to one SVG, cached by a per-body content hash, so editing one
+figure invalidates exactly one SVG (spec §1.5: "one edited figure
+invalidates one SVG, not 114").
+
+Design decisions
+----------------
+
+1. **Verbatim round trip, no Python-side grammar.**  The TeX library in
+   The tenkz package is the single authority on the picture grammar.  This
+   module captures the raw characters between ``\begin{tenkz}[...]`` and
+   ``\end{tenkz}`` (the optional key list included — with verbatim catcodes
+   it is simply the first characters of the body) and re-emits them
+   unchanged into a standalone document.  Print and web therefore compile
+   byte-identical picture sources, which is what makes the cross-engine
+   drift check (spec §5.5, G12) meaningful.
+
+2. **Engine route: xelatex → .xdv → dvisvgm, with a probed fallback.**
+   The spec pins the web pipeline to ``xelatex -no-pdf`` → ``.xdv`` →
+   ``dvisvgm`` (§1.5).  That route has a silent failure mode: under
+   xelatex, PGF emits xdvipdfmx ``pdf:code``/``pdf:bcontent`` specials,
+   which dvisvgm can only interpret through a Ghostscript (or mutool) PDF
+   interpreter.  Without one — or with dvisvgm < 3.2 against Ghostscript
+   >= 10.1, whose PostScript-based PDF interpreter was removed — dvisvgm
+   exits 0 and emits an SVG containing the text glyphs but **none of the
+   TikZ ink** (observed with dvisvgm 3.0.3 + Ghostscript 10.06 on macOS).
+   ``dvisvgm --pdf`` fails for the same reason.  We therefore compile a
+   one-time ink canary (a bare TikZ ``\draw``, no text, so any ``<path>``
+   in the output must be ink) through the xdv route; if the route fails —
+   dvisvgm missing, xelatex or dvisvgm exiting non-zero, no SVG produced,
+   or an SVG that lost its ink — every unit in this process falls back to
+   ``xelatex`` → PDF → ``pdftocairo -svg`` (poppler; no Ghostscript
+   dependency), and the fallback warning names the observed failure mode.  Both routes rasterize nothing — text becomes outlined
+   paths either way (``--no-fonts`` / cairo).  The pdf→svg fallback uses
+   pdftocairo rather than ``dvisvgm --pdf`` because the latter depends on
+   exactly the Ghostscript facility whose absence triggers the fallback.
+
+3. **Cache key.**  ``sha256(library digest ‖ standalone document)[:16]``.
+   The library digest folds in every file of the pinned tenkz package plus
+   ``macros/common.tex``: a library edit re-renders everything (correct —
+   every picture may look different), a body edit re-renders one SVG.
+
+4. **Standalone preamble.**  Units are compiled with ``macros/common`` in
+   scope so picture labels may use blueprint macros, with the same
+   ``\newcounter{chapter}`` shim required because standalone is article-based
+   and lacks the chapter counter that common's theorem numbering expects.
+
+5. **Equation rows (G20).**  Blueprint source marks a display-adjacent
+   diagram equation with ``tenkzequation``.  The wrapper keeps every captured
+   picture as its own SVG outside MathJax and lays the sibling pictures and
+   operator text out as one responsive row.  Equality signs and arrows remain
+   selectable instead of becoming part of one whole-equation image.  A bare
+   ``\tnpic`` inside ``$...$`` or ``\[...\]`` is still unsupported because
+   MathJax cannot typeset the emitted ``<img>``; ordinary TeX retains that
+   running-math capability.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import logging
+import os
+import posixpath
+import re
+import shutil
+import subprocess
+import sys
+from dataclasses import dataclass
+from functools import lru_cache
+from html import escape
+from pathlib import Path
+from typing import Iterable
+
+log = logging.getLogger(__name__)
+
+_SRC_DIR = Path(__file__).resolve().parents[1]
+_REPO_ROOT = _SRC_DIR.parents[1]
+sys.path.insert(0, str(_REPO_ROOT / "scripts"))
+from tenkz_paths import tenkz_tex  # noqa: E402
+
+_CACHE_DIR = _SRC_DIR / ".tenkz_svg_cache"
+_SVG_SUBDIR = "tenkz_svg"
+MISSING_SVG_SENTINEL = "tenkz SVG unavailable"
+
+
+@lru_cache(maxsize=1)
+def _tenkz_dir() -> Path:
+    """Directory of the pinned tenkz package on TEXINPUTS."""
+    return tenkz_tex()
+
+
+@lru_cache(maxsize=1)
+def _render_source_files() -> tuple[Path, ...]:
+    tenkz = _tenkz_dir()
+    return (
+        _SRC_DIR / "macros/common.tex",
+        _SRC_DIR / "macros/diagrams.tex",
+        *sorted(tenkz.glob("*.sty")),
+        *sorted(tenkz.glob("*.code.tex")),
+    )
+
+# The .tnlog language tag of each environment (spec §5.1); reused as the
+# CSS modifier class of the emitted <img>.  Since the S4 surface swap the
+# ``tenkz`` environment is the kernel surface.
+_ENVIRONMENT_LANGS = {
+    "tenkz": "kernel",
+    "tikzcd": "cd",
+}
+
+# Ink canary for the route probe: a pure \draw, no text.  Any <path> in its
+# SVG is necessarily TikZ ink, so "no <path>" identifies the silent
+# dvisvgm-without-Ghostscript failure mode described in the module docstring.
+_CANARY_DOCUMENT = r"""\documentclass[border=2pt]{standalone}
+\usepackage{tikz}
+\begin{document}
+\begin{tikzpicture}\draw[line width=1pt] (0,0) -- (12pt,12pt);\end{tikzpicture}
+\end{document}
+"""
+
+
+def _latex_document(unit_source: str) -> str:
+    """Wrap one verbatim picture unit in the standalone compile document."""
+
+    return rf"""\documentclass[varwidth,border=2pt]{{standalone}}
+\usepackage{{amssymb,amsthm,amsmath,mathtools}}
+% standalone is based on article, which already supplies section and
+% subsection; only chapter is absent, so define it before loading
+% macros/common (its theorem numbering references the chapter counter).
+\newcounter{{chapter}}
+\input{{macros/common}}
+\usepackage{{tenkz}}
+\input{{macros/diagrams}}
+\begin{{document}}
+{unit_source}
+\end{{document}}
+"""
+
+
+@lru_cache(maxsize=1)
+def _render_source_digest() -> str:
+    digest = hashlib.sha256()
+    for source_file in _render_source_files():
+        if not source_file.is_file():
+            raise RuntimeError(f"Missing tenkz render source: {source_file}")
+        digest.update(source_file.name.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(source_file.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def unit_hash(unit_source: str) -> str:
+    """Content hash of one picture unit (library digest + full document)."""
+
+    digest = hashlib.sha256()
+    digest.update(_render_source_digest().encode("ascii"))
+    digest.update(b"\0")
+    digest.update(_latex_document(unit_source).encode("utf-8"))
+    return digest.hexdigest()[:16]
+
+
+@lru_cache(maxsize=1)
+def _tex_env() -> dict[str, str]:
+    """Compile environment: pinned tenkz package on TEXINPUTS (spec §1.5)."""
+
+    env = os.environ.copy()
+    env["TEXINPUTS"] = str(_tenkz_dir()) + "//:" + env.get("TEXINPUTS", "")
+    kpsewhich = shutil.which("kpsewhich")
+    if kpsewhich is None:
+        return env
+    # When invoked from plasTeX the caller's environment can lack the TeX
+    # variables a Homebrew/TeX Live split needs; resolve them once here.
+    for name in ("TEXMFCNF", "TEXMFROOT"):
+        if env.get(name):
+            continue
+        result = subprocess.run(
+            [kpsewhich, f"-var-value={name}"],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            timeout=10,
+            check=False,
+        )
+        value = result.stdout.strip()
+        if result.returncode == 0 and value:
+            env[name] = value
+    return env
+
+
+def _run(cmd: Iterable[str], *, cwd: Path) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        list(cmd),
+        cwd=cwd,
+        env=_tex_env(),
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=120,
+        check=False,
+    )
+
+
+@dataclass(frozen=True)
+class Toolchain:
+    """The engine route chosen for this process (see module docstring §2)."""
+
+    xelatex: str
+    route: str  # "xdv" (spec primary) or "pdf" (probed fallback)
+    converter: str  # dvisvgm for "xdv", pdftocairo for "pdf"
+
+
+def _xelatex_command(xelatex: str, stem: str, *, xdv: bool) -> list[str]:
+    cmd = [xelatex]
+    if xdv:
+        cmd.append("-no-pdf")
+    cmd += [
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-output-directory",
+        str(_CACHE_DIR),
+        str(_CACHE_DIR / f"{stem}.tex"),
+    ]
+    return cmd
+
+
+def _dvisvgm_command(dvisvgm: str, stem: str, svg_path: Path) -> list[str]:
+    # --no-fonts: text as outlined paths (web-safe, matches the fallback);
+    # --exact --bbox=3pt: tight crop, same knobs as the old pipeline.
+    return [
+        dvisvgm,
+        "--no-fonts",
+        "--exact",
+        "--bbox=3pt",
+        f"--output={svg_path}",
+        str(_CACHE_DIR / f"{stem}.xdv"),
+    ]
+
+
+def _svg_has_ink(svg_path: Path) -> bool:
+    if not svg_path.is_file():
+        return False
+    return "<path" in svg_path.read_text(encoding="utf-8", errors="replace")
+
+
+def _xdv_route_failure(xelatex: str, dvisvgm: str) -> str | None:
+    """One-time canary through the spec's primary route (module docstring §2).
+
+    Returns None when the route renders ink, otherwise the observed failure
+    mode — the fallback warning must name what actually broke (a failed
+    compile or conversion is not the ink-stripping Ghostscript problem).
+    """
+
+    _CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    stem = "tenkz-route-probe"
+    (_CACHE_DIR / f"{stem}.tex").write_text(_CANARY_DOCUMENT, encoding="utf-8")
+    svg_path = _CACHE_DIR / f"{stem}.svg"
+    svg_path.unlink(missing_ok=True)
+    engine = _run(_xelatex_command(xelatex, stem, xdv=True), cwd=_SRC_DIR)
+    if engine.returncode != 0:
+        return f"xelatex exited {engine.returncode} compiling the canary"
+    converter = _run(_dvisvgm_command(dvisvgm, stem, svg_path), cwd=_SRC_DIR)
+    if converter.returncode != 0:
+        return f"dvisvgm exited {converter.returncode} converting the canary"
+    if not svg_path.is_file():
+        return "dvisvgm exited 0 but produced no canary SVG"
+    if not _svg_has_ink(svg_path):
+        return (
+            "dvisvgm dropped the TikZ ink of the canary SVG "
+            "(Ghostscript/mutool unavailable to it?)"
+        )
+    return None
+
+
+@lru_cache(maxsize=1)
+def toolchain() -> Toolchain | None:
+    """Probe and cache the SVG toolchain; None when no usable route exists."""
+
+    xelatex = shutil.which("xelatex")
+    if xelatex is None:
+        return None
+    dvisvgm = shutil.which("dvisvgm")
+    if dvisvgm is None:
+        xdv_failure = "dvisvgm is not on PATH"
+    else:
+        xdv_failure = _xdv_route_failure(xelatex, dvisvgm)
+        if xdv_failure is None:
+            return Toolchain(xelatex=xelatex, route="xdv", converter=dvisvgm)
+    pdftocairo = shutil.which("pdftocairo")
+    if pdftocairo is not None:
+        log.warning(
+            "tenkz: xdv route unusable (%s); falling back to "
+            "xelatex -> PDF -> pdftocairo.",
+            xdv_failure,
+        )
+        return Toolchain(xelatex=xelatex, route="pdf", converter=pdftocairo)
+    return None
+
+
+def _compile_unit(unit_source: str, stem: str, svg_path: Path) -> bool:
+    """Compile one unit to ``svg_path``; False when no toolchain exists."""
+
+    chain = toolchain()
+    if chain is None:
+        return False
+    svg_path.parent.mkdir(parents=True, exist_ok=True)
+    _CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    tex_path = _CACHE_DIR / f"{stem}.tex"
+    tex_path.write_text(_latex_document(unit_source), encoding="utf-8")
+
+    engine = _run(
+        _xelatex_command(chain.xelatex, stem, xdv=chain.route == "xdv"),
+        cwd=_SRC_DIR,
+    )
+    if engine.returncode != 0:
+        log_path = _CACHE_DIR / f"{stem}.compile.log"
+        log_path.write_text(engine.stdout, encoding="utf-8")
+        # A run that stopped partway still wrote whatever events it reached.
+        # Leaving that behind would let the next caller read a fragment as a
+        # finished stream.
+        (_CACHE_DIR / f"{stem}.tnlog").unlink(missing_ok=True)
+        raise RuntimeError(
+            f"tenkz picture compilation failed for {unit_source!r}; see {log_path}"
+        )
+
+    if chain.route == "xdv":
+        converter_cmd = _dvisvgm_command(chain.converter, stem, svg_path)
+    else:
+        converter_cmd = [
+            chain.converter,
+            "-svg",
+            str(_CACHE_DIR / f"{stem}.pdf"),
+            str(svg_path),
+        ]
+    converter = _run(converter_cmd, cwd=_SRC_DIR)
+    if converter.returncode != 0 or not svg_path.is_file():
+        log_path = _CACHE_DIR / f"{stem}.convert.log"
+        log_path.write_text(converter.stdout, encoding="utf-8")
+        # The engine wrote a complete stream but the unit did not render, so
+        # the pair is incomplete; leaving the stream behind would let the
+        # next caller call the unit sound.
+        (_CACHE_DIR / f"{stem}.tnlog").unlink(missing_ok=True)
+        raise RuntimeError(
+            f"tenkz SVG conversion failed for {unit_source!r}; see {log_path}"
+        )
+
+    tex_path.unlink(missing_ok=True)
+    return True
+
+
+def render_unit(unit_source: str, svg_dir: Path) -> tuple[Path | None, bool]:
+    """Render one verbatim unit to a content-addressed SVG under ``svg_dir``.
+
+    Returns ``(svg_path, cache_hit)``; ``(None, False)`` when the SVG
+    toolchain is unavailable.  The cache is the SVG's existence: the file
+    name is the content hash, so a body edit produces a new name (miss)
+    while an untouched body finds its previous SVG (hit) — per-figure
+    invalidation with no manifest to maintain.
+    """
+
+    stem = f"tenkz-{unit_hash(unit_source)}"
+    svg_path = svg_dir / f"{stem}.svg"
+    if svg_path.exists():
+        return svg_path, True
+    if not _compile_unit(unit_source, stem, svg_path):
+        return None, False
+    return svg_path, False
+
+
+def unit_event_log(unit_source: str, svg_dir: Path) -> Path | None:
+    """Return the ``.tnlog`` one unit wrote, compiling it when absent.
+
+    The event stream is the audit's subject and the SVG is the reader's, so
+    the two are cached the same way and by the same compile; a sweep asks for
+    the log and gets whichever the last render left behind.
+    """
+
+    stem = f"tenkz-{unit_hash(unit_source)}"
+    log_path = _CACHE_DIR / f"{stem}.tnlog"
+    # The stream is the evidence that the compile finished, because a run
+    # that stopped at either stage takes its stream with it.  The drawing is
+    # not: it lands wherever its caller asked for it, so a stream cached
+    # beside one caller's SVG is still this caller's answer.
+    if log_path.is_file():
+        return log_path
+    if not _compile_unit(unit_source, stem, svg_dir / f"{stem}.svg"):
+        return None
+    return log_path if log_path.is_file() else None
+
+
+# --------------------------------------------------------------------------
+# plasTeX layer.  Deferred import so scripts/test_tenkz_pic.py can exercise
+# the compile+cache core above without a plasTeX installation.
+# --------------------------------------------------------------------------
+
+def _output_dir(doc: object) -> Path:
+    configured = Path(str(doc.config["files"]["directory"]))
+    if configured.is_absolute():
+        return configured
+    working_dir = Path(doc.userdata.get("working-dir", _SRC_DIR))
+    return (working_dir / configured).resolve()
+
+
+def _nearest_output_url(obj: object) -> str | None:
+    current = obj
+    while current is not None:
+        url = getattr(current, "url", None)
+        if url:
+            return str(url)
+        current = getattr(current, "parentNode", None)
+    return None
+
+
+def _svg_src(obj: object, svg_path: Path, output_dir: Path) -> str:
+    output_url = _nearest_output_url(obj)
+    if output_url is None:
+        return posixpath.join(_SVG_SUBDIR, svg_path.name)
+    html_path = Path(output_url)
+    if not html_path.is_absolute():
+        html_path = output_dir / html_path
+    return Path(os.path.relpath(svg_path, start=html_path.parent)).as_posix()
+
+
+def _missing_tools_html(unit_source: str) -> str:
+    return (
+        '<span class="tenkz-svg-missing">'
+        f"{MISSING_SVG_SENTINEL}: install xelatex plus dvisvgm (with "
+        "Ghostscript/mutool) or pdftocairo to render "
+        f"<code>{escape(unit_source)}</code>."
+        "</span>"
+    )
+
+
+try:
+    from plasTeX import Command, Environment, VerbatimEnvironment
+except ImportError:  # standalone harness use; see the section comment above
+    pass
+else:
+
+    class tenkzkernel(Command):
+        r"""The retained kernel switch (spec §2).  Since the S4 surface
+        swap the package binds the kernel surface at load, so the switch
+        rebinds the same meanings and is inert; it stands in the tree only
+        so sources that still spell it parse."""
+
+        args = ""
+
+    class tenkzequation(Environment):
+        """A responsive text-mode row of independent SVG picture units."""
+
+        blockType = True
+        templateName = "TenkzEquation"
+
+    class _TenkzSvgMixin:
+        """Shared rendering: compile the captured unit, emit one <img>."""
+
+        # plasTeX's renderer reads ``templateName`` as a string attribute of
+        # the node; the template lives in plastex_templates/
+        # TenkzPictures.jinja2s and expands to ``tenkz_svg_html``.
+        templateName = "TenkzPicture"
+
+        def tenkzUnitSource(self) -> str:
+            raise NotImplementedError
+
+        @property
+        def tenkz_svg_html(self) -> str:
+            unit_source = self.tenkzUnitSource()
+            output_dir = _output_dir(self.ownerDocument)
+            svg_path, _ = render_unit(unit_source, output_dir / _SVG_SUBDIR)
+            if svg_path is None:
+                logged = self.ownerDocument.userdata.setdefault(
+                    "_tenkz_svg_missing_tools", False
+                )
+                if not logged:
+                    log.warning(
+                        "tenkz SVG rendering needs xelatex and dvisvgm or "
+                        "pdftocairo on PATH."
+                    )
+                    self.ownerDocument.userdata["_tenkz_svg_missing_tools"] = True
+                if os.environ.get("CI") == "true":
+                    raise RuntimeError(
+                        "tenkz SVG rendering needs xelatex and dvisvgm or "
+                        f"pdftocairo on PATH for {unit_source!r}."
+                    )
+                return _missing_tools_html(unit_source)
+            src = _svg_src(self, svg_path, output_dir)
+            lang = _ENVIRONMENT_LANGS[self.nodeName]
+            # The verbatim unit source is the per-picture alternative text;
+            # tenkzequation keeps operators outside the image and selectable.
+            return (
+                f'<img class="tenkz-pic tenkz-pic-{lang}" '
+                f'src="{escape(src, quote=True)}" '
+                f'alt="{escape(unit_source, quote=True)}">'
+            )
+
+    class _TenkzVerbatimEnvironment(_TenkzSvgMixin, VerbatimEnvironment):
+        r"""Base of the two picture environments.
+
+        VerbatimEnvironment switches to verbatim catcodes right after
+        parsing the (empty) argument spec, so everything between
+        ``\begin{X}`` and ``\end{X}`` — the optional ``[keys]`` included —
+        is captured as raw characters and round-trips into the standalone
+        document byte-identically.  No tenkz key ever gets parsed in
+        Python; the TeX library is the single grammar authority.
+        """
+
+        # TikZ pictures are inline boxes. Verbatim capture protects their
+        # syntax, but VerbatimEnvironment's block default would split one
+        # TeX paragraph into separate picture/operator paragraphs.
+        blockType = False
+
+        def tenkzUnitSource(self) -> str:
+            name = self.nodeName
+            return rf"\begin{{{name}}}{self.textContent}\end{{{name}}}"
+
+    class tenkz(_TenkzVerbatimEnvironment):
+        pass
+
+    class tikzcd(_TenkzVerbatimEnvironment):
+        pass

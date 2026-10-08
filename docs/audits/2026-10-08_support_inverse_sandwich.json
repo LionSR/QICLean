@@ -1,0 +1,118 @@
+{
+  "base_commit": "fbe84eae5cc0e223bee1676c2434ada3e77cb194",
+  "checked_commit": "e68b9e13d7e57f6f4486f97a86a4e3d89b9e38a6",
+  "lean_toolchain_sha256": "bc84812c94489d1e3e191baa1dc10d5eb684382d7fe9d2a5ab085e72c1c67e47",
+  "lake_manifest_sha256": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf",
+  "checks": [
+    {
+      "name": "source-final",
+      "checked_commit": "e68b9e13d7e57f6f4486f97a86a4e3d89b9e38a6",
+      "input": "QICLean/Analysis/SupportInverseSandwich.lean",
+      "input_sha256": "8d1ee6ecfafafe144c595738e24403e5fded8e45cb853e0b722b06f202ddd2dc",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/SupportInverseSandwich.lean"
+      ],
+      "lean_num_threads": 2,
+      "exit_code": 0,
+      "elapsed_seconds": 3.079,
+      "log": "docs/audits/evidence/support-inverse-sandwich/source-final.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "serialized_with_build_lock": true
+    },
+    {
+      "name": "consumers-final",
+      "checked_commit": "e68b9e13d7e57f6f4486f97a86a4e3d89b9e38a6",
+      "input": "QICLeanTest/SupportInverseSandwich.lean",
+      "input_sha256": "3e316f3f2e6bd96db1206f6d2017deed0c94348e815f5781e2c02b5ab11a314e",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/SupportInverseSandwich.lean"
+      ],
+      "lean_num_threads": 2,
+      "exit_code": 0,
+      "elapsed_seconds": 3.477,
+      "log": "docs/audits/evidence/support-inverse-sandwich/consumers-final.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "serialized_with_build_lock": true
+    },
+    {
+      "name": "guards-final",
+      "checked_commit": "e68b9e13d7e57f6f4486f97a86a4e3d89b9e38a6",
+      "input": "QICLeanTest/SupportInverseSandwichAxioms.lean",
+      "input_sha256": "18852bc2d68560a3184a07377cdf2802ec36b51a0f290a8ba9756163c435e4b5",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/SupportInverseSandwichAxioms.lean"
+      ],
+      "lean_num_threads": 2,
+      "exit_code": 0,
+      "elapsed_seconds": 2.755,
+      "log": "docs/audits/evidence/support-inverse-sandwich/guards-final.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "serialized_with_build_lock": true
+    },
+    {
+      "name": "raw-final",
+      "checked_commit": "e68b9e13d7e57f6f4486f97a86a4e3d89b9e38a6",
+      "input": "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean",
+      "input_sha256": "0048b0dab04e51ac73a35e9aa2d9a02473043cc2dafb700e0a8123929cd33d15",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean"
+      ],
+      "lean_num_threads": 2,
+      "exit_code": 0,
+      "elapsed_seconds": 2.909,
+      "log": "docs/audits/evidence/support-inverse-sandwich/raw-final.txt",
+      "log_sha256": "6ea99bed21b122b24bb7da930f7ab43f2d03a07bc2bdd3552810710d62860cda",
+      "serialized_with_build_lock": true
+    }
+  ],
+  "native_build": {
+    "checked_commit": "769fe086c5805bf5a94b8af7686759818279d09f",
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.SupportInverseSandwich"
+    ],
+    "serialized_with_build_lock": true,
+    "lean_num_threads": 2,
+    "exit_code": 0,
+    "log": "docs/audits/evidence/support-inverse-sandwich/native-build.txt",
+    "log_sha256": "b451dd5736b3032c74b840d1c30477917045ae090542beaf08be7110043442dd",
+    "same_source_bytes_at_final_checked_commit": true
+  }
+}

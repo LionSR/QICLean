@@ -1,0 +1,40 @@
+{
+  "reason": "The filename prefix 09 does not establish the manuscript section number. The pinned source explicitly names the section Amplifying the collar estimate.",
+  "verified_title": "Amplifying the collar estimate",
+  "paper_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "paper_path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex",
+  "baseline_revision": "d80a7ae0174d9a826095aa8e45934f0417ecbe9c",
+  "corrected_source_revision": "bbdafdcc6e56d1a90f882b1508c4e6adc67ea2bc",
+  "citation_commits": [
+    "8761f9d0871e33714ec49c7d3840d0979e1b499b",
+    "e8c2c446af46c26ca4bb98c6a1cf0f446961cbb7",
+    "bbdafdcc6e56d1a90f882b1508c4e6adc67ea2bc"
+  ],
+  "changed_source_files": [
+    "QICLean/Analysis/RestoringCoefficientBound.lean",
+    "QICLean/Analysis/SupportInverseSandwich.lean",
+    "blueprint/src/chapter/ch12_entropy_restoring_ground_component.tex",
+    "blueprint/src/chapter/ch12_support_inverse_sandwich.tex",
+    "blueprint/src/chapter/restoring_coefficient_bound.tex"
+  ],
+  "proof_text_checks": {
+    "QICLean/Analysis/RestoringCoefficientBound.lean": {
+      "code_after_removing_block_comments_sha256": "84dc1aea345f58287dad394c20d4171690d1097eb9b28c275387534c13022aa1",
+      "proof_and_declaration_text_unchanged": true,
+      "line_count_unchanged": true
+    },
+    "QICLean/Analysis/SupportInverseSandwich.lean": {
+      "code_after_removing_block_comments_sha256": "0000abf3b656a30398668be244c3dc8d4890036ff377c98169370f37eb9cdb8a",
+      "proof_and_declaration_text_unchanged": true,
+      "line_count_unchanged": true
+    }
+  },
+  "archive": {
+    "path": "history/90872eab1782af4b50e2f7847bf278cac0f58280",
+    "original_packet_source": "90872eab1782af4b50e2f7847bf278cac0f58280",
+    "all_original_files_copied_verbatim": true,
+    "original_packet_manifest_sha256": "0b6131d0da8fad9913e6ee419a5e8464b8c7b0b7fbf470acacad0728e9197ab8",
+    "original_raw_render_retained_at": "${WORKSPACE}/restoring-ground-focused",
+    "note": "Historical evidence intentionally retains the former citation text. Its source hashes, artifact hashes, raw records and files have not been rewritten."
+  }
+}

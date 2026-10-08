@@ -62,7 +62,6 @@ identity at zero.
 
 All three public declarations use only `propext`, `Classical.choice`, and
 `Quot.sound`. Dependency source and artifact hashes were audited before and
-after checking the final files. Source provenance remains planned until
-immutable source publication and a separate evidence update. No full local
+after checking the final files. No full local
 Lake build, aggregate declaration check, or full blueprint rendering is
 claimed by the focused checks.

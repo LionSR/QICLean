@@ -10,8 +10,8 @@ split (see the extraction report in the repository history / PR description
 for the moved-file list, the Wolf-chapter mapping, and the severed
 cross-boundary `\uses`/`\ref` edges recorded in
 `docs/extraction/interface_edges.md`). Chapter contents are unchanged from
-TNLean except for three tensor-network diagrams removed (QICLean carries no
-tenkz diagram pipeline) and two `\input` lines dropped where the
+TNLean except for three tensor-network diagrams removed during extraction
+and two `\input` lines dropped where the
 corresponding content stayed in TNLean.
 
 ## Layout
@@ -36,6 +36,7 @@ Run these commands from the repository root:
 
 ```bash
 lake build
+python3 scripts/fetch_tenkz.py
 cd blueprint
 leanblueprint checkdecls
 leanblueprint pdf
@@ -45,6 +46,34 @@ leanblueprint web
 `leanblueprint checkdecls` should be run after adding or changing `\lean{...}`
 tags.  The PDF and web builds regenerate `blueprint/print/` and
 `blueprint/web/`.
+
+Tensor-network pictures use the immutable companion revision in `tenkz.toml`.
+Both print and standalone web rendering load `.deps/tenkz`; an existing local
+checkout can be selected with `TENKZ_ROOT`. The fetch helper manages only
+`.deps/tenkz` and resets that generated checkout to the pin. Do not store local
+edits there. It does not change the Lean toolchain or Lake dependencies.
+
+After installing XeLaTeX and either dvisvgm with working PDF-special support
+or Poppler's `pdftocairo`, run from the repository root:
+
+```bash
+python3 scripts/test_tenkz_pic.py
+python3 scripts/test_tenkz_blueprint_sweep.py
+python3 scripts/tenkz_blueprint_sweep.py --allow-empty
+```
+
+The smoke test checks SVG ink, cold/warm caching, one-picture invalidation,
+and missing-tool failure. The sweep compiles and audits actual picture event
+streams and fails on hard findings or missing renders. `--allow-empty` permits
+the extraction-era blueprint with no pictures and reports that no pictures were
+checked; omit it when a nonempty diagram corpus is expected. A presentational
+`tenkzequation` row does not assert an equality of boundary signatures. Only a
+declared `tenkzeq` scope receives the corresponding hard group checks.
+
+All three existing CI routes fetch this pin, run the smoke and sweep checks,
+and reject HTML containing the missing-SVG sentinel. The diagram infrastructure is
+copied from LionSR/TNLean (Apache-2.0); the three adapted scripts carry a header
+notice naming the source revision.
 
 ## Writing Conventions
 
