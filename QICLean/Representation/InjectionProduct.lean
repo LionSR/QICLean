@@ -268,7 +268,8 @@ theorem injectionAverage_mul_injectionAverage (G : Matrix (Fin m → Ω) (Fin m 
         (∑ l : Fin (m + n) ↪ Fin k, placeOp l (copyKronecker G H) +
           ∑ p ∈ overlapPairs k m n, placeOp p.1 G * placeOp p.2 H) := by
   rw [injectionAverage, injectionAverage, smul_mul_smul_comm, mul_inv, Finset.sum_mul_sum,
-    ← Finset.sum_product', Finset.univ_product_univ, ← Finset.sum_filter_not_add_sum_filter (s := Finset.univ)
+    ← Finset.sum_product', Finset.univ_product_univ,
+    ← Finset.sum_filter_not_add_sum_filter (s := Finset.univ)
       (p := fun p : (Fin m ↪ Fin k) × (Fin n ↪ Fin k) => ∃ a b, p.1 a = p.2 b),
     sum_filter_not_overlapPairs (fun ι κ => placeOp ι G * placeOp κ H)]
   simp only [placeOp_castAdd_mul_placeOp_natAdd]
