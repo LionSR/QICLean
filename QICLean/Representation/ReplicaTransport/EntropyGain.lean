@@ -23,12 +23,12 @@ Proof outline:
   extended by the identity (`symBandMetric`), which commute across bands;
 * `bandRelRatio_eq_eval` — congruence covariance identifies `C_{h,g}` with the
   conditional choice tree of the single-move relative metrics;
-* `smul_coherentProj_le_bandRelRatio` — Lemma 6.4 and projection transfer give the
+* `smul_coherentProj_le_bandRelRatio` — Lemma 6.3 and projection transfer give the
   conditional pin (display `transport:conditional-pin`);
 * `realCoherentIntegral_sub_log_le_re_trace_mul_log` — the logarithmic passage
   (display `transport:log-relative`);
 * `exists_entropyGain_le_exactDerivative_of_relativePin` — summation over bands and
-  histories, with `∑_h w_h = 1` and `∫ m_{1/4} = 1/2`, assuming Lemma 6.4 in the form
+  histories, with `∑_h w_h = 1` and `∫ m_{1/4} = 1/2`, assuming Lemma 6.3 in the form
   `RelativePinBound`.
 
 The proofs are written from the paper; no Lean source was adapted.
@@ -349,7 +349,7 @@ theorem cfc_log_relRatio_eq_sum (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {
 
 /-- **Entropy-gain lower bound** (area-law paper, Proposition 7.4, display
 `transport:entropy-gain`, `06-transport.tex` lines 409--416 and 495--583). The constants
-`c₀`, `C`, `e` are universal; `β_k = O(log(k+1))` depends only on the fixed data. Lemma 6.4
+`c₀`, `C`, `e` are universal; `β_k = O(log(k+1))` depends only on the fixed data. Lemma 6.3
 of the source enters as the hypothesis `RelativePinBound`. -/
 theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePinBound.{u}) :
     ∃ c₀ Cent eent : ℝ, 0 < c₀ ∧

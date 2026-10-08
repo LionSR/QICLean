@@ -10,17 +10,17 @@ import QICLean.Representation.ReplicaTransport.Setup
 
 The transport estimate consumes two results of the replica section of the area-law paper:
 
-* Lemma 6.4 (`lem:relative-pin`, `05-replicas.tex` lines 480--500), the relative coherent
+* Lemma 6.3 (`lem:relative-pin`, `05-replicas.tex` lines 480--500), the relative coherent
   pin for one move;
-* the skew bound of Lemma 6.5 (`lem:symbol`, display `replicas:skew-bound`,
+* the skew bound of Lemma 6.4 (`lem:symbol`, display `replicas:skew-bound`,
   `05-replicas.tex` lines 615--660), in the form used at a split leaf.
 
 Both are recorded here as propositions on the band metric of `ReplicaTransport.Setup`, and the
 transport estimate is proved assuming them. `RelativePinBound` is proved from the relative
-coherent pin in `ReplicaTransport.RelativePinBound` (`relativePinBound`); `SplitSkewBound`
-remains a hypothesis.
+coherent pin in `ReplicaTransport.RelativePinBound` (`relativePinBound`), and `SplitSkewBound`
+from the skew bound in `ReplicaTransport.SplitSkewBound` (`splitSkewBound`).
 
-`SplitSkewBound` is the case of Lemma 6.5 used at a split leaf: the
+`SplitSkewBound` is the case of Lemma 6.4 used at a split leaf: the
 designated support meets `Y` and exactly one outer part. The source lemma requires only
 that `h` be supported on `P ∪ Y`; the split case is the specialization consumed by
 Proposition 7.4 (`06-transport.tex` lines 735--748).
@@ -35,7 +35,7 @@ universe u
 
 namespace TensorPower.ReplicaTransport
 
-/-- **Lemma 6.4, relative coherent pin** (`05-replicas.tex`, display
+/-- **Lemma 6.3, relative coherent pin** (`05-replicas.tex`, display
 `replicas:relative-pin`, lines 480--500): for a valid move of `x ⊆ Y` with
 `0 < t < 1/4`, `a = 2t` and `a log(e dim x) ≤ c`, there are `b_k > 0` with
 `-log b_k = O(log(k+1))`, uniform in `θ`, such that
@@ -56,7 +56,7 @@ def RelativePinBound : Prop :=
               bandMetric n t k π ^ (-(1 / 2) : ℝ) * bandMetric n t k (m.apply π) *
                 bandMetric n t k π ^ (-(1 / 2) : ℝ)
 
-/-- **Lemma 6.5, skew bound at a split** (`05-replicas.tex`, display
+/-- **Lemma 6.4, skew bound at a split** (`05-replicas.tex`, display
 `replicas:skew-bound`, lines 645--660): for `0 ≤ h ≤ 1` with designated support `D`
 meeting `Y` and exactly one outer part, `0 < t < 1/4`, `a = 2t` and `a log(e dim D) ≤ c`,
 uniformly over density matrices `ρ` on `𝒮_k`,
