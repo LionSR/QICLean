@@ -21,8 +21,8 @@ threshold. For every `k`, every nonzero `pre ∈ 𝒮_k` and every `0 < p < 1`:
 * the exact derivative `-∂_p log N(p)² = ∑_h w_h ∫ m_{1/4}(u) Tr(σ_{h,u} log C_h) du`;
 * the entropy-gain lower bound with error `C k a K a^{1/4} ℓ^C + β_k`,
   `β_k = O(log(k+1))` independent of `p` and `pre`;
-* if `H̄ pre = E₀ pre`, the energy bound
-  `⟨v, H̄ v⟩ ≤ 2E₀ + C a² ℓ^C ∑_i W_i(p) ∑_{j∈𝒥_i} π_j ∫ m_{1/4} ∫ η_{i,j}^{1/8} dμ_{σ_{j,u}} du
+* if `Hbar pre = E₀ pre`, the energy bound
+  `⟨v, Hbar v⟩ ≤ 2E₀ + C a² ℓ^C ∑_i W_i(p) ∑_{j∈𝒥_i} π_j ∫ m_{1/4} ∫ η_{i,j}^{1/8} dμ_{σ_{j,u}} du
   + o_k(1)`, with the remainder uniform in `p`, `pre` and the replica state.
 
 The constants and exponents are universal (separate ones for the two estimates, as the

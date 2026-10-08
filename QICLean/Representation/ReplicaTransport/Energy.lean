@@ -12,21 +12,21 @@ import QICLean.Representation.ReplicaTransport.EntropyGain
 # The energy estimate of the transport proposition
 
 Area-law paper, Proposition 7.4, display `transport:energy` (`06-transport.tex`
-lines 417--426, proof lines 588--766): if `H̄ pre = E₀ pre`, then
+lines 417--426, proof lines 588--766): if `Hbar pre = E₀ pre`, then
 $$\langle v,\bar Hv\rangle\le 2E_0+Ca^2\ell^C\sum_iW_i(p)\sum_{j\in\mathcal J_i}\pi_j
   \int m_{1/4}(u)\int\eta_{i,j}^{1/8}\,d\mu_{\sigma_{j,u}}\,du+o_k(1).$$
 
 Proof outline:
 
 * `commute_input_copyMean_of_not_mem_splitLeaves` — an unsplit leaf metric commutes with
-  `h̄_i` (lines 359--364);
+  `hbar_i` (lines 359--364);
 * `skewSquare_input_eq_bandMetric` — at a split leaf only the exceptional band fails to
   commute, and the other factors cancel in `O_{i,j}` (lines 732--735);
 * `splitEta_eq_splitBandEta` — `η_{i,j}` is the split entropy of the exceptional band;
 * `trace_state_skewSquare_le` — Lemma 6.5 at every split term--leaf pair, with one common
   remainder (display `transport:symbol-cost`, lines 736--748);
 * `Matrix.Transport.re_star_dotProduct_mulVec_le_energy` (generic block argument) per
-  term, then summation over `i` using `M^s v = pre / N` and `H̄ pre = E₀ pre`
+  term, then summation over `i` using `M^s v = pre / N` and `Hbar pre = E₀ pre`
   (lines 750--766).
 
 The proofs are written from the paper; no Lean source was adapted.
@@ -335,7 +335,7 @@ theorem isPartition_leafPart' (hD : D.IsAdmissible) (j : Σ h, Option (C h)) (g 
 omit [Fintype H] [∀ h, Fintype (C h)] [Fintype ι] in
 /-- **Single-band reduction at a split leaf** (`06-transport.tex` lines 732--735): if `g`
 is the exceptional band of `D_i` at `j`, the other band factors cancel in
-`O_{i,j} = A_j^{-1/2} h̄_i A_j^{1/2}`, so the skew square is that of the band metric. -/
+`O_{i,j} = A_j^{-1/2} hbar_i A_j^{1/2}`, so the skew square is that of the band metric. -/
 theorem skewSquare_input_eq_bandMetric (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
     (hcomm : D.CrossBandCommute n t k) (hEsupp : ∀ i, IsSupportedOn (E.term i) (E.support i))
     (hcompat : D.SupportCompatible E) {i : ι} {j : Σ h, Option (C h)} {g : Fin K}

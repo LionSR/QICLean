@@ -23,7 +23,7 @@ This file fixes the data of the area-law paper, Proposition 7.4 (`prop:transport
   and new partitions, the old and new metrics `A_h`, `A_{h,c}`, and the root `M(p)`;
 * cross-band commutation (line 268);
 * positive contractions `h_i` with designated supports `D_i`, splits at terminal leaves,
-  `η_{i,j}`, `W_i(p)` and `H̄ = ∑_i h̄_i` (lines 335--362);
+  `η_{i,j}`, `W_i(p)` and `Hbar = ∑_i hbar_i` (lines 335--362);
 * the coherent measure `dμ_σ(θ) = D_k Tr(σ P_{θ,k}) dθ` (display
   `transport:coherent-measure`), with `dθ` realized as the image of Haar measure on the
   unitary group under `U ↦ U e`.
@@ -274,7 +274,7 @@ def splitEta (E : EnergyTerms V n ι) (i : ι) (j : Σ h, Option (C h))
   ∑ g ∈ Finset.univ.filter fun g => ¬ (D.leafPart j g).Contains (E.support i),
     splitBandEta n (D.leafPart j g) (E.support i) θ
 
-/-- The replica energy `H̄ = ∑_i h̄_i` on `k` copies (`06-transport.tex`, display
+/-- The replica energy `Hbar = ∑_i hbar_i` on `k` copies (`06-transport.tex`, display
 `transport:replica-energy`). -/
 def _root_.TensorPower.ReplicaTransport.EnergyTerms.replicaEnergy [Fintype ι]
     (E : EnergyTerms V n ι) (k : ℕ) :
