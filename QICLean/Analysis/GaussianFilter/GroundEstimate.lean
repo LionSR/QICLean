@@ -21,6 +21,9 @@ spectral multiplier formula is assumed. The probability measure formulation
 includes `h = 0`; positive variance is needed only to identify this filter with
 the Gaussian density integral. The truncation is unrenormalized.
 
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
+
 ## References and reuse
 
 Polynomial-PEPS manuscript (2026), `lem:reset`, `02-information.tex`,
@@ -38,28 +41,18 @@ identities. No OpenAI Lean proof text is copied or adapted.
 -/
 
 /-
-Provenance-ID: gaussian8766-integral-ground-estimate
-Downstream declaration: GaussianFilter.norm_gaussianIntertwiner_ground_le
 Source: peps-02-information-adc7f124.tex, lines 426–443.
 Reuse: local integral coefficients, local Gaussian spectral decay, Mathlib operator norm.
 
-Provenance-ID: gaussian8766-integral-two-sided
-Downstream declaration: GaussianFilter.gaussianIntertwiner_two_sided_ground_estimate
 Source: peps-02-information-adc7f124.tex, lines 426–443.
 Reuse: forward estimate, local swapped-generator adjoint, Mathlib inner-product adjoint.
 
-Provenance-ID: gaussian8766-integral-real-contraction
-Downstream declaration: GaussianFilter.gaussianIntertwiner_two_sided_of_real_overlap
 Source: peps-02-information-adc7f124.tex, lines 402–443.
 Reuse: two-sided estimate, local integral contraction, real-scalar conjugation.
 
-Provenance-ID: gaussian8766-truncated-ground-estimate
-Downstream declaration: GaussianFilter.norm_gaussianIntertwinerTruncated_ground_le
 Source: peps-02-information-adc7f124.tex, lines 443–452.
 Reuse: local Gaussian tail bound, forward ground estimate, norm triangle inequality.
 
-Provenance-ID: gaussian8766-truncated-two-sided
-Downstream declaration: GaussianFilter.gaussianIntertwinerTruncated_two_sided_ground_estimate
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: truncated forward estimate and the swapped-generator adjoint identity.
 -/

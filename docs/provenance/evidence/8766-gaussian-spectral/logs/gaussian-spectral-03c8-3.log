@@ -1,4 +1,0 @@
-'GaussianFilter.eigenvector_ground_or_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
-`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
-'GaussianFilter.norm_sub_ground_le_of_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
-`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
