@@ -7,6 +7,7 @@ import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.RegionPowerSymbol
 import QICLean.Representation.StarFunction
 import QICLean.Representation.CoherentSymbolLimit
+import QICLean.Representation.CoherentSymbolFunction
 import Mathlib.Topology.ContinuousMap.Weierstrass
 
 /-!
@@ -32,6 +33,8 @@ one-copy side (lines 813–826). This file assembles these steps into
 * `TensorPower.hasCoherentSymbol_markedSimilarity` — `O_k` has coherent symbol `f_θ`.
 * `TensorPower.eventually_norm_trace_freeAlgebra_markedSimilarity_sub_le` — equation
   `replicas:polynomial-symbol`.
+* `TensorPower.eventually_norm_trace_skewOperator_markedSimilarity_sub_le` — equation
+  `replicas:skew-symbol`.
 
 ## References
 
@@ -575,5 +578,22 @@ theorem eventually_norm_trace_freeAlgebra_markedSimilarity_sub_le {t : ℝ} (ht0
             ![markedScalarSymbol t P Y h θ, star (markedScalarSymbol t P Y h θ)] q)‖ ≤ ε :=
   ((hasCoherentSymbol_markedSimilarity ht0 ht1 hPY hPF hYF hh).freeAlgebra
     q).eventually_norm_trace_sub_le hε
+
+/-- **Lemma 6.4, equation `replicas:skew-symbol`** (`05-replicas.tex`, lines 627–631 and
+832–838): for `𝒟_k = |O_k| + |O_k^†| - O_k - O_k^†` on the symmetric subspace,
+`Tr σ 𝒟_k = 2 ∫ (|f_θ| - Re f_θ) dμ_σ(θ) + o_k(1)` uniformly over symmetric density
+matrices `σ`. -/
+theorem eventually_norm_trace_skewOperator_markedSimilarity_sub_le {t : ℝ} (ht0 : 0 < t)
+    (ht1 : t < 1 / 2) {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F)
+    (hYF : Disjoint Y F) {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+    (hh : IsSupportedOn h (P ∪ Y)) {ε : ℝ} (hε : 0 < ε) :
+    ∀ᶠ k in atTop, ∀ (a : SiteConfig n)
+      (σ : Matrix (Fin k → SiteConfig n) (Fin k → SiteConfig n) ℂ), σ.PosSemidef →
+      σ.trace = 1 → (∀ π, permOp (copyPerm (SiteConfig n) k) π * σ = σ) →
+        ‖(σ * skewOperator k (markedSimilarity n t k P Y F h)).trace -
+          coherentIntegral a σ (fun θ => ((2 * (‖markedScalarSymbol t P Y h θ‖ -
+            (markedScalarSymbol t P Y h θ).re) : ℝ) : ℂ))‖ ≤ ε :=
+  (hasCoherentSymbol_markedSimilarity ht0 ht1 hPY hPF hYF hh).skew.eventually_norm_trace_sub_le
+    hε
 
 end TensorPower
