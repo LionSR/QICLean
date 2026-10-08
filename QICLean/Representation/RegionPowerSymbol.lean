@@ -64,7 +64,8 @@ theorem commute_localLift_of_disjoint {X T : Finset V} (hXT : Disjoint X T)
 
 /-- A lift commutes with every operator supported on a disjoint region. -/
 theorem commute_localLift_of_isSupportedOn {Q D : Finset V} (hQD : Disjoint Q D)
-    (K : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ) {c : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+    (K : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ)
+    {c : Matrix (SiteConfig n) (SiteConfig n) ℂ}
     (hc : IsSupportedOn c D) (σ₀ : SiteConfig n) : Commute (localLift Q K) c := by
   obtain ⟨K', rfl⟩ := hc.exists_localLift σ₀
   exact commute_localLift_of_disjoint hQD K K'

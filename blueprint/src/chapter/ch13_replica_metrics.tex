@@ -380,6 +380,8 @@ $O_k=A_k^{-1/2}\bar hA_k^{1/2}$.
     \lean{TensorPower.leafRoot, TensorPower.leafMetric, TensorPower.copyMean,
         TensorPower.markedSimilarity, TensorPower.sqrt_leafMetric,
         TensorPower.star_dotProduct_copyMean_eq, TensorPower.replicaMetric_conj_siteOp_mul,
+        TensorPower.markedSimilarity_succ_eq, TensorPower.commute_copyPerm_markedSimilarity_succ,
+        TensorPower.star_dotProduct_markedSimilarity_eq_sum,
         TensorPower.exists_norm_markedSimilarity_mulVec_le}
     \leanok
     \uses{lem:replica_site_operators, thm:marked_ratio_forward, thm:marked_ratio_inverse,
@@ -740,4 +742,102 @@ eigenbasis. The following statements show that such averages are central label f
     over the donor copy gives
     $J_{Q,k}=\sum_{a,b}\mathcal T_{k,1}(E_{ab})E_{ba}^{(k)}+O(k^{-1})$, whose marked symbol is
     $\sum_{a,b}\langle\theta,E_{ab}\theta\rangle E_{ba}=\rho_Q(\theta)\otimes1$.
+\end{proof}
+
+\begin{lemma}[Limits of coherent symbols]
+    \label{lem:coherent_symbol_limit}
+    \lean{TensorPower.l2_opNorm_symProj_mul_mul_symProj_le,
+        TensorPower.HasCoherentSymbol.of_approx}
+    \leanok
+    \uses{thm:coherent_symbol}
+    If $|\langle u,Mz\rangle|\le c\|u\|\|z\|$ for all symmetric $u,z$, then
+    $\|\Pi_kM\Pi_k\|\le c$. Let $X_k$ commute with $\Pi_k$, with $\|X_k\Pi_k\|$ bounded.
+    Suppose that for every $\varepsilon>0$ there are $X'_k$ with coherent symbol $f'$ such
+    that $|f-f'|\le\varepsilon$ on unit vectors and eventually
+    $\|(X_k-X'_k)\Pi_k\|\le\varepsilon$. Then $f$ is continuous on unit vectors and $X_k$ has
+    coherent symbol $f$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For the first statement put $w=\Pi_kM\Pi_kv$; then
+    $\|w\|^2=\langle w,M\Pi_kv\rangle\le c\|w\|\|v\|$. For the second, $f$ is a uniform
+    limit of continuous functions on the unit sphere, and the approximations combine by
+    the triangle inequality.
+\end{proof}
+
+\begin{lemma}[Polynomials in the star operator]
+    \label{lem:star_polynomial}
+    \lean{TensorPower.l2_opNorm_starOp_le, TensorPower.abs_starValue_le_one,
+        TensorPower.l2_opNorm_cfc_starOp_sub_aeval_le, TensorPower.l2_opNorm_aeval_starOp_le,
+        TensorPower.isHermitian_aeval_starOp, TensorPower.isHermitian_cfc_starOp}
+    \leanok
+    \uses{thm:replica_metric_basic}
+    $\|J_{Q,k}\|\le1$, so every star eigenvalue lies in $[-1,1]$. If
+    $|\varphi-p|\le M$ on $[-1,1]$ for a function $\varphi$ and a real polynomial $p$, then
+    $\|\varphi(J_{Q,k})-p(J_{Q,k})\|\le M$.
+\end{lemma}
+
+\begin{proof}\leanok
+    $J_{Q,k}$ is $k^{-1}$ times a sum of $k-1$ permutation operators. On a nonzero branch
+    projection its eigenvalue is bounded by its norm, and functions of $J_{Q,k}$ act on the
+    branch decomposition by their values at the eigenvalues.
+\end{proof}
+
+\begin{lemma}[Powers of one-copy marginals]
+    \label{lem:marginal_powers}
+    \lean{Entropy.commute_localLift_of_disjoint, Entropy.aeval_localLift,
+        TensorPower.suppRpow, TensorPower.regionPow, TensorPower.markedScalarSymbol,
+        TensorPower.eigenvalues_regionState_mem, TensorPower.norm_localLift_cfc_mulVec_sq_le,
+        TensorPower.mul_clip_sub_sq_le, TensorPower.l2_opNorm_regionPow_le_one,
+        TensorPower.norm_regionPow_neg_mulVec_le, TensorPower.norm_regionPow_sandwich_sub_le}
+    \leanok
+    Let $\theta$ be a unit vector, $\rho_Q$ its marginal on $Q$ lifted by the identity,
+    $0<t<1/2$ and $0<\delta$. Then $\|\rho_Q^t\|\le1$, $\|\rho_Q^{-t}\theta\|^2\le d_Q$, and
+    \[
+        \bigl\|(\rho_Q^{-t}-\max(\rho_Q,\delta)^{-t})\theta\bigr\|^2\le d_Q\delta^{1-2t},
+    \]
+    with powers zero on kernels. Consequently, if $|p-u_+^t|\le\eta$ and
+    $|q-\max(u,\delta)^{-t}|\le\eta$ on $[-1,1]$, then
+    $\|\rho_Q^ta\rho_Q^{-t}\theta-p(\rho_Q)aq(\rho_Q)\theta\|
+    \le\|a\|\bigl(\eta\sqrt{d_Q}+(1+\eta)(\sqrt{d_Q\delta^{1-2t}}+\eta)\bigr)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For a real function $g$, $\|g(\rho_Q)\theta\|^2=\Tr\rho_Qg(\rho_Q)^2=\sum_i\lambda_ig(\lambda_i)^2$
+    over the eigenvalues $\lambda_i\in[0,1]$ of the marginal. For the clipping,
+    $\lambda(\max(\lambda,\delta)^{-t}-\lambda^{-t})^2$ vanishes for $\lambda\ge\delta$ and
+    is at most $\lambda^{1-2t}\le\delta^{1-2t}$ for $0<\lambda<\delta$.
+\end{proof}
+
+\begin{theorem}[Coherent symbol of the similarity transform]
+    \label{thm:marked_similarity_symbol}
+    \lean{TensorPower.polyWord, TensorPower.polyWordSymbol, TensorPower.hasMarkedSymbol_polyWord,
+        TensorPower.norm_markedScalarSymbol_sub_le,
+        TensorPower.norm_markedSimilarity_sub_polyWord_le,
+        TensorPower.hasCoherentSymbol_markedSimilarity,
+        TensorPower.eventually_norm_trace_freeAlgebra_markedSimilarity_sub_le}
+    \leanok
+    \uses{thm:marked_similarity_bounded, lem:star_marked_symbol, lem:coherent_symbol_limit,
+        lem:star_polynomial, lem:marginal_powers, thm:marked_ratio_forward,
+        thm:marked_ratio_inverse}
+    Let $0<t<1/2$, let $P,Y,F$ be disjoint and let $h$ be supported on $P\cup Y$. Then
+    $O_k$ has coherent symbol
+    $f_\theta=\langle\theta,\rho_P^t\rho_Y^{-t}h\rho_P^{-t}\rho_Y^t\theta\rangle$. In
+    particular, for every noncommutative polynomial $q$ in two variables,
+    \[
+        \sup_\sigma\Bigl|\Tr\sigma q(O_k,O_k^\ast)-\int q(f_\theta,\overline{f_\theta})
+        \,d\mu_\sigma(\theta)\Bigr|\longrightarrow0
+    \]
+    over symmetric density matrices $\sigma$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Write $h=\sum_ib_ia_i$. Given $\varepsilon$, choose $\delta$, then polynomials $p,q$
+    approximating $u_+^t$ and $\max(u,\delta)^{-t}$ on $[-1,1]$, and compare $O_k$ with the
+    compression of $W_k=\sum_i(q(J_Y)b_i^{(k)}p(J_Y))(p(J_P)a_i^{(k)}q(J_P))$. Between
+    symmetric vectors, the forward-ratio estimate, the clipped inverse estimate and the
+    polynomial approximation bound the difference of the pairings by a multiple of the
+    chosen accuracy for large $k$. The marked symbol of $W_k$ replaces each star by the
+    corresponding marginal, and the clipping is removed on the one-copy side by the
+    preceding lemma. The trace limit then follows from the coherent symbol calculus.
 \end{proof}

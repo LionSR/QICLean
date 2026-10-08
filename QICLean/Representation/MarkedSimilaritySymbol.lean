@@ -41,7 +41,7 @@ one-copy side (lines 813–826). This file assembles these steps into
 -/
 
 open Matrix PermutationRepresentation Polynomial Filter Entropy
-open scoped Matrix.Norms.L2Operator
+open scoped Matrix.Norms.L2Operator ComplexOrder
 
 namespace TensorPower
 
@@ -109,7 +109,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
 /-- The commutation pattern `P^t Y^{-t} (b a) P^{-t} Y^t = (Y^{-t} b Y^t)(P^t a P^{-t})`
 (`05-replicas.tex`, lines 668–683). -/
-theorem sandwich_rearrange {X : Type*} [Fintype X] [DecidableEq X]
+theorem sandwich_rearrange {X : Type*} [Fintype X]
     {Pt Pm Yt Ym b a : Matrix X X ℂ} (h1 : Commute Pt Ym) (h2 : Commute Pt b)
     (h3 : Commute Yt Pm) (h4 : Commute Yt a) (h5 : Commute Pt Yt) :
     Pt * Ym * (b * a) * Pm * Yt = (Ym * b * Yt) * (Pt * a * Pm) := by
@@ -139,7 +139,8 @@ noncomputable def polyWordSymbol (P Y : Finset V) {N : ℕ}
 `|p - u_+^t| ≤ s` and `|q - max(u, δ)^{-t}| ≤ s` on `[-1, 1]` and `√(d_Q δ^{1-2t}) ≤ s` for
 `Q = P, Y`, then `|f_θ - ⟨θ, F(θ) θ⟩| ≤ s K ∑_i ‖a_i‖ ‖b_i‖` on unit vectors, where `F` is the
 symbol of the polynomial word. -/
-theorem norm_markedScalarSymbol_sub_le [∀ v, NeZero (n v)] {t δ s : ℝ} (ht0 : 0 < t) (ht1 : t < 1 / 2)
+theorem norm_markedScalarSymbol_sub_le [∀ v, NeZero (n v)] {t δ s : ℝ} (ht0 : 0 < t)
+    (ht1 : t < 1 / 2)
     (hδ : 0 < δ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) {P Y : Finset V} (hPY : Disjoint P Y)
     {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} {N : ℕ}
     {a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ} (ha : ∀ i, IsSupportedOn (a i) P)
@@ -299,7 +300,8 @@ theorem norm_markedSimilarity_sub_polyWord_le {t s CR CI : ℝ} (ht0 : 0 ≤ t) 
         aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)) q *ᵥ z)‖ ≤
         3 * s * ‖(EuclideanSpace.equiv _ ℂ).symm z‖) :
     ‖(markedSimilarity n t (m + 1) P Y F h -
-        HasMarkedSymbol.compress (polyWord P Y a b p q) (m + 1)) * symProj (copyPerm (SiteConfig n) (m + 1))‖ ≤
+        HasMarkedSymbol.compress (polyWord P Y a b p q) (m + 1)) *
+          symProj (copyPerm (SiteConfig n) (m + 1))‖ ≤
       s * ((2 * CI + 6) * CR * CI + (CR * CI + 2 * CI + 6) * (2 * CI + 6)) *
         ∑ i, ‖a i‖ * ‖b i‖ := by
   set Pi := symProj (copyPerm (SiteConfig n) (m + 1))
@@ -555,5 +557,23 @@ theorem hasCoherentSymbol_markedSimilarity {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1 
       _ ≤ (s + s) * ‖(EuclideanSpace.equiv _ ℂ).symm z‖ +
           s * ‖(EuclideanSpace.equiv _ ℂ).symm z‖ := by gcongr
       _ = 3 * s * ‖(EuclideanSpace.equiv _ ℂ).symm z‖ := by ring
+
+/-- **Lemma 6.4, equation `replicas:polynomial-symbol`** (`05-replicas.tex`, lines 631–638):
+for every noncommutative polynomial `q` in two variables,
+`sup_σ |Tr σ q(O_k, O_k^†) - ∫ q(f_θ, conj f_θ) dμ_σ(θ)| → 0` over symmetric density
+matrices `σ`. -/
+theorem eventually_norm_trace_freeAlgebra_markedSimilarity_sub_le {t : ℝ} (ht0 : 0 < t)
+    (ht1 : t < 1 / 2) {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F)
+    (hYF : Disjoint Y F) {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+    (hh : IsSupportedOn h (P ∪ Y)) (q : FreeAlgebra ℂ (Fin 2)) {ε : ℝ} (hε : 0 < ε) :
+    ∀ᶠ k in atTop, ∀ (a : SiteConfig n)
+      (σ : Matrix (Fin k → SiteConfig n) (Fin k → SiteConfig n) ℂ), σ.PosSemidef →
+      σ.trace = 1 → (∀ π, permOp (copyPerm (SiteConfig n) k) π * σ = σ) →
+        ‖(σ * FreeAlgebra.lift ℂ ![markedSimilarity n t k P Y F h,
+            (markedSimilarity n t k P Y F h)ᴴ] q).trace -
+          coherentIntegral a σ (fun θ => FreeAlgebra.lift ℂ
+            ![markedScalarSymbol t P Y h θ, star (markedScalarSymbol t P Y h θ)] q)‖ ≤ ε :=
+  ((hasCoherentSymbol_markedSimilarity ht0 ht1 hPY hPF hYF hh).freeAlgebra
+    q).eventually_norm_trace_sub_le hε
 
 end TensorPower
