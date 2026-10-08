@@ -748,3 +748,133 @@ depend on the common values there.
     $\sum_ja_jS(X\mid T_j)\le S(X)+\text{error}$, and Theorem~\ref{thm:region_ssa} bounds the
     left side below by $2S(X\mid T)$.
 \end{proof}
+
+\subsection{Sharp one-crossing estimate for polynomial patches}
+
+The polynomial-PEPS patch argument uses the explicit constant in
+\cite{OpenAI2026PolynomialPEPS}, Section~4,
+\texttt{03-patches.tex}, lines 248--319. Its sharper estimate follows
+from the same Hermitian pairing and weighted row and column bounds.
+
+\begin{theorem}[Quadratic hyperbolic scaling]
+    \label{lem:patch_cosh_scaling}
+    \lean{Entropy.cosh_mul_sub_one_le_sq_mul,
+        Entropy.sqrt_mul_cosh_sub_one_le_sharp}
+    \leanok
+    For $0\le a\le1$ and $y\in\R$,
+    \begin{align*}
+        \cosh(ay)-1\le a^2(\cosh y-1).
+    \end{align*}
+    If $p,q\ge0$, $a\le1$, and
+    $|t|\le\frac a2|\log p-\log q|$ whenever $p,q>0$, then
+    \begin{align*}
+        \sqrt{pq}(\cosh t-1)\le\frac{a^2}{2}(p+q).
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    In the power series after its constant term, every exponent is at
+    least two, so $a^{2k}\le a^2$ for $k\ge1$. For positive $p,q$, set
+    $z=(\log p-\log q)/2$. The clipping condition and monotonicity of
+    $\cosh$ in the absolute value of its argument give the bound, using
+    $\sqrt{pq}\cosh z=(p+q)/2$. If $a<0$, the clipping condition forces
+    $t=0$. If either probability vanishes, the left side vanishes.
+\end{proof}
+
+\begin{theorem}[Inside-support matrix-unit count]
+    \label{lem:patch_inside_decomposition}
+    \lean{Entropy.card_innerConfig, Entropy.IsSupportedOn.hasProductDecomposition_inner}
+    \leanok
+    Suppose the physical configuration space is nonempty. An operator
+    $X$ supported on $S$ has a product decomposition across $B\sqcup B^c$
+    with at most $d_{S\cap B}^2$ terms, each of product norm at most
+    $\lVert X\rVert$, where $d_{S\cap B}=\prod_{v\in S\cap B}n_v$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:supported_product_decomposition}
+    Keep the actual number of matrix units on $S\cap B$ in the
+    construction of Lemma~\ref{lem:supported_product_decomposition}.
+    No enlargement to the dimension of all of $S$ is needed.
+\end{proof}
+
+\begin{theorem}[Sharp clipped conjugation]
+    \label{thm:patch_sharp_conjugation}
+    \lean{Entropy.abs_re_inner_sub_inner_conj_le_sharp,
+        Entropy.abs_re_inner_sub_conj_le_of_common_basis_sharp,
+        Entropy.abs_re_inner_sub_conj_localLift_le_sharp}
+    \leanok
+    Let $\phi$ be a unit vector. Suppose the positive invertible filter
+    $L$ and its marginal have a common orthonormal eigenbasis, with
+    eigenvalues $l_i>0$ and $p_i\ge0$. Assume $a\le1$ and
+    $|\log l_i-\log l_k|\le\frac a2|\log p_i-\log p_k|$ whenever
+    $p_i,p_k>0$. For a Hermitian product sum $X=\sum_\alpha c_\alpha\otimes d_\alpha$,
+    \begin{align*}
+        |\operatorname{Re}\langle\phi,X\phi\rangle
+        -\operatorname{Re}\langle\phi,(L\otimes1)X(L^{-1}\otimes1)\phi\rangle|
+        \le a^2\sum_\alpha\lVert c_\alpha\rVert\lVert d_\alpha\rVert.
+    \end{align*}
+    If $X$ is supported on $S$ and $\lVert X\rVert\le J$, the expectation
+    difference is at most $a^2d_{S\cap B}^2J$, by choosing the inside-support
+    matrix-unit decomposition.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:patch_cosh_scaling, lem:filter_conjugation,
+        lem:patch_inside_decomposition}
+    Use the coefficient $a^2(p_i+p_k)/2$ in the Hermitian pairing.
+    The weighted row and column estimate contributes the factor two.
+    Unitary transport gives the common-basis statement. For supported
+    operators use the matrix-unit decomposition just proved.
+\end{proof}
+
+\begin{theorem}[A single crossing in a nested chain]
+    \label{thm:patch_sharp_chain}
+    \lean{Entropy.abs_re_inner_sub_chain_conj_le_sharp}
+    \leanok
+    Let $K_j$ be invertible filters on nested regions $D_j$. Each filter
+    commutes with the regional marginal of the same unit vector $\phi$
+    and satisfies the common-basis and clipping hypotheses above, with
+    weight $a_j\le1$. Suppose the support $S$ of a Hermitian operator $X$
+    is split by at most one region, and $\lVert X\rVert\le J$. Writing
+    $K=K_{m-1}\cdots K_0$ for the lifted product,
+    \begin{align*}
+        |\operatorname{Re}\langle\phi,X\phi\rangle
+        -\operatorname{Re}\langle\phi,KXK^{-1}\phi\rangle|
+        \le\sum_{j\text{ splits }S}a_j^2d_{S\cap D_j}^2J.
+    \end{align*}
+    In particular, an interaction with one inside endpoint of dimension
+    $q$ has one-term cost at most $q^2Ja_j^2$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:patch_sharp_conjugation}
+    Filters outside the crossing region drop out by the descending
+    trace identity; filters inside it have disjoint support and commute
+    with $X$. Apply the sharp supported bound to the remaining filter.
+    If there is no crossing, the expectation difference is zero.
+\end{proof}
+
+\begin{theorem}[Sharp stationary-chain excitation energy]
+    \label{thm:patch_sharp_energy}
+    \lean{Entropy.re_inner_sub_le_of_chain_sharp}
+    \leanok
+    Under the hypotheses of Theorem~\ref{thm:patch_sharp_chain}, let
+    $H=\sum_i h_i$, where each $h_i$ is Hermitian, supported on $S_i$,
+    has norm at most $J$, and is split by at most one region. If
+    $KHK^{-1}\phi=E_0\phi$, then
+    \begin{align*}
+        \operatorname{Re}\langle\phi,H\phi\rangle-E_0
+        \le \sum_j a_j^2\sum_{i:\,D_j\text{ splits }S_i}
+            d_{S_i\cap D_j}^2 J.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:patch_sharp_chain}
+    Expand the expectation difference as a sum over $i$, bound each
+    summand by its absolute value, and apply
+    Theorem~\ref{thm:patch_sharp_chain}. Interchange the finite sums to
+    group the interactions by their crossing region. The eigenvector
+    equation and unit normalization identify the conjugated expectation
+    with $E_0$.
+\end{proof}
+
+These estimates assume the stated commutation and clipping properties.
+Deriving them from a particular minimum and counting physical crossing
+edges are separate steps in the patch argument.

@@ -30,6 +30,11 @@ the row and column estimate of the strip bound finishes the argument.
 * Two-dimensional area-law manuscript (September 24, 2026), proof of Lemma 3.2
   (`lem:initial-buffer`), `02-initial.tex`, lines 407–439.
 
+The sharp refinement follows the polynomial-PEPS manuscript (September 24, 2026),
+`03-patches.tex`, lines 248–319, at source commit
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`. It retains the factor `a/2` in the
+clipping hypothesis and uses only the inside-support matrix-unit count.
+
 Independently written from the manuscript; no upstream Lean proof text is reused.
 -/
 
@@ -90,22 +95,22 @@ theorem re_sum_sub_conj_eq {X : Matrix (α × β) (α × β) ℂ} (hX : Matrix.I
 
 /-- **Quadratic conjugation estimate for a clipped filter.** Let the marginal of `Θ` be
 `diag s` with `∑ s = 1`, let `X = ∑ c_α ⊗ d_α` be Hermitian, and let `l > 0` with
-`|log l_j - log l_k| ≤ (a/2) |log s_j - log s_k|` for positive `s_j, s_k`, where `a ≤ 1/2`.
+`|log l_j - log l_k| ≤ (a/2) |log s_j - log s_k|` for positive `s_j, s_k`, where `a ≤ 1`.
 Then conjugation by `L = diag l` changes the real part of the expectation of `X` by at most
-`4 a² ∑ ‖c_α‖ ‖d_α‖`.
-Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 407–439. -/
-theorem abs_re_inner_sub_inner_conj_le {Θ : EuclideanSpace ℂ (α × β)} {s : α → ℝ}
+`a² ∑ ‖c_α‖ ‖d_α‖`.
+Polynomial-PEPS manuscript, `03-patches.tex`, lines 248–302. -/
+theorem abs_re_inner_sub_inner_conj_le_sharp {Θ : EuclideanSpace ℂ (α × β)} {s : α → ℝ}
     (hs : ∀ j, 0 ≤ s j) (hsum : ∑ j, s j = 1)
     (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0)
     {X : Matrix (α × β) (α × β) ℂ} (hX : Matrix.IsHermitian X) {N : ℕ}
     (c : Fin N → Matrix α α ℂ) (d : Fin N → Matrix β β ℂ) (hdec : X = ∑ a, c a ⊗ₖ d a)
-    {l : α → ℝ} (hl : ∀ j, 0 < l j) {a : ℝ} (ha : a ≤ 1 / 2)
+    {l : α → ℝ} (hl : ∀ j, 0 < l j) {a : ℝ} (ha : a ≤ 1)
     (hclip : ∀ j k, 0 < s j → 0 < s k →
       |Real.log (l j) - Real.log (l k)| ≤ a / 2 * |Real.log (s j) - Real.log (s k)|) :
     |(⟪Θ, toEuclideanLin X Θ⟫_ℂ -
         ⟪rowWeight (fun j ↦ (l j : ℂ)) Θ,
           toEuclideanLin X (rowWeight (fun j ↦ ((l j)⁻¹ : ℂ)) Θ)⟫_ℂ).re| ≤
-      4 * a ^ 2 * ∑ α', ‖c α'‖ * ‖d α'‖ := by
+      a ^ 2 * ∑ α', ‖c α'‖ * ‖d α'‖ := by
   set t : α → α → ℝ := fun j k ↦ Real.log (l j) - Real.log (l k)
   have hcosh0 : ∀ j k, 0 ≤ Real.cosh (t j k) - 1 := fun j k ↦ by
     linarith [Real.one_le_cosh (t j k)]
@@ -131,17 +136,10 @@ theorem abs_re_inner_sub_inner_conj_le {Θ : EuclideanSpace ℂ (α × β)} {s :
     exact le_of_eq (by ring)
   -- the hyperbolic coefficient after removing `√(s_j s_k)`
   have hcoef : ∀ j k, (Real.cosh (t j k) - 1) * (Real.sqrt (s j) * Real.sqrt (s k)) ≤
-      2 * a ^ 2 * (s j + s k) := by
+      (a ^ 2 / 2) * (s j + s k) := by
     intro j k
-    rcases (hs j).eq_or_lt with hj | hj
-    · rw [← hj, Real.sqrt_zero, zero_mul, mul_zero]
-      have : 0 ≤ s k := hs k
-      positivity
-    rcases (hs k).eq_or_lt with hk | hk
-    · rw [← hk, Real.sqrt_zero, mul_zero, mul_zero]
-      positivity
-    rw [← Real.sqrt_mul hj.le, mul_comm]
-    exact sqrt_mul_cosh_sub_one_le ha hj hk (hclip j k hj hk)
+    rw [← Real.sqrt_mul (hs j), mul_comm]
+    exact sqrt_mul_cosh_sub_one_le_sharp ha (hs j) (hs k) (hclip j k)
   rw [inner_rowWeight_inv, ← modularExpectation_zero Θ s X]
   simp only [modularExpectation, zero_mul, Complex.exp_zero, one_mul]
   rw [re_sum_sub_conj_eq hX Θ hl, abs_neg]
@@ -151,7 +149,7 @@ theorem abs_re_inner_sub_inner_conj_le {Θ : EuclideanSpace ℂ (α × β)} {s :
         refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun k _ ↦ ?_)
         rw [abs_mul, abs_of_nonneg (hcosh0 j k)]
         exact mul_le_mul_of_nonneg_left (abs_re_le_norm _) (hcosh0 j k)
-    _ ≤ ∑ j, ∑ k, ∑ α', 2 * a ^ 2 * ((s j + s k) * (‖c α' j k‖ * ‖D α' j k‖)) := by
+    _ ≤ ∑ j, ∑ k, ∑ α', (a ^ 2 / 2) * ((s j + s k) * (‖c α' j k‖ * ‖D α' j k‖)) := by
         refine Finset.sum_le_sum fun j _ ↦ Finset.sum_le_sum fun k _ ↦ ?_
         refine (mul_le_mul_of_nonneg_left (hT j k) (hcosh0 j k)).trans ?_
         rw [Finset.mul_sum]
@@ -161,17 +159,36 @@ theorem abs_re_inner_sub_inner_conj_le {Θ : EuclideanSpace ℂ (α × β)} {s :
               (‖c α' j k‖ * ‖D α' j k‖))
             = ((Real.cosh (t j k) - 1) * (Real.sqrt (s j) * Real.sqrt (s k))) *
               (‖c α' j k‖ * ‖D α' j k‖) := by ring
-          _ ≤ (2 * a ^ 2 * (s j + s k)) * (‖c α' j k‖ * ‖D α' j k‖) :=
+          _ ≤ ((a ^ 2 / 2) * (s j + s k)) * (‖c α' j k‖ * ‖D α' j k‖) :=
               mul_le_mul_of_nonneg_right (hcoef j k) hn
           _ = _ := by ring
-    _ = ∑ α', 2 * a ^ 2 * ∑ j, ∑ k, (s j + s k) * (‖c α' j k‖ * ‖D α' j k‖) := by
+    _ = ∑ α', (a ^ 2 / 2) * ∑ j, ∑ k, (s j + s k) * (‖c α' j k‖ * ‖D α' j k‖) := by
         simp only [Finset.mul_sum]
         conv_rhs => rw [Finset.sum_comm]
         exact Finset.sum_congr rfl fun j _ ↦ Finset.sum_comm
-    _ ≤ ∑ α', 2 * a ^ 2 * (2 * (‖c α'‖ * ‖d α'‖)) := by
+    _ ≤ ∑ α', (a ^ 2 / 2) * (2 * (‖c α'‖ * ‖d α'‖)) := by
         refine Finset.sum_le_sum fun α' _ ↦ ?_
         exact mul_le_mul_of_nonneg_left (sum_add_mul_norm_unitRow_le hs hsum hΘ _ _)
           (by positivity)
-    _ = 4 * a ^ 2 * ∑ α', ‖c α'‖ * ‖d α'‖ := by rw [Finset.mul_sum]; ring_nf
+    _ = a ^ 2 * ∑ α', ‖c α'‖ * ‖d α'‖ := by rw [Finset.mul_sum]; ring_nf
+
+/-- The original coarse conjugation estimate, retained for compatibility.
+Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 407–439. -/
+theorem abs_re_inner_sub_inner_conj_le {Θ : EuclideanSpace ℂ (α × β)} {s : α → ℝ}
+    (hs : ∀ j, 0 ≤ s j) (hsum : ∑ j, s j = 1)
+    (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0)
+    {X : Matrix (α × β) (α × β) ℂ} (hX : Matrix.IsHermitian X) {N : ℕ}
+    (c : Fin N → Matrix α α ℂ) (d : Fin N → Matrix β β ℂ) (hdec : X = ∑ a, c a ⊗ₖ d a)
+    {l : α → ℝ} (hl : ∀ j, 0 < l j) {a : ℝ} (ha : a ≤ 1 / 2)
+    (hclip : ∀ j k, 0 < s j → 0 < s k →
+      |Real.log (l j) - Real.log (l k)| ≤ a / 2 * |Real.log (s j) - Real.log (s k)|) :
+    |(⟪Θ, toEuclideanLin X Θ⟫_ℂ -
+        ⟪rowWeight (fun j ↦ (l j : ℂ)) Θ,
+          toEuclideanLin X (rowWeight (fun j ↦ ((l j)⁻¹ : ℂ)) Θ)⟫_ℂ).re| ≤
+      4 * a ^ 2 * ∑ α', ‖c α'‖ * ‖d α'‖ := by
+  refine (abs_re_inner_sub_inner_conj_le_sharp hs hsum hΘ hX c d hdec hl
+    (by linarith) hclip).trans ?_
+  have hsum0 : 0 ≤ ∑ α', ‖c α'‖ * ‖d α'‖ := Finset.sum_nonneg fun _ _ ↦ by positivity
+  nlinarith [mul_nonneg (sq_nonneg a) hsum0]
 
 end Entropy

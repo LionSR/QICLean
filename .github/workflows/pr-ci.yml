@@ -276,6 +276,17 @@ jobs:
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
 
+      - name: Check sharp filter energy regressions strictly
+        run: |
+          set -euo pipefail
+          for example in SharpFilterCoefficient SupportedInsideCount SharpFilterEnergy SharpFilterAxioms; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
       - name: Check shifted density power regressions strictly
         run: >
           LEAN_NUM_THREADS=1 lake env lean -j1
