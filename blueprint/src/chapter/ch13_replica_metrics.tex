@@ -535,14 +535,14 @@ eigenbasis. The following statements show that such averages are central label f
     For a density matrix $\sigma$ on the symmetric subspace of $k$ copies, the coherent
     measure is $d\mu_\sigma(\theta)=D_k\Tr(\sigma P_{\theta,k})\,d\theta$, where $\theta=Ue$
     for Haar-distributed $U$. It is a probability measure, and
-    $\bigl|\int\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle\,d\mu_\sigma\bigr|\le\norm G$
+    $\bigl|\int\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle\,d\mu_\sigma\bigr|\le\|G\|$
     for every operator $G$ on $m$ copies.
 \end{definition}
 
 \begin{proof}\leanok
     The coherent-state resolution gives total mass $\Tr(\sigma\Pi_k)=\Tr\sigma=1$. The
     density $D_k\Tr(\sigma P_{\theta,k})$ is nonnegative, and
-    $|\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle|\le\norm G$ for a unit vector
+    $|\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle|\le\|G\|$ for a unit vector
     $\theta$.
 \end{proof}
 
@@ -554,7 +554,7 @@ eigenbasis. The following statements show that such averages are central label f
     For an operator $G$ on $m$ copies and an ordered injection $\iota$ of $m$ copies into
     $k$ copies, $G_\iota$ is $G$ on the copies $\iota(1),\dots,\iota(m)$ and the identity
     elsewhere. The injection average $\mathcal T_{k,m}(G)$ is the average of $G_\iota$ over
-    all ordered injections; $\norm{\mathcal T_{k,m}(G)}\le\norm G$.
+    all ordered injections; $\|\mathcal T_{k,m}(G)\|\le\|G\|$.
 \end{definition}
 
 \begin{lemma}[Partial trace of matched swaps]
@@ -587,7 +587,7 @@ eigenbasis. The following statements show that such averages are central label f
     \[
         \left|\Tr\sigma\mathcal T_{k,m}(G)
             -\int\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle\,d\mu_\sigma\right|
-        \le\frac{4m^2(1+d^m)^2\norm G}{k},
+        \le\frac{4m^2(1+d^m)^2\|G\|}{k},
     \]
     where $d$ is the one-copy dimension.
 \end{theorem}
@@ -599,8 +599,8 @@ eigenbasis. The following statements show that such averages are central label f
     previous lemma evaluates $\pi_\iota$. These permutations therefore contribute their
     proportion times $\Tr\sigma\mathcal T_{k,m}(G)$. The other permutations send a
     prescribed one of the last copies to a prescribed one of them for some pair, so they
-    form a fraction at most $m^2/(k+m)$, and each term is at most $d^m\norm G$ in absolute
-    value because $|\Tr(\rho M)|\le\Tr\rho\,\norm M$ for $\rho\ge0$. The normalization
+    form a fraction at most $m^2/(k+m)$, and each term is at most $d^m\|G\|$ in absolute
+    value because $|\Tr(\rho M)|\le\Tr\rho\,\|M\|$ for $\rho\ge0$. The normalization
     $D_k/D_{k+m}$ is eliminated with the case $G=1$, where the coherent measure has total
-    mass one. For small $k$ both terms are bounded by $\norm G$.
+    mass one. For small $k$ both terms are bounded by $\|G\|$.
 \end{proof}
