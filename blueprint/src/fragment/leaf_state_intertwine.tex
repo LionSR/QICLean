@@ -1,0 +1,54 @@
+% Source: OpenAI2026AreaLaw, 06-transport.tex, transport:states, lines 393--401.
+% Manuscript revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\section{Embedding identities for trace-adjoint leaf maps}
+\label{sec:leaf_state_intertwine}
+
+Let $T$ be a weighted binary tree with labels in a set $I$.
+For positive definite inputs $(A_i)_{i\in I}$, let $\Phi_{T,j}^A$
+be its normalized leaf map, as in
+Theorem~\ref{thm:mean_tree_derivative_intertwine}.
+The trace-pairing adjoint is characterized by
+\begin{align}
+  \operatorname{Tr}\bigl((\Phi_{T,j}^A)^*(\rho)X\bigr)
+    &=\operatorname{Tr}\bigl(\rho\,\Phi_{T,j}^A(X)\bigr).
+\end{align}
+The following identity is auxiliary to the transport-state construction
+of~\cite{OpenAI2026AreaLaw}, display \texttt{transport:states}.
+It applies to arbitrary matrices; positivity and trace normalization
+may be imposed separately when constructing states.
+
+\begin{theorem}[Embedding a matrix through a trace-adjoint leaf map]
+  \label{thm:trace_adjoint_leaf_map_intertwine}
+  \lean{Matrix.MeanTree.traceAdjoint_leafMap_intertwine}
+  \leanok
+  Let $(A_i)_{i\in I}$ and $(B_i)_{i\in I}$ be positive definite inputs
+  on two finite-dimensional complex Hilbert spaces.
+  Suppose that a linear map $J$ from the second space to the first
+  satisfies $A_iJ=JB_i$ for every $i\in I$.
+  Then, for the same tree $T$, every label $j$ and every matrix $\rho$
+  on the second space satisfy
+  \begin{align}
+    (\Phi_{T,j}^A)^*(J\rho J^*)
+      &=J(\Phi_{T,j}^B)^*(\rho)J^*.
+  \end{align}
+  The inputs use the same labels and weights, including repeated labels
+  and zero terminal weights. No isometry assumption on $J$ is required.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:mean_tree_derivative_compress}
+  Put $C_J(X)=J^*XJ$ and $E_J(\rho)=J\rho J^*$.
+  Cyclicity of the trace gives $C_J^*=E_J$.
+  Theorem~\ref{thm:mean_tree_derivative_compress} gives
+  \begin{align}
+    C_J\circ\Phi_{T,j}^A&=\Phi_{T,j}^B\circ C_J.
+  \end{align}
+  The trace-pairing adjoint reverses composition. Taking adjoints
+  therefore gives
+  \begin{align}
+    (\Phi_{T,j}^A)^*\circ E_J
+      &=E_J\circ(\Phi_{T,j}^B)^*.
+  \end{align}
+  Evaluate this identity at $\rho$.
+\end{proof}
