@@ -54,4 +54,3 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 -/
 #guard_msgs (whitespace := lax) in
 #print axioms Metric.sum_stretchedBallKernel_mul_exp_half_rate_le
-
