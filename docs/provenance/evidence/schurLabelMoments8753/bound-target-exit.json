@@ -1,0 +1,14 @@
+{
+  "source_revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Representation.SchurLabelMoments"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:50:27.508700+00:00",
+  "elapsed_seconds": 13.811,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMoments8753/bound-target.log",
+  "sha256": "87733e764b7f414fd6dad485089438c25a6857690b3a2266b63ee35913a0b02b"
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "path": "QICLean/Representation/SchurLabelMoments.lean",
+    "sha256": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925"
+  },
+  {
+    "path": "blueprint/src/fragment/schur_label_moments.tex",
+    "sha256": "ff86e108d9da278ea861e7c1d9465d99d6e60f211df5f4bf3e0e82d46ba7fee9"
+  },
+  {
+    "path": "docs/tactic_patterns.md",
+    "sha256": "6f19a74ab4ffd522777977f11c07fe90d445f6bbb1a1ab2a85aab48a6f472e22"
+  }
+]

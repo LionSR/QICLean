@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+    "--root",
+    "/tmp/tnlean-schur-label-moments/final-verification-20261008/tactic-scan-sources",
+    "--top",
+    "30"
+  ],
+  "returncode": 0
+}

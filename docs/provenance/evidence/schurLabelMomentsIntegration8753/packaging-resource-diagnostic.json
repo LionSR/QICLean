@@ -1,0 +1,14 @@
+{
+  "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-manifest.py",
+    "--index"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "tool_session_id": 16150,
+  "exit_code": 1,
+  "capture_kind": "Verbatim failing exception excerpts from tool output with separately marked context.",
+  "cause": "Global OS file-table exhaustion during an unchanged-parent Git read.",
+  "repair": "Integration-only single batch object read performs the same byte comparisons. Original frozen leaf and mathematical source unchanged."
+}

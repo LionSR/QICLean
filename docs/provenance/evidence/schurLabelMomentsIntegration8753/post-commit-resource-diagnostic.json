@@ -1,0 +1,16 @@
+{
+  "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+  "evidence_revision": "c8ed87d0f1e26a60db49a601cad9fb9782009aba",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-manifest.py",
+    "--git"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "tool_session_id": 67995,
+  "exit_code": 1,
+  "capture_kind": "Verbatim failing exception excerpt from tool output; contextual prose explicitly separated.",
+  "diagnostic": "Unchanged-parent git-show subprocess died SIGBUS during the system resource incident.",
+  "scope": "Read-only post-commit hash validator; all frozen-source semantic/build/book checks passed.",
+  "retry_plan": "Repeat only the text/hash validator after the coordinated recovery run ends."
+}

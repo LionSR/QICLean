@@ -1,0 +1,57 @@
+[
+  {
+    "label": "before-imports",
+    "command": [
+      "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+      "-Dpp.unicode.fun=true",
+      "-DrelaxedAutoImplicit=false",
+      "-Dweak.linter.mathlibStandardSet=true",
+      "-DmaxSynthPendingDepth=3",
+      "-DwarningAsError=true",
+      "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/DependencySnapshot.lean"
+    ],
+    "cwd": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008",
+    "LEAN_PATH": "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean:/tmp/tnlean-schur-label-moments:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Qq/.lake/build/lib/lean",
+    "returncode": 0,
+    "seconds": 7.736,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "strict-build",
+    "command": [
+      "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+      "-Dpp.unicode.fun=true",
+      "-DrelaxedAutoImplicit=false",
+      "-Dweak.linter.mathlibStandardSet=true",
+      "-DmaxSynthPendingDepth=3",
+      "-DwarningAsError=true",
+      "-R",
+      "/private/tmp/tnlean-schur-label-moments/src",
+      "-o",
+      "/private/tmp/tnlean-schur-label-moments/QICLean/Representation/SchurLabelMoments.olean",
+      "/private/tmp/tnlean-schur-label-moments/src/QICLean/Representation/SchurLabelMoments.lean"
+    ],
+    "cwd": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008",
+    "LEAN_PATH": "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean:/tmp/tnlean-schur-label-moments:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Qq/.lake/build/lib/lean",
+    "returncode": 0,
+    "seconds": 4.73,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "imported-audit",
+    "command": [
+      "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+      "-Dpp.unicode.fun=true",
+      "-DrelaxedAutoImplicit=false",
+      "-Dweak.linter.mathlibStandardSet=true",
+      "-DmaxSynthPendingDepth=3",
+      "-DwarningAsError=true",
+      "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/Axioms.lean"
+    ],
+    "cwd": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008",
+    "LEAN_PATH": "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean:/tmp/tnlean-schur-label-moments:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Qq/.lake/build/lib/lean",
+    "returncode": 0,
+    "seconds": 5.289,
+    "log_sha256": "5e22ca18354a4663842d88013187d75f19c2943c5b9f2f08c8cdc785bd098eb2"
+  }
+]

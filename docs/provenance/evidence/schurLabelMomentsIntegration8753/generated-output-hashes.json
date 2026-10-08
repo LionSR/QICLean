@@ -1,0 +1,29 @@
+{
+  "files": [
+    {
+      "path": "blueprint/print/print.pdf",
+      "sha256": "54c772686109b60c3f0b9914213cea3007671a5d7345744ff26b385d7f12c6d8",
+      "bytes": 3018630
+    },
+    {
+      "path": "blueprint/print/print.bbl",
+      "sha256": "1c9c49ee1de060dc40e74b44b1cbcd0a961b662280ac2dcdc5439d3556e24695",
+      "bytes": 14706
+    },
+    {
+      "path": "blueprint/lean_decls",
+      "sha256": "e209e8a375cdaee22b3f0e1c3167fadb7b984ebeac0706bee11df017b0638a83",
+      "bytes": 158475
+    },
+    {
+      "path": "blueprint/web/ch-schur_labels.html",
+      "sha256": "a91a173337d9d8eeb67980d5c7bd3843a3412d42fd5129723b2662eff2e3fae6",
+      "bytes": 223201
+    },
+    {
+      "path": "output/pdf/area-law-schur-label-moments-blueprint.pdf",
+      "sha256": "54c772686109b60c3f0b9914213cea3007671a5d7345744ff26b385d7f12c6d8",
+      "bytes": 3018630
+    }
+  ]
+}

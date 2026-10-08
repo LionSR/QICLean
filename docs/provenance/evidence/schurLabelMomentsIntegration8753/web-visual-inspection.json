@@ -1,0 +1,126 @@
+{
+  "all_images_inspected": true,
+  "widths": [
+    1280,
+    360
+  ],
+  "images": [
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/sec-schur-label-moments-web.png",
+      "sha256": "9edfa506c5c4e14a41aa57cc6e065760050360f1ba114007c5820f71bb7a1aa2",
+      "bytes": 245777
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/thm-schur-label-copy-centered-web.png",
+      "sha256": "553b1ba5c4bd6f5ba18b9f695ad123cb73a906c505b45a43a9847524aae012b2",
+      "bytes": 232987
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/thm-schur-label-negative-centered-web.png",
+      "sha256": "553b1ba5c4bd6f5ba18b9f695ad123cb73a906c505b45a43a9847524aae012b2",
+      "bytes": 232987
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/thm-schur-label-positive-centered-web.png",
+      "sha256": "3d0a2270303e8c212fcca0e350240474b30b029741215fb8c72c982f540734e2",
+      "bytes": 233684
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-copy-centered-proof-1280.png",
+      "sha256": "b8daea16a0060f167df20ed8d3d5d2452d7beaedf84210f3373bcd8be68ebf46",
+      "bytes": 20555
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-copy-centered-proof-360.png",
+      "sha256": "a28341fd5cd29a37ddd50a40d855f1711ead6b4180fcd85ece050bdccd1d3a3b",
+      "bytes": 20528
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-copy-centered-statement-1280.png",
+      "sha256": "34fb3fc4c32eda501bafff14dbb18ec6b386c976bb907261acf8d5de597fbf2f",
+      "bytes": 24258
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-copy-centered-statement-360.png",
+      "sha256": "6adbbd8bc10af7f5e2a198754cc416b41a47648168b68d889df99b845b8e009b",
+      "bytes": 23437
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-negative-centered-proof-1280.png",
+      "sha256": "b41708ad25621456d68f7c53c5f44ba8fad72bc834cd7a1bfd9eef60bdd69faf",
+      "bytes": 29546
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-negative-centered-proof-360.png",
+      "sha256": "cc8e8247c544dcae9d89d0b69ba3e385560b5e70c289fe3ad51baa668aaa2d1d",
+      "bytes": 28426
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-negative-centered-statement-1280.png",
+      "sha256": "e8314f56a5b32e816ff5e7886c207c6b5cb566c501cfc735c275f061a3293a7f",
+      "bytes": 16896
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-negative-centered-statement-360.png",
+      "sha256": "131269b95fea53ee214a87a5dac2dd226f41427308e0d6c36fb09babf6953077",
+      "bytes": 16284
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-negative-centered-statement-display-0-360-right.png",
+      "sha256": "37f37c1e6528b922fe4e7bbbb7d9766d0929f492fa817a171882153fc2b8c2dc",
+      "bytes": 5924
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-positive-centered-proof-1280.png",
+      "sha256": "4fe02d77239729d54f07c54b4e080ae8ea478d3d297da31b99f705f58558f45b",
+      "bytes": 36010
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-positive-centered-proof-360.png",
+      "sha256": "110d79fa436310ee8c7b91ea98aee99977ef2d9f07e36ee29c5076a0d9a919e2",
+      "bytes": 34081
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-positive-centered-statement-1280.png",
+      "sha256": "ee4a7d6fb7ba70c78f0fac254cecc921e6fd8785f9ba282b1cc8dddcebfa9291",
+      "bytes": 13082
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-schur-label-positive-centered-statement-360.png",
+      "sha256": "e6bf4fa86b39990b7a1cbad7fb8a3a3cb750e06beb6d4c924c368d0dfb2b0d5f",
+      "bytes": 12910
+    }
+  ],
+  "mobile_displayed_formulas": [
+    {
+      "width": 310,
+      "scrollWidth": 310,
+      "overflow": "auto",
+      "label": "schur-label-positive-centered",
+      "kind": "statement",
+      "index": 0
+    },
+    {
+      "width": 310,
+      "scrollWidth": 319,
+      "overflow": "auto",
+      "label": "schur-label-negative-centered",
+      "kind": "statement",
+      "index": 0,
+      "right_endpoint": {
+        "left": 9,
+        "max": 9
+      }
+    },
+    {
+      "width": 310,
+      "scrollWidth": 310,
+      "overflow": "auto",
+      "label": "schur-label-copy-centered",
+      "kind": "statement",
+      "index": 0
+    }
+  ],
+  "mobile_local_right_endpoints": 1,
+  "inspection": "All three complete statements and proofs inspected at desktop/mobile widths; every displayed formula checked, including local scroll endpoints. Supported kernel convention, arbitrary negative-comparison exponent and restricted copy-transfer exponent readable."
+}

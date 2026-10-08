@@ -1,0 +1,384 @@
+{
+  "files": [
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/Axioms.lean",
+      "sha256": "7845698335f493c3d934452f838aa2c9bbf6775950052e2bd5043e2cbf3944c1",
+      "bytes": 389
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/README.md",
+      "sha256": "63976df3379dbcfd3198e2be1fcb6316fa057117922438fb5d4419a060da6996",
+      "bytes": 1495
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/Signatures.lean",
+      "sha256": "d45205429584653ff9dabb60305c3d077a092c7c73613195b21d1a85dc3b3aff",
+      "bytes": 368
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/TextStyle.lean",
+      "sha256": "195e2059ec6e833a8de1166c41ebc557a61f7ed432c5a0269abded252fbc6941",
+      "bytes": 390
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-axioms-exit.json",
+      "sha256": "cede70023ba894fc4e0d4ae80ae370843f42cb4c9bbd9e4d9ebe0c24dac6f6f9",
+      "bytes": 723
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-axioms.log",
+      "sha256": "5e22ca18354a4663842d88013187d75f19c2943c5b9f2f08c8cdc785bd098eb2",
+      "bytes": 372
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-cache-fetch-exit.json",
+      "sha256": "d1c13007d632a0ec88687743cf84235841c9cf026363fad4a24ba72300f0b4fe",
+      "bytes": 492
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-cache-guard-exit.json",
+      "sha256": "d1612dedc0261c2aea20b9acc88d563df3060e39187a7dc3f5af11316bab2595",
+      "bytes": 528
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-cache-guard.log",
+      "sha256": "17b34e9cfbcdc0fcbecd98a579be3dea9a9934e52040ba41f8a5557b5c22c5f2",
+      "bytes": 1583
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-patterns-exit.json",
+      "sha256": "312c062be64d9f2c1d6a5c838c2df8b986e99564738bddf368a325c456734be4",
+      "bytes": 585
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-patterns.log",
+      "sha256": "9f7ea979339169149f40f5a28ddb8b99726b18885b010849368c976c323c73b5",
+      "bytes": 3871
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-prose-exit.json",
+      "sha256": "556a5c12f18101c342a2878948d64da12f3135ff5988adc2ef50364c4243ba24",
+      "bytes": 564
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-provenance-exit.json",
+      "sha256": "8f149b36666431594e579843d00b6c4ee1a49e57845c6134ec5452ebccccfa88",
+      "bytes": 614
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-provenance.log",
+      "sha256": "a367add2016da425e0b0777cc3514315b4a0b21543987b9936c85bee79e7af01",
+      "bytes": 69
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-signatures-exit.json",
+      "sha256": "3279375325321f7f90f2c68d34563b4673e924a93ca9e0c58dec3c268b94a845",
+      "bytes": 732
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-signatures.log",
+      "sha256": "dba4c277b56d644678b621df20a3e4141a2ea9cb683390f4e5e271ab0439bbcc",
+      "bytes": 2044
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-source-audit-exit.json",
+      "sha256": "e2f87d5660042590cffbc31262a9c4566d27eb0ae2ad9409f193dde5a1e8d815",
+      "bytes": 530
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-source-audit.log",
+      "sha256": "374577b4f3c89616a3c54607fce15111bedab68cf9313ad36d5ac4973bb314f3",
+      "bytes": 77
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-source-comparison-exit.json",
+      "sha256": "64eba17748086ff9c36a1e61cbf4964af5ab6367c226c97c124bc7da4d26682c",
+      "bytes": 538
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-source-comparison-final-exit.json",
+      "sha256": "22cbe3c99e19b7cbca2d10079e9bdc2d5924d0008e5e51fd2b31671bb2ad34f8",
+      "bytes": 544
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-source-comparison-final.log",
+      "sha256": "3cd192f47895210ead282b5892ecbe27d859de421e9e3c0d45a26fa47240e45e",
+      "bytes": 667
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-source-comparison.log",
+      "sha256": "22f109d181f2e30e6b44c6d634ce83f14ae763418fee93ed2c66e8ed6474d4e0",
+      "bytes": 389
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-strict-exit.json",
+      "sha256": "ccb2853e21921119c1ecdc7172fb6b668a69bd2833a5457d4cd471110cba8380",
+      "bytes": 711
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-strict.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-target-exit.json",
+      "sha256": "4b38d1633c9acc38711b5c5bde7752d7b7a26f253fadca18b3ab3abf12543939",
+      "bytes": 513
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-target.log",
+      "sha256": "87733e764b7f414fd6dad485089438c25a6857690b3a2266b63ee35913a0b02b",
+      "bytes": 112
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-text-style-exit.json",
+      "sha256": "04e5103dd8bdc8e8dea0eda8eb0d21f05089c89d18d18577321dda439f3180d7",
+      "bytes": 624
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/bound-text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/cache-fetch-exit.json",
+      "sha256": "afb612497709beb05f8b4478f207dccaded04c7d673cf99d285eeaa823be1801",
+      "bytes": 484
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/cache-guard-exit.json",
+      "sha256": "de583cdf5f06a89c1e7f060d58f7993a3f08aeea2feb21051456dbca6d854e7f",
+      "bytes": 520
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/cache-guard.log",
+      "sha256": "17b34e9cfbcdc0fcbecd98a579be3dea9a9934e52040ba41f8a5557b5c22c5f2",
+      "bytes": 1583
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/cache-guard.py",
+      "sha256": "cff5c5abc04903fd5fb3c82ebfcefe47048d93f48e55ae1c4667068d4211af92",
+      "bytes": 1358
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/check-manifest.py",
+      "sha256": "01db93939da0b475858254f244f1661e03a6b321532c2d3ebb3af1e8d908acb2",
+      "bytes": 2229
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/collect.py",
+      "sha256": "8c6ca34bab2dc4f6f09f3bf481de0090e222ace837a1606546ee3681d75f5aad",
+      "bytes": 1571
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/compare-source.py",
+      "sha256": "25f0368bc27a8e5e0c480211e177ffff0e0b1f48a7473f82f9ab111fdc87b7cf",
+      "bytes": 2115
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/create-provenance.py",
+      "sha256": "793e092abf866c0068c993455d5ac5a509cfe6d22c842ab9f851c274b4b357d2",
+      "bytes": 1969
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/Axioms.lean",
+      "sha256": "1887aab02f1df92bbd5adea90a8097a46ee2e8481855087512358546e44f0304",
+      "bytes": 612
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/DependencySnapshot.lean",
+      "sha256": "e02faf13c85c874b5d477dc2011d264de29a64e36087d52a9eefb27539684925",
+      "bytes": 238
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/README.md",
+      "sha256": "dd3f8122fbe8c5e20682b05d1559d722a51ec6d79c8c52b1b53acd88ecb6c206",
+      "bytes": 2255
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/SchurLabelMoments.lean",
+      "sha256": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925",
+      "bytes": 10752
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/axiom-dependencies.json",
+      "sha256": "43f906b871a0fc02e1366184dd440a3ba567fea5d5d180066c8cada7e02ed21e",
+      "bytes": 392
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/before-imports.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/before-modules.json",
+      "sha256": "f1deb0febfcd263e85abd7cf9642f111491698dbe99d0d02697ec3cfea2cb942",
+      "bytes": 158903
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/blueprint-coverage.json",
+      "sha256": "f9c18484c57eeaf8e0885dc300073b21471c87ac4276b00286009aba2278dcfe",
+      "bytes": 455
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/checked-sources.json",
+      "sha256": "1925e76963a8d73692e062eebf8abce669669811dd126547d2cb159713b388ae",
+      "bytes": 940
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/commands.json",
+      "sha256": "e802c90eeca4ae2c0412ab0e2a443126441eedf602f32925f2ede96ea6a133d0",
+      "bytes": 6627
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/delivery-files.json",
+      "sha256": "839ccb964ad470d429884f08554d884c32203a11c251fce57793d347678c2c63",
+      "bytes": 435
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/imported-audit.log",
+      "sha256": "5e22ca18354a4663842d88013187d75f19c2943c5b9f2f08c8cdc785bd098eb2",
+      "bytes": 372
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/imported-dependencies.json",
+      "sha256": "b3df6443787e974ad78e32b016f2806d804c70a62e9db22bc2b35cdf6658db26",
+      "bytes": 2326654
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/imported-modules.json",
+      "sha256": "f1deb0febfcd263e85abd7cf9642f111491698dbe99d0d02697ec3cfea2cb942",
+      "bytes": 158903
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/independent-review.json",
+      "sha256": "e4a5360ff9bb3ca9c684b1f4a6b5ba1e61cf15dc61222edbd83572f5549ecbb0",
+      "bytes": 1038
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/strict-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-command.json",
+      "sha256": "d32dbe57cdc8401778cd3895c273a3f3479c9a4e6891402505352c8328fc4d9c",
+      "bytes": 265
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-sources/OrthogonalResolution.lean",
+      "sha256": "65ebba8cca5d3558df5860f800c1adf1f2436bbbf96a7663c2ea9cdbc41fd7e4",
+      "bytes": 11452
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-sources/SchurLabelMoments.lean",
+      "sha256": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925",
+      "bytes": 10752
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-sources/SchurSurprisal.lean",
+      "sha256": "ec9b587efcc36f7b0a558b3b35ec3cfd9ebd088c0d4c99cf47f0f531edd2c0d2",
+      "bytes": 17904
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-sources/WeightedTraceHolder.lean",
+      "sha256": "376f80c3c8284c27105152168c8ffcc1c36c96f9074fe344b6cf29ee2e9bb07e",
+      "bytes": 13411
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan.log",
+      "sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8",
+      "bytes": 61
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/historical-bindings.json",
+      "sha256": "6c9e36e663a7f1e0298492ee4954869c12369b4fd5ab95faefcf977c9903db9d",
+      "bytes": 7278
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/kernel-summary.json",
+      "sha256": "911036400d6be4a7c9e0f8e4123b3de4383620606ab721414b99b95bffe8b776",
+      "bytes": 560
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/owned-shards.json",
+      "sha256": "27bd0ffa2b62aa4a66ec4890e556a13148ce2f4e08d86f5b57db400281697f88",
+      "bytes": 31
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/public-declarations.json",
+      "sha256": "b388f01646f18a040048337c211d50a2191effac869424fd3ac65a936faeaec2",
+      "bytes": 224
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/run.py",
+      "sha256": "8b693115881c54a3dac953ad99d760870519b11697c460810d66dfc26853bcfa",
+      "bytes": 1125
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/source-audit.json",
+      "sha256": "bfea449245d1ca84235ab3c18cb98a8ee2fb728783faa6df46e2897e717b8270",
+      "bytes": 410
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/source-audit.py",
+      "sha256": "f2314b4f672d8c66971fd35779830b876c268d237d8320a49aa46d8d82d7580b",
+      "bytes": 1405
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/source-comparison.json",
+      "sha256": "1ac997faea8ad8a43e4c2baa96e94f2fc41968a40b6c252d2d6f750104613568",
+      "bytes": 701
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/source-freeze.json",
+      "sha256": "f643cd0dca61a95b72cfd75e4ff84542c4f9b76d67b2b00162e321ef0b1d6c6d",
+      "bytes": 913
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/tactic-pattern-scan.py",
+      "sha256": "d6c4e9a12ccc192ca92de9a56f1850753dc2bc44724c647e90fc51a3ddaa4b4b",
+      "bytes": 6706
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/target-exit.json",
+      "sha256": "2b9a9fb8d72c5886c48ce4260c1e98da66d6cdc47b6cf35761b1c11ce20bed2f",
+      "bytes": 541
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/target.log",
+      "sha256": "ac3c437fea5070979ed4f7ab210537e2788e405b426fdc5511a5af8d7b22499d",
+      "bytes": 111
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/validate-owned.py",
+      "sha256": "fc9a04d87b689372c942df76c99cd35cffdb49737cf74613fc0d6dcc225806b0",
+      "bytes": 1524
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMoments8753/verification.json",
+      "sha256": "ad612efe2f0524e2f1a9932f0957058a6fab4325256e8f53e713178fb9a1c9d5",
+      "bytes": 10604
+    },
+    {
+      "path": "docs/provenance/openai-math.d/schurLabelMoments8753.json",
+      "sha256": "f30d6ddcfc50c44bbaeb0a663550115dab402df8f18af39f8516bad73991ca67",
+      "bytes": 7767
+    }
+  ]
+}

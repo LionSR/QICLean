@@ -1,0 +1,20 @@
+{
+  "source_revision": null,
+  "dependency_source_commit": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "sources": [
+    {
+      "path": "QICLean/Representation/SchurLabelMoments.lean",
+      "source": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-label-moments/QICLean/Representation/SchurLabelMoments.lean",
+      "sha256": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925",
+      "artifact": "/private/tmp/tnlean-schur-label-moments/QICLean/Representation/SchurLabelMoments.olean",
+      "artifact_sha256": "db08bc2c95055e9966bae650b99157393bb21869aea8de5aaec538637f8f16be"
+    }
+  ],
+  "all_preexisting_import_hashes_unchanged": true,
+  "declarations": [
+    "PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le",
+    "PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le",
+    "TensorPower.centered_labelEntropy_moments_le"
+  ],
+  "imported_artifacts": 4650
+}

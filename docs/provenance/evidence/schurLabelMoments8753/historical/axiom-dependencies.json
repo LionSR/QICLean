@@ -1,0 +1,17 @@
+{
+  "PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "TensorPower.centered_labelEntropy_moments_le": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ]
+}

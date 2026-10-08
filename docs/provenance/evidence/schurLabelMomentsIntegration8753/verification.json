@@ -1,0 +1,399 @@
+{
+  "mathematical_source_revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+  "leaf_evidence_revision": "fd7d585b87e56aedb9326a70973280145dc98fc5",
+  "unique_inclusion_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+  "checked_source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+  "checks": [
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "node",
+        "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+        "--operation-kind",
+        "edit",
+        "--expected-output-count",
+        "1",
+        "--output-format",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:56:26.020710+00:00",
+      "elapsed_seconds": 0.558,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:56:24.835295+00:00",
+      "elapsed_seconds": 34.524,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/axioms-final.log",
+      "sha256": "5e22ca18354a4663842d88013187d75f19c2943c5b9f2f08c8cdc785bd098eb2"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/copy-bibliography.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:56:57.744663+00:00",
+      "elapsed_seconds": 0.057,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/cache-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:55:01.009544+00:00",
+      "elapsed_seconds": 0.336,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/cache-guard.log",
+      "sha256": "2e13a163821a1e1f167fd2cbc2ae50ad71235a3ee18fe61b21dafd9bdb846f5e"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "leanblueprint",
+        "checkdecls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T03:58:11.731919+00:00",
+      "elapsed_seconds": 50.208,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/checkdecls.log",
+      "sha256": "09f688a4d6f422ddefa6e5c7dfb2a91b041c7c588830d830e65b7c230409c82b"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--update-lean-decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:55:44.416047+00:00",
+      "elapsed_seconds": 0.562,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/declaration-sync.log",
+      "sha256": "ad2e737201cbe86f55297d16800410cf354c3b115cc6772a46074fe1220b1111"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:55:01.966413+00:00",
+      "elapsed_seconds": 57.983,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/full-build.log",
+      "sha256": "6ed2ad0662400cfbbade7816deab3cd10c338641779a748ee96ff100229153c8"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:55:40.933647+00:00",
+      "elapsed_seconds": 0.632,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/imports.log",
+      "sha256": "7da6d9e483963c336782e84b7daa6e535e4d1a90ed8d59627d1e28b574fd6776"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-native-targets.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:59:02.208095+00:00",
+      "elapsed_seconds": 0.163,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/native-targets.log",
+      "sha256": "1096e1bc29fd0f5c8546d6de524fecf18fe4b6ee7536a2154842aa8f6073f17d"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:55:42.234940+00:00",
+      "elapsed_seconds": 0.633,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T03:56:26.744050+00:00",
+      "elapsed_seconds": 30.817,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/pdf.log",
+      "sha256": "659d45c0648e244fcc3ef6f808889bad0170c658d1d744d942f17e6716d43033"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "pdftoppm",
+        "-f",
+        "460",
+        "-l",
+        "461",
+        "-r",
+        "110",
+        "-png",
+        "blueprint/print/print.pdf",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/page"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:57:49.104513+00:00",
+      "elapsed_seconds": 0.789,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/pdf-render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-manifest.py",
+        "--git"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T04:05:39.296904+00:00",
+      "elapsed_seconds": 28.924,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/post-commit-retry.log",
+      "sha256": "15ecebd41d26f58b477ee52d2384c68393c09b35b014d63955e0dc79c02d411b"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "-Werror",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T04:11:33.799123+00:00",
+      "elapsed_seconds": 0.633,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-batch-clean.log",
+      "sha256": "c67a1ee359a3c57337ec89b7b075b6f6566d85bea6aa752f6335024f70e55663"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T04:10:37.165367+00:00",
+      "elapsed_seconds": 0.768,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-batch.log",
+      "sha256": "628762b953459a0d1c9d24e39106f3f9fe2b288422c1aa809b0caf727f1b95cf"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:57:00.383347+00:00",
+      "elapsed_seconds": 33.801,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation.log",
+      "sha256": "a5b72a14a8a0d5e8d43d84be9fe33dd51ba0f47eb29a32e24e16fbf84cd8d690"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:55:41.735395+00:00",
+      "elapsed_seconds": 0.319,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:56:59.525873+00:00",
+      "elapsed_seconds": 0.683,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/provenance-final.log",
+      "sha256": "a367add2016da425e0b0777cc3514315b4a0b21543987b9936c85bee79e7af01"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:55:43.033948+00:00",
+      "elapsed_seconds": 1.181,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/tenkz.log",
+      "sha256": "b10dd226fcfb59e9eb52b06bc040d251e35cd38d571c963ece4bf0e5263f2d8d"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "leanblueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T03:56:57.971432+00:00",
+      "elapsed_seconds": 73.559,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web.log",
+      "sha256": "9066d364a1eabf3392822cb6f489a2898c960b4f43681395d1ce1e3e0f9a356c"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-qa.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:58:30.529192+00:00",
+      "elapsed_seconds": 4.353,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-reader.log",
+      "sha256": "54809e622e0e89f03cada80834a1fa7cea4d697972b9d12fc911b7225b06dc4c"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-visual.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:58:35.083023+00:00",
+      "elapsed_seconds": 2.732,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-visual.log",
+      "sha256": "616997330faccc1b96368f2c8bc518310f061339b56e81b84a260d5eee498271"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:58:38.110468+00:00",
+      "elapsed_seconds": 56.433,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/whole-web-reader.log",
+      "sha256": "e3b8ef5f7395689369b3ac98b15c7cc875e934e50f8f9787900821919d69af1f"
+    }
+  ],
+  "complete_library_jobs": 9825,
+  "complete_pdf_pages": 473,
+  "native_inventory": {
+    "declaration_lines": 3771,
+    "unique_declarations": 3771,
+    "owned_declarations": [
+      "PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le",
+      "PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le",
+      "TensorPower.centered_labelEntropy_moments_le"
+    ],
+    "unique_fragment_input": [
+      "blueprint/src/chapter/ch13_schur_labels.tex"
+    ],
+    "each_occurs_once": true
+  },
+  "whole_web_reader": {
+    "pages": 50,
+    "typeset": 40997
+  },
+  "fresh_exact_kernel_reports": 3,
+  "original_owned_provenance_entries": 3,
+  "source_scope": "Centered Schur-label transfer from supported surprisal moments. Positive comparison u>=0 with trace-one; negative comparison arbitrary real u without normalization; tensor-copy polynomial remainder for 0<=u and 2u<=1. Signed independent-copy rate estimate remains downstream.",
+  "preservation": "Frozen four mathematical/exposition files and entire canonical leaf exact; external Lean SHA2d460... and original22 historical records retained. Checked Holder parent source/evidence mechanically preserved with exact generated Representation import exception; ledger authority6c. No unchanged parent semantic audit repeated.",
+  "packaging_resource_diagnostic": {
+    "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+    "command": [
+      "python3",
+      "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-manifest.py",
+      "--index"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+    "tool_session_id": 16150,
+    "exit_code": 1,
+    "capture_kind": "Verbatim failing exception excerpts from tool output with separately marked context.",
+    "cause": "Global OS file-table exhaustion during an unchanged-parent Git read.",
+    "repair": "Integration-only single batch object read performs the same byte comparisons. Original frozen leaf and mathematical source unchanged."
+  },
+  "historical_resource_diagnostic": {
+    "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+    "evidence_revision": "c8ed87d0f1e26a60db49a601cad9fb9782009aba",
+    "command": [
+      "python3",
+      "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-manifest.py",
+      "--git"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+    "tool_session_id": 67995,
+    "exit_code": 1,
+    "capture_kind": "Verbatim failing exception excerpt from tool output; contextual prose explicitly separated.",
+    "diagnostic": "Unchanged-parent git-show subprocess died SIGBUS during the system resource incident.",
+    "scope": "Read-only post-commit hash validator; all frozen-source semantic/build/book checks passed.",
+    "retry_plan": "Repeat only the text/hash validator after the coordinated recovery run ends."
+  },
+  "resource_retry_exit": 0,
+  "shared_source_exceptions": {
+    "authoritative_parent": "fd7d585b87e56aedb9326a70973280145dc98fc5",
+    "QICLean/Representation.lean": "Exactly one generated SchurLabelMoments import.",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "Exactly one final schur_label_moments fragment input with surrounding newline."
+  }
+}

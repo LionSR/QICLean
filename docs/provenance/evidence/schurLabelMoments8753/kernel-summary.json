@@ -1,0 +1,16 @@
+{
+  "source_revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+  "declarations": [
+    "PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le",
+    "PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le",
+    "TensorPower.centered_labelEntropy_moments_le"
+  ],
+  "raw_log": "docs/provenance/evidence/schurLabelMoments8753/bound-axioms.log",
+  "sha256": "5e22ca18354a4663842d88013187d75f19c2943c5b9f2f08c8cdc785bd098eb2",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "exact_name_reports": 3
+}

@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-schur-label-moments-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurLabelMoments.lean",
+        "declaration": "PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary centered Schur-label comparison with supported surprisal moments. No upstream Lean proof text reused; signed independent-copy surprisal rate estimates remain downstream."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.SchurLabelMoments",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMoments8753/bound-target.log",
+            "sha256": "87733e764b7f414fd6dad485089438c25a6857690b3a2266b63ee35913a0b02b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchurLabelMoments.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMoments8753/bound-strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurLabelMoments8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMoments8753/bound-axioms.log",
+            "sha256": "5e22ca18354a4663842d88013187d75f19c2943c5b9f2f08c8cdc785bd098eb2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schur-label-moments-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurLabelMoments.lean",
+        "declaration": "PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary centered Schur-label comparison with supported surprisal moments. No upstream Lean proof text reused; signed independent-copy surprisal rate estimates remain downstream."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.SchurLabelMoments",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMoments8753/bound-target.log",
+            "sha256": "87733e764b7f414fd6dad485089438c25a6857690b3a2266b63ee35913a0b02b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchurLabelMoments.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMoments8753/bound-strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurLabelMoments8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMoments8753/bound-axioms.log",
+            "sha256": "5e22ca18354a4663842d88013187d75f19c2943c5b9f2f08c8cdc785bd098eb2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schur-label-moments-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurLabelMoments.lean",
+        "declaration": "TensorPower.centered_labelEntropy_moments_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary centered Schur-label comparison with supported surprisal moments. No upstream Lean proof text reused; signed independent-copy surprisal rate estimates remain downstream."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.SchurLabelMoments",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMoments8753/bound-target.log",
+            "sha256": "87733e764b7f414fd6dad485089438c25a6857690b3a2266b63ee35913a0b02b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchurLabelMoments.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMoments8753/bound-strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurLabelMoments8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMoments8753/bound-axioms.log",
+            "sha256": "5e22ca18354a4663842d88013187d75f19c2943c5b9f2f08c8cdc785bd098eb2"
+          }
+        ]
+      }
+    }
+  ]
+}

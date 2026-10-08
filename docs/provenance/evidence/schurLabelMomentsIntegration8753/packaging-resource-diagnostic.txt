@@ -1,0 +1,10 @@
+Verbatim exception excerpts from packaging tool session 16150:
+
+fatal: unable to access '/Applications/Xcode.app/Contents/Developer/usr/share/git-core/gitconfig': Too many open files in system
+subprocess.CalledProcessError: Command ['git', 'show', 'd21af4657ca03bf6a71aa738d72efd71f5eb7521:QICLean/Channel/Peripheral/MultiCycleDecomposition.lean']' returned non-zero exit status 128.
+
+The failed command was the read-only --index integration manifest check.
+The earlier post-commit retry had already passed. No mathematical source,
+original leaf file or rendered artifact changed. The new integration harness
+was subsequently changed to perform the same byte comparisons by a single
+batch Git-object read, preserving the original frozen leaf checker.

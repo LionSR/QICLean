@@ -1,0 +1,12 @@
+{
+  "production_files": [
+    {
+      "path": "QICLean/Representation/SchurLabelMoments.lean",
+      "forbidden_code_tokens": []
+    }
+  ],
+  "new_original_notices": 3,
+  "owned_declarations": 3,
+  "manuscript_commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "faithfulness": "Centered Schur-label transfer from supported surprisal moments; independent-copy surprisal rate estimates remain downstream."
+}

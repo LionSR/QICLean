@@ -1,0 +1,3 @@
+/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py:23: SyntaxWarning: "\i" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\i"? A raw string is also an option.
+  p='blueprint/src/chapter/ch13_schur_labels.tex';assert (r/p).read_bytes()==objects[leaf+':'+p].rstrip()+b'\n\n\input{fragment/schur_label_moments}\n'
+Batch-verified 77 original leaf files, 1078 Holder-parent files and all frozen source/exposition bytes; exact generated import/chapter exceptions only. No inherited semantic audit repeated.

@@ -1,0 +1,13 @@
+{
+  "source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/weightedTraceHolder8753/compare-source.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:19:05.651425+00:00",
+  "elapsed_seconds": 0.374,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-source-comparison.log",
+  "sha256": "9866afd8cc6fca9cd7aad18514b8c18652b62d6408f0d26916e5faaa20db6d88"
+}

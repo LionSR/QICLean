@@ -1,0 +1,21 @@
+{
+  "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+  "command": [
+    "pdftoppm",
+    "-f",
+    "460",
+    "-l",
+    "461",
+    "-r",
+    "110",
+    "-png",
+    "blueprint/print/print.pdf",
+    "docs/provenance/evidence/schurLabelMomentsIntegration8753/page"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:57:49.104513+00:00",
+  "elapsed_seconds": 0.789,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/pdf-render.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

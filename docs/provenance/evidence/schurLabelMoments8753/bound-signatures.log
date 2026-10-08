@@ -1,0 +1,21 @@
+PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le.{u_1, u_2} {G : Type u_1} {X : Type u_2} [Group G]
+  [Fintype G] [Fintype X] [DecidableEq X] {φ : G →* Equiv.Perm X} {ρ : Matrix X X ℂ} (hρ : ρ.PosSemidef)
+  (hinv : ∀ (g : G), Commute ((PermutationRepresentation.permOp φ) g) ρ) (htr : ρ.trace = 1) (s u : ℝ) (hu : 0 ≤ u) :
+  (ρ * NormedSpace.exp (↑u • (PermutationRepresentation.labelEntropy φ - ↑s • 1))).trace.re ≤
+    (ρ * NormedSpace.exp (↑u • (-CFC.log ρ - ↑s • 1))).trace.re
+PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le.{u_1, u_2} {G : Type u_1} {X : Type u_2}
+  [Group G] [Fintype G] [Fintype X] [DecidableEq X] {φ : G →* Equiv.Perm X} {ρ : Matrix X X ℂ} (hρ : ρ.PosSemidef)
+  (hinv : ∀ (g : G), Commute ((PermutationRepresentation.permOp φ) g) ρ) (s u : ℝ) :
+  (ρ * NormedSpace.exp (-↑u • (PermutationRepresentation.labelEntropy φ - ↑s • 1))).trace.re ≤
+    √((ρ * NormedSpace.exp ((-2 * ↑u) • (-CFC.log ρ - ↑s • 1))).trace.re *
+        (ρ * NormedSpace.exp ((2 * ↑u) • (-CFC.log ρ - PermutationRepresentation.labelEntropy φ))).trace.re)
+TensorPower.centered_labelEntropy_moments_le.{u_1} {Ω : Type u_1} [Fintype Ω] [DecidableEq Ω] {k : ℕ}
+  {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hρ : ρ.PosSemidef) (htr : ρ.trace = 1)
+  (hinv : ∀ (σ : Equiv.Perm (Fin k)), Commute ((PermutationRepresentation.permOp (TensorPower.copyPerm Ω k)) σ) ρ)
+  (s u : ℝ) (hu : 0 ≤ u) (hu2 : 2 * u ≤ 1) :
+  (ρ * NormedSpace.exp (↑u • (PermutationRepresentation.labelEntropy (TensorPower.copyPerm Ω k) - ↑s • 1))).trace.re ≤
+      (ρ * NormedSpace.exp (↑u • (-CFC.log ρ - ↑s • 1))).trace.re ∧
+    (ρ *
+            NormedSpace.exp
+              (-↑u • (PermutationRepresentation.labelEntropy (TensorPower.copyPerm Ω k) - ↑s • 1))).trace.re ≤
+      √((ρ * NormedSpace.exp ((-2 * ↑u) • (-CFC.log ρ - ↑s • 1))).trace.re * ↑((k + 1) ^ Fintype.card Ω ^ 2))
