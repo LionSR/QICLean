@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/docs/provenance/evidence/pureTensorPowerIntegration8753/validate-owned.py", line 14, in <module>
-    tnlean = Path(sys.argv[1]).resolve()
-                  ~~~~~~~~^^^
-IndexError: list index out of range

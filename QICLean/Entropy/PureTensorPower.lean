@@ -28,10 +28,6 @@ Original actual-product marginal and projection-mass identities supporting
 OpenAI, A two-dimensional area law from a global spectral gap,
 September 24, 2026, 07-comparators.tex lines 255–281, comparator:high-label.
 Independently formalized; no upstream Lean proof text reused.
-Provenance-ID: 8753-qic-pure-tensor-power-01
-Matrix.partialTraceLeft_vecMulVec_prod
-Provenance-ID: 8753-qic-pure-tensor-power-02
-Matrix.norm_sq_one_kronecker_mulVec_prod
 -/
 
 open scoped BigOperators Matrix Kronecker

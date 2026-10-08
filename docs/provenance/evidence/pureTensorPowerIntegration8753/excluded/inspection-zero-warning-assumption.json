@@ -1,6 +1,0 @@
-{
-  "source_revision": "b9c8bd663c081e6128353eee979d266b1c4bdce0",
-  "actual_exit_code": 1,
-  "failure": "Preliminary local visual-record helper assumed no Overfull warning in the new fragment. Actual final log has one 1.2038pt heading warning.",
-  "correction": "Retain the exact heading warning and visual finding of no clipping or overlap; no production edits or rerender needed."
-}

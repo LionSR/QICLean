@@ -1,9 +1,0 @@
-{
-  "actual_distinct_names": 3191,
-  "actual_whitespace_separated_entries": 3191,
-  "exact_new_names": [
-    "Matrix.partialTraceLeft_vecMulVec_prod",
-    "Matrix.norm_sq_one_kronecker_mulVec_prod"
-  ],
-  "all_new_names_present": true
-}

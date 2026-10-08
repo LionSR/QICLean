@@ -32,13 +32,17 @@ vectors with real overlap `F` are at squared distance $2(1-F)$.
 * `Matrix.exists_isIsometry_norm_sub_le_of_purification` — two unit purifications are
   within $\sqrt{2(1-e^{-D(\rho\Vert\sigma)/2})}$ after an isometry on the purifying
   system, when the purifying space of the target has room for both systems.
-* `Matrix.exists_isIsometry_norm_sub_padPurification_le` — the "in particular" clause
-  of Lemma 2.2: the same estimate after enlarging the purifying space of the target
-  by zero padding, with no condition on the dimensions.
+* `Matrix.exists_isIsometry_norm_sub_padPurification_le` — the "Moreover" clause of
+  Lemma 2.2 combined with $F\ge e^{-D/2}$: the same estimate after enlarging the
+  purifying space of the target by zero padding, with no condition on the dimensions.
 * `Matrix.exists_isIsometry_norm_sub_tensorPurification_le` — the splitting estimate
   with $b=D(\rho_{TE}\Vert\rho_T\otimes\rho_E)$, for arbitrary finite index types.
 * `Matrix.exists_isIsometry_norm_sub_tensorPurification_le_mutualInformation` —
   Lemma 6.4 `lem:splitting` with $b=I(T:E)$ and both inequalities.
+* `Matrix.exists_isIsometry_norm_sub_tensorPurification_le_sqrt` — the "in particular"
+  clause of Lemma 2.2: a mutual-information bound $I(T:E)\le\delta$ gives
+  purifications of the joint state and of the product state at distance at most
+  $\sqrt\delta$.
 * `Matrix.exists_isIsometry_norm_sub_tensorPurification_le_zpow` — if
   $b\le L^{-60}$, the error is at most $L^{-30}$.
 
@@ -86,8 +90,9 @@ theorem star_mulVec_dotProduct_mulVec_of_conjTranspose_mul_eq_one {ι κ : Type*
     (v : ι → ℂ) : star (K *ᵥ v) ⬝ᵥ (K *ᵥ v) = star v ⬝ᵥ v := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, hK, one_mulVec]
 
-/-- **Purification distance, room-condition form** (Lemma 2.2 `lem:fidelity`, "in
-particular" clause, when the purifying space of `φ` is already large enough).  Let
+/-- **Purification distance, room-condition form** (Lemma 2.2 `lem:fidelity`,
+"Moreover" clause combined with $F(\rho,\sigma)\ge e^{-D(\rho\Vert\sigma)/2}$, when the
+purifying space of `φ` is already large enough).  Let
 `ψ` and `φ` be unit purifications of `ρ` on `A × R` and of `σ` on `A × S`, with
 $\ker\sigma\subseteq\ker\rho$ and with `S` at least as large as `A` and `R`.  Then an
 isometry `V` from `R` to `S` brings `ψ` within
@@ -96,7 +101,7 @@ purifying space enlarged and no condition on the dimensions, is
 `Matrix.exists_isIsometry_norm_sub_padPurification_le`.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
-`01-preliminaries.tex:99–139`. -/
+`01-preliminaries.tex:92–101` and its proof `01-preliminaries.tex:106–139`. -/
 theorem exists_isIsometry_norm_sub_le_of_purification
     {ρ σ : Matrix A A ℂ} {ψ : A × R → ℂ} {φ : A × S → ℂ}
     (hψ : partialTraceRight (vecMulVec ψ (star ψ)) = ρ)
@@ -127,7 +132,8 @@ theorem exists_isIsometry_norm_sub_le_of_purification
   refine Real.sqrt_le_sqrt ?_
   linarith
 
-/-- **Purification distance** (Lemma 2.2 `lem:fidelity`, "in particular" clause).  Let
+/-- **Purification distance** (Lemma 2.2 `lem:fidelity`, "Moreover" clause combined
+with $F(\rho,\sigma)\ge e^{-D(\rho\Vert\sigma)/2}$).  Let
 `ψ` and `φ` be unit purifications of `ρ` on `A × R` and of `σ` on `A × S`, with
 $\ker\sigma\subseteq\ker\rho$.  After enlarging the purifying space of `φ` to
 `S ⊕ (A ⊕ R)` by zero padding, an isometry `V` defined on all of `R` brings `ψ` within
@@ -135,7 +141,7 @@ $\sqrt{2(1-e^{-D(\rho\Vert\sigma)/2})}$ of the padded `φ`.  No condition is imp
 on the dimensions.
 
 Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
-`01-preliminaries.tex:99–139`. -/
+`01-preliminaries.tex:92–101` and its proof `01-preliminaries.tex:106–139`. -/
 theorem exists_isIsometry_norm_sub_padPurification_le
     {ρ σ : Matrix A A ℂ} {ψ : A × R → ℂ} {φ : A × S → ℂ}
     (hψ : partialTraceRight (vecMulVec ψ (star ψ)) = ρ)
@@ -274,6 +280,30 @@ theorem exists_isIsometry_norm_sub_tensorPurification_le_mutualInformation
   refine ⟨V, s, s', hV, hs, hs', ?_, Real.sqrt_two_mul_one_sub_exp_neg_half_le_sqrt _⟩
   exact hb ▸ hnorm
 
+/-- **Purification distance from a mutual-information bound** (Lemma 2.2
+`lem:fidelity`, "in particular" clause).  Let `Ω` be a unit vector on `(T × E) × U`
+with reduced state `ρ` on `T × E`.  If $I(T:E)\le\delta$, there are an isometry `V`
+on `U` and unit vectors `s` on `T × T` and `s'` on `E × (E ⊕ U)` such that the
+purification $(\mathbf 1_{TE}\otimes V)\Omega$ of the joint state and the purification
+$s\otimes s'$ of the product of its marginals are at distance at most $\sqrt\delta$.
+
+Source: Polynomial-PEPS manuscript (September 24, 2026), Lemma 2.2 `lem:fidelity`,
+`01-preliminaries.tex:101–104`. -/
+theorem exists_isIsometry_norm_sub_tensorPurification_le_sqrt
+    {dT dE : ℕ} (Ω : (Fin dT × Fin dE) × U → ℂ) (hΩ : star Ω ⬝ᵥ Ω = 1)
+    {ρ : Matrix (Fin dT × Fin dE) (Fin dT × Fin dE) ℂ}
+    (hρ : partialTraceRight (vecMulVec Ω (star Ω)) = ρ) (hρH : ρ.IsHermitian)
+    {δ : ℝ} (hδ : mutualInformation ρ hρH ≤ δ) :
+    ∃ (V : Matrix (Fin dT × (Fin dE ⊕ U)) U ℂ) (s : Fin dT × Fin dT → ℂ)
+      (s' : Fin dE × (Fin dE ⊕ U) → ℂ),
+      V.IsIsometry ∧ star s ⬝ᵥ s = 1 ∧ star s' ⬝ᵥ s' = 1 ∧
+      ‖(WithLp.toLp 2 ((((1 : Matrix (Fin dT × Fin dE) (Fin dT × Fin dE) ℂ) ⊗ₖ V) *ᵥ Ω) -
+          tensorPurification s s') :
+            EuclideanSpace ℂ ((Fin dT × Fin dE) × (Fin dT × (Fin dE ⊕ U))))‖ ≤ √δ := by
+  obtain ⟨V, s, s', hV, hs, hs', h₁, h₂⟩ :=
+    exists_isIsometry_norm_sub_tensorPurification_le_mutualInformation Ω hΩ hρ hρH
+  exact ⟨V, s, s', hV, hs, hs', h₁.trans (h₂.trans (Real.sqrt_le_sqrt hδ))⟩
+
 /-- **Splitting at a polynomially small mutual information** (Lemma 6.4 `lem:splitting`,
 last sentence).  If $I(T:E)\le L^{-60}$ for some $L>0$, the splitting error is at most
 $L^{-30}$.
@@ -292,13 +322,12 @@ theorem exists_isIsometry_norm_sub_tensorPurification_le_zpow
           tensorPurification s s') :
             EuclideanSpace ℂ ((Fin dT × Fin dE) × (Fin dT × (Fin dE ⊕ U))))‖ ≤
         L ^ (-30 : ℤ) := by
-  obtain ⟨V, s, s', hV, hs, hs', h₁, h₂⟩ :=
-    exists_isIsometry_norm_sub_tensorPurification_le_mutualInformation Ω hΩ hρ hρH
-  refine ⟨V, s, s', hV, hs, hs', h₁.trans (h₂.trans ?_)⟩
+  obtain ⟨V, s, s', hV, hs, hs', h⟩ :=
+    exists_isIsometry_norm_sub_tensorPurification_le_sqrt Ω hΩ hρ hρH hb
+  refine ⟨V, s, s', hV, hs, hs', h.trans ?_⟩
   have hsq : L ^ (-60 : ℤ) = (L ^ (-30 : ℤ)) ^ 2 := by
     rw [sq, ← zpow_add₀ hL.ne']; norm_num
   rw [← Real.sqrt_sq (zpow_nonneg hL.le (-30 : ℤ)), ← hsq]
-  exact Real.sqrt_le_sqrt hb
 
 end Splitting
 

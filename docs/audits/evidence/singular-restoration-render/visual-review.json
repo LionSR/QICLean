@@ -1,0 +1,73 @@
+{
+  "status": "passed",
+  "source_revision": "8ecbed7f053226cd5f8b912514777d986e7cf702",
+  "pdf_review": {
+    "pages_directly_viewed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "raster_scale_pixels": 1500,
+    "findings": [
+      "All six pages directly viewed: title, contents, three mathematical pages and bibliography. No clipped text, overlapping displays, missing glyphs or detached theorem headings.",
+      "PDF page 3 contains the three support-inverse statements and proofs. The introductory basis paragraph continues normally onto page 4.",
+      "PDF page 4 contains all restoring and column definitions, both Gram matrices, the displayed spectator permutation, the spectator Gram identity and the complete Gram proof.",
+      "PDF page 5 contains partial-trace cyclicity, compression, the actual marginal definition and its complete order proof. The bibliography retains the exact paper pin.",
+      "All 14 numbered equations, 16 checked statement/proof markers and 29 Lean badges are legible. The former 9.67131pt permutation overflow is absent."
+    ]
+  },
+  "static_html_review": {
+    "files_read": [
+      "ch-singular_restoration_focus.html",
+      "dep_graph_chapter_1.html",
+      "dep_graph_document.html",
+      "dep_graphs.html",
+      "index.html",
+      "sect0001.html"
+    ],
+    "method": "Read all initial generated text, then compared every final static HTML payload against it and inspected the changed display/prose fragments; structural checks scan every final file.",
+    "findings": [
+      "The operator and Gram equations now each have their own static anchor. All 21 leaf labels and every generated local reference target exist, with no duplicate IDs.",
+      "All 29 exact declaration identifiers and expected local doc URL prefixes match the three frozen production modules in the chapter and both graph modals. PDF URI inventory independently matches the same 29 names.",
+      "Adjoints, selected inverse weights, tensor factor order, full-basis y sums, weak Hermitian-T conditions and marginal commutation assumptions survive serialization.",
+      "No blueprint metadata commands leak into prose, no unresolved references occur, no mathematical curly-apostrophe corruption is present, and the frozen generated-source regression passes."
+    ]
+  },
+  "dependency_graph": {
+    "method": "Extracted the actual generated renderDot payload and used Graphviz on white for pixel inspection. No live browser used.",
+    "nodes": 9,
+    "rendered_edges": 4,
+    "explicit_uses_edges": 5,
+    "reachability_matches": true,
+    "findings": "All node labels are readable. Restoring definitions feed Gram matrices. Partial-trace cyclicity feeds compression, and compression plus the marginal definition feed marginal order. The direct cyclicity-to-order edge is transitively reduced. The three support-inverse nodes have no explicit uses edges in these focused leaves.",
+    "dot_sha256": "435f30a55b3a1104208d2ba5dc53063f99ff3cd31d55c0a4c8c1680c0f723a50",
+    "inspection_png_sha256": "7464e17ffde34360b0216d9a794d164b71862d07536fddee938d8e162a394cfe"
+  },
+  "mathematical_review": {
+    "basis_coordinates": "For a unitary U with the chosen full eigenbasis as columns, the physical coordinate transform is (U†⊗I) Q (U⊗I). The physical order is (X,Y), the restoring order is s,(X,Y), and the column order is (s,e),(X,Y).",
+    "factor_permutation": "The map ((s,e),(x,y)) ↦ ((s,(x,y)),e) has the direction used by the matrix submatrix pullback. Transporting R0⊗Ie therefore places Ie in the second ancillary factor of its Gram matrix.",
+    "dagger_orientation": "The checked quantities are R0†R0 and B0†B0, never the reversed products. Output-basis orthogonality removes unequal ancillary indices. The physical product is [Q(|x⟩⟨b|⊗T)]† Q(|x⟩⟨b|⊗T), giving |b⟩⟨b|⊗T⟨x|Q|x⟩T.",
+    "arbitrary_blanks": "The blank factors are |b⟩⟨b| for arbitrary b. They need not be unit vectors, eigenvectors or projections; zero blanks are allowed. No normalization is silently used in the Gram identities.",
+    "weights_and_full_basis": "Only p_x for x in E must be positive. The inverse square-root coefficient squares to p_x^-1 on E. The second column sum runs over the entire chosen basis, including zero-probability coordinates, and produces IX, not a selected-support projector.",
+    "weaker_gram_contracts": "The Gram identities require Q†=Q, Q²=Q and T†=T. They do not require T²=T or commutation of Q with IX⊗T. Positivity of BY alone requires Q≥0 and T†=T, because each summand is a positive scalar multiple of a Hermitian congruence of the positive compression ⟨x|Q|x⟩.",
+    "partial_trace": "PartialTraceRight traces Y in the (X,Y) basis. Cyclicity holds for arbitrary A and T on the traced factor. Projection compression uses T†=T and T²=T. Splitting with I-T proves the partial-trace order bound without requiring A to commute with IX⊗T.",
+    "actual_marginal_order": "The defined matrix is MX=trY((IX⊗T)ρQ), not an abstract positive matrix supplied as an assumption. With ρ≥0, Q and T orthogonal projections, and ρQ=Qρ, A=ρQ obeys 0≤A≤ρ. Partial-trace cyclicity inserts the right-hand K=IX⊗T, yielding 0≤MX=trY(KAK)≤trY A≤trY ρ. No Q/K commutation is assumed.",
+    "support_inverse": "From 0≤M≤ρ, ker ρ is contained in ker M and both support absorptions follow. The support-inverse normalization lies below Pρ. Expanding the two positive congruences using ρ+ρρ+=ρ+ gives M-Mρ+M≥0, without full rank or M/ρ commutation.",
+    "paper_comparison": "Checked against the retained official Section 9 source at adc7f1241b42e322a6451854ab7e4b4c146bf78a, lines 324–446. Definitions match lines 350–364; Gram identities match lines 378–384; the marginal and support-order argument matches lines 417–438. Generic blank and Hermitian-T contracts are explicitly distinguished from the paper’s unit blanks and projection T.",
+    "scope": "This review covers the proved finite-matrix operators, Gram identities, actual marginal order and support-inverse sandwich. The paper’s norm bound, vector identity, adjoint cancellation and ground-component coefficient identity remain outside this packet. Source-inspected consumers and axiom guards are not claimed as independently compiled."
+  },
+  "warnings": [
+    "Inherited xdvipdfmx warnings about pdftex.map, kanjix.map and a duplicate title/contents page.1 destination remain. All theorem/equation destinations and actual PDF internal-link targets were separately verified.",
+    "plasTeX reports no dvisvgm/vector imager. These two leaves contain zero tensor diagrams. The final LaTeX log has no box, undefined-reference, missing-character or LaTeX warning."
+  ],
+  "limitations": [
+    "Focused two-leaf fixture only; no full-book build or live browser/MathJax runtime/responsive/click testing.",
+    "All declaration identifiers and generated local anchors verified; remote doc URL availability/publication not verified.",
+    "No Lean/Lake/checkdecls or CI performed by render worker; consumers and axiom guards source-inspected only.",
+    "No new tensor diagram; Tenkz picture validation is not applicable.",
+    "No operator norm bound, column-vector identity, adjoint cancellation, or actual ground-component coefficient is established by this evidence."
+  ]
+}

@@ -1,7 +1,0 @@
-{
-  "source_revision": "b9c8bd663c081e6128353eee979d266b1c4bdce0",
-  "actual_exit_code": 1,
-  "failure": "QICLean.Channel.KoashiImoto.MarkovDilation.SectorAction failed while removing an output hash: file table overflow, operating-system error 23.",
-  "mathematical_source_changed": false,
-  "disposition": "Retained as the failed initial complete-library attempt, excluded from passing verification. One sequential warm complete-library check follows."
-}

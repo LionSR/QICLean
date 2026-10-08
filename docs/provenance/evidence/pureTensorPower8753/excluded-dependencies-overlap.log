@@ -1,5 +1,0 @@
-✔ [2766/2769] Built QICLean.Algebra.MatrixIsometryEntries (6.4s)
-✔ [2767/2769] Built QICLean.Algebra.KroneckerFactorPositivity (8.0s)
-✔ [2768/2769] Built QICLean.Algebra.MatrixAux (8.7s)
-✔ [2769/2769] Built QICLean.Channel.PartialTrace (4.1s)
-Build completed successfully (2769 jobs).

@@ -1,3 +1,0 @@
-kern.maxfiles: 491520
-kern.maxfilesperproc: 245760
-kern.num_files: 10920

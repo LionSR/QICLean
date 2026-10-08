@@ -1,0 +1,129 @@
+{
+  "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2",
+  "base": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+  "focused_check_rows": 11,
+  "all_passed": true,
+  "new_production_lines": 454,
+  "new_public_declarations": 20,
+  "promoted_existing_declarations": 2,
+  "new_consumers": 14,
+  "new_axiom_guards": 22,
+  "raw_axiom_inventory": {
+    "Matrix.PosSemidef.nonneg_of_eq_diagonal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Matrix.PosSemidef.supportInv_eq_diagonal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Matrix.PosSemidef.trace_mul_supportInv_mul_re": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Matrix.PosSemidef.selected_sum_sq_div_le_trace_mul_supportInv_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Matrix.PosSemidef.trace_mul_supportInv_mul_re_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Matrix.PosSemidef.selected_sum_sq_div_le_trace": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringReducedDensity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGroundOuterProduct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGroundComponent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGlobal_copy_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringReducedDensity_posSemidef": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringReducedDensity_trace": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGroundOuterProduct_isStarProjection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGroundOuterProduct_mulVec_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringMarginal_reducedDensity_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGroundComponent_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGroundComponent_norm_sq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGroundComponent_column_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGroundComponent_trace_chain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringGroundComponent_norm_le_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringBlank_sum_eq_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Entropy.restoringOperatorWithAncilla_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "unchanged_pins": {
+    "lean-toolchain": "bc84812c94489d1e3e191baa1dc10d5eb684382d7fe9d2a5ab085e72c1c67e47",
+    "lakefile.toml": "c40e0bb3a1ee5f9025d5c752d25c7c2f61622db813f79d6bee7d2412d8760907",
+    "lake-manifest.json": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf"
+  },
+  "blueprint_render": "Pending parent integration and rendering; direct leaves statically checked for exact declaration coverage."
+}

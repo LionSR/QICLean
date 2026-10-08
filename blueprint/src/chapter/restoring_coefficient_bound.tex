@@ -1,0 +1,76 @@
+\section{Weighted coefficients for singular restoration}
+\label{sec:restoring_coefficient_bound}
+
+Fix a full orthonormal basis $\{|x\rangle\}_{x\in\mathsf X}$ of a
+finite-dimensional complex Hilbert space, and write
+$M_{yx}=\langle y|M|x\rangle$.
+Let $\rho=\operatorname{diag}(p_x)$ be positive semidefinite, with real
+$p_x$, and write $\rho^+$ for its inverse on its support, extended by zero
+on its kernel. Use the convention $0^{-1}=0$ in reciprocal weights.
+The following estimates give the coefficient and trace bounds in the
+restoration construction of \emph{A two-dimensional area law from a
+global spectral gap},
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex\#L417-L446}{``Amplifying the collar estimate,'' lines 417--446}.
+
+\begin{theorem}[Support inverse of a diagonal reference]
+\label{thm:restoring_diagonal_inverse}
+\lean{Matrix.PosSemidef.nonneg_of_eq_diagonal, Matrix.PosSemidef.supportInv_eq_diagonal}
+\leanok
+Every $p_x$ is nonnegative, and
+$\rho^+=\operatorname{diag}(p_x^{-1})$.
+\end{theorem}
+\begin{proof}
+\leanok
+Positivity gives $p_x=\langle x|\rho|x\rangle\ge0$.
+The inverse square root on the support acts diagonally by
+$(\sqrt{p_x})^{-1}$. Squaring gives $p_x^{-1}$, also when $p_x=0$.
+\end{proof}
+
+\begin{theorem}[Weighted coefficient trace identity]
+\label{thm:restoring_coefficient_trace}
+\lean{Matrix.PosSemidef.trace_mul_supportInv_mul_re}
+\leanok
+If $M\ge0$, then
+\begin{align}
+\operatorname{Re}\tr(M\rho^+M)
+  &=\sum_{x\in\mathsf X}\sum_{y\in\mathsf X}
+      p_x^{-1}|M_{yx}|^2.
+\label{eq:restoring_coefficient_trace}
+\end{align}
+Both indices range over the entire basis, including zero-probability
+coordinates.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:restoring_diagonal_inverse}
+Cyclicity of the trace gives
+$\tr(M\rho^+M)=\tr(\rho^+M^2)$.
+Since $M_{xy}=\overline{M_{yx}}$, the $x$th diagonal entry of $M^2$ is
+$\sum_{y\in\mathsf X}|M_{yx}|^2$.
+Multiplication by the diagonal $\rho^+$ and summation prove
+(\ref{eq:restoring_coefficient_trace}).
+\end{proof}
+
+\begin{theorem}[Selected coefficients below the original trace]
+\label{thm:restoring_coefficient_bound}
+\lean{Matrix.PosSemidef.selected_sum_sq_div_le_trace_mul_supportInv_mul, Matrix.PosSemidef.trace_mul_supportInv_mul_re_le, Matrix.PosSemidef.selected_sum_sq_div_le_trace}
+\leanok
+Let $E\subseteq\mathsf X$. If $0\le M\le\rho$, then
+\begin{align}
+\sum_{x\in E}\sum_{y\in\mathsf X}p_x^{-1}|M_{yx}|^2
+  &\le\operatorname{Re}\tr(M\rho^+M)
+   \le\operatorname{Re}\tr M.
+\label{eq:restoring_selected_bound}
+\end{align}
+The first inequality requires only $M\ge0$; the second holds for an
+arbitrary positive-semidefinite reference, without requiring it to be
+diagonal. No commutation assumption is imposed.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:restoring_coefficient_trace, thm:support_inverse_sandwich}
+The terms omitted from (\ref{eq:restoring_coefficient_trace}) are
+nonnegative, which proves the first inequality.
+For the second, $M-M\rho^+M\ge0$ implies
+$\operatorname{Re}\tr(M-M\rho^+M)\ge0$.
+\end{proof}
