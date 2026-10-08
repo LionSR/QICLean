@@ -72,6 +72,7 @@ import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OrthogonalProjection
 import QICLean.Algebra.OverlappingLiftAlgebra
+import QICLean.Algebra.PartialTraceDomination
 import QICLean.Algebra.PerronFrobenius
 import QICLean.Algebra.PiProductTrace
 import QICLean.Algebra.PosSemidefSupport
@@ -102,9 +103,11 @@ import QICLean.Algebra.StarSubalgebraSimpleModule
 import QICLean.Algebra.StarSubalgebraSpatial
 import QICLean.Algebra.StarSubalgebraUnitaryIntertwiner
 import QICLean.Algebra.SwapTrace
+import QICLean.Algebra.TaggedInterleavings
 import QICLean.Algebra.TraceFormDuality
 import QICLean.Algebra.TracePowerCharPoly
 import QICLean.Algebra.TracePurity
 import QICLean.Algebra.TraceReindex
 import QICLean.Algebra.UnitModulusPowerSum
+import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums

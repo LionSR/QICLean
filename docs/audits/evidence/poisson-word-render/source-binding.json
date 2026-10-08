@@ -1,0 +1,42 @@
+{
+  "initial_source_revision": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+  "final_render_source_revision": "8e0a72aa2ad07a02a5c5a13436b17607fdd5af61",
+  "owned_leaf_commits": [
+    "dd98417",
+    "8e0a72a"
+  ],
+  "owned_changed_leaves": [
+    "blueprint/src/chapter/ch11_poisson_word.tex",
+    "blueprint/src/chapter/ch13_contraction_word_decay.tex",
+    "blueprint/src/chapter/ch13_contraction_word_decay_spectator.tex",
+    "blueprint/src/chapter/ch13_poisson_contraction_decay.tex"
+  ],
+  "unchanged_inputs": [
+    "QICLean/Probability/PoissonWord.lean",
+    "QICLean/Analysis/ContractionWordDecay.lean",
+    "QICLean/Analysis/ContractionWordDecaySpectator.lean",
+    "QICLean/Analysis/PoissonContractionDecay.lean",
+    "QICLeanTest/PoissonWord.lean",
+    "QICLeanTest/PoissonWordAxioms.lean",
+    "QICLeanTest/ContractionWordDecay.lean",
+    "QICLeanTest/ContractionWordDecayAxioms.lean",
+    "QICLeanTest/ContractionWordDecaySpectator.lean",
+    "QICLeanTest/ContractionWordDecaySpectatorAxioms.lean",
+    "QICLeanTest/PoissonContractionDecay.lean",
+    "QICLeanTest/PoissonContractionDecayAxioms.lean",
+    "blueprint/src/content.tex",
+    "lean-toolchain",
+    "lake-manifest.json",
+    "lakefile.toml",
+    "texra-blueprint.toml"
+  ],
+  "unchanged_inputs_byte_verified": true,
+  "other_changed_paths_from_concurrent_parent_work": [
+    "docs/audits/2026-10-08_poisson_word_checkpoint.md",
+    "docs/audits/evidence/poisson-word-decay/checks.json"
+  ],
+  "initial_record_sha256": "addc8d99db8944f3ce95ae41627bd0ffbd106bbacae2c955fe9cc31f6b948261",
+  "initial_raw_root": "${WORKSPACE}/poisson-word-focused-initial",
+  "final_raw_root": "${WORKSPACE}/poisson-word-focused",
+  "counting_note": "50 explicitly named public declarations (including one named probability-measure instance) plus two generated measurable-space instances = 52 guarded public constants. No private proof helper is counted."
+}

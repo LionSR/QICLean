@@ -32,7 +32,4 @@ supporting theorem. Canonical tripartite API identification and dimension/site-
 count transport remain with their existing owner; no competing API is introduced.
 
 All new code is independently written from the mathematical paper and existing
-Mathlib/QICLean results. No OpenAI Lean proof code is copied or adapted. The
-issue 8765 provenance shard distinguishes this mathematical derivation from code
-reuse, and initially remains planned until an immutable source snapshot and its
-exact verification evidence are published.
+Mathlib/QICLean results. No OpenAI Lean proof code is copied or adapted.

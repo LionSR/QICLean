@@ -1,0 +1,87 @@
+{
+  "status": "passed",
+  "source_revision": "947cfcb24904c7ba5c83e9723f9c0db994731935",
+  "pdf_review": {
+    "pages_directly_viewed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "raster_scale_pixels": 1500,
+    "findings": [
+      "All nine final PDF pages directly viewed. Pages 1–2 are title/contents, page 3 gives partial-trace context and support-inverse results, pages 4–5 give restoration operators and marginal order, pages 6–7 give norms, pages 7–8 give vectors and adjoint error, and page 9 is the bibliography.",
+      "No clipping, overlapping displays, missing glyphs, detached theorem headings or box warnings. The scalar-constant norm theorem is at the end of page 6 and its complete proof starts page 7; this is a clean statement/proof page break.",
+      "All 26 numbered equations and 36 checked markers are legible. The three norm equation labels now anchor their first numbered row. The copied-vector coordinates, ancillary delta, adjoints and remote identity are visible and retain their intended indices.",
+      "The final tensor-order proof says to apply the inequality to the tensor factors, avoiding the inaccurate earlier twice count."
+    ]
+  },
+  "static_html_review": {
+    "files_read": [
+      "ch-restoring_norm_vectors_focus.html",
+      "dep_graph_chapter_1.html",
+      "dep_graph_document.html",
+      "dep_graphs.html",
+      "index.html",
+      "sect0001.html"
+    ],
+    "method": "Read generated context/new-leaf text and graph modal headings; checked graph displaymath payloads against the chapter; compared every final HTML payload after the last prose-only repair. All final files pass the frozen generated-source regression.",
+    "findings": [
+      "All 39 labels, local href targets and bibliography anchors exist. No duplicate IDs or unresolved references remain.",
+      "All 54 restoration declaration identifiers match the five production modules, including every one of the 25 new declarations. Four existing partial-trace context links are separately identified. Each of the PDF, chapter and two graph-modal inventories contains all 58 expected links.",
+      "All displayed graph mathematics appears byte-for-byte in the inspected chapter payload. No blueprint metadata leakage or mathematical curly-prime corruption was found. The diagram count is zero."
+    ]
+  },
+  "dependency_graph": {
+    "method": "Extract actual generated renderDot payload and render with Graphviz on white for direct pixel inspection; no browser execution.",
+    "nodes": 20,
+    "rendered_edges": 18,
+    "explicit_uses_edges": 25,
+    "reachability_matches": true,
+    "findings": "All labels are readable. Selected-block control feeds the Gram bound; that bound, unit blanks and the old Gram identities feed operator norms, which feed the exponential specialization. Vector definitions feed the column and adjoint identities; the adjoint identity feeds exact error/isometry, then the three-projection estimate. The graph uses transitive reduction.",
+    "dot_sha256": "9e47e0fce8478b18b19aa1867893547225f2036c36d481b200e8fbc5f3787df1",
+    "inspection_png_sha256": "2080b3a20d59af302f639aa0a2a698ddf50fd2d382ceb1cc10e0c99d774f9bdd"
+  },
+  "mathematical_review": {
+    "partial_trace_and_weighted_sum": "partialTraceLeft traces X and yields the actual Y marginal. Each selected Q block is positive. For the weighted upper bound, p may be arbitrary real and p_x^-1 need only be at most cX; the omitted-block step uses cX≥0. Positivity of selected p is imposed later for the Gram/norm conclusions, not silently assumed for this weaker bound.",
+    "spectral_bound": "Q and T are orthogonal projections; cX,cQ,cY are nonnegative; Q≤cQρ and T(trXρ)T≤cY T use the actual marginal. The order proof gives BY≤cXcQcY I without requiring an extra ρ positivity hypothesis or Q/(IX⊗T) commutation.",
+    "norm_and_blanks": "Norms are Euclidean induced operator norms, not Frobenius or entrywise norms. Unit s/X blanks suffice for R0 and unit s/e blanks independently suffice for B0. Positive Gram factors and tensor-order bounds give A†A≤C I, hence ||A||²≤C. Unselected p may vanish.",
+    "exponential_constant": "The square root of exp(SX+w) exp(SXY+w) exp(-SY+w) is exactly exp((I+3w)/2), under the explicit scalar hypothesis I=SX+SXY-SY. No additional constant or purity/entropy theorem is claimed.",
+    "spectator_coordinates": "Physical coordinates are ((X,Y),Z); enlarged coordinates are (((s,e),(X,Y)),Z). Physical lifting uses the reassociation to ((s,e),((X,Y),Z)), fixes both ancillas and retains Z. Copying reads the original X coordinate from e and inserts the s and X blanks.",
+    "column_identity": "The actual R0φ=B0ψ equality contracts unit X and e blanks independently. The common s-blank factor need not be unit. Ω,Q,T are arbitrary, and the full y basis sum includes zero-probability coordinates. No Schmidt representation is an extra hypothesis.",
+    "adjoint_cancellation": "The physical lift preserves the ancillary diagonal pair. Selected positivity makes conjugate(p_e^-1/2) sqrt(p_e)=1. Taking adjoints reverses the physical order to (PE⊗T)Q, followed by L†; the remote factor remains IZ. Q,T need only be Hermitian here, not projections, and neither normalization nor a norm estimate is used.",
+    "copy_isometry": "Unit s and X blanks give ||RX v||²=||s||²||Xblank||²||v||²=||v||². Applying this to the exact vector difference yields the adjoint error equality without any ||R0|| factor.",
+    "three_projection_error": "A=(PE⊗IY)⊗IZ, B=(IX⊗T)⊗IZ and C=Q⊗IZ are actual orthogonal projections. ABC=((PE⊗T)Q)⊗IZ. The identity ABCv−Ω=ABC(v−Ω)+AB(CΩ−Ω)+A(BΩ−Ω)+(AΩ−Ω) uses no reordering. Contraction and three supplied ε disturbance bounds yield 3ε+||L†Ω−Ω||; ε=sqrt δ recovers the paper coefficient.",
+    "paper_and_scope": "Compared with official pinned Section 9 lines 324–415 (within the retained 324–446 extract). The vector and norm statements are the finite-dimensional algebraic estimates; they do not construct typical projections, prove localization, identify entropy through purity, establish the ground-component coefficient identity or finish amplification.",
+    "consumer_coverage": "Source-inspected 30 consumers and 54 axiom guards. New consumers include singular weights, noncommuting projections, complex blank phases, full-basis zero-weight coordinates and the remote spectator. No Lean compilation is claimed by this worker."
+  },
+  "core_checker_maintenance": {
+    "status": "passed",
+    "command": "python docs/audits/evidence/singular-restoration-render/check.py",
+    "log_sha256": "3639bb7e17afa9b5531b52f5637fd125dde02624978a5de959f4e215941659f9",
+    "substantive_core_sources_unchanged": true,
+    "historical_source_and_artifact_record_sha256": {
+      "focus-manifest.json": "598f8de60d4ada008f2fa25ef9050b9336171a6343c51f620a2fb3ee2515e1aa",
+      "verification.json": "cf68eb6d3ff412eff076c449681ee3b09ae63db551e2423de53065256a183b77",
+      "visual-review.json": "75dd8d47bc063ddbecc217ed0cb2c346b1d0381778670d6c1fefbf722ee46e3a",
+      "initial-findings.json": "adb1049777812cf75ed4a7d246c8aad0d93885e4b0a9294d50fa84cc86c17f74"
+    },
+    "description": "Only checker/replay metadata was maintained. The historical router hash and original render/artifact records remain unchanged; current router must retain both core includes exactly once."
+  },
+  "warnings": [
+    "Inherited xdvipdfmx font-map warnings and duplicate title/contents page.1 destination remain; every mathematical destination and actual PDF internal-link target was verified.",
+    "plasTeX has no dvisvgm/vector imager. No tensor diagrams occur, so no Tenkz picture rendering is required."
+  ],
+  "limitations": [
+    "Focused norm/vector fixture with restoration and partial-trace context only; no full-book build or live browser/MathJax runtime/responsive/click testing.",
+    "All declaration identifiers and generated local anchors verified; remote doc URL availability/publication not verified.",
+    "No Lean/Lake/checkdecls or CI performed by render worker; consumers and axiom guards source-inspected only.",
+    "No new tensor diagram; Tenkz picture validation is not applicable.",
+    "No existence of typical projections, localization theorem, purity-to-mutual-information identification, complete amplification theorem, or actual ground-component coefficient is established by this evidence."
+  ]
+}
