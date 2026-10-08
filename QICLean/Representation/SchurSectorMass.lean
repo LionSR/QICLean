@@ -23,6 +23,9 @@ selected label. In particular, they do not prove the accompanying asymptotic
 formula for the irreducible dimension, select a common sequence for Bell
 pinning, or establish positive occurrence on the initial uniform pair,
 matching of the auxiliary labels, or the energy statement.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-
@@ -32,10 +35,6 @@ A two-dimensional area law from a global spectral gap, September 24, 2026,
 Only generic mass selection is proved; the entropy window, common Bell
 sequence, initial positive occurrence, auxiliary-label matching, and energy
 statement remain separate; no upstream Lean proof text reused.
-Provenance-ID: 8753-qic-schur-sector-mass-01
-TensorPower.exists_labelProj_trace_mass_ge
-Provenance-ID: 8753-qic-schur-sector-mass-02
-TensorPower.exists_labelProj_norm_mass_ge
 -/
 
 open Matrix PermutationRepresentation

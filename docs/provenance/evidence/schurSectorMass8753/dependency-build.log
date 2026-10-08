@@ -1,8 +1,0 @@
-✔ [3094/3100] Built QICLean.Representation.PermutationRepresentation (10s)
-✔ [3095/3100] Built QICLean.Analysis.OrthogonalResolution (10s)
-✔ [3096/3100] Built QICLean.Representation.IrrepLabels (4.6s)
-✔ [3097/3100] Built QICLean.Representation.LabelProjectors (3.4s)
-✔ [3098/3100] Built QICLean.Representation.IsotypicDimension (15s)
-✔ [3099/3100] Built QICLean.Representation.TensorPowerAction (15s)
-✔ [3100/3100] Built QICLean.Representation.CommutantDimension (4.9s)
-Build completed successfully (3100 jobs).

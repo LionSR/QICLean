@@ -11,6 +11,19 @@ No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
+### Unit-blank contraction in restoration — promoted lemmas (2026-10-08)
+
+- **Pattern:** Expand restoring matrix entries and contract unit ancillary
+  blanks through `∑ i, star (b i) * b i = 1`.
+- **Seen:** The copied-vector identity in `RestoringVectors.lean` and the actual
+  ground-component coefficient proof in `RestoringGroundComponent.lean`.
+- **Abstraction:** Promote the already proved blank normalization and restoring
+  entry formula as `restoringBlank_sum_eq_one` and
+  `restoringOperatorWithAncilla_apply`, preserving their existing proof bodies.
+  The new coefficient proof reuses both instead of duplicating those expansions.
+- **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
+  over the whole basis, including coordinates with zero assigned probability.
+
 ## Candidates
 
 ### Finite-spectrum functional-calculus scalar reduction — candidate (2026-10-07)

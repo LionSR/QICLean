@@ -1,0 +1,148 @@
+\section{Contraction-word decay with spectators}
+\label{sec:contraction_word_decay_spectator}
+
+Let $\mathcal H=\C^d$, let $\mathcal K=\C^a$ be an arbitrary finite
+spectator space, and let $\mathcal I$ be a finite label set with $N=|\mathcal I|$. All index
+sets may be empty. For
+$\xi\in\mathcal H\otimes\mathcal K$ and a spectator coordinate $r$, write
+$\xi_r(i)=\xi(i,r)$. The estimates below give the finite-word spectator
+step in the excited-state argument of
+the section \emph{Amplifying the collar estimate} of
+\cite{OpenAI2026AreaLaw}. No product-vector restriction is
+placed on $\xi$.
+
+\begin{theorem}[Spectator coordinate identities]
+    \label{thm:contraction_spectator_slices}
+    \lean{Matrix.kronecker_one_mulVec_apply_slice,
+        Matrix.norm_sq_eq_sum_spectator_slices,
+        Matrix.norm_sq_toEuclideanLin_kronecker_one_eq_sum}
+    \leanok
+    For every operator $A$ on $\mathcal H$ and every joint vector $\xi$,
+    \begin{align}
+        ((A\otimes I_{\mathcal K})\xi)_r & = A\xi_r,
+        \label{eq:contraction_spectator_slices}\\
+        \|\xi\|^2 & = \sum_r\|\xi_r\|^2, \notag\\
+        \|(A\otimes I_{\mathcal K})\xi\|^2 & = \sum_r\|A\xi_r\|^2. \notag
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    The matrix entries are $(A\otimes I)_{(i,r),(j,s)}=A_{ij}\delta_{rs}$.
+    Summing over $s$ gives the first equality. Interchanging the two
+    finite coordinate sums gives the norm identities.
+\end{proof}
+
+\begin{definition}[Word energy with spectators]
+    \label{def:contraction_spectator_sum}
+    \lean{Matrix.contractionWordSpectatorSum}
+    \leanok
+    \uses{def:contraction_word}
+    For the chronological products $D_m(w)$, define
+    \begin{align}
+        A_m^{\mathcal K}(\xi)
+         & =\sum_{w\in\mathcal I^m}\|(D_m(w)\otimes I_{\mathcal K})\xi\|^2.
+        \label{eq:contraction_spectator_energy}
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Word products and slice sums]
+    \label{thm:contraction_spectator_sum}
+    \lean{Matrix.contractionWord_snoc_kronecker_one,
+        Matrix.contractionWordSpectatorSum_eq_sum_slices,
+        Matrix.contractionWordSpectatorSum_zero,
+        Matrix.contractionWordSpectatorSum_zero_vector}
+    \leanok
+    \uses{def:contraction_spectator_sum}
+    Tensoring with $I_{\mathcal K}$ preserves the chronological recurrence:
+    \begin{align}
+        D_{m+1}(w,i)\otimes I_{\mathcal K}
+         & =(\sqrt{I-k_i}\otimes I_{\mathcal K})(D_m(w)\otimes I_{\mathcal K}),
+        \label{eq:contraction_spectator_word_sum}\\
+        A_m^{\mathcal K}(\xi)&=\sum_r A_m(\xi_r),\notag\\
+        A_0^{\mathcal K}(\xi)&=\|\xi\|^2,\qquad A_m^{\mathcal K}(0)=0.\notag
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:contraction_spectator_slices}
+    Use $(AB)\otimes I=(A\otimes I)(B\otimes I)$ for the recurrence.
+    Apply~(\ref{eq:contraction_spectator_slices}) to each word and
+    interchange the word and spectator sums. At length zero the word
+    product is $I$, and every product sends zero to zero.
+\end{proof}
+
+\begin{theorem}[Dimension-free finite-word bound]
+    \label{thm:contraction_spectator_decay}
+    \lean{Matrix.contractionWordSpectatorSum_le_pow}
+    \leanok
+    \uses{def:contraction_spectator_sum}
+    Let $k_i\le I$, let $\Omega\in\mathcal H$ satisfy $k_i\Omega=0$,
+    and suppose
+    $\sum_i k_i\ge g(I-|\Omega\rangle\langle\Omega|)$ for $g\in\R$.
+    If $g\le N$ and
+    $\langle\Omega,\xi_r\rangle=0$ for every spectator coordinate, then
+    \begin{align}
+        A_m^{\mathcal K}(\xi)&\le(N-g)^m\|\xi\|^2.
+        \label{eq:contraction_spectator_decay}
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:contraction_word_decay,thm:contraction_spectator_sum,
+        thm:contraction_spectator_slices}
+    The finite-word estimate applies to each $\xi_r$, so
+    $A_m^{\mathcal K}(\xi)=\sum_r A_m(\xi_r)
+    \le(N-g)^m\sum_r\|\xi_r\|^2=(N-g)^m\|\xi\|^2$.
+\end{proof}
+
+\begin{theorem}[Excited projections with spectators]
+    \label{thm:contraction_spectator_projection}
+    \lean{Matrix.inner_toEuclideanLin_one_sub_vecMulVec_eq_zero,
+        Matrix.inner_spectatorSlice_excitedProjection_eq_zero,
+        Matrix.contractionWordSpectatorSum_excitedProjection_le_pow}
+    \leanok
+    \uses{def:contraction_spectator_sum}
+    If $\|\Omega\|=1$, set $Q=I-|\Omega\rangle\langle\Omega|$.
+    Then $\langle\Omega,Qv\rangle=0$ for every $v\in\mathcal H$.
+    For every $\zeta\in\mathcal H\otimes\mathcal K$, all slices of
+    $\xi=(Q\otimes I_{\mathcal K})\zeta$ are orthogonal to $\Omega$.
+    If $k_i\le I$, $k_i\Omega=0$, $\sum_i k_i\ge gQ$, and $g\le N$,
+    this gives
+    \begin{align}
+        A_m^{\mathcal K}((Q\otimes I_{\mathcal K})\zeta)
+         &\le(N-g)^m\|(Q\otimes I_{\mathcal K})\zeta\|^2.
+        \label{eq:contraction_spectator_projection}
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:contraction_spectator_slices,thm:contraction_spectator_decay}
+    The rank-one action gives
+    $\langle\Omega,Qv\rangle
+    =\langle\Omega,v\rangle(1-\|\Omega\|^2)=0$.
+    Each slice of $(Q\otimes I)\zeta$ equals $Q\zeta_r$.
+    Apply~(\ref{eq:contraction_spectator_decay}).
+\end{proof}
+
+\begin{theorem}[Vanishing above the cardinality bound]
+    \label{thm:contraction_spectator_large_gap}
+    \lean{Matrix.spectator_eq_zero_of_card_lt_gap,
+        Matrix.spectator_excitedProjection_eq_zero_of_card_lt_gap}
+    \leanok
+    Suppose $k_i\le I$ and
+    $\sum_i k_i\ge g(I-|\Omega\rangle\langle\Omega|)$ with $g>N$.
+    Every joint vector whose slices are orthogonal to $\Omega$ is zero.
+    If $\|\Omega\|=1$, then
+    $((I-|\Omega\rangle\langle\Omega|)\otimes I_{\mathcal K})\zeta=0$
+    for every $\zeta$. These conclusions require no condition on
+    $k_i\Omega$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:contraction_word_decay,thm:contraction_spectator_projection}
+    For each excited slice $v=\xi_r$, the one-step inequality gives
+    $0\le\sum_i\|\sqrt{I-k_i}v\|^2\le(N-g)\|v\|^2$.
+    Since $g>N$, this forces $v=0$; this argument uses no condition on
+    $k_i\Omega$. Thus every joint coordinate is zero. For the projected
+    statement, normalization gives the required slice orthogonality.
+\end{proof}

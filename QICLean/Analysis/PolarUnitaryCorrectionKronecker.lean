@@ -24,10 +24,8 @@ spectator space, so the construction is coherent across all finite spectators.
 open scoped Matrix Kronecker MatrixOrder ComplexOrder
 
 /-!
-## Declaration provenance
+## Source notice
 
-Provenance-ID: 8766-unitary_polar_correction_kronecker_one
-Downstream declaration: Matrix.unitary_polar_correction_kronecker_one
 Source: September 24, 2026, eq:info-reset-polar-errors and eq:info-reset-unitary.
 <https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex>
 Source: September 24, 2026, eq:amplification-unitary-error.
