@@ -1,0 +1,20 @@
+{
+  "kind": "verification",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "QICLean.Analysis.ReplicaTwoMergeMoment"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 29.27,
+  "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-two-merge.log",
+  "sha256": "05a465a14a4033d608dc20f09add59bf1525988c9376ea08c997f29990469a3c",
+  "raw_log_sha256": "05a465a14a4033d608dc20f09add59bf1525988c9376ea08c997f29990469a3c",
+  "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-two-merge.log.gz",
+  "gzip_sha256": "c2e75240f51255c7110b803675cc073db0921c7d0d4793edb6961de5c7a5d5e7",
+  "role": "successful prerequisite check"
+}

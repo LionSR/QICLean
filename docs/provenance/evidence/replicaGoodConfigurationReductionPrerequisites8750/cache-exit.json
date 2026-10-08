@@ -1,0 +1,21 @@
+{
+  "kind": "verification",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 36.39,
+  "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/cache.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+  "raw_log_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+  "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/cache.log.gz",
+  "gzip_sha256": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+  "role": "successful prerequisite check"
+}

@@ -1,0 +1,17 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/mathlib-guard.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.09,
+  "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/guard.log",
+  "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+  "raw_log_sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+  "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/guard.log.gz",
+  "gzip_sha256": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+  "role": "successful prerequisite check"
+}

@@ -1,0 +1,180 @@
+{
+  "revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+  "scope": "Prerequisite cache, source-version inventory, and target verification only; no new theorem or inherited proof audit.",
+  "commands": [
+    {
+      "record": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/cache-exit.json",
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 36.39,
+      "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "raw_log_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/cache.log.gz",
+      "gzip_sha256": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+      "role": "successful prerequisite check"
+    },
+    {
+      "record": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/guard-exit.json",
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.09,
+      "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/guard.log",
+      "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+      "raw_log_sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+      "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/guard.log.gz",
+      "gzip_sha256": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+      "role": "successful prerequisite check"
+    },
+    {
+      "record": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-component-exit.json",
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "QICLean.Analysis.ReplicaComponentMergeMoment"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 34.64,
+      "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-component.log",
+      "sha256": "d165d68983c796ad96b10cb7b0e7c166565829eac711c0a243e39df22a9aa38f",
+      "raw_log_sha256": "d165d68983c796ad96b10cb7b0e7c166565829eac711c0a243e39df22a9aa38f",
+      "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-component.log.gz",
+      "gzip_sha256": "47ab5f2e4647d780a289964197ab92adae67daa2984ec5a9a929d2a220f9e084",
+      "role": "successful prerequisite check"
+    },
+    {
+      "record": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-two-merge-exit.json",
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "QICLean.Analysis.ReplicaTwoMergeMoment"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 29.27,
+      "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-two-merge.log",
+      "sha256": "05a465a14a4033d608dc20f09add59bf1525988c9376ea08c997f29990469a3c",
+      "raw_log_sha256": "05a465a14a4033d608dc20f09add59bf1525988c9376ea08c997f29990469a3c",
+      "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-two-merge.log.gz",
+      "gzip_sha256": "c2e75240f51255c7110b803675cc073db0921c7d0d4793edb6961de5c7a5d5e7",
+      "role": "successful prerequisite check"
+    },
+    {
+      "record": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-exit.json",
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "QICLean.Analysis.WeightedTraceExponential"
+      ],
+      "working_directory": ".",
+      "exit_code": 1,
+      "elapsed_seconds": 14.0,
+      "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted.log",
+      "sha256": "2710168984171d9c2e940393ccbea64c7223db9c3af277e0c60c1e4f371de10e",
+      "raw_log_sha256": "2710168984171d9c2e940393ccbea64c7223db9c3af277e0c60c1e4f371de10e",
+      "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted.log.gz",
+      "gzip_sha256": "e25561bb6f737b4c17b0f99a313acbe222582c4c6d8dcb1cb3467d2877d405a6",
+      "role": "operational ENFILE attempt, not a successful check"
+    },
+    {
+      "record": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-sequential-exit.json",
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "QICLean.Analysis.WeightedTraceExponential"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 22.5,
+      "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-sequential.log",
+      "sha256": "8bac16f0141bb90116dcd2b67211ece649ea590d5bfa308a406f902e73870d39",
+      "raw_log_sha256": "8bac16f0141bb90116dcd2b67211ece649ea590d5bfa308a406f902e73870d39",
+      "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-sequential.log.gz",
+      "gzip_sha256": "efe3f061672bd98a7423ccc6ddccfe257e7f8e7d9bd2d1f5ccc0b2a553398038",
+      "role": "successful prerequisite check"
+    },
+    {
+      "record": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/targets-exit.json",
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "QICLean.Representation.CompatiblePhysicalLabel",
+        "QICLean.Analysis.ReplicaTwoMergeMoment"
+      ],
+      "working_directory": ".",
+      "exit_code": 1,
+      "elapsed_seconds": 109.1,
+      "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/targets.log",
+      "sha256": "90ee203e01147006bf10e53328f4028e910be4274dde100eeb157f2b97f7c2b8",
+      "raw_log_sha256": "90ee203e01147006bf10e53328f4028e910be4274dde100eeb157f2b97f7c2b8",
+      "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/targets.log.gz",
+      "gzip_sha256": "edf9128ba91d12a48e6d85f947a79c5c95c700acdd8741e087d2fec8d87f3fff",
+      "role": "operational ENFILE attempt, not a successful check"
+    }
+  ],
+  "files": {
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/README.md": "e188e581a5ecdd76c8a9f88e3e6721ac357c2dc2958ab888c490712c39b1af35",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/cache-exit.json": "694d0ef0d53e72cf80cf0b9159ebc9dcb5e1e80eb8a3247c62a71d635c09722c",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/cache.log.gz": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/capture.py": "94c47d96bf25e177d1c9079c2d58b30f88af7b2d299e8f5dee999059e0a68263",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/excluded-resource-tool-output.json": "357c96fc5d3fd8bcd7795872dc43bb3c449849b11aef4a478dfee8319c897723",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/guard-exit.json": "75d4846cc02ee5b4717cf620ba19141453ee8ca7080bd146e76464b9dfa269e6",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/guard.log": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/guard.log.gz": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/mathlib-guard.py": "7735e65b032808f8e4f6a672cec0c4a72ee8b81fa84177b9330fc44a71d456f5",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/parent-selection.json": "6842e6d9fe5d73f3ce0db6f46768e846c3873f9684560d573430b802c6f2917b",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-component-exit.json": "cb2f72179373b17bf756899e1d58e32cb490fb67f059ed460a2bef8519f5a35f",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-component.log": "d165d68983c796ad96b10cb7b0e7c166565829eac711c0a243e39df22a9aa38f",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-component.log.gz": "47ab5f2e4647d780a289964197ab92adae67daa2984ec5a9a929d2a220f9e084",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-two-merge-exit.json": "d4d16e37ce94870d22901b51f78847673bfd70c1b537ec68f8f2154dcc25e8de",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-two-merge.log": "05a465a14a4033d608dc20f09add59bf1525988c9376ea08c997f29990469a3c",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-two-merge.log.gz": "c2e75240f51255c7110b803675cc073db0921c7d0d4793edb6961de5c7a5d5e7",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-exit.json": "47d4b42c9b6a412d2f5f2e5e053cb6747370c92948cd754c972200ce7f386aab",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-sequential-exit.json": "9e3dc7b23d614fca55f2469f84e7e16657a0de02ad0f4ca57da7dbf5b7cd5446",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-sequential.log": "8bac16f0141bb90116dcd2b67211ece649ea590d5bfa308a406f902e73870d39",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-sequential.log.gz": "efe3f061672bd98a7423ccc6ddccfe257e7f8e7d9bd2d1f5ccc0b2a553398038",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted.log": "2710168984171d9c2e940393ccbea64c7223db9c3af277e0c60c1e4f371de10e",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted.log.gz": "e25561bb6f737b4c17b0f99a313acbe222582c4c6d8dcb1cb3467d2877d405a6",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/targets-exit.json": "98c02c99e4f1ced7a32bfd9160dd1d4a360a8ecba52a597dccc978caf86104f6",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/targets.log": "90ee203e01147006bf10e53328f4028e910be4274dde100eeb157f2b97f7c2b8",
+    "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/targets.log.gz": "edf9128ba91d12a48e6d85f947a79c5c95c700acdd8741e087d2fec8d87f3fff"
+  }
+}

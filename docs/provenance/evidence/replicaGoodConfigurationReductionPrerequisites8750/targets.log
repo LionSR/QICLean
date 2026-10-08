@@ -1,0 +1,40 @@
+✔ [3108/3115] Built QICLean.Representation.MergeExponential (19s)
+✔ [3496/3500] Built QICLean.Representation.PairMergeMoment (9.7s)
+⚠ [3497/3500] Built QICLean.Entropy.ConditionalMovement.LogCompression (9.4s)
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:95:0: `compression_mono` does not use the following hypothesis in its type:
+  • [Fintype n] (#4)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:281:0: `sqrt_posDef` does not use the following hypothesis in its type outside of proofs:
+  • [DecidableEq m] (#3) (used in type, but only in a proof)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:284:0: `sqrt_square` does not use the following hypothesis in its type outside of proofs:
+  • [DecidableEq m] (#3) (used in type, but only in a proof)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:296:0: `eq_of_vec_pairing` does not use the following hypothesis in its type:
+  • [DecidableEq m] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+✔ [3498/3500] Built QICLean.Analysis.SpectralProjectionIntertwiner (5.8s)
+✔ [3499/3506] Built QICLean.Representation.CompatiblePhysicalLabel (4.6s)
+✖ [3524/3536] Building QICLean.Analysis.ReplicaComponentMergeMoment (10s)
+trace: .> LEAN_PATH=/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/Cli/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/Qq/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/lib/lean /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/QICLean/Analysis/ReplicaComponentMergeMoment.lean -o /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/lib/lean/QICLean/Analysis/ReplicaComponentMergeMoment.olean -i /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/lib/lean/QICLean/Analysis/ReplicaComponentMergeMoment.ilean -c /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/ir/QICLean/Analysis/ReplicaComponentMergeMoment.c --setup /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/ir/QICLean/Analysis/ReplicaComponentMergeMoment.setup.json --json
+error: QICLean/Analysis/ReplicaComponentMergeMoment.lean:6:0: failed to open file '/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/LinearAlgebra/TensorProduct/Finiteness.olean': Too many open files in system
+✖ [3534/3536] Building QICLean.Analysis.WeightedTraceExponential (2.0s)
+trace: .> LEAN_PATH=/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/Cli/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/Qq/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/lib/lean /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/QICLean/Analysis/WeightedTraceExponential.lean -o /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/lib/lean/QICLean/Analysis/WeightedTraceExponential.olean -i /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/lib/lean/QICLean/Analysis/WeightedTraceExponential.ilean -c /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/ir/QICLean/Analysis/WeightedTraceExponential.c --setup /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/build/ir/QICLean/Analysis/WeightedTraceExponential.setup.json --json
+error: QICLean/Analysis/WeightedTraceExponential.lean:6:0: failed to open file '/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Ring/InjSurj.olean.server': Too many open files in system
+✔ [3535/3536] Built QICLean.Representation.PairMergeDeficit (22s)
+Some required targets logged failures:
+- QICLean.Analysis.ReplicaComponentMergeMoment
+- QICLean.Analysis.WeightedTraceExponential
+error: build failed

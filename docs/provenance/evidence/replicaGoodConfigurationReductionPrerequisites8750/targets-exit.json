@@ -1,0 +1,21 @@
+{
+  "kind": "verification",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "QICLean.Representation.CompatiblePhysicalLabel",
+    "QICLean.Analysis.ReplicaTwoMergeMoment"
+  ],
+  "working_directory": ".",
+  "exit_code": 1,
+  "elapsed_seconds": 109.1,
+  "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/targets.log",
+  "sha256": "90ee203e01147006bf10e53328f4028e910be4274dde100eeb157f2b97f7c2b8",
+  "raw_log_sha256": "90ee203e01147006bf10e53328f4028e910be4274dde100eeb157f2b97f7c2b8",
+  "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/targets.log.gz",
+  "gzip_sha256": "edf9128ba91d12a48e6d85f947a79c5c95c700acdd8741e087d2fec8d87f3fff",
+  "role": "operational ENFILE attempt, not a successful check"
+}
