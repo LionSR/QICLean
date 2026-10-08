@@ -153,6 +153,58 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 /-- The power `x ↦ x^s` vanishing at zero. -/
 noncomputable def suppRpow (s x : ℝ) : ℝ := if x = 0 then 0 else x ^ s
 
+section RealBounds
+
+variable {t : ℝ}
+
+theorem suppRpow_eq_max_rpow (ht : 0 < t) {x : ℝ} (hx : 0 ≤ x) :
+    suppRpow t x = max x 0 ^ t := by
+  rcases hx.eq_or_lt with rfl | hx
+  · simp [suppRpow, Real.zero_rpow ht.ne']
+  · simp [suppRpow, hx.ne', max_eq_left hx.le]
+
+theorem abs_suppRpow_le_one (ht : 0 < t) {x : ℝ} (hx : x ∈ Set.Icc (0 : ℝ) 1) :
+    |suppRpow t x| ≤ 1 := by
+  rw [suppRpow_eq_max_rpow ht hx.1, max_eq_left hx.1,
+    abs_of_nonneg (Real.rpow_nonneg hx.1 _)]
+  exact Real.rpow_le_one hx.1 hx.2 ht.le
+
+theorem mul_rpow_neg_sq {x : ℝ} (hx : 0 < x) : x * (x ^ (-t)) ^ 2 = x ^ (1 - 2 * t) := by
+  calc x * (x ^ (-t)) ^ 2 = x ^ (1 : ℝ) * x ^ (-t + -t) := by
+        rw [Real.rpow_one, sq, ← Real.rpow_add hx]
+    _ = x ^ (1 + (-t + -t)) := (Real.rpow_add hx _ _).symm
+    _ = _ := by congr 1; ring
+
+theorem mul_suppRpow_neg_sq_le_one (ht1 : t < 1 / 2) {x : ℝ} (hx : x ∈ Set.Icc (0 : ℝ) 1) :
+    x * suppRpow (-t) x ^ 2 ≤ 1 := by
+  rcases hx.1.eq_or_lt with h0 | h0
+  · simp [← h0]
+  · simp only [suppRpow, h0.ne', ↓reduceIte]
+    rw [mul_rpow_neg_sq h0]
+    exact Real.rpow_le_one hx.1 hx.2 (by linarith)
+
+/-- **The clipping tail** (`05-replicas.tex`, lines 815–818): for `0 ≤ x`,
+`x (max(x, δ)^{-t} - x^{[-t]})² ≤ δ^{1-2t}`. -/
+theorem mul_clip_sub_sq_le (ht0 : 0 < t) (ht1 : t < 1 / 2) {δ : ℝ} (hδ : 0 < δ) {x : ℝ}
+    (hx : 0 ≤ x) : x * (max x δ ^ (-t) - suppRpow (-t) x) ^ 2 ≤ δ ^ (1 - 2 * t) := by
+  have hpos : 0 ≤ δ ^ (1 - 2 * t) := Real.rpow_nonneg hδ.le _
+  rcases hx.eq_or_lt with h0 | h0
+  · simp [← h0, hpos]
+  simp only [suppRpow, h0.ne', ↓reduceIte]
+  rcases lt_or_ge x δ with hxδ | hxδ
+  · rw [max_eq_right hxδ.le]
+    have h1 : δ ^ (-t) ≤ x ^ (-t) := Real.rpow_le_rpow_of_nonpos h0 hxδ.le (by linarith)
+    have h2 : 0 ≤ δ ^ (-t) := Real.rpow_nonneg hδ.le _
+    have h3 : (δ ^ (-t) - x ^ (-t)) ^ 2 ≤ (x ^ (-t)) ^ 2 := by nlinarith
+    calc x * (δ ^ (-t) - x ^ (-t)) ^ 2 ≤ x * (x ^ (-t)) ^ 2 :=
+          mul_le_mul_of_nonneg_left h3 hx
+      _ = x ^ (1 - 2 * t) := mul_rpow_neg_sq h0
+      _ ≤ δ ^ (1 - 2 * t) := Real.rpow_le_rpow hx hxδ.le (by linarith)
+  · rw [max_eq_left hxδ, sub_self]
+    simpa using hpos
+
+end RealBounds
+
 /-- The lifted power `ρ_Q^s` of the marginal of `|θ⟩⟨θ|` on `Q`, zero on the kernel. -/
 noncomputable def regionPow (Q : Finset V) (s : ℝ) (θ : SiteConfig n → ℂ) :
     Matrix (SiteConfig n) (SiteConfig n) ℂ :=
