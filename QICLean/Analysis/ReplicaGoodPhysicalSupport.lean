@@ -38,6 +38,7 @@ Original formalization, no upstream Lean proof text reused.
 Declaration: Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density
 Manuscript: September 24, 2026, 07-comparators.tex,
 lines 23, 103–110, 513–517 and 520–549.
+Labels: comparator:merge-decomposition, comparator:merge-moments.
 -/
 
 /-- The actual density on the good physical copies and the whole auxiliary
