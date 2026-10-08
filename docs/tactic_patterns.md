@@ -230,3 +230,18 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Seen:** `Analysis/ReplicaJointDensity.lean`; regional product calculations appear in `Analysis/ReplicaRegionalDensity.lean`.
 - **Abstraction:** Existing partial-trace composition and covariance results give the regrouping. The finite-sum Kronecker identity is private; no new tactic is introduced.
 - **Caveat:** Retain the actual component and its own auxiliary density. A product identity is derived from the prescribed one-copy ground vector rather than supplied as a premise.
+
+### Simultaneous retained and discarded coordinate changes — candidate (2026-10-08)
+
+- **Pattern:** Prove covariance of the literal excitation operator by its finite
+  product entries, apply `submatrix_mulVec_equiv` to the actual component, and
+  transport its partial trace using `partialTraceRight_submatrix_prod_equiv`.
+- **Seen:** The exchanged common-density proof in
+  `QICLean/Analysis/ReplicaGoodPairMarginal.lean`; one mathematical consumer.
+- **Abstraction:** Private coordinate-covariance lemmas share the operator and
+  vector calculation. Finite-sum reorderings use an explicit coordinate
+  equivalence and `Equiv.sum_comp`, rather than a looping sum-commutation simp
+  rule. No new tactic is introduced.
+- **Caveats:** The physical and auxiliary regions are exchanged together; the
+  component must be derived from the original vector and excitation operator.
+  Neither normalization nor a supplied covariance identity is assumed.

@@ -1,0 +1,100 @@
+\section{A common density for the two good regions}
+\label{sec:replica_good_pair_marginal}
+
+Let $Q,V,C,R$ be finite coordinate sets and let $k\geq0$.
+For $B\subseteq\{0,\ldots,k-1\}$, put $G=B^c$ and $m=|G|$.
+Choose one enumeration of $G$ for all four good regions, and one enumeration
+of $B$ for both bad auxiliary regions. For arbitrary
+$\Omega\in\mathbb C^Q\otimes\mathbb C^V$ and
+$u\in(QV)^{\otimes k}\otimes C^{\otimes k}\otimes R^{\otimes k}$,
+put $w=(R_B\otimes I)u$. Here $R_B$ is the excitation operator determined
+by $\Omega$; it is an orthogonal projection when $\Omega$ is unit.
+The following coordinate identities identify the two reduced matrices used
+in \cite[Section~7]{OpenAI2026AreaLaw}, equation
+(comparator:merge-moments). No permutation symmetry is required.
+
+\begin{definition}[Common good-copy density]
+\label{def:replica_good_pair_marginal}
+\lean{Matrix.replicaGoodPairMarginal}
+\leanok
+\uses{def:good_bad_copies_equiv}
+Regroup the same component $w$ into retained and discarded factors:
+\begin{align}
+ \mathcal H_{\mathrm{ret}}
+   &=(Q^{\otimes m}\otimes C^{\otimes m})
+      \otimes(V^{\otimes m}\otimes R^{\otimes m}),\\
+ \mathcal H_{\mathrm{tr}}
+   &=(QV)^{\otimes|B|}\otimes C^{\otimes|B|}\otimes R^{\otimes|B|}.
+\end{align}
+The common density $\Gamma_B(u)$ is
+$\operatorname{Tr}_{\mathcal H_{\mathrm{tr}}}|w\rangle\langle w|$.
+It retains all four good regions and is unnormalized.
+\end{definition}
+
+\begin{theorem}[First actual marginal]
+\label{thm:replica_good_pair_marginal_right}
+\lean{Matrix.partialTraceRight_replicaGoodPairMarginal}
+\leanok
+\uses{def:replica_good_pair_marginal,def:replica_good_regional_auxiliary_marginal}
+The first marginal of the common density is the actual regional auxiliary
+marginal of the same component:
+\begin{align}
+ \operatorname{Tr}_{V_G R_G}\Gamma_B(u)=\rho_{Q_G C_G}(w).
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+Split the full $R$ configurations into their good and bad coordinates.
+The two successive partial traces then sum over exactly the same coordinates
+as the definition of $\rho_{Q_G C_G}(w)$. A finite-sum reordering proves the identity.
+\end{proof}
+
+\begin{theorem}[Second actual marginal]
+\label{thm:replica_good_pair_marginal_left}
+\lean{Matrix.partialTraceLeft_replicaGoodPairMarginal}
+\leanok
+\uses{def:replica_good_pair_marginal,def:replica_good_regional_auxiliary_marginal}
+Exchange the physical regions and the auxiliary regions simultaneously:
+\begin{align}
+ \Omega'(v,q)&=\Omega(q,v),\\
+ u'(x,(r,c))&=u\bigl((i\mapsto\operatorname{swap}(x_i)),(c,r)\bigr).
+\end{align}
+Let $w'=(R'_B\otimes I)u'$ be the actual component determined by $\Omega'$.
+Then
+\begin{align}
+ \operatorname{Tr}_{Q_G C_G}\Gamma_B(u)=\rho_{V_G R_G}(w').
+\end{align}
+The vector $w'$ is the coordinate exchange of $w$, rather than a separately
+chosen excitation component.
+\end{theorem}
+\begin{proof}
+\leanok
+A change of one-copy coordinates carries each factor of the excitation
+operator to the corresponding factor for the exchanged vector. Tensoring
+and applying it to the exchanged original vector therefore gives exactly
+the exchanged component. The physical good/bad split respects this exchange.
+Partial trace is invariant under the exchange of discarded coordinates,
+so the common density is exchanged only on its retained factors. Apply
+the first marginal identity to this exchanged density.
+\end{proof}
+
+\begin{theorem}[Actual component mass]
+\label{thm:replica_good_pair_marginal_trace}
+\lean{Matrix.trace_replicaGoodPairMarginal}
+\leanok
+\uses{def:replica_good_pair_marginal}
+The common density has total mass
+\begin{align}
+ \operatorname{Tr}\Gamma_B(u)=\|w\|^2.
+\end{align}
+The trace is a complex number; the right-hand side is the real squared norm
+included into $\mathbb C$. The identity includes zero components, zero copies
+and empty good sets.
+\end{theorem}
+\begin{proof}
+\leanok
+The retained and discarded coordinates together form an equivalence with
+the original coordinates. Reindexing by an equivalence and taking a partial
+trace preserve the full trace. Finally,
+$\operatorname{Tr}|w\rangle\langle w|=\langle w,w\rangle=\|w\|^2$.
+\end{proof}
