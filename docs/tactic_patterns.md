@@ -303,3 +303,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Derive the physical intertwining identity before applying the
   spectral fact. An independent middle physical region cannot be identified
   with the combined exterior region on the whole space.
+
+### Logarithmic comparison on a nonzero joint eigenspace — candidate (2026-10-08)
+
+- **Pattern:** From a positive eigenvalue r and the actual multiplicity inequality
+  r d ≤ 1, use `Real.log_nonpos` and `Real.log_mul` to obtain log d ≤ −log r.
+- **Seen:** The supported operator comparison in `Representation/SchurSurprisal.lean`
+  and the positive exponential comparison in `Representation/SchurLabelMoments.lean`.
+- **Abstraction:** These are two occurrences of the same scalar step. Existing
+  logarithm and multiplication lemmas suffice for now. A third independent use
+  should promote the supported scalar comparison beside the eigenvalue bound.
+  The remainder-moment proof uses a different multiplicative exponential
+  inequality and is not counted as another logarithmic comparison.
+- **Caveat:** The zero-eigenvalue case must be treated separately. The comparison
+  is used only on nonzero joint projections, never as a global label inequality.
