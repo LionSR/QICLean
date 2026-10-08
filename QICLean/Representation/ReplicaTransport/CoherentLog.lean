@@ -745,7 +745,7 @@ theorem coherentAverage_log_le (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} (hf
       symProj (copyPerm Ω k) *
         CFC.log (coherentAverage k a f + (1 - symProj (copyPerm Ω k))) *
           symProj (copyPerm Ω k) := by
-  sorry
+  simpa only [one_smul] using coherentAverage_log_le_of_pos k a hf hpos one_pos
 
 /-- **Logarithmic passage** (`06-transport.tex` lines 520--575): a rank-one pin
 `X ≥ e^{φ(θ)} P_{θ,k}` for all unit `θ`, with `X` positive definite and commuting with copy
@@ -758,7 +758,80 @@ theorem coherentIntegral_sub_log_le_re_trace_mul_log {k : ℕ} (a : Ω)
     {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hρ : ρ.PosSemidef) (htr : ρ.trace = 1)
     (hsym : symProj (copyPerm Ω k) * ρ = ρ) :
     coherentIntegral k a ρ φ - Real.log (symDim Ω k) ≤ (ρ * CFC.log X).trace.re := by
-  sorry
+  set P := symProj (copyPerm Ω k) with hPdef
+  set D : ℕ := symDim Ω k
+  have hD : (0 : ℝ) < D := by exact_mod_cast symDim_pos k a
+  set μ := unitaryHaar Ω
+  set θ : unitaryGroup Ω ℂ → Ω → ℂ := fun U => (U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1
+  have hfe : Continuous fun θ => Real.exp (φ θ) := Real.continuous_exp.comp hφ
+  set Q := coherentAverage k a (fun θ => Real.exp (φ θ))
+  -- integrating the pin against Haar measure: `D⁻¹ 𝒬_k(e^φ) ≤ X`
+  have hQX : (X - (D : ℝ)⁻¹ • Q).PosSemidef := by
+    have hF := integrable_coherentIntegrand k a hfe
+    have e1 : (D : ℝ)⁻¹ • Q = ∫ U, ((Real.exp (φ (θ U)) : ℝ) : ℂ) • coherentProj k (θ U) ∂μ := by
+      simp only [Q, coherentAverage]
+      rw [← Complex.coe_smul, smul_smul, Complex.ofReal_inv, Complex.ofReal_natCast,
+        inv_mul_cancel₀ (by exact_mod_cast hD.ne'), one_smul]
+    rw [e1, ← Matrix.nonneg_iff_posSemidef]
+    have e2 : X = ∫ _U, X ∂μ := by simp
+    rw [e2, ← integral_sub (integrable_const X) hF]
+    refine integral_nonneg fun U => ?_
+    rw [Pi.zero_apply, sub_nonneg, Complex.coe_smul]
+    exact hpin _ (star_coherentVec_dotProduct a U)
+  -- a positive filler on the complement of `𝒮_k`
+  haveI : Nonempty (Fin k → Ω) := ⟨fun _ => a⟩
+  obtain ⟨ε, hε, hεX⟩ := (CFC.exists_pos_algebraMap_le_iff X hX.isHermitian.isSelfAdjoint).mpr
+    fun x hx => hX.isStrictlyPositive.spectrum_pos hx
+  rw [Algebra.algebraMap_eq_smul_one] at hεX
+  have hc : 0 < (D : ℝ) * ε := mul_pos hD hε
+  set Y := Q + ((D : ℝ) * ε) • (1 - P)
+  have hY : Y.PosDef := posDef_coherentAverage_add_smul k a hfe (fun _ => Real.exp_pos _) hc
+  have hPh : P.IsHermitian := isHermitian_symProj k
+  have hPP : P * P = P := symProj_mul_self k
+  have hXP : X * P = P * X := by
+    have h := fun σ => (hXc σ).symm.eq
+    simp only [hPdef, symProj, mul_smul_comm, smul_mul_assoc, Finset.mul_sum, Finset.sum_mul]
+    congr 1
+    exact Finset.sum_congr rfl fun σ _ => ((hXc σ).eq).symm
+  have hQP : Q * P = Q := coherentAverage_mul_symProj k a hfe
+  have hPQ : P * Q = Q := symProj_mul_coherentAverage k a hfe
+  have hYX : (D : ℝ)⁻¹ • Y ≤ X := by
+    rw [Matrix.le_iff]
+    have e : X - (D : ℝ)⁻¹ • Y = Pᴴ * (X - (D : ℝ)⁻¹ • Q) * P +
+        (1 - P)ᴴ * (X - ε • 1) * (1 - P) := by
+      rw [conjTranspose_sub, conjTranspose_one, hPh.eq]
+      simp only [Y, smul_add, smul_smul, inv_mul_cancel_left₀ hD.ne', mul_sub, sub_mul, one_mul,
+        mul_one, smul_mul_assoc, mul_smul_comm, hPP, hQP, hPQ]
+      rw [hXP, mul_assoc P X P, hXP, ← mul_assoc, hPP]
+      module
+    rw [e]
+    exact (hQX.conjTranspose_mul_mul_same P).add
+      ((Matrix.le_iff.mp hεX).conjTranspose_mul_mul_same (1 - P))
+  -- operator monotonicity of the logarithm
+  have hrY : ((D : ℝ)⁻¹ • Y).PosDef := hY.smul (inv_pos.mpr hD)
+  have hlog : CFC.log ((D : ℝ)⁻¹ • Y) ≤ CFC.log X :=
+    CFC.log_le_log hYX hrY.isStrictlyPositive
+  rw [CFC.log_smul' Y (inv_pos.mpr hD) hY.isStrictlyPositive, Algebra.algebraMap_eq_smul_one,
+    Real.log_inv] at hlog
+  -- the Jensen step on `𝒮_k`
+  have hJ := coherentAverage_log_le_of_pos k a hfe (fun _ => Real.exp_pos _) hc
+  simp only [Real.log_exp] at hJ
+  have hρP : ρ * P = ρ := by
+    have h := congrArg conjTranspose hsym
+    rwa [conjTranspose_mul, hρ.isHermitian.eq, hPh.eq] at h
+  have hmono : ∀ {A B : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}, A ≤ B →
+      (ρ * A).trace.re ≤ (ρ * B).trace.re := fun {A B} h => by
+    have := (Complex.nonneg_iff.mp (hρ.trace_mul_nonneg (Matrix.le_iff.mp h))).1
+    rwa [mul_sub, trace_sub, Complex.sub_re, sub_nonneg] at this
+  have h1 := hmono hJ
+  have h2 := hmono hlog
+  rw [trace_mul_coherentAverage k a hφ] at h1
+  have h3 : (ρ * (P * CFC.log Y * P)).trace = (ρ * CFC.log Y).trace := by
+    rw [← mul_assoc, ← mul_assoc, hρP, trace_mul_comm, ← mul_assoc, hsym]
+  rw [h3] at h1
+  rw [mul_add, trace_add, Complex.add_re, mul_smul_comm, mul_one, trace_smul, htr] at h2
+  simp only [Complex.real_smul, mul_one, Complex.ofReal_re] at h2
+  linarith
 
 /-- `D_k` is polynomial in `k`: `log D_k = O(log (k + 1))`. -/
 theorem log_symDim_isBigO :
