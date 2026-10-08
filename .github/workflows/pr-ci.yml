@@ -326,9 +326,31 @@ jobs:
           QICLeanTest/GlobalGap.lean
 
 
-      - name: Check physical-buffer overlap regressions and all axiom guards strictly
+      - name: Check physical-buffer, evolution, and restoration regressions strictly
         run: |
-          for file in QICLeanTest/CompressedPartialSwap.lean QICLeanTest/ProductOverlapPurity.lean QICLeanTest/PhysicalBufferOverlap.lean QICLeanTest/DoubledSystemGap.lean QICLeanTest/PositiveGapUniqueness.lean; do
+          for file in \
+            QICLeanTest/CompressedPartialSwap.lean \
+            QICLeanTest/ProductOverlapPurity.lean \
+            QICLeanTest/PhysicalBufferOverlap.lean \
+            QICLeanTest/DoubledSystemGap.lean \
+            QICLeanTest/PositiveGapUniqueness.lean \
+            QICLeanTest/MatrixEvolution.lean \
+            QICLeanTest/UnitaryEvolution.lean \
+            QICLeanTest/UnitaryEvolutionAxioms.lean \
+            QICLeanTest/MatrixUnitaryEvolution.lean \
+            QICLeanTest/EvolutionCommutant.lean \
+            QICLeanTest/ProjectedEvolution.lean \
+            QICLeanTest/ProjectedEvolutionAxioms.lean \
+            QICLeanTest/SupportInverseSandwich.lean \
+            QICLeanTest/SupportInverseSandwichAxioms.lean \
+            QICLeanTest/RestoringMarginal.lean \
+            QICLeanTest/RestoringMarginalAxioms.lean \
+            QICLeanTest/RestoringOperators.lean \
+            QICLeanTest/RestoringOperatorsAxioms.lean \
+            QICLeanTest/RestoringNorm.lean \
+            QICLeanTest/RestoringNormAxioms.lean \
+            QICLeanTest/RestoringVectors.lean \
+            QICLeanTest/RestoringVectorsAxioms.lean; do
             timeout --signal=INT --kill-after=5s 90s lake env lean -j1 \
               -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true \
               -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \

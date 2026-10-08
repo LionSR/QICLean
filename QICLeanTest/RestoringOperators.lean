@@ -18,7 +18,7 @@ example :
       ((false, true), (false, 0)) ((false, false), (true, 0)) = 1 := by
   simp [columnOperator, restoringWeight, basisColumn, vecMulVec_apply,
     Matrix.smul_apply, Matrix.sum_apply, kroneckerMap_apply, Pi.single_apply,
-    Matrix.single_apply, Fintype.sum_bool]
+    Matrix.single_apply]
 
 /-- A complex blank phase is conjugated in the input bra. -/
 example :
@@ -28,37 +28,14 @@ example :
       ((false, true), (false, 0)) ((false, false), (true, 0)) = -Complex.I := by
   simp [columnOperator, restoringWeight, basisColumn, vecMulVec_apply,
     Matrix.smul_apply, Matrix.sum_apply, kroneckerMap_apply, Pi.single_apply,
-    Matrix.single_apply, Fintype.sum_bool]
+    Matrix.single_apply]
+
+/-- The spectator permutation puts `e` last and retains every physical coordinate. -/
+example : restoringAncillaGrouping (Y := Fin 1)
+    ((false, true), (false, 0)) = ((false, (false, 0)), true) := rfl
 
 /-- Empty selections produce zero even if all probabilities vanish. -/
 example (s x : Bool → ℂ) (Q : Matrix (Bool × Fin 2) (Bool × Fin 2) ℂ)
     (T : Matrix (Fin 2) (Fin 2) ℂ) :
     restoringOperator ∅ (fun _ ↦ 0) s x Q T = 0 := by
   simp [restoringOperator]
-
-/--
-info: 'Entropy.restoringOperator_gram' depends on axioms:
-[propext, Classical.choice, Quot.sound]
----
-info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
--/
-#guard_msgs (whitespace := lax) in
-#print axioms Entropy.restoringOperator_gram
-
-/--
-info: 'Entropy.columnOperator_gram' depends on axioms:
-[propext, Classical.choice, Quot.sound]
----
-info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
--/
-#guard_msgs (whitespace := lax) in
-#print axioms Entropy.columnOperator_gram
-
-/--
-info: 'Entropy.restoringGram_posSemidef' depends on axioms:
-[propext, Classical.choice, Quot.sound]
----
-info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
--/
-#guard_msgs (whitespace := lax) in
-#print axioms Entropy.restoringGram_posSemidef

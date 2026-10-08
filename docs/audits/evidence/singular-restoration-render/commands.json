@@ -1,0 +1,79 @@
+{
+  "environment": "source ${WORKSPACE}/glm23-blueprint-env.sh && export WORKSPACE=${WORKSPACE}",
+  "working_directory": "${WORKSPACE}/singular-restoration-focused/blueprint/src",
+  "commands": [
+    {
+      "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
+      "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/singular-restoration-render/prepare_fixture.py",
+      "exit_code": 0
+    },
+    {
+      "command": "export XDG_CACHE_HOME=${WORKSPACE}/8766-unitary-evolution-focused/font-cache && latexmk -xelatex -interaction=nonstopmode -halt-on-error print.tex > ../../pdf-build.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "command": "cp print.bbl web.bbl && plastex -c plastex.cfg web.tex > ../../web-build.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/singular-restoration-focused",
+      "command": "mkdir -p pdf-pages && pdftoppm -scale-to 1500 -png blueprint/src/print.pdf pdf-pages/page > pdf-raster.log 2>&1 && pdfinfo blueprint/src/print.pdf > pdf-info.txt",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
+      "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/singular-restoration-render/verify_render.py > ${WORKSPACE}/singular-restoration-focused/verify-render.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/singular-restoration-focused",
+      "command": "export XDG_CACHE_HOME=${WORKSPACE}/8766-unitary-evolution-focused/font-cache && dot -Gbgcolor=white -Tpng dependency-graph.dot -o dependency-graph-white.png",
+      "exit_code": 0
+    }
+  ],
+  "notes": [
+    "Successful command segments reconstructed from tool records; environment setup is factored out. This is a replay recipe, not a byte-for-byte shell transcript.",
+    "The initial failed-quality render and original raw command/log records remain separately preserved in singular-restoration-focused-initial. The final fixture was freshly prepared from the source-owner repair at 8ecbed7f053226cd5f8b912514777d986e7cf702.",
+    "Reused the installed texra-blueprint 0.3.8 environment and existing font cache. No downloads, Lean/Lake/checkdecls, pin changes, CI, shared-source edits by this worker, live browser, external mutations, or binary/LFS uploads.",
+    "The retained official paper source was materialized by the source owner from its pinned Git object; the renderer verified its exact SHA256."
+  ],
+  "raw_logs": {
+    "pdf-build.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/pdf-build.log",
+      "sha256": "0928a1cef46de22703afaaa422a3a51738f281040f4770d19561941246186701"
+    },
+    "web-build.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/web-build.log",
+      "sha256": "5a5fbfd1c70650d9d65d91c81891f25cd4eed50086c5c3bb4c9433530faff0d1"
+    },
+    "pdf-raster.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/pdf-raster.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "verify-render.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/verify-render.log",
+      "sha256": "e7f4df267141b918d6367e1262a8ecfe6bbcce90c4e5fa5b2fe45d88dc305fc8"
+    },
+    "blueprint/src/print.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/blueprint/src/print.log",
+      "sha256": "5b071fca9edff3971d33870acf4498d55461e7994010086f0649a78fcfbb93f6"
+    }
+  },
+  "replay_scripts": {
+    "prepare_fixture.py": {
+      "published_sha256": "22ce809e47b5f5a33611b8735b026f3dcd8e4e05bb9c262f5ab25f46535db177"
+    },
+    "verify_render.py": {
+      "published_sha256": "a55167aee1364be7b99cb778f93be2b55b8f7759aea557c0454f6c7a3d776ba5"
+    },
+    "check.py": {
+      "published_sha256": "6a8bd199e27c5443e645ebf1509aac02fcbc97680a59c313469623dd9d3487c4"
+    }
+  },
+  "environment_script_sha256": "3a538bdefcda033a0d3a55eda7102007c6789d6da004b28bb47033a17fb6c70b",
+  "normalization": {
+    "rule": "Replace the executor-private workspace root with literal ${WORKSPACE}; no other recorded arguments changed.",
+    "original_record": "${WORKSPACE}/singular-restoration-focused/commands-original.json",
+    "original_record_sha256": "0d1456df3c7c9cc88ddd2c832f904646ed69b45d02d23d73fac04d433e9549ac"
+  }
+}

@@ -8,8 +8,10 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation
 
+import QICLean.Representation.BranchProbability
 import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri
+import QICLean.Representation.Casimir
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.GroupedCopies
@@ -21,16 +23,26 @@ import QICLean.Representation.IrrepLabelCount
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.JointIsotypic
+import QICLean.Representation.JucysRecursion
 import QICLean.Representation.LabelProjectors
 import QICLean.Representation.MergeDimensions
 import QICLean.Representation.MergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
+import QICLean.Representation.RegularTrace
+import QICLean.Representation.ReplicaMarkedRatio
+import QICLean.Representation.ReplicaMarkedRatioInverse
+import QICLean.Representation.ReplicaMetric
 import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
+import QICLean.Representation.SchurLabelEstimates
 import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
 import QICLean.Representation.SchurWeylLabels
 import QICLean.Representation.SchurWeylLift
+import QICLean.Representation.StarOperator
+import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
+import QICLean.Representation.WeylDimension
+import QICLean.Representation.WeylRecursion

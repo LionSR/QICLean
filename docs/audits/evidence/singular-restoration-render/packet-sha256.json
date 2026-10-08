@@ -1,0 +1,11 @@
+{
+  "README.md": "26c4b9bc3eae1336c145f106492112fe6b7fdc3774249f9b3719fbb999392068",
+  "check.py": "6a8bd199e27c5443e645ebf1509aac02fcbc97680a59c313469623dd9d3487c4",
+  "commands.json": "37a6f6fff3df3795e2df4273337518e02f2a591ce0bf56fa291b96cc898ab868",
+  "focus-manifest.json": "598f8de60d4ada008f2fa25ef9050b9336171a6343c51f620a2fb3ee2515e1aa",
+  "initial-findings.json": "adb1049777812cf75ed4a7d246c8aad0d93885e4b0a9294d50fa84cc86c17f74",
+  "prepare_fixture.py": "22ce809e47b5f5a33611b8735b026f3dcd8e4e05bb9c262f5ab25f46535db177",
+  "verification.json": "cf68eb6d3ff412eff076c449681ee3b09ae63db551e2423de53065256a183b77",
+  "verify_render.py": "a55167aee1364be7b99cb778f93be2b55b8f7759aea557c0454f6c7a3d776ba5",
+  "visual-review.json": "75dd8d47bc063ddbecc217ed0cb2c346b1d0381778670d6c1fefbf722ee46e3a"
+}

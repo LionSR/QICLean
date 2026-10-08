@@ -1,0 +1,146 @@
+\section{Column vectors and the adjoint restoration identity}
+\label{sec:restoring_vectors}
+
+Keep the full coordinate basis and the operators of
+Section~\ref{sec:restoring_operators}, and add an arbitrary remote factor $Z$.
+Physical coordinates are $((x,y),z)$, while the enlarged space is ordered as
+$(((s,e),(x,y)),z)$. The operators $R_0$ and $B_0$ are extended by the
+identities on their spectator factors. A physical operator $L$ fixes both
+ancillas; the reassociation
+$(((s,e),(x,y)),z)\mapsto((s,e),((x,y),z))$ specifies this extension.
+All norms in this section are Hilbert-space norms.
+
+\begin{definition}[Copied, initial, and restored vectors]
+    \label{def:restoring_vectors}
+    \lean{Entropy.restoringPhysicalGrouping, Entropy.restoringPhysicalLift,
+        Entropy.restoringGlobal, Entropy.restoringColumnGlobal,
+        Entropy.restoringCopy, Entropy.restoringInitial,
+        Entropy.restoringRestored, Entropy.restoringSelectedProjection,
+        Entropy.restoringSelectedProjection_isHermitian,
+        Entropy.restoringSelectedProjection_mul_self}
+    \leanok
+    For every physical vector $\Omega$, define
+    \begin{align}
+        (\mathcal R_X\Omega)_{sexyz}
+            &=(0_s)_s(0_X)_x\Omega_{eyz},
+            &\psi_{sexyz}&=(0_s)_s(0_e)_e\Omega_{xyz},\\
+        \eta_{sexyz}&=\mathbf1_{s=e}\sqrt{p_s}\,\Omega_{xyz},
+            &P_E&=\sum_{x\in E}|x\rangle\langle x|.
+    \end{align}
+    Write $\phi=\mathcal R_X\Omega$. Substitution of the source's Schmidt
+    expansion into this definition gives its swapped-state expression.
+    The identities below do not require that expansion as a hypothesis,
+    nor do they require $\Omega$ to be normalized or $p$ to be its marginal
+    spectrum. In the source application $p$ is the nonnegative marginal
+    spectrum; its zero eigenvalues contribute zero to $\eta$.
+\end{definition}
+
+\begin{theorem}[Actual column-vector identity]
+    \label{thm:restoring_column_vector}
+    \lean{Entropy.restoringGlobal_mulVec_copy}
+    \leanok
+    \uses{def:restoring_vectors, def:restoring_operators}
+    If $\|0_X\|=\|0_e\|=1$, then
+    \begin{align}
+        R_0\phi=B_0\psi.
+    \end{align}
+    This equality holds for arbitrary $\Omega,Q,T$ and arbitrary $0_s$.
+    The full-basis sum in $B_0$ includes coordinates for which $p_y=0$.
+\end{theorem}
+\begin{proof}\leanok
+    Expanding either side in the coordinate basis leaves the same coefficient
+    after contracting the $X$ blank on the left and the $e$ blank on the right.
+    Their unit norms make both contractions equal to one. The contraction
+    of the $s$ blank is common to both expressions.
+\end{proof}
+
+\begin{theorem}[Adjoint inverse-weight cancellation]
+    \label{thm:restoring_adjoint_vector}
+    \lean{Entropy.restoringPhysicalLift_mulVec_restored,
+        Entropy.restoringPhysicalLift_conjTranspose,
+        Entropy.restoringGlobal_adjoint_restored,
+        Entropy.restoringGlobal_adjoint_identity}
+    \leanok
+    \uses{def:restoring_vectors, def:restoring_operators}
+    Suppose $p_x>0$ for every $x\in E$, $Q^\dagger=Q$, and $T^\dagger=T$.
+    For every physical operator $L$ and every physical vector $\Omega$,
+    \begin{align}
+        R_0^\dagger L^\dagger\eta
+            =\mathcal R_X\bigl(((P_E\otimes T)Q)\otimes I_Z\bigr)
+                L^\dagger\Omega.
+        \label{eq:restoring_adjoint_vector}
+    \end{align}
+    No normalization, projection, commutation, or operator norm hypothesis
+    is needed for this identity. Unselected eigenvalues may vanish.
+\end{theorem}
+\begin{proof}\leanok
+    The physical operator preserves the ancillary pair in $\eta$.
+    The ancillary Kronecker delta then forces the restoring summation
+    index to equal $e$. On each selected coordinate,
+    $p_e^{-1/2}\sqrt{p_e}=1$; on every other coordinate the sum vanishes.
+    Taking the adjoint reverses the physical order to $(P_E\otimes T)Q$.
+    The two remaining blank coefficients insert precisely $\mathcal R_X$.
+\end{proof}
+
+\begin{theorem}[Isometry and exact adjoint error]
+    \label{thm:restoring_adjoint_error}
+    \lean{Entropy.restoringCopy_norm, Entropy.restoringCopy_isometry,
+        Entropy.restoringGlobal_adjoint_error_eq}
+    \leanok
+    \uses{thm:restoring_adjoint_vector}
+    If in addition $\|0_s\|=\|0_X\|=1$, then $\mathcal R_X$ is an isometry
+    and
+    \begin{align}
+        \|R_0^\dagger L^\dagger\eta-\phi\|
+        =\|\bigl(((P_E\otimes T)Q)\otimes I_Z\bigr)L^\dagger\Omega
+              -\Omega\|.
+    \end{align}
+    In particular this equality introduces no factor $\|R_0\|$.
+\end{theorem}
+\begin{proof}\leanok
+    Summing the squared coordinate moduli of $\mathcal R_X v$ gives
+    $\|0_s\|^2\|0_X\|^2\|v\|^2=\|v\|^2$. Apply this to the difference
+    in~\eqref{eq:restoring_adjoint_vector}.
+\end{proof}
+
+\begin{theorem}[Three-projection adjoint estimate]
+    \label{thm:restoring_three_projection_error}
+    \lean{Entropy.restoringGlobal_adjoint_error_le}
+    \leanok
+    \uses{thm:restoring_adjoint_error}
+    Suppose $Q$ and $T$ are orthogonal projections and retain the selected
+    positivity and unit-blank assumptions above. Write
+    $A=(P_E\otimes I_Y)\otimes I_Z$,
+    $B=(I_X\otimes T)\otimes I_Z$, and $C=Q\otimes I_Z$.
+    If
+    \begin{align}
+        \|A\Omega-\Omega\|\le\varepsilon,\qquad
+        \|B\Omega-\Omega\|\le\varepsilon,\qquad
+        \|C\Omega-\Omega\|\le\varepsilon,
+    \end{align}
+    then
+    \begin{align}
+        \|R_0^\dagger L^\dagger\eta-\phi\|
+        \le 3\varepsilon+\|L^\dagger\Omega-\Omega\|.
+    \end{align}
+    Taking $\varepsilon=\sqrt\delta$ gives the adjoint error bound used
+    in the source. No commutation among the three projections is required.
+\end{theorem}
+\begin{proof}\leanok
+    All three orthogonal projections are contractions. For $v=L^\dagger\Omega$,
+    the exact decomposition
+    \begin{align}
+        ABCv-\Omega={}&ABC(v-\Omega)+AB(C\Omega-\Omega)\notag\\
+          &+A(B\Omega-\Omega)+(A\Omega-\Omega)
+    \end{align}
+    and the triangle inequality give the stated bound. The preceding exact
+    error equality transfers it to the enlarged space.
+\end{proof}
+
+These finite-dimensional identities supply the algebraic part of the
+adjoint estimate in~\cite{OpenAI2026AreaLaw}. They do not assert existence
+of typical projections, localization, or the complete amplification theorem.
+
+% Primary source: adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
+% build/sections/09-amplification.tex:324--415.

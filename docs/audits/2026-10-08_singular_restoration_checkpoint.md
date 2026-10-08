@@ -3,6 +3,8 @@
 This is a source recovery checkpoint for the bounded generic restoration work
 in TNLean issue #8757. It does not close the amplification theorem.
 
+## Historical first checkpoint
+
 At local source `0deeb5c3561566d16f930e0c355b09983c97cfc5`:
 
 - `SupportInverseSandwich.lean`: native/strict production, six consumers and
@@ -23,3 +25,11 @@ existence, Poisson products, physical locality and full amplification remain
 separate. Source: pinned openai/math adc7f1241b42e322a6451854ab7e4b4c146bf78a,
 AreaLaw `09-amplification.tex`, lines 324–446. No upstream Lean proof text was
 copied. No toolchain/dependency change, generated binary or LFS asset is included.
+
+## Checked implementation checkpoint
+
+At integrated source `1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03`, all five production modules (1,282 lines, 54 public declarations) have passed targeted native and strict compilation. Individual package checks passed 30 consumer examples and 54 standard-axiom guards. The combined integration rerun passed all 20 checks at that exact source head; full hosted CI has not run on this new checkpoint.
+
+The earlier helper errors are repaired. The actual singular support-inverse sandwich, partial-trace marginal order, R₀/B₀ Gram identities, norm bounds, column identity, arbitrary-operator adjoint cancellation and three-projection adjoint-error estimate are proved. Independent source review found no substantive mathematical defect. Core PDF/web rendering passed; the norm/vector extension render is pending.
+
+The exponential norm specialization explicitly assumes the scalar entropy identity. The square-root failure-parameter specialization assumes the three norm-disturbance bounds; neither typical-projector existence nor those disturbance estimates are proved here. The actual ground-component coefficient identity/bound remains active work. Poisson products, locality and full amplification are separate.

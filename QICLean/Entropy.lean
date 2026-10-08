@@ -14,6 +14,9 @@ import QICLean.Entropy.ClassicalMutualInformation
 import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalMovement
 import QICLean.Entropy.ConditionalMovementEstimate
+import QICLean.Entropy.ConditionalSkewPhase
+import QICLean.Entropy.ConditionalSkewSetup
+import QICLean.Entropy.ConditionalSkewStrip
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FilterChain
@@ -55,6 +58,10 @@ import QICLean.Entropy.ProductOverlapPurity
 import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionUnion
+import QICLean.Entropy.RestoringMarginal
+import QICLean.Entropy.RestoringNorm
+import QICLean.Entropy.RestoringOperators
+import QICLean.Entropy.RestoringVectors
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.SchmidtPinning
 import QICLean.Entropy.SchmidtTilt

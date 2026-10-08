@@ -1,0 +1,167 @@
+\section{Norm bounds for restoring operators}
+\label{sec:restoring_norm}
+
+Let $X,Y$ be finite-dimensional complex Hilbert spaces, fix a full
+orthonormal basis $\{|x\rangle\}_{x\in\mathsf X}$ of $X$, and let
+$E\subseteq\mathsf X$. Use the operators $R_0,B_0,B_Y$ of
+Definition~\ref{def:restoring_operators}, with the same tensor orders.
+All vector norms are Euclidean norms, and all operator norms are the
+induced norms. For the weighted-sum inequalities alone, the numbers
+$p_x$ may be arbitrary real numbers, with $0^{-1}=0$; positivity on $E$
+will be imposed for the norm bounds. These estimates give the first
+restoring-operator estimate in the amplification argument
+of~\cite{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Selected blocks below the full partial trace]
+    \label{thm:restoring_selected_trace}
+    \lean{Entropy.restoringGram_le_compressed_partialTrace}
+    \leanok
+    \uses{def:restoring_operators, def:partial_trace}
+    Suppose $Q\ge0$, $T=T^\dagger$, and $c_X\ge0$.
+    If $p_x^{-1}\le c_X$ for every $x\in E$, then
+    \begin{align}
+        B_Y\le c_X T(\operatorname{tr}_X Q)T.
+        \label{eq:restoring_selected_trace}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:restoring_operators}
+    Put $Q_x=\langle x|Q|x\rangle$. Each $Q_x$ and $TQ_xT$ is
+    positive semidefinite. Therefore
+    \begin{align*}
+        B_Y
+        &\le c_X T\left(\sum_{x\in E}Q_x\right)T
+        \le c_X T\left(\sum_{x\in\mathsf X}Q_x\right)T
+        =c_X T(\operatorname{tr}_X Q)T.
+    \end{align*}
+    The second inequality follows by summing the positive omitted blocks
+    and taking congruence by $T$.
+\end{proof}
+
+\begin{theorem}[Spectral bound for the restoring Gram factor]
+    \label{thm:restoring_gram_bound}
+    \lean{Entropy.restoringGram_le}
+    \leanok
+    \uses{def:restoring_operators, def:partial_trace}
+    Let $\rho$ be an operator on $X\otimes Y$, and set
+    $\rho_Y=\operatorname{tr}_X\rho$. Suppose $Q$ and $T$ are
+    orthogonal projections and $c_X,c_Q,c_Y\ge0$. Assume the following
+    inequalities, with the scalar inequality required for every $x\in E$:
+    \begin{align}
+        p_x^{-1}&\le c_X,\notag\\
+        Q&\le c_Q\rho,\notag\\
+        T\rho_YT&\le c_YT.
+        \label{eq:restoring_spectral_bounds}
+    \end{align}
+    Then $B_Y\le c_Xc_Qc_Y I_Y$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:restoring_selected_trace}
+    Positivity of the partial trace gives
+    $\operatorname{tr}_XQ\le c_Q\rho_Y$.
+    Apply~(\ref{eq:restoring_selected_trace}), preserve order under
+    congruence by $T$, and use $T\le I_Y$ to obtain
+    \begin{align*}
+        B_Y
+        &\le c_X T(\operatorname{tr}_XQ)T
+        \le c_Xc_Q T\rho_YT
+        \le c_Xc_Qc_Y T
+        \le c_Xc_Qc_Y I_Y.
+    \end{align*}
+\end{proof}
+
+\begin{theorem}[Outer product of a unit blank]
+    \label{thm:restoring_unit_blank}
+    \lean{Entropy.blankOuterProduct_isStarProjection}
+    \leanok
+    \uses{def:restoring_operators}
+    If $b\in X$ and $\|b\|=1$, then $P_b=|b\rangle\langle b|$
+    is an orthogonal projection.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:restoring_operators}
+    The outer product is positive semidefinite and hence Hermitian.
+    Its square is $P_b^2=\langle b,b\rangle P_b=\|b\|^2P_b=P_b$.
+\end{proof}
+
+\begin{theorem}[Norm bounds from the spectral constants]
+    \label{thm:restoring_operator_norm}
+    \lean{Entropy.restoringOperator_norm_le, Entropy.columnOperator_norm_le}
+    \leanok
+    \uses{def:restoring_operators, def:partial_trace}
+    Let $\rho$ be an operator on $X\otimes Y$, and set
+    $\rho_Y=\operatorname{tr}_X\rho$. Suppose $Q,T$ are orthogonal
+    projections, $c_X,c_Q,c_Y\ge0$, and
+    (\ref{eq:restoring_spectral_bounds}) holds. Assume $p_x>0$ for
+    every $x\in E$.
+    If $\|0_s\|=\|0_X\|=1$, then $\|R_0\|\le\sqrt{c_Xc_Qc_Y}$.
+    Independently, if $\|0_s\|=\|0_e\|=1$, then
+    $\|B_0\|\le\sqrt{c_Xc_Qc_Y}$.
+    Neither bound requires positivity of the unselected $p_x$ or
+    commutation between $Q$ and $I_X\otimes T$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:restoring_gram_bound, thm:restoring_unit_blank, thm:restoring_grams}
+    Set $C=c_Xc_Qc_Y$. Theorem~\ref{thm:restoring_grams} gives $B_Y\ge0$,
+    and Theorem~\ref{thm:restoring_gram_bound} gives $B_Y\le CI_Y$.
+    Each normalized blank gives $0\le P_b\le I_X$ by
+    Theorem~\ref{thm:restoring_unit_blank}.
+    For positive $A,B$ satisfying $A\le I$ and $B\le cI$, positivity
+    of tensor products yields $A\otimes B\le I\otimes B\le cI$.
+    Apply this inequality twice to each of the Gram formulas
+    (\ref{eq:restore_rgram}) and~(\ref{eq:restore_bgram}). Thus
+    \begin{align*}
+        R_0^\dagger R_0&\le CI_{s\otimes(X\otimes Y)},\\
+        B_0^\dagger B_0&\le CI_{(s\otimes e)\otimes(X\otimes Y)}.
+    \end{align*}
+    For either operator $A$, positivity and this order bound give
+    $\|A\|^2=\|A^\dagger A\|\le C$. Taking the nonnegative square
+    root proves the two conclusions.
+\end{proof}
+
+\begin{theorem}[Exponential specialization]
+    \label{thm:restoring_norm_exp}
+    \lean{Entropy.restoringOperators_norm_le_exp}
+    \leanok
+    \uses{def:restoring_operators, def:partial_trace}
+    Let $\rho$ be an operator on $X\otimes Y$, set
+    $\rho_Y=\operatorname{tr}_X\rho$, and suppose $Q,T$ are
+    orthogonal projections. Assume $p_x>0$ for every $x\in E$ and
+    $\|0_s\|=\|0_X\|=\|0_e\|=1$.
+    Let $S_X,S_{XY},S_Y,w,\mathcal I$ be real numbers satisfying
+    $\mathcal I=S_X+S_{XY}-S_Y$. Assume the following inequalities,
+    with the scalar inequality required for every $x\in E$:
+    \begin{align}
+        p_x^{-1}&\le e^{S_X+w},\notag\\
+        Q&\le e^{S_{XY}+w}\rho,\notag\\
+        T\rho_YT&\le e^{-S_Y+w}T.
+        \label{eq:restoring_exp_hypotheses}
+    \end{align}
+    Then
+    \begin{align}
+        \|R_0\|&\le\exp\bigl((\mathcal I+3w)/2\bigr),\notag\\
+        \|B_0\|&\le\exp\bigl((\mathcal I+3w)/2\bigr).
+        \label{eq:restoring_norm_exp}
+    \end{align}
+    In the spectral application, take
+    $S_X=S(X)$, $S_{XY}=S(XY)$, and $S_Y=S(Y)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:restoring_operator_norm}
+    Apply Theorem~\ref{thm:restoring_operator_norm} with
+    $c_X=e^{S_X+w}$, $c_Q=e^{S_{XY}+w}$, and $c_Y=e^{-S_Y+w}$.
+    All three constants are positive, and their square-root product is
+    \begin{align*}
+        \sqrt{e^{S_X+w}e^{S_{XY}+w}e^{-S_Y+w}}
+        &=\exp\bigl((S_X+S_{XY}-S_Y+3w)/2\bigr)
+        =\exp\bigl((\mathcal I+3w)/2\bigr).
+    \end{align*}
+    This is the scalar specialization of the spectral-constant estimate.
+\end{proof}
+
+% Primary source: adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
+% build/sections/09-amplification.tex:374--397.
+% The scalar identity defining I is a hypothesis here. No claim about the
+% complete amplification argument or a purity-to-mutual-information identity
+% is attached to this leaf.

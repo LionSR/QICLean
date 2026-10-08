@@ -706,3 +706,128 @@ $\nu$ factor of $\C[S_{k-1}]$ in the $\lambda$ factor of $\C[S_k]$.
     using Lemma~\ref{lem:hook_recursions}. Hence $d_\lambda=D_\lambda$, and a missing
     removable row would make the first inequality strict.
 \end{proof}
+
+\section{The star operator and branch probabilities}
+
+Let $T_k=\sum_{i\ne j}(i\ j)\in\C[S_k]$, the sum over ordered pairs of distinct copies,
+and let $\kappa_\lambda$ be the scalar by which this central element acts on the
+$\lambda$ factor.
+
+\begin{lemma}[Casimir identity]
+    \label{lem:casimir}
+    \lean{IrrepLabel.transpositionSum_mul_comm, IrrepLabel.casimir,
+        TensorPower.sum_gen_mulVec_gen, TensorPower.casimir_eq}
+    \leanok
+    \uses{thm:schur_weyl_labels}
+    On $(\C^q)^{\otimes k}$, $\sum_{a,b}E_{ab}E_{ba}=kq+T_k$. Consequently, for a
+    label $\lambda$ with at most $q$ rows,
+    $\kappa_\lambda=\sum_a\lambda_a^2+\sum_{a<b}(\lambda_a-\lambda_b)-kq$.
+\end{lemma}
+
+\begin{proof}\leanok
+    A matrix unit summed over its index pairs acts on two distinct copies as their
+    transposition and on one copy as $q$ times the identity. On a highest-weight
+    vector of weight $\lambda$ in $V_\lambda$ the diagonal terms give $\lambda_a^2$,
+    and for $a<b$ the commutator $[E_{ab},E_{ba}]=E_{aa}-E_{bb}$ gives
+    $\lambda_a-\lambda_b$, while the terms with $a>b$ vanish.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 6]
+    \label{thm:schur_part6}
+    \lean{TensorPower.schur_branch_compatible_iff, TensorPower.schur_branch_probability,
+        TensorPower.schur_starOp_eigenvalue,
+        PermutationRepresentation.labelProj_mul_labelProj_firstCopies_ne_zero_iff,
+        PermutationRepresentation.trace_mul_labelProj_mul_labelProj_firstCopies,
+        PermutationRepresentation.starOp_mul_branch,
+        TensorPower.dim_div_dim_eq, TensorPower.dim_div_dim_le}
+    \leanok
+    \uses{thm:dim_eq_hook, lem:casimir, lem:restriction}
+    On $(\C^q)^{\otimes k}$, the full label $\lambda$ and the label $\nu$ of the first
+    $k-1$ copies are compatible precisely when $\lambda$ occurs and
+    $\nu=\lambda-e_i$ for a removable row $i$. For every operator $\rho$ commuting
+    with the copy permutations, $d_\lambda\Tr(\rho\pi^\lambda\pi^\nu)=d_\nu
+    \Tr(\rho\pi^\lambda)$ on that branch, so in a permutation-invariant state the
+    branch has conditional probability
+    \[
+        p_{\lambda,i}=\frac{d_{\lambda-e_i}}{d_\lambda}
+        =\frac{l_i}{k}\prod_{j\ne i}\frac{l_i-1-l_j}{l_i-l_j}\le2^q\frac{l_i}{k}.
+    \]
+    The normalized star operator $J=\frac1k\sum_{j<k}U((j\ k))$ acts on the branch by
+    $(\lambda_i-i)/k$, with rows indexed from one.
+\end{theorem}
+
+\begin{proof}\leanok
+    Compatibility and the probability follow from Lemma~\ref{lem:restriction} and the
+    branching rule of Theorem~\ref{thm:dim_eq_hook}; the quotient is the recursion of
+    Lemma~\ref{lem:hook_recursions}, whose factors with $j<i$ are at most two and with
+    $j>i$ at most one. Since $2kJ=T_k-T_{k-1}$, the star operator acts on the branch
+    by $(\kappa_\lambda-\kappa_\nu)/(2k)$, which Lemma~\ref{lem:casimir} evaluates.
+\end{proof}
+
+\begin{lemma}[Character projection]
+    \label{lem:character_projection}
+    \lean{PermutationRepresentation.trace_groupAlgebraRep,
+        PermutationRepresentation.multiplicity_regular, IrrepLabel.card_mul_coeff_centralIdem,
+        PermutationRepresentation.characterSum_eq}
+    \leanok
+    \uses{lem:restriction}
+    For a permutation representation $\rho$ of a finite group $G$ with multiplicities
+    $m_\lambda$, $\tr\rho(a)=\sum_\lambda m_\lambda\tr W_\lambda(a)$. In the regular
+    representation $m_\lambda=d_\lambda$, so $|G|e_\lambda(g)=d_\lambda\tr
+    W_\lambda(g^{-1})$, and
+    $\sum_g\tr\rho(g^{-1})\,g=\sum_\lambda(|G|m_\lambda/d_\lambda)e_\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first formula is Lemma~\ref{lem:restriction} with $M=1$. In the regular
+    representation the image of a minimal idempotent is a left ideal of
+    $\C[G]$, which the Artin--Wedderburn isomorphism identifies with one row of the
+    $\lambda$ factor. The trace of the regular representation is $|G|$ times the
+    coefficient of the identity; apply it to $e_\lambda g^{-1}$ and compare
+    coefficients.
+\end{proof}
+
+\begin{lemma}[Fixed-point sum]
+    \label{lem:jucys}
+    \lean{TensorPower.fixSum, TensorPower.fixSum_succ}
+    \leanok
+    Let $Z_k=\sum_{\tau\in S_k}f(\tau)\tau$, where $f(\tau)$ is the number of
+    configurations of $(\C^q)^{\otimes k}$ fixed by $\tau$. Then
+    $Z_{k+1}=(q+X_{k+1})Z_k$, with $X_{k+1}=\sum_{j\le k}(j\ k{+}1)$ and $Z_k$
+    embedded through the permutations of the first $k$ copies.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every permutation of $k+1$ copies is uniquely $\sigma$ or $(j\ k{+}1)\sigma$ with
+    $\sigma$ permuting the first $k$ copies; these fix $qf(\sigma)$ and $f(\sigma)$
+    configurations respectively, the last copy being free or determined by copy $j$.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 1]
+    \label{thm:schur_part1_dim}
+    \lean{TensorPower.labelPart_eq_zero_of_labelProj_ne_zero,
+        TensorPower.schur_dim_eq_hookFormula, TensorPower.schur_abs_log_dim_sub_le,
+        TensorPower.schur_multiplicity_eq_weylFormula, TensorPower.multiplicity_eq_weylFormula,
+        TensorPower.sum_branchMult_mul_multiplicity}
+    \leanok
+    \uses{thm:schur_weyl_labels, thm:dim_eq_hook, lem:hook_formula_entropy,
+        lem:character_projection, lem:jucys}
+    The labels occurring in $(\C^q)^{\otimes k}$ are the partitions of $k$ with at most
+    $q$ rows. For them, with $l_i=\lambda_i+q-i$,
+    $\dim V^{(q)}_\lambda=\prod_{i<j}(l_i-l_j)/(j-i)$,
+    $d_\lambda=k!\prod_{i<j}(l_i-l_j)/\prod_il_i!$, and
+    $|\log d_\lambda-kH(\lambda/k)|\le(q^2+q+1)(\log(k+q+2)+1)$. The number of labels and
+    the sum of the multiplicities are at most $(k+1)^{q^2}$ (Lemma~\ref{lem:multiplicity_count}).
+\end{theorem}
+
+\begin{proof}\leanok
+    The labels and $d_\lambda$ come from Theorems~\ref{thm:schur_weyl_labels}
+    and~\ref{thm:dim_eq_hook}, and the asymptotics from
+    Lemma~\ref{lem:hook_formula_entropy}. By Lemma~\ref{lem:character_projection} the
+    fixed-point sum acts on $\lambda$ by $s_\lambda=k!m_\lambda/d_\lambda$. On a branch
+    $\nu=\lambda-e_i$, Lemma~\ref{lem:jucys} and the star-operator eigenvalue of
+    Theorem~\ref{thm:schur_part6} give $s_\lambda=(q+\lambda_i-i)s_\nu=l_is_\nu$.
+    Combined with the quotient $d_\nu/d_\lambda$ of Theorem~\ref{thm:schur_part6} this
+    is the recursion $W_\lambda\prod_{j\ne i}(l_i-1-l_j)=W_\nu\prod_{j\ne i}(l_i-l_j)$ of the
+    Weyl formula, and induction on $k$ gives $m_\lambda=W_\lambda$.
+\end{proof}

@@ -2,11 +2,13 @@
 \label{sec:restoring_operators}
 
 Let $X,Y$ be finite-dimensional Hilbert spaces. Fix a full orthonormal
-basis $\{|x\rangle\}_{x\in\mathsf X}$ of $X$, with associated nonnegative
+basis $\{|x\rangle\}_{x\in\mathsf X}$ of $X$, with associated real
 numbers $p_x$, and a selected set $E\subseteq\mathsf X$ on which $p_x>0$.
-Let $s,e$ be copies of $X$, and fix unit blank vectors
-$|0_s\rangle,|0_e\rangle,|0_X\rangle$. The selected basis can be an
-eigenbasis of a singular marginal: the unselected $p_x$ may vanish.
+Let $s,e$ be copies of $X$, and fix arbitrary blank vectors
+$|0_s\rangle,|0_e\rangle,|0_X\rangle$. In the source application the
+blanks are unit vectors and $p_x$ form a nonnegative marginal spectrum;
+zero eigenvalues are allowed outside $E$. The Gram identities below do
+not require blank normalization.
 If $U$ has the chosen eigenvectors as columns, physical matrices are
 written in these coordinates by $Q\mapsto(U^\dagger\otimes I)Q(U\otimes I)$.
 The tensor order is $s\otimes(X\otimes Y)$ for the restoring operator
@@ -14,19 +16,25 @@ and $(s\otimes e)\otimes(X\otimes Y)$ for the column operator.
 
 \begin{definition}[Restoring and column operators]
     \label{def:restoring_operators}
-    \lean{Entropy.restoringBasisCoordinates, Entropy.blankProjection,
-        Entropy.basisColumn, Entropy.pairedBlank, Entropy.columnGrouping,
+    \lean{Entropy.restoringBasisCoordinates, Entropy.blankOuterProduct,
+        Entropy.basisColumn, Entropy.pairedBlank,
+        Entropy.restoringAncillaGrouping, Entropy.restoringOperatorWithAncilla,
         Entropy.restoringWeight, Entropy.restoringBlock,
         Entropy.restoringOperator, Entropy.columnOperator, Entropy.restoringGram}
-    For orthogonal projections $Q$ on $X\otimes Y$ and $T$ on $Y$, define
+    \leanok
+    For matrices $Q$ on $X\otimes Y$ and $T$ on $Y$, define
     \begin{align}
         R_0&=\sum_{x\in E}p_x^{-1/2}|x\rangle\langle0_s|
             \otimes Q\bigl(|x\rangle\langle0_X|\otimes T\bigr),
-            \label{eq:restore_operator}\\
+            \label{eq:restore_operator}
+    \end{align}
+    \begin{align}
         B_0&=\sum_{x\in E}\sum_{y\in\mathsf X}p_x^{-1/2}
             \bigl(|x\rangle\langle0_s|\otimes|y\rangle\langle0_e|\bigr)
             \otimes Q\bigl(|x\rangle\langle y|\otimes T\bigr),
-            \label{eq:restore_column}\\
+            \label{eq:restore_column}
+    \end{align}
+    \begin{align}
         B_Y&=\sum_{x\in E}p_x^{-1}T\langle x|Q|x\rangle T.
             \label{eq:restore_gram}
     \end{align}
@@ -38,23 +46,40 @@ and $(s\otimes e)\otimes(X\otimes Y)$ for the column operator.
 \begin{theorem}[Gram matrices of the restoring operators]
     \label{thm:restoring_grams}
     \lean{Entropy.restoringOperator_gram, Entropy.columnOperator_gram,
-        Entropy.restoringGram_posSemidef}
+        Entropy.restoringGram_posSemidef, Entropy.restoringOperatorWithAncilla_gram}
+    \leanok
     \uses{def:restoring_operators}
+    Suppose $Q^\dagger=Q$, $Q^2=Q$, and $T^\dagger=T$.
     The matrix $B_Y$ is positive semidefinite and
     \begin{align}
         R_0^\dagger R_0
             &=|0_s\rangle\langle0_s|\otimes
               \bigl(|0_X\rangle\langle0_X|\otimes B_Y\bigr),
-              \label{eq:restore_rgram}\\
+              \label{eq:restore_rgram}
+    \end{align}
+    \begin{align}
         B_0^\dagger B_0
             &=\bigl(|0_s\rangle\langle0_s|\otimes
                     |0_e\rangle\langle0_e|\bigr)
                     \otimes(I_X\otimes B_Y).
               \label{eq:restore_bgram}
     \end{align}
+    Transport $R_0\otimes I_e$ by the permutation
+    \begin{align*}
+        ((s,e),(x,y))\longmapsto((s,(x,y)),e)
+    \end{align*}
+    to obtain $\widehat R_0$. Then
+    \begin{align}
+        \widehat R_0^\dagger\widehat R_0
+        &=\bigl(|0_s\rangle\langle0_s|\otimes I_e\bigr)
+          \otimes\bigl(|0_X\rangle\langle0_X|\otimes B_Y\bigr).
+    \end{align}
     No commutation between $Q$ and $I_X\otimes T$ is required.
+    More generally, positivity of $B_Y$ only requires $Q\ge0$ and
+    $T^\dagger=T$. The source uses the special case in which $T$
+    is also an orthogonal projection.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Orthogonality of the ancillary output vectors removes unequal pairs
     of summation indices. Since $Q^\dagger Q=Q$ and $T^\dagger=T$,
     \begin{align}
@@ -66,10 +91,94 @@ and $(s\otimes e)\otimes(X\otimes Y)$ for the column operator.
     Taking $b=0_X$ gives~(\ref{eq:restore_rgram}); taking $b=y$ and
     using $\sum_{y\in\mathsf X}|y\rangle\langle y|=I_X$ gives
     (\ref{eq:restore_bgram}). Each summand of~(\ref{eq:restore_gram}) is
-    a positive scalar multiple of a compression of the positive matrix $Q$.
+    a positive scalar multiple of the Hermitian congruence
+    $T\langle x|Q|x\rangle T$ of the positive compression
+    $\langle x|Q|x\rangle$.
+\end{proof}
+
+\subsection{The reduced matrix}
+
+\begin{lemma}[Partial-trace cyclicity and order]
+    \label{lem:restoring_partial_trace}
+    \lean{Matrix.partialTraceRight_mul_one_kronecker, Matrix.partialTraceRight_mono}
+    \leanok
+    For arbitrary matrices $A$ on $X\otimes Y$ and $T$ on $Y$,
+    \begin{align}
+        \operatorname{tr}_Y\bigl(A(I_X\otimes T)\bigr)
+        &=\operatorname{tr}_Y\bigl((I_X\otimes T)A\bigr).
+        \label{eq:restoring_partial_cyclic}
+    \end{align}
+    If $A\le B$, then $\operatorname{tr}_Y A\le\operatorname{tr}_Y B$.
+\end{lemma}
+\begin{proof}\leanok
+    The $(i,j)$ entry on the left of~(\ref{eq:restoring_partial_cyclic}) is
+    \begin{align}
+        \sum_{a,b}A_{ia,jb}T_{ba}
+        =\sum_{a,b}T_{ab}A_{ib,ja}.
+    \end{align}
+    This is the entry on the right. Positivity of the partial trace gives
+    $\operatorname{tr}_Y(B-A)\ge0$ whenever $B-A\ge0$.
+\end{proof}
+
+\begin{lemma}[Compression on the discarded factor]
+    \label{lem:restoring_partial_compression}
+    \lean{Matrix.partialTraceRight_projection_sandwich,
+        Matrix.partialTraceRight_projection_sandwich_le}
+    \leanok
+    Let $T$ be an orthogonal projection and $K=I_X\otimes T$.
+    For every matrix $A$,
+    \begin{align}
+        \operatorname{tr}_Y(KAK)&=\operatorname{tr}_Y(KA).
+        \label{eq:restoring_partial_compression}
+    \end{align}
+    If $A\ge0$, then $\operatorname{tr}_Y(KAK)\le\operatorname{tr}_Y A$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:restoring_partial_trace}
+    Cyclicity on $Y$ and $K^2=K$ prove the identity. For $J=I-K$,
+    \begin{align}
+        \operatorname{tr}_Y A
+        &=\operatorname{tr}_Y(KAK)+\operatorname{tr}_Y(JAJ),
+        &\operatorname{tr}_Y(JAJ)&\ge0.
+    \end{align}
+    This proves the inequality without requiring $A$ to commute with $K$.
+\end{proof}
+
+\begin{definition}[Restoring marginal]
+    \label{def:restoring_marginal}
+    \lean{Matrix.restoringMarginal}
+    \leanok
+    For matrices $\rho,Q$ on $X\otimes Y$ and $T$ on $Y$, set
+    \begin{align}
+        M_X=\operatorname{tr}_Y\bigl((I_X\otimes T)\rho Q\bigr).
+        \label{eq:restoring_marginal}
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Order bound for the restoring marginal]
+    \label{thm:restoring_marginal_order}
+    \lean{Matrix.restoringMarginal_nonneg, Matrix.restoringMarginal_le}
+    \leanok
+    \uses{def:restoring_marginal}
+    Suppose $\rho\ge0$, $Q$ and $T$ are orthogonal projections, and
+    $\rho Q=Q\rho$. Then
+    \begin{align}
+        0\le M_X\le\operatorname{tr}_Y\rho.
+        \label{eq:restoring_marginal_order}
+    \end{align}
+    No commutation between $Q$ and $I_X\otimes T$ is assumed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:restoring_partial_trace, lem:restoring_partial_compression}
+    Put $A=\rho Q$ and $K=I_X\otimes T$. Commutation gives
+    $A\ge0$ and $\rho-A=\rho(I-Q)\ge0$. Therefore
+    \begin{align}
+        0\le M_X=\operatorname{tr}_Y(KAK)
+        \le\operatorname{tr}_Y A\le\operatorname{tr}_Y\rho.
+    \end{align}
 \end{proof}
 
 % Primary source: adc7f1241b42e322a6451854ab7e4b4c146bf78a,
 % preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
-% build/sections/09-amplification.tex:324--392.
+% build/sections/09-amplification.tex:324--446.
 % The direct leaf is connected to the shared chapter router by its owner.
