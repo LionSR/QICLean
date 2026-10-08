@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.ContractionChain
 import QICLean.Analysis.SubnormalizedPureStateError
 import QICLean.Analysis.MatrixFramePerturbation
+import QICLean.Analysis.RootChannel
 
 /-!
 # Chronological accumulation of idle garbage registers
@@ -37,26 +38,10 @@ universe u v
 
 /-- The previously appended inventory, in chronological order. The empty
 inventory is a one-dimensional scalar register. -/
-/-
-Provenance-ID: p09-qic-garbage-garbageinventory
-Downstream declaration: Matrix.garbageInventory
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 @[reducible] def garbageInventory (B : ℕ → Type u) : ℕ → Type u
   | 0 => PUnit
   | t + 1 => garbageInventory B t × B t
 
-/-
-Provenance-ID: p09-qic-garbage-garbageinventoryfintype
-Downstream declaration: Matrix.garbageInventoryFintype
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 @[reducible] instance garbageInventoryFintype (B : ℕ → Type u) [∀ t, Fintype (B t)] (t : ℕ) :
     Fintype (garbageInventory B t) := by
   induction t with
@@ -65,14 +50,6 @@ Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c1
     letI := ih
     exact inferInstanceAs (Fintype (garbageInventory B t × B t))
 
-/-
-Provenance-ID: p09-qic-garbage-garbageinventorydecidableeq
-Downstream declaration: Matrix.garbageInventoryDecidableEq
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 @[reducible] instance garbageInventoryDecidableEq (B : ℕ → Type u)
     [∀ t, DecidableEq (B t)] (t : ℕ) :
     DecidableEq (garbageInventory B t) := by
@@ -85,39 +62,15 @@ Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c1
 variable {m n b c : Type*}
 
 /-- Coordinate tensor product of two arbitrary finite Euclidean vectors. -/
-/-
-Provenance-ID: p09-qic-garbage-euclideantensorvector
-Downstream declaration: Matrix.euclideanTensorVector
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 def euclideanTensorVector (v : EuclideanSpace ℂ m) (w : EuclideanSpace ℂ n) :
     EuclideanSpace ℂ (m × n) := WithLp.toLp 2 (fun p ↦ v p.1 * w p.2)
 
 @[simp]
-/-
-Provenance-ID: p09-qic-garbage-euclideantensorvector_apply
-Downstream declaration: Matrix.euclideanTensorVector_apply
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem euclideanTensorVector_apply (v : EuclideanSpace ℂ m)
     (w : EuclideanSpace ℂ n) (i : m) (j : n) :
     euclideanTensorVector v w (i, j) = v i * w j := rfl
 
 /-- Tensor products multiply actual vector norms, with no nonzero assumption. -/
-/-
-Provenance-ID: p09-qic-garbage-norm_euclideantensorvector
-Downstream declaration: Matrix.norm_euclideanTensorVector
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem norm_euclideanTensorVector [Fintype m] [Fintype n] (v : EuclideanSpace ℂ m)
     (w : EuclideanSpace ℂ n) : ‖euclideanTensorVector v w‖ = ‖v‖ * ‖w‖ := by
   apply (sq_eq_sq₀ (norm_nonneg _) (mul_nonneg (norm_nonneg _) (norm_nonneg _))).mp
@@ -126,14 +79,6 @@ theorem norm_euclideanTensorVector [Fintype m] [Fintype n] (v : EuclideanSpace �
   rw [Finset.sum_mul_sum]
 
 /-- Outer products retain the literal tensor-factor placement. -/
-/-
-Provenance-ID: p09-qic-garbage-euclideanouterproduct_tensorvector
-Downstream declaration: Matrix.euclideanOuterProduct_tensorVector
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem euclideanOuterProduct_tensorVector (v : EuclideanSpace ℂ m)
     (w : EuclideanSpace ℂ n) :
     euclideanOuterProduct (euclideanTensorVector v w) (euclideanTensorVector v w) =
@@ -144,14 +89,6 @@ theorem euclideanOuterProduct_tensorVector (v : EuclideanSpace ℂ m)
   ring
 
 /-- The trace of the actual pure density is the squared Euclidean norm. -/
-/-
-Provenance-ID: p09-qic-garbage-trace_euclideanouterproduct_self
-Downstream declaration: Matrix.trace_euclideanOuterProduct_self
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem trace_euclideanOuterProduct_self [Fintype n] (w : EuclideanSpace ℂ n) :
     (euclideanOuterProduct w w).trace = (‖w‖ : ℂ) ^ 2 := by
   calc
@@ -162,14 +99,6 @@ theorem trace_euclideanOuterProduct_self [Fintype n] (w : EuclideanSpace ℂ n) 
 
 /-- Discarding a fresh normalized pure register preserves the exact density,
 also for zero or subnormalized working vectors. -/
-/-
-Provenance-ID: p09-qic-garbage-partialtraceright_tensorvector
-Downstream declaration: Matrix.partialTraceRight_tensorVector
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem partialTraceRight_tensorVector [Fintype n] (v : EuclideanSpace ℂ m)
     (w : EuclideanSpace ℂ n) (hw : ‖w‖ = 1) :
     partialTraceRight (euclideanOuterProduct
@@ -183,40 +112,16 @@ variable [Fintype n] [Fintype c] [DecidableEq c]
 
 /-- Lift a map that creates a new register, leaving every earlier register
 idle. The output order is memory, earlier inventory, fresh register. -/
-/-
-Provenance-ID: p09-qic-garbage-idlegarbagelift
-Downstream declaration: Matrix.idleGarbageLift
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 def idleGarbageLift (A : Matrix (m × b) n ℂ) :
     Matrix (m × (c × b)) (n × c) ℂ :=
   fun y x ↦ A (y.1, y.2.2) x.1 * if y.2.1 = x.2 then 1 else 0
 
 /-- Append the specified pure vector after an actual working-memory gate. -/
-/-
-Provenance-ID: p09-qic-garbage-appendgarbagegate
-Downstream declaration: Matrix.appendGarbageGate
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 def appendGarbageGate (G : Matrix m n ℂ) (γ : EuclideanSpace ℂ b) :
     Matrix (m × b) n ℂ := fun y x ↦ G y.1 x * γ y.2
 
 /-- The idle coefficient lift acts only on the working memory and fresh
 register, without altering any earlier inventory coordinate. -/
-/-
-Provenance-ID: p09-qic-garbage-idlegarbagelift_mulvec
-Downstream declaration: Matrix.idleGarbageLift_mulVec
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem idleGarbageLift_mulVec (A : Matrix (m × b) n ℂ)
     (ξ : EuclideanSpace ℂ (n × c)) (y : m) (k : c) (e : b) :
     (idleGarbageLift A *ᵥ WithLp.ofLp ξ) (y, (k, e)) =
@@ -226,14 +131,6 @@ theorem idleGarbageLift_mulVec (A : Matrix (m × b) n ℂ)
     mul_ite, ite_mul]
 
 /-- One chronological ideal stage preserves the tensor factorization. -/
-/-
-Provenance-ID: p09-qic-garbage-idlegarbagelift_append_mulvec
-Downstream declaration: Matrix.idleGarbageLift_append_mulVec
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem idleGarbageLift_append_mulVec [DecidableEq n] (G : Matrix m n ℂ)
     (γ : EuclideanSpace ℂ b) (v : EuclideanSpace ℂ n) (w : EuclideanSpace ℂ c) :
     toEuclideanLin (idleGarbageLift (appendGarbageGate G γ))
@@ -250,14 +147,6 @@ theorem idleGarbageLift_append_mulVec [DecidableEq n] (G : Matrix m n ℂ)
 omit [Fintype n] [Fintype c] in
 /-- The idle lift is exactly a rectangular identity amplification followed
 by the stated output-register permutation. -/
-/-
-Provenance-ID: p09-qic-garbage-idlegarbagelift_eq_kronecker_submatrix
-Downstream declaration: Matrix.idleGarbageLift_eq_kronecker_submatrix
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem idleGarbageLift_eq_kronecker_submatrix (A : Matrix (m × b) n ℂ) :
     idleGarbageLift (c := c) A =
       (A ⊗ₖ (1 : Matrix c c ℂ)).submatrix
@@ -267,14 +156,6 @@ theorem idleGarbageLift_eq_kronecker_submatrix (A : Matrix (m × b) n ℂ) :
 
 /-- Keeping earlier inventories idle introduces no dimension factor into
 the operator norm, even for empty memory or inventory spaces. -/
-/-
-Provenance-ID: p09-qic-garbage-norm_idlegarbagelift_le
-Downstream declaration: Matrix.norm_idleGarbageLift_le
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem norm_idleGarbageLift_le [Fintype m] [Fintype b] [DecidableEq n]
     (A : Matrix (m × b) n ℂ) : ‖idleGarbageLift (c := c) A‖ ≤ ‖A‖ := by
   rw [l2_opNorm_def]
@@ -299,14 +180,6 @@ theorem norm_idleGarbageLift_le [Fintype m] [Fintype b] [DecidableEq n]
 
 omit [Fintype n] [Fintype c] in
 /-- The idle lift respects actual differences of replacement coefficients. -/
-/-
-Provenance-ID: p09-qic-garbage-idlegarbagelift_sub
-Downstream declaration: Matrix.idleGarbageLift_sub
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem idleGarbageLift_sub (A A' : Matrix (m × b) n ℂ) :
     idleGarbageLift (c := c) (A - A') = idleGarbageLift A - idleGarbageLift A' := by
   ext y x
@@ -314,14 +187,6 @@ theorem idleGarbageLift_sub (A A' : Matrix (m × b) n ℂ) :
 
 /-- A replacement's operator error is preserved when the earlier garbage
 is kept idle; no restriction is imposed on its correlations. -/
-/-
-Provenance-ID: p09-qic-garbage-norm_idlegarbagelift_sub_le
-Downstream declaration: Matrix.norm_idleGarbageLift_sub_le
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem norm_idleGarbageLift_sub_le [Fintype m] [Fintype b] [DecidableEq n]
     (A A' : Matrix (m × b) n ℂ) :
     ‖idleGarbageLift (c := c) A - idleGarbageLift A'‖ ≤ ‖A - A'‖ := by
@@ -331,14 +196,6 @@ theorem norm_idleGarbageLift_sub_le [Fintype m] [Fintype b] [DecidableEq n]
 omit [Fintype c] [DecidableEq c] in
 /-- Appending a pure register acts on every actual input by a coordinate
 tensor product, without requiring unit norm. -/
-/-
-Provenance-ID: p09-qic-garbage-appendgarbagegate_mulvec
-Downstream declaration: Matrix.appendGarbageGate_mulVec
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem appendGarbageGate_mulVec [DecidableEq n] (G : Matrix m n ℂ)
     (γ : EuclideanSpace ℂ b) (v : EuclideanSpace ℂ n) :
     toEuclideanLin (appendGarbageGate G γ) v =
@@ -351,14 +208,6 @@ theorem appendGarbageGate_mulVec [DecidableEq n] (G : Matrix m n ℂ)
 omit [Fintype c] [DecidableEq c] in
 /-- The norm cost of appending an arbitrary pure register is its vector
 norm, rather than its dimension. -/
-/-
-Provenance-ID: p09-qic-garbage-norm_appendgarbagegate_le
-Downstream declaration: Matrix.norm_appendGarbageGate_le
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem norm_appendGarbageGate_le [Fintype m] [Fintype b] [DecidableEq n]
     (G : Matrix m n ℂ) (γ : EuclideanSpace ℂ b) :
     ‖appendGarbageGate G γ‖ ≤ ‖G‖ * ‖γ‖ := by
@@ -372,14 +221,6 @@ theorem norm_appendGarbageGate_le [Fintype m] [Fintype b] [DecidableEq n]
     (by ring)
 
 /-- The final identity amplification leaves the entire inventory unchanged. -/
-/-
-Provenance-ID: p09-qic-garbage-kronecker_one_tensorvector
-Downstream declaration: Matrix.kronecker_one_tensorVector
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem kronecker_one_tensorVector [DecidableEq n] (K : Matrix m n ℂ)
     (v : EuclideanSpace ℂ n) (w : EuclideanSpace ℂ c) :
     toEuclideanLin (K ⊗ₖ (1 : Matrix c c ℂ)) (euclideanTensorVector v w) =
@@ -393,51 +234,18 @@ theorem kronecker_one_tensorVector [DecidableEq n] (K : Matrix m n ℂ)
     Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ ↦ by ring
 
-/-- An arbitrary rectangular readout amplified by the garbage identity has
-the same operator bound, including empty spaces. -/
-/-
-Provenance-ID: p09-qic-garbage-norm_kronecker_one_rectangular_le
-Downstream declaration: Matrix.norm_kronecker_one_rectangular_le
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
-theorem norm_kronecker_one_rectangular_le [Fintype m] [DecidableEq n]
-    (K : Matrix m n ℂ) : ‖K ⊗ₖ (1 : Matrix c c ℂ)‖ ≤ ‖K‖ := by
-  rw [l2_opNorm_def]
-  apply ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg K)
-  intro ξ
-  exact l2_opNorm_kronecker_one_mulVec_le K ξ
-
 variable {D : ℕ → Type v} {B : ℕ → Type u}
   [∀ t, Fintype (D t)] [∀ t, DecidableEq (D t)]
   [∀ t, Fintype (B t)] [∀ t, DecidableEq (B t)]
 
 /-- Product of the supplied fresh inventory vectors through the first `t`
 stages; the initial scalar factor has coefficient one. -/
-/-
-Provenance-ID: p09-qic-garbage-cumulativegarbagevector
-Downstream declaration: Matrix.cumulativeGarbageVector
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 def cumulativeGarbageVector (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) :
     (t : ℕ) → EuclideanSpace ℂ (garbageInventory B t)
   | 0 => WithLp.toLp 2 (fun _ ↦ 1)
   | t + 1 => euclideanTensorVector (cumulativeGarbageVector γ t) (γ t)
 
 /-- The concrete chain of ideal gates with all accumulated inventories idle. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalgarbagechain
-Downstream declaration: Matrix.chronologicalGarbageChain
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 def chronologicalGarbageChain
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (t : ℕ) :
@@ -447,14 +255,6 @@ def chronologicalGarbageChain
 
 /-- Actual replacement stages lifted into the same chronological inventory.
 The supplied maps may create correlations with their fresh output registers. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalreplacementchain
-Downstream declaration: Matrix.chronologicalReplacementChain
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 def chronologicalReplacementChain
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ) (t : ℕ) :
     Matrix (D (t + 1) × garbageInventory B (t + 1))
@@ -462,14 +262,6 @@ def chronologicalReplacementChain
 
 /-- The lifted replacement's actual error against the ideal fresh-inventory
 gate is bounded by its original per-gate error, independent of old garbage. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalreplacementchain_sub_norm_le
-Downstream declaration: Matrix.chronologicalReplacementChain_sub_norm_le
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalReplacementChain_sub_norm_le
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
@@ -479,14 +271,6 @@ theorem chronologicalReplacementChain_sub_norm_le
 
 /-- Contractive replacement gates remain contractive after all earlier
 inventories are kept idle. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalreplacementchain_norm_le_one
-Downstream declaration: Matrix.chronologicalReplacementChain_norm_le_one
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalReplacementChain_norm_le_one
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
     (hA : ∀ t, ‖A t‖ ≤ 1) (t : ℕ) : ‖chronologicalReplacementChain A t‖ ≤ 1 :=
@@ -495,14 +279,6 @@ theorem chronologicalReplacementChain_norm_le_one
 omit [∀ t, DecidableEq (B t)] in
 /-- Every accumulated ideal inventory is normalized when its supplied
 stage vectors are normalized. No dimension lower bounds are imposed. -/
-/-
-Provenance-ID: p09-qic-garbage-norm_cumulativegarbagevector
-Downstream declaration: Matrix.norm_cumulativeGarbageVector
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem norm_cumulativeGarbageVector
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1) (t : ℕ) :
     ‖cumulativeGarbageVector γ t‖ = 1 := by
@@ -515,14 +291,6 @@ theorem norm_cumulativeGarbageVector
 
 /-- Exact evaluation of the augmented chronological prefix, without any
 normalization or contraction assumptions on the gates or vectors. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalgarbagechain_prefix_vector
-Downstream declaration: Matrix.chronologicalGarbageChain_prefix_vector
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalGarbageChain_prefix_vector
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (ψ : EuclideanSpace ℂ (D 0)) (t : ℕ) :
@@ -540,14 +308,6 @@ theorem chronologicalGarbageChain_prefix_vector
 
 /-- Literal discarded density of the augmented ideal circuit equals the
 original circuit density. The working input need not be normalized. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalgarbagechain_discard_density
-Downstream declaration: Matrix.chronologicalGarbageChain_discard_density
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalGarbageChain_discard_density
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1)
@@ -564,14 +324,6 @@ theorem chronologicalGarbageChain_discard_density
 
 /-- The actual ideal augmented stages are contractions whenever the
 working gates contract and the supplied fresh vectors are normalized. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalgarbagechain_norm_le_one
-Downstream declaration: Matrix.chronologicalGarbageChain_norm_le_one
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalGarbageChain_norm_le_one
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t))
@@ -584,14 +336,6 @@ variable {P E : Type*} [Fintype E]
 
 /-- Actual readout of the augmented prefix, acting identically on the
 accumulated inventory. Its output order is `(physical, owned)`, then inventory. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalgarbagereadout
-Downstream declaration: Matrix.chronologicalGarbageReadout
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 def chronologicalGarbageReadout
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (ψ : EuclideanSpace ℂ (D 0)) (t : ℕ)
@@ -604,14 +348,6 @@ def chronologicalGarbageReadout
 
 omit [Fintype E] in
 /-- Exact final vector factorization for the common physical readout. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalgarbagereadout_eq
-Downstream declaration: Matrix.chronologicalGarbageReadout_eq
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalGarbageReadout_eq
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (ψ : EuclideanSpace ℂ (D 0)) (t : ℕ)
@@ -626,14 +362,6 @@ theorem chronologicalGarbageReadout_eq
 /-- Discard the actual accumulated inventories and the originally owned
 readout register: the resulting physical density equals the original circuit's
 readout density. No gate, readout or input normalization is needed. -/
-/-
-Provenance-ID: p09-qic-garbage-chronologicalgarbagereadout_discard_density
-Downstream declaration: Matrix.chronologicalGarbageReadout_discard_density
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalGarbageReadout_discard_density
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1)

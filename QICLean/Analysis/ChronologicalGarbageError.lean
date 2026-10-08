@@ -40,14 +40,6 @@ variable {D B : ℕ → Type*}
 
 /-- Use the supplied replacement at marked stages, rescaled by `1 + δ`;
 every other stage is exactly the ideal gate with its fresh pure inventory. -/
-/-
-Provenance-ID: p09-qic-gerror-markedchronologicalgarbagechain
-Downstream declaration: Matrix.markedChronologicalGarbageChain
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 def markedChronologicalGarbageChain
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
@@ -62,14 +54,6 @@ variable {P E : Type*} [Fintype E]
 /-- Physical density of an actual augmented gate chain. The common readout
 acts as `K ⊗ I`; first discard the accumulated inventory, then the originally
 owned readout register. The initial inventory has the scalar coefficient one. -/
-/-
-Provenance-ID: p09-qic-gerror-chronologicalgarbagedensity
-Downstream declaration: Matrix.chronologicalGarbageDensity
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 def chronologicalGarbageDensity
     (H : (t : ℕ) → Matrix (D (t + 1) × garbageInventory B (t + 1))
       (D t × garbageInventory B t) ℂ)
@@ -82,14 +66,6 @@ def chronologicalGarbageDensity
 
 /-- The actual ideal augmented circuit has exactly the original physical
 density, for arbitrary gates, input and common readout. -/
-/-
-Provenance-ID: p09-qic-gerror-chronologicalgarbagedensity_ideal
-Downstream declaration: Matrix.chronologicalGarbageDensity_ideal
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalGarbageDensity_ideal
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1)
@@ -103,14 +79,6 @@ theorem chronologicalGarbageDensity_ideal
 /-- An empty marked set retains the original physical density exactly,
 regardless of the circuit length, replacement maps or approximation scale. -/
 @[simp]
-/-
-Provenance-ID: p09-qic-gerror-chronologicalgarbagedensity_marked_empty
-Downstream declaration: Matrix.chronologicalGarbageDensity_marked_empty
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalGarbageDensity_marked_empty
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
@@ -128,14 +96,6 @@ theorem chronologicalGarbageDensity_marked_empty
 /-- Zero stages give the original physical density even when future fresh
 spaces are empty and their vectors are unnormalized. No gate is evaluated. -/
 @[simp]
-/-
-Provenance-ID: p09-qic-gerror-chronologicalgarbagedensity_zero
-Downstream declaration: Matrix.chronologicalGarbageDensity_zero
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem chronologicalGarbageDensity_zero
     (H : (t : ℕ) → Matrix (D (t + 1) × garbageInventory B (t + 1))
       (D t × garbageInventory B t) ℂ)
@@ -157,14 +117,6 @@ variable [Fintype P] [DecidableEq P]
 need approximate their ideal appended-vector gates. The marked set may contain
 stages beyond `n`; they merely weaken the bound. Source: Theorem 5.2,
 `eq:compression-effect-circuit-error`, `04-compression.tex:199–229`. -/
-/-
-Provenance-ID: p09-qic-gerror-rectangulartracenorm_chronologicalgarbagedensity_marked_sub_le
-Downstream declaration: Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
@@ -183,7 +135,7 @@ theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le
     dsimp only [ψ']
     rw [norm_euclideanTensorVector, norm_cumulativeGarbageVector γ hγ 0, mul_one]
     exact hψ
-  have hK' : ‖K'‖ ≤ 1 := (norm_kronecker_one_rectangular_le K).trans hK
+  have hK' : ‖K'‖ ≤ 1 := (l2_opNorm_kronecker_one_le K).trans hK
   have herr : ∀ t ∈ S,
       ‖chronologicalReplacementChain A t - chronologicalGarbageChain G γ t‖ ≤ δ :=
     fun t ht ↦ (chronologicalReplacementChain_sub_norm_le A G γ t).trans (herror t ht)
@@ -198,14 +150,6 @@ theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le
 
 /-- The paper's approximation scale `ε / (8 |S|)` gives the actual physical
 density budget `ε / 2`, counting only marked occurrences. -/
-/-
-Provenance-ID: p09-qic-gerror-rectangulartracenorm_chronologicalgarbagedensity_marked_sub_le_half
-Downstream declaration: Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)
@@ -229,14 +173,6 @@ theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half
 /-- Empty marked set has zero absolute error against the original physical
 density; no contraction or input normalization hypothesis is needed. -/
 @[simp]
-/-
-Provenance-ID: p09-qic-gerror-rectangulartracenorm_chronologicalgarbagedensity_marked_empty
-Downstream declaration: Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_empty
-Source: September 24, 2026.
-Label: eq:compression-effect-circuit-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L199-L229
--/
 theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_empty
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (A : (t : ℕ) → Matrix (D (t + 1) × B t) (D t) ℂ)

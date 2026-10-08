@@ -61,7 +61,7 @@ example : Matrix.rectangularTraceNorm
     (fun _ ↦ Matrix.l2_opNorm_one_le)
     (by intro t _; simp)
     (by norm_num)
-    (Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self _
+    (Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one
       (Matrix.basisRegisterInjection_conjTranspose_mul_self (0 : Fin 1)))
 
 -- Zero input gives exactly zero actual density without input normalization.

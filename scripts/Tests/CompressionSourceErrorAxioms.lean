@@ -13,7 +13,6 @@ import QICLean.Probability.WeightedSourceError
 #print axioms Matrix.basisRegisterInjection
 #print axioms Matrix.basisRegisterInjection_conjTranspose_mul_self
 #print axioms Matrix.basisRegisterInjection_sandwich_eq_single_kronecker
-#print axioms Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self
 #print axioms Matrix.rectangularTraceNorm_add_le
 #print axioms Matrix.rectangularTraceNorm_conjTranspose
 #print axioms Matrix.rectangularTraceNorm_conjTranspose_le

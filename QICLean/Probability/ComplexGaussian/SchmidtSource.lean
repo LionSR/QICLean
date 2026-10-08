@@ -48,14 +48,6 @@ The weights have their actual norm-squared mass, including the zero vector.
 Source: `eq:compression-random-source`, `04-compression.tex:281–289`;
 Schmidt existence is supplied by Wolf Proposition 1.1 through
 `Matrix.exists_isSchmidtDecomposition`. -/
-/-
-Provenance-ID: p09-qic-schmidt-source-exists_schmidtsourceframes
-Downstream declaration: QICLean.ComplexGaussian.exists_schmidtSourceFrames
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem exists_schmidtSourceFrames {L R : Type*} [Fintype L] [Fintype R]
     (ψ : EuclideanSpace ℂ (L × R)) :
     ∃ (lam : Fin (min (Fintype.card L) (Fintype.card R)) → ℝ)
@@ -95,14 +87,6 @@ theorem exists_schmidtSourceFrames {L R : Type*} [Fintype L] [Fintype R]
 
 /-- Unit-norm source vectors give actual normalized Schmidt probability lists.
 Source: `eq:compression-random-source`, `04-compression.tex:281–290`. -/
-/-
-Provenance-ID: p09-qic-schmidt-source-exists_probability_schmidtsourceframes
-Downstream declaration: QICLean.ComplexGaussian.exists_probability_schmidtSourceFrames
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem exists_probability_schmidtSourceFrames {L R : Type*} [Fintype L] [Fintype R]
     (ψ : EuclideanSpace ℂ (L × R)) (hψ : ‖ψ‖ = 1) :
     ∃ (lam : Fin (min (Fintype.card L) (Fintype.card R)) → ℝ)
@@ -117,14 +101,6 @@ theorem exists_probability_schmidtSourceFrames {L R : Type*} [Fintype L] [Fintyp
 Schmidt weights and local isometries obtained from the genuine Schmidt theorem.
 The ket and bra endpoint dimensions may differ. Source:
 `eq:compression-random-source`, `04-compression.tex:279–309`. -/
-/-
-Provenance-ID: p09-qic-schmidt-source-exists_schmidtsourcereplacement
-Downstream declaration: QICLean.ComplexGaussian.exists_schmidtSourceReplacement
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem exists_schmidtSourceReplacement {L R Lt Rt : Type*}
     [Fintype L] [Fintype R] [Fintype Lt] [Fintype Rt]
     (ψ : EuclideanSpace ℂ (L × R)) (φ : EuclideanSpace ℂ (Lt × Rt))

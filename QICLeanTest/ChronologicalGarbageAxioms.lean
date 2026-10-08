@@ -27,7 +27,6 @@ import QICLean.Analysis.ChronologicalGarbage
 #print axioms Matrix.appendGarbageGate_mulVec
 #print axioms Matrix.norm_appendGarbageGate_le
 #print axioms Matrix.kronecker_one_tensorVector
-#print axioms Matrix.norm_kronecker_one_rectangular_le
 #print axioms Matrix.cumulativeGarbageVector
 #print axioms Matrix.chronologicalGarbageChain
 #print axioms Matrix.chronologicalReplacementChain

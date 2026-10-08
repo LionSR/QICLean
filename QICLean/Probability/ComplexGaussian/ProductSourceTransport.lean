@@ -36,28 +36,12 @@ local instance {m n : Type*} [Fintype m] [Fintype n] : ContinuousENorm (Matrix m
 
 /-- The ambient Schmidt vector in explicit local bases.
 Source: `04-compression.tex:281–289`. -/
-/-
-Provenance-ID: p09-qic-product-transport-ambientschmidtvector
-Downstream declaration: QICLean.ComplexGaussian.ambientSchmidtVector
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 def ambientSchmidtVector (lam : A → ℝ) (E : Matrix W A ℂ) (F : Matrix X A ℂ)
     (p : W × X) : ℂ :=
   ∑ a, (Real.sqrt (lam a) : ℂ) * E p.1 a * F p.2 a
 
 /-- The actual ambient ket/bra outer product specified by the two Schmidt representations.
 Source: `eq:compression-random-source`, `04-compression.tex:281–305`. -/
-/-
-Provenance-ID: p09-qic-product-transport-ambientschmidtsource
-Downstream declaration: QICLean.ComplexGaussian.ambientSchmidtSource
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 def ambientSchmidtSource (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
     Matrix (W × X) (Y × Z) ℂ :=
@@ -66,14 +50,6 @@ def ambientSchmidtSource (lam : A → ℝ) (mu : C → ℝ)
 
 /-- Transport a rectangular coordinate source through its ket and bra endpoint bases.
 Source: `eq:compression-random-source`, `04-compression.tex:294–309`. -/
-/-
-Provenance-ID: p09-qic-product-transport-sourcetransport
-Downstream declaration: QICLean.ComplexGaussian.sourceTransport
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 def sourceTransport (E : Matrix W A ℂ) (F : Matrix X A ℂ)
     (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (M : Matrix (A × A) (C × C) ℂ) : Matrix (W × X) (Y × Z) ℂ :=
@@ -81,14 +57,6 @@ def sourceTransport (E : Matrix W A ℂ) (F : Matrix X A ℂ)
 
 /-- The first actual sampled source operator in its ambient endpoint bases.
 Source: `eq:compression-random-source`, `04-compression.tex:294–297`. -/
-/-
-Provenance-ID: p09-qic-product-transport-ambientsourceu
-Downstream declaration: QICLean.ComplexGaussian.ambientSourceU
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 def ambientSourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (Et : Matrix Y C ℂ) (j : Fin k)
     (x : Sample (Fin k × (A × C))) : Matrix W Y ℂ :=
@@ -96,14 +64,6 @@ def ambientSourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
 
 /-- The second actual sampled source operator in its ambient endpoint bases.
 Source: `eq:compression-random-source`, `04-compression.tex:297–300`. -/
-/-
-Provenance-ID: p09-qic-product-transport-ambientsourcev
-Downstream declaration: QICLean.ComplexGaussian.ambientSourceV
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 def ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (F : Matrix X A ℂ) (Ft : Matrix Z C ℂ) (j : Fin k)
     (x : Sample (Fin k × (A × C))) : Matrix X Z ℂ :=
@@ -111,14 +71,6 @@ def ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
 
 /-- The sampled product-operator average acting between ambient endpoint spaces.
 Source: `eq:compression-random-source`, `04-compression.tex:300–309`. -/
-/-
-Provenance-ID: p09-qic-product-transport-ambientsampledsource
-Downstream declaration: QICLean.ComplexGaussian.ambientSampledSource
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 def ambientSampledSource (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (x : Sample (Fin k × (A × C))) : Matrix (W × X) (Y × Z) ℂ :=
@@ -127,28 +79,12 @@ def ambientSampledSource (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
 
 /-- The actual centered ambient source replacement.
 Source: `eq:compression-random-source`, `04-compression.tex:302–305`. -/
-/-
-Provenance-ID: p09-qic-product-transport-ambientsourcecorrection
-Downstream declaration: QICLean.ComplexGaussian.ambientSourceCorrection
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 def ambientSourceCorrection (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (x : Sample (Fin k × (A × C))) : Matrix (W × X) (Y × Z) ℂ :=
   ambientSampledSource k lam mu E F Et Ft x - ambientSchmidtSource lam mu E F Et Ft
 
 omit [Fintype C] [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-ambientschmidtvector_eq_mulvec
-Downstream declaration: QICLean.ComplexGaussian.ambientSchmidtVector_eq_mulVec
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem ambientSchmidtVector_eq_mulVec (lam : A → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) :
     ambientSchmidtVector lam E F = (E ⊗ₖ F) *ᵥ schmidtVector lam := by
@@ -164,14 +100,6 @@ theorem ambientSchmidtVector_eq_mulVec (lam : A → ℝ)
   ring
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-sourcetransport_kronecker
-Downstream declaration: QICLean.ComplexGaussian.sourceTransport_kronecker
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem sourceTransport_kronecker (E : Matrix W A ℂ) (F : Matrix X A ℂ)
     (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) (U V : Matrix A C ℂ) :
     sourceTransport E F Et Ft (U ⊗ₖ V) =
@@ -179,14 +107,6 @@ theorem sourceTransport_kronecker (E : Matrix W A ℂ) (F : Matrix X A ℂ)
   simp only [sourceTransport, Matrix.mul_kronecker_mul, Matrix.conjTranspose_kronecker]
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-ambientsourceu_kronecker_ambientsourcev
-Downstream declaration: QICLean.ComplexGaussian.ambientSourceU_kronecker_ambientSourceV
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem ambientSourceU_kronecker_ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (j : Fin k) (x : Sample (Fin k × (A × C))) :
@@ -195,14 +115,6 @@ theorem ambientSourceU_kronecker_ambientSourceV (k : ℕ) (lam : A → ℝ) (mu 
   (sourceTransport_kronecker E F Et Ft _ _).symm
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-ambientsampledsource_eq_transport
-Downstream declaration: QICLean.ComplexGaussian.ambientSampledSource_eq_transport
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem ambientSampledSource_eq_transport (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (x : Sample (Fin k × (A × C))) :
@@ -213,14 +125,6 @@ theorem ambientSampledSource_eq_transport (k : ℕ) (lam : A → ℝ) (mu : C �
     Matrix.mul_sum, Matrix.sum_mul]
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] in
-/-
-Provenance-ID: p09-qic-product-transport-sourcetransport_schmidtsource
-Downstream declaration: QICLean.ComplexGaussian.sourceTransport_schmidtSource
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem sourceTransport_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
     sourceTransport E F Et Ft (schmidtSource lam mu) =
@@ -232,14 +136,6 @@ theorem sourceTransport_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
   exact (Matrix.star_mulVec _ _).symm
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] in
-/-
-Provenance-ID: p09-qic-product-transport-ambientsourcecorrection_eq_transport
-Downstream declaration: QICLean.ComplexGaussian.ambientSourceCorrection_eq_transport
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem ambientSourceCorrection_eq_transport (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (x : Sample (Fin k × (A × C))) :
@@ -286,14 +182,6 @@ private theorem integrable_matrix_of_entries {Ω m n : Type*} [MeasurableSpace �
   exact hpi.congr'_enorm hMatrix (Filter.Eventually.of_forall fun _ ↦ rfl)
 
 omit [Fintype X] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-integrable_ambientsourceu
-Downstream declaration: QICLean.ComplexGaussian.integrable_ambientSourceU
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem integrable_ambientSourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (E : Matrix W A ℂ) (Et : Matrix Y C ℂ) (j : Fin k) :
     Integrable (ambientSourceU k lam mu E Et j) (law (Fin k × (A × C))) := by
@@ -305,14 +193,6 @@ theorem integrable_ambientSourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
   exact ((memLp_coordinate (j, (a, c)) 1 (by norm_num)).integrable (by norm_num)).const_mul _
 
 omit [Fintype W] [Fintype Y] [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-integrable_ambientsourcev
-Downstream declaration: QICLean.ComplexGaussian.integrable_ambientSourceV
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem integrable_ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (F : Matrix X A ℂ) (Ft : Matrix Z C ℂ) (j : Fin k) :
     Integrable (ambientSourceV k lam mu F Ft j) (law (Fin k × (A × C))) := by
@@ -325,14 +205,6 @@ theorem integrable_ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (by norm_num)).const_mul _
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-integrable_ambientsampledsource_entry
-Downstream declaration: QICLean.ComplexGaussian.integrable_ambientSampledSource_entry
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem integrable_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
@@ -344,14 +216,6 @@ theorem integrable_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
     (integrable_sampledSource_entry k hk lam mu hlam hmu) p q
 
 omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-integral_ambientsampledsource_entry
-Downstream declaration: QICLean.ComplexGaussian.integral_ambientSampledSource_entry
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem integral_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
@@ -368,14 +232,6 @@ theorem integral_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
   exact congrArg (fun M ↦ M p q) (sourceTransport_schmidtSource lam mu E F Et Ft)
 
 omit [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-integrable_ambientsampledsource
-Downstream declaration: QICLean.ComplexGaussian.integrable_ambientSampledSource
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem integrable_ambientSampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
@@ -386,14 +242,6 @@ theorem integrable_ambientSampledSource (k : ℕ) (hk : 0 < k)
 omit [DecidableEq A] [DecidableEq C] in
 /-- Genuine matrix-valued unbiasedness in the ambient endpoint spaces.
 Source: `eq:compression-random-source`, `04-compression.tex:294–309`. -/
-/-
-Provenance-ID: p09-qic-product-transport-integral_ambientsampledsource
-Downstream declaration: QICLean.ComplexGaussian.integral_ambientSampledSource
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem integral_ambientSampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
@@ -411,14 +259,6 @@ theorem integral_ambientSampledSource (k : ℕ) (hk : 0 < k)
     integral_ambientSampledSource_entry k hk lam mu hlam hmu]
 
 omit [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-integrable_ambientsourcecorrection
-Downstream declaration: QICLean.ComplexGaussian.integrable_ambientSourceCorrection
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem integrable_ambientSourceCorrection (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
@@ -427,14 +267,6 @@ theorem integrable_ambientSourceCorrection (k : ℕ) (hk : 0 < k)
   (integrable_ambientSampledSource k hk lam mu hlam hmu E F Et Ft).sub (integrable_const _)
 
 omit [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-transport-integral_ambientsourcecorrection
-Downstream declaration: QICLean.ComplexGaussian.integral_ambientSourceCorrection
-Source: September 24, 2026.
-Label: eq:compression-random-source.
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L279-L309
--/
 theorem integral_ambientSourceCorrection (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :

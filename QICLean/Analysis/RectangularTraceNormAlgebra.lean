@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.RectangularTraceNorm
+import QICLean.Analysis.MatrixFramePerturbation
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 
 /-!
@@ -20,123 +21,6 @@ approximation of gapped square-grid ground states*, Theorem 5.2,
 `04-compression.tex:518–561`, immutable revision
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 No OpenAI Lean code is copied or adapted.
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-rectangulartracenorm_zero
-Downstream declaration: Matrix.rectangularTraceNorm_zero
-Source: September 24, 2026.
-Label: eq:compression-total-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-rectangulartracenorm_add_le
-Downstream declaration: Matrix.rectangularTraceNorm_add_le
-Source: September 24, 2026.
-Label: eq:compression-total-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-rectangulartracenorm_smul
-Downstream declaration: Matrix.rectangularTraceNorm_smul
-Source: September 24, 2026.
-Label: eq:compression-total-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-rectangulartracenorm_sum_le
-Downstream declaration: Matrix.rectangularTraceNorm_sum_le
-Source: September 24, 2026.
-Label: eq:compression-total-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-rectangulartracenorm_sum_smul_le
-Downstream declaration: Matrix.rectangularTraceNorm_sum_smul_le
-Source: September 24, 2026.
-Label: eq:compression-total-error
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-rectangulartracenorm_conjtranspose_le
-Downstream declaration: Matrix.rectangularTraceNorm_conjTranspose_le
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-rectangulartracenorm_conjtranspose
-Downstream declaration: Matrix.rectangularTraceNorm_conjTranspose
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-l2_opnorm_le_one_of_conjtranspose_mul_self
-Downstream declaration: Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-rectangulartracenorm_isometry_sandwich
-Downstream declaration: Matrix.rectangularTraceNorm_isometry_sandwich
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-basisregisterinjection
-Downstream declaration: Matrix.basisRegisterInjection
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-basisregisterinjection_conjtranspose_mul_self
-Downstream declaration: Matrix.basisRegisterInjection_conjTranspose_mul_self
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-basisregisterinjection_sandwich_eq_single_kronecker
-Downstream declaration: Matrix.basisRegisterInjection_sandwich_eq_single_kronecker
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
-/-
-Provenance-ID: p09-qic-norm-algebra-rectangulartracenorm_single_kronecker
-Downstream declaration: Matrix.rectangularTraceNorm_single_kronecker
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
 -/
 
 open scoped Matrix Matrix.Norms.L2Operator Kronecker
@@ -228,16 +112,6 @@ theorem rectangularTraceNorm_conjTranspose [DecidableEq m] (A : Matrix m n ℂ) 
   exact le_antisymm (rectangularTraceNorm_conjTranspose_le A)
     (by simpa only [conjTranspose_conjTranspose] using rectangularTraceNorm_conjTranspose_le Aᴴ)
 
-/-- An isometry is an operator-norm contraction, even when its domain is
-empty. -/
-theorem l2_opNorm_le_one_of_conjTranspose_mul_self (K : Matrix m n ℂ)
-    (hK : Kᴴ * K = 1) : ‖K‖ ≤ 1 := by
-  have h : ‖Kᴴ * K‖ ≤ 1 := by
-    rw [hK]
-    exact l2_opNorm_unitary_le_one (by simp)
-  rw [l2_opNorm_conjTranspose_mul_self] at h
-  nlinarith [norm_nonneg K]
-
 /-- Independent isometric embeddings of the ket and bra spaces preserve the
 nuclear norm of an arbitrary rectangular matrix. This gives exact physical
 reinsertion without any positivity hypothesis. Source: Theorem 5.2,
@@ -248,8 +122,8 @@ theorem rectangularTraceNorm_isometry_sandwich
     (hK : Kᴴ * K = 1) (hL : Lᴴ * L = 1) :
     rectangularTraceNorm (K * A * Lᴴ) = rectangularTraceNorm A := by
   classical
-  have hKn := l2_opNorm_le_one_of_conjTranspose_mul_self K hK
-  have hLn := l2_opNorm_le_one_of_conjTranspose_mul_self L hL
+  have hKn := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hK
+  have hLn := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hL
   apply le_antisymm
   · exact rectangularTraceNorm_mul_conjTranspose_le A K L hKn hLn
   · have h := rectangularTraceNorm_mul_conjTranspose_le (K * A * Lᴴ) Kᴴ Lᴴ

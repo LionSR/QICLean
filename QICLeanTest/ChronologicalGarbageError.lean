@@ -97,7 +97,7 @@ example : rectangularTraceNorm
     phaseGarbage phaseGarbage_norm (EuclideanSpace.single (0 : Fin 1) (1 / 2 : ℂ)) 3
     (basisRegisterInjection (0 : Fin 1)) {1} 1 (by norm_num) (by simp)
     (fun _ ↦ l2_opNorm_one_le) (by intro t _; simp) (by norm_num)
-    (l2_opNorm_le_one_of_conjTranspose_mul_self _
+    (l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one
       (basisRegisterInjection_conjTranspose_mul_self (0 : Fin 1)))
 
 -- The physical density budget also permits an empty originally owned register.
