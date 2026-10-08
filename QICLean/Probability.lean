@@ -30,3 +30,4 @@ import QICLean.Probability.PoissonWordSpatialGrowth
 import QICLean.Probability.PoissonWordThinning
 import QICLean.Probability.PoissonWordUniformOrder
 import QICLean.Probability.PoissonWordWeightedGrowth
+import QICLean.Probability.WeightedSourceError

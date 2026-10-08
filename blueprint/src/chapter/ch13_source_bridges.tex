@@ -1,0 +1,692 @@
+%% =========================================================
+%% Genuine source frames, one global Gaussian law, and idle fresh registers.
+%% Source: September 24, 2026 polynomial-PEPS preprint, Theorem 5.2.
+%% The coefficient contraction and chronological gate spaces are explicitly supplied.
+%% Actual circuit/party identification, private branch sector identification, separated exterior
+%% operator bounds, network construction, and uniform polynomial bounds remain open.
+%% =========================================================
+
+\chapter{Source Frames, Global Sampling, and Idle Registers}
+\label{ch:source_constructions}
+
+Schmidt decomposition gives the actual local frames needed for Gaussian
+source replacement. A single product probability space samples every
+position and branch label, while multilinearity expands errors by
+corrected positions. Chronologically appended normalized pure registers
+can be kept idle and discarded without changing the original physical
+density. These are the constructions used in
+\cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+Applying them to a distributed circuit requires its chronological memory
+spaces, participating parties, source maps, and physical readout.
+The weighted error estimate also requires a contraction bound for the
+exterior operator.
+% Still required: identify the concrete circuit's coefficient contraction and branch
+% labels; construct its source-party maps and identify its private branch sectors; prove the
+% separated exterior operator contraction; and build the operator network with uniform
+% polynomial link, degree, lifetime, and dimension bounds.
+
+\section{Actual Schmidt source frames}
+
+\begin{theorem}[Schmidt frames and an unbiased replacement]
+    \label{thm:construction_schmidt}
+    \lean{QICLean.ComplexGaussian.exists_schmidtSourceFrames}
+    \lean{QICLean.ComplexGaussian.exists_probability_schmidtSourceFrames}
+    \lean{QICLean.ComplexGaussian.exists_schmidtSourceReplacement}
+    \leanok
+    Let $L,R$ be finite index sets and let
+    $\psi\in\C^L\otimes\C^R$. Set $r=\min(|L|,|R|)$.
+    There are nonnegative weights $\lambda_a$ and column isometries
+    $E:\C^r\to\C^L$, $F:\C^r\to\C^R$ such that
+    \begin{align}
+        \psi        & =\sum_{a=1}^r\sqrt{\lambda_a}\,E|a\rangle\otimes F|a\rangle,
+        \label{eq:construction_schmidt_vector}                                     \\
+        E^\dagger E & =F^\dagger F=I_r,
+        \qquad \sum_a\lambda_a=\lVert\psi\rVert^2.
+        \label{eq:construction_schmidt_mass}
+    \end{align}
+    Thus unit vectors give probability weight lists. The zero vector
+    and zero-dimensional spaces are included.
+
+    For an arbitrary second vector
+    $\phi\in\C^{\widetilde L}\otimes\C^{\widetilde R}$, choose its
+    corresponding frames $\widetilde E,\widetilde F$ and weights $\mu$.
+    For every positive sample count $k$, the ambient product replacement
+    of Definition~\ref{def:reduction_ambient_transport} is integrable and
+    \begin{align}
+        X_{\mathrm{amb}} & =|\psi\rangle\langle\phi|,
+        \qquad
+        \mathbb E\widehat X_{\mathrm{amb}}=|\psi\rangle\langle\phi|.
+        \label{eq:construction_schmidt_replacement}
+    \end{align}
+    The ket and bra dimensions may differ. This supplies the Schmidt
+    coordinates in \cite[Equation~(5.6)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-random-source, 04-compression.tex:279--309.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:reduction_ambient_transport, thm:reduction_ambient_unbiased}
+    Schmidt decomposition gives orthonormal families and nonnegative
+    weights with mass $\lVert\psi\rVert^2$
+    \cite[Proposition~1.1]{Wolf2012Quantum}.
+    Reindex the families into the ambient spaces. Their Gram matrices
+    are identities, giving the column-isometry equations.
+    Apply the same argument to $\phi$. Their outer product is exactly
+    $X_{\mathrm{amb}}$, so integrability and unbiasedness follow from
+    Theorem~\ref{thm:reduction_ambient_unbiased}.
+\end{proof}
+
+
+
+\section{Common private source sectors}
+
+\begin{definition}[Adjoint extension of a local domain]
+    \label{def:construction_domain_extension}
+    \lean{Matrix.isometricDomainExtension}
+    \lean{Matrix.isometricDomainExtension_mul}
+    \lean{Matrix.isometricDomainExtension_mul_rangeProjection}
+    \lean{Matrix.norm_isometricDomainExtension}
+    \lean{Matrix.norm_isometricDomainExtension_le_one}
+    \lean{Matrix.norm_toLp_mulVec_of_isometry}
+    \leanok
+    For finite index sets $N,M,Q$, let $B:\C^N\to\C^M$ be rectangular and let
+    $J:\C^N\to\C^Q$ satisfy $J^\dagger J=I_N$. Its adjoint domain
+    extension is $\overline B=BJ^\dagger$. It satisfies
+    \begin{align}
+        \overline BJ            & =B,
+        \qquad \overline BJJ^\dagger=\overline B,
+        \label{eq:construction_domain_recovery}    \\
+        \lVert\overline B\rVert & =\lVert B\rVert,
+        \qquad \lVert J\psi\rVert=\lVert\psi\rVert.
+        \label{eq:construction_domain_norm}
+    \end{align}
+    Thus local contractions remain contractions on their common
+    ambient domain. These equalities allow empty domains, empty
+    codomains, and zero or subnormalized vectors.
+    % Source: eq:compression-source-gate, 04-compression.tex:250--268.
+\end{definition}
+
+\begin{proof}\leanok
+    Multiplication by $J^\dagger J=I_N$ proves recovery and range
+    support. The isometry and its adjoint have operator norm at most
+    one. Hence $\lVert BJ^\dagger\rVert\leq\lVert B\rVert$ and
+    $\lVert B\rVert=\lVert BJ^\dagger J\rVert\leq\lVert BJ^\dagger\rVert$.
+    Apply the same contraction and left-inverse argument to vectors.
+\end{proof}
+
+\begin{theorem}[Canonical private branch sectors]
+    \label{thm:construction_private_sectors}
+    \lean{Matrix.isometricDomainExtension_sigmaBlockInclusion_mul}
+    \lean{Matrix.isometricDomainExtension_sigmaBlockInclusion_mul_of_ne}
+    \lean{Matrix.norm_isometricDomainExtension_sigmaBlockInclusion}
+    \lean{Matrix.norm_sigmaBlockInclusion_mulVec}
+    \lean{Matrix.norm_isometricDomainExtension_sigmaBlockInclusion_kronecker_one}
+    \lean{Matrix.norm_sigmaBlockInclusion_kronecker_mulVec}
+    \leanok
+    \uses{def:construction_domain_extension}
+    Let $\Xi$ be finite and let $N_\xi$ be arbitrary finite branch
+    index sets. Write $Q=\bigoplus_{\xi\in\Xi}\C^{N_\xi}$ and let
+    $J_\xi:\C^{N_\xi}\to Q$ be the canonical sector inclusions.
+    For arbitrary rectangular $B_\xi$ with domain $\C^{N_\xi}$, set
+    $\overline B_\xi=B_\xi J_\xi^\dagger$. Then
+    \begin{align}
+        \overline B_\xi J_\xi       & =B_\xi,
+        \qquad \overline B_\xi J_\zeta=0\quad(\xi\ne\zeta),
+        \label{eq:construction_branch_recovery}            \\
+        \lVert\overline B_\xi\rVert & =\lVert B_\xi\rVert,
+        \qquad \lVert J_\xi\psi\rVert=\lVert\psi\rVert.
+        \label{eq:construction_branch_norm}
+    \end{align}
+    For any finite external memory $R$, extension of a map with domain
+    $\C^{N_\xi}\otimes\C^R$ through $J_\xi\otimes I_R$ likewise
+    preserves its exact operator norm.
+    For a second family of finite private sectors $L_\xi$, their
+    inclusions $\widetilde J_\xi$ satisfy
+    \begin{align}
+        \lVert(J_\xi\otimes\widetilde J_\xi)\psi\rVert
+         & =\lVert\psi\rVert.
+        \label{eq:construction_bipartite_sector_norm}
+    \end{align}
+    No bound on the private branch dimensions is required.
+    These are the common private slot spaces in
+    \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-source-gate, 04-compression.tex:250--268.
+    % The branch families and local maps are supplied; identifying them with the
+    % concrete party-private decomposition remains an additional circuit statement.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:construction_domain_extension}
+    Canonical sector inclusions satisfy $J_\xi^\dagger J_\xi=I$
+    and $J_\xi^\dagger J_\zeta=0$ for distinct branches.
+    Apply Definition~\ref{def:construction_domain_extension}.
+    Tensor products of these isometries, including an identity on
+    external memory, remain isometries and give the two tensor
+    norm-preservation statements.
+\end{proof}
+
+\section{Multilinear contraction and correction positions}
+
+\begin{definition}[Finite coefficient contraction]
+    \label{def:construction_contraction}
+    \lean{Matrix.sourceContraction}
+    \lean{Matrix.sourceContraction_apply}
+    \lean{Matrix.sourceContraction_apply_apply}
+    \leanok
+    Let $P$ be finite. For each position $p$, let $R_p,C_p$ be finite
+    row and column sets. For every label
+    $x\in\prod_{p\in P}(R_p\times C_p)$, fix a matrix $M_x$ with the
+    same output row and column sets. Define the multilinear contraction
+    \begin{align}
+        \mathcal C(X)      & =\sum_x
+        \left(\prod_{p\in P}(X_p)_{x_p^1x_p^2}\right)M_x,
+        \label{eq:construction_contraction}    \\
+        \mathcal C(X)_{ab} & =\sum_x(M_x)_{ab}
+        \prod_{p\in P}(X_p)_{x_p^1x_p^2}.
+        \label{eq:construction_contraction_entry}
+    \end{align}
+    Each $X_p$ is an arbitrary rectangular matrix.
+    The coefficient matrices are deterministic and unrestricted.
+    % Source: eq:compression-subset-expansion, 04-compression.tex:338--355.
+    % Identification with the concrete distributed circuit is a separate statement.
+\end{definition}
+
+\begin{theorem}[Expansion over corrected positions]
+    \label{thm:construction_position_expansion}
+    \lean{Matrix.sourceContraction_piecewise_add}
+    \lean{Matrix.sourceContraction_add}
+    \lean{Matrix.sourceContraction_piecewise_sub}
+    \lean{Matrix.sourceContraction_sub}
+    \lean{Matrix.rectangularTraceNorm_sourceContraction_sub_le}
+    \leanok
+    \uses{def:construction_contraction}
+    Fix exact sources $X_p$, corrections $\Delta_p$, and a set
+    $T\subseteq P$. Let $X^{T,+}_p=X_p+\Delta_p$ on $T$ and $X_p$
+    outside $T$. For each $S\subseteq T$, let $Z^S_p=\Delta_p$ on $S$
+    and $X_p$ outside $S$. Then
+    \begin{align}
+        \mathcal C(X^{T,+}) & =\sum_{S\subseteq T}\mathcal C(Z^S),
+        \label{eq:construction_position_sum}                                      \\
+        \mathcal C(X^{T,+})-\mathcal C(X)
+                            & =\sum_{\varnothing\ne S\subseteq T}\mathcal C(Z^S).
+        \label{eq:construction_nonempty_sum}
+    \end{align}
+    Taking $T=P$ gives the full replacement expansion. For finite
+    output spaces, its actual rectangular nuclear error satisfies
+    \begin{align}
+        \lVert\mathcal C(X+\Delta)-\mathcal C(X)\rVert_1
+         & \leq\sum_{\varnothing\ne S\subseteq P}
+        \lVert\mathcal C(Z^S)\rVert_1.
+        \label{eq:construction_position_norm}
+    \end{align}
+    The subsets count positions independently of the number of branch
+    labels. This is the algebraic expansion in
+    \cite[Equation~(5.9)]{OpenAI2026PolynomialPEPS}.
+    % No dimension-free bound for an arbitrary coefficient array is asserted.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:construction_contraction, thm:source_branch_sum}
+    Expand each corrected factor using multilinearity. Each choice
+    of the correction rather than the exact source determines one
+    subset $S$. The empty subset contributes $\mathcal C(X)$.
+    Subtract that term and apply the finite nuclear-norm triangle
+    inequality.
+\end{proof}
+
+\section{A single probability space for all branch labels}
+
+\begin{definition}[Global samples and fixed coordinate choices]
+    \label{def:construction_global_law}
+    \lean{QICLean.ComplexGaussian.globalBranchLaw}
+    \lean{QICLean.ComplexGaussian.globalBranchLawIsProbabilityMeasure}
+    \lean{QICLean.ComplexGaussian.selectedBranchSamples}
+    \lean{QICLean.ComplexGaussian.measurePreserving_selectedBranchSamples}
+    \leanok
+    Let $P$ be finite, let $B_p$ be its finite branch-label sets, and
+    let $A_{pb},C_{pb}$ be finite Schmidt supports. For each $p,b$,
+    let $\nu_{pb}$ be the standard circular complex Gaussian law on
+    the coordinates $\{0,\ldots,k-1\}\times A_{pb}\times C_{pb}$.
+    The nested law
+    \begin{align}
+        \nu & =\bigotimes_{p\in P}\bigotimes_{b\in B_p}\nu_{pb}
+        \label{eq:construction_global_law}
+    \end{align}
+    is a probability measure. For $S\subseteq P$ and a deterministic
+    choice $\sigma_p\in B_p$ at each $p\in S$, define
+    $\pi_{S,\sigma}(\omega)_p=\omega_{p,\sigma_p}$.
+    Its actual pushforward is
+    \begin{align}
+        (\pi_{S,\sigma})_*\nu & =\bigotimes_{p\in S}\nu_{p,\sigma_p}.
+        \label{eq:construction_selected_law}
+    \end{align}
+    The branch choice is fixed before sampling. This realizes the fresh
+    samples used in \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-subset-expansion, 04-compression.tex:338--379.
+\end{definition}
+
+\begin{proof}\leanok
+    \uses{thm:random_gaussian_slots}
+    Projection of a finite product probability measure onto selected
+    positions preserves the corresponding product measure.
+    At each selected position, projection onto the fixed branch
+    coordinate preserves its Gaussian law. Compose these projections
+    to obtain (\ref{eq:construction_selected_law}).
+\end{proof}
+
+\begin{theorem}[Selected moments on the global law]
+    \label{thm:construction_global_moments}
+    \lean{QICLean.ComplexGaussian.selectedBranchDensityCoefficient}
+    \lean{QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient}
+    \lean{QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient_mul_conj}
+    \lean{QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_mul_conj}
+    \lean{QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_eq_zero}
+    \leanok
+    \uses{def:construction_global_law}
+    For a positive sample count $k$, use the selected quarter-weight
+    correction coefficients $c_{p,\sigma_p}$ from
+    (\ref{eq:random_gaussian_slot}). Define
+    \begin{align}
+        z_{il}(\omega) & =\prod_{p\in S}
+        c_{p,\sigma_p}(i_p,l_p)(\omega_{p,\sigma_p}),
+        \label{eq:construction_selected_coefficient}                      \\
+        q_i            & =\prod_{p\in S}\lambda_p(i_p^1)\lambda_p(i_p^2),
+        \qquad
+        \widetilde q_l=\prod_{p\in S}\mu_p(l_p^1)\mu_p(l_p^2).
+        \label{eq:construction_selected_weights}
+    \end{align}
+    The weights are nonnegative. On the single global law, $z_{il}$ and
+    every conjugate pair product are integrable, and
+    \begin{align}
+        \mathbb E_\nu[z_{il}\overline{z_{i'l'}}]
+         & =k^{-|S|}\sqrt{q_i\widetilde q_l}\,
+        \delta_{ii'}\delta_{ll'}.
+        \label{eq:construction_selected_covariance}
+    \end{align}
+    If $S$ is nonempty, $\mathbb E_\nu z_{il}=0$.
+    The inverse-sample exponent counts corrected positions; unselected
+    positions and branch labels do not contribute.
+    This is \cite[Equation~(5.11)]{OpenAI2026PolynomialPEPS}
+    on the global probability space.
+    % Source: eq:compression-product-covariance, 04-compression.tex:369--407.
+    % The integrability statements also cover the totalized zero-sample coefficients.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:construction_global_law, thm:random_gaussian_slots}
+    The selected coefficients are compositions of the independent-slot
+    coefficients with $\pi_{S,\sigma}$. Its measure-preserving identity
+    transports their integrability, covariance, and centeredness to
+    the global law. The selected index set has cardinality $|S|$.
+\end{proof}
+
+\begin{theorem}[Unbiasedness of the actual coefficient-contracted sampled output]
+    \label{thm:construction_gaussian_contraction}
+    \lean{QICLean.ComplexGaussian.gaussianSourceContraction}
+    \lean{QICLean.ComplexGaussian.correctedGaussianSourceContraction}
+    \lean{QICLean.ComplexGaussian.corrected_source_entry_product}
+    \lean{QICLean.ComplexGaussian.correctedGaussianSourceContraction_eq_sum}
+    \lean{QICLean.ComplexGaussian.gaussianSourceContraction_sub}
+    \lean{QICLean.ComplexGaussian.integrable_correctedGaussianSourceContraction}
+    \lean{QICLean.ComplexGaussian.integral_correctedGaussianSourceContraction_eq_zero}
+    \lean{QICLean.ComplexGaussian.integrable_gaussianSourceContraction}
+    \lean{QICLean.ComplexGaussian.integral_gaussianSourceContraction}
+    \leanok
+    \uses{def:construction_contraction, def:construction_global_law}
+    Let $k>0$ and fix a deterministic branch choice $\sigma_p$ at
+    every position $p\in P$. Choose nonnegative Schmidt weights
+    $\lambda_p,\mu_p$ on the corresponding finite supports.
+    Let $\widehat X_p(\omega_{p,\sigma_p})$ be the actual sampled
+    source of Definition~\ref{def:source_product}, with exact source
+    $X_p$ and correction $\Delta_p=\widehat X_p-X_p$.
+    For the finite coefficient contraction of
+    Definition~\ref{def:construction_contraction}, with finite output
+    row and column sets, define
+    \begin{align}
+        \widehat Y(\omega)
+                    & =\mathcal C((\widehat X_p(\omega_{p,\sigma_p}))_{p\in P}),
+        \qquad Y=\mathcal C((X_p)_{p\in P}),
+        \label{eq:construction_sampled_output}                                   \\
+        Y_S(\omega) & =\mathcal C(Z^S(\omega)),
+        \label{eq:construction_corrected_output}
+    \end{align}
+    where $Z^S_p=\Delta_p(\omega_{p,\sigma_p})$ on $S$ and $X_p$
+    outside $S$. These are actual matrix-valued contractions.
+    For each entry label $x=(i_p,l_p)_{p\in P}$, their literal
+    source-entry product is
+    \begin{align}
+        \prod_{p\in P}(Z^S_p)_{i_pl_p}
+         & =\left(\prod_{p\notin S}(X_p)_{i_pl_p}\right)
+        z_{x|S}(\omega),
+        \label{eq:construction_corrected_entry_factorization}
+    \end{align}
+    with $z_{x|S}$ the actual selected coefficient of
+    (\ref{eq:construction_selected_coefficient}). Substitution into
+    (\ref{eq:construction_contraction}) gives the corresponding
+    finite matrix sum. In particular,
+    \begin{align}
+        \widehat Y-Y & =\sum_{\varnothing\ne S\subseteq P}Y_S.
+        \label{eq:construction_sampled_output_expansion}
+    \end{align}
+    On the single global Gaussian law, every $Y_S$ is integrable,
+    $\mathbb E_\nu Y_S=0$ for nonempty $S$.
+    The actual sampled output $\widehat Y$ is integrable and
+    \begin{align}
+        \mathbb E_\nu\widehat Y & =Y.
+        \label{eq:construction_sampled_output_mean}
+    \end{align}
+    The source weights need not sum to one, and the deterministic
+    coefficient matrices have no norm restriction.
+    This realizes the corrected-position expansion and its centered
+    terms in \cite[Equations~(5.6) and~(5.9)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-random-source and eq:compression-subset-expansion,
+    % 04-compression.tex:279--379. No arbitrary-array dimension-free bound is asserted.
+    % Circuit coefficient/branch identification remains a separate statement.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:construction_position_expansion, thm:construction_global_moments}
+    Each actual correction entry equals its selected Gaussian
+    coefficient. Factor its product into the constant outside entries
+    and the selected-position coefficient to obtain
+    (\ref{eq:construction_corrected_entry_factorization}).
+    Finite sums of these integrable scalar coefficients times fixed
+    matrices prove integrability of $Y_S$. Their nonempty selected
+    products have zero mean by
+    Theorem~\ref{thm:construction_global_moments}.
+    Integrate the literal nonempty-position expansion. Adding the
+    constant $Y$ gives both integrability of $\widehat Y$ and its
+    exact matrix-valued expectation.
+\end{proof}
+
+\begin{theorem}[Global-law expected error for a fixed branch choice]
+    \label{thm:construction_global_error}
+    \lean{QICLean.ComplexGaussian.integrable_rectangularTraceNorm_selectedBranchSourceError}
+    \lean{QICLean.ComplexGaussian.integral_rectangularTraceNorm_selectedBranchSourceError_le}
+    \leanok
+    \uses{def:construction_global_law, thm:construction_global_moments}
+    Let $k>0$. Assume each selected Schmidt list $\lambda_p,\mu_p$ is nonnegative
+    and sums to one. Let $\tau,\widetilde\tau$ be nonnegative diagonal
+    trace-one matrices on finite spaces $T,U$, and let
+    $O:\C^{I\times T}\to\C^{L\times U}$ be a contraction, where
+    $I=\prod_{p\in S}(A_{p,\sigma_p}\times A_{p,\sigma_p})$ and
+    $L=\prod_{p\in S}(C_{p,\sigma_p}\times C_{p,\sigma_p})$.
+    For the actual selected coefficients of
+    (\ref{eq:construction_selected_coefficient}), set
+    \begin{align}
+        Z_\sigma(\omega) & =\sum_{i,l}z_{il}(\omega)
+        \tau^{1/2}O_{li}^{T}\widetilde\tau^{1/2}.
+        \label{eq:construction_selected_error}
+    \end{align}
+    The transpose is ordinary. The function
+    $\lVert Z_\sigma\rVert_1$ is integrable on $\nu$, and
+    \begin{align}
+        \mathbb E_\nu\lVert Z_\sigma\rVert_1 & \leq k^{-|S|/2}.
+        \label{eq:construction_global_error}
+    \end{align}
+    Zero weights and differing finite Schmidt supports are allowed.
+    The empty selected set is included. This is the fixed-choice
+    estimate of \cite[Equation~(5.18)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-one-choice, 04-compression.tex:529--561.
+    % O is supplied with an explicit operator-norm bound; no circuit-derived bound is assumed proved.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:construction_global_moments, thm:source_covariance_error}
+    Finite distributivity normalizes $q,\widetilde q$.
+    Apply Theorem~\ref{thm:source_covariance_error} with
+    $\kappa=k^{-|S|}$, or transport the independent-slot estimate
+    through $\pi_{S,\sigma}$. This gives both integrability and
+    (\ref{eq:construction_global_error}) on the one global law.
+\end{proof}
+
+\section{Chronological fresh registers}
+
+\begin{definition}[Accumulated pure inventory]
+    \label{def:construction_inventory}
+    \lean{Matrix.garbageInventory}
+    \lean{Matrix.garbageInventoryFintype}
+    \lean{Matrix.garbageInventoryDecidableEq}
+    \lean{Matrix.euclideanTensorVector}
+    \lean{Matrix.euclideanTensorVector_apply}
+    \lean{Matrix.norm_euclideanTensorVector}
+    \lean{Matrix.euclideanOuterProduct_tensorVector}
+    \lean{Matrix.trace_euclideanOuterProduct_self}
+    \lean{Matrix.partialTraceRight_tensorVector}
+    \lean{Matrix.cumulativeGarbageVector}
+    \lean{Matrix.norm_cumulativeGarbageVector}
+    \leanok
+    Choose finite fresh registers $B_t$ and pure vectors
+    $\gamma_t\in\C^{B_t}$. Define the finite chronological inventory
+    $J_0=\{*\}$, $J_{t+1}=J_t\times B_t$, with
+    \begin{align}
+        \Gamma_0 & =1\in\C^{J_0},
+        \qquad \Gamma_{t+1}=\Gamma_t\otimes\gamma_t.
+        \label{eq:construction_inventory_vector}
+    \end{align}
+    Coordinate tensor products satisfy
+    $(v\otimes w)_{ij}=v_iw_j$ and
+    $\lVert v\otimes w\rVert=\lVert v\rVert\lVert w\rVert$.
+    Their actual outer products satisfy
+    \begin{align}
+        |v\otimes w\rangle\langle v\otimes w|
+                                 & =|v\rangle\langle v|\otimes|w\rangle\langle w|,
+        \label{eq:construction_tensor_density}                                     \\
+        \tr(|w\rangle\langle w|) & =\lVert w\rVert^2.
+        \label{eq:construction_pure_trace}
+    \end{align}
+    Thus normalized $\gamma_t$ give $\lVert\Gamma_t\rVert=1$.
+    Discarding any normalized pure factor $w$ gives
+    \begin{align}
+        \Tr_w(|v\otimes w\rangle\langle v\otimes w|)
+         & =|v\rangle\langle v|,
+        \label{eq:construction_pure_discard}
+    \end{align}
+    including zero or subnormalized $v$.
+    % Source: eq:compression-effect-circuit-error, 04-compression.tex:199--229.
+    % The fresh register types and vectors are supplied; arbitrary discarded entangled
+    % registers are not identified with normalized fresh pure factors.
+\end{definition}
+
+\begin{definition}[Appending a register while earlier registers remain idle]
+    \label{def:construction_idle_gates}
+    \lean{Matrix.idleGarbageLift}
+    \lean{Matrix.appendGarbageGate}
+    \lean{Matrix.idleGarbageLift_mulVec}
+    \lean{Matrix.idleGarbageLift_append_mulVec}
+    \lean{Matrix.idleGarbageLift_eq_kronecker_submatrix}
+    \lean{Matrix.norm_idleGarbageLift_le}
+    \lean{Matrix.idleGarbageLift_sub}
+    \lean{Matrix.norm_idleGarbageLift_sub_le}
+    \lean{Matrix.appendGarbageGate_mulVec}
+    \lean{Matrix.norm_appendGarbageGate_le}
+    \lean{Matrix.kronecker_one_tensorVector}
+    \lean{Matrix.l2_opNorm_kronecker_one_le}
+    \leanok
+    \uses{def:construction_inventory}
+    For $G:\C^D\to\C^{D'}$ and $\gamma\in\C^B$, define
+    $A_{G,\gamma}:\C^D\to\C^{D'\times B}$ by
+    $(A_{G,\gamma})_{(y,e),x}=G_{yx}\gamma_e$.
+    For an arbitrary $A:\C^D\to\C^{D'\times B}$ and an old inventory
+    $J$, its idle lift $\mathcal L_J(A)$ is given by
+    \begin{align}
+        \mathcal L_J(A)_{(y,(j,e)),(x,j')}
+         & =A_{(y,e),x}\delta_{jj'}.
+        \label{eq:construction_idle_coefficients}
+    \end{align}
+    This is $A\otimes I_J$ followed by the stated output permutation.
+    On an arbitrary vector $\xi$,
+    $(\mathcal L_J(A)\xi)_{y,j,e}=\sum_x A_{(y,e),x}\xi_{x,j}$.
+    In particular,
+    \begin{align}
+        A_{G,\gamma}v & =Gv\otimes\gamma,
+        \label{eq:construction_append_action}       \\
+        \mathcal L_J(A_{G,\gamma})(v\otimes w)
+                      & =Gv\otimes(w\otimes\gamma).
+        \label{eq:construction_idle_action}
+    \end{align}
+    The actual operator bounds are
+    \begin{align}
+        \lVert A_{G,\gamma}\rVert   & \leq\lVert G\rVert\lVert\gamma\rVert,
+        \label{eq:construction_append_norm}                                 \\
+        \lVert\mathcal L_J(A)\rVert & \leq\lVert A\rVert,
+        \qquad
+        \mathcal L_J(A-A')=\mathcal L_J(A)-\mathcal L_J(A'),
+        \label{eq:construction_idle_norm}                                   \\
+        \lVert\mathcal L_J(A)-\mathcal L_J(A')\rVert
+                                    & \leq\lVert A-A'\rVert.
+        \label{eq:construction_idle_error}
+    \end{align}
+    Likewise $(K\otimes I_J)(v\otimes w)=Kv\otimes w$ and
+    $\lVert K\otimes I_J\rVert\leq\lVert K\rVert$ for arbitrary
+    rectangular $K$. No dimension lower bounds are needed.
+    % Source: eq:compression-effect-circuit-error, 04-compression.tex:199--229.
+\end{definition}
+
+\begin{theorem}[Actual chronological prefixes and their discarded densities]
+    \label{thm:construction_chronological_density}
+    \lean{Matrix.chronologicalGarbageChain}
+    \lean{Matrix.chronologicalReplacementChain}
+    \lean{Matrix.chronologicalReplacementChain_sub_norm_le}
+    \lean{Matrix.chronologicalReplacementChain_norm_le_one}
+    \lean{Matrix.chronologicalGarbageChain_prefix_vector}
+    \lean{Matrix.chronologicalGarbageChain_discard_density}
+    \lean{Matrix.chronologicalGarbageChain_norm_le_one}
+    \lean{Matrix.chronologicalGarbageReadout}
+    \lean{Matrix.chronologicalGarbageReadout_eq}
+    \lean{Matrix.chronologicalGarbageReadout_discard_density}
+    \leanok
+    \uses{def:construction_inventory, def:construction_idle_gates}
+    Let $D_t$ be finite changing memory spaces and let
+    $G_t:\C^{D_t}\to\C^{D_{t+1}}$. Define actual ideal and replacement
+    stages on the accumulated inventory by
+    \begin{align}
+        \overline G_t & =\mathcal L_{J_t}(A_{G_t,\gamma_t}),
+        \qquad \overline A_t=\mathcal L_{J_t}(A_t),
+        \label{eq:construction_chronological_gates}
+    \end{align}
+    where $A_t:\C^{D_t}\to\C^{D_{t+1}\times B_t}$ is arbitrary.
+    With $C_t=G_{t-1}\cdots G_0$ and
+    $\overline C_t=\overline G_{t-1}\cdots\overline G_0$,
+    \begin{align}
+        \overline C_t(\psi\otimes\Gamma_0)
+         & =C_t\psi\otimes\Gamma_t.
+        \label{eq:construction_chronological_prefix}
+    \end{align}
+    This equality requires no normalization assumptions.
+    If every $\gamma_t$ is normalized, discarding $J_t$ gives exactly
+    $|C_t\psi\rangle\langle C_t\psi|$. Also,
+    \begin{align}
+        \lVert\overline A_t-\overline G_t\rVert
+         & \leq\lVert A_t-A_{G_t,\gamma_t}\rVert.
+        \label{eq:construction_chronological_error}
+    \end{align}
+    Contractive $A_t$ give contractive $\overline A_t$.
+    Contractive $G_t$ and normalized $\gamma_t$ give contractive
+    $\overline G_t$. The replacement may correlate its working memory
+    with the fresh output register.
+
+    For an arbitrary common readout $K:\C^{D_t}\to\C^{P\times E}$,
+    set $\overline v_t=(K\otimes I_{J_t})
+        \overline C_t(\psi\otimes\Gamma_0)$. Then
+    \begin{align}
+        \overline v_t & =KC_t\psi\otimes\Gamma_t,
+        \label{eq:construction_chronological_readout}              \\
+        \Tr_E\Tr_{J_t}(|\overline v_t\rangle\langle\overline v_t|)
+                      & =\Tr_E(|KC_t\psi\rangle\langle KC_t\psi|).
+        \label{eq:construction_original_density}
+    \end{align}
+    The density identity assumes only normalization of the supplied
+    fresh vectors; the gates, readout, and input need not be normalized.
+    It is the unchanged physical density preceding
+    \cite[Equation~(5.3)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-effect-circuit-error, 04-compression.tex:199--229.
+    % Per-stage fresh registers, working-memory gates, replacements, and common K are given.
+    % Effect elimination and ownership/party semantics remain separate obligations.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:construction_idle_gates, def:construction_inventory}
+    Induct on the chronological prefix using
+    (\ref{eq:construction_idle_action}). This gives
+    (\ref{eq:construction_chronological_prefix}).
+    Normalization of $\Gamma_t$ and
+    (\ref{eq:construction_pure_discard}) prove the discarded-density
+    identity. The gate and error bounds follow from
+    (\ref{eq:construction_append_norm})--(\ref{eq:construction_idle_error}).
+    The identity-amplified readout gives
+    (\ref{eq:construction_chronological_readout}); discard $J_t$ first
+    and then $E$ to obtain (\ref{eq:construction_original_density}).
+\end{proof}
+
+\begin{theorem}[Marked replacement error against the original physical density]
+    \label{thm:construction_original_density_error}
+    \lean{Matrix.markedChronologicalGarbageChain}
+    \lean{Matrix.chronologicalGarbageDensity}
+    \lean{Matrix.chronologicalGarbageDensity_ideal}
+    \lean{Matrix.chronologicalGarbageDensity_marked_empty}
+    \lean{Matrix.chronologicalGarbageDensity_zero}
+    \lean{Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le}
+    \lean{Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half}
+    \lean{Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_empty}
+    \leanok
+    \uses{thm:construction_chronological_density, thm:reduction_marked_budget}
+    In the chronological construction, suppose
+    $\lVert\gamma_t\rVert=1$, $\lVert G_t\rVert\leq1$,
+    $\lVert\psi\rVert\leq1$, and $\lVert K\rVert\leq1$.
+    Choose a finite set of marked stages $S$ and $\delta\geq0$, with
+    $\lVert A_t-A_{G_t,\gamma_t}\rVert\leq\delta$ for every $t\in S$.
+    Define the actual augmented replacement stages
+    \begin{align}
+        H_t & =\begin{cases}
+                   \overline A_t/(1+\delta), & t\in S,    \\
+                   \overline G_t,            & t\notin S.
+               \end{cases}
+        \label{eq:construction_marked_inventory_gates}
+    \end{align}
+    Put $v_H=(K\otimes I_{J_n})H_{n-1}\cdots H_0
+        (\psi\otimes\Gamma_0)$ and define the actual physical densities
+    \begin{align}
+        \rho_H & =\Tr_E\Tr_{J_n}(|v_H\rangle\langle v_H|),
+        \qquad
+        \rho_G=\Tr_E(|KC_n\psi\rangle\langle KC_n\psi|).
+        \label{eq:construction_original_comparison}
+    \end{align}
+    Then
+    \begin{align}
+        \lVert\rho_H-\rho_G\rVert_1 & \leq4|S|\delta.
+        \label{eq:construction_original_error}
+    \end{align}
+    Only marked stages require approximation. Unmarked stages are exact.
+    Marks beyond the final stage merely weaken the bound.
+    For $\epsilon\geq0$ and $|S|>0$, taking
+    $\delta=\epsilon/(8|S|)$ gives error at most $\epsilon/2$.
+    This is the comparison with the original physical density in
+    \cite[Equation~(5.3)]{OpenAI2026PolynomialPEPS}.
+
+    For $S=\varnothing$, $\rho_H=\rho_G$ and the nuclear error is
+    exactly zero for arbitrary gates, replacements, readout, input,
+    and $\delta$, provided the supplied fresh vectors are normalized.
+    For zero stages, the density identity holds for every augmented
+    chain without normalization assumptions on future fresh vectors.
+    % Source: eq:compression-effect-circuit-error, 04-compression.tex:199--229.
+    % The ideal-versus-original density identity is proved, not an additional premise.
+    % Construction of the particular effect replacements and their party ownership
+    % remains separate from this chronological comparison.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:construction_chronological_density, thm:reduction_marked_budget}
+    Idle lifting bounds the augmented per-stage errors by the original
+    marked errors, and the ideal augmented stages are contractions.
+    The initial tensor vector has norm at most one, and identity
+    amplification gives a contractive common readout.
+    Theorem~\ref{thm:reduction_marked_budget} bounds the augmented readout
+    density error by $4|S|\delta$. Discard the remaining owned register
+    and use (\ref{eq:construction_original_density}) to identify the
+    ideal density with $\rho_G$. Partial trace cannot increase the
+    nuclear norm. The positive marked-count substitution gives the
+    half-accuracy bound.
+    An empty marked set leaves the ideal chain unchanged. With zero
+    stages, the only inventory is its initial scalar vector.
+\end{proof}

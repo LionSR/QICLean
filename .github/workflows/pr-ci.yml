@@ -297,6 +297,36 @@ jobs:
             -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
             scripts/Tests/MatrixSecondMoment.lean
 
+      - name: Check compression source error regressions strictly
+        run: |
+          set -euo pipefail
+          for example in GaussianProductSource GaussianSourceError RectangularTraceNormAlgebra WeightedSourceError; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
+      - name: Check compression source reduction regressions strictly
+        run: |
+          set -euo pipefail
+          for example in ContractionChain GaussianProductSourceTransport SourceOnlyDensityError SubnormalizedPureStateError; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
+      - name: Check compression source bridge regressions strictly
+        run: |
+          set -euo pipefail
+          for example in ChronologicalGarbage ChronologicalGarbageError GaussianContraction GlobalBranchLaw IsometricDomainExtension SchmidtSource SourceContraction; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
       - name: Check shifted density commutation regressions strictly
         run: >
           LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s
