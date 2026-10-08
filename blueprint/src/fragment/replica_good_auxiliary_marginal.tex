@@ -1,0 +1,78 @@
+\section{The actual good auxiliary marginal}
+\label{sec:replica_good_auxiliary_marginal}
+
+The auxiliary symmetry needed for the merge moments is a symmetry of the
+actual reduced matrix. It follows from the simultaneous symmetry of the
+excitation component after every discarded register is traced out.
+
+\begin{definition}[Chosen good and bad auxiliary coordinates]
+\label{def:good_bad_copies_equiv}
+\lean{TensorPower.goodBadCopiesEquiv}
+\leanok
+Let $B\subseteq\{1,\ldots,k\}$, put $r=|B|$ and $m=|B^c|=k-r$, and use
+the chosen finite-set equivalences to enumerate $B^c$ and $B$. For a
+coordinate set $C$, write
+\[
+ e_C:C^k\longrightarrow C^m\times C^r,
+ \qquad e_C(c)=\bigl(c\circ j_g,c\circ j_b\bigr),
+\]
+where $j_g$ and $j_b$ are the inverse finite-set equivalences, followed by
+inclusion into the whole copy set. This is an equivalence, including when
+one of the copy groups is empty. No order-preserving enumeration is required.
+\end{definition}
+
+\begin{definition}[Actual good auxiliary marginal]
+\label{def:replica_good_auxiliary_marginal}
+\lean{Matrix.replicaGoodAuxiliaryMarginal}
+\leanok
+Let $A,C,D$ be finite coordinate sets, let $\Omega\in\mathbb C^A$, and
+let $v\in\mathbb C^{A^k}\otimes\mathbb C^{C^k}\otimes\mathbb C^{D^k}$.
+Write $R_B$ for the literal excitation operator, with factors
+$I-|\Omega\rangle\langle\Omega|$ on $B$ and
+$|\Omega\rangle\langle\Omega|$ on its complement, and set
+$w=(R_B\otimes I)v$. First form the whole auxiliary marginal
+$\rho_{CD}=\operatorname{Tr}_{A^k}|w\rangle\langle w|$.
+Regroup its coordinates using
+\[
+ e_{CD}:C^k\times D^k\longrightarrow C^m\times(C^r\times D^k),
+ \qquad e_{CD}(c,d)=\bigl((e_Cc)_g,((e_Cc)_b,d)\bigr).
+\]
+The actual good auxiliary marginal is the unnormalized matrix
+\[
+ \rho_C^{\mathrm{good}}
+   =\operatorname{Tr}_{C^r\times D^k}
+      \bigl(\rho_{CD}\text{ expressed in the coordinates }e_{CD}\bigr).
+\]
+Thus every physical copy, the bad auxiliary copies and every exterior copy
+are traced out; the good auxiliary copies are retained.
+\end{definition}
+
+\begin{theorem}[Permutation invariance of the good auxiliary marginal]
+\label{thm:replica_good_auxiliary_marginal_commute}
+\lean{Matrix.commute_replicaGoodAuxiliaryMarginal_copyPerm}
+\leanok
+In the preceding definitions, suppose that $v$ is fixed by every
+simultaneous copy permutation of $A^k,C^k,D^k$. Then
+$\rho_C^{\mathrm{good}}$ commutes with every copy-permutation operator
+on $C^m$. No normalization or independence assumption is made. The vector
+$\Omega$ is arbitrary, and zero components and zero copy groups are included.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:good_bad_copies_equiv,def:replica_good_auxiliary_marginal,thm:replica_excitation_preserves_fixed,thm:fixed_vector_marginal_symmetry}
+Extend a permutation of the good copies by the identity on $B$. The chosen
+coordinate equivalences give an actual permutation of all $k$ copies that
+fixes every excited coordinate. The stabilizer identity therefore shows
+that $w$ is fixed by its simultaneous physical, auxiliary and exterior
+action. Under the actual coordinate regrouping, this action is the tensor
+product of a permutation of the discarded register and the given
+permutation of $C^m$. Both factors are unitary. Partial-trace covariance
+then proves that the reduced matrix commutes with the retained action.
+Interchanging the finite trace sums identifies this reduced matrix with
+the two successive traces in the definition.
+\end{proof}
+
+This proves the auxiliary permutation invariance used after
+\cite[Section~7, equation \textup{(comparator:merge-moments)}]{OpenAI2026AreaLaw}.
+It does not assert that the auxiliary copies are independent or establish
+the merge-moment estimate.
