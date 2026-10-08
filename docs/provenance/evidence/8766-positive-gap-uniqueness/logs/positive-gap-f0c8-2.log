@@ -1,5 +1,0 @@
-QICLeanTest/PositiveGapUniqueness.lean:103:68: error: unsolved goals
-n : Type u_1
-inst✝¹ : Fintype n
-inst✝ : DecidableEq n
-⊢ 0 true = 0

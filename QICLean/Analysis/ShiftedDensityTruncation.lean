@@ -27,48 +27,6 @@ Polynomial PEPS approximation of gapped square-grid ground states, September 24,
 All ranks are on the inside space before extension by an outside identity.
 No optimizer, entropy-tail estimate, regulator growth, contraction, or Proposition 4.1
 is asserted here; no upstream Lean proof text reused.
-Provenance-ID: 8767-qic-shifted-density-truncation-01
-Matrix.spectralProjectionGE
-Provenance-ID: 8767-qic-shifted-density-truncation-02
-Matrix.shiftedPowerHead
-Provenance-ID: 8767-qic-shifted-density-truncation-03
-Matrix.shiftedPowerTail
-Provenance-ID: 8767-qic-shifted-density-truncation-04
-Matrix.IsHermitian.spectralProjectionGE_eq_cfc
-Provenance-ID: 8767-qic-shifted-density-truncation-05
-Matrix.IsHermitian.isStarProjection_spectralProjectionGE
-Provenance-ID: 8767-qic-shifted-density-truncation-06
-Matrix.IsHermitian.commute_spectralProjectionGE
-Provenance-ID: 8767-qic-shifted-density-truncation-07
-Matrix.PosSemidef.add_smul_one_rpow_eq_cfc
-Provenance-ID: 8767-qic-shifted-density-truncation-08
-Matrix.PosSemidef.commute_add_smul_one_rpow_spectralProjectionGE
-Provenance-ID: 8767-qic-shifted-density-truncation-09
-Matrix.shiftedPowerHead_add_shiftedPowerTail
-Provenance-ID: 8767-qic-shifted-density-truncation-10
-Matrix.PosSemidef.shiftedPowerHead_eq_cfc
-Provenance-ID: 8767-qic-shifted-density-truncation-11
-Matrix.PosSemidef.shiftedPowerTail_eq_cfc
-Provenance-ID: 8767-qic-shifted-density-truncation-12
-Matrix.PosSemidef.shiftedPowerHead_posSemidef
-Provenance-ID: 8767-qic-shifted-density-truncation-13
-Matrix.PosSemidef.shiftedPowerTail_posSemidef
-Provenance-ID: 8767-qic-shifted-density-truncation-14
-Matrix.PosSemidef.shiftedPowerHead_mul_shiftedPowerTail
-Provenance-ID: 8767-qic-shifted-density-truncation-15
-Matrix.PosSemidef.shiftedPowerTail_mul_shiftedPowerHead
-Provenance-ID: 8767-qic-shifted-density-truncation-16
-Matrix.PosSemidef.add_smul_one_rpow_mul_neg
-Provenance-ID: 8767-qic-shifted-density-truncation-17
-Matrix.PosSemidef.range_shiftedPowerHead
-Provenance-ID: 8767-qic-shifted-density-truncation-18
-Matrix.PosSemidef.rank_shiftedPowerHead
-Provenance-ID: 8767-qic-shifted-density-truncation-19
-Matrix.PosSemidef.mul_rank_spectralProjectionGE_le_trace
-Provenance-ID: 8767-qic-shifted-density-truncation-20
-Matrix.PosSemidef.rank_shiftedPowerHead_le
-Provenance-ID: 8767-qic-shifted-density-truncation-21
-Matrix.PosSemidef.l2_opNorm_shiftedPowerTail_le
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
