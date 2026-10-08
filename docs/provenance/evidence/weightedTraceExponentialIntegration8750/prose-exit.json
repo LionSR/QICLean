@@ -1,0 +1,15 @@
+{
+  "source_revision": "3de85fb945f151078fbf30568bc6075c6ed45f7d",
+  "command": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "5a83568097c77798bdd3f77dc892c338749381bf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T01:03:57.868761+00:00",
+  "elapsed_seconds": 0.249,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

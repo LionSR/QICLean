@@ -1,0 +1,14 @@
+[
+  {
+    "width": 310,
+    "scrollWidth": 331,
+    "overflow": "auto",
+    "theorem": "weighted_trace_exponential",
+    "kind": "statement",
+    "index": 0,
+    "right_endpoint": {
+      "left": 21,
+      "max": 21
+    }
+  }
+]

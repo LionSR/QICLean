@@ -1,0 +1,13 @@
+{
+  "source_revision": "3de85fb945f151078fbf30568bc6075c6ed45f7d",
+  "command": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+  "started_utc": "2026-10-08T01:26:13.320925+00:00",
+  "elapsed_seconds": 27.23,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/pdf.log",
+  "sha256": "c753703f946b62680f4a4c1eaed0f4a44db9894155079da985d8b02e55717cf4"
+}

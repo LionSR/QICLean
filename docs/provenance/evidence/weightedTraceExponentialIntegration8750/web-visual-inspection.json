@@ -1,0 +1,20 @@
+{
+  "viewports": [
+    1280,
+    360
+  ],
+  "complete_entries": [
+    "source citation and auxiliary scope",
+    "complete theorem hypotheses, statement and proof"
+  ],
+  "displayed_formulas": 1,
+  "scrolling_formula_right_endpoints": 1,
+  "screenshots": [
+    "web-weighted_trace_exponential-proof-1280.png",
+    "web-weighted_trace_exponential-proof-360.png",
+    "web-weighted_trace_exponential-statement-1280.png",
+    "web-weighted_trace_exponential-statement-360.png",
+    "web-weighted_trace_exponential-statement-display-0-360-right.png"
+  ],
+  "result": "Complete statement and proof visually inspected at desktop/mobile widths. The single scrolling inequality was inspected at its right endpoint; all terms and closing punctuation are readable. No clipping of non-scrolling text, overlap or unresolved mathematical symbols."
+}

@@ -1,0 +1,25 @@
+{
+  "inventories": [
+    {
+      "inventory": "docs/provenance/evidence/mergeExponential8750/evidence-sha256.json",
+      "verified_bindings": 46,
+      "sha256": "b90891247738c8fedd3feac596205364c20d7980a0f0acecbdf71609e7986305"
+    },
+    {
+      "inventory": "docs/provenance/evidence/mergeExponentialIntegration8750/evidence-sha256.json",
+      "verified_bindings": 86,
+      "sha256": "be4450f3b95b51728f3ef47d48cb81904baa28ec5cea7570a743fe49d52f362b"
+    },
+    {
+      "inventory": "docs/provenance/evidence/weightedTraceExponential8750/evidence-sha256.json",
+      "verified_bindings": 73,
+      "sha256": "ca1aab858f8d22b62890bb34bb4153f13399af6a748cf7c220c08c7372172ca8"
+    },
+    {
+      "inventory": "docs/provenance/evidence/pepsSourceLatestMainIntegration/manifest.json",
+      "verified_bindings": 114,
+      "sha256": "ffd39bf78b4165b3d02eb2df86debb4d3596a65b6805fb949ea74817a336210b"
+    }
+  ],
+  "total_bindings": 319
+}

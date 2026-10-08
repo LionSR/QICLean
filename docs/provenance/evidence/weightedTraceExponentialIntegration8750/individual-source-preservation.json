@@ -1,0 +1,29 @@
+{
+  "files": [
+    {
+      "path": "QICLean/Analysis/WeightedTraceExponential.lean",
+      "source_revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+      "sha256": "08b5b6af2335c789429a7514cc8a1516b9bf3c8dca930b471dd013ee8feb27e0",
+      "exact_frozen_bytes": true
+    },
+    {
+      "path": "docs/area-law-weighted-trace-exponential.md",
+      "source_revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+      "sha256": "489ed7c2ba37e10138ce7d5366cbc1f8febbf33fddd5770ee5acd9a3df062c5d",
+      "exact_frozen_bytes": true
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "source_revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+      "sha256": "9bb4a04ebdc73ebffdcc4a4cc5b65f365d066ae978f320b1ed8b49ae25cb227a",
+      "exact_frozen_bytes": true
+    },
+    {
+      "path": "blueprint/src/fragment/weighted_trace_exponential.tex",
+      "source_revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+      "sha256": "d16d102a1c3c972ff3f65880a89b13e713816bd74a828a283f681c3ce9828b7e",
+      "exact_frozen_bytes": false,
+      "exposition_only_exception": "Exact bibliography key replacement; separate fragment-citation-correction.json records both full hashes."
+    }
+  ]
+}

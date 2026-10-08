@@ -1,0 +1,16 @@
+{
+  "physical_pages": [
+    438
+  ],
+  "printed_pages": [
+    437
+  ],
+  "inspected": [
+    "source citation and auxiliary arithmetic-mean scope",
+    "all hypotheses and complete weighted trace statement",
+    "displayed inequality",
+    "entire difference-square proof"
+  ],
+  "result": "Complete statement and proof visually inspected; no clipping, overlap, unresolved symbols or unreadable display.",
+  "pdf_sha256": "dde089df2d56e6f71d694169877fe14ad0ffe300d4e3ccc607b467724c34025f"
+}

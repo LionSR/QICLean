@@ -1,0 +1,49 @@
+{
+  "source_revision": "3de85fb945f151078fbf30568bc6075c6ed45f7d",
+  "parent_revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+  "preserved_published_branch": {
+    "branch": "feat/area-law-merge-exponential",
+    "revision": "5a83568097c77798bdd3f77dc892c338749381bf"
+  },
+  "declarations": [
+    "Matrix.PosSemidef.re_trace_mul_exp_add_le_half_sum"
+  ],
+  "coverage": "Entire final mathematical source, fragment, reader note, ledger and unique generated import/chapter input.",
+  "files": [
+    {
+      "path": "QICLean/Analysis/WeightedTraceExponential.lean",
+      "sha256": "08b5b6af2335c789429a7514cc8a1516b9bf3c8dca930b471dd013ee8feb27e0",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/weighted_trace_exponential.tex",
+      "sha256": "d16d102a1c3c972ff3f65880a89b13e713816bd74a828a283f681c3ce9828b7e",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-weighted-trace-exponential.md",
+      "sha256": "489ed7c2ba37e10138ce7d5366cbc1f8febbf33fddd5770ee5acd9a3df062c5d",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "9bb4a04ebdc73ebffdcc4a4cc5b65f365d066ae978f320b1ed8b49ae25cb227a",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Analysis.lean",
+      "sha256": "6679090ced9491b82629d60e55f8634e6677ffc5f99ba2e4885e5bca4a988f6e",
+      "coverage": "Entire unique inclusion file."
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_schur_labels.tex",
+      "sha256": "c80d378529691309ec45308b1dfb792bc34697ad8f77ff5768ba41eab5051a49",
+      "coverage": "Entire unique inclusion file."
+    }
+  ],
+  "superseded_documentation_revision": "96387e42dfb5674898fb2b3fb26c2679b3f00e4b",
+  "mathematical_source_revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+  "leaf_evidence_revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+  "unique_inclusion_revision": "dcfa3c3950ddfc4a1e1637bdaab4f59f489ba8b2",
+  "exposition_correction_revision": "3de85fb945f151078fbf30568bc6075c6ed45f7d"
+}

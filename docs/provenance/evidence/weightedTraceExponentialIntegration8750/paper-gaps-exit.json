@@ -1,0 +1,14 @@
+{
+  "source_revision": "3de85fb945f151078fbf30568bc6075c6ed45f7d",
+  "command": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T01:03:57.868479+00:00",
+  "elapsed_seconds": 0.933,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/paper-gaps.log",
+  "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f"
+}
