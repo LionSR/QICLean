@@ -326,7 +326,7 @@ jobs:
           QICLeanTest/GlobalGap.lean
 
 
-      - name: Check physical-buffer and time-evolution regressions and axiom guards strictly
+      - name: Check physical-buffer, evolution, and restoration regressions strictly
         run: |
           for file in \
             QICLeanTest/CompressedPartialSwap.lean \
@@ -334,13 +334,35 @@ jobs:
             QICLeanTest/PhysicalBufferOverlap.lean \
             QICLeanTest/DoubledSystemGap.lean \
             QICLeanTest/PositiveGapUniqueness.lean \
+            QICLeanTest/PoissonWord.lean \
+            QICLeanTest/PoissonWordAxioms.lean \
+            QICLeanTest/ContractionWordDecay.lean \
+            QICLeanTest/ContractionWordDecayAxioms.lean \
+            QICLeanTest/ContractionWordDecaySpectator.lean \
+            QICLeanTest/ContractionWordDecaySpectatorAxioms.lean \
+            QICLeanTest/PoissonContractionDecay.lean \
+            QICLeanTest/PoissonContractionDecayAxioms.lean \
             QICLeanTest/MatrixEvolution.lean \
             QICLeanTest/UnitaryEvolution.lean \
             QICLeanTest/UnitaryEvolutionAxioms.lean \
             QICLeanTest/MatrixUnitaryEvolution.lean \
             QICLeanTest/EvolutionCommutant.lean \
             QICLeanTest/ProjectedEvolution.lean \
-            QICLeanTest/ProjectedEvolutionAxioms.lean; do
+            QICLeanTest/ProjectedEvolutionAxioms.lean \
+            QICLeanTest/SupportInverseSandwich.lean \
+            QICLeanTest/SupportInverseSandwichAxioms.lean \
+            QICLeanTest/RestoringMarginal.lean \
+            QICLeanTest/RestoringMarginalAxioms.lean \
+            QICLeanTest/RestoringOperators.lean \
+            QICLeanTest/RestoringOperatorsAxioms.lean \
+            QICLeanTest/RestoringNorm.lean \
+            QICLeanTest/RestoringNormAxioms.lean \
+            QICLeanTest/RestoringVectors.lean \
+            QICLeanTest/RestoringVectorsAxioms.lean \
+            QICLeanTest/RestoringCoefficientBound.lean \
+            QICLeanTest/RestoringCoefficientBoundAxioms.lean \
+            QICLeanTest/RestoringGroundComponent.lean \
+            QICLeanTest/RestoringGroundComponentAxioms.lean; do
             timeout --signal=INT --kill-after=5s 90s lake env lean -j1 \
               -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true \
               -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \

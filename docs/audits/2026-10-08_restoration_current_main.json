@@ -1,0 +1,27 @@
+{
+  "source_head": "d0fdbcaf341da2f9ee67bbebd3295a839c9c1da9",
+  "main_head": "9febbfd70ffb464f15b2eafe860cbdc6b0b61969",
+  "proof_regression_pin_identity": "All seven production modules, all restoration consumers/guards, lean-toolchain and lake-manifest.json are byte-identical to the 27-check source457c011. New main changes are disjoint unitary-twirl/representation modules and additive import/blueprint routing.",
+  "checks": [
+    {
+      "head": "d0fdbcaf341da2f9ee67bbebd3295a839c9c1da9",
+      "file": "aggregate",
+      "sha256": null,
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Entropy.RestoringMarginal",
+        "QICLean.Entropy.RestoringOperators",
+        "QICLean.Analysis.SupportInverseSandwich",
+        "QICLean.Entropy.RestoringNorm",
+        "QICLean.Entropy.RestoringVectors",
+        "QICLean.Analysis.RestoringCoefficientBound",
+        "QICLean.Entropy.RestoringGroundComponent"
+      ],
+      "exit_code": 0,
+      "seconds": 1.699583088993677,
+      "log_sha256": "523647fec4bcab6a8fa7cc2ac6d0c393aca765c83d14a13d95b3fffe098e4a05",
+      "log_bytes": 42
+    }
+  ]
+}
