@@ -1,0 +1,5 @@
+{
+  "package_revision": "3d425859e73fcfbef85b9638c2a91708ef4a22d4",
+  "binary": ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+  "binary_sha256": "67873de2b0bf2a3868d9b090017833275edb2ad500803ae0c9e60e536a878f14"
+}

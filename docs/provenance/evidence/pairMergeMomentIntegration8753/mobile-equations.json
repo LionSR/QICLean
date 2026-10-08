@@ -1,0 +1,41 @@
+{
+  "equations": [
+    {
+      "id": "a0000002539",
+      "clientWidth": 312,
+      "scrollWidth": 443,
+      "scrollLeft": 131,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:pair_merge_moment",
+      "clientWidth": 310,
+      "scrollWidth": 331,
+      "scrollLeft": 21,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002541",
+      "clientWidth": 311,
+      "scrollWidth": 311,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:pair_merge_moment_mass",
+      "clientWidth": 310,
+      "scrollWidth": 377,
+      "scrollLeft": 67,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002543",
+      "clientWidth": 311,
+      "scrollWidth": 311,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    }
+  ],
+  "result": "passed",
+  "interpretation": "Long displays use horizontal scrolling within the equation box. Each right endpoint was reached and captured; the page itself has no horizontal overflow."
+}
