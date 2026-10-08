@@ -18,7 +18,7 @@ conditional skew estimate, Lemma 5.3 of the area-law paper) to be read on region
 * `Entropy.IsRegionSplit` — the two conditions on the coordinates.
 * `Entropy.IsRegionSplit.localLift_submatrix` — `lift_D K = K ⊗ 1` in these coordinates.
 * `Entropy.IsRegionSplit.partialTraceRight_vecMulVec` — the marginal on `D` is `ρ_D`.
-* `Entropy.IsRegionSplit.star_dotProduct_submatrix_mulVec` — expectations transport.
+* `Entropy.star_dotProduct_submatrix_mulVec` — expectations transport.
 
 ## References
 
@@ -127,16 +127,6 @@ theorem partialTraceRight_vecMulVec (he : IsRegionSplit D φ e) [Fintype B]
   exact Function.Bijective.sum_comp hc (fun w => θ ((cutEquiv n D).symm (a, w)) *
     star (θ ((cutEquiv n D).symm (a', w))))
 
-omit [DecidableEq V] in
-/-- Expectations are invariant under coordinates. -/
-theorem _root_.Entropy.star_dotProduct_submatrix_mulVec {X Y : Type*} [Fintype X] [Fintype Y]
-    (e : X ≃ Y) (M : Matrix X X ℂ) (θ : X → ℂ) :
-    star (θ ∘ e.symm) ⬝ᵥ (M.submatrix e.symm e.symm *ᵥ (θ ∘ e.symm)) = star θ ⬝ᵥ (M *ᵥ θ) := by
-  simp only [dotProduct, mulVec, submatrix_apply, Function.comp_apply, Pi.star_apply]
-  refine Fintype.sum_equiv e.symm _ _ fun y => ?_
-  congr 1
-  exact Fintype.sum_equiv e.symm _ _ fun y' => rfl
-
 omit [Fintype V] [DecidableEq V] in
 /-- Composing with equivalences of the two factors keeps a split. -/
 theorem trans_prodCongr (he : IsRegionSplit D φ e) {A' B' : Type*} (ψ : A ≃ A') (χ : B ≃ B') :
@@ -148,6 +138,16 @@ theorem trans_prodCongr (he : IsRegionSplit D φ e) {A' B' : Type*} (ψ : A ≃ 
     exact χ.injective.eq_iff
 
 end IsRegionSplit
+
+omit [DecidableEq V] in
+/-- Expectations are invariant under coordinates. -/
+theorem star_dotProduct_submatrix_mulVec {X Y : Type*} [Fintype X] [Fintype Y]
+    (e : X ≃ Y) (M : Matrix X X ℂ) (θ : X → ℂ) :
+    star (θ ∘ e.symm) ⬝ᵥ (M.submatrix e.symm e.symm *ᵥ (θ ∘ e.symm)) = star θ ⬝ᵥ (M *ᵥ θ) := by
+  simp only [dotProduct, mulVec, submatrix_apply, Function.comp_apply, Pi.star_apply]
+  refine Fintype.sum_equiv e.symm _ _ fun y => ?_
+  congr 1
+  exact Fintype.sum_equiv e.symm _ _ fun y' => rfl
 
 /-- Configurations of `V = D ∪ D'` (disjoint) as pairs of configurations of `D` and `D'`. -/
 def regionSplitEquiv {D D' : Finset V} (hDD : Disjoint D D') (hcov : ∀ v, v ∈ D ∨ v ∈ D') :
