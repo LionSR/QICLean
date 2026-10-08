@@ -1,0 +1,1 @@
+{"parent_comparisons": 1944, "distinct_parent_paths": 1732, "leaf_artifacts": 126, "unchanged_parent_bytes": true, "unchanged_leaf_bytes": true, "only_inclusion_paths": ["QICLean/Representation.lean", "blueprint/src/chapter/ch12_entropy.tex"], "result": "passed"}

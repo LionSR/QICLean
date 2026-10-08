@@ -1,0 +1,9 @@
+{
+  "attempt": "initial-folded-mobile-equations",
+  "status": "excluded from final complete-display evidence",
+  "reason": "The inherited helper omitted the top-level construction display and measured the coordinate-regrouping display while its proof was folded. The raw output and exit are preserved. The corrected helper measures all seven displays with both proofs open; no mathematical or blueprint source changed.",
+  "preserved_actual_exit_record": "initial-folded-mobile-equations-exit.json",
+  "preserved_raw_log": "initial-folded-mobile-equations.log",
+  "preserved_output": "initial-folded-mobile-equations.json",
+  "preserved_helper": "initial-folded-inspect-mobile-equations.py"
+}

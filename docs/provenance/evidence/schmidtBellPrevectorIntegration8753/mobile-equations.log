@@ -1,0 +1,55 @@
+{
+  "equations": [
+    {
+      "id": "eq:schmidt_bell_selected_vectors",
+      "clientWidth": 344,
+      "scrollWidth": 476,
+      "scrollLeft": 132,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:schmidt_bell_initial_vector",
+      "clientWidth": 310,
+      "scrollWidth": 367,
+      "scrollLeft": 57,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:schmidt_bell_actual_pin",
+      "clientWidth": 310,
+      "scrollWidth": 364,
+      "scrollLeft": 54,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:schmidt_bell_regroup",
+      "clientWidth": 311,
+      "scrollWidth": 395,
+      "scrollLeft": 84,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:schmidt_bell_actual_marginal",
+      "clientWidth": 310,
+      "scrollWidth": 370,
+      "scrollLeft": 60,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:schmidt_bell_mean_energy",
+      "clientWidth": 310,
+      "scrollWidth": 352,
+      "scrollLeft": 42,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:schmidt_bell_selected_mass_entropy",
+      "clientWidth": 310,
+      "scrollWidth": 439,
+      "scrollLeft": 129,
+      "overflowX": "auto"
+    }
+  ],
+  "result": "passed",
+  "interpretation": "Long displays use horizontal scrolling within the equation box. Each right endpoint was reached and captured; the page itself has no horizontal overflow."
+}

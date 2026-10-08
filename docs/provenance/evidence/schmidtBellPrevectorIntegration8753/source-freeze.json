@@ -1,0 +1,14 @@
+{
+  "source_revision": "b5d4862fb1c00667234015114fbd4e8a29aec13b",
+  "mathematical_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+  "fragment_revision": "c20f3e46",
+  "leaf_revision": "e9f2d8914a7a93ca022daf566b375fad2b97d797",
+  "production_sha256": {
+    "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+    "blueprint/src/fragment/schmidt_bell_prevector.tex": "3e119994ac202e8ffbe0077477e6cb0ca64e8ed97588447465c76a2afe43f8af",
+    "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d",
+    "QICLean/Representation.lean": "5a4f039bb115ee689f5ac515a846dffa1d430695dc4639e6693d3ed7ca5554d0",
+    "blueprint/src/chapter/ch12_entropy.tex": "5e1832d137431085d35bf4ce4bf53da25c3a60e5dccfb2715204195a3ca780ae"
+  },
+  "inclusion_diff": "Exactly one generated import and one unique entropy chapter input."
+}

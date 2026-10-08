@@ -1,0 +1,31 @@
+{
+  "source_revision": "b5d4862fb1c00667234015114fbd4e8a29aec13b",
+  "pdf": "complete-book.pdf",
+  "pdf_sha256": "1ae66188e974f99a7e7863c4e97d017cc00283919e3e687fa2c0e59fb1d8a974",
+  "pages": 436,
+  "inspected_physical_pages": [
+    415,
+    416
+  ],
+  "printed_pages": [
+    414,
+    415
+  ],
+  "theorems": [
+    "13.37.1",
+    "13.37.2"
+  ],
+  "visually_inspected": true,
+  "observations": [
+    "The chapter section and both theorem statements/proofs are visible without clipping or overlapping text.",
+    "The power coefficient (sqrt(z)/d)^k, coordinate regrouping, actual diagonal marginal and polynomial selected mass are correct.",
+    "Both initial labels are stated before pinning; the pin statement preserves the right label only.",
+    "The source citation and all local equation references resolve. The subsequent inverse-metric estimates remain explicitly separate."
+  ],
+  "print_log": {
+    "path": "print.log.gz",
+    "sha256": "23a15596e97bb2a8cd7a7ef33fb5ffb1ab0c56ddb651549e254020bdf75f3e4d",
+    "uncompressed_sha256": "60461bc3bc0029ead90dba310489f3abdc9cbda6f260d9641da600f821daf48a",
+    "gzip_mtime": 0
+  }
+}

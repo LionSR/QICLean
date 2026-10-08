@@ -1,0 +1,27 @@
+{
+  "source_revision": "b5d4862fb1c00667234015114fbd4e8a29aec13b",
+  "mathematical_revision": "67e75fc624d73eb36ba92737cc47e21e5f4e1b8a",
+  "production_sha256": {
+    "QICLean/Representation/SchmidtBellPrevector.lean": "14d7db9f7674e0d8b438a1b13b63c07907e331503a266e958749be802dc3c4b8",
+    "blueprint/src/fragment/schmidt_bell_prevector.tex": "3e119994ac202e8ffbe0077477e6cb0ca64e8ed97588447465c76a2afe43f8af",
+    "docs/tactic_patterns.md": "4caf1f9556a25566ac2e57b8691ddf04db402e9ac7fa4e7898e9446156cdc63d",
+    "QICLean/Representation.lean": "5a4f039bb115ee689f5ac515a846dffa1d430695dc4639e6693d3ed7ca5554d0",
+    "blueprint/src/chapter/ch12_entropy.tex": "5e1832d137431085d35bf4ce4bf53da25c3a60e5dccfb2715204195a3ca780ae"
+  },
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/schmidtBellPrevectorIntegration8753/inspect-mobile-equations.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "exit_code": 0,
+  "elapsed_seconds": 7.44489433299168,
+  "log": "docs/provenance/evidence/schmidtBellPrevectorIntegration8753/mobile-equations.log",
+  "sha256": "ab8d73219f980cb2c44a1b34aabda5d55d516a1a55454a10814ce3b44c3cb447",
+  "uncompressed_sha256": "ab8d73219f980cb2c44a1b34aabda5d55d516a1a55454a10814ce3b44c3cb447",
+  "uncompressed_bytes": 1348,
+  "compressed": false,
+  "deterministic_gzip_mtime": null,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true
+}
