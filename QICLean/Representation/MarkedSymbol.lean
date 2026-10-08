@@ -532,6 +532,113 @@ theorem aeval (hX : HasMarkedSymbol X F) (p : Polynomial ℝ) :
         fun θ => (c : ℂ) • F θ ^ n from funext e2]
     exact (hX.pow n).smul (c : ℂ)
 
+/-- The compression `Π_{k+1} X_k Π_{k+1}`, indexed by the number of copies. -/
+noncomputable def compress (X : ∀ k, Matrix (Fin (k + 1) → Ω) (Fin (k + 1) → Ω) ℂ) :
+    ∀ k, Matrix (Fin k → Ω) (Fin k → Ω) ℂ
+  | 0 => 0
+  | k + 1 => symProj (copyPerm Ω (k + 1)) * X k * symProj (copyPerm Ω (k + 1))
+
+theorem symProj_mul_mul_mul_symProj {c T : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
+    (hT : Commute (symProj (copyPerm Ω k)) T) :
+    symProj (copyPerm Ω k) * c * T * symProj (copyPerm Ω k) =
+      symProj (copyPerm Ω k) * c * symProj (copyPerm Ω k) * T := by
+  rw [Matrix.mul_assoc _ T, ← hT.eq, ← Matrix.mul_assoc]
+
+theorem norm_symProj_mul_mul_symProj_le (M : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) :
+    ‖symProj (copyPerm Ω k) * M * symProj (copyPerm Ω k)‖ ≤ ‖M‖ := by
+  refine (l2_opNorm_mul _ _).trans ?_
+  refine (mul_le_mul_of_nonneg_right (l2_opNorm_mul _ _) (norm_nonneg _)).trans ?_
+  calc ‖symProj (copyPerm Ω k)‖ * ‖M‖ * ‖symProj (copyPerm Ω k)‖ ≤ 1 * ‖M‖ * 1 := by
+        gcongr
+        · exact l2_opNorm_symProj_le
+        · exact l2_opNorm_symProj_le
+    _ = ‖M‖ := by ring
+
+/-- **Compression to the symmetric subspace** (`05-replicas.tex`, lines 749–760 and 797–812):
+a sequence with marked symbol `F` compresses to a sequence with coherent symbol
+`θ ↦ ⟨θ, F(θ) θ⟩`. -/
+theorem hasCoherentSymbol_compress (hX : HasMarkedSymbol X F) :
+    HasCoherentSymbol (compress X) (fun θ => star θ ⬝ᵥ (F θ *ᵥ θ)) where
+  commute k := by
+    cases k with
+    | zero => exact Commute.zero_right _
+    | succ k =>
+      change Commute _ (symProj (copyPerm Ω (k + 1)) * X k * symProj (copyPerm Ω (k + 1)))
+      set P := symProj (copyPerm Ω (k + 1))
+      have hPP : P * P = P := symProj_mul_symProj
+      calc P * (P * X k * P) = P * P * X k * P := by simp only [Matrix.mul_assoc]
+        _ = P * X k * P := by rw [hPP]
+        _ = P * X k * (P * P) := by rw [hPP]
+        _ = P * X k * P * P := by simp only [Matrix.mul_assoc]
+  bounded := by
+    obtain ⟨M, hM0, hM⟩ := hX.norm_le
+    refine ⟨M, fun k => ?_⟩
+    cases k with
+    | zero => simpa [compress] using hM0
+    | succ k =>
+      change ‖symProj (copyPerm Ω (k + 1)) * X k * symProj (copyPerm Ω (k + 1)) *
+        symProj (copyPerm Ω (k + 1))‖ ≤ M
+      rw [Matrix.mul_assoc _ _ (symProj _), symProj_mul_symProj]
+      exact (norm_symProj_mul_mul_symProj_le _).trans (hM k)
+  continuousOn := by
+    have hF := hX.continuous
+    have : Continuous fun θ : Ω → ℂ => star θ ⬝ᵥ (F θ *ᵥ θ) := by
+      simp only [dotProduct, mulVec, Pi.star_apply]
+      exact continuous_finsetSum _ fun i _ => (continuous_apply i).star.mul
+        (continuous_finsetSum _ fun j _ =>
+          ((continuous_apply j).comp ((continuous_apply i).comp hF)).mul (continuous_apply j))
+    exact this.continuousOn
+  approx ε hε := by
+    obtain ⟨Y, ⟨N, A, G, hY, hFY⟩, C, hC⟩ := hX
+    set H : Fin N → Σ r : ℕ, Matrix (Fin r → Ω) (Fin r → Ω) ℂ := fun i =>
+      ⟨1 + (G i).1, copyKronecker (oneCopy (A i)) (G i).2⟩
+    refine ⟨fun k => ∑ i, injectionAverage k (H i).1 (H i).2, fun θ => star θ ⬝ᵥ (F θ *ᵥ θ),
+      ⟨N, H, fun k => rfl, fun θ => ?_⟩, fun θ _ => by simp [hε.le], ?_⟩
+    · simp only [H, coherentExpect_copyKronecker, coherentExpect_oneCopy, hFY, sum_mulVec,
+        dotProduct_sum, smul_mulVec, dotProduct_smul, smul_eq_mul, mul_comm]
+    set D := max C 0 + ∑ i, 2 * (G i).1 * ‖A i‖ * ‖(G i).2‖
+    have hD : Tendsto (fun k : ℕ => D / (k : ℝ)) atTop (nhds 0) :=
+      tendsto_const_nhds.div_atTop tendsto_natCast_atTop_atTop
+    filter_upwards [hD.eventually (ge_mem_nhds hε), eventually_gt_atTop 0] with k hk hk0
+    obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hk0.ne'
+    set P := symProj (copyPerm Ω (k + 1))
+    have hPP : P * P = P := symProj_mul_symProj
+    have hPYP : P * Y k * P = ∑ i, injectionAverage (k + 1) 1 (oneCopy (A i)) *
+        injectionAverage (k + 1) (G i).1 (G i).2 * P := by
+      rw [hY, Finset.mul_sum, Finset.sum_mul]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      rw [← Matrix.mul_assoc, symProj_mul_mul_mul_symProj (commute_symProj_injectionAverage _),
+        symProj_mul_siteOp_mul_symProj, Matrix.mul_assoc, (commute_symProj_injectionAverage _).eq,
+        ← Matrix.mul_assoc]
+    change ‖(P * X k * P - ∑ i, injectionAverage (k + 1) (H i).1 (H i).2) * P‖ ≤ ε
+    have hexp : (P * X k * P - ∑ i, injectionAverage (k + 1) (H i).1 (H i).2) * P =
+        P * (X k - Y k) * P + ∑ i, (injectionAverage (k + 1) 1 (oneCopy (A i)) *
+          injectionAverage (k + 1) (G i).1 (G i).2 -
+            injectionAverage (k + 1) (H i).1 (H i).2) * P := by
+      have h1 : P * X k * P * P = P * X k * P := by rw [Matrix.mul_assoc _ P P, hPP]
+      simp only [Matrix.sub_mul, Finset.sum_sub_distrib, ← Finset.sum_mul, Matrix.mul_sub, h1,
+        ← hPYP]
+      abel
+    rw [hexp]
+    have hk' : D / ((k : ℝ) + 1) ≤ ε := by simpa using hk
+    refine (norm_add_le _ _).trans (le_trans ?_ hk')
+    rw [show D / ((k : ℝ) + 1) = max C 0 / ((k : ℝ) + 1) +
+        ∑ i, 2 * (G i).1 * ‖A i‖ * ‖(G i).2‖ / ((k : ℝ) + 1) by
+      simp only [D, add_div, Finset.sum_div]]
+    refine add_le_add ?_ ?_
+    · calc ‖P * (X k - Y k) * P‖ ≤ ‖X k - Y k‖ := norm_symProj_mul_mul_symProj_le _
+        _ ≤ C / ((k : ℝ) + 1) := hC k
+        _ ≤ max C 0 / ((k : ℝ) + 1) := by gcongr; exact le_max_left _ _
+    · refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
+      refine (l2_opNorm_mul _ _).trans ?_
+      have h := norm_injectionAverage_mul_sub_le (k := k + 1) (Nat.succ_pos k) (oneCopy (A i))
+        (G i).2
+      rw [l2_opNorm_oneCopy] at h
+      push_cast at h
+      calc _ ≤ 2 * 1 * (G i).1 * ‖A i‖ * ‖(G i).2‖ / ((k : ℝ) + 1) * 1 :=
+            mul_le_mul h l2_opNorm_symProj_le (norm_nonneg _) (by positivity)
+        _ = _ := by ring
+
 end HasMarkedSymbol
 
 end TensorPower
