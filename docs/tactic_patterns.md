@@ -11,23 +11,21 @@ No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
-### Joint central-label resolution — existing mathematical lemmas (2026-10-07)
+### Joint orthogonal-resolution coordinate functions — promoted lemmas (2026-10-08)
 
-- **Pattern:** Form the product of commuting orthogonal resolutions, express
-  the observables as functions of this joint resolution, and prove matrix
-  order from scalar inequalities on its nonzero components.
-- **Seen:** `TensorPower.copyPerm_groupedCopies_labelEntropy_bounds` in
-  `QICLean/Representation/GoodAuxiliaryLabelEntropy.lean`, as well as `TensorPower.groupedCopies_labelEntropy_bounds` in
-  `QICLean/Representation/GroupedLabelEntropy.lean` and
-  `PermutationRepresentation.supportProj_mul_labelEntropy_mul_supportProj_le`
-  in `QICLean/Representation/SchurSurprisal.lean`.
-- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.prod` and
-  `posSemidef_hom_of_ne_zero`. The coordinate functions of a product
-  resolution are recovered by summing the other factor to the identity;
-  the new module has two private lemmas for this elementary calculation.
-- **Caveats:** Scalar inequalities are required only on nonzero joint
-  projections. Compatibility and the full-space order must be derived from
-  the actual projections, rather than supplied as extra assumptions.
+- **Pattern:** Form a product of commuting orthogonal resolutions and recover
+  a function of either coordinate by summing the other resolution to the identity.
+- **Seen:** `GroupedLabelEntropy.lean`, `SchurSurprisal.lean`,
+  `MergeExponential.lean`, and `WeightedTraceHolder.lean`.
+- **Abstraction:** `Matrix.IsOrthogonalResolution.prod_hom_fst` and
+  `prod_hom_snd` in `Analysis/OrthogonalResolution.lean`. The former private
+  grouped-copy helpers are removed, and the existing marginal calculations
+  use these two lemmas. This is a mathematical abstraction, with no new tactic.
+- **Caveats:** The functions may be complex. Neither Hermiticity nor positivity
+  is needed for the coordinate identities. The underlying projections must
+  still form the actual resolutions; matrix order is obtained separately from
+  scalar inequalities on nonzero joint components. No compatibility premise
+  is added to any source theorem.
 
 
 ## Candidates
