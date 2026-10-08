@@ -12,7 +12,7 @@ The coefficient of a monomial in a power of the sum of variables counts words
 with the prescribed multiplicities. Comparing this expansion with the
 multinomial theorem gives the exact cardinality, including an empty alphabet.
 This is the combinatorial intermediate for the fixed-time count and ordering
-calculation in `area-law09-amplification.tex`, lines 49–54 and 237–253.
+calculation in `09-amplification.tex`, lines 49–54 and 237–253.
 -/
 
 open scoped BigOperators Nat

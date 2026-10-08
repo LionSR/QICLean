@@ -2,7 +2,7 @@
 
 This separately named combinatorial intermediate supports the fixed-time
 Poisson count/order calculation in the pinned amplification source,
-`area-law09-amplification.tex`, lines 49–54 and 237–253. It does not identify
+`09-amplification.tex`, lines 49–54 and 237–253. It does not identify
 the existing word measure with a chronological independent-clock process.
 
 ## Mathematical argument

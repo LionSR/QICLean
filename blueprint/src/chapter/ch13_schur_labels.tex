@@ -831,3 +831,138 @@ $\lambda$ factor.
     is the recursion $W_\lambda\prod_{j\ne i}(l_i-1-l_j)=W_\nu\prod_{j\ne i}(l_i-l_j)$ of the
     Weyl formula, and induction on $k$ gives $m_\lambda=W_\lambda$.
 \end{proof}
+
+\section{The Weyl character formula}
+
+The integral representation of the replica metrics in the proof of Lemma~6.2
+of~\cite{OpenAI2026AreaLaw} uses the characters of the multiplicity spaces. For a label
+$\lambda$ with at most $q$ rows and $y\in\C^q$, let
+$\chi_\lambda(y)=\Tr\bigl(E^\lambda_{00}\operatorname{diag}(y)^{\otimes k}\bigr)$ be the
+character of $V^{(q)}_\lambda$, so that
+$\Tr\bigl(\pi^\lambda\operatorname{diag}(y)^{\otimes k}\bigr)=d_\lambda\chi_\lambda(y)$. For
+exponents $\alpha\in\mathbb N^q$ write $a_\alpha(y)=\det[y_i^{\alpha_j}]$ for the alternant,
+$1_S$ for the indicator vector of a set $S$ of rows, and
+$e_r(y)=\sum_{|S|=r}\prod_{i\in S}y_i$ for the elementary symmetric polynomial.
+
+\begin{lemma}[Vertical-strip rule for alternants]
+    \label{lem:alternant_pieri}
+    \lean{Partition.alternant, Partition.elemSymm, Partition.indic,
+        Partition.alternant_eq_zero_of_eq, Partition.alternant_mul_elemSymm,
+        Partition.alternant_geom, Partition.sum_vand_add_indic,
+        Partition.sum_weylFormula_add_indic}
+    \leanok
+    An alternant with two equal exponents vanishes, and
+    $a_\alpha e_r=\sum_{|S|=r}a_{\alpha+1_S}$. Consequently
+    $\sum_{|S|=r}V(\alpha+1_S)=\binom qrV(\alpha)$ for the Vandermonde product
+    $V(t)=\prod_{i<j}(t_i-t_j)$, and
+    $\sum_{|S|=r}W_{\lambda+1_S}=\binom qrW_\lambda$ for the right-hand side $W$ of the
+    Weyl dimension formula.
+\end{lemma}
+
+\begin{proof}\leanok
+    Expand the determinant over permutations $\sigma$ and reindex $e_r$ by $\sigma$. At
+    $y=(1,z,\dots,z^{q-1})$ the alternant is the Vandermonde determinant in the
+    $z^{\alpha_j}$, equal to $(z-1)^{\binom q2}$ times $\prod_{i<j}(G_{\alpha_j}-G_{\alpha_i})$
+    with $G_n=1+z+\cdots+z^{n-1}$. Cancel the power of $z-1$ in the polynomial ring and set
+    $z=1$, where $G_n=n$ and $e_r=\binom qr$.
+\end{proof}
+
+\begin{lemma}[The exterior power]
+    \label{lem:exterior_character}
+    \lean{TensorPower.leftCopies, TensorPower.rightCopies, TensorPower.splitOp,
+        TensorPower.groupAlgebraRep_leftCopies, TensorPower.groupAlgebraRep_rightCopies,
+        TensorPower.tensorPow_eq_splitOp, TensorPower.trace_splitOp, TensorPower.antisym,
+        TensorPower.antisym_mul_antisym, TensorPower.trace_antisym_mul_tensorPow}
+    \leanok
+    Let $A_r=\frac1{r!}\sum_{\tau\in S_r}\operatorname{sgn}(\tau)\tau$. Then $A_r^2=A_r$ and
+    $\Tr\bigl(A_r\operatorname{diag}(y)^{\otimes r}\bigr)=e_r(y)$. On $(\C^q)^{\otimes(m+r)}$
+    the permutations of the first $m$ and of the last $r$ copies act on the two tensor
+    factors of $(\C^q)^{\otimes m}\otimes(\C^q)^{\otimes r}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The diagonal entry of $A_r\operatorname{diag}(y)^{\otimes r}$ at a configuration
+    $z$ is $\frac1{r!}\prod_jy_{z_j}$ times the signed count of permutations fixing $z$,
+    which is one when the entries of $z$ are distinct and zero otherwise, since a
+    transposition of two equal entries reverses the sign. Each set of $r$ distinct entries
+    arises from $r!$ configurations, which cancels the factor $\frac1{r!}$.
+\end{proof}
+
+\begin{lemma}[Highest weights in $V_\mu\otimes\Lambda^r$]
+    \label{lem:exterior_highest_weight}
+    \lean{TensorPower.pieriElem, TensorPower.pieriElem_mul_self, TensorPower.sliceR,
+        TensorPower.exists_sliceR_isHighestWeight,
+        TensorPower.finrank_hwSpace_pieri_le_one, TensorPower.pieriRank,
+        TensorPower.pieriRank_le_one_and}
+    \leanok
+    \uses{lem:pieri, lem:exterior_character}
+    Let $\mu$ be a label of $S_m$ and let $c(\lambda)$ be the rank of the $\lambda$ block
+    of $e^\mu_{00}\otimes A_r$ in $\C[S_{m+r}]$. In every dimension $q$ in which $\lambda$
+    and $\mu$ occur, $c(\lambda)\le1$, and $c(\lambda)=0$ unless $\lambda=\mu+1_S$ for a
+    set $S$ of $r$ rows.
+\end{lemma}
+
+\begin{proof}\leanok
+    A highest-weight vector $w$ of weight $\lambda$ fixed by $e^\mu_{00}\otimes A_r$ has
+    components $w_z\in V_\mu$, indexed by the configurations $z$ of the last $r$ copies,
+    which are antisymmetric in $z$ and vanish unless $z$ has distinct entries. Among the
+    nonzero components choose one maximizing $\sum_jz_j$. A raising operator
+    $E_{ab}$, $a<b$, maps it to minus a sum of components whose configurations have a
+    larger sum, so it is a highest-weight vector of $V_\mu$ of weight $\lambda-\mathrm{wt}(z)$;
+    hence $\lambda=\mu+1_S$ with $S$ the set of entries of $z$. Configurations with the same
+    entries differ by a permutation, so the component at one such configuration determines
+    $w$, and it lies on the line of highest-weight vectors of $V_\mu$. As in
+    Lemma~\ref{lem:pieri}, the matrix units of $\lambda$ applied to a highest-weight vector
+    of $V_\lambda$ embed the range of the block into this space.
+\end{proof}
+
+\begin{theorem}[Vertical-strip rule for the characters]
+    \label{thm:character_pieri}
+    \lean{TensorPower.glChar, TensorPower.trace_labelProj_mul_tensorPow,
+        TensorPower.trace_mul_tensorPow_eq_sum, TensorPower.trace_pieriElem_mul_tensorPow,
+        TensorPower.exists_part_eq, TensorPower.pieriSet, TensorPower.sum_pieriSet,
+        TensorPower.pieriRank_eq_one, TensorPower.glChar_mul_elemSymm}
+    \leanok
+    \uses{lem:restriction, lem:exterior_highest_weight, lem:alternant_pieri,
+        thm:schur_part1_dim}
+    For a label $\mu$ of $S_m$ with at most $q$ rows,
+    $\chi_\mu e_r=\sum_\lambda\chi_\lambda$, the sum running over the partitions
+    $\lambda=\mu+1_S$ of $m+r$ with at most $q$ rows.
+\end{theorem}
+
+\begin{proof}\leanok
+    By Lemma~\ref{lem:restriction}, $\Tr\bigl(\rho(a)\operatorname{diag}(y)^{\otimes k}\bigr)
+    =\sum_\lambda\tr W_\lambda(a)\chi_\lambda(y)$ for every $a\in\C[S_k]$, and for
+    $a=e^\mu_{00}\otimes A_r$ the left side is $\chi_\mu(y)e_r(y)$ by
+    Lemma~\ref{lem:exterior_character}. Labels with more than $q$ rows contribute nothing,
+    since their characters vanish. For the other labels,
+    Lemma~\ref{lem:exterior_highest_weight} bounds the coefficients by one on these
+    partitions and by zero elsewhere. At $y=1$ the two sides
+    are $\binom qrm_\mu$ and $\sum_\lambda c(\lambda)m_\lambda$, while the Weyl dimension
+    formula and Lemma~\ref{lem:alternant_pieri} give $\sum_\lambda m_\lambda=\binom qrm_\mu$
+    over the same partitions; the summands with $\mu+1_S$ not a partition vanish because two
+    shifted parts coincide. Since $m_\lambda>0$, every coefficient is one.
+\end{proof}
+
+\begin{theorem}[The Weyl character formula]
+    \label{thm:weyl_character}
+    \lean{TensorPower.rowSet, TensorPower.card_rowSet_lt, TensorPower.alternant_mul_glChar}
+    \leanok
+    \uses{thm:character_pieri, lem:alternant_pieri}
+    For a label $\lambda$ of $S_k$ with at most $q$ rows,
+    $a_\delta(y)\chi_\lambda(y)=a_{\lambda+\delta}(y)$ with $\delta_j=q-j$; that is,
+    $\Delta(y)\chi_\lambda(y)=\det[y_i^{l_j}]$ with $l_j=\lambda_j+q-j$ and $\Delta$ the
+    Vandermonde determinant.
+\end{theorem}
+
+\begin{proof}\leanok
+    By induction on $k$, and for fixed $k$ downward on the number $\ell$ of nonempty rows.
+    For $\ell=0$ both sides are $a_\delta$. Otherwise let $\mu$ be $\lambda$ with its first
+    column removed, a partition of $k-\ell$. Multiply the rule of
+    Theorem~\ref{thm:character_pieri} for $r=\ell$ by $a_\delta$. By induction on $k$ the
+    left side is $a_{\mu+\delta}e_\ell=\sum_{|S|=\ell}a_{\mu+\delta+1_S}$, in which the terms
+    with $\mu+1_S$ not a partition vanish. On the right, every partition $\mu+1_S$ other
+    than $\lambda$ has a nonempty row below the first $\ell$, hence more than $\ell$
+    nonempty rows, and the inner induction applies to it. The remaining terms are
+    $a_\delta\chi_\lambda$ and $a_{\lambda+\delta}$.
+\end{proof}

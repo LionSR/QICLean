@@ -1,7 +1,7 @@
 \subsection{Letter counts and multiplicities}
 \label{sec:poisson_word_counts}
 
-% Combinatorial intermediate for area-law09-amplification.tex, lines 49--54
+% Combinatorial intermediate for 09-amplification.tex, lines 49--54
 % and 237--253; no chronological clock-process identification is asserted.
 Let $I$ be a finite alphabet.
 
@@ -28,16 +28,14 @@ Every word in $\mathcal W_n$ has length $\sum_{i\in I}n_i$.
 \leanok
 \uses{def:poisson_word_count_vector}
 For a finite alphabet $I$, a nonnegative count vector $n\in\N^I$, and
-$m\in\N$, the number of length-$m$ words with count vector $n$ is
+$m\in\N$ with $\sum_{i\in I}n_i=m$, the number of length-$m$ words
+with count vector $n$ is
 \begin{align}
  \bigl|\{w\in I^{\{0,\ldots,m-1\}}:C(w)=n\}\bigr|
- &=\begin{cases}
-    \displaystyle\frac{(\sum_{i\in I}n_i)!}{\prod_{i\in I}n_i!},
-       &\sum_{i\in I}n_i=m,\\
-    0,&\sum_{i\in I}n_i\ne m.
-   \end{cases}
+ &=\frac{(\sum_{i\in I}n_i)!}{\prod_{i\in I}n_i!}.
  \label{eq:word_multiplicity_card}
 \end{align}
+If $\sum_{i\in I}n_i\ne m$, there are no such words.
 \end{lemma}
 \begin{proof}
 \leanok

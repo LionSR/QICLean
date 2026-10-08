@@ -12,7 +12,7 @@ import QICLean.Probability.PoissonWord
 Every nonnegative count vector determines a finite, nonempty set of finite
 words. Its cardinality is the multinomial coefficient. These are the actual
 word fibers used in the fixed-time count and ordering calculation from
-`area-law09-amplification.tex`, lines 49–54 and 237–253; no chronological
+`09-amplification.tex`, lines 49–54 and 237–253; no chronological
 clock process is constructed here.
 -/
 
