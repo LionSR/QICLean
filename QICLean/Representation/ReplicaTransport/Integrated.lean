@@ -45,6 +45,14 @@ theorem integral_le_log_filteredNormSq_sub (hD : D.IsAdmissible) {t : ℝ} (ht :
     ∫ p in p₀..p₁, L p ≤
       Real.log (Transport.filteredNormSq (D.rootPath n t k p₀) pre) -
         Real.log (Transport.filteredNormSq (D.rootPath n t k p₁) pre) := by
-  sorry
+  have hA : ∀ h, (D.oldMetric n t k h).PosDef := fun h => D.posDef_input hD ht hcomm ⟨h, none⟩
+  have hA' : ∀ h c, (D.newMetric n t k h c).PosDef := fun h c =>
+    D.posDef_input hD ht hcomm ⟨h, some c⟩
+  obtain ⟨hint, heq⟩ := Transport.log_filteredNormSq_sub_eq_integral (T := D.histTree)
+    (S := D.choiceTree) hA hA' hD.histWeight_pos hpre h0 h01 h1
+  have hL' : IntervalIntegrable L volume p₀ p₁ := hL.mono_set (by
+    rw [uIcc_of_le h01, uIcc_of_le zero_le_one]; exact Icc_subset_Icc h0 h1)
+  exact (intervalIntegral.integral_mono_on_of_le_Ioo h01 hL' hint fun p hp =>
+    hLle p ⟨h0.trans_lt hp.1, hp.2.trans_le h1⟩).trans_eq heq.symm
 
 end TensorPower.ReplicaTransport.TransportData
