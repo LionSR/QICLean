@@ -19,8 +19,8 @@ $1\le i\le d$, and set
 \]
 The metric of a subsystem $Q$ is $W_{Q,k}=\sum_\lambda w_k(\lambda)\pi^\lambda_{Q,k}$.
 This chapter proves the scalar properties of $w_k$, and from them the operator
-statements of the paper's Lemma~6.2 other than the integral representation of
-$W_{Q,k}$.
+statements of the paper's Lemma~6.2, including the integral representation of
+$W_{Q,k}$ (Theorem~\ref{thm:replica_metric_integral}).
 
 \section{Ratios of Gamma values}
 
@@ -984,4 +984,87 @@ weight $(\sum_ix_i)^{-a}e^{-\sum_ix_i}$; the quotients of gamma values are the s
     Here $D=c+tk$ and $D-tk=c$ for $l$, while $D=c$ for $\delta$. The factors $d!\,t^N$ cancel,
     and $a_\delta(l)/a_\delta(\delta)=W_\lambda$ because $a_\delta$ is a fixed sign times the
     Vandermonde product and $a_\delta(\delta)$ is the product of the differences $j-i$.
+\end{proof}
+
+\section{The integral representation}
+
+\begin{lemma}[Powers of compressions]
+    \label{lem:trace_compression}
+    \lean{Matrix.embedMatrix, Matrix.conjTranspose_mul_mul_embedMatrix,
+        Matrix.re_trace_rpow_submatrix_le}
+    \leanok
+    For $A\ge0$ on $\C^n$, an isometry $E:\C^m\to\C^n$ given by an injection of basis
+    vectors, and $p\ge1$, $\Tr(E^\ast AE)^p\le\Tr A^p$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $E^\ast AE=\sum_i\beta_i\psi_i\psi_i^\ast$. Then
+    $\beta_i=\langle E\psi_i,AE\psi_i\rangle$, and Jensen's inequality for the convex function
+    $x^p$ gives $\beta_i^p\le\langle E\psi_i,A^pE\psi_i\rangle$. Summing over $i$ gives
+    $\Tr(E^\ast A^pE)$, a partial sum of the nonnegative diagonal entries of $A^p$.
+\end{proof}
+
+\begin{lemma}[The spectral law]
+    \label{lem:spectral_law}
+    \lean{TensorPower.specDensity, TensorPower.specNorm, TensorPower.specNorm_pos,
+        TensorPower.specMeasure, TensorPower.isProbabilityMeasure_specMeasure,
+        TensorPower.specSample, TensorPower.specSample_rpow, TensorPower.specSample_posDef,
+        TensorPower.trace_specSample}
+    \leanok
+    \uses{thm:gamma_integral}
+    Let $t>0$. The density proportional to $a_\delta(x)a_\delta(x^t)e^{-\sum_ix_i}$ on the
+    positive orthant is a probability density. For $x$ in the orthant and a unitary $U$, the
+    sample $\sigma=U\operatorname{diag}(x/\sum_ix_i)U^\ast$ is a positive definite density
+    matrix and $\sigma^t=U\operatorname{diag}((x/\sum_ix_i)^t)U^\ast$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The normalization is the gamma integral at $a=0$, which is positive. The power of the
+    sample follows from the functional calculus of a diagonal matrix.
+\end{proof}
+
+\begin{theorem}[The integral on the whole system]
+    \label{thm:replica_full_integral}
+    \lean{TensorPower.glChar_mul_left, TensorPower.alternant_mul_glChar_ofReal,
+        TensorPower.specDensity_mul_glChar, TensorPower.integral_unitary_sampleEntry,
+        TensorPower.integral_specMeasure_label, TensorPower.integral_specSample_tensorPow}
+    \leanok
+    \uses{lem:spectral_law, thm:unitary_twirl, thm:weyl_character, thm:replica_weight_gamma}
+    Let $t>0$ and let $U$ be Haar distributed, independent of $x$. Then
+    $\int(\sigma^t)^{\otimes k}=\sum_\lambda w_k(\lambda)\pi^\lambda$ on $(\C^d)^{\otimes k}$
+    for every $k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The average over $U$ is the twirl of $\operatorname{diag}(s^t)^{\otimes k}$, which by
+    Theorem~\ref{thm:unitary_twirl} acts on $\lambda$ by $\chi_\lambda(s^t)/\dim V_\lambda$.
+    Since $\chi_\lambda$ is homogeneous of degree $k$,
+    $\chi_\lambda(s^t)=(\sum_ix_i)^{-tk}\chi_\lambda(x^t)$, and by the Weyl character formula
+    $a_\delta(x^t)\chi_\lambda(x^t)=a_l(x^t)$. The average over $x$ is therefore
+    $J_{tk}(l)/(J_0(\delta)W_\lambda)=w_k(\lambda)$ by Theorem~\ref{thm:replica_weight_gamma}.
+\end{proof}
+
+\begin{theorem}[Lemma 6.2, integral representation]
+    \label{thm:replica_metric_integral}
+    \lean{TensorPower.groupAlgebraRep_comp_embedding, TensorPower.labelProj_comp_embedding,
+        TensorPower.subSample, TensorPower.subSample_posDef, TensorPower.subSample_rpow,
+        TensorPower.re_trace_subSample_le, TensorPower.subEmbedding,
+        TensorPower.replicaMetric_reindex, TensorPower.exists_replicaMetric_integral}
+    \leanok
+    \uses{thm:replica_full_integral, lem:trace_compression, thm:replica_metric_basic}
+    Let $0<t\le1$. For each subsystem $Q$ there is a probability measure $\zeta_Q$ on positive
+    definite subdensities $\tau$ on $Q$, with $\Tr\tau\le1$, such that
+    $W_{Q,k}=\int(\tau^t)^{\otimes k}\,d\zeta_Q(\tau)$ for every $k\ge0$, the identity on the
+    complement of $Q$ being implicit. The measure does not depend on $k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Choose an injection $j$ of the basis configurations of $Q$ into those of $\C^d$,
+    $d=\dim\mathcal V$, with isometry $E$. A permutation operator of $(\C^d)^{\otimes k}$
+    compressed by $E^{\otimes k}$ is the same permutation operator of $Q^{\otimes k}$, so the
+    compression of $\sum_\lambda w_k(\lambda)\pi^\lambda$ is $W_{Q,k}$ restricted to $Q$; the
+    label function is the same on every subsystem. On each sample the compression of
+    $(\sigma^t)^{\otimes k}$ is $B^{\otimes k}$ with $B=E^\ast\sigma^tE>0$. Put $\tau=B^{1/t}$;
+    then $\tau^t=B$, and Lemma~\ref{lem:trace_compression} with $p=1/t\ge1$ gives
+    $\Tr\tau\le\Tr\sigma=1$. The measure $\zeta_Q$ is the law of $\tau$.
 \end{proof}

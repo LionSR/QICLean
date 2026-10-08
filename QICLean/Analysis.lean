@@ -142,6 +142,7 @@ import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SupportPower
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.TraceCFC
+import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceDistance
 import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceMulBound

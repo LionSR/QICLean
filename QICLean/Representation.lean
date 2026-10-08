@@ -47,12 +47,14 @@ import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.RegionPowerSymbol
 import QICLean.Representation.RegularTrace
 import QICLean.Representation.ReplicaGammaIntegral
+import QICLean.Representation.ReplicaIntegral
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
 import QICLean.Representation.ReplicaMetric
 import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
+import QICLean.Representation.ReplicaSpectralLaw
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
