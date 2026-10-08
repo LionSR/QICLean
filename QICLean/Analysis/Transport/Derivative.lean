@@ -33,20 +33,67 @@ namespace Matrix
 
 namespace MeanTree
 
+section Bind
+
+variable {ι κ : Type*} [DecidableEq ι] [DecidableEq κ]
+
+/-- The weight of a label after substitution, when only the subtree at `h₀` carries it. -/
+theorem weight_bind_of_forall_ne (T : MeanTree ι) {f : ι → MeanTree κ} {h₀ : ι} {j : κ}
+    (hf : ∀ h ≠ h₀, (f h).weight j = 0) : (T.bind f).weight j = T.weight h₀ * (f h₀).weight j := by
+  induction T with
+  | leaf h =>
+    by_cases hh : h = h₀
+    · subst hh; simp [bind]
+    · simp [bind, hf h hh, Pi.single_eq_of_ne' hh]
+  | node p l r ihl ihr =>
+    simp only [bind, weight_node, ihl, ihr]; ring
+
+omit [DecidableEq ι] in
+/-- The weight of a label carried by no substituted subtree is zero. -/
+theorem weight_bind_eq_zero (T : MeanTree ι) {f : ι → MeanTree κ} {j : κ}
+    (hf : ∀ h, (f h).weight j = 0) : (T.bind f).weight j = 0 := by
+  induction T with
+  | leaf h => exact hf h
+  | node p l r ihl ihr => simp only [bind, weight_node, ihl, ihr]; ring
+
+theorem weight_map_apply (T : MeanTree ι) {g : ι → κ} (hg : Function.Injective g) (c : ι) :
+    (T.map g).weight (g c) = T.weight c := by
+  rw [map, weight_bind_of_forall_ne T (h₀ := c)]
+  · simp
+  · intro h hh
+    simp [Pi.single_eq_of_ne' (hg.ne hh)]
+
+theorem weight_map_of_forall_ne (T : MeanTree ι) {g : ι → κ} {j : κ} (hj : ∀ c, g c ≠ j) :
+    (T.map g).weight j = 0 :=
+  weight_bind_eq_zero T fun h => by simp [Pi.single_eq_of_ne' (hj h)]
+
+end Bind
+
 variable {H : Type*} [DecidableEq H] {C : H → Type*} [∀ h, DecidableEq (C h)]
 
 /-- Terminal weight `π_{(h,old)} = (1 - p) w_h` (`06-transport.tex`, display
 `transport:terminal-weights`). -/
 theorem weight_interpTree_old (T : MeanTree H) (S : ∀ h, MeanTree (C h)) (p : I) (h : H) :
     (interpTree T S p).weight ⟨h, none⟩ = (1 - (p : ℝ)) * T.weight h := by
-  sorry
+  rw [interpTree, weight_bind_of_forall_ne T (h₀ := h)]
+  · rw [weight_node, weight_map_of_forall_ne _ (by simp)]
+    simp; ring
+  · intro h' hh'
+    rw [weight_node, weight_map_of_forall_ne _ (by simp [hh'])]
+    simp [Pi.single_eq_of_ne' (by simp [hh'] : (⟨h', none⟩ : Σ h, Option (C h)) ≠ ⟨h, none⟩)]
 
 /-- Terminal weight `π_{(h,c,new)} = p w_h q_{c|h}` (`06-transport.tex`, display
 `transport:terminal-weights`). -/
 theorem weight_interpTree_new (T : MeanTree H) (S : ∀ h, MeanTree (C h)) (p : I) (h : H)
     (c : C h) :
     (interpTree T S p).weight ⟨h, some c⟩ = (p : ℝ) * T.weight h * (S h).weight c := by
-  sorry
+  rw [interpTree, weight_bind_of_forall_ne T (h₀ := h)]
+  · rw [weight_node, weight_map_apply (S h) (g := fun c => (⟨h, some c⟩ : Σ h, Option (C h)))
+      (fun a b hab => by simpa using hab)]
+    simp; ring
+  · intro h' hh'
+    rw [weight_node, weight_map_of_forall_ne _ (by simp [hh'])]
+    simp [Pi.single_eq_of_ne' (by simp [hh'] : (⟨h', none⟩ : Σ h, Option (C h)) ≠ ⟨h, some c⟩)]
 
 end MeanTree
 
@@ -98,12 +145,14 @@ theorem hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt {M : ℝ → Matrix n n 
             (imagPow (M p) u *ᵥ filteredVector (M p) pre))).re) p := by
   sorry
 
+omit [DecidableEq n] in
 /-- Moving a positive map to its trace adjoint: `⟨w, Φ(Z) w⟩ = Tr(Φ^*(|w⟩⟨w|) Z)`
 (`06-transport.tex` lines 490--494). -/
 theorem star_dotProduct_mulVec_eq_trace_traceAdjointMap
     (Φ : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) (Z : Matrix n n ℂ) (w : n → ℂ) :
     star w ⬝ᵥ (Φ Z *ᵥ w) = (traceAdjointMap Φ (vecMulVec w (star w)) * Z).trace := by
-  sorry
+  rw [trace_traceAdjointMap_mul, vecMulVec_mul, trace_vecMulVec, dotProduct_mulVec,
+    dotProduct_comm]
 
 /-- **Exact derivative** (area-law paper, Proposition 7.4, display
 `transport:exact-derivative`, `06-transport.tex` lines 402--408): for `0 < p < 1` and
@@ -125,18 +174,27 @@ theorem hasDerivAt_neg_log_filteredNormSq {T : MeanTree H} {S : ∀ h, MeanTree 
   -- Insert `transport:root-p-derivative` and move each leaf map to its trace adjoint.
   sorry
 
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] in
+/-- `M^{-iu}` is unitary. -/
+theorem conjTranspose_imagPow_mul_imagPow (M : Matrix n n ℂ) (u : ℝ) :
+    (imagPow M u)ᴴ * imagPow M u = 1 := by
+  have hlog : (CFC.log M).IsHermitian := by
+    unfold CFC.log; exact cfc_predicate _ _
+  exact mul_eq_one_comm.mp (hermitianUnitaryPath_mul_conjTranspose _ hlog _)
+
 /-- The transport states are density matrices (`06-transport.tex` line 491, from
 Lemma 7.2): positive semidefinite, with trace `‖v‖²`. -/
 theorem posSemidef_transportState {J : Type*} [DecidableEq J] {T' : MeanTree J}
     {A : J → Matrix n n ℂ} (hA : ∀ j, (A j).PosDef) (v : n → ℂ) (j : J) (u : ℝ) :
-    (transportState T' A v j u).PosSemidef := by
-  sorry
+    (transportState T' A v j u).PosSemidef :=
+  posSemidef_traceAdjoint_leafMap hA T' j (posSemidef_vecMulVec_self_star _)
 
 theorem trace_transportState {J : Type*} [DecidableEq J] {T' : MeanTree J}
     {A : J → Matrix n n ℂ} (hA : ∀ j, (A j).PosDef) {j : J} (hw : T'.weight j ≠ 0)
     (v : n → ℂ) (u : ℝ) :
     (transportState T' A v j u).trace = star v ⬝ᵥ v := by
-  sorry
+  rw [transportState, trace_traceAdjoint_leafMap hA T' hw, trace_vecMulVec, dotProduct_comm,
+    star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, conjTranspose_imagPow_mul_imagPow, one_mulVec]
 
 /-- `N²` is positive and continuous on `[0, 1]` (`06-transport.tex` lines 769--771). -/
 theorem continuous_filteredNormSq_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
@@ -147,7 +205,13 @@ theorem continuous_filteredNormSq_interpPath {T : MeanTree H} {S : ∀ h, MeanTr
 
 theorem filteredNormSq_pos {M : Matrix n n ℂ} (hM : M.PosDef) {pre : n → ℂ} (hpre : pre ≠ 0) :
     0 < filteredNormSq M pre := by
-  sorry
+  have hne : filteredRaw M pre ≠ 0 := by
+    intro h0
+    apply hpre
+    have : M ^ (1 / 4 : ℝ) *ᵥ filteredRaw M pre = pre := by
+      rw [filteredRaw, mulVec_mulVec, hM.rpow_mul_rpow_neg, one_mulVec]
+    rw [← this, h0, mulVec_zero]
+  exact (Complex.pos_iff.mp (dotProduct_star_self_pos_iff.mpr hne)).1
 
 /-- **Integration over a closed subinterval** (`06-transport.tex` lines 427--429 and
 769--779): the derivative of `-log N²` is interval integrable on `[p₀, p₁] ⊆ [0, 1]`, and
