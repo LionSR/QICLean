@@ -33,6 +33,29 @@ namespace TensorPower
 
 variable {Ω : Type*} [Fintype Ω] [DecidableEq Ω]
 
+/-- The coherent-state vector `U e_a` is continuous in `U`. -/
+theorem continuous_coherentVec (a : Ω) :
+    Continuous fun U : unitaryGroup Ω ℂ => (U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1 := by
+  refine continuous_pi fun x => ?_
+  simp only [mulVec, dotProduct]
+  exact continuous_finsetSum _ fun y _ => (continuous_unitary_apply Ω _ _).mul continuous_const
+
+omit [Fintype Ω] [DecidableEq Ω] in
+/-- The coherent projector `P_{θ,k}` depends continuously on `θ`. -/
+theorem continuous_coherentProj {X : Type*} [TopologicalSpace X] (k : ℕ) {θ : X → Ω → ℂ}
+    (hθ : Continuous θ) : Continuous fun x => coherentProj k (θ x) := by
+  refine continuous_pi fun y => continuous_pi fun z => ?_
+  simp only [coherentProj, vecMulVec_apply, tensorVec, Pi.star_apply, star_prod]
+  fun_prop
+
+/-- The integrand of a coherent average is Haar integrable. -/
+theorem integrable_coherentIntegrand (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} (hf : Continuous f) :
+    Integrable (fun U : unitaryGroup Ω ℂ => (f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) : ℂ) •
+      coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)) (unitaryHaar Ω) :=
+  ((Complex.continuous_ofReal.comp (hf.comp (continuous_coherentVec a))).smul
+    (continuous_coherentProj k (continuous_coherentVec a))).integrable_of_hasCompactSupport
+      (HasCompactSupport.of_compactSpace _)
+
 /-- The coherent average `𝒬_k(f) = D_k ∫ f(θ) P_{θ,k} dθ` (`06-transport.tex` line 523). -/
 def coherentAverage (k : ℕ) (a : Ω) (f : (Ω → ℂ) → ℝ) : Matrix (Fin k → Ω) (Fin k → Ω) ℂ :=
   (symDim Ω k : ℂ) • ∫ U, (f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) : ℂ) •
@@ -42,7 +65,20 @@ def coherentAverage (k : ℕ) (a : Ω) (f : (Ω → ℂ) → ℝ) : Matrix (Fin 
 theorem trace_mul_coherentAverage (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} (hf : Continuous f)
     (ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) :
     (ρ * coherentAverage k a f).trace.re = coherentIntegral k a ρ f := by
-  sorry
+  have hF := integrable_coherentIntegrand k a hf
+  let L : Matrix (Fin k → Ω) (Fin k → Ω) ℂ →L[ℂ] ℂ :=
+    LinearMap.toContinuousLinearMap ((Matrix.traceLinearMap _ ℂ ℂ) ∘ₗ LinearMap.mulLeft ℂ ρ)
+  have hL : ∀ M, L M = (ρ * M).trace := fun M => rfl
+  have hint : Integrable (fun U : unitaryGroup Ω ℂ => L ((f ((U : Matrix Ω Ω ℂ) *ᵥ
+      Pi.single a 1) : ℂ) • coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)))
+      (unitaryHaar Ω) := L.integrable_comp hF
+  rw [coherentIntegral, coherentAverage, mul_smul_comm, trace_smul, ← hL,
+    ← L.integral_comp_comm hF, smul_eq_mul, ← Complex.ofReal_natCast, Complex.re_ofReal_mul]
+  congr 1
+  rw [← RCLike.re_to_complex, ← integral_re hint]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun U => ?_)
+  simp only [hL, mul_smul_comm, trace_smul, smul_eq_mul, RCLike.re_to_complex,
+    Complex.re_ofReal_mul]
 
 /-- **Operator Jensen inequality for the logarithm** (`06-transport.tex`, display
 `transport:log-jensen`, lines 526--546), compressed to `𝒮_k`: for continuous `f > 0`,
