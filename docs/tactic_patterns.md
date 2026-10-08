@@ -82,6 +82,22 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   No new tactic is needed.
 - **Caveats:** The sector count gives a mass bound only; an entropy window
   requires a separate concentration estimate and a restricted selection.
+### Joint central-label resolution — candidate (2026-10-07)
+
+- **Pattern:** Form the product of commuting orthogonal resolutions, express
+  the observables as functions of this joint resolution, and prove matrix
+  order from scalar inequalities on its nonzero components.
+- **Seen:** `TensorPower.groupedCopies_labelEntropy_bounds` in
+  `QICLean/Representation/GroupedLabelEntropy.lean` and
+  `PermutationRepresentation.supportProj_mul_labelEntropy_mul_supportProj_le`
+  in `QICLean/Representation/SchurSurprisal.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.prod` and
+  `posSemidef_hom_of_ne_zero`. The coordinate functions of a product
+  resolution are recovered by summing the other factor to the identity;
+  the new module has two private lemmas for this elementary calculation.
+- **Caveats:** Scalar inequalities are required only on nonzero joint
+  projections. Compatibility and the full-space order must be derived from
+  the actual projections, rather than supplied as extra assumptions.
 ### Contraction of the repeated uniform pair — candidate (2026-10-07)
 
 - **Pattern:** Expand a Kronecker action against the actual repeated uniform

@@ -36,7 +36,9 @@ import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.FiniteProductTypicalState
 import QICLean.Entropy.GapSurprisal
+import QICLean.Entropy.IidSurprisal
 import QICLean.Entropy.LocalLift
 import QICLean.Entropy.MarginalPhaseApprox
 import QICLean.Entropy.MarginalPhaseComparison
