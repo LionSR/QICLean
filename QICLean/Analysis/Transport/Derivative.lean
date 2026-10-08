@@ -352,6 +352,63 @@ theorem continuous_filteredNormSq_interpPath {T : MeanTree H} {S : ∀ h, MeanTr
   exact Complex.continuous_re.comp (continuous_const.dotProduct
     (hc.matrix_mulVec continuous_const))
 
+/-- A density pairing is bounded by the operator norm: `|Re Tr(R X)| ≤ ‖X‖ Re Tr R` for
+positive semidefinite `σ` and Hermitian `X`. -/
+theorem abs_re_trace_mul_le {R X : Matrix n n ℂ} (hR : R.PosSemidef) (hX : X.IsHermitian) :
+    |(R * X).trace.re| ≤ ‖X‖ * R.trace.re := by
+  have hsa : IsSelfAdjoint X := hX.isSelfAdjoint
+  have h1 : X ≤ ‖X‖ • (1 : Matrix n n ℂ) := by
+    simpa [Algebra.algebraMap_eq_smul_one] using hsa.le_algebraMap_norm_self
+  have h2 : -(‖X‖ • (1 : Matrix n n ℂ)) ≤ X := by
+    simpa [Algebra.algebraMap_eq_smul_one] using hsa.neg_algebraMap_norm_le_self
+  have u := (Complex.nonneg_iff.mp (PosSemidef.trace_mul_nonneg (Matrix.le_iff.mp h1) hR)).1
+  have l := (Complex.nonneg_iff.mp (PosSemidef.trace_mul_nonneg (Matrix.le_iff.mp h2) hR)).1
+  rw [Matrix.sub_mul, trace_sub, Complex.sub_re, Matrix.smul_mul, Matrix.one_mul, trace_smul,
+    Complex.real_smul, Complex.re_ofReal_mul, trace_mul_comm X] at u
+  rw [Matrix.sub_mul, trace_sub, Complex.sub_re, Matrix.neg_mul, Matrix.smul_mul,
+    Matrix.one_mul, trace_neg, trace_smul, Complex.neg_re, Complex.real_smul,
+    Complex.re_ofReal_mul, trace_mul_comm X] at l
+  rw [abs_le]
+  constructor <;> linarith
+
+/-- The derivative of `-log N²` is bounded uniformly in `p ∈ (0, 1)` (`06-transport.tex`
+lines 771--775: the states are densities and the weights sum to one). -/
+theorem exists_abs_exactDerivative_le {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
+    {A : H → Matrix n n ℂ} {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef)
+    (hA' : ∀ h c, (A' h c).PosDef) (hT : ∀ h, 0 < T.weight h) {pre : n → ℂ} (hpre : pre ≠ 0) :
+    ∃ K : ℝ, ∀ p ∈ Ioo (0 : ℝ) 1, |∑ h, T.weight h * ∫ u, fourierWeight u *
+        (transportState (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)) (interpInput A A')
+            (filteredVector (interpPath T S A A' p) pre) ⟨h, none⟩ u *
+          CFC.log (relRatio S A A' h)).trace.re| ≤ K := by
+  have hIn : ∀ j, (interpInput A A' j).PosDef := fun j => match j with
+    | ⟨h, none⟩ => hA h
+    | ⟨h, some c⟩ => hA' h c
+  have hs : (1 / 4 : ℝ) ∈ Ioo (0 : ℝ) (1 / 2) := ⟨by norm_num, by norm_num⟩
+  refine ⟨∑ h, T.weight h * ∫ u, fourierWeight u * ‖CFC.log (relRatio S A A' h)‖,
+    fun p hp => ?_⟩
+  have hpI : ((projIcc (0 : ℝ) 1 zero_le_one p : I) : ℝ) = p :=
+    congrArg Subtype.val (projIcc_of_mem _ (Ioo_subset_Icc_self hp))
+  refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun h _ => ?_)
+  rw [abs_mul, abs_of_pos (hT h)]
+  refine mul_le_mul_of_nonneg_left ?_ (hT h).le
+  refine (abs_integral_le_integral_abs).trans (integral_mono_of_nonneg
+    (Eventually.of_forall fun _ => abs_nonneg _)
+    ((Real.integrable_sinhRatioDensity hs).mul_const _) (Eventually.of_forall fun u => ?_))
+  have hw : (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)).weight ⟨h, none⟩ ≠ 0 := by
+    rw [weight_interpTree_old, hpI]
+    exact mul_ne_zero (by linarith [hp.2]) (hT h).ne'
+  have hlog : (CFC.log (relRatio S A A' h)).IsHermitian := by
+    unfold CFC.log; exact cfc_predicate _ _
+  have hb := abs_re_trace_mul_le (posSemidef_transportState (T' := interpTree T S
+    (projIcc (0 : ℝ) 1 zero_le_one p)) hIn
+    (filteredVector (interpPath T S A A' p) pre) ⟨h, none⟩ u) hlog
+  have hMp : (interpPath T S A A' p).PosDef := posDef_interpRoot hA hA' _
+  rw [trace_transportState hIn hw, star_dotProduct_filteredVector hMp hpre,
+    Complex.one_re, mul_one] at hb
+  have hm : 0 < fourierWeight u := Real.sinhRatioDensity_pos hs u
+  simp only [abs_mul, abs_of_pos hm]
+  exact mul_le_mul_of_nonneg_left hb hm.le
+
 /-- **Integration over a closed subinterval** (`06-transport.tex` lines 427--429 and
 769--779): the derivative of `-log N²` is interval integrable on `[p₀, p₁] ⊆ [0, 1]`, and
 its integral is the difference of the continuous endpoint values. -/
@@ -369,7 +426,31 @@ theorem log_filteredNormSq_sub_eq_integral {T : MeanTree H} {S : ∀ h, MeanTree
         (transportState (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)) (interpInput A A')
             (filteredVector (interpPath T S A A' p) pre) ⟨h, none⟩ u *
           CFC.log (relRatio S A A' h)).trace.re := by
-  sorry
+  set F := fun q => -Real.log (filteredNormSq (interpPath T S A A' q) pre)
+  set F' := fun p => ∑ h, T.weight h * ∫ u, fourierWeight u *
+    (transportState (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)) (interpInput A A')
+        (filteredVector (interpPath T S A A' p) pre) ⟨h, none⟩ u *
+      CFC.log (relRatio S A A' h)).trace.re
+  have hsub : Ioo p₀ p₁ ⊆ Ioo 0 1 := Ioo_subset_Ioo h0 h1
+  have hd : ∀ p ∈ Ioo p₀ p₁, HasDerivAt F (F' p) p := fun p hp =>
+    hasDerivAt_neg_log_filteredNormSq hA hA' hT (hsub hp) hpre
+  have hcont : Continuous F := by
+    have hc := continuous_filteredNormSq_interpPath (T := T) (S := S) hA hA' pre
+    exact (hc.log fun q => (filteredNormSq_pos (posDef_interpRoot hA hA' _) hpre).ne').neg
+  obtain ⟨K, hK⟩ := exists_abs_exactDerivative_le (S := S) hA hA' hT hpre
+  have hint : IntervalIntegrable F' volume p₀ p₁ := by
+    rw [intervalIntegrable_iff_integrableOn_Ioo_of_le h01]
+    have hderiv : IntegrableOn (deriv F) (Ioo p₀ p₁) := by
+      refine Measure.integrableOn_of_bounded (M := K) (by simp)
+        (stronglyMeasurable_deriv F).aestronglyMeasurable ?_
+      filter_upwards [ae_restrict_mem measurableSet_Ioo] with p hp
+      rw [(hd p hp).deriv, Real.norm_eq_abs]
+      exact hK p (hsub hp)
+    exact hderiv.congr_fun (fun p hp => (hd p hp).deriv) measurableSet_Ioo
+  refine ⟨hint, ?_⟩
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le h01 hcont.continuousOn hd hint]
+  simp only [F]
+  ring
 
 end Transport
 
