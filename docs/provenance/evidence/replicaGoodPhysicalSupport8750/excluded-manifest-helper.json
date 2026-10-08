@@ -1,0 +1,4 @@
+{
+  "attempt": "manifest-notice-check",
+  "reason": "The historical successful manifest-check raw log had been omitted from the tracked inventory; the checker therefore correctly refused completion. The helper now inventories all captured logs and records the exact known unsuccessful wrapper, notice and manifest attempts. No production bytes changed."
+}

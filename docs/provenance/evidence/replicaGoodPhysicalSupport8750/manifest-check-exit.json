@@ -1,0 +1,13 @@
+{
+  "source_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodPhysicalSupport8750/validate-manifest.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T02:30:14.447409+00:00",
+  "elapsed_seconds": 2.8760337910061935,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/manifest-check.log",
+  "sha256": "473e2dd89712225142b40b082800e6de32224cd7b862aa27115db55037f0d175"
+}

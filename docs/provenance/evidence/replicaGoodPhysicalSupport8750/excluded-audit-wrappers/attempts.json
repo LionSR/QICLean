@@ -1,0 +1,18 @@
+{
+  "classification": "Excluded initial audit-wrapper header failures; production source unchanged",
+  "source_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "attempt_records": [
+    "../axioms-exit.json",
+    "../statements-exit.json"
+  ],
+  "actual_exit_codes": [
+    1,
+    1
+  ],
+  "original_wrapper_copies": [
+    "Axioms-initial.lean",
+    "Statements-initial.lean"
+  ],
+  "reason": "The wrappers omitted module docstrings. Under the standard style.header linter and warnings-as-errors this is an error. The printed kernel dependencies/signature were correct, but these command exits are not successful verification evidence.",
+  "resolution": "Add purpose-specific module docstrings only to the wrappers and rerun under the same strict options. No production options, proof or statement changed."
+}

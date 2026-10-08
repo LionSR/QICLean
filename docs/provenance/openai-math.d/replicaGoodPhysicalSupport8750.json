@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-good-physical-support-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaGoodPhysicalSupport.lean",
+        "declaration": "Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive symmetric physical-copy support of the literal good-physical+whole-auxiliary density from the actual excitation of a unit one-copy vector. Reindex the existing product density by the chosen finite-set enumeration, derive identical-copy vector invariance via Equiv.prod_comp, and apply the actual averaging projector. Generic physical A specializes to Q\u00d7(Y\u00d7V), retaining all middle Y coordinates until projection. Arbitrary original u, k including zero, B and zero component; no supplied symmetry/support/product premise. Source07 lines23,103\u2013110,513\u2013517,520\u2013549. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "eba4662708f7178a3ac18584a4b8218f04442d19",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=2 lake build QICLean.Analysis.ReplicaGoodPhysicalSupport",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/target-notice.log",
+            "sha256": "cb0e2b1c0dbf8e1181b34b8ca0d406c5346175ba736a2369760086f67fabc16b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaGoodPhysicalSupport.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/strict-notice.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true docs/provenance/evidence/replicaGoodPhysicalSupport8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/axioms-notice.log",
+            "sha256": "9ae4f93a8c26b33c3a7be05c21b56c1686cecc1296322ad193b384652e1d88e6"
+          }
+        ]
+      }
+    }
+  ]
+}

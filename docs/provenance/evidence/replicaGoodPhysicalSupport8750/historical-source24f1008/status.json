@@ -1,0 +1,8 @@
+{
+  "classification": "Historical mathematical introduction and pre-notice-repair attempts, not a released completed leaf",
+  "source_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "mathematical_checks": "Actual target, whole-source strict and corrected exact stock/signature commands passed. Root read the mathematical proof and exposition.",
+  "provenance_status": "Initial frozen-policy check failed because the original notice omitted the literal manuscript labels, despite carrying the line ranges. No provenance-complete claim is made for this source.",
+  "logs": "Exact original command records, raw logs and deterministic gzip copies remain under their original relative paths in the enclosing evidence folder.",
+  "source_correction": "A notice-only child is proposed; mathematical statement and proof must remain unchanged."
+}

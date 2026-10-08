@@ -1,0 +1,17 @@
+{
+  "source_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "argv": [
+    "pdflatex",
+    "-interaction=nonstopmode",
+    "-halt-on-error",
+    "-output-directory",
+    "docs/provenance/evidence/replicaGoodPhysicalSupport8750",
+    "docs/provenance/evidence/replicaGoodPhysicalSupport8750/standalone-wrapper.tex"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T02:24:38.891717+00:00",
+  "elapsed_seconds": 0.8140753749903524,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/standalone-final.log",
+  "sha256": "8da36091454785e9f55dc320b1f03536c2f88d37a1c345a835b804ca679b6e25"
+}

@@ -1,0 +1,19 @@
+{
+  "source_revision": "eba4662708f7178a3ac18584a4b8218f04442d19",
+  "source_commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "paper_passages": [
+    "07-comparators.tex:23",
+    "07-comparators.tex:103\u2013110",
+    "07-comparators.tex:513\u2013517",
+    "07-comparators.tex:520\u2013549"
+  ],
+  "result": "passed",
+  "argument": "Reindex the proved actual good-copy product density by the chosen Finset.equivFin; permutation invariance of the identical ground-state tensor product follows from Equiv.prod_comp. The averaging projector fixes the product vector, hence fixes its rank-one density and the actual density tensored with its unchanged auxiliary marginal.",
+  "premises": "Only unit one-copy ground vector. Arbitrary original vector, k and B; no supplied support/product or symmetry equation.",
+  "middle_factor": "Take A=Q\u00d7(Y\u00d7V). Every middle physical copy is retained until physical symmetrization.",
+  "degenerate_cases": "Zero component and zero/empty good-copy sets included. Empty products are one, and the zero-copy configuration set is a singleton.",
+  "remaining_scope": "Canonical Fin5 support transport, compatible physical spectral projection and merged-label commutation are separate results.",
+  "original": "No upstream Lean proof text reused.",
+  "mathematical_introduction": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "notice_correction": "The original notice now includes both manuscript labels. The theorem statement and proof bytes are unchanged."
+}

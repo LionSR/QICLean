@@ -1,0 +1,9 @@
+{
+  "mathematical_introduction": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "whole_file_verification_revision": "eba4662708f7178a3ac18584a4b8218f04442d19",
+  "exposition_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "changes": "One original-notice line adds comparator:merge-decomposition and comparator:merge-moments. No statement, proof, blueprint, reader-note or ledger change.",
+  "statement_and_proof_sha256": "b67efbd1ef24d0bb3f14d97f2f6a26460c66890c65e5e51e4b4c10820841f9d0",
+  "statement_and_proof_bytes_identical": true,
+  "historical_records": "Original source24f attempts, including the failed notice-policy check and initial wrapper-header failures, remain immutable and are excluded from the current successful verification commands. The historical standalone PDF binds the unchanged mathematical exposition."
+}
