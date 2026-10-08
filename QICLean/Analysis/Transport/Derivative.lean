@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.Transport.Defs
+import QICLean.Analysis.Transport.PathDerivative
 
 /-!
 # The exact derivative of the filtered norm
@@ -27,7 +27,7 @@ The proofs are written from the paper; no Lean source was adapted.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator unitInterval
-open MeasureTheory Set
+open MeasureTheory Set Filter Topology
 
 namespace Matrix
 
@@ -66,6 +66,18 @@ theorem weight_map_apply (T : MeanTree ι) {g : ι → κ} (hg : Function.Inject
 theorem weight_map_of_forall_ne (T : MeanTree ι) {g : ι → κ} {j : κ} (hj : ∀ c, g c ≠ j) :
     (T.map g).weight j = 0 :=
   weight_bind_eq_zero T fun h => by simp [Pi.single_eq_of_ne' (hj h)]
+
+theorem mem_labels_map (T : MeanTree ι) {g : ι → κ} {j : κ} (hj : j ∈ (T.map g).labels) :
+    ∃ c, g c = j := by
+  induction T with
+  | leaf c =>
+    simp only [map, bind, labels_leaf, List.mem_singleton] at hj
+    exact ⟨c, hj.symm⟩
+  | node p l r ihl ihr =>
+    simp only [map, bind, labels_node, List.mem_append] at hj ihl ihr
+    rcases hj with hj | hj
+    · exact ihl hj
+    · exact ihr hj
 
 end Bind
 
@@ -117,6 +129,70 @@ theorem posDef_interpRoot {T : MeanTree H} {S : ∀ h, MeanTree (C h)} {A : H �
     | ⟨h, none⟩ => hA h
     | ⟨h, some c⟩ => hA' h c) _
 
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] in
+/-- The relabelled choice tree evaluates to the conditional choice root `B_h`. -/
+theorem eval_map_choice (S : ∀ h, MeanTree (C h)) (A : H → Matrix n n ℂ)
+    (A' : ∀ h, C h → Matrix n n ℂ) (h : H) :
+    ((S h).map fun c => (⟨h, some c⟩ : Σ h, Option (C h))).eval (interpInput A A') =
+      choiceRoot S A' h :=
+  eval_map _ _ _
+
+omit [∀ h, Fintype (C h)] in
+/-- The root derivative along the interpolation parameter, before normalization: for every
+subtree `T₀` of the history tree, `∂_q` of the interpolated subtree is the sum over `h` of the
+old-child derivatives in the directions `(1 - p)⁻¹ A_h^{1/2} log C_h A_h^{1/2}`
+(`06-transport.tex` lines 448--468). -/
+theorem hasDerivAt_eval_bind {S : ∀ h, MeanTree (C h)}
+    {A : H → Matrix n n ℂ} {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef)
+    (hA' : ∀ h c, (A' h c).PosDef) {p : ℝ} (hp : p ∈ Ioo 0 1) (T₀ : MeanTree H) :
+    HasDerivAt (fun q => (interpTree T₀ S (projIcc (0 : ℝ) 1 zero_le_one q)).eval
+        (interpInput A A'))
+      (∑ h, (interpTree T₀ S (projIcc (0 : ℝ) 1 zero_le_one p)).derivLabel (interpInput A A')
+        ⟨h, none⟩ ((1 - p)⁻¹ • (A h ^ (1 / 2 : ℝ) * CFC.log (relRatio S A A' h) *
+          A h ^ (1 / 2 : ℝ)))) p := by
+  have hIn : ∀ j, (interpInput A A' j).PosDef := fun j => match j with
+    | ⟨h, none⟩ => hA h
+    | ⟨h, some c⟩ => hA' h c
+  have hpI : ((projIcc (0 : ℝ) 1 zero_le_one p : I) : ℝ) = p :=
+    congrArg Subtype.val (projIcc_of_mem _ (Ioo_subset_Icc_self hp))
+  induction T₀ with
+  | leaf h₀ =>
+    have hB : (choiceRoot S A' h₀).PosDef := posDef_eval (hA' h₀) _
+    have hnot : ∀ h, (⟨h, none⟩ : Σ h, Option (C h)) ∉
+        ((S h₀).map fun c => (⟨h₀, some c⟩ : Σ h, Option (C h))).labels := by
+      intro h hh
+      obtain ⟨c, hc⟩ := mem_labels_map _ hh
+      obtain ⟨rfl, h2⟩ := Sigma.mk.inj_iff.mp hc
+      simp at h2
+    have hsum : (∑ h, (interpTree (leaf h₀) S (projIcc (0 : ℝ) 1 zero_le_one p)).derivLabel
+        (interpInput A A') ⟨h, none⟩ ((1 - p)⁻¹ • (A h ^ (1 / 2 : ℝ) *
+          CFC.log (relRatio S A A' h) * A h ^ (1 / 2 : ℝ)))) =
+        geomMeanDerivLeft p (A h₀) (choiceRoot S A' h₀) ((1 - p)⁻¹ • (A h₀ ^ (1 / 2 : ℝ) *
+          CFC.log (relRatio S A A' h₀) * A h₀ ^ (1 / 2 : ℝ))) := by
+      simp only [interpTree, MeanTree.bind, derivLabel, derivLabel_of_not_mem (hnot _), add_zero,
+        ContinuousLinearMap.comp_zero, eval_leaf, eval_map_choice, hpI]
+      rw [Finset.sum_eq_single h₀]
+      · simp [interpInput]
+      · intro h _ hh
+        simp [Ne.symm hh]
+      · simp
+    rw [hsum, ContinuousLinearMap.map_smul_of_tower, relRatio,
+      geomMeanDerivLeft_sandwich_log (hA h₀) hB (Ioo_subset_Icc_self hp),
+      smul_smul, inv_mul_cancel₀ (by linarith [hp.2] : (1 - p) ≠ 0), one_smul]
+    have hev : (fun q => (interpTree (leaf h₀) S (projIcc (0 : ℝ) 1 zero_le_one q)).eval
+        (interpInput A A')) =ᶠ[𝓝 p] fun q => geomMean q (A h₀) (choiceRoot S A' h₀) := by
+      filter_upwards [Ioo_mem_nhds hp.1 hp.2] with q hq
+      simp only [interpTree, MeanTree.bind, eval_node, eval_leaf, eval_map_choice, interpInput]
+      rw [projIcc_of_mem _ (Ioo_subset_Icc_self hq)]
+    exact (hasDerivAt_geomMean_param (hA h₀) hB p).congr_of_eventuallyEq hev
+  | node r l rr ihl ihr =>
+    have hL := isHermitian_eval (fun j => (hIn j).isHermitian)
+    have h := hasDerivAt_geomMean_of_hasDerivAt r.2 ihl ihr
+      (fun q => hL _) (fun q => hL _) (posDef_eval hIn _) (posDef_eval hIn _)
+    refine h.congr_deriv ?_
+    simp only [interpTree, MeanTree.bind, derivLabel, _root_.add_apply,
+      ContinuousLinearMap.comp_apply, map_sum, Finset.sum_add_distrib]
+
 /-- **The derivative at the root** (`06-transport.tex`, displays
 `transport:node-p-derivative` and `transport:root-p-derivative`, lines 442--468):
 `𝖧 = M^{-1/2} ∂_p M M^{-1/2} = ∑_h w_h Φ_{(h,old)}(log C_h)`. The coefficient is `w_h`,
@@ -128,7 +204,28 @@ theorem exists_hasDerivAt_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)
       interpPath T S A A' p ^ (-(1 / 2) : ℝ) * D * interpPath T S A A' p ^ (-(1 / 2) : ℝ) =
         ∑ h, T.weight h • (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)).leafMap
           (interpInput A A') ⟨h, none⟩ (CFC.log (relRatio S A A' h)) := by
-  sorry
+  have hpI : ((projIcc (0 : ℝ) 1 zero_le_one p : I) : ℝ) = p :=
+    congrArg Subtype.val (projIcc_of_mem _ (Ioo_subset_Icc_self hp))
+  refine ⟨_, hasDerivAt_eval_bind hA hA' hp T, ?_⟩
+  rw [Finset.mul_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun h _ => ?_
+  have hw : (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)).weight ⟨h, none⟩ ≠ 0 := by
+    rw [weight_interpTree_old, hpI]
+    exact mul_ne_zero (by linarith [hp.2]) (hT h).ne'
+  have key : (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)).eval (interpInput A A') ^
+        (-(1 / 2) : ℝ) * (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)).derivLabel
+          (interpInput A A') ⟨h, none⟩
+          (A h ^ (1 / 2 : ℝ) * CFC.log (relRatio S A A' h) * A h ^ (1 / 2 : ℝ)) *
+        (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)).eval (interpInput A A') ^
+          (-(1 / 2) : ℝ) =
+      (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)).weight ⟨h, none⟩ •
+        (interpTree T S (projIcc (0 : ℝ) 1 zero_le_one p)).leafMap (interpInput A A') ⟨h, none⟩
+          (CFC.log (relRatio S A A' h)) :=
+    sandwich_derivLabel_eq_smul_leafMap _ hw _
+  rw [ContinuousLinearMap.map_smul_of_tower, mul_smul_comm, smul_mul_assoc]
+  unfold interpPath interpRoot
+  rw [key, weight_interpTree_old, hpI, smul_smul, ← mul_assoc,
+    inv_mul_cancel₀ (by linarith [hp.2] : (1 - p) ≠ 0), one_mul]
 
 /-- **The derivative of the filtered norm** (`06-transport.tex`, display
 `transport:norm-derivative` and the Fourier formula `transport:g-fourier`,
