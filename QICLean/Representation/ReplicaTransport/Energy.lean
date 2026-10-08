@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.Transport.EnergyBlock
 import QICLean.Representation.ReplicaTransport.Prerequisites
 import QICLean.Representation.ReplicaTransport.States
+import QICLean.Representation.ReplicaTransport.EntropyGain
 
 /-!
 # The energy estimate of the transport proposition
@@ -218,6 +219,78 @@ theorem one_le_logDim (x : Finset V) : 1 ≤ logDim n x := by
   rw [Real.log_mul (Real.exp_pos 1).ne' (by positivity), Real.log_exp]
   linarith [Real.log_nonneg h1]
 
+omit [∀ v, NeZero (n v)] in
+/-- The copy mean of a positive semidefinite operator is positive semidefinite. -/
+theorem posSemidef_copyMean {k : ℕ} {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+    (hh : h.PosSemidef) : (copyMean n k h).PosSemidef := by
+  unfold copyMean
+  have hs : ∀ j : Fin k, (siteOp j h).PosSemidef := fun j => by
+    rw [siteOp_eq_reindex]
+    exact (hh.kronecker Matrix.PosSemidef.one).submatrix _
+  have hsum := Matrix.posSemidef_sum Finset.univ fun j _ => hs j
+  have hc : ((k : ℂ))⁻¹ = (((k : ℝ)⁻¹ : ℝ) : ℂ) := by push_cast; rfl
+  rw [hc]
+  exact hsum.smul (Complex.zero_le_real.mpr (inv_nonneg.mpr (Nat.cast_nonneg _)))
+
+/-- A filtered vector of a nonzero vector is a unit vector. -/
+theorem re_star_filteredVector_dotProduct {m : Type*} [Fintype m] [DecidableEq m]
+    {M : Matrix m m ℂ} {pre : m → ℂ} (hN : 0 < Transport.filteredNormSq M pre) :
+    (star (Transport.filteredVector M pre) ⬝ᵥ Transport.filteredVector M pre).re = 1 := by
+  unfold Transport.filteredVector
+  rw [star_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc]
+  have hs : star ((Real.sqrt (Transport.filteredNormSq M pre) : ℂ)⁻¹) *
+      (Real.sqrt (Transport.filteredNormSq M pre) : ℂ)⁻¹ =
+      (((Transport.filteredNormSq M pre)⁻¹ : ℝ) : ℂ) := by
+    rw [star_inv₀, Complex.star_def, Complex.conj_ofReal, ← mul_inv, ← Complex.ofReal_mul,
+      Real.mul_self_sqrt hN.le, Complex.ofReal_inv]
+  rw [hs, Complex.re_ofReal_mul]
+  exact inv_mul_cancel₀ hN.ne'
+
+/-- The integrand `m_{1/4}(u) Tr(σ_{j,u} Q)` is integrable for every fixed matrix `Q`: the
+transport state depends continuously on `u` through the unitary `M^{-iu}`, so the trace is
+bounded by compactness of the unitary group. -/
+theorem integrable_fourierWeight_mul_trace_transportState {m : Type*} [Fintype m]
+    [DecidableEq m] {J : Type*} [DecidableEq J] (T' : MeanTree J) (A : J → Matrix m m ℂ)
+    (v : m → ℂ) (j : J) (Q : Matrix m m ℂ) :
+    MeasureTheory.Integrable fun u =>
+      Transport.fourierWeight u * (Transport.transportState T' A v j u * Q).trace.re := by
+  set G : Matrix m m ℂ → ℝ := fun U => (traceAdjointMap (T'.leafMap A j).toLinearMap
+    (vecMulVec (U *ᵥ v) (star (U *ᵥ v))) * Q).trace.re with hGdef
+  have hL : Continuous (traceAdjointMap (T'.leafMap A j).toLinearMap) :=
+    LinearMap.continuous_of_finiteDimensional _
+  have hG : Continuous G := by
+    refine Complex.continuous_re.comp (Continuous.matrix_trace ?_)
+    refine Continuous.matrix_mul (hL.comp ?_) continuous_const
+    exact Continuous.matrix_vecMulVec (continuous_id.matrix_mulVec continuous_const)
+      ((continuous_id.matrix_mulVec continuous_const).star)
+  obtain ⟨c, hc⟩ := (isCompact_unitaryGroup m).exists_bound_of_continuousOn hG.continuousOn
+  have hpath : Continuous fun u => Transport.imagPow (T'.eval A) u :=
+    (continuous_hermitianUnitaryPath _).comp continuous_neg
+  have hmem : ∀ u, Transport.imagPow (T'.eval A) u ∈ unitaryGroup m ℂ := fun u =>
+    Matrix.mem_unitaryGroup_iff.mpr (hermitianUnitaryPath_mul_conjTranspose _
+      (IsSelfAdjoint.log (a := T'.eval A)) _)
+  have heq : (fun u => (Transport.transportState T' A v j u * Q).trace.re) =
+      fun u => G (Transport.imagPow (T'.eval A) u) := rfl
+  refine (Real.integrable_sinhRatioDensity (s := 1 / 4) ⟨by norm_num, by norm_num⟩).mul_bdd
+    (c := c) ?_ (Filter.Eventually.of_forall fun u => ?_)
+  · rw [heq]; exact (hG.comp hpath).aestronglyMeasurable
+  · exact hc _ (hmem u)
+
+/-- The entropy `η_{i,j}^{1/8}` is continuous in the one-copy vector. -/
+theorem continuous_splitBandEta (π : PYF V) (D : Finset V) :
+    Continuous fun θ : SiteConfig n → ℂ =>
+      splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ) := by
+  classical
+  by_cases hP : π.SplitsToP D
+  · have : (fun θ : SiteConfig n → ℂ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ)) =
+        fun θ => moveEta n π (.toP (D ∩ π.Y)) ((EuclideanSpace.equiv _ ℂ).symm θ) := by
+      funext θ; simp only [splitBandEta, moveEta, if_pos hP]
+    rw [this]; exact continuous_moveEta π _
+  · have : (fun θ : SiteConfig n → ℂ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ)) =
+        fun θ => moveEta n π (.toF (D ∩ π.Y)) ((EuclideanSpace.equiv _ ℂ).symm θ) := by
+      funext θ; simp only [splitBandEta, moveEta, if_neg hP]
+    rw [this]; exact continuous_moveEta π _
+
 namespace TransportData
 
 variable {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
@@ -361,6 +434,14 @@ theorem exists_trace_skewSquare_le :
     exact (le_abs_self _).trans (Finset.single_le_sum (f := fun x => |r x k|)
       (fun x _ => abs_nonneg _) (Finset.mem_univ (i, j)))
 
+omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] [Fintype ι] in
+theorem continuous_splitEta_rpow (i : ι) (j : Σ h, Option (C h)) :
+    Continuous fun θ : SiteConfig n → ℂ =>
+      D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ) := by
+  refine Continuous.rpow_const ?_ fun _ => Or.inr (by norm_num)
+  unfold splitEta
+  exact continuous_finset_sum _ fun g _ => continuous_splitBandEta _ _
+
 /-- **Energy estimate** (area-law paper, Proposition 7.4, display `transport:energy`,
 `06-transport.tex` lines 417--426 and 588--766). The split weight `W_i(p)` enters twice;
 the remainder is uniform in `p`, in `pre` and in the replica state; support dimensions
@@ -382,7 +463,147 @@ theorem exists_energy_le :
               let v := Transport.filteredVector (D.rootPath n (a / 2) k p) pre
               (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re ≤
                 2 * E₀ + Cen * a ^ 2 * ℓ ^ een * D.energyError E (a / 2) k pre p + r k := by
-  sorry
+  obtain ⟨c₀, Csym, esym, hc₀, hT⟩ := exists_trace_skewSquare_le
+  refine ⟨c₀, 3 / 2 * Csym, esym, hc₀, ?_⟩
+  intro V _ _ n _ K H _ _ C _ _ D ι _ E hD h0 h1 hEsupp hcompat a ℓ ha hℓ haℓ hcomm hℓD
+  obtain ⟨r, hr, hr0, hbound⟩ := hT n D E hD h0 h1 hEsupp hcompat ha hℓ haℓ hcomm hℓD
+  refine ⟨fun k => 3 / 4 * (Fintype.card ι : ℝ) * r k, by
+    simpa using hr.const_mul (3 / 4 * (Fintype.card ι : ℝ)), ?_⟩
+  intro k pre hsym hpre p hp E₀ hE₀ v
+  have ht : (0 : ℝ) ≤ a / 2 := by positivity
+  set T' := D.tree (Set.projIcc (0 : ℝ) 1 zero_le_one p) with hT'
+  set A := D.input n (a / 2) k with hAdef
+  set M := T'.eval A with hMdef
+  set κ := Csym * a ^ 2 * ℓ ^ esym with hκ
+  set W : ι → ℝ := fun i => ∑ j ∈ D.splitLeaves E i, T'.weight j with hW
+  set h : ι → Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
+    fun i => copyMean n k (E.term i) with hhdef
+  have hA : ∀ j, (A j).PosDef := fun j => D.posDef_input hD ht (hcomm k) j
+  have hw : ∀ j, 0 < T'.weight j := fun j => D.weight_tree_pos hD hp j
+  have hM : M.PosDef := MeanTree.posDef_eval hA T'
+  have hv1 : (star v ⬝ᵥ v).re = 1 :=
+    re_star_filteredVector_dotProduct (Transport.filteredNormSq_pos hM hpre)
+  -- the similarity part: `M^s v` is proportional to `pre`
+  have hMv : M ^ (1 / 4 : ℝ) *ᵥ v =
+      ((Real.sqrt (Transport.filteredNormSq M pre) : ℂ)⁻¹) • pre := by
+    change M ^ (1 / 4 : ℝ) *ᵥ (((Real.sqrt (Transport.filteredNormSq M pre) : ℂ)⁻¹) •
+      (M ^ (-(1 / 4) : ℝ) *ᵥ pre)) = _
+    rw [Matrix.mulVec_smul, Matrix.mulVec_mulVec, hM.rpow_mul_rpow_neg, Matrix.one_mulVec]
+  have hHv : E.replicaEnergy k *ᵥ (M ^ (1 / 4 : ℝ) *ᵥ v) =
+      (E₀ : ℂ) • (M ^ (1 / 4 : ℝ) *ᵥ v) := by
+    rw [hMv, Matrix.mulVec_smul, hE₀, smul_comm]
+  have hsumA : ∑ i, 2 * (star (M ^ (-(1 / 4) : ℝ) *ᵥ v) ⬝ᵥ
+      (h i *ᵥ (M ^ (1 / 4 : ℝ) *ᵥ v))).re = 2 * E₀ := by
+    rw [← Finset.mul_sum, ← Complex.re_sum, ← dotProduct_sum, ← Matrix.sum_mulVec]
+    change 2 * (star (M ^ (-(1 / 4) : ℝ) *ᵥ v) ⬝ᵥ
+      (E.replicaEnergy k *ᵥ (M ^ (1 / 4 : ℝ) *ᵥ v))).re = 2 * E₀
+    rw [hHv, dotProduct_smul, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec,
+      (hM.rpow_isHermitian _).eq, Matrix.mulVec_mulVec, hM.rpow_neg_mul_rpow,
+      Matrix.one_mulVec, smul_eq_mul, Complex.re_ofReal_mul, hv1, mul_one]
+  -- the integrated symbol cost at one split term--leaf pair
+  have hm : MeasureTheory.Integrable Transport.fourierWeight :=
+    Real.integrable_sinhRatioDensity ⟨by norm_num, by norm_num⟩
+  have hint : ∀ i, ∀ j ∈ D.splitLeaves E i,
+      ∫ u, Transport.fourierWeight u *
+          (Transport.transportState T' A v j u * Transport.skewSquare (A j) (h i)).trace.re ≤
+        κ * (∫ u, Transport.fourierWeight u *
+          coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+            D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) + r k / 2 := by
+    intro i j hj
+    set Q := coherentAverage k (base n) (fun θ =>
+      D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))
+    have hX : ∀ u, coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+        D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) =
+        (Transport.transportState T' A v j u * Q).trace.re := fun u =>
+      (trace_mul_coherentAverage k (base n) (D.continuous_splitEta_rpow E i j) _).symm
+    simp_rw [hX]
+    have i1 := integrable_fourierWeight_mul_trace_transportState T' A v j
+      (Transport.skewSquare (A j) (h i))
+    have i2 := integrable_fourierWeight_mul_trace_transportState T' A v j Q
+    calc ∫ u, Transport.fourierWeight u *
+          (Transport.transportState T' A v j u * Transport.skewSquare (A j) (h i)).trace.re
+        ≤ ∫ u, (κ * (Transport.fourierWeight u *
+            (Transport.transportState T' A v j u * Q).trace.re) +
+            r k * Transport.fourierWeight u) := by
+          refine MeasureTheory.integral_mono i1 ((i2.const_mul κ).add (hm.const_mul (r k)))
+            fun u => ?_
+          have hb : (Transport.transportState T' A v j u *
+              Transport.skewSquare (A j) (h i)).trace.re ≤
+              κ * (Transport.transportState T' A v j u * Q).trace.re + r k := by
+            rw [← hX u]
+            exact hbound k i j hj _ (D.posSemidef_state hD ht (hcomm k) pre p j u)
+              (D.trace_state hD ht (hcomm k) hpre hp j u)
+              (D.symProj_mul_state hD ht (hcomm k) hsym p j u)
+          have hm0 : 0 ≤ Transport.fourierWeight u :=
+            (Real.sinhRatioDensity_pos ⟨by norm_num, by norm_num⟩ u).le
+          calc Transport.fourierWeight u *
+                (Transport.transportState T' A v j u * Transport.skewSquare (A j) (h i)).trace.re
+              ≤ Transport.fourierWeight u *
+                (κ * (Transport.transportState T' A v j u * Q).trace.re + r k) :=
+                mul_le_mul_of_nonneg_left hb hm0
+            _ = _ := by ring
+      _ = κ * (∫ u, Transport.fourierWeight u *
+            (Transport.transportState T' A v j u * Q).trace.re) + r k / 2 := by
+          rw [MeasureTheory.integral_add (i2.const_mul κ) (hm.const_mul _),
+            MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul,
+            Real.integral_sinhRatioDensity ⟨by norm_num, by norm_num⟩]
+          ring
+  -- one term
+  have hW0 : ∀ i, 0 ≤ W i := fun i => Finset.sum_nonneg fun j _ => (hw j).le
+  have hW1 : ∀ i, W i ≤ 1 := fun i => by
+    rw [← T'.sum_weight]
+    exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
+      fun j _ _ => (hw j).le
+  have step : ∀ i, (star v ⬝ᵥ (h i *ᵥ v)).re ≤
+      2 * (star (M ^ (-(1 / 4) : ℝ) *ᵥ v) ⬝ᵥ (h i *ᵥ (M ^ (1 / 4 : ℝ) *ᵥ v))).re +
+        3 / 2 * κ * (W i * ∑ j ∈ D.splitLeaves E i, T'.weight j *
+          ∫ u, Transport.fourierWeight u *
+            coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+              D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) +
+        3 / 4 * r k * (W i * W i) := by
+    intro i
+    refine (Transport.re_star_dotProduct_mulVec_le_energy T' hA hw
+      (posSemidef_copyMean (Matrix.nonneg_iff_posSemidef.mp (h0 i))) (D.splitLeaves E i)
+      (fun j hj => D.commute_input_copyMean_of_not_mem_splitLeaves E hD k hEsupp hj) v).trans ?_
+    have hle := Finset.sum_le_sum fun j hj =>
+      mul_le_mul_of_nonneg_left (hint i j hj) (hw j).le
+    have e : ∑ j ∈ D.splitLeaves E i, T'.weight j * (κ * (∫ u, Transport.fourierWeight u *
+          coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+            D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) + r k / 2) =
+        κ * ∑ j ∈ D.splitLeaves E i, T'.weight j * (∫ u, Transport.fourierWeight u *
+          coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+            D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) +
+        r k / 2 * W i := by
+      rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun j _ => by ring
+    rw [e] at hle
+    have h2 := mul_le_mul_of_nonneg_left hle (by linarith [hW0 i] : (0 : ℝ) ≤ 3 / 2 * W i)
+    change _ + 3 / 2 * W i * _ ≤ _
+    linear_combination h2
+  -- summation over the terms
+  have hsplit : ∀ i, D.splitWeight E i p = W i := fun i => rfl
+  calc (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re = ∑ i, (star v ⬝ᵥ (h i *ᵥ v)).re := by
+        rw [EnergyTerms.replicaEnergy, Matrix.sum_mulVec, dotProduct_sum, Complex.re_sum]
+    _ ≤ ∑ i, (2 * (star (M ^ (-(1 / 4) : ℝ) *ᵥ v) ⬝ᵥ (h i *ᵥ (M ^ (1 / 4 : ℝ) *ᵥ v))).re +
+        3 / 2 * κ * (W i * ∑ j ∈ D.splitLeaves E i, T'.weight j *
+          ∫ u, Transport.fourierWeight u *
+            coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+              D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) +
+        3 / 4 * r k * (W i * W i)) := Finset.sum_le_sum fun i _ => step i
+    _ = 2 * E₀ + 3 / 2 * κ * D.energyError E (a / 2) k pre p +
+        3 / 4 * r k * ∑ i, W i * W i := by
+      rw [Finset.sum_add_distrib, Finset.sum_add_distrib, hsumA, ← Finset.mul_sum,
+        ← Finset.mul_sum]
+      rfl
+    _ ≤ 2 * E₀ + 3 / 2 * Csym * a ^ 2 * ℓ ^ esym * D.energyError E (a / 2) k pre p +
+        3 / 4 * (Fintype.card ι : ℝ) * r k := by
+      have hWW : ∑ i, W i * W i ≤ Fintype.card ι := by
+        calc ∑ i, W i * W i ≤ ∑ _i : ι, (1 : ℝ) :=
+              Finset.sum_le_sum fun i _ => mul_le_one₀ (hW1 i) (hW0 i) (hW1 i)
+          _ = Fintype.card ι := by simp
+      have := mul_le_mul_of_nonneg_left hWW (by linarith [hr0 k] : (0 : ℝ) ≤ 3 / 4 * r k)
+      rw [hκ]
+      linarith
 
 end TransportData
 
