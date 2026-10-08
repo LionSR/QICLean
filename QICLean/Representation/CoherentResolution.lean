@@ -72,7 +72,7 @@ theorem commute_permOp_coherentProj (θ : Ω → ℂ) (σ : Equiv.Perm (Fin k)) 
   rw [Commute, SemiconjBy, coherentProj, mul_vecMulVec, vecMulVec_mul, hv, hw]
 
 /-- An idempotent Hermitian matrix with zero trace vanishes. -/
-theorem eq_zero_of_isHermitian_of_mul_self_of_trace {X : Type*} [Fintype X] [DecidableEq X]
+theorem eq_zero_of_isHermitian_of_mul_self_of_trace {X : Type*} [Fintype X]
     {P : Matrix X X ℂ} (hH : P.IsHermitian) (hP : P * P = P) (htr : P.trace = 0) : P = 0 := by
   have : (Pᴴ * P).trace = 0 := by rw [hH.eq, hP, htr]
   exact (trace_conjTranspose_mul_self_eq_zero_iff).mp this
