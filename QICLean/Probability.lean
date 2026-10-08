@@ -9,3 +9,5 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Probability
 
 import QICLean.Probability.PoissonWord
+import QICLean.Probability.PoissonWordAppend
+import QICLean.Probability.PoissonWordSemigroup
