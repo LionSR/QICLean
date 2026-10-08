@@ -1,3 +1,0 @@
-'Entropy.conditionalMovement_norm_le' depends on axioms: [propext, Classical.choice, Quot.sound]
-'ConditionalMovement.LocalMove.one_copy_move_cfc' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.cfc_rpow_kernelCompletion' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Adapted for QICLean: allow an explicitly empty blueprint before diagrams land.
-# Source and license: docs/provenance/tenkz-blueprint-support.md.
+# Adapted from LionSR/TNLean@b053c4ca45dd9f181695aaa1ea3879fc2f413e87 (Apache-2.0).
 """Audit the event stream of every tenkz picture in the blueprint.
 
 The web build compiles a picture standalone and caches it by a content hash
