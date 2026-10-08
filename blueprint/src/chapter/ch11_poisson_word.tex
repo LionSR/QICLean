@@ -9,7 +9,9 @@ independent clocks.
 
 \begin{definition}[Poissonized word measure]
 \label{def:poisson_word_measure}
-\lean{PoissonWord.Word, PoissonWord.nil, PoissonWord.weight, PoissonWord.measure}
+\lean{PoissonWord.Word, PoissonWord.nil,
+PoissonWord.instMeasurableSpaceWord, PoissonWord.instMeasurableSingletonClassWord,
+PoissonWord.weight, PoissonWord.measure}
 \leanok
 Equip $\mathcal W$ with its discrete $\sigma$-algebra and put
 \begin{align}
@@ -48,7 +50,7 @@ PoissonWord.integral_eq_tsum_sum}
 \leanok
 \uses{def:poisson_word_measure}
 For an observable $f$ valued in a normed additive group, integrability is
- equivalent to summability of
+equivalent to summability of
 $\sum_{w\in\mathcal W}e^{-Nt}t^{|w|}\|f(w)\|/|w|!$.
 If $f$ is real and nonnegative, put
 $A_m=\sum_{w\in I^{\{0,\ldots,m-1\}}}f(w)$.

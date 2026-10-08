@@ -334,6 +334,14 @@ jobs:
             QICLeanTest/PhysicalBufferOverlap.lean \
             QICLeanTest/DoubledSystemGap.lean \
             QICLeanTest/PositiveGapUniqueness.lean \
+            QICLeanTest/PoissonWord.lean \
+            QICLeanTest/PoissonWordAxioms.lean \
+            QICLeanTest/ContractionWordDecay.lean \
+            QICLeanTest/ContractionWordDecayAxioms.lean \
+            QICLeanTest/ContractionWordDecaySpectator.lean \
+            QICLeanTest/ContractionWordDecaySpectatorAxioms.lean \
+            QICLeanTest/PoissonContractionDecay.lean \
+            QICLeanTest/PoissonContractionDecayAxioms.lean \
             QICLeanTest/MatrixEvolution.lean \
             QICLeanTest/UnitaryEvolution.lean \
             QICLeanTest/UnitaryEvolutionAxioms.lean \

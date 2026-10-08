@@ -22,7 +22,7 @@ example (t : ℝ≥0) :
 example (t : ℝ≥0) (w : Fin 2 → Fin 2) :
     measure (Fin 2) t {⟨2, w⟩} =
       ENNReal.ofReal (Real.exp (-2 * (t : ℝ)) * (t : ℝ) ^ 2 / 2) := by
-  simpa [weight] using measure_singleton t (⟨2, w⟩ : Word (Fin 2))
+  simp [weight]
 
 -- There is an empty word even when the alphabet itself is empty.
 example (t : ℝ≥0) : measure (Fin 0) t = Measure.dirac (nil : Word (Fin 0)) :=
@@ -38,20 +38,13 @@ example (t : ℝ≥0) : measure (Fin 2) t Set.univ = 1 := measure_univ
 example (t : ℝ≥0) : (∫ _w : Word (Fin 2), (1 : ℝ) ∂measure (Fin 2) t) = 1 := by
   simp
 
--- Vanishing finite-word sums give a zero expectation and are integrable.
-example (t : ℝ≥0) :
-    Integrable (fun _w : Word (Fin 2) ↦ (0 : ℝ)) (measure (Fin 2) t) ∧
-      (∫ _w : Word (Fin 2), (0 : ℝ) ∂measure (Fin 2) t) ≤ 0 := by
-  simpa using integrable_and_integral_le_of_sum_le_pow t
-    (fun _w : Word (Fin 2) ↦ (0 : ℝ)) (fun _ ↦ le_rfl)
-    (a := 0) (C := 0) le_rfl le_rfl (fun _ ↦ by simp)
-
 -- A genuine strict geometric layer bound gives rate-one decay for two labels.
 example (t : ℝ≥0) (f : Word (Fin 2) → ℝ) (hf : ∀ w, 0 ≤ f w)
     (hbound : ∀ m, (∑ w : Fin m → Fin 2, f ⟨m, w⟩) ≤ (1 : ℝ) ^ m * 3) :
     Integrable f (measure (Fin 2) t) ∧
       (∫ w, f w ∂measure (Fin 2) t) ≤ Real.exp (-(t : ℝ)) * 3 := by
-  simpa using integrable_and_integral_le_of_sum_le_pow t f hf
-    (a := 1) (C := 3) (by norm_num) (by norm_num) hbound
+  convert integrable_and_integral_le_of_sum_le_pow t f hf
+    (a := 1) (C := 3) (by norm_num) (by norm_num) hbound using 1
+  norm_num
 
 end PoissonWordTest

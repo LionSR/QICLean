@@ -16,7 +16,7 @@ rate `N * t`. Finite sums bounded by `a ^ m * C` give an integrable observable
 with expectation at most `exp ((a - N) * t) * C`.
 
 This is the finite-word probability calculation used for the excited-state
-estimate in the amplification source, lines 235–249. No identification with a
+estimate in the amplification source, lines 237–253. No identification with a
 chronological construction from independent clocks is asserted here.
 -/
 
@@ -26,15 +26,12 @@ open scoped BigOperators NNReal Nat
 namespace PoissonWord
 
 /-- Finite words, retaining the length as part of the value. -/
-def Word (ι : Type*) := Σ m : ℕ, (Fin m → ι)
+abbrev Word (ι : Type*) := Σ m : ℕ, (Fin m → ι)
 
-instance {ι : Type*} : MeasurableSpace (Word ι) := ⊤
+instance instMeasurableSpaceWord {ι : Type*} : MeasurableSpace (Word ι) := ⊤
 
-instance {ι : Type*} : MeasurableSingletonClass (Word ι) :=
+instance instMeasurableSingletonClassWord {ι : Type*} : MeasurableSingletonClass (Word ι) :=
   ⟨fun _ ↦ MeasurableSet.of_discrete⟩
-
-instance {ι : Type*} [Fintype ι] : Countable (Word ι) :=
-  inferInstanceAs (Countable (Σ m : ℕ, (Fin m → ι)))
 
 /-- The unique word of length zero. -/
 def nil {ι : Type*} : Word ι := ⟨0, Fin.elim0⟩
@@ -62,7 +59,8 @@ private lemma summable_word_iff (f : Word ι → ℝ) (hf : ∀ w, 0 ≤ f w) :
     Summable f ↔ Summable (fun m ↦ ∑ w : Fin m → ι, f ⟨m, w⟩) := by
   change Summable (fun w : Σ m : ℕ, (Fin m → ι) ↦ f w) ↔ _
   rw [summable_sigma_of_nonneg hf]
-  simp only [summable_fintype, forall_const, true_and, tsum_fintype]
+  simp only [tsum_fintype]
+  exact and_iff_right (fun _ ↦ (hasSum_fintype _).summable)
 
 /-- The individual word masses sum to one, including for an empty alphabet. -/
 lemma hasSum_one_weight (t : ℝ≥0) :
@@ -95,7 +93,7 @@ lemma measure_length (t : ℝ≥0) (m : ℕ) :
   change (∑' w : Σ k : ℕ, (Fin k → ι), _) = _
   rw [ENNReal.tsum_sigma']
   simp only [Measure.smul_apply, Measure.dirac_apply' _ MeasurableSet.of_discrete,
-    Set.mem_setOf_eq, smul_eq_mul]
+    Set.indicator_apply, Set.mem_ofPred_eq, Pi.one_apply, smul_eq_mul]
   simp only [tsum_fintype]
   simp_rw [mul_ite, mul_one, mul_zero, Finset.sum_ite_irrel, Finset.sum_const_zero]
   rw [tsum_ite_eq, ← ENNReal.ofReal_sum_of_nonneg (fun _ _ ↦ weight_nonneg t m), sum_weight]
@@ -107,9 +105,10 @@ lemma map_length (t : ℝ≥0) :
   apply Measure.ext_of_singleton
   intro m
   rw [Measure.map_apply Measurable.of_discrete (measurableSet_singleton m)]
-  simpa only [Set.preimage_singleton_eq, NNReal.coe_mul, NNReal.coe_natCast, neg_mul] using
-    (measure_length (ι := ι) t m).trans
-      (ProbabilityTheory.poissonMeasure_singleton ((Fintype.card ι : ℝ≥0) * t) m).symm
+  rw [ProbabilityTheory.poissonMeasure_singleton]
+  simpa only [Set.preimage, Set.mem_singleton_iff, NNReal.coe_mul, NNReal.coe_natCast,
+    neg_mul] using
+    measure_length (ι := ι) t m
 
 /-- At time zero the random word is empty. -/
 @[simp] lemma measure_zero : measure ι 0 = Measure.dirac (nil : Word ι) := by
@@ -182,7 +181,7 @@ lemma hasSum_weight_mul_pow (t : ℝ≥0) (a C : ℝ) :
 /-- Finite-word bounds imply both integrability and exponential decay of the
 actual probability expectation; normalization and expected decay are conclusions. -/
 theorem integrable_and_integral_le_of_sum_le_pow (t : ℝ≥0) (f : Word ι → ℝ)
-    (hf : ∀ w, 0 ≤ f w) {a C : ℝ} (ha : 0 ≤ a) (hC : 0 ≤ C)
+    (hf : ∀ w, 0 ≤ f w) {a C : ℝ} (_ha : 0 ≤ a) (_hC : 0 ≤ C)
     (hbound : ∀ m, (∑ w : Fin m → ι, f ⟨m, w⟩) ≤ a ^ m * C) :
     Integrable f (measure ι t) ∧
       (∫ w, f w ∂measure ι t) ≤ Real.exp ((a - Fintype.card ι) * t) * C := by

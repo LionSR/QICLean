@@ -15,7 +15,7 @@ entangled vector as its spectator coordinate slices and sums the physical square
 estimates. No spectator-dimension factor or nonemptiness assumption is introduced.
 
 This is the finite-word spectator step for the excited-state estimate in the area-law
-manuscript, `09-amplification.tex`, lines 235–249, source revision
+manuscript, `09-amplification.tex`, lines 237–253, source revision
 `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`. It does not identify a word law
 with independent clocks or assert locality of the products.
 -/
@@ -26,6 +26,7 @@ namespace Matrix
 
 variable {n a : Type*} [Fintype n] [DecidableEq n] [Fintype a] [DecidableEq a]
 
+omit [DecidableEq n] in
 /-- An operator tensored with the spectator identity acts separately on each coordinate
 slice, including slices of entangled vectors. -/
 theorem kronecker_one_mulVec_apply_slice (A : Matrix n n ℂ)
@@ -36,6 +37,7 @@ theorem kronecker_one_mulVec_apply_slice (A : Matrix n n ℂ)
   simp [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.kroneckerMap_apply,
     Matrix.one_apply, mul_ite, ite_mul]
 
+omit [DecidableEq n] [DecidableEq a] in
 /-- The squared Euclidean norm is the sum of the squared norms of all spectator slices. -/
 theorem norm_sq_eq_sum_spectator_slices (ξ : EuclideanSpace ℂ (n × a)) :
     ‖ξ‖ ^ 2 = ∑ r : a, ‖WithLp.toLp 2 (fun i => ξ (i, r))‖ ^ 2 := by
@@ -56,6 +58,7 @@ theorem norm_sq_toEuclideanLin_kronecker_one_eq_sum (A : Matrix n n ℂ)
 
 variable {ι : Type*} [Fintype ι]
 
+omit [Fintype ι] in
 /-- Tensoring the chronological product with an identity commutes with adding the
 latest event. -/
 theorem contractionWord_snoc_kronecker_one (k : ι → Matrix n n ℂ) {m : ℕ}
@@ -105,6 +108,7 @@ theorem contractionWordSpectatorSum_le_pow (k : ι → Matrix n n ℂ)
     Finset.mul_sum]
   exact Finset.sum_le_sum fun r _ => contractionWordSum_le_pow k hk hΩ hgap hg (hξ r) m
 
+omit [Fintype a] [DecidableEq a] in
 /-- If the gap is larger than the number of terms, every vector in the excited physical
 sector tensored with an arbitrary finite spectator is zero. -/
 theorem spectator_eq_zero_of_card_lt_gap (k : ι → Matrix n n ℂ)

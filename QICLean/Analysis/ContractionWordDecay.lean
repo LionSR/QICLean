@@ -17,7 +17,7 @@ fixed length. The estimate is obtained from the actual matrix products and their
 one-step energy loss. No commutation between distinct factors is required.
 
 This is the finite-word part of the excited-state estimate in the two-dimensional
-area-law manuscript, `09-amplification.tex`, lines 235–249, source revision
+area-law manuscript, `09-amplification.tex`, lines 237–253, source revision
 `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`. Identifying a probability
 law with independent clocks is a separate assertion.
 -/
@@ -28,8 +28,8 @@ namespace Matrix
 
 variable {n ι : Type*} [Fintype n] [DecidableEq n]
 
-/-- Chronological product, with the latest square-root contraction acting on the left
-(area-law manuscript, `09-amplification.tex`, lines 235–249). -/
+/-- Chronological product, with the latest square-root factor acting on the left
+(area-law manuscript, `09-amplification.tex`, lines 237–253). -/
 noncomputable def contractionWord (k : ι → Matrix n n ℂ) :
     (m : ℕ) → (Fin m → ι) → Matrix n n ℂ
   | 0, _ => 1
@@ -45,7 +45,7 @@ noncomputable def contractionWord (k : ι → Matrix n n ℂ) :
       CFC.sqrt (1 - k i) * contractionWord k m w := by
   simp [contractionWord]
 
-/-- Each square-root contraction fixes any vector annihilated by its deficit. -/
+/-- Each square-root factor fixes any vector annihilated by its deficit. -/
 theorem sqrt_one_sub_toEuclideanLin_eq_self {k : Matrix n n ℂ} (hk : k ≤ 1)
     {Ω : EuclideanSpace ℂ n} (hΩ : toEuclideanLin k Ω = 0) :
     toEuclideanLin (CFC.sqrt (1 - k)) Ω = Ω := by
@@ -62,7 +62,7 @@ theorem inner_sqrt_one_sub_eq_zero {k : Matrix n n ℂ} (hk : k ≤ 1)
     (nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg (1 - k))).isHermitian
   rw [← hs, sqrt_one_sub_toEuclideanLin_eq_self hk hΩ, hv]
 
-/-- Exact squared-norm loss at a square-root contraction. -/
+/-- Exact squared-norm change at a square-root factor. -/
 theorem norm_sq_sqrt_one_sub {k : Matrix n n ℂ} (hk : k ≤ 1)
     (v : EuclideanSpace ℂ n) :
     ‖toEuclideanLin (CFC.sqrt (1 - k)) v‖ ^ 2 =
@@ -76,7 +76,7 @@ theorem norm_sq_sqrt_one_sub {k : Matrix n n ℂ} (hk : k ≤ 1)
 variable [Fintype ι]
 
 /-- Summing the exact losses and applying the operator gap gives the one-step estimate
-from the area-law manuscript, `09-amplification.tex`, lines 235–249. -/
+from the area-law manuscript, `09-amplification.tex`, lines 237–253. -/
 theorem sum_norm_sq_sqrt_one_sub_le (k : ι → Matrix n n ℂ)
     (hk : ∀ i, k i ≤ 1) {Ω v : EuclideanSpace ℂ n} {g : ℝ}
     (hgap : (g : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))) ≤ ∑ i, k i)

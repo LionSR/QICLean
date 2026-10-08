@@ -1,0 +1,71 @@
+\section{Poissonized excited-state decay}
+\label{sec:poisson_contraction_decay}
+
+Let $\mathcal H=\C^d$ and let $\mathcal K$ be an arbitrary finite-dimensional
+spectator space.  For a finite label set $I$, write $N=|I|$ and let
+$D_w$ be the chronological square-root product of
+Definition~\ref{def:contraction_word}.  The probability measure $\mu_t$
+is the explicit word law of Definition~\ref{def:poisson_word_measure}.
+The following estimate is the finite-word probability form of the excited-state
+bound in \emph{A two-dimensional area law from a global spectral gap},
+\cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex}, lines 237--253.
+
+\begin{definition}[Word energy with a spectator]
+    \label{def:poisson_contraction_energy}
+    \lean{Matrix.poissonContractionWordEnergy}
+    \leanok
+    \uses{def:contraction_word, def:poisson_word_measure}
+    For $\xi\in\mathcal H\otimes\mathcal K$ define the nonnegative observable
+    \begin{align}
+        F_\xi(w)&=\|(D_w\otimes I_{\mathcal K})\xi\|^2.
+        \label{eq:poisson_contraction_energy}
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Exponential decay under the word law]
+    \label{thm:poisson_contraction_decay}
+    \lean{Matrix.poissonContractionWordEnergy_integrable_and_le,
+        Matrix.poissonContractionWord_excitedProjection_decay}
+    \leanok
+    \uses{def:poisson_contraction_energy}
+    Let $\Omega\in\mathcal H$, set $P_\Omega=|\Omega\rangle\langle\Omega|$,
+    and assume $k_i\le I$, $k_i\Omega=0$, and
+    $\sum_i k_i\ge g(I-P_\Omega)$ for $g\in\R$.
+    If $\xi\in\Omega^\perp\otimes\mathcal K$, then $F_\xi$ is integrable
+    and, for every $t\ge0$,
+    \begin{align}
+        \int F_\xi\,d\mu_t
+        &\le e^{-gt}\|\xi\|^2.
+        \label{eq:poisson_contraction_decay}
+    \end{align}
+    If $\|\Omega\|=1$, then $P_\Omega$ is an orthogonal projection,
+    and in particular this holds for
+    $\xi=((I-P_\Omega)\otimes I_{\mathcal K})\zeta$ and arbitrary
+    $\zeta\in\mathcal H\otimes\mathcal K$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:contraction_spectator_decay, thm:contraction_spectator_projection,
+        thm:contraction_spectator_large_gap, thm:poisson_word_decay}
+    Suppose first that $g\le N$.  The finite-word bound gives
+    $\sum_{|w|=m}F_\xi(w)\le(N-g)^m\|\xi\|^2$.
+    The weighted summation theorem proves integrability and gives
+    \begin{align}
+        \int F_\xi\,d\mu_t
+        &\le e^{-Nt}\sum_{m\ge0}\frac{t^m(N-g)^m}{m!}\|\xi\|^2
+         =e^{-gt}\|\xi\|^2.
+        \label{eq:poisson_contraction_series}
+    \end{align}
+    If $g>N$, the one-step gap inequality forces $\xi=0$, so both sides
+    vanish.  The complementary ground projection puts every physical
+    coordinate slice in $\Omega^\perp$, proving the last assertion.
+\end{proof}
+
+The result permits an empty label set, time zero, and an empty spectator.
+There is no spectator-dimension factor.  The source application has
+$0\le k_i\le I$ and a positive gap; the algebraic estimate above also
+allows the displayed weaker hypotheses.  Identifying $\mu_t$ with the
+chronological events of independent rate-one clocks is a separate formal
+bridge.  This result does not provide the coupled-clock locality estimate or the
+full amplification theorem.
