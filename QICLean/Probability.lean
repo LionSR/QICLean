@@ -13,7 +13,12 @@ import QICLean.Probability.PoissonWord
 import QICLean.Probability.PoissonWordAppend
 import QICLean.Probability.PoissonWordCounts
 import QICLean.Probability.PoissonWordIndependentCounts
+import QICLean.Probability.PoissonWordInsertion
+import QICLean.Probability.PoissonWordInsertionWeight
+import QICLean.Probability.PoissonWordMarked
+import QICLean.Probability.PoissonWordOccupation
 import QICLean.Probability.PoissonWordPartition
+import QICLean.Probability.PoissonWordRealOccupation
 import QICLean.Probability.PoissonWordRelabel
 import QICLean.Probability.PoissonWordSemigroup
 import QICLean.Probability.PoissonWordThinning
