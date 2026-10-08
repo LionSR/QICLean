@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.Transport.Defs
+import QICLean.Channel.Schwarz.TwoVariable
+import QICLean.Channel.Schwarz.PositiveMapProperties
 
 /-!
 # The auxiliary block tree and the energy of the filtered vector
@@ -451,6 +453,267 @@ theorem sum_weight_smul_leafMap_rotation {M : J → Matrix m m ℂ} (hM : ∀ j,
     _ = _ := by rw [h2, h3, Matrix.one_mul, Matrix.mul_one]
 
 end Rotation
+
+/-! ### Spectral form, Fourier densities and the Schwarz inequality -/
+
+section Fourier
+
+variable {m : Type*} [Fintype m] [DecidableEq m] {R : Matrix m m ℂ}
+
+/-- Conjugation `U X U^*` by the eigenvector unitary of a Hermitian matrix. -/
+noncomputable def eigConj (hR : R.IsHermitian) (X : Matrix m m ℂ) : Matrix m m ℂ :=
+  (hR.eigenvectorUnitary : Matrix m m ℂ) * X * star (hR.eigenvectorUnitary : Matrix m m ℂ)
+
+theorem star_eigU_mul_eigU (hR : R.IsHermitian) :
+    star (hR.eigenvectorUnitary : Matrix m m ℂ) * (hR.eigenvectorUnitary : Matrix m m ℂ) = 1 :=
+  Unitary.coe_star_mul_self _
+
+theorem eigU_mul_star_eigU (hR : R.IsHermitian) :
+    (hR.eigenvectorUnitary : Matrix m m ℂ) * star (hR.eigenvectorUnitary : Matrix m m ℂ) = 1 :=
+  Unitary.coe_mul_star_self _
+
+theorem eigConj_mul_eigConj (hR : R.IsHermitian) (X Y : Matrix m m ℂ) :
+    eigConj hR X * eigConj hR Y = eigConj hR (X * Y) := by
+  simp only [eigConj]
+  calc _ = (hR.eigenvectorUnitary : Matrix m m ℂ) * X *
+        (star (hR.eigenvectorUnitary : Matrix m m ℂ) * (hR.eigenvectorUnitary : Matrix m m ℂ)) *
+        Y * star (hR.eigenvectorUnitary : Matrix m m ℂ) := by noncomm_ring
+    _ = _ := by rw [star_eigU_mul_eigU, Matrix.mul_one, Matrix.mul_assoc _ X Y]
+
+theorem eigConj_unconj (hR : R.IsHermitian) (X : Matrix m m ℂ) :
+    eigConj hR (star (hR.eigenvectorUnitary : Matrix m m ℂ) * X *
+      (hR.eigenvectorUnitary : Matrix m m ℂ)) = X := by
+  simp only [eigConj]
+  calc _ = ((hR.eigenvectorUnitary : Matrix m m ℂ) * star (hR.eigenvectorUnitary : Matrix m m ℂ)) *
+        X * ((hR.eigenvectorUnitary : Matrix m m ℂ) *
+          star (hR.eigenvectorUnitary : Matrix m m ℂ)) := by noncomm_ring
+    _ = X := by rw [eigU_mul_star_eigU, Matrix.one_mul, Matrix.mul_one]
+
+theorem conjTranspose_eigConj (hR : R.IsHermitian) (X : Matrix m m ℂ) :
+    (eigConj hR X)ᴴ = eigConj hR Xᴴ := by
+  simp only [eigConj, conjTranspose_mul, star_eq_conjTranspose, conjTranspose_conjTranspose,
+    Matrix.mul_assoc]
+
+theorem cfc_eq_eigConj (hR : R.IsHermitian) (f : ℝ → ℝ) :
+    cfc f R = eigConj hR (diagonal fun a => (f (hR.eigenvalues a) : ℂ)) := by
+  rw [hR.cfc_eq, IsHermitian.cfc, Unitary.conjStarAlgAut_apply]; rfl
+
+theorem rpow_eq_eigConj (hR : R.PosDef) (r : ℝ) :
+    R ^ r = eigConj hR.isHermitian
+      (diagonal fun a => (Real.exp (r * Real.log (hR.isHermitian.eigenvalues a)) : ℂ)) := by
+  rw [CFC.rpow_eq_cfc_real hR.posSemidef.nonneg, cfc_eq_eigConj hR.isHermitian]
+  congr 2; funext a
+  rw [Real.rpow_def_of_pos (hR.eigenvalues_pos a), mul_comm]
+
+theorem imagPow_eq_eigConj (hR : R.PosDef) (u : ℝ) :
+    imagPow R u = eigConj hR.isHermitian
+      (diagonal fun a => Complex.exp (-(u : ℂ) * Complex.I *
+        (Real.log (hR.isHermitian.eigenvalues a) : ℂ))) := by
+  have hU : IsUnit (hR.isHermitian.eigenvectorUnitary : Matrix m m ℂ) :=
+    (Unitary.isUnit_coe (U := hR.isHermitian.eigenvectorUnitary))
+  have hinv : (hR.isHermitian.eigenvectorUnitary : Matrix m m ℂ)⁻¹ =
+      star (hR.isHermitian.eigenvectorUnitary : Matrix m m ℂ) :=
+    Matrix.inv_eq_left_inv (star_eigU_mul_eigU hR.isHermitian)
+  unfold imagPow hermitianUnitaryPath
+  set U := (hR.isHermitian.eigenvectorUnitary : Matrix m m ℂ)
+  have harg : (-u) • (Complex.I • eigConj hR.isHermitian
+      (diagonal fun a => ((Real.log (hR.isHermitian.eigenvalues a) : ℝ) : ℂ))) =
+      U * diagonal (fun a => -(u : ℂ) * Complex.I *
+        (Real.log (hR.isHermitian.eigenvalues a) : ℂ)) * U⁻¹ := by
+    rw [hinv, ← Complex.coe_smul, smul_smul, eigConj, ← smul_mul_assoc, ← mul_smul_comm]
+    congr 2
+    ext i j
+    by_cases h : i = j <;> simp [h, diagonal]
+  rw [CFC.log, cfc_eq_eigConj hR.isHermitian, harg, Matrix.exp_conj _ _ hU, Matrix.exp_diagonal,
+    Pi.exp_def, hinv, eigConj]
+  simp only [← Complex.exp_eq_exp_ℂ]
+  rfl
+
+
+/-! ### The Fourier densities `q_±` -/
+
+/-- The exponent `±1/4` of the error vectors `E_±`. -/
+noncomputable abbrev signExp (sign : Bool) : ℝ := if sign then 1 / 4 else -(1 / 4)
+
+/-- The Fourier densities `q_+(u) = m_{1/8}(u + i/8)` and `q_-(u) = -m_{1/8}(u - i/8)`
+(`06-transport.tex`, display `transport:q-density`). -/
+noncomputable def qDensity (sign : Bool) (u : ℝ) : ℂ :=
+  if sign then Complex.sinhRatioDensity ((1 / 4 : ℝ) / 2) (u + ((1 / 4 : ℝ) / 2 : ℝ) * Complex.I)
+  else -Complex.sinhRatioDensity ((1 / 4 : ℝ) / 2) (u + (-((1 / 4 : ℝ) / 2) : ℝ) * Complex.I)
+
+theorem norm_qDensity_le (sign : Bool) (u : ℝ) :
+    ‖qDensity sign u‖ ≤ fourierWeight u / √2 := by
+  cases sign
+  · have h := Complex.norm_sinhRatioDensity_shift_le u (Or.inr rfl : (-1 : ℝ) = 1 ∨ (-1 : ℝ) = -1)
+    simp only [qDensity, Bool.false_eq_true, ↓reduceIte, norm_neg]
+    convert h using 3 <;> push_cast <;> ring
+  · have h := Complex.norm_sinhRatioDensity_shift_le u (Or.inl rfl : (1 : ℝ) = 1 ∨ (1 : ℝ) = -1)
+    simp only [qDensity, ↓reduceIte]
+    convert h using 3 <;> push_cast <;> ring
+
+theorem continuous_qDensity (sign : Bool) : Continuous (qDensity sign) := by
+  have hs : (1 / 4 : ℝ) ∈ Set.Ioo 0 (1 / 2) := by norm_num
+  have key : ∀ τ : ℝ, |τ| ≤ (1 / 4 : ℝ) / 2 →
+      Continuous fun u : ℝ => Complex.sinhRatioDensity ((1 / 4 : ℝ) / 2) (u + τ * Complex.I) := by
+    intro τ hσ
+    refine continuous_const.div ((Complex.differentiable_densityDenom _).continuous.comp
+      (by fun_prop)) fun u => ?_
+    exact Complex.densityDenom_half_ne_zero hs (by simpa using hσ)
+  cases sign
+  · exact (key _ (by rw [abs_neg, abs_of_pos (by norm_num)])).neg
+  · exact key _ (by rw [abs_of_pos (by norm_num)])
+
+theorem integrable_fourierWeight : Integrable fourierWeight :=
+  Real.integrable_sinhRatioDensity (by norm_num)
+
+theorem integral_fourierWeight : ∫ u, fourierWeight u = 1 / 2 := by
+  rw [Real.integral_sinhRatioDensity (by norm_num)]; norm_num
+
+theorem integrable_qDensity (sign : Bool) : Integrable (qDensity sign) :=
+  (integrable_fourierWeight.div_const √2).mono' (continuous_qDensity sign).aestronglyMeasurable
+    (Filter.Eventually.of_forall (norm_qDensity_le sign))
+
+theorem integral_norm_qDensity_le (sign : Bool) :
+    ∫ u, ‖qDensity sign u‖ ≤ 1 / 2 / √2 := by
+  calc ∫ u, ‖qDensity sign u‖ ≤ ∫ u, fourierWeight u / √2 :=
+        integral_mono (integrable_qDensity sign).norm (integrable_fourierWeight.div_const _)
+          (norm_qDensity_le sign)
+    _ = 1 / 2 / √2 := by rw [integral_div, integral_fourierWeight]
+
+/-- The Fourier multiplier of `q_±` against the hyperbolic factor:
+`(∫ q_±(u) e^{iuz} du) (e^{z/2} - e^{-z/2}) = e^{±z/4} - 1` (`06-transport.tex`,
+displays `transport:h-def` and `transport:q-density`). -/
+theorem integral_qDensity_mul_cexp_mul (sign : Bool) (z : ℝ) :
+    (∫ u, qDensity sign u * Complex.exp (Complex.I * u * z)) *
+        ((Real.exp (z / 2) : ℂ) - (Real.exp (-(z / 2)) : ℂ)) =
+      (Real.exp (signExp sign * z) : ℂ) - 1 := by
+  have hs : (1 / 4 : ℝ) ∈ Set.Ioo 0 (1 / 2) := by norm_num
+  rcases eq_or_ne z 0 with rfl | hz
+  · simp
+  have hsinh : (Real.exp (z / 2) : ℂ) - (Real.exp (-(z / 2)) : ℂ) =
+      ((2 * Real.sinh (z / 2) : ℝ) : ℂ) := by
+    rw [Real.sinh_eq]; push_cast; ring
+  have hsh : Real.sinh (z / 2) ≠ 0 := by
+    rw [Ne, Real.sinh_eq_zero]; intro h; exact hz (by linarith)
+  simp_rw [mul_comm (qDensity sign _)]
+  cases sign
+  · have h := Complex.integral_exp_mul_qMinus_of_ne_zero hs hz
+    simp only [qDensity, Bool.false_eq_true, ↓reduceIte] at h ⊢
+    rw [h, hsinh, ← Complex.ofReal_mul, div_mul_cancel₀ _ (by positivity)]
+    push_cast; simp only [signExp]; push_cast; ring_nf
+  · have h := Complex.integral_exp_mul_qPlus_of_ne_zero hs hz
+    simp only [qDensity, ↓reduceIte] at h ⊢
+    rw [h, hsinh, ← Complex.ofReal_mul, div_mul_cancel₀ _ (by positivity)]
+    push_cast; simp only [signExp]; push_cast; ring_nf
+
+
+theorem eigConj_sub (hR : R.IsHermitian) (X Y : Matrix m m ℂ) :
+    eigConj hR (X - Y) = eigConj hR X - eigConj hR Y := by
+  simp only [eigConj, Matrix.mul_sub, Matrix.sub_mul]
+
+theorem star_dotProduct_eigConj_mulVec (hR : R.IsHermitian) (Z : Matrix m m ℂ) (x y : m → ℂ) :
+    star y ⬝ᵥ (eigConj hR Z *ᵥ x) =
+      ∑ a, ∑ b, star ((star (hR.eigenvectorUnitary : Matrix m m ℂ) *ᵥ y) a) * Z a b *
+        (star (hR.eigenvectorUnitary : Matrix m m ℂ) *ᵥ x) b := by
+  set U := (hR.eigenvectorUnitary : Matrix m m ℂ)
+  have h := star_mulVec_dotProduct_mulVec (star U) Z y (star U *ᵥ x)
+  rw [star_eq_conjTranspose U, conjTranspose_conjTranspose, ← star_eq_conjTranspose U] at h
+  rw [eigConj, ← mulVec_mulVec, ← h]
+  generalize star U *ᵥ x = x'
+  generalize star U *ᵥ y = y'
+  simp only [dotProduct, mulVec, Finset.mul_sum, Pi.star_apply]
+  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+  ring
+
+/-- `q_±` times a bounded continuous function is integrable. -/
+theorem integrable_qDensity_mul {f : ℝ → ℂ} (sign : Bool) (hf : Continuous f) {C : ℝ}
+    (hC : ∀ u, ‖f u‖ ≤ C) : Integrable fun u => qDensity sign u * f u :=
+  (integrable_qDensity sign).mul_bdd hf.aestronglyMeasurable (Filter.Eventually.of_forall hC)
+
+theorem integrable_qDensity_mul_cexp (sign : Bool) (z : ℝ) (k : ℂ) :
+    Integrable fun u : ℝ => qDensity sign u * (Complex.exp (Complex.I * u * z) * k) :=
+  integrable_qDensity_mul sign (by fun_prop) (C := ‖k‖) fun u => by
+    rw [norm_mul, show Complex.I * u * z = ((u * z : ℝ) : ℂ) * Complex.I by push_cast; ring,
+      Complex.norm_exp_ofReal_mul_I, one_mul]
+
+/-- **Fourier form of the error operators** (`06-transport.tex`, displays `transport:E-def`
+and the Fourier formula following it, lines 688--700): for positive definite `R`,
+`⟨y, (R^{±s} L R^{∓s} - L) x⟩ = ∫ q_±(u) ⟨R^{-iu} y, (R^{1/2} L R^{-1/2} - R^{-1/2} L R^{1/2})
+R^{-iu} x⟩ du` with `s = 1/4`. -/
+theorem integral_qDensity_mul_inner (hR : R.PosDef) (L : Matrix m m ℂ) (sign : Bool)
+    (x y : m → ℂ) :
+    ∫ u, qDensity sign u * (star (imagPow R u *ᵥ y) ⬝ᵥ
+      ((R ^ (1 / 2 : ℝ) * L * R ^ (-(1 / 2) : ℝ) - R ^ (-(1 / 2) : ℝ) * L * R ^ (1 / 2 : ℝ)) *ᵥ
+        (imagPow R u *ᵥ x))) =
+      star y ⬝ᵥ ((R ^ signExp sign * L * R ^ (-signExp sign) - L) *ᵥ x) := by
+  set hH := hR.isHermitian
+  set U := (hH.eigenvectorUnitary : Matrix m m ℂ)
+  set ℓ : m → ℝ := fun a => Real.log (hH.eigenvalues a)
+  set ex : ℝ → m → ℂ := fun r a => (Real.exp (r * ℓ a) : ℂ)
+  set L' := star U * L * U
+  have hL : L = eigConj hH L' := (eigConj_unconj hH L).symm
+  have hpow : ∀ r : ℝ, R ^ r = eigConj hH (diagonal (ex r)) := rpow_eq_eigConj hR
+  set ph : ℝ → m → ℂ := fun u a => Complex.exp (-(u : ℂ) * Complex.I * (ℓ a : ℂ))
+  have hW : ∀ u, imagPow R u = eigConj hH (diagonal (ph u)) := imagPow_eq_eigConj hR
+  set c : m → m → ℂ := fun a b => star ((star U *ᵥ y) a) * L' a b * (star U *ᵥ x) b
+  -- the integrand in the eigenbasis
+  have hint : ∀ u, star (imagPow R u *ᵥ y) ⬝ᵥ
+      ((R ^ (1 / 2 : ℝ) * L * R ^ (-(1 / 2) : ℝ) - R ^ (-(1 / 2) : ℝ) * L * R ^ (1 / 2 : ℝ)) *ᵥ
+        (imagPow R u *ᵥ x)) = ∑ a, ∑ b, Complex.exp (Complex.I * u * ((ℓ a - ℓ b : ℝ) : ℂ)) *
+          ((ex (1 / 2) a * ex (-(1 / 2)) b - ex (-(1 / 2)) a * ex (1 / 2) b) * c a b) := by
+    intro u
+    rw [star_mulVec_dotProduct_mulVec, mulVec_mulVec, hW, hpow, hpow, hL, conjTranspose_eigConj,
+      eigConj_mul_eigConj, eigConj_mul_eigConj, eigConj_mul_eigConj, eigConj_mul_eigConj,
+      ← eigConj_sub, eigConj_mul_eigConj, eigConj_mul_eigConj, star_dotProduct_eigConj_mulVec]
+    refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+    have hph : star (ph u a) * ph u b = Complex.exp (Complex.I * u * ((ℓ a - ℓ b : ℝ) : ℂ)) := by
+      simp only [ph, ← Complex.exp_conj, Complex.star_def, map_mul, map_neg, Complex.conj_ofReal,
+        Complex.conj_I, ← Complex.exp_add]
+      congr 1; push_cast; ring
+    simp only [diagonal_conjTranspose, sub_apply, diagonal_mul, mul_diagonal, Pi.star_apply, c]
+    calc _ = (star (ph u a) * ph u b) * ((ex (1 / 2) a * ex (-(1 / 2)) b -
+          ex (-(1 / 2)) a * ex (1 / 2) b) * (star ((star U *ᵥ y) a) * L' a b *
+            (star U *ᵥ x) b)) := by ring
+      _ = _ := by rw [hph]
+  simp_rw [hint]
+  rw [hpow, hpow, hL, eigConj_mul_eigConj, eigConj_mul_eigConj, ← eigConj_sub,
+    star_dotProduct_eigConj_mulVec]
+  simp_rw [Finset.mul_sum]
+  rw [integral_finsetSum _ fun a _ => ?_]
+  · refine Finset.sum_congr rfl fun a _ => ?_
+    rw [integral_finsetSum _ fun b _ => integrable_qDensity_mul_cexp sign _ _]
+    refine Finset.sum_congr rfl fun b _ => ?_
+    have h := integral_qDensity_mul_cexp_mul sign (ℓ a - ℓ b)
+    simp_rw [← mul_assoc]
+    rw [integral_mul_const, integral_mul_const]
+    simp only [sub_apply, diagonal_mul, mul_diagonal, c, ex]
+    have e1 : ((Real.exp (1 / 2 * ℓ a) : ℂ) * (Real.exp (-(1 / 2) * ℓ b) : ℂ) -
+        (Real.exp (-(1 / 2) * ℓ a) : ℂ) * (Real.exp (1 / 2 * ℓ b) : ℂ)) =
+        (Real.exp ((ℓ a - ℓ b) / 2) : ℂ) - (Real.exp (-((ℓ a - ℓ b) / 2)) : ℂ) := by
+      rw [← Complex.ofReal_mul, ← Complex.ofReal_mul, ← Real.exp_add, ← Real.exp_add]
+      congr 3 <;> ring
+    have e2 : (Real.exp (signExp sign * ℓ a) : ℂ) * (Real.exp (-signExp sign * ℓ b) : ℂ) =
+        (Real.exp (signExp sign * (ℓ a - ℓ b)) : ℂ) := by
+      rw [← Complex.ofReal_mul, ← Real.exp_add]; congr 2; ring
+    rw [e1, h]
+    calc _ = star ((star U *ᵥ y) a) * ((Real.exp (signExp sign * (ℓ a - ℓ b)) : ℂ) * L' a b -
+          L' a b) * (star U *ᵥ x) b := by ring
+      _ = _ := by rw [← e2]; ring
+  · exact integrable_finsetSum _ fun b _ => integrable_qDensity_mul_cexp sign _ _
+
+/-- **Schwarz inequality for a unital 2-positive map** (`06-transport.tex`, display
+`transport:cp-schwarz`, lines 712--722): `‖Ψ(K) y‖² ≤ ⟨y, Ψ(K^*K) y⟩`. -/
+theorem re_star_mulVec_dotProduct_le_of_twoPositive {Φ : Matrix m m ℂ →ₗ[ℂ] Matrix m m ℂ}
+    (h2 : IsNPositiveMap 2 Φ) (h1 : Φ 1 = 1) (K : Matrix m m ℂ) (y : m → ℂ) :
+    (star (Φ K *ᵥ y) ⬝ᵥ (Φ K *ᵥ y)).re ≤ (star y ⬝ᵥ (Φ (Kᴴ * K) *ᵥ y)).re := by
+  have hpos : IsPositiveMap Φ := Is2PositiveMap.isPositiveMap h2
+  have h := SchwarzTwoVariable.schwarz_two_variable Φ h2 K 1 y (Φ K *ᵥ y)
+    (by simp [h1])
+  rw [Matrix.mul_one, hpos.map_conjTranspose] at h
+  rw [star_mulVec, ← dotProduct_mulVec]
+  exact (Complex.le_def.mp h).1
+
+end Fourier
 
 /-- The error vectors `E_± = 𝓑^{±s} T M^{∓s} - T` of the block root
 (`06-transport.tex`, display `transport:E-def`), with `s = 1/4` and `T = h^{1/2}`. -/
