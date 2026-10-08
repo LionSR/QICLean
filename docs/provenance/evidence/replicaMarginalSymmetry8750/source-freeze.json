@@ -1,9 +1,0 @@
-{
-  "source_revision": "84057ec47d715328375b322cb4129f88709323ed",
-  "production_sha256": {
-    "QICLean/Analysis/ReplicaMarginalSymmetry.lean": "18117f22dbd29f9279edd3f3667756b0847e3d2cb5efc1a520eedb1b9c56b51f",
-    "blueprint/src/fragment/replica_marginal_symmetry.tex": "4d7a85ce035173d01bfa062a8bd2174d17428033d398b5fc89ff5a71a1047158",
-    "docs/formalization/replica-marginal-symmetry.md": "4eb8d9530b3675d2d0dcbbc01a762b659f6c76d4ba32b96ec39d01e8bde57147",
-    "docs/tactic_patterns.md": "3edb046cbbb769d118a70752dc449c3f4939456bc0f5c15a100024899eed05a4"
-  }
-}

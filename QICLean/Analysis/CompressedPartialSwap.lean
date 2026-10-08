@@ -30,50 +30,6 @@ Original proofs for OpenAI, *A two-dimensional area law from a global spectral g
 September 24, 2026, `02-information.tex`, lines 355–424, `eq:info-reset-overlap`.
 Paper source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
 No upstream Lean declaration or proof text is reused.
-Provenance-ID: physical-buffer8766-equiv.partialswap
-Downstream declaration: Equiv.partialSwap
-Provenance-ID: physical-buffer8766-equiv.partialswap_apply
-Downstream declaration: Equiv.partialSwap_apply
-Provenance-ID: physical-buffer8766-equiv.partialswap_symm
-Downstream declaration: Equiv.partialSwap_symm
-Provenance-ID: physical-buffer8766-equiv.partialswap_mul_self
-Downstream declaration: Equiv.partialSwap_mul_self
-Provenance-ID: physical-buffer8766-matrix.partialswap
-Downstream declaration: Matrix.partialSwap
-Provenance-ID: physical-buffer8766-matrix.partialswap_apply
-Downstream declaration: Matrix.partialSwap_apply
-Provenance-ID: physical-buffer8766-matrix.partialswap_mulvec
-Downstream declaration: Matrix.partialSwap_mulVec
-Provenance-ID: physical-buffer8766-matrix.partialswap_ishermitian
-Downstream declaration: Matrix.partialSwap_isHermitian
-Provenance-ID: physical-buffer8766-matrix.partialswap_mul_self
-Downstream declaration: Matrix.partialSwap_mul_self
-Provenance-ID: physical-buffer8766-matrix.partialswap_mem_unitarygroup
-Downstream declaration: Matrix.partialSwap_mem_unitaryGroup
-Provenance-ID: physical-buffer8766-matrix.norm_partialswap_le_one
-Downstream declaration: Matrix.norm_partialSwap_le_one
-Provenance-ID: physical-buffer8766-matrix.partialswap_kronecker_mulvec
-Downstream declaration: Matrix.partialSwap_kronecker_mulVec
-Provenance-ID: physical-buffer8766-matrix.partialswap_one_mulvec
-Downstream declaration: Matrix.partialSwap_one_mulVec
-Provenance-ID: physical-buffer8766-matrix.kronecker_self_conjtranspose_mul_self
-Downstream declaration: Matrix.kronecker_self_conjTranspose_mul_self
-Provenance-ID: physical-buffer8766-matrix.compressedpartialswap
-Downstream declaration: Matrix.compressedPartialSwap
-Provenance-ID: physical-buffer8766-matrix.compressedpartialswap_ishermitian
-Downstream declaration: Matrix.compressedPartialSwap_isHermitian
-Provenance-ID: physical-buffer8766-matrix.norm_conjtranspose_mul_mul_le_of_isometry
-Downstream declaration: Matrix.norm_conjTranspose_mul_mul_le_of_isometry
-Provenance-ID: physical-buffer8766-matrix.norm_compressedpartialswap_le_one
-Downstream declaration: Matrix.norm_compressedPartialSwap_le_one
-Provenance-ID: physical-buffer8766-matrix.star_dotproduct_compression
-Downstream declaration: Matrix.star_dotProduct_compression
-Provenance-ID: physical-buffer8766-matrix.star_dotproduct_kronecker_compression
-Downstream declaration: Matrix.star_dotProduct_kronecker_compression
-Provenance-ID: physical-buffer8766-matrix.compressedpartialswap_overlap
-Downstream declaration: Matrix.compressedPartialSwap_overlap
-Provenance-ID: physical-buffer8766-matrix.compressedpartialswap_left_overlap
-Downstream declaration: Matrix.compressedPartialSwap_left_overlap
 -/
 
 open scoped Matrix Kronecker Matrix.Norms.L2Operator

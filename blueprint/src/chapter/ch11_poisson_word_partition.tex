@@ -1,0 +1,79 @@
+\section{Thinning by a subset of the alphabet}
+\label{sec:poisson_word_partition}
+
+% Derived supporting identities for the label selection in
+% 09-amplification.tex at adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% lines 49--54 and 237--253; not separately stated theorems in that source.
+The retained and omitted label words associated with a subset of the
+alphabet satisfy the following fixed-time identities. The retained labels
+in the local constraint products of \cite{OpenAI2026AreaLaw}, in the section
+``Amplifying the collar estimate,'' are an example of such a subset.
+
+\begin{definition}[Partitioning a word]
+\label{def:poisson_word_partition}
+\lean{PoissonWord.partitionWords, PoissonWord.partitionWords_nil,
+PoissonWord.partitionWords_length}
+\leanok
+\uses{def:poisson_word_relabel, def:poisson_word_filters}
+Let $p$ be a predicate on an alphabet $I$, and put
+$S=\{i\in I:p(i)\}$ and $T=\{i\in I:\neg p(i)\}$.
+Classify each letter by the bijection $c:I\to S\sqcup T$, then define
+$P_p(w)=(L(c^{\mathcal W}(w)),R(c^{\mathcal W}(w)))$.
+Write $P_p(w)=(w_S,w_T)$. The empty word gives two empty words, and
+$|w_S|+|w_T|=|w|$.
+\end{definition}
+
+\begin{theorem}[The original filtered letters]
+\label{thm:poisson_partition_letters}
+\lean{PoissonWord.ofFn_partitionWords_fst, PoissonWord.ofFn_partitionWords_snd}
+\leanok
+\uses{def:poisson_word_partition}
+For $w=(i_0,\ldots,i_{m-1})$, regard the letters of $w_S,w_T$ as letters
+of $I$ through their inclusions. Then
+\begin{align}
+ (w_S,w_T)&=\bigl((i_j)_{0\leq j<m,\ p(i_j)},
+                  (i_j)_{0\leq j<m,\ \neg p(i_j)}\bigr),
+ \label{eq:poisson_partition_letters}
+\end{align}
+where both lists retain increasing order of the original positions.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:poisson_word_partition, def:poisson_word_filters,
+def:poisson_word_relabel}
+For each letter $i$, the left filter retains $c(i)$ exactly when $p(i)$
+holds, and the right filter retains it exactly when $\neg p(i)$ holds.
+In either case the inclusion into $I$ returns $i$. Applying this identity
+at every position proves both equalities, preserving the original order.
+\end{proof}
+
+\begin{theorem}[Independent subset thinning]
+\label{thm:poisson_word_partition}
+\lean{PoissonWord.map_partitionWords, PoissonWord.map_partitionWords_fst,
+PoissonWord.map_partitionWords_snd, PoissonWord.indepFun_partitionWords}
+\leanok
+\uses{def:poisson_word_partition}
+Suppose $I$ is finite and $t\geq0$. For a single sample $w$ with law
+$\mu_{I,t}$, its two ordered subwords have joint law
+\begin{align}
+ (P_p)_*\mu_{I,t}&=\mu_{S,t}\otimes\mu_{T,t}.
+ \label{eq:poisson_partition_law}
+\end{align}
+In particular, $w_S$ and $w_T$ are independent with laws $\mu_{S,t}$ and
+$\mu_{T,t}$. This holds when either subset is empty and at $t=0$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:poisson_word_relabel, thm:poisson_word_thinning,
+lem:poisson_word_normalization}
+Relabeling gives $(c^{\mathcal W})_*\mu_{I,t}=\mu_{S\sqcup T,t}$.
+Applying the joint filtered-word law to this measure gives
+\begin{align}
+ (P_p)_*\mu_{I,t}
+ &=(L,R)_*(c^{\mathcal W})_*\mu_{I,t}
+  =(L,R)_*\mu_{S\sqcup T,t}
+  =\mu_{S,t}\otimes\mu_{T,t}.
+\end{align}
+Both factors have mass one, so coordinate projections give the stated
+marginals. Their product is the joint law, which proves independence.
+\end{proof}

@@ -26,12 +26,6 @@ Original exact-excitation covariance and stabilizer symmetry supporting OpenAI,
 A two-dimensional area law from a global spectral gap, September 24, 2026,
 07-comparators.tex lines 441–456, comparator:defect-mass.
 Independently formalized; no upstream Lean proof text reused.
-Provenance-ID: 8750-qic-excitation-stabilizer-01
-Matrix.permOp_mul_replicaExcitationProjection
-Provenance-ID: 8750-qic-excitation-stabilizer-02
-Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq
-Provenance-ID: 8750-qic-excitation-stabilizer-03
-Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed
 -/
 
 open Matrix PermutationRepresentation TensorPower

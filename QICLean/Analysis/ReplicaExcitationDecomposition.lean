@@ -31,27 +31,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Label: comparator:defect-mass.
-Provenance-ID: 8750-qic-replica-excitation-01
-Downstream declaration:
-Matrix.replicaExcitationProjection
-Provenance-ID: 8750-qic-replica-excitation-02
-Downstream declaration:
-Matrix.isStarProjection_replicaExcitationProjection
-Provenance-ID: 8750-qic-replica-excitation-03
-Downstream declaration:
-Matrix.sum_replicaExcitationProjection
-Provenance-ID: 8750-qic-replica-excitation-04
-Downstream declaration:
-Matrix.replicaDefectCount_mul_replicaExcitationProjection
-Provenance-ID: 8750-qic-replica-excitation-05
-Downstream declaration:
-Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection
-Provenance-ID: 8750-qic-replica-excitation-06
-Downstream declaration:
-Matrix.replicaExcitationProjection_mul_of_ne
-Provenance-ID: 8750-qic-replica-excitation-07
-Downstream declaration:
-Matrix.replicaDefectCutoff_decomposition
 -/
 
 open scoped BigOperators Matrix Kronecker ComplexOrder

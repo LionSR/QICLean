@@ -1,5 +1,0 @@
-{
-  "diagram_scope": "This exact released QIC parent does not load tenkz and has no tenkz fetch step.",
-  "print_source": "blueprint/src/print.tex",
-  "sha256": "e9c7f539b7af4e5c5d27f316fb176f5e95963abc654d231756007c0efc417763"
-}

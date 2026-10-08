@@ -51,7 +51,6 @@ transport of strong subadditivity to unnormalized states is new.
 
 /-
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-purifying-swap
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/PureEntropy.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.purifyingSwap
@@ -62,7 +61,6 @@ swap_gram_left, swap_gram_right and swap_gram_kept are inlined into the proof of
 inequality.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-araki-lieb
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/PureEntropy.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.entropy_triangle

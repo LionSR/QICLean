@@ -29,7 +29,6 @@ variable {Q T C : Type*} [Fintype Q] [DecidableEq Q]
   [Fintype T] [DecidableEq T] [Fintype C] [DecidableEq C]
 
 /-
-Provenance-ID: 8750-qic-regional-good-copy-density-01
 Original formalization, no upstream Lean proof text reused.
 Declaration: Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density
 Manuscript: September 24, 2026, comparator:merge-moments, lines 520–549.

@@ -1,9 +1,0 @@
-{
-  "result": "passed",
-  "source_revision": "0d00ac83ac5533452abdfed33e5b55f301f32b2b",
-  "declarations": [
-    "Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder",
-    "Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density"
-  ],
-  "review": "The projected component and contracted remainder are literal functions of the original arbitrary vector. The unit ground vector gives unit mass for the good product. The first identity identifies the actual whole-auxiliary marginal; the second traces the bad physical register after the canonical (good\u00d7auxiliary)\u00d7bad regrouping, deriving the product with that same marginal. No independence, supplied factorization/marginal certificate, nonzero component or normalized component is assumed. Zero copies/components are included. Physical and auxiliary region restriction, symmetry, independent-copy moments and merge moments remain separate."
-}

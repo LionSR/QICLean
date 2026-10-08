@@ -1,0 +1,100 @@
+{
+  "environment": "source ${WORKSPACE}/glm23-blueprint-env.sh && export WORKSPACE=${WORKSPACE}",
+  "working_directory": "${WORKSPACE}/restoring-norm-vectors-focused/blueprint/src",
+  "commands": [
+    {
+      "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
+      "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/restoring-norm-vectors-render/prepare_fixture.py",
+      "exit_code": 0
+    },
+    {
+      "command": "export XDG_CACHE_HOME=${WORKSPACE}/8766-unitary-evolution-focused/font-cache && latexmk -xelatex -interaction=nonstopmode -halt-on-error print.tex > ../../pdf-build.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "command": "cp print.bbl web.bbl && plastex -c plastex.cfg web.tex > ../../web-build.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/restoring-norm-vectors-focused",
+      "command": "mkdir -p pdf-pages && pdftoppm -scale-to 1500 -png blueprint/src/print.pdf pdf-pages/page > pdf-raster.log 2>&1 && pdfinfo blueprint/src/print.pdf > pdf-info.txt",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
+      "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/restoring-norm-vectors-render/verify_render.py > ${WORKSPACE}/restoring-norm-vectors-focused/verify-render.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/restoring-norm-vectors-focused",
+      "command": "export XDG_CACHE_HOME=${WORKSPACE}/8766-unitary-evolution-focused/font-cache && dot -Gbgcolor=white -Tpng dependency-graph.dot -o dependency-graph-white.png",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
+      "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/singular-restoration-render/check.py > ${WORKSPACE}/restoring-norm-vectors-focused/core-check.log 2>&1",
+      "exit_code": 0
+    }
+  ],
+  "notes": [
+    "Successful command segments reconstructed from tool records, with environment setup factored out. This is a replay recipe, not a byte-for-byte shell transcript.",
+    "Final verification ran after the web and raster processes had both completed. All final PDF pages were directly reinspected after the last prose change.",
+    "Earlier raw artifacts/logs remain in restoring-norm-vectors-focused-initial and restoring-norm-vectors-focused-anchors. Historical singular-restoration render/artifact records were not overwritten.",
+    "Installed texra-blueprint 0.3.8 and existing font cache reused; no downloads, Lean/Lake/checkdecls, pin changes, CI, external mutations or binary/LFS uploads."
+  ],
+  "raw_logs": {
+    "pdf-build.log": {
+      "retained_at": "${WORKSPACE}/restoring-norm-vectors-focused/pdf-build.log",
+      "sha256": "e2c1203695506e5cd4fe7cef6a1099e416589bb6607f6f3fe841699869c2d5ff"
+    },
+    "web-build.log": {
+      "retained_at": "${WORKSPACE}/restoring-norm-vectors-focused/web-build.log",
+      "sha256": "779cbae3f0bf92b3ea944156c8b49b2c9d4e4e8792be44b9f34a17c256c3660d"
+    },
+    "pdf-raster.log": {
+      "retained_at": "${WORKSPACE}/restoring-norm-vectors-focused/pdf-raster.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "verify-render.log": {
+      "retained_at": "${WORKSPACE}/restoring-norm-vectors-focused/verify-render.log",
+      "sha256": "e3c7c80717a956ec58a1a94397716d476fcccd78ecda4b920c4522e9cf202374"
+    },
+    "blueprint/src/print.log": {
+      "retained_at": "${WORKSPACE}/restoring-norm-vectors-focused/blueprint/src/print.log",
+      "sha256": "b6bcc9543710900f7e67c168736cb0b6d14801048d06604a1947acbcf5410a23"
+    },
+    "core-check.log": {
+      "retained_at": "${WORKSPACE}/restoring-norm-vectors-focused/core-check.log",
+      "sha256": "3639bb7e17afa9b5531b52f5637fd125dde02624978a5de959f4e215941659f9"
+    }
+  },
+  "replay_scripts": {
+    "prepare_fixture.py": {
+      "published_sha256": "0277e2d58355dc11cc70ba73e84d561a490b9f096d28ba5c290ce9913b12960c"
+    },
+    "verify_render.py": {
+      "published_sha256": "edbd36e543751ceb39f8bb9497fe46ddecfc25fabbcaa7965acf279e5363132c"
+    },
+    "check.py": {
+      "published_sha256": "d9ba9f172b63c1552d55e6cc0156d92e9c266f2e8bb4d3fca67630e152bf8bcf"
+    }
+  },
+  "environment_script_sha256": "3a538bdefcda033a0d3a55eda7102007c6789d6da004b28bb47033a17fb6c70b",
+  "normalization": {
+    "rule": "Replace executor-private workspace root with literal ${WORKSPACE}; no other recorded arguments changed.",
+    "original_record": "${WORKSPACE}/restoring-norm-vectors-focused/commands-original.json",
+    "original_record_sha256": "6738064d6fd0d6cadc33b1ea6567e65f0b6f212b24c18106774a201259ab7afc",
+    "maintenance_note": "The published checker/preparation hashes and historical replay metadata were updated after publication. Original raw commands, frozen source hashes and artifact records remain unchanged."
+  },
+  "historical_checker_maintenance": {
+    "public_replay_revision": "2bddde9e49330bab20260b002b7f0ba7de51918e",
+    "reason": "The 76-declaration extension promotes two vector lemmas, changing substantive source bytes. The historical checker now reads every source blob from the explicitly selected public 54-declaration ancestor; the preparation script defaults to that public replay source.",
+    "original_render_records_unchanged": {
+      "focus-manifest.json": "90f86acbb7883cef8b066e5167c23ec68236ddc9c30aa904ca74c15a52e297aa",
+      "verification.json": "2162b70033f441d20260a7c2aed3789e6890f3697b477a4a77485402bdd7c09c",
+      "visual-review.json": "e5b2d9955b88c2b699ce325a7c04016aa4c77943b790b0af8272a0a8903ed3d1",
+      "initial-findings.json": "f913de8a47d9d58ef3a02cd04575efe5b17aea70874d25dbbc74b49f8b643693",
+      "anchor-fix-findings.json": "c8aa46e2772d58a218e6c3e2272a2a509d44ab2c09d12fb308a1a405e31dcfef"
+    }
+  }
+}

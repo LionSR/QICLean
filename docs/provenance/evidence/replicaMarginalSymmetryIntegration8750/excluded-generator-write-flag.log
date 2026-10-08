@@ -1,2 +1,0 @@
-usage: generate_import_aggregators.py [-h] [--root ROOT] [--check]
-generate_import_aggregators.py: error: unrecognized arguments: --write

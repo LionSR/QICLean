@@ -37,15 +37,6 @@ Lean proof text is copied or adapted. The eigenspace and dimension consequences
 reuse Mathlib's span and eigenspace interfaces.
 -/
 
-/-
-Provenance-ID: positivegap8766-projection
-Downstream declaration: Matrix.PosSemidef.eq_inner_smul_of_gap
-Provenance-ID: positivegap8766-eigenspace
-Downstream declaration: Matrix.PosSemidef.eigenspace_eq_span_of_gap
-Provenance-ID: positivegap8766-dimension
-Downstream declaration: Matrix.PosSemidef.finrank_eigenspace_eq_one_of_gap
--/
-
 open Complex
 open scoped InnerProductSpace ComplexOrder
 

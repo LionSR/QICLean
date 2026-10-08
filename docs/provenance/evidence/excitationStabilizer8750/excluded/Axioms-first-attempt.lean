@@ -1,5 +1,0 @@
-import QICLean.Analysis.ReplicaExcitationSymmetry
-
-#print axioms Matrix.permOp_mul_replicaExcitationProjection
-#print axioms Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq
-#print axioms Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed

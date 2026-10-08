@@ -31,7 +31,6 @@ variable {G X Y : Type*} [Group G] [Fintype X] [DecidableEq X]
     [Fintype Y] [DecidableEq Y]
 
 /-
-Provenance-ID: 8750-qic-replica-marginal-symmetry-01
 Original formalization, no upstream Lean proof text reused.
 Declaration: PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp
 Manuscript: September 24, 2026, comparator:merge-moments, lines 540–549.
@@ -66,7 +65,6 @@ variable {A C : Type*} [Fintype A] [DecidableEq A] [Fintype C] [DecidableEq C]
 open PermutationRepresentation TensorPower
 
 /-
-Provenance-ID: 8750-qic-replica-marginal-symmetry-02
 Original formalization, no upstream Lean proof text reused.
 Declaration: Matrix.commute_partialTraceLeft_replicaExcitationComponent
 Manuscript: September 24, 2026, comparator:merge-moments, lines 540–549.
