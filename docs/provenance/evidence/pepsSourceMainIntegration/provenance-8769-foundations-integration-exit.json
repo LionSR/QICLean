@@ -1,0 +1,14 @@
+{
+  "source_revision": "9fabbcb948ef1fb41a573f596495c42a55cb8e7a",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/8769-foundations-integration/source-audit.py",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/docs/provenance/evidence/pepsSourceMainIntegration/provenance-policy.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "started_utc": "2026-10-07T23:11:09.563006+00:00",
+  "elapsed_seconds": 0.07326979099889286,
+  "exit_code": 1,
+  "log": "docs/provenance/evidence/pepsSourceMainIntegration/provenance-8769-foundations-integration.log",
+  "sha256": "5450a6ae3b20dd5e9d05d8052b3d82ac9d5b96d4cc51fcaed1b26b48c323c672"
+}

@@ -230,3 +230,28 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Seen:** `Analysis/ReplicaJointDensity.lean`; regional product calculations appear in `Analysis/ReplicaRegionalDensity.lean`.
 - **Abstraction:** Existing partial-trace composition and covariance results give the regrouping. The finite-sum Kronecker identity is private; no new tactic is introduced.
 - **Caveat:** Retain the actual component and its own auxiliary density. A product identity is derived from the prescribed one-copy ground vector rather than supplied as a premise.
+### Covariance under a finite coordinate bijection — candidate (2026-10-08)
+
+- **Pattern:** Transport a density and permutation operators by one basis
+  bijection, obtain the central projectors by the group-algebra sum, and
+  compare the actual product traces using finite-sum reindexing.
+- **Seen:** The three copy actions and joint trace in
+  `QICLean/Representation/PairMergeMoment.lean` share one private transport
+  calculation. The matrix products reuse `Matrix.submatrix_mul_equiv`.
+- **Abstraction:** Keep the common permutation/projector and trace calculations
+  as private lemmas. No new tactic is justified by one mathematical module.
+- **Caveats:** Use the same coordinate bijection for the density and all three
+  actions; separate permutation invariance is a premise of the auxiliary
+  theorem and must be proved in its physical application.
+
+### Total normalization of an invariant positive component — candidate (2026-10-08)
+
+- **Pattern:** Preserve commutation under total trace normalization and recover
+  an unnormalized moment by multiplication by the nonnegative actual trace.
+- **Seen:** `TensorPower.pair_merge_moment_le_mul_trace`; the independent
+  homogeneous merge-moment argument uses the same normalization calculation.
+- **Abstraction:** Reuse the existing positive normalization, trace-one and
+  reconstruction lemmas. Record a shared commutation lemma if further
+  independent consumers appear; no general multiplicity interface is added.
+- **Caveats:** At zero trace the positive matrix is zero and the normalized
+  choice is a scalar identity. Empty bases require their own zero-matrix case.

@@ -1,0 +1,10 @@
+PASS no proof placeholders/custom axioms: QICLean/Analysis/ChronologicalGarbage.lean
+PASS no proof placeholders/custom axioms: QICLean/Analysis/ChronologicalGarbageError.lean
+PASS no proof placeholders/custom axioms: QICLean/Analysis/IsometricDomainExtension.lean
+PASS no proof placeholders/custom axioms: QICLean/Analysis/SourceContraction.lean
+PASS no proof placeholders/custom axioms: QICLean/Probability/ComplexGaussian/GaussianContraction.lean
+PASS no proof placeholders/custom axioms: QICLean/Probability/ComplexGaussian/GlobalBranchLaw.lean
+PASS no proof placeholders/custom axioms: QICLean/Probability/ComplexGaussian/SchmidtSource.lean
+PASS complete public-source mapping: 84 declarations in 7 modules.
+PASS compiled kernel reports: only propext, Classical.choice, Quot.sound or no axioms.
+PASS adapted/original classifications: 0 adapted; 84 original.

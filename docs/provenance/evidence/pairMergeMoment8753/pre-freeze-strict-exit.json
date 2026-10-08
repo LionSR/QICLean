@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Representation/PairMergeMoment.lean"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 22.931597458999022,
+  "source_sha256": "8377a7ac4e5ed15edbfb0e7316095b438ff44f18b10627b23da94f5b6afee0e3",
+  "base_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+  "excluded_from_final_provenance": true,
+  "reason": "Pre-freeze source preparation check; final canonical check will bind the immutable source revision."
+}

@@ -1,0 +1,1714 @@
+{
+  "result": "passed",
+  "native_list": "docs/provenance/evidence/pepsSourceMainIntegration/NativeDeclarations.txt",
+  "native_list_sha256": "52e027fb669e25f3d28eab1c6fc7c1117c212c8c7235f6b37e56e916d4dad606",
+  "native_declarations": 3617,
+  "source_chapters": {
+    "blueprint/src/chapter/ch13_random_sources.tex": [
+      "CompressionSampling.binomial_error_le_exp",
+      "CompressionSampling.binomial_error_le_quarter",
+      "CompressionSampling.error_le_quarter_of_sample_count",
+      "CompressionSampling.error_le_quarter_sampleCount",
+      "CompressionSampling.exists_error_le_half_sampleCount",
+      "CompressionSampling.exists_valid_error_le_half_sampleCount",
+      "CompressionSampling.exists_valid_norm_sum_le_half_sampleCount",
+      "CompressionSampling.exp_eighth_sub_one_le_quarter",
+      "CompressionSampling.integral_error_le_binomial",
+      "CompressionSampling.integral_norm_sum_le_binomial",
+      "CompressionSampling.integral_norm_sum_le_sampling_error",
+      "CompressionSampling.inverse_half_power",
+      "CompressionSampling.ratio_le_of_sample_count",
+      "CompressionSampling.sampleCount",
+      "CompressionSampling.sampleCount_bounds",
+      "CompressionSampling.sum_nonempty_subsets_pow",
+      "CompressionSampling.sum_nonempty_subsets_rpow",
+      "CompressionSampling.sum_nonempty_subsets_weight",
+      "CompressionSampling.zero_slots_error",
+      "IndependentCovariance.integrable_product_mul_conj",
+      "IndependentCovariance.integrable_tensorCoefficient_mul_conj",
+      "IndependentCovariance.integral_product_mul_conj",
+      "IndependentCovariance.product_weighted_sqrt",
+      "IndependentCovariance.sum_product_weights_eq_one",
+      "IndependentCovariance.tensorCoefficient",
+      "IndependentCovariance.tensor_covariance_of_diagonal",
+      "IndependentCovariance.tensor_covariance_weighted",
+      "Matrix.exists_contraction_trace_conjTranspose_mul_eq",
+      "Matrix.frobeniusNormSq_rpow_quarter_mul_le_one",
+      "Matrix.l2_opNorm_kronecker_one_square_le",
+      "Matrix.norm_trace_conjTranspose_mul_le_rectangularTraceNorm",
+      "Matrix.rectangularTraceNorm",
+      "Matrix.rectangularTraceNorm_eq_sum_sqrt_eigenvalues",
+      "Matrix.rectangularTraceNorm_halfWeighted_le",
+      "Matrix.rectangularTraceNorm_mul_conjTranspose_le",
+      "Matrix.rectangularTraceNorm_partialTraceRight_le",
+      "Matrix.rectangularTraceNorm_partialTraceRight_mul_conjTranspose_le",
+      "Matrix.rectangularTraceNorm_square",
+      "Matrix.trace_partialTraceRight_conjTranspose_mul",
+      "ProbabilityTheory.integrable_frobenius_norm_sq_sum",
+      "ProbabilityTheory.integrable_normSq_sum",
+      "ProbabilityTheory.integral_frobenius_norm_sq_sum_eq_sum",
+      "ProbabilityTheory.integral_frobenius_norm_sum_le_sqrt",
+      "ProbabilityTheory.integral_normSq_sum_eq_sum",
+      "QICLean.ComplexGaussian.independentDensityCoefficient",
+      "QICLean.ComplexGaussian.independentDensityLaw",
+      "QICLean.ComplexGaussian.independentDensityLawIsProbabilityMeasure",
+      "QICLean.ComplexGaussian.integrable_independentDensityCoefficient",
+      "QICLean.ComplexGaussian.integrable_independentDensityCoefficient_mul_conj",
+      "QICLean.ComplexGaussian.integral_independentDensityCoefficient_eq_zero",
+      "QICLean.ComplexGaussian.integral_independentDensityCoefficient_mul_conj",
+      "QICLean.ComplexGaussian.pairedProductProbability",
+      "QICLean.ComplexGaussian.pairedProductProbability_nonneg",
+      "QICLean.ComplexGaussian.sum_pairedProductProbability_eq_one"
+    ],
+    "blueprint/src/chapter/ch13_source_error.tex": [
+      "Matrix.basisRegisterInjection",
+      "Matrix.basisRegisterInjection_conjTranspose_mul_self",
+      "Matrix.basisRegisterInjection_sandwich_eq_single_kronecker",
+      "Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self",
+      "Matrix.rectangularTraceNorm_add_le",
+      "Matrix.rectangularTraceNorm_conjTranspose",
+      "Matrix.rectangularTraceNorm_conjTranspose_le",
+      "Matrix.rectangularTraceNorm_isometry_sandwich",
+      "Matrix.rectangularTraceNorm_single_kronecker",
+      "Matrix.rectangularTraceNorm_smul",
+      "Matrix.rectangularTraceNorm_sum_le",
+      "Matrix.rectangularTraceNorm_sum_smul_le",
+      "Matrix.rectangularTraceNorm_zero",
+      "ProbabilityTheory.aestronglyMeasurable_rectangularTraceNorm_sum",
+      "ProbabilityTheory.integrable_rectangularTraceNorm_weightedSourceError",
+      "ProbabilityTheory.integrable_weightedSourceQuarter_norm",
+      "ProbabilityTheory.integral_frobeniusNormSq_weightedSourceQuarter_eq",
+      "ProbabilityTheory.integral_rectangularTraceNorm_weightedSourceError_le",
+      "ProbabilityTheory.quarterWeighted_source_sum_eq_transpose",
+      "ProbabilityTheory.rectangularTraceNorm_weightedSourceError_le",
+      "ProbabilityTheory.sourceBlock",
+      "ProbabilityTheory.sourceProductProbability",
+      "ProbabilityTheory.sum_sourceProductProbability",
+      "ProbabilityTheory.weightedSourceError",
+      "ProbabilityTheory.weightedSourceError_eq_halfWeighted",
+      "ProbabilityTheory.weightedSourceQuarter",
+      "ProbabilityTheory.weighted_source_block_aggregation",
+      "ProbabilityTheory.weighted_source_block_sum_le_one",
+      "QICLean.ComplexGaussian.integrable_rectangularTraceNorm_gaussianSourceError",
+      "QICLean.ComplexGaussian.integrable_sampledSource",
+      "QICLean.ComplexGaussian.integrable_sampledSource_entry",
+      "QICLean.ComplexGaussian.integrable_sourceCorrection",
+      "QICLean.ComplexGaussian.integrable_sourceCorrection_entry",
+      "QICLean.ComplexGaussian.integrable_sourceCorrection_entry_mul_conj",
+      "QICLean.ComplexGaussian.integral_frobeniusNormSq_gaussianSourceQuarter_eq",
+      "QICLean.ComplexGaussian.integral_rectangularTraceNorm_gaussianSourceError_le",
+      "QICLean.ComplexGaussian.integral_sampledSource",
+      "QICLean.ComplexGaussian.integral_sampledSource_entry",
+      "QICLean.ComplexGaussian.integral_sourceCorrection",
+      "QICLean.ComplexGaussian.integral_sourceCorrection_entry_mul_conj",
+      "QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta",
+      "QICLean.ComplexGaussian.sampledSource",
+      "QICLean.ComplexGaussian.sampledSource_apply",
+      "QICLean.ComplexGaussian.schmidtSource",
+      "QICLean.ComplexGaussian.schmidtSource_apply",
+      "QICLean.ComplexGaussian.schmidtVector",
+      "QICLean.ComplexGaussian.sourceCorrection",
+      "QICLean.ComplexGaussian.sourceCorrection_apply",
+      "QICLean.ComplexGaussian.sourceU",
+      "QICLean.ComplexGaussian.sourceV",
+      "QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource"
+    ],
+    "blueprint/src/chapter/ch13_source_reduction.tex": [
+      "Matrix.contractionPrefix",
+      "Matrix.contractionPrefix_norm_le_one",
+      "Matrix.contractionPrefix_sub_norm_le",
+      "Matrix.contractionPrefix_sub_norm_le_supported",
+      "Matrix.contractionPrefix_sub_norm_le_uniform",
+      "Matrix.euclideanOuterProduct",
+      "Matrix.euclideanOuterProduct_self_sub",
+      "Matrix.l2_opNorm_one_le",
+      "Matrix.markedRescaledGateChain",
+      "Matrix.rectangularTraceNorm_euclideanOuterProduct_le",
+      "Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le",
+      "Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le_two",
+      "Matrix.rectangularTraceNorm_pure_density_sub_le",
+      "Matrix.rectangularTraceNorm_pure_density_sub_le_two",
+      "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_empty",
+      "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le",
+      "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le_half",
+      "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le",
+      "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_half",
+      "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_prefix",
+      "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_sum",
+      "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_zero",
+      "Matrix.rescaledGateChain",
+      "Matrix.sourceOnlyReadoutDensity",
+      "Matrix.sourceOnlyReadoutDensity_zero",
+      "Matrix.sourceOnlyReadoutVector",
+      "Matrix.sourceOnlyReadoutVector_norm_le_one",
+      "Matrix.sourceOnlyReadoutVector_sub_norm_le",
+      "Matrix.trace_euclideanOuterProduct_conjTranspose_mul",
+      "NormedSpace.rescale_approximation",
+      "QICLean.ComplexGaussian.ambientSampledSource",
+      "QICLean.ComplexGaussian.ambientSampledSource_eq_transport",
+      "QICLean.ComplexGaussian.ambientSchmidtSource",
+      "QICLean.ComplexGaussian.ambientSchmidtVector",
+      "QICLean.ComplexGaussian.ambientSchmidtVector_eq_mulVec",
+      "QICLean.ComplexGaussian.ambientSourceCorrection",
+      "QICLean.ComplexGaussian.ambientSourceCorrection_eq_transport",
+      "QICLean.ComplexGaussian.ambientSourceU",
+      "QICLean.ComplexGaussian.ambientSourceU_kronecker_ambientSourceV",
+      "QICLean.ComplexGaussian.ambientSourceV",
+      "QICLean.ComplexGaussian.integrable_ambientSampledSource",
+      "QICLean.ComplexGaussian.integrable_ambientSampledSource_entry",
+      "QICLean.ComplexGaussian.integrable_ambientSourceCorrection",
+      "QICLean.ComplexGaussian.integrable_ambientSourceU",
+      "QICLean.ComplexGaussian.integrable_ambientSourceV",
+      "QICLean.ComplexGaussian.integral_ambientSampledSource",
+      "QICLean.ComplexGaussian.integral_ambientSampledSource_entry",
+      "QICLean.ComplexGaussian.integral_ambientSourceCorrection",
+      "QICLean.ComplexGaussian.sourceTransport",
+      "QICLean.ComplexGaussian.sourceTransport_kronecker",
+      "QICLean.ComplexGaussian.sourceTransport_schmidtSource"
+    ],
+    "blueprint/src/chapter/ch13_source_bridges.tex": [
+      "Matrix.appendGarbageGate",
+      "Matrix.appendGarbageGate_mulVec",
+      "Matrix.chronologicalGarbageChain",
+      "Matrix.chronologicalGarbageChain_discard_density",
+      "Matrix.chronologicalGarbageChain_norm_le_one",
+      "Matrix.chronologicalGarbageChain_prefix_vector",
+      "Matrix.chronologicalGarbageDensity",
+      "Matrix.chronologicalGarbageDensity_ideal",
+      "Matrix.chronologicalGarbageDensity_marked_empty",
+      "Matrix.chronologicalGarbageDensity_zero",
+      "Matrix.chronologicalGarbageReadout",
+      "Matrix.chronologicalGarbageReadout_discard_density",
+      "Matrix.chronologicalGarbageReadout_eq",
+      "Matrix.chronologicalReplacementChain",
+      "Matrix.chronologicalReplacementChain_norm_le_one",
+      "Matrix.chronologicalReplacementChain_sub_norm_le",
+      "Matrix.cumulativeGarbageVector",
+      "Matrix.euclideanOuterProduct_tensorVector",
+      "Matrix.euclideanTensorVector",
+      "Matrix.euclideanTensorVector_apply",
+      "Matrix.garbageInventory",
+      "Matrix.garbageInventoryDecidableEq",
+      "Matrix.garbageInventoryFintype",
+      "Matrix.idleGarbageLift",
+      "Matrix.idleGarbageLift_append_mulVec",
+      "Matrix.idleGarbageLift_eq_kronecker_submatrix",
+      "Matrix.idleGarbageLift_mulVec",
+      "Matrix.idleGarbageLift_sub",
+      "Matrix.isometricDomainExtension",
+      "Matrix.isometricDomainExtension_mul",
+      "Matrix.isometricDomainExtension_mul_rangeProjection",
+      "Matrix.isometricDomainExtension_sigmaBlockInclusion_mul",
+      "Matrix.isometricDomainExtension_sigmaBlockInclusion_mul_of_ne",
+      "Matrix.kronecker_one_tensorVector",
+      "Matrix.markedChronologicalGarbageChain",
+      "Matrix.norm_appendGarbageGate_le",
+      "Matrix.norm_cumulativeGarbageVector",
+      "Matrix.norm_euclideanTensorVector",
+      "Matrix.norm_idleGarbageLift_le",
+      "Matrix.norm_idleGarbageLift_sub_le",
+      "Matrix.norm_isometricDomainExtension",
+      "Matrix.norm_isometricDomainExtension_le_one",
+      "Matrix.norm_isometricDomainExtension_sigmaBlockInclusion",
+      "Matrix.norm_isometricDomainExtension_sigmaBlockInclusion_kronecker_one",
+      "Matrix.norm_kronecker_one_rectangular_le",
+      "Matrix.norm_sigmaBlockInclusion_kronecker_mulVec",
+      "Matrix.norm_sigmaBlockInclusion_mulVec",
+      "Matrix.norm_toLp_mulVec_of_isometry",
+      "Matrix.partialTraceRight_tensorVector",
+      "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_empty",
+      "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le",
+      "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half",
+      "Matrix.rectangularTraceNorm_sourceContraction_sub_le",
+      "Matrix.sourceContraction",
+      "Matrix.sourceContraction_add",
+      "Matrix.sourceContraction_apply",
+      "Matrix.sourceContraction_apply_apply",
+      "Matrix.sourceContraction_piecewise_add",
+      "Matrix.sourceContraction_piecewise_sub",
+      "Matrix.sourceContraction_sub",
+      "Matrix.trace_euclideanOuterProduct_self",
+      "QICLean.ComplexGaussian.correctedGaussianSourceContraction",
+      "QICLean.ComplexGaussian.correctedGaussianSourceContraction_eq_sum",
+      "QICLean.ComplexGaussian.corrected_source_entry_product",
+      "QICLean.ComplexGaussian.exists_probability_schmidtSourceFrames",
+      "QICLean.ComplexGaussian.exists_schmidtSourceFrames",
+      "QICLean.ComplexGaussian.exists_schmidtSourceReplacement",
+      "QICLean.ComplexGaussian.gaussianSourceContraction",
+      "QICLean.ComplexGaussian.gaussianSourceContraction_sub",
+      "QICLean.ComplexGaussian.globalBranchLaw",
+      "QICLean.ComplexGaussian.globalBranchLawIsProbabilityMeasure",
+      "QICLean.ComplexGaussian.integrable_correctedGaussianSourceContraction",
+      "QICLean.ComplexGaussian.integrable_gaussianSourceContraction",
+      "QICLean.ComplexGaussian.integrable_rectangularTraceNorm_selectedBranchSourceError",
+      "QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient",
+      "QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient_mul_conj",
+      "QICLean.ComplexGaussian.integral_correctedGaussianSourceContraction_eq_zero",
+      "QICLean.ComplexGaussian.integral_gaussianSourceContraction",
+      "QICLean.ComplexGaussian.integral_rectangularTraceNorm_selectedBranchSourceError_le",
+      "QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_eq_zero",
+      "QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_mul_conj",
+      "QICLean.ComplexGaussian.measurePreserving_selectedBranchSamples",
+      "QICLean.ComplexGaussian.selectedBranchDensityCoefficient",
+      "QICLean.ComplexGaussian.selectedBranchSamples"
+    ]
+  },
+  "source_declarations": 240,
+  "active_fragments": {},
+  "fragment_declarations": 0,
+  "source_contraction_exports": [
+    "Matrix.sourceContraction",
+    "Matrix.sourceContraction_apply",
+    "Matrix.sourceContraction_apply_apply",
+    "Matrix.sourceContraction_piecewise_add",
+    "Matrix.sourceContraction_add",
+    "Matrix.sourceContraction_piecewise_sub",
+    "Matrix.sourceContraction_sub",
+    "Matrix.rectangularTraceNorm_sourceContraction_sub_le"
+  ],
+  "contains_all_source_targets": true,
+  "contains_all_active_fragment_targets": true,
+  "rendered_doc_links": {
+    "Matrix.garbageInventoryFintype": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.garbageInventoryFintype"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le_two": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le_two"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_ambientSampledSource_entry": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_ambientSampledSource_entry"
+      }
+    ],
+    "Matrix.sourceContraction_apply_apply": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.sourceContraction_apply_apply"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_partialTraceRight_le": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_partialTraceRight_le"
+      }
+    ],
+    "Matrix.norm_isometricDomainExtension_sigmaBlockInclusion_kronecker_one": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_isometricDomainExtension_sigmaBlockInclusion_kronecker_one"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSampledSource": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSampledSource"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_sourceCorrection_entry_mul_conj": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_sourceCorrection_entry_mul_conj"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_sourceCorrection": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_sourceCorrection"
+      }
+    ],
+    "QICLean.ComplexGaussian.schmidtSource_apply": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.schmidtSource_apply"
+      }
+    ],
+    "Matrix.garbageInventoryDecidableEq": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.garbageInventoryDecidableEq"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_zero": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_zero"
+      }
+    ],
+    "Matrix.appendGarbageGate": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.appendGarbageGate"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_rectangularTraceNorm_selectedBranchSourceError_le": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_rectangularTraceNorm_selectedBranchSourceError_le"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_independentDensityCoefficient": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_independentDensityCoefficient"
+      }
+    ],
+    "QICLean.ComplexGaussian.sampledSource_apply": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sampledSource_apply"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_sum": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_sum"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_sourceCorrection": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_sourceCorrection"
+      }
+    ],
+    "Matrix.sourceOnlyReadoutDensity": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.sourceOnlyReadoutDensity"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSchmidtVector": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSchmidtVector"
+      }
+    ],
+    "CompressionSampling.integral_error_le_binomial": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.integral_error_le_binomial"
+      }
+    ],
+    "QICLean.ComplexGaussian.pairedProductProbability": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.pairedProductProbability"
+      }
+    ],
+    "CompressionSampling.error_le_quarter_of_sample_count": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.error_le_quarter_of_sample_count"
+      }
+    ],
+    "QICLean.ComplexGaussian.sourceU": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sourceU"
+      }
+    ],
+    "Matrix.norm_cumulativeGarbageVector": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_cumulativeGarbageVector"
+      }
+    ],
+    "Matrix.chronologicalGarbageDensity_ideal": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageDensity_ideal"
+      }
+    ],
+    "ProbabilityTheory.sum_sourceProductProbability": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.sum_sourceProductProbability"
+      }
+    ],
+    "CompressionSampling.binomial_error_le_exp": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.binomial_error_le_exp"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_partialTraceRight_mul_conjTranspose_le": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_partialTraceRight_mul_conjTranspose_le"
+      }
+    ],
+    "Matrix.basisRegisterInjection": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.basisRegisterInjection"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSourceCorrection_eq_transport": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSourceCorrection_eq_transport"
+      }
+    ],
+    "Matrix.chronologicalGarbageChain_prefix_vector": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageChain_prefix_vector"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_independentDensityCoefficient_mul_conj": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_independentDensityCoefficient_mul_conj"
+      }
+    ],
+    "Matrix.euclideanTensorVector": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.euclideanTensorVector"
+      }
+    ],
+    "ProbabilityTheory.integrable_weightedSourceQuarter_norm": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.integrable_weightedSourceQuarter_norm"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_ambientSampledSource": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_ambientSampledSource"
+      }
+    ],
+    "ProbabilityTheory.weightedSourceQuarter": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.weightedSourceQuarter"
+      }
+    ],
+    "Matrix.isometricDomainExtension": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.isometricDomainExtension"
+      }
+    ],
+    "Matrix.idleGarbageLift_mulVec": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.idleGarbageLift_mulVec"
+      }
+    ],
+    "CompressionSampling.exp_eighth_sub_one_le_quarter": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.exp_eighth_sub_one_le_quarter"
+      }
+    ],
+    "Matrix.sourceContraction_piecewise_sub": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.sourceContraction_piecewise_sub"
+      }
+    ],
+    "Matrix.contractionPrefix_sub_norm_le": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.contractionPrefix_sub_norm_le"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_eq_sum_sqrt_eigenvalues": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_eq_sum_sqrt_eigenvalues"
+      }
+    ],
+    "Matrix.trace_euclideanOuterProduct_conjTranspose_mul": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.trace_euclideanOuterProduct_conjTranspose_mul"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_conjTranspose": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_conjTranspose"
+      }
+    ],
+    "QICLean.ComplexGaussian.schmidtVector": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.schmidtVector"
+      }
+    ],
+    "Matrix.idleGarbageLift_sub": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.idleGarbageLift_sub"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le"
+      }
+    ],
+    "Matrix.chronologicalGarbageReadout_discard_density": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageReadout_discard_density"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_pure_density_sub_le": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_pure_density_sub_le"
+      }
+    ],
+    "IndependentCovariance.tensor_covariance_weighted": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/IndependentCovariance.tensor_covariance_weighted"
+      }
+    ],
+    "Matrix.norm_idleGarbageLift_le": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_idleGarbageLift_le"
+      }
+    ],
+    "Matrix.idleGarbageLift_eq_kronecker_submatrix": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.idleGarbageLift_eq_kronecker_submatrix"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_rectangularTraceNorm_gaussianSourceError_le": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_rectangularTraceNorm_gaussianSourceError_le"
+      }
+    ],
+    "Matrix.sourceContraction_apply": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.sourceContraction_apply"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_sampledSource_entry": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_sampledSource_entry"
+      }
+    ],
+    "Matrix.trace_euclideanOuterProduct_self": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.trace_euclideanOuterProduct_self"
+      }
+    ],
+    "Matrix.norm_trace_conjTranspose_mul_le_rectangularTraceNorm": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.norm_trace_conjTranspose_mul_le_rectangularTraceNorm"
+      }
+    ],
+    "QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource"
+      }
+    ],
+    "Matrix.chronologicalGarbageChain": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageChain"
+      }
+    ],
+    "CompressionSampling.binomial_error_le_quarter": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.binomial_error_le_quarter"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_gaussianSourceContraction": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_gaussianSourceContraction"
+      }
+    ],
+    "Matrix.contractionPrefix_norm_le_one": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.contractionPrefix_norm_le_one"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSchmidtVector_eq_mulVec": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSchmidtVector_eq_mulVec"
+      }
+    ],
+    "QICLean.ComplexGaussian.selectedBranchSamples": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.selectedBranchSamples"
+      }
+    ],
+    "ProbabilityTheory.quarterWeighted_source_sum_eq_transpose": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.quarterWeighted_source_sum_eq_transpose"
+      }
+    ],
+    "Matrix.partialTraceRight_tensorVector": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.partialTraceRight_tensorVector"
+      }
+    ],
+    "CompressionSampling.zero_slots_error": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.zero_slots_error"
+      }
+    ],
+    "Matrix.chronologicalGarbageChain_discard_density": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageChain_discard_density"
+      }
+    ],
+    "QICLean.ComplexGaussian.sampledSource": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sampledSource"
+      }
+    ],
+    "Matrix.euclideanOuterProduct": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.euclideanOuterProduct"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_ambientSourceV": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_ambientSourceV"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sum_le": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sum_le"
+      }
+    ],
+    "ProbabilityTheory.sourceProductProbability": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.sourceProductProbability"
+      }
+    ],
+    "QICLean.ComplexGaussian.selectedBranchDensityCoefficient": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.selectedBranchDensityCoefficient"
+      }
+    ],
+    "Matrix.markedRescaledGateChain": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.markedRescaledGateChain"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSchmidtSource": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSchmidtSource"
+      }
+    ],
+    "Matrix.isometricDomainExtension_sigmaBlockInclusion_mul_of_ne": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.isometricDomainExtension_sigmaBlockInclusion_mul_of_ne"
+      }
+    ],
+    "Matrix.trace_partialTraceRight_conjTranspose_mul": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.trace_partialTraceRight_conjTranspose_mul"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_independentDensityCoefficient_eq_zero": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_independentDensityCoefficient_eq_zero"
+      }
+    ],
+    "Matrix.norm_isometricDomainExtension_sigmaBlockInclusion": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_isometricDomainExtension_sigmaBlockInclusion"
+      }
+    ],
+    "Matrix.rectangularTraceNorm": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_independentDensityCoefficient_mul_conj": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_independentDensityCoefficient_mul_conj"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_sampledSource": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_sampledSource"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_euclideanOuterProduct_le": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_euclideanOuterProduct_le"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_sourceCorrection_entry": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_sourceCorrection_entry"
+      }
+    ],
+    "QICLean.ComplexGaussian.exists_probability_schmidtSourceFrames": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.exists_probability_schmidtSourceFrames"
+      }
+    ],
+    "Matrix.norm_sigmaBlockInclusion_mulVec": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_sigmaBlockInclusion_mulVec"
+      }
+    ],
+    "QICLean.ComplexGaussian.independentDensityCoefficient": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.independentDensityCoefficient"
+      }
+    ],
+    "Matrix.sourceContraction": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.sourceContraction"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_gaussianSourceContraction": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_gaussianSourceContraction"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_single_kronecker": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_single_kronecker"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_rectangularTraceNorm_selectedBranchSourceError": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_rectangularTraceNorm_selectedBranchSourceError"
+      }
+    ],
+    "Matrix.sourceOnlyReadoutVector_sub_norm_le": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.sourceOnlyReadoutVector_sub_norm_le"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_ambientSourceU": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_ambientSourceU"
+      }
+    ],
+    "Matrix.cumulativeGarbageVector": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.cumulativeGarbageVector"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_ambientSampledSource_entry": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_ambientSampledSource_entry"
+      }
+    ],
+    "ProbabilityTheory.integral_rectangularTraceNorm_weightedSourceError_le": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.integral_rectangularTraceNorm_weightedSourceError_le"
+      }
+    ],
+    "ProbabilityTheory.rectangularTraceNorm_weightedSourceError_le": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.rectangularTraceNorm_weightedSourceError_le"
+      }
+    ],
+    "CompressionSampling.inverse_half_power": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.inverse_half_power"
+      }
+    ],
+    "QICLean.ComplexGaussian.sourceCorrection_apply": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sourceCorrection_apply"
+      }
+    ],
+    "Matrix.sourceOnlyReadoutVector": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.sourceOnlyReadoutVector"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_conjTranspose_le": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_conjTranspose_le"
+      }
+    ],
+    "QICLean.ComplexGaussian.measurePreserving_selectedBranchSamples": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.measurePreserving_selectedBranchSamples"
+      }
+    ],
+    "QICLean.ComplexGaussian.gaussianSourceContraction": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.gaussianSourceContraction"
+      }
+    ],
+    "QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta"
+      }
+    ],
+    "Matrix.contractionPrefix_sub_norm_le_supported": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.contractionPrefix_sub_norm_le_supported"
+      }
+    ],
+    "ProbabilityTheory.weighted_source_block_sum_le_one": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.weighted_source_block_sum_le_one"
+      }
+    ],
+    "Matrix.chronologicalReplacementChain": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalReplacementChain"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_empty": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_empty"
+      }
+    ],
+    "QICLean.ComplexGaussian.sourceTransport_kronecker": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sourceTransport_kronecker"
+      }
+    ],
+    "QICLean.ComplexGaussian.correctedGaussianSourceContraction_eq_sum": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.correctedGaussianSourceContraction_eq_sum"
+      }
+    ],
+    "Matrix.norm_appendGarbageGate_le": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_appendGarbageGate_le"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_sampledSource_entry": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_sampledSource_entry"
+      }
+    ],
+    "Matrix.chronologicalReplacementChain_sub_norm_le": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalReplacementChain_sub_norm_le"
+      }
+    ],
+    "CompressionSampling.sampleCount": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.sampleCount"
+      }
+    ],
+    "CompressionSampling.integral_norm_sum_le_sampling_error": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.integral_norm_sum_le_sampling_error"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le"
+      }
+    ],
+    "ProbabilityTheory.integral_normSq_sum_eq_sum": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.integral_normSq_sum_eq_sum"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_prefix": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_prefix"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSourceU_kronecker_ambientSourceV": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSourceU_kronecker_ambientSourceV"
+      }
+    ],
+    "QICLean.ComplexGaussian.globalBranchLawIsProbabilityMeasure": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.globalBranchLawIsProbabilityMeasure"
+      }
+    ],
+    "CompressionSampling.sampleCount_bounds": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.sampleCount_bounds"
+      }
+    ],
+    "QICLean.ComplexGaussian.independentDensityLawIsProbabilityMeasure": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.independentDensityLawIsProbabilityMeasure"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_sourceCorrection_entry_mul_conj": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_sourceCorrection_entry_mul_conj"
+      }
+    ],
+    "Matrix.contractionPrefix_sub_norm_le_uniform": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.contractionPrefix_sub_norm_le_uniform"
+      }
+    ],
+    "CompressionSampling.sum_nonempty_subsets_weight": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.sum_nonempty_subsets_weight"
+      }
+    ],
+    "Matrix.idleGarbageLift": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.idleGarbageLift"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_ambientSourceCorrection": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_ambientSourceCorrection"
+      }
+    ],
+    "Matrix.contractionPrefix": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.contractionPrefix"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_correctedGaussianSourceContraction": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_correctedGaussianSourceContraction"
+      }
+    ],
+    "Matrix.norm_euclideanTensorVector": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_euclideanTensorVector"
+      }
+    ],
+    "CompressionSampling.ratio_le_of_sample_count": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.ratio_le_of_sample_count"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSourceU": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSourceU"
+      }
+    ],
+    "Matrix.chronologicalGarbageDensity_zero": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageDensity_zero"
+      }
+    ],
+    "IndependentCovariance.tensorCoefficient": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/IndependentCovariance.tensorCoefficient"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_isometry_sandwich": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_isometry_sandwich"
+      }
+    ],
+    "ProbabilityTheory.weightedSourceError": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.weightedSourceError"
+      }
+    ],
+    "QICLean.ComplexGaussian.exists_schmidtSourceFrames": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.exists_schmidtSourceFrames"
+      }
+    ],
+    "ProbabilityTheory.weighted_source_block_aggregation": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.weighted_source_block_aggregation"
+      }
+    ],
+    "QICLean.ComplexGaussian.correctedGaussianSourceContraction": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.correctedGaussianSourceContraction"
+      }
+    ],
+    "IndependentCovariance.tensor_covariance_of_diagonal": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/IndependentCovariance.tensor_covariance_of_diagonal"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_pure_density_sub_le_two": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_pure_density_sub_le_two"
+      }
+    ],
+    "Matrix.norm_isometricDomainExtension": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_isometricDomainExtension"
+      }
+    ],
+    "Matrix.euclideanTensorVector_apply": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.euclideanTensorVector_apply"
+      }
+    ],
+    "Matrix.sourceOnlyReadoutDensity_zero": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.sourceOnlyReadoutDensity_zero"
+      }
+    ],
+    "Matrix.sourceContraction_sub": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.sourceContraction_sub"
+      }
+    ],
+    "Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSourceCorrection": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSourceCorrection"
+      }
+    ],
+    "QICLean.ComplexGaussian.globalBranchLaw": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.globalBranchLaw"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_sampledSource": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_sampledSource"
+      }
+    ],
+    "ProbabilityTheory.integrable_rectangularTraceNorm_weightedSourceError": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.integrable_rectangularTraceNorm_weightedSourceError"
+      }
+    ],
+    "CompressionSampling.exists_valid_error_le_half_sampleCount": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.exists_valid_error_le_half_sampleCount"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_square": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_square"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_correctedGaussianSourceContraction_eq_zero": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_correctedGaussianSourceContraction_eq_zero"
+      }
+    ],
+    "Matrix.chronologicalGarbageDensity_marked_empty": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageDensity_marked_empty"
+      }
+    ],
+    "QICLean.ComplexGaussian.independentDensityLaw": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.independentDensityLaw"
+      }
+    ],
+    "Matrix.markedChronologicalGarbageChain": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.markedChronologicalGarbageChain"
+      }
+    ],
+    "QICLean.ComplexGaussian.sourceV": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sourceV"
+      }
+    ],
+    "IndependentCovariance.product_weighted_sqrt": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/IndependentCovariance.product_weighted_sqrt"
+      }
+    ],
+    "QICLean.ComplexGaussian.pairedProductProbability_nonneg": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.pairedProductProbability_nonneg"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSourceV": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSourceV"
+      }
+    ],
+    "Matrix.l2_opNorm_kronecker_one_square_le": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.l2_opNorm_kronecker_one_square_le"
+      }
+    ],
+    "ProbabilityTheory.integrable_frobenius_norm_sq_sum": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.integrable_frobenius_norm_sq_sum"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_ambientSampledSource": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_ambientSampledSource"
+      }
+    ],
+    "Matrix.euclideanOuterProduct_tensorVector": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.euclideanOuterProduct_tensorVector"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_frobeniusNormSq_gaussianSourceQuarter_eq": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_frobeniusNormSq_gaussianSourceQuarter_eq"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_add_le": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_add_le"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_eq_zero": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_eq_zero"
+      }
+    ],
+    "ProbabilityTheory.aestronglyMeasurable_rectangularTraceNorm_sum": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.aestronglyMeasurable_rectangularTraceNorm_sum"
+      }
+    ],
+    "Matrix.isometricDomainExtension_mul_rangeProjection": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.isometricDomainExtension_mul_rangeProjection"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_zero": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_zero"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_mul_conjTranspose_le": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_mul_conjTranspose_le"
+      }
+    ],
+    "Matrix.basisRegisterInjection_conjTranspose_mul_self": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.basisRegisterInjection_conjTranspose_mul_self"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le_half": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le_half"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_empty": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_chronologicalGarbageDensity_marked_empty"
+      }
+    ],
+    "QICLean.ComplexGaussian.sum_pairedProductProbability_eq_one": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sum_pairedProductProbability_eq_one"
+      }
+    ],
+    "CompressionSampling.error_le_quarter_sampleCount": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.error_le_quarter_sampleCount"
+      }
+    ],
+    "IndependentCovariance.integrable_tensorCoefficient_mul_conj": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/IndependentCovariance.integrable_tensorCoefficient_mul_conj"
+      }
+    ],
+    "QICLean.ComplexGaussian.schmidtSource": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.schmidtSource"
+      }
+    ],
+    "ProbabilityTheory.integrable_normSq_sum": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.integrable_normSq_sum"
+      }
+    ],
+    "Matrix.l2_opNorm_one_le": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.l2_opNorm_one_le"
+      }
+    ],
+    "Matrix.isometricDomainExtension_mul": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.isometricDomainExtension_mul"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sum_smul_le": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sum_smul_le"
+      }
+    ],
+    "Matrix.idleGarbageLift_append_mulVec": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.idleGarbageLift_append_mulVec"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_smul": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_smul"
+      }
+    ],
+    "QICLean.ComplexGaussian.gaussianSourceContraction_sub": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.gaussianSourceContraction_sub"
+      }
+    ],
+    "Matrix.chronologicalGarbageReadout": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageReadout"
+      }
+    ],
+    "ProbabilityTheory.integral_frobenius_norm_sq_sum_eq_sum": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.integral_frobenius_norm_sq_sum_eq_sum"
+      }
+    ],
+    "Matrix.chronologicalGarbageChain_norm_le_one": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageChain_norm_le_one"
+      }
+    ],
+    "Matrix.chronologicalGarbageDensity": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageDensity"
+      }
+    ],
+    "Matrix.isometricDomainExtension_sigmaBlockInclusion_mul": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.isometricDomainExtension_sigmaBlockInclusion_mul"
+      }
+    ],
+    "ProbabilityTheory.integral_frobenius_norm_sum_le_sqrt": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.integral_frobenius_norm_sum_le_sqrt"
+      }
+    ],
+    "Matrix.sourceContraction_add": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.sourceContraction_add"
+      }
+    ],
+    "Matrix.norm_toLp_mulVec_of_isometry": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_toLp_mulVec_of_isometry"
+      }
+    ],
+    "Matrix.sourceContraction_piecewise_add": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.sourceContraction_piecewise_add"
+      }
+    ],
+    "QICLean.ComplexGaussian.sourceCorrection": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sourceCorrection"
+      }
+    ],
+    "Matrix.kronecker_one_tensorVector": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.kronecker_one_tensorVector"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient_mul_conj": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient_mul_conj"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_ambientSourceCorrection": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_ambientSourceCorrection"
+      }
+    ],
+    "NormedSpace.rescale_approximation": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/NormedSpace.rescale_approximation"
+      }
+    ],
+    "ProbabilityTheory.sourceBlock": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.sourceBlock"
+      }
+    ],
+    "QICLean.ComplexGaussian.integrable_rectangularTraceNorm_gaussianSourceError": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integrable_rectangularTraceNorm_gaussianSourceError"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_half": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_half"
+      }
+    ],
+    "IndependentCovariance.integrable_product_mul_conj": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/IndependentCovariance.integrable_product_mul_conj"
+      }
+    ],
+    "CompressionSampling.exists_valid_norm_sum_le_half_sampleCount": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.exists_valid_norm_sum_le_half_sampleCount"
+      }
+    ],
+    "Matrix.chronologicalReplacementChain_norm_le_one": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalReplacementChain_norm_le_one"
+      }
+    ],
+    "Matrix.norm_isometricDomainExtension_le_one": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_isometricDomainExtension_le_one"
+      }
+    ],
+    "QICLean.ComplexGaussian.corrected_source_entry_product": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.corrected_source_entry_product"
+      }
+    ],
+    "Matrix.frobeniusNormSq_rpow_quarter_mul_le_one": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.frobeniusNormSq_rpow_quarter_mul_le_one"
+      }
+    ],
+    "Matrix.exists_contraction_trace_conjTranspose_mul_eq": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.exists_contraction_trace_conjTranspose_mul_eq"
+      }
+    ],
+    "IndependentCovariance.sum_product_weights_eq_one": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/IndependentCovariance.sum_product_weights_eq_one"
+      }
+    ],
+    "Matrix.garbageInventory": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.garbageInventory"
+      }
+    ],
+    "Matrix.chronologicalGarbageReadout_eq": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.chronologicalGarbageReadout_eq"
+      }
+    ],
+    "CompressionSampling.sum_nonempty_subsets_pow": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.sum_nonempty_subsets_pow"
+      }
+    ],
+    "CompressionSampling.sum_nonempty_subsets_rpow": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.sum_nonempty_subsets_rpow"
+      }
+    ],
+    "Matrix.appendGarbageGate_mulVec": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.appendGarbageGate_mulVec"
+      }
+    ],
+    "ProbabilityTheory.integral_frobeniusNormSq_weightedSourceQuarter_eq": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.integral_frobeniusNormSq_weightedSourceQuarter_eq"
+      }
+    ],
+    "QICLean.ComplexGaussian.exists_schmidtSourceReplacement": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.exists_schmidtSourceReplacement"
+      }
+    ],
+    "Matrix.euclideanOuterProduct_self_sub": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.euclideanOuterProduct_self_sub"
+      }
+    ],
+    "IndependentCovariance.integral_product_mul_conj": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/IndependentCovariance.integral_product_mul_conj"
+      }
+    ],
+    "Matrix.sourceOnlyReadoutVector_norm_le_one": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.sourceOnlyReadoutVector_norm_le_one"
+      }
+    ],
+    "CompressionSampling.integral_norm_sum_le_binomial": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.integral_norm_sum_le_binomial"
+      }
+    ],
+    "Matrix.basisRegisterInjection_sandwich_eq_single_kronecker": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/Matrix.basisRegisterInjection_sandwich_eq_single_kronecker"
+      }
+    ],
+    "QICLean.ComplexGaussian.sourceTransport_schmidtSource": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sourceTransport_schmidtSource"
+      }
+    ],
+    "CompressionSampling.exists_error_le_half_sampleCount": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/CompressionSampling.exists_error_le_half_sampleCount"
+      }
+    ],
+    "Matrix.norm_sigmaBlockInclusion_kronecker_mulVec": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_sigmaBlockInclusion_kronecker_mulVec"
+      }
+    ],
+    "Matrix.rescaledGateChain": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rescaledGateChain"
+      }
+    ],
+    "QICLean.ComplexGaussian.ambientSampledSource_eq_transport": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.ambientSampledSource_eq_transport"
+      }
+    ],
+    "Matrix.norm_kronecker_one_rectangular_le": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_kronecker_one_rectangular_le"
+      }
+    ],
+    "QICLean.ComplexGaussian.sourceTransport": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.sourceTransport"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_halfWeighted_le": [
+      {
+        "document": "blueprint/web/ch-random_sources.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_halfWeighted_le"
+      }
+    ],
+    "ProbabilityTheory.weightedSourceError_eq_halfWeighted": [
+      {
+        "document": "blueprint/web/ch-source_error.html",
+        "href": "../docs/find/#doc/ProbabilityTheory.weightedSourceError_eq_halfWeighted"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sourceContraction_sub_le": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sourceContraction_sub_le"
+      }
+    ],
+    "Matrix.norm_idleGarbageLift_sub_le": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/Matrix.norm_idleGarbageLift_sub_le"
+      }
+    ],
+    "Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le": [
+      {
+        "document": "blueprint/web/ch-source_reduction.html",
+        "href": "../docs/find/#doc/Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le"
+      }
+    ],
+    "QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_mul_conj": [
+      {
+        "document": "blueprint/web/ch-source_constructions.html",
+        "href": "../docs/find/#doc/QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_mul_conj"
+      }
+    ]
+  },
+  "missing": []
+}

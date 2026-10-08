@@ -9,18 +9,27 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Representation
 
 import QICLean.Representation.BadCopyLabelDimension
+import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy
+import QICLean.Representation.HighestWeight
+import QICLean.Representation.HookFormula
+import QICLean.Representation.IrrepLabelCount
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.JointIsotypic
 import QICLean.Representation.LabelProjectors
 import QICLean.Representation.MergeDimensions
 import QICLean.Representation.MergeMoment
+import QICLean.Representation.PairMergeMoment
+import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurSurprisal
+import QICLean.Representation.SchurWeylCommutant
+import QICLean.Representation.SchurWeylLabels
+import QICLean.Representation.SchurWeylLift
 import QICLean.Representation.TensorPowerAction
