@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-compatible-physical-label-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/CompatiblePhysicalLabel.lean",
+        "declaration": "TensorPower.physicalMergeDeficit",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the actual physical operator FQ+FV\u2212FY on five independent Q,Y,V,C,R factors."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "117c20bc410636629d7789d47697875ae541e0f2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.CompatiblePhysicalLabel",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/target.log",
+            "sha256": "b1684f93669f2213a40efc8dcf1074aaf772d2a4017f9c30975fad6e69017783"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/CompatiblePhysicalLabel.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/compatiblePhysicalLabel8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/axioms.log",
+            "sha256": "bcf03f40e61e05dcbcaf214fa0bcf96388f5245e9ca7e35ad9d357ed132bc550"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-compatible-physical-label-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/CompatiblePhysicalLabel.lean",
+        "declaration": "TensorPower.physicalMergeDeficit_mul_symProj",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive actual GP=PDQV from relative complementary central labels and nested commutation."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "117c20bc410636629d7789d47697875ae541e0f2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.CompatiblePhysicalLabel",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/target.log",
+            "sha256": "b1684f93669f2213a40efc8dcf1074aaf772d2a4017f9c30975fad6e69017783"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/CompatiblePhysicalLabel.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/compatiblePhysicalLabel8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/axioms.log",
+            "sha256": "bcf03f40e61e05dcbcaf214fa0bcf96388f5245e9ca7e35ad9d357ed132bc550"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-compatible-physical-label-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/CompatiblePhysicalLabel.lean",
+        "declaration": "TensorPower.spectralProjectionGE_physicalMergeDeficit_mul_symProj",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive the actual closed nonnegative spectral projection identity JP=P from QV positivity and the actual intertwining."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "117c20bc410636629d7789d47697875ae541e0f2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.CompatiblePhysicalLabel",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/target.log",
+            "sha256": "b1684f93669f2213a40efc8dcf1074aaf772d2a4017f9c30975fad6e69017783"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/CompatiblePhysicalLabel.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/compatiblePhysicalLabel8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/axioms.log",
+            "sha256": "bcf03f40e61e05dcbcaf214fa0bcf96388f5245e9ca7e35ad9d357ed132bc550"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-compatible-physical-label-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/CompatiblePhysicalLabel.lean",
+        "declaration": "TensorPower.commute_cfc_physicalMergeDeficit_labelObservables",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive arbitrary real functional-calculus commutation with independently weighted actual QC,VR,C,R central label observables."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "117c20bc410636629d7789d47697875ae541e0f2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.CompatiblePhysicalLabel",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/target.log",
+            "sha256": "b1684f93669f2213a40efc8dcf1074aaf772d2a4017f9c30975fad6e69017783"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/CompatiblePhysicalLabel.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/compatiblePhysicalLabel8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/axioms.log",
+            "sha256": "bcf03f40e61e05dcbcaf214fa0bcf96388f5245e9ca7e35ad9d357ed132bc550"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-compatible-physical-label-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/CompatiblePhysicalLabel.lean",
+        "declaration": "TensorPower.commute_cfc_physicalMergeDeficit_mergeDeficits",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive arbitrary real functional-calculus commutation with both actual merge deficits from the specified copy actions."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "117c20bc410636629d7789d47697875ae541e0f2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.CompatiblePhysicalLabel",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/target.log",
+            "sha256": "b1684f93669f2213a40efc8dcf1074aaf772d2a4017f9c30975fad6e69017783"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/CompatiblePhysicalLabel.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/compatiblePhysicalLabel8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/axioms.log",
+            "sha256": "bcf03f40e61e05dcbcaf214fa0bcf96388f5245e9ca7e35ad9d357ed132bc550"
+          }
+        ]
+      }
+    }
+  ]
+}

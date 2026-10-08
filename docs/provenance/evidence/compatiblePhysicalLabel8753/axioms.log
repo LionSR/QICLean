@@ -1,0 +1,9 @@
+'TensorPower.physicalMergeDeficit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.physicalMergeDeficit_mul_symProj' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.spectralProjectionGE_physicalMergeDeficit_mul_symProj' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'TensorPower.commute_cfc_physicalMergeDeficit_labelObservables' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'TensorPower.commute_cfc_physicalMergeDeficit_mergeDeficits' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "python3",
+    "/tmp/compatiblePhysical8753/record-command.py",
+    "cache-get",
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "wrapper_exit_code": 1,
+  "source_revision": "f675fee80416c966989bc8bc124a3d54b1348492",
+  "excluded": true,
+  "reason": "The copied recorder required a repository-relative log path, but this scratch log is outside the repository. The subprocess result was not serialized; it is not used as evidence. Recaptured after correcting only the recorder."
+}
