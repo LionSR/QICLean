@@ -17,11 +17,11 @@ Let `V = ⨂_v ℂ^{n_v}` with every `n_v ≥ 1`, let `P, Y, F` be disjoint subs
 lines 615–631) defines the partition metric `A_k = (W_{P,k}^{-1} W_{F,k}^{-1} W_{Y,k})²` and,
 for a one-copy operator `h` supported on `P ∪ Y`, the similarity transform of its copy mean
 
-`O_k = A_k^{-1/2} h̄ A_k^{1/2}`, `h̄ = k^{-1} ∑_j h^{(j)}`,
+`O_k = A_k^{-1/2} hbar A_k^{1/2}`, `hbar = k^{-1} ∑_j h^{(j)}`,
 
 on the symmetric subspace `𝒮_k`. This file proves the first assertion of Lemma 6.4:
 `sup_k ‖O_k‖ < ∞` on `𝒮_k`. The proof follows lines 666–692: between symmetric vectors
-`h^{(k)}` may replace `h̄`, the `F` factors cancel, the remaining form is the compression of
+`h^{(k)}` may replace `hbar`, the `F` factors cancel, the remaining form is the compression of
 `R_{P,k} R_{Y,k}^{-1} h^{(k)} R_{P,k}^{-1} R_{Y,k}`, and after writing `h` as a sum of products
 `e_Y c_P` both inverses act directly on symmetric vectors, where Lemma 6.2 bounds them.
 
@@ -149,13 +149,13 @@ noncomputable def leafMetric (t : ℝ) (k : ℕ) (P Y F : Finset V) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
   leafRoot n t k P Y F ^ 2
 
-/-- The copy mean `h̄ = k^{-1} ∑_j h^{(j)}` of a one-copy operator (`05-replicas.tex`,
+/-- The copy mean `hbar = k^{-1} ∑_j h^{(j)}` of a one-copy operator (`05-replicas.tex`,
 line 470). -/
 noncomputable def copyMean (k : ℕ) (h : Matrix (SiteConfig n) (SiteConfig n) ℂ) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
   ((k : ℂ))⁻¹ • ∑ j, siteOp j h
 
-/-- The similarity transform `O_k = A_k^{-1/2} h̄ A_k^{1/2}` (`05-replicas.tex`, Lemma 6.4,
+/-- The similarity transform `O_k = A_k^{-1/2} hbar A_k^{1/2}` (`05-replicas.tex`, Lemma 6.4,
 line 621). -/
 noncomputable def markedSimilarity (t : ℝ) (k : ℕ) (P Y F : Finset V)
     (h : Matrix (SiteConfig n) (SiteConfig n) ℂ) :
