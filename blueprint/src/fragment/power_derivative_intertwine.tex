@@ -1,0 +1,42 @@
+\section{Intertwining derivatives of matrix powers}
+\label{sec:power_derivative_intertwine}
+
+For a positive definite matrix $A$ and $0<p<1$, write
+\begin{align*}
+  \mathcal D_p(A)[H]
+    &=\kappa_p\int_0^\infty s^p(sI+A)^{-1}H(sI+A)^{-1}\,ds.
+\end{align*}
+Here $\kappa_p$ is the scalar normalization in the integral formula
+for the derivative of $A^p$. Set $\mathcal D_0(A)[H]=0$ and
+$\mathcal D_1(A)[H]=H$. For Hermitian directions this is the derivative
+within the Hermitian matrices; the formula extends complex linearly to
+all matrices. This is the derivative formula used in the proof of
+Lemma~7.2 of~\cite{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Intertwining the power derivative]
+  \label{thm:power_derivative_intertwine}
+  \lean{Matrix.rpowDeriv_intertwine}
+  \leanok
+  Let $A$ and $B$ be positive definite matrices on finite-dimensional
+  complex Hilbert spaces, and let $J$ be a linear map satisfying $AJ=JB$.
+  For every $p\in[0,1]$ and every matrix $H$ on the space of $B$,
+  \begin{align*}
+    \mathcal D_p(A)[JHJ^*]&=J\mathcal D_p(B)[H]J^*.
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  The endpoints follow from the definitions. For $0<p<1$ and $s>0$,
+  both shifted matrices are positive definite. The identity
+  $(sI+A)J=J(sI+B)$ gives
+  $(sI+A)^{-1}J=J(sI+B)^{-1}$. Taking adjoints gives
+  $J^*(sI+A)^{-1}=(sI+B)^{-1}J^*$. Consequently,
+  \begin{align*}
+    (sI+A)^{-1}JHJ^*(sI+A)^{-1}
+      &=J(sI+B)^{-1}H(sI+B)^{-1}J^*.
+  \end{align*}
+  The linear map $H\mapsto JHJ^*$ is continuous in finite dimension
+  and therefore passes through the integrable derivative formula.
+  This proves the assertion.
+\end{proof}
