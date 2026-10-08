@@ -1,0 +1,55 @@
+% Source: OpenAI2026AreaLaw, 06-transport.tex, lines 28--34 and 99--128.
+% Manuscript revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\section{Intertwining a weighted mean tree}
+\label{sec:mean_tree_intertwine}
+
+Let $T$ be a finite weighted binary tree as in
+Definition~\ref{def:mean_tree}, with leaf labels in an arbitrary set $I$.
+For a family of positive definite matrices $(A_i)_{i\in I}$, denote its
+root by $M_T(A)$. Thus a leaf labelled $i$ has root $A_i$, and a vertex
+with parameter $p\in[0,1]$ and subtrees $l,r$ has root
+\begin{align}
+  M_T(A)&=F_p\bigl(M_l(A),M_r(A)\bigr),
+\end{align}
+where $F_p$ is the binary geometric-mean formula of
+Theorem~\ref{thm:geometric_mean_value_intertwine}.
+The following identity is auxiliary to the weighted-tree construction
+and Lemma~7.1 of~\cite{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Intertwining the root of a mean tree]
+  \label{thm:mean_tree_intertwine}
+  \lean{Matrix.MeanTree.eval_intertwine}
+  \leanok
+  \uses{def:mean_tree}
+  Let $(A_i)_{i\in I}$ and $(B_i)_{i\in I}$ be families of positive
+  definite matrices on two finite-dimensional complex Hilbert spaces.
+  Suppose that a linear map $J$ from the second space to the first satisfies,
+  for every $i\in I$,
+  \begin{align}
+    A_iJ&=JB_i.
+  \end{align}
+  Then evaluation of the same weighted binary tree on the two families gives
+  \begin{align}
+    M_T(A)J&=JM_T(B).
+  \end{align}
+  Repeated leaf labels and parameters $p=0$ or $p=1$ are allowed.
+  No isometry assumption on $J$ is required.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:mean_tree_properties, thm:geometric_mean_value_intertwine}
+  Induct on the tree. At a leaf labelled $i$, the assertion is the
+  assumed identity $A_iJ=JB_i$. At an internal vertex, the induction
+  hypotheses give the two intertwining identities for the subtree roots.
+  Those roots are positive definite by
+  Theorem~\ref{thm:mean_tree_properties}. Applying
+  Theorem~\ref{thm:geometric_mean_value_intertwine} at the vertex parameter
+  therefore yields
+  \begin{align}
+    F_p\bigl(M_l(A),M_r(A)\bigr)J
+      &=JF_p\bigl(M_l(B),M_r(B)\bigr).
+  \end{align}
+  By the recursive definition of the root, this is the desired identity
+  at that vertex.
+\end{proof}
