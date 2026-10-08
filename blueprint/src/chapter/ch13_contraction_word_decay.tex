@@ -1,0 +1,81 @@
+\section{Finite words of square-root factors}
+\label{sec:contraction_word_decay}
+
+Let $\mathcal H=\C^d$, let $\mathcal I$ be a finite set of labels, and write
+$N=|\mathcal I|$. Let $\Omega\in\mathcal H$ and put
+$P_\Omega=|\Omega\rangle\langle\Omega|$.
+Assume $k_i\le I$, $k_i\Omega=0$, and
+$\sum_{i\in\mathcal I}k_i\ge g(I-P_\Omega)$ for a real number $g$.
+This section proves the finite-word estimate underlying the excited-state
+bound in OpenAI, \emph{A two-dimensional area law from a global spectral gap}
+(September 24, 2026), \cite{OpenAI2026AreaLaw}.
+% Source: 09-amplification.tex, lines 237--253, revision
+% adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026
+
+\begin{definition}[Chronological square-root words]
+\label{def:contraction_word}
+\lean{Matrix.contractionWord, Matrix.contractionWord_zero, Matrix.contractionWord_snoc,
+Matrix.contractionWordSum, Matrix.contractionWordSum_zero}
+\leanok
+Set $G_i=(I-k_i)^{1/2}$. For a word $w=(i_0,\ldots,i_{m-1})$, set
+$D_w=G_{i_{m-1}}\cdots G_{i_0}$, with $D_{\varnothing}=I$.
+For $v\in\mathcal H$, define
+\begin{align}
+ A_m(v)=\sum_{w\in\mathcal I^m}\|D_wv\|^2.
+ \label{eq:word_decay_sum}
+\end{align}
+\end{definition}
+
+\begin{theorem}[Summed decay over finite words]
+\label{thm:contraction_word_decay}
+\lean{Matrix.sqrt_one_sub_toEuclideanLin_eq_self, Matrix.inner_sqrt_one_sub_eq_zero,
+Matrix.norm_sq_sqrt_one_sub, Matrix.sum_norm_sq_sqrt_one_sub_le,
+Matrix.contractionWord_fix, Matrix.inner_contractionWord_eq_zero,
+Matrix.contractionWordSum_succ, Matrix.contractionWordSum_succ_le,
+Matrix.contractionWordSum_le_pow, Matrix.eq_zero_of_card_lt_gap}
+\leanok
+\uses{def:contraction_word}
+Every $D_w$ fixes $\Omega$ and preserves $\Omega^\perp$.
+For every $v\perp\Omega$ and every $m\ge0$,
+\begin{align}
+ A_{m+1}(v)&\le (N-g) A_m(v).
+ \label{eq:word_decay_recurrence}
+\end{align}
+If $g\le N$, then $A_m(v)\le(N-g)^m\|v\|^2$.
+If $g>N$, then $v=0$.
+The one-step estimate below and this last conclusion require only
+$k_i\le I$ and the gap bound, without the condition $k_i\Omega=0$.
+These assertions allow an empty label set and require no commutation
+between distinct $k_i$.
+\end{theorem}
+\begin{proof}
+\leanok
+Functional calculus gives $G_i\Omega=\Omega$ and $G_i^2=I-k_i$.
+Since $G_i$ is self-adjoint, it preserves $\Omega^\perp$.
+For $v\perp\Omega$,
+\begin{align}
+ \|G_iv\|^2&=\|v\|^2-\operatorname{Re}\langle v,k_iv\rangle.
+ \label{eq:word_decay_norm}
+\end{align}
+The operator order makes each $k_i$ self-adjoint, so the quadratic forms
+are real. Summing gives
+\begin{align}
+ \sum_i\|G_iv\|^2
+ &=N\|v\|^2-\left\langle v,\left(\sum_i k_i\right)v\right\rangle
+ \le(N-g)\|v\|^2.
+ \label{eq:word_decay_step}
+\end{align}
+Appending the last letter gives
+$A_{m+1}(v)=\sum_{w\in\mathcal I^m}\sum_i\|G_iD_wv\|^2$.
+Apply~(\ref{eq:word_decay_step}) to each excited vector $D_wv$ to obtain
+(\ref{eq:word_decay_recurrence}). For $g\le N$, induction from
+$A_0(v)=\|v\|^2$ proves the power bound.
+For $g>N$, nonnegativity of the left side of~(\ref{eq:word_decay_step})
+forces $\|v\|^2=0$.
+\end{proof}
+
+For the physical application, $\Omega$ is a unit ground vector,
+$0\le k_i\le I$, and $g>0$.  Then $P_\Omega$ is its orthogonal
+projection and every square-root factor is a contraction.  The algebraic
+estimates above hold under the weaker displayed hypotheses.

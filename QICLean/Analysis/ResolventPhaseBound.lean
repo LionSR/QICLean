@@ -287,7 +287,8 @@ theorem integral_sqrtRatio_le_phaseRate {D : ℝ} (hD : 1 ≤ D) (hK : R.invQuad
     ∫ v in Ioi (0 : ℝ), R.sqrtRatio v ≤ 4 * phaseRate D R.logGap := by
   rcases (R.logGap_nonneg).lt_or_eq with hη | hη
   · refine (R.integral_sqrtRatio_le hD hK hM hη).trans ?_
-    rw [phaseRate, if_pos hη, mul_add]
+    simp only [phaseRate, hη, ↓reduceIte]
+    rw [mul_add]
     have hy0 : 0 < min 1 R.logGap := lt_min one_pos hη
     have hlog : 0 ≤ R.logGap * Real.log (Real.exp 1 * D / min 1 R.logGap) := by
       refine mul_nonneg hη.le (Real.log_nonneg ?_)
@@ -302,8 +303,8 @@ theorem integral_sqrtRatio_le_phaseRate {D : ℝ} (hD : 1 ≤ D) (hK : R.invQuad
       calc √2 ≤ √16 := Real.sqrt_le_sqrt (by norm_num)
         _ = 4 := by rw [show (16 : ℝ) = 4 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]
     linarith
-  · rw [R.integral_sqrtRatio_eq_zero hη.symm, phaseRate, if_neg (by rw [← hη]; exact lt_irrefl 0),
-      mul_zero]
+  · rw [R.integral_sqrtRatio_eq_zero hη.symm, ← hη]
+    simp [phaseRate]
 
 theorem norm_toLp_discrepancy_le {v : ℝ} (hv : 0 < v) :
     ‖(WithLp.toLp 2 (R.discrepancy v) : EuclideanSpace ℂ n)‖ ≤ R.sqrtRatio v := by

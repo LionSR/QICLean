@@ -1,0 +1,75 @@
+{
+  "source_head": "e9ea0011787e7f440aaa55abcc151ba3b9982b7a",
+  "checks": [
+    {
+      "head": "e9ea0011787e7f440aaa55abcc151ba3b9982b7a",
+      "file": "aggregate",
+      "sha256": null,
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Analysis.RestoringCoefficientBound"
+      ],
+      "exit_code": 0,
+      "seconds": 5.595507851001457,
+      "log_sha256": "64112e65d2527bfc6be203b7e3cff80a76ad57357c70d50c15d1c50bc85fc771",
+      "log_bytes": 183
+    },
+    {
+      "head": "e9ea0011787e7f440aaa55abcc151ba3b9982b7a",
+      "file": "QICLean/Analysis/SupportInverseSandwich.lean",
+      "sha256": "6b0f3517cdcebfd8105c10673d1d88354b2699ed55d9310b9888fa41229abf78",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/SupportInverseSandwich.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.0828005320072407,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "e9ea0011787e7f440aaa55abcc151ba3b9982b7a",
+      "file": "QICLean/Analysis/RestoringCoefficientBound.lean",
+      "sha256": "aacaab5cbb61047b89a1edd4d2d812214c99e935595badcf37ba3834ca746a8f",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/RestoringCoefficientBound.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.942700583997066,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    }
+  ],
+  "documentation_only_production_changes": {
+    "QICLean/Analysis/SupportInverseSandwich.lean": {
+      "before_sha256": "8d1ee6ecfafafe144c595738e24403e5fded8e45cb853e0b722b06f202ddd2dc",
+      "after_sha256": "6b0f3517cdcebfd8105c10673d1d88354b2699ed55d9310b9888fa41229abf78",
+      "outside_block_comments_sha256": "0000abf3b656a30398668be244c3dc8d4890036ff377c98169370f37eb9cdb8a"
+    },
+    "QICLean/Analysis/RestoringCoefficientBound.lean": {
+      "before_sha256": "e8ad39a6b78301c8c1429fc35ca2088c3af2658af4c3dfa5336a0c700ae06873",
+      "after_sha256": "aacaab5cbb61047b89a1edd4d2d812214c99e935595badcf37ba3834ca746a8f",
+      "outside_block_comments_sha256": "84dc1aea345f58287dad394c20d4171690d1097eb9b28c275387534c13022aa1"
+    }
+  },
+  "render_source": "bbdafdcc6e56d1a90f882b1508c4e6adc67ea2bc",
+  "scope": "Corrects filename/section-number confusion; proof/declaration text is unchanged."
+}

@@ -26,12 +26,6 @@ Polynomial PEPS approximation of gapped square-grid ground states, September 24,
 03-patches.tex lines 425–451, eq:patch-uniform-local-lipschitz.
 No noncommuting matrix derivative, minimum-envelope estimate, regulator-growth
 theorem, or completion of Proposition 4.1 is asserted; no upstream Lean proof text reused.
-Provenance-ID: 8767-qic-shifted-power-derivative-01
-Matrix.PosSemidef.hasDerivAt_add_smul_one_rpow
-Provenance-ID: 8767-qic-shifted-power-derivative-02
-Matrix.PosSemidef.hasDerivAt_add_exp_neg_smul_one_rpow
-Provenance-ID: 8767-qic-shifted-power-derivative-03
-Matrix.PosSemidef.l2_opNorm_smul_add_smul_one_rpow_neg_one_le
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
