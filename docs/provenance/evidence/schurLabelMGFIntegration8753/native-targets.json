@@ -1,0 +1,12 @@
+{
+  "declaration_lines": 3773,
+  "unique_declarations": 3773,
+  "owned_declarations": [
+    "TensorPower.log_centered_labelEntropy_moments_le",
+    "TensorPower.log_centered_labelEntropy_moments_uniform"
+  ],
+  "unique_fragment_input": [
+    "blueprint/src/chapter/ch13_schur_labels.tex"
+  ],
+  "each_occurs_once": true
+}

@@ -1,0 +1,24 @@
+{
+  "physical_pages": [
+    461,
+    462
+  ],
+  "printed_pages": [
+    460,
+    461
+  ],
+  "all_pages_inspected": true,
+  "images": [
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/page-461.png",
+      "sha256": "61fe75e8f024765c1afe9628f545275e840ffd8c85f59c53a6d78014e5ad7444",
+      "bytes": 197081
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/page-462.png",
+      "sha256": "eaae5da31a3411a63d942f536aa5c695a009d30f276a46c2c3b754c75b2c2e5c",
+      "bytes": 189199
+    }
+  ],
+  "inspection": "Physical page461 contains the whole new conditional theorem and complete proof. Both signs, assumed centered k-copy surprisal hypothesis, chosen interval and dimension-dependent logarithmic loss are legible. Physical462 contains the subsequent unchanged grouped-label and bad-copy statements and was also visually inspected. No clipped displays or page-break ambiguity."
+}

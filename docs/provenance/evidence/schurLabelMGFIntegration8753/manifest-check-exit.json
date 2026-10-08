@@ -1,0 +1,13 @@
+{
+  "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/schurLabelMGFIntegration8753/check-manifest.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T04:49:04.006109+00:00",
+  "elapsed_seconds": 0.508,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGFIntegration8753/manifest-check.log",
+  "sha256": "320bb19d1c2202b2998b6ec7b80b19ca85fbee02b8be9e13a67cef5a19bc8d4a"
+}

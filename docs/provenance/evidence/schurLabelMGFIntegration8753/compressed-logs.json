@@ -1,0 +1,49 @@
+{
+  "files": [
+    {
+      "raw_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/pdf.log",
+      "archive_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/pdf.log.gz",
+      "raw_bytes": 108388,
+      "archive_bytes": 22125,
+      "raw_sha256": "158d997ae410a50eb3829644ec9a28990e1b9bd4cfbd9ce11f7d3e01d8ab3526",
+      "archive_sha256": "7130bbabc4c86800ebefea3bc3c559c6f928972c3a47965a422ef7a1748805c2",
+      "compression": "gzip.compress(raw,mtime=0); original bytes recover exactly."
+    },
+    {
+      "raw_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/full-build.log",
+      "archive_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/full-build.log.gz",
+      "raw_bytes": 58433,
+      "archive_bytes": 4465,
+      "raw_sha256": "273b70e58aa48e8a73ec1ee3b4700588e67d8ad429e938d733981f4824182b1d",
+      "archive_sha256": "3cad69b749732517cffc1c4ee62b937fd8e2c8e996cb63de46db8916f55c1898",
+      "compression": "gzip.compress(raw,mtime=0); original bytes recover exactly."
+    },
+    {
+      "raw_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/declaration-sync.log",
+      "archive_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/declaration-sync.log.gz",
+      "raw_bytes": 9068,
+      "archive_bytes": 2171,
+      "raw_sha256": "6629ccbb6a200a80034228297d10e633410c15f43b556a62f84eac29f4ef329a",
+      "archive_sha256": "68d8d537f81d898a13c1bd7a3627fba6b0c4a39be6b13c71ffaba9d9869a480e",
+      "compression": "gzip.compress(raw,mtime=0); original bytes recover exactly."
+    },
+    {
+      "raw_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web.log",
+      "archive_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web.log.gz",
+      "raw_bytes": 18529,
+      "archive_bytes": 2659,
+      "raw_sha256": "e667a27f4f636ae5a1417446545a7749ab2eeb80a41b80e3063496b26a63e706",
+      "archive_sha256": "244b1892a8c8bd71dd81df759a5c387ad39b235063d4718072e516bafb299ede",
+      "compression": "gzip.compress(raw,mtime=0); original bytes recover exactly."
+    },
+    {
+      "raw_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/raw-log-diff-check.log",
+      "archive_path": "docs/provenance/evidence/schurLabelMGFIntegration8753/raw-log-diff-check.log.gz",
+      "raw_bytes": 993,
+      "archive_bytes": 192,
+      "raw_sha256": "c8dbb59327820ad450cc6eee2ec399d8f8b03e3cdb0c4a47b76a892db102e15f",
+      "archive_sha256": "eeebf2ade00fd1062bc5d16a0fc4371d2dffbab19b5e8b85f325c1b281e5efd0",
+      "compression": "gzip.compress(raw,mtime=0); original bytes recover exactly."
+    }
+  ]
+}

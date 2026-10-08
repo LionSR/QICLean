@@ -1,0 +1,92 @@
+{
+  "all_images_inspected": true,
+  "widths": [
+    1280,
+    360
+  ],
+  "images": [
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/sec-schur-label-moment-bounds-web.png",
+      "sha256": "638d6a8efcf82b58226dab42044a464d679122e58f48157877a070db5e2dc8e6",
+      "bytes": 255532
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/thm-schur-label-moment-bounds-web.png",
+      "sha256": "a7fa22ec4722c409253d73ec6a8adc8ae2766d8984158ef6e0aafb5f392abfce",
+      "bytes": 239504
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-proof-1280.png",
+      "sha256": "712a889361173aa8c111f1708edb9f8c02fda50b2525c174f195491e5f3c78f1",
+      "bytes": 58090
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-proof-360.png",
+      "sha256": "cfd92d8cb1ab708d7a98ee3678381c4f4204512ca1db7412ca796ab6c19320a9",
+      "bytes": 53923
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-proof-display-0-360-right.png",
+      "sha256": "3b98e9d6c2c539e51fe3cd6283d36644d6e66181810cdc82a88e1643d659eab0",
+      "bytes": 8562
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-statement-1280.png",
+      "sha256": "e20655eed7c4d9eb7e4198d49b4b391d4581302b829d1f4a4a358d3fa8ca4ab7",
+      "bytes": 88504
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-statement-360.png",
+      "sha256": "bf23d92381c23c316648f92bd4459261e135ac4c302d4392042332dc37ce9273",
+      "bytes": 86601
+    }
+  ],
+  "mobile_displayed_formulas": [
+    {
+      "width": 310,
+      "scrollWidth": 310,
+      "overflow": "auto",
+      "label": "schur-label-moment-bounds",
+      "kind": "statement",
+      "index": 0
+    },
+    {
+      "width": 310,
+      "scrollWidth": 310,
+      "overflow": "auto",
+      "label": "schur-label-moment-bounds",
+      "kind": "statement",
+      "index": 1
+    },
+    {
+      "width": 310,
+      "scrollWidth": 310,
+      "overflow": "auto",
+      "label": "schur-label-moment-bounds",
+      "kind": "statement",
+      "index": 2
+    },
+    {
+      "width": 310,
+      "scrollWidth": 310,
+      "overflow": "auto",
+      "label": "schur-label-moment-bounds",
+      "kind": "statement",
+      "index": 3
+    },
+    {
+      "width": 311,
+      "scrollWidth": 360,
+      "overflow": "auto",
+      "label": "schur-label-moment-bounds",
+      "kind": "proof",
+      "index": 0,
+      "right_endpoint": {
+        "left": 49,
+        "max": 49
+      }
+    }
+  ],
+  "mobile_local_right_endpoints": 1,
+  "inspection": "The complete combined mathematical statement and full proof inspected at desktop/mobile widths; every displayed formula checked, including actual local scroll endpoints. The screenshot helper hides only the fixed page header and navigation controls, and uses a taller viewport, so the full mobile title is visible; the actual page overflow checks run with the unchanged page header. The assumed centred surprisal estimate, derived interval and constants, both signs and dimension-dependent logarithmic loss remain explicit."
+}

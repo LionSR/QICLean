@@ -1,0 +1,424 @@
+{
+  "files": [
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/Axioms.lean",
+      "sha256": "8049daa8d6c8c41533dcc3de7faf02f4d3ec1c1565972daa6ea90677180bbdf1",
+      "bytes": 269
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/README.md",
+      "sha256": "94537a77e2c47f2596908f6682c2811339c2bfe245a208367e5d9fa90d9f33a3",
+      "bytes": 2085
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/artifact-operation-exit.json",
+      "sha256": "faf3220805c80934cd104d3a10c5799bd58d40fe7ee8c5a768634c4fca76fdb9",
+      "bytes": 720
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/axioms-final-exit.json",
+      "sha256": "ab89c8cf4962f8f6b8c201e1a5574717603c20f9eb9ec2432694d2f0f6449868",
+      "bytes": 738
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/axioms-final.log",
+      "sha256": "14929a2f79496742330dbe90e32f3c5f6a3c1cfcd52da5449f9bb58aeb6a7ef7",
+      "bytes": 225
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/axioms-header-failure.log",
+      "sha256": "7d3f903b54bafe4fd89f11f537ae8d05d95b51a5279db90a31e481eee265b3ee",
+      "bytes": 630
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/bibliography-exit.json",
+      "sha256": "3673b2d61e6c8265d006c8cd68077a658ca60f454e9353e3eee16bcca7343ac5",
+      "bytes": 543
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831",
+      "bytes": 169
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/cache-fetch-exit.json",
+      "sha256": "6cbf2f1a6619656063819701ae0f98126e7ef70b1fede36ac184c70104e855d8",
+      "bytes": 493
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/cache-guard-exit.json",
+      "sha256": "89f0bf9e4cb3741a57cde36a20cb0cca7b559ceab14939526bd109e13da4db89",
+      "bytes": 536
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/cache-guard.log",
+      "sha256": "2e13a163821a1e1f167fd2cbc2ae50ad71235a3ee18fe61b21dafd9bdb846f5e",
+      "bytes": 1189
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/cache-guard.py",
+      "sha256": "c35345c174616feb95914ec46c1d34a82458233b5605637529f74c433da1e469",
+      "bytes": 1183
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/check-manifest.py",
+      "sha256": "bc1e62f846a0744262f1605089adddaf60f7088f93f6f1f0a5b84e2b6e3272f1",
+      "bytes": 3018
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/check-native-targets.py",
+      "sha256": "f9a9287fc05ff362f9559c775b6e0f60090bd2f86dddb662c46253782cf7b2c7",
+      "bytes": 1137
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/check-preservation.py",
+      "sha256": "4f1ec38d2341cabe8c7721ff6a85e6c5b1fd81f90d56052e6ae5ca328f458f95",
+      "bytes": 4222
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/checkdecls-exit.json",
+      "sha256": "fdd06ba2478ae45bc67d592c48b29ace56bf0d4f12abc8ac4228be37e652b5d7",
+      "bytes": 494
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/collect.py",
+      "sha256": "ca4bd073d360116b36481396de7c33b132d75dd50620cf7e6feac448f5bf2ef0",
+      "bytes": 5216
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/compressed-logs.json",
+      "sha256": "220b1660a8dda8a0c39869c619cb1e64afdf285d9c176b9f9dc1ac10cb5a45a5",
+      "bytes": 2608
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/copy-bibliography.py",
+      "sha256": "54f9d179b155aff7bc5e5b7fe90739c2f7ddaff2b0615e8c44a4f086f5bc4e1c",
+      "bytes": 461
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/declaration-sync-exit.json",
+      "sha256": "900b34704762c6f501aa3caf255bc8242e69761b1def18fc3023ee80e1c44626",
+      "bytes": 530
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/declaration-sync.log.gz",
+      "sha256": "68d8d537f81d898a13c1bd7a3627fba6b0c4a39be6b13c71ffaba9d9869a480e",
+      "bytes": 2171
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/excluded-commands.json",
+      "sha256": "730a8b1bd2f009b6d1891a67a05157223c29ee7aaa0301d650d7dbb49cdba9cf",
+      "bytes": 1913
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/final-diff-check-exit.json",
+      "sha256": "07706802fe552c234040ec8dd79ef3ab457c2e487fceb91e8b5201879b5f554f",
+      "bytes": 504
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/final-diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/full-build-exit.json",
+      "sha256": "806359dcbb3ba4f16f75f0f295f3eacb96a20dd57106562bd725e6653487d6e3",
+      "bytes": 470
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/full-build.log.gz",
+      "sha256": "3cad69b749732517cffc1c4ee62b937fd8e2c8e996cb63de46db8916f55c1898",
+      "bytes": 4465
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/generated-output-hashes.json",
+      "sha256": "6b853a5f2ad87c2a9f02432ffb3cc8e1bb0e07573ac5f6461ce8a450613a95d1",
+      "bytes": 869
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/imports-exit.json",
+      "sha256": "f52c5cb568f245cf05e701357c8fec366a4cac981eae7a70c0239e44f9a577e6",
+      "bytes": 517
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/imports.log",
+      "sha256": "3676753c68de02ebb95ce44770a8579bcf66720370b267b5abcfb73e12c02aea",
+      "bytes": 81
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/inspected-pages.json",
+      "sha256": "1b7e3620b539d6cfc283801adfd4043187f56bfac64066a327d6343129c3f35a",
+      "bytes": 479
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/kernel-summary.json",
+      "sha256": "6882a00a9fd855a0bee320afcd17d6a56b6e3feab755bc292b459a53389f7ce7",
+      "bytes": 522
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/manifest-recursion-failure.log",
+      "sha256": "74f030ea48edfa9acf88d01f1799ad3e0d8b419a252882063ba6bfd200a363e8",
+      "bytes": 868
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/mobile-equations.json",
+      "sha256": "33985e2697b5f0cf16ec59ddbe64714ccc79164d08242f5bf787556dcdd87584",
+      "bytes": 849
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/native-targets-exit.json",
+      "sha256": "5b1b54395185b672b6f89472730ddfc75e32a21da539200c11f5bbc5e9f67b68",
+      "bytes": 548
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/native-targets.json",
+      "sha256": "e0facdab09ad48278b110ea15252a9f1c196d074d49aecbc31083e9a5dc932bf",
+      "bytes": 322
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/native-targets.log",
+      "sha256": "792a5d9babc57dbae7af5c24319e36ebff1615210d4d86227a3c1a0e8d97b881",
+      "bytes": 79
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/owned-shards.json",
+      "sha256": "75255fd400d2de521593a0dc942b4e0323db772923d088e0924c15c98e1bf1e8",
+      "bytes": 27
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/page-461.png",
+      "sha256": "61fe75e8f024765c1afe9628f545275e840ffd8c85f59c53a6d78014e5ad7444",
+      "bytes": 197081
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/page-462.png",
+      "sha256": "eaae5da31a3411a63d942f536aa5c695a009d30f276a46c2c3b754c75b2c2e5c",
+      "bytes": 189199
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/paper-gaps-exit.json",
+      "sha256": "d005a35f6d3a20e2b20335d08cef920f088912c0a03915cd7c3270bd1d0b0bf6",
+      "bytes": 498
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+      "bytes": 91
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/pdf-exit.json",
+      "sha256": "95bc1a05f6143342f4835dd1435feaffab762a0719a4e1bab9ed37850564878e",
+      "bytes": 480
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/pdf-render-exit.json",
+      "sha256": "be50aa72ee038fa052ed3797e25f5e566b451c7c389a72e707eb4e8e00917e1b",
+      "bytes": 634
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/pdf-render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/pdf-visual-inspection.json",
+      "sha256": "51dece5ef16efe703ddd08a805cde03524871cc98439d6e1d69405822ef7f580",
+      "bytes": 934
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/pdf.log.gz",
+      "sha256": "7130bbabc4c86800ebefea3bc3c559c6f928972c3a47965a422ef7a1748805c2",
+      "bytes": 22125
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/preservation-exit.json",
+      "sha256": "e362cabbf4b05a3806cb0955609d91c12a57e6f6874991957d64fb9f1e14213e",
+      "bytes": 566
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/preservation.log",
+      "sha256": "7ba6fa701f841c4f3feeedc90a8ad5f405b10c9fd60492e3d27c4ffa381cbc49",
+      "bytes": 190
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/prose-exit.json",
+      "sha256": "2e8254ea445ea3c82f12b0a1b659ae8557f14de37cadced5ccda6c5d122998ca",
+      "bytes": 565
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/provenance-final-exit.json",
+      "sha256": "9862d9f52ab73ec2c987ed8a1811d6ad9299bd61a8c40d510e1992d117d7060e",
+      "bytes": 628
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/provenance-final.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+      "bytes": 69
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/raw-log-diff-check.log.gz",
+      "sha256": "eeebf2ade00fd1062bc5d16a0fc4371d2dffbab19b5e8b85f325c1b281e5efd0",
+      "bytes": 192
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/run.py",
+      "sha256": "8afa8fc5f04e5905858e496003cca0cda038749b0cb993b44e9492768954537a",
+      "bytes": 1201
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/sec-schur-label-moment-bounds-web.png",
+      "sha256": "638d6a8efcf82b58226dab42044a464d679122e58f48157877a070db5e2dc8e6",
+      "bytes": 255532
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/source-freeze.json",
+      "sha256": "3792597e2fe57895d53482e4ebbf205233c0e392aa5fce3a98a88f1f4f4eb274",
+      "bytes": 1231
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/tenkz-exit.json",
+      "sha256": "13a9c8648f46060943e5e4fb95ad47717f71ce89bb8fc370e7727eaf95a9d8b4",
+      "bytes": 484
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/tenkz.log",
+      "sha256": "b10dd226fcfb59e9eb52b06bc040d251e35cd38d571c963ece4bf0e5263f2d8d",
+      "bytes": 147
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/thm-schur-label-moment-bounds-web.png",
+      "sha256": "a7fa22ec4722c409253d73ec6a8adc8ae2766d8984158ef6e0aafb5f392abfce",
+      "bytes": 239504
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/validate-owned.py",
+      "sha256": "8be195bd4c019f0127912fb982bfbcc30ca9889faea6bab36edffa2f778c57ab",
+      "bytes": 1529
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/verification.json",
+      "sha256": "48f0a098f119b0270123da09c3c19815e6539ee1d58fb02dacc90c0a683c71b8",
+      "bytes": 18717
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-exit.json",
+      "sha256": "ae60ec56ee992ee4894056af247b0fa150fdade86ab6439e66bc6daad18e5fa8",
+      "bytes": 480
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-qa.py",
+      "sha256": "ffba5fe7b4959293b352144f8428c87b6377dd513b2955f194bc03b768687faf",
+      "bytes": 2282
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-reader-exit.json",
+      "sha256": "9659db1fbee6281ab80ab4ff3eb44cfe360b22f32f155743c8c20d2d4bc123d7",
+      "bytes": 560
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-reader.log",
+      "sha256": "dfbd89619fd0ad88efa2181cf72e5e11207e98604eed89581729a2e7bcb83da8",
+      "bytes": 251
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-proof-1280.png",
+      "sha256": "712a889361173aa8c111f1708edb9f8c02fda50b2525c174f195491e5f3c78f1",
+      "bytes": 58090
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-proof-360.png",
+      "sha256": "cfd92d8cb1ab708d7a98ee3678381c4f4204512ca1db7412ca796ab6c19320a9",
+      "bytes": 53923
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-proof-display-0-360-right.png",
+      "sha256": "3b98e9d6c2c539e51fe3cd6283d36644d6e66181810cdc82a88e1643d659eab0",
+      "bytes": 8562
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-statement-1280.png",
+      "sha256": "e20655eed7c4d9eb7e4198d49b4b391d4581302b829d1f4a4a358d3fa8ca4ab7",
+      "bytes": 88504
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-schur-label-moment-bounds-statement-360.png",
+      "sha256": "bf23d92381c23c316648f92bd4459261e135ac4c302d4392042332dc37ce9273",
+      "bytes": 86601
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-visual-clean-exit.json",
+      "sha256": "d9b0273f97503f4abdadb6f68a5503107d86a889deddc13d72ce6c3e1b4c57d3",
+      "bytes": 570
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-visual-clean.log",
+      "sha256": "5ab9ec96bc24dfe731e4c6b99235503320c86cbc46791b1df98d708662159285",
+      "bytes": 116
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-visual-complete-exit.json",
+      "sha256": "090ef03518565d13b73d623414fd840c9e62114194420b48220fa1fe0097659f",
+      "bytes": 573
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-visual-complete.log",
+      "sha256": "5ab9ec96bc24dfe731e4c6b99235503320c86cbc46791b1df98d708662159285",
+      "bytes": 116
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-visual-exit.json",
+      "sha256": "91c46137aa4f8fc081de8f4ab9d7371784b019fb28bb235db587795b9134bf21",
+      "bytes": 564
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-visual-inspection.json",
+      "sha256": "2acf9b3bbb4530744c45c98f88c8ef0269120638819e9f312f34ad27985f0fc0",
+      "bytes": 3287
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-visual.log",
+      "sha256": "5ab9ec96bc24dfe731e4c6b99235503320c86cbc46791b1df98d708662159285",
+      "bytes": 116
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web-visual.py",
+      "sha256": "0b7ef1a9bcd8d763fe1840749b852592f9484c4cd31e2817321795d73e0f89ed",
+      "bytes": 2073
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/web.log.gz",
+      "sha256": "244b1892a8c8bd71dd81df759a5c387ad39b235063d4718072e516bafb299ede",
+      "bytes": 2659
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/whole-web-reader-exit.json",
+      "sha256": "abf7e81e3e1ed0d0e4659d8b5087b78ff5d9e475624553ebcc390eb3e1d4e74c",
+      "bytes": 579
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMGFIntegration8753/whole-web-reader.log",
+      "sha256": "5d0de93abe8368af2f8b2d4905c76ec71b577af7eadd87729a70f3bee87649e0",
+      "bytes": 32
+    }
+  ]
+}

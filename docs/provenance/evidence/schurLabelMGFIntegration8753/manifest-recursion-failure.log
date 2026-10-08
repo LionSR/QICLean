@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/docs/provenance/evidence/schurLabelMGFIntegration8753/check-manifest.py", line 12, in <module>
+    rec=json.loads(path.read_text());assert rec['exit_code']==0,path.name;assert rec['source_revision']==f['source_revision'];log=root/rec['log'];data=log.read_bytes() if log.exists() else gzip.decompress((root/compressed[rec['log']]['archive_path']).read_bytes());assert sha(data)==rec['sha256'],path.name
+                                                                                                                                                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: manifest-check-exit.json

@@ -1,0 +1,15 @@
+{
+  "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+  "command": [
+    "git",
+    "diff",
+    "--cached",
+    "--check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T04:48:31.981793+00:00",
+  "elapsed_seconds": 0.024,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGFIntegration8753/final-diff-check.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

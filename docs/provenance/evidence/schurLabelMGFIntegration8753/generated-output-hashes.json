@@ -1,0 +1,29 @@
+{
+  "files": [
+    {
+      "path": "blueprint/print/print.pdf",
+      "sha256": "5762c534a952ddc162aa66dd9fb709ff8387c015a90c6a925d9957129f5e3e71",
+      "bytes": 3021639
+    },
+    {
+      "path": "blueprint/print/print.bbl",
+      "sha256": "1c9c49ee1de060dc40e74b44b1cbcd0a961b662280ac2dcdc5439d3556e24695",
+      "bytes": 14706
+    },
+    {
+      "path": "blueprint/lean_decls",
+      "sha256": "0bbf0635de2177b295aef13136c03121c20d92bd96590a6c6dd70f2acb094514",
+      "bytes": 158578
+    },
+    {
+      "path": "blueprint/web/ch-schur_labels.html",
+      "sha256": "75439c62177b34b49cbc57c64436141a7c2ace224e76c81943ef3277c90b6910",
+      "bytes": 228524
+    },
+    {
+      "path": "output/pdf/area-law-schur-label-moment-bounds-blueprint.pdf",
+      "sha256": "5762c534a952ddc162aa66dd9fb709ff8387c015a90c6a925d9957129f5e3e71",
+      "bytes": 3021639
+    }
+  ]
+}

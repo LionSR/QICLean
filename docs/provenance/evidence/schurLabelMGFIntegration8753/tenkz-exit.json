@@ -1,0 +1,13 @@
+{
+  "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+  "command": [
+    "python3",
+    "scripts/fetch_tenkz.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T04:42:30.884621+00:00",
+  "elapsed_seconds": 1.136,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGFIntegration8753/tenkz.log",
+  "sha256": "b10dd226fcfb59e9eb52b06bc040d251e35cd38d571c963ece4bf0e5263f2d8d"
+}

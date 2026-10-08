@@ -1,0 +1,16 @@
+{
+  "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+  "declarations": [
+    "TensorPower.log_centered_labelEntropy_moments_le",
+    "TensorPower.log_centered_labelEntropy_moments_uniform"
+  ],
+  "raw_log": "docs/provenance/evidence/schurLabelMGFIntegration8753/axioms-final.log",
+  "sha256": "14929a2f79496742330dbe90e32f3c5f6a3c1cfcd52da5449f9bb58aeb6a7ef7",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "exact_name_reports": 2,
+  "matches_original_leaf_raw_report": true
+}

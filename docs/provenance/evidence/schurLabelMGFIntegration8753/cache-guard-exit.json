@@ -1,0 +1,13 @@
+{
+  "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/schurLabelMGFIntegration8753/cache-guard.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T04:41:40.460476+00:00",
+  "elapsed_seconds": 0.068,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGFIntegration8753/cache-guard.log",
+  "sha256": "2e13a163821a1e1f167fd2cbc2ae50ad71235a3ee18fe61b21dafd9bdb846f5e"
+}

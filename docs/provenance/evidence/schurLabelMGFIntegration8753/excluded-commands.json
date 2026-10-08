@@ -1,0 +1,52 @@
+[
+  {
+    "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+    "command": [
+      "env",
+      "LEAN_NUM_THREADS=1",
+      "lake",
+      "env",
+      "lean",
+      "-j1",
+      "-DwarningAsError=true",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DrelaxedAutoImplicit=false",
+      "-DmaxSynthPendingDepth=3",
+      "docs/provenance/evidence/schurLabelMGFIntegration8753/Axioms.lean"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+    "started_utc": "2026-10-08T04:42:46.784342+00:00",
+    "elapsed_seconds": 8.686,
+    "exit_code": 1,
+    "log": "docs/provenance/evidence/schurLabelMGFIntegration8753/axioms-header-failure.log",
+    "sha256": "7d3f903b54bafe4fd89f11f537ae8d05d95b51a5279db90a31e481eee265b3ee"
+  },
+  {
+    "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+    "started_utc": "2026-10-08T04:48:02.987967+00:00",
+    "elapsed_seconds": 0.023,
+    "exit_code": 2,
+    "log": "docs/provenance/evidence/schurLabelMGFIntegration8753/raw-log-diff-check.log",
+    "sha256": "c8dbb59327820ad450cc6eee2ec399d8f8b03e3cdb0c4a47b76a892db102e15f"
+  },
+  {
+    "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+    "command": [
+      "python3",
+      "docs/provenance/evidence/schurLabelMGFIntegration8753/check-manifest.py"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+    "started_utc": "2026-10-08T04:48:45.343610+00:00",
+    "elapsed_seconds": 0.072,
+    "exit_code": 1,
+    "log": "docs/provenance/evidence/schurLabelMGFIntegration8753/manifest-recursion-failure.log",
+    "sha256": "74f030ea48edfa9acf88d01f1799ad3e0d8b419a252882063ba6bfd200a363e8"
+  }
+]

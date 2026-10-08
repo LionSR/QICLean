@@ -1,0 +1,15 @@
+{
+  "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "scripts/test_blueprint_web_render.py",
+    "--web-root",
+    "blueprint/web"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T04:45:30.543217+00:00",
+  "elapsed_seconds": 54.071,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGFIntegration8753/whole-web-reader.log",
+  "sha256": "5d0de93abe8368af2f8b2d4905c76ec71b577af7eadd87729a70f3bee87649e0"
+}

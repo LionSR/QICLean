@@ -1,0 +1,30 @@
+{
+  "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+  "parent_revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+  "files": [
+    {
+      "path": "QICLean/Representation/SchurLabelMomentBounds.lean",
+      "sha256": "9845b65181ba4dc234344bc280f08147c4d799d8198abc4be48a7bf9f256e4b0"
+    },
+    {
+      "path": "blueprint/src/fragment/schur_label_moment_bounds.tex",
+      "sha256": "f3ee5c87ad606c01cf0fc1034178dc11ff475ea1e177d3b63f5811199c118a39"
+    },
+    {
+      "path": "docs/openai-area-law-schur-label-mgf.md",
+      "sha256": "6c7a46617a74c89a576b397d0af924e985605ef2d5eb034e0f860d4b2d9a895e"
+    },
+    {
+      "path": "QICLean/Representation.lean",
+      "sha256": "da257278c965e96198b08f97191a9b3961ba1462d2bceb1d114edd7eac3dc184"
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_schur_labels.tex",
+      "sha256": "99e085acda029bda3e1370de7a74f2404d2b1078e28ca9e067e1a52535b0a9b9"
+    }
+  ],
+  "mathematical_source_revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+  "leaf_evidence_revision": "697aa7c157fe4fb2dbb7cdbfcde5cf26b7964784",
+  "comparison_evidence_revision": "5c5a5068d5bb5ef1f2571593dcf17d68ad86449d",
+  "joined_parent_revision": "aa6397f2d0d2cfb6559a05f4722101c607033929"
+}

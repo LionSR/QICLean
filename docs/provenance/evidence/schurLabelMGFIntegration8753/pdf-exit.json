@@ -1,0 +1,13 @@
+{
+  "source_revision": "335adba326c9d8cfec52c7c2a6c4e8a75703c7fe",
+  "command": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+  "started_utc": "2026-10-08T04:43:02.725910+00:00",
+  "elapsed_seconds": 28.587,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGFIntegration8753/pdf.log",
+  "sha256": "158d997ae410a50eb3829644ec9a28990e1b9bd4cfbd9ce11f7d3e01d8ab3526"
+}

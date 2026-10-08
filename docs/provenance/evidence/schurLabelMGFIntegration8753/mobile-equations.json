@@ -1,0 +1,46 @@
+[
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "label": "schur-label-moment-bounds",
+    "kind": "statement",
+    "index": 0
+  },
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "label": "schur-label-moment-bounds",
+    "kind": "statement",
+    "index": 1
+  },
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "label": "schur-label-moment-bounds",
+    "kind": "statement",
+    "index": 2
+  },
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "label": "schur-label-moment-bounds",
+    "kind": "statement",
+    "index": 3
+  },
+  {
+    "width": 311,
+    "scrollWidth": 360,
+    "overflow": "auto",
+    "label": "schur-label-moment-bounds",
+    "kind": "proof",
+    "index": 0,
+    "right_endpoint": {
+      "left": 49,
+      "max": 49
+    }
+  }
+]
