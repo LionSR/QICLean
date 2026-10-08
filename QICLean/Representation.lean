@@ -66,6 +66,7 @@ import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
+import QICLean.Representation.SchurSectorMass
 import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
 import QICLean.Representation.SchurWeylLabels

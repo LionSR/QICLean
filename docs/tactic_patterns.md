@@ -69,6 +69,19 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
 
+### Sector mass from a finite resolution — candidate (2026-10-07)
+
+- **Pattern:** Restrict trace masses to the nonzero projections, use positivity
+  and completeness to obtain a nonempty set of total mass one, and apply
+  `Finset.exists_le_of_sum_le` with a bound on the number of projections.
+- **Seen:** `TensorPower.exists_labelProj_trace_mass_ge` in
+  `QICLean/Representation/SchurSectorMass.lean`; one mathematical consumer.
+- **Abstraction:** Reuse the existing finite-sum comparison theorem. The
+  projected-vector result applies this trace result to the actual reduced
+  state and uses the trace-pairing and Hermitian-idempotent norm identities.
+  No new tactic is needed.
+- **Caveats:** The sector count gives a mass bound only; an entropy window
+  requires a separate concentration estimate and a restricted selection.
 ### Joint central-label resolution — candidate (2026-10-07)
 
 - **Pattern:** Form the product of commuting orthogonal resolutions, express
