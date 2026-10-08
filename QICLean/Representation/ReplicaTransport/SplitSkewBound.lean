@@ -7,7 +7,7 @@ import QICLean.Representation.ReplicaTransport.RelativePinBound
 import QICLean.Representation.ReplicaEtaForms
 
 /-!
-# The skew bound at a split leaf, and the transport estimate
+# The skew bound at a split leaf
 
 The transport estimate (Proposition 7.4 of the area-law paper, *A two-dimensional area law
 from a global spectral gap*, `06-transport.tex`, lines 377–434) uses the skew bound of
@@ -16,8 +16,7 @@ split leaf: a positive contraction `h` whose designated support `D` meets the mi
 and exactly one outer part (`06-transport.tex`, lines 735–748). This file proves that
 specialization, `TensorPower.ReplicaTransport.SplitSkewBound`, from
 `TensorPower.SkewPartition.eventually_re_trace_skewOperator_le_regionalMovementEta` and its
-variant with the outer parts exchanged, and hence states Proposition 7.4 without replica
-hypotheses.
+variant with the outer parts exchanged.
 
 The comparison has three parts.
 
@@ -40,7 +39,6 @@ The proofs are written from the paper; no Lean source was adapted.
 * `TensorPower.re_coherentIntegral_ofReal` — the complex and real coherent integrals agree.
 * `TensorPower.mul_skewOperator_eq_mul_skewSquare` — the two skew operators agree on `𝒮_k`.
 * `TensorPower.ReplicaTransport.splitSkewBound` — `SplitSkewBound` holds.
-* `TensorPower.ReplicaTransport.transport` — Proposition 7.4.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator Kronecker
@@ -352,50 +350,5 @@ theorem splitSkewBound : SplitSkewBound.{u} := by
         with k hk ρ
       linarith [hk ρ.1 ρ.2.1 ρ.2.2.1 ρ.2.2.2])
   exact ⟨r, hr, fun k ρ hρ htr hs => by linarith [hle k ⟨ρ, hρ, htr, hs⟩]⟩
-
-/-- **Proposition 7.4, entropy and energy transport** (area-law paper, `prop:transport`,
-`06-transport.tex` lines 377--434). Fix a finite one-copy space, history and conditional
-choice trees, partitions with cross-band commutation on `𝒮_k`, a positive parameter
-`a = 2t`, and positive contractions with designated supports compatible with the terminal
-partitions. Let `ℓ ≥ 1` bound `log(e dim x)` for every transferred subsystem and
-`log(e dim D_i)` for every term split at some terminal leaf, with `a ℓ` below a universal
-threshold. Then for every `k`, every nonzero `pre ∈ 𝒮_k` and every `0 < p < 1`:
-
-* `-∂_p log N(p)² = ∑_h w_h ∫ m_{1/4}(u) Tr(σ_{h,u} log C_h) du`;
-* the entropy-gain lower bound with error `C k a K a^{1/4} ℓ^C + β_k`,
-  `β_k = O(log(k+1))` independent of `p` and `pre`;
-* if `Hbar pre = E₀ pre`, the energy bound
-  `⟨v, Hbar v⟩ ≤ 2E₀ + C a² ℓ^C ∑_i W_i(p) ∑_{j∈𝒥_i} π_j ∫ m_{1/4} ∫ η_{i,j}^{1/8} dμ_{σ_{j,u}}
-  du + o_k(1)`, with the remainder uniform in `p`, `pre` and the replica state.
-
-The relative coherent pin (Lemma 6.3) and the skew bound (Lemma 6.4) of the source enter
-through `relativePinBound` and `splitSkewBound`. -/
-theorem transport :
-    ∃ c₀ Cent eent Cen een : ℝ, 0 < c₀ ∧
-      ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
-        {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
-        [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
-        {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
-        D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
-        ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
-        (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
-        (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
-        ∃ β r : ℕ → ℝ, (β =O[atTop] fun k : ℕ => Real.log (k + 1)) ∧
-          Tendsto r atTop (𝓝 0) ∧
-          ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
-            pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 →
-            ∀ p ∈ Ioo (0 : ℝ) 1,
-              HasDerivAt
-                (fun q => -Real.log (Transport.filteredNormSq (D.rootPath n (a / 2) k q) pre))
-                (D.exactDerivative n (a / 2) k pre p) p ∧
-              (k : ℝ) * a * D.entropyGain n (a / 2) k pre p -
-                  Cent * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ eent - β k ≤
-                D.exactDerivative n (a / 2) k pre p ∧
-              ∀ E₀ : ℝ, E.replicaEnergy k *ᵥ pre = (E₀ : ℂ) • pre →
-                let v := Transport.filteredVector (D.rootPath n (a / 2) k p) pre
-                (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re ≤
-                  2 * E₀ + Cen * a ^ 2 * ℓ ^ een * D.energyError E (a / 2) k pre p + r k :=
-  transport_of_splitSkewBound splitSkewBound
 
 end TensorPower.ReplicaTransport
