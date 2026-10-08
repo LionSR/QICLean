@@ -1,0 +1,50 @@
+\section{Uniform conditioning on a finite event}
+\label{sec:finite_uniform_conditioning}
+
+Let $\Omega$ be a measurable space with measurable singletons, let $\mu$
+be a measure on $\Omega$, and let $S\subseteq\Omega$ be finite.
+Write $\#|_S$ for counting measure restricted to $S$.
+
+\begin{lemma}[Equal atomic masses]
+\label{lem:finite_constant_singletons}
+\lean{ProbabilityTheory.measure_eq_count_mul_of_finite_constant_singletons,
+ProbabilityTheory.restrict_eq_smul_count_of_finite_constant_singletons}
+\leanok
+If $\mu(\{x\})=c$ for every $x\in S$, where $c\in[0,\infty]$, then
+\begin{align}
+ \mu(S)&=|S|c,& \mu|_S&=c\,\#|_S.
+ \label{eq:finite_constant_singletons}
+\end{align}
+These identities require neither $S\ne\varnothing$ nor $\mu(S)>0$.
+\end{lemma}
+\begin{proof}
+\leanok
+A finite set is the disjoint union of its singletons. Summing their masses
+proves the first identity. For every measurable $A$, apply the same identity
+to $A\cap S$ to obtain $\mu(A\cap S)=c|A\cap S|$.
+Equality on measurable sets proves the restriction identity.
+\end{proof}
+
+\begin{theorem}[Uniform conditional law]
+\label{thm:finite_uniform_conditioning}
+\lean{ProbabilityTheory.cond_eq_uniformOn_of_finite_constant_singletons}
+\leanok
+Suppose additionally that $\mu$ is finite and $\mu(S)\ne0$.
+If all singletons in $S$ have the same mass, then
+\begin{align}
+ \mu(\,\cdot\mid S)
+   &=\frac{\mu|_S}{\mu(S)}
+    =\frac{\#|_S}{|S|}
+    =\operatorname{Unif}(S).
+ \label{eq:finite_uniform_conditioning}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:finite_constant_singletons}
+Positive event mass implies $S\ne\varnothing$ and $c>0$.
+Finiteness of $\mu$ implies $c<\infty$, and finiteness of $S$ implies
+$|S|<\infty$. Substituting (\ref{eq:finite_constant_singletons}) in the
+conditional measure therefore permits cancellation of $c$.
+The assumption $\mu(S)\ne0$ is essential for this cancellation.
+\end{proof}

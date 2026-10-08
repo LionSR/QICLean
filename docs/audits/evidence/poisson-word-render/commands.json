@@ -1,0 +1,116 @@
+{
+  "environment": "source ${WORKSPACE}/glm23-blueprint-env.sh && export WORKSPACE=${WORKSPACE}",
+  "working_directory": "${WORKSPACE}/poisson-word-focused/blueprint/src",
+  "source_revision": "8e0a72aa2ad07a02a5c5a13436b17607fdd5af61",
+  "commands": [
+    {
+      "working_directory": "${WORKSPACE}/qiclean-poisson-decay-8757",
+      "command": "SOURCE_REVISION=8e0a72aa2ad07a02a5c5a13436b17607fdd5af61 RENDER_NAME=poisson-word-focused python docs/audits/evidence/poisson-word-render/prepare_fixture.py",
+      "exit_code": 0
+    },
+    {
+      "command": "export XDG_CACHE_HOME=${WORKSPACE}/8766-unitary-evolution-focused/font-cache && latexmk -xelatex -interaction=nonstopmode -halt-on-error print.tex > ../../pdf-build.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "command": "cp print.bbl web.bbl && plastex -c plastex.cfg web.tex > ../../web-build.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/poisson-word-focused",
+      "command": "mkdir -p pdf-pages && pdftoppm -scale-to 1500 -png blueprint/src/print.pdf pdf-pages/page > pdf-raster.log 2>&1 && pdfinfo blueprint/src/print.pdf > pdf-info.txt",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/qiclean-poisson-decay-8757",
+      "command": "python docs/audits/evidence/poisson-word-render/verify_render.py > ${WORKSPACE}/poisson-word-focused/verify-render.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/poisson-word-focused",
+      "command": "export XDG_CACHE_HOME=${WORKSPACE}/8766-unitary-evolution-focused/font-cache && dot -Gbgcolor=white -Tpng dependency-graph.dot -o dependency-graph-white.png",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/qiclean-poisson-decay-8757",
+      "command": "python docs/audits/evidence/poisson-word-render/verify_render.py > ${WORKSPACE}/poisson-word-focused/verify-render.log 2>&1",
+      "exit_code": 0
+    }
+  ],
+  "initial_render": {
+    "source_revision": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+    "render_name": "poisson-word-focused-initial",
+    "same_render_recipe": true,
+    "verification_exit_code": 1,
+    "reason": "Three missing HTML equation anchors, two unlinked generated instances, and one overfull heading; full initial quality record retained."
+  },
+  "notes": [
+    "Commands are replayable successful segments reconstructed from tool records, not a byte-for-byte shell transcript.",
+    "All 17 final artifacts are hashed after rasterization and graph rendering. Initial and final raw artifacts remain separate.",
+    "No Lean/Lake/checkdecls, downloads, external writes, pin changes, CI, binary/LFS commits or uploads."
+  ],
+  "raw_logs": {
+    "poisson-word-focused-initial/pdf-build.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused-initial/pdf-build.log",
+      "sha256": "33aa76d3267b13ca8966eb527d46770ebe70181c0be3def1b5bb021e4e78c38e"
+    },
+    "poisson-word-focused-initial/web-build.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused-initial/web-build.log",
+      "sha256": "a22ee67a19903840037aac758ee2b95e09e603cb4de75044602074a31a6319db"
+    },
+    "poisson-word-focused-initial/pdf-raster.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused-initial/pdf-raster.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "poisson-word-focused-initial/verify-render.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused-initial/verify-render.log",
+      "sha256": "8e3158c2b0d2c68bd37782df0a493ed065ea35cfedae8584feb0b257992fb964"
+    },
+    "poisson-word-focused-initial/blueprint/src/print.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused-initial/blueprint/src/print.log",
+      "sha256": "0bc324d3007e7b349ced6b8b0c4ec20abde7d717267fb16d64177b033b456a43"
+    },
+    "poisson-word-focused/pdf-build.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused/pdf-build.log",
+      "sha256": "ed1c8130d0ea15a596ddbd437cf21a5a52c32016c6763411cdced70d2ce89035"
+    },
+    "poisson-word-focused/web-build.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused/web-build.log",
+      "sha256": "4052c4e016dc44f99a4da7d9e3091955589bbf345d8e930642841c7c3150e739"
+    },
+    "poisson-word-focused/pdf-raster.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused/pdf-raster.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "poisson-word-focused/verify-render.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused/verify-render.log",
+      "sha256": "c0e78e597d361e02da73d5bfee467e4bde480c6755797e345efbee9733098b44"
+    },
+    "poisson-word-focused/blueprint/src/print.log": {
+      "retained_at": "${WORKSPACE}/poisson-word-focused/blueprint/src/print.log",
+      "sha256": "01d904319f23eeda225dde26e1d31b4f45cf74767cfbae87ceb06f3f2eb362c5"
+    }
+  },
+  "replay_scripts": {
+    "prepare_fixture.py": {
+      "published_sha256": "35717382d2f998cc1dd334cea9bd8b48d8f9d7fb00c6d39063ace2c7f464c430"
+    },
+    "verify_render.py": {
+      "published_sha256": "240310e0522ad2fdda72e83e763f727109bcb4fe1d73d33b040014f72a56e9c5"
+    },
+    "check.py": {
+      "published_sha256": "410f4b573c51c42a4af85fa77a07369bb78e255df362b0055d777df8bcd015fc"
+    }
+  },
+  "environment_script_sha256": "3a538bdefcda033a0d3a55eda7102007c6789d6da004b28bb47033a17fb6c70b",
+  "normalization": {
+    "rule": "Replace the executor-private workspace root by literal ${WORKSPACE}; no raw artifacts or raw logs are modified.",
+    "original_record": "${WORKSPACE}/poisson-word-focused/commands-original.json",
+    "original_record_sha256": "d9a107d124a12d0b29f4990da96e1499c266cf4d077d35291dbad4ca5bd578b8"
+  },
+  "replay_script_update": {
+    "name": "check.py",
+    "reason": "Add exact source-transfer verification after the parent explicitly named two existing instances; rendering commands and raw log records unchanged.",
+    "original_normalized_command_record_retained": true
+  }
+}

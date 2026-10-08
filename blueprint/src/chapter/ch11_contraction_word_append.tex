@@ -1,0 +1,34 @@
+\section{Chronological products under concatenation}
+\label{sec:contraction_word_append}
+
+\begin{theorem}[Later factors act on the left]
+\label{thm:contraction_word_append}
+\lean{Matrix.contractionWord_append, Matrix.contractionWord_word_append}
+\leanok
+\uses{def:contraction_word, def:poisson_word_append}
+For the chronological square-root products of
+Definition~\ref{def:contraction_word}, concatenation satisfies
+\begin{align}
+ D_{uv}&=D_vD_u.
+ \label{eq:contraction_word_append}
+\end{align}
+The identity depends only on the ordered matrix product, without a
+commutation, order, ground-state, or gap hypothesis on the matrices $k_i$.
+It holds for tuples of fixed lengths and for arbitrary finite words,
+including either empty word.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:contraction_word}
+Induct on the length of $v$, appending its last letter $i$.
+The empty word gives $D_{u\varnothing}=D_u=ID_u$.
+For the induction step,
+$D_{u(vi)}=G_iD_{uv}=G_i(D_vD_u)=(G_iD_v)D_u=D_{vi}D_u$.
+Thus the factors of the later word multiply on the left, as in
+\cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex}, lines 49--54.
+\end{proof}
+
+Together with~(\ref{eq:poisson_word_append_law}), this identifies the
+matrix-product orientation for distributional time composition.
+It supplies no event times, process with independent increments,
+path coupling, or locality assertion.

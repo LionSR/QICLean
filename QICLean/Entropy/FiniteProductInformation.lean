@@ -34,15 +34,6 @@ Manuscript:
 preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/01-preliminaries.tex and 09-amplification.tex
 Labels: sec:prelim, prop:amplification.
-Provenance-ID: amplification-regional-information-01
-Downstream declaration:
-FiniteProduct.conditionalMutualInformation_nonneg
-Provenance-ID: amplification-regional-information-02
-Downstream declaration:
-FiniteProduct.entropy_submodular
-Provenance-ID: amplification-regional-information-03
-Downstream declaration:
-FiniteProduct.mutualInformation_mono_left
 -/
 
 open scoped Matrix ComplexOrder
