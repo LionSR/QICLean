@@ -22,6 +22,7 @@ import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingHermitian
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
+import QICLean.Analysis.ContractionWordAppend
 import QICLean.Analysis.ContractionWordDecay
 import QICLean.Analysis.ContractionWordDecaySpectator
 import QICLean.Analysis.ConvexHullCompact
