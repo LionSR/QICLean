@@ -123,9 +123,9 @@ theorem sandwich_rearrange {X : Type*} [Fintype X] [DecidableEq X]
     _ = Ym * b * (Yt * Pt) * a * Pm := by rw [h5.eq]
     _ = (Ym * b * Yt) * (Pt * a * Pm) := by simp only [Matrix.mul_assoc]
 
-/-- `⟨θ, A B θ⟩ = ⟨Aᴴ θ, B θ⟩`. -/
-theorem star_dotProduct_mul_mulVec {X : Type*} [Fintype X] (A B : Matrix X X ℂ) (θ : X → ℂ) :
-    star θ ⬝ᵥ ((A * B) *ᵥ θ) = star (Aᴴ *ᵥ θ) ⬝ᵥ (B *ᵥ θ) := by
+/-- `⟨u, A B z⟩ = ⟨Aᴴ u, B z⟩`. -/
+theorem star_dotProduct_mul_mulVec {X : Type*} [Fintype X] (A B : Matrix X X ℂ) (u z : X → ℂ) :
+    star u ⬝ᵥ ((A * B) *ᵥ z) = star (Aᴴ *ᵥ u) ⬝ᵥ (B *ᵥ z) := by
   rw [← mulVec_mulVec, dotProduct_mulVec, star_mulVec, conjTranspose_conjTranspose]
 
 /-- The one-copy symbol of the polynomial word: `∑_i (q(ρ_Y) b_i p(ρ_Y))(p(ρ_P) a_i q(ρ_P))`. -/
@@ -231,6 +231,170 @@ theorem norm_markedScalarSymbol_sub_le [∀ v, NeZero (n v)] {t δ s : ℝ} (ht0
   refine (norm_pairing_approx_le _ _ _ _ hxP hMxP hyY hMy').trans ?_
   have := mul_nonneg (norm_nonneg (a i)) (norm_nonneg (b i))
   apply le_of_eq
+  ring
+
+/-- The polynomial word on `m + 1` copies:
+`∑_i (q(J_Y) b_i^{(k)} p(J_Y))(p(J_P) a_i^{(k)} q(J_P))` (`05-replicas.tex`, lines 693–702). -/
+noncomputable def polyWord (P Y : Finset V) {N : ℕ}
+    (a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ) (p q : ℝ[X]) (m : ℕ) :
+    Matrix (Fin (m + 1) → SiteConfig n) (Fin (m + 1) → SiteConfig n) ℂ :=
+  ∑ i, (aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Y)) q *
+      siteOp (Fin.last m) (b i) * aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Y)) p) *
+    (aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) P)) p *
+      siteOp (Fin.last m) (a i) * aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) P)) q)
+
+/-- **The symbol of a polynomial word** (`05-replicas.tex`, lines 776–812): stars are replaced
+by the corresponding marginals. -/
+theorem hasMarkedSymbol_polyWord (P Y : Finset V) {N : ℕ}
+    (a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ) (p q : ℝ[X]) :
+    HasMarkedSymbol (polyWord P Y a b p q) (polyWordSymbol P Y a b p q) := by
+  have hJ : ∀ (Q : Finset V) (r : ℝ[X]), HasMarkedSymbol
+      (fun m => aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)) r)
+      (fun θ => aeval (margLift Q θ) r) := fun Q r => (hasMarkedSymbol_starOp Q).aeval r
+  exact HasMarkedSymbol.sum (Ω := SiteConfig n) Finset.univ fun i _ =>
+    ((((hJ Y q).mul (HasMarkedSymbol.center (b i))).mul (hJ Y p)).mul
+      (((hJ P p).mul (HasMarkedSymbol.center (a i))).mul (hJ P q)))
+
+omit [Fintype V] [DecidableEq V] in
+theorem commute_symProj_of_forall {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {k : ℕ}
+    {M : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
+    (h : ∀ τ, Commute (permOp (copyPerm Ω k) τ) M) : Commute (symProj (copyPerm Ω k)) M := by
+  rw [symProj]
+  exact (Commute.sum_left _ _ _ fun τ _ => h τ).smul_left _
+
+variable [∀ v, NeZero (n v)]
+
+theorem isHermitian_markedRatio {t : ℝ} (ht : 0 ≤ t) (m : ℕ) (Q : Finset V) :
+    (markedRatio (fun v => Fin (n v)) t m Q).IsHermitian := by
+  rw [markedRatio_eq_hom _ ht]
+  exact (isOrthogonalResolution_branch m Q).isHermitian_hom (isHermitian_branch _ m Q) _
+
+theorem isHermitian_markedRatio_inv {t : ℝ} (ht : 0 ≤ t) (m : ℕ) (Q : Finset V) :
+    ((markedRatio (fun v => Fin (n v)) t m Q)⁻¹).IsHermitian := by
+  rw [markedRatio_inv_eq_hom _ ht]
+  exact (isOrthogonalResolution_branch m Q).isHermitian_hom (isHermitian_branch _ m Q) _
+
+/-- **The operator-side approximation** (`05-replicas.tex`, lines 693–708): if, at `m + 1`
+copies and for `Q = P, Y`, `‖R_Q - p(J_Q)‖ ≤ 2s`, `‖p(J_Q)‖ ≤ 2`, `‖R_Q‖ ≤ C_R`, and on
+symmetric vectors `‖R_Q^{-1} z‖ ≤ C_I ‖z‖` and `‖(R_Q^{-1} - q(J_Q)) z‖ ≤ 3s ‖z‖`, then
+`‖(O_{m+1} - Π W Π) Π‖ ≤ s K ∑_i ‖a_i‖ ‖b_i‖` for the polynomial word `W`. -/
+theorem norm_markedSimilarity_sub_polyWord_le {t s CR CI : ℝ} (ht0 : 0 ≤ t) (m : ℕ)
+    (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hCR : 0 ≤ CR) (hCI : 0 ≤ CI)
+    {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
+    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y)) {N : ℕ}
+    {a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ} (ha : ∀ i, IsSupportedOn (a i) P)
+    (hb : ∀ i, IsSupportedOn (b i) Y) (hdec : h = ∑ i, b i * a i) {p q : ℝ[X]}
+    (hR : ∀ Q, Q = P ∨ Q = Y → ‖markedRatio (fun v => Fin (n v)) t m Q -
+      aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)) p‖ ≤ 2 * s)
+    (hp : ∀ Q, Q = P ∨ Q = Y →
+      ‖aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)) p‖ ≤ 2)
+    (hRn : ∀ Q, Q = P ∨ Q = Y → ‖markedRatio (fun v => Fin (n v)) t m Q‖ ≤ CR)
+    (hRi : ∀ Q, Q = P ∨ Q = Y → ∀ z : (Fin (m + 1) → SiteConfig n) → ℂ,
+      z ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)) →
+      ‖(EuclideanSpace.equiv _ ℂ).symm ((markedRatio (fun v => Fin (n v)) t m Q)⁻¹ *ᵥ z)‖ ≤
+        CI * ‖(EuclideanSpace.equiv _ ℂ).symm z‖)
+    (hI : ∀ Q, Q = P ∨ Q = Y → ∀ z : (Fin (m + 1) → SiteConfig n) → ℂ,
+      z ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)) →
+      ‖(EuclideanSpace.equiv _ ℂ).symm ((markedRatio (fun v => Fin (n v)) t m Q)⁻¹ *ᵥ z -
+        aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)) q *ᵥ z)‖ ≤
+        3 * s * ‖(EuclideanSpace.equiv _ ℂ).symm z‖) :
+    ‖(markedSimilarity n t (m + 1) P Y F h -
+        HasMarkedSymbol.compress (polyWord P Y a b p q) (m + 1)) * symProj (copyPerm (SiteConfig n) (m + 1))‖ ≤
+      s * ((2 * CI + 6) * CR * CI + (CR * CI + 2 * CI + 6) * (2 * CI + 6)) *
+        ∑ i, ‖a i‖ * ‖b i‖ := by
+  set Pi := symProj (copyPerm (SiteConfig n) (m + 1))
+  set O := markedSimilarity n t (m + 1) P Y F h
+  set W := polyWord P Y a b p q m
+  set K := (2 * CI + 6) * CR * CI + (CR * CI + 2 * CI + 6) * (2 * CI + 6)
+  have hK : 0 ≤ K := by positivity
+  have hOc : Commute Pi O :=
+    commute_symProj_of_forall (commute_copyPerm_markedSimilarity_succ ht0 m hPY hPF hYF hh)
+  have hPP : Pi * Pi = Pi := symProj_mul_symProj
+  have heq : (O - HasMarkedSymbol.compress (polyWord P Y a b p q) (m + 1)) * Pi =
+      Pi * (O - W) * Pi := by
+    change (O - Pi * W * Pi) * Pi = _
+    rw [Matrix.sub_mul, Matrix.mul_assoc (Pi * W) Pi Pi, hPP, Matrix.mul_sub, Matrix.sub_mul,
+      hOc.eq, Matrix.mul_assoc O Pi Pi, hPP]
+  rw [heq]
+  refine l2_opNorm_symProj_mul_mul_symProj_le (by positivity) fun u z hu hz => ?_
+  have hmv : ∀ (M : Matrix (Fin (m + 1) → SiteConfig n) (Fin (m + 1) → SiteConfig n) ℂ)
+      (v : (Fin (m + 1) → SiteConfig n) → ℂ),
+      ‖(EuclideanSpace.equiv _ ℂ).symm (M *ᵥ v)‖ ≤ ‖M‖ * ‖(EuclideanSpace.equiv _ ℂ).symm v‖ :=
+    fun M v => by simpa using M.l2_opNorm_mulVec ((EuclideanSpace.equiv _ ℂ).symm v)
+  set R := fun Q : Finset V => markedRatio (fun v => Fin (n v)) t m Q
+  set J := fun Q : Finset V => starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)
+  -- One sandwiched vector and its approximation.
+  have hsand : ∀ Q, Q = P ∨ Q = Y → ∀ (c : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+      (w : (Fin (m + 1) → SiteConfig n) → ℂ),
+      w ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)) →
+      ‖(EuclideanSpace.equiv _ ℂ).symm (R Q *ᵥ (siteOp (Fin.last m) c *ᵥ ((R Q)⁻¹ *ᵥ w)) -
+          aeval (J Q) p *ᵥ (siteOp (Fin.last m) c *ᵥ (aeval (J Q) q *ᵥ w)))‖ ≤
+        s * (2 * CI + 6) * ‖c‖ * ‖(EuclideanSpace.equiv _ ℂ).symm w‖ ∧
+      ‖(EuclideanSpace.equiv _ ℂ).symm (R Q *ᵥ (siteOp (Fin.last m) c *ᵥ ((R Q)⁻¹ *ᵥ w)))‖ ≤
+        CR * ‖c‖ * CI * ‖(EuclideanSpace.equiv _ ℂ).symm w‖ := by
+    intro Q hQ c w hw
+    have hc : ‖siteOp (Fin.last m) c‖ ≤ ‖c‖ := l2_opNorm_siteOp_le _ _
+    have hw0 := norm_nonneg ((EuclideanSpace.equiv _ ℂ).symm w)
+    refine ⟨(norm_sandwich_approx_le _ _ _ _ _ w (hR Q hQ) (hRi Q hQ w hw) (hI Q hQ w hw)
+      (hp Q hQ)).trans ?_, ?_⟩
+    · calc ‖siteOp (Fin.last m) c‖ * (2 * s * CI + 2 * (3 * s)) *
+            ‖(EuclideanSpace.equiv _ ℂ).symm w‖
+          ≤ ‖c‖ * (2 * s * CI + 2 * (3 * s)) * ‖(EuclideanSpace.equiv _ ℂ).symm w‖ := by gcongr
+        _ = _ := by ring
+    · calc _ ≤ ‖R Q‖ * (‖siteOp (Fin.last m) c‖ * (CI * ‖(EuclideanSpace.equiv _ ℂ).symm w‖)) :=
+            (hmv _ _).trans (mul_le_mul_of_nonneg_left ((hmv _ _).trans
+              (mul_le_mul_of_nonneg_left (hRi Q hQ w hw) (norm_nonneg _))) (norm_nonneg _))
+        _ ≤ CR * (‖c‖ * (CI * ‖(EuclideanSpace.equiv _ ℂ).symm w‖)) := by
+            gcongr
+            exact hRn Q hQ
+        _ = _ := by ring
+  have hO := star_dotProduct_markedSimilarity_eq_sum (F := F) ht0 m hPY hPF hYF hh ha hb hdec
+    hu hz
+  have hW : star u ⬝ᵥ (W *ᵥ z) = ∑ i, star u ⬝ᵥ
+      (((aeval (J Y) q * siteOp (Fin.last m) (b i) * aeval (J Y) p) *
+        (aeval (J P) p * siteOp (Fin.last m) (a i) * aeval (J P) q)) *ᵥ z) := by
+    simp only [W, polyWord, sum_mulVec, dotProduct_sum]
+    rfl
+  have e1 : (R Y)ᴴ = R Y := (isHermitian_markedRatio ht0 m Y).eq
+  have e2 : ((R Y)⁻¹)ᴴ = (R Y)⁻¹ := (isHermitian_markedRatio_inv ht0 m Y).eq
+  have e3 : (aeval (J Y) p)ᴴ = aeval (J Y) p :=
+    (isHermitian_aeval_starOp (ι := fun v => Fin (n v)) m Y p).eq
+  have e4 : (aeval (J Y) q)ᴴ = aeval (J Y) q :=
+    (isHermitian_aeval_starOp (ι := fun v => Fin (n v)) m Y q).eq
+  rw [sub_mulVec, dotProduct_sub, hO, hW, ← Finset.sum_sub_distrib, Finset.mul_sum,
+    Finset.sum_mul, Finset.sum_mul]
+  refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
+  change ‖star u ⬝ᵥ ((((R Y)⁻¹ * siteOp (Fin.last m) (b i) * R Y) *
+      (R P * siteOp (Fin.last m) (a i) * (R P)⁻¹)) *ᵥ z) - star u ⬝ᵥ
+      (((aeval (J Y) q * siteOp (Fin.last m) (b i) * aeval (J Y) p) *
+        (aeval (J P) p * siteOp (Fin.last m) (a i) * aeval (J P) q)) *ᵥ z)‖ ≤ _
+  rw [star_dotProduct_mul_mulVec ((R Y)⁻¹ * siteOp (Fin.last m) (b i) * R Y),
+    star_dotProduct_mul_mulVec (aeval (J Y) q * siteOp (Fin.last m) (b i) * aeval (J Y) p)]
+  rw [conjTranspose_mul, conjTranspose_mul, conjTranspose_mul, conjTranspose_mul,
+    e1, e2, e3, e4, conjTranspose_siteOp]
+  simp only [← mulVec_mulVec]
+  obtain ⟨hx, hMx⟩ := hsand P (Or.inl rfl) (a i) z hz
+  obtain ⟨hy, hMy⟩ := hsand Y (Or.inr rfl) (b i)ᴴ u hu
+  rw [l2_opNorm_conjTranspose] at hy hMy
+  have hu0 := norm_nonneg ((EuclideanSpace.equiv _ ℂ).symm u)
+  have hz0 := norm_nonneg ((EuclideanSpace.equiv _ ℂ).symm z)
+  have ha0 := norm_nonneg (a i)
+  have hb0 := norm_nonneg (b i)
+  have hMy' : ‖(EuclideanSpace.equiv _ ℂ).symm (aeval (J Y) p *ᵥ
+      (siteOp (Fin.last m) (b i)ᴴ *ᵥ (aeval (J Y) q *ᵥ u)))‖ ≤
+      (CR * CI + 2 * CI + 6) * ‖b i‖ * ‖(EuclideanSpace.equiv _ ℂ).symm u‖ := by
+    have hsplit : aeval (J Y) p *ᵥ (siteOp (Fin.last m) (b i)ᴴ *ᵥ (aeval (J Y) q *ᵥ u)) =
+        R Y *ᵥ (siteOp (Fin.last m) (b i)ᴴ *ᵥ ((R Y)⁻¹ *ᵥ u)) -
+        (R Y *ᵥ (siteOp (Fin.last m) (b i)ᴴ *ᵥ ((R Y)⁻¹ *ᵥ u)) -
+          aeval (J Y) p *ᵥ (siteOp (Fin.last m) (b i)ᴴ *ᵥ (aeval (J Y) q *ᵥ u))) := by abel
+    rw [hsplit, map_sub]
+    calc _ ≤ CR * ‖b i‖ * CI * ‖(EuclideanSpace.equiv _ ℂ).symm u‖ +
+          s * (2 * CI + 6) * ‖b i‖ * ‖(EuclideanSpace.equiv _ ℂ).symm u‖ :=
+          (norm_sub_le _ _).trans (add_le_add hMy hy)
+      _ ≤ CR * ‖b i‖ * CI * ‖(EuclideanSpace.equiv _ ℂ).symm u‖ +
+          1 * (2 * CI + 6) * ‖b i‖ * ‖(EuclideanSpace.equiv _ ℂ).symm u‖ := by gcongr
+      _ = _ := by ring
+  refine (norm_pairing_approx_le _ _ _ _ hx hMx hy hMy').trans (le_of_eq ?_)
   ring
 
 end TensorPower
