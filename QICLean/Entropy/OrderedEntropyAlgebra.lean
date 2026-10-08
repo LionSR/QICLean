@@ -26,7 +26,7 @@ state theorem. In particular, the crossed upper bounds in
 partition before applying that result. Empty families and signed error bounds
 are allowed throughout; no normalization of the set function is assumed.
 
-## References and provenance
+## References
 
 The cancellation argument follows Lemma 11.1 (source label
 `geometry:cancellation`) of OpenAI, *A two-dimensional area law from a global
@@ -46,27 +46,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/10-geometry.tex
 Labels: geometry:cancellation.
-Provenance-ID: 8760-qic-ordered-01
-Downstream declaration:
-Entropy.OrderedSetFunction.union_biUnion_le_sum
-Provenance-ID: 8760-qic-ordered-02
-Downstream declaration:
-Entropy.OrderedSetFunction.past
-Provenance-ID: 8760-qic-ordered-03
-Downstream declaration:
-Entropy.OrderedSetFunction.defect
-Provenance-ID: 8760-qic-ordered-04
-Downstream declaration:
-Entropy.OrderedSetFunction.sum_defect
-Provenance-ID: 8760-qic-ordered-05
-Downstream declaration:
-Entropy.OrderedSetFunction.chain_lower
-Provenance-ID: 8760-qic-ordered-06
-Downstream declaration:
-Entropy.OrderedSetFunction.two_family_le_half_sum_defect
-Provenance-ID: 8760-qic-ordered-07
-Downstream declaration:
-Entropy.OrderedSetFunction.two_family_le_half_sum
 -/
 
 open scoped BigOperators

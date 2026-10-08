@@ -26,9 +26,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Labels: comparator:high-label.
-Provenance-ID: 8753-qic-iid-tail-threshold-01
-Downstream declaration:
-Real.eventually_iid_tail_error_le_half
 -/
 
 open Filter
