@@ -148,6 +148,7 @@ import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Analysis.TraceNormContractivity
 import QICLean.Analysis.TraceNormFrobenius
 import QICLean.Analysis.TraceNormVariational
+import QICLean.Analysis.Transport
 import QICLean.Analysis.TwoProjectionAngleBlock
 import QICLean.Analysis.TwoProjectionAngleOrthogonality
 import QICLean.Analysis.TwoProjectionCompression
