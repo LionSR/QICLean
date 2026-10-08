@@ -46,7 +46,7 @@ namespace IsRegionSplit
 
 variable {D : Finset V} {A B : Type*} {φ : RegionConfig n D ≃ A} {e : SiteConfig n ≃ A × B}
 
-omit [Fintype V] in
+omit [Fintype V] [DecidableEq V] in
 theorem _root_.Entropy.siteConfig_eq_of_mem_of_not_mem {σ τ : SiteConfig n}
     (h1 : ∀ v ∈ D, σ v = τ v) (h2 : ∀ v ∉ D, σ v = τ v) : σ = τ := by
   funext v
@@ -67,7 +67,7 @@ theorem symm_apply_mem (he : IsRegionSplit D φ e) (p : A × B) {v : V}
   congrFun (he.restrict_symm p) ⟨v, hv⟩
 
 /-- **Lifts in split coordinates**: `lift_D K = K ⊗ 1`. -/
-theorem localLift_submatrix (he : IsRegionSplit D φ e) [Fintype B] [DecidableEq B]
+theorem localLift_submatrix (he : IsRegionSplit D φ e) [DecidableEq B]
     (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :
     (localLift D K).submatrix e.symm e.symm =
       K.submatrix φ.symm φ.symm ⊗ₖ (1 : Matrix B B ℂ) := by

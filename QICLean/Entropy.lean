@@ -57,6 +57,7 @@ import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.ProductOverlapPurity
 import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.RegionEntropy
+import QICLean.Entropy.RegionSplit
 import QICLean.Entropy.RegionUnion
 import QICLean.Entropy.RestoringGroundComponent
 import QICLean.Entropy.RestoringMarginal
