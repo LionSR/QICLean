@@ -1,0 +1,52 @@
+% Source: OpenAI2026AreaLaw, Lemma 7.2, 06-transport.tex, lines 157--172.
+% Manuscript revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\section{Hermitian intertwining and matrix sandwiches}
+\label{sec:matrix_sandwich_intertwine}
+
+The following algebraic identities are auxiliary to the sandwich formulas
+in the proof of Lemma~7.2 of~\cite{OpenAI2026AreaLaw}.
+They hold for finite matrices over a semiring with involution; a
+multiplicative identity is not required. The notation $L^*$ denotes the
+conjugate transpose, and a matrix is Hermitian when $L^*=L$.
+
+\begin{theorem}[The adjoint intertwining identity]
+  \label{thm:matrix_adjoint_intertwine}
+  \lean{Matrix.IsHermitian.conjTranspose_intertwine}
+  \leanok
+  Let $L_1,L_2$ be Hermitian square matrices, and let $J$ be a rectangular
+  matrix satisfying $L_1J=JL_2$. Then
+  \begin{align}
+    L_2J^*&=J^*L_1.
+  \end{align}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Taking adjoints gives $J^*L_1^*=L_2^*J^*$.
+  The two Hermitian identities give the conclusion.
+\end{proof}
+
+\begin{theorem}[Intertwining a sandwich]
+  \label{thm:matrix_sandwich_intertwine}
+  \lean{Matrix.IsHermitian.sandwich_intertwine}
+  \leanok
+  Under the hypotheses of Theorem~\ref{thm:matrix_adjoint_intertwine},
+  every square matrix $H$ of the same size as $L_2$ satisfies
+  \begin{align}
+    L_1(JHJ^*)L_1&=J(L_2HL_2)J^*.
+  \end{align}
+  No Hermitian assumption on $H$ or isometry assumption on $J$ is required.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:matrix_adjoint_intertwine}
+  Associativity, the original intertwining identity, and
+  Theorem~\ref{thm:matrix_adjoint_intertwine} give
+  \begin{align}
+    L_1(JHJ^*)L_1
+      &=(L_1J)H(J^*L_1)
+       =(JL_2)H(L_2J^*)
+       =J(L_2HL_2)J^*.
+  \end{align}
+\end{proof}

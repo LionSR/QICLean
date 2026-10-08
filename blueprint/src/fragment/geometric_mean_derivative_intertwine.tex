@@ -31,9 +31,11 @@ Lemma~7.2 of~\cite{OpenAI2026AreaLaw}.
 
 \begin{proof}
   \leanok
-  \uses{thm:power_derivative_intertwine,thm:real_power_intertwine}
+  \uses{thm:power_derivative_intertwine,thm:real_power_intertwine,
+    thm:matrix_sandwich_intertwine}
   Functional calculus gives $A_1^sJ=JA_2^s$ for every real $s$.
-  Taking adjoints gives $J^*A_1^s=A_2^sJ^*$, and hence
+  The powers are Hermitian, so
+  Theorem~\ref{thm:matrix_sandwich_intertwine} gives
   \begin{align*}
     A_1^s(JHJ^*)A_1^s&=J(A_2^sHA_2^s)J^*.
   \end{align*}
@@ -62,8 +64,9 @@ Lemma~7.2 of~\cite{OpenAI2026AreaLaw}.
 
 \begin{proof}
   \leanok
-  \uses{thm:geometric_mean_derivative_intertwine}
-  Taking adjoints gives $A_2J^*=J^*A_1$ and $B_2J^*=J^*B_1$.
+  \uses{thm:geometric_mean_derivative_intertwine,thm:matrix_adjoint_intertwine}
+  Theorem~\ref{thm:matrix_adjoint_intertwine} gives
+  $A_2J^*=J^*A_1$ and $B_2J^*=J^*B_1$.
   Apply Theorem~\ref{thm:geometric_mean_derivative_intertwine}
   with the matrix pairs exchanged and intertwiner $J^*$.
 \end{proof}

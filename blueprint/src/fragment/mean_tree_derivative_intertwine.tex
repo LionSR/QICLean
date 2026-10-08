@@ -1,0 +1,99 @@
+% Source: OpenAI2026AreaLaw, Lemma 7.2, 06-transport.tex, lines 144--172.
+% Manuscript revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\section{Intertwining the recursive maps of a mean tree}
+\label{sec:mean_tree_derivative_intertwine}
+
+Let $T$ be a weighted binary tree as in Definition~\ref{def:mean_tree},
+with labels in a set $I$ and positive definite inputs $(A_i)_{i\in I}$.
+Write $M_T(A)$ for its root. For a label $j$, define the complex-linear
+map $D_{T,j}^A$ recursively. At a leaf labelled $i$, it is the identity
+map if $i=j$ and the zero map otherwise. At a vertex with parameter
+$p\in[0,1]$ and subtrees $l,r$, it is
+\begin{align}
+  D_{T,j}^A[H]
+    &=D_1F_p\bigl(M_l(A),M_r(A)\bigr)[D_{l,j}^A[H]]
+      +D_2F_p\bigl(M_l(A),M_r(A)\bigr)[D_{r,j}^A[H]].
+\end{align}
+Here $D_1F_p,D_2F_p$ are the complex-linear maps of
+Theorem~\ref{thm:geometric_mean_derivative_intertwine}.
+Repeated labels contribute through both subtrees whenever they occur in both.
+
+Let $w_{T,j}$ be the terminal weight of label $j$, summing over all its
+occurrences. The associated normalized map is
+\begin{align}
+  \Phi_{T,j}^A[H]
+    &=w_{T,j}^{-1}M_T(A)^{-1/2}
+      D_{T,j}^A[A_j^{1/2}HA_j^{1/2}]M_T(A)^{-1/2},
+\end{align}
+with the convention $0^{-1}=0$. Thus this definition also applies when
+$w_{T,j}=0$. For distinct labels it is the normalized map appearing in
+Theorem~\ref{thm:mean_tree_leaf_maps}. The identities below concern these
+recursive maps, including repeated labels, and are auxiliary to
+Lemma~7.2 of~\cite{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Intertwining the recursive derivative and normalized map]
+  \label{thm:mean_tree_derivative_intertwine}
+  \lean{Matrix.MeanTree.derivLabel_intertwine,
+    Matrix.MeanTree.leafMap_intertwine}
+  \leanok
+  Let $(A_i)_{i\in I}$ and $(B_i)_{i\in I}$ be families of positive definite
+  matrices on two finite-dimensional complex Hilbert spaces.
+  Suppose that a linear map $J$ from the second space to the first satisfies
+  $A_iJ=JB_i$ for every $i\in I$. For the same tree $T$, every label $j$
+  and every matrix $H$ on the second space satisfy
+  \begin{align}
+    D_{T,j}^A[JHJ^*]&=J D_{T,j}^B[H]J^*, \\
+    \Phi_{T,j}^A[JHJ^*]&=J\Phi_{T,j}^B[H]J^*.
+  \end{align}
+  No distinctness of labels, positivity of $w_{T,j}$, Hermitian assumption
+  on $H$, or isometry assumption on $J$ is required.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{def:mean_tree, thm:mean_tree_properties, thm:mean_tree_intertwine,
+    thm:geometric_mean_derivative_intertwine, thm:real_power_intertwine,
+    thm:matrix_sandwich_intertwine}
+  Induct on $T$ for the identity involving $D_{T,j}$.
+  At a leaf, the identity and zero maps both satisfy the assertion.
+  At a vertex, Theorem~\ref{thm:mean_tree_intertwine} intertwines the
+  positive definite subtree roots. Apply
+  Theorem~\ref{thm:geometric_mean_derivative_intertwine} to each term
+  in the recursion, using the two induction hypotheses, and add the
+  resulting identities.
+
+  For the normalized map, Theorem~\ref{thm:real_power_intertwine} gives
+  \begin{align}
+    A_j^{1/2}J&=JB_j^{1/2}, \\
+    M_T(A)^{-1/2}J&=JM_T(B)^{-1/2}.
+  \end{align}
+  These powers are Hermitian. Apply
+  Theorem~\ref{thm:matrix_sandwich_intertwine} to the inner square-root
+  sandwich and the outer inverse-square-root sandwich, with the
+  derivative intertwining identity between them. Multiplication by the
+  common scalar $w_{T,j}^{-1}$ proves the normalized identity, including
+  $w_{T,j}=0$.
+\end{proof}
+
+\begin{theorem}[Compression of the recursive derivative and normalized map]
+  \label{thm:mean_tree_derivative_compress}
+  \lean{Matrix.MeanTree.derivLabel_compress,
+    Matrix.MeanTree.leafMap_compress}
+  \leanok
+  Under the hypotheses of Theorem~\ref{thm:mean_tree_derivative_intertwine},
+  every matrix $X$ on the first space satisfies
+  \begin{align}
+    J^*D_{T,j}^A[X]J&=D_{T,j}^B[J^*XJ], \\
+    J^*\Phi_{T,j}^A[X]J&=\Phi_{T,j}^B[J^*XJ].
+  \end{align}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:matrix_adjoint_intertwine, thm:mean_tree_derivative_intertwine}
+  The inputs are Hermitian, so
+  Theorem~\ref{thm:matrix_adjoint_intertwine} gives $B_iJ^*=J^*A_i$
+  for every label $i$. Apply
+  Theorem~\ref{thm:mean_tree_derivative_intertwine} with the two input
+  families exchanged and intertwiner $J^*$, using $(J^*)^*=J$.
+\end{proof}

@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Matrix.Bilinear
+import QICLean.Algebra.MatrixSandwichIntertwine
 import QICLean.Analysis.OperatorMean.MeanDerivative
 
 /-!
@@ -61,13 +62,6 @@ theorem rpowDeriv_intertwine
       rw [← Matrix.nonsing_inv_eq_ringInverse, ← Matrix.nonsing_inv_eq_ringInverse]
       apply (Matrix.inv_mul_eq_iff_eq_mul_of_invertible _ _ _).2
       rw [← Matrix.mul_assoc, hshift, Matrix.mul_inv_cancel_right_of_invertible]
-    have hresStar (t : ℝ) (ht : 0 < t) :
-        Jᴴ * Ring.inverse (t • (1 : Matrix n n ℂ) + A) =
-          Ring.inverse (t • (1 : Matrix m m ℂ) + B) * Jᴴ := by
-      have hstar := congrArg Matrix.conjTranspose (hres t ht)
-      simpa only [← Matrix.nonsing_inv_eq_ringInverse, Matrix.conjTranspose_mul,
-        ((PosDef.one.smul ht).add hA).isHermitian.inv.eq,
-        ((PosDef.one.smul ht).add hB).isHermitian.inv.eq] using hstar
     let L : Matrix m m ℂ →L[ℂ] Matrix n n ℂ :=
       LinearMap.toContinuousLinearMap
         ((mulRightLinearMap n ℂ Jᴴ).comp (mulLeftLinearMap m ℂ J))
@@ -84,8 +78,10 @@ theorem rpowDeriv_intertwine
           Ring.inverse (t • (1 : Matrix m m ℂ) + B))) * Jᴴ
       rw [Matrix.mul_smul, Matrix.smul_mul]
       congr 1
-      simp only [← Matrix.mul_assoc, hres t ht]
-      simp only [Matrix.mul_assoc, hresStar t ht]
+      simpa only [← Matrix.nonsing_inv_eq_ringInverse] using
+        (((PosDef.one.smul ht).add hA).isHermitian.inv.sandwich_intertwine
+          ((PosDef.one.smul ht).add hB).isHermitian.inv J
+          (by simpa only [← Matrix.nonsing_inv_eq_ringInverse] using hres t ht) H)
     rw [setIntegral_congr_fun measurableSet_Ioi hcomm,
       ContinuousLinearMap.integral_comp_comm L hint]
     change rpowConst p • (J * (∫ t in Ioi (0 : ℝ), t ^ p •
@@ -104,9 +100,8 @@ theorem rpowDeriv_compress
     (J : Matrix n m ℂ) (hAJ : A * J = J * B)
     {p : ℝ} (hp : p ∈ Icc (0 : ℝ) 1) (X : Matrix n n ℂ) :
     Jᴴ * rpowDeriv p A X * J = rpowDeriv p B (Jᴴ * X * J) := by
-  have hstar := congrArg Matrix.conjTranspose hAJ
-  simp only [Matrix.conjTranspose_mul, hA.isHermitian.eq, hB.isHermitian.eq] at hstar
+  have hstar := hA.isHermitian.conjTranspose_intertwine hB.isHermitian J hAJ
   simpa only [Matrix.conjTranspose_conjTranspose] using
-    (rpowDeriv_intertwine hB hA Jᴴ hstar.symm hp X).symm
+    (rpowDeriv_intertwine hB hA Jᴴ hstar hp X).symm
 
 end Matrix

@@ -27,11 +27,13 @@ Lemma~7.2 of~\cite{OpenAI2026AreaLaw}.
 
 \begin{proof}
   \leanok
+  \uses{thm:matrix_sandwich_intertwine}
   The endpoints follow from the definitions. For $0<p<1$ and $s>0$,
   both shifted matrices are positive definite. The identity
   $(sI+A)J=J(sI+B)$ gives
-  $(sI+A)^{-1}J=J(sI+B)^{-1}$. Taking adjoints gives
-  $J^*(sI+A)^{-1}=(sI+B)^{-1}J^*$. Consequently,
+  $(sI+A)^{-1}J=J(sI+B)^{-1}$.
+  The inverses are Hermitian, so
+  Theorem~\ref{thm:matrix_sandwich_intertwine} gives
   \begin{align*}
     (sI+A)^{-1}JHJ^*(sI+A)^{-1}
       &=J(sI+B)^{-1}H(sI+B)^{-1}J^*.
@@ -56,7 +58,8 @@ Lemma~7.2 of~\cite{OpenAI2026AreaLaw}.
 
 \begin{proof}
   \leanok
-  Taking adjoints of $AJ=JB$ gives $BJ^*=J^*A$.
+  \uses{thm:matrix_adjoint_intertwine,thm:power_derivative_intertwine}
+  Theorem~\ref{thm:matrix_adjoint_intertwine} gives $BJ^*=J^*A$.
   Apply Theorem~\ref{thm:power_derivative_intertwine} with $A,B$
   exchanged and with intertwiner $J^*$.
 \end{proof}

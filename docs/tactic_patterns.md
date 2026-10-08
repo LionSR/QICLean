@@ -35,6 +35,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Every real exponent is allowed. Negative powers vanish on the
   kernel, and exponent zero gives the identity. No isometry is required.
 
+### Rectangular sandwich intertwining — promoted lemmas (2026-10-08)
+
+- **Pattern:** Move a Hermitian factor through a rectangular intertwiner,
+  and its adjoint through the conjugate transpose, to transport a sandwich.
+- **Seen:** Resolvents in `PowerDerivativeIntertwine.lean`, real powers in
+  `GeometricMeanDerivativeIntertwine.lean`, and the leaf and root normalization
+  factors in `MeanTreeDerivativeIntertwine.lean`.
+- **Abstraction:** `Matrix.IsHermitian.conjTranspose_intertwine` and
+  `Matrix.IsHermitian.sandwich_intertwine`, in
+  `Algebra/MatrixSandwichIntertwine.lean`. All three consumers reuse these
+  identities; compression uses the adjoint identity with the families exchanged.
+- **Caveats:** Directions are arbitrary. Rectangular products require matrix
+  associativity. Neither isometry nor nonempty index sets are assumed.
+
 ## Candidates
 
 ### Finite-spectrum functional-calculus scalar reduction — candidate (2026-10-07)
@@ -68,16 +82,3 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Commutation and the actual inverse identity are proved before
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
-
-### Rectangular sandwich intertwining — candidate (2026-10-08)
-
-- **Pattern:** Normalize products to the left to use `L₁ * J = J * L₂`,
-  then to the right to use its adjoint, obtaining transport of `J * H * Jᴴ`.
-- **Seen:** The resolvent sandwich in `PowerDerivativeIntertwine.lean` and
-  the real-power sandwich in `GeometricMeanDerivativeIntertwine.lean`.
-- **Abstraction:** The latter proof uses one local identity for both its
-  inner and outer sandwiches. There are two occurrences across two files;
-  no new tactic is needed.
-- **Caveats:** Use `Matrix.mul_assoc` for rectangular products. The direction
-  is arbitrary; no isometry or nonempty index set is required. Hermiticity
-  is used to derive the adjoint intertwining equation.

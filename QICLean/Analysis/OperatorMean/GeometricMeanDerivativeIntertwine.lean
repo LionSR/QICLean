@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.MatrixSandwichIntertwine
 import QICLean.Analysis.OperatorMean.PowerDerivativeIntertwine
 import QICLean.Analysis.OperatorMean.RealPowerIntertwine
 
@@ -42,9 +43,6 @@ theorem geomMeanDerivRight_intertwine
   have hpow (s : ℝ) : A₁ ^ s * J = J * A₂ ^ s :=
     hA₁.posSemidef.rpow_intertwine hA₂.posSemidef J hAJ s
   simp only [ContinuousLinearMap.comp_apply, sandwichL_apply]
-  have hstar (s : ℝ) : Jᴴ * A₁ ^ s = A₂ ^ s * Jᴴ := by
-    simpa only [conjTranspose_mul, (hA₁.rpow_isHermitian s).eq,
-      (hA₂.rpow_isHermitian s).eq] using congrArg Matrix.conjTranspose (hpow s)
   have hwhite :
       (A₁ ^ (-(1 / 2) : ℝ) * B₁ * A₁ ^ (-(1 / 2) : ℝ)) * J =
         J * (A₂ ^ (-(1 / 2) : ℝ) * B₂ * A₂ ^ (-(1 / 2) : ℝ)) := by
@@ -55,9 +53,8 @@ theorem geomMeanDerivRight_intertwine
       Matrix.mul_assoc J (A₂ ^ (-(1 / 2) : ℝ)) B₂,
       Matrix.mul_assoc J (A₂ ^ (-(1 / 2) : ℝ) * B₂) (A₂ ^ (-(1 / 2) : ℝ))]
   have hsandwich (s : ℝ) (X : Matrix m m ℂ) :
-      A₁ ^ s * (J * X * Jᴴ) * A₁ ^ s = J * (A₂ ^ s * X * A₂ ^ s) * Jᴴ := by
-    simp only [← Matrix.mul_assoc, hpow s]
-    simp only [Matrix.mul_assoc, hstar s]
+      A₁ ^ s * (J * X * Jᴴ) * A₁ ^ s = J * (A₂ ^ s * X * A₂ ^ s) * Jᴴ :=
+    (hA₁.rpow_isHermitian s).sandwich_intertwine (hA₂.rpow_isHermitian s) J (hpow s) X
   rw [hsandwich,
     rpowDeriv_intertwine (hA₁.whiten hB₁) (hA₂.whiten hB₂) J hwhite hp, hsandwich]
 
@@ -90,12 +87,8 @@ theorem geomMeanDerivRight_compress
     {p : ℝ} (hp : p ∈ Icc (0 : ℝ) 1) (X : Matrix n n ℂ) :
     Jᴴ * geomMeanDerivRight p A₁ B₁ X * J =
       geomMeanDerivRight p A₂ B₂ (Jᴴ * X * J) := by
-  have hAstar : A₂ * Jᴴ = Jᴴ * A₁ := by
-    simpa only [conjTranspose_mul, hA₁.isHermitian.eq, hA₂.isHermitian.eq] using
-      (congrArg Matrix.conjTranspose hAJ).symm
-  have hBstar : B₂ * Jᴴ = Jᴴ * B₁ := by
-    simpa only [conjTranspose_mul, hB₁.isHermitian.eq, hB₂.isHermitian.eq] using
-      (congrArg Matrix.conjTranspose hBJ).symm
+  have hAstar := hA₁.isHermitian.conjTranspose_intertwine hA₂.isHermitian J hAJ
+  have hBstar := hB₁.isHermitian.conjTranspose_intertwine hB₂.isHermitian J hBJ
   simpa only [conjTranspose_conjTranspose] using
     (geomMeanDerivRight_intertwine hA₂ hB₂ hA₁ hB₁ Jᴴ hAstar hBstar hp X).symm
 
