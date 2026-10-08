@@ -48,5 +48,6 @@ import QICLean.Representation.StarOperator
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.UnitaryCommutant
+import QICLean.Representation.UnitaryTwirl
 import QICLean.Representation.WeylDimension
 import QICLean.Representation.WeylRecursion
