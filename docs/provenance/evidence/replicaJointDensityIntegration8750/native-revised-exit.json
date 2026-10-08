@@ -1,0 +1,15 @@
+{
+  "kind": "verification",
+  "command": [
+    "lake",
+    "exe",
+    "checkdecls",
+    "blueprint/lean_decls"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 51.41,
+  "source_revision": "7840e716185f9d477c3c135192f3ec0573813e14",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/native-revised.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,35 @@
+{
+  "result": "passed",
+  "complete_definition_visible": true,
+  "complete_proof_visible": true,
+  "definition_coordinate_order_preserved": true,
+  "retained_factors": [
+    "Q_good",
+    "C_good"
+  ],
+  "traced_factors": [
+    "C_bad",
+    "D_all",
+    "T_good",
+    "(Q\u00d7T)_bad"
+  ],
+  "physical_pdf_pages": [
+    412,
+    413
+  ],
+  "printed_pdf_pages": [
+    411,
+    412
+  ],
+  "desktop_viewport": 1440,
+  "mobile_viewport": 360,
+  "mobile_formula_endpoints_visible": true,
+  "mobile_equation_scrolls": 0,
+  "inspected_files": {
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render-revised/joint-density-web-desktop.png": "f725f97e8164c644668b3d4cd7edd9c61073c2d237ba0d22182d3988edaa7214",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render-revised/joint-density-web-mobile.png": "cac3baffee3743bae9ae54bf3378637584260bb42d7c16b14fc65218de49d08f",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render-revised/page-412.png": "2ef6d0eafde6c4a2d0d316d362aa8847cd8c9a76d490d8432c1a6a5432d2527c",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render-revised/page-413.png": "16369c2cb85961114c31956eb95b5af3b941938b16143b6b89b1dcd9dc525345"
+  },
+  "source_statement_checked": "Only the product theorem assumes unit \u03a9; no independence, fixedness or supplied marginal identity is assumed."
+}

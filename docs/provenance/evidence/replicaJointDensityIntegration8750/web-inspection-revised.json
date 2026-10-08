@@ -1,0 +1,23 @@
+{
+  "links": [
+    "Matrix.replicaGoodRegionalAuxiliaryMarginal",
+    "Matrix.replicaGoodRegionalAuxiliaryMarginal_eq"
+  ],
+  "errors": [],
+  "top": 1044.921875,
+  "bottom": 1887.203125,
+  "mathElements": 31,
+  "proofs": [
+    {
+      "height": 177.359375,
+      "text": "\n   Before tracing auxiliary coordinates, the regional density theorem gives \u03c1QGK(w)=\u03c1Q\u2297m\u2297\u03c1K(w), where K=C\u2297k\u2297D\u2297k. Regroup K as C\u2297m\u2297(C\u2297|B|\u2297D\u2297k) and trace the second factor. Composition of partial traces gives the literal joint marginal on the left. On the right, the partial trace acts only on \u03c1K(w) and produces its actual good auxiliary marginal, proving (298). Empty coordinate products are singletons, so the same calculation applies when m=0 or k=0. \n\n  "
+    }
+  ],
+  "mobile_section_bounds": {
+    "top": 934.421875,
+    "bottom": 2170.390625
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360,
+  "mobile_equation_scrolls": []
+}

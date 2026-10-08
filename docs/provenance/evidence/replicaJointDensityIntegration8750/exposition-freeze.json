@@ -1,0 +1,8 @@
+{
+  "revision": "7840e716185f9d477c3c135192f3ec0573813e14",
+  "mathematical_source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+  "path": "blueprint/src/fragment/replica_joint_density.tex",
+  "sha256": "47a1fada68f1df1bc301eec1ca4d42e547a2313f981214edb0c6d1a209be2748",
+  "reason": "Replace the clipped inline coordinate decomposition by a two-row display, preserving retained and traced factors and their order.",
+  "authorization": "Root message approving a narrow exposition-only child after visual inspection."
+}

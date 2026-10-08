@@ -1,0 +1,21 @@
+{
+  "scope": "Derived actual good physical and good auxiliary density product identity; no merge-moment estimate.",
+  "source_repository": "openai/math",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "source_lines": [
+    520,
+    549
+  ],
+  "reviewers": [
+    "root",
+    "typical_state_step"
+  ],
+  "checks": [
+    "The definition is the partial trace of the same actual excitation component after explicit regrouping.",
+    "Both good physical and auxiliary coordinates use the same chosen enumeration.",
+    "The product theorem has only unit normalization of the prescribed one-copy ground vector.",
+    "No independence, permutation fixedness, supplied product identity or auxiliary marginal certificate is assumed.",
+    "Zero components, k=0 and empty good sets are included.",
+    "General partial-trace composition and Kronecker trace results remain private."
+  ]
+}
