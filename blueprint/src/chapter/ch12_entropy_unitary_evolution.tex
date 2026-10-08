@@ -1,0 +1,446 @@
+\section{Global matrix evolution and unitary comparison}
+\label{sec:unitary_evolution}
+
+Let $n$ be a finite index set and put $\mathcal M=\C^{n\times n}$.
+All matrix norms below are operator norms for the Euclidean inner product
+on $\C^n$, and $X^\dagger$ denotes the adjoint of $X$.
+The index set may be empty. Time ranges over all of $\R$; write
+$J_t=[\min(0,t),\max(0,t)]$ and use the oriented integral
+$\int_0^t=-\int_t^0$ when $t<0$.
+The existence and comparison results below give the finite-dimensional
+evolution argument used in \cite{OpenAI2026PolynomialPEPS},
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/02-information.tex\#L513-L536}{Section 2}.
+% Pinned source: polynomial-PEPS02-information.tex, lines 513--536,
+% openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% These entries assert the exact hypotheses of the checked matrix theorems.
+% They do not assert physical support of a localized evolution or completion
+% of the reset theorem. No tensor contraction is represented in this section.
+
+\begin{theorem}[Global existence for a bounded matrix coefficient]
+    \label{thm:matrix_evolution_exists}
+    \lean{MatrixEvolution.exists_solution}
+    \leanok
+    Let $A:\R\to\mathcal M$ be continuously differentiable, and let
+    $M\ge0$ satisfy $\|A(s)\|\le M$ for every $s\in\R$.
+    For every $X_0\in\mathcal M$, there is a differentiable path
+    $U:\R\to\mathcal M$ with $U(0)=X_0$ such that, for every $t\in\R$,
+    \begin{align}
+        U^{\prime}(t)&=A(t)U(t).
+        \label{eq:matrix_evolution_ode}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Fix a starting time $s\in\R$ and an initial matrix $X_0$.
+    Set $\rho=\|X_0\|+1$, $L=2(M+1)\rho$, and
+    $\delta=(2(M+1))^{-1}>0$.
+    The time-dependent vector field $f_s(r,X)=A(s+r)X$ is continuous
+    in $r$ and is $M$-Lipschitz in $X$, since
+    \begin{align}
+        \|f_s(r,X)-f_s(r,Y)\|
+            &\le\|A(s+r)\|\,\|X-Y\|\le M\|X-Y\|.
+        \label{eq:matrix_evolution_lipschitz}
+    \end{align}
+    If $\|X-X_0\|\le\rho$, then
+    $\|X\|\le\rho+\|X_0\|\le2\rho$, so
+    \begin{align}
+        \|f_s(r,X)\|&\le2M\rho\le L,
+        \label{eq:matrix_evolution_lifespan}\\
+        L\delta&=\rho.\notag
+    \end{align}
+    Picard--Lindel\"of on $[-\delta,\delta]$ therefore gives a local
+    solution $W$ with $W(0)=X_0$ and
+    $W^{\prime}(r)=A(s+r)W(r)$ for $|r|<\delta$.
+    The ball radius and the bound $L$ grow with $\|X_0\|$, while the
+    lifespan $\delta$ is independent of both $s$ and $X_0$.
+
+    On the real vector space $\R\times\mathcal M$, consider the
+    continuously differentiable autonomous vector field
+    $F(s,X)=(1,A(s)X)$. For every $(s,X_0)$ the curve
+    $r\mapsto(s+r,W(r))$ solves this autonomous equation on the same
+    interval $(-\delta,\delta)$.
+    The uniform-lifespan continuation theorem consequently gives a global
+    integral curve $\gamma=(a,U)$ through $(0,X_0)$.
+    Indeed, local uniqueness identifies overlapping integral curves, and
+    the common positive lifespan extends an integral curve past any
+    proposed finite endpoint in either direction.
+    Its coordinates satisfy
+    \begin{align}
+        a^{\prime}(t)&=1, & a(0)&=0,
+        \label{eq:matrix_evolution_autonomous}\\
+        U^{\prime}(t)&=A(a(t))U(t), & U(0)&=X_0.\notag
+    \end{align}
+    The function $a(t)-t$ has zero derivative and vanishes at zero, so
+    $a(t)=t$. Substitution in~(\ref{eq:matrix_evolution_autonomous})
+    proves~(\ref{eq:matrix_evolution_ode}).
+\end{proof}
+
+\begin{theorem}[Derivative of the relative evolution]
+    \label{thm:relative_evolution_derivative}
+    \lean{MatrixEvolution.hasDerivAt_star_mul}
+    \leanok
+    Let $G,H,U,V:\R\to\mathcal M$. Suppose $G(s)^\dagger=G(s)$
+    for every $s\in\R$, and that $U,V$ are differentiable with
+    $U^{\prime}(s)=iG(s)U(s)$ and $V^{\prime}(s)=iH(s)V(s)$ for every $s\in\R$.
+    Then, for every $t\in\R$,
+    \begin{align}
+        \frac{d}{dt}\bigl(U(t)^\dagger V(t)\bigr)
+            &=U(t)^\dagger\,i\bigl(H(t)-G(t)\bigr)V(t).
+        \label{eq:unitary_evolution_relative}
+    \end{align}
+    There is no continuity assumption on $G,H$, no Hermiticity
+    assumption on $H$, and no initial-value condition.
+\end{theorem}
+\begin{proof}\leanok
+    Since $(iG(t))^\dagger=-iG(t)$, the product and adjoint rules give
+    \begin{align}
+        \frac{d}{dt}\bigl(U(t)^\dagger V(t)\bigr)
+            &=-U(t)^\dagger iG(t)V(t)+U(t)^\dagger iH(t)V(t)\notag\\
+            &=U(t)^\dagger i\bigl(H(t)-G(t)\bigr)V(t).\notag
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Unitarity of a solution with Hermitian generator]
+    \label{thm:unitary_evolution_preserved}
+    \lean{MatrixEvolution.mem_unitaryGroup_of_hasDerivAt}
+    \leanok
+    Let $G,U:\R\to\mathcal M$ with $G(s)^\dagger=G(s)$ for every
+    $s\in\R$. Suppose $U(0)=I$ and $U$ is differentiable with
+    $U^{\prime}(s)=iG(s)U(s)$ for every $s\in\R$.
+    Then $U(t)$ is unitary for every $t\in\R$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:relative_evolution_derivative}
+    Apply Theorem~\ref{thm:relative_evolution_derivative} with $H=G$
+    and $V=U$. The derivative of $U(t)^\dagger U(t)$ is zero everywhere,
+    and hence
+    \begin{align}
+        U(t)^\dagger U(t)&=U(0)^\dagger U(0)=I.
+        \label{eq:unitary_evolution_isometry}
+    \end{align}
+    For a square matrix, (\ref{eq:unitary_evolution_isometry}) also
+    implies $U(t)U(t)^\dagger=I$.
+\end{proof}
+
+\begin{theorem}[Exact relative-evolution integral identity]
+    \label{thm:unitary_evolution_duhamel}
+    \lean{MatrixEvolution.star_mul_sub_one_eq_integral}
+    \leanok
+    Let $G,H:\R\to\mathcal M$ be continuous, and suppose
+    $G(s)^\dagger=G(s)$ for every $s\in\R$.
+    Let $U,V:\R\to\mathcal M$ satisfy $U(0)=I$, $V(0)=I$, and
+    be differentiable with $U^{\prime}(s)=iG(s)U(s)$ and
+    $V^{\prime}(s)=iH(s)V(s)$ for every $s\in\R$.
+    Then, for every $t\in\R$,
+    \begin{align}
+        U(t)^\dagger V(t)-I
+            &=\int_0^t U(s)^\dagger\,i\bigl(H(s)-G(s)\bigr)V(s)\,ds.
+        \label{eq:unitary_evolution_duhamel}
+    \end{align}
+    Hermiticity of $H$ is not required.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:relative_evolution_derivative}
+    Differentiability makes $U,V$ continuous. Thus the integrand in
+    (\ref{eq:unitary_evolution_duhamel}) is continuous and integrable
+    on $J_t$. Apply the fundamental theorem of calculus to
+    (\ref{eq:unitary_evolution_relative}) and use
+    $U(0)^\dagger V(0)=I$. The oriented integral gives the same
+    identity when $t<0$.
+\end{proof}
+
+\begin{theorem}[Duhamel estimate in operator norm]
+    \label{thm:unitary_evolution_norm}
+    \lean{MatrixEvolution.norm_sub_le_abs_integral_norm}
+    \leanok
+    Let $G,H:\R\to\mathcal M$ be continuous with
+    $G(s)^\dagger=G(s)$ and $H(s)^\dagger=H(s)$ for every $s\in\R$.
+    Let $U,V:\R\to\mathcal M$ satisfy $U(0)=I$, $V(0)=I$, and
+    be differentiable with $U^{\prime}(s)=iG(s)U(s)$ and
+    $V^{\prime}(s)=iH(s)V(s)$ for every $s\in\R$.
+    Then, for every $t\in\R$,
+    \begin{align}
+        \|U(t)-V(t)\|
+            &\le\left|\int_0^t\|G(s)-H(s)\|\,ds\right|.
+        \label{eq:unitary_evolution_norm}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:unitary_evolution_preserved, thm:unitary_evolution_duhamel}
+    Theorem~\ref{thm:unitary_evolution_preserved} makes both paths
+    unitary. Left and right multiplication by a unitary preserve the
+    Euclidean operator norm, including when $n$ is empty. Therefore
+    \begin{align}
+        \|U(t)-V(t)\|&=\|U(t)^\dagger V(t)-I\|,
+        \label{eq:unitary_evolution_norm_invariance}\\
+        \|U(s)^\dagger i(H(s)-G(s))V(s)\|
+            &=\|G(s)-H(s)\|.\notag
+    \end{align}
+    Substitute (\ref{eq:unitary_evolution_duhamel}) and apply the norm
+    bound for an oriented integral. The identities in
+    (\ref{eq:unitary_evolution_norm_invariance}) give
+    (\ref{eq:unitary_evolution_norm}).
+\end{proof}
+
+\begin{theorem}[Uniform generator error on the time interval]
+    \label{thm:unitary_evolution_error}
+    \lean{MatrixEvolution.norm_sub_le_of_generator_bound}
+    \leanok
+    Let $G,H:\R\to\mathcal M$ be continuous with
+    $G(s)^\dagger=G(s)$ and $H(s)^\dagger=H(s)$ for every $s\in\R$.
+    Let $U,V:\R\to\mathcal M$ satisfy $U(0)=I$, $V(0)=I$, and
+    be differentiable with $U^{\prime}(s)=iG(s)U(s)$ and
+    $V^{\prime}(s)=iH(s)V(s)$ for every $s\in\R$.
+    For every $t,\varepsilon\in\R$, if
+    $\|G(s)-H(s)\|\le\varepsilon$ for every $s\in J_t$, then
+    \begin{align}
+        \|U(t)-V(t)\|&\le\varepsilon|t|.
+        \label{eq:unitary_evolution_error}
+    \end{align}
+    Nonnegativity of $\varepsilon$ follows from the bound at $s=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:unitary_evolution_norm}
+    Apply Theorem~\ref{thm:unitary_evolution_norm} and estimate the
+    integral by the interval length:
+    \begin{align}
+        \left|\int_0^t\|G(s)-H(s)\|\,ds\right|
+            &=\int_{\min(0,t)}^{\max(0,t)}\|G(s)-H(s)\|\,ds\notag\\
+            &\le\varepsilon\bigl(\max(0,t)-\min(0,t)\bigr)
+             =\varepsilon|t|.\notag
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Existence and uniqueness of global unitary evolution]
+    \label{thm:unitary_evolution_unique}
+    \lean{MatrixEvolution.exists_unique_unitary_solution}
+    \leanok
+    Let $G:\R\to\mathcal M$ be continuously differentiable with
+    $G(t)^\dagger=G(t)$ for every $t\in\R$.
+    Let $M\ge0$ satisfy $\|G(t)\|\le M$ for every $t\in\R$.
+    There is a differentiable path $U:\R\to\mathcal M$ with $U(0)=I$
+    such that, for every $t\in\R$,
+    \begin{align}
+        U^{\prime}(t)&=iG(t)U(t),
+        \label{eq:unitary_evolution_unique}\\
+        U(t)^\dagger U(t)&=U(t)U(t)^\dagger=I.\notag
+    \end{align}
+    For every path $V:\R\to\mathcal M$, if $V(0)=I$ and $V$ is
+    differentiable with $V^{\prime}(t)=iG(t)V(t)$ for every $t\in\R$, then
+    $V=U$. In particular, uniqueness does not assume unitarity of $V$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:matrix_evolution_exists, thm:unitary_evolution_preserved,
+        thm:unitary_evolution_error}
+    The coefficient $A(t)=iG(t)$ is continuously differentiable and
+    satisfies $\|A(t)\|=\|G(t)\|\le M$.
+    Theorem~\ref{thm:matrix_evolution_exists}, with $X_0=I$, constructs
+    a global solution $U$. Theorem~\ref{thm:unitary_evolution_preserved}
+    proves its unitarity.
+    If $V$ is any other solution with $V(0)=I$, apply
+    Theorem~\ref{thm:unitary_evolution_error} to $V,U$ with the same
+    generator on both sides and $\varepsilon=0$. For every $t\in\R$,
+    $\|V(t)-U(t)\|\le0$, hence $V(t)=U(t)$ and $V=U$.
+\end{proof}
+
+\section{Projected interaction-picture generators}
+\label{sec:projected_unitary_evolution}
+
+Retain the finite matrix algebra $\mathcal M$ and its Euclidean operator
+norm. The map $P$ below is complex linear; it need not be idempotent.
+
+\begin{definition}[Projected interaction-picture generator]
+    \label{def:projected_generator}
+    \lean{MatrixEvolution.projectedGenerator,
+        MatrixEvolution.projectedGenerator_zero}
+    \leanok
+    For a complex-linear map $P:\mathcal M\to\mathcal M$ and matrices
+    $H,B\in\mathcal M$, define, for every $t\in\R$,
+    \begin{align}
+        G_{P,H,B}(t)&=P\bigl(e^{itH}Be^{-itH}\bigr).
+        \label{eq:projected_generator}
+    \end{align}
+    In particular, $G_{P,H,B}(0)=P(B)$.
+\end{definition}
+
+\begin{theorem}[Regularity of the exponential and projected generator]
+    \label{thm:projected_generator_smooth}
+    \lean{Matrix.contDiff_hermitianUnitaryPath,
+        MatrixEvolution.contDiff_projectedGenerator}
+    \leanok
+    \uses{def:projected_generator}
+    For every $H\in\mathcal M$ and every differentiability order
+    $k\in\N\cup\{\infty,\omega\}$, the path $t\mapsto e^{itH}$ is
+    $C^k$, where $C^\omega$ denotes real analyticity.
+    For every complex-linear map $P:\mathcal M\to\mathcal M$,
+    every $H,B\in\mathcal M$, and every such $k$, the path
+    $G_{P,H,B}$ is $C^k$. Hermiticity, Hermitian preservation, and
+    contractivity are not needed for these regularity assertions.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:projected_generator}
+    The matrix exponential is real analytic. Composing it with the
+    real-linear map $t\mapsto itH$ gives the first assertion.
+    Matrix multiplication is continuous bilinear, and every linear map
+    on the finite-dimensional space $\mathcal M$ is continuous.
+    Composing $t\mapsto e^{itH}Be^{-itH}$ with $P$ proves the second
+    assertion for each $k$.
+\end{proof}
+
+\begin{theorem}[Hermiticity of the projected generator]
+    \label{thm:projected_generator_hermitian}
+    \lean{MatrixEvolution.isHermitian_projectedGenerator}
+    \leanok
+    \uses{def:projected_generator}
+    Let $P:\mathcal M\to\mathcal M$ be complex linear and satisfy
+    $P(X)^\dagger=P(X)$ for every Hermitian matrix $X$.
+    For every pair of Hermitian matrices $H,B\in\mathcal M$ and every
+    $t\in\R$, the matrix $G_{P,H,B}(t)$ is Hermitian.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:projected_generator}
+    Put $E=e^{itH}$. Since $H^\dagger=H$,
+    $E^\dagger=e^{-itH}$. Thus
+    $(EBE^\dagger)^\dagger=EB^\dagger E^\dagger=EBE^\dagger$.
+    Applying the Hermitian-preservation hypothesis on $P$ gives the
+    result.
+\end{proof}
+
+\begin{theorem}[Uniform bound for the projected generator]
+    \label{thm:projected_generator_bound}
+    \lean{MatrixEvolution.norm_projectedGenerator_le}
+    \leanok
+    \uses{def:projected_generator}
+    Let $P:\mathcal M\to\mathcal M$ be complex linear with
+    $\|P(X)\|\le\|X\|$ for every $X\in\mathcal M$.
+    For every Hermitian matrix $H\in\mathcal M$, every matrix
+    $B\in\mathcal M$, and every $t\in\R$,
+    \begin{align}
+        \|G_{P,H,B}(t)\|&\le\|B\|.
+        \label{eq:projected_generator_bound}
+    \end{align}
+    Neither Hermiticity of $B$ nor Hermitian preservation by $P$ is
+    required for this bound.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:projected_generator}
+    The matrices $e^{itH}$ and $e^{-itH}$ are unitary. Contractivity of
+    $P$ and unitary invariance of the Euclidean operator norm give
+    \begin{align}
+        \|P(e^{itH}Be^{-itH})\|
+            &\le\|e^{itH}Be^{-itH}\|=\|B\|.\notag
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Unique global evolution from a projected generator]
+    \label{thm:projected_unitary_evolution}
+    \lean{MatrixEvolution.exists_unique_projected_unitary_solution}
+    \leanok
+    \uses{def:projected_generator}
+    Let $P:\mathcal M\to\mathcal M$ be complex linear, preserve
+    Hermitian matrices, and satisfy $\|P(X)\|\le\|X\|$ for every
+    $X\in\mathcal M$. For every pair of Hermitian matrices
+    $H,B\in\mathcal M$, there is a differentiable path
+    $U:\R\to\mathcal M$ with $U(0)=I$ such that, for every $t\in\R$,
+    \begin{align}
+        U^{\prime}(t)&=iG_{P,H,B}(t)U(t),
+        \label{eq:projected_unitary_evolution}\\
+        U(t)^\dagger U(t)&=U(t)U(t)^\dagger=I.\notag
+    \end{align}
+    For every path $V:\R\to\mathcal M$, if $V(0)=I$ and $V$ is
+    differentiable with $V^{\prime}(t)=iG_{P,H,B}(t)V(t)$ for every $t\in\R$,
+    then $V=U$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:projected_generator_smooth,
+        thm:projected_generator_hermitian, thm:projected_generator_bound,
+        thm:unitary_evolution_unique}
+    Theorems~\ref{thm:projected_generator_smooth},
+    \ref{thm:projected_generator_hermitian}, and
+    \ref{thm:projected_generator_bound} give continuous differentiability,
+    pointwise Hermiticity, and the uniform bound $\|B\|$ for
+    $G_{P,H,B}$. Apply Theorem~\ref{thm:unitary_evolution_unique} with
+    $M=\|B\|$. It constructs $U$ and proves all the stated properties
+    from the hypotheses on $P,H,B$.
+\end{proof}
+
+\begin{theorem}[Generator of the explicit interaction-picture product]
+    \label{thm:interaction_picture_derivative}
+    \lean{MatrixEvolution.hasDerivAt_hermitianUnitaryPath_mul_neg}
+    \leanok
+    For every pair of matrices $H^{\prime},H\in\mathcal M$, define
+    \begin{align}
+        V(t)&=e^{itH^{\prime}}e^{-itH},
+        \label{eq:interaction_picture_product}\\
+        G(t)&=e^{itH^{\prime}}(H^{\prime}-H)e^{-itH^{\prime}}.\notag
+    \end{align}
+    Then $V$ is differentiable and $V^{\prime}(t)=iG(t)V(t)$ for every
+    $t\in\R$. Neither matrix is required to be Hermitian.
+\end{theorem}
+\begin{proof}\leanok
+    Differentiating both exponentials and applying the product rule gives
+    \begin{align}
+        V^{\prime}(t)&=e^{itH^{\prime}}iH^{\prime}e^{-itH}-e^{itH^{\prime}}iHe^{-itH}
+            =i e^{itH^{\prime}}(H^{\prime}-H)e^{-itH}.
+        \label{eq:interaction_picture_derivative}
+    \end{align}
+    Exponential cancellation gives $e^{-itH^{\prime}}e^{itH^{\prime}}=I$, so
+    \begin{align}
+        iG(t)V(t)
+            &=i e^{itH^{\prime}}(H^{\prime}-H)e^{-itH^{\prime}}e^{itH^{\prime}}e^{-itH}\notag\\
+            &=i e^{itH^{\prime}}(H^{\prime}-H)e^{-itH}.\notag
+    \end{align}
+    Comparison with~(\ref{eq:interaction_picture_derivative}) proves the
+    claimed differential equation.
+\end{proof}
+
+\begin{theorem}[Projected evolution approximates the explicit product]
+    \label{thm:projected_evolution_comparison}
+    \lean{MatrixEvolution.exists_unique_projected_unitary_solution_compare}
+    \leanok
+    \uses{def:projected_generator}
+    Let $P:\mathcal M\to\mathcal M$ be complex linear, preserve
+    Hermitian matrices, and satisfy $\|P(X)\|\le\|X\|$ for every
+    $X\in\mathcal M$. For every pair of Hermitian matrices
+    $H^{\prime},H\in\mathcal M$, put
+    \begin{align}
+        V(t)&=e^{itH^{\prime}}e^{-itH},
+        \label{eq:projected_comparison_generators}\\
+        G(t)&=e^{itH^{\prime}}(H^{\prime}-H)e^{-itH^{\prime}},\notag\\
+        G_P(t)&=P(G(t))=G_{P,H^{\prime},H^{\prime}-H}(t).\notag
+    \end{align}
+    There is a differentiable path $U:\R\to\mathcal M$ with $U(0)=I$
+    such that, for every $s\in\R$,
+    \begin{align}
+        U^{\prime}(s)&=iG_P(s)U(s),
+        \label{eq:projected_comparison_evolution}\\
+        U(s)^\dagger U(s)&=U(s)U(s)^\dagger=I.\notag
+    \end{align}
+    Every differentiable path $W:\R\to\mathcal M$ with $W(0)=I$
+    and $W^{\prime}(s)=iG_P(s)W(s)$ for every $s\in\R$ equals $U$.
+    The same path $U$ satisfies the following estimate simultaneously
+    for every $t,\varepsilon\in\R$: if
+    $\|G(s)-G_P(s)\|\le\varepsilon$ for every $s\in J_t$, then
+    \begin{align}
+        \|e^{itH^{\prime}}e^{-itH}-U(t)\|&\le\varepsilon|t|.
+        \label{eq:projected_comparison_error}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:projected_unitary_evolution,
+        thm:projected_generator_smooth, thm:projected_generator_hermitian,
+        thm:interaction_picture_derivative, thm:unitary_evolution_error}
+    Since $H^{\prime}-H$ is Hermitian,
+    Theorem~\ref{thm:projected_unitary_evolution} constructs $U$ with
+    the initial value, differential equation, unitarity, and uniqueness
+    in the statement. This choice of $U$ depends only on $P,H^{\prime},H$.
+
+    Fix $t,\varepsilon\in\R$ and the stated bound on $J_t$.
+    Theorems~\ref{thm:projected_generator_smooth} and
+    \ref{thm:projected_generator_hermitian}, applied with $P$ and with
+    the identity map, show that $G_P$ and $G$ are continuous and
+    Hermitian at every time. Theorem~\ref{thm:interaction_picture_derivative}
+    gives $V^{\prime}=iGV$, and $V(0)=e^0e^0=I$.
+    Apply Theorem~\ref{thm:unitary_evolution_error} to $V,U$ and
+    their generators $G,G_P$. This proves
+    (\ref{eq:projected_comparison_error}) for the already chosen $U$.
+\end{proof}

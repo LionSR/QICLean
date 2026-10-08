@@ -326,9 +326,20 @@ jobs:
           QICLeanTest/GlobalGap.lean
 
 
-      - name: Check physical-buffer overlap regressions and all axiom guards strictly
+      - name: Check physical-buffer and time-evolution regressions and axiom guards strictly
         run: |
-          for file in QICLeanTest/CompressedPartialSwap.lean QICLeanTest/ProductOverlapPurity.lean QICLeanTest/PhysicalBufferOverlap.lean QICLeanTest/DoubledSystemGap.lean QICLeanTest/PositiveGapUniqueness.lean; do
+          for file in \
+            QICLeanTest/CompressedPartialSwap.lean \
+            QICLeanTest/ProductOverlapPurity.lean \
+            QICLeanTest/PhysicalBufferOverlap.lean \
+            QICLeanTest/DoubledSystemGap.lean \
+            QICLeanTest/PositiveGapUniqueness.lean \
+            QICLeanTest/MatrixEvolution.lean \
+            QICLeanTest/UnitaryEvolution.lean \
+            QICLeanTest/UnitaryEvolutionAxioms.lean \
+            QICLeanTest/MatrixUnitaryEvolution.lean \
+            QICLeanTest/ProjectedEvolution.lean \
+            QICLeanTest/ProjectedEvolutionAxioms.lean; do
             timeout --signal=INT --kill-after=5s 90s lake env lean -j1 \
               -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true \
               -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
