@@ -13,6 +13,7 @@ import QICLean.Representation.CommutantDimension
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookFormula
+import QICLean.Representation.HookRecursion
 import QICLean.Representation.IrrepLabelCount
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
