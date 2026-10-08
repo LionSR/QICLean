@@ -28,6 +28,9 @@ the existing sector theorem identifies the literal excitation operator
 with the orthogonal excitation projection. No normalization, independence
 or iid assumption is needed for the present bound. Empty registers, zero
 copies and zero components are included, with the total real logarithm.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 open Matrix PermutationRepresentation TensorPower
@@ -49,9 +52,7 @@ variable {A C D : Type*} [Fintype A] [DecidableEq A]
     [Fintype C] [DecidableEq C] [Fintype D] [DecidableEq D]
 
 /-
-Provenance-ID: 8750-qic-replica-good-auxiliary-label-bound-01
 Original formalization, no upstream Lean proof text reused.
-Declaration: Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower
 Manuscript: September 24, 2026, comparator:good-auxiliary, lines 481–493.
 -/
 

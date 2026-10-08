@@ -27,30 +27,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Labels: comparator:typical-set, comparator:post-marginal.
-Provenance-ID: 8753-qic-typical-pure-compression-01
-Downstream declaration:
-Matrix.IsHermitian.spectralSelectionEmbedding
-Provenance-ID: 8753-qic-typical-pure-compression-02
-Downstream declaration:
-Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding
-Provenance-ID: 8753-qic-typical-pure-compression-03
-Downstream declaration:
-Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose
-Provenance-ID: 8753-qic-typical-pure-compression-04
-Downstream declaration:
-Matrix.compressedTypicalPureState
-Provenance-ID: 8753-qic-typical-pure-compression-05
-Downstream declaration:
-Matrix.kronecker_mulVec_compressedTypicalPureState
-Provenance-ID: 8753-qic-typical-pure-compression-06
-Downstream declaration:
-Matrix.partialTraceRight_compressedTypicalPureState
-Provenance-ID: 8753-qic-typical-pure-compression-07
-Downstream declaration:
-Matrix.partialTraceLeft_compressedTypicalPureState
-Provenance-ID: 8753-qic-typical-pure-compression-08
-Downstream declaration:
-Matrix.norm_compressedTypicalPureState
 -/
 
 open scoped BigOperators Matrix Kronecker ComplexOrder

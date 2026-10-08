@@ -14,6 +14,9 @@ has dimension at most \(d^r\), even when the representation is considered on the
 whole space of \(k\) copies. This is the bad-copy dimension bound used in
 *A two-dimensional area law from a global spectral gap*, `07-comparators.tex`,
 lines 490–493, equation `comparator:good-auxiliary`.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 open Matrix PermutationRepresentation
@@ -58,9 +61,7 @@ private theorem bad_copy_labelProj_entry (β : IrrepLabel (Equiv.Perm (Fin r)))
     permOp_apply_apply, bad_copy_perm_condition, hg]
 
 /-
-Provenance-ID: 8750-qic-bad-copy-label-dimension-01
 Original formalization, no upstream Lean proof text reused.
-Declaration: TensorPower.groupHom₂_labelProj_dim_le
 Manuscript: September 24, 2026, comparator:good-auxiliary, lines 490–493.
 -/
 

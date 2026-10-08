@@ -1,4 +1,0 @@
-'TensorPower.copyPerm_groupedGood_labelEntropy_compression' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

@@ -1,1 +1,0 @@
-'TensorPower.groupedCopies_labelEntropy_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]

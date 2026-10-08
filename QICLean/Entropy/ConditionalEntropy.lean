@@ -65,7 +65,6 @@ two-summand ones; the mixture interval for probability weights is new.
 
 /-
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-conditional-entropy
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyBounds.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.conditionalEntropy
@@ -75,7 +74,6 @@ Changes for TNLean/QICLean: Defined from vonNeumannEntropy with a Hermiticity wi
 Matrix.partialTraceLeft.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-conditional-entropy-smul
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyBounds.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.conditionalEntropy_smul
@@ -84,7 +82,6 @@ Downstream declaration: Entropy.conditionalEntropy_real_smul
 Changes for TNLean/QICLean: Stated for Hermitian matrices with explicit witnesses.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-conditional-superadditive
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyBounds.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.conditional_superadditive
@@ -95,7 +92,6 @@ is Mathlib's blockDiagonal over the label type and the strong subadditivity inpu
 Entropy.strongSubadditivity_of_posSemidef.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-entropy-concave
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyBounds.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.entropy_homogeneous_concave
@@ -104,7 +100,6 @@ Downstream declaration: Entropy.sum_vonNeumannEntropy_sub_negMulLog_le
 Changes for TNLean/QICLean: Generalized from two summands to a finite family.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-conditional-upper
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyBounds.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.conditional_add_upper
@@ -113,7 +108,6 @@ Downstream declaration: Entropy.conditionalEntropy_sum_le
 Changes for TNLean/QICLean: Generalized from two summands to a finite family.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-conditional-abs
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/PureEntropy.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.conditional_abs_le

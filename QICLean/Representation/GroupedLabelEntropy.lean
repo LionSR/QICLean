@@ -21,6 +21,9 @@ gap*, Lemma 6.1(4), `05-replicas.tex`, lines 116–123, used in
 `07-comparators.tex`, lines 455–467, equation `comparator:restriction-dimensions`.
 The later estimates for the good auxiliary systems require further bounds on the
 occurring bad-copy labels and are not asserted here.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 open Matrix PermutationRepresentation
@@ -29,9 +32,7 @@ open scoped MatrixOrder ComplexOrder
 namespace TensorPower
 
 /-
-Provenance-ID: 8750-qic-grouped-label-entropy-01
 Original formalization, no upstream Lean proof text reused.
-Declaration: TensorPower.groupedCopies_labelEntropy_bounds
 Manuscript: September 24, 2026, Lemma 6.1(4), lem:schur,
 replicas:group-dimensions; comparator:restriction-dimensions.
 -/

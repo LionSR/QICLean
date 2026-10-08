@@ -1,0 +1,82 @@
+\section{A Bell projection onto the selected space}
+\label{sec:typical_bell_pin}
+
+Let $\Omega\in\mathcal H_A\otimes\mathcal H_B$ and let
+$\rho_A=\operatorname{Tr}_B|\Omega\rangle\langle\Omega|$.
+For a selected set $E$ of eigenvectors of $\rho_A$, let
+$J:\mathbb C^E\to\mathcal H_A$ be the selected spectral isometry.
+Write $d=|E|$ and $z=\sum_{i\in E}p_i$, and suppose $z>0$.
+The auxiliary spaces $\mathcal H_C$ and $\mathcal H_R$ are copies of
+$\mathbb C^E$. Put
+$u=d^{-1/2}\sum_{i\in E}|i\rangle_C|i\rangle_R$ and
+$\chi=z^{-1/2}(J^\dagger\otimes I_B)\Omega$.
+These are the one-copy constructions in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{definition}[The selected Bell vector and its outer product]
+\label{def:typical_bell_projection}
+\lean{Matrix.selectedBellVector,Matrix.selectedBellProjection}
+\leanok
+\uses{def:typical_selection_embedding}
+Define
+\begin{align}
+ \beta&=d^{-1/2}\sum_{i\in E}(J|i\rangle)_A\otimes|i\rangle_C,
+ \label{eq:bell_selected_vector}\\
+ P&=|\beta\rangle\langle\beta|.
+ \label{eq:bell_selected_projection}
+\end{align}
+\end{definition}
+
+\begin{theorem}[Normalization and orthogonal projection]
+\label{thm:typical_bell_projection}
+\lean{Matrix.norm_selectedBellVector,Matrix.isStarProjection_selectedBellProjection}
+\leanok
+\uses{def:typical_bell_projection}
+The selected Bell vector satisfies $\|\beta\|=1$, and $P$ is an
+orthogonal projection: $P^2=P=P^\dagger$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:typical_bell_projection,thm:typical_selection_embedding}
+Positive selected mass implies $d>0$.
+The uniform pair has squared norm $d\cdot d^{-1}=1$.
+Since $J^\dagger J=I_R$, the isometry $J\otimes I_C$ preserves this norm.
+Thus $\langle\beta,\beta\rangle=1$, which gives $P^2=P=P^\dagger$.
+\end{proof}
+
+\begin{definition}[The one-copy vectors]
+\label{def:typical_bell_vectors}
+\lean{Matrix.bellPinPrevector,Matrix.bellPinPostvector}
+\leanok
+\uses{def:typical_bell_projection,def:compressed_typical_vector}
+On $(\mathcal H_A\otimes\mathcal H_C)\otimes
+(\mathcal H_R\otimes\mathcal H_B)$, define
+$\mathrm{pre}_{acrb}=\Omega_{ab}u_{cr}$ and
+$\mathrm{post}=\beta\otimes\chi$.
+\end{definition}
+
+\begin{theorem}[The one-copy Bell contraction]
+\label{thm:typical_bell_pin}
+\lean{Matrix.selectedBellProjection_bellPinPrevector}
+\leanok
+\uses{def:typical_bell_vectors}
+For every $\Omega$ with positive selected mass,
+\begin{align}
+ (P\otimes I_{RB})\mathrm{pre}
+   &=\frac{\sqrt z}{d}\,\mathrm{post}.
+ \label{eq:bell_one_copy}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:typical_bell_vectors,def:typical_bell_projection,def:compressed_typical_vector}
+Let $C_\Omega$ be the coefficient matrix of $\Omega$.
+The Kronecker delta in the auxiliary uniform pair gives
+\begin{align}
+ \bigl((\langle\beta|_{AC}\otimes I_{RB})\mathrm{pre}\bigr)_{rb}
+   &=d^{-1}(J^\dagger C_\Omega)_{rb}
+    =\frac{\sqrt z}{d}\,\chi_{rb}.
+ \label{eq:bell_contracted_coefficient}
+\end{align}
+Multiplication by $|\beta\rangle$ gives (\ref{eq:bell_one_copy}).
+\end{proof}

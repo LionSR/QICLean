@@ -26,24 +26,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Labels: comparator:typical-set, comparator:post-marginal.
-Provenance-ID: 8753-qic-regional-typical-state-01
-Downstream declaration:
-FiniteProduct.typicalPureState
-Provenance-ID: 8753-qic-regional-typical-state-02
-Downstream declaration:
-FiniteProduct.split_typicalPureState
-Provenance-ID: 8753-qic-regional-typical-state-03
-Downstream declaration:
-FiniteProduct.norm_typicalPureState
-Provenance-ID: 8753-qic-regional-typical-state-04
-Downstream declaration:
-FiniteProduct.reducedPure_typicalPureState
-Provenance-ID: 8753-qic-regional-typical-state-05
-Downstream declaration:
-FiniteProduct.entropy_typicalPureState_le
-Provenance-ID: 8753-qic-regional-typical-state-06
-Downstream declaration:
-FiniteProduct.reducedPure_typicalPureState_le
 -/
 
 open scoped BigOperators Matrix ComplexOrder InnerProductSpace

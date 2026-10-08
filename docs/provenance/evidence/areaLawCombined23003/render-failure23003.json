@@ -1,9 +1,0 @@
-{
-  "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
-  "pdf_sha256": "33c757c7435c459f4a4fcb49a2dcc3c4838c5943d971ebe0a0ddeae90e3f8018",
-  "pdf_pages": 412,
-  "publication_accepted": false,
-  "cause": "The combined chapter header places the chapter and ch:entropy label on a percent-commented line. The final PDF reports the resulting undefined ch:entropy reference.",
-  "parent_header": "%% =========================================================\n%% Chapter: Quantum Entropy\n%% Von Neumann entropy, strong subadditivity, and mutual information.\n%% =========================================================\n\n\\chapter{Quantum Entropy}\\label{ch:entropy}\n\n",
-  "current_header": "%% ==================================================%% Chapter: Quantum Entropy\n%% Von Neumann entropy, strong subadditivity, and mutual information.\n%% ===========================================\\chapter{Quantum Entropy}\\label{ch:entropy}\n\n"
-}

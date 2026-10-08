@@ -1,3 +1,0 @@
-'TensorPower.groupedCopies_labelEntropy_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
-'TensorPower.groupHom₂_labelProj_dim_le' depends on axioms: [propext, Classical.choice, Quot.sound]
-'TensorPower.copyPerm_groupedCopies_labelEntropy_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]

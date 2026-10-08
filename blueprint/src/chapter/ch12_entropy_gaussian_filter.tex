@@ -1,0 +1,516 @@
+\section{Gaussian filtering between two Hamiltonians}
+\label{sec:gaussian_filter}
+
+Let $\mathcal H$ be a finite-dimensional complex Hilbert space, with inner
+product conjugate-linear in its first argument. All operator norms below
+are induced by the Hilbert-space norm. The Gaussian-filter argument in the
+proof of the reset lemma of~\cite{OpenAI2026PolynomialPEPS} averages
+$e^{it\mathbb H'}We^{-it\mathbb H}$ over time. Its variance $h$ determines
+both the suppression of excited energies and the cost of truncating time.
+% Source: polynomial-PEPS manuscript (September 24, 2026), lem:reset,
+% pinned peps-02-information-adc7f124.tex, lines 426--452; the real overlap
+% is established separately at eq:info-reset-overlap, lines 402--414.
+% This leaf covers the finite-dimensional integral and gap argument only.
+% It makes no spatial-locality, full-reset, or Hermiticity claim for M.
+% The source passage is algebraic; no tensor diagram is needed.
+
+\subsection{The normalized Gaussian and its tail}
+
+\begin{definition}[Gaussian time density]
+    \label{def:gaussian_time_density}
+    \lean{GaussianFilter.kernel, GaussianFilter.kernel_eq,
+        GaussianFilter.kernel_zero}
+    \leanok
+    For $h>0$, define the centered Gaussian density of variance $h$ by
+    \begin{align}
+        g_h(t)&=(2\pi h)^{-1/2}\exp\!\left(-\frac{t^2}{2h}\right).
+        \label{eq:gaussian_density}
+    \end{align}
+    Write $\mu_h$ for the corresponding probability measure. At $h=0$,
+    set $\mu_0=\delta_0$ and $g_0(t)=0$ for every $t$.
+    Thus $g_0$ is not a density of $\mu_0$ with respect to Lebesgue measure.
+\end{definition}
+
+\begin{theorem}[Positivity and normalization]
+    \label{thm:gaussian_normalization}
+    \lean{GaussianFilter.kernel_nonneg, GaussianFilter.integrable_kernel,
+        GaussianFilter.integral_kernel}
+    \leanok
+    \uses{def:gaussian_time_density}
+    For every $h\ge0$, the function $g_h$ is nonnegative and integrable.
+    For $h>0$, $\int_{\R}g_h(t)\,dt=1$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:gaussian_time_density}
+    For positive variance these are the positivity, integrability, and
+    normalization identities for the centered Gaussian density. At zero
+    variance, $g_0=0$.
+\end{proof}
+
+\begin{theorem}[Density and probability integrals]
+    \label{thm:gaussian_density_integrals}
+    \lean{GaussianFilter.integrable_kernel_smul_iff,
+        GaussianFilter.integral_kernel_smul,
+        GaussianFilter.setIntegral_kernel_smul,
+        GaussianFilter.integral_kernel_eq_measureReal}
+    \leanok
+    \uses{def:gaussian_time_density}
+    Let $h>0$ and let $f$ take values in a real normed vector space.
+    Then $g_hf$ is Lebesgue integrable if and only if $f$ is integrable
+    with respect to $\mu_h$. The integrals satisfy
+    \begin{align}
+        \int_{\R}g_h(t)f(t)\,dt&=\int_{\R}f(t)\,d\mu_h(t),
+        \label{eq:gaussian_density_integral}\\
+        \int_S g_h(t)f(t)\,dt&=\int_S f(t)\,d\mu_h(t) \notag
+    \end{align}
+    for every measurable set $S$. In particular,
+    $\int_S g_h(t)\,dt=\mu_h(S)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:gaussian_time_density}
+    Substitute $d\mu_h(t)=g_h(t)\,dt$ in the integrability criterion and
+    the integral. Apply the same identity to $\mathbf 1_Sf$ for the
+    restricted integral. The scalar mass identity is the density formula
+    for $\mu_h$.
+\end{proof}
+
+\begin{theorem}[Characteristic integral and exponential moments]
+    \label{thm:gaussian_characteristic}
+    \lean{GaussianFilter.integral_cexp,
+        GaussianFilter.integral_kernel_cexp,
+        GaussianFilter.hasSubgaussianMGF_gaussianReal}
+    \leanok
+    \uses{def:gaussian_time_density}
+    For $h\ge0$ and $\omega,s\in\R$,
+    \begin{align}
+        \int_{\R}e^{i\omega t}\,d\mu_h(t)&=e^{-h\omega^2/2},
+        \label{eq:gaussian_characteristic}\\
+        \int_{\R}e^{st}\,d\mu_h(t)&\le e^{hs^2/2}. \notag
+    \end{align}
+    In particular, all these exponential moments are finite, and the
+    centered Gaussian is sub-Gaussian with variance parameter $h$.
+    For $h>0$, the first integral also equals
+    $\int_{\R}g_h(t)e^{i\omega t}\,dt$.
+    The frequency $\omega$ is angular frequency, so no additional factor
+    of $2\pi$ occurs in the exponent.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_density_integrals}
+    The characteristic function gives the first identity. The exact
+    Gaussian moment-generating function is $e^{hs^2/2}$, which implies
+    the exponential-moment and sub-Gaussian bounds. For $h>0$, use
+    (\ref{eq:gaussian_density_integral}) to obtain the density integral.
+\end{proof}
+
+For $T\ge0$, write $I_T=[-T,T]$. Set
+$\tau_h(T)=2\exp(-T^2/(2h))$ for $h>0$, and $\tau_0(T)=2$.
+The value at zero permits a common bound for all nonnegative variances;
+the actual mass of $I_T^c$ under $\mu_0=\delta_0$ is zero.
+
+\begin{theorem}[Discarded Gaussian mass]
+    \label{thm:gaussian_tail}
+    \lean{GaussianFilter.measure_compl_Icc_le,
+        GaussianFilter.integral_kernel_compl_Icc_le}
+    \leanok
+    \uses{def:gaussian_time_density}
+    For $h\ge0$ and $T\ge0$, $\mu_h(I_T^c)\le\tau_h(T)$.
+    For $h>0$, this gives the density estimate
+    \begin{align}
+        \int_{I_T^c}g_h(t)\,dt&\le 2e^{-T^2/(2h)}.
+        \label{eq:gaussian_density_tail}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_characteristic, thm:gaussian_density_integrals}
+    The exponential-moment bound applied to $t$ and $-t$ gives
+    $\mu_h\{t\ge T\}\le e^{-T^2/(2h)}$ and
+    $\mu_h\{-t\ge T\}\le e^{-T^2/(2h)}$ when $h>0$.
+    Their sum bounds $\mu_h(I_T^c)$ by the union bound. At $h=0$,
+    the discarded mass is zero. The density identity follows from
+    Theorem~\ref{thm:gaussian_density_integrals}.
+\end{proof}
+
+\subsection{The two-Hamiltonian integral}
+
+\begin{definition}[Full and truncated Gaussian filters]
+    \label{def:gaussian_filter_integrals}
+    \lean{GaussianFilter.gaussianIntertwiner,
+        GaussianFilter.gaussianIntertwinerTruncated}
+    \leanok
+    \uses{def:gaussian_time_density}
+    For matrices $\mathbb H',\mathbb H,W$ on $\mathcal H$, define
+    $A_t=e^{it\mathbb H'}We^{-it\mathbb H}$ and, for $h\ge0$,
+    \begin{align}
+        M_h(\mathbb H',\mathbb H;W)&=\int_{\R}A_t\,d\mu_h(t),
+        \label{eq:gaussian_filters}\\
+        M_h^T(\mathbb H',\mathbb H;W)&=\int_{[-T,T]}A_t\,d\mu_h(t). \notag
+    \end{align}
+    Truncation retains the original Gaussian mass, without division
+    by $\mu_h([-T,T])$.
+    Write $M_h$ and $M_h^T$ when the three matrices are fixed.
+\end{definition}
+
+\begin{theorem}[Continuity, integrability, and constant norm]
+    \label{thm:gaussian_integrand}
+    \lean{GaussianFilter.continuous_intertwinerIntegrand,
+        GaussianFilter.norm_intertwinerIntegrand,
+        GaussianFilter.integrable_intertwinerIntegrand,
+        GaussianFilter.integrable_intertwinerIntegrand_restrict}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    The function $t\mapsto A_t$ is continuous for arbitrary matrices
+    $\mathbb H',\mathbb H,W$. If $\mathbb H'$ and $\mathbb H$ are
+    Hermitian, then $\|A_t\|=\|W\|$ for every $t$.
+    In that case $A_t$ is integrable against $\mu_h$ and its restriction
+    to $[-T,T]$, for every $h\ge0$ and every $T\in\R$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:gaussian_filter_integrals}
+    Continuity follows from continuity of the matrix exponential and
+    multiplication. For Hermitian generators, both exponential factors
+    are unitary, so left and right multiplication preserve the operator
+    norm. The constant $\|W\|$ is integrable under the probability
+    measure $\mu_h$, and also under its restriction.
+\end{proof}
+
+\begin{theorem}[Density formulas and zero variance]
+    \label{thm:gaussian_filter_density}
+    \lean{GaussianFilter.gaussianIntertwiner_eq_integral_kernel,
+        GaussianFilter.gaussianIntertwinerTruncated_eq_integral_kernel,
+        GaussianFilter.integrable_kernel_intertwinerIntegrand,
+        GaussianFilter.gaussianIntertwiner_zero_variance,
+        GaussianFilter.gaussianIntertwiner_zero}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    For $h>0$ and arbitrary matrices $\mathbb H',\mathbb H,W$,
+    \begin{align}
+        M_h&=\int_{\R}g_h(t)e^{it\mathbb H'}We^{-it\mathbb H}\,dt,
+        \label{eq:gaussian_filter_density}\\
+        M_h^T&=\int_{[-T,T]}g_h(t)e^{it\mathbb H'}We^{-it\mathbb H}\,dt. \notag
+    \end{align}
+    If the two generators are Hermitian, these density integrands are
+    integrable. At zero variance, $M_0(\mathbb H',\mathbb H;W)=W$.
+    For every $h\ge0$, $M_h(\mathbb H',\mathbb H;0)=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_density_integrals, thm:gaussian_integrand,
+        def:gaussian_filter_integrals}
+    Apply Theorem~\ref{thm:gaussian_density_integrals} to $A_t$ and its
+    restriction; integrability follows from
+    Theorem~\ref{thm:gaussian_integrand}. At zero variance, integration
+    against $\delta_0$ evaluates $A_0=W$. For zero input, $A_t=0$.
+\end{proof}
+
+\begin{theorem}[Contraction and truncation error]
+    \label{thm:gaussian_filter_contraction}
+    \lean{GaussianFilter.norm_gaussianIntertwiner_le,
+        GaussianFilter.norm_gaussianIntertwinerTruncated_le_mass,
+        GaussianFilter.norm_gaussianIntertwinerTruncated_le,
+        GaussianFilter.norm_gaussianIntertwiner_sub_truncated_le_mass,
+        GaussianFilter.norm_gaussianIntertwiner_sub_truncated_le}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    Suppose $\mathbb H'$ and $\mathbb H$ are Hermitian and $h\ge0$.
+    For every $T\in\R$,
+    \begin{align}
+        \|M_h\|&\le\|W\|, &
+        \|M_h^T\|&\le\|W\|\mu_h([-T,T])\le\|W\|,
+        \label{eq:gaussian_contractions}\\
+        \|M_h-M_h^T\|&\le\mu_h([-T,T]^c)\|W\|. \notag
+    \end{align}
+    In particular, for $T\ge0$,
+    \begin{align}
+        \|M_h-M_h^T\|&\le\tau_h(T)\|W\|.
+        \label{eq:gaussian_truncation_error}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_integrand, thm:gaussian_tail}
+    Integrating $\|A_t\|=\|W\|$ gives the full and restricted norm
+    bounds. Since $A_t$ is integrable, the difference $M_h-M_h^T$ is
+    its integral over $[-T,T]^c$. Bound its norm by the integral of
+    $\|W\|$ and apply Theorem~\ref{thm:gaussian_tail}.
+\end{proof}
+
+\begin{theorem}[Adjoints exchange the generators]
+    \label{thm:gaussian_filter_adjoint}
+    \lean{GaussianFilter.gaussianIntertwiner_conjTranspose,
+        GaussianFilter.gaussianIntertwinerTruncated_conjTranspose}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    For Hermitian $\mathbb H',\mathbb H$, every $h\ge0$ and $T\in\R$,
+    \begin{align}
+        M_h(\mathbb H',\mathbb H;W)^\dagger
+            &=M_h(\mathbb H,\mathbb H';W^\dagger),
+        \label{eq:gaussian_adjoint}\\
+        M_h^T(\mathbb H',\mathbb H;W)^\dagger
+            &=M_h^T(\mathbb H,\mathbb H';W^\dagger). \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:gaussian_filter_integrals}
+    Taking the adjoint commutes with the integral, and
+    $A_t^\dagger=e^{it\mathbb H}W^\dagger e^{-it\mathbb H'}$.
+    This identity holds for the full measure and for its restriction.
+\end{proof}
+
+\begin{theorem}[Matrix elements and the Gaussian multiplier]
+    \label{thm:gaussian_filter_multiplier}
+    \lean{GaussianFilter.dotProduct_intertwinerIntegrand_mulVec,
+        GaussianFilter.dotProduct_gaussianIntertwiner_mulVec,
+        GaussianFilter.inner_gaussianIntertwiner}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    Let $\mathbb H'v=Ev$ and $\mathbb Hw=E'w$, where $E,E'\in\R$.
+    If $\mathbb H'$ is Hermitian, then
+    \begin{align}
+        \langle v,A_tw\rangle
+            &=e^{it(E-E')}\langle v,Ww\rangle.
+        \label{eq:gaussian_integrand_coefficient}
+    \end{align}
+    If both generators are Hermitian, then for every $h\ge0$,
+    \begin{align}
+        \langle v,M_hw\rangle
+            &=e^{-h(E-E')^2/2}\langle v,Ww\rangle.
+        \label{eq:gaussian_multiplier}
+    \end{align}
+    The vectors need not be normalized or real. In coordinates,
+    $\langle v,M_hw\rangle=\sum_j\overline{v_j}(M_hw)_j$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_integrand, thm:gaussian_characteristic}
+    The right eigenvector contributes $e^{-itE'}$; the left covector
+    contributes $e^{itE}$, because the first argument of the inner
+    product is conjugate-linear. Their product proves
+    (\ref{eq:gaussian_integrand_coefficient}). The continuous linear
+    functional $A\mapsto\langle v,Aw\rangle$ commutes with the
+    integrable matrix average. Apply
+    (\ref{eq:gaussian_characteristic}) at $\omega=E-E'$ to obtain
+    (\ref{eq:gaussian_multiplier}).
+\end{proof}
+
+\subsection{Spectral gaps and ground-vector estimates}
+
+\begin{theorem}[Ground and excited eigenvectors]
+    \label{thm:gaussian_gap_dichotomy}
+    \lean{GaussianFilter.eigenvector_ground_or_gap}
+    \leanok
+    Let $K$ be Hermitian, $\|\Omega\|=1$, $K\Omega=\mathcal E\Omega$,
+    and $\Delta>0$. Suppose
+    \begin{align}
+        K-\mathcal E I&\ge\Delta(I-\ketbra{\Omega}{\Omega}).
+        \label{eq:gaussian_lower_gap}
+    \end{align}
+    For an orthonormal eigenbasis $Ku_k=\lambda_ku_k$, each $k$
+    satisfies one of the following alternatives:
+    \begin{align}
+        \lambda_k&=\mathcal E, &
+        u_k&=\langle\Omega,u_k\rangle\Omega;
+        \label{eq:gaussian_eigenvector_cases}\\
+        \lambda_k-\mathcal E&\ge\Delta, &
+        \langle u_k,\Omega\rangle&=0. \notag
+    \end{align}
+    Thus $\Delta$ is a lower bound on the gap; equality with the least
+    excitation energy is not required.
+\end{theorem}
+\begin{proof}\leanok
+    When $\lambda_k=\mathcal E$, the quadratic-form inequality
+    (\ref{eq:gaussian_lower_gap}) forces
+    $\|u_k-\langle\Omega,u_k\rangle\Omega\|^2=0$.
+    Otherwise Hermiticity and the two eigenvector equations imply
+    $(\lambda_k-\mathcal E)\langle u_k,\Omega\rangle=0$.
+    Hence $u_k\perp\Omega$, and evaluating
+    (\ref{eq:gaussian_lower_gap}) on $u_k$ gives
+    $\lambda_k-\mathcal E\ge\Delta$.
+\end{proof}
+
+\begin{theorem}[Dimension-free decay from spectral coefficients]
+    \label{thm:gaussian_coefficient_decay}
+    \lean{GaussianFilter.norm_sub_ground_le_of_coefficients}
+    \leanok
+    Under the hypotheses of Theorem~\ref{thm:gaussian_gap_dichotomy},
+    let $h\ge0$ and suppose $x,y\in\mathcal H$ satisfy
+    \begin{align}
+        \langle u_k,y\rangle
+            &=e^{-h(\lambda_k-\mathcal E)^2/2}\langle u_k,x\rangle
+        \label{eq:gaussian_spectral_coefficients}
+    \end{align}
+    for every $k$. Then
+    \begin{align}
+        \|y-\langle\Omega,x\rangle\Omega\|
+            &\le e^{-h\Delta^2/2}\|x\|.
+        \label{eq:gaussian_coefficient_decay}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_gap_dichotomy}
+    Put $r=y-\langle\Omega,x\rangle\Omega$ and
+    $q=e^{-h\Delta^2/2}$. The ground coefficients of $r$ vanish.
+    Each excited coefficient obeys
+    $|\langle u_k,r\rangle|\le q|\langle u_k,x\rangle|$, since
+    $\lambda_k-\mathcal E\ge\Delta>0$ and $h\ge0$.
+    Parseval's identity gives
+    \begin{align}
+        \|r\|^2
+            &=\sum_k|\langle u_k,r\rangle|^2
+            \le q^2\sum_k|\langle u_k,x\rangle|^2
+            =q^2\|x\|^2.
+        \label{eq:gaussian_parseval}
+    \end{align}
+    Taking square roots proves~(\ref{eq:gaussian_coefficient_decay}),
+    with no factor depending on $\dim\mathcal H$.
+\end{proof}
+
+Let $\mathbb H',\mathbb H$ now be Hermitian, with unit vectors
+$\Phi,\Psi$ and common eigenvalue $\mathcal E$:
+\begin{align}
+    \mathbb H'\Phi&=\mathcal E\Phi, &
+    \mathbb H\Psi&=\mathcal E\Psi.
+    \label{eq:gaussian_ground_vectors}
+\end{align}
+For any operator $W$, put $z=\langle\Phi,W\Psi\rangle\in\C$ and
+$q_h=e^{-h\Delta^2/2}$.
+% The five integral-ground declarations passed native production, strict
+% production, consumers, and five guarded axiom checks at revision 2ae6e259.
+% Their source bytes are unchanged in the render snapshot at 63a3390.
+
+\begin{theorem}[Forward ground-vector estimate]
+    \label{thm:gaussian_ground_estimate}
+    \lean{GaussianFilter.norm_gaussianIntertwiner_ground_le}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    Assume~(\ref{eq:gaussian_ground_vectors}), $\Delta>0$, and
+    $\mathbb H'-\mathcal E I\ge\Delta(I-\ketbra{\Phi}{\Phi})$.
+    For every $h\ge0$,
+    \begin{align}
+        \|M_h\Psi-z\Phi\|&\le q_h\|W\|.
+        \label{eq:gaussian_ground_estimate}
+    \end{align}
+    Only the target Hamiltonian $\mathbb H'$ needs a gap for this bound.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_filter_multiplier, thm:gaussian_coefficient_decay}
+    In an orthonormal eigenbasis $\mathbb H'u_k=\lambda_ku_k$,
+    (\ref{eq:gaussian_multiplier}) gives
+    \begin{align}
+        \langle u_k,M_h\Psi\rangle
+            &=e^{-h(\lambda_k-\mathcal E)^2/2}
+                \langle u_k,W\Psi\rangle.
+        \label{eq:gaussian_ground_coefficients}
+    \end{align}
+    Apply Theorem~\ref{thm:gaussian_coefficient_decay} with
+    $x=W\Psi$, $y=M_h\Psi$, and $\Omega=\Phi$.
+    Since $\|W\Psi\|\le\|W\|\|\Psi\|=\|W\|$, this proves
+    (\ref{eq:gaussian_ground_estimate}). Thus the spectral coefficient
+    identity is obtained from the integral itself.
+\end{proof}
+
+\begin{theorem}[Two-sided ground-vector estimate]
+    \label{thm:gaussian_two_sided}
+    \lean{GaussianFilter.gaussianIntertwiner_two_sided_ground_estimate}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    Assume~(\ref{eq:gaussian_ground_vectors}), $\Delta>0$, and both
+    lower-gap inequalities
+    \begin{align}
+        \mathbb H-\mathcal E I&\ge\Delta(I-\ketbra{\Psi}{\Psi}),
+        \label{eq:gaussian_two_gaps}\\
+        \mathbb H'-\mathcal E I&\ge\Delta(I-\ketbra{\Phi}{\Phi}). \notag
+    \end{align}
+    For every $h\ge0$,
+    \begin{align}
+        \|M_h\Psi-z\Phi\|&\le q_h\|W\|, &
+        \|M_h^\dagger\Phi-\overline z\Psi\|&\le q_h\|W\|.
+        \label{eq:gaussian_two_sided}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_ground_estimate, thm:gaussian_filter_adjoint}
+    Apply Theorem~\ref{thm:gaussian_ground_estimate} once to
+    $(\mathbb H',\mathbb H,W,\Phi,\Psi)$ and once to
+    $(\mathbb H,\mathbb H',W^\dagger,\Psi,\Phi)$.
+    By~(\ref{eq:gaussian_adjoint}), the second filtered operator is
+    $M_h^\dagger$. Its overlap is
+    $\langle\Psi,W^\dagger\Phi\rangle
+      =\overline{\langle\Phi,W\Psi\rangle}=\overline z$, and
+    $\|W^\dagger\|=\|W\|$.
+\end{proof}
+
+\begin{theorem}[Real overlap and contraction]
+    \label{thm:gaussian_real_overlap}
+    \lean{GaussianFilter.gaussianIntertwiner_two_sided_of_real_overlap}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    Under~(\ref{eq:gaussian_ground_vectors}) and
+    (\ref{eq:gaussian_two_gaps}), suppose $\Delta>0$, $\|W\|\le1$,
+    and $\langle\Phi,W\Psi\rangle=z\in\R$.
+    For every $h\ge0$,
+    \begin{align}
+        \|M_h\|&\le1, &
+        \|M_h\Psi-z\Phi\|&\le q_h, &
+        \|M_h^\dagger\Phi-z\Psi\|&\le q_h.
+        \label{eq:gaussian_real_overlap}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_two_sided, thm:gaussian_filter_contraction}
+    Use Theorem~\ref{thm:gaussian_filter_contraction} and
+    (\ref{eq:gaussian_two_sided}), then substitute
+    $\overline z=z$ and $\|W\|\le1$.
+\end{proof}
+
+In the reset argument of~\cite{OpenAI2026PolynomialPEPS}, the overlap
+$z$ is a purity and is therefore real and nonnegative. This is the
+real-overlap hypothesis used in~(\ref{eq:gaussian_real_overlap});
+Hermiticity of $W$ alone does not make $\langle\Phi,W\Psi\rangle$
+real for two different vectors.
+
+\begin{theorem}[Forward estimate after time truncation]
+    \label{thm:gaussian_truncated_ground}
+    \lean{GaussianFilter.norm_gaussianIntertwinerTruncated_ground_le}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    Under the hypotheses of Theorem~\ref{thm:gaussian_ground_estimate},
+    for $h\ge0$ and $T\ge0$,
+    \begin{align}
+        \|M_h^T\Psi-z\Phi\|
+            &\le\bigl(q_h+\tau_h(T)\bigr)\|W\|.
+        \label{eq:gaussian_truncated_ground}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_ground_estimate, thm:gaussian_filter_contraction}
+    Split $M_h^T\Psi-z\Phi=(M_h\Psi-z\Phi)+(M_h^T-M_h)\Psi$.
+    The triangle inequality, $\|\Psi\|=1$, and
+    (\ref{eq:gaussian_truncation_error}) bound the two terms by
+    $q_h\|W\|$ and $\tau_h(T)\|W\|$.
+\end{proof}
+
+\begin{theorem}[Two-sided estimate after time truncation]
+    \label{thm:gaussian_truncated_two_sided}
+    \lean{GaussianFilter.gaussianIntertwinerTruncated_two_sided_ground_estimate}
+    \leanok
+    \uses{def:gaussian_filter_integrals}
+    Under~(\ref{eq:gaussian_ground_vectors}) and
+    (\ref{eq:gaussian_two_gaps}), suppose $\Delta>0$, $h\ge0$, and $T\ge0$.
+    With $\varepsilon=(q_h+\tau_h(T))\|W\|$,
+    \begin{align}
+        \|M_h^T\Psi-z\Phi\|&\le\varepsilon, &
+        \|(M_h^T)^\dagger\Phi-\overline z\Psi\|&\le\varepsilon.
+        \label{eq:gaussian_truncated_two_sided}
+    \end{align}
+    In particular, at positive variance the common bound is exactly
+    \begin{align}
+        \varepsilon&=\left(e^{-h\Delta^2/2}
+            +2e^{-T^2/(2h)}\right)\|W\|.
+        \label{eq:gaussian_truncated_error}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_truncated_ground, thm:gaussian_filter_adjoint}
+    Apply Theorem~\ref{thm:gaussian_truncated_ground} to the original
+    and exchanged generators. The truncated identity in
+    (\ref{eq:gaussian_adjoint}) converts the second result to the
+    adjoint estimate, with overlap $\overline z$ and unchanged norm
+    $\|W^\dagger\|=\|W\|$.
+\end{proof}

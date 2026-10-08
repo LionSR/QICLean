@@ -22,7 +22,7 @@ ordered chain is asserted.
 **Scope restriction (last-filter case):** The concrete declarations describe
 one diagonal filter. The descending trace argument needed for earlier factors
 of the source's ordered chain is recorded in
-`docs/paper-gaps/openai_peps_patch_stationarity_gap.tex`.
+`docs/paper-gaps/oai26_peps_patch_stationarity_gap.tex`.
 
 Source: OpenAI, polynomial PEPS manuscript, September 24, 2026,
 `03-patches.tex`, equations `eq:patch-simplex-derivative`, `eq:patch-kkt`,
@@ -30,40 +30,6 @@ and `eq:patch-clipped-eigenvalues`, lines 170–200, commit
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 Independently written from the mathematical manuscript; no upstream Lean proof
 text is reused.
--/
-
-/-!
-## Original proof provenance
-
-Source: September 24, 2026,
-https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex
-Labels: eq:patch-variational-problem, eq:patch-simplex-derivative,
-eq:patch-kkt, eq:patch-clipped-eigenvalues.
-Independently formalized; no upstream Lean proof text reused.
-
-Provenance-ID: 8767-density-simplex-01
-Downstream declaration: Entropy.simplex_ratio_conditions_of_isMinOn
-
-Provenance-ID: 8767-density-simplex-02
-Downstream declaration: Entropy.simplexFilterObjective
-
-Provenance-ID: 8767-density-simplex-03
-Downstream declaration: Entropy.normalizedFilterWeights
-
-Provenance-ID: 8767-density-simplex-04
-Downstream declaration: Entropy.hasFDerivAt_simplexFilterObjective
-
-Provenance-ID: 8767-density-simplex-05
-Downstream declaration: Entropy.simplexFilterObjective_pos
-
-Provenance-ID: 8767-density-simplex-06
-Downstream declaration: Entropy.normalizedFilterWeights_nonneg
-
-Provenance-ID: 8767-density-simplex-07
-Downstream declaration: Entropy.sum_normalizedFilterWeights
-
-Provenance-ID: 8767-density-simplex-08
-Downstream declaration: Entropy.normalizedFilterWeights_clipped_of_isMinOn
 -/
 
 open scoped BigOperators
