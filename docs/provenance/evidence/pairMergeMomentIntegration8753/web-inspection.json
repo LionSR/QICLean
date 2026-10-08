@@ -1,0 +1,23 @@
+{
+  "links": [
+    "TensorPower.pairCopyLeft",
+    "TensorPower.pairCopyRight",
+    "TensorPower.pairCopyBoth",
+    "TensorPower.commute_pairCopy",
+    "TensorPower.pairCopyBoth_eq_mul",
+    "TensorPower.pair_merge_moment_le",
+    "TensorPower.pair_merge_moment_le_mul_trace"
+  ],
+  "errors": [],
+  "top": 47.9375,
+  "bottom": 1442.15625,
+  "mathElements": 40,
+  "mobile_section_bounds": {
+    "top": 111.84375,
+    "bottom": 2035.78125
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360,
+  "visual_review": "passed",
+  "visual_observations": "All three entries and all three complete proofs inspected on desktop and360px mobile. All seven links and all40 mathematical elements present, with no MathJax errors. The three wide displays retain accessible, inspected scrolling right endpoints; both remaining proof displays fit without scrolling."
+}
