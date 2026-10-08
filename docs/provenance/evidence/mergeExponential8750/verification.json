@@ -1,0 +1,236 @@
+{
+  "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+  "checks": [
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/mergeExponential8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:31:19.219034+00:00",
+      "elapsed_seconds": 24.369,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/axioms.log",
+      "sha256": "f5cc24d6e83bfef913f041f9c9b67ca3bd1903d9b22d1a508876890fe05c25f1"
+    },
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Representation.MergeExponential"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:30:09.004262+00:00",
+      "elapsed_seconds": 25.65,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/build.log",
+      "sha256": "20dab9a6c910724b90ae4032aab5066e60f8b34826babc730dd12bd626a5c5f7"
+    },
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/mergeExponential8750/cache-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:30:08.482658+00:00",
+      "elapsed_seconds": 0.355,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+    },
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/mergeExponential8750/check-inherited.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:31:19.218987+00:00",
+      "elapsed_seconds": 0.611,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/inherited.log",
+      "sha256": "2a2c7616909c563ba36c97b34d315bd09b8d7c34ae6737fc3eba09d3dc866852"
+    },
+    {
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "/tmp/MergeExponentialMinimal.lean"
+      ],
+      "started_utc": "2026-10-08T00:24:38.296519+00:00",
+      "elapsed_seconds": 1.766,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/mergeExponential8750/merge-exponential-minimal-strict.log",
+      "sha256": "798450175b8ab8ed892dbc4858652162fffc965518895ad2d39953bca2220e83",
+      "binding": "Prefreeze preparation at the exact source-chain parent; this does not replace the source-bound checks below."
+    },
+    {
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "/tmp/MergeExponentialMinimal.lean"
+      ],
+      "started_utc": "2026-10-08T00:25:41.558139+00:00",
+      "elapsed_seconds": 5.756,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/merge-exponential-minimal-strict-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "binding": "Prefreeze preparation at the exact source-chain parent; this does not replace the source-bound checks below."
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Representation.SchurSurprisal",
+        "QICLean.Representation.SchurLabelCommutation"
+      ],
+      "started_utc": "2026-10-08T00:24:53.861875+00:00",
+      "elapsed_seconds": 41.168,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/merge-exponential-prerequisite-build.log",
+      "sha256": "7af81ac61293741185044cfa514382e38079bee030fa00e9b4e1c28d94b14283",
+      "binding": "Prefreeze preparation at the exact source-chain parent; this does not replace the source-bound checks below."
+    },
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:31:19.219162+00:00",
+      "elapsed_seconds": 0.249,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/mergeExponential8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:32:32.685098+00:00",
+      "elapsed_seconds": 1.242,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/provenance.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+    },
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/mergeExponential8750/Statements.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:31:19.219059+00:00",
+      "elapsed_seconds": 24.428,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/statements.log",
+      "sha256": "dabfc8e282a383791c98f8373a11f7b09aea203a6a3e9e0a37de284334f2fc69"
+    },
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "QICLean/Representation/MergeExponential.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:31:19.218948+00:00",
+      "elapsed_seconds": 25.365,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/mergeExponential8750/tactic_pattern_scan.py",
+        "--root",
+        "QICLean",
+        "--top",
+        "15"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:31:19.219144+00:00",
+      "elapsed_seconds": 0.718,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/tactic-patterns.log",
+      "sha256": "0c1c6d800ce000f31c33b3fd35e5df0d1569c96537577aa3fbe56e0551ee7bb9"
+    },
+    {
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/mergeExponential8750/TextStyle.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T00:31:19.219047+00:00",
+      "elapsed_seconds": 4.366,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeExponential8750/text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "status": "complete individual proof verification",
+  "module_build_jobs": 3105,
+  "full_source_strict_check": true,
+  "strict_options": {
+    "warningAsError": true,
+    "linter.mathlibStandardSet": true,
+    "relaxedAutoImplicit": false,
+    "maxSynthPendingDepth": 3
+  },
+  "stock_kernel_reports": 2,
+  "original_provenance_entries": 2,
+  "owned_original_shards": 1,
+  "source_files_unchanged": true,
+  "shared_imports_or_chapter_inputs_added": false,
+  "inherited_evidence_bindings": 613,
+  "inherited_inventory_hashes": 0,
+  "parent_source_bindings": 792,
+  "preparation_failure": "The initial availability assertion found the old warmed QIC cache missing SchurSurprisal.olean and stopped before creating the minimal-import scratch file. The premature strict command therefore failed with file-not-found. Both QIC prerequisites were then built under the successful pinned prebuilt Mathlib guard; the minimal-import and production strict checks passed. Production proof text was unchanged. Original preparation logs are preserved.",
+  "full_library_and_book_verification": "Deferred to separate unique inclusion."
+}

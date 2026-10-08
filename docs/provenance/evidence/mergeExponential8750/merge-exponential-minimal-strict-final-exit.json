@@ -1,0 +1,18 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "/tmp/MergeExponentialMinimal.lean"
+  ],
+  "started_utc": "2026-10-08T00:25:41.558139+00:00",
+  "elapsed_seconds": 5.756,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeExponential8750/merge-exponential-minimal-strict-final.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "binding": "Prefreeze preparation at the exact source-chain parent; this does not replace the source-bound checks below."
+}

@@ -1,0 +1,188 @@
+{
+  "files": [
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/Axioms.lean",
+      "sha256": "60af145f96bef90fc05baefd55bdcfa996bcde673887e310b1c1b1e542644c0e"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/README.md",
+      "sha256": "8794fb18a89b9a5c1671bb5ad9c84cfddee55392d3d802942cbc654052ab592f"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/Statements.lean",
+      "sha256": "994be74ba9c3675d6c84ca38505aeacaa239283056690a6c82eb46d6a39501d1"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/TextStyle.lean",
+      "sha256": "552d4a9432c33ea3fbea5d1c07d6f17ebe6d068ddce64b20e7b80b9aa83b7ecd"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/axioms-exit.json",
+      "sha256": "465cd5c218b000b3599092c2389c2df983f75e5b9594b2d15a8db362de77527a"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/axioms.log",
+      "sha256": "f5cc24d6e83bfef913f041f9c9b67ca3bd1903d9b22d1a508876890fe05c25f1"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/build-exit.json",
+      "sha256": "13b155c6e1d6813781e2439d00475ba4ae77f07877692c3d313c165c1ea7d3e7"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/build.log",
+      "sha256": "20dab9a6c910724b90ae4032aab5066e60f8b34826babc730dd12bd626a5c5f7"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/cache-guard-exit.json",
+      "sha256": "92cfa3c6c518e3aef95481280ac1d4ab2e528b3f9bd4c4eecf1e1503c47f9514"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/cache-guard.py",
+      "sha256": "60c61c038e9cf222a429e09c703b78649e3b6be389fb0c10f8477f1316cb3651"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/check-inherited.py",
+      "sha256": "2fc2c2f85cb4e6c52426b34f3b31e5bf69c83fa3532fda658382553b4e498464"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/check-manifest.py",
+      "sha256": "6120418c0699fc53370c812ba000d2b57d669310abb0c2822455d5cb018a9826"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/generated-import-preservation.json",
+      "sha256": "696ef0a19fe9c74193bc29dab43ee9b7563248337ce466af86b756584990580a"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/inherited-byte-preservation.json",
+      "sha256": "74482cc78e95a68e38aa2b741276ab1b42ad98f2c25e47bbafd9a72d6fc7488a"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/inherited-exit.json",
+      "sha256": "debddf32c0edee65909ddfd18451059dc3900d0c28f592e21c25820c21bd0900"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/inherited-inventory-check.json",
+      "sha256": "72cc269ca322fce99d5c4fc5cd1d0b10380d6a7fa0b68536a456b8af1c0273ae"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/inherited.log",
+      "sha256": "2a2c7616909c563ba36c97b34d315bd09b8d7c34ae6737fc3eba09d3dc866852"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/kernel-summary.json",
+      "sha256": "c1e29752e4f727f33008082004adff79e1121348ee2cadeabc8bfef8273835c6"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/merge-exponential-minimal-strict-exit.json",
+      "sha256": "921805cab9f3d7adb1af6ee8656fd218deb279daa46e0f670da4f80a29513576"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/merge-exponential-minimal-strict-final-exit.json",
+      "sha256": "a69dc39d74edebfe4fa28b7ba1449191e864c8796eaa66180a52e44424e55215"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/merge-exponential-minimal-strict-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/merge-exponential-minimal-strict.log",
+      "sha256": "798450175b8ab8ed892dbc4858652162fffc965518895ad2d39953bca2220e83"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/merge-exponential-prerequisite-build-exit.json",
+      "sha256": "6a5dc5aab6aab0b5ab73916dbe7bbd9cf8de78c96f2270d6fe60365a20ac9176"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/merge-exponential-prerequisite-build.log",
+      "sha256": "7af81ac61293741185044cfa514382e38079bee030fa00e9b4e1c28d94b14283"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/owned-shards.json",
+      "sha256": "279720cc5aa8cd078aff4776aa823846e052561c855bee4bd91799c63e80328e"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/preexisting-output-preservation.json",
+      "sha256": "3fb77c4abee9438a6398c04def77f160b6b43840598d181c0fd8d56fdd4c357d"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/production-preservation.json",
+      "sha256": "ce23570d62345eab921a2d4787314232a968c6e65f6f005b42262155e06ae36e"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/prose-exit.json",
+      "sha256": "ab5f9c27ec4231a6c2481c13177c2de7b768db23bb984a66c54e49f8eec523c9"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/provenance-exit.json",
+      "sha256": "32c91f3015606cdf96e55b0a2086c893b277122ecbad4f45c532f8fcddff0b3d"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/provenance.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/run.py",
+      "sha256": "7b348e5b425be03b1b4076402707030225c27220858e053daa21cc9c1c91647c"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/source-freeze.json",
+      "sha256": "f0d6fe69cc5f599a5dc125a0624dc1d3ef9b36eac19cd67f5c67903c4de84bd9"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/statements-exit.json",
+      "sha256": "03af8f406002f585ce9520e2862e805287dc9bb933b9728053cc04a9870f1d6e"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/statements.log",
+      "sha256": "dabfc8e282a383791c98f8373a11f7b09aea203a6a3e9e0a37de284334f2fc69"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/strict-source-exit.json",
+      "sha256": "8c28e2b2e03d6a3cdaf2abe4c7e355ae74a84d8aa8d8250bd669d9b8d938950a"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/tactic-patterns-exit.json",
+      "sha256": "16f20db5de46ca0e69aef2e956f440c62eabf4d12bda0bcf480150952903b21e"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/tactic-patterns.log",
+      "sha256": "0c1c6d800ce000f31c33b3fd35e5df0d1569c96537577aa3fbe56e0551ee7bb9"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/tactic_pattern_scan.py",
+      "sha256": "d6c4e9a12ccc192ca92de9a56f1850753dc2bc44724c647e90fc51a3ddaa4b4b"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/text-style-exit.json",
+      "sha256": "8dc9adb2f7984396e0fdb5ce7c17a6738e1c5f891b5edab719e97362dbe1997c"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/validate-owned.py",
+      "sha256": "a891ee6f435c08863f7230715b8893231cf047706dc168abca59eed613e979de"
+    },
+    {
+      "path": "docs/provenance/evidence/mergeExponential8750/verification.json",
+      "sha256": "856a076c247235e9a9376b4072b99b0ece851900215985ab68022cd9b9947d4d"
+    },
+    {
+      "path": "docs/provenance/openai-math.d/mergeExponential8750.json",
+      "sha256": "8451f38759c6593fef9dfebcc72f0940999838e15ea7e22817f277378d7a8cb8"
+    }
+  ]
+}
