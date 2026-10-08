@@ -1,0 +1,57 @@
+% Source: OpenAI2026AreaLaw, 09-amplification.tex, amplification-channel-vector,
+% lines 75--88. Revision adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\section{Chronological root channels on a common annihilated vector}
+\label{sec:root_channel_word}
+
+Let $\mathcal H$ be a finite-dimensional complex Hilbert space. Suppose that
+$0\le k_i\le I$ and $k_i\Omega=0$ for every index $i$, and put
+\begin{align}
+  G_i&=(I-k_i)^{1/2}, & K_i&=k_i^{1/2}, &
+  \mathcal E_i(B)&=G_iBG_i+K_iBK_i.
+\end{align}
+The identities below are auxiliary to the amplification argument
+of~\cite{OpenAI2026AreaLaw}.
+
+\begin{lemma}[A root channel on an annihilated vector]
+  \label{thm:root_channel_sqrt_mulVec_eq}
+  \lean{Matrix.rootChannel_sqrt_mulVec_eq}
+  \leanok
+  For every matrix $B$ and every index $i$,
+  \begin{align}
+    \mathcal E_i(B)\Omega&=G_i(B\Omega).
+  \end{align}
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Functional calculus on $k_i\Omega=0$ gives $K_i\Omega=0$ and
+  $G_i\Omega=\Omega$. Consequently
+  \begin{align}
+    \mathcal E_i(B)\Omega
+      &=G_iB(G_i\Omega)+K_iB(K_i\Omega)=G_i(B\Omega).
+  \end{align}
+\end{proof}
+
+\begin{theorem}[A chronological product on a common annihilated vector]
+  \label{thm:root_channel_foldl_mulVec_eq}
+  \lean{Matrix.rootChannel_foldl_mulVec_eq}
+  \leanok
+  Let $(i_1,\ldots,i_m)$ be any finite list of indices, and let $B$ be any matrix.
+  Then
+  \begin{align}
+    \bigl(\mathcal E_{i_m}\circ\cdots\circ\mathcal E_{i_1}\bigr)(B)\Omega
+      &=G_{i_m}\cdots G_{i_1}(B\Omega).
+  \end{align}
+  For the empty list, both actions are the identity.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:root_channel_sqrt_mulVec_eq}
+  Evaluation at $\Omega$ takes each successive channel action on a matrix
+  to the corresponding $G_i$ action on its evaluated vector, by
+  Lemma~\ref{thm:root_channel_sqrt_mulVec_eq}. Iterate this compatibility
+  along the original list, beginning at $B$ and $B\Omega$.
+\end{proof}
+
+Repeated indices are allowed, and no normalization of $\Omega$ is needed.
