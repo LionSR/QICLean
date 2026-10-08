@@ -38,6 +38,7 @@ import QICLean.Analysis.EntropyMarkovForward
 import QICLean.Analysis.EntropyMarkovReverse
 import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
+import QICLean.Analysis.ExponentialDistanceProfile
 import QICLean.Analysis.FiniteCoordinateNowosad
 import QICLean.Analysis.FiniteCoordinateNowosad.Recursion
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami

@@ -350,6 +350,10 @@ jobs:
             QICLeanTest/PoissonWordJumpAxioms.lean \
             QICLeanTest/PoissonWordWeightedGrowth.lean \
             QICLeanTest/PoissonWordWeightedGrowthAxioms.lean \
+            QICLeanTest/ExponentialDistanceProfile.lean \
+            QICLeanTest/ExponentialDistanceProfileAxioms.lean \
+            QICLeanTest/PoissonWordSpatialGrowth.lean \
+            QICLeanTest/PoissonWordSpatialGrowthAxioms.lean \
             QICLeanTest/TaggedInterleavings.lean \
             QICLeanTest/TaggedInterleavingsAxioms.lean \
             QICLeanTest/PoissonWordThinning.lean \

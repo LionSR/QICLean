@@ -1,0 +1,119 @@
+\section{Spatial growth under the Poisson word law}
+\label{sec:poisson_word_spatial_growth}
+
+Let $I$ and $Y$ be finite sets, with an extended pseudometric
+$\delta$ on $Y$.  Write $\mathcal W_I$ for the finite words in $I$,
+$\varnothing$ for the empty word, and $u[i]$ for appending $i$ on
+the right.  Let $\mu_{I,t}$ be the actual Poisson word probability
+measure of Definition~\ref{def:poisson_word_measure}.
+For an arbitrary $S\subseteq Y$, use its extended distance $D_S$
+and the profile $r_{S,a,\alpha}$ of
+Definition~\ref{def:exponential_distance_profile}.
+The following results combine the metric estimate with weighted
+finite-word growth to obtain the probabilistic consequence of
+\cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex}, lines 159--188.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% Checked module: QICLean/Probability/PoissonWordSpatialGrowth.lean,
+% revision 284fcf9f.
+
+\begin{theorem}[Integrability and spatial exponential growth]
+\label{thm:poisson_word_spatial_expectation}
+\lean{PoissonWord.integrable_and_integral_le_of_spatial_growth}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_insert,
+def:exponential_distance_profile}
+Let $t\geq0$, $a\geq0$, $0<\alpha\leq1$, and $v,C\geq0$.
+Let $f:\mathcal W_I\times Y\to\mathbb R$ and
+$A:Y\times Y\to\mathbb R$ be nonnegative at every argument,
+and let $S\subseteq Y$ be arbitrary.
+Assume that, for every word $u$ and all $y,z\in Y$,
+\begin{align}
+ \begin{aligned}
+ f(\varnothing,y)&\leq C\mathbf 1_S(y),\\
+ \sum_{i\in I}\bigl(f(u[i],y)-f(u,y)\bigr)
+ &\leq\sum_{z\in Y}A(y,z)f(u,z),\\
+ \delta(y,z)=\infty&\ \Longrightarrow\ A(y,z)=0,\\
+ \sum_{z\in Y}A(y,z)e^{a(\delta(y,z)_{\mathbb R})^\alpha}
+ &\leq v.
+ \end{aligned}
+ \label{eq:poisson_word_spatial_hypotheses}
+\end{align}
+Then, for every $y\in Y$, the function $u\mapsto f(u,y)$ is
+integrable with respect to $\mu_{I,t}$, and
+\begin{align}
+ \int_{\mathcal W_I}f(u,y)\,d\mu_{I,t}(u)
+ &\leq e^{vt}C r_{S,a,\alpha}(y).
+ \label{eq:poisson_word_spatial_expectation}
+\end{align}
+At finite distance from $S$, the right side is
+$C e^{vt-a(D_S(y)_{\mathbb R})^\alpha}$; at infinite distance it is
+zero.  The initial bound uses the actual indicator of $S$, and the
+increment hypothesis sums all right-appended letters.  No uniform
+bound on $f$ is required.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:exponential_distance_profile_nonneg,
+lem:indicator_le_exponential_distance_profile,
+thm:exponential_distance_profile_row,
+thm:poisson_word_weighted_expectation}
+Set $r=r_{S,a,\alpha}$.
+Lemma~\ref{lem:exponential_distance_profile_nonneg} gives $r\geq0$.
+Since $C\geq0$, Lemma~\ref{lem:indicator_le_exponential_distance_profile}
+and the initial bound imply
+\begin{align}
+ f(\varnothing,y)&\leq C\mathbf 1_S(y)\leq C r(y).
+ \label{eq:poisson_word_spatial_initial_profile}
+\end{align}
+Theorem~\ref{thm:exponential_distance_profile_row} supplies
+$\sum_{z\in Y}A(y,z)r(z)\leq v r(y)$, including coordinates at
+infinite distance from $S$.
+These are precisely the profile hypotheses of
+Theorem~\ref{thm:poisson_word_weighted_expectation}.
+Apply it with the unchanged summed append-increment bound in
+(\ref{eq:poisson_word_spatial_hypotheses}) to obtain integrability
+and~(\ref{eq:poisson_word_spatial_expectation}).
+\end{proof}
+
+\begin{theorem}[Pointwise vanishing at infinite distance]
+\label{thm:poisson_word_spatial_zero}
+\lean{PoissonWord.eq_zero_of_spatial_growth_of_infEDist_eq_top}
+\leanok
+\uses{def:poisson_word_insert, def:exponential_distance_profile}
+Let $a\geq0$, $0<\alpha\leq1$, $v,C\geq0$, and let
+$f:\mathcal W_I\times Y\to\mathbb R$ and
+$A:Y\times Y\to\mathbb R$ be nonnegative at every argument.
+For an arbitrary $S\subseteq Y$, assume all four conditions in
+(\ref{eq:poisson_word_spatial_hypotheses}).
+If $D_S(y)=\infty$, then
+\begin{align}
+ f(u,y)&=0\qquad\text{for every }u\in\mathcal W_I.
+ \label{eq:poisson_word_spatial_zero}
+\end{align}
+This assertion is independent of time and holds at every word.
+In particular, when $S=\varnothing$, $f$ vanishes identically.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:indicator_le_exponential_distance_profile,
+thm:exponential_distance_profile_row,
+lem:exponential_distance_profile_zero,
+thm:poisson_word_weighted_zero}
+Use $r=r_{S,a,\alpha}$.
+As in~(\ref{eq:poisson_word_spatial_initial_profile}), indicator
+domination and $C\geq0$ give $f(\varnothing,z)\leq Cr(z)$ at
+every coordinate $z$.
+Theorem~\ref{thm:exponential_distance_profile_row} gives the kernel
+supersolution bound, while
+Lemma~\ref{lem:exponential_distance_profile_zero} gives $r(y)=0$.
+Apply Theorem~\ref{thm:poisson_word_weighted_zero} with the original
+summed append-increment hypothesis.  The empty-set conclusion follows
+because $D_{\varnothing}(y)=\infty$ for every $y$.
+\end{proof}
+
+These statements allow an empty alphabet, an empty target set, and
+time zero.  They prove the spatial estimate under the displayed
+kernel and append-increment hypotheses.  Constructing the physical
+oscillation kernel, verifying those hypotheses for the induced-graph
+application, and identifying the word law with independent
+chronological clocks remain separate tasks.

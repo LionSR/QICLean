@@ -22,6 +22,7 @@ import QICLean.Probability.PoissonWordPartition
 import QICLean.Probability.PoissonWordRealOccupation
 import QICLean.Probability.PoissonWordRelabel
 import QICLean.Probability.PoissonWordSemigroup
+import QICLean.Probability.PoissonWordSpatialGrowth
 import QICLean.Probability.PoissonWordThinning
 import QICLean.Probability.PoissonWordUniformOrder
 import QICLean.Probability.PoissonWordWeightedGrowth
