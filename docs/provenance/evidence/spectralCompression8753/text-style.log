@@ -1,0 +1,3 @@
+error: QICLean/Analysis/InverseCompressionLowerBound.lean:15: This line contains a unicode character that is not on the allowlist 'ᐟ' (U+141f). For adding new symbols see `Mathlib.Linter.TextBased.UnicodeLinter.othersInMathlib`.
+error: found 1 new style error(s)! Try `lake exe lint-style --fix` to apply automatic fixes.
+1

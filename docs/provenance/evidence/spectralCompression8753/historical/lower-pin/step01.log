@@ -1,0 +1,6 @@
+/tmp/tnlean-lower-pin-check/LowerPin.lean:29:4: error: Type mismatch: After simplification, term
+  hn
+ has type
+  ‖Tᴴ * T‖ ≤ c
+but is expected to have type
+  ‖T‖ * ‖T‖ ≤ c

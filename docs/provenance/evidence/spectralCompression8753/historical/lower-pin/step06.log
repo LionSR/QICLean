@@ -1,0 +1,8 @@
+/tmp/tnlean-lower-pin-check/LowerPin.lean:73:8: error: invalid 'calc' step, left-hand side is
+  S * (T * Tᴴ) * S : Matrix n n ℂ
+but is expected to be
+  P : Matrix n n ℂ
+/tmp/tnlean-lower-pin-check/LowerPin.lean:74:8: error: invalid 'calc' step, right-hand side is
+  P : Matrix n n ℂ
+but is expected to be
+  S * (T * Tᴴ) * S : Matrix n n ℂ

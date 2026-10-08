@@ -1,0 +1,12 @@
+Matrix.spectralProjectionGE_exp_smul_sub_le.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n] {G H : Matrix n n ℂ}
+  (hG : G.IsHermitian) (hH : H.IsHermitian) (hGH : Commute G H) {a : ℝ} (ha : 0 ≤ a) :
+  G.spectralProjectionGE 0 * NormedSpace.exp (↑a • (H - G)) * G.spectralProjectionGE 0 ≤ NormedSpace.exp (↑a • H)
+Matrix.PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul.{u_1} {n : Type u_1} [Fintype n]
+  [DecidableEq n] {ρ G H : Matrix n n ℂ} (hρ : ρ.PosSemidef) (hG : G.IsHermitian) (hH : H.IsHermitian)
+  (hGH : Commute G H) {a : ℝ} (ha : 0 ≤ a) (hsupport : G.spectralProjectionGE 0 * ρ = ρ) :
+  (ρ * NormedSpace.exp (↑a • (H - G))).trace.re ≤ (ρ * NormedSpace.exp (↑a • H)).trace.re
+Matrix.mul_conjTranspose_le_smul_one_of_conjTranspose_mul_le.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
+  (T : Matrix n n ℂ) {c : ℝ} (hc : 0 ≤ c) (h : T.conjTranspose * T ≤ c • 1) : T * T.conjTranspose ≤ c • 1
+Matrix.PosDef.inv_smul_projection_le_of_compression_inv_le.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
+  {A P : Matrix n n ℂ} (hA : A.PosDef) (hP : IsStarProjection P) {c : ℝ} (hc : 0 < c) (h : P * A⁻¹ * P ≤ c • P) :
+  c⁻¹ • P ≤ A

@@ -1,0 +1,51 @@
+/tmp/SpectralExpDrop.lean:70:89: error: unsolved goals
+case pos
+n : Type u_1
+inst✝¹ : Fintype n
+inst✝ : DecidableEq n
+G H : Matrix n n ℂ
+hG : G.IsHermitian
+hH : H.IsHermitian
+hGH : Commute G H
+a : ℝ
+ha : 0 ≤ a
+hc : ∀ (g : ↥hG.eigenvalueSet) (h : ↥hH.eigenvalueSet), Commute (hG.spectralProj ↑g) (hH.spectralProj ↑h)
+R : IsOrthogonalResolution fun p => hG.spectralProj ↑p.1 * hH.spectralProj ↑p.2 :=
+  IsOrthogonalResolution.prod (IsHermitian.isOrthogonalResolution_spectralProj hG)
+    (IsHermitian.isOrthogonalResolution_spectralProj hH) hc
+hE : ∀ (p : ↥hG.eigenvalueSet × ↥hH.eigenvalueSet), (hG.spectralProj ↑p.1 * hH.spectralProj ↑p.2).IsHermitian
+hmG : (R.hom fun p => ↑↑p.1) = G
+hmH : (R.hom fun p => ↑↑p.2) = H
+hmJ : (R.hom fun p => ↑(if 0 ≤ ↑p.1 then 1 else 0)) = G.spectralProjectionGE 0
+hmHG : (R.hom fun p => ↑(↑p.2 - ↑p.1)) = H - G
+hExpHG : NormedSpace.exp (↑a • (H - G)) = R.hom fun p => ↑(Real.exp (a * (↑p.2 - ↑p.1)))
+hExpH : NormedSpace.exp (↑a • H) = R.hom fun p => ↑(Real.exp (a * ↑p.2))
+p : ↥hG.eigenvalueSet × ↥hH.eigenvalueSet
+h✝ : 0 ≤ ↑p.1
+⊢ ↑(if 0 ≤ ↑p.1 then 1 else 0) * Complex.exp (↑a * (↑↑p.2 - ↑↑p.1)) * ↑(if 0 ≤ ↑p.1 then 1 else 0) =
+    Complex.exp (↑a * (↑↑p.2 - ↑↑p.1))
+
+case neg
+n : Type u_1
+inst✝¹ : Fintype n
+inst✝ : DecidableEq n
+G H : Matrix n n ℂ
+hG : G.IsHermitian
+hH : H.IsHermitian
+hGH : Commute G H
+a : ℝ
+ha : 0 ≤ a
+hc : ∀ (g : ↥hG.eigenvalueSet) (h : ↥hH.eigenvalueSet), Commute (hG.spectralProj ↑g) (hH.spectralProj ↑h)
+R : IsOrthogonalResolution fun p => hG.spectralProj ↑p.1 * hH.spectralProj ↑p.2 :=
+  IsOrthogonalResolution.prod (IsHermitian.isOrthogonalResolution_spectralProj hG)
+    (IsHermitian.isOrthogonalResolution_spectralProj hH) hc
+hE : ∀ (p : ↥hG.eigenvalueSet × ↥hH.eigenvalueSet), (hG.spectralProj ↑p.1 * hH.spectralProj ↑p.2).IsHermitian
+hmG : (R.hom fun p => ↑↑p.1) = G
+hmH : (R.hom fun p => ↑↑p.2) = H
+hmJ : (R.hom fun p => ↑(if 0 ≤ ↑p.1 then 1 else 0)) = G.spectralProjectionGE 0
+hmHG : (R.hom fun p => ↑(↑p.2 - ↑p.1)) = H - G
+hExpHG : NormedSpace.exp (↑a • (H - G)) = R.hom fun p => ↑(Real.exp (a * (↑p.2 - ↑p.1)))
+hExpH : NormedSpace.exp (↑a • H) = R.hom fun p => ↑(Real.exp (a * ↑p.2))
+p : ↥hG.eigenvalueSet × ↥hH.eigenvalueSet
+h✝ : ¬0 ≤ ↑p.1
+⊢ ↑p.1 < 0
