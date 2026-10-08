@@ -96,6 +96,7 @@ import QICLean.Analysis.ReplicaDefect
 import QICLean.Analysis.ReplicaExcitationDecomposition
 import QICLean.Analysis.ReplicaExcitationSymmetry
 import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
+import QICLean.Analysis.ReplicaGoodAuxiliaryMarginal
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ResolventFunctionalCalculus
