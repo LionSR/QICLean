@@ -30,21 +30,18 @@ or constructed.
 
 The proof uses Mathlib's exponential inequalities, positive-base real powers,
 and natural ceiling. No OpenAI Lean proof text is copied or adapted.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-
-Provenance-ID: gaussian8766-localization-constant
-Downstream declaration: GaussianFilter.exists_localization_parameter_constant
 Source: peps-02-information-adc7f124.tex, lines 551–554.
 Reuse: Mathlib ordered-field arithmetic.
 
-Provenance-ID: gaussian8766-localization-error
-Downstream declaration: GaussianFilter.localization_error_bound_of_parameter_constant
 Source: peps-02-information-adc7f124.tex, lines 546–554.
 Reuse: Mathlib exponential inequalities, real powers, and natural ceiling.
 
-Provenance-ID: gaussian8766-localization-parameters
-Downstream declaration: GaussianFilter.exists_localization_parameters
 Source: peps-02-information-adc7f124.tex, lines 546–554.
 Reuse: the explicit coefficient and scalar estimate in this module.
 -/

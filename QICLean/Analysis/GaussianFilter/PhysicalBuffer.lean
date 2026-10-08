@@ -24,21 +24,18 @@ in the September 24, 2026 Polynomial-PEPS manuscript, source revision
 `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 Interaction support, regional hypotheses, and the full reset lemma remain separate.
 These are original composition proofs; no upstream Lean proof text is reused.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-
-Provenance-ID: physical-gaussian8766-hermitian
-Downstream declaration: Matrix.isHermitian_of_posSemidef_gap
 Source: peps-02-information-adc7f124.tex, lines 415–421.
 Reuse: Hermitian closure under addition and real scalar multiplication.
 
-Provenance-ID: physical-gaussian8766-ground-pair
-Downstream declaration: Matrix.physicalBuffer_ground_pair
 Source: peps-02-information-adc7f124.tex, lines 415–425.
 Reuse: local doubled gap, coordinate regrouping, and unitary conjugation.
 
-Provenance-ID: physical-gaussian8766-filter
-Downstream declaration: GaussianFilter.exists_physicalBuffer_gaussian_filter
 Source: peps-02-information-adc7f124.tex, lines 402–452.
 Reuse: local physical-buffer overlap, derived ground pair, Gaussian integral estimates,
 and Mathlib contractivity of star-algebra homomorphisms.

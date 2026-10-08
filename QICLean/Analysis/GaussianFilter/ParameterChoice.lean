@@ -30,26 +30,21 @@ The constants are constructed as `A = 2 * (30 + r) / Δ ^ 2` and
 `T₀ = sqrt (2 * A * (30 + r))`. The proof reuses Mathlib's positive square
 root, monotonicity of the exponential, and the logarithmic formula for real
 powers. No OpenAI Lean proof text is copied or adapted.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-
-Provenance-ID: gaussian8766-parameter-constants
-Downstream declaration: GaussianFilter.exists_gaussian_parameter_constants
 Source: peps-02-information-adc7f124.tex, lines 443–452.
 Reuse: Mathlib positive square root and ordered-field arithmetic.
 
-Provenance-ID: gaussian8766-parameter-errors
-Downstream declaration: GaussianFilter.gaussian_error_bounds_of_parameter_constants
 Source: peps-02-information-adc7f124.tex, lines 443–452.
 Reuse: Mathlib exponential monotonicity and positive-base real powers.
 
-Provenance-ID: gaussian8766-uniform-parameters
-Downstream declaration: GaussianFilter.exists_gaussian_parameters
 Source: peps-02-information-adc7f124.tex, lines 443–452.
 Reuse: explicit fixed constants and scalar error bounds in this module.
 
-Provenance-ID: gaussian8766-polynomial-parameters
-Downstream declaration: GaussianFilter.exists_gaussian_parameters_of_polynomial_exponent
 Source: peps-02-information-adc7f124.tex, lines 425–452.
 Reuse: the uniform parameter theorem with the manuscript exponent `2 * p + 10`.
 -/

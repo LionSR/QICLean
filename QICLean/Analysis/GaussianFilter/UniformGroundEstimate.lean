@@ -27,11 +27,12 @@ Source: polynomial-PEPS manuscript (2026), `lem:reset`, `02-information.tex`,
 lines 443–452, at `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 This is the uniform Gaussian approximation step only. No spatial locality or
 full reset conclusion is asserted. No OpenAI Lean proof text is copied or adapted.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-
-Provenance-ID: gaussian8766-uniform-truncated-ground
-Downstream declaration: GaussianFilter.exists_uniform_truncated_ground_estimate
 Source: peps-02-information-adc7f124.tex, lines 443–452.
 Reuse: local scalar parameter choice, actual two-sided truncated integral estimate,
 and the local unrenormalized integral contraction bound.
