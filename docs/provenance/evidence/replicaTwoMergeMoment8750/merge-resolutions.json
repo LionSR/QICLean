@@ -1,0 +1,51 @@
+{
+  "allowed_source_differences": [
+    {
+      "path": "QICLean/Algebra.lean",
+      "kind": "generated imports",
+      "resolution": "Union of existing imports; no declaration proof text."
+    },
+    {
+      "path": "QICLean/Analysis.lean",
+      "kind": "generated imports",
+      "resolution": "Union of existing imports; no declaration proof text."
+    },
+    {
+      "path": "QICLean/Channel.lean",
+      "kind": "generated imports",
+      "resolution": "Union of existing imports; no declaration proof text."
+    },
+    {
+      "path": "QICLean/Entropy.lean",
+      "kind": "generated imports",
+      "resolution": "Union of existing imports; no declaration proof text."
+    },
+    {
+      "path": "QICLean/Representation.lean",
+      "kind": "generated imports",
+      "resolution": "Union of existing imports; no declaration proof text."
+    },
+    {
+      "path": "QICLean/Entropy/FilterMoment.lean",
+      "kind": "accepted prerequisite advancement",
+      "authoritative_parent": "b5ba8ae27c0a86858a02e62337cf66a343a9d6ad",
+      "resolution": "Exact accepted #652 helper source; all proof text from that parent retained."
+    }
+  ],
+  "shared_documentation_resolutions": [
+    {
+      "path": "blueprint/src/chapter/ch13_schur_labels.tex",
+      "resolution": "Retain the unique weighted-exponential and component-moment inputs once each."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "resolution": "Retain every distinct parent candidate, followed by the new two-consumer covariance candidate."
+    }
+  ],
+  "joins": [
+    "8e8be726",
+    "d004b61c",
+    "2e7a3732",
+    "b8d02f2f"
+  ]
+}

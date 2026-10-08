@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "uncompressed_path": "docs/provenance/evidence/replicaTwoMergeMoment8750/inherited-byte-preservation.json",
+      "compressed_path": "docs/provenance/evidence/replicaTwoMergeMoment8750/inherited-byte-preservation.json.gz",
+      "uncompressed_bytes": 2232953,
+      "compressed_bytes": 269129,
+      "uncompressed_sha256": "402c8d226107d8d0425d4adc613355af9676ecbf3df4f43f5ebca68791b0c366",
+      "compressed_sha256": "5d9c2600c36a3e6d513077f7e71304ba3edb912806c9c8cade2ceedd3ffcc53b",
+      "format": "deterministic gzip, mtime0; original JSON bytes retained exactly"
+    },
+    {
+      "uncompressed_path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-parent-source-comparison.json",
+      "compressed_path": "docs/provenance/evidence/replicaTwoMergeMoment8750/two-deficit-parent-source-comparison.json.gz",
+      "uncompressed_bytes": 1045397,
+      "compressed_bytes": 185079,
+      "uncompressed_sha256": "99ee140be2ce693f9d71b5ce39177d55bebab17c10de031078346bc143caba1b",
+      "compressed_sha256": "52fbfa3c5f10f94c5864c3110fd150f9ff04b4a09c2308cc3bbbe986a6b6c6aa",
+      "format": "deterministic gzip, mtime0; original JSON bytes retained exactly"
+    }
+  ]
+}

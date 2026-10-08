@@ -1,0 +1,15 @@
+{
+  "existing_apis": [
+    "LinearIsometryEquiv.piLpCongrLeft",
+    "Matrix.submatrix_mulVec_equiv",
+    "Matrix.IsHermitian.conjTranspose_kronecker identity",
+    "TensorPower.commute_pairMergeDeficit_lifts",
+    "TensorPower.trace_exp_pairMergeDeficit_left",
+    "TensorPower.trace_exp_pairMergeDeficit_right",
+    "Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le",
+    "Matrix.PosSemidef.re_trace_mul_exp_add_le_half_sum"
+  ],
+  "ownership": "One actual two-deficit moment consumer; common-density, generic operator identity, positivity and local moment proofs belong to their existing leaves.",
+  "source_scope": "Q\u00d7(Y\u00d7V), everyYcopy traced; actual norm/symmetry/mass covariance derived under exteriorQ\u2194V andauxC\u2194R. Auxiliary AM polynomial bound, not the printed CS geometric mean or full comparator.",
+  "repetition": "Generic excitation-coordinate covariance has two private consumers; recorded for extraction before a third use."
+}

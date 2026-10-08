@@ -1,0 +1,22 @@
+[
+  {
+    "path": "QICLean/Analysis/WeightedTraceExponential.lean",
+    "parent": "2c3b04b6d031d94b05729b940ed22eae89217081",
+    "sha256": "08b5b6af2335c789429a7514cc8a1516b9bf3c8dca930b471dd013ee8feb27e0"
+  },
+  {
+    "path": "QICLean/Analysis/ReplicaComponentMergeMoment.lean",
+    "parent": "b5ba8ae27c0a86858a02e62337cf66a343a9d6ad",
+    "sha256": "ff2e0c4ff9c5f2ae6ce3669736cd32fb452c9661b6ae78907286d1995ae4cac7"
+  },
+  {
+    "path": "QICLean/Representation/PairMergeDeficit.lean",
+    "parent": "038138a077800f1b4b2f82378e423bddd8de9582",
+    "sha256": "f41591ccbf444d719eafdb35f2f4c59d98e2f0b588f757ba7365600f449c0004"
+  },
+  {
+    "path": "QICLean/Analysis/ReplicaGoodPairMarginal.lean",
+    "parent": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+    "sha256": "a0dafbc33cb0385bb9dca2d2a95c551d3eac6a21e45675e000b25bffcb9a95b6"
+  }
+]

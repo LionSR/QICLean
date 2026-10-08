@@ -1,0 +1,33 @@
+{
+  "source_revision": "7c8099cf9790cc72e1c17bbbde9ac65f4eb24bd1",
+  "parent_revision": "b8d02f2fb12811f5cc335482d616a94c17caf64c",
+  "declarations": [
+    "Matrix.replicaGoodPairMarginal_exp_sum_mergeDeficit_le"
+  ],
+  "files": [
+    {
+      "path": "QICLean/Analysis/ReplicaTwoMergeMoment.lean",
+      "sha256": "bc7b38e35122b52d119043d4118590bce1a80750f33d5187c8968374588cdc9c",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/replica_two_merge_moment.tex",
+      "sha256": "9cdcf5752bcbbcbce480d5ca8920af497e6cc9219fa49c5e5cbf88517f165132",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-replica-two-merge-moment.md",
+      "sha256": "6fc9560bcd2526bcf7049be8d708e53aa94911121e2eed5eacb5fd805941f429",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "1ef7e87561b2ead9c7c21d1db864c754116e20470ffa2cda4da09c76c6ee0344",
+      "coverage": "Entire file."
+    }
+  ],
+  "preserved_published_branch": {
+    "branch": "feat/area-law-weighted-trace-exponential",
+    "revision": "2c3b04b6d031d94b05729b940ed22eae89217081"
+  }
+}

@@ -1,0 +1,11 @@
+✔ [3183/3192] Built QICLean.Analysis.ReplicaExcitationSymmetry (6.2s)
+✔ [3184/3192] Built QICLean.Analysis.ReplicaPermutationCovariance (6.3s)
+✔ [3185/3192] Built QICLean.Analysis.ReplicaRegionalDensity (6.5s)
+✔ [3186/3192] Built QICLean.Representation.PairMergeMoment (7.9s)
+✔ [3187/3192] Built QICLean.Analysis.ReplicaMarginalSymmetry (8.4s)
+✔ [3188/3192] Built QICLean.Representation.PairMergeDeficit (7.8s)
+✔ [3189/3192] Built QICLean.Analysis.ReplicaGoodAuxiliaryMarginal (4.7s)
+✔ [3190/3192] Built QICLean.Analysis.ReplicaJointDensity (3.0s)
+✔ [3191/3192] Built QICLean.Analysis.ReplicaComponentMergeMoment (4.5s)
+✔ [3192/3192] Built QICLean.Analysis.ReplicaGoodPairMarginal (5.2s)
+Build completed successfully (3192 jobs).

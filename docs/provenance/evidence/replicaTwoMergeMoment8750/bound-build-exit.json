@@ -1,0 +1,14 @@
+{
+  "source_revision": "7c8099cf9790cc72e1c17bbbde9ac65f4eb24bd1",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Analysis.ReplicaTwoMergeMoment"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:01:11.428230+00:00",
+  "elapsed_seconds": 8.152,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-build.log",
+  "sha256": "dbcaf8b62e0f685df5658d7a0928366eadc6541776e0ff9f100f1f480c78ca7b"
+}

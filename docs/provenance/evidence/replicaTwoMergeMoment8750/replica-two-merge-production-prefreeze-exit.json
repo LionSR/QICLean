@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Analysis/ReplicaTwoMergeMoment.lean"
+  ],
+  "source_head": "b8d02f2fb12811f5cc335482d616a94c17caf64c",
+  "unfrozen_source_sha256": "c7df68a3cef96a8fc1224ed0b24749da890036153cde3ca0db5cfa9175d0ea90",
+  "exit_code": 1,
+  "log": "/tmp/replica-two-merge-production-prefreeze.log",
+  "cause": "Two docstrings preceded omit commands rather than the theorem declarations."
+}

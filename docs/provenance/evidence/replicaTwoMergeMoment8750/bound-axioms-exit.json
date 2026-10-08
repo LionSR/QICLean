@@ -1,0 +1,19 @@
+{
+  "source_revision": "7c8099cf9790cc72e1c17bbbde9ac65f4eb24bd1",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/replicaTwoMergeMoment8750/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:02:57.796327+00:00",
+  "elapsed_seconds": 6.093,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-axioms.log",
+  "sha256": "9d1b97cbfcd3cba8c95f8a344bb44b955685c7854cca09d30dba13a2b7fcb2ea"
+}
