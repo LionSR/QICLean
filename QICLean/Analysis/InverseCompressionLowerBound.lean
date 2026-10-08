@@ -12,7 +12,7 @@ import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic
 
 For a positive-definite matrix A and an orthogonal projection P, a bound
 `P * A⁻¹ * P ≤ c • P`, with `c > 0`, implies `c⁻¹ • P ≤ A`.
-The argument compares the two Gram matrices of `A⁻¹ᐟ² * P` by their
+The argument compares the two Gram matrices of the inverse square root of A times P by their
 operator norms, then conjugates by the positive square root of A.
 
 This is the abstract implication from inverse compression to the lower pin
