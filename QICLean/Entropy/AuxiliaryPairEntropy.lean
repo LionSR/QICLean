@@ -28,12 +28,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Labels: comparator:entropy-identity, comparator:sharp-lower.
-Provenance-ID: 8753-qic-auxiliary-pair-entropy-01
-Downstream declaration:
-FiniteProduct.auxiliaryPair_entropyIdentity
-Provenance-ID: 8753-qic-auxiliary-pair-entropy-02
-Downstream declaration:
-FiniteProduct.auxiliaryPair_pre_nonneg
 -/
 
 namespace FiniteProduct
