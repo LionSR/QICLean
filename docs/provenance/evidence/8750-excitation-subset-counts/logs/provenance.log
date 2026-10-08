@@ -1,3 +1,0 @@
-Excitation-subset provenance valid: 4 entries; exact source bytes and log hashes checked.
-All four recorded kernel reports use only propext, Classical.choice and Quot.sound.
-Proof-integrity token scan passed; no new Lean invocation was performed by this checker.

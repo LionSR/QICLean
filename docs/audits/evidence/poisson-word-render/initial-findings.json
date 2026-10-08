@@ -1,0 +1,608 @@
+{
+  "status": "quality findings require review",
+  "recorded_at_utc": "2026-10-08T03:53:29.019314+00:00",
+  "source_revision": "64cb622e9b786d0f5437c96212918474b8a2e20a",
+  "source_sha256": {
+    "QICLean/Probability/PoissonWord.lean": "b80d9226661c59bfa805b9c387ebc808eaacf315d618aaf2f9a1cf7ae704bf2b",
+    "QICLean/Analysis/ContractionWordDecay.lean": "bd647850a2a4b2a8abfd0bc1f5669727eb166221e7a771ce4eb54db9c85a54e4",
+    "QICLean/Analysis/ContractionWordDecaySpectator.lean": "58dc2cee6715ef1e0083b93c8272da982f5295f562b35e865b5a7962fb2efbd4",
+    "QICLean/Analysis/PoissonContractionDecay.lean": "ce67d892fe50eae2d6bfe01bab8a0b7c2459dbe8cbbc3c94c96b0066a3649147",
+    "QICLeanTest/PoissonWord.lean": "2f5bbc469d4d991bcfaecf7f67574c476a31287f52d48de756c80244c867cdc6",
+    "QICLeanTest/PoissonWordAxioms.lean": "b78854841adb5306d27cb27e779b54916f00b000d0d818de2f98a84ebad21f93",
+    "QICLeanTest/ContractionWordDecay.lean": "abcac7adadb093794dc25c568710ec4cc4642c496fe0e93a89622bbde5637c01",
+    "QICLeanTest/ContractionWordDecayAxioms.lean": "70bf2ed11363a94e8691805b6b1e334731983d144a5a0e8c54a1d17edaa35803",
+    "QICLeanTest/ContractionWordDecaySpectator.lean": "fa2a7de080bbf62f71545f489b4831b5f5a582587bc04cbd03ea5d06cde183a8",
+    "QICLeanTest/ContractionWordDecaySpectatorAxioms.lean": "63c1eca976df1e5061731ef1993ac316300cf965974c48dc1216eef0d4a74673",
+    "QICLeanTest/PoissonContractionDecay.lean": "40bd528c6480dc2b68dc38526a8430ff9c9d56b6b4a6ab752c7f95f0bf469214",
+    "QICLeanTest/PoissonContractionDecayAxioms.lean": "751c56cea4a4a99b15b40c3e44ca2d85a53f9dcd3c073dde961e93baec8b1d20",
+    "blueprint/src/chapter/ch11_poisson_word.tex": "5e48b2f5ff0d9161c56fdf251711763aac745521980f57538b1e20203c600797",
+    "blueprint/src/chapter/ch13_contraction_word_decay.tex": "724a9c72ad5a47565cd7736355aca44bda49d96c73e4026ec8fa5f61302d2d08",
+    "blueprint/src/chapter/ch13_contraction_word_decay_spectator.tex": "204caaf0f3a3391f707560ae09b8eadd2eda441ee6102b0833c0ff2add7300c9",
+    "blueprint/src/chapter/ch13_poisson_contraction_decay.tex": "4e7bfe95414062630e565167c314dd4cd421ba7f41e306303d1ebb604b89d1bc",
+    "blueprint/src/content.tex": "3d2bd90233175220e88aa425ffa8a5d751cfccc680c3c7cd8e68aee0aa0d9357",
+    "lean-toolchain": "bc84812c94489d1e3e191baa1dc10d5eb684382d7fe9d2a5ab085e72c1c67e47",
+    "lake-manifest.json": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf",
+    "lakefile.toml": "c40e0bb3a1ee5f9025d5c752d25c7c2f61622db813f79d6bee7d2412d8760907",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9"
+  },
+  "counts": {
+    "production_modules": 4,
+    "production_lines": 639,
+    "explicitly_named_public_declarations": 50,
+    "generated_public_instances": 2,
+    "public_constants": 52,
+    "declaration_kinds": {
+      "abbrev": 1,
+      "def": 7,
+      "lemma": 12,
+      "instance": 1,
+      "theorem": 29
+    },
+    "source_inspected_consumers": 24,
+    "source_inspected_axiom_guards": 52,
+    "blueprint_entries": 14,
+    "proofs": 10,
+    "checked_markers": 24,
+    "equation_labels": 12,
+    "all_labels": 30,
+    "pdf_pages": 7,
+    "html_pages": 6,
+    "pdf_declaration_links": 50,
+    "html_chapter_declaration_links": 50,
+    "html_all_declaration_links": 150,
+    "pdf_internal_link_annotations": 20,
+    "explicit_dependency_edges": 23,
+    "diagrams": 0
+  },
+  "declarations": [
+    "PoissonWord.Word",
+    "PoissonWord.nil",
+    "PoissonWord.weight",
+    "PoissonWord.measure",
+    "PoissonWord.weight_nonneg",
+    "PoissonWord.sum_weight",
+    "PoissonWord.hasSum_one_weight",
+    "PoissonWord.isProbabilityMeasure",
+    "PoissonWord.measure_singleton",
+    "PoissonWord.measure_length",
+    "PoissonWord.map_length",
+    "PoissonWord.measure_zero",
+    "PoissonWord.measure_of_isEmpty",
+    "PoissonWord.integrable_iff",
+    "PoissonWord.integrable_iff_sum",
+    "PoissonWord.integral_eq_tsum_sum",
+    "PoissonWord.hasSum_weight_mul_pow",
+    "PoissonWord.integrable_and_integral_le_of_sum_le_pow",
+    "Matrix.contractionWord",
+    "Matrix.contractionWord_zero",
+    "Matrix.contractionWord_snoc",
+    "Matrix.contractionWordSum",
+    "Matrix.contractionWordSum_zero",
+    "Matrix.sqrt_one_sub_toEuclideanLin_eq_self",
+    "Matrix.inner_sqrt_one_sub_eq_zero",
+    "Matrix.norm_sq_sqrt_one_sub",
+    "Matrix.sum_norm_sq_sqrt_one_sub_le",
+    "Matrix.contractionWord_fix",
+    "Matrix.inner_contractionWord_eq_zero",
+    "Matrix.contractionWordSum_succ",
+    "Matrix.contractionWordSum_succ_le",
+    "Matrix.contractionWordSum_le_pow",
+    "Matrix.eq_zero_of_card_lt_gap",
+    "Matrix.kronecker_one_mulVec_apply_slice",
+    "Matrix.norm_sq_eq_sum_spectator_slices",
+    "Matrix.norm_sq_toEuclideanLin_kronecker_one_eq_sum",
+    "Matrix.contractionWordSpectatorSum",
+    "Matrix.contractionWord_snoc_kronecker_one",
+    "Matrix.contractionWordSpectatorSum_eq_sum_slices",
+    "Matrix.contractionWordSpectatorSum_zero",
+    "Matrix.contractionWordSpectatorSum_zero_vector",
+    "Matrix.contractionWordSpectatorSum_le_pow",
+    "Matrix.inner_toEuclideanLin_one_sub_vecMulVec_eq_zero",
+    "Matrix.inner_spectatorSlice_excitedProjection_eq_zero",
+    "Matrix.contractionWordSpectatorSum_excitedProjection_le_pow",
+    "Matrix.spectator_eq_zero_of_card_lt_gap",
+    "Matrix.spectator_excitedProjection_eq_zero_of_card_lt_gap",
+    "Matrix.poissonContractionWordEnergy",
+    "Matrix.poissonContractionWordEnergy_integrable_and_le",
+    "Matrix.poissonContractionWord_excitedProjection_decay"
+  ],
+  "generated_instances": [
+    "PoissonWord.instMeasurableSpaceWord",
+    "PoissonWord.instMeasurableSingletonClassWord"
+  ],
+  "unlinked_public_constants": [
+    "PoissonWord.instMeasurableSingletonClassWord",
+    "PoissonWord.instMeasurableSpaceWord"
+  ],
+  "html_declaration_hrefs": [
+    "../docs/find/#doc/PoissonWord.Word",
+    "../docs/find/#doc/PoissonWord.nil",
+    "../docs/find/#doc/PoissonWord.weight",
+    "../docs/find/#doc/PoissonWord.measure",
+    "../docs/find/#doc/PoissonWord.weight_nonneg",
+    "../docs/find/#doc/PoissonWord.sum_weight",
+    "../docs/find/#doc/PoissonWord.hasSum_one_weight",
+    "../docs/find/#doc/PoissonWord.isProbabilityMeasure",
+    "../docs/find/#doc/PoissonWord.measure_singleton",
+    "../docs/find/#doc/PoissonWord.measure_length",
+    "../docs/find/#doc/PoissonWord.map_length",
+    "../docs/find/#doc/PoissonWord.measure_zero",
+    "../docs/find/#doc/PoissonWord.measure_of_isEmpty",
+    "../docs/find/#doc/PoissonWord.integrable_iff",
+    "../docs/find/#doc/PoissonWord.integrable_iff_sum",
+    "../docs/find/#doc/PoissonWord.integral_eq_tsum_sum",
+    "../docs/find/#doc/PoissonWord.hasSum_weight_mul_pow",
+    "../docs/find/#doc/PoissonWord.integrable_and_integral_le_of_sum_le_pow",
+    "../docs/find/#doc/Matrix.contractionWord",
+    "../docs/find/#doc/Matrix.contractionWord_zero",
+    "../docs/find/#doc/Matrix.contractionWord_snoc",
+    "../docs/find/#doc/Matrix.contractionWordSum",
+    "../docs/find/#doc/Matrix.contractionWordSum_zero",
+    "../docs/find/#doc/Matrix.sqrt_one_sub_toEuclideanLin_eq_self",
+    "../docs/find/#doc/Matrix.inner_sqrt_one_sub_eq_zero",
+    "../docs/find/#doc/Matrix.norm_sq_sqrt_one_sub",
+    "../docs/find/#doc/Matrix.sum_norm_sq_sqrt_one_sub_le",
+    "../docs/find/#doc/Matrix.contractionWord_fix",
+    "../docs/find/#doc/Matrix.inner_contractionWord_eq_zero",
+    "../docs/find/#doc/Matrix.contractionWordSum_succ",
+    "../docs/find/#doc/Matrix.contractionWordSum_succ_le",
+    "../docs/find/#doc/Matrix.contractionWordSum_le_pow",
+    "../docs/find/#doc/Matrix.eq_zero_of_card_lt_gap",
+    "../docs/find/#doc/Matrix.kronecker_one_mulVec_apply_slice",
+    "../docs/find/#doc/Matrix.norm_sq_eq_sum_spectator_slices",
+    "../docs/find/#doc/Matrix.norm_sq_toEuclideanLin_kronecker_one_eq_sum",
+    "../docs/find/#doc/Matrix.contractionWordSpectatorSum",
+    "../docs/find/#doc/Matrix.contractionWord_snoc_kronecker_one",
+    "../docs/find/#doc/Matrix.contractionWordSpectatorSum_eq_sum_slices",
+    "../docs/find/#doc/Matrix.contractionWordSpectatorSum_zero",
+    "../docs/find/#doc/Matrix.contractionWordSpectatorSum_zero_vector",
+    "../docs/find/#doc/Matrix.contractionWordSpectatorSum_le_pow",
+    "../docs/find/#doc/Matrix.inner_toEuclideanLin_one_sub_vecMulVec_eq_zero",
+    "../docs/find/#doc/Matrix.inner_spectatorSlice_excitedProjection_eq_zero",
+    "../docs/find/#doc/Matrix.contractionWordSpectatorSum_excitedProjection_le_pow",
+    "../docs/find/#doc/Matrix.spectator_eq_zero_of_card_lt_gap",
+    "../docs/find/#doc/Matrix.spectator_excitedProjection_eq_zero_of_card_lt_gap",
+    "../docs/find/#doc/Matrix.poissonContractionWordEnergy",
+    "../docs/find/#doc/Matrix.poissonContractionWordEnergy_integrable_and_le",
+    "../docs/find/#doc/Matrix.poissonContractionWord_excitedProjection_decay"
+  ],
+  "pdf_declaration_uris": [
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.Word",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.nil",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.weight",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.weight_nonneg",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.sum_weight",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.hasSum_one_weight",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.isProbabilityMeasure",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_singleton",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_length",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.map_length",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_zero",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_of_isEmpty",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.integrable_iff",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.integrable_iff_sum",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.integral_eq_tsum_sum",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.hasSum_weight_mul_pow",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.integrable_and_integral_le_of_sum_le_pow",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWord",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWord_zero",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWord_snoc",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSum",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSum_zero",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.sqrt_one_sub_toEuclideanLin_eq_self",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.inner_sqrt_one_sub_eq_zero",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.norm_sq_sqrt_one_sub",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.sum_norm_sq_sqrt_one_sub_le",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWord_fix",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.inner_contractionWord_eq_zero",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSum_succ",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSum_succ_le",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSum_le_pow",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.eq_zero_of_card_lt_gap",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.kronecker_one_mulVec_apply_slice",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.norm_sq_eq_sum_spectator_slices",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.norm_sq_toEuclideanLin_kronecker_one_eq_sum",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSpectatorSum",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWord_snoc_kronecker_one",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSpectatorSum_eq_sum_slices",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSpectatorSum_zero",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSpectatorSum_zero_vector",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSpectatorSum_le_pow",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.inner_toEuclideanLin_one_sub_vecMulVec_eq_zero",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.inner_spectatorSlice_excitedProjection_eq_zero",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.contractionWordSpectatorSum_excitedProjection_le_pow",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.spectator_eq_zero_of_card_lt_gap",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.spectator_excitedProjection_eq_zero_of_card_lt_gap",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.poissonContractionWordEnergy",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.poissonContractionWordEnergy_integrable_and_le",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/Matrix.poissonContractionWord_excitedProjection_decay"
+  ],
+  "labels": [
+    "sec:poisson_words",
+    "def:poisson_word_measure",
+    "eq:poisson_word_mass",
+    "lem:poisson_word_normalization",
+    "lem:poisson_word_expectation",
+    "eq:poisson_word_expectation",
+    "thm:poisson_word_decay",
+    "eq:poisson_word_decay",
+    "sec:contraction_word_decay",
+    "def:contraction_word",
+    "eq:word_decay_sum",
+    "thm:contraction_word_decay",
+    "eq:word_decay_recurrence",
+    "eq:word_decay_step",
+    "sec:contraction_word_decay_spectator",
+    "thm:contraction_spectator_slices",
+    "eq:contraction_spectator_slices",
+    "def:contraction_spectator_sum",
+    "thm:contraction_spectator_sum",
+    "eq:contraction_spectator_word_sum",
+    "thm:contraction_spectator_decay",
+    "eq:contraction_spectator_decay",
+    "thm:contraction_spectator_projection",
+    "thm:contraction_spectator_large_gap",
+    "sec:poisson_contraction_decay",
+    "def:poisson_contraction_energy",
+    "eq:poisson_contraction_energy",
+    "thm:poisson_contraction_decay",
+    "eq:poisson_contraction_decay",
+    "eq:poisson_contraction_series"
+  ],
+  "html_files": [
+    "ch-poisson_word_focus.html",
+    "dep_graph_chapter_1.html",
+    "dep_graph_document.html",
+    "dep_graphs.html",
+    "index.html",
+    "sect0001.html"
+  ],
+  "html_chapter_classes": {
+    "icon": 72,
+    "icon-list-numbered": 1,
+    "wrapper": 1,
+    "toc": 1,
+    "sub-toc-0": 1,
+    "active": 2,
+    "current": 1,
+    "toc_ref": 6,
+    "toc_entry": 6,
+    "expand-toc": 1,
+    "sub-toc-1": 1,
+    "content": 1,
+    "content-wrapper": 1,
+    "main-text": 1,
+    "definition_thmwrapper": 4,
+    "theorem-style-definition": 4,
+    "definition_thmheading": 4,
+    "definition_thmcaption": 4,
+    "definition_thmlabel": 4,
+    "definition_thmtitle": 4,
+    "thm_header_extras": 14,
+    "thm_header_hidden_extras": 14,
+    "proof": 24,
+    "modal": 23,
+    "lean": 14,
+    "modal-container": 23,
+    "modal-content": 23,
+    "closebtn": 23,
+    "icon-cross": 23,
+    "uses": 23,
+    "lean_decl": 50,
+    "definition_thmcontent": 4,
+    "displaymath": 14,
+    "lemma_thmwrapper": 2,
+    "theorem-style-plain": 10,
+    "lemma_thmheading": 2,
+    "lemma_thmcaption": 2,
+    "lemma_thmlabel": 2,
+    "lemma_thmtitle": 2,
+    "icon-cogs": 10,
+    "icon-mindmap": 9,
+    "lemma_thmcontent": 2,
+    "proof_wrapper": 10,
+    "proof_heading": 10,
+    "proof_caption": 10,
+    "expand-proof": 10,
+    "proof_content": 10,
+    "theorem_thmwrapper": 8,
+    "theorem_thmheading": 8,
+    "theorem_thmcaption": 8,
+    "theorem_thmlabel": 8,
+    "theorem_thmtitle": 8,
+    "theorem_thmcontent": 8,
+    "cite": 3,
+    "ttfamily": 1,
+    "prev_up_next": 1,
+    "icon-eye-minus": 1,
+    "showmore": 2,
+    "icon-eye-plus": 1,
+    "icon-arrow-left": 1,
+    "icon-arrow-up": 1,
+    "icon-arrow-right": 1
+  },
+  "dependency_graphs": {
+    "dep_graph_document.html": {
+      "nodes": 14,
+      "edges": 16,
+      "reachability_matches_explicit_uses": true,
+      "rendered_edge_styles_match_dependency_placement": true
+    },
+    "dep_graph_chapter_1.html": {
+      "nodes": 14,
+      "edges": 16,
+      "reachability_matches_explicit_uses": true,
+      "rendered_edge_styles_match_dependency_placement": true
+    }
+  },
+  "explicit_dependency_edges": [
+    [
+      "def:contraction_spectator_sum",
+      "thm:contraction_spectator_decay"
+    ],
+    [
+      "def:contraction_spectator_sum",
+      "thm:contraction_spectator_sum"
+    ],
+    [
+      "def:contraction_word",
+      "def:contraction_spectator_sum"
+    ],
+    [
+      "def:contraction_word",
+      "def:poisson_contraction_energy"
+    ],
+    [
+      "def:contraction_word",
+      "thm:contraction_word_decay"
+    ],
+    [
+      "def:poisson_contraction_energy",
+      "thm:poisson_contraction_decay"
+    ],
+    [
+      "def:poisson_word_measure",
+      "def:poisson_contraction_energy"
+    ],
+    [
+      "def:poisson_word_measure",
+      "lem:poisson_word_expectation"
+    ],
+    [
+      "def:poisson_word_measure",
+      "lem:poisson_word_normalization"
+    ],
+    [
+      "def:poisson_word_measure",
+      "thm:poisson_word_decay"
+    ],
+    [
+      "lem:poisson_word_expectation",
+      "thm:poisson_word_decay"
+    ],
+    [
+      "thm:contraction_spectator_decay",
+      "thm:contraction_spectator_projection"
+    ],
+    [
+      "thm:contraction_spectator_decay",
+      "thm:poisson_contraction_decay"
+    ],
+    [
+      "thm:contraction_spectator_large_gap",
+      "thm:poisson_contraction_decay"
+    ],
+    [
+      "thm:contraction_spectator_projection",
+      "thm:contraction_spectator_large_gap"
+    ],
+    [
+      "thm:contraction_spectator_projection",
+      "thm:poisson_contraction_decay"
+    ],
+    [
+      "thm:contraction_spectator_slices",
+      "thm:contraction_spectator_decay"
+    ],
+    [
+      "thm:contraction_spectator_slices",
+      "thm:contraction_spectator_projection"
+    ],
+    [
+      "thm:contraction_spectator_slices",
+      "thm:contraction_spectator_sum"
+    ],
+    [
+      "thm:contraction_spectator_sum",
+      "thm:contraction_spectator_decay"
+    ],
+    [
+      "thm:contraction_word_decay",
+      "thm:contraction_spectator_decay"
+    ],
+    [
+      "thm:contraction_word_decay",
+      "thm:contraction_spectator_large_gap"
+    ],
+    [
+      "thm:poisson_word_decay",
+      "thm:poisson_contraction_decay"
+    ]
+  ],
+  "dependency_placement": [
+    {
+      "from": "def:poisson_word_measure",
+      "to": "lem:poisson_word_normalization",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "lem:poisson_word_expectation",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "thm:poisson_word_decay",
+      "placement": "statement"
+    },
+    {
+      "from": "lem:poisson_word_expectation",
+      "to": "thm:poisson_word_decay",
+      "placement": "proof"
+    },
+    {
+      "from": "def:contraction_word",
+      "to": "thm:contraction_word_decay",
+      "placement": "statement"
+    },
+    {
+      "from": "def:contraction_word",
+      "to": "def:contraction_spectator_sum",
+      "placement": "statement"
+    },
+    {
+      "from": "def:contraction_spectator_sum",
+      "to": "thm:contraction_spectator_sum",
+      "placement": "statement"
+    },
+    {
+      "from": "thm:contraction_spectator_slices",
+      "to": "thm:contraction_spectator_sum",
+      "placement": "proof"
+    },
+    {
+      "from": "def:contraction_spectator_sum",
+      "to": "thm:contraction_spectator_decay",
+      "placement": "statement"
+    },
+    {
+      "from": "thm:contraction_word_decay",
+      "to": "thm:contraction_spectator_decay",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:contraction_spectator_sum",
+      "to": "thm:contraction_spectator_decay",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:contraction_spectator_slices",
+      "to": "thm:contraction_spectator_decay",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:contraction_spectator_slices",
+      "to": "thm:contraction_spectator_projection",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:contraction_spectator_decay",
+      "to": "thm:contraction_spectator_projection",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:contraction_word_decay",
+      "to": "thm:contraction_spectator_large_gap",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:contraction_spectator_projection",
+      "to": "thm:contraction_spectator_large_gap",
+      "placement": "proof"
+    },
+    {
+      "from": "def:contraction_word",
+      "to": "def:poisson_contraction_energy",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "def:poisson_contraction_energy",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_contraction_energy",
+      "to": "thm:poisson_contraction_decay",
+      "placement": "statement"
+    },
+    {
+      "from": "thm:contraction_spectator_decay",
+      "to": "thm:poisson_contraction_decay",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:contraction_spectator_projection",
+      "to": "thm:poisson_contraction_decay",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:contraction_spectator_large_gap",
+      "to": "thm:poisson_contraction_decay",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:poisson_word_decay",
+      "to": "thm:poisson_contraction_decay",
+      "placement": "proof"
+    }
+  ],
+  "missing_internal_anchors": [
+    [
+      "ch-poisson_word_focus.html",
+      "ch-poisson_word_focus.html#eq:word_decay_step",
+      "anchor"
+    ],
+    [
+      "ch-poisson_word_focus.html",
+      "ch-poisson_word_focus.html#eq:word_decay_step",
+      "anchor"
+    ],
+    [
+      "ch-poisson_word_focus.html",
+      "ch-poisson_word_focus.html#eq:contraction_spectator_slices",
+      "anchor"
+    ]
+  ],
+  "missing_label_anchors": [
+    "eq:contraction_spectator_slices",
+    "eq:contraction_spectator_word_sum",
+    "eq:word_decay_step"
+  ],
+  "duplicate_html_ids": [],
+  "tex_box_reference_warnings": [
+    "Overfull \\hbox (0.49863pt too wide) in paragraph at lines 51--55"
+  ],
+  "curly_math_prime_serialization": [],
+  "artifact_sha256": {
+    "blueprint/src/print.pdf": "001066d3f12ba14dad041776b1190cc47e16a8e0356f7995cc5f5f49d93866e6",
+    "blueprint/src/print.aux": "67a6c5579eb729971048208f78c0dd3946571e2e909ac7ee0f4161f2ff9bf018",
+    "dependency-graph.dot": "8acd6acc19aeb72cd9818d26d11e766dd06b4597568829ac5f87ef1d090d340a",
+    "blueprint/web/ch-poisson_word_focus.html": "776fa5b51ec08c46f8cd0f456aa96385261c15d41b612bb89b691bb184e48d82",
+    "blueprint/web/dep_graph_chapter_1.html": "f56548edef04f4878586e8a2570164278e480682c6a62a0fa1e4584d4a327a03",
+    "blueprint/web/dep_graph_document.html": "ae679291d8a50538ad06e6495de00d3904d34d9942379520c9c32db441ffcb7c",
+    "blueprint/web/dep_graphs.html": "4db5ab4296f863aef09cb7af3f9e3487688a448a5da3d558b1c5511447c05659",
+    "blueprint/web/index.html": "4491c92d995fd9498dc04277dfae519921bf5eb089e8d0e4c582dd5628b35c36",
+    "blueprint/web/sect0001.html": "7fd56e042b1a715b847ea6ad94b68f770364146adefc5ec2928c636a0c9bdba8",
+    "pdf-pages/page-1.png": "71fa102d47acedc070814368696fea4a09a9eb25707b2282e548ad306c249abb",
+    "pdf-pages/page-2.png": "ac554ae6f19b7a02946167e6cd238159c4e0ab237ee7936cff0f2d254be76c82",
+    "pdf-pages/page-3.png": "7af087c62a5538376813274d46382692da1247b7cb903c86081c9fc5733bb7a0",
+    "pdf-pages/page-4.png": "2032244b35552181f2d35b6c045db9dd987fb58459a92c5969a7afd6cbee597b",
+    "pdf-pages/page-5.png": "36534d6ae4e7162e4dce9ce816a5afe207823bde08d125ba1cd73b627e9ffc3d",
+    "pdf-pages/page-6.png": "e7716636deb8bae2936750df1efffb715eb9d52c5d9539af50fa94972ffddfe8",
+    "pdf-pages/page-7.png": "65a83c932b93917419f5bcb74fb7352db06c885430c0ed57c1741bff46614048",
+    "dependency-graph-white.png": "2cfd412b537978c2a8ab4a36eb5466ce18dad8de21da8ce638a90afb665471ed"
+  },
+  "raw_log_sha256": {
+    "pdf-build.log": "33aa76d3267b13ca8966eb527d46770ebe70181c0be3def1b5bb021e4e78c38e",
+    "web-build.log": "a22ee67a19903840037aac758ee2b95e09e603cb4de75044602074a31a6319db",
+    "pdf-raster.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "limits": [
+    "Focused four-leaf PDF/static HTML, not a full-book build or live-browser/MathJax runtime test.",
+    "Declaration URL identifiers and local anchors checked; remote Lean-document publication not tested.",
+    "No Lean/Lake/checkdecls or CI performed by this render worker; consumers and axiom guards source-inspected only.",
+    "No new tensor diagrams; Tenkz picture validation is inapplicable.",
+    "Concrete normalized word law is proved; independent rate-one clock identification, coupled-clock locality, and full amplification remain unproved."
+  ]
+}

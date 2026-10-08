@@ -103,9 +103,11 @@ import QICLean.Algebra.StarSubalgebraSimpleModule
 import QICLean.Algebra.StarSubalgebraSpatial
 import QICLean.Algebra.StarSubalgebraUnitaryIntertwiner
 import QICLean.Algebra.SwapTrace
+import QICLean.Algebra.TaggedInterleavings
 import QICLean.Algebra.TraceFormDuality
 import QICLean.Algebra.TracePowerCharPoly
 import QICLean.Algebra.TracePurity
 import QICLean.Algebra.TraceReindex
 import QICLean.Algebra.UnitModulusPowerSum
+import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums

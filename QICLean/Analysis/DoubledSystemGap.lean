@@ -32,35 +32,6 @@ is asserted. There is no subsystem-gap hypothesis or claim about interaction sup
 The proofs are original proofs from this paper passage; no upstream Lean proof is reused.
 -/
 
-/-
-Provenance-ID: doubled8766-vector
-Downstream declaration: Matrix.doubledVector
-Provenance-ID: doubled8766-hamiltonian
-Downstream declaration: Matrix.doubledHamiltonian
-Provenance-ID: doubled8766-projector
-Downstream declaration: Matrix.vecMulVec_doubledVector
-Provenance-ID: doubled8766-sum-norm
-Downstream declaration: Matrix.sum_normSq_doubledVector
-Provenance-ID: doubled8766-normalization
-Downstream declaration: Matrix.norm_doubledVector
-Provenance-ID: doubled8766-eigenvector
-Downstream declaration: Matrix.doubledHamiltonian_mulVec
-Provenance-ID: doubled8766-defect
-Downstream declaration: Matrix.doubledHamiltonian_gap_eq
-Provenance-ID: doubled8766-gap
-Downstream declaration: Matrix.PosSemidef.doubled_gap
-Provenance-ID: doubled8766-unitary-norm
-Downstream declaration: Matrix.norm_toLp_mulVec_of_unitary
-Provenance-ID: doubled8766-unitary-defect
-Downstream declaration: Matrix.gap_unitary_conj_eq
-Provenance-ID: doubled8766-unitary-gap
-Downstream declaration: Matrix.PosSemidef.gap_unitary_conj
-Provenance-ID: doubled8766-unitary-eigenvector
-Downstream declaration: Matrix.mulVec_unitary_conj_eigenvector
-Provenance-ID: doubled8766-physical-swap
-Downstream declaration: Matrix.doubled_gap_partialSwap
--/
-
 open scoped Matrix Kronecker ComplexOrder
 
 namespace Matrix

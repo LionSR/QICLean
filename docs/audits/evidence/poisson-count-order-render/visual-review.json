@@ -1,0 +1,78 @@
+{
+  "status": "passed",
+  "scope": "PDF pixel review, static HTML and graph-source validation. No live-browser runtime pass.",
+  "source_revision": "487c65996fa26916d1d1e4b23e277607075035ba",
+  "reviewed_at_utc": "2026-10-08T05:38:04.587879+00:00",
+  "pdf_review": {
+    "pages_directly_viewed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "page_notes": {
+      "1": "Inherited title page; text and author alignment are clean.",
+      "2": "Contents entries and page references are complete and readable.",
+      "3": "Prerequisite word measure, normalization and expectation formulas; no clipping or overlap.",
+      "4": "Multinomial formula and both length cases, finite nonempty fibers, source citation; clean formula and page break.",
+      "5": "Count-product law, independent counts, and generic finite-event conditioning; restrictions and denominator hypotheses are legible.",
+      "6": "Actual conditional law, positive time, null conditioning, sampler and reconstruction; zero-time and empty-alphabet scope is explicit.",
+      "7": "Bibliography resolves the pinned area-law source revision."
+    },
+    "no_visible_formula_or_layout_defects": true,
+    "raster_artifacts": {
+      "pdf-pages/page-1.png": "71fa102d47acedc070814368696fea4a09a9eb25707b2282e548ad306c249abb",
+      "pdf-pages/page-2.png": "1d44e6cee04d33dd3c206c37e7fe238c81d87c1cd6d1fbe62b67d014c50308e6",
+      "pdf-pages/page-3.png": "e9d89edf06992f0a2cbb6d879336cdf49e60dca312e9e1f4a91314092fbcf656",
+      "pdf-pages/page-4.png": "451bde0eb30e1824e3e76f716b2a48589f1f8de16c1c1d1d43aac83ec811acec",
+      "pdf-pages/page-5.png": "8132b073cb29dc3bc43c081a79b70033bd6a57875a1cb8f941d5bbd5831b7d68",
+      "pdf-pages/page-6.png": "a08ba7d8437822f282f6f26e586366af117d2f199b1c37c0facd6804e9b722bc",
+      "pdf-pages/page-7.png": "65a83c932b93917419f5bcb74fb7352db06c885430c0ed57c1741bff46614048"
+    }
+  },
+  "web_review": {
+    "static_pages_checked": [
+      "ch-poisson_count_order_focus.html",
+      "dep_graph_chapter_1.html",
+      "dep_graph_document.html",
+      "dep_graphs.html",
+      "index.html",
+      "sect0001.html"
+    ],
+    "source_payload_and_local_anchor_checks_passed": true,
+    "target_and_prerequisite_declaration_modals_checked": true,
+    "live_browser_runtime_pass_claimed": false,
+    "browser_attempt": {
+      "render_source_revision": "d904c5accc333bd67d3be932b1ca622662d1dd3a",
+      "tool": "Installed Chromium through Playwright",
+      "status": "blocked before browser startup",
+      "error": "process_singleton_posix.cc: socket() failed: Operation not permitted (1)",
+      "escalated_retry_same_error": true,
+      "raw_log_sha256": "b1c6ffb5769648d60ec22b8aacb8bdc83cc8bf799aaa47fce952f90439b87490"
+    }
+  },
+  "graph_review": {
+    "pixels_directly_viewed": true,
+    "artifact": "dependency-graph-white.png",
+    "sha256": "4a0e211ab113e91b99090378ed56b7d38b6b90c477f3112332e97134b866185c",
+    "nodes": 15,
+    "rendered_edges": 18,
+    "explicit_edges": 30,
+    "no_clipped_labels_or_overlaps": true,
+    "edge_reachability_and_statement_proof_styles_checked": true
+  },
+  "mathematical_review": [
+    "The equal-singleton mass and restriction identities allow zero event mass and extended nonnegative c.",
+    "The uniform conditional theorem explicitly requires a finite measure and nonzero event mass; cancellation uses positive finite c and finite event cardinality.",
+    "Conditional ordering applies to the actual Poissonized word measure, using equal singleton masses and finite count fibers.",
+    "At positive time every count vector has positive probability because every fiber is nonempty and its common word weight is positive.",
+    "At zero time nonzero count events and their totalized conditional measures vanish; the zero vector conditions to the empty word.",
+    "Reconstruction checks singleton masses, separates the null branch, and remains valid at zero time and for an empty alphabet.",
+    "The pinned manuscript motivates only this fixed-time characterization; chronological event times, independent increments, pathwise coupling, and locality remain outside the theorem."
+  ],
+  "tensor_diagrams": 0,
+  "tenkz_validation": "Not applicable: no tensor diagrams are introduced."
+}
