@@ -53,6 +53,13 @@ def elemSymm (r : ℕ) (y : Fin q → R) : R :=
 /-- The indicator vector `1_S` of a set of rows. -/
 def indic (S : Finset (Fin q)) : Fin q → ℕ := fun i => if i ∈ S then 1 else 0
 
+theorem indic_injective : Function.Injective (indic : Finset (Fin q) → Fin q → ℕ) := by
+  intro S T h
+  ext a
+  have := congrFun h a
+  simp only [indic] at this
+  by_cases ha : a ∈ S <;> by_cases hb : a ∈ T <;> simp [ha, hb] at this ⊢
+
 theorem alternant_eq_sum (α : Fin q → ℕ) (y : Fin q → R) :
     alternant α y = ∑ σ : Equiv.Perm (Fin q),
       (Equiv.Perm.sign σ : R) * ∏ i, y (σ i) ^ α i := by
