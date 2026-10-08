@@ -15,183 +15,183 @@ lines 141--159.
 % or establish the full amplification theorem.
 
 \begin{definition}[Stretched-exponential ball kernel]
-\label{def:stretched_ball_kernel}
-\lean{Metric.stretchedBallKernel}
-\leanok
-\uses{def:ball_incidence_kernel}
-For real $C,c,\alpha$ and $y,z\in Y$, define
-\begin{align}
- A_{C,c,\alpha}(y,z)
- &=\sum_{n=0}^{\infty}C e^{-cn^\alpha}K_n(y,z).
- \label{eq:stretched_ball_kernel}
-\end{align}
-Every radius $n$ is regarded as a finite nonnegative real radius.
-The sum is the real infinite sum, with value zero if the series
-does not converge.  Theorem~\ref{thm:stretched_ball_summable}
-establishes convergence under the counting hypotheses used below.
+    \label{def:stretched_ball_kernel}
+    \lean{Metric.stretchedBallKernel}
+    \leanok
+    \uses{def:ball_incidence_kernel}
+    For real $C,c,\alpha$ and $y,z\in Y$, define
+    \begin{align}
+        A_{C,c,\alpha}(y,z)
+         & =\sum_{n=0}^{\infty}C e^{-cn^\alpha}K_n(y,z).
+        \label{eq:stretched_ball_kernel}
+    \end{align}
+    Every radius $n$ is regarded as a finite nonnegative real radius.
+    The sum is the real infinite sum, with value zero if the series
+    does not converge.  Theorem~\ref{thm:stretched_ball_summable}
+    establishes convergence under the counting hypotheses used below.
 \end{definition}
 
 \begin{lemma}[Nonnegativity of the shell kernel]
-\label{lem:stretched_ball_nonneg}
-\lean{Metric.stretchedBallKernel_nonneg}
-\leanok
-\uses{def:stretched_ball_kernel}
-For every $C\geq0$, $c,\alpha\in\mathbb R$, and $y,z\in Y$,
-one has $A_{C,c,\alpha}(y,z)\geq0$.
+    \label{lem:stretched_ball_nonneg}
+    \lean{Metric.stretchedBallKernel_nonneg}
+    \leanok
+    \uses{def:stretched_ball_kernel}
+    For every $C\geq0$, $c,\alpha\in\mathbb R$, and $y,z\in Y$,
+    one has $A_{C,c,\alpha}(y,z)\geq0$.
 \end{lemma}
 \begin{proof}
-\leanok
-\uses{def:stretched_ball_kernel, lem:ball_incidence_nonneg}
-Each summand is nonnegative by
-Lemma~\ref{lem:ball_incidence_nonneg} and positivity of the
-exponential.  Its infinite sum is nonnegative as well.
+    \leanok
+    \uses{def:stretched_ball_kernel, lem:ball_incidence_nonneg}
+    Each summand is nonnegative by
+    Lemma~\ref{lem:ball_incidence_nonneg} and positivity of the
+    exponential.  Its infinite sum is nonnegative as well.
 \end{proof}
 
 \begin{lemma}[No entries across infinite distance]
-\label{lem:stretched_ball_zero}
-\lean{Metric.stretchedBallKernel_eq_zero_of_edist_eq_top}
-\leanok
-\uses{def:stretched_ball_kernel}
-For every $C,c,\alpha\in\mathbb R$ and $y,z\in Y$, if
-$\delta(y,z)=\infty$, then $A_{C,c,\alpha}(y,z)=0$.
+    \label{lem:stretched_ball_zero}
+    \lean{Metric.stretchedBallKernel_eq_zero_of_edist_eq_top}
+    \leanok
+    \uses{def:stretched_ball_kernel}
+    For every $C,c,\alpha\in\mathbb R$ and $y,z\in Y$, if
+    $\delta(y,z)=\infty$, then $A_{C,c,\alpha}(y,z)=0$.
 \end{lemma}
 \begin{proof}
-\leanok
-\uses{def:stretched_ball_kernel, lem:ball_incidence_zero}
-Lemma~\ref{lem:ball_incidence_zero} gives $K_n(y,z)=0$ at every
-natural radius $n$.  The series is identically zero.
+    \leanok
+    \uses{def:stretched_ball_kernel, lem:ball_incidence_zero}
+    Lemma~\ref{lem:ball_incidence_zero} gives $K_n(y,z)=0$ at every
+    natural radius $n$.  The series is identically zero.
 \end{proof}
 
 \begin{theorem}[Convergence from quadratic label counts]
-\label{thm:stretched_ball_summable}
-\lean{Metric.summable_stretchedBallKernel}
-\leanok
-\uses{def:ball_incidence_kernel}
-Let $C\geq0$, $c>0$, $\alpha>0$, $B\in\mathbb R$, and fix
-$y,z\in Y$.  Suppose that, for every $n\in\mathbb N$,
-\begin{align}
- \bigl|\{i\in I:\delta(y,x_i)\leq n\}\bigr|
- &\leq B(1+n)^2.
- \label{eq:stretched_entry_labels}
-\end{align}
-Then the series
-$\sum_{n=0}^{\infty}C e^{-cn^\alpha}K_n(y,z)$ is summable.
-No finiteness of $Y$, site-count bound, or separate sign assumption
-on $B$ is required; the $n=0$ label bound already implies $B\geq0$.
+    \label{thm:stretched_ball_summable}
+    \lean{Metric.summable_stretchedBallKernel}
+    \leanok
+    \uses{def:ball_incidence_kernel}
+    Let $C\geq0$, $c>0$, $\alpha>0$, $B\in\mathbb R$, and fix
+    $y,z\in Y$.  Suppose that, for every $n\in\mathbb N$,
+    \begin{align}
+        \bigl|\{i\in I:\delta(y,x_i)\leq n\}\bigr|
+         & \leq B(1+n)^2.
+        \label{eq:stretched_entry_labels}
+    \end{align}
+    Then the series
+    $\sum_{n=0}^{\infty}C e^{-cn^\alpha}K_n(y,z)$ is summable.
+    No finiteness of $Y$, site-count bound, or separate sign assumption
+    on $B$ is required; the $n=0$ label bound already implies $B\geq0$.
 \end{theorem}
 \begin{proof}
-\leanok
-\uses{lem:ball_incidence_nonneg, lem:ball_incidence_label_bound,
-thm:stretched_moment_summable}
-The summands are nonnegative by
-Lemma~\ref{lem:ball_incidence_nonneg}.
-Lemma~\ref{lem:ball_incidence_label_bound} and
-(\ref{eq:stretched_entry_labels}) give, for every $n$,
-\begin{align}
- \bigl|C e^{-cn^\alpha}K_n(y,z)\bigr|
- &\leq CB(1+n)^2e^{-cn^\alpha}.
- \label{eq:stretched_entry_majorant}
-\end{align}
-The right side is summable by
-Theorem~\ref{thm:stretched_moment_summable} with $p=2$,
-followed by multiplication by $CB$.
-Comparison of norms proves convergence.  In particular, this is
-absolute convergence of the actual shell series.
+    \leanok
+    \uses{lem:ball_incidence_nonneg, lem:ball_incidence_label_bound,
+        thm:stretched_moment_summable}
+    The summands are nonnegative by
+    Lemma~\ref{lem:ball_incidence_nonneg}.
+    Lemma~\ref{lem:ball_incidence_label_bound} and
+    (\ref{eq:stretched_entry_labels}) give, for every $n$,
+    \begin{align}
+        \bigl|C e^{-cn^\alpha}K_n(y,z)\bigr|
+         & \leq CB(1+n)^2e^{-cn^\alpha}.
+        \label{eq:stretched_entry_majorant}
+    \end{align}
+    The right side is summable by
+    Theorem~\ref{thm:stretched_moment_summable} with $p=2$,
+    followed by multiplication by $CB$.
+    Comparison of norms proves convergence.  In particular, this is
+    absolute convergence of the actual shell series.
 \end{proof}
 
 \begin{theorem}[Uniform weighted row bound]
-\label{thm:stretched_ball_weighted_row}
-\lean{Metric.sum_stretchedBallKernel_mul_exp_le}
-\leanok
-\uses{def:stretched_ball_kernel}
-Suppose $Y$ is finite.  Let $C,a,B,V\geq0$ and $\alpha>0$,
-and let $c\in\mathbb R$ satisfy $\eta=c-a2^\alpha>0$.
-Assume the following bounds for every $n\in\mathbb N$,
-$y\in Y$, and $i\in I$:
-\begin{align}
- \begin{aligned}
- \bigl|\{i\in I:\delta(y,x_i)\leq n\}\bigr|&\leq B(1+n)^2,\\
- \bigl|\{z\in Y:\delta(z,x_i)\leq n\}\bigr|&\leq V(1+n)^2.
- \end{aligned}
- \label{eq:stretched_ball_counts}
-\end{align}
-Then, for every $y\in Y$,
-\begin{align}
- \begin{aligned}
- \sum_{z\in Y}A_{C,c,\alpha}(y,z)
- e^{a(\delta(y,z)_{\mathbb R})^\alpha}
- &\leq CBV\sum_{n=0}^{\infty}(1+n)^4
- e^{-(c-a2^\alpha)n^\alpha}\\
- &=CBV M_4(c-a2^\alpha,\alpha).
- \end{aligned}
- \label{eq:stretched_ball_weighted_row}
-\end{align}
-The remaining decay rate is exactly $c-a2^\alpha$.
-The fourth moment is finite, and no assumption $\alpha\leq1$
-is needed.
+    \label{thm:stretched_ball_weighted_row}
+    \lean{Metric.sum_stretchedBallKernel_mul_exp_le}
+    \leanok
+    \uses{def:stretched_ball_kernel}
+    Suppose $Y$ is finite.  Let $C,a,B,V\geq0$ and $\alpha>0$,
+    and let $c\in\mathbb R$ satisfy $\eta=c-a2^\alpha>0$.
+    Assume the following bounds for every $n\in\mathbb N$,
+    $y\in Y$, and $i\in I$:
+    \begin{align}
+        \begin{aligned}
+            \bigl|\{i\in I:\delta(y,x_i)\leq n\}\bigr| & \leq B(1+n)^2, \\
+            \bigl|\{z\in Y:\delta(z,x_i)\leq n\}\bigr| & \leq V(1+n)^2.
+        \end{aligned}
+        \label{eq:stretched_ball_counts}
+    \end{align}
+    Then, for every $y\in Y$,
+    \begin{align}
+        \begin{aligned}
+            \sum_{z\in Y}A_{C,c,\alpha}(y,z)
+            e^{a(\delta(y,z)_{\mathbb R})^\alpha}
+             & \leq CBV\sum_{n=0}^{\infty}(1+n)^4
+            e^{-(c-a2^\alpha)n^\alpha}            \\
+             & =CBV M_4(c-a2^\alpha,\alpha).
+        \end{aligned}
+        \label{eq:stretched_ball_weighted_row}
+    \end{align}
+    The remaining decay rate is exactly $c-a2^\alpha$.
+    The fourth moment is finite, and no assumption $\alpha\leq1$
+    is needed.
 \end{theorem}
 \begin{proof}
-\leanok
-\uses{def:stretched_ball_kernel, thm:stretched_ball_summable,
-thm:ball_incidence_weighted_row, thm:stretched_moment_summable}
-Since $a2^\alpha\geq0$, the hypothesis $\eta>0$ implies $c>0$.
-Theorem~\ref{thm:stretched_ball_summable} proves convergence for
-each entry.  Multiplying each entry's summands by the fixed
-nonnegative weight $e^{a(\delta(y,z)_{\mathbb R})^\alpha}$
-preserves convergence.  Since $Y$ is finite, the resulting finite
-sum of convergent series is convergent, and its finite site sum
-may be exchanged with the infinite radius sum.
+    \leanok
+    \uses{def:stretched_ball_kernel, thm:stretched_ball_summable,
+        thm:ball_incidence_weighted_row, thm:stretched_moment_summable}
+    Since $a2^\alpha\geq0$, the hypothesis $\eta>0$ implies $c>0$.
+    Theorem~\ref{thm:stretched_ball_summable} proves convergence for
+    each entry.  Multiplying each entry's summands by the fixed
+    nonnegative weight $e^{a(\delta(y,z)_{\mathbb R})^\alpha}$
+    preserves convergence.  Since $Y$ is finite, the resulting finite
+    sum of convergent series is convergent, and its finite site sum
+    may be exchanged with the infinite radius sum.
 
-At radius $n$, apply
-Theorem~\ref{thm:ball_incidence_weighted_row} with the label and
-site bounds $B(1+n)^2$ and $V(1+n)^2$ from
-(\ref{eq:stretched_ball_counts}).  Multiplication by
-$C e^{-cn^\alpha}\geq0$ gives
-\begin{align}
- \begin{aligned}
- \sum_{z\in Y}C e^{-cn^\alpha}K_n(y,z)
- e^{a(\delta(y,z)_{\mathbb R})^\alpha}
- &\leq CBV(1+n)^4e^{-cn^\alpha}e^{a(2n)^\alpha}\\
- &=CBV(1+n)^4e^{-(c-a2^\alpha)n^\alpha}.
- \end{aligned}
- \label{eq:stretched_ball_shell_bound}
-\end{align}
-The equality uses $(2n)^\alpha=2^\alpha n^\alpha$ for
-nonnegative bases, including $n=0$.
-The majorant is summable by
-Theorem~\ref{thm:stretched_moment_summable} with $p=4$ and
-rate $\eta>0$.  Sum~(\ref{eq:stretched_ball_shell_bound}) over
-$n$ using the established convergence, then factor out $CBV$.
-This gives~(\ref{eq:stretched_ball_weighted_row}).
+    At radius $n$, apply
+    Theorem~\ref{thm:ball_incidence_weighted_row} with the label and
+    site bounds $B(1+n)^2$ and $V(1+n)^2$ from
+    (\ref{eq:stretched_ball_counts}).  Multiplication by
+    $C e^{-cn^\alpha}\geq0$ gives
+    \begin{align}
+        \begin{aligned}
+            \sum_{z\in Y}C e^{-cn^\alpha}K_n(y,z)
+            e^{a(\delta(y,z)_{\mathbb R})^\alpha}
+             & \leq CBV(1+n)^4e^{-cn^\alpha}e^{a(2n)^\alpha} \\
+             & =CBV(1+n)^4e^{-(c-a2^\alpha)n^\alpha}.
+        \end{aligned}
+        \label{eq:stretched_ball_shell_bound}
+    \end{align}
+    The equality uses $(2n)^\alpha=2^\alpha n^\alpha$ for
+    nonnegative bases, including $n=0$.
+    The majorant is summable by
+    Theorem~\ref{thm:stretched_moment_summable} with $p=4$ and
+    rate $\eta>0$.  Sum~(\ref{eq:stretched_ball_shell_bound}) over
+    $n$ using the established convergence, then factor out $CBV$.
+    This gives~(\ref{eq:stretched_ball_weighted_row}).
 \end{proof}
 
 \begin{theorem}[Explicit half-rate choice of the spatial weight]
-\label{thm:stretched_ball_half_rate}
-\lean{Metric.sum_stretchedBallKernel_mul_exp_half_rate_le}
-\leanok
-\uses{def:stretched_ball_kernel}
-Suppose $Y$ is finite.  Let $C,B,V\geq0$, $c>0$, and
-$\alpha>0$, and assume~(\ref{eq:stretched_ball_counts}) for all
-$n\in\mathbb N$, $y\in Y$, and $i\in I$.
-Set $a=c/(2\cdot2^\alpha)$.  Then $a>0$, and for every $y\in Y$,
-\begin{align}
- \begin{aligned}
- \sum_{z\in Y}A_{C,c,\alpha}(y,z)
- e^{\frac{c}{2\cdot2^\alpha}(\delta(y,z)_{\mathbb R})^\alpha}
- &\leq CBV\sum_{n=0}^{\infty}(1+n)^4e^{-(c/2)n^\alpha}\\
- &=CBV M_4(c/2,\alpha).
- \end{aligned}
- \label{eq:stretched_ball_half_rate}
-\end{align}
+    \label{thm:stretched_ball_half_rate}
+    \lean{Metric.sum_stretchedBallKernel_mul_exp_half_rate_le}
+    \leanok
+    \uses{def:stretched_ball_kernel}
+    Suppose $Y$ is finite.  Let $C,B,V\geq0$, $c>0$, and
+    $\alpha>0$, and assume~(\ref{eq:stretched_ball_counts}) for all
+    $n\in\mathbb N$, $y\in Y$, and $i\in I$.
+    Set $a=c/(2\cdot2^\alpha)$.  Then $a>0$, and for every $y\in Y$,
+    \begin{align}
+        \begin{aligned}
+            \sum_{z\in Y}A_{C,c,\alpha}(y,z)
+            e^{\frac{c}{2\cdot2^\alpha}(\delta(y,z)_{\mathbb R})^\alpha}
+             & \leq CBV\sum_{n=0}^{\infty}(1+n)^4e^{-(c/2)n^\alpha} \\
+             & =CBV M_4(c/2,\alpha).
+        \end{aligned}
+        \label{eq:stretched_ball_half_rate}
+    \end{align}
 \end{theorem}
 \begin{proof}
-\leanok
-\uses{thm:stretched_ball_weighted_row}
-Since $2^\alpha>0$ and $c>0$, the chosen $a$ is positive.
-Direct cancellation gives
-$c-\bigl(c/(2\cdot2^\alpha)\bigr)2^\alpha=c/2>0$.
-Apply Theorem~\ref{thm:stretched_ball_weighted_row} with this
-value of $a$.
+    \leanok
+    \uses{thm:stretched_ball_weighted_row}
+    Since $2^\alpha>0$ and $c>0$, the chosen $a$ is positive.
+    Direct cancellation gives
+    $c-\bigl(c/(2\cdot2^\alpha)\bigr)2^\alpha=c/2>0$.
+    Apply Theorem~\ref{thm:stretched_ball_weighted_row} with this
+    value of $a$.
 \end{proof}
 
 The constant in~(\ref{eq:stretched_ball_half_rate}) uses the literal
