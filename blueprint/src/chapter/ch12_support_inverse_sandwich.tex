@@ -1,0 +1,54 @@
+\section{Order bounds for a support inverse}
+\label{sec:support_inverse_sandwich}
+
+Let $M,\rho$ be positive-semidefinite operators on a finite-dimensional
+complex Hilbert space. Write $\rho^+$ for the inverse of $\rho$ on its
+support, extended by zero on its kernel, and $P_\rho$ for its support
+projection. The following bounds are used in the restoration construction
+of \emph{A two-dimensional area law from a global spectral gap},
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex\#L417-L446}{Section 9, lines 417--446}.
+
+\begin{theorem}[Support inclusion from order]
+\label{thm:support_inverse_kernel}
+\lean{Matrix.PosSemidef.mulVec_eq_zero_of_le, Matrix.PosSemidef.mul_supportProj_eq_self_of_le, Matrix.PosSemidef.supportProj_mul_eq_self_of_le}
+\leanok
+If $0\le M\le\rho$, then $\ker\rho\subseteq\ker M$ and
+$MP_\rho=P_\rho M=M$.
+\end{theorem}
+\begin{proof}
+\leanok
+For $\rho v=0$, positivity gives
+$0\le\langle v,Mv\rangle\le\langle v,\rho v\rangle=0$.
+For a positive-semidefinite operator, a zero quadratic form implies
+$Mv=0$. Hence $M(I-P_\rho)=0$, and taking adjoints gives left absorption.
+\end{proof}
+
+\begin{theorem}[Normalization below the support projection]
+\label{thm:support_inverse_normalization}
+\lean{Matrix.PosSemidef.supportInvSqrt_mul_mul_supportInvSqrt_le_supportProj}
+\leanok
+If $M\le\rho$, then $(\rho^+)^{1/2}M(\rho^+)^{1/2}\le P_\rho$.
+\end{theorem}
+\begin{proof}
+\leanok
+Congruence of $\rho-M\ge0$ by $(\rho^+)^{1/2}$ gives the claim because
+$(\rho^+)^{1/2}\rho(\rho^+)^{1/2}=P_\rho$.
+\end{proof}
+
+\begin{theorem}[Support-inverse sandwich bound]
+\label{thm:support_inverse_sandwich}
+\lean{Matrix.PosSemidef.sub_mul_supportInv_mul_eq, Matrix.PosSemidef.sub_mul_supportInv_mul_posSemidef, Matrix.PosSemidef.mul_supportInv_mul_le}
+\leanok
+If $0\le M\le\rho$, then $M\rho^+M\le M$, even when $\rho$ is singular
+or $M$ and $\rho$ do not commute.
+\end{theorem}
+\begin{proof}
+\leanok
+Using $\rho^+\rho\rho^+=\rho^+$, expansion gives
+\begin{align*}
+M-M\rho^+M
+&=(I-M\rho^+)M(I-M\rho^+)^*
+  +(M\rho^+)(\rho-M)(M\rho^+)^*.
+\end{align*}
+Both summands are positive semidefinite.
+\end{proof}
