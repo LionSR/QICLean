@@ -1,0 +1,37 @@
+{
+  "status": "PASS: direct inspection of four rasterized PDF pages",
+  "pdf_sha256": "1dab8b9ac27a8bd7c6f3a4a8d9540448ba3196e1fefec85df8b091a755fb61c6",
+  "pages": [
+    {
+      "pdf_page": 3,
+      "printed_page": 2,
+      "file": "pdf-pages/page-03.png",
+      "finding": "The reused physical-buffer compression diagram is readable: K, F_A, and K dagger boxes; two Q input/output legs; A tensor B internal legs; arrows and labels have no clipping or collisions."
+    },
+    {
+      "pdf_page": 13,
+      "printed_page": 12,
+      "file": "pdf-pages/page-13.png",
+      "finding": "Parameter bounds and generic uniform theorem are readable, including the two separately numbered forward/adjoint estimates, integral, and polynomial bound. No clipping or overlap."
+    },
+    {
+      "pdf_page": 14,
+      "printed_page": 13,
+      "file": "pdf-pages/page-14.png",
+      "finding": "The final physical-buffer theorem and full proof are readable on one page, following the generic proof. Original-system hypotheses, independently chosen W and z, six numbered equations (1.59\u20131.64), and cross-references have no clipping or overlap."
+    },
+    {
+      "pdf_page": 15,
+      "printed_page": 14,
+      "file": "pdf-pages/page-15.png",
+      "finding": "Bibliography only: two source entries with full pinned revision text, both readable. No theorem or proof continues onto this page."
+    }
+  ],
+  "page_image_sha256": {
+    "page-03.png": "0d5075da0941f64df26f204d76f8f0300eae7094ac2dfdaf3527dc07ea81e8d7",
+    "page-13.png": "500b62a8696404b3f9ed29519b52c1bcb4f32331b5b779d9a60be513a940b2db",
+    "page-14.png": "a35a6570efcb73ab66ebd7be1d4cf08e97698c2d8816d52c77cdb2f356b58bdb",
+    "page-15.png": "27eb265b5f0dec2e235bead60a94edc66c585d26b69fcfb3113d20b02d546dd3"
+  },
+  "scope": "Direct PDF visual inspection only; static HTML structure/assets checked automatically. No browser or MathJax execution. Other PDF pages were checked automatically, not visually."
+}

@@ -1,0 +1,88 @@
+\subsection{Uniform approximation on the original physical buffer}
+\label{sec:gaussian_physical_uniform}
+
+% Source: polynomial-PEPS manuscript (September 24, 2026), lem:reset,
+% pinned peps-02-information-adc7f124.tex, lines 395--452, at
+% openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% This states the Gaussian approximation step with its original-system
+% hypotheses. It does not assert spatial locality, interaction support,
+% the regional hypotheses, or the complete reset lemma.
+
+\begin{theorem}[Uniform physical-buffer Gaussian approximation]
+    \label{thm:gaussian_physical_uniform}
+    \lean{GaussianFilter.exists_uniform_physicalBuffer_filter}
+    \leanok
+    Let $\Delta>0$ and $r\ge0$ be real. There are constants $a>0$ and
+    $T_0>0$, depending only on $\Delta,r$, with the following property.
+    Let $\mathcal H_R,\mathcal H_C,\mathcal H_Q$ be finite-dimensional
+    complex Hilbert spaces, and put
+    $\mathcal H=\mathcal H_R\otimes\mathcal H_C\otimes\mathcal H_Q$.
+    Suppose $H$ is an operator on $\mathcal H$, $\Omega$ is a unit vector,
+    and $E_0\in\R$ and $b\ge0$ satisfy
+    \begin{align}
+        H\Omega&=E_0\Omega,
+        & H-E_0\Id&\succeq\Delta(\Id-\ketbra{\Omega}{\Omega}).
+        \label{eq:physical_uniform_original_gap}
+    \end{align}
+    With $\rho_{RC}=\operatorname{Tr}_Q\ketbra{\Omega}{\Omega}$,
+    $\rho_R=\operatorname{Tr}_C\rho_{RC}$, and
+    $\rho_C=\operatorname{Tr}_R\rho_{RC}$, suppose also that
+    $D(\rho_{RC}\Vert\rho_R\otimes\rho_C)\le b$.
+
+    Let $U_e$ regroup the two copies of $\mathcal H$ as
+    $(\mathcal H_R\otimes\mathcal H_C)^{\otimes2}
+        \otimes\mathcal H_Q^{\otimes2}$, and let $S$ exchange the two
+    $R$ registers while fixing both $C$ and both $Q$ registers. Set
+    \begin{align}
+        K&=U_e(H\otimes\Id+\Id\otimes H)U_e^\dagger,
+        & K'&=SKS^\dagger.
+        \label{eq:physical_uniform_generators}
+    \end{align}
+    Write $\Psi=U_e(\Omega\otimes\Omega)$ and $\Phi=S\Psi$.
+    There are a Hermitian contraction $W$ on $\mathcal H_Q^{\otimes2}$
+    and a real $z\ge e^{-2b}$, chosen independently of $L$, such that
+    $\braket{\Phi}{V\Psi}=z$ for
+    $V=\Id_{(RC)^{\otimes2}}\otimes W$.
+
+    For every real $L\ge1$, put $B_*=1+b+\log L$, $h=aB_*$, and
+    $T=T_0B_*$. Then $h>0$ and $T\ge0$. The unrenormalized integral
+    \begin{align}
+        M_L&=\int_{-T}^{T}(2\pi h)^{-1/2}e^{-t^2/(2h)}
+            e^{itK'}V e^{-itK}\,dt
+        \label{eq:physical_uniform_integral}
+    \end{align}
+    satisfies $\|M_L\|\le1$ and
+    \begin{align}
+        \|M_L\Psi-z\Phi\|&\le3e^{-10b}L^{-r}.
+        \label{eq:physical_uniform_forward}
+    \end{align}
+    \begin{align}
+        \|M_L^\dagger\Phi-z\Psi\|&\le3e^{-10b}L^{-r}.
+        \label{eq:physical_uniform_reverse}
+    \end{align}
+    This is the uniform Gaussian approximation step in the reset
+    argument of~\cite{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_parameters, thm:physical_buffer_gaussian_filter}
+    Choose $a,T_0$ by Theorem~\ref{thm:gaussian_parameters}, before the
+    Hilbert spaces, $H,\Omega,E_0,b$, or $L$ are specified.
+    Theorem~\ref{thm:physical_buffer_gaussian_filter} then provides $W,z$
+    from the original-system hypotheses, before the variance and cutoff
+    are specified. Its two generators have common ground energy $2E_0$
+    and lower gap $\Delta$, and its real overlap gives the same
+    coefficient $z$ for the forward and adjoint estimates.
+
+    For $L\ge1$, one has $B_*\ge1$, so $h=aB_*>0$ and $T=T_0B_*\ge0$.
+    Theorem~\ref{thm:physical_buffer_gaussian_filter} gives
+    $\|M_L\|\le1$ and bounds each residual in
+    (\ref{eq:physical_uniform_forward}) and
+    (\ref{eq:physical_uniform_reverse}) by
+    \begin{align}
+        e^{-h\Delta^2/2}+2e^{-T^2/(2h)}
+        &\le e^{-10b}L^{-r}+2e^{-10b}L^{-r}
+         =3e^{-10b}L^{-r}.
+        \label{eq:physical_uniform_error_sum}
+    \end{align}
+    The scalar inequality is Theorem~\ref{thm:gaussian_parameters}.
+\end{proof}

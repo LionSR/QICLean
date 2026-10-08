@@ -1,0 +1,11 @@
+{
+  "local_render_source_revision": "d44122632c6d7d1b2d17a5d889fc8fe10bbb846e",
+  "local_render_source_tree": "8eb40f1385380b29d19e409510219cbceba15843",
+  "public_source_revision": "003cd1fe3999756bd3bd01d0170793b5273ae739",
+  "public_source_tree": "8eb40f1385380b29d19e409510219cbceba15843",
+  "public_source_parent": "3e0d8b682870b4ab3da5c6ff1d9a7a7acc2ffeb2",
+  "pull_request": "https://github.com/LionSR/QICLean/pull/620",
+  "correspondence": "Exact tree identity. The render commands ran locally at d441226; they did not run at the public commit.",
+  "verification": "Local tree read with git rev-parse; public commit, tree, and parent checked separately by GitHub Git-commit and branch readback during publication.",
+  "limits": "This source correspondence does not establish CI status or claim a new render/build on the public commit."
+}

@@ -1,0 +1,121 @@
+\subsection{Gaussian filters under finite coordinate changes}
+\label{sec:gaussian_reindex}
+
+% Source: polynomial-PEPS manuscript (September 24, 2026), lem:reset,
+% pinned peps-02-information-adc7f124.tex, lines 426--452, at
+% openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% This is the coordinate-transport interface for the Gaussian integral.
+% Regional threeSplit/sheetSwap identifications are downstream in TNLean.
+% No locality estimate or complete reset theorem is asserted here.
+
+Let $n,m$ be finite sets and let $e:n\to m$ be a bijection. For a
+complex matrix $A$ indexed by $n$, define its reindexing $R_e(A)$ by
+\begin{align}
+    R_e(A)_{ab}&=A_{e^{-1}(a),e^{-1}(b)}\qquad(a,b\in m).
+    \label{eq:gaussian_reindex_coordinates}
+\end{align}
+Thus the same inverse bijection acts on both indices, with the entries
+unchanged. The map $R_e$ is an algebra isomorphism and a continuous
+complex-linear equivalence. The finite sets may be empty.
+For any complex matrix $H$, write $U_H(t)=e^{itH}$; Hermiticity is not
+assumed in the coordinate identities below.
+
+\begin{theorem}[Exponential covariance]
+    \label{thm:gaussian_reindex_exp}
+    \lean{Matrix.reindex_exp, Matrix.reindex_hermitianUnitaryPath}
+    \leanok
+    For all complex matrices $A,H$ indexed by $n$ and all $t\in\R$,
+    \begin{align}
+        R_e(e^A)&=e^{R_e(A)}.
+        \label{eq:gaussian_reindex_exp}
+    \end{align}
+    \begin{align}
+        R_e(U_H(t))&=U_{R_e(H)}(t).
+        \label{eq:gaussian_reindex_path}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    The continuous algebra isomorphism $R_e$ preserves the exponential
+    series. Apply this identity to $itH$ and use complex linearity to
+    obtain~(\ref{eq:gaussian_reindex_path}).
+\end{proof}
+
+\begin{theorem}[Covariance of the matrix integral]
+    \label{thm:gaussian_reindex_integral}
+    \lean{Matrix.reindex_integral}
+    \leanok
+    Let $\mu$ be a measure on a measurable space $X$ and let
+    $F:X\to\C^{n\times n}$ be any function. Then
+    \begin{align}
+        R_e\!\left(\int_X F(x)\,d\mu(x)\right)
+            &=\int_X R_e(F(x))\,d\mu(x).
+        \label{eq:gaussian_reindex_integral}
+    \end{align}
+    The integrals use the convention that a nonintegrable function
+    has integral zero. No integrability assumption is needed.
+\end{theorem}
+\begin{proof}\leanok
+    A continuous linear map commutes with the integral of an integrable
+    function. Both $R_e$ and its inverse are continuous linear maps, so
+    $F$ is integrable exactly when $R_e\circ F$ is integrable. In the
+    remaining case both integrals are zero, and $R_e(0)=0$.
+\end{proof}
+
+\begin{theorem}[Covariance of the two-generator integrand]
+    \label{thm:gaussian_reindex_integrand}
+    \lean{GaussianFilter.reindex_intertwinerIntegrand}
+    \leanok
+    For all complex matrices $H',H,W$ indexed by $n$ and every real $t$,
+    \begin{align}
+        R_e\bigl(U_{H'}(t)WU_H(-t)\bigr)
+            &=U_{R_e(H')}(t)R_e(W)U_{R_e(H)}(-t).
+        \label{eq:gaussian_reindex_integrand}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_reindex_exp}
+    Apply multiplicativity of $R_e$ to the two products, then use
+    (\ref{eq:gaussian_reindex_path}) for each exponential factor.
+    The left generator remains $H'$ at time $t$ and the right generator
+    remains $H$ at time $-t$.
+\end{proof}
+
+\begin{theorem}[Covariance of full and truncated Gaussian filters]
+    \label{thm:gaussian_reindex_filters}
+    \lean{GaussianFilter.reindex_gaussianIntertwiner,
+        GaussianFilter.reindex_gaussianIntertwinerTruncated}
+    \leanok
+    \uses{def:gaussian_filter_integrals, def:gaussian_time_density}
+    Let $h\ge0$, $T\in\R$, and let $H',H,W$ be arbitrary complex
+    matrices indexed by $n$. For the centered Gaussian measure $\mu_h$
+    of variance $h$, the actual full integral satisfies
+    \begin{align}
+        &R_e\!\left(\int_{\R}U_{H'}(t)WU_H(-t)\,d\mu_h(t)\right)
+            \label{eq:gaussian_reindex_full_integral}\\
+        &\qquad=\int_{\R}U_{R_e(H')}(t)R_e(W)U_{R_e(H)}(-t)\,d\mu_h(t).
+            \notag
+    \end{align}
+    Its unrenormalized truncation satisfies
+    \begin{align}
+        &R_e\!\left(\int_{[-T,T]}U_{H'}(t)WU_H(-t)\,d\mu_h(t)\right)
+            \label{eq:gaussian_reindex_truncated_integral}\\
+        &\qquad=\int_{[-T,T]}U_{R_e(H')}(t)R_e(W)U_{R_e(H)}(-t)\,d\mu_h(t).
+            \notag
+    \end{align}
+    Equivalently, $R_e(M_h(H',H;W))=M_h(R_e(H'),R_e(H);R_e(W))$,
+    with the same identity for $M_h^T$. The variance, cutoff, and
+    restricted Gaussian mass are preserved.
+
+    These identities include $h=0$, when $\mu_0=\delta_0$ and the full
+    integral is $W$. They also include $T<0$, when $[-T,T]$ is empty
+    and both truncated integrals vanish. No Hermiticity, positive
+    variance, nonnegative cutoff, or nonempty-index assumption is
+    required.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_reindex_integral, thm:gaussian_reindex_integrand}
+    Use Theorem~\ref{thm:gaussian_reindex_integral} first with $\mu_h$
+    and then with its restriction to $[-T,T]$. In each case substitute
+    (\ref{eq:gaussian_reindex_integrand}) inside the integral. The
+    measure is unchanged, so there is no normalization factor.
+\end{proof}
