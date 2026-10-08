@@ -163,6 +163,150 @@
           }
         ]
       }
+    },
+    {
+      "id": "8748-qic-phases-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/MarginalPhaseSingular.lean",
+        "declaration": "Entropy.MarginalPhase.norm_phaseDifference_mulVec_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/04-conditional.tex",
+          "labels": [
+            "lem:conditional-phases"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove Lemma 5.2 for a unit vector with kernel-completed phases, via the faithful case and a faithful approximation."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "16605786368cfb5a5995241dd8884e090fc0f5a3",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.MarginalPhaseSingular",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/phases-build.log",
+            "sha256": "9c1125de2b916c8c13f53d19387700cf1d49047d7db9f72fe2f27b7d349b8127"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean docs/provenance/evidence/8748/phases-axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/phases-axioms.log",
+            "sha256": "484723857c32e6d871bdab72be14839a51b06e575bb4d966cb230085ab0f6b14"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8748-qic-phases-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/MarginalPhaseComparison.lean",
+        "declaration": "Entropy.MarginalPhase.norm_phaseDifference_le_of_posDef",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/04-conditional.tex",
+          "labels": [
+            "lem:conditional-phases"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the faithful case of Lemma 5.2 through a resolvent compression on Hilbert--Schmidt spaces."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "16605786368cfb5a5995241dd8884e090fc0f5a3",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.MarginalPhaseSingular",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/phases-build.log",
+            "sha256": "9c1125de2b916c8c13f53d19387700cf1d49047d7db9f72fe2f27b7d349b8127"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean docs/provenance/evidence/8748/phases-axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/phases-axioms.log",
+            "sha256": "484723857c32e6d871bdab72be14839a51b06e575bb4d966cb230085ab0f6b14"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8748-qic-phases-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ResolventPhaseBound.lean",
+        "declaration": "Matrix.ResolventCompression.norm_phaseGap_le_phaseRate",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/04-conditional.tex",
+          "labels": [
+            "lem:conditional-phases"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the resolvent phase-gap bound used in the proof of Lemma 5.2."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "16605786368cfb5a5995241dd8884e090fc0f5a3",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.MarginalPhaseSingular",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/phases-build.log",
+            "sha256": "9c1125de2b916c8c13f53d19387700cf1d49047d7db9f72fe2f27b7d349b8127"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean docs/provenance/evidence/8748/phases-axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/phases-axioms.log",
+            "sha256": "484723857c32e6d871bdab72be14839a51b06e575bb4d966cb230085ab0f6b14"
+          }
+        ]
+      }
     }
   ]
 }
