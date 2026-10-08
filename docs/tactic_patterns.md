@@ -26,6 +26,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Commutation with a matrix inverse — candidate (2026-10-07)
+
+- **Pattern:** Give a positive definite matrix its existing `Invertible`
+  instance, use `Commute.invOf_right` or `commute_invOf`, and rewrite
+  `Matrix.invOf_eq_nonsing_inv`.
+- **Seen:** Three inverse-commutation steps in
+  `QICLean/Analysis/PatchRegulator.lean`; one file.
+- **Abstraction:** The existing Mathlib commutation lemmas suffice. Retain
+  this record until independent occurrences in another file justify a
+  matrix-specific lemma; no new tactic is introduced.
+
 ### Finite-spectrum functional-calculus scalar reduction — candidate (2026-10-07)
 
 - **Pattern:** Rewrite matrices as Hermitian functional calculi, combine
