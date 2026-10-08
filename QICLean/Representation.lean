@@ -35,6 +35,8 @@ import QICLean.Representation.IsotypicDimension
 import QICLean.Representation.JointIsotypic
 import QICLean.Representation.JucysRecursion
 import QICLean.Representation.LabelProjectors
+import QICLean.Representation.MarkedStar
+import QICLean.Representation.MarkedSymbol
 import QICLean.Representation.MergeDimensions
 import QICLean.Representation.MergeMoment
 import QICLean.Representation.PartitionCount
