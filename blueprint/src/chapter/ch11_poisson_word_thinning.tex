@@ -51,8 +51,6 @@ the retained and omitted ordered words from one sample at a fixed time.
     \begin{align}
         \mu_{I\sqcup J,t}(E(u,v))
         &=\binom{m+n}{m}e^{-(a+b)t}\frac{t^{m+n}}{(m+n)!}
-          =\left(e^{-at}\frac{t^m}{m!}\right)
-           \left(e^{-bt}\frac{t^n}{n!}\right)
           =\mu_{I,t}(\{u\})\mu_{J,t}(\{v\}).
         \label{eq:poisson_thinning_mass}
     \end{align}
@@ -60,7 +58,7 @@ the retained and omitted ordered words from one sample at a fixed time.
 \begin{proof}
     \leanok
     \uses{lem:poisson_thinning_fiber, lem:poisson_word_normalization}
-    Sum the common atomic mass over the finite joint fiber. The identity
+    Sum the singleton masses over $E(u,v)$. The factorial identity
     $\binom{m+n}{m}m!n!=(m+n)!$, exponential addition, and
     $t^{m+n}=t^mt^n$ give (\ref{eq:poisson_thinning_mass}). Only positive
     factorials are canceled, so the calculation also applies at $t=0$.
