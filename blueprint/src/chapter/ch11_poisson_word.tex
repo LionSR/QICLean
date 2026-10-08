@@ -1,0 +1,94 @@
+\section{Poissonized finite words}
+\label{sec:poisson_words}
+
+Let $I$ be a finite alphabet, $N=|I|$, and $t\geq0$.  Write
+$\mathcal W=\coprod_{m\geq0}I^{\{0,\ldots,m-1\}}$ for the set of finite
+words, including the empty word.  These statements concern this explicit
+word law and do not identify it with a chronological construction from
+independent clocks.
+
+\begin{definition}[Poissonized word measure]
+\label{def:poisson_word_measure}
+\lean{PoissonWord.Word, PoissonWord.nil, PoissonWord.weight, PoissonWord.measure}
+\leanok
+Equip $\mathcal W$ with its discrete $\sigma$-algebra and put
+\begin{align}
+ \mu_t&=\sum_{w\in\mathcal W}
+       e^{-Nt}\frac{t^{|w|}}{|w|!}\,\delta_w.
+ \label{eq:poisson_word_mass}
+\end{align}
+\end{definition}
+
+\begin{lemma}[Normalization and length distribution]
+\label{lem:poisson_word_normalization}
+\lean{PoissonWord.weight_nonneg, PoissonWord.sum_weight,
+PoissonWord.hasSum_one_weight, PoissonWord.isProbabilityMeasure,
+PoissonWord.measure_singleton, PoissonWord.measure_length,
+PoissonWord.map_length, PoissonWord.measure_zero, PoissonWord.measure_of_isEmpty}
+\leanok
+\uses{def:poisson_word_measure}
+The measure $\mu_t$ is a probability measure.  The distribution of the length
+is Poisson with mean $Nt$, and each individual word has the mass in
+(\ref{eq:poisson_word_mass}).  If $t=0$ or $I=\varnothing$, then $\mu_t$
+is the point mass at the empty word.
+\end{lemma}
+\begin{proof}
+\leanok
+There are $N^m$ words of length $m$, so their total mass is
+$e^{-Nt}(Nt)^m/m!$.  Summing these nonnegative masses gives
+$e^{-Nt}\sum_{m\geq0}(Nt)^m/m!=1$.  The same length-wise calculation gives
+the Poisson distribution.  At zero time all positive lengths have zero mass;
+for an empty alphabet there are no words of positive length.
+\end{proof}
+
+\begin{lemma}[Weighted expectation]
+\label{lem:poisson_word_expectation}
+\lean{PoissonWord.integrable_iff, PoissonWord.integrable_iff_sum,
+PoissonWord.integral_eq_tsum_sum}
+\leanok
+\uses{def:poisson_word_measure}
+For an observable $f$ valued in a normed additive group, integrability is
+ equivalent to summability of
+$\sum_{w\in\mathcal W}e^{-Nt}t^{|w|}\|f(w)\|/|w|!$.
+If $f$ is real and nonnegative, put
+$A_m=\sum_{w\in I^{\{0,\ldots,m-1\}}}f(w)$.
+Then integrability is equivalent to summability of
+$\sum_{m\geq0}e^{-Nt}t^m A_m/m!$, and in that case
+\begin{align}
+ \int_{\mathcal W} f\,d\mu_t
+   &=\sum_{m\geq0}e^{-Nt}\frac{t^m}{m!}A_m.
+ \label{eq:poisson_word_expectation}
+\end{align}
+\end{lemma}
+\begin{proof}
+\leanok
+Integrate against the sum of weighted point masses.  Absolute summability
+is precisely the integrability criterion.  For nonnegative real observables,
+regrouping the series by length gives
+(\ref{eq:poisson_word_expectation}).
+\end{proof}
+
+\begin{theorem}[Exponential estimate from finite words]
+\label{thm:poisson_word_decay}
+\lean{PoissonWord.hasSum_weight_mul_pow,
+PoissonWord.integrable_and_integral_le_of_sum_le_pow}
+\leanok
+\uses{def:poisson_word_measure}
+Suppose $f\geq0$, $a,C\geq0$, and $A_m\leq a^m C$ for every $m\geq0$.
+Then $f$ is integrable and
+\begin{align}
+ \int_{\mathcal W} f\,d\mu_t
+   &\leq e^{(a-N)t}C.
+ \label{eq:poisson_word_decay}
+\end{align}
+The comparison series has sum $e^{(a-N)t}C$ for arbitrary real $a,C$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_expectation}
+The exponential series gives
+$\sum_{m\geq0}e^{-Nt}t^m a^m C/m!=e^{(a-N)t}C$.
+The nonnegative terms in (\ref{eq:poisson_word_expectation}) are bounded by
+this summable series.  The comparison proves both integrability and
+(\ref{eq:poisson_word_decay}).
+\end{proof}
