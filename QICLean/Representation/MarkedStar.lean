@@ -35,7 +35,7 @@ and deduces that the star operator `J_{Q,k} = k⁻¹ ∑_{j<k-1} U_Q((j, k-1))` 
 -/
 
 open Matrix PermutationRepresentation Finset Entropy
-open scoped Kronecker Matrix.Norms.L2Operator
+open scoped Kronecker Matrix.Norms.L2Operator InnerProductSpace
 
 namespace TensorPower
 
@@ -154,5 +154,65 @@ theorem permOp_subsystemPerm_swap_eq_sum (Q : Finset V) {i j : Fin k} (hij : i �
     rw [← h]
     funext f
     simp [Equiv.swap_apply_of_ne_of_ne hli hlj]
+
+/-- The marginal `ρ_Q(θ)` of `|θ⟩⟨θ|` on `Q`, tensored with the identity on one copy. -/
+noncomputable def margLift (Q : Finset V) (θ : SiteConfig n → ℂ) :
+    Matrix (SiteConfig n) (SiteConfig n) ℂ :=
+  localLift Q (regionState Q (WithLp.toLp 2 θ))
+
+theorem localLift_sum {ι : Type*} (s : Finset ι) (Q : Finset V)
+    (K : ι → Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ) :
+    localLift Q (∑ i ∈ s, K i) = ∑ i ∈ s, localLift Q (K i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+    simpa using localLift_smul (D := Q) (0 : ℂ) (0 : Matrix (RegionConfig n Q) _ ℂ)
+  | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, localLift_add, ih]
+
+/-- **Contracting a donor** (`05-replicas.tex`, lines 790–795): `∑_{a,b} ⟨θ, E_{ab} θ⟩ E_{ba}`
+is the marginal `ρ_Q(θ)` lifted to one copy. -/
+theorem sum_expect_regionUnit_smul (Q : Finset V) (θ : SiteConfig n → ℂ) :
+    ∑ a, ∑ b, (star θ ⬝ᵥ (regionUnit Q a b *ᵥ θ)) • regionUnit Q b a = margLift Q θ := by
+  have hexp : ∀ a b, star θ ⬝ᵥ (regionUnit Q a b *ᵥ θ) =
+      regionState Q (WithLp.toLp 2 θ) b a := by
+    intro a b
+    have h : star θ ⬝ᵥ (regionUnit Q a b *ᵥ θ) =
+        ⟪WithLp.toLp 2 θ, Matrix.toEuclideanLin (regionUnit Q a b) (WithLp.toLp 2 θ)⟫_ℂ := by
+      rw [EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm]
+      rfl
+    rw [h, regionUnit, inner_localLift, Matrix.trace]
+    simp [Matrix.mul_apply, Matrix.single_apply]
+  simp only [hexp, regionUnit, ← localLift_smul, ← localLift_sum, margLift]
+  congr 1
+  rw [Finset.sum_comm]
+  conv_rhs => rw [Matrix.matrix_eq_sum_single (regionState Q (WithLp.toLp 2 θ))]
+  refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_
+  rw [Matrix.smul_single, smul_eq_mul, mul_one]
+
+/-- The average of one-copy operators over all copies. -/
+theorem injectionAverage_oneCopy_eq {Ω : Type*} [Fintype Ω] [DecidableEq Ω] (A : Matrix Ω Ω ℂ) :
+    injectionAverage k 1 (oneCopy A) = ((k : ℂ))⁻¹ • ∑ j, siteOp j A := by
+  have hN : Fintype.card (Fin 1 ↪ Fin k) = k := by
+    rw [Fintype.card_embedding_eq, Fintype.card_fin, Fintype.card_fin, Nat.descFactorial_one]
+  rw [injectionAverage, hN]
+  congr 1
+  refine Fintype.sum_equiv ⟨fun ι => ι 0, singleEmb, fun ι => ?_, fun j => rfl⟩ _ _ fun ι => ?_
+  · ext a; rw [Subsingleton.elim a 0]; rfl
+  · have hι : ι = singleEmb (ι 0) := by ext a; rw [Subsingleton.elim a 0]; rfl
+    simp only [Equiv.coe_fn_mk]
+    conv_lhs => rw [hι]
+    exact placeOp_single _ _
+
+/-- **The star operator splits into donor averages** (`05-replicas.tex`, lines 776–789):
+`J_{Q,k} = ∑_{a,b} 𝒯_{k,1}(E_{ab}) E_{ba}^{(k)} - k⁻¹ ∑_{a,b} (E_{ab} E_{ba})^{(k)}`. -/
+theorem starOp_subsystemPerm_eq (m : ℕ) (Q : Finset V) :
+    starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q) =
+      ∑ a, ∑ b, injectionAverage (m + 1) 1 (oneCopy (regionUnit Q a b)) *
+          siteOp (Fin.last m) (regionUnit Q b a) -
+        ((m + 1 : ℕ) : ℂ)⁻¹ • siteOp (Fin.last m) (∑ a, ∑ b, regionUnit Q a b * regionUnit Q b a) := by
+  rw [starOp]
+  simp only [fun j : Fin m => permOp_subsystemPerm_swap_eq_sum (k := m + 1) (n := n) Q
+    (Fin.castSucc_lt_last j).ne, injectionAverage_oneCopy_eq, Fin.sum_univ_castSucc]
+  sorry
 
 end TensorPower

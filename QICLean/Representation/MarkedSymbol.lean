@@ -532,6 +532,18 @@ theorem aeval (hX : HasMarkedSymbol X F) (p : Polynomial ℝ) :
         fun θ => (c : ℂ) • F θ ^ n from funext e2]
     exact (hX.pow n).smul (c : ℂ)
 
+theorem sum {ι : Type*} (s : Finset ι) {X : ι → ∀ k, Matrix (Fin (k + 1) → Ω) (Fin (k + 1) → Ω) ℂ}
+    {F : ι → (Ω → ℂ) → Matrix Ω Ω ℂ} (h : ∀ i ∈ s, HasMarkedSymbol (X i) (F i)) :
+    HasMarkedSymbol (fun k => ∑ i ∈ s, X i k) (fun θ => ∑ i ∈ s, F i θ) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+    simp only [Finset.sum_empty]
+    exact of_isMarkedPoly ⟨0, Fin.elim0, Fin.elim0, fun k => by simp, fun θ => by simp⟩
+  | insert i s hi ih =>
+    simp only [Finset.sum_insert hi]
+    exact (h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
+
 /-- The compression `Π_{k+1} X_k Π_{k+1}`, indexed by the number of copies. -/
 noncomputable def compress (X : ∀ k, Matrix (Fin (k + 1) → Ω) (Fin (k + 1) → Ω) ℂ) :
     ∀ k, Matrix (Fin k → Ω) (Fin k → Ω) ℂ
