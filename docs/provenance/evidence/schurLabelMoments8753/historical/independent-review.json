@@ -1,0 +1,20 @@
+{
+  "reviewer": "/root/area_law_survey",
+  "result": "PASS",
+  "source_sha256": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925",
+  "source_passage": "07-comparators.tex217\u2013237; Lemma6.1(5)",
+  "findings": [
+    "Positive comparison uses nonzero joint spectral blocks; zero eigenvalue terms vanish.",
+    "The two negative-moment observables average to exactly \u2212u(F\u2212sI).",
+    "Weighted Holder needs neither trace normalization nor a sign restriction on u.",
+    "The copyPerm corollary applies the actual remainder bound at2u\u22641 with a nonnegative other moment.",
+    "The source and blueprint retain the separate iid centered-surprisal moment-growth obligation."
+  ],
+  "corrections_requested": false,
+  "second_review": {
+    "reviewer": "external area-law coordinator01a11579-2f8a-7740-9231-4b1cdb393c19",
+    "relayed_by": "/root",
+    "result": "PASS",
+    "findings": "Whole source checked; no sign, hypothesis or source-faithfulness problems. Concentration/MGF growth remains separate."
+  }
+}

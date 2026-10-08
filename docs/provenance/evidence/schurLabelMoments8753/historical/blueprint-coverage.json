@@ -1,0 +1,12 @@
+{
+  "chapter": "blueprint/src/fragment/schur_label_moments.tex",
+  "sha256": "ff86e108d9da278ea861e7c1d9465d99d6e60f211df5f4bf3e0e82d46ba7fee9",
+  "declaration_tags": [
+    "PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le",
+    "PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le",
+    "TensorPower.centered_labelEntropy_moments_le"
+  ],
+  "exact_once": true,
+  "rendered": false,
+  "full_checkdecls_run": false
+}

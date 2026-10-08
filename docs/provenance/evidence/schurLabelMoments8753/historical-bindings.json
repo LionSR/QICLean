@@ -1,0 +1,115 @@
+{
+  "scope": "Original direct strict/imported-kernel/dependency checks; no canonical full build or complete book claimed. No compiled artifact or cache copied.",
+  "files": [
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/Axioms.lean",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/Axioms.lean",
+      "sha256": "1887aab02f1df92bbd5adea90a8097a46ee2e8481855087512358546e44f0304"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/DependencySnapshot.lean",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/DependencySnapshot.lean",
+      "sha256": "e02faf13c85c874b5d477dc2011d264de29a64e36087d52a9eefb27539684925"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/README.md",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/README.md",
+      "sha256": "dd3f8122fbe8c5e20682b05d1559d722a51ec6d79c8c52b1b53acd88ecb6c206"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/SchurLabelMoments.lean",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/SchurLabelMoments.lean",
+      "sha256": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/axiom-dependencies.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/axiom-dependencies.json",
+      "sha256": "43f906b871a0fc02e1366184dd440a3ba567fea5d5d180066c8cada7e02ed21e"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/before-imports.log",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/before-imports.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/before-modules.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/before-modules.json",
+      "sha256": "f1deb0febfcd263e85abd7cf9642f111491698dbe99d0d02697ec3cfea2cb942"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/blueprint-coverage.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/blueprint-coverage.json",
+      "sha256": "f9c18484c57eeaf8e0885dc300073b21471c87ac4276b00286009aba2278dcfe"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/checked-sources.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/checked-sources.json",
+      "sha256": "1925e76963a8d73692e062eebf8abce669669811dd126547d2cb159713b388ae"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/commands.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/commands.json",
+      "sha256": "e802c90eeca4ae2c0412ab0e2a443126441eedf602f32925f2ede96ea6a133d0"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/delivery-files.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/delivery-files.json",
+      "sha256": "839ccb964ad470d429884f08554d884c32203a11c251fce57793d347678c2c63"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/imported-audit.log",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/imported-audit.log",
+      "sha256": "5e22ca18354a4663842d88013187d75f19c2943c5b9f2f08c8cdc785bd098eb2"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/imported-dependencies.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/imported-dependencies.json",
+      "sha256": "b3df6443787e974ad78e32b016f2806d804c70a62e9db22bc2b35cdf6658db26"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/imported-modules.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/imported-modules.json",
+      "sha256": "f1deb0febfcd263e85abd7cf9642f111491698dbe99d0d02697ec3cfea2cb942"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/independent-review.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/independent-review.json",
+      "sha256": "e4a5360ff9bb3ca9c684b1f4a6b5ba1e61cf15dc61222edbd83572f5549ecbb0"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/strict-build.log",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/strict-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/tactic-scan-command.json",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-command.json",
+      "sha256": "d32dbe57cdc8401778cd3895c273a3f3479c9a4e6891402505352c8328fc4d9c"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/tactic-scan-sources/OrthogonalResolution.lean",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-sources/OrthogonalResolution.lean",
+      "sha256": "65ebba8cca5d3558df5860f800c1adf1f2436bbbf96a7663c2ea9cdbc41fd7e4"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/tactic-scan-sources/SchurLabelMoments.lean",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-sources/SchurLabelMoments.lean",
+      "sha256": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/tactic-scan-sources/SchurSurprisal.lean",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-sources/SchurSurprisal.lean",
+      "sha256": "ec9b587efcc36f7b0a558b3b35ec3cfd9ebd088c0d4c99cf47f0f531edd2c0d2"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/tactic-scan-sources/WeightedTraceHolder.lean",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan-sources/WeightedTraceHolder.lean",
+      "sha256": "376f80c3c8284c27105152168c8ffcc1c36c96f9074fe344b6cf29ee2e9bb07e"
+    },
+    {
+      "original_path": "/private/tmp/tnlean-schur-label-moments/final-verification-20261008/tactic-scan.log",
+      "archived_path": "docs/provenance/evidence/schurLabelMoments8753/historical/tactic-scan.log",
+      "sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8"
+    }
+  ]
+}

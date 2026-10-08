@@ -1,0 +1,26 @@
+{
+  "source_revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+  "authoritative_parent_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "files": [
+    {
+      "path": "QICLean/Representation/SchurLabelMoments.lean",
+      "sha256": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/schur_label_moments.tex",
+      "sha256": "5a186038021100b4f3959198b24f81631adf798e61460b78542107efbef73700",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/openai-area-law-schur-label-moments.md",
+      "sha256": "fd79b2679ff3267a43941726f34b52bd5eaac0a3f408beda783f47ce68681d35",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "6f19a74ab4ffd522777977f11c07fe90d445f6bbb1a1ab2a85aab48a6f472e22",
+      "coverage": "Entire file."
+    }
+  ]
+}

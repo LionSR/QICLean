@@ -1,0 +1,13 @@
+{
+  "source_revision": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/schurLabelMoments8753/compare-source.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:51:12.138296+00:00",
+  "elapsed_seconds": 21.859,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMoments8753/bound-source-comparison.log",
+  "sha256": "22f109d181f2e30e6b44c6d634ce83f14ae763418fee93ed2c66e8ed6474d4e0"
+}
