@@ -1,0 +1,104 @@
+{
+  "source_head": "3c911be1ccb1f35b97aa35e100e2d45af2ea0b0b",
+  "scope": "The two existing instance constants are now explicitly named without changing their public names or definitions. All other proof text is unchanged from the complete 14-check source64cb622.",
+  "checks": [
+    {
+      "head": "3c911be1ccb1f35b97aa35e100e2d45af2ea0b0b",
+      "file": "aggregate",
+      "sha256": null,
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Analysis.PoissonContractionDecay"
+      ],
+      "exit_code": 0,
+      "seconds": 6.742298936995212,
+      "log_sha256": "ff56d419786e24fb68654062e81d19f6f1cdcd800ce91d0ecf5d9d6bf30dec3f",
+      "log_bytes": 173
+    },
+    {
+      "head": "3c911be1ccb1f35b97aa35e100e2d45af2ea0b0b",
+      "file": "QICLean/Probability/PoissonWord.lean",
+      "sha256": "f7fb672ec289580dbc5422dffc7eac8fbcec3409810cea42ffe2253816bba659",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Probability/PoissonWord.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.331622885001707,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "3c911be1ccb1f35b97aa35e100e2d45af2ea0b0b",
+      "file": "QICLeanTest/PoissonWord.lean",
+      "sha256": "2f5bbc469d4d991bcfaecf7f67574c476a31287f52d48de756c80244c867cdc6",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWord.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.027762267010985,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "3c911be1ccb1f35b97aa35e100e2d45af2ea0b0b",
+      "file": "QICLeanTest/PoissonWordAxioms.lean",
+      "sha256": "b78854841adb5306d27cb27e779b54916f00b000d0d818de2f98a84ebad21f93",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWordAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.75708763700095,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "3c911be1ccb1f35b97aa35e100e2d45af2ea0b0b",
+      "file": "docs/audits/evidence/poisson-word-decay/PoissonWordDecayRawAxioms.lean",
+      "sha256": "8d2d0b21d8b54268e9b7835b7f2ce65ea1f1dec3aa3e84fe69ee615bd21a46bc",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/poisson-word-decay/PoissonWordDecayRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.895375514999614,
+      "log_sha256": "6ca4596c8c9c9c67b027dd6669ba03bfcc622bf2371cf24ead01e3ee1c574cb1",
+      "log_bytes": 9220
+    }
+  ]
+}

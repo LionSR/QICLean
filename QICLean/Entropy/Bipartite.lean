@@ -28,18 +28,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/10-geometry.tex
 Labels: geometry:cancellation.
-Provenance-ID: 8760-qic-bipartite-01
-Downstream declaration:
-Entropy.subadditivity
-Provenance-ID: 8760-qic-bipartite-02
-Downstream declaration:
-Entropy.mutualInformation_submatrix_prod_equiv
-Provenance-ID: 8760-qic-bipartite-03
-Downstream declaration:
-Entropy.partialTraceLeft_vecMulVec_eq_map_conj
-Provenance-ID: 8760-qic-bipartite-04
-Downstream declaration:
-Entropy.pure_marginal_entropy_eq
 -/
 
 open scoped BigOperators Matrix ComplexOrder

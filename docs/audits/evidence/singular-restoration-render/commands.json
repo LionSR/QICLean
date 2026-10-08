@@ -1,0 +1,103 @@
+{
+  "environment": "source ${WORKSPACE}/glm23-blueprint-env.sh && export WORKSPACE=${WORKSPACE}",
+  "working_directory": "${WORKSPACE}/singular-restoration-focused/blueprint/src",
+  "commands": [
+    {
+      "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
+      "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/singular-restoration-render/prepare_fixture.py",
+      "exit_code": 0
+    },
+    {
+      "command": "export XDG_CACHE_HOME=${WORKSPACE}/8766-unitary-evolution-focused/font-cache && latexmk -xelatex -interaction=nonstopmode -halt-on-error print.tex > ../../pdf-build.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "command": "cp print.bbl web.bbl && plastex -c plastex.cfg web.tex > ../../web-build.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/singular-restoration-focused",
+      "command": "mkdir -p pdf-pages && pdftoppm -scale-to 1500 -png blueprint/src/print.pdf pdf-pages/page > pdf-raster.log 2>&1 && pdfinfo blueprint/src/print.pdf > pdf-info.txt",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/qiclean-singular-restoration-8757",
+      "command": "python ${WORKSPACE}/qiclean-singular-restoration-8757/docs/audits/evidence/singular-restoration-render/verify_render.py > ${WORKSPACE}/singular-restoration-focused/verify-render.log 2>&1",
+      "exit_code": 0
+    },
+    {
+      "working_directory": "${WORKSPACE}/singular-restoration-focused",
+      "command": "export XDG_CACHE_HOME=${WORKSPACE}/8766-unitary-evolution-focused/font-cache && dot -Gbgcolor=white -Tpng dependency-graph.dot -o dependency-graph-white.png",
+      "exit_code": 0
+    }
+  ],
+  "notes": [
+    "Successful command segments reconstructed from tool records; environment setup is factored out. This is a replay recipe, not a byte-for-byte shell transcript.",
+    "The initial failed-quality render and original raw command/log records remain separately preserved in singular-restoration-focused-initial. The final fixture was freshly prepared from the source-owner repair at 8ecbed7f053226cd5f8b912514777d986e7cf702.",
+    "Reused the installed texra-blueprint 0.3.8 environment and existing font cache. No downloads, Lean/Lake/checkdecls, pin changes, CI, shared-source edits by this worker, live browser, external mutations, or binary/LFS uploads.",
+    "The retained official paper source was materialized by the source owner from its pinned Git object; the renderer verified its exact SHA256."
+  ],
+  "raw_logs": {
+    "pdf-build.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/pdf-build.log",
+      "sha256": "0928a1cef46de22703afaaa422a3a51738f281040f4770d19561941246186701"
+    },
+    "web-build.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/web-build.log",
+      "sha256": "5a5fbfd1c70650d9d65d91c81891f25cd4eed50086c5c3bb4c9433530faff0d1"
+    },
+    "pdf-raster.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/pdf-raster.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "verify-render.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/verify-render.log",
+      "sha256": "e7f4df267141b918d6367e1262a8ecfe6bbcce90c4e5fa5b2fe45d88dc305fc8"
+    },
+    "blueprint/src/print.log": {
+      "retained_at": "${WORKSPACE}/singular-restoration-focused/blueprint/src/print.log",
+      "sha256": "5b071fca9edff3971d33870acf4498d55461e7994010086f0649a78fcfbb93f6"
+    }
+  },
+  "replay_scripts": {
+    "prepare_fixture.py": {
+      "published_sha256": "6162daed352b2c3487d7738ba3b471fc3b77014b6914044bc99396aa086ba6d6"
+    },
+    "verify_render.py": {
+      "published_sha256": "a55167aee1364be7b99cb778f93be2b55b8f7759aea557c0454f6c7a3d776ba5"
+    },
+    "check.py": {
+      "published_sha256": "3b3883320fa0f302980f947cf9228d1e446387e3a9e6d00b6251cc6299c4e61d"
+    }
+  },
+  "environment_script_sha256": "3a538bdefcda033a0d3a55eda7102007c6789d6da004b28bb47033a17fb6c70b",
+  "normalization": {
+    "rule": "Replace the executor-private workspace root with literal ${WORKSPACE}; no other recorded arguments changed.",
+    "original_record": "${WORKSPACE}/singular-restoration-focused/commands-original.json",
+    "original_record_sha256": "0d1456df3c7c9cc88ddd2c832f904646ed69b45d02d23d73fac04d433e9549ac",
+    "maintenance_note": "Published replay/checker hashes and maintenance metadata changed; original command record and frozen source/artifact records remain unchanged."
+  },
+  "checker_maintenance": {
+    "reason": "The shared chapter router now also includes the norm and vector leaves. The checker preserves the historical router hash, verifies its frozen bytes when the local Git object is available, requires each original core include exactly once in the current router, and continues checking every substantive core source byte.",
+    "historical_render_records_unchanged": {
+      "focus-manifest.json": "598f8de60d4ada008f2fa25ef9050b9336171a6343c51f620a2fb3ee2515e1aa",
+      "verification.json": "cf68eb6d3ff412eff076c449681ee3b09ae63db551e2423de53065256a183b77",
+      "visual-review.json": "75dd8d47bc063ddbecc217ed0cb2c346b1d0381778670d6c1fefbf722ee46e3a",
+      "initial-findings.json": "adb1049777812cf75ed4a7d246c8aad0d93885e4b0a9294d50fa84cc86c17f74"
+    },
+    "old_check_script_sha256": "6a8bd199e27c5443e645ebf1509aac02fcbc97680a59c313469623dd9d3487c4",
+    "new_check_script_sha256": "284fd67e8df5b6b7c168b162dbb04aaa07956f17f92643f16355879f742257c0",
+    "no_render_repeated": true
+  },
+  "historical_citation_replay": {
+    "public_source": "2bddde9e49330bab20260b002b7f0ba7de51918e",
+    "reason": "Later factual citation corrections alter the authored core leaf and module documentation. The historical checker now reads the explicitly selected public ancestor. All original substantive sources and exact fixture inputs match their old hashes; the public ancestor router additionally contains the norm/vector leaves.",
+    "original_render_records_unchanged": {
+      "focus-manifest.json": "598f8de60d4ada008f2fa25ef9050b9336171a6343c51f620a2fb3ee2515e1aa",
+      "verification.json": "cf68eb6d3ff412eff076c449681ee3b09ae63db551e2423de53065256a183b77",
+      "visual-review.json": "75dd8d47bc063ddbecc217ed0cb2c346b1d0381778670d6c1fefbf722ee46e3a",
+      "initial-findings.json": "adb1049777812cf75ed4a7d246c8aad0d93885e4b0a9294d50fa84cc86c17f74"
+    },
+    "current_source_not_claimed_identical": true
+  }
+}
