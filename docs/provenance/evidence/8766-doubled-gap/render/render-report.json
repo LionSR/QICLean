@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "source_revision": "b4acf6c00a3d0f6e150462bfd7d5cde4dddb584b",
+  "source_leaf_sha256": "45e02877216ef61b7bcd8c795223bd62d123a7a282155128ff56519d5546e7ff",
+  "coverage": "13 new declarations in five entries; 43 reused declarations; nine new checked markers",
+  "render": "Seven PDF pages and six generated HTML pages; all new and reused declaration links, new labels, and local references pass.",
+  "pixels": "Inspected PDF pages 3, 5, 6, 7 and rasterized actual web SVG.",
+  "tenkz": "One reused picture, no new diagram; sweep has zero hard/advisory findings; PDF/standalone event semantics agree; no hard equation-group check.",
+  "known_environment_warnings": [
+    "xdvipdfmx: unavailable pdftex.map and kanjix.map",
+    "xdvipdfmx: duplicate report title-page destination @page.1; theorem/equation links checked separately"
+  ],
+  "scope": "Focused PDF/static HTML and recorded local native/strict evidence only; no full-root or hosted CI completion claim."
+}

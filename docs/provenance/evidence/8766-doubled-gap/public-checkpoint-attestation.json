@@ -1,0 +1,22 @@
+{
+  "public_revision": "5a846a09030085ad1546d50163caad111f7748f4",
+  "public_ref": "refs/heads/codex/physical-buffer-gap-checkpoint-8766",
+  "public_repository": "https://github.com/LionSR/QICLean",
+  "public_tree": "8bbc912846024bfbbcd81d9e9f17989e4b1a81a9",
+  "local_checkpoint_revision": "ebb3194763b87d6c4909ef1a907911b6274af72c",
+  "local_checkpoint_tree": "8bbc912846024bfbbcd81d9e9f17989e4b1a81a9",
+  "tree_equality_verified": true,
+  "recorded_native_strict_revision": "57bfd1d9842875d41d1e8d1b56f0ec66d6dbc2b0",
+  "frozen_source_revision": "b4acf6c00a3d0f6e150462bfd7d5cde4dddb584b",
+  "source_sha256": {
+    "QICLean/Analysis/DoubledSystemGap.lean": "e354cd36fa70fe4d751a02833e28d961b3a1eb0405ae068b32d3225731e4a51b",
+    "QICLeanTest/DoubledSystemGap.lean": "2ea9a4e04a86eebc17793c65259c44d83033550c7880eadf422afa7d1950025c"
+  },
+  "public_git_blobs": {
+    "QICLean/Analysis/DoubledSystemGap.lean": "451d00bc634c921d954d69dd8a694d246801e49e",
+    "QICLeanTest/DoubledSystemGap.lean": "523d64249f4b842ae455c8c62f68e7f190490084"
+  },
+  "frozen_blueprint_sha256": "45e02877216ef61b7bcd8c795223bd62d123a7a282155128ff56519d5546e7ff",
+  "verification_method": "Read-only Git object comparison after fetching the official public checkpoint. Public and local checkpoint trees agree exactly; public production/test bytes match the original recorded SHA256 values. No Lean execution was repeated.",
+  "historical_records": "All command records, their revisions, exit codes, and logs remain unchanged; the prior ledger is historical-ledger-57bf.json."
+}

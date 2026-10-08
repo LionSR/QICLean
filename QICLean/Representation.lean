@@ -30,6 +30,8 @@ import QICLean.Representation.MergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.RegularTrace
+import QICLean.Representation.ReplicaRatio
+import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
 import QICLean.Representation.SchurSurprisal

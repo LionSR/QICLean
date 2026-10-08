@@ -1,0 +1,41 @@
+✖ [2711/2711] Building QICLean.Analysis.PositiveGapUniqueness (2.0s)
+trace: .> LEAN_PATH=<DEPENDENCY_CHECKOUT>/.lake/packages/Cli/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/batteries/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/Qq/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/aesop/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/proofwidgets/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/importGraph/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/LeanSearchClient/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/plausible/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/Gametheory/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/mathlib/.lake/build/lib/lean:<DEPENDENCY_CHECKOUT>/.lake/packages/checkdecls/.lake/build/lib/lean:<BUILD_CHECKOUT>/.lake/build/lib/lean <LEAN_TOOLCHAIN>/bin/lean <BUILD_CHECKOUT>/QICLean/Analysis/PositiveGapUniqueness.lean -o <BUILD_CHECKOUT>/.lake/build/lib/lean/QICLean/Analysis/PositiveGapUniqueness.olean -i <BUILD_CHECKOUT>/.lake/build/lib/lean/QICLean/Analysis/PositiveGapUniqueness.ilean -c <BUILD_CHECKOUT>/.lake/build/ir/QICLean/Analysis/PositiveGapUniqueness.c --setup <BUILD_CHECKOUT>/.lake/build/ir/QICLean/Analysis/PositiveGapUniqueness.setup.json --json
+error: QICLean/Analysis/PositiveGapUniqueness.lean:55:66: unsolved goals
+n : Type u_1
+inst✝¹ : Fintype n
+inst✝ : DecidableEq n
+H : Matrix n n ℂ
+E₀ Δ : ℝ
+Ω ψ : EuclideanSpace ℂ n
+hgap : (H - ↑E₀ • 1 - ↑Δ • (1 - vecMulVec Ω.ofLp (star Ω.ofLp))).PosSemidef
+hΔ : 0 < Δ
+hΩ : ‖Ω‖ = 1
+hψ : H *ᵥ ψ.ofLp = ↑E₀ • ψ.ofLp
+hlin : (toEuclideanLin H) ψ = ↑E₀ • ψ
+⊢ (⟪ψ, E₀ • ψ⟫_ℂ).re = E₀ * ‖ψ‖ ^ 2
+warning: QICLean/Analysis/PositiveGapUniqueness.lean:56:16: This simp argument is unused:
+  inner_smul_right
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hlin, inner_self_eq_norm_sq_to_K, ← Complex.ofReal_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: QICLean/Analysis/PositiveGapUniqueness.lean:56:34: This simp argument is unused:
+  inner_self_eq_norm_sq_to_K
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hlin, inner_smul_right, ← Complex.ofReal_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: QICLean/Analysis/PositiveGapUniqueness.lean:56:62: This simp argument is unused:
+  ← Complex.ofReal_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hlin, inner_smul_right, inner_self_eq_norm_sq_to_K]
+
+Note: Simp arguments with `←` have the additional effect of removing the other direction from the simp set, even if the simp argument itself is unused. If the hint above does not work, try replacing `←` with `-` to only get that effect and silence this warning.
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Some required targets logged failures:
+- QICLean.Analysis.PositiveGapUniqueness
+error: build failed

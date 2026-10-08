@@ -1,0 +1,35 @@
+[
+  {
+    "head": "5bbc0fd9bd3e5ddca0016b5a684cd5fa1ac56f63",
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Analysis.PositiveGapUniqueness"
+    ],
+    "exit_code": 0,
+    "seconds": 1.5146489369944902,
+    "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-raw-5bbc-0.log"
+  },
+  {
+    "head": "5bbc0fd9bd3e5ddca0016b5a684cd5fa1ac56f63",
+    "file": "docs/provenance/evidence/8766-positive-gap-uniqueness/drivers/PositiveGapUniquenessRawAxioms.lean",
+    "sha256": "b14a7b46ec599847bed20dc2f6767f2261c6d3c176cbe68131e544aaabbfae4b",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "docs/provenance/evidence/8766-positive-gap-uniqueness/drivers/PositiveGapUniquenessRawAxioms.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 2.708448874996975,
+    "log": "docs/provenance/evidence/8766-positive-gap-uniqueness/logs/positive-gap-raw-5bbc-1.log"
+  }
+]

@@ -1,0 +1,55 @@
+{
+  "base": "e8570eeaa58d6191b99b34a4ac9c1281d4c34a0c",
+  "root_inputs": {
+    "lean-toolchain": "bc84812c94489d1e3e191baa1dc10d5eb684382d7fe9d2a5ab085e72c1c67e47",
+    "lakefile.toml": "c40e0bb3a1ee5f9025d5c752d25c7c2f61622db813f79d6bee7d2412d8760907",
+    "lake-manifest.json": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf"
+  },
+  "packages": [
+    {
+      "name": "checkdecls",
+      "revision": "3d425859e73fcfbef85b9638c2a91708ef4a22d4"
+    },
+    {
+      "name": "mathlib",
+      "revision": "c55e6e786f49471c72fbddbec5415808896aec1e"
+    },
+    {
+      "name": "Gametheory",
+      "revision": "ec93e4daed4ad8b4784a9d760e492832e7711433"
+    },
+    {
+      "name": "plausible",
+      "revision": "fb13df72ecefd8ddbf9291021d7f33a8673eb57b"
+    },
+    {
+      "name": "LeanSearchClient",
+      "revision": "29ff470276c725ae01505d55b17148c18fc7dfd3"
+    },
+    {
+      "name": "importGraph",
+      "revision": "7e81a29bda33a6b257bd37557a6aa6aebe175d96"
+    },
+    {
+      "name": "proofwidgets",
+      "revision": "c643bbb3c24f8a25f9c14e3a6b1ceb13d01f3de1"
+    },
+    {
+      "name": "aesop",
+      "revision": "a90fbf7b02ff06a0deebf74088dff9e5fe02c9ea"
+    },
+    {
+      "name": "Qq",
+      "revision": "37b0ba0b26109cf9f9c541f0f9557e50cfa1a3b9"
+    },
+    {
+      "name": "batteries",
+      "revision": "3b7c8101932390d60e92a3f3d917901d5b5a773b"
+    },
+    {
+      "name": "Cli",
+      "revision": "843844fa601dd56767b1eb22b7ada5b64d5e567a"
+    }
+  ],
+  "mathlib_cache_present": true
+}

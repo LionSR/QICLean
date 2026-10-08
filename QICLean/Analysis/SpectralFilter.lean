@@ -10,7 +10,9 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.SpectralFilter.Cutoff
 import QICLean.Analysis.SpectralFilter.Decay
+import QICLean.Analysis.SpectralFilter.FilterLocality
 import QICLean.Analysis.SpectralFilter.Inversion
 import QICLean.Analysis.SpectralFilter.Kernel
 import QICLean.Analysis.SpectralFilter.MatrixFilter
+import QICLean.Analysis.SpectralFilter.PositiveReplacement
 import QICLean.Analysis.SpectralFilter.Profile

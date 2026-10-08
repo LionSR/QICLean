@@ -1,0 +1,36 @@
+✔ [2803/2805] Built QICLean.Algebra.PerronFrobenius.RankOne (3.6s)
+✔ [2804/2805] Built QICLean.Analysis.MatrixTraceInequalities (3.6s)
+⚠ [2805/2805] Built QICLean.Entropy.ProductOverlapPurity (2.5s)
+warning: QICLean/Entropy/ProductOverlapPurity.lean:33:0: automatically included section variable(s) unused in theorem `Matrix.star_product_dotProduct_eq`:
+  [DecidableEq A]
+  [DecidableEq B]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq A] [DecidableEq B] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: QICLean/Entropy/ProductOverlapPurity.lean:31:0: `star_product_dotProduct_eq` does not use the following hypotheses in its type:
+  • [DecidableEq A] (#5)
+  • [DecidableEq B] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ProductOverlapPurity.lean:44:0: `norm_product_overlap_le_schmidtCoeffMatrix` does not use the following hypothesis in its type:
+  • [DecidableEq A] (#5)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ProductOverlapPurity.lean:71:0: `norm_product_overlap_pow_four_le_purity` does not use the following hypothesis in its type:
+  • [DecidableEq B] (#6)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ProductOverlapPurity.lean:93:0: `norm_product_overlap_pow_four_le_purity_of_star_dotProduct_eq_one` does not use the following hypothesis in its type:
+  • [DecidableEq B] (#6)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+Build completed successfully (2805 jobs).
