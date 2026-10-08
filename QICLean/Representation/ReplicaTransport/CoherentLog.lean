@@ -367,6 +367,75 @@ theorem isHermitian_resolvent (X : Matrix m m ℂ) (s : ℝ) : (resolvent X s).I
 
 end MatrixLog
 
+section AverageAlgebra
+
+variable (k : ℕ) (a : Ω)
+
+/-- The symmetric projector is Hermitian. -/
+theorem isHermitian_symProj : (symProj (copyPerm Ω k)).IsHermitian := by
+  rw [IsHermitian, symProj, conjTranspose_smul, conjTranspose_sum]
+  simp_rw [conjTranspose_permOp]
+  congr 1
+  · simp
+  · exact Fintype.sum_equiv (Equiv.inv _) _ _ fun _ => rfl
+
+omit [DecidableEq Ω] in
+theorem isHermitian_coherentProj (θ : Ω → ℂ) : (coherentProj k θ).IsHermitian :=
+  (posSemidef_vecMulVec_self_star _).isHermitian
+
+theorem symProj_mul_coherentProj (θ : Ω → ℂ) :
+    symProj (copyPerm Ω k) * coherentProj k θ = coherentProj k θ := by
+  rw [coherentProj, mul_vecMulVec, symProj_mulVec_of_mem _ (tensorVec_mem_symmetricSubspace θ)]
+
+theorem coherentProj_mul_symProj (θ : Ω → ℂ) :
+    coherentProj k θ * symProj (copyPerm Ω k) = coherentProj k θ := by
+  have h := congrArg conjTranspose (symProj_mul_coherentProj k θ)
+  rwa [conjTranspose_mul, (isHermitian_symProj k).eq, (isHermitian_coherentProj k θ).eq] at h
+
+/-- Left multiplication by a fixed matrix commutes with the Haar integral. -/
+theorem mul_integral {X : Type*} [Fintype X] [DecidableEq X] (B : Matrix X X ℂ)
+    {F : unitaryGroup Ω ℂ → Matrix X X ℂ} (hF : Integrable F (unitaryHaar Ω)) :
+    B * ∫ U, F U ∂(unitaryHaar Ω) = ∫ U, B * F U ∂(unitaryHaar Ω) :=
+  ((ContinuousLinearMap.mul ℂ (Matrix X X ℂ)) B).integral_comp_comm hF |>.symm
+
+/-- Right multiplication by a fixed matrix commutes with the Haar integral. -/
+theorem integral_mul {X : Type*} [Fintype X] [DecidableEq X] (B : Matrix X X ℂ)
+    {F : unitaryGroup Ω ℂ → Matrix X X ℂ} (hF : Integrable F (unitaryHaar Ω)) :
+    (∫ U, F U ∂(unitaryHaar Ω)) * B = ∫ U, F U * B ∂(unitaryHaar Ω) :=
+  ((ContinuousLinearMap.mul ℂ (Matrix X X ℂ)).flip B).integral_comp_comm hF |>.symm
+
+theorem symProj_mul_coherentAverage {f : (Ω → ℂ) → ℝ} (hf : Continuous f) :
+    symProj (copyPerm Ω k) * coherentAverage k a f = coherentAverage k a f := by
+  rw [coherentAverage, mul_smul_comm, mul_integral _ (integrable_coherentIntegrand k a hf)]
+  simp_rw [mul_smul_comm, symProj_mul_coherentProj]
+
+theorem coherentAverage_mul_symProj {f : (Ω → ℂ) → ℝ} (hf : Continuous f) :
+    coherentAverage k a f * symProj (copyPerm Ω k) = coherentAverage k a f := by
+  rw [coherentAverage, smul_mul_assoc, integral_mul _ (integrable_coherentIntegrand k a hf)]
+  simp_rw [smul_mul_assoc, coherentProj_mul_symProj]
+
+theorem coherentAverage_sub {f g : (Ω → ℂ) → ℝ} (hf : Continuous f) (hg : Continuous g) :
+    coherentAverage k a (fun θ => f θ - g θ) = coherentAverage k a f - coherentAverage k a g := by
+  simp only [coherentAverage, ← smul_sub]
+  rw [← integral_sub (integrable_coherentIntegrand k a hf) (integrable_coherentIntegrand k a hg)]
+  simp_rw [Complex.ofReal_sub, sub_smul]
+
+theorem coherentAverage_add {f g : (Ω → ℂ) → ℝ} (hf : Continuous f) (hg : Continuous g) :
+    coherentAverage k a (fun θ => f θ + g θ) = coherentAverage k a f + coherentAverage k a g := by
+  simp only [coherentAverage, ← smul_add]
+  rw [← integral_add (integrable_coherentIntegrand k a hf) (integrable_coherentIntegrand k a hg)]
+  simp_rw [Complex.ofReal_add, add_smul]
+
+theorem coherentAverage_const (c : ℝ) :
+    coherentAverage k a (fun _ => c) = c • symProj (copyPerm Ω k) := by
+  rw [← coherentAverage_one k a, coherentAverage, coherentAverage, smul_comm]
+  congr 1
+  rw [RCLike.real_smul_eq_coe_smul (K := ℂ), ← integral_smul]
+  simp_rw [smul_smul, Complex.ofReal_one, mul_one]
+  rfl
+
+end AverageAlgebra
+
 /-- **Operator Jensen inequality for the logarithm** (`06-transport.tex`, display
 `transport:log-jensen`, lines 526--546), compressed to `𝒮_k`: for continuous `f > 0`,
 `Π 𝒬_k(log f) Π ≤ Π log(𝒬_k(f) + (1 - Π)) Π`. -/
