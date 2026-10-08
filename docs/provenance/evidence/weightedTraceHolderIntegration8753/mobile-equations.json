@@ -1,0 +1,46 @@
+[
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "label": "resolution-product-coordinates",
+    "kind": "statement",
+    "index": 0
+  },
+  {
+    "width": 310,
+    "scrollWidth": 361,
+    "overflow": "auto",
+    "label": "weighted-trace-holder-binary",
+    "kind": "statement",
+    "index": 0,
+    "right_endpoint": {
+      "left": 51,
+      "max": 51
+    }
+  },
+  {
+    "width": 311,
+    "scrollWidth": 311,
+    "overflow": "auto",
+    "label": "weighted-trace-holder-binary",
+    "kind": "proof",
+    "index": 0
+  },
+  {
+    "width": 311,
+    "scrollWidth": 311,
+    "overflow": "auto",
+    "label": "weighted-trace-holder-binary",
+    "kind": "proof",
+    "index": 1
+  },
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "label": "weighted-trace-holder-finite",
+    "kind": "statement",
+    "index": 0
+  }
+]

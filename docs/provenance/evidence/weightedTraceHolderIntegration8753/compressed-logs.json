@@ -1,0 +1,13 @@
+{
+  "files": [
+    {
+      "raw_path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf.log",
+      "archive_path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf.log.gz",
+      "raw_bytes": 108563,
+      "archive_bytes": 22144,
+      "raw_sha256": "5367c3a8b1f365d39e4b31b48f40f0e3e4376d0836b497ea70fb01322a68380a",
+      "archive_sha256": "857cc25dfe2b83b63d120bdf27e71077305d6647868a4c773c2db4f3374f6e91",
+      "compression": "gzip.compress(raw,mtime=0); original bytes recover exactly."
+    }
+  ]
+}
