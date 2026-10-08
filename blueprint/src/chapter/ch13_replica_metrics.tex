@@ -1,0 +1,151 @@
+%% =========================================================
+%% Chapter: Replica entropy metrics
+%% The common label function of the replica metrics and its marked ratios
+%% (area-law paper, Section 6.2, Lemma 6.2, replicas:metric).
+%% =========================================================
+
+\chapter{Replica Entropy Metrics}\label{ch:replica_metrics}
+
+The symmetric-replica argument of the two-dimensional area
+law~\cite{OpenAI2026AreaLaw} compares the label observable of a subsystem with
+a positive operator built from one label function shared by every subsystem.
+Fix the dimension $d\ge1$ of the whole one-copy system and $0<t<1/4$. Pad each
+label $\lambda\vdash k$ to length $d$, put $l_i=\lambda_i+d-i$ for
+$1\le i\le d$, and set
+\[
+    c=d+(1+t)\binom d2,\qquad
+    w_k(\lambda)=\frac{\Gamma(c)}{\Gamma(c+tk)}
+        \prod_{i=1}^d\frac{\Gamma(1+tl_i)}{\Gamma(1+t(d-i))}.
+\]
+The metric of a subsystem $Q$ is $W_{Q,k}=\sum_\lambda w_k(\lambda)\pi^\lambda_{Q,k}$.
+This chapter proves the scalar properties of $w_k$ on which the operator
+statements of the paper's Lemma~6.2 rest: positivity, the exact marked ratio,
+the entropy asymptotics, and the size and limit of the marked ratio. The
+integral representation of $W_{Q,k}$ and the operator forms of these estimates
+are not yet formalized.
+
+\section{Ratios of Gamma values}
+
+\begin{lemma}[Wendel's inequalities]
+    \label{lem:wendel_gamma_ratio}
+    \lean{Real.Gamma_add_le_rpow_mul_Gamma, Real.mul_Gamma_le_rpow_mul_Gamma_add,
+        Real.Gamma_add_div_Gamma_le_rpow, Real.div_rpow_le_Gamma_add_div_Gamma,
+        Real.rpow_sub_le_Gamma_add_div_Gamma}
+    \leanok
+    For $x>0$ and $0\le s\le1$,
+    \[
+        x(x+s)^{s-1}\le\frac{\Gamma(x+s)}{\Gamma(x)}\le x^s .
+    \]
+    If moreover $x\ge1$, then $x^s-s\le\Gamma(x+s)/\Gamma(x)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $x+s=(1-s)x+s(x+1)$ and $x+1=s(x+s)+(1-s)(x+s+1)$, apply
+    log-convexity of $\Gamma$ to each, and use $\Gamma(y+1)=y\Gamma(y)$. For
+    the last claim, $(x+s)^{s-1}\ge x^s/(x+s)$, so the lower bound is at least
+    $x^s-sx^s/(x+s)\ge x^s-s$ when $x\ge1$.
+\end{proof}
+
+\begin{lemma}[Stirling estimate for the Gamma function]
+    \label{lem:log_gamma_stirling}
+    \lean{Real.abs_log_Gamma_one_add_sub_le}
+    \leanok
+    \uses{lem:wendel_gamma_ratio, lem:stirling_log_factorial}
+    For $u\ge0$,
+    $|\log\Gamma(1+u)-(u\log u-u)|\le3\log(u+2)+3$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Let $n=\lfloor u\rfloor$ and $s=u-n$. Wendel's inequalities at $x=n+1$
+    give $|\log\Gamma(1+u)-\log n!|\le\log(u+2)$. The Stirling bounds control
+    $\log n!-(n\log n-n)$, and $u\log u-u$ differs from $n\log n-n$ by at most
+    $\log(u+2)+2$.
+\end{proof}
+
+\section{The common label function}
+
+\begin{lemma}[Positivity, normalization and marked ratio]
+    \label{lem:replica_weight_ratio}
+    \lean{Partition.replicaConst, Partition.replicaWeight, Partition.replicaRatio,
+        Partition.replicaWeight_pos, Partition.replicaWeight_zero,
+        Partition.replicaWeight_update_succ}
+    \leanok
+    The label function is positive, and $w_0=1$. If $\lambda\vdash k$ is
+    obtained from $\nu\vdash k-1$ by adding a box in row $i$, then
+    $w_k(\lambda)=r_{\lambda,i}\,w_{k-1}(\nu)$ with
+    \[
+        r_{\lambda,i}=\frac{\Gamma(c+t(k-1))}{\Gamma(c+tk)}
+            \frac{\Gamma(1+tl_i)}{\Gamma(1+t(l_i-1))},
+    \]
+    where $l_i$ is the shifted part of $\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every argument of $\Gamma$ is positive. Adding the box raises the number of
+    copies by one and the $i$-th shifted part by one, leaving the other shifted
+    parts unchanged.
+\end{proof}
+
+\begin{lemma}[Entropy asymptotics of the label function]
+    \label{lem:replica_weight_entropy}
+    \lean{Partition.exists_abs_log_replicaWeight_add_le}
+    \leanok
+    \uses{lem:log_gamma_stirling, lem:replica_weight_ratio}
+    There is a constant $C_{d,t}$ such that every $\lambda\vdash k$ of length at
+    most $d$ satisfies
+    $|\log w_k(\lambda)+tkH(\lambda/k)|\le C_{d,t}\log(k+2)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Apply the Stirling estimate to each of the $d+2$ Gamma factors. The terms
+    containing $\log t$ cancel up to a constant because
+    $\sum_il_i=k+\binom d2$. The shifts $0\le l_i-\lambda_i\le d-1$ change
+    $\sum_il_i\log l_i$ by $O_d(\log(k+2))$, and
+    $kH(\lambda/k)=k\log k-\sum_i\lambda_i\log\lambda_i$.
+\end{proof}
+
+Together with the entropy asymptotics of the dimension formula, this gives
+$w_k(\lambda)=d_\lambda^{-t}$ up to factors polynomial in $k$, which is the
+label-wise form of the comparison of $W_{Q,k}$ with $e^{-tF_{Q,k}}$.
+
+\section{The marked ratio}
+
+\begin{lemma}[Size of the marked ratio]
+    \label{lem:replica_ratio_bounds}
+    \lean{Partition.replicaRatio_eq_div, Partition.replicaRatio_wendel,
+        Partition.exists_replicaRatio_bounds}
+    \leanok
+    \uses{lem:wendel_gamma_ratio, lem:replica_weight_ratio}
+    Let $0<t<1$. There is $C\ge1$ such that, for $k\ge1$ and $1\le l\le k+d$,
+    the ratio $r(k,l)$ of the previous lemma satisfies
+    $C^{-1}(l/k)^t\le r(k,l)\le C$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The ratio is a quotient of two Wendel ratios, with $x=1+t(l-1)$ and
+    $y=c+t(k-1)$, both at least one. Wendel's inequalities give
+    $(1-t)(x/y)^t\le r(k,l)\le(x/y)^t/(1-t)$. On the stated range,
+    $tl\le x\le(1+d)y$ and $y\le(c+t)k$.
+\end{proof}
+
+\begin{lemma}[Limit of the marked ratio]
+    \label{lem:replica_ratio_limit}
+    \lean{Real.abs_rpow_sub_rpow_le, Partition.exists_abs_replicaRatio_sub_le}
+    \leanok
+    \uses{lem:replica_ratio_bounds}
+    Let $0<t<1$. There is a constant $C$ such that, for $k\ge1$ and
+    $1\le l\le k+d$,
+    \[
+        \bigl|r(k,l)-\max\bigl((l-d)/k,0\bigr)^t\bigr|\le Ck^{-t}.
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    Wendel's inequalities give $|r(k,l)-(x/y)^t|\le Ck^{-t}$, since $y\ge tk$
+    and $(x/y)^t\le1+d$. Moreover $|x/y-l/k|=O(1/k)$ and
+    $|l/k-\max((l-d)/k,0)|\le d/k$, and $|a^t-b^t|\le|a-b|^t$ for $a,b\ge0$.
+\end{proof}
+
+On a removable branch the star operator has eigenvalue $(\lambda_i-i)/k=(l_i-d)/k$,
+so this lemma is the scalar content of the convergence of the marked ratio of
+the metrics to the positive part of the star operator raised to the power $t$.
