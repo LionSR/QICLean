@@ -128,6 +128,35 @@ as such; the unconditional proposition remains open.
     term with $\bar Hx=E_0x$ (lines 588--766).
 \end{proof}
 
+\begin{theorem}[Entropy and energy transport, assuming the split-leaf skew bound and full-space band commutation]
+    \label{thm:replica_transport_skew_conditional}
+    \lean{Matrix.smul_vecMulVec_le_of_forall,
+      TensorPower.ReplicaTransport.fourPartition_of_isPartition,
+      TensorPower.ReplicaTransport.isBigO_neg_log_inv_poly,
+      TensorPower.ReplicaTransport.relativePinBound,
+      TensorPower.ReplicaTransport.transport_of_splitSkewBound}
+    \leanok
+    \uses{thm:replica_transport_conditional, thm:relative_pin, lem:movement_eta_regional}
+    The relative coherent pin holds in the form assumed in
+    Theorem~\ref{thm:replica_transport_conditional}. Hence the conclusions
+    of~\cite[Proposition~7.4]{OpenAI2026AreaLaw} hold assuming only the skew bound at a
+    split leaf and the full-space band commutation of
+    Theorem~\ref{thm:replica_transport_conditional}.
+\end{theorem}
+
+\begin{proof}\leanok
+    For a move of $x\subseteq Y$ to $P$, the parts $P,x,Y\setminus x,F$ partition the
+    sites, and Theorem~\ref{thm:relative_pin} bounds the relative metric with
+    $\eta_\theta=S_\theta(x|P)+S_\theta(x|Y\setminus x)=I_\theta(x:F|P)$, the entropy of the
+    move (\texttt{06-transport.tex} lines 315--328). A move to $F$ is the same after
+    exchanging the outer parts, and a choice making no move has relative metric $I$, which
+    dominates every coherent projector. A quadratic-form bound
+    $c\,|\langle\theta^{\otimes k},w\rangle|^2\le\langle w,Mw\rangle$ for Hermitian $M$ is the
+    operator bound $cP_{\theta,k}\le M$. The polynomial factor $p(k)$ gives
+    $-\log p(k)^{-1}=O(\log(k+1))$, and $\log(e\dim x)$ is the logarithm of $e$ times the
+    product of the site dimensions.
+\end{proof}
+
 \begin{corollary}[Integrated form]\label{cor:replica_transport_integrated}
     \lean{TensorPower.ReplicaTransport.TransportData.integral_le_log_filteredNormSq_sub}
     \leanok
