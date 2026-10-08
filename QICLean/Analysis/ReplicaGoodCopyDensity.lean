@@ -21,6 +21,9 @@ a global spectral gap*, `07-comparators.tex`, lines 520–549, equation
 is used. Zero components and zero copies are included. Regional restriction,
 independent-copy physical moments, auxiliary permutation invariance and the
 merge-moment bound are further assertions.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 open scoped BigOperators Matrix Kronecker
@@ -54,7 +57,6 @@ private theorem goodAuxiliary_density_factorization_with_remainder
 
 /-
 Original formalization, no upstream Lean proof text reused.
-Declaration: Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder
 Manuscript: September 24, 2026, comparator:merge-moments, lines 520–549.
 -/
 
@@ -103,7 +105,6 @@ theorem partialTraceLeft_replicaExcitationComponent_eq_remainder
 
 /-
 Original formalization, no upstream Lean proof text reused.
-Declaration: Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density
 Manuscript: September 24, 2026, comparator:merge-moments, lines 520–549.
 -/
 

@@ -21,6 +21,9 @@ global spectral gap*, `07-comparators.tex`, lines 520–549, equation
 original vector and component may be unnormalized or zero; zero copies and
 empty good sets are included. Restriction to the good auxiliary register,
 its permutation symmetry and the merge-moment estimate remain further steps.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 open scoped BigOperators Matrix Kronecker
@@ -30,7 +33,6 @@ variable {Q T C : Type*} [Fintype Q] [DecidableEq Q]
 
 /-
 Original formalization, no upstream Lean proof text reused.
-Declaration: Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density
 Manuscript: September 24, 2026, comparator:merge-moments, lines 520–549.
 -/
 

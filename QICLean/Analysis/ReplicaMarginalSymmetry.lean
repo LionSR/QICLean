@@ -20,6 +20,9 @@ from a global spectral gap*, `07-comparators.tex`, lines 540–549, following
 equation `comparator:merge-moments`. No normalization or independent-copy
 assumption is needed. Selecting and regrouping the good-copy registers and
 proving the merge-moment bound are separate assertions.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 open Matrix
@@ -32,7 +35,6 @@ variable {G X Y : Type*} [Group G] [Fintype X] [DecidableEq X]
 
 /-
 Original formalization, no upstream Lean proof text reused.
-Declaration: PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp
 Manuscript: September 24, 2026, comparator:merge-moments, lines 540–549.
 -/
 
@@ -66,7 +68,6 @@ open PermutationRepresentation TensorPower
 
 /-
 Original formalization, no upstream Lean proof text reused.
-Declaration: Matrix.commute_partialTraceLeft_replicaExcitationComponent
 Manuscript: September 24, 2026, comparator:merge-moments, lines 540–549.
 -/
 
