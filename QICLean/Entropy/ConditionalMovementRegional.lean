@@ -403,3 +403,61 @@ theorem regionalMovement_norm_le :
   exact key
 
 end Entropy
+
+namespace Entropy
+
+open Matrix ConditionalMovement ConditionalMovement.QuantumSSA
+
+variable {X U P F : Type*} [Fintype X] [Fintype U] [Fintype P] [Fintype F]
+  [DecidableEq X] [DecidableEq U] [DecidableEq P] [DecidableEq F]
+
+/-- The kernel projection of `ρ_P` annihilates `θ` (`05-replicas.tex`, lines 547–549). -/
+theorem liftXP_kernelProjection_mulVec (θ : (X × U) × (P × F) → ℂ) :
+    liftXP ((1 : Matrix X X ℂ) ⊗ₖ kernelProjection (partialTraceLeft (movementMarginalXP θ))) *ᵥ
+      θ = 0 := by
+  let C : Matrix (X × U) (P × F) ℂ := fun i j => θ (i, j)
+  have hv : θ = coefficientVector C := rfl
+  have hP : partialTraceLeft (movementMarginalXP θ) = ptrL (reshuffle C * (reshuffle C)ᴴ) := by
+    rw [hv, movementMarginalXP_eq]; rfl
+  rw [hP, hv, coefficientVector_eq_reshuffle_comp, liftXP_mulVec,
+    one_kronecker_kernelProjection_mul]
+  funext q
+  rfl
+
+/-- The kernel projection of `ρ_U` annihilates `θ`. -/
+theorem liftXU_kernelProjection_mulVec (θ : (X × U) × (P × F) → ℂ) :
+    liftXU ((1 : Matrix X X ℂ) ⊗ₖ kernelProjection (partialTraceLeft (movementMarginalXU θ))) *ᵥ
+      θ = 0 := by
+  let C : Matrix (X × U) (P × F) ℂ := fun i j => θ (i, j)
+  have hv : θ = coefficientVector C := rfl
+  have hU : partialTraceLeft (movementMarginalXU θ) = ptrL (C * Cᴴ) := by
+    rw [hv, movementMarginalXU_eq]; rfl
+  rw [hU, hv, liftXU_mulVec, one_kronecker_kernelProjection_mul]
+  funext q
+  rfl
+
+end Entropy
+
+namespace Entropy
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {P x Y F : Finset V}
+
+theorem localLift_kernelProjection_P_mulVec (h : FourPartition P x Y F)
+    (θ : EuclideanSpace ℂ (SiteConfig n)) :
+    localLift P (kernelProjection (frameMarginalP h θ)) *ᵥ θ.ofLp = 0 := by
+  have key := liftXP_kernelProjection_mulVec (frameVector h θ)
+  rw [← reindex_localLift_P h, reindex_apply, frameVector, submatrix_mulVec_equiv,
+    Equiv.symm_symm] at key
+  have := congrArg (· ∘ frameEquiv h) key
+  simpa [Function.comp_assoc, frameMarginalP, frameVector] using this
+
+theorem localLift_kernelProjection_Y_mulVec (h : FourPartition P x Y F)
+    (θ : EuclideanSpace ℂ (SiteConfig n)) :
+    localLift Y (kernelProjection (frameMarginalY h θ)) *ᵥ θ.ofLp = 0 := by
+  have key := liftXU_kernelProjection_mulVec (frameVector h θ)
+  rw [← reindex_localLift_Y h, reindex_apply, frameVector, submatrix_mulVec_equiv,
+    Equiv.symm_symm] at key
+  have := congrArg (· ∘ frameEquiv h) key
+  simpa [Function.comp_assoc, frameMarginalY, frameVector] using this
+
+end Entropy
