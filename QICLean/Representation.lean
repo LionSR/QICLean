@@ -27,6 +27,7 @@ import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy
+import QICLean.Representation.HighLabelWindow
 import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookDimension
 import QICLean.Representation.HookFormula
@@ -61,12 +62,14 @@ import QICLean.Representation.ReplicaLift
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
 import QICLean.Representation.ReplicaMetric
+import QICLean.Representation.ReplicaPrevector
 import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
+import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
 import QICLean.Representation.SchurSectorMass

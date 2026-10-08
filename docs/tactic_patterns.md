@@ -60,6 +60,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   shared lemma when a third mathematical consumer occurs.
 - **Caveats:** Orthogonality is proved for the actual projector. Neither the
   desired projected mass nor a supplied reduced-density identity is assumed.
+
 ### Commutation with a matrix inverse — candidate (2026-10-07)
 
 - **Pattern:** Give a positive definite matrix its existing `Invertible`
@@ -191,6 +192,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   component's label equation and the good/bad coordinate split are derived.
   Do not replace either with a certificate or commute a physical excitation
   projection through a band metric.
+
 ### Marginal invariance from a simultaneous fixed vector — candidate (2026-10-08)
 
 - **Pattern:** Convert a fixed-vector equation into conjugation invariance of
@@ -238,6 +240,49 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The sector count gives a mass bound only; an entropy window
   requires a separate concentration estimate and a restricted selection.
 
+### Joint spectral trace reduction — candidate (2026-10-07)
+
+- **Pattern:** Express the density and the tested observable through the
+  joint orthogonal resolution, multiply using its algebra homomorphism, and
+  take the trace as a finite weighted sum.
+- **Seen:** The surprisal tail, label-window mass and exponential remainder
+  in `QICLean/Representation/HighLabelWindow.lean` use the private
+  `re_trace_mul_joint_hom` lemma; the existing moment calculation in
+  `SchurSurprisal.lean` has the corresponding finite trace expansion.
+- **Abstraction:** A single private mathematical lemma handles all three
+  new uses. The existing resolution homomorphism and trace theorem remain
+  the common public results; no tactic is introduced.
+- **Caveats:** The density is positive semidefinite and permutation invariant.
+  Zero eigenvalues contribute zero mass. A trace expansion must not be
+  substituted for either concentration or the moment bound itself.
+
+### Norm of a finite product of vectors — candidate (2026-10-07)
+
+- **Pattern:** Reduce normalization to a one-coordinate sum, then apply
+  `Fintype.prod_sum` to the literal finite product. For complex pairings,
+  distribute the product over multiplication; for squared norms, use
+  `norm_prod` and `Finset.prod_pow`.
+- **Seen:** The contraction recovery and norm equality in
+  `QICLean/Analysis/ReplicaGoodCopyFactorization.lean`; one file.
+- **Abstraction:** Existing finite sum and product identities suffice. No
+  new public tensor-vector definition or automation is introduced.
+- **Caveats:** Retain the canonical coordinate equivalence and every
+  auxiliary coordinate. Empty products have value one.
+
+### Finite-product partial traces — candidate (2026-10-08)
+
+- **Pattern:** Reindex a partial trace by the existing finite-product splitting equivalence, insert the proved coordinate factorization, and factor the resulting finite sums.
+- **Seen:** Ground-copy contraction and norm preservation in `Analysis/ReplicaGoodCopyFactorization.lean`, and marginal identification in `Analysis/ReplicaGoodCopyDensity.lean`.
+- **Abstraction:** The existing `FiniteProduct.splitEquiv`, `Fintype.prod_sum`, and finite-sum multiplication lemmas supply the reindexing and product calculation. The new public density identities carry these calculations to later consumers; no new tactic is introduced.
+- **Caveat:** Normalization belongs only to the prescribed ground vector. The excitation component and its auxiliary marginal may have zero or arbitrary total mass.
+
+### Regional finite-product marginal — candidate (2026-10-08)
+
+- **Pattern:** Use the chosen finite-set enumeration to convert a good-copy product to a finite Kronecker power, and apply `Fintype.prod_sum` after tracing one physical coordinate per copy.
+- **Seen:** `Analysis/ReplicaRegionalDensity.lean`; the auxiliary marginal calculation in `Analysis/ReplicaGoodCopyDensity.lean` uses the same existing finite-product identities.
+- **Abstraction:** Existing `Equiv.prod_comp`, `Fintype.prod_sum` and finite-sum multiplication lemmas perform the calculation. The new regional density theorem carries it to the physical consumer; no new tactic is introduced.
+- **Caveat:** Keep the literal excitation component and its own auxiliary density. Only the prescribed one-copy ground vector is normalized.
+
 ### Contraction of the repeated uniform pair — candidate (2026-10-07)
 
 - **Pattern:** Expand a Kronecker action against the actual repeated uniform
@@ -251,3 +296,37 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The normalization depends on the actual one-copy dimension;
   nonzero occurrence requires that dimension to be positive. The central
   Schur label equality additionally uses inversion-invariant coefficients.
+
+### Tensor-product actions in product coordinates — candidate (2026-10-08)
+
+- **Pattern:** Expand a Kronecker action on a product vector and apply the
+  distributive law for two finite sums. Factor the physical and auxiliary
+  actions before using their individual fixed-vector equations.
+- **Seen:** The two auxiliary-label equations and simultaneous symmetry in
+  `QICLean/Representation/ReplicaPrevector.lean` share the private generic
+  `kronecker_mulVec_product` lemma. The mean-energy calculation in
+  `QICLean/Analysis/ReplicaDefect.lean` has a prior identity-spectator variant.
+- **Abstraction:** The new calculation is written once and reused for all
+  three actions. The norm calculation reuses the existing public quadratic
+  form factorization. Reconsider a common algebraic action lemma when a
+  further independent consumer needs it; no tactic is introduced here.
+- **Caveats:** The actual matrix actions and vector factors are used. No
+  supplied factorization or eigenvector statement for the initial vector
+  replaces these calculations.
+
+### Projection after regrouping tensor factors — candidate (2026-10-08)
+
+- **Pattern:** Keep the physical coefficient fixed while an operator acts
+  on the selected auxiliary factor, and identify the result after regrouping
+  the physical and auxiliary coordinates.
+- **Seen:** `QICLean/Representation/SchmidtBellPrevector.lean` has one new
+  consumer. The earlier product-action and identity-spectator calculations
+  occur in `ReplicaPrevector.lean` and `ReplicaDefect.lean`.
+- **Abstraction:** The new calculation reuses Mathlib's
+  `Matrix.vec_mul_eq_mulVec` twice. A single private lemma applies this
+  matrix-vectorization identity to the two coordinate maps, and the public
+  result combines it with the existing finite-copy Bell identity. The
+  reindexing of that identity uses `Matrix.submatrix_mulVec_equiv`.
+- **Caveats:** The right auxiliary projector remains on its actual selected
+  copy space. The Bell projection acts on the physical and left auxiliary
+  factors; the asserted label of the projected output is the right label.
