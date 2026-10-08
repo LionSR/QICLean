@@ -30,6 +30,7 @@ import QICLean.Representation.PairMergeDeficit
 import QICLean.Representation.PairMergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
+import QICLean.Representation.PhysicalMergeHolder
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
