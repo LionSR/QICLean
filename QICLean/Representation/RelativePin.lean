@@ -184,10 +184,50 @@ theorem relativePin :
   set E := Real.exp (k * (-t * η + C₀ * (2 * t) ^ (5 / 4 : ℝ) * ℓ ^ 2))
   -- the support identity: `z = tP tY y`
   have hz : z = tP *ᵥ (tY *ᵥ y) := by
-    sorry
+    have hPY : Disjoint P Y := h.PY
+    have hcomm : localLift Y (ρY ^ t) * localLift P DP = localLift P DP * localLift Y (ρY ^ t) :=
+      commute_of_isSupportedOn_disjoint (isSupportedOn_localLift _) (isSupportedOn_localLift _)
+        hPY σ₀
+    have h1 : localLift Y (ρY ^ t) *ᵥ v = localLift P DP *ᵥ θ.ofLp := by
+      simp only [v]
+      rw [mulVec_mulVec, hcomm, ← mulVec_mulVec,
+        localLift_rpow_mul_mulVec hρY ht0 (localLift_kernelProjection_Y_mulVec h θ)]
+    have h2 : localLift P (ρP ^ t) *ᵥ (localLift P DP *ᵥ θ.ofLp) = θ.ofLp :=
+      localLift_rpow_mul_mulVec hρP ht0 (localLift_kernelProjection_P_mulVec h θ)
+    simp only [z, y, tP, tY, tensorPow_mulVec_tensorVec, h1, h2]
   -- moving the compensators
   have hM : moveWord n t k P x Y *ᵥ z = (Wp⁻¹ * tP) *ᵥ ((Wy⁻¹ * tY) *ᵥ (Wa *ᵥ (Wb *ᵥ y))) := by
-    sorry
+    have hPx : P ⊆ P ∪ x := Finset.subset_union_left
+    have hYx : Y ⊆ x ∪ Y := Finset.subset_union_right
+    have hPxY : Disjoint P (x ∪ Y) := Finset.disjoint_union_right.mpr ⟨h.Px, h.PY⟩
+    have hYPx : Disjoint Y (P ∪ x) := Finset.disjoint_union_right.mpr ⟨h.PY.symm, h.xY.symm⟩
+    have hWp := replicaMetric_inv_eq (n := n) ht0.le k P
+    have hWy := replicaMetric_inv_eq (n := n) ht0.le k Y
+    have LWa := isLabelFunctionOn_replicaMetric (ι := fun v => Fin (n v)) (k := k) t (P ∪ x)
+    have LWb := isLabelFunctionOn_replicaMetric (ι := fun v => Fin (n v)) (k := k) t (x ∪ Y)
+    have LWp := isLabelFunctionOn_replicaMetric_inv (ι := fun v => Fin (n v)) (k := k) ht0.le P
+    have LWy := isLabelFunctionOn_replicaMetric_inv (ι := fun v => Fin (n v)) (k := k) ht0.le Y
+    have c1 : Commute Wy⁻¹ tP := by
+      rw [hWy]; exact commute_labelObservable_tensorPow_of_disjoint h.PY σ₀ _ _
+    have cap : Commute Wa (Wp⁻¹ * tP) :=
+      ((LWp.commute_of_subset LWa hPx).symm).mul_right
+        (commute_labelObservable_tensorPow_of_subset hPx σ₀ _ _)
+    have cbp : Commute Wb (Wp⁻¹ * tP) :=
+      ((LWp.commute_of_disjoint LWb hPxY).symm).mul_right
+        (commute_labelObservable_tensorPow_of_disjoint hPxY σ₀ _ _)
+    have cay : Commute Wa (Wy⁻¹ * tY) :=
+      ((LWy.commute_of_disjoint LWa hYPx).symm).mul_right
+        (commute_labelObservable_tensorPow_of_disjoint hYPx σ₀ _ _)
+    have cby : Commute Wb (Wy⁻¹ * tY) :=
+      ((LWy.commute_of_subset LWb hYx).symm).mul_right
+        (commute_labelObservable_tensorPow_of_subset hYx σ₀ _ _)
+    have hmat : moveWord n t k P x Y * tP * tY = (Wp⁻¹ * tP) * (Wy⁻¹ * tY) * (Wa * Wb) := by
+      have e1 : moveWord n t k P x Y * tP * tY = Wa * Wb * ((Wp⁻¹ * tP) * (Wy⁻¹ * tY)) := by
+        simp only [moveWord, Matrix.mul_assoc]
+        rw [← Matrix.mul_assoc Wy⁻¹ tP tY, c1.eq, Matrix.mul_assoc]
+      rw [e1, ((cap.mul_left cbp).mul_right (cay.mul_left cby)).eq]
+    rw [hz, mulVec_mulVec, mulVec_mulVec, hmat]
+    simp only [mulVec_mulVec, Matrix.mul_assoc]
   -- the averaged numerators
   have hWW : ‖(EuclideanSpace.equiv _ ℂ).symm (Wa *ᵥ (Wb *ᵥ y))‖ ≤ E := by
     sorry
