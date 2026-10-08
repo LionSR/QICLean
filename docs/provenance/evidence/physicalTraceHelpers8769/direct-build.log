@@ -1,0 +1,51 @@
+Direct Lean compilation with package options and warnings as errors.
+Source revision: 92b6eea77da987d4d12236c3dd3fc06510cd98ac
+No Lake build or cache mutation was performed.
+
+Source: QICLean/Channel/PartialTraceBasisInvariance.lean
+Source SHA256: ab0800a8e746c9b69d29ca92021ecad560eb25ebd508b77483720f76f6aeb90b
+Working directory: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-physical-trace-helpers/artifacts/QICLean/Channel/PartialTraceBasisInvariance.olean QICLean/Channel/PartialTraceBasisInvariance.lean
+Exit code: 0
+Elapsed seconds: 5.34
+Diagnostics: none.
+
+Source: QICLean/Channel/PartialTraceBlocks.lean
+Source SHA256: 80ce40a8b0bc4004283aded588b13ee86a71c40b27371b19ba715966a042b8fc
+Working directory: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-physical-trace-helpers/artifacts/QICLean/Channel/PartialTraceBlocks.olean QICLean/Channel/PartialTraceBlocks.lean
+Exit code: 0
+Elapsed seconds: 5.012
+Diagnostics: none.
+
+Source: QICLean/Probability/MatrixTraceNormIntegrability.lean
+Source SHA256: e8463f0f618307a7541f2bd56cae1e07350e68dacd58e215d21f6b2a1b91fcc1
+Working directory: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-physical-trace-helpers/artifacts/QICLean/Probability/MatrixTraceNormIntegrability.olean QICLean/Probability/MatrixTraceNormIntegrability.lean
+Exit code: 0
+Elapsed seconds: 15.661
+Diagnostics: none.
+
+Source: QICLean/Channel.lean
+Source SHA256: 6e863d312995d41d1e06b5aa5641aec80420635077778ace1b93f4a85e289855
+Working directory: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-physical-trace-helpers/artifacts/QICLean/Channel.olean QICLean/Channel.lean
+Exit code: 0
+Elapsed seconds: 30.108
+Diagnostics: none.
+
+Source: QICLean/Probability.lean
+Source SHA256: 3b23f4625da8de04ac20b919e69271a5847d37b448a3f0d9b81764d24a302dff
+Working directory: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-physical-trace-helpers/artifacts/QICLean/Probability.olean QICLean/Probability.lean
+Exit code: 0
+Elapsed seconds: 4.679
+Diagnostics: none.
+
+Source: QICLean.lean
+Source SHA256: de31f0202944898ecfbb383a9fd172cde81ea22c1dc80b266f1fe172ecf60c15
+Working directory: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-physical-trace-helpers/artifacts/QICLean.olean QICLean.lean
+Exit code: 0
+Elapsed seconds: 10.562
+Diagnostics: none.

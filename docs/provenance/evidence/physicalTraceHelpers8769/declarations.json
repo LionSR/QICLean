@@ -1,0 +1,62 @@
+[
+  {
+    "id": "p09-qic-partialtracebasisinvariance-01",
+    "path": "QICLean/Channel/PartialTraceBasisInvariance.lean",
+    "declaration": "Matrix.rectangularTraceNorm_partialTraceRight_isometries",
+    "paper_label": "eq:compression-exterior-contraction"
+  },
+  {
+    "id": "p09-qic-partialtracebasisinvariance-02",
+    "path": "QICLean/Channel/PartialTraceBasisInvariance.lean",
+    "declaration": "OrthonormalBasis.tensorProduct_basisChange",
+    "paper_label": "eq:compression-exterior-contraction"
+  },
+  {
+    "id": "p09-qic-partialtracebasisinvariance-03",
+    "path": "QICLean/Channel/PartialTraceBasisInvariance.lean",
+    "declaration": "OrthonormalBasis.tensorProduct_rankOne_basisChange",
+    "paper_label": "eq:compression-exterior-contraction"
+  },
+  {
+    "id": "p09-qic-partialtracebasisinvariance-04",
+    "path": "QICLean/Channel/PartialTraceBasisInvariance.lean",
+    "declaration": "OrthonormalBasis.rectangularTraceNorm_partialTrace_sum_rankOne_basis_eq",
+    "paper_label": "eq:compression-exterior-contraction"
+  },
+  {
+    "id": "p09-qic-partialtraceblocks-01",
+    "path": "QICLean/Channel/PartialTraceBlocks.lean",
+    "declaration": "Matrix.eq_sum_single_kronecker_submatrix",
+    "paper_label": "eq:compression-total-error"
+  },
+  {
+    "id": "p09-qic-partialtraceblocks-02",
+    "path": "QICLean/Channel/PartialTraceBlocks.lean",
+    "declaration": "Matrix.rectangularTraceNorm_le_sum_submatrix",
+    "paper_label": "eq:compression-total-error"
+  },
+  {
+    "id": "p09-qic-partialtraceblocks-03",
+    "path": "QICLean/Channel/PartialTraceBlocks.lean",
+    "declaration": "Matrix.submatrix_partialTraceRight",
+    "paper_label": "eq:compression-total-error"
+  },
+  {
+    "id": "p09-qic-partialtraceblocks-04",
+    "path": "QICLean/Channel/PartialTraceBlocks.lean",
+    "declaration": "Matrix.integral_rectangularTraceNorm_le_sum_submatrix",
+    "paper_label": "eq:compression-total-error"
+  },
+  {
+    "id": "p09-qic-matrixtracenormintegrability-01",
+    "path": "QICLean/Probability/MatrixTraceNormIntegrability.lean",
+    "declaration": "ProbabilityTheory.integrable_rectangularTraceNorm_sum",
+    "paper_label": "eq:compression-block-second-moment"
+  },
+  {
+    "id": "p09-qic-matrixtracenormintegrability-02",
+    "path": "QICLean/Probability/MatrixTraceNormIntegrability.lean",
+    "declaration": "ProbabilityTheory.integrable_rectangularTraceNorm_sum_of_memLp_two",
+    "paper_label": "eq:compression-block-second-moment"
+  }
+]

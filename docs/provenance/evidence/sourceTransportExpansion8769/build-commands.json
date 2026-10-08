@@ -1,0 +1,98 @@
+[
+  {
+    "module": "QICLean.Probability.ComplexGaussian.SourceTransportExpansion",
+    "source_path": "QICLean/Probability/ComplexGaussian/SourceTransportExpansion.lean",
+    "source_sha256": "9f51adfc8f787f62dbc32af366b306555103ac1eaf01519f913569500062156f",
+    "command": [
+      "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+      "-Dpp.unicode.fun=true",
+      "-DrelaxedAutoImplicit=false",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DmaxSynthPendingDepth=3",
+      "-DwarningAsError=true",
+      "-o",
+      "/private/tmp/qic-source-transport-expansion/artifacts/QICLean/Probability/ComplexGaussian/SourceTransportExpansion.olean",
+      "QICLean/Probability/ComplexGaussian/SourceTransportExpansion.lean"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/source-transport-expansion",
+    "LEAN_PATH": "/private/tmp/qic-source-transport-expansion/artifacts:/private/tmp/tnlean-source-main-integration/strict-artifacts:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Cli/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Qq/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/lib/lean:/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean",
+    "returncode": 0,
+    "seconds": 33.494,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifact": "/private/tmp/qic-source-transport-expansion/artifacts/QICLean/Probability/ComplexGaussian/SourceTransportExpansion.olean",
+    "artifact_sha256": "6c12a9dfd7379f496cb0d9d3cce617eafd7152966aebeb12dd1dfd036a5b2b7c",
+    "source_revision": "b298f3fb6439c3e149d6788249fae868e3f9ed50"
+  },
+  {
+    "module": "QICLean.Probability.ComplexGaussian",
+    "source_path": "QICLean/Probability/ComplexGaussian.lean",
+    "source_sha256": "14821d9f8eff5cbbd1c6fe4d691db6f61779898b23cab4b75f2fdc2434aacd32",
+    "command": [
+      "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+      "-Dpp.unicode.fun=true",
+      "-DrelaxedAutoImplicit=false",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DmaxSynthPendingDepth=3",
+      "-DwarningAsError=true",
+      "-o",
+      "/private/tmp/qic-source-transport-expansion/artifacts/QICLean/Probability/ComplexGaussian.olean",
+      "QICLean/Probability/ComplexGaussian.lean"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/source-transport-expansion",
+    "LEAN_PATH": "/private/tmp/qic-source-transport-expansion/artifacts:/private/tmp/tnlean-source-main-integration/strict-artifacts:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Cli/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Qq/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/lib/lean:/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean",
+    "returncode": 0,
+    "seconds": 12.614,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifact": "/private/tmp/qic-source-transport-expansion/artifacts/QICLean/Probability/ComplexGaussian.olean",
+    "artifact_sha256": "e2cd977abc39eb7362fbf74c3d16b080bd40aae3c3ec7a6be4f005cdec7fe776",
+    "source_revision": "b298f3fb6439c3e149d6788249fae868e3f9ed50"
+  },
+  {
+    "module": "QICLean.Probability",
+    "source_path": "QICLean/Probability.lean",
+    "source_sha256": "3c8082ce196d617864de73d7a4e994d6c79c154df21ce5fab72a4f0af1716351",
+    "command": [
+      "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+      "-Dpp.unicode.fun=true",
+      "-DrelaxedAutoImplicit=false",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DmaxSynthPendingDepth=3",
+      "-DwarningAsError=true",
+      "-o",
+      "/private/tmp/qic-source-transport-expansion/artifacts/QICLean/Probability.olean",
+      "QICLean/Probability.lean"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/source-transport-expansion",
+    "LEAN_PATH": "/private/tmp/qic-source-transport-expansion/artifacts:/private/tmp/tnlean-source-main-integration/strict-artifacts:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Cli/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Qq/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/lib/lean:/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean",
+    "returncode": 0,
+    "seconds": 11.971,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifact": "/private/tmp/qic-source-transport-expansion/artifacts/QICLean/Probability.olean",
+    "artifact_sha256": "d3af8396db79eaf788604aa05aa81d44ba87b853ba02ab33f7f297130660071a",
+    "source_revision": "b298f3fb6439c3e149d6788249fae868e3f9ed50"
+  },
+  {
+    "module": "QICLean",
+    "source_path": "QICLean.lean",
+    "source_sha256": "de31f0202944898ecfbb383a9fd172cde81ea22c1dc80b266f1fe172ecf60c15",
+    "command": [
+      "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+      "-Dpp.unicode.fun=true",
+      "-DrelaxedAutoImplicit=false",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DmaxSynthPendingDepth=3",
+      "-DwarningAsError=true",
+      "-o",
+      "/private/tmp/qic-source-transport-expansion/artifacts/QICLean.olean",
+      "QICLean.lean"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/source-transport-expansion",
+    "LEAN_PATH": "/private/tmp/qic-source-transport-expansion/artifacts:/private/tmp/tnlean-source-main-integration/strict-artifacts:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Cli/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Qq/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-approx-pair-layout/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/.lake/build/lib/lean:/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean",
+    "returncode": 0,
+    "seconds": 29.693,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifact": "/private/tmp/qic-source-transport-expansion/artifacts/QICLean.olean",
+    "artifact_sha256": "b8ba66a62235f72722d16c3fdad5cc80cc07ad14b208d9e0c8ea7170f48a52e1",
+    "source_revision": "b298f3fb6439c3e149d6788249fae868e3f9ed50"
+  }
+]

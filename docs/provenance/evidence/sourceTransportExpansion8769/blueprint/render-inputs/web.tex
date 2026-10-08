@@ -1,0 +1,35 @@
+\documentclass{report}
+
+\usepackage{xcolor}
+\usepackage{amssymb, amsthm, amsmath}
+\usepackage[numbers,square]{natbib}
+\usepackage{hyperref}
+\usepackage[showmore, dep_graph]{blueprint}
+\usepackage{texra_patches}
+\usepackage{texra_graphs}
+\usepackage{tenkz_pic}
+
+% plasTeX already propagates section resets through subsection counters.
+\makeatletter
+\providecommand{\@addtoreset}[2]{}
+\makeatother
+
+\input{macros/common}
+\input{macros/web}
+
+\providecommand{\dotsc}{\dots}
+
+\home{..}
+\github{https://github.com/LionSR/QICLean}
+\dochome{../docs}
+
+\title{Quantum Information and Channels: A formalization blueprint}
+\author{Sirui Lu, Erickson Tjoa, and J.\ Ignacio Cirac}
+\date{Last update: \today}
+
+\begin{document}
+\maketitle
+\input{content-focused}
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

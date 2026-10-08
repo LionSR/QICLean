@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-source-gaussian/scripts/latexindent",
+    "-l",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers/blueprint/latexindent.yaml",
+    "-w",
+    "-s",
+    "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-physical-format-g1p70n_u/ch13_physical_trace_coordinates.tex"
+  ],
+  "returncode": 0,
+  "idempotent": true,
+  "new_tags": 10,
+  "source_path": "blueprint/src/chapter/ch13_physical_trace_coordinates.tex",
+  "source_sha256": "b0df4300a47e5af420de3d76df6b032579f30899dfe7a7e0e7dc41d404abd250"
+}
