@@ -1,0 +1,18 @@
+{
+  "source_revision": "fe621df0e0b9025b39172a750bc6e56ee692dc08",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "QICLean/Representation/BadCopyLabelDimension.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T22:37:20.070105+00:00",
+  "elapsed_seconds": 44.102,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/badCopyLabelDimension8750/strict-source.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

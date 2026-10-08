@@ -1,0 +1,14 @@
+{
+  "kind": "provenance",
+  "command": [
+    "/tmp/qic-density-simplex-provenance-env/bin/python",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.26,
+  "source_revision": "aca96d26559088c2c595325e3cd3ac303971bf0d",
+  "log": "docs/provenance/evidence/excitationStabilizerIntegration8750/provenance.log",
+  "sha256": "a367add2016da425e0b0777cc3514315b4a0b21543987b9936c85bee79e7af01"
+}

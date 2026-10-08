@@ -1,0 +1,16 @@
+{
+  "source_revision": "272718145ed2fa1ec58adfeb5e5620355be971d0",
+  "command": [
+    "python3",
+    "scripts/blueprint_lean_sync.py",
+    "--root",
+    ".",
+    "--update-lean-decls"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-08T00:16:58.962721+00:00",
+  "elapsed_seconds": 0.732,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodAuxiliaryMarginalIntegration8750/declaration-sync.log",
+  "sha256": "23f00d8efefc707a99b2b4226783825bf58ec63742cce59cad12a20b225ca8ea"
+}

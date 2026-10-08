@@ -1,0 +1,40 @@
+Chapter 13
+
+Quantum Entropy
+
+This chapter develops trace distance, von Neumann entropy, and their basic properties for finite-
+dimensional quantum systems.
+
+
+13.1      Trace norm
+Definition 13.1.1 (Schatten one-norm). Lean ✓ Stmt For a matrix 𝐴 ∈ 𝑀𝐷 (ℂ), the singular
+values 𝑠0 (𝐴), 𝑠1 (𝐴), … form a finitely supported family: only finitely many are nonzero. The
+Schatten one-norm of 𝐴 is their sum, that is, the sum of the finitely many nonzero singular
+values:
+
+                                     ‖𝐴‖1 =       ∑           𝑠𝑖 (𝐴).                      (13.1)
+                                               𝑖 ∶ 𝑠𝑖 (𝐴)≠0
+
+
+This is the 𝑝 = 1 case of the Schatten 𝑝-norm [Wol12, Chapter 8, Section 8.1]. The equivalent
+                         𝐷−1
+closed formula ‖𝐴‖1 = ∑𝑖=0 𝑠𝑖 (𝐴), summing over all 𝐷 singular values including trailing zeros,
+is part of Theorem 13.1.4.
+Definition 13.1.2 (Trace norm).      Lean    ✓ Stmt The trace norm of 𝐴 ∈ 𝑀𝐷 (ℂ) is its Schatten
+one-norm:
+
+                                            ‖𝐴‖tr = ‖𝐴‖1 .                                 (13.2)
+
+   Wolf records the equivalent formula ‖𝐴‖1 = tr|𝐴| [Wol12, Chapter 8, Section 8.1]; this is
+Theorem 13.1.5.
+Theorem 13.1.3 (Finite singular-value expansions). Lean Lean Lean ✓ Stmt The Schatten
+one-norm and trace norm are the sums over the finite support of the singular-value sequence.
+Equivalently, the trace norm is the sum over the indices below the rank of the represented linear
+map.
+Proof. ✓ Proof The singular-value sequence satisfies 𝑠𝑖 (𝐴) = 0 for all 𝑖 ≥ rank(𝐴), so summing
+over the support and summing over {0, … , rank(𝐴) − 1} give the same value.
+
+
+
+
+                                                 315

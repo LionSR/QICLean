@@ -1,0 +1,16 @@
+{
+  "reviewer": "verify_prior_results agent",
+  "source_revision": "523a72b62e49b834574dc4e990a761e8891d1cc5",
+  "source_sha256": "ff2e0c4ff9c5f2ae6ce3669736cd32fb452c9661b6ae78907286d1995ae4cac7",
+  "source_passage": "07-comparators.tex, lines 498\u2013549, adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "result": "passed",
+  "findings": [
+    "Positivity follows from the literal regrouped rank-one density.",
+    "The physical invariance follows from the literal tensor power.",
+    "The auxiliary invariance follows from original simultaneous symmetry, the good-copy stabilizer and partial traces.",
+    "The trace equals the squared norm of the same projected component without division.",
+    "The only vector premises are the unit one-copy ground vector and original simultaneous symmetry.",
+    "The exponent range includes the printed interval and zero components, zero copies and empty good sets remain valid."
+  ],
+  "scope_clarification": "This proves the local QC moment. Apply the same theorem to the physical region V and auxiliary R after their actual coordinate identifications for the VR moment. Combining both requires common-space identities; no complete inverse-compression theorem is asserted."
+}

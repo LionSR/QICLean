@@ -1,0 +1,12 @@
+{
+  "upstream-source05.tex.gz": {
+    "uncompressed_sha256": "e5c927a30f38b511f2a6d6d2fc2f9f0b9dadfcec27992d7253b0f86a3d4258d6",
+    "compressed_sha256": "9cc8043fa7dba6c7871ff3a9700ac24d91dbc499084ef1f116f8702fd986d5e4",
+    "gzip_mtime": 0
+  },
+  "upstream-source07.tex.gz": {
+    "uncompressed_sha256": "5c8d8dd55a283a7ffe9573067c631ea70d93b01c207a297aee02352c25d2573b",
+    "compressed_sha256": "8e50e51d091ace01ae4ac0007ff32f568fe841abe9b6a5e059ee5597787b1aed",
+    "gzip_mtime": 0
+  }
+}

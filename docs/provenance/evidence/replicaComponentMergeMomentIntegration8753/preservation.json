@@ -1,0 +1,82 @@
+{
+  "parents": {
+    "ab5264325521b5f7fa1719217512c655e0820e4f": {
+      "checked_bindings": 3420,
+      "changed_existing_bindings": {
+        "QICLean/Analysis.lean": [
+          "3afd8cb0690ee09b5914bdc92f93d98179d775bf",
+          "d3d02fe60e16f1d3707c4f8f6ac6e168cd662160"
+        ]
+      },
+      "all_provenance_bytes_preserved": true
+    },
+    "5a83568097c77798bdd3f77dc892c338749381bf": {
+      "checked_bindings": 1578,
+      "changed_existing_bindings": {
+        "QICLean/Analysis.lean": [
+          "fda0b58bde30c81565743e7c30f8a6309e679f15",
+          "d3d02fe60e16f1d3707c4f8f6ac6e168cd662160"
+        ],
+        "QICLean/Entropy.lean": [
+          "90d03fe653736a41ab0fe18b715ea4483a32ef6d",
+          "864ad2093d8d131e62ad939c86cb2ad515d470b6"
+        ],
+        "QICLean/Representation.lean": [
+          "43f0c9900fb33d625dd9d46710bfccf98af9a956",
+          "a5cd1228a0a9a2ea57a46e370b0d1fdac6d4adc2"
+        ]
+      },
+      "all_provenance_bytes_preserved": true
+    },
+    "ef7442f03ea09bb7997295304ba4ddc289b540b0": {
+      "checked_bindings": 1548,
+      "changed_existing_bindings": {
+        "QICLean/Analysis.lean": [
+          "fda0b58bde30c81565743e7c30f8a6309e679f15",
+          "d3d02fe60e16f1d3707c4f8f6ac6e168cd662160"
+        ],
+        "QICLean/Entropy.lean": [
+          "90d03fe653736a41ab0fe18b715ea4483a32ef6d",
+          "864ad2093d8d131e62ad939c86cb2ad515d470b6"
+        ],
+        "QICLean/Representation.lean": [
+          "29d99e38d8c6dfc2f8d6fa6de40d609bee622664",
+          "a5cd1228a0a9a2ea57a46e370b0d1fdac6d4adc2"
+        ]
+      },
+      "all_provenance_bytes_preserved": true
+    },
+    "771e955ae728db3e88af04114b5773843fc04eef": {
+      "checked_bindings": 2990,
+      "changed_existing_bindings": {
+        "QICLean/Algebra.lean": [
+          "f2c7d1d4dbc17c448c1ed0eea9c403dffe30f6a7",
+          "05037df531424c9096b3bfbe859d9032b806b903"
+        ],
+        "QICLean/Analysis.lean": [
+          "cc7d93091b9030c80ef9417c60a2346a8bad970d",
+          "d3d02fe60e16f1d3707c4f8f6ac6e168cd662160"
+        ],
+        "QICLean/Channel.lean": [
+          "28b7640ec37e9fe02f685ccf406835070510137a",
+          "3e423e6c37ea0c54b92bd7c2dda917dc27f63908"
+        ],
+        "QICLean/Entropy.lean": [
+          "154ed549668182ae905176c31211e8a8799254fc",
+          "864ad2093d8d131e62ad939c86cb2ad515d470b6"
+        ],
+        "QICLean/Entropy/FilterMoment.lean": [
+          "56f08d655c119f3e641f2b474454a27da3fdd43b",
+          "b76f00df1fd8f02940ca3c05721136244302ec47"
+        ],
+        "QICLean/Representation.lean": [
+          "7ae85c6d114f02dfc1116d819d421f1aea6ee5ad",
+          "a5cd1228a0a9a2ea57a46e370b0d1fdac6d4adc2"
+        ]
+      },
+      "all_provenance_bytes_preserved": true
+    }
+  },
+  "full_build_to_book_mathematical_sources_and_pins_unchanged": true,
+  "filter_moment_exception": "The older joint-density parent is advanced to the accepted paired-moment FilterMoment helper extraction. The norm-bound statement and premises are unchanged. Its exact final blob is b76f00df1fd8f02940ca3c05721136244302ec47."
+}

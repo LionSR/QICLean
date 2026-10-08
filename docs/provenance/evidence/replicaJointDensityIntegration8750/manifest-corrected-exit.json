@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/validate-revised-manifest.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.44,
+  "source_revision": "7840e716185f9d477c3c135192f3ec0573813e14",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/manifest-corrected.log",
+  "sha256": "c21d5a3f0dfd86e7cebd92712084d157c4a21356c68fe9cf5c71769708a31282"
+}

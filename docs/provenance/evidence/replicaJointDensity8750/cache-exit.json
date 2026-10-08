@@ -1,0 +1,16 @@
+{
+  "source_revision": "076b8c48a1bb018d796a00855cce8dcb9b0f7077",
+  "stage": "pre-freeze preparation",
+  "argv": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T00:30:01.367257+00:00",
+  "elapsed_seconds": 22.737820207999903,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaJointDensity8750/cache.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

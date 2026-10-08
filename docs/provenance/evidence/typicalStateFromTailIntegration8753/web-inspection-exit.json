@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/tmp/qic-regional-blueprint-env/bin/python",
+    "docs/provenance/evidence/typicalStateFromTailIntegration8753/inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 7.35,
+  "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+  "log_sha256": "ee6cbaa4738dab57fb618451691aa316cb63f7166afe89fc538ac5f5c0a3a8e1"
+}

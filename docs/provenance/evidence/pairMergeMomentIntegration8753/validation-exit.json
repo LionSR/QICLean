@@ -1,0 +1,28 @@
+{
+  "source_revision": "90afecd265ca5547b9de350dcd35afc0fe49bbcc",
+  "mathematical_revision": "477e8c6f646001c0aff7838e9728967053bb9420",
+  "production_sha256": {
+    "QICLean/Representation/PairMergeMoment.lean": "8377a7ac4e5ed15edbfb0e7316095b438ff44f18b10627b23da94f5b6afee0e3",
+    "blueprint/src/fragment/pair_merge_moment.tex": "79b443f15dddc72ab0db66cea4ac50faaf3e28baed0d6c10f5d70f7c85b53c2e",
+    "docs/openai-area-law-pair-merge-moment.md": "02683cdf1d5822147cdca12e2b0159d4f367f1f3fb4534fbbaa85ab8493f1d62",
+    "docs/tactic_patterns.md": "495789840c66407614607842cce346d1a946ffc384ebe65a4ff0b4132527fb7b",
+    "QICLean/Representation.lean": "09e3845b059c8040334c91900db9b16c30b4077f3ecf53a34629ad9e16b01734",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "32bf474360b983cbc290b3bf1ed6ebc6829bb695aa0531566cbe7c087efabc03"
+  },
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/pairMergeMomentIntegration8753/validate-manifest.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 1.4588539999967907,
+  "log": "docs/provenance/evidence/pairMergeMomentIntegration8753/validation.log",
+  "sha256": "d2d4a1be88fd37478f8b738e7f98f688e3725fbd04699ea9dea2ab087f751f35",
+  "uncompressed_sha256": "d2d4a1be88fd37478f8b738e7f98f688e3725fbd04699ea9dea2ab087f751f35",
+  "uncompressed_bytes": 193,
+  "compressed": false,
+  "deterministic_gzip_mtime": null,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true
+}

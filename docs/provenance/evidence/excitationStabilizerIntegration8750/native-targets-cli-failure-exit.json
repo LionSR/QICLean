@@ -1,0 +1,19 @@
+{
+  "kind": "excluded",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/capture.py",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750",
+    "native",
+    "native-targets",
+    ".",
+    "python3",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/check-native-targets.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 1,
+  "elapsed_seconds": 0.05,
+  "source_revision": "aca96d26559088c2c595325e3cd3ac303971bf0d",
+  "log": "docs/provenance/evidence/excitationStabilizerIntegration8750/native-targets-cli-failure.log",
+  "sha256": "f5a60821d588ab9eac45b472323a6180327da3de4557e2088b88dee891b8af7e"
+}

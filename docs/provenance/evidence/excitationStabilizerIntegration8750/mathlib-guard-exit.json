@@ -1,0 +1,13 @@
+{
+  "kind": "cache",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/mathlib-guard.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.06,
+  "source_revision": "aca96d26559088c2c595325e3cd3ac303971bf0d",
+  "log": "docs/provenance/evidence/excitationStabilizerIntegration8750/mathlib-guard.log",
+  "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+}

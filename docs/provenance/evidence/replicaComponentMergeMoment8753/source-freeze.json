@@ -1,0 +1,11 @@
+{
+  "source_revision": "523a72b62e49b834574dc4e990a761e8891d1cc5",
+  "prerequisite_revision": "ab5264325521b5f7fa1719217512c655e0820e4f",
+  "upstream_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "production_sha256": {
+    "QICLean/Analysis/ReplicaComponentMergeMoment.lean": "ff2e0c4ff9c5f2ae6ce3669736cd32fb452c9661b6ae78907286d1995ae4cac7",
+    "blueprint/src/fragment/replica_component_merge_moment.tex": "56d88c6378c4a66146aecc8c619cb029cce046e6d1984e06c75dca8bd6602714",
+    "docs/openai-area-law-component-merge-moment.md": "622bb54994abd6ae00b1e780afbfee90d094409f88bf36b5e057ce599ef34866",
+    "docs/tactic_patterns.md": "ac746897284bcbd506a3c2bc8ce2cc1d5361b411d56e073eb751ac25971c1ed3"
+  }
+}

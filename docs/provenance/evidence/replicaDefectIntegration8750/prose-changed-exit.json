@@ -1,0 +1,15 @@
+{
+  "source_revision": "8a519b3f63e91e7f4628097bd000161156269504",
+  "command": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "14778d7ee2e8c12efbf3a8029f7e5ef6d4d52bf4"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-defect",
+  "started_utc": "2026-10-07T20:40:36.240053+00:00",
+  "elapsed_seconds": 0.727,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaDefectIntegration8750/prose-changed.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

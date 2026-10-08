@@ -1,0 +1,51 @@
+\section{Permutation symmetry of component marginals}
+\label{sec:replica_marginal_symmetry}
+
+The merge-moment argument in \cite[Section~7]{OpenAI2026AreaLaw} uses
+permutation invariance of an auxiliary marginal obtained by tracing other
+registers. The following partial-trace identities do not require a product
+state or normalization.
+
+\begin{theorem}[Marginal symmetry of a fixed vector]
+\label{thm:fixed_vector_marginal_symmetry}
+\lean{PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp}
+\leanok
+Let $U_g$ and $V_g$ be permutation representations on finite-dimensional
+spaces $\mathcal H$ and $\mathcal K$. If $v\in\mathcal H\otimes\mathcal K$
+satisfies $(U_g\otimes V_g)v=v$, then
+\[
+ V_g\rho_{\mathcal K}=\rho_{\mathcal K}V_g,
+ \qquad \rho_{\mathcal K}=\operatorname{Tr}_{\mathcal H}|v\rangle\langle v|.
+\]
+\end{theorem}
+\begin{proof}
+\leanok
+The fixed-vector equation implies invariance of $|v\rangle\langle v|$
+under conjugation by $U_g\otimes V_g$. The partial trace removes the
+unitary $U_g$ and yields $V_g\rho_{\mathcal K}V_g^*=\rho_{\mathcal K}$.
+Multiply on the right by $V_g$.
+\end{proof}
+
+\begin{theorem}[Marginal symmetry of an excitation component]
+\label{thm:excitation_component_marginal_symmetry}
+\lean{Matrix.commute_partialTraceLeft_replicaExcitationComponent}
+\leanok
+\uses{thm:replica_excitation_preserves_fixed,thm:fixed_vector_marginal_symmetry}
+Let $\Omega\in\mathcal H$, let $B\subseteq\{1,\ldots,k\}$, and put
+$w=(R_B\otimes I_{\mathcal K})v$.
+Suppose $\sigma B=B$ and $(U_\sigma\otimes V_\sigma)v=v$, where
+$U_\sigma$ permutes the physical copies and $V_\sigma$ is a permutation
+representation on $\mathcal K$. Then $V_\sigma$ commutes with
+$\operatorname{Tr}_{\mathcal H^{\otimes k}}|w\rangle\langle w|$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_excitation_preserves_fixed,thm:fixed_vector_marginal_symmetry}
+The stabilizer condition gives $(U_\sigma\otimes V_\sigma)w=w$.
+Apply the preceding theorem to $w$.
+\end{proof}
+
+Both statements include empty registers and zero vectors. To obtain the
+specific good-copy marginal in the merge-moment argument, one must also
+select and regroup the relevant registers. The moment estimate itself is
+a further assertion.

@@ -1,0 +1,13 @@
+{
+  "declaration_lines": 3344,
+  "unique_declarations": 3344,
+  "owned_declarations": [
+    "TensorPower.copyPerm_groupedGood_labelEntropy_compression",
+    "Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower"
+  ],
+  "fragment_inputs": [
+    "good_auxiliary_label_compression",
+    "replica_good_auxiliary_label_bound"
+  ],
+  "each_occurs_once": true
+}

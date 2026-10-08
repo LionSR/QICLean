@@ -1,0 +1,27 @@
+[
+  {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+    "lines": "116\u2013123",
+    "labels": [
+      "lem:schur",
+      "replicas:group-dimensions"
+    ],
+    "git_blob_sha": "8677212573116fd4ad2beacaf74b29a08047b7b8",
+    "sha256": "e5c927a30f38b511f2a6d6d2fc2f9f0b9dadfcec27992d7253b0f86a3d4258d6",
+    "comparison": "Actual local source bytes equal the immutable GitHub source bytes."
+  },
+  {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+    "lines": "455\u2013467",
+    "labels": [
+      "comparator:restriction-dimensions"
+    ],
+    "git_blob_sha": "601b50517acfb1cb4c2cc82a661fa712a3717cc4",
+    "sha256": "5c8d8dd55a283a7ffe9573067c631ea70d93b01c207a297aee02352c25d2573b",
+    "comparison": "Actual local source bytes equal the immutable GitHub source bytes."
+  }
+]

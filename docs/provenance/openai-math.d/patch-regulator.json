@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "patch-regulator-trace-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/PatchRegulator.lean",
+        "declaration": "Matrix.trace_le_smul_rank_add_complement_of_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-regulator-trace"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive the rank and complementary-weight trace estimate from Loewner upper bounds using positive trace pairings; no projection commutation is assumed.",
+        "These auxiliary implications do not prove the native ordered-objective stationarity or the full PEPS proposition."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.PatchRegulator",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/patch-regulator/build.log",
+            "sha256": "6af178382c78bd88f4490940d1b5cb56de849e8cb910e92fd35af32678078e7b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/patch-regulator/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/patch-regulator/axioms.log",
+            "sha256": "87ed1948b53c3ab1d7a5b5d364fa239f7dcd6cfceb6233c5ca5ea33727cde79f"
+          }
+        ]
+      }
+    },
+    {
+      "id": "patch-regulator-order-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/PatchRegulator.lean",
+        "declaration": "Matrix.PosSemidef.shiftedRegulator_bounds",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-kkt",
+            "eq:patch-regulator-trace"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove positivity and both Loewner bounds for the actual shifted inverse regulator from commuting PSD data and the explicit density upper bound.",
+        "These auxiliary implications do not prove the native ordered-objective stationarity or the full PEPS proposition."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.PatchRegulator",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/patch-regulator/build.log",
+            "sha256": "6af178382c78bd88f4490940d1b5cb56de849e8cb910e92fd35af32678078e7b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/patch-regulator/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/patch-regulator/axioms.log",
+            "sha256": "87ed1948b53c3ab1d7a5b5d364fa239f7dcd6cfceb6233c5ca5ea33727cde79f"
+          }
+        ]
+      }
+    },
+    {
+      "id": "patch-regulator-trace-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/PatchRegulator.lean",
+        "declaration": "Matrix.PosSemidef.trace_shiftedRegulator_le_quarter",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+          "labels": [
+            "eq:patch-constant-tail",
+            "eq:patch-regulator-trace"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Combine the actual regulator bounds with the stated exponential projection rank, constant tail, and source starting radius to derive the quarter trace bound.",
+        "These auxiliary implications do not prove the native ordered-objective stationarity or the full PEPS proposition."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.PatchRegulator",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/patch-regulator/build.log",
+            "sha256": "6af178382c78bd88f4490940d1b5cb56de849e8cb910e92fd35af32678078e7b"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true docs/provenance/evidence/patch-regulator/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/patch-regulator/axioms.log",
+            "sha256": "87ed1948b53c3ab1d7a5b5d364fa239f7dcd6cfceb6233c5ca5ea33727cde79f"
+          }
+        ]
+      }
+    }
+  ]
+}

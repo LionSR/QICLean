@@ -1,0 +1,11 @@
+{
+  "command": [
+    "leanblueprint",
+    "checkdecls"
+  ],
+  "working_directory": "blueprint",
+  "exit_code": 0,
+  "elapsed_seconds": 43.83,
+  "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+  "log_sha256": "1c4ccc6e08b956339a481fb0561f9220f3075d6a0ba652e715347b54b5e27b16"
+}

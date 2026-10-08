@@ -1,0 +1,14 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "-c",
+    "import os,subprocess,sys;os.chdir(\"blueprint\");sys.exit(subprocess.call([\"leanblueprint\",\"pdf\"]))"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 27.45,
+  "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/pdf.log",
+  "sha256": "83e8d87b87483ddc4a5248c95f386d29d1e3b58c78994a3a9b9200b11f124f5b"
+}

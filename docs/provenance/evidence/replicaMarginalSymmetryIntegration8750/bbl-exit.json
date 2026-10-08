@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "texra-blueprint",
+    "bbl"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.39,
+  "source_revision": "fc3c07583efd46380d5c1143b37b5e825c9a5c4e",
+  "log": "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/bbl.log",
+  "sha256": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6"
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "lake",
+    "build"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 85.47,
+  "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/build.log",
+  "sha256": "4c8438e0a3a295e883fd4189f7e79616c136d693c5cd40d67445f69d39a7974d"
+}

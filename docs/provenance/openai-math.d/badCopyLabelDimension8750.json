@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-bad-copy-label-dimension-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/BadCopyLabelDimension.lean",
+        "declaration": "TensorPower.groupHom\u2082_labelProj_dim_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:good-auxiliary"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove the actual full-copy central projection entry as identity on fixed good coordinates times the r-copy central projection. Derive nonzero r-copy occurrence and the invariant-range dimension bound. No nonempty coordinate-set or supplied dimension hypothesis; zero-copy cases remain included."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "fe621df0e0b9025b39172a750bc6e56ee692dc08",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.BadCopyLabelDimension",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/badCopyLabelDimension8750/build.log",
+            "sha256": "fa75c5a4b840f10b32f9dae0b83c7253b3b1590acaca01d817c26686189d009a"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false QICLean/Representation/BadCopyLabelDimension.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/badCopyLabelDimension8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false docs/provenance/evidence/badCopyLabelDimension8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/badCopyLabelDimension8750/axioms.log",
+            "sha256": "35cbcf969a72f9edcfdd8bca044ddf842e7e6497a636350e012f7f820d9f9cdd"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "fresh_reports": [
+    {
+      "declaration": "TensorPower.copyPerm_groupedGood_labelEntropy_compression",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "fresh_report_count": 2,
+  "owned_original_shards": 2,
+  "successful_command_record": "axioms-final-exit.json",
+  "inherited_reports": "Preserved against immutable original Git revisions, not repeated."
+}

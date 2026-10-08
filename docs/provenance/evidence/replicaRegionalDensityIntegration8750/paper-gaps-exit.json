@@ -1,0 +1,14 @@
+{
+  "kind": "verification",
+  "command": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.38,
+  "source_revision": "a5a72254c33075af243b4defab475c544d4b0f50",
+  "log": "docs/provenance/evidence/replicaRegionalDensityIntegration8750/paper-gaps.log",
+  "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+}

@@ -1,0 +1,23 @@
+{
+  "source_revision": "523a72b62e49b834574dc4e990a761e8891d1cc5",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "docs/provenance/evidence/replicaComponentMergeMoment8753/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T00:53:35.016564+00:00",
+  "elapsed_seconds": 5.8213994999969145,
+  "exit_code": 1,
+  "log": "docs/provenance/evidence/replicaComponentMergeMoment8753/axioms.log",
+  "sha256": "ad8e0cf8594af3b7769a3673b6f33b90377583b583964b565beaf0a9feae9f11"
+}

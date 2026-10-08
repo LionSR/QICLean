@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 6.05,
+  "source_revision": "fc3c07583efd46380d5c1143b37b5e825c9a5c4e",
+  "log": "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/focused-web.log",
+  "sha256": "c77db398b5e9b1329c43029cb41bf5991914f199ad58e45ea968842f38814d83"
+}

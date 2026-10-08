@@ -1,0 +1,26 @@
+{
+  "source_revision": "2b2ce0a9e57ffff7c6044b4133c62f6f5afa0828",
+  "complete_entropy_html_sha256": "0201b4756ee7aa63ee99ec8a33c64672f934b2eed75b60f708cb944f569abe99",
+  "section_excerpt_sha256": "c9112c3a853d3f8fc4113f50bc87b93f3231bea25779e4f05170e15ff7726f58",
+  "labels": [
+    "replica_sum_copy_commute",
+    "replica_product_copy_commute",
+    "replica_cfc_copy_commute",
+    "replica_cfc_auxiliary_commute",
+    "replica_cfc_preserves_fixed"
+  ],
+  "exact_declarations": [
+    "Matrix.commute_replicaHamiltonian_permOp",
+    "Matrix.commute_cfc_replicaDefectCount_permOp",
+    "Matrix.commute_cfc_replicaDefectCount_kronecker",
+    "Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed",
+    "Matrix.commute_finKronecker_const_permOp"
+  ],
+  "local_section_references_resolve": true,
+  "repaired_parent_equation_anchors": [
+    "eq:replica_hamiltonian",
+    "eq:replica_excitation_projection",
+    "eq:replica_components"
+  ],
+  "warning": "The current warm web rendering completed without the earlier tenkz canary warning; the earlier complete render retained its successful PDF fallback evidence."
+}

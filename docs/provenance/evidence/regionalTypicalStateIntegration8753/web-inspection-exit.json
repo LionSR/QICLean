@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/tmp/qic-regional-blueprint-env/bin/python",
+    "/tmp/qic-regional-inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 7.81,
+  "source_revision": "4618717329582f63300c195a498c41125ae7b8e3",
+  "log_sha256": "524dcfe8d74f4a0fc6eebe8ffaa66fadfdaa7392b2d9e52670b2ad5553f160df"
+}

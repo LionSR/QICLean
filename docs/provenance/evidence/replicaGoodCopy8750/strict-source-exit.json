@@ -1,0 +1,18 @@
+{
+  "source_revision": "38b658ef2ff408eda7a0a958071750bbf70de84b",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "QICLean/Analysis/ReplicaGoodCopyFactorization.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-07T21:09:21.293613+00:00",
+  "elapsed_seconds": 13.137,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodCopy8750/strict-source.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

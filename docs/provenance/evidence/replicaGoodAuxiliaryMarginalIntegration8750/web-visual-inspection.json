@@ -1,0 +1,28 @@
+{
+  "page": "ch-entropy.html",
+  "widths": [
+    1280,
+    360
+  ],
+  "complete_entries": [
+    "def:good_bad_copies_equiv",
+    "def:replica_good_auxiliary_marginal",
+    "thm:replica_good_auxiliary_marginal_commute"
+  ],
+  "complete_theorem_proof_inspected": true,
+  "mobile_formula_right_endpoints_inspected": 3,
+  "images": [
+    "web-good_bad_copies_equiv-statement-1280.png",
+    "web-good_bad_copies_equiv-statement-360.png",
+    "web-good_bad_copies_equiv-statement-display-0-360-right.png",
+    "web-replica_good_auxiliary_marginal-statement-1280.png",
+    "web-replica_good_auxiliary_marginal-statement-360.png",
+    "web-replica_good_auxiliary_marginal-statement-display-0-360-right.png",
+    "web-replica_good_auxiliary_marginal-statement-display-1-360-right.png",
+    "web-replica_good_auxiliary_marginal_commute-proof-1280.png",
+    "web-replica_good_auxiliary_marginal_commute-proof-360.png",
+    "web-replica_good_auxiliary_marginal_commute-statement-1280.png",
+    "web-replica_good_auxiliary_marginal_commute-statement-360.png"
+  ],
+  "result": "All three definitions/theorem and the complete proof visually inspected at desktop/mobile widths; wide formulas use local horizontal scrolling and all right endpoints are accessible and inspected. No page-level overflow, overlap, unresolved glyphs or unrendered mathematics."
+}

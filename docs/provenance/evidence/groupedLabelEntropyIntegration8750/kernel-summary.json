@@ -1,0 +1,13 @@
+{
+  "source_revision": "d3c2710149ae35128407a6ffcbd1d4d3e66311f0",
+  "import": "QICLean",
+  "exact_reports": 1,
+  "names": {
+    "TensorPower.groupedCopies_labelEntropy_bounds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "all_standard": true
+}

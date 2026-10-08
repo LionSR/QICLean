@@ -1,0 +1,192 @@
+{
+  "checked_inclusion_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+  "mathematical_source_revision": "79b9d503971a4ff2409fa557e174b46b13fdbbda",
+  "leaf_evidence_revision": "ff911404aa810d30c6ca0667b476e12ec14d4e8f",
+  "parent_revision": "7b1532162bac7c62bbaa98e0abc5dc3d93704711",
+  "files": {
+    "QICLean/Entropy/TypicalStateFromTail.lean": "149554ccbce80b00197d5f969c04d9674b0c60f2bbca38eb0f0c1771307fe555",
+    "QICLean/Entropy.lean": "047b97651b682eecb0fe890521322c0941f52c5c6f226a37da767694ff0d8952",
+    "blueprint/src/chapter/ch12_entropy.tex": "6a68bf0ae2559e77c1d49984426241825303ad7dec8119ef1c041b1b33a0c8ff",
+    "blueprint/src/chapter/ch12_entropy_typical_tail.tex": "f8a9aaf3db1bc26ab3470ad1abbdc5224f006ca8c8d8b13b78e097562e5f720c"
+  },
+  "preserved_parent_production_files": {
+    "QICLean/Analysis/DensitySimplex.lean": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8",
+    "QICLean/Analysis/PatchRegulator.lean": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca",
+    "QICLean/Entropy/FiniteProductInformation.lean": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f",
+    "QICLean/Entropy/FiniteProductSplitting.lean": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739",
+    "QICLean/Entropy/TypicalDensity.lean": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914",
+    "QICLean/Entropy/TypicalPureState.lean": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01",
+    "QICLean/Entropy/TypicalSpectrum.lean": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4"
+  },
+  "source_byte_binding": "The two tail bindings remain at 79b9d503. All seven inherited production files and all 54 parent bindings are unchanged.",
+  "full_library_jobs": 9682,
+  "declaration_count": 56,
+  "new_declaration_count": 2,
+  "owned_provenance_shards": 8,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "mathlib_prebuilt_olean_verified": true,
+  "commands": [
+    {
+      "record": "axioms-exit.json",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "docs/provenance/evidence/typicalStateFromTailIntegration8753/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 7.84,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "151f6e2ea400b0bb3fa3033adcdd3cd002061de16fa61097093285688c8e6e0e"
+    },
+    {
+      "record": "blueprint-checkdecls-exit.json",
+      "command": [
+        "leanblueprint",
+        "checkdecls"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 9.83,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": "blueprint-pdf-exit.json",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 23.0,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "91621d6e1e4ed90b0de2b9f8baf36fce9d75d6f9fdf5f6d29a0cdf90d07e4346"
+    },
+    {
+      "record": "blueprint-web-exit.json",
+      "command": [
+        "leanblueprint",
+        "web"
+      ],
+      "working_directory": "blueprint",
+      "exit_code": 0,
+      "elapsed_seconds": 49.37,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "11391b8908d12ec01aaccc71db1a35cdb9b77bd7b697a5d37e5c20221ee5d66e"
+    },
+    {
+      "record": "full-lake-build-exit.json",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 45.14,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "54853834102003507bf18d6487b40eb1832da53fefdbbde48416800f9757e7aa"
+    },
+    {
+      "record": "import-aggregators-exit.json",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.35,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "39eb81233c203fe0dd47802ffeb92a43e738eaadf689b2d623d54a966063962c"
+    },
+    {
+      "record": "mathlib-cache-exit.json",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 12.12,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "record": "paper-gaps-exit.json",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.34,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "record": "provenance-exit.json",
+      "command": [
+        "/tmp/qic-density-simplex-provenance-env/bin/python",
+        "docs/provenance/evidence/typicalStateFromTailIntegration8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.53,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "56f809cfcaba078fc4d44b2b60bbc2fedc9267cafa203df821cfc5cf70737d40"
+    },
+    {
+      "record": "reader-prose-exit.json",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "7b153216"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "record": "web-inspection-exit.json",
+      "command": [
+        "/tmp/qic-regional-blueprint-env/bin/python",
+        "docs/provenance/evidence/typicalStateFromTailIntegration8753/inspect-web.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 7.35,
+      "source_revision": "691bfc7216426469d9f2dd094e2daeaf939ffaec",
+      "log_sha256": "ee6cbaa4738dab57fb618451691aa316cb63f7166afe89fc538ac5f5c0a3a8e1"
+    }
+  ],
+  "logs": {
+    "axioms.log": "151f6e2ea400b0bb3fa3033adcdd3cd002061de16fa61097093285688c8e6e0e",
+    "blueprint-checkdecls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "blueprint-pdf.log": "91621d6e1e4ed90b0de2b9f8baf36fce9d75d6f9fdf5f6d29a0cdf90d07e4346",
+    "blueprint-web.log": "11391b8908d12ec01aaccc71db1a35cdb9b77bd7b697a5d37e5c20221ee5d66e",
+    "final-bibtex.log": "6038c8c150898fba1e7184c562490e5220698a75a96614902c7cc1f832126155",
+    "final-latex.log": "56bc0315e795f49fc758fd78008a991d6d807b84170fcdfd72b90a7346121778",
+    "full-lake-build.log": "54853834102003507bf18d6487b40eb1832da53fefdbbde48416800f9757e7aa",
+    "import-aggregators.log": "39eb81233c203fe0dd47802ffeb92a43e738eaadf689b2d623d54a966063962c",
+    "mathlib-cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "paper-gaps.log": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+    "pdf-artifact-marker.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance.log": "56f809cfcaba078fc4d44b2b60bbc2fedc9267cafa203df821cfc5cf70737d40",
+    "reader-prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "web-inspection.log": "ee6cbaa4738dab57fb618451691aa316cb63f7166afe89fc538ac5f5c0a3a8e1"
+  },
+  "render_inspection": "render-inspection.json",
+  "web_inspection": "web-inspection.json"
+}

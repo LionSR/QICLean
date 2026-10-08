@@ -1,0 +1,46 @@
+def Matrix.replicaGoodRegionalAuxiliaryMarginal.{u_1, u_2, u_3, u_4} : {Q : Type u_1} →
+  {T : Type u_2} →
+    {C : Type u_3} →
+      {D : Type u_4} →
+        [Fintype Q] →
+          [DecidableEq Q] →
+            [Fintype T] →
+              [DecidableEq T] →
+                [Fintype C] →
+                  [DecidableEq C] →
+                    [Fintype D] →
+                      [DecidableEq D] →
+                        (Q × T → ℂ) →
+                          (k : ℕ) →
+                            (B : Finset (Fin k)) →
+                              ((Fin k → Q × T) × (Fin k → C) × (Fin k → D) → ℂ) →
+                                Matrix ((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C)) ((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C))
+                                  ℂ :=
+fun {Q} {T} {C} {D} [Fintype Q] [DecidableEq Q] [Fintype T] [DecidableEq T] [Fintype C] [DecidableEq C] [Fintype D]
+    [DecidableEq D] Ω k B u ↦
+  have w := (Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u;
+  have e :=
+    ((TensorPower.goodBadCopiesEquiv C B).prodCongr (Equiv.refl (Fin k → D))).trans
+      (Equiv.prodAssoc (Fin Bᶜ.card → C) (Fin B.card → C) (Fin k → D));
+  have f := fun x ↦
+    w
+      ((FiniteProduct.splitEquiv (fun x ↦ Q × T) B).symm
+          (x.2.2.2, fun i ↦ (x.1.1 (Bᶜ.equivFin i), x.2.2.1 (Bᶜ.equivFin i))),
+        e.symm (x.1.2, x.2.1));
+  (Matrix.vecMulVec f (star f)).partialTraceRight
+theorem Matrix.replicaGoodRegionalAuxiliaryMarginal_eq.{u_1, u_2, u_3, u_4} : ∀ {Q : Type u_1} {T : Type u_2}
+  {C : Type u_3} {D : Type u_4} [inst : Fintype Q] [inst_1 : DecidableEq Q] [inst_2 : Fintype T]
+  [inst_3 : DecidableEq T] [inst_4 : Fintype C] [inst_5 : DecidableEq C] [inst_6 : Fintype D] [inst_7 : DecidableEq D]
+  (Ω : Q × T → ℂ),
+  ‖WithLp.toLp 2 Ω‖ = 1 →
+    ∀ (k : ℕ) (B : Finset (Fin k)) (u : (Fin k → Q × T) × (Fin k → C) × (Fin k → D) → ℂ),
+      Matrix.replicaGoodRegionalAuxiliaryMarginal Ω k B u =
+        Matrix.kroneckerMap (fun x1 x2 ↦ x1 * x2)
+          (Matrix.finKronecker fun x ↦ (Matrix.vecMulVec Ω (star Ω)).partialTraceRight)
+          (Matrix.replicaGoodAuxiliaryMarginal Ω k B u) :=
+fun {Q} {T} {C} {D} [Fintype Q] [DecidableEq Q] [Fintype T] [DecidableEq T] [Fintype C] [DecidableEq C] [Fintype D]
+    [DecidableEq D] Ω hΩ k B u ↦
+  Matrix.goodRegionalRetained_density✝ Ω hΩ B
+    (((TensorPower.goodBadCopiesEquiv C B).prodCongr (Equiv.refl (Fin k → D))).trans
+      (Equiv.prodAssoc (Fin Bᶜ.card → C) (Fin B.card → C) (Fin k → D)))
+    u

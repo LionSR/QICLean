@@ -1,0 +1,13 @@
+{
+  "source_revision": "d3c2710149ae35128407a6ffcbd1d4d3e66311f0",
+  "command": [
+    "lake",
+    "build"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T22:12:59.874440+00:00",
+  "elapsed_seconds": 317.575,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/groupedLabelEntropyIntegration8750/full-build-repair.log",
+  "sha256": "afb55bcd26b7360845b031ff1d61396cec9242783e449c99dd97569267259202"
+}

@@ -1,0 +1,30 @@
+Matrix.replicaGoodCopyRemainder.{u_1, u_2} {A : Type u_1} {C : Type u_2} [Fintype A] (Ω : A → ℂ) {k : ℕ}
+  (B : Finset (Fin k)) (u : (Fin k → A) × C → ℂ) : FiniteProduct.Configuration (fun x => A) B × C → ℂ
+Matrix.replicaExcitationProjection_mulVec_factorization.{u_1, u_2} {A : Type u_1} {C : Type u_2} [Fintype A]
+  [DecidableEq A] [Fintype C] [DecidableEq C] (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) {k : ℕ} (B : Finset (Fin k))
+  (u : (Fin k → A) × C → ℂ) (b : FiniteProduct.Configuration (fun x => A) B)
+  (g : FiniteProduct.Configuration (fun x => A) Bᶜ) (c : C) :
+  (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u
+      ((FiniteProduct.splitEquiv (fun x => A) B).symm (b, g), c) =
+    (∏ i, Ω (g i)) *
+      Matrix.replicaGoodCopyRemainder Ω B
+        ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u) (b, c)
+Matrix.replicaGoodCopy_factorization_of_fixed.{u_1, u_2} {A : Type u_1} {C : Type u_2} [Fintype A] [DecidableEq A]
+  [Fintype C] [DecidableEq C] (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) {k : ℕ} (B : Finset (Fin k))
+  (u : (Fin k → A) × C → ℂ)
+  (hu : (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u = u)
+  (b : FiniteProduct.Configuration (fun x => A) B) (g : FiniteProduct.Configuration (fun x => A) Bᶜ) (c : C) :
+  u ((FiniteProduct.splitEquiv (fun x => A) B).symm (b, g), c) =
+    (∏ i, Ω (g i)) * Matrix.replicaGoodCopyRemainder Ω B u (b, c)
+Matrix.norm_replicaGoodCopyRemainder_of_fixed.{u_1, u_2} {A : Type u_1} {C : Type u_2} [Fintype A] [DecidableEq A]
+  [Fintype C] [DecidableEq C] (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) {k : ℕ} (B : Finset (Fin k))
+  (u : (Fin k → A) × C → ℂ)
+  (hu : (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec u = u) :
+  ‖WithLp.toLp 2 (Matrix.replicaGoodCopyRemainder Ω B u)‖ = ‖WithLp.toLp 2 u‖
+def Matrix.replicaGoodCopyRemainder.{u_1, u_2} : {A : Type u_1} →
+  {C : Type u_2} →
+    [Fintype A] →
+      (A → ℂ) →
+        {k : ℕ} → (B : Finset (Fin k)) → ((Fin k → A) × C → ℂ) → FiniteProduct.Configuration (fun x => A) B × C → ℂ :=
+fun {A} {C} [Fintype A] Ω {k} B u bc =>
+  ∑ g, (∏ i, star (Ω (g i))) * u ((FiniteProduct.splitEquiv (fun x => A) B).symm (bc.1, g), bc.2)

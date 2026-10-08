@@ -1,0 +1,30 @@
+{
+  "source_revision": "bae99ee2bdca809d374246ec53b4c3e9782d0b15",
+  "compression_source_revision": "4689fb0bf7098493ca15ee95d8cff5cb9bbb84ad",
+  "compression_leaf_evidence_revision": "36c60c2515b79ef3dc3e185c6201bd44eab880db",
+  "excitation_prerequisite_revision": "0e64e1af3cd626df2230961c82e3c47a67939ad7",
+  "merge_revision": "28ef1a54a146cd1e62bb10109cdc4f22d2cebc00",
+  "coverage": "Entire actual component source, including the private constructed good/bad split.",
+  "files": [
+    {
+      "path": "QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean",
+      "sha256": "28d9503f05d41b7229a5edaaa0406c34fa73d22735405b32a0a40902fc728d6c",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/replica_good_auxiliary_label_bound.tex",
+      "sha256": "9ffdcc2279ae49074528c40642534776b41263f28edabfbfa0f9ec24c870effc",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-replica-good-auxiliary-label-bound.md",
+      "sha256": "8e442c878b0a020bfb7009dbdcceb38f4c42016410da198aa1cbb3d2456d7bbe",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "ff4e4d369abf23550657eb03dc7a7be8d4e63253a4a041f5a2dcfcc2ac1393cb",
+      "coverage": "Entire file."
+    }
+  ]
+}

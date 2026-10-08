@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "texra-blueprint",
+    "web"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 52.02,
+  "source_revision": "942add5cf83a5acc3864197e0844b2074875d6c9",
+  "log": "docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/web.log",
+  "sha256": "e0b0a240b6ef85f69de479580ac3ab8c1329dd9040bdccc2ccfc165a2159bee7"
+}

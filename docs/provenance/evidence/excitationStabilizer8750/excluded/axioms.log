@@ -1,0 +1,16 @@
+'Matrix.permOp_mul_replicaExcitationProjection' depends on axioms: [propext, Classical.choice, Quot.sound]
+docs/provenance/evidence/excitationStabilizer8750/Axioms.lean:3:0: error: The module doc-string for a file should be the first command after the imports.
+Please, add a module doc-string (`/-! ... -/`) before `#print axioms Matrix.permOp_mul_replicaExcitationProjection`.
+
+Hint: Type `m(odule docstring) + [tab]` to insert a template via snippet.
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
+'Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+`#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]

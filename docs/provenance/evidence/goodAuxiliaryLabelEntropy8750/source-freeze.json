@@ -1,0 +1,28 @@
+{
+  "source_revision": "0b6ff5a3f75635c5e829e476b18209e3cd4d9fec",
+  "bad_copy_source_revision": "fe621df0e0b9025b39172a750bc6e56ee692dc08",
+  "parent_release": "18155980ade0fce287c18e84a5b6ba3d5a8de185",
+  "coverage": "Entire new source; both public operator bounds and all internal spectral-resolution calculations.",
+  "files": [
+    {
+      "path": "QICLean/Representation/GoodAuxiliaryLabelEntropy.lean",
+      "sha256": "1271344ceba586973e679661e33d94a7cf94c96216361e8239bdaf78f0c76d4e",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/good_auxiliary_label_entropy.tex",
+      "sha256": "ac20cb99fe6f4d6ca4180ca5bd305aa8075b1049b6d6baa1fc578a3d33b17d02",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-good-auxiliary-label-entropy.md",
+      "sha256": "ea82c1f48f9c35825a9b75058988340a17e4e463906a7fe314ec6943cb72f68a",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "fc3f4ca3292de934e77c7d857d5aa4aed03faf64e110203ab50d57f98f028088",
+      "coverage": "Entire file."
+    }
+  ]
+}

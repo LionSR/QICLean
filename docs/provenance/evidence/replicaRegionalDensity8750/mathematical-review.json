@@ -1,0 +1,8 @@
+{
+  "source_revision": "84865e1359c36daaa20aef8d4fa267e28b97ba6d",
+  "mathematical_introduction": "197c14880aa35553458ab13d3d6ac31972f1557c",
+  "paper_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "paper_passage": "Section 7, lines 520\u2013549, comparator:merge-moments",
+  "review": "The canonical physical split lists bad coordinates before good coordinates. The chosen Finset.equivFin enumeration pairs q and t from the same good copy. The actual partial trace discards all good T coordinates and every bad Q\u00d7T coordinate; it retains good Q and the whole auxiliary C. The RHS is the original one-copy Q marginal tensor power and the actual marginal of that same excitation component. Only the one-copy vector is unit. k=0, B=univ, B=empty and zero components are included by empty products and singleton empty configurations. Good-auxiliary restriction, permutation symmetry and subsequent merge moments remain separate. The finite-set equivalence is not asserted to preserve numerical order.",
+  "result": "passed"
+}

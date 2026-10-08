@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaRegionalDensityIntegration8750/review-leaf.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.71,
+  "source_revision": "a5a72254c33075af243b4defab475c544d4b0f50",
+  "log": "docs/provenance/evidence/replicaRegionalDensityIntegration8750/leaf-review.log",
+  "sha256": "6d0fc0242853056fb2dbad854e1a86caa4d8b116a2978dcdd13ed5a8c4f0d213"
+}

@@ -1,0 +1,16 @@
+{
+  "source_revision": "076b8c48a1bb018d796a00855cce8dcb9b0f7077",
+  "stage": "pre-freeze preparation",
+  "argv": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "076b8c48"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T00:31:54.036209+00:00",
+  "elapsed_seconds": 0.16178816600586288,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaJointDensity8750/prose-introduction.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

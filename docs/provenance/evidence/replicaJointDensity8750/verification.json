@@ -1,0 +1,335 @@
+{
+  "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+  "declarations": [
+    "Matrix.replicaGoodRegionalAuxiliaryMarginal",
+    "Matrix.replicaGoodRegionalAuxiliaryMarginal_eq"
+  ],
+  "checks": [
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensity8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:33:22.711995+00:00",
+      "elapsed_seconds": 4.908401791995857,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/axioms.log",
+      "sha256": "141e585885125f37c46ebeb8f3d712f611fac489e8048d8211583257e194ecc7"
+    },
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaJointDensity8750/mathlib-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:32:29.092972+00:00",
+      "elapsed_seconds": 0.09405400000105146,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/guard-frozen.log",
+      "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+    },
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensity8750/check-hazards.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:33:34.497564+00:00",
+      "elapsed_seconds": 0.03440124999906402,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/hazards.log",
+      "sha256": "a9e606221242f5b2dd99676e05ee44a68f3d3aa2bd7dcf3851bf4739c8dab452"
+    },
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensity8750/pattern-scan.py",
+        "--root",
+        "QICLean",
+        "--top",
+        "5"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:33:32.575943+00:00",
+      "elapsed_seconds": 0.669879207998747,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/patterns.log",
+      "sha256": "bfe91ff4c46806437ef76c4ec6e6a302f2e0e46f491307f6c47d5467375c26d4"
+    },
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensity8750/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:33:33.297929+00:00",
+      "elapsed_seconds": 1.147707875003107,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/preservation.log",
+      "sha256": "27b3f136a2daba8a677846b9072937d8ea15144e774df0c8b9b8559b3e06ede3"
+    },
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "076b8c48"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:33:32.341440+00:00",
+      "elapsed_seconds": 0.18695237499196082,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaJointDensity8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:33:49.415966+00:00",
+      "elapsed_seconds": 0.3284316250064876,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/provenance.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+    },
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensity8750/Statements.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:33:27.670939+00:00",
+      "elapsed_seconds": 4.623349125002278,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/statements.log",
+      "sha256": "7a2df89d0171bf96e3475c2438696b0bab600bb0df687e7db412bcba23491ba0"
+    },
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/ReplicaJointDensity.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:33:13.516480+00:00",
+      "elapsed_seconds": 9.146027499999036,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+      "argv": [
+        "lake",
+        "build",
+        "QICLean.Analysis.ReplicaJointDensity"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:32:29.258646+00:00",
+      "elapsed_seconds": 32.5126321669959,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/target.log",
+      "sha256": "5ac38ce0ed1cfec6d7934afc606286c660734a4a12bab6468d38579b1835215b"
+    }
+  ],
+  "preparatory_checks": [
+    {
+      "source_revision": "076b8c48a1bb018d796a00855cce8dcb9b0f7077",
+      "stage": "pre-freeze preparation",
+      "argv": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:30:01.367257+00:00",
+      "elapsed_seconds": 22.737820207999903,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "source_revision": "076b8c48a1bb018d796a00855cce8dcb9b0f7077",
+      "stage": "pre-freeze preparation",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaJointDensity8750/mathlib-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:30:48.296561+00:00",
+      "elapsed_seconds": 0.07672437500150409,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/guard.log",
+      "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+    },
+    {
+      "source_revision": "076b8c48a1bb018d796a00855cce8dcb9b0f7077",
+      "stage": "pre-freeze preparation",
+      "argv": [
+        "lake",
+        "build",
+        "QICLean.Analysis.ReplicaGoodAuxiliaryMarginal"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:30:48.441721+00:00",
+      "elapsed_seconds": 29.653698084002826,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/prerequisite-target.log",
+      "sha256": "208e2255b64df0cc58f1fb26a79585eb008a83e88f46aad129dbe429ddcb7871"
+    },
+    {
+      "source_revision": "076b8c48a1bb018d796a00855cce8dcb9b0f7077",
+      "stage": "pre-freeze preparation",
+      "argv": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "076b8c48"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:31:54.036209+00:00",
+      "elapsed_seconds": 0.16178816600586288,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/prose-introduction.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "076b8c48a1bb018d796a00855cce8dcb9b0f7077",
+      "stage": "pre-freeze preparation",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/ReplicaJointDensity.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T00:31:24.668232+00:00",
+      "elapsed_seconds": 20.74537475001125,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaJointDensity8750/strict-introduction.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "excluded_failed_attempts": [],
+  "file_hashes": {
+    "docs/provenance/evidence/replicaJointDensity8750/Axioms.lean": "69591acbf93329c87a1bc55891cd11011c94d63b44890fe96ea948241e68fb93",
+    "docs/provenance/evidence/replicaJointDensity8750/README.md": "a9833b3770778739b0253aded9c236d8153e5febacc95c4a28d72d92b1e25853",
+    "docs/provenance/evidence/replicaJointDensity8750/Statements.lean": "2dc7afc193bde098a02b05f094c1034bbf9c38b5d363029e749b292ae0fc7082",
+    "docs/provenance/evidence/replicaJointDensity8750/axioms-exit.json": "e4de533c7f5d514aa3f0dc9524859ac75f347692e64fea8953cb60e7a9a69381",
+    "docs/provenance/evidence/replicaJointDensity8750/axioms.log": "141e585885125f37c46ebeb8f3d712f611fac489e8048d8211583257e194ecc7",
+    "docs/provenance/evidence/replicaJointDensity8750/axioms.log.gz": "dbd2b368f2336486765ad3a84a9826efbc04ce941928ca679d4b9d0199d797e7",
+    "docs/provenance/evidence/replicaJointDensity8750/cache-exit.json": "42fa5b312a7ecb07555a3410ba8854ec90ba90ae88e9c2bfb31c72d28ce62c30",
+    "docs/provenance/evidence/replicaJointDensity8750/cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/replicaJointDensity8750/cache.log.gz": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "docs/provenance/evidence/replicaJointDensity8750/capture-preliminary.py": "c0375c250e3619266fb8c4255103219288add43db7b841db5d5c25294aea0f72",
+    "docs/provenance/evidence/replicaJointDensity8750/capture.py": "dbd1dd407b7479306d18aa360cb75f5fcc26c120a154fcff99d19681dafec78d",
+    "docs/provenance/evidence/replicaJointDensity8750/check-hazards.py": "abc8c198ca36569ec2eeff923393307f6f5459b1d5d2c6ace780134cb3e66a15",
+    "docs/provenance/evidence/replicaJointDensity8750/check-preservation.py": "83db1c2034654b56fc05231b40e5e572f4a0729a90335cdeed1c0ffdfad43ccd",
+    "docs/provenance/evidence/replicaJointDensity8750/compression.json": "3a0994224b6e825e0d52df979c611df761ad041058925a60fba896f3a34d5482",
+    "docs/provenance/evidence/replicaJointDensity8750/guard-exit.json": "fb0123ff31af1a56a180e6181b771e1a6d974eefb481bd21428fb751ce94bf8b",
+    "docs/provenance/evidence/replicaJointDensity8750/guard-frozen-exit.json": "5cf2736be9a34c0704e00653f23cf81f2ae1ea595feac137dc00edf90a295df4",
+    "docs/provenance/evidence/replicaJointDensity8750/guard-frozen.log": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "docs/provenance/evidence/replicaJointDensity8750/guard-frozen.log.gz": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "docs/provenance/evidence/replicaJointDensity8750/guard.log": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "docs/provenance/evidence/replicaJointDensity8750/guard.log.gz": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "docs/provenance/evidence/replicaJointDensity8750/hazards-exit.json": "3b94407e1d82adf2f1cc3ed9ca2576c28cd9d25150d9dfca59f6f99a99ecafc4",
+    "docs/provenance/evidence/replicaJointDensity8750/hazards.log": "a9e606221242f5b2dd99676e05ee44a68f3d3aa2bd7dcf3851bf4739c8dab452",
+    "docs/provenance/evidence/replicaJointDensity8750/hazards.log.gz": "5a67267ec7ca467d5c93a9fb57227f2b79f19f0ce897fba07a743df72423b462",
+    "docs/provenance/evidence/replicaJointDensity8750/mathematical-review.json": "404c72217cb45eee2f90b427295ac15502218836bf55fec410e4c3525cf31cfd",
+    "docs/provenance/evidence/replicaJointDensity8750/mathlib-guard.py": "7735e65b032808f8e4f6a672cec0c4a72ee8b81fa84177b9330fc44a71d456f5",
+    "docs/provenance/evidence/replicaJointDensity8750/owned-shards.json": "07a61f59a4f23763a41b3cc0d266aca42b7e67dcff811784fc3199682e2530d4",
+    "docs/provenance/evidence/replicaJointDensity8750/parent-preservation.json": "eb540dcebbd5939b3abcedf68badee07bf5903aa88b022d3d3a5a5251da4c875",
+    "docs/provenance/evidence/replicaJointDensity8750/pattern-scan.py": "d6c4e9a12ccc192ca92de9a56f1850753dc2bc44724c647e90fc51a3ddaa4b4b",
+    "docs/provenance/evidence/replicaJointDensity8750/patterns-exit.json": "9f829eb27ba504caaf8acf7834e490098e21461c1fd49091bb1f017652ed1794",
+    "docs/provenance/evidence/replicaJointDensity8750/patterns.log": "bfe91ff4c46806437ef76c4ec6e6a302f2e0e46f491307f6c47d5467375c26d4",
+    "docs/provenance/evidence/replicaJointDensity8750/patterns.log.gz": "70a6c3b4ab4659c144a875ef4a6725734f5de7479ada7c852c0cb929ec5b799c",
+    "docs/provenance/evidence/replicaJointDensity8750/prerequisite-merge-preservation.json": "fb997dfe72a7640ee8a68caa844abf62e1f08e7b67150b25d1717a3dd4e96db8",
+    "docs/provenance/evidence/replicaJointDensity8750/prerequisite-target-exit.json": "b88d4846734a383e6193b248bd535d83a3f9d1caadaffa15eed9cf99254b2ca5",
+    "docs/provenance/evidence/replicaJointDensity8750/prerequisite-target.log": "208e2255b64df0cc58f1fb26a79585eb008a83e88f46aad129dbe429ddcb7871",
+    "docs/provenance/evidence/replicaJointDensity8750/prerequisite-target.log.gz": "404a3b1ebe5da9e327eef7529272b39c27a2875fdb1bdef239ab0a165bc18c6c",
+    "docs/provenance/evidence/replicaJointDensity8750/preservation-exit.json": "d14cc66ef648119b4517c931dd61bb4fc94d41d1eab93055811a2450647bd54c",
+    "docs/provenance/evidence/replicaJointDensity8750/preservation.log": "27b3f136a2daba8a677846b9072937d8ea15144e774df0c8b9b8559b3e06ede3",
+    "docs/provenance/evidence/replicaJointDensity8750/preservation.log.gz": "6d134be9fafa7ac8cefcbdbf31afa549ef5c47d81ee3ab7096677dc2ffcdb984",
+    "docs/provenance/evidence/replicaJointDensity8750/prose-exit.json": "cda61e25f8e0913216ca18325e3b733c83ee96bde477e05b85774775d74a0353",
+    "docs/provenance/evidence/replicaJointDensity8750/prose-introduction-exit.json": "28b89a53379bd06799dc6747d629dca0336009460f20a7131ab6947fe730b6d9",
+    "docs/provenance/evidence/replicaJointDensity8750/prose-introduction.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaJointDensity8750/prose-introduction.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/replicaJointDensity8750/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaJointDensity8750/prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/replicaJointDensity8750/provenance-exit.json": "8b485b5bdc523eb9c10ccb43d56be7cda36b44a37a6d9047341559abfe36d3a8",
+    "docs/provenance/evidence/replicaJointDensity8750/provenance.log": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+    "docs/provenance/evidence/replicaJointDensity8750/provenance.log.gz": "8df4465601a3f24ec1678b2bbad81a5a0f4bdacb6f1d062c35a761455dcca324",
+    "docs/provenance/evidence/replicaJointDensity8750/run-owned.py": "2263c68ea5713e069bc1a9ce37f38bf1a60d9d4f7752b92f547dd9f3356cce1e",
+    "docs/provenance/evidence/replicaJointDensity8750/source-freeze.json": "80c10d4b47200efe54e983e740c9048363a301de9854b07335735c2e2dc0778f",
+    "docs/provenance/evidence/replicaJointDensity8750/statements-exit.json": "4a29a91a4d0f06f8da0fc9aff7c04ce6d49b57ce759b8d28c56054318f0fdc03",
+    "docs/provenance/evidence/replicaJointDensity8750/statements.log": "7a2df89d0171bf96e3475c2438696b0bab600bb0df687e7db412bcba23491ba0",
+    "docs/provenance/evidence/replicaJointDensity8750/statements.log.gz": "7da96e8abe5fea45ca8924d03644d872686e5500000eeed28fbe829826a5258f",
+    "docs/provenance/evidence/replicaJointDensity8750/strict-introduction-exit.json": "c1ee27598c59a3dbad7e97d953e63001195108b14631c7218aa4e702900678ea",
+    "docs/provenance/evidence/replicaJointDensity8750/strict-introduction.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/replicaJointDensity8750/strict-introduction.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/replicaJointDensity8750/strict-source-exit.json": "85871e2c3e10171afebc3b17b4af5d8d826ea817747463f46d81f728f7928786",
+    "docs/provenance/evidence/replicaJointDensity8750/strict-source.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/replicaJointDensity8750/strict-source.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/replicaJointDensity8750/target-exit.json": "3e6e1e66918540ab402114c47a8ba9df044171712d944416a8f64ac6931851cd",
+    "docs/provenance/evidence/replicaJointDensity8750/target.log": "5ac38ce0ed1cfec6d7934afc606286c660734a4a12bab6468d38579b1835215b",
+    "docs/provenance/evidence/replicaJointDensity8750/target.log.gz": "071b53750377fd5feba2d5143a61cc7c2f0986f70abc79e9be22fe355ad84c16",
+    "docs/provenance/evidence/replicaJointDensity8750/validate-manifest.py": "981cd50d3ab374011651caa6f581e4976f4796c7a4305b667aed2b0537cde3c8",
+    "docs/provenance/evidence/replicaJointDensity8750/validate-owned.py": "68ae4439df5d4833105c48eefcfb6c9b00c743297564d58e5be36981ca2fb900",
+    "QICLean/Analysis/ReplicaJointDensity.lean": "74543f8465db446e8566edf48ce8cbb4d2d81ea94cda8c59b416f0d802398dc7",
+    "blueprint/src/fragment/replica_joint_density.tex": "9c7ececbca72b68941843ea584e0f6e4289e5531484950ac8a519f94cb09f9be",
+    "docs/formalization/replica-joint-density.md": "f69d4c2f12b946a2242b017875fc513e9c03a011581788fe05afd01c31f5a871",
+    "docs/tactic_patterns.md": "d12b6f8bce4ad2d4bdeb76863c9791968d23aeea6f3463fedcc063c1b2fa9971",
+    "docs/provenance/openai-math.d/replicaJointDensity8750.json": "c88f717b83e543a2cf3e6def8c17782cf1c55e8e548bbcde21642020d57436f4"
+  }
+}

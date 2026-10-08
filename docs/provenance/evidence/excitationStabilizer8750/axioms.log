@@ -1,0 +1,7 @@
+'Matrix.permOp_mul_replicaExcitationProjection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

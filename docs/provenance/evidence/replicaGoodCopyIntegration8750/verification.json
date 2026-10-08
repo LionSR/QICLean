@@ -1,0 +1,299 @@
+{
+  "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+  "mathematical_leaf_revision": "38b658ef2ff408eda7a0a958071750bbf70de84b",
+  "leaf_evidence_revision": "cc2450d3fdc9c9d9820f5f54cbe0ab68aba295d5",
+  "published_parent_revision": "799b2a3b0f6ca0ab1c184201e044bb03d942edc0",
+  "production_bindings": {
+    "QICLean/Entropy/TypicalSpectrum.lean": {
+      "revision": "958a33256b1b679eea9994660c31706e4d604932",
+      "sha256": "b1a8948c6461f6adec17b039662f82f2fd2c6a96d9febcde4ba0b376d2426ea4"
+    },
+    "QICLean/Entropy/TypicalDensity.lean": {
+      "revision": "cc89ef96c7390a92861cf45997f77d40cb394ed1",
+      "sha256": "a54f5275da996fb39f886f4f3c31574f927141a20a1d81b04055870b4ac57914"
+    },
+    "QICLean/Entropy/FiniteProductSplitting.lean": {
+      "revision": "2ba107e29c07b623707d030eca3240e52a804b50",
+      "sha256": "ae51eed72617c75f4777a6d99c398195df854270466fa64ba8abfd12b0423739"
+    },
+    "QICLean/Entropy/FiniteProductInformation.lean": {
+      "revision": "e5fe5732e6c10a921793c1c03bee5403e5bf6362",
+      "sha256": "0566d01274428c8dbce8272a3190b7bff96e2f840824a9e295e5104ab375719f"
+    },
+    "QICLean/Analysis/PatchRegulator.lean": {
+      "revision": "68341c6416b8cbe6ee4f804737eb8ccf5a222663",
+      "sha256": "4618e40140707f71bd55a3dbfe436ed0d8d8b85d52e3d0bf7dd683d7da8a54ca"
+    },
+    "QICLean/Analysis/DensitySimplex.lean": {
+      "revision": "5633d8d7d931717c6eb9c5ed41e83ee7eb73eaa4",
+      "sha256": "424d64de5d9ccb21c231093f8149600e2897e2879578be2c0ab0fbd52e044aa8"
+    },
+    "QICLean/Entropy/TypicalPureState.lean": {
+      "revision": "382468eec8f32d2776b7a30d281ff75c0702640b",
+      "sha256": "60a70724e5ca0421796d1958b5bf2da44eee209a4d679a44d61127e9528c8d01"
+    },
+    "QICLean/Entropy/TypicalPureCompression.lean": {
+      "revision": "7076296aad42492bccb9b3bb321ca12b5565d0e9",
+      "sha256": "e0b2e684eaaa83f1969c7048dabcf1f7ec35d90edf7723598715895ebdb34b49"
+    },
+    "QICLean/Entropy/FiniteProductTypicalState.lean": {
+      "revision": "9366e598b122bab020558c3fbbe3f1bd55e7a990",
+      "sha256": "92ab405b18f2cebd705c5fe3fba04a444e0f361e43ac9d796906c0e0b09bd226"
+    },
+    "QICLean/Analysis/ShiftedDensityCommutation.lean": {
+      "revision": "a85789dabd1a2c9f9966fa0b8fdcff160547e88b",
+      "sha256": "8a9e3272897a291decbe3b71babe59c6579f88a29523c3d836766d198634a249"
+    },
+    "QICLean/Entropy/TypicalStateFromTail.lean": {
+      "revision": "79b9d503971a4ff2409fa557e174b46b13fdbbda",
+      "sha256": "149554ccbce80b00197d5f969c04d9674b0c60f2bbca38eb0f0c1771307fe555"
+    },
+    "QICLean/Analysis/SpectralCutoffMass.lean": {
+      "revision": "8f0020f9670356b79727bb6f23383f9c952c93a5",
+      "sha256": "2f77fe08c9482f508558cee3f2a0fb68f7626322bee49d46633cdc51f91ade4a"
+    },
+    "QICLean/Analysis/ReplicaDefect.lean": {
+      "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+      "sha256": "b349352101074287409ab34df6982825b1e1d50f94b06d520bf788dc5285f357"
+    },
+    "QICLean/Analysis/ReplicaExcitationDecomposition.lean": {
+      "revision": "68849bf729881c780a0a66f3a7fe80d22a350bba",
+      "sha256": "7302690f7b083ff1326abf663f497e5c707ca5344a68cebe8cc5ac10fe94e900"
+    },
+    "QICLean/Analysis/ReplicaGoodCopyFactorization.lean": {
+      "revision": "38b658ef2ff408eda7a0a958071750bbf70de84b",
+      "sha256": "2f9ef7204cdeb8dc0c523be766ec5dd38868281ce37a4b2c4e846cf220d6fccd"
+    }
+  },
+  "full_library_jobs": 9689,
+  "stock_kernel_reports": 93,
+  "unchanged_parent_reports": 89,
+  "parent_raw_audit_exact_prefix": true,
+  "owned_provenance_shards": 15,
+  "unchanged_parent_shards": 14,
+  "parent_and_leaf_log_bindings": 280,
+  "mathlib_prebuilt_cache": true,
+  "native_declaration_count": 3141,
+  "native_checker_sha256": "67873de2b0bf2a3868d9b090017833275edb2ad500803ae0c9e60e536a878f14",
+  "native_checker_revision": "3d425859e73fcfbef85b9638c2a91708ef4a22d4",
+  "commands": {
+    "web-reader": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodCopyIntegration8750/web-qa.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-07T21:15:06.310657+00:00",
+      "elapsed_seconds": 6.754,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/web-reader.log",
+      "sha256": "018bd41b76242264b41d7a1235002aa8a257623d144b4184673674e73d3c1e6a"
+    },
+    "web": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-07T21:13:17.264407+00:00",
+      "elapsed_seconds": 50.712,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/web.log",
+      "sha256": "8f9cc727f9cb8f075ba6c5fc5c637b2bfd3473d6734dfa4f6c8456a56c86b451",
+      "gzip_log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/web.log.gz",
+      "gzip_sha256": "a60b9bb8d6fd21adfc4e28188e0882cb9a5dfb4cf038a7717a79544100b58f8f",
+      "gzip_mtime": 0
+    },
+    "cache-guard": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "test",
+        "-f",
+        ".lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-07T21:12:23.712308+00:00",
+      "elapsed_seconds": 0.005,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/cache-guard.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "paper-gaps": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-07T21:13:17.264369+00:00",
+      "elapsed_seconds": 0.417,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    "prose-changed": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "799b2a3b0f6ca0ab1c184201e044bb03d942edc0"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-07T21:13:56.266337+00:00",
+      "elapsed_seconds": 0.214,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/prose-changed.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    "imports": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-07T21:13:17.264546+00:00",
+      "elapsed_seconds": 0.389,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/imports.log",
+      "sha256": "b1805dbf98a45afee8088003f48b7102bedbd4a3982128ba3a3021fa13c1d189"
+    },
+    "pdf": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-07T21:13:16.171242+00:00",
+      "elapsed_seconds": 48.394,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/pdf.log",
+      "sha256": "dba25b05b02d858f55caa73247b4311f6fb0d76718946477174863bfe03a9a3e",
+      "gzip_log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/pdf.log.gz",
+      "gzip_sha256": "01a4bc510a84b5198eaa41755287f278f0ee2625032d1279eb74f79e31b65da1",
+      "gzip_mtime": 0
+    },
+    "provenance": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodCopyIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-07T21:13:55.132690+00:00",
+      "elapsed_seconds": 2.656,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/provenance.log",
+      "sha256": "ffa26bf1ac2da7b899a0c584d830587727b4c8904761135da9e6feb487791dc7"
+    },
+    "full-build": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-07T21:12:23.876683+00:00",
+      "elapsed_seconds": 39.123,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/full-build.log",
+      "sha256": "4be1802cb4f6b4cb0766bcc86caef539238f52561f623d863960b08df98a11ae",
+      "gzip_log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/full-build.log.gz",
+      "gzip_sha256": "d883e836e25cbc28e65791a094f60d4e76a8681c4ebfaaff04212b054b0f7861",
+      "gzip_mtime": 0
+    },
+    "axioms": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "docs/provenance/evidence/replicaGoodCopyIntegration8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-07T21:13:17.264570+00:00",
+      "elapsed_seconds": 6.199,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/axioms.log",
+      "sha256": "5aedf9025bcbad564b0e9d167ea9c571464fbab5dd7b66e699aa19125b8001c2"
+    },
+    "checkdecls": {
+      "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+      "command": [
+        "lake",
+        "env",
+        ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-07T21:15:06.310657+00:00",
+      "elapsed_seconds": 27.313,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "pdf": {
+    "pages": 418,
+    "sha256": "95c5e0f20fb7311586b71ce3af26e17d4af1b6d000f024b0abd2a515afec8920",
+    "inspected_physical_pages": [
+      402,
+      403
+    ],
+    "printed_page_numbers": [
+      401,
+      402
+    ],
+    "section": "13.25",
+    "entries": [
+      "13.25.1",
+      "13.25.2",
+      "13.25.3",
+      "13.25.4"
+    ],
+    "formulas": [
+      "13.243",
+      "13.244",
+      "13.245"
+    ],
+    "visual_review": "All new definitions, assumptions, equations and proofs inspected; no clipping, overlapping text or broken mathematical glyphs."
+  },
+  "browser_reader": {
+    "typeset": 3259,
+    "anchors": {
+      "sec:replica_good_copy": true,
+      "def:replica_good_remainder": true,
+      "eq:replica_good_contraction": true,
+      "thm:replica_good_component": true,
+      "eq:replica_good_component": true,
+      "eq:replica_good_residual": true,
+      "thm:replica_good_fixed": true,
+      "thm:replica_good_norm": true
+    },
+    "widths": {
+      "360": {
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "escaped": []
+      },
+      "1440": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "escaped": []
+      }
+    }
+  },
+  "claim_scope": "Actual good-copy factorization and norm equality derived from literal excitation sectors with every auxiliary factor retained. Symmetry compatibility, Schur labels and metric comparisons remain distinct.",
+  "mathematical_source_changed_during_verification": false,
+  "all_required_exits_zero": true
+}

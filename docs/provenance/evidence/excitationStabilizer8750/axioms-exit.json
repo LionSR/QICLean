@@ -1,0 +1,19 @@
+{
+  "source_revision": "6c2e938246305038cb4e448499efcb04d2921c7f",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/excitationStabilizer8750/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-07T22:44:53.354746+00:00",
+  "elapsed_seconds": 19.16406658300548,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/excitationStabilizer8750/axioms.log",
+  "sha256": "85b5c4f9d1c7e4d2155827ab91c9b87d9b0169a2c7246e998dceb6b7e0ca02a9"
+}

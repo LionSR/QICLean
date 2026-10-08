@@ -1,0 +1,13 @@
+{
+  "source_revision": "ac88a3117b6215a4f74eb8cf10209ba071e024fb",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-qa.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T23:44:18.446542+00:00",
+  "elapsed_seconds": 2.755,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/web-reader.log",
+  "sha256": "04bac1c9d42903f023ded19d5fef0f6ce13880af64c251be6c600e283991a540"
+}

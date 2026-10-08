@@ -1,0 +1,10 @@
+'Matrix.IsHermitian.spectralSelectionEmbedding' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Matrix.compressedTypicalPureState' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.kronecker_mulVec_compressedTypicalPureState' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.partialTraceRight_compressedTypicalPureState' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.partialTraceLeft_compressedTypicalPureState' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.norm_compressedTypicalPureState' depends on axioms: [propext, Classical.choice, Quot.sound]

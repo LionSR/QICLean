@@ -1,0 +1,23 @@
+{
+  "source_revision": "0d00ac83ac5533452abdfed33e5b55f301f32b2b",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/docs/provenance/evidence/replicaGoodCopyDensity8750/Statements.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-07T23:35:48.278772+00:00",
+  "elapsed_seconds": 19.145177083002636,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodCopyDensity8750/statements.log",
+  "sha256": "9cad026bd783cbac7b7d488133fb14eaa124c8676a4ce7d29d39f6afd74b8d6d"
+}

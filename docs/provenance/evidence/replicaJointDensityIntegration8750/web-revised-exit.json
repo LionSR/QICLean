@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "texra-blueprint",
+    "web"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 56.37,
+  "source_revision": "7840e716185f9d477c3c135192f3ec0573813e14",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/web-revised.log",
+  "sha256": "f4689be18a005ca0027993e71c636491588beef67eb9ad33f9abbd36bfa2bc00"
+}

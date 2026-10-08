@@ -1,0 +1,71 @@
+\section{Regional information and discarding systems}
+
+The following inequalities hold for every finite-product vector $\psi$,
+with regional entropy defined by the reductions of
+$|\psi\rangle\langle\psi|$. In particular, they hold for every unit pure
+state. Empty regions and unequal local dimensions are allowed.
+
+\begin{theorem}[Nonnegative regional conditional information]
+    \label{thm:finite_product_conditional_nonnegative}
+    \lean{FiniteProduct.conditionalMutualInformation_nonneg}
+    \leanok
+    \uses{def:finite_product_conditional_information,
+        def:finite_product_regional_entropy, thm:ssa_unnormalized}
+    For pairwise disjoint regions $X,C,Z$,
+    $I_\psi(X:C\mid Z)\ge0$.
+    For unit states this is the strong-subadditivity input in
+    \cite[Section~2]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    Express the actual reduction on $X\cup Z\cup C$ in the product basis
+    $E_X\times(E_Z\times E_C)$. This matrix is positive semidefinite.
+    Composition of regional partial traces identifies its $ZC$, $Z$ and
+    $XZ$ marginals with the corresponding original regional reductions.
+    The two associations of three disjoint configuration spaces agree;
+    entropy is unchanged by their basis bijections. Apply unnormalized
+    strong subadditivity to obtain
+    \begin{align}
+        S_\psi(XZC)+S_\psi(Z)&\le S_\psi(XZ)+S_\psi(ZC).
+        \label{eq:finite_product_regional_ssa}
+    \end{align}
+    Subtracting the left side gives the asserted conditional information.
+\end{proof}
+
+\begin{theorem}[Submodular regional entropy]
+    \label{thm:finite_product_entropy_submodular}
+    \lean{FiniteProduct.entropy_submodular}
+    \leanok
+    \uses{def:finite_product_regional_entropy, thm:ssa_unnormalized}
+    For arbitrary regions $R,T$,
+    \begin{align}
+        S_\psi(R\cup T)+S_\psi(R\cap T)&\le S_\psi(R)+S_\psi(T).
+        \label{eq:finite_product_entropy_submodular}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Use the same regional strong-subadditivity argument with the disjoint
+    systems $R\setminus T$, $R\cap T$, $T\setminus R$.
+    Their total union is $R\cup T$, while the first two and last two
+    unions are respectively $R$ and $T$. Substituting these identities
+    into~(\ref{eq:finite_product_regional_ssa}) gives
+    (\ref{eq:finite_product_entropy_submodular}).
+\end{proof}
+
+\begin{theorem}[Regional information decreases under discarding]
+    \label{thm:finite_product_information_discarding}
+    \lean{FiniteProduct.mutualInformation_mono_left}
+    \leanok
+    \uses{thm:finite_product_entropy_submodular,
+        def:finite_product_regional_entropy}
+    If $R\subseteq T$ and $T\cap J=\varnothing$, then
+    $I_\psi(R:J)\le I_\psi(T:J)$.
+    This gives the final subset step in the amplification argument of
+    \cite[Section~10]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    Apply~(\ref{eq:finite_product_entropy_submodular}) to $R\cup J$ and
+    $T$. Their intersection is $R$ and their union is $T\cup J$, so
+    $S_\psi(T\cup J)+S_\psi(R)\le S_\psi(R\cup J)+S_\psi(T)$.
+    Adding $S_\psi(J)$ and rearranging gives the mutual-information
+    inequality.
+\end{proof}

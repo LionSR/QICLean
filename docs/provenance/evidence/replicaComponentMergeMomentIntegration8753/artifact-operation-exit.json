@@ -1,0 +1,19 @@
+{
+  "source_revision": "65b283fcd652ae7fb61c84810d9b08a0a432ff08",
+  "argv": [
+    "node",
+    "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+    "--operation-kind",
+    "edit",
+    "--expected-output-count",
+    "1",
+    "--output-format",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T01:10:54.923969+00:00",
+  "elapsed_seconds": 0.13561149999441113,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaComponentMergeMomentIntegration8753/artifact-operation.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

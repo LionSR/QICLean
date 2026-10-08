@@ -1,0 +1,19 @@
+{
+  "source_revision": "e15c46e0679bcddc122d1366b9363853a9df9441",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "docs/provenance/evidence/groupedLabelEntropy8750/TextStyle.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T21:43:18.487686+00:00",
+  "elapsed_seconds": 19.206,
+  "exit_code": 1,
+  "log": "docs/provenance/evidence/groupedLabelEntropy8750/text-style-initial.log",
+  "sha256": "0696439d4a7f22b4e03f46924c85ddacfd0cb0e13f694c94919bd9c47a8a83ff",
+  "note": "Initial audit driver lacked its required module docstring; production source was unchanged."
+}

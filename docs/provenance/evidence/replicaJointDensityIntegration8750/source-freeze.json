@@ -1,0 +1,10 @@
+{
+  "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+  "parent_revision": "076b8c48",
+  "production_sha256": {
+    "QICLean/Analysis/ReplicaJointDensity.lean": "74543f8465db446e8566edf48ce8cbb4d2d81ea94cda8c59b416f0d802398dc7",
+    "blueprint/src/fragment/replica_joint_density.tex": "9c7ececbca72b68941843ea584e0f6e4289e5531484950ac8a519f94cb09f9be",
+    "docs/formalization/replica-joint-density.md": "f69d4c2f12b946a2242b017875fc513e9c03a011581788fe05afd01c31f5a871",
+    "docs/tactic_patterns.md": "d12b6f8bce4ad2d4bdeb76863c9791968d23aeea6f3463fedcc063c1b2fa9971"
+  }
+}

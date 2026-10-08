@@ -1,0 +1,12 @@
+{
+  "declarations": [
+    "TensorPower.copyPerm_groupedGood_labelEntropy_compression"
+  ],
+  "reports": 1,
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "result": "standard only"
+}

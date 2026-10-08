@@ -1,0 +1,13 @@
+{
+  "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+  "argv": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+  "exit_code": 0,
+  "elapsed_seconds": 0.4009270668029785,
+  "log": "docs/provenance/evidence/areaLawCombined23003/paper-gaps.log",
+  "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+}

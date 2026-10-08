@@ -1,0 +1,25 @@
+{
+  "pages": 418,
+  "sha256": "95c5e0f20fb7311586b71ce3af26e17d4af1b6d000f024b0abd2a515afec8920",
+  "inspected_physical_pages": [
+    402,
+    403
+  ],
+  "printed_page_numbers": [
+    401,
+    402
+  ],
+  "section": "13.25",
+  "entries": [
+    "13.25.1",
+    "13.25.2",
+    "13.25.3",
+    "13.25.4"
+  ],
+  "formulas": [
+    "13.243",
+    "13.244",
+    "13.245"
+  ],
+  "visual_review": "All new definitions, assumptions, equations and proofs inspected; no clipping, overlapping text or broken mathematical glyphs."
+}

@@ -1,0 +1,14 @@
+{
+  "source_revision": "7b285119725de296ed2a8e6ce154481ce9b30b35",
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Analysis.ReplicaGoodAuxiliaryMarginal"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-08T00:12:24.205572+00:00",
+  "elapsed_seconds": 10.543,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodAuxiliaryMarginal8750/build.log",
+  "sha256": "7339c3a479b087955c924ea1ea94c2ba1ddabcd468dd2c4e576d8518c5d44210"
+}

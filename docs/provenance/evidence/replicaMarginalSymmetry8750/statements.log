@@ -1,0 +1,108 @@
+theorem PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp.{u_1, u_2, u_3} : ∀
+  {G : Type u_1} {X : Type u_2} {Y : Type u_3} [inst : Group G] [inst_1 : Fintype X] [inst_2 : DecidableEq X]
+  [inst_3 : Fintype Y] [inst_4 : DecidableEq Y] (φ : G →* Equiv.Perm X) (χ : G →* Equiv.Perm Y) (g : G) (v : X × Y → ℂ),
+  (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) ((PermutationRepresentation.permOp φ) g)
+            ((PermutationRepresentation.permOp χ) g)).mulVec
+        v =
+      v →
+    Commute ((PermutationRepresentation.permOp χ) g) (Matrix.vecMulVec v (star v)).partialTraceLeft :=
+fun {G} {X} {Y} [Group G] [Fintype X] [DecidableEq X] [Fintype Y] [DecidableEq Y] φ χ g v hv =>
+  have hA :=
+    Eq.mpr
+      (id
+        (congrArg (fun _a => _a * (PermutationRepresentation.permOp φ) g = 1)
+          (PermutationRepresentation.conjTranspose_permOp φ g)))
+      (Eq.mpr (id (congrArg (fun _a => _a = 1) (PermutationRepresentation.permOp_inv_mul_self φ g))) (Eq.refl 1));
+  have hconj :=
+    Eq.mpr
+      (id
+        (congrArg
+          (fun _a =>
+            _a *
+                (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) ((PermutationRepresentation.permOp φ) g)
+                    ((PermutationRepresentation.permOp χ) g)).conjTranspose =
+              Matrix.vecMulVec v (star v))
+          (Matrix.mul_vecMulVec
+            (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) ((PermutationRepresentation.permOp φ) g)
+              ((PermutationRepresentation.permOp χ) g))
+            v (star v))))
+      (Eq.mpr
+        (id
+          (congrArg (fun _a => _a = Matrix.vecMulVec v (star v))
+            (Matrix.vecMulVec_mul
+              ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) ((PermutationRepresentation.permOp φ) g)
+                    ((PermutationRepresentation.permOp χ) g)).mulVec
+                v)
+              (star v)
+              (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) ((PermutationRepresentation.permOp φ) g)
+                  ((PermutationRepresentation.permOp χ) g)).conjTranspose)))
+        (Eq.mpr
+          (id
+            (congrArg
+              (fun _a =>
+                Matrix.vecMulVec
+                    ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) ((PermutationRepresentation.permOp φ) g)
+                          ((PermutationRepresentation.permOp χ) g)).mulVec
+                      v)
+                    _a =
+                  Matrix.vecMulVec v (star v))
+              (Eq.symm
+                (Matrix.star_mulVec
+                  (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) ((PermutationRepresentation.permOp φ) g)
+                    ((PermutationRepresentation.permOp χ) g))
+                  v))))
+          (Eq.mpr (id (congrArg (fun _a => Matrix.vecMulVec _a (star _a) = Matrix.vecMulVec v (star v)) hv))
+            (Eq.refl (Matrix.vecMulVec v (star v))))));
+  have hpartial := congrArg Matrix.partialTraceLeft hconj;
+  have hright :=
+    congrArg (fun K => K * (PermutationRepresentation.permOp χ) g)
+      (Eq.mp
+        (congrArg (fun _a => _a = (Matrix.vecMulVec v (star v)).partialTraceLeft)
+          (Matrix.partialTraceLeft_kronecker_conj_of_left_isometry ((PermutationRepresentation.permOp φ) g)
+            ((PermutationRepresentation.permOp χ) g) hA (Matrix.vecMulVec v (star v))))
+        hpartial);
+  id
+    (Eq.mp
+      (congrFun'
+        (congrArg Eq
+          (Eq.trans
+            (Eq.trans
+              (congrFun'
+                (congrArg HMul.hMul
+                  (Eq.trans
+                    (congrArg
+                      (HMul.hMul
+                        ((PermutationRepresentation.permOp χ) g * (Matrix.vecMulVec v (star v)).partialTraceLeft))
+                      (PermutationRepresentation.conjTranspose_permOp χ g))
+                    (mul_assoc ((PermutationRepresentation.permOp χ) g) (Matrix.vecMulVec v (star v)).partialTraceLeft
+                      ((PermutationRepresentation.permOp χ) g⁻¹))))
+                ((PermutationRepresentation.permOp χ) g))
+              (mul_assoc ((PermutationRepresentation.permOp χ) g)
+                ((Matrix.vecMulVec v (star v)).partialTraceLeft * (PermutationRepresentation.permOp χ) g⁻¹)
+                ((PermutationRepresentation.permOp χ) g)))
+            (congrArg (HMul.hMul ((PermutationRepresentation.permOp χ) g))
+              (Eq.trans
+                (mul_assoc (Matrix.vecMulVec v (star v)).partialTraceLeft ((PermutationRepresentation.permOp χ) g⁻¹)
+                  ((PermutationRepresentation.permOp χ) g))
+                (Eq.trans
+                  (congrArg (HMul.hMul (Matrix.vecMulVec v (star v)).partialTraceLeft)
+                    (PermutationRepresentation.permOp_inv_mul_self χ g))
+                  (mul_one (Matrix.vecMulVec v (star v)).partialTraceLeft))))))
+        ((Matrix.vecMulVec v (star v)).partialTraceLeft * (PermutationRepresentation.permOp χ) g))
+      hright)
+theorem Matrix.commute_partialTraceLeft_replicaExcitationComponent.{u_1, u_2} : ∀ {A : Type u_1} {C : Type u_2}
+  [inst : Fintype A] [inst_1 : DecidableEq A] [inst_2 : Fintype C] [inst_3 : DecidableEq C] (Ω : A → ℂ) (k : ℕ)
+  (B : Finset (Fin k)) (σ : Equiv.Perm (Fin k)),
+  Finset.image (⇑σ) B = B →
+    ∀ (χ : Equiv.Perm (Fin k) →* Equiv.Perm C) (v : (Fin k → A) × C → ℂ),
+      (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) ((PermutationRepresentation.permOp (TensorPower.copyPerm A k)) σ)
+                ((PermutationRepresentation.permOp χ) σ)).mulVec
+            v =
+          v →
+        have w := (Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec v;
+        Commute ((PermutationRepresentation.permOp χ) σ) (Matrix.vecMulVec w (star w)).partialTraceLeft :=
+fun {A} {C} [Fintype A] [DecidableEq A] [Fintype C] [DecidableEq C] Ω k B σ hB χ v hv =>
+  PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp (TensorPower.copyPerm A k) χ σ
+    ((Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (Matrix.replicaExcitationProjection Ω k B) 1).mulVec v)
+    (Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed Ω k B σ hB
+      ((PermutationRepresentation.permOp χ) σ) v hv)

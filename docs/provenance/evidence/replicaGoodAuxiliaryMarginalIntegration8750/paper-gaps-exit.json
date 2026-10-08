@@ -1,0 +1,14 @@
+{
+  "source_revision": "272718145ed2fa1ec58adfeb5e5620355be971d0",
+  "command": [
+    "texra-blueprint",
+    "paper-gaps",
+    "check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-08T00:15:32.495441+00:00",
+  "elapsed_seconds": 0.393,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodAuxiliaryMarginalIntegration8750/paper-gaps.log",
+  "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+}

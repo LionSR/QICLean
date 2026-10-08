@@ -1,0 +1,16 @@
+{
+  "source_revision": "09aaf7d1ba641df56814c2b81c7cca327b71bcf2",
+  "command": [
+    "lake",
+    "build"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-07T21:12:23.876683+00:00",
+  "elapsed_seconds": 39.123,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/full-build.log",
+  "sha256": "4be1802cb4f6b4cb0766bcc86caef539238f52561f623d863960b08df98a11ae",
+  "gzip_log": "docs/provenance/evidence/replicaGoodCopyIntegration8750/full-build.log.gz",
+  "gzip_sha256": "d883e836e25cbc28e65791a094f60d4e76a8681c4ebfaaff04212b054b0f7861",
+  "gzip_mtime": 0
+}

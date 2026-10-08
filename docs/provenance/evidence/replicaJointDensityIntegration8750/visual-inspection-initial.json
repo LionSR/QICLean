@@ -1,0 +1,9 @@
+{
+  "result": "failed",
+  "reason": "The mobile definition has a clipped long inline regrouping formula, despite automated page-width checks passing.",
+  "pdf": "Definition and complete theorem/proof are clear on physical pages 412\u2013413.",
+  "desktop": "Entire section is visible.",
+  "mobile": "Complete theorem/proof is visible, but the definition formula has an unreadable right endpoint.",
+  "mathematical_source_unchanged": true,
+  "authorized_correction": "Root approved an exposition-only two-row display, preserving exact coordinate order."
+}

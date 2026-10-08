@@ -1,0 +1,21 @@
+{
+  "source_revision": "629a85392078d6c4ab72246679e36af1928499a8",
+  "pdf_sha256": "97686f665d2492d2e22dab53e434fd3eb88626dc360dea269d616ca37219b715",
+  "pdf_page_count": 415,
+  "inspected_physical_pages": [
+    400
+  ],
+  "render_images": {
+    "page-400.png": "cc71ed584675c29d2b60d66777ef3543d245ff33ba5252b133368a4d408f426f"
+  },
+  "findings": [
+    "Both new statements and both proofs render completely on physical page400.",
+    "The spectral projection is visibly the closed indicator of (-infinity,b]; the first theorem covers every real b.",
+    "The second theorem states precisely b>0 and a unit vector, and the formula has first moment divided by b.",
+    "The citation, proof references, statement and proof verification links are resolved.",
+    "The actual replica defect-count and Hamiltonian-bound construction is explicitly stated to be separate.",
+    "No clipping, overlapping text, missing formulas or unresolved citations were observed in the new section."
+  ],
+  "undefined_references": false,
+  "undefined_citations": false
+}

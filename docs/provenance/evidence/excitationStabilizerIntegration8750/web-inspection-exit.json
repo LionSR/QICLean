@@ -1,0 +1,13 @@
+{
+  "kind": "reader",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/excitationStabilizerIntegration8750/inspect-web.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 6.84,
+  "source_revision": "aca96d26559088c2c595325e3cd3ac303971bf0d",
+  "log": "docs/provenance/evidence/excitationStabilizerIntegration8750/web-inspection.log",
+  "sha256": "572a211be51552b2a501b108ec7fbf0283ca4ef57b16c7ba21b6ebff39158da2"
+}

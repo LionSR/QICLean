@@ -25,6 +25,7 @@ import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ContractionChain
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
+import QICLean.Analysis.DensitySimplex
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
@@ -82,6 +83,7 @@ import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
+import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PolarUnitaryCorrection
 import QICLean.Analysis.PolarUnitaryCorrectionKronecker
@@ -97,6 +99,18 @@ import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
+import QICLean.Analysis.ReplicaComponentMergeMoment
+import QICLean.Analysis.ReplicaDefect
+import QICLean.Analysis.ReplicaExcitationDecomposition
+import QICLean.Analysis.ReplicaExcitationSymmetry
+import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
+import QICLean.Analysis.ReplicaGoodAuxiliaryMarginal
+import QICLean.Analysis.ReplicaGoodCopyDensity
+import QICLean.Analysis.ReplicaGoodCopyFactorization
+import QICLean.Analysis.ReplicaJointDensity
+import QICLean.Analysis.ReplicaMarginalSymmetry
+import QICLean.Analysis.ReplicaPermutationCovariance
+import QICLean.Analysis.ReplicaRegionalDensity
 import QICLean.Analysis.ResolventDefect
 import QICLean.Analysis.ResolventDefectIntegral
 import QICLean.Analysis.ResolventFunctionalCalculus
@@ -113,6 +127,7 @@ import QICLean.Analysis.ScaleRecurrence
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
+import QICLean.Analysis.ShiftedDensityCommutation
 import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.ShiftedDensityTruncation
 import QICLean.Analysis.ShiftedPowerDerivative
@@ -121,6 +136,7 @@ import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
+import QICLean.Analysis.SpectralCutoffMass
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralKronecker
 import QICLean.Analysis.SpectralQuadraticForm

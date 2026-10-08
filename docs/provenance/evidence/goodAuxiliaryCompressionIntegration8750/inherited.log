@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy/docs/provenance/evidence/goodAuxiliaryCompressionIntegration8750/check-inherited.py", line 32, in <module>
+    assert data==old,(rev,p)
+           ^^^^^^^^^
+AssertionError: ('1f2a868dd6fc465bea6e1823dc63bddc7a43dacd', 'QICLean/Entropy.lean')

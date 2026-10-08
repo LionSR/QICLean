@@ -1,0 +1,14 @@
+{
+  "source_revision": "23003bd89855d54a5645d0694accdeb70671c0f8",
+  "argv": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-two-family-entropy",
+  "exit_code": 0,
+  "elapsed_seconds": 11.207322120666504,
+  "log": "docs/provenance/evidence/areaLawCombined23003/mathlib-cache.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

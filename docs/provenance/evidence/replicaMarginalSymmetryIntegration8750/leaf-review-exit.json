@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/review-leaf.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.86,
+  "source_revision": "032b230b2a18d9715b3741b3bf5d1fe1edc4e08f",
+  "log": "docs/provenance/evidence/replicaMarginalSymmetryIntegration8750/leaf-review.log",
+  "sha256": "97a7303f0308226b18670f5a468f693d33a71ca663128b5f63ed12a4f2aa4782"
+}

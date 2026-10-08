@@ -1,0 +1,77 @@
+{
+  "docs/provenance/evidence/replicaJointDensity8750/provenance.log": {
+    "raw_sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+    "gzip_sha256": "8df4465601a3f24ec1678b2bbad81a5a0f4bdacb6f1d062c35a761455dcca324",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/statements.log": {
+    "raw_sha256": "7a2df89d0171bf96e3475c2438696b0bab600bb0df687e7db412bcba23491ba0",
+    "gzip_sha256": "7da96e8abe5fea45ca8924d03644d872686e5500000eeed28fbe829826a5258f",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/strict-introduction.log": {
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/hazards.log": {
+    "raw_sha256": "a9e606221242f5b2dd99676e05ee44a68f3d3aa2bd7dcf3851bf4739c8dab452",
+    "gzip_sha256": "5a67267ec7ca467d5c93a9fb57227f2b79f19f0ce897fba07a743df72423b462",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/patterns.log": {
+    "raw_sha256": "bfe91ff4c46806437ef76c4ec6e6a302f2e0e46f491307f6c47d5467375c26d4",
+    "gzip_sha256": "70a6c3b4ab4659c144a875ef4a6725734f5de7479ada7c852c0cb929ec5b799c",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/strict-source.log": {
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/prerequisite-target.log": {
+    "raw_sha256": "208e2255b64df0cc58f1fb26a79585eb008a83e88f46aad129dbe429ddcb7871",
+    "gzip_sha256": "404a3b1ebe5da9e327eef7529272b39c27a2875fdb1bdef239ab0a165bc18c6c",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/guard-frozen.log": {
+    "raw_sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "gzip_sha256": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/prose-introduction.log": {
+    "raw_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "gzip_sha256": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/cache.log": {
+    "raw_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "gzip_sha256": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/preservation.log": {
+    "raw_sha256": "27b3f136a2daba8a677846b9072937d8ea15144e774df0c8b9b8559b3e06ede3",
+    "gzip_sha256": "6d134be9fafa7ac8cefcbdbf31afa549ef5c47d81ee3ab7096677dc2ffcdb984",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/target.log": {
+    "raw_sha256": "5ac38ce0ed1cfec6d7934afc606286c660734a4a12bab6468d38579b1835215b",
+    "gzip_sha256": "071b53750377fd5feba2d5143a61cc7c2f0986f70abc79e9be22fe355ad84c16",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/axioms.log": {
+    "raw_sha256": "141e585885125f37c46ebeb8f3d712f611fac489e8048d8211583257e194ecc7",
+    "gzip_sha256": "dbd2b368f2336486765ad3a84a9826efbc04ce941928ca679d4b9d0199d797e7",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/guard.log": {
+    "raw_sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "gzip_sha256": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "mtime": 0
+  },
+  "docs/provenance/evidence/replicaJointDensity8750/prose.log": {
+    "raw_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "gzip_sha256": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "mtime": 0
+  }
+}

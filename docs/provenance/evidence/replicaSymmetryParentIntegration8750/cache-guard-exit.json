@@ -1,0 +1,17 @@
+{
+  "source_revision": "2b2ce0a9e57ffff7c6044b4133c62f6f5afa0828",
+  "argv": [
+    "python3",
+    "-c",
+    "import json,pathlib,subprocess; p=pathlib.Path(\".lake/packages/mathlib\"); named=next(x[\"rev\"] for x in json.loads(pathlib.Path(\"lake-manifest.json\").read_text())[\"packages\"] if x[\"name\"]==\"mathlib\"); actual=subprocess.check_output([\"git\",\"-C\",str(p),\"rev-parse\",\"HEAD\"]).decode().strip(); assert named==actual==\"c55e6e786f49471c72fbddbec5415808896aec1e\"; assert (p/\".lake/build/lib/lean/Mathlib.olean\").is_file(); print(\"Named and actual Mathlib\",actual,\"prebuilt Mathlib.olean present; previous post-clone cache fetch remains valid.\")"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "exit_code": 0,
+  "elapsed_seconds": 0.056595040994579904,
+  "log": "docs/provenance/evidence/replicaSymmetryParentIntegration8750/cache-guard.log",
+  "sha256": "5e7fc053b5391cda228fc18aaf1995fc04eae02a2c2a4762c4e3c1bbbca0df5a",
+  "uncompressed_sha256": "5e7fc053b5391cda228fc18aaf1995fc04eae02a2c2a4762c4e3c1bbbca0df5a",
+  "uncompressed_bytes": 145,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

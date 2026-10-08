@@ -1,0 +1,15 @@
+{
+  "kind": "verification",
+  "command": [
+    "lake",
+    "exe",
+    "checkdecls",
+    "blueprint/lean_decls"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 34.82,
+  "source_revision": "942add5cf83a5acc3864197e0844b2074875d6c9",
+  "log": "docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/native.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

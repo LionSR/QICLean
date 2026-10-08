@@ -1,0 +1,15 @@
+{
+  "version": 7,
+  "diagnostics": [
+    {
+      "line": 67,
+      "severity": 1,
+      "message": "unsolved goals\nA : Type u_1\nC : Type u_2\ninst✝³ : Fintype A\ninst✝² : DecidableEq A\ninst✝¹ : Fintype C\ninst✝ : DecidableEq C\nΩ : A → ℂ\nk : ℕ\nB : Finset (Fin k)\nu : (Fin k → A) × C → ℂ\nb : FiniteProduct.Configuration (fun x ↦ A) B\ng : FiniteProduct.Configuration (fun x ↦ A) Bᶜ\nc : C\n⊢ ∑ x,\n      ∑ x_1,\n        replicaExcitationProjection Ω k B ((FiniteProduct.splitEquiv (fun x ↦ A) B).symm (b, g)) x *\n            1 ((FiniteProduct.splitEquiv (fun x ↦ A) B).symm (b, g), c).2 (x, x_1).2 *\n          u (x, x_1) =\n    (∏ i, Ω (g i)) * ∑ y, ((∏ i, (1 - vecMulVec Ω (star Ω)) (b i) (y ↑i)) * ∏ i, star (Ω (y ↑i))) * u (y, c)"
+    }
+  ],
+  "response": {
+    "id": 17,
+    "jsonrpc": "2.0",
+    "result": {}
+  }
+}

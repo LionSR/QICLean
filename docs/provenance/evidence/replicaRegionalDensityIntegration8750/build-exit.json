@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "lake",
+    "build"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 48.41,
+  "source_revision": "a5a72254c33075af243b4defab475c544d4b0f50",
+  "log": "docs/provenance/evidence/replicaRegionalDensityIntegration8750/build.log",
+  "sha256": "0717e0d7498c96cf445980755c75030097e983696cb7eda2a791234532c2e5d3"
+}

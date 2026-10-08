@@ -1,0 +1,16 @@
+{
+  "source_revision": "7c35cc9da08c5c566190fb792ad133f4fa5f03ca",
+  "argv": [
+    "python3",
+    "scripts/fetch_tenkz.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "exit_code": 0,
+  "elapsed_seconds": 4.833136500004912,
+  "log": "docs/provenance/evidence/replicaSymmetryIntegration8750/tenkz-fetch.log",
+  "sha256": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9",
+  "uncompressed_sha256": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9",
+  "uncompressed_bytes": 146,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

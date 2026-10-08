@@ -1,0 +1,11 @@
+{
+  "source_revision": "0b6ff5a3f75635c5e829e476b18209e3cd4d9fec",
+  "complete_source_checked": true,
+  "hazards": [],
+  "public_declarations": [
+    "TensorPower.copyPerm_groupedCopies_labelEntropy_bounds"
+  ],
+  "hypotheses": "Specified split e and finite/decidable C only. No nonempty coordinate-set, state, support, symmetry, factorization or supplied dimension premise.",
+  "source_scope": "Actual whole-space operator input to source07 lines481\u2013493. Physical excitation support preservation and the whole-label threshold remain separate.",
+  "logarithm_convention": "Total real logarithm with log0=0; explicit in module, blueprint and reader note."
+}

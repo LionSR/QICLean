@@ -1,0 +1,14 @@
+{
+  "source_revision": "0b6ff5a3f75635c5e829e476b18209e3cd4d9fec",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T22:51:00.855448+00:00",
+  "elapsed_seconds": 0.513,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/goodAuxiliaryLabelEntropy8750/provenance.log",
+  "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764"
+}

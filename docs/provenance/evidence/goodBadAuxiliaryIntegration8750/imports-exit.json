@@ -1,0 +1,14 @@
+{
+  "source_revision": "6352dc06b4f0010d085a50d05ab2ec7555ad6334",
+  "command": [
+    "python3",
+    "scripts/generate_import_aggregators.py",
+    "--check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy",
+  "started_utc": "2026-10-07T22:53:33.845534+00:00",
+  "elapsed_seconds": 0.61,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/goodBadAuxiliaryIntegration8750/imports.log",
+  "sha256": "e9283e300150a4b3c1f3a7e82a464332efddf1e0903f7310d889957a469fadec"
+}
