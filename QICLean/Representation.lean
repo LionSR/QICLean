@@ -30,6 +30,7 @@ import QICLean.Representation.PairMergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.SchurLabelCommutation
+import QICLean.Representation.SchurLabelMomentBounds
 import QICLean.Representation.SchurLabelMoments
 import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
