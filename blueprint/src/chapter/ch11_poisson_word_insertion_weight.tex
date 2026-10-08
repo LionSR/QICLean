@@ -1,0 +1,55 @@
+\section{The insertion-time weight identity}
+\label{sec:poisson_word_insertion_weight}
+
+For a finite alphabet $I$, put $N=|I|$ and retain the singleton word
+weights $w_t(m)=e^{-Nt}t^m/m!$ from
+Definition~\ref{def:poisson_word_measure}.  The following integration
+identity supplies the scalar calculation for inserting a marked letter
+between a prefix and a suffix.  It is a derived identity for the finite-word
+model motivated by the occurrence-order products in
+\emph{A two-dimensional area law from a global spectral gap},
+\cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex}, lines 49--54,
+and its integration over update times on lines 203--209; it is a derived
+identity rather than a theorem stated in that manuscript.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+
+\begin{lemma}[Integration of prefix and suffix weights]
+\label{lem:poisson_word_insertion_weight}
+\lean{PoissonWord.continuous_weight_ofReal,
+PoissonWord.measurable_weight_ofReal,
+PoissonWord.weight_mul_weight_nonneg,
+PoissonWord.intervalIntegrable_weight_mul_weight,
+PoissonWord.integral_weight_mul_weight,
+PoissonWord.lintegral_weight_mul_weight}
+\leanok
+\uses{def:poisson_word_measure}
+For every $T\geq0$ and $m,n\in\N$,
+\begin{align}
+ \int_0^T w_s(m)w_{T-s}(n)\,ds
+ &=w_T(m+n+1).
+ \label{eq:poisson_word_insertion_weight}
+\end{align}
+The integrand is nonnegative and integrable.  Equivalently, the same
+identity holds as a nonnegative Lebesgue integral on $(0,T]$ after viewing
+the weights in $[0,\infty]$.
+\end{lemma}
+\begin{proof}
+\leanok
+At $T=0$, both sides vanish.  For $T>0$, the beta integral and its relation
+to the gamma function at positive integers give
+\begin{align}
+ \int_0^T s^m(T-s)^n\,ds
+ &=T^{m+n+1}\frac{m!\,n!}{(m+n+1)!}.
+ \label{eq:poisson_word_insertion_beta}
+\end{align}
+On the integration interval, the two exponential factors multiply to
+$e^{-NT}$.  Factoring out $e^{-NT}/(m!n!)$ proves the identity.
+Continuity proves integrability; nonnegativity identifies the real and
+nonnegative integrals.  Writing $s_+=\max(s,0)$ extends the two factors
+to continuous functions $s\mapsto w_{s_+}(m)$ and
+$s\mapsto w_{(T-s)_+}(n)$ on the real line.  These extensions agree with
+the original weights on $[0,T]$.
+\end{proof}
+
+The identity includes zero time and allows $I=\varnothing$.  It does not
+construct a clock process or a coupling of event times.

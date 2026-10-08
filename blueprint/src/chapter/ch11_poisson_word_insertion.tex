@@ -1,0 +1,77 @@
+\section{Insertion into Poissonized words}
+\label{sec:poisson_word_insertion}
+
+Let $I$ be a finite alphabet, $N=|I|$, and let $\mu_t$ be the probability
+measure of Definition~\ref{def:poisson_word_measure}.  For a word $w$ and
+$0\le j<|w|$, write $w_{<j}$ for its prefix of length $j$ and $w_{>j}$
+for the suffix after its $j$th letter.  The rate and time integration in
+\emph{A two-dimensional area law from a global spectral gap},
+\cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex}, lines 203--209,
+is represented by the nonnegative insertion identity below.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+
+\begin{theorem}[Nonnegative insertion identity]
+\label{thm:poisson_word_insertion}
+\lean{PoissonWord.lintegral_eq_tsum,
+PoissonWord.lintegral_sum_marked_eq_tsum,
+PoissonWord.lintegral_insertion_eq_tsum,
+PoissonWord.lintegral_sum_marked}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_marked_equiv}
+For $T\ge0$ and any function
+$F:\mathcal W\times I\times\mathcal W\to[0,\infty]$,
+\begin{align}
+ &\int_{\mathcal W}\sum_{j=0}^{|w|-1}
+   F(w_{<j},w_j,w_{>j})\,d\mu_T(w)\notag\\
+ &\qquad=\int_0^T\sum_{i\in I}
+   \int_{\mathcal W}\int_{\mathcal W}
+   F(u,i,v)\,d\mu_{T-s}(v)\,d\mu_s(u)\,ds.
+ \label{eq:poisson_word_insertion}
+\end{align}
+Both sides may be infinite.  No integrability assumption on $F$ is required.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:poisson_word_marked_equiv, lem:poisson_word_insertion_weight}
+Expanding the atomic word measure expresses the left side as a sum over
+marked words.  The bijection of
+Definition~\ref{def:poisson_word_marked_equiv} rewrites this sum as
+\begin{align}
+ \sum_{i\in I}\sum_{u,v\in\mathcal W}
+ e^{-NT}\frac{T^{|u|+|v|+1}}{(|u|+|v|+1)!}F(u,i,v).
+ \label{eq:poisson_word_marked_sum}
+\end{align}
+On the right side of (\ref{eq:poisson_word_insertion}), expand both atomic
+measures.  Each summand is a measurable nonnegative function of time,
+so Tonelli's theorem moves the sums outside the time integral.
+Formula~(\ref{eq:poisson_word_insertion_weight}) then gives
+(\ref{eq:poisson_word_marked_sum}).  This argument includes zero singleton
+masses multiplied by an infinite value of $F$, using $0\cdot\infty=0$.
+\end{proof}
+
+\begin{corollary}[Prefix observables and expected length]
+\label{cor:poisson_word_insertion_prefix}
+\lean{PoissonWord.lintegral_sum_prefix, PoissonWord.lintegral_length}
+\leanok
+\uses{thm:poisson_word_insertion}
+For $G:\mathcal W\times I\to[0,\infty]$ and $T\ge0$,
+\begin{align}
+ &\int_{\mathcal W}\sum_{j=0}^{|w|-1}G(w_{<j},w_j)\,d\mu_T(w)\notag\\
+ &\qquad=\int_0^T\sum_{i\in I}\int_{\mathcal W}G(u,i)\,d\mu_s(u)\,ds.
+ \label{eq:poisson_word_prefix_insertion}
+\end{align}
+In particular, the expected length is $\int_{\mathcal W}|w|\,d\mu_T(w)=NT$.
+\end{corollary}
+\begin{proof}
+\leanok
+\uses{thm:poisson_word_insertion, lem:poisson_word_normalization}
+Apply (\ref{eq:poisson_word_insertion}) to $F(u,i,v)=G(u,i)$.
+The suffix measure has total mass one, giving
+(\ref{eq:poisson_word_prefix_insertion}).  Taking $G=1$ makes the inner
+sum on the left equal to the length and the time integrand equal to $N$.
+\end{proof}
+
+All formulas include $T=0$ and the empty alphabet.  They concern the
+explicit finite-word measures; they do not construct event times or
+independent clock paths, and they do not give a propagation or
+spatial-omission bound.

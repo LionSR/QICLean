@@ -1,0 +1,56 @@
+\subsection{Words with a marked letter}
+\label{sec:poisson_word_marked}
+
+Let $I$ be an arbitrary alphabet and $\mathcal W$ its finite words.
+Index the letters of a word $w$ by $0,\ldots,|w|-1$.
+
+\begin{definition}[Insertion of a letter]
+\label{def:poisson_word_insert}
+\lean{PoissonWord.singleton, PoissonWord.length_singleton,
+PoissonWord.ofFn_singleton, PoissonWord.insert, PoissonWord.length_insert,
+PoissonWord.ofFn_insert}
+\leanok
+\uses{def:poisson_word_append}
+For $a\in I$, write $[a]$ for the word with the single letter $a$.
+For words $u,v\in\mathcal W$, inserting $a$ between $u$ and $v$
+gives the word $u[a]v$, of length $|u|+|v|+1$.
+\end{definition}
+
+\begin{definition}[Marked words]
+\label{def:poisson_word_marked}
+\lean{PoissonWord.MarkedWord, PoissonWord.markedInsert,
+PoissonWord.markedInsert_word, PoissonWord.markedInsert_position}
+\leanok
+\uses{def:poisson_word_insert}
+A marked word is a pair $(w,j)$ with $w\in\mathcal W$ and $0\leq j<|w|$.
+The marked insertion of $(u,a,v)$ is $(u[a]v,|u|)$.
+\end{definition}
+
+\begin{definition}[Decomposition at a marked letter]
+\label{def:poisson_word_marked_equiv}
+\lean{PoissonWord.markedWordEquiv, PoissonWord.markedWordEquiv_apply,
+PoissonWord.markedWordEquiv_symm_apply, PoissonWord.take_insert,
+PoissonWord.drop_insert, PoissonWord.markedInsert_letter,
+PoissonWord.insert_take_get_drop}
+\leanok
+\uses{def:poisson_word_marked, def:poisson_word_split}
+The bijection between marked words and
+$\mathcal W\times I\times\mathcal W$ is
+\begin{align}
+ (w,j)&\longmapsto (w_{<j},w_j,w_{\geq j+1}),
+ & (u,a,v)&\longmapsto (u[a]v,|u|).
+ \label{eq:poisson_word_marked_equiv}
+\end{align}
+No finiteness assumption on $I$ is needed.
+Repeated letters at distinct positions give distinct marked words;
+when $I$ is empty, both sets in the bijection are empty.
+\end{definition}
+\begin{proof}
+\leanok
+The prefix of $u[a]v$ before position $|u|$ is $u$, the letter at that
+position is $a$, and the suffix after it is $v$.
+Conversely, splitting at $j$ gives
+$w=w_{<j}[w_j]w_{\geq j+1}$ and $|w_{<j}|=j$.
+Thus reconstruction recovers both the word and its marked position.
+The cases $j=0$ and $j=|w|-1$ have empty prefix and suffix, respectively.
+\end{proof}
