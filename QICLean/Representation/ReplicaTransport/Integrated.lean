@@ -33,6 +33,9 @@ theorem intervalIntegrable_entropyGain (hD : D.IsAdmissible) {t : ℝ} (ht : 0 �
     (hcomm : D.CrossBandCommute n t k) {pre : Config k (fun v => Fin (n v)) → ℂ}
     (hpre : pre ≠ 0) (p₀ p₁ : ℝ) :
     IntervalIntegrable (fun p => D.entropyGain n t k pre p) volume p₀ p₁ := by
+  -- Boundedness follows from `trace_state` and the entropy bounds in the fixed one-copy
+  -- space (`06-transport.tex` lines 771--775). Measurability in `p` is not addressed by the
+  -- source; it needs measurability of the move entropies in `θ` and of the states in `p`.
   sorry
 
 omit [∀ h, Fintype (C h)] in
