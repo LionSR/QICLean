@@ -171,6 +171,42 @@ theorem coherentAverage_one (k : ℕ) (a : Ω) :
   change _ * unitaryTwirl (coherentProj k (Pi.single a 1)) x y = _
   rw [hres, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hD, one_mul]
 
+/-- The coherent measure of a state on `𝒮_k` has total mass one. -/
+theorem coherentIntegral_one {k : ℕ} (a : Ω) {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
+    (htr : ρ.trace = 1) (hsym : symProj (copyPerm Ω k) * ρ = ρ) :
+    coherentIntegral k a ρ (fun _ => 1) = 1 := by
+  rw [← trace_mul_coherentAverage k a continuous_const, coherentAverage_one, trace_mul_comm, hsym,
+    htr, Complex.one_re]
+
+/-- The coherent integrand of a continuous function is Haar integrable. -/
+theorem integrable_coherentIntegral_integrand (k : ℕ) (a : Ω)
+    (ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) {g : (Ω → ℂ) → ℝ} (hg : Continuous g) :
+    Integrable (fun U : unitaryGroup Ω ℂ => g ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) *
+      (ρ * coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)).trace.re) (unitaryHaar Ω) :=
+  ((hg.comp (continuous_coherentVec a)).mul (Complex.continuous_re.comp
+    ((continuous_const.mul (continuous_coherentProj k (continuous_coherentVec a))).matrix_trace))
+    ).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
+
+/-- The coherent integral against a state on `𝒮_k` is affine in the integrand. -/
+theorem coherentIntegral_affine {k : ℕ} (a : Ω) {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
+    (htr : ρ.trace = 1) (hsym : symProj (copyPerm Ω k) * ρ = ρ) {F : (Ω → ℂ) → ℝ}
+    (hF : Continuous F) (α β : ℝ) :
+    coherentIntegral k a ρ (fun θ => α + β * F θ) = α + β * coherentIntegral k a ρ F := by
+  have h1 := coherentIntegral_one a htr hsym
+  unfold coherentIntegral at h1 ⊢
+  beta_reduce at h1 ⊢
+  set w : unitaryGroup Ω ℂ → ℝ := fun U =>
+    (ρ * coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)).trace.re with hw
+  have hI : ∫ U, (α + β * F ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)) * w U ∂(unitaryHaar Ω) =
+      α * ∫ U, 1 * w U ∂(unitaryHaar Ω) +
+        β * ∫ U, F ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) * w U ∂(unitaryHaar Ω) := by
+    rw [← integral_const_mul, ← integral_const_mul, ← integral_add
+      ((integrable_coherentIntegral_integrand k a ρ continuous_const).const_mul α)
+      ((integrable_coherentIntegral_integrand k a ρ hF).const_mul β)]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun U => by ring)
+  rw [hI]
+  linear_combination α * h1
+
 /-- **Operator Jensen inequality for the logarithm** (`06-transport.tex`, display
 `transport:log-jensen`, lines 526--546), compressed to `𝒮_k`: for continuous `f > 0`,
 `Π 𝒬_k(log f) Π ≤ Π log(𝒬_k(f) + (1 - Π)) Π`. -/
