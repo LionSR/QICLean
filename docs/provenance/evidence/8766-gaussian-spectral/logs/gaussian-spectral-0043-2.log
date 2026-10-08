@@ -1,7 +1,0 @@
-QICLeanTest/GaussianSpectralGap.lean:48:2: error: No goals to be solved
-QICLeanTest/GaussianSpectralGap.lean:66:0: error: `hermitian` does not use the following hypothesis in its type:
-  • [Fintype n] (#2)
-
-Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
-
-Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`

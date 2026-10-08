@@ -20,6 +20,9 @@ This module is independent of the Gaussian integral construction, so that its
 consumer can derive that identity directly from the integral. The gap parameter
 is a positive lower bound; no equality with the actual spectral gap is asserted.
 
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
+
 ## References and reuse
 
 Polynomial-PEPS manuscript (September 24, 2026), `02-information.tex`, lines
@@ -35,10 +38,6 @@ Lean proof text is copied or adapted.
 -/
 
 /-
-Provenance-ID: gaussian8766-eigenvector-gap
-Downstream declaration: GaussianFilter.eigenvector_ground_or_gap
-Provenance-ID: gaussian8766-spectral-decay
-Downstream declaration: GaussianFilter.norm_sub_ground_le_of_coefficients
 -/
 
 open Complex Matrix

@@ -11,7 +11,7 @@ import Mathlib.Tactic.Linarith
 # Gaussian filtering kernel
 
 The parameter `h : ℝ≥0` is the variance. For `h ≠ 0`, the time kernel is
-`g_h(t) = (2πh)⁻¹ᐟ² exp(-t²/(2h))`. Its integral is one, its characteristic integral at
+`g_h(t) = (2πh)^(-1/2) exp(-t²/(2h))`. Its integral is one, its characteristic integral at
 angular frequency `ω` is `exp(-hω²/2)`, and the mass outside `[-T,T]` is at most
 `2 exp(-T²/(2h))` for `T ≥ 0`.
 
@@ -29,39 +29,12 @@ no Lean proof text from the paper repository is copied or adapted.
 At zero variance the Gaussian measure is a Dirac mass, whereas `kernel 0` is identically
 zero. All conversions from Gaussian probability integrals to density integrals therefore
 require `h ≠ 0`. The probability formulation remains valid at zero variance.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-
-Provenance-ID: gaussiankernel8766-kernel
-Downstream declaration: GaussianFilter.kernel
-Provenance-ID: gaussiankernel8766-formula
-Downstream declaration: GaussianFilter.kernel_eq
-Provenance-ID: gaussiankernel8766-nonneg
-Downstream declaration: GaussianFilter.kernel_nonneg
-Provenance-ID: gaussiankernel8766-integrable
-Downstream declaration: GaussianFilter.integrable_kernel
-Provenance-ID: gaussiankernel8766-normalization
-Downstream declaration: GaussianFilter.integral_kernel
-Provenance-ID: gaussiankernel8766-zero
-Downstream declaration: GaussianFilter.kernel_zero
-Provenance-ID: gaussiankernel8766-integrable-density
-Downstream declaration: GaussianFilter.integrable_kernel_smul_iff
-Provenance-ID: gaussiankernel8766-integral-density
-Downstream declaration: GaussianFilter.integral_kernel_smul
-Provenance-ID: gaussiankernel8766-window-density
-Downstream declaration: GaussianFilter.setIntegral_kernel_smul
-Provenance-ID: gaussiankernel8766-mass-density
-Downstream declaration: GaussianFilter.integral_kernel_eq_measureReal
-Provenance-ID: gaussiankernel8766-characteristic
-Downstream declaration: GaussianFilter.integral_cexp
-Provenance-ID: gaussiankernel8766-characteristic-density
-Downstream declaration: GaussianFilter.integral_kernel_cexp
-Provenance-ID: gaussiankernel8766-mgf
-Downstream declaration: GaussianFilter.hasSubgaussianMGF_gaussianReal
-Provenance-ID: gaussiankernel8766-tail
-Downstream declaration: GaussianFilter.measure_compl_Icc_le
-Provenance-ID: gaussiankernel8766-tail-density
-Downstream declaration: GaussianFilter.integral_kernel_compl_Icc_le
 -/
 
 open MeasureTheory ProbabilityTheory Set

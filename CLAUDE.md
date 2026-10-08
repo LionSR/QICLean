@@ -148,6 +148,7 @@ process they describe.
 - **Proof integrity blockers**: `sorry`, `admit`, `native_decide`, `unsafeCast`, `axiom`, circular reasoning
 - **Blueprint prose**: Pure mathematics only — no Lean identifiers in text, no software jargon (see banned terms list in blueprint style guide)
 - **Paper references**: Cite theorem numbers in docstrings (e.g., "Wolf Thm 6.3", "arXiv:1606.00608 Appendix A")
+- **Adapted code**: Apache-2.0 code adapted from another repository carries a source notice in its module docstring or header naming the upstream file, the commit, and the changes; no separate attribution files are kept
 - **Mathematical renames**: When renaming a declaration whose old name encodes misleading terminology (banned vocabulary in the lean-conventions prose_style reference, §2), skip the `@[deprecated] alias` and state the reason in the PR body (see `docs/CONTRIBUTING.md` §Mathematical-language renames).
 
 ## Workflow

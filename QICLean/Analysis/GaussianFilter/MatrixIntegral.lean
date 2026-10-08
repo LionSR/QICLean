@@ -23,113 +23,74 @@ has `H'`-energy `E` and the right vector has `H`-energy `E'`.
 
 The unitary-path and eigenvector arguments reuse
 `QICLean.Analysis.SpectralFilter.MatrixFilter`; the scalar Fourier transform reuses Mathlib's
-`ProbabilityTheory.charFun_gaussianReal`. Scope coordination: LionSR/TNLean issue #8766,
-comment 6041075081. No spatial locality or full reset conclusion is asserted here.
+`ProbabilityTheory.charFun_gaussianReal`. No spatial locality or full reset conclusion is
+asserted here.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-
-Provenance-ID: gaussian-matrix8766-gaussian-intertwiner
-Downstream declaration: GaussianFilter.gaussianIntertwiner
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Definition follows the paper; Mathlib Bochner integral and gaussianReal.
 
-Provenance-ID: gaussian-matrix8766-gaussian-intertwiner-truncated
-Downstream declaration: GaussianFilter.gaussianIntertwinerTruncated
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Definition follows the paper; Mathlib restricted Bochner integral.
 
-Provenance-ID: gaussian-matrix8766-continuous-intertwiner-integrand
-Downstream declaration: GaussianFilter.continuous_intertwinerIntegrand
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Adapted from SpectralFilter.continuous_hermitianUnitaryPath_conj for two generators.
 
-Provenance-ID: gaussian-matrix8766-norm-intertwiner-integrand
-Downstream declaration: GaussianFilter.norm_intertwinerIntegrand
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Adapted from SpectralFilter.norm_hermitianUnitaryPath_conj for two generators.
 
-Provenance-ID: gaussian-matrix8766-integrable-intertwiner-integrand
-Downstream declaration: GaussianFilter.integrable_intertwinerIntegrand
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Adapted from SpectralFilter.integrable_filterIntegrand using Gaussian probability mass.
 
-Provenance-ID: gaussian-matrix8766-integrable-intertwiner-integrand-restrict
-Downstream declaration: GaussianFilter.integrable_intertwinerIntegrand_restrict
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-norm-gaussian-intertwiner-le
-Downstream declaration: GaussianFilter.norm_gaussianIntertwiner_le
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-norm-gaussian-intertwiner-truncated-le-mass
-Downstream declaration: GaussianFilter.norm_gaussianIntertwinerTruncated_le_mass
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-norm-gaussian-intertwiner-truncated-le
-Downstream declaration: GaussianFilter.norm_gaussianIntertwinerTruncated_le
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-norm-gaussian-intertwiner-sub-truncated-le-mass
-Downstream declaration: GaussianFilter.norm_gaussianIntertwiner_sub_truncated_le_mass
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-norm-gaussian-intertwiner-sub-truncated-le
-Downstream declaration: GaussianFilter.norm_gaussianIntertwiner_sub_truncated_le
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-gaussian-intertwiner-eq-integral-kernel
-Downstream declaration: GaussianFilter.gaussianIntertwiner_eq_integral_kernel
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-gaussian-intertwiner-truncated-eq-integral-kernel
-Downstream declaration: GaussianFilter.gaussianIntertwinerTruncated_eq_integral_kernel
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-integrable-kernel-intertwiner-integrand
-Downstream declaration: GaussianFilter.integrable_kernel_intertwinerIntegrand
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-gaussian-intertwiner-conj-transpose
-Downstream declaration: GaussianFilter.gaussianIntertwiner_conjTranspose
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Proof adapted from SpectralFilter.filterIntegral_conjTranspose, exchanging generators.
 
-Provenance-ID: gaussian-matrix8766-gaussian-intertwiner-truncated-conj-transpose
-Downstream declaration: GaussianFilter.gaussianIntertwinerTruncated_conjTranspose
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Same adjoint argument with the restricted Gaussian measure.
 
-Provenance-ID: gaussian-matrix8766-gaussian-intertwiner-zero-variance
-Downstream declaration: GaussianFilter.gaussianIntertwiner_zero_variance
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-gaussian-intertwiner-zero
-Downstream declaration: GaussianFilter.gaussianIntertwiner_zero
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Derived from the Gaussian probability integral using the cited Mathlib APIs.
 
-Provenance-ID: gaussian-matrix8766-dot-product-intertwiner-integrand-mul-vec
-Downstream declaration: GaussianFilter.dotProduct_intertwinerIntegrand_mulVec
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Proof adapted from SpectralFilter.dotProduct_conj_mulVec for two generators.
 
-Provenance-ID: gaussian-matrix8766-dot-product-gaussian-intertwiner-mul-vec
-Downstream declaration: GaussianFilter.dotProduct_gaussianIntertwiner_mulVec
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: Proof adapted from SpectralFilter.dotProduct_filterIntegral_mulVec; scalar integral_cexp.
 
-Provenance-ID: gaussian-matrix8766-inner-gaussian-intertwiner
-Downstream declaration: GaussianFilter.inner_gaussianIntertwiner
 Source: peps-02-information-adc7f124.tex, lines 426–452.
 Reuse: EuclideanSpace.inner_eq_star_dotProduct applied to the preceding coefficient theorem.
 -/
