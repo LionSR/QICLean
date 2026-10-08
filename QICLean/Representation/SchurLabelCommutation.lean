@@ -30,8 +30,15 @@ value for both factors.
 
 * `TensorPower.commute_groupAlgebraRep_subsystemPerm_of_subset` — nested commutation.
 * `TensorPower.commute_groupAlgebraRep_subsystemPerm_of_disjoint` — disjoint commutation.
+* `TensorPower.commute_labelObservables_subsystemPerm_of_laminar` — central observable commutation.
 * `TensorPower.labelProj_mulVec_compl_of_mem_symmetricSubspace`,
   `TensorPower.labelProj_mul_symProj_compl` — complementary labels on `𝒮_k`.
+
+## References
+
+* OpenAI, *A two-dimensional area law from a global spectral gap*, September 24,
+  2026, Lemma 6.1(2), `05-replicas.tex`, lines 101–103 and 168–181, at manuscript
+  commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
 open MonoidAlgebra Matrix
@@ -128,6 +135,25 @@ theorem commute_labelProj_subsystemPerm_of_disjoint {Q Q' : Finset F} (h : Disjo
     (l l' : IrrepLabel (Equiv.Perm (Fin k))) :
     Commute (labelProj (subsystemPerm k ι Q) l) (labelProj (subsystemPerm k ι Q') l') :=
   commute_groupAlgebraRep_subsystemPerm_of_disjoint ι k h _ _
+
+/-- Central label observables commute when their actual subsystems are nested
+or disjoint; the region hypothesis supplies the required commutation.
+OpenAI area-law manuscript, Lemma 6.1(2), `05-replicas.tex`, lines 101–102
+and 172–176. -/
+theorem commute_labelObservables_subsystemPerm_of_laminar (A B : Finset F)
+    (h : A ⊆ B ∨ B ⊆ A ∨ Disjoint A B)
+    (f g : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
+    Commute (labelObservable (subsystemPerm k ι A) f)
+      (labelObservable (subsystemPerm k ι B) g) := by
+  classical
+  exact Commute.sum_left _ _ _ fun l _ =>
+    (Commute.sum_right _ _ _ fun l' _ =>
+      (h.elim
+        (fun h => commute_labelProj_subsystemPerm_of_subset ι k h l l')
+        (fun h => h.elim
+          (fun h => (commute_labelProj_subsystemPerm_of_subset ι k h l' l).symm)
+          (fun h =>
+            commute_labelProj_subsystemPerm_of_disjoint ι k h l l'))).smul_right _).smul_left _
 
 /-- On the symmetric subspace, a central label function of `Q` agrees with the same
 central label function of the complement `Qᶜ` (`05-replicas.tex`, lines 176–181). -/
