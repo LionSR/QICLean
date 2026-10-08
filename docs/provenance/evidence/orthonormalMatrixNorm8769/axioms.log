@@ -1,0 +1,4 @@
+Source revision: 361713b3a0fc203724a720d34b980d4e12320035
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true Axioms.lean
+
+'ContinuousLinearMap.norm_toMatrix_orthonormal' depends on axioms: [propext, Classical.choice, Quot.sound]

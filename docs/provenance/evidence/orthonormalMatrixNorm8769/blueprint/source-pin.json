@@ -1,0 +1,10 @@
+{
+  "source_revision": "361713b3a0fc203724a720d34b980d4e12320035",
+  "checked_files": 953,
+  "all_source_hashes_match": true,
+  "visual_review": {
+    "pdf_page": 3,
+    "result": "pass",
+    "notes": "The complete theorem and proof are readable; no overflow or undefined references."
+  }
+}

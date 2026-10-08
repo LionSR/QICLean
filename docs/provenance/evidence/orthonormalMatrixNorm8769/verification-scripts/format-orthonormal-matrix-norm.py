@@ -1,0 +1,5 @@
+from pathlib import Path
+import hashlib,json,subprocess,tempfile,shutil
+root=Path('/Users/siruilu/Local/agentFormalization/QICLean/worktrees/orthonormal-matrix-norm');out=Path('/tmp/qic-orthonormal-matrix-norm');src=root/'blueprint/src/chapter/ch01_orthonormal_matrix_norm.tex';tmp=Path(tempfile.mkdtemp(prefix='qic-orthonormal-format-'))/src.name;shutil.copy2(src,tmp)
+cmd=['/Users/siruilu/Local/agentFormalization/TNLean/worktrees/peps-source-corrections/scripts/latexindent','-l',str(root/'blueprint/latexindent.yaml'),'-w','-s',str(tmp)];r=subprocess.run(cmd,capture_output=True,text=True);assert r.returncode==0,r.stdout+r.stderr;src.write_bytes(tmp.read_bytes());before=src.read_bytes();r2=subprocess.run(cmd,capture_output=True,text=True);assert r2.returncode==0 and tmp.read_bytes()==before
+(out/'format-command.json').write_text(json.dumps({'command':cmd,'returncode':r.returncode,'idempotent':True,'source_path':str(src.relative_to(root)),'source_sha256':hashlib.sha256(before).hexdigest()},indent=2)+'\n');print('FORMAT_PASS')

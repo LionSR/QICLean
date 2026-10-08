@@ -1,0 +1,27 @@
+Direct Lean compilation with package options and warnings as errors.
+Source revision: 361713b3a0fc203724a720d34b980d4e12320035
+No local Lake build or cache mutation was performed.
+
+Source: QICLean/Analysis/OrthonormalMatrixNorm.lean
+Source SHA256: 73f1f0327f668cfef27ecfa77670b066e058c3ddf3a34b54d2635450a291db32
+Working directory: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/orthonormal-matrix-norm
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-orthonormal-matrix-norm/artifacts/QICLean/Analysis/OrthonormalMatrixNorm.olean QICLean/Analysis/OrthonormalMatrixNorm.lean
+Exit code: 0
+Elapsed seconds: 3.781
+Diagnostics: none.
+
+Source: QICLean/Analysis.lean
+Source SHA256: 2faf66bfa21965f92a686c50d626b5ef209d7cd349b58eecb08373ae320d7dcc
+Working directory: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/orthonormal-matrix-norm
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-orthonormal-matrix-norm/artifacts/QICLean/Analysis.olean QICLean/Analysis.lean
+Exit code: 0
+Elapsed seconds: 28.816
+Diagnostics: none.
+
+Source: QICLean.lean
+Source SHA256: de31f0202944898ecfbb383a9fd172cde81ea22c1dc80b266f1fe172ecf60c15
+Working directory: /Users/siruilu/Local/agentFormalization/QICLean/worktrees/orthonormal-matrix-norm
+Command: /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-orthonormal-matrix-norm/artifacts/QICLean.olean QICLean.lean
+Exit code: 0
+Elapsed seconds: 8.407
+Diagnostics: none.

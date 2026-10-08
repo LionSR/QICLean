@@ -1,0 +1,44 @@
+[
+  {
+    "name": "sync",
+    "command": [
+      "python3",
+      "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/orthonormal-matrix-norm/scripts/blueprint_lean_sync.py",
+      "--root",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-orthonormal-blueprint-vra0u7ho",
+      "--report",
+      "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-orthonormal-blueprint-vra0u7ho/sync.json",
+      "--ci",
+      "--update-lean-decls"
+    ],
+    "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/orthonormal-matrix-norm",
+    "returncode": 0,
+    "seconds": 0.602,
+    "log_sha256": "29707dfe55fa9b4b2c4d91fb2cf14f48be6f36559dff279a516c9b188d2738ee"
+  },
+  {
+    "name": "pdf",
+    "command": [
+      "latexmk",
+      "-lualatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "focused.tex"
+    ],
+    "cwd": "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-orthonormal-blueprint-vra0u7ho/blueprint/src",
+    "returncode": 0,
+    "seconds": 7.412,
+    "log_sha256": "00303b8f66b1679e6e2de60ebfa3ea53c7a0a6253efb49566444b7a646831b9b"
+  },
+  {
+    "name": "web",
+    "command": [
+      "/Users/siruilu/.local/share/uv/tools/texra-blueprint/bin/leanblueprint",
+      "web"
+    ],
+    "cwd": "/var/folders/d1/qpfb8kqs3dj482nzfg_0yvkc0000gn/T/qic-orthonormal-blueprint-vra0u7ho/blueprint",
+    "returncode": 1,
+    "seconds": 0.223,
+    "log_sha256": "e7401a392d3843c947cf1b277a029f834aba9b57da8f29fbcc31750498c92e9e"
+  }
+]

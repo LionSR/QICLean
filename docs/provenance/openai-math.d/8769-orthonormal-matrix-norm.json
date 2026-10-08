@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "p09-qic-orthonormal-matrix-norm",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/OrthonormalMatrixNorm.lean",
+        "declaration": "ContinuousLinearMap.norm_toMatrix_orthonormal",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-exterior-contraction"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized from Mathlib coordinate and isometry identities; no upstream Lean proof text reused.",
+        "A general supporting coordinate identity used in the exterior-contraction argument, not a formalization of the complete polynomial-PEPS theorem. Rectangular matrices, real or complex scalars, and empty bases are permitted."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "361713b3a0fc203724a720d34b980d4e12320035",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-orthonormal-matrix-norm/artifacts/QICLean/Analysis/OrthonormalMatrixNorm.olean QICLean/Analysis/OrthonormalMatrixNorm.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/orthonormalMatrixNorm8769/direct-build.log",
+            "sha256": "6118bc146e8c109e0819efa01cd93b30e6182c3e0c3a7ea573fc619cebe0edde"
+          },
+          {
+            "kind": "axioms",
+            "command": "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/orthonormalMatrixNorm8769/axioms.log",
+            "sha256": "87c21650b79b2142780d6f9f430f11a2cec03ee254d8bb5cb027ff021297b299"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "tn_patch_applied": false,
+  "tn_dependency_pin_changed": false,
+  "references": [
+    {
+      "path": "consumers/ExteriorSourceContraction.lean",
+      "sha256": "943c6c653b5c4fb065948a63e447788cd67a378ac20e67c7842a7d9721f8199c"
+    },
+    {
+      "path": "consumers/tnlean-orthonormal-coordinate-norm-refactor.patch.gz",
+      "sha256": "b3726b892dd90ec3db5e0831d763e3f80a9e1605635945cb5d8dd8e68ccd0e6a",
+      "uncompressed_sha256": "dbfacc567bf173db414bc757993468fb291da503d52757f91fa1bfbf4aede7b6"
+    }
+  ],
+  "statements": [
+    "Word.norm_preparedMatrix_le_one",
+    "Word.norm_freeSourceMatrix_le_one",
+    "Word.norm_physicalOutputMatrix_le_one"
+  ]
+}
