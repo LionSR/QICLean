@@ -261,3 +261,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The product formula is derived from the actual excitation
   component. In Q tensor Y tensor V, every middle Y coordinate must be retained
   until physical symmetrization. The original vector need not be symmetric.
+
+### Physical support through an auxiliary partial trace — candidate (2026-10-08)
+
+- **Pattern:** Regroup the actual retained density, trace a discarded auxiliary
+  factor, and move multiplication by a physical operator through this trace.
+- **Seen:** `Analysis/ReplicaGoodConfigurationDensity.lean`; one consumer.
+- **Abstraction:** Private finite-sum lemmas identify the literal rank-one
+  trace and prove the left-multiplication identity. The coordinate transport
+  is proved from permutation entries and their finite average. No new tactic
+  is introduced.
+- **Caveats:** All good middle physical coordinates are retained. The density
+  and its support are derived from the same actual excitation component;
+  neither a coordinate identity nor a support hypothesis is supplied.
