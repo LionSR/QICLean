@@ -338,6 +338,7 @@ jobs:
             QICLeanTest/UnitaryEvolution.lean \
             QICLeanTest/UnitaryEvolutionAxioms.lean \
             QICLeanTest/MatrixUnitaryEvolution.lean \
+            QICLeanTest/EvolutionCommutant.lean \
             QICLeanTest/ProjectedEvolution.lean \
             QICLeanTest/ProjectedEvolutionAxioms.lean; do
             timeout --signal=INT --kill-after=5s 90s lake env lean -j1 \

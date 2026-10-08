@@ -121,6 +121,65 @@ evolution argument used in \cite{OpenAI2026PolynomialPEPS},
     implies $U(t)U(t)^\dagger=I$.
 \end{proof}
 
+\begin{theorem}[Derivative of a conjugated fixed matrix]
+    \label{thm:unitary_evolution_fixed_derivative}
+    \lean{MatrixEvolution.hasDerivAt_star_mul_const_mul}
+    \leanok
+    Let $C\in\mathcal M$ and $G,U:\R\to\mathcal M$. Suppose
+    $G(s)^\dagger=G(s)$ and $U^{\prime}(s)=iG(s)U(s)$ for every
+    $s\in\R$. Then, for every $t\in\R$,
+    \begin{align}
+        \frac{d}{dt}\bigl(U(t)^\dagger C U(t)\bigr)
+            &=U(t)^\dagger\,i\bigl(CG(t)-G(t)C\bigr)U(t).
+        \label{eq:unitary_evolution_fixed_derivative}
+    \end{align}
+    Neither Hermiticity of $C$ nor an initial-value condition is required.
+\end{theorem}
+\begin{proof}\leanok
+    Since $(iG(t))^\dagger=-iG(t)$, the product and adjoint rules give
+    \begin{align}
+        \frac{d}{dt}\bigl(U(t)^\dagger C U(t)\bigr)
+            &=-U(t)^\dagger iG(t)CU(t)+U(t)^\dagger CiG(t)U(t)\notag\\
+            &=U(t)^\dagger\,i\bigl(CG(t)-G(t)C\bigr)U(t).\notag
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Conservation of a common commuting matrix]
+    \label{thm:unitary_evolution_conserved}
+    \lean{MatrixEvolution.star_mul_const_mul_eq_of_commute}
+    \leanok
+    Let $C\in\mathcal M$ and $G,U:\R\to\mathcal M$. Suppose
+    $U(0)=I$, $G(s)^\dagger=G(s)$, $U^{\prime}(s)=iG(s)U(s)$,
+    and $CG(s)=G(s)C$ for every $s\in\R$. Then
+    $U(t)^\dagger C U(t)=C$ for every $t\in\R$.
+    The matrix $C$ need not be Hermitian or unitary.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:unitary_evolution_fixed_derivative}
+    The commutation assumption makes
+    (\ref{eq:unitary_evolution_fixed_derivative}) zero everywhere.
+    A differentiable function with zero derivative on $\R$ is constant,
+    so $U(t)^\dagger C U(t)=U(0)^\dagger C U(0)=C$.
+\end{proof}
+
+\begin{theorem}[Commutation with the evolution]
+    \label{thm:unitary_evolution_commutes}
+    \lean{MatrixEvolution.commute_of_commute_generator}
+    \leanok
+    Under the assumptions of Theorem~\ref{thm:unitary_evolution_conserved},
+    $CU(t)=U(t)C$ for every $t\in\R$.
+    This includes negative times and a zero-dimensional matrix algebra.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:unitary_evolution_preserved, thm:unitary_evolution_conserved}
+    By Theorem~\ref{thm:unitary_evolution_preserved},
+    $U(t)U(t)^\dagger=I$. Thus
+    \begin{align}
+        CU(t)&=U(t)U(t)^\dagger CU(t)
+            =U(t)\bigl(U(t)^\dagger CU(t)\bigr)=U(t)C.\notag
+    \end{align}
+\end{proof}
+
 \begin{theorem}[Exact relative-evolution integral identity]
     \label{thm:unitary_evolution_duhamel}
     \lean{MatrixEvolution.star_mul_sub_one_eq_integral}

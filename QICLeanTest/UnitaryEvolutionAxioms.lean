@@ -43,3 +43,24 @@ info: 'MatrixEvolution.norm_sub_le_of_generator_bound' depends on axioms:
 -/
 #guard_msgs (whitespace := lax) in
 #print axioms MatrixEvolution.norm_sub_le_of_generator_bound
+
+/--
+info: 'MatrixEvolution.hasDerivAt_star_mul_const_mul' depends on axioms:
+[propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms MatrixEvolution.hasDerivAt_star_mul_const_mul
+
+/--
+info: 'MatrixEvolution.star_mul_const_mul_eq_of_commute' depends on axioms:
+[propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms MatrixEvolution.star_mul_const_mul_eq_of_commute
+
+/--
+info: 'MatrixEvolution.commute_of_commute_generator' depends on axioms:
+[propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms MatrixEvolution.commute_of_commute_generator
