@@ -11,7 +11,7 @@ import QICLean.Entropy.ConditionalSkewSetup
 For a unit vector `θ` and `0 ≤ h ≤ 1` on `P₀ x`, the function `f` of the conditional
 skew estimate satisfies `|f(z)| ≤ (dim P₀ · dim x)²` on `|Re z| ≤ 1/4`.  Expanding `h` in
 matrix units of `P₀ x`, each term is the inner product of
-`ρ_Y^{[z̄]} d* ρ_Y^{[-z̄]} θ` and `ρ_P^{[z]} c ρ_P^{[-z]} θ` for matrix units `c` on `P₀`
+`ρ_Y^{[conj z]} d* ρ_Y^{[-conj z]} θ` and `ρ_P^{[z]} c ρ_P^{[-z]} θ` for matrix units `c` on `P₀`
 and `d` on `x`, and each of these vectors has norm at most one by the sandwich bound.
 
 ## Main results

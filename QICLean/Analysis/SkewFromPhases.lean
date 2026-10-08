@@ -11,7 +11,7 @@ import Mathlib.Analysis.Calculus.Deriv.Star
 /-!
 # Departure from the positive axis from phase control
 
-Let `f` be an entire function with `f(-z̄) = conj f(z)`, bounded by one on the
+Let `f` be an entire function with `f(-conj z) = conj f(z)`, bounded by one on the
 imaginary axis and by `m ≥ 1` on the strip `|Re z| ≤ 1/4`, and suppose its values on
 the imaginary axis stay close to `p = f 0 ≥ 0`:
 `|f(iu) - p| ≤ 2 √p E(u) + E(u)²` with `E(u) = 2 |sinh π u| R`.  Then for small real
@@ -189,7 +189,7 @@ theorem norm_deriv_le_of_phase {f : ℂ → ℂ} (hf : Differentiable ℂ f) {p 
         rw [← sq_abs (Real.sinh _)]
         field_simp
 
-/-- The real part of the derivative at the origin vanishes under `f(-z̄) = conj f(z)`. -/
+/-- The real part of the derivative at the origin vanishes under `f(-conj z) = conj f(z)`. -/
 theorem re_deriv_eq_zero_of_symm {f : ℂ → ℂ} (hf : Differentiable ℂ f)
     (hsymm : ∀ z, f (-(conj z)) = conj (f z)) : (deriv f 0).re = 0 := by
   set D := deriv f 0
@@ -214,7 +214,7 @@ theorem re_deriv_eq_zero_of_symm {f : ℂ → ℂ} (hf : Differentiable ℂ f)
   simp only [neg_re, conj_re] at hre
   linarith
 
-/-- **Departure from the positive axis.**  Let `f` be entire with `f(-z̄) = conj f(z)`,
+/-- **Departure from the positive axis.**  Let `f` be entire with `f(-conj z) = conj f(z)`,
 `‖f(iy)‖ ≤ 1`, `‖f z‖ ≤ m` on `|Re z| ≤ 1/4` (with `1 ≤ m`, `1 ≤ ℓ`, `log m ≤ 2ℓ`), and
 `f 0 = p ≥ 0`, and suppose `‖f(iu) - p‖ ≤ 2√p E + E²` with `E = 2 |sinh π u| R`.  Then
 for real `|t| ≤ 1/(16ℓ)`,

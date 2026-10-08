@@ -369,7 +369,7 @@ theorem skew_matrix_conjTranspose {A₁ A₂ : Matrix (P₀ × P₁) (P₀ × P�
   rw [← liftP_liftY_comm A₁ᴴ, ← Matrix.mul_assoc (liftY B₂ᴴ), ← liftP_liftY_comm A₂ᴴ]
   simp only [Matrix.mul_assoc]
 
-/-- The reflection `f(-z̄) = conj f(z)` for Hermitian `h`.  Area-law manuscript,
+/-- The reflection `f(-conj z) = conj f(z)` for Hermitian `h`.  Area-law manuscript,
 `04-conditional.tex`, lines 529–530. -/
 theorem skewFun_neg_conj (hh : h.IsHermitian) (z : ℂ) :
     skewFun θ h (-(starRingEnd ℂ z)) = starRingEnd ℂ (skewFun θ h z) := by
