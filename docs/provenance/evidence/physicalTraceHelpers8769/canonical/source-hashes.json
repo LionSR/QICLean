@@ -1,8 +1,0 @@
-{
-  "source_revision": "b2521d2a2843d824ce85a4d94bf4b60d322d6c6f",
-  "source_directory": "docs/provenance/evidence/sourceTransportExpansion8769/canonical",
-  "sha256": {
-    "check_openai_provenance.py": "8183e29f5a339bba37e28e9473aa7a6a42791282ed6877071dfd4096eda7cb65",
-    "openai-math.schema.json": "a691d8e95b668c968365f2c7e33f614d49635aade8fdd4c2f27cd64f0cd6b459"
-  }
-}

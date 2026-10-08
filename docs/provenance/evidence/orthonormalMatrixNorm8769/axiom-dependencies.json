@@ -1,7 +1,0 @@
-{
-  "ContinuousLinearMap.norm_toMatrix_orthonormal": [
-    "propext",
-    "Classical.choice",
-    "Quot.sound"
-  ]
-}

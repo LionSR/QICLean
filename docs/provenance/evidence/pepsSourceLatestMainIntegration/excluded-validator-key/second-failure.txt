@@ -1,1 +1,0 @@
-The metadata regeneration helper used a relative Path with an absolute repository root, causing ValueError in relative_to. Its following validator invocation saw the intentionally stale inventory and exited 1. Both operations concerned evidence metadata only. The inventory was regenerated using absolute paths before the final validator run.

@@ -1,8 +1,0 @@
-'Matrix.sourceContraction' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.sourceContraction_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.sourceContraction_apply_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.sourceContraction_piecewise_add' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.sourceContraction_add' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.sourceContraction_piecewise_sub' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.sourceContraction_sub' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.rectangularTraceNorm_sourceContraction_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]

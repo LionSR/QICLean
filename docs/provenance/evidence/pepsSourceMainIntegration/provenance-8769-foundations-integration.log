@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/docs/provenance/evidence/8769-foundations-integration/source-audit.py", line 9, in <module>
-    spec.loader.exec_module(policy)
-    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
-  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
-  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
-  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power/docs/provenance/evidence/pepsSourceMainIntegration/provenance-policy.py", line 13, in <module>
-    from jsonschema import Draft202012Validator
-ModuleNotFoundError: No module named 'jsonschema'

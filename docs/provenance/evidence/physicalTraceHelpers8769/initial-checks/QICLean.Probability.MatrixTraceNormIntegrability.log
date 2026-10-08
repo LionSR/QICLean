@@ -1,1 +1,0 @@
-QICLean/Probability/MatrixTraceNormIntegrability.lean:62:8: error(lean.unknownIdentifier): Unknown constant `Matrix.rectangularTraceNorm_sum_smul_le`

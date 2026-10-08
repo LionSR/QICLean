@@ -1,7 +1,0 @@
-PASS no proof placeholders/custom axioms: QICLean/Analysis/RectangularTraceNormAlgebra.lean
-PASS no proof placeholders/custom axioms: QICLean/Probability/ComplexGaussian/ProductSource.lean
-PASS no proof placeholders/custom axioms: QICLean/Probability/ComplexGaussian/SourceError.lean
-PASS no proof placeholders/custom axioms: QICLean/Probability/WeightedSourceError.lean
-PASS complete public-source mapping: 51 declarations in 4 modules.
-PASS compiled kernel reports: only propext, Classical.choice, Quot.sound or no axioms.
-PASS adapted/original classifications: 0 adapted; 51 original.
