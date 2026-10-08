@@ -1,0 +1,15 @@
+{
+  "equations": [
+    {
+      "id": "a0000002672",
+      "clientWidth": 310,
+      "scrollWidth": 493,
+      "scrollLeft": 183,
+      "overflowX": "auto"
+    }
+  ],
+  "result": "passed",
+  "overflowing_display_count": 1,
+  "right_endpoint_capture_count": 1,
+  "interpretation": "Long displays scroll within their equation boxes; every overflowing right endpoint was reached and captured. The page has no horizontal overflow."
+}

@@ -1,0 +1,20 @@
+{
+  "source_revision": "a8910b9c3e14e7ef9dc7e0fcb04abe99510ad0e7",
+  "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+  "parent_revision": "44817678b6bf19ea7b17a0722f43abccf5182f65",
+  "prerequisite_revisions": [
+    "1a61097225a153adeb32270edb0778363e2ddfb1",
+    "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2"
+  ],
+  "production_sha256": {
+    "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+    "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+    "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+    "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c",
+    "QICLean/Representation.lean": "db2b27811a78c82dbc493c79b8e362498e27d92fd9b27f21b805837066aa4d3e",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "4ac588b4aba0b1ec4b54db39c623f541b7425bb377e33934f8bf1eaf6f0b32c8"
+  },
+  "notice_only_correction": "The original notice now includes both actual manuscript labels required by frozen policy; every signature and proof byte is unchanged from ad1.",
+  "leaf_evidence_revision": "f932f7326e046299b0d0a59f43486dfa6f03b323",
+  "prerequisite_verified_revision": "d21af4657ca03bf6a71aa738d72efd71f5eb7521"
+}

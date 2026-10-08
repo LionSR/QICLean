@@ -1,0 +1,17 @@
+{
+  "links": [
+    "TensorPower.re_trace_mul_exp_mergeDeficits_sub_physicalMergeDeficit_le"
+  ],
+  "errors": [],
+  "top": 47.5,
+  "bottom": 621.203125,
+  "mathElements": 19,
+  "mobile_section_bounds": {
+    "top": 111.625,
+    "bottom": 1010.203125
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360,
+  "visual_review": "passed",
+  "visual_observations": "Complete section and expanded proof inspected at 1440 and 360 pixels. All signs, independent Y, citation and final equation reference are legible. The inequality scrolls in its own box; the captured right endpoint contains the complete final FY factor and punctuation."
+}

@@ -1,0 +1,52 @@
+Theorem 21.15.3 (Equal-weight finite-family trace inequality). Lean ✓ Stmt Let 𝑟 ≥ 1 be an
+integer, let 𝐴1 , … , 𝐴𝑟 be pairwise commuting Hermitian matrices, and let 𝜌 ≥ 0. For every real
+𝑎,
+                                       𝑟
+                                                  𝑟
+                                                                      1/𝑟
+                          ReTr (𝜌𝑒𝑎 ∑𝑗=1 𝐴𝑗 ) ≤ ∏ (ReTr(𝜌𝑒𝑟𝑎𝐴𝑗 ))           .                (21.24)
+                                                 𝑗=1
+
+In particular, 𝑟 = 5 gives the fifth-root product in the sharp component estimate. No normalization
+or commutation condition is imposed on 𝜌.
+                                                                                   𝑟
+Proof. ✓ Proof Induct on 𝑟. The case 𝑟 = 1 is equality. For 𝑟 ≥ 2, set 𝐵 = ∑𝑗=2 𝐴𝑗 and apply
+(21.21) to 𝑟𝑎𝐴1 and 𝑟𝑎𝐵/(𝑟 − 1) with weight 𝑡 = 1/𝑟. Apply the induction hypothesis to 𝐵 with
+exponent 𝑟𝑎/(𝑟 − 1). Raising that bound to 1 − 1/𝑟 gives exponent (1/(𝑟 − 1))(1 − 1/𝑟) = 1/𝑟 on
+every remaining factor. All bases are nonnegative, so this argument also includes zero traces.
+
+
+21.16 Five-factor Hölder for the actual merge deficits
+Let 𝑄, 𝑌 , 𝑉 , 𝐶, 𝑅 be independent finite-dimensional factors and let 𝑚 ≥ 0. For each subsystem
+𝐴, let 𝐹𝐴 be the logarithmic dimension observable of its actual copy-permutation action. On
+the common five-factor copy space set 𝐷𝐶 = 𝐹𝑄 + 𝐹𝐶 − 𝐹𝑄𝐶 , 𝐷𝑅 = 𝐹𝑉 + 𝐹𝑅 − 𝐹𝑉 𝑅 and
+𝐺 = 𝐹𝑄 + 𝐹𝑉 − 𝐹𝑌 . The factor 𝑌 is independent of 𝑄 and 𝑉 . For a positive semidefinite matrix
+𝜌, write 𝑀𝜌 (𝐻) = Re Tr(𝜌𝑒𝐻 ).
+Theorem 21.16.1 (The five actual exponential moments).         Lean     ✓ Stmt For every real 𝑎,
+
+
+         𝑀𝜌 (𝑎(𝐷𝐶 + 𝐷𝑅 − 𝐺)) ≤ 𝑀𝜌 (5𝑎𝐷𝐶 )1/5 𝑀𝜌 (5𝑎𝐷𝑅 )1/5
+                                   × 𝑀𝜌 (−5𝑎𝐹𝑄 )1/5 𝑀𝜌 (−5𝑎𝐹𝑉 )1/5 𝑀𝜌 (5𝑎𝐹𝑌 )1/5 .           (21.25)
+
+The weight 𝜌 need not be normalized or commute with any of the observables. Zero copies, zero
+weights and zero-dimensional factors are included. This is the five-factor Hölder step in [Ope26b,
+Section 7, lines 556–560].
+Proof. ✓ Proof Each 𝐹𝐴 is a real linear combination of orthogonal central projections and is there-
+fore Hermitian. The seven subsystems 𝑄, 𝑌 , 𝑉 , 𝐶, 𝑅, 𝑄𝐶, 𝑉 𝑅 are pairwise nested or disjoint, so
+their central observables commute. Addition, subtraction and negation give pairwise commuta-
+tion of 𝐷𝐶 , 𝐷𝑅 , −𝐹𝑄 , −𝐹𝑉 , 𝐹𝑌 . Apply equal-weight trace Hölder to these five operators. Their
+sum is 𝐷𝐶 + 𝐷𝑅 − 𝐺, giving (21.25).
+
+
+21.17 Label observables under restriction to two groups of
+      copies
+The subgroup dimension inequalities of [Ope26b, Lemma 6.1(4)] give matrix inequalities for the
+logarithmic label observables. These are used in Section 7 to compare whole-copy and subgroup
+labels before measuring an excitation component.
+Theorem 21.17.1 (Grouped-copy label bounds). Lean ✓ Stmt Let 𝑚 + 𝑟 = 𝑘, fix a partition of
+the 𝑘 copies into specified groups of sizes 𝑚 and 𝑟, and let 𝜙 ∶ 𝑆𝑘 → Perm(𝑋) be any permutation
+
+
+
+
+                                               460

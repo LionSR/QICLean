@@ -1,0 +1,598 @@
+{
+  "source_revision": "a8910b9c3e14e7ef9dc7e0fcb04abe99510ad0e7",
+  "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+  "parent_revision": "44817678b6bf19ea7b17a0722f43abccf5182f65",
+  "prerequisite_revisions": [
+    "1a61097225a153adeb32270edb0778363e2ddfb1",
+    "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2"
+  ],
+  "production_sha256": {
+    "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+    "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+    "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+    "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c",
+    "QICLean/Representation.lean": "db2b27811a78c82dbc493c79b8e362498e27d92fd9b27f21b805837066aa4d3e",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "4ac588b4aba0b1ec4b54db39c623f541b7425bb377e33934f8bf1eaf6f0b32c8"
+  },
+  "notice_only_correction": "The original notice now includes both actual manuscript labels required by frozen policy; every signature and proof byte is unchanged from ad1.",
+  "leaf_evidence_revision": "f932f7326e046299b0d0a59f43486dfa6f03b323",
+  "prerequisite_verified_revision": "d21af4657ca03bf6a71aa738d72efd71f5eb7521",
+  "canonical_source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+  "policy_revision": "806099b4dddcce591b3a62ee1921926a6af5ad55",
+  "actual_commands": [
+    {
+      "name": "axioms-after-failed-build",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-after-failed-build-exit.json",
+      "exit_code": 1,
+      "contributes_to_success": false
+    },
+    {
+      "name": "axioms-environment-one-thread-failed",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-environment-one-thread-failed-exit.json",
+      "exit_code": 1,
+      "contributes_to_success": false
+    },
+    {
+      "name": "axioms",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "axioms-file-table-failed",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-file-table-failed-exit.json",
+      "exit_code": 1,
+      "contributes_to_success": false
+    },
+    {
+      "name": "axioms-missing-prebuilt-failed",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-missing-prebuilt-failed-exit.json",
+      "exit_code": 1,
+      "contributes_to_success": false
+    },
+    {
+      "name": "bbl",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/bbl-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "cache-fetch",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/cache-fetch-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "cache-guard",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/cache-guard-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "checkdecls",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/checkdecls-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "checkdecls-file-table-failed",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/checkdecls-file-table-failed-exit.json",
+      "exit_code": 1,
+      "contributes_to_success": false
+    },
+    {
+      "name": "full-build",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/full-build-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "full-build-initial-failed",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/full-build-initial-failed-exit.json",
+      "exit_code": 1,
+      "contributes_to_success": false
+    },
+    {
+      "name": "full-build-second-failed",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/full-build-second-failed-exit.json",
+      "exit_code": 1,
+      "contributes_to_success": false
+    },
+    {
+      "name": "imports",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/imports-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "mathlib-umbrella-cache",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/mathlib-umbrella-cache-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "mobile-equations",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/mobile-equations-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "native-targets",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/native-targets-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "pdf",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/pdf-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "pdf-inspection",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/pdf-inspection-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "preservation",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/preservation-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "prose",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/prose-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "provenance-before-audit-failed",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/provenance-before-audit-failed-exit.json",
+      "exit_code": 1,
+      "contributes_to_success": false
+    },
+    {
+      "name": "provenance",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/provenance-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "registry",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/registry-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "retry-cache-guard",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/retry-cache-guard-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "umbrella-cache-guard",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/umbrella-cache-guard-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "validation",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/validation-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "web",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/web-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "web-inspection",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/web-inspection-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    },
+    {
+      "name": "whole-web",
+      "record": "docs/provenance/evidence/physicalMergeHolderIntegration8753/whole-web-exit.json",
+      "exit_code": 0,
+      "contributes_to_success": true
+    }
+  ],
+  "successful_commands": 22,
+  "excluded_failed_attempts": 8,
+  "mathematical_scope": "Actual five-factor trace H\u00f6lder, arbitrary positive semidefinite weight; no component, entropy-rate or inverse-comparator conclusion.",
+  "complete_library_jobs": 9826,
+  "preserved_parent_files": 4896,
+  "preserved_leaf_artifacts": 65,
+  "exact_stock_reports": 1,
+  "stock_report_sha256": "3376cfe5d8ccd896aa4bbbeebdd14424b584696067938bb947af4fc2519702de",
+  "pdf": {
+    "pdf": "blueprint/print/print.pdf",
+    "pdf_sha256": "925acc8882a34c66552cd916c84d2dbf091c4bc3ac60a7dab8667fae38d8387a",
+    "pages": 473,
+    "markers": {
+      "The five actual exponential moments": [
+        461
+      ]
+    },
+    "inspected_physical_pages": [
+      461
+    ],
+    "text_sha256": "028fe8ffb54743f5bcc95a82dc192550da5006d0cc4886de1b569526605780a4",
+    "compressed_text_sha256": "1c2b201bdfcc7b8e8985ab721f167b4844d24f520661cc0ad99005b3a7dffbef",
+    "deterministic_gzip_mtime": 0,
+    "schur_chapter_heading_present": true,
+    "new_pages_have_no_unresolved_references": true,
+    "visual_review": "passed",
+    "visual_observations": "Physical page 461 (printed 460): complete definition paragraph, five signed moments with exponent 1/5, source citation, full proof and equation reference are legible; no clipping or unresolved references.",
+    "archived_pdf_gzip": "docs/provenance/evidence/physicalMergeHolderIntegration8753/complete-book.pdf.gz",
+    "archived_pdf_gzip_sha256": "eda49bd53c0240ecb8fdbcc14a6366ca8c0adbb2d81fec38aa34c2df5a1e4f61",
+    "archived_pdf_uncompressed_sha256": "925acc8882a34c66552cd916c84d2dbf091c4bc3ac60a7dab8667fae38d8387a"
+  },
+  "native": {
+    "declarations": 3774,
+    "active_fragment_targets": 82,
+    "owned_targets": 1
+  },
+  "reader": {
+    "desktop_width": 1440,
+    "mobile_width": 360,
+    "overflowing_display_count": 1,
+    "inspected_right_endpoint_scroll": 183,
+    "whole_pages": 50,
+    "whole_typeset_elements": 41056
+  },
+  "artifacts": {
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/Axioms.lean": {
+      "sha256": "687e5f3818547b1ca618c976741d14afd11b05f7d39f889fcb20dc07b7058556",
+      "bytes": 383
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/NativeDeclarations.txt": {
+      "sha256": "c172ac67df46a639ef9e73a2c8e56c52920cb7c1db91133b195ab7bd260a32ba",
+      "bytes": 158626
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/README.md": {
+      "sha256": "738bb4b256408e6732a4f480dd1e04ac8252113ab192a4449b8b98d9b7445018",
+      "bytes": 4605
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-after-failed-build-exit.json": {
+      "sha256": "2cad0ded846935b50af516d4fdff2a342fab3d0bed69f4643812af28f72d0fc2",
+      "bytes": 1813
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-after-failed-build.log": {
+      "sha256": "8e783f474c7ddca029c8c5e2c609652211fa40bb12a8359a0f9c2d0800a79763",
+      "bytes": 318
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-environment-one-thread-failed-exit.json": {
+      "sha256": "f2c5940cf34225ae0063ece62ef698a9c879d1f29a96aebc18fe1501721d675d",
+      "bytes": 1861
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-environment-one-thread-failed.log": {
+      "sha256": "c490491ec7364713269dc21c8589e123b952a5d1ece98b5e08e3b1915790e68b",
+      "bytes": 331
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-exit.json": {
+      "sha256": "e80a1de221656776d0611780ef245181704f9291fab6ae8b9a49968bc6eebe5d",
+      "bytes": 1804
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-file-table-failed-exit.json": {
+      "sha256": "d826449fb692e3fbab61684b7e33c00bb2e929f5e9b76befaee3bd93733ce56f",
+      "bytes": 1812
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-file-table-failed.log": {
+      "sha256": "ab70149654773a75746bead4d2c1f484dc0d04c5ec343374257192d5afb1fe36",
+      "bytes": 328
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-missing-prebuilt-failed-exit.json": {
+      "sha256": "a991fd2794f9b2bfabe777c0cebe089e1232ef54cb6a5310bdffa26e8d1a8f2c",
+      "bytes": 1817
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms-missing-prebuilt-failed.log": {
+      "sha256": "43b66fb7984132f48f8a920609c31b96c6bd49f980de514d882524568bc9a346",
+      "bytes": 364
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/axioms.log": {
+      "sha256": "3376cfe5d8ccd896aa4bbbeebdd14424b584696067938bb947af4fc2519702de",
+      "bytes": 134
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/bbl-exit.json": {
+      "sha256": "170afbd7dc788a80652fceb9a112539941e2674c1ab0c9a9e21791446b2ddbf5",
+      "bytes": 1574
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/bbl.log.gz": {
+      "sha256": "2837d07c9c16cf3325881b6950b0b956e4f620473fd306de06dce88fa0c54879",
+      "bytes": 118
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/cache-fetch-exit.json": {
+      "sha256": "bc480374893c15a19559b9b593d4a56ef821cca9b6b9c2de166dba6de57f90bf",
+      "bytes": 1595
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/cache-fetch.log": {
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/cache-guard-exit.json": {
+      "sha256": "2598f378ef81e4be009238e135120b4630c61483c2eac65a3a2a091b56508222",
+      "bytes": 1650
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/cache-guard.log": {
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "bytes": 172
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/check-native-targets.py": {
+      "sha256": "303f8d16186602a3fc34754ae554256492f87232ce24591853a67ad5cd0ded99",
+      "bytes": 3274
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/check-preservation.py": {
+      "sha256": "31476fa6c94a67214085c4682970a3c66899ec1f6d4e1e73de26279e83c4abd4",
+      "bytes": 2770
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/checkdecls-exit.json": {
+      "sha256": "535083cbf691a89ac8541237c8f7dc0d912328ff2e6f9e40d258a2dfcc93d24c",
+      "bytes": 1694
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/checkdecls-file-table-failed-exit.json": {
+      "sha256": "801a099b560ad2f33861d195b3959501a663a1afd80b9763663a406cea5b21b6",
+      "bytes": 1676
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/checkdecls-file-table-failed.log": {
+      "sha256": "a0477b77fba91c8150ae671332000df69d1d14bce120f6a3e1762e8b9274156a",
+      "bytes": 270
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/checkdecls-tool.json": {
+      "sha256": "b6661391dfd0306c517086136b6b5da7cf8f8d3a5ad877a9a11334d925d711f0",
+      "bytes": 224
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/checkdecls.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/collect-manifest.py": {
+      "sha256": "ead18d984cc798365eee3bd8d08fa16bcd9e4efcd136645e0db782251c316192",
+      "bytes": 2195
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/complete-book-text.txt.gz": {
+      "sha256": "1c2b201bdfcc7b8e8985ab721f167b4844d24f520661cc0ad99005b3a7dffbef",
+      "bytes": 408153
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/complete-book.pdf.gz": {
+      "sha256": "eda49bd53c0240ecb8fdbcc14a6366ca8c0adbb2d81fec38aa34c2df5a1e4f61",
+      "bytes": 2982433
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/full-build-exit.json": {
+      "sha256": "8d23e1102bae38b85af36d69ebcd284d3486e4cf956b4693f4ba84447bc2ca55",
+      "bytes": 1573
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/full-build-initial-failed-exit.json": {
+      "sha256": "93e80e9ddecd99d2d3dc5eadd6c4bdf746ef475d7d2629a2ee474ab4032d97e9",
+      "bytes": 1589
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/full-build-initial-failed.log.gz": {
+      "sha256": "df4cb05949130e497e4a55737c6df743f2bd199e58707e647b062dee30d0badc",
+      "bytes": 4990
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/full-build-second-failed-exit.json": {
+      "sha256": "f5ab1308627e985104e1d733ed30ca051cbceeb97bd95fe052193aa99d717929",
+      "bytes": 1588
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/full-build-second-failed.log.gz": {
+      "sha256": "1b89703424cd2005fcd9c6d610430def80493db86908a506cbc4361424fcd0e3",
+      "bytes": 5223
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/full-build.log.gz": {
+      "sha256": "4a58bc20bbbce50830d10809c63de8315abb3fd06b672e42ddb9ef39316c11e6",
+      "bytes": 4531
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/imports-exit.json": {
+      "sha256": "123f81f5592843d7c5f7264326b6258958a473c2682990697d2325fba01e2f0c",
+      "bytes": 1619
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/imports.log": {
+      "sha256": "3676753c68de02ebb95ce44770a8579bcf66720370b267b5abcfb73e12c02aea",
+      "bytes": 81
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/inspect-mobile-equations.py": {
+      "sha256": "89f4e8282848b8936033181da8ec24bbcc13022f4c716bb3c5babf2420cb8a0a",
+      "bytes": 2607
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/inspect-pdf.py": {
+      "sha256": "3663c095d0d67688c9c8666cfbe704bc65fcbf1a5376011154fb67d748aabaaa",
+      "bytes": 2416
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/inspect-web.py": {
+      "sha256": "2abe446d8e0dca93f476b35fc5ffc7a44926d442af28b1bcd2d7104fc751a753",
+      "bytes": 3563
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/mathlib-guard.py": {
+      "sha256": "98adc6192d8cfee6650b0a5b93d971abd3d267ea5945d747e541de7bd2a04438",
+      "bytes": 684
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/mathlib-umbrella-cache-exit.json": {
+      "sha256": "e721ca2018a1812aacf7ed96cce0c83ee18de7b0048d92c35bc918969fe97329",
+      "bytes": 1622
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/mathlib-umbrella-cache.log": {
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/mobile-equations-exit.json": {
+      "sha256": "c6f62bb432391786399b1ea7d124405981d29cb83cbbfe52609ec210aef39329",
+      "bytes": 1694
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/mobile-equations.json": {
+      "sha256": "00f0d17730756044e4c3645ea38cc1e9d22c1771fd6c238c65d7b912bfb55040",
+      "bytes": 592
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/mobile-equations.log": {
+      "sha256": "a4940828550d389bc16f8dd52d84f3a8e967b342ade3632d824e62782fcbd71f",
+      "bytes": 429
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/native-targets-exit.json": {
+      "sha256": "be7dd20205b39623002f894815094b7dbf32c1b7c9955c84467e8f9474599864",
+      "bytes": 1660
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/native-targets.json": {
+      "sha256": "6155ee83eb2617999e7c08526cfc6b0eab476a3a0edbaff17326d47992cbe399",
+      "bytes": 24779
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/native-targets.log": {
+      "sha256": "6155ee83eb2617999e7c08526cfc6b0eab476a3a0edbaff17326d47992cbe399",
+      "bytes": 24779
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/owned-shards.json": {
+      "sha256": "60053e731968fa98a8cd6c9f0ba8078a1f5db874ec8bf09b5985a6a898b31c2a",
+      "bytes": 33
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/pdf-exit.json": {
+      "sha256": "44c7cc904e8ee4394800e038a23737e4d0af0a2698c6c2eebc88f18b92a27dd4",
+      "bytes": 1584
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/pdf-inspection-exit.json": {
+      "sha256": "be9abc680e1161d98532e64b11c0029a6af2b00994011a493952ffb8051363db",
+      "bytes": 1648
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/pdf-inspection.json": {
+      "sha256": "686366f929a296f228c747cc6b61bd531c648f3d5b641d9647fcc5b5ebca32cf",
+      "bytes": 1146
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/pdf-inspection.log": {
+      "sha256": "b0dcead12fad0a763c1a516e0ecd7d245bcd428d8d9cd38451241e242cc121ca",
+      "bytes": 603
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/pdf.log.gz": {
+      "sha256": "e64f9692f6276428f93d10ecb4a7391540aee9df06d1c799a0b4cd0373f5d697",
+      "bytes": 22202
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/preservation-exit.json": {
+      "sha256": "0e0add49c075054871e4dacb47391b6edf44bcf3442ecee9bbf4fb6caacf31b2",
+      "bytes": 1653
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/preservation.log": {
+      "sha256": "3734e16aaf5e63c506e57b6a524b6a85f508f879626cdee37a6090352ab1543a",
+      "bytes": 337
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/prose-exit.json": {
+      "sha256": "9b10fe78cb2beb0f525b3ed4944933f597327a31e6bf76cbe81c5745d5440a16",
+      "bytes": 1739
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/prose.log": {
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/provenance-before-audit-failed-exit.json": {
+      "sha256": "e379c7befe8d4d1dfc1af619f06ab4fd70316f5d7a8530f145d6208010a96519",
+      "bytes": 1752
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/provenance-before-audit-failed.log": {
+      "sha256": "8d9bb15061edaa007627be5f83d9927583447ef3e2be023da883ab1ade26557d",
+      "bytes": 1190
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/provenance-exit.json": {
+      "sha256": "349c50da3b093cf30f213792ea90705e517b0737b03a297504fb9cbf10107ea1",
+      "bytes": 1731
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/provenance.log": {
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764",
+      "bytes": 69
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/record-command.py": {
+      "sha256": "f306a13d9c54775c8ee36ca59fda87d7d70713b57c13e04129fdafe85553f3b1",
+      "bytes": 2553
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/registry-exit.json": {
+      "sha256": "e8ef4e1c300f0a7aea05e076e5f6a414132f157ac6ee9b7dd650a87ee9c436cf",
+      "bytes": 1598
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/registry.log": {
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+      "bytes": 91
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/render/physical_merge_holder-mobile-equation-0-right.png": {
+      "sha256": "ac04309161d14fef89b695dad828ecd805f456b2a973df38531e8ffa31edf202",
+      "bytes": 8350
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/render/physical_merge_holder-page-461.png": {
+      "sha256": "ed7f56923e4fa8053f9b1ed250195c223faa745636ef8abc58b36f0bbcec4fce",
+      "bytes": 321232
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/render/physical_merge_holder-page-461.txt": {
+      "sha256": "a159cabcc2a527fb5f09d49c8260e5606198999a76ae6a27808ad7c31cfef1e1",
+      "bytes": 3592
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/render/physical_merge_holder-web-desktop.png": {
+      "sha256": "4d933dfb85b92ed0a16f0489734aaf28999177d0875575dcabaddecb0b27bb9b",
+      "bytes": 188651
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/render/physical_merge_holder-web-mobile.png": {
+      "sha256": "8cccc83edb43765124713665f9ceefb508c227161f5b908381ae11d113dd089b",
+      "bytes": 117670
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/retry-cache-guard-exit.json": {
+      "sha256": "0dda4c1e2878158e5774f1bfe77ef34c2edf510eeb3aa36f63468ada2c106231",
+      "bytes": 1655
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/retry-cache-guard.log": {
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "bytes": 172
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/source-freeze.json": {
+      "sha256": "2f28d6fc5c403b7713caaa3e0b2d1ddd1c760d50dbe3d3b3bb868ade09e1e910",
+      "bytes": 1379
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/umbrella-cache-guard-exit.json": {
+      "sha256": "9beb66c8609ef03c378b61f03e1254fabad17302db1151abbe79e8d02829c4ce",
+      "bytes": 1658
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/umbrella-cache-guard.log": {
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "bytes": 172
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/validate-manifest.py": {
+      "sha256": "47edbb8f3ba798094bc94339ff9db31b3d59c48edec180fd8e7e4e368abc87b4",
+      "bytes": 4992
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/validate-owned.py": {
+      "sha256": "98cc4318e855d41a31a0dd7ce9bddbe8471d1e11d31556a515ed342c72c6fc19",
+      "bytes": 1519
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/validation-exit.json": {
+      "sha256": "41a946d2fc733c634f76c09cbeebb4c7676876b17181c20388ae7496e18623a8",
+      "bytes": 1650
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/validation.log": {
+      "sha256": "9ad9f54435044c9540e304d0054452e2f700ee5dea0a6d590c1184285fecccd2",
+      "bytes": 588
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/web-exit.json": {
+      "sha256": "b37c152dc1c59c8d6609f640d404422a903e96581c39d6dac3ef72fa463f19ff",
+      "bytes": 1575
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/web-inspection-exit.json": {
+      "sha256": "32762aa26ce7324fc4b865768197d70408038def2025064541e8e35ed98a86b8",
+      "bytes": 1679
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/web-inspection.json": {
+      "sha256": "933dc4dbdb50dced68439dde3c50a5d8bf78433446e50b23638f25110eebc55d",
+      "bytes": 641
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/web-inspection.log": {
+      "sha256": "0f4b118b54863db2d52412f17952877603016b6e0d1b3a6453af3fc457d5e763",
+      "bytes": 116
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/web.log.gz": {
+      "sha256": "9780cbcbf73bf8f04be377c0c0e8eb5274a1d701194b0eb4621e05d6e6c71d6b",
+      "bytes": 2665
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/whole-web-exit.json": {
+      "sha256": "714717550006235c2e477c10ccc3486c9b9a07941a099cba89bf3041324065bf",
+      "bytes": 1673
+    },
+    "docs/provenance/evidence/physicalMergeHolderIntegration8753/whole-web.log": {
+      "sha256": "8f78e51f8afd63aca08c1972b864bfd91a21fac6491c82988974402cb36e75ef",
+      "bytes": 32
+    }
+  }
+}

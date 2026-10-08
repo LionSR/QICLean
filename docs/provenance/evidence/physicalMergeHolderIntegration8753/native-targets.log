@@ -1,0 +1,642 @@
+{
+  "native_list": "docs/provenance/evidence/physicalMergeHolderIntegration8753/NativeDeclarations.txt",
+  "native_list_sha256": "c172ac67df46a639ef9e73a2c8e56c52920cb7c1db91133b195ab7bd260a32ba",
+  "native_declarations": 3774,
+  "active_fragments": {
+    "blueprint/src/fragment/bad_copy_label_dimension.tex": [
+      "TensorPower.groupHom\u2082_labelProj_dim_le"
+    ],
+    "blueprint/src/fragment/compatible_physical_label.tex": [
+      "TensorPower.commute_cfc_physicalMergeDeficit_labelObservables",
+      "TensorPower.commute_cfc_physicalMergeDeficit_mergeDeficits",
+      "TensorPower.physicalMergeDeficit",
+      "TensorPower.physicalMergeDeficit_mul_symProj",
+      "TensorPower.spectralProjectionGE_physicalMergeDeficit_mul_symProj"
+    ],
+    "blueprint/src/fragment/good_auxiliary_label_compression.tex": [
+      "TensorPower.copyPerm_groupedGood_labelEntropy_compression"
+    ],
+    "blueprint/src/fragment/good_auxiliary_label_entropy.tex": [
+      "TensorPower.copyPerm_groupedCopies_labelEntropy_bounds"
+    ],
+    "blueprint/src/fragment/grouped_label_entropy.tex": [
+      "TensorPower.groupedCopies_labelEntropy_bounds"
+    ],
+    "blueprint/src/fragment/merge_deficit_positivity.tex": [
+      "Matrix.PosSemidef.spectralProjectionGE_zero",
+      "Matrix.spectralProjectionGE_zero_mul_of_intertwine",
+      "PermutationRepresentation.posSemidef_mergeDeficit",
+      "TensorPower.posSemidef_pairMergeDeficit"
+    ],
+    "blueprint/src/fragment/merge_exponential.tex": [
+      "PermutationRepresentation.exp_mergeDeficit_eq_sum",
+      "PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum"
+    ],
+    "blueprint/src/fragment/pair_merge_deficit.tex": [
+      "TensorPower.commute_pairMergeDeficit_lifts",
+      "TensorPower.exp_pairMergeDeficit_lifts",
+      "TensorPower.isHermitian_pairMergeDeficit",
+      "TensorPower.pairMergeDeficit",
+      "TensorPower.trace_exp_pairMergeDeficit_left",
+      "TensorPower.trace_exp_pairMergeDeficit_right"
+    ],
+    "blueprint/src/fragment/pair_merge_moment.tex": [
+      "TensorPower.commute_pairCopy",
+      "TensorPower.pairCopyBoth",
+      "TensorPower.pairCopyBoth_eq_mul",
+      "TensorPower.pairCopyLeft",
+      "TensorPower.pairCopyRight",
+      "TensorPower.pair_merge_moment_le",
+      "TensorPower.pair_merge_moment_le_mul_trace"
+    ],
+    "blueprint/src/fragment/physical_merge_holder.tex": [
+      "TensorPower.re_trace_mul_exp_mergeDeficits_sub_physicalMergeDeficit_le"
+    ],
+    "blueprint/src/fragment/replica_component_merge_moment.tex": [
+      "Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le"
+    ],
+    "blueprint/src/fragment/replica_defect.tex": [
+      "Matrix.PosSemidef.replica_gap",
+      "Matrix.posSemidef_replicaDefectCount",
+      "Matrix.replicaDefectCount",
+      "Matrix.replicaHamiltonian",
+      "Matrix.replicaHamiltonian_mulVec_prod",
+      "Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod",
+      "Matrix.spectralCutoff_replica_gap_mass_ge"
+    ],
+    "blueprint/src/fragment/replica_excitation_decomposition.tex": [
+      "Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection",
+      "Matrix.isStarProjection_replicaExcitationProjection",
+      "Matrix.replicaDefectCount_mul_replicaExcitationProjection",
+      "Matrix.replicaDefectCutoff_decomposition",
+      "Matrix.replicaExcitationProjection",
+      "Matrix.replicaExcitationProjection_mul_of_ne",
+      "Matrix.sum_replicaExcitationProjection"
+    ],
+    "blueprint/src/fragment/replica_excitation_symmetry.tex": [
+      "Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq",
+      "Matrix.permOp_mul_replicaExcitationProjection",
+      "Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed"
+    ],
+    "blueprint/src/fragment/replica_good_auxiliary_label_bound.tex": [
+      "Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower"
+    ],
+    "blueprint/src/fragment/replica_good_auxiliary_marginal.tex": [
+      "Matrix.commute_replicaGoodAuxiliaryMarginal_copyPerm",
+      "Matrix.replicaGoodAuxiliaryMarginal",
+      "TensorPower.goodBadCopiesEquiv"
+    ],
+    "blueprint/src/fragment/replica_good_copy_density.tex": [
+      "Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder",
+      "Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density"
+    ],
+    "blueprint/src/fragment/replica_good_copy_factorization.tex": [
+      "Matrix.norm_replicaGoodCopyRemainder_of_fixed",
+      "Matrix.replicaExcitationProjection_mulVec_factorization",
+      "Matrix.replicaGoodCopyRemainder",
+      "Matrix.replicaGoodCopy_factorization_of_fixed"
+    ],
+    "blueprint/src/fragment/replica_joint_density.tex": [
+      "Matrix.replicaGoodRegionalAuxiliaryMarginal",
+      "Matrix.replicaGoodRegionalAuxiliaryMarginal_eq"
+    ],
+    "blueprint/src/fragment/replica_marginal_symmetry.tex": [
+      "Matrix.commute_partialTraceLeft_replicaExcitationComponent",
+      "PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp"
+    ],
+    "blueprint/src/fragment/replica_permutation_covariance.tex": [
+      "Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed",
+      "Matrix.commute_cfc_replicaDefectCount_kronecker",
+      "Matrix.commute_cfc_replicaDefectCount_permOp",
+      "Matrix.commute_finKronecker_const_permOp",
+      "Matrix.commute_replicaHamiltonian_permOp"
+    ],
+    "blueprint/src/fragment/replica_regional_density.tex": [
+      "Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density"
+    ],
+    "blueprint/src/fragment/spectral_cutoff_mass.tex": [
+      "Matrix.PosSemidef.smul_one_sub_spectralCutoff_le",
+      "Matrix.PosSemidef.spectralCutoff_mass_ge"
+    ],
+    "blueprint/src/fragment/typical_pure_compression.tex": [
+      "Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding",
+      "Matrix.IsHermitian.spectralSelectionEmbedding",
+      "Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose",
+      "Matrix.compressedTypicalPureState",
+      "Matrix.kronecker_mulVec_compressedTypicalPureState",
+      "Matrix.norm_compressedTypicalPureState",
+      "Matrix.partialTraceLeft_compressedTypicalPureState",
+      "Matrix.partialTraceRight_compressedTypicalPureState"
+    ],
+    "blueprint/src/fragment/weighted_trace_holder.tex": [
+      "Matrix.IsOrthogonalResolution.prod_hom_fst",
+      "Matrix.IsOrthogonalResolution.prod_hom_snd",
+      "Matrix.PosSemidef.re_trace_mul_exp_nonneg",
+      "Matrix.PosSemidef.re_trace_mul_exp_smul_add_le",
+      "Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod"
+    ]
+  },
+  "fragment_declarations": 82,
+  "owned_declarations": [
+    "TensorPower.re_trace_mul_exp_mergeDeficits_sub_physicalMergeDeficit_le"
+  ],
+  "contains_all_active_fragment_targets": true,
+  "contains_all_owned": true,
+  "missing": [],
+  "link_scope": "content pages; dependency graph repeats excluded",
+  "rendered_doc_links": {
+    "Matrix.posSemidef_replicaDefectCount": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.posSemidef_replicaDefectCount"
+      }
+    ],
+    "Matrix.PosSemidef.replica_gap": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.replica_gap"
+      }
+    ],
+    "TensorPower.pairCopyRight": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyRight"
+      }
+    ],
+    "TensorPower.commute_pairMergeDeficit_lifts": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.commute_pairMergeDeficit_lifts"
+      }
+    ],
+    "Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod"
+      }
+    ],
+    "TensorPower.pair_merge_moment_le_mul_trace": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pair_merge_moment_le_mul_trace"
+      }
+    ],
+    "Matrix.IsOrthogonalResolution.prod_hom_fst": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.IsOrthogonalResolution.prod_hom_fst"
+      }
+    ],
+    "Matrix.commute_cfc_replicaDefectCount_kronecker": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_cfc_replicaDefectCount_kronecker"
+      }
+    ],
+    "TensorPower.commute_pairCopy": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.commute_pairCopy"
+      }
+    ],
+    "Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod"
+      }
+    ],
+    "TensorPower.pairMergeDeficit": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairMergeDeficit"
+      }
+    ],
+    "PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/PermutationRepresentation.commute_partialTraceLeft_vecMulVec_of_fixed_kronecker_permOp"
+      }
+    ],
+    "Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density"
+      }
+    ],
+    "Matrix.replicaGoodCopy_factorization_of_fixed": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaGoodCopy_factorization_of_fixed"
+      }
+    ],
+    "TensorPower.groupHom\u2082_labelProj_dim_le": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.groupHom\u2082_labelProj_dim_le"
+      }
+    ],
+    "TensorPower.copyPerm_groupedGood_labelEntropy_compression": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.copyPerm_groupedGood_labelEntropy_compression"
+      }
+    ],
+    "Matrix.sum_replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.sum_replicaExcitationProjection"
+      }
+    ],
+    "Matrix.replicaGoodCopyRemainder": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaGoodCopyRemainder"
+      }
+    ],
+    "Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder"
+      }
+    ],
+    "Matrix.replicaDefectCutoff_decomposition": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaDefectCutoff_decomposition"
+      }
+    ],
+    "Matrix.kronecker_mulVec_compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.kronecker_mulVec_compressedTypicalPureState"
+      }
+    ],
+    "Matrix.spectralProjectionGE_zero_mul_of_intertwine": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.spectralProjectionGE_zero_mul_of_intertwine"
+      }
+    ],
+    "Matrix.replicaExcitationProjection_mulVec_factorization": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaExcitationProjection_mulVec_factorization"
+      }
+    ],
+    "TensorPower.trace_exp_pairMergeDeficit_left": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.trace_exp_pairMergeDeficit_left"
+      }
+    ],
+    "Matrix.partialTraceRight_compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.partialTraceRight_compressedTypicalPureState"
+      }
+    ],
+    "Matrix.spectralCutoff_replica_gap_mass_ge": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.spectralCutoff_replica_gap_mass_ge"
+      }
+    ],
+    "Matrix.PosSemidef.spectralCutoff_mass_ge": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.spectralCutoff_mass_ge"
+      }
+    ],
+    "Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.IsHermitian.spectralSelectionEmbedding_mul_conjTranspose"
+      }
+    ],
+    "TensorPower.isHermitian_pairMergeDeficit": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.isHermitian_pairMergeDeficit"
+      }
+    ],
+    "TensorPower.physicalMergeDeficit_mul_symProj": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.physicalMergeDeficit_mul_symProj"
+      }
+    ],
+    "TensorPower.copyPerm_groupedCopies_labelEntropy_bounds": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.copyPerm_groupedCopies_labelEntropy_bounds"
+      }
+    ],
+    "Matrix.replicaGoodRegionalAuxiliaryMarginal_eq": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaGoodRegionalAuxiliaryMarginal_eq"
+      }
+    ],
+    "Matrix.commute_replicaHamiltonian_permOp": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_replicaHamiltonian_permOp"
+      }
+    ],
+    "TensorPower.pair_merge_moment_le": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pair_merge_moment_le"
+      }
+    ],
+    "Matrix.replicaHamiltonian": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaHamiltonian"
+      }
+    ],
+    "Matrix.replicaDefectCount_mul_replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaDefectCount_mul_replicaExcitationProjection"
+      }
+    ],
+    "TensorPower.pairCopyBoth_eq_mul": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyBoth_eq_mul"
+      }
+    ],
+    "Matrix.PosSemidef.re_trace_mul_exp_smul_add_le": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.re_trace_mul_exp_smul_add_le"
+      }
+    ],
+    "Matrix.isStarProjection_replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.isStarProjection_replicaExcitationProjection"
+      }
+    ],
+    "Matrix.norm_replicaGoodCopyRemainder_of_fixed": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.norm_replicaGoodCopyRemainder_of_fixed"
+      }
+    ],
+    "Matrix.norm_compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.norm_compressedTypicalPureState"
+      }
+    ],
+    "Matrix.PosSemidef.spectralProjectionGE_zero": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.spectralProjectionGE_zero"
+      }
+    ],
+    "TensorPower.commute_cfc_physicalMergeDeficit_mergeDeficits": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.commute_cfc_physicalMergeDeficit_mergeDeficits"
+      }
+    ],
+    "Matrix.permOp_mul_replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.permOp_mul_replicaExcitationProjection"
+      }
+    ],
+    "TensorPower.goodBadCopiesEquiv": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/TensorPower.goodBadCopiesEquiv"
+      }
+    ],
+    "PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum"
+      }
+    ],
+    "Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.IsHermitian.isIsometry_spectralSelectionEmbedding"
+      }
+    ],
+    "Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq"
+      }
+    ],
+    "Matrix.IsHermitian.spectralSelectionEmbedding": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.IsHermitian.spectralSelectionEmbedding"
+      }
+    ],
+    "Matrix.commute_partialTraceLeft_replicaExcitationComponent": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_partialTraceLeft_replicaExcitationComponent"
+      }
+    ],
+    "Matrix.PosSemidef.smul_one_sub_spectralCutoff_le": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.smul_one_sub_spectralCutoff_le"
+      }
+    ],
+    "TensorPower.trace_exp_pairMergeDeficit_right": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.trace_exp_pairMergeDeficit_right"
+      }
+    ],
+    "Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower"
+      }
+    ],
+    "Matrix.replicaExcitationProjection_mul_of_ne": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaExcitationProjection_mul_of_ne"
+      }
+    ],
+    "TensorPower.commute_cfc_physicalMergeDeficit_labelObservables": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.commute_cfc_physicalMergeDeficit_labelObservables"
+      }
+    ],
+    "TensorPower.groupedCopies_labelEntropy_bounds": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.groupedCopies_labelEntropy_bounds"
+      }
+    ],
+    "Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density"
+      }
+    ],
+    "Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed"
+      }
+    ],
+    "Matrix.replicaGoodRegionalAuxiliaryMarginal": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaGoodRegionalAuxiliaryMarginal"
+      }
+    ],
+    "Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed"
+      }
+    ],
+    "Matrix.replicaGoodAuxiliaryMarginal": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaGoodAuxiliaryMarginal"
+      }
+    ],
+    "Matrix.partialTraceLeft_compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.partialTraceLeft_compressedTypicalPureState"
+      }
+    ],
+    "TensorPower.exp_pairMergeDeficit_lifts": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.exp_pairMergeDeficit_lifts"
+      }
+    ],
+    "TensorPower.pairCopyLeft": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyLeft"
+      }
+    ],
+    "Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le"
+      }
+    ],
+    "Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.cfc_replicaDefectCount_eq_sum_replicaExcitationProjection"
+      }
+    ],
+    "Matrix.replicaExcitationProjection": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaExcitationProjection"
+      }
+    ],
+    "Matrix.replicaHamiltonian_mulVec_prod": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaHamiltonian_mulVec_prod"
+      }
+    ],
+    "Matrix.commute_finKronecker_const_permOp": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_finKronecker_const_permOp"
+      }
+    ],
+    "Matrix.replicaDefectCount": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.replicaDefectCount"
+      }
+    ],
+    "TensorPower.spectralProjectionGE_physicalMergeDeficit_mul_symProj": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.spectralProjectionGE_physicalMergeDeficit_mul_symProj"
+      }
+    ],
+    "TensorPower.posSemidef_pairMergeDeficit": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.posSemidef_pairMergeDeficit"
+      }
+    ],
+    "Matrix.compressedTypicalPureState": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.compressedTypicalPureState"
+      }
+    ],
+    "TensorPower.physicalMergeDeficit": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.physicalMergeDeficit"
+      }
+    ],
+    "Matrix.PosSemidef.re_trace_mul_exp_nonneg": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.PosSemidef.re_trace_mul_exp_nonneg"
+      }
+    ],
+    "Matrix.commute_replicaGoodAuxiliaryMarginal_copyPerm": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_replicaGoodAuxiliaryMarginal_copyPerm"
+      }
+    ],
+    "PermutationRepresentation.posSemidef_mergeDeficit": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/PermutationRepresentation.posSemidef_mergeDeficit"
+      }
+    ],
+    "TensorPower.pairCopyBoth": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.pairCopyBoth"
+      }
+    ],
+    "Matrix.IsOrthogonalResolution.prod_hom_snd": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/Matrix.IsOrthogonalResolution.prod_hom_snd"
+      }
+    ],
+    "TensorPower.re_trace_mul_exp_mergeDeficits_sub_physicalMergeDeficit_le": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/TensorPower.re_trace_mul_exp_mergeDeficits_sub_physicalMergeDeficit_le"
+      }
+    ],
+    "Matrix.commute_cfc_replicaDefectCount_permOp": [
+      {
+        "document": "blueprint/web/ch-entropy.html",
+        "href": "../docs/find/#doc/Matrix.commute_cfc_replicaDefectCount_permOp"
+      }
+    ],
+    "PermutationRepresentation.exp_mergeDeficit_eq_sum": [
+      {
+        "document": "blueprint/web/ch-schur_labels.html",
+        "href": "../docs/find/#doc/PermutationRepresentation.exp_mergeDeficit_eq_sum"
+      }
+    ]
+  },
+  "result": "passed"
+}

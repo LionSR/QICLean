@@ -1,0 +1,19 @@
+{
+  "pdf": "blueprint/print/print.pdf",
+  "pdf_sha256": "925acc8882a34c66552cd916c84d2dbf091c4bc3ac60a7dab8667fae38d8387a",
+  "pages": 473,
+  "markers": {
+    "The five actual exponential moments": [
+      461
+    ]
+  },
+  "inspected_physical_pages": [
+    461
+  ],
+  "text_sha256": "028fe8ffb54743f5bcc95a82dc192550da5006d0cc4886de1b569526605780a4",
+  "compressed_text_sha256": "1c2b201bdfcc7b8e8985ab721f167b4844d24f520661cc0ad99005b3a7dffbef",
+  "deterministic_gzip_mtime": 0,
+  "schur_chapter_heading_present": true,
+  "new_pages_have_no_unresolved_references": true,
+  "visual_review": "pending"
+}
