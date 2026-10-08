@@ -64,6 +64,7 @@ omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [Deci
 theorem posSemidef_margW (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : (margW θ).PosSemidef :=
   (posSemidef_vecMulVec_self_star θ).partialTraceLeft
 
+omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem posSemidef_margY (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : (margY θ).PosSemidef :=
   (posSemidef_margW θ).partialTraceRight
 
@@ -111,18 +112,21 @@ theorem liftP_liftY_comm (A : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) (B : Mat
   rw [liftP, liftY, ← mul_kronecker_mul, ← mul_kronecker_mul, Matrix.one_mul, Matrix.mul_one,
     Matrix.one_mul, Matrix.mul_one]
 
-omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [DecidableEq P₁] [Fintype X] [Fintype U] [Fintype F] in
+omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [DecidableEq P₁] [Fintype X] [Fintype U] [Fintype F]
+  in
 theorem conjTranspose_liftP (A : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) :
     (liftP (X := X) (U := U) (F := F) A)ᴴ = liftP Aᴴ := by
   rw [liftP, liftP, conjTranspose_kronecker, conjTranspose_one]
 
-omit [Fintype P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [DecidableEq U] [Fintype F] in
+omit [Fintype P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [DecidableEq U] [Fintype F]
+  in
 theorem conjTranspose_liftY (B : Matrix (X × U) (X × U) ℂ) :
     (liftY (P₀ := P₀) (P₁ := P₁) (F := F) B)ᴴ = liftY Bᴴ := by
   rw [liftY, liftY, conjTranspose_kronecker, conjTranspose_kronecker, conjTranspose_one,
     conjTranspose_one]
 
-omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [Fintype F] in
+omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [Fintype F]
+  in
 theorem conjTranspose_liftH (h : Matrix (P₀ × X) (P₀ × X) ℂ) :
     (liftH (U := U) (F := F) (P₁ := P₁) h)ᴴ = liftH hᴴ := by
   rw [liftH, liftH, conjTranspose_submatrix, conjTranspose_kronecker, conjTranspose_one]
@@ -150,6 +154,7 @@ theorem dotProduct_mulVec_eq_trace' {n : Type*} [Fintype n] (M : Matrix n n ℂ)
     star v ⬝ᵥ (M *ᵥ v) = (M * vecMulVec v (star v)).trace := by
   rw [mul_vecMulVec, trace_vecMulVec, dotProduct_comm]
 
+omit [DecidableEq P₀] [DecidableEq P₁] in
 /-- A Hermitian projection `K` on `P` with `tr (ρ_P K) = 0` annihilates `θ`. -/
 theorem liftP_mulVec_eq_zero (θ : (P₀ × P₁) × ((X × U) × F) → ℂ)
     {K : Matrix (P₀ × P₁) (P₀ × P₁) ℂ} (hK : Kᴴ = K) (hKK : K * K = K)
@@ -159,6 +164,7 @@ theorem liftP_mulVec_eq_zero (θ : (P₀ × P₁) × ((X × U) × F) → ℂ)
     ← trace_partialTraceRight_mul]
   exact htr
 
+omit [DecidableEq X] [DecidableEq U] in
 /-- A Hermitian projection `K` on `Y` with `tr (ρ_Y K) = 0` annihilates `θ`. -/
 theorem liftY_mulVec_eq_zero (θ : (P₀ × P₁) × ((X × U) × F) → ℂ)
     {K : Matrix (X × U) (X × U) ℂ} (hK : Kᴴ = K) (hKK : K * K = K)
@@ -192,12 +198,14 @@ theorem cfcC_supp_zero {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n �
   rw [eq_sub_iff_add_eq, cfcC_add hA, ← cfcC_one hA]
   congr 1; funext t; unfold suppPowFun kerFun; split_ifs <;> simp
 
-omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [DecidableEq P₁] [Fintype X] [Fintype U] [Fintype F] in
+omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [DecidableEq P₁] [Fintype X] [Fintype U] [Fintype F]
+  in
 theorem liftP_sub (A B : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) :
     liftP (X := X) (U := U) (F := F) (A - B) = liftP A - liftP B := by
   ext i j; simp [liftP, sub_mul]
 
-omit [Fintype P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [DecidableEq U] [Fintype F] in
+omit [Fintype P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [DecidableEq U] [Fintype F]
+  in
 theorem liftY_sub (A B : Matrix (X × U) (X × U) ℂ) :
     liftY (P₀ := P₀) (P₁ := P₁) (F := F) (A - B) = liftY A - liftY B := by
   ext i j; simp [liftY, sub_mul, mul_sub]
@@ -212,7 +220,8 @@ theorem liftP_supp_zero_mulVec (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) 
 theorem liftY_supp_zero_mulVec (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) :
     liftY (P₀ := P₀) (P₁ := P₁) (F := F) (cfcC (margY θ) (suppPowFun 0)) *ᵥ θ = θ := by
   have hA := (posSemidef_margY θ).1
-  rw [cfcC_supp_zero hA, liftY_sub, liftY_one, sub_mulVec, one_mulVec, liftY_mulVec_eq_zero θ (cfcC_ker_isHermitian hA)
+  rw [cfcC_supp_zero hA, liftY_sub, liftY_one, sub_mulVec, one_mulVec,
+      liftY_mulVec_eq_zero θ (cfcC_ker_isHermitian hA)
       (cfcC_ker_mul_self hA) (by rw [mul_cfcC_ker hA, trace_zero]), sub_zero]
 
 end Support
@@ -261,7 +270,8 @@ theorem skewFun_zero : skewFun θ h 0 = star θ ⬝ᵥ (liftH h *ᵥ θ) := by
     star_dotProduct_mulVec_eq, conjTranspose_liftY, conjTranspose_suppPow hY, map_zero,
     liftY_supp_zero_mulVec]
 
-theorem conj_ofReal_mul_I (y : ℝ) : starRingEnd ℂ ((y : ℂ) * Complex.I) = -((y : ℂ) * Complex.I) := by
+theorem conj_ofReal_mul_I (y : ℝ) : starRingEnd ℂ ((y : ℂ) * Complex.I) = -((y : ℂ) * Complex.I)
+    := by
   simp [Complex.conj_ofReal]
 
 /-- On the imaginary axis, `f(iy) = ⟨v, h v⟩` with `v = ρ_P^{[-iy]} ρ_Y^{[iy]} θ`.  Area-law
@@ -282,22 +292,21 @@ theorem skewFun_imag (y : ℝ) :
 /-- The vector `v = ρ_P^{[-iy]} ρ_Y^{[iy]} θ` has the norm of `θ`. -/
 theorem dotProduct_star_imag_vector (y : ℝ) :
     star (liftP (cfcC (margP θ) (suppPowFun (-((y : ℂ) * Complex.I)))) *ᵥ
-        (liftY (P₀ := P₀) (P₁ := P₁) (F := F) (cfcC (margY θ) (suppPowFun ((y : ℂ) * Complex.I))) *ᵥ θ)) ⬝ᵥ
+        (liftY (P₀ := P₀) (P₁ := P₁) (F := F) (cfcC (margY θ) (suppPowFun ((y : ℂ) * Complex.I)))
+            *ᵥ θ)) ⬝ᵥ
       (liftP (cfcC (margP θ) (suppPowFun (-((y : ℂ) * Complex.I)))) *ᵥ
         (liftY (cfcC (margY θ) (suppPowFun ((y : ℂ) * Complex.I))) *ᵥ θ)) = star θ ⬝ᵥ θ := by
   have hP := (posSemidef_margP θ)
   have hY := (posSemidef_margY θ)
   rw [star_mulVec_dotProduct, conjTranspose_liftP, conjTranspose_suppPow hP, map_neg,
     conj_ofReal_mul_I, neg_neg, mulVec_mulVec, liftP_mul, suppPow_mul hP.1, add_neg_cancel,
-    mulVec_mulVec, liftP_liftY_comm, ← mulVec_mulVec, liftP_supp_zero_mulVec, star_mulVec_dotProduct,
+    mulVec_mulVec, liftP_liftY_comm, ← mulVec_mulVec, liftP_supp_zero_mulVec,
+        star_mulVec_dotProduct,
     conjTranspose_liftY, conjTranspose_suppPow hY, conj_ofReal_mul_I, mulVec_mulVec, liftY_mul,
     suppPow_mul hY.1, neg_add_cancel, liftY_supp_zero_mulVec]
 
-omit [Fintype
-  P₀] [DecidableEq
-  P₀] [Fintype
-  P₁] [DecidableEq
-  P₁] [Fintype X] [DecidableEq X] [Fintype U] [DecidableEq U] [Fintype F] [DecidableEq F] in
+omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [DecidableEq P₁] [Fintype X] [DecidableEq X]
+  [Fintype U] [DecidableEq U] [Fintype F] [DecidableEq F] in
 theorem regroup_injective :
     Function.Injective (regroup (P₀ := P₀) (P₁ := P₁) (X := X) (U := U) (F := F)) := by
   rintro ⟨⟨a, b⟩, ⟨⟨c, d⟩, e⟩⟩ ⟨⟨a', b'⟩, ⟨⟨c', d'⟩, e'⟩⟩ h
@@ -305,10 +314,12 @@ theorem regroup_injective :
   obtain ⟨⟨rfl, rfl⟩, rfl, rfl, rfl⟩ := h
   rfl
 
+omit [Fintype P₀] [Fintype P₁] [Fintype X] [Fintype U] [Fintype F] in
 theorem liftH_one : liftH (P₁ := P₁) (U := U) (F := F) (1 : Matrix (P₀ × X) (P₀ × X) ℂ) = 1 := by
   rw [liftH, one_kronecker_one, submatrix_one _ regroup_injective]
 
-omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [Fintype F] in
+omit [Fintype P₀] [DecidableEq P₀] [Fintype P₁] [Fintype X] [DecidableEq X] [Fintype U] [Fintype F]
+  in
 theorem liftH_sub (h₁ h₂ : Matrix (P₀ × X) (P₀ × X) ℂ) :
     liftH (P₁ := P₁) (U := U) (F := F) (h₁ - h₂) = liftH h₁ - liftH h₂ := by
   ext i j; simp [liftH, sub_mul]

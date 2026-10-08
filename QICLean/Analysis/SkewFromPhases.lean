@@ -135,7 +135,8 @@ theorem phaseError_mul_exp_le {R : ℝ} (hR : 0 ≤ R) (hR1 : R ≤ 1) (u : ℝ)
 
 theorem tendsto_sinh_pi_mul_div :
     Tendsto (fun u : ℝ => Real.sinh (Real.pi * u) / u) (𝓝[≠] 0) (𝓝 Real.pi) := by
-  have h : HasDerivAt (fun u : ℝ => Real.sinh (Real.pi * u)) (Real.cosh (Real.pi * 0) * Real.pi) 0 :=
+  have h : HasDerivAt
+      (fun u : ℝ => Real.sinh (Real.pi * u)) (Real.cosh (Real.pi * 0) * Real.pi) 0 :=
     (Real.hasDerivAt_sinh _).comp 0 ((hasDerivAt_id 0).const_mul Real.pi |>.congr_deriv (by ring))
   rw [hasDerivAt_iff_tendsto_slope] at h
   simp only [mul_zero, Real.cosh_zero, one_mul] at h
@@ -162,7 +163,8 @@ theorem norm_deriv_le_of_phase {f : ℂ → ℂ} (hf : Differentiable ℂ f) {p 
   -- the bound on the slopes
   set B : ℝ → ℝ := fun u => 4 * √p * |Real.sinh (Real.pi * u) / u| * R +
     4 * |Real.sinh (Real.pi * u) / u| * |Real.sinh (Real.pi * u)| * R ^ 2
-  have hB : Tendsto B (𝓝[≠] 0) (𝓝 (4 * √p * |Real.pi| * R + 4 * |Real.pi| * |Real.sinh (Real.pi * 0)| * R ^ 2)) := by
+  have hB : Tendsto B (𝓝[≠] 0) (𝓝 (4 * √p * |Real.pi| * R + 4 * |Real.pi| * |Real.sinh (Real.pi
+      * 0)| * R ^ 2)) := by
     have h1 := tendsto_sinh_pi_mul_div.abs
     have h2 : Tendsto (fun u : ℝ => |Real.sinh (Real.pi * u)|) (𝓝[≠] 0)
         (𝓝 |Real.sinh (Real.pi * 0)|) :=
@@ -226,7 +228,8 @@ theorem norm_sub_re_le_of_phase_bounds {f : ℂ → ℂ} (hf : Differentiable �
       4 * √p * |Real.sinh (Real.pi * u)| * R + 4 * Real.sinh (Real.pi * u) ^ 2 * R ^ 2)
     {t : ℝ} (ht : |t| ≤ 1 / (16 * ℓ)) :
     ‖f t‖ - (f t).re ≤
-      t ^ 2 * (8 * Real.pi ^ 2 * R ^ 2 + 12288 * Real.exp (Real.pi ^ 2 + 1) * ℓ ^ 2 * √(min 1 R)) := by
+      t ^ 2 * (8 * Real.pi ^ 2 * R ^ 2 + 12288 * Real.exp (Real.pi ^ 2 + 1) * ℓ ^ 2 * √(min 1 R))
+          := by
   have hℓ0 : 0 < ℓ := by linarith
   set b : ℝ := 1 / (8 * ℓ) with hb
   have hb0 : 0 < b := by positivity
@@ -267,7 +270,8 @@ theorem norm_sub_re_le_of_phase_bounds {f : ℂ → ℂ} (hf : Differentiable �
           ≤ (4 * |Real.sinh (Real.pi * u)| * R + 4 * Real.sinh (Real.pi * u) ^ 2 * R ^ 2) *
               Real.exp (-u ^ 2) := by
             refine mul_le_mul_of_nonneg_right (h1.trans ?_) (Real.exp_pos _).le
-            have : 4 * √p * |Real.sinh (Real.pi * u)| * R ≤ 4 * 1 * |Real.sinh (Real.pi * u)| * R := by
+            have : 4 * √p * |Real.sinh (Real.pi * u)| * R ≤ 4 * 1 * |Real.sinh (Real.pi * u)| * R
+                := by
               gcongr
             linarith
         _ ≤ K1 * R := phaseError_mul_exp_le hR hR1 u
@@ -396,7 +400,8 @@ theorem norm_sub_re_le_of_phase_bounds {f : ℂ → ℂ} (hf : Differentiable �
       have : ‖D‖ ≤ 0 := by simpa using hD
       have hD0 : ‖D‖ = 0 := le_antisymm this (norm_nonneg _)
       rw [norm_eq_zero] at hD0
-      simp [hD0]; positivity
+      simp only [hD0, ofReal_zero, zero_add, sub_zero, norm_zero, mul_zero]
+      positivity
     · have hD2 : t ^ 2 * ‖D‖ ^ 2 ≤ t ^ 2 * (16 * Real.pi ^ 2 * p * R ^ 2) := by
         gcongr
         calc ‖D‖ ^ 2 ≤ (4 * Real.pi * √p * R) ^ 2 := pow_le_pow_left₀ (norm_nonneg _) hD 2

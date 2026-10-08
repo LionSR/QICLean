@@ -65,12 +65,13 @@ theorem conjTranspose_supportCPow (hA : A.PosSemidef) (z : ℂ) :
   · simp [h]
   · simp only [Pi.star_apply, h, ite_false, RCLike.star_def]
     have hpos : 0 < hA.1.eigenvalues k := lt_of_le_of_ne (hA.eigenvalues_nonneg k) (Ne.symm h)
-    rw [Complex.cpow_conj _ _ (by rw [Complex.arg_ofReal_of_nonneg hpos.le]; exact Real.pi_ne_zero.symm),
+    rw [Complex.cpow_conj _ _
+        (by rw [Complex.arg_ofReal_of_nonneg hpos.le]; exact Real.pi_ne_zero.symm),
       Complex.conj_ofReal]
 
 theorem spectralFun_apply (U : unitary (Matrix n n ℂ)) (f : n → ℂ) (i j : n) :
     spectralFun U f i j = ∑ k, (U : Matrix n n ℂ) i k * f k * star (U : Matrix n n ℂ) k j := by
-  simp [spectralFun, mul_apply, diagonal, Finset.sum_mul, mul_assoc]
+  simp [spectralFun, mul_apply, diagonal, mul_assoc]
 
 theorem differentiable_spectralFun_apply (U : unitary (Matrix n n ℂ)) {φ : ℂ → n → ℂ}
     (hφ : ∀ k, Differentiable ℂ (fun z => φ z k)) (i j : n) :

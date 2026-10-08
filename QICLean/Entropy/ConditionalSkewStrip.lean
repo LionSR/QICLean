@@ -100,8 +100,8 @@ theorem liftH_eq_sum (h : Matrix (P₀ × X) (P₀ × X) ℂ) :
   simp only [liftH, liftP, liftY, unitP, unitY, ← mul_kronecker_mul, Matrix.one_mul,
     Matrix.mul_one, submatrix_apply, regroup, kroneckerMap_apply, Matrix.sum_apply,
     Matrix.smul_apply, smul_eq_mul, single_apply, one_apply, Fintype.sum_prod_type]
-  simp only [ite_and, mul_ite, ite_mul, one_mul, mul_one, zero_mul, mul_zero,
-    Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_ite_irrel,
+  simp only [ite_and, mul_ite, mul_one, mul_zero,
+    Finset.sum_ite_eq', Finset.mem_univ, ite_true, Finset.sum_ite_irrel,
     Finset.sum_const_zero, Prod.mk.injEq]
   by_cases h1 : p₁ = p₁' <;> by_cases h2 : u = u' <;> by_cases h3 : f = f' <;> simp [h1, h2, h3]
 
@@ -111,7 +111,8 @@ theorem single_mul_conjTranspose_le_one {n : Type*} [Fintype n] [DecidableEq n] 
     single a b (1 : ℂ) * (single a b 1)ᴴ ≤ 1 := by
   rw [conjTranspose_single, star_one, single_mul_single_same, mul_one, le_iff]
   have : (1 : Matrix n n ℂ) - single a a 1 = diagonal (fun k => if k = a then 0 else 1) := by
-    ext i j; by_cases hij : i = j <;> by_cases hi : i = a <;> simp [hij, hi, single_apply, one_apply]
+    ext i j; by_cases hij : i = j <;> by_cases hi : i = a <;> simp [hij, hi, single_apply,
+        one_apply]
       <;> aesop
   rw [this]
   exact PosSemidef.diagonal fun k => by dsimp; split_ifs <;> norm_num
@@ -121,7 +122,7 @@ theorem kronecker_one_le_one {n m : Type*} [Fintype n] [DecidableEq n] [Fintype 
   have h : (1 : Matrix (n × m) (n × m) ℂ) - A ⊗ₖ (1 : Matrix m m ℂ) =
       (1 - A) ⊗ₖ (1 : Matrix m m ℂ) := by
     ext ⟨a, b⟩ ⟨c, d⟩
-    by_cases h1 : a = c <;> by_cases h2 : b = d <;> simp [one_apply, h1, h2, sub_mul]
+    by_cases h1 : a = c <;> by_cases h2 : b = d <;> simp [one_apply, h1, h2]
   rw [le_iff, h]
   exact (le_iff.1 hA).kronecker PosSemidef.one
 
@@ -172,6 +173,7 @@ theorem trace_margY : (margY θ).trace = star θ ⬝ᵥ θ := by
   rw [margY, margW, trace_partialTraceRight, trace_partialTraceLeft, trace_vecMulVec,
     dotProduct_comm]
 
+omit [DecidableEq P₀] [DecidableEq P₁] in
 theorem normSq_liftP_mulVec (A : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) :
     star (liftP (X := X) (U := U) (F := F) A *ᵥ θ) ⬝ᵥ (liftP A *ᵥ θ) =
       (Aᴴ * A * margP θ).trace := by
@@ -180,6 +182,7 @@ theorem normSq_liftP_mulVec (A : Matrix (P₀ × P₁) (P₀ × P₁) ℂ) :
     trace_mul_comm]
   rfl
 
+omit [DecidableEq X] [DecidableEq U] in
 theorem normSq_liftY_mulVec (B : Matrix (X × U) (X × U) ℂ) :
     star (liftY (P₀ := P₀) (P₁ := P₁) (F := F) B *ᵥ θ) ⬝ᵥ (liftY B *ᵥ θ) =
       (Bᴴ * B * margY θ).trace := by
