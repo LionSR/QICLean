@@ -287,7 +287,7 @@ theorem sum_sign_fix (z : Fin r → Fin q) :
     · simp [F]
     · intro τ _ hτ
       change (if _ then _ else _) = _
-      rw [if_neg]
+      rw [ite_eq_right]
       intro h
       apply hτ
       have key : ∀ j, τ⁻¹ j = j := fun j => by
@@ -321,9 +321,9 @@ theorem sum_sign_fix (z : Fin r → Fin q) :
         · intro h; rw [h, hswap]
       simp only [F]
       by_cases h : copyPerm (Fin q) r τ z = z
-      · rw [if_pos (e.mpr h), if_pos h, Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hne]
+      · rw [ite_eq_left (e.mpr h), ite_eq_left h, Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hne]
         push_cast; ring
-      · rw [if_neg (fun h' => h (e.mp h')), if_neg h, neg_zero]
+      · rw [ite_eq_right (fun h' => h (e.mp h')), ite_eq_right h, neg_zero]
     have hS : ∑ τ, F τ = -∑ τ, F τ := by
       calc ∑ τ, F τ = ∑ τ, F (Equiv.swap i j * τ) :=
             (Fintype.sum_equiv (Equiv.mulLeft (Equiv.swap i j)) _ _ fun _ => rfl).symm
@@ -340,7 +340,7 @@ theorem trace_permOp_mul_tensorPow_diagonal (τ : Equiv.Perm (Fin r)) (y : Fin q
   · split_ifs with h <;> simp
   · intro w _ hw
     obtain ⟨j, hj⟩ := Function.ne_iff.mp hw
-    rw [prod_eq_zero (mem_univ j) (if_neg hj), mul_zero]
+    rw [prod_eq_zero (mem_univ j) (ite_eq_right hj), mul_zero]
   · simp
 
 /-- The number of injective configurations with a given image of size `r` is `r!`. -/
