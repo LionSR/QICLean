@@ -1,0 +1,82 @@
+\section{The two merge deficits on a common copy space}
+\label{sec:pair_merge_deficit}
+
+Let $Q,C,V,R$ be finite orthonormal bases, with $m\ge0$ copies of each.
+Use the same enumeration of the copies in all four factors, and put
+\[
+ \mathcal H_{QC}=\ell^2(Q)^{\otimes m}\otimes\ell^2(C)^{\otimes m},\qquad
+ \mathcal H_{VR}=\ell^2(V)^{\otimes m}\otimes\ell^2(R)^{\otimes m}.
+\]
+The common space is $\mathcal H_{QC}\otimes\mathcal H_{VR}$.
+The separate and simultaneous copy actions of
+Definition~\ref{def:pair_copy_actions} define the actual central
+logarithmic dimension observables in each pair. These are the two local
+merge deficits used in \cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{definition}[The actual paired merge deficit]
+\label{def:pair_merge_deficit}
+\lean{TensorPower.pairMergeDeficit,TensorPower.isHermitian_pairMergeDeficit}
+\leanok
+\uses{def:pair_copy_actions}
+For the $QC$ pair set $D_C=F_Q+F_C-F_{QC}$, and for the $VR$ pair set
+$D_R=F_V+F_R-F_{VR}$. Each operator is Hermitian. On the common space
+write $\widehat D_C=D_C\otimes I_{VR}$ and
+$\widehat D_R=I_{QC}\otimes D_R$.
+\end{definition}
+\begin{proof}
+\leanok
+Each logarithmic dimension observable is a real linear combination of
+orthogonal central projectors. Sums and differences of Hermitian
+operators remain Hermitian, as do their extensions by an identity.
+\end{proof}
+
+\begin{theorem}[The two lifted exponential factors]
+\label{thm:pair_merge_deficit_lifts}
+\lean{TensorPower.commute_pairMergeDeficit_lifts,TensorPower.exp_pairMergeDeficit_lifts}
+\leanok
+\uses{def:pair_merge_deficit}
+The lifted deficits commute. For all real $a,b$,
+\begin{align}
+ e^{a\widehat D_C+b\widehat D_R}
+ &=e^{aD_C}\otimes e^{bD_R}.
+ \label{eq:pair_merge_deficit_lifts}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+The two products $\widehat D_C\widehat D_R$ and
+$\widehat D_R\widehat D_C$ both equal $D_C\otimes D_R$.
+For commuting operators the exponential of their sum is the product of
+their exponentials. Exponentiating either tensor-factor extension
+adjoins the same identity, giving \eqref{eq:pair_merge_deficit_lifts}.
+\end{proof}
+
+\begin{theorem}[The individual traces on the common space]
+\label{thm:pair_merge_deficit_traces}
+\lean{TensorPower.trace_exp_pairMergeDeficit_left,TensorPower.trace_exp_pairMergeDeficit_right}
+\leanok
+\uses{def:pair_merge_deficit}
+Let $\rho$ be any matrix on the common space, and let
+$\rho_{QC}=\operatorname{Tr}_{VR}\rho$ and
+$\rho_{VR}=\operatorname{Tr}_{QC}\rho$. For all real $a,b$,
+\begin{align}
+ \Tr(\rho e^{a\widehat D_C})&=\Tr(\rho_{QC}e^{aD_C}),
+ \label{eq:pair_merge_deficit_trace_left}\\
+ \Tr(\rho e^{b\widehat D_R})&=\Tr(\rho_{VR}e^{bD_R}).
+ \label{eq:pair_merge_deficit_trace_right}
+\end{align}
+The matrix need not be normalized, invariant under copy permutations,
+or independent between the two pairs. The identities are complex trace
+equalities, and hence also hold for their real parts.
+\end{theorem}
+\begin{proof}
+\leanok
+The partial trace is adjoint to adjoining an identity under the trace
+pairing. Apply this identity to each local exponential, using the
+identity for its tensor-factor extension.
+\end{proof}
+
+The component construction must still identify these two reduced
+matrices with the actual local component marginals. A joint exponential
+trace retains the correlations in $\rho$; no product of marginal trace
+pairings follows from the operator factorization alone.

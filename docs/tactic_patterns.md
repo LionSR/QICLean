@@ -70,3 +70,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   independent consumers appear; no general multiplicity interface is added.
 - **Caveats:** At zero trace the positive matrix is zero and the normalized
   choice is a scalar identity. Empty bases require their own zero-matrix case.
+
+### Tensor-factor exponential and trace identities — candidate (2026-10-08)
+
+- **Pattern:** Move a scalar through a Kronecker product, exponentiate the
+  actual identity extension, and pair with a common matrix by partial trace.
+- **Seen:** The common-space exponential and two complex trace equalities in
+  `QICLean/Representation/PairMergeDeficit.lean`; their generic calculations
+  already live in `KroneckerExponential.lean`, `TraceDistance.lean` and
+  `Channel/PartialTrace.lean`.
+- **Abstraction:** Use the existing exponential and trace-pairing theorems
+  directly. No additional private helper or tactic is needed.
+- **Caveats:** Operator factorization preserves correlations in the common
+  matrix. It does not justify multiplying two marginal trace pairings.
