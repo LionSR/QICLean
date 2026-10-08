@@ -237,4 +237,110 @@ theorem trace_specSample (hd : 0 < d) {x : Fin d → ℝ} (hx : ∀ i, 0 < x i)
   rw [specSample, trace_mul_cycle, mem_unitaryGroup_iff'.mp U.2, Matrix.one_mul, trace_diagonal]
   rw [← Complex.ofReal_sum, ← sum_div, div_self hS.ne', Complex.ofReal_one]
 
+/-! ### The full-dimensional integral -/
+
+/-- The entries of `(σ^t)^{⊗k}` for `σ = U diag(x/∑ x) U†`, written explicitly. -/
+noncomputable def sampleEntry (t : ℝ) {k : ℕ} (a b : Fin k → Fin d)
+    (ω : (Fin d → ℝ) × unitaryGroup (Fin d) ℂ) : ℂ :=
+  ∏ m, ∑ c, (ω.2 : Matrix (Fin d) (Fin d) ℂ) (a m) c * (((ω.1 c / ∑ j, ω.1 j) ^ t : ℝ) : ℂ) *
+    star ((ω.2 : Matrix (Fin d) (Fin d) ℂ) (b m) c)
+
+theorem tensorPow_specSample_rpow_apply (hd : 0 < d) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
+    {x : Fin d → ℝ} (hx : ∀ i, 0 < x i) (U : unitaryGroup (Fin d) ℂ) (a b : Fin k → Fin d) :
+    tensorPow (k := k) (specSample x U ^ t) a b = sampleEntry t a b (x, U) := by
+  rw [specSample_rpow hd ht hx, tensorPow_apply, sampleEntry]
+  refine prod_congr rfl fun m _ => ?_
+  rw [Matrix.mul_apply]
+  simp only [Matrix.mul_diagonal, star_apply]
+
+theorem measurable_sampleEntry (t : ℝ) {k : ℕ} (a b : Fin k → Fin d) :
+    Measurable (sampleEntry t a b) := by
+  have hU : ∀ i j, Measurable fun ω : (Fin d → ℝ) × unitaryGroup (Fin d) ℂ =>
+      (ω.2 : Matrix (Fin d) (Fin d) ℂ) i j := fun i j =>
+    ((continuous_unitary_apply (Fin d) i j).comp continuous_snd).measurable
+  have hx : ∀ c, Measurable fun ω : (Fin d → ℝ) × unitaryGroup (Fin d) ℂ =>
+      ((((ω.1 c / ∑ j, ω.1 j) ^ t : ℝ)) : ℂ) := fun c => by fun_prop
+  unfold sampleEntry
+  refine Finset.measurable_prod _ fun m _ => Finset.measurable_sum _ fun c _ => ?_
+  exact ((hU _ _).mul (hx c)).mul (continuous_star.measurable.comp (hU _ _))
+
+theorem norm_sampleEntry_le (hd : 0 < d) {t : ℝ} (ht : 0 ≤ t) {k : ℕ} (a b : Fin k → Fin d)
+    {ω : (Fin d → ℝ) × unitaryGroup (Fin d) ℂ} (hx : ∀ i, 0 < ω.1 i) :
+    ‖sampleEntry t a b ω‖ ≤ (d : ℝ) ^ k := by
+  have hS : 0 < ∑ j, ω.1 j := sum_pos (fun j _ => hx j) ⟨⟨0, hd⟩, mem_univ _⟩
+  unfold sampleEntry
+  rw [norm_prod]
+  calc ∏ m, ‖∑ c, (ω.2 : Matrix (Fin d) (Fin d) ℂ) (a m) c *
+        (((ω.1 c / ∑ j, ω.1 j) ^ t : ℝ) : ℂ) * star ((ω.2 : Matrix (Fin d) (Fin d) ℂ) (b m) c)‖
+      ≤ ∏ _m : Fin k, (d : ℝ) := by
+        refine Finset.prod_le_prod₀ (fun _ _ => norm_nonneg _) (fun m _ => ?_)
+        refine (norm_sum_le _ _).trans ?_
+        calc ∑ c, ‖(ω.2 : Matrix (Fin d) (Fin d) ℂ) (a m) c *
+              (((ω.1 c / ∑ j, ω.1 j) ^ t : ℝ) : ℂ) *
+              star ((ω.2 : Matrix (Fin d) (Fin d) ℂ) (b m) c)‖ ≤ ∑ _c : Fin d, (1 : ℝ) := by
+              refine sum_le_sum fun c _ => ?_
+              rw [norm_mul, norm_mul, norm_star, Complex.norm_real, Real.norm_eq_abs]
+              have h1 := norm_apply_le_one_of_mem_unitaryGroup ω.2.2 (a m) c
+              have h2 := norm_apply_le_one_of_mem_unitaryGroup ω.2.2 (b m) c
+              have hq : 0 ≤ ω.1 c / ∑ j, ω.1 j := div_nonneg (hx c).le hS.le
+              have hq1 : ω.1 c / ∑ j, ω.1 j ≤ 1 := by
+                rw [div_le_one hS]
+                exact single_le_sum (fun j _ => (hx j).le) (mem_univ c)
+              have h3 : |(ω.1 c / ∑ j, ω.1 j) ^ t| ≤ 1 := by
+                rw [abs_of_nonneg (Real.rpow_nonneg hq t)]
+                exact Real.rpow_le_one hq hq1 ht
+              calc ‖(ω.2 : Matrix (Fin d) (Fin d) ℂ) (a m) c‖ * |(ω.1 c / ∑ j, ω.1 j) ^ t| *
+                    ‖(ω.2 : Matrix (Fin d) (Fin d) ℂ) (b m) c‖ ≤ 1 * 1 * 1 := by gcongr
+                _ = 1 := by ring
+          _ = d := by simp
+    _ = (d : ℝ) ^ k := by simp
+
+theorem ae_prod_pos {t : ℝ} :
+    ∀ᵐ ω ∂((specMeasure d t).prod (unitaryHaar (Fin d))), ∀ i, 0 < ω.1 i := by
+  exact Measure.quasiMeasurePreserving_fst.ae ae_specMeasure_pos
+
+theorem labelProj_eq_zero_of_multiplicity {k : ℕ} {l : IrrepLabel (Equiv.Perm (Fin k))}
+    (h : multiplicity (copyPerm (Fin d) k) l = 0) : labelProj (copyPerm (Fin d) k) l = 0 := by
+  have htr := trace_labelProj (copyPerm (Fin d) k) l
+  rw [h, mul_zero, Nat.cast_zero, trace_eq_finrank_range_of_mul_self (labelProj_mul_self _ l)]
+    at htr
+  have h0 : LinearMap.range (toLin' (labelProj (copyPerm (Fin d) k) l)) = ⊥ :=
+    Submodule.finrank_eq_zero.mp (by exact_mod_cast htr)
+  rw [LinearMap.range_eq_bot] at h0
+  exact toLin'.injective (by rw [h0, map_zero])
+
+/-- The average over the unitary eigenbasis is the twirl, a central label function with
+eigenvalue `χ_λ(y)/dim V_λ`. -/
+theorem integral_unitary_sampleEntry (hd : 0 < d) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
+    (a b : Fin k → Fin d) {x : Fin d → ℝ} (hx : ∀ i, 0 < x i) :
+    ∫ U, sampleEntry t a b (x, U) ∂(unitaryHaar (Fin d)) =
+      ∑ l, glChar d l (fun i => (((x i / ∑ j, x j) ^ t : ℝ) : ℂ)) /
+        multiplicity (copyPerm (Fin d) k) l * labelProj (copyPerm (Fin d) k) l a b := by
+  set y : Fin d → ℂ := fun i => (((x i / ∑ j, x j) ^ t : ℝ) : ℂ)
+  set A := tensorPow (k := k) (diagonal y)
+  have hcongr : ∀ U : unitaryGroup (Fin d) ℂ, sampleEntry t a b (x, U) =
+      (tensorPow (k := k) (U : Matrix (Fin d) (Fin d) ℂ) * A *
+        tensorPow (k := k) (star U : Matrix (Fin d) (Fin d) ℂ)) a b := by
+    intro U
+    rw [← tensorPow_specSample_rpow_apply hd ht hx U, specSample_rpow hd ht hx, tensorPow_mul,
+      tensorPow_mul]
+  simp only [hcongr]
+  change unitaryTwirl A a b = _
+  obtain ⟨c, hc, hctr⟩ := unitaryTwirl_eq_sum_labelProj
+    (fun σ => commute_permOp_copyPerm_tensorPow (k := k) (diagonal y) σ)
+  rw [hc, Matrix.sum_apply]
+  refine sum_congr rfl fun l _ => ?_
+  rw [Matrix.smul_apply, smul_eq_mul]
+  by_cases hm : multiplicity (copyPerm (Fin d) k) l = 0
+  · rw [labelProj_eq_zero_of_multiplicity hm]; simp
+  · congr 1
+    have h1 := hctr l
+    rw [trace_labelProj, trace_labelProj_mul_tensorPow] at h1
+    have hdim : (l.dim : ℂ) ≠ 0 := by exact_mod_cast l.dim_pos.ne'
+    have hm' : (multiplicity (copyPerm (Fin d) k) l : ℂ) ≠ 0 := by exact_mod_cast hm
+    rw [eq_div_iff hm']
+    push_cast at h1
+    apply mul_left_cancel₀ hdim
+    linear_combination h1
+
 end TensorPower
