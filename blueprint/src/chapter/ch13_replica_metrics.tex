@@ -362,7 +362,7 @@ $O_k=A_k^{-1/2}\bar hA_k^{1/2}$.
     The operator $h^{(j)}$ commutes with the copy permutations of every subsystem
     disjoint from the support of $h$, and with every copy permutation of a subsystem
     that fixes the copy $j$. A permutation $\tau$ of entire copies conjugates $h^{(j)}$
-    to $h^{(\tau j)}$, and $\|h^{(j)}\|=\|h\|$. An operator supported on a disjoint
+    to $h^{(\tau j)}$, and $\|h^{(j)}\|\le\|h\|$. An operator supported on a disjoint
     union $X\cup T$ is a finite sum of products $a_ib_i$ with $a_i$ supported on $X$
     and $b_i$ supported on $T$.
 \end{lemma}
@@ -384,7 +384,8 @@ $O_k=A_k^{-1/2}\bar hA_k^{1/2}$.
     \leanok
     \uses{lem:replica_site_operators, thm:marked_ratio_forward, thm:marked_ratio_inverse,
         thm:replica_metric_basic}
-    Let $0<t<1/2$. There is $C$, depending on $\mathcal V$, $t$ and $h$, such that
+    Let $0<t<1/2$. For fixed $P,Y,F$ and $h$ there is $C$, depending on $\mathcal V$, $t$,
+    the partition and $h$, such that
     $\|O_kz\|\le C\|z\|$ for every $k$ and every $z\in\mathcal S_k$.
 \end{theorem}
 
