@@ -1,0 +1,93 @@
+\section{Reducing the full density of the good copies}
+\label{sec:replica_good_configuration_reduction}
+
+Let the five finite coordinate sets be ordered as $Q,Y,V,C,R$.
+For the same excitation component $w=(R_B\otimes I)u$, put $G=B^c$
+and $m=|G|$. Let $\Gamma$ be its actual density retaining all five factors
+on the good copies and discarding only the bad copies. The same chosen
+enumeration of $G$ is used in every factor. Let $\rho$ be the existing
+actual density retaining $Q,C,V,R$ and discarding every $Y$ copy.
+
+\begin{theorem}[Tracing the good middle physical copies]
+\label{thm:replica_good_configuration_trace_Y}
+\lean{Matrix.partialTraceRight_replicaGoodConfigurationMarginal}
+\leanok
+\uses{def:replica_good_configuration_marginal,def:replica_good_pair_marginal}
+Rearrange the retained coordinates by
+\begin{align}
+ t(x)&=(((q,c),(v,r)),y),\\
+ q_j&=x_{j,Q},\qquad c_j=x_{j,C},\\
+ v_j&=x_{j,V},\qquad r_j=x_{j,R},\qquad y_j=x_{j,Y}.
+\end{align}
+Writing $\Gamma_t$ for the density in these coordinates gives
+\begin{align}
+ \operatorname{Tr}_{Y^m}\Gamma_t=\rho.
+\end{align}
+Neither normalization nor permutation invariance is required.
+\end{theorem}
+\begin{proof}\leanok
+Expand both actual partial traces using their definitions. On the left,
+the discarded coordinates are the good $Y$ coordinates, the bad physical
+coordinates and the bad auxiliary coordinates. These are exactly the
+coordinates discarded in the definition of $\rho$. Interchanging the
+finite sums proves the identity. Every reconstructed coordinate belongs
+to the same original component $w$.
+\end{proof}
+
+\begin{theorem}[Actual compatible physical support]
+\label{thm:replica_good_configuration_J_support}
+\lean{Matrix.spectralProjectionGE_physicalMergeDeficit_mul_replicaGoodConfigurationMarginal}
+\leanok
+\uses{thm:replica_good_configuration_support,thm:physical-label-projection}
+Suppose $\|\Omega\|=1$. Let
+\begin{align}
+ G_{\mathrm{phys}}&=F_Q+F_V-F_Y,\\
+ J&=\mathbf1_{[0,\infty)}(G_{\mathrm{phys}}).
+\end{align}
+Then $J\Gamma=\Gamma$. The original vector $u$ need not be symmetric.
+\end{theorem}
+\begin{proof}\leanok
+The actual physical symmetric-support identity gives $P\Gamma=\Gamma$,
+and the compatible physical-label theorem gives $JP=P$. Thus
+$J\Gamma=JP\Gamma=P\Gamma=\Gamma$.
+This uses no assertion that a merged-label measurement preserves $P$.
+\end{proof}
+
+\begin{theorem}[Actual sum-merge moment on the full density]
+\label{thm:replica_good_configuration_sum_merge_moment}
+\lean{Matrix.replicaGoodConfigurationMarginal_exp_sum_mergeDeficit_le}
+\leanok
+\uses{thm:replica_good_configuration_trace_Y,thm:replica_two_merge_moment}
+Suppose $\|\Omega\|=1$ and that $u$ is fixed by simultaneous permutation
+of its physical, $C$ and $R$ copy strings. On the full configuration space put
+\begin{align}
+ D_C&=F_Q+F_C-F_{QC},\\
+ D_R&=F_V+F_R-F_{VR},\\
+ p_{QC}&=(m+1)^{(|Q|\,|C|)^2},\\
+ p_{VR}&=(m+1)^{(|V|\,|R|)^2}.
+\end{align}
+For every real $a$ with $2a\leq1$,
+\begin{align}
+ \operatorname{Re}\tr\bigl(\Gamma e^{a(D_C+D_R)}\bigr)
+ &\leq \frac{p_{QC}+p_{VR}}2\,\|w\|^2.
+\end{align}
+No normalization or nonvanishing of $w$ is required. Zero copies and
+empty good sets are included.
+\end{theorem}
+\begin{proof}\leanok
+In the coordinates $t$, the $Q,C,QC$ copy actions operate on the first
+pair and the $V,R,VR$ actions operate on the second pair; all fix $Y$.
+Their permutation matrices therefore have the corresponding tensor-factor
+forms. The Schur-label operators are finite linear combinations of these
+matrices, so the same identities hold for the six label operators.
+Consequently $D_C+D_R$ becomes the sum of the two paired deficits tensored
+with the identity on $Y^m$. Matrix exponentiation preserves this identity.
+The preceding partial trace therefore reduces the displayed trace to
+$\operatorname{Re}\tr(\rho e^{a(D_C+D_R)})$ on the two pairs.
+Apply the actual paired arithmetic-mean moment bound to this same $w$.
+\end{proof}
+
+These identities supply the actual density reductions in
+\cite[Section~7, lines 501--555]{OpenAI2026AreaLaw}.
+The last theorem is an auxiliary arithmetic-mean polynomial estimate;
+it does not assert the sharper printed constant or the final metric comparison.
