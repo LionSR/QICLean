@@ -21,6 +21,8 @@ import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingHermitian
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
+import QICLean.Analysis.ContractionWordDecay
+import QICLean.Analysis.ContractionWordDecaySpectator
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
 import QICLean.Analysis.DeterminantTraceBound
@@ -83,6 +85,7 @@ import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
 import QICLean.Analysis.PhaseError
+import QICLean.Analysis.PoissonContractionDecay
 import QICLean.Analysis.PolarUnitaryCorrection
 import QICLean.Analysis.PolarUnitaryCorrectionKronecker
 import QICLean.Analysis.PosSemidefCommute

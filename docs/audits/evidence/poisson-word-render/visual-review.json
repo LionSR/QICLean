@@ -1,0 +1,80 @@
+{
+  "status": "passed",
+  "source_revision": "8e0a72aa2ad07a02a5c5a13436b17607fdd5af61",
+  "pdf_review": {
+    "pages_directly_viewed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "method": "Direct inspection of every final pdftoppm PNG at 1500-pixel maximum dimension.",
+    "page_notes": {
+      "1": "Title and authors legible, inherited report layout; date follows unchanged local-time preamble.",
+      "2": "Contents includes all four sections with readable links.",
+      "3": "Poisson mass, expectation, zero-time and empty-alphabet cases fit.",
+      "4": "Chronology, one-step real quadratic form, recurrence, and weak-hypothesis explanation fit.",
+      "5": "Spectator slices and chronological tensor recurrence have correct physical/spectator order; heading now fits.",
+      "6": "Large-gap argument and final weighted exponential estimate fit; all unproved bridges explicit.",
+      "7": "Bibliography title, date and pinned revision legible."
+    },
+    "defects": []
+  },
+  "static_html_review": {
+    "files_read": [
+      "ch-poisson_word_focus.html",
+      "dep_graph_chapter_1.html",
+      "dep_graph_document.html",
+      "dep_graphs.html",
+      "index.html",
+      "sect0001.html"
+    ],
+    "math_displays_in_chapter": 15,
+    "math_displays_in_each_graph_modal": 12,
+    "declaration_links_in_each_inventory": 52,
+    "all_local_links_and_anchors_checked": true,
+    "method": "Read serialized static HTML prose/math, inventories, graph DOT and local anchors; repository static generated-source assertions pass. No live browser or MathJax runtime assertion."
+  },
+  "graph_review": {
+    "pixel_file": "dependency-graph-white.png",
+    "sha256": "1292da1088c7ba8d08c1cc3a52a6c0f3df6579594b6fa7049a657847cfdbdcc8",
+    "nodes": 14,
+    "rendered_edges": 16,
+    "explicit_dependencies": 24,
+    "all_nodes_visible": true,
+    "definition_and_proof_dependency_placement_checked": true,
+    "edge_styles_checked_programmatically": true
+  },
+  "mathematical_review": [
+    "Each individual length-m word has mass exp(-Nt)t^m/m!, without a spurious N^-m factor. Summing N^m words yields the Poisson(Nt) length mass and total mass one.",
+    "Time is nonnegative throughout. The empty word has mass one at t=0; an empty alphabet permits only the empty word for any time. The zero-length convention is preserved.",
+    "The latest event acts on the left: D_(w,i)=sqrt(I-k_i) D_w. This matches pinned chronology lines 49\u201354 and the source-inspected noncommuting two-factor regression.",
+    "The core algebraic hypotheses are k_i<=I, common annihilated Omega, arbitrary real g, and the operator lower bound. Positivity of k_i, g>0 and unit Omega are explained as source-application specializations.",
+    "Functional calculus makes sqrt(I-k_i) self-adjoint and fixes Omega; it therefore preserves Omega-perpendicular. The norm identity uses the real part of the Hermitian quadratic form.",
+    "The one-step and g>N conclusions need no k_i Omega=0. Each excited slice satisfies 0<=sum_i ||sqrt(I-k_i)v||^2<=(N-g)||v||^2, forcing zero when g>N. The spectator proof states this weaker argument directly.",
+    "Tensor products are physical operator on the left and spectator identity on the right. Finite coordinate slicing applies to arbitrary entangled inputs and introduces no spectator-dimension factor. Empty spectators and empty physical spaces are permitted where hypotheses are satisfiable.",
+    "The base excited-slice estimate allows arbitrary Omega; only the literal Q=I-|Omega><Omega| projection corollary requires ||Omega||=1. Its g<=N finite-word hypothesis is explicit.",
+    "For g<=N the nonnegative recurrence coefficient is N-g. The weighted sum is exp(-Nt)exp((N-g)t)=exp(-gt), for squared norms, with no extra factor two in the exponent. The g>N branch is settled by vanishing before using the comparison theorem.",
+    "Integrability is concluded from the nonnegative summable comparison, not assumed. The positive-time final consumer has a nonzero excited vector with initial energy one and t=g=1, bounding the actual expectation by exp(-1); source inspected only.",
+    "The paper is cited by title of its amplification section, not by an inferred section number from its filename. Estimate lines 237\u2013253 and chronology lines 49\u201354 were read against the retained pinned manuscript.",
+    "The constructed normalized word measure is not identified with independent rate-one clocks. Coupled-clock locality and the full amplification theorem remain explicitly unproved."
+  ],
+  "tool_warning_review": {
+    "nonfatal_raw_log_warnings": [
+      "xdvipdfmx could not open pdftex.map or kanjix.map; final glyphs were directly inspected.",
+      "Inherited report title-page numbering triggers Object @page.1 already defined; all formula/theorem destinations and actual internal annotations resolve.",
+      "plasTeX finds no pdf2svg/dvisvgm vector imager; the fixture contains zero diagrams and no generated image is missing."
+    ],
+    "source_box_reference_glyph_warnings": []
+  },
+  "limits": [
+    "Focused four-leaf PDF/static HTML, not a full-book build or live-browser/MathJax runtime test.",
+    "Declaration URL identifiers and local anchors checked; remote Lean-document publication not tested.",
+    "No Lean/Lake/checkdecls or CI performed by this render worker; consumers and axiom guards source-inspected only.",
+    "No new tensor diagrams; Tenkz picture validation is inapplicable.",
+    "Concrete normalized word law is proved; independent rate-one clock identification, coupled-clock locality, and full amplification remain unproved."
+  ]
+}
