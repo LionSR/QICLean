@@ -140,10 +140,46 @@ theorem commute_permOp_bandMetric (t : ℝ) (k : ℕ) (π : PYF V) (s : Equiv.Pe
   exact ((((commute_inv_of_commute (hW _)).mul_right (commute_inv_of_commute (hW _))).mul_right
     (hW _)).pow_right 2)
 
+omit [∀ v, NeZero (n v)] in
+/-- The entropy of a region of a pure state is continuous in the vector: the reduced matrix is
+quadratic in the vector and `ρ ↦ Tr η(ρ)` is continuous on Hermitian matrices. -/
+theorem continuous_entropy (R : Finset V) :
+    Continuous fun θ : SiteConfig n → ℂ =>
+      FiniteProduct.entropy (fun v => Fin (n v)) ((EuclideanSpace.equiv _ ℂ).symm θ) R := by
+  have hρ : Continuous fun θ : SiteConfig n → ℂ =>
+      FiniteProduct.reducedPure (fun v => Fin (n v)) ((EuclideanSpace.equiv _ ℂ).symm θ) R := by
+    refine continuous_pi fun a => continuous_pi fun b => ?_
+    simp only [FiniteProduct.reducedPure, FiniteProduct.reducedMatrix_apply, vecMulVec_apply]
+    fun_prop
+  have heq : ∀ θ : SiteConfig n → ℂ,
+      FiniteProduct.entropy (fun v => Fin (n v)) ((EuclideanSpace.equiv _ ℂ).symm θ) R =
+        (cfc Real.negMulLog (FiniteProduct.reducedPure (fun v => Fin (n v))
+          ((EuclideanSpace.equiv _ ℂ).symm θ) R)).trace.re := fun θ => by
+    have hH := (FiniteProduct.reducedPure_posSemidef (fun v => Fin (n v))
+      ((EuclideanSpace.equiv _ ℂ).symm θ) R).isHermitian
+    rw [FiniteProduct.entropy, _root_.vonNeumannEntropy, hH.cfc_eq, ← RCLike.re_eq_complex_re,
+      Matrix.IsHermitian.trace_cfc_eq_sum_re]
+  simp_rw [heq]
+  refine Complex.continuous_re.comp (continuous_id.matrix_trace.comp ?_)
+  exact Continuous.cfc_of_mem_nhdsSet (s := Set.univ) Real.negMulLog Filter.univ_mem hρ
+    (fun θ => (FiniteProduct.reducedPure_posSemidef (fun v => Fin (n v))
+      ((EuclideanSpace.equiv _ ℂ).symm θ) R).isHermitian.isSelfAdjoint)
+    Real.continuous_negMulLog.continuousOn
+
+omit [∀ v, NeZero (n v)] in
 /-- The entropy of a move is continuous in the one-copy vector. -/
 theorem continuous_moveEta (π : PYF V) (m : Move V) :
     Continuous fun θ : SiteConfig n → ℂ => moveEta n π m ((EuclideanSpace.equiv _ ℂ).symm θ) := by
-  sorry
+  cases m with
+  | stay => exact continuous_const
+  | toP x =>
+    simp only [moveEta, FiniteProduct.conditionalMutualInformation]
+    exact (((continuous_entropy _).add (continuous_entropy _)).sub (continuous_entropy _)).sub
+      (continuous_entropy _)
+  | toF x =>
+    simp only [moveEta, FiniteProduct.conditionalMutualInformation]
+    exact (((continuous_entropy _).add (continuous_entropy _)).sub (continuous_entropy _)).sub
+      (continuous_entropy _)
 
 namespace TransportData
 
