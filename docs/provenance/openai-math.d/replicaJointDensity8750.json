@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8750-qic-good-joint-density-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaJointDensity.lean",
+        "declaration": "Matrix.replicaGoodRegionalAuxiliaryMarginal",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Define the literal actual excitation-component density retaining good physical Q and good auxiliary C, with explicit regrouping and chosen finite-set enumerations. The definition accepts arbitrary \u03a9; all unwanted physical and auxiliary coordinates are traced. No upstream Lean proof text is reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "05dc00486525e0e79413afb806c221eb98787204",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaJointDensity",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaJointDensity8750/target.log",
+            "sha256": "5ac38ce0ed1cfec6d7934afc606286c660734a4a12bab6468d38579b1835215b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaJointDensity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaJointDensity8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensity8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaJointDensity8750/axioms.log",
+            "sha256": "141e585885125f37c46ebeb8f3d712f611fac489e8048d8211583257e194ecc7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8750-qic-good-joint-density-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaJointDensity.lean",
+        "declaration": "Matrix.replicaGoodRegionalAuxiliaryMarginal_eq",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive the product of the original one-copy Q marginal tensor power and the actual good auxiliary marginal of the same excitation component, using regional density and composed partial traces. Only \u03a9 is unit; zero components, zero copies and empty good sets are included. No independence, fixedness or supplied marginal identity is assumed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "05dc00486525e0e79413afb806c221eb98787204",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaJointDensity",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaJointDensity8750/target.log",
+            "sha256": "5ac38ce0ed1cfec6d7934afc606286c660734a4a12bab6468d38579b1835215b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/ReplicaJointDensity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaJointDensity8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensity8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaJointDensity8750/axioms.log",
+            "sha256": "141e585885125f37c46ebeb8f3d712f611fac489e8048d8211583257e194ecc7"
+          }
+        ]
+      }
+    }
+  ]
+}

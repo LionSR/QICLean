@@ -1,0 +1,23 @@
+{
+  "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensity8750/Statements.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T00:33:27.670939+00:00",
+  "elapsed_seconds": 4.623349125002278,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaJointDensity8750/statements.log",
+  "sha256": "7a2df89d0171bf96e3475c2438696b0bab600bb0df687e7db412bcba23491ba0"
+}

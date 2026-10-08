@@ -1,0 +1,14 @@
+{
+  "source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/replicaJointDensity8750/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T00:33:49.415966+00:00",
+  "elapsed_seconds": 0.3284316250064876,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaJointDensity8750/provenance.log",
+  "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+}
