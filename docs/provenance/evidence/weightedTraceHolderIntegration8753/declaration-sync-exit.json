@@ -1,0 +1,14 @@
+{
+  "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+  "command": [
+    "python3",
+    "scripts/blueprint_lean_sync.py",
+    "--update-lean-decls"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:34:59.143363+00:00",
+  "elapsed_seconds": 2.279,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/declaration-sync.log",
+  "sha256": "25ba3f73f684f4198eecf61fbfadb6bda841a2e1844f4ea7ec8f2a8d04b0bde6"
+}

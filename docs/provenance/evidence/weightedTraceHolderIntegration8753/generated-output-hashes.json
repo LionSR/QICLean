@@ -1,0 +1,29 @@
+{
+  "files": [
+    {
+      "path": "blueprint/print/print.pdf",
+      "sha256": "ed48d471cef720fb32a8e4410a3f5b1c3d9a174438f01941dd03fd02d2d0e124",
+      "bytes": 3012819
+    },
+    {
+      "path": "blueprint/print/print.bbl",
+      "sha256": "1c9c49ee1de060dc40e74b44b1cbcd0a961b662280ac2dcdc5439d3556e24695",
+      "bytes": 14706
+    },
+    {
+      "path": "blueprint/lean_decls",
+      "sha256": "dea028e7284db5da91218d915c9cd7d73449069aa48c085ee7e9c782778d444c",
+      "bytes": 158290
+    },
+    {
+      "path": "blueprint/web/ch-schur_labels.html",
+      "sha256": "0ef123ed36978888c3962b826faaf81fca8e57c125e4bca15f4809fb20cbf8a6",
+      "bytes": 213269
+    },
+    {
+      "path": "output/pdf/area-law-weighted-trace-holder-blueprint.pdf",
+      "sha256": "ed48d471cef720fb32a8e4410a3f5b1c3d9a174438f01941dd03fd02d2d0e124",
+      "bytes": 3012819
+    }
+  ]
+}

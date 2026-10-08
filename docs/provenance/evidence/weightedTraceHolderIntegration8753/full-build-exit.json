@@ -1,0 +1,15 @@
+{
+  "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:26:11.674343+00:00",
+  "elapsed_seconds": 278.621,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/full-build.log",
+  "sha256": "e864454f90804bdaac6c144153ddbd60def984b74dd44b9009b9864f60ba14b3"
+}

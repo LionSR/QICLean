@@ -1,0 +1,142 @@
+{
+  "all_images_inspected": true,
+  "widths": [
+    1280,
+    360
+  ],
+  "images": [
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/sec-weighted-trace-holder-web.png",
+      "sha256": "bb872dc09b42394a4329fbaea6e50dc739f3e6ce518c327b6cbee5f7ca8a8e73",
+      "bytes": 262336
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/thm-resolution-product-coordinates-web.png",
+      "sha256": "bb872dc09b42394a4329fbaea6e50dc739f3e6ce518c327b6cbee5f7ca8a8e73",
+      "bytes": 262336
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/thm-weighted-trace-holder-binary-web.png",
+      "sha256": "c91a9ce162fb43f1d569c68f296767c5679f8f9c0c9767884f3d91fdafe09385",
+      "bytes": 234649
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/thm-weighted-trace-holder-finite-web.png",
+      "sha256": "69fb3b620bba5f258243ff9f9e71425fe5e6e72c814d8ca74c0f492fc6645aac",
+      "bytes": 250065
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-resolution-product-coordinates-proof-1280.png",
+      "sha256": "9bdd858447c30763b0b826afde1d1ffde2b6deff9e0828f12867e26c651efaaa",
+      "bytes": 11151
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-resolution-product-coordinates-proof-360.png",
+      "sha256": "ca1adc9084bf23e519cb3ff7ddd53251eb74b981851b5af612c075d49654f62d",
+      "bytes": 10080
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-resolution-product-coordinates-statement-1280.png",
+      "sha256": "c5516a768f968d29bc7f4e56282b42ec07cfc972038ee64d736b0e2625f936d0",
+      "bytes": 34044
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-resolution-product-coordinates-statement-360.png",
+      "sha256": "5e46dde029ab9634b7523b224ed599c9f53adb60f2ab26f1e0c6c561d9c47f4a",
+      "bytes": 32103
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-proof-1280.png",
+      "sha256": "4d656d30b7eaf8d7d6d5936dcc46df3e94f75c83c86d85ef29be3553d66c2f2d",
+      "bytes": 73975
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-proof-360.png",
+      "sha256": "0a062ecae3c34b0f3c702339a3cc9498e674093ebf3ad5ad68830755e40c7a9c",
+      "bytes": 70641
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-statement-1280.png",
+      "sha256": "fd6404258feb0a5fd28fbe897d3aeeb94c93c2148c1132594ff632976112262c",
+      "bytes": 34689
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-statement-360.png",
+      "sha256": "4e56ce3c1af2c2c946f02bee2c2b1cdd7cf1d0a6d9e301f46a6a93bdb9d1f16d",
+      "bytes": 33964
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-statement-display-0-360-right.png",
+      "sha256": "a09271d09c9d86f5c59dec9a0268345751b64cfeef7a0679dd90aadc4454442d",
+      "bytes": 5424
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-finite-proof-1280.png",
+      "sha256": "28ff59ce6b7e75614c4f27e97035229eabe9140e63eac6d552ce7e90666d3d44",
+      "bytes": 34355
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-finite-proof-360.png",
+      "sha256": "2f9a02960605b449d6a276ba6e2400f3ad762d0e33d8e5b098df8fc8a6fb0080",
+      "bytes": 33212
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-finite-statement-1280.png",
+      "sha256": "3769f064af6dff607c2fe1cfcf2dcc543237badfdca8842e0de723f54b253cd1",
+      "bytes": 35102
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-finite-statement-360.png",
+      "sha256": "8a4ce30dd678d47672e5b957de1e3feee519dbff0102cc416b86e78c2a2ebb85",
+      "bytes": 34692
+    }
+  ],
+  "mobile_displayed_formulas": [
+    {
+      "width": 310,
+      "scrollWidth": 310,
+      "overflow": "auto",
+      "label": "resolution-product-coordinates",
+      "kind": "statement",
+      "index": 0
+    },
+    {
+      "width": 310,
+      "scrollWidth": 361,
+      "overflow": "auto",
+      "label": "weighted-trace-holder-binary",
+      "kind": "statement",
+      "index": 0,
+      "right_endpoint": {
+        "left": 51,
+        "max": 51
+      }
+    },
+    {
+      "width": 311,
+      "scrollWidth": 311,
+      "overflow": "auto",
+      "label": "weighted-trace-holder-binary",
+      "kind": "proof",
+      "index": 0
+    },
+    {
+      "width": 311,
+      "scrollWidth": 311,
+      "overflow": "auto",
+      "label": "weighted-trace-holder-binary",
+      "kind": "proof",
+      "index": 1
+    },
+    {
+      "width": 310,
+      "scrollWidth": 310,
+      "overflow": "auto",
+      "label": "weighted-trace-holder-finite",
+      "kind": "statement",
+      "index": 0
+    }
+  ],
+  "mobile_local_right_endpoints": 1,
+  "inspection": "Complete coordinate, binary and finite-family statements and all open proofs visually inspected at desktop/mobile widths. All five mobile displays checked; binary statement right endpoint shows the full second trace factor and exponent. The other displays fit. Full viewport context captures also inspected."
+}

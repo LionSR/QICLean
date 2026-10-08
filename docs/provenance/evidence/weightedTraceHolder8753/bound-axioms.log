@@ -1,0 +1,13 @@
+'Matrix.IsOrthogonalResolution.prod_hom_fst' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.IsOrthogonalResolution.prod_hom_snd' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.re_trace_mul_exp_smul_add_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.re_trace_mul_exp_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PermutationRepresentation.joint_hom_fst' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PermutationRepresentation.joint_hom_snd' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.groupedCopies_labelEntropy_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PermutationRepresentation.exp_mergeDeficit_eq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'PermutationRepresentation.posSemidef_mergeDeficit' depends on axioms: [propext, Classical.choice, Quot.sound]

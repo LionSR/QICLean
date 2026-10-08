@@ -1,0 +1,14 @@
+{
+  "source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/weightedTraceHolder8753/check-manifest.py",
+    "--index"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:24:32.935917+00:00",
+  "elapsed_seconds": 2.449,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceHolder8753/manifest-check.log",
+  "sha256": "723546d9ac144477886ea4851ef63e1d58e11516ecc270f540f275e15bbcea9f"
+}

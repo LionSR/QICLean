@@ -1,0 +1,14 @@
+{
+  "source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/weightedTraceHolder8753/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:22:32.971742+00:00",
+  "elapsed_seconds": 0.066,
+  "exit_code": 1,
+  "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-provenance.log",
+  "sha256": "7675ebf91d5b392541ebc6584d2bb0739b699c310f0768c2f74eaf3e449b957f"
+}

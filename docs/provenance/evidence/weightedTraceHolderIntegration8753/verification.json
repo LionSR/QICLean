@@ -1,0 +1,360 @@
+{
+  "mathematical_source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "leaf_evidence_revision": "6c64b654686dc36d39891baaebe8e2bce726aa07",
+  "unique_inclusion_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+  "checked_source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+  "checks": [
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "node",
+        "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+        "--operation-kind",
+        "edit",
+        "--expected-output-count",
+        "1",
+        "--output-format",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:35:01.899526+00:00",
+      "elapsed_seconds": 0.246,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:34:59.144002+00:00",
+      "elapsed_seconds": 63.094,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/axioms-final.log",
+      "sha256": "2052d13589991df9490cd155e5bcf4ab9d343c65476957283c04803c566742df"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/copy-bibliography.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:35:38.907921+00:00",
+      "elapsed_seconds": 0.057,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:25:56.010030+00:00",
+      "elapsed_seconds": 15.108,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/cache-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:26:11.372512+00:00",
+      "elapsed_seconds": 0.069,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/cache-guard.log",
+      "sha256": "2e13a163821a1e1f167fd2cbc2ae50ad71235a3ee18fe61b21dafd9bdb846f5e"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "leanblueprint",
+        "checkdecls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T03:36:45.535798+00:00",
+      "elapsed_seconds": 41.982,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--update-lean-decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:34:59.143363+00:00",
+      "elapsed_seconds": 2.279,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/declaration-sync.log",
+      "sha256": "25ba3f73f684f4198eecf61fbfadb6bda841a2e1844f4ea7ec8f2a8d04b0bde6"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:26:11.674343+00:00",
+      "elapsed_seconds": 278.621,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/full-build.log",
+      "sha256": "e864454f90804bdaac6c144153ddbd60def984b74dd44b9009b9864f60ba14b3"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:27:52.607927+00:00",
+      "elapsed_seconds": 0.467,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/imports.log",
+      "sha256": "eaac36ef21135748a642ad0e883cfb7befe746b87e74d45be7373d498639b0c0"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/check-native-targets.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:36:44.965414+00:00",
+      "elapsed_seconds": 0.196,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/native-targets.log",
+      "sha256": "d128a3af9ee7e0ea8a8261f2238d735511870d003a2afe21f79f42dd37dbf1c4"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:27:54.029999+00:00",
+      "elapsed_seconds": 0.572,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T03:35:02.801811+00:00",
+      "elapsed_seconds": 35.724,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf.log",
+      "sha256": "5367c3a8b1f365d39e4b31b48f40f0e3e4376d0836b497ea70fb01322a68380a"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "pdftoppm",
+        "-f",
+        "459",
+        "-l",
+        "460",
+        "-r",
+        "120",
+        "-png",
+        "blueprint/print/print.pdf",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/page"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:37:34.349047+00:00",
+      "elapsed_seconds": 0.757,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf-render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:27:48.827036+00:00",
+      "elapsed_seconds": 3.538,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/preservation.log",
+      "sha256": "39c50f0a86d24223c6f2f2962c2b4be8ef2828457391d434ec2abb18bace6b70"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:41:12.399053+00:00",
+      "elapsed_seconds": 4.27,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/preservation-final.log",
+      "sha256": "39c50f0a86d24223c6f2f2962c2b4be8ef2828457391d434ec2abb18bace6b70"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "f675fee80416c966989bc8bc124a3d54b1348492"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:27:53.319219+00:00",
+      "elapsed_seconds": 0.476,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:36:27.393528+00:00",
+      "elapsed_seconds": 0.581,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/provenance-final.log",
+      "sha256": "7ffe59dc837709b43bb625c25323aefa56962a79d773fc9aa21d59d05ff2ed05"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:27:54.844841+00:00",
+      "elapsed_seconds": 1.244,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/tenkz.log",
+      "sha256": "b10dd226fcfb59e9eb52b06bc040d251e35cd38d571c963ece4bf0e5263f2d8d"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "leanblueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+      "started_utc": "2026-10-08T03:35:39.301503+00:00",
+      "elapsed_seconds": 65.214,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web.log",
+      "sha256": "531d848049d2d8e9ca63eb6577d39546ff137f559fdf9814a75b7abc21877e12"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-qa.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:37:34.349030+00:00",
+      "elapsed_seconds": 3.742,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-reader.log",
+      "sha256": "a6416e733843a3f2d0a956ff96d60853e5065dae477d29d27d1f18f9a019c256"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-visual.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:37:38.362154+00:00",
+      "elapsed_seconds": 2.736,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-visual.log",
+      "sha256": "616997330faccc1b96368f2c8bc518310f061339b56e81b84a260d5eee498271"
+    },
+    {
+      "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T03:37:34.349054+00:00",
+      "elapsed_seconds": 55.03,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/whole-web-reader.log",
+      "sha256": "8f1415819121581247fcbdba21f5ae71e8e3fa7e831d4caa3cf3864341cbbd44"
+    }
+  ],
+  "complete_library_jobs": 9824,
+  "complete_pdf_pages": 472,
+  "native_inventory": {
+    "declaration_lines": 3768,
+    "unique_declarations": 3768,
+    "owned_declarations": [
+      "Matrix.IsOrthogonalResolution.prod_hom_fst",
+      "Matrix.IsOrthogonalResolution.prod_hom_snd",
+      "Matrix.PosSemidef.re_trace_mul_exp_smul_add_le",
+      "Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod",
+      "Matrix.PosSemidef.re_trace_mul_exp_nonneg"
+    ],
+    "unique_fragment_input": [
+      "blueprint/src/chapter/ch13_schur_labels.tex"
+    ],
+    "each_occurs_once": true
+  },
+  "whole_web_reader": {
+    "pages": 50,
+    "typeset": 40970
+  },
+  "fresh_exact_kernel_reports": 11,
+  "original_owned_provenance_entries": 5,
+  "source_scope": "Auxiliary genuine weighted trace Holder for commuting Hermitian observables and arbitrary PSD weight; all real finite-family exponent, binary endpoints, zero trace weight, empty ambient and one-factor case included. Actual physical five-factor construction and signed rate remain subsequent.",
+  "preservation": "All five Lean files, fragment/reader/ledger and original leaf remain exact; original three provenance shards preserved; six old signatures unchanged; published ca72/a820 refs and prior saved PDFs exact. No wider inherited semantic audit claimed.",
+  "shared_source_exceptions": {
+    "authoritative_parent": "6c64b654686dc36d39891baaebe8e2bce726aa07",
+    "QICLean/Analysis.lean": "Exactly one generated WeightedTraceHolder import.",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "Exactly one final weighted_trace_holder fragment input with surrounding newline."
+  },
+  "historical_diagnostics": "Root pre-freeze target typing attempts and own leaf wrapper/ Python dependency diagnostics are retained verbatim; all final source-bound production/verification checks passed and frozen source did not change."
+}

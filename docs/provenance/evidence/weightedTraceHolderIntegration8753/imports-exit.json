@@ -1,0 +1,14 @@
+{
+  "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+  "command": [
+    "python3",
+    "scripts/generate_import_aggregators.py",
+    "--check"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:27:52.607927+00:00",
+  "elapsed_seconds": 0.467,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/imports.log",
+  "sha256": "eaac36ef21135748a642ad0e883cfb7befe746b87e74d45be7373d498639b0c0"
+}

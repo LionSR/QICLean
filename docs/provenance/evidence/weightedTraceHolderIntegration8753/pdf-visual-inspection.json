@@ -1,0 +1,24 @@
+{
+  "physical_pages": [
+    459,
+    460
+  ],
+  "printed_pages": [
+    458,
+    459
+  ],
+  "all_pages_inspected": true,
+  "images": [
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/page-459.png",
+      "sha256": "b7390f65bc04c7513931dc050b9d312590486df9ef1517ca6e073d72eaf77ec4",
+      "bytes": 233905
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/page-460.png",
+      "sha256": "d6d705965d180572d346e0ecd0a7e7ab599d1a004bd2977c7155b65cdcf3ecc0",
+      "bytes": 218294
+    }
+  ],
+  "inspection": "All three new mathematical statements and complete proofs, actual coordinate product resolutions, binary weight endpoints and arbitrary mass, direct scalar weighted Holder argument and finite-family induction inspected. Fifth-root product and arbitrary real exponent clear; no overlap or clipping."
+}

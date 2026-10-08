@@ -1,0 +1,17 @@
+{
+  "new": [
+    "Matrix.IsOrthogonalResolution.prod_hom_fst",
+    "Matrix.IsOrthogonalResolution.prod_hom_snd",
+    "Matrix.PosSemidef.re_trace_mul_exp_smul_add_le",
+    "Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod",
+    "Matrix.PosSemidef.re_trace_mul_exp_nonneg"
+  ],
+  "refreshed": [
+    "PermutationRepresentation.joint_hom_fst",
+    "PermutationRepresentation.joint_hom_snd",
+    "TensorPower.groupedCopies_labelEntropy_bounds",
+    "PermutationRepresentation.exp_mergeDeficit_eq_sum",
+    "PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum",
+    "PermutationRepresentation.posSemidef_mergeDeficit"
+  ]
+}

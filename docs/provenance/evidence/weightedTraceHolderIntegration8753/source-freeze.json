@@ -1,0 +1,58 @@
+{
+  "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+  "authoritative_parent_revision": "f675fee80416c966989bc8bc124a3d54b1348492",
+  "files": [
+    {
+      "path": "QICLean/Analysis/OrthogonalResolution.lean",
+      "sha256": "65ebba8cca5d3558df5860f800c1adf1f2436bbbf96a7663c2ea9cdbc41fd7e4",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Analysis/WeightedTraceHolder.lean",
+      "sha256": "376f80c3c8284c27105152168c8ffcc1c36c96f9074fe344b6cf29ee2e9bb07e",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Representation/GroupedLabelEntropy.lean",
+      "sha256": "14864d8ae132acf5d2d35a9b410e4392c8956d2538d203d43cf0018c8a000ddc",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Representation/MergeExponential.lean",
+      "sha256": "02f2e25b8cb88b62efd98ef8e9e8fbda75b8ea3fb3398a99972fadfac7beee53",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Representation/SchurSurprisal.lean",
+      "sha256": "ec9b587efcc36f7b0a558b3b35ec3cfd9ebd088c0d4c99cf47f0f531edd2c0d2",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/weighted_trace_holder.tex",
+      "sha256": "6dd428a0b6ba32733e875a45e9e78ec1e7a143f35657b29bc414f4dafbef05db",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/openai-area-law-weighted-trace-holder.md",
+      "sha256": "80524ce4df6ed0024291e5389a2bb4565e9b38e4e9fa4460f3571a71e0ff7c42",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "a7619b9862cf230725a6f05f0a609533385b0fad563a74751884fe3150ff0274",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Analysis.lean",
+      "sha256": "3d14e91892bd2431dd81d052cf3acc25fc38c8853c07f70d595421fe1101c27c",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_schur_labels.tex",
+      "sha256": "c44df3b7496ec485f53fd9a7417c3d83dea23ff5b276dd65058673af7d6c3ca8",
+      "coverage": "Entire file."
+    }
+  ],
+  "mathematical_source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "leaf_evidence_revision": "6c64b654686dc36d39891baaebe8e2bce726aa07"
+}

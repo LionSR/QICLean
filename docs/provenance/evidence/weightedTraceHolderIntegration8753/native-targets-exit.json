@@ -1,0 +1,13 @@
+{
+  "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/weightedTraceHolderIntegration8753/check-native-targets.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:36:44.965414+00:00",
+  "elapsed_seconds": 0.196,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/native-targets.log",
+  "sha256": "d128a3af9ee7e0ea8a8261f2238d735511870d003a2afe21f79f42dd37dbf1c4"
+}

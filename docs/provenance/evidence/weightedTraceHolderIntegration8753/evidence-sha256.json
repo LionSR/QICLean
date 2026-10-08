@@ -1,0 +1,439 @@
+{
+  "files": [
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/Axioms.lean",
+      "sha256": "1239461d44fa378c992420cbb1e87d341ef3d882d499fb17ce130c98745c7b79",
+      "bytes": 794
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/README.md",
+      "sha256": "020ac3ea5e5905f19eea47b826efce628580b02bbe1c98cfeea21fce7d2b0910",
+      "bytes": 1724
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/artifact-operation-exit.json",
+      "sha256": "83f5afa8ece7ba8bdfad4412a7f7be068ee873fde11c288ab4f21bf37a24d5ec",
+      "bytes": 726
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/axioms-final-exit.json",
+      "sha256": "c2ebe16f16a7b0517e004f47d4f86f872dcaf7b93c22261066774420fc933eef",
+      "bytes": 751
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/axioms-final.log",
+      "sha256": "2052d13589991df9490cd155e5bcf4ab9d343c65476957283c04803c566742df",
+      "bytes": 1184
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/bibliography-exit.json",
+      "sha256": "df9cf6c9b40260896c56e223320329f232e9a131debe3ee3e036e336c8d37952",
+      "bytes": 555
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831",
+      "bytes": 169
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/cache-fetch-exit.json",
+      "sha256": "7881059f8d52a08fabc1f820e253fe80a64e88b2afb97831a6701dac11361676",
+      "bytes": 499
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/cache-guard-exit.json",
+      "sha256": "a00dccc5f8e5f593e79ff95c8829d70020e37768a250196b380f380e7a4b6ee0",
+      "bytes": 548
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/cache-guard.log",
+      "sha256": "2e13a163821a1e1f167fd2cbc2ae50ad71235a3ee18fe61b21dafd9bdb846f5e",
+      "bytes": 1189
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/cache-guard.py",
+      "sha256": "c35345c174616feb95914ec46c1d34a82458233b5605637529f74c433da1e469",
+      "bytes": 1183
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/check-manifest.py",
+      "sha256": "f3cea899934def54e080a8615a25c97d2996e8c13a8d2e92352d01017f82caa6",
+      "bytes": 2757
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/check-native-targets.py",
+      "sha256": "31fb46f0b8d797604299d2cd3167b743d86ca66935614b2d0bec2faa3ab8a413",
+      "bytes": 1153
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/check-preservation.py",
+      "sha256": "85a338315762aa6ac91293e519bee28ac6b49e16d6729d1f18fb517b89ad3767",
+      "bytes": 1441
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/checkdecls-exit.json",
+      "sha256": "eb2231476f783976da6b470b7f724960054c85794cbcb0e4e7a5c9f5c969a91a",
+      "bytes": 500
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/collect.py",
+      "sha256": "c19a260733e717e4c2fbeda2740ddc7faf5349094f60da897725abc114639bf1",
+      "bytes": 4806
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/compressed-logs.json",
+      "sha256": "2dd062d9f42ad1b6cbec0993f1cdfccb73911c615bee0e0dcd1a73e8d56ac96c",
+      "bytes": 538
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/copy-bibliography.py",
+      "sha256": "54f9d179b155aff7bc5e5b7fe90739c2f7ddaff2b0615e8c44a4f086f5bc4e1c",
+      "bytes": 461
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/declaration-sync-exit.json",
+      "sha256": "5f51228e4899fa687343b0a6e206062d39759526123a779d0ce8810cc331d0a7",
+      "bytes": 536
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/declaration-sync.log",
+      "sha256": "25ba3f73f684f4198eecf61fbfadb6bda841a2e1844f4ea7ec8f2a8d04b0bde6",
+      "bytes": 9068
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/full-build-exit.json",
+      "sha256": "df3c8930794d5f220050e73b87c7bc9bfdee94e7e796cedc86d7e8fa8b8bfde2",
+      "bytes": 514
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/full-build.log",
+      "sha256": "e864454f90804bdaac6c144153ddbd60def984b74dd44b9009b9864f60ba14b3",
+      "bytes": 59336
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/generated-output-hashes.json",
+      "sha256": "6833f31b94b25100434bc9af31540dc6be77e2b5755f38778a15e51e9defd3de",
+      "bytes": 865
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/imports-exit.json",
+      "sha256": "f4a751449a0c3df0d918ac783a01d9006db1c1156b7d52a903489c6a8093aae5",
+      "bytes": 523
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/imports.log",
+      "sha256": "eaac36ef21135748a642ad0e883cfb7befe746b87e74d45be7373d498639b0c0",
+      "bytes": 81
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/individual-source-preservation.json",
+      "sha256": "84275f100c8ba8369a002e2b03a62fc94167ed59ed03d1ca5c05357d89e1297f",
+      "bytes": 12683
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/kernel-summary.json",
+      "sha256": "0ca3eb878e697a1a62dea405f8e9069751eb72b47b485d9a522350d0fe2dc207",
+      "bytes": 1066
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/mobile-equations.json",
+      "sha256": "95e8aed87930fe6b3adc5acd072d653167f4c3c8b9f3cc0b3e0271b9f85dfd1b",
+      "bytes": 862
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/native-targets-exit.json",
+      "sha256": "15c33a45dd057b68b3cb9ebcc0da143a0553d73d02a3ccda70f5f08b3c84861d",
+      "bytes": 560
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/native-targets.json",
+      "sha256": "1e8e8357131731fcd37a2b2e0a57b76913ab18dcf1bde9e6a06ffdf929caacab",
+      "bytes": 462
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/native-targets.log",
+      "sha256": "d128a3af9ee7e0ea8a8261f2238d735511870d003a2afe21f79f42dd37dbf1c4",
+      "bytes": 79
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/owned-shards.json",
+      "sha256": "94d8cb93000379a04ab7c66a53fb3a2720cc1075f155908f3c38cbe2cddba880",
+      "bytes": 33
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/page-459.png",
+      "sha256": "b7390f65bc04c7513931dc050b9d312590486df9ef1517ca6e073d72eaf77ec4",
+      "bytes": 233905
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/page-460.png",
+      "sha256": "d6d705965d180572d346e0ecd0a7e7ab599d1a004bd2977c7155b65cdcf3ecc0",
+      "bytes": 218294
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/paper-gaps-exit.json",
+      "sha256": "efc43b98fec519ff216a05c0bf94ebbbf23d2dd93f6b74aec5da35f12d47a5d1",
+      "bytes": 504
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+      "bytes": 91
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf-exit.json",
+      "sha256": "c8bcf02617931b0c51c72e9e501b84451e219b2ad3f21ce75e1360d282ce4da1",
+      "bytes": 486
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf-page-search.json",
+      "sha256": "b9a76b21ff0e8aa736fcce30f7260f0c0f131429f4d3e078cb467170c487863c",
+      "bytes": 10315
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf-render-exit.json",
+      "sha256": "0627dbf85b193abfdc70982541e7e70fc9354395f45e3893a74131f9f50ae169",
+      "bytes": 646
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf-render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf-visual-inspection.json",
+      "sha256": "cfa93f91a2e7d21506f4aede5f3f28f2b9581d30bfe37277542be0520da956e1",
+      "bytes": 874
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf.log.gz",
+      "sha256": "857cc25dfe2b83b63d120bdf27e71077305d6647868a4c773c2db4f3374f6e91",
+      "bytes": 22144
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/preservation-exit.json",
+      "sha256": "9461c6ebe7d6fe1ff505318afbc69ede15b590c4d7a797462cbde1a797fc3f93",
+      "bytes": 556
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/preservation-final-exit.json",
+      "sha256": "1ceff4eed698599213958795dd0da1f6013ba2a73d26609a48e6f69063c2f51b",
+      "bytes": 561
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/preservation-final.log",
+      "sha256": "39c50f0a86d24223c6f2f2962c2b4be8ef2828457391d434ec2abb18bace6b70",
+      "bytes": 437
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/preservation.log",
+      "sha256": "39c50f0a86d24223c6f2f2962c2b4be8ef2828457391d434ec2abb18bace6b70",
+      "bytes": 437
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/prose-exit.json",
+      "sha256": "eea7b09340466c764219dd10926ef20b88a19babdee3f8245e1ecde874de5726",
+      "bytes": 571
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/provenance-final-exit.json",
+      "sha256": "56e91979cf7808711cae8a564fd200210f781ec01d93086f6ed69f22044efea3",
+      "bytes": 640
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/provenance-final.log",
+      "sha256": "7ffe59dc837709b43bb625c25323aefa56962a79d773fc9aa21d59d05ff2ed05",
+      "bytes": 69
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/run.py",
+      "sha256": "96a4b6e1df1483f2564958b77117124ab1e0418ca2fbdd2aea254f4b40f718de",
+      "bytes": 1207
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/sec-weighted-trace-holder-web.png",
+      "sha256": "bb872dc09b42394a4329fbaea6e50dc739f3e6ce518c327b6cbee5f7ca8a8e73",
+      "bytes": 262336
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/source-freeze.json",
+      "sha256": "be25c87ca8121ebae714c9769a8ff6b988724a8d6a63f488ef9f0e9f650c3a0d",
+      "bytes": 2190
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/tenkz-exit.json",
+      "sha256": "ae5cc8ed6b2a1e0317e5bc9d628eb45045fec271f9b8f42200a73e62948cc6ec",
+      "bytes": 490
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/tenkz.log",
+      "sha256": "b10dd226fcfb59e9eb52b06bc040d251e35cd38d571c963ece4bf0e5263f2d8d",
+      "bytes": 147
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/thm-resolution-product-coordinates-web.png",
+      "sha256": "bb872dc09b42394a4329fbaea6e50dc739f3e6ce518c327b6cbee5f7ca8a8e73",
+      "bytes": 262336
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/thm-weighted-trace-holder-binary-web.png",
+      "sha256": "c91a9ce162fb43f1d569c68f296767c5679f8f9c0c9767884f3d91fdafe09385",
+      "bytes": 234649
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/thm-weighted-trace-holder-finite-web.png",
+      "sha256": "69fb3b620bba5f258243ff9f9e71425fe5e6e72c814d8ca74c0f492fc6645aac",
+      "bytes": 250065
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/validate-owned.py",
+      "sha256": "7f1e3500237e51030befa6ca2c70e32046b9cf346918b056032670569c7715ce",
+      "bytes": 1519
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/verification.json",
+      "sha256": "add2b34b59aaa30ec9cda916c5be27ee824f25a4941941a820dcf1621ca9637b",
+      "bytes": 15874
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-exit.json",
+      "sha256": "9010a0fb366b08d62929baa6af71b25a6d45cf79c06c5380086091ba5187c60e",
+      "bytes": 486
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-qa.py",
+      "sha256": "f0aaa9cd6dc1d8f223d9c75f77ff159b1492e1621c0d357b48a11c53ebf58cbe",
+      "bytes": 2356
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-reader-exit.json",
+      "sha256": "5f4670bfc7c5ea54e2c25318e1ee786620a61a353f8b0d10efb3a436ec31a872",
+      "bytes": 572
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-reader.log",
+      "sha256": "a6416e733843a3f2d0a956ff96d60853e5065dae477d29d27d1f18f9a019c256",
+      "bytes": 336
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-resolution-product-coordinates-proof-1280.png",
+      "sha256": "9bdd858447c30763b0b826afde1d1ffde2b6deff9e0828f12867e26c651efaaa",
+      "bytes": 11151
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-resolution-product-coordinates-proof-360.png",
+      "sha256": "ca1adc9084bf23e519cb3ff7ddd53251eb74b981851b5af612c075d49654f62d",
+      "bytes": 10080
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-resolution-product-coordinates-statement-1280.png",
+      "sha256": "c5516a768f968d29bc7f4e56282b42ec07cfc972038ee64d736b0e2625f936d0",
+      "bytes": 34044
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-resolution-product-coordinates-statement-360.png",
+      "sha256": "5e46dde029ab9634b7523b224ed599c9f53adb60f2ab26f1e0c6c561d9c47f4a",
+      "bytes": 32103
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-visual-exit.json",
+      "sha256": "8d6505b1310fa1b5af9aa95cbec19ac5b0ed16b6273454da8f0dc98cecc8db91",
+      "bytes": 576
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-visual-inspection.json",
+      "sha256": "8896ef986b7ac3dadd8166abfeb8d60e3b2c005ed633086f0ab7a9c7b86bf1d6",
+      "bytes": 5584
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-visual.log",
+      "sha256": "616997330faccc1b96368f2c8bc518310f061339b56e81b84a260d5eee498271",
+      "bytes": 124
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-visual.py",
+      "sha256": "bb7612544d9e1f3f3a684235baca778aa16c5f4f594e6f6f4a1b1eaf9dccb6c8",
+      "bytes": 2059
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-proof-1280.png",
+      "sha256": "4d656d30b7eaf8d7d6d5936dcc46df3e94f75c83c86d85ef29be3553d66c2f2d",
+      "bytes": 73975
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-proof-360.png",
+      "sha256": "0a062ecae3c34b0f3c702339a3cc9498e674093ebf3ad5ad68830755e40c7a9c",
+      "bytes": 70641
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-statement-1280.png",
+      "sha256": "fd6404258feb0a5fd28fbe897d3aeeb94c93c2148c1132594ff632976112262c",
+      "bytes": 34689
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-statement-360.png",
+      "sha256": "4e56ce3c1af2c2c946f02bee2c2b1cdd7cf1d0a6d9e301f46a6a93bdb9d1f16d",
+      "bytes": 33964
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-binary-statement-display-0-360-right.png",
+      "sha256": "a09271d09c9d86f5c59dec9a0268345751b64cfeef7a0679dd90aadc4454442d",
+      "bytes": 5424
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-finite-proof-1280.png",
+      "sha256": "28ff59ce6b7e75614c4f27e97035229eabe9140e63eac6d552ce7e90666d3d44",
+      "bytes": 34355
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-finite-proof-360.png",
+      "sha256": "2f9a02960605b449d6a276ba6e2400f3ad762d0e33d8e5b098df8fc8a6fb0080",
+      "bytes": 33212
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-finite-statement-1280.png",
+      "sha256": "3769f064af6dff607c2fe1cfcf2dcc543237badfdca8842e0de723f54b253cd1",
+      "bytes": 35102
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web-weighted-trace-holder-finite-statement-360.png",
+      "sha256": "8a4ce30dd678d47672e5b957de1e3feee519dbff0102cc416b86e78c2a2ebb85",
+      "bytes": 34692
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/web.log",
+      "sha256": "531d848049d2d8e9ca63eb6577d39546ff137f559fdf9814a75b7abc21877e12",
+      "bytes": 18417
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/whole-web-reader-exit.json",
+      "sha256": "2eeee09db6a8c962e7b480a9923380ecfc7265db17259acb5b227ddaadadd2a6",
+      "bytes": 584
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceHolderIntegration8753/whole-web-reader.log",
+      "sha256": "8f1415819121581247fcbdba21f5ae71e8e3fa7e831d4caa3cf3864341cbbd44",
+      "bytes": 32
+    }
+  ]
+}

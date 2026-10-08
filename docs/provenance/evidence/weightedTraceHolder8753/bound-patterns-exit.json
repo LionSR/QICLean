@@ -1,0 +1,17 @@
+{
+  "source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/weightedTraceHolder8753/tactic-pattern-scan.py",
+    "--root",
+    "QICLean",
+    "--top",
+    "10"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:20:08.477844+00:00",
+  "elapsed_seconds": 2.26,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-patterns.log",
+  "sha256": "9f7ea979339169149f40f5a28ddb8b99726b18885b010849368c976c323c73b5"
+}

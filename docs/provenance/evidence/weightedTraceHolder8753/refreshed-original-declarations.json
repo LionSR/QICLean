@@ -1,0 +1,42 @@
+{
+  "source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "reports": "docs/provenance/evidence/weightedTraceHolder8753/bound-axioms.log",
+  "declarations": [
+    {
+      "declaration": "PermutationRepresentation.joint_hom_fst",
+      "retained_original_id": null,
+      "source_notice": "Retained original module/declaration notice; no new predecessor ID assigned.",
+      "historical_original_verification": "Preserved exactly; fresh child verification supplements the earlier proof dependency graph."
+    },
+    {
+      "declaration": "PermutationRepresentation.joint_hom_snd",
+      "retained_original_id": null,
+      "source_notice": "Retained original module/declaration notice; no new predecessor ID assigned.",
+      "historical_original_verification": "Preserved exactly; fresh child verification supplements the earlier proof dependency graph."
+    },
+    {
+      "declaration": "TensorPower.groupedCopies_labelEntropy_bounds",
+      "retained_original_id": "8750-qic-grouped-label-entropy-01",
+      "source_notice": "Retained original module/declaration notice; no new predecessor ID assigned.",
+      "historical_original_verification": "Preserved exactly; fresh child verification supplements the earlier proof dependency graph."
+    },
+    {
+      "declaration": "PermutationRepresentation.exp_mergeDeficit_eq_sum",
+      "retained_original_id": "8750-qic-merge-exponential-01",
+      "source_notice": "Retained original module/declaration notice; no new predecessor ID assigned.",
+      "historical_original_verification": "Preserved exactly; fresh child verification supplements the earlier proof dependency graph."
+    },
+    {
+      "declaration": "PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum",
+      "retained_original_id": "8750-qic-merge-exponential-02",
+      "source_notice": "Retained original module/declaration notice; no new predecessor ID assigned.",
+      "historical_original_verification": "Preserved exactly; fresh child verification supplements the earlier proof dependency graph."
+    },
+    {
+      "declaration": "PermutationRepresentation.posSemidef_mergeDeficit",
+      "retained_original_id": "8753-qic-merge-deficit-positivity-01",
+      "source_notice": "Retained original module/declaration notice; no new predecessor ID assigned.",
+      "historical_original_verification": "Preserved exactly; fresh child verification supplements the earlier proof dependency graph."
+    }
+  ]
+}
