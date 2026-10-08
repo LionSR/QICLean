@@ -40,8 +40,10 @@ import QICLean.Representation.MergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.RegularTrace
+import QICLean.Representation.RelativePinAlgebra
 import QICLean.Representation.ReplicaGammaIntegral
 import QICLean.Representation.ReplicaIntegral
+import QICLean.Representation.ReplicaLift
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
 import QICLean.Representation.ReplicaMetric
@@ -60,6 +62,7 @@ import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarOperator
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
+import QICLean.Representation.TensorPowerRpow
 import QICLean.Representation.TrivialLabel
 import QICLean.Representation.UniformHusimi
 import QICLean.Representation.UnitaryCommutant

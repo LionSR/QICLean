@@ -14,6 +14,7 @@ import QICLean.Entropy.ClassicalMutualInformation
 import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalMovement
 import QICLean.Entropy.ConditionalMovementEstimate
+import QICLean.Entropy.ConditionalMovementRegional
 import QICLean.Entropy.ConditionalSkewPhase
 import QICLean.Entropy.ConditionalSkewSetup
 import QICLean.Entropy.ConditionalSkewStrip
