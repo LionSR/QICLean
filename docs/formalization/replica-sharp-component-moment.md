@@ -6,7 +6,7 @@ permutations of its physical, \(C\) and \(R\) copy strings. For a set \(B\)
 of bad copies, define the physical excitation projection by
 
 \[
-R_B=\bigotimes_{i=1}^k R_i,\qquad
+R_B=\bigotimes_{i=0}^{k-1} R_i,\qquad
 R_i=\begin{cases}
 I-|\Omega\rangle\langle\Omega|,&i\in B,\\
 |\Omega\rangle\langle\Omega|,&i\notin B.
@@ -41,7 +41,7 @@ For \(T\in\{Q,Y,V\}\), let \(\sigma_T\) be the actual one-copy marginal of
 
 \[
 \log\!\sum_{p>0} p e^{-s\log p}
-\le sS_T+C_0\mathcal B s^2.
+\le sS_T+C_0\mathcal B s^2,
 \]
 
 where the sum runs over the positive eigenvalues of \(\sigma_T\), with
