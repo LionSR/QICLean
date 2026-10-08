@@ -1,0 +1,28 @@
+{
+  "source_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "declarations": {
+    "new": [
+      "Matrix.IsOrthogonalResolution.prod_hom_fst",
+      "Matrix.IsOrthogonalResolution.prod_hom_snd",
+      "Matrix.PosSemidef.re_trace_mul_exp_smul_add_le",
+      "Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod",
+      "Matrix.PosSemidef.re_trace_mul_exp_nonneg"
+    ],
+    "refreshed": [
+      "PermutationRepresentation.joint_hom_fst",
+      "PermutationRepresentation.joint_hom_snd",
+      "TensorPower.groupedCopies_labelEntropy_bounds",
+      "PermutationRepresentation.exp_mergeDeficit_eq_sum",
+      "PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum",
+      "PermutationRepresentation.posSemidef_mergeDeficit"
+    ]
+  },
+  "raw_log": "docs/provenance/evidence/weightedTraceHolder8753/bound-axioms.log",
+  "sha256": "2052d13589991df9490cd155e5bcf4ab9d343c65476957283c04803c566742df",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "exact_name_reports": 11
+}

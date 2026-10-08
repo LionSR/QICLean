@@ -1,0 +1,37 @@
+{
+  "records": [
+    {
+      "attempt": 1,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/weightedTraceHolder8753/root-unfrozen-target-attempt1.log",
+      "sha256": "adcc4da1b5b82943d5dcafeb15aab93bd1bb51dbf82e1390122580aeda47a8af",
+      "source_revision_at_run": null,
+      "binding": "Historical root worktree run before source/evidence freeze; not substituted for the child source-bound target."
+    },
+    {
+      "attempt": 2,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/weightedTraceHolder8753/root-unfrozen-target-attempt2.log",
+      "sha256": "3cc9b9705e6074c0245f1a8aba7b6c3f59f881714eabf95d0eea6772d0cc1497",
+      "source_revision_at_run": null,
+      "binding": "Historical root worktree run before source/evidence freeze; not substituted for the child source-bound target."
+    },
+    {
+      "attempt": 3,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/weightedTraceHolder8753/root-unfrozen-target-attempt3.log",
+      "sha256": "dd8f577bb3d6d37fb05c28feba87ce2c0c3c4fb2895bc5e2561b0a2437399c6e",
+      "source_revision_at_run": null,
+      "binding": "Historical root worktree run before source/evidence freeze; not substituted for the child source-bound target."
+    },
+    {
+      "attempt": 4,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/weightedTraceHolder8753/root-unfrozen-target-attempt4.log",
+      "sha256": "53852a7ddfc37241df36ef317da37dd177935c9efd57f113289b4ad1b30435d2",
+      "source_revision_at_run": null,
+      "binding": "Historical root worktree run before source/evidence freeze; not substituted for the child source-bound target."
+    }
+  ],
+  "first_three_cause": "Old marginal refactor typing; corrected before frozen f24 mathematical source. No new mathematical hypothesis or admitted proof."
+}

@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "path": "output/pdf/area-law-replica-good-copy-blueprint.pdf",
+      "sha256": "95c5e0f20fb7311586b71ce3af26e17d4af1b6d000f024b0abd2a515afec8920"
+    },
+    {
+      "path": "output/pdf/area-law-replica-physical-label-moment-blueprint.pdf",
+      "sha256": "d6368c591df40126479d39bd53613419049f318b3f5950579e99763ac609b5b6"
+    },
+    {
+      "path": "output/pdf/area-law-replica-two-merge-moment-blueprint.pdf",
+      "sha256": "43d44f6b86a6c6192c210642fbc2e3ac2f8abc11d1fb782462ba19bcc27ecafd"
+    }
+  ],
+  "published_branches": {
+    "feat/area-law-physical-label-moment": "ca72e88dd71e5e6c8b6f2f8f2d2df35b1af94ae6",
+    "feat/area-law-two-deficit-moment": "a820e67e2f30782485361fa71c8c0763981f8edb"
+  }
+}

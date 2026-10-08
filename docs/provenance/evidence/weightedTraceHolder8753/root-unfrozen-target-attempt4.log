@@ -1,0 +1,7 @@
+✔ [3106/3111] Built QICLean.Analysis.OrthogonalResolution (13s)
+✔ [3107/3111] Built QICLean.Analysis.WeightedTraceHolder (4.5s)
+✔ [3108/3111] Built QICLean.Representation.CommutantDimension (5.8s)
+✔ [3109/3111] Built QICLean.Representation.SchurSurprisal (7.3s)
+✔ [3110/3111] Built QICLean.Representation.GroupedLabelEntropy (12s)
+✔ [3111/3111] Built QICLean.Representation.MergeExponential (12s)
+Build completed successfully (3111 jobs).
