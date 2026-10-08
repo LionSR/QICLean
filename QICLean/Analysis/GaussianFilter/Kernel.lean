@@ -11,7 +11,7 @@ import Mathlib.Tactic.Linarith
 # Gaussian filtering kernel
 
 The parameter `h : ℝ≥0` is the variance. For `h ≠ 0`, the time kernel is
-`g_h(t) = (2πh)⁻¹ᐟ² exp(-t²/(2h))`. Its integral is one, its characteristic integral at
+`g_h(t) = (2πh)^(-1/2) exp(-t²/(2h))`. Its integral is one, its characteristic integral at
 angular frequency `ω` is `exp(-hω²/2)`, and the mass outside `[-T,T]` is at most
 `2 exp(-T²/(2h))` for `T ≥ 0`.
 
