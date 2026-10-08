@@ -515,12 +515,8 @@ private theorem eq_zero_of_tendsto_pow_apply_zero_of_recurrent
           rw [pow_succ', Module.End.mul_apply, ih, hfix]
     have hlimzero : Tendsto (fun k : ℕ ↦ (f ^ (n * k)) x) atTop (𝓝 0) :=
       hzero.comp (strictMono_id.const_mul hn).tendsto_atTop
-    have hlimself : Tendsto (fun k : ℕ ↦ (f ^ (n * k)) x) atTop (𝓝 x) :=
-      tendsto_const_nhds.congr' <| Filter.Eventually.of_forall fun k ↦ by
-        change x = (f ^ (n * k)) x
-        rw [pow_mul]
-        exact (hpow k).symm
-    exact hx (tendsto_nhds_unique hlimself hlimzero)
+    exact hx (tendsto_nhds_unique_of_forall tendsto_const_nhds hlimzero fun k ↦ by
+      rw [pow_mul, hpow k])
   obtain ⟨N, hN⟩ := Metric.tendsto_atTop.mp hzero (‖x‖ / 2) (by positivity)
   let s : Finset ℝ :=
     insert (‖x‖ / 2) ((Finset.Ico 1 N).image fun n ↦ ‖(f ^ n) x - x‖)

@@ -513,11 +513,7 @@ private theorem resolvent_eq_of_sqrt_defect_sum_eq_zero
   have hm : (CFC.sqrt (S i))⁻¹ *ᵥ b i -
       CFC.sqrt (S i) *ᵥ x = 0 := by
     funext p
-    have hp : ‖((CFC.sqrt (S i))⁻¹ *ᵥ b i -
-        CFC.sqrt (S i) *ᵥ x) p‖ ^ 2 = 0 :=
-      (Finset.sum_eq_zero_iff_of_nonneg (fun q _ ↦ sq_nonneg _)).mp (hi i) p
-        (Finset.mem_univ p)
-    exact norm_eq_zero.mp (sq_eq_zero_iff.mp hp)
+    exact norm_eq_zero.mp ((Finset.sum_sq_eq_zero_iff _ _).mp (hi i) p (Finset.mem_univ p))
   let Q : Matrix n n ℂ := CFC.sqrt (S i)
   have hQunit : IsUnit Q := by
     change IsUnit (CFC.sqrt (S i))

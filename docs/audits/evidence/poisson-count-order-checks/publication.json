@@ -1,0 +1,20 @@
+{
+  "repository": "LionSR/QICLean",
+  "pull_request": 680,
+  "branch": "codex/poisson-counts-order-8757",
+  "source_checkpoints": [
+    {
+      "public_commit": "fa468c573a32e60cb2ec963ff1305daf450bef93",
+      "local_commit": "fe118d31bd87d245a5546dab9cb19ff75d294d76",
+      "equal_tree": "1ca90471883e94408e3a642744daed05b330ed3c",
+      "validation": "all five production sources checked; final tests/render pending at checkpoint"
+    },
+    {
+      "public_commit": "487c65996fa26916d1d1e4b23e277607075035ba",
+      "local_commit": "d904c5accc333bd67d3be932b1ca622662d1dd3a",
+      "equal_tree": "9fdd8230fdd4e8af0e35f78f51253ec8dadecdbb",
+      "integrated_main": "445b58325b78b3f4f3c1a067f026267ddaf30ba3",
+      "validation": "all source/test identities match strict-checked 16e93ce; render frozen at public source; hosted CI separately pending"
+    }
+  ]
+}

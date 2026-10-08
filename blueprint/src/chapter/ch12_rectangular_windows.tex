@@ -1,0 +1,175 @@
+\section{Products of rectangular channels}
+\label{sec:rectangular_windows}
+
+Let $E_i:\MN{D_{i+1}}\to\MN{D_i}$ be completely positive maps.
+The dimensions may vary. Write $R_\rho(X)=\tr(X)\rho$, and normalize
+the output-first Choi matrix by the input dimension:
+$J(F)=(F\otimes\Id)(\ketbra{\Omega_b}{\Omega_b})$ for
+$F:\MN{b}\to\MN{a}$, where $\Omega_b=b^{-1/2}\sum_j\ket{j,j}$.
+The norm of a map below is its Hilbert--Schmidt induced operator norm.
+
+\begin{definition}[Ordered rectangular interval]
+    \label{def:rectangular_channel_interval}
+    \lean{Matrix.channelInterval,Kraus.rectangularEval,Kraus.rectangularTransfer}
+    \leanok
+    For $a\le b$, set $F_{a:b}=E_a\circ\cdots\circ E_{b-1}$,
+    with $F_{a:a}=\Id_{\MN{D_a}}$.
+    For successive rectangular Kraus families $A_i^{s_i}$, set
+    $A^{\boldsymbol s}=A_a^{s_a}\cdots A_{b-1}^{s_{b-1}}$.
+\end{definition}
+
+\begin{theorem}[Composition on the actual matrix spaces]
+    \label{thm:rectangular_channel_composition}
+    \lean{Matrix.channelInterval_self,Matrix.channelInterval_succ,
+        Matrix.channelInterval_single,Matrix.channelInterval_succ_left,
+        Matrix.channelInterval_comp,Matrix.channelInterval_shift,
+        Matrix.channelInterval_isKrausCP,Matrix.channelInterval_isKrausCPTP,
+        Kraus.rectangularTransfer_apply,Kraus.rectangularTransfer_eq_channelInterval,
+        Matrix.isKrausCPTP_rectangularKrausMap_finCast}
+    \leanok
+    \uses{def:rectangular_channel_interval}
+    For $a\le b\le c$, one has $F_{a:c}=F_{a:b}\circ F_{b:c}$.
+    Complete positivity, and trace preservation when present, are retained.
+    For Kraus maps $E_i(X)=\sum_s A_i^sX(A_i^s)^\dagger$,
+    \begin{align}
+        F_{a:b}(X)=\sum_{\boldsymbol s}A^{\boldsymbol s}X(A^{\boldsymbol s})^\dagger.
+    \end{align}
+    Shifting all cut indices by one common offset shifts the selected interval.
+    Identifying equal dimensions does not change the channel property.
+\end{theorem}
+\begin{proof}\leanok
+    Induct on the right cut, adjoining its channel on the right.
+    The Kraus expansion follows by summing over successive indices.
+\end{proof}
+
+\begin{theorem}[Compatible cyclic densities]
+    \label{thm:rectangular_cyclic_densities}
+    \lean{Matrix.exists_compatible_channelInterval_densities}
+    \leanok
+    \uses{def:rectangular_channel_interval}
+    Suppose $D_0>0$, $D_N=D_0$, and all $N$ site maps are trace preserving.
+    There are density matrices $\sigma_a\in\MN{D_a}$, for $0\le a\le N$,
+    with $\sigma_N=\sigma_0$ under the closing identification and
+    $F_{a:b}(\sigma_b)=\sigma_a$ for $a\le b\le N$.
+    No faithful density or common stationary matrix is assumed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:rectangular_channel_composition}
+    Choose a density $\theta$ fixed by $F_{0:N}$ and put
+    $\sigma_a=F_{a:N}(\theta)$. Positivity and trace preservation give
+    the density conditions. Composition gives transport, and the fixed-point
+    equation identifies the two closing references.
+\end{proof}
+
+\begin{theorem}[Trace bounds for matrix operator norms]
+    \label{thm:matrix_operator_trace_bounds}
+    \lean{Matrix.PosSemidef.l2_opNorm_le_trace_re,
+        Matrix.l2_opNorm_sq_le_trace_conjTranspose_mul_self_re}
+    \leanok
+    For a positive semidefinite matrix $H$, $\|H\|\le\tr H$.
+    For a rectangular matrix $B$, $\|B\|^2\le\tr(B^\dagger B)$.
+\end{theorem}
+\begin{proof}\leanok
+    The largest nonnegative eigenvalue of $H$ is at most their sum.
+    Apply this to $B^\dagger B$ and use $\|B^\dagger B\|=\|B\|^2$.
+\end{proof}
+
+\begin{theorem}[Rectangular scaled-trace bound]
+    \label{thm:rectangular_scaled_trace_bound}
+    \lean{Matrix.rectangularChoi_eq_smul_choiMatrix_swap,
+        Matrix.rectangularChoi_posSemidef,Matrix.trace_rectangularChoi_of_scaledTrace,
+        Matrix.norm_linearMapMatrix_le_of_isKrausCP_scaledTrace,
+        Matrix.linearMapMatrix_sub,Matrix.norm_linearMapMatrix_sub_tracePrepareMap_finCast}
+    \leanok
+    Let $Q:\MN{b}\to\MN{a}$ be completely positive, with $b>0$, and suppose
+    $\tr Q(X)=t\tr X$ for a real $t\ge0$. Then $\|Q\|_{2\to2}\le bt$.
+    Taking coefficient matrices commutes with subtraction. Identifying equal
+    input or output dimensions preserves this norm and trace-prepare errors.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:matrix_operator_trace_bounds}
+    The input-first unnormalized Choi matrix $C_Q$ is $bJ(Q)$ after exchanging
+    tensor factors. It is positive semidefinite and has trace $bt$.
+    Its Frobenius norm equals that of the coefficient matrix of $Q$.
+    The sum of squares of its nonnegative eigenvalues is at most $(bt)^2$,
+    which bounds the squared operator norm of that coefficient matrix.
+\end{proof}
+
+\begin{theorem}[Completely positive residual]
+    \label{thm:rectangular_choi_residual}
+    \lean{Matrix.isKrausCP_sub_smul_tracePrepareMap_of_choi_domination,
+        Matrix.trace_sub_smul_tracePrepareMap,Matrix.le_one_of_choi_domination,
+        Matrix.norm_linearMapMatrix_sub_tracePrepareMap_le_of_residual}
+    \leanok
+    Let $F:\MN{b}\to\MN{a}$ preserve trace, let $b>0$, and let $\tr\tau=1$.
+    If $J(F)\ge(\eta/b)(\tau\otimes I_b)$, then $F-\eta R_\tau$ is completely
+    positive, scales trace by $1-\eta$, and $\eta\le1$.
+
+    More generally, let $F$ be linear and let a completely positive $Q$ satisfy
+    $\tr Q(X)=t\tr X$, $t\ge0$, and $Q(X)=F(X)$ on traceless matrices.
+    For every input density $\rho$,
+    \begin{align}
+        \|F-R_{F(\rho)}\|_{2\to2}\le2bt.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:rectangular_scaled_trace_bound,lem:choi_matrix_trace_prepare,thm:choi_rect_cp}
+    Choi linearity makes $F-\eta R_\tau$ completely positive. Its trace on any
+    input density gives $1-\eta\ge0$.
+    Apply the traceless-input equality to $X-\tr(X)\rho$ to obtain
+    $F-R_{F(\rho)}=Q-R_{Q(\rho)}$.
+    The two maps on the right are completely positive with trace scale $t$,
+    so their two norm bounds add.
+\end{proof}
+
+\begin{theorem}[Fixed-width rectangular window estimate]
+    \label{thm:rectangular_window_estimate}
+    \lean{Matrix.exists_channelInterval_residual_of_window_domination,
+        Matrix.norm_linearMapMatrix_channelInterval_sub_transport_le_of_window_domination}
+    \leanok
+    \uses{def:rectangular_channel_interval}
+    Let $D_i>0$ for $0\le i\le N$, let every site map preserve trace, and fix
+    $s\ge1$ and $\eta\le1$. Suppose every nonwrapping $s$-window has a density
+    $\tau_a$ with
+    \begin{align}
+        J(F_{a:a+s})\ge\frac{\eta}{D_{a+s}}(\tau_a\otimes I_{D_{a+s}}).
+    \end{align}
+    Every interval $[a,b)$ has a completely positive residual $Q$ agreeing with
+    $F_{a:b}$ on traceless inputs and having trace scale
+    $t=(1-\eta)^{\lfloor(b-a)/s\rfloor}$. For every density $\rho\in\MN{D_b}$,
+    \begin{align}
+        \|F_{a:b}-R_{F_{a:b}(\rho)}\|_{2\to2}
+        \le2D_b(1-\eta)^{\lfloor(b-a)/s\rfloor}.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:rectangular_channel_composition,thm:rectangular_choi_residual}
+    Peel complete $s$-windows from the right. Their residuals each scale trace
+    by $1-\eta$; the shorter interval left at the beginning scales trace by one.
+    On traceless inputs every subtracted reset vanishes. Compose these residuals
+    and apply the scaled-trace estimate, including $t=0$.
+\end{proof}
+
+\begin{theorem}[Geometric decay in physical length]
+    \label{thm:window_geometric_exponential}
+    \lean{Real.pow_nat_div_le_two_mul_exp}
+    \leanok
+    If $s\ge1$, $n\ge0$, and $1/2\le\alpha<1$, then
+    $\alpha^{\lfloor n/s\rfloor}\le2\exp(-(-\log\alpha)n/s)$.
+\end{theorem}
+\begin{proof}\leanok
+    The inequality $n/s\le\lfloor n/s\rfloor+1$ loses at most
+    the factor $\alpha^{-1}\le2$ when exponentiating.
+\end{proof}
+
+\begin{theorem}[Dependent matrix entries]
+    \label{thm:dependent_matrix_entries}
+    \lean{Matrix.entry_eq_of_heq}
+    \leanok
+    In a family of rectangular matrices whose row and column spaces depend on a
+    parameter, equal parameters and the corresponding identified row and column
+    coordinates give equal matrix entries.
+\end{theorem}
+\begin{proof}\leanok
+    Substitute the parameter and coordinate identifications.
+\end{proof}
