@@ -58,9 +58,7 @@ its original order inside each label, and proves equality with the model's
 already-defined regional entropy. It contains no second definition of a lattice
 model and no copy of the generic QICLean proof.
 
-## Provenance and validation
+## Attribution
 
 All proofs in this batch are independently written from the mathematical paper
 and existing Mathlib/QICLean APIs. No OpenAI Lean proof text is copied or adapted.
-Source notices and the issue 8760 ledger distinguish this from code reuse.
-Validation evidence is recorded separately from mathematical completeness claims.

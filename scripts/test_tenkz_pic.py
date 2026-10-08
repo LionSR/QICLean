@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Adapted for QICLean: omit TNLean slide/theme checks; cover all web routes.
-# Source and license: docs/provenance/tenkz-blueprint-support.md.
+# Adapted from LionSR/TNLean@b053c4ca45dd9f181695aaa1ea3879fc2f413e87 (Apache-2.0).
 r"""Standalone test harness for the tenkz plasTeX SVG pipeline.
 
 Exercises the compile+cache core of ``blueprint/src/Packages/tenkz_pic.py``

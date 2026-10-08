@@ -1,7 +1,0 @@
-{
-  "attempt": "capture checker output directly inside scanned packet",
-  "exit_code": 1,
-  "failure": "Shell redirection created an empty checks.json before the checker recursively parsed packet JSON, causing JSONDecodeError.",
-  "repair": "Capture checker output before replacing the output file.",
-  "production_or_test_bytes_changed": false
-}

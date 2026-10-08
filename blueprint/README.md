@@ -71,9 +71,9 @@ checked; omit it when a nonempty diagram corpus is expected. A presentational
 declared `tenkzeq` scope receives the corresponding hard group checks.
 
 All three existing CI routes fetch this pin, run the smoke and sweep checks,
-and reject HTML containing the missing-SVG sentinel. See
-[`docs/provenance/tenkz-blueprint-support.md`](../docs/provenance/tenkz-blueprint-support.md)
-for the copied infrastructure's source, hashes, license, and adaptations.
+and reject HTML containing the missing-SVG sentinel. The diagram infrastructure is
+copied from LionSR/TNLean (Apache-2.0); the three adapted scripts carry a header
+notice naming the source revision.
 
 ## Writing Conventions
 
