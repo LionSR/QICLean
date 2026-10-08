@@ -1,0 +1,15 @@
+{
+  "kind": "verification",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=2",
+    "lake",
+    "build"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 79.9,
+  "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/build.log",
+  "sha256": "ec70df0b8f591dcee4e9cd398895223df98e34dbaea8e41fb21396d05ac3e3a9"
+}

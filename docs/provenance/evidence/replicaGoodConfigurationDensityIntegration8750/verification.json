@@ -1,0 +1,461 @@
+{
+  "mathematical_source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "leaf_evidence_revision": "e62dbf114d00bad2397e05f830cac4afe71236ec",
+  "inclusion_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+  "owned_declarations": [
+    "TensorPower.fiveFactorCopiesEquiv",
+    "Matrix.replicaGoodConfigurationMarginal",
+    "Matrix.symProj_mul_replicaGoodConfigurationMarginal"
+  ],
+  "commands": [
+    {
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 44.67,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/axioms.log",
+      "sha256": "a1887561ca3c99f504059a20690094f2a789b735eab1e6778c387355cd66ad17"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "bbl"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.35,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/bbl.log",
+      "sha256": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.67,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/blueprint-sync.log",
+      "sha256": "d05b0c483955c42173597fcbc58d78ad5780177fee2528c1e2b9c343d14c085d"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=2",
+        "lake",
+        "build"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 79.9,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/build.log",
+      "sha256": "ec70df0b8f591dcee4e9cd398895223df98e34dbaea8e41fb21396d05ac3e3a9"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=2",
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 31.42,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/inspect-entries.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 7.91,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/entry-web.log",
+      "sha256": "afcb62023655acde27aef0b35c15c6577f7e411303265bef9326aeac2216c0f6"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/inspect-web.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.82,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/focused-web.log",
+      "sha256": "410031c1b5104d98c7dd68da574668fde9448adce9aacb12c79be3fd1ea11764"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/guard.log",
+      "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.83,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/imports.log",
+      "sha256": "eefffab8ee73227823b188cdd88eb1e2d326fb3afc512810e4b79e75e3dd05cb"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensity8750/validate-manifest.py",
+        "--allow-inclusion"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.6,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/leaf-preservation.log",
+      "sha256": "3ae2e5c47dcb0f7dc893e6b3700dce6a7a6cf8adeb99e0f1d93ce6763205a15c"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/validate-manifest.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.85,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/manifest-check.log",
+      "sha256": "9d454b170399a1da6470ed84396ee3020805a2645e4d23e816ffc23f87c358b7"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "lake",
+        "exe",
+        "checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 47.64,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/native.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/check-native-targets.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.63,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/native-targets.log",
+      "sha256": "a6a41282a9698b7b4752cc95b02b26ff5f7dee60ded6a536327aa1469c82198d"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.14,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys;os.chdir(\"blueprint\");sys.exit(subprocess.call([\"leanblueprint\",\"pdf\"]))"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 28.48,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/pdf.log",
+      "sha256": "39e2c143fd59b3b5f16021eedc316dd994bdf58f84995d320aa794300439e3b9"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/check-preservation.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.6,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/preservation.log",
+      "sha256": "e7ade8c60a3e68d1938a32879703fa7540122db8a799ff354a08ba64ef705233"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/check-preservation.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.77,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/preservation-final.log",
+      "sha256": "e7ade8c60a3e68d1938a32879703fa7540122db8a799ff354a08ba64ef705233"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "1c5769be"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.52,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.79,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/provenance.log",
+      "sha256": "a367add2016da425e0b0777cc3514315b4a0b21543987b9936c85bee79e7af01"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render-pdf.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 10.67,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render.log",
+      "sha256": "da904d9c5966c274a82a6a2e9a49dc8e312ccae38c57a244536932aa6a9a0beb"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.62,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/tenkz.log",
+      "sha256": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 55.32,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/web.log",
+      "sha256": "8646ef1a45b073736ca7fb1a3a48261f1af8d2c1c664564394eae4cb225bd9ca"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 45.59,
+      "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+      "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/whole-web.log",
+      "sha256": "a8689adabe83295ef4d489f8124a334700959568a9d4ab6bd9af8bf22039bf75"
+    }
+  ],
+  "excluded_commands": [],
+  "file_hashes": {
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/Axioms.lean": "16c1b5eeacbd1d7d7d0e4a386b1eea1f6bffd62f6d6272e13b1edfa662da5d71",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/NativeDeclarations.txt": "1da29f6582ea9ffd711f150d60442d0999902a9311cb528e9d3ccf84ec6ad9fa",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/README.md": "7e1cc6a685e1204bbf06d44e20cac649e26615b8a8f2269b54f7708079ccaab9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/axioms-exit.json": "42b5d5e0905dfec7a22c03551f80d675ac0690747d06e02bce8f24b270e9dc72",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/axioms.log": "a1887561ca3c99f504059a20690094f2a789b735eab1e6778c387355cd66ad17",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/axioms.log.gz": "0fc6f411a390473b717fea57d5d1d5666bde79aba788de177cba427e4281d814",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/bbl-exit.json": "1487d9889fe859d17e2c4bc9f8e439147fdf363b528b52c822dde1445dd73ab7",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/bbl.log": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/bbl.log.gz": "7c2ee3d468eb73cbdbc31e17b1311d942def86dea73e4e1b79e6474d6575ff04",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/blueprint-sync-exit.json": "a3148e406390284f9a1fc2187a6cb27f183697d54a7c2eaf0331bc832004d63a",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/blueprint-sync.log": "d05b0c483955c42173597fcbc58d78ad5780177fee2528c1e2b9c343d14c085d",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/blueprint-sync.log.gz": "d8203d71ff7b1b7e91ac00178e41ebc5e86204327e5157bde45ea161d980e325",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/build-exit.json": "d9b36c1c200bf8e49f3b36131e6b58f67666304a69dde2f4d45546fa4aeff7b4",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/build.log": "ec70df0b8f591dcee4e9cd398895223df98e34dbaea8e41fb21396d05ac3e3a9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/build.log.gz": "fc8ada6042706f456a86de3f4c88fa0b22d9bfe7a4cd6e6587a6cd86ec894f80",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/cache-exit.json": "614066565ca733548ca0c79475e652b33706e30011fa28a155782290b239ccd9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/cache.log.gz": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/capture.py": "5fd14ba50171a79d440167af43846d836cef9f2f8d1ce7d8aba8febdcb0e1348",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/check-native-targets.py": "789b60e7535715e09a7cd95579c0732cb441db4b5e55561c7bb0d10a36373552",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/check-preservation.py": "ffa4f069501630c9602310996558f1085d6ad67b6b08a40616632d49eb50a131",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/collect-manifest.py": "f8cf5f38fb0b0ba90bad820a245943ead7a68d4515eb6f8f914d68f9a09556a8",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/compression.json": "db2f27317d70b29511487d650c6b7e865be2fc450581d86711ded97385460bd7",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/entry-inspection.json": "91bfc7947c7482445ac579d027c11054b767a16a3848e832408d39f2e8b918f2",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/entry-web-exit.json": "5d1e3f1d1cbfa2a64f6c0548a188eaa3d670680390c921b96ef0f663a2c60b5c",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/entry-web.log": "afcb62023655acde27aef0b35c15c6577f7e411303265bef9326aeac2216c0f6",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/entry-web.log.gz": "dc6827a5992d11a8c38a27e11ec294408caae8c8e44b509e55ebdcaf09e5ffc5",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/focused-web-exit.json": "6867256130ad206887eadfac5aa1b4fb2c777783a352a5acda793a6787025579",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/focused-web.log": "410031c1b5104d98c7dd68da574668fde9448adce9aacb12c79be3fd1ea11764",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/focused-web.log.gz": "89c03133decb8869e1527fa60f6ad7a0928fd27eea5176676a9cb9c828648a8d",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/good-configuration-blueprint.pdf": "5f44b8fceaf97ea2ccc09f3b7d5c7d089063eb5bf4512728beed67c17d9d3153",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/guard-exit.json": "8c5c098d4c347fab89a8ef47482a3b62a8a44ab06a0b25aeaea162609991fa20",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/guard.log": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/guard.log.gz": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/imports-exit.json": "332a293bc9925059b68b6798658baebb36f198cbf93623f7ab17074765944c58",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/imports.log": "eefffab8ee73227823b188cdd88eb1e2d326fb3afc512810e4b79e75e3dd05cb",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/imports.log.gz": "d70ebfecac3be2b8141ba459fdd8aa04c46e66d7a3c3b58898a46da20354fb97",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/inspect-entries.py": "00f0f7223def777355a8749b1fbf75ebc1fc599936a2119793ce79d4febdedf1",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/inspect-web.py": "68fca7e7114c7c05ae66df190e7e7e47d2aca28b26862e5ce661f7fbd027d0be",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/leaf-preservation-exit.json": "9f81e4cdcdef293e8eb342e67e1c2205c06f133a6485d4586ccca573a92a5dd8",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/leaf-preservation.log": "3ae2e5c47dcb0f7dc893e6b3700dce6a7a6cf8adeb99e0f1d93ce6763205a15c",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/leaf-preservation.log.gz": "fd1414cdbc7ad7ea9001d894575b0efc8591ac266b0f0f1489fda2516870b48d",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/manifest-check-exit.json": "d65d3d9a26a5b03003c8f4dc1abd2e1a69a048e981d7a5472c35cf1331fe726f",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/manifest-check.log": "9d454b170399a1da6470ed84396ee3020805a2645e4d23e816ffc23f87c358b7",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/manifest-check.log.gz": "b1f6fbb6adbe970bd2d9bbb21f9b071038d2c12a34ffc8597c64f4f25dc1598e",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/mathlib-guard.py": "7735e65b032808f8e4f6a672cec0c4a72ee8b81fa84177b9330fc44a71d456f5",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/native-exit.json": "fdf6c3322e4f55e0b8a81a7e0928dc87399d1d10f93d220adbaccbe5663f68ba",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/native-targets-exit.json": "1497ea737950e76d9b5298ebde8f03ec91f1a87ae945069f4dbe134632e8ef36",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/native-targets.json": "a6a41282a9698b7b4752cc95b02b26ff5f7dee60ded6a536327aa1469c82198d",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/native-targets.log": "a6a41282a9698b7b4752cc95b02b26ff5f7dee60ded6a536327aa1469c82198d",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/native-targets.log.gz": "be4afb1210dd66594acdf70af57a9617e6ac6e9bf45994a4eb6a11e7c33fbbc6",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/native.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/native.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/owned-shards.json": "d0ebe2e210dfe4aa88062bdc120eeee4bc6cb83b71f827d79a35b2dbe7777987",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/paper-gaps-exit.json": "208bb7529e1949e3b5c1b97114701c0e30398cc99cdad9c21f40f23d93f35172",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/paper-gaps.log": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/paper-gaps.log.gz": "daa5bc242751cef680bcc2ef9e4e40bf806993a1426781e6f26c31a344c88d25",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/parent-preservation.json": "2f703206bbe6a3455bf9105e63bb86a5acdb563cb5b03036c9dad3b44ab99296",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/pdf-exit.json": "1341b312c82a480ee9e071d6ace2e4b84ef0a9a5b4b8c1c3a26fdd4f98214194",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/pdf-page-selection.json": "57dc29fa9217357815992da657d37c739970cedb3a8a3826ffe2d8e129fb1422",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/pdf.log": "39e2c143fd59b3b5f16021eedc316dd994bdf58f84995d320aa794300439e3b9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/pdf.log.gz": "01c321e4ae0b867c33b1ef46db555991db22a95b57e52125bc86eb24c88e0146",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/preservation-exit.json": "6d94d80e329fc61d8b23ca880963453be3234047b89c9667f521764924a4ee41",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/preservation-final-exit.json": "4137690f6742009e8dc4170e951010a50acfaeb80b60c38fde21b4374fcc456d",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/preservation-final.log": "e7ade8c60a3e68d1938a32879703fa7540122db8a799ff354a08ba64ef705233",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/preservation-final.log.gz": "9cf91ce0e7808285d65a94785439526dd59675ee71827e14c3aa75235dc7f500",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/preservation.log": "e7ade8c60a3e68d1938a32879703fa7540122db8a799ff354a08ba64ef705233",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/preservation.log.gz": "9cf91ce0e7808285d65a94785439526dd59675ee71827e14c3aa75235dc7f500",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/prose-exit.json": "13253aa09ca7edfe179351602f4bc9e7c12d1e434d3e61301a979bc50b01fab8",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/provenance-exit.json": "2ddf6fa87b2d5c6a21a4f0f53871df71b8ec0865a986d09ce49f84be343d922c",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/provenance.log": "a367add2016da425e0b0777cc3514315b4a0b21543987b9936c85bee79e7af01",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/provenance.log.gz": "f03ff765c770991871bde6f1546873bd22936ea177963387ab4de28fc3b135c6",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-1-desktop.png": "58c3477ae920193b4ab7c06b9d9ee4963ee4e54a76d8569a1e02a14837528410",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-1-mobile.png": "5a719dfe76bfbbd19e9289c96d33f573584e4d20c96bec557c5d7bc54ceacb89",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-2-desktop.png": "685da8e92c6c23e64d78354151df82029992e1fdc46551b5ee33ecea989d54b0",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-2-mobile-endpoints.png": "9a57457d49e1a3d4637c8529070352de5521a16a855d8b5feb8b63930d8cb3e3",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-2-mobile.png": "9a01fa2bd5cc73ef7d924cfc3b155e0203fde26271bbf72f52c1b3aef4503acb",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-3-desktop.png": "16935d04f97912706191f6b3d046a7e4022ddd8b4eb9f21d95b22327ab56ecd3",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/entry-3-mobile.png": "22d7ef4bfe90bd5a5bf13353adf005631d83aa3f9726f8651d1a066a55800ed1",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/good-configuration-web-desktop.png": "aa237fbb1c55b3e92cfb897600ac82ed1f50c713a105847a610177d07df38634",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/good-configuration-web-mobile-equation-endpoints.png": "0060be4edd8464b63ee76c7cab714fdc4ddb02e46ebd8cb5013825df6575bc85",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/good-configuration-web-mobile.png": "2d59b542868e405efc23e553bf586a4819db7013eacec6620f494fa854e8cfba",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/page-415.png": "53edc123bbd3a6bb0494aeaa40dc3b103e0a06aaf50e8f45bd8456974c702d9b",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render/page-416.png": "3a70ce3c9622f8ca455037e0efbf6beac5620d1b5c45ee5b5b3bedbeddaa9782",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render-exit.json": "162a6ecf39b1d84cfe5da6b62ceacfbdb99d1a327419a114c29a2657d044e27d",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render-pdf.py": "b876c7a0806707c4febe87e123ec3295217aaafe84a14297109326777dec786b",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render.log": "da904d9c5966c274a82a6a2e9a49dc8e312ccae38c57a244536932aa6a9a0beb",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/render.log.gz": "b6a5964cdb92350d30d19c303a56bbb3405719cc73bba8395dec1c4f51187155",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/run-book.py": "c29acbf854aa2c37d9ff5bf5af953a9e044770f80b7523366cc42445c871a0ea",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/source-freeze.json": "3bdd557ffc9a13d3145e844da5a45f87e79c95ab963916cabf54b49dba0002e9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/tenkz-exit.json": "a07a05cb072a0ddb36522b4a76838a4a8c507100f4a9e8de5265349ab4cc0b65",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/tenkz.log": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/tenkz.log.gz": "72aa2c0b6e8094402e184de0b18c4557b64e419b076a8846987347281866cdf4",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/validate-manifest.py": "ff6adbfba8b74cc210fd24a2ebe0ed0615d54467d49a3daf2878c780c84bd7de",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/validate-owned.py": "68ae4439df5d4833105c48eefcfb6c9b00c743297564d58e5be36981ca2fb900",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/visual-inspection.json": "55cd087e24f02abcf106bcacfd6d27a9cf1441feb34a9c468238fdfc546e4905",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/web-exit.json": "c2b39ed54a2395975a2108af4fea459ce5670c4e3565468e0d4908315cb704a2",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/web-inspection.json": "2752ddf4bde4da362c04060c21a2a2614923d79ef511037557f9997f79e6a58c",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/web.log": "8646ef1a45b073736ca7fb1a3a48261f1af8d2c1c664564394eae4cb225bd9ca",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/web.log.gz": "94ebdbc849d58c9f42c3eb2dce62de7ec74a53b1f2365d9208ec29f089304d42",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/whole-web-exit.json": "09ae9912b0fa6c4b2b745b9435ba5e85372a0c74ee6f71aaa6ba02521ca17c6e",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/whole-web.log": "a8689adabe83295ef4d489f8124a334700959568a9d4ab6bd9af8bf22039bf75",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/whole-web.log.gz": "3debdd834928d9619c417e5621d8d8d9253fc806548880d2c35a97abe82500ab",
+    "QICLean/Analysis/ReplicaGoodConfigurationDensity.lean": "f1d4d451ce80e3335facc9cc447d400a0ec69d09b8106216ca0ca322ba9d6bee",
+    "blueprint/src/fragment/replica_good_configuration_density.tex": "020eae87a1d2ecbae5e21c96af4c90a5706e9a71689ca60e1191c1cc35bd8c41",
+    "docs/formalization/replica-good-configuration-density.md": "91829d011f210958adfb95882b4e4670e810232a230466a78f3567a1e48a1167",
+    "docs/tactic_patterns.md": "f5356aa5b7866396d60b71ad2e34d37d4f6b96818c2577249cf811a9d69598eb",
+    "QICLean/Analysis.lean": "b25834767dcb107cad8c0b4155ac0a040b616ca9d1984140088c266beda34298",
+    "blueprint/src/chapter/ch12_entropy.tex": "3ef751780c69427225bde4a77e61960085e93dfbb4941cdf22ff2c30726c9a2b",
+    "docs/provenance/openai-math.d/replicaGoodConfigurationDensity8750.json": "def500186e5a56c555d868d0b3f35ba8eb75339c833d6c51a7b2df06c6877e13",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/verification.json": "bf933abd9cbf5534f57e60bb7520090550a1b5dd1c31766bcf6316829c2c2fb4"
+  },
+  "inventory_exclusions": [
+    "verification.json: self inventory"
+  ],
+  "scope": "Three original full-good configuration declarations; all good Y retained. Inherited mathematical proofs and audits are preserved, not freshly reviewed."
+}

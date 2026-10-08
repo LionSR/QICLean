@@ -1,0 +1,14 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/validate-manifest.py",
+    "--allow-inclusion"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 2.6,
+  "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/leaf-preservation.log",
+  "sha256": "3ae2e5c47dcb0f7dc893e6b3700dce6a7a6cf8adeb99e0f1d93ce6763205a15c"
+}
