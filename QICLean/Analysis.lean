@@ -82,6 +82,7 @@ import QICLean.Analysis.MatrixReducedProjection
 import QICLean.Analysis.MatrixSqrt
 import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
+import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
@@ -134,6 +135,8 @@ import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
 import QICLean.Analysis.SqrtHolder
+import QICLean.Analysis.StretchedBallKernel
+import QICLean.Analysis.StretchedExponentialSummability
 import QICLean.Analysis.StripQuadratic
 import QICLean.Analysis.SubperipheralSpectrum
 import QICLean.Analysis.SuperoperatorResolvent

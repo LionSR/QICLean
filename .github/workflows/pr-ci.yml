@@ -354,6 +354,14 @@ jobs:
             QICLeanTest/ExponentialDistanceProfileAxioms.lean \
             QICLeanTest/PoissonWordSpatialGrowth.lean \
             QICLeanTest/PoissonWordSpatialGrowthAxioms.lean \
+            QICLeanTest/StretchedExponentialSummability.lean \
+            QICLeanTest/StretchedExponentialSummabilityAxioms.lean \
+            QICLeanTest/MetricBallKernel.lean \
+            QICLeanTest/MetricBallKernelAxioms.lean \
+            QICLeanTest/StretchedBallKernel.lean \
+            QICLeanTest/StretchedBallKernelAxioms.lean \
+            QICLeanTest/PoissonWordShellGrowth.lean \
+            QICLeanTest/PoissonWordShellGrowthAxioms.lean \
             QICLeanTest/TaggedInterleavings.lean \
             QICLeanTest/TaggedInterleavingsAxioms.lean \
             QICLeanTest/PoissonWordThinning.lean \

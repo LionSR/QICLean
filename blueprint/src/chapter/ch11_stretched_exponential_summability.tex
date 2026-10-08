@@ -1,0 +1,93 @@
+\section{Polynomial moments of stretched exponentials}
+\label{sec:stretched_exponential_summability}
+
+The shell and tail estimates in \cite{OpenAI2026AreaLaw},
+\texttt{09-amplification.tex}, lines 141--159 and 187--212, use
+summability of polynomial factors against stretched-exponential decay.
+For $p\in\mathbb N$ and $c,\alpha>0$, write
+\begin{align}
+ M_p(c,\alpha)&=\sum_{n=0}^{\infty}(1+n)^p e^{-cn^\alpha}.
+ \label{eq:stretched_moment}
+\end{align}
+The next theorem establishes convergence of this literal series.
+All the estimates in this section hold for every $\alpha>0$.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% Checked module: QICLean/Analysis/StretchedExponentialSummability.lean.
+
+\begin{theorem}[Summability of every polynomial moment]
+\label{thm:stretched_moment_summable}
+\lean{Real.summable_nat_pow_mul_exp_neg_mul_rpow}
+\leanok
+For every $p\in\mathbb N$, $c>0$, and $\alpha>0$, the series
+in~(\ref{eq:stretched_moment}) is summable.
+\end{theorem}
+\begin{proof}
+\leanok
+The exponential $e^{-ct}$ decays faster than the power
+$t^{(-p-2)/\alpha}$ as $t\to\infty$.  Substitute $t=n^\alpha$;
+since $\alpha>0$, this tends to infinity and gives
+$e^{-cn^\alpha}\leq n^{-p-2}$ for all sufficiently large $n$.
+For these $n$, also require $n\geq1$.  Then
+\begin{align}
+ (1+n)^p e^{-cn^\alpha}
+ &\leq (2n)^p n^{-p-2}=2^p n^{-2}.
+ \label{eq:stretched_moment_comparison}
+\end{align}
+The summands are nonnegative, and $\sum_{n\geq1}n^{-2}$ converges.
+Comparison outside a finite initial segment proves the claim.
+\end{proof}
+
+\begin{theorem}[Lower bound on the full moment]
+\label{thm:stretched_moment_one_le}
+\lean{Real.one_le_tsum_nat_pow_mul_exp_neg_mul_rpow}
+\leanok
+For every $p\in\mathbb N$, $c>0$, and $\alpha>0$, one has
+$1\leq M_p(c,\alpha)$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:stretched_moment_summable}
+The series is summable by Theorem~\ref{thm:stretched_moment_summable}
+and has nonnegative summands.  Its $n=0$ term is exactly one,
+because $0^\alpha=0$ for $\alpha>0$.
+\end{proof}
+
+\begin{theorem}[Tail estimate at a real cutoff]
+\label{thm:stretched_moment_tail}
+\lean{Real.tsum_nat_pow_mul_exp_neg_mul_rpow_tail_le}
+\leanok
+Let $p\in\mathbb N$, $c>0$, $\alpha>0$, and $r\in\mathbb R$
+with $r\geq0$.  Then
+\begin{align}
+ \label{eq:stretched_moment_tail}
+ \sum_{\substack{n\in\mathbb N\\r\leq n}}(1+n)^p e^{-cn^\alpha}
+ &\leq
+ \left(\sum_{n=0}^{\infty}(1+n)^p e^{-(c/2)n^\alpha}\right)
+ e^{-(c/2)r^\alpha}.
+\end{align}
+The constant multiplying the decay at $r$ is the full moment
+$M_p(c/2,\alpha)$, which is finite and at least one by
+Theorems~\ref{thm:stretched_moment_summable}
+and~\ref{thm:stretched_moment_one_le}.
+The cutoff need not be an integer, and the boundary $n=r$ is included
+whenever $r$ is a natural number.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:stretched_moment_summable}
+Both the full-rate and half-rate series are summable by
+Theorem~\ref{thm:stretched_moment_summable}.  For every natural
+number $n\geq r$, monotonicity of nonnegative real powers gives
+$r^\alpha\leq n^\alpha$.  Splitting the exponential rate yields
+\begin{align}
+ \begin{aligned}
+ (1+n)^p e^{-cn^\alpha}
+ &=(1+n)^p e^{-(c/2)n^\alpha}e^{-(c/2)n^\alpha}\\
+ &\leq (1+n)^p e^{-(c/2)n^\alpha}e^{-(c/2)r^\alpha}.
+ \end{aligned}
+ \label{eq:stretched_tail_comparison}
+\end{align}
+Sum over the natural numbers with $r\leq n$, enlarge to all natural
+numbers using nonnegativity, and take the constant
+$e^{-(c/2)r^\alpha}$ outside the sum.
+\end{proof}

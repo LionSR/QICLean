@@ -1,0 +1,112 @@
+\section{Poisson word growth from quadratic shell counts}
+\label{sec:poisson_word_shell_growth}
+
+Let $I$ and $Y$ be finite sets, let $\delta$ be an extended
+pseudometric on $Y$, and fix anchor positions $i\mapsto x_i$.
+Write $\mathcal W_I$ for the finite words in $I$, $\varnothing$
+for the empty word, and $u[i]$ for appending $i$ on the right.
+Use the Poisson word probability measure $\mu_{I,t}$ of
+Definition~\ref{def:poisson_word_measure} and the shell kernel
+$A_{C,c,\alpha}$ of Definition~\ref{def:stretched_ball_kernel}.
+For $S\subseteq Y$, write $D_S$ for its extended distance and
+use the profile $r_{S,a,\alpha}$ of
+Definition~\ref{def:exponential_distance_profile}.
+The following theorem combines the shell counts with the stochastic
+propagation argument in \cite{OpenAI2026AreaLaw},
+\texttt{09-amplification.tex}, lines 141--188.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% Checked module: QICLean/Probability/PoissonWordShellGrowth.lean,
+% revision 36da3ffa.
+% This is a generic supporting propagation theorem.  Identifying the
+% physical oscillation observable, induced-graph geometry, and chronological
+% clocks remains separate; the actual summed append estimate is a hypothesis.
+
+\begin{theorem}[Spatial growth from the shell kernel]
+\label{thm:poisson_word_shell_growth}
+\lean{PoissonWord.integrable_and_integral_le_of_shell_growth}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_insert,
+def:stretched_ball_kernel, def:exponential_distance_profile}
+Let $t\geq0$, $C,B,V,M\geq0$, $c>0$, and $0<\alpha\leq1$.
+Let $S\subseteq Y$ be arbitrary and let
+$f:\mathcal W_I\times Y\to\mathbb R$ be nonnegative at every
+argument.  Suppose that, for every $n\in\mathbb N$, $y\in Y$,
+and $i\in I$, the literal label and site counts satisfy
+\begin{align}
+ \begin{aligned}
+ \bigl|\{i\in I:\delta(y,x_i)\leq n\}\bigr|
+ &\leq B(1+n)^2,\\
+ \bigl|\{z\in Y:\delta(z,x_i)\leq n\}\bigr|
+ &\leq V(1+n)^2.
+ \end{aligned}
+ \label{eq:poisson_shell_counts}
+\end{align}
+Suppose also that, for every word $u$ and every $y\in Y$,
+\begin{align}
+ \begin{aligned}
+ f(\varnothing,y)&\leq M\mathbf 1_S(y),\\
+ \sum_{i\in I}\bigl(f(u[i],y)-f(u,y)\bigr)
+ &\leq\sum_{z\in Y}A_{C,c,\alpha}(y,z)f(u,z).
+ \end{aligned}
+ \label{eq:poisson_shell_increment}
+\end{align}
+Define the spatial and temporal rates by
+\begin{align}
+ \begin{aligned}
+ a&=\frac{c}{2\cdot2^\alpha},\\
+ v&=CBV\sum_{n=0}^{\infty}(1+n)^4e^{-(c/2)n^\alpha}.
+ \end{aligned}
+ \label{eq:poisson_shell_rates}
+\end{align}
+Then $a>0$ and $v\geq0$.  For every $y\in Y$, the function
+$u\mapsto f(u,y)$ is integrable with respect to $\mu_{I,t}$ and
+\begin{align}
+ \int_{\mathcal W_I}f(u,y)\,d\mu_{I,t}(u)
+ &\leq e^{vt}M r_{S,a,\alpha}(y).
+ \label{eq:poisson_shell_expectation}
+\end{align}
+If $D_S(y)=\infty$, then $f(u,y)=0$ for every $u\in\mathcal W_I$.
+At finite distance from $S$, the right side of
+(\ref{eq:poisson_shell_expectation}) is
+$M e^{vt-a(D_S(y)_{\mathbb R})^\alpha}$.
+The amplitude $C$ belongs to the shell kernel, while $M$ bounds
+the initial observable.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:stretched_ball_half_rate, lem:stretched_ball_nonneg,
+lem:stretched_ball_zero, thm:poisson_word_spatial_expectation,
+thm:poisson_word_spatial_zero}
+Apply Theorem~\ref{thm:stretched_ball_half_rate} to
+(\ref{eq:poisson_shell_counts}).  It gives $a>0$ and, for every
+$y\in Y$,
+\begin{align}
+ \sum_{z\in Y}A_{C,c,\alpha}(y,z)
+ e^{a(\delta(y,z)_{\mathbb R})^\alpha}
+ &\leq v.
+ \label{eq:poisson_shell_row}
+\end{align}
+Every term of the series defining $v$ is nonnegative, and
+$C,B,V\geq0$, so $v\geq0$.
+Lemma~\ref{lem:stretched_ball_nonneg} gives
+$A_{C,c,\alpha}(y,z)\geq0$, and
+Lemma~\ref{lem:stretched_ball_zero} gives
+$A_{C,c,\alpha}(y,z)=0$ whenever $\delta(y,z)=\infty$.
+Together with~(\ref{eq:poisson_shell_increment}) and
+(\ref{eq:poisson_shell_row}), these facts satisfy the hypotheses
+of Theorem~\ref{thm:poisson_word_spatial_expectation}, with initial
+amplitude $M$.  That theorem gives integrability and
+(\ref{eq:poisson_shell_expectation}) at every site.
+The same hypotheses give vanishing at every word when
+$D_S(y)=\infty$ by Theorem~\ref{thm:poisson_word_spatial_zero}.
+\end{proof}
+
+The rates in~(\ref{eq:poisson_shell_rates}) depend only on
+$C,c,\alpha,B,V$.  In particular, the convergent fourth moment
+uses the full sum beginning at $n=0$, and there is no factor of
+$|I|$ or $|Y|$.  Fixed kernel parameters and quadratic counting
+constants therefore give rates uniform over finite domains.
+Repeated anchor positions are counted with their label multiplicities.
+The theorem permits an empty alphabet, an empty site set, time zero,
+and an empty initial support; when $S=\varnothing$, the observable
+vanishes at every site and every word.
