@@ -18,7 +18,7 @@ other diagonal block.
 
 ## Main definitions
 
-* `Matrix.blockProj b` — the orthogonal projection onto the first (`b = true`) or the
+* `Matrix.blockDiagProj b` — the orthogonal projection onto the first (`b = true`) or the
   second (`b = false`) summand.
 * `Matrix.IsBlockDiagonalMap L L₁ L₂` — `L` commutes with compression to each block and
   acts as `L₁` on the first and as `L₂` on the second diagonal block.
@@ -147,16 +147,16 @@ end MeanTree
 
 /-! ### Maps preserving the block structure -/
 
-/-- The orthogonal projections onto the two summands: `blockProj true = 1 ⊕ 0` and
-`blockProj false = 0 ⊕ 1`. -/
-def blockProj : Bool → Matrix (n ⊕ m) (n ⊕ m) ℂ
+/-- The orthogonal projections onto the two summands: `blockDiagProj true = 1 ⊕ 0` and
+`blockDiagProj false = 0 ⊕ 1`. -/
+def blockDiagProj : Bool → Matrix (n ⊕ m) (n ⊕ m) ℂ
   | true => fromBlocks 1 0 0 0
   | false => fromBlocks 0 0 0 1
 
 /-- A block-diagonal matrix commutes with the block projections. -/
-theorem fromBlocks_diag_mul_blockProj (V₁ : Matrix n n ℂ) (V₂ : Matrix m m ℂ) (b : Bool) :
-    fromBlocks V₁ 0 0 V₂ * blockProj b = blockProj b * fromBlocks V₁ 0 0 V₂ := by
-  cases b <;> simp [blockProj, fromBlocks_multiply]
+theorem fromBlocks_diag_mul_blockDiagProj (V₁ : Matrix n n ℂ) (V₂ : Matrix m m ℂ) (b : Bool) :
+    fromBlocks V₁ 0 0 V₂ * blockDiagProj b = blockDiagProj b * fromBlocks V₁ 0 0 V₂ := by
+  cases b <;> simp [blockDiagProj, fromBlocks_multiply]
 
 /-- A linear map on matrices over `n ⊕ m` **preserves the block structure** with diagonal
 parts `L₁` and `L₂` if it commutes with compression to each of the four blocks, and acts
@@ -166,7 +166,8 @@ Area-law paper, Lemma 7.2 (`transport:cp`), `06-transport.tex` lines 151--154. -
 structure IsBlockDiagonalMap (L : Matrix (n ⊕ m) (n ⊕ m) ℂ →L[ℂ] Matrix (n ⊕ m) (n ⊕ m) ℂ)
     (L₁ : Matrix n n ℂ →L[ℂ] Matrix n n ℂ) (L₂ : Matrix m m ℂ →L[ℂ] Matrix m m ℂ) : Prop where
   /-- Compression to each matrix block commutes with the map. -/
-  compress : ∀ a b H, L (blockProj a * H * blockProj b) = blockProj a * L H * blockProj b
+  compress : ∀ a b H,
+    L (blockDiagProj a * H * blockDiagProj b) = blockDiagProj a * L H * blockDiagProj b
   /-- On the first diagonal block the map is `L₁`. -/
   first : ∀ Z, L (fromBlocks Z 0 0 0) = fromBlocks (L₁ Z) 0 0 0
   /-- On the second diagonal block the map is `L₂`. -/
@@ -211,14 +212,14 @@ theorem id : IsBlockDiagonalMap (ContinuousLinearMap.id ℂ (Matrix (n ⊕ m) (n
 in particular it does not depend on the other blocks of `H`. -/
 theorem toBlocks₁₁ (hL : IsBlockDiagonalMap L L₁ L₂) (H : Matrix (n ⊕ m) (n ⊕ m) ℂ) :
     (L H).toBlocks₁₁ = L₁ H.toBlocks₁₁ := by
-  have h1 : blockProj true * H * blockProj true = fromBlocks H.toBlocks₁₁ 0 0 0 := by
+  have h1 : blockDiagProj true * H * blockDiagProj true = fromBlocks H.toBlocks₁₁ 0 0 0 := by
     conv_lhs => rw [← fromBlocks_toBlocks H]
-    simp [blockProj, fromBlocks_multiply]
+    simp [blockDiagProj, fromBlocks_multiply]
   have h2 := hL.compress true true H
   rw [h1, hL.first] at h2
-  have h3 : blockProj true * L H * blockProj true = fromBlocks (L H).toBlocks₁₁ 0 0 0 := by
+  have h3 : blockDiagProj true * L H * blockDiagProj true = fromBlocks (L H).toBlocks₁₁ 0 0 0 := by
     conv_lhs => rw [← fromBlocks_toBlocks (L H)]
-    simp [blockProj, fromBlocks_multiply]
+    simp [blockDiagProj, fromBlocks_multiply]
   rw [h3] at h2
   exact (Matrix.fromBlocks_inj.mp h2).1.symm
 
@@ -226,14 +227,15 @@ theorem toBlocks₁₁ (hL : IsBlockDiagonalMap L L₁ L₂) (H : Matrix (n ⊕ 
 `H`. -/
 theorem toBlocks₂₂ (hL : IsBlockDiagonalMap L L₁ L₂) (H : Matrix (n ⊕ m) (n ⊕ m) ℂ) :
     (L H).toBlocks₂₂ = L₂ H.toBlocks₂₂ := by
-  have h1 : blockProj false * H * blockProj false = fromBlocks 0 0 0 H.toBlocks₂₂ := by
+  have h1 : blockDiagProj false * H * blockDiagProj false = fromBlocks 0 0 0 H.toBlocks₂₂ := by
     conv_lhs => rw [← fromBlocks_toBlocks H]
-    simp [blockProj, fromBlocks_multiply]
+    simp [blockDiagProj, fromBlocks_multiply]
   have h2 := hL.compress false false H
   rw [h1, hL.second] at h2
-  have h3 : blockProj false * L H * blockProj false = fromBlocks 0 0 0 (L H).toBlocks₂₂ := by
+  have h3 : blockDiagProj false * L H * blockDiagProj false =
+      fromBlocks 0 0 0 (L H).toBlocks₂₂ := by
     conv_lhs => rw [← fromBlocks_toBlocks (L H)]
-    simp [blockProj, fromBlocks_multiply]
+    simp [blockDiagProj, fromBlocks_multiply]
   rw [h3] at h2
   exact (Matrix.fromBlocks_inj.mp h2).2.2.2.symm
 
@@ -244,10 +246,10 @@ theorem isBlockDiagonalMap_sandwichL (V₁ : Matrix n n ℂ) (V₂ : Matrix m m 
     IsBlockDiagonalMap (sandwichL (fromBlocks V₁ 0 0 V₂)) (sandwichL V₁) (sandwichL V₂) where
   compress a b H := by
     simp only [sandwichL_apply]
-    have ha := fromBlocks_diag_mul_blockProj V₁ V₂ a
-    have hb := fromBlocks_diag_mul_blockProj V₁ V₂ b
-    rw [show fromBlocks V₁ 0 0 V₂ * (blockProj a * H * blockProj b) * fromBlocks V₁ 0 0 V₂ =
-        (fromBlocks V₁ 0 0 V₂ * blockProj a) * H * (blockProj b * fromBlocks V₁ 0 0 V₂) by
+    have ha := fromBlocks_diag_mul_blockDiagProj V₁ V₂ a
+    have hb := fromBlocks_diag_mul_blockDiagProj V₁ V₂ b
+    rw [show fromBlocks V₁ 0 0 V₂ * (blockDiagProj a * H * blockDiagProj b) * fromBlocks V₁ 0 0 V₂ =
+        (fromBlocks V₁ 0 0 V₂ * blockDiagProj a) * H * (blockDiagProj b * fromBlocks V₁ 0 0 V₂) by
       noncomm_ring, ha, ← hb]
     noncomm_ring
   first Z := by simp [fromBlocks_multiply]
@@ -311,20 +313,20 @@ theorem isBlockDiagonalMap_rpowFDeriv {C₁ : Matrix n n ℂ} {C₂ : Matrix m m
   · rw [rpowFDeriv_apply hC hp, rpowFDeriv_apply hC hp]
     have hcomm : ∀ t ∈ Ioi (0 : ℝ),
         t ^ p • (Ring.inverse (t • (1 : Matrix (n ⊕ m) (n ⊕ m) ℂ) + fromBlocks C₁ 0 0 C₂) *
-          (blockProj a * H * blockProj b) *
+          (blockDiagProj a * H * blockDiagProj b) *
           Ring.inverse (t • (1 : Matrix (n ⊕ m) (n ⊕ m) ℂ) + fromBlocks C₁ 0 0 C₂)) =
-        ContinuousLinearMap.mulLeftRight ℂ _ (blockProj a) (blockProj b)
+        ContinuousLinearMap.mulLeftRight ℂ _ (blockDiagProj a) (blockDiagProj b)
           (rpowFDerivIntegrand p (fromBlocks C₁ 0 0 C₂) t H) := by
       intro t ht
       rw [rpowFDerivIntegrand_apply, hR t ht, ContinuousLinearMap.mulLeftRight_apply,
         mul_smul_comm, smul_mul_assoc]
       congr 1
-      have ha := fromBlocks_diag_mul_blockProj (Ring.inverse (t • (1 : Matrix n n ℂ) + C₁))
+      have ha := fromBlocks_diag_mul_blockDiagProj (Ring.inverse (t • (1 : Matrix n n ℂ) + C₁))
         (Ring.inverse (t • (1 : Matrix m m ℂ) + C₂)) a
-      have hb := fromBlocks_diag_mul_blockProj (Ring.inverse (t • (1 : Matrix n n ℂ) + C₁))
+      have hb := fromBlocks_diag_mul_blockDiagProj (Ring.inverse (t • (1 : Matrix n n ℂ) + C₁))
         (Ring.inverse (t • (1 : Matrix m m ℂ) + C₂)) b
-      rw [show ∀ R : Matrix (n ⊕ m) (n ⊕ m) ℂ, R * (blockProj a * H * blockProj b) * R =
-          (R * blockProj a) * H * (blockProj b * R) from fun R ↦ by noncomm_ring, ha, ← hb]
+      rw [show ∀ R : Matrix (n ⊕ m) (n ⊕ m) ℂ, R * (blockDiagProj a * H * blockDiagProj b) * R =
+          (R * blockDiagProj a) * H * (blockDiagProj b * R) from fun R ↦ by noncomm_ring, ha, ← hb]
       noncomm_ring
     rw [setIntegral_congr_fun measurableSet_Ioi hcomm,
       ContinuousLinearMap.integral_comp_comm _ (hint H)]

@@ -283,6 +283,14 @@ jobs:
           -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
           QICLeanTest/ShiftedDensityPowers.lean
 
+      - name: Check shifted density commutation regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s
+          lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/ShiftedDensityCommutation.lean
+
       - name: Check shifted density truncation regressions strictly
         run: >
           LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s
@@ -299,6 +307,18 @@ jobs:
           -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
           QICLeanTest/ShiftedPowerDerivative.lean
 
+      - name: Check polar-unitary correction regressions strictly
+        timeout-minutes: 2
+        run: |
+          set -e
+          for example in PolarUnitaryCorrection PolarUnitaryCorrectionAxioms \
+              PolarUnitaryCorrectionKronecker PolarUnitaryCorrectionKroneckerAxioms; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
       - name: Check pure-environment dilation regressions strictly
         run: >
           LEAN_NUM_THREADS=1 lake env lean -j1
@@ -314,7 +334,7 @@ jobs:
           QICLeanTest/GlobalGap.lean
 
 
-      - name: Check physical-buffer and Gaussian-filter regressions and all axiom guards strictly
+      - name: Check physical-buffer, Gaussian-filter, evolution, and restoration regressions strictly
         run: |
           for file in \
             QICLeanTest/CompressedPartialSwap.lean \
@@ -322,9 +342,69 @@ jobs:
             QICLeanTest/PhysicalBufferOverlap.lean \
             QICLeanTest/DoubledSystemGap.lean \
             QICLeanTest/PositiveGapUniqueness.lean \
+            QICLeanTest/PoissonWord.lean \
+            QICLeanTest/PoissonWordAxioms.lean \
+            QICLeanTest/PoissonWordMarked.lean \
+            QICLeanTest/PoissonWordMarkedAxioms.lean \
+            QICLeanTest/PoissonWordInsertionWeight.lean \
+            QICLeanTest/PoissonWordInsertionWeightAxioms.lean \
+            QICLeanTest/PoissonWordInsertion.lean \
+            QICLeanTest/PoissonWordInsertionAxioms.lean \
+            QICLeanTest/PoissonWordOccupation.lean \
+            QICLeanTest/PoissonWordOccupationAxioms.lean \
+            QICLeanTest/PoissonWordRealOccupation.lean \
+            QICLeanTest/PoissonWordRealOccupationAxioms.lean \
+            QICLeanTest/TaggedInterleavings.lean \
+            QICLeanTest/TaggedInterleavingsAxioms.lean \
+            QICLeanTest/PoissonWordThinning.lean \
+            QICLeanTest/PoissonWordThinningAxioms.lean \
+            QICLeanTest/PoissonWordRelabel.lean \
+            QICLeanTest/PoissonWordRelabelAxioms.lean \
+            QICLeanTest/PoissonWordPartition.lean \
+            QICLeanTest/PoissonWordPartitionAxioms.lean \
+            QICLeanTest/PoissonWordAppend.lean \
+            QICLeanTest/PoissonWordAppendAxioms.lean \
+            QICLeanTest/PoissonWordSemigroup.lean \
+            QICLeanTest/PoissonWordSemigroupAxioms.lean \
+            QICLeanTest/ContractionWordAppend.lean \
+            QICLeanTest/ContractionWordAppendAxioms.lean \
+            QICLeanTest/PoissonWordCounts.lean \
+            QICLeanTest/PoissonWordCountsAxioms.lean \
+            QICLeanTest/PoissonWordIndependentCounts.lean \
+            QICLeanTest/PoissonWordIndependentCountsAxioms.lean \
+            QICLeanTest/FiniteUniformConditioning.lean \
+            QICLeanTest/FiniteUniformConditioningAxioms.lean \
+            QICLeanTest/PoissonWordUniformOrder.lean \
+            QICLeanTest/PoissonWordUniformOrderAxioms.lean \
+            QICLeanTest/ContractionWordDecay.lean \
+            QICLeanTest/ContractionWordDecayAxioms.lean \
+            QICLeanTest/ContractionWordDecaySpectator.lean \
+            QICLeanTest/ContractionWordDecaySpectatorAxioms.lean \
+            QICLeanTest/PoissonContractionDecay.lean \
+            QICLeanTest/PoissonContractionDecayAxioms.lean \
+            QICLeanTest/MatrixEvolution.lean \
+            QICLeanTest/UnitaryEvolution.lean \
+            QICLeanTest/UnitaryEvolutionAxioms.lean \
+            QICLeanTest/MatrixUnitaryEvolution.lean \
+            QICLeanTest/EvolutionCommutant.lean \
+            QICLeanTest/ProjectedEvolution.lean \
+            QICLeanTest/ProjectedEvolutionAxioms.lean \
+            QICLeanTest/SupportInverseSandwich.lean \
+            QICLeanTest/SupportInverseSandwichAxioms.lean \
+            QICLeanTest/RestoringMarginal.lean \
+            QICLeanTest/RestoringMarginalAxioms.lean \
+            QICLeanTest/RestoringOperators.lean \
+            QICLeanTest/RestoringOperatorsAxioms.lean \
+            QICLeanTest/RestoringNorm.lean \
+            QICLeanTest/RestoringNormAxioms.lean \
+            QICLeanTest/RestoringVectors.lean \
+            QICLeanTest/RestoringVectorsAxioms.lean \
+            QICLeanTest/RestoringCoefficientBound.lean \
+            QICLeanTest/RestoringCoefficientBoundAxioms.lean \
+            QICLeanTest/RestoringGroundComponent.lean \
+            QICLeanTest/RestoringGroundComponentAxioms.lean \
             QICLeanTest/GaussianKernel.lean \
             QICLeanTest/GaussianMatrixIntegral.lean \
-            docs/provenance/evidence/8766-gaussian-matrix/drivers/GaussianMatrixIntegralGuardedAxioms.lean \
             QICLeanTest/GaussianSpectralGap.lean \
             QICLeanTest/GaussianGroundEstimate.lean; do
             timeout --signal=INT --kill-after=5s 90s lake env lean -j1 \
