@@ -201,9 +201,30 @@ which gives the proposition without hypotheses beyond those of the source.
 \begin{proof}\leanok
     Integrate the pointwise bound and apply
     Lemma~\ref{lem:transport_integrated_derivative} (\texttt{06-transport.tex}
-    lines 427--429 and 769--779). Taking $L$ to be the entropy-gain lower bound
-    additionally requires its measurability in $p$, which the source does not
-    address.
+    lines 427--429 and 769--779).
+\end{proof}
+
+\begin{lemma}[Integrability of the entropy gain]\label{lem:replica_entropy_gain_integrable}
+    \lean{Matrix.MeanTree.hasDerivAt_eval_update_path,
+      Matrix.Transport.hasDerivAt_neg_log_filteredNormSq_leafPerturbation,
+      TensorPower.ReplicaTransport.TransportData.aestronglyMeasurable_integral_state,
+      TensorPower.ReplicaTransport.TransportData.abs_integral_state_le,
+      TensorPower.ReplicaTransport.TransportData.intervalIntegrable_entropyGain}
+    \leanok
+    \uses{lem:replica_transport_states}
+    For fixed $k$ and nonzero $x\in\mathcal S_k$, the entropy-gain term of
+    \cite[Proposition~7.4]{OpenAI2026AreaLaw} is integrable in $p$ on $[0,1]$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Each summand is $G(p)=\int m_{1/4}(u)\operatorname{Tr}(\sigma_{h,u}Q)\,du$ with $Q$
+    Hermitian. Replacing the old input $A_h$ by $A_h^{1/2}e^{\delta Q}A_h^{1/2}$ changes
+    $-\log N(p)^2$ at $\delta=0$ at rate $(1-p)w_hG(p)$, by the norm-derivative formula and
+    the leaf identity. For fixed $\delta$ the perturbed norm is continuous in $p$, so
+    $(1-p)w_hG(p)$ is a pointwise limit of continuous functions on $(0,1)$ and hence
+    measurable. The states are density matrices, so $|G(p)|\le\|Q\|/2$. The source asserts
+    the integration (\texttt{06-transport.tex} lines 427--429) and bounds the integrand
+    (lines 769--779); measurability is the remaining point.
 \end{proof}
 
 \begin{theorem}[The skew bound at a split leaf]\label{thm:replica_split_skew_bound}
@@ -239,16 +260,21 @@ which gives the proposition without hypotheses beyond those of the source.
 \begin{theorem}[Entropy and energy transport]\label{thm:replica_transport}
     \lean{TensorPower.ReplicaTransport.transport}
     \leanok
-    \uses{thm:replica_transport_skew_conditional, thm:replica_split_skew_bound}
-    The conclusions of~\cite[Proposition~7.4]{OpenAI2026AreaLaw} at every $0<p<1$, namely the
-    exact derivative, the entropy-gain lower bound and the energy bound, hold under the
-    hypotheses of the source: admissible finite history and choice data, cross-band
-    commutation on $\mathcal S_k$, positive contractions with designated supports compatible
-    with the terminal partitions, and $\ell\ge1$ bounding the logarithmic dimensions with
-    $a\ell$ below a universal threshold.
+    \uses{thm:replica_transport_skew_conditional, thm:replica_split_skew_bound,
+      cor:replica_transport_integrated, lem:replica_entropy_gain_integrable}
+    The conclusions of~\cite[Proposition~7.4]{OpenAI2026AreaLaw} hold under the hypotheses
+    of the source: admissible finite history and choice data, cross-band commutation on
+    $\mathcal S_k$, positive contractions with designated supports compatible with the
+    terminal partitions, and $\ell\ge1$ bounding the logarithmic dimensions with $a\ell$
+    below a universal threshold. Namely, for every $k$ and nonzero $x\in\mathcal S_k$: at
+    every $0<p<1$ the exact derivative, the entropy-gain lower bound and the energy bound
+    hold, and the entropy-gain lower bound integrates over every $[p_0,p_1]\subseteq[0,1]$
+    to $\log N(p_0)^2-\log N(p_1)^2$.
 \end{theorem}
 
 \begin{proof}\leanok
     Combine Theorem~\ref{thm:replica_transport_skew_conditional} with
-    Theorem~\ref{thm:replica_split_skew_bound}.
+    Theorem~\ref{thm:replica_split_skew_bound}. For the integrated form, apply
+    Corollary~\ref{cor:replica_transport_integrated} with the entropy-gain lower bound,
+    which is integrable by Lemma~\ref{lem:replica_entropy_gain_integrable}.
 \end{proof}
