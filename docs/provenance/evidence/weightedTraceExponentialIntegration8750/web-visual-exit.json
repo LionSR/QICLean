@@ -1,0 +1,13 @@
+{
+  "source_revision": "3de85fb945f151078fbf30568bc6075c6ed45f7d",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-visual.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T01:28:07.595396+00:00",
+  "elapsed_seconds": 2.413,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-visual.log",
+  "sha256": "84ecb9de87d81a2e13eaa204555d7f382b02bc31ad85f5db0e38d742993c32cb"
+}

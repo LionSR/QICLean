@@ -1,0 +1,13 @@
+{
+  "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/check-inherited.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:49:35.640151+00:00",
+  "elapsed_seconds": 2.796,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/inherited.log",
+  "sha256": "27333659e04237ef49f69411520abbd635dd034043def836fccfd37db90fbc07"
+}

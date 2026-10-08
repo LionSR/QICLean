@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/check-native-targets.py", line 5, in <module>
+    for name in expected:assert names.count(name)==1,(name,names.count(name))
+                                ^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('Matrix.trace_exp_labelEntropy_replicaExcitationComponent_eq', 0)

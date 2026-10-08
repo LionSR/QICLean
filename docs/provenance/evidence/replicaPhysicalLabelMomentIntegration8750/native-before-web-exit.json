@@ -1,0 +1,13 @@
+{
+  "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/check-native-targets.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:56:07.966435+00:00",
+  "elapsed_seconds": 0.052,
+  "exit_code": 1,
+  "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/native-before-web.log",
+  "sha256": "41379ced0e8ad33c7b8ea6b355f5eac666cd0dcc5858224c18294ab33f916f5f"
+}

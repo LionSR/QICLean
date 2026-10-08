@@ -1,0 +1,19 @@
+{
+  "source_revision": "96387e42dfb5674898fb2b3fb26c2679b3f00e4b",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/weightedTraceExponential8750/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T00:58:38.793050+00:00",
+  "elapsed_seconds": 6.212,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceExponential8750/axioms-final.log",
+  "sha256": "84b339d88eba6c3d6e8b60311bfe3028771580b14b3fdf9ac8cf602d5c44d59c"
+}

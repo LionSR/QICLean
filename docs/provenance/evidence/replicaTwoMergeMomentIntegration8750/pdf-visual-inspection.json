@@ -1,0 +1,22 @@
+{
+  "physical_pages": [
+    459,
+    460
+  ],
+  "printed_pages": [
+    458,
+    459
+  ],
+  "all_pages_inspected": true,
+  "inspection": "Full chosen-coordinate setting, both actual deficits, polynomial coefficients, 2a\u22641 estimate and complete proof inspected in rendered PNGs. No clipping or overlap; full QYV, Y-preserving exchange and same component mass readable.",
+  "images": [
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/page-459.png",
+      "sha256": "e380a29b97c0f6b889436aacb7fed3b9fcb54d40ab2dc45abfbf5ee4183ac459"
+    },
+    {
+      "path": "docs/provenance/evidence/replicaTwoMergeMomentIntegration8750/page-460.png",
+      "sha256": "6fbf86a7ba0e7c057afe2f23c36f793a2fd57b83052e44b95b37f65dc06e2af5"
+    }
+  ]
+}

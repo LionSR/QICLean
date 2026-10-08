@@ -1,0 +1,22 @@
+{
+  "base_revision": "a820e67e2f30782485361fa71c8c0763981f8edb",
+  "existing_apis": [
+    "Matrix.partialTraceRight_replicaExcitationComponent_goodRegional_density",
+    "Matrix.trace_partialTraceRight_mul",
+    "Matrix.exp_kronecker_one",
+    "Matrix.mul_kronecker_mul",
+    "Matrix.trace_kronecker",
+    "Matrix.trace_partialTraceLeft",
+    "Matrix.trace_vecMulVec",
+    "EuclideanSpace.inner_eq_star_dotProduct",
+    "inner_self_eq_norm_sq_to_K"
+  ],
+  "source_passages": [
+    "07-comparators.tex:520\u2013549",
+    "07-comparators.tex:556\u2013560"
+  ],
+  "ownership": "Exact actual physical expectation only. Root owns genuine fivefold Holder, typical owns actual good-physical SymProj support, verifier owns actual G/J and commutation. Both agents independently confirm no signed centered F rate result is present or owned in checked parents.",
+  "analytic_gap": "Source07:227\u2013237 signed centered iid F exponential rates are not supplied by SchurSurprisal L\u2212F remainder moments or finite iid Chebyshev concentration. No such rate is assumed or claimed.",
+  "new_definitions": [],
+  "private_helpers": []
+}

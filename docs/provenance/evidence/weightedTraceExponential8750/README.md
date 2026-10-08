@@ -1,0 +1,13 @@
+# Individual verification of the weighted exponential trace bound
+
+The final source is frozen at `d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96`, over the published exponential contribution `5a83568097c77798bdd3f77dc892c338749381bf`. Its earlier documentation revision `96387e42dfb5674898fb2b3fb26c2679b3f00e4b` differs only in the manuscript notice: the informal description was replaced by the exact `comparator:component-inverse` label. The validator checks this single replacement mechanically; the mathematical statement and all proof bytes are unchanged.
+
+The sole public theorem is `Matrix.PosSemidef.re_trace_mul_exp_add_le_half_sum`. A positive semidefinite weight and two commuting Hermitian matrices satisfy the weighted exponential arithmetic-mean inequality for every real exponent. Normalization and commutation with the weight are not required. The result is a separate auxiliary estimate for the rough argument in the pinned manuscript, Section 7, lines 553–555; it does not assert the printed geometric-mean inequality or the complete comparator theorem.
+
+The guarded module build passed with 2,768 jobs. The entire corrected source passed strict synthesis depth three, no relaxed implicit variables, the standard Mathlib linters and warnings as errors. The exact declaration audit contains only `propext`, `Classical.choice` and `Quot.sound`. The original one-entry provenance shard passed the frozen policy. Existing mathematical dependencies are the positive trace product inequality, positivity of a conjugate square, and the Hermitian exponential and commuting exponential identities.
+
+All final checks passed. Original preliminary logs remain verbatim: two draft documentation-placement syntax errors, missing module-docstring errors in the audit helpers, an unsupported tactic-scanner argument, and the provenance notice-label rejection. The first text-style helper checked the preceding module; the corrected helper checked the actual new source. No mathematical proof repair was required. The final source-bound build, strict check, declaration output, kernel report and provenance validation were repeated against the corrected citation freeze.
+
+Mechanical preservation checked 746 inherited evidence and shard bindings, 246 inherited inventory bindings and 793 production-source bindings. No inherited semantic audits were repeated. The published exponential branch and pre-existing untracked output remain unchanged. No shared import or blueprint chapter input is changed by this individual packet.
+
+Run `python3 docs/provenance/evidence/weightedTraceExponential8750/check-manifest.py --git` to validate the portable hashes, frozen source, original command and provenance bindings, exact citation correction and inherited source preservation.

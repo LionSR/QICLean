@@ -1,0 +1,11 @@
+{
+  "declaration_lines": 3630,
+  "unique_declarations": 3630,
+  "owned_declarations": [
+    "Matrix.PosSemidef.re_trace_mul_exp_add_le_half_sum"
+  ],
+  "unique_fragment_input": [
+    "blueprint/src/chapter/ch13_schur_labels.tex"
+  ],
+  "each_occurs_once": true
+}

@@ -1,0 +1,5 @@
+usage: tactic_pattern_scan.py [-h] [--root ROOT] [--min-window MIN_WINDOW]
+                              [--max-window MAX_WINDOW]
+                              [--min-count MIN_COUNT] [--top TOP]
+                              [--show-locations SHOW_LOCATIONS]
+tactic_pattern_scan.py: error: unrecognized arguments: QICLean/Analysis/WeightedTraceExponential.lean

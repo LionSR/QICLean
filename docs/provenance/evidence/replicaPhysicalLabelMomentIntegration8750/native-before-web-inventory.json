@@ -1,0 +1,6 @@
+{
+  "sha256": "fb4ae2b67b4bbe49d6df8f1fe6394dc647a69a1b468702cf27b9351167ff1a3f",
+  "lines": 3766,
+  "owned_occurrences": 1,
+  "cause": "The static chapter scanner omits separately included fragment references. This check ran before the complete web renderer regenerated its full native declaration inventory; rerun after web is required. No source changed."
+}

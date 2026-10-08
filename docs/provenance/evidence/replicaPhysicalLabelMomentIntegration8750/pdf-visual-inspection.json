@@ -1,0 +1,24 @@
+{
+  "physical_pages": [
+    460,
+    461
+  ],
+  "printed_pages": [
+    459,
+    460
+  ],
+  "all_pages_inspected": true,
+  "inspection": "Entire good-region/exterior setting, actual regrouped component, retained label exponential, all-real exact trace identity, complete proof and subsequent signed-rate scope paragraph inspected in rendered PNGs. Clear mathematics, no clipping or overlap.",
+  "images": [
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/page-460.png",
+      "sha256": "884deecbee3f42896b98fab9e99d43557da2c6458fc96dd859eb7ce4960b8d58",
+      "bytes": 292451
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/page-461.png",
+      "sha256": "ed65642542634c33e202fb370174df5c3d8b5bab8ebdaf5cf9333ba0bfb8b97a",
+      "bytes": 306668
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "no_upstream_proof_text_reused": true,
+      "id": "8750-qic-physical-label-moment-01",
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/ReplicaPhysicalLabelMoment.lean",
+        "declaration": "Matrix.trace_exp_labelEntropy_replicaExcitationComponent_eq",
+        "name_status": "declared"
+      },
+      "changes": [
+        "Derive the exact complex trace pairing of the original excitation-component rank-one density with the actual good-region label exponential, retaining all complementary physical and exterior factors. The result is its squared norm times the iid regional moment, for arbitrary real exponent and only the unit one-copy ground hypothesis. No supplied marginal, symmetry, independence, component normalization or nonzero premise; no signed centred rate or sharp comparator claim."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "fc4db3db1dc27f565637d218adc1fe0bf4de7e6d",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Analysis.ReplicaPhysicalLabelMoment",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-build.log",
+            "sha256": "95a37473ecb397f38801868ddd72003959dfb3d6269f019df503687b9cd66803"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/ReplicaPhysicalLabelMoment.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/replicaPhysicalLabelMoment8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-axioms.log",
+            "sha256": "87cbce79ea5b063258694a5a4ae0a5c12291e21cb7ec0a0d3621b92076a344eb"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -260,6 +260,12 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Abstraction:** The existing resolution homomorphism and `exp_hom` already supply the functional-calculus step. Continue using these results and finite-sum identities; no additional tactic or duplicate spectral calculus is introduced.
 - **Caveat:** Derive the joint resolution from the actual projections. Positive irreducible dimensions justify the logarithms even when their ambient label projections vanish.
 
+### Positive weighted trace of a difference square — candidate (2026-10-08)
+
+- **Pattern:** Apply positive-semidefinite trace positivity to `(U - V)ᴴ * (U - V)`, then use Hermitian symmetry and commutation to identify the product terms and obtain the arithmetic-mean bound.
+- **Seen:** `Analysis/WeightedTraceExponential.lean`; one calculation, reused for exponential matrices in the same file.
+- **Abstraction:** The private product inequality isolates this calculation. Existing `Matrix.PosSemidef.trace_mul_nonneg` and exponential commutation identities supply the mathematical steps; no new tactic is needed.
+- **Caveat:** Commutation of the two factors is a hypothesis, while no commutation with the positive semidefinite trace weight is used.
 ### Product-density invariance and actual trace mass — candidate (2026-10-08)
 
 - **Pattern:** Identify each separate copy permutation with an operator on
@@ -379,3 +385,26 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   product-of-sums theorem. A third independent use should promote the trace
   identity beside the finite tensor product and refactor both call sites.
 - **Caveat:** The zero-copy trace is one, including an empty one-copy index set.
+### Simultaneous retained and discarded coordinate changes — candidate (2026-10-08)
+
+- **Pattern:** Prove covariance of the literal excitation operator by its finite
+  product entries, apply `submatrix_mulVec_equiv` to the actual component, and
+  transport its partial trace using `partialTraceRight_submatrix_prod_equiv`.
+- **Seen:** The exchanged common-density proof in
+  `QICLean/Analysis/ReplicaGoodPairMarginal.lean`; one mathematical consumer.
+- **Abstraction:** Private coordinate-covariance lemmas share the operator and
+  vector calculation. Finite-sum reorderings use an explicit coordinate
+  equivalence and `Equiv.sum_comp`, rather than a looping sum-commutation simp
+  rule. No new tactic is introduced.
+- **Caveats:** The physical and auxiliary regions are exchanged together; the
+  component must be derived from the original vector and excitation operator.
+  Neither normalization nor a supplied covariance identity is assumed.
+  For a three-factor physical space, preserve the middle factor under the
+  exterior-region exchange and trace all of its copies in the common density.
+
+### Excitation covariance under physical coordinate exchange — candidate (2026-10-08)
+
+- **Pattern:** Transport the literal finite product of ground and defect factors through a one-copy coordinate equivalence, then transport the actual selected vector by `submatrix_mulVec_equiv`. A coordinate isometry preserves its Euclidean norm.
+- **Seen:** `Analysis/ReplicaGoodPairMarginal.lean` and `Analysis/ReplicaTwoMergeMoment.lean`; two independent consumers, respectively the marginal exchange and its norm consequence.
+- **Abstraction:** The existing matrix reindexing and coordinate isometry results supply the algebra. These two consumers retain private excitation calculations. Before a third consumer is added, extract their shared mathematical covariance statement and replace the repeated calculations.
+- **Caveat:** Exchange both exterior physical and auxiliary regions while preserving the independent middle physical region. Derive covariance and simultaneous fixedness from actual coordinates; do not supply them as additional hypotheses.

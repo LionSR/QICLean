@@ -1,0 +1,12 @@
+{
+  "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+  "source_commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "source_lines": [
+    23,
+    "103\u2013110",
+    "524\u2013549"
+  ],
+  "root_independent_review": "All generalized scratch proofs and four statements approved before source freeze. The middle factor is preserved by physical exchange and completely traced in the common density.",
+  "assumptions": "Only finite coordinates and decidable equality; arbitrary \u03a9 and u; no normalization, fixedness, supplied marginal or covariance certificate.",
+  "scope": "Actual coordinate partial-trace and total-mass identities, not the paired exponential bound or final area law."
+}

@@ -1,0 +1,17 @@
+{
+  "source_revision": "fc4db3db1dc27f565637d218adc1fe0bf4de7e6d",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaTwoMergeMoment8750/tactic_pattern_scan.py",
+    "--root",
+    "QICLean",
+    "--top",
+    "15"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:40:06.867953+00:00",
+  "elapsed_seconds": 0.646,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-patterns.log",
+  "sha256": "0c1c6d800ce000f31c33b3fd35e5df0d1569c96537577aa3fbe56e0551ee7bb9"
+}

@@ -1,0 +1,13 @@
+{
+  "source_revision": "7c8099cf9790cc72e1c17bbbde9ac65f4eb24bd1",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaTwoMergeMoment8750/check-hazards.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T02:06:58.304895+00:00",
+  "elapsed_seconds": 0.035,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaTwoMergeMoment8750/bound-hazards.log",
+  "sha256": "3d65a2effdce0c087f5e87280ff7176cdba567e175c929ef4b5fe6c4c621d027"
+}

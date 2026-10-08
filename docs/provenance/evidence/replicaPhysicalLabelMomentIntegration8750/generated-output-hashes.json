@@ -1,0 +1,29 @@
+{
+  "files": [
+    {
+      "path": "blueprint/print/print.pdf",
+      "sha256": "d6368c591df40126479d39bd53613419049f318b3f5950579e99763ac609b5b6",
+      "bytes": 3019107
+    },
+    {
+      "path": "blueprint/print/print.bbl",
+      "sha256": "1c9c49ee1de060dc40e74b44b1cbcd0a961b662280ac2dcdc5439d3556e24695",
+      "bytes": 14706
+    },
+    {
+      "path": "blueprint/lean_decls",
+      "sha256": "fb4ae2b67b4bbe49d6df8f1fe6394dc647a69a1b468702cf27b9351167ff1a3f",
+      "bytes": 158214
+    },
+    {
+      "path": "blueprint/web/ch-schur_labels.html",
+      "sha256": "de5359a9fa265eca6450d5773cbf04fa4b88fc0d3c8acf51ea9876e58cee7d16",
+      "bytes": 210639
+    },
+    {
+      "path": "output/pdf/area-law-replica-physical-label-moment-blueprint.pdf",
+      "sha256": "d6368c591df40126479d39bd53613419049f318b3f5950579e99763ac609b5b6",
+      "bytes": 3019107
+    }
+  ]
+}

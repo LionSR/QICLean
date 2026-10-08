@@ -1,0 +1,236 @@
+{
+  "source_revision": "fc4db3db1dc27f565637d218adc1fe0bf4de7e6d",
+  "files": [
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/Axioms.lean",
+      "sha256": "0ef2184ce32f56178c9db56821cfb9ad6ff3f9e5d50e7e2be5c6235793f1b939",
+      "bytes": 220
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/README.md",
+      "sha256": "5c2b6e2a21bb5209ac6e47a9ec77bac96b70aa7fc86085be3adf95580a9a3185",
+      "bytes": 2190
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/Statements.lean",
+      "sha256": "3f911bb42a831cbf9e8dc5e0b9a27f5a86fa035691413dc92bf3efc577cb0c3a",
+      "bytes": 217
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/TextStyle.lean",
+      "sha256": "4e831aa90ed3dc284ff99eb39382d1c99f068a87ccdf4ac1a2b6b9f03891ef2f",
+      "bytes": 393
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/audit-wrapper-axioms-exit.json",
+      "sha256": "8b1356219cde14ff0577593ca8d7365758c64fa3a10e271d3af8cde671cd89b8",
+      "bytes": 702
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/audit-wrapper-axioms.log",
+      "sha256": "b0734d85ca451a174de15282e9ab98b7d0cbbdbdb77cfe0dcc1f126589a80273",
+      "bytes": 650
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/audit-wrapper-statements-exit.json",
+      "sha256": "456cf2a235ddded13eee14062732a1ffd7c14382432568ed18c46560d02273be",
+      "bytes": 710
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/audit-wrapper-statements.log",
+      "sha256": "3741746d69e0428c3f947811dca3e58fda77a216f0c6715f38498e18089868bd",
+      "bytes": 11934
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-axioms-exit.json",
+      "sha256": "53e3004a3a662228c49c30b1986bb24d3fb7678a058610798e8da8a8dafdb784",
+      "bytes": 694
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-axioms.log",
+      "sha256": "87cbce79ea5b063258694a5a4ae0a5c12291e21cb7ec0a0d3621b92076a344eb",
+      "bytes": 121
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-build-exit.json",
+      "sha256": "72ebdf0553ac835c937f4f10ac43a66003c7254018000560a663705ee92ddd71",
+      "bytes": 523
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-build.log",
+      "sha256": "95a37473ecb397f38801868ddd72003959dfb3d6269f019df503687b9cd66803",
+      "bytes": 115
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-cache-fetch-exit.json",
+      "sha256": "4bf042b435fe5c4347d2a7fb4cc5ccafcd7565aff147ff0dfb6e1b707f540047",
+      "bytes": 501
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-cache-guard-exit.json",
+      "sha256": "ab0e76b040b59f7bc85519847c00f09fdb3d6fd8219369622e8b2e6c08d0ac26",
+      "bytes": 546
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-cache-guard.log",
+      "sha256": "7a261f40a8457739d006e91b8e261aca127802d54aa7d6c19f323ec71e0dc9d4",
+      "bytes": 960
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-hazards-exit.json",
+      "sha256": "5f507ede891044595c79de532f59b77745526d86619e1a1fb4c76d62fc87a6b6",
+      "bytes": 544
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-hazards.log",
+      "sha256": "3d65a2effdce0c087f5e87280ff7176cdba567e175c929ef4b5fe6c4c621d027",
+      "bytes": 55
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-patterns-exit.json",
+      "sha256": "bf79a609f2c93aab8bcc2f463d9a093ed0ec2c555f7c80aacae98e2a9f01a530",
+      "bytes": 598
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-patterns.log",
+      "sha256": "0c1c6d800ce000f31c33b3fd35e5df0d1569c96537577aa3fbe56e0551ee7bb9",
+      "bytes": 5796
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-preservation-exit.json",
+      "sha256": "36958ac1601aeacb5e1de4e39c78489327d1a4ff10e70d7cda071c2967bb7f98",
+      "bytes": 554
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-preservation-final-exit.json",
+      "sha256": "63e5f68d87d64ed435af557bfebd12072ba1e15990a56d098552ce5e82406109",
+      "bytes": 560
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-preservation-final.log",
+      "sha256": "67daabdc0eb37a008f6fcb714812d9b9978791b3f7c8a673c46874b5ac6221d2",
+      "bytes": 194
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-preservation.log",
+      "sha256": "af1dc04af5bc686e95b92e924c0572b116bbc2c2950c41e93cba8d3330c272a4",
+      "bytes": 565
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-prose-exit.json",
+      "sha256": "9a47b2b2e4094cdff4ce867b7a6ba82ed628ec72d1cb92acd2fe77ec4ee52a1c",
+      "bytes": 541
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-provenance-exit.json",
+      "sha256": "320f297425a038c2e03ff55e611a90f4fa6c01df951398db45a48061f4c96d34",
+      "bytes": 632
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-provenance.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764",
+      "bytes": 69
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-statements-exit.json",
+      "sha256": "12bbea1db76ae23c5a63a9df207e52e351335a3294a1b95f81c16de8965b9692",
+      "bytes": 702
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-statements.log",
+      "sha256": "a318af916433536cbd32217d18cbf103f51bc0bc919adee8d39aaf02812085f4",
+      "bytes": 11408
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-strict-source-exit.json",
+      "sha256": "b280b9fd18cc8e65a4178f684d8041814d9edc5bd39c821481a22b93b17744b7",
+      "bytes": 680
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-text-style-exit.json",
+      "sha256": "b3256c03a744c46321ae4ebdef9b2f897379de8a813824b87f76bb1496217fa3",
+      "bytes": 701
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/cache-guard.py",
+      "sha256": "006b200da78598bd4ed7609ccf5f614d42e07c32e720339a8860e5b259eb9b26",
+      "bytes": 1100
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/check-hazards.py",
+      "sha256": "7ea387cede18099687e3581ff5e9883f974e69fe5c3de362185f7557445a511f",
+      "bytes": 348
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/check-manifest.py",
+      "sha256": "29b8c09ce6959f91eb1cee44987b249e18816e4d86667b6a0825f8ecb9383d15",
+      "bytes": 2182
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/check-preservation.py",
+      "sha256": "9f4efbba53ebbcf011ed69e10c8967875bc3e8eb2ef62769c3d94edffa807a90",
+      "bytes": 1839
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/kernel-summary.json",
+      "sha256": "12dd241af494abd8ea0406b7d4dcf2a16d215f3bd605fd54fff5adda5c596ce9",
+      "bytes": 403
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/owned-shards.json",
+      "sha256": "cad7ef006fdba7e5d1dcec0f1b1f1c1f67bd116b2c4f354054f9769aed5a0287",
+      "bytes": 40
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/run.py",
+      "sha256": "0450e215b8e49825a935e0b46904a326cc4f585cc1cfe551516da74d835d8a93",
+      "bytes": 1134
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/scouting.json",
+      "sha256": "5c25c99a902092fd52cd4e95a9171cbce7fef19e39becc4988e6e2d0e9b70189",
+      "bytes": 1123
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/source-freeze.json",
+      "sha256": "58c9087662f2f82f7b401ee69676779e15f7cf288183725c593142f5abd8d617",
+      "bytes": 983
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/validate-owned.py",
+      "sha256": "8bc851dbc3773032133c7cfbb3f27a79a57a591f4de63fac9f7ca278b3b6ccdf",
+      "bytes": 1524
+    },
+    {
+      "path": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/verification.json",
+      "sha256": "94543169aba10a457ec80ec97726b3bc1e22efc6929640370e0a389775ead4d7",
+      "bytes": 11096
+    },
+    {
+      "path": "docs/provenance/openai-math.d/replicaPhysicalLabelMoment8750.json",
+      "sha256": "d9e138b52716ae1bb4d4c307de7bb905cc6de3a57ac0c2274928ce7d89852ef8",
+      "bytes": 2972
+    }
+  ],
+  "excluded": "Inventory itself and final validator output."
+}

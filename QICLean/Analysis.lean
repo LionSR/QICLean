@@ -107,10 +107,13 @@ import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
 import QICLean.Analysis.ReplicaGoodAuxiliaryMarginal
 import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
+import QICLean.Analysis.ReplicaGoodPairMarginal
 import QICLean.Analysis.ReplicaJointDensity
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
+import QICLean.Analysis.ReplicaPhysicalLabelMoment
 import QICLean.Analysis.ReplicaRegionalDensity
+import QICLean.Analysis.ReplicaTwoMergeMoment
 import QICLean.Analysis.ResolventDefect
 import QICLean.Analysis.ResolventDefectIntegral
 import QICLean.Analysis.ResolventFunctionalCalculus
@@ -173,6 +176,7 @@ import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
 import QICLean.Analysis.WeightedRectangular
 import QICLean.Analysis.WeightedSupertrace
+import QICLean.Analysis.WeightedTraceExponential
 import QICLean.Analysis.WeightedTraceHolder
 import QICLean.Analysis.WeylMonotonicity
 import QICLean.Analysis.YamagamiBoundary

@@ -1,0 +1,13 @@
+{
+  "source_revision": "1dba3aeb6c26745ce1e0b3885361e0a5bce22366",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:01:48.333209+00:00",
+  "elapsed_seconds": 1.642,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaPhysicalLabelMomentIntegration8750/web-context-final.log",
+  "sha256": "de484e5594a9aa9c37c11d2c73d3602bf67ac8c8312e43f61dc0a4ca5a08cf66"
+}

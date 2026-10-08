@@ -1,0 +1,13 @@
+{
+  "source_revision": "fc4db3db1dc27f565637d218adc1fe0bf4de7e6d",
+  "declarations": [
+    "Matrix.trace_exp_labelEntropy_replicaExcitationComponent_eq"
+  ],
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "raw_log": "docs/provenance/evidence/replicaPhysicalLabelMoment8750/bound-axioms.log",
+  "sha256": "87cbce79ea5b063258694a5a4ae0a5c12291e21cb7ec0a0d3621b92076a344eb"
+}

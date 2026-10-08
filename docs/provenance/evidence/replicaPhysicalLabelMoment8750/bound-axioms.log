@@ -1,0 +1,1 @@
+'Matrix.trace_exp_labelEntropy_replicaExcitationComponent_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
