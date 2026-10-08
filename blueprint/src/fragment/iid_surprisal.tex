@@ -1,0 +1,93 @@
+\section{Surprisal concentration for independent copies}
+\label{sec:iid_surprisal}
+
+Let $\rho$ be a density matrix on a finite-dimensional Hilbert space, with
+nonnegative eigenvalues $(p_i)_i$ summing to one. Set
+\begin{align}
+ S&=-\sum_i p_i\log p_i,
+ &V&=\sum_i p_i(-\log p_i-S)^2.
+ \label{eq:iid_surprisal_moments}
+\end{align}
+Terms with $p_i=0$ are zero. For $k\ge0$, write
+$\rho_k=\rho^{\otimes k}$ and $L_k=-\log\rho_k$, with the logarithm equal
+to zero on the kernel. These results justify the independent-copy
+concentration step in \cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[The product spectral distribution]
+\label{thm:iid_surprisal_spectral_distribution}
+\lean{Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal}
+\leanok
+For every real function $f$ and $k\ge0$,
+\begin{align}
+ \operatorname{Tr}(\rho_k f(L_k))
+  &=\sum_{x=(x_0,\ldots,x_{k-1})}
+       \left(\prod_jp_{x_j}\right)
+       f\left(-\log\prod_jp_{x_j}\right).
+ \label{eq:iid_surprisal_spectral_distribution}
+\end{align}
+This identity also holds for any positive semidefinite $\rho$ whose trace
+need not be one. A real function on a finite spectrum defines its spectral
+functional calculus without a global continuity assumption.
+\end{theorem}
+\begin{proof}
+\leanok
+Tensoring a unitary eigenbasis of $\rho$ gives a unitary eigenbasis of
+$\rho_k$, with eigenvalues $\prod_jp_{x_j}$. Apply the spectral functional
+calculus in that basis and use invariance of the trace under unitary
+conjugation.
+\end{proof}
+
+\begin{theorem}[Finite-product Chebyshev bound]
+\label{thm:iid_surprisal_chebyshev}
+\lean{Entropy.surprisalTail_pi_le_variance}
+\leanok
+Let $(p_i)_i$ be any finite probability distribution, allowing zero weights,
+and let $S,V$ be given by~(\ref{eq:iid_surprisal_moments}). For every $k\ge0$
+and $w>0$,
+\begin{align}
+ \sum_{x:\,| -\log\prod_jp_{x_j}-kS |>w}\prod_jp_{x_j}
+   &\le \frac{kV}{w^2}.
+ \label{eq:iid_surprisal_chebyshev}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+Choose independent samples $X_0,\ldots,X_{k-1}$ with law $(p_i)_i$.
+The sum $Y=\sum_j-\log p_{X_j}$ has expectation $kS$ and variance $kV$.
+Chebyshev's inequality bounds the probability that $|Y-kS|\ge w$ by
+$kV/w^2$. On every tuple of positive probability,
+$Y=-\log\prod_jp_{X_j}$. The remaining tuples have probability zero and
+contribute nothing to the displayed sum.
+\end{proof}
+
+\begin{theorem}[The entropy window of the actual density matrix]
+\label{thm:iid_surprisal_density_tail}
+\lean{Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le,Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le}
+\leanok
+\uses{thm:iid_surprisal_spectral_distribution,thm:iid_surprisal_chebyshev}
+For every $k\ge0$ and $w>0$,
+\begin{align}
+ \operatorname{Tr}\!\left(\rho_k\mathbf1_{\{|L_k-kS|>w\}}\right)
+   &\le \frac{kV}{w^2}.
+ \label{eq:iid_surprisal_density_tail}
+\end{align}
+In particular, for $k>0$ and $w=k^{3/4}$,
+\begin{align}
+ \operatorname{Tr}\!\left(\rho_k\mathbf1_{\{|L_k-kS|>k^{3/4}\}}\right)
+   &\le \frac{V}{\sqrt{k}}.
+ \label{eq:iid_surprisal_rate}
+\end{align}
+Thus the mass outside this entropy window tends to zero for a fixed density
+matrix as the number of copies tends to infinity.
+\end{theorem}
+\begin{proof}
+\leanok
+Apply~(\ref{eq:iid_surprisal_spectral_distribution}) to the indicator of
+the complement of the window and then use~(\ref{eq:iid_surprisal_chebyshev}).
+For $k>0$, substitution of $w=k^{3/4}$ gives
+$kV/w^2=V/\sqrt{k}$.
+\end{proof}
+
+These concentration statements do not yet select an irreducible
+representation label. That step also requires comparison with the label
+observable and control of the number of labels.

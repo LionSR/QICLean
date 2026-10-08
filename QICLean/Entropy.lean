@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Entropy
 
+import QICLean.Entropy.AuxiliaryPairEntropy
 import QICLean.Entropy.Bipartite
 import QICLean.Entropy.BufferDiscount
 import QICLean.Entropy.ClassicalMutualInformation
@@ -36,7 +37,9 @@ import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.FiniteProductTypicalState
 import QICLean.Entropy.GapSurprisal
+import QICLean.Entropy.IidSurprisal
 import QICLean.Entropy.LocalLift
 import QICLean.Entropy.MarginalPhaseApprox
 import QICLean.Entropy.MarginalPhaseComparison
@@ -59,6 +62,7 @@ import QICLean.Entropy.PhysicalBufferOverlap
 import QICLean.Entropy.PositiveOverlappingProduct
 import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.ProductOverlapPurity
+import QICLean.Entropy.PureTensorPower
 import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionSplit
@@ -75,7 +79,9 @@ import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
+import QICLean.Entropy.TypicalBellPin
 import QICLean.Entropy.TypicalDensity
+import QICLean.Entropy.TypicalPureCompression
 import QICLean.Entropy.TypicalPureState
 import QICLean.Entropy.TypicalSpectrum
 import QICLean.Entropy.TypicalStateFromTail

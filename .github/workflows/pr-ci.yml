@@ -283,6 +283,20 @@ jobs:
           -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
           QICLeanTest/ShiftedDensityPowers.lean
 
+      - name: Check compression foundations regressions strictly
+        run: |
+          set -euo pipefail
+          for example in ComplexGaussian CompressionSampling IndependentCovariance IndependentGaussianSlots WeightedRectangular; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+          LEAN_NUM_THREADS=1 lake env lean -j1 \
+            -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+            -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+            scripts/Tests/MatrixSecondMoment.lean
+
       - name: Check shifted density commutation regressions strictly
         run: >
           LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s

@@ -1,0 +1,47 @@
+\section{Label observables under restriction to two groups of copies}
+\label{sec:grouped_label_entropy}
+
+The subgroup dimension inequalities of \cite[Lemma~6.1(4)]{OpenAI2026AreaLaw}
+give matrix inequalities for the logarithmic label observables. These are
+used in Section~7 to compare whole-copy and subgroup labels before measuring
+an excitation component.
+
+\begin{theorem}[Grouped-copy label bounds]
+\label{thm:grouped_label_entropy_bounds}
+\lean{TensorPower.groupedCopies_labelEntropy_bounds}
+\leanok
+Let $m+r=k$, fix a partition of the $k$ copies into specified groups of
+sizes $m$ and $r$, and let $\phi:S_k\to\operatorname{Perm}(X)$ be any
+permutation representation on a finite coordinate set $X$. For the
+restrictions to the two groups and for the whole group, let
+\[
+ F_g=\sum_\alpha(\log d_\alpha)P^g_\alpha,\qquad
+ F_b=\sum_\beta(\log d_\beta)P^b_\beta,\qquad
+ F_w=\sum_\lambda(\log d_\lambda)P^w_\lambda
+\]
+be the central label observables on $\mathbb C^X$. Then, on the whole space,
+\begin{align}
+ F_g+F_b\le F_w\le F_g+F_b+\log\binom{k}{r}\,I.
+ \label{eq:grouped_label_entropy_bounds}
+\end{align}
+The statement includes $m=0$ and $r=0$.
+\end{theorem}
+\begin{proof}
+\leanok
+The three families of central label projections commute. Their products
+$P^g_\alpha P^b_\beta P^w_\lambda$ form an orthogonal resolution of the
+identity. On every nonzero product, the two subgroup dimension bounds give
+\[
+ d_\alpha d_\beta\le d_\lambda
+ \le\binom{k}{r}d_\alpha d_\beta.
+\]
+All irreducible dimensions are positive, and $r\le k$ implies
+$\binom{k}{r}>0$. Taking logarithms proves both inequalities on this
+joint component. Vanishing products make no contribution. Summing over the
+joint resolution proves \eqref{eq:grouped_label_entropy_bounds}.
+\end{proof}
+
+The ensuing good-auxiliary estimate also uses a dimension bound for labels
+which actually occur on the bad copies and preservation of the whole-copy
+auxiliary labels by a physical excitation projection. Those are separate
+assertions.
