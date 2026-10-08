@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/docs/provenance/evidence/replicaComponentMergeMoment8753/check-provenance.py", line 6, in <module>
+    m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+                                            ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/docs/provenance/evidence/replicaComponentMergeMoment8753/provenance-policy.py", line 13, in <module>
+    from jsonschema import Draft202012Validator
+ModuleNotFoundError: No module named 'jsonschema'
