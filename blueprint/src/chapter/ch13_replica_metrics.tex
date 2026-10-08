@@ -470,3 +470,57 @@ eigenbasis. The following statements show that such averages are central label f
     do. The previous lemma gives the central form. The label projectors commute with
     unitary tensor powers, so $\Tr(\pi^\lambda T(A))=\Tr(\pi^\lambda A)$.
 \end{proof}
+
+\begin{lemma}[The trivial label]
+    \label{lem:trivial_label}
+    \lean{IrrepLabel.averagingElement, IrrepLabel.augmentation,
+        IrrepLabel.exists_centralIdem_eq_averagingElement,
+        PermutationRepresentation.exists_labelProj_eq_symProj}
+    \leanok
+    \uses{def:irrep_labels}
+    The averaging element $|G|^{-1}\sum_gg$ of $\C[G]$ is one of the central idempotents
+    $e_\lambda$. Hence, for every permutation action, the projector onto the invariant
+    vectors is a label projector.
+\end{lemma}
+
+\begin{proof}\leanok
+    The averaging element $\varepsilon$ satisfies $\varepsilon a=\operatorname{aug}(a)\varepsilon$.
+    The augmentations of the $e_\lambda$ are idempotent, sum to one and have vanishing
+    pairwise products, so exactly one $e_{\lambda_0}$ has $\varepsilon e_{\lambda_0}=\varepsilon$.
+    In the simple block of $\lambda_0$ the central idempotent $\varepsilon e_{\lambda_0}$ is
+    nonzero, hence equal to $e_{\lambda_0}$.
+\end{proof}
+
+\begin{theorem}[Coherent-state resolution]
+    \label{thm:coherent_resolution}
+    \lean{TensorPower.tensorVec, TensorPower.tensorPow_mulVec_tensorVec,
+        TensorPower.tensorVec_mem_symmetricSubspace, TensorPower.coherentProj,
+        TensorPower.unitaryTwirl_coherentProj}
+    \leanok
+    \uses{thm:unitary_twirl, lem:trivial_label}
+    For a unit basis vector $e$, $\int P_{Ue,k}\,dU=D_k^{-1}\Pi_k$, where
+    $P_{\theta,k}=|\theta^{\otimes k}\rangle\langle\theta^{\otimes k}|$, $\Pi_k$ is the
+    projector onto the symmetric subspace and $D_k=\Tr\Pi_k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The integral is the twirl of $P_{e,k}$, a central label function with coefficients
+    fixed by $\langle e^{\otimes k},\pi^\lambda e^{\otimes k}\rangle$. The symmetric vector
+    $e^{\otimes k}$ lies in the range of the trivial label projector $\Pi_k$ and is
+    orthogonal to the other label projectors.
+\end{proof}
+
+\begin{theorem}[Finite-copy coherent identity]
+    \label{thm:finite_husimi_identity}
+    \lean{TensorPower.splitCopies, TensorPower.coherentProj_split,
+        TensorPower.trace_mul_integral, TensorPower.integral_coherent_pairing}
+    \leanok
+    \uses{thm:coherent_resolution}
+    For $\sigma$ on $k$ copies and $G$ on $m$ copies,
+    $\int\Tr(\sigma P_{Ue,k})\Tr(GP_{Ue,m})\,dU=D_{k+m}^{-1}\Tr[(\sigma\otimes G)\Pi_{k+m}]$.
+\end{theorem}
+
+\begin{proof}\leanok
+    $P_{\theta,k+m}=P_{\theta,k}\otimes P_{\theta,m}$; pair the coherent-state resolution
+    for $k+m$ copies with $\sigma\otimes G$.
+\end{proof}

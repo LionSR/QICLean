@@ -60,7 +60,7 @@ theorem coherentProj_split (k m : ℕ) (θ : Ω → ℂ) :
   ring
 
 /-- The trace pairing of a fixed matrix with an entrywise integral. -/
-theorem trace_mul_integral {X : Type*} [Fintype X] [DecidableEq X] {μ : Measure (unitaryGroup Ω ℂ)}
+theorem trace_mul_integral {X : Type*} [Fintype X] {μ : Measure (unitaryGroup Ω ℂ)}
     (M : Matrix X X ℂ) (F : unitaryGroup Ω ℂ → Matrix X X ℂ)
     (hF : ∀ x y, Integrable (fun U => F U x y) μ) {T : Matrix X X ℂ}
     (hT : ∀ x y, T x y = ∫ U, F U x y ∂μ) :
