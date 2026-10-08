@@ -27,6 +27,7 @@ import QICLean.Analysis.ContractionWordDecay
 import QICLean.Analysis.ContractionWordDecaySpectator
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
+import QICLean.Analysis.DensitySimplex
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
@@ -38,6 +39,7 @@ import QICLean.Analysis.EntropyMarkovForward
 import QICLean.Analysis.EntropyMarkovReverse
 import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
+import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.FiniteCoordinateNowosad
 import QICLean.Analysis.FiniteCoordinateNowosad.Recursion
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
@@ -56,6 +58,7 @@ import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
 import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
+import QICLean.Analysis.IidTailThreshold
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.JordanBlockAsymptotics
@@ -88,6 +91,7 @@ import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
+import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PoissonContractionDecay
 import QICLean.Analysis.PolarUnitaryCorrection
