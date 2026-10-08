@@ -1,0 +1,22 @@
+[
+  {
+    "file": "QICLean/Entropy/ProductOverlapPurity.lean",
+    "sha256": "60383cb8af62e0dd4b117e084150e0dd9c72bf527ad45c20c2b616522b1276d7",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--profile",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Entropy/ProductOverlapPurity.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.2988535080003203,
+    "log": "<VALIDATION_LOGS>/QICLean_Entropy_ProductOverlapPurity.lean-buffer-provenance-style-final.log"
+  }
+]

@@ -1,0 +1,111 @@
+{
+  "scope": "Documentation, source-level declaration coverage, import-router generation, strict CI regression registration, and planned provenance for shifted spectral truncation.",
+  "base": "378bef486fc0241dee8ad875ccaf659d51d33ac9",
+  "public_declarations": 21,
+  "blueprint_entries": 12,
+  "production_source_sha256": "43b497f22747cc905e3d2eb46328726adfcbc33a1a992d4768f9b7361281b65a",
+  "regression_source_sha256": "97a29ae8007be562bc721434870b646336ec5fa248d7a57e5116b02f6a9d0a50",
+  "paper_source": {
+    "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex",
+    "lines": [
+      484,
+      502
+    ],
+    "blob": "b4b45e7d3c6c2a8a2abcdc85df0bb72ea51edbb5",
+    "sha256": "0c5648040b1f8fdea55062b82b5bc301570bbddd27a7741fed05acc78b840d14",
+    "local_copy_verified_identical": true
+  },
+  "checks": {
+    "blueprint_source_sync": {
+      "result": "passed",
+      "references": 2856,
+      "new_names": 21,
+      "command": "python3 scripts/blueprint_lean_sync.py --root . --ci --warn-missing-blueprint --changed-files QICLean/Analysis/ShiftedDensityTruncation.lean --report ../shifted-density-truncation-validation/docs/blueprint-sync.json",
+      "log": "blueprint-sync.log",
+      "report": "blueprint-sync.json"
+    },
+    "planned_provenance": {
+      "result": "passed",
+      "rows": 21,
+      "status": "planned",
+      "name_status": "proposed",
+      "verification": "pending",
+      "checker_contract": "TNLean-provenance-pr8784-review",
+      "checked": [
+        "JSON schema",
+        "pinned paper labels from Git objects",
+        "all 21 public declarations",
+        "exact source independence notices",
+        "no unmatched notice IDs"
+      ],
+      "script": "validate_docs.py",
+      "log": "validation.log"
+    },
+    "reader_prose": {
+      "result": "passed",
+      "scope": "all lines of new production source and both changed blueprint files, including untracked content",
+      "log": "validation.log"
+    },
+    "strict_regression_ci": {
+      "result": "passed_static_validation",
+      "placement": "after full project build",
+      "timeout_seconds": 90,
+      "warning_as_error": true,
+      "auto_implicit": false,
+      "relaxed_auto_implicit": false,
+      "log": "validation.log"
+    },
+    "import_aggregators": {
+      "result": "passed",
+      "generated_files": 31,
+      "production_modules": 630,
+      "log": "import-aggregators.log"
+    },
+    "latexindent": {
+      "result": "passed",
+      "version": "3.24.7",
+      "method": "format to separate outputs, verify nonempty, and compare stable final bytes",
+      "scope": [
+        "blueprint/src/chapter/ch01_deconstructing_quantum.tex",
+        "blueprint/src/chapter/ch01_shifted_density_truncation.tex"
+      ]
+    },
+    "focused_pdf": {
+      "result": "passed",
+      "engine": "existing cached XeLaTeX format; no installation",
+      "pages": 3,
+      "included": "exact existing positive-identity-shift theorem and proof, then full new spectral-truncation section",
+      "warnings": 0,
+      "visual_review": "All three pages inspected; no overflow, overlap, clipping, or unresolved references. Spectral block split uses supported ordinary math.",
+      "pdf": "shifted-density-truncation-focused.pdf",
+      "log": "render-second.log",
+      "binary_added_to_repository": false
+    },
+    "oversized_guard": {
+      "result": "passed",
+      "log": "oversized-check.log"
+    },
+    "git_diff_check": {
+      "result": "passed",
+      "log": "git-diff-check.log"
+    }
+  },
+  "limits": [
+    "No Lean compiler invoked by documentation worker.",
+    "No full Lean build or compiled checkdecls run by documentation worker.",
+    "Focused PDF only; no aggregate blueprint PDF or web build. Installed plasTeX, leanblueprint, and texra_blueprint are unavailable, and no packages were installed.",
+    "Only the new provenance shard and its target source were checked; unrelated historical shards and repository-wide unledgered-source scan excluded.",
+    "All 21 new provenance rows remain planned until root supplies verified published source revision and matching build/axiom evidence."
+  ],
+  "files": {
+    ".github/workflows/pr-ci.yml": "6b36848b4c834fc1db316463544968908705490301aa3ecf5127d46212f7c644",
+    "QICLean/Analysis.lean": "033578b37f8d32b832f747f5d9375a682c9f7752c5b98fa3fa22dd7fcb2cf138",
+    "blueprint/src/chapter/ch01_deconstructing_quantum.tex": "677393177e42f8995bce305be94cac576dfd79e6a48675e1357a43d883d96d5c",
+    "blueprint/src/chapter/ch01_shifted_density_truncation.tex": "536a5bc2aef4b1a60cc506858b3c06764a8a724ae3834ede686043215a50e2a4",
+    "docs/formalization/shifted-density-truncation.md": "bee748defeb0e4e9e51fef9e423333272b6e62a3c07246866963358408fa8cb5",
+    "docs/glossary.md": "c44d8a80ae91054a0511b059b7f3c1794dffeb37c1cd492905fb4ef2a6f79ae5",
+    "docs/provenance/openai-math.d/shiftedDensityTruncation8767.json": "5dcef165843483ca7cc741e6b2c2411589223de3e2fead5c1f664711817c1cc6",
+    "docs/tactic_patterns.md": "3a5f1b94c76196660e10d8707afc745498d9b421f72708364feb519c6ef019f8"
+  }
+}

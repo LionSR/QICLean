@@ -1,0 +1,59 @@
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plasTeX/Packages/report.py
+ )..
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plasTeX/Packages/xcolor.py
+ )
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plasTeX/Packages/amssymb.py
+ )
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plasTeX/Packages/amsthm.py
+ )
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plasTeX/Packages/amsmath.py
+ )
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plasTeX/Packages/natbib.py
+ )
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plasTeX/Packages/hyperref.py
+ )
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/leanblueprint/Packages/blueprint.py
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plastexdepgraph/Packages/depgraph.py
+ )
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plastexshowmore/Packages/showmore.py
+ ) )
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/texra_blueprint/Packages/texra_patches.py
+ )
+ (loading package <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/texra_blueprint/Packages/texra_graphs.py
+ )
+ (loading package <WORKSPACE>/doubled-
+   gap-8766-blueprint-validation/blueprint/src/Packages/tenkz_pic.py
+ ).... ( ./macros/common.tex )................ ( ./macros/web.tex )........
+ ( ./content.tex ) ( ./chapter/ch12_entropy_physical_buffer_overlap.tex )..
+................ ( ./chapter/ch12_entropy_doubled_system_gap.tex ).........
+........
+INFO: Directing output files to directory: ../web/.
+INFO: Importing templates from
+   <WORKSPACE>/glm23-blueprint-venv/lib/python3.12/site-
+   packages/plasTeX/Renderers/PageTemplate
+INFO: Importing templates from
+   <WORKSPACE>/glm23-blueprint-venv/lib/python3.12/site-
+   packages/plasTeX/Renderers/HTML5
+INFO: Importing templates from <WORKSPACE>/doubled-
+   gap-8766-blueprint-validation/blueprint/src/plastex_templates
+INFO: Using theme <WORKSPACE>/glm23-blueprint-
+   venv/lib/python3.12/site-packages/plasTeX/Renderers/HTML5/Themes/default
+INFO: Using the imager "gspdfpng".
+/bin/sh: 1: dvisvgm: not found
+WARNING: Could not find a valid vector imager in the list: pdf2svg,
+   dvisvgm.  The default vector imager will be used.
+ [ index.html [ ch-doubled_gap_focus.html
+WARNING: Using default renderer for tenkzkernel
+ ] [ sect0001.html ] ]plasTeX version 3.1

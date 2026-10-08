@@ -1,0 +1,54 @@
+✖ [3169/3171] Building QICLean.Analysis.CompressedPartialSwap (3.1s)
+trace: .> LEAN_PATH=<DEPENDENCY_WORKTREE>/.lake/packages/Cli/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/batteries/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/Qq/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/aesop/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/proofwidgets/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/importGraph/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/LeanSearchClient/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/plausible/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/Gametheory/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/mathlib/.lake/build/lib/lean:<DEPENDENCY_WORKTREE>/.lake/packages/checkdecls/.lake/build/lib/lean:<VALIDATION_WORKTREE>/.lake/build/lib/lean <LEAN_TOOLCHAIN>/bin/lean <VALIDATION_WORKTREE>/QICLean/Analysis/CompressedPartialSwap.lean -o <VALIDATION_WORKTREE>/.lake/build/lib/lean/QICLean/Analysis/CompressedPartialSwap.olean -i <VALIDATION_WORKTREE>/.lake/build/lib/lean/QICLean/Analysis/CompressedPartialSwap.ilean -c <VALIDATION_WORKTREE>/.lake/build/ir/QICLean/Analysis/CompressedPartialSwap.c --setup <VALIDATION_WORKTREE>/.lake/build/ir/QICLean/Analysis/CompressedPartialSwap.setup.json --json
+error: QICLean/Analysis/CompressedPartialSwap.lean:99:66: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝⁷ : Fintype A
+inst✝⁶ : Fintype B
+inst✝⁵ : DecidableEq A
+inst✝⁴ : DecidableEq B
+X : Type u_3
+Y : Type u_4
+inst✝³ : Fintype X
+inst✝² : Fintype Y
+inst✝¹ : DecidableEq X
+inst✝ : DecidableEq Y
+x : ((A × B) × A × B) × (X × Y) × X × Y → ℂ
+p : ((A × B) × A × B) × (X × Y) × X × Y
+⊢ ∑ x_1,
+      ∑ x_2,
+        ((if x_1 = ((p.1.2.1, p.1.1.2), p.1.1.1, p.1.2.2) then 1 else 0) *
+            if x_2 = ((p.2.2.1, p.2.1.2), p.2.1.1, p.2.2.2) then 1 else 0) *
+          x (x_1, x_2) =
+    x (((p.1.2.1, p.1.1.2), p.1.1.1, p.1.2.2), (p.2.2.1, p.2.1.2), p.2.1.1, p.2.2.2)
+warning: QICLean/Analysis/CompressedPartialSwap.lean:102:8: This simp argument is unused:
+  ite_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [mul_ite]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: QICLean/Analysis/CompressedPartialSwap.lean:102:17: This simp argument is unused:
+  mul_ite
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [ite_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+error: QICLean/Analysis/CompressedPartialSwap.lean:109:44: unsolved goals
+A : Type u_1
+B : Type u_2
+inst✝⁵ : Fintype A
+inst✝⁴ : Fintype B
+inst✝³ : DecidableEq A
+inst✝² : DecidableEq B
+Q : Type u_3
+inst✝¹ : Fintype Q
+inst✝ : DecidableEq Q
+x : ((A × B) × A × B) × Q → ℂ
+p : ((A × B) × A × B) × Q
+⊢ ∑ x_1, (if x_1 = ((p.1.2.1, p.1.1.2), p.1.1.1, p.1.2.2) then 1 else 0) * x (x_1, p.2) =
+    x (((p.1.2.1, p.1.1.2), p.1.1.1, p.1.2.2), p.2)
+Some required targets logged failures:
+- QICLean.Analysis.CompressedPartialSwap
+error: build failed
