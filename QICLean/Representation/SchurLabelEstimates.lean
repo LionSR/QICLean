@@ -21,9 +21,10 @@ labels with partitions:
   on `λ`, the branch has probability `d_ν / d_λ = (l_i/k) ∏_{j ≠ i} (l_i - 1 - l_j)/(l_i - l_j)
   ≤ 2^q l_i / k`; and the star operator has eigenvalue `(λ_i - 1 - i)/k` on the branch.
 
-The remaining assertion of part 1, `dim V^{(q)}_λ = ∏_{i<j} (l_i - l_j)/(j - i)`, is not
-proved here; the polynomial bounds on the number of labels and on the total multiplicity
-are `TensorPower.card_labelProj_ne_zero_le` and `TensorPower.sum_multiplicity_le`.
+The remaining assertion of part 1, `dim V^{(q)}_λ = ∏_{i<j} (l_i - l_j)/(j - i)`, is
+`TensorPower.schur_multiplicity_eq_weylFormula`; the polynomial bounds on the number of
+labels and on the total multiplicity are `TensorPower.card_labelProj_ne_zero_le` and
+`TensorPower.sum_multiplicity_le`.
 
 ## Main declarations
 
