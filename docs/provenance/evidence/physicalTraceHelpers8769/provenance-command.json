@@ -1,0 +1,19 @@
+{
+  "command": [
+    "uv",
+    "run",
+    "--no-project",
+    "--with",
+    "jsonschema==4.26.0",
+    "python",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers/docs/provenance/evidence/physicalTraceHelpers8769/check-provenance.py",
+    "--root",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers",
+    "--upstream-root",
+    "/private/tmp/tnlean-openai-math-audit.git"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/physical-trace-helpers",
+  "returncode": 0,
+  "seconds": 1.773,
+  "log_sha256": "4e26e290b828526772a637865fd354d48d09517ee332e872876d3947da4d9e5b"
+}
