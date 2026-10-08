@@ -688,3 +688,56 @@ eigenbasis. The following statements show that such averages are central label f
     $|\Tr\sigma(X_k-Y_k)|\le\|(X_k-Y_k)\Pi_k\|$, the coherent measure is a probability measure,
     and the previous lemma treats $Y_k$. Polynomials follow by induction.
 \end{proof}
+
+\begin{theorem}[Marked symbols]
+    \label{thm:marked_symbol}
+    \lean{TensorPower.placeOp_single, TensorPower.commute_placeOp_siteOp,
+        TensorPower.norm_injectionAverage_mul_siteOp_sub_le,
+        TensorPower.symProj_mul_siteOp_mul_symProj, TensorPower.IsMarkedPoly,
+        TensorPower.HasMarkedSymbol, TensorPower.HasMarkedSymbol.add,
+        TensorPower.HasMarkedSymbol.smul, TensorPower.HasMarkedSymbol.mul,
+        TensorPower.HasMarkedSymbol.conjTranspose, TensorPower.HasMarkedSymbol.sum,
+        TensorPower.HasMarkedSymbol.aeval, TensorPower.HasMarkedSymbol.hasCoherentSymbol_compress}
+    \leanok
+    \uses{thm:coherent_symbol}
+    On $k+1$ copies with the last copy marked, say that operators $X_k$ have marked symbol
+    $F$, a function from vectors to operators on one copy, if for some finitely many
+    one-copy operators $A_i$ and fixed operators $G_i$,
+    \[
+        \Big\|X_k-\sum_i A_i^{(k+1)}\,\mathcal T_{k+1,r_i}(G_i)\Big\|=O(k^{-1}),\qquad
+        F(\theta)=\sum_i\langle\theta^{\otimes r_i},G_i\theta^{\otimes r_i}\rangle A_i .
+    \]
+    Marked symbols are preserved by sums, scalar multiples, products (with the ordered
+    product of the symbols), adjoints and real polynomials. If $X_k$ has marked symbol $F$,
+    then $\Pi_{k+1}X_k\Pi_{k+1}$ has coherent symbol $\theta\mapsto\langle\theta,F(\theta)\theta\rangle$.
+\end{theorem}
+
+\begin{proof}\leanok
+    An injection average commutes with $a^{(j)}$ except for the fraction $r/k$ of placements
+    meeting copy $j$, so $\|[\mathcal T_{k,r}(G),a^{(j)}]\|\le 2r\|G\|\|a\|/k$. Products are
+    therefore reordered as $(AA')^{(k+1)}\mathcal T(G)\mathcal T(G')$ up to $O(k^{-1})$, and
+    the product of injection averages is handled by the product theorem. For compression,
+    all placements of one copy are conjugate under copy permutations, so
+    $\Pi a^{(j)}\Pi=\mathcal T_{k,1}(a)\Pi$, and $\mathcal T_{k,1}(a)\mathcal T_{k,r}(G)$
+    is an injection average of $a\otimes G$ up to $O(k^{-1})$.
+\end{proof}
+
+\begin{lemma}[Marked symbol of the star operator]
+    \label{lem:star_marked_symbol}
+    \lean{TensorPower.regionUnit, TensorPower.permOp_subsystemPerm_swap_eq_sum,
+        TensorPower.margLift, TensorPower.sum_expect_regionUnit_smul,
+        TensorPower.starOp_subsystemPerm_eq, TensorPower.hasMarkedSymbol_starOp}
+    \leanok
+    \uses{thm:marked_symbol}
+    For a subsystem $Q$, the star operator $J_{Q,k}$ on $k$ copies has marked symbol
+    $\theta\mapsto\rho_Q(\theta)\otimes1$, where $\rho_Q(\theta)$ is the marginal of
+    $|\theta\rangle\langle\theta|$ on $Q$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The partial swap of $Q$ between distinct copies $i,j$ is
+    $\sum_{a,b}(E_{ab})^{(i)}(E_{ba})^{(j)}$ with matrix units $E_{ab}$ on $Q$. Averaging
+    over the donor copy gives
+    $J_{Q,k}=\sum_{a,b}\mathcal T_{k,1}(E_{ab})E_{ba}^{(k)}+O(k^{-1})$, whose marked symbol is
+    $\sum_{a,b}\langle\theta,E_{ab}\theta\rangle E_{ba}=\rho_Q(\theta)\otimes1$.
+\end{proof}

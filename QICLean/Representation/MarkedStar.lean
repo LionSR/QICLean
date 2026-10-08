@@ -25,6 +25,8 @@ and deduces that the star operator `J_{Q,k} = k⁻¹ ∑_{j<k-1} U_Q((j, k-1))` 
 
 * `TensorPower.margLift` — `θ ↦ ρ_Q(θ) ⊗ 1`.
 * `TensorPower.permOp_subsystemPerm_swap_eq_sum` — the partial-swap decomposition.
+* `TensorPower.sum_expect_regionUnit_smul` — contracting a donor gives `ρ_Q(θ) ⊗ 1`.
+* `TensorPower.starOp_subsystemPerm_eq` — `J_{Q,k}` as donor averages plus an `O(k⁻¹)` term.
 * `TensorPower.hasMarkedSymbol_starOp` — the marked symbol of `J_{Q,k}`.
 
 ## References
@@ -192,7 +194,7 @@ theorem sum_expect_regionUnit_smul (Q : Finset V) (θ : SiteConfig n → ℂ) :
   rw [Matrix.smul_single, smul_eq_mul, mul_one]
 
 /-- The average of one-copy operators over all copies. -/
-theorem injectionAverage_oneCopy_eq {Ω : Type*} [Fintype Ω] [DecidableEq Ω] (A : Matrix Ω Ω ℂ) :
+theorem injectionAverage_oneCopy_eq {Ω : Type*} [DecidableEq Ω] (A : Matrix Ω Ω ℂ) :
     injectionAverage k 1 (oneCopy A) = ((k : ℂ))⁻¹ • ∑ j, siteOp j A := by
   have hN : Fintype.card (Fin 1 ↪ Fin k) = k := by
     rw [Fintype.card_embedding_eq, Fintype.card_fin, Fintype.card_fin, Nat.descFactorial_one]
@@ -212,7 +214,8 @@ theorem starOp_subsystemPerm_eq (m : ℕ) (Q : Finset V) :
     starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q) =
       ∑ a, ∑ b, injectionAverage (m + 1) 1 (oneCopy (regionUnit Q a b)) *
           siteOp (Fin.last m) (regionUnit Q b a) -
-        ((m + 1 : ℕ) : ℂ)⁻¹ • siteOp (Fin.last m) (∑ a, ∑ b, regionUnit Q a b * regionUnit Q b a) := by
+        ((m + 1 : ℕ) : ℂ)⁻¹ •
+          siteOp (Fin.last m) (∑ a, ∑ b, regionUnit Q a b * regionUnit Q b a) := by
   have hsw : ∀ j : Fin m, permOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)
       (Equiv.swap (Fin.castSucc j) (Fin.last m)) = ∑ a, ∑ b,
         siteOp (Fin.castSucc j) (regionUnit Q a b) * siteOp (Fin.last m) (regionUnit Q b a) :=
@@ -224,5 +227,30 @@ theorem starOp_subsystemPerm_eq (m : ℕ) (Q : Finset V) :
   rw [add_sub_cancel_right, Finset.sum_comm]
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [Finset.sum_comm]
+
+/-- **The marked symbol of the star operator** (`05-replicas.tex`, lines 776–796): the star
+operator `J_{Q,k}` has marked symbol `θ ↦ ρ_Q(θ) ⊗ 1`. -/
+theorem hasMarkedSymbol_starOp (Q : Finset V) :
+    HasMarkedSymbol (fun m => starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q))
+      (margLift Q) := by
+  have h : HasMarkedSymbol (fun m => ∑ a, ∑ b,
+      injectionAverage (m + 1) 1 (oneCopy (regionUnit Q a b)) *
+        siteOp (Fin.last m) (regionUnit Q b a))
+      (fun θ => ∑ a, ∑ b, (coherentExpect (oneCopy (regionUnit Q a b)) θ • 1) *
+        regionUnit Q b a) :=
+    HasMarkedSymbol.sum (Ω := SiteConfig n) Finset.univ fun a _ =>
+      HasMarkedSymbol.sum (Ω := SiteConfig n) Finset.univ fun b _ =>
+      (HasMarkedSymbol.injection (oneCopy (regionUnit Q a b))).mul
+        (HasMarkedSymbol.center (regionUnit Q b a))
+  refine (h.congr_symbol fun θ => ?_).of_norm_sub_le
+    (C := ‖∑ a, ∑ b, regionUnit (n := n) Q a b * regionUnit Q b a‖) fun m => ?_
+  · simp only [coherentExpect_oneCopy, smul_one_mul]
+    exact sum_expect_regionUnit_smul Q θ
+  · rw [starOp_subsystemPerm_eq, sub_sub_cancel_left, norm_neg]
+    refine (norm_smul_le _ _).trans ?_
+    rw [norm_inv, Complex.norm_natCast, inv_mul_eq_div]
+    push_cast
+    gcongr
+    exact l2_opNorm_siteOp_le _ _
 
 end TensorPower
