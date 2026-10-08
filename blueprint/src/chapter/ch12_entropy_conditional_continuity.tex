@@ -1,0 +1,176 @@
+\section{Conditional entropy and its continuity}
+
+This section proves the continuity estimate for conditional entropy of
+Alicki and Fannes~\cite{AlickiFannes2004Continuity} in the sharp form of
+Winter~\cite[Lemma~2]{Winter2016Tight}, as stated in Lemma~2.1 of the
+two-dimensional area-law preprint~\cite{OpenAI2026AreaLaw}. All finite
+mixtures are handled with unnormalized positive semidefinite summands, so
+zero weights and singular states need no separate treatment. Throughout,
+$\eta(x)=-x\log x$ with $\eta(0)=0$, and $S(A)=\sum_i\eta(\lambda_i)$ for a
+Hermitian matrix $A$ with eigenvalues $\lambda_i$.
+
+\begin{definition}[Trace distance]\label{def:trace_distance}
+    \lean{Matrix.traceDistance}
+    \leanok
+    \uses{def:trace_norm}
+    The trace distance of two square matrices is
+    $\delta(\rho,\sigma)=\tfrac12\operatorname{Re}\tr\lvert\rho-\sigma\rvert$,
+    half the trace norm of $\rho-\sigma$.
+\end{definition}
+
+\begin{lemma}[Jordan parts and bounds for the trace distance]
+    \label{lem:trace_distance_jordan}
+    \lean{Matrix.re_trace_posPart_eq_traceDistance, Matrix.traceDistance_le_one, Matrix.traceDistance_partialTraceRight_le, Matrix.traceDistance_eq_traceNorm}
+    \leanok
+    \uses{def:trace_distance}
+    If $\rho,\sigma$ are Hermitian with equal trace, then the positive and
+    negative parts of $\rho-\sigma$ both have trace $\delta(\rho,\sigma)$.
+    For states, $\delta(\rho,\sigma)\le1$, and the partial trace over a
+    tensor factor does not increase $\delta$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The parts satisfy $(\rho-\sigma)^++(\rho-\sigma)^-=\lvert\rho-\sigma\rvert$
+    and $(\rho-\sigma)^+-(\rho-\sigma)^-=\rho-\sigma$, whose trace vanishes.
+    With $\Pi$ the support projection of $(\rho-\sigma)^+$,
+    $\delta=\tr\Pi\rho-\tr\Pi\sigma\le\tr\rho=1$. For the partial trace,
+    pair the positive part of the reduced difference with $\Pi'\otimes1$,
+    where $\Pi'$ is its support projection, and use $0\le\Pi'\otimes1\le1$.
+\end{proof}
+
+\begin{theorem}[Subadditivity of unnormalized entropy]
+    \label{thm:entropy_add_le}
+    \lean{vonNeumannEntropy_add_le, vonNeumannEntropy_sum_le}
+    \leanok
+    \uses{def:von_neumann_entropy}
+    For positive semidefinite matrices $A_1,\dots,A_k$,
+    $S(\sum_jA_j)\le\sum_jS(A_j)$. With $A_j=p_j\rho_j$ for states $\rho_j$
+    and probability weights $p_j$ this is the mixing bound
+    $S(\sum_jp_j\rho_j)\le H(p)+\sum_jp_jS(\rho_j)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    For positive definite $A,B$, operator monotonicity of the logarithm gives
+    $\log A\le\log(A+B)$ and $\log B\le\log(A+B)$; pairing with $A$ and $B$
+    yields $S(A+B)\le S(A)+S(B)$. The positive semidefinite case follows by
+    replacing $A,B$ by $A+t\,1,B+t\,1$ and letting $t\to0^+$, and the finite
+    case by induction.
+\end{proof}
+
+\begin{theorem}[Strong subadditivity for unnormalized matrices]
+    \label{thm:ssa_unnormalized}
+    \lean{Entropy.strongSubadditivity_of_posSemidef, Entropy.vonNeumannEntropy_add_negMulLog_le, Entropy.vonNeumannEntropy_partialTraceLeft_add_negMulLog_le}
+    \leanok
+    \uses{thm:strong_subadditivity, def:von_neumann_entropy}
+    For a positive semidefinite $\omega$ on $A\otimes B\otimes C$ of any trace,
+    $S(\omega_{ABC})+S(\omega_B)\le S(\omega_{AB})+S(\omega_{BC})$. For a
+    positive semidefinite $\omega$ on $A\otimes B$ with trace $t$,
+    $S(\omega_{AB})+\eta(t)\le S(\omega_A)+S(\omega_B)$ and
+    $S(\omega_B)+\eta(t)\le S(\omega_A)+S(\omega_{AB})$
+    \cite{ArakiLieb1970Entropy}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:strong_subadditivity}
+    Normalize by the trace and apply strong subadditivity; the scaling law
+    $S(c\,\omega)=cS(\omega)+\eta(c)\tr\omega$ contributes the same correction
+    to both sides. Subadditivity is the case of a one-dimensional middle
+    system. For the triangle inequality, write $\omega=CC^\dagger$, exchange
+    the roles of $B$ and the purifying system, apply subadditivity, and use
+    that $XX^\dagger$ and $X^\dagger X$ have the same entropy.
+\end{proof}
+
+\begin{definition}[Conditional entropy]\label{def:conditional_entropy}
+    \lean{Entropy.conditionalEntropy}
+    \leanok
+    \uses{def:von_neumann_entropy}
+    For a Hermitian matrix $\rho$ on $D\otimes E$,
+    $S(D|E)_\rho=S(\rho_{DE})-S(\rho_E)$.
+\end{definition}
+
+\begin{lemma}[Mixture interval for conditional entropy]
+    \label{lem:conditional_entropy_mixture}
+    \lean{Entropy.sum_conditionalEntropy_le, Entropy.conditionalEntropy_sum_le, Entropy.conditionalEntropy_mixture_mem_Icc}
+    \leanok
+    \uses{def:conditional_entropy}
+    For states $\tau_j$ on $D\otimes E$ and probability weights $p_j$,
+    \[
+      0\le S(D|E)_{\sum_jp_j\tau_j}-\sum_jp_jS(D|E)_{\tau_j}\le H(p).
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:ssa_unnormalized, thm:entropy_add_le}
+    Strong subadditivity for the block-diagonal matrix
+    $\sum_jp_j\tau_j\otimes\lvert j\rangle\langle j\rvert$ on
+    $D\otimes E\otimes J$ shows that conditioning on the register $J$
+    decreases the conditional entropy, which is the lower bound. The upper
+    bound combines the mixing bound for $S(DE)$ with concavity of $S(E)$; the
+    latter is the lower bound for a one-dimensional first system.
+\end{proof}
+
+\begin{lemma}[Dimension bound for conditional entropy]
+    \label{lem:conditional_entropy_dimension}
+    \lean{Entropy.abs_conditionalEntropy_le_log_card}
+    \leanok
+    \uses{def:conditional_entropy}
+    For a state $\rho$ on $D\otimes E$, $\lvert S(D|E)_\rho\rvert\le\log\dim D$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:ssa_unnormalized}
+    Subadditivity and $S(\rho_D)\le\log\dim D$ give the upper bound, and the
+    Araki--Lieb inequality gives the lower bound.
+\end{proof}
+
+\begin{theorem}[Continuity with a fixed controlled system]
+    \label{thm:conditional_entropy_continuity}
+    \lean{Entropy.abs_conditionalEntropy_sub_le, Entropy.abs_conditionalEntropy_sub_le_sqrt}
+    \leanok
+    \uses{def:conditional_entropy, def:trace_distance}
+    Let $\rho,\sigma$ be states on $D\otimes E$, put
+    $\delta=\delta(\rho,\sigma)$ and $d_D=\dim D$, and let
+    $h(u)=-u\log u-(1-u)\log(1-u)$. Then
+    \[
+      \lvert S(D|E)_\rho-S(D|E)_\sigma\rvert
+      \le2\delta\log d_D+(1+\delta)\,h\!\left(\frac{\delta}{1+\delta}\right)
+      \le4\sqrt\delta\,\log(e\,d_D).
+    \]
+    Neither bound depends on the dimension of $E$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:trace_distance_jordan, lem:conditional_entropy_mixture,
+      lem:conditional_entropy_dimension}
+    Let $P,N$ be the positive and negative parts of $\rho-\sigma$; both have
+    trace $\delta$ and $\rho+N=\sigma+P$. The unnormalized mixture bounds
+    applied to both decompositions of this matrix, together with
+    $\lvert S(D|E)_P\rvert,\lvert S(D|E)_N\rvert\le\delta\log d_D$, give the
+    first inequality in the form $2\delta\log d_D+\eta(\delta)-\eta(1+\delta)$,
+    which equals the stated one. The case $\delta=0$ is included, since no
+    division by $\delta$ occurs. For the second inequality,
+    $\eta(\delta)-\eta(1+\delta)=\log(1+\delta)+\delta\log(1+1/\delta)
+    \le4\sqrt\delta$ by $\log(1+x)\le2\sqrt x$, and $\delta\le\sqrt\delta$
+    because $\delta\le1$.
+\end{proof}
+
+\begin{corollary}[Continuity of entropy and mutual information]
+    \label{cor:entropy_mutual_information_continuity}
+    \lean{Entropy.abs_vonNeumannEntropy_sub_le, Entropy.abs_vonNeumannEntropy_sub_le_sqrt, Entropy.abs_mutualInformation_sub_le, Entropy.abs_mutualInformation_sub_le_sqrt, Entropy.abs_mutualInformation_sub_le_sqrt_fin}
+    \leanok
+    \uses{thm:conditional_entropy_continuity, def:mutual_information}
+    The bounds of Theorem~\ref{thm:conditional_entropy_continuity} hold for
+    $S(D)$ with $\delta=\delta(\rho_D,\sigma_D)$ and states on $D$. For states
+    $\rho,\sigma$ on $D\otimes E$, the change of
+    $I(D:E)=S(D)+S(E)-S(DE)$ is at most the sum of the two moduli, at
+    $\delta(\rho_D,\sigma_D)$ and $\delta(\rho,\sigma)$, and hence at most
+    $8\sqrt{\delta(\rho,\sigma)}\,\log(e\,d_D)$, independently of the
+    dimension of $E$.
+\end{corollary}
+
+\begin{proof}\leanok
+    \uses{thm:conditional_entropy_continuity, lem:trace_distance_jordan}
+    For $S(D)$, adjoin a one-dimensional system $E$, which leaves the trace
+    distance unchanged. Then $I(D:E)=S(D)-S(D|E)$, and
+    $\delta(\rho_D,\sigma_D)\le\delta(\rho,\sigma)$.
+\end{proof}

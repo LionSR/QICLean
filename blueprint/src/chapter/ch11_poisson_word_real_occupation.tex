@@ -1,0 +1,157 @@
+\section{Integrable real prefix occupation}
+\label{sec:poisson_word_real_occupation}
+
+The nonnegative occupation identities above also give real expectation
+identities for bounded defect kernels.  Here integrability is proved
+before converting either side to a real integral.  Let $I$ be a finite
+alphabet, $T\geq0$, and let $\mu_{I,T}$ be the actual atomic word law.
+All assertions include $T=0$ and an empty alphabet.
+
+\begin{lemma}[Integrable word length]
+\label{lem:poisson_word_real_length}
+\lean{PoissonWord.integrable_length, PoissonWord.integral_length}
+\leanok
+The length function belongs to $L^1(\mu_{I,T})$ and
+\begin{align}
+ \int_{\mathcal W_I}|w|\,d\mu_{I,T}(w)=|I|T.
+ \label{eq:poisson_word_real_length}
+\end{align}
+\end{lemma}
+\begin{proof}
+\leanok
+\uses{cor:poisson_word_insertion_prefix}
+The previously established nonnegative first moment is $|I|T<\infty$.
+The length is measurable because the word space is discrete.  The
+finite nonnegative integral gives integrability, and conversion to a
+real integral gives the displayed value.
+\end{proof}
+
+\begin{lemma}[Bounded kernels and measurable expectations]
+\label{lem:poisson_word_bounded_real_kernel}
+\lean{PoissonWord.integrable_of_nonneg_le_const,
+PoissonWord.measurable_integral_of_nonneg_le_const}
+\leanok
+\uses{def:poisson_word_measure}
+If $0\leq f(u)\leq C<\infty$, then $f\in L^1(\mu_{I,t})$ for every
+$t\geq0$, and
+$s\mapsto\int f\,d\mu_{I,\max(s,0)}$ is measurable on $\mathbb R$.
+\end{lemma}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_normalization, lem:poisson_word_insertion_weight,
+thm:poisson_word_insertion}
+Dominate $f$ by the integrable constant $C$ under the probability
+measure.  For measurability, expand its nonnegative expectation into
+\begin{align*}
+ \sum_{u\in\mathcal W_I}
+ \operatorname{weight}(I,\max(s,0),|u|)f(u).
+\end{align*}
+Each atomic time weight is continuous, so this countable nonnegative
+sum is measurable.  Its finite value converts to the real expectation.
+\end{proof}
+
+\begin{lemma}[Integrable time averages]
+\label{lem:poisson_word_real_time_integrable}
+\lean{PoissonWord.integrableOn_sum_word_integral}
+\leanok
+\uses{lem:poisson_word_bounded_real_kernel}
+Let $K$ be a finite alphabet, $J$ an arbitrary alphabet,
+$A\subseteq J$ finite, and
+$F:\mathcal W_K\times J\to[0,C]$, where $C<\infty$.
+Then
+\begin{align*}
+ s\longmapsto\sum_{i\in A}\int_{\mathcal W_K}
+ F(u,i)\,d\mu_{K,s}(u)
+\end{align*}
+is integrable on $(0,T]$.
+\end{lemma}
+\begin{proof}
+\leanok
+Each expectation is measurable and lies in $[0,C]$.
+The sum is bounded by $|A|C$ on an interval of finite volume.
+\end{proof}
+
+\begin{theorem}[Real marked-prefix expectation]
+\label{thm:poisson_word_real_prefix}
+\lean{PoissonWord.integrable_sum_prefix, PoissonWord.integral_sum_prefix}
+\leanok
+\uses{lem:poisson_word_real_length, lem:poisson_word_real_time_integrable}
+For $F:\mathcal W_I\times I\to[0,C]$ with $C<\infty$, the actual
+marked-prefix sum is integrable and satisfies
+\begin{equation}
+\label{eq:poisson_word_real_prefix}
+\begin{aligned}
+ &\int_{\mathcal W_I}\sum_{j<|w|}F(w_{<j},w_j)\,d\mu_{I,T}(w)\\
+ &\qquad=\int_0^T\sum_{i\in I}\int_{\mathcal W_I}
+ F(u,i)\,d\mu_{I,s}(u)\,ds.
+\end{aligned}
+\end{equation}
+Every inner word expectation and the outer time integrand are integrable.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{cor:poisson_word_insertion_prefix}
+Pointwise, the marked-prefix sum lies between zero and $C|w|$.
+Lemma~\ref{lem:poisson_word_real_length} proves its integrability.
+Apply the nonnegative prefix identity to $\operatorname{ofReal}\circ F$.
+Finite-sum compatibility and the integrability of both sides justify
+conversion to the asserted real equality.
+\end{proof}
+
+\begin{theorem}[Real retained-prefix expectation]
+\label{thm:poisson_word_real_partition_prefix}
+\lean{PoissonWord.integrable_sum_partition_prefix,
+PoissonWord.integral_sum_partition_prefix}
+\leanok
+\uses{thm:poisson_word_real_prefix, lem:poisson_word_real_time_integrable}
+Let $S=\{i\in I:p(i)\}$ and let $R_p$ retain precisely the letters in $S$.
+For $F:\mathcal W_S\times I\to[0,C]$ with $C<\infty$,
+\begin{equation}
+\label{eq:poisson_word_real_partition_prefix}
+\begin{aligned}
+ &\int_{\mathcal W_I}\sum_{j<|w|}F(R_p(w_{<j}),w_j)\,d\mu_{I,T}(w)\\
+ &\qquad=\int_0^T\sum_{i\in I}\int_{\mathcal W_S}
+ F(u,i)\,d\mu_{S,s}(u)\,ds.
+\end{aligned}
+\end{equation}
+The marked sum, inner kernels, and time integrand are integrable.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:poisson_word_partition_prefix}
+The composed kernel $F(R_p(u),i)$ obeys the same uniform bound, so its
+marked sum is integrable by length domination.  Convert the existing
+nonnegative retained-prefix identity using the integrability just proved.
+That identity already derives the retained law from actual subset thinning.
+\end{proof}
+
+\begin{corollary}[Real occupation at omitted labels]
+\label{cor:poisson_word_real_omitted_prefix}
+\lean{PoissonWord.integrable_sum_omitted_partition_prefix,
+PoissonWord.integral_sum_omitted_partition_prefix}
+\leanok
+\uses{thm:poisson_word_real_partition_prefix, lem:poisson_word_real_time_integrable}
+With the same assumptions, all integrands below are integrable and
+\begin{equation}
+\label{eq:poisson_word_real_omitted_prefix}
+\begin{aligned}
+ &\int_{\mathcal W_I}\sum_{\substack{j<|w|\\w_j\notin S}}
+ F(R_p(w_{<j}),w_j)\,d\mu_{I,T}(w)\\
+ &\qquad=\int_0^T\sum_{i\in I\setminus S}\int_{\mathcal W_S}
+ F(u,i)\,d\mu_{S,s}(u)\,ds.
+\end{aligned}
+\end{equation}
+\end{corollary}
+\begin{proof}
+\leanok
+Set the kernel to zero on retained labels and apply the preceding theorem.
+For time integrability use the finite subset $A=I\setminus S$ in
+Lemma~\ref{lem:poisson_word_real_time_integrable}.
+\end{proof}
+
+The probability step in \cite{OpenAI2026AreaLaw},
+\texttt{09-amplification.tex}, lines 203--209, thus has a real-integral
+form for bounded defect kernels.  The prefix-sensitive operator telescope,
+clock-process construction, propagation, and final spatial-omission
+estimate remain separate inputs.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.

@@ -1,0 +1,1280 @@
+%% =========================================================
+%% Chapter: Replica entropy metrics
+%% The common label function of the replica metrics and its marked ratios
+%% (area-law paper, Section 6.2, Lemma 6.2, replicas:metric).
+%% =========================================================
+
+\chapter{Replica Entropy Metrics}\label{ch:replica_metrics}
+
+The symmetric-replica argument of the two-dimensional area
+law~\cite{OpenAI2026AreaLaw} compares the label observable of a subsystem with
+a positive operator built from one label function shared by every subsystem.
+Fix the dimension $d\ge1$ of the whole one-copy system and $0<t<1/4$. Pad each
+label $\lambda\vdash k$ to length $d$, put $l_i=\lambda_i+d-i$ for
+$1\le i\le d$, and set
+\[
+    c=d+(1+t)\binom d2,\qquad
+    w_k(\lambda)=\frac{\Gamma(c)}{\Gamma(c+tk)}
+        \prod_{i=1}^d\frac{\Gamma(1+tl_i)}{\Gamma(1+t(d-i))}.
+\]
+The metric of a subsystem $Q$ is $W_{Q,k}=\sum_\lambda w_k(\lambda)\pi^\lambda_{Q,k}$.
+This chapter proves the scalar properties of $w_k$, and from them the operator
+statements of the paper's Lemma~6.2, including the integral representation of
+$W_{Q,k}$ (Theorem~\ref{thm:replica_metric_integral}).
+
+\section{Ratios of Gamma values}
+
+\begin{lemma}[Wendel's inequalities]
+    \label{lem:wendel_gamma_ratio}
+    \lean{Real.Gamma_add_le_rpow_mul_Gamma, Real.mul_Gamma_le_rpow_mul_Gamma_add,
+        Real.Gamma_add_div_Gamma_le_rpow, Real.div_rpow_le_Gamma_add_div_Gamma,
+        Real.rpow_sub_le_Gamma_add_div_Gamma}
+    \leanok
+    For $x>0$ and $0\le s\le1$,
+    \[
+        x(x+s)^{s-1}\le\frac{\Gamma(x+s)}{\Gamma(x)}\le x^s .
+    \]
+    If moreover $x\ge1$, then $x^s-s\le\Gamma(x+s)/\Gamma(x)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $x+s=(1-s)x+s(x+1)$ and $x+1=s(x+s)+(1-s)(x+s+1)$, apply
+    log-convexity of $\Gamma$ to each, and use $\Gamma(y+1)=y\Gamma(y)$. For
+    the last claim, $(x+s)^{s-1}\ge x^s/(x+s)$, so the lower bound is at least
+    $x^s-sx^s/(x+s)\ge x^s-s$ when $x\ge1$.
+\end{proof}
+
+\begin{lemma}[Stirling estimate for the Gamma function]
+    \label{lem:log_gamma_stirling}
+    \lean{Real.abs_log_Gamma_one_add_sub_le}
+    \leanok
+    \uses{lem:wendel_gamma_ratio, lem:stirling_log_factorial}
+    For $u\ge0$,
+    $|\log\Gamma(1+u)-(u\log u-u)|\le3\log(u+2)+3$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Let $n=\lfloor u\rfloor$ and $s=u-n$. Wendel's inequalities at $x=n+1$
+    give $|\log\Gamma(1+u)-\log n!|\le\log(u+2)$. The Stirling bounds control
+    $\log n!-(n\log n-n)$, and $u\log u-u$ differs from $n\log n-n$ by at most
+    $\log(u+2)+2$.
+\end{proof}
+
+\section{The common label function}
+
+\begin{lemma}[Positivity, normalization and marked ratio]
+    \label{lem:replica_weight_ratio}
+    \lean{Partition.replicaConst, Partition.replicaWeight, Partition.replicaRatio,
+        Partition.replicaWeight_pos, Partition.replicaWeight_zero,
+        Partition.replicaWeight_update_succ}
+    \leanok
+    The label function is positive, and $w_0=1$. If $\lambda\vdash k$ is
+    obtained from $\nu\vdash k-1$ by adding a box in row $i$, then
+    $w_k(\lambda)=r_{\lambda,i}\,w_{k-1}(\nu)$ with
+    \[
+        r_{\lambda,i}=\frac{\Gamma(c+t(k-1))}{\Gamma(c+tk)}
+            \frac{\Gamma(1+tl_i)}{\Gamma(1+t(l_i-1))},
+    \]
+    where $l_i$ is the shifted part of $\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every argument of $\Gamma$ is positive. Adding the box raises the number of
+    copies by one and the $i$-th shifted part by one, leaving the other shifted
+    parts unchanged.
+\end{proof}
+
+\begin{lemma}[Entropy asymptotics of the label function]
+    \label{lem:replica_weight_entropy}
+    \lean{Partition.exists_abs_log_replicaWeight_add_le}
+    \leanok
+    \uses{lem:log_gamma_stirling, lem:replica_weight_ratio}
+    There is a constant $C_{d,t}$ such that every $\lambda\vdash k$ of length at
+    most $d$ satisfies
+    $|\log w_k(\lambda)+tkH(\lambda/k)|\le C_{d,t}\log(k+2)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Apply the Stirling estimate to each of the $d+2$ Gamma factors. The terms
+    containing $\log t$ cancel up to a constant because
+    $\sum_il_i=k+\binom d2$. The shifts $0\le l_i-\lambda_i\le d-1$ change
+    $\sum_il_i\log l_i$ by $O_d(\log(k+2))$, and
+    $kH(\lambda/k)=k\log k-\sum_i\lambda_i\log\lambda_i$.
+\end{proof}
+
+Together with the entropy asymptotics of the dimension formula, this gives
+$w_k(\lambda)=d_\lambda^{-t}$ up to factors polynomial in $k$, which is the
+label-wise form of the comparison of $W_{Q,k}$ with $e^{-tF_{Q,k}}$.
+
+\section{The marked ratio}
+
+\begin{lemma}[Size of the marked ratio]
+    \label{lem:replica_ratio_bounds}
+    \lean{Partition.replicaRatio_eq_div, Partition.replicaRatio_wendel,
+        Partition.exists_replicaRatio_bounds}
+    \leanok
+    \uses{lem:wendel_gamma_ratio, lem:replica_weight_ratio}
+    Let $0<t<1$. There is $C\ge1$ such that, for $k\ge1$ and $1\le l\le k+d$,
+    the ratio $r(k,l)$ of the previous lemma satisfies
+    $C^{-1}(l/k)^t\le r(k,l)\le C$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The ratio is a quotient of two Wendel ratios, with $x=1+t(l-1)$ and
+    $y=c+t(k-1)$, both at least one. Wendel's inequalities give
+    $(1-t)(x/y)^t\le r(k,l)\le(x/y)^t/(1-t)$. On the stated range,
+    $tl\le x\le(1+d)y$ and $y\le(c+t)k$.
+\end{proof}
+
+\begin{lemma}[Limit of the marked ratio]
+    \label{lem:replica_ratio_limit}
+    \lean{Real.abs_rpow_sub_rpow_le, Partition.exists_abs_replicaRatio_sub_le}
+    \leanok
+    \uses{lem:replica_ratio_bounds}
+    Let $0<t<1$. There is a constant $C$ such that, for $k\ge1$ and
+    $1\le l\le k+d$,
+    \[
+        \bigl|r(k,l)-\max\bigl((l-d)/k,0\bigr)^t\bigr|\le Ck^{-t}.
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    Wendel's inequalities give $|r(k,l)-(x/y)^t|\le Ck^{-t}$, since $y\ge tk$
+    and $(x/y)^t\le1+d$. Moreover $|x/y-l/k|=O(1/k)$ and
+    $|l/k-\max((l-d)/k,0)|\le d/k$, and $|a^t-b^t|\le|a-b|^t$ for $a,b\ge0$.
+\end{proof}
+
+On a removable branch the star operator has eigenvalue $(\lambda_i-i)/k=(l_i-d)/k$,
+so this lemma is the scalar content of the convergence of the marked ratio of
+the metrics to the positive part of the star operator raised to the power $t$.
+
+\section{Functional calculus on an orthogonal resolution}
+
+\begin{lemma}[Functions of an orthogonal resolution]
+    \label{lem:orthogonal_resolution_cfc}
+    \lean{Matrix.IsOrthogonalResolution.aeval_hom,
+        Matrix.IsOrthogonalResolution.spectrum_hom_subset,
+        Matrix.IsOrthogonalResolution.cfc_hom,
+        Matrix.IsOrthogonalResolution.l2_opNorm_hom_le,
+        Matrix.IsOrthogonalResolution.re_star_dotProduct_hom_mulVec_self,
+        Matrix.IsOrthogonalResolution.sum_weight}
+    \leanok
+    \uses{lem:orthogonal_resolution}
+    Let $P_i$ be Hermitian idempotents with $P_iP_j=\delta_{ij}P_i$ and
+    $\sum_iP_i=I$, and let $g$ be real. Then $f(\sum_ig_iP_i)=\sum_if(g_i)P_i$ for
+    every real function $f$. If $|c_i|\le M$ whenever $P_i\ne0$, then
+    $\|\sum_ic_iP_i\|\le M$ in operator norm. For every vector $z$,
+    $\|\sum_ic_iP_iz\|^2=\sum_i|c_i|^2\|P_iz\|^2$ and $\sum_i\|P_iz\|^2=\|z\|^2$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Polynomials act pointwise, and the spectrum lies in the range of $g$, so
+    interpolating $f$ on that finite set by a polynomial proves the first claim.
+    For the second, $A^\ast A=\sum_i|c_i|^2P_i\le M^2I$ and
+    $\|A\|^2=\|A^\ast A\|$.
+\end{proof}
+
+\section{The metrics}
+
+Let $\mathcal V=\bigotimes_f\C^{\iota_f}$ have dimension $d$, and let a subsystem
+$Q$ be a set of factors. A label occurring on $Q^{\otimes k}$ has at most $d_Q\le d$
+rows.
+
+\begin{lemma}[Labels of a subsystem]
+    \label{lem:subsystem_label_transport}
+    \lean{PermutationRepresentation.labelProj_of_intertwine,
+        PermutationRepresentation.labelProj_prodLeft,
+        TensorPower.labelProj_subsystemPerm_eq,
+        TensorPower.labelPart_eq_zero_of_subsystemPerm,
+        TensorPower.card_subConfig_le}
+    \leanok
+    Under $\mathcal V^{\otimes k}\cong Q^{\otimes k}\otimes(Q^c)^{\otimes k}$, the
+    label projector $\pi^\lambda_{Q,k}$ is the label projector of $Q^{\otimes k}$
+    tensored with the identity. Consequently a label with $\pi^\lambda_{Q,k}\ne0$
+    has at most $d_Q$ rows, and $d_Q\le d$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Intertwined permutation actions have the same group-algebra image up to
+    relabelling the basis, and an action on the first factor of a product gives
+    the image tensored with the identity. The row bound is the corresponding
+    statement for $(\C^{d_Q})^{\otimes k}$.
+\end{proof}
+
+\begin{theorem}[Positivity, centrality and complements]
+    \label{thm:replica_metric_basic}
+    \lean{TensorPower.replicaMetric, TensorPower.posDef_replicaMetric,
+        TensorPower.replicaMetric_zero, TensorPower.commute_replicaMetric_permOp,
+        TensorPower.commute_replicaMetric_of_subset,
+        TensorPower.commute_replicaMetric_of_disjoint,
+        TensorPower.replicaMetric_mul_symProj_compl}
+    \leanok
+    \uses{lem:replica_weight_ratio, thm:schur_label_commutation}
+    Let $t\ge0$ and assume every factor is nonzero. The metric
+    $W_{Q,k}=\sum_\lambda w_k(\lambda)\pi^\lambda_{Q,k}$ is positive definite,
+    commutes with the copy permutations of $Q$ and with the metrics of nested and
+    disjoint subsystems, and $W_{Q,0}=I$. On the symmetric subspace,
+    $W_{Q,k}=W_{Q^c,k}$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The weights are positive and the label projectors form an orthogonal
+    resolution of the identity. The other claims hold for every central label
+    function, by the commutation and complement properties of the label
+    projectors.
+\end{proof}
+
+\begin{theorem}[Comparison with the label observable]
+    \label{thm:replica_metric_comparison}
+    \lean{TensorPower.exists_abs_log_replicaLabelWeight_add_le,
+        TensorPower.cfc_exp_labelEntropy, TensorPower.exists_replicaMetric_comparison}
+    \leanok
+    \uses{lem:replica_weight_entropy, lem:hook_formula_entropy,
+        lem:subsystem_label_transport, lem:orthogonal_resolution_cfc}
+    Let $t>0$. There is $C$, depending only on $d$ and $t$, such that for every
+    subsystem $Q$ and every $k$,
+    \[
+        (k+2)^{-C}e^{-tF_{Q,k}}\le W_{Q,k}\le(k+2)^Ce^{-tF_{Q,k}}.
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    Both sides are functions of the label projectors, so it suffices to compare
+    the coefficients of the labels that occur. Such a label has at most $d$ rows,
+    $d_\lambda$ equals the dimension formula, and the entropy asymptotics of the
+    dimension formula and of the label function give
+    $|\log w_k(\lambda)+t\log d_\lambda|\le C\log(k+2)$.
+\end{proof}
+
+\section{The marked ratio of the metrics}
+
+Let $k=m+1$. Extend $W_{Q,k-1}$ by the identity on the last copy, put
+$R_{Q,k}=W_{Q,k}W_{Q,k-1}^{-1}$, and let $J_{Q,k}$ be the normalized star
+operator of $Q$.
+
+\begin{lemma}[Branch decomposition of the marked ratio]
+    \label{lem:marked_ratio_branches}
+    \lean{TensorPower.snocEquiv, TensorPower.replicaMetricFirst,
+        TensorPower.replicaMetricFirst_eq, TensorPower.markedRatio,
+        TensorPower.starOp_subsystemPerm_eq_hom, TensorPower.markedRatio_eq_hom,
+        TensorPower.exists_branch_scalars}
+    \leanok
+    \uses{thm:replica_metric_basic, lem:replica_weight_ratio}
+    In the joint resolution by the label $\lambda$ of all copies and the label
+    $\nu$ of the first $k-1$ copies, $R_{Q,k}$ and $J_{Q,k}$ are diagonal. On a
+    nonzero block, $\nu=\lambda-e_i$, the ratio acts by $r(k,l_i)$ and the star
+    operator by $(l_i-d)/k$, where $1\le l_i\le k+d$ is the shifted part of
+    $\lambda$ padded to length $d$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The extended metric is the central label function of the copy permutations
+    fixing the last copy. On a nonzero block the labels are compatible, so
+    $\nu=\lambda-e_i$; the star eigenvalue is the one of the Schur-label
+    estimates, and the ratio of label functions is the exact marked ratio.
+\end{proof}
+
+\begin{theorem}[Forward marked ratio]
+    \label{thm:marked_ratio_forward}
+    \lean{TensorPower.exists_l2_opNorm_markedRatio_sub_le,
+        TensorPower.exists_l2_opNorm_markedRatio_le}
+    \leanok
+    \uses{lem:marked_ratio_branches, lem:replica_ratio_limit, lem:replica_ratio_bounds,
+        lem:orthogonal_resolution_cfc}
+    Let $0<t<1$. There are constants such that, on the entire tensor space and
+    for every subsystem,
+    $\|R_{Q,k}-(J_{Q,k})_+^t\|\le Ck^{-t}$ and $\|R_{Q,k}\|\le C$. In particular
+    $\|R_{Q,k}-(J_{Q,k})_+^t\|\to0$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Both operators are diagonal in the branch decomposition; apply the limit and
+    the bounds of the marked ratio blockwise and the operator-norm bound on an
+    orthogonal resolution.
+\end{proof}
+
+\begin{lemma}[Branch weights of a symmetric vector]
+    \label{lem:symmetric_branch_weights}
+    \lean{TensorPower.complAverage, TensorPower.trace_complAverage_mul,
+        TensorPower.commute_complAverage, TensorPower.weight_branch,
+        TensorPower.card_branch_le, TensorPower.exists_branch_data}
+    \leanok
+    \uses{lem:marked_ratio_branches, lem:subsystem_label_transport}
+    Let $z\in\mathcal S_k$. On a branch $\nu=\lambda-e_i$,
+    $d_\lambda\|\pi^\lambda\pi^\nu z\|^2=d_\nu\|\pi^\lambda z\|^2$; hence
+    $\|\pi^\lambda\pi^\nu z\|^2\le2^d(l_i/k)\|\pi^\lambda z\|^2$. Each label has at
+    most $d$ branches with nonzero projector.
+\end{lemma}
+
+\begin{proof}\leanok
+    The average of $|z\rangle\langle z|$ over the copy permutations of $Q^c$ commutes
+    with the copy permutations of $Q$, because $z$ is symmetric, and pairs with every
+    operator generated by them as $k!\,|z\rangle\langle z|$; this is the matrix form
+    of the permutation invariance of the $Q$ marginal. The branch-probability
+    identity of the Schur-label estimates applies to it. Distinct branches of one
+    label differ in their removed row.
+\end{proof}
+
+\begin{theorem}[Inverse marked ratio on symmetric vectors]
+    \label{thm:marked_ratio_inverse}
+    \lean{TensorPower.markedRatio_inv_eq_hom,
+        TensorPower.exists_norm_markedRatio_inv_mulVec_le,
+        TensorPower.exists_markedRatio_inv_sub_clipped_sq_le,
+        TensorPower.exists_norm_markedRatio_inv_sub_clipped_le}
+    \leanok
+    \uses{lem:symmetric_branch_weights, lem:replica_ratio_bounds, lem:replica_ratio_limit}
+    Let $0<t<1/2$. There is $C$ such that $\|R_{Q,k}^{-1}z\|\le C\|z\|$ for every
+    $z\in\mathcal S_k$, and, for every $0<\delta<1$,
+    \[
+        \limsup_{k\to\infty}\sup_{z\in\mathcal S_k,\ \|z\|=1}
+        \bigl\|\bigl(R_{Q,k}^{-1}-\max(J_{Q,k},\delta)^{-t}\bigr)z\bigr\|
+        \le C\delta^{(1-2t)/2}.
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    Both operators are diagonal in the branch decomposition. On a branch,
+    $r^{-2}\|\pi^\lambda\pi^\nu z\|^2\le C(l_i/k)^{1-2t}\|\pi^\lambda z\|^2$, and summing
+    over at most $d$ branches and over labels gives the first bound. For the second,
+    on $J\ge\delta$ the clipped inverse differs from $r^{-1}$ by $O(k^{-t}\delta^{-2t})$.
+    On $J<\delta$, $l_i/k<\delta+d/k$, and both inverses contribute at most
+    $C\bigl((\delta+d/k)^{1-2t}+\delta^{-2t}(\delta+d/k)\bigr)\|\pi^\lambda z\|^2$.
+    Let $k\to\infty$ and take square roots.
+\end{proof}
+
+\section{Similarity transforms of copy means}
+
+Let $\mathcal V=\bigotimes_v\C^{n_v}$ with every $n_v\ge1$, let $P,Y,F$ be disjoint
+sets of factors, and let $A_k=(W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k})^2$ be the partition
+metric. For a one-copy operator $h$ supported on $P\cup Y$, write $h^{(j)}$ for $h$
+acting on the $j$-th copy, $\bar h=k^{-1}\sum_jh^{(j)}$, and
+$O_k=A_k^{-1/2}\bar hA_k^{1/2}$.
+
+\begin{lemma}[One-copy operators on replicas]
+    \label{lem:replica_site_operators}
+    \lean{PermutationRepresentation.commute_permOp_of_apply_eq,
+        TensorPower.siteOp_apply_of_isSupportedOn,
+        TensorPower.commute_permOp_subsystemPerm_siteOp_of_disjoint,
+        TensorPower.commute_permOp_subsystemPerm_siteOp_of_fix,
+        TensorPower.permOp_copyPerm_mul_siteOp, TensorPower.siteOp_eq_reindex,
+        TensorPower.l2_opNorm_siteOp_le, Entropy.IsSupportedOn.exists_sum_mul}
+    \leanok
+    The operator $h^{(j)}$ commutes with the copy permutations of every subsystem
+    disjoint from the support of $h$, and with every copy permutation of a subsystem
+    that fixes the copy $j$. A permutation $\tau$ of entire copies conjugates $h^{(j)}$
+    to $h^{(\tau j)}$, and $\|h^{(j)}\|\le\|h\|$. An operator supported on a disjoint
+    union $X\cup T$ is a finite sum of products $a_ib_i$ with $a_i$ supported on $X$
+    and $b_i$ supported on $T$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first two statements compare matrix entries: $h^{(j)}$ is nonzero only
+    between configurations that agree outside the support factors of copy $j$, and
+    the permutations in question preserve this relation and these factors. The
+    operator $h^{(j)}$ is $h\otimes I$ after splitting off copy $j$. For the
+    decomposition, expand a local operator on $X\cup T$ in matrix units.
+\end{proof}
+
+\begin{theorem}[Uniform boundedness of the similarity transform]
+    \label{thm:marked_similarity_bounded}
+    \lean{TensorPower.leafRoot, TensorPower.leafMetric, TensorPower.copyMean,
+        TensorPower.markedSimilarity, TensorPower.sqrt_leafMetric,
+        TensorPower.star_dotProduct_copyMean_eq, TensorPower.replicaMetric_conj_siteOp_mul,
+        TensorPower.markedSimilarity_succ_eq, TensorPower.commute_copyPerm_markedSimilarity_succ,
+        TensorPower.star_dotProduct_markedSimilarity_eq_sum,
+        TensorPower.exists_norm_markedSimilarity_mulVec_le}
+    \leanok
+    \uses{lem:replica_site_operators, thm:marked_ratio_forward, thm:marked_ratio_inverse,
+        thm:replica_metric_basic}
+    Let $0<t<1/2$. For fixed $P,Y,F$ and $h$ there is $C$, depending on $\mathcal V$, $t$,
+    the partition and $h$, such that
+    $\|O_kz\|\le C\|z\|$ for every $k$ and every $z\in\mathcal S_k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The square root of $A_k$ is $W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k}$, the $F$ factors
+    commute with $\bar h$ and cancel, and $O_k$ preserves $\mathcal S_k$. Between
+    symmetric vectors, $h^{(k)}$ may replace $\bar h$. Write $h=\sum_ib_ia_i$ with $b_i$
+    supported on $Y$ and $a_i$ on $P$. Since the metric of the first $k-1$ copies
+    commutes with operators on the last copy,
+    \[
+        W_Y^{-1}W_P(b_ia_i)^{(k)}W_P^{-1}W_Y
+        =\bigl(R_Y^{-1}b_i^{(k)}R_Y\bigr)\bigl(R_Pa_i^{(k)}R_P^{-1}\bigr).
+    \]
+    Hence $\langle w,O_kz\rangle=\sum_i\langle R_Yb_i^{(k)\ast}R_Y^{-1}w,
+    R_Pa_i^{(k)}R_P^{-1}z\rangle$ for symmetric $w,z$, in which both inverses act on
+    symmetric vectors. The forward and inverse bounds on the marked ratio bound each
+    term by $C_i\|w\|\|z\|$; take $w=O_kz$.
+\end{proof}
+
+\section{Unitary twirls}
+
+The integral representation of the metrics averages over a Haar-distributed unitary
+eigenbasis. The following statements show that such averages are central label functions.
+
+\begin{lemma}[Central label functions]
+    \label{lem:central_label_function}
+    \lean{Matrix.exists_eq_smul_of_commute_corner,
+        PermutationRepresentation.exists_eq_sum_labelProj_of_commute}
+    \leanok
+    \uses{lem:label_projectors}
+    For a permutation action of a finite group, an operator commuting with the
+    permutation operators and with every operator of their commutant is
+    $\sum_\lambda c_\lambda\pi^\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    On the corner of the matrix unit $E^\lambda_{00}$ the operator commutes with every
+    compressed matrix, because the averages $\sum_jE^\lambda_{j0}BE^\lambda_{0j}$ lie in
+    the commutant; hence it is a multiple of the corner projection there. The matrix
+    units $E^\lambda_{i0}$ carry this multiple to the whole block.
+\end{proof}
+
+\begin{lemma}[The differentiated unitary action]
+    \label{lem:unitary_commutant}
+    \lean{TensorPower.rotation, TensorPower.rotation_mem_unitaryGroup,
+        TensorPower.commute_diagOp_of_commute_tensorPow_rotation,
+        TensorPower.commute_diagOp_of_forall_unitary,
+        TensorPower.exists_eq_sum_labelProj_of_forall_unitary}
+    \leanok
+    \uses{thm:schur_weyl_commutant, lem:central_label_function}
+    An operator on $(\C^q)^{\otimes k}$ commuting with $U^{\otimes k}$ for every unitary
+    $U$ commutes with $\sum_jA^{(j)}$ for every matrix $A$. If it also commutes with the
+    copy permutations, it is a central label function.
+\end{lemma}
+
+\begin{proof}\leanok
+    Differentiate along the one-parameter unitary groups
+    $1+(\cos\theta-1)P+(\sin\theta)J$ with
+    $(P,J)=(e_{aa}+e_{bb},e_{ab}-e_{ba})$, $(e_{aa}+e_{bb},i(e_{ab}+e_{ba}))$ and
+    $(e_{aa},ie_{aa})$, whose derivatives at $\theta=0$ span all matrices. By
+    Schur--Weyl duality the diagonal actions generate the commutant of the copy
+    permutations.
+\end{proof}
+
+\begin{theorem}[The unitary twirl]
+    \label{thm:unitary_twirl}
+    \lean{Matrix.isCompact_unitaryGroup, Matrix.unitaryHaar, TensorPower.unitaryTwirl,
+        TensorPower.tensorPow_mul_unitaryTwirl, TensorPower.commute_permOp_unitaryTwirl,
+        TensorPower.trace_labelProj_mul_unitaryTwirl,
+        TensorPower.unitaryTwirl_eq_sum_labelProj}
+    \leanok
+    \uses{lem:unitary_commutant}
+    Let $A$ commute with the copy permutations, and let
+    $T(A)=\int U^{\otimes k}A(U^{\otimes k})^\ast\,dU$ over the Haar probability measure
+    of the compact unitary group. Then $T(A)=\sum_\lambda c_\lambda\pi^\lambda$ with
+    $c_\lambda\Tr\pi^\lambda=\Tr(\pi^\lambda A)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Left invariance of Haar measure makes $T(A)$ commute with every unitary tensor
+    power, and $T(A)$ commutes with the copy permutations because tensor powers and $A$
+    do. The previous lemma gives the central form. The label projectors commute with
+    unitary tensor powers, so $\Tr(\pi^\lambda T(A))=\Tr(\pi^\lambda A)$.
+\end{proof}
+
+\begin{lemma}[The trivial label]
+    \label{lem:trivial_label}
+    \lean{IrrepLabel.averagingElement, IrrepLabel.augmentation,
+        IrrepLabel.exists_centralIdem_eq_averagingElement,
+        PermutationRepresentation.exists_labelProj_eq_symProj}
+    \leanok
+    \uses{def:irrep_labels}
+    The averaging element $|G|^{-1}\sum_gg$ of $\C[G]$ is one of the central idempotents
+    $e_\lambda$. Hence, for every permutation action, the projector onto the invariant
+    vectors is a label projector.
+\end{lemma}
+
+\begin{proof}\leanok
+    The averaging element $\varepsilon$ satisfies $\varepsilon a=\operatorname{aug}(a)\varepsilon$.
+    The augmentations of the $e_\lambda$ are idempotent, sum to one and have vanishing
+    pairwise products, so exactly one $e_{\lambda_0}$ has $\varepsilon e_{\lambda_0}=\varepsilon$.
+    In the simple block of $\lambda_0$ the central idempotent $\varepsilon e_{\lambda_0}$ is
+    nonzero, hence equal to $e_{\lambda_0}$.
+\end{proof}
+
+\begin{theorem}[Coherent-state resolution]
+    \label{thm:coherent_resolution}
+    \lean{TensorPower.tensorVec, TensorPower.tensorPow_mulVec_tensorVec,
+        TensorPower.tensorVec_mem_symmetricSubspace, TensorPower.coherentProj,
+        TensorPower.unitaryTwirl_coherentProj}
+    \leanok
+    \uses{thm:unitary_twirl, lem:trivial_label}
+    For a unit basis vector $e$, $\int P_{Ue,k}\,dU=D_k^{-1}\Pi_k$, where
+    $P_{\theta,k}=|\theta^{\otimes k}\rangle\langle\theta^{\otimes k}|$, $\Pi_k$ is the
+    projector onto the symmetric subspace and $D_k=\Tr\Pi_k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The integral is the twirl of $P_{e,k}$, a central label function with coefficients
+    fixed by $\langle e^{\otimes k},\pi^\lambda e^{\otimes k}\rangle$. The symmetric vector
+    $e^{\otimes k}$ lies in the range of the trivial label projector $\Pi_k$ and is
+    orthogonal to the other label projectors.
+\end{proof}
+
+\begin{theorem}[Finite-copy coherent identity]
+    \label{thm:finite_husimi_identity}
+    \lean{TensorPower.splitCopies, TensorPower.coherentProj_split,
+        TensorPower.trace_mul_integral, TensorPower.integral_coherent_pairing}
+    \leanok
+    \uses{thm:coherent_resolution}
+    For $\sigma$ on $k$ copies and $G$ on $m$ copies,
+    $\int\Tr(\sigma P_{Ue,k})\Tr(GP_{Ue,m})\,dU=D_{k+m}^{-1}\Tr[(\sigma\otimes G)\Pi_{k+m}]$.
+\end{theorem}
+
+\begin{proof}\leanok
+    $P_{\theta,k+m}=P_{\theta,k}\otimes P_{\theta,m}$; pair the coherent-state resolution
+    for $k+m$ copies with $\sigma\otimes G$.
+\end{proof}
+
+\begin{definition}[The coherent measure]
+    \label{def:coherent_measure}
+    \lean{TensorPower.coherentIntegral, TensorPower.coherentIntegral_one,
+        TensorPower.coherentIntegral_trace_coherentProj,
+        TensorPower.norm_coherentIntegral_trace_coherentProj_le}
+    \leanok
+    \uses{thm:coherent_resolution, thm:finite_husimi_identity}
+    For a density matrix $\sigma$ on the symmetric subspace of $k$ copies, the coherent
+    measure is $d\mu_\sigma(\theta)=D_k\Tr(\sigma P_{\theta,k})\,d\theta$, where $\theta=Ue$
+    for Haar-distributed $U$. It is a probability measure, and
+    $\bigl|\int\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle\,d\mu_\sigma\bigr|\le\|G\|$
+    for every operator $G$ on $m$ copies.
+\end{definition}
+
+\begin{proof}\leanok
+    The coherent-state resolution gives total mass $\Tr(\sigma\Pi_k)=\Tr\sigma=1$. The
+    density $D_k\Tr(\sigma P_{\theta,k})$ is nonnegative, and
+    $|\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle|\le\|G\|$ for a unit vector
+    $\theta$.
+\end{proof}
+
+\begin{definition}[Injection averages]
+    \label{def:injection_average}
+    \lean{TensorPower.placeSplit, TensorPower.placeOp, TensorPower.injectionAverage,
+        TensorPower.l2_opNorm_injectionAverage_le}
+    \leanok
+    For an operator $G$ on $m$ copies and an ordered injection $\iota$ of $m$ copies into
+    $k$ copies, $G_\iota$ is $G$ on the copies $\iota(1),\dots,\iota(m)$ and the identity
+    elsewhere. The injection average $\mathcal T_{k,m}(G)$ is the average of $G_\iota$ over
+    all ordered injections; $\|\mathcal T_{k,m}(G)\|\le\|G\|$.
+\end{definition}
+
+\begin{lemma}[Partial trace of matched swaps]
+    \label{lem:matched_swaps}
+    \lean{TensorPower.injectionSwap, TensorPower.trace_kronecker_mul_injectionSwap}
+    \leanok
+    \uses{def:injection_average}
+    Let $\pi_\iota$ exchange the copy $\iota(j)$ with the copy $k+j$ for every $j$. Then
+    $\Tr[(\sigma\otimes G)U(\pi_\iota)]=\Tr(\sigma G_\iota)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write configurations of $k+m$ copies as a configuration $u$ of the first $k$ copies and
+    $w$ of the last $m$. The permutation $\pi_\iota$ sends $(u,w)$ to the configuration whose
+    first part is $u$ with $w$ inserted at $\iota$ and whose last part is $u\circ\iota$; the
+    trace is the resulting partial trace.
+\end{proof}
+
+\begin{theorem}[Uniform coherent approximation]
+    \label{thm:uniform_husimi}
+    \lean{Matrix.PosSemidef.norm_trace_mul_le, Equiv.Perm.card_filter_apply_eq_mul,
+        TensorPower.sum_goodPerms, TensorPower.card_filter_not_goodPerms_mul_le,
+        TensorPower.permOp_mul_copyKronecker, TensorPower.norm_exchangeTrace_le,
+        TensorPower.factorial_mul_trace_copyKronecker_mul_symProj,
+        TensorPower.norm_trace_mul_injectionAverage_sub_coherentIntegral_le}
+    \leanok
+    \uses{def:coherent_measure, lem:matched_swaps}
+    For a density matrix $\sigma$ on the symmetric subspace of $k\ge1$ copies and an
+    operator $G$ on $m$ copies,
+    \[
+        \left|\Tr\sigma\mathcal T_{k,m}(G)
+            -\int\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle\,d\mu_\sigma\right|
+        \le\frac{4m^2(1+d^m)^2\|G\|}{k},
+    \]
+    where $d$ is the one-copy dimension.
+\end{theorem}
+
+\begin{proof}\leanok
+    Expand $\Pi_{k+m}$ into permutations in the finite-copy identity. A permutation sending
+    each of the last $m$ copies into the first $k$ is uniquely $\pi_\iota\gamma$ with
+    $\gamma$ fixing the last $m$ copies; symmetry of $\sigma$ absorbs $\gamma$, and the
+    previous lemma evaluates $\pi_\iota$. These permutations therefore contribute their
+    proportion times $\Tr\sigma\mathcal T_{k,m}(G)$. The other permutations send a
+    prescribed one of the last copies to a prescribed one of them for some pair, so they
+    form a fraction at most $m^2/(k+m)$, and each term is at most $d^m\|G\|$ in absolute
+    value because $|\Tr(\rho M)|\le\Tr\rho\,\|M\|$ for $\rho\ge0$. The normalization
+    $D_k/D_{k+m}$ is eliminated with the case $G=1$, where the coherent measure has total
+    mass one. For small $k$ both terms are bounded by $\|G\|$.
+\end{proof}
+
+\begin{theorem}[Products of injection averages]
+    \label{thm:injection_product}
+    \lean{TensorPower.placeOp_castAdd_mul_placeOp_natAdd,
+        Function.Embedding.card_filter_apply_eq_mul, TensorPower.sum_filter_not_overlapPairs,
+        TensorPower.card_overlapPairs_mul_le, TensorPower.norm_injectionAverage_mul_sub_le}
+    \leanok
+    \uses{def:injection_average}
+    For operators $G$ on $m$ copies and $H$ on $n$ copies and every $k\ge1$,
+    \[
+        \|\mathcal T_{k,m}(G)\mathcal T_{k,n}(H)-\mathcal T_{k,m+n}(G\otimes H)\|
+        \le\frac{2mn\|G\|\|H\|}{k}.
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    If $\iota,\kappa$ are the restrictions of an injection $\lambda$ of $m+n$ copies, then
+    $G_\iota H_\kappa=(G\otimes H)_\lambda$, and pairs of injections with disjoint images
+    correspond to injections of $m+n$ copies. A pair has $\iota(a)=\kappa(b)$ for prescribed
+    $a,b$ with probability $1/k$, so pairs with intersecting images form a fraction at most
+    $mn/k$. These pairs and the change of normalization each cost at most that fraction
+    times $\|G\|\|H\|$.
+\end{proof}
+
+\begin{lemma}[Sums of injection averages]
+    \label{lem:injection_poly}
+    \lean{TensorPower.placeOp_trans_perm, TensorPower.commute_symProj_injectionAverage,
+        TensorPower.conjTranspose_injectionAverage, TensorPower.coherentExpect,
+        TensorPower.coherentExpect_conjTranspose, TensorPower.coherentExpect_copyKronecker,
+        TensorPower.norm_coherentIntegral_le, TensorPower.IsInjectionPoly,
+        TensorPower.IsInjectionPoly.exists_mul,
+        TensorPower.IsInjectionPoly.exists_norm_trace_sub_coherentIntegral_le}
+    \leanok
+    \uses{thm:uniform_husimi, thm:injection_product}
+    Let $Y_k=\sum_i\mathcal T_{k,r_i}(G_i)$ for finitely many fixed operators $G_i$, with
+    symbol $\psi(\theta)=\sum_i\langle\theta^{\otimes r_i},G_i\theta^{\otimes r_i}\rangle$.
+    Then $Y_k$ commutes with the copy permutations, $Y_k^\ast$ has symbol
+    $\overline\psi$, the product of two such sums is, up to $O(k^{-1})$ in operator norm, a
+    third one whose symbol is the product of the symbols, and
+    $|\Tr\sigma Y_k-\int\psi\,d\mu_\sigma|=O(k^{-1})$ uniformly in symmetric density matrices
+    $\sigma$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Relocating a placement by a copy permutation conjugates it by that permutation, and
+    relocation permutes the injections. Product vectors factor:
+    $\langle\theta^{\otimes(m+n)},(G\otimes H)\theta^{\otimes(m+n)}\rangle
+    =\langle\theta^{\otimes m},G\theta^{\otimes m}\rangle
+    \langle\theta^{\otimes n},H\theta^{\otimes n}\rangle$. The product estimate and the trace
+    estimate follow termwise from the two previous theorems.
+\end{proof}
+
+\begin{theorem}[Coherent symbol calculus]
+    \label{thm:coherent_symbol}
+    \lean{TensorPower.unitSphere, TensorPower.isCompact_unitSphere,
+        TensorPower.HasCoherentSymbol, TensorPower.HasCoherentSymbol.add,
+        TensorPower.HasCoherentSymbol.smul, TensorPower.HasCoherentSymbol.conjTranspose,
+        TensorPower.HasCoherentSymbol.mul,
+        TensorPower.HasCoherentSymbol.eventually_norm_trace_sub_le,
+        TensorPower.HasCoherentSymbol.freeAlgebra}
+    \leanok
+    \uses{lem:injection_poly}
+    Say that operators $X_k$ have coherent symbol $f$ if they commute with $\Pi_k$, are
+    uniformly bounded on $\mathcal S_k$, $f$ is continuous on unit vectors, and for every
+    $\varepsilon>0$ some sum of injection averages $Y_k$ with symbol $\psi$ satisfies
+    $|f-\psi|\le\varepsilon$ on unit vectors and $\|(X_k-Y_k)\Pi_k\|\le\varepsilon$ for large
+    $k$. This property is preserved by sums, scalar multiples, adjoints with the conjugate
+    symbol, and products with the product symbol. Consequently, for every noncommutative
+    polynomial $q$ in two variables, $q(X_k,X_k^\ast)$ has coherent symbol
+    $q(f,\overline f)$, and
+    \[
+        \sup_\sigma\left|\Tr\sigma X_k-\int f\,d\mu_\sigma\right|\longrightarrow0
+    \]
+    over symmetric density matrices $\sigma$.
+\end{theorem}
+
+\begin{proof}\leanok
+    For products, write
+    $XX'\Pi=X\Pi(X'-Y')\Pi+(X-Y)\Pi Y'\Pi+YY'\Pi$, using that all factors commute with
+    $\Pi$, and approximate $YY'$ by the previous lemma. Symbols are bounded on the compact
+    unit sphere, so the symbol errors combine in the same way. For the trace limit,
+    $|\Tr\sigma(X_k-Y_k)|\le\|(X_k-Y_k)\Pi_k\|$, the coherent measure is a probability measure,
+    and the previous lemma treats $Y_k$. Polynomials follow by induction.
+\end{proof}
+
+\begin{theorem}[Marked symbols]
+    \label{thm:marked_symbol}
+    \lean{TensorPower.placeOp_single, TensorPower.commute_placeOp_siteOp,
+        TensorPower.norm_injectionAverage_mul_siteOp_sub_le,
+        TensorPower.symProj_mul_siteOp_mul_symProj, TensorPower.IsMarkedPoly,
+        TensorPower.HasMarkedSymbol, TensorPower.HasMarkedSymbol.add,
+        TensorPower.HasMarkedSymbol.smul, TensorPower.HasMarkedSymbol.mul,
+        TensorPower.HasMarkedSymbol.conjTranspose, TensorPower.HasMarkedSymbol.sum,
+        TensorPower.HasMarkedSymbol.aeval, TensorPower.HasMarkedSymbol.hasCoherentSymbol_compress}
+    \leanok
+    \uses{thm:coherent_symbol}
+    On $k+1$ copies with the last copy marked, say that operators $X_k$ have marked symbol
+    $F$, a function from vectors to operators on one copy, if for some finitely many
+    one-copy operators $A_i$ and fixed operators $G_i$,
+    \[
+        \Big\|X_k-\sum_i A_i^{(k+1)}\,\mathcal T_{k+1,r_i}(G_i)\Big\|=O(k^{-1}),\qquad
+        F(\theta)=\sum_i\langle\theta^{\otimes r_i},G_i\theta^{\otimes r_i}\rangle A_i .
+    \]
+    Marked symbols are preserved by sums, scalar multiples, products (with the ordered
+    product of the symbols), adjoints and real polynomials. If $X_k$ has marked symbol $F$,
+    then $\Pi_{k+1}X_k\Pi_{k+1}$ has coherent symbol $\theta\mapsto\langle\theta,F(\theta)\theta\rangle$.
+\end{theorem}
+
+\begin{proof}\leanok
+    An injection average commutes with $a^{(j)}$ except for the fraction $r/k$ of placements
+    meeting copy $j$, so $\|[\mathcal T_{k,r}(G),a^{(j)}]\|\le 2r\|G\|\|a\|/k$. Products are
+    therefore reordered as $(AA')^{(k+1)}\mathcal T(G)\mathcal T(G')$ up to $O(k^{-1})$, and
+    the product of injection averages is handled by the product theorem. For compression,
+    all placements of one copy are conjugate under copy permutations, so
+    $\Pi a^{(j)}\Pi=\mathcal T_{k,1}(a)\Pi$, and $\mathcal T_{k,1}(a)\mathcal T_{k,r}(G)$
+    is an injection average of $a\otimes G$ up to $O(k^{-1})$.
+\end{proof}
+
+\begin{lemma}[Marked symbol of the star operator]
+    \label{lem:star_marked_symbol}
+    \lean{TensorPower.regionUnit, TensorPower.permOp_subsystemPerm_swap_eq_sum,
+        TensorPower.margLift, TensorPower.sum_expect_regionUnit_smul,
+        TensorPower.starOp_subsystemPerm_eq, TensorPower.hasMarkedSymbol_starOp}
+    \leanok
+    \uses{thm:marked_symbol}
+    For a subsystem $Q$, the star operator $J_{Q,k}$ on $k$ copies has marked symbol
+    $\theta\mapsto\rho_Q(\theta)\otimes1$, where $\rho_Q(\theta)$ is the marginal of
+    $|\theta\rangle\langle\theta|$ on $Q$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The partial swap of $Q$ between distinct copies $i,j$ is
+    $\sum_{a,b}(E_{ab})^{(i)}(E_{ba})^{(j)}$ with matrix units $E_{ab}$ on $Q$. Averaging
+    over the donor copy gives
+    $J_{Q,k}=\sum_{a,b}\mathcal T_{k,1}(E_{ab})E_{ba}^{(k)}+O(k^{-1})$, whose marked symbol is
+    $\sum_{a,b}\langle\theta,E_{ab}\theta\rangle E_{ba}=\rho_Q(\theta)\otimes1$.
+\end{proof}
+
+\begin{lemma}[Limits of coherent symbols]
+    \label{lem:coherent_symbol_limit}
+    \lean{TensorPower.l2_opNorm_symProj_mul_mul_symProj_le,
+        TensorPower.HasCoherentSymbol.of_approx}
+    \leanok
+    \uses{thm:coherent_symbol}
+    If $|\langle u,Mz\rangle|\le c\|u\|\|z\|$ for all symmetric $u,z$, then
+    $\|\Pi_kM\Pi_k\|\le c$. Let $X_k$ commute with $\Pi_k$, with $\|X_k\Pi_k\|$ bounded.
+    Suppose that for every $\varepsilon>0$ there are $X'_k$ with coherent symbol $f'$ such
+    that $|f-f'|\le\varepsilon$ on unit vectors and eventually
+    $\|(X_k-X'_k)\Pi_k\|\le\varepsilon$. Then $f$ is continuous on unit vectors and $X_k$ has
+    coherent symbol $f$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For the first statement put $w=\Pi_kM\Pi_kv$; then
+    $\|w\|^2=\langle w,M\Pi_kv\rangle\le c\|w\|\|v\|$. For the second, $f$ is a uniform
+    limit of continuous functions on the unit sphere, and the approximations combine by
+    the triangle inequality.
+\end{proof}
+
+\begin{lemma}[Polynomials in the star operator]
+    \label{lem:star_polynomial}
+    \lean{TensorPower.l2_opNorm_starOp_le, TensorPower.abs_starValue_le_one,
+        TensorPower.l2_opNorm_cfc_starOp_sub_aeval_le, TensorPower.l2_opNorm_aeval_starOp_le,
+        TensorPower.isHermitian_aeval_starOp, TensorPower.isHermitian_cfc_starOp}
+    \leanok
+    \uses{thm:replica_metric_basic}
+    $\|J_{Q,k}\|\le1$, so every star eigenvalue lies in $[-1,1]$. If
+    $|\varphi-p|\le M$ on $[-1,1]$ for a function $\varphi$ and a real polynomial $p$, then
+    $\|\varphi(J_{Q,k})-p(J_{Q,k})\|\le M$.
+\end{lemma}
+
+\begin{proof}\leanok
+    $J_{Q,k}$ is $k^{-1}$ times a sum of $k-1$ permutation operators. On a nonzero branch
+    projection its eigenvalue is bounded by its norm, and functions of $J_{Q,k}$ act on the
+    branch decomposition by their values at the eigenvalues.
+\end{proof}
+
+\begin{lemma}[Powers of one-copy marginals]
+    \label{lem:marginal_powers}
+    \lean{Entropy.commute_localLift_of_disjoint, Entropy.aeval_localLift,
+        TensorPower.suppRpow, TensorPower.regionPow, TensorPower.markedScalarSymbol,
+        TensorPower.eigenvalues_regionState_mem, TensorPower.norm_localLift_cfc_mulVec_sq_le,
+        TensorPower.mul_clip_sub_sq_le, TensorPower.l2_opNorm_regionPow_le_one,
+        TensorPower.norm_regionPow_neg_mulVec_le, TensorPower.norm_regionPow_sandwich_sub_le}
+    \leanok
+    Let $\theta$ be a unit vector, $\rho_Q$ its marginal on $Q$ lifted by the identity,
+    $0<t<1/2$ and $0<\delta$. Then $\|\rho_Q^t\|\le1$, $\|\rho_Q^{-t}\theta\|^2\le d_Q$, and
+    \[
+        \bigl\|(\rho_Q^{-t}-\max(\rho_Q,\delta)^{-t})\theta\bigr\|^2\le d_Q\delta^{1-2t},
+    \]
+    with powers zero on kernels. Consequently, if $|p-u_+^t|\le\eta$ and
+    $|q-\max(u,\delta)^{-t}|\le\eta$ on $[-1,1]$, then
+    $\|\rho_Q^ta\rho_Q^{-t}\theta-p(\rho_Q)aq(\rho_Q)\theta\|
+    \le\|a\|\bigl(\eta\sqrt{d_Q}+(1+\eta)(\sqrt{d_Q\delta^{1-2t}}+\eta)\bigr)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For a real function $g$, $\|g(\rho_Q)\theta\|^2=\Tr\rho_Qg(\rho_Q)^2=\sum_i\lambda_ig(\lambda_i)^2$
+    over the eigenvalues $\lambda_i\in[0,1]$ of the marginal. For the clipping,
+    $\lambda(\max(\lambda,\delta)^{-t}-\lambda^{-t})^2$ vanishes for $\lambda\ge\delta$ and
+    is at most $\lambda^{1-2t}\le\delta^{1-2t}$ for $0<\lambda<\delta$.
+\end{proof}
+
+\begin{theorem}[Coherent symbol of the similarity transform]
+    \label{thm:marked_similarity_symbol}
+    \lean{TensorPower.polyWord, TensorPower.polyWordSymbol, TensorPower.hasMarkedSymbol_polyWord,
+        TensorPower.norm_markedScalarSymbol_sub_le,
+        TensorPower.norm_markedSimilarity_sub_polyWord_le,
+        TensorPower.hasCoherentSymbol_markedSimilarity,
+        TensorPower.eventually_norm_trace_freeAlgebra_markedSimilarity_sub_le}
+    \leanok
+    \uses{thm:marked_similarity_bounded, lem:star_marked_symbol, lem:coherent_symbol_limit,
+        lem:star_polynomial, lem:marginal_powers, thm:marked_ratio_forward,
+        thm:marked_ratio_inverse}
+    Let $0<t<1/2$, let $P,Y,F$ be disjoint and let $h$ be supported on $P\cup Y$. Then
+    $O_k$ has coherent symbol
+    $f_\theta=\langle\theta,\rho_P^t\rho_Y^{-t}h\rho_P^{-t}\rho_Y^t\theta\rangle$. In
+    particular, for every noncommutative polynomial $q$ in two variables,
+    \[
+        \sup_\sigma\Bigl|\Tr\sigma q(O_k,O_k^\ast)-\int q(f_\theta,\overline{f_\theta})
+        \,d\mu_\sigma(\theta)\Bigr|\longrightarrow0
+    \]
+    over symmetric density matrices $\sigma$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Write $h=\sum_ib_ia_i$. Given $\varepsilon$, choose $\delta$, then polynomials $p,q$
+    approximating $u_+^t$ and $\max(u,\delta)^{-t}$ on $[-1,1]$, and compare $O_k$ with the
+    compression of $W_k=\sum_i(q(J_Y)b_i^{(k)}p(J_Y))(p(J_P)a_i^{(k)}q(J_P))$. Between
+    symmetric vectors, the forward-ratio estimate, the clipped inverse estimate and the
+    polynomial approximation bound the difference of the pairings by a multiple of the
+    chosen accuracy for large $k$. The marked symbol of $W_k$ replaces each star by the
+    corresponding marginal, and the clipping is removed on the one-copy side by the
+    preceding lemma. The trace limit then follows from the coherent symbol calculus.
+\end{proof}
+
+\begin{lemma}[Continuous functions of coherent symbols]
+    \label{lem:coherent_symbol_function}
+    \lean{Matrix.IsHermitian.abs_eigenvalues_le, TensorPower.HasCoherentSymbol.pow,
+        TensorPower.HasCoherentSymbol.aeval, TensorPower.HasCoherentSymbol.symProj_mul,
+        TensorPower.HasCoherentSymbol.cfc, TensorPower.HasCoherentSymbol.abs}
+    \leanok
+    \uses{lem:coherent_symbol_limit}
+    Let $X_k$ be Hermitian with eigenvalues in $[a,b]$ and coherent symbol $f$, with $f$
+    real with values in $[a,b]$ on unit vectors, and let $\varphi$ be continuous on $[a,b]$.
+    Then $\varphi(X_k)$ has coherent symbol $\varphi\circ f$. In particular, if $X_k$ has
+    coherent symbol $f$, then $\bigl(\Pi_kX_k^\ast X_k\bigr)^{1/2}$ has coherent symbol $|f|$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Approximate $\varphi$ uniformly on $[a,b]$ by a polynomial $p$. Then
+    $\|\varphi(X_k)-p(X_k)\|\le\sup_{[a,b]}|\varphi-p|$, and $p(X_k)$ has coherent symbol
+    $p\circ f$ by the product calculus. For the absolute value, $\Pi_kX_k^\ast X_k
+    =(X_k\Pi_k)^\ast(X_k\Pi_k)$ is positive with norm at most $\sup_k\|X_k\Pi_k\|^2$, and
+    its symbol is $|f|^2$.
+\end{proof}
+
+\begin{theorem}[Skew symbol]
+    \label{thm:skew_symbol}
+    \lean{TensorPower.skewOperator, TensorPower.HasCoherentSymbol.skew,
+        TensorPower.eventually_norm_trace_skewOperator_markedSimilarity_sub_le}
+    \leanok
+    \uses{thm:marked_similarity_symbol, lem:coherent_symbol_function}
+    Let $\mathcal D_k=|O_k|+|O_k^\ast|-O_k-O_k^\ast$, with absolute values taken on
+    $\mathcal S_k$. Uniformly in symmetric density matrices $\sigma$,
+    \[
+        \Tr\sigma\mathcal D_k=2\int\bigl(|f_\theta|-\operatorname{Re}f_\theta\bigr)
+        \,d\mu_\sigma(\theta)+o_k(1).
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    Both $|O_k|$ and $|O_k^\ast|$ have coherent symbol $|f_\theta|$ by the previous lemma,
+    whether or not $O_k$ is normal, and $O_k+O_k^\ast$ has symbol $2\operatorname{Re}f_\theta$.
+    Apply the trace limit of the coherent symbol calculus.
+\end{proof}
+
+\begin{lemma}[Regions as tensor factors]
+    \label{lem:region_split}
+    \lean{Entropy.IsRegionSplit, Entropy.IsRegionSplit.localLift_submatrix,
+        Entropy.IsRegionSplit.partialTraceRight_vecMulVec, Entropy.regionSplitEquiv,
+        Entropy.star_dotProduct_submatrix_mulVec, TensorPower.SkewPartition,
+        TensorPower.SkewPartition.equiv, TensorPower.SkewPartition.transport,
+        TensorPower.SkewPartition.skewFun_transport}
+    \leanok
+    \uses{lem:marginal_powers}
+    Let $\mathcal V$ be partitioned as $P=P_0P_1$, $Y=xU$ and $F$, and identify the
+    configurations of $\mathcal V$ with those of $(P_0P_1)((xU)F)$. Lifts from a region and
+    marginals on a region agree with the corresponding tensor-factor lifts and partial
+    traces. In particular, if $h$ is supported on $P_0x$, the symbol $f_\theta$ at $t$ is
+    the function $f(t)$ of the conditional skew estimate for the transported vector.
+\end{lemma}
+
+\begin{proof}\leanok
+    Compare matrix entries: a lift from $D$ is nonzero only between configurations that
+    agree off $D$, and the marginal on $D$ sums over the configurations off $D$. The real
+    powers through the complex functional calculus agree with the real powers on positive
+    marginals.
+\end{proof}
+
+\begin{lemma}[Continuity of the entropy]
+    \label{lem:entropy_continuity}
+    \lean{Matrix.vonNeumannEntropy_eq_re_trace_cfc, Matrix.continuousOn_vonNeumannEntropy,
+        TensorPower.continuousOn_condMutualInfo,
+        TensorPower.SkewPartition.continuousOn_skewEta_transport}
+    \leanok
+    The von Neumann entropy is continuous along continuous families of Hermitian matrices
+    with eigenvalues in $[0,1]$. Hence $\theta\mapsto\eta_\theta=I(x:F|U)_\theta$ is continuous
+    on unit vectors.
+\end{lemma}
+
+\begin{proof}\leanok
+    $S(\rho)=\Tr(-\rho\log\rho)$ is the trace of a continuous function of $\rho$ on $[0,1]$,
+    and the continuous functional calculus is continuous in the operator.
+\end{proof}
+
+\begin{theorem}[Skew bound]
+    \label{thm:skew_bound}
+    \lean{TensorPower.re_coherentIntegral_le, TensorPower.coherentIntegral_const_mul,
+        TensorPower.SkewPartition.markedScalarSymbol_skew_le,
+        TensorPower.SkewPartition.eventually_re_trace_skewOperator_le,
+        TensorPower.SkewPartition.skewEta_transport,
+        TensorPower.SkewPartition.eventually_re_trace_skewOperator_le_regionalMovementEta,
+        TensorPower.markedSimilarity_comm,
+        TensorPower.SkewPartition.eventually_re_trace_skewOperator_le_swap}
+    \leanok
+    \uses{thm:skew_symbol, lem:region_split, lem:entropy_continuity, thm:conditional_skew,
+        lem:movement_eta_regional}
+    Let $P=P_0P_1$, let $h$ be supported on $P_0x$ with $0\le h\le I$, $d_h=(\dim P_0)(\dim x)$,
+    $\eta_\theta=S_\theta(x|P)+S_\theta(x|U)=I_\theta(x:F|U)$, and let $0<a$ with
+    $a\log(ed_h)\le1/8$ and $t=a/2$. Then
+    $|f_\theta|-\operatorname{Re}f_\theta\le Ca^2\log^4(ed_h)\eta_\theta^{1/8}$ on unit vectors,
+    and uniformly in symmetric density matrices $\sigma$,
+    \[
+        \Tr\sigma\mathcal D_k\le2Ca^2\log^4(ed_h)\int\eta_\theta^{1/8}\,d\mu_\sigma(\theta)
+        +o_k(1).
+    \]
+    The same bound holds with the two outer parts of the partition metric exchanged.
+\end{theorem}
+
+\begin{proof}\leanok
+    The pointwise bound is the conditional skew estimate read on regions. Integrate it
+    against the coherent measure, which is a positive measure, using the skew symbol and the
+    continuity of both integrands. In the coordinates of the conditional skew estimate the
+    marginals of the transported vector on $xU$, $U$ and $UF$ are the states of $\theta$ on
+    $xU$, $U$ and, by purity, the complement $Px$, and its full marginal on $xUF$ has the
+    entropy of the state on $P$; hence $I(x:F|U)=S_\theta(x|P)+S_\theta(x|U)$. The factors
+    $W_P^{-1}$ and $W_F^{-1}$ commute, so the partition metric, and with it the similarity
+    transform and $\mathcal D_k$, is unchanged when the outer parts are exchanged.
+\end{proof}
+
+\section{The gamma integral}
+
+The integral representation of the metrics draws the eigenvalues $s$ of a density matrix with
+a density proportional to $\Delta(s)\Delta(s^t)$. The following statements compute the
+resulting averages of characters. Write $\delta_j=d-j$, $a_\alpha(y)=\det[y_i^{\alpha_j}]$ for
+the alternant, $l$ for the shifted parts of a label, $N=\binom d2$, and
+$D=d+N+t\sum_jl_j$. In place of the simplex we integrate over the positive orthant with the
+weight $(\sum_ix_i)^{-a}e^{-\sum_ix_i}$; the quotients of gamma values are the same.
+
+\begin{lemma}[The Beta integral on the half-line]
+    \label{lem:beta_half_line}
+    \lean{Real.integrableOn_rpow_mul_one_add_rpow, Real.integral_rpow_mul_one_add_rpow}
+    \leanok
+    For $a,b>0$,
+    $\int_0^\infty u^{a-1}(1+u)^{-(a+b)}\,du=\Gamma(a)\Gamma(b)/\Gamma(a+b)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Substitute $x=u/(1+u)$ in the Beta integral $\int_0^1x^{a-1}(1-x)^{b-1}\,dx$.
+\end{proof}
+
+\begin{lemma}[Monomial integrals]
+    \label{lem:orthant_monomials}
+    \lean{Partition.orthant, Partition.orthMono, Partition.integral_monomial,
+        Partition.integrable_monomial, Partition.integral_monomial_mul_rpow_sum,
+        Partition.integrable_monomial_mul_rpow_sum, Partition.integral_monomial_mul_rpow_sum'}
+    \leanok
+    \uses{lem:beta_half_line}
+    Let $u_i>-1$ and $E=d+\sum_iu_i$. For $b>0$,
+    $\int_{(0,\infty)^d}\prod_ix_i^{u_i}e^{-bx_i}\,dx=\prod_i\Gamma(1+u_i)b^{-1-u_i}$, and for
+    $0\le a<E$,
+    \[
+        \int_{(0,\infty)^d}\prod_ix_i^{u_i}\Bigl(\sum_ix_i\Bigr)^{-a}e^{-\sum_ix_i}\,dx
+        =\prod_i\Gamma(1+u_i)\,\frac{\Gamma(E-a)}{\Gamma(E)}.
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    The first integral factorizes into one-dimensional gamma integrals. For the second,
+    insert $\Gamma(a)r^{-a}=\int_0^\infty v^{a-1}e^{-rv}\,dv$ with $r=\sum_ix_i$, exchange the
+    integrals, evaluate the inner one by the first formula with $b=1+v$, and apply the Beta
+    integral.
+\end{proof}
+
+\begin{lemma}[A determinant of gamma values]
+    \label{lem:gamma_determinant}
+    \lean{Partition.risingPoly, Partition.Gamma_one_add_add_nat, Partition.revPerm,
+        Partition.alternant_delta_eq, Partition.det_risingPoly, Partition.det_Gamma,
+        Partition.alternant_mul_left}
+    \leanok
+    For $t\ge0$,
+    $\det[\Gamma(1+\delta_i+tl_j)]_{i,j}=\prod_j\Gamma(1+tl_j)\cdot a_\delta(tl)$, and
+    $a_\delta(tl)=t^Na_\delta(l)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    $\Gamma(1+tl+n)=\Gamma(1+tl)(1+tl)(2+tl)\cdots(n+tl)$, a monic polynomial of degree $n$ in
+    $tl$. A determinant of monic polynomials of degrees $\delta_i$ evaluated at the points
+    $tl_j$ equals the Vandermonde determinant with the same ordering of degrees, which is
+    $a_\delta(tl)$.
+\end{proof}
+
+\begin{theorem}[The gamma integral]
+    \label{thm:gamma_integral}
+    \lean{Partition.gammaIntegral, Partition.alternant_mul_alternant_rpow,
+        Partition.gammaIntegral_eq_sum, Partition.integrable_gammaIntegrand,
+        Partition.sum_sign_prod_Gamma, Partition.gammaIntegral_eq,
+        Partition.alternant_delta_mul_rpow_nonneg}
+    \leanok
+    \uses{lem:orthant_monomials, lem:gamma_determinant, lem:alternant_pieri}
+    For $t\ge0$ and $0\le a<D$,
+    \[
+        \int_{(0,\infty)^d}a_\delta(x)a_l(x^t)\Bigl(\sum_ix_i\Bigr)^{-a}e^{-\sum_ix_i}\,dx
+        =d!\,t^N\prod_j\Gamma(1+tl_j)\,a_\delta(l)\,\frac{\Gamma(D-a)}{\Gamma(D)},
+    \]
+    the integrand is integrable, and $a_\delta(x)a_\delta(x^t)\ge0$ on the orthant.
+\end{theorem}
+
+\begin{proof}\leanok
+    Expand both alternants over permutations; each product is a monomial with exponents
+    $\delta_{\sigma^{-1}i}+tl_{\tau^{-1}i}$, whose sum is $N+t\sum_jl_j$. The previous lemma
+    integrates each term, and the double sum over $\sigma,\tau$ collapses to $d!$ copies of
+    $\det[\Gamma(1+\delta_i+tl_j)]$. Finally
+    $a_\delta(x)a_\delta(x^t)=\prod_{i<j}(x_j-x_i)(x_j^t-x_i^t)$.
+\end{proof}
+
+\begin{theorem}[The label function as a normalized gamma integral]
+    \label{thm:replica_weight_gamma}
+    \lean{Partition.alternant_delta_eq_vand, Partition.weylFormula_eq_alternant_div,
+        Partition.replicaWeight_eq_gammaIntegral}
+    \leanok
+    \uses{thm:gamma_integral, lem:replica_weight_ratio}
+    Let $J_a(l)$ denote the integral of the previous theorem and $W_\lambda$ the Weyl dimension
+    formula. For $t>0$ and a partition $\lambda\vdash k$ with at most $d$ rows,
+    $w_k(\lambda)=J_{tk}(l)/\bigl(J_0(\delta)W_\lambda\bigr)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Here $D=c+tk$ and $D-tk=c$ for $l$, while $D=c$ for $\delta$. The factors $d!\,t^N$ cancel,
+    and $a_\delta(l)/a_\delta(\delta)=W_\lambda$ because $a_\delta$ is a fixed sign times the
+    Vandermonde product and $a_\delta(\delta)$ is the product of the differences $j-i$.
+\end{proof}
+
+\section{The integral representation}
+
+\begin{lemma}[Powers of compressions]
+    \label{lem:trace_compression}
+    \lean{Matrix.embedMatrix, Matrix.conjTranspose_mul_mul_embedMatrix,
+        Matrix.re_trace_rpow_submatrix_le}
+    \leanok
+    For $A\ge0$ on $\C^n$, an isometry $E:\C^m\to\C^n$ given by an injection of basis
+    vectors, and $p\ge1$, $\Tr(E^\ast AE)^p\le\Tr A^p$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $E^\ast AE=\sum_i\beta_i\psi_i\psi_i^\ast$. Then
+    $\beta_i=\langle E\psi_i,AE\psi_i\rangle$, and Jensen's inequality for the convex function
+    $x^p$ gives $\beta_i^p\le\langle E\psi_i,A^pE\psi_i\rangle$. Summing over $i$ gives
+    $\Tr(E^\ast A^pE)$, a partial sum of the nonnegative diagonal entries of $A^p$.
+\end{proof}
+
+\begin{lemma}[The spectral law]
+    \label{lem:spectral_law}
+    \lean{TensorPower.specDensity, TensorPower.specNorm, TensorPower.specNorm_pos,
+        TensorPower.specMeasure, TensorPower.isProbabilityMeasure_specMeasure,
+        TensorPower.specSample, TensorPower.specSample_rpow, TensorPower.specSample_posDef,
+        TensorPower.trace_specSample}
+    \leanok
+    \uses{thm:gamma_integral}
+    Let $t>0$. The density proportional to $a_\delta(x)a_\delta(x^t)e^{-\sum_ix_i}$ on the
+    positive orthant is a probability density. For $x$ in the orthant and a unitary $U$, the
+    sample $\sigma=U\operatorname{diag}(x/\sum_ix_i)U^\ast$ is a positive definite density
+    matrix and $\sigma^t=U\operatorname{diag}((x/\sum_ix_i)^t)U^\ast$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The normalization is the gamma integral at $a=0$, which is positive. The power of the
+    sample follows from the functional calculus of a diagonal matrix.
+\end{proof}
+
+\begin{theorem}[The integral on the whole system]
+    \label{thm:replica_full_integral}
+    \lean{TensorPower.glChar_mul_left, TensorPower.alternant_mul_glChar_ofReal,
+        TensorPower.specDensity_mul_glChar, TensorPower.integral_unitary_sampleEntry,
+        TensorPower.integral_specMeasure_label, TensorPower.integral_specSample_tensorPow}
+    \leanok
+    \uses{lem:spectral_law, thm:unitary_twirl, thm:weyl_character, thm:replica_weight_gamma}
+    Let $t>0$ and let $U$ be Haar distributed, independent of $x$. Then
+    $\int(\sigma^t)^{\otimes k}=\sum_\lambda w_k(\lambda)\pi^\lambda$ on $(\C^d)^{\otimes k}$
+    for every $k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The average over $U$ is the twirl of $\operatorname{diag}(s^t)^{\otimes k}$, which by
+    Theorem~\ref{thm:unitary_twirl} acts on $\lambda$ by $\chi_\lambda(s^t)/\dim V_\lambda$.
+    Since $\chi_\lambda$ is homogeneous of degree $k$,
+    $\chi_\lambda(s^t)=(\sum_ix_i)^{-tk}\chi_\lambda(x^t)$, and by the Weyl character formula
+    $a_\delta(x^t)\chi_\lambda(x^t)=a_l(x^t)$. The average over $x$ is therefore
+    $J_{tk}(l)/(J_0(\delta)W_\lambda)=w_k(\lambda)$ by Theorem~\ref{thm:replica_weight_gamma}.
+\end{proof}
+
+\begin{theorem}[Lemma 6.2, integral representation]
+    \label{thm:replica_metric_integral}
+    \lean{TensorPower.groupAlgebraRep_comp_embedding, TensorPower.labelProj_comp_embedding,
+        TensorPower.subSample, TensorPower.subSample_posDef, TensorPower.subSample_rpow,
+        TensorPower.re_trace_subSample_le, TensorPower.subEmbedding,
+        TensorPower.replicaMetric_reindex, TensorPower.exists_replicaMetric_integral}
+    \leanok
+    \uses{thm:replica_full_integral, lem:trace_compression, thm:replica_metric_basic}
+    Let $0<t\le1$. For each subsystem $Q$ there is a probability measure $\zeta_Q$ on positive
+    definite subdensities $\tau$ on $Q$, with $\Tr\tau\le1$, such that
+    $W_{Q,k}=\int(\tau^t)^{\otimes k}\,d\zeta_Q(\tau)$ for every $k\ge0$, the identity on the
+    complement of $Q$ being implicit. The measure does not depend on $k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Choose an injection $j$ of the basis configurations of $Q$ into those of $\C^d$,
+    $d=\dim\mathcal V$, with isometry $E$. A permutation operator of $(\C^d)^{\otimes k}$
+    compressed by $E^{\otimes k}$ is the same permutation operator of $Q^{\otimes k}$, so the
+    compression of $\sum_\lambda w_k(\lambda)\pi^\lambda$ is $W_{Q,k}$ restricted to $Q$; the
+    label function is the same on every subsystem. On each sample the compression of
+    $(\sigma^t)^{\otimes k}$ is $B^{\otimes k}$ with $B=E^\ast\sigma^tE>0$. Put $\tau=B^{1/t}$;
+    then $\tau^t=B$, and Lemma~\ref{lem:trace_compression} with $p=1/t\ge1$ gives
+    $\Tr\tau\le\Tr\sigma=1$. The measure $\zeta_Q$ is the law of $\tau$.
+\end{proof}
+
+\section{The relative coherent pin}
+
+Let $P,x,Y_0,F$ partition the sites, let $A_k=A_k(P,xY_0,F)$ and $B_k=A_k(Px,Y_0,F)$ be the
+partition metrics before and after moving $x$ from the middle part to $P$, and let
+$C_{x,k}=A_k^{-1/2}B_kA_k^{-1/2}$. For a unit vector $\theta$ write
+$P_{\theta,k}=|\theta^{\otimes k}\rangle\langle\theta^{\otimes k}|$ and
+$\eta_\theta=S_\theta(x|P)+S_\theta(x|Y_0)$.
+
+\begin{lemma}[The inverse quadratic form of a move]
+    \label{lem:move_inverse}
+    \lean{TensorPower.norm_star_dotProduct_sq_le_inv, TensorPower.IsLabelFunctionOn,
+        TensorPower.relativeMetric, TensorPower.moveWord, TensorPower.leafRoot_inv_mul_leafRoot,
+        TensorPower.posDef_relativeMetric_and_inv,
+        TensorPower.norm_star_dotProduct_sq_le_moveWord}
+    \leanok
+    \uses{thm:replica_metric_basic}
+    $C_{x,k}>0$, and for all $z,w$,
+    $|\langle z,w\rangle|^2\le\|W_{Px,k}W_{xY_0,k}W_{P,k}^{-1}W_{Y_0,k}^{-1}z\|^2
+    \langle w,C_{x,k}w\rangle$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For $C>0$, Cauchy--Schwarz gives $|\langle z,w\rangle|^2\le\langle z,C^{-1}z\rangle
+    \langle w,Cw\rangle$. With $A_k^{1/2}=W_P^{-1}W_F^{-1}W_{xY_0}$ and
+    $B_k^{1/2}=W_{Px}^{-1}W_F^{-1}W_{Y_0}$,
+    $\langle z,C_{x,k}^{-1}z\rangle=\|B_k^{-1/2}A_k^{1/2}z\|^2$; the $F$ factors cancel and the
+    remaining nested or disjoint central factors commute.
+\end{proof}
+
+\begin{lemma}[The compensators]
+    \label{lem:compensator}
+    \lean{TensorPower.tensorPow_rpow, TensorPower.trace_tensorPow,
+        TensorPower.l2_opNorm_labelObservable_mul_tensorPow_rpow_le,
+        TensorPower.reindex_labelObservable_subsystemPerm,
+        TensorPower.exists_l2_opNorm_compensator_le,
+        TensorPower.commute_labelObservable_tensorPow_of_subset,
+        TensorPower.commute_labelObservable_tensorPow_of_disjoint}
+    \leanok
+    \uses{thm:schur_label_surprisal, thm:replica_metric_basic}
+    There is $C$ such that $\|W_{R,k}^{-1}(\rho_R^t)^{\otimes k}\|\le(k+2)^C$ for every
+    region $R$ and every density matrix $\rho_R$ on $R$. Label functions of $Q$ commute with
+    $M^{\otimes k}$ for $M$ supported on a region contained in or disjoint from $Q$.
+\end{lemma}
+
+\begin{proof}\leanok
+    $(\rho_R^{\otimes k})^t=(\rho_R^t)^{\otimes k}$. In the joint resolution of
+    $\rho_R^{\otimes k}$ and the label projectors, an eigenvalue $u$ occurring in the
+    $\lambda$ block satisfies $ud_\lambda\le1$, and $w_k(\lambda)^{-1}\le(k+2)^Cd_\lambda^t$ by
+    the entropy asymptotics; hence each weight $w_k(\lambda)^{-1}u^t$ is at most $(k+2)^C$.
+    Copy permutations of $Q$ act on the copies of $Q$, on which $M^{\otimes k}$ is symmetric;
+    for $M$ off $Q$ write them as full copy permutations times inverse copy permutations of
+    the complement.
+\end{proof}
+
+\begin{lemma}[Lemma 5.1 for local operators]
+    \label{lem:regional_movement}
+    \lean{Entropy.FourPartition, Entropy.frameEquiv, Entropy.reindex_localLift_PX,
+        Entropy.reindex_localLift_XY, Entropy.reindex_localLift_P, Entropy.reindex_localLift_Y,
+        Entropy.regionalMoveOperator, Entropy.regionalMovement_norm_le,
+        Entropy.localLift_kernelProjection_P_mulVec, Entropy.localLift_kernelProjection_Y_mulVec}
+    \leanok
+    \uses{thm:conditional_movement}
+    For a unit vector $\theta$ on the sites and positive semidefinite $\sigma$ on $Px$, $\tau$
+    on $xY_0$ of trace at most one, the word
+    $\sigma^{a/2}\hat\rho_P^{-a/2}\tau^{a/2}\hat\rho_{Y_0}^{-a/2}\theta$, each factor acting
+    on its region, satisfies the bound of Lemma 5.1. The kernel projections of $\rho_P$ and
+    $\rho_{Y_0}$ annihilate $\theta$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The configurations of the sites split as those of $x$, $Y_0$, $P$ and $F$; in these
+    coordinates the operators are those of Lemma 5.1.
+\end{proof}
+
+\begin{lemma}[The movement entropy in region form]
+    \label{lem:movement_eta_regional}
+    \lean{Entropy.regionalMovementEta, Entropy.partialTraceLeft_regionState_union,
+        Entropy.FourPartition.frameMarginalP_eq, Entropy.FourPartition.frameMarginalY_eq,
+        Entropy.FourPartition.movementEta_frameVector, Entropy.regionEntropy_eq_entropy,
+        Entropy.regionEntropy_compl, Entropy.regionalMovementEta_eq_cmi_left,
+        Entropy.regionalMovementEta_eq_cmi_right, Entropy.regionalMovementEta_nonneg}
+    \leanok
+    \uses{lem:regional_movement}
+    For a vector $\theta$ on the sites and a partition $P,x,Y_0,F$, the exponent of
+    Lemma~\ref{lem:regional_movement} is $\eta_\theta=S_\theta(x|P)+S_\theta(x|Y_0)$, the marginals
+    $\rho_P,\rho_{Y_0}$ there are the states of $\theta$ on $P$ and $Y_0$, and
+    \[
+        \eta_\theta=I_\theta(x:F|P)=I_\theta(x:F|Y_0)\ge0.
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    The coordinates of Lemma~\ref{lem:regional_movement} split the configurations along $xY_0$
+    and along $Px$, so the marginals on these regions are the regional states, and their
+    partial traces are the states on $Y_0$ and $P$. Complementary regions of a vector have
+    equal entropy, which turns $S_\theta(x|P)+S_\theta(x|Y_0)$ into either conditional mutual
+    information; strong subadditivity gives $I_\theta(x:F|P)\ge0$.
+\end{proof}
+
+\begin{theorem}[Lemma 6.3, the relative coherent pin]
+    \label{thm:relative_pin}
+    \lean{TensorPower.exists_replicaMetric_integral_localLift, TensorPower.norm_tensorVec,
+        TensorPower.norm_of_integral_mulVec_le, Matrix.rpow_mul_cfc_kernelCompletion,
+        TensorPower.relativePin, TensorPower.relativePin_regionalMovementEta,
+        TensorPower.leafRoot_comm, TensorPower.leafMetric_comm, TensorPower.relativePin_toF}
+    \leanok
+    \uses{lem:move_inverse, lem:compensator, lem:regional_movement,
+        thm:replica_metric_integral, lem:movement_eta_regional}
+    There are universal constants $C,c>0$ such that, for $0<t\le1$, $a=2t$ and
+    $a\log(e\dim x)\le c$, there is a polynomial $p(k)$, uniform in $\theta$, with
+    \[
+        C_{x,k}\ge p(k)^{-1}\exp\bigl\{ka[\eta_\theta-Ca^{1/4}\log^2(e\dim x)]\bigr\}
+            P_{\theta,k},
+    \]
+    where $\eta_\theta=S_\theta(x|P)+S_\theta(x|Y_0)=I_\theta(x:F|P)=I_\theta(x:F|Y_0)$. The
+    same statement holds for a move to $F$ after exchanging the outer parts:
+    $A_k^{-1/2}A_k(P,Y_0,Fx)A_k^{-1/2}$ satisfies the bound with
+    $\eta_\theta=S_\theta(x|F)+S_\theta(x|Y_0)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    By Lemma~\ref{lem:move_inverse} it suffices to bound
+    $\|W_{Px}W_{xY_0}W_P^{-1}W_{Y_0}^{-1}\theta^{\otimes k}\|$. Since $\rho_R^t\hat\rho_R^{-t}$ is
+    the support projection of $\rho_R$, $W_P^{-1}W_{Y_0}^{-1}\theta^{\otimes k}=T_PT_{Y_0}y$ with
+    $T_R=W_R^{-1}(\rho_R^t)^{\otimes k}$ and $y=(\hat\rho_P^{-t}\hat\rho_{Y_0}^{-t}\theta)^{\otimes k}$;
+    the compensators commute with $W_{Px}$ and $W_{xY_0}$ and have polynomial norm. Expanding
+    both numerators by the integral representation,
+    $\|W_{Px}W_{xY_0}y\|$ is at most the supremum of
+    $\|\sigma^t\tau^t\hat\rho_P^{-t}\hat\rho_{Y_0}^{-t}\theta\|^k$, which
+    Lemma~\ref{lem:regional_movement} bounds by $\exp(-ka\eta_\theta/2+kCa^{5/4}\ell^2)$, with
+    $\ell=\log(e\dim x)$ and $C$ the constant of Lemma 5.1. Squaring gives the claim with twice
+    that constant, and Lemma~\ref{lem:movement_eta_regional} identifies the exponent. For a move
+    to $F$, apply the statement to the partition $F,x,Y_0,P$: the partition metric is symmetric in
+    its outer parts, since $W_P^{-1}$ and $W_F^{-1}$ commute.
+\end{proof}

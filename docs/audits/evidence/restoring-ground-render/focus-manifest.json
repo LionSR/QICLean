@@ -1,0 +1,146 @@
+{
+  "source_revision": "bbdafdcc6e56d1a90f882b1508c4e6adc67ea2bc",
+  "target_leaves": [
+    "blueprint/src/chapter/ch12_support_inverse_sandwich.tex",
+    "blueprint/src/chapter/ch12_entropy_restoring_operators.tex",
+    "blueprint/src/chapter/ch12_entropy_restoring_norm.tex",
+    "blueprint/src/chapter/ch12_entropy_restoring_vectors.tex",
+    "blueprint/src/chapter/restoring_coefficient_bound.tex",
+    "blueprint/src/chapter/ch12_entropy_restoring_ground_component.tex"
+  ],
+  "new_leaves": [
+    "blueprint/src/chapter/restoring_coefficient_bound.tex",
+    "blueprint/src/chapter/ch12_entropy_restoring_ground_component.tex"
+  ],
+  "context": {
+    "source_path": "blueprint/src/chapter/ch03_channel_representations_choi_and_kraus.tex",
+    "first_line": 11,
+    "last_line": 28,
+    "fixture_path": "blueprint/src/partial-trace-context.tex",
+    "sha256": "b0fe20b8db655856b383ad5e3873415b9b262a6b7ba89a032dd70d12e016cec4",
+    "declarations": [
+      "Matrix.traceLeft",
+      "Matrix.traceRight",
+      "Matrix.partialTraceRight",
+      "Matrix.partialTraceRight_apply"
+    ]
+  },
+  "source_sha256": {
+    "QICLean/Analysis/SupportInverseSandwich.lean": "ad13e0f55e3977a089a7305c022db070305607dd06badbeea3e99aa734ca71ae",
+    "QICLean/Entropy/RestoringMarginal.lean": "02e3697b6b74ec3cd89dcb8a3d33614e07c080284aec9bd0829e4cd0592801d7",
+    "QICLean/Entropy/RestoringOperators.lean": "a7934cdfb92f0c58c61a9bbfd1feeccb2336b111719c07873fa5670d4f6528fb",
+    "QICLean/Entropy/RestoringNorm.lean": "6c8965df5fd8880baa13d46e651854224ea49e60d3aeb1dac07f155ec2478946",
+    "QICLean/Entropy/RestoringVectors.lean": "d3fe9e01a6cb0289bf453af5dc5a7bb14a83438abe7555150957538ebea9d7e6",
+    "QICLean/Analysis/RestoringCoefficientBound.lean": "b715a6cb9480f912a5839232e0b6999eea7d1a4e1c0d77469d384caf4da7c51c",
+    "QICLean/Entropy/RestoringGroundComponent.lean": "0534b415654445b36b2d38b9378c17361702fed48b4ba887305961c643407f60",
+    "QICLeanTest/SupportInverseSandwich.lean": "3e316f3f2e6bd96db1206f6d2017deed0c94348e815f5781e2c02b5ab11a314e",
+    "QICLeanTest/SupportInverseSandwichAxioms.lean": "18852bc2d68560a3184a07377cdf2802ec36b51a0f290a8ba9756163c435e4b5",
+    "QICLeanTest/RestoringMarginal.lean": "cd37d977631f7d27ab8291042a3dc977ef383b3de3b7dd559b35542c793e8f2b",
+    "QICLeanTest/RestoringMarginalAxioms.lean": "0748ec0d2b0091c73cf92bd064611ceecaa45889f17cd478ae1d7311de87c7d6",
+    "QICLeanTest/RestoringOperators.lean": "39b157ddda438a206fbf39372220e158e01c7628cc43042636d1e5076462b764",
+    "QICLeanTest/RestoringOperatorsAxioms.lean": "b5b13832445c7492b27fe17974524811bc2b68beaf231d87c12169ec3487618b",
+    "QICLeanTest/RestoringNorm.lean": "20104c3cbe6811aca948e184ca8592f2dc3e20cd523074081959b21d4521a64d",
+    "QICLeanTest/RestoringNormAxioms.lean": "8154346013846ebd3c7d9a146b55721b15db4fe049b440988ba8c80ab528439d",
+    "QICLeanTest/RestoringVectors.lean": "0ffbb97b4bfb602860d1969bf2ed1c4d123eebbe54c17c2d2a8e3faa6df5e47d",
+    "QICLeanTest/RestoringVectorsAxioms.lean": "ad2520a7821cca15276741389c065d2567ef305063b9526518bd3133e3ba95df",
+    "QICLeanTest/RestoringCoefficientBound.lean": "f4b093c0e31c4a57a7ce4ad881de15365a18a0534608999da038a376b257dc58",
+    "QICLeanTest/RestoringCoefficientBoundAxioms.lean": "a293b3bf844941662f80e0d1b1972a726c4a4147769bf49aac3db119ac30e252",
+    "QICLeanTest/RestoringGroundComponent.lean": "4dfb75464da55754b03b1da9fbb60d3cb5dbd55c5c9c95c72e5fc98c32ca71f6",
+    "QICLeanTest/RestoringGroundComponentAxioms.lean": "c5fdcecf1f3168f8444c8d94529a3fe80a689a8123b3a17cd5071da165b25ece",
+    "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean": "0048b0dab04e51ac73a35e9aa2d9a02473043cc2dafb700e0a8123929cd33d15",
+    "docs/audits/evidence/restoring-marginal/RestoringMarginalRawAxioms.lean": "6aae65bff35719566505dae7f9b69b4b25a76cdc78cf4e8be77c663c6ff70b3b",
+    "docs/audits/evidence/restoring-marginal/RestoringOperatorsRawAxioms.lean": "c5498932cc32d4ed4b2e1eb218805d03ca41cdc67222bb050b5d2ad6687feb8f",
+    "docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean": "4da5a717f9098f2c878c58bc7bd1ff4eab5ccef9ce238e24c11b809d5a53b613",
+    "docs/audits/evidence/restoring-ground-component/RestoringGroundComponentRawAxioms.lean": "ea99567735dc9be55f1b2c8700ff781bb21c14f3dc71883509c3c832381e111b",
+    "blueprint/src/chapter/ch12_support_inverse_sandwich.tex": "1c35cd9e478ff26f29247bbd3f09ae7f734bd845bbebca7c3bbdf7d71c42452a",
+    "blueprint/src/chapter/ch12_entropy_restoring_operators.tex": "8a9d5ca43f646ac4613dbeed1dfb79ec3a06a9984750ea479bdad229428e6d9c",
+    "blueprint/src/chapter/ch12_entropy_restoring_norm.tex": "2085183423f371151bf9b577529b2f929ab5537629cc4088d404cb6537b2a23a",
+    "blueprint/src/chapter/ch12_entropy_restoring_vectors.tex": "4ad16e66c454cfaecc23f3e0b6efb900217ccf682c2679e09b41dd824a694f4e",
+    "blueprint/src/chapter/restoring_coefficient_bound.tex": "3ed4470f0be2ad4e2c0fc1722ee934f81a2ebb811fce600116dbed08ee14b0da",
+    "blueprint/src/chapter/ch12_entropy_restoring_ground_component.tex": "bda12ea50623aa761ec388ddecfcf156727b7121898d0ecb6a30837cb2ecabd2",
+    "blueprint/src/chapter/ch03_channel_representations_choi_and_kraus.tex": "9a127280db5f05684fa22aefd5049e26df94e91455b4d4d1f72375c079486400",
+    "QICLean/Channel/PartialTrace.lean": "6deff109171281a38a5b60edb671e82ff7667b2a5a7dcf40573309cd1bc28338",
+    "blueprint/src/chapter/ch12_entropy.tex": "b01d9c2186a46c59126a409a08eb1429962568092a08f7adad6ea66d248ed897"
+  },
+  "fixture_source_sha256": {
+    "blueprint/src/Packages/tenkz_pic.py": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",
+    "blueprint/src/blueprint.sty": "bba6dd0bcae52e864efd02a248f4b8cccc9f62ba82e5ec8f8045c5944d841a8d",
+    "blueprint/src/extra_styles.css": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1",
+    "blueprint/src/latexmkrc": "6bf5c08358866b42ad8062b7dcf7fa08b892361af7dd5547235f31aed33629e0",
+    "blueprint/src/macros/common.tex": "923294d75aa08e713fe7400eceac858eb6bb5f95667eeaf2d4bb202e9a35ec35",
+    "blueprint/src/macros/diagrams.tex": "275794e8e3fcf74aa7c000b38420f9150dd52017ea61216875103dc62908bf2e",
+    "blueprint/src/macros/print.tex": "e7abb3c60f1d2125b3c5ff72a14c408755e418b9654c9c661841efb1f54e1d10",
+    "blueprint/src/macros/web.tex": "3906fd9caafca22ceec080aca9c95a0cde575d7ecf7e70ef43156eadce0ca080",
+    "blueprint/src/plastex.cfg": "c6dd8278bcdc1c3106607dc114dee52a84a136e9cfa04e2a4d2f8d0b4c3e0378",
+    "blueprint/src/plastex_templates/DocumentCommands.jinja2s": "38fb147cde71e0c9e943ca6a7645950f12869d1d19b6f2cd843f56c8f0add921",
+    "blueprint/src/plastex_templates/TenkzPictures.jinja2s": "879380488675beb1bc55fe420f966e6a5f3fa86b9c1cf76489ace0e5dbb4c3c5",
+    "blueprint/src/print.tex": "a80284c614ecaff007283ca80bbe7285fae1796ded5cc21bd36dcea1a41794f0",
+    "blueprint/src/references.bib": "e1a3c3fc4670fcc744cb44ad5457206de9ce86322848c3df53bb1395b0e74420",
+    "blueprint/src/tenkz_pic.sty": "adf747cb82f51ce4da80003c3352c58164f60ce04a33cbb1d6b560e1042004f5",
+    "blueprint/src/texra_patches.sty": "d97f038370fb8fe469682196ab4e99bb1bd8c761a7ba5a4d34f51f6ad4027302",
+    "blueprint/src/web.tex": "3381d2bf7da7dcda9a7e309c6fb070bb3ee7620ca5c8649b802074826bd1a9a4",
+    "blueprint/src/chapter/ch12_support_inverse_sandwich.tex": "1c35cd9e478ff26f29247bbd3f09ae7f734bd845bbebca7c3bbdf7d71c42452a",
+    "blueprint/src/chapter/ch12_entropy_restoring_operators.tex": "8a9d5ca43f646ac4613dbeed1dfb79ec3a06a9984750ea479bdad229428e6d9c",
+    "blueprint/src/chapter/ch12_entropy_restoring_norm.tex": "2085183423f371151bf9b577529b2f929ab5537629cc4088d404cb6537b2a23a",
+    "blueprint/src/chapter/ch12_entropy_restoring_vectors.tex": "4ad16e66c454cfaecc23f3e0b6efb900217ccf682c2679e09b41dd824a694f4e",
+    "blueprint/src/chapter/restoring_coefficient_bound.tex": "3ed4470f0be2ad4e2c0fc1722ee934f81a2ebb811fce600116dbed08ee14b0da",
+    "blueprint/src/chapter/ch12_entropy_restoring_ground_component.tex": "bda12ea50623aa761ec388ddecfcf156727b7121898d0ecb6a30837cb2ecabd2",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9",
+    "scripts/tenkz_paths.py": "b301db3e900ab33d7d43cc271a914361b989034d106ebe66713343beb37e1236",
+    "scripts/test_blueprint_web_render.py": "c8b8f8ef96f6c9539a0ea99980b54302ae4b29ebd920ddce87824d13f8aa28b5"
+  },
+  "fixture_wrapper_sha256": "0ef6f3cef8c02f3cf3ebf85e81b611e42afcbbe7661e1f84fd081dc25fa07382",
+  "production_modules": [
+    "QICLean/Analysis/SupportInverseSandwich.lean",
+    "QICLean/Entropy/RestoringMarginal.lean",
+    "QICLean/Entropy/RestoringOperators.lean",
+    "QICLean/Entropy/RestoringNorm.lean",
+    "QICLean/Entropy/RestoringVectors.lean",
+    "QICLean/Analysis/RestoringCoefficientBound.lean",
+    "QICLean/Entropy/RestoringGroundComponent.lean"
+  ],
+  "test_modules": [
+    "QICLeanTest/SupportInverseSandwich.lean",
+    "QICLeanTest/SupportInverseSandwichAxioms.lean",
+    "QICLeanTest/RestoringMarginal.lean",
+    "QICLeanTest/RestoringMarginalAxioms.lean",
+    "QICLeanTest/RestoringOperators.lean",
+    "QICLeanTest/RestoringOperatorsAxioms.lean",
+    "QICLeanTest/RestoringNorm.lean",
+    "QICLeanTest/RestoringNormAxioms.lean",
+    "QICLeanTest/RestoringVectors.lean",
+    "QICLeanTest/RestoringVectorsAxioms.lean",
+    "QICLeanTest/RestoringCoefficientBound.lean",
+    "QICLeanTest/RestoringCoefficientBoundAxioms.lean",
+    "QICLeanTest/RestoringGroundComponent.lean",
+    "QICLeanTest/RestoringGroundComponentAxioms.lean"
+  ],
+  "raw_axiom_drivers": [
+    "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean",
+    "docs/audits/evidence/restoring-marginal/RestoringMarginalRawAxioms.lean",
+    "docs/audits/evidence/restoring-marginal/RestoringOperatorsRawAxioms.lean",
+    "docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean",
+    "docs/audits/evidence/restoring-ground-component/RestoringGroundComponentRawAxioms.lean"
+  ],
+  "production_lines": 1740,
+  "fixture_only_changes": [
+    "Replace content.tex with one Quantum entropy chapter wrapper selecting six byte-identical frozen restoration leaves plus the exact partial-trace definition excerpt for cross-reference context. All selected repository preambles, macros, packages, templates, bibliography, and configuration are unchanged."
+  ],
+  "tools": {
+    "texra-blueprint": "0.3.8",
+    "plasTeX": "3.1",
+    "leanblueprint": "0.0.20"
+  },
+  "paper": {
+    "section_title": "Amplifying the collar estimate",
+    "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "upstream_path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex",
+    "lines": [
+      324,
+      446
+    ],
+    "retained_local_source": "${WORKSPACE}/pinned-paper-sources/arealaw-09-amplification-adc7f124.tex",
+    "sha256": "17cb317a40f7348cce2fff888a5a3b8c6fb5e9b240d0bc9eca27452db482807f"
+  },
+  "scope": "Focused PDF and static HTML; no Lean/Lake/checkdecls, full-book build, live browser, remote documentation access, or publication."
+}

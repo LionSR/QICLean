@@ -26,6 +26,7 @@ import QICLean.Algebra.FrameOperator
 import QICLean.Algebra.FrobeniusHilbert
 import QICLean.Algebra.GramMatrixLI
 import QICLean.Algebra.HermitianHelpers
+import QICLean.Algebra.HermitianPartSum
 import QICLean.Algebra.HermitianSpectrumMultiplicity
 import QICLean.Algebra.HermitianSpectrumPerturbation
 import QICLean.Algebra.HermitianSpectrumPreserver
@@ -33,11 +34,13 @@ import QICLean.Algebra.HermitianTracePower
 import QICLean.Algebra.HermitianUnitaryConjugacy
 import QICLean.Algebra.KramersDegeneracy
 import QICLean.Algebra.KroneckerFactorPositivity
+import QICLean.Algebra.L2OpNormReindex
 import QICLean.Algebra.MatrixAlgEquiv
 import QICLean.Algebra.MatrixAlgHomCentralizer
 import QICLean.Algebra.MatrixAux
 import QICLean.Algebra.MatrixCongruence
 import QICLean.Algebra.MatrixCyclicTracePower
+import QICLean.Algebra.MatrixDependentEntries
 import QICLean.Algebra.MatrixFamilyAction
 import QICLean.Algebra.MatrixFamilySupport
 import QICLean.Algebra.MatrixGramConjugation
@@ -57,6 +60,7 @@ import QICLean.Algebra.MatrixSpectralDecomp
 import QICLean.Algebra.MatrixStabilization
 import QICLean.Algebra.MatrixTracePairing
 import QICLean.Algebra.MatrixTracePowerContinuity
+import QICLean.Algebra.MatrixUnitConjugator
 import QICLean.Algebra.MatrixUnitaryBetween
 import QICLean.Algebra.MinkowskiCanonicalPair
 import QICLean.Algebra.NewtonGirard
@@ -68,6 +72,7 @@ import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OrthogonalProjection
 import QICLean.Algebra.OverlappingLiftAlgebra
+import QICLean.Algebra.PartialTraceDomination
 import QICLean.Algebra.PerronFrobenius
 import QICLean.Algebra.PiProductTrace
 import QICLean.Algebra.PosSemidefSupport
@@ -98,9 +103,11 @@ import QICLean.Algebra.StarSubalgebraSimpleModule
 import QICLean.Algebra.StarSubalgebraSpatial
 import QICLean.Algebra.StarSubalgebraUnitaryIntertwiner
 import QICLean.Algebra.SwapTrace
+import QICLean.Algebra.TaggedInterleavings
 import QICLean.Algebra.TraceFormDuality
 import QICLean.Algebra.TracePowerCharPoly
 import QICLean.Algebra.TracePurity
 import QICLean.Algebra.TraceReindex
 import QICLean.Algebra.UnitModulusPowerSum
+import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums

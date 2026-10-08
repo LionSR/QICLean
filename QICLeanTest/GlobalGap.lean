@@ -1,0 +1,70 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Analysis.GlobalGap
+
+/-! Regressions for the global-gap equivalence with a negative ground energy. -/
+
+open Complex Matrix
+open scoped InnerProductSpace ComplexOrder
+
+namespace GlobalGapTest
+
+/-- A two-level Hamiltonian with ground energy `-7` and gap `2` above the vector `Ω`. -/
+private noncomputable def H (Ω : EuclideanSpace ℂ (Fin 2)) : Matrix (Fin 2) (Fin 2) ℂ :=
+  ((-7 : ℝ) : ℂ) • 1 + ((2 : ℝ) : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))
+
+private theorem posSemidef_gap (Ω : EuclideanSpace ℂ (Fin 2)) :
+    (H Ω - ((-7 : ℝ) : ℂ) • 1 -
+      ((2 : ℝ) : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef := by
+  rw [H, add_sub_cancel_left, sub_self]
+  exact PosSemidef.zero
+
+-- The quadratic-form gap holds at every vector, with no orthogonality to `Ω`.
+example (Ω ψ : EuclideanSpace ℂ (Fin 2)) :
+    2 * (‖ψ‖ ^ 2 - ‖⟪Ω, ψ⟫_ℂ‖ ^ 2) ≤ (⟪ψ, toEuclideanLin (H Ω) ψ⟫_ℂ).re - (-7) * ‖ψ‖ ^ 2 :=
+  (posSemidef_gap Ω).gap_le ψ
+
+-- The energy-to-phase-error bound with the negative ground energy.
+example (Ω ψ : EuclideanSpace ℂ (Fin 2)) (hΩ : ‖Ω‖ = 1) (hψ : ‖ψ‖ = 1) :
+    ⨅ θ : ℝ, ‖ψ - exp (θ * I) • Ω‖ ^ 2 ≤ 2 * ((⟪ψ, toEuclideanLin (H Ω) ψ⟫_ℂ).re - (-7)) / 2 :=
+  iInf_sq_norm_sub_exp_smul_le_of_posSemidef_gap (posSemidef_gap Ω) two_pos hΩ hψ
+
+/-- A two-level Hamiltonian with ground energy `-7` and gap `3` above the vector `Ω`, used to
+check the converse direction with the smaller gap `2`. -/
+private noncomputable def H₃ (Ω : EuclideanSpace ℂ (Fin 2)) : Matrix (Fin 2) (Fin 2) ℂ :=
+  ((-7 : ℝ) : ℂ) • 1 + ((3 : ℝ) : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))
+
+private theorem isHermitian_H₃ (Ω : EuclideanSpace ℂ (Fin 2)) : (H₃ Ω).IsHermitian := by
+  have hP : (vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))).IsHermitian := by
+    rw [IsHermitian, conjTranspose_vecMulVec, star_star]
+  exact (isHermitian_one.smul (Complex.conj_ofReal _)).add
+    ((isHermitian_one.sub hP).smul (Complex.conj_ofReal _))
+
+-- The converse direction: a quadratic-form gap of `2` gives the operator gap inequality.
+example (Ω : EuclideanSpace ℂ (Fin 2)) (hΩ : ‖Ω‖ = 1) :
+    (H₃ Ω - ((-7 : ℝ) : ℂ) • 1 -
+      ((2 : ℝ) : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef := by
+  refine ((isHermitian_H₃ Ω).posSemidef_gap_iff _ _ Ω).mpr fun ψ ↦ ?_
+  have hz : H₃ Ω - ((-7 : ℝ) : ℂ) • 1 -
+      ((3 : ℝ) : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))) = 0 := by
+    unfold H₃
+    rw [add_sub_cancel_left, sub_self]
+  have h := re_inner_toEuclideanLin_gap (H₃ Ω) (-7) 3 Ω ψ
+  rw [hz] at h
+  have hc : ‖⟪Ω, ψ⟫_ℂ‖ ≤ ‖ψ‖ := by simpa [hΩ] using norm_inner_le_norm (𝕜 := ℂ) Ω ψ
+  have hc2 : ‖⟪Ω, ψ⟫_ℂ‖ ^ 2 ≤ ‖ψ‖ ^ 2 := pow_le_pow_left₀ (norm_nonneg _) hc 2
+  simp only [map_zero, LinearMap.zero_apply, inner_zero_right, Complex.zero_re] at h
+  nlinarith
+
+-- The energy-to-phase-error bound for the normalization of a nonzero vector.
+example (Ω ψ : EuclideanSpace ℂ (Fin 2)) (hΩ : ‖Ω‖ = 1) (hψ : ψ ≠ 0) :
+    ∃ θ : ℝ, IsMinOn (fun φ : ℝ ↦ ‖(‖ψ‖⁻¹ : ℂ) • ψ - exp (φ * I) • Ω‖) Set.univ θ ∧
+      ‖(‖ψ‖⁻¹ : ℂ) • ψ - exp (θ * I) • Ω‖ ^ 2 ≤
+        2 * ((⟪ψ, toEuclideanLin (H Ω) ψ⟫_ℂ).re / ‖ψ‖ ^ 2 - (-7)) / 2 :=
+  exists_isMinOn_sq_norm_normalize_sub_exp_smul_le_of_posSemidef_gap (posSemidef_gap Ω) two_pos
+    hΩ hψ
+
+end GlobalGapTest
