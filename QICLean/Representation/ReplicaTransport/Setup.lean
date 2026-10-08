@@ -276,7 +276,7 @@ def splitEta (E : EnergyTerms V n ι) (i : ι) (j : Σ h, Option (C h))
 
 /-- The replica energy `H̄ = ∑_i h̄_i` on `k` copies (`06-transport.tex`, display
 `transport:replica-energy`). -/
-def replicaEnergy [Fintype ι] (E : EnergyTerms V n ι) (k : ℕ) :
+def _root_.TensorPower.ReplicaTransport.EnergyTerms.replicaEnergy [Fintype ι] (E : EnergyTerms V n ι) (k : ℕ) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
   ∑ i, copyMean n k (E.term i)
 
