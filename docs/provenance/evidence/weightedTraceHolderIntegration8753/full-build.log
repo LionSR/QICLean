@@ -1,0 +1,865 @@
+⚠ [3264/3285] Replayed QICLean.Algebra.PartialTraceDomination
+warning: QICLean/Algebra/PartialTraceDomination.lean:63:0: `PosSemidef.le_card_smul_one_kronecker_partialTraceLeft` does not use the following hypothesis in its type:
+  • [DecidableEq Y] (#6)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Algebra/PartialTraceDomination.lean:63:0: `PosSemidef.le_card_smul_one_kronecker_partialTraceLeft` does not use the following hypothesis in its type:
+  • [Fintype Y] (#5)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+⚠ [9116/9824] Replayed QICLean.Analysis.ConvexHullCompact
+warning: QICLean/Analysis/ConvexHullCompact.lean:65:4: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: QICLean/Analysis/ConvexHullCompact.lean:70:12: `isCompact_stdSimplex` has been deprecated: Use `Convexity.StdSimplex.compactSpace` instead
+
+Note: The updated constant has a different type:
+  ∀ (R : Type u_1) (M : Type u_2) [inst : Ring R] [inst_1 : TopologicalSpace R] [IsTopologicalRing R]
+    [inst_3 : PartialOrder R] [inst_4 : IsStrictOrderedRing R] [CompactIccSpace R] [OrderClosedTopology R] [Finite M],
+    CompactSpace (Convexity.StdSimplex R M)
+instead of
+  ∀ (𝕜 : Type u_1) (ι : Type u_2) [inst : Fintype ι] [inst_1 : TopologicalSpace 𝕜] [inst_2 : Semiring 𝕜]
+    [inst_3 : PartialOrder 𝕜] [OrderClosedTopology 𝕜] [ContinuousAdd 𝕜] [CompactIccSpace 𝕜] [IsOrderedAddMonoid 𝕜],
+    IsCompact (stdSimplex 𝕜 ι)
+warning: QICLean/Analysis/ConvexHullCompact.lean:99:23: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+⚠ [9117/9824] Replayed QICLean.Analysis.CyclicReciprocal
+warning: QICLean/Analysis/CyclicReciprocal.lean:103:44: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+⚠ [9142/9824] Replayed QICLean.Analysis.KernelCompletion
+warning: QICLean/Analysis/KernelCompletion.lean:91:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+⚠ [9161/9824] Replayed QICLean.Entropy.ConditionalMovement.LogCompression
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:95:0: `compression_mono` does not use the following hypothesis in its type:
+  • [Fintype n] (#4)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:281:0: `sqrt_posDef` does not use the following hypothesis in its type outside of proofs:
+  • [DecidableEq m] (#3) (used in type, but only in a proof)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:284:0: `sqrt_square` does not use the following hypothesis in its type outside of proofs:
+  • [DecidableEq m] (#3) (used in type, but only in a proof)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/LogCompression.lean:296:0: `eq_of_vec_pairing` does not use the following hypothesis in its type:
+  • [DecidableEq m] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+ℹ [9211/9824] Replayed Gametheory.Scarf
+info: Gametheory/Scarf.lean:241:33: Try this:
+  [apply] rwa [h1.2] at hd
+
+Note: This linter can be disabled with `set_option linter.tacticAnalysis.rwaSuggestion false`
+info: Gametheory/Scarf.lean:246:33: Try this:
+  [apply] rwa [h1.2] at hd
+
+Note: This linter can be disabled with `set_option linter.tacticAnalysis.rwaSuggestion false`
+⚠ [9245/9824] Replayed QICLean.Analysis.SpectralKronecker
+warning: QICLean/Analysis/SpectralKronecker.lean:115:0: `ext_star_dotProduct_mulVec` does not use the following hypotheses in its type:
+  • [DecidableEq n] (#4)
+  • [DecidableEq m] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Analysis/SpectralKronecker.lean:122:0: `ext_star_vec_dotProduct_mulVec_vec` does not use the following hypotheses in its type:
+  • [DecidableEq l] (#4)
+  • [DecidableEq k] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9267/9824] Replayed QICLean.Entropy.ConditionalMovement.PartialTrace
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:55:0: `ptrR_posSemidef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:55:0: `ptrR_posSemidef` does not use the following hypothesis in its type:
+  • [Fintype m] (#3)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:60:0: `ptrR_posDef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:60:0: `ptrR_posDef` does not use the following hypothesis in its type:
+  • [Fintype m] (#3)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:72:2: `simp [tensorLeftHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrR, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:74:2: `exact Finset.sum_congr rfl fun x _ => Finset.sum_comm`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 72!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:78:2: `simp [tensorRightHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrL, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:80:2: `rw [Finset.sum_comm]`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 78!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:78:2: `simp [tensorRightHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrL, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:81:2: `apply Finset.sum_congr rfl`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 78!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:78:2: `simp [tensorRightHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrL, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:82:2: `intro i hi`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 78!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:78:2: `simp [tensorRightHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, ptrL, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:83:2: `exact Finset.sum_comm`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 78!
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:192:0: `ptrL_posSemidef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:192:0: `ptrL_posSemidef` does not use the following hypothesis in its type:
+  • [Fintype n] (#4)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:197:0: `ptrL_posDef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/PartialTrace.lean:197:0: `ptrL_posDef` does not use the following hypothesis in its type:
+  • [Fintype n] (#4)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+⚠ [9273/9824] Replayed Gametheory.Brouwer
+warning: Gametheory/Brouwer.lean:39:34: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:49:45: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:370:14: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:370:37: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:374:33: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:374:33: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:391:42: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:391:42: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:403:32: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:506:40: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:506:63: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:507:65: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:525:38: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:548:23: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:549:46: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:551:55: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:552:46: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:566:34: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:566:57: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:626:34: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:626:57: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:631:87: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:685:122: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:686:83: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:705:65: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:706:53: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:713:48: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:717:48: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:732:83: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:740:81: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:742:81: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:743:46: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer.lean:746:83: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+⚠ [9331/9824] Replayed Gametheory.Brouwer_product
+warning: Gametheory/Brouwer_product.lean:15:21: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:18:37: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:48:12: `WellFounded.min_le` has been deprecated: Use `WellFoundedLT.min_le` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.min_le` to `WellFoundedLT.min_le x`).
+
+Hint: Replace the deprecated name:
+  WellFoundedL̲T̲.min_le
+warning: Gametheory/Brouwer_product.lean:224:8: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:220:17: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:229:15: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:253:15: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:375:8: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:362:17: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: Gametheory/Brouwer_product.lean:382:15: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+⚠ [9396/9824] Replayed QICLean.Analysis.ResolventPhaseBound
+warning: QICLean/Analysis/ResolventPhaseBound.lean:290:19: `if_pos` has been deprecated: Use `ite_eq_left` instead
+
+Hint: Replace the deprecated name:
+  i̵f̵_̵p̵o̵s̵i̲t̲e̲_̲e̲q̲_̲l̲e̲f̲t̲
+warning: QICLean/Analysis/ResolventPhaseBound.lean:305:57: `if_neg` has been deprecated: Use `ite_eq_right` instead
+
+Hint: Replace the deprecated name:
+  i̵f̵_̵n̵e̵g̵i̲t̲e̲_̲e̲q̲_̲r̲i̲g̲h̲t̲
+✔ [9399/9824] Built QICLean.Analysis.SpectralProjectionIntertwiner (6.2s)
+⚠ [9421/9824] Replayed QICLean.Entropy.ConditionalMovement.EntropyBounds
+warning: QICLean/Entropy/ConditionalMovement/EntropyBounds.lean:39:0: `block_posSemidef` does not use the following hypotheses in its type:
+  • [DecidableEq m] (#5)
+  • [DecidableEq n] (#6)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/EntropyBounds.lean:39:0: `block_posSemidef` does not use the following hypotheses in its type:
+  • [Fintype m] (#3)
+  • [Fintype n] (#4)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/EntropyBounds.lean:135:0: `trace_mul_mono_right` does not use the following hypothesis in its type:
+  • [DecidableEq n] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9427/9824] Replayed QICLean.Topology.BrouwerProduct
+warning: QICLean/Topology/BrouwerProduct.lean:33:36: `stdSimplexHomeomorphUnitInterval` has been deprecated: Use `Convexity.StdSimplex.homeomorphI` instead
+
+Note: The updated constant has a different type:
+  Convexity.StdSimplex ℝ (Fin 2) ≃ₜ ↑unitInterval
+instead of
+  ↑(stdSimplex ℝ (Fin 2)) ≃ₜ ↑unitInterval
+⚠ [9448/9824] Replayed QICLean.Channel.ChoiTypeMap.YamagamiPositivity
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:166:25: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:175:13: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:181:23: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:182:45: `isClosed_stdSimplex` has been deprecated: Use `Convexity.StdSimplex.isClosedEmbedding_toFun_comp_weights` instead
+
+Note: The updated constant has a different type:
+  ∀ (R : Type u) [inst : PartialOrder R] [inst_1 : Ring R] [inst_2 : TopologicalSpace R]
+    [inst_3 : IsStrictOrderedRing R] [IsTopologicalRing R] [OrderClosedTopology R] (M : Type u_1) [Finite M],
+    Topology.IsClosedEmbedding fun t ↦ ⇑t.weights
+instead of
+  ∀ (𝕜 : Type u_1) (ι : Type u_2) [inst : Fintype ι] [inst_1 : TopologicalSpace 𝕜] [inst_2 : Semiring 𝕜]
+    [inst_3 : PartialOrder 𝕜] [OrderClosedTopology 𝕜] [ContinuousAdd 𝕜], IsClosed (stdSimplex 𝕜 ι)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:184:5: `isCompact_stdSimplex` has been deprecated: Use `Convexity.StdSimplex.compactSpace` instead
+
+Note: The updated constant has a different type:
+  ∀ (R : Type u_1) (M : Type u_2) [inst : Ring R] [inst_1 : TopologicalSpace R] [IsTopologicalRing R]
+    [inst_3 : PartialOrder R] [inst_4 : IsStrictOrderedRing R] [CompactIccSpace R] [OrderClosedTopology R] [Finite M],
+    CompactSpace (Convexity.StdSimplex R M)
+instead of
+  ∀ (𝕜 : Type u_1) (ι : Type u_2) [inst : Fintype ι] [inst_1 : TopologicalSpace 𝕜] [inst_2 : Semiring 𝕜]
+    [inst_3 : PartialOrder 𝕜] [OrderClosedTopology 𝕜] [ContinuousAdd 𝕜] [CompactIccSpace 𝕜] [IsOrderedAddMonoid 𝕜],
+    IsCompact (stdSimplex 𝕜 ι)
+warning: QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean:263:48: `stdSimplex` has been deprecated: Use `Convexity.StdSimplex` instead
+
+Note: The updated constant has a different type:
+  (R : Type u) → [LE R] → [AddCommMonoid R] → [One R] → Type v → Type (max u v)
+instead of
+  (𝕜 : Type u_2) → (ι : Type u_1) → [Semiring 𝕜] → [PartialOrder 𝕜] → [Fintype ι] → Set (ι → 𝕜)
+⚠ [9494/9824] Replayed QICLean.Entropy.ConditionalMovement.ConditionalCollision
+warning: QICLean/Entropy/ConditionalMovement/ConditionalCollision.lean:67:0: `collision_le` does not use the following hypotheses in its type:
+  • [DecidableEq X] (#7)
+  • [DecidableEq F] (#9)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/ConditionalCollision.lean:129:0: `density_pos` does not use the following hypotheses in its type:
+  • [Fintype X] (#4)
+  • [Fintype P] (#5)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/ConditionalCollision.lean:141:0: `conditional_spectral_mgf` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9497/9824] Replayed QICLean.Entropy.MarginalPhaseFaithful
+warning: QICLean/Entropy/MarginalPhaseFaithful.lean:50:0: `posDef_marginalUF` does not use the following hypotheses in its type:
+  • [Fintype U] (#5)
+  • [Fintype F] (#6)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/MarginalPhaseFaithful.lean:54:0: `posDef_marginalXU` does not use the following hypotheses in its type:
+  • [Fintype X] (#4)
+  • [Fintype U] (#5)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/MarginalPhaseFaithful.lean:58:0: automatically included section variable(s) unused in theorem `Entropy.MarginalPhase.posDef_marginalU`:
+  [DecidableEq X]
+  [DecidableEq U]
+  [DecidableEq F]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: QICLean/Entropy/MarginalPhaseFaithful.lean:58:0: `posDef_marginalU` does not use the following hypotheses in its type:
+  • [DecidableEq X] (#5)
+  • [DecidableEq U] (#7)
+  • [DecidableEq F] (#9)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/MarginalPhaseFaithful.lean:58:0: `posDef_marginalU` does not use the following hypothesis in its type:
+  • [Fintype U] (#6)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/MarginalPhaseFaithful.lean:147:4: Overlapping instance parameters in `isoMap`:
+
+⚠️ There are 2 `[Nonempty X]` instances; one is sufficient.
+⚠️ There are 2 `[Nonempty F]` instances; one is sufficient.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+⚠ [9553/9824] Replayed QICLean.Entropy.ConditionalMovement.ConditionalPhase
+warning: QICLean/Entropy/ConditionalMovement/ConditionalPhase.lean:107:0: `conditional_spectral_second_moment` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/ConditionalPhase.lean:202:0: `conditional_phase_continuity` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9554/9824] Replayed QICLean.Entropy.ConditionalMovement.EntropyContinuity
+warning: QICLean/Entropy/ConditionalMovement/EntropyContinuity.lean:39:0: `posSemidef_zero_of_trace_re_zero` does not use the following hypothesis in its type:
+  • [DecidableEq n] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9555/9824] Replayed QICLean.Entropy.ConditionalMovement.FilterEntropy
+warning: QICLean/Entropy/ConditionalMovement/FilterEntropy.lean:177:0: `one_filter_entropy_bound` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9558/9824] Replayed QICLean.Entropy.MarginalPhaseQuantities
+warning: QICLean/Entropy/MarginalPhaseQuantities.lean:58:0: automatically included section variable(s) unused in theorem `Entropy.MarginalPhase.trace_marginalU`:
+  [DecidableEq X]
+  [DecidableEq U]
+  [DecidableEq F]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: QICLean/Entropy/MarginalPhaseQuantities.lean:58:0: `trace_marginalU` does not use the following hypotheses in its type:
+  • [DecidableEq X] (#5)
+  • [DecidableEq U] (#7)
+  • [DecidableEq F] (#9)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/MarginalPhaseQuantities.lean:62:0: `trace_sigmaS` does not use the following hypotheses in its type:
+  • [DecidableEq U] (#7)
+  • [DecidableEq F] (#9)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/MarginalPhaseQuantities.lean:100:29: This simp argument is unused:
+  Complex.zero_re
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Complex.sub_re] at this
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: QICLean/Entropy/MarginalPhaseQuantities.lean:92:0: `re_trace_mul_mul_mono` does not use the following hypothesis in its type:
+  • [DecidableEq n] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/MarginalPhaseQuantities.lean:112:0: `posDef_sigmaF` does not use the following hypotheses in its type:
+  • [Fintype U] (#6)
+  • [Fintype F] (#7)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+✔ [9564/9824] Built QICLean.Representation.SchurWeylCommutant (5.0s)
+ℹ [9595/9824] Replayed QICLean.Channel.LorentzNormalForm.SpinorExponential
+info: QICLean/Channel/LorentzNormalForm/SpinorExponential.lean:452:47: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: QICLean/Channel/LorentzNormalForm/SpinorExponential.lean:454:47: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: QICLean/Channel/LorentzNormalForm/SpinorExponential.lean:484:46: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: QICLean/Channel/LorentzNormalForm/SpinorExponential.lean:486:46: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+⚠ [9601/9824] Replayed QICLean.Entropy.ConditionalMovement.Optimizer
+warning: QICLean/Entropy/ConditionalMovement/Optimizer.lean:419:0: `conditional_optimizer_root_stability` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+✔ [9609/9824] Built QICLean.Representation.HighestWeight (4.5s)
+✔ [9611/9824] Built QICLean.Representation.ColumnAntisymmetrizer (5.4s)
+✔ [9613/9824] Built QICLean.Representation.GoodAuxiliaryLabelEntropy (6.0s)
+✔ [9620/9824] Built QICLean.Representation.MergeMoment (7.9s)
+✔ [9644/9824] Built QICLean.Representation.SchurWeylLabels (4.3s)
+✔ [9645/9824] Built QICLean.Representation.GoodAuxiliaryLabelCompression (4.1s)
+✔ [9653/9824] Built QICLean.Representation.PairMergeMoment (5.1s)
+✔ [9670/9824] Built QICLean.Representation.SchurWeylLift (4.6s)
+✔ [9671/9824] Built QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound (4.6s)
+⚠ [9688/9824] Replayed QICLean.Entropy.ConditionalMovement.FilterSlack
+warning: QICLean/Entropy/ConditionalMovement/FilterSlack.lean:159:0: `conditional_optimizer_deficit` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/FilterSlack.lean:205:0: `coefficient_energy` does not use the following hypothesis in its type:
+  • [DecidableEq X] (#7)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/FilterSlack.lean:219:0: `conditional_modular_distance` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+✔ [9690/9824] Built QICLean.Representation.PairMergeDeficit (3.0s)
+✔ [9691/9824] Built QICLean.Analysis.ReplicaComponentMergeMoment (9.7s)
+⚠ [9711/9824] Replayed QICLean.Entropy.ConditionalMovement.Purification
+warning: QICLean/Entropy/ConditionalMovement/Purification.lean:75:0: `opposite_entropy_absorbed` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/Purification.lean:219:0: `one_filter_purification_bound` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+✔ [9712/9824] Built QICLean.Representation (7.0s)
+⚠ [9723/9824] Replayed QICLean.Entropy.ConditionalMovement.BoundaryEnergy
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:135:0: `paired_entropy_boundary` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:234:0: `coefficient_kernel` does not use the following hypothesis in its type:
+  • [Fintype Y] (#5)
+
+Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:265:0: `one_filter_with_marginal_phase` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#9)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:337:0: `right_boundary_entropy` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/BoundaryEnergy.lean:375:0: `boundary_pair_energy` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9750/9824] Replayed QICLean.Entropy.ConditionalMovement.DoubleCurve
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:56:0: `matrixMul_differentiable` does not use the following hypotheses in its type:
+  • [DecidableEq κ] (#7)
+  • [DecidableEq ζ] (#8)
+
+Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:56:0: `matrixMul_differentiable` does not use the following hypotheses in its type:
+  • [Fintype ι] (#4)
+  • [Fintype ζ] (#6)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:92:0: `doubleCurve_differentiable` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:112:0: `doubleCurve_bounded` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/DoubleCurve.lean:201:0: `one_copy_interpolation_fullrank` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9774/9824] Replayed QICLean.Entropy.ConditionalMovement.SingularInterpolation
+warning: QICLean/Entropy/ConditionalMovement/SingularInterpolation.lean:100:0: `one_copy_interpolation` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+warning: QICLean/Entropy/ConditionalMovement/SingularInterpolation.lean:157:0: `one_copy_move_schmidt` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9799/9824] Replayed QICLean.Entropy.ConditionalMovement.UnitaryCovariance
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:51:2: `rw [Finset.sum_comm]`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:52:2: `apply Finset.sum_congr rfl`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:53:2: `intro y' hy'`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:54:2: `apply Finset.sum_congr rfl`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:49:2: `simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
+    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:55:2: `intro p' hp'`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 49!
+warning: QICLean/Entropy/ConditionalMovement/UnitaryCovariance.lean:348:0: `one_copy_move_cfc` does not use the following hypothesis in its type:
+  • [DecidableEq F] (#12)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`
+⚠ [9801/9824] Replayed QICLean.Entropy.ConditionalMovementEstimate
+warning: QICLean/Entropy/ConditionalMovementEstimate.lean:158:0: `movementMarginalXU_posSemidef` does not use the following hypotheses in its type:
+  • [Fintype X] (#5)
+  • [Fintype U] (#6)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+warning: QICLean/Entropy/ConditionalMovementEstimate.lean:163:0: `movementMarginalXP_posSemidef` does not use the following hypotheses in its type:
+  • [Fintype X] (#5)
+  • [Fintype P] (#7)
+
+Consider replacing these hypotheses with the corresponding instances of `Finite` and using `Fintype.ofFinite` in the proof, or removing them entirely.
+
+Note: This linter can be disabled with `set_option linter.unusedFintypeInType false`
+✔ [9818/9824] Built QICLean.Analysis (73s)
+✔ [9823/9824] Built QICLean (69s)
+Build completed successfully (9824 jobs).

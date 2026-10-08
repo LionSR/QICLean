@@ -1,0 +1,21 @@
+{
+  "source_revision": "16aa60629926eec575b5af7a29e59bf73b8cab28",
+  "command": [
+    "pdftoppm",
+    "-f",
+    "459",
+    "-l",
+    "460",
+    "-r",
+    "120",
+    "-png",
+    "blueprint/print/print.pdf",
+    "docs/provenance/evidence/weightedTraceHolderIntegration8753/page"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T03:37:34.349047+00:00",
+  "elapsed_seconds": 0.757,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/weightedTraceHolderIntegration8753/pdf-render.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

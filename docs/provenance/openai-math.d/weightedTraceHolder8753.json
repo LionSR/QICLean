@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-weighted-trace-holder-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/OrthogonalResolution.lean",
+        "declaration": "Matrix.IsOrthogonalResolution.prod_hom_fst",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary weighted exponential trace inequality or actual product-resolution marginal identity. No upstream Lean proof text reused; the actual source five-factor construction and moment rates remain downstream."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Analysis.WeightedTraceHolder QICLean.Representation.GroupedLabelEntropy QICLean.Representation.MergeExponential QICLean.Representation.SchurSurprisal",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-target.log",
+            "sha256": "d8a5560abadf930f628f0b0707a52ecda7aa06f1a46be974d4965bf2f3f3194b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/OrthogonalResolution.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-strict-resolution.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/weightedTraceHolder8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-axioms.log",
+            "sha256": "2052d13589991df9490cd155e5bcf4ab9d343c65476957283c04803c566742df"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-weighted-trace-holder-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/OrthogonalResolution.lean",
+        "declaration": "Matrix.IsOrthogonalResolution.prod_hom_snd",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary weighted exponential trace inequality or actual product-resolution marginal identity. No upstream Lean proof text reused; the actual source five-factor construction and moment rates remain downstream."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Analysis.WeightedTraceHolder QICLean.Representation.GroupedLabelEntropy QICLean.Representation.MergeExponential QICLean.Representation.SchurSurprisal",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-target.log",
+            "sha256": "d8a5560abadf930f628f0b0707a52ecda7aa06f1a46be974d4965bf2f3f3194b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/OrthogonalResolution.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-strict-resolution.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/weightedTraceHolder8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-axioms.log",
+            "sha256": "2052d13589991df9490cd155e5bcf4ab9d343c65476957283c04803c566742df"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-weighted-trace-holder-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/WeightedTraceHolder.lean",
+        "declaration": "Matrix.PosSemidef.re_trace_mul_exp_smul_add_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary weighted exponential trace inequality or actual product-resolution marginal identity. No upstream Lean proof text reused; the actual source five-factor construction and moment rates remain downstream."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Analysis.WeightedTraceHolder QICLean.Representation.GroupedLabelEntropy QICLean.Representation.MergeExponential QICLean.Representation.SchurSurprisal",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-target.log",
+            "sha256": "d8a5560abadf930f628f0b0707a52ecda7aa06f1a46be974d4965bf2f3f3194b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/WeightedTraceHolder.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-strict-holder.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/weightedTraceHolder8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-axioms.log",
+            "sha256": "2052d13589991df9490cd155e5bcf4ab9d343c65476957283c04803c566742df"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-weighted-trace-holder-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/WeightedTraceHolder.lean",
+        "declaration": "Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary weighted exponential trace inequality or actual product-resolution marginal identity. No upstream Lean proof text reused; the actual source five-factor construction and moment rates remain downstream."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Analysis.WeightedTraceHolder QICLean.Representation.GroupedLabelEntropy QICLean.Representation.MergeExponential QICLean.Representation.SchurSurprisal",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-target.log",
+            "sha256": "d8a5560abadf930f628f0b0707a52ecda7aa06f1a46be974d4965bf2f3f3194b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/WeightedTraceHolder.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-strict-holder.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/weightedTraceHolder8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-axioms.log",
+            "sha256": "2052d13589991df9490cd155e5bcf4ab9d343c65476957283c04803c566742df"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-weighted-trace-holder-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/WeightedTraceHolder.lean",
+        "declaration": "Matrix.PosSemidef.re_trace_mul_exp_nonneg",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary weighted exponential trace inequality or actual product-resolution marginal identity. No upstream Lean proof text reused; the actual source five-factor construction and moment rates remain downstream."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Analysis.WeightedTraceHolder QICLean.Representation.GroupedLabelEntropy QICLean.Representation.MergeExponential QICLean.Representation.SchurSurprisal",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-target.log",
+            "sha256": "d8a5560abadf930f628f0b0707a52ecda7aa06f1a46be974d4965bf2f3f3194b"
+          },
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/WeightedTraceHolder.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-strict-holder.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "env LEAN_NUM_THREADS=1 lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/weightedTraceHolder8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/weightedTraceHolder8753/bound-axioms.log",
+            "sha256": "2052d13589991df9490cd155e5bcf4ab9d343c65476957283c04803c566742df"
+          }
+        ]
+      }
+    }
+  ]
+}

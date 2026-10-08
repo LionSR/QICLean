@@ -1,0 +1,55 @@
+✔ [3106/3111] Built QICLean.Analysis.OrthogonalResolution (14s)
+✔ [3107/3111] Built QICLean.Analysis.WeightedTraceHolder (6.5s)
+✔ [3108/3111] Built QICLean.Representation.CommutantDimension (9.8s)
+✔ [3109/3111] Built QICLean.Representation.SchurSurprisal (5.2s)
+✔ [3110/3111] Built QICLean.Representation.GroupedLabelEntropy (5.6s)
+✖ [3111/3111] Building QICLean.Representation.MergeExponential (5.0s)
+trace: .> LEAN_PATH=/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Cli/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Qq/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/lib/lean /Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/QICLean/Representation/MergeExponential.lean -o /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/lib/lean/QICLean/Representation/MergeExponential.olean -i /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/lib/lean/QICLean/Representation/MergeExponential.ilean -c /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/ir/QICLean/Representation/MergeExponential.c --setup /Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/ir/QICLean/Representation/MergeExponential.setup.json --json
+error: QICLean/Representation/MergeExponential.lean:62:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⋯.hom fun p ↦ ?f p.1
+in the target expression
+  (⋯.hom fun p ↦ ↑(Real.log ↑p.1.1.dim)) = labelEntropy φQ
+
+G : Type u_1
+X : Type u_2
+inst✝³ : Group G
+inst✝² : Fintype G
+inst✝¹ : Fintype X
+inst✝ : DecidableEq X
+φQ φE φQE : G →* Equiv.Perm X
+hcomm : ∀ (g h : G), Commute (φQ g) (φE h)
+hprod : ∀ (g : G), φQE g = φQ g * φE g
+⊢ (⋯.hom fun p ↦ ↑(Real.log ↑p.1.1.dim)) = labelEntropy φQ
+error: QICLean/Representation/MergeExponential.lean:74:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⋯.hom fun p ↦ ?f p.1
+in the target expression
+  (⋯.hom fun p ↦ ↑(Real.log ↑p.1.2.dim)) = labelEntropy φE
+
+G : Type u_1
+X : Type u_2
+inst✝³ : Group G
+inst✝² : Fintype G
+inst✝¹ : Fintype X
+inst✝ : DecidableEq X
+φQ φE φQE : G →* Equiv.Perm X
+hcomm : ∀ (g h : G), Commute (φQ g) (φE h)
+hprod : ∀ (g : G), φQE g = φQ g * φE g
+⊢ (⋯.hom fun p ↦ ↑(Real.log ↑p.1.2.dim)) = labelEntropy φE
+error: QICLean/Representation/MergeExponential.lean:86:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⋯.hom fun p ↦ ?f p.2
+in the target expression
+  (⋯.hom fun p ↦ ↑(Real.log ↑p.2.dim)) = labelEntropy φQE
+
+G : Type u_1
+X : Type u_2
+inst✝³ : Group G
+inst✝² : Fintype G
+inst✝¹ : Fintype X
+inst✝ : DecidableEq X
+φQ φE φQE : G →* Equiv.Perm X
+hcomm : ∀ (g h : G), Commute (φQ g) (φE h)
+hprod : ∀ (g : G), φQE g = φQ g * φE g
+⊢ (⋯.hom fun p ↦ ↑(Real.log ↑p.2.dim)) = labelEntropy φQE
+Some required targets logged failures:
+- QICLean.Representation.MergeExponential
+error: build failed
