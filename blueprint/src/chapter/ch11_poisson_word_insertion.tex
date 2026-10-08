@@ -20,14 +20,16 @@ PoissonWord.lintegral_sum_marked}
 \uses{def:poisson_word_measure, def:poisson_word_marked_equiv}
 For $T\ge0$ and any function
 $F:\mathcal W\times I\times\mathcal W\to[0,\infty]$,
-\begin{align}
+\begin{equation}
+\label{eq:poisson_word_insertion}
+\begin{aligned}
  &\int_{\mathcal W}\sum_{j=0}^{|w|-1}
-   F(w_{<j},w_j,w_{>j})\,d\mu_T(w)\notag\\
+   F(w_{<j},w_j,w_{>j})\,d\mu_T(w)\\
  &\qquad=\int_0^T\sum_{i\in I}
    \int_{\mathcal W}\int_{\mathcal W}
    F(u,i,v)\,d\mu_{T-s}(v)\,d\mu_s(u)\,ds.
- \label{eq:poisson_word_insertion}
-\end{align}
+\end{aligned}
+\end{equation}
 Both sides may be infinite.  No integrability assumption on $F$ is required.
 \end{theorem}
 \begin{proof}
@@ -55,11 +57,13 @@ masses multiplied by an infinite value of $F$, using $0\cdot\infty=0$.
 \leanok
 \uses{thm:poisson_word_insertion}
 For $G:\mathcal W\times I\to[0,\infty]$ and $T\ge0$,
-\begin{align}
- &\int_{\mathcal W}\sum_{j=0}^{|w|-1}G(w_{<j},w_j)\,d\mu_T(w)\notag\\
+\begin{equation}
+\label{eq:poisson_word_prefix_insertion}
+\begin{aligned}
+ &\int_{\mathcal W}\sum_{j=0}^{|w|-1}G(w_{<j},w_j)\,d\mu_T(w)\\
  &\qquad=\int_0^T\sum_{i\in I}\int_{\mathcal W}G(u,i)\,d\mu_s(u)\,ds.
- \label{eq:poisson_word_prefix_insertion}
-\end{align}
+\end{aligned}
+\end{equation}
 In particular, the expected length is $\int_{\mathcal W}|w|\,d\mu_T(w)=NT$.
 \end{corollary}
 \begin{proof}

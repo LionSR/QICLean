@@ -342,6 +342,8 @@ jobs:
             QICLeanTest/PoissonWordInsertionWeightAxioms.lean \
             QICLeanTest/PoissonWordInsertion.lean \
             QICLeanTest/PoissonWordInsertionAxioms.lean \
+            QICLeanTest/PoissonWordOccupation.lean \
+            QICLeanTest/PoissonWordOccupationAxioms.lean \
             QICLeanTest/TaggedInterleavings.lean \
             QICLeanTest/TaggedInterleavingsAxioms.lean \
             QICLeanTest/PoissonWordThinning.lean \
