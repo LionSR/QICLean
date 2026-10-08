@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "QICLean.Representation.SchurSurprisal",
+    "QICLean.Representation.SchurLabelCommutation"
+  ],
+  "started_utc": "2026-10-08T00:24:53.861875+00:00",
+  "elapsed_seconds": 41.168,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeExponential8750/merge-exponential-prerequisite-build.log",
+  "sha256": "7af81ac61293741185044cfa514382e38079bee030fa00e9b4e1c28d94b14283",
+  "binding": "Prefreeze preparation at the exact source-chain parent; this does not replace the source-bound checks below."
+}

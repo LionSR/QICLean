@@ -255,3 +255,9 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   independent consumers appear; no general multiplicity interface is added.
 - **Caveats:** At zero trace the positive matrix is zero and the normalized
   choice is a scalar identity. Empty bases require their own zero-matrix case.
+### Exponential on an actual joint label resolution — candidate (2026-10-08)
+
+- **Pattern:** Construct a joint resolution from commuting actual label projections, identify its marginal observables using the projection sums, and apply `Matrix.IsOrthogonalResolution.exp_hom` before a positive-dimension scalar logarithm calculation.
+- **Seen:** `Representation/SchurSurprisal.lean` and `Representation/MergeExponential.lean`; two mathematical exponential calculations in two files.
+- **Abstraction:** The existing resolution homomorphism and `exp_hom` already supply the functional-calculus step. Continue using these results and finite-sum identities; no additional tactic or duplicate spectral calculus is introduced.
+- **Caveat:** Derive the joint resolution from the actual projections. Positive irreducible dimensions justify the logarithms even when their ambient label projections vanish.

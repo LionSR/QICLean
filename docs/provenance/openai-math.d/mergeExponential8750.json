@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+          "labels": [
+            "replicas:merge-moment"
+          ]
+        },
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "no_upstream_proof_text_reused": true,
+      "id": "8750-qic-merge-exponential-01",
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/MergeExponential.lean",
+        "declaration": "PermutationRepresentation.exp_mergeDeficit_eq_sum",
+        "name_status": "declared"
+      },
+      "changes": [
+        "Derive the actual three-label orthogonal resolution from commuting separate actions and their literal pointwise product, then compute the exponential with positive irreducible-dimension scalar coefficients; every real exponent and empty ambient basis is included."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.MergeExponential",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeExponential8750/build.log",
+            "sha256": "20dab9a6c910724b90ae4032aab5066e60f8b34826babc730dd12bd626a5c5f7"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/MergeExponential.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeExponential8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/mergeExponential8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeExponential8750/axioms.log",
+            "sha256": "f5cc24d6e83bfef913f041f9c9b67ca3bd1903d9b22d1a508876890fe05c25f1"
+          }
+        ]
+      }
+    },
+    {
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/05-replicas.tex",
+          "labels": [
+            "replicas:merge-moment"
+          ]
+        },
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "no_upstream_proof_text_reused": true,
+      "id": "8750-qic-merge-exponential-02",
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/MergeExponential.lean",
+        "declaration": "PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum",
+        "name_status": "declared"
+      },
+      "changes": [
+        "Derive the exact real trace pairing with the exponential by distributing over its actual finite-label expansion; the paired matrix is arbitrary. No density, Hermitian, normalization, compatibility or target-identity premise."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.MergeExponential",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeExponential8750/build.log",
+            "sha256": "20dab9a6c910724b90ae4032aab5066e60f8b34826babc730dd12bd626a5c5f7"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/MergeExponential.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeExponential8750/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/mergeExponential8750/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/mergeExponential8750/axioms.log",
+            "sha256": "f5cc24d6e83bfef913f041f9c9b67ca3bd1903d9b22d1a508876890fe05c25f1"
+          }
+        ]
+      }
+    }
+  ]
+}

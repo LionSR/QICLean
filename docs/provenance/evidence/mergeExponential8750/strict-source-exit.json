@@ -1,0 +1,19 @@
+{
+  "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Representation/MergeExponential.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T00:31:19.218948+00:00",
+  "elapsed_seconds": 25.365,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeExponential8750/strict-source.log",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
