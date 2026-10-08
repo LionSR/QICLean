@@ -139,7 +139,7 @@ def coherentAverage (k : ℕ) (a : Ω) (f : (Ω → ℂ) → ℝ) : Matrix (Fin 
 /-- Tracing a coherent average against `ρ` gives the coherent integral. -/
 theorem trace_mul_coherentAverage (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} (hf : Continuous f)
     (ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) :
-    (ρ * coherentAverage k a f).trace.re = coherentIntegral k a ρ f := by
+    (ρ * coherentAverage k a f).trace.re = realCoherentIntegral k a ρ f := by
   have hF := integrable_coherentIntegrand k a hf
   let L : Matrix (Fin k → Ω) (Fin k → Ω) ℂ →L[ℂ] ℂ :=
     LinearMap.toContinuousLinearMap ((Matrix.traceLinearMap _ ℂ ℂ) ∘ₗ LinearMap.mulLeft ℂ ρ)
@@ -147,7 +147,7 @@ theorem trace_mul_coherentAverage (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} 
   have hint : Integrable (fun U : unitaryGroup Ω ℂ => L ((f ((U : Matrix Ω Ω ℂ) *ᵥ
       Pi.single a 1) : ℂ) • coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)))
       (unitaryHaar Ω) := L.integrable_comp hF
-  rw [coherentIntegral, coherentAverage, mul_smul_comm, trace_smul, ← hL,
+  rw [realCoherentIntegral, coherentAverage, mul_smul_comm, trace_smul, ← hL,
     ← L.integral_comp_comm hF, smul_eq_mul, ← Complex.ofReal_natCast, Complex.re_ofReal_mul]
   congr 1
   rw [← RCLike.re_to_complex, ← integral_re hint]
@@ -172,14 +172,14 @@ theorem coherentAverage_one (k : ℕ) (a : Ω) :
   rw [hres, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hD, one_mul]
 
 /-- The coherent measure of a state on `𝒮_k` has total mass one. -/
-theorem coherentIntegral_one {k : ℕ} (a : Ω) {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
+theorem realCoherentIntegral_one {k : ℕ} (a : Ω) {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
     (htr : ρ.trace = 1) (hsym : symProj (copyPerm Ω k) * ρ = ρ) :
-    coherentIntegral k a ρ (fun _ => 1) = 1 := by
+    realCoherentIntegral k a ρ (fun _ => 1) = 1 := by
   rw [← trace_mul_coherentAverage k a continuous_const, coherentAverage_one, trace_mul_comm, hsym,
     htr, Complex.one_re]
 
 /-- The coherent integrand of a continuous function is Haar integrable. -/
-theorem integrable_coherentIntegral_integrand (k : ℕ) (a : Ω)
+theorem integrable_realCoherentIntegral_integrand (k : ℕ) (a : Ω)
     (ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) {g : (Ω → ℂ) → ℝ} (hg : Continuous g) :
     Integrable (fun U : unitaryGroup Ω ℂ => g ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) *
       (ρ * coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)).trace.re) (unitaryHaar Ω) :=
@@ -188,12 +188,12 @@ theorem integrable_coherentIntegral_integrand (k : ℕ) (a : Ω)
     ).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /-- The coherent integral against a state on `𝒮_k` is affine in the integrand. -/
-theorem coherentIntegral_affine {k : ℕ} (a : Ω) {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
+theorem realCoherentIntegral_affine {k : ℕ} (a : Ω) {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ}
     (htr : ρ.trace = 1) (hsym : symProj (copyPerm Ω k) * ρ = ρ) {F : (Ω → ℂ) → ℝ}
     (hF : Continuous F) (α β : ℝ) :
-    coherentIntegral k a ρ (fun θ => α + β * F θ) = α + β * coherentIntegral k a ρ F := by
-  have h1 := coherentIntegral_one a htr hsym
-  unfold coherentIntegral at h1 ⊢
+    realCoherentIntegral k a ρ (fun θ => α + β * F θ) = α + β * realCoherentIntegral k a ρ F := by
+  have h1 := realCoherentIntegral_one a htr hsym
+  unfold realCoherentIntegral at h1 ⊢
   beta_reduce at h1 ⊢
   set w : unitaryGroup Ω ℂ → ℝ := fun U =>
     (ρ * coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)).trace.re with hw
@@ -201,8 +201,8 @@ theorem coherentIntegral_affine {k : ℕ} (a : Ω) {ρ : Matrix (Fin k → Ω) (
       α * ∫ U, 1 * w U ∂(unitaryHaar Ω) +
         β * ∫ U, F ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) * w U ∂(unitaryHaar Ω) := by
     rw [← integral_const_mul, ← integral_const_mul, ← integral_add
-      ((integrable_coherentIntegral_integrand k a ρ continuous_const).const_mul α)
-      ((integrable_coherentIntegral_integrand k a ρ hF).const_mul β)]
+      ((integrable_realCoherentIntegral_integrand k a ρ continuous_const).const_mul α)
+      ((integrable_realCoherentIntegral_integrand k a ρ hF).const_mul β)]
     exact integral_congr_ae (Filter.Eventually.of_forall fun U => by ring)
   rw [hI]
   linear_combination α * h1
@@ -754,13 +754,13 @@ theorem coherentAverage_log_le (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} (hf
 `X ≥ e^{φ(θ)} P_{θ,k}` for all unit `θ`, with `X` positive definite and commuting with copy
 permutations, gives `∫ φ dμ_ρ - log D_k ≤ Tr(ρ log X)` for every density matrix `ρ`
 on `𝒮_k`. -/
-theorem coherentIntegral_sub_log_le_re_trace_mul_log {k : ℕ} (a : Ω)
+theorem realCoherentIntegral_sub_log_le_re_trace_mul_log {k : ℕ} (a : Ω)
     {X : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hX : X.PosDef)
     (hXc : ∀ s, Commute (permOp (copyPerm Ω k) s) X) {φ : (Ω → ℂ) → ℝ} (hφ : Continuous φ)
     (hpin : ∀ θ : Ω → ℂ, star θ ⬝ᵥ θ = 1 → Real.exp (φ θ) • coherentProj k θ ≤ X)
     {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hρ : ρ.PosSemidef) (htr : ρ.trace = 1)
     (hsym : symProj (copyPerm Ω k) * ρ = ρ) :
-    coherentIntegral k a ρ φ - Real.log (symDim Ω k) ≤ (ρ * CFC.log X).trace.re := by
+    realCoherentIntegral k a ρ φ - Real.log (symDim Ω k) ≤ (ρ * CFC.log X).trace.re := by
   set P := symProj (copyPerm Ω k) with hPdef
   set D : ℕ := symDim Ω k
   have hD : (0 : ℝ) < D := by exact_mod_cast symDim_pos k a

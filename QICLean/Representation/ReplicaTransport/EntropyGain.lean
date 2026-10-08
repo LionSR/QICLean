@@ -24,7 +24,7 @@ Proof outline:
   conditional choice tree of the single-move relative metrics;
 * `smul_coherentProj_le_bandRelRatio` — Lemma 6.4 and projection transfer give the
   conditional pin (display `transport:conditional-pin`);
-* `coherentIntegral_sub_log_le_re_trace_mul_log` — the logarithmic passage
+* `realCoherentIntegral_sub_log_le_re_trace_mul_log` — the logarithmic passage
   (display `transport:log-relative`);
 * `exists_entropyGain_le_exactDerivative_of_relativePin` — summation over bands and
   histories, with `∑_h w_h = 1` and `∫ m_{1/4} = 1/2`, assuming Lemma 6.4 in the form
@@ -467,11 +467,11 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePin
   have hgain : ∀ (k : ℕ) h g (ρ : Matrix (Config k fun v => Fin (n v))
       (Config k fun v => Fin (n v)) ℂ), ρ.PosSemidef → ρ.trace = 1 →
       symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
-      Real.log (bmin k) + (k : ℝ) * a * (coherentIntegral k (base n) ρ (F h g) - Err) -
+      Real.log (bmin k) + (k : ℝ) * a * (realCoherentIntegral k (base n) ρ (F h g) - Err) -
           Real.log (symDim (SiteConfig n) k) ≤
         (ρ * CFC.log (D.bandRelRatio n (a / 2) k h g)).trace.re := by
     intro k h g ρ hρ htr hsym
-    have key := coherentIntegral_sub_log_le_re_trace_mul_log (base n)
+    have key := realCoherentIntegral_sub_log_le_re_trace_mul_log (base n)
       (D.posDef_bandRelRatio hD ht0.le k h g)
       (fun s => D.commute_permOp_bandRelRatio (t := a / 2) k h g s)
       (φ := fun θ => (Real.log (bmin k) - (k : ℝ) * a * Err) + ((k : ℝ) * a) * F h g θ)
@@ -484,12 +484,12 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePin
             Real.log (bmin k) + (k : ℝ) * a * (F h g θ - Err) by ring, Real.exp_add,
           Real.exp_log (hbmin_pos k)])
       hρ htr hsym
-    rw [coherentIntegral_affine (base n) htr hsym (hFc h g)] at key
+    rw [realCoherentIntegral_affine (base n) htr hsym (hFc h g)] at key
     linarith
   -- Summation over bands at fixed history and Fourier time.
   have hsum : ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
       pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1, ∀ h u,
-      (k : ℝ) * a * ∑ g, coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u)
+      (k : ℝ) * a * ∑ g, realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u)
           (F h g) - K * ((k : ℝ) * a * Err + Real.log (symDim (SiteConfig n) k) -
             Real.log (bmin k)) ≤
         (D.state n (a / 2) k pre p ⟨h, none⟩ u * CFC.log (D.relRatio n (a / 2) k h)).trace.re := by
@@ -502,8 +502,8 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePin
       Complex.re_sum]
     have hle := Finset.sum_le_sum fun g (_ : g ∈ Finset.univ) => hgain k h g ρs hσ hσ1 hσs
     have hcalc : ∑ g : Fin K, (Real.log (bmin k) + (k : ℝ) * a *
-        (coherentIntegral k (base n) ρs (F h g) - Err) - Real.log (symDim (SiteConfig n) k)) =
-        (k : ℝ) * a * ∑ g, coherentIntegral k (base n) ρs (F h g) - K * ((k : ℝ) * a * Err +
+        (realCoherentIntegral k (base n) ρs (F h g) - Err) - Real.log (symDim (SiteConfig n) k)) =
+        (k : ℝ) * a * ∑ g, realCoherentIntegral k (base n) ρs (F h g) - K * ((k : ℝ) * a * Err +
           Real.log (symDim (SiteConfig n) k) - Real.log (bmin k)) := by
       simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.mul_sum, mul_sub,
         Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
@@ -520,7 +520,7 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePin
     change ∫ u, Real.sinhRatioDensity (1 / 4) u = 1 / 2
     rw [hm]; norm_num
   have hEint : ∀ h g, MeasureTheory.Integrable fun u => Matrix.Transport.fourierWeight u *
-      coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) := by
+      realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) := by
     intro h g
     refine (D.integrable_fourierWeight_mul_trace_state (a / 2) k pre p ⟨h, none⟩
       (coherentAverage k (base n) (F h g))).congr (Filter.Eventually.of_forall fun u => ?_)
@@ -528,14 +528,14 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePin
   set β' := (K : ℝ) * ((k : ℝ) * a * Err + Real.log (symDim (SiteConfig n) k) -
     Real.log (bmin k))
   have hhist : ∀ h, (k : ℝ) * a * ∑ g, (∫ u, Matrix.Transport.fourierWeight u *
-      coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) - β' / 2 ≤
+      realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) - β' / 2 ≤
       ∫ u, Matrix.Transport.fourierWeight u *
         (D.state n (a / 2) k pre p ⟨h, none⟩ u * CFC.log (D.relRatio n (a / 2) k h)).trace.re := by
     intro h
     have e : ∀ u, Matrix.Transport.fourierWeight u * ((k : ℝ) * a * ∑ g,
-        coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) - β') =
+        realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) - β') =
         (∑ g, (k : ℝ) * a * (Matrix.Transport.fourierWeight u *
-          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g))) -
+          realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g))) -
             β' * Matrix.Transport.fourierWeight u := fun u => by
       rw [mul_sub, Finset.mul_sum, Finset.mul_sum]
       congr 1
@@ -543,16 +543,16 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePin
       · ring
     have hsumint : MeasureTheory.Integrable fun u => ∑ g, (k : ℝ) * a *
         (Matrix.Transport.fourierWeight u *
-          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) :=
+          realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) :=
       MeasureTheory.integrable_finsetSum _ fun g _ => (hEint h g).const_mul _
     have hlowint : MeasureTheory.Integrable fun u => Matrix.Transport.fourierWeight u *
         ((k : ℝ) * a * ∑ g,
-          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) - β') :=
+          realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) - β') :=
       (hsumint.sub (hmi.const_mul β')).congr (Filter.Eventually.of_forall fun u => (e u).symm)
     have hlow : ∫ u, Matrix.Transport.fourierWeight u * ((k : ℝ) * a * ∑ g,
-        coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) - β') =
+        realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) - β') =
         (k : ℝ) * a * ∑ g, (∫ u, Matrix.Transport.fourierWeight u *
-          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
+          realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
             β' / 2 := by
       rw [MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall e),
         MeasureTheory.integral_sub hsumint (hmi.const_mul _),
@@ -571,20 +571,20 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePin
         |Cpin| / 2 * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ max epin 0 -
           (K : ℝ) / 2 * (Real.log (symDim (SiteConfig n) k) + L k)
       = ∑ h, D.histTree.weight h * ((k : ℝ) * a * ∑ g, (∫ u, Matrix.Transport.fourierWeight u *
-          coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
+          realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
             β' / 2) := by
         have hEG : D.entropyGain n (a / 2) k pre p = ∑ h, D.histTree.weight h * ∑ g,
             ∫ u, Matrix.Transport.fourierWeight u *
-              coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) := by
+              realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g) := by
           unfold entropyGain
           simp only [Finset.mul_sum]
           rfl
         have hRHS : ∑ h, D.histTree.weight h * ((k : ℝ) * a * ∑ g,
             (∫ u, Matrix.Transport.fourierWeight u *
-              coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
+              realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
                 β' / 2) = (k : ℝ) * a * ∑ h, D.histTree.weight h * ∑ g,
             (∫ u, Matrix.Transport.fourierWeight u *
-              coherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
+              realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
                 β' / 2 := by
           have e2 : ∀ (h : H) (X : ℝ), D.histTree.weight h * ((k : ℝ) * a * X - β' / 2) =
               (k : ℝ) * a * (D.histTree.weight h * X) - D.histTree.weight h * (β' / 2) :=

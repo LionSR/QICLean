@@ -72,7 +72,7 @@ def SplitSkewBound : Prop :=
             ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
             (ρ * Matrix.Transport.skewSquare (bandMetric n t k π) (copyMean n k h)).trace.re ≤
               Csym * (2 * t) ^ 2 * logDim n D ^ esym *
-                  coherentIntegral k (TransportData.base n) ρ (fun θ =>
+                  realCoherentIntegral k (TransportData.base n) ρ (fun θ =>
                     splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) +
                 r k
 

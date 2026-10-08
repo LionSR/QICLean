@@ -48,8 +48,9 @@ abbrev symDim (Ω : Type*) [Fintype Ω] [DecidableEq Ω] (k : ℕ) : ℕ :=
 
 /-- The coherent integral `∫ f dμ_σ = D_k ∫ f(θ) Tr(σ P_{θ,k}) dθ`, with `θ = U e_a` for
 Haar-distributed unitaries `U` (`06-transport.tex`, display `transport:coherent-measure`,
-lines 364--373). -/
-def coherentIntegral (k : ℕ) (a : Ω) (ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ)
+lines 364--373). This is the real-valued form, for real integrands, of
+`TensorPower.coherentIntegral`. -/
+def realCoherentIntegral (k : ℕ) (a : Ω) (ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ)
     (f : (Ω → ℂ) → ℝ) : ℝ :=
   (symDim Ω k : ℝ) * ∫ U, f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) *
     (ρ * coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)).trace.re ∂(unitaryHaar Ω)
@@ -234,7 +235,7 @@ def base : SiteConfig n := fun _ => 0
 def entropyGain [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)]
     (t : ℝ) (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ) (p : ℝ) : ℝ :=
   ∑ h, ∑ g, D.histTree.weight h * ∫ u, Matrix.Transport.fourierWeight u *
-    coherentIntegral k (base n) (D.state n t k pre p ⟨h, none⟩ u) (fun θ =>
+    realCoherentIntegral k (base n) (D.state n t k pre p ⟨h, none⟩ u) (fun θ =>
       ∑ c, (D.choiceTree h).weight c *
         moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ))
 
@@ -298,7 +299,7 @@ def energyError [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, Decid
   ∑ i, D.splitWeight E i p * ∑ j ∈ D.splitLeaves E i,
     (D.tree (Set.projIcc (0 : ℝ) 1 zero_le_one p)).weight j *
       ∫ u, Matrix.Transport.fourierWeight u *
-        coherentIntegral k (base n) (D.state n t k pre p j u) (fun θ =>
+        realCoherentIntegral k (base n) (D.state n t k pre p j u) (fun θ =>
           D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))
 
 end TransportData

@@ -202,10 +202,10 @@ theorem rpow_one_div_eight_nonneg (x : ℝ) : 0 ≤ x ^ (1 / 8 : ℝ) := by
 
 /-- The coherent integral of a nonnegative function against a positive semidefinite
 matrix is nonnegative. -/
-theorem coherentIntegral_nonneg {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {k : ℕ} (a : Ω)
+theorem realCoherentIntegral_nonneg {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {k : ℕ} (a : Ω)
     {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hρ : ρ.PosSemidef) {f : (Ω → ℂ) → ℝ}
-    (hf : ∀ θ, 0 ≤ f θ) : 0 ≤ coherentIntegral k a ρ f := by
-  unfold coherentIntegral
+    (hf : ∀ θ, 0 ≤ f θ) : 0 ≤ realCoherentIntegral k a ρ f := by
+  unfold realCoherentIntegral
   refine mul_nonneg (Nat.cast_nonneg _) (MeasureTheory.integral_nonneg fun U =>
     mul_nonneg (hf _) ?_)
   rw [coherentProj, Matrix.mul_vecMulVec, Matrix.trace_vecMulVec, dotProduct_comm]
@@ -383,7 +383,7 @@ theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}
             ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
             (ρ * Transport.skewSquare (D.input n (a / 2) k j)
                 (copyMean n k (E.term i))).trace.re ≤
-              Csym * a ^ 2 * ℓ ^ esym * coherentIntegral k (base n) ρ (fun θ =>
+              Csym * a ^ 2 * ℓ ^ esym * realCoherentIntegral k (base n) ρ (fun θ =>
                 D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) + r k := by
   obtain ⟨c, Csym, esym, hc, hsym⟩ := hskew
   refine ⟨min c (1 / 4), max Csym 0, max esym 0, lt_min hc (by norm_num), ?_⟩
@@ -397,7 +397,7 @@ theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}
           ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
           (ρ * Transport.skewSquare (D.input n (a / 2) k x.2)
               (copyMean n k (E.term x.1))).trace.re ≤
-            max Csym 0 * a ^ 2 * ℓ ^ max esym 0 * coherentIntegral k (base n) ρ (fun θ =>
+            max Csym 0 * a ^ 2 * ℓ ^ max esym 0 * realCoherentIntegral k (base n) ρ (fun θ =>
               D.splitEta E x.1 x.2 ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) +
               r k := by
     rintro ⟨i, j⟩
@@ -422,7 +422,7 @@ theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}
       dsimp only
       rw [D.skewSquare_input_eq_bandMetric E hD (by linarith) (hcomm k) hEsupp hcompat hg, hfun]
       refine hb.trans (add_le_add ?_ le_rfl)
-      have hI := coherentIntegral_nonneg (base n) hρ (f := fun θ => splitBandEta n
+      have hI := realCoherentIntegral_nonneg (base n) hρ (f := fun θ => splitBandEta n
         (D.leafPart j g) (E.support i) ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))
         fun θ => rpow_one_div_eight_nonneg _
       rw [show 2 * (a / 2) = a by ring]
@@ -517,12 +517,12 @@ theorem exists_energy_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
       ∫ u, Transport.fourierWeight u *
           (Transport.transportState T' A v j u * Transport.skewSquare (A j) (h i)).trace.re ≤
         κ * (∫ u, Transport.fourierWeight u *
-          coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+          realCoherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
             D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) + r k / 2 := by
     intro i j hj
     set Q := coherentAverage k (base n) (fun θ =>
       D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))
-    have hX : ∀ u, coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+    have hX : ∀ u, realCoherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
         D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) =
         (Transport.transportState T' A v j u * Q).trace.re := fun u =>
       (trace_mul_coherentAverage k (base n) (D.continuous_splitEta_rpow E i j) _).symm
@@ -568,7 +568,7 @@ theorem exists_energy_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
       2 * (star (M ^ (-(1 / 4) : ℝ) *ᵥ v) ⬝ᵥ (h i *ᵥ (M ^ (1 / 4 : ℝ) *ᵥ v))).re +
         3 / 2 * κ * (W i * ∑ j ∈ D.splitLeaves E i, T'.weight j *
           ∫ u, Transport.fourierWeight u *
-            coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+            realCoherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
               D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) +
         3 / 4 * r k * (W i * W i) := by
     intro i
@@ -578,10 +578,10 @@ theorem exists_energy_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
     have hle := Finset.sum_le_sum fun j hj =>
       mul_le_mul_of_nonneg_left (hint i j hj) (hw j).le
     have e : ∑ j ∈ D.splitLeaves E i, T'.weight j * (κ * (∫ u, Transport.fourierWeight u *
-          coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+          realCoherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
             D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) + r k / 2) =
         κ * ∑ j ∈ D.splitLeaves E i, T'.weight j * (∫ u, Transport.fourierWeight u *
-          coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+          realCoherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
             D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) +
         r k / 2 * W i := by
       rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
@@ -597,7 +597,7 @@ theorem exists_energy_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
     _ ≤ ∑ i, (2 * (star (M ^ (-(1 / 4) : ℝ) *ᵥ v) ⬝ᵥ (h i *ᵥ (M ^ (1 / 4 : ℝ) *ᵥ v))).re +
         3 / 2 * κ * (W i * ∑ j ∈ D.splitLeaves E i, T'.weight j *
           ∫ u, Transport.fourierWeight u *
-            coherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
+            realCoherentIntegral k (base n) (D.state n (a / 2) k pre p j u) (fun θ =>
               D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))) +
         3 / 4 * r k * (W i * W i)) := Finset.sum_le_sum fun i _ => step i
     _ = 2 * E₀ + 3 / 2 * κ * D.energyError E (a / 2) k pre p +
