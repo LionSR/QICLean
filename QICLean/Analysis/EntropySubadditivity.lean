@@ -55,7 +55,6 @@ QICLean's eigenvalue-defined `vonNeumannEntropy`, through the bridge
 
 /-
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-entropy-smul
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyBounds.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.traceEntropy_smul_real
@@ -66,7 +65,6 @@ Hermiticity witnesses through vonNeumannEntropy_eq_re_trace_cfc; uses QICLean's
 IsHermitian.trace_cfc_eq_sum_re instead of the upstream trace_cfc.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-trace-mul-mono
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyBounds.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.trace_mul_mono_right
@@ -75,7 +73,6 @@ Downstream declaration: Matrix.PosSemidef.re_trace_mul_le_re_trace_mul
 Changes for TNLean/QICLean: Renamed into the Matrix.PosSemidef namespace; unchanged argument.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-entropy-add-posdef
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyBounds.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.traceEntropy_add_le_posDef
@@ -85,7 +82,6 @@ Changes for TNLean/QICLean: Stated for vonNeumannEntropy; uses QICLean's
 vonNeumannEntropy_eq_neg_trace_mul_log instead of traceEntropy_log.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-entropy-add
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/EntropyBounds.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.traceEntropy_add_le
@@ -95,7 +91,6 @@ Changes for TNLean/QICLean: Stated for vonNeumannEntropy; the regularized functi
 trace form.
 
 Adapted from OpenAI's openai/math repository (Apache-2.0).
-Provenance-ID: 8742-qic-entropy-regularization
 Upstream commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
 Upstream file: lean/OAI/MathematicalPhysics/PEPSMove/PartialTrace.lean
 Upstream declaration: OAI.PolynomialPEPS.PhysicalMove.QuantumSSA.entropy_regularization_continuous

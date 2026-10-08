@@ -19,7 +19,7 @@ region, or sign assumption on the error bounds is required. The mutual informati
 is the actual regional quantum mutual information, identified with the canonical
 matrix definition by `FiniteProduct.mutualInformation_eq_matrix`.
 
-## References and provenance
+## References
 
 OpenAI, *A two-dimensional area law from a global spectral gap*, September 24,
 2026, Lemma 11.1 (`geometry:cancellation`), immutable source:
@@ -37,21 +37,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/10-geometry.tex
 Labels: geometry:cancellation.
-Provenance-ID: 8760-qic-two-families-01
-Downstream declaration:
-FiniteProduct.mutualInformation_past_eq_defect
-Provenance-ID: 8760-qic-two-families-02
-Downstream declaration:
-FiniteProduct.orderedFamily_entropy_chain_lower
-Provenance-ID: 8760-qic-two-families-03
-Downstream declaration:
-FiniteProduct.disjoint_exterior_past
-Provenance-ID: 8760-qic-two-families-04
-Downstream declaration:
-FiniteProduct.entropy_le_remainder_add_half_mutualInformation
-Provenance-ID: 8760-qic-two-families-05
-Downstream declaration:
-FiniteProduct.entropy_le_remainder_add_half_sum
 -/
 
 open scoped BigOperators
