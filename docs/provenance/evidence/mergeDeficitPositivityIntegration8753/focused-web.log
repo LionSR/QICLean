@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/docs/provenance/evidence/mergeDeficitPositivityIntegration8753/web-visual.py", line 29, in <module>
+    assert len(facts)>=8,facts
+           ^^^^^^^^^^^^^
+AssertionError: [{'width': 566, 'scrollWidth': 566, 'overflow': 'auto', 'viewport': 1280, 'kind': 'merge-statement', 'index': 0}, {'width': 567, 'scrollWidth': 567, 'overflow': 'auto', 'viewport': 1280, 'kind': 'merge-proof', 'index': 0}, {'width': 566, 'scrollWidth': 566, 'overflow': 'auto', 'viewport': 1280, 'kind': 'spectral-statement', 'index': 0}, {'width': 310, 'scrollWidth': 310, 'overflow': 'auto', 'viewport': 360, 'kind': 'merge-statement', 'index': 0}, {'width': 311, 'scrollWidth': 311, 'overflow': 'auto', 'viewport': 360, 'kind': 'merge-proof', 'index': 0}, {'width': 310, 'scrollWidth': 310, 'overflow': 'auto', 'viewport': 360, 'kind': 'spectral-statement', 'index': 0}]

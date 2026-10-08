@@ -1,0 +1,2 @@
+/tmp/MergeDeficitPositivity.lean:195:10: error(lean.unknownIdentifier): Unknown identifier `isHermitian_mul_of_commute`
+/tmp/MergeDeficitPositivity.lean:196:4: error: No goals to be solved

@@ -1,0 +1,18 @@
+/tmp/SpectralProjectionIntertwiner.lean:20:20: error: aesop: failed to prove the goal after exhaustive search.
+/tmp/SpectralProjectionIntertwiner.lean:20:20: error: could not synthesize default value for parameter 'ha' using tactics
+/tmp/SpectralProjectionIntertwiner.lean:20:20: error: unsolved goals
+n : Type u_2
+inst : Fintype n
+inst_1 : DecidableEq n
+B : Matrix n n ℂ
+hB : B.PosSemidef
+r : ℝ
+a : Matrix n n ℂ
+fwd : 0 ≤ B
+⊢ IsSelfAdjoint a
+/tmp/SpectralProjectionIntertwiner.lean:22:0: error: `test_spectralProjectionGE_zero_mul_of_intertwine` does not use the following hypothesis in its type:
+  • [DecidableEq n] (#6)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Note: This linter can be disabled with `set_option linter.unusedDecidableInType false`

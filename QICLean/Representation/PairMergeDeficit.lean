@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.PairMergeMoment
+import QICLean.Representation.MergeExponential
 import QICLean.Analysis.KroneckerExponential
 import QICLean.Analysis.TraceDistance
 
@@ -159,4 +160,23 @@ theorem trace_exp_pairMergeDeficit_right
         pairMergeDeficit V R m)).trace := by
   rw [← Matrix.kronecker_smul, Matrix.exp_one_kronecker,
     ← Matrix.trace_partialTraceLeft_mul]
+
+/-
+Provenance-ID: 8753-qic-merge-deficit-positivity-02
+Original formalization, no upstream Lean proof text reused.
+Declaration: TensorPower.posSemidef_pairMergeDeficit
+Manuscript: September 24, 2026, comparator:merge-decomposition.
+-/
+
+open scoped ComplexOrder in
+/-- The actual paired-copy merge deficit is positive semidefinite. Separate
+copy actions commute and their pointwise product is the simultaneous action,
+so compatibility is derived from the actual label projections. OpenAI,
+*A two-dimensional area law from a global spectral gap*, `07-comparators.tex`,
+lines 501–508, and Lemma 6.1(3), equation `replicas:merge-dimensions`, at commit
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`. -/
+theorem posSemidef_pairMergeDeficit : (pairMergeDeficit Q C m).PosSemidef := by
+  exact PermutationRepresentation.posSemidef_mergeDeficit (commute_pairCopy Q C m)
+    (pairCopyBoth_eq_mul Q C m)
+
 end TensorPower

@@ -1,0 +1,296 @@
+{
+  "mathematical_source_revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+  "leaf_evidence_revision": "7c3842d27ceb39da6a25aa811ae15bb0229b71da",
+  "full_library_revision": "7f93d7704212761151540c00856094df5278a71d",
+  "book_revision": "7f93d7704212761151540c00856094df5278a71d",
+  "successful_checks": [
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "node",
+        "/Users/siruilu/.codex/plugins/cache/openai-primary-runtime/pdf/26.905.11957/skills/pdf/container_tools/mark_artifact_operation_started.mjs",
+        "--operation-kind",
+        "edit",
+        "--expected-output-count",
+        "1",
+        "--output-format",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:08:20.586755+00:00",
+      "elapsed_seconds": 0.1426360420009587,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:08:21.017825+00:00",
+      "elapsed_seconds": 39.075176583006396,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/axioms.log",
+      "sha256": "9815b03b4c4438522bf0cc5b5a48a0c0da7dd807c9cbd6397b96b6a6f572e14a"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/copy-bibliography.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:09:41.008654+00:00",
+      "elapsed_seconds": 0.05032249999931082,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "lake",
+        "env",
+        ".lake/packages/checkdecls/.lake/build/bin/checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:11:25.917884+00:00",
+      "elapsed_seconds": 38.27017474999593,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/web-visual-corrected.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:11:59.648760+00:00",
+      "elapsed_seconds": 3.196160665989737,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/focused-web-corrected.log",
+      "sha256": "30f898ec48e87556669d02fff92a53ecc6045fabcbddfe69b79a133effca1df2"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:00:17.414417+00:00",
+      "elapsed_seconds": 82.22502041600819,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/full-build.log",
+      "sha256": "52f47f3e5dcc89aed1f980ba2348ad3ded7bf77bdb7d9a43975fd828a9e2c944"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/mathlib-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:00:17.291287+00:00",
+      "elapsed_seconds": 0.08006720899720676,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/guard.log",
+      "sha256": "ad631e6b79aa65bc41bf843e71fcc7aa7de2827bec5ebabdd88585512b335d7f"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:08:21.018403+00:00",
+      "elapsed_seconds": 0.4505900840013055,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/imports.log",
+      "sha256": "39a2240f5f9ae06dce6704dc9279a23a8ffc70ef8438a6becb3762ffe80b0307"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/mergeDeficitPositivity8753/check-manifest.py",
+        "--git"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:12:29.379461+00:00",
+      "elapsed_seconds": 3.062868041000911,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/leaf-manifest.log",
+      "sha256": "317f69d54ce682b95c0f8b2fe0d1a56ce6f689405e90a5b595b1e6bef7981559"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/check-native-targets.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:11:25.921735+00:00",
+      "elapsed_seconds": 0.04988566700194497,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/native-targets.log",
+      "sha256": "93e894ffbd14ed75bc65fd0c2f2be0706fc343d1ae00ac43ed85afc1d842d156"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "leanblueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/blueprint",
+      "started_utc": "2026-10-08T02:08:42.700378+00:00",
+      "elapsed_seconds": 28.990170499993837,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf-corrected.log",
+      "sha256": "524dafbac0c511df2285b736b09c21e6832ee41a611448f65542a6b1333f75fe"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf-pages-corrected.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:10:56.963057+00:00",
+      "elapsed_seconds": 11.038643375009997,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf-render-corrected.log",
+      "sha256": "2be231e6456c7c9c3e2da18edd26daff28ad5d14e8177ad16de9f28d86cc6fc5"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/check-preservation-corrected.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:12:59.233386+00:00",
+      "elapsed_seconds": 1.526145625000936,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/preservation-corrected.log",
+      "sha256": "2436611ddd7135d7c58445fa3a42f28d80826dd8509e36a30a19ae3e48d7e799"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/check-provenance.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:08:21.017873+00:00",
+      "elapsed_seconds": 0.24082008301047608,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/provenance.log",
+      "sha256": "b9d9d5e57a7fd2ad2541dae388932351c7e0e93bd27d5ecaed782b71130874d4"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "texra-blueprint",
+        "web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/blueprint",
+      "started_utc": "2026-10-08T02:09:41.167808+00:00",
+      "elapsed_seconds": 60.733748040991486,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/web.log",
+      "sha256": "8929ef6f8afffae861fd4966901a1c76fde40c785807af8595244b07fdf7241d"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:11:25.917607+00:00",
+      "elapsed_seconds": 53.75436983398686,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/whole-web.log",
+      "sha256": "a59e7e1361e121bbce501eb4e8cbd9c028b942e0bb1e6c379ad9c88fc8f2dca9"
+    }
+  ],
+  "retained_metadata_failures": [
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/web-visual.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:11:25.918419+00:00",
+      "elapsed_seconds": 3.3835242919885786,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/focused-web.log",
+      "sha256": "59d38d7ab70abe5ade04f1fbc5ce02f86ced615d51ea5f5498ec684ae12081dd"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "texra-blueprint",
+        "pdf"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/blueprint",
+      "started_utc": "2026-10-08T02:08:20.812788+00:00",
+      "elapsed_seconds": 0.11756945800152607,
+      "exit_code": 2,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf.log",
+      "sha256": "2d78d5c5743a69916ca0fe88ed9964beead3eff53c32c12ec6f911b8a9097246"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf-pages.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:09:42.325494+00:00",
+      "elapsed_seconds": 10.312130457998137,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf-render.log",
+      "sha256": "66323959fd82198344ef86b15e66557057f00d03ff6863ae1da73f84cc06f854"
+    },
+    {
+      "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T02:10:33.177919+00:00",
+      "elapsed_seconds": 90.64935245900415,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/preservation.log",
+      "sha256": "bfbcb3b91dd1fad63b7dd8de795b7149953c801e4e0046a90c7f9f315c9ae405"
+    }
+  ],
+  "scope": "Four auxiliary positivity and spectral-projection facts. The physical complementary-label identity, inverse-compression estimates and final ground-state area-law theorem are not asserted.",
+  "fresh_imported_kernel_reports": 4
+}

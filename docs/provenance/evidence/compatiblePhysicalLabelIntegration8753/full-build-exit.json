@@ -1,0 +1,28 @@
+{
+  "source_revision": "a31ba42a1809a2a319109f94a319cac612d98ea9",
+  "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+  "production_sha256": {
+    "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+    "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+    "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+    "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22",
+    "QICLean/Representation.lean": "b7756ef24338ec15ad11d175a99ffb35ade53a52d839f19984137fa68970199f",
+    "blueprint/src/chapter/ch13_schur_labels.tex": "f3791a72c1ac72b7df858f1ac543e593fb33eea70dd5c6c4283d0277178f00d7"
+  },
+  "argv": [
+    "lake",
+    "build"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 78.82854670799861,
+  "log": "docs/provenance/evidence/compatiblePhysicalLabelIntegration8753/full-build.log.gz",
+  "sha256": "3e8bf3db823bf6abf902581e4b142f63fa534cb9946f0fe94b6056bb75f0f926",
+  "uncompressed_sha256": "13f1940ef418116ec195a14ab0d5be734b9b3d39dc81d11fbfc520f7c5e6443b",
+  "uncompressed_bytes": 60458,
+  "compressed": true,
+  "deterministic_gzip_mtime": 0,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true
+}

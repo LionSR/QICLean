@@ -1,0 +1,13 @@
+{
+  "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+  "argv": [
+    "texra-blueprint",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/blueprint",
+  "started_utc": "2026-10-08T02:08:20.812788+00:00",
+  "elapsed_seconds": 0.11756945800152607,
+  "exit_code": 2,
+  "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf.log",
+  "sha256": "2d78d5c5743a69916ca0fe88ed9964beead3eff53c32c12ec6f911b8a9097246"
+}

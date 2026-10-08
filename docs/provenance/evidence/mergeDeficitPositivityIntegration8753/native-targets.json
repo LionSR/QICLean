@@ -1,0 +1,14 @@
+{
+  "declaration_lines": 3763,
+  "unique_declarations": 3763,
+  "owned_declarations": [
+    "PermutationRepresentation.posSemidef_mergeDeficit",
+    "TensorPower.posSemidef_pairMergeDeficit",
+    "Matrix.PosSemidef.spectralProjectionGE_zero",
+    "Matrix.spectralProjectionGE_zero_mul_of_intertwine"
+  ],
+  "unique_fragment_input": [
+    "blueprint/src/chapter/ch13_schur_labels.tex"
+  ],
+  "each_occurs_once": true
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf-pages.py", line 10, in <module>
+    assert all(len(v)==1 for v in found.values()),found;hits=sorted(set(hits))
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'Nonnegative merge deficit': [9, 454, 455], 'Nonnegative spectral projection on an intertwined range': [455]}

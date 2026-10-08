@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurSurprisal
+import QICLean.Representation.MergeDimensions
 
 /-!
 # Exponentials of merge deficits
@@ -169,4 +170,54 @@ theorem re_trace_mul_exp_mergeDeficit_eq_sum
     Matrix.trace_smul, smul_eq_mul, Complex.mul_re, Complex.ofReal_re,
     Complex.ofReal_im, zero_mul, sub_zero, mul_comm]
 
+/-
+Provenance-ID: 8753-qic-merge-deficit-positivity-01
+Original formalization, no upstream Lean proof text reused.
+Declaration: PermutationRepresentation.posSemidef_mergeDeficit
+Manuscript: September 24, 2026, replicas:merge-dimensions and comparator:merge-decomposition.
+-/
+
+open scoped ComplexOrder in
+/-- The actual logarithmic merge deficit is positive semidefinite. The separate
+permutation actions commute and the combined action is their pointwise product;
+no compatibility assumption on labels is supplied. Zero ambient dimension is
+included. OpenAI, *A two-dimensional area law from a global spectral gap*,
+Lemma 6.1(3), `05-replicas.tex`, equation `replicas:merge-dimensions`, and
+`07-comparators.tex`, lines 501–508, at commit
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`. -/
+theorem posSemidef_mergeDeficit (hcomm : ∀ g h, Commute (φQ g) (φE h))
+    (hprod : ∀ g, φQE g = φQ g * φE g) :
+    (labelEntropy φQ + labelEntropy φE - labelEntropy φQE).PosSemidef := by
+  classical
+  let R := mergeResolution hcomm hprod
+  have hD : labelEntropy φQ + labelEntropy φE - labelEntropy φQE =
+      R.hom (fun p => ((Real.log p.1.1.dim + Real.log p.1.2.dim - Real.log p.2.dim : ℝ) : ℂ)) := by
+    rw [← mergeResolution_hom_left hcomm hprod, ← mergeResolution_hom_middle hcomm hprod,
+      ← mergeResolution_hom_right hcomm hprod, ← map_add, ← map_sub]
+    congr 1
+    funext p
+    simp only [Pi.add_apply, Pi.sub_apply, Complex.ofReal_add, Complex.ofReal_sub]
+  rw [hD]
+  refine R.posSemidef_hom_of_ne_zero (fun p => ?_) fun p hp => ?_
+  · have hQE := commute_groupAlgebraRep_of_commute φQ φE hcomm
+        (IrrepLabel.centralIdem p.1.1) (IrrepLabel.centralIdem p.1.2)
+    have hQboth := commute_groupAlgebraRep_of_eq_mul φQ φE φQE hprod hcomm
+        (IrrepLabel.centralIdem_mem_center p.1.1) (IrrepLabel.centralIdem p.2)
+    have hEboth := commute_groupAlgebraRep_of_eq_mul φE φQ φQE
+        (fun g => by rw [hprod, (hcomm g g).eq])
+        (fun g h => (hcomm h g).symm) (IrrepLabel.centralIdem_mem_center p.1.2)
+        (IrrepLabel.centralIdem p.2)
+    have hHerm := ((isHermitian_labelProj φQ p.1.1).commute_iff
+      (isHermitian_labelProj φE p.1.2)).mp hQE
+    exact (hHerm.commute_iff (isHermitian_labelProj φQE p.2)).mp
+      (hQboth.mul_left hEboth)
+  · have hdim := dim_le_mul_dim_of_compatible hcomm hprod hp
+    have hx : (0 : ℝ) < p.1.1.dim := by exact_mod_cast p.1.1.dim_pos
+    have hy : (0 : ℝ) < p.1.2.dim := by exact_mod_cast p.1.2.dim_pos
+    have hz : (0 : ℝ) < p.2.dim := by exact_mod_cast p.2.dim_pos
+    have hlog : Real.log (p.2.dim : ℝ) ≤ Real.log ((p.1.1.dim : ℝ) * p.1.2.dim) := by
+      apply Real.log_le_log hz
+      exact_mod_cast hdim
+    rw [Real.log_mul hx.ne' hy.ne'] at hlog
+    linarith
 end PermutationRepresentation

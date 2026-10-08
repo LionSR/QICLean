@@ -1,0 +1,37 @@
+{
+  "pdf": "blueprint/print/print.pdf",
+  "pdf_sha256": "c818e28cb952dd5c98aa2af5274717cc849041453f7aad6d189cc1d43478e809",
+  "pages": 472,
+  "markers": {
+    "Physical label operator": [
+      455
+    ],
+    "Physical symmetry and the nonnegative spectral projection": [
+      456
+    ],
+    "Compatibility with the two merges": [
+      456
+    ],
+    "The compatible physical-label projection": [
+      455
+    ]
+  },
+  "inspected_physical_pages": [
+    455,
+    456
+  ],
+  "text_sha256": "b9ee29c93658c8be66289a04f8132edafc42ae4a775dac2fec053d6fd4c677bb",
+  "compressed_text_sha256": "4b03f370d6c5dbef3933db42ff3495e32d894894d7795ae63deee7950bc101b6",
+  "deterministic_gzip_mtime": 0,
+  "schur_chapter_heading_present": true,
+  "new_pages_have_no_unresolved_references": true,
+  "visual_review": "passed",
+  "visual_observations": [
+    "Physical pages455\u2013456 show the complete definition and both theorem statements/proofs without clipping or overlaps.",
+    "All eleven numbered new equations21.7\u201321.17 are legible, including all six compatibility rows; physicalY remains independent.",
+    "The complementary-label identity and spectral transfer proof are readable; source citation and equation references resolve."
+  ],
+  "archived_pdf_gzip": "docs/provenance/evidence/compatiblePhysicalLabelIntegration8753/complete-book.pdf.gz",
+  "archived_pdf_gzip_sha256": "586678b350a42c9da25713288dc1887190906ae50ea529698c04dc9301c53c20",
+  "archived_pdf_uncompressed_bytes": 3012244
+}

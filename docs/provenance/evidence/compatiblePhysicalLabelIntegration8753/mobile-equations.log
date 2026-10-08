@@ -1,0 +1,29 @@
+{
+  "equations": [
+    {
+      "id": "eq:phys_label_definition",
+      "clientWidth": 312,
+      "scrollWidth": 312,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:phys_label_intertwine",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "a0000002648",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    }
+  ],
+  "result": "passed",
+  "overflowing_display_count": 0,
+  "right_endpoint_capture_count": 0,
+  "interpretation": "All three display boxes fit the mobile content width; no horizontal scrolling or right-endpoint capture is required."
+}

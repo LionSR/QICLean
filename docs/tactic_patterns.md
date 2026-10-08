@@ -348,3 +348,40 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Seen:** `Analysis/ReplicaGoodPairMarginal.lean` and `Analysis/ReplicaTwoMergeMoment.lean`; two independent consumers, respectively the marginal exchange and its norm consequence.
 - **Abstraction:** The existing matrix reindexing and coordinate isometry results supply the algebra. These two consumers retain private excitation calculations. Before a third consumer is added, extract their shared mathematical covariance statement and replace the repeated calculations.
 - **Caveat:** Exchange both exterior physical and auxiliary regions while preserving the independent middle physical region. Derive covariance and simultaneous fixedness from actual coordinates; do not supply them as additional hypotheses.
+
+### Spectral projection on an intertwined range — candidate (2026-10-08)
+
+- **Pattern:** Derive an actual matrix identity AT=TB with a positive B,
+  transport the closed nonnegative indicator through the existing Hermitian
+  functional-calculus intertwiner, and use the nonnegative spectrum of B.
+- **Seen:** `Matrix.spectralProjectionGE_zero_mul_of_intertwine` in
+  `QICLean/Analysis/SpectralProjectionIntertwiner.lean`; one mathematical
+  application is being developed for complementary physical labels.
+- **Abstraction:** Reuse `ConditionalMovement.QuantumSSA.cfc_intertwine`.
+  The new projection theorem names the resulting spectral fact; no duplicate
+  eigenbasis argument or tactic is introduced.
+- **Caveats:** Derive the physical intertwining identity before applying the
+  spectral fact. An independent middle physical region cannot be identified
+  with the combined exterior region on the whole space.
+
+### Relative complementary labels and central-observable commutation — candidate (2026-10-08)
+
+- **Pattern:** Apply the inversion-invariant central-coefficient identity to
+  each column of an actual symmetric projection for a disjoint union, then
+  sum the central projections with their real label weights. Extend actual
+  nested/disjoint projector commutation to real label observables by finite
+  sums and scalar multiplication.
+- **Seen:** The private complementary-label and central-observable proofs in
+  `QICLean/Representation/CompatiblePhysicalLabel.lean`, using the existing
+  generic identities in `SchurLabelCommutation.lean` and finite-sum closure
+  used in `LabelProjectors.lean`.
+- **Abstraction:** Reuse the generic central-coefficient identity and
+  `Commute.sum_left`, `Commute.sum_right`. One private observable helper
+  treats nesting or disjointness, so the physical and both deficit
+  applications do not repeat the projector-sum calculation. No tactic is
+  introduced.
+- **Caveats:** The complement is relative to the actual physical union QYV;
+  it must retain Y as an independent factor. All source-facing commutation
+  facts are derived for the five specified actions. No global positivity
+  of the physical operator or preservation of the physical symmetric
+  projection under a merge is assumed.

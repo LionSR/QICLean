@@ -1,0 +1,17 @@
+{
+  "source_revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/mergeDeficitPositivity8753/pattern-scan.py",
+    "--root",
+    "QICLean",
+    "--top",
+    "8"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T01:50:56.882715+00:00",
+  "elapsed_seconds": 2.6171913750004023,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeDeficitPositivity8753/patterns.log",
+  "sha256": "5e2708bb58445839fe7073d58563e8ef75d285637249a61a8c025e8369cf82dd"
+}

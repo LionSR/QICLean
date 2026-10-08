@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/docs/provenance/evidence/mergeDeficitPositivityIntegration8753/check-preservation.py", line 10, in <module>
+    old=subprocess.check_output(['git','show',f['leaf_evidence_revision']+':'+n]);new=(r/n).read_bytes();assert new.count(line.encode())==1,(n,line);assert new.replace(line.encode(),b'')==old,n
+                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('QICLean/Analysis.lean', 'public import QICLean.Analysis.SpectralProjectionIntertwiner\n')

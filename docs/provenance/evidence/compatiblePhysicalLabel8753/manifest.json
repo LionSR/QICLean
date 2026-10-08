@@ -1,0 +1,445 @@
+{
+  "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+  "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+  "parent_revision": "f675fee80416c966989bc8bc124a3d54b1348492",
+  "production_sha256": {
+    "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+    "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+    "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+    "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+  },
+  "frozen_policy_revision": "806099b4dddcce591b3a62ee1921926a6af5ad55",
+  "owned_shards": [
+    "docs/provenance/openai-math.d/compatiblePhysicalLabel8753.json"
+  ],
+  "owned_shard_sha256": "0ae30e6203a2645dcc6a70d6c8b51dd4ab4d1068056f7e58bad1b22dd6a26f9f",
+  "owned_public_declarations": 5,
+  "exact_stock_kernel_reports": 5,
+  "axioms_log_sha256": "bcf03f40e61e05dcbcaf214fa0bcf96388f5245e9ca7e35ad9d357ed132bc550",
+  "canonical_commands": {
+    "axioms-exit.json": {
+      "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "production_sha256": {
+        "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+        "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+        "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+        "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+      },
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/compatiblePhysicalLabel8753/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 10.931992124998942,
+      "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/axioms.log",
+      "sha256": "bcf03f40e61e05dcbcaf214fa0bcf96388f5245e9ca7e35ad9d357ed132bc550",
+      "uncompressed_sha256": "bcf03f40e61e05dcbcaf214fa0bcf96388f5245e9ca7e35ad9d357ed132bc550",
+      "uncompressed_bytes": 574,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "cache-guard-exit.json": {
+      "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "production_sha256": {
+        "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+        "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+        "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+        "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+      },
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/compatiblePhysicalLabel8753/mathlib-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.06731066599604674,
+      "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/cache-guard.log",
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "uncompressed_sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "uncompressed_bytes": 172,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "parent-preservation-exit.json": {
+      "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "production_sha256": {
+        "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+        "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+        "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+        "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+      },
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/compatiblePhysicalLabel8753/check-parent.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9730809169996064,
+      "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/parent-preservation.log",
+      "sha256": "7b3bd16d6de93a6861e09a5100e2b90af0027c9c2486a5a9256b5ddfc419a8a6",
+      "uncompressed_sha256": "7b3bd16d6de93a6861e09a5100e2b90af0027c9c2486a5a9256b5ddfc419a8a6",
+      "uncompressed_bytes": 225,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "patterns-exit.json": {
+      "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "production_sha256": {
+        "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+        "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+        "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+        "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+      },
+      "argv": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+        "--root",
+        "QICLean/Representation",
+        "--top",
+        "2",
+        "--show-locations",
+        "2"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07274791698728222,
+      "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/patterns.log",
+      "sha256": "e13b2d49725238cdf64c28c7b17ab2a44f1554c6e9e4de80e3f425486bc73efd",
+      "uncompressed_sha256": "e13b2d49725238cdf64c28c7b17ab2a44f1554c6e9e4de80e3f425486bc73efd",
+      "uncompressed_bytes": 292,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "prose-exit.json": {
+      "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "production_sha256": {
+        "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+        "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+        "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+        "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+      },
+      "argv": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/TNLean/scripts/check_reader_facing_prose.py",
+        "--root",
+        ".",
+        "--diff-base",
+        "f675fee80416c966989bc8bc124a3d54b1348492"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.10458625000319444,
+      "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "uncompressed_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "uncompressed_bytes": 57,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "provenance-exit.json": {
+      "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "production_sha256": {
+        "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+        "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+        "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+        "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+      },
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/compatiblePhysicalLabel8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.31452541700855363,
+      "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/provenance.log",
+      "sha256": "7ffe59dc837709b43bb625c25323aefa56962a79d773fc9aa21d59d05ff2ed05",
+      "uncompressed_sha256": "7ffe59dc837709b43bb625c25323aefa56962a79d773fc9aa21d59d05ff2ed05",
+      "uncompressed_bytes": 69,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "source-comparison-exit.json": {
+      "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "production_sha256": {
+        "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+        "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+        "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+        "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+      },
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/compatiblePhysicalLabel8753/check-source.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.041858583004795946,
+      "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/source-comparison.log",
+      "sha256": "3e6dc5dafdae858d94c0b021c7829227fa64d7709fdc37e0e77ffbc25830cdb7",
+      "uncompressed_sha256": "3e6dc5dafdae858d94c0b021c7829227fa64d7709fdc37e0e77ffbc25830cdb7",
+      "uncompressed_bytes": 458,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "strict-source-exit.json": {
+      "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "production_sha256": {
+        "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+        "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+        "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+        "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+      },
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "QICLean/Representation/CompatiblePhysicalLabel.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 10.401901459001238,
+      "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "target-exit.json": {
+      "source_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "mathematical_revision": "117c20bc410636629d7789d47697875ae541e0f2",
+      "production_sha256": {
+        "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+        "blueprint/src/fragment/compatible_physical_label.tex": "3cdbdcdc68a0f5ad29da85e68f5c01542029cbd1a5ec56f56b229b67b528c990",
+        "docs/openai-area-law-compatible-physical-label.md": "787fb69d86bcd16bf26c0d86f010e3e258e14136e6a2f9be21a414ace445597a",
+        "docs/tactic_patterns.md": "cda785eb7d151a9d69cfb7ba19f9cd71515341eb0ac200ea6c0e8d9e5b6efc22"
+      },
+      "argv": [
+        "lake",
+        "build",
+        "QICLean.Representation.CompatiblePhysicalLabel"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 27.563309417004348,
+      "log": "docs/provenance/evidence/compatiblePhysicalLabel8753/target.log",
+      "sha256": "b1684f93669f2213a40efc8dcf1074aaf772d2a4017f9c30975fad6e69017783",
+      "uncompressed_sha256": "b1684f93669f2213a40efc8dcf1074aaf772d2a4017f9c30975fad6e69017783",
+      "uncompressed_bytes": 1986,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    }
+  },
+  "artifacts": {
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/Axioms.lean": {
+      "sha256": "393514e95dc3a2adafd115324eb0b41dcfed0e045380e3b9f008562b826d5481",
+      "bytes": 681
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/README.md": {
+      "sha256": "17567e0c3dea2fea6e90e14c63f956056f32e48599f454e7fdc63d1e493359cd",
+      "bytes": 3103
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/axioms-exit.json": {
+      "sha256": "7bcc6317478df88cc0e46d0bd5caec8f56dda7c3167e4400ddb1f352184346e9",
+      "bytes": 1570
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/axioms.log": {
+      "sha256": "bcf03f40e61e05dcbcaf214fa0bcf96388f5245e9ca7e35ad9d357ed132bc550",
+      "bytes": 574
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/cache-guard-exit.json": {
+      "sha256": "6934283f356953642cc9cdf4de5c589442a1ad96fecf3caff6b419f30bc830e0",
+      "bytes": 1425
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/cache-guard.log": {
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "bytes": 172
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/check-parent.py": {
+      "sha256": "3ce743cee26c94f6dc09f654bd1353b96467f660e72a9baa0789731d7e390144",
+      "bytes": 1103
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/check-source.py": {
+      "sha256": "fddf4fc9b6516f939105c19cd2d2b2906e5d42aab32c28a7deb3763179ea15e9",
+      "bytes": 1026
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/mathlib-guard.py": {
+      "sha256": "98adc6192d8cfee6650b0a5b93d971abd3d267ea5945d747e541de7bd2a04438",
+      "bytes": 684
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/owned-shards.json": {
+      "sha256": "914b8e607f2b2b0f51548332aa611841d7b161c298aa0c17ce1fefb1e0a4a80b",
+      "bytes": 41
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/parent-preservation-exit.json": {
+      "sha256": "34a5275867afbc4b55cee5a872ca7638a0dea2c9a0da5734b80e5fd0f3d19193",
+      "bytes": 1431
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/parent-preservation.log": {
+      "sha256": "7b3bd16d6de93a6861e09a5100e2b90af0027c9c2486a5a9256b5ddfc419a8a6",
+      "bytes": 225
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/patterns-exit.json": {
+      "sha256": "04212c98256d2da04bdfd0e6a4f7e00364dc83487f956bce8116174156c9f161",
+      "bytes": 1529
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/patterns.log": {
+      "sha256": "e13b2d49725238cdf64c28c7b17ab2a44f1554c6e9e4de80e3f425486bc73efd",
+      "bytes": 292
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/cache-get-exit.json": {
+      "sha256": "bec5cf79fd8f58ea0b4440af418c0a2748cf77195791b6c83cdf22984d2686c2",
+      "bytes": 878
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/cache-get-initial-operational-exit.json": {
+      "sha256": "db5b46a65a9e55440f6bb487a44c0b201fd2b72d9c912583173bee6de7f3eefb",
+      "bytes": 503
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/cache-get-initial-operational.log": {
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/cache-get.log": {
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/cache-guard-exit.json": {
+      "sha256": "1dbda7a4e6a54d47afa75a26e9ed19fb00a1205a175789c3087c690a57ebc64e",
+      "bytes": 902
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/cache-guard.log": {
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "bytes": 172
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/mathlib-guard.py": {
+      "sha256": "98adc6192d8cfee6650b0a5b93d971abd3d267ea5945d747e541de7bd2a04438",
+      "bytes": 684
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/prerequisites-exit.json": {
+      "sha256": "c4b832ad3a8c3310517c3f41c179c0ee7b9e8288605f36fac81274b779fd1e74",
+      "bytes": 963
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/prerequisites.log": {
+      "sha256": "afa594641791cd8d25fc08c047d4f49421cd13377b61b0e003e210e1715df909",
+      "bytes": 2054
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/record-command.py": {
+      "sha256": "71785b45c416b9bde20e5b87cd7f5f1ae8d5060a8c2cf6832d725fc7f346202e",
+      "bytes": 2598
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prerequisite-operations/source-freeze.json": {
+      "sha256": "80783375ccaca5cdb6c5719af9afa83ae731f6549016cfc2a159459d1ec0625e",
+      "bytes": 166
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prose-exit.json": {
+      "sha256": "b1400eab806cea5a3eea4fede3e8af7bc6c05525b8bff0a839993a8c99b29be7",
+      "bytes": 1522
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/prose.log": {
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/provenance-exit.json": {
+      "sha256": "fdf217e7ff6a44fc25bf66b5d14b3386fb2a226dd88665d02d50de373b40c84f",
+      "bytes": 1508
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/provenance.log": {
+      "sha256": "7ffe59dc837709b43bb625c25323aefa56962a79d773fc9aa21d59d05ff2ed05",
+      "bytes": 69
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/record-command.py": {
+      "sha256": "30a503e93b8312a804d65a3df65b4a8b3cf348c7169b3bcae4c1e75c43fabd98",
+      "bytes": 2557
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/source-comparison-exit.json": {
+      "sha256": "bf85a78d1d9256c4f2e9fce6a3597468c55127f530474ef6ea5caa0d02a472ff",
+      "bytes": 1431
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/source-comparison.log": {
+      "sha256": "3e6dc5dafdae858d94c0b021c7829227fa64d7709fdc37e0e77ffbc25830cdb7",
+      "bytes": 458
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/source-freeze.json": {
+      "sha256": "090fa85174dc423ffcf179ae9b40d61bfdfaf76c317be86b9b3fb72d97f13717",
+      "bytes": 712
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/strict-source-exit.json": {
+      "sha256": "40f9e0884a0c80478ffbc212fffb838107378326edb0d9bd75efd893f6204932",
+      "bytes": 1562
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/strict-source.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/target-exit.json": {
+      "sha256": "080e05e89001d3b1efc88c524f5e14218b9ddfeff3204a4f12ab6a165c305c73",
+      "bytes": 1407
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/target.log": {
+      "sha256": "b1684f93669f2213a40efc8dcf1074aaf772d2a4017f9c30975fad6e69017783",
+      "bytes": 1986
+    },
+    "docs/provenance/evidence/compatiblePhysicalLabel8753/validate-owned.py": {
+      "sha256": "921ffe4d34663b701937f8e753eb9f960da4d466568ad12be40bbb3b17557230",
+      "bytes": 1523
+    }
+  },
+  "parent_preservation": {
+    "parent_revision": "f675fee80416c966989bc8bc124a3d54b1348492",
+    "exact_unchanged_parent_files": 4553,
+    "sole_parent_edit": "docs/tactic_patterns.md: append only",
+    "parent_mathematical_sources_and_bound_evidence": "unchanged"
+  },
+  "publication_checks_pending": [
+    "complete library after unique inclusion",
+    "complete PDF and visual inspection",
+    "web and native complete fragment inventory",
+    "focused and whole web readers"
+  ]
+}
