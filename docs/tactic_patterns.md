@@ -247,3 +247,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   Neither normalization nor a supplied covariance identity is assumed.
   For a three-factor physical space, preserve the middle factor under the
   exterior-region exchange and trace all of its copies in the common density.
+
+### Chosen copy enumeration and actual density support — candidate (2026-10-08)
+
+- **Pattern:** Transport an actual reduced density through a chosen finite-set
+  enumeration, apply its proved product formula, and use a fixed tensor vector
+  to show support in the physical symmetric subspace.
+- **Seen:** `Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density`
+  in `QICLean/Analysis/ReplicaGoodPhysicalSupport.lean`; one consumer.
+- **Abstraction:** Reuse `partialTraceRight_submatrix_prod_equiv`,
+  `Equiv.prod_comp`, `symProj_mulVec_of_mem`, `mul_vecMulVec` and
+  `mul_kronecker_mul`. No new tactic or parallel marginal is introduced.
+- **Caveats:** The product formula is derived from the actual excitation
+  component. In Q tensor Y tensor V, every middle Y coordinate must be retained
+  until physical symmetrization. The original vector need not be symmetric.
