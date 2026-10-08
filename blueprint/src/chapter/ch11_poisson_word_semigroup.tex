@@ -1,0 +1,69 @@
+\section{Time composition of Poissonized words}
+\label{sec:poisson_word_semigroup}
+
+Let $I$ be a finite alphabet, $N=|I|$, and let $\mu_t$ be the word measure
+of Definition~\ref{def:poisson_word_measure}.  Concatenation places every
+letter of the first word before every letter of the second.  The
+occurrence-order products in
+\emph{A two-dimensional area law from a global spectral gap},
+\cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex}, lines 49--54,
+motivate this word model.  The following derived composition law supports
+the excited-state estimate on lines 237--253; it is not a theorem stated
+in the manuscript.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+
+\begin{lemma}[Convolution of singleton word weights]
+\label{lem:poisson_word_weight_convolution}
+\lean{PoissonWord.sum_weight_mul_weight}
+\leanok
+\uses{def:poisson_word_measure}
+For $s,t\ge0$ and $m\in\N$,
+\begin{align}
+ \sum_{k=0}^{m}
+   \left(e^{-Ns}\frac{s^k}{k!}\right)
+   \left(e^{-Nt}\frac{t^{m-k}}{(m-k)!}\right)
+ &=e^{-N(s+t)}\frac{(s+t)^m}{m!}.
+ \label{eq:poisson_word_weight_convolution}
+\end{align}
+\end{lemma}
+\begin{proof}
+\leanok
+For $0\le k\le m$, the identity
+$\binom{m}{k}k!(m-k)!=m!$ expresses each summand as
+$e^{-N(s+t)}s^kt^{m-k}\binom{m}{k}/m!$.
+Factor out $e^{-N(s+t)}/m!$ and apply the binomial theorem.
+Only positive factorials are canceled, so zero times are included.
+\end{proof}
+
+\begin{theorem}[Composition of the word measures]
+\label{thm:poisson_word_semigroup}
+\lean{PoissonWord.prod_measure_append_preimage_singleton,
+PoissonWord.map_append}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_append}
+For $s,t\geq0$, the pushforward of the product measure under concatenation
+satisfies
+\begin{align}
+ \operatorname{append}_*(\mu_s\otimes\mu_t)&=\mu_{s+t}.
+ \label{eq:poisson_word_append_law}
+\end{align}
+Equivalently, independent word samples with durations $s$ and $t$
+concatenate to a word with law $\mu_{s+t}$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_append_fiber, lem:poisson_word_weight_convolution,
+lem:poisson_word_normalization}
+Fix a word $w$ of length $m$.  Its concatenation fiber consists of precisely
+the $m+1$ pairs formed by its prefix of length $k$ and suffix of length
+$m-k$, with $0\le k\le m$.  The product measure assigns to each pair the
+product of the corresponding singleton masses.  Summing over the fiber
+and using~(\ref{eq:poisson_word_weight_convolution}) gives
+$e^{-N(s+t)}(s+t)^m/m!$, the singleton mass of $w$ under $\mu_{s+t}$.
+Since the word space is countable, agreement on every singleton proves
+equality of the measures.
+\end{proof}
+
+The empty word is the identity at time zero, and the formula also holds
+for an empty alphabet.  This composition statement does not construct
+event times, a process with independent increments, or a coupling of paths.

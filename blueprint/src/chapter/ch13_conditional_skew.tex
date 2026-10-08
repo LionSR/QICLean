@@ -1,0 +1,166 @@
+%% =========================================================
+%% Chapter: The conditional skew estimate
+%% Source: OpenAI, "A two-dimensional area law from a global spectral gap"
+%%         (September 24, 2026), Lemma 5.3, 04-conditional.tex lines 487-600
+%% =========================================================
+
+\chapter{The Conditional Skew Estimate}
+\label{ch:conditional_skew}
+
+This chapter formalizes the conditional skew estimate
+of~\cite[Lemma~5.3]{OpenAI2026AreaLaw}: a local positive expectation
+conjugated by marginal real powers departs from the nonnegative real axis by
+at most a fractional power of a conditional mutual information. Throughout,
+$\theta$ is a unit vector on finite-dimensional systems $P,x,U,F$ with
+$P=P_0P_1$, $Y=xU$, $\rho_D$ denotes a marginal of $\theta$, powers
+$\rho^{[z]}$ vanish on the kernel, and $0\le h\le I$ acts on $P_0x$. Put
+$d_h=(\dim P_0)(\dim x)$, $\ell_h=\log(ed_h)$, $\eta=I(x:F|U)_\theta$ and
+\[
+  f(z)=\langle\theta,\rho_P^{[z]}\rho_Y^{[-z]}h\rho_P^{[-z]}\rho_Y^{[z]}\theta\rangle .
+\]
+
+\section{The scalar function}
+
+\begin{lemma}[Elementary properties]
+    \label{lem:skew_function}
+    \lean{Entropy.ConditionalSkew.differentiable_skewFun,
+        Entropy.ConditionalSkew.skewFun_zero,
+        Entropy.ConditionalSkew.skewFun_neg_conj,
+        Entropy.ConditionalSkew.norm_skewFun_imag_le,
+        Entropy.ConditionalSkew.norm_skewFun_le_of_strip}
+    \leanok
+    The function $f$ is entire, $f(0)=\langle\theta,h\theta\rangle\ge0$ and
+    $f(-\bar z)=\overline{f(z)}$. On the imaginary axis $|f|\le1$, and
+    $|f(z)|\le d_h^2$ for $|\operatorname{Re}z|\le\frac12$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Each matrix entry of a support power is an entire function of the exponent.
+    On the imaginary axis $f(iy)$ is an expectation of $h$ in a unit vector.
+    For the strip bound, expand $h$ in matrix units on $P_0x$; each of the at
+    most $d_h^2$ terms is an inner product of two vectors of the form
+    $\rho^{[z]}c\,\rho^{[-z]}\theta$ with $\lVert c\rVert\le1$, and
+    $\lVert\rho^{[z]}c\,\rho^{[1/2-z]}\rVert_2\le\lVert c\rVert$ for
+    $0\le\operatorname{Re}z\le\frac12$. The reflection treats negative real
+    parts.
+\end{proof}
+
+\begin{theorem}[Departure from the positive axis]
+    \label{thm:skew_departure}
+    \lean{Complex.norm_sub_re_le_of_phase_bounds}
+    \leanok
+    Let $g$ be entire with $g(-\bar z)=\overline{g(z)}$, $g(0)=p\ge0$,
+    $|g|\le1$ on the imaginary axis and $|g|\le m$ on
+    $|\operatorname{Re}z|\le\frac14$, where $1\le m$, $1\le\ell$ and
+    $\log m\le2\ell$. Suppose that for some $R\ge0$ and every real $u$,
+    \[
+      |g(iu)-p|\le4\sqrt p\,|\sinh\pi u|\,R+4\sinh^2(\pi u)R^2 .
+    \]
+    Then for real $|t|\le1/(16\ell)$,
+    \[
+      |g(t)|-\operatorname{Re}g(t)\le t^2\bigl(8\pi^2R^2
+        +12288\,e^{\pi^2+1}\ell^2\sqrt{\min(1,R)}\bigr).
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    Three lines on the two half-strips bounds $g$ by a universal constant on
+    $|\operatorname{Re}z|\le1/(8\ell)$. The phase hypothesis gives
+    $g'(0)\in i\mathbb R$ and $|g'(0)|\le4\pi\sqrt p\,R$. The function
+    $(g(z)-p)e^{z^2}$ is bounded by $C\min(1,R)$ on the imaginary axis and by a
+    constant on the outer lines, so three lines and a Cauchy estimate bound the
+    second-order Taylor remainder of $g$ at zero. Finally
+    $|p+itb|-p\le t^2b^2/p$ for real $b$ when $p>0$, and $g'(0)=0$ when $p=0$.
+\end{proof}
+
+\section{The imaginary axis}
+
+\begin{lemma}[Schmidt mirroring]
+    \label{lem:schmidt_mirroring}
+    \lean{Entropy.ConditionalSkew.cfcC_kronecker_one_mulVec}
+    \leanok
+    For a vector $\theta$ on $A\otimes B$ and any function $g$ on the real
+    line, $(g(\rho_A)\otimes I)\theta=(I\otimes g(\rho_B))\theta$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $\theta$ as a coefficient matrix $C$, so $\rho_A=CC^*$ and
+    $\rho_B=(C^*C)^T$. The operators act by $C\mapsto g(CC^*)C$ and
+    $C\mapsto C\,g(C^*C)$, which agree since $CC^*\cdot C=C\cdot C^*C$.
+\end{proof}
+
+\begin{lemma}[Imaginary-axis comparison]
+    \label{lem:skew_imaginary_axis}
+    \lean{Entropy.ConditionalSkew.norm_skewFun_imag_sub_le}
+    \leanok
+    \uses{lem:skew_function, lem:schmidt_mirroring, thm:marginal_phase}
+    With $p=\langle\theta,h\theta\rangle$ and $\mathcal R_\eta$ the rate of
+    Theorem~\ref{thm:marginal_phase} for $d=\dim x$, every real $u$ satisfies
+    \[
+      |f(iu)-p|\le4\sqrt p\,|\sinh\pi u|\,\mathcal R_\eta
+        +4\sinh^2(\pi u)\mathcal R_\eta^2 .
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    The kernel parts of the support powers annihilate $\theta$, and Schmidt
+    mirroring across $P$ and $YF$ gives $f(iu)=\langle w_u,hw_u\rangle$ with
+    $w_u=\widehat\rho_Y^{\,iu}\widehat\rho_{YF}^{\,-iu}\theta$. The vector
+    $w_u^0=\widehat\rho_U^{\,iu}\widehat\rho_{UF}^{\,-iu}\theta$ is a unitary
+    on $UF$ applied to $\theta$, so $\langle w_u^0,hw_u^0\rangle=p$.
+    Multiplying $w_u-w_u^0$ by $\widehat\rho_P^{\,iu}$ and
+    $\widehat\rho_U^{\,-iu}$ and mirroring again gives
+    $\lVert w_u-w_u^0\rVert=\lVert(\widehat\rho_U^{\,-iu}\widehat\rho_Y^{\,iu}
+    -\widehat\rho_{UF}^{\,-iu}\widehat\rho_{YF}^{\,iu})\theta\rVert$, which
+    Theorem~\ref{thm:marginal_phase} bounds by
+    $2|\sinh\pi u|\,\mathcal R_\eta$. For $0\le h\le I$,
+    $|\langle w,hw\rangle-\langle w^0,hw^0\rangle|\le
+    2\sqrt{\langle w^0,hw^0\rangle}\,\lVert w-w^0\rVert+\lVert w-w^0\rVert^2$.
+\end{proof}
+
+\section{The estimate}
+
+\begin{lemma}[Size of the rate]
+    \label{lem:skew_rate}
+    \lean{Entropy.ConditionalSkew.phaseRate_le,
+        Entropy.ConditionalSkew.condMutualInfo_nonneg,
+        Entropy.ConditionalSkew.condMutualInfo_le_two_log}
+    \leanok
+    For a density matrix on $xUF$, $0\le I(x:F|U)\le2\log\dim x$. If
+    $1\le D$, $\log(eD)\le\ell$ and $\eta\le2\ell$, then the rate of
+    Theorem~\ref{thm:marginal_phase} satisfies
+    $\mathcal R_\eta\le3\ell\min(1,\eta)^{1/4}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Nonnegativity is strong subadditivity, and the upper bound writes
+    $I(x:F|U)=S(x|U)-S(x|UF)$ with both conditional entropies bounded in
+    absolute value by $\log\dim x$. For $0<\eta\le1$ use
+    $-\eta\log\eta\le2\sqrt\eta$; for $\eta>1$ the rate is at most
+    $1+\sqrt{2}\,\ell$.
+\end{proof}
+
+\begin{theorem}[Conditional skew estimate]
+    \label{thm:conditional_skew}
+    \lean{Entropy.ConditionalSkew.conditionalSkew_le}
+    \leanok
+    \uses{lem:skew_function, thm:skew_departure, lem:skew_imaginary_axis,
+        lem:skew_rate}
+    There is a universal constant $C$ such that for $0<a\ell_h\le\frac18$ and
+    $t=a/2$,
+    \[
+      |f(t)|-\operatorname{Re}f(t)\le Ca^2\ell_h^4\eta^{1/8}.
+    \]
+    In particular the left side is zero if $\eta=0$. One may take
+    $C=18\pi^2+6144\,e^{\pi^2+1}$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Apply Theorem~\ref{thm:skew_departure} to $f$ with $m=d_h^2$,
+    $\ell=\ell_h$, $R=\mathcal R_\eta$ and $p=\langle\theta,h\theta\rangle$,
+    using Lemmas~\ref{lem:skew_function} and~\ref{lem:skew_imaginary_axis}.
+    Since $\dim x\le d_h$ and $\eta\le2\log\dim x\le2\ell_h$,
+    Lemma~\ref{lem:skew_rate} gives
+    $\mathcal R_\eta^2\le9\ell_h^2\eta^{1/8}$ and
+    $\sqrt{\min(1,\mathcal R_\eta)}\le2\ell_h\eta^{1/8}$.
+\end{proof}
