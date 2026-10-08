@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "path": "QICLean/Representation/MergeExponential.lean",
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "sha256": "6521cee62efc950bc2d64f5dee74fa56dddeb8ecd530421feb32a5abfe63a484",
+      "exact_frozen_bytes": true
+    },
+    {
+      "path": "blueprint/src/fragment/merge_exponential.tex",
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "sha256": "f361300beeaad57233385bb90847c36c339382282f84090ab387c5d60039a691",
+      "exact_frozen_bytes": true
+    },
+    {
+      "path": "docs/area-law-merge-exponential.md",
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "sha256": "ecba79e00bd9a2a3cac4df6f47150c64b0374ecfcf84f17b701ad1dacf1e7586",
+      "exact_frozen_bytes": true
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+      "sha256": "f5d4ce8ef371d1cf78609f7bf9663af2bf891c663abb00e09164289744c70daf",
+      "exact_frozen_bytes": true
+    }
+  ]
+}

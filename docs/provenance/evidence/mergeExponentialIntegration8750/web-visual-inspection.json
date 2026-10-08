@@ -1,0 +1,28 @@
+{
+  "viewports": [
+    1280,
+    360
+  ],
+  "complete_entries": [
+    "explicit common hypotheses",
+    "both theorem statements",
+    "both full proofs"
+  ],
+  "displayed_formulas": 3,
+  "scrolling_formula_right_endpoints": 2,
+  "screenshots": [
+    "web-exp_merge_deficit_eq_sum-proof-1280.png",
+    "web-exp_merge_deficit_eq_sum-proof-360.png",
+    "web-exp_merge_deficit_eq_sum-statement-1280.png",
+    "web-exp_merge_deficit_eq_sum-statement-360.png",
+    "web-merge_exponential-prelude-1280.png",
+    "web-merge_exponential-prelude-360.png",
+    "web-merge_exponential-prelude-display-360-right.png",
+    "web-re_trace_exp_merge_deficit_eq_sum-proof-1280.png",
+    "web-re_trace_exp_merge_deficit_eq_sum-proof-360.png",
+    "web-re_trace_exp_merge_deficit_eq_sum-statement-1280.png",
+    "web-re_trace_exp_merge_deficit_eq_sum-statement-360.png",
+    "web-re_trace_exp_merge_deficit_eq_sum-statement-display-0-360-right.png"
+  ],
+  "result": "Complete statements, hypotheses and proofs visually inspected. The wide trace and hypothesis displays remain readable with horizontal scrolling; both right endpoints were inspected. No overlap, missing symbols or clipped non-scrolling text."
+}

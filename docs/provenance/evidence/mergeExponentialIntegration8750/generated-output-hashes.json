@@ -1,0 +1,374 @@
+{
+  "files": [
+    {
+      "path": "blueprint/print/print.pdf",
+      "bytes": 2866266,
+      "sha256": "7cd5fda89568c74ea9addbfe496024909efbd2ab78d788c877f9bb462a660620"
+    },
+    {
+      "path": "blueprint/print/print.bbl",
+      "bytes": 14706,
+      "sha256": "1c9c49ee1de060dc40e74b44b1cbcd0a961b662280ac2dcdc5439d3556e24695"
+    },
+    {
+      "path": "blueprint/src/web.bbl",
+      "bytes": 14706,
+      "sha256": "1c9c49ee1de060dc40e74b44b1cbcd0a961b662280ac2dcdc5439d3556e24695"
+    },
+    {
+      "path": "blueprint/lean_decls",
+      "bytes": 151965,
+      "sha256": "ef055adefc2d568be1cc64713ed4d113273a78eb5f379ee167952854d1f15795"
+    },
+    {
+      "path": "blueprint/web/ch-buffered_filters.html",
+      "bytes": 63244,
+      "sha256": "137e4b7583bf472adbf318b4800358d5ab70db5730557f16553c22e8335af422"
+    },
+    {
+      "path": "blueprint/web/ch-channel_asymptotics.html",
+      "bytes": 769734,
+      "sha256": "a04988e3f4fc6a4153a52048806b1b2a044837a066266f4af218aa2924a8dfe7"
+    },
+    {
+      "path": "blueprint/web/ch-channel_representations.html",
+      "bytes": 837854,
+      "sha256": "21d8c19fcef8828abfd8cff797135348c3601c0322fbdeff21ebd0769d921b26"
+    },
+    {
+      "path": "blueprint/web/ch-channels.html",
+      "bytes": 324484,
+      "sha256": "732ab1a8583c6aeccb0384801da1280b56825f33bf4bf05591130db5619ff175"
+    },
+    {
+      "path": "blueprint/web/ch-conditional_movement.html",
+      "bytes": 66872,
+      "sha256": "e12bfd23de32c607718ca2806cc24ebf002cb2bfd00e56d1733906a64c92067a"
+    },
+    {
+      "path": "blueprint/web/ch-convex_structure.html",
+      "bytes": 100603,
+      "sha256": "d7b3b803ae4a5e15e39394bc5cd8b22932de6497182ee94462f230fb3969b683"
+    },
+    {
+      "path": "blueprint/web/ch-deconstructing_quantum.html",
+      "bytes": 428674,
+      "sha256": "8497b04cbfa3d0027198ae09927df321a9ac7765356b53a539c4c01d4518287d"
+    },
+    {
+      "path": "blueprint/web/ch-entropy.html",
+      "bytes": 1101367,
+      "sha256": "657fadfab0c49bf5710ab5e7f98418bb545f5e124e04ddcd70cc4727d22072c8"
+    },
+    {
+      "path": "blueprint/web/ch-marginal_phase.html",
+      "bytes": 74001,
+      "sha256": "02a2128bce24ce32c986df99eec3a05b44b4e038557dbac88637ca011a961267"
+    },
+    {
+      "path": "blueprint/web/ch-marginal_tails.html",
+      "bytes": 171083,
+      "sha256": "40d20a0efe49ffc8e76873b59416527d4c794af7bf186b2685b0a502a384001b"
+    },
+    {
+      "path": "blueprint/web/ch-operator_convexity.html",
+      "bytes": 238815,
+      "sha256": "8d4c9732a8d299768f095926d152c7ce52c0955b8448933b949294fcffc63145"
+    },
+    {
+      "path": "blueprint/web/ch-positive_not_cp.html",
+      "bytes": 760989,
+      "sha256": "9116cf01418676f70b3fb285585691acbd59e9f4d3b361f70c690cca057566b7"
+    },
+    {
+      "path": "blueprint/web/ch-qpf.html",
+      "bytes": 404981,
+      "sha256": "7728e4ef4fb6e09aeb516fdbb6b4fbbf4c38c4e3e79b4e009525d19857fa7dff"
+    },
+    {
+      "path": "blueprint/web/ch-random_sources.html",
+      "bytes": 102745,
+      "sha256": "0332f8ae067a436617e87d4dd1d6038e85d22b13834274bb8d6b604da83d6356"
+    },
+    {
+      "path": "blueprint/web/ch-schur_labels.html",
+      "bytes": 144372,
+      "sha256": "42f4ba68441751febd71a797f59857e14fed106745ae6b144e149948f818a212"
+    },
+    {
+      "path": "blueprint/web/ch-schwarz.html",
+      "bytes": 261501,
+      "sha256": "55c01369a06e8513917f94e119e9dd8160a778a87555c62b781e8609debafb1e"
+    },
+    {
+      "path": "blueprint/web/ch-semigroup.html",
+      "bytes": 447393,
+      "sha256": "322eff1a4c6c8b78a4e92261b7b66d9d376d96be6527da4774647614dd2f5d23"
+    },
+    {
+      "path": "blueprint/web/ch-source_constructions.html",
+      "bytes": 124006,
+      "sha256": "9ce4ce2f3b16377b2e36162f4c405038c6cffa964ef1391f1c6f8a8de1d8d776"
+    },
+    {
+      "path": "blueprint/web/ch-source_error.html",
+      "bytes": 87717,
+      "sha256": "ee8d95c68055bc8828420fbf65e107577465c23788fabadef0aae45f34868a1c"
+    },
+    {
+      "path": "blueprint/web/ch-source_reduction.html",
+      "bytes": 88125,
+      "sha256": "cca1b619bb48381ac6ee4b8645be1f737cc39b3509b63d7057dac936f22883de"
+    },
+    {
+      "path": "blueprint/web/ch-spectral.html",
+      "bytes": 151730,
+      "sha256": "7c2b93cbeda339983fc5b8a8788e8c3455b93abad751c49f2a2fdedca75a6e3d"
+    },
+    {
+      "path": "blueprint/web/ch-spectral_filter.html",
+      "bytes": 125099,
+      "sha256": "4c4f0cd0ae98362d0150f667406eb56e56f947879b570cda88f79ca32cf74e09"
+    },
+    {
+      "path": "blueprint/web/ch-wielandt.html",
+      "bytes": 164888,
+      "sha256": "df5821479dab40637d9b551bd33eff1698e36fc576cc96ae9e54d3c7f3eaca3c"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_1.html",
+      "bytes": 244850,
+      "sha256": "660524d896033f0c5af0784b57ee12229042b0cae3b87c49411e022992095830"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_10.html",
+      "bytes": 447417,
+      "sha256": "43730e022dfc39c024dbe1856421bcee9f03145c3090831eb89402fde656aa8e"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_11.html",
+      "bytes": 92346,
+      "sha256": "729ece816c8fe685770acc4392e0426b0aeeb97fae83cfb689823c187c599b31"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_12.html",
+      "bytes": 240669,
+      "sha256": "6603b336891fc494309ff14697403ff68048e35f5ac5040779a72bc46ae425e3"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_13.html",
+      "bytes": 675742,
+      "sha256": "6d1958d3c4a462393928eebda4e235ab098bc9bbdc84f32ecdf8839b8405b2a6"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_14.html",
+      "bytes": 39998,
+      "sha256": "7e6c04c31013313db8e2fb3c2268aed9698b767c9c05b3d3826b90bb12bbe368"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_15.html",
+      "bytes": 44968,
+      "sha256": "e929681076f290c3b5651d6b92ab7721cf3c2b036e7253ba6060e8ab7ad98552"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_16.html",
+      "bytes": 46660,
+      "sha256": "0e369765b2410b8f6ed103af7d88ddb95e9d6aed709ebaace12b4624c8b115e8"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_17.html",
+      "bytes": 81624,
+      "sha256": "5ee8377ea25ee715f1242de1cc04e0a4c602deffb4379ed34718e46f41a4990a"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_18.html",
+      "bytes": 10268,
+      "sha256": "b063b6cbb59c08cc566d8b2672224baf29736e15a55481a9c491a6b06943c478"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_19.html",
+      "bytes": 47646,
+      "sha256": "04b2c15482385274b24100fa71304b6be6e7f1df4f39603fc8755df7f041ff03"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_2.html",
+      "bytes": 181012,
+      "sha256": "b203c0decb5dd52f68e4c63405d3dc3de6b955fdbfde4d55b5f2a56f9605362c"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_20.html",
+      "bytes": 81987,
+      "sha256": "317b95d5ad6646fadda4ea95d7550f43d780a59c3a727b8b76d9b73a094120fc"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_21.html",
+      "bytes": 58173,
+      "sha256": "f7c1254379659bb8e84a85437e0e8e75db2413b5e7346bf8bb7b377632c47f42"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_22.html",
+      "bytes": 12578,
+      "sha256": "1d5fa2ec83b8eb113e230ae00539fcf0bfecac306f062c8246637f70697c11b1"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_23.html",
+      "bytes": 16223,
+      "sha256": "b2d4fbfe2c7ec17f411f50c471980a31a3fb1d0539d563b406e26cb65448431e"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_3.html",
+      "bytes": 504303,
+      "sha256": "5e146f1d58e9f5abb418d184aff1f5f2e145b21088927c732745f77b5121573b"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_4.html",
+      "bytes": 411851,
+      "sha256": "0fb25ee0958ee4900f4aaa9fafdbe9f3b3a6976367fbfc00e2384aa6fa66dec1"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_5.html",
+      "bytes": 36961,
+      "sha256": "855562c63a965f0e6e81edef97d0a0dee189b65a14e521600f574386d193730d"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_6.html",
+      "bytes": 121357,
+      "sha256": "044c6dfe1c52b4fa6ed2fe842ff773deacda791802f12fdb78711a90d27a6ec7"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_7.html",
+      "bytes": 107567,
+      "sha256": "57f93a1cbefc39b2819ffd6fb51377333e9e8b3a953192b0987cb4884f195119"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_8.html",
+      "bytes": 236474,
+      "sha256": "1d73b2f94727d1c05223358eff3bb3ceafa774b9e18b1df3817173da83c71ebf"
+    },
+    {
+      "path": "blueprint/web/dep_graph_chapter_9.html",
+      "bytes": 75035,
+      "sha256": "99719521151170a8d7a9c68882853ba38115c8a74f0440fe7ad95c5ec63ce91c"
+    },
+    {
+      "path": "blueprint/web/dep_graph_document.html",
+      "bytes": 3193790,
+      "sha256": "06e72209a108e2209e95312d9d39e3bb90ed7e2ac3c9c174862fdc33a34b0d49"
+    },
+    {
+      "path": "blueprint/web/dep_graphs.html",
+      "bytes": 3324,
+      "sha256": "e28429cf4ed295e616933e1b8fade15eaf004e531b5b92316a790d29647ac814"
+    },
+    {
+      "path": "blueprint/web/index.html",
+      "bytes": 107701,
+      "sha256": "04bbad175382e3b62c89a67301f820a5282b2de35b75b575dd3213042e16219a"
+    },
+    {
+      "path": "blueprint/web/js/d3-graphviz.js",
+      "bytes": 80111,
+      "sha256": "e268e178923f808d8af3d3bb1c523a1ba6361e5bae5f80998382ee8bca2f755f"
+    },
+    {
+      "path": "blueprint/web/js/d3.min.js",
+      "bytes": 247829,
+      "sha256": "9b442622c05770e322113466a53dea836210fe2d2a6b3240da68821f33a64b56"
+    },
+    {
+      "path": "blueprint/web/js/expatlib.wasm",
+      "bytes": 100896,
+      "sha256": "3a97493daaa71c38c02f7b67b2d79a93845b0f8824403ae0c15dadb27cef1893"
+    },
+    {
+      "path": "blueprint/web/js/graphvizlib.wasm",
+      "bytes": 1099314,
+      "sha256": "d0b94b72100d77383de7e2f2afc344c3f613d1cd453e9cbf264759d7d2c62d86"
+    },
+    {
+      "path": "blueprint/web/js/hpcc.min.js",
+      "bytes": 117436,
+      "sha256": "5b89eaba7e26acaf24e50279dde60ef33a1833e037ea18dd3b465ba49456c369"
+    },
+    {
+      "path": "blueprint/web/js/jquery.min.js",
+      "bytes": 95821,
+      "sha256": "4b940065e2a67c37e3bd02b23c651f4744a3c219aba2d4fb99a631113494d376"
+    },
+    {
+      "path": "blueprint/web/js/js.cookie.min.js",
+      "bytes": 1681,
+      "sha256": "d07dcdbb3ddaba0dda7d56d496cbb5d8fbb1bdadc23f812126d3c4c6ab39e158"
+    },
+    {
+      "path": "blueprint/web/js/plastex.js",
+      "bytes": 2179,
+      "sha256": "50906c5f6f4f2a5a908a8d4d239d0c7ba63efc672227c02a1c7295ae3d112a3e"
+    },
+    {
+      "path": "blueprint/web/js/showmore.js",
+      "bytes": 2088,
+      "sha256": "501931cec2f8a230c505494680a23522b9293459d38cdb806a030e4d058cb17a"
+    },
+    {
+      "path": "blueprint/web/js/svgxuse.js",
+      "bytes": 9062,
+      "sha256": "0babbf27b9a172566e74d8e3e282760dbeb4974240510a501cc7cf29ed720e80"
+    },
+    {
+      "path": "blueprint/web/sect0001.html",
+      "bytes": 74112,
+      "sha256": "569ffbdeb38771f398bf40732b90d42e389a18353eb7cb532446c4639f27553c"
+    },
+    {
+      "path": "blueprint/web/styles/amsthm.css",
+      "bytes": 1318,
+      "sha256": "0f673aad2c52db8c76a321b550dbdd24adf6badb1d4822a04a9b6a0257cf6ba1"
+    },
+    {
+      "path": "blueprint/web/styles/blueprint.css",
+      "bytes": 103,
+      "sha256": "515a7d9e0f37cb3a7ee974f9a003efd172b64144dc1b0c074f68bdd34a79a580"
+    },
+    {
+      "path": "blueprint/web/styles/dep_graph.css",
+      "bytes": 2950,
+      "sha256": "80625482aec24cfa4d93e59aa278e3e6f39ba7dbf5efdeefac9b866a8b5763d0"
+    },
+    {
+      "path": "blueprint/web/styles/extra_styles.css",
+      "bytes": 2095,
+      "sha256": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1"
+    },
+    {
+      "path": "blueprint/web/styles/showmore.css",
+      "bytes": 175,
+      "sha256": "ceae58e215ee0ddc45c3e062b6700c0c72425ce05d75507070af9e681d88d4d8"
+    },
+    {
+      "path": "blueprint/web/styles/theme-blue.css",
+      "bytes": 11088,
+      "sha256": "0971a0d82a77340b3224577d7a1a436a9823a2ffb55388d15c38df7b17a5ae54"
+    },
+    {
+      "path": "blueprint/web/styles/theme-green.css",
+      "bytes": 11052,
+      "sha256": "8ee1e7f7058175497cab53acf2d3eaf949f8f7627fdd69655c01c8d531368886"
+    },
+    {
+      "path": "blueprint/web/styles/theme-white.css",
+      "bytes": 10940,
+      "sha256": "c6296062b86c41fd8ece73838d319bedba0bacf5c59e0036b90d34c9d8e6592e"
+    },
+    {
+      "path": "blueprint/web/symbol-defs.svg",
+      "bytes": 11977,
+      "sha256": "4c67d8eee1e29b8faaec6b44685dc89d06a682a5b0107e7aadde087f2c7ebb3a"
+    },
+    {
+      "path": "blueprint/web/tenkz_svg/tenkz-b101d2d678567a9c.svg",
+      "bytes": 21012,
+      "sha256": "71cab0bc0e1c14b442d12ef979ac0c4e279050661cbb322dce8e747866da3493"
+    }
+  ]
+}

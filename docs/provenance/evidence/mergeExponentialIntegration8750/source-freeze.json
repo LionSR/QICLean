@@ -1,0 +1,47 @@
+{
+  "source_revision": "042d02048532174df8e6b9cade48b615d281f1e9",
+  "parent_revision": "4be0ef429c5048cf1bf4f5b7afd5b9f7b9361ca0",
+  "preserved_published_branch": {
+    "branch": "feat/area-law-good-copy-density",
+    "revision": "77f935df86c650a44b2fa2558044f822cba91560"
+  },
+  "declarations": [
+    "PermutationRepresentation.exp_mergeDeficit_eq_sum",
+    "PermutationRepresentation.re_trace_mul_exp_mergeDeficit_eq_sum"
+  ],
+  "coverage": "Entire production source including private actual-resolution and scalar proofs, standalone mathematical fragment, reader note and cumulative ledger.",
+  "files": [
+    {
+      "path": "QICLean/Representation/MergeExponential.lean",
+      "sha256": "6521cee62efc950bc2d64f5dee74fa56dddeb8ecd530421feb32a5abfe63a484",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "blueprint/src/fragment/merge_exponential.tex",
+      "sha256": "f361300beeaad57233385bb90847c36c339382282f84090ab387c5d60039a691",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/area-law-merge-exponential.md",
+      "sha256": "ecba79e00bd9a2a3cac4df6f47150c64b0374ecfcf84f17b701ad1dacf1e7586",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "f5d4ce8ef371d1cf78609f7bf9663af2bf891c663abb00e09164289744c70daf",
+      "coverage": "Entire file."
+    },
+    {
+      "path": "QICLean/Representation.lean",
+      "sha256": "db978c3f97b19aca2285aeb3119a04275812b68ea906d48d61f0653a35c92ccf",
+      "coverage": "Entire unique inclusion file."
+    },
+    {
+      "path": "blueprint/src/chapter/ch13_schur_labels.tex",
+      "sha256": "fd973ce5f62901a315e0362ee0458fd082468c9da61bcc8043a9df73e003338b",
+      "coverage": "Entire unique inclusion file."
+    }
+  ],
+  "mathematical_source_revision": "853163620d7bf2dcd47c0107b523d677f6e5dbfc",
+  "leaf_evidence_revision": "561182452d0c1199b6d2f7e5068a7cf9fd789be7"
+}

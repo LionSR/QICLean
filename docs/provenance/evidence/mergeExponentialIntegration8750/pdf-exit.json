@@ -1,0 +1,13 @@
+{
+  "source_revision": "042d02048532174df8e6b9cade48b615d281f1e9",
+  "command": [
+    "leanblueprint",
+    "pdf"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/blueprint",
+  "started_utc": "2026-10-08T00:43:11.546645+00:00",
+  "elapsed_seconds": 41.675,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeExponentialIntegration8750/pdf.log",
+  "sha256": "15c1f9ecdcb3bb14080db6ad1c2021a5b8207e8db07b0579c530afef0d3e7b9a"
+}

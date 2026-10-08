@@ -1,0 +1,13 @@
+{
+  "source_revision": "042d02048532174df8e6b9cade48b615d281f1e9",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/mergeExponentialIntegration8750/check-native-targets.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+  "started_utc": "2026-10-08T00:47:25.645347+00:00",
+  "elapsed_seconds": 0.065,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeExponentialIntegration8750/native-targets.log",
+  "sha256": "a51dd033a1beeb8f066a1da5fba2f182e3f62978de55349a13a0cc9a21a5fbde"
+}
