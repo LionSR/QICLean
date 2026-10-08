@@ -335,6 +335,44 @@ theorem norm_star_dotProduct_sub_le {X : Type*} [Fintype X] (x x' y y' : X → �
   rw [hsplit]
   exact (norm_add_le _ _).trans (add_le_add (hcs _ _) (hcs _ _))
 
+theorem l2_opNorm_regionPow_le_one {t : ℝ} (ht0 : 0 < t) (Q : Finset V)
+    {θ : SiteConfig n → ℂ} (hθ : θ ∈ unitSphere) : ‖regionPow Q t θ‖ ≤ 1 :=
+  (l2_opNorm_localLift_le _).trans ((isHermitian_regionState Q θ).l2_opNorm_cfc_le _ zero_le_one
+    fun i => abs_suppRpow_le_one ht0 (eigenvalues_regionState_mem Q hθ i))
+
+/-- `‖ρ_Q^{-t} θ‖ ≤ √d_Q` for a unit vector `θ` and `t < 1/2`. -/
+theorem norm_regionPow_neg_mulVec_le {t : ℝ} (ht1 : t < 1 / 2) (Q : Finset V)
+    {θ : SiteConfig n → ℂ} (hθ : θ ∈ unitSphere) :
+    ‖(EuclideanSpace.equiv _ ℂ).symm (regionPow Q (-t) θ *ᵥ θ)‖ ≤
+      √(Fintype.card (RegionConfig n Q) : ℝ) := by
+  refine Real.le_sqrt_of_sq_le ?_
+  have := norm_localLift_cfc_mulVec_sq_le Q θ (suppRpow (-t)) (B := 1) fun i =>
+    mul_suppRpow_neg_sq_le_one ht1 (eigenvalues_regionState_mem Q hθ i)
+  rw [one_mul] at this
+  exact this
+
+theorem isHermitian_regionPow (Q : Finset V) (s : ℝ) (θ : SiteConfig n → ℂ) :
+    (regionPow Q s θ).IsHermitian := by
+  have h : IsSelfAdjoint (cfc (suppRpow s) (regionState Q (WithLp.toLp 2 θ))) :=
+    cfc_predicate _ _
+  change (localLift Q _)ᴴ = localLift Q _
+  rw [← localLift_conjTranspose, show (cfc (suppRpow s) (regionState Q (WithLp.toLp 2 θ)))ᴴ =
+    cfc (suppRpow s) (regionState Q (WithLp.toLp 2 θ)) from h]
+
+theorem isHermitian_aeval_margLift (Q : Finset V) (θ : SiteConfig n → ℂ) (p : ℝ[X]) :
+    (aeval (margLift Q θ) p).IsHermitian := by
+  have hρ := isHermitian_regionState Q θ
+  have h : aeval (regionState Q (WithLp.toLp 2 θ)) p =
+      cfc (fun x => p.eval x) (regionState Q (WithLp.toLp 2 θ)) :=
+    (cfc_polynomial p _ hρ.isSelfAdjoint).symm
+  have hsa : IsSelfAdjoint (cfc (fun x => p.eval x) (regionState Q (WithLp.toLp 2 θ))) :=
+    cfc_predicate _ _
+  rw [margLift, aeval_localLift, h]
+  change (localLift Q _)ᴴ = localLift Q _
+  rw [← localLift_conjTranspose, show (cfc (fun x => p.eval x)
+    (regionState Q (WithLp.toLp 2 θ)))ᴴ = cfc (fun x => p.eval x)
+      (regionState Q (WithLp.toLp 2 θ)) from hsa]
+
 /-- **Polynomial approximation of the marked one-copy vector** (`05-replicas.tex`,
 lines 696–702 and 813–826): if `|p - u_+^t| ≤ η` and `|q - max(u, δ)^{-t}| ≤ η` on `[-1, 1]`,
 then for a unit vector `θ`,
@@ -361,19 +399,13 @@ theorem norm_regionPow_sandwich_sub_le {t δ η : ℝ} (ht0 : 0 < t) (ht1 : t < 
     l2_opNorm_localLift_cfc_sub_aeval_le Q hθ _ p hη fun x hx => by
       rw [suppRpow_eq_max_rpow ht0 hx.1]; exact hp x (hIcc x hx)
   have hA' : ‖aeval (margLift Q θ) p‖ ≤ 1 + η := by
-    have h1 : ‖regionPow Q t θ‖ ≤ 1 := (l2_opNorm_localLift_le _).trans
-      (hρ.l2_opNorm_cfc_le _ zero_le_one fun i =>
-        abs_suppRpow_le_one ht0 (eigenvalues_regionState_mem Q hθ i))
+    have h1 : ‖regionPow Q t θ‖ ≤ 1 := l2_opNorm_regionPow_le_one ht0 Q hθ
     calc ‖aeval (margLift Q θ) p‖ = ‖regionPow Q t θ - (regionPow Q t θ -
           aeval (margLift Q θ) p)‖ := by rw [sub_sub_cancel]
       _ ≤ 1 + η := (norm_sub_le _ _).trans (add_le_add h1 hA)
   -- The inverse power on `θ`.
-  have hx : ‖(EuclideanSpace.equiv _ ℂ).symm (regionPow Q (-t) θ *ᵥ θ)‖ ≤ √d := by
-    refine Real.le_sqrt_of_sq_le ?_
-    have := norm_localLift_cfc_mulVec_sq_le Q θ (suppRpow (-t)) (B := 1) fun i =>
-      mul_suppRpow_neg_sq_le_one ht1 (eigenvalues_regionState_mem Q hθ i)
-    rw [one_mul] at this
-    exact this
+  have hx : ‖(EuclideanSpace.equiv _ ℂ).symm (regionPow Q (-t) θ *ᵥ θ)‖ ≤ √d :=
+    norm_regionPow_neg_mulVec_le ht1 Q hθ
   set G := localLift Q (cfc (fun x => max x δ ^ (-t)) ρ)
   have hclip : ‖(EuclideanSpace.equiv _ ℂ).symm ((regionPow Q (-t) θ - G) *ᵥ θ)‖ ≤
       √(d * δ ^ (1 - 2 * t)) := by
