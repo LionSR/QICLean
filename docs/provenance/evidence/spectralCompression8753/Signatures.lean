@@ -1,0 +1,7 @@
+import QICLean.Analysis.SpectralExponentialDrop
+import QICLean.Analysis.InverseCompressionLowerBound
+set_option linter.hashCommand false
+#check Matrix.spectralProjectionGE_exp_smul_sub_le
+#check Matrix.PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul
+#check Matrix.mul_conjTranspose_le_smul_one_of_conjTranspose_mul_le
+#check Matrix.PosDef.inv_smul_projection_le_of_compression_inv_le

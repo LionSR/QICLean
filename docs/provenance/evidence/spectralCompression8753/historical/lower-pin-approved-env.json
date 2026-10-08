@@ -1,0 +1,13 @@
+{
+  "LEAN_PATH": "/private/tmp/tnlean-actual-corrected-bound:/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean:/private/tmp/tnlean-actual-gaussian-branch:/private/tmp/tnlean-source-resource-checkpoint/artifacts:/private/tmp/tnlean-artifact-recovery-20261008/gaussian/artifacts",
+  "lean": "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+  "options": [
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DmaxSynthPendingDepth=3"
+  ],
+  "source_root": "/private/tmp/tnlean-actual-corrected-bound/src",
+  "output_root": "/private/tmp/tnlean-actual-corrected-bound",
+  "warning": "Read-only checked snapshot. Put every new output in a separate complete package overlay."
+}

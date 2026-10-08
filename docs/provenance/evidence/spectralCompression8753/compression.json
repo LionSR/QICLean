@@ -1,0 +1,255 @@
+[
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/bound-axioms.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/bound-axioms.log.gz",
+    "raw_sha256": "f6f2f22a71a70b366e9a5cc97ed35c61168a714cb3af115105ec4c31fe982ee1",
+    "archive_sha256": "9619e7da2d7ee78b6de2420215768b199b6db85e7c0e6606e89b61313e82b145"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/cache-fetch.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/cache-fetch.log.gz",
+    "raw_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "archive_sha256": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/cache-guard.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/cache-guard.log.gz",
+    "raw_sha256": "17b34e9cfbcdc0fcbecd98a579be3dea9a9934e52040ba41f8a5557b5c22c5f2",
+    "archive_sha256": "80659d6882522ef6d38311676471b6ce0244de4c3c13076fec2ecccfd58664ec"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-axioms.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-axioms.log.gz",
+    "raw_sha256": "f6f2f22a71a70b366e9a5cc97ed35c61168a714cb3af115105ec4c31fe982ee1",
+    "archive_sha256": "9619e7da2d7ee78b6de2420215768b199b6db85e7c0e6606e89b61313e82b145"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-cache-guard.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-cache-guard.log.gz",
+    "raw_sha256": "17b34e9cfbcdc0fcbecd98a579be3dea9a9934e52040ba41f8a5557b5c22c5f2",
+    "archive_sha256": "80659d6882522ef6d38311676471b6ce0244de4c3c13076fec2ecccfd58664ec"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-prose.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-prose.log.gz",
+    "raw_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "archive_sha256": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-provenance.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-provenance.log.gz",
+    "raw_sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116",
+    "archive_sha256": "0f4505c363e308ff7fea94ec3b259161b432753924b6677321a89720267a74e9"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-signatures.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-signatures.log.gz",
+    "raw_sha256": "7a50074e26ffcef5179245d15137afc1d0abc9c4d836f7dc51f86ec99303b241",
+    "archive_sha256": "a21095ec9078b602f62ebd5b1054198bc51338ee62773f1d54f64e2df1bb5918"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-source-check.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-source-check.log.gz",
+    "raw_sha256": "b6dfa26d229ccf4b3ad1f21851e8210316fddde5be5733f7bd13eac954211217",
+    "archive_sha256": "0302c96688786094461fcf9be319bde85f1b2cf06419455c26089d25e52b3d39"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-strict-inverse.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-strict-inverse.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-strict-spectral.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-strict-spectral.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-target-inverse.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-target-inverse.log.gz",
+    "raw_sha256": "5840e43a967ed28f64ab568638cce6e384f0e27752121ea165c16ee2631bed12",
+    "archive_sha256": "727f0e2524ce9bc613a1a147cf406689efad8368bda05fdb68380e61bc72bdf3"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-target-spectral.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-target-spectral.log.gz",
+    "raw_sha256": "08b5ebb4e90133239a2016c0777a4c1e845a8e4bd651567da66efbfe2c86868e",
+    "archive_sha256": "f4779d118bc418ec2f6b54e0f2e41218679b014703dec135b07c532762b81e22"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/corrected-text-style.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/corrected-text-style.log.gz",
+    "raw_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "archive_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/InverseCompressionLowerBound-strict.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/InverseCompressionLowerBound-strict.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/LowerPin-root-strict.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/LowerPin-root-strict.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt1.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt1.log.gz",
+    "raw_sha256": "807a9cc145531f8d890cf3bd4a3dc0d2066f417158b5696676d4455207399cad",
+    "archive_sha256": "ec0d3ae01724d66d58eddd9079f67ad519b7bb622ddb3b3d5fe6b1f6bbc351c3"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt2.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt2.log.gz",
+    "raw_sha256": "ecbb5ee7ec72639c9f23f033f26c6ce49395f23b30feb0b95a30ee1d2e784002",
+    "archive_sha256": "3125a920a25ec6eb031181d6eb8dfcdd690cbb959d01f54f3900a6fc4be21cab"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt3.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt3.log.gz",
+    "raw_sha256": "7ab0f3ec37b41d2a958826923dfaf18527627fdcd16caa76dc8868c22554b01d",
+    "archive_sha256": "d279a4d5201037352992394667c1d08d392f64ade0de5bdc51a372c38db705ec"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt1.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt1.log.gz",
+    "raw_sha256": "9e2961d611dc1ca9c82102a6e862281083a03d00814f03f0513be9c14c04b7f1",
+    "archive_sha256": "5606a5ae0eff5c0baa57e71af8c7d9f4da521133a5c2a3f6701666d4e5c5fa5c"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt2.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt2.log.gz",
+    "raw_sha256": "7ab0f3ec37b41d2a958826923dfaf18527627fdcd16caa76dc8868c22554b01d",
+    "archive_sha256": "d279a4d5201037352992394667c1d08d392f64ade0de5bdc51a372c38db705ec"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt3.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt3.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExponentialDrop-production-strict.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExponentialDrop-production-strict.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/all-public-axioms.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/all-public-axioms.log.gz",
+    "raw_sha256": "60ad7806f80c16f7cba437c15fcf93cdeb19994d28cfe2aff93617778dfd33ca",
+    "archive_sha256": "d860fd0e2bfc5ba5ab95d07be5286d43c5ce3ad8afef500f013e5496f610eecd"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step01.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step01.log.gz",
+    "raw_sha256": "e83aa26c0a7a1f960e2ad365bee659a4350c46103b550fe2be90c59010cc6050",
+    "archive_sha256": "dc5c0a0399c92fe08181f2a4e2986cf987b59c8668836861a006736e3fc7c289"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step02.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step02.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step03.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step03.log.gz",
+    "raw_sha256": "ea06d4eea2c676b484f4b1dc2ad1fa7485ad6e256e1f2fb45a17dead2829e9a3",
+    "archive_sha256": "5d5d70d1e12f24e8f3dfcaeaa7170a7ce6d41fa4dfc2b42846d719ce1a0d8b80"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step04.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step04.log.gz",
+    "raw_sha256": "4d6a6079fa8a57a6d2ad8007af7df2b72b133f896185b7b92abc5cb1c9986b01",
+    "archive_sha256": "792f9b6c13aa585705ba5235dfb90a6c997055c5724086053c2be41ac302566e"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step05.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step05.log.gz",
+    "raw_sha256": "033ed9aa377f509396ae00f56c129c8d4aaf1300e15151f8803428df26d640ae",
+    "archive_sha256": "8d0ceaba6feb719208071bb778fca59d19c4e1dcc839a57bbfb65396649c729b"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step06.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step06.log.gz",
+    "raw_sha256": "69222fcb85b437dbdb2094435597d3880c220631a591cdbb9be933b6999e66ef",
+    "archive_sha256": "34e27c2a72685c29b724b4176ddc01282c80976d7b2f291f624e4f0b03fa143d"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step07.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step07.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/prose.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/prose.log.gz",
+    "raw_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "archive_sha256": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/provenance.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/provenance.log.gz",
+    "raw_sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116",
+    "archive_sha256": "0f4505c363e308ff7fea94ec3b259161b432753924b6677321a89720267a74e9"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/signatures.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/signatures.log.gz",
+    "raw_sha256": "7a50074e26ffcef5179245d15137afc1d0abc9c4d836f7dc51f86ec99303b241",
+    "archive_sha256": "a21095ec9078b602f62ebd5b1054198bc51338ee62773f1d54f64e2df1bb5918"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/source-check.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/source-check.log.gz",
+    "raw_sha256": "b6dfa26d229ccf4b3ad1f21851e8210316fddde5be5733f7bd13eac954211217",
+    "archive_sha256": "0302c96688786094461fcf9be319bde85f1b2cf06419455c26089d25e52b3d39"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/strict-inverse.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/strict-inverse.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/strict-spectral.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/strict-spectral.log.gz",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/tactic-patterns.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/tactic-patterns.log.gz",
+    "raw_sha256": "3a577aa0c21ed3bf8bb8855ac1fa36c8e92b3fde2a4b746b4d6ca15bd2253ab7",
+    "archive_sha256": "b8918a4d1a10aa05290225b4862c3204a5305f8fdc63caaba910e5718d0e1bee",
+    "compressed_only": true
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/target-inverse-retry.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/target-inverse-retry.log.gz",
+    "raw_sha256": "da477b6a50e1a84656316079b7d67b747d0ddb4958b577fc86429b168285baec",
+    "archive_sha256": "99b5a76f5510c739fc48650487e3c70fb7fd314a5ad02fd3950aa26fc809f85c"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/target-spectral-retry.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/target-spectral-retry.log.gz",
+    "raw_sha256": "189d826e1f5ba9ed758b00feb19d8677bdec8017c3afa5533756d89b789b0c67",
+    "archive_sha256": "127e6e5b8422eb4457e0436a07ee2daecbe5f4025bffc84b14c330f9b685336e"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/target.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/target.log.gz",
+    "raw_sha256": "3fa40208f5118723fa35998183a9726b94353a7cdb1848bb819dc501cdc218ff",
+    "archive_sha256": "4d9bc13afd399af53f0c3d234e9d3eba36ce2da39ce44baa8dd6fb7411c03829"
+  },
+  {
+    "raw": "docs/provenance/evidence/spectralCompression8753/text-style.log",
+    "archive": "docs/provenance/evidence/spectralCompression8753/text-style.log.gz",
+    "raw_sha256": "3083fd363cd5c116ce672e5758d3e02a45f040d5fe8b38b69e0676144f4ac9e9",
+    "archive_sha256": "c69c8e931eb4df2fa2e7d7804ac253442c379d48951be6f458383a8dc9e9b6cb"
+  }
+]

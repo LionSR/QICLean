@@ -53,6 +53,7 @@ import QICLean.Analysis.HermitianMatrixCone
 import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.InjectiveRangeProjector
+import QICLean.Analysis.InverseCompressionLowerBound
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.JordanBlockAsymptotics
@@ -137,6 +138,7 @@ import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
+import QICLean.Analysis.SpectralExponentialDrop
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralKronecker
 import QICLean.Analysis.SpectralProjectionIntertwiner

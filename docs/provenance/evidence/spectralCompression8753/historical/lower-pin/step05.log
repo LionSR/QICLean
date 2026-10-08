@@ -1,0 +1,10 @@
+/tmp/tnlean-lower-pin-check/LowerPin.lean:63:33: error: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `T ?a✝ ?a✝¹` is a value of type
+  ℂ
+/tmp/tnlean-lower-pin-check/LowerPin.lean:71:8: error: invalid 'calc' step, left-hand side is
+  S * (T * Tᴴ) * S : Matrix n n ℂ
+but is expected to be
+  P : Matrix n n ℂ
+/tmp/tnlean-lower-pin-check/LowerPin.lean:72:8: error: invalid 'calc' step, right-hand side is
+  P : Matrix n n ℂ
+but is expected to be
+  S * (T * Tᴴ) * S : Matrix n n ℂ

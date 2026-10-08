@@ -1,0 +1,35 @@
+{
+  "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+  "parent_revision": "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2",
+  "files": [
+    {
+      "path": "QICLean/Analysis/InverseCompressionLowerBound.lean",
+      "sha256": "f993c2d9da434ae2a57eaaa26739570ba73115e6c24376caa4ea188c8659bafe"
+    },
+    {
+      "path": "QICLean/Analysis/SpectralExponentialDrop.lean",
+      "sha256": "f30b48d5c753a51a726bcd2d5182436e8611c8beaad035447c6cfc0d37a035d9"
+    },
+    {
+      "path": "blueprint/src/fragment/inverse_compression_lower_bound.tex",
+      "sha256": "c567d636a564903056e82b5a5950de76d03e4e62bd219da6dda55029ddc67b4e"
+    },
+    {
+      "path": "blueprint/src/fragment/spectral_exponential_drop.tex",
+      "sha256": "380665037ab8dfe58b845d40b7daa2e127a538a9a6de25467c63e6ee4fc25d46"
+    },
+    {
+      "path": "docs/openai-area-law-inverse-compression-lower-bound.md",
+      "sha256": "5e87c48c52055c2e4824cacb5468aaa55f77b949f0beb1a3b02c3c97b0698670"
+    },
+    {
+      "path": "docs/openai-area-law-spectral-exponential-drop.md",
+      "sha256": "ece348cbf1e13ed1afbe673a76d2fd078a022a066e49393de96a99f92700efbf"
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "440c8abd450aa6c76f03fa481382caa3d25ce14ac95b8fd42703843824a5ba90"
+    }
+  ],
+  "original_source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1"
+}

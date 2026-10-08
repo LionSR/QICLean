@@ -1,0 +1,16 @@
+{
+  "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "QICLean.Analysis.SpectralExponentialDrop"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T04:15:02.878530+00:00",
+  "elapsed_seconds": 33.113,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/spectralCompression8753/target-spectral-retry.log",
+  "sha256": "189d826e1f5ba9ed758b00feb19d8677bdec8017c3afa5533756d89b789b0c67"
+}

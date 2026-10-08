@@ -1,0 +1,14 @@
+/tmp/tnlean-lower-pin-check/LowerPin.lean:46:74: error(lean.invalidField): Invalid field `posDef`: The environment does not contain `And.posDef`, so it is not possible to project the field `posDef` from an expression
+  IsStrictlyPositive.sqrt A (isStrictlyPositive hA)
+of type
+  0 ≤ CFC.sqrt A ∧ IsUnit (CFC.sqrt A)
+/tmp/tnlean-lower-pin-check/LowerPin.lean:62:33: error: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `T ?a✝ ?a✝¹` is a value of type
+  ℂ
+/tmp/tnlean-lower-pin-check/LowerPin.lean:70:8: error: invalid 'calc' step, left-hand side is
+  S * (T * Tᴴ) * S : Matrix n n ℂ
+but is expected to be
+  P : Matrix n n ℂ
+/tmp/tnlean-lower-pin-check/LowerPin.lean:71:8: error: invalid 'calc' step, right-hand side is
+  P : Matrix n n ℂ
+but is expected to be
+  S * (T * Tᴴ) * S : Matrix n n ℂ

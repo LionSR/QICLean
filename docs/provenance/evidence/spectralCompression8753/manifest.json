@@ -1,0 +1,1021 @@
+{
+  "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+  "commands": [
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "docs/provenance/evidence/spectralCompression8753/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:36:18.689768+00:00",
+      "elapsed_seconds": 4.582,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-axioms.log",
+      "sha256": "f6f2f22a71a70b366e9a5cc97ed35c61168a714cb3af115105ec4c31fe982ee1"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/spectralCompression8753/cache-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:34:41.265087+00:00",
+      "elapsed_seconds": 0.166,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-cache-guard.log",
+      "sha256": "17b34e9cfbcdc0fcbecd98a579be3dea9a9934e52040ba41f8a5557b5c22c5f2"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:36:57.269318+00:00",
+      "elapsed_seconds": 0.23,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/spectralCompression8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:36:56.503885+00:00",
+      "elapsed_seconds": 0.593,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-provenance.log",
+      "sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "docs/provenance/evidence/spectralCompression8753/Signatures.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:36:23.450457+00:00",
+      "elapsed_seconds": 5.378,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-signatures.log",
+      "sha256": "7a50074e26ffcef5179245d15137afc1d0abc9c4d836f7dc51f86ec99303b241"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/spectralCompression8753/source-check.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:36:56.021410+00:00",
+      "elapsed_seconds": 0.309,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-source-check.log",
+      "sha256": "b6dfa26d229ccf4b3ad1f21851e8210316fddde5be5733f7bd13eac954211217"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/InverseCompressionLowerBound.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:36:13.396356+00:00",
+      "elapsed_seconds": 5.123,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-strict-inverse.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/SpectralExponentialDrop.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:36:07.262255+00:00",
+      "elapsed_seconds": 5.959,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-strict-spectral.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "QICLean.Analysis.InverseCompressionLowerBound"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:35:49.362401+00:00",
+      "elapsed_seconds": 17.719,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-target-inverse.log",
+      "sha256": "5840e43a967ed28f64ab568638cce6e384f0e27752121ea165c16ee2631bed12"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "QICLean.Analysis.SpectralExponentialDrop"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:35:36.640527+00:00",
+      "elapsed_seconds": 12.529,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-target-spectral.log",
+      "sha256": "08b5ebb4e90133239a2016c0777a4c1e845a8e4bd651567da66efbfe2c86868e"
+    },
+    {
+      "source_revision": "1e85cc958e7c16505854433a492f7ad0ad12f985",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "docs/provenance/evidence/spectralCompression8753/TextStyle.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:36:29.008520+00:00",
+      "elapsed_seconds": 2.318,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/corrected-text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "historical_commands": [
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "docs/provenance/evidence/spectralCompression8753/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:16:44.627441+00:00",
+      "elapsed_seconds": 5.131,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/bound-axioms.log",
+      "sha256": "f6f2f22a71a70b366e9a5cc97ed35c61168a714cb3af115105ec4c31fe982ee1"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:06:43.967934+00:00",
+      "elapsed_seconds": 48.454,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/spectralCompression8753/cache-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:07:32.803502+00:00",
+      "elapsed_seconds": 0.149,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/cache-guard.log",
+      "sha256": "17b34e9cfbcdc0fcbecd98a579be3dea9a9934e52040ba41f8a5557b5c22c5f2"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:19:43.391625+00:00",
+      "elapsed_seconds": 0.306,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/spectralCompression8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:19:42.421918+00:00",
+      "elapsed_seconds": 0.726,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/provenance.log",
+      "sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "docs/provenance/evidence/spectralCompression8753/Signatures.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:16:49.931533+00:00",
+      "elapsed_seconds": 5.744,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/signatures.log",
+      "sha256": "7a50074e26ffcef5179245d15137afc1d0abc9c4d836f7dc51f86ec99303b241"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/spectralCompression8753/source-check.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:20:52.272673+00:00",
+      "elapsed_seconds": 0.236,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/source-check.log",
+      "sha256": "b6dfa26d229ccf4b3ad1f21851e8210316fddde5be5733f7bd13eac954211217"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/InverseCompressionLowerBound.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:16:32.323041+00:00",
+      "elapsed_seconds": 12.073,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/strict-inverse.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/SpectralExponentialDrop.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:16:05.588056+00:00",
+      "elapsed_seconds": 26.412,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/strict-spectral.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+        "--root",
+        "QICLean/Analysis",
+        "--top",
+        "10"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:25:57.730998+00:00",
+      "elapsed_seconds": 0.218,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/tactic-patterns.log",
+      "sha256": "3a577aa0c21ed3bf8bb8855ac1fa36c8e92b3fde2a4b746b4d6ca15bd2253ab7"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "QICLean.Analysis.InverseCompressionLowerBound"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:15:36.209347+00:00",
+      "elapsed_seconds": 29.13,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/target-inverse-retry.log",
+      "sha256": "da477b6a50e1a84656316079b7d67b747d0ddb4958b577fc86429b168285baec"
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "QICLean.Analysis.SpectralExponentialDrop"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:15:02.878530+00:00",
+      "elapsed_seconds": 33.113,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/target-spectral-retry.log",
+      "sha256": "189d826e1f5ba9ed758b00feb19d8677bdec8017c3afa5533756d89b789b0c67"
+    }
+  ],
+  "excluded_commands": [
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Analysis.SpectralExponentialDrop",
+        "QICLean.Analysis.InverseCompressionLowerBound"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:07:33.334453+00:00",
+      "elapsed_seconds": 23.049,
+      "exit_code": 1,
+      "log": "docs/provenance/evidence/spectralCompression8753/target.log",
+      "sha256": "3fa40208f5118723fa35998183a9726b94353a7cdb1848bb819dc501cdc218ff",
+      "failure_reason": "Operating-system file-table exhaustion at unchanged imports."
+    },
+    {
+      "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/spectralCompression8753/TextStyle.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+      "started_utc": "2026-10-08T04:25:54.830605+00:00",
+      "elapsed_seconds": 2.721,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/spectralCompression8753/text-style.log",
+      "sha256": "3083fd363cd5c116ce672e5758d3e02a45f040d5fe8b38b69e0676144f4ac9e9",
+      "failure_reason": "Process exit zero, but text linter reported one unsupported-character style error."
+    }
+  ],
+  "scope": "Named target, strict, kernel, source, style and provenance checks only; no full-library or rendered blueprint claim.",
+  "files": [
+    {
+      "path": "QICLean/Analysis/InverseCompressionLowerBound.lean",
+      "sha256": "f993c2d9da434ae2a57eaaa26739570ba73115e6c24376caa4ea188c8659bafe"
+    },
+    {
+      "path": "QICLean/Analysis/SpectralExponentialDrop.lean",
+      "sha256": "f30b48d5c753a51a726bcd2d5182436e8611c8beaad035447c6cfc0d37a035d9"
+    },
+    {
+      "path": "blueprint/src/fragment/inverse_compression_lower_bound.tex",
+      "sha256": "c567d636a564903056e82b5a5950de76d03e4e62bd219da6dda55029ddc67b4e"
+    },
+    {
+      "path": "blueprint/src/fragment/spectral_exponential_drop.tex",
+      "sha256": "380665037ab8dfe58b845d40b7daa2e127a538a9a6de25467c63e6ee4fc25d46"
+    },
+    {
+      "path": "docs/openai-area-law-inverse-compression-lower-bound.md",
+      "sha256": "5e87c48c52055c2e4824cacb5468aaa55f77b949f0beb1a3b02c3c97b0698670"
+    },
+    {
+      "path": "docs/openai-area-law-spectral-exponential-drop.md",
+      "sha256": "ece348cbf1e13ed1afbe673a76d2fd078a022a066e49393de96a99f92700efbf"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/Axioms.lean",
+      "sha256": "7a1b5d40f5db3705e5d088c72bded8fe399fd7975971eee0658a56fcd45028b6"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/README.md",
+      "sha256": "59fa18c1284ccf4238bf7d89a77ac372ddc563eeb039d4aefc081aa2ec204931"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/Signatures.lean",
+      "sha256": "ba1c3ca21ec39b87d40875e09d4ef35218695a49bd3e097673e7add7b75a15ab"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/TextStyle.lean",
+      "sha256": "3b161582d79f7832c1072cc9ee3691ce088c9044b4b7ec8aa7f14d2d99512aa6"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/bound-axioms-exit.json",
+      "sha256": "eb4815abe6eb358b21cf39520b10d2f2ff4f8e3369d74aea39bb1f32f3a80ecf"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/bound-axioms.log",
+      "sha256": "f6f2f22a71a70b366e9a5cc97ed35c61168a714cb3af115105ec4c31fe982ee1"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/bound-axioms.log.gz",
+      "sha256": "9619e7da2d7ee78b6de2420215768b199b6db85e7c0e6606e89b61313e82b145"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/cache-fetch-exit.json",
+      "sha256": "0538cc132a4b8bab9d99c73e43ee697291f503ca23ac21f900764822268600b5"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/cache-fetch.log.gz",
+      "sha256": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/cache-guard-exit.json",
+      "sha256": "c9ba994d015d97fc5af8f04487b43f4a7ac6af95a2872b1e13b5905b2701688a"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/cache-guard.log",
+      "sha256": "17b34e9cfbcdc0fcbecd98a579be3dea9a9934e52040ba41f8a5557b5c22c5f2"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/cache-guard.log.gz",
+      "sha256": "80659d6882522ef6d38311676471b6ce0244de4c3c13076fec2ecccfd58664ec"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/cache-guard.py",
+      "sha256": "cff5c5abc04903fd5fb3c82ebfcefe47048d93f48e55ae1c4667068d4211af92"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/check-manifest.py",
+      "sha256": "477ce1954f21b51c0c6029e144732316f4c6e59bd7923b76b2254f0d9d137928"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/compression.json",
+      "sha256": "db559faccc7c549cd73a55491aa7b2ce3f120e39919e0fdc157fe1cb0f1496f8"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-axioms-exit.json",
+      "sha256": "865ed55ceb1ce139372c5fd90545ea371fcf0ac63325022703e5e746b1521aeb"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-axioms.log",
+      "sha256": "f6f2f22a71a70b366e9a5cc97ed35c61168a714cb3af115105ec4c31fe982ee1"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-axioms.log.gz",
+      "sha256": "9619e7da2d7ee78b6de2420215768b199b6db85e7c0e6606e89b61313e82b145"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-cache-guard-exit.json",
+      "sha256": "642b9a1e0c863af5760d00f80f91fcad00514f23568612672581724bc3368ed1"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-cache-guard.log",
+      "sha256": "17b34e9cfbcdc0fcbecd98a579be3dea9a9934e52040ba41f8a5557b5c22c5f2"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-cache-guard.log.gz",
+      "sha256": "80659d6882522ef6d38311676471b6ce0244de4c3c13076fec2ecccfd58664ec"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-prose-exit.json",
+      "sha256": "29339e35bdcf80eed5f765f635c86bc9d3f1ac813464e1dc85cffaaf0a642d3a"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-prose.log.gz",
+      "sha256": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-provenance-exit.json",
+      "sha256": "7c96d7bd18d0bf8b0c2e6fb116dab3401266344c1cdab8c8856de0f61c33ecb2"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-provenance.log",
+      "sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-provenance.log.gz",
+      "sha256": "0f4505c363e308ff7fea94ec3b259161b432753924b6677321a89720267a74e9"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-signatures-exit.json",
+      "sha256": "4822319010f8afbe16383ee4674b6602d9c89af5f29c1217570b8b197667295d"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-signatures.log",
+      "sha256": "7a50074e26ffcef5179245d15137afc1d0abc9c4d836f7dc51f86ec99303b241"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-signatures.log.gz",
+      "sha256": "a21095ec9078b602f62ebd5b1054198bc51338ee62773f1d54f64e2df1bb5918"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-source-check-exit.json",
+      "sha256": "0c336c38d611347a005cf5988ee0fb7714a8ce5bbea5adb5c8db36f81da7a3c7"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-source-check.log",
+      "sha256": "b6dfa26d229ccf4b3ad1f21851e8210316fddde5be5733f7bd13eac954211217"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-source-check.log.gz",
+      "sha256": "0302c96688786094461fcf9be319bde85f1b2cf06419455c26089d25e52b3d39"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-strict-inverse-exit.json",
+      "sha256": "5ee50d87ebe7b55069ac8791ca3dfd915ce070b0dcc335b1d64c20a5f1a45cbf"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-strict-inverse.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-strict-inverse.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-strict-spectral-exit.json",
+      "sha256": "5673af233dbe0b1036d438da94a91b0ed5c86ea4acd20d66ef6953d2facf53c7"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-strict-spectral.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-strict-spectral.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-target-inverse-exit.json",
+      "sha256": "eec9b92032fa4486d1d80fa95e74c79823629965648d6e8df004c502edb7ab21"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-target-inverse.log",
+      "sha256": "5840e43a967ed28f64ab568638cce6e384f0e27752121ea165c16ee2631bed12"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-target-inverse.log.gz",
+      "sha256": "727f0e2524ce9bc613a1a147cf406689efad8368bda05fdb68380e61bc72bdf3"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-target-spectral-exit.json",
+      "sha256": "671a2fea085e87f648ce5a842bfa2a79cad6526ed56aee016e66400a35630f74"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-target-spectral.log",
+      "sha256": "08b5ebb4e90133239a2016c0777a4c1e845a8e4bd651567da66efbfe2c86868e"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-target-spectral.log.gz",
+      "sha256": "f4779d118bc418ec2f6b54e0f2e41218679b014703dec135b07c532762b81e22"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-text-style-exit.json",
+      "sha256": "2803dcb4400ebc2896d51f83f312dff203ae1852cd21a7ce8880b0aa56959dbe"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/corrected-text-style.log.gz",
+      "sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/declarations.json",
+      "sha256": "4a86ad1498cecd7dff67c5bbfe9c8b194aa721d03f681113a08385a8ac7b34e0"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/InverseCompressionLowerBound-strict.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/InverseCompressionLowerBound-strict.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/LowerPin-root-strict.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/LowerPin-root-strict.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt1.log",
+      "sha256": "807a9cc145531f8d890cf3bd4a3dc0d2066f417158b5696676d4455207399cad"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt1.log.gz",
+      "sha256": "ec0d3ae01724d66d58eddd9079f67ad519b7bb622ddb3b3d5fe6b1f6bbc351c3"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt2.log",
+      "sha256": "ecbb5ee7ec72639c9f23f033f26c6ce49395f23b30feb0b95a30ee1d2e784002"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt2.log.gz",
+      "sha256": "3125a920a25ec6eb031181d6eb8dfcdd690cbb959d01f54f3900a6fc4be21cab"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt3.log",
+      "sha256": "7ab0f3ec37b41d2a958826923dfaf18527627fdcd16caa76dc8868c22554b01d"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-attempt3.log.gz",
+      "sha256": "d279a4d5201037352992394667c1d08d392f64ade0de5bdc51a372c38db705ec"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt1.log",
+      "sha256": "9e2961d611dc1ca9c82102a6e862281083a03d00814f03f0513be9c14c04b7f1"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt1.log.gz",
+      "sha256": "5606a5ae0eff5c0baa57e71af8c7d9f4da521133a5c2a3f6701666d4e5c5fa5c"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt2.log",
+      "sha256": "7ab0f3ec37b41d2a958826923dfaf18527627fdcd16caa76dc8868c22554b01d"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt2.log.gz",
+      "sha256": "d279a4d5201037352992394667c1d08d392f64ade0de5bdc51a372c38db705ec"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt3.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop-trace-attempt3.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExpDrop.lean",
+      "sha256": "ec8936f2eaf62df8509a153311faca4161632c54dc4f2b426f8ebb6d338f2307"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExponentialDrop-production-strict.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/SpectralExponentialDrop-production-strict.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/QICLean/Analysis/InverseCompressionLowerBound.lean",
+      "sha256": "949bbad01afec71c44f5fb8b0d5c65ce967e98350f5f4db3b6fb1fc8076fcabe"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/QICLean/Analysis/SpectralExponentialDrop.lean",
+      "sha256": "f30b48d5c753a51a726bcd2d5182436e8611c8beaad035447c6cfc0d37a035d9"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/blueprint/src/fragment/inverse_compression_lower_bound.tex",
+      "sha256": "c567d636a564903056e82b5a5950de76d03e4e62bd219da6dda55029ddc67b4e"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/blueprint/src/fragment/spectral_exponential_drop.tex",
+      "sha256": "380665037ab8dfe58b845d40b7daa2e127a538a9a6de25467c63e6ee4fc25d46"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/docs/openai-area-law-inverse-compression-lower-bound.md",
+      "sha256": "5e87c48c52055c2e4824cacb5468aaa55f77b949f0beb1a3b02c3c97b0698670"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/docs/openai-area-law-spectral-exponential-drop.md",
+      "sha256": "ece348cbf1e13ed1afbe673a76d2fd078a022a066e49393de96a99f92700efbf"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/canonical-original/docs/tactic_patterns.md",
+      "sha256": "440c8abd450aa6c76f03fa481382caa3d25ce14ac95b8fd42703843824a5ba90"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/LowerPin.lean",
+      "sha256": "edb435b3e0c8dd03ff9b0affa250433cb784f6316452191b546c13fb696cf6a5"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/LowerPinAudit.lean",
+      "sha256": "98299092826d6c4dde923e9e3a55dc60642d3eb9a5daa741d5ab1f1c4f1c8fd4"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/all-public-axioms.log",
+      "sha256": "60ad7806f80c16f7cba437c15fcf93cdeb19994d28cfe2aff93617778dfd33ca"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/all-public-axioms.log.gz",
+      "sha256": "d860fd0e2bfc5ba5ab95d07be5286d43c5ce3ad8afef500f013e5496f610eecd"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/freeze.json",
+      "sha256": "7dbe0a6e50e9f880ead1dec0205a18d09e9c45f0401e5d03fd1a4320a4f84056"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step01.log",
+      "sha256": "e83aa26c0a7a1f960e2ad365bee659a4350c46103b550fe2be90c59010cc6050"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step01.log.gz",
+      "sha256": "dc5c0a0399c92fe08181f2a4e2986cf987b59c8668836861a006736e3fc7c289"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step02.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step02.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step03.log",
+      "sha256": "ea06d4eea2c676b484f4b1dc2ad1fa7485ad6e256e1f2fb45a17dead2829e9a3"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step03.log.gz",
+      "sha256": "5d5d70d1e12f24e8f3dfcaeaa7170a7ce6d41fa4dfc2b42846d719ce1a0d8b80"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step04.log",
+      "sha256": "4d6a6079fa8a57a6d2ad8007af7df2b72b133f896185b7b92abc5cb1c9986b01"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step04.log.gz",
+      "sha256": "792f9b6c13aa585705ba5235dfb90a6c997055c5724086053c2be41ac302566e"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step05.log",
+      "sha256": "033ed9aa377f509396ae00f56c129c8d4aaf1300e15151f8803428df26d640ae"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step05.log.gz",
+      "sha256": "8d0ceaba6feb719208071bb778fca59d19c4e1dcc839a57bbfb65396649c729b"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step06.log",
+      "sha256": "69222fcb85b437dbdb2094435597d3880c220631a591cdbb9be933b6999e66ef"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step06.log.gz",
+      "sha256": "34e27c2a72685c29b724b4176ddc01282c80976d7b2f291f624e4f0b03fa143d"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step07.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin/step07.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical/lower-pin-approved-env.json",
+      "sha256": "883042351542627c77e494132559b59b427e6b1b1cac75b25c5e7b9221bc533a"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/historical-bindings.json",
+      "sha256": "d7e1d00c814d8905a4fd01dd7e7e1b32287de5ab35034c1824387ba85129a896"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/owned-shards.json",
+      "sha256": "72b1ab2bb451167aa19af6ea55c5b1ce30f7810fa7a7b7cfa2fc930cf9947205"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/parent-preservation.json",
+      "sha256": "89bf24ffc64f2d57d1a1001a8a87ee8d49618c94baa9fd57082e4a3be95678b7"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/prose-exit.json",
+      "sha256": "969faa69af04253c1913b1db7536dd53aaa7999334b7bdc4f0d93a1b66ed1064"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/prose.log.gz",
+      "sha256": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/provenance-exit.json",
+      "sha256": "b1c9d9bf8b8be035911020a94f06d84d9da44d350e3b7702a63989c06dd993c8"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/provenance.log",
+      "sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/provenance.log.gz",
+      "sha256": "0f4505c363e308ff7fea94ec3b259161b432753924b6677321a89720267a74e9"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/run.py",
+      "sha256": "28083739164508d18536975c35179057f464c24b3117cad47c06a6352921fd37"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/signatures-exit.json",
+      "sha256": "d8882d8419db0bfeab3176f93eb7503770ce3266a0e490e68809dc329927dc3f"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/signatures.log",
+      "sha256": "7a50074e26ffcef5179245d15137afc1d0abc9c4d836f7dc51f86ec99303b241"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/signatures.log.gz",
+      "sha256": "a21095ec9078b602f62ebd5b1054198bc51338ee62773f1d54f64e2df1bb5918"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/source-check-exit.json",
+      "sha256": "3cf8609f4cbd48b81d1eac2b0ef8aded7afe4f27b7010f01928a31430cc89c45"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/source-check.log",
+      "sha256": "b6dfa26d229ccf4b3ad1f21851e8210316fddde5be5733f7bd13eac954211217"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/source-check.log.gz",
+      "sha256": "0302c96688786094461fcf9be319bde85f1b2cf06419455c26089d25e52b3d39"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/source-check.py",
+      "sha256": "986cfe4128c76798d5aeb839f978d064451d400602af74df8425808c644e008c"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/source-freeze-original.json",
+      "sha256": "e330f91b3605754b2fbd4dc6120547b98ab02759f910ee3b4c18e246b0fe3afe"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/source-freeze.json",
+      "sha256": "442a13f1d8da29e1203fdbe1fd7cd5401fe5b59d9b59babca17b949f7465bd45"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/strict-inverse-exit.json",
+      "sha256": "d63c013268fd42aa4f931e4519c2312571c0bcf39013a9229e5b760b2fde2827"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/strict-inverse.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/strict-inverse.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/strict-spectral-exit.json",
+      "sha256": "47ce794e1e767825e824c54742313529a8d034aede70b281ad1c3e54a0049e85"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/strict-spectral.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/strict-spectral.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/tactic-patterns-exit.json",
+      "sha256": "30f08a04d57ee5eb447aa41d5b1ae7b8d5d77a151b5ea6ec361b99a908852f29"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/tactic-patterns.log.gz",
+      "sha256": "b8918a4d1a10aa05290225b4862c3204a5305f8fdc63caaba910e5718d0e1bee"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/target-exit.json",
+      "sha256": "c2fc509b4ac963ab39500c6dc97d556d9b81a64880240a602fda7d55d85d8626"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/target-inverse-retry-exit.json",
+      "sha256": "24e2a71880c5603f3c09ab55ed5e6019c02be7040402243d1840b86671a1d451"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/target-inverse-retry.log",
+      "sha256": "da477b6a50e1a84656316079b7d67b747d0ddb4958b577fc86429b168285baec"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/target-inverse-retry.log.gz",
+      "sha256": "99b5a76f5510c739fc48650487e3c70fb7fd314a5ad02fd3950aa26fc809f85c"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/target-spectral-retry-exit.json",
+      "sha256": "4e7ad004ee33bcbd955dd1ec0a1c0ff29d773265d6082843be1e1131ec3fdfb6"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/target-spectral-retry.log",
+      "sha256": "189d826e1f5ba9ed758b00feb19d8677bdec8017c3afa5533756d89b789b0c67"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/target-spectral-retry.log.gz",
+      "sha256": "127e6e5b8422eb4457e0436a07ee2daecbe5f4025bffc84b14c330f9b685336e"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/target.log",
+      "sha256": "3fa40208f5118723fa35998183a9726b94353a7cdb1848bb819dc501cdc218ff"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/target.log.gz",
+      "sha256": "4d9bc13afd399af53f0c3d234e9d3eba36ce2da39ce44baa8dd6fb7411c03829"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/text-style-exit.json",
+      "sha256": "c9e5deebbb73c430b136804df7d5c46af015a19835f8968a038881d9c8c0c265"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/text-style.log",
+      "sha256": "3083fd363cd5c116ce672e5758d3e02a45f040d5fe8b38b69e0676144f4ac9e9"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/text-style.log.gz",
+      "sha256": "c69c8e931eb4df2fa2e7d7804ac253442c379d48951be6f458383a8dc9e9b6cb"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/validate-owned.py",
+      "sha256": "14fb6e3620954070815de355a8370c2eac50a36f794551bca6e9a7cdf58e8e13"
+    },
+    {
+      "path": "docs/provenance/openai-math.d/inverseCompressionLowerBound8753.json",
+      "sha256": "d904360c4e29c38ae8e37752a7439b8a7861321cbccedad7b69db29b89a063d6"
+    },
+    {
+      "path": "docs/provenance/openai-math.d/spectralExponentialDrop8753.json",
+      "sha256": "70f2bad1a561a3465f8ba99fdb6fc7aef74c0a27590de78e012c9cdfc145fb32"
+    },
+    {
+      "path": "docs/tactic_patterns.md",
+      "sha256": "440c8abd450aa6c76f03fa481382caa3d25ce14ac95b8fd42703843824a5ba90"
+    },
+    {
+      "path": "docs/provenance/evidence/spectralCompression8753/tactic-patterns.log",
+      "sha256": "3a577aa0c21ed3bf8bb8855ac1fa36c8e92b3fde2a4b746b4d6ca15bd2253ab7",
+      "compressed_only": true
+    }
+  ]
+}

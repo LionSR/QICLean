@@ -1,0 +1,13 @@
+{
+  "source_revision": "2eaa6ec28f601f8d1a5336acb450f93ad6ca88c1",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/spectralCompression8753/cache-guard.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T04:07:32.803502+00:00",
+  "elapsed_seconds": 0.149,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/spectralCompression8753/cache-guard.log",
+  "sha256": "17b34e9cfbcdc0fcbecd98a579be3dea9a9934e52040ba41f8a5557b5c22c5f2"
+}

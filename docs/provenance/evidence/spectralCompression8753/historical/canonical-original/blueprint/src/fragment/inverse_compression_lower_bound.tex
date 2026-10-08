@@ -1,0 +1,45 @@
+\section{A lower bound from inverse compression}
+\label{sec:inverse-compression-lower-bound}
+
+The inverse compression estimate in
+\cite[Section~7, lines~585--605]{OpenAI2026AreaLaw} yields a lower bound
+on the original positive matrix by the following finite-dimensional implication.
+
+\begin{theorem}[Interchanging Gram bounds]
+\label{thm:inverse-compression-gram-bound}
+\lean{Matrix.mul_conjTranspose_le_smul_one_of_conjTranspose_mul_le}
+\leanok
+For a square complex matrix $T$ and $c\ge0$, the bound $T^*T\le cI$
+implies $TT^*\le cI$.
+\end{theorem}
+
+\begin{proof}
+\leanok
+Positivity identifies the order bound with $\|T^*T\|\le c$.
+The $C^*$ identity gives $\|T\|^2\le c$, and hence
+$TT^*\le\|T\|^2I\le cI$.
+\end{proof}
+
+\begin{theorem}[Lower bound from a compressed inverse]
+\label{thm:inverse-compression-lower-bound}
+\lean{Matrix.PosDef.inv_smul_projection_le_of_compression_inv_le}
+\uses{thm:inverse-compression-gram-bound}
+\leanok
+Let $A>0$ be a positive-definite matrix, let $P$ be an orthogonal projection,
+and let $c>0$. Then
+\begin{align}
+ PA^{-1}P\le cP\quad\Longrightarrow\quad c^{-1}P\le A.
+ \label{eq:inverse_compression_lower}
+\end{align}
+No commutation between $A$ and $P$ is required. The statement also includes
+$P=0$ and a zero-dimensional ambient space.
+\end{theorem}
+
+\begin{proof}
+\leanok
+Put $S=A^{1/2}$ and $T=S^{-1}P$. Since $S$ is positive and invertible,
+$T^*T=PA^{-1}P\le cP\le cI$. Interchanging the Gram bounds gives
+$TT^*\le cI$. Conjugate this inequality by $S$ and use $ST=P$ and
+$T^*S=P$ to obtain $P\le cA$. Multiplication by $c^{-1}$ proves
+(\ref{eq:inverse_compression_lower}).
+\end{proof}

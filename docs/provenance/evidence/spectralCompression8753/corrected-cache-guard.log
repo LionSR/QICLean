@@ -1,0 +1,18 @@
+{
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "prebuilt_modules": {
+    "Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order": "5ffe092b96aa0f7ce4843306c51dd0ed4fa13924ed5862e3e943cc436bde8d68",
+    "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic": "51bf2319e5135d1e339b70927dc4d36399f0af61c7b4780a164586e8af652472",
+    "Mathlib.Analysis.Matrix.Order": "d4d2739743998ae1b98f8c8ebb5205bb4a26ad9c36a7ab6478820be1ddb76307",
+    "Mathlib": "9a387323c3dc0909926e9b8e73e1a95905f6666e6a811a44a8fecd8c35f12230",
+    "Mathlib.LinearAlgebra.Matrix.Kronecker": "5ac2864d8398a59f13211dcc313513aafb8277aa9c9e20bff1f8de8542a91218",
+    "Mathlib.LinearAlgebra.Matrix.Permutation": "febc9b493dab94aee29a7556b3912d8eb3ac587a5fd65dc02dba73cdbdda693a",
+    "Mathlib.LinearAlgebra.Matrix.ToLin": "01df1f49b9464f07af31398aed3c02798c119f90a9aa0a838a88833ed17ddfaa",
+    "Mathlib.Logic.Equiv.Fin.Basic": "fea5eaca861ddea699acf6ad93141423e70b445ce9d8e56c7dc9296d892315b1",
+    "Mathlib.Data.Fintype.Pi": "2fa8f9f352251c1998c0c37759f3121163cd58b149c6c6d801cd523e66e5b1b8",
+    "Mathlib.Analysis.Normed.Algebra.MatrixExponential": "1f3a486cc9564d4e6c5f8db772681f4c98825623d15758ae76b57f0a3b5e0f53",
+    "Mathlib.Analysis.MeanInequalities": "e95386f7a379fb25b31d8e186ba2f9bf88410e03d2c96ad13535d7465d4db2a0",
+    "Mathlib.Analysis.SpecialFunctions.Pow.NNReal": "e1cbe1d6a482b1c62a6bff12970e0914dd46237c6580650d1efae28d9698bd27",
+    "Mathlib.LinearAlgebra.Matrix.PosDef": "da386a137a31e6e3db33a32de86d696d3938dbc3899beaf04cdbd7a2c124f2a9"
+  }
+}

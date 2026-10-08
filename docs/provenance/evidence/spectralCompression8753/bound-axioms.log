@@ -1,0 +1,8 @@
+'Matrix.spectralProjectionGE_exp_smul_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Matrix.mul_conjTranspose_le_smul_one_of_conjTranspose_mul_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Matrix.PosDef.inv_smul_projection_le_of_compression_inv_le' depends on axioms: [propext, Classical.choice, Quot.sound]
