@@ -1,0 +1,12 @@
+{
+  "parent": "5ac8f08508a93badfa6d1d76108c1c895631baac",
+  "files_preserved": 4648,
+  "exceptions": [
+    "QICLean/Analysis.lean",
+    "QICLean/Representation.lean",
+    "blueprint/src/chapter/ch13_schur_labels.tex",
+    "docs/tactic_patterns.md"
+  ],
+  "exception_patch_sha256": "c089da46e00336b4ea8d05bcb5b7225a063ac110c7828f4c0a06a8d31e40ac2f",
+  "note": "All mathematical files/evidence unchanged; the exceptions retain held d949 generated imports/chapter inputs and both parent ledger entries."
+}

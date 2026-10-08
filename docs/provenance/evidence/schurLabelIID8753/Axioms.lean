@@ -1,0 +1,17 @@
+import QICLean.Representation.SchurLabelIIDMoments
+
+/-! Exact stock kernel reports for six new, two refactored, and five inherited results. -/
+set_option linter.hashCommand false
+#print axioms Matrix.finKronecker_cons
+#print axioms Matrix.cfc_finKronecker_const
+#print axioms Matrix.re_trace_mul_exp_centered_neg_log_eq_surprisalMoment
+#print axioms Matrix.re_trace_mul_exp_centered_neg_log_finKronecker
+#print axioms TensorPower.log_centered_surprisalMoment_finKronecker_le
+#print axioms TensorPower.log_centered_labelEntropy_finKronecker_le
+#print axioms Matrix.finKronecker_posSemidef
+#print axioms Matrix.exists_pi_smul_posSemidef_of_finKronecker_posSemidef
+#print axioms PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le
+#print axioms PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le
+#print axioms TensorPower.centered_labelEntropy_moments_le
+#print axioms TensorPower.log_centered_labelEntropy_moments_le
+#print axioms TensorPower.log_centered_labelEntropy_moments_uniform

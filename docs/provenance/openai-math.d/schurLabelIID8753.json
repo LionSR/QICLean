@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-schur-iid-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Algebra/KroneckerFactorPositivity.lean",
+        "declaration": "Matrix.finKronecker_cons",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:mgf-data",
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Canonical adoption of the original finite-dimensional tensor-power proof. Proof and signature text agrees with the retained external original; only full source-label notices were corrected."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8696425c625c9e0a24b4f555fafcf5c97b02b19b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Algebra.KroneckerFactorPositivity QICLean.Analysis.CfcFinKronecker QICLean.Representation.SchurLabelIIDMoments",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/target.log",
+            "sha256": "ad52c02497cf6f1269241e6ccee9cbbe4ae7ce123f8a6f429a254b21eb7242d3"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Algebra/KroneckerFactorPositivity.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/strict-algebra.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurLabelIID8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/axioms.log",
+            "sha256": "14fa4ce7ce5920a5766ff2edd097fa79fd4e8e98e186e0384c62ea02c92815d0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schur-iid-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/CfcFinKronecker.lean",
+        "declaration": "Matrix.cfc_finKronecker_const",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:mgf-data",
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Canonical adoption of the original finite-dimensional tensor-power proof. Proof and signature text agrees with the retained external original; only full source-label notices were corrected."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8696425c625c9e0a24b4f555fafcf5c97b02b19b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Algebra.KroneckerFactorPositivity QICLean.Analysis.CfcFinKronecker QICLean.Representation.SchurLabelIIDMoments",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/target.log",
+            "sha256": "ad52c02497cf6f1269241e6ccee9cbbe4ae7ce123f8a6f429a254b21eb7242d3"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Analysis/CfcFinKronecker.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/strict-cfc.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurLabelIID8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/axioms.log",
+            "sha256": "14fa4ce7ce5920a5766ff2edd097fa79fd4e8e98e186e0384c62ea02c92815d0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schur-iid-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurLabelIIDMoments.lean",
+        "declaration": "Matrix.re_trace_mul_exp_centered_neg_log_eq_surprisalMoment",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:mgf-data",
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Canonical adoption of the original finite-dimensional tensor-power proof. Proof and signature text agrees with the retained external original; only full source-label notices were corrected."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8696425c625c9e0a24b4f555fafcf5c97b02b19b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Algebra.KroneckerFactorPositivity QICLean.Analysis.CfcFinKronecker QICLean.Representation.SchurLabelIIDMoments",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/target.log",
+            "sha256": "ad52c02497cf6f1269241e6ccee9cbbe4ae7ce123f8a6f429a254b21eb7242d3"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchurLabelIIDMoments.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/strict-iid.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurLabelIID8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/axioms.log",
+            "sha256": "14fa4ce7ce5920a5766ff2edd097fa79fd4e8e98e186e0384c62ea02c92815d0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schur-iid-04",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurLabelIIDMoments.lean",
+        "declaration": "Matrix.re_trace_mul_exp_centered_neg_log_finKronecker",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:mgf-data",
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Canonical adoption of the original finite-dimensional tensor-power proof. Proof and signature text agrees with the retained external original; only full source-label notices were corrected."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8696425c625c9e0a24b4f555fafcf5c97b02b19b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Algebra.KroneckerFactorPositivity QICLean.Analysis.CfcFinKronecker QICLean.Representation.SchurLabelIIDMoments",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/target.log",
+            "sha256": "ad52c02497cf6f1269241e6ccee9cbbe4ae7ce123f8a6f429a254b21eb7242d3"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchurLabelIIDMoments.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/strict-iid.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurLabelIID8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/axioms.log",
+            "sha256": "14fa4ce7ce5920a5766ff2edd097fa79fd4e8e98e186e0384c62ea02c92815d0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schur-iid-05",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurLabelIIDMoments.lean",
+        "declaration": "TensorPower.log_centered_surprisalMoment_finKronecker_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:mgf-data",
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Canonical adoption of the original finite-dimensional tensor-power proof. Proof and signature text agrees with the retained external original; only full source-label notices were corrected."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8696425c625c9e0a24b4f555fafcf5c97b02b19b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Algebra.KroneckerFactorPositivity QICLean.Analysis.CfcFinKronecker QICLean.Representation.SchurLabelIIDMoments",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/target.log",
+            "sha256": "ad52c02497cf6f1269241e6ccee9cbbe4ae7ce123f8a6f429a254b21eb7242d3"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchurLabelIIDMoments.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/strict-iid.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurLabelIID8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/axioms.log",
+            "sha256": "14fa4ce7ce5920a5766ff2edd097fa79fd4e8e98e186e0384c62ea02c92815d0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schur-iid-06",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurLabelIIDMoments.lean",
+        "declaration": "TensorPower.log_centered_labelEntropy_finKronecker_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:mgf-data",
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Canonical adoption of the original finite-dimensional tensor-power proof. Proof and signature text agrees with the retained external original; only full source-label notices were corrected."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "8696425c625c9e0a24b4f555fafcf5c97b02b19b",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "env LEAN_NUM_THREADS=1 lake build QICLean.Algebra.KroneckerFactorPositivity QICLean.Analysis.CfcFinKronecker QICLean.Representation.SchurLabelIIDMoments",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/target.log",
+            "sha256": "ad52c02497cf6f1269241e6ccee9cbbe4ae7ce123f8a6f429a254b21eb7242d3"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/SchurLabelIIDMoments.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/strict-iid.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -j1 -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/schurLabelIID8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelIID8753/axioms.log",
+            "sha256": "14fa4ce7ce5920a5766ff2edd097fa79fd4e8e98e186e0384c62ea02c92815d0"
+          }
+        ]
+      }
+    }
+  ]
+}

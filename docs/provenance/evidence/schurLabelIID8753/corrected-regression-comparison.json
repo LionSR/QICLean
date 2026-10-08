@@ -1,0 +1,65 @@
+{
+  "record": {
+    "status": "PASS",
+    "regression_directory": "/private/tmp/tnlean-iid-moments/regression-verification-20261008",
+    "commands": [
+      {
+        "label": "strict-build",
+        "command": [
+          "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+          "-j1",
+          "-Dpp.unicode.fun=true",
+          "-DrelaxedAutoImplicit=false",
+          "-Dweak.linter.mathlibStandardSet=true",
+          "-DmaxSynthPendingDepth=3",
+          "-DwarningAsError=true",
+          "-o",
+          "/private/tmp/tnlean-iid-moments/regression-verification-20261008/SchurLabelIIDRegression.olean",
+          "/private/tmp/tnlean-iid-moments/regression-verification-20261008/SchurLabelIIDRegression.lean"
+        ],
+        "cwd": "/private/tmp/tnlean-iid-moments/regression-verification-20261008",
+        "LEAN_PATH": "/private/tmp/tnlean-iid-moments/regression-verification-20261008:/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean:/private/tmp/tnlean-iid-moments:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Qq/.lake/build/lib/lean",
+        "returncode": 0,
+        "seconds": 9.466,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "imported-audit",
+        "command": [
+          "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean",
+          "-j1",
+          "-Dpp.unicode.fun=true",
+          "-DrelaxedAutoImplicit=false",
+          "-Dweak.linter.mathlibStandardSet=true",
+          "-DmaxSynthPendingDepth=3",
+          "-DwarningAsError=true",
+          "/private/tmp/tnlean-iid-moments/regression-verification-20261008/Axioms.lean"
+        ],
+        "cwd": "/private/tmp/tnlean-iid-moments/regression-verification-20261008",
+        "LEAN_PATH": "/private/tmp/tnlean-iid-moments/regression-verification-20261008:/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/lib/lean:/private/tmp/tnlean-iid-moments:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/mathlib/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Gametheory/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/plausible/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/batteries/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/checkdecls/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/aesop/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/importGraph/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers/.lake/packages/Qq/.lake/build/lib/lean",
+        "returncode": 0,
+        "seconds": 3.466,
+        "log_sha256": "5f6631710d870f8dd6ff318718ccb4c474fafa723ee15a94bfbff84ea35f0bd3"
+      }
+    ],
+    "source_sha256": "63f3a3a90946c1bbe2658694cd388767395ccdd6f8fb22d70a5c22d33ac003f4",
+    "named_axioms": {
+      "SchurLabelIIDRegression.singular_unit_exponent": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "SchurLabelIIDRegression.empty_ambient_zero_copy": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    "production_rebuild": false,
+    "artifact_sweep": false,
+    "handoff_readme_sha256": "2e430ee1c7ff577df5e18fae5c618ddec1fda1a7bc8bb24b48e59a8641a56878"
+  },
+  "verified_handoff_hashes": true,
+  "original_failed_attempt_retained": true,
+  "archives_contain_no_compiled_or_dependency_symlink_contents": true
+}

@@ -1,0 +1,28 @@
+{
+  "source_revision": "8696425c625c9e0a24b4f555fafcf5c97b02b19b",
+  "mathematical_revision": "5ac8f08508a93badfa6d1d76108c1c895631baac",
+  "production_sha256": {
+    "QICLean/Algebra/KroneckerFactorPositivity.lean": "bb4a9524a6359aa71d9bdbf67fa8d5e5b16dbc4223e7b5a930721dc85d4cf845",
+    "QICLean/Analysis/CfcFinKronecker.lean": "39481057b0351e6836ad232228257c250d3fcb16e35195663df2e1cb164007ed",
+    "QICLean/Representation/SchurLabelIIDMoments.lean": "3f70da3bb36a4cfdcfdd465d96fc79d717b91ede7eacd70b96b5c920f668e894",
+    "blueprint/src/fragment/schur_label_iid_moments.tex": "3d77dd68164e9ca424b55eb418683cc17841334bc88bc9fec1044f19b8a73991",
+    "docs/openai-area-law-schur-iid-moments.md": "175b07871b80e328a312656c6337ee20356f4abc26364a45a7272e78840b46a2"
+  },
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/schurLabelIID8753/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 0.3420614579808898,
+  "log": "docs/provenance/evidence/schurLabelIID8753/provenance.log",
+  "sha256": "903370f37facabee6005dfb26af547afcb8479613ed263246235f48cc353c365",
+  "uncompressed_sha256": "903370f37facabee6005dfb26af547afcb8479613ed263246235f48cc353c365",
+  "uncompressed_bytes": 115,
+  "compressed": false,
+  "deterministic_gzip_mtime": null,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true
+}

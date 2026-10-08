@@ -1,0 +1,10 @@
+{
+  "parent": "d949d2dc7dec1872aa4838d374dbe47512ae4919",
+  "files_preserved": 4982,
+  "exceptions": [
+    "QICLean/Algebra/KroneckerFactorPositivity.lean",
+    "docs/tactic_patterns.md"
+  ],
+  "method": "Git blob hashes of every inherited regular file",
+  "source_revision": "8696425c625c9e0a24b4f555fafcf5c97b02b19b"
+}

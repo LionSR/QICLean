@@ -1,0 +1,14 @@
+{
+  "source_revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+  "wholefile_sha256": {
+    "QICLean/Representation/SchurLabelMoments.lean": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925",
+    "QICLean/Representation/SchurLabelMomentBounds.lean": "9845b65181ba4dc234344bc280f08147c4d799d8198abc4be48a7bf9f256e4b0"
+  },
+  "report_scope": [
+    "PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le",
+    "PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le",
+    "TensorPower.centered_labelEntropy_moments_le",
+    "TensorPower.log_centered_labelEntropy_moments_le",
+    "TensorPower.log_centered_labelEntropy_moments_uniform"
+  ]
+}

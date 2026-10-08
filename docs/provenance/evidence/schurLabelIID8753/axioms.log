@@ -1,0 +1,17 @@
+'Matrix.finKronecker_cons' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.cfc_finKronecker_const' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.re_trace_mul_exp_centered_neg_log_eq_surprisalMoment' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.re_trace_mul_exp_centered_neg_log_finKronecker' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.log_centered_surprisalMoment_finKronecker_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.log_centered_labelEntropy_finKronecker_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.finKronecker_posSemidef' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.exists_pi_smul_posSemidef_of_finKronecker_posSemidef' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'TensorPower.centered_labelEntropy_moments_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.log_centered_labelEntropy_moments_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.log_centered_labelEntropy_moments_uniform' depends on axioms: [propext, Classical.choice, Quot.sound]

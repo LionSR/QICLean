@@ -1,0 +1,8 @@
+✔ [2766/2779] Built QICLean.Algebra.KroneckerFactorPositivity (11s)
+✔ [2777/2802] Built QICLean.Analysis.CfcFinKronecker (3.2s)
+✔ [3114/3120] Built QICLean.Representation.SchurLabelMoments (4.6s)
+✔ [3116/3153] Built QICLean.Representation.SchurLabelMomentBounds (4.1s)
+✔ [3175/3177] Built QICLean.Analysis.ReplicaDefect (4.3s)
+✔ [3176/3177] Built QICLean.Analysis.ReplicaPermutationCovariance (3.3s)
+✔ [3177/3177] Built QICLean.Representation.SchurLabelIIDMoments (3.6s)
+Build completed successfully (3177 jobs).

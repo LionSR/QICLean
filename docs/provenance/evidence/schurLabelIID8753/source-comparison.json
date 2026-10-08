@@ -1,0 +1,20 @@
+[
+  {
+    "path": "QICLean/Algebra/KroneckerFactorPositivity.lean",
+    "canonical_sha256": "bb4a9524a6359aa71d9bdbf67fa8d5e5b16dbc4223e7b5a930721dc85d4cf845",
+    "original_sha256": "37536754ee63977d4fc00e33bb331f3d5bc527a8a9946d2eca5fc2851422e79b",
+    "proof_and_signature_bytes_unchanged": true
+  },
+  {
+    "path": "QICLean/Analysis/CfcFinKronecker.lean",
+    "canonical_sha256": "39481057b0351e6836ad232228257c250d3fcb16e35195663df2e1cb164007ed",
+    "original_sha256": "ac0a5f17c195ab5c987891b5868a8b576e41bf948a20fc67edf298b1e942f43b",
+    "proof_and_signature_bytes_unchanged": true
+  },
+  {
+    "path": "QICLean/Representation/SchurLabelIIDMoments.lean",
+    "canonical_sha256": "3f70da3bb36a4cfdcfdd465d96fc79d717b91ede7eacd70b96b5c920f668e894",
+    "original_sha256": "fc24f58eae574103c599503f71b9e3e43cf1cad4a17453faa5a199b9f0685930",
+    "proof_and_signature_bytes_unchanged": true
+  }
+]

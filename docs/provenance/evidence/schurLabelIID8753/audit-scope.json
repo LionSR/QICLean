@@ -1,0 +1,22 @@
+{
+  "new": [
+    "Matrix.finKronecker_cons",
+    "Matrix.cfc_finKronecker_const",
+    "Matrix.re_trace_mul_exp_centered_neg_log_eq_surprisalMoment",
+    "Matrix.re_trace_mul_exp_centered_neg_log_finKronecker",
+    "TensorPower.log_centered_surprisalMoment_finKronecker_le",
+    "TensorPower.log_centered_labelEntropy_finKronecker_le"
+  ],
+  "refactored": [
+    "Matrix.finKronecker_posSemidef",
+    "Matrix.exists_pi_smul_posSemidef_of_finKronecker_posSemidef"
+  ],
+  "unchanged_predecessors": [
+    "PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le",
+    "PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le",
+    "TensorPower.centered_labelEntropy_moments_le",
+    "TensorPower.log_centered_labelEntropy_moments_le",
+    "TensorPower.log_centered_labelEntropy_moments_uniform"
+  ],
+  "expected_report_count": 13
+}

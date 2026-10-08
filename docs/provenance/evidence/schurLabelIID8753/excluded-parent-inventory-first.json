@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "kind": "metadata inventory",
+  "reason": "The first inventory allowed only the ledger exception and stopped at QICLean/Analysis.lean. The corrected inventory records the three inherited d949 import/input files explicitly. No proof/build failed and no source was changed."
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "path": "docs/provenance/evidence/schurLabelIID8753/original-packets.json.gz",
+    "sha256": "5b19b21fcd0cddc80a1f33465b3785c2de78f7a7ca0edbc591ae0d67d4a6d749",
+    "uncompressed_sha256": "419bfa1d6085542d658dd7a6d5669bf8aa1706527a4d596582b3a20addfd018f",
+    "uncompressed_bytes": 3300638,
+    "deterministic_gzip_mtime": 0
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelIID8753/canonical-parent-inclusion-exceptions.patch.gz",
+    "sha256": "57cf09483ab4eefc367ec4aa353e32baf51667fa1cd8e4462ea3b3f44f2517c0",
+    "uncompressed_sha256": "c089da46e00336b4ea8d05bcb5b7225a063ac110c7828f4c0a06a8d31e40ac2f",
+    "uncompressed_bytes": 5274,
+    "deterministic_gzip_mtime": 0
+  }
+]
