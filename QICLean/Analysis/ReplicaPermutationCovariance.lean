@@ -26,6 +26,9 @@ No normalization of the one-copy vector is needed for commutation. The
 Hamiltonian gap estimate, mass bound, ground-factor decomposition and
 inverse-metric estimates, independent-copy concentration and entropy-window
 selection are separate statements.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-
@@ -34,16 +37,6 @@ A two-dimensional area law from a global spectral gap, September 24, 2026.
 07-comparators.tex lines 421–443, comparator:defect-mass; lines 255–263,
 comparator:high-label, for literal tensor-power invariance.
 Independently formalized; no upstream Lean proof text reused.
-Provenance-ID: 8750-qic-replica-symmetry-01
-Matrix.commute_replicaHamiltonian_permOp
-Provenance-ID: 8750-qic-replica-symmetry-02
-Matrix.commute_cfc_replicaDefectCount_permOp
-Provenance-ID: 8750-qic-replica-symmetry-03
-Matrix.commute_cfc_replicaDefectCount_kronecker
-Provenance-ID: 8750-qic-replica-symmetry-04
-Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed
-Provenance-ID: 8750-qic-replica-symmetry-05
-Matrix.commute_finKronecker_const_permOp
 -/
 
 open Matrix PermutationRepresentation TensorPower

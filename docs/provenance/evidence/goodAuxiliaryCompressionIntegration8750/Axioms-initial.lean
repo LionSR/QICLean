@@ -1,4 +1,0 @@
-import QICLean
-
-#print axioms TensorPower.copyPerm_groupedGood_labelEntropy_compression
-#print axioms Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower

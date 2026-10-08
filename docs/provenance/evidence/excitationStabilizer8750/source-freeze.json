@@ -1,9 +1,0 @@
-{
-  "source_revision": "6c2e938246305038cb4e448499efcb04d2921c7f",
-  "production_sha256": {
-    "QICLean/Analysis/ReplicaExcitationSymmetry.lean": "fcfef73414a54801b24fa0e28324a91901935a0042cfe7e17b337b6ebbc0e0e9",
-    "blueprint/src/fragment/replica_excitation_symmetry.tex": "5321b55d7e340273b0e0f94aac838030b9aefa043d16f9a1a65b8cf2c01b8ccf",
-    "docs/formalization/replica-excitation-symmetry.md": "604f3560eb3eb022c1fdd2d03ccc6262000c221aeb712219e7945088732f8cee",
-    "docs/tactic_patterns.md": "3e15b45a37b9c90ff1a0434e5ae23fda45be417b27bcecdf105ba8cfa7264456"
-  }
-}

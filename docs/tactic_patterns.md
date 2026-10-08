@@ -29,9 +29,37 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   projections. Compatibility and the full-space order must be derived from
   the actual projections, rather than supplied as extra assumptions.
 
+### Unit-blank contraction in restoration — promoted lemmas (2026-10-08)
+
+- **Pattern:** Expand restoring matrix entries and contract unit ancillary
+  blanks through `∑ i, star (b i) * b i = 1`.
+- **Seen:** The copied-vector identity in `RestoringVectors.lean` and the actual
+  ground-component coefficient proof in `RestoringGroundComponent.lean`.
+- **Abstraction:** Promote the already proved blank normalization and restoring
+  entry formula as `restoringBlank_sum_eq_one` and
+  `restoringOperatorWithAncilla_apply`, preserving their existing proof bodies.
+  The new coefficient proof reuses both instead of duplicating those expansions.
+- **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
+  over the whole basis, including coordinates with zero assigned probability.
 
 ## Candidates
 
+### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
+
+- **Pattern:** Use the partial-trace pairing, cyclicity of trace and the pure
+  matrix trace to express a projected mass as a sesquilinear pairing. Move
+  the projector across that pairing, then use idempotence, self-adjointness
+  and the Euclidean norm identity.
+- **Seen:** The private `norm_sq_mulVec_eq_re_trace` calculation in
+  `QICLean/Entropy/PureTensorPower.lean`, and the local `hmass` calculation
+  in `TensorPower.exists_labelProj_norm_mass_ge` on the separate
+  `SchurSectorMass` contribution. These are two mathematical consumers.
+- **Abstraction:** The actual product marginal and projected-mass identities
+  are the public conclusions here. Keep the general pairing calculation
+  private while the two contributions remain independent; reconsider a
+  shared lemma when a third mathematical consumer occurs.
+- **Caveats:** Orthogonality is proved for the actual projector. Neither the
+  desired projected mass nor a supplied reduced-density identity is assumed.
 ### Commutation with a matrix inverse — candidate (2026-10-07)
 
 - **Pattern:** Give a positive definite matrix its existing `Invertible`
@@ -195,3 +223,31 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveat:** A compatible regrouped action or an invariant marginal must be
   derived. It must not be introduced as a supplied certificate. Chosen
   finite-set equivalences need not enumerate the copies in increasing order.
+
+### Sector mass from a finite resolution — candidate (2026-10-07)
+
+- **Pattern:** Restrict trace masses to the nonzero projections, use positivity
+  and completeness to obtain a nonempty set of total mass one, and apply
+  `Finset.exists_le_of_sum_le` with a bound on the number of projections.
+- **Seen:** `TensorPower.exists_labelProj_trace_mass_ge` in
+  `QICLean/Representation/SchurSectorMass.lean`; one mathematical consumer.
+- **Abstraction:** Reuse the existing finite-sum comparison theorem. The
+  projected-vector result applies this trace result to the actual reduced
+  state and uses the trace-pairing and Hermitian-idempotent norm identities.
+  No new tactic is needed.
+- **Caveats:** The sector count gives a mass bound only; an entropy window
+  requires a separate concentration estimate and a restricted selection.
+
+### Contraction of the repeated uniform pair — candidate (2026-10-07)
+
+- **Pattern:** Expand a Kronecker action against the actual repeated uniform
+  pair, rewrite its coordinates as a scalar times the equality indicator,
+  and contract one coordinate sum.
+- **Seen:** The two private coordinate identities in
+  `QICLean/Representation/UniformBellLabel.lean`; two occurrences in one file.
+- **Abstraction:** The public projected-norm and nonzero-occurrence theorems
+  supply the mathematical consequences. A separate tactic is not warranted
+  by two coordinate contractions.
+- **Caveats:** The normalization depends on the actual one-copy dimension;
+  nonzero occurrence requires that dimension to be positive. The central
+  Schur label equality additionally uses inversion-invariant coefficients.

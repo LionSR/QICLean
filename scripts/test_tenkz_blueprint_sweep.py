@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Adapted for QICLean: test explicit empty-corpus and absent-directory behavior.
-# Source and license: docs/provenance/tenkz-blueprint-support.md.
+# Adapted from LionSR/TNLean@b053c4ca45dd9f181695aaa1ea3879fc2f413e87 (Apache-2.0).
 """Focused regressions for the blueprint sweep's unit selection.
 
 The sweep decides what one audited compile is.  Getting that wrong is not a

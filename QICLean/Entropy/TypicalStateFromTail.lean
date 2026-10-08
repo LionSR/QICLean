@@ -34,12 +34,6 @@ Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-Sept
 build/sections/07-comparators.tex
 Labels: comparator:typical-set, comparator:typical-entropies.
 Additional manuscript passage: build/sections/02-initial.tex, Lemma 3.1 (lem:tail).
-Provenance-ID: 8753-qic-typical-tail-01
-Downstream declaration:
-Matrix.PosSemidef.typicalSet_normalizedSpectralRestriction_bounds
-Provenance-ID: 8753-qic-typical-tail-02
-Downstream declaration:
-Matrix.typicalPureState_typicalSet_bounds
 -/
 
 open scoped BigOperators Matrix ComplexOrder InnerProductSpace

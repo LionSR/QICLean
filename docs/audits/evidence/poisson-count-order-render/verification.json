@@ -1,0 +1,708 @@
+{
+  "status": "passed",
+  "recorded_at_utc": "2026-10-08T05:35:46.045125+00:00",
+  "source_revision": "487c65996fa26916d1d1e4b23e277607075035ba",
+  "source_sha256": {
+    "QICLean/Algebra/WordMultiplicity.lean": "d391217a58689a236250485de05e5563424967380d3fbee0313bf343ac1a9a59",
+    "QICLean/Probability/PoissonWordCounts.lean": "1551f5fa7905699468de7a93429b5858c96b3f64ef855ac682273b31a1363332",
+    "QICLean/Probability/PoissonWordIndependentCounts.lean": "dd170a85f6664dfd4116efc75d8d55d1597d5269dfcd447d1d257f841221185b",
+    "QICLean/Probability/FiniteUniformConditioning.lean": "bdc529fcb48ab124f4920faec9afb7f560b85315040b3f8224d65b39e5de02bd",
+    "QICLean/Probability/PoissonWordUniformOrder.lean": "d3579232f8959d8d127596b648bae8b3ca9b37a14c1a08b7988d9e140f09b31d",
+    "QICLean/Probability/PoissonWord.lean": "f7fb672ec289580dbc5422dffc7eac8fbcec3409810cea42ffe2253816bba659",
+    "blueprint/src/chapter/ch11_poisson_word.tex": "13a91ae881d0df890714d9beb58e3c71a6a365069000396798c020c05fdd20c3",
+    "blueprint/src/chapter/ch11_poisson_word_counts.tex": "905ae54a85ada57a3b0ac31c7fc99dcf8ad2cc6be3825ade16a458bacb311412",
+    "blueprint/src/chapter/ch11_poisson_independent_counts.tex": "8e91af287959fe61c500c43669d8bc3f4126de9bf41479af38c3db229ed24769",
+    "blueprint/src/chapter/ch11_finite_uniform_conditioning.tex": "a4c86313f6e833bb69c34c0a29c27d51127c6be8935ab465bed21ccad8e16b38",
+    "blueprint/src/chapter/ch11_poisson_uniform_order.tex": "21dff1c776659a31f451462b8190d2254838f55e2481a3523c29294d4cbf56c4",
+    "blueprint/src/content.tex": "a150a2999395c17087cd382bbe1cca2aefece259feb9e5aadcee266aa37565ed",
+    "lean-toolchain": "bc84812c94489d1e3e191baa1dc10d5eb684382d7fe9d2a5ab085e72c1c67e47",
+    "lake-manifest.json": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf",
+    "lakefile.toml": "c40e0bb3a1ee5f9025d5c752d25c7c2f61622db813f79d6bee7d2412d8760907",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9"
+  },
+  "counts": {
+    "production_modules": 5,
+    "production_lines": 456,
+    "explicitly_named_public_declarations": 33,
+    "context_public_declarations": 20,
+    "all_linked_public_constants": 53,
+    "declaration_kinds": {
+      "def": 5,
+      "lemma": 14,
+      "abbrev": 1,
+      "instance": 2,
+      "theorem": 11
+    },
+    "blueprint_entries": 15,
+    "proofs": 12,
+    "checked_markers": 27,
+    "equation_labels": 11,
+    "all_labels": 31,
+    "pdf_pages": 7,
+    "html_pages": 6,
+    "pdf_declaration_links": 53,
+    "html_chapter_declaration_links": 53,
+    "html_all_declaration_links": 159,
+    "pdf_internal_link_annotations": 19,
+    "explicit_dependency_edges": 30,
+    "diagrams": 0
+  },
+  "declarations": [
+    "PoissonWord.Word",
+    "PoissonWord.nil",
+    "PoissonWord.instMeasurableSpaceWord",
+    "PoissonWord.instMeasurableSingletonClassWord",
+    "PoissonWord.weight",
+    "PoissonWord.measure",
+    "PoissonWord.weight_nonneg",
+    "PoissonWord.sum_weight",
+    "PoissonWord.hasSum_one_weight",
+    "PoissonWord.isProbabilityMeasure",
+    "PoissonWord.measure_singleton",
+    "PoissonWord.measure_length",
+    "PoissonWord.map_length",
+    "PoissonWord.measure_zero",
+    "PoissonWord.measure_of_isEmpty",
+    "PoissonWord.integrable_iff",
+    "PoissonWord.integrable_iff_sum",
+    "PoissonWord.integral_eq_tsum_sum",
+    "PoissonWord.hasSum_weight_mul_pow",
+    "PoissonWord.integrable_and_integral_le_of_sum_le_pow",
+    "WordMultiplicity.countsFinsupp",
+    "WordMultiplicity.sum_counts",
+    "PoissonWord.countVector",
+    "PoissonWord.countEvent",
+    "PoissonWord.countFiber",
+    "PoissonWord.countVector_nil",
+    "PoissonWord.sum_countVector",
+    "PoissonWord.length_eq_sum_of_countVector_eq",
+    "WordMultiplicity.card_counts_eq",
+    "PoissonWord.countFiberEquiv",
+    "PoissonWord.instFintypeCountFiber",
+    "PoissonWord.finite_countEvent",
+    "PoissonWord.card_countFiber",
+    "PoissonWord.card_countFiber_eq_factorial",
+    "PoissonWord.countFiber_nonempty",
+    "PoissonWord.countEvent_nonempty",
+    "PoissonWord.measure_countEvent",
+    "PoissonWord.card_countFiber_mul_weight",
+    "PoissonWord.measure_countEvent_eq_prod",
+    "PoissonWord.map_countVector",
+    "PoissonWord.map_countVector_apply",
+    "PoissonWord.iIndepFun_countVector",
+    "ProbabilityTheory.measure_eq_count_mul_of_finite_constant_singletons",
+    "ProbabilityTheory.restrict_eq_smul_count_of_finite_constant_singletons",
+    "ProbabilityTheory.cond_eq_uniformOn_of_finite_constant_singletons",
+    "PoissonWord.cond_countEvent",
+    "PoissonWord.measure_countEvent_pos",
+    "PoissonWord.cond_countEvent_of_pos",
+    "PoissonWord.measure_countEvent_zero_time_of_ne",
+    "PoissonWord.cond_countEvent_zero_time_of_ne",
+    "PoissonWord.countsThenUniform",
+    "PoissonWord.countsThenUniform_eq_measure",
+    "PoissonWord.instIsProbabilityMeasureCountsThenUniform"
+  ],
+  "target_declarations": [
+    "WordMultiplicity.countsFinsupp",
+    "WordMultiplicity.sum_counts",
+    "WordMultiplicity.card_counts_eq",
+    "PoissonWord.countVector",
+    "PoissonWord.countEvent",
+    "PoissonWord.countFiber",
+    "PoissonWord.countVector_nil",
+    "PoissonWord.sum_countVector",
+    "PoissonWord.length_eq_sum_of_countVector_eq",
+    "PoissonWord.countFiberEquiv",
+    "PoissonWord.instFintypeCountFiber",
+    "PoissonWord.finite_countEvent",
+    "PoissonWord.card_countFiber",
+    "PoissonWord.card_countFiber_eq_factorial",
+    "PoissonWord.countFiber_nonempty",
+    "PoissonWord.countEvent_nonempty",
+    "PoissonWord.measure_countEvent",
+    "PoissonWord.card_countFiber_mul_weight",
+    "PoissonWord.measure_countEvent_eq_prod",
+    "PoissonWord.map_countVector",
+    "PoissonWord.map_countVector_apply",
+    "PoissonWord.iIndepFun_countVector",
+    "ProbabilityTheory.measure_eq_count_mul_of_finite_constant_singletons",
+    "ProbabilityTheory.restrict_eq_smul_count_of_finite_constant_singletons",
+    "ProbabilityTheory.cond_eq_uniformOn_of_finite_constant_singletons",
+    "PoissonWord.cond_countEvent",
+    "PoissonWord.measure_countEvent_pos",
+    "PoissonWord.cond_countEvent_of_pos",
+    "PoissonWord.measure_countEvent_zero_time_of_ne",
+    "PoissonWord.cond_countEvent_zero_time_of_ne",
+    "PoissonWord.countsThenUniform",
+    "PoissonWord.countsThenUniform_eq_measure",
+    "PoissonWord.instIsProbabilityMeasureCountsThenUniform"
+  ],
+  "context_declarations": [
+    "PoissonWord.Word",
+    "PoissonWord.instMeasurableSpaceWord",
+    "PoissonWord.instMeasurableSingletonClassWord",
+    "PoissonWord.nil",
+    "PoissonWord.weight",
+    "PoissonWord.weight_nonneg",
+    "PoissonWord.sum_weight",
+    "PoissonWord.hasSum_one_weight",
+    "PoissonWord.measure",
+    "PoissonWord.isProbabilityMeasure",
+    "PoissonWord.measure_singleton",
+    "PoissonWord.measure_length",
+    "PoissonWord.map_length",
+    "PoissonWord.measure_zero",
+    "PoissonWord.measure_of_isEmpty",
+    "PoissonWord.integrable_iff",
+    "PoissonWord.integrable_iff_sum",
+    "PoissonWord.integral_eq_tsum_sum",
+    "PoissonWord.hasSum_weight_mul_pow",
+    "PoissonWord.integrable_and_integral_le_of_sum_le_pow"
+  ],
+  "unlinked_public_constants": [],
+  "html_declaration_hrefs": [
+    "../docs/find/#doc/PoissonWord.Word",
+    "../docs/find/#doc/PoissonWord.nil",
+    "../docs/find/#doc/PoissonWord.instMeasurableSpaceWord",
+    "../docs/find/#doc/PoissonWord.instMeasurableSingletonClassWord",
+    "../docs/find/#doc/PoissonWord.weight",
+    "../docs/find/#doc/PoissonWord.measure",
+    "../docs/find/#doc/PoissonWord.weight_nonneg",
+    "../docs/find/#doc/PoissonWord.sum_weight",
+    "../docs/find/#doc/PoissonWord.hasSum_one_weight",
+    "../docs/find/#doc/PoissonWord.isProbabilityMeasure",
+    "../docs/find/#doc/PoissonWord.measure_singleton",
+    "../docs/find/#doc/PoissonWord.measure_length",
+    "../docs/find/#doc/PoissonWord.map_length",
+    "../docs/find/#doc/PoissonWord.measure_zero",
+    "../docs/find/#doc/PoissonWord.measure_of_isEmpty",
+    "../docs/find/#doc/PoissonWord.integrable_iff",
+    "../docs/find/#doc/PoissonWord.integrable_iff_sum",
+    "../docs/find/#doc/PoissonWord.integral_eq_tsum_sum",
+    "../docs/find/#doc/PoissonWord.hasSum_weight_mul_pow",
+    "../docs/find/#doc/PoissonWord.integrable_and_integral_le_of_sum_le_pow",
+    "../docs/find/#doc/WordMultiplicity.countsFinsupp",
+    "../docs/find/#doc/WordMultiplicity.sum_counts",
+    "../docs/find/#doc/PoissonWord.countVector",
+    "../docs/find/#doc/PoissonWord.countEvent",
+    "../docs/find/#doc/PoissonWord.countFiber",
+    "../docs/find/#doc/PoissonWord.countVector_nil",
+    "../docs/find/#doc/PoissonWord.sum_countVector",
+    "../docs/find/#doc/PoissonWord.length_eq_sum_of_countVector_eq",
+    "../docs/find/#doc/WordMultiplicity.card_counts_eq",
+    "../docs/find/#doc/PoissonWord.countFiberEquiv",
+    "../docs/find/#doc/PoissonWord.instFintypeCountFiber",
+    "../docs/find/#doc/PoissonWord.finite_countEvent",
+    "../docs/find/#doc/PoissonWord.card_countFiber",
+    "../docs/find/#doc/PoissonWord.card_countFiber_eq_factorial",
+    "../docs/find/#doc/PoissonWord.countFiber_nonempty",
+    "../docs/find/#doc/PoissonWord.countEvent_nonempty",
+    "../docs/find/#doc/PoissonWord.measure_countEvent",
+    "../docs/find/#doc/PoissonWord.card_countFiber_mul_weight",
+    "../docs/find/#doc/PoissonWord.measure_countEvent_eq_prod",
+    "../docs/find/#doc/PoissonWord.map_countVector",
+    "../docs/find/#doc/PoissonWord.map_countVector_apply",
+    "../docs/find/#doc/PoissonWord.iIndepFun_countVector",
+    "../docs/find/#doc/ProbabilityTheory.measure_eq_count_mul_of_finite_constant_singletons",
+    "../docs/find/#doc/ProbabilityTheory.restrict_eq_smul_count_of_finite_constant_singletons",
+    "../docs/find/#doc/ProbabilityTheory.cond_eq_uniformOn_of_finite_constant_singletons",
+    "../docs/find/#doc/PoissonWord.cond_countEvent",
+    "../docs/find/#doc/PoissonWord.measure_countEvent_pos",
+    "../docs/find/#doc/PoissonWord.cond_countEvent_of_pos",
+    "../docs/find/#doc/PoissonWord.measure_countEvent_zero_time_of_ne",
+    "../docs/find/#doc/PoissonWord.cond_countEvent_zero_time_of_ne",
+    "../docs/find/#doc/PoissonWord.countsThenUniform",
+    "../docs/find/#doc/PoissonWord.countsThenUniform_eq_measure",
+    "../docs/find/#doc/PoissonWord.instIsProbabilityMeasureCountsThenUniform"
+  ],
+  "pdf_declaration_uris": [
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.Word",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.nil",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.instMeasurableSpaceWord",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.instMeasurableSingletonClassWord",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.weight",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.weight_nonneg",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.sum_weight",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.hasSum_one_weight",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.isProbabilityMeasure",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_singleton",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_length",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.map_length",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_zero",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_of_isEmpty",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.integrable_iff",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.integrable_iff_sum",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.integral_eq_tsum_sum",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.hasSum_weight_mul_pow",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.integrable_and_integral_le_of_sum_le_pow",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/WordMultiplicity.countsFinsupp",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/WordMultiplicity.sum_counts",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.countVector",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.countEvent",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.countFiber",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.countVector_nil",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.sum_countVector",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.length_eq_sum_of_countVector_eq",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/WordMultiplicity.card_counts_eq",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.countFiberEquiv",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.instFintypeCountFiber",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.finite_countEvent",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.card_countFiber",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.card_countFiber_eq_factorial",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.countFiber_nonempty",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.countEvent_nonempty",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_countEvent",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.card_countFiber_mul_weight",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_countEvent_eq_prod",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.map_countVector",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.map_countVector_apply",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.iIndepFun_countVector",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/ProbabilityTheory.measure_eq_count_mul_of_finite_constant_singletons",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/ProbabilityTheory.restrict_eq_smul_count_of_finite_constant_singletons",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/ProbabilityTheory.cond_eq_uniformOn_of_finite_constant_singletons",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.cond_countEvent",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_countEvent_pos",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.cond_countEvent_of_pos",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.measure_countEvent_zero_time_of_ne",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.cond_countEvent_zero_time_of_ne",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.countsThenUniform",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.countsThenUniform_eq_measure",
+    "https://lionsr.github.io/QICLean/docs/find/#doc/PoissonWord.instIsProbabilityMeasureCountsThenUniform"
+  ],
+  "labels": [
+    "sec:poisson_words",
+    "def:poisson_word_measure",
+    "eq:poisson_word_mass",
+    "lem:poisson_word_normalization",
+    "lem:poisson_word_expectation",
+    "eq:poisson_word_expectation",
+    "thm:poisson_word_decay",
+    "eq:poisson_word_decay",
+    "sec:poisson_word_counts",
+    "def:poisson_word_count_vector",
+    "lem:word_multiplicity_card",
+    "eq:word_multiplicity_card",
+    "lem:poisson_word_count_fiber",
+    "sec:poisson_independent_counts",
+    "lem:poisson_count_event_mass",
+    "eq:poisson_count_event_mass",
+    "thm:poisson_independent_counts",
+    "sec:finite_uniform_conditioning",
+    "lem:finite_constant_singletons",
+    "eq:finite_constant_singletons",
+    "thm:finite_uniform_conditioning",
+    "eq:finite_uniform_conditioning",
+    "sec:poisson_uniform_order",
+    "thm:poisson_conditional_order",
+    "eq:poisson_conditional_order",
+    "lem:poisson_null_count_conditioning",
+    "eq:poisson_null_count_conditioning",
+    "def:poisson_counts_then_uniform",
+    "eq:poisson_counts_then_uniform",
+    "thm:poisson_counts_then_uniform",
+    "eq:poisson_counts_then_uniform_eq"
+  ],
+  "html_files": [
+    "ch-poisson_count_order_focus.html",
+    "dep_graph_chapter_1.html",
+    "dep_graph_document.html",
+    "dep_graphs.html",
+    "index.html",
+    "sect0001.html"
+  ],
+  "html_chapter_classes": {
+    "icon": 84,
+    "icon-list-numbered": 1,
+    "wrapper": 1,
+    "toc": 1,
+    "sub-toc-0": 1,
+    "active": 2,
+    "current": 1,
+    "toc_ref": 7,
+    "toc_entry": 7,
+    "expand-toc": 2,
+    "sub-toc-1": 1,
+    "sub-toc-2": 1,
+    "content": 1,
+    "content-wrapper": 1,
+    "main-text": 1,
+    "definition_thmwrapper": 3,
+    "theorem-style-definition": 3,
+    "definition_thmheading": 3,
+    "definition_thmcaption": 3,
+    "definition_thmlabel": 3,
+    "definition_thmtitle": 3,
+    "thm_header_extras": 15,
+    "thm_header_hidden_extras": 15,
+    "proof": 27,
+    "modal": 27,
+    "lean": 15,
+    "modal-container": 27,
+    "modal-content": 27,
+    "closebtn": 27,
+    "icon-cross": 27,
+    "uses": 27,
+    "lean_decl": 53,
+    "definition_thmcontent": 3,
+    "displaymath": 11,
+    "lemma_thmwrapper": 7,
+    "theorem-style-plain": 12,
+    "lemma_thmheading": 7,
+    "lemma_thmcaption": 7,
+    "lemma_thmlabel": 7,
+    "lemma_thmtitle": 7,
+    "icon-cogs": 12,
+    "icon-mindmap": 12,
+    "lemma_thmcontent": 7,
+    "proof_wrapper": 12,
+    "proof_heading": 12,
+    "proof_caption": 12,
+    "expand-proof": 12,
+    "proof_content": 12,
+    "theorem_thmwrapper": 5,
+    "theorem_thmheading": 5,
+    "theorem_thmcaption": 5,
+    "theorem_thmlabel": 5,
+    "theorem_thmtitle": 5,
+    "theorem_thmcontent": 5,
+    "cite": 2,
+    "ttfamily": 2,
+    "prev_up_next": 1,
+    "icon-eye-minus": 1,
+    "showmore": 2,
+    "icon-eye-plus": 1,
+    "icon-arrow-left": 1,
+    "icon-arrow-up": 1,
+    "icon-arrow-right": 1
+  },
+  "dependency_graphs": {
+    "dep_graph_document.html": {
+      "nodes": 15,
+      "edges": 18,
+      "reachability_matches_explicit_uses": true,
+      "rendered_edge_styles_match_dependency_placement": true
+    },
+    "dep_graph_chapter_1.html": {
+      "nodes": 15,
+      "edges": 18,
+      "reachability_matches_explicit_uses": true,
+      "rendered_edge_styles_match_dependency_placement": true
+    }
+  },
+  "explicit_dependency_edges": [
+    [
+      "def:poisson_counts_then_uniform",
+      "thm:poisson_counts_then_uniform"
+    ],
+    [
+      "def:poisson_word_count_vector",
+      "def:poisson_counts_then_uniform"
+    ],
+    [
+      "def:poisson_word_count_vector",
+      "lem:poisson_count_event_mass"
+    ],
+    [
+      "def:poisson_word_count_vector",
+      "lem:poisson_null_count_conditioning"
+    ],
+    [
+      "def:poisson_word_count_vector",
+      "lem:poisson_word_count_fiber"
+    ],
+    [
+      "def:poisson_word_count_vector",
+      "lem:word_multiplicity_card"
+    ],
+    [
+      "def:poisson_word_count_vector",
+      "thm:poisson_conditional_order"
+    ],
+    [
+      "def:poisson_word_count_vector",
+      "thm:poisson_independent_counts"
+    ],
+    [
+      "def:poisson_word_measure",
+      "def:poisson_word_count_vector"
+    ],
+    [
+      "def:poisson_word_measure",
+      "lem:poisson_count_event_mass"
+    ],
+    [
+      "def:poisson_word_measure",
+      "lem:poisson_word_expectation"
+    ],
+    [
+      "def:poisson_word_measure",
+      "lem:poisson_word_normalization"
+    ],
+    [
+      "def:poisson_word_measure",
+      "thm:poisson_conditional_order"
+    ],
+    [
+      "def:poisson_word_measure",
+      "thm:poisson_counts_then_uniform"
+    ],
+    [
+      "def:poisson_word_measure",
+      "thm:poisson_independent_counts"
+    ],
+    [
+      "def:poisson_word_measure",
+      "thm:poisson_word_decay"
+    ],
+    [
+      "lem:finite_constant_singletons",
+      "thm:finite_uniform_conditioning"
+    ],
+    [
+      "lem:poisson_count_event_mass",
+      "thm:poisson_conditional_order"
+    ],
+    [
+      "lem:poisson_count_event_mass",
+      "thm:poisson_independent_counts"
+    ],
+    [
+      "lem:poisson_word_count_fiber",
+      "def:poisson_counts_then_uniform"
+    ],
+    [
+      "lem:poisson_word_count_fiber",
+      "lem:poisson_count_event_mass"
+    ],
+    [
+      "lem:poisson_word_count_fiber",
+      "thm:poisson_conditional_order"
+    ],
+    [
+      "lem:poisson_word_expectation",
+      "thm:poisson_word_decay"
+    ],
+    [
+      "lem:poisson_word_normalization",
+      "lem:poisson_null_count_conditioning"
+    ],
+    [
+      "lem:poisson_word_normalization",
+      "thm:poisson_conditional_order"
+    ],
+    [
+      "lem:poisson_word_normalization",
+      "thm:poisson_counts_then_uniform"
+    ],
+    [
+      "lem:word_multiplicity_card",
+      "lem:poisson_word_count_fiber"
+    ],
+    [
+      "thm:finite_uniform_conditioning",
+      "thm:poisson_conditional_order"
+    ],
+    [
+      "thm:poisson_conditional_order",
+      "thm:poisson_counts_then_uniform"
+    ],
+    [
+      "thm:poisson_independent_counts",
+      "thm:poisson_counts_then_uniform"
+    ]
+  ],
+  "dependency_placement": [
+    {
+      "from": "def:poisson_word_measure",
+      "to": "lem:poisson_word_normalization",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "lem:poisson_word_expectation",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "thm:poisson_word_decay",
+      "placement": "statement"
+    },
+    {
+      "from": "lem:poisson_word_expectation",
+      "to": "thm:poisson_word_decay",
+      "placement": "proof"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "def:poisson_word_count_vector",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_count_vector",
+      "to": "lem:word_multiplicity_card",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_count_vector",
+      "to": "lem:poisson_word_count_fiber",
+      "placement": "statement"
+    },
+    {
+      "from": "lem:word_multiplicity_card",
+      "to": "lem:poisson_word_count_fiber",
+      "placement": "proof"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "lem:poisson_count_event_mass",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_count_vector",
+      "to": "lem:poisson_count_event_mass",
+      "placement": "statement"
+    },
+    {
+      "from": "lem:poisson_word_count_fiber",
+      "to": "lem:poisson_count_event_mass",
+      "placement": "proof"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "thm:poisson_independent_counts",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_count_vector",
+      "to": "thm:poisson_independent_counts",
+      "placement": "statement"
+    },
+    {
+      "from": "lem:poisson_count_event_mass",
+      "to": "thm:poisson_independent_counts",
+      "placement": "proof"
+    },
+    {
+      "from": "lem:finite_constant_singletons",
+      "to": "thm:finite_uniform_conditioning",
+      "placement": "proof"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "thm:poisson_conditional_order",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_count_vector",
+      "to": "thm:poisson_conditional_order",
+      "placement": "statement"
+    },
+    {
+      "from": "lem:poisson_word_count_fiber",
+      "to": "thm:poisson_conditional_order",
+      "placement": "proof"
+    },
+    {
+      "from": "lem:poisson_count_event_mass",
+      "to": "thm:poisson_conditional_order",
+      "placement": "proof"
+    },
+    {
+      "from": "lem:poisson_word_normalization",
+      "to": "thm:poisson_conditional_order",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:finite_uniform_conditioning",
+      "to": "thm:poisson_conditional_order",
+      "placement": "proof"
+    },
+    {
+      "from": "def:poisson_word_count_vector",
+      "to": "lem:poisson_null_count_conditioning",
+      "placement": "statement"
+    },
+    {
+      "from": "lem:poisson_word_normalization",
+      "to": "lem:poisson_null_count_conditioning",
+      "placement": "proof"
+    },
+    {
+      "from": "def:poisson_word_count_vector",
+      "to": "lem:poisson_null_count_conditioning",
+      "placement": "proof"
+    },
+    {
+      "from": "def:poisson_word_count_vector",
+      "to": "def:poisson_counts_then_uniform",
+      "placement": "statement"
+    },
+    {
+      "from": "lem:poisson_word_count_fiber",
+      "to": "def:poisson_counts_then_uniform",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_counts_then_uniform",
+      "to": "thm:poisson_counts_then_uniform",
+      "placement": "statement"
+    },
+    {
+      "from": "def:poisson_word_measure",
+      "to": "thm:poisson_counts_then_uniform",
+      "placement": "statement"
+    },
+    {
+      "from": "thm:poisson_independent_counts",
+      "to": "thm:poisson_counts_then_uniform",
+      "placement": "proof"
+    },
+    {
+      "from": "thm:poisson_conditional_order",
+      "to": "thm:poisson_counts_then_uniform",
+      "placement": "proof"
+    },
+    {
+      "from": "lem:poisson_word_normalization",
+      "to": "thm:poisson_counts_then_uniform",
+      "placement": "proof"
+    }
+  ],
+  "missing_internal_anchors": [],
+  "missing_label_anchors": [],
+  "duplicate_html_ids": [],
+  "tex_box_reference_warnings": [],
+  "curly_math_prime_serialization": [],
+  "artifact_sha256": {
+    "blueprint/src/print.pdf": "e7897d6b6a9ad526ab107e81e000bc8378e1dd81b3b56c9cee5c171eba15b0ff",
+    "blueprint/src/print.aux": "e36de50bc756ad99fe3aa137bdc2b14235891b0106f35787c83f77480ed79db5",
+    "dependency-graph.dot": "92893af9c6e87973fe5489f4b9f8695a442d60f8b30ec1005ccb711a2e555013",
+    "blueprint/web/ch-poisson_count_order_focus.html": "0ef0fe3d75c48ffea9fbdfedc853e5a91476b27c0d53ae7f952884836da1a52b",
+    "blueprint/web/dep_graph_chapter_1.html": "35152f6d2855a3a9a42082b7656ad7eabbabb15f5b8231c746baba39390dc802",
+    "blueprint/web/dep_graph_document.html": "79796a6a7265ac3fdbb1bafe8f8b0485384afa2763c5a8567fbf093c37cc1747",
+    "blueprint/web/dep_graphs.html": "6f7e44a5c8b5c357f1e9229b9eda7690b81fe08575d396ae0bf6617ec9c584e4",
+    "blueprint/web/index.html": "1700a6637e2d602a940766d030a09d5596c879e0afb18e209334e8e43620cee6",
+    "blueprint/web/sect0001.html": "4f0adc20c41d02856745afa8397121ec030cd6d54503d4fddd6cf6ea880dcb52",
+    "pdf-pages/page-1.png": "71fa102d47acedc070814368696fea4a09a9eb25707b2282e548ad306c249abb",
+    "pdf-pages/page-2.png": "1d44e6cee04d33dd3c206c37e7fe238c81d87c1cd6d1fbe62b67d014c50308e6",
+    "pdf-pages/page-3.png": "e9d89edf06992f0a2cbb6d879336cdf49e60dca312e9e1f4a91314092fbcf656",
+    "pdf-pages/page-4.png": "451bde0eb30e1824e3e76f716b2a48589f1f8de16c1c1d1d43aac83ec811acec",
+    "pdf-pages/page-5.png": "8132b073cb29dc3bc43c081a79b70033bd6a57875a1cb8f941d5bbd5831b7d68",
+    "pdf-pages/page-6.png": "a08ba7d8437822f282f6f26e586366af117d2f199b1c37c0facd6804e9b722bc",
+    "pdf-pages/page-7.png": "65a83c932b93917419f5bcb74fb7352db06c885430c0ed57c1741bff46614048",
+    "dependency-graph-white.png": "4a0e211ab113e91b99090378ed56b7d38b6b90c477f3112332e97134b866185c"
+  },
+  "raw_log_sha256": {
+    "pdf-build.log": "f59248d912860cf50bd3bccbf920b23c97b4d88c971f18265ab4fbe4a07e720a",
+    "web-build.log": "ced08f7d8f7c3939774ae60e24ea6f5eb787b677d92f60887aa5e8b279c4ff75",
+    "pdf-raster.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "limits": [
+    "Focused five-leaf PDF/static HTML; any separate browser inspection is recorded in visual-review.json. Not a full-book build.",
+    "Declaration URL identifiers and local anchors checked; remote Lean-document publication not tested.",
+    "No Lean/Lake/checkdecls or CI performed by this render worker.",
+    "No new tensor diagrams; Tenkz picture validation is inapplicable.",
+    "This is a fixed-time count-and-order characterization. Event times, independent increments, a pathwise clock coupling, locality, and full amplification are outside this package."
+  ]
+}

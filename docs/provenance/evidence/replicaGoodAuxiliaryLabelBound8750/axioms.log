@@ -1,3 +1,0 @@
-'Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

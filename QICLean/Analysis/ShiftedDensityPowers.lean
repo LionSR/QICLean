@@ -23,20 +23,6 @@ Original supporting spectral and compactness facts for OpenAI,
 Polynomial PEPS approximation of gapped square-grid ground states, September 24, 2026,
 03-patches.tex, eq:patch-variational-problem and eq:patch-elementary-norm-bounds.
 No regional minimization or stationarity is asserted here; no upstream Lean proof text reused.
-Provenance-ID: 8767-qic-shifted-density-powers-01
-Matrix.isCompact_setOf_posSemidef_trace_eq_one
-Provenance-ID: 8767-qic-shifted-density-powers-02
-Matrix.setOf_posSemidef_trace_eq_one_nonempty
-Provenance-ID: 8767-qic-shifted-density-powers-03
-Matrix.PosSemidef.add_smul_one_posDef
-Provenance-ID: 8767-qic-shifted-density-powers-04
-Matrix.continuousOn_add_smul_one_rpow
-Provenance-ID: 8767-qic-shifted-density-powers-05
-Matrix.PosSemidef.spectrum_add_smul_one_bounds
-Provenance-ID: 8767-qic-shifted-density-powers-06
-Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonpos
-Provenance-ID: 8767-qic-shifted-density-powers-07
-Matrix.PosSemidef.l2_opNorm_add_smul_one_rpow_le_of_nonneg
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator

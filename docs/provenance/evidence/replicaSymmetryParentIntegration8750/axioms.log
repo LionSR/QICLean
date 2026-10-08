@@ -1,7 +1,0 @@
-'Matrix.commute_replicaHamiltonian_permOp' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.commute_cfc_replicaDefectCount_permOp' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.commute_cfc_replicaDefectCount_kronecker' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Matrix.cfc_replicaDefectCount_kronecker_mulVec_preserves_fixed' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]
-'Matrix.commute_finKronecker_const_permOp' depends on axioms: [propext, Classical.choice, Quot.sound]

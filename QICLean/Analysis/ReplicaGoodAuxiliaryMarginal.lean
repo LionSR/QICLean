@@ -25,6 +25,9 @@ from a global spectral gap*, `07-comparators.tex`, lines 520–549, following
 need not have unit norm, and zero components, zero copies and empty coordinate
 sets are included. Neither independence of the auxiliary copies nor a
 merge-moment estimate is asserted here.
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 open Matrix PermutationRepresentation TensorPower
@@ -126,9 +129,7 @@ private theorem good_group_image_eq {k : ℕ} (B : Finset (Fin k))
 namespace TensorPower
 
 /-
-Provenance-ID: 8750-qic-good-auxiliary-marginal-03
 Original formalization, no upstream Lean proof text reused.
-Declaration: TensorPower.goodBadCopiesEquiv
 Manuscript: September 24, 2026, comparator:merge-moments, lines 520–549.
 -/
 
@@ -150,9 +151,7 @@ variable {A C D : Type*} [Fintype A] [DecidableEq A]
     [Fintype C] [DecidableEq C] [Fintype D] [DecidableEq D]
 
 /-
-Provenance-ID: 8750-qic-good-auxiliary-marginal-01
 Original formalization, no upstream Lean proof text reused.
-Declaration: Matrix.replicaGoodAuxiliaryMarginal
 Manuscript: September 24, 2026, comparator:merge-moments, lines 520–549.
 -/
 
@@ -192,9 +191,7 @@ private theorem replicaGoodAuxiliaryMarginal_eq (Ω : A → ℂ) (k : ℕ)
   exact Finset.sum_comm
 
 /-
-Provenance-ID: 8750-qic-good-auxiliary-marginal-02
 Original formalization, no upstream Lean proof text reused.
-Declaration: Matrix.commute_replicaGoodAuxiliaryMarginal_copyPerm
 Manuscript: September 24, 2026, comparator:merge-moments, lines 520–549.
 -/
 

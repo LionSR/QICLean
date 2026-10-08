@@ -22,7 +22,8 @@ OpenAI, *A two-dimensional area law from a global spectral gap* (September 24,
 Copy-permutation compatibility, ground-factor decomposition and metric estimates
 are separate steps of the source argument.
 
-Independently formalized; no upstream Lean proof text reused.
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 /-
@@ -32,27 +33,6 @@ Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-Sept
 build/sections/07-comparators.tex
 Label: comparator:defect-mass.
 Label: comparator:prevector.
-Provenance-ID: 8750-qic-replica-defect-01
-Downstream declaration:
-Matrix.replicaHamiltonian
-Provenance-ID: 8750-qic-replica-defect-02
-Downstream declaration:
-Matrix.replicaDefectCount
-Provenance-ID: 8750-qic-replica-defect-03
-Downstream declaration:
-Matrix.replicaHamiltonian_mulVec_prod
-Provenance-ID: 8750-qic-replica-defect-04
-Downstream declaration:
-Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod
-Provenance-ID: 8750-qic-replica-defect-05
-Downstream declaration:
-Matrix.PosSemidef.replica_gap
-Provenance-ID: 8750-qic-replica-defect-06
-Downstream declaration:
-Matrix.posSemidef_replicaDefectCount
-Provenance-ID: 8750-qic-replica-defect-07
-Downstream declaration:
-Matrix.spectralCutoff_replica_gap_mass_ge
 -/
 
 open scoped BigOperators Matrix Kronecker ComplexOrder

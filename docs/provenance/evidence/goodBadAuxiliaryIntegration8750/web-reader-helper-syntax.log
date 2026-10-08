@@ -1,4 +1,0 @@
-  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-grouped-label-entropy/docs/provenance/evidence/goodBadAuxiliaryIntegration8750/web-qa.py", line 25
-    anchors=page.evaluate("ids => Object.fromEntries(ids.map(id => [id,!!document.getElementById(id) || !!document.getElementById("mjx-eqn:"+id)]))",labels)
-                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?

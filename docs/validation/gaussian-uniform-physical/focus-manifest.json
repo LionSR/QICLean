@@ -1,0 +1,80 @@
+{
+  "source_revision": "d44122632c6d7d1b2d17a5d889fc8fe10bbb846e",
+  "leaves_sha256": {
+    "blueprint/src/chapter/ch12_entropy_physical_buffer_overlap.tex": "bb98535114b0ee29869893ee380d7ffb88cfacd80342ac12061ce838f4be6334",
+    "blueprint/src/chapter/ch12_entropy_doubled_system_gap.tex": "241fcd5926db74e99fd743b852fe674978490329c3b7d43afb66196e6c0d150c",
+    "blueprint/src/chapter/ch12_entropy_gaussian_filter.tex": "dbdbbd44352219401ef09f04c44debe6dd47de3fe36f76d20360a74e43e2833c",
+    "blueprint/src/chapter/ch12_entropy_gaussian_parameters.tex": "d6df68adeb637944331be27807e70aa904fab3ebd40b4568a06ba5be546b46d5",
+    "blueprint/src/chapter/ch12_entropy_gaussian_uniform_ground.tex": "22929f8fb4376f4ab989b4d3b7e1d6cf7d02b230be4aa2cc3c29399c3b1944f7",
+    "blueprint/src/chapter/ch12_entropy_gaussian_physical_uniform.tex": "83b1040937e92e751a0ff742f9a5baa55770da846f7ee6292bfac67a9f85439b"
+  },
+  "source_sha256": {
+    "QICLean/Analysis/GaussianFilter/GroundEstimate.lean": "36c57e508e9bf5e2e5f956f53a60745408e31c253c0d325911bf0605756d86f3",
+    "QICLean/Analysis/GaussianFilter/Kernel.lean": "43f41e9a3b2a191fa4999eb68d906d2851a169d9c95e4f0576ea5df9d1bcdbef",
+    "QICLean/Analysis/GaussianFilter/MatrixIntegral.lean": "9e94093b4b5f3c99729743dd874ce53312edd5868244130bb5f379bff9e42d30",
+    "QICLean/Analysis/GaussianFilter/ParameterChoice.lean": "8a79cfd12d4d826229a2f1f8f72f4e757f13190d588c0c5c3bc805e96e295405",
+    "QICLean/Analysis/GaussianFilter/PhysicalBuffer.lean": "89f985161a5431e76f44551ea2a06ec0eff16222e661296cb6e9926a8b898e53",
+    "QICLean/Analysis/GaussianFilter/PhysicalBufferUniform.lean": "639b6a7c5b37efec460acbd8157f1766653c3efb1ee05867108ba80323d4a0aa",
+    "QICLean/Analysis/GaussianFilter/SpectralGap.lean": "3743ada0931869ae1cf419798ca0d920431404927b1b05f6b9918b7b50f56565",
+    "QICLean/Analysis/GaussianFilter/UniformGroundEstimate.lean": "d7869ffe169f2d9286ce019978f0bd86f95014c3663655f9d1b17bf7d585904a"
+  },
+  "support_source_sha256": {
+    "blueprint/src/Packages/tenkz_pic.py": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",
+    "blueprint/src/blueprint.sty": "bba6dd0bcae52e864efd02a248f4b8cccc9f62ba82e5ec8f8045c5944d841a8d",
+    "blueprint/src/extra_styles.css": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1",
+    "blueprint/src/latexmkrc": "6bf5c08358866b42ad8062b7dcf7fa08b892361af7dd5547235f31aed33629e0",
+    "blueprint/src/macros/common.tex": "923294d75aa08e713fe7400eceac858eb6bb5f95667eeaf2d4bb202e9a35ec35",
+    "blueprint/src/macros/diagrams.tex": "275794e8e3fcf74aa7c000b38420f9150dd52017ea61216875103dc62908bf2e",
+    "blueprint/src/macros/print.tex": "e7abb3c60f1d2125b3c5ff72a14c408755e418b9654c9c661841efb1f54e1d10",
+    "blueprint/src/macros/web.tex": "3906fd9caafca22ceec080aca9c95a0cde575d7ecf7e70ef43156eadce0ca080",
+    "blueprint/src/plastex.cfg": "c6dd8278bcdc1c3106607dc114dee52a84a136e9cfa04e2a4d2f8d0b4c3e0378",
+    "blueprint/src/plastex_templates/DocumentCommands.jinja2s": "38fb147cde71e0c9e943ca6a7645950f12869d1d19b6f2cd843f56c8f0add921",
+    "blueprint/src/plastex_templates/TenkzPictures.jinja2s": "879380488675beb1bc55fe420f966e6a5f3fa86b9c1cf76489ace0e5dbb4c3c5",
+    "blueprint/src/print.tex": "a80284c614ecaff007283ca80bbe7285fae1796ded5cc21bd36dcea1a41794f0",
+    "blueprint/src/references.bib": "e1a3c3fc4670fcc744cb44ad5457206de9ce86322848c3df53bb1395b0e74420",
+    "blueprint/src/tenkz_pic.sty": "adf747cb82f51ce4da80003c3352c58164f60ce04a33cbb1d6b560e1042004f5",
+    "blueprint/src/texra_patches.sty": "d97f038370fb8fe469682196ab4e99bb1bd8c761a7ba5a4d34f51f6ad4027302",
+    "blueprint/src/web.tex": "3381d2bf7da7dcda9a7e309c6fb070bb3ee7620ca5c8649b802074826bd1a9a4",
+    "scripts/tenkz_blueprint_sweep.py": "0eec311364bb19750e04c658c61a8c8d27b6786c9184879d853c6a77feae1c75",
+    "scripts/tenkz_paths.py": "b301db3e900ab33d7d43cc271a914361b989034d106ebe66713343beb37e1236",
+    "tenkz.toml": "b47dd85f2a66ae5a809712f494b50176ada4ffb5809ec5cbc74012c851242e39",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9"
+  },
+  "support_fixture_sha256": {
+    "blueprint/src/Packages/tenkz_pic.py": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",
+    "blueprint/src/blueprint.sty": "bba6dd0bcae52e864efd02a248f4b8cccc9f62ba82e5ec8f8045c5944d841a8d",
+    "blueprint/src/extra_styles.css": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1",
+    "blueprint/src/latexmkrc": "6bf5c08358866b42ad8062b7dcf7fa08b892361af7dd5547235f31aed33629e0",
+    "blueprint/src/macros/common.tex": "923294d75aa08e713fe7400eceac858eb6bb5f95667eeaf2d4bb202e9a35ec35",
+    "blueprint/src/macros/diagrams.tex": "275794e8e3fcf74aa7c000b38420f9150dd52017ea61216875103dc62908bf2e",
+    "blueprint/src/macros/print.tex": "e7abb3c60f1d2125b3c5ff72a14c408755e418b9654c9c661841efb1f54e1d10",
+    "blueprint/src/macros/web.tex": "3906fd9caafca22ceec080aca9c95a0cde575d7ecf7e70ef43156eadce0ca080",
+    "blueprint/src/plastex.cfg": "c6dd8278bcdc1c3106607dc114dee52a84a136e9cfa04e2a4d2f8d0b4c3e0378",
+    "blueprint/src/plastex_templates/DocumentCommands.jinja2s": "38fb147cde71e0c9e943ca6a7645950f12869d1d19b6f2cd843f56c8f0add921",
+    "blueprint/src/plastex_templates/TenkzPictures.jinja2s": "879380488675beb1bc55fe420f966e6a5f3fa86b9c1cf76489ace0e5dbb4c3c5",
+    "blueprint/src/print.tex": "fd61bba558238010ffe64b2e25299a01824dc3018c3ac050f875c507e683846d",
+    "blueprint/src/references.bib": "e1a3c3fc4670fcc744cb44ad5457206de9ce86322848c3df53bb1395b0e74420",
+    "blueprint/src/tenkz_pic.sty": "adf747cb82f51ce4da80003c3352c58164f60ce04a33cbb1d6b560e1042004f5",
+    "blueprint/src/texra_patches.sty": "d97f038370fb8fe469682196ab4e99bb1bd8c761a7ba5a4d34f51f6ad4027302",
+    "blueprint/src/web.tex": "3381d2bf7da7dcda9a7e309c6fb070bb3ee7620ca5c8649b802074826bd1a9a4",
+    "scripts/tenkz_blueprint_sweep.py": "0eec311364bb19750e04c658c61a8c8d27b6786c9184879d853c6a77feae1c75",
+    "scripts/tenkz_paths.py": "b301db3e900ab33d7d43cc271a914361b989034d106ebe66713343beb37e1236",
+    "tenkz.toml": "b47dd85f2a66ae5a809712f494b50176ada4ffb5809ec5cbc74012c851242e39",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9"
+  },
+  "router_sha256": "4724944a09785fe102f11dab88641c4028199d75cdcec54aae4c22a3936fec59",
+  "tools": {
+    "texra-blueprint": "0.3.8",
+    "plasTeX": "3.1",
+    "leanblueprint": "0.0.20"
+  },
+  "fixture_changes": [
+    "Focused content router and PDF title only; all six source leaves are unchanged."
+  ],
+  "limits": [
+    "Focused PDF and static HTML only; no full-book, browser, MathJax runtime, or responsive-layout claim.",
+    "No Lean/Lake/checkdecls build or remote write; source parsing is not proof validation.",
+    "Generated PDF, HTML, diagram SVG, and page images stay outside Git.",
+    "Remote declaration-documentation URLs are checked for identity, not availability."
+  ]
+}

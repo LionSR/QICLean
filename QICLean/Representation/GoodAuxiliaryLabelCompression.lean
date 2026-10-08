@@ -20,6 +20,9 @@ global spectral gap*, `07-comparators.tex`, lines 481–493, equation
 physical excitation projection is a separate step. No commutation with the
 band metric is asserted. The total real logarithm includes empty coordinate
 sets and zero copy groups, with \(\log 0=0\).
+
+Independently formalized from the manuscript; no upstream Lean proof text is
+reused.
 -/
 
 open Matrix PermutationRepresentation
@@ -31,9 +34,7 @@ variable {m r k : ℕ} (e : Fin m ⊕ Fin r ≃ Fin k)
     {C : Type*} [Fintype C] [DecidableEq C]
 
 /-
-Provenance-ID: 8750-qic-good-auxiliary-label-compression-01
 Original formalization, no upstream Lean proof text reused.
-Declaration: TensorPower.copyPerm_groupedGood_labelEntropy_compression
 Manuscript: September 24, 2026, comparator:good-auxiliary, lines 481–493.
 -/
 

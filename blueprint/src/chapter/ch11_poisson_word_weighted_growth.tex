@@ -1,0 +1,190 @@
+\section{Weighted growth of Poisson word observables}
+\label{sec:poisson_word_weighted_growth}
+
+Let $I$ and $Y$ be finite sets, put $N=|I|$, and write
+$\mathcal W_I$ for the finite words in $I$.
+For $m\in\mathbb N$, let $\mathcal W_{I,m}=I^{\{0,\ldots,m-1\}}$ denote the words of
+length $m$, with $\mathcal W_{I,0}=\{\varnothing\}$.
+Write $u[i]$ for appending the letter $i$ on the right of $u$.
+For $f:\mathcal W_I\times Y\to\mathbb R$, put
+$S_m(y)=\sum_{w\in\mathcal W_{I,m}}f(w,y)$.
+For $t\geq0$, let $\mu_{I,t}$ be the probability measure of
+Definition~\ref{def:poisson_word_measure}.
+The following finite-word estimates support the weighted oscillation
+argument in \cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex},
+lines 159--188.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% Checked module: QICLean/Probability/PoissonWordWeightedGrowth.lean,
+% revision 21ce2891.  These are generic supporting estimates; the physical
+% oscillations, spatial profile, chronological clocks, and source Gronwall
+% argument are not established here.
+
+\begin{lemma}[Summation by the last letter]
+\label{lem:poisson_word_sum_length_succ}
+\lean{PoissonWord.sum_length_succ}
+\leanok
+\uses{def:poisson_word_insert}
+For every $g:\mathcal W_I\to\mathbb R$ and $m\geq0$,
+\begin{align}
+ \sum_{w\in\mathcal W_{I,m+1}}g(w)
+ &=\sum_{u\in\mathcal W_{I,m}}\sum_{i\in I}g(u[i]).
+ \label{eq:poisson_growth_last_letter}
+\end{align}
+\end{lemma}
+\begin{proof}
+\leanok
+\uses{def:poisson_word_append, def:poisson_word_insert}
+Every word of length $m+1$ has a unique prefix of length $m$ and a
+unique last letter.  Thus $(u,i)\mapsto u[i]$ is a bijection from
+$\mathcal W_{I,m}\times I$ to $\mathcal W_{I,m+1}$.
+Reindexing the finite sum by this bijection gives
+(\ref{eq:poisson_growth_last_letter}).
+\end{proof}
+
+\begin{lemma}[Recurrence from one-letter increments]
+\label{lem:poisson_word_growth_recurrence}
+\lean{PoissonWord.sum_length_succ_le_of_append_singleton}
+\leanok
+\uses{def:poisson_word_insert}
+Let $f:\mathcal W_I\times Y\to\mathbb R$ and
+$A:Y\times Y\to\mathbb R$.  Suppose that, for every word $u$ and
+every $y\in Y$,
+\begin{align}
+ \sum_{i\in I}\bigl(f(u[i],y)-f(u,y)\bigr)
+ &\leq\sum_{z\in Y}A(y,z)f(u,z).
+ \label{eq:poisson_growth_increment}
+\end{align}
+Then, for every $m\geq0$ and $y\in Y$,
+\begin{align}
+ S_{m+1}(y)&\leq N S_m(y)+\sum_{z\in Y}A(y,z)S_m(z).
+ \label{eq:poisson_growth_recurrence}
+\end{align}
+No sign assumptions on $f$ or $A$ are needed.
+\end{lemma}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_sum_length_succ}
+Rearranging~(\ref{eq:poisson_growth_increment}) gives
+$\sum_{i\in I}f(u[i],y)\leq Nf(u,y)+\sum_{z\in Y}A(y,z)f(u,z)$.
+Sum over $u\in\mathcal W_{I,m}$ and apply
+(\ref{eq:poisson_growth_last_letter}).
+Interchanging the two finite sums on the right gives
+(\ref{eq:poisson_growth_recurrence}).
+\end{proof}
+
+\begin{theorem}[Finite-length bound from a weighted profile]
+\label{thm:poisson_word_weighted_length}
+\lean{PoissonWord.sum_length_le_pow_of_weighted_growth}
+\leanok
+\uses{def:poisson_word_insert}
+Let $f:\mathcal W_I\times Y\to\mathbb R$,
+$A:Y\times Y\to\mathbb R$, and $r:Y\to\mathbb R$.
+Suppose $A(y,z)\geq0$ for every $y,z\in Y$, and let $v,C\geq0$.
+Assume~(\ref{eq:poisson_growth_increment}) for every $u,y$, and suppose
+that, for every $y\in Y$,
+\begin{align}
+ \begin{aligned}
+ f(\varnothing,y)&\leq C r(y),\\
+ \sum_{z\in Y}A(y,z)r(z)&\leq v r(y).
+ \end{aligned}
+ \label{eq:poisson_growth_profile}
+\end{align}
+Then, for every $m\geq0$ and $y\in Y$,
+\begin{align}
+ S_m(y)&\leq (N+v)^m C r(y).
+ \label{eq:poisson_growth_length}
+\end{align}
+Both $f$ and $r$ may take negative values.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_growth_recurrence}
+Induct on $m$, proving the bound for all $y$ at once.
+For $m=0$, it is the initial bound in~(\ref{eq:poisson_growth_profile}).
+For the induction step, set $q_m=(N+v)^m C\geq0$.
+By~(\ref{eq:poisson_growth_recurrence}), the induction hypothesis,
+and the nonnegativity of $N$ and $A$,
+\begin{align}
+ \begin{aligned}
+ S_{m+1}(y)
+ &\leq Nq_m r(y)+\sum_{z\in Y}A(y,z)q_m r(z)\\
+ &=q_m\left(Nr(y)+\sum_{z\in Y}A(y,z)r(z)\right)\\
+ &\leq q_m\bigl(Nr(y)+vr(y)\bigr)
+  =(N+v)^{m+1}C r(y).
+ \end{aligned}
+ \label{eq:poisson_growth_induction}
+\end{align}
+The last inequality uses~(\ref{eq:poisson_growth_profile}) and $q_m\geq0$.
+No division by a profile coordinate occurs.
+\end{proof}
+
+\begin{theorem}[Integrability and exponential weighted growth]
+\label{thm:poisson_word_weighted_expectation}
+\lean{PoissonWord.integrable_and_integral_le_of_weighted_growth}
+\leanok
+\uses{def:poisson_word_measure, def:poisson_word_insert}
+Let $t\geq0$, $f:\mathcal W_I\times Y\to\mathbb R$,
+$A:Y\times Y\to\mathbb R$, $r:Y\to\mathbb R$, and $v,C\geq0$.
+Suppose $f(u,y)\geq0$, $A(y,z)\geq0$, and $r(y)\geq0$ for every
+$u\in\mathcal W_I$ and $y,z\in Y$.
+Assume~(\ref{eq:poisson_growth_increment}) for every $u,y$ and
+(\ref{eq:poisson_growth_profile}) for every $y$.
+Then, for each $y\in Y$, the function $u\mapsto f(u,y)$ is integrable
+with respect to $\mu_{I,t}$, and
+\begin{align}
+ \int_{\mathcal W_I}f(u,y)\,d\mu_{I,t}(u)
+ &\leq e^{vt}C r(y).
+ \label{eq:poisson_growth_expectation}
+\end{align}
+Neither a uniform bound on $f$ nor strict positivity of $r$ is required.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:poisson_word_weighted_length, thm:poisson_word_decay}
+Theorem~\ref{thm:poisson_word_weighted_length} gives
+$S_m(y)\leq(N+v)^m C r(y)$.
+Apply Theorem~\ref{thm:poisson_word_decay} to $f(\cdot,y)$ with
+$a=N+v\geq0$ and the nonnegative constant $C r(y)$.
+Its comparison series, with the actual Poisson word weights, is
+\begin{align}
+ \begin{aligned}
+ \sum_{m\geq0}e^{-Nt}\frac{t^m}{m!}(N+v)^m C r(y)
+ &=e^{-Nt}e^{(N+v)t}C r(y)\\
+ &=e^{vt}C r(y).
+ \end{aligned}
+ \label{eq:poisson_growth_exponential}
+\end{align}
+This summable majorant proves integrability as well as
+(\ref{eq:poisson_growth_expectation}).
+\end{proof}
+
+\begin{theorem}[Pointwise vanishing at a zero profile coordinate]
+\label{thm:poisson_word_weighted_zero}
+\lean{PoissonWord.eq_zero_of_weighted_growth_of_profile_eq_zero}
+\leanok
+\uses{def:poisson_word_insert}
+Let $f:\mathcal W_I\times Y\to\mathbb R$,
+$A:Y\times Y\to\mathbb R$, $r:Y\to\mathbb R$, and $v,C\geq0$.
+Suppose $f(u,z)\geq0$ and $A(z,z')\geq0$ for every word $u$ and
+every $z,z'\in Y$.
+Assume~(\ref{eq:poisson_growth_increment}) for every word and coordinate,
+and~(\ref{eq:poisson_growth_profile}) for every coordinate.
+For each $y\in Y$ with $r(y)=0$, one has $f(u,y)=0$ for every
+$u\in\mathcal W_I$.
+No sign assumption on the other coordinates of $r$ is needed.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:poisson_word_weighted_length}
+Fix a word $u$ and put $m=|u|$.
+All terms in $S_m(y)$ are nonnegative, and $f(u,y)$ is one of them.
+By Theorem~\ref{thm:poisson_word_weighted_length},
+\begin{align}
+ 0\leq f(u,y)\leq S_m(y)\leq (N+v)^m C r(y)=0.
+ \label{eq:poisson_growth_zero}
+\end{align}
+Thus vanishing holds at every word, independently of any choice of time.
+\end{proof}
+
+All statements allow an empty alphabet, and the expectation bound includes
+$t=0$.
