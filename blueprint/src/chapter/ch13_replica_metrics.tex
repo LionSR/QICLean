@@ -926,23 +926,35 @@ eigenbasis. The following statements show that such averages are central label f
     \label{thm:skew_bound}
     \lean{TensorPower.re_coherentIntegral_le, TensorPower.coherentIntegral_const_mul,
         TensorPower.SkewPartition.markedScalarSymbol_skew_le,
-        TensorPower.SkewPartition.eventually_re_trace_skewOperator_le}
+        TensorPower.SkewPartition.eventually_re_trace_skewOperator_le,
+        TensorPower.SkewPartition.skewEta_transport,
+        TensorPower.SkewPartition.eventually_re_trace_skewOperator_le_regionalMovementEta,
+        TensorPower.markedSimilarity_comm,
+        TensorPower.SkewPartition.eventually_re_trace_skewOperator_le_swap}
     \leanok
-    \uses{thm:skew_symbol, lem:region_split, lem:entropy_continuity, thm:conditional_skew}
-    Let $h$ be supported on $P_0x$ with $0\le h\le I$, $d_h=(\dim P_0)(\dim x)$,
-    $\eta_\theta=I(x:F|U)_\theta$, and let $0<a$ with $a\log(ed_h)\le1/8$ and $t=a/2$. Then
+    \uses{thm:skew_symbol, lem:region_split, lem:entropy_continuity, thm:conditional_skew,
+        lem:movement_eta_regional}
+    Let $P=P_0P_1$, let $h$ be supported on $P_0x$ with $0\le h\le I$, $d_h=(\dim P_0)(\dim x)$,
+    $\eta_\theta=S_\theta(x|P)+S_\theta(x|U)=I_\theta(x:F|U)$, and let $0<a$ with
+    $a\log(ed_h)\le1/8$ and $t=a/2$. Then
     $|f_\theta|-\operatorname{Re}f_\theta\le Ca^2\log^4(ed_h)\eta_\theta^{1/8}$ on unit vectors,
     and uniformly in symmetric density matrices $\sigma$,
     \[
         \Tr\sigma\mathcal D_k\le2Ca^2\log^4(ed_h)\int\eta_\theta^{1/8}\,d\mu_\sigma(\theta)
         +o_k(1).
     \]
+    The same bound holds with the two outer parts of the partition metric exchanged.
 \end{theorem}
 
 \begin{proof}\leanok
     The pointwise bound is the conditional skew estimate read on regions. Integrate it
     against the coherent measure, which is a positive measure, using the skew symbol and the
-    continuity of both integrands.
+    continuity of both integrands. In the coordinates of the conditional skew estimate the
+    marginals of the transported vector on $xU$, $U$ and $UF$ are the states of $\theta$ on
+    $xU$, $U$ and, by purity, the complement $Px$, and its full marginal on $xUF$ has the
+    entropy of the state on $P$; hence $I(x:F|U)=S_\theta(x|P)+S_\theta(x|U)$. The factors
+    $W_P^{-1}$ and $W_F^{-1}$ commute, so the partition metric, and with it the similarity
+    transform and $\mathcal D_k$, is unchanged when the outer parts are exchanged.
 \end{proof}
 
 \section{The gamma integral}
@@ -1205,20 +1217,50 @@ $\eta_\theta=S_\theta(x|P)+S_\theta(x|Y_0)$.
     coordinates the operators are those of Lemma 5.1.
 \end{proof}
 
+\begin{lemma}[The movement entropy in region form]
+    \label{lem:movement_eta_regional}
+    \lean{Entropy.regionalMovementEta, Entropy.partialTraceLeft_regionState_union,
+        Entropy.FourPartition.frameMarginalP_eq, Entropy.FourPartition.frameMarginalY_eq,
+        Entropy.FourPartition.movementEta_frameVector, Entropy.regionEntropy_eq_entropy,
+        Entropy.regionEntropy_compl, Entropy.regionalMovementEta_eq_cmi_left,
+        Entropy.regionalMovementEta_eq_cmi_right, Entropy.regionalMovementEta_nonneg}
+    \leanok
+    \uses{lem:regional_movement}
+    For a vector $\theta$ on the sites and a partition $P,x,Y_0,F$, the exponent of
+    Lemma~\ref{lem:regional_movement} is $\eta_\theta=S_\theta(x|P)+S_\theta(x|Y_0)$, the marginals
+    $\rho_P,\rho_{Y_0}$ there are the states of $\theta$ on $P$ and $Y_0$, and
+    \[
+        \eta_\theta=I_\theta(x:F|P)=I_\theta(x:F|Y_0)\ge0.
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    The coordinates of Lemma~\ref{lem:regional_movement} split the configurations along $xY_0$
+    and along $Px$, so the marginals on these regions are the regional states, and their
+    partial traces are the states on $Y_0$ and $P$. Complementary regions of a vector have
+    equal entropy, which turns $S_\theta(x|P)+S_\theta(x|Y_0)$ into either conditional mutual
+    information; strong subadditivity gives $I_\theta(x:F|P)\ge0$.
+\end{proof}
+
 \begin{theorem}[Lemma 6.3, the relative coherent pin]
     \label{thm:relative_pin}
     \lean{TensorPower.exists_replicaMetric_integral_localLift, TensorPower.norm_tensorVec,
         TensorPower.norm_of_integral_mulVec_le, Matrix.rpow_mul_cfc_kernelCompletion,
-        TensorPower.relativePin}
+        TensorPower.relativePin, TensorPower.relativePin_regionalMovementEta,
+        TensorPower.leafRoot_comm, TensorPower.leafMetric_comm, TensorPower.relativePin_toF}
     \leanok
     \uses{lem:move_inverse, lem:compensator, lem:regional_movement,
-        thm:replica_metric_integral}
+        thm:replica_metric_integral, lem:movement_eta_regional}
     There are universal constants $C,c>0$ such that, for $0<t\le1$, $a=2t$ and
     $a\log(e\dim x)\le c$, there is a polynomial $p(k)$, uniform in $\theta$, with
     \[
         C_{x,k}\ge p(k)^{-1}\exp\bigl\{ka[\eta_\theta-Ca^{1/4}\log^2(e\dim x)]\bigr\}
-            P_{\theta,k}.
+            P_{\theta,k},
     \]
+    where $\eta_\theta=S_\theta(x|P)+S_\theta(x|Y_0)=I_\theta(x:F|P)=I_\theta(x:F|Y_0)$. The
+    same statement holds for a move to $F$ after exchanging the outer parts:
+    $A_k^{-1/2}A_k(P,Y_0,Fx)A_k^{-1/2}$ satisfies the bound with
+    $\eta_\theta=S_\theta(x|F)+S_\theta(x|Y_0)$.
 \end{theorem}
 
 \begin{proof}\leanok
@@ -1232,5 +1274,7 @@ $\eta_\theta=S_\theta(x|P)+S_\theta(x|Y_0)$.
     $\|\sigma^t\tau^t\hat\rho_P^{-t}\hat\rho_{Y_0}^{-t}\theta\|^k$, which
     Lemma~\ref{lem:regional_movement} bounds by $\exp(-ka\eta_\theta/2+kCa^{5/4}\ell^2)$, with
     $\ell=\log(e\dim x)$ and $C$ the constant of Lemma 5.1. Squaring gives the claim with twice
-    that constant.
+    that constant, and Lemma~\ref{lem:movement_eta_regional} identifies the exponent. For a move
+    to $F$, apply the statement to the partition $F,x,Y_0,P$: the partition metric is symmetric in
+    its outer parts, since $W_P^{-1}$ and $W_F^{-1}$ commute.
 \end{proof}

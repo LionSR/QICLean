@@ -14,5 +14,6 @@ import QICLean.Representation.ReplicaTransport.EntropyGain
 import QICLean.Representation.ReplicaTransport.Integrated
 import QICLean.Representation.ReplicaTransport.Prerequisites
 import QICLean.Representation.ReplicaTransport.Proposition
+import QICLean.Representation.ReplicaTransport.RelativePinBound
 import QICLean.Representation.ReplicaTransport.Setup
 import QICLean.Representation.ReplicaTransport.States
