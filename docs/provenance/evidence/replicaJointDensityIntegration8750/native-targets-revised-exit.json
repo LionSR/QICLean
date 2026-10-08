@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensityIntegration8750/check-native-targets-revised.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.61,
+  "source_revision": "7840e716185f9d477c3c135192f3ec0573813e14",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/native-targets-revised.log",
+  "sha256": "9a63d6cc7d236343bcb1c5f8e795f52329e2b69928136a579b9dc52f05cd4239"
+}

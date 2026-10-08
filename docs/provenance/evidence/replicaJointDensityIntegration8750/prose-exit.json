@@ -1,0 +1,15 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "scripts/check_reader_facing_prose.py",
+    "--diff-base",
+    "f94ea7d4"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.48,
+  "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+}

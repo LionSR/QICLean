@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensityIntegration8750/mathlib-guard.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.08,
+  "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/guard.log",
+  "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/check-integration-preservation.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 1.87,
+  "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/preservation.log",
+  "sha256": "5548843746f431f4351ab7667480608dfc6e13065059137f3978a8e8b0b95c46"
+}

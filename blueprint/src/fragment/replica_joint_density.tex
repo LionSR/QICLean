@@ -17,10 +17,13 @@ equation (comparator:merge-moments).
 \lean{Matrix.replicaGoodRegionalAuxiliaryMarginal}
 \leanok
 \uses{def:good_bad_copies_equiv}
-Regroup $w$ as a vector on
-$(Q^{\otimes m}\otimes C^{\otimes m})\otimes
-(C^{\otimes|B|}\otimes D^{\otimes k}\otimes
-T^{\otimes m}\otimes(QT)^{\otimes|B|})$.
+Regroup $w$ as a vector on $\mathcal H_{\mathrm{ret}}\otimes
+\mathcal H_{\mathrm{tr}}$, where
+\begin{align}
+ \mathcal H_{\mathrm{ret}}&=Q^{\otimes m}\otimes C^{\otimes m},\\
+ \mathcal H_{\mathrm{tr}}&=C^{\otimes|B|}\otimes D^{\otimes k}
+   \otimes T^{\otimes m}\otimes(QT)^{\otimes|B|}.
+\end{align}
 The joint marginal $\rho_{Q_GC_G}(w)$ is the partial trace of
 $|w\rangle\langle w|$ over the second factor. Thus it retains the good
 physical $Q$ coordinates and the good auxiliary $C$ coordinates of the

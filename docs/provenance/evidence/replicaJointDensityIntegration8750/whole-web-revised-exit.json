@@ -1,0 +1,15 @@
+{
+  "kind": "verification",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "scripts/test_blueprint_web_render.py",
+    "--web-root",
+    "blueprint/web"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 46.99,
+  "source_revision": "7840e716185f9d477c3c135192f3ec0573813e14",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/whole-web-revised.log",
+  "sha256": "81190dccbdfa25e937f01dc82f072a72412803136321ee63bb16dbc8469f279a"
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/review-historical-leaf.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.19,
+  "source_revision": "7840e716185f9d477c3c135192f3ec0573813e14",
+  "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/historical-leaf-review.log",
+  "sha256": "673c946b8d93ff261f8867db5133a8a677fa5a62432ce3453dfab513b759625b"
+}

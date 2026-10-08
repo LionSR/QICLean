@@ -1,0 +1,349 @@
+{
+  "inclusion_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+  "mathematical_source_revision": "05dc00486525e0e79413afb806c221eb98787204",
+  "commands": [
+    {
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensityIntegration8750/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 6.02,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/axioms.log",
+      "sha256": "141e585885125f37c46ebeb8f3d712f611fac489e8048d8211583257e194ecc7"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "bbl"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.34,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/bbl.log",
+      "sha256": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.72,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/blueprint-sync.log",
+      "sha256": "f4f383fc71b48345683180854d01888c45b74f15c4d6feb8d3e7f5d6d0bbe083"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "lake",
+        "build"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 85.47,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/build.log",
+      "sha256": "4c8438e0a3a295e883fd4189f7e79616c136d693c5cd40d67445f69d39a7974d"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensityIntegration8750/inspect-web.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.96,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/focused-web.log",
+      "sha256": "fe89d43d01ca8a68421bcb52f890ab9bdade8557f3a8ebe0b8bd4643725e7b34"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensityIntegration8750/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/guard.log",
+      "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.63,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/imports.log",
+      "sha256": "d50e440191bbae68399ea83f93ae385ad23977cc8769a2e7769d346843ca7538"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensityIntegration8750/review-leaf.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.79,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/leaf-review.log",
+      "sha256": "a84754d5061cbe363cb598918f246fcc6b51d99ba853d15298bd831e432b59f9"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "lake",
+        "exe",
+        "checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 36.27,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/native.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensityIntegration8750/check-native-targets.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.64,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/native-targets.log",
+      "sha256": "88a4fa4144a34e3ec26d68dd98de4316f69d3072608614b4a8db0b5173e9a35d"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.36,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys;os.chdir(\"blueprint\");sys.exit(subprocess.call([\"leanblueprint\",\"pdf\"]))"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 27.45,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/pdf.log",
+      "sha256": "83e8d87b87483ddc4a5248c95f386d29d1e3b58c78994a3a9b9200b11f124f5b"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaJointDensityIntegration8750/check-integration-preservation.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.87,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/preservation.log",
+      "sha256": "5548843746f431f4351ab7667480608dfc6e13065059137f3978a8e8b0b95c46"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "f94ea7d4"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.48,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensityIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.53,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/provenance.log",
+      "sha256": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaJointDensityIntegration8750/render-pdf.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 10.85,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/render.log",
+      "sha256": "b7babc967a7317d6e48632a14414b6fad11fb25286656150cad466b09914ebce"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.2,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/tenkz.log",
+      "sha256": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 55.5,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/web.log",
+      "sha256": "f4689be18a005ca0027993e71c636491588beef67eb9ad33f9abbd36bfa2bc00"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 47.12,
+      "source_revision": "69b31fc6bbb94576c69def6d42d3153b39afcf04",
+      "log": "docs/provenance/evidence/replicaJointDensityIntegration8750/whole-web.log",
+      "sha256": "758e092cb227ec843fa315527d2a85e0b027b657ce80ca48d61fac9668780b13"
+    }
+  ],
+  "technical_commands_passed": true,
+  "visual_review_result": "failed",
+  "claimed_as_complete_final_verification": false,
+  "file_hashes": {
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/leaf-review-exit.json": "0e723acf78f3818c3fdba8231afb75fa6912bfec173c5d50427aad5f211475ec",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/provenance.log": "e9b7ba47040fb00d7634cbe9a7c5ade90595442969878f04eca3eee264823cc7",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/pdf.log": "83e8d87b87483ddc4a5248c95f386d29d1e3b58c78994a3a9b9200b11f124f5b",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/focused-web-exit.json": "eddcae25882b1f86a0d0f56ed6101a2f266b944bacd704c21dad97d4e697bbab",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/native-exit.json": "8009e08ef0c28c489f4faa5b1d22af46775ce280906c4d228ea14a9c2f21817c",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render-exit.json": "8e5995ad380a83345f507243751bc365da3cc6b0150e81beb635dcf63f57789a",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render.log": "b7babc967a7317d6e48632a14414b6fad11fb25286656150cad466b09914ebce",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/tenkz.log": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/bbl.log": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/preservation-exit.json": "b7faae0521494b748de453edcdcb0a0ef5cd29af2b6ddb53248e611d60ffe68d",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/inspect-web.py": "e83b5c01576b9ac6a1f68b5614971f2a2bb088f79a8c2f5e2a8d736305d7836f",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/whole-web-exit.json": "734536587f0645c5c3b2127fd081d81a323b1d8500ee466da1e22c6c612878f2",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/run-book.py": "f240dc74e83e5908613dd2b3665e6cef258d0b80bfaaca1aacbdddc2119e3d9a",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/owned-shards.json": "07a61f59a4f23763a41b3cc0d266aca42b7e67dcff811784fc3199682e2530d4",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/paper-gaps.log": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/run-library.py": "156775e536d071994b866f863a9225aa2ecfbbe4f78101468d86fb82bdbfa619",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/pdf-page-selection.json": "a204acf2f96e573e005c40e01f932f37173c987b362fa53527049c6a16a9045f",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/prose-exit.json": "6712248b7d427776734aadb7914a64134009d20e42f9d0db780ed08ca82e5862",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/mathematical-review.json": "404c72217cb45eee2f90b427295ac15502218836bf55fec410e4c3525cf31cfd",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/check-integration-preservation.py": "7555e671d75d983c2aa2fcb19933da2938c3ef13e88314f9beb00a98f15d4434",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/web-exit.json": "24ef2490fa7d85dfc53ed974866cb9ec091f4211a56312ba7ca239ba54d0e617",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/paper-gaps-exit.json": "e8d5748ff21825112252dff16cb8205bb3835a8c069d1fe1b191e118c4e98ab7",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/validate-manifest.py": "7081635bdcc94a68b82cd99e45c5cdbe9c328d4e7f4b03be80b5aeb8f2cc3291",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/blueprint-sync.log": "f4f383fc71b48345683180854d01888c45b74f15c4d6feb8d3e7f5d6d0bbe083",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/run-static.py": "721bc7fba71543b16381827c6074a591ab5302e56fcd66a25b07bcc61cce301a",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/web.log": "f4689be18a005ca0027993e71c636491588beef67eb9ad33f9abbd36bfa2bc00",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/native-targets.log": "88a4fa4144a34e3ec26d68dd98de4316f69d3072608614b4a8db0b5173e9a35d",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/bbl-exit.json": "f551fc1b0a91047f9302f54cece131e6fab0ad071d7589b7f5bd61882a532e41",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/validate-owned.py": "68ae4439df5d4833105c48eefcfb6c9b00c743297564d58e5be36981ca2fb900",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/NativeDeclarations.txt": "c915795489b7924176c9c2b4e0cb826a7f98f2897dcdeab641c05da600e7592e",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/README.md": "0a14d05e2ff3b3cb19230c515c588ac9f7330084e95b1c17dfd70149a4ace2ad",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/finalize-manifest.py": "581a085c5121edc9b523a740715e9ced5936bb3676fa632a3873bf8021df3b08",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/imports.log": "d50e440191bbae68399ea83f93ae385ad23977cc8769a2e7769d346843ca7538",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render-pdf.py": "9478bc80efc66bb1a00374b89ecc91489678110f019f5280e4a91759f3b41412",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/capture.py": "b657aef3eb127c7840df51574d9b1a8a8f0b1839361f6498a88a8a2356541dbb",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/preservation.log": "5548843746f431f4351ab7667480608dfc6e13065059137f3978a8e8b0b95c46",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/mathlib-guard.py": "7735e65b032808f8e4f6a672cec0c4a72ee8b81fa84177b9330fc44a71d456f5",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/native.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/imports-exit.json": "9d462ee5570a6ae670dda252d22b559e649fc664fc03c040d0286867b79019d3",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/tenkz-exit.json": "a41e57de0b664e25de7c6a50c4671df6b547726a15df613c6c2ea3e2dc426f96",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/check-native-targets.py": "34fde29017cc9a6c85fdfcc4bec47bb9935f1d97e6636ec7b374add208ffb0da",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/whole-web.log": "758e092cb227ec843fa315527d2a85e0b027b657ce80ca48d61fac9668780b13",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/axioms.log": "141e585885125f37c46ebeb8f3d712f611fac489e8048d8211583257e194ecc7",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/source-freeze.json": "80c10d4b47200efe54e983e740c9048363a301de9854b07335735c2e2dc0778f",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/pdf-exit.json": "2d001b02d5c46dd3c7ebacf9aaf4b4533eb2d6e507ae282e5f5d9082815dcc02",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/guard.log": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/Axioms.lean": "69591acbf93329c87a1bc55891cd11011c94d63b44890fe96ea948241e68fb93",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/focused-web.log": "fe89d43d01ca8a68421bcb52f890ab9bdade8557f3a8ebe0b8bd4643725e7b34",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/build-exit.json": "b59df5f5af019655006645d91147ba0c8fc4854895632e4d64ffae3a908d3ae6",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/review-leaf.py": "3b75aa8417949f6d4f1dd896947972d8eefe5833af94c9fb471768b5dc05b899",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/provenance-exit.json": "866c5b66dc70e30978c469fa2ff70bf0a36ca39ac8e5ece910652ba88749d642",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/visual-inspection-initial.json": "2f69d4dd7c4483a4936c9a5b8eeb12d0c03f7b9838bd060ef047e6e83278fbcb",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/joint-density-blueprint.pdf": "56b67d70f0c12f57e6cbfea7a1b8708ca552c20b8e9d9c95e06e7e87e7b5d71b",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/blueprint-sync-exit.json": "9059a1bae2d003cdc550945b82c1db280f65ed87bb5bcba5d44f5e5c6d1cbaa7",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/leaf-review.log": "a84754d5061cbe363cb598918f246fcc6b51d99ba853d15298bd831e432b59f9",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/native-targets-exit.json": "d40b07464782017ae0e7797826bbd8e1da482be89973b4afa992a704a931c7e9",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/parent-preservation.json": "a4c0f92e3f9b476ff40ac4bb84cc0efec288651dfed5886bfba8ad4c77f15249",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/native-targets.json": "88a4fa4144a34e3ec26d68dd98de4316f69d3072608614b4a8db0b5173e9a35d",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/web-inspection.json": "d74e7d850d6723bd8ac232ce7e73103861f6281a9aa8e9ecb602149125454408",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/axioms-exit.json": "1063b14ce6f827d8e3911dbad1370c316cc0685e63015e86beaad19fe10362fd",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/run-remaining.py": "91e63e59b73e632fe5cad595cbf21ad0041f697c94cf666fc32bead41e6c1f19",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/guard-exit.json": "7572e966d2a87b0ca4c76433f09fb830b3af26c9842cf27affff7c26d00edecf",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/build.log": "4c8438e0a3a295e883fd4189f7e79616c136d693c5cd40d67445f69d39a7974d",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render/page-412.png": "1e9fb6b8efc668a513d95cc385cd2c37f4971d89986c55cd0310d579fb3b29cd",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render/joint-density-web-desktop.png": "3fc6d53c7d4f240369d36b35372ae137bb9f640d95d2b413b520c0d0c6aa88d3",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render/page-413.png": "09c97958439e3f1731156bafae12b3cb2baf9b2778be9b7a7b1b314bcbcb2a03",
+    "docs/provenance/evidence/replicaJointDensityIntegration8750/render/joint-density-web-mobile.png": "fa2c050bd16ad1a628ca2f47fb2f2d92b3f9c8e1fba37d73ac95e057cd981ceb"
+  }
+}

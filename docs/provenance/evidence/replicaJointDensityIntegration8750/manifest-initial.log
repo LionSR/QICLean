@@ -1,0 +1,6 @@
+22 final successful commands; 9 preserved initial book commands; 150 tracked hashes.
+Traceback (most recent call last):
+  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaJointDensityIntegration8750/validate-revised-manifest-initial.py", line 43, in <module>
+    print('Two exact standard-kernel reports;',n['fragment_declarations'],'active fragment targets;',n['native_declarations'],'native declarations; complete PDF/web definition and proof visible.')
+                                               ~^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: string indices must be integers, not 'str'
