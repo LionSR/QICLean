@@ -1,0 +1,21 @@
+{
+  "render_source_revision": "90872eab1782af4b50e2f7847bf278cac0f58280",
+  "integrated_source_revision": "457c011a74fd255f06d63d342c329067309c467b",
+  "source_repair_revision": "90872eab1782af4b50e2f7847bf278cac0f58280",
+  "repair_changed_files": [
+    "blueprint/src/chapter/ch12_entropy_restoring_ground_component.tex",
+    "blueprint/src/chapter/restoring_coefficient_bound.tex"
+  ],
+  "lean_sources_tests_workflows_and_router_unchanged_by_render_repair": true,
+  "intervening_parent_metadata": "The parent added validation records between the integrated source and the render repair; these do not change the render/Lean inputs.",
+  "historical_54_checkpoint": {
+    "public_revision": "2bddde9e49330bab20260b002b7f0ba7de51918e",
+    "tree": "33dbaed80a4e190d887248b3301cdce0546fba8c",
+    "tree_identical_local_revision": "b68c42c1723f866933e10839f102478cf70bee17",
+    "materialized_and_verified_by_render_worker": true,
+    "all_original_54_source_hashes_match": true,
+    "check_selection": "--source-revision 2bddde9e49330bab20260b002b7f0ba7de51918e"
+  },
+  "publication_scope": "The 54-declaration public ancestor is materialized and verified. The 76-declaration render is bound to the exact local frozen source and hashes; publication is owned by the parent and is not claimed here.",
+  "pull_request": "https://github.com/LionSR/QICLean/pull/660"
+}

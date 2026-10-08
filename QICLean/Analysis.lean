@@ -102,6 +102,7 @@ import QICLean.Analysis.ResolventFunctionalCalculus
 import QICLean.Analysis.ResolventMellin
 import QICLean.Analysis.ResolventPhaseBound
 import QICLean.Analysis.ResolventPhaseGap
+import QICLean.Analysis.RestoringCoefficientBound
 import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
@@ -131,6 +132,7 @@ import QICLean.Analysis.SubperipheralSpectrum
 import QICLean.Analysis.SuperoperatorResolvent
 import QICLean.Analysis.SupportCompressedEntropy
 import QICLean.Analysis.SupportCompression
+import QICLean.Analysis.SupportInverseSandwich
 import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SupportPower
 import QICLean.Analysis.SurprisalMoment
