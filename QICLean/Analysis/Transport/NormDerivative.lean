@@ -98,4 +98,75 @@ theorem integral_fourierWeight_mul_re_sum {κ : Type*} [Fintype κ] (z : κ → 
         refine Finset.sum_congr rfl fun k _ => ?_
         rw [integral_const_mul, Complex.integral_exp_mul_sinhRatioDensity quarter_mem_Ioo]
 
+/-! ### Spectral coordinates -/
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- The eigenvector unitary of a Hermitian matrix, as a matrix. -/
+noncomputable abbrev eigU {M : Matrix n n ℂ} (hM : M.IsHermitian) : Matrix n n ℂ :=
+  (hM.eigenvectorUnitary : Matrix n n ℂ)
+
+theorem star_eigU_mul {M : Matrix n n ℂ} (hM : M.IsHermitian) : star (eigU hM) * eigU hM = 1 :=
+  Unitary.coe_star_mul_self _
+
+theorem eigU_mul_star {M : Matrix n n ℂ} (hM : M.IsHermitian) : eigU hM * star (eigU hM) = 1 :=
+  Unitary.coe_mul_star_self _
+
+theorem cfc_eq_eigen {M : Matrix n n ℂ} (hM : M.IsHermitian) (f : ℝ → ℝ) :
+    cfc f M = eigU hM * diagonal (fun i => ((f (hM.eigenvalues i) : ℝ) : ℂ)) * star (eigU hM) := by
+  rw [hM.cfc_eq]; rfl
+
+theorem rpow_eq_eigen {M : Matrix n n ℂ} (hM : M.PosDef) (s : ℝ) :
+    M ^ s = eigU hM.isHermitian *
+      diagonal (fun i => ((hM.isHermitian.eigenvalues i ^ s : ℝ) : ℂ)) *
+        star (eigU hM.isHermitian) := by
+  rw [CFC.rpow_eq_cfc_real hM.posSemidef.nonneg, cfc_eq_eigen]
+
+theorem log_eq_eigen {M : Matrix n n ℂ} (hM : M.IsHermitian) :
+    CFC.log M = eigU hM * diagonal (fun i => ((Real.log (hM.eigenvalues i) : ℝ) : ℂ)) *
+      star (eigU hM) :=
+  cfc_eq_eigen hM _
+
+theorem imagPow_eq_eigen {M : Matrix n n ℂ} (hM : M.IsHermitian) (u : ℝ) :
+    imagPow M u = eigU hM *
+      diagonal (fun i => cexp (((-u : ℝ) : ℂ) * (I * (Real.log (hM.eigenvalues i) : ℂ)))) *
+        star (eigU hM) := by
+  have hUinv : (eigU hM)⁻¹ = star (eigU hM) := Matrix.inv_eq_left_inv (star_eigU_mul hM)
+  have hunit : IsUnit (eigU hM) := isUnit_iff_exists_inv.mpr ⟨_, eigU_mul_star hM⟩
+  rw [imagPow, hermitianUnitaryPath, log_eq_eigen hM]
+  have hsm : (-u : ℝ) • (I • (eigU hM * diagonal (fun i => ((Real.log (hM.eigenvalues i) : ℝ) : ℂ)) *
+      star (eigU hM))) = eigU hM * diagonal (fun i => ((-u : ℝ) : ℂ) *
+        (I * (Real.log (hM.eigenvalues i) : ℂ))) * (eigU hM)⁻¹ := by
+    rw [hUinv]
+    have : diagonal (fun i => ((-u : ℝ) : ℂ) * (I * (Real.log (hM.eigenvalues i) : ℂ))) =
+        (-u : ℝ) • (I • diagonal (fun i => ((Real.log (hM.eigenvalues i) : ℝ) : ℂ))) := by
+      ext i j; simp only [diagonal_apply, smul_apply]; split_ifs <;> simp [Complex.real_smul]
+    rw [this]
+    simp only [Matrix.mul_smul, Matrix.smul_mul]
+  rw [hsm, Matrix.exp_conj _ _ hunit, exp_diagonal, Pi.exp_def, hUinv]
+  simp only [← Complex.exp_eq_exp_ℂ]
+
+/-- A unitary preserves the sesquilinear pairing. -/
+theorem star_mulVec_dotProduct_mulVec {U : Matrix n n ℂ} (hU : star U * U = 1) (a b : n → ℂ) :
+    star (U *ᵥ a) ⬝ᵥ (U *ᵥ b) = star a ⬝ᵥ b := by
+  rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, ← star_eq_conjTranspose, hU, one_mulVec]
+
+/-- **The quadratic form in spectral coordinates.** For `W = U diag(e) U*`, `H = U K U*` and
+`v = U c`, `⟨W v, H W v⟩ = ∑_{r,t} c̄_r ē_r K_{rt} e_t c_t`. -/
+theorem quadForm_eigen {U K : Matrix n n ℂ} (hU : star U * U = 1) (e c : n → ℂ) :
+    star ((U * diagonal e * star U) *ᵥ (U *ᵥ c)) ⬝ᵥ
+        ((U * K * star U) *ᵥ ((U * diagonal e * star U) *ᵥ (U *ᵥ c))) =
+      ∑ r, ∑ t, star (c r) * (star (e r) * K r t * e t) * c t := by
+  have h1 : (U * diagonal e * star U) *ᵥ (U *ᵥ c) = U *ᵥ (diagonal e *ᵥ c) := by
+    rw [mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hU, Matrix.mul_one, mulVec_mulVec]
+  have h2 : ∀ y, (U * K * star U) *ᵥ (U *ᵥ y) = U *ᵥ (K *ᵥ y) := fun y => by
+    rw [mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hU, Matrix.mul_one, mulVec_mulVec]
+  rw [h1, h2, star_mulVec_dotProduct_mulVec hU]
+  simp only [dotProduct, Pi.star_apply]
+  refine Finset.sum_congr rfl fun r _ => ?_
+  rw [mulVec_diagonal, mulVec, dotProduct, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun t _ => ?_
+  rw [mulVec_diagonal, star_mul']
+  ring
+
 end Matrix.Transport
