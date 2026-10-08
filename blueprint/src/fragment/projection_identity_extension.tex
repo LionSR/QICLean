@@ -1,0 +1,79 @@
+\section{Identity extensions of invariant operators}
+\label{sec:projection-identity-extension}
+
+The transport metrics in \cite[Section~7]{OpenAI2026AreaLaw} act on the
+symmetric subspace. The following identities describe an extension of an
+invariant operator to the ambient finite-dimensional complex Hilbert space.
+Let $P$ be an orthogonal projection and write $Q=I-P$. For an operator $A$
+commuting with $P$, put
+\begin{align*}
+ E_P(A)&=PAP+Q.
+\end{align*}
+Its restriction to the complementary subspace is the identity. Lower
+operator bounds are separate assertions.
+
+\begin{lemma}[Restriction of the identity extension]
+\label{lem:projection-identity-extension-restriction}
+\lean{Matrix.compression_add_one_sub_mul_projection}
+\leanok
+If $AP=PA$, then
+\begin{align*}
+ E_P(A)P&=AP.
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+\leanok
+Use $P^2=P$, $QP=0$, and $PAP=AP$.
+\end{proof}
+
+\begin{lemma}[Products of identity extensions]
+\label{lem:projection-identity-extension-product}
+\lean{Matrix.compression_add_one_sub_mul_compression_add_one_sub}
+\leanok
+If $AP=PA$ and $BP=PB$, then
+\begin{align*}
+ E_P(A)E_P(B)&=ABP+Q.
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+\leanok
+The mixed terms vanish because $PQ=QP=0$. The other two terms are $ABP$
+and $Q^2=Q$.
+\end{proof}
+
+\begin{lemma}[Commutation of identity extensions]
+\label{lem:projection-identity-extension-commutation}
+\lean{Matrix.commute_compression_add_one_sub_of_mul_projection_eq}
+\uses{lem:projection-identity-extension-product}
+\leanok
+Suppose $AP=PA$, $BP=PB$, and $ABP=BAP$. Then $E_P(A)$ and $E_P(B)$ commute.
+\end{lemma}
+
+\begin{proof}
+\leanok
+Apply Lemma~\ref{lem:projection-identity-extension-product} in both orders.
+\end{proof}
+
+\begin{lemma}[Functional calculus on the invariant subspace]
+\label{lem:projection-identity-extension-functional-calculus}
+\lean{Matrix.cfc_compression_add_one_sub_mul_projection}
+\uses{lem:projection-identity-extension-restriction}
+\leanok
+If $A$ is Hermitian and $AP=PA$, then every real-valued function $f$ satisfies
+\begin{align*}
+ f(E_P(A))P&=Pf(A).
+\end{align*}
+Here functional calculus is defined on the finite spectra of the two
+Hermitian operators.
+\end{lemma}
+
+\begin{proof}
+\leanok
+The operator $E_P(A)$ is Hermitian. The restriction identity gives
+$E_P(A)P=PA$. Functional calculus preserves this intertwining identity:
+in eigenbases of the two Hermitian operators, an entry of $P$ can be nonzero
+only between equal eigenvalues. Applying $f$ preserves equality of those
+eigenvalues.
+\end{proof}
