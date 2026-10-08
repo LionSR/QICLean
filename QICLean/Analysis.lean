@@ -111,6 +111,7 @@ import QICLean.Analysis.ReplicaGoodPairMarginal
 import QICLean.Analysis.ReplicaJointDensity
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
+import QICLean.Analysis.ReplicaPhysicalLabelMoment
 import QICLean.Analysis.ReplicaRegionalDensity
 import QICLean.Analysis.ReplicaTwoMergeMoment
 import QICLean.Analysis.ResolventDefect
