@@ -604,3 +604,26 @@ eigenbasis. The following statements show that such averages are central label f
     $D_k/D_{k+m}$ is eliminated with the case $G=1$, where the coherent measure has total
     mass one. For small $k$ both terms are bounded by $\|G\|$.
 \end{proof}
+
+\begin{theorem}[Products of injection averages]
+    \label{thm:injection_product}
+    \lean{TensorPower.placeOp_castAdd_mul_placeOp_natAdd,
+        Function.Embedding.card_filter_apply_eq_mul, TensorPower.sum_filter_not_overlapPairs,
+        TensorPower.card_overlapPairs_mul_le, TensorPower.norm_injectionAverage_mul_sub_le}
+    \leanok
+    \uses{def:injection_average}
+    For operators $G$ on $m$ copies and $H$ on $n$ copies and every $k\ge1$,
+    \[
+        \norm{\mathcal T_{k,m}(G)\mathcal T_{k,n}(H)-\mathcal T_{k,m+n}(G\otimes H)}
+        \le\frac{2mn\norm G\norm H}{k}.
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    If $\iota,\kappa$ are the restrictions of an injection $\lambda$ of $m+n$ copies, then
+    $G_\iota H_\kappa=(G\otimes H)_\lambda$, and pairs of injections with disjoint images
+    correspond to injections of $m+n$ copies. A pair has $\iota(a)=\kappa(b)$ for prescribed
+    $a,b$ with probability $1/k$, so pairs with intersecting images form a fraction at most
+    $mn/k$. These pairs and the change of normalization each cost at most that fraction
+    times $\norm G\norm H$.
+\end{proof}

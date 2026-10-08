@@ -24,6 +24,7 @@ import QICLean.Representation.HookFormula
 import QICLean.Representation.HookRecursion
 import QICLean.Representation.HusimiIdentity
 import QICLean.Representation.InjectionAverage
+import QICLean.Representation.InjectionProduct
 import QICLean.Representation.IrrepLabelCount
 import QICLean.Representation.IrrepLabels
 import QICLean.Representation.IsotypicDimension
