@@ -430,13 +430,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   enumeration, apply its proved product formula, and use a fixed tensor vector
   to show support in the physical symmetric subspace.
 - **Seen:** `Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density`
-  in `QICLean/Analysis/ReplicaGoodPhysicalSupport.lean`; one consumer.
+  in `QICLean/Analysis/ReplicaGoodPhysicalSupport.lean`, and the private
+  `full_good_density_product` in
+  `QICLean/Analysis/ReplicaGoodConfigurationLabelMoment.lean`; two consumers.
 - **Abstraction:** Reuse `partialTraceRight_submatrix_prod_equiv`,
   `Equiv.prod_comp`, `symProj_mulVec_of_mem`, `mul_vecMulVec` and
   `mul_kronecker_mul`. No new tactic or parallel marginal is introduced.
 - **Caveats:** The product formula is derived from the actual excitation
   component. In Q tensor Y tensor V, every middle Y coordinate must be retained
   until physical symmetrization. The original vector need not be symmetric.
+  The singleton moment calculation changes coordinates only after the actual
+  physical product density is established, and uses
+  `partialTraceLeft_vecMulVec_prod` for its ground marginal; it does not repeat
+  excitation covariance. A third use should promote the finite-enumerated
+  product-density identity and replace both private enumeration calculations.
 
 ### Physical support through an auxiliary partial trace — candidate (2026-10-08)
 

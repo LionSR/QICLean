@@ -1,0 +1,52 @@
+\section{Actual signed physical moments on the full good-copy density}
+
+The three physical tensor factors are $Q,Y,V$, with $Y$ retained as its own
+factor. The vector $\Omega$ may be entangled among these factors.
+The two auxiliary factors are $C,R$. Let $\Omega$ be a unit ground vector,
+let $u$ be an arbitrary original vector, and let $w=(R_B\otimes I)u$ be its
+actual excitation component. The density $\rho_G$ retains every good copy of
+all five factors and traces only bad copies. Thus no good middle physical
+coordinate has been discarded.
+
+For a physical factor $A$, take its actual one-copy marginal
+$\sigma_A=\operatorname{Tr}_{A^c}|\Omega\rangle\langle\Omega|$ and put
+$S_A=S(\sigma_A)$. The only moment hypothesis is the original one-copy
+surprisal-growth bound from the manuscript. For every $s$ with
+$|s|\leq c_0/\sqrt{\mathcal B}$, it states
+\begin{align}
+ \log\sum_j p_j e^{-s\log p_j}
+ \leq sS_A+C_0\mathcal B s^2,
+\end{align}
+where $p_j$ are the positive eigenvalues of this marginal, $C_0\geq0$,
+$c_0>0$, and $\mathcal B\geq1$.
+Writing $m=|B^c|$ and $q_A=\dim A$, the actual singleton label observable
+on the good copies satisfies, for every $t$ with
+$|t|\leq\min(c_0,1)/(2\sqrt{\mathcal B})$,
+\begin{align}
+ \operatorname{ReTr}\!\left(\rho_G
+ e^{t(\widehat F_A^{(m)}-mS_AI)}\right)
+ \leq \|w\|^2
+ \exp\!\left(2C_0m\mathcal B t^2+\frac{q_A^2}{2}\log(m+1)\right).
+\end{align}
+The estimate applies to either sign, singular ground marginals, zero
+components, and zero good copies. The original vector need not be unit
+or permutation invariant.
+
+The product density of the good physical copies is first obtained from the
+actual excitation component. Tracing the bad auxiliary copies preserves
+its literal mass. Canonical finite-product coordinates carry the singleton
+copy action and its central label sums to the selected physical factor.
+The reduced pure tensor power is exactly $\sigma_A^{\otimes m}$, so the trace
+pairing equals the independent-copy moment multiplied by $\|w\|^2$.
+Exponentiating the independent-copy logarithmic bound finishes the estimate.
+No division by the component mass occurs.
+
+This establishes the finite-system physical singleton estimate used in
+OpenAI, \emph{A two-dimensional area law from a global spectral gap},
+September 24, 2026, \texttt{07-comparators.tex}, lines 75--85
+(\texttt{comparator:mgf-data}), 227--238
+(\texttt{comparator:signed-label-moments}), and 501--518, 556--560
+(\texttt{comparator:component-inverse}), at manuscript revision
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}. The statement concerns a
+single physical moment under the manuscript's one-copy assumption. Its
+conclusion contains neither the joint merge estimate nor the final comparison.
