@@ -1,0 +1,53 @@
+\begin{theorem}[Auxiliary label factors in the good-copy exponential]
+\label{thm:replica-good-auxiliary-exponential-drop}
+\lean{Matrix.replicaGoodConfigurationMarginal_exp_mergedLabel_le}
+\leanok
+Let the five finite-dimensional factors be $Q,Y,V,C,R$, and let
+$\Omega\in\mathcal H_Q\otimes\mathcal H_Y\otimes\mathcal H_V$ and the
+original $k$-copy vector $u$ be arbitrary. Suppose that $u$ has auxiliary
+whole-copy labels $\lambda_C$ and $\lambda_R$. For a subset $B$ of excited
+copies, form the same excitation component $w_B$ and trace its bad physical
+and auxiliary copies to obtain $\Gamma_B$. Retain all five good-copy
+factors, including every $Y$ coordinate, with the same chosen enumeration
+of $B^c$ in each factor. Put $r=|B|$ and $m=k-r$.
+
+For each collection $T$ of good-copy factors, let $F_T$ denote the central
+copy-permutation observable with value $\log\dim\lambda$ on label
+$\lambda$. Set
+\begin{align*}
+ L_C&=\log d_{\lambda_C}-r\log\dim\mathcal H_C-\log\binom{k}{r},\\
+ L_R&=\log d_{\lambda_R}-r\log\dim\mathcal H_R-\log\binom{k}{r},\\
+ D_C&=F_Q+F_C-F_{QC},\qquad D_R=F_V+F_R-F_{VR},\\
+ G_{\mathrm{phys}}&=F_Q+F_V-F_Y.
+\end{align*}
+Then, for every $a\ge0$,
+\begin{align*}
+ \operatorname{Re}\operatorname{Tr}
+   \bigl(\Gamma_B e^{-a(F_{QC}+F_{VR}-F_Y)}\bigr)
+ &\le e^{-a(L_C+L_R)}
+   \operatorname{Re}\operatorname{Tr}
+   \bigl(\Gamma_B e^{a(D_C+D_R-G_{\mathrm{phys}})}\bigr).
+\end{align*}
+No normalization, nonzero component or original permutation symmetry is
+required. This is an auxiliary reduction using
+\cite[Section~7]{OpenAI2026AreaLaw}; the
+whole-copy restriction and inverse metric comparison are separate assertions.
+\end{theorem}
+
+\begin{proof}\leanok
+\uses{thm:replica-good-auxiliary-spectral-support,thm:supported-exponential-trace-drop}
+The density $\Gamma_B$ is positive semidefinite. Put
+$X=F_C-L_CI$, $Z=F_R-L_RI$ and
+$H=D_C+D_R-G_{\mathrm{phys}}$. The actual central observables commute
+by nesting or disjointness of their regions. The two closed nonnegative
+spectral projections of $X$ and $Z$ fix $\Gamma_B$. Applying the supported
+trace inequality first to $X$ and then to $Z$ gives
+\begin{align*}
+ \operatorname{Re}\operatorname{Tr}(\Gamma_B e^{a(H-Z-X)})
+ &\le\operatorname{Re}\operatorname{Tr}(\Gamma_B e^{a(H-Z)})
+ \le\operatorname{Re}\operatorname{Tr}(\Gamma_B e^{aH}).
+\end{align*}
+The literal identity $F_{QC}+F_{VR}-F_Y=F_C+F_R-H$ gives
+$e^{-a(F_{QC}+F_{VR}-F_Y)}=e^{-a(L_C+L_R)}e^{a(H-Z-X)}$.
+Multiply the preceding inequality by the positive scalar $e^{-a(L_C+L_R)}$.
+\end{proof}
