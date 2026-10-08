@@ -506,9 +506,8 @@ theorem commute_copyPerm_markedSimilarity_succ {t : ℝ} (ht0 : 0 ≤ t) (m : �
     {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
     {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y))
     (τ : Equiv.Perm (Fin (m + 1))) :
-    Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) (markedSimilarity n t (m + 1) P Y F h) := by
-  have hw : ∀ l, replicaLabelWeight (k := m + 1) (fun v => Fin (n v)) t l ≠ 0 :=
-    fun l => (replicaLabelWeight_pos _ ht0 l).ne'
+    Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ)
+      (markedSimilarity n t (m + 1) P Y F h) := by
   rw [markedSimilarity_succ_eq ht0 m hPY hPF hYF hh, replicaMetric_inv_eq ht0,
     replicaMetric_inv_eq ht0]
   refine (((Commute.mul_right ?_ ?_).mul_right ?_).mul_right (Commute.mul_right ?_ ?_)) <;>
@@ -532,8 +531,6 @@ theorem star_dotProduct_markedSimilarity_eq_sum {t : ℝ} (ht0 : 0 ≤ t) (m : �
           markedRatio (fun v => Fin (n v)) t m Y) *
         (markedRatio (fun v => Fin (n v)) t m P * siteOp (Fin.last m) (a i) *
           (markedRatio (fun v => Fin (n v)) t m P)⁻¹)) *ᵥ z) := by
-  have hw : ∀ l, replicaLabelWeight (k := m + 1) (fun v => Fin (n v)) t l ≠ 0 :=
-    fun l => (replicaLabelWeight_pos _ ht0 l).ne'
   set WP := replicaMetric (fun v => Fin (n v)) t (m + 1) P
   set WY := replicaMetric (fun v => Fin (n v)) t (m + 1) Y
   have hcWP : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WP := fun τ =>
