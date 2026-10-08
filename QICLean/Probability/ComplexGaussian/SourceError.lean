@@ -68,18 +68,6 @@ private theorem source_coefficient_covariance (k : ℕ) (hk : 0 < k)
   · have hneq : ¬(b.1 = c.1 ∧ b.2 = c.2) := fun h ↦ hbc (Prod.ext h.1 h.2)
     simpa only [Complex.star_def, ite_eq_right hneq, ite_eq_right hbc] using h
 
-/-
-Provenance-ID: p09-qic-gaussian-source-error-integrable_rectangulartracenorm_gaussiansourceerror
-Downstream declaration: QICLean.ComplexGaussian.integrable_rectangularTraceNorm_gaussianSourceError
-Source: September 24, 2026.
-Label: eq:compression-block-second-moment
-Label: eq:compression-dimension-free
-Label: eq:compression-one-choice
-Label: eq:compression-product-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
-
 open Classical in
 /-- The trace norm of the actual Gaussian corrected-source error is integrable.
 Source: Theorem 5.2, `eq:compression-one-choice`, `04-compression.tex:403--538`.
@@ -98,18 +86,6 @@ theorem integrable_rectangularTraceNorm_gaussianSourceError (k : ℕ)
   exact ProbabilityTheory.integrable_rectangularTraceNorm_weightedSourceError tau tau' O
     (fun b ω ↦ independentDensityCoefficient k lam mu b.1 b.2 ω)
     (integrable_source_coefficient_pair k lam mu) htau htau' htausum htau'sum
-
-/-
-Provenance-ID: p09-qic-gaussian-source-error-integral_frobeniusnormsq_gaussiansourcequarter_eq
-Downstream declaration: QICLean.ComplexGaussian.integral_frobeniusNormSq_gaussianSourceQuarter_eq
-Source: September 24, 2026.
-Label: eq:compression-block-second-moment
-Label: eq:compression-dimension-free
-Label: eq:compression-one-choice
-Label: eq:compression-product-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
 
 open Classical in
 /-- Exact quarter-weighted second moment for the actual Gaussian source corrections.
@@ -134,18 +110,6 @@ theorem integral_frobeniusNormSq_gaussianSourceQuarter_eq (k : ℕ) (hk : 0 < k)
     (fun b ω ↦ independentDensityCoefficient k lam mu b.1 b.2 ω) _
     (integrable_source_coefficient_pair k lam mu)
     (source_coefficient_covariance k hk lam mu hlam hmu)
-
-/-
-Provenance-ID: p09-qic-gaussian-source-error-integral_rectangulartracenorm_gaussiansourceerror_le
-Downstream declaration: QICLean.ComplexGaussian.integral_rectangularTraceNorm_gaussianSourceError_le
-Source: September 24, 2026.
-Label: eq:compression-block-second-moment
-Label: eq:compression-dimension-free
-Label: eq:compression-one-choice
-Label: eq:compression-product-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
 
 open Classical in
 /-- Dimension-independent expected trace error of the actual Gaussian source replacements.

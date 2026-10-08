@@ -26,14 +26,7 @@ variable {𝕜 E F m n : Type*} [RCLike 𝕜]
   [Fintype m] [Fintype n] [DecidableEq n]
 
 /-- Passing to arbitrary finite orthonormal coordinates preserves the operator norm. -/
-/-
-Provenance-ID: p09-qic-orthonormal-matrix-norm
-Downstream declaration: ContinuousLinearMap.norm_toMatrix_orthonormal
-Source: September 24, 2026.
-Label: eq:compression-exterior-contraction
-A general coordinate identity used in the proof of polynomial-PEPS Theorem 5.2.
-Independently formalized; no upstream Lean proof text reused.
--/
+
 theorem norm_toMatrix_orthonormal (T : E →L[𝕜] F)
     (bIn : OrthonormalBasis n 𝕜 E) (bOut : OrthonormalBasis m 𝕜 F) :
     ‖LinearMap.toMatrix bIn.toBasis bOut.toBasis T.toLinearMap‖ = ‖T‖ := by

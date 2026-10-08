@@ -32,46 +32,6 @@ Theorem 5.2, `eq:compression-block-second-moment`;
 The proofs in this module are original and use Mathlib's finite sums and integrals.
 -/
 
-/-!
-Provenance-ID: p09-qic-second-moment-integrable_normsq_sum
-Downstream declaration: ProbabilityTheory.integrable_normSq_sum
-Source: September 24, 2026 paper.
-Labels: eq:compression-block-second-moment.
-Independently formalized; no upstream Lean proof text reused.
--/
-
-/-!
-Provenance-ID: p09-qic-second-moment-integral_normsq_sum_eq_sum
-Downstream declaration: ProbabilityTheory.integral_normSq_sum_eq_sum
-Source: September 24, 2026 paper.
-Labels: eq:compression-block-second-moment.
-Independently formalized; no upstream Lean proof text reused.
--/
-
-/-!
-Provenance-ID: p09-qic-second-moment-integrable_frobenius_norm_sq_sum
-Downstream declaration: ProbabilityTheory.integrable_frobenius_norm_sq_sum
-Source: September 24, 2026 paper.
-Labels: eq:compression-block-second-moment.
-Independently formalized; no upstream Lean proof text reused.
--/
-
-/-!
-Provenance-ID: p09-qic-second-moment-integral_frobenius_norm_sq_sum_eq_sum
-Downstream declaration: ProbabilityTheory.integral_frobenius_norm_sq_sum_eq_sum
-Source: September 24, 2026 paper.
-Labels: eq:compression-block-second-moment.
-Independently formalized; no upstream Lean proof text reused.
--/
-
-/-!
-Provenance-ID: p09-qic-second-moment-integral_frobenius_norm_sum_le_sqrt
-Downstream declaration: ProbabilityTheory.integral_frobenius_norm_sum_le_sqrt
-Source: September 24, 2026 paper.
-Labels: eq:compression-block-second-moment, eq:compression-dimension-free.
-Independently formalized; no upstream Lean proof text reused.
--/
-
 open MeasureTheory
 open scoped BigOperators ComplexConjugate Matrix.Norms.Frobenius
 

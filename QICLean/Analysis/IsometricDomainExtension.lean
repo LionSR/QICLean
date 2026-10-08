@@ -35,26 +35,12 @@ variable {m n p : Type*} [Fintype n]
 
 /-- Extend a rectangular map by projecting onto an isometrically embedded
 domain. The definition does not require the embedding to be isometric. -/
-/-
-Provenance-ID: p09-qic-domain-extension-isometricdomainextension
-Downstream declaration: Matrix.isometricDomainExtension
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 def isometricDomainExtension (B : Matrix m n ℂ) (J : Matrix p n ℂ) : Matrix m p ℂ :=
   B * Jᴴ
 
 /-- The extended map agrees with the original map on the embedded domain. -/
-/-
-Provenance-ID: p09-qic-domain-extension-isometricdomainextensionmul
-Downstream declaration: Matrix.isometricDomainExtension_mul
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem isometricDomainExtension_mul [Fintype p] [DecidableEq n]
     (B : Matrix m n ℂ) (J : Matrix p n ℂ) (hJ : Jᴴ * J = 1) :
     isometricDomainExtension B J * J = B := by
@@ -62,14 +48,7 @@ theorem isometricDomainExtension_mul [Fintype p] [DecidableEq n]
 
 /-- The extension is supported on the actual range projection of its domain
 embedding. -/
-/-
-Provenance-ID: p09-qic-domain-extension-isometricdomainextensionmulrangeprojection
-Downstream declaration: Matrix.isometricDomainExtension_mul_rangeProjection
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem isometricDomainExtension_mul_rangeProjection [Fintype p] [DecidableEq n]
     (B : Matrix m n ℂ) (J : Matrix p n ℂ) (hJ : Jᴴ * J = 1) :
     isometricDomainExtension B J * (J * Jᴴ) = isometricDomainExtension B J := by
@@ -77,14 +56,7 @@ theorem isometricDomainExtension_mul_rangeProjection [Fintype p] [DecidableEq n]
 
 /-- Adjoint domain extension preserves the exact L2 operator norm, even
 when the original domain or codomain is empty. -/
-/-
-Provenance-ID: p09-qic-domain-extension-normisometricdomainextension
-Downstream declaration: Matrix.norm_isometricDomainExtension
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem norm_isometricDomainExtension [Fintype m] [Fintype p] [DecidableEq n] [DecidableEq p]
     (B : Matrix m n ℂ) (J : Matrix p n ℂ) (hJ : Jᴴ * J = 1) :
     ‖isometricDomainExtension B J‖ = ‖B‖ := by
@@ -106,14 +78,7 @@ theorem norm_isometricDomainExtension [Fintype m] [Fintype p] [DecidableEq n] [D
 
 /-- A local contraction remains a contraction after extension to its common
 private ambient sector. -/
-/-
-Provenance-ID: p09-qic-domain-extension-normisometricdomainextensionleone
-Downstream declaration: Matrix.norm_isometricDomainExtension_le_one
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem norm_isometricDomainExtension_le_one
     [Fintype m] [Fintype p] [DecidableEq n] [DecidableEq p]
     (B : Matrix m n ℂ) (J : Matrix p n ℂ) (hJ : Jᴴ * J = 1) (hB : ‖B‖ ≤ 1) :
@@ -122,14 +87,7 @@ theorem norm_isometricDomainExtension_le_one
 
 /-- An actual column isometry preserves Euclidean vector norms, without a
 nonzero-vector or nonempty-space premise. -/
-/-
-Provenance-ID: p09-qic-domain-extension-normtolpmulvecofisometry
-Downstream declaration: Matrix.norm_toLp_mulVec_of_isometry
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem norm_toLp_mulVec_of_isometry [Fintype p] [DecidableEq n]
     (J : Matrix p n ℂ) (hJ : Jᴴ * J = 1) (ψ : EuclideanSpace ℂ n) :
     ‖WithLp.toLp 2 (J *ᵥ ψ.ofLp)‖ = ‖ψ‖ := by
@@ -157,28 +115,14 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 variable (dim : ι → Type*) [∀ ξ, Fintype (dim ξ)] [∀ ξ, DecidableEq (dim ξ)]
 
 /-- The canonical branch extension recovers its original rectangular map. -/
-/-
-Provenance-ID: p09-qic-domain-extension-isometricdomainextensionsigmablockinclusionmul
-Downstream declaration: Matrix.isometricDomainExtension_sigmaBlockInclusion_mul
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem isometricDomainExtension_sigmaBlockInclusion_mul (ξ : ι)
     (B : Matrix m (dim ξ) ℂ) :
     isometricDomainExtension B (sigmaBlockInclusion dim ξ) * sigmaBlockInclusion dim ξ = B :=
   isometricDomainExtension_mul B _ (sigmaBlockInclusion_isometry dim ξ)
 
 /-- A branch extension vanishes on every other branch's source sector. -/
-/-
-Provenance-ID: p09-qic-domain-extension-isometricdomainextensionsigmablockinclusionmulofne
-Downstream declaration: Matrix.isometricDomainExtension_sigmaBlockInclusion_mul_of_ne
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem isometricDomainExtension_sigmaBlockInclusion_mul_of_ne {ξ ζ : ι} (hξζ : ξ ≠ ζ)
     (B : Matrix m (dim ξ) ℂ) :
     isometricDomainExtension B (sigmaBlockInclusion dim ξ) * sigmaBlockInclusion dim ζ = 0 := by
@@ -187,14 +131,7 @@ theorem isometricDomainExtension_sigmaBlockInclusion_mul_of_ne {ξ ζ : ι} (hξ
 
 /-- Arbitrary finite private branch dimensions do not change the operator
 norm of the map extended by the canonical sector projection. -/
-/-
-Provenance-ID: p09-qic-domain-extension-normisometricdomainextensionsigmablockinclusion
-Downstream declaration: Matrix.norm_isometricDomainExtension_sigmaBlockInclusion
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem norm_isometricDomainExtension_sigmaBlockInclusion [Fintype m] (ξ : ι)
     (B : Matrix m (dim ξ) ℂ) :
     ‖isometricDomainExtension B (sigmaBlockInclusion dim ξ)‖ = ‖B‖ :=
@@ -202,28 +139,14 @@ theorem norm_isometricDomainExtension_sigmaBlockInclusion [Fintype m] (ξ : ι)
 
 /-- Canonical common-sector insertion preserves the actual norm of a
 branch vector, including zero and subnormalized vectors. -/
-/-
-Provenance-ID: p09-qic-domain-extension-normsigmablockinclusionmulvec
-Downstream declaration: Matrix.norm_sigmaBlockInclusion_mulVec
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem norm_sigmaBlockInclusion_mulVec (ξ : ι) (ψ : EuclideanSpace ℂ (dim ξ)) :
     ‖WithLp.toLp 2 (sigmaBlockInclusion dim ξ *ᵥ ψ.ofLp)‖ = ‖ψ‖ :=
   norm_toLp_mulVec_of_isometry _ (sigmaBlockInclusion_isometry dim ξ) ψ
 
 /-- Fixed external memory coordinates remain unchanged under private-sector
 extension, with exact operator-norm preservation. -/
-/-
-Provenance-ID: p09-qic-domain-extension-normisometricdomainextensionsigmablockinclusionkroneckerone
-Downstream declaration: Matrix.norm_isometricDomainExtension_sigmaBlockInclusion_kronecker_one
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem norm_isometricDomainExtension_sigmaBlockInclusion_kronecker_one
     [Fintype m] {r : Type*} [Fintype r] [DecidableEq r] (ξ : ι)
     (B : Matrix m (dim ξ × r) ℂ) :
@@ -235,14 +158,7 @@ theorem norm_isometricDomainExtension_sigmaBlockInclusion_kronecker_one
 /-- Embedding both halves of an actual bipartite source into their common
 branch sectors preserves its norm. In particular, normalized sources remain
 normalized without bounds on the private dimensions. -/
-/-
-Provenance-ID: p09-qic-domain-extension-normsigmablockinclusionkroneckermulvec
-Downstream declaration: Matrix.norm_sigmaBlockInclusion_kronecker_mulVec
-Source: September 24, 2026.
-Label: eq:compression-source-gate
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L250-L268
--/
+
 theorem norm_sigmaBlockInclusion_kronecker_mulVec
     (dimR : ι → Type*) [∀ ξ, Fintype (dimR ξ)] [∀ ξ, DecidableEq (dimR ξ)]
     (ξ : ι) (ψ : EuclideanSpace ℂ (dim ξ × dimR ξ)) :

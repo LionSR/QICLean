@@ -67,15 +67,6 @@ variable {P : Type*} [Fintype P] {B : P → Type*} [∀ p, Fintype (B p)]
     {A C : (p : P) → B p → Type*}
     [∀ p b, Fintype (A p b)] [∀ p b, Fintype (C p b)]
 
-/-
-Provenance-ID: p09-qic-global-globalbranchlaw
-Downstream declaration: QICLean.ComplexGaussian.globalBranchLaw
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L379
--/
-
 /-- A single law samples every position and every ordered branch-label pair.
 Source: Theorem 5.2, fresh samples, `04-compression.tex:338--340`.
 The label type may depend on the position; Schmidt supports may depend on both. -/
@@ -84,30 +75,12 @@ def globalBranchLaw (k : ℕ) (A C : (p : P) → B p → Type*)
     Measure ((p : P) → (b : B p) → Sample (Fin k × (A p b × C p b))) :=
   Measure.pi (fun p ↦ independentDensityLaw k (A p) (C p))
 
-/-
-Provenance-ID: p09-qic-global-globalbranchlawisprobabilitymeasure
-Downstream declaration: QICLean.ComplexGaussian.globalBranchLawIsProbabilityMeasure
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L379
--/
-
 /-- The nested global Gaussian law is a probability measure.
 Source: Theorem 5.2, fresh samples, `04-compression.tex:338--340`. -/
 instance globalBranchLawIsProbabilityMeasure (k : ℕ) :
     IsProbabilityMeasure (globalBranchLaw k A C) :=
   inferInstanceAs (IsProbabilityMeasure
     (Measure.pi (fun p ↦ independentDensityLaw k (A p) (C p))))
-
-/-
-Provenance-ID: p09-qic-global-selectedbranchsamples
-Downstream declaration: QICLean.ComplexGaussian.selectedBranchSamples
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L379
--/
 
 /-- Restrict global samples to corrected positions and fixed deterministic branch labels.
 Source: Theorem 5.2, expansion by corrected positions, `04-compression.tex:342--379`.
@@ -116,15 +89,6 @@ def selectedBranchSamples (k : ℕ) (S : Finset P) (σ : (p : S) → B p)
     (ω : (p : P) → (b : B p) → Sample (Fin k × (A p b × C p b))) :
     (p : S) → Sample (Fin k × (A p (σ p) × C p (σ p))) :=
   fun p ↦ ω p (σ p)
-
-/-
-Provenance-ID: p09-qic-global-measurepreserving_selectedbranchsamples
-Downstream declaration: QICLean.ComplexGaussian.measurePreserving_selectedBranchSamples
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L379
--/
 
 open Classical in
 /-- The actual global coordinate projection has the checked independent corrected-slot law.
@@ -144,15 +108,6 @@ theorem measurePreserving_selectedBranchSamples (k : ℕ) (S : Finset P)
 
 variable [∀ p b, DecidableEq (A p b)] [∀ p b, DecidableEq (C p b)]
 
-/-
-Provenance-ID: p09-qic-global-selectedbranchdensitycoefficient
-Downstream declaration: QICLean.ComplexGaussian.selectedBranchDensityCoefficient
-Source: September 24, 2026.
-Label: eq:compression-product-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L369-L407
--/
-
 /-- Actual selected correction coefficients, evaluated on the one global sample.
 Source: Theorem 5.2, fixed choices and `eq:compression-product-covariance`,
 `04-compression.tex:369--407`. The finite product ranges over corrected positions only. -/
@@ -162,15 +117,6 @@ def selectedBranchDensityCoefficient (k : ℕ) (S : Finset P) (σ : (p : S) → 
     (l : (p : S) → C p (σ p) × C p (σ p))
     (ω : (p : P) → (b : B p) → Sample (Fin k × (A p b × C p b))) : ℂ :=
   independentDensityCoefficient k lam mu i l (selectedBranchSamples k S σ ω)
-
-/-
-Provenance-ID: p09-qic-global-integrable_selectedbranchdensitycoefficient
-Downstream declaration: QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient
-Source: September 24, 2026.
-Label: eq:compression-product-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L369-L407
--/
 
 open Classical in
 /-- Selected Gaussian coefficients are integrable on the actual global law.
@@ -184,15 +130,6 @@ theorem integrable_selectedBranchDensityCoefficient (k : ℕ) (S : Finset P)
   (measurePreserving_selectedBranchSamples k S σ).integrable_comp_of_integrable
     (integrable_independentDensityCoefficient k lam mu i l)
 
-/-
-Provenance-ID: p09-qic-global-integrable_selectedbranchdensitycoefficient_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integrable_selectedBranchDensityCoefficient_mul_conj
-Source: September 24, 2026.
-Label: eq:compression-product-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L369-L407
--/
-
 open Classical in
 /-- Selected coefficient conjugate products are integrable on the actual global law.
 Source: Theorem 5.2, `eq:compression-product-covariance`, `04-compression.tex:390--407`. -/
@@ -205,15 +142,6 @@ theorem integrable_selectedBranchDensityCoefficient_mul_conj (k : ℕ) (S : Fins
       star (selectedBranchDensityCoefficient k S σ lam mu i' l' ω)) (globalBranchLaw k A C) :=
   (measurePreserving_selectedBranchSamples k S σ).integrable_comp_of_integrable
     (integrable_independentDensityCoefficient_mul_conj k lam mu i i' l l')
-
-/-
-Provenance-ID: p09-qic-global-integral_selectedbranchdensitycoefficient_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_mul_conj
-Source: September 24, 2026.
-Label: eq:compression-product-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L369-L407
--/
 
 open Classical in
 /-- Global-law covariance has inverse-sample exponent equal to the corrected-position count.
@@ -240,15 +168,6 @@ theorem integral_selectedBranchDensityCoefficient_mul_conj (k : ℕ) (hk : 0 < k
   simpa only [Fintype.card_coe] using
     integral_independentDensityCoefficient_mul_conj k hk lam mu hlam hmu i i' l l'
 
-/-
-Provenance-ID: p09-qic-global-integral_selectedbranchdensitycoefficient_eq_zero
-Downstream declaration: QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_eq_zero
-Source: September 24, 2026.
-Label: eq:compression-product-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L369-L407
--/
-
 open Classical in
 /-- Nonempty selected correction products are centered on the single global law.
 Source: Theorem 5.2, centered corrections and fresh samples, `04-compression.tex:338--407`. -/
@@ -269,16 +188,6 @@ variable {T U : Type*} [Fintype T] [Fintype U] [DecidableEq T] [DecidableEq U]
 -- Match the canonical slot API on the finite tensor indices of selected positions.
 local instance (S : Finset P) : DecidableEq S := Classical.decEq _
 
-/-
-Provenance-ID: p09-qic-global-integrable_rectangulartracenorm_selectedbranchsourceerror
-Downstream declaration:
-QICLean.ComplexGaussian.integrable_rectangularTraceNorm_selectedBranchSourceError
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L529-L561
--/
-
 open Classical in
 /-- The actual corrected-source trace error remains integrable on the global branch law.
 Source: Theorem 5.2, `eq:compression-one-choice`, `04-compression.tex:533--561`.
@@ -298,16 +207,6 @@ theorem integrable_rectangularTraceNorm_selectedBranchSourceError (k : ℕ) (S :
   (measurePreserving_selectedBranchSamples k S σ).integrable_comp_of_integrable
     (integrable_rectangularTraceNorm_gaussianSourceError k lam mu tau tau' O
       htau htau' htausum htau'sum)
-
-/-
-Provenance-ID: p09-qic-global-integral_rectangulartracenorm_selectedbranchsourceerror_le
-Downstream declaration:
-QICLean.ComplexGaussian.integral_rectangularTraceNorm_selectedBranchSourceError_le
-Source: September 24, 2026.
-Label: eq:compression-one-choice
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L529-L561
--/
 
 open Classical in
 /-- The one-choice trace error bound holds on a single global Gaussian law.

@@ -42,40 +42,19 @@ local instance : ContinuousENorm (Matrix (A × A) (C × C) ℂ) :=
 
 /-- A Schmidt vector in its paired basis, with amplitudes `sqrt(lam a)`.
 Source: `04-compression.tex:281–289`. -/
-/-
-Provenance-ID: p09-qic-product-source-schmidtvector
-Downstream declaration: QICLean.ComplexGaussian.schmidtVector
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 def schmidtVector (lam : A → ℝ) (p : A × A) : ℂ :=
   if p.1 = p.2 then (Real.sqrt (lam p.1) : ℂ) else 0
 
 /-- The rectangular Schmidt ket/bra outer-product target.
 Source: `eq:compression-random-source`, `04-compression.tex:281–305`. -/
-/-
-Provenance-ID: p09-qic-product-source-schmidtsource
-Downstream declaration: QICLean.ComplexGaussian.schmidtSource
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 def schmidtSource (lam : A → ℝ) (mu : C → ℝ) : Matrix (A × A) (C × C) ℂ :=
   Matrix.vecMulVec (schmidtVector lam) (fun q ↦ conj (schmidtVector mu q))
 
 /-- The first sampled rectangular source operator `U_j`.
 Source: `eq:compression-random-source`, `04-compression.tex:294–297`. -/
-/-
-Provenance-ID: p09-qic-product-source-sourceu
-Downstream declaration: QICLean.ComplexGaussian.sourceU
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 def sourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
     (x : Sample (Fin k × (A × C))) : Matrix A C ℂ :=
   Matrix.of fun a c ↦ (((lam a * mu c) ^ (1 / 4 : ℝ) : ℝ) : ℂ) *
@@ -83,14 +62,7 @@ def sourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
 
 /-- The second sampled rectangular source operator `V_j`, using the conjugate of the
 same Gaussian family as `U_j`. Source: `04-compression.tex:297–300`. -/
-/-
-Provenance-ID: p09-qic-product-source-sourcev
-Downstream declaration: QICLean.ComplexGaussian.sourceV
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 def sourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
     (x : Sample (Fin k × (A × C))) : Matrix A C ℂ :=
   Matrix.of fun b d ↦ (((lam b * mu d) ^ (1 / 4 : ℝ) : ℝ) : ℂ) *
@@ -98,41 +70,20 @@ def sourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
 
 /-- The sampled product-operator replacement `Xhat = k⁻¹ sum_j U_j ⊗ V_j`.
 Source: `eq:compression-random-source`, `04-compression.tex:300–305`. -/
-/-
-Provenance-ID: p09-qic-product-source-sampledsource
-Downstream declaration: QICLean.ComplexGaussian.sampledSource
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 def sampledSource (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (x : Sample (Fin k × (A × C))) : Matrix (A × A) (C × C) ℂ :=
   (k : ℂ)⁻¹ • ∑ j : Fin k, sourceU k lam mu j x ⊗ₖ sourceV k lam mu j x
 
 /-- The actual centered sampled matrix, without positivity or Hermiticity assumptions.
 Source: `eq:compression-random-source`, `04-compression.tex:302–305`. -/
-/-
-Provenance-ID: p09-qic-product-source-sourcecorrection
-Downstream declaration: QICLean.ComplexGaussian.sourceCorrection
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 def sourceCorrection (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (x : Sample (Fin k × (A × C))) : Matrix (A × A) (C × C) ℂ :=
   sampledSource k lam mu x - schmidtSource lam mu
 
 omit [Fintype A] [Fintype C] in
-/-
-Provenance-ID: p09-qic-product-source-schmidtsource_apply
-Downstream declaration: QICLean.ComplexGaussian.schmidtSource_apply
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 theorem schmidtSource_apply (lam : A → ℝ) (mu : C → ℝ) (p : A × A) (q : C × C) :
     schmidtSource lam mu p q =
       if p.1 = p.2 ∧ q.1 = q.2 then
@@ -141,14 +92,7 @@ theorem schmidtSource_apply (lam : A → ℝ) (mu : C → ℝ) (p : A × A) (q :
     simp [schmidtSource, Matrix.vecMulVec_apply, schmidtVector, hp, hq]
 
 omit [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-source-sampledsource_apply
-Downstream declaration: QICLean.ComplexGaussian.sampledSource_apply
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 theorem sampledSource_apply (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (x : Sample (Fin k × (A × C))) (p : A × A) (q : C × C) :
@@ -171,14 +115,7 @@ private theorem quarter_square (t : ℝ) (ht : 0 ≤ t) :
   norm_num
 
 omit [Fintype A] [Fintype C] in
-/-
-Provenance-ID: p09-qic-product-source-weighted_delta_eq_schmidtsource
-Downstream declaration: QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 theorem weighted_delta_eq_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
     (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) (p : A × A) (q : C × C) :
     (coefficientWeight lam mu (p, q) : ℂ) * delta (p.1, q.1) (p.2, q.2) =
@@ -197,14 +134,6 @@ theorem weighted_delta_eq_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
     · simp [delta, hcd, schmidtSource_apply]
   · simp [delta, hab, schmidtSource_apply]
 
-/-
-Provenance-ID: p09-qic-product-source-sampleaverage_eq_average_sub_delta
-Downstream declaration: QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
 theorem sampleAverage_eq_average_sub_delta {ι : Type*} [Fintype ι] [DecidableEq ι]
     (k : ℕ) (hk : 0 < k) (a b : ι) (x : Sample (Fin k × ι)) :
     sampleAverage k a b x = (k : ℂ)⁻¹ *
@@ -218,15 +147,7 @@ theorem sampleAverage_eq_average_sub_delta {ι : Type*} [Fintype ι] [DecidableE
 /-- Each entry of the actual centered source replacement is precisely the Gaussian
 coefficient whose diagonal covariance was proved earlier. Source:
 `04-compression.tex:311–318`. -/
-/-
-Provenance-ID: p09-qic-product-source-sourcecorrection_apply
-Downstream declaration: QICLean.ComplexGaussian.sourceCorrection_apply
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Label: eq:compression-gaussian-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 theorem sourceCorrection_apply (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (x : Sample (Fin k × (A × C))) (p : A × A) (q : C × C) :
@@ -237,15 +158,6 @@ theorem sourceCorrection_apply (k : ℕ) (hk : 0 < k)
     ← weighted_delta_eq_schmidtSource lam mu hlam hmu p q]
   ring
 
-/-
-Provenance-ID: p09-qic-product-source-integrable_sourcecorrection_entry
-Downstream declaration: QICLean.ComplexGaussian.integrable_sourceCorrection_entry
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Label: eq:compression-gaussian-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
 theorem integrable_sourceCorrection_entry (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (p : A × A) (q : C × C) :
@@ -255,15 +167,7 @@ theorem integrable_sourceCorrection_entry (k : ℕ) (hk : 0 < k)
 
 /-- Pair integrability for entries of the actual source-correction matrix, rather than
 an abstract family assumed to satisfy the desired covariance. -/
-/-
-Provenance-ID: p09-qic-product-source-integrable_sourcecorrection_entry_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integrable_sourceCorrection_entry_mul_conj
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Label: eq:compression-gaussian-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 theorem integrable_sourceCorrection_entry_mul_conj (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (p r : A × A) (q t : C × C) :
@@ -275,15 +179,7 @@ theorem integrable_sourceCorrection_entry_mul_conj (k : ℕ) (hk : 0 < k)
 /-- The covariance of the actual source-correction entries, including coincident indices
 and zero Schmidt weights. Source: `eq:compression-gaussian-covariance`,
 `04-compression.tex:311–328`. -/
-/-
-Provenance-ID: p09-qic-product-source-integral_sourcecorrection_entry_mul_conj
-Downstream declaration: QICLean.ComplexGaussian.integral_sourceCorrection_entry_mul_conj
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Label: eq:compression-gaussian-covariance
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 theorem integral_sourceCorrection_entry_mul_conj (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (p r : A × A) (q t : C × C) :
@@ -295,14 +191,7 @@ theorem integral_sourceCorrection_entry_mul_conj (k : ℕ) (hk : 0 < k)
   exact integral_densityCoefficient_mul_conj k hk lam mu hlam hmu (p, q) (r, t)
 
 omit [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-source-integrable_sampledsource_entry
-Downstream declaration: QICLean.ComplexGaussian.integrable_sampledSource_entry
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 theorem integrable_sampledSource_entry (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (p : A × A) (q : C × C) :
@@ -314,14 +203,6 @@ theorem integrable_sampledSource_entry (k : ℕ) (hk : 0 < k)
   simp_rw [he]
   exact (integrable_sourceCorrection_entry k hk lam mu hlam hmu p q).add (integrable_const _)
 
-/-
-Provenance-ID: p09-qic-product-source-integral_sampledsource_entry
-Downstream declaration: QICLean.ComplexGaussian.integral_sampledSource_entry
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
 theorem integral_sampledSource_entry (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (p : A × A) (q : C × C) :
@@ -337,14 +218,7 @@ theorem integral_sampledSource_entry (k : ℕ) (hk : 0 < k)
   simp
 
 omit [DecidableEq A] [DecidableEq C] in
-/-
-Provenance-ID: p09-qic-product-source-integrable_sampledsource
-Downstream declaration: QICLean.ComplexGaussian.integrable_sampledSource
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 theorem integrable_sampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) :
     Integrable (sampledSource k lam mu) (law (Fin k × (A × C))) := by
@@ -361,14 +235,6 @@ theorem integrable_sampledSource (k : ℕ) (hk : 0 < k)
       continuous_id.matrixOf).comp_aestronglyMeasurable hpi.aestronglyMeasurable
   exact hpi.congr'_enorm hMatrix (Filter.Eventually.of_forall fun _ ↦ rfl)
 
-/-
-Provenance-ID: p09-qic-product-source-integrable_sourcecorrection
-Downstream declaration: QICLean.ComplexGaussian.integrable_sourceCorrection
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
 theorem integrable_sourceCorrection (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) :
     Integrable (sourceCorrection k lam mu) (law (Fin k × (A × C))) :=
@@ -377,14 +243,7 @@ theorem integrable_sourceCorrection (k : ℕ) (hk : 0 < k)
 /-- The actual product-operator replacement has the exact Schmidt outer product as its
 expectation, with no sample norm bound or full-support hypothesis. Source:
 `eq:compression-random-source`, `04-compression.tex:279–309`. -/
-/-
-Provenance-ID: p09-qic-product-source-integral_sampledsource
-Downstream declaration: QICLean.ComplexGaussian.integral_sampledSource
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
+
 theorem integral_sampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) :
     (∫ x, sampledSource k lam mu x ∂law (Fin k × (A × C))) = schmidtSource lam mu := by
@@ -397,14 +256,6 @@ theorem integral_sampledSource (k : ℕ) (hk : 0 < k)
     eval_integral (fun q ↦ integrable_sampledSource_entry k hk lam mu hlam hmu p q),
     integral_sampledSource_entry k hk lam mu hlam hmu]
 
-/-
-Provenance-ID: p09-qic-product-source-integral_sourcecorrection
-Downstream declaration: QICLean.ComplexGaussian.integral_sourceCorrection
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex
--/
 theorem integral_sourceCorrection (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) :
     (∫ x, sourceCorrection k lam mu x ∂law (Fin k × (A × C))) = 0 := by

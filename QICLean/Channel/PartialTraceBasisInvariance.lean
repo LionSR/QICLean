@@ -24,23 +24,6 @@ Source: September 24, 2026, polynomial-PEPS manuscript, 04-compression.tex,
 eq:compression-exterior-contraction.
 Manuscript revision: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
 Independently formalized; no upstream Lean proof text reused.
-
-Provenance-ID: p09-qic-partialtracebasisinvariance-01
-Downstream declaration:
-Matrix.rectangularTraceNorm_partialTraceRight_isometries
-
-Provenance-ID: p09-qic-partialtracebasisinvariance-02
-Downstream declaration:
-OrthonormalBasis.tensorProduct_basisChange
-
-Provenance-ID: p09-qic-partialtracebasisinvariance-03
-Downstream declaration:
-OrthonormalBasis.tensorProduct_rankOne_basisChange
-
-Provenance-ID: p09-qic-partialtracebasisinvariance-04
-Downstream declaration:
-OrthonormalBasis.rectangularTraceNorm_partialTrace_sum_rankOne_basis_eq
-
 -/
 
 noncomputable section

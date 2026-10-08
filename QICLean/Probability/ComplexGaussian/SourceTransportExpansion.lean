@@ -19,13 +19,7 @@ namespace QICLean.ComplexGaussian
 
 /-- Expand an ambient source transport in the actual endpoint frame vectors.
 Source: polynomial-PEPS Theorem 5.2, `04-compression.tex`, lines 294–338. -/
-/-
-Provenance-ID: p09-qic-source-transport-expansion
-Downstream declaration: QICLean.ComplexGaussian.sourceTransport_eq_sum_rankOne
-Source: September 24, 2026.
-Label: eq:compression-random-source
-Independently formalized; no upstream Lean proof text reused.
--/
+
 theorem sourceTransport_eq_sum_rankOne {A C W X Y Z : Type}
     [Fintype A] [Fintype C]
     (E : Matrix W A ℂ) (F : Matrix X A ℂ)

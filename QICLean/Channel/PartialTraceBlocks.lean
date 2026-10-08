@@ -23,23 +23,6 @@ Source: September 24, 2026, polynomial-PEPS manuscript, 04-compression.tex,
 eq:compression-total-error.
 Manuscript revision: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
 Independently formalized; no upstream Lean proof text reused.
-
-Provenance-ID: p09-qic-partialtraceblocks-01
-Downstream declaration:
-Matrix.eq_sum_single_kronecker_submatrix
-
-Provenance-ID: p09-qic-partialtraceblocks-02
-Downstream declaration:
-Matrix.rectangularTraceNorm_le_sum_submatrix
-
-Provenance-ID: p09-qic-partialtraceblocks-03
-Downstream declaration:
-Matrix.submatrix_partialTraceRight
-
-Provenance-ID: p09-qic-partialtraceblocks-04
-Downstream declaration:
-Matrix.integral_rectangularTraceNorm_le_sum_submatrix
-
 -/
 
 noncomputable section

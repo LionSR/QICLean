@@ -21,38 +21,6 @@ This is the exterior-map estimate `eq:compression-exterior-contraction` in
 OpenAI Lean code.
 -/
 
-/-!
-Provenance-ID: p09-qic-weighted-l2_opnorm_kronecker_one_le
-Downstream declaration: Matrix.l2_opNorm_kronecker_one_square_le
-Source: September 24, 2026 paper.
-Labels: eq:compression-exterior-contraction.
-Independently formalized; no upstream Lean proof text reused.
--/
-
-/-!
-Provenance-ID: p09-qic-weighted-trace_partialtraceright_conjtranspose_mul
-Downstream declaration: Matrix.trace_partialTraceRight_conjTranspose_mul
-Source: September 24, 2026 paper.
-Labels: eq:compression-exterior-contraction.
-Independently formalized; no upstream Lean proof text reused.
--/
-
-/-!
-Provenance-ID: p09-qic-weighted-rectangulartracenorm_partialtraceright_le
-Downstream declaration: Matrix.rectangularTraceNorm_partialTraceRight_le
-Source: September 24, 2026 paper.
-Labels: eq:compression-exterior-contraction.
-Independently formalized; no upstream Lean proof text reused.
--/
-
-/-!
-Provenance-ID: p09-qic-weighted-rectangulartracenorm_partialtraceright_mul_conjtranspose_le
-Downstream declaration: Matrix.rectangularTraceNorm_partialTraceRight_mul_conjTranspose_le
-Source: September 24, 2026 paper.
-Labels: eq:compression-exterior-contraction.
-Independently formalized; no upstream Lean proof text reused.
--/
-
 open scoped Matrix Matrix.Norms.L2Operator Kronecker
 
 noncomputable section

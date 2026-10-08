@@ -31,14 +31,7 @@ variable {P : Type*} [Fintype P] [DecidableEq P] {R C : P → Type*}
 
 /-- Contract a finite coefficient array with all source entries. Each source position
 has its own arbitrary rectangular row and column spaces. -/
-/-
-Provenance-ID: p09-qic-source-contraction-sourcecontraction
-Downstream declaration: Matrix.sourceContraction
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L355
--/
+
 noncomputable def sourceContraction
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ) :
     MultilinearMap ℂ (fun p => Matrix (R p) (C p) ℂ) (Matrix m n ℂ) :=
@@ -48,14 +41,7 @@ noncomputable def sourceContraction
       map_smul' := fun _ _ => rfl }).smulRight (coeff x)
 
 /-- The construction evaluates to the literal sum of products of source entries. -/
-/-
-Provenance-ID: p09-qic-source-contraction-sourcecontraction_apply
-Downstream declaration: Matrix.sourceContraction_apply
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L355
--/
+
 theorem sourceContraction_apply
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X : (p : P) → Matrix (R p) (C p) ℂ) :
@@ -65,14 +51,7 @@ theorem sourceContraction_apply
   rfl
 
 /-- Entrywise form of the actual contraction; the coefficients are deterministic. -/
-/-
-Provenance-ID: p09-qic-source-contraction-sourcecontraction_apply_apply
-Downstream declaration: Matrix.sourceContraction_apply_apply
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L355
--/
+
 theorem sourceContraction_apply_apply
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X : (p : P) → Matrix (R p) (C p) ℂ) (a : m) (b : n) :
@@ -88,14 +67,7 @@ theorem sourceContraction_apply_apply
 
 /-- Expand corrections at a specified finite set of positions, leaving every other
 source exact. This is an identity of actual matrix contractions. -/
-/-
-Provenance-ID: p09-qic-source-contraction-sourcecontraction_piecewise_add
-Downstream declaration: Matrix.sourceContraction_piecewise_add
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L355
--/
+
 theorem sourceContraction_piecewise_add
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) (T : Finset P) :
@@ -105,14 +77,7 @@ theorem sourceContraction_piecewise_add
 
 /-- Replacing every source by an exact source plus a correction expands over the
 subsets of positions, independently of the number of branch labels. -/
-/-
-Provenance-ID: p09-qic-source-contraction-sourcecontraction_add
-Downstream declaration: Matrix.sourceContraction_add
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L355
--/
+
 theorem sourceContraction_add
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) :
@@ -121,14 +86,7 @@ theorem sourceContraction_add
   (sourceContraction coeff).map_add_univ E X
 
 /-- Subtracting the exact contraction removes exactly the empty correction subset. -/
-/-
-Provenance-ID: p09-qic-source-contraction-sourcecontraction_piecewise_sub
-Downstream declaration: Matrix.sourceContraction_piecewise_sub
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L355
--/
+
 theorem sourceContraction_piecewise_sub
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) (T : Finset P) :
@@ -139,14 +97,7 @@ theorem sourceContraction_piecewise_sub
   simp
 
 /-- The complete sampled-minus-exact contraction is its nonempty-position expansion. -/
-/-
-Provenance-ID: p09-qic-source-contraction-sourcecontraction_sub
-Downstream declaration: Matrix.sourceContraction_sub
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L355
--/
+
 theorem sourceContraction_sub
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) :
@@ -159,14 +110,7 @@ variable [Fintype m] [Fintype n] [DecidableEq n]
 
 /-- Bound the actual error by the nuclear errors of its nonempty-position terms;
 the matrices may be rectangular, non-Hermitian and nonpositive. -/
-/-
-Provenance-ID: p09-qic-source-contraction-rectangulartracenorm_sourcecontraction_sub_le
-Downstream declaration: Matrix.rectangularTraceNorm_sourceContraction_sub_le
-Source: September 24, 2026.
-Label: eq:compression-subset-expansion
-Independently formalized; no upstream Lean proof text reused.
-Paper URL: https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex#L338-L355
--/
+
 theorem rectangularTraceNorm_sourceContraction_sub_le
     (coeff : ((p : P) → R p × C p) → Matrix m n ℂ)
     (X E : (p : P) → Matrix (R p) (C p) ℂ) :
