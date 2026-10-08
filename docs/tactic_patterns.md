@@ -385,3 +385,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   facts are derived for the five specified actions. No global positivity
   of the physical operator or preservation of the physical symmetric
   projection under a merge is assumed.
+
+### Central observables on a laminar family — reusable lemma (2026-10-08)
+
+- **Pattern:** Expand two central observables into their label projections,
+  apply nested or disjoint projection commutation, and pass through the finite
+  sums and scalar multiples.
+- **Seen:** The private commutation arguments in the pending
+  `CompatiblePhysicalLabel` and `PhysicalMergeHolder` modules, and the
+  five-factor component estimate.
+- **Abstraction:**
+  `TensorPower.commute_labelObservables_subsystemPerm_of_laminar` in
+  `Representation/SchurLabelCommutation.lean` states the common mathematical
+  assertion for arbitrary real label functions. The pending consumers should
+  use this lemma when their source changes are combined.
+- **Caveats:** The two actual regions must be nested in either direction or
+  disjoint. No assertion is made for crossing regions. No positivity,
+  occurrence of a label, or nonempty coordinate set is required.
