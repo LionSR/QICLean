@@ -1,0 +1,14 @@
+{
+  "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/mergeDeficitPositivity8753/check-manifest.py",
+    "--git"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T02:12:29.379461+00:00",
+  "elapsed_seconds": 3.062868041000911,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/leaf-manifest.log",
+  "sha256": "317f69d54ce682b95c0f8b2fe0d1a56ce6f689405e90a5b595b1e6bef7981559"
+}

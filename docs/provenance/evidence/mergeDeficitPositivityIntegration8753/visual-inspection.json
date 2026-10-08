@@ -1,0 +1,17 @@
+{
+  "reviewer": "root",
+  "owned_theorems": [
+    "thm:merge-deficit-positivity",
+    "thm:nonnegative-spectral-intertwiner"
+  ],
+  "pdf_physical_pages_inspected": [
+    454,
+    455
+  ],
+  "pdf_printed_owned_page": 454,
+  "desktop_and_mobile_complete_statements_and_proofs_inspected": true,
+  "mobile_width": 360,
+  "all_six_displays_fit_without_horizontal_scroll": true,
+  "independent_middle_region_explanation_inspected": true,
+  "conclusion": "Both complete theorem statements and proofs, including zero eigenvalues and the distinction between global pair positivity and physical symmetric-subspace positivity, are readable."
+}

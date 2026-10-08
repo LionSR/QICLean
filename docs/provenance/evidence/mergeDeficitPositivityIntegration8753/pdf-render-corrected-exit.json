@@ -1,0 +1,13 @@
+{
+  "source_revision": "7f93d7704212761151540c00856094df5278a71d",
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf-pages-corrected.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T02:10:56.963057+00:00",
+  "elapsed_seconds": 11.038643375009997,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/mergeDeficitPositivityIntegration8753/pdf-render-corrected.log",
+  "sha256": "2be231e6456c7c9c3e2da18edd26daff28ad5d14e8177ad16de9f28d86cc6fc5"
+}

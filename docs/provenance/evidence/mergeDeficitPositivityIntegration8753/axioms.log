@@ -1,0 +1,4 @@
+'PermutationRepresentation.posSemidef_mergeDeficit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.posSemidef_pairMergeDeficit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.PosSemidef.spectralProjectionGE_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.spectralProjectionGE_zero_mul_of_intertwine' depends on axioms: [propext, Classical.choice, Quot.sound]

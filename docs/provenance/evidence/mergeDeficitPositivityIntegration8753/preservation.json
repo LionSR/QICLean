@@ -1,0 +1,12 @@
+{
+  "leaf_evidence_revision": "7c3842d27ceb39da6a25aa811ae15bb0229b71da",
+  "inclusion_revision": "7f93d7704212761151540c00856094df5278a71d",
+  "parent_files_checked": 4454,
+  "unchanged_parent_files": 4452,
+  "exact_two_added_lines": [
+    "QICLean/Analysis.lean",
+    "blueprint/src/chapter/ch13_schur_labels.tex"
+  ],
+  "all_leaf_evidence_preserved": true,
+  "all_predecessor_source_and_evidence_preserved": true
+}
