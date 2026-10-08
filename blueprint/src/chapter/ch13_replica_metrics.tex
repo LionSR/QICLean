@@ -403,3 +403,69 @@ $O_k=A_k^{-1/2}\bar hA_k^{1/2}$.
     symmetric vectors. The forward and inverse bounds on the marked ratio bound each
     term by $C_i\|w\|\|z\|$; take $w=O_kz$.
 \end{proof}
+
+\section{Unitary twirls}
+
+The integral representation of the metrics averages over a Haar-distributed unitary
+eigenbasis. The following statements show that such averages are central label functions.
+
+\begin{lemma}[Central label functions]
+    \label{lem:central_label_function}
+    \lean{Matrix.exists_eq_smul_of_commute_corner,
+        PermutationRepresentation.exists_eq_sum_labelProj_of_commute}
+    \leanok
+    \uses{lem:label_projectors}
+    For a permutation action of a finite group, an operator commuting with the
+    permutation operators and with every operator of their commutant is
+    $\sum_\lambda c_\lambda\pi^\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    On the corner of the matrix unit $E^\lambda_{00}$ the operator commutes with every
+    compressed matrix, because the averages $\sum_jE^\lambda_{j0}BE^\lambda_{0j}$ lie in
+    the commutant; hence it is a multiple of the corner projection there. The matrix
+    units $E^\lambda_{i0}$ carry this multiple to the whole block.
+\end{proof}
+
+\begin{lemma}[The differentiated unitary action]
+    \label{lem:unitary_commutant}
+    \lean{TensorPower.rotation, TensorPower.rotation_mem_unitaryGroup,
+        TensorPower.commute_diagOp_of_commute_tensorPow_rotation,
+        TensorPower.commute_diagOp_of_forall_unitary,
+        TensorPower.exists_eq_sum_labelProj_of_forall_unitary}
+    \leanok
+    \uses{thm:schur_weyl_commutant, lem:central_label_function}
+    An operator on $(\C^q)^{\otimes k}$ commuting with $U^{\otimes k}$ for every unitary
+    $U$ commutes with $\sum_jA^{(j)}$ for every matrix $A$. If it also commutes with the
+    copy permutations, it is a central label function.
+\end{lemma}
+
+\begin{proof}\leanok
+    Differentiate along the one-parameter unitary groups
+    $1+(\cos\theta-1)P+(\sin\theta)J$ with
+    $(P,J)=(e_{aa}+e_{bb},e_{ab}-e_{ba})$, $(e_{aa}+e_{bb},i(e_{ab}+e_{ba}))$ and
+    $(e_{aa},ie_{aa})$, whose derivatives at $\theta=0$ span all matrices. By
+    Schur--Weyl duality the diagonal actions generate the commutant of the copy
+    permutations.
+\end{proof}
+
+\begin{theorem}[The unitary twirl]
+    \label{thm:unitary_twirl}
+    \lean{Matrix.isCompact_unitaryGroup, Matrix.unitaryHaar, TensorPower.unitaryTwirl,
+        TensorPower.tensorPow_mul_unitaryTwirl, TensorPower.commute_permOp_unitaryTwirl,
+        TensorPower.trace_labelProj_mul_unitaryTwirl,
+        TensorPower.unitaryTwirl_eq_sum_labelProj}
+    \leanok
+    \uses{lem:unitary_commutant}
+    Let $A$ commute with the copy permutations, and let
+    $T(A)=\int U^{\otimes k}A(U^{\otimes k})^\ast\,dU$ over the Haar probability measure
+    of the compact unitary group. Then $T(A)=\sum_\lambda c_\lambda\pi^\lambda$ with
+    $c_\lambda\Tr\pi^\lambda=\Tr(\pi^\lambda A)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Left invariance of Haar measure makes $T(A)$ commute with every unitary tensor
+    power, and $T(A)$ commutes with the copy permutations because tensor powers and $A$
+    do. The previous lemma gives the central form. The label projectors commute with
+    unitary tensor powers, so $\Tr(\pi^\lambda T(A))=\Tr(\pi^\lambda A)$.
+\end{proof}
