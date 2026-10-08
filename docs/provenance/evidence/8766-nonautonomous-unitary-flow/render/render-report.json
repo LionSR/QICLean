@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "initial_frozen_source": "2794faaae0faf0482d4533ed8168554b531903cd",
+  "final_frozen_source": "220aa2735fbc5f1629c2782edb6b43ae8951ceb3",
+  "leaf_sha256": "b378417f68a8626693a511b3ef1ae61fa81c2f3ad3b172df53921a2016419e5c",
+  "counts": {
+    "production_modules": 3,
+    "production_lines": 512,
+    "public_declarations": 16,
+    "blueprint_entries": 14,
+    "proofs": 13,
+    "checked_markers": 27,
+    "equation_labels": 19,
+    "all_labels": 35,
+    "pdf_pages": 8,
+    "html_pages": 6,
+    "pdf_declaration_links": 16,
+    "html_chapter_declaration_links": 16,
+    "html_all_declaration_links": 48,
+    "pdf_internal_link_annotations": 29,
+    "explicit_dependency_edges": 22,
+    "diagrams": 0
+  },
+  "repair": "Explicit mathematical primes prevent the initial plasTeX U+2019 conversion; all eight PDF pages remain pixel-identical.",
+  "render": "Eight PDF pages and six static HTML pages. All declaration identifiers, 35 labels, 19 equation anchors, 29 PDF links and two 14-node dependency graphs verified.",
+  "visual": "All initial PDF pages viewed; final pages 3, 5, 7 reinspected and all final page PNG hashes match. Actual generated dependency graph raster inspected.",
+  "tools": {
+    "texra-blueprint": "0.3.8",
+    "plasTeX": "3.1",
+    "leanblueprint": "0.0.20"
+  },
+  "limits": [
+    "Focused fixture only; no full-book build or live browser/MathJax runtime/responsive/click testing.",
+    "Declaration identifiers and generated local anchors verified; remote doc URL availability/publication not verified.",
+    "No Lean/Lake/checkdecls builds or CI performed by render worker.",
+    "No new tensor diagram; Tenkz picture validation is not applicable."
+  ],
+  "retained_fixture": "${WORKSPACE}/8766-unitary-evolution-focused",
+  "committed_artifacts": "Compact text only; no PDF, PNG, HTML bundle, binaries, or LFS objects."
+}

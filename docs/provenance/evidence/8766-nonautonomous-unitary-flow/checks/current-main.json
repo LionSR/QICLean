@@ -1,0 +1,295 @@
+{
+  "checked_commit": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+  "main_commit": "6874d75280b62ebf18713579a29596869e491c7f",
+  "source_and_dependency_pins_unchanged": true,
+  "commands": [
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "aggregate",
+      "sha256": null,
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Analysis.ProjectedEvolution"
+      ],
+      "exit_code": 0,
+      "seconds": 1.540516970999306,
+      "log": "global-unitary-main-f98fd14-0.log",
+      "log_sha256": "fe86f713b3c846226da6b93f00c24f70b6ffd72649fce934ac94a41eb488f204"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "QICLean/Analysis/MatrixEvolution.lean",
+      "sha256": "c78d596b4d6232a09f0e8d5fe94ca95a4e5b525983aa61c4edde2847a2fa4201",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/MatrixEvolution.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.6295095039968146,
+      "log": "global-unitary-main-f98fd14-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "QICLean/Analysis/UnitaryEvolution.lean",
+      "sha256": "006dddd8485de40e03054a08bcc06091da3cb7e60d0bb32f036f5659e6203286",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/UnitaryEvolution.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.136230345000513,
+      "log": "global-unitary-main-f98fd14-2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "QICLean/Analysis/ProjectedEvolution.lean",
+      "sha256": "58e4e608d6d4b17346a7c7a9bb869de7e15f786ccfa29ca78cbde65e29bff9a8",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/ProjectedEvolution.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.5303579960018396,
+      "log": "global-unitary-main-f98fd14-3.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "QICLeanTest/MatrixEvolution.lean",
+      "sha256": "e3077b8bc31f4575a21b74fd00ed0a118e70a499d33e267067d32224a7b28785",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/MatrixEvolution.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.1167825930024264,
+      "log": "global-unitary-main-f98fd14-4.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "QICLeanTest/UnitaryEvolution.lean",
+      "sha256": "8ec4957cba2a0f0b254ff37ad3dd9f973f4d9aedc2c6567de930466545edc545",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/UnitaryEvolution.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.4370489139982965,
+      "log": "global-unitary-main-f98fd14-5.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "QICLeanTest/UnitaryEvolutionAxioms.lean",
+      "sha256": "4630b19e5618c4370a516ee240a4a922462ca5591245283123eaa4a1be468371",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/UnitaryEvolutionAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.8112618010054575,
+      "log": "global-unitary-main-f98fd14-6.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "QICLeanTest/MatrixUnitaryEvolution.lean",
+      "sha256": "2f403b58a91c98c1d53fd4b454211b1cca873809d27f99de4e9d5777353ba676",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/MatrixUnitaryEvolution.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.130145862000063,
+      "log": "global-unitary-main-f98fd14-7.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "QICLeanTest/ProjectedEvolution.lean",
+      "sha256": "0d3e47e3888a78db73313cb2e638e3a5213dae257c7ae0a622776fb761728927",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/ProjectedEvolution.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.3530694389919518,
+      "log": "global-unitary-main-f98fd14-8.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "QICLeanTest/ProjectedEvolutionAxioms.lean",
+      "sha256": "52a2edddc37f34187ba15b01b70d9dd9196aeb3fadf399d8901df5b4bfbd0e51",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/ProjectedEvolutionAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.1481115060014417,
+      "log": "global-unitary-main-f98fd14-9.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "docs/provenance/evidence/8766-nonautonomous-unitary-flow/drivers/MatrixEvolutionRawAxioms.lean",
+      "sha256": "e82844873c495a419b9524d8f14ac407b0aa4b63ab69592b7577fe6ffd78631d",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/8766-nonautonomous-unitary-flow/drivers/MatrixEvolutionRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.7307770080078626,
+      "log": "global-unitary-main-f98fd14-10.log",
+      "log_sha256": "57fe82810ec0d61eacd854a60771f6b9d9ba63ec0e48c2525a5dc8c85e5f73f0"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "docs/provenance/evidence/8766-nonautonomous-unitary-flow/drivers/UnitaryEvolutionRawAxioms.lean",
+      "sha256": "cf9488f745abeaba1481db25efef13c94eaeaec02c0d4bd18e07480c3ab4a6d5",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/8766-nonautonomous-unitary-flow/drivers/UnitaryEvolutionRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.634446381998714,
+      "log": "global-unitary-main-f98fd14-11.log",
+      "log_sha256": "72d247e999c188b35ee67c785be6b45cfc9bab25a8181a9a416bde7fcd0061af"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "docs/provenance/evidence/8766-nonautonomous-unitary-flow/drivers/MatrixUnitaryEvolutionRawAxioms.lean",
+      "sha256": "008e90592ed2bb1321892ec9c815ebc9b1f718f57e86a251c5662e81eb3b93d1",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/8766-nonautonomous-unitary-flow/drivers/MatrixUnitaryEvolutionRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.8720620999956736,
+      "log": "global-unitary-main-f98fd14-12.log",
+      "log_sha256": "111876345bc7c07b391997d8296f96d458a8b36c1e0a331d4fe58a5670853595"
+    },
+    {
+      "head": "f98fd140473bdf4badcdc3ddac672d204afaad43",
+      "file": "docs/provenance/evidence/8766-nonautonomous-unitary-flow/drivers/ProjectedEvolutionRawAxioms.lean",
+      "sha256": "297c64f8ca01e3331121586eca1a1ac82f7469b1c91e53568d72bd518e8e47a7",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/8766-nonautonomous-unitary-flow/drivers/ProjectedEvolutionRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.7172709629958263,
+      "log": "global-unitary-main-f98fd14-13.log",
+      "log_sha256": "b244abc1e0ee52b26cf7cccf156ba94fa18af400f5bdcd71586c77e4579c5943"
+    }
+  ],
+  "log_retention": "Original refreshed logs retained locally. The preceding source-identical raw axiom logs are included in this packet. Full hosted exact-head CI remains required."
+}
