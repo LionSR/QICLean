@@ -3,33 +3,32 @@
   "base_commit": "6a48f2bdefb417150b4a62fa1ce6e25350a25294",
   "implementation_commit": "4e54727",
   "branch": "codex/restoration-norm-8757",
-  "worktree": "/workspace/scratch/757f4f120786/qiclean-buffer-compiler",
   "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
   "source_lines": "09-amplification.tex:374-397",
   "lean_version": "v4.35.0-rc3",
   "checks": [
     {
-      "command": "PATH=/workspace/scratch/757f4f120786/glm23-toolchains/lean-4.35.0-rc3-linux/bin:$PATH LEAN_NUM_THREADS=2 flock /workspace/scratch/757f4f120786/glm23-recovered-20261006/.git/tnlean-lake-cache.lock lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/RestoringNorm.lean",
+      "command": "LEAN_NUM_THREADS=2 lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Entropy/RestoringNorm.lean",
       "exit_code": 0,
       "result": "Passed strict compilation; no output."
     },
     {
-      "command": "PATH=/workspace/scratch/757f4f120786/glm23-toolchains/lean-4.35.0-rc3-linux/bin:$PATH LEAN_NUM_THREADS=2 flock /workspace/scratch/757f4f120786/glm23-recovered-20261006/.git/tnlean-lake-cache.lock lake build QICLean.Entropy.RestoringNorm",
+      "command": "LEAN_NUM_THREADS=2 lake build QICLean.Entropy.RestoringNorm",
       "exit_code": 0,
       "result": "Built QICLean.Entropy.RestoringNorm (2.6s); build completed successfully (3098 jobs)."
     },
     {
-      "command": "PATH=/workspace/scratch/757f4f120786/glm23-toolchains/lean-4.35.0-rc3-linux/bin:$PATH LEAN_NUM_THREADS=2 flock /workspace/scratch/757f4f120786/glm23-recovered-20261006/.git/tnlean-lake-cache.lock lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/RestoringNorm.lean",
+      "command": "LEAN_NUM_THREADS=2 lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/RestoringNorm.lean",
       "exit_code": 0,
       "result": "Six finite consumers passed strict compilation; no output."
     },
     {
-      "command": "PATH=/workspace/scratch/757f4f120786/glm23-toolchains/lean-4.35.0-rc3-linux/bin:$PATH LEAN_NUM_THREADS=2 flock /workspace/scratch/757f4f120786/glm23-recovered-20261006/.git/tnlean-lake-cache.lock lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/RestoringNormAxioms.lean",
+      "command": "LEAN_NUM_THREADS=2 lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLeanTest/RestoringNormAxioms.lean",
       "exit_code": 0,
       "result": "All six public declarations match guarded standard-axiom inventories; no output."
     },
     {
-      "command": "PATH=/workspace/scratch/757f4f120786/glm23-toolchains/lean-4.35.0-rc3-linux/bin:$PATH LEAN_NUM_THREADS=2 flock /workspace/scratch/757f4f120786/glm23-recovered-20261006/.git/tnlean-lake-cache.lock lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean",
+      "command": "LEAN_NUM_THREADS=2 lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean",
       "exit_code": 0,
       "result": "All six raw inventories list only propext, Classical.choice, Quot.sound."
     },
@@ -46,5 +45,6 @@
     "docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean": "4da5a717f9098f2c878c58bc7bd1ff4eab5ccef9ce238e24c11b809d5a53b613"
   },
   "scope": "Targeted module and leaf consumers, not a full project rebuild. Shared import routers and CI integration were intentionally left to the integrating task.",
-  "constraints": "No dependency or toolchain changes; no cache deletion or downloads; no external mutations; no new axioms or admitted proofs."
+  "constraints": "No dependency or toolchain changes; no cache deletion or downloads; no external mutations; no new axioms or admitted proofs.",
+  "command_normalization": "Machine-local PATH and exclusive-cache-lock wrappers are omitted; the Lean/Lake arguments and outcomes are retained."
 }

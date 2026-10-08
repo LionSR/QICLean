@@ -54,3 +54,8 @@ For rendering, set `WORKSPACE` to the retained workspace root, source
 `$WORKSPACE/glm23-blueprint-env.sh`, and follow `commands.json` starting with
 `prepare_fixture.py`. `SOURCE_REVISION` can override the frozen revision.
 Binary artifacts and raw logs remain local; none are included in this packet.
+
+Checker maintenance: later norm/vector leaves extend the shared chapter router.
+The checker now requires the two original includes exactly once and preserves
+the historical router hash; all substantive core source bytes and all original
+render/artifact records remain unchanged. This is not a new core render.

@@ -48,10 +48,9 @@ of~\cite{OpenAI2026AreaLaw}.
     orthogonal projections and $c_X,c_Q,c_Y\ge0$. Assume the following
     inequalities, with the scalar inequality required for every $x\in E$:
     \begin{align}
-        p_x^{-1}&\le c_X,\notag\\
+        p_x^{-1}&\le c_X,\label{eq:restoring_spectral_bounds}\\
         Q&\le c_Q\rho,\notag\\
-        T\rho_YT&\le c_YT.
-        \label{eq:restoring_spectral_bounds}
+        T\rho_YT&\le c_YT.\notag
     \end{align}
     Then $B_Y\le c_Xc_Qc_Y I_Y$.
 \end{theorem}
@@ -108,7 +107,7 @@ of~\cite{OpenAI2026AreaLaw}.
     Theorem~\ref{thm:restoring_unit_blank}.
     For positive $A,B$ satisfying $A\le I$ and $B\le cI$, positivity
     of tensor products yields $A\otimes B\le I\otimes B\le cI$.
-    Apply this inequality twice to each of the Gram formulas
+    Apply this inequality to the tensor factors in both Gram formulas
     (\ref{eq:restore_rgram}) and~(\ref{eq:restore_bgram}). Thus
     \begin{align*}
         R_0^\dagger R_0&\le CI_{s\otimes(X\otimes Y)},\\
@@ -132,16 +131,15 @@ of~\cite{OpenAI2026AreaLaw}.
     $\mathcal I=S_X+S_{XY}-S_Y$. Assume the following inequalities,
     with the scalar inequality required for every $x\in E$:
     \begin{align}
-        p_x^{-1}&\le e^{S_X+w},\notag\\
+        p_x^{-1}&\le e^{S_X+w},\label{eq:restoring_exp_hypotheses}\\
         Q&\le e^{S_{XY}+w}\rho,\notag\\
-        T\rho_YT&\le e^{-S_Y+w}T.
-        \label{eq:restoring_exp_hypotheses}
+        T\rho_YT&\le e^{-S_Y+w}T.\notag
     \end{align}
     Then
     \begin{align}
-        \|R_0\|&\le\exp\bigl((\mathcal I+3w)/2\bigr),\notag\\
-        \|B_0\|&\le\exp\bigl((\mathcal I+3w)/2\bigr).
-        \label{eq:restoring_norm_exp}
+        \|R_0\|&\le\exp\bigl((\mathcal I+3w)/2\bigr),
+        \label{eq:restoring_norm_exp}\\
+        \|B_0\|&\le\exp\bigl((\mathcal I+3w)/2\bigr).\notag
     \end{align}
     In the spectral application, take
     $S_X=S(X)$, $S_{XY}=S(XY)$, and $S_Y=S(Y)$.

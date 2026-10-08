@@ -67,13 +67,26 @@
       "published_sha256": "a55167aee1364be7b99cb778f93be2b55b8f7759aea557c0454f6c7a3d776ba5"
     },
     "check.py": {
-      "published_sha256": "6a8bd199e27c5443e645ebf1509aac02fcbc97680a59c313469623dd9d3487c4"
+      "published_sha256": "284fd67e8df5b6b7c168b162dbb04aaa07956f17f92643f16355879f742257c0"
     }
   },
   "environment_script_sha256": "3a538bdefcda033a0d3a55eda7102007c6789d6da004b28bb47033a17fb6c70b",
   "normalization": {
     "rule": "Replace the executor-private workspace root with literal ${WORKSPACE}; no other recorded arguments changed.",
     "original_record": "${WORKSPACE}/singular-restoration-focused/commands-original.json",
-    "original_record_sha256": "0d1456df3c7c9cc88ddd2c832f904646ed69b45d02d23d73fac04d433e9549ac"
+    "original_record_sha256": "0d1456df3c7c9cc88ddd2c832f904646ed69b45d02d23d73fac04d433e9549ac",
+    "maintenance_note": "Only the published checker hash and this maintenance metadata were updated after path normalization. The original command record and all frozen source/artifact hashes remain unchanged."
+  },
+  "checker_maintenance": {
+    "reason": "The shared chapter router now also includes the norm and vector leaves. The checker preserves the historical router hash, verifies its frozen bytes when the local Git object is available, requires each original core include exactly once in the current router, and continues checking every substantive core source byte.",
+    "historical_render_records_unchanged": {
+      "focus-manifest.json": "598f8de60d4ada008f2fa25ef9050b9336171a6343c51f620a2fb3ee2515e1aa",
+      "verification.json": "cf68eb6d3ff412eff076c449681ee3b09ae63db551e2423de53065256a183b77",
+      "visual-review.json": "75dd8d47bc063ddbecc217ed0cb2c346b1d0381778670d6c1fefbf722ee46e3a",
+      "initial-findings.json": "adb1049777812cf75ed4a7d246c8aad0d93885e4b0a9294d50fa84cc86c17f74"
+    },
+    "old_check_script_sha256": "6a8bd199e27c5443e645ebf1509aac02fcbc97680a59c313469623dd9d3487c4",
+    "new_check_script_sha256": "284fd67e8df5b6b7c168b162dbb04aaa07956f17f92643f16355879f742257c0",
+    "no_render_repeated": true
   }
 }

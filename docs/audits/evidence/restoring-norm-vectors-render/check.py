@@ -25,10 +25,11 @@ for name, digest in m['source_sha256'].items():
         historical = subprocess.run(['git', 'show', m['source_revision'] + ':' + name], cwd=ROOT, capture_output=True)
         if historical.returncode == 0:
             assert hashlib.sha256(historical.stdout).hexdigest() == digest, name
-assert v['counts']['public_declarations'] == len(v['declarations']) == 29
-assert v['counts']['theorems'] == 17 and v['counts']['definitions'] == 12
-assert v['counts']['source_inspected_consumers'] == 15
-assert v['counts']['source_inspected_axiom_guards'] == 29
+assert v['counts']['public_declarations'] == len(v['declarations']) == 54
+assert len(v['new_declarations']) == 25 and len(v['context_declarations']) == 4
+assert v['counts']['theorems'] == 34 and v['counts']['definitions'] == 20
+assert v['counts']['source_inspected_consumers'] == 30
+assert v['counts']['source_inspected_axiom_guards'] == 54
 assert r['pdf_review']['pages_directly_viewed'] == list(range(1,v['counts']['pdf_pages']+1))
 for name in ['missing_internal_anchors','missing_label_anchors','duplicate_html_ids','tex_box_reference_warnings','curly_math_prime_serialization']:
     assert not v[name], name
@@ -40,4 +41,4 @@ for p in HERE.iterdir():
     if p.is_file():
         text = p.read_text()
         assert not any(prefix in text for prefix in ['/' + 'workspace/scratch/', '/' + 'root/']), p.name
-print('PASS: substantive frozen source hashes, retained core router includes, 29 declaration links, all reviewed pages and compact packet integrity')
+print('PASS: substantive frozen source hashes, retained restoration router includes, 54 package links plus 4 context links, all reviewed pages and compact packet integrity')

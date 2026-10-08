@@ -1,0 +1,21 @@
+{
+  "render_source_revision": "947cfcb24904c7ba5c83e9723f9c0db994731935",
+  "requested_initial_revision": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
+  "public_base": {
+    "revision": "ab023e613e2d31e713f4c9c474e6bb758ed92e80",
+    "tree": "1ac06d72f6863141b7901bed0b5ea75a50144d03",
+    "source_equivalent_local_revision": "8f9057a4266a4c7730f2a2e7f4a68643e47ba305",
+    "verification_provenance": "Parent verified the public commit/tree through connector readback. The render worker independently checked the matching local tree; the public Git object was not fetched by this worker.",
+    "pull_request": "https://github.com/LionSR/QICLean/pull/660"
+  },
+  "local_render_fixes": [
+    "fc2af2b56160113a03a65dc065102ff4eb118759",
+    "947cfcb24904c7ba5c83e9723f9c0db994731935"
+  ],
+  "changed_files_from_public_equivalent_base": [
+    "blueprint/src/chapter/ch12_entropy_restoring_norm.tex",
+    "blueprint/src/chapter/ch12_entropy_restoring_vectors.tex"
+  ],
+  "publication_limit": "The parent reported that the render fixes were not yet published at the time of review. Public base ab023e61 is not claimed to contain these fixes or the final rendered bytes. A subsequent upload is owned by the parent.",
+  "lean_sources_and_tests_unchanged_from_base": true
+}
