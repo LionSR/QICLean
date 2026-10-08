@@ -1,0 +1,26 @@
+{
+  "source_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+  "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+  "production_sha256": {
+    "QICLean/Representation/PhysicalMergeHolder.lean": "1ffbade40f96abc5846a4875a95c8dff421693869464a7b8f77b6fc273626761",
+    "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+    "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+    "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+  },
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/physicalMergeHolder8753/mathlib-guard.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 0.05734654201660305,
+  "log": "docs/provenance/evidence/physicalMergeHolder8753/guard.log",
+  "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+  "uncompressed_sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+  "uncompressed_bytes": 172,
+  "compressed": false,
+  "deterministic_gzip_mtime": null,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true
+}

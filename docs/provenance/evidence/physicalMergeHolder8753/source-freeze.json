@@ -1,0 +1,15 @@
+{
+  "source_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+  "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+  "parent_revision": "8afc77668eb70bcd3400269e442d94787228674f",
+  "prerequisite_revisions": [
+    "1a61097225a153adeb32270edb0778363e2ddfb1",
+    "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2"
+  ],
+  "production_sha256": {
+    "QICLean/Representation/PhysicalMergeHolder.lean": "1ffbade40f96abc5846a4875a95c8dff421693869464a7b8f77b6fc273626761",
+    "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+    "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+    "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+  }
+}

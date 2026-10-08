@@ -1,0 +1,577 @@
+{
+  "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+  "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+  "parent_revision": "8afc77668eb70bcd3400269e442d94787228674f",
+  "prerequisite_revisions": [
+    "1a61097225a153adeb32270edb0778363e2ddfb1",
+    "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2"
+  ],
+  "production_sha256": {
+    "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+    "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+    "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+    "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+  },
+  "notice_only_correction": "The original notice now includes both actual manuscript labels required by frozen policy; every signature and proof byte is unchanged from ad1.",
+  "frozen_policy_revision": "806099b4dddcce591b3a62ee1921926a6af5ad55",
+  "owned_shards": [
+    "docs/provenance/openai-math.d/physicalMergeHolder8753.json"
+  ],
+  "owned_public_declarations": 1,
+  "exact_stock_kernel_reports": 1,
+  "axioms_log_sha256": "3376cfe5d8ccd896aa4bbbeebdd14424b584696067938bb947af4fc2519702de",
+  "canonical_commands": {
+    "axioms-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "docs/provenance/evidence/physicalMergeHolderFinal8753/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 22.36926754101296,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/axioms.log",
+      "sha256": "3376cfe5d8ccd896aa4bbbeebdd14424b584696067938bb947af4fc2519702de",
+      "uncompressed_sha256": "3376cfe5d8ccd896aa4bbbeebdd14424b584696067938bb947af4fc2519702de",
+      "uncompressed_bytes": 134,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "guard-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/physicalMergeHolderFinal8753/mathlib-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.05879779197857715,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/guard.log",
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "uncompressed_sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "uncompressed_bytes": 172,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "parent-preservation-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/physicalMergeHolderFinal8753/check-parent.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 2.3680713339999784,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/parent-preservation.log",
+      "sha256": "1f4abd1f5aefc39aa56b003f6587eed927ec78bf2c0855cabf8806fd193d7fec",
+      "uncompressed_sha256": "1f4abd1f5aefc39aa56b003f6587eed927ec78bf2c0855cabf8806fd193d7fec",
+      "uncompressed_bytes": 225,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "patterns-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+        "--root",
+        "QICLean/Representation",
+        "--top",
+        "2",
+        "--show-locations",
+        "2"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.10913333302596584,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/patterns.log",
+      "sha256": "e13b2d49725238cdf64c28c7b17ab2a44f1554c6e9e4de80e3f425486bc73efd",
+      "uncompressed_sha256": "e13b2d49725238cdf64c28c7b17ab2a44f1554c6e9e4de80e3f425486bc73efd",
+      "uncompressed_bytes": 292,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "prose-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/TNLean/scripts/check_reader_facing_prose.py",
+        "--root",
+        ".",
+        "--diff-base",
+        "8afc77668eb70bcd3400269e442d94787228674f"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.15214562500477768,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "uncompressed_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "uncompressed_bytes": 57,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "provenance-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/physicalMergeHolderFinal8753/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.4162488750007469,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/provenance.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764",
+      "uncompressed_sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764",
+      "uncompressed_bytes": 69,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "source-comparison-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/physicalMergeHolderFinal8753/check-source.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1142600410094019,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/source-comparison.log",
+      "sha256": "ba8f2383c816a8102c8298fd05f911c37c903112cfb3fbd9aa88c19bd671f3ca",
+      "uncompressed_sha256": "ba8f2383c816a8102c8298fd05f911c37c903112cfb3fbd9aa88c19bd671f3ca",
+      "uncompressed_bytes": 427,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "strict-source-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "-DwarningAsError=true",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "QICLean/Representation/PhysicalMergeHolder.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 7.803633292001905,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "target-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "lake",
+        "build",
+        "QICLean.Representation.PhysicalMergeHolder"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 21.806312792003155,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/target.log",
+      "sha256": "772a8ca51e33019d72bfacc06a65572ef63fbf76959abcb946e1dbc38d989bcb",
+      "uncompressed_sha256": "772a8ca51e33019d72bfacc06a65572ef63fbf76959abcb946e1dbc38d989bcb",
+      "uncompressed_bytes": 1982,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    },
+    "validation-exit.json": {
+      "source_revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+      "mathematical_revision": "ad1da831edeec210032bf92579b802884d40aa18",
+      "production_sha256": {
+        "QICLean/Representation/PhysicalMergeHolder.lean": "2ccb2cf9d9eb291bc4aa0036725436b6e5ad69a8c468cfc943c69c952ae9faef",
+        "blueprint/src/fragment/physical_merge_holder.tex": "32beda8c0ca446b32d2eb30a07b2e5eda8efa07c19d354989891cc4304169764",
+        "docs/openai-area-law-physical-merge-holder.md": "656ec6469b9c12962cdb595dcf5a014dc83eece2beed3b2f4b911efd52f02720",
+        "docs/tactic_patterns.md": "b6c02bacb7d395038aeec072f4bca7ce910cb952a33da37f2cc38e45afc14f5c"
+      },
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/physicalMergeHolderFinal8753/validate-manifest.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+      "exit_code": 0,
+      "elapsed_seconds": 0.22169508298975416,
+      "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/validation.log",
+      "sha256": "e6119506e328b4d786ca2bba49359de65ff654826ecdc1246559da31572f01dd",
+      "uncompressed_sha256": "e6119506e328b4d786ca2bba49359de65ff654826ecdc1246559da31572f01dd",
+      "uncompressed_bytes": 668,
+      "compressed": false,
+      "deterministic_gzip_mtime": null,
+      "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+      "Mathlib_olean_exists": true
+    }
+  },
+  "excluded_earlier_records": "docs/provenance/evidence/physicalMergeHolder8753",
+  "status": {
+    "leaf_verification": "passed",
+    "full_library": "pending",
+    "complete_book_and_native_readers": "pending"
+  },
+  "artifacts": {
+    "docs/provenance/evidence/physicalMergeHolder8753/Axioms.lean": {
+      "sha256": "373ad3ad0cbfc8d0160374a30beceec3d6dab2f80ee6a4cdfc0564b1cc4ae907",
+      "bytes": 418
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/README.md": {
+      "sha256": "b54b296c81d689cb41272c06759eecd038069c0fce4240b24dbc191feef46957",
+      "bytes": 718
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/axioms-exit.json": {
+      "sha256": "57c3df0ca08918199b1dd4180f820ee827023c170e8ca6aafeee843dad286eff",
+      "bytes": 1549
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/axioms.log": {
+      "sha256": "3376cfe5d8ccd896aa4bbbeebdd14424b584696067938bb947af4fc2519702de",
+      "bytes": 134
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/check-parent.py": {
+      "sha256": "032f6fdc303aeb33d5f80a529a3780ef24588200d40be2b564ed0f572cd5b0f3",
+      "bytes": 1103
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/check-source.py": {
+      "sha256": "88fc30daca284be46932c59971ec0ddf1febd5c1eb3ddb4daa2abc9c509fab48",
+      "bytes": 1022
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/guard-exit.json": {
+      "sha256": "a83a1e86f1808df0852f3bf7c0cc3892cc3b7aa7f47d3a0b484a6c74c4dd126e",
+      "bytes": 1399
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/guard.log": {
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "bytes": 172
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/mathlib-guard.py": {
+      "sha256": "98adc6192d8cfee6650b0a5b93d971abd3d267ea5945d747e541de7bd2a04438",
+      "bytes": 684
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/owned-shards.json": {
+      "sha256": "60053e731968fa98a8cd6c9f0ba8078a1f5db874ec8bf09b5985a6a898b31c2a",
+      "bytes": 33
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/parent-preservation-exit.json": {
+      "sha256": "8ad1d0102baa76fee27ba54d32d1c17ec39a423c0fd984782eaa96f5cea1e8f6",
+      "bytes": 1411
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/parent-preservation.log": {
+      "sha256": "1f4abd1f5aefc39aa56b003f6587eed927ec78bf2c0855cabf8806fd193d7fec",
+      "bytes": 225
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/patterns-exit.json": {
+      "sha256": "2f8587264d94eaf127fc66b9947c91f78713ae2d46376884767fff354de8dcd9",
+      "bytes": 1513
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/patterns.log": {
+      "sha256": "e13b2d49725238cdf64c28c7b17ab2a44f1554c6e9e4de80e3f425486bc73efd",
+      "bytes": 292
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prerequisite-operations/cache-exit.json": {
+      "sha256": "13a367d451b11393ce242c7439b20c762b59d22aadbba95fdad3f4e31c2679fd",
+      "bytes": 1637
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prerequisite-operations/cache.log": {
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+      "bytes": 138
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prerequisite-operations/guard-exit.json": {
+      "sha256": "db2c982937f2ea98710d733da27df7ee34f6373abd7d867d8786563a2d54cb58",
+      "bytes": 1704
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prerequisite-operations/guard.log": {
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "bytes": 172
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prerequisite-operations/mathlib-guard.py": {
+      "sha256": "98adc6192d8cfee6650b0a5b93d971abd3d267ea5945d747e541de7bd2a04438",
+      "bytes": 684
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prerequisite-operations/record-command.py": {
+      "sha256": "59103e203ffb3e706222168eaf49df1cf60e64ebbe8a5ca1b3276e12cc29e633",
+      "bytes": 2566
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prerequisite-operations/source-freeze.json": {
+      "sha256": "39dc21a7fafbe51f63adbe7807f07ef2fdaf9a620cc44970c89473958e86f50f",
+      "bytes": 1154
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prerequisite-operations/target-exit.json": {
+      "sha256": "a34b3cb3c9e7f7d51d0ff9eb269e5010d4b26f4fa31e47b67e25e16654cd94d7",
+      "bytes": 1660
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prerequisite-operations/target.log": {
+      "sha256": "08441e92c330cd50f092b1125bc68b0488fde1764c9c720287062f9b19790b9b",
+      "bytes": 174
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prose-exit.json": {
+      "sha256": "f145bef7b9207a5b154fb009c0ed5499941a2bae902fab22fde405f678bd2587",
+      "bytes": 1505
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/prose.log": {
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/record-command.py": {
+      "sha256": "f306a13d9c54775c8ee36ca59fda87d7d70713b57c13e04129fdafe85553f3b1",
+      "bytes": 2553
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/source-comparison-exit.json": {
+      "sha256": "a98f1635d5d3cec344ee890676496ee1a7b0f531b7395b6e99f7e1492cbd4f72",
+      "bytes": 1410
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/source-comparison.log": {
+      "sha256": "28d36f181a19eeaca0f433eb3b76de00175903ce896310b1543724e336af5808",
+      "bytes": 300
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/source-freeze.json": {
+      "sha256": "0b3871121698d3588f8600085a459fd6ad37108f2b9382a11af6909c2c424d35",
+      "bytes": 830
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/strict-source-exit.json": {
+      "sha256": "06e355a3cd4fe838b94ba254c251a80795909fb046286e1f537e8958ba88b6e3",
+      "bytes": 1541
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/strict-source.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/target-exit.json": {
+      "sha256": "0a15f75d0500f70b10dab5eedc5e548de492525149df6d312daaf27504ec0c3a",
+      "bytes": 1386
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/target.log": {
+      "sha256": "5876231fd36f8874ac17b5008498f4a937d58e756901c60d16dfc0b96042a9d3",
+      "bytes": 2264
+    },
+    "docs/provenance/evidence/physicalMergeHolder8753/validate-owned.py": {
+      "sha256": "98cc4318e855d41a31a0dd7ce9bddbe8471d1e11d31556a515ed342c72c6fc19",
+      "bytes": 1519
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/Axioms.lean": {
+      "sha256": "373ad3ad0cbfc8d0160374a30beceec3d6dab2f80ee6a4cdfc0564b1cc4ae907",
+      "bytes": 418
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/README.md": {
+      "sha256": "eb9c1a007e8e30201baaa9e5ad0cc5411609f962b0f99bd22c4ba919593e4119",
+      "bytes": 3581
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/axioms-exit.json": {
+      "sha256": "4c5d7556ffa276aaa42b15f074cad199486459bd247bcf4dff8f01accb77fcf6",
+      "bytes": 1559
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/axioms.log": {
+      "sha256": "3376cfe5d8ccd896aa4bbbeebdd14424b584696067938bb947af4fc2519702de",
+      "bytes": 134
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/check-parent.py": {
+      "sha256": "032f6fdc303aeb33d5f80a529a3780ef24588200d40be2b564ed0f572cd5b0f3",
+      "bytes": 1103
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/check-source.py": {
+      "sha256": "4cc7583822a32ec9e2ee29b1cbcf3f155382d71bf08cd70bce19ad2722fdfc6e",
+      "bytes": 1485
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/guard-exit.json": {
+      "sha256": "28e529dbdadb109aed5f50ed79f60b88587f594cbe719ceb138b0fdb037abdb1",
+      "bytes": 1409
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/guard.log": {
+      "sha256": "627cd8fccd3272f28e99f83403ba7df6e1a1855357f4c511cfada7a74da9f778",
+      "bytes": 172
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/mathlib-guard.py": {
+      "sha256": "98adc6192d8cfee6650b0a5b93d971abd3d267ea5945d747e541de7bd2a04438",
+      "bytes": 684
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/owned-shards.json": {
+      "sha256": "60053e731968fa98a8cd6c9f0ba8078a1f5db874ec8bf09b5985a6a898b31c2a",
+      "bytes": 33
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/parent-preservation-exit.json": {
+      "sha256": "3c501759aa6cf20f9adbb5ed5b205d00d45c90af3fcf0fb46b62a9130ae55ebc",
+      "bytes": 1421
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/parent-preservation.log": {
+      "sha256": "1f4abd1f5aefc39aa56b003f6587eed927ec78bf2c0855cabf8806fd193d7fec",
+      "bytes": 225
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/patterns-exit.json": {
+      "sha256": "f2784064447e5485c1afb141f3dd16a6afd980e57ef5855fcaab320a0eef73c0",
+      "bytes": 1518
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/patterns.log": {
+      "sha256": "e13b2d49725238cdf64c28c7b17ab2a44f1554c6e9e4de80e3f425486bc73efd",
+      "bytes": 292
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/prose-exit.json": {
+      "sha256": "a10ea14fd841abb69e3f37765726277f255921e8621f2b89f8716269b025f05a",
+      "bytes": 1511
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/prose.log": {
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+      "bytes": 57
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/provenance-exit.json": {
+      "sha256": "4ffd2d825a0a5be14f8db75ca3112c58814c15cb6d79c0a89c56c55c4e19a57c",
+      "bytes": 1497
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/provenance.log": {
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764",
+      "bytes": 69
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/record-command.py": {
+      "sha256": "f306a13d9c54775c8ee36ca59fda87d7d70713b57c13e04129fdafe85553f3b1",
+      "bytes": 2553
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/source-comparison-exit.json": {
+      "sha256": "c9bc51845c3657cc8608c8d51104d842bbef7d0b268f3cc3d9c7d7fa173de206",
+      "bytes": 1419
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/source-comparison.log": {
+      "sha256": "ba8f2383c816a8102c8298fd05f911c37c903112cfb3fbd9aa88c19bd671f3ca",
+      "bytes": 427
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/source-freeze.json": {
+      "sha256": "8c1037972c97f3f9394b3a68a9d07cbefe76d983557344b4f0703358587ccbfc",
+      "bytes": 1005
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/strict-source-exit.json": {
+      "sha256": "819cb5174251a9886b3ccbe763cf653ca1e329759d67af570b6603cd0f05bb29",
+      "bytes": 1546
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/strict-source.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/target-exit.json": {
+      "sha256": "0792b506d0b021ee792258b580f72629cedbed9e763bd83a74fc81eb28fe0bd2",
+      "bytes": 1392
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/target.log": {
+      "sha256": "772a8ca51e33019d72bfacc06a65572ef63fbf76959abcb946e1dbc38d989bcb",
+      "bytes": 1982
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/validate-manifest.py": {
+      "sha256": "4d73b37f417d72873efb3891288a83b4684eb6b8010bd855976642f3b0c37552",
+      "bytes": 2742
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/validate-owned.py": {
+      "sha256": "98cc4318e855d41a31a0dd7ce9bddbe8471d1e11d31556a515ed342c72c6fc19",
+      "bytes": 1519
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/validation-exit.json": {
+      "sha256": "14cb0ccd6acb9bc4a0cd1e8569e6b124cbb5d747caab8f748b5aa221dd77545e",
+      "bytes": 1418
+    },
+    "docs/provenance/evidence/physicalMergeHolderFinal8753/validation.log": {
+      "sha256": "e6119506e328b4d786ca2bba49359de65ff654826ecdc1246559da31572f01dd",
+      "bytes": 668
+    },
+    "docs/provenance/openai-math.d/physicalMergeHolder8753.json": {
+      "sha256": "9189826defe4c1349048ffa45f0dc2e68dac30b56810540785ec087952c4a286",
+      "bytes": 2760
+    }
+  }
+}

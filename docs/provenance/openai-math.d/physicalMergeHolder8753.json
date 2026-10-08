@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-physical-merge-holder-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/PhysicalMergeHolder.lean",
+        "declaration": "TensorPower.re_trace_mul_exp_mergeDeficits_sub_physicalMergeDeficit_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:merge-decomposition",
+            "comparator:component-inverse"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Derive all pairwise commutations and Hermiticity of the actual DC,DR,\u2212FQ,\u2212FV,FY operators from nested/disjoint subsystem copy actions, then apply finite trace H\u00f6lder to an arbitrary positive semidefinite matrix weight."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "4907ab67c69587e6b71d81e8bb6ae27b8e2189c2",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.PhysicalMergeHolder",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/target.log",
+            "sha256": "772a8ca51e33019d72bfacc06a65572ef63fbf76959abcb946e1dbc38d989bcb"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Representation/PhysicalMergeHolder.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/physicalMergeHolderFinal8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/physicalMergeHolderFinal8753/axioms.log",
+            "sha256": "3376cfe5d8ccd896aa4bbbeebdd14424b584696067938bb947af4fc2519702de"
+          }
+        ]
+      }
+    }
+  ]
+}

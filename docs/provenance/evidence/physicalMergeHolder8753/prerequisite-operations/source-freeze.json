@@ -1,0 +1,17 @@
+{
+  "source_revision": "8afc77668eb70bcd3400269e442d94787228674f",
+  "mathematical_revision": "8afc77668eb70bcd3400269e442d94787228674f",
+  "parent_revisions": [
+    "1a61097225a153adeb32270edb0778363e2ddfb1",
+    "f24f6b07ddf56b782f6e097e0fe6a95907fbeef2"
+  ],
+  "production_sha256": {
+    "QICLean/Representation/CompatiblePhysicalLabel.lean": "c2162ffd1e5fb9be94dab14e10bc1d6c71a984860f7d85df10fae564a226ec8d",
+    "QICLean/Analysis/WeightedTraceHolder.lean": "376f80c3c8284c27105152168c8ffcc1c36c96f9074fe344b6cf29ee2e9bb07e",
+    "QICLean/Analysis/OrthogonalResolution.lean": "65ebba8cca5d3558df5860f800c1adf1f2436bbbf96a7663c2ea9cdbc41fd7e4",
+    "QICLean/Representation/GroupedLabelEntropy.lean": "14864d8ae132acf5d2d35a9b410e4392c8956d2538d203d43cf0018c8a000ddc",
+    "QICLean/Representation/MergeExponential.lean": "02f2e25b8cb88b62efd98ef8e9e8fbda75b8ea3fb3398a99972fadfac7beee53",
+    "QICLean/Representation/SchurSurprisal.lean": "ec9b587efcc36f7b0a558b3b35ec3cfd9ebd088c0d4c99cf47f0f531edd2c0d2"
+  },
+  "combination": "Clean merge; ledger auto-union retains both mathematical entries; all six source files equal their respective parents."
+}

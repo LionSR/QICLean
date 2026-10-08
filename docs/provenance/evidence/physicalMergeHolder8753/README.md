@@ -1,0 +1,3 @@
+# Checks before the complete original source notice
+
+These raw records belong to mathematical source `ad1da831edeec210032bf92579b802884d40aa18` and prerequisite join `8afc77668eb70bcd3400269e442d94787228674f`. The build, strict source and kernel checks passed, but the original notice did not yet contain the manuscript labels required by the frozen provenance policy. These checks are retained as earlier records and are excluded from the final provenance verification. The final records are in `physicalMergeHolderFinal8753`, bound to notice-only child `4907ab67c69587e6b71d81e8bb6ae27b8e2189c2`. Every mathematical signature and proof byte is preserved by that child; the exact original kernel report is unchanged.
