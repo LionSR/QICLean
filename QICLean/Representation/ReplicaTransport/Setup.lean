@@ -173,7 +173,13 @@ structure IsAdmissible [DecidableEq H] [∀ h, DecidableEq (C h)] : Prop where
 
 /-- **Cross-band commutation** (`06-transport.tex` lines 268--271): every old or new metric
 from band `g` commutes with every old or new metric from band `g' ≠ g`, at all histories and
-choices. -/
+choices.
+
+**Scope restriction (full-space commutation):** the source asks for commutation of the band
+metrics on `𝒮_k` (`07-comparators.tex` lines 26--35 identify complementary labels there);
+this predicate asks for it on the full tensor power, which is strictly stronger and fails for
+overlapping, non-nested bands. Documented in
+`docs/paper-gaps/oai26_transport_crossband_commutation.tex`. -/
 def CrossBandCommute (t : ℝ) (k : ℕ) : Prop :=
   ∀ j j' g g', g ≠ g' →
     Commute (bandMetric n t k (D.leafPart j g)) (bandMetric n t k (D.leafPart j' g'))
