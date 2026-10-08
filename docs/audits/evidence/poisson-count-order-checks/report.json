@@ -1,0 +1,309 @@
+{
+  "head": "16e93ce43ed976018af7f3470a298d9c3df77e7b",
+  "sources": {
+    "QICLean/Algebra/WordMultiplicity.lean": {
+      "git_blob": "9e856b25aa60eae46a3aa8174207e1b69e85426e",
+      "sha256": "d391217a58689a236250485de05e5563424967380d3fbee0313bf343ac1a9a59"
+    },
+    "QICLean/Probability/PoissonWordCounts.lean": {
+      "git_blob": "6950f34593aef99634d1c9bdb18df742e8b2f76d",
+      "sha256": "1551f5fa7905699468de7a93429b5858c96b3f64ef855ac682273b31a1363332"
+    },
+    "QICLean/Probability/PoissonWordIndependentCounts.lean": {
+      "git_blob": "262f039e3cbe2542def79db9b8e34027fcd8ecfe",
+      "sha256": "dd170a85f6664dfd4116efc75d8d55d1597d5269dfcd447d1d257f841221185b"
+    },
+    "QICLean/Probability/FiniteUniformConditioning.lean": {
+      "git_blob": "b8b04f786259bacbb801e3311d3be7954d19770e",
+      "sha256": "bdc529fcb48ab124f4920faec9afb7f560b85315040b3f8224d65b39e5de02bd"
+    },
+    "QICLean/Probability/PoissonWordUniformOrder.lean": {
+      "git_blob": "b2e9e8e58b3414f5a76c7cc2d5bef50c78835b55",
+      "sha256": "d3579232f8959d8d127596b648bae8b3ca9b37a14c1a08b7988d9e140f09b31d"
+    },
+    "QICLeanTest/PoissonWordCounts.lean": {
+      "git_blob": "bbf8357576e387bbd30433db97a6701991aff46c",
+      "sha256": "9733c39ed91343fa603890bcff5e7251a99481ea55237455c989a26d17739e8e"
+    },
+    "QICLeanTest/PoissonWordCountsAxioms.lean": {
+      "git_blob": "71b50861c4d4f944731f937c07785871400f7e5a",
+      "sha256": "127cf85f83f6fd592a83932016ddfa4c0b4a93d6f7a013a78968739d9577907b"
+    },
+    "QICLeanTest/PoissonWordIndependentCounts.lean": {
+      "git_blob": "a9a4ce0c4a07a27f464d22374829bcd948e4b659",
+      "sha256": "9e12bbcd25319990c2990f2de58ffccd2c51539e36221d7b97d758c1b4f9352f"
+    },
+    "QICLeanTest/PoissonWordIndependentCountsAxioms.lean": {
+      "git_blob": "c070901b619b9260ec83eb7974d53d8feeb6a1d0",
+      "sha256": "8e7b83a20cb1a178f878b3190d4f701f4a054cedf834e37c60aa4578b408118b"
+    },
+    "QICLeanTest/FiniteUniformConditioning.lean": {
+      "git_blob": "1f5992b7d5d2b8edc5788cadb57f28508d5b1030",
+      "sha256": "3e30324e5d2e904a1cd0ed70193d7ee348aafb8a3f09e2a6c9ffa117683a7b7e"
+    },
+    "QICLeanTest/FiniteUniformConditioningAxioms.lean": {
+      "git_blob": "433bed2dc4b8041e8a3879b3c398087649c36069",
+      "sha256": "e5d123668a147a3d11ddc83283155eac6ea3f73f33a5bb2a06bfc7f3be6d5c54"
+    },
+    "QICLeanTest/PoissonWordUniformOrder.lean": {
+      "git_blob": "415d9e4de16ca2d36ae48436bceb584debc5bfb9",
+      "sha256": "90af7ac41b8a9905f78d70d75d1d2f523f4b472e02a1e93a781bbb3c63e01a7f"
+    },
+    "QICLeanTest/PoissonWordUniformOrderAxioms.lean": {
+      "git_blob": "22a094a58a26012155e4bd6bef82e91f23eddd95",
+      "sha256": "f7be5d3d2517c9fca5cf5d6413aa97efb3010a0cd97d2ad51e33f2702a3ce73e"
+    }
+  },
+  "checks": [
+    {
+      "name": "native-capstone",
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Probability.PoissonWordUniformOrder"
+      ],
+      "exit_code": 0,
+      "seconds": 9.545,
+      "log": "native-capstone.txt",
+      "log_sha256": "57eeae347a87fe5cae471980e434e8c2db0918fcf8e57791d3133bd45d07c41c"
+    },
+    {
+      "name": "QICLean_Algebra_WordMultiplicity.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Algebra/WordMultiplicity.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.004,
+      "log": "QICLean_Algebra_WordMultiplicity.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLean_Probability_PoissonWordCounts.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Probability/PoissonWordCounts.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.834,
+      "log": "QICLean_Probability_PoissonWordCounts.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLean_Probability_PoissonWordIndependentCounts.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Probability/PoissonWordIndependentCounts.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.182,
+      "log": "QICLean_Probability_PoissonWordIndependentCounts.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLean_Probability_FiniteUniformConditioning.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Probability/FiniteUniformConditioning.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.224,
+      "log": "QICLean_Probability_FiniteUniformConditioning.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLean_Probability_PoissonWordUniformOrder.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Probability/PoissonWordUniformOrder.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.054,
+      "log": "QICLean_Probability_PoissonWordUniformOrder.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLeanTest_PoissonWordCounts.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWordCounts.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.968,
+      "log": "QICLeanTest_PoissonWordCounts.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLeanTest_PoissonWordCountsAxioms.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWordCountsAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.847,
+      "log": "QICLeanTest_PoissonWordCountsAxioms.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLeanTest_PoissonWordIndependentCounts.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWordIndependentCounts.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.179,
+      "log": "QICLeanTest_PoissonWordIndependentCounts.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLeanTest_PoissonWordIndependentCountsAxioms.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWordIndependentCountsAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.682,
+      "log": "QICLeanTest_PoissonWordIndependentCountsAxioms.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLeanTest_FiniteUniformConditioning.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/FiniteUniformConditioning.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.555,
+      "log": "QICLeanTest_FiniteUniformConditioning.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLeanTest_FiniteUniformConditioningAxioms.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/FiniteUniformConditioningAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.201,
+      "log": "QICLeanTest_FiniteUniformConditioningAxioms.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLeanTest_PoissonWordUniformOrder.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWordUniformOrder.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.057,
+      "log": "QICLeanTest_PoissonWordUniformOrder.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "QICLeanTest_PoissonWordUniformOrderAxioms.lean",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/PoissonWordUniformOrderAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.873,
+      "log": "QICLeanTest_PoissonWordUniformOrderAxioms.lean.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "guard_count": 33,
+  "example_count": 36,
+  "public_source_commit": "487c65996fa26916d1d1e4b23e277607075035ba",
+  "public_source_binding": "All thirteen validated source/test file SHA256 values agree with this public commit; the actual check head remains the recorded local head."
+}

@@ -1,0 +1,5 @@
+✔ [3106/3109] Built QICLean.Algebra.WordMultiplicity (1.6s)
+✔ [3107/3109] Built QICLean.Probability.PoissonWordCounts (2.1s)
+✔ [3108/3109] Built QICLean.Probability.PoissonWordIndependentCounts (2.4s)
+✔ [3109/3109] Built QICLean.Probability.PoissonWordUniformOrder (2.3s)
+Build completed successfully (3109 jobs).
