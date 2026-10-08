@@ -1,0 +1,9 @@
+{
+  "source_revision": "c3c228ced821c1da85f3064b52eda3a2fee3cc6a",
+  "status": "excluded incomplete audit record; no successful audit claimed",
+  "wrapper_exit_code": 1,
+  "child_exit_code": null,
+  "reason": "The capture wrapper raised OSError Errno 28, No space left on device, while writing axioms-exit.json. The child exit was not durably captured.",
+  "raw_log": "excluded-audit-resource-failure.log",
+  "raw_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

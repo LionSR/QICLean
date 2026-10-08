@@ -1,0 +1,18 @@
+{
+  "source_revision": "b9c8bd663c081e6128353eee979d266b1c4bdce0",
+  "argv": [
+    "sysctl",
+    "kern.maxfiles",
+    "kern.maxfilesperproc",
+    "kern.num_files"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 0.03352416699635796,
+  "log": "docs/provenance/evidence/pureTensorPowerIntegration8753/file-table-state.log",
+  "sha256": "ede05b737270c626df58f7883c9806a4fff164de41c18ce5eaff32f269a23b36",
+  "uncompressed_sha256": "ede05b737270c626df58f7883c9806a4fff164de41c18ce5eaff32f269a23b36",
+  "uncompressed_bytes": 73,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

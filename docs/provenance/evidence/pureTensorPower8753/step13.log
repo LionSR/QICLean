@@ -1,0 +1,9 @@
+QICLean/Entropy/PureTensorPower.lean:55:2: error: unsolved goals
+S : Type u_1
+Ω : Type u_2
+inst✝¹ : Fintype S
+inst✝ : Fintype Ω
+ψ : S × Ω → ℂ
+k : ℕ
+x y : Fin k → Ω
+⊢ ∑ k_1, (∏ x_1, ψ (k_1 x_1, x x_1)) * ∏ x, star (ψ (k_1 x, y x)) = ∏ n, ∑ k, ψ (k, x n) * star (ψ (k, y n))

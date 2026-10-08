@@ -1,0 +1,7 @@
+{
+  "source_revision": "b9c8bd663c081e6128353eee979d266b1c4bdce0",
+  "actual_exit_code": 1,
+  "helper_sha256": "3969dbeb9fcbd21f03a9a33ff02dacffd747dd0aa33e6d85bfe3b0719ec01388",
+  "failure": "Collector expected an id anchor in the bibliography; the actual valid target is a named anchor: <a name=\"OpenAI2026AreaLaw\">Ope26b</a>.",
+  "correction": "Accept either id or name for the referenced bibliography anchor; no generated page, mathematical source, build, kernel or native check changed."
+}

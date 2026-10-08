@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-pure-tensor-power-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PureTensorPower.lean",
+        "declaration": "Matrix.partialTraceLeft_vecMulVec_prod",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Prove that the actual partial trace of the literal regrouped product vector is the literal tensor product of its actual one-copy partial trace, by the finite product-of-sums identity. Arbitrary vector, zero copies and empty factors are included."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "c3c228ced821c1da85f3064b52eda3a2fee3cc6a",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.PureTensorPower",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pureTensorPower8753/target.log",
+            "sha256": "ff321e1451422db17bc1e904e81bae03b4912dc229d1d5d3eb438bfc5ede0bc6"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/PureTensorPower.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pureTensorPower8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pureTensorPower8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pureTensorPower8753/axioms.log",
+            "sha256": "ac0468438f66dc9fc1a2ea566f949cf469f6ac0cc462c7134f449490cd0314fe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-pure-tensor-power-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/PureTensorPower.lean",
+        "declaration": "Matrix.norm_sq_one_kronecker_mulVec_prod",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:high-label"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Compute the actual projected squared norm of that product vector as the trace mass of its actual tensor-power reduced density for every orthogonal projector; the identity applies directly to actual Schur label projectors. No normalization, invertibility, desired marginal identity or supplied mass is assumed."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "c3c228ced821c1da85f3064b52eda3a2fee3cc6a",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.PureTensorPower",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pureTensorPower8753/target.log",
+            "sha256": "ff321e1451422db17bc1e904e81bae03b4912dc229d1d5d3eb438bfc5ede0bc6"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 QICLean/Entropy/PureTensorPower.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pureTensorPower8753/strict-source.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean -DwarningAsError=true -Dlinter.mathlibStandardSet=true -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 docs/provenance/evidence/pureTensorPower8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/pureTensorPower8753/axioms.log",
+            "sha256": "ac0468438f66dc9fc1a2ea566f949cf469f6ac0cc462c7134f449490cd0314fe"
+          }
+        ]
+      }
+    }
+  ]
+}

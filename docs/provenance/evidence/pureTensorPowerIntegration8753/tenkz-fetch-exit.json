@@ -1,0 +1,16 @@
+{
+  "source_revision": "b9c8bd663c081e6128353eee979d266b1c4bdce0",
+  "argv": [
+    "python3",
+    "scripts/fetch_tenkz.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 5.77408975000435,
+  "log": "docs/provenance/evidence/pureTensorPowerIntegration8753/tenkz-fetch.log",
+  "sha256": "609d1a0c8802981a6dfd30f9f6a8b3388ebf6aaaae1913b95b285eceb3b134a9",
+  "uncompressed_sha256": "609d1a0c8802981a6dfd30f9f6a8b3388ebf6aaaae1913b95b285eceb3b134a9",
+  "uncompressed_bytes": 147,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

@@ -1,0 +1,2 @@
+'Matrix.partialTraceLeft_vecMulVec_prod' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.norm_sq_one_kronecker_mulVec_prod' depends on axioms: [propext, Classical.choice, Quot.sound]

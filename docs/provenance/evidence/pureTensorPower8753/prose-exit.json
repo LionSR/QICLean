@@ -1,0 +1,20 @@
+{
+  "source_revision": "c3c228ced821c1da85f3064b52eda3a2fee3cc6a",
+  "argv": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/TNLean/scripts/check_reader_facing_prose.py",
+    "--root",
+    ".",
+    "--diff-base",
+    "0c3485a499660de80843affa0b25b964c12a5193"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 0.203573624996352,
+  "log": "docs/provenance/evidence/pureTensorPower8753/prose.log",
+  "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+  "uncompressed_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+  "uncompressed_bytes": 57,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

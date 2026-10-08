@@ -1,0 +1,15 @@
+{
+  "base_revision": "0c3485a499660de80843affa0b25b964c12a5193",
+  "command": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 18.514036416992894,
+  "named_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_present": true,
+  "raw_log_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

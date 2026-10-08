@@ -1,0 +1,10 @@
+QICLean/Entropy/PureTensorPower.lean:53:2: error: unsolved goals
+S : Type u_1
+Ω : Type u_2
+inst✝¹ : Fintype S
+inst✝ : Fintype Ω
+ψ : S × Ω → ℂ
+k : ℕ
+x y : Fin k → Ω
+⊢ (vecMulVec (fun x => ∏ i, ψ (x.1 i, x.2 i)) (star fun x => ∏ i, ψ (x.1 i, x.2 i))).partialTraceLeft x y =
+    finKronecker (fun x => (vecMulVec ψ (star ψ)).partialTraceLeft) x y

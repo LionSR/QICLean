@@ -1,0 +1,171 @@
+<h1 id="sec:pure_tensor_power">13.20 Reduced densities and masses of repeated pure states</h1>
+
+<p>Let \(\mathcal H_S=\mathbb C^S\) and \(\mathcal H_R=\mathbb C^\Omega \) be finite-dimensional, and let \(\psi \in \mathcal H_S\otimes \mathcal H_R\). Write \(\rho =\operatorname {tr}_S|\psi \rangle \langle \psi |\) for its actual reduced density, without imposing normalization. For \(k\ge 0\), regroup the repeated vector into the two systems. Its coordinates, indexed by \(x\in S^k\) and \(y\in \Omega ^k\), are </p>
+<div class="displaymath" id="a0000002397">
+  \begin{align}  v_k(x,y)=\prod _{i=0}^{k-1}\psi (x_i,y_i). \end{align}
+</div>
+<p> These are the pure-state identities used in the Schur-sector argument of <span class="cite">
+	[
+	
+	<a href="sect0001.html#OpenAI2026AreaLaw" >Ope26b</a>
+	, Section&#160;7
+	]
+</span>. </p>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:pure_tensor_power_marginal">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">13.20.1</span>
+    <span class="theorem_thmtitle">Reduced density of a repeated bipartite vector</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="ch-entropy.html#thm:pure_tensor_power_marginal">#</a>
+    
+    <a class="icon proof" href="ch-entropy.html#a0000002398"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="../docs/find/#doc/Matrix.partialTraceLeft_vecMulVec_prod" class="lean_decl">Matrix.partialTraceLeft_vecMulVec_prod</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>   For every \(\psi \) and every \(k\ge 0\), </p>
+<div class="displaymath" id="a0000002399">
+  \begin{align}  \operatorname {tr}_{S^k}|v_k\rangle \langle v_k|=\rho ^{\otimes k}. \end{align}
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000002398">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>For \(y,z\in \Omega ^k\), the matrix entry on the left is </p>
+<div class="displaymath" id="a0000002400">
+  \begin{align}  \sum _{x\in S^k}\prod _i\psi (x_i,y_i)\overline{\psi (x_i,z_i)} =\prod _i\sum _{s\in S}\psi (s,y_i)\overline{\psi (s,z_i)} =\prod _i\rho (y_i,z_i). \end{align}
+</div>
+<p> The middle equality is the distributive law for a finite product of sums. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:pure_tensor_power_projection_mass">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">13.20.2</span>
+    <span class="theorem_thmtitle">Projection mass of a repeated bipartite vector</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="ch-entropy.html#thm:pure_tensor_power_projection_mass">#</a>
+    
+    <a class="icon proof" href="ch-entropy.html#a0000002401"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="ch-entropy.html#thm:pure_tensor_power_marginal">Theorem 13.20.1</a></li>
+          
+          <li><a href="ch-entropy.html#thm:pure_tensor_power_marginal">Theorem 13.20.1</a></li>
+          
+          <li><a href="ch-entropy.html#thm:pure_tensor_power_marginal">Theorem 13.20.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="../docs/find/#doc/Matrix.norm_sq_one_kronecker_mulVec_prod" class="lean_decl">Matrix.norm_sq_one_kronecker_mulVec_prod</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    For every orthogonal projector \(P\) on \(\mathcal H_R^{\otimes k}\), </p>
+<div class="displaymath" id="a0000002402">
+  \begin{align}  \| (I_{S^k}\otimes P)v_k\| ^2 =\operatorname {Re}\operatorname {tr}(\rho ^{\otimes k}P). \end{align}
+</div>
+<p> In particular, taking \(P\) to be an actual central Schur projector gives the squared norm in that sector. </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000002401">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> The trace-pairing property of the partial trace and the preceding identity give </p>
+<div class="displaymath" id="a0000002403">
+  \begin{align}  \operatorname {tr}(\rho ^{\otimes k}P) =\langle v_k,(I_{S^k}\otimes P)v_k\rangle =\langle (I_{S^k}\otimes P)v_k,(I_{S^k}\otimes P)v_k\rangle . \end{align}
+</div>
+<p> The second equality uses \(P=P^\dagger =P^2\). Taking real parts proves the formula. </p>
+
+  </div>
+</div>
+<p>Both identities include zero copies and empty one-copy factors; no invertibility of \(\rho \) is required. Concentration, the entropy window and selection of a common sequence of labels are separate assertions.   </p>

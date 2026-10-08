@@ -1,0 +1,13 @@
+QICLean/Entropy/PureTensorPower.lean:47:8: warning: declaration uses `sorry`
+QICLean/Entropy/PureTensorPower.lean:83:2: error: unsolved goals
+S : Type u_1
+Ω : Type u_2
+inst✝² : Fintype S
+inst✝¹ : Fintype Ω
+inst✝ : DecidableEq S
+ψ : S × Ω → ℂ
+k : ℕ
+P : Matrix (Fin k → Ω) (Fin k → Ω) ℂ
+hP : IsStarProjection P
+⊢ kroneckerMap (fun x1 x2 => x1 * x2) 1 P = kroneckerMap (fun x1 x2 => x1 * x2) 1 P ∧
+    kroneckerMap (fun x1 x2 => x1 * x2) 1 P = kroneckerMap (fun x1 x2 => x1 * x2) 1 P

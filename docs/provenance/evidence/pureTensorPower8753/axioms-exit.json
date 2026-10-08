@@ -1,0 +1,22 @@
+{
+  "source_revision": "c3c228ced821c1da85f3064b52eda3a2fee3cc6a",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "docs/provenance/evidence/pureTensorPower8753/Axioms.lean"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 20.504675999996834,
+  "log": "docs/provenance/evidence/pureTensorPower8753/axioms.log",
+  "sha256": "ac0468438f66dc9fc1a2ea566f949cf469f6ac0cc462c7134f449490cd0314fe",
+  "uncompressed_sha256": "ac0468438f66dc9fc1a2ea566f949cf469f6ac0cc462c7134f449490cd0314fe",
+  "uncompressed_bytes": 202,
+  "compressed": false,
+  "deterministic_gzip_mtime": null
+}

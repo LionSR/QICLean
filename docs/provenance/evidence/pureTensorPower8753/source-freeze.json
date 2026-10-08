@@ -1,0 +1,10 @@
+{
+  "source_revision": "c3c228ced821c1da85f3064b52eda3a2fee3cc6a",
+  "base_revision": "0c3485a499660de80843affa0b25b964c12a5193",
+  "production_sha256": {
+    "QICLean/Entropy/PureTensorPower.lean": "27bed0db03f6d514faeb4e590bee5ea30b4523eabb60e0e3fb350b653392fd40",
+    "blueprint/src/fragment/pure_tensor_power.tex": "ce63aa0fe40de0f58ea927c4594d709dcdd81ce717bb88e506a7dbef61131c27",
+    "docs/tactic_patterns.md": "9097c001dcd0958ebbd94b73d2936c6d39fed54c17e5bdccabc44d58c2d3b40c"
+  },
+  "cache_guard": "cache-exit.json records the own completed fetch and named Mathlib/artifact guard; early dependency overlap was excluded and repeated after that guard."
+}
