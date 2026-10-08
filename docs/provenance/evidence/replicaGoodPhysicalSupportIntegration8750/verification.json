@@ -1,0 +1,449 @@
+{
+  "mathematical_source_revision": "eba4662708f7178a3ac18584a4b8218f04442d19",
+  "leaf_evidence_revision": "6bd427e93124fb9bd1761879eb6f954524692c1f",
+  "inclusion_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+  "owned_declarations": [
+    "Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density"
+  ],
+  "commands": [
+    {
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 29.58,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/axioms.log",
+      "sha256": "9ae4f93a8c26b33c3a7be05c21b56c1686cecc1296322ad193b384652e1d88e6"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "bbl"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.49,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/bbl.log",
+      "sha256": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.94,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/blueprint-sync.log",
+      "sha256": "bc0b7d3d98ca922c19634339a19779eba8ddb1ac41e687e418def6423caa16ea"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=2",
+        "lake",
+        "build"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 125.8,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/build.log",
+      "sha256": "505cbe61d4626737d434d7b4136cf05adaa8ff1a8bead065c36f36ce068ff1d6"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/inspect-entries.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.13,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/entry-web.log",
+      "sha256": "52a78ef848e55b4ff52cd2120a28105b02064416b66ba1847811452e88e17f96"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/check-preservation.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.06,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-preservation.log",
+      "sha256": "928268bffc05906605bb3f32632a1a934d1050738d965f77cc583c098f178d60"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "6bd427e9"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/inspect-web.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.62,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/focused-web.log",
+      "sha256": "db86917a9f8cf38b43d2c02e2bf4364d36d1e24f40dba605c20ea55a3502cd69"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.06,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/guard.log",
+      "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.55,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/imports.log",
+      "sha256": "7b696efc598e88904a2e92d4fbbc571144ab99ae5ec8a118e0f1b3e42c08e511"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPhysicalSupport8750/validate-manifest.py",
+        "--allow-inclusion"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.49,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/leaf-preservation.log",
+      "sha256": "f2d578ec6da7e8657b59ea53f4432c795d430d452aa04a43f4696f5a83410f97"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/validate-manifest.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.03,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/manifest-check.log",
+      "sha256": "a5b572ea7649f11898d0da8c5356e18ad0a710aeda685b762fc00e7b2af89309"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "lake",
+        "exe",
+        "checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 35.77,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/check-native-targets.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.61,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native-targets.log",
+      "sha256": "265386cd8f38639018aaa78ac763d21b048e71765f67ef903212d67a7f32a431"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.7,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys;os.chdir(\"blueprint\");sys.exit(subprocess.call([\"leanblueprint\",\"pdf\"]))"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 31.29,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/pdf.log",
+      "sha256": "01e28866265f5edd71e3bf327ecc9a34968f8b435fa90433a12da450ab2562ac"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/check-preservation.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.74,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/preservation.log",
+      "sha256": "928268bffc05906605bb3f32632a1a934d1050738d965f77cc583c098f178d60"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "6bd427e9"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.28,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.64,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/provenance.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render-pdf.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 9.86,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render.log",
+      "sha256": "ecb6150acf43c042f963f56c2d930dd94eaadb6896d56a06b389077f64832536"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.74,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/tenkz.log",
+      "sha256": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 55.11,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/web.log",
+      "sha256": "d730c069af6430171c0f287ec458015121e7ccb727a8b052688d749b1d3c6462"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 43.88,
+      "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+      "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/whole-web.log",
+      "sha256": "e4262ce4233915f630ec44558ed1110d6db66819963507803c92c6c59d334094"
+    }
+  ],
+  "file_hashes": {
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/Axioms.lean": "e8ce4ecbb321e8fa19a8383d2065f273a249340da870919f61a2bbbaf0fd6314",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/NativeDeclarations.txt": "2d9ad3eabbce7b8d15c2873bedb9fd4a46648fae6a3a3d7d0c79ec194db9f53b",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/README.md": "f03aaef3aa2c8dbc386ef837284e1a8918632ebbc67bb03d659cb6af798fff75",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/axioms-exit.json": "b941950d23ac2ebb01a039eb52d2f9b90d86e27a0fdfcc0f23d232eb067b0c2a",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/axioms.log": "9ae4f93a8c26b33c3a7be05c21b56c1686cecc1296322ad193b384652e1d88e6",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/axioms.log.gz": "1769613f86ac88bfc2f13490b9a6af165c00c7027c32857c65b9c6e446f2cedd",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/bbl-exit.json": "5190cdcdfe01ddae759500597a7d69a2d8bdd238ae650792a97d2b1d42d4482d",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/bbl.log": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/bbl.log.gz": "7c2ee3d468eb73cbdbc31e17b1311d942def86dea73e4e1b79e6474d6575ff04",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/blueprint-sync-exit.json": "849e9045cde847fb22f5d0e2ac32391d1dd2c4f70a00cc39c2528a86c0f9efdc",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/blueprint-sync.log": "bc0b7d3d98ca922c19634339a19779eba8ddb1ac41e687e418def6423caa16ea",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/blueprint-sync.log.gz": "82277ce8d31286f25b8c5f8c69bec0a83379e6cf743f286496117b3a264914fc",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/build-exit.json": "23c3c35ce6d35710cb0ec1769c06ebd89388db8265bf59de1c72950ed8ab4c11",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/build.log": "505cbe61d4626737d434d7b4136cf05adaa8ff1a8bead065c36f36ce068ff1d6",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/build.log.gz": "8bd8b416207975d2f70f2a079a14fab3a921ce39c3e015003c7f845daea30e13",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/capture.py": "ab9d42c9d786613986990d05d57a8687cb76adb1553f976e2574841ad3cef9e4",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/check-native-targets.py": "c67d92de1d0116f07723f3324eb33d1fe1acaa4934e05ff957d8758f20082be7",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/check-preservation.py": "ffa4f069501630c9602310996558f1085d6ad67b6b08a40616632d49eb50a131",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/collect-manifest.py": "709436a26e621953ee72753ee90fb8b8fb5e0b465e71b6ae6940d20be79dd5e9",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/compression.json": "1809227015ae87834a1c23d34c0382f3d51243f5d88f1dfc8ec059a1936a13a9",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/entry-inspection.json": "2103da0f1cd2cfe70c697656b224518a8242e9bc3025f60c39afb6ed65fa04c8",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/entry-web-exit.json": "6ef640401e7edb7530c9f47b946b25213720e4d337bbf870c9b2bfb3c9a25ecc",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/entry-web.log": "52a78ef848e55b4ff52cd2120a28105b02064416b66ba1847811452e88e17f96",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/entry-web.log.gz": "943671e38a861d5b4e59e1d41d7333e56205e05862f37d39d909ef86f443d13d",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-preservation-exit.json": "d08fef34c9d45406d361f04883160714fee44934411db8c170e3a72d0db3b428",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-preservation.log": "928268bffc05906605bb3f32632a1a934d1050738d965f77cc583c098f178d60",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-preservation.log.gz": "010703aa14e24d95c3f297bd07aea1e17b3d25827045216b17c5c2c40c6259e0",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-prose-exit.json": "2447101f54e8f8c937c2da89aaec997673a8b2b939f06d1221d71e389f4f39d3",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/focused-web-exit.json": "09b84e37d75fc352c6310e5a16031c6a366b501474aeccb2751ae731192d39e7",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/focused-web.log": "db86917a9f8cf38b43d2c02e2bf4364d36d1e24f40dba605c20ea55a3502cd69",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/focused-web.log.gz": "a6bb2522559211b67914cd00d20d4a3e8188e2f77b8f7a7e35220c0d280a7e70",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/guard-exit.json": "88d891e5bfc30dac84295957257be463a5b0086374fcbe7f060152549287b3f1",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/guard.log": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/guard.log.gz": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/imports-exit.json": "4ec7e6a787132bfb786220de1270b5ba76394fcbc8f5392432da4fc2399efe29",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/imports.log": "7b696efc598e88904a2e92d4fbbc571144ab99ae5ec8a118e0f1b3e42c08e511",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/imports.log.gz": "09b7ea81ea0b241ba669de4d8d03acd848464d1331328d30aa2f1ae851477bba",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/inspect-entries.py": "8efbe2a7b74dd6b3b9f548407668ea7073be9a43dde3ac3c953d1563cbe62d0f",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/inspect-web.py": "c58015c52faff0ab904d61a348a695a0bcfe4bfc389d3740eac0b7c4284f051e",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/leaf-preservation-exit.json": "19d2278fd1ffc7ef3cd5e977f1edcf0a6ba19aa718bcdad34e933d0815edd42f",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/leaf-preservation.log": "f2d578ec6da7e8657b59ea53f4432c795d430d452aa04a43f4696f5a83410f97",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/leaf-preservation.log.gz": "7f55239979dec8dddc14efabe66032bbef862672a506c536278fc655ba2c6616",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/manifest-check-exit.json": "a7a7da14fd94ea8c40d2f97b41805e24703a9f622e9c1024f84655b78a2550fb",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/manifest-check.log": "a5b572ea7649f11898d0da8c5356e18ad0a710aeda685b762fc00e7b2af89309",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/manifest-check.log.gz": "506ae36eb002290723474de18de15672f28d039f5b5598e21dde22935b5694dd",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/mathlib-guard.py": "7735e65b032808f8e4f6a672cec0c4a72ee8b81fa84177b9330fc44a71d456f5",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native-exit.json": "8d21b868769a4e09be7e9b802ab21f5fcd4dae19c2364e973882021b7b15ec64",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native-targets-exit.json": "fc845d8cd00e7342089512a43f76bcc696aa20a7d6b07f9ad7a1954a924224e8",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native-targets.json": "265386cd8f38639018aaa78ac763d21b048e71765f67ef903212d67a7f32a431",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native-targets.log": "265386cd8f38639018aaa78ac763d21b048e71765f67ef903212d67a7f32a431",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native-targets.log.gz": "03fb81bb3265393dfe0fe6c79a3ccd5b11df3d8aa69996c080f02e16bb06d5c9",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/owned-shards.json": "da32cb2c4429038f76a939e3a04675b94698299c3eebdb3e1e26ddb3048cd29f",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/paper-gaps-exit.json": "6e129d3c7203503ef8f3878800195e56bc27ba4064309eff083a409f3500397e",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/paper-gaps.log": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/paper-gaps.log.gz": "daa5bc242751cef680bcc2ef9e4e40bf806993a1426781e6f26c31a344c88d25",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/parent-preservation.json": "151d2bc5d71685cd8a6da665b265f2525216495a4080f37e7ee3e41ae50eebce",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/pdf-exit.json": "38accae26eb6266f7ba2015ddb1cce784ce610c159ac4be10148abc953b16f41",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/pdf-page-selection.json": "09cd009c04da448e24f54cf7290ad38575ba0022ea33cf3c5bac4b76e9373ccc",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/pdf.log": "01e28866265f5edd71e3bf327ecc9a34968f8b435fa90433a12da450ab2562ac",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/pdf.log.gz": "4f0600c983b0299bd5815c30bdf52ca3d06369008b2a5324047f58e7e9e0da5b",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/physical-support-blueprint.pdf": "6791446f3c25520393db00062522cbaacf0fc49b72c78e501f4b13835bb7b9a8",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/preservation-exit.json": "8dc7e948e990e39c74b3ec14c2de003084631a4d07433a8ba8b50acb6b9c596d",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/preservation.log": "928268bffc05906605bb3f32632a1a934d1050738d965f77cc583c098f178d60",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/preservation.log.gz": "010703aa14e24d95c3f297bd07aea1e17b3d25827045216b17c5c2c40c6259e0",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/prose-exit.json": "30bf57eb873398c224fa77564c991c5f5c37a434a5ddcddc6bf921467a9e5621",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/provenance-exit.json": "76f5d8cf89404afdb20bef6dc90b99aad5c2fc43e053eee8f48c8175c38d5712",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/provenance.log": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/provenance.log.gz": "36be032bdd2045857ea5597875b124180f11d4c5478f421568ccc28d94795be6",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render/entry-1-desktop.png": "95d0df5bf4df6d70d775c32cf5fd07e3187f986bacda8314ca12e7480808a7d0",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render/entry-1-mobile.png": "b9cf2145441d37ae3f6fc49fc5be65541e3e63f94420a0cac1e0534cf794aee5",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render/page-414.png": "14741dcd98474782edb4c892c2c6c6332f370d0e9f4c06a7625aba217edc9002",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render/physical-support-web-desktop.png": "a22c7bb8e2b8bffcee4b618245a4e5dc6377cc0e3b7afbea618f089655fa46c2",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render/physical-support-web-mobile.png": "d80b35a61ad9fba541555b8dd8d3a8b38942ebfb5e3d990574febc9bd224909c",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render-exit.json": "fe8c2a7247a3a86041caeeb97261e385886c1e13919f36670a28f5c69ef8af1e",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render-pdf.py": "dd19d5e4f7d7f65652761d6d3e52ed2dc1a27e892b0a360f991ab3d6ec190986",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render.log": "ecb6150acf43c042f963f56c2d930dd94eaadb6896d56a06b389077f64832536",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render.log.gz": "1435d58c9fa30ecd6abd780528c8af2b4590c3ecbd2082a2bb90c258f8c4d424",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/run-book.py": "c04db69e5d0e5f415a93e8e02b65d28240aa68c15fda6e8f28e5865e7f2684ce",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/source-freeze.json": "72e8f7b510ec032cb2791166f16922359579bfdf1da798d032bbe83610ae81e2",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/tenkz-exit.json": "a8d3df8105d27e4e1daa48e93421225768abf17ef03c9422c9fc16529e5d972f",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/tenkz.log": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/tenkz.log.gz": "72aa2c0b6e8094402e184de0b18c4557b64e419b076a8846987347281866cdf4",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/validate-manifest.py": "d5ba1d922b889d2fa62ec8b127a8f8e7cca0c7cec7fd7097d752a8a20b5f730a",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/validate-owned.py": "68ae4439df5d4833105c48eefcfb6c9b00c743297564d58e5be36981ca2fb900",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/visual-inspection.json": "366597e2fdb7a82a0aae7ee9af6199d16de9539ae6b85e7c6af63d7e971494b4",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/web-exit.json": "3f624d0f8a4ff6c29c6eace415051e1862cee5f78a24b3d2a99b6f0c999732f7",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/web-inspection.json": "d7917d64cb0e55151c3c937ebb7dd76b2ffc0bbd15975ae35de87c30848307e3",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/web.log": "d730c069af6430171c0f287ec458015121e7ccb727a8b052688d749b1d3c6462",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/web.log.gz": "62e0cf3613b4630f26f851a7744a8ac20a82d51ed8de7cf1b619e1b3f0a5f212",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/whole-web-exit.json": "3cd612c148552e242dd0d5668e38478b4fc51910a481b49e44d4262eb3c0484f",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/whole-web.log": "e4262ce4233915f630ec44558ed1110d6db66819963507803c92c6c59d334094",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/whole-web.log.gz": "1684aa3cc2700c1af2d2d075542fd37eb0ceef11f11bbc8cea074d3db832fb2a",
+    "QICLean/Analysis/ReplicaGoodPhysicalSupport.lean": "dd7b26165765df0b0c53b38cebc72a4a3fbb83ed767bf962ee61acae82fd773f",
+    "blueprint/src/fragment/replica_good_physical_support.tex": "cc6b21915c4026f66c3fa1beee2b9e1ff4ba6ccd860feb764c4118aef325e992",
+    "docs/formalization/replica-good-physical-support.md": "979099602cfe178e55cf9dec706592463215f611c64324603a2ddd9d7cee32aa",
+    "docs/tactic_patterns.md": "fc1d78e62742ff63ecb2c572143c717126e26743e1381027889a03fba07fb1f5",
+    "QICLean/Analysis.lean": "9c38a06df903adc6cec32a8727517e12217505af1434e2b1b91957aa319a382c",
+    "blueprint/src/chapter/ch12_entropy.tex": "8ae16c52335601a59b3448a20a14bd9376ee6aee4836363b6a7e9a8f7d4a72b3",
+    "docs/provenance/openai-math.d/replicaGoodPhysicalSupport8750.json": "af3dc306a8ed3b3f659834308ad5b5f800be223428713c2e85f46cf34e4078d1",
+    "docs/provenance/evidence/replicaGoodPhysicalSupport8750/verification.json": "ba586f21d3ab2a2ec371bb3910447497c5594c316fe7ca515af076416665b57a"
+  },
+  "inventory_exclusions": [
+    "verification.json: self inventory"
+  ],
+  "scope": "One actual physical symmetric-support theorem; inherited mathematical proofs and audits are preserved, not freshly reviewed."
+}

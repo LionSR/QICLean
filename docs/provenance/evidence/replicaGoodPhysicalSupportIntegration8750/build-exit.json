@@ -1,0 +1,15 @@
+{
+  "kind": "verification",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=2",
+    "lake",
+    "build"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 125.8,
+  "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/build.log",
+  "sha256": "505cbe61d4626737d434d7b4136cf05adaa8ff1a8bead065c36f36ce068ff1d6"
+}

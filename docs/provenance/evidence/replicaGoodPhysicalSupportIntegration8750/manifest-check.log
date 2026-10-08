@@ -1,0 +1,6 @@
+All 3666 leaf-parent files preserved with only the two exact inclusion lines.
+9 source-bound successful commands; 116 tracked hashes; one exact standard-kernel report.
+All four frozen files and 3550 released-parent files preserved, allowing only the recorded cumulative ledger append and, when requested, the two exact inclusion lines.
+Actual physical support is derived without a supplied symmetry/support certificate.
+22 actual successful integration commands; 103 portable tracked hashes; one exact standard-kernel report.
+All inherited files preserved except the two exact inclusion lines; no inherited mathematical audit is repeated.

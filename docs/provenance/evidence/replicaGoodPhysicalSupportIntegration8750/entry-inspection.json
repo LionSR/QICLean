@@ -1,0 +1,31 @@
+[
+  {
+    "top": 1973.171875,
+    "bottom": 2486.921875,
+    "proofs": [
+      {
+        "height": 155.1875,
+        "text": "\n  The actual product-density identity gives \n\n  \u03c1AGC(w)=|\u03a9\u2297m\u27e9\u27e8\u03a9\u2297m|\u2297\u03c1C(w).\n\n A permutation only reorders the identical factors of \u03a9\u2297m. Thus Pm\u03a9\u2297m=\u03a9\u2297m. Multiplying the product density by Pm\u2297IC proves the assertion. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_physical_support",
+    "view": "desktop",
+    "screenshot": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render/entry-1-desktop.png"
+  },
+  {
+    "top": 1431.015625,
+    "bottom": 2170.421875,
+    "proofs": [
+      {
+        "height": 200,
+        "text": "\n  The actual product-density identity gives \n\n  \u03c1AGC(w)=|\u03a9\u2297m\u27e9\u27e8\u03a9\u2297m|\u2297\u03c1C(w).\n\n A permutation only reorders the identical factors of \u03a9\u2297m. Thus Pm\u03a9\u2297m=\u03a9\u2297m. Multiplying the product density by Pm\u2297IC proves the assertion. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_physical_support",
+    "view": "mobile",
+    "screenshot": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render/entry-1-mobile.png",
+    "horizontal_endpoints": []
+  }
+]

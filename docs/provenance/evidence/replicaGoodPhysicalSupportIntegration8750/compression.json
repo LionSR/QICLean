@@ -1,0 +1,163 @@
+[
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/axioms.log",
+    "raw_sha256": "9ae4f93a8c26b33c3a7be05c21b56c1686cecc1296322ad193b384652e1d88e6",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/axioms.log.gz",
+    "gzip_sha256": "1769613f86ac88bfc2f13490b9a6af165c00c7027c32857c65b9c6e446f2cedd",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/bbl.log",
+    "raw_sha256": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/bbl.log.gz",
+    "gzip_sha256": "7c2ee3d468eb73cbdbc31e17b1311d942def86dea73e4e1b79e6474d6575ff04",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/blueprint-sync.log",
+    "raw_sha256": "bc0b7d3d98ca922c19634339a19779eba8ddb1ac41e687e418def6423caa16ea",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/blueprint-sync.log.gz",
+    "gzip_sha256": "82277ce8d31286f25b8c5f8c69bec0a83379e6cf743f286496117b3a264914fc",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/build.log",
+    "raw_sha256": "505cbe61d4626737d434d7b4136cf05adaa8ff1a8bead065c36f36ce068ff1d6",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/build.log.gz",
+    "gzip_sha256": "8bd8b416207975d2f70f2a079a14fab3a921ce39c3e015003c7f845daea30e13",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/entry-web.log",
+    "raw_sha256": "52a78ef848e55b4ff52cd2120a28105b02064416b66ba1847811452e88e17f96",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/entry-web.log.gz",
+    "gzip_sha256": "943671e38a861d5b4e59e1d41d7333e56205e05862f37d39d909ef86f443d13d",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-preservation.log",
+    "raw_sha256": "928268bffc05906605bb3f32632a1a934d1050738d965f77cc583c098f178d60",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-preservation.log.gz",
+    "gzip_sha256": "010703aa14e24d95c3f297bd07aea1e17b3d25827045216b17c5c2c40c6259e0",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-prose.log",
+    "raw_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/final-prose.log.gz",
+    "gzip_sha256": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/focused-web.log",
+    "raw_sha256": "db86917a9f8cf38b43d2c02e2bf4364d36d1e24f40dba605c20ea55a3502cd69",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/focused-web.log.gz",
+    "gzip_sha256": "a6bb2522559211b67914cd00d20d4a3e8188e2f77b8f7a7e35220c0d280a7e70",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/guard.log",
+    "raw_sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/guard.log.gz",
+    "gzip_sha256": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/imports.log",
+    "raw_sha256": "7b696efc598e88904a2e92d4fbbc571144ab99ae5ec8a118e0f1b3e42c08e511",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/imports.log.gz",
+    "gzip_sha256": "09b7ea81ea0b241ba669de4d8d03acd848464d1331328d30aa2f1ae851477bba",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/leaf-preservation.log",
+    "raw_sha256": "f2d578ec6da7e8657b59ea53f4432c795d430d452aa04a43f4696f5a83410f97",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/leaf-preservation.log.gz",
+    "gzip_sha256": "7f55239979dec8dddc14efabe66032bbef862672a506c536278fc655ba2c6616",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/manifest-check.log",
+    "raw_sha256": "a5b572ea7649f11898d0da8c5356e18ad0a710aeda685b762fc00e7b2af89309",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/manifest-check.log.gz",
+    "gzip_sha256": "506ae36eb002290723474de18de15672f28d039f5b5598e21dde22935b5694dd",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native.log",
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native.log.gz",
+    "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native-targets.log",
+    "raw_sha256": "265386cd8f38639018aaa78ac763d21b048e71765f67ef903212d67a7f32a431",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/native-targets.log.gz",
+    "gzip_sha256": "03fb81bb3265393dfe0fe6c79a3ccd5b11df3d8aa69996c080f02e16bb06d5c9",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/paper-gaps.log",
+    "raw_sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/paper-gaps.log.gz",
+    "gzip_sha256": "daa5bc242751cef680bcc2ef9e4e40bf806993a1426781e6f26c31a344c88d25",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/pdf.log",
+    "raw_sha256": "01e28866265f5edd71e3bf327ecc9a34968f8b435fa90433a12da450ab2562ac",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/pdf.log.gz",
+    "gzip_sha256": "4f0600c983b0299bd5815c30bdf52ca3d06369008b2a5324047f58e7e9e0da5b",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/preservation.log",
+    "raw_sha256": "928268bffc05906605bb3f32632a1a934d1050738d965f77cc583c098f178d60",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/preservation.log.gz",
+    "gzip_sha256": "010703aa14e24d95c3f297bd07aea1e17b3d25827045216b17c5c2c40c6259e0",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/prose.log",
+    "raw_sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/prose.log.gz",
+    "gzip_sha256": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/provenance.log",
+    "raw_sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/provenance.log.gz",
+    "gzip_sha256": "36be032bdd2045857ea5597875b124180f11d4c5478f421568ccc28d94795be6",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render.log",
+    "raw_sha256": "ecb6150acf43c042f963f56c2d930dd94eaadb6896d56a06b389077f64832536",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/render.log.gz",
+    "gzip_sha256": "1435d58c9fa30ecd6abd780528c8af2b4590c3ecbd2082a2bb90c258f8c4d424",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/tenkz.log",
+    "raw_sha256": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/tenkz.log.gz",
+    "gzip_sha256": "72aa2c0b6e8094402e184de0b18c4557b64e419b076a8846987347281866cdf4",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/web.log",
+    "raw_sha256": "d730c069af6430171c0f287ec458015121e7ccb727a8b052688d749b1d3c6462",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/web.log.gz",
+    "gzip_sha256": "62e0cf3613b4630f26f851a7744a8ac20a82d51ed8de7cf1b619e1b3f0a5f212",
+    "mtime": 0
+  },
+  {
+    "raw": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/whole-web.log",
+    "raw_sha256": "e4262ce4233915f630ec44558ed1110d6db66819963507803c92c6c59d334094",
+    "gzip": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/whole-web.log.gz",
+    "gzip_sha256": "1684aa3cc2700c1af2d2d075542fd37eb0ceef11f11bbc8cea074d3db832fb2a",
+    "mtime": 0
+  }
+]
