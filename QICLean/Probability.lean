@@ -16,5 +16,6 @@ import QICLean.Probability.PoissonWordIndependentCounts
 import QICLean.Probability.PoissonWordPartition
 import QICLean.Probability.PoissonWordRelabel
 import QICLean.Probability.PoissonWordSemigroup
+import QICLean.Probability.PoissonWordTelescope
 import QICLean.Probability.PoissonWordThinning
 import QICLean.Probability.PoissonWordUniformOrder

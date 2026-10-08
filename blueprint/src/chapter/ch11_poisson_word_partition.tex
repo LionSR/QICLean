@@ -47,6 +47,37 @@ In either case the inclusion into $I$ returns $i$. Applying this identity
 at every position proves both equalities, preserving the original order.
 \end{proof}
 
+\begin{theorem}[Omitted-letter telescoping]
+\label{thm:poisson_word_omission_telescope}
+\lean{PoissonWord.foldl_sub_partitionWords_fst_eq_sum}
+\leanok
+\uses{thm:poisson_partition_letters, def:poisson_word_split}
+Let $K$ be a semiring and $M$ a $K$-module with an abelian additive group.
+Let $E_i:M\to M$ be linear for each letter $i\in I$. For a word
+$u=(i_0,\ldots,i_{k-1})$, put
+$A(u)=E_{i_{k-1}}\cdots E_{i_0}$, with $A(\varnothing)=1$.
+Fix $x\in M$ and a word $w=(i_0,\ldots,i_{m-1})$, and write
+$R_j=A((w_{<j})_S)x$. Then
+\begin{align}
+ A(w)x-A(w_S)x
+ &=\sum_{\substack{0\leq j<m\\\neg p(i_j)}}
+ A(w_{\geq j+1})(E_{i_j}R_j-R_j).
+ \label{eq:poisson_word_omission_telescope}
+\end{align}
+The sum is over positions, so repeated letters contribute separately.
+\end{theorem}
+\begin{proof}\leanok
+Put $H_j=A(w_{\geq j})R_j$. The endpoint identities are
+$H_0=A(w)x$ and $H_m=A(w_S)x$. If $p(i_j)$ holds, then
+$R_{j+1}=E_{i_j}R_j$ and $H_j-H_{j+1}=0$. Otherwise,
+$R_{j+1}=R_j$, and linearity gives
+\begin{align}
+ H_j-H_{j+1}
+ &=A(w_{\geq j+1})(E_{i_j}R_j-R_j).
+\end{align}
+Summing these consecutive differences proves the identity.
+\end{proof}
+
 \begin{theorem}[Independent subset thinning]
 \label{thm:poisson_word_partition}
 \lean{PoissonWord.map_partitionWords, PoissonWord.map_partitionWords_fst,
