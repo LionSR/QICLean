@@ -1,0 +1,50 @@
+Theorem 21.9.2 (Physical symmetry and the nonnegative spectral projection).                     Lean    Lean
+✓ Stmt Set 𝐷𝑄𝑉 = 𝐹𝑄 + 𝐹𝑉 − 𝐹𝑄𝑉 and 𝐽 = 1[0,∞) (𝐺phys ). Then
+
+
+                                           𝐺phys 𝑃 = 𝑃 𝐷𝑄𝑉 ,                                           (21.10)
+                                                𝐽𝑃 = 𝑃 .                                               (21.11)
+
+Zero copies and zero-dimensional factors are included.
+Proof. ✓ Proof The physical copy action is the commuting product of the 𝑌 and 𝑄𝑉 copy actions.
+On its fixed vectors, inversion-invariance of the central coeﬀicients gives Π𝜆𝑌 𝑃 = Π𝜆𝑄𝑉 𝑃 for every
+label. Summing with coeﬀicient log 𝑑𝜆 gives 𝐹𝑌 𝑃 = 𝐹𝑄𝑉 𝑃 . The 𝑄, 𝑉 , 𝑄𝑉 central observables
+commute with 𝑃 by nesting, which gives (21.10). The actual merge-dimension inequality gives
+𝐷𝑄𝑉 ≥ 0. Functional calculus of (21.10) therefore gives (21.11).
+Theorem 21.9.3 (Compatibility with the two merges). Lean Lean ✓ Stmt For an arbitrary real
+function 𝑓 and independently chosen real label functions 𝑔𝐴 , with 𝐴 ∈ {𝑄𝐶, 𝑉 𝑅, 𝐶, 𝑅}, write
+𝐿𝐴 (𝑔𝐴 ) = ∑𝜆 𝑔𝐴 (𝜆)Π𝜆𝐴 . Then
+
+                                     [𝑓(𝐺phys ), 𝐿𝑄𝐶 (𝑔𝑄𝐶 )] = 0,                                      (21.12)
+                                     [𝑓(𝐺phys ), 𝐿𝑉 𝑅 (𝑔𝑉 𝑅 )] = 0,                                    (21.13)
+                                          [𝑓(𝐺phys ), 𝐿𝐶 (𝑔𝐶 )] = 0,                                   (21.14)
+                                          [𝑓(𝐺phys ), 𝐿𝑅 (𝑔𝑅 )] = 0,                                   (21.15)
+                                              [𝑓(𝐺phys ), 𝐷𝐶 ] = 0,                                    (21.16)
+                                              [𝑓(𝐺phys ), 𝐷𝑅 ] = 0.                                    (21.17)
+
+In particular, 𝐽 commutes with both merge deficits.
+Proof. ✓ Proof The 𝑄 action is nested in 𝑄𝐶, while 𝑉 and 𝑌 are disjoint from 𝑄𝐶. The analogous
+statements hold for 𝑉 inside 𝑉 𝑅, with 𝑄 and 𝑌 disjoint. Central-label commutation therefore
+gives commutation of 𝐺phys with both merged label observables. The auxiliary 𝐶, 𝑅 actions are
+disjoint from all three physical actions. The same nesting and disjointness give commutation
+with the singleton terms in 𝐷𝐶 , 𝐷𝑅 . Addition, subtraction and real functional calculus preserve
+these commutations.
+
+
+21.10 The dimension formulas
+The first part of the Schur-label lemma identifies the labels of 𝑆𝑘 occurring in (ℂ𝑞 )⊗𝑘 with the
+partitions 𝜆 ⊢ 𝑘 of length at most 𝑞 and states the dimension formulas
+
+                    (𝑞)       𝑙𝑖 − 𝑙𝑗               𝑘! ∏𝑖<𝑗 (𝑙𝑖 − 𝑙𝑗 )
+              dim 𝑉𝜆 = ∏              ,      𝑑𝜆 =                        ,   𝑙𝑖 = 𝜆𝑖 + 𝑞 − 𝑖.
+                          𝑖<𝑗
+                               𝑗−𝑖                        ∏ 𝑖 𝑙𝑖 !
+
+The identification of the labels with partitions is proved in the section on Schur–Weyl duality
+below. The following lemmas concern the right-hand sides of these formulas.
+Lemma 21.10.1 (Stirling bounds). Lean Lean Lean ✓ Stmt For every 𝑛 ≥ 0, 0 ≤ log 𝑛! −
+(𝑛 log 𝑛 − 𝑛) ≤ log(𝑛 + 2) + 1. For natural numbers 𝑎, 𝑠, 0 ≤ (𝑎 + 𝑠) log(𝑎 + 𝑠) − 𝑎 log 𝑎 ≤
+𝑠(log(𝑎 + 𝑠) + 1).
+
+
+                                                    455

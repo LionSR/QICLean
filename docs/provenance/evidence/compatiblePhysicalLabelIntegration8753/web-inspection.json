@@ -1,0 +1,25 @@
+{
+  "links": [
+    "TensorPower.physicalMergeDeficit",
+    "TensorPower.physicalMergeDeficit_mul_symProj",
+    "TensorPower.spectralProjectionGE_physicalMergeDeficit_mul_symProj",
+    "TensorPower.commute_cfc_physicalMergeDeficit_labelObservables",
+    "TensorPower.commute_cfc_physicalMergeDeficit_mergeDeficits"
+  ],
+  "errors": [],
+  "top": 47.53125,
+  "bottom": 1228.984375,
+  "mathElements": 41,
+  "mobile_section_bounds": {
+    "top": 112.1875,
+    "bottom": 1845.765625
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360,
+  "visual_review": "passed",
+  "visual_observations": [
+    "Desktop1440px and mobile360px show the full definition and both expanded proofs.",
+    "All three displays and all six compatibility rows fit the mobile content width with no clipped right endpoint.",
+    "Five declaration links, source citation and the two equation-reference targets are present; no typesetting errors."
+  ]
+}
