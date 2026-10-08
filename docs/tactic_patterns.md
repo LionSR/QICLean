@@ -313,3 +313,10 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   Neither normalization nor a supplied covariance identity is assumed.
   For a three-factor physical space, preserve the middle factor under the
   exterior-region exchange and trace all of its copies in the common density.
+
+### Excitation covariance under physical coordinate exchange — candidate (2026-10-08)
+
+- **Pattern:** Transport the literal finite product of ground and defect factors through a one-copy coordinate equivalence, then transport the actual selected vector by `submatrix_mulVec_equiv`. A coordinate isometry preserves its Euclidean norm.
+- **Seen:** `Analysis/ReplicaGoodPairMarginal.lean` and `Analysis/ReplicaTwoMergeMoment.lean`; two independent consumers, respectively the marginal exchange and its norm consequence.
+- **Abstraction:** The existing matrix reindexing and coordinate isometry results supply the algebra. These two consumers retain private excitation calculations. Before a third consumer is added, extract their shared mathematical covariance statement and replace the repeated calculations.
+- **Caveat:** Exchange both exterior physical and auxiliary regions while preserving the independent middle physical region. Derive covariance and simultaneous fixedness from actual coordinates; do not supply them as additional hypotheses.
