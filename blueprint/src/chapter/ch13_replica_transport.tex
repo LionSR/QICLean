@@ -1,0 +1,141 @@
+%% =========================================================
+%% Chapter: Entropy and energy transport on symmetric replicas
+%% Source: OpenAI, "A two-dimensional area law from a global spectral gap"
+%%         (September 24, 2026), Proposition 7.4, 06-transport.tex lines 377-779
+%% =========================================================
+
+\chapter{Entropy and Energy Transport on Symmetric Replicas}
+\label{ch:replica_transport}
+
+This chapter assembles the entropy and energy transport estimate
+of~\cite[Proposition~7.4]{OpenAI2026AreaLaw} on the symmetric subspace
+$\mathcal S_k$ of $k$ replicas, from the matrix estimates of
+Section~\ref{sec:matrix_mean_trees}. The inputs of the mean trees are products
+over bands of replica metrics, the moves transfer a subsystem $x$ of the middle
+region $Y$ to one of the outer regions, and $\eta$ denotes the conditional mutual
+information of a move evaluated at a one-copy vector $\theta$. For a density
+matrix $\rho$ on $\mathcal S_k$, $\int f\,d\mu_\rho$ denotes the coherent
+integral $D_k\int f(\theta)\operatorname{Tr}(\rho P_{\theta,k})\,d\theta$, where
+$P_{\theta,k}$ projects onto $\theta^{\otimes k}$ and $D_k=\dim\mathcal S_k$.
+
+The source proves the relative coherent pin (Lemma~6.4) and the skew bound
+(Lemma~6.5) in its replica section. Those two lemmas are not yet formalized, so
+the assembled estimate below takes their conclusions as hypotheses and is stated
+as such; the unconditional proposition remains open.
+
+\section{The logarithmic passage}
+
+\begin{lemma}[Operator Jensen inequality on symmetric replicas]
+    \label{lem:replica_coherent_log_jensen}
+    \lean{TensorPower.coherentAverage_log_le, TensorPower.trace_mul_coherentAverage,
+      TensorPower.log_symDim_isBigO}
+    \leanok
+    \uses{thm:coherent_resolution}
+    Let $\mathcal Q_k(f)=D_k\int f(\theta)P_{\theta,k}\,d\theta$ and let $\Pi$ be
+    the projection onto $\mathcal S_k$. For continuous $f>0$,
+    \[
+      \mathcal Q_k(\log f)\le\Pi\log\bigl(\mathcal Q_k(f)+(I-\Pi)\bigr)\Pi .
+    \]
+    Moreover $\log D_k=O(\log(k+1))$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $\log Y=\int_0^\infty[(1+s)^{-1}-(Y+s)^{-1}]\,ds$. For each $s$ the
+    positivity of $g(X-g^{-1})P_\theta(X-g^{-1})$ with
+    $X=\Pi(Y+s)^{-1}\Pi$, averaged over $\theta$, gives the resolvent form of the
+    inequality; Fubini's theorem exchanges the two integrals
+    (\texttt{06-transport.tex} lines 526--546). The dimension of $\mathcal S_k$
+    is at most $(k+1)^{\dim}$.
+\end{proof}
+
+\begin{lemma}[Logarithmic passage]\label{lem:replica_log_passage}
+    \lean{TensorPower.coherentIntegral_sub_log_le_re_trace_mul_log}
+    \leanok
+    \uses{lem:replica_coherent_log_jensen}
+    Let $X$ be positive definite and commute with copy permutations, and let
+    $\varphi$ be continuous with $X\ge e^{\varphi(\theta)}P_{\theta,k}$ for every
+    unit vector $\theta$. For every density matrix $\rho$ on $\mathcal S_k$,
+    $\int\varphi\,d\mu_\rho-\log D_k\le\operatorname{Tr}(\rho\log X)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Integrating the pin gives $D_k^{-1}\mathcal Q_k(e^\varphi)\le X$. Adding
+    $\varepsilon(I-\Pi)$ with $\varepsilon I\le X$ keeps the inequality and makes
+    the left side positive definite; operator monotonicity of the logarithm and
+    the Jensen inequality conclude (\texttt{06-transport.tex} lines 520--575).
+\end{proof}
+
+\section{The assembled estimate}
+
+\begin{lemma}[Transport states on replicas]\label{lem:replica_transport_states}
+    \lean{TensorPower.ReplicaTransport.TransportData.posSemidef_state,
+      TensorPower.ReplicaTransport.TransportData.trace_state,
+      TensorPower.ReplicaTransport.TransportData.symProj_mul_state,
+      TensorPower.ReplicaTransport.TransportData.hasDerivAt_exactDerivative}
+    \leanok
+    \uses{lem:transport_exact_derivative, lem:transport_states_commutant}
+    For admissible transport data the transport states are density matrices
+    supported on $\mathcal S_k$, and the exact derivative formula of
+    Lemma~\ref{lem:transport_exact_derivative} holds for the replica inputs.
+\end{lemma}
+
+\begin{proof}\leanok
+    All inputs are positive definite and commute with copy permutations, so the
+    symmetrizer fixes the transport states by
+    Lemma~\ref{lem:transport_states_commutant}.
+\end{proof}
+
+\begin{theorem}[Entropy and energy transport, assuming Lemmas 6.4 and 6.5]
+    \label{thm:replica_transport_conditional}
+    \lean{TensorPower.ReplicaTransport.transport_of_relativePin_of_splitSkewBound,
+      TensorPower.ReplicaTransport.TransportData.exists_entropyGain_le_exactDerivative_of_relativePin,
+      TensorPower.ReplicaTransport.TransportData.exists_energy_le_of_splitSkewBound,
+      TensorPower.ReplicaTransport.TransportData.smul_coherentProj_le_bandRelRatio,
+      TensorPower.ReplicaTransport.TransportData.cfc_log_relRatio_eq_sum}
+    \leanok
+    \uses{lem:replica_log_passage, lem:replica_transport_states,
+      lem:transport_energy_block}
+    Assume the conclusion of the relative coherent pin~\cite[Lemma~6.4]{OpenAI2026AreaLaw}
+    and of the skew bound~\cite[Lemma~6.5]{OpenAI2026AreaLaw} at a split leaf.
+    Then the conclusions of~\cite[Proposition~7.4]{OpenAI2026AreaLaw} hold: with
+    $a=2t$, $\ell\ge1$ bounding $\log(e\dim x)$ for every transferred subsystem and
+    $\log(e\dim D_i)$ for every split term, and $a\ell$ below a universal
+    threshold, for every $k$, nonzero $x\in\mathcal S_k$ and $0<p<1$,
+    \[
+      -\partial_p\log N(p)^2\ge ka\sum_{h,g}w_h\int m_{1/4}(u)\int\sum_cq_{c|h}
+      \eta_{h,c,g}\,d\mu_{\sigma_{h,u}}\,du-CkaKa^{1/4}\ell^C-\beta_k
+    \]
+    with $\beta_k=O(\log(k+1))$ independent of $p$ and $x$; and if
+    $\bar Hx=E_0x$, then
+    $\langle v,\bar Hv\rangle\le2E_0+Ca^2\ell^C\sum_iW_i(p)\sum_{j}\pi_j\int
+    m_{1/4}\int\eta_{i,j}^{1/8}\,d\mu_{\sigma_{j,u}}\,du+o_k(1)$, uniformly in $p$
+    and $x$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The relative ratio factors over bands, $\log C_h=\sum_g\log C_{h,g}$. The
+    relative pin and projection transfer give the conditional pin of each band
+    (\texttt{06-transport.tex} lines 513--531), and the logarithmic passage turns
+    it into the entropy lower bound (lines 495--583). For the energy, the
+    support of each term commutes with every unsplit band, a single band remains
+    at a split leaf (lines 732--735), the skew bound controls its symbol cost
+    (lines 736--748), and Lemma~\ref{lem:transport_energy_block} applies term by
+    term with $\bar Hx=E_0x$ (lines 588--766).
+\end{proof}
+
+\begin{corollary}[Integrated form]\label{cor:replica_transport_integrated}
+    \lean{TensorPower.ReplicaTransport.TransportData.integral_le_log_filteredNormSq_sub}
+    \leanok
+    \uses{lem:transport_integrated_derivative}
+    For $0\le p_0\le p_1\le1$ and every integrable function $L$ on $[0,1]$ with
+    $L(p)\le-\partial_p\log N(p)^2$ for $0<p<1$,
+    $\int_{p_0}^{p_1}L\le\log N(p_0)^2-\log N(p_1)^2$.
+\end{corollary}
+
+\begin{proof}\leanok
+    Integrate the pointwise bound and apply
+    Lemma~\ref{lem:transport_integrated_derivative} (\texttt{06-transport.tex}
+    lines 427--429 and 769--779). Taking $L$ to be the entropy-gain lower bound
+    additionally requires its measurability in $p$, which the source does not
+    address.
+\end{proof}
