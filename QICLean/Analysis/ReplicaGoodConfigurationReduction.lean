@@ -167,7 +167,8 @@ private theorem trace_good_operator (ι : Fin 5 → Type*)
   rw [trace_reindex_kronecker]
   rw [show partialTraceRight ((replicaGoodConfigurationMarginal ι Ω k B u).submatrix
     (goodPairConfigEquiv ι Bᶜ.card).symm (goodPairConfigEquiv ι Bᶜ.card).symm) =
-      replicaGoodPairMarginal Ω k B u from partialTraceRight_replicaGoodConfigurationMarginal ι Ω k B u]
+      replicaGoodPairMarginal Ω k B u from
+      partialTraceRight_replicaGoodConfigurationMarginal ι Ω k B u]
 
 /-- The nonnegative physical merge-deficit projection fixes the actual full
 density of the good copies. All good middle physical copies remain present;
