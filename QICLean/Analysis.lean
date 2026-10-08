@@ -109,6 +109,11 @@ import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
+import QICLean.Analysis.ReplicaDefect
+import QICLean.Analysis.ReplicaExcitationDecomposition
+import QICLean.Analysis.ReplicaExcitationSymmetry
+import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
+import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ResolventDefect
 import QICLean.Analysis.ResolventDefectIntegral
 import QICLean.Analysis.ResolventFunctionalCalculus
@@ -134,6 +139,7 @@ import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SkewFromPhases
+import QICLean.Analysis.SpectralCutoffMass
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker

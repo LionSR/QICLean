@@ -1,0 +1,62 @@
+\section{Symmetry of exact excitation components}
+\label{sec:replica_excitation_symmetry}
+
+Let $\mathcal H=\mathbb C^A$, let $\Omega\in\mathcal H$, and write $R_B$
+for the exact excitation matrix indexed by $B\subseteq\{1,\ldots,k\}$.
+When $\Omega$ is unit, this is the orthogonal projection of
+Definition~\ref{def:replica_excitation_projection}.
+Let $U_\sigma$ permute the physical copies by $\sigma\in S_k$.
+The following identities supply the component symmetries used in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Covariance of exact excitation sectors]
+\label{thm:replica_excitation_covariance}
+\lean{Matrix.permOp_mul_replicaExcitationProjection}
+\leanok
+\uses{def:replica_excitation_projection}
+For every $B$ and $\sigma$, $U_\sigma R_B=R_{\sigma B}U_\sigma$.
+\end{theorem}
+\begin{proof}
+\leanok
+Each matrix entry of $R_B$ is the product of one-copy entries of
+$I-|\Omega\rangle\langle\Omega|$ at the indices in $B$ and of
+$|\Omega\rangle\langle\Omega|$ at the remaining indices.
+Reindexing this product by $\sigma^{-1}$ gives
+$R_{\sigma B}(\sigma x,\sigma y)=R_B(x,y)$, which is the stated covariance.
+\end{proof}
+
+\begin{theorem}[Stabilizer symmetry with auxiliary systems]
+\label{thm:replica_excitation_auxiliary_commute}
+\lean{Matrix.commute_replicaExcitationProjection_kronecker_of_image_eq}
+\leanok
+\uses{thm:replica_excitation_covariance}
+If $\sigma B=B$, then $R_B\otimes I_{\mathcal K}$ commutes with
+$U_\sigma\otimes M$ for every operator $M$ on any finite-dimensional
+auxiliary space $\mathcal K$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_excitation_covariance}
+Covariance gives $U_\sigma R_B=R_BU_\sigma$. The two tensor products
+therefore multiply in either order to $(R_BU_\sigma)\otimes M$.
+\end{proof}
+
+\begin{theorem}[Symmetry inherited by an excitation component]
+\label{thm:replica_excitation_preserves_fixed}
+\lean{Matrix.replicaExcitationProjection_kronecker_mulVec_preserves_fixed}
+\leanok
+\uses{thm:replica_excitation_auxiliary_commute}
+Suppose $\sigma B=B$ and $(U_\sigma\otimes M)v=v$.
+Then the component $v_B=(R_B\otimes I_{\mathcal K})v$ satisfies
+$(U_\sigma\otimes M)v_B=v_B$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_excitation_auxiliary_commute}
+Commute the two operators and apply the assumed fixed-vector identity.
+\end{proof}
+
+For a simultaneously symmetric vector, this proves separate symmetry under
+permutations within $B$ and within its complement. Taking $\sigma$ to be the
+identity and $M$ to be an auxiliary label projector preserves its given label.
+All three identities include $k=0$ and require no normalization of $\Omega$.
