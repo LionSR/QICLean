@@ -15,10 +15,10 @@ The transport estimate consumes two results of the replica section of the area-l
 * the skew bound of Lemma 6.5 (`lem:symbol`, display `replicas:skew-bound`,
   `05-replicas.tex` lines 615--660), in the form used at a split leaf.
 
-Both lemmas belong to the replica section of the source and are not formalized yet. They
-are recorded here as propositions on the band metric of `ReplicaTransport.Setup`, and the
-transport estimate is proved assuming them; once the replica-metric lemmas are formalized,
-both propositions are discharged by applying them.
+Both are recorded here as propositions on the band metric of `ReplicaTransport.Setup`, and the
+transport estimate is proved assuming them. `RelativePinBound` is proved from the relative
+coherent pin in `ReplicaTransport.RelativePinBound` (`relativePinBound`); `SplitSkewBound`
+remains a hypothesis.
 
 `SplitSkewBound` is the case of Lemma 6.5 used at a split leaf: the
 designated support meets `Y` and exactly one outer part. The source lemma requires only
