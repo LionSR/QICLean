@@ -346,3 +346,108 @@ $m_s(u)=\sin(2\pi s)/(\cosh(2\pi u)+\cos(2\pi s))$.
     modulus is $(2c(c+1))^{-1/2}\le(\sqrt2\,c)^{-1}$.
 \end{proof}
 
+
+\subsection{The filtered transport path}
+
+This subsection records the matrix part of the entropy and energy transport
+estimate of the area-law paper (Proposition 7.4, \texttt{06-transport.tex}
+lines 377--434). Fix a mean tree $T$ with leaves $h$ and positive weights
+$w_h$, a mean tree $S_h$ for every $h$, positive definite old inputs $A_h$ and
+new inputs $A'_{h,c}$. Let $B_h$ be the root of $S_h$ on the inputs $A'_{h,c}$
+and $C_h=A_h^{-1/2}B_hA_h^{-1/2}$. For $0\le p\le1$ the interpolated tree
+replaces each leaf $h$ of $T$ by the vertex $A_h\#_pB_h$; let $M(p)$ be its
+root. For a nonzero vector $x$ put $N(p)=\|M(p)^{-1/4}x\|$,
+$v(p)=M(p)^{-1/4}x/N(p)$, and define the transport states
+$\sigma_{j,u}=\Phi_j^\dagger\bigl(|M^{-iu}v\rangle\langle M^{-iu}v|\bigr)$, where
+$\Phi_j$ are the normalized derivative maps of the interpolated tree.
+
+\begin{lemma}[Exact derivative of the filtered norm]\label{lem:transport_exact_derivative}
+    \lean{Matrix.Transport.hasDerivAt_neg_log_filteredNormSq,
+      Matrix.Transport.hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt,
+      Matrix.Transport.exists_hasDerivAt_interpPath,
+      Matrix.MeanTree.weight_interpTree_old, Matrix.MeanTree.weight_interpTree_new,
+      Matrix.Transport.posSemidef_transportState, Matrix.Transport.trace_transportState}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps, cor:mean_tree_leaf_states, lem:sinh_ratio_fourier}
+    The transport states are density matrices. For $0<p<1$,
+    \[
+      -\partial_p\log N(p)^2=\sum_hw_h\int_{\mathbb R}m_{1/4}(u)
+      \operatorname{Tr}\bigl(\sigma_{(h,\mathrm{old}),u}\log C_h\bigr)\,du .
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    The terminal weights of the interpolated tree are $w_h(1-p)$ at the old leaf
+    and $w_hp\,\pi_c^{S_h}$ at the new leaves. Differentiating the vertex
+    $A_h\#_pB_h=A_h^{1/2}C_h^pA_h^{1/2}$ and the tree gives
+    $M^{-1/2}\partial_pMM^{-1/2}=\sum_hw_h\Phi_{(h,\mathrm{old})}(\log C_h)$
+    (\texttt{06-transport.tex} lines 442--468). In an eigenbasis of $M$ the
+    derivative of $\|M^{-1/4}x\|^2$ has coefficients
+    $g_{1/4}(\log x_r-\log x_t)$, and the Fourier formula for $g_{1/4}$ turns
+    them into the integral over $u$ (lines 470--489). Passing each map to its
+    trace adjoint gives the stated form (lines 490--494).
+\end{proof}
+
+\begin{lemma}[Integration over closed subintervals]\label{lem:transport_integrated_derivative}
+    \lean{Matrix.Transport.log_filteredNormSq_sub_eq_integral,
+      Matrix.Transport.continuous_filteredNormSq_interpPath,
+      Matrix.Transport.filteredNormSq_pos}
+    \leanok
+    \uses{lem:transport_exact_derivative}
+    The function $N$ is continuous and positive on $[0,1]$. For
+    $0\le p_0\le p_1\le1$ the right side of the exact derivative is integrable
+    on $[p_0,p_1]$, and its integral equals
+    $\log N(p_0)^2-\log N(p_1)^2$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The derivative is bounded uniformly in $p$ by
+    $\sum_hw_h\,\|\log C_h\|\int m_{1/4}$, since the transport states are
+    density matrices. The fundamental theorem of calculus applies to the
+    continuous function $-\log N^2$ (\texttt{06-transport.tex} lines 769--779).
+\end{proof}
+
+\begin{lemma}[Transport states and the commutant]\label{lem:transport_states_commutant}
+    \lean{Matrix.Transport.mul_transportState, Matrix.Transport.mulVec_filteredVector}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps}
+    If $Z$ commutes with every input of a mean tree and fixes the vector $v$, then
+    $Z\sigma_{j,u}=\sigma_{j,u}$ for every leaf $j$ and every real $u$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every map in the construction of the normalized derivative maps is a right
+    module map over $Z$, so $\Phi_j(XZ)=\Phi_j(X)Z$ and dually
+    $\Phi_j^\dagger(ZY)=Z\Phi_j^\dagger(Y)$. The matrix $Z$ commutes with the root
+    and hence fixes $M^{-iu}v$.
+\end{proof}
+
+\begin{lemma}[Energy of the filtered vector for one term]\label{lem:transport_energy_block}
+    \lean{Matrix.Transport.re_star_dotProduct_mulVec_le_energy,
+      Matrix.Transport.exists_auxBlock, Matrix.Transport.norm_sq_errorVec_le,
+      Matrix.Transport.nsq_conj_sub_le}
+    \leanok
+    \uses{thm:mean_tree_leaf_maps_blocks, lem:sinh_ratio_fourier}
+    Let a mean tree have positive weights $\pi_j$, positive definite inputs $A_j$
+    and root $M$, let $h\ge0$ commute with $A_j$ for every leaf $j$ outside a finite
+    set $S$, and put $W=\sum_{j\in S}\pi_j$. Let $\mathsf D_j$ be the skew square of
+    $O_j=A_j^{-1/2}hA_j^{1/2}$. For every vector $v$,
+    \[
+      \langle v,hv\rangle\le2\operatorname{Re}\langle M^{-1/4}v,hM^{1/4}v\rangle
+      +\tfrac32W\sum_{j\in S}\pi_j\int_{\mathbb R}m_{1/4}(u)
+      \operatorname{Tr}(\sigma_{j,u}\mathsf D_j)\,du .
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    Factor $h=T^*T$ with $T=h^{1/2}$; the source factors through the last copy,
+    and any factorization serves. An auxiliary second diagonal block $B_j$ gives
+    $Y_j^*Z_j=O_j$ with $(Y_j-Z_j)^*(Y_j-Z_j)=\mathsf D_j$, and $Y_j=Z_j$ off $S$
+    (\texttt{06-transport.tex} lines 604--656). On the doubled space a
+    block-rotation identity writes the rotated commutator as
+    $\sum_{j\in S}\pi_j\widehat\Phi_j(K_j)$. The Fourier densities $q_\pm$,
+    Cauchy--Schwarz and the Schwarz inequality for the unital two-positive leaf
+    maps bound both error vectors by $\tfrac14W\sum_{j\in S}\pi_j\int
+    m_{1/4}\operatorname{Tr}(\sigma_{j,u}\mathsf D_j)$ (lines 658--729), and the
+    similarity pairing closes the estimate (lines 730--766).
+\end{proof}

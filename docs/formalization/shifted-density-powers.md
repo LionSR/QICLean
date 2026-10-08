@@ -46,7 +46,7 @@ The inequalities bI ≤ x + bI ≤ (1 + b)I imply the spectral interval. Scalar
 monotonicity of t^r on that interval and the norm estimate for continuous
 functional calculus then give both operator-norm bounds.
 
-## Scope and provenance
+## Scope and attribution
 
 These are elementary spectral and compactness ingredients. This module does
 not define the native ordered product or its variational objective, prove
@@ -57,15 +57,7 @@ is assigned by assuming continuity, compactness, norm estimates, or an already
 minimizing tuple in place of proving those missing steps.
 
 The proofs are independently written using existing QICLean and Mathlib
-results. No OpenAI Lean proof text is copied or adapted. The separate
-`docs/provenance/openai-math.d/shiftedDensityPowers8767.json` shard records the
-manuscript as mathematical motivation and preserves the distinction from
-upstream code reuse. The immutable source snapshot
-`81ca38e523242fe7d1be1195f3e974c7a5da6134` retained planned records. The
-evidence commit activates all seven rows against that snapshot, using the
-original successful build and axiom logs, matching source hashes, and an
-identical-tree attestation. Full repository CI remains a separate acceptance
-gate; the local evidence does not claim an aggregate build.
+results. No OpenAI Lean proof text is copied or adapted.
 
 The blueprint entry is
 `blueprint/src/chapter/ch01_shifted_density_powers.tex`, included from the

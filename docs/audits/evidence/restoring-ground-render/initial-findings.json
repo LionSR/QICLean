@@ -1,0 +1,83 @@
+{
+  "source_revision": "457c011a74fd255f06d63d342c329067309c467b",
+  "status": "initial presentation findings",
+  "missing_internal_anchors": [],
+  "missing_label_anchors": [
+    "eq:restoring_ground_definition"
+  ],
+  "tex_box_reference_warnings": [
+    "Overfull \\hbox (2.0942pt too wide) in paragraph at lines 31--34"
+  ],
+  "counts": {
+    "production_modules": 7,
+    "production_lines": 1740,
+    "public_declarations": 76,
+    "new_public_declarations": 22,
+    "context_declarations": 4,
+    "theorems": 53,
+    "definitions": 23,
+    "source_inspected_consumers": 44,
+    "source_inspected_axiom_guards": 76,
+    "blueprint_entries": 29,
+    "proofs": 24,
+    "checked_markers": 53,
+    "equation_labels": 25,
+    "all_labels": 60,
+    "pdf_pages": 12,
+    "html_pages": 6,
+    "pdf_declaration_links": 80,
+    "html_chapter_declaration_links": 80,
+    "html_all_declaration_links": 240,
+    "pdf_internal_link_annotations": 37,
+    "explicit_dependency_edges": 44,
+    "diagrams": 0
+  },
+  "artifact_sha256": {
+    "blueprint/src/print.pdf": "326eef0684a5be0acea76ca9671c380d6867bada25818aae7e259bfe4dd119ae",
+    "blueprint/src/print.aux": "3867731b27b61a77eafc3a181e854614b517e6438c4453fa7cc5afe31fc1daef",
+    "dependency-graph.dot": "da6b0664b75660a82741511a03c8a4b2444ec57a9ea146509f7436713e49b3fb",
+    "blueprint/web/ch-restoring_ground_focus.html": "3f6720929a6fae43dd47abf65b2e681f37c14d5706a9136192b6e1fd762a08a3",
+    "blueprint/web/dep_graph_chapter_1.html": "e507b693ac9fe3335d0493263bfd8c1c98bd2b0e823d05f4aa9123bea4b38d5a",
+    "blueprint/web/dep_graph_document.html": "25a8adf2a448240eed6da6669ac841ef619314e80edf56cf254824d397c0e2df",
+    "blueprint/web/dep_graphs.html": "dcf7e2b96ec0c46434d9fedf3086578d4ee8c10f13c4921dc9ec59b8215d1b8b",
+    "blueprint/web/index.html": "b5b068589a635c2d973dcf3c9a6e87f33d782f3283c52c44be12b30dc73a1c9d",
+    "blueprint/web/sect0001.html": "9c10110d604f7759017dfbe814bbdeca9df0491f3a1170587420e1474cd78fd0",
+    "pdf-pages/page-01.png": "71fa102d47acedc070814368696fea4a09a9eb25707b2282e548ad306c249abb",
+    "pdf-pages/page-02.png": "61a73e0cdcc097bec72dc6aad095962d5af2d6059b2a54e290ba37343f71bc06",
+    "pdf-pages/page-03.png": "a67438fc6a02a5a6c874e1e603187527b1fed95873ee8768ffa62b57cc209248",
+    "pdf-pages/page-04.png": "371604d466cdba2eac58d699ad4b5d4dd84d1313f8faba2b9f9966f56f5d781c",
+    "pdf-pages/page-05.png": "f50a4e8814dd52c91602e74bd0c2bce9878dcb5782bb9ac9f97064c66d35db2a",
+    "pdf-pages/page-06.png": "5dd16fe5c311ba2060c6019e3166bfcac730dc0095e77a242d311859526eb0d5",
+    "pdf-pages/page-07.png": "0234be41eb6b3d2283550da081a08879e85064566e9fb2a3c831136069d0128c",
+    "pdf-pages/page-08.png": "25f4e63da71519ad743211b4e9940427fee4836d101b735c549e4df5cdd85a38",
+    "pdf-pages/page-09.png": "88d62b24f81c1272fbf1264ecc5a51f39da49d801db3873825c8588db4cc9a00",
+    "pdf-pages/page-10.png": "32745810a56f8414311823c41a695e6304d5658478307a61a0d7d251db7634e9",
+    "pdf-pages/page-11.png": "00551462c0711c5b239dfb67b6ba24f9ea1974304f625267c39288e8e349e1ed",
+    "pdf-pages/page-12.png": "4234e884b2500be90da80981b5caed6056630dc8a8148337990cbf962606610f"
+  },
+  "raw_log_sha256": {
+    "pdf-build.log": "b91924421b40f66beaf4161b4371a8564d3a07e5559291979c67ae81c7f6db4a",
+    "web-build.log": "562e44729bddb630b1cd5174cfd078776c7e1da5fa90b95bda47937afb91ced6",
+    "pdf-raster.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verify-render.log": "8fe5477bbb9f1250128df5366db56af3664ddfd698bb50dcca2152c8759c59a4",
+    "blueprint/src/print.log": "1ccf70cee349a88689907987f4a55c0dc89157403c7d7b98ad990a904a0dd11f",
+    "historical-54-check.log": "b296cb1340a9d2e559bc7cc4eff502224caef3e0a4c99b89930a9dc5c133db6e",
+    "core-check.log": "3639bb7e17afa9b5531b52f5637fd125dde02624978a5de959f4e215941659f9"
+  },
+  "record_sha256": {
+    "focus-manifest.json": "98e0a3f3c400beb5c135556100cc253f02f944cc6e47eedef9ef4306ca1640bc",
+    "verification.json": "2111682facc1e13d16f96c3573b2895368a4a204a51cff6ed7fdfa224c1c8e01",
+    "initial-prepare_fixture.py": "e05feac9313febb2641a35fa3313174fa3d6dc8577529c6b87a6fe1bec2e9877",
+    "initial-verify_render.py": "446c6a9797a67a69de3835afae7665a855762967bc6759ac460c1abd4b753c1d"
+  },
+  "retained_local_directory": "${WORKSPACE}/restoring-ground-focused-initial",
+  "findings": [
+    "A 2.0942pt overfull theorem-heading/condition line in restoring_coefficient_bound.tex.",
+    "The later-row label eq:restoring_ground_definition is absent as a static HTML ID. No dangling href currently refers to it."
+  ],
+  "inspection": "The three ground/coefficient mathematical pages were directly viewed; links, mathematical serialization and graph reachability passed except the recorded label/box findings.",
+  "final_resolution": {
+    "source_revision": "90872eab1782af4b50e2f7847bf278cac0f58280",
+    "status": "passed"
+  }
+}

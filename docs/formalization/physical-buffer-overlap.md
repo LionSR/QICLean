@@ -67,7 +67,7 @@ relative-entropy theorem explicitly normalizes `Ω`; its splitting step and
 unit-vector distance expansion depend on that hypothesis. The explicit `b ≥ 0`
 hypothesis matches the current declaration.
 
-## Scope and provenance
+## Scope and attribution
 
 The new proofs are independently written from the pinned mathematical source and
 existing Mathlib/QICLean interfaces. Uhlmann's theorem and purification splitting

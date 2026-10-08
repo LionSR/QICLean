@@ -386,3 +386,583 @@ lemma~\cite[Lemma 6.1]{OpenAI2026AreaLaw}.
     compatible, so $R=d_\lambda d_\mu/d_\nu\ge1$ and $R^b\le R$. Summing,
     the moment is at most $\sum_\nu m_\nu\le(k+1)^{q^2}$.
 \end{proof}
+
+\section{The dimension formulas}
+
+The first part of the Schur-label lemma identifies the labels of $S_k$
+occurring in $(\C^q)^{\otimes k}$ with the partitions $\lambda\vdash k$ of
+length at most $q$ and states the dimension formulas
+\[
+    \dim V^{(q)}_\lambda=\prod_{i<j}\frac{l_i-l_j}{j-i},\qquad
+    d_\lambda=\frac{k!\prod_{i<j}(l_i-l_j)}{\prod_il_i!},\qquad
+    l_i=\lambda_i+q-i.
+\]
+The identification of the labels with partitions is proved in the section on
+Schur--Weyl duality below. The following lemmas concern the right-hand sides of
+these formulas.
+
+\begin{lemma}[Stirling bounds]
+    \label{lem:stirling_log_factorial}
+    \lean{Real.log_factorial_sub_nonneg, Real.log_factorial_sub_le,
+        Real.mul_log_add_sub_bounds}
+    \leanok
+    For every $n\ge0$,
+    $0\le\log n!-(n\log n-n)\le\log(n+2)+1$. For natural numbers $a,s$,
+    $0\le(a+s)\log(a+s)-a\log a\le s(\log(a+s)+1)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The lower bound is Stirling's inequality
+    $n!\ge\sqrt{2\pi n}(n/e)^n$. The upper bound follows because the Stirling
+    sequence $n!/(\sqrt{2n}(n/e)^n)$ decreases and equals $e/\sqrt2$ at
+    $n=1$. For the second statement use $\log(1+s/a)\le s/a$.
+\end{proof}
+
+\begin{lemma}[Entropy asymptotics of the dimension formula]
+    \label{lem:hook_formula_entropy}
+    \lean{Partition.hookFormula, Partition.entropyTerm,
+        Partition.abs_log_hookFormula_sub_le,
+        Partition.abs_log_hookFormula_sub_le_mul_log,
+        Partition.weylFormula, Partition.weylFormula_le}
+    \leanok
+    \uses{lem:stirling_log_factorial}
+    Let $\lambda\vdash k$ have length at most $q$, and let $D_\lambda$ be the
+    right-hand side of the formula for $d_\lambda$. Then
+    \[
+        |\log D_\lambda-kH(\lambda/k)|\le(q^2+q+1)\bigl(\log(k+q+2)+1\bigr),
+    \]
+    so $\log D_\lambda=kH(\lambda/k)+O_q(\log(k+2))$. The right-hand side of the
+    formula for $\dim V^{(q)}_\lambda$ is at most $(k+q)^{q^2}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $\log D_\lambda=\log k!+\sum_{i<j}\log(l_i-l_j)-\sum_i\log l_i!$ and
+    $kH(\lambda/k)=k\log k-\sum_i\lambda_i\log\lambda_i$. The difference is the
+    sum of the Stirling errors, the Vandermonde term, the shifts
+    $\sum_i(l_i-\lambda_i)\le q^2$, and $\sum_i(\lambda_i\log\lambda_i-l_i\log l_i)$;
+    each is bounded by Lemma~\ref{lem:stirling_log_factorial} using
+    $1\le l_i-l_j\le l_i\le k+q$.
+\end{proof}
+
+\begin{lemma}[Recursions for the dimension formula]
+    \label{lem:hook_recursions}
+    \lean{Partition.sum_mul_prod_sub_one_div, Partition.sum_prod_add_one_div,
+        Partition.hookFormula_update_sub_mul, Partition.hookFormula_update_add_mul,
+        Partition.hookFormula_eq_sum_remove, Partition.sum_hookFormula_add,
+        Partition.hookFormula_eq_of_le}
+    \leanok
+    Let $\lambda$ be a partition of $k\ge1$ padded to length $q$ and $D_\lambda$ the
+    right-hand side of the formula for $d_\lambda$. Then
+    $D_\lambda=\sum_iD_{\lambda-e_i}$, the sum over the rows from which a box can be
+    removed, and $D_{\lambda-e_i}/D_\lambda=(l_i/k)\prod_{j\ne i}(l_i-1-l_j)/(l_i-l_j)$.
+    If the last row of $\lambda$ is empty, $\sum_iD_{\lambda+e_i}=(k+1)D_\lambda$, the
+    sum over the rows to which a box can be added. Appending empty rows does not
+    change $D_\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Changing one shifted part changes the Vandermonde product by the factor
+    $\prod_{j\ne i}(c-l_j)/(l_i-l_j)$; terms for rows that cannot lose or gain a box
+    vanish because two shifted parts coincide. The recursions reduce to the
+    interpolation identities
+    \[
+        \sum_i t_i\prod_{j\ne i}\frac{t_i-t_j-1}{t_i-t_j}=\sum_it_i-\binom q2,
+        \qquad
+        \sum_i\frac{\prod_{j\ne i_0}(t_i+1-t_j)}{\prod_{j\ne i}(t_i-t_j)}=1
+    \]
+    for distinct nodes, which follow from Lagrange interpolation: the sum
+    $\sum_iP(t_i)/\prod_{j\ne i}(t_i-t_j)$ is the coefficient of $X^{q-1}$ in any
+    polynomial $P$ of degree less than $q$; for the first identity apply this to
+    $X\bigl(\prod_j(X-t_j-1)-\prod_j(X-t_j)\bigr)+q\prod_j(X-t_j)$, whose top
+    coefficients are computed from $e_1$ and $e_2$ of the nodes.
+\end{proof}
+
+\section{Schur--Weyl duality and highest weights}
+
+For a matrix $A$ on $\C^q$ write $A^{(j)}$ for $A$ acting on the $j$-th copy of
+$(\C^q)^{\otimes k}$ and $\Delta(A)=\sum_jA^{(j)}$ for the diagonal action of the
+general linear Lie algebra. The matrix units give the operators
+$E_{ab}=\Delta(e_{ab})$. The identification of the labels with partitions rests
+on the half of Schur--Weyl duality proved below, cited in the area-law paper
+from the textbook of Etingof and coauthors.
+
+\begin{theorem}[Schur--Weyl duality]
+    \label{thm:schur_weyl_commutant}
+    \lean{TensorPower.tensorPow_mem_diagAlgebra, TensorPower.symTensor_eq_sum,
+        TensorPower.commutant_le_diagAlgebra, TensorPower.commutant_eq_diagAlgebra}
+    \leanok
+    The operators on $(\C^q)^{\otimes k}$ commuting with the copy permutations
+    form the algebra generated by the operators $\Delta(A)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The operators $\Delta(A)$ commute with the copy permutations. Conversely,
+    $A^{\otimes k}=A^{(1)}\cdots A^{(k)}$ is the top elementary symmetric
+    polynomial of the commuting family $A^{(j)}$, hence by Newton's identities a
+    polynomial in the power sums $\sum_j(A^{(j)})^m=\Delta(A^m)$. Polarization,
+    \[
+        \sum_{\sigma\in S_k}B_{\sigma(1)}\otimes\cdots\otimes B_{\sigma(k)}
+        =\sum_{S\subseteq\{1,\dots,k\}}(-1)^{k-|S|}
+            \Bigl(\sum_{i\in S}B_i\Bigr)^{\otimes k},
+    \]
+    follows by expanding the right side and using
+    $\sum_{S\supseteq T}(-1)^{k-|S|}=[T=\{1,\dots,k\}]$. Finally an operator
+    commuting with the copy permutations is the average of its conjugates,
+    a combination of symmetrizations of tensor products of matrix units.
+\end{proof}
+
+A configuration $x$ of the $k$ copies has weight
+$\mathrm{wt}(x)_a=\#\{j:x_j=a\}$, and $E_{ab}$ maps vectors of weight $\mu$ to
+vectors of weight $\mu+e_a-e_b$. A highest-weight vector is a nonzero weight
+vector annihilated by the raising operators $E_{ab}$, $a<b$. Weights are
+compared lexicographically.
+
+\begin{theorem}[Highest weights]
+    \label{thm:highest_weight}
+    \lean{TensorPower.exists_isHighestWeight,
+        TensorPower.IsIrreducible.mem_span_of_isWeightVector,
+        TensorPower.IsIrreducible.toLex_le,
+        TensorPower.IsIrreducible.weight_eq_of_isHighestWeight,
+        TensorPower.IsIrreducible.antitone_of_isHighestWeight}
+    \leanok
+    \uses{thm:schur_weyl_commutant}
+    Every nonzero subspace of $(\C^q)^{\otimes k}$ invariant under the commutant
+    of the copy permutations contains a highest-weight vector. If the subspace
+    is irreducible and contains a highest-weight vector $v$ of weight $\mu$,
+    then its vectors of weight $\mu$ are the multiples of $v$, all its weights
+    are lexicographically at most $\mu$, every highest-weight vector in it has
+    weight $\mu$, and $\mu$ is weakly decreasing.
+\end{theorem}
+
+\begin{proof}\leanok
+    A weight vector of lexicographically maximal weight is annihilated by the
+    raising operators. For irreducibility, the span $L$ of the vectors
+    $E_{a_1b_1}\cdots E_{a_rb_r}v$ with all $a_i>b_i$ is invariant under every
+    $E_{ab}$, by induction on $r$ using
+    $[E_{ab},E_{cd}]=\delta_{bc}E_{ad}-\delta_{ad}E_{cb}$; by
+    Theorem~\ref{thm:schur_weyl_commutant} it is invariant under the commutant,
+    hence equal to the subspace. Each nonempty lowering product strictly
+    lowers the weight. Permuting the basis of $\C^q$ on every copy commutes with
+    the copy permutations and permutes the weights; if $\mu_a<\mu_b$ for some
+    $a<b$, the transposition of $a$ and $b$ would produce a weight above $\mu$.
+\end{proof}
+
+\section{The labels of the symmetric group are partitions}
+
+\begin{lemma}[Counting labels]
+    \label{lem:count_labels}
+    \lean{IrrepLabel.card_eq_card_conjClasses, Equiv.Perm.nat_card_conjClasses,
+        Partition.card_padded_self}
+    \leanok
+    The number of labels of a finite group is its number of conjugacy classes.
+    The conjugacy classes of $S_k$ correspond to the partitions of $k$, which
+    correspond to the weakly decreasing vectors of $k$ nonnegative integers
+    summing to $k$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The centre of $\C[G]$ is the algebra of tuples of scalars of the
+    Artin--Wedderburn decomposition, and also the space of class functions. Two
+    permutations are conjugate exactly when they have the same cycle type, and
+    every partition is a cycle type. A partition $p$ gives the decreasing vector
+    $i\mapsto\#\{\text{parts}>i\}$ of its conjugate, and a decreasing vector gives
+    the partition formed by its nonzero entries; both maps are injective, since a
+    decreasing vector takes values at least $v$ on an initial segment.
+\end{proof}
+
+\begin{lemma}[Column antisymmetrization]
+    \label{lem:column_antisymmetrizer}
+    \lean{TensorPower.isHighestWeight_columnVector}
+    \leanok
+    \uses{thm:highest_weight}
+    Let $\mu$ be a partition of $k$ padded to length $q$. Place the copies of
+    $(\C^q)^{\otimes k}$ in the boxes of the Young diagram of $\mu$, let $x$ assign
+    to each copy the row of its box, and let $C_\mu$ be the group of permutations
+    of the copies preserving every column. Then
+    $\sum_{\sigma\in C_\mu}\operatorname{sgn}(\sigma)U(\sigma)e_x$ is a
+    highest-weight vector of weight $\mu$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every term has weight $\mu$, and the coefficient of $e_x$ is one because a
+    column-preserving permutation fixing $x$ also preserves rows. For $a<b$ the
+    operator $E_{ab}$ commutes with the antisymmetrization and changes the value
+    of a copy in row $b$ to $a$; since $\mu_a\ge\mu_b$ the same column has a copy
+    in row $a$, and the transposition of these two copies fixes the new
+    configuration and reverses the sign, so the antisymmetrization vanishes.
+\end{proof}
+
+For a label $\lambda$ of $S_k$ the multiplicity space $V_\lambda$ in
+$(\C^q)^{\otimes k}$ is the range of the image of a diagonal matrix unit of the
+$\lambda$ factor. It is invariant under the commutant of the copy permutations
+and, when nonzero, irreducible; its highest weight is the \emph{shape} of
+$\lambda$.
+
+\begin{theorem}[Labels of the symmetric group]
+    \label{thm:labels_are_partitions}
+    \lean{TensorPower.isIrreducible_multSpace, TensorPower.labelShape,
+        TensorPower.labelShape_bijective}
+    \leanok
+    \uses{thm:highest_weight, lem:count_labels, lem:column_antisymmetrizer}
+    The shape of a label of $S_k$ in $(\C^k)^{\otimes k}$ is a partition of $k$,
+    and this is a bijection between the labels of $S_k$ and the partitions
+    of $k$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The orbit of a configuration with distinct entries carries the regular
+    representation, so every label occurs. A highest-weight vector of weight
+    $\mu$ with a nonzero component of label $\lambda$ yields, through a matrix
+    unit, a highest-weight vector of weight $\mu$ in $V_\lambda$, so $\mu$ is the
+    shape of $\lambda$. Applied to Lemma~\ref{lem:column_antisymmetrizer}, every
+    partition is a shape. Lemma~\ref{lem:count_labels} gives equal cardinalities.
+\end{proof}
+
+\begin{theorem}[Labels occurring in a tensor power]
+    \label{thm:schur_weyl_labels}
+    \lean{TensorPower.multSpace_ne_bot_iff, TensorPower.shape_eq_labelShape,
+        TensorPower.labelProj_ne_zero_iff}
+    \leanok
+    \uses{thm:labels_are_partitions}
+    The label projector $\pi^\lambda$ on $(\C^q)^{\otimes k}$ is nonzero exactly
+    when the partition $\lambda$ has at most $q$ rows, and then the highest
+    weight of $V^{(q)}_\lambda$ is $\lambda$.
+\end{theorem}
+
+\begin{proof}\leanok
+    For $q\le q'$ the inclusion $\C^q\subseteq\C^{q'}$ induces an embedding of
+    tensor powers commuting with the copy permutations and mapping highest-weight
+    vectors of weight $\mu$ to highest-weight vectors of weight $\mu$ padded with
+    zeros. Compare with $q=k$, using Lemma~\ref{lem:column_antisymmetrizer} for
+    the converse.
+\end{proof}
+
+\section{Branching and the dimension formula}
+
+Let $S_{k-1}\subseteq S_k$ permute the first $k-1$ copies. For labels $\lambda$ of
+$S_k$ and $\nu$ of $S_{k-1}$, let $c(\lambda,\nu)$ be the multiplicity of $\nu$ in
+the restriction of $\lambda$, the rank of the image of a minimal idempotent of the
+$\nu$ factor of $\C[S_{k-1}]$ in the $\lambda$ factor of $\C[S_k]$.
+
+\begin{lemma}[Restriction]
+    \label{lem:restriction}
+    \lean{IrrepLabel.branchMult, IrrepLabel.dim_eq_sum_branchMult, IrrepLabel.sum_dim_sq,
+        PermutationRepresentation.trace_mul_groupAlgebraRep_mul_labelProj,
+        PermutationRepresentation.groupAlgebraRep_mul_labelProj_eq_zero_iff}
+    \leanok
+    For a subgroup $H$ of a finite group $G$, $d_\lambda=\sum_\nu c(\lambda,\nu)d_\nu$
+    and $\sum_\lambda d_\lambda^2=|G|$. For a permutation representation $\rho$ of $G$,
+    an element $a$ of $\C[G]$ with $\lambda$ block $W_\lambda(a)$, and an operator $M$
+    commuting with $\rho$,
+    $d_\lambda\Tr\bigl(M\rho(a)\pi^\lambda\bigr)=\tr W_\lambda(a)\Tr(M\pi^\lambda)$,
+    and $\rho(a)\pi^\lambda=0$ exactly when $\pi^\lambda=0$ or $W_\lambda(a)=0$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The central idempotents of $H$ sum to one, and the block of the central
+    idempotent of $\nu$ has trace $d_\nu c(\lambda,\nu)$. The Artin--Wedderburn
+    isomorphism preserves dimension. Finally
+    $\rho(a)\pi^\lambda=\sum_{ij}W_\lambda(a)_{ij}E^\lambda_{ij}$ and
+    $\Tr(ME^\lambda_{ij})=\delta_{ij}\Tr(ME^\lambda_{00})$.
+\end{proof}
+
+\begin{lemma}[Restriction multiplicities are at most one]
+    \label{lem:pieri}
+    \lean{TensorPower.finrank_hwSpace_fixed_le_one, TensorPower.branchMult_le_one_and}
+    \leanok
+    \uses{thm:schur_weyl_labels, lem:restriction}
+    $c(\lambda,\nu)\le1$, and $c(\lambda,\nu)=0$ unless $\lambda=\nu+e_i$ for some
+    row $i$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Work in $(\C^k)^{\otimes k}=(\C^k)^{\otimes(k-1)}\otimes\C^k$. A highest-weight
+    vector of weight $\mu$ fixed by a minimal idempotent of $\nu$ in the first $k-1$
+    copies has components along the last copy in $V_\nu$, and its last nonzero
+    component, at row $i$, is a highest-weight vector of weight $\mu-e_i$; hence
+    $\mu=\nu+e_i$, and the component at row $i$ determines the vector, so these
+    vectors span at most a line. The images of the matrix units of $\lambda$ applied
+    to a highest-weight vector of $V_\lambda$ embed the range of the block of the
+    minimal idempotent into this space.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 1: the dimension of the symmetric-group factor]
+    \label{thm:dim_eq_hook}
+    \lean{TensorPower.dim_eq_hookFormula, TensorPower.dim_eq_hookFormula_of_rows,
+        TensorPower.branchMult_eq_one_iff}
+    \leanok
+    \uses{lem:pieri, lem:hook_recursions, thm:labels_are_partitions}
+    For a partition $\lambda\vdash k$ padded to any length $q$ at least its number of
+    rows, $d_\lambda=k!\prod_{i<j}(l_i-l_j)/\prod_il_i!$ with $l_i=\lambda_i+q-i$.
+    Moreover $c(\lambda,\nu)=1$ if $\lambda=\nu+e_i$ for some row $i$ and
+    $c(\lambda,\nu)=0$ otherwise.
+\end{theorem}
+
+\begin{proof}\leanok
+    By induction on $k$. From Lemma~\ref{lem:pieri},
+    $d_\lambda=\sum_\nu c(\lambda,\nu)d_\nu\le\sum_iD_{\lambda-e_i}=D_\lambda$, and
+    $\sum_\lambda D_\lambda d_\lambda=\sum_\nu d_\nu\sum_\lambda c(\lambda,\nu)D_\lambda
+    \le\sum_\nu d_\nu\sum_iD_{\nu+e_i}=k\sum_\nu d_\nu^2=k!=\sum_\lambda d_\lambda^2$,
+    using Lemma~\ref{lem:hook_recursions}. Hence $d_\lambda=D_\lambda$, and a missing
+    removable row would make the first inequality strict.
+\end{proof}
+
+\section{The star operator and branch probabilities}
+
+Let $T_k=\sum_{i\ne j}(i\ j)\in\C[S_k]$, the sum over ordered pairs of distinct copies,
+and let $\kappa_\lambda$ be the scalar by which this central element acts on the
+$\lambda$ factor.
+
+\begin{lemma}[Casimir identity]
+    \label{lem:casimir}
+    \lean{IrrepLabel.transpositionSum_mul_comm, IrrepLabel.casimir,
+        TensorPower.sum_gen_mulVec_gen, TensorPower.casimir_eq}
+    \leanok
+    \uses{thm:schur_weyl_labels}
+    On $(\C^q)^{\otimes k}$, $\sum_{a,b}E_{ab}E_{ba}=kq+T_k$. Consequently, for a
+    label $\lambda$ with at most $q$ rows,
+    $\kappa_\lambda=\sum_a\lambda_a^2+\sum_{a<b}(\lambda_a-\lambda_b)-kq$.
+\end{lemma}
+
+\begin{proof}\leanok
+    A matrix unit summed over its index pairs acts on two distinct copies as their
+    transposition and on one copy as $q$ times the identity. On a highest-weight
+    vector of weight $\lambda$ in $V_\lambda$ the diagonal terms give $\lambda_a^2$,
+    and for $a<b$ the commutator $[E_{ab},E_{ba}]=E_{aa}-E_{bb}$ gives
+    $\lambda_a-\lambda_b$, while the terms with $a>b$ vanish.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 6]
+    \label{thm:schur_part6}
+    \lean{TensorPower.schur_branch_compatible_iff, TensorPower.schur_branch_probability,
+        TensorPower.schur_starOp_eigenvalue,
+        PermutationRepresentation.labelProj_mul_labelProj_firstCopies_ne_zero_iff,
+        PermutationRepresentation.trace_mul_labelProj_mul_labelProj_firstCopies,
+        PermutationRepresentation.starOp_mul_branch,
+        TensorPower.dim_div_dim_eq, TensorPower.dim_div_dim_le}
+    \leanok
+    \uses{thm:dim_eq_hook, lem:casimir, lem:restriction}
+    On $(\C^q)^{\otimes k}$, the full label $\lambda$ and the label $\nu$ of the first
+    $k-1$ copies are compatible precisely when $\lambda$ occurs and
+    $\nu=\lambda-e_i$ for a removable row $i$. For every operator $\rho$ commuting
+    with the copy permutations, $d_\lambda\Tr(\rho\pi^\lambda\pi^\nu)=d_\nu
+    \Tr(\rho\pi^\lambda)$ on that branch, so in a permutation-invariant state the
+    branch has conditional probability
+    \[
+        p_{\lambda,i}=\frac{d_{\lambda-e_i}}{d_\lambda}
+        =\frac{l_i}{k}\prod_{j\ne i}\frac{l_i-1-l_j}{l_i-l_j}\le2^q\frac{l_i}{k}.
+    \]
+    The normalized star operator $J=\frac1k\sum_{j<k}U((j\ k))$ acts on the branch by
+    $(\lambda_i-i)/k$, with rows indexed from one.
+\end{theorem}
+
+\begin{proof}\leanok
+    Compatibility and the probability follow from Lemma~\ref{lem:restriction} and the
+    branching rule of Theorem~\ref{thm:dim_eq_hook}; the quotient is the recursion of
+    Lemma~\ref{lem:hook_recursions}, whose factors with $j<i$ are at most two and with
+    $j>i$ at most one. Since $2kJ=T_k-T_{k-1}$, the star operator acts on the branch
+    by $(\kappa_\lambda-\kappa_\nu)/(2k)$, which Lemma~\ref{lem:casimir} evaluates.
+\end{proof}
+
+\begin{lemma}[Character projection]
+    \label{lem:character_projection}
+    \lean{PermutationRepresentation.trace_groupAlgebraRep,
+        PermutationRepresentation.multiplicity_regular, IrrepLabel.card_mul_coeff_centralIdem,
+        PermutationRepresentation.characterSum_eq}
+    \leanok
+    \uses{lem:restriction}
+    For a permutation representation $\rho$ of a finite group $G$ with multiplicities
+    $m_\lambda$, $\tr\rho(a)=\sum_\lambda m_\lambda\tr W_\lambda(a)$. In the regular
+    representation $m_\lambda=d_\lambda$, so $|G|e_\lambda(g)=d_\lambda\tr
+    W_\lambda(g^{-1})$, and
+    $\sum_g\tr\rho(g^{-1})\,g=\sum_\lambda(|G|m_\lambda/d_\lambda)e_\lambda$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first formula is Lemma~\ref{lem:restriction} with $M=1$. In the regular
+    representation the image of a minimal idempotent is a left ideal of
+    $\C[G]$, which the Artin--Wedderburn isomorphism identifies with one row of the
+    $\lambda$ factor. The trace of the regular representation is $|G|$ times the
+    coefficient of the identity; apply it to $e_\lambda g^{-1}$ and compare
+    coefficients.
+\end{proof}
+
+\begin{lemma}[Fixed-point sum]
+    \label{lem:jucys}
+    \lean{TensorPower.fixSum, TensorPower.fixSum_succ}
+    \leanok
+    Let $Z_k=\sum_{\tau\in S_k}f(\tau)\tau$, where $f(\tau)$ is the number of
+    configurations of $(\C^q)^{\otimes k}$ fixed by $\tau$. Then
+    $Z_{k+1}=(q+X_{k+1})Z_k$, with $X_{k+1}=\sum_{j\le k}(j\ k{+}1)$ and $Z_k$
+    embedded through the permutations of the first $k$ copies.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every permutation of $k+1$ copies is uniquely $\sigma$ or $(j\ k{+}1)\sigma$ with
+    $\sigma$ permuting the first $k$ copies; these fix $qf(\sigma)$ and $f(\sigma)$
+    configurations respectively, the last copy being free or determined by copy $j$.
+\end{proof}
+
+\begin{theorem}[Schur-label estimates, part 1]
+    \label{thm:schur_part1_dim}
+    \lean{TensorPower.labelPart_eq_zero_of_labelProj_ne_zero,
+        TensorPower.schur_dim_eq_hookFormula, TensorPower.schur_abs_log_dim_sub_le,
+        TensorPower.schur_multiplicity_eq_weylFormula, TensorPower.multiplicity_eq_weylFormula,
+        TensorPower.sum_branchMult_mul_multiplicity}
+    \leanok
+    \uses{thm:schur_weyl_labels, thm:dim_eq_hook, lem:hook_formula_entropy,
+        lem:character_projection, lem:jucys}
+    The labels occurring in $(\C^q)^{\otimes k}$ are the partitions of $k$ with at most
+    $q$ rows. For them, with $l_i=\lambda_i+q-i$,
+    $\dim V^{(q)}_\lambda=\prod_{i<j}(l_i-l_j)/(j-i)$,
+    $d_\lambda=k!\prod_{i<j}(l_i-l_j)/\prod_il_i!$, and
+    $|\log d_\lambda-kH(\lambda/k)|\le(q^2+q+1)(\log(k+q+2)+1)$. The number of labels and
+    the sum of the multiplicities are at most $(k+1)^{q^2}$ (Lemma~\ref{lem:multiplicity_count}).
+\end{theorem}
+
+\begin{proof}\leanok
+    The labels and $d_\lambda$ come from Theorems~\ref{thm:schur_weyl_labels}
+    and~\ref{thm:dim_eq_hook}, and the asymptotics from
+    Lemma~\ref{lem:hook_formula_entropy}. By Lemma~\ref{lem:character_projection} the
+    fixed-point sum acts on $\lambda$ by $s_\lambda=k!m_\lambda/d_\lambda$. On a branch
+    $\nu=\lambda-e_i$, Lemma~\ref{lem:jucys} and the star-operator eigenvalue of
+    Theorem~\ref{thm:schur_part6} give $s_\lambda=(q+\lambda_i-i)s_\nu=l_is_\nu$.
+    Combined with the quotient $d_\nu/d_\lambda$ of Theorem~\ref{thm:schur_part6} this
+    is the recursion $W_\lambda\prod_{j\ne i}(l_i-1-l_j)=W_\nu\prod_{j\ne i}(l_i-l_j)$ of the
+    Weyl formula, and induction on $k$ gives $m_\lambda=W_\lambda$.
+\end{proof}
+
+\section{The Weyl character formula}
+
+The integral representation of the replica metrics in the proof of Lemma~6.2
+of~\cite{OpenAI2026AreaLaw} uses the characters of the multiplicity spaces. For a label
+$\lambda$ with at most $q$ rows and $y\in\C^q$, let
+$\chi_\lambda(y)=\Tr\bigl(E^\lambda_{00}\operatorname{diag}(y)^{\otimes k}\bigr)$ be the
+character of $V^{(q)}_\lambda$, so that
+$\Tr\bigl(\pi^\lambda\operatorname{diag}(y)^{\otimes k}\bigr)=d_\lambda\chi_\lambda(y)$. For
+exponents $\alpha\in\mathbb N^q$ write $a_\alpha(y)=\det[y_i^{\alpha_j}]$ for the alternant,
+$1_S$ for the indicator vector of a set $S$ of rows, and
+$e_r(y)=\sum_{|S|=r}\prod_{i\in S}y_i$ for the elementary symmetric polynomial.
+
+\begin{lemma}[Vertical-strip rule for alternants]
+    \label{lem:alternant_pieri}
+    \lean{Partition.alternant, Partition.elemSymm, Partition.indic,
+        Partition.alternant_eq_zero_of_eq, Partition.alternant_mul_elemSymm,
+        Partition.alternant_geom, Partition.sum_vand_add_indic,
+        Partition.sum_weylFormula_add_indic}
+    \leanok
+    An alternant with two equal exponents vanishes, and
+    $a_\alpha e_r=\sum_{|S|=r}a_{\alpha+1_S}$. Consequently
+    $\sum_{|S|=r}V(\alpha+1_S)=\binom qrV(\alpha)$ for the Vandermonde product
+    $V(t)=\prod_{i<j}(t_i-t_j)$, and
+    $\sum_{|S|=r}W_{\lambda+1_S}=\binom qrW_\lambda$ for the right-hand side $W$ of the
+    Weyl dimension formula.
+\end{lemma}
+
+\begin{proof}\leanok
+    Expand the determinant over permutations $\sigma$ and reindex $e_r$ by $\sigma$. At
+    $y=(1,z,\dots,z^{q-1})$ the alternant is the Vandermonde determinant in the
+    $z^{\alpha_j}$, equal to $(z-1)^{\binom q2}$ times $\prod_{i<j}(G_{\alpha_j}-G_{\alpha_i})$
+    with $G_n=1+z+\cdots+z^{n-1}$. Cancel the power of $z-1$ in the polynomial ring and set
+    $z=1$, where $G_n=n$ and $e_r=\binom qr$.
+\end{proof}
+
+\begin{lemma}[The exterior power]
+    \label{lem:exterior_character}
+    \lean{TensorPower.leftCopies, TensorPower.rightCopies, TensorPower.splitOp,
+        TensorPower.groupAlgebraRep_leftCopies, TensorPower.groupAlgebraRep_rightCopies,
+        TensorPower.tensorPow_eq_splitOp, TensorPower.trace_splitOp, TensorPower.antisym,
+        TensorPower.antisym_mul_antisym, TensorPower.trace_antisym_mul_tensorPow}
+    \leanok
+    Let $A_r=\frac1{r!}\sum_{\tau\in S_r}\operatorname{sgn}(\tau)\tau$. Then $A_r^2=A_r$ and
+    $\Tr\bigl(A_r\operatorname{diag}(y)^{\otimes r}\bigr)=e_r(y)$. On $(\C^q)^{\otimes(m+r)}$
+    the permutations of the first $m$ and of the last $r$ copies act on the two tensor
+    factors of $(\C^q)^{\otimes m}\otimes(\C^q)^{\otimes r}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The diagonal entry of $A_r\operatorname{diag}(y)^{\otimes r}$ at a configuration
+    $z$ is $\frac1{r!}\prod_jy_{z_j}$ times the signed count of permutations fixing $z$,
+    which is one when the entries of $z$ are distinct and zero otherwise, since a
+    transposition of two equal entries reverses the sign. Each set of $r$ distinct entries
+    arises from $r!$ configurations, which cancels the factor $\frac1{r!}$.
+\end{proof}
+
+\begin{lemma}[Highest weights in $V_\mu\otimes\Lambda^r$]
+    \label{lem:exterior_highest_weight}
+    \lean{TensorPower.pieriElem, TensorPower.pieriElem_mul_self, TensorPower.sliceR,
+        TensorPower.exists_sliceR_isHighestWeight,
+        TensorPower.finrank_hwSpace_pieri_le_one, TensorPower.pieriRank,
+        TensorPower.pieriRank_le_one_and}
+    \leanok
+    \uses{lem:pieri, lem:exterior_character}
+    Let $\mu$ be a label of $S_m$ and let $c(\lambda)$ be the rank of the $\lambda$ block
+    of $e^\mu_{00}\otimes A_r$ in $\C[S_{m+r}]$. In every dimension $q$ in which $\lambda$
+    and $\mu$ occur, $c(\lambda)\le1$, and $c(\lambda)=0$ unless $\lambda=\mu+1_S$ for a
+    set $S$ of $r$ rows.
+\end{lemma}
+
+\begin{proof}\leanok
+    A highest-weight vector $w$ of weight $\lambda$ fixed by $e^\mu_{00}\otimes A_r$ has
+    components $w_z\in V_\mu$, indexed by the configurations $z$ of the last $r$ copies,
+    which are antisymmetric in $z$ and vanish unless $z$ has distinct entries. Among the
+    nonzero components choose one maximizing $\sum_jz_j$. A raising operator
+    $E_{ab}$, $a<b$, maps it to minus a sum of components whose configurations have a
+    larger sum, so it is a highest-weight vector of $V_\mu$ of weight $\lambda-\mathrm{wt}(z)$;
+    hence $\lambda=\mu+1_S$ with $S$ the set of entries of $z$. Configurations with the same
+    entries differ by a permutation, so the component at one such configuration determines
+    $w$, and it lies on the line of highest-weight vectors of $V_\mu$. As in
+    Lemma~\ref{lem:pieri}, the matrix units of $\lambda$ applied to a highest-weight vector
+    of $V_\lambda$ embed the range of the block into this space.
+\end{proof}
+
+\begin{theorem}[Vertical-strip rule for the characters]
+    \label{thm:character_pieri}
+    \lean{TensorPower.glChar, TensorPower.trace_labelProj_mul_tensorPow,
+        TensorPower.trace_mul_tensorPow_eq_sum, TensorPower.trace_pieriElem_mul_tensorPow,
+        TensorPower.exists_part_eq, TensorPower.pieriSet, TensorPower.sum_pieriSet,
+        TensorPower.pieriRank_eq_one, TensorPower.glChar_mul_elemSymm}
+    \leanok
+    \uses{lem:restriction, lem:exterior_highest_weight, lem:alternant_pieri,
+        thm:schur_part1_dim}
+    For a label $\mu$ of $S_m$ with at most $q$ rows,
+    $\chi_\mu e_r=\sum_\lambda\chi_\lambda$, the sum running over the partitions
+    $\lambda=\mu+1_S$ of $m+r$ with at most $q$ rows.
+\end{theorem}
+
+\begin{proof}\leanok
+    By Lemma~\ref{lem:restriction}, $\Tr\bigl(\rho(a)\operatorname{diag}(y)^{\otimes k}\bigr)
+    =\sum_\lambda\tr W_\lambda(a)\chi_\lambda(y)$ for every $a\in\C[S_k]$, and for
+    $a=e^\mu_{00}\otimes A_r$ the left side is $\chi_\mu(y)e_r(y)$ by
+    Lemma~\ref{lem:exterior_character}. Labels with more than $q$ rows contribute nothing,
+    since their characters vanish. For the other labels,
+    Lemma~\ref{lem:exterior_highest_weight} bounds the coefficients by one on these
+    partitions and by zero elsewhere. At $y=1$ the two sides
+    are $\binom qrm_\mu$ and $\sum_\lambda c(\lambda)m_\lambda$, while the Weyl dimension
+    formula and Lemma~\ref{lem:alternant_pieri} give $\sum_\lambda m_\lambda=\binom qrm_\mu$
+    over the same partitions; the summands with $\mu+1_S$ not a partition vanish because two
+    shifted parts coincide. Since $m_\lambda>0$, every coefficient is one.
+\end{proof}
+
+\begin{theorem}[The Weyl character formula]
+    \label{thm:weyl_character}
+    \lean{TensorPower.rowSet, TensorPower.card_rowSet_lt, TensorPower.alternant_mul_glChar}
+    \leanok
+    \uses{thm:character_pieri, lem:alternant_pieri}
+    For a label $\lambda$ of $S_k$ with at most $q$ rows,
+    $a_\delta(y)\chi_\lambda(y)=a_{\lambda+\delta}(y)$ with $\delta_j=q-j$; that is,
+    $\Delta(y)\chi_\lambda(y)=\det[y_i^{l_j}]$ with $l_j=\lambda_j+q-j$ and $\Delta$ the
+    Vandermonde determinant.
+\end{theorem}
+
+\begin{proof}\leanok
+    By induction on $k$, and for fixed $k$ downward on the number $\ell$ of nonempty rows.
+    For $\ell=0$ both sides are $a_\delta$. Otherwise let $\mu$ be $\lambda$ with its first
+    column removed, a partition of $k-\ell$. Multiply the rule of
+    Theorem~\ref{thm:character_pieri} for $r=\ell$ by $a_\delta$. By induction on $k$ the
+    left side is $a_{\mu+\delta}e_\ell=\sum_{|S|=\ell}a_{\mu+\delta+1_S}$, in which the terms
+    with $\mu+1_S$ not a partition vanish. On the right, every partition $\mu+1_S$ other
+    than $\lambda$ has a nonempty row below the first $\ell$, hence more than $\ell$
+    nonempty rows, and the inner induction applies to it. The remaining terms are
+    $a_\delta\chi_\lambda$ and $a_{\lambda+\delta}$.
+\end{proof}
