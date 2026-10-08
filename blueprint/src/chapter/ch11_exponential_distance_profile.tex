@@ -47,12 +47,12 @@ $e^{p+q}=e^pe^q$.
 For every $S\subseteq Y$ and every pair of real parameters $a,\alpha$,
 define
 \begin{align}
+ \label{eq:exponential_distance_profile}
  r_{S,a,\alpha}(y)&=
  \begin{cases}
   0,&D_S(y)=\infty,\\
   e^{-a(D_S(y)_{\mathbb R})^\alpha},&D_S(y)\ne\infty.
  \end{cases}
- \label{eq:exponential_distance_profile}
 \end{align}
 There are no sign restrictions on $a$ or $\alpha$ in this definition.
 \end{definition}
@@ -227,8 +227,8 @@ $\infty_{\mathbb R}=0$ in the displayed row weight.
 lem:exponential_distance_profile_nonneg}
 Write $r=r_{S,a,\alpha}$.  For a pair at infinite distance, the
 corresponding kernel entry is zero.  At finite pair distance,
-Lemma~\ref{lem:exponential_distance_profile_transfer} and $A(y,z)\geq0$
-give $A(y,z)r(z)\leq A(y,z)e^{a(\delta(y,z)_{\mathbb R})^\alpha}r(y)$.
+multiply Lemma~\ref{lem:exponential_distance_profile_transfer}
+by $A(y,z)\geq0$.
 Summing both cases and factoring out $r(y)$ gives
 \begin{align}
  \begin{aligned}
