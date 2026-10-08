@@ -1,0 +1,83 @@
+\section{Centered moments of the Schur label}
+\label{sec:schur-label-moments}
+
+The signed label-moment argument in
+\cite[Section~7, lines~227--237]{OpenAI2026AreaLaw} first compares the label
+observable with the supported surprisal. The estimates below give this
+comparison for an arbitrary real center. The subsequent bounds for the
+centered surprisal of independent copies are a separate argument.
+
+Let a finite group act by permutations on a finite-dimensional Hilbert space,
+let $\rho\ge0$ commute with that action, and let $P_\lambda$ be the central
+projection belonging to the irreducible representation of dimension $d_\lambda$.
+Write
+\begin{align}
+ F&=\sum_\lambda (\log d_\lambda)P_\lambda,\\
+ L&=-\log\rho,\\
+ M_A(t;s)&=\operatorname{ReTr}\bigl(\rho e^{t(A-sI)}\bigr).
+\end{align}
+The logarithm of $\rho$ is evaluated on its support and is zero on its kernel.
+
+\begin{theorem}[Positive centered comparison]
+\label{thm:schur-label-positive-centered}
+\lean{PermutationRepresentation.re_trace_mul_exp_centered_labelEntropy_le}
+\uses{thm:schur_label_surprisal}
+\leanok
+If $\operatorname{Tr}\rho=1$, then for every $s\in\mathbb R$ and $u\ge0$,
+\begin{align}
+ M_F(u;s)\le M_L(u;s).
+\end{align}
+\end{theorem}
+
+\begin{proof}
+\leanok
+Use the joint spectral resolution of $\rho$ and the central projections.
+On a nonzero joint eigenspace with positive eigenvalue $r$, invariance and
+normalization give $r d_\lambda\le1$, so $\log d_\lambda\le-\log r$.
+The desired comparison follows by monotonicity of the scalar exponential.
+The terms with $r=0$ have zero trace weight. Thus only the supported
+comparison is used; an inequality on the entire ambient space is unnecessary.
+\end{proof}
+
+\begin{theorem}[Negative centered comparison]
+\label{thm:schur-label-negative-centered}
+\lean{PermutationRepresentation.re_trace_mul_exp_neg_centered_labelEntropy_le}
+\uses{thm:weighted-trace-holder-binary}
+\leanok
+Without requiring $\operatorname{Tr}\rho=1$, for all $s,u\in\mathbb R$,
+\begin{align}
+ M_F(-u;s)\le
+ \sqrt{M_L(-2u;s)\operatorname{ReTr}\bigl(\rho e^{2u(L-F)}\bigr)}.
+\end{align}
+\end{theorem}
+
+\begin{proof}
+\leanok
+The Hermitian operators $-2u(L-sI)$ and $2u(L-F)$ commute, since both are
+functions of the joint spectral resolution. Their average is $-u(F-sI)$.
+Apply the weighted trace inequality with weights $1/2,1/2$. The individual
+exponential traces are nonnegative, so the product of their square roots
+is the square root of their product.
+\end{proof}
+
+\begin{theorem}[Copy-permutation moment transfer]
+\label{thm:schur-label-copy-centered}
+\lean{TensorPower.centered_labelEntropy_moments_le}
+\uses{thm:schur-label-positive-centered,thm:schur-label-negative-centered,
+thm:schur_label_surprisal}
+\leanok
+Let $\rho$ be a permutation-invariant density matrix on $Q^{\otimes k}$,
+where $\dim Q=q$. For every $s\in\mathbb R$ and $0\le u\le1/2$,
+\begin{align}
+ M_F(u;s)&\le M_L(u;s),\\
+ M_F(-u;s)&\le\sqrt{(k+1)^{q^2}M_L(-2u;s)}.
+\end{align}
+\end{theorem}
+
+\begin{proof}
+\leanok
+Apply the preceding comparisons and the Schur remainder estimate
+$\operatorname{ReTr}(\rho e^{b(L-F)})\le(k+1)^{q^2}$ with $b=2u\le1$.
+The other factor is nonnegative, so multiplication and the square root
+preserve the bound.
+\end{proof}

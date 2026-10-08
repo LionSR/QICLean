@@ -1,0 +1,13 @@
+{
+  "source_revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/schurLabelMGF8753/source-check.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T03:58:50.497674+00:00",
+  "elapsed_seconds": 0.131,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGF8753/source-check.log",
+  "sha256": "ac5a8298b0bf82ae91dceea122b7c3eee9f8de6c5b00059f505b6265b03c7ea4"
+}

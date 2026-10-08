@@ -1,0 +1,17 @@
+{
+  "source_revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+  "command": [
+    "python3",
+    "/Users/siruilu/Local/agentFormalization/TNLean/scripts/tactic_pattern_scan.py",
+    "--root",
+    "QICLean/Representation",
+    "--top",
+    "10"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-bell-pin-powers",
+  "started_utc": "2026-10-08T04:01:35.242377+00:00",
+  "elapsed_seconds": 0.095,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/schurLabelMGF8753/tactic-patterns-representation.log",
+  "sha256": "796c11e9345384346932a40214b9def6b5833287072fb6052c8601cefeb0f64a"
+}

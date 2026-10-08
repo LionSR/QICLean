@@ -1,0 +1,132 @@
+[
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/checked-sources.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/checked-sources.json",
+    "sha256": "9def9060ac6e21475669ad2658b529697490c7fa59f97c23f8345d84f2e297a4"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/SchurLabelMomentBounds.lean",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/SchurLabelMomentBounds.lean",
+    "sha256": "9845b65181ba4dc234344bc280f08147c4d799d8198abc4be48a7bf9f256e4b0"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/blueprint-coverage.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/blueprint-coverage.json",
+    "sha256": "937bf6528a4561cf55fea78b8f158e3e062199a1394b6350d78227c88b6badfb"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/delivery-files.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/delivery-files.json",
+    "sha256": "adf211a20cda7155957c40c36851a1c64cee00803ca1f286f4650ded2c2affda"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/imported-audit.log",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/imported-audit.log",
+    "sha256": "14929a2f79496742330dbe90e32f3c5f6a3c1cfcd52da5449f9bb58aeb6a7ef7"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/independent-review.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/independent-review.json",
+    "sha256": "fe7b6f4e81b63f64d4de06374d3b5dc3bd3ab72b2f1efe07d883c0d6d5a4e934"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/axiom-dependencies.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/axiom-dependencies.json",
+    "sha256": "544bcb6aa9e9f190b93f733ae1e5b76b7ef6c3399eea948e5148b910a319e749"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/tactic-scan.log",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/tactic-scan.log",
+    "sha256": "eaf48eec7fd8ce17ad105b9714500bf8ba25f7b1618ba81504a77710c2d1d6e8"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/imported-modules.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/imported-modules.json",
+    "sha256": "0f48679ebc43bd037d7fecd61b21b7828b32cb018937b7dbebce3965401ffaf6"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/strict-build.log",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/strict-build.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/commands.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/commands.json",
+    "sha256": "dceebd8d7488f12eef03d54d0cfba798223367cb3f0e72fc43dbfd24de223588"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/README.md",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/README.md",
+    "sha256": "f9b5c22458470c3d0081124b2ce58b3e56950902511792a91123079c0ebc36e3"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/before-modules.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/before-modules.json",
+    "sha256": "0f48679ebc43bd037d7fecd61b21b7828b32cb018937b7dbebce3965401ffaf6"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/DependencySnapshot.lean",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/DependencySnapshot.lean",
+    "sha256": "99e62518d9826deab4f679ba9cad745041ab446c1fb919e66ff0e2b87067b98e"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/before-imports.log",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/before-imports.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/Axioms.lean",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/Axioms.lean",
+    "sha256": "3702596e844fafa1d8aebb82b12b762824590f98176c04e5a90d8486697e1b04"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/imported-dependencies.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/imported-dependencies.json",
+    "sha256": "fb0ac274abb20dd31ed895dff908123441a188f4ab539f53afed3bbef20afb7f"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/tactic-scan-command.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/tactic-scan-command.json",
+    "sha256": "32d4e1c3dc674efc7592efe6a6ea543443a3dfef11365a65d1cb99f45d4ddd67"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/tactic-scan-sources/SchurLabelMomentBounds.lean",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/tactic-scan-sources/SchurLabelMomentBounds.lean",
+    "sha256": "9845b65181ba4dc234344bc280f08147c4d799d8198abc4be48a7bf9f256e4b0"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/tactic-scan-sources/SchurLabelMoments.lean",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/tactic-scan-sources/SchurLabelMoments.lean",
+    "sha256": "2d46012278b416ab7d057cc739da49dbc8e4a49923527585043da201e4b21925"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/tactic-scan-sources/WeightedTraceHolder.lean",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/tactic-scan-sources/WeightedTraceHolder.lean",
+    "sha256": "376f80c3c8284c27105152168c8ffcc1c36c96f9074fe344b6cf29ee2e9bb07e"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/tactic-scan-sources/SchurSurprisal.lean",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-verification-20261008/tactic-scan-sources/SchurSurprisal.lean",
+    "sha256": "ec9b587efcc36f7b0a558b3b35ec3cfd9ebd088c0d4c99cf47f0f531edd2c0d2"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/bounds-declarations.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-declarations.json",
+    "sha256": "1170759a3d833a0688e629544c5df067febc1130e00eac72b39d7720b03f9526"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/bounds-source-freeze.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/bounds-source-freeze.json",
+    "sha256": "072409b0b6920a34fc674abf6b4e43c091188287d9957f279c2ebb0b4e8004a7"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/env.json",
+    "original_path": "/private/tmp/tnlean-schur-label-moments/env.json",
+    "sha256": "c4d6c4f5b22ad85f5dbebfa2082e9813fb80b4969bd12e0aca64395c540f8a5d"
+  },
+  {
+    "path": "docs/provenance/evidence/schurLabelMGF8753/historical/original-fragment.tex",
+    "original_path": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-label-moments/blueprint/src/fragment/schur_label_moment_bounds.tex",
+    "sha256": "c49680e9ab6349210f18d4cd73d16ef560408cf417b23992a6d4003beb971729"
+  }
+]

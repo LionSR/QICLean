@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "8753-qic-schur-label-mgf-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurLabelMomentBounds.lean",
+        "declaration": "TensorPower.log_centered_labelEntropy_moments_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary quantitative transfer from actual centered k-copy surprisal growth to signed Schur-label growth. The independent-copy surprisal factorization and headline area-law theorem remain separate. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.SchurLabelMomentBounds",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMGF8753/target.log",
+            "sha256": "389605759d56301ac7696e8d25e801f6c0545498fccbb9c806ad637a470eeaea"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dweak.linter.mathlibStandardSet=true -DwarningAsError=true QICLean/Representation/SchurLabelMomentBounds.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMGF8753/strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean docs/provenance/evidence/schurLabelMGF8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMGF8753/bound-axioms.log",
+            "sha256": "14929a2f79496742330dbe90e32f3c5f6a3c1cfcd52da5449f9bb58aeb6a7ef7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8753-qic-schur-label-mgf-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Representation/SchurLabelMomentBounds.lean",
+        "declaration": "TensorPower.log_centered_labelEntropy_moments_uniform",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/07-comparators.tex",
+          "labels": [
+            "comparator:signed-label-moments"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Original auxiliary quantitative transfer from actual centered k-copy surprisal growth to signed Schur-label growth. The independent-copy surprisal factorization and headline area-law theorem remain separate. No upstream Lean proof text reused."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "eedf28aa8f39c5a78971f343a13a289c062ee98a",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Representation.SchurLabelMomentBounds",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMGF8753/target.log",
+            "sha256": "389605759d56301ac7696e8d25e801f6c0545498fccbb9c806ad637a470eeaea"
+          },
+          {
+            "kind": "build",
+            "command": "lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -Dweak.linter.mathlibStandardSet=true -DwarningAsError=true QICLean/Representation/SchurLabelMomentBounds.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMGF8753/strict.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean docs/provenance/evidence/schurLabelMGF8753/Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/schurLabelMGF8753/bound-axioms.log",
+            "sha256": "14929a2f79496742330dbe90e32f3c5f6a3c1cfcd52da5449f9bb58aeb6a7ef7"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+'TensorPower.log_centered_labelEntropy_moments_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TensorPower.log_centered_labelEntropy_moments_uniform' depends on axioms: [propext, Classical.choice, Quot.sound]

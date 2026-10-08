@@ -1,0 +1,8 @@
+{
+  "path": "QICLean/Representation/SchurLabelMomentBounds.lean",
+  "before_notices_sha256": "b8b3bf14c81b3d3277ab9f2d8d65b584e07e70305dc080259a56afc503953a5b",
+  "sha256": "9845b65181ba4dc234344bc280f08147c4d799d8198abc4be48a7bf9f256e4b0",
+  "noncomment_tokens_unchanged": true,
+  "dependency_source_commit": "6c8a3e8cfaf896ebf6eeac3d8782193847755905",
+  "signed_comparison_source_matches_canonical": true
+}
