@@ -1,0 +1,88 @@
+\section{The compatible physical-label projection}
+\label{sec:compatible-physical-label}
+
+Let $Q,Y,V,C,R$ be five independent finite-dimensional factors, and let
+$m\ge0$. On $(Q\otimes Y\otimes V\otimes C\otimes R)^{\otimes m}$, let
+$U_A(\sigma)$ permute the copies of the factors in $A$ and fix the other
+factors. Write $\Pi_A^\lambda$ for its central label projections and
+$F_A=\sum_\lambda (\log d_\lambda)\Pi_A^\lambda$.
+The physical symmetric projection is
+$P=\lvert S_m\rvert^{-1}\sum_{\sigma\in S_m}U_{QYV}(\sigma)$.
+These are the actual copy actions used in
+\cite[Section~7, lines~501--522]{OpenAI2026AreaLaw}.
+
+\begin{definition}[Physical label operator]
+\label{def:physical-merge-deficit}
+\lean{TensorPower.physicalMergeDeficit}
+\leanok
+The physical label operator and the two merge deficits are
+\begin{align}
+ G_{\mathrm{phys}}&=F_Q+F_V-F_Y,\label{eq:phys_label_definition}\\
+ D_C&=F_Q+F_C-F_{QC},\\
+ D_R&=F_V+F_R-F_{VR}.
+\end{align}
+The region $Y$ is independent of $Q$ and $V$.
+\end{definition}
+
+\begin{theorem}[Physical symmetry and the nonnegative spectral projection]
+\label{thm:physical-label-projection}
+\lean{TensorPower.physicalMergeDeficit_mul_symProj,
+TensorPower.spectralProjectionGE_physicalMergeDeficit_mul_symProj}
+\uses{def:physical-merge-deficit,thm:schur_label_commutation,
+thm:merge-deficit-positivity,thm:nonnegative-spectral-intertwiner}
+\leanok
+Set $D_{QV}=F_Q+F_V-F_{QV}$ and
+$J=\mathbf1_{[0,\infty)}(G_{\mathrm{phys}})$. Then
+\begin{align}
+ G_{\mathrm{phys}}P&=PD_{QV},\label{eq:phys_label_intertwine}\\
+ JP&=P.\label{eq:phys_label_projection}
+\end{align}
+Zero copies and zero-dimensional factors are included.
+\end{theorem}
+
+\begin{proof}
+\leanok
+The physical copy action is the commuting product of the $Y$ and $QV$
+copy actions. On its fixed vectors, inversion-invariance of the central
+coefficients gives $\Pi_Y^\lambda P=\Pi_{QV}^\lambda P$ for every label.
+Summing with coefficient $\log d_\lambda$ gives $F_YP=F_{QV}P$.
+The $Q,V,QV$ central observables commute with $P$ by nesting, which gives
+(\ref{eq:phys_label_intertwine}). The actual merge-dimension inequality
+gives $D_{QV}\ge0$. Functional calculus of
+(\ref{eq:phys_label_intertwine}) therefore gives
+(\ref{eq:phys_label_projection}).
+\end{proof}
+
+\begin{theorem}[Compatibility with the two merges]
+\label{thm:physical-label-merge-commutation}
+\lean{TensorPower.commute_cfc_physicalMergeDeficit_labelObservables,
+TensorPower.commute_cfc_physicalMergeDeficit_mergeDeficits}
+\uses{def:physical-merge-deficit,thm:schur_label_commutation}
+\leanok
+For an arbitrary real function $f$ and independently chosen real label
+functions $g_A$, with $A\in\{QC,VR,C,R\}$, write
+$L_A(g_A)=\sum_\lambda g_A(\lambda)\Pi_A^\lambda$. Then
+\begin{align}
+ [f(G_{\mathrm{phys}}),L_{QC}(g_{QC})]&=0,\\
+ [f(G_{\mathrm{phys}}),L_{VR}(g_{VR})]&=0,\\
+ [f(G_{\mathrm{phys}}),L_C(g_C)]&=0,\\
+ [f(G_{\mathrm{phys}}),L_R(g_R)]&=0,\\
+ [f(G_{\mathrm{phys}}),D_C]&=0,\\
+ [f(G_{\mathrm{phys}}),D_R]&=0.
+\end{align}
+In particular, $J$ commutes with both merge deficits.
+\end{theorem}
+
+\begin{proof}
+\leanok
+The $Q$ action is nested in $QC$, while $V$ and $Y$ are disjoint from $QC$.
+The analogous statements hold for $V$ inside $VR$, with $Q$ and $Y$
+disjoint. Central-label commutation therefore gives commutation of
+$G_{\mathrm{phys}}$ with both merged label observables. The auxiliary $C,R$ actions are disjoint from all three physical
+actions. The same nesting and disjointness give commutation with the singleton terms in
+$D_C,D_R$. Addition, subtraction and real functional calculus preserve
+these commutations.
+\end{proof}
+
+% The actual excitation-density support, its coordinate regrouping, moment
+% estimates and the complete metric comparison are separate assertions.

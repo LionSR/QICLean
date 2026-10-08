@@ -330,3 +330,215 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The right auxiliary projector remains on its actual selected
   copy space. The Bell projection acts on the physical and left auxiliary
   factors; the asserted label of the projected output is the right label.
+
+### Exponential on an actual joint label resolution — candidate (2026-10-08)
+
+- **Pattern:** Construct a joint resolution from commuting actual label projections, identify its marginal observables using the projection sums, and apply `Matrix.IsOrthogonalResolution.exp_hom` before a positive-dimension scalar logarithm calculation.
+- **Seen:** `Representation/SchurSurprisal.lean` and `Representation/MergeExponential.lean`; two mathematical exponential calculations in two files.
+- **Abstraction:** The existing resolution homomorphism and `exp_hom` already supply the functional-calculus step. Continue using these results and finite-sum identities; no additional tactic or duplicate spectral calculus is introduced.
+- **Caveat:** Derive the joint resolution from the actual projections. Positive irreducible dimensions justify the logarithms even when their ambient label projections vanish.
+
+### Covariance under a finite coordinate bijection — candidate (2026-10-08)
+
+- **Pattern:** Transport a density and permutation operators by one basis
+  bijection, obtain the central projectors by the group-algebra sum, and
+  compare the actual product traces using finite-sum reindexing.
+- **Seen:** The three copy actions and joint trace in
+  `QICLean/Representation/PairMergeMoment.lean` share one private transport
+  calculation. The matrix products reuse `Matrix.submatrix_mul_equiv`.
+- **Abstraction:** Keep the common permutation/projector and trace calculations
+  as private lemmas. No new tactic is justified by one mathematical module.
+- **Caveats:** Use the same coordinate bijection for the density and all three
+  actions; separate permutation invariance is a premise of the auxiliary
+  theorem and must be proved in its physical application.
+
+### Total normalization of an invariant positive component — candidate (2026-10-08)
+
+- **Pattern:** Preserve commutation under total trace normalization and recover
+  an unnormalized moment by multiplication by the nonnegative actual trace.
+- **Seen:** `TensorPower.pair_merge_moment_le_mul_trace`; the independent
+  homogeneous merge-moment argument uses the same normalization calculation.
+- **Abstraction:** Reuse the existing positive normalization, trace-one and
+  reconstruction lemmas. Record a shared commutation lemma if further
+  independent consumers appear; no general multiplicity interface is added.
+- **Caveats:** At zero trace the positive matrix is zero and the normalized
+  choice is a scalar identity. Empty bases require their own zero-matrix case.
+
+### Composition of retained auxiliary traces — candidate (2026-10-08)
+
+- **Pattern:** Regroup the auxiliary register by an explicit product equivalence, compose the partial traces of a rank-one density, then trace only the auxiliary factor of a proved Kronecker product.
+- **Seen:** `Analysis/ReplicaJointDensity.lean`; regional product calculations appear in `Analysis/ReplicaRegionalDensity.lean`.
+- **Abstraction:** Existing partial-trace composition and covariance results give the regrouping. The finite-sum Kronecker identity is private; no new tactic is introduced.
+- **Caveat:** Retain the actual component and its own auxiliary density. A product identity is derived from the prescribed one-copy ground vector rather than supplied as a premise.
+
+### Product-density invariance and actual trace mass — candidate (2026-10-08)
+
+- **Pattern:** Identify each separate copy permutation with an operator on
+  one factor tensored with the identity. Use `mul_kronecker_mul` to derive
+  invariance of the actual product density, then partial-trace preservation
+  and the unit one-copy trace to recover the component's squared norm.
+- **Seen:** `Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le`
+  in `QICLean/Analysis/ReplicaComponentMergeMoment.lean`; one mathematical
+  consumer. The two separate actions use different factor invariances.
+- **Abstraction:** Reuse the existing permutation entries, tensor-product
+  multiplication, partial-trace preservation, and paired homogeneous moment
+  theorem. The two elementary factor calculations remain private. No new
+  tactic is introduced.
+- **Caveats:** Both marginals must belong to the same excitation component.
+  Retain the actual trace mass; do not assume a nonzero or unit component.
+
+### Positive weighted trace of a difference square — candidate (2026-10-08)
+
+- **Pattern:** Apply positive-semidefinite trace positivity to `(U - V)ᴴ * (U - V)`, then use Hermitian symmetry and commutation to identify the product terms and obtain the arithmetic-mean bound.
+- **Seen:** `Analysis/WeightedTraceExponential.lean`; one calculation, reused for exponential matrices in the same file.
+- **Abstraction:** The private product inequality isolates this calculation. Existing `Matrix.PosSemidef.trace_mul_nonneg` and exponential commutation identities supply the mathematical steps; no new tactic is needed.
+- **Caveat:** Commutation of the two factors is a hypothesis, while no commutation with the positive semidefinite trace weight is used.
+
+### Tensor-factor exponential and trace identities — candidate (2026-10-08)
+
+- **Pattern:** Move a scalar through a Kronecker product, exponentiate the
+  actual identity extension, and pair with a common matrix by partial trace.
+- **Seen:** The common-space exponential and two complex trace equalities in
+  `QICLean/Representation/PairMergeDeficit.lean`; their generic calculations
+  already live in `KroneckerExponential.lean`, `TraceDistance.lean` and
+  `Channel/PartialTrace.lean`.
+- **Abstraction:** Use the existing exponential and trace-pairing theorems
+  directly. No additional private helper or tactic is needed.
+- **Caveats:** Operator factorization preserves correlations in the common
+  matrix. It does not justify multiplying two marginal trace pairings.
+
+### Simultaneous retained and discarded coordinate changes — candidate (2026-10-08)
+
+- **Pattern:** Prove covariance of the literal excitation operator by its finite
+  product entries, apply `submatrix_mulVec_equiv` to the actual component, and
+  transport its partial trace using `partialTraceRight_submatrix_prod_equiv`.
+- **Seen:** The exchanged common-density proof in
+  `QICLean/Analysis/ReplicaGoodPairMarginal.lean`; one mathematical consumer.
+- **Abstraction:** Private coordinate-covariance lemmas share the operator and
+  vector calculation. Finite-sum reorderings use an explicit coordinate
+  equivalence and `Equiv.sum_comp`, rather than a looping sum-commutation simp
+  rule. No new tactic is introduced.
+- **Caveats:** The physical and auxiliary regions are exchanged together; the
+  component must be derived from the original vector and excitation operator.
+  Neither normalization nor a supplied covariance identity is assumed.
+  For a three-factor physical space, preserve the middle factor under the
+  exterior-region exchange and trace all of its copies in the common density.
+
+### Spectral projection on an intertwined range — candidate (2026-10-08)
+
+- **Pattern:** Derive an actual matrix identity AT=TB with a positive B,
+  transport the closed nonnegative indicator through the existing Hermitian
+  functional-calculus intertwiner, and use the nonnegative spectrum of B.
+- **Seen:** `Matrix.spectralProjectionGE_zero_mul_of_intertwine` in
+  `QICLean/Analysis/SpectralProjectionIntertwiner.lean`; one mathematical
+  application is being developed for complementary physical labels.
+- **Abstraction:** Reuse `ConditionalMovement.QuantumSSA.cfc_intertwine`.
+  The new projection theorem names the resulting spectral fact; no duplicate
+  eigenbasis argument or tactic is introduced.
+- **Caveats:** Derive the physical intertwining identity before applying the
+  spectral fact. An independent middle physical region cannot be identified
+  with the combined exterior region on the whole space.
+
+### Excitation covariance under physical coordinate exchange — candidate (2026-10-08)
+
+- **Pattern:** Transport the literal finite product of ground and defect factors through a one-copy coordinate equivalence, then transport the actual selected vector by `submatrix_mulVec_equiv`. A coordinate isometry preserves its Euclidean norm.
+- **Seen:** `Analysis/ReplicaGoodPairMarginal.lean` and `Analysis/ReplicaTwoMergeMoment.lean`; two independent consumers, respectively the marginal exchange and its norm consequence.
+- **Abstraction:** The existing matrix reindexing and coordinate isometry results supply the algebra. These two consumers retain private excitation calculations. Before a third consumer is added, extract their shared mathematical covariance statement and replace the repeated calculations.
+- **Caveat:** Exchange both exterior physical and auxiliary regions while preserving the independent middle physical region. Derive covariance and simultaneous fixedness from actual coordinates; do not supply them as additional hypotheses.
+
+### Chosen copy enumeration and actual density support — candidate (2026-10-08)
+
+- **Pattern:** Transport an actual reduced density through a chosen finite-set
+  enumeration, apply its proved product formula, and use a fixed tensor vector
+  to show support in the physical symmetric subspace.
+- **Seen:** `Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density`
+  in `QICLean/Analysis/ReplicaGoodPhysicalSupport.lean`; one consumer.
+- **Abstraction:** Reuse `partialTraceRight_submatrix_prod_equiv`,
+  `Equiv.prod_comp`, `symProj_mulVec_of_mem`, `mul_vecMulVec` and
+  `mul_kronecker_mul`. No new tactic or parallel marginal is introduced.
+- **Caveats:** The product formula is derived from the actual excitation
+  component. In Q tensor Y tensor V, every middle Y coordinate must be retained
+  until physical symmetrization. The original vector need not be symmetric.
+
+### Relative complementary labels and central-observable commutation — candidate (2026-10-08)
+
+- **Pattern:** Apply the inversion-invariant central-coefficient identity to
+  each column of an actual symmetric projection for a disjoint union, then
+  sum the central projections with their real label weights. Extend actual
+  nested/disjoint projector commutation to real label observables by finite
+  sums and scalar multiplication.
+- **Seen:** The private complementary-label and central-observable proofs in
+  `QICLean/Representation/CompatiblePhysicalLabel.lean`, using the existing
+  generic identities in `SchurLabelCommutation.lean` and finite-sum closure
+  used in `LabelProjectors.lean`.
+- **Abstraction:** Reuse the generic central-coefficient identity and
+  `Commute.sum_left`, `Commute.sum_right`. One private observable helper
+  treats nesting or disjointness, so the physical and both deficit
+  applications do not repeat the projector-sum calculation. No tactic is
+  introduced.
+- **Caveats:** The complement is relative to the actual physical union QYV;
+  it must retain Y as an independent factor. All source-facing commutation
+  facts are derived for the five specified actions. No global positivity
+  of the physical operator or preservation of the physical symmetric
+  projection under a merge is assumed.
+
+### Joint orthogonal-resolution coordinate functions — promoted lemmas (2026-10-08)
+
+- **Pattern:** Form a product of commuting orthogonal resolutions and recover
+  a function of either coordinate by summing the other resolution to the identity.
+- **Seen:** `GroupedLabelEntropy.lean`, `SchurSurprisal.lean`,
+  `MergeExponential.lean`, and `WeightedTraceHolder.lean`.
+- **Abstraction:** `Matrix.IsOrthogonalResolution.prod_hom_fst` and
+  `prod_hom_snd` in `Analysis/OrthogonalResolution.lean`. `MergeExponential.lean` and
+  `WeightedTraceHolder.lean` use these two lemmas; the private helpers in
+  `GroupedLabelEntropy.lean` and the joint calculations in `SchurSurprisal.lean`
+  remain to be rewritten with them. This is a mathematical abstraction, with no new tactic.
+- **Caveats:** The functions may be complex. Neither Hermiticity nor positivity
+  is needed for the coordinate identities. The underlying projections must
+  still form the actual resolutions; matrix order is obtained separately from
+  scalar inequalities on nonzero joint components. No compatibility premise
+  is added to any source theorem.
+
+### Physical support through an auxiliary partial trace — candidate (2026-10-08)
+
+- **Pattern:** Regroup the actual retained density, trace a discarded auxiliary
+  factor, and move multiplication by a physical operator through this trace.
+- **Seen:** `Analysis/ReplicaGoodConfigurationDensity.lean`; one consumer.
+- **Abstraction:** Private finite-sum lemmas identify the literal rank-one
+  trace and prove the left-multiplication identity. The coordinate transport
+  is proved from permutation entries and their finite average. No new tactic
+  is introduced.
+- **Caveats:** All good middle physical coordinates are retained. The density
+  and its support are derived from the same actual excitation component;
+  neither a coordinate identity nor a support hypothesis is supplied.
+
+### Logarithmic comparison on a nonzero joint eigenspace — candidate (2026-10-08)
+
+- **Pattern:** From a positive eigenvalue r and the actual multiplicity inequality
+  r d ≤ 1, use `Real.log_nonpos` and `Real.log_mul` to obtain log d ≤ −log r.
+- **Seen:** The supported operator comparison in `Representation/SchurSurprisal.lean`
+  and the positive exponential comparison in `Representation/SchurLabelMoments.lean`.
+- **Abstraction:** These are two occurrences of the same scalar step. Existing
+  logarithm and multiplication lemmas suffice for now. A third independent use
+  should promote the supported scalar comparison beside the eigenvalue bound.
+  The remainder-moment proof uses a different multiplicative exponential
+  inequality and is not counted as another logarithmic comparison.
+- **Caveat:** The zero-eigenvalue case must be treated separately. The comparison
+  is used only on nonzero joint projections, never as a global label inequality.
+
+### Hölder for a fixed family of subsystem observables — candidate (2026-10-08)
+
+- **Pattern:** Extend actual nested/disjoint central-projector commutation to
+  real label observables, verify the finite family of subsystem sets, and
+  derive the commutation of signed sums before applying finite trace Hölder.
+- **Seen:** `Representation/PhysicalMergeHolder.lean` uses the existing
+  projector results in `SchurLabelCommutation.lean`. The private observable
+  extension also occurs in `CompatiblePhysicalLabel.lean`; two occurrences
+  in two files, below the threshold for a new public helper.
+- **Abstraction:** Reuse `Commute.sum_left`, `Commute.sum_right` and direct
+  addition/subtraction/negation closure. The five signed combinations share
+  one private two-sided calculation. The general finite trace inequality
+  remains in `Analysis/WeightedTraceHolder.lean`; no new tactic is introduced.
+- **Caveats:** Derive every commutation from the actual subsystem actions.
+  An arbitrary positive semidefinite trace weight need not commute with the
+  observables. The factor Y is independent of the combined exterior QV.

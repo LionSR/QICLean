@@ -22,6 +22,7 @@ import QICLean.Representation.CoherentSymbolFunction
 import QICLean.Representation.CoherentSymbolLimit
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
+import QICLean.Representation.CompatiblePhysicalLabel
 import QICLean.Representation.ExteriorPieri
 import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
@@ -46,9 +47,13 @@ import QICLean.Representation.MarkedSimilaritySymbol
 import QICLean.Representation.MarkedStar
 import QICLean.Representation.MarkedSymbol
 import QICLean.Representation.MergeDimensions
+import QICLean.Representation.MergeExponential
 import QICLean.Representation.MergeMoment
+import QICLean.Representation.PairMergeDeficit
+import QICLean.Representation.PairMergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
+import QICLean.Representation.PhysicalMergeHolder
 import QICLean.Representation.RegionPowerSymbol
 import QICLean.Representation.RegularTrace
 import QICLean.Representation.RelativePin
@@ -72,6 +77,8 @@ import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
+import QICLean.Representation.SchurLabelMomentBounds
+import QICLean.Representation.SchurLabelMoments
 import QICLean.Representation.SchurSectorMass
 import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
