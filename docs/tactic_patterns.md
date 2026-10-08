@@ -11,6 +11,24 @@ No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
+### Joint central-label resolution — existing mathematical lemmas (2026-10-07)
+
+- **Pattern:** Form the product of commuting orthogonal resolutions, express
+  the observables as functions of this joint resolution, and prove matrix
+  order from scalar inequalities on its nonzero components.
+- **Seen:** `TensorPower.copyPerm_groupedCopies_labelEntropy_bounds` in
+  `QICLean/Representation/GoodAuxiliaryLabelEntropy.lean`, as well as `TensorPower.groupedCopies_labelEntropy_bounds` in
+  `QICLean/Representation/GroupedLabelEntropy.lean` and
+  `PermutationRepresentation.supportProj_mul_labelEntropy_mul_supportProj_le`
+  in `QICLean/Representation/SchurSurprisal.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.prod` and
+  `posSemidef_hom_of_ne_zero`. The coordinate functions of a product
+  resolution are recovered by summing the other factor to the identity;
+  the new module has two private lemmas for this elementary calculation.
+- **Caveats:** Scalar inequalities are required only on nonzero joint
+  projections. Compatibility and the full-space order must be derived from
+  the actual projections, rather than supplied as extra assumptions.
+
 ### Unit-blank contraction in restoration — promoted lemmas (2026-10-08)
 
 - **Pattern:** Expand restoring matrix entries and contract unit ancillary
@@ -85,6 +103,25 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   use. Neither an abstract range certificate nor invertibility of the
   unshifted PSD matrix is assumed.
 
+### Spectator coordinates in a central projection — candidate (2026-10-07)
+
+- **Pattern:** Prove the actual permutation entry condition in split coordinates,
+  then expand the group-algebra sum to identify the central projection entry
+  as an identity on the fixed coordinates times the projection on the moving
+  coordinates. Nonvanishing on the whole space forces nonvanishing on the
+  moving coordinates.
+- **Seen:** The private entry proof in
+  `QICLean/Representation/BadCopyLabelDimension.lean`; one mathematical
+  consumer in one file.
+- **Abstraction:** Reuse the existing permutation-entry and group-algebra
+  formulas. The ensuing dimension estimate uses the existing
+  `dim_le_finrank_of_invariant` theorem; no new tactic or competing general
+  representation definition is introduced.
+- **Caveats:** The actual group action and specified coordinate split are
+  essential. Fixed-coordinate multiplicity must not be included in the
+  dimension of the moving tensor power. Empty coordinate sets and zero
+  moving coordinates remain included.
+
 ### Sector mass from a finite resolution — candidate (2026-10-07)
 
 - **Pattern:** Restrict trace masses to the nonzero projections, use positivity
@@ -98,22 +135,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   No new tactic is needed.
 - **Caveats:** The sector count gives a mass bound only; an entropy window
   requires a separate concentration estimate and a restricted selection.
-### Joint central-label resolution — candidate (2026-10-07)
 
-- **Pattern:** Form the product of commuting orthogonal resolutions, express
-  the observables as functions of this joint resolution, and prove matrix
-  order from scalar inequalities on its nonzero components.
-- **Seen:** `TensorPower.groupedCopies_labelEntropy_bounds` in
-  `QICLean/Representation/GroupedLabelEntropy.lean` and
-  `PermutationRepresentation.supportProj_mul_labelEntropy_mul_supportProj_le`
-  in `QICLean/Representation/SchurSurprisal.lean`.
-- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.prod` and
-  `posSemidef_hom_of_ne_zero`. The coordinate functions of a product
-  resolution are recovered by summing the other factor to the identity;
-  the new module has two private lemmas for this elementary calculation.
-- **Caveats:** Scalar inequalities are required only on nonzero joint
-  projections. Compatibility and the full-space order must be derived from
-  the actual projections, rather than supplied as extra assumptions.
 ### Contraction of the repeated uniform pair — candidate (2026-10-07)
 
 - **Pattern:** Expand a Kronecker action against the actual repeated uniform

@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Representation
 
 import QICLean.Representation.Alternant
+import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.BranchProbability
 import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri
@@ -22,6 +23,7 @@ import QICLean.Representation.CoherentSymbolLimit
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.ExteriorPieri
+import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy
 import QICLean.Representation.HighestWeight

@@ -1,0 +1,40 @@
+\section{Dimensions of labels on the bad copies}
+\label{sec:bad_copy_label_dimension}
+
+The auxiliary estimate in Section~7 uses a bound on the dimensions of labels
+occurring under permutations of the bad copies. The good copies may remain
+in the representation space, but their multiplicity does not enter this bound.
+
+\begin{theorem}[Dimension of an occurring bad-copy label]
+\label{thm:bad_copy_label_dimension}
+\lean{TensorPower.groupHom₂_labelProj_dim_le}
+\leanok
+Let $C$ be a finite coordinate set with $d=|C|$, and split the $k$ copy
+coordinates into specified groups of sizes $m$ and $r$, where $m+r=k$.
+Let $S_r$ act on $\mathbb C^{C^k}$ by permuting the second group and fixing
+the first group. If its central projection $P_\beta$ for an irreducible
+label $\beta$ is nonzero, then
+\[
+ d_\beta\le d^r.
+\]
+The statement includes $m=0$, $r=0$, and $C=\varnothing$.
+\end{theorem}
+\begin{proof}
+\leanok
+Write $x=(x_g,x_b)$ and $y=(y_g,y_b)$ in the specified split of the
+coordinates. The central projection has entries
+\[
+ P_\beta(x,y)=\mathbf 1_{x_g=y_g}\,P^{(r)}_\beta(x_b,y_b),
+\]
+where $P^{(r)}_\beta$ is the same label projection for the actual
+permutation action on $\mathbb C^{C^r}$. Thus nonvanishing of $P_\beta$
+implies nonvanishing of $P^{(r)}_\beta$. Its range is invariant under
+$S_r$, is nonzero, and is contained in the $\beta$-isotypic component.
+Consequently its dimension is at least $d_\beta$ and at most the ambient
+dimension $d^r$.
+\end{proof}
+
+This proves the bad-label dimension bound used in
+\cite[Section~7, equation \textup{(comparator:good-auxiliary)}]{OpenAI2026AreaLaw}.
+The preservation of whole-copy auxiliary labels by the physical excitation
+projection, and the resulting good-auxiliary estimate, are separate assertions.
