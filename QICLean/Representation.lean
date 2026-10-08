@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
+import QICLean.Representation.CompatiblePhysicalLabel
 import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GroupedCopies
