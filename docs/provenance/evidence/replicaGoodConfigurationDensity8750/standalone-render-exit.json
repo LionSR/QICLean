@@ -1,0 +1,13 @@
+{
+  "source_revision": "8c8fb43a408f6692632a8e5b68e455c2136e0068",
+  "argv": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/replicaGoodConfigurationDensity8750/render-standalone.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T03:40:02.801413+00:00",
+  "elapsed_seconds": 2.124346124997828,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodConfigurationDensity8750/standalone-render.log",
+  "sha256": "864624304757e53db64ec16e93e6591ed3efff90aaeaca73aab538ae15ec166a"
+}

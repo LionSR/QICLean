@@ -1,0 +1,320 @@
+{
+  "files": [
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/Axioms.lean",
+      "sha256": "c5f7a5f0f076ac623409c49340cedad390abd7c8b6713c103abb1009df90705d"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/README.md",
+      "sha256": "62f51f332284cef85ad47d774c2d0510f3b9f8e4f6cff4d468f97c9e410cdd30"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/artifact-operation-exit.json",
+      "sha256": "88afe8909671ad2bc5f4e3cc68f36a868815003788915211ef9ee9e91930c4aa"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/artifact-operation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/axioms-final-exit.json",
+      "sha256": "2d9e98459a3eb3f84b0ef83097a6bbd428d3e4b86fac173497d34bfdb8294de4"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/axioms-final.log",
+      "sha256": "84b339d88eba6c3d6e8b60311bfe3028771580b14b3fdf9ac8cf602d5c44d59c"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/bibliography-exit.json",
+      "sha256": "7e72416ed09fca67200dbb8dd509e5de2ce8dbc7197ca4b731039850d286f838"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/bibliography.log",
+      "sha256": "676d4a274779017c70525790a3ecdc4ad50004d8eac12b779d58ea3359572831"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/blueprint-source-preservation.json",
+      "sha256": "decf123427dbf897f7feef5f1f48b53fbce7ff8d9f8cb3a8bc20cd4206b97c6b"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/cache-fetch-exit.json",
+      "sha256": "834184da7abf0e68c6bda47cd1a8cce0cc2bfa1ea443d305711e36bcd8250f56"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/cache-guard-exit.json",
+      "sha256": "ba1fe87f1d7eb85ed06b6c7d8fb3479a0aafd7043dfec922b367f09945d46826"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/cache-guard.py",
+      "sha256": "60c61c038e9cf222a429e09c703b78649e3b6be389fb0c10f8477f1316cb3651"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/check-inherited.py",
+      "sha256": "b288ff20f43dd76335e9a8dec28e3127b57f23d2712c0d8a5b7ba97a0f065065"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/check-manifest.py",
+      "sha256": "401e3fe0cd810e73888e209b7102da6c7b79da2476c7992826c24da618cc8ae4"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/check-native-targets.py",
+      "sha256": "5cbc23064b40b7ca04574d70a5bdea51c490a0085db6fee592cb9dccd1f89161"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/checkdecls-exit.json",
+      "sha256": "922476063e7deaf1c0564a623c2a7a57e754c0d1786758f59fcaf6bcc69a8994"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/checkdecls.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/compressed-logs.json",
+      "sha256": "142bdf6f09348a23b53ed40c7af1bbeecfe043220c294ed09a6a26a7b52d2278"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/copy-bibliography.py",
+      "sha256": "54f9d179b155aff7bc5e5b7fe90739c2f7ddaff2b0615e8c44a4f086f5bc4e1c"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/declaration-sync-exit.json",
+      "sha256": "200d8365fdee80e95608ee5af01ffc645b56fb5b5e71d9d735769db6ced688c7"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/declaration-sync.log",
+      "sha256": "6c17424f222135b051b8873d10489e2d8f98211de0ecfb6f455c790e26c1658f"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/fragment-citation-correction.json",
+      "sha256": "4f8c79d9d18844c158c5b73a748468f557f1f918606f96c817327dc36f926859"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/full-build-exit.json",
+      "sha256": "4dddd59c32b84c6df486a4b255a92b9a63979e96e8b057283951cb45ee482ec5"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/full-build.log",
+      "sha256": "7af40de2c4480183aa4ed0da07aa67d40c7248e8f56b25ab17c5d92813689789"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/generated-import-preservation.json",
+      "sha256": "ab57e44a7c8d078d92419a59cf286ff6e40fd1695f79f8b0688ff4da068a438b"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/generated-output-hashes.json",
+      "sha256": "222ae5c2957837d467f568434ff57e9c691584ead7f9a285f2c1fd229d871847"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/imports-exit.json",
+      "sha256": "429e646aaf8e3531bd78ebe9ae40e0ee400e1e7535b5dc2beb7943cc141691ff"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/imports.log",
+      "sha256": "1d63ef81339a1db27768529b7a2460898b76aac16cb01531061117fc7c40e2cb"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/individual-source-preservation.json",
+      "sha256": "7c96e00e87bbf341501a102902402ad7c52e6e7aa5a1b6dc4a7bb80ed5aaa8da"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/inherited-byte-preservation.json",
+      "sha256": "9ba7d122d999c970421024599e785a93c65c32e717a96c36c108a4a625dadcff"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/inherited-exit.json",
+      "sha256": "bfad4dc677125f9c4549402d8d19d1591bdfc6b74ac1d4c795ecd4e44ce7069e"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/inherited-inventory-check.json",
+      "sha256": "4854548483fa88b57086091b85c4a4a8341952081694c25bf39a63a631a00771"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/inherited.log",
+      "sha256": "b3efbd7104db7c8f4c63647b774cc1502283077fad9f640ff7de64f74fba7adf"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/kernel-summary.json",
+      "sha256": "2538ec976d634a9ed9c73d6722732dd91110cf9ec96dcb175f57e347fc3840f9"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/mobile-equations.json",
+      "sha256": "03e0b810ee50151452681f1fdec5f38ae341b30cc27069837eb462a168382a1a"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/native-targets-exit.json",
+      "sha256": "04fa22028e4a9eddd32666e805e07c657a5fc4b0ed2f83c7f2320ea6fe1be38d"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/native-targets.json",
+      "sha256": "dd14af33feb77e77fc0c6f8f774af1f2df58314e1d2d1b3ff8a9d8ee434143e0"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/native-targets.log",
+      "sha256": "c61e9ccf1f81319b131901d1ad9704a391dd1f3582b1b255b81f4feae94b121b"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/owned-shards.json",
+      "sha256": "c00f73f3aeeab6b72e53180ab83f1bb6583d7d9db867849e0c3d0a68efa666e6"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/page-438.png",
+      "sha256": "78eadf77dc512b7c54e155394b03855bebe875edda416f1e7edcf4c1af20a1e2"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/paper-gaps-exit.json",
+      "sha256": "5bb33c97f56000558f2c9fc6f0936cb8986edeadfdc85be1261921bd69339419"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/paper-gaps.log",
+      "sha256": "227b559051174894c91ac4a854dbec0d7c46d999547c129c7a3f0b921f8b8a9f"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/pdf-exit.json",
+      "sha256": "6f26b2c4882074c7eba55cd2f244974f1739c63c497bef6c7899efbf8d116977"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/pdf-page-search.json",
+      "sha256": "d0dae1d5165732012477fdc827f99ac0f99f5994dbefa9db5209c69145081173"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/pdf-visual-inspection.json",
+      "sha256": "2534ffca052375d0e046cc1a9f882fa605d959dc14d35ab361dc01b2db9a4472"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/pdf.log.gz",
+      "sha256": "9e93c84acad72f2bad318c8a91ef2fdca329aedaa00e5458cea571675560b9b6"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/preexisting-output-preservation.json",
+      "sha256": "3fb77c4abee9438a6398c04def77f160b6b43840598d181c0fd8d56fdd4c357d"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/production-preservation.json",
+      "sha256": "dcda0ac541d7102b3bcd6ba2e8f7ffda790c4fff02c5437fb02ccbecd8c3c355"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/prose-exit.json",
+      "sha256": "9bedacb33d0884fce1afc6672e5af6cf6767c62db1ab559fc0cb06c53fc0883a"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/provenance-final-exit.json",
+      "sha256": "7313900e3be4f1440fdf2a4d0215e058b0e1417c37f032b5a2121d382104027c"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/provenance-final.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/run.py",
+      "sha256": "fb8b12b868de5a5f926a9495d79976c04debfbb0b1805f3922eb4444fff41fda"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/sec-weighted_trace_exponential-web.png",
+      "sha256": "f494dca723d2437ae6a00cbc5522d035208acac3bb102fa8f8e27ed550c1ff12"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/source-freeze.json",
+      "sha256": "a16fd6d1ff77ed6df0bae8c9d27b46938c454952ddd199725b2c19f5de35c11a"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/tenkz-exit.json",
+      "sha256": "024232348a0a536a3a09352845b8f27fd7f3794337ddba40fd652be3b756decd"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/tenkz.log",
+      "sha256": "b10dd226fcfb59e9eb52b06bc040d251e35cd38d571c963ece4bf0e5263f2d8d"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/thm-weighted_trace_exponential-web.png",
+      "sha256": "f494dca723d2437ae6a00cbc5522d035208acac3bb102fa8f8e27ed550c1ff12"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/validate-owned.py",
+      "sha256": "f92320074256d84afefdaccd2c3e719506f4f049f215109404cb71f2dece9148"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/verification.json",
+      "sha256": "25bc00ef6f4b788cd217fcf75c2c50c0b5977294ba8d2a15c489f39706d880e8"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-exit.json",
+      "sha256": "61170b18501aec4a54f8047259009ca8d0119512fc2356a84a8cd57f876d49bd"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-qa.py",
+      "sha256": "33199976cd348dcbbdd911d8efdf5d6a4632ede9a278997c7c61e723ff562d79"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-reader-exit.json",
+      "sha256": "56c3c4fb38644060490d0e6daa487f893b90ad64be07261b415fa62029448de4"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-reader.log",
+      "sha256": "ab16c7c6058abfc96ada8fdd16cf460410dcdcbfddbc2287d37f7c0be229ad31"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-visual-exit.json",
+      "sha256": "e0ffc6f7e08006a6eb6d59e80e93d31f29165c3901186a7777fafd6b37b6c752"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-visual-inspection.json",
+      "sha256": "0a0a01ee3d2bbe9f80857160d05ba0f763539ed4a68e22dda5e8b99ff02084b9"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-visual.log",
+      "sha256": "84ecb9de87d81a2e13eaa204555d7f382b02bc31ad85f5db0e38d742993c32cb"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-visual.py",
+      "sha256": "22320824501c5228979467db0bfca94223831b8d192ff9a8934cc4cb174362f8"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-weighted_trace_exponential-proof-1280.png",
+      "sha256": "72bcb857bdcd9d1aada79ab458d03033bbe9c1f582a9366a25d2029f8284b3b1"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-weighted_trace_exponential-proof-360.png",
+      "sha256": "4859a4f8356ae1adbe4bc3aaea7bbbc5827cc8ead1528ed7268c1cc4158dc48f"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-weighted_trace_exponential-statement-1280.png",
+      "sha256": "dd3e5d4deefb83cbeca2225c7911b9bdb4cf489fe2990fa3d357697630433f4f"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-weighted_trace_exponential-statement-360.png",
+      "sha256": "168ab74bdd2d3761c0e9f45c7b40586ad990a460180041212f0b7a1caff10af0"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web-weighted_trace_exponential-statement-display-0-360-right.png",
+      "sha256": "0f3f3fc3e85f114b62204f75b745b5a90980bc2623ffcd3ad928a130b6d7750a"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/web.log",
+      "sha256": "e82340b00d15769911c6b91d576847485ef30bd622861bcfe0f060ac8cbdefa1"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/whole-web-reader-exit.json",
+      "sha256": "e6437cddd17f4be94a20e4f8356d4f96902afa54d50d405f617fa6938d6d8f95"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponentialIntegration8750/whole-web-reader.log",
+      "sha256": "7b74f8754a2ca9adff5d8ee6bb8766ee3996005d5af2f79ad95ab5a0e2410d88"
+    },
+    {
+      "path": "docs/provenance/openai-math.d/weightedTraceExponential8750.json",
+      "sha256": "5654f0d11d8e6876bbc570f8ed65511964e2916d45fd45e1d67a478098009d82"
+    }
+  ]
+}

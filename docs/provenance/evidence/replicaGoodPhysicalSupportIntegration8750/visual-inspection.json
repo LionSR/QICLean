@@ -1,0 +1,21 @@
+{
+  "result": "passed",
+  "mathematical_introduction": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "mathematical_source_revision": "eba4662708f7178a3ac18584a4b8218f04442d19",
+  "book_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+  "pdf_physical_pages": [
+    414
+  ],
+  "pdf_printed_pages": [
+    413
+  ],
+  "pdf_total_pages": 438,
+  "inspected_images": [
+    "render/page-414.png",
+    "render/physical-support-web-desktop.png",
+    "render/physical-support-web-mobile.png",
+    "render/entry-1-desktop.png",
+    "render/entry-1-mobile.png"
+  ],
+  "scope": "Complete new theorem, source context and proof. The full Q\u00d7(Y\u00d7V) physical factor is retained; arbitrary original vector and zero-copy/empty-good cases are stated. Citation resolves. All equations are legible and no content is clipped. Desktop/mobile focused checks show no page overflow or mathematics error."
+}

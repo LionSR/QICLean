@@ -228,6 +228,51 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Seen:** `Analysis/ReplicaJointDensity.lean`; regional product calculations appear in `Analysis/ReplicaRegionalDensity.lean`.
 - **Abstraction:** Existing partial-trace composition and covariance results give the regrouping. The finite-sum Kronecker identity is private; no new tactic is introduced.
 - **Caveat:** Retain the actual component and its own auxiliary density. A product identity is derived from the prescribed one-copy ground vector rather than supplied as a premise.
+
+### Simultaneous retained and discarded coordinate changes — candidate (2026-10-08)
+
+- **Pattern:** Prove covariance of the literal excitation operator by its finite
+  product entries, apply `submatrix_mulVec_equiv` to the actual component, and
+  transport its partial trace using `partialTraceRight_submatrix_prod_equiv`.
+- **Seen:** The exchanged common-density proof in
+  `QICLean/Analysis/ReplicaGoodPairMarginal.lean`; one mathematical consumer.
+- **Abstraction:** Private coordinate-covariance lemmas share the operator and
+  vector calculation. Finite-sum reorderings use an explicit coordinate
+  equivalence and `Equiv.sum_comp`, rather than a looping sum-commutation simp
+  rule. No new tactic is introduced.
+- **Caveats:** The physical and auxiliary regions are exchanged together; the
+  component must be derived from the original vector and excitation operator.
+  Neither normalization nor a supplied covariance identity is assumed.
+  For a three-factor physical space, preserve the middle factor under the
+  exterior-region exchange and trace all of its copies in the common density.
+
+### Chosen copy enumeration and actual density support — candidate (2026-10-08)
+
+- **Pattern:** Transport an actual reduced density through a chosen finite-set
+  enumeration, apply its proved product formula, and use a fixed tensor vector
+  to show support in the physical symmetric subspace.
+- **Seen:** `Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density`
+  in `QICLean/Analysis/ReplicaGoodPhysicalSupport.lean`; one consumer.
+- **Abstraction:** Reuse `partialTraceRight_submatrix_prod_equiv`,
+  `Equiv.prod_comp`, `symProj_mulVec_of_mem`, `mul_vecMulVec` and
+  `mul_kronecker_mul`. No new tactic or parallel marginal is introduced.
+- **Caveats:** The product formula is derived from the actual excitation
+  component. In Q tensor Y tensor V, every middle Y coordinate must be retained
+  until physical symmetrization. The original vector need not be symmetric.
+
+### Physical support through an auxiliary partial trace — candidate (2026-10-08)
+
+- **Pattern:** Regroup the actual retained density, trace a discarded auxiliary
+  factor, and move multiplication by a physical operator through this trace.
+- **Seen:** `Analysis/ReplicaGoodConfigurationDensity.lean`; one consumer.
+- **Abstraction:** Private finite-sum lemmas identify the literal rank-one
+  trace and prove the left-multiplication identity. The coordinate transport
+  is proved from permutation entries and their finite average. No new tactic
+  is introduced.
+- **Caveats:** All good middle physical coordinates are retained. The density
+  and its support are derived from the same actual excitation component;
+  neither a coordinate identity nor a support hypothesis is supplied.
+
 ### Covariance under a finite coordinate bijection — candidate (2026-10-08)
 
 - **Pattern:** Transport a density and permutation operators by one basis
@@ -260,6 +305,12 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Abstraction:** The existing resolution homomorphism and `exp_hom` already supply the functional-calculus step. Continue using these results and finite-sum identities; no additional tactic or duplicate spectral calculus is introduced.
 - **Caveat:** Derive the joint resolution from the actual projections. Positive irreducible dimensions justify the logarithms even when their ambient label projections vanish.
 
+### Positive weighted trace of a difference square — candidate (2026-10-08)
+
+- **Pattern:** Apply positive-semidefinite trace positivity to `(U - V)ᴴ * (U - V)`, then use Hermitian symmetry and commutation to identify the product terms and obtain the arithmetic-mean bound.
+- **Seen:** `Analysis/WeightedTraceExponential.lean`; one calculation, reused for exponential matrices in the same file.
+- **Abstraction:** The private product inequality isolates this calculation. Existing `Matrix.PosSemidef.trace_mul_nonneg` and exponential commutation identities supply the mathematical steps; no new tactic is needed.
+- **Caveat:** Commutation of the two factors is a hypothesis, while no commutation with the positive semidefinite trace weight is used.
 ### Product-density invariance and actual trace mass — candidate (2026-10-08)
 
 - **Pattern:** Identify each separate copy permutation with an operator on
@@ -288,6 +339,13 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   directly. No additional private helper or tactic is needed.
 - **Caveats:** Operator factorization preserves correlations in the common
   matrix. It does not justify multiplying two marginal trace pairings.
+
+### Excitation covariance under physical coordinate exchange — candidate (2026-10-08)
+
+- **Pattern:** Transport the literal finite product of ground and defect factors through a one-copy coordinate equivalence, then transport the actual selected vector by `submatrix_mulVec_equiv`. A coordinate isometry preserves its Euclidean norm.
+- **Seen:** `Analysis/ReplicaGoodPairMarginal.lean` and `Analysis/ReplicaTwoMergeMoment.lean`; two independent consumers, respectively the marginal exchange and its norm consequence.
+- **Abstraction:** The existing matrix reindexing and coordinate isometry results supply the algebra. These two consumers retain private excitation calculations. Before a third consumer is added, extract their shared mathematical covariance statement and replace the repeated calculations.
+- **Caveat:** Exchange both exterior physical and auxiliary regions while preserving the independent middle physical region. Derive covariance and simultaneous fixedness from actual coordinates; do not supply them as additional hypotheses.
 
 ### Spectral projection on an intertwined range — candidate (2026-10-08)
 
@@ -330,3 +388,25 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Left support implies right support because both the trace weight
   and the spectral projection are Hermitian. Support alone does not imply
   commutation with the other observable.
+
+### Relative complementary labels and central-observable commutation — candidate (2026-10-08)
+
+- **Pattern:** Apply the inversion-invariant central-coefficient identity to
+  each column of an actual symmetric projection for a disjoint union, then
+  sum the central projections with their real label weights. Extend actual
+  nested/disjoint projector commutation to real label observables by finite
+  sums and scalar multiplication.
+- **Seen:** The private complementary-label and central-observable proofs in
+  `QICLean/Representation/CompatiblePhysicalLabel.lean`, using the existing
+  generic identities in `SchurLabelCommutation.lean` and finite-sum closure
+  used in `LabelProjectors.lean`.
+- **Abstraction:** Reuse the generic central-coefficient identity and
+  `Commute.sum_left`, `Commute.sum_right`. One private observable helper
+  treats nesting or disjointness, so the physical and both deficit
+  applications do not repeat the projector-sum calculation. No tactic is
+  introduced.
+- **Caveats:** The complement is relative to the actual physical union QYV;
+  it must retain Y as an independent factor. All source-facing commutation
+  facts are derived for the five specified actions. No global positivity
+  of the physical operator or preservation of the physical symmetric
+  projection under a merge is assumed.

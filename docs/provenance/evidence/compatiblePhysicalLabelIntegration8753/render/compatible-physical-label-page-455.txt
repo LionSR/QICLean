@@ -1,0 +1,48 @@
+Theorem 21.8.1 (Nonnegative merge deficit). Lean Lean              ✓ Stmt The actual merge deficit is
+positive semidefinite:
+                               𝐹𝑄 + 𝐹𝐸 − 𝐹𝑄𝐸 ≥ 0.
+In particular, this holds for the separate and simultaneous actions on the literal paired copy space,
+at every number of copies.
+Proof. ✓ Proof The three commuting families of central projections give a joint orthogonal reso-
+lution. On the sector with labels 𝜆, 𝜇, 𝜈, the deficit is
+
+                                      log 𝑑𝜆 + log 𝑑𝜇 − log 𝑑𝜈 .
+
+Every nonzero joint sector satisfies 𝑑𝜈 ≤ 𝑑𝜆 𝑑𝜇 , so its coeﬀicient is nonnegative. Vanishing sectors
+contribute zero. Positivity therefore follows by summing the actual Hermitian projections with
+these coeﬀicients. This also covers a zero-dimensional ambient space.
+    The physical expression 𝐹𝑄 + 𝐹𝑉 − 𝐹𝑌 has an independent middle region 𝑌 . Its positivity
+on the physical symmetric subspace requires the complementary label identity there. It is not a
+full-space instance of the preceding theorem. The following elementary spectral fact applies once
+that identity has been derived, as in [Ope26b, Section 7, lines 515–522].
+Theorem 21.8.2 (Nonnegative spectral projection on an intertwined range). Lean Lean ✓ Stmt
+For a Hermitian matrix 𝐴, let 𝐽𝐴 = 1[0,∞) (𝐴). If 𝐵 ≥ 0, then 𝐽𝐵 = 𝐼. If 𝑇 is any rectangular
+matrix satisfying 𝐴𝑇 = 𝑇 𝐵, then
+                                         𝐽𝐴 𝑇 = 𝑇 .
+The matrix 𝑇 may have zero or noninjective range, and the coordinate sets may be empty.
+
+Proof. ✓ Proof All eigenvalues of 𝐵 are nonnegative, including its zero eigenvalues, so the closed
+nonnegative spectral projection is the identity. Functional calculus preserves the Hermitian
+intertwining relation, giving 𝐽𝐴 𝑇 = 𝑇 𝐽𝐵 = 𝑇 .
+
+
+21.9      The compatible physical-label projection
+Let 𝑄, 𝑌 , 𝑉 , 𝐶, 𝑅 be five independent finite-dimensional factors, and let 𝑚 ≥ 0. On (𝑄 ⊗ 𝑌 ⊗
+𝑉 ⊗ 𝐶 ⊗ 𝑅)⊗𝑚 , let 𝑈𝐴 (𝜎) permute the copies of the factors in 𝐴 and fix the other factors. Write
+Π𝜆𝐴 for its central label projections and 𝐹𝐴 = ∑𝜆 (log 𝑑𝜆 )Π𝜆𝐴 . The physical symmetric projection
+is 𝑃 = |𝑆𝑚 |−1 ∑𝜎∈𝑆 𝑈𝑄𝑌 𝑉 (𝜎). These are the actual copy actions used in [Ope26b, Section 7,
+                      𝑚
+lines 501–522].
+Definition 21.9.1 (Physical label operator).      Lean   ✓ Stmt The physical label operator and the
+two merge deficits are
+
+                                     𝐺phys = 𝐹𝑄 + 𝐹𝑉 − 𝐹𝑌 ,                                    (21.7)
+                                       𝐷𝐶 = 𝐹𝑄 + 𝐹𝐶 − 𝐹𝑄𝐶 ,                                    (21.8)
+                                       𝐷𝑅 = 𝐹𝑉 + 𝐹𝑅 − 𝐹𝑉 𝑅 .                                   (21.9)
+
+The region 𝑌 is independent of 𝑄 and 𝑉 .
+
+
+
+
+                                                 454

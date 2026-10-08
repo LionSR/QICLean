@@ -1,0 +1,19 @@
+{
+  "source_revision": null,
+  "phase": "pre-freeze import and source check",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Analysis/WeightedTraceExponential.lean"
+  ],
+  "started_utc": "2026-10-08T00:55:51.131490+00:00",
+  "elapsed_seconds": 15.027,
+  "exit_code": 1,
+  "log": "docs/provenance/evidence/weightedTraceExponential8750/draft-strict.log",
+  "sha256": "4e1c795cdd14efd95fa186af94d17c2dca48cc699168da1e6047e1e8e44ad18e"
+}

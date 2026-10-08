@@ -1,0 +1,20 @@
+{
+  "kind": "verification",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "QICLean.Analysis.WeightedTraceExponential"
+  ],
+  "working_directory": ".",
+  "exit_code": 1,
+  "elapsed_seconds": 14.0,
+  "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted.log",
+  "sha256": "2710168984171d9c2e940393ccbea64c7223db9c3af277e0c60c1e4f371de10e",
+  "raw_log_sha256": "2710168984171d9c2e940393ccbea64c7223db9c3af277e0c60c1e4f371de10e",
+  "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted.log.gz",
+  "gzip_sha256": "e25561bb6f737b4c17b0f99a313acbe222582c4c6d8dcb1cb3467d2877d405a6",
+  "role": "operational ENFILE attempt, not a successful check"
+}

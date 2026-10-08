@@ -1,0 +1,3 @@
+'TensorPower.fiveFactorCopiesEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.replicaGoodConfigurationMarginal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.symProj_mul_replicaGoodConfigurationMarginal' depends on axioms: [propext, Classical.choice, Quot.sound]

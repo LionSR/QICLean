@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "QICLean/Analysis/ReplicaTwoMergeMoment.lean"
+  ],
+  "source_head": "b8d02f2fb12811f5cc335482d616a94c17caf64c",
+  "source_sha256": "bc7b38e35122b52d119043d4118590bce1a80750f33d5187c8968374588cdc9c",
+  "exit_code": 0,
+  "elapsed_seconds": 6.022414207458496,
+  "log": "/tmp/replica-two-merge-production-prefreeze-corrected.log"
+}

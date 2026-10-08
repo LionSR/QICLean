@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/replicaComponentMergeMoment8753/mathlib-guard.py"
+  ],
+  "source_head": "2e7a37320c811a42fc79f88be57795a6eacd070c",
+  "exit_code": 0,
+  "elapsed_seconds": 0.06813383102416992,
+  "log": "/tmp/two-deficit-prerequisite-guard.log"
+}

@@ -1,0 +1,14 @@
+{
+  "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+  "production_sha256": {
+    "QICLean/Analysis/ReplicaGoodPairMarginal.lean": "a0dafbc33cb0385bb9dca2d2a95c551d3eac6a21e45675e000b25bffcb9a95b6",
+    "blueprint/src/fragment/replica_good_pair_marginal.tex": "70f6a3752b2f9378bddfcee667984e4041bcb1ea781521b8555ed3a5be4d1509",
+    "docs/formalization/replica-good-pair-marginal.md": "b9bab579c22cd97ebb0117e5feea10b224889f2215bd5148bdd81a12380fb9f2",
+    "docs/tactic_patterns.md": "ed361a334dac32a6120e31ed30f07cd1120c2a0f950433f8e4a16e5d9ee4fbbf"
+  },
+  "inclusion_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+  "inclusion_sha256": {
+    "QICLean/Analysis.lean": "d3230f90a7d2083bc699cd414e7b2bf2e7743a7e59642a0fd35ed4a08efe1ae5",
+    "blueprint/src/chapter/ch12_entropy.tex": "c50400fb4a5c8a826bd908aa2659ec8d00f51126c582d9798d0b9983d41af258"
+  }
+}

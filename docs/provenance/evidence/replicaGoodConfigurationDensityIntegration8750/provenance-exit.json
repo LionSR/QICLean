@@ -1,0 +1,14 @@
+{
+  "kind": "verification",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/validate-owned.py",
+    "/Users/siruilu/Local/agentFormalization/TNLean"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.79,
+  "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/provenance.log",
+  "sha256": "a367add2016da425e0b0777cc3514315b4a0b21543987b9936c85bee79e7af01"
+}

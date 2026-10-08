@@ -1,0 +1,23 @@
+{
+  "source_revision": "f675fee80416c966989bc8bc124a3d54b1348492",
+  "mathematical_revision": "a9415ed990a9b0ccb8998506881b21b8be8f6154",
+  "production_sha256": {},
+  "argv": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-pure-tensor-power",
+  "exit_code": 0,
+  "elapsed_seconds": 59.34315545798745,
+  "log": "/private/tmp/compatiblePhysical8753/cache-get.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+  "uncompressed_sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+  "uncompressed_bytes": 138,
+  "compressed": false,
+  "deterministic_gzip_mtime": null,
+  "mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "actual_mathlib_revision": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "Mathlib_olean_exists": true
+}

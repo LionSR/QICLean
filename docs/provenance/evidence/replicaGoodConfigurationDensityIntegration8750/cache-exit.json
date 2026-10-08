@@ -1,0 +1,17 @@
+{
+  "kind": "verification",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=2",
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 31.42,
+  "source_revision": "1f350a6e71a2363e7827f08e40e471d5b4e85d29",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationDensityIntegration8750/cache.log",
+  "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+}

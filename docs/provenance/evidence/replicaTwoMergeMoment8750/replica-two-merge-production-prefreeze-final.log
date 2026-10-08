@@ -1,0 +1,2 @@
+QICLean/Analysis/ReplicaTwoMergeMoment.lean:41:67: error: unexpected token 'omit'; expected 'lemma'
+QICLean/Analysis/ReplicaTwoMergeMoment.lean:52:39: error: unexpected token 'omit'; expected 'lemma'

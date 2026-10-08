@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/check-preservation.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 0.74,
+  "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/preservation.log",
+  "sha256": "928268bffc05906605bb3f32632a1a934d1050738d965f77cc583c098f178d60"
+}

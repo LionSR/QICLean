@@ -1,0 +1,9 @@
+{
+  "result": "passed",
+  "source_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "artifact": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/standalone-wrapper.pdf",
+  "image": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/standalone-page.png",
+  "pages": 1,
+  "inspected": "Entire theorem, all hypotheses, retained QYV explanation, actual product density proof and bibliography",
+  "observations": "The statement and proof are legible, with no clipping, overlap or unresolved citation. The independent middle Y factor is retained until physical symmetrization."
+}

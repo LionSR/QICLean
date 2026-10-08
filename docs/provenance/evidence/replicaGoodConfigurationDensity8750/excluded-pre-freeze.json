@@ -1,0 +1,22 @@
+{
+  "exit_code": 1,
+  "source_sha256": "b9b66a55b9ed8c83fae99fb39a46b08298ac21a4fafe3c612216c71590239f06",
+  "source": "excluded-pre-freeze-source.lean.txt",
+  "diagnostics": "excluded-pre-freeze-tool-output.txt",
+  "capture_kind": "Tool result transcribed before source freeze; not a canonical recorded command log.",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "-j1",
+    "-Dpp.unicode.fun=true",
+    "-DrelaxedAutoImplicit=false",
+    "-DmaxSynthPendingDepth=3",
+    "-Dlinter.mathlibStandardSet=true",
+    "-DwarningAsError=true",
+    "QICLean/Analysis/ReplicaGoodConfigurationDensity.lean"
+  ],
+  "correction": "Remove the private helper unused DecidableEq A type parameter and use classical in its proof; public signatures and mathematical proof unchanged."
+}

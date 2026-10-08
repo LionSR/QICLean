@@ -1,0 +1,458 @@
+{
+  "mathematical_source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+  "leaf_evidence_revision": "127e81f0482bd2f3ce166f283b981a71a17edb96",
+  "inclusion_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+  "owned_declarations": [
+    "Matrix.replicaGoodPairMarginal",
+    "Matrix.partialTraceRight_replicaGoodPairMarginal",
+    "Matrix.partialTraceLeft_replicaGoodPairMarginal",
+    "Matrix.trace_replicaGoodPairMarginal"
+  ],
+  "commands": [
+    {
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/Axioms.lean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 56.92,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/axioms.log",
+      "sha256": "d01fd0967d7179bdee394bd2451896dc1e2393f4dfde0f4eeda7f36eb8127eec"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "bbl"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.51,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/bbl.log",
+      "sha256": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/blueprint_lean_sync.py",
+        "--root",
+        ".",
+        "--update-lean-decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.49,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/blueprint-sync.log",
+      "sha256": "ccb9c6d07911b3f1ee0cff5261f7b575f41c293f0be26c7e341756cd1d142016"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=2",
+        "lake",
+        "build"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 211.89,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/build.log",
+      "sha256": "3e307323aae438505ac97b18fdb56ca258f0569e69fb312f48240f95e0db089e"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/inspect-entries.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 6.23,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/entry-web.log",
+      "sha256": "69f399d15a16d4095e05e9c4c3e3ae6c5bd6ed1a007fb648252cf4959757dc24"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/check-preservation.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.75,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-preservation.log",
+      "sha256": "c6cb333ccbed65bca049d50fc3e2e985b24acbc2e0b7954235eb0dbc78bd6c2a"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "127e81f0"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.12,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/inspect-web.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 5.71,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/focused-web.log",
+      "sha256": "a79c7c209f3ae42398b9185f00ce1c1dc5c1cdb7f05085e717285a4625d4aa2d"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/mathlib-guard.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.11,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/guard.log",
+      "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/generate_import_aggregators.py",
+        "--check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.77,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/imports.log",
+      "sha256": "0fd38ff18f2eab0b06e9844101f8dd4d30ecb1f4f465ae3c020ca40d6213c86e"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/validate-manifest.py",
+        "--allow-inclusion"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.36,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/leaf-preservation.log",
+      "sha256": "a155894a52754f004f2ddcc703e2655eda40a616eef4a49773e96b79b892d3a3"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/validate-manifest.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.26,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/manifest-check.log",
+      "sha256": "02d4399ab330b083d61513172585fb3132b8afdc784e2d08331f47856011a401"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "lake",
+        "exe",
+        "checkdecls",
+        "blueprint/lean_decls"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 36.33,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/check-native-targets.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.62,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native-targets.log",
+      "sha256": "e18bdef47fbe0affc2dd24fe4a7c70a09dc0341d74fb6dce0c5c4fec468c647e"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "paper-gaps",
+        "check"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.08,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/paper-gaps.log",
+      "sha256": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys;os.chdir(\"blueprint\");sys.exit(subprocess.call([\"leanblueprint\",\"pdf\"]))"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 36.66,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/pdf.log",
+      "sha256": "ebf02412af6b8c760762c7994f1fccf642c25a8f61f4c787dbcab00bb025ef76"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/check-preservation.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 2.59,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/preservation.log",
+      "sha256": "c6cb333ccbed65bca049d50fc3e2e985b24acbc2e0b7954235eb0dbc78bd6c2a"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "127e81f0"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.21,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 0.61,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/provenance.log",
+      "sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry/docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render-pdf.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 10.11,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render.log",
+      "sha256": "f256e124e0fb104a09ac13f05f6b0ec423d443ce602fe1b3d69b913466f0e53d"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "python3",
+        "scripts/fetch_tenkz.py"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 1.89,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/tenkz.log",
+      "sha256": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "texra-blueprint",
+        "web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 55.52,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/web.log",
+      "sha256": "aa5d46bcbee1ef7582eb66e023a4e3e97f7bf6cec13515687c257563758897d0"
+    },
+    {
+      "kind": "verification",
+      "command": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "scripts/test_blueprint_web_render.py",
+        "--web-root",
+        "blueprint/web"
+      ],
+      "working_directory": ".",
+      "exit_code": 0,
+      "elapsed_seconds": 44.65,
+      "source_revision": "fa392bef26b908210d2c64baf4dcad13c7d90b9c",
+      "log": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/whole-web.log",
+      "sha256": "e35ee704503c59bee5210f9217d685ecf68cc5c026d027f1f8948c07c58708ba"
+    }
+  ],
+  "file_hashes": {
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/Axioms.lean": "0e93cd880ca8f68d81f38534f6aaea2f2fb04c57edb4c160f4e3594c387fc5bb",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/NativeDeclarations.txt": "4e4725bba709ed2dc9028efee655f662692ee5aa2079d396575cad31f389495a",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/README.md": "4d56494d1cf4b10fa2356111abfdede6e6e1450b6ca17af8cd119de625e4409c",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/axioms-exit.json": "df6e392d61ade778e92529a745a3f8057abb7468747f62a5d6e8b1e755f36ed5",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/axioms.log": "d01fd0967d7179bdee394bd2451896dc1e2393f4dfde0f4eeda7f36eb8127eec",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/axioms.log.gz": "36662a2d8c03770ccf4c65956e9130d76c8896fe9a9cb8134e7fde1801233226",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/bbl-exit.json": "a1eeb85bc4bdf1d5c31291e9ff839705dc096c522b29a229cc127a5d74ebbe5c",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/bbl.log": "dc7f719bb049f457496f2c46e587310bb66182ae0057b2268486fc05798f7bf6",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/bbl.log.gz": "7c2ee3d468eb73cbdbc31e17b1311d942def86dea73e4e1b79e6474d6575ff04",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/blueprint-sync-exit.json": "3473125afa04849ba38d62cc05f61adab79a82f7b1a98546091719d86b232e1c",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/blueprint-sync.log": "ccb9c6d07911b3f1ee0cff5261f7b575f41c293f0be26c7e341756cd1d142016",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/blueprint-sync.log.gz": "6a64563fcf111a5171c23df60745e6d74b5336a76f4d0e9cad235611fab9dc3a",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/build-exit.json": "f17034232a5ac2e4ad72d31a7d86bb2a29da8162ef7a5a1a308a32c8e9f08726",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/build.log": "3e307323aae438505ac97b18fdb56ca258f0569e69fb312f48240f95e0db089e",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/build.log.gz": "148da25f3841662c72a63acbe3a0f56722fb8cf5cdaae46a6b2950f83a5ec270",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/capture.py": "4ddd6a74013370931f7ef47d188ddc8c7301c23e78ddef41ac711c307aeb7a8d",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/check-native-targets.py": "075aeea7d8b040d8f67bda762c31c068b6981838eeb754a053f1b0e8369acb9f",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/check-preservation.py": "ffa4f069501630c9602310996558f1085d6ad67b6b08a40616632d49eb50a131",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/collect-manifest.py": "ea70880d17e8c7a4ad0ed0a931e27a3ac33153c85a97d4b27e0ac6f07b310068",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/common-density-blueprint.pdf": "bac7314a26795b2b29859ae67b9b2941e9b01ac39917e11cf932c4e803016d52",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/compression.json": "d88859d4d2f7f389ca240f87158e55b5717e4ce5440b2aa9a8b67d64af7c1f6e",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/entry-inspection.json": "d0d79819581dfaa0379f57ffa4b56e4f4afce6edb24fb03411ddce6c8ded78ad",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/entry-web-exit.json": "29ae72598673428af9a05a475f520bc640a42f9d238b448853cd8195c1c1b6ca",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/entry-web.log": "69f399d15a16d4095e05e9c4c3e3ae6c5bd6ed1a007fb648252cf4959757dc24",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/entry-web.log.gz": "77d441c95c533c236ef39cc15abed07a86007ec44ed1e5b5fea949d374af92d4",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/excluded-html-scout.json": "0d4580fe87e91230ebcf3b77579112909b23dc1c85c2d2a8cf4d592eebd6088b",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-preservation-exit.json": "d7e03ee91ca430a78c49d9054244fdc54c6ceff1519796e93fe5fe805decb0dc",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-preservation.log": "c6cb333ccbed65bca049d50fc3e2e985b24acbc2e0b7954235eb0dbc78bd6c2a",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-preservation.log.gz": "827fd5a104cd6fa0c588f9e6f8389345b488c425269df895c5acf144ba57b636",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-prose-exit.json": "6c897660b90f65ed580b947a4fa7d802ff4f6d7e042fa366faa42af75923cdbb",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/final-prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/focused-web-exit.json": "5b74f28a04fe6268786c3d0f8a90b72a61c4f1f86b018f94857380c5b810f37f",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/focused-web.log": "a79c7c209f3ae42398b9185f00ce1c1dc5c1cdb7f05085e717285a4625d4aa2d",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/focused-web.log.gz": "6bc6c54cf32580bffea40bba0de1bc2306adfadd2d3a681d1de595010df76fce",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/guard-exit.json": "c3c64d2c59385cf1e2ef85a8d2950623ddb5041ff700712228ce2adff8557428",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/guard.log": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/guard.log.gz": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/imports-exit.json": "3217381da7518d97c22954fa5916e3d7336981686603bdb18c19ace5b70a057a",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/imports.log": "0fd38ff18f2eab0b06e9844101f8dd4d30ecb1f4f465ae3c020ca40d6213c86e",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/imports.log.gz": "ea9352889c876a3096c973d611dbe5d02e79bb2928ad1fa3ac422903d78379cf",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/inspect-entries.py": "0c6c2af3738d540a49ecd277014eed4a41279bf882723d4ac701aced0ddb90df",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/inspect-web.py": "9af6a0a303e372cbe33129a0f1423492398cc76e9b3cd9447ca36d78edeccbfc",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/leaf-preservation-exit.json": "194b36f61e455e2454519ea1ddfb2320ab1e0fbd8c08c21ea52e9ca389dca933",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/leaf-preservation.log": "a155894a52754f004f2ddcc703e2655eda40a616eef4a49773e96b79b892d3a3",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/leaf-preservation.log.gz": "6f3b7df91d626b5a8beff9f823c3fa4d41719a0a8c32ee094aa1f7c08df7fb6c",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/mathlib-guard.py": "7735e65b032808f8e4f6a672cec0c4a72ee8b81fa84177b9330fc44a71d456f5",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native-exit.json": "009e7a75184d6198f07f744d630671820b1f8210a03206b709fb7389f7b76336",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native-targets-exit.json": "42d5a62200ffdfc154758370a38dcec9f5c6f7f52207e24528f09455fbf49e6f",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native-targets.json": "e18bdef47fbe0affc2dd24fe4a7c70a09dc0341d74fb6dce0c5c4fec468c647e",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native-targets.log": "e18bdef47fbe0affc2dd24fe4a7c70a09dc0341d74fb6dce0c5c4fec468c647e",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native-targets.log.gz": "63a52a5e3720e12238544a174dcd2a8ab07c20a157554e7b6e8e6ff4e27da022",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/native.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/owned-shards.json": "c801ebede69ccdb7858f4d6f6cfbc30785dba7b1f492b05c95046ab49fb69727",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/paper-gaps-exit.json": "e143ffb65aa62635e6dda87ce541556a0f14c4fb3181c4361b7dd182db0d9deb",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/paper-gaps.log": "45a5281c81789f25ed8a92da906cf813b0f3d8a6cbe42c1c9f8ea482281b390a",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/paper-gaps.log.gz": "daa5bc242751cef680bcc2ef9e4e40bf806993a1426781e6f26c31a344c88d25",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/parent-preservation.json": "25205bd200cd27ad73cc317d30c68025f846fc467075c709af6409ed0983d9d9",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/pdf-exit.json": "a32f4cf2aa8978fb67cc65d6ed59c9e39f4dbf3d64dd21e4331290f761960d66",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/pdf-page-selection.json": "b0784763c78eb12f3cb48a638561a2e9247409edbca99cc172ab50f0ace6ce76",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/pdf.log": "ebf02412af6b8c760762c7994f1fccf642c25a8f61f4c787dbcab00bb025ef76",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/pdf.log.gz": "959fb99d960ce5804bdff85dfb48a46adcb75c9bd069ad1d0e0e57524afbc0a5",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/preservation-exit.json": "f266e8df6f630f9b2a8685e9a3e7c8856fb6c9084ce810cf26b3b569e9c26c82",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/preservation.log": "c6cb333ccbed65bca049d50fc3e2e985b24acbc2e0b7954235eb0dbc78bd6c2a",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/preservation.log.gz": "827fd5a104cd6fa0c588f9e6f8389345b488c425269df895c5acf144ba57b636",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/prose-exit.json": "9cc7364a8e8c762589a51b549f5ba4a7513a859c6398ab30b93fa8e29e6be0ad",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/provenance-exit.json": "bc44707a0d1a16a5f0c6c47417259b1fa5e47e9d94f1bf7ccafa98876978bf19",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/provenance.log": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/provenance.log.gz": "0f4505c363e308ff7fea94ec3b259161b432753924b6677321a89720267a74e9",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/common-density-web-desktop.png": "47a11d39a15cca1e5822880ee7dbca90e5d8177301e83d788116a4ba151d19f0",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/common-density-web-mobile.png": "e4825dec72b16c2e5939d4bb0317975eb8cc45ec63caec22d8bffaf5918e8d5d",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-1-desktop.png": "2fbcead8c90ffb9972065fc3676f0283193ccd77b28e1ff3fd74561b3b5004d9",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-1-mobile.png": "8ca172fedef829e074d07d15b87bf4fc248b37ad2c6a688a5b672122b41b52d1",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-2-desktop.png": "08cab27a9d84e8f1a2492eafb67c25a3e2a157be275597fa67cd2d27f3ddca60",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-2-mobile.png": "f4b633d9d0d0bdbc112563fe38fe590cfa2232e0f06173c388f21a34c9d9398e",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-3-desktop.png": "347c246e5b71e2243a95aeb4bb4700b946d2f54541dae6d58d34d947fb6fcb38",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-3-mobile.png": "370e800b66a3511eb3a76b4da8cc7c01607e77352b09d1de71b384e4f00c7e9a",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-4-desktop.png": "77a6ff4c95d2248f470046ff563b6b128b65500f72ba95df812d52a2b0deb092",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-4-mobile.png": "dca0a3a57c2a0f143cf28e717339ce71c6500ea79b8e2d73223243a84d624218",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/page-413.png": "0150628b3498a9a7638d5b8aea2ced993af6e3e22870c33ed29b8b322666471a",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/page-414.png": "c361306bd54691aa35295fdd19a5bfc51593d333f190fcbba87a4d558ac60f91",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render-exit.json": "c63a5347c1612239553a286df6dd727d87277e22fd86b3a5a574a6b0e848a31a",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render-pdf.py": "207628db24a8473bf879a49882b3a25180a5b2530434f138da9bfc8eb3ed7e52",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render.log": "f256e124e0fb104a09ac13f05f6b0ec423d443ce602fe1b3d69b913466f0e53d",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render.log.gz": "21d18c5d822c57dc4b0af3abf5bfec96015a918c0d1308b2d6434aac4c4e06ed",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/run-book.py": "ba0247aab00b072b75c94658381626b24b57257eb04e969af380c12b3be89181",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/source-freeze.json": "3a0970e687b11348a7301d28b9c265068659504d20e73b490ba9433b7457ce25",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/tenkz-exit.json": "60e932275df58ba2415b51486ebf73e3109518c2eb75aef295cc35343a208328",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/tenkz.log": "ec4454e707a77b674e16dd22fe0f9540b0a309fdb86fe2b50c11378ccd3fdcd9",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/tenkz.log.gz": "72aa2c0b6e8094402e184de0b18c4557b64e419b076a8846987347281866cdf4",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/validate-manifest.py": "7852d881a9988b886ee30311b7ac5130578fd4590f5bd118b6acc1b2ea1135fb",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/validate-owned.py": "d1396e8520fbd7e5d63767493e3970f8d2b2c3d273ffdb1915a95dd8d9939f26",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/visual-inspection.json": "8f78d92308b91ef1280cf65779f15ca8dd9afa9bc3b33caf5957915fa173d67c",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/web-exit.json": "918229c1fdcdd685a036682cf92ada4f8c1702879ae56a122bf3b95ad3b0856f",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/web-inspection.json": "c305981c03eaa2afbd0d743405731617889cfe35f7445eac2611b39a41bc31a1",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/web.log": "aa5d46bcbee1ef7582eb66e023a4e3e97f7bf6cec13515687c257563758897d0",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/web.log.gz": "54174f8de79d4e43844d19a1fefd5fa547eca749458fbfb983800c429be7c0e4",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/whole-web-exit.json": "bc9b35a25269b637ed57587426d5a583f9b076f3a5ec265455e12d4948ceda05",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/whole-web.log": "e35ee704503c59bee5210f9217d685ecf68cc5c026d027f1f8948c07c58708ba",
+    "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/whole-web.log.gz": "7203e5e50dd93433e851a7f2d8909c81197240a1274da595d32643d9bd5f884b",
+    "QICLean/Analysis/ReplicaGoodPairMarginal.lean": "a0dafbc33cb0385bb9dca2d2a95c551d3eac6a21e45675e000b25bffcb9a95b6",
+    "blueprint/src/fragment/replica_good_pair_marginal.tex": "70f6a3752b2f9378bddfcee667984e4041bcb1ea781521b8555ed3a5be4d1509",
+    "docs/formalization/replica-good-pair-marginal.md": "b9bab579c22cd97ebb0117e5feea10b224889f2215bd5148bdd81a12380fb9f2",
+    "docs/tactic_patterns.md": "ed361a334dac32a6120e31ed30f07cd1120c2a0f950433f8e4a16e5d9ee4fbbf",
+    "QICLean/Analysis.lean": "d3230f90a7d2083bc699cd414e7b2bf2e7743a7e59642a0fd35ed4a08efe1ae5",
+    "blueprint/src/chapter/ch12_entropy.tex": "c50400fb4a5c8a826bd908aa2659ec8d00f51126c582d9798d0b9983d41af258",
+    "docs/provenance/openai-math.d/replicaGoodPairMarginal8750.json": "59c27830675fd90e5fd3bd0b55538cb171a765f1f952dceb3fa81406ed5987c5",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/verification.json": "a2d828dbef9861c0691d6fb9bd51d02316f79b4a970a16d9f0a8eb2ce2ac02eb"
+  },
+  "inventory_exclusions": [
+    "verification.json: self inventory",
+    "manifest-check* command records: final validation output; validated through commands after collection"
+  ],
+  "scope": "Four actual common-density coordinate and mass declarations; inherited mathematical proofs and audits are preserved, not freshly reviewed."
+}

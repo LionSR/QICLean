@@ -1,0 +1,108 @@
+[
+  {
+    "top": 1207.09375,
+    "bottom": 1443.5625,
+    "proofs": [],
+    "errors": [],
+    "id": "def:replica_good_pair_marginal",
+    "view": "desktop",
+    "screenshot": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-1-desktop.png"
+  },
+  {
+    "top": 1451.5625,
+    "bottom": 1690.375,
+    "proofs": [
+      {
+        "height": 83.21875,
+        "text": "\n  Split the full R configurations into their good and bad coordinates. The two successive partial traces then sum over exactly the same coordinates as the definition of \u03c1QGCG(w). A finite-sum reordering proves the identity. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_pair_marginal_right",
+    "view": "desktop",
+    "screenshot": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-2-desktop.png"
+  },
+  {
+    "top": 1698.375,
+    "bottom": 2200.265625,
+    "proofs": [
+      {
+        "height": 150.4375,
+        "text": "\n  The physical exchange preserves the middle coordinate and carries each factor of the excitation operator to the corresponding factor for the exchanged vector. Tensoring and applying it to the exchanged original vector therefore gives exactly the exchanged component. The physical good/bad split respects this exchange. Partial trace is invariant under the exchange of discarded coordinates, so the common density is exchanged only on its retained factors. Apply the first marginal identity to this exchanged density. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_pair_marginal_left",
+    "view": "desktop",
+    "screenshot": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-3-desktop.png"
+  },
+  {
+    "top": 2208.265625,
+    "bottom": 2487.125,
+    "proofs": [
+      {
+        "height": 83.296875,
+        "text": "\n  The retained and discarded coordinates together form an equivalence with the original coordinates. Reindexing by an equivalence and taking a partial trace preserve the full trace. Finally, Tr|w\u27e9\u27e8w|=\u27e8w,w\u27e9=\u2016w\u20162. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_pair_marginal_trace",
+    "view": "desktop",
+    "screenshot": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-4-desktop.png"
+  },
+  {
+    "top": 440.28125,
+    "bottom": 767.96875,
+    "proofs": [],
+    "errors": [],
+    "id": "def:replica_good_pair_marginal",
+    "view": "mobile",
+    "screenshot": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-1-mobile.png",
+    "horizontal_endpoints": []
+  },
+  {
+    "top": 775.96875,
+    "bottom": 1082,
+    "proofs": [
+      {
+        "height": 128.03125,
+        "text": "\n  Split the full R configurations into their good and bad coordinates. The two successive partial traces then sum over exactly the same coordinates as the definition of \u03c1QGCG(w). A finite-sum reordering proves the identity. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_pair_marginal_right",
+    "view": "mobile",
+    "screenshot": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-2-mobile.png",
+    "horizontal_endpoints": []
+  },
+  {
+    "top": 1090,
+    "bottom": 1793.546875,
+    "proofs": [
+      {
+        "height": 284.875,
+        "text": "\n  The physical exchange preserves the middle coordinate and carries each factor of the excitation operator to the corresponding factor for the exchanged vector. Tensoring and applying it to the exchanged original vector therefore gives exactly the exchanged component. The physical good/bad split respects this exchange. Partial trace is invariant under the exchange of discarded coordinates, so the common density is exchanged only on its retained factors. Apply the first marginal identity to this exchanged density. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_pair_marginal_left",
+    "view": "mobile",
+    "screenshot": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-3-mobile.png",
+    "horizontal_endpoints": []
+  },
+  {
+    "top": 1801.546875,
+    "bottom": 2170.03125,
+    "proofs": [
+      {
+        "height": 128.109375,
+        "text": "\n  The retained and discarded coordinates together form an equivalence with the original coordinates. Reindexing by an equivalence and taking a partial trace preserve the full trace. Finally, Tr|w\u27e9\u27e8w|=\u27e8w,w\u27e9=\u2016w\u20162. \n\n  "
+      }
+    ],
+    "errors": [],
+    "id": "thm:replica_good_pair_marginal_trace",
+    "view": "mobile",
+    "screenshot": "docs/provenance/evidence/replicaGoodPairMarginalIntegration8750/render/entry-4-mobile.png",
+    "horizontal_endpoints": []
+  }
+]

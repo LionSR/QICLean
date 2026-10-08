@@ -1,0 +1,350 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Analysis.ReplicaJointDensity
+
+/-!
+# The common density on both good physical and auxiliary regions
+
+For the actual excitation component on `Q × (Y × V)`, retain the good copies
+of the exterior physical regions and both auxiliary regions, and trace every
+middle physical coordinate `Y`. The two partial traces are the existing
+regional auxiliary marginals, the second after exchanging the exterior physical
+and auxiliary regions. The exchange is proved for the literal excitation
+operator. The common density has the squared norm of the original component
+as its total mass.
+
+These coordinate and trace identities support the paired merge-moment argument
+in *A two-dimensional area law from a global spectral gap*, `07-comparators.tex`,
+lines 23, 103–110 and 524–549, equation `comparator:merge-moments`. They require
+neither unit norm nor permutation symmetry. Zero components, zero copies and
+empty good sets are included. All factors use the same chosen enumeration of
+the good copies; no ordering property is used.
+-/
+open scoped BigOperators Matrix Kronecker
+namespace Matrix
+
+/-- A change of one-copy coordinates transports the literal excitation operator.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
+private theorem excitation_reindex {A A' : Type*} [Fintype A] [DecidableEq A]
+    [Fintype A'] [DecidableEq A'] (e : A ≃ A') (Ω : A → ℂ)
+    (k : ℕ) (B : Finset (Fin k)) :
+    replicaExcitationProjection (fun x => Ω (e.symm x)) k B =
+      (replicaExcitationProjection Ω k B).submatrix
+        (fun x i => e.symm (x i)) (fun x i => e.symm (x i)) := by
+  classical
+  ext x y
+  simp only [replicaExcitationProjection, finKronecker_apply, submatrix_apply]
+  apply Finset.prod_congr rfl
+  intro i _
+  split_ifs
+  all_goals simp [Matrix.sub_apply, Matrix.one_apply, vecMulVec_apply, e.symm.injective.eq_iff]
+
+/-- The actual excitation component respects physical and auxiliary coordinate changes.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
+private theorem excitationComponent_reindex {A A' K K' : Type*}
+    [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A']
+    [Fintype K] [DecidableEq K] [Fintype K'] [DecidableEq K']
+    (e : A ≃ A') (g : K ≃ K') (Ω : A → ℂ) (k : ℕ) (B : Finset (Fin k))
+    (u : (Fin k → A) × K → ℂ) :
+    let E := (Equiv.arrowCongr (Equiv.refl (Fin k)) e).prodCongr g
+    (replicaExcitationProjection (fun x => Ω (e.symm x)) k B ⊗ₖ
+      (1 : Matrix K' K' ℂ)) *ᵥ (u ∘ E.symm) =
+      (((replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix K K ℂ)) *ᵥ u) ∘ E.symm) := by
+  classical
+  dsimp only
+  suffices h : (replicaExcitationProjection (fun x => Ω (e.symm x)) k B ⊗ₖ
+      (1 : Matrix K' K' ℂ)) =
+      (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix K K ℂ)).submatrix
+        ((Equiv.arrowCongr (Equiv.refl (Fin k)) e).prodCongr g).symm
+        ((Equiv.arrowCongr (Equiv.refl (Fin k)) e).prodCongr g).symm by
+    rw [h, submatrix_mulVec_equiv]
+    simp only [Equiv.symm_symm, Function.comp_assoc, Equiv.symm_comp_self, Function.comp_id]
+  ext x y
+  simp [excitation_reindex, kroneckerMap_apply, Matrix.one_apply,
+    g.symm.injective.eq_iff, Equiv.arrowCongr, Function.comp_def]
+
+/-
+Provenance-ID: 8750-qic-good-pair-marginal-01
+Original formalization, no upstream Lean proof text reused.
+Declaration: Matrix.replicaGoodPairMarginal
+Manuscript: September 24, 2026, comparator:merge-moments, lines 23, 103–110 and 524–549.
+-/
+
+/-- The literal common density on the good exterior physical and auxiliary regions,
+retaining `((Q_G × C_G) × (V_G × R_G))`. Trace every middle physical coordinate
+and all bad exterior and auxiliary coordinates. The one-copy vector is
+arbitrary; its excitation operator is a projection when the vector is unit.
+*A two-dimensional area law from a global spectral gap*, `07-comparators.tex`,
+lines 23, 103–110 and 524–549, equation `comparator:merge-moments`. -/
+noncomputable def replicaGoodPairMarginal
+    {Q Y V C R : Type*} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y]
+    [Fintype V] [DecidableEq V]
+    [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
+    (Ω : Q × (Y × V) → ℂ) (k : ℕ) (B : Finset (Fin k))
+    (u : (Fin k → Q × (Y × V)) × ((Fin k → C) × (Fin k → R)) → ℂ) :
+    Matrix (((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C)) ×
+      ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R)))
+      (((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C)) ×
+      ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))) ℂ :=
+  let w := (replicaExcitationProjection Ω k B ⊗ₖ
+    (1 : Matrix ((Fin k → C) × (Fin k → R)) ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ u
+  let f := fun x : (((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C)) ×
+      ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))) ×
+      ((Fin Bᶜ.card → Y) ×
+        ((↥B → Q × (Y × V)) × ((Fin B.card → C) × (Fin B.card → R)))) =>
+    w ((FiniteProduct.splitEquiv (fun _ : Fin k => Q × (Y × V)) B).symm
+      (x.2.2.1, fun i => (x.1.1.1 ((Finset.equivFin Bᶜ) i),
+        (x.2.1 ((Finset.equivFin Bᶜ) i), x.1.2.1 ((Finset.equivFin Bᶜ) i)))),
+      ((TensorPower.goodBadCopiesEquiv C B).symm (x.1.1.2, x.2.2.2.1),
+        (TensorPower.goodBadCopiesEquiv R B).symm (x.1.2.2, x.2.2.2.2)))
+  partialTraceRight (vecMulVec f (star f))
+
+/-- Exchange the exterior physical regions while preserving the independent middle region.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
+private def physicalRegionExchange (Q Y V : Type*) : Q × (Y × V) ≃ V × (Y × Q) where
+  toFun x := (x.2.2, (x.2.1, x.1))
+  invFun x := (x.2.2, (x.2.1, x.1))
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- Exchange the exterior physical and auxiliary regions, preserving the middle region.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
+private theorem excitationComponent_swap
+    {Q Y V C R : Type*} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y]
+    [Fintype V] [DecidableEq V] [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
+    (Ω : Q × (Y × V) → ℂ) (k : ℕ) (B : Finset (Fin k))
+    (u : (Fin k → Q × (Y × V)) × ((Fin k → C) × (Fin k → R)) → ℂ) :
+    (replicaExcitationProjection (fun x : V × (Y × Q) => Ω (x.2.2, (x.2.1, x.1))) k B ⊗ₖ
+      (1 : Matrix ((Fin k → R) × (Fin k → C)) ((Fin k → R) × (Fin k → C)) ℂ)) *ᵥ
+      (fun x => u ((fun i => ((x.1 i).2.2, ((x.1 i).2.1, (x.1 i).1))),
+        (x.2.2, x.2.1))) =
+    fun x => ((replicaExcitationProjection Ω k B ⊗ₖ
+      (1 : Matrix ((Fin k → C) × (Fin k → R)) ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ u)
+      ((fun i => ((x.1 i).2.2, ((x.1 i).2.1, (x.1 i).1))), (x.2.2, x.2.1)) := by
+  simpa [physicalRegionExchange, Function.comp_def, Equiv.arrowCongr, Prod.map, Prod.swap] using
+    excitationComponent_reindex (physicalRegionExchange Q Y V)
+      (Equiv.prodComm (Fin k → C) (Fin k → R)) Ω k B u
+
+/-- The physical split respects an arbitrary change of one-copy coordinates.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
+private theorem split_physical_reindex {A A' : Type*} {k : ℕ}
+    (e : A ≃ A') (B : Finset (Fin k)) (b : ↥B → A) (g : ↥(Bᶜ) → A) :
+    (FiniteProduct.splitEquiv (fun _ : Fin k => A') B).symm
+      ((fun i => e (b i)), (fun i => e (g i))) =
+    fun i => e ((FiniteProduct.splitEquiv (fun _ : Fin k => A) B).symm (b, g) i) := by
+  classical
+  funext i
+  by_cases hi : i ∈ B
+  all_goals simp [FiniteProduct.splitEquiv_symm_apply_of_mem,
+    FiniteProduct.splitEquiv_symm_apply_of_notMem, hi]
+
+/-- The transported component has the exchanged common density.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
+private theorem pairMarginal_swap
+    {Q Y V C R : Type*} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y]
+    [Fintype V] [DecidableEq V]
+    [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
+    (Ω : Q × (Y × V) → ℂ) (k : ℕ) (B : Finset (Fin k))
+    (u : (Fin k → Q × (Y × V)) × ((Fin k → C) × (Fin k → R)) → ℂ) :
+    replicaGoodPairMarginal (fun x : V × (Y × Q) => Ω (x.2.2, (x.2.1, x.1))) k B
+      (fun x => u ((fun i => ((x.1 i).2.2, ((x.1 i).2.1, (x.1 i).1))),
+        (x.2.2, x.2.1))) =
+      (replicaGoodPairMarginal Ω k B u).submatrix
+        (Equiv.prodComm ((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C))
+          ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))).symm
+        (Equiv.prodComm ((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C))
+          ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))).symm := by
+  classical
+  dsimp only [replicaGoodPairMarginal]
+  rw [excitationComponent_swap]
+  let eBad := (Equiv.refl (Fin Bᶜ.card → Y)).prodCongr
+    ((Equiv.arrowCongr (Equiv.refl ↥B) (physicalRegionExchange Q Y V)).prodCongr
+      (Equiv.prodComm (Fin B.card → C) (Fin B.card → R)))
+  rw [← partialTraceRight_submatrix_prod_equiv
+    (Equiv.prodComm ((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C))
+      ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))) eBad]
+  congr 1
+  ext x y
+  simp only [vecMulVec_apply, Pi.star_apply, RCLike.star_def, Equiv.arrowCongr,
+    Equiv.coe_prodComm, Equiv.refl_symm, Equiv.coe_refl, CompTriple.comp_eq,
+    Equiv.prodComm_symm, Equiv.prodCongr_symm, Equiv.symm_mk, Equiv.prodCongr_apply,
+    Equiv.coe_fn_mk, submatrix_apply, Prod.map, eBad, physicalRegionExchange]
+  have hx := split_physical_reindex (physicalRegionExchange V Y Q) B x.2.2.1
+    (fun i => (x.1.1.1 (Bᶜ.equivFin i),
+      (x.2.1 (Bᶜ.equivFin i), x.1.2.1 (Bᶜ.equivFin i))))
+  have hy := split_physical_reindex (physicalRegionExchange V Y Q) B y.2.2.1
+    (fun i => (y.1.1.1 (Bᶜ.equivFin i),
+      (y.2.1 (Bᶜ.equivFin i), y.1.2.1 (Bᶜ.equivFin i))))
+  simp only [physicalRegionExchange, Equiv.coe_fn_mk, Prod.swap, Function.comp_def, id_eq]
+    at hx hy ⊢
+  rw [hx, hy]
+
+/-- Splitting and tracing the middle physical and last auxiliary coordinates
+preserves the actual retained regional density.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
+private theorem trace_split_last_auxiliary
+    {Q T Y V C D H J R S : Type*} [Fintype T] [Fintype Y] [Fintype V]
+    [Fintype D] [Fintype H] [Fintype J] [Fintype R] [Fintype S]
+    (eT : T ≃ Y × V) (e : D ≃ R × S)
+    (w : ((Q × T) × H) × ((C × J) × D) → ℂ) :
+    partialTraceRight (partialTraceRight (vecMulVec
+      (fun x : ((Q × C) × (V × R)) × (Y × (H × (J × S))) =>
+        w (((x.1.1.1, eT.symm (x.2.1, x.1.2.1)), x.2.2.1),
+          ((x.1.1.2, x.2.2.2.1), e.symm (x.1.2.2, x.2.2.2.2))))
+      (star (fun x : ((Q × C) × (V × R)) × (Y × (H × (J × S))) =>
+        w (((x.1.1.1, eT.symm (x.2.1, x.1.2.1)), x.2.2.1),
+          ((x.1.1.2, x.2.2.2.1), e.symm (x.1.2.2, x.2.2.2.2))))))) =
+    partialTraceRight (vecMulVec
+      (fun x : (Q × C) × ((J × D) × (T × H)) =>
+        w (((x.1.1, x.2.2.1), x.2.2.2), ((x.1.2, x.2.1.1), x.2.1.2)))
+      (star (fun x : (Q × C) × ((J × D) × (T × H)) =>
+        w (((x.1.1, x.2.2.1), x.2.2.2), ((x.1.2, x.2.1.1), x.2.1.2))))) := by
+  classical
+  ext p q
+  simp only [partialTraceRight_apply, vecMulVec_apply, Pi.star_apply, Fintype.sum_prod_type]
+  have hsum (F : D → ℂ) : ∑ d, F d = ∑ x : R × S, F (e.symm x) :=
+    (e.symm.sum_comp F).symm
+  have hsumT (F : T → ℂ) : ∑ t, F t = ∑ x : Y × V, F (eT.symm x) :=
+    (eT.symm.sum_comp F).symm
+  simp_rw [hsum, hsumT, Fintype.sum_prod_type]
+  let t : V × (R × (Y × (H × (J × S)))) ≃ J × (R × (S × (Y × (V × H)))) :=
+    { toFun := fun x => (x.2.2.2.2.1, x.2.1, x.2.2.2.2.2, x.2.2.1, x.1, x.2.2.2.1)
+      invFun := fun x => (x.2.2.2.2.1, x.2.1, x.2.2.2.1, x.2.2.2.2.2, x.1, x.2.2.1)
+      left_inv := fun _ => rfl
+      right_inv := fun _ => rfl }
+  simpa only [Fintype.sum_prod_type, t, Equiv.coe_fn_mk] using t.sum_comp
+    (fun x => w (((p.1, eT.symm (x.2.2.2.1, x.2.2.2.2.1)), x.2.2.2.2.2),
+      (p.2, x.1), e.symm (x.2.1, x.2.2.1)) *
+      star (w (((q.1, eT.symm (x.2.2.2.1, x.2.2.2.2.1)), x.2.2.2.2.2),
+        (q.2, x.1), e.symm (x.2.1, x.2.2.1))))
+
+/-
+Provenance-ID: 8750-qic-good-pair-marginal-02
+Original formalization, no upstream Lean proof text reused.
+Declaration: Matrix.partialTraceRight_replicaGoodPairMarginal
+Manuscript: September 24, 2026, comparator:merge-moments, lines 23, 103–110 and 524–549.
+-/
+
+/-- Tracing the good complementary exterior physical and auxiliary regions gives
+the actual regional auxiliary marginal of the same excitation component, with
+physical complement `Y × V`. Neither normalization nor symmetry is required.
+*A two-dimensional area law from a global spectral gap*, `07-comparators.tex`,
+lines 23, 103–110 and 524–549, equation `comparator:merge-moments`. -/
+theorem partialTraceRight_replicaGoodPairMarginal
+    {Q Y V C R : Type*} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y]
+    [Fintype V] [DecidableEq V]
+    [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
+    (Ω : Q × (Y × V) → ℂ) (k : ℕ) (B : Finset (Fin k))
+    (u : (Fin k → Q × (Y × V)) × ((Fin k → C) × (Fin k → R)) → ℂ) :
+    partialTraceRight (replicaGoodPairMarginal Ω k B u) =
+      replicaGoodRegionalAuxiliaryMarginal Ω k B u := by
+  classical
+  dsimp only [replicaGoodPairMarginal, replicaGoodRegionalAuxiliaryMarginal]
+  exact trace_split_last_auxiliary
+    (Equiv.arrowProdEquivProdArrow (Fin Bᶜ.card) (fun _ => Y) (fun _ => V))
+    (TensorPower.goodBadCopiesEquiv R B)
+    (fun x : (((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → Y × V)) × (↥B → Q × (Y × V))) ×
+        (((Fin Bᶜ.card → C) × (Fin B.card → C)) × (Fin k → R)) =>
+      ((replicaExcitationProjection Ω k B ⊗ₖ
+      (1 : Matrix ((Fin k → C) × (Fin k → R)) ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ u)
+      ((FiniteProduct.splitEquiv (fun _ : Fin k => Q × (Y × V)) B).symm
+        (x.1.2, fun i => (x.1.1.1 (Bᶜ.equivFin i), x.1.1.2 (Bᶜ.equivFin i))),
+        (TensorPower.goodBadCopiesEquiv C B).symm x.2.1, x.2.2))
+
+/-
+Provenance-ID: 8750-qic-good-pair-marginal-03
+Original formalization, no upstream Lean proof text reused.
+Declaration: Matrix.partialTraceLeft_replicaGoodPairMarginal
+Manuscript: September 24, 2026, comparator:merge-moments, lines 23, 103–110 and 524–549.
+-/
+
+/-- Tracing the good first exterior physical and auxiliary regions gives the actual
+regional auxiliary marginal after exchanging the exterior physical and auxiliary
+regions. The independent middle region is preserved, and the new physical
+complement is `Y × Q`. Excitation covariance derives this component from the
+same original component. Neither normalization nor symmetry is required.
+*A two-dimensional area law from a global spectral gap*, `07-comparators.tex`,
+lines 23, 103–110 and 524–549, equation `comparator:merge-moments`. -/
+theorem partialTraceLeft_replicaGoodPairMarginal
+    {Q Y V C R : Type*} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y]
+    [Fintype V] [DecidableEq V]
+    [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
+    (Ω : Q × (Y × V) → ℂ) (k : ℕ) (B : Finset (Fin k))
+    (u : (Fin k → Q × (Y × V)) × ((Fin k → C) × (Fin k → R)) → ℂ) :
+    partialTraceLeft (replicaGoodPairMarginal Ω k B u) =
+      replicaGoodRegionalAuxiliaryMarginal (fun x : V × (Y × Q) => Ω (x.2.2, (x.2.1, x.1))) k B
+        (fun x => u ((fun i => ((x.1 i).2.2, ((x.1 i).2.1, (x.1 i).1))),
+          (x.2.2, x.2.1))) := by
+  classical
+  rw [← partialTraceRight_replicaGoodPairMarginal, pairMarginal_swap]
+  rfl
+
+/-- Regroup the original coordinates into the four good exterior regions,
+the good middle region and the bad regions.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
+private noncomputable def goodPairCoordinates (Q Y V C R : Type*) {k : ℕ}
+    (B : Finset (Fin k)) :
+    ((Fin k → Q × (Y × V)) × ((Fin k → C) × (Fin k → R))) ≃
+      ((((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C)) ×
+        ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))) ×
+        ((Fin Bᶜ.card → Y) ×
+          ((↥B → Q × (Y × V)) × ((Fin B.card → C) × (Fin B.card → R))))) :=
+  let eGood := (Equiv.arrowCongr Bᶜ.equivFin (Equiv.refl (Q × (Y × V)))).trans
+    ((Equiv.arrowProdEquivProdArrow (Fin Bᶜ.card) (fun _ => Q) (fun _ => Y × V)).trans
+      ((Equiv.refl (Fin Bᶜ.card → Q)).prodCongr
+        (Equiv.arrowProdEquivProdArrow (Fin Bᶜ.card) (fun _ => Y) (fun _ => V))))
+  let ePhys := (FiniteProduct.splitEquiv (fun _ : Fin k => Q × (Y × V)) B).trans
+    ((Equiv.refl (↥B → Q × (Y × V))).prodCongr eGood)
+  let regroup : ((↥B → Q × (Y × V)) ×
+      ((Fin Bᶜ.card → Q) × ((Fin Bᶜ.card → Y) × (Fin Bᶜ.card → V)))) ×
+      (((Fin Bᶜ.card → C) × (Fin B.card → C)) ×
+        ((Fin Bᶜ.card → R) × (Fin B.card → R))) ≃
+      ((((Fin Bᶜ.card → Q) × (Fin Bᶜ.card → C)) ×
+        ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))) ×
+        ((Fin Bᶜ.card → Y) ×
+          ((↥B → Q × (Y × V)) × ((Fin B.card → C) × (Fin B.card → R))))) :=
+    { toFun := fun x => (((x.1.2.1, x.2.1.1), (x.1.2.2.2, x.2.2.1)),
+        (x.1.2.2.1, x.1.1, x.2.1.2, x.2.2.2))
+      invFun := fun x => ((x.2.2.1, x.1.1.1, x.2.1, x.1.2.1),
+        ((x.1.1.2, x.2.2.2.1), (x.1.2.2, x.2.2.2.2)))
+      left_inv := fun _ => rfl
+      right_inv := fun _ => rfl }
+  (ePhys.prodCongr ((TensorPower.goodBadCopiesEquiv C B).prodCongr
+    (TensorPower.goodBadCopiesEquiv R B))).trans regroup
+
+/-
+Provenance-ID: 8750-qic-good-pair-marginal-04
+Original formalization, no upstream Lean proof text reused.
+Declaration: Matrix.trace_replicaGoodPairMarginal
+Manuscript: September 24, 2026, comparator:merge-moments, lines 23, 103–110 and 524–549.
+-/
+
+/-- The trace of the common good-copy density is the squared norm of the actual
+original excitation component, with the real squared norm included into the
+complex numbers. Neither normalization nor nonvanishing is required.
+*A two-dimensional area law from a global spectral gap*, `07-comparators.tex`,
+lines 23, 103–110 and 524–549, equation `comparator:merge-moments`. -/
+theorem trace_replicaGoodPairMarginal
+    {Q Y V C R : Type*} [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y]
+    [Fintype V] [DecidableEq V]
+    [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
+    (Ω : Q × (Y × V) → ℂ) (k : ℕ) (B : Finset (Fin k))
+    (u : (Fin k → Q × (Y × V)) × ((Fin k → C) × (Fin k → R)) → ℂ) :
+    (replicaGoodPairMarginal Ω k B u).trace =
+      ((‖WithLp.toLp 2 ((replicaExcitationProjection Ω k B ⊗ₖ
+        (1 : Matrix ((Fin k → C) × (Fin k → R))
+          ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ u)‖ ^ 2 : ℝ) : ℂ) := by
+  classical
+  let w := (replicaExcitationProjection Ω k B ⊗ₖ
+    (1 : Matrix ((Fin k → C) × (Fin k → R)) ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ u
+  let e := goodPairCoordinates Q Y V C R B
+  change (partialTraceRight ((vecMulVec w (star w)).submatrix e.symm e.symm)).trace =
+    ((‖WithLp.toLp 2 w‖ ^ 2 : ℝ) : ℂ)
+  rw [trace_partialTraceRight, trace_submatrix_equiv, trace_vecMulVec,
+    ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K]
+  simp [w]
+
+end Matrix

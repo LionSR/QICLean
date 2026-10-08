@@ -1,0 +1,347 @@
+{
+  "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+  "declarations": [
+    "Matrix.replicaGoodPairMarginal",
+    "Matrix.partialTraceRight_replicaGoodPairMarginal",
+    "Matrix.partialTraceLeft_replicaGoodPairMarginal",
+    "Matrix.trace_replicaGoodPairMarginal"
+  ],
+  "checks": [
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/Axioms.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:44:40.302737+00:00",
+      "elapsed_seconds": 20.352219124994008,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms.log",
+      "sha256": "d01fd0967d7179bdee394bd2451896dc1e2393f4dfde0f4eeda7f36eb8127eec"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "lake",
+        "exe",
+        "cache",
+        "get"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:43:42.106222+00:00",
+      "elapsed_seconds": 13.933725374998176,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/cache.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/mathlib-guard.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:44:06.387192+00:00",
+      "elapsed_seconds": 0.10797233300399967,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/guard.log",
+      "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/check-hazards.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:44:27.333495+00:00",
+      "elapsed_seconds": 0.0381162910052808,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/hazards.log",
+      "sha256": "edd3cd77c9cd6f79d8f81cae4b7f535f1dec8be8d3845fb0201daadb96c79137"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/validate-manifest.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:48:31.392893+00:00",
+      "elapsed_seconds": 3.800056957989,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/manifest-check.log",
+      "sha256": "ba1e18af93492cf692931f042bbde6c6a93f4b4e6b8de887bdcc29eab0d52639"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/pattern-scan.py",
+        "--root",
+        "QICLean",
+        "--top",
+        "5"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:44:27.333450+00:00",
+      "elapsed_seconds": 0.6318387499923119,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/patterns.log",
+      "sha256": "bfe91ff4c46806437ef76c4ec6e6a302f2e0e46f491307f6c47d5467375c26d4"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "python3",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:44:27.333469+00:00",
+      "elapsed_seconds": 1.275223457996617,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/preservation.log",
+      "sha256": "e0d594621baa464655d32be193ef79f7f7fba90c5a04b5f136613f28ec9b0b1b"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "python3",
+        "scripts/check_reader_facing_prose.py",
+        "--diff-base",
+        "771e955ae728db3e88af04114b5773843fc04eef"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:44:27.333419+00:00",
+      "elapsed_seconds": 0.6386581249971641,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "/Users/siruilu/miniforge3/bin/python3",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/validate-owned.py",
+        "/Users/siruilu/Local/agentFormalization/TNLean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:47:01.474206+00:00",
+      "elapsed_seconds": 1.3786425839934964,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/provenance.log",
+      "sha256": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "pdflatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-output-directory=docs/provenance/evidence/replicaGoodPairMarginal8750",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-wrapper.tex"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:45:21.147940+00:00",
+      "elapsed_seconds": 0.5399765409965767,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf.log",
+      "sha256": "dfb740ff98c4b7847889362a8f5051b3bddf667cf63121cdd6645ab9ac0e0143"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "pdflatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-output-directory=docs/provenance/evidence/replicaGoodPairMarginal8750",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-wrapper.tex"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:45:46.111505+00:00",
+      "elapsed_seconds": 0.46440258299116977,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf-final.log",
+      "sha256": "509458cd830ad308a2181a15b7d721a7eda8c0489924c7d5abaec0bafcf3b289"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "pdftoppm",
+        "-scale-to",
+        "1600",
+        "-png",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-wrapper.pdf",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-page"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:45:46.622505+00:00",
+      "elapsed_seconds": 0.6414217499986989,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-render.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/provenance/evidence/replicaGoodPairMarginal8750/Statements.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:44:40.302892+00:00",
+      "elapsed_seconds": 20.375448625010904,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/statements.log",
+      "sha256": "fa999dfb705c22c213ef3ea180a193679ca1e8cd4a383ae5d510ac34a720fff9"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/ReplicaGoodPairMarginal.lean"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:44:40.302877+00:00",
+      "elapsed_seconds": 22.517679124997812,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_revision": "f5877818e2b2c179c8bbd5e867447a695f3364bd",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=2",
+        "lake",
+        "build",
+        "QICLean.Analysis.ReplicaGoodPairMarginal"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+      "started_utc": "2026-10-08T01:44:06.675180+00:00",
+      "elapsed_seconds": 11.440079791995231,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/replicaGoodPairMarginal8750/target.log",
+      "sha256": "e1e054a918843324ce3c20d65fcc2e84bfabb68fea7320379bda32b428781734"
+    }
+  ],
+  "file_hashes": {
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/provenance.log": "42df10c3efea50de04c7d7ce8d5658989007bf9e54e4c8ee3d0ec01b60f69116",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/statements.log": "fa999dfb705c22c213ef3ea180a193679ca1e8cd4a383ae5d510ac34a720fff9",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/preservation-exit.json": "456860274fe8032f669839a0faac5a294abe46e878b449a9045d42f727047f33",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/owned-shards.json": "c801ebede69ccdb7858f4d6f6cfbc30785dba7b1f492b05c95046ab49fb69727",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/patterns-exit.json": "20ddea5ba64ab476e9a58290dd56ec9abac8ef87f077f9e99a2bf85b967a3006",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-wrapper.tex": "d24d706cb8a7cadfc4c46ee2bfeebee759384188065fbe1032a65e7603d68d44",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/provenance.log.gz": "0f4505c363e308ff7fea94ec3b259161b432753924b6677321a89720267a74e9",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/statements.log.gz": "d9a8ef19056b72cc4208326d6a7354d22e8dabc72cfb2ebfa678f737329cdb95",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-render.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/prose-exit.json": "de81438d62336d05df404f8b032b220fcc0046e46fb2fa6be81332abe195354a",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/target.log.gz": "49e5319ba1a436c4bf790807089adbf7ea3223d595e7764cf0f4871825d0307b",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/mathematical-review.json": "4f0ccc92856e053c349fd277a2822d436c85ff9a57918080ccab3d92f7dd443f",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-render-exit.json": "95f563e609b8d94a19b71ae336a53d13cf93f1cab57f1c21efc81c16ad298235",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/prose.log.gz": "13f7a1f6bd1fb917e7d99bee5793e439fcc5c54adb02b1550cc330e31594caf9",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf-exit.json": "95678525f4ec1d0a4c40a577069d811f059c0e6617b32d342845894e50aaef3b",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-wrapper.pdf": "31784b25cd2e77a7b35b7796d995e2c1296b0de71b74a102754a5a1e562f267c",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/source-history.json": "fd41d08113b8983847a7fab47628a5e3bbb6dd27eb04946b5cb595bad3d03d60",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-render.log.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/validate-manifest.py": "7799d7e089f2f696e79c2d62ff119ef8c0f27c7f9fe3d439dac666f99c11eeb5",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/hazards.log": "edd3cd77c9cd6f79d8f81cae4b7f535f1dec8be8d3845fb0201daadb96c79137",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-page-2.png": "31323cea3b036a2a10e38797db600ecdd70ab72a902a371333407335a3eddd8c",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/patterns.log.gz": "70a6c3b4ab4659c144a875ef4a6725734f5de7479ada7c852c0cb929ec5b799c",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf.log.gz": "dd4d8b82d795d4f2bf7fc238cbea4c236cfeb1db724b2a6e90e11602023a9bfc",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/patterns.log": "bfe91ff4c46806437ef76c4ec6e6a302f2e0e46f491307f6c47d5467375c26d4",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/Statements.lean": "b0f780ab42d9480357843f8515418ff873471f878323fa45fdeb95b0e7275951",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf.log": "dfb740ff98c4b7847889362a8f5051b3bddf667cf63121cdd6645ab9ac0e0143",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-page-1.png": "9c4aadd625e0ebbe8b4f7abc2991e1466800b5f9c2e2fcfbe8e8a9f64e7c7621",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/check-preservation.py": "83db1c2034654b56fc05231b40e5e572f4a0729a90335cdeed1c0ffdfad43ccd",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/validate-owned.py": "68ae4439df5d4833105c48eefcfb6c9b00c743297564d58e5be36981ca2fb900",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf-final-exit.json": "d53b9aa3ace1d0bc7f5f5cac0691c268da0c4895055aa4c2e380cf8f65e92585",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/README.md": "96ecee5d9e2ec42c339496815c19f15cbd1ac0e6b0b091683945852654ae503d",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/compression.json": "bf06901cf7617752fe6e6bffe9495482c84acf62f1935dba7f72e1f3c4de4fc7",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf-final.log.gz": "5072b586fd1a747a8f06bd1ecaa22cc5ebc7b37ce78cc7006fe35aa58499696b",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/cache.log.gz": "840237552f7aee81dc9f51916ea94bb6513d40703e2e9d1d793319869888d7f1",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/visual-inspection.json": "b0c7760fc741a2f78f0e92048da620ac4bc1130468388e03b34931d85b5945b2",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/cache.log": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/capture.py": "7a2910b7a0fa72248c09e6d772ba30470776fd8210ce0cc9f9ad7f94ed8f90ce",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/manifest-check-exit.json": "8147bbf127982373bdef8460b25e8d060d659180dd56e83119315d22a459eec8",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/check-hazards.py": "df0ee81e8b94abd1400174db40f85a74d92ef2c7c5b341364c5dc724bcb58274",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/standalone-pdf-final.log": "509458cd830ad308a2181a15b7d721a7eda8c0489924c7d5abaec0bafcf3b289",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/preservation.log": "e0d594621baa464655d32be193ef79f7f7fba90c5a04b5f136613f28ec9b0b1b",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/mathlib-guard.py": "7735e65b032808f8e4f6a672cec0c4a72ee8b81fa84177b9330fc44a71d456f5",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/target-exit.json": "d4b784b2fdae17043bb0df3be47f9e7216ea58d920ff1989813cd1c44695aa54",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/cache-exit.json": "97ee0885168e8395658cc4b53ff03f0a8f2924f824c02a588cc6ad2d41a90fac",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/hazards-exit.json": "f3261e1b1cc502b76ea4a80cec196f3325b0a38e972a953611cd1d29c52b44c5",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/target.log": "e1e054a918843324ce3c20d65fcc2e84bfabb68fea7320379bda32b428781734",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms.log": "d01fd0967d7179bdee394bd2451896dc1e2393f4dfde0f4eeda7f36eb8127eec",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/source-freeze.json": "59b1bdd7b59e0ca03be29f46038b9476d380f61d1475cd1b4bb6fe217d77111d",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/preservation.log.gz": "02247e96b148924e3d0581c1ceaac6671ecc301faa035fe869ee2b2aae56f0bc",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/guard.log": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/Axioms.lean": "b23fa9bee1991f17c6ee0eea8b4f28f4546ea6e91842024dd6c52f8f64a3e65a",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms.log.gz": "36662a2d8c03770ccf4c65956e9130d76c8896fe9a9cb8134e7fde1801233226",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/provenance-exit.json": "6d2c910ac9eb79c54fd60aadf4a60dc25e5da22f892b5b59e18ef740f506442e",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/manifest-check.log.gz": "3a17d8d73309b27199b19a8c319390bea5129b85afefb66b7d5983ef072bb39f",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/prose.log": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/guard.log.gz": "f67647531cd3495d6aa5280e086df6e4755ace3aea01a335e21a7d0f5df76ed2",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/parent-preservation.json": "3c4061e4d967582a3e70250f6a2fee335d3194779def1c79f70487bbe9d4959a",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/hazards.log.gz": "ac4a2f55adc14f35621f8b8882760abe8fcc0cb82382c8d482336b3115f12405",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/manifest-check.log": "ba1e18af93492cf692931f042bbde6c6a93f4b4e6b8de887bdcc29eab0d52639",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/axioms-exit.json": "1be26402b9425e5ce595837a58e0a3f9a87a8f6d535813cb3745b73fe940253c",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/statements-exit.json": "5416dca3d48d2b444c4911db068bc7d03d847f8b2386e1cbb6bb128c7d958298",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/strict-source-exit.json": "ea196a29614e9647501850202475cbd39fc69cfe0f600dd59ef67ae4d8303dae",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/guard-exit.json": "c9f401365b264e3108657d659c5ed166c630ab9625678e81fa7ad7a4f6121d48",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/pattern-scan.py": "d6c4e9a12ccc192ca92de9a56f1850753dc2bc44724c647e90fc51a3ddaa4b4b",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/excluded-documentation-preparation/unfrozen-source.lean.txt": "b966dcf67b3bdebf5d8bf1e75b106c053ab8f69791094e7ea7f6545dace86b00",
+    "docs/provenance/evidence/replicaGoodPairMarginal8750/excluded-documentation-preparation/attempt.json": "1c3b6baac0e3e951e908d70cf1d47b409f23204d587e5e77111174b47e9bcb97",
+    "QICLean/Analysis/ReplicaGoodPairMarginal.lean": "a0dafbc33cb0385bb9dca2d2a95c551d3eac6a21e45675e000b25bffcb9a95b6",
+    "blueprint/src/fragment/replica_good_pair_marginal.tex": "70f6a3752b2f9378bddfcee667984e4041bcb1ea781521b8555ed3a5be4d1509",
+    "docs/formalization/replica-good-pair-marginal.md": "b9bab579c22cd97ebb0117e5feea10b224889f2215bd5148bdd81a12380fb9f2",
+    "docs/tactic_patterns.md": "ed361a334dac32a6120e31ed30f07cd1120c2a0f950433f8e4a16e5d9ee4fbbf",
+    "docs/provenance/openai-math.d/replicaGoodPairMarginal8750.json": "59c27830675fd90e5fd3bd0b55538cb171a765f1f952dceb3fa81406ed5987c5"
+  },
+  "excluded_local_auxiliary_files": [
+    "standalone-wrapper.aux",
+    "standalone-wrapper.log",
+    "standalone-wrapper.out"
+  ],
+  "excluded_attempts": [
+    {
+      "path": "docs/provenance/evidence/replicaGoodPairMarginal8750/excluded-documentation-preparation/attempt.json",
+      "actual_exit_code": 1,
+      "stage": "unfrozen documentation preparation",
+      "not_part_of_successful_source_bound_checks": true
+    }
+  ],
+  "scope": "Actual full QYV common density and its two literal marginal and norm-mass identities; no exponential moment or final area-law claim."
+}

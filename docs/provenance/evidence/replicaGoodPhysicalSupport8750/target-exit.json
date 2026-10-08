@@ -1,0 +1,16 @@
+{
+  "source_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=2",
+    "lake",
+    "build",
+    "QICLean.Analysis.ReplicaGoodPhysicalSupport"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T02:24:46.387187+00:00",
+  "elapsed_seconds": 44.357440459003556,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/target.log",
+  "sha256": "4fe38166960bb92c41ad95b98c6661700e2a476cc1d6d375f8f2deb81aae5326"
+}

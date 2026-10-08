@@ -1,0 +1,3 @@
+import QICLean.Analysis.ReplicaGoodPhysicalSupport
+set_option linter.hashCommand false
+#check Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density

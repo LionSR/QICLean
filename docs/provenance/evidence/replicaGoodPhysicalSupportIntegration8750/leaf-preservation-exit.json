@@ -1,0 +1,14 @@
+{
+  "kind": "verification",
+  "command": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodPhysicalSupport8750/validate-manifest.py",
+    "--allow-inclusion"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 2.49,
+  "source_revision": "9b955ec2e26cc9b4c5300427ba4a5950622ef4d0",
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupportIntegration8750/leaf-preservation.log",
+  "sha256": "f2d578ec6da7e8657b59ea53f4432c795d430d452aa04a43f4696f5a83410f97"
+}

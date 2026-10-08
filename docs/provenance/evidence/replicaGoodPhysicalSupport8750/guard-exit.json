@@ -1,0 +1,13 @@
+{
+  "source_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "argv": [
+    "python3",
+    "docs/provenance/evidence/replicaGoodPhysicalSupport8750/mathlib-guard.py"
+  ],
+  "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-symmetry",
+  "started_utc": "2026-10-08T02:24:38.891713+00:00",
+  "elapsed_seconds": 0.15707579099398572,
+  "exit_code": 0,
+  "log": "docs/provenance/evidence/replicaGoodPhysicalSupport8750/guard.log",
+  "sha256": "7dff7a6d695815b219ea3706197366258f40df7268b3cad3719883d854f1f86c"
+}

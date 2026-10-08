@@ -1,0 +1,6 @@
+{
+  "operation": "Preparatory read-only source search; no subprocess created.",
+  "tool_result": "CreateProcess rejected: Too many open files in system (os error23).",
+  "action": "Held all Lean/cache/build stages until verifier library END. Retried read-only source search successfully after release.",
+  "canonical_check": false
+}

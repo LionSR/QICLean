@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "lake",
+    "exe",
+    "cache",
+    "get"
+  ],
+  "source_head": "2e7a37320c811a42fc79f88be57795a6eacd070c",
+  "exit_code": 0,
+  "elapsed_seconds": 10.934037923812866,
+  "log": "/tmp/two-deficit-prerequisite-cache.log"
+}

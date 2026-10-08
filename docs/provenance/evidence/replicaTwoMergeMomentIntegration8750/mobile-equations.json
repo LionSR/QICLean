@@ -1,0 +1,18 @@
+[
+  {
+    "width": 310,
+    "scrollWidth": 310,
+    "overflow": "auto",
+    "theorem": "replica_two_merge_moment",
+    "kind": "statement",
+    "index": 0
+  },
+  {
+    "width": 311,
+    "scrollWidth": 311,
+    "overflow": "auto",
+    "theorem": "replica_two_merge_moment",
+    "kind": "proof",
+    "index": 0
+  }
+]

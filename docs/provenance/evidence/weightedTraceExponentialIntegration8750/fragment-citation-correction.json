@@ -1,0 +1,9 @@
+{
+  "path": "blueprint/src/fragment/weighted_trace_exponential.tex",
+  "initial_source_revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+  "exposition_revision": "3de85fb945f151078fbf30568bc6075c6ed45f7d",
+  "original_sha256": "a99d2cd07862522179c1a12f785c935f7c2b83ab21dfec6c44a47711f7cb179f",
+  "corrected_sha256": "d16d102a1c3c972ff3f65880a89b13e713816bd74a828a283f681c3ce9828b7e",
+  "only_change": "Replace rendered bibliography label Ope26b by the actual OpenAI2026AreaLaw key in the fragment citation. Entire mathematical statements and proofs remain unchanged.",
+  "exact_single_replacement_verified": true
+}

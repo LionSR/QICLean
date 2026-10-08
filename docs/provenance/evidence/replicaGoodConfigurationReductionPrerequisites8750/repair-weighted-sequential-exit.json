@@ -1,0 +1,20 @@
+{
+  "kind": "verification",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "QICLean.Analysis.WeightedTraceExponential"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 22.5,
+  "source_revision": "d9b570764665b6f5e39c1c273693afbe5d4772b5",
+  "log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-sequential.log",
+  "sha256": "8bac16f0141bb90116dcd2b67211ece649ea590d5bfa308a406f902e73870d39",
+  "raw_log_sha256": "8bac16f0141bb90116dcd2b67211ece649ea590d5bfa308a406f902e73870d39",
+  "gzip_log": "docs/provenance/evidence/replicaGoodConfigurationReductionPrerequisites8750/repair-weighted-sequential.log.gz",
+  "gzip_sha256": "efe3f061672bd98a7423ccc6ddccfe257e7f8e7d9bd2d1f5ccc0b2a553398038",
+  "role": "successful prerequisite check"
+}

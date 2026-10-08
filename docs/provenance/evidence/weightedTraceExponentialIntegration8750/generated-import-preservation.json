@@ -1,0 +1,583 @@
+{
+  "records": [
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Algebra.lean",
+      "original_blob": "05037df531424c9096b3bfbe859d9032b806b903",
+      "current_blob": "05037df531424c9096b3bfbe859d9032b806b903",
+      "current_sha256": "d446f5f4b186dcabcbd691c36945233bc65c2a4fadc2fce425ed53188db373a9",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Algebra/PerronFrobenius.lean",
+      "original_blob": "7bf977c6c3c1a6b7d1e183daeb85cc89d70e1933",
+      "current_blob": "7bf977c6c3c1a6b7d1e183daeb85cc89d70e1933",
+      "current_sha256": "542a7699191fab59233d85c921a6084bbe4a7a352207f70fc71c6e6061366e87",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Algebra/SpinCover.lean",
+      "original_blob": "8dae7d620fa2d12b4600928fb03898c5b2fba826",
+      "current_blob": "8dae7d620fa2d12b4600928fb03898c5b2fba826",
+      "current_sha256": "3f17f8124c08470430519d4ded34673998f0fa1ed7171a597d622f31fcfe8a37",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Analysis.lean",
+      "original_blob": "fda0b58bde30c81565743e7c30f8a6309e679f15",
+      "current_blob": "1d2975d655efc79462091b77a2272dfe9e4c2a95",
+      "current_sha256": "6679090ced9491b82629d60e55f8634e6677ffc5f99ba2e4885e5bca4a988f6e",
+      "exact_original_bytes": false
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Analysis/OperatorMean.lean",
+      "original_blob": "5d3a86980f5740b9e7c2acb082c293c0c91e938f",
+      "current_blob": "5d3a86980f5740b9e7c2acb082c293c0c91e938f",
+      "current_sha256": "9f08e6c77632fb0461d0732395c3eb1b5a8d8523841efe9f4efa929087ed040c",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Analysis/SpectralFilter.lean",
+      "original_blob": "083fbc0e80f4488e1a5f2c2d4ef8932429f1d419",
+      "current_blob": "083fbc0e80f4488e1a5f2c2d4ef8932429f1d419",
+      "current_sha256": "455313a153e945ecb3d395340dec6cc7487fb7ecde350b45c5b89a5c677be085",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel.lean",
+      "original_blob": "3e423e6c37ea0c54b92bd7c2dda917dc27f63908",
+      "current_blob": "3e423e6c37ea0c54b92bd7c2dda917dc27f63908",
+      "current_sha256": "a8bf728aace4585d783188f330fc160f5a67f7e18e9214d098b7ea8cdb65ed7c",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/FixedPoint.lean",
+      "original_blob": "3917f73234c1f2f7bd7fc9bad0b2ebeb5b6ed95f",
+      "current_blob": "3917f73234c1f2f7bd7fc9bad0b2ebeb5b6ed95f",
+      "current_sha256": "a7aa42109bec352e72328392a8ceacd49ef685d0f28255be4874b3f3f71fa191",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/Irreducible.lean",
+      "original_blob": "781e56343d1d8a6db3e54cbd21732cda451e7153",
+      "current_blob": "781e56343d1d8a6db3e54cbd21732cda451e7153",
+      "current_sha256": "a32656eb79d29b1336340b33d410f7608a1c31c87e6f554d79737f95de31c4e7",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/KoashiImoto.lean",
+      "original_blob": "8a35aae48a7671bcf3b2024af765bcaccc0cc07f",
+      "current_blob": "8a35aae48a7671bcf3b2024af765bcaccc0cc07f",
+      "current_sha256": "4035e915fb2be09f530b58cccb6c7c1f3ef99b6525885242a85a52a5a8c3c157",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/KoashiImoto/MarkovDilation.lean",
+      "original_blob": "17b1196fe51952624d59979812e3e12206f105c2",
+      "current_blob": "17b1196fe51952624d59979812e3e12206f105c2",
+      "current_sha256": "afe6968d8e176d22db7499e7a5889ee3824bf30e846acd03698bf0a05c93bced",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/PSDConeAutomorphism.lean",
+      "original_blob": "a7fcec722b7003addf191ecac0d30cf034fa3b77",
+      "current_blob": "a7fcec722b7003addf191ecac0d30cf034fa3b77",
+      "current_sha256": "415fcb2a6bf4eda5fa49591ec4116084f158c7cff42443436e63f9a928568087",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/Peripheral.lean",
+      "original_blob": "9a1b9ad347bff3d70158bbb1c3ed6d5081d1bf9c",
+      "current_blob": "9a1b9ad347bff3d70158bbb1c3ed6d5081d1bf9c",
+      "current_sha256": "96d30dac96e26bbded5ebccc5da1d6056f53b5c3db8ac608340ba67e2852118d",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/PerronFrobenius.lean",
+      "original_blob": "e5c1fc59f20e7d53825d9a9c61ac377428f60528",
+      "current_blob": "e5c1fc59f20e7d53825d9a9c61ac377428f60528",
+      "current_sha256": "4011e45348ecc34555ee65b86c4df892633888bb21f9c95fb49784ed90f2da52",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/Schwarz.lean",
+      "original_blob": "1b2558877418dce743d51b8341da1cc0a16a7ffa",
+      "current_blob": "1b2558877418dce743d51b8341da1cc0a16a7ffa",
+      "current_sha256": "062b3ed592c1073d7bf2a0a180fe8da9dc3662b50da1d73668a865d42510c0f2",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/Semigroup.lean",
+      "original_blob": "071a05e2bf860a67ac35c87f7ab8399536be560d",
+      "current_blob": "071a05e2bf860a67ac35c87f7ab8399536be560d",
+      "current_sha256": "a0520b2e5b86fae2d9a824385c50d69212b252c3a3e85e995a2f5e11b9940f41",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/Wigner.lean",
+      "original_blob": "d747681e080032f652c10eff5a546e6e74d4f528",
+      "current_blob": "d747681e080032f652c10eff5a546e6e74d4f528",
+      "current_sha256": "8a364feccd899bbb99491502142d098d1c5a7416b0aad3c6cbfd7ce03eef645f",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Channel/Wigner/Upstream.lean",
+      "original_blob": "7a450dc3fac13b326e14a2ef2d855b9d327fe205",
+      "current_blob": "7a450dc3fac13b326e14a2ef2d855b9d327fe205",
+      "current_sha256": "b834d91648bd39e4a0aca1a85725d9db6c1dda450236f9a3662374574bb4ee14",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Entropy.lean",
+      "original_blob": "90d03fe653736a41ab0fe18b715ea4483a32ef6d",
+      "current_blob": "90d03fe653736a41ab0fe18b715ea4483a32ef6d",
+      "current_sha256": "3fcca857cccef8cc84341f430dfad6cfa7cf161b2f1c912a368c30f528c5e3b6",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Entropy/ConditionalMovement.lean",
+      "original_blob": "59aa6dc24024c257679a87ec3329ae4d9bff8cf7",
+      "current_blob": "59aa6dc24024c257679a87ec3329ae4d9bff8cf7",
+      "current_sha256": "7baa3a8f08f897491bb1ccf6d1be2dee87645ea944a658c03dd5dcbbb914cd87",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Kraus.lean",
+      "original_blob": "0cf5b015b01dcffccd822debddd2fe111b72a87f",
+      "current_blob": "0cf5b015b01dcffccd822debddd2fe111b72a87f",
+      "current_sha256": "bcc3df82cbded67c4a7906dbe4179cfed1f9072c1549246e31777328044da2a1",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Kraus/Tactic.lean",
+      "original_blob": "7966d060e7ca30ba00497171ad3a0bb3e6b8f928",
+      "current_blob": "7966d060e7ca30ba00497171ad3a0bb3e6b8f928",
+      "current_sha256": "174c28ebc85c048a1b5377bb650b0b9dc394af28d0fe82d87e551a0e91a973f1",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Kraus/Wielandt.lean",
+      "original_blob": "004a3585ceb5a35962497880923dc914fd224fd0",
+      "current_blob": "004a3585ceb5a35962497880923dc914fd224fd0",
+      "current_sha256": "28a04b5786a91a538d0d4ba9422af046bd5a7b4de0f0a0a96d9fd082e1006549",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Kraus/Wielandt/Inequality.lean",
+      "original_blob": "78c9a3fceaea9a79f06816421e5d00b7ea877ab6",
+      "current_blob": "78c9a3fceaea9a79f06816421e5d00b7ea877ab6",
+      "current_sha256": "6f2023a917a64c84af0b2a9305eac06d0ace36cbf36c995da35c2a835cf99aaf",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Kraus/Wielandt/Primitivity.lean",
+      "original_blob": "3c28ff2fdc42abe3837bf289672396eda4258501",
+      "current_blob": "3c28ff2fdc42abe3837bf289672396eda4258501",
+      "current_sha256": "aebeb5a5103acae16d30b97e94ca79da3bda2c1fad19f3fdb1cee1d25fadefaa",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Kraus/Wielandt/RankOne.lean",
+      "original_blob": "95615389f59ed1c9afcf8fdcbe8f5343ee50fc89",
+      "current_blob": "95615389f59ed1c9afcf8fdcbe8f5343ee50fc89",
+      "current_sha256": "09235576148acdc3216c2c68fb1805ab0069ca54ec550c6ee614f7f442b078cc",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Kraus/Wielandt/RectangularSpan.lean",
+      "original_blob": "abbe0673760e375ff89acd94ffa0bfd8594129d4",
+      "current_blob": "abbe0673760e375ff89acd94ffa0bfd8594129d4",
+      "current_sha256": "995344a974580fdd0e641d2640737457284f8dee17a0d3a31a9654b62e763d33",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Kraus/Wielandt/RectangularSpan/UniversalityAux.lean",
+      "original_blob": "e010481a423c227ff3f9910251ad8c69e493afee",
+      "current_blob": "e010481a423c227ff3f9910251ad8c69e493afee",
+      "current_sha256": "3df7a802eadcb2f23928c66ba63ad4bac20053091828076474a90aa43e342ee0",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Kraus/Wielandt/SpanGrowth.lean",
+      "original_blob": "0e976e2ebf3539f367d85cbc0f0faf02167ca8df",
+      "current_blob": "0e976e2ebf3539f367d85cbc0f0faf02167ca8df",
+      "current_sha256": "0c63de0e13cb37fd01278fb5c6dbbee487485f06b915fdc08ba1ea63f5219b7f",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Probability.lean",
+      "original_blob": "eea503e897cd0ec01942d6dd12f9a85fc9e7735f",
+      "current_blob": "eea503e897cd0ec01942d6dd12f9a85fc9e7735f",
+      "current_sha256": "3c8082ce196d617864de73d7a4e994d6c79c154df21ce5fab72a4f0af1716351",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Probability/ComplexGaussian.lean",
+      "original_blob": "f41bf40f501d9bbadf559fa4d3eeda57d9bdee8f",
+      "current_blob": "f41bf40f501d9bbadf559fa4d3eeda57d9bdee8f",
+      "current_sha256": "50b0a835ee0f860ec027eca77be10633ecd5d95dc61dfba5ab4f913b62128e29",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/QPF.lean",
+      "original_blob": "d63ee37c0c8880c6cdfe1fa45862cb1917c559e2",
+      "current_blob": "d63ee37c0c8880c6cdfe1fa45862cb1917c559e2",
+      "current_sha256": "30f3f6deca2ea7e1befe652a387091ed584d33d1e6d4b932f363de76a2d363d7",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Representation.lean",
+      "original_blob": "43f0c9900fb33d625dd9d46710bfccf98af9a956",
+      "current_blob": "43f0c9900fb33d625dd9d46710bfccf98af9a956",
+      "current_sha256": "db978c3f97b19aca2285aeb3119a04275812b68ea906d48d61f0653a35c92ccf",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Spectral.lean",
+      "original_blob": "cf7bf13af0f17f6191e91bf06229fa15dd1f01f1",
+      "current_blob": "cf7bf13af0f17f6191e91bf06229fa15dd1f01f1",
+      "current_sha256": "95c098d7b688b738712f32d4abcce6eaa4562ff7505153a22261b775e7a6e440",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Topology.lean",
+      "original_blob": "c08c8ef7fb9403750026486fe405e0e734f8be00",
+      "current_blob": "c08c8ef7fb9403750026486fe405e0e734f8be00",
+      "current_sha256": "7245ca367389876382ebef8cdbc365db7887801a347e5c929cedc96b2113ac69",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Algebra.lean",
+      "original_blob": "05037df531424c9096b3bfbe859d9032b806b903",
+      "current_blob": "05037df531424c9096b3bfbe859d9032b806b903",
+      "current_sha256": "d446f5f4b186dcabcbd691c36945233bc65c2a4fadc2fce425ed53188db373a9",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Algebra/PerronFrobenius.lean",
+      "original_blob": "7bf977c6c3c1a6b7d1e183daeb85cc89d70e1933",
+      "current_blob": "7bf977c6c3c1a6b7d1e183daeb85cc89d70e1933",
+      "current_sha256": "542a7699191fab59233d85c921a6084bbe4a7a352207f70fc71c6e6061366e87",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Algebra/SpinCover.lean",
+      "original_blob": "8dae7d620fa2d12b4600928fb03898c5b2fba826",
+      "current_blob": "8dae7d620fa2d12b4600928fb03898c5b2fba826",
+      "current_sha256": "3f17f8124c08470430519d4ded34673998f0fa1ed7171a597d622f31fcfe8a37",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Analysis.lean",
+      "original_blob": "fda0b58bde30c81565743e7c30f8a6309e679f15",
+      "current_blob": "1d2975d655efc79462091b77a2272dfe9e4c2a95",
+      "current_sha256": "6679090ced9491b82629d60e55f8634e6677ffc5f99ba2e4885e5bca4a988f6e",
+      "exact_original_bytes": false
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Analysis/OperatorMean.lean",
+      "original_blob": "5d3a86980f5740b9e7c2acb082c293c0c91e938f",
+      "current_blob": "5d3a86980f5740b9e7c2acb082c293c0c91e938f",
+      "current_sha256": "9f08e6c77632fb0461d0732395c3eb1b5a8d8523841efe9f4efa929087ed040c",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Analysis/SpectralFilter.lean",
+      "original_blob": "083fbc0e80f4488e1a5f2c2d4ef8932429f1d419",
+      "current_blob": "083fbc0e80f4488e1a5f2c2d4ef8932429f1d419",
+      "current_sha256": "455313a153e945ecb3d395340dec6cc7487fb7ecde350b45c5b89a5c677be085",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel.lean",
+      "original_blob": "3e423e6c37ea0c54b92bd7c2dda917dc27f63908",
+      "current_blob": "3e423e6c37ea0c54b92bd7c2dda917dc27f63908",
+      "current_sha256": "a8bf728aace4585d783188f330fc160f5a67f7e18e9214d098b7ea8cdb65ed7c",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/FixedPoint.lean",
+      "original_blob": "3917f73234c1f2f7bd7fc9bad0b2ebeb5b6ed95f",
+      "current_blob": "3917f73234c1f2f7bd7fc9bad0b2ebeb5b6ed95f",
+      "current_sha256": "a7aa42109bec352e72328392a8ceacd49ef685d0f28255be4874b3f3f71fa191",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/Irreducible.lean",
+      "original_blob": "781e56343d1d8a6db3e54cbd21732cda451e7153",
+      "current_blob": "781e56343d1d8a6db3e54cbd21732cda451e7153",
+      "current_sha256": "a32656eb79d29b1336340b33d410f7608a1c31c87e6f554d79737f95de31c4e7",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/KoashiImoto.lean",
+      "original_blob": "8a35aae48a7671bcf3b2024af765bcaccc0cc07f",
+      "current_blob": "8a35aae48a7671bcf3b2024af765bcaccc0cc07f",
+      "current_sha256": "4035e915fb2be09f530b58cccb6c7c1f3ef99b6525885242a85a52a5a8c3c157",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/KoashiImoto/MarkovDilation.lean",
+      "original_blob": "17b1196fe51952624d59979812e3e12206f105c2",
+      "current_blob": "17b1196fe51952624d59979812e3e12206f105c2",
+      "current_sha256": "afe6968d8e176d22db7499e7a5889ee3824bf30e846acd03698bf0a05c93bced",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/PSDConeAutomorphism.lean",
+      "original_blob": "a7fcec722b7003addf191ecac0d30cf034fa3b77",
+      "current_blob": "a7fcec722b7003addf191ecac0d30cf034fa3b77",
+      "current_sha256": "415fcb2a6bf4eda5fa49591ec4116084f158c7cff42443436e63f9a928568087",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/Peripheral.lean",
+      "original_blob": "9a1b9ad347bff3d70158bbb1c3ed6d5081d1bf9c",
+      "current_blob": "9a1b9ad347bff3d70158bbb1c3ed6d5081d1bf9c",
+      "current_sha256": "96d30dac96e26bbded5ebccc5da1d6056f53b5c3db8ac608340ba67e2852118d",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/PerronFrobenius.lean",
+      "original_blob": "e5c1fc59f20e7d53825d9a9c61ac377428f60528",
+      "current_blob": "e5c1fc59f20e7d53825d9a9c61ac377428f60528",
+      "current_sha256": "4011e45348ecc34555ee65b86c4df892633888bb21f9c95fb49784ed90f2da52",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/Schwarz.lean",
+      "original_blob": "1b2558877418dce743d51b8341da1cc0a16a7ffa",
+      "current_blob": "1b2558877418dce743d51b8341da1cc0a16a7ffa",
+      "current_sha256": "062b3ed592c1073d7bf2a0a180fe8da9dc3662b50da1d73668a865d42510c0f2",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/Semigroup.lean",
+      "original_blob": "071a05e2bf860a67ac35c87f7ab8399536be560d",
+      "current_blob": "071a05e2bf860a67ac35c87f7ab8399536be560d",
+      "current_sha256": "a0520b2e5b86fae2d9a824385c50d69212b252c3a3e85e995a2f5e11b9940f41",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/Wigner.lean",
+      "original_blob": "d747681e080032f652c10eff5a546e6e74d4f528",
+      "current_blob": "d747681e080032f652c10eff5a546e6e74d4f528",
+      "current_sha256": "8a364feccd899bbb99491502142d098d1c5a7416b0aad3c6cbfd7ce03eef645f",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Channel/Wigner/Upstream.lean",
+      "original_blob": "7a450dc3fac13b326e14a2ef2d855b9d327fe205",
+      "current_blob": "7a450dc3fac13b326e14a2ef2d855b9d327fe205",
+      "current_sha256": "b834d91648bd39e4a0aca1a85725d9db6c1dda450236f9a3662374574bb4ee14",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Entropy.lean",
+      "original_blob": "90d03fe653736a41ab0fe18b715ea4483a32ef6d",
+      "current_blob": "90d03fe653736a41ab0fe18b715ea4483a32ef6d",
+      "current_sha256": "3fcca857cccef8cc84341f430dfad6cfa7cf161b2f1c912a368c30f528c5e3b6",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Entropy/ConditionalMovement.lean",
+      "original_blob": "59aa6dc24024c257679a87ec3329ae4d9bff8cf7",
+      "current_blob": "59aa6dc24024c257679a87ec3329ae4d9bff8cf7",
+      "current_sha256": "7baa3a8f08f897491bb1ccf6d1be2dee87645ea944a658c03dd5dcbbb914cd87",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Kraus.lean",
+      "original_blob": "0cf5b015b01dcffccd822debddd2fe111b72a87f",
+      "current_blob": "0cf5b015b01dcffccd822debddd2fe111b72a87f",
+      "current_sha256": "bcc3df82cbded67c4a7906dbe4179cfed1f9072c1549246e31777328044da2a1",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Kraus/Tactic.lean",
+      "original_blob": "7966d060e7ca30ba00497171ad3a0bb3e6b8f928",
+      "current_blob": "7966d060e7ca30ba00497171ad3a0bb3e6b8f928",
+      "current_sha256": "174c28ebc85c048a1b5377bb650b0b9dc394af28d0fe82d87e551a0e91a973f1",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Kraus/Wielandt.lean",
+      "original_blob": "004a3585ceb5a35962497880923dc914fd224fd0",
+      "current_blob": "004a3585ceb5a35962497880923dc914fd224fd0",
+      "current_sha256": "28a04b5786a91a538d0d4ba9422af046bd5a7b4de0f0a0a96d9fd082e1006549",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Kraus/Wielandt/Inequality.lean",
+      "original_blob": "78c9a3fceaea9a79f06816421e5d00b7ea877ab6",
+      "current_blob": "78c9a3fceaea9a79f06816421e5d00b7ea877ab6",
+      "current_sha256": "6f2023a917a64c84af0b2a9305eac06d0ace36cbf36c995da35c2a835cf99aaf",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Kraus/Wielandt/Primitivity.lean",
+      "original_blob": "3c28ff2fdc42abe3837bf289672396eda4258501",
+      "current_blob": "3c28ff2fdc42abe3837bf289672396eda4258501",
+      "current_sha256": "aebeb5a5103acae16d30b97e94ca79da3bda2c1fad19f3fdb1cee1d25fadefaa",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Kraus/Wielandt/RankOne.lean",
+      "original_blob": "95615389f59ed1c9afcf8fdcbe8f5343ee50fc89",
+      "current_blob": "95615389f59ed1c9afcf8fdcbe8f5343ee50fc89",
+      "current_sha256": "09235576148acdc3216c2c68fb1805ab0069ca54ec550c6ee614f7f442b078cc",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Kraus/Wielandt/RectangularSpan.lean",
+      "original_blob": "abbe0673760e375ff89acd94ffa0bfd8594129d4",
+      "current_blob": "abbe0673760e375ff89acd94ffa0bfd8594129d4",
+      "current_sha256": "995344a974580fdd0e641d2640737457284f8dee17a0d3a31a9654b62e763d33",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Kraus/Wielandt/RectangularSpan/UniversalityAux.lean",
+      "original_blob": "e010481a423c227ff3f9910251ad8c69e493afee",
+      "current_blob": "e010481a423c227ff3f9910251ad8c69e493afee",
+      "current_sha256": "3df7a802eadcb2f23928c66ba63ad4bac20053091828076474a90aa43e342ee0",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Kraus/Wielandt/SpanGrowth.lean",
+      "original_blob": "0e976e2ebf3539f367d85cbc0f0faf02167ca8df",
+      "current_blob": "0e976e2ebf3539f367d85cbc0f0faf02167ca8df",
+      "current_sha256": "0c63de0e13cb37fd01278fb5c6dbbee487485f06b915fdc08ba1ea63f5219b7f",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Probability.lean",
+      "original_blob": "eea503e897cd0ec01942d6dd12f9a85fc9e7735f",
+      "current_blob": "eea503e897cd0ec01942d6dd12f9a85fc9e7735f",
+      "current_sha256": "3c8082ce196d617864de73d7a4e994d6c79c154df21ce5fab72a4f0af1716351",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Probability/ComplexGaussian.lean",
+      "original_blob": "f41bf40f501d9bbadf559fa4d3eeda57d9bdee8f",
+      "current_blob": "f41bf40f501d9bbadf559fa4d3eeda57d9bdee8f",
+      "current_sha256": "50b0a835ee0f860ec027eca77be10633ecd5d95dc61dfba5ab4f913b62128e29",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/QPF.lean",
+      "original_blob": "d63ee37c0c8880c6cdfe1fa45862cb1917c559e2",
+      "current_blob": "d63ee37c0c8880c6cdfe1fa45862cb1917c559e2",
+      "current_sha256": "30f3f6deca2ea7e1befe652a387091ed584d33d1e6d4b932f363de76a2d363d7",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Representation.lean",
+      "original_blob": "43f0c9900fb33d625dd9d46710bfccf98af9a956",
+      "current_blob": "43f0c9900fb33d625dd9d46710bfccf98af9a956",
+      "current_sha256": "db978c3f97b19aca2285aeb3119a04275812b68ea906d48d61f0653a35c92ccf",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Spectral.lean",
+      "original_blob": "cf7bf13af0f17f6191e91bf06229fa15dd1f01f1",
+      "current_blob": "cf7bf13af0f17f6191e91bf06229fa15dd1f01f1",
+      "current_sha256": "95c098d7b688b738712f32d4abcce6eaa4562ff7505153a22261b775e7a6e440",
+      "exact_original_bytes": true
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Topology.lean",
+      "original_blob": "c08c8ef7fb9403750026486fe405e0e734f8be00",
+      "current_blob": "c08c8ef7fb9403750026486fe405e0e734f8be00",
+      "current_sha256": "7245ca367389876382ebef8cdbc365db7887801a347e5c929cedc96b2113ac69",
+      "exact_original_bytes": true
+    }
+  ],
+  "changed_paths": [
+    {
+      "revision": "5a83568097c77798bdd3f77dc892c338749381bf",
+      "path": "QICLean/Analysis.lean",
+      "original_blob": "fda0b58bde30c81565743e7c30f8a6309e679f15",
+      "current_blob": "1d2975d655efc79462091b77a2272dfe9e4c2a95",
+      "current_sha256": "6679090ced9491b82629d60e55f8634e6677ffc5f99ba2e4885e5bca4a988f6e",
+      "exact_original_bytes": false
+    },
+    {
+      "revision": "d96fcdb7e3f3fe66b4bd622163e6d64fcbf0e4d3",
+      "path": "QICLean/Analysis.lean",
+      "original_blob": "fda0b58bde30c81565743e7c30f8a6309e679f15",
+      "current_blob": "1d2975d655efc79462091b77a2272dfe9e4c2a95",
+      "current_sha256": "6679090ced9491b82629d60e55f8634e6677ffc5f99ba2e4885e5bca4a988f6e",
+      "exact_original_bytes": false
+    }
+  ],
+  "generator_check": "imports-exit.json"
+}

@@ -1,0 +1,11 @@
+{
+  "source_revision": "eba4662708f7178a3ac18584a4b8218f04442d19",
+  "production_sha256": {
+    "QICLean/Analysis/ReplicaGoodPhysicalSupport.lean": "dd7b26165765df0b0c53b38cebc72a4a3fbb83ed767bf962ee61acae82fd773f",
+    "blueprint/src/fragment/replica_good_physical_support.tex": "cc6b21915c4026f66c3fa1beee2b9e1ff4ba6ccd860feb764c4118aef325e992",
+    "docs/formalization/replica-good-physical-support.md": "979099602cfe178e55cf9dec706592463215f611c64324603a2ddd9d7cee32aa",
+    "docs/tactic_patterns.md": "fc1d78e62742ff63ecb2c572143c717126e26743e1381027889a03fba07fb1f5"
+  },
+  "mathematical_introduction": "24f1008f63b8c6cbe3c6f363199dfb2df358d755",
+  "exposition_revision": "24f1008f63b8c6cbe3c6f363199dfb2df358d755"
+}

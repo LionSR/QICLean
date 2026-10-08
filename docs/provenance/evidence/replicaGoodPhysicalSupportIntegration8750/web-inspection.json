@@ -1,0 +1,22 @@
+{
+  "links": [
+    "Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density"
+  ],
+  "errors": [],
+  "top": 1293.171875,
+  "bottom": 1886.921875,
+  "mathElements": 20,
+  "proofs": [
+    {
+      "height": 155.1875,
+      "text": "\n  The actual product-density identity gives \n\n  \u03c1AGC(w)=|\u03a9\u2297m\u27e9\u27e8\u03a9\u2297m|\u2297\u03c1C(w).\n\n A permutation only reorders the identical factors of \u03a9\u2297m. Thus Pm\u03a9\u2297m=\u03a9\u2297m. Multiplying the product density by Pm\u2297IC proves the assertion. \n\n  "
+    }
+  ],
+  "mobile_section_bounds": {
+    "top": 1319.015625,
+    "bottom": 2170.421875
+  },
+  "mobile_page_width": 360,
+  "mobile_viewport_width": 360,
+  "mobile_equation_scrolls": []
+}
