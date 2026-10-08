@@ -92,6 +92,7 @@ Provenance-ID: 8753-qic-physical-merge-holder-01
 Original formalization, no upstream Lean proof text reused.
 Declaration: TensorPower.re_trace_mul_exp_mergeDeficits_sub_physicalMergeDeficit_le
 Manuscript: September 24, 2026, 07-comparators.tex, lines 501–506 and 556–560.
+Labels: comparator:merge-decomposition, comparator:component-inverse.
 Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
 -/
 
