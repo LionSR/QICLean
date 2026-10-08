@@ -77,6 +77,7 @@ import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow
 import QICLean.Representation.TrivialLabel
+import QICLean.Representation.UniformBellLabel
 import QICLean.Representation.UniformHusimi
 import QICLean.Representation.UnitaryCommutant
 import QICLean.Representation.UnitaryTwirl
