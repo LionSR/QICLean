@@ -1,0 +1,34 @@
+\section{Weighted traces of commuting exponentials}
+\label{sec:weighted_trace_exponential}
+
+The rough estimate in \cite[Section~7, lines 553--555]{OpenAI2026AreaLaw} combines two
+merge moments by Cauchy--Schwarz. The following arithmetic-mean estimate
+also gives a polynomial bound when the doubled moments have polynomial
+bounds.
+
+\begin{theorem}[Arithmetic-mean bound for weighted exponential traces]
+\label{thm:weighted_trace_exponential}
+\lean{Matrix.PosSemidef.re_trace_mul_exp_add_le_half_sum}
+\leanok
+Let $\rho$ be a positive semidefinite complex matrix on a finite coordinate
+set, and let $A,B$ be Hermitian matrices on the same set with $AB=BA$.
+For every $a\in\R$,
+\begin{align}
+ \operatorname{Re}\tr\bigl(\rho e^{a(A+B)}\bigr)
+ &\le \frac{\operatorname{Re}\tr(\rho e^{2aA})
+       +\operatorname{Re}\tr(\rho e^{2aB})}{2}.
+ \label{eq:weighted_trace_exp_mean}
+\end{align}
+The weight need not have trace one or commute with $A$ or $B$.
+\end{theorem}
+
+\begin{proof}\leanok
+Set $U=e^{aA}$ and $V=e^{aB}$. These matrices are Hermitian and commute,
+so positivity of the weighted trace gives
+$0\le\operatorname{Re}\tr(\rho(U-V)^2)$.
+Expanding the square yields
+$2\operatorname{Re}\tr(\rho UV)
+ \le\operatorname{Re}\tr(\rho U^2)+\operatorname{Re}\tr(\rho V^2)$.
+The identities $UV=e^{a(A+B)}$, $U^2=e^{2aA}$ and $V^2=e^{2aB}$
+then give~(\ref{eq:weighted_trace_exp_mean}).
+\end{proof}

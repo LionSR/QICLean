@@ -1,0 +1,40 @@
+\section{Symmetric support of the good physical density}
+\label{sec:replica_good_physical_support}
+
+\begin{theorem}[Actual physical symmetric support]
+\label{thm:replica_good_physical_support}
+\lean{Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density}
+\leanok
+\uses{thm:replica_good_copy_product_density}
+Let $A,C$ be finite coordinate sets, let $\Omega\in\mathbb C^A$ be unit,
+and let $u\in(\mathbb C^A)^{\otimes k}\otimes\mathbb C^C$ be arbitrary. For an excited subset
+$B\subseteq\{0,\ldots,k-1\}$, put $G=B^c$, $m=|G|$ and
+$w=(R_B\otimes I_C)u$. Enumerate the good copies by one chosen equivalence.
+Let $\rho_{A_G C}(w)$ be the actual density obtained from
+$|w\rangle\langle w|$ by tracing the bad physical copies, and let $P_m$
+be the orthogonal projection onto $\operatorname{Sym}^m\mathbb C^A$.
+Then
+\begin{align}
+ (P_m\otimes I_C)\rho_{A_G C}(w)=\rho_{A_G C}(w).
+\end{align}
+The vector $u$ need not be symmetric, normalized or nonzero. Zero copies
+and empty good sets are included.
+
+This is the physical symmetric-support assertion used in
+\cite[Section~7]{OpenAI2026AreaLaw}. For the physical space
+$\mathbb C^Q\otimes\mathbb C^Y\otimes\mathbb C^V$, take
+$A=Q\times(Y\times V)$. Every middle physical coordinate is retained
+until the projection $P_m$ is applied.
+\end{theorem}
+\begin{proof}
+\leanok
+The actual product-density identity gives
+\begin{align}
+ \rho_{A_G C}(w)
+   =|\Omega^{\otimes m}\rangle\langle\Omega^{\otimes m}|
+      \otimes\rho_C(w).
+\end{align}
+A permutation only reorders the identical factors of $\Omega^{\otimes m}$.
+Thus $P_m\Omega^{\otimes m}=\Omega^{\otimes m}$. Multiplying the product
+density by $P_m\otimes I_C$ proves the assertion.
+\end{proof}
