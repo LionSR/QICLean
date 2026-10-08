@@ -1,0 +1,34 @@
+{
+  "render_source_revision": "8e0a72aa2ad07a02a5c5a13436b17607fdd5af61",
+  "current_source_transfer_revision": "3c911be1ccb1f35b97aa35e100e2d45af2ea0b0b",
+  "rerender_performed": false,
+  "changed_path": "QICLean/Probability/PoissonWord.lean",
+  "render_source_sha256": "b80d9226661c59bfa805b9c387ebc808eaacf315d618aaf2f9a1cf7ae704bf2b",
+  "current_source_sha256": "f7fb672ec289580dbc5422dffc7eac8fbcec3409810cea42ffe2253816bba659",
+  "exact_reverse_replacements": [
+    [
+      "instance instMeasurableSpaceWord {",
+      "instance {"
+    ],
+    [
+      "instance instMeasurableSingletonClassWord {",
+      "instance {"
+    ]
+  ],
+  "reverse_replacement_restores_render_source_bytes": true,
+  "other_source_paths_unchanged": true,
+  "line_count_unchanged": true,
+  "kernel_names_and_definition_bodies_unchanged": true,
+  "render_source_count": {
+    "explicitly_named": 50,
+    "generated": 2,
+    "total": 52
+  },
+  "current_source_count": {
+    "explicitly_named": 52,
+    "generated": 0,
+    "total": 52
+  },
+  "reason": "The parent made the two existing measurable-space instance identifiers explicit so the source-to-blueprint scanner can discover the already-existing public names. All four TeX leaves, rendered formulas and 52 declaration URLs are byte-identical.",
+  "validation_scope": "Exact source diff, reverse normalization, unchanged TeX and artifact correspondence only; native, strict and guarded verification belong to the parent and were not rerun by the render worker."
+}

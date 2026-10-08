@@ -1,0 +1,63 @@
+\section{Independent Poisson letter counts}
+\label{sec:poisson_independent_counts}
+
+Let $I$ be a finite alphabet, $N=|I|$, and $t\ge0$.  The word law $\mu_t$
+assigns mass $e^{-Nt}t^m/m!$ to each word of length $m$.  For
+$n\in\N^I$, let $C_n$ be the set of words with letter counts $n$, and put
+$m=\sum_{i\in I}n_i$.  The following calculation identifies the fixed-time
+count law used in \emph{A two-dimensional area law from a global spectral gap},
+\cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex}, lines 49--54 and
+237--253.
+
+\begin{lemma}[Mass of a prescribed count vector]
+    \label{lem:poisson_count_event_mass}
+    \lean{PoissonWord.measure_countEvent,
+        PoissonWord.card_countFiber_mul_weight,
+        PoissonWord.measure_countEvent_eq_prod}
+    \leanok
+    \uses{def:poisson_word_measure, def:poisson_word_count_vector}
+    For every $n\in\N^I$,
+    \begin{align}
+        \mu_t(C_n)
+        &= |C_n|\frac{e^{-Nt}t^m}{m!}
+         = \prod_{i\in I}\frac{e^{-t}t^{n_i}}{n_i!}.
+        \label{eq:poisson_count_event_mass}
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{lem:poisson_word_count_fiber}
+    Every word in $C_n$ has length $m$.  Sum its common singleton mass
+    over the finite set $C_n$.  The multinomial identity
+    $|C_n|\prod_i n_i!=m!$ cancels the factorial in the word weight.
+    The remaining factors satisfy
+    $\prod_i e^{-t}=e^{-Nt}$ and $\prod_i t^{n_i}=t^m$.
+    All factorials are positive, so this argument also applies at $t=0$.
+\end{proof}
+
+\begin{theorem}[Independent Poisson count law]
+    \label{thm:poisson_independent_counts}
+    \lean{PoissonWord.map_countVector, PoissonWord.map_countVector_apply,
+        PoissonWord.iIndepFun_countVector}
+    \leanok
+    \uses{def:poisson_word_measure, def:poisson_word_count_vector}
+    Under $\mu_t$, the count vector $w\mapsto(n_i(w))_{i\in I}$ has law
+    $\bigotimes_{i\in I}\operatorname{Poisson}(t)$.
+    Thus the label counts are mutually independent, and each has
+    Poisson law of rate $t$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{lem:poisson_count_event_mass}
+    The set $\N^I$ is countable.  Formula~(\ref{eq:poisson_count_event_mass})
+    equates the singleton masses of the count law and the product of the
+    Poisson laws, so the two measures agree.  Coordinate projection gives
+    each marginal law.  Equality of the joint law with the product of its
+    marginals proves mutual independence.
+\end{proof}
+
+An empty alphabet gives the unique empty count vector and an empty product
+of probability measures.  No event times or independent-increment process
+are constructed by this fixed-time characterization.
