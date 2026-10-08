@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "openai/math",
+    "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "entries": [
+    {
+      "id": "p09-qic-source-transport-expansion",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Probability/ComplexGaussian/SourceTransportExpansion.lean",
+        "declaration": "QICLean.ComplexGaussian.sourceTransport_eq_sum_rankOne",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/04-compression.tex",
+          "labels": [
+            "eq:compression-random-source"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently formalized by expanding finite matrix products; no upstream Lean proof text reused.",
+        "An algebraic supporting identity for transported Gaussian sources, not the complete polynomial-PEPS theorem. Endpoint maps are arbitrary; only the two summed Schmidt index types are finite."
+      ],
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "b298f3fb6439c3e149d6788249fae868e3f9ed50",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true -o /private/tmp/qic-source-transport-expansion/artifacts/QICLean/Probability/ComplexGaussian/SourceTransportExpansion.olean QICLean/Probability/ComplexGaussian/SourceTransportExpansion.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/sourceTransportExpansion8769/direct-build.log",
+            "sha256": "400dbbcd3fb6d772259068fef5e5212027fb236dcf0bba8b683e000bb023cdee"
+          },
+          {
+            "kind": "axioms",
+            "command": "/Users/siruilu/.elan/toolchains/leanprover--lean4---v4.35.0-rc3/bin/lean -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -Dlinter.mathlibStandardSet=true -DmaxSynthPendingDepth=3 -DwarningAsError=true Axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/sourceTransportExpansion8769/axioms.log",
+            "sha256": "2234b35f0689460298fb2a9f2ca1b6ed1b607ec5c8edcac67fe408a730c7cc6b"
+          }
+        ]
+      },
+      "no_upstream_proof_text_reused": true
+    }
+  ]
+}
