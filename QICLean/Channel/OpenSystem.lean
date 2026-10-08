@@ -3,7 +3,7 @@ Copyright (c) 2026 Sirui Lu and TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
-import QICLean.Algebra.MatrixGramUnitary
+import QICLean.Channel.EnvironmentEmbedding
 import QICLean.Channel.RadonNikodym
 
 /-!
@@ -11,7 +11,7 @@ import QICLean.Channel.RadonNikodym
 
 This file proves the unitary form of Wolf's open-system representation theorem
 from the isometric Stinespring form.  The linear-algebra step is the rectangular
-Gram theorem from `TNLean.Algebra.MatrixGramUnitary`: two maps with the same
+Gram theorem from `QICLean.Algebra.MatrixGramUnitary`: two maps with the same
 Gram matrix differ by a unitary on the codomain.
 
 ## Main results
@@ -37,8 +37,7 @@ namespace Matrix
 /-- The embedding `x ↦ x ⊗ e₀` into the first coordinate of an environment. -/
 def firstEnvEmbedding (D r : ℕ) (hr : 0 < r) :
     Matrix (Fin D × Fin r) (Fin D) ℂ :=
-  fun ik j =>
-    if ik.2 = ⟨0, hr⟩ then (1 : Matrix (Fin D) (Fin D) ℂ) ik.1 j else 0
+  fixedEnvEmbedding (S := Fin D) (⟨0, hr⟩ : Fin r)
 
 /-- `firstEnvEmbedding` embeds into the zero environment coordinate as the identity. -/
 @[simp]
@@ -46,25 +45,19 @@ theorem firstEnvEmbedding_apply_zero (D r : ℕ) (hr : 0 < r)
     (i j : Fin D) :
     firstEnvEmbedding D r hr (i, ⟨0, hr⟩) j =
       (1 : Matrix (Fin D) (Fin D) ℂ) i j := by
-  simp [firstEnvEmbedding]
+  simp [firstEnvEmbedding, fixedEnvEmbedding]
 
 /-- `firstEnvEmbedding` is zero away from the zero environment coordinate. -/
 @[simp]
 theorem firstEnvEmbedding_apply_ne (D r : ℕ) (hr : 0 < r)
     (i j : Fin D) {k : Fin r} (hk : k ≠ ⟨0, hr⟩) :
     firstEnvEmbedding D r hr (i, k) j = 0 := by
-  simp [firstEnvEmbedding, hk]
+  simp [firstEnvEmbedding, fixedEnvEmbedding, hk]
 
 /-- The first-coordinate environment embedding is an isometry. -/
 theorem firstEnvEmbedding_conjTranspose_mul_self (D r : ℕ) (hr : 0 < r) :
-    (firstEnvEmbedding D r hr)ᴴ * firstEnvEmbedding D r hr = 1 := by
-  ext i j
-  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, Fintype.sum_prod_type]
-  rw [Finset.sum_comm]
-  by_cases hij : i = j
-  · simp [firstEnvEmbedding, Matrix.one_apply, hij]
-  · have hji : j ≠ i := fun h => hij h.symm
-    simp [firstEnvEmbedding, Matrix.one_apply, hij, hji]
+    (firstEnvEmbedding D r hr)ᴴ * firstEnvEmbedding D r hr = 1 :=
+  fixedEnvEmbedding_conjTranspose_mul_self (S := Fin D) (⟨0, hr⟩ : Fin r)
 
 end Matrix
 

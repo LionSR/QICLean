@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-06",
+  "validation_kind": "Actual serial direct Lean elaboration with exact package options, standard linters and warnings-as-errors; not a Lake/root build",
+  "tn_base": "38c8fdec67ffef5e67b2664052061558ec2c971a",
+  "tn_base_tree": "7d0a07d5f1d96ae30d2cc0d3247c9cd40dcf515e",
+  "qic_base": "c61daa23f385237a4d992a602c94812ca9f909b8",
+  "mathlib_pin": "c55e6e786f49471c72fbddbec5415808896aec1e",
+  "lean_toolchain": "leanprover/lean4:v4.35.0-rc3",
+  "wall_limit_seconds": 90,
+  "serial_compiler": true,
+  "results": [
+    {
+      "module": "QICLean.Algebra.MatrixUnitConjugator",
+      "source": "QICLean/Algebra/MatrixUnitConjugator.lean",
+      "cwd": "/workspace/scratch/7637e06d0fc2/QICLean-differentiable-inner-action",
+      "unchanged_dependency": false,
+      "source_sha256": "1521a4d6320e0df379c2ff6580e6dd835cf3667f068e7db12ab7387b06820493",
+      "command": [
+        "timeout",
+        "--signal=INT",
+        "--kill-after=5s",
+        "90s",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "-o",
+        "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/tmp/56550683410504/QICLean/Algebra/MatrixUnitConjugator.olean",
+        "-i",
+        "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/tmp/56550683410504/QICLean/Algebra/MatrixUnitConjugator.ilean",
+        "/workspace/scratch/7637e06d0fc2/QICLean-differentiable-inner-action/QICLean/Algebra/MatrixUnitConjugator.lean"
+      ],
+      "lean_path": "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/lib:/workspace/scratch/7637e06d0fc2/periodic-string-draft/integration-review/final-lib:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/batteries/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/plausible/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/Qq/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/aesop/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/importGraph/.lake/build/lib/lean",
+      "start": "2026-10-06T18:43:03.648231+00:00",
+      "elapsed_seconds": 2.039,
+      "exit_code": 0,
+      "log": "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/logs/QICLean.Algebra.MatrixUnitConjugator.56550683753930.log",
+      "artifact_sha256": "7ab2ebc8bddf5bc65c9e01bc4aa18992d771a1dc6bdc1227018ce3e1f9f98249",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "QICLean.Analysis.DifferentiableInnerAction",
+      "source": "QICLean/Analysis/DifferentiableInnerAction.lean",
+      "cwd": "/workspace/scratch/7637e06d0fc2/QICLean-differentiable-inner-action",
+      "unchanged_dependency": false,
+      "source_sha256": "f80dac9ff36608ab696e363ea1effe7f93542653334132825ad485d1dd0e2a84",
+      "command": [
+        "timeout",
+        "--signal=INT",
+        "--kill-after=5s",
+        "90s",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "-o",
+        "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/tmp/56552766137211/QICLean/Analysis/DifferentiableInnerAction.olean",
+        "-i",
+        "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/tmp/56552766137211/QICLean/Analysis/DifferentiableInnerAction.ilean",
+        "/workspace/scratch/7637e06d0fc2/QICLean-differentiable-inner-action/QICLean/Analysis/DifferentiableInnerAction.lean"
+      ],
+      "lean_path": "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/lib:/workspace/scratch/7637e06d0fc2/periodic-string-draft/integration-review/final-lib:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/batteries/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/plausible/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/Qq/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/aesop/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/importGraph/.lake/build/lib/lean",
+      "start": "2026-10-06T18:43:05.731059+00:00",
+      "elapsed_seconds": 2.774,
+      "exit_code": 0,
+      "log": "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/logs/QICLean.Analysis.DifferentiableInnerAction.56552766582409.log",
+      "artifact_sha256": "73b7d91ee9b7d09fe16a84ce439e9a6599c9419fa0e237fa185a89396cabf953",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "QICLeanTest.DifferentiableInnerAction",
+      "source": "QICLeanTest/DifferentiableInnerAction.lean",
+      "cwd": "/workspace/scratch/7637e06d0fc2/QICLean-differentiable-inner-action",
+      "unchanged_dependency": false,
+      "source_sha256": "9368b1b4e65229a842a2bf01246f006bce05186cf9a88def081f96b3aabcaf66",
+      "command": [
+        "timeout",
+        "--signal=INT",
+        "--kill-after=5s",
+        "90s",
+        "lean",
+        "-j1",
+        "-Dpp.unicode.fun=true",
+        "-DrelaxedAutoImplicit=false",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "-DautoImplicit=false",
+        "-o",
+        "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/tmp/56555584908110/QICLeanTest/DifferentiableInnerAction.olean",
+        "-i",
+        "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/tmp/56555584908110/QICLeanTest/DifferentiableInnerAction.ilean",
+        "/workspace/scratch/7637e06d0fc2/QICLean-differentiable-inner-action/QICLeanTest/DifferentiableInnerAction.lean"
+      ],
+      "lean_path": "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/lib:/workspace/scratch/7637e06d0fc2/periodic-string-draft/integration-review/final-lib:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/batteries/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/plausible/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/Qq/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/aesop/.lake/build/lib/lean:/workspace/scratch/7637e06d0fc2/TNLean/.lake/packages/importGraph/.lake/build/lib/lean",
+      "start": "2026-10-06T18:43:08.549657+00:00",
+      "elapsed_seconds": 2.319,
+      "exit_code": 0,
+      "log": "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/logs/QICLeanTest.DifferentiableInnerAction.56555585180689.log",
+      "artifact_sha256": "b157077d58ee829c7e8de5bddcd55ee94b8fecaa9f5fda9bac0e58de0e91bd21",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "standard_axiom_guards": {
+    "allowed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "passed": true,
+    "guarded_theorems": 3
+  },
+  "combined_import_check": {
+    "source_sha256": "6c6ccec600f7223afdf4a1c1a45795911468e3b72379ff0de31db3b6662349ed",
+    "elapsed_seconds": 5.908393441000953,
+    "exit_code": 0,
+    "log": "/workspace/scratch/7637e06d0fc2/effective-symmetry-converse-draft/logs/CombinedSymmetryValidation.56592056512225.log",
+    "artifact_sha256": "ae0a7ac698d0b15a6a2c1658fc090c1b90a9d2c2d536ff3a62175e54bb63e2ba"
+  },
+  "static_checks": {
+    "generated_imports": true,
+    "size_policy": true,
+    "reader_facing_prose": true,
+    "source_blueprint_sync": true,
+    "changed_blueprint_formatting": true,
+    "diff_check": true,
+    "durable_ci_registration": {
+      "repository": "QICLean-differentiable-inner-action",
+      "workflow": ".github/workflows/pr-ci.yml",
+      "workflow_sha256": "a8585545436c20ab7cf754f5ebe8c1eac301a2773afe9cb21031765cf2b40a37",
+      "yaml_parse": true,
+      "shell_syntax": true,
+      "focused_build_before_regressions": true,
+      "build_targets": [
+        "QICLean.Algebra.MatrixUnitConjugator",
+        "QICLean.Analysis.DifferentiableInnerAction"
+      ],
+      "strict_regressions": [
+        "HermitianIntertwiner",
+        "ContinuousHermitianPath",
+        "DifferentiableInnerAction"
+      ],
+      "standard_axiom_guards_included": true,
+      "strict_flags_preserved": true
+    }
+  },
+  "native_render": {
+    "changed_sections_pdf": true,
+    "visual_inspection": true,
+    "missing_glyphs": false,
+    "overfull_or_underfull_boxes": 0,
+    "scope": "Selected sections using unchanged repository preambles; omitted surrounding-section references remain unresolved"
+  },
+  "not_run": [
+    "Full Lake/root build",
+    "Generated-aggregator elaboration against the entire repository",
+    "Whole-book leanblueprint web/PDF/checkdecls",
+    "Full repository lint_style executable"
+  ]
+}

@@ -1,0 +1,72 @@
+\section{Hermitian intertwiners of rectangular matrices}
+\label{sec:hermitian_rectangular_intertwiners}
+
+Let $F:\C^J\to\C^I$ be a matrix between finite-dimensional coordinate
+spaces. Write $G=FF^\dagger$, and let $G^+$ be the inverse of $G$ on its
+support, extended by zero on $\ker G$. The construction below allows
+linearly dependent columns of $F$, deficient rank, and empty index sets.
+
+\begin{theorem}[Commutation with the support inverse]
+    \label{thm:commute_support_inverse}
+    \lean{Matrix.PosSemidef.commute_supportInv}
+    \leanok
+    If $G\ge0$ and $LG=GL$, then $LG^+=G^+L$.
+\end{theorem}
+\begin{proof}\leanok
+    On the finite spectrum of $G$, the function that equals $x^{-1/2}$
+    for $x>0$ and vanishes at zero is continuous. Its continuous functional
+    calculus is the support inverse square root. Commutation with $G$
+    passes to this function of $G$, and hence to its square $G^+$.
+\end{proof}
+
+\begin{theorem}[Supported rectangular intertwiner]
+    \label{thm:supported_rectangular_intertwiner}
+    \lean{Matrix.isHermitian_conjTranspose_mul_mul_mul,
+        Matrix.mul_supportedHermitianLift,
+        Matrix.supportedHermitianLift_mulVec_eq_zero}
+    \leanok
+    Let $S,L\in\C^{I\times I}$ be Hermitian with $SL=LS$. Then
+    $K=F^\dagger SLF$ is Hermitian and vanishes on $\ker F$.
+    If also $GL=LG$ and $GSF=F$, then $FK=LF$.
+\end{theorem}
+\begin{proof}\leanok
+    Taking adjoints gives $K^\dagger=F^\dagger LSF=K$.
+    For $Fv=0$, the identity $Kv=F^\dagger SL(Fv)=0$ proves the kernel
+    assertion. Under the additional hypotheses,
+    \begin{align}
+        FK&=GSLF=GLSF=LGSF=LF.
+        \notag
+    \end{align}
+    Hermiticity is used only for $K^\dagger=K$; the kernel and
+    intertwining identities use the indicated algebraic equalities alone.
+\end{proof}
+
+\begin{theorem}[Hermitian lift criterion]
+    \label{thm:hermitian_rectangular_lift}
+    \lean{Matrix.commute_mul_conjTranspose_iff_exists_hermitian_intertwiner,
+        Matrix.exists_hermitian_intertwiner_of_commute_mul_conjTranspose,
+        Matrix.commute_mul_conjTranspose_of_hermitian_intertwiner}
+    \leanok
+    Let $L\in\C^{I\times I}$ be Hermitian. Then
+    \begin{align}
+        [L,FF^\dagger]=0
+        &\quad\Longleftrightarrow\quad
+        \exists K=K^\dagger\in\C^{J\times J},\quad FK=LF.
+        \label{eq:representations_hermitian_lift}
+    \end{align}
+    When these conditions hold, one may choose
+    $K=F^\dagger(FF^\dagger)^+LF$, which satisfies $K|_{\ker F}=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:commute_support_inverse, thm:supported_rectangular_intertwiner}
+    Suppose $LG=GL$. Theorem~\ref{thm:commute_support_inverse} gives
+    $LG^+=G^+L$. Since $GG^+$ is the projection onto
+    $\range G=\range F$, one has $GG^+F=F$.
+    Apply Theorem~\ref{thm:supported_rectangular_intertwiner} with $S=G^+$.
+    Conversely, taking the adjoint of $FK=LF$ gives
+    $KF^\dagger=F^\dagger L$, and therefore
+    \begin{align}
+        LFF^\dagger&=FKF^\dagger=FF^\dagger L.
+        \notag
+    \end{align}
+\end{proof}
