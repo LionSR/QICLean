@@ -13,7 +13,8 @@ Let P be an orthogonal projection. For an operator A commuting with P,
 the operator P A P + (1 - P) agrees with A on the range of P and with the
 identity on its orthogonal complement. Products and real functional calculus
 have the same restriction. Consequently, commutation on the range of P
-implies commutation of the identity extensions.
+implies commutation of the identity extensions. A positive definite operator
+has a positive definite identity extension.
 
 These identities apply to the symmetric-subspace commutation in the transport
 argument of the area-law manuscript. Operator lower bounds remain separate
@@ -52,6 +53,21 @@ theorem compression_add_one_sub_mul_compression_add_one_sub
     mul_assoc, ← hPA.eq, ← hPB.eq, hP.isIdempotentElem.mul_self_mul]
   simp only [hP.isIdempotentElem.eq, sub_self, add_zero, ← mul_assoc,
     hPA.eq, hP.isIdempotentElem.mul_mul_self, add_sub_cancel_left]
+
+/-- The identity extension of a positive definite invariant operator is
+positive definite. Auxiliary to the symmetric-subspace metrics of OpenAI's
+area-law manuscript, `06-transport.tex`, lines 273–276. -/
+theorem PosDef.compression_add_one_sub
+    {P A : Matrix n n ℂ} (hA : A.PosDef) (hP : IsStarProjection P)
+    (hPA : Commute P A) : (P * A * P + (1 - P)).PosDef := by
+  let := hA.isUnit.invertible
+  have hPAP : (P * A * P).PosSemidef := by
+    simpa only [hP.isSelfAdjoint.isHermitian.eq] using
+      hA.posSemidef.conjTranspose_mul_mul_same P
+  apply (hPAP.add (nonneg_iff_posSemidef.mp hP.one_sub.nonneg)).posDef_iff_isUnit.mpr
+  refine isUnit_iff_exists_inv.mpr ⟨P * ⅟A * P + (1 - P), ?_⟩
+  rw [compression_add_one_sub_mul_compression_add_one_sub hP hPA hPA.invOf_right]
+  simp only [mul_invOf_self, one_mul, ← add_sub_assoc, add_sub_cancel_left]
 
 /-- Commutation on an invariant subspace yields commutation of its identity
 extensions. OpenAI area-law manuscript, `06-transport.tex`, lines 273–276. -/

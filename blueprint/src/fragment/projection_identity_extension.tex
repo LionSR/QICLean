@@ -43,6 +43,25 @@ The mixed terms vanish because $PQ=QP=0$. The other two terms are $ABP$
 and $Q^2=Q$.
 \end{proof}
 
+\begin{lemma}[Positivity of the identity extension]
+\label{lem:projection-identity-extension-positivity}
+\lean{Matrix.PosDef.compression_add_one_sub}
+\uses{lem:projection-identity-extension-product}
+\leanok
+If $A$ is positive definite and $AP=PA$, then $E_P(A)$ is positive definite.
+\end{lemma}
+
+\begin{proof}
+\leanok
+Both $PAP$ and $Q$ are positive semidefinite. The inverse of $A$ commutes
+with $P$, and Lemma~\ref{lem:projection-identity-extension-product} gives
+\begin{align*}
+ E_P(A)E_P(A^{-1})&=P+Q=I.
+\end{align*}
+Thus $E_P(A)$ is positive semidefinite and invertible, hence positive definite.
+The zero-dimensional invariant subspace is included.
+\end{proof}
+
 \begin{lemma}[Commutation of identity extensions]
 \label{lem:projection-identity-extension-commutation}
 \lean{Matrix.commute_compression_add_one_sub_of_mul_projection_eq}
