@@ -1,0 +1,13 @@
+{
+  "kind": "verification",
+  "command": [
+    "/Users/siruilu/miniforge3/bin/python3",
+    "docs/provenance/evidence/replicaRegionalDensityIntegration8750/render-pdf.py"
+  ],
+  "working_directory": ".",
+  "exit_code": 0,
+  "elapsed_seconds": 9.59,
+  "source_revision": "a5a72254c33075af243b4defab475c544d4b0f50",
+  "log": "docs/provenance/evidence/replicaRegionalDensityIntegration8750/render.log",
+  "sha256": "c3b641b311d977ffd2cb67753aefcd12b38192141882a603869d0cfbf847fc7b"
+}
