@@ -45,10 +45,10 @@ universe u
 namespace TensorPower.ReplicaTransport
 
 /-- **Proposition 7.4, entropy and energy transport** (area-law paper, `prop:transport`,
-`06-transport.tex` lines 377--434), assuming the relative coherent pin of Lemma 6.4 and the
-split-leaf skew bound of Lemma 6.5 in the forms `RelativePinBound` and `SplitSkewBound`.
-The source proves those lemmas in its replica section; here they are hypotheses until the
-replica-metric formalization supplies them. The hypothesis `D.CrossBandCommute` is the
+`06-transport.tex` lines 377--434), assuming the relative coherent pin of Lemma 6.3 and the
+split-leaf skew bound of Lemma 6.4 in the forms `RelativePinBound` and `SplitSkewBound`.
+Both are proved (`relativePinBound`, `splitSkewBound`), and `transport` states the
+proposition without them. The hypothesis `D.CrossBandCommute` is the
 source's cross-band commutation on `𝒮_k` (`06-transport.tex` lines 273--276). -/
 theorem transport_of_relativePin_of_splitSkewBound (hpin : RelativePinBound.{u})
     (hskew : SplitSkewBound.{u}) :

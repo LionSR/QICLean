@@ -23,7 +23,7 @@ Proof outline:
 * `skewSquare_input_eq_symBandMetric` — at a split leaf only the exceptional band fails to
   commute, and the other factors cancel in `O_{i,j}` (lines 732--735);
 * `splitEta_eq_splitBandEta` — `η_{i,j}` is the split entropy of the exceptional band;
-* `trace_state_skewSquare_le` — Lemma 6.5 at every split term--leaf pair, with one common
+* `trace_state_skewSquare_le` — Lemma 6.4 at every split term--leaf pair, with one common
   remainder (display `transport:symbol-cost`, lines 736--748);
 * `Matrix.Transport.re_star_dotProduct_mulVec_le_energy` (generic block argument) per
   term, then summation over `i` using `M^s v = pre / N` and `Hbar pre = E₀ pre`
@@ -370,7 +370,7 @@ theorem splitEta_eq_splitBandEta (hcompat : D.SupportCompatible E) {i : ι}
 
 /-- **Symbol cost at the split leaves** (`06-transport.tex`, display
 `transport:symbol-cost`, lines 736--748): one remainder `r_k → 0` serves all split
-term--leaf pairs, uniformly over density matrices on `𝒮_k`. The split case of Lemma 6.5 of
+term--leaf pairs, uniformly over density matrices on `𝒮_k`. The split case of Lemma 6.4 of
 the source enters as the hypothesis `SplitSkewBound`. -/
 theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
     ∃ c₀ Csym esym : ℝ, 0 < c₀ ∧
@@ -461,7 +461,7 @@ theorem continuous_splitEta_rpow (i : ι) (j : Σ h, Option (C h)) :
 /-- **Energy estimate** (area-law paper, Proposition 7.4, display `transport:energy`,
 `06-transport.tex` lines 417--426 and 588--766). The split weight `W_i(p)` enters twice;
 the remainder is uniform in `p`, in `pre` and in the replica state; support dimensions
-enter the coefficient only through `ℓ`. The split case of Lemma 6.5 of the source enters as
+enter the coefficient only through `ℓ`. The split case of Lemma 6.4 of the source enters as
 the hypothesis `SplitSkewBound`. -/
 theorem exists_energy_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
     ∃ c₀ Cen een : ℝ, 0 < c₀ ∧
