@@ -1,0 +1,49 @@
+\section{A rough exponential estimate for an excitation component}
+\label{sec:replica_rough_component_moment}
+
+The following auxiliary estimate gives the spectral and moment steps in
+\cite[Section~7, lines~513--555]{OpenAI2026AreaLaw}. The inverse metric and
+the scalar factor from the good auxiliary labels remain separate arguments.
+
+\begin{theorem}[Rough exponential estimate with the component mass]
+\label{thm:replica_rough_component_moment}
+\lean{Matrix.replicaGoodConfigurationMarginal_exp_mergeDeficits_sub_physicalMergeDeficit_le}
+\uses{thm:replica_good_configuration_J_support,
+thm:replica_good_configuration_sum_merge_moment,thm:spectral-exponential-drop-trace}
+\leanok
+Let $Q,Y,V,C,R$ be finite coordinate sets, let $\Omega$ be a unit vector
+on $Q\otimes Y\otimes V$, and let $u$ be fixed by simultaneous permutation
+of its physical, $C$ and $R$ copy strings. For a set $B$ of bad copies put
+$m=|B^c|$ and $w=(R_B\otimes I)u$. Let $\Gamma$ be its actual density
+retaining all five factors on the good copies and tracing only the bad
+copies, with the same chosen enumeration in every factor. On this space put
+\begin{align*}
+ G_{\mathrm{phys}}&=F_Q+F_V-F_Y,\\
+ D_C&=F_Q+F_C-F_{QC},\qquad D_R=F_V+F_R-F_{VR}.
+\end{align*}
+For $a\ge0$ with $2a\le1$,
+\begin{align*}
+ \operatorname{ReTr}\bigl(\Gamma e^{a(D_C+D_R-G_{\mathrm{phys}})}\bigr)
+ &\le \frac{(m+1)^{(|Q|\,|C|)^2}+(m+1)^{(|V|\,|R|)^2}}2\,\|w\|^2.
+\end{align*}
+Neither normalization nor nonvanishing of $w$ is required. The statement
+includes zero copies and an empty set of good copies.
+\end{theorem}
+
+\begin{proof}
+\leanok
+The actual density is a partial trace of the positive rank-one matrix
+of the rearranged component, and hence is positive semidefinite. Its
+physical symmetric support gives
+$\mathbf1_{[0,\infty)}(G_{\mathrm{phys}})\Gamma=\Gamma$.
+The physical deficit commutes with both actual merge deficits, and all
+three matrices are Hermitian. The supported exponential trace inequality
+therefore gives
+\begin{align*}
+ \operatorname{ReTr}\bigl(\Gamma e^{a(D_C+D_R-G_{\mathrm{phys}})}\bigr)
+ &\le \operatorname{ReTr}\bigl(\Gamma e^{a(D_C+D_R)}\bigr).
+\end{align*}
+Apply the actual sum-merge moment bound to the same component $w$.
+No positivity of $G_{\mathrm{phys}}$ outside the retained spectral subspace
+is needed.
+\end{proof}
