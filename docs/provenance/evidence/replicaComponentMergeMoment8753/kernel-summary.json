@@ -1,0 +1,11 @@
+{
+  "declaration": "Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le",
+  "result": "passed_standard_axioms_only",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "log": "axioms-corrected.log",
+  "sha256": "86ab331be933a6f8baa3b8f4ddcd3c56c800b0c1c6d9d09eebce0fe316b9c9de"
+}
