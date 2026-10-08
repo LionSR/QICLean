@@ -67,6 +67,7 @@ import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
 import QICLean.Analysis.LogClipping
 import QICLean.Analysis.MarginalSupport
+import QICLean.Analysis.MatrixEvolution
 import QICLean.Analysis.MatrixFamilySupport
 import QICLean.Analysis.MatrixFittingRange
 import QICLean.Analysis.MatrixFramePerturbation
@@ -88,6 +89,7 @@ import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.ProbabilityEntropy
+import QICLean.Analysis.ProjectedEvolution
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
@@ -147,7 +149,11 @@ import QICLean.Analysis.TwoProjectionCompressionSpectrum
 import QICLean.Analysis.TwoProjectionDefectBlockSum
 import QICLean.Analysis.TwoProjectionReducedProjection
 import QICLean.Analysis.TypicalSet
+<<<<<<< HEAD
 import QICLean.Analysis.UnitaryHaar
+=======
+import QICLean.Analysis.UnitaryEvolution
+>>>>>>> origin/main
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.WeightedCesaroMean

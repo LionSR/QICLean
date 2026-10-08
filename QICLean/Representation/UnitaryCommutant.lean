@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.CentralLabelFunction
 import QICLean.Representation.SchurWeylCommutant
+import QICLean.Representation.HighestWeight
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 
 /-!
@@ -145,26 +146,6 @@ theorem commute_diagOp_of_commute_tensorPow_rotation {P J : Matrix Ω Ω ℂ}
   exact sub_eq_zero.mp this
 
 /-! ### The three families of rotations -/
-
-omit [Fintype Ω] in
-theorem diagOp_add (A B : Matrix Ω Ω ℂ) :
-    diagOp (k := k) (A + B) = diagOp A + diagOp B := by
-  ext x y
-  simp only [diagOp_apply, Matrix.add_apply, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  split_ifs <;> simp
-
-omit [Fintype Ω] in
-theorem diagOp_smul (c : ℂ) (A : Matrix Ω Ω ℂ) : diagOp (k := k) (c • A) = c • diagOp A := by
-  ext x y
-  simp only [diagOp_apply, Matrix.smul_apply, Finset.smul_sum]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  split_ifs <;> simp
-
-omit [Fintype Ω] in
-theorem diagOp_sub (A B : Matrix Ω Ω ℂ) :
-    diagOp (k := k) (A - B) = diagOp A - diagOp B := by
-  rw [sub_eq_add_neg, diagOp_add, ← neg_one_smul ℂ B, diagOp_smul, neg_one_smul, ← sub_eq_add_neg]
 
 omit [Fintype Ω] in
 theorem diagOp_sum {ι : Type*} (s : Finset ι) (A : ι → Matrix Ω Ω ℂ) :
