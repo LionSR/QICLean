@@ -67,8 +67,8 @@
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py",
-      "sha256": "18b0eed17bac9879c5759931b820bf3a157e5e374749e3d7c58b72a02236ddad",
-      "bytes": 3176
+      "sha256": "c9caf1dc5e651d0fcffedaa0c9aa909831192e21d20a49543fd111514fa379f1",
+      "bytes": 3177
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/checkdecls-exit.json",
@@ -246,6 +246,16 @@
       "bytes": 1170
     },
     {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-batch-clean-exit.json",
+      "sha256": "e6aeea2bedcbd7f04fe32307ea7fe1fe316145221bc0a22b71fe9f6109d8eca6",
+      "bytes": 579
+    },
+    {
+      "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-batch-clean.log",
+      "sha256": "c67a1ee359a3c57337ec89b7b075b6f6566d85bea6aa752f6335024f70e55663",
+      "bytes": 190
+    },
+    {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-batch-exit.json",
       "sha256": "33b4e6eec2220e8de535a7e7ad0b3944d7b5e39bf4f73d2dde5c808841fad496",
       "bytes": 558
@@ -332,8 +342,8 @@
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/verification.json",
-      "sha256": "3d6da4c65162eb8fb5952160430a28129ddd168bb748ee4d005fc9d26506747a",
-      "bytes": 17267
+      "sha256": "b67a273b838580dd3a811f486e70af787c30234466a9043f54bbb762f502fe5b",
+      "bytes": 17903
     },
     {
       "path": "docs/provenance/evidence/schurLabelMomentsIntegration8753/web-exit.json",

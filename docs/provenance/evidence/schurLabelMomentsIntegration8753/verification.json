@@ -204,6 +204,20 @@
       "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
       "command": [
         "python3",
+        "-Werror",
+        "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py"
+      ],
+      "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",
+      "started_utc": "2026-10-08T04:11:33.799123+00:00",
+      "elapsed_seconds": 0.633,
+      "exit_code": 0,
+      "log": "docs/provenance/evidence/schurLabelMomentsIntegration8753/preservation-batch-clean.log",
+      "sha256": "c67a1ee359a3c57337ec89b7b075b6f6566d85bea6aa752f6335024f70e55663"
+    },
+    {
+      "source_revision": "cd2375ebca774d3e696321950f0848ad85c37359",
+      "command": [
+        "python3",
         "docs/provenance/evidence/schurLabelMomentsIntegration8753/check-preservation.py"
       ],
       "cwd": "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy",

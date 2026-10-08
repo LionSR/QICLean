@@ -20,7 +20,7 @@ for path in parent_paths:
   added=b'import QICLean.Representation.SchurLabelMoments\n';assert d.count(added)==1 and d.replace(added,b'')==before,path
  else:assert d==before,path
 p='QICLean/Representation.lean';added=b'import QICLean.Representation.SchurLabelMoments\n';assert (r/p).read_bytes().replace(added,b'')==objects[leaf+':'+p]
-p='blueprint/src/chapter/ch13_schur_labels.tex';assert (r/p).read_bytes()==objects[leaf+':'+p].rstrip()+b'\n\n\input{fragment/schur_label_moments}\n'
+p='blueprint/src/chapter/ch13_schur_labels.tex';assert (r/p).read_bytes()==objects[leaf+':'+p].rstrip()+b'\n\n\\input{fragment/schur_label_moments}\n'
 leaf_e=r/'docs/provenance/evidence/schurLabelMoments8753'
 for row in json.loads((leaf_e/'evidence-sha256.json').read_text())['files']:assert sha((r/row['path']).read_bytes())==row['sha256'],row['path']
 history=json.loads((leaf_e/'historical-bindings.json').read_text())['files'];assert len(history)==22
