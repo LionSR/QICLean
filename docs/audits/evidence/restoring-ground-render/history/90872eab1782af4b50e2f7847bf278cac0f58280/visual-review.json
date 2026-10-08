@@ -1,0 +1,99 @@
+{
+  "status": "passed",
+  "source_revision": "90872eab1782af4b50e2f7847bf278cac0f58280",
+  "pdf_review": {
+    "pages_directly_viewed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "raster_scale_pixels": 1500,
+    "findings": [
+      "All twelve final PDF pages directly viewed. Pages 1–2 contain title/contents; pages 3–8 contain the context and previously established matrix/norm/vector material; page 9 contains the coefficient trace results and ground definition; page 10 contains actual entries, coefficients and the norm identity; page 11 contains the complete physical ground bound; page 12 contains the pinned bibliography.",
+      "No clipped text, overlapping equations, missing glyphs or detached theorem headings. The norm theorem/proof page break remains clean. The final ground bound and its proof are together on page 11.",
+      "All 37 numbered equations and 53 checked markers are legible. Complex conjugation, the yx coefficient order, selected x/full y sums, the remote factor and both unit-blank contractions are visible.",
+      "The coefficient-theorem condition fits after shortening it to If M≥0, then. The ground definition retains both formula rows and has its static label on the first row."
+    ]
+  },
+  "static_html_review": {
+    "files_read": [
+      "ch-restoring_ground_focus.html",
+      "dep_graph_chapter_1.html",
+      "dep_graph_document.html",
+      "dep_graphs.html",
+      "index.html",
+      "sect0001.html"
+    ],
+    "method": "Read the actual generated coefficient/ground chapter text, context, navigation, bibliography and graph modal headings; checked every displayed graph formula against the chapter. Existing restoration text was compared to the previously inspected source. Every final file passes the frozen generated-source regression.",
+    "findings": [
+      "All 60 source labels exist as static HTML IDs, including the repaired ground definition. All local href targets and bibliography anchors exist without duplicate IDs.",
+      "All 76 package declaration identifiers match the seven frozen production modules. The 22 declarations introduced or promoted for the ground extension are all linked. Four partial-trace context links are counted separately. PDF, chapter and each graph-modal inventory contain all 80 expected links.",
+      "All graph displaymath payloads match the inspected chapter byte-for-byte. Mathematical primes and conjugation bars survive serialization. No unresolved references, leaked blueprint metadata or missing diagram assets occur."
+    ]
+  },
+  "dependency_graph": {
+    "method": "Extract actual generated renderDot payload, render with Graphviz on white, and inspect the original-resolution pixels; no browser execution.",
+    "nodes": 29,
+    "rendered_edges": 33,
+    "explicit_uses_edges": 44,
+    "reachability_matches": true,
+    "findings": "Labels and arrow endpoints are readable. The support-inverse sandwich and diagonal coefficient trace feed the coefficient bound. Actual blank coordinates and physical projection normalization feed ground coefficients, which feed the squared-norm identity. The coefficient bound, squared-norm identity and actual marginal order feed the final ground bound. Existing norm and adjoint branches retain their order.",
+    "dot_sha256": "6783ee8bd1033e33fdf5480423dd0a8b447a4a95628cd68315188f32c450e76c",
+    "inspection_png_sha256": "ef5d9a6a38ec0e3db076fdfa2a335fada47c0d06a338e010edb1a95b4be5e4c8"
+  },
+  "mathematical_review": {
+    "actual_density_and_outer_product": "ρXY is trZ(|Ω⟩⟨Ω|), constructed from the physical vector. PΩ is the same physical outer product lifted through both ancillary identities and the explicit reassociation. For arbitrary Ω it is an outer product; unit Ω gives an orthogonal projection and trρXY=1. No normalization is silently assumed in the general contraction formula.",
+    "factor_order": "The enlarged index is (((s,e),(X,Y)),Z). PΩ contracts only the physical (a,z) coordinate and preserves both s,e. The copied vector reads the original X coordinate from e and inserts s/X blanks. The operator entry has the identity δ(e,e′), conjugate input blanks and the physical Q*T order.",
+    "unit_blank_contractions": "Unit s and X blanks contract Σ conjugate(b)b and Σ conjugate(c)c to one. The resulting R0φ entry is w_s Σ_jk Q[a,(s,k)] T[k,j] Ω[e,j,z]. No projection, normalization of Ω, or spectral relation is assumed for this algebraic entry formula.",
+    "coefficient_orientation": "The actual M_X=trY((IX⊗T)ρXY Q) has entry M[e,s]=Σ_azjk conjugate(Ω[a,z]) Q[a,(s,k)] T[k,j] Ω[e,j,z]. Thus g[s,e,a,z]=w_s M[e,s] Ω[a,z]. For selected s, the ancillary coefficient is M[e,s]/sqrt(p_s), matching M_yx/sqrt(p_x). Neither transpose nor extra conjugation is inserted.",
+    "nonreal_regression": "The source consumer uses Ω=(1,i), Q=T=I, E={false}, p=(1,0), and unit coordinate blanks. Its tested off-diagonal ground coefficient is +i. Direct substitution agrees with M[true,false]=i, while transposition/conjugation would give −i. This consumer is source-inspected, not compiled here.",
+    "squared_norm": "For unit Ω and unit s/X blanks, summing |g|² over the physical coordinates contributes ||Ω||²=1. Selected p_x>0 gives |w_x|²=1/p_x. The selected x sum and unrestricted y sum therefore equal the actual squared ground norm. The column expression needs only the X/e blank units, as stated separately.",
+    "singular_coefficient_bound": "A positive diagonal actual reference has p_x≥0 and support inverse diag(p_x^-1), with 0^-1=0. The Hermitian relation M_xy=conjugate(M_yx) gives Re tr(Mρ+M)=Σ_xy |M_yx|²/p_x. Omitting nonnegative columns yields the selected bound, including selected zero-weight coordinates for the generic coefficient lemma. The trace sandwich bound uses M≤ρ but no commutation or diagonal hypothesis.",
+    "actual_marginal_and_trace_chain": "The final theorem assumes Q,T are orthogonal projections, actual ρXY commutes with Q, and the actual marginal trYρXY equals diag(p). Previously proved marginal order supplies 0≤M_X≤ρ_X. Combining the literal coefficient identity, selected trace bound and Re trM_X≤trρ_X=trρXY=1 gives ||PΩR0φ||²≤1 and hence its norm≤1. Q need not commute with IX⊗T, and the marginal may be singular.",
+    "normalization_scope": "The final bound requires unit Ω and the s/X blanks and positivity only at selected coordinates. It does not require an e blank until the independent initial-column-vector expression is requested. The real traces are intentional; positivity makes the underlying traces real.",
+    "paper_comparison": "Checked against the retained official Section 9 source at adc7f1241b42e322a6451854ab7e4b4c146bf78a, especially lines 417–446. The actual reduced matrix, coefficient orientation, full row sum, singular support inverse and terminal bound match that passage. Existing norm and adjoint results remain in the same bounded fixture.",
+    "scope": "This closes the finite-dimensional actual ground-component estimate, not typical-projection existence, physical localization or the full amplification theorem. The render worker source-inspected 44 consumers and 76 axiom guards and made no compiler/CI claim."
+  },
+  "historical_checks": {
+    "54_declaration": {
+      "status": "passed",
+      "source_revision": "2bddde9e49330bab20260b002b7f0ba7de51918e",
+      "command": "python3 docs/audits/evidence/restoring-norm-vectors-render/check.py --source-revision 2bddde9e49330bab20260b002b7f0ba7de51918e",
+      "log_sha256": "b296cb1340a9d2e559bc7cc4eff502224caef3e0a4c99b89930a9dc5c133db6e",
+      "original_record_sha256": {
+        "focus-manifest.json": "90f86acbb7883cef8b066e5167c23ec68236ddc9c30aa904ca74c15a52e297aa",
+        "verification.json": "2162b70033f441d20260a7c2aed3789e6890f3697b477a4a77485402bdd7c09c",
+        "visual-review.json": "e5b2d9955b88c2b699ce325a7c04016aa4c77943b790b0af8272a0a8903ed3d1",
+        "initial-findings.json": "f913de8a47d9d58ef3a02cd04575efe5b17aea70874d25dbbc74b49f8b643693",
+        "anchor-fix-findings.json": "c8aa46e2772d58a218e6c3e2272a2a509d44ab2c09d12fb308a1a405e31dcfef"
+      },
+      "meaning": "Every original render source hash matches the explicitly selected public ancestor, including its historical router. The promoted vector helpers make current 76-declaration bytes different; no historical/current equivalence is claimed."
+    },
+    "29_declaration_core": {
+      "status": "passed",
+      "command": "python3 docs/audits/evidence/singular-restoration-render/check.py",
+      "log_sha256": "3639bb7e17afa9b5531b52f5637fd125dde02624978a5de959f4e215941659f9",
+      "meaning": "Current substantive core bytes match their frozen hashes and both original core includes remain present. Original core artifact records are unchanged."
+    }
+  },
+  "warnings": [
+    "Inherited xdvipdfmx font-map warnings and duplicate title/contents page.1 destination remain; mathematical named destinations and all actual PDF internal targets were checked.",
+    "plasTeX lacks a dvisvgm/vector imager. There are zero tensor diagrams, so Tenkz picture validation is not applicable."
+  ],
+  "limitations": [
+    "Focused final ground-component fixture with restoration and partial-trace context only; no full-book build or live browser/MathJax runtime/responsive/click testing.",
+    "All declaration identifiers and generated local anchors verified; remote doc URL availability/publication not verified.",
+    "No Lean/Lake/checkdecls or CI performed by render worker; consumers and axiom guards source-inspected only.",
+    "No new tensor diagram; Tenkz picture validation is not applicable.",
+    "This evidence does not establish existence of typical projections, localization, a purity-to-mutual-information identification, or the complete amplification theorem."
+  ]
+}

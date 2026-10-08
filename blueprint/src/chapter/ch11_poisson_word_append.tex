@@ -1,0 +1,62 @@
+\subsection{Concatenation and finite fibers}
+\label{sec:poisson_word_append}
+
+For an arbitrary alphabet $I$, let $\mathcal W$ be its finite words.
+The following statements do not require $I$ to be finite.
+
+\begin{definition}[Word concatenation]
+\label{def:poisson_word_append}
+\lean{PoissonWord.append, PoissonWord.length_append,
+PoissonWord.nil_append, PoissonWord.append_nil, PoissonWord.append_assoc}
+\leanok
+\uses{def:poisson_word_measure}
+For words $u$ and $v$, their concatenation $uv$ places all letters of $v$
+after all letters of $u$.  Thus $|uv|=|u|+|v|$.
+Concatenation is associative, and the empty word is a two-sided identity.
+\end{definition}
+
+\begin{definition}[Prefixes and suffixes]
+\label{def:poisson_word_split}
+\lean{PoissonWord.take, PoissonWord.drop, PoissonWord.length_take,
+PoissonWord.length_drop, PoissonWord.length_take_of_le,
+PoissonWord.ofFn_take, PoissonWord.ofFn_drop}
+\leanok
+\uses{def:poisson_word_measure}
+For a word $w$ and $k\geq0$, write $w_{<k}$ for its first
+$\min(k,|w|)$ letters, and $w_{\geq k}$ for the remaining
+$\max(|w|-k,0)$ letters.  In particular,
+$|w_{<k}|=k$ whenever $k\leq|w|$.
+\end{definition}
+
+\begin{lemma}[Fibers of concatenation]
+\label{lem:poisson_word_append_fiber}
+\lean{PoissonWord.append_take_drop, PoissonWord.take_append,
+PoissonWord.drop_append, PoissonWord.appendFiber,
+PoissonWord.appendFiberEquiv, PoissonWord.appendFiberEquiv_apply,
+PoissonWord.appendFiberEquiv_symm_apply, PoissonWord.instFintypeAppendFiber,
+PoissonWord.card_appendFiber, PoissonWord.finite_append_preimage_singleton,
+PoissonWord.ncard_append_preimage_singleton, PoissonWord.append_eq_iff}
+\leanok
+\uses{def:poisson_word_append, def:poisson_word_split}
+For every word $w$ of length $m$, the fiber
+\begin{align}
+ \{(u,v)\in\mathcal W\times\mathcal W:uv=w\}
+ \label{eq:poisson_word_append_fiber}
+\end{align}
+has exactly $m+1$ elements.  They are parametrized bijectively by
+$k\in\{0,\ldots,m\}$ through
+\begin{align}
+ k\longmapsto (w_{<k},w_{\geq k}),
+ \qquad (u,v)\longmapsto |u|.
+ \label{eq:poisson_word_split_maps}
+\end{align}
+\end{lemma}
+\begin{proof}
+\leanok
+Splitting a word at position $k$ and concatenating the two parts returns
+the original word.  Conversely, if $uv=w$, then $|u|\leq m$,
+and splitting $w$ at $|u|$ returns $u$ and $v$.  The prefix of the split
+at $k\leq m$ has length $k$, so the maps
+in~(\ref{eq:poisson_word_split_maps}) are inverse.
+This also proves finiteness, including the unique split of the empty word.
+\end{proof}

@@ -1,6 +1,0 @@
-{
-  "source_revision": "84057ec47d715328375b322cb4129f88709323ed",
-  "result": "passed",
-  "statement": "The reduced matrix is the actual partial trace of the rank-one density. Unitary permutation actions and the original simultaneous fixed-vector equation give conjugation invariance. For the actual excitation component, fixedness is derived by the proved stabilizer identity. No component or marginal invariance certificate, normalization, independent-copy hypothesis or merge-moment estimate is assumed. Empty registers, zero vectors and zero copies are included. Selection and regrouping of the specific good-copy marginal and the moment estimate remain separate.",
-  "source": "openai/math adc7f1241b42e322a6451854ab7e4b4c146bf78a, 07-comparators.tex lines 540\u2013549"
-}

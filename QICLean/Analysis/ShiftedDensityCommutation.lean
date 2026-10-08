@@ -18,26 +18,9 @@ Source: OpenAI, polynomial PEPS manuscript, September 24, 2026,
 commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 This is a spectral implication; stationarity of the ordered patch objective
 and commutation of its filter with the output marginal remain separate steps.
-Independently written; no upstream Lean proof text reused.
--/
-
-/-!
-## Original proof provenance
-
-Independently formalized from OpenAI, September 24, 2026,
-`03-patches.tex`, lines 160–168, `eq:patch-stationarity-commutation`,
-source commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
-Independently written; no upstream Lean proof text reused.
-
-Provenance-ID: 8767-shifted-commutation-01
-Downstream declaration: Matrix.PosDef.commute_rpow_iff
-
-Provenance-ID: 8767-shifted-commutation-02
-Downstream declaration: Matrix.PosSemidef.commute_add_smul_one_rpow_iff
-
-Provenance-ID: 8767-shifted-commutation-03
-Downstream declaration: Matrix.PosSemidef.commute_of_commute_shifted_inverse_power
-
+The proof implementation is retained from QICLean pull request 607. Its original
+proofs were independently written from the manuscript and Mathlib; no upstream
+OpenAI Lean proof text was reused.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator

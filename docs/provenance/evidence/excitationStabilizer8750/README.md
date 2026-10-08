@@ -1,9 +1,0 @@
-# Exact excitation-sector covariance and stabilizer symmetry
-
-The mathematics and exposition are frozen at `6c2e9382`. The actual copy action sends the sector B to σB. For a permutation stabilizing B, its physical projection with an auxiliary identity commutes with the simultaneous physical/auxiliary action. Consequently an exact excitation component inherits the good/bad subgroup symmetry and each fixed whole-copy auxiliary label. The three algebraic statements include zero copies and require no normalization. They assert no commutation with a band metric.
-
-The complete production module passed its 3,157-job target build and strict checking with all standard linters, warnings as errors and maxSynthPendingDepth 3. Three exact kernel reports contain only the standard axioms. The original three-entry provenance shard and reader-prose check passed. The one-page mathematical excerpt was compiled, rendered and visually inspected; its three statements, proofs and citation are legible. All ten canonical commands have actual exits and source-bound raw logs, with deterministic gzip copies. The independent mathematical review checked the image orientation and stabilizer hypothesis against Section 7, lines 441–456.
-
-The first temporary audit wrapper omitted the module docstring and the explicit exception for intentional #print commands. Its exit-one record, exact raw output and source snapshot are preserved under excluded/, and are excluded from successful verification. Only the audit wrapper was corrected; production source was unchanged. The final audit passed with all three exact reports.
-
-All 795 inherited provenance/evidence files retain their bytes. source-freeze.json binds the four entire production/exposition/ledger files. Complete-library and complete-blueprint integration remain separate verification steps.

@@ -1,0 +1,111 @@
+{
+  "source_revision": "6a48f2bdefb417150b4a62fa1ce6e25350a25294",
+  "status": "initial quality findings",
+  "record_type": "Retained initial-render findings; final outcome is in verification.json and visual-review.json.",
+  "findings": [
+    "9.67131pt overfull spectator-permutation paragraph on PDF page 4 (printed page 3).",
+    "Static HTML lacks eq:restore_column, eq:restore_gram, eq:restore_bgram IDs; five static href occurrences have absent anchors. No live-browser conclusion is made.",
+    "All 29 source declarations match PDF, chapter HTML, and both graph modal link inventories. All PDF named destinations and graph dependency reachability pass.",
+    "Gram positivity proof should call the T sandwich a Hermitian congruence of a positive compression under its weaker Hermitian-T contract."
+  ],
+  "missing_internal_anchors": [
+    [
+      "ch-singular_restoration_focus.html",
+      "ch-singular_restoration_focus.html#eq:restore_column",
+      "anchor"
+    ],
+    [
+      "ch-singular_restoration_focus.html",
+      "ch-singular_restoration_focus.html#eq:restore_bgram",
+      "anchor"
+    ],
+    [
+      "ch-singular_restoration_focus.html",
+      "ch-singular_restoration_focus.html#eq:restore_gram",
+      "anchor"
+    ],
+    [
+      "dep_graph_chapter_1.html",
+      "ch-singular_restoration_focus.html#eq:restore_column",
+      "anchor"
+    ],
+    [
+      "dep_graph_document.html",
+      "ch-singular_restoration_focus.html#eq:restore_column",
+      "anchor"
+    ]
+  ],
+  "missing_label_anchors": [
+    "eq:restore_bgram",
+    "eq:restore_column",
+    "eq:restore_gram"
+  ],
+  "tex_box_reference_warnings": [
+    "Overfull \\hbox (9.67131pt too wide) in paragraph at lines 60--63"
+  ],
+  "counts": {
+    "production_modules": 3,
+    "production_lines": 585,
+    "public_declarations": 29,
+    "theorems": 17,
+    "definitions": 12,
+    "source_inspected_consumers": 15,
+    "source_inspected_axiom_guards": 29,
+    "blueprint_entries": 9,
+    "proofs": 7,
+    "checked_markers": 16,
+    "equation_labels": 10,
+    "all_labels": 21,
+    "pdf_pages": 6,
+    "html_pages": 6,
+    "pdf_declaration_links": 29,
+    "html_chapter_declaration_links": 29,
+    "html_all_declaration_links": 87,
+    "pdf_internal_link_annotations": 10,
+    "explicit_dependency_edges": 5,
+    "diagrams": 0
+  },
+  "artifact_sha256": {
+    "blueprint/src/print.pdf": "0ed9c07282aafa216fffbb3478e80212b51620384d65f7dede0c05671f83954e",
+    "blueprint/src/print.aux": "05c98ad2de6f53a0466c9a298f6ca34d1d970d5ea4e8ddff6b1ded93d0e9fefa",
+    "dependency-graph.dot": "dbbedfbe4124e9071b1103664e654c620559914b86908040f9da370e89bc6d6a",
+    "blueprint/web/ch-singular_restoration_focus.html": "0a6425ad0c90a1eeaa317133401ec48d16c42ff1e5812cb2837cb487fb6e3694",
+    "blueprint/web/dep_graph_chapter_1.html": "f6a068ee403df333d7dc14e69c6b3e47826b83643e40195dcb1eca919b567b9b",
+    "blueprint/web/dep_graph_document.html": "0245bf3193c5cfe24573c618b7eb0337227fb98a16e6875337d6963084de04ad",
+    "blueprint/web/dep_graphs.html": "27293c86f36b61f9f988dc85dbb762e48e2138da30d8bc7786b45431a280ebb5",
+    "blueprint/web/index.html": "bac53507189ef530934743fc738aacf6c6bd4f01480986b71d9307d682ec5eba",
+    "blueprint/web/sect0001.html": "e0384a6e99fbc07fc8064679e7dbca5db105911d3b89dc3e06987dcda58d1b45",
+    "pdf-pages/page-1.png": "71fa102d47acedc070814368696fea4a09a9eb25707b2282e548ad306c249abb",
+    "pdf-pages/page-2.png": "b4a7a4d784fdb63a17852d65892d55eab9f9d8ec814c8a9c8ba6cf3faa900d00",
+    "pdf-pages/page-3.png": "7062251167e5d31776238dd02e39625dc592cf0a84fa9d003845522442fac0a9",
+    "pdf-pages/page-4.png": "2f37b9d5e3b56f83f9ba4d038f3882138499a66958fd180d7def7fb0b8b08759",
+    "pdf-pages/page-5.png": "838791f3fd60133b91da820fac5380f3f847cb964596e113e3eeb9628ac724aa",
+    "pdf-pages/page-6.png": "f9456170535eb273c6ce86cdf735d8109636a7bdcfab92583ab4724f2b45501c"
+  },
+  "additional_record_sha256": {
+    "focus-manifest.json": "d1195795b3096b713c082720c5f75c913f98217db612947abf01da62a5a8fdb4",
+    "verification.json": "3c43de6db4b516309c45a1b4bbc38efcdd63054b9ee743def0c74d5c0b857482",
+    "initial-review.json": "5ceaea6a0a924110e658924f343da1b3f81ced9fa18b8699fb9e5da6dc1277aa",
+    "commands-original.json": "e630648da92080fbb60220e00137ece7d2b912165759267b3b5066234d8a719b",
+    "initial-prepare_fixture.py": "0af613a74e9b7dadb70eaa0155a753bc6a84b9a45cfd3e274839427f4f695438",
+    "initial-verify_render.py": "97da821a7b4ae91a3f83548bacb7e1e2f2c396336422970ebe4627afd714e811",
+    "dependency-graph-white.png": "706b836fce5c62f339ec79cb1ec6e064d92734b084a0ea55b112a5ca71e3c51a"
+  },
+  "raw_log_sha256": {
+    "pdf-build.log": "374a404b05fa2fdb320708a6a02a62064383f6dbab57ae5100b7cddc740d3960",
+    "web-build.log": "5a5fbfd1c70650d9d65d91c81891f25cd4eed50086c5c3bb4c9433530faff0d1",
+    "pdf-raster.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verify-render.log": "5e55cc2f56a2e609958b613cfce10520c4db2867d318b0a0ed4fe53ae5c1b61e",
+    "blueprint/src/print.log": "d25ee9bf5725862eceb449b096c6e04efc0062e5f793ebd30970489ad7d4ee93"
+  },
+  "retained_local_directory": "${WORKSPACE}/singular-restoration-focused-initial",
+  "retention_note": "Original raw logs and original command record are unchanged; the fixture directory was renamed from singular-restoration-focused to singular-restoration-focused-initial before final replay.",
+  "resolution": {
+    "source_owner_repair_revision": "8ecbed7f053226cd5f8b912514777d986e7cf702",
+    "final_status": "passed",
+    "changed_source_files": [
+      "blueprint/src/chapter/ch12_entropy_restoring_operators.tex"
+    ],
+    "lean_sources_tests_and_axiom_drivers_byte_identical": true
+  }
+}

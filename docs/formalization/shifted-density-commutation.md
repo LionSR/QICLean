@@ -30,12 +30,18 @@ premise. The native diagonal variation and identification with the simplex
 derivative, followed by the simultaneous spectral density-order consequence,
 remain separate steps.
 
-Ownership was checked on October 7, 2026. QICLean PR #603 owns local lifts,
-actual regional states and one-step trace stripping; TNLean PR #8830 owns the
-unstripped coordinate first variation and actual marginal adapter. The
-analytic-core session owns the descending stationarity and floor-calculus
-work. This independent spectral implication was coordinated separately.
+The three production theorem statements and proofs are carried unchanged from
+[QICLean PR #607](https://github.com/LionSR/QICLean/pull/607), at commit
+`0e3c232fed3b901db3b992b6bd557210296e3982`. This standalone port uses the
+accepted main branch and does not depend on the simplex results in
+[PR #605](https://github.com/LionSR/QICLean/pull/605). The existing copyright
+and mathematical source citation are retained. The obsolete provenance-ID
+block and separate evidence archives are not carried forward, following
+[PR #678](https://github.com/LionSR/QICLean/pull/678).
 
-All proof text is original and based on the mathematical manuscript and
-Mathlib. OpenAI Codex (GPT-6) assisted the proof, source comparison and checks;
-no upstream OpenAI Lean proof text was reused.
+The original proof was based on the mathematical manuscript and Mathlib,
+with OpenAI Codex (GPT-6) assistance, and reused no upstream OpenAI Lean
+proof text. The standalone port preserves that proof rather than claiming
+it as a new proof. Its additional regressions cover the empty index type,
+a singular positive semidefinite matrix with a positive shift, exponent two,
+and the inverse-power implication for positive a.
