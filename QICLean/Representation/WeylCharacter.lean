@@ -413,4 +413,160 @@ theorem glChar_mul_elemSymm {μ : IrrepLabel (Equiv.Perm (Fin m))} (hμ : HasRow
       simp [h0]
     · simp [glChar_eq_zero_of_not_hasRows hr]
 
+
+/-! ### The Weyl character formula -/
+
+/-- The rows of a label that are not empty, among the first `q`. -/
+noncomputable def rowSet (q : ℕ) (l : IrrepLabel (Equiv.Perm (Fin k))) : Finset (Fin q) :=
+  univ.filter fun a => part q l a ≠ 0
+
+theorem mem_rowSet {l : IrrepLabel (Equiv.Perm (Fin k))} {a : Fin q} :
+    a ∈ rowSet q l ↔ part q l a ≠ 0 := by
+  simp [rowSet]
+
+theorem mem_rowSet_of_le {l : IrrepLabel (Equiv.Perm (Fin k))} {a b : Fin q} (hab : b ≤ a)
+    (ha : a ∈ rowSet q l) : b ∈ rowSet q l := by
+  rw [mem_rowSet] at ha ⊢
+  have := antitone_part (q := q) l hab
+  omega
+
+/-- A vertical strip over the label with its first column removed, other than the label itself,
+has more rows. -/
+theorem card_rowSet_lt {l l' : IrrepLabel (Equiv.Perm (Fin (m + r)))} {p : Fin q → ℕ}
+    (hl : part q l = p + Partition.indic (rowSet q l)) {S : Finset (Fin q)}
+    (hS : S.card = (rowSet q l).card) (hl' : part q l' = p + Partition.indic S)
+    (hne : S ≠ rowSet q l) : (rowSet q l).card < (rowSet q l').card := by
+  classical
+  obtain ⟨a, haS, ha⟩ : ∃ a ∈ S, a ∉ rowSet q l := by
+    by_contra h
+    push Not at h
+    exact hne (eq_of_subset_of_card_le h hS.ge)
+  have hpa : p a = 0 := by
+    have := congrFun hl a
+    simp only [Pi.add_apply, Partition.indic, ha, ite_false, add_zero] at this
+    rw [← this]
+    simpa [mem_rowSet] using ha
+  have hal' : a ∈ rowSet q l' := by
+    rw [mem_rowSet, hl']
+    simp [Partition.indic, haS, hpa]
+  have hsub : rowSet q l ⊆ rowSet q l' := by
+    intro b hb
+    refine mem_rowSet_of_le ?_ hal'
+    by_contra hlt
+    exact ha (mem_rowSet_of_le (not_le.mp hlt).le hb)
+  exact card_lt_card ⟨hsub, fun h => ha (h hal')⟩
+
+theorem glChar_of_part_eq_zero {l : IrrepLabel (Equiv.Perm (Fin k))} (hl : HasRows q l)
+    (h0 : part q l = 0) (y : Fin q → ℂ) : glChar q l y = 1 := by
+  have hk : k = 0 := by rw [← sum_part hl, h0]; simp
+  subst hk
+  have hT : tensorPow (k := 0) (diagonal y) = 1 := by
+    ext x x'
+    rw [tensorPow_apply, Subsingleton.elim x x']
+    simp
+  have hm := multiplicity_eq_weylFormula l hl
+  rw [show part q l = 0 from h0, Partition.weylFormula_zero] at hm
+  rw [glChar, hT, Matrix.mul_one,
+    trace_eq_finrank_range_of_mul_self (matrixUnitOp_mul_matrixUnitOp_self _ l _ _ _)]
+  exact_mod_cast hm
+
+/-- **The Weyl character formula** (`05-replicas.tex`, proof of Lemma 6.2, lines 336–364): for
+a label `λ` with at most `q` rows, `Δ(y) χ_λ(y) = det [y_i ^ {l_j}]` with `l_j = λ_j + q - 1 - j`
+and `Δ(y) = det [y_i ^ {q - 1 - j}]`. -/
+theorem alternant_mul_glChar : ∀ {k : ℕ} {l : IrrepLabel (Equiv.Perm (Fin k))},
+    HasRows q l → ∀ y : Fin q → ℂ,
+      Partition.alternant (Partition.shiftedPart (0 : Fin q → ℕ)) y * glChar q l y =
+        Partition.alternant (Partition.shiftedPart (part q l)) y := by
+  classical
+  intro k
+  induction k using Nat.strong_induction_on with
+  | _ k IHk =>
+  suffices H : ∀ n, ∀ l : IrrepLabel (Equiv.Perm (Fin k)), HasRows q l →
+      q - (rowSet q l).card = n → ∀ y : Fin q → ℂ,
+        Partition.alternant (Partition.shiftedPart (0 : Fin q → ℕ)) y * glChar q l y =
+          Partition.alternant (Partition.shiftedPart (part q l)) y from
+    fun {l} hl => H _ l hl rfl
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n IHn =>
+  intro l hl hn y
+  -- the empty partition
+  by_cases h0 : rowSet q l = ∅
+  · have hp : part q l = 0 := funext fun a => by
+      by_contra h
+      have : a ∈ rowSet q l := mem_rowSet.mpr h
+      rw [h0] at this
+      exact absurd this (Finset.notMem_empty a)
+    rw [glChar_of_part_eq_zero hl hp, mul_one, hp]
+  -- remove the first column
+  set S0 := rowSet q l with hS0
+  set p : Fin q → ℕ := fun a => part q l a - Partition.indic S0 a with hpdef
+  have hlp : part q l = p + Partition.indic S0 := by
+    funext a
+    simp only [Pi.add_apply, p, Partition.indic]
+    split_ifs with ha
+    · have := mem_rowSet.mp ha; omega
+    · omega
+  have hpanti : Antitone p := by
+    intro a b hab
+    have h1 := antitone_part (q := q) l hab
+    by_cases hb : b ∈ S0
+    · have ha : a ∈ S0 := mem_rowSet_of_le hab hb
+      simp only [p, Partition.indic, ha, hb, ite_true]
+      omega
+    · have : part q l b = 0 := by
+        by_contra h; exact hb (mem_rowSet.mpr h)
+      simp only [p, Partition.indic, hb, ite_false]
+      omega
+  generalize hℓ : S0.card = ℓ
+  have hℓpos : 1 ≤ ℓ := by
+    rw [← hℓ, Nat.one_le_iff_ne_zero]
+    exact fun h => h0 (card_eq_zero.mp h)
+  have hpsum : ∑ a, p a + ℓ = k := by
+    rw [← hℓ, ← sum_part hl, hlp]
+    simp [sum_add_distrib, Partition.indic]
+  obtain ⟨m, rfl⟩ : ∃ m, k = m + ℓ := ⟨∑ a, p a, hpsum.symm⟩
+  obtain ⟨μ, hμ, hμp⟩ := exists_part_eq (k := m) hpanti (by omega)
+  have hIHμ := IHk m (by omega) hμ y
+  have hcard : (rowSet q l).card = ℓ := hℓ
+  -- the Pieri rules
+  have hP := glChar_mul_elemSymm (r := ℓ) hμ y
+  have hA := Partition.alternant_mul_elemSymm (Partition.shiftedPart (part q μ)) ℓ y
+  simp only [← Partition.shiftedPart_add_indic] at hA
+  have hsumA := sum_pieriSet (r := ℓ) hμ
+    (fun p' => Partition.alternant (Partition.shiftedPart p') y) fun S hS => by
+      obtain ⟨a, b, hab, h⟩ := exists_shiftedPart_eq_of_not_antitone (antitone_part μ) hS
+      exact Partition.alternant_eq_zero_of_eq y hab h
+  have hfinal : ∑ l' ∈ pieriSet q μ ℓ,
+      Partition.alternant (Partition.shiftedPart (0 : Fin q → ℕ)) y * glChar q l' y =
+      ∑ l' ∈ pieriSet q μ ℓ, Partition.alternant (Partition.shiftedPart (part q l')) y := by
+    rw [← mul_sum, ← hP, ← mul_assoc, hIHμ, hA]
+    exact hsumA.symm
+  -- `λ` is one of the vertical strips
+  have hlmem : l ∈ pieriSet q μ ℓ :=
+    mem_pieriSet.mpr ⟨hl, S0, mem_powersetCard.mpr ⟨subset_univ _, hℓ⟩, by rw [hμp]; exact hlp⟩
+  have hothers : ∀ l' ∈ (pieriSet q μ ℓ).erase l,
+      Partition.alternant (Partition.shiftedPart (0 : Fin q → ℕ)) y * glChar q l' y =
+        Partition.alternant (Partition.shiftedPart (part q l')) y := by
+    intro l' hl'
+    obtain ⟨hne, hl'm⟩ := mem_erase.mp hl'
+    obtain ⟨hl'r, S, hS, hl'p⟩ := mem_pieriSet.mp hl'm
+    have hSne : S ≠ S0 := by
+      rintro rfl
+      exact hne (hasRows_iff_part hl'r hl (by rw [hl'p, hμp, hlp]))
+    have hlt := card_rowSet_lt (p := p) hlp (by rw [(mem_powersetCard.mp hS).2, hℓ])
+      (by rw [hl'p, hμp]) hSne
+    rw [hcard] at hlt
+    have hle : (rowSet q l').card ≤ q := by
+      simpa using card_le_univ (rowSet q l')
+    exact IHn _ (by omega) l' hl'r rfl y
+  have hsplit := add_sum_erase (pieriSet q μ ℓ)
+    (fun l' => Partition.alternant (Partition.shiftedPart (0 : Fin q → ℕ)) y * glChar q l' y)
+    hlmem
+  have hsplit' := add_sum_erase (pieriSet q μ ℓ)
+    (fun l' => Partition.alternant (Partition.shiftedPart (part q l')) y) hlmem
+  rw [sum_congr rfl hothers] at hsplit
+  rw [← hsplit, ← hsplit'] at hfinal
+  exact add_right_cancel hfinal
+
 end TensorPower
