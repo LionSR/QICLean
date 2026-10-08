@@ -47,6 +47,7 @@ import QICLean.Entropy.MarginalPhaseSupport
 import QICLean.Entropy.MarginalTails
 import QICLean.Entropy.MarkovChain
 import QICLean.Entropy.ModularExpectation
+import QICLean.Entropy.MovementEtaRegional
 import QICLean.Entropy.MutualInformation
 import QICLean.Entropy.MutualInformationBasic
 import QICLean.Entropy.MutualInformationDataProcessing

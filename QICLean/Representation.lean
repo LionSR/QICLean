@@ -50,6 +50,7 @@ import QICLean.Representation.RelativePin
 import QICLean.Representation.RelativePinAlgebra
 import QICLean.Representation.RelativePinCommute
 import QICLean.Representation.RelativePinCompensator
+import QICLean.Representation.ReplicaEtaForms
 import QICLean.Representation.ReplicaGammaIntegral
 import QICLean.Representation.ReplicaIntegral
 import QICLean.Representation.ReplicaLift
