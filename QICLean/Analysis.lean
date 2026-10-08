@@ -139,6 +139,7 @@ import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralKronecker
+import QICLean.Analysis.SpectralProjectionIntertwiner
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
