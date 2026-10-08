@@ -10,7 +10,7 @@ import QICLean.Analysis.Transport.PathDerivative
 
 For a differentiable path `M(q)` of positive definite matrices and a nonzero vector `pre`,
 put `N(q)² = ‖M(q)^{-1/4} pre‖²`, `v = M^{-1/4} pre / N` and
-`𝖧 = M^{-1/2} M' M^{-1/2}`. Then
+`H' = M^{-1/2} M' M^{-1/2}`. Then
 $$-\partial_q\log N^2=\int_{\mathbb R}m_{1/4}(u)\,
   \langle M^{-iu}v,\mathsf H M^{-iu}v\rangle\,du$$
 (area-law paper, Proposition 7.4, displays `transport:norm-derivative` and
@@ -158,7 +158,7 @@ theorem conj_mulVec_mulVec {U : Matrix n n ℂ} (hU : star U * U = 1) (K : Matri
   rw [mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hU, Matrix.mul_one, mulVec_mulVec]
 
 /-- **The quadratic form in spectral coordinates.** For `W = U diag(e) U*`, `H = U K U*` and
-`v = U c`, `⟨W v, H W v⟩ = ∑_{r,t} c̄_r ē_r K_{rt} e_t c_t`. -/
+`v = U c`, `⟨W v, H W v⟩ = ∑_{r,t} conj(c_r) conj(e_r) K_{rt} e_t c_t`. -/
 theorem quadForm_eigen {U K : Matrix n n ℂ} (hU : star U * U = 1) (e c : n → ℂ) :
     star ((U * diagonal e * star U) *ᵥ (U *ᵥ c)) ⬝ᵥ
         ((U * K * star U) *ᵥ ((U * diagonal e * star U) *ᵥ (U *ᵥ c))) =
@@ -381,8 +381,8 @@ theorem relation_eigen {M G' D : Matrix n n ℂ} (hM : M.PosDef)
 /-- **The derivative of the filtered norm** (`06-transport.tex`, display
 `transport:norm-derivative` and the Fourier formula `transport:g-fourier`,
 lines 470--491): for a differentiable path of positive definite matrices with
-`M(p)^{-1/2} M'(p) M(p)^{-1/2} = 𝖧`,
-`-∂_p log N² = ∫ m_{1/4}(u) ⟨M^{-iu} v, 𝖧 M^{-iu} v⟩ du`. -/
+`M(p)^{-1/2} M'(p) M(p)^{-1/2} = H'`,
+`-∂_p log N² = ∫ m_{1/4}(u) ⟨M^{-iu} v, H' M^{-iu} v⟩ du`. -/
 theorem hasDerivAt_neg_log_filteredNormSq_of_hasDerivAt {M : ℝ → Matrix n n ℂ}
     {D : Matrix n n ℂ} {p : ℝ} (hM : ∀ q, (M q).PosDef) (hD : HasDerivAt M D p)
     {pre : n → ℂ} (hpre : pre ≠ 0) :
