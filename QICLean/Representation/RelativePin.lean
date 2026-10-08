@@ -230,7 +230,47 @@ theorem relativePin :
     simp only [mulVec_mulVec, Matrix.mul_assoc]
   -- the averaged numerators
   have hWW : ‖(EuclideanSpace.equiv _ ℂ).symm (Wa *ᵥ (Wb *ᵥ y))‖ ≤ E := by
-    sorry
+    have hWa : Wa = Matrix.of fun a b =>
+        ∫ ω, tensorPow (k := k) (localLift (P ∪ x) (σ ω ^ t)) a b ∂P₁ := by
+      ext a b; exact heq₁ k a b
+    have hWb : Wb = Matrix.of fun a b =>
+        ∫ ω, tensorPow (k := k) (localLift (x ∪ Y) (τ ω ^ t)) a b ∂P₂ := by
+      ext a b; exact heq₂ k a b
+    have h2t : (0 : ℝ) < 2 * t := by positivity
+    rw [hWa]
+    refine norm_of_integral_mulVec_le _ (hint₁ k) _ ?_
+    filter_upwards [hσ] with ω hω
+    rw [mulVec_mulVec, hWb, mul_of_integral _ _ (hint₂ k)]
+    refine norm_of_integral_mulVec_le _ (fun a b => ?_) y ?_
+    · simp only [Matrix.mul_apply]
+      exact integrable_finsetSum _ fun c _ => (hint₂ k c b).const_mul _
+    filter_upwards [hτ] with ω' hω'
+    rw [← tensorPow_mul, tensorPow_mulVec_tensorVec, norm_tensorVec]
+    have hcomm : localLift (x ∪ Y) (τ ω' ^ t) * localLift P DP =
+        localLift P DP * localLift (x ∪ Y) (τ ω' ^ t) :=
+      commute_of_isSupportedOn_disjoint (isSupportedOn_localLift _) (isSupportedOn_localLift _)
+        (Finset.disjoint_union_right.mpr ⟨h.Px, h.PY⟩) σ₀
+    have hop : (localLift (P ∪ x) (σ ω ^ t) * localLift (x ∪ Y) (τ ω' ^ t)) *ᵥ v =
+        regionalMoveOperator h θ (σ ω) (τ ω') (2 * t) *ᵥ θ.ofLp := by
+      have e1 : (fun s : ℝ => s ^ (2 * t / 2)) = fun s : ℝ => s ^ t := by
+        funext s; congr 1; ring
+      have e2 : (fun s : ℝ => s ^ (-(2 * t) / 2)) = fun s : ℝ => s ^ (-t) := by
+        funext s; congr 1; ring
+      simp only [regionalMoveOperator, e1, e2, ← CFC.rpow_eq_cfc_real hω.1.posSemidef.nonneg,
+        ← CFC.rpow_eq_cfc_real hω'.1.posSemidef.nonneg]
+      simp only [v, DP, DY, ρP, ρY, mulVec_mulVec, Matrix.mul_assoc]
+      rw [← Matrix.mul_assoc (localLift (x ∪ Y) _), hcomm, Matrix.mul_assoc]
+    have hone := Hmove h θ hθ (σ ω) (τ ω') hω.1.posSemidef hω.2 hω'.1.posSemidef hω'.2
+      (2 * t) h2t hsmall
+    rw [← hop] at hone
+    calc ‖(EuclideanSpace.equiv _ ℂ).symm
+          ((localLift (P ∪ x) (σ ω ^ t) * localLift (x ∪ Y) (τ ω' ^ t)) *ᵥ v)‖ ^ k
+        ≤ Real.exp (-(2 * t / 2) * η + C₀ * (2 * t) ^ (5 / 4 : ℝ) * ℓ ^ 2) ^ k :=
+          pow_le_pow_left₀ (norm_nonneg _) hone k
+      _ = E := by
+          rw [← Real.exp_nat_mul]
+          congr 1
+          ring
   have hTP : ‖Wp⁻¹ * tP‖ ≤ ((k : ℝ) + 2) ^ Cc :=
     Hcomp k P ρP hρP (trace_frameMarginalP h hθ)
   have hTY : ‖Wy⁻¹ * tY‖ ≤ ((k : ℝ) + 2) ^ Cc :=
