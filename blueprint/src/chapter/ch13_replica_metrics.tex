@@ -524,3 +524,106 @@ eigenbasis. The following statements show that such averages are central label f
     $P_{\theta,k+m}=P_{\theta,k}\otimes P_{\theta,m}$; pair the coherent-state resolution
     for $k+m$ copies with $\sigma\otimes G$.
 \end{proof}
+
+\section{The gamma integral}
+
+The integral representation of the metrics draws the eigenvalues $s$ of a density matrix with
+a density proportional to $\Delta(s)\Delta(s^t)$. The following statements compute the
+resulting averages of characters. Write $\delta_j=d-j$, $a_\alpha(y)=\det[y_i^{\alpha_j}]$ for
+the alternant, $l$ for the shifted parts of a label, $N=\binom d2$, and
+$D=d+N+t\sum_jl_j$. In place of the simplex we integrate over the positive orthant with the
+weight $(\sum_ix_i)^{-a}e^{-\sum_ix_i}$; the quotients of gamma values are the same.
+
+\begin{lemma}[The Beta integral on the half-line]
+    \label{lem:beta_half_line}
+    \lean{Real.integrableOn_rpow_mul_one_add_rpow, Real.integral_rpow_mul_one_add_rpow}
+    \leanok
+    For $a,b>0$,
+    $\int_0^\infty u^{a-1}(1+u)^{-(a+b)}\,du=\Gamma(a)\Gamma(b)/\Gamma(a+b)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Substitute $x=u/(1+u)$ in the Beta integral $\int_0^1x^{a-1}(1-x)^{b-1}\,dx$.
+\end{proof}
+
+\begin{lemma}[Monomial integrals]
+    \label{lem:orthant_monomials}
+    \lean{Partition.orthant, Partition.orthMono, Partition.integral_monomial,
+        Partition.integrable_monomial, Partition.integral_monomial_mul_rpow_sum,
+        Partition.integrable_monomial_mul_rpow_sum, Partition.integral_monomial_mul_rpow_sum'}
+    \leanok
+    \uses{lem:beta_half_line}
+    Let $u_i>-1$ and $E=d+\sum_iu_i$. For $b>0$,
+    $\int_{(0,\infty)^d}\prod_ix_i^{u_i}e^{-bx_i}\,dx=\prod_i\Gamma(1+u_i)b^{-1-u_i}$, and for
+    $0\le a<E$,
+    \[
+        \int_{(0,\infty)^d}\prod_ix_i^{u_i}\Bigl(\sum_ix_i\Bigr)^{-a}e^{-\sum_ix_i}\,dx
+        =\prod_i\Gamma(1+u_i)\,\frac{\Gamma(E-a)}{\Gamma(E)}.
+    \]
+\end{lemma}
+
+\begin{proof}\leanok
+    The first integral factorizes into one-dimensional gamma integrals. For the second,
+    insert $\Gamma(a)r^{-a}=\int_0^\infty v^{a-1}e^{-rv}\,dv$ with $r=\sum_ix_i$, exchange the
+    integrals, evaluate the inner one by the first formula with $b=1+v$, and apply the Beta
+    integral.
+\end{proof}
+
+\begin{lemma}[A determinant of gamma values]
+    \label{lem:gamma_determinant}
+    \lean{Partition.risingPoly, Partition.Gamma_one_add_add_nat, Partition.revPerm,
+        Partition.alternant_delta_eq, Partition.det_risingPoly, Partition.det_Gamma,
+        Partition.alternant_mul_left}
+    \leanok
+    For $t\ge0$,
+    $\det[\Gamma(1+\delta_i+tl_j)]_{i,j}=\prod_j\Gamma(1+tl_j)\cdot a_\delta(tl)$, and
+    $a_\delta(tl)=t^Na_\delta(l)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    $\Gamma(1+tl+n)=\Gamma(1+tl)(1+tl)(2+tl)\cdots(n+tl)$, a monic polynomial of degree $n$ in
+    $tl$. A determinant of monic polynomials of degrees $\delta_i$ evaluated at the points
+    $tl_j$ equals the Vandermonde determinant with the same ordering of degrees, which is
+    $a_\delta(tl)$.
+\end{proof}
+
+\begin{theorem}[The gamma integral]
+    \label{thm:gamma_integral}
+    \lean{Partition.gammaIntegral, Partition.alternant_mul_alternant_rpow,
+        Partition.gammaIntegral_eq_sum, Partition.integrable_gammaIntegrand,
+        Partition.sum_sign_prod_Gamma, Partition.gammaIntegral_eq,
+        Partition.alternant_delta_mul_rpow_nonneg}
+    \leanok
+    \uses{lem:orthant_monomials, lem:gamma_determinant, lem:alternant_pieri}
+    For $t\ge0$ and $0\le a<D$,
+    \[
+        \int_{(0,\infty)^d}a_\delta(x)a_l(x^t)\Bigl(\sum_ix_i\Bigr)^{-a}e^{-\sum_ix_i}\,dx
+        =d!\,t^N\prod_j\Gamma(1+tl_j)\,a_\delta(l)\,\frac{\Gamma(D-a)}{\Gamma(D)},
+    \]
+    the integrand is integrable, and $a_\delta(x)a_\delta(x^t)\ge0$ on the orthant.
+\end{theorem}
+
+\begin{proof}\leanok
+    Expand both alternants over permutations; each product is a monomial with exponents
+    $\delta_{\sigma^{-1}i}+tl_{\tau^{-1}i}$, whose sum is $N+t\sum_jl_j$. The previous lemma
+    integrates each term, and the double sum over $\sigma,\tau$ collapses to $d!$ copies of
+    $\det[\Gamma(1+\delta_i+tl_j)]$. Finally
+    $a_\delta(x)a_\delta(x^t)=\prod_{i<j}(x_j-x_i)(x_j^t-x_i^t)$.
+\end{proof}
+
+\begin{theorem}[The label function as a normalized gamma integral]
+    \label{thm:replica_weight_gamma}
+    \lean{Partition.alternant_delta_eq_vand, Partition.weylFormula_eq_alternant_div,
+        Partition.replicaWeight_eq_gammaIntegral}
+    \leanok
+    \uses{thm:gamma_integral, lem:replica_weight_ratio}
+    Let $J_a(l)$ denote the integral of the previous theorem and $W_\lambda$ the Weyl dimension
+    formula. For $t>0$ and a partition $\lambda\vdash k$ with at most $d$ rows,
+    $w_k(\lambda)=J_{tk}(l)/\bigl(J_0(\delta)W_\lambda\bigr)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Here $D=c+tk$ and $D-tk=c$ for $l$, while $D=c$ for $\delta$. The factors $d!\,t^N$ cancel,
+    and $a_\delta(l)/a_\delta(\delta)=W_\lambda$ because $a_\delta$ is a fixed sign times the
+    Vandermonde product and $a_\delta(\delta)$ is the product of the differences $j-i$.
+\end{proof}

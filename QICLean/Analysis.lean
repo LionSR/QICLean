@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.AdjointEigenvalues
 import QICLean.Analysis.AsymptoticStateConvergence
+import QICLean.Analysis.BetaHalfLine
 import QICLean.Analysis.Birkhoff
 import QICLean.Analysis.CStarCompletion
 import QICLean.Analysis.CStarMatrixKronecker
