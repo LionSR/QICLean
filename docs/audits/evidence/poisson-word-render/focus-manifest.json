@@ -1,0 +1,99 @@
+{
+  "source_revision": "8e0a72aa2ad07a02a5c5a13436b17607fdd5af61",
+  "target_leaves": [
+    "blueprint/src/chapter/ch11_poisson_word.tex",
+    "blueprint/src/chapter/ch13_contraction_word_decay.tex",
+    "blueprint/src/chapter/ch13_contraction_word_decay_spectator.tex",
+    "blueprint/src/chapter/ch13_poisson_contraction_decay.tex"
+  ],
+  "production_modules": [
+    "QICLean/Probability/PoissonWord.lean",
+    "QICLean/Analysis/ContractionWordDecay.lean",
+    "QICLean/Analysis/ContractionWordDecaySpectator.lean",
+    "QICLean/Analysis/PoissonContractionDecay.lean"
+  ],
+  "test_modules": [
+    "QICLeanTest/PoissonWord.lean",
+    "QICLeanTest/PoissonWordAxioms.lean",
+    "QICLeanTest/ContractionWordDecay.lean",
+    "QICLeanTest/ContractionWordDecayAxioms.lean",
+    "QICLeanTest/ContractionWordDecaySpectator.lean",
+    "QICLeanTest/ContractionWordDecaySpectatorAxioms.lean",
+    "QICLeanTest/PoissonContractionDecay.lean",
+    "QICLeanTest/PoissonContractionDecayAxioms.lean"
+  ],
+  "source_sha256": {
+    "QICLean/Probability/PoissonWord.lean": "b80d9226661c59bfa805b9c387ebc808eaacf315d618aaf2f9a1cf7ae704bf2b",
+    "QICLean/Analysis/ContractionWordDecay.lean": "bd647850a2a4b2a8abfd0bc1f5669727eb166221e7a771ce4eb54db9c85a54e4",
+    "QICLean/Analysis/ContractionWordDecaySpectator.lean": "58dc2cee6715ef1e0083b93c8272da982f5295f562b35e865b5a7962fb2efbd4",
+    "QICLean/Analysis/PoissonContractionDecay.lean": "ce67d892fe50eae2d6bfe01bab8a0b7c2459dbe8cbbc3c94c96b0066a3649147",
+    "QICLeanTest/PoissonWord.lean": "2f5bbc469d4d991bcfaecf7f67574c476a31287f52d48de756c80244c867cdc6",
+    "QICLeanTest/PoissonWordAxioms.lean": "b78854841adb5306d27cb27e779b54916f00b000d0d818de2f98a84ebad21f93",
+    "QICLeanTest/ContractionWordDecay.lean": "abcac7adadb093794dc25c568710ec4cc4642c496fe0e93a89622bbde5637c01",
+    "QICLeanTest/ContractionWordDecayAxioms.lean": "70bf2ed11363a94e8691805b6b1e334731983d144a5a0e8c54a1d17edaa35803",
+    "QICLeanTest/ContractionWordDecaySpectator.lean": "fa2a7de080bbf62f71545f489b4831b5f5a582587bc04cbd03ea5d06cde183a8",
+    "QICLeanTest/ContractionWordDecaySpectatorAxioms.lean": "63c1eca976df1e5061731ef1993ac316300cf965974c48dc1216eef0d4a74673",
+    "QICLeanTest/PoissonContractionDecay.lean": "40bd528c6480dc2b68dc38526a8430ff9c9d56b6b4a6ab752c7f95f0bf469214",
+    "QICLeanTest/PoissonContractionDecayAxioms.lean": "751c56cea4a4a99b15b40c3e44ca2d85a53f9dcd3c073dde961e93baec8b1d20",
+    "blueprint/src/chapter/ch11_poisson_word.tex": "13a91ae881d0df890714d9beb58e3c71a6a365069000396798c020c05fdd20c3",
+    "blueprint/src/chapter/ch13_contraction_word_decay.tex": "eab86b8d26b6dcbfc877933412c1e66a503fee9235a72291e381770268964f38",
+    "blueprint/src/chapter/ch13_contraction_word_decay_spectator.tex": "128618393e5db4662345b27b61e8b558911a372db86c5d98c51aff1cc5ebbf32",
+    "blueprint/src/chapter/ch13_poisson_contraction_decay.tex": "f0daae1309702a43f5024f9139d2409c82056f17683a0fdaaf8b7fb98ac3a862",
+    "blueprint/src/content.tex": "3d2bd90233175220e88aa425ffa8a5d751cfccc680c3c7cd8e68aee0aa0d9357",
+    "lean-toolchain": "bc84812c94489d1e3e191baa1dc10d5eb684382d7fe9d2a5ab085e72c1c67e47",
+    "lake-manifest.json": "8ee65a668c3fdb00702c728eee7b0b9ebd02d97a6363f23b43036d6236cda7cf",
+    "lakefile.toml": "c40e0bb3a1ee5f9025d5c752d25c7c2f61622db813f79d6bee7d2412d8760907",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9"
+  },
+  "fixture_source_sha256": {
+    "blueprint/src/Packages/tenkz_pic.py": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",
+    "blueprint/src/blueprint.sty": "bba6dd0bcae52e864efd02a248f4b8cccc9f62ba82e5ec8f8045c5944d841a8d",
+    "blueprint/src/extra_styles.css": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1",
+    "blueprint/src/latexmkrc": "6bf5c08358866b42ad8062b7dcf7fa08b892361af7dd5547235f31aed33629e0",
+    "blueprint/src/macros/common.tex": "923294d75aa08e713fe7400eceac858eb6bb5f95667eeaf2d4bb202e9a35ec35",
+    "blueprint/src/macros/diagrams.tex": "275794e8e3fcf74aa7c000b38420f9150dd52017ea61216875103dc62908bf2e",
+    "blueprint/src/macros/print.tex": "e7abb3c60f1d2125b3c5ff72a14c408755e418b9654c9c661841efb1f54e1d10",
+    "blueprint/src/macros/web.tex": "3906fd9caafca22ceec080aca9c95a0cde575d7ecf7e70ef43156eadce0ca080",
+    "blueprint/src/plastex.cfg": "c6dd8278bcdc1c3106607dc114dee52a84a136e9cfa04e2a4d2f8d0b4c3e0378",
+    "blueprint/src/plastex_templates/DocumentCommands.jinja2s": "38fb147cde71e0c9e943ca6a7645950f12869d1d19b6f2cd843f56c8f0add921",
+    "blueprint/src/plastex_templates/TenkzPictures.jinja2s": "879380488675beb1bc55fe420f966e6a5f3fa86b9c1cf76489ace0e5dbb4c3c5",
+    "blueprint/src/print.tex": "a80284c614ecaff007283ca80bbe7285fae1796ded5cc21bd36dcea1a41794f0",
+    "blueprint/src/references.bib": "e1a3c3fc4670fcc744cb44ad5457206de9ce86322848c3df53bb1395b0e74420",
+    "blueprint/src/tenkz_pic.sty": "adf747cb82f51ce4da80003c3352c58164f60ce04a33cbb1d6b560e1042004f5",
+    "blueprint/src/texra_patches.sty": "d97f038370fb8fe469682196ab4e99bb1bd8c761a7ba5a4d34f51f6ad4027302",
+    "blueprint/src/web.tex": "3381d2bf7da7dcda9a7e309c6fb070bb3ee7620ca5c8649b802074826bd1a9a4",
+    "blueprint/src/chapter/ch11_poisson_word.tex": "13a91ae881d0df890714d9beb58e3c71a6a365069000396798c020c05fdd20c3",
+    "blueprint/src/chapter/ch13_contraction_word_decay.tex": "eab86b8d26b6dcbfc877933412c1e66a503fee9235a72291e381770268964f38",
+    "blueprint/src/chapter/ch13_contraction_word_decay_spectator.tex": "128618393e5db4662345b27b61e8b558911a372db86c5d98c51aff1cc5ebbf32",
+    "blueprint/src/chapter/ch13_poisson_contraction_decay.tex": "f0daae1309702a43f5024f9139d2409c82056f17683a0fdaaf8b7fb98ac3a862",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9",
+    "scripts/tenkz_paths.py": "b301db3e900ab33d7d43cc271a914361b989034d106ebe66713343beb37e1236",
+    "scripts/test_blueprint_web_render.py": "c8b8f8ef96f6c9539a0ea99980b54302ae4b29ebd920ddce87824d13f8aa28b5"
+  },
+  "fixture_wrapper_sha256": "ffaa4414ebac67366f9017c81613c84ab5df2de78359d81fbd5e960d5cec0b38",
+  "production_lines": 639,
+  "fixture_only_changes": [
+    "Replace content.tex with one chapter wrapper selecting four byte-identical frozen leaves. Repository preambles, commands, bibliography, templates, styles and render configuration are unchanged."
+  ],
+  "tools": {
+    "texra-blueprint": "0.3.8",
+    "plasTeX": "3.1",
+    "leanblueprint": "0.0.20"
+  },
+  "paper": {
+    "section_title": "Amplifying the collar estimate",
+    "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "upstream_path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex",
+    "estimate_lines": [
+      237,
+      253
+    ],
+    "chronology_lines": [
+      49,
+      54
+    ],
+    "retained_local_source": "${WORKSPACE}/pinned-paper-sources/arealaw-09-amplification-adc7f124.tex",
+    "sha256": "17cb317a40f7348cce2fff888a5a3b8c6fb5e9b240d0bc9eca27452db482807f"
+  },
+  "scope": "Focused PDF/static HTML only. No Lean/Lake/checkdecls, full-book build, live browser, remote documentation check, external write or publication."
+}

@@ -1,0 +1,86 @@
+{
+  "source_revision": "8ecbed7f053226cd5f8b912514777d986e7cf702",
+  "target_leaves": [
+    "blueprint/src/chapter/ch12_support_inverse_sandwich.tex",
+    "blueprint/src/chapter/ch12_entropy_restoring_operators.tex"
+  ],
+  "source_sha256": {
+    "QICLean/Analysis/SupportInverseSandwich.lean": "8d1ee6ecfafafe144c595738e24403e5fded8e45cb853e0b722b06f202ddd2dc",
+    "QICLean/Entropy/RestoringMarginal.lean": "02e3697b6b74ec3cd89dcb8a3d33614e07c080284aec9bd0829e4cd0592801d7",
+    "QICLean/Entropy/RestoringOperators.lean": "a7934cdfb92f0c58c61a9bbfd1feeccb2336b111719c07873fa5670d4f6528fb",
+    "QICLeanTest/SupportInverseSandwich.lean": "3e316f3f2e6bd96db1206f6d2017deed0c94348e815f5781e2c02b5ab11a314e",
+    "QICLeanTest/SupportInverseSandwichAxioms.lean": "18852bc2d68560a3184a07377cdf2802ec36b51a0f290a8ba9756163c435e4b5",
+    "QICLeanTest/RestoringMarginal.lean": "cd37d977631f7d27ab8291042a3dc977ef383b3de3b7dd559b35542c793e8f2b",
+    "QICLeanTest/RestoringMarginalAxioms.lean": "0748ec0d2b0091c73cf92bd064611ceecaa45889f17cd478ae1d7311de87c7d6",
+    "QICLeanTest/RestoringOperators.lean": "39b157ddda438a206fbf39372220e158e01c7628cc43042636d1e5076462b764",
+    "QICLeanTest/RestoringOperatorsAxioms.lean": "b5b13832445c7492b27fe17974524811bc2b68beaf231d87c12169ec3487618b",
+    "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean": "0048b0dab04e51ac73a35e9aa2d9a02473043cc2dafb700e0a8123929cd33d15",
+    "docs/audits/evidence/restoring-marginal/RestoringMarginalRawAxioms.lean": "6aae65bff35719566505dae7f9b69b4b25a76cdc78cf4e8be77c663c6ff70b3b",
+    "docs/audits/evidence/restoring-marginal/RestoringOperatorsRawAxioms.lean": "c5498932cc32d4ed4b2e1eb218805d03ca41cdc67222bb050b5d2ad6687feb8f",
+    "blueprint/src/chapter/ch12_support_inverse_sandwich.tex": "130193c7c0f47a124389b91f75e49be61f78dfc0c95f7bd9c88e0ab78d4c6a87",
+    "blueprint/src/chapter/ch12_entropy_restoring_operators.tex": "8a9d5ca43f646ac4613dbeed1dfb79ec3a06a9984750ea479bdad229428e6d9c",
+    "blueprint/src/chapter/ch12_entropy.tex": "51c573c10dfdbe06aae82440e67021f538951cb4abc4198ffb71292ef0f41fed"
+  },
+  "fixture_source_sha256": {
+    "blueprint/src/Packages/tenkz_pic.py": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",
+    "blueprint/src/blueprint.sty": "bba6dd0bcae52e864efd02a248f4b8cccc9f62ba82e5ec8f8045c5944d841a8d",
+    "blueprint/src/extra_styles.css": "5526a44bc9d74c132ef04dcef9d2a0ebc6bd353d7f37d0fba4d0dbed5be4eec1",
+    "blueprint/src/latexmkrc": "6bf5c08358866b42ad8062b7dcf7fa08b892361af7dd5547235f31aed33629e0",
+    "blueprint/src/macros/common.tex": "923294d75aa08e713fe7400eceac858eb6bb5f95667eeaf2d4bb202e9a35ec35",
+    "blueprint/src/macros/diagrams.tex": "275794e8e3fcf74aa7c000b38420f9150dd52017ea61216875103dc62908bf2e",
+    "blueprint/src/macros/print.tex": "e7abb3c60f1d2125b3c5ff72a14c408755e418b9654c9c661841efb1f54e1d10",
+    "blueprint/src/macros/web.tex": "3906fd9caafca22ceec080aca9c95a0cde575d7ecf7e70ef43156eadce0ca080",
+    "blueprint/src/plastex.cfg": "c6dd8278bcdc1c3106607dc114dee52a84a136e9cfa04e2a4d2f8d0b4c3e0378",
+    "blueprint/src/plastex_templates/DocumentCommands.jinja2s": "38fb147cde71e0c9e943ca6a7645950f12869d1d19b6f2cd843f56c8f0add921",
+    "blueprint/src/plastex_templates/TenkzPictures.jinja2s": "879380488675beb1bc55fe420f966e6a5f3fa86b9c1cf76489ace0e5dbb4c3c5",
+    "blueprint/src/print.tex": "a80284c614ecaff007283ca80bbe7285fae1796ded5cc21bd36dcea1a41794f0",
+    "blueprint/src/references.bib": "e1a3c3fc4670fcc744cb44ad5457206de9ce86322848c3df53bb1395b0e74420",
+    "blueprint/src/tenkz_pic.sty": "adf747cb82f51ce4da80003c3352c58164f60ce04a33cbb1d6b560e1042004f5",
+    "blueprint/src/texra_patches.sty": "d97f038370fb8fe469682196ab4e99bb1bd8c761a7ba5a4d34f51f6ad4027302",
+    "blueprint/src/web.tex": "3381d2bf7da7dcda9a7e309c6fb070bb3ee7620ca5c8649b802074826bd1a9a4",
+    "blueprint/src/chapter/ch12_support_inverse_sandwich.tex": "130193c7c0f47a124389b91f75e49be61f78dfc0c95f7bd9c88e0ab78d4c6a87",
+    "blueprint/src/chapter/ch12_entropy_restoring_operators.tex": "8a9d5ca43f646ac4613dbeed1dfb79ec3a06a9984750ea479bdad229428e6d9c",
+    "texra-blueprint.toml": "88a7728dd2d68e2af8d5fb3a8d20353e739b1ee8f4974670b41cdfd3f9d0e1c9",
+    "scripts/tenkz_paths.py": "b301db3e900ab33d7d43cc271a914361b989034d106ebe66713343beb37e1236",
+    "scripts/test_blueprint_web_render.py": "c8b8f8ef96f6c9539a0ea99980b54302ae4b29ebd920ddce87824d13f8aa28b5"
+  },
+  "fixture_wrapper_sha256": "721a732fd5b517293f5969e2f697725c2a87204c6e1a6ebbaefeb726160ddc41",
+  "production_modules": [
+    "QICLean/Analysis/SupportInverseSandwich.lean",
+    "QICLean/Entropy/RestoringMarginal.lean",
+    "QICLean/Entropy/RestoringOperators.lean"
+  ],
+  "test_modules": [
+    "QICLeanTest/SupportInverseSandwich.lean",
+    "QICLeanTest/SupportInverseSandwichAxioms.lean",
+    "QICLeanTest/RestoringMarginal.lean",
+    "QICLeanTest/RestoringMarginalAxioms.lean",
+    "QICLeanTest/RestoringOperators.lean",
+    "QICLeanTest/RestoringOperatorsAxioms.lean"
+  ],
+  "raw_axiom_drivers": [
+    "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean",
+    "docs/audits/evidence/restoring-marginal/RestoringMarginalRawAxioms.lean",
+    "docs/audits/evidence/restoring-marginal/RestoringOperatorsRawAxioms.lean"
+  ],
+  "production_lines": 585,
+  "fixture_only_changes": [
+    "Replace content.tex with one Quantum entropy chapter wrapper selecting the two byte-identical frozen leaves. All selected repository preambles, macros, packages, templates, bibliography, and configuration are unchanged."
+  ],
+  "tools": {
+    "texra-blueprint": "0.3.8",
+    "plasTeX": "3.1",
+    "leanblueprint": "0.0.20"
+  },
+  "paper": {
+    "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "upstream_path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/09-amplification.tex",
+    "lines": [
+      324,
+      446
+    ],
+    "retained_local_source": "${WORKSPACE}/pinned-paper-sources/arealaw-09-amplification-adc7f124.tex",
+    "sha256": "17cb317a40f7348cce2fff888a5a3b8c6fb5e9b240d0bc9eca27452db482807f"
+  },
+  "scope": "Focused PDF and static HTML; no Lean/Lake/checkdecls, full-book build, live browser, remote documentation access, or publication."
+}
