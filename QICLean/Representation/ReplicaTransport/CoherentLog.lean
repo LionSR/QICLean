@@ -103,6 +103,34 @@ theorem symDim_le (k : ℕ) : symDim Ω k ≤ (k + 1) ^ Fintype.card Ω := by
     _ ≤ Fintype.card (Ω → Fin (k + 1)) := Fintype.card_subtype_le _
     _ = (k + 1) ^ Fintype.card Ω := by simp
 
+/-- The symmetric projector is idempotent. -/
+theorem symProj_mul_self (k : ℕ) :
+    symProj (copyPerm Ω k) * symProj (copyPerm Ω k) = symProj (copyPerm Ω k) := by
+  nth_rewrite 1 [symProj]
+  rw [smul_mul_assoc, Finset.sum_mul]
+  simp_rw [permOp_mul_symProj]
+  rw [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul,
+    inv_mul_cancel₀ (by exact_mod_cast Fintype.card_ne_zero), one_smul]
+
+/-- `Tr Π_k = D_k`. -/
+theorem trace_symProj (k : ℕ) : (symProj (copyPerm Ω k)).trace = symDim Ω k := by
+  have hR : LinearMap.range (Matrix.toLin' (symProj (copyPerm Ω k))) =
+      invariantSubspace (copyPerm Ω k) := by
+    apply le_antisymm
+    · rintro _ ⟨v, rfl⟩
+      rw [Matrix.toLin'_apply]
+      exact symProj_mulVec_mem _ v
+    · intro v hv
+      exact ⟨v, by rw [Matrix.toLin'_apply]; exact symProj_mulVec_of_mem _ hv⟩
+  rw [trace_eq_finrank_range_of_mul_self (symProj_mul_self k), hR]
+
+/-- `D_k ≥ 1`: the product vector `e_a^{⊗k}` is symmetric and nonzero. -/
+theorem symDim_pos (k : ℕ) (a : Ω) : 0 < symDim Ω k := by
+  rw [Module.finrank_pos_iff_exists_ne_zero]
+  refine ⟨⟨tensorVec k (Pi.single a 1), tensorVec_mem_symmetricSubspace _⟩, fun h => ?_⟩
+  have := congrFun (congrArg Subtype.val h) (fun _ => a)
+  simp [tensorVec] at this
+
 /-- The coherent average `𝒬_k(f) = D_k ∫ f(θ) P_{θ,k} dθ` (`06-transport.tex` line 523). -/
 def coherentAverage (k : ℕ) (a : Ω) (f : (Ω → ℂ) → ℝ) : Matrix (Fin k → Ω) (Fin k → Ω) ℂ :=
   (symDim Ω k : ℂ) • ∫ U, (f ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) : ℂ) •
@@ -126,6 +154,22 @@ theorem trace_mul_coherentAverage (k : ℕ) (a : Ω) {f : (Ω → ℂ) → ℝ} 
   refine integral_congr_ae (Filter.Eventually.of_forall fun U => ?_)
   simp only [hL, mul_smul_comm, trace_smul, smul_eq_mul, RCLike.re_to_complex,
     Complex.re_ofReal_mul]
+
+/-- **Coherent-state resolution** in the form `𝒬_k(1) = Π_k`. -/
+theorem coherentAverage_one (k : ℕ) (a : Ω) :
+    coherentAverage k a (fun _ => 1) = symProj (copyPerm Ω k) := by
+  have hD : (symDim Ω k : ℂ) ≠ 0 := by exact_mod_cast (symDim_pos k a).ne'
+  have hF := integrable_coherentIntegrand k a (f := fun _ => 1) continuous_const
+  ext x y
+  let L : Matrix (Fin k → Ω) (Fin k → Ω) ℂ →L[ℂ] ℂ :=
+    LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ x y)
+  have hL : ∀ M, L M = M x y := fun M => rfl
+  have hres := congrFun (congrFun (unitaryTwirl_coherentProj (k := k) a) x) y
+  rw [trace_symProj] at hres
+  rw [coherentAverage, Matrix.smul_apply, ← hL (∫ U, _ ∂(unitaryHaar Ω)), ← L.integral_comp_comm hF]
+  simp only [hL, Complex.ofReal_one, one_smul, coherentProj_mulVec]
+  change _ * unitaryTwirl (coherentProj k (Pi.single a 1)) x y = _
+  rw [hres, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hD, one_mul]
 
 /-- **Operator Jensen inequality for the logarithm** (`06-transport.tex`, display
 `transport:log-jensen`, lines 526--546), compressed to `𝒮_k`: for continuous `f > 0`,
