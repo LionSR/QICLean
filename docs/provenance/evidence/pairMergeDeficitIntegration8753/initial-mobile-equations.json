@@ -1,0 +1,27 @@
+{
+  "equations": [
+    {
+      "id": "a0000002544",
+      "clientWidth": 344,
+      "scrollWidth": 344,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:pair_merge_deficit_lifts",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    },
+    {
+      "id": "eq:pair_merge_deficit_trace_left",
+      "clientWidth": 310,
+      "scrollWidth": 310,
+      "scrollLeft": 0,
+      "overflowX": "auto"
+    }
+  ],
+  "result": "passed",
+  "interpretation": "Long displays use horizontal scrolling within the equation box. Each right endpoint was reached and captured; the page itself has no horizontal overflow."
+}
