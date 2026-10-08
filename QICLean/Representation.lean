@@ -68,6 +68,7 @@ import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
 import QICLean.Representation.SchurWeylLabels
 import QICLean.Representation.SchurWeylLift
+import QICLean.Representation.SkewSymbolBound
 import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarFunction
 import QICLean.Representation.StarOperator
