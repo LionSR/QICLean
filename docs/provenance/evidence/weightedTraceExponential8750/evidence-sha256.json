@@ -1,0 +1,296 @@
+{
+  "files": [
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/Axioms.lean",
+      "sha256": "405c804af6d957f6e6e3cea0043bec52714aa6f078251ce58a5be0ea22f9d586"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/README.md",
+      "sha256": "8d06f1fe4c7bb1b822a4cf82cf66cdc4b22642370bbb01175ed23bdadca1c9f5"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/Statements.lean",
+      "sha256": "da8f1c7b23b1253d12eef78352164b8869391fc2738bba531cd355e4b09beb55"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/TextStyle.lean",
+      "sha256": "08ad305af705f22ffddc66e31a379621cb840318de85075a2c3ec8b531c74ec6"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/axioms-exit.json",
+      "sha256": "a1db655d0b8fa3c2b55dd49ebfc617e7061b6c1a7b7efca4a010be8216d46c80"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/axioms-final-exit.json",
+      "sha256": "70baa9bd3f4353f4ab2fad122df93712f42d1fb8c68bb3c92271e1df5e253df6"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/axioms-final.log",
+      "sha256": "84b339d88eba6c3d6e8b60311bfe3028771580b14b3fdf9ac8cf602d5c44d59c"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/axioms.log",
+      "sha256": "587155ddde6d9c8b8fa6048b3e64cc4bbd8104e9006402f5a7eb03943d69c375"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-axioms-exit.json",
+      "sha256": "e50a8e18ce1d368442ea5c6e3ac2cca7e51f0574c36251bc52527361fdf93575"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-axioms.log",
+      "sha256": "84b339d88eba6c3d6e8b60311bfe3028771580b14b3fdf9ac8cf602d5c44d59c"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-build-exit.json",
+      "sha256": "4a6e58c8e3e91dbba989c37ee9807bf47649608f95d6e4e81a297fd0d627d5dd"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-build.log",
+      "sha256": "6b6c7504ffd337b8d0ac99749c090d977443960cea0058207772c9ed3d1ee7b8"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-cache-guard-exit.json",
+      "sha256": "768101607dde62954e943725e2ee5021410c01feed04806d7775d250001fc6bb"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-prose-exit.json",
+      "sha256": "f2f0af69172e29f404d21a3c0c5a98c1b7385d605d18e7843d4cbb8db3753b8c"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-statements-exit.json",
+      "sha256": "5f23dd229b9c66702b0dd0ea368c77d244d97a8a11ad3a182b3afd5e2bd757b7"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-statements.log",
+      "sha256": "426f436174c40242fb48c2958cc094430cf708ac611b73ddf95b2b2e9a0f79c4"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-strict-source-exit.json",
+      "sha256": "023b1cbdfb34bce68e3f5990b096895df480c38395ab2053de930fe4ef8d326e"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/bound-strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/build-exit.json",
+      "sha256": "3776c51f9f01cf227d8d6ab5ea2be7842396527841284ef0feed851a46386f4f"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/build.log",
+      "sha256": "8bac16f0141bb90116dcd2b67211ece649ea590d5bfa308a406f902e73870d39"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/cache-guard-exit.json",
+      "sha256": "e414124c7261aed9a732f1b4d277ef9a20182325ed0e09adb85c04710f3bb980"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/cache-guard.py",
+      "sha256": "60c61c038e9cf222a429e09c703b78649e3b6be389fb0c10f8477f1316cb3651"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/check-inherited.py",
+      "sha256": "8cd2fb64c48ddc67ef788817deaf663ce2f626cbee8460a0fa7d7a9042dc3df4"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/check-manifest.py",
+      "sha256": "064563f8552c237666be27fe8c79ba3ce456aafa00304ca0458d5c52a960e441"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/draft-strict-corrected-exit.json",
+      "sha256": "e20cb42446ee1d9be2a2e48553efb9f09a1d1f71e7b12ab65d7919b9bbe11b42"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/draft-strict-corrected.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/draft-strict-exit.json",
+      "sha256": "a85688713fc2d075bb67256fae7770ef224fe748afa09304424d312e17649ab8"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/draft-strict.log",
+      "sha256": "4e1c795cdd14efd95fa186af94d17c2dca48cc699168da1e6047e1e8e44ad18e"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/generated-import-preservation.json",
+      "sha256": "4c874670bffd306d98c3941f6ad5dca024caf3dbfaba53a6be8734814d3dbd99"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/inherited-byte-preservation.json",
+      "sha256": "f8fbb04a6720829cc0466ea8c74458226414147e4367a193af1d4bc782ee71e9"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/inherited-exit.json",
+      "sha256": "a5e8bdaf8f573d32b207ba80d601ae6907dc05f2d60a0028e26c8d67f35ab4b5"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/inherited-inventory-check.json",
+      "sha256": "8ee574392fef64f31159ec3eee801795fc0dd132e60523176a3c9a369b40a0e5"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/inherited.log",
+      "sha256": "880f8e82fa0dec9e9f55e85d66967211acc07c9ebaa348f658b337248d5978b6"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/initial-cache-fetch-exit.json",
+      "sha256": "20121c4375153f0763a3345c2d71c06e649c26199d47faa2c44198a79100d4c9"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/initial-cache-fetch.log",
+      "sha256": "3dde3f97d818acb72f542a4522fd87e0a54f8dfedc54c4114f86288c46fff1fd"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/initial-cache-guard-exit.json",
+      "sha256": "41904c74f613a5ffe41050ccdaaecef3a05e646f57f20b870313cc42b5544a83"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/initial-cache-guard.log",
+      "sha256": "9a84386b23e60ee9bb416656dca17c41a9146d4486a1203b8c32ecb4b7211cfb"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/initial-source-freeze.json",
+      "sha256": "9abc2ae68313196f3049ab22158a86715e2656e6129f5b693cfdf2c778e5a20e"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/kernel-summary.json",
+      "sha256": "2538ec976d634a9ed9c73d6722732dd91110cf9ec96dcb175f57e347fc3840f9"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/owned-shards.json",
+      "sha256": "c00f73f3aeeab6b72e53180ab83f1bb6583d7d9db867849e0c3d0a68efa666e6"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/preexisting-output-preservation.json",
+      "sha256": "3fb77c4abee9438a6398c04def77f160b6b43840598d181c0fd8d56fdd4c357d"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/production-preservation.json",
+      "sha256": "8729fa06b93e8503255dea8f74c0c863a066ced7f10e6008ff3851c4f0b31a1a"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/prose-exit.json",
+      "sha256": "1a0189fb12097cd28bcc9a7cf4701fe14a5316604cf798bb70f5d08073ee6517"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/prose.log",
+      "sha256": "d39c2b93f7b3558c79cdece49fc662676154c593925a7e54d992218ac5c360e2"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/provenance-exit.json",
+      "sha256": "50febd9f86f59f3827b256c81080c41d4cc185a25170ed7cbfad42770269e42d"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/provenance-final-exit.json",
+      "sha256": "ef04e73f49963dd44ce9ab31d287cbfc7b8a2dc2024f8a3695d61a11a4d86204"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/provenance-final.log",
+      "sha256": "8f5fa24579696546b58864b3fa159ea1580689062a22a3a35c6d0b72f49cb764"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/provenance.log",
+      "sha256": "02bba05670a9b5cf9e0706ed5e32785508adc8e7ec0bb7f0bf3240852ceccb81"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/run.py",
+      "sha256": "3019492a223221139c9c7ea4b23188731c84aa53fd9428fd66bf6e21e199e632"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/scouting.json",
+      "sha256": "7c0a602f30cf1c03e0684117f4ae7afcb01c21a20ecadb1e16bce2b07101813a"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/source-citation-correction.json",
+      "sha256": "141fcdb460f16afc1b77387dc490a6f32a5720bde12be4bca93c01c19cacfb4c"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/source-freeze.json",
+      "sha256": "ca5eaf8685b6424ea156e3438effbffa9ed329e3e85fbb27a9286df6bf876e99"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/statements-exit.json",
+      "sha256": "775ca6b2d5e1aa53da420e77f07c73da533caa0ce4ff0b39550d5f34afe803d6"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/statements-final-exit.json",
+      "sha256": "5836833cb470e03a625ae748879b1f736ded75fb55f7f376f4dffbb212410c14"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/statements-final.log",
+      "sha256": "426f436174c40242fb48c2958cc094430cf708ac611b73ddf95b2b2e9a0f79c4"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/statements.log",
+      "sha256": "14887a20476d728b79cab20829d470fd52971e352378fbf40fc4fdae130c9517"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/strict-source-exit.json",
+      "sha256": "4b34054819b9e009623be4070c1f74a9083aa8cf4cb41da7245f0d69549a4031"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/strict-source.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/tactic-patterns-corrected-exit.json",
+      "sha256": "048df1a2b11d83b7c3b3203a8cf4f7e9262fb09b2e8bb5dfa8ad5a2ef4e0a52a"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/tactic-patterns-corrected.log",
+      "sha256": "0c1c6d800ce000f31c33b3fd35e5df0d1569c96537577aa3fbe56e0551ee7bb9"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/tactic-patterns-exit.json",
+      "sha256": "8ff085da331b04633210e1659c75952bc1c9e895473940842dbe2859388a833f"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/tactic-patterns.log",
+      "sha256": "ff010c45eb555a4072a511df232223e9b548d27b30c8bc16f31d08527af11e2a"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/tactic_pattern_scan.py",
+      "sha256": "d6c4e9a12ccc192ca92de9a56f1850753dc2bc44724c647e90fc51a3ddaa4b4b"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/text-style-exit.json",
+      "sha256": "6de9e320429fda639fbef76fd79cb540e81f456f3eaffa69e192823ca0549cb0"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/text-style-new-source-exit.json",
+      "sha256": "386c2ca95ad46b23e87f0ff09c0e62cce4192ab6dae395ea8ad9dffcc279a9df"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/text-style-new-source.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/text-style.log",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/validate-owned.py",
+      "sha256": "96817e6688db39439e07ce0d2afe40b5dc7deb2d3707c1a1d6ef52ffb8bfbe70"
+    },
+    {
+      "path": "docs/provenance/evidence/weightedTraceExponential8750/verification.json",
+      "sha256": "c4956f089132b748d9fda5b3c6ac81a3bf1eeeeea2445cddc3b91dd3e2e640a3"
+    },
+    {
+      "path": "docs/provenance/openai-math.d/weightedTraceExponential8750.json",
+      "sha256": "5654f0d11d8e6876bbc570f8ed65511964e2916d45fd45e1d67a478098009d82"
+    }
+  ]
+}

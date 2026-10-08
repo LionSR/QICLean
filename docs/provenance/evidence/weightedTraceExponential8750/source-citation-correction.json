@@ -1,0 +1,7 @@
+{
+  "from_revision": "96387e42dfb5674898fb2b3fb26c2679b3f00e4b",
+  "to_revision": "d5c6a69a4c74daf5c2cab3926a5d0a1298adbf96",
+  "path": "QICLean/Analysis/WeightedTraceExponential.lean",
+  "only_change": "Replace the informal notice description by the exact comparator:component-inverse manuscript label; mathematical statement and all proof bytes unchanged.",
+  "exact_single_replacement_verified": true
+}

@@ -1,0 +1,2 @@
+QICLean/Analysis/WeightedTraceExponential.lean:34:65: error: unexpected token 'omit'; expected 'lemma'
+QICLean/Analysis/WeightedTraceExponential.lean:61:51: error: unexpected token 'open'; expected 'lemma'
