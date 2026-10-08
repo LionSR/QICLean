@@ -307,6 +307,150 @@
           }
         ]
       }
+    },
+    {
+      "id": "8748-qic-skew-01",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ConditionalSkewPhase.lean",
+        "declaration": "Entropy.ConditionalSkew.conditionalSkew_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/04-conditional.tex",
+          "labels": [
+            "lem:skew"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the conditional skew estimate with explicit constants c = 1/8 and C = 18 pi^2 + 6144 e^(pi^2+1)."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d2575819602700a39e21d53331bbc6c08ace9d1c",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.ConditionalSkewPhase",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/skew-build.log",
+            "sha256": "4e1106c8c5630ef39db96b1745a51133b668f9eb0dd7ed481dc78bc08396eac7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean docs/provenance/evidence/8748/skew-axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/skew-axioms.log",
+            "sha256": "f1d34634e60a7a61b1e6a895d0544e41a0b909ef647aa74cccd06a5587228794"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8748-qic-skew-02",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Entropy/ConditionalSkewPhase.lean",
+        "declaration": "Entropy.ConditionalSkew.norm_skewFun_imag_sub_le",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/04-conditional.tex",
+          "labels": [
+            "lem:skew"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the imaginary-axis comparison by Schmidt mirroring and Lemma 5.2."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d2575819602700a39e21d53331bbc6c08ace9d1c",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.ConditionalSkewPhase",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/skew-build.log",
+            "sha256": "4e1106c8c5630ef39db96b1745a51133b668f9eb0dd7ed481dc78bc08396eac7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean docs/provenance/evidence/8748/skew-axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/skew-axioms.log",
+            "sha256": "f1d34634e60a7a61b1e6a895d0544e41a0b909ef647aa74cccd06a5587228794"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8748-qic-skew-03",
+      "status": "ported",
+      "reuse_kind": "original",
+      "upstream": null,
+      "downstream": {
+        "repository": "LionSR/QICLean",
+        "path": "QICLean/Analysis/SkewFromPhases.lean",
+        "declaration": "Complex.norm_sub_re_le_of_phase_bounds",
+        "name_status": "declared"
+      },
+      "paper_sources": [
+        {
+          "version": "September 24, 2026",
+          "path": "preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/build/sections/04-conditional.tex",
+          "labels": [
+            "lem:skew"
+          ]
+        }
+      ],
+      "license": "Apache-2.0",
+      "notices": [],
+      "changes": [
+        "Independently prove the analytic departure bound used in the proof of Lemma 5.3."
+      ],
+      "no_upstream_proof_text_reused": true,
+      "verification": {
+        "result": "passed",
+        "repository": "LionSR/QICLean",
+        "revision": "d2575819602700a39e21d53331bbc6c08ace9d1c",
+        "commands": [
+          {
+            "kind": "build",
+            "command": "lake build QICLean.Entropy.ConditionalSkewPhase",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/skew-build.log",
+            "sha256": "4e1106c8c5630ef39db96b1745a51133b668f9eb0dd7ed481dc78bc08396eac7"
+          },
+          {
+            "kind": "axioms",
+            "command": "lake env lean docs/provenance/evidence/8748/skew-axioms.lean",
+            "exit_code": 0,
+            "log": "docs/provenance/evidence/8748/skew-axioms.log",
+            "sha256": "f1d34634e60a7a61b1e6a895d0544e41a0b909ef647aa74cccd06a5587228794"
+          }
+        ]
+      }
     }
   ]
 }
