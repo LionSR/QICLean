@@ -112,6 +112,7 @@ import QICLean.Analysis.ReplicaJointDensity
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ReplicaRegionalDensity
+import QICLean.Analysis.ReplicaTwoMergeMoment
 import QICLean.Analysis.ResolventDefect
 import QICLean.Analysis.ResolventDefectIntegral
 import QICLean.Analysis.ResolventFunctionalCalculus
