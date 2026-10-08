@@ -11,3 +11,4 @@ Authors: QICLean contributors
 import QICLean.Analysis.Transport.Defs
 import QICLean.Analysis.Transport.Derivative
 import QICLean.Analysis.Transport.EnergyBlock
+import QICLean.Analysis.Transport.ErrorFourier
