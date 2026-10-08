@@ -1,0 +1,58 @@
+\begin{lemma}[Spectral support from a compressed lower bound]
+\label{lem:compressed-spectral-support}
+\lean{Matrix.spectralProjectionGE_shift_mul_eq_of_compression_lower}
+\leanok
+Let $F$ be Hermitian and $P$ an orthogonal projection, with $FP=PF$.
+If $cP\le PFP$ for a real number $c$, then
+\[
+ \mathbf1_{[0,\infty)}(F-cI)P=P.
+\]
+The projection may have zero range, and the spectral threshold is closed.
+\end{lemma}
+
+\begin{proof}\leanok
+The operator $PFP-cP$ is positive semidefinite. Moreover,
+$(F-cI)P=P(PFP-cP)$. Functional calculus of this intertwining identity
+gives the conclusion.
+\end{proof}
+
+\begin{theorem}[Good auxiliary spectral support]
+\label{thm:replica-good-auxiliary-spectral-support}
+\lean{Matrix.spectralProjectionGE_auxiliaryLabelEntropy_mul_replicaGoodConfigurationMarginal}
+\leanok
+Let the five finite-dimensional factors be $Q,Y,V,C,R$, and let
+$\Omega\in\mathcal H_Q\otimes\mathcal H_Y\otimes\mathcal H_V$ be arbitrary.
+Suppose that an original vector $u$ on the $k$ copies has whole-copy auxiliary
+labels $\lambda_C$ and $\lambda_R$. For an excited subset $B$, form its
+literal physical excitation component $w_B$, put $r=|B|$ and $m=k-r$, and
+let $\Gamma_B$ be the density obtained by tracing the bad physical and
+auxiliary copies. All five good-copy factors are retained, including $Y$,
+with the same chosen enumeration of $B^c$ in each factor.
+
+Let $F_C,F_R$ be the good-copy logarithmic irreducible-dimension observables,
+and set
+\begin{align*}
+ L_C&=\log d_{\lambda_C}-r\log\dim\mathcal H_C-\log\binom{k}{r},\\
+ L_R&=\log d_{\lambda_R}-r\log\dim\mathcal H_R-\log\binom{k}{r}.
+\end{align*}
+Then
+\begin{align*}
+ \mathbf1_{[0,\infty)}(F_C-L_CI)\Gamma_B&=\Gamma_B,\\
+ \mathbf1_{[0,\infty)}(F_R-L_RI)\Gamma_B&=\Gamma_B.
+\end{align*}
+No normalization, nonzero component or original permutation symmetry is
+required. This is the spectral-support consequence of the auxiliary label
+restriction in \cite[Section~7, equation \textup{(comparator:good-auxiliary)}]
+{OpenAI2026AreaLaw}; the inverse metric comparison is a separate assertion.
+\end{theorem}
+
+\begin{proof}\leanok
+\uses{lem:compressed-spectral-support}
+The physical excitation operator preserves each original whole-copy
+auxiliary label. The good-copy observable commutes with the corresponding
+whole-copy label projection, and its compression is bounded below by the
+displayed threshold. The preceding lemma therefore gives spectral support
+of the same component. The chosen good/bad coordinate split identifies this
+spectral projection with an operator on the retained good auxiliary factor.
+Tracing the bad copies preserves the support identity.
+\end{proof}
