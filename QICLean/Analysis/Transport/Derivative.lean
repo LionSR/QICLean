@@ -199,7 +199,7 @@ theorem hasDerivAt_eval_bind {S : ∀ h, MeanTree (C h)}
 omit [∀ h, Fintype (C h)] in
 /-- **The derivative at the root** (`06-transport.tex`, displays
 `transport:node-p-derivative` and `transport:root-p-derivative`, lines 442--468):
-`𝖧 = M^{-1/2} ∂_p M M^{-1/2} = ∑_h w_h Φ_{(h,old)}(log C_h)`. The coefficient is `w_h`,
+`H' = M^{-1/2} ∂_p M M^{-1/2} = ∑_h w_h Φ_{(h,old)}(log C_h)`. The coefficient is `w_h`,
 not the terminal weight `(1 - p) w_h`. -/
 theorem exists_hasDerivAt_interpPath {T : MeanTree H} {S : ∀ h, MeanTree (C h)}
     {A : H → Matrix n n ℂ} {A' : ∀ h, C h → Matrix n n ℂ} (hA : ∀ h, (A h).PosDef)
