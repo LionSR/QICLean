@@ -261,3 +261,19 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Seen:** `Representation/SchurSurprisal.lean` and `Representation/MergeExponential.lean`; two mathematical exponential calculations in two files.
 - **Abstraction:** The existing resolution homomorphism and `exp_hom` already supply the functional-calculus step. Continue using these results and finite-sum identities; no additional tactic or duplicate spectral calculus is introduced.
 - **Caveat:** Derive the joint resolution from the actual projections. Positive irreducible dimensions justify the logarithms even when their ambient label projections vanish.
+
+### Product-density invariance and actual trace mass — candidate (2026-10-08)
+
+- **Pattern:** Identify each separate copy permutation with an operator on
+  one factor tensored with the identity. Use `mul_kronecker_mul` to derive
+  invariance of the actual product density, then partial-trace preservation
+  and the unit one-copy trace to recover the component's squared norm.
+- **Seen:** `Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le`
+  in `QICLean/Analysis/ReplicaComponentMergeMoment.lean`; one mathematical
+  consumer. The two separate actions use different factor invariances.
+- **Abstraction:** Reuse the existing permutation entries, tensor-product
+  multiplication, partial-trace preservation, and paired homogeneous moment
+  theorem. The two elementary factor calculations remain private. No new
+  tactic is introduced.
+- **Caveats:** Both marginals must belong to the same excitation component.
+  Retain the actual trace mass; do not assume a nonzero or unit component.
