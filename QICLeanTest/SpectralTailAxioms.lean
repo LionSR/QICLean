@@ -1,0 +1,12 @@
+import QICLean.Entropy.SpectralTail
+
+/-! Kernel dependencies of the canonical entropy spectral-tail estimates. -/
+
+#print axioms Matrix.IsHermitian.trace_complement_spectralProjectionGE
+#print axioms Matrix.PosSemidef.trace_complement_spectralProjectionGE_le_entropy
+#print axioms Matrix.PosSemidef.spectralProjectionGE_exp_entropy_bounds
+#print axioms Matrix.re_trace_mul_sub_le_traceDistance
+#print axioms Matrix.PosSemidef.trace_complement_spectralProjectionGE_le_entropy_add_distance
+#print axioms Matrix.PosSemidef.spectralProjectionGE_one_of_entropy_nonpos
+#print axioms Matrix.PosSemidef.spectralProjectionGE_constant_tail
+#print axioms Matrix.PosSemidef.trace_shiftedRegulator_le_quarter_of_entropy
