@@ -1,6 +1,0 @@
-'Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]
-'Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

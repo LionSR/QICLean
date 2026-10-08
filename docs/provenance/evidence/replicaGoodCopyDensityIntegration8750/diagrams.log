@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/siruilu/Local/agentFormalization/QICLean/worktrees/area-law-replica-good-copy/docs/provenance/evidence/replicaGoodCopyDensityIntegration8750/check-vendored-diagrams.py", line 3, in <module>
-    p=Path("tex/tenkz");files=sorted(p.rglob("*.sty"));assert files
-                                                              ^^^^^
-AssertionError

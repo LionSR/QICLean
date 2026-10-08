@@ -34,24 +34,6 @@ Manuscript:
 preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/
 build/sections/05-frames.tex
 Labels: lem:splitting.
-Provenance-ID: 8761-finite-product-splitting-01
-Downstream declaration:
-FiniteProduct.splitTwoRegionsEquiv
-Provenance-ID: 8761-finite-product-splitting-02
-Downstream declaration:
-FiniteProduct.splitTwoRegionsState
-Provenance-ID: 8761-finite-product-splitting-03
-Downstream declaration:
-FiniteProduct.partialTraceRight_splitTwoRegionsState
-Provenance-ID: 8761-finite-product-splitting-04
-Downstream declaration:
-FiniteProduct.splitTwoRegionsState_unit
-Provenance-ID: 8761-finite-product-splitting-05
-Downstream declaration:
-FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le
-Provenance-ID: 8761-finite-product-splitting-06
-Downstream declaration:
-FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow
 -/
 
 open scoped Matrix ComplexOrder Kronecker Matrix.Norms.L2Operator

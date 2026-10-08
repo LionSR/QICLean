@@ -53,7 +53,6 @@ private theorem goodAuxiliary_density_factorization_with_remainder
   ring
 
 /-
-Provenance-ID: 8750-qic-good-copy-density-01
 Original formalization, no upstream Lean proof text reused.
 Declaration: Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder
 Manuscript: September 24, 2026, comparator:merge-moments, lines 520–549.
@@ -103,7 +102,6 @@ theorem partialTraceLeft_replicaExcitationComponent_eq_remainder
     _ = _ := by rw [hgood, one_mul]
 
 /-
-Provenance-ID: 8750-qic-good-copy-density-02
 Original formalization, no upstream Lean proof text reused.
 Declaration: Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density
 Manuscript: September 24, 2026, comparator:merge-moments, lines 520–549.
