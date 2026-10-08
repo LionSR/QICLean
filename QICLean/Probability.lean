@@ -8,6 +8,10 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Probability
 
+import QICLean.Probability.FiniteUniformConditioning
 import QICLean.Probability.PoissonWord
 import QICLean.Probability.PoissonWordAppend
+import QICLean.Probability.PoissonWordCounts
+import QICLean.Probability.PoissonWordIndependentCounts
 import QICLean.Probability.PoissonWordSemigroup
+import QICLean.Probability.PoissonWordUniformOrder
