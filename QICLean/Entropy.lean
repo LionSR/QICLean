@@ -15,6 +15,7 @@ import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalMovement
 import QICLean.Entropy.ConditionalMovementEstimate
 import QICLean.Entropy.ConditionalSkewSetup
+import QICLean.Entropy.ConditionalSkewStrip
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
 import QICLean.Entropy.FilterChain
