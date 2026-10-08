@@ -1,0 +1,192 @@
+%% =========================================================
+%% Chapter: Comparing marginal phases
+%% Source: OpenAI, "A two-dimensional area law from a global spectral gap"
+%%         (September 24, 2026), Lemma 5.2, 04-conditional.tex lines 310-479
+%% =========================================================
+
+\chapter{Comparing Marginal Phases}
+\label{ch:marginal_phase}
+
+This chapter formalizes the resolvent argument behind the marginal-phase
+comparison of~\cite[Lemma~5.2]{OpenAI2026AreaLaw}: a change in products of
+marginal imaginary powers is controlled by a conditional mutual information,
+with constants depending only on the dimension of the moved system. The
+faithful case is proved first and singular states are reached by a faithful
+approximation.
+
+\section{The resolvent defect of a compression}
+
+Let $A$ and $B$ be positive definite operators with orthonormal eigenbases,
+$V$ an isometry with $V^*AV=B$, $b_0$ a vector and $a_0=Vb_0$. For $v>0$ put
+$h(v)=\langle a_0,(A+v)^{-1}a_0\rangle-\langle b_0,(B+v)^{-1}b_0\rangle$ and
+$\delta_v=(A+v)^{-1}a_0-V(B+v)^{-1}b_0$.
+
+\begin{lemma}[Resolvent compression identity]
+    \label{lem:resolvent_compression}
+    \lean{Matrix.ResolventCompression.discrepancy_quadratic,
+        Matrix.ResolventCompression.defect_nonneg,
+        Matrix.ResolventCompression.mul_norm_discrepancy_sq_le}
+    \leanok
+    $\langle\delta_v,(A+v)\delta_v\rangle=h(v)$. In particular $h(v)\ge0$ and
+    $v\lVert\delta_v\rVert^2\le h(v)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Expand the quadratic form and use $V^*(A+v)V=B+v$ and $V^*V=1$.
+\end{proof}
+
+\begin{lemma}[Tails and integral of the resolvent defect]
+    \label{lem:resolvent_defect_integral}
+    \lean{Matrix.ResolventCompression.defect_le_invQuadA,
+        Matrix.ResolventCompression.defect_le_quadB_div_sq,
+        Matrix.ResolventCompression.integrableOn_defect_and_integral}
+    \leanok
+    \uses{lem:resolvent_compression}
+    For $v>0$, $h(v)\le\langle a_0,A^{-1}a_0\rangle$ and
+    $h(v)\le\langle b_0,Bb_0\rangle/v^2$. Moreover $h$ is integrable on
+    $(0,\infty)$ and
+    $\int_0^\infty h(v)\,dv=\langle b_0,\log B\,b_0\rangle-\langle a_0,\log A\,a_0\rangle$.
+\end{lemma}
+
+\begin{proof}\leanok
+    In eigencoordinates $h(v)=\sum_kp_k/(\lambda_k+v)-\sum_jq_j/(\mu_j+v)$ with
+    $\sum_kp_k=\sum_jq_j$, and
+    $\int_0^\infty\bigl((\lambda+v)^{-1}-(1+v)^{-1}\bigr)dv=-\log\lambda$.
+\end{proof}
+
+\begin{lemma}[Resolvent integral of a complex power]
+    \label{lem:resolvent_mellin}
+    \lean{Complex.integral_cpow_div_add, Complex.integral_cpow_imag_mul_inv_sub}
+    \leanok
+    For $\lambda>0$ and $-1<\operatorname{Re}z<0$,
+    $\int_0^\infty v^z(\lambda+v)^{-1}dv=-\frac{\pi}{\sin\pi z}\lambda^z$. For
+    real $u\ne0$,
+    $\int_0^\infty v^{-iu}\bigl((\lambda+v)^{-1}-(1+v)^{-1}\bigr)dv
+    =-\frac{\pi}{\sin(-i\pi u)}(\lambda^{-iu}-1)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The substitution $v=\lambda t/(1-t)$ gives the Beta integral
+    $B(z+1,-z)=\Gamma(z+1)\Gamma(-z)$, and the reflection formula evaluates it.
+    The second identity follows from the first by dominated convergence as
+    $\operatorname{Re}z\uparrow0$.
+\end{proof}
+
+\begin{theorem}[Phase gap of a compression]
+    \label{thm:resolvent_phase_gap}
+    \lean{Matrix.ResolventCompression.norm_phaseGap_le_integral,
+        Matrix.ResolventCompression.norm_phaseGap_le_phaseRate}
+    \leanok
+    \uses{lem:resolvent_defect_integral, lem:resolvent_mellin}
+    For every real $u$,
+    $\lVert A^{-iu}a_0-VB^{-iu}b_0\rVert\le\frac{|\sinh\pi u|}{\pi}
+    \int_0^\infty\sqrt{h(v)/v}\,dv$. If
+    $\langle a_0,A^{-1}a_0\rangle\le D^2$, $\langle b_0,Bb_0\rangle\le1$ and
+    $D\ge1$, then
+    $\lVert A^{-iu}a_0-VB^{-iu}b_0\rVert\le2|\sinh\pi u|\,\mathcal R_\eta$ with
+    $\eta=\int_0^\infty h$, $y=\min(1,\eta)$,
+    $\mathcal R_\eta=\sqrt y+\sqrt{\eta\log(eD/y)}$ and $\mathcal R_0=0$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Pair the phase gap with a vector and use the second resolvent integral.
+    Split $\int\sqrt{h/v}$ at $y/D^2$ and $1/y$; bound the ends by the tails
+    and the middle by the arithmetic--geometric mean inequality.
+\end{proof}
+
+\section{The faithful case}
+
+\begin{lemma}[Domination by the marginal]
+    \label{lem:marginal_domination}
+    \lean{Matrix.PosSemidef.le_card_smul_one_kronecker_partialTraceLeft}
+    \leanok
+    For positive semidefinite $\rho$ on $X\otimes Y$,
+    $\rho\le(\dim X)\,(I_X\otimes\operatorname{tr}_X\rho)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Write $\rho=B^*B$ and apply the Cauchy--Schwarz inequality over the
+    $\dim X$ blocks.
+\end{proof}
+
+\begin{theorem}[Marginal-phase comparison, faithful case]
+    \label{thm:marginal_phase_faithful}
+    \lean{Entropy.MarginalPhase.norm_phaseDifference_le_of_posDef}
+    \leanok
+    \uses{thm:resolvent_phase_gap, lem:marginal_domination}
+    Let $\rho$ be a positive definite density matrix on $xUF$, $d=\dim x$ and
+    $\eta=I(x:F|U)_\rho$. For every real $u$,
+    \[
+      \bigl\lVert\bigl((\rho_U^{-iu}\rho_{xU}^{iu})\otimes I_F
+        -\rho_{UF}^{-iu}\rho_{xUF}^{iu}\bigr)\sqrt\rho\bigr\rVert_2
+      \le2|\sinh\pi u|\,\mathcal R_\eta .
+    \]
+\end{theorem}
+
+\begin{proof}\leanok
+    On Hilbert--Schmidt spaces take $A=L_{\sigma_f}R_{\rho^{-1}}$ and
+    $B=L_{\sigma_s}R_{\rho_{xU}^{-1}}$ with $\sigma_f=I_x/d\otimes\rho_{UF}$ and
+    $\sigma_s=I_x/d\otimes\rho_U$, the isometry
+    $V(Y\sqrt{\rho_{xU}})=(Y\otimes I_F)\sqrt\rho$ and $b_0=\sqrt{\rho_{xU}}$.
+    Then $\langle a_0,A^{-1}a_0\rangle=\operatorname{tr}\rho\sigma_f^{-1}\rho\le d^2$
+    by the domination $\rho\le d^2\sigma_f$, $\langle b_0,Bb_0\rangle=1$, and
+    the logarithmic gap is $I(x:F|U)_\rho$. The phase gap is the displayed
+    vector up to a unimodular scalar.
+\end{proof}
+
+\section{The general case}
+
+For a Hermitian matrix $\rho$ write $\widehat\rho^{\,iu}$ for the
+kernel-completed phase, equal to $\rho^{iu}$ on the support of $\rho$ and to
+the identity on its kernel.
+
+\begin{lemma}[Support inclusions]
+    \label{lem:marginal_phase_support}
+    \lean{Entropy.MarginalPhase.one_kronecker_kerProj_mul_sqrtSpec,
+        Entropy.MarginalPhase.embedF_kerProj_mul_sqrtSpec,
+        Entropy.MarginalPhase.embedF_kerProj_hatPhase_mul_sqrtSpec}
+    \leanok
+    For a positive semidefinite $\rho$ on $xUF$,
+    $(I_x\otimes\Pi_{\ker\rho_{UF}})\sqrt\rho=0$,
+    $(\Pi_{\ker\rho_{xU}}\otimes I_F)\sqrt\rho=0$ and
+    $\bigl((I_x\otimes\Pi_{\ker\rho_U})\widehat\rho_{xU}^{\,iu}\otimes I_F\bigr)
+    \sqrt\rho=0$.
+\end{lemma}
+
+\begin{proof}\leanok
+    A Hermitian projection $K$ with $\operatorname{tr}(\rho K)=0$ annihilates
+    $\sqrt\rho$. The traces are traces of a kernel projection against the
+    corresponding marginal. For the last identity, $\widehat\rho_{xU}^{\,iu}$
+    maps the support of $\rho_{xU}$ into itself and that support lies in
+    $x\otimes\operatorname{supp}\rho_U$.
+\end{proof}
+
+\begin{theorem}[Marginal-phase comparison]
+    \label{thm:marginal_phase}
+    \lean{Entropy.MarginalPhase.norm_phaseDifference_mulVec_le,
+        Entropy.MarginalPhase.norm_phaseDifference_le}
+    \leanok
+    \uses{thm:marginal_phase_faithful, lem:marginal_phase_support}
+    Let $\theta$ be a unit vector on finite-dimensional systems $P,x,U,F$, write
+    $\rho_D$ for its marginals, and put $d=\dim x$ and
+    $\eta=I(x:F|U)_\theta$. For every real $u$,
+    \[
+      \bigl\lVert\bigl(\widehat\rho_U^{\,-iu}\widehat\rho_{xU}^{\,iu}
+        -\widehat\rho_{UF}^{\,-iu}\widehat\rho_{xUF}^{\,iu}\bigr)\theta\bigr\rVert
+      \le2|\sinh\pi u|\,\mathcal R_\eta .
+    \]
+    In particular the two phase products agree on $\theta$ if $\eta=0$. The
+    constant does not depend on $\dim P$, $\dim U$ or $\dim F$.
+\end{theorem}
+
+\begin{proof}\leanok
+    For an operator $T$ on $xUF$, $\lVert T\theta\rVert=\lVert T\sqrt\rho\rVert_2$
+    with $\rho=\rho_{xUF}$. Apply the faithful case to
+    $\rho_\epsilon=(1-\epsilon)\rho+\epsilon I/N$, whose marginals are affine
+    functions of the marginals of $\rho$. In the eigenbases of $\rho$ and its
+    marginals, every phase of $\rho_\epsilon$ converges off the kernel and
+    equals a common unimodular scalar on the kernel; the support inclusions make
+    the kernel parts vanish in the limit. The conditional mutual information of
+    $\rho_\epsilon$ converges to $\eta$ and $\mathcal R$ is continuous on
+    $[0,\infty)$.
+\end{proof}

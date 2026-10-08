@@ -27,54 +27,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Labels: comparator:typical-set, comparator:post-marginal.
-Provenance-ID: 8753-qic-typical-pure-state-01
-Downstream declaration:
-Matrix.leftFilteredVector
-Provenance-ID: 8753-qic-typical-pure-state-02
-Downstream declaration:
-Matrix.leftFilteredVector_eq_kronecker
-Provenance-ID: 8753-qic-typical-pure-state-03
-Downstream declaration:
-Matrix.partialTraceLeft_projection_split
-Provenance-ID: 8753-qic-typical-pure-state-04
-Downstream declaration:
-Matrix.typicalPureState
-Provenance-ID: 8753-qic-typical-pure-state-05
-Downstream declaration:
-Matrix.partialTraceRight_typicalPureState
-Provenance-ID: 8753-qic-typical-pure-state-06
-Downstream declaration:
-Matrix.norm_typicalPureState
-Provenance-ID: 8753-qic-typical-pure-state-07
-Downstream declaration:
-Matrix.inner_typicalPureState
-Provenance-ID: 8753-qic-typical-pure-state-08
-Downstream declaration:
-Matrix.norm_sub_typicalPureState_sq
-Provenance-ID: 8753-qic-typical-pure-state-09
-Downstream declaration:
-Matrix.norm_sub_typicalPureState_sq_le
-Provenance-ID: 8753-qic-typical-pure-state-10
-Downstream declaration:
-Matrix.partialTraceLeft_typicalPureState
-Provenance-ID: 8753-qic-typical-pure-state-11
-Downstream declaration:
-Matrix.partialTraceLeft_typicalPureState_decomposition
-Provenance-ID: 8753-qic-typical-pure-state-12
-Downstream declaration:
-Matrix.partialTraceLeft_typicalPureState_le
-Provenance-ID: 8753-qic-typical-pure-state-13
-Downstream declaration:
-Matrix.entropy_partialTraceLeft_typicalPureState_le
-Provenance-ID: 8753-qic-typical-pure-state-14
-Downstream declaration:
-Matrix.partialTraceRight_partialTraceLeft_typicalPureState_decomposition
-Provenance-ID: 8753-qic-typical-pure-state-15
-Downstream declaration:
-Matrix.partialTraceRight_partialTraceLeft_typicalPureState_le
-Provenance-ID: 8753-qic-typical-pure-state-16
-Downstream declaration:
-Matrix.entropy_partialTraceRight_partialTraceLeft_typicalPureState_le
 -/
 
 open scoped BigOperators Matrix ComplexOrder InnerProductSpace Kronecker

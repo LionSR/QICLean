@@ -1,0 +1,571 @@
+{
+  "source_head": "457c011a74fd255f06d63d342c329067309c467b",
+  "checks": [
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "aggregate",
+      "sha256": null,
+      "command": [
+        "lake",
+        "build",
+        "QICLean.Entropy.RestoringMarginal",
+        "QICLean.Entropy.RestoringOperators",
+        "QICLean.Analysis.SupportInverseSandwich",
+        "QICLean.Entropy.RestoringNorm",
+        "QICLean.Entropy.RestoringVectors",
+        "QICLean.Analysis.RestoringCoefficientBound",
+        "QICLean.Entropy.RestoringGroundComponent"
+      ],
+      "exit_code": 0,
+      "seconds": 1.5881805120006902,
+      "log_sha256": "523647fec4bcab6a8fa7cc2ac6d0c393aca765c83d14a13d95b3fffe098e4a05",
+      "log_bytes": 42
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLean/Analysis/SupportInverseSandwich.lean",
+      "sha256": "8d1ee6ecfafafe144c595738e24403e5fded8e45cb853e0b722b06f202ddd2dc",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/SupportInverseSandwich.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.899323050995008,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLean/Entropy/RestoringMarginal.lean",
+      "sha256": "02e3697b6b74ec3cd89dcb8a3d33614e07c080284aec9bd0829e4cd0592801d7",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Entropy/RestoringMarginal.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.023150198001531,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLean/Entropy/RestoringOperators.lean",
+      "sha256": "a7934cdfb92f0c58c61a9bbfd1feeccb2336b111719c07873fa5670d4f6528fb",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Entropy/RestoringOperators.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.2853568110003835,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/SupportInverseSandwich.lean",
+      "sha256": "3e316f3f2e6bd96db1206f6d2017deed0c94348e815f5781e2c02b5ab11a314e",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/SupportInverseSandwich.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.616110714006936,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/SupportInverseSandwichAxioms.lean",
+      "sha256": "18852bc2d68560a3184a07377cdf2802ec36b51a0f290a8ba9756163c435e4b5",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/SupportInverseSandwichAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.938812811000389,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringMarginal.lean",
+      "sha256": "cd37d977631f7d27ab8291042a3dc977ef383b3de3b7dd559b35542c793e8f2b",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringMarginal.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.6926066760061076,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringMarginalAxioms.lean",
+      "sha256": "0748ec0d2b0091c73cf92bd064611ceecaa45889f17cd478ae1d7311de87c7d6",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringMarginalAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.6386100069939857,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringOperators.lean",
+      "sha256": "39b157ddda438a206fbf39372220e158e01c7628cc43042636d1e5076462b764",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringOperators.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.801923122999142,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringOperatorsAxioms.lean",
+      "sha256": "b5b13832445c7492b27fe17974524811bc2b68beaf231d87c12169ec3487618b",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringOperatorsAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.5206909330008784,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean",
+      "sha256": "0048b0dab04e51ac73a35e9aa2d9a02473043cc2dafb700e0a8123929cd33d15",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/support-inverse-sandwich/SupportInverseSandwichAxiomsRaw.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.6686359879968222,
+      "log_sha256": "6ea99bed21b122b24bb7da930f7ab43f2d03a07bc2bdd3552810710d62860cda",
+      "log_bytes": 771
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "docs/audits/evidence/restoring-marginal/RestoringMarginalRawAxioms.lean",
+      "sha256": "6aae65bff35719566505dae7f9b69b4b25a76cdc78cf4e8be77c663c6ff70b3b",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/restoring-marginal/RestoringMarginalRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.5628601880016504,
+      "log_sha256": "03ca2c2ebb52667e456a43b4d34c88485a04db954160dc519819dd85807c5a2b",
+      "log_bytes": 1252
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "docs/audits/evidence/restoring-marginal/RestoringOperatorsRawAxioms.lean",
+      "sha256": "c5498932cc32d4ed4b2e1eb218805d03ca41cdc67222bb050b5d2ad6687feb8f",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/restoring-marginal/RestoringOperatorsRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.612404137995327,
+      "log_sha256": "c29148e8238cd1e765b80f42f41862849b90052c471295ad271e6a9b0ba0c600",
+      "log_bytes": 2538
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLean/Entropy/RestoringNorm.lean",
+      "sha256": "6c8965df5fd8880baa13d46e651854224ea49e60d3aeb1dac07f155ec2478946",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Entropy/RestoringNorm.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.1987285740033258,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLean/Entropy/RestoringVectors.lean",
+      "sha256": "d3fe9e01a6cb0289bf453af5dc5a7bb14a83438abe7555150957538ebea9d7e6",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Entropy/RestoringVectors.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 4.0896009460120695,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringNorm.lean",
+      "sha256": "20104c3cbe6811aca948e184ca8592f2dc3e20cd523074081959b21d4521a64d",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringNorm.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.600176520005334,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringNormAxioms.lean",
+      "sha256": "8154346013846ebd3c7d9a146b55721b15db4fe049b440988ba8c80ab528439d",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringNormAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.913956607997534,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringVectors.lean",
+      "sha256": "0ffbb97b4bfb602860d1969bf2ed1c4d123eebbe54c17c2d2a8e3faa6df5e47d",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringVectors.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.0055126179941,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringVectorsAxioms.lean",
+      "sha256": "ad2520a7821cca15276741389c065d2567ef305063b9526518bd3133e3ba95df",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringVectorsAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.7694209430046612,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean",
+      "sha256": "4da5a717f9098f2c878c58bc7bd1ff4eab5ccef9ce238e24c11b809d5a53b613",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/restoring-marginal/RestoringNormRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.686146109001129,
+      "log_sha256": "88ee60037976a4e98c1316d0eb73ff40586a3fa8b01ad9f7aac9bf42c57735f9",
+      "log_bytes": 1079
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLean/Analysis/RestoringCoefficientBound.lean",
+      "sha256": "e8ad39a6b78301c8c1429fc35ca2088c3af2658af4c3dfa5336a0c700ae06873",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Analysis/RestoringCoefficientBound.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.661585965004633,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLean/Entropy/RestoringGroundComponent.lean",
+      "sha256": "0534b415654445b36b2d38b9378c17361702fed48b4ba887305961c643407f60",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLean/Entropy/RestoringGroundComponent.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.3116108939866535,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringCoefficientBound.lean",
+      "sha256": "f4b093c0e31c4a57a7ce4ad881de15365a18a0534608999da038a376b257dc58",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringCoefficientBound.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.696412125005736,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringCoefficientBoundAxioms.lean",
+      "sha256": "a293b3bf844941662f80e0d1b1972a726c4a4147769bf49aac3db119ac30e252",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringCoefficientBoundAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.9918234040087555,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringGroundComponent.lean",
+      "sha256": "4dfb75464da55754b03b1da9fbb60d3cb5dbd55c5c9c95c72e5fc98c32ca71f6",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringGroundComponent.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 3.139332538994495,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "QICLeanTest/RestoringGroundComponentAxioms.lean",
+      "sha256": "c5fdcecf1f3168f8444c8d94529a3fe80a689a8123b3a17cd5071da165b25ece",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "QICLeanTest/RestoringGroundComponentAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.8891958919994067,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "head": "457c011a74fd255f06d63d342c329067309c467b",
+      "file": "docs/audits/evidence/restoring-ground-component/RestoringGroundComponentRawAxioms.lean",
+      "sha256": "ea99567735dc9be55f1b2c8700ff781bb21c14f3dc71883509c3c832381e111b",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "-DautoImplicit=false",
+        "-DrelaxedAutoImplicit=false",
+        "-Dpp.unicode.fun=true",
+        "-DmaxSynthPendingDepth=3",
+        "-Dlinter.mathlibStandardSet=true",
+        "-DwarningAsError=true",
+        "docs/audits/evidence/restoring-ground-component/RestoringGroundComponentRawAxioms.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 2.6984005349950166,
+      "log_sha256": "b2cd5942859abcb884dbad216ad4a5335464b5e5d4ec60f94980f79b97ec8062",
+      "log_bytes": 2289
+    }
+  ]
+}

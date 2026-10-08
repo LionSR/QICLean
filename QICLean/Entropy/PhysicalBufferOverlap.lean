@@ -30,36 +30,6 @@ September 24, 2026, `02-information.tex`, lines 355–424,
 `eq:info-split-overlap` and `eq:info-reset-overlap`.
 Paper source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
 No upstream Lean declaration or proof text is reused.
-Provenance-ID: physical-buffer8766-equiv.bipartiteregroup
-Downstream declaration: Equiv.bipartiteRegroup
-Provenance-ID: physical-buffer8766-equiv.doubledregroup
-Downstream declaration: Equiv.doubledRegroup
-Provenance-ID: physical-buffer8766-matrix.doubledregroup
-Downstream declaration: Matrix.doubledRegroup
-Provenance-ID: physical-buffer8766-matrix.physicalleftswap
-Downstream declaration: Matrix.physicalLeftSwap
-Provenance-ID: physical-buffer8766-matrix.regrouppurification
-Downstream declaration: Matrix.regroupPurification
-Provenance-ID: physical-buffer8766-matrix.one_kronecker_mulvec_apply
-Downstream declaration: Matrix.one_kronecker_mulVec_apply
-Provenance-ID: physical-buffer8766-matrix.doubledregroup_one_kronecker_mulvec
-Downstream declaration: Matrix.doubledRegroup_one_kronecker_mulVec
-Provenance-ID: physical-buffer8766-matrix.star_doubledregroup_dotproduct
-Downstream declaration: Matrix.star_doubledRegroup_dotProduct
-Provenance-ID: physical-buffer8766-matrix.star_regrouppurification_dotproduct
-Downstream declaration: Matrix.star_regroupPurification_dotProduct
-Provenance-ID: physical-buffer8766-matrix.star_tensorpurification_dotproduct_eq_one
-Downstream declaration: Matrix.star_tensorPurification_dotProduct_eq_one
-Provenance-ID: physical-buffer8766-matrix.exp_neg_half_le_re_overlap_of_norm_sub_le
-Downstream declaration: Matrix.exp_neg_half_le_re_overlap_of_norm_sub_le
-Provenance-ID: physical-buffer8766-matrix.physicalleftswap_eq_mulvec
-Downstream declaration: Matrix.physicalLeftSwap_eq_mulVec
-Provenance-ID: physical-buffer8766-matrix.star_doubledregroup_dotproduct_partialswaps_eq_purity
-Downstream declaration: Matrix.star_doubledRegroup_dotProduct_partialSwaps_eq_purity
-Provenance-ID: physical-buffer8766-matrix.physicalleftswap_compressedpartialswap_overlap_eq_purity
-Downstream declaration: Matrix.physicalLeftSwap_compressedPartialSwap_overlap_eq_purity
-Provenance-ID: physical-buffer8766-matrix.exists_hermitian_contraction_physicalbuffer_overlap
-Downstream declaration: Matrix.exists_hermitian_contraction_physicalBuffer_overlap
 -/
 
 open scoped Matrix Kronecker ComplexOrder MatrixOrder Matrix.Norms.L2Operator
