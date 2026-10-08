@@ -1,0 +1,215 @@
+[
+  {
+    "file": "aggregate",
+    "sha256": null,
+    "command": [
+      "lake",
+      "build",
+      "QICLean.Entropy.RestoringGroundComponent"
+    ],
+    "exit_code": 0,
+    "seconds": 4.510889078999753,
+    "log": "check-00.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "QICLean/Analysis/RestoringCoefficientBound.lean",
+    "sha256": "e8ad39a6b78301c8c1429fc35ca2088c3af2658af4c3dfa5336a0c700ae06873",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Analysis/RestoringCoefficientBound.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.0072295809950447,
+    "log": "check-01.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "QICLean/Entropy/RestoringVectors.lean",
+    "sha256": "d3fe9e01a6cb0289bf453af5dc5a7bb14a83438abe7555150957538ebea9d7e6",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Entropy/RestoringVectors.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 4.293625049991533,
+    "log": "check-02.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "QICLean/Entropy/RestoringGroundComponent.lean",
+    "sha256": "0534b415654445b36b2d38b9378c17361702fed48b4ba887305961c643407f60",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLean/Entropy/RestoringGroundComponent.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.543825864995597,
+    "log": "check-03.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "QICLeanTest/RestoringCoefficientBound.lean",
+    "sha256": "f4b093c0e31c4a57a7ce4ad881de15365a18a0534608999da038a376b257dc58",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/RestoringCoefficientBound.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.648976415992365,
+    "log": "check-04.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "QICLeanTest/RestoringCoefficientBoundAxioms.lean",
+    "sha256": "a293b3bf844941662f80e0d1b1972a726c4a4147769bf49aac3db119ac30e252",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/RestoringCoefficientBoundAxioms.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.1724526540056104,
+    "log": "check-05.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "QICLeanTest/RestoringGroundComponent.lean",
+    "sha256": "4dfb75464da55754b03b1da9fbb60d3cb5dbd55c5c9c95c72e5fc98c32ca71f6",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/RestoringGroundComponent.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.5803414069960127,
+    "log": "check-06.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "QICLeanTest/RestoringGroundComponentAxioms.lean",
+    "sha256": "c5fdcecf1f3168f8444c8d94529a3fe80a689a8123b3a17cd5071da165b25ece",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/RestoringGroundComponentAxioms.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 2.8222902190027526,
+    "log": "check-07.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "QICLeanTest/RestoringVectors.lean",
+    "sha256": "0ffbb97b4bfb602860d1969bf2ed1c4d123eebbe54c17c2d2a8e3faa6df5e47d",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/RestoringVectors.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 3.2540653829928488,
+    "log": "check-08.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "QICLeanTest/RestoringVectorsAxioms.lean",
+    "sha256": "ad2520a7821cca15276741389c065d2567ef305063b9526518bd3133e3ba95df",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "QICLeanTest/RestoringVectorsAxioms.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 2.900191366992658,
+    "log": "check-09.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  },
+  {
+    "file": "docs/audits/evidence/restoring-ground-component/RestoringGroundComponentRawAxioms.lean",
+    "sha256": "ea99567735dc9be55f1b2c8700ff781bb21c14f3dc71883509c3c832381e111b",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "-DautoImplicit=false",
+      "-DrelaxedAutoImplicit=false",
+      "-Dpp.unicode.fun=true",
+      "-DmaxSynthPendingDepth=3",
+      "-Dlinter.mathlibStandardSet=true",
+      "-DwarningAsError=true",
+      "docs/audits/evidence/restoring-ground-component/RestoringGroundComponentRawAxioms.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 2.8602511809876887,
+    "log": "check-10.txt",
+    "source_checkpoint": "e5c117077301d44a34f66660bdfb85d1ec7390a2"
+  }
+]

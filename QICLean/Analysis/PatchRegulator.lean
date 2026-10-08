@@ -24,7 +24,7 @@ September 24, 2026, `03-patches.tex:397–413`, equation
 **Scope restriction (operator consequences):** The density order, projection
 rank, and complementary tail bounds are supplied explicitly where used.
 Their derivation from the native patch minimization problem remains separate;
-see `docs/paper-gaps/openai_peps_patch_stationarity_gap.tex`.
+see `docs/paper-gaps/oai26_peps_patch_stationarity_gap.tex`.
 The proofs are original; no upstream Lean proof text is reused.
 -/
 
@@ -41,9 +41,6 @@ Manuscript:
 preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/
 build/sections/03-patches.tex
 Labels: eq:patch-regulator-trace.
-Provenance-ID: patch-regulator-trace-01
-Downstream declaration:
-Matrix.trace_le_smul_rank_add_complement_of_le
 -/
 
 /-- The projection estimate in OpenAI's PEPS manuscript,
@@ -71,9 +68,6 @@ Manuscript:
 preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/
 build/sections/03-patches.tex
 Labels: eq:patch-kkt, eq:patch-regulator-trace.
-Provenance-ID: patch-regulator-order-01
-Downstream declaration:
-Matrix.PosSemidef.shiftedRegulator_bounds
 -/
 
 /-- The positive regulator preceding `eq:patch-regulator-trace` in OpenAI's
@@ -118,9 +112,6 @@ Manuscript:
 preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/
 build/sections/03-patches.tex
 Labels: eq:patch-constant-tail, eq:patch-regulator-trace.
-Provenance-ID: patch-regulator-trace-02
-Downstream declaration:
-Matrix.PosSemidef.trace_shiftedRegulator_le_quarter
 -/
 
 /-- The final regulator bound following `eq:patch-regulator-trace` in OpenAI's

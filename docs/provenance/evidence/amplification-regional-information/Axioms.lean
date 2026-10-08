@@ -1,5 +1,0 @@
-import QICLean.Entropy.FiniteProductInformation
-
-#print axioms FiniteProduct.conditionalMutualInformation_nonneg
-#print axioms FiniteProduct.entropy_submodular
-#print axioms FiniteProduct.mutualInformation_mono_left

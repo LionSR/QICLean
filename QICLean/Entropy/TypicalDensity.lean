@@ -32,42 +32,6 @@ Independently formalized; no upstream Lean proof text reused.
 Manuscript: preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 build/sections/07-comparators.tex
 Labels: comparator:typical-set, comparator:typical-entropies.
-Provenance-ID: 8753-qic-typical-density-01
-Downstream declaration:
-Matrix.IsHermitian.spectralSelection
-Provenance-ID: 8753-qic-typical-density-02
-Downstream declaration:
-Matrix.IsHermitian.spectralRestrictionMass
-Provenance-ID: 8753-qic-typical-density-03
-Downstream declaration:
-Matrix.IsHermitian.normalizedSpectralRestriction
-Provenance-ID: 8753-qic-typical-density-04
-Downstream declaration:
-Matrix.IsHermitian.isStarProjection_spectralSelection
-Provenance-ID: 8753-qic-typical-density-05
-Downstream declaration:
-Matrix.IsHermitian.commute_spectralSelection
-Provenance-ID: 8753-qic-typical-density-06
-Downstream declaration:
-Matrix.PosSemidef.normalizedSpectralRestriction_posSemidef
-Provenance-ID: 8753-qic-typical-density-07
-Downstream declaration:
-Matrix.IsHermitian.trace_normalizedSpectralRestriction
-Provenance-ID: 8753-qic-typical-density-08
-Downstream declaration:
-Matrix.IsHermitian.normalizedSpectralRestriction_eq
-Provenance-ID: 8753-qic-typical-density-09
-Downstream declaration:
-Matrix.PosSemidef.spectralRestrictionMass_le_one
-Provenance-ID: 8753-qic-typical-density-10
-Downstream declaration:
-Matrix.IsHermitian.rank_normalizedSpectralRestriction
-Provenance-ID: 8753-qic-typical-density-11
-Downstream declaration:
-Matrix.PosSemidef.entropy_normalizedSpectralRestriction
-Provenance-ID: 8753-qic-typical-density-12
-Downstream declaration:
-Matrix.PosSemidef.typicalSpectralRestriction_entropy_bounds
 -/
 
 open scoped BigOperators Matrix ComplexOrder
