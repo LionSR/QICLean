@@ -28,13 +28,14 @@ the original matrix with the projection is required. Source:
 `07-comparators.tex`, `comparator:lower-pin`, lines 585--600. -/
 theorem PosDef.lower_pin_of_reindexed_inverse_compression
     {m n l : Type*} [Fintype m] [DecidableEq m]
-    [Fintype n] [DecidableEq n] [Fintype l]
+    [Fintype n] [Finite l]
     {A : Matrix m m ℂ} (hA : A.PosDef) (e : m ≃ n)
     {P : Matrix n n ℂ} (hP : IsStarProjection P)
     {c : ℝ} (hc : 0 < c)
     (hinv : P * (A⁻¹).submatrix e.symm e.symm * P ≤ c • P)
     (Z : Matrix m l ℂ) :
     c⁻¹ • (Zᴴ * P.submatrix e e * Z) ≤ Zᴴ * A * Z := by
+  classical
   have hnative : c⁻¹ • P ≤ A.submatrix e.symm e.symm :=
     (hA.submatrix e.symm.injective).inv_smul_projection_le_of_compression_inv_le
       hP hc (by simpa only [Matrix.inv_submatrix_equiv] using hinv)
