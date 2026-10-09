@@ -1,0 +1,149 @@
+\section{One Schmidt label sequence and the common-cutoff overlap}
+\label{sec:schmidt_bell_common_cutoffs}
+
+The following statement combines the selected initial vector with the
+common-cutoff overlap of
+\cite[Section~7, lines~130--147, 240--281 and 332--354]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[A common label sequence with polynomial overlap]
+\label{thm:schmidt_bell_common_cutoffs}
+\lean{FiniteProduct.exists_label_sequence_schmidtBellPrevector_commonCutoffs}
+\leanok
+\uses{def:replica_prevector,def:compressed_typical_vector,def:typical_bell_projection,def:compressed_site_family,def:schur_label_cutoff}
+Let $V$ be a finite set with finite local coordinate sets, let $\Omega$ be
+a unit vector in the corresponding physical Hilbert space, and fix
+$X\subseteq V$. Write $A$ and $B$ for the configuration sets on $X$ and
+$X^c$, respectively, and let $\Omega_X\in\mathbb C^A\otimes\mathbb C^B$
+be $\Omega$ in these product coordinates. In the fixed spectral
+decomposition of the actual marginal $\rho_X^\Omega$, write $u_i$ for
+the eigenvectors and $p_i$ for the eigenvalues. Choose spectral indices
+$E$ with $d=|E|$ and $z=\sum_{i\in E}p_i>0$.
+Put $D=\{0,\ldots,d-1\}$, let $\iota:E\to D$ be the fixed
+enumeration, and define
+\begin{align}
+ J|r\rangle&=u_{\iota^{-1}(r)},\\
+ \chi&=z^{-1/2}(J^*\otimes I_B)\Omega_X,
+ &\psi(b,r)&=\chi(r,b).
+\end{align}
+Let $H$ be a matrix on $\mathbb C^A\otimes\mathbb C^B$, let
+$E_0\in\mathbb R$, and suppose $H\Omega_X=E_0\Omega_X$.
+Here $\psi\in\mathbb C^B\otimes\mathbb C^D$, with the physical
+complement as the first factor. The actual selected vector and its
+auxiliary marginal satisfy
+\begin{align}
+ \|\psi\|&=1,\\
+ \rho_R:=\operatorname{Tr}_{\mathbb C^B}|\psi\rangle\langle\psi|
+   &=\operatorname{diag}_{0\le r<d}\bigl(p_{\iota^{-1}(r)}/z\bigr).
+\end{align}
+
+There is a sequence $(\lambda_k)_{k\ge0}$ of irreducible labels of
+$\mathfrak S_k$ with all the following properties. Denote the central
+label projection on $(\mathbb C^d)^{\otimes k}$ by
+$\Pi_k=\Pi^{d,k}_{\lambda_k}$. In the original product coordinates
+$(A\times B)^k\times(D^k\times D^k)$, let $v_k$ be the initial vector
+of (\ref{eq:schmidt_bell_initial_vector}), using $\Omega_X$ and
+$\lambda_k$. Explicitly, with the uniform pair regrouped into $D^k\times D^k$,
+\begin{align}
+ u_d&=d^{-1/2}\sum_{r\in D}|r,r\rangle,
+ &v_k&=\Omega_X^{\otimes k}\otimes
+       (I_{D^k}\otimes\Pi_k)u_d^{\otimes k}.
+\end{align}
+For every $k\ge1$,
+\begin{align}
+ v_k&\ne0,
+ &\|v_k\|&\le1,\\
+ (\overline H_k\otimes I_{D^k\times D^k})v_k&=E_0v_k,
+ &\overline H_k&=\frac1k\sum_{j=0}^{k-1}H^{(j)},\\
+ (I_{(A\times B)^k}\otimes\Pi_k\otimes I_{D^k})v_k&=v_k,\\
+ (I_{(A\times B)^k}\otimes I_{D^k}\otimes\Pi_k)v_k&=v_k.
+\end{align}
+For a finite coordinate set $K$, write $U^K_\sigma$ for the operator
+which permutes its $k$ copies by $\sigma$. For every
+$\sigma\in\mathfrak S_k$,
+\begin{align}
+ (U^{A\times B}_\sigma\otimes U^D_\sigma\otimes U^D_\sigma)v_k&=v_k.
+\end{align}
+The same label sequence satisfies, for all sufficiently large $k$,
+\begin{align}
+ \|(I_{B^k}\otimes\Pi_k)\psi^{\otimes k}\|^2
+   &\ge\frac1{2(k+1)^{d^2}},
+\end{align}
+and $\log\dim\lambda_k-kS(\rho_R)=o(k)$ as $k\to\infty$.
+Here the copies of $\psi$ are regrouped into $B^k\times D^k$; the
+partial trace defining $\rho_R$ is over the physical first factor.
+
+Place the coordinate $r$ of $\chi(r,b)$ at the auxiliary site of
+$\widehat V=\{r\}\sqcup X^c$, retaining all physical coordinates in
+$X^c$. Write $\chi_{\mathrm{site}}$ for this vector,
+$\Psi_k=\chi_{\mathrm{site}}^{\otimes k}$, and
+$Q_k=\Pi_{\{r\},\lambda_k}$ for the actual auxiliary-site label
+projection. In particular,
+\begin{align}
+ q_k:=\|Q_k\Psi_k\|^2
+   &=\|(I_{B^k}\otimes\Pi_k)\psi^{\otimes k}\|^2.
+\end{align}
+
+With this sequence fixed, let $\mathcal R=(B_1,\ldots,B_m)$ be any
+finite list of physical regions disjoint from $X$, pairwise comparable
+by inclusion. The list may be empty or contain repetitions. For its
+actual lifted regions $\widehat B_j\subseteq\widehat V$, define the
+closed label cutoffs and their ordered product by
+\begin{align}
+ C_{j,k}&=\sum_{\log\dim\mu\le k(S(\rho_{B_j}^\Omega)/z+1)}
+                  \Pi_{\widehat B_j,\mu},\\
+ C_k&=C_{1,k}\cdots C_{m,k},
+ &r_k&=\|C_kQ_k\Psi_k\|^2.
+\end{align}
+The empty product is the identity. The thresholds use the original
+physical marginal entropies and the same selected mass $z$.
+For the left auxiliary space indexed by $E$, set
+\begin{align}
+ \beta_E&=d^{-1/2}\sum_{i\in E}u_i\otimes|i\rangle,
+ &\Pi_E&=|\beta_E\rangle\langle\beta_E|,\\
+ \mathrm{post}_k&=\beta_E^{\otimes k}\otimes\Psi_k.
+\end{align}
+The right auxiliary space remains indexed by $\{0,\ldots,d-1\}$.
+For all sufficiently large $k$, there is a unit vector $\varphi_k$ in
+$(\mathbb C^A\otimes\mathbb C^E)^{\otimes k}\otimes
+\widehat{\mathcal H}^{\otimes k}$, where $\widehat{\mathcal H}$ is the
+Hilbert space of the augmented site family, such that
+\begin{align}
+ (\Pi_E^{\otimes k}\otimes I)\varphi_k&=\varphi_k,\\
+ (I\otimes Q_k)\varphi_k&=\varphi_k.
+\end{align}
+For every position $j$ of the list,
+$(I\otimes C_{j,k})\varphi_k=\varphi_k$. The vector $\varphi_k$ is
+fixed by every simultaneous copy permutation of its Bell and augmented
+site factors, after the canonical regrouping into $k$ copies of
+$(\mathbb C^A\otimes\mathbb C^E)\otimes\widehat{\mathcal H}$.
+Its overlap with the actual projected post vector is
+\begin{align}
+ \bigl|\langle\varphi_k,(I\otimes Q_k)\mathrm{post}_k\rangle\bigr|^2
+   &=r_k,\\
+ r_k&\ge q_k/2,\\
+ r_k&\ge\frac1{4(k+1)^{d^2}}.
+\end{align}
+The sequence $(\lambda_k)$ is chosen before $\mathcal R$. The eventual
+threshold and the vectors $\varphi_k$ may depend on $\mathcal R$.
+\end{theorem}
+
+\begin{proof}
+\leanok
+\uses{thm:schmidt_bell_prevector_sequence,thm:compressed_site_label_mass_coordinates,thm:compressed_typical_common_bell_vector}
+The physical coordinate identification preserves the norm of $\Omega$.
+Apply Theorem~\ref{thm:schmidt_bell_prevector_sequence} to $\Omega_X$,
+its selected spectral indices, and its original eigenvector equation.
+Retain the normalized selected vector, diagonal auxiliary marginal, and
+the single sequence supplied there. This gives every positive-copy
+initial-vector conclusion, the eventual projected-mass bound, and the
+entropy asymptotic before any regional list is chosen.
+
+Theorem~\ref{thm:compressed_site_label_mass_coordinates} identifies the
+selected mass with $q_k$ for each copy number and the same label. Thus
+$q_k\ge1/(2(k+1)^{d^2})$ eventually. For an arbitrary fixed nested list
+$\mathcal R$ disjoint from $X$, apply
+Theorem~\ref{thm:compressed_typical_common_bell_vector} with this supplied
+sequence. It yields the unit vector, simultaneous-copy invariance, all
+Bell and cutoff projection equations, the exact overlap $r_k$, and both
+lower bounds. No further label selection is made.
+\end{proof}
