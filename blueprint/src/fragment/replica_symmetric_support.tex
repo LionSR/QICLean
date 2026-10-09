@@ -1,4 +1,3 @@
-% Exact-source elaboration and kernel audit passed; native CI remains pending.
 % Source: 05-replicas.tex, Lemma 6.1(2--3), lines 99--115,
 % revision adc7f1241b42e322a6451854ab7e4b4c146bf78a.
 \section{Nonnegative label support on symmetric copies}
@@ -23,6 +22,7 @@ with label $\lambda$.
 \begin{theorem}[Nonnegative label support for a partition]
     \label{thm:replica_partition_nonnegative_support}
     \lean{TensorPower.spectralProjectionGE_labelDeficit_mul_symProj_of_partition}
+    \leanok
     \uses{def:copy_permutations,def:label_projectors}
     Let $P,Y,F$ be pairwise disjoint subsets whose union is $V$, and put
     $H_k=F_{P,k}+F_{F,k}-F_{Y,k}$. Then
@@ -33,7 +33,7 @@ with label $\lambda$.
     This includes $k=0$, empty regions, and an empty family of factors.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:symmetric_union_logarithmic_labels,
         thm:nested_label_observable_symmetry,thm:merge-deficit-positivity,
         thm:nonnegative-spectral-intertwiner,lem:label_projectors}
