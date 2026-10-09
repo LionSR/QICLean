@@ -91,7 +91,7 @@ theorem copyPerm_groupedGood_auxiliaryPair_labelEntropy_compression
   ext x y
   simp only [kroneckerMap_apply, Matrix.add_apply, Matrix.neg_apply, Matrix.smul_apply]
   simp only [RCLike.real_smul_eq_coe_mul]
-  done
+  ring
 
 /-- The two good auxiliary exponentials obey one joint compressed bound on
 the intersection of the original label subspaces. This is a single operator
