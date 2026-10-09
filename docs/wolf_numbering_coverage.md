@@ -27,15 +27,15 @@ Kraus-span characterization of primitive channels is formalized here.
 The August 29, 2026 audit covers all 153 literal lemma, proposition, theorem,
 and corollary environments in the transcribed Wolf chapters. Definitions and
 examples are outside this named-result count. After the positive-map
-formalizations of Theorem 6.2 and Corollary 6.3, the dispositions are: 83
-exact, 15 corrected or otherwise dispositioned, 4 partial-packaging, 7
+formalizations of Theorems 6.2 and 6.5 and Corollary 6.3, the dispositions
+are: 84 exact, 15 corrected or otherwise dispositioned, 4 partial-packaging, 6
 partial-scope, 2 obstructed, and 42 open. Fourteen of the 15
 corrected/dispositioned entries have an implemented corrected theorem; the
 remaining entry is a documented disposition rather than a replacement
-declaration. Thus 98 of the 153 named environments (64.1%) are exact or
-dispositioned, while 97 have an implemented exact or corrected theorem. There
-are 55 audit-unresolved environments (4 partial-packaging + 7 partial-scope + 2
-obstructed + 42 open), and 56 do not have an implemented exact or corrected
+declaration. Thus 99 of the 153 named environments (64.7%) are exact or
+dispositioned, while 98 have an implemented exact or corrected theorem. There
+are 54 audit-unresolved environments (4 partial-packaging + 6 partial-scope + 2
+obstructed + 42 open), and 55 do not have an implemented exact or corrected
 theorem.
 
 Here "partial-packaging" means that substantial clauses or equation-level
@@ -1361,16 +1361,22 @@ restrictions are recorded in the resolved note
 the central correction index
 `docs/paper-gaps/wolf_lecture_notes_errata.tex`.
 
-#### Wolf Theorem 6.5 (Spectral radius and positive eigenvectors) — PARTIAL-SCOPE
+#### Wolf Theorem 6.5 (Spectral radius and positive eigenvectors) — FORMALIZED
 
-* `exists_posSemidef_eigenvector` — `QICLean.Channel.PerronFrobenius.Existence`
-* `exists_posSemidef_eigenvector_general` — gives SOME nonnegative eigenvalue with
-  PSD eigenvector, but does NOT identify it with the spectral radius.
-* `exists_wolfTheorem63_of_irreducible_positive` — completes the
-  spectral-radius eigenvector statement for the irreducible positive-map case.
-  Thus the remaining Theorem 6.5 gap is only the reduction from an arbitrary
-  positive map to a suitable irreducible invariant face.
-* Paper-gap: `docs/paper-gaps/wolf_ch6_spectral_radius_eigenvalue.tex`
+* `exists_density_eigenvector_spectralRadius` —
+  `QICLean.Channel.PerronFrobenius.SpectralRadiusEigenvector`: every positive
+  map on `M_D(ℂ)` with `D > 0` has a density-matrix eigenvector at its spectral
+  radius. The proof regularizes `T` by `ε tr(·) 𝟙/D`, takes positive-definite
+  density eigenvectors of the regularized maps, bounds the spectral radius by
+  the upper Collatz--Wielandt estimate
+  `spectralRadius_le_of_upperCollatzWielandtFeasible_of_posDef`, and passes to
+  a compactness limit.
+* `exists_posSemidef_eigenvector` and `exists_posSemidef_eigenvector_general`
+  — `QICLean.Channel.PerronFrobenius.Existence`: weaker existence results that
+  do not identify the eigenvalue with the spectral radius.
+* `exists_wolfTheorem63_of_irreducible_positive` — the irreducible case with a
+  positive-definite eigenvector (Theorem 6.3).
+* Resolved paper-gap: `docs/paper-gaps/wolf_ch6_spectral_radius_eigenvalue.tex`
 
 Uses Brouwer's fixed-point theorem on density matrices (proved in
 `QICLean.Channel.FixedPoint.BrouwerDensityMatrices`).
