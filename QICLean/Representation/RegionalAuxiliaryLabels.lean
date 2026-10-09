@@ -68,6 +68,15 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
       Matrix.reindex eC eC (labelProj (subsystemPerm k ι₀ {some none}) ellC) :=
     (labelProj_prodLeft (Z := (Fin k → R) × (Fin k → (x : V) → β x))
       (copyPerm C k) ellC).symm.trans (labelProj_of_intertwine eC heC ellC)
+  have hleft : (I ⊗ₖ (labelProj (copyPerm C k) ellC ⊗ₖ
+      (1 : Matrix (Fin k → R) (Fin k → R) ℂ))).submatrix e e =
+      labelProj (subsystemPerm k ι₀ {some none}) ellC :=
+    Matrix.ext fun x y ↦ by
+      simpa [Matrix.reindex_apply, Matrix.submatrix_apply,
+        ← Matrix.one_kronecker_one (α := ℂ) (m := Fin k → R)
+          (n := Fin k → (v : V) → β v), Matrix.kroneckerMap_apply,
+        eC, I, mul_comm, mul_left_comm, mul_assoc] using
+        congrArg (fun H ↦ H (eC x) (eC y)) hLC
   done
 
 end TensorPower
