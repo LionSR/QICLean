@@ -26,7 +26,7 @@ lines 218–238 and 550–560, `comparator:signed-label-moments` and
 
 noncomputable section
 open Matrix TensorPower PermutationRepresentation
-open scoped BigOperators Kronecker Matrix.Norms.Operator
+open scoped BigOperators Kronecker ComplexOrder Matrix.Norms.Operator
 
 namespace Matrix
 
