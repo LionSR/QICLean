@@ -23,4 +23,5 @@ import QICLean.Representation.ReplicaTransport.Setup
 import QICLean.Representation.ReplicaTransport.SplitSkewBound
 import QICLean.Representation.ReplicaTransport.States
 import QICLean.Representation.ReplicaTransport.SymmetricMetric
+import QICLean.Representation.ReplicaTransport.SymmetricMetricFloor
 import QICLean.Representation.ReplicaTransport.Transport

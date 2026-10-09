@@ -101,7 +101,7 @@ tree is part of the data; no associativity of matrix means is used.
 
 \begin{theorem}[Properties of a finite mean tree]\label{thm:mean_tree_properties}
     \lean{Matrix.MeanTree.posDef_eval, Matrix.MeanTree.eval_star_conj,
-      Matrix.MeanTree.eval_mono, Matrix.MeanTree.eval_smul,
+      Matrix.MeanTree.eval_mono, Matrix.MeanTree.eval_smul, Matrix.MeanTree.eval_const,
       Matrix.MeanTree.re_dotProduct_eval_le, Matrix.MeanTree.smul_le_eval,
       Matrix.MeanTree.eval_listProd_ofFn, Matrix.MeanTree.commute_eval_band}
     \leanok
@@ -110,7 +110,8 @@ tree is part of the data; no associativity of matrix means is used.
     definite inputs $A_j$, and let $M$ be its root. Then $M$ is positive
     definite, commutes with invertible congruence, is monotone in the inputs,
     and satisfies
-    $\mathcal T(c_jA_j:j)=\bigl(\prod_jc_j^{w_j}\bigr)M$ for $c_j>0$. For every
+    $\mathcal T(c_jA_j:j)=\bigl(\prod_jc_j^{w_j}\bigr)M$ for $c_j>0$.
+    A tree with constant positive definite input $X$ has root $X$. For every
     vector $z$,
     \begin{align}
         \langle z,Mz\rangle\le\prod_j\langle z,A_jz\rangle^{w_j}.
