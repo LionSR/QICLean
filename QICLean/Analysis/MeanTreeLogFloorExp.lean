@@ -82,7 +82,7 @@ theorem weighted_log_add_half_exp_bounds (T : MeanTree ι)
   have hupper := Finset.sum_le_sum (s := Finset.univ) fun j _ ↦
     mul_le_mul_of_nonneg_left
       ((Real.log_add_half_exp_sub_log_le hb (L j)).trans
-        (add_le_add_right (max_le_max le_rfl (sub_le_sub_right (hU j) _)) _))
+        (add_le_add_left (max_le_max le_rfl (sub_le_sub_right (hU j) _)) _))
       (T.weight_nonneg j)
   simp only [mul_sub, Finset.sum_sub_distrib, hconst] at hlower hfloor hupper
   exact ⟨hlower, sub_nonneg.mpr hfloor, hupper⟩
