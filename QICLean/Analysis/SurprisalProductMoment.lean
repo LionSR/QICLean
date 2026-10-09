@@ -35,8 +35,9 @@ theorem surprisalMoment_pi {n : Type*} [Fintype n]
   trans ∑ x : Fin k → n, ∏ j, p (x j) * Real.exp (u * -Real.log (p (x j)))
   · refine Finset.sum_congr rfl fun x _ ↦ ?_
     by_cases hx : ∏ j, p (x j) = 0
-    · done
-    · done
+    · simp only [Finset.prod_mul_distrib, hx, zero_mul]
+    · rw [Real.log_prod (Finset.prod_ne_zero_iff.mp hx),
+        ← Finset.sum_neg_distrib, Finset.mul_sum, Real.exp_sum, Finset.prod_mul_distrib]
   · simpa only [Finset.prod_const, Finset.card_univ, Fintype.card_fin] using
       (Fintype.prod_sum (fun (_ : Fin k) i ↦ p i * Real.exp (u * -Real.log (p i)))).symm
 
