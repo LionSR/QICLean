@@ -91,6 +91,7 @@ import QICLean.Analysis.MatrixReducedProjection
 import QICLean.Analysis.MatrixSqrt
 import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
+import QICLean.Analysis.MeanTreeLogFloorDeficit
 import QICLean.Analysis.MeanTreeLogFloorExp
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse

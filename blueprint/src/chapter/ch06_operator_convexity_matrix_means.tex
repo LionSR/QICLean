@@ -230,6 +230,47 @@ For the upper bound, use $L_j\le U$ and monotonicity of the positive part.
 Finally, $b+e^{L_j}/2\ge b$ gives $\ell\ge\log b$.
 \end{proof}
 
+\begin{theorem}[A logarithmic remainder uniform in the discarded mass]
+\label{thm:mean_tree_log_floor_deficit}
+\lean{Matrix.MeanTree.weighted_log_floor_deficit_lower}
+\uses{def:mean_tree}
+Let $T$ be a weighted binary tree with labels in a finite set $J$ and
+terminal weights $w_j$. Let $b>0$, $\kappa\ge0$, and $r,U\in\mathbb R$,
+and suppose $L_j\le U$ for every $j\in J$. For $0\le\delta\le1$, set
+\begin{align}
+ \ell=\sum_{j\in J}w_j\log\left(b+\tfrac12e^{\kappa L_j-r}\right).
+ \notag
+\end{align}
+Then
+\begin{align}
+ \ell-\delta(\ell-\log b)
+ &\ge\kappa\left(\sum_{j\in J}w_jL_j-\delta\max\{0,U\}\right)
+       -R,\notag\\
+ R&=2|r|+|\log b|+\log2+\log(3/2).
+ \notag
+\end{align}
+The remainder $R$ is independent of $\delta$, the tree, and its terminal
+weights. This makes explicit the scalar error preceding the logarithmic
+lower comparison in \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+\uses{thm:mean_tree_weighted_log_floor_exp,lem:mean_tree_weights}
+Apply Theorem~\ref{thm:mean_tree_weighted_log_floor_exp} to the exponents
+$\kappa L_j-r$, whose common upper bound is $\kappa U-r$.
+Set $E=|r|+|\log b|+\log(3/2)\ge0$. Since the weights sum to one,
+\begin{align}
+ \ell&\ge\kappa\sum_{j\in J}w_jL_j-r-\log2,\notag\\
+ \ell-\log b
+ &\le\max\{0,\kappa U-r-\log b\}+\log(3/2)\notag\\
+ &\le\kappa\max\{0,U\}+E.
+ \notag
+\end{align}
+Multiply the second bound by $\delta\ge0$ and subtract it
+from the first. The inequalities $\delta E\le E$ and $r\le|r|$ give the
+stated remainder.
+\end{proof}
+
 \subsection{Normalized derivative maps}
 
 For $0<p<1$ and a positive semidefinite matrix $X$ the real power has the
