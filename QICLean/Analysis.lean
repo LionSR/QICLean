@@ -21,6 +21,7 @@ import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
+import QICLean.Analysis.CommutingExponentialOrder
 import QICLean.Analysis.CommutingHermitian
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
@@ -50,6 +51,7 @@ import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
+import QICLean.Analysis.FiveFactorAuxiliaryCoordinates
 import QICLean.Analysis.FloorKKT
 import QICLean.Analysis.GammaRatio
 import QICLean.Analysis.GapPerturbation
@@ -64,6 +66,7 @@ import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.IidTailThreshold
 import QICLean.Analysis.InjectiveRangeProjector
+import QICLean.Analysis.InvariantExponentialComparison
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.JordanBlockAsymptotics
@@ -109,8 +112,10 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
+import QICLean.Analysis.ProjectionCfcUpperBound
 import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
+import QICLean.Analysis.ProjectionQuadraticBound
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
@@ -118,6 +123,8 @@ import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
+import QICLean.Analysis.ReplicaBadCopyExponential
+import QICLean.Analysis.ReplicaComponentInverseGoodExpectation
 import QICLean.Analysis.ReplicaComponentMergeMoment
 import QICLean.Analysis.ReplicaDefect
 import QICLean.Analysis.ReplicaExcitationDecomposition
@@ -129,6 +136,7 @@ import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaGoodPairMarginal
 import QICLean.Analysis.ReplicaGoodPhysicalSupport
+import QICLean.Analysis.ReplicaJointAuxiliaryExponential
 import QICLean.Analysis.ReplicaJointDensity
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
