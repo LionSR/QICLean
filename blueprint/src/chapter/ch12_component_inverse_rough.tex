@@ -1,0 +1,46 @@
+\section{The rough inverse estimate for excitation components}
+
+Fix five nonzero finite-dimensional spaces of dimensions
+$d_0,\ldots,d_4$. The physical factors have indices $0,1,2$, and
+the auxiliary factors have indices $3,4$.
+
+\begin{theorem}[Rough inverse bound for the original component]
+  \label{thm:actual_component_inverse_rough}
+  \lean{Matrix.exists_replicaExcitationComponent_inverse_rough_le}
+  Let $t>0$ satisfy $4t\leq1$. There exists $C\geq0$, depending only
+  on $t$ and the five spaces, with the following property.
+  Let $k\geq0$ and $B\subseteq\{1,\ldots,k\}$, and put $r=|B|$ and
+  $m=k-r$. Let $\Omega$ be a unit vector on the physical factors.
+  Suppose $u$ is invariant under simultaneous copy permutations and
+  is fixed by the original whole-copy auxiliary label projections
+  $\lambda_3,\lambda_4$. Form the actual excitation component
+  $w=(P_B(\Omega)\otimes I)u$ and write it as $f$ in five-factor
+  coordinates. With $W_{t,k}(S)$ the replica metric of $S$, set
+  \begin{align}
+    A&=\bigl(W_{t,k}(\{0,3\})^{-1}
+      W_{t,k}(\{2,4\})^{-1}W_{t,k}(\{1\})\bigr)^2,\notag\\
+    b&=\log\dim\lambda_3+\log\dim\lambda_4
+      -r(\log d_3+\log d_4)-2\log\binom{k}{r},\notag\\
+    q_m&=\tfrac12\bigl((m+1)^{(d_0d_3)^2}
+      +(m+1)^{(d_2d_4)^2}\bigr).
+  \end{align}
+  Then
+  \begin{align}
+    \operatorname{Re}\langle f,A^{-1}f\rangle
+      &\leq (k+2)^C\binom{k}{r}^{2t}e^{-2tb}q_m\|w\|^2.
+  \end{align}
+  The vector $u$ and its component may be unnormalized or zero.
+  This is the component estimate in
+  \cite[Section~8]{OpenAI2026AreaLaw}, before combining its scalar
+  factors into a common exponential bound.
+\end{theorem}
+\begin{proof}
+  \uses{thm:actual_component_inverse_good_expectation,thm:replica_good_configuration_exponential_expectation,thm:replica_good_physical_exponential_bound}
+  Apply the inverse-to-good-expectation comparison with its constant
+  chosen before the copy number and the vector. Express its quadratic
+  form as a trace against the actual reduced good-copy density.
+  Remove the physical deficit on its invariant spectral support and
+  apply the paired merge moment estimate with parameter $2t$.
+  The hypothesis $4t\leq1$ is exactly the range of that estimate.
+  Multiplication by the nonnegative prefactor gives the stated bound.
+\end{proof}
