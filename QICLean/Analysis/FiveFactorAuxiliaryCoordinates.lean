@@ -100,9 +100,9 @@ theorem fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep
   | single σ c =>
     have h := fiveFactorCopiesEquiv_auxiliary_permOp ι k (θ σ)
     constructor
-    · simpa only [groupAlgebraRep_single, submatrix_smul, Pi.smul_apply,
+    · simpa only [groupAlgebraRep_single, permOp_comp, submatrix_smul, Pi.smul_apply,
         smul_kronecker, kronecker_smul] using congrArg (fun M => c • M) h.1
-    · simpa only [groupAlgebraRep_single, submatrix_smul, Pi.smul_apply,
+    · simpa only [groupAlgebraRep_single, permOp_comp, submatrix_smul, Pi.smul_apply,
         smul_kronecker, kronecker_smul] using congrArg (fun M => c • M) h.2
 
 end TensorPower
