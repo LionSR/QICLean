@@ -6,11 +6,13 @@ independent-copy step in \cite[Section~8]{OpenAI2026AreaLaw}.
 \begin{theorem}[Centering inside the functional calculus]
   \label{thm:hermitian_centered_exponential_cfc}
   \lean{Matrix.IsHermitian.exp_smul_sub_smul_one_eq_cfc}
+  \leanok
   Let $A$ be Hermitian on a finite-dimensional complex Hilbert space,
   and let $u,s\in\mathbb R$. Then $e^{u(A-sI)}=f(A)$ for
   $f(x)=e^{u(x-s)}$.
 \end{theorem}
 \begin{proof}
+  \leanok
   The functional calculus preserves subtraction, multiplication by a
   real scalar, and constants. Its composition law then gives the
   stated exponential identity.
@@ -19,6 +21,7 @@ independent-copy step in \cite[Section~8]{OpenAI2026AreaLaw}.
 \begin{theorem}[Exact centered moment of a tensor-power density]
   \label{thm:iid_centered_surprisal_exponential}
   \lean{Matrix.PosSemidef.re_trace_finKronecker_exp_centered_surprisal}
+  \leanok
   Let $\rho$ be positive semidefinite on a finite-dimensional complex
   Hilbert space, with eigenvalues $p_i$, and put
   $M_p(u)=\sum_i p_i e^{-u\log p_i}$. For $k\geq0$ and $u,s\in\mathbb R$,
@@ -32,6 +35,7 @@ independent-copy step in \cite[Section~8]{OpenAI2026AreaLaw}.
   one-dimensional space of empty configurations.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:hermitian_centered_exponential_cfc,thm:surprisal_product_moment}
   The tensor-power spectral weights are $\prod_jp_{x_j}$. Apply the
   centered scalar function to this spectral resolution. Extract the
