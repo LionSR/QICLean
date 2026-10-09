@@ -8,10 +8,12 @@ dimension zero. Matrix order means positive semidefinite order.
 \begin{theorem}[Exponential order for commuting matrices]
   \label{thm:commuting_exponential_order}
   \lean{Matrix.IsHermitian.exp_le_exp_of_commute}
+  \leanok
   Let $A,B$ be commuting Hermitian matrices. If $A\leq B$, then
   $e^A\leq e^B$.
 \end{theorem}
 \begin{proof}
+  \leanok
   Set $D=B-A\geq0$. Scalar functional calculus gives $e^D\geq I$.
   Since $A$ and $D$ commute, $e^B-e^A=e^A(e^D-I)\geq0$.
 \end{proof}
@@ -19,12 +21,14 @@ dimension zero. Matrix order means positive semidefinite order.
 \begin{theorem}[Functional calculus on an invariant range]
   \label{thm:invariant_range_functional_bound}
   \lean{Matrix.IsHermitian.compression_cfc_le_of_lower_bound}
+  \leanok
   Let $A=A^*$ and let $P=P^*=P^2$ commute with $A$. Suppose that
   $bP\leq PAP$ for some $b\in\mathbb R$. If $f\colon\mathbb R\to\mathbb R$
   and $c\in\mathbb R$ satisfy $f(x)\leq c$ whenever $x\geq b$, then
   $Pf(A)P\leq cP$.
 \end{theorem}
 \begin{proof}
+  \leanok
   The Hermitian matrix $B=PA+b(I-P)$ satisfies $B\geq bI$.
   Functional calculus on its finite spectrum gives $f(B)\leq cI$.
   Since $PA=PB$, the restrictions of $f(A)$ and $f(B)$ to the range
@@ -34,11 +38,13 @@ dimension zero. Matrix order means positive semidefinite order.
 \begin{theorem}[Negative exponential on an invariant range]
   \label{thm:invariant_range_negative_exp}
   \lean{Matrix.IsHermitian.compression_exp_neg_smul_le_of_lower_bound}
+  \leanok
   Under the hypotheses on $A,P,b$ in
   Theorem~\ref{thm:invariant_range_functional_bound}, every $a\geq0$
   satisfies $Pe^{-aA}P\leq e^{-ab}P$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:invariant_range_functional_bound}
   Apply the theorem to $f(x)=e^{-ax}$, which is at most $e^{-ab}$
   on $[b,\infty)$.
@@ -47,12 +53,14 @@ dimension zero. Matrix order means positive semidefinite order.
 \begin{theorem}[Exponential comparison on fixed vectors]
   \label{thm:fixed_vector_exp_comparison}
   \lean{Matrix.IsHermitian.re_dotProduct_exp_add_le_of_compressed_exp_le_smul}
+  \leanok
   Let $A$ and $P$ be Hermitian, let $B$ be a complex matrix, and assume
   $AP=PA$ and $AB=BA$. If $Pe^BP\leq cP$ for $c\in\mathbb R$, then
   every vector $v$ with $Pv=v$ satisfies
   $\operatorname{Re}(v^*e^{A+B}v)\leq c\operatorname{Re}(v^*e^Av)$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:hermitian_compression_quadratic}
   Set $C=e^{A/2}$. Commutation gives $P(Cv)=Cv$, and the fixed-vector
   quadratic bound applied to $Cv$ gives
@@ -64,12 +72,14 @@ dimension zero. Matrix order means positive semidefinite order.
 \begin{theorem}[Removing a compressed exponential contraction]
   \label{thm:fixed_vector_exp_contraction}
   \lean{Matrix.IsHermitian.re_dotProduct_exp_add_le_of_compressed_exp_le}
+  \leanok
   Under the matrix hypotheses of Theorem~\ref{thm:fixed_vector_exp_comparison},
   $Pe^BP\leq P$ implies
   $\operatorname{Re}(v^*e^{A+B}v)\leq\operatorname{Re}(v^*e^Av)$
   for every $Pv=v$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:fixed_vector_exp_comparison}
   Take $c=1$.
 \end{proof}
@@ -77,11 +87,13 @@ dimension zero. Matrix order means positive semidefinite order.
 \begin{theorem}[Compressed exponential comparison]
   \label{thm:compressed_exp_comparison}
   \lean{Matrix.IsHermitian.compression_exp_add_le_of_compressed_exp_le}
+  \leanok
   Let $A,B$ be Hermitian, let $P=P^*=P^2$, and suppose that $AP=PA$
   and $AB=BA$. If $Pe^BP\leq cP$ for $c\in\mathbb R$, then
   $Pe^{A+B}P\leq cPe^AP$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:fixed_vector_exp_comparison}
   Apply the fixed-vector comparison to $Pv$ for every $v$.
   The two compressed matrices are Hermitian, so their quadratic-form
@@ -91,6 +103,7 @@ dimension zero. Matrix order means positive semidefinite order.
 \begin{theorem}[Exponential comparison for a supported density]
   \label{thm:supported_density_exp_comparison}
   \lean{Matrix.IsHermitian.re_trace_mul_exp_add_le_of_compressed_exp_le}
+  \leanok
   Under the hypotheses of Theorem~\ref{thm:compressed_exp_comparison},
   let $\rho\geq0$ satisfy $P\rho=\rho$. Then
   $\operatorname{Re}\operatorname{tr}(\rho e^{A+B})
@@ -98,6 +111,7 @@ dimension zero. Matrix order means positive semidefinite order.
   No trace normalization is required.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:compressed_exp_comparison}
   Taking adjoints gives $\rho P=\rho$. Pair the compressed matrix
   inequality with $\rho$, using positivity of the trace pairing.
