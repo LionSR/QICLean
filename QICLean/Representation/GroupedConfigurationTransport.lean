@@ -59,7 +59,8 @@ theorem groupedConfigurationEquiv_subsystemPerm
   · funext j v
     by_cases hv : v ∈ S <;>
       simp [groupedConfigurationEquiv, prodLeft_apply, subsystemPerm_apply,
-        hv, groupHom₁, youngHom, Equiv.permCongrHom, Equiv.permCongr_def]
+        hv, groupHom₁, youngHom, Equiv.permCongrHom, Equiv.permCongr_def,
+        Equiv.Perm.one_def]
 
 variable [Fintype V] [∀ v, Fintype (ι v)] [∀ v, DecidableEq (ι v)]
 
