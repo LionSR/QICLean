@@ -1,0 +1,39 @@
+\begin{theorem}[A common error for finitely many transports]
+    \label{thm:replica_transport_finite_family}
+    \lean{TensorPower.ReplicaTransport.transport_finite_family,
+        Asymptotics.IsBigO.exists_nonneg_abs_le_mul_log_add_two}
+    \uses{thm:replica_transport}
+    Choose the universal constants of Theorem~\ref{thm:replica_transport} once.
+    Fix a finite family of admissible transports with the same one-copy dimensions,
+    band count, supported energy terms, positive parameter $a$, and dimension bound
+    $\ell\ge1$, satisfying all hypotheses of that theorem in each round.
+    The history and conditional choice sets may vary between rounds.
+    There exist nonnegative sequences $\beta_k$ and $r_k$, and a constant
+    $C_\beta\ge0$, such that $\beta_k\le C_\beta\log(k+2)$ for every $k\ge0$
+    and $r_k\longrightarrow0$.
+    These same sequences give the entropy and energy error bounds for every round,
+    every replica count, every nonzero symmetric input vector, and every interior
+    interpolation parameter. The energy estimate retains its replica-energy
+    eigenvector hypothesis with the stated eigenvalue. The exact derivative identity
+    and the entropy inequality integrated over every closed subinterval of $[0,1]$
+    also hold. The family may be empty. Only $C_\beta$ and the two sequences may
+    depend on the fixed family; the universal constants are unchanged.
+\end{theorem}
+
+\begin{proof}
+    \uses{thm:replica_transport, lem:replica_entropy_gain_integrable,
+        cor:replica_transport_integrated}
+    For each round $j$, choose the sequences $\beta_{j,k}$ and $r_{j,k}$ from
+    Theorem~\ref{thm:replica_transport}, before fixing a replica count or input vector.
+    Set $\beta_k=\sum_j|\beta_{j,k}|$ and $r_k=\sum_j|r_{j,k}|$.
+    Both sequences are nonnegative and dominate the corresponding signed error
+    in every round. Finite sums preserve convergence to zero and the logarithmic
+    asymptotic bound. Since $\log(k+2)\ge\log2>0$, one can enlarge its coefficient
+    to absorb the finitely many initial indices, even when $\beta_0\ne0$.
+    The derivative identity is unchanged. Subtracting the larger entropy error
+    gives the common pointwise bound; adding the larger energy remainder gives
+    the common energy bound. Finally, the entropy gain is integrable by
+    Lemma~\ref{lem:replica_entropy_gain_integrable}, so
+    Corollary~\ref{cor:replica_transport_integrated} applies with the common error,
+    including both endpoints.
+\end{proof}

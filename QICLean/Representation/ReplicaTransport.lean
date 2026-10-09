@@ -12,6 +12,7 @@ import QICLean.Representation.ReplicaTransport.CoherentLog
 import QICLean.Representation.ReplicaTransport.CoherentMeasure
 import QICLean.Representation.ReplicaTransport.Energy
 import QICLean.Representation.ReplicaTransport.EntropyGain
+import QICLean.Representation.ReplicaTransport.FiniteFamily
 import QICLean.Representation.ReplicaTransport.Integrated
 import QICLean.Representation.ReplicaTransport.IntegratedEntropy
 import QICLean.Representation.ReplicaTransport.LeafMeasure
