@@ -7,10 +7,11 @@ refer to the positive-semidefinite order.
 \begin{theorem}[Transferring a bound between Gram matrices]
 \label{thm:gram_operator_bound}
 \lean{Matrix.mul_conjTranspose_le_smul_one_of_conjTranspose_mul_le}
+\leanok
 Let $T$ be an operator and let $c\ge0$. If $T^*T\le c\Id$, then
 $TT^*\le c\Id$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
 The hypothesis gives $\|T\|^2=\|T^*T\|\le c$. Thus
 $TT^*\le\|T\|^2\Id\le c\Id$.
 \end{proof}
@@ -18,6 +19,7 @@ $TT^*\le\|T\|^2\Id\le c\Id$.
 \begin{theorem}[A lower bound from a compressed inverse]
 \label{thm:inverse_compression_lower_pin}
 \lean{Matrix.PosDef.inv_smul_projection_le_of_compression_inv_le}
+\leanok
 Let $A$ be positive definite, let $P$ be an orthogonal projection, and
 let $c>0$. Then
 \begin{align}
@@ -27,7 +29,7 @@ No commutation between $A$ and $P$ is required. This is the implication
 from the compressed-inverse estimate to the lower bound in
 \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
 \uses{thm:gram_operator_bound}
 Put $S=A^{1/2}$ and $T=S^{-1}P$. Since $0\le P\le\Id$, the hypothesis
 gives $T^*T=PA^{-1}P\le c\Id$. Theorem~\ref{thm:gram_operator_bound}
