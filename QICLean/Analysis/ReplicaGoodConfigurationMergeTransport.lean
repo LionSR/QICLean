@@ -92,9 +92,15 @@ variable [∀ f, Fintype (ι f)] [∀ f, DecidableEq (ι f)]
 local instance goodConfigurationMerge_decidableEqConfig :
     DecidableEq (Config m ι) := Fintype.decidablePiFintype
 
+local instance goodConfigurationMerge_decidableEqCopies (j : Fin 5) :
+    DecidableEq (Fin m → ι j) := Fintype.decidablePiFintype
+
+local instance goodConfigurationMerge_decidableEqPair (i j : Fin 5) :
+    DecidableEq ((Fin m → ι i) × (Fin m → ι j)) := inferInstance
+
 local instance goodConfigurationMerge_decidableEqPairMiddle :
     DecidableEq ((((Fin m → ι 0) × (Fin m → ι 3)) ×
-      ((Fin m → ι 2) × (Fin m → ι 4))) × (Fin m → ι 1)) := Classical.decEq _
+      ((Fin m → ι 2) × (Fin m → ι 4))) × (Fin m → ι 1)) := inferInstance
 
 private theorem firstPair_labelObservable (j : Fin 3)
     (f : IrrepLabel (Equiv.Perm (Fin m)) → ℝ) :
