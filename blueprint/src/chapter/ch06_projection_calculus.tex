@@ -1,0 +1,28 @@
+\section{Functional calculus on complementary projection ranges}
+\label{sec:projection_calculus}
+
+\begin{theorem}[Functional calculus of an affine projection]
+    \label{thm:area_law_affine_projection_calculus}
+    \lean{Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem}
+    Let $P$ be an orthogonal projection on a finite-dimensional complex
+    Hilbert space. For arbitrary $b,d\in\mathbb R$ and an arbitrary
+    function $f:\mathbb R\to\mathbb R$,
+    \begin{align}
+        f\bigl(bI+(d-b)P\bigr) & =f(b)(I-P)+f(d)P.
+        \label{eq:affine_projection_calculus}
+    \end{align}
+    Here functional calculus uses the restriction of $f$ to the finite
+    spectrum. Neither continuity of $f$ nor distinctness of $b,d$ is required.
+    Either projection range, or the entire space, may have dimension zero.
+    This is the complementary-range calculation used in
+    \cite[Section~7, lines~603--640]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \uses{lem:orthogonal_resolution_cfc}
+    The projections $I-P,P$ are orthogonal and sum to $I$. Apply
+    Lemma~\ref{lem:orthogonal_resolution_cfc} to this resolution with scalar
+    values $b,d$. This argument permits zero projections and repeated scalar
+    values. In particular, if $b=d$, the formula reduces to $f(b)I$; if
+    $P=0$ or $P=I$, it reduces to $f(b)I$ or $f(d)I$, respectively.
+\end{proof}
