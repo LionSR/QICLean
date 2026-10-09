@@ -197,7 +197,8 @@ theorem fiveFactorCopies_exp_labelEntropy_singleton (a : ℝ) :
       (1 : Matrix (Fin m → ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2)))
         (Fin m → ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2))) ℂ))
   rw [exp_kronecker_one] at hexp
-  done
+  simpa only [reindex_apply, Equiv.symm_symm, smul_kronecker,
+    submatrix_smul, Pi.smul_apply] using hexp.symm
 
 end TensorPower
 
